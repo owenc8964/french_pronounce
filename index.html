@@ -22,10 +22,10 @@
     .col-right { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 10px 14px; gap: 2px; }
     .graphies { font-size: 0.72rem; color: #aaa; margin-bottom: 3px; }
     .exemples { font-size: 0.9rem; line-height: 1.9; }
-    .playable { cursor: pointer; display: inline; padding: 3px 8px; border-radius: 8px; -webkit-tap-highlight-color: transparent; transition: background 0.12s; }
+    .playable { cursor: pointer; display: inline; padding: 3px 8px; border-radius: 8px; -webkit-tap-highlight-color: transparent; transition: background 0.12s; touch-action: manipulation; }
     .playable:active, .playable:hover { background: #efefef; }
     .playable.playing { background: #e6f4e6; color: #2a7a2a; }
-    .son-btn { font-size: 1.25rem; font-weight: 700; font-family: 'Georgia', serif; padding: 6px 8px; border-radius: 10px; cursor: pointer; text-align: center; -webkit-tap-highlight-color: transparent; transition: background 0.12s; line-height: 1.2; }
+    .son-btn { font-size: 1.25rem; font-weight: 700; font-family: 'Georgia', serif; padding: 6px 8px; border-radius: 10px; cursor: pointer; text-align: center; -webkit-tap-highlight-color: transparent; transition: background 0.12s; line-height: 1.2; touch-action: manipulation; }
     .son-btn:active, .son-btn:hover { background: #efefef; }
     .son-btn.playing { background: #e6f4e6; color: #2a7a2a; }
     .playable::before { content: '▶\00a0'; font-size: 0.55rem; color: #ccc; vertical-align: middle; }
@@ -306,25 +306,33 @@
     stopAt = null;
   }
 
+  let pendingPlay = false;
+  audio.addEventListener('seeked', () => {
+    if (pendingPlay) { pendingPlay = false; audio.play().catch(() => {}); }
+  });
+
+  function triggerPlay(el) {
+    const start = Math.max(0, parseFloat(el.dataset.start));
+    const end   = parseFloat(el.dataset.end);
+    if (isNaN(end)) return;
+
+    if (currentEl === el && !audio.paused) {
+      audio.pause(); clearPlaying(); return;
+    }
+
+    clearPlaying();
+    stopAt = end;
+    currentEl = el;
+    el.classList.add('playing');
+    bar.textContent = '▶ ' + el.textContent.trim();
+    bar.classList.add('visible');
+    pendingPlay = true;
+    audio.currentTime = start;
+  }
+
   document.querySelectorAll('.playable').forEach(el => {
-    el.addEventListener('click', () => {
-      const start = Math.max(0, parseFloat(el.dataset.start));
-      const end   = parseFloat(el.dataset.end);
-      if (isNaN(end)) return;
-
-      if (currentEl === el && !audio.paused) {
-        audio.pause(); clearPlaying(); return;
-      }
-
-      clearPlaying();
-      audio.currentTime = start;
-      stopAt = end;
-      currentEl = el;
-      el.classList.add('playing');
-      bar.textContent = '▶ ' + el.textContent.trim();
-      bar.classList.add('visible');
-      audio.play();
-    });
+    el.addEventListener('touchstart', e => { e.preventDefault(); triggerPlay(el); }, { passive: false });
+    el.addEventListener('click', () => { triggerPlay(el); });
   });
 
   audio.addEventListener('timeupdate', () => {
