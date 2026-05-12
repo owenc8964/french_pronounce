@@ -167,7 +167,7 @@ let frVoice = null, slowMode = false, currentCard = null;
 
 function initVoices() {
   const all = speechSynthesis.getVoices();
-  const frVoices = all.filter(v => v.lang.startsWith('fr') && /enhanced|premium/i.test(v.name));
+  const frVoices = all.filter(v => /amelie/i.test(v.name) && /enhanced|premium/i.test(v.name));
   const sel = document.getElementById('voiceSelect');
   const status = document.getElementById('voiceStatus');
 
