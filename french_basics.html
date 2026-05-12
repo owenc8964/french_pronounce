@@ -158,7 +158,7 @@ let frVoice = null, slowMode = false, currentCard = null;
 
 function initVoices() {
   const all = speechSynthesis.getVoices();
-  frVoice = all.find(v => /am[eé]lie/i.test(v.name) && /enhanced|premium/i.test(v.name)) || null;
+  frVoice = all.find(v => /am[eé]lie/i.test(v.name)) || null;
   const status = document.getElementById('voiceStatus');
   if (frVoice) { status.textContent = '✓ ' + frVoice.name; status.className = 'voice-status ok'; }
   else         { status.textContent = '找不到 Amelie Enhanced'; status.className = 'voice-status err'; }
