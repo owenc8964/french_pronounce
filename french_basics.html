@@ -27,6 +27,12 @@
     .voice-status { font-size: 0.75rem; color: #bbb; margin-left: 2px; }
     .voice-status.ok  { color: #2a7a2a; }
     .voice-status.err { color: #c00; }
+    .voice-select {
+      padding: 6px 10px; border: 1.5px solid #ddd; border-radius: 8px;
+      font-size: 0.8rem; background: #fff; color: #2c2c2c; cursor: pointer;
+      max-width: 220px;
+    }
+    .voice-select:focus { outline: none; border-color: #aaa; }
 
     /* ── Section ── */
     .section { background: #fff; border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
@@ -95,7 +101,10 @@
 <div class="controls">
   <button class="btn btn-slow" id="slowBtn" onclick="toggleSlow()">慢速模式</button>
   <button class="btn btn-gray" onclick="stopAll()">停止</button>
-  <span class="voice-status" id="voiceStatus">偵測語音中…</span>
+  <select class="voice-select" id="voiceSelect" onchange="onVoiceChange()">
+    <option value="">偵測語音中…</option>
+  </select>
+  <span class="voice-status" id="voiceStatus"></span>
 </div>
 
 <!-- 數字 0–100 -->
@@ -157,12 +166,40 @@ const MONTHS = [
 let frVoice = null, slowMode = false, currentCard = null;
 
 function initVoices() {
-  const v = speechSynthesis.getVoices();
-  frVoice = v.find(x => x.lang === 'fr-FR') || v.find(x => x.lang.startsWith('fr')) || null;
-  const el = document.getElementById('voiceStatus');
-  if (frVoice) { el.textContent = '✓ ' + frVoice.name; el.className = 'voice-status ok'; }
-  else         { el.textContent = '找不到法語語音（請至系統偏好設定安裝）'; el.className = 'voice-status err'; }
+  const all = speechSynthesis.getVoices();
+  const frVoices = all.filter(v => v.lang.startsWith('fr'));
+  const sel = document.getElementById('voiceSelect');
+  const status = document.getElementById('voiceStatus');
+
+  if (frVoices.length === 0) {
+    sel.innerHTML = '<option>找不到法語語音</option>';
+    status.textContent = '請至系統設定 → 輔助使用 → 語音內容 安裝法語語音';
+    status.className = 'voice-status err';
+    return;
+  }
+
+  sel.innerHTML = frVoices.map((v, i) =>
+    `<option value="${i}">${v.name} (${v.lang})</option>`
+  ).join('');
+
+  // 優先選 Premium / Enhanced，其次 fr-FR，否則第一個
+  const best =
+    frVoices.find(v => /premium/i.test(v.name)) ||
+    frVoices.find(v => /enhanced/i.test(v.name)) ||
+    frVoices.find(v => v.lang === 'fr-FR') ||
+    frVoices[0];
+
+  const bestIdx = frVoices.indexOf(best);
+  sel.value = bestIdx;
+  frVoice = best;
+  status.textContent = '';
 }
+
+function onVoiceChange() {
+  const all = speechSynthesis.getVoices().filter(v => v.lang.startsWith('fr'));
+  frVoice = all[document.getElementById('voiceSelect').value] || null;
+}
+
 speechSynthesis.onvoiceschanged = initVoices;
 initVoices();
 
