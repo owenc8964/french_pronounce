@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>法語基礎發音</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f0f0ee;
+      color: #2c2c2c;
+      padding: 24px 20px;
+      min-width: 360px;
+    }
+
+    h1 { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; }
+    .subtitle { font-size: 0.78rem; color: #999; margin-bottom: 20px; }
+
+    /* ── Controls ── */
+    .controls { display: flex; gap: 8px; align-items: center; margin-bottom: 22px; flex-wrap: wrap; }
+    .btn { padding: 7px 14px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 500; transition: opacity 0.1s; }
+    .btn:hover { opacity: 0.82; }
+    .btn-gray { background: #e4e4e2; color: #2c2c2c; }
+    .btn-slow { background: #e4e4e2; color: #2c2c2c; }
+    .btn-slow.active { background: #d4a017; color: #fff; }
+    .voice-status { font-size: 0.75rem; color: #bbb; margin-left: 2px; }
+    .voice-status.ok  { color: #2a7a2a; }
+    .voice-status.err { color: #c00; }
+
+    /* ── Section ── */
+    .section { background: #fff; border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .section-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #aaa; margin-bottom: 14px; }
+
+    /* ── Number grid: 10 columns, fixed row height ── */
+    .grid-numbers {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 5px;
+    }
+
+    /* ── Days / Months grid: 4 columns ── */
+    .grid-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+    }
+
+    /* ── Card base ── */
+    .card {
+      background: #f8f8f6;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      border: 2px solid transparent;
+      transition: background 0.1s, box-shadow 0.1s, transform 0.1s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .card:hover  { background: #eeeeec; transform: translateY(-1px); box-shadow: 0 2px 6px rgba(0,0,0,0.09); }
+    .card:active { transform: translateY(0); }
+    .card.playing { background: #fff8e0; border-color: #d4a017; box-shadow: 0 2px 8px rgba(212,160,23,0.22); }
+
+    /* Number card: fixed height so grid stays aligned */
+    .card-num-item {
+      height: 58px;
+      padding: 4px 3px;
+    }
+    .card-num-item .top { font-size: 1.05rem; font-weight: 700; color: #2c2c2c; line-height: 1; }
+    .card-num-item .fr  { font-size: 0.6rem; color: #777; margin-top: 3px; line-height: 1.25; word-break: break-word; }
+
+    /* Day / Month card */
+    .card-word { padding: 10px 8px; }
+    .card-word .fr { font-size: 0.9rem; font-weight: 600; color: #2c2c2c; }
+    .card-word .zh { font-size: 0.68rem; color: #aaa; margin-top: 3px; }
+
+    /* ── Hint ── */
+    .hint { margin-top: 12px; font-size: 0.72rem; color: #bbb; line-height: 1.7; }
+    .hint b { color: #999; }
+
+    @media (max-width: 600px) {
+      .grid-numbers { grid-template-columns: repeat(5, 1fr); }
+      .grid-list    { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<h1>法語基礎發音</h1>
+<p class="subtitle">點擊卡片即可聆聽法語發音</p>
+
+<div class="controls">
+  <button class="btn btn-slow" id="slowBtn" onclick="toggleSlow()">慢速模式</button>
+  <button class="btn btn-gray" onclick="stopAll()">停止</button>
+  <span class="voice-status" id="voiceStatus">偵測語音中…</span>
+</div>
+
+<!-- 數字 0–100 -->
+<div class="section">
+  <div class="section-title">數字 0 – 100</div>
+  <div class="grid-numbers" id="numbersGrid"></div>
+  <div class="hint">
+    <b>連音：</b> deux euros [z]、six euros [z]、un euro [n]　｜
+    <b>注意：</b> 70 = soixante-dix（六十＋十）、80 = quatre-vingts（四個二十）、90 = quatre-vingt-dix
+  </div>
+</div>
+
+<!-- 星期 -->
+<div class="section">
+  <div class="section-title">星期</div>
+  <div class="grid-list" id="daysGrid"></div>
+  <div class="hint">
+    法語星期從 <b>lundi</b>（一）開始。今天是幾號？→ <b>Aujourd'hui, c'est...</b>
+  </div>
+</div>
+
+<!-- 月份 -->
+<div class="section">
+  <div class="section-title">月份</div>
+  <div class="grid-list" id="monthsGrid"></div>
+  <div class="hint">
+    說日期：<b>le 2 janvier</b>（le ＋ 數字 ＋ 月份）。1 號例外：<b>le premier mai</b>。
+  </div>
+</div>
+
+<script>
+// ── 資料 ─────────────────────────────────────────────────────
+const FR_NUM = [
+  'zéro','un','deux','trois','quatre','cinq','six','sept','huit','neuf',
+  'dix','onze','douze','treize','quatorze','quinze','seize','dix-sept','dix-huit','dix-neuf',
+  'vingt','vingt et un','vingt-deux','vingt-trois','vingt-quatre','vingt-cinq','vingt-six','vingt-sept','vingt-huit','vingt-neuf',
+  'trente','trente et un','trente-deux','trente-trois','trente-quatre','trente-cinq','trente-six','trente-sept','trente-huit','trente-neuf',
+  'quarante','quarante et un','quarante-deux','quarante-trois','quarante-quatre','quarante-cinq','quarante-six','quarante-sept','quarante-huit','quarante-neuf',
+  'cinquante','cinquante et un','cinquante-deux','cinquante-trois','cinquante-quatre','cinquante-cinq','cinquante-six','cinquante-sept','cinquante-huit','cinquante-neuf',
+  'soixante','soixante et un','soixante-deux','soixante-trois','soixante-quatre','soixante-cinq','soixante-six','soixante-sept','soixante-huit','soixante-neuf',
+  'soixante-dix','soixante et onze','soixante-douze','soixante-treize','soixante-quatorze','soixante-quinze','soixante-seize','soixante-dix-sept','soixante-dix-huit','soixante-dix-neuf',
+  'quatre-vingts','quatre-vingt-un','quatre-vingt-deux','quatre-vingt-trois','quatre-vingt-quatre','quatre-vingt-cinq','quatre-vingt-six','quatre-vingt-sept','quatre-vingt-huit','quatre-vingt-neuf',
+  'quatre-vingt-dix','quatre-vingt-onze','quatre-vingt-douze','quatre-vingt-treize','quatre-vingt-quatorze','quatre-vingt-quinze','quatre-vingt-seize','quatre-vingt-dix-sept','quatre-vingt-dix-huit','quatre-vingt-dix-neuf',
+  'cent'
+];
+
+const DAYS = [
+  ['lundi','星期一'],['mardi','星期二'],['mercredi','星期三'],['jeudi','星期四'],
+  ['vendredi','星期五'],['samedi','星期六'],['dimanche','星期日'],
+];
+
+const MONTHS = [
+  ['janvier','一月'],['février','二月'],['mars','三月'],['avril','四月'],
+  ['mai','五月'],['juin','六月'],['juillet','七月'],['août','八月'],
+  ['septembre','九月'],['octobre','十月'],['novembre','十一月'],['décembre','十二月'],
+];
+
+// ── 語音 ─────────────────────────────────────────────────────
+let frVoice = null, slowMode = false, currentCard = null;
+
+function initVoices() {
+  const v = speechSynthesis.getVoices();
+  frVoice = v.find(x => x.lang === 'fr-FR') || v.find(x => x.lang.startsWith('fr')) || null;
+  const el = document.getElementById('voiceStatus');
+  if (frVoice) { el.textContent = '✓ ' + frVoice.name; el.className = 'voice-status ok'; }
+  else         { el.textContent = '找不到法語語音（請至系統偏好設定安裝）'; el.className = 'voice-status err'; }
+}
+speechSynthesis.onvoiceschanged = initVoices;
+initVoices();
+
+function speak(text, el) {
+  speechSynthesis.cancel();
+  if (currentCard) currentCard.classList.remove('playing');
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'fr-FR';
+  if (frVoice) utt.voice = frVoice;
+  utt.rate = slowMode ? 0.65 : 1.0;
+  currentCard = el;
+  el.classList.add('playing');
+  utt.onend = utt.onerror = () => el.classList.remove('playing');
+  speechSynthesis.speak(utt);
+}
+
+function stopAll() {
+  speechSynthesis.cancel();
+  if (currentCard) { currentCard.classList.remove('playing'); currentCard = null; }
+}
+
+function toggleSlow() {
+  slowMode = !slowMode;
+  const btn = document.getElementById('slowBtn');
+  btn.classList.toggle('active', slowMode);
+  btn.textContent = slowMode ? '慢速 ON' : '慢速模式';
+}
+
+// ── 渲染 ─────────────────────────────────────────────────────
+const numGrid = document.getElementById('numbersGrid');
+FR_NUM.forEach((fr, i) => {
+  const d = document.createElement('div');
+  d.className = 'card card-num-item';
+  d.innerHTML = `<div class="top">${i}</div><div class="fr">${fr}</div>`;
+  d.addEventListener('click', () => speak(fr, d));
+  numGrid.appendChild(d);
+});
+
+document.getElementById('daysGrid').append(
+  ...DAYS.map(([fr, zh]) => {
+    const d = document.createElement('div');
+    d.className = 'card card-word';
+    d.innerHTML = `<div class="fr">${fr}</div><div class="zh">${zh}</div>`;
+    d.addEventListener('click', () => speak(fr, d));
+    return d;
+  })
+);
+
+document.getElementById('monthsGrid').append(
+  ...MONTHS.map(([fr, zh]) => {
+    const d = document.createElement('div');
+    d.className = 'card card-word';
+    d.innerHTML = `<div class="fr">${fr}</div><div class="zh">${zh}</div>`;
+    d.addEventListener('click', () => speak(fr, d));
+    return d;
+  })
+);
+</script>
+</body>
+</html>
