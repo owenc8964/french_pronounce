@@ -11,7 +11,7 @@
       background: #f0f0ee;
       color: #2c2c2c;
       padding: 24px 20px;
-      min-width: 360px;
+      min-width: 320px;
     }
 
     h1 { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; }
@@ -24,29 +24,36 @@
     .btn-gray { background: #e4e4e2; color: #2c2c2c; }
     .btn-slow { background: #e4e4e2; color: #2c2c2c; }
     .btn-slow.active { background: #d4a017; color: #fff; }
-    .voice-status { font-size: 0.75rem; color: #bbb; margin-left: 2px; }
+    .voice-status { font-size: 0.75rem; color: #bbb; }
     .voice-status.ok  { color: #2a7a2a; }
     .voice-status.err { color: #c00; }
 
     /* ── Section ── */
     .section { background: #fff; border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
     .section-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #aaa; margin-bottom: 14px; }
+    .section-subtitle { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #ccc; margin: 14px 0 8px; }
 
-    /* ── Number grid: 10 columns, fixed row height ── */
-    .grid-numbers {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 5px;
+    /* ── Rule box ── */
+    .rule-box {
+      background: #f8f8f6;
+      border-left: 3px solid #2c2c2c;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: #444;
     }
+    .rule-box b { color: #2c2c2c; }
 
-    /* ── Days / Months grid: 4 columns ── */
-    .grid-list {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 7px;
-    }
+    /* ── Grids（auto-fill，手機自動調整）── */
+    .grid-num   { display: grid; grid-template-columns: repeat(auto-fill, minmax(48px,  1fr)); gap: 5px; }
+    .grid-3     { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+    .grid-large { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 7px; }
+    .grid-alpha { display: grid; grid-template-columns: repeat(auto-fill, minmax(52px,  1fr)); gap: 5px; }
+    .grid-word  { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 7px; }
 
-    /* ── Card base ── */
+    /* ── Card ── */
     .card {
       background: #f8f8f6;
       border-radius: 8px;
@@ -59,68 +66,145 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
     .card:hover  { background: #eeeeec; transform: translateY(-1px); box-shadow: 0 2px 6px rgba(0,0,0,0.09); }
     .card:active { transform: translateY(0); }
-    .card.playing { background: #fff8e0; border-color: #d4a017; box-shadow: 0 2px 8px rgba(212,160,23,0.22); }
-
-    /* Number card: fixed height so grid stays aligned */
-    .card-num-item {
-      height: 58px;
-      padding: 4px 3px;
+    .card.playing { background: #fff8e0; border-color: #d4a017; }
+    .card.has-note::after {
+      content: '●';
+      position: absolute;
+      top: 3px; right: 5px;
+      font-size: 0.45rem;
+      color: #4a90d9;
+      line-height: 1;
     }
-    .card-num-item .top { font-size: 1.05rem; font-weight: 700; color: #2c2c2c; line-height: 1; }
-    .card-num-item .fr  { font-size: 0.6rem; color: #777; margin-top: 3px; line-height: 1.25; word-break: break-word; }
 
-    /* Day / Month card */
-    .card-word { padding: 10px 8px; }
-    .card-word .fr { font-size: 0.9rem; font-weight: 600; color: #2c2c2c; }
-    .card-word .zh { font-size: 0.68rem; color: #aaa; margin-top: 3px; }
+    /* Number card */
+    .card-n { min-height: 58px; padding: 5px 4px; }
+    .card-n .top { font-size: 1.05rem; font-weight: 700; color: #2c2c2c; line-height: 1; }
+    .card-n .fr  { font-size: 0.58rem; color: #777; margin-top: 3px; line-height: 1.25; word-break: break-word; }
 
-    /* ── Hint ── */
-    .hint { margin-top: 12px; font-size: 0.72rem; color: #bbb; line-height: 1.7; }
+    /* Large number card */
+    .card-big { padding: 10px 8px; }
+    .card-big .top { font-size: 0.95rem; font-weight: 700; color: #2c2c2c; }
+    .card-big .fr  { font-size: 0.72rem; color: #555; margin-top: 3px; line-height: 1.3; }
+
+    /* Word card (days, months, alphabet) */
+    .card-w { padding: 10px 8px; }
+    .card-w .top { font-size: 1rem; font-weight: 700; color: #2c2c2c; }
+    .card-w .fr  { font-size: 0.82rem; font-weight: 600; color: #2c2c2c; }
+    .card-w .sub { font-size: 0.65rem; color: #aaa; margin-top: 2px; }
+
+    /* Shared note display */
+    .card-note {
+      font-size: 0.62rem;
+      color: #4a90d9;
+      font-style: italic;
+      margin-top: 4px;
+      line-height: 1.3;
+      padding: 0 3px;
+      word-break: break-word;
+    }
+
+    /* Note editor (shown on dblclick) */
+    .note-editor {
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.96);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 6px;
+      z-index: 10;
+    }
+    .note-editor textarea {
+      flex: 1;
+      border: 1.5px solid #4a90d9;
+      border-radius: 5px;
+      font-size: 0.75rem;
+      padding: 4px 6px;
+      resize: none;
+      outline: none;
+      font-family: inherit;
+      color: #2c2c2c;
+    }
+    .note-editor-hint {
+      font-size: 0.6rem;
+      color: #bbb;
+      text-align: center;
+      margin-top: 3px;
+    }
+
+    /* ── Hint text ── */
+    .hint { margin-top: 10px; font-size: 0.72rem; color: #bbb; line-height: 1.7; }
     .hint b { color: #999; }
-
-    @media (max-width: 600px) {
-      .grid-numbers { grid-template-columns: repeat(5, 1fr); }
-      .grid-list    { grid-template-columns: repeat(2, 1fr); }
-    }
   </style>
 </head>
 <body>
 
 <h1>法語基礎發音</h1>
-<p class="subtitle">點擊卡片即可聆聽法語發音</p>
+<p class="subtitle">單擊播放　雙擊加備注</p>
 
 <div class="controls">
   <button class="btn btn-slow" id="slowBtn" onclick="toggleSlow()">慢速模式</button>
   <button class="btn btn-gray" onclick="stopAll()">停止</button>
-  <span class="voice-status" id="voiceStatus"></span>
+  <span class="voice-status" id="voiceStatus">偵測語音中…</span>
 </div>
 
-<!-- 數字 0–100 -->
+<!-- ── 數字 0–20 ── -->
 <div class="section">
-  <div class="section-title">數字 0 – 100</div>
-  <div class="grid-numbers" id="numbersGrid"></div>
+  <div class="section-title">數字 0 – 20</div>
+  <div class="grid-num" id="grid-0-20"></div>
+</div>
+
+<!-- ── 數字規律 ── -->
+<div class="section">
+  <div class="section-title">數字規律</div>
+
+  <div class="rule-box">
+    <b>x1（除了 11）→ 用 et un：</b>vingt <b>et un</b>、trente <b>et un</b>…<br>
+    <b>x2–x9 → 直接加連字號：</b>vingt<b>-deux</b>、trente<b>-trois</b>…<br>
+    <b>70–79 → soixante + dix 系列：</b>70 = soixante-dix（六十加十）<br>
+    <b>80–89 → quatre-vingts 系列：</b>80 單獨用 = quatre-<b>vingts</b>（有 s）；後面接數字就去掉 s：quatre-vingt-un、quatre-vingt-deux…<br>
+    <b>90–99 → quatre-vingt-dix 系列：</b>90 = quatre-vingt-dix（四個二十加十）
+  </div>
+
+  <div class="section-subtitle">規律示例</div>
+  <div class="grid-3" id="grid-pattern"></div>
+
+  <div class="section-subtitle">大數字</div>
+  <div class="grid-large" id="grid-large"></div>
+
   <div class="hint">
-    <b>連音：</b> deux euros [z]、six euros [z]、un euro [n]　｜
-    <b>注意：</b> 70 = soixante-dix（六十＋十）、80 = quatre-vingts（四個二十）、90 = quatre-vingt-dix
+    <b>100 之後：</b>cent un（不加 et）｜<b>200：</b>deux cents（加 s），但 deux cent un 去掉 s<br>
+    <b>1000：</b>mille（永遠不加 s）｜<b>百萬：</b>un million、<b>十億：</b>un milliard
   </div>
 </div>
 
-<!-- 星期 -->
+<!-- ── 字母 A–Z ── -->
+<div class="section">
+  <div class="section-title">字母 A – Z</div>
+  <div class="grid-alpha" id="grid-alpha"></div>
+  <div class="hint">
+    <b>W</b> = double vé（不是 double u！）｜<b>Y</b> = i grec（希臘字母 i）｜<b>H</b> = ache（永遠不發音）
+  </div>
+</div>
+
+<!-- ── 星期 ── -->
 <div class="section">
   <div class="section-title">星期</div>
-  <div class="grid-list" id="daysGrid"></div>
+  <div class="grid-word" id="grid-days"></div>
   <div class="hint">
-    法語星期從 <b>lundi</b>（一）開始。今天是幾號？→ <b>Aujourd'hui, c'est...</b>
+    法語星期從 <b>lundi</b>（一）開始。Aujourd'hui, c'est...
   </div>
 </div>
 
-<!-- 月份 -->
+<!-- ── 月份 ── -->
 <div class="section">
   <div class="section-title">月份</div>
-  <div class="grid-list" id="monthsGrid"></div>
+  <div class="grid-word" id="grid-months"></div>
   <div class="hint">
     說日期：<b>le 2 janvier</b>（le ＋ 數字 ＋ 月份）。1 號例外：<b>le premier mai</b>。
   </div>
@@ -128,18 +212,30 @@
 
 <script>
 // ── 資料 ─────────────────────────────────────────────────────
-const FR_NUM = [
-  'zéro','un','deux','trois','quatre','cinq','six','sept','huit','neuf',
-  'dix','onze','douze','treize','quatorze','quinze','seize','dix-sept','dix-huit','dix-neuf',
-  'vingt','vingt et un','vingt-deux','vingt-trois','vingt-quatre','vingt-cinq','vingt-six','vingt-sept','vingt-huit','vingt-neuf',
-  'trente','trente et un','trente-deux','trente-trois','trente-quatre','trente-cinq','trente-six','trente-sept','trente-huit','trente-neuf',
-  'quarante','quarante et un','quarante-deux','quarante-trois','quarante-quatre','quarante-cinq','quarante-six','quarante-sept','quarante-huit','quarante-neuf',
-  'cinquante','cinquante et un','cinquante-deux','cinquante-trois','cinquante-quatre','cinquante-cinq','cinquante-six','cinquante-sept','cinquante-huit','cinquante-neuf',
-  'soixante','soixante et un','soixante-deux','soixante-trois','soixante-quatre','soixante-cinq','soixante-six','soixante-sept','soixante-huit','soixante-neuf',
-  'soixante-dix','soixante et onze','soixante-douze','soixante-treize','soixante-quatorze','soixante-quinze','soixante-seize','soixante-dix-sept','soixante-dix-huit','soixante-dix-neuf',
-  'quatre-vingts','quatre-vingt-un','quatre-vingt-deux','quatre-vingt-trois','quatre-vingt-quatre','quatre-vingt-cinq','quatre-vingt-six','quatre-vingt-sept','quatre-vingt-huit','quatre-vingt-neuf',
-  'quatre-vingt-dix','quatre-vingt-onze','quatre-vingt-douze','quatre-vingt-treize','quatre-vingt-quatorze','quatre-vingt-quinze','quatre-vingt-seize','quatre-vingt-dix-sept','quatre-vingt-dix-huit','quatre-vingt-dix-neuf',
-  'cent'
+const NUM_0_20 = [
+  [0,'zéro'],[1,'un'],[2,'deux'],[3,'trois'],[4,'quatre'],[5,'cinq'],[6,'six'],
+  [7,'sept'],[8,'huit'],[9,'neuf'],[10,'dix'],[11,'onze'],[12,'douze'],
+  [13,'treize'],[14,'quatorze'],[15,'quinze'],[16,'seize'],[17,'dix-sept'],
+  [18,'dix-huit'],[19,'dix-neuf'],[20,'vingt'],
+];
+
+const NUM_PATTERN = [
+  [21,'vingt et un'],[32,'trente-deux'],[43,'quarante-trois'],
+  [54,'cinquante-quatre'],[65,'soixante-cinq'],[76,'soixante-seize'],
+  [80,'quatre-vingts'],[87,'quatre-vingt-sept'],[98,'quatre-vingt-dix-huit'],
+];
+
+const NUM_LARGE = [
+  [100,'cent'],[1000,'mille'],[10000,'dix mille'],
+  [100000,'cent mille'],[1000000,'un million'],
+];
+
+const ALPHABET = [
+  ['A','a'],['B','bé'],['C','cé'],['D','dé'],['E','e'],['F','effe'],
+  ['G','gé'],['H','ache'],['I','i'],['J','ji'],['K','ka'],['L','elle'],
+  ['M','emme'],['N','enne'],['O','o'],['P','pé'],['Q','ku'],['R','erre'],
+  ['S','esse'],['T','té'],['U','u'],['V','vé'],['W','double vé'],
+  ['X','ixe'],['Y','i grec'],['Z','zède'],
 ];
 
 const DAYS = [
@@ -153,17 +249,27 @@ const MONTHS = [
   ['septembre','九月'],['octobre','十月'],['novembre','十一月'],['décembre','十二月'],
 ];
 
+// ── 備注（localStorage）─────────────────────────────────────
+const NOTES_KEY = 'fr_card_notes';
+let savedNotes = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}');
+
+function getNote(id) { return savedNotes[id] || ''; }
+function setNote(id, text) {
+  if (text) savedNotes[id] = text;
+  else delete savedNotes[id];
+  localStorage.setItem(NOTES_KEY, JSON.stringify(savedNotes));
+}
+
 // ── 語音 ─────────────────────────────────────────────────────
 let frVoice = null, slowMode = false, currentCard = null;
 
 function initVoices() {
   const all = speechSynthesis.getVoices();
   frVoice = all.find(v => /am[eé]lie/i.test(v.name)) || null;
-  const status = document.getElementById('voiceStatus');
-  if (frVoice) { status.textContent = '✓ ' + frVoice.name; status.className = 'voice-status ok'; }
-  else         { status.textContent = '找不到 Amelie Enhanced'; status.className = 'voice-status err'; }
+  const el = document.getElementById('voiceStatus');
+  if (frVoice) { el.textContent = '✓ ' + frVoice.name; el.className = 'voice-status ok'; }
+  else         { el.textContent = '找不到 Amélie 語音'; el.className = 'voice-status err'; }
 }
-
 speechSynthesis.onvoiceschanged = initVoices;
 initVoices();
 
@@ -192,35 +298,98 @@ function toggleSlow() {
   btn.textContent = slowMode ? '慢速 ON' : '慢速模式';
 }
 
-// ── 渲染 ─────────────────────────────────────────────────────
-const numGrid = document.getElementById('numbersGrid');
-FR_NUM.forEach((fr, i) => {
+// ── 備注編輯器 ─────────────────────────────────────────────
+function openNote(card, id) {
+  speechSynthesis.cancel();
+  if (card.querySelector('.note-editor')) return;
+
+  const existing = getNote(id);
+  const editor = document.createElement('div');
+  editor.className = 'note-editor';
+  editor.innerHTML = `<textarea placeholder="輸入備注…"></textarea><div class="note-editor-hint">Enter 儲存　Esc 取消</div>`;
+  card.appendChild(editor);
+
+  const ta = editor.querySelector('textarea');
+  ta.value = existing;
+  ta.focus();
+
+  function save() {
+    const val = ta.value.trim();
+    setNote(id, val);
+    const noteEl = card.querySelector('.card-note');
+    if (noteEl) noteEl.textContent = val;
+    card.classList.toggle('has-note', !!val);
+    editor.remove();
+  }
+  function cancel() {
+    editor.remove();
+  }
+
+  ta.addEventListener('blur', save);
+  ta.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { e.preventDefault(); ta.value = existing; cancel(); }
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); ta.blur(); }
+  });
+  editor.addEventListener('mousedown', e => e.stopPropagation());
+}
+
+// ── 建立卡片 ─────────────────────────────────────────────────
+function card(id, speakText, topHTML, frHTML, subHTML, type) {
   const d = document.createElement('div');
-  d.className = 'card card-num-item';
-  d.innerHTML = `<div class="top">${i}</div><div class="fr">${fr}</div>`;
-  d.addEventListener('click', () => speak(fr, d));
-  numGrid.appendChild(d);
+  d.className = `card card-${type}`;
+  const note = getNote(id);
+  if (note) d.classList.add('has-note');
+
+  d.innerHTML = `
+    <div class="top">${topHTML}</div>
+    <div class="fr">${frHTML}</div>
+    ${subHTML ? `<div class="sub">${subHTML}</div>` : ''}
+    <div class="card-note">${note}</div>
+  `;
+
+  d.addEventListener('click', () => speak(speakText, d));
+  d.addEventListener('dblclick', e => { e.preventDefault(); openNote(d, id); });
+  return d;
+}
+
+// ── 渲染 ─────────────────────────────────────────────────────
+
+// 0–20
+const g020 = document.getElementById('grid-0-20');
+NUM_0_20.forEach(([n, fr]) => {
+  g020.appendChild(card(`num-${n}`, fr, n, fr, '', 'n'));
 });
 
-document.getElementById('daysGrid').append(
-  ...DAYS.map(([fr, zh]) => {
-    const d = document.createElement('div');
-    d.className = 'card card-word';
-    d.innerHTML = `<div class="fr">${fr}</div><div class="zh">${zh}</div>`;
-    d.addEventListener('click', () => speak(fr, d));
-    return d;
-  })
-);
+// 規律示例
+const gpat = document.getElementById('grid-pattern');
+NUM_PATTERN.forEach(([n, fr]) => {
+  gpat.appendChild(card(`num-${n}`, fr, n, fr, '', 'n'));
+});
 
-document.getElementById('monthsGrid').append(
-  ...MONTHS.map(([fr, zh]) => {
-    const d = document.createElement('div');
-    d.className = 'card card-word';
-    d.innerHTML = `<div class="fr">${fr}</div><div class="zh">${zh}</div>`;
-    d.addEventListener('click', () => speak(fr, d));
-    return d;
-  })
-);
+// 大數字
+const glarge = document.getElementById('grid-large');
+NUM_LARGE.forEach(([n, fr]) => {
+  const display = n >= 1000 ? n.toLocaleString('fr-FR') : n;
+  glarge.appendChild(card(`num-${n}`, fr, display, fr, '', 'big'));
+});
+
+// 字母
+const galpha = document.getElementById('grid-alpha');
+ALPHABET.forEach(([letter, name]) => {
+  galpha.appendChild(card(`alpha-${letter}`, name, letter, name, '', 'w'));
+});
+
+// 星期
+const gdays = document.getElementById('grid-days');
+DAYS.forEach(([fr, zh]) => {
+  gdays.appendChild(card(`day-${fr}`, fr, '', fr, zh, 'w'));
+});
+
+// 月份
+const gmonths = document.getElementById('grid-months');
+MONTHS.forEach(([fr, zh]) => {
+  gmonths.appendChild(card(`month-${fr}`, fr, '', fr, zh, 'w'));
+});
 </script>
 </body>
 </html>
