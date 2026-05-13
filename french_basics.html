@@ -234,12 +234,12 @@ const NUM_LARGE = [
 // 字母區改用 Google Translate TTS（fr-FR 標準法語）
 // Amélie 是 fr-CA，母音發法跟標準法語有差，無法靠文字技巧矯正
 const ALPHABET = [
-  ['A','a','a'],['B','bé','bé'],['C','cé','cé'],['D','dé','dé'],
-  ['E','e','e'],['F','effe','effe'],['G','gé','gé'],['H','ache','ache'],
+  ['A','a','a'],['B','bè','bè'],['C','cè','cè'],['D','dè','dè'],
+  ['E','e','e'],['F','effe','effe'],['G','gè','gè'],['H','ache','ache'],
   ['I','i','i'],['J','ji','ji'],['K','ka','ka'],['L','elle','elle'],
-  ['M','emme','emme'],['N','enne','enne'],['O','o','o'],['P','pé','pé'],
-  ['Q','cu','ku'],['R','erre','erre'],['S','esse','esse'],['T','té','té'],
-  ['U','u','u'],['V','vé','vé'],['W','double vé','double vé'],
+  ['M','emme','emme'],['N','enne','enne'],['O','o','o'],['P','pè','pè'],
+  ['Q','cu','ku'],['R','erre','erre'],['S','esse','esse'],['T','tè','tè'],
+  ['U','u','u'],['V','vè','vè'],['W','double vè','double vè'],
   ['X','ixe','ixe'],['Y','i grec','i grec'],['Z','zède','zède'],
 ];
 
@@ -271,7 +271,7 @@ let frVoice = null, frVoiceAlpha = null, slowMode = false, currentCard = null;
 function initVoices() {
   const all = speechSynthesis.getVoices();
   frVoice      = all.find(v => /am[eé]lie/i.test(v.name)) || null;  // 數字／星期／月份
-  frVoiceAlpha = all.find(v => /thomas/i.test(v.name))    || frVoice; // 字母用 Thomas fr-FR，沒有就備援 Amélie
+  frVoiceAlpha = all.find(v => /thomas/i.test(v.name)) || frVoice;
   const el = document.getElementById('voiceStatus');
   if (frVoice) { el.textContent = `✓ ${frVoice.name}　字母：${frVoiceAlpha.name}`; el.className = 'voice-status ok'; }
   else         { el.textContent = '找不到 Amélie 語音'; el.className = 'voice-status err'; }
