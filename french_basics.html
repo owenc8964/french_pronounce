@@ -266,13 +266,14 @@ function setNote(id, text) {
 }
 
 // ── 語音 ─────────────────────────────────────────────────────
-let frVoice = null, slowMode = false, currentCard = null;
+let frVoice = null, frVoiceAlpha = null, slowMode = false, currentCard = null;
 
 function initVoices() {
   const all = speechSynthesis.getVoices();
-  frVoice = all.find(v => /am[eé]lie/i.test(v.name)) || null;
+  frVoice      = all.find(v => /am[eé]lie/i.test(v.name)) || null;  // 數字／星期／月份
+  frVoiceAlpha = all.find(v => /thomas/i.test(v.name))    || frVoice; // 字母用 Thomas fr-FR，沒有就備援 Amélie
   const el = document.getElementById('voiceStatus');
-  if (frVoice) { el.textContent = '✓ ' + frVoice.name; el.className = 'voice-status ok'; }
+  if (frVoice) { el.textContent = `✓ ${frVoice.name}　字母：${frVoiceAlpha.name}`; el.className = 'voice-status ok'; }
   else         { el.textContent = '找不到 Amélie 語音'; el.className = 'voice-status err'; }
 }
 speechSynthesis.onvoiceschanged = initVoices;
@@ -293,35 +294,21 @@ function speak(text, el) {
 
 function stopAll() {
   speechSynthesis.cancel();
-  if (currentAlphaAudio) { currentAlphaAudio.pause(); currentAlphaAudio = null; }
   if (currentCard) { currentCard.classList.remove('playing'); currentCard = null; }
 }
 
-// ── Google TTS（字母專用，fr-FR 標準法語）────────────────────
-let currentAlphaAudio = null;
-
+// ── 字母專用 speak（Thomas fr-FR）───────────────────────────
 function speakAlpha(text, cardEl) {
   speechSynthesis.cancel();
-  if (currentAlphaAudio) { currentAlphaAudio.pause(); currentAlphaAudio = null; }
   if (currentCard) currentCard.classList.remove('playing');
-
-  const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=fr&client=tw-ob&ttsspeed=${slowMode ? 0.5 : 0.8}`;
-  const audio = new Audio(url);
-  currentAlphaAudio = audio;
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang  = 'fr-FR';
+  utt.voice = frVoiceAlpha;
+  utt.rate  = slowMode ? 0.65 : 0.85;
   currentCard = cardEl;
   cardEl.classList.add('playing');
-
-  audio.addEventListener('ended',  () => { cardEl.classList.remove('playing'); currentAlphaAudio = null; });
-  audio.addEventListener('error',  () => {
-    // 備援：Google TTS 失敗時改用 Amélie
-    cardEl.classList.remove('playing');
-    currentAlphaAudio = null;
-    speak(text, cardEl);
-  });
-  audio.play().catch(() => {
-    cardEl.classList.remove('playing');
-    speak(text, cardEl);
-  });
+  utt.onend = utt.onerror = () => cardEl.classList.remove('playing');
+  speechSynthesis.speak(utt);
 }
 
 function toggleSlow() {
