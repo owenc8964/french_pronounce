@@ -230,16 +230,17 @@ const NUM_LARGE = [
   [100000,'cent mille'],[1000000,'un million'],
 ];
 
-// [字母顯示, 朗讀文字, 卡片音標]
-// 朗讀加句號，防止 TTS 把字母當縮寫展開（如 B → B comme Bernard）
+// [字母顯示, Google TTS 朗讀文字, 卡片音標]
+// 字母區改用 Google Translate TTS（fr-FR 標準法語）
+// Amélie 是 fr-CA，母音發法跟標準法語有差，無法靠文字技巧矯正
 const ALPHABET = [
-  ['A','a.','a'],['B','bé.','bé'],['C','cé.','cé'],['D','dé.','dé'],
-  ['E','e.','e'],['F','effe.','effe'],['G','gé.','gé'],['H','ache.','ache'],
-  ['I','i.','i'],['J','ji.','ji'],['K','ka.','ka'],['L','elle.','elle'],
-  ['M','emme.','emme'],['N','enne.','enne'],['O','o.','o'],['P','pé.','pé'],
-  ['Q','ku.','ku'],['R','erre.','erre'],['S','esse.','esse'],['T','té.','té'],
-  ['U','u.','u'],['V','vé.','vé'],['W','double vé.','double vé'],
-  ['X','ixe.','ixe'],['Y','i grec.','i grec'],['Z','zède.','zède'],
+  ['A','a','a'],['B','bé','bé'],['C','cé','cé'],['D','dé','dé'],
+  ['E','e','e'],['F','effe','effe'],['G','gé','gé'],['H','ache','ache'],
+  ['I','i','i'],['J','ji','ji'],['K','ka','ka'],['L','elle','elle'],
+  ['M','emme','emme'],['N','enne','enne'],['O','o','o'],['P','pé','pé'],
+  ['Q','ku','ku'],['R','erre','erre'],['S','esse','esse'],['T','té','té'],
+  ['U','u','u'],['V','vé','vé'],['W','double vé','double vé'],
+  ['X','ixe','ixe'],['Y','i grec','i grec'],['Z','zède','zède'],
 ];
 
 const DAYS = [
@@ -292,7 +293,35 @@ function speak(text, el) {
 
 function stopAll() {
   speechSynthesis.cancel();
+  if (currentAlphaAudio) { currentAlphaAudio.pause(); currentAlphaAudio = null; }
   if (currentCard) { currentCard.classList.remove('playing'); currentCard = null; }
+}
+
+// ── Google TTS（字母專用，fr-FR 標準法語）────────────────────
+let currentAlphaAudio = null;
+
+function speakAlpha(text, cardEl) {
+  speechSynthesis.cancel();
+  if (currentAlphaAudio) { currentAlphaAudio.pause(); currentAlphaAudio = null; }
+  if (currentCard) currentCard.classList.remove('playing');
+
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=fr&client=tw-ob&ttsspeed=${slowMode ? 0.5 : 0.8}`;
+  const audio = new Audio(url);
+  currentAlphaAudio = audio;
+  currentCard = cardEl;
+  cardEl.classList.add('playing');
+
+  audio.addEventListener('ended',  () => { cardEl.classList.remove('playing'); currentAlphaAudio = null; });
+  audio.addEventListener('error',  () => {
+    // 備援：Google TTS 失敗時改用 Amélie
+    cardEl.classList.remove('playing');
+    currentAlphaAudio = null;
+    speak(text, cardEl);
+  });
+  audio.play().catch(() => {
+    cardEl.classList.remove('playing');
+    speak(text, cardEl);
+  });
 }
 
 function toggleSlow() {
@@ -379,8 +408,15 @@ NUM_LARGE.forEach(([n, fr]) => {
 
 // 字母
 const galpha = document.getElementById('grid-alpha');
-ALPHABET.forEach(([letter, speak, name]) => {
-  galpha.appendChild(card(`alpha-${letter}`, speak, letter, name, '', 'w'));
+ALPHABET.forEach(([letter, googleText, name]) => {
+  const d = document.createElement('div');
+  d.className = 'card card-w';
+  const note = getNote(`alpha-${letter}`);
+  if (note) d.classList.add('has-note');
+  d.innerHTML = `<div class="top">${letter}</div><div class="fr">${name}</div><div class="sub"></div><div class="card-note">${note}</div>`;
+  d.addEventListener('click', () => speakAlpha(googleText, d));
+  d.addEventListener('dblclick', e => { e.preventDefault(); openNote(d, `alpha-${letter}`); });
+  galpha.appendChild(d);
 });
 
 // 星期
