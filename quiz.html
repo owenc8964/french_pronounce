@@ -15,9 +15,49 @@
       margin: 0 auto;
     }
 
-    h1 { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; }
-    .meta { font-size: 0.75rem; color: #aaa; margin-bottom: 24px; }
+    h1 { font-size: 1.15rem; font-weight: 700; margin-bottom: 2px; }
+    .meta { font-size: 0.75rem; color: #aaa; margin-bottom: 10px; }
     .meta a { color: #aaa; text-decoration: none; border-bottom: 1px solid #ddd; }
+
+    /* ── XP / streak bar ── */
+    .stat-bar {
+      display: flex; gap: 10px; align-items: center;
+      margin-bottom: 18px; flex-wrap: wrap;
+    }
+    .stat-chip {
+      font-size: 0.72rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 99px;
+      background: #fff; border: 1.5px solid #e0e0de; color: #555;
+    }
+    .stat-chip.fire  { border-color: #f5a623; color: #c07000; }
+    .stat-chip.star  { border-color: #9b59b6; color: #7b39a6; }
+    .stat-chip.weak  { border-color: #e74c3c; color: #c00; cursor: pointer; }
+    .stat-chip.weak:hover { background: #fff0f0; }
+
+    /* ── Mode row ── */
+    .mode-row {
+      display: flex; gap: 6px; margin-bottom: 10px;
+    }
+    .mode-btn {
+      flex: 1; border: 1.5px solid #ddd; background: #fff; border-radius: 8px;
+      padding: 7px 8px; font-size: 0.72rem; font-weight: 600;
+      cursor: pointer; color: #777; transition: all 0.15s; text-align: center;
+    }
+    .mode-btn:hover { background: #f8f8f6; }
+    .mode-btn.active         { border-color: #2c2c2c; color: #2c2c2c; background: #f0f0ee; }
+    .mode-btn.active.m-weak  { border-color: #e74c3c; color: #c00; background: #fff8f8; }
+    .mode-btn.active.m-mixed { border-color: #2a7a4f; color: #1a5a3a; background: #f4fbf6; }
+
+    /* ── 篩選列 ── */
+    .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .ctrl-btn {
+      border: 1.5px solid #ddd; background: #fff; border-radius: 8px;
+      padding: 6px 12px; font-size: 0.75rem; font-weight: 600;
+      cursor: pointer; color: #666; transition: all 0.15s;
+    }
+    .ctrl-btn:hover { background: #f8f8f6; }
+    .ctrl-btn.active { border-color: #2c2c2c; color: #2c2c2c; background: #f0f0ee; }
+    .ctrl-btn.shuffle { margin-left: auto; }
 
     /* ── 進度 ── */
     .progress-bar-wrap { background: #e4e4e2; border-radius: 99px; height: 5px; margin-bottom: 18px; overflow: hidden; }
@@ -28,31 +68,30 @@
     .chip-ok { background: #e6f4ea; color: #1a6b2a; }
     .chip-no { background: #fde8e8; color: #c00; }
 
-    /* ── 篩選列 ── */
-    .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
-    .ctrl-btn {
-      border: 1.5px solid #ddd; background: #fff; border-radius: 8px;
-      padding: 6px 12px; font-size: 0.75rem; font-weight: 600;
-      cursor: pointer; color: #666; transition: all 0.15s;
-    }
-    .ctrl-btn:hover { background: #f8f8f6; }
-    .ctrl-btn.active { border-color: #2c2c2c; color: #2c2c2c; background: #f0f0ee; }
-    .ctrl-btn.shuffle { margin-left: auto; }
-
     /* ── 題卡 ── */
     .card {
-      background: #fff; border-radius: 16px; padding: 22px 22px;
+      background: #fff; border-radius: 16px; padding: 22px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 14px;
     }
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
     .qtype {
       font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
       letter-spacing: 0.08em; color: #fff; padding: 2px 8px;
-      border-radius: 5px; display: inline-block; margin-bottom: 14px;
+      border-radius: 5px; display: inline-block;
     }
     .type-fill   { background: #3b6fd4; }
     .type-trans  { background: #2a7a4f; }
     .type-gender { background: #8b44c2; }
     .type-choose { background: #c05a00; }
+
+    .review-badge {
+      font-size: 0.6rem; font-weight: 700; padding: 2px 8px;
+      border-radius: 5px; background: #fff0e0; color: #c05a00;
+      border: 1px solid #f0c080;
+    }
+    .weak-indicator {
+      font-size: 0.68rem; color: #e74c3c; font-weight: 600;
+    }
 
     .question { font-size: 1rem; font-weight: 600; line-height: 1.6; margin-bottom: 6px; }
     .hint { font-size: 0.78rem; color: #bbb; margin-bottom: 14px; }
@@ -114,22 +153,52 @@
     .tts-btn:hover { opacity: 1; }
     .tts-btn.playing { opacity: 1; }
 
+    /* ── 複習分隔畫面 ── */
+    .review-divider {
+      background: #fff8f0; border-radius: 16px; padding: 28px 22px;
+      text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      border: 2px solid #f0c080;
+    }
+    .review-divider h2 { font-size: 1.1rem; color: #c05a00; margin-bottom: 8px; }
+    .review-divider p  { font-size: 0.88rem; color: #888; margin-bottom: 20px; }
+    .review-list { text-align: left; margin-bottom: 20px; }
+    .review-list-item {
+      font-size: 0.82rem; padding: 6px 0;
+      border-bottom: 1px solid #f0e8d8; color: #555;
+    }
+    .btn-review { background: #c05a00; color: #fff; width: 100%; padding: 11px; border-radius: 10px; border: none; font-size: 0.92rem; font-weight: 600; cursor: pointer; }
+    .btn-skip   { background: #f0f0ee; color: #888; width: 100%; padding: 9px; border-radius: 10px; border: 1.5px solid #ddd; font-size: 0.82rem; font-weight: 600; cursor: pointer; margin-top: 8px; }
+
     /* ── 完成 ── */
     .done-card {
-      background: #fff; border-radius: 16px; padding: 36px 22px;
+      background: #fff; border-radius: 16px; padding: 32px 22px;
       text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.07);
     }
-    .done-card h2 { font-size: 1.3rem; margin-bottom: 8px; }
-    .done-card p  { font-size: 0.9rem; color: #666; margin-bottom: 24px; }
-    .done-big { font-size: 2.5rem; font-weight: 800; margin: 16px 0 4px; }
-    .btn-restart { background: #2c2c2c; color: #fff; width: 100%; padding: 12px; border-radius: 10px; border: none; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
+    .done-card h2 { font-size: 1.2rem; margin-bottom: 4px; }
+    .done-big { font-size: 2.4rem; font-weight: 800; margin: 12px 0 4px; }
+    .done-sub { font-size: 0.88rem; color: #888; margin-bottom: 6px; }
+    .xp-gain  { font-size: 0.78rem; font-weight: 700; color: #7b39a6; margin-bottom: 20px; }
+
+    .weak-section { text-align: left; margin: 18px 0; }
+    .weak-section-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #bbb; margin-bottom: 8px; }
+    .weak-item {
+      display: flex; align-items: baseline; justify-content: space-between;
+      padding: 7px 0; border-bottom: 1px solid #f0f0ee; gap: 10px;
+    }
+    .weak-item-q   { font-size: 0.82rem; color: #444; flex: 1; }
+    .weak-item-cnt { font-size: 0.7rem; font-weight: 700; color: #e74c3c; white-space: nowrap; }
+
+    .done-btns { display: flex; gap: 8px; margin-top: 18px; }
+    .btn-restart { background: #2c2c2c; color: #fff; flex: 1; padding: 11px; border-radius: 10px; border: none; font-size: 0.92rem; font-weight: 600; cursor: pointer; }
+    .btn-do-weak { background: #fff0f0; color: #c00; flex: 1; padding: 11px; border-radius: 10px; border: 1.5px solid #f0b0b0; font-size: 0.88rem; font-weight: 600; cursor: pointer; }
+    .btn-do-weak:disabled { opacity: 0.35; cursor: default; }
 
     /* toast */
     .toast {
       position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
       background: #2c2c2c; color: #fff; padding: 9px 20px; border-radius: 99px;
       font-size: 0.82rem; font-weight: 600; opacity: 0; pointer-events: none;
-      transition: opacity 0.2s;
+      transition: opacity 0.2s; white-space: nowrap;
     }
     .toast.show { opacity: 1; }
   </style>
@@ -139,6 +208,18 @@
 <h1>法語抽考 · A1</h1>
 <p class="meta">筆記 → <a href="french_notes.html">french_notes.html</a></p>
 
+<div class="stat-bar" id="statBar">
+  <span class="stat-chip fire" id="chipStreak">🔥 —</span>
+  <span class="stat-chip star" id="chipXP">⭐ —</span>
+  <span class="stat-chip weak" id="chipWeak" onclick="setMode('weak')">🎯 — 弱點</span>
+</div>
+
+<div class="mode-row">
+  <button class="mode-btn active" id="mNormal" onclick="setMode('normal')">📚 一般練習</button>
+  <button class="mode-btn m-weak"  id="mWeak"   onclick="setMode('weak')">🎯 弱點模式</button>
+  <button class="mode-btn m-mixed" id="mMixed"  onclick="setMode('mixed')">🔀 混合複習</button>
+</div>
+
 <div class="filter-row">
   <button class="ctrl-btn active" id="btnAll"    onclick="setType('all')">全部類型</button>
   <button class="ctrl-btn"        id="btnFill"   onclick="setType('fill')">動詞填空</button>
@@ -147,9 +228,7 @@
   <button class="ctrl-btn"        id="btnChoose" onclick="setType('choose')">判斷</button>
   <button class="ctrl-btn shuffle" onclick="restart()">🔀 洗牌</button>
 </div>
-<div class="filter-row" id="lessonRow">
-  <button class="ctrl-btn active" id="btnLessonAll" onclick="setLesson('all')">全部課堂</button>
-</div>
+<div class="filter-row" id="lessonRow"></div>
 
 <div class="progress-text">
   <span id="progressLabel">第 1 題</span>
@@ -169,15 +248,16 @@
 // ── TTS ──────────────────────────────────────────────────────
 let frVoice = null, activeTtsEl = null;
 function initVoice() {
-  frVoice = speechSynthesis.getVoices().find(v => /am[eé]lie/i.test(v.name))
-         || speechSynthesis.getVoices().find(v => /thomas/i.test(v.name)) || null;
+  frVoice = speechSynthesis.getVoices().find(v => /thomas/i.test(v.name))
+         || speechSynthesis.getVoices().find(v => /am[eé]lie/i.test(v.name))
+         || speechSynthesis.getVoices().find(v => v.lang === 'fr-FR')
+         || null;
 }
 speechSynthesis.onvoiceschanged = initVoice;
 initVoice();
 function ttsSpeak(text, btn) {
   speechSynthesis.cancel();
   if (activeTtsEl) activeTtsEl.classList.remove('playing');
-  // 把 " / " 換成逗號讓 TTS 自然斷句
   const cleaned = text.replace(/ \/ /g, ', ');
   const utt = new SpeechSynthesisUtterance(cleaned);
   utt.lang = 'fr-FR'; utt.rate = 0.7;
@@ -190,18 +270,73 @@ function ttsSpeak(text, btn) {
 
 // ── 比對 ─────────────────────────────────────────────────────
 function norm(s) {
-  return s.toLowerCase().trim()
-    .replace(/[.,!?'`'']/g, '')   // 去標點
-    .replace(/\s+/g, ' ').trim();
+  return s.toLowerCase().trim().replace(/[.,!?'`'']/g, '').replace(/\s+/g, ' ').trim();
 }
-// 支援多個正確答案（用 | 分隔）
 function isCorrect(input, answer) {
   const n = norm(input);
   return answer.split('|').some(a => norm(a) === n);
 }
 
+// ── SRS / localStorage ────────────────────────────────────────
+function qId(q) {
+  // Stable ID from question text (first 30 chars, base64-ish)
+  return 'q_' + q.q.slice(0, 30).replace(/[^a-zA-Z0-9一-鿿]/g, '_');
+}
+function getSRS(id) {
+  try { return JSON.parse(localStorage.getItem('clb7_' + id)) || { w:0, c:0, last:0 }; }
+  catch(e) { return { w:0, c:0, last:0 }; }
+}
+function setSRS(id, data) {
+  try { localStorage.setItem('clb7_' + id, JSON.stringify(data)); } catch(e) {}
+}
+function recordResult(q, ok) {
+  const id = qId(q);
+  const srs = getSRS(id);
+  if (ok) srs.c++; else srs.w++;
+  srs.last = Date.now();
+  setSRS(id, srs);
+}
+function weakScore(q) {
+  const { w, c } = getSRS(qId(q));
+  if (w + c === 0) return 0;
+  return w / (w + c);
+}
+function wrongCount(q) {
+  return getSRS(qId(q)).w;
+}
+function isWeak(q) { return wrongCount(q) >= 2; }
+
+// ── Game state (XP + streak) ──────────────────────────────────
+function getGame() {
+  try { return JSON.parse(localStorage.getItem('clb7_game')) || { xp:0, streak:0, lastDate:'' }; }
+  catch(e) { return { xp:0, streak:0, lastDate:'' }; }
+}
+function saveGame(g) {
+  try { localStorage.setItem('clb7_game', JSON.stringify(g)); } catch(e) {}
+}
+function touchStreak() {
+  const g = getGame();
+  const today = new Date().toISOString().slice(0, 10);
+  if (g.lastDate === today) return;
+  const yd = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  g.streak = (g.lastDate === yd) ? g.streak + 1 : 1;
+  g.lastDate = today;
+  saveGame(g);
+}
+function addXP(n) {
+  const g = getGame();
+  g.xp += n;
+  saveGame(g);
+}
+function renderStats() {
+  const g = getGame();
+  document.getElementById('chipStreak').textContent = `🔥 ${g.streak} 天連續`;
+  document.getElementById('chipXP').textContent     = `⭐ ${g.xp} XP`;
+  const wc = BANK.filter(q => isWeak(q)).length;
+  document.getElementById('chipWeak').textContent   = `🎯 ${wc} 弱點`;
+}
+
 // ── 題庫 ─────────────────────────────────────────────────────
-// trans 題：askClaude:true → 顯示「問 Claude」按鈕
 const BANK = [
   // 動詞填空 ── être
   { lesson:1, type:'fill', q:'Je _____ (être) taïwanais.',          hint:'être 現在式', a:'Je suis taïwanais|suis', aNote:'être → je suis' },
@@ -227,8 +362,7 @@ const BANK = [
   { lesson:1, type:'fill', q:'Tu _____ (aimer) la musique ?',        hint:'規則 -ER 動詞', a:'Tu aimes la musique|aimes', aNote:'aimer → tu aimes' },
   { lesson:1, type:'fill', q:'Nous _____ (aimer) voyager.',          hint:'規則 -ER 動詞', a:'Nous aimons voyager|aimons', aNote:'aimer → nous aimons' },
   { lesson:1, type:'fill', q:'Ils _____ (aimer) le sport.',          hint:'規則 -ER 動詞（字尾 -ent 不發音）', a:'Ils aiment le sport|aiment', aNote:'aimer → ils aiment（-ent 不發音）' },
-
-  // 翻譯 zh→fr（造句，問 Claude）
+  // 翻譯
   { lesson:1, type:'trans', q:'我是台灣人。（男）',           hint:'nationality masc.', a:'Je suis taïwanais.', aNote:'', askClaude:true },
   { lesson:1, type:'trans', q:'我是台灣人。（女）',           hint:'nationality fem.', a:'Je suis taïwanaise.', aNote:'', askClaude:true },
   { lesson:1, type:'trans', q:'你好嗎？（對朋友）',           hint:'informal', a:'Ça va ?|Tu vas bien ?', aNote:'兩種都可以', askClaude:true },
@@ -240,11 +374,9 @@ const BANK = [
   { lesson:1, type:'trans', q:'祝你有美好的一天！（道別時）', hint:'不是打招呼，是道別', a:'Bonne journée !|Bonne journée', aNote:'Bonjour 打招呼 ≠ Bonne journée 道別', askClaude:true },
   { lesson:1, type:'trans', q:'我的生日是6月4日。',           hint:'le + 數字 + 月份', a:"Mon anniversaire, c'est le 4 juin.", aNote:'', askClaude:true },
   { lesson:1, type:'trans', q:'5月1日是勞動節。',             hint:'1號的例外說法', a:"Le premier mai, c'est la fête du Travail.", aNote:'1號說 premier，不說 un', askClaude:true },
-  // 翻譯 fr→zh
   { lesson:1, type:'trans', q:"Demain, c'est mercredi.",       hint:'fr → zh', a:'明天是星期三。|明天是星期三', aNote:'', askClaude:true },
   { lesson:1, type:'trans', q:"Je n'ai pas d'enfant.",         hint:'否定句 fr → zh', a:"我沒有小孩。|我沒有孩子。|我沒有小孩|我沒有孩子", aNote:"ne…pas + un/une → de/d'", askClaude:true },
-
-  // 陰陽性（精確比對，不問 Claude）
+  // 陰陽性
   { lesson:1, type:'gender', q:'français → 女性形？',         hint:'+ e', a:'française', aNote:'尾音 s 開始發音' },
   { lesson:1, type:'gender', q:'coréen → 女性形？',            hint:'子音雙寫', a:'coréenne', aNote:'-éen → + ne，雙寫 n' },
   { lesson:1, type:'gender', q:'italien → 女性形？',           hint:'子音雙寫', a:'italienne', aNote:'-ien → + ne' },
@@ -254,8 +386,7 @@ const BANK = [
   { lesson:1, type:'gender', q:'belge → 女性形？',             hint:'已是 e 結尾', a:'belge', aNote:'不變' },
   { lesson:1, type:'gender', q:'américain → 女性形？',         hint:'+ e', a:'américaine', aNote:'鼻音 -ain 變 -aine' },
   { lesson:1, type:'gender', q:'japonais → 女性形？',          hint:'+ e', a:'japonaise', aNote:'' },
-
-  // 判斷（短答，精確比對）
+  // 判斷
   { lesson:1, type:'choose', q:'見到不認識的人，問好用 tu 還是 vous？',  hint:'', a:'vous', aNote:'陌生人、長輩、正式場合' },
   { lesson:1, type:'choose', q:'對朋友問好，用 tu 還是 vous？',          hint:'', a:'tu', aNote:'朋友、家人、小孩' },
   { lesson:1, type:'choose', q:'「我25歲」用 être 還是 avoir？',         hint:'年齡', a:'avoir', aNote:"J'ai 25 ans. 法文年齡說「擁有」幾年" },
@@ -267,8 +398,10 @@ const BANK = [
 ];
 
 // ── 狀態 ──────────────────────────────────────────────────────
-let queue = [], current = 0, scoreOk = 0, scoreNo = 0, answered = false;
-let filterType = 'all', filterLesson = 'all';
+let queue = [], resurface = [], resurfaceDone = false;
+let current = 0, scoreOk = 0, scoreNo = 0, answered = false;
+let filterType = 'all', filterLesson = 'all', filterMode = 'normal';
+let sessionXP = 0;
 const TYPE_LABEL = { fill:'動詞填空', trans:'翻譯', gender:'陰陽性', choose:'判斷' };
 const TYPE_CLASS  = { fill:'type-fill', trans:'type-trans', gender:'type-gender', choose:'type-choose' };
 
@@ -281,7 +414,6 @@ function shuffle(arr) {
   return a;
 }
 
-// 動態產生課堂按鈕（根據 BANK 裡有哪些 lesson）
 function buildLessonButtons() {
   const lessons = [...new Set(BANK.map(q => q.lesson))].sort((a,b) => a-b);
   const row = document.getElementById('lessonRow');
@@ -308,18 +440,48 @@ function setLesson(lesson) {
   restart();
 }
 
-function restart() {
+function setMode(mode) {
+  filterMode = mode;
+  ['normal','weak','mixed'].forEach(m => {
+    const el = document.getElementById('m' + m.charAt(0).toUpperCase() + m.slice(1));
+    if (el) el.classList.toggle('active', m === mode);
+  });
+  restart();
+}
+
+function getPool() {
   let pool = BANK;
   if (filterType   !== 'all') pool = pool.filter(q => q.type   === filterType);
   if (filterLesson !== 'all') pool = pool.filter(q => q.lesson === filterLesson);
-  queue = shuffle(pool);
-  current = 0; scoreOk = 0; scoreNo = 0; answered = false;
+
+  if (filterMode === 'weak') {
+    const weak = pool.filter(q => isWeak(q));
+    return weak.length > 0 ? weak : pool; // fallback to all if no weak yet
+  }
+  if (filterMode === 'mixed') {
+    const weak = pool.filter(q => isWeak(q));
+    const rest = pool.filter(q => !isWeak(q));
+    // Sort weak by worst first, take up to half the pool
+    const weakSorted = weak.sort((a, b) => weakScore(b) - weakScore(a));
+    const halfN = Math.ceil(pool.length / 2);
+    const weakPart = weakSorted.slice(0, halfN);
+    const restPart = shuffle(rest).slice(0, pool.length - weakPart.length);
+    return shuffle([...weakPart, ...restPart]);
+  }
+  return pool;
+}
+
+function restart() {
+  resurface = []; resurfaceDone = false;
+  queue = shuffle(getPool());
+  current = 0; scoreOk = 0; scoreNo = 0; answered = false; sessionXP = 0;
   updateProgress();
   renderCard();
 }
 
 function updateProgress() {
   const total = queue.length, done = current;
+  const inReview = resurfaceDone === false && resurface.length > 0 && current >= queue.length;
   document.getElementById('progressLabel').textContent =
     total === 0 ? '沒有題目' : `第 ${Math.min(done + 1, total)} 題 / 共 ${total} 題`;
   document.getElementById('progressFill').style.width =
@@ -330,26 +492,32 @@ function updateProgress() {
 
 function renderCard() {
   const area = document.getElementById('quizArea');
+
+  // All done — check for resurface round
   if (current >= queue.length) {
-    area.innerHTML = `
-      <div class="done-card">
-        <h2>全部完成 🎉</h2>
-        <div class="done-big">${scoreOk} / ${queue.length}</div>
-        <p>答對 ${scoreOk} 題，複習 ${scoreNo} 題</p>
-        <button class="btn-restart" onclick="restart()">🔀 再來一次</button>
-      </div>`;
+    if (resurface.length > 0 && !resurfaceDone) {
+      showReviewDivider();
+      return;
+    }
+    showDoneCard();
     return;
   }
 
   const q = queue[current];
+  const isReviewQ = q._review === true;
   answered = false;
-
-  // 顯示答案的第一個（用 | 分隔時取第一個念）
   const displayA = q.a.split('|')[0];
+  const wc = wrongCount(q);
 
   area.innerHTML = `
     <div class="card">
-      <div class="qtype ${TYPE_CLASS[q.type]}">${TYPE_LABEL[q.type]}</div>
+      <div class="card-top">
+        <div class="qtype ${TYPE_CLASS[q.type]}">${TYPE_LABEL[q.type]}</div>
+        <div style="display:flex;gap:6px;align-items:center">
+          ${wc >= 2 ? `<span class="weak-indicator">⚠ 錯過 ${wc} 次</span>` : ''}
+          ${isReviewQ ? `<span class="review-badge">🔁 複習</span>` : ''}
+        </div>
+      </div>
       <div class="question">${q.q}</div>
       ${q.hint ? `<div class="hint">提示：${q.hint}</div>` : ''}
       <div class="input-row">
@@ -369,7 +537,7 @@ function renderCard() {
           ${q.aNote ? `<div class="ans-note">📌 ${q.aNote}</div>` : ''}
         </div>
         <div class="btn-row">
-          ${q.askClaude ? `<button class="btn btn-claude" id="btnClaude" onclick="askClaude()">問 Claude</button>` : ''}
+          ${q.askClaude ? `<button class="btn btn-claude" onclick="askClaude()">問 Claude</button>` : ''}
           <button class="btn btn-next" onclick="nextQ()">下一題 →</button>
         </div>
       </div>
@@ -403,14 +571,27 @@ function checkAnswer() {
   const banner = document.getElementById('resultBanner');
   banner.className = 'result-banner ' + (ok ? 'ok' : 'no');
   document.getElementById('resultText').textContent = ok ? '✓ 正確！' : '✗ 再想想';
-
-  // 答錯才顯示正確答案
   if (!ok) document.getElementById('correctAns').style.display = 'block';
-
   document.getElementById('result').classList.add('show');
 
-  if (ok) scoreOk++; else scoreNo++;
+  // SRS tracking
+  recordResult(q, ok);
+
+  if (ok) {
+    scoreOk++;
+    const xp = q._review ? 5 : 10;
+    sessionXP += xp;
+    addXP(xp);
+  } else {
+    scoreNo++;
+    // Queue for resurface (once only, not if already a review card)
+    if (!q._review && !resurface.find(r => r.q === q.q)) {
+      resurface.push({ ...q, _review: true });
+    }
+  }
+
   updateProgress();
+  renderStats();
 }
 
 function nextQ() {
@@ -419,7 +600,74 @@ function nextQ() {
   renderCard();
 }
 
-// 複製題目 + 開 claude.ai
+function showReviewDivider() {
+  const area = document.getElementById('quizArea');
+  const list = resurface.map(q => `<div class="review-list-item">・${q.q}</div>`).join('');
+  area.innerHTML = `
+    <div class="review-divider">
+      <h2>🔁 複習錯題 (${resurface.length} 題)</h2>
+      <p>剛才這些題目答錯了，再試一次吧！</p>
+      <div class="review-list">${list}</div>
+      <button class="btn-review" onclick="startReview()">開始複習</button>
+      <button class="btn-skip"   onclick="skipReview()">跳過，直接看結果</button>
+    </div>`;
+}
+
+function startReview() {
+  resurfaceDone = true;
+  queue = shuffle(resurface);
+  resurface = [];
+  current = 0;
+  updateProgress();
+  renderCard();
+}
+
+function skipReview() {
+  resurface = [];
+  resurfaceDone = true;
+  showDoneCard();
+}
+
+function showDoneCard() {
+  // Award session completion bonus
+  const bonus = scoreOk >= queue.length * 0.8 ? 50 : 20;
+  addXP(bonus); sessionXP += bonus;
+  touchStreak();
+  renderStats();
+
+  // Top weak questions across whole bank
+  const weakList = BANK
+    .filter(q => wrongCount(q) > 0)
+    .sort((a, b) => wrongCount(b) - wrongCount(a))
+    .slice(0, 5);
+
+  const weakHTML = weakList.length > 0 ? `
+    <div class="weak-section">
+      <div class="weak-section-title">累計最弱題目</div>
+      ${weakList.map(q => `
+        <div class="weak-item">
+          <span class="weak-item-q">${q.q}</span>
+          <span class="weak-item-cnt">✗ ${wrongCount(q)} 次</span>
+        </div>`).join('')}
+    </div>` : '';
+
+  const hasWeak = BANK.some(q => isWeak(q));
+  const pct = queue.length > 0 ? Math.round(scoreOk / queue.length * 100) : 0;
+
+  document.getElementById('quizArea').innerHTML = `
+    <div class="done-card">
+      <h2>全部完成 🎉</h2>
+      <div class="done-big">${scoreOk} / ${queue.length}</div>
+      <div class="done-sub">答對率 ${pct}%　複習 ${scoreNo} 題</div>
+      <div class="xp-gain">＋${sessionXP} XP 本場獲得</div>
+      ${weakHTML}
+      <div class="done-btns">
+        <button class="btn-restart" onclick="restart()">🔀 再來一次</button>
+        <button class="btn-do-weak" onclick="setMode('weak')" ${hasWeak ? '' : 'disabled'}>🎯 練習弱點</button>
+      </div>
+    </div>`;
+}
+
 function askClaude() {
   const q = queue[current];
   const userInput = document.getElementById('ansInput').value.trim();
@@ -441,6 +689,7 @@ function showToast(msg) {
 
 // 啟動
 buildLessonButtons();
+renderStats();
 restart();
 </script>
 </body>
