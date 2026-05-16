@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>法語筆記</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f0f0ee;
+      color: #2c2c2c;
+      padding: 24px 20px;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    h1 { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; }
+    .meta { font-size: 0.75rem; color: #aaa; margin-bottom: 24px; }
+    .meta a { color: #aaa; text-decoration: none; border-bottom: 1px solid #ddd; }
+
+    /* ── 章節 ── */
+    .unit {
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px 22px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+
+    .unit-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1.5px solid #f0f0ee;
+    }
+
+    .unit-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #fff;
+      background: #2c2c2c;
+      padding: 2px 8px;
+      border-radius: 5px;
+    }
+
+    .unit-title { font-size: 1rem; font-weight: 700; }
+    .unit-lesson { font-size: 0.72rem; color: #bbb; margin-left: auto; }
+
+    h3 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #aaa;
+      margin: 18px 0 10px;
+    }
+    h3:first-child { margin-top: 0; }
+
+    /* ── 規則框 ── */
+    .rule {
+      background: #f8f8f6;
+      border-left: 3px solid #2c2c2c;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+    .rule .label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #aaa;
+      margin-bottom: 4px;
+    }
+
+    /* ── 注意框 ── */
+    .note {
+      background: #fff8e0;
+      border-left: 3px solid #d4a017;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+
+    /* ── 動詞表格 ── */
+    .verb-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .verb-card {
+      background: #f8f8f6;
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .verb-card .verb-name {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #aaa;
+      margin-bottom: 8px;
+    }
+    .verb-card .verb-name span {
+      color: #2c2c2c;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: 0;
+      margin-left: 4px;
+    }
+
+    .conj-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 3px 0;
+      border-bottom: 1px solid #efefed;
+      font-size: 0.84rem;
+    }
+    .conj-row:last-child { border-bottom: none; }
+    .conj-pro { color: #999; font-size: 0.78rem; min-width: 60px; }
+    .conj-fr  { font-weight: 600; color: #2c2c2c; display: inline-flex; align-items: center; gap: 4px; }
+
+    /* ── 行內法文例子 ── */
+    .fr-ex { font-weight: 600; color: #2c2c2c; }
+
+    /* ── 句型列表 ── */
+    .phrase-list { list-style: none; }
+    .phrase-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid #f0f0ee;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .phrase-list li:last-child { border-bottom: none; }
+    .fr { font-weight: 600; color: #2c2c2c; min-width: 200px; }
+    .zh { color: #666; }
+
+    @media (max-width: 540px) {
+      .phrase-list li {
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 2px 8px;
+      }
+      .fr { min-width: unset; width: 100%; }
+      .zh { font-size: 0.82rem; color: #888; }
+    }
+
+    /* ── 比較表 ── */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+    .compare-table th {
+      background: #f0f0ee;
+      padding: 7px 12px;
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #999;
+    }
+    .compare-table td { padding: 7px 12px; border-bottom: 1px solid #f0f0ee; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table .m { font-weight: 600; }
+    .compare-table .f { font-weight: 600; color: #c05; }
+    .compare-table .rule-col { font-size: 0.75rem; color: #aaa; }
+
+    /* ── 標籤 ── */
+    .tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-right: 4px;
+    }
+    .tag-vous { background: #e8f0fe; color: #1a56db; }
+    .tag-tu   { background: #e6f4ea; color: #1e7e34; }
+
+    p { font-size: 0.88rem; line-height: 1.7; margin-bottom: 8px; }
+
+    /* ── TTS 喇叭 ── */
+    .tts-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      opacity: 0.7;
+      border-radius: 6px;
+      font-size: 1rem;
+      padding: 0;
+      flex-shrink: 0;
+      transition: opacity 0.15s;
+    }
+    .tts-btn:hover { opacity: 1; }
+    .tts-btn.playing { opacity: 1; }
+
+    /* 動詞卡片裡的喇叭放在動詞名稱旁 */
+    .verb-name .tts-btn { vertical-align: middle; margin-left: 4px; }
+  </style>
+</head>
+<body>
+
+<h1>法語筆記 · CLB7</h1>
+<p class="meta">發音練習 → <a href="french_basics.html">french_basics.html</a>（GitHub Pages）</p>
+
+<!-- ════════ 第1課：問候與課堂用語 ════════ -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第1課</span>
+    <span class="unit-title">問候、自我介紹、課堂用語</span>
+    <span class="unit-lesson">Unité 0</span>
+  </div>
+
+  <h3>問候方式</h3>
+  <div class="rule">
+    <div class="label">重點</div>
+    <span class="tag tag-vous">vous</span>不認識的人、長輩、正式場合 → <strong>Bonjour</strong> + <strong>vous allez bien ?</strong><br>
+    <span class="tag tag-tu">tu</span>朋友、家人、小孩 → <strong>Salut</strong> + <strong>ça va ?</strong>
+  </div>
+
+  <ul class="phrase-list">
+    <li><span class="fr">Bonjour / Bonsoir</span><span class="zh">你好（白天）／晚上好</span></li>
+    <li><span class="fr">Salut !</span><span class="zh">嗨！（朋友之間）</span></li>
+    <li><span class="fr">Ça va ? / Tu vas bien ?</span><span class="zh">你好嗎？</span></li>
+    <li><span class="fr">Vous allez bien ?</span><span class="zh">您好嗎？（正式）</span></li>
+    <li><span class="fr">Oui, ça va, merci. Et toi ?</span><span class="zh">好，謝謝。你呢？</span></li>
+    <li><span class="fr">Très bien, merci. Et vous ?</span><span class="zh">很好，謝謝。您呢？（正式）</span></li>
+    <li><span class="fr">Au revoir / À bientôt</span><span class="zh">再見／待會見</span></li>
+    <li><span class="fr">À demain / À lundi</span><span class="zh">明天見／星期一見</span></li>
+    <li><span class="fr">À plus / À plus tard</span><span class="zh">之後見（不指定時間）／待會見（當天）</span></li>
+    <li><span class="fr">Ciao</span><span class="zh">義大利語借詞，法國人說再見常用</span></li>
+    <li><span class="fr">Bonne journée !</span><span class="zh">祝你有美好的一天！（對話結束時說，等於 goodbye）</span></li>
+    <li><span class="fr">Bonne soirée / Bonne nuit</span><span class="zh">晚上愉快／晚安</span></li>
+  </ul>
+
+  <div class="note">
+    💡 <strong>Bonjour vs Bonne journée：</strong><br>
+    Bonjour = 打招呼用（對話開始）<br>
+    Bonne journée = 道別用（對話結束），說了就等於 au revoir，不用再說再見
+  </div>
+
+  <div class="note">
+    🤝 <strong>握手 vs 親吻（法國文化）：</strong><br>
+    男生對男生 → 握手 <span class="fr-ex">serrer la main</span><br>
+    男生對女生、女生對女生 → 臉頰互親 <span class="fr-ex">faire la bise</span><br>
+    不認識的人 → 握手。法國人見面一定要有動作，不像台灣可以只點頭。
+  </div>
+
+  <h3>課堂常用句</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Comment ça s'écrit ?</span><span class="zh">這怎麼拼／寫？</span></li>
+    <li><span class="fr">Vous pouvez répéter, s'il vous plaît ?</span><span class="zh">可以再說一次嗎？（正式）</span></li>
+    <li><span class="fr">Tu peux répéter ?</span><span class="zh">可以再說一次嗎？（朋友）</span></li>
+    <li><span class="fr">Je ne comprends pas.</span><span class="zh">我聽不懂。</span></li>
+    <li><span class="fr">Comment on dit… en français ?</span><span class="zh">……用法文怎麼說？</span></li>
+    <li><span class="fr">Excusez-moi, je suis en retard.</span><span class="zh">對不起，我遲到了。</span></li>
+    <li><span class="fr">S'il vous plaît / S'il te plaît</span><span class="zh">請（正式／朋友）</span></li>
+    <li><span class="fr">Pardon. / Excusez-moi. / Excuse-moi.</span><span class="zh">不好意思 / 對不起（正式／朋友）</span></li>
+  </ul>
+
+  <h3>強調代名詞</h3>
+  <div class="rule">
+    <div class="label">什麼時候用？</div>
+    單獨使用、對比強調、接在 et 後面時，用強調形。<br>
+    例：Et <strong>toi</strong> ? / Et <strong>vous</strong> ?（你呢？）
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">Je → Moi</span><span class="zh">我（強調）</span></li>
+    <li><span class="fr">Tu → Toi</span><span class="zh">你（強調）</span></li>
+    <li><span class="fr">Vous → Vous</span><span class="zh">您／你們（不變）</span></li>
+  </ul>
+</div>
+
+<!-- ════════ 第1課：動詞變位 ════════ -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第1課</span>
+    <span class="unit-title">動詞變位</span>
+    <span class="unit-lesson">Unité 0–1</span>
+  </div>
+
+  <div class="rule">
+    <div class="label">記憶技巧</div>
+    口語裡 je / tu / il / ils 的<strong>發音通常一樣</strong>，差別主要在書寫。<br>
+    -ER 動詞規律：je → <strong>e</strong>、tu → <strong>es</strong>、il → <strong>e</strong>、nous → <strong>ons</strong>、vous → <strong>ez</strong>、ils → <strong>ent</strong>
+  </div>
+
+  <div class="verb-grid">
+    <div class="verb-card">
+      <div class="verb-name">être <span>是（be）</span></div>
+      <div class="conj-row"><span class="conj-pro">Je</span><span class="conj-fr">suis</span></div>
+      <div class="conj-row"><span class="conj-pro">Tu</span><span class="conj-fr">es</span></div>
+      <div class="conj-row"><span class="conj-pro">Il/Elle</span><span class="conj-fr">est</span></div>
+      <div class="conj-row"><span class="conj-pro">Nous</span><span class="conj-fr">sommes</span></div>
+      <div class="conj-row"><span class="conj-pro">Vous</span><span class="conj-fr">êtes</span></div>
+      <div class="conj-row"><span class="conj-pro">Ils/Elles</span><span class="conj-fr">sont</span></div>
+    </div>
+    <div class="verb-card">
+      <div class="verb-name">avoir <span>有（have）</span></div>
+      <div class="conj-row"><span class="conj-pro">Je</span><span class="conj-fr">ai</span></div>
+      <div class="conj-row"><span class="conj-pro">Tu</span><span class="conj-fr">as</span></div>
+      <div class="conj-row"><span class="conj-pro">Il/Elle</span><span class="conj-fr">a</span></div>
+      <div class="conj-row"><span class="conj-pro">Nous</span><span class="conj-fr">avons</span></div>
+      <div class="conj-row"><span class="conj-pro">Vous</span><span class="conj-fr">avez</span></div>
+      <div class="conj-row"><span class="conj-pro">Ils/Elles</span><span class="conj-fr">ont</span></div>
+    </div>
+    <div class="verb-card">
+      <div class="verb-name">s'appeler <span>叫做</span></div>
+      <div class="conj-row"><span class="conj-pro">Je</span><span class="conj-fr">m'appelle</span></div>
+      <div class="conj-row"><span class="conj-pro">Tu</span><span class="conj-fr">t'appelles</span></div>
+      <div class="conj-row"><span class="conj-pro">Il/Elle</span><span class="conj-fr">s'appelle</span></div>
+      <div class="conj-row"><span class="conj-pro">Nous</span><span class="conj-fr">nous appelons</span></div>
+      <div class="conj-row"><span class="conj-pro">Vous</span><span class="conj-fr">vous appelez</span></div>
+      <div class="conj-row"><span class="conj-pro">Ils/Elles</span><span class="conj-fr">s'appellent</span></div>
+    </div>
+    <div class="verb-card">
+      <div class="verb-name">aimer <span>喜歡（like）</span></div>
+      <div class="conj-row"><span class="conj-pro">Je</span><span class="conj-fr">aime</span></div>
+      <div class="conj-row"><span class="conj-pro">Tu</span><span class="conj-fr">aimes</span></div>
+      <div class="conj-row"><span class="conj-pro">Il/Elle</span><span class="conj-fr">aime</span></div>
+      <div class="conj-row"><span class="conj-pro">Nous</span><span class="conj-fr">aimons</span></div>
+      <div class="conj-row"><span class="conj-pro">Vous</span><span class="conj-fr">aimez</span></div>
+      <div class="conj-row"><span class="conj-pro">Ils/Elles</span><span class="conj-fr">aiment</span></div>
+    </div>
+  </div>
+
+  <div class="note">
+    ⚠️ <strong>年齡用 avoir（有）不用 être（是）：</strong><br>
+    ✗ Je suis 25 ans.　✓ <strong>J'ai 25 ans.</strong>（我「有」25年）<br>
+    同樣：Elle a onze mois.（她11個月大）
+  </div>
+
+  <div class="note">
+    ⚠️ <strong>否定句：ne … pas 夾住動詞</strong><br>
+    Je comprends. → Je <strong>ne</strong> comprends <strong>pas.</strong><br>
+    J'ai un enfant. → Je <strong>n'</strong>ai <strong>pas d'</strong>enfant.（母音前 ne→n'，un/une→de/d'）
+  </div>
+
+  <div class="note">
+    ⚠️ <strong>s'appeler 為什麼要加 me/te/se？</strong><br>
+    這是「反身動詞」，動作對象是自己。「我叫做」= 我對自己「叫」→ je <strong>me</strong> appelle → je <strong>m'</strong>appelle<br>
+    Nous nous appelons = 我們叫做（主詞＋反身代詞都要說）
+  </div>
+</div>
+
+<!-- ════════ 第1課：國籍形容詞 ════════ -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第1課</span>
+    <span class="unit-title">國籍形容詞：陰陽性變化</span>
+    <span class="unit-lesson">Unité 1</span>
+  </div>
+
+  <div class="rule">
+    <div class="label">基本規則</div>
+    <strong>女生版 = 男生版 + e</strong>（大部分情況）<br>
+    加了 e 之後，原本不發音的尾音子音會<strong>開始發音</strong><br>
+    例：français（s 不發音）→ française（s 發音）
+  </div>
+
+  <table class="compare-table">
+    <thead>
+      <tr><th>男性</th><th>女性</th><th>規則</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="m">français</td><td class="f">française</td><td class="rule-col">+ e</td></tr>
+      <tr><td class="m">chinois</td><td class="f">chinoise</td><td class="rule-col">+ e</td></tr>
+      <tr><td class="m">américain</td><td class="f">américaine</td><td class="rule-col">+ e</td></tr>
+      <tr><td class="m">allemand</td><td class="f">allemande</td><td class="rule-col">+ e</td></tr>
+      <tr><td class="m">espagnol</td><td class="f">espagnole</td><td class="rule-col">+ e</td></tr>
+      <tr><td class="m">hollandais</td><td class="f">hollandaise</td><td class="rule-col">+ e</td></tr>
+      <tr><td class="m">japonais</td><td class="f">japonaise</td><td class="rule-col">+ e</td></tr>
+      <tr><td class="m">coréen</td><td class="f">coréenne</td><td class="rule-col">-éen → + ne（子音雙寫，保持 e 音）</td></tr>
+      <tr><td class="m">italien</td><td class="f">italienne</td><td class="rule-col">-ien → + ne（子音雙寫）</td></tr>
+      <tr><td class="m">canadien</td><td class="f">canadienne</td><td class="rule-col">-ien → + ne</td></tr>
+      <tr><td class="m">colombien</td><td class="f">colombienne</td><td class="rule-col">-ien → + ne</td></tr>
+      <tr><td class="m">belge</td><td class="f">belge</td><td class="rule-col">不變（已是 e 結尾）</td></tr>
+      <tr><td class="m">suisse</td><td class="f">suisse</td><td class="rule-col">不變（已是 e 結尾）</td></tr>
+      <tr><td class="m">russe</td><td class="f">russe</td><td class="rule-col">不變（已是 e 結尾）</td></tr>
+      <tr><td class="m">grec</td><td class="f">grecque</td><td class="rule-col">例外：+ que</td></tr>
+      <tr><td class="m">turc</td><td class="f">turque</td><td class="rule-col">例外：+ que</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    💡 <strong>-ien 為什麼要雙寫 n？</strong><br>
+    加 e 之後如果只有一個 n（italiene），前面的 e 會變成鼻音 [ɛ̃]，念起來不對。<br>
+    雙寫 nn（italienne）讓前面的 e 保持清楚的 [ɛ] 音。→ 同理：coréenne、canadienne
+  </div>
+
+  <div class="note">
+    ⚠️ <strong>法文國籍不大寫！</strong><br>
+    英文：He is French. / She is Taiwanese.（大寫）<br>
+    法文：Il est <strong>français</strong>. / Elle est <strong>taïwanaise</strong>.（小寫）<br>
+    只有國家名稱和城市名稱大寫。
+  </div>
+
+  <h3>實用句型</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Je suis taïwanais / taïwanaise.</span><span class="zh">我是台灣人。（男／女）</span></li>
+    <li><span class="fr">Tu es français ?</span><span class="zh">你是法國人嗎？</span></li>
+    <li><span class="fr">Non, je suis suisse.</span><span class="zh">不，我是瑞士人。</span></li>
+    <li><span class="fr">Elle s'appelle Jolie. Elle est japonaise.</span><span class="zh">她叫 Jolie，她是日本人。</span></li>
+    <li><span class="fr">Nous sommes taïwanais / taïwanaises.</span><span class="zh">我們是台灣人。（複數男／女）</span></li>
+  </ul>
+</div>
+
+<!-- ════════ 第1課：日期 ════════ -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第1課</span>
+    <span class="unit-title">日期與序數</span>
+    <span class="unit-lesson">Unité 0</span>
+  </div>
+
+  <div class="rule">
+    <div class="label">日期說法</div>
+    <strong>le + 數字 + 月份</strong> → <span class="fr-ex">le 2 janvier</span>（1月2日）<br>
+    ⚠️ 1號例外：不說 le un，說 <span class="fr-ex">le premier</span>（序數「第一」）<br>
+    例：<span class="fr-ex">le premier mai</span> = 5月1日（勞動節）
+  </div>
+
+  <div class="rule">
+    <div class="label">序數規律</div>
+    數字 + <strong>ième</strong>：<span class="fr-ex">deuxième</span>、<span class="fr-ex">troisième</span>、<span class="fr-ex">quatrième</span>…<br>
+    只有「第一」特殊：<span class="fr-ex">premier</span>（男）/ <span class="fr-ex">première</span>（女）
+  </div>
+
+  <ul class="phrase-list">
+    <li><span class="fr">Aujourd'hui, c'est le mardi 12 mai 2026.</span><span class="zh">今天是2026年5月12日，星期二。</span></li>
+    <li><span class="fr">Demain, c'est mercredi.</span><span class="zh">明天是星期三。</span></li>
+    <li><span class="fr">Mon anniversaire, c'est le 4 juin.</span><span class="zh">我的生日是6月4日。</span></li>
+    <li><span class="fr">La fête nationale, c'est le 14 juillet.</span><span class="zh">法國國慶日是7月14日。</span></li>
+    <li><span class="fr">Le premier mai, c'est la fête du Travail.</span><span class="zh">5月1日是勞動節。</span></li>
+  </ul>
+
+  <div class="note">
+    💡 <strong>Aujourd'hui 這個字為什麼這麼長？</strong><br>
+    以前「今天」是四個字：au jour de hui（在今天這一天）<br>
+    久了合成一個字：aujourd'hui。老師說這個字本身看起來就很奇怪！
+  </div>
+
+  <div class="note">
+    💡 <strong>星期的名字來自拉丁文行星：</strong><br>
+    lundi（月亮 lune）、mardi（火星 Mars）、mercredi（水星 Mercure）<br>
+    jeudi（木星 Jupiter）、vendredi（金星 Venus）、samedi（土星 Saturne）<br>
+    dimanche 不是行星，是「主的日子」（dies Dominica），最特別的一天。
+  </div>
+</div>
+
+
+<script>
+// ── TTS ─────────────────────────────────────────────────────
+let frVoice = null, activeTtsEl = null;
+
+function initVoice() {
+  frVoice = speechSynthesis.getVoices().find(v => /am[eé]lie/i.test(v.name))
+         || speechSynthesis.getVoices().find(v => /thomas/i.test(v.name))
+         || null;
+}
+speechSynthesis.onvoiceschanged = initVoice;
+initVoice();
+
+function ttsSpeak(text, btn) {
+  speechSynthesis.cancel();
+  if (activeTtsEl) activeTtsEl.classList.remove('playing');
+  const cleaned = text.replace(/ \/ /g, ', ');
+  const utt = new SpeechSynthesisUtterance(cleaned);
+  utt.lang = 'fr-FR';
+  utt.rate = 0.7;
+  if (frVoice) utt.voice = frVoice;
+  activeTtsEl = btn;
+  btn.classList.add('playing');
+  utt.onend = utt.onerror = () => btn.classList.remove('playing');
+  speechSynthesis.speak(utt);
+}
+
+function makeTtsBtn(text) {
+  const btn = document.createElement('button');
+  btn.className = 'tts-btn';
+  btn.title = '播放發音';
+  btn.textContent = '🔊';
+  btn.addEventListener('click', e => { e.stopPropagation(); ttsSpeak(text, btn); });
+  return btn;
+}
+
+// 自動幫所有 phrase-list 的 li 加喇叭（放在 .zh 之後，不塞進 .fr）
+document.querySelectorAll('.phrase-list li').forEach(li => {
+  const frEl = li.querySelector('.fr');
+  if (!frEl) return;
+  const text = frEl.textContent.trim();
+  if (!text) return;
+  li.appendChild(makeTtsBtn(text));
+});
+
+// 動詞卡片標題也加
+document.querySelectorAll('.verb-name span').forEach(el => {
+  const verbName = el.closest('.verb-name');
+  if (!verbName) return;
+  const raw = verbName.childNodes[0].textContent.trim();
+  verbName.appendChild(makeTtsBtn(raw));
+});
+
+// 動詞變位每一行：念「代名詞 + 變位形」
+document.querySelectorAll('.verb-card').forEach(card => {
+  card.querySelectorAll('.conj-row').forEach(row => {
+    const pro = row.querySelector('.conj-pro').textContent.trim();
+    const fr  = row.querySelector('.conj-fr').textContent.trim();
+    row.querySelector('.conj-fr').appendChild(makeTtsBtn(pro + ' ' + fr));
+  });
+});
+
+// 國籍表格：男性和女性欄
+document.querySelectorAll('.compare-table td.m, .compare-table td.f').forEach(td => {
+  const text = td.textContent.trim();
+  if (text) td.appendChild(makeTtsBtn(text));
+});
+
+// 行內法文例子（.fr-ex）
+document.querySelectorAll('.fr-ex').forEach(el => {
+  const text = el.textContent.trim();
+  if (text) el.appendChild(makeTtsBtn(text));
+});
+</script>
+</body>
+</html>
