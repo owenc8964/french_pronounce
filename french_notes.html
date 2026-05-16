@@ -528,7 +528,7 @@ document.querySelectorAll('.verb-name span').forEach(el => {
 // 動詞變位每一行：念「代名詞 + 變位形」
 document.querySelectorAll('.verb-card').forEach(card => {
   card.querySelectorAll('.conj-row').forEach(row => {
-    const pro = row.querySelector('.conj-pro').textContent.trim();
+    const pro = row.querySelector('.conj-pro').textContent.trim().split('/')[0].trim();
     const fr  = row.querySelector('.conj-fr').textContent.trim();
     row.querySelector('.conj-fr').appendChild(makeTtsBtn(pro + ' ' + fr));
   });
