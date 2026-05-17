@@ -395,6 +395,37 @@ const BANK = [
   { lesson:1, type:'choose', q:'mercredi 來自哪顆行星？',                hint:'拉丁文', a:'水星|mercure|Mercure', aNote:'mercredi ← Mercure（水星）' },
   { lesson:1, type:'choose', q:'lundi 來自什麼？',                       hint:'拉丁文', a:'月亮|lune', aNote:'lundi ← luna（月亮）' },
   { lesson:1, type:'choose', q:'否定句的結構是？',                       hint:'ne…', a:'ne…pas|ne ... pas|ne pas', aNote:'ne + 動詞 + pas，母音前 ne → n\'' },
+
+  // ── 第2課：冠詞、介詞、habiter ──────────────────────────────────
+  { lesson:2, type:'fill', q:'J\'_____ à Taipei. (habiter)',                    hint:'je + habiter', a:'J\'habite à Taipei.|habite', aNote:'habiter → j\'habite（字尾加 e，je → j\' 因母音）' },
+  { lesson:2, type:'fill', q:'Tu _____ dans quelle ville ? (habiter)',           hint:'tu + habiter', a:'Tu habites dans quelle ville ?|habites', aNote:'tu habites（字尾加 -es）' },
+  { lesson:2, type:'fill', q:'On _____ dans un appartement. (habiter)',          hint:'on → 同 il/elle 變位', a:'On habite dans un appartement.|habite', aNote:'on → habite（同 il/elle）' },
+  { lesson:2, type:'fill', q:'Nous _____ à Lyon. (habiter)',                     hint:'nous + habiter', a:'Nous habitons à Lyon.|habitons', aNote:'nous habitons（字尾加 -ons）' },
+  { lesson:2, type:'fill', q:'J\'aime _____ musique. (定冠詞)',                  hint:'musique 是陰性', a:'J\'aime la musique.|la', aNote:'la musique（陰性）' },
+  { lesson:2, type:'fill', q:'J\'aime _____ sport. (定冠詞)',                   hint:'sport 是陽性', a:'J\'aime le sport.|le', aNote:'le sport（陽性）' },
+  { lesson:2, type:'fill', q:'Il y a _____ chiens dehors. (不定冠詞複數)',       hint:'複數不定冠詞', a:'Il y a des chiens dehors.|des', aNote:'des = 複數不定冠詞「一些」' },
+  { lesson:2, type:'fill', q:'Je vais _____ France. (介詞)',                     hint:'la France → ?', a:'Je vais en France.|en', aNote:'陰性/字尾 -e 國家 → en' },
+  { lesson:2, type:'fill', q:'Il habite _____ Canada. (介詞)',                   hint:'le Canada → ?', a:'Il habite au Canada.|au', aNote:'陽性國家 → au（= à + le）' },
+  { lesson:2, type:'fill', q:'Elle est née _____ États-Unis. (介詞)',            hint:'les États-Unis → ?', a:'Elle est née aux États-Unis.|aux', aNote:'複數國家 → aux（= à + les）' },
+
+  { lesson:2, type:'trans', q:'你住在哪個城市？',                               hint:'habiter / quelle / ville', a:'Tu habites dans quelle ville ?|Tu habites quelle ville ?', aNote:'quelle（陰性）隨 ville（f）', askClaude:true },
+  { lesson:2, type:'trans', q:'我住在台北的一間公寓。',                          hint:'habiter / appartement / à', a:'J\'habite dans un appartement à Taipei.', aNote:'un appartement（陽性不定冠詞）', askClaude:true },
+  { lesson:2, type:'trans', q:'我們住在里昂。（口語，用 on）',                   hint:'on + habiter', a:'On habite à Lyon.', aNote:'on = nous 口語版，動詞同 il/elle', askClaude:true },
+  { lesson:2, type:'trans', q:'我喜歡音樂和電影。',                              hint:'la musique / le cinéma', a:'J\'aime la musique et le cinéma.', aNote:'定冠詞 la/le', askClaude:true },
+  { lesson:2, type:'trans', q:'你喜歡什麼音樂？',                               hint:'quelle + musique', a:'Tu aimes quelle musique ?', aNote:'quelle（陰性）隨 musique（f）', askClaude:true },
+  { lesson:2, type:'trans', q:'她去法國，他去加拿大。',                          hint:'en / au', a:'Elle va en France, il va au Canada.', aNote:'France（陰性）→ en；Canada（陽性）→ au', askClaude:true },
+
+  { lesson:2, type:'gender', q:'sport → 陽性 or 陰性？冠詞是？',                hint:'字尾為子音', a:'陽性 → le sport', aNote:'le sport（m）' },
+  { lesson:2, type:'gender', q:'musique → 陽性 or 陰性？冠詞是？',              hint:'字尾為 -e', a:'陰性 → la musique', aNote:'la musique（f）' },
+  { lesson:2, type:'gender', q:'art → 陽性 or 陰性？冠詞是？',                  hint:'母音開頭', a:'陽性 → l\'art', aNote:'l\'art（m），母音開頭用 l\'，但本身陽性' },
+  { lesson:2, type:'gender', q:'histoire → 陽性 or 陰性？冠詞是？',             hint:'字尾 -e，母音開頭', a:'陰性 → l\'histoire', aNote:'l\'histoire（f），母音開頭用 l\'' },
+  { lesson:2, type:'gender', q:'café → 陽性 or 陰性？冠詞是？',                 hint:'-é 結尾≠陰性 -e', a:'陽性 → le café', aNote:'le café（m），帶重音的 -é 不算陰性字尾 -e' },
+
+  { lesson:2, type:'choose', q:'librairie 和 bibliothèque，哪個是「圖書館」？', hint:'faux ami（假朋友）', a:'bibliothèque', aNote:'librairie = 書店；bibliothèque = 圖書館' },
+  { lesson:2, type:'choose', q:'「on」在口語中等於哪個主詞？動詞怎麼變？',     hint:'動詞變位同 il/elle', a:'nous；動詞用 il/elle 的變位（-e）', aNote:'On habite = Nous habitons，但動詞是 habite 不是 habitons' },
+  { lesson:2, type:'choose', q:'以下哪個介詞 + 國家組合是正確的？', hint:'注意陽陰複數', a:'au Canada|en France|aux États-Unis', aNote:'le Canada → au；la France → en；les États-Unis → aux' },
+  { lesson:2, type:'choose', q:'「台灣」要用哪個介詞？為什麼？',                hint:'島嶼無性別', a:'à Taiwan', aNote:'台灣被視為島嶼/城市，無明確性別，用 à（同城市）' },
+  { lesson:2, type:'choose', q:'法文電話號碼 06 89 34 72 51 怎麼念？',           hint:'兩位兩位念', a:'zéro six, quatre-vingt-neuf, trente-quatre, soixante-douze, cinquante et un', aNote:'法文電話號碼兩位兩位念' },
 ];
 
 // ── 狀態 ──────────────────────────────────────────────────────
