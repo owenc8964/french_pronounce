@@ -426,6 +426,28 @@ const BANK = [
   { lesson:2, type:'choose', q:'以下哪個介詞 + 國家組合是正確的？', hint:'注意陽陰複數', a:'au Canada|en France|aux États-Unis', aNote:'le Canada → au；la France → en；les États-Unis → aux' },
   { lesson:2, type:'choose', q:'「台灣」要用哪個介詞？為什麼？',                hint:'島嶼無性別', a:'à Taiwan', aNote:'台灣被視為島嶼/城市，無明確性別，用 à（同城市）' },
   { lesson:2, type:'choose', q:'法文電話號碼 06 89 34 72 51 怎麼念？',           hint:'兩位兩位念', a:'zéro six, quatre-vingt-neuf, trente-quatre, soixante-douze, cinquante et un', aNote:'法文電話號碼兩位兩位念' },
+
+  // ── 第2課補充：疑問詞、parler、國家性別 ──────────────────────────
+  { lesson:2, type:'fill', q:'Je _____ chinois, taïwanais et anglais. (parler)', hint:'je + parler', a:'Je parle chinois, taïwanais et anglais.|parle', aNote:'parler → je parle（語言前不加冠詞）' },
+  { lesson:2, type:'fill', q:'Tu _____ quelle langue ? (parler)',                 hint:'tu + parler', a:'Tu parles quelle langue ?|parles', aNote:'tu parles' },
+  { lesson:2, type:'fill', q:'Il _____ français et espagnol. (parler)',           hint:'il + parler', a:'Il parle français et espagnol.|parle', aNote:'il parle（同 je）' },
+  { lesson:2, type:'fill', q:'Vous _____ anglais ? (parler)',                     hint:'vous + parler', a:'Vous parlez anglais ?|parlez', aNote:'vous parlez（字尾 -ez）' },
+  { lesson:2, type:'fill', q:'Je vais _____ Mexique. (介詞)',                     hint:'le Mexique → 陽性，但字尾 -e！', a:'Je vais au Mexique.|au', aNote:'le Mexique = 例外！字尾 -e 但陽性 → au' },
+
+  { lesson:2, type:'trans', q:'你說幾種語言？',                                   hint:'Combien / parler / langue', a:'Combien de langues tu parles ?|Tu parles combien de langues ?', aNote:'Combien de + 名詞', askClaude:true },
+  { lesson:2, type:'trans', q:'為什麼你喜歡法文？因為很好玩！',                   hint:'Pourquoi / parce que / sympa', a:'Pourquoi tu aimes le français ? Parce que c\'est sympa !', aNote:'Pourquoi → Parce que（因為）', askClaude:true },
+  { lesson:2, type:'trans', q:'她是哪裡人？她是義大利人。',                       hint:'Qui / d\'où / italienne', a:'Elle est d\'où ? Elle est italienne.', aNote:'D\'où es-tu ? = 你是哪裡人？', askClaude:true },
+  { lesson:2, type:'trans', q:'我說中文，不說西班牙文。',                          hint:'parler / ne...pas', a:'Je parle chinois, je ne parle pas espagnol.', aNote:'語言前不加冠詞；否定 ne...pas', askClaude:true },
+
+  { lesson:2, type:'gender', q:'France → 陰性 or 陽性？用哪個介詞去那裡？',      hint:'字尾 -e', a:'陰性 → en France', aNote:'la France（字尾 -e）→ en' },
+  { lesson:2, type:'gender', q:'Canada → 陰性 or 陽性？用哪個介詞去那裡？',      hint:'字尾子音', a:'陽性 → au Canada', aNote:'le Canada（字尾 -a）→ au' },
+  { lesson:2, type:'gender', q:'Mexique → 陰性 or 陽性？用哪個介詞去那裡？',     hint:'⚠️ 例外！字尾 -e 但…', a:'陽性例外 → au Mexique', aNote:'le Mexique = 例外，字尾 -e 卻是陽性 → au' },
+  { lesson:2, type:'gender', q:'États-Unis → 單數 or 複數？用哪個介詞去那裡？', hint:'les + 複數', a:'複數 → aux États-Unis', aNote:'les États-Unis（複數）→ aux' },
+
+  { lesson:2, type:'choose', q:'「為什麼」用哪個疑問詞？回答時用什麼？',           hint:'Why / Because', a:'Pourquoi ? → Parce que...', aNote:'Pourquoi ? = Why? / Parce que = Because' },
+  { lesson:2, type:'choose', q:'以下哪句「parler + 語言」用法正確？',             hint:'語言前不加冠詞', a:'Je parle français.|Je parle le français.', aNote:'parler + 語言 → 直接接，不加冠詞（但 aimer le français 要加）' },
+  { lesson:2, type:'choose', q:'Qui / Où / Comment / Combien / Pourquoi，哪個問「在哪裡」？', hint:'Where', a:'Où', aNote:'Où = Where；Qui = Who；Comment = How；Combien = How much/many；Pourquoi = Why' },
+  { lesson:2, type:'choose', q:'71 和 81，哪個有「et」？為什麼？',               hint:'soixante + onze', a:'71（soixante et onze）有 et；81（quatre-vingt-un）沒有', aNote:'21-71 的個位為 1 用 et；80 之後完全不用 et' },
 ];
 
 // ── 狀態 ──────────────────────────────────────────────────────
