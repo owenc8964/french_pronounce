@@ -175,7 +175,7 @@
     #tab-sons .playable { cursor: pointer; display: inline; padding: 3px 8px; border-radius: 8px; -webkit-tap-highlight-color: transparent; transition: background 0.12s; }
     #tab-sons .playable:active, #tab-sons .playable:hover { background: #efefef; }
     #tab-sons .playable.playing { background: #e6f4e6; color: #2a7a2a; }
-    #tab-sons .son-btn { font-size: 1.25rem; font-weight: 700; font-family: 'Georgia', serif; padding: 6px 8px; border-radius: 10px; cursor: pointer; text-align: center; -webkit-tap-highlight-color: transparent; transition: background 0.12s; line-height: 1.2; }
+    #tab-sons .son-btn { font-size: 1.25rem; font-weight: 700; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', sans-serif; padding: 6px 8px; border-radius: 10px; cursor: pointer; text-align: center; -webkit-tap-highlight-color: transparent; transition: background 0.12s; line-height: 1.2; }
     #tab-sons .son-btn:active, #tab-sons .son-btn:hover { background: #efefef; }
     #tab-sons .son-btn.playing { background: #e6f4e6; color: #2a7a2a; }
     #tab-sons .playable::before { content: '▶\00a0'; font-size: 0.55rem; color: #ccc; vertical-align: middle; }
@@ -220,13 +220,13 @@
   <div class="rule-box">
     <b>x1（除了 11）→ 用 et un：</b>vingt <b>et un</b>、trente <b>et un</b>…<br>
     <b>x2–x9 → 直接加連字號：</b>vingt<b>-deux</b>、trente<b>-trois</b>…<br>
-    <b>70–79 → soixante + dix 系列：</b>70 = soixante-dix（六十加十）<br>
-    <b>80–89 → quatre-vingts 系列：</b>80 單獨用 = quatre-<b>vingts</b>（有 s）；後面接數字就去掉 s：quatre-vingt-un、quatre-vingt-deux…<br>
+    <b>70–79 → soixante + dix 系列：</b>70 = soixante-dix（六十加十）；⚠️ 71 = soixante <b>et</b> onze（加 et，例外！）<br>
+    <b>80–89 → quatre-vingts 系列：</b>80 單獨用 = quatre-<b>vingts</b>（有 s）；⚠️ 81 = quatre-vingt-<b>un</b>（不加 et，例外！）<br>
     <b>90–99 → quatre-vingt-dix 系列：</b>90 = quatre-vingt-dix（四個二十加十）
   </div>
 
   <div class="section-subtitle">規律示例</div>
-  <div class="grid-3" id="grid-pattern"></div>
+  <div class="grid-large" id="grid-pattern"></div>
 
   <div class="section-subtitle">大數字</div>
   <div class="grid-large" id="grid-large"></div>
@@ -557,8 +557,9 @@ const NUM_0_20 = [
 
 const NUM_PATTERN = [
   [21,'vingt et un'],[32,'trente-deux'],[43,'quarante-trois'],
-  [54,'cinquante-quatre'],[65,'soixante-cinq'],[76,'soixante-seize'],
-  [80,'quatre-vingts'],[87,'quatre-vingt-sept'],[98,'quatre-vingt-dix-huit'],
+  [54,'cinquante-quatre'],[65,'soixante-cinq'],[71,'soixante et onze'],
+  [76,'soixante-seize'],[80,'quatre-vingts'],[81,'quatre-vingt-un'],
+  [87,'quatre-vingt-sept'],[98,'quatre-vingt-dix-huit'],
 ];
 
 const NUM_LARGE = [
