@@ -196,6 +196,7 @@
 <div class="tab-nav" id="tabNav">
   <button class="tab-btn active" onclick="switchTab('basics')">🔢 數字 / 星期 / 月份</button>
   <button class="tab-btn" onclick="switchTab('sons')">🎵 Sons du Français</button>
+  <button class="tab-btn" onclick="switchTab('tables')">📊 文法表</button>
 </div>
 
 <!-- ══ Tab 1: Basics ══ -->
@@ -534,14 +535,155 @@
   </div>
 </div>
 
+<!-- ═══════════════ TAB 3：文法表 ═══════════════ -->
+<div id="tab-tables" style="display:none">
+<style>
+  #tab-tables { padding: 0 0 60px; }
+  #tab-tables h2 { font-size: 0.75rem; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.08em; margin: 24px 0 8px; }
+  #tab-tables .tbl-card { background: white; border-radius: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 14px; overflow: hidden; }
+  #tab-tables .tbl-title { font-size: 0.78rem; font-weight: 700; color: #fff; background: #2c2c2c; padding: 8px 14px; letter-spacing: 0.04em; }
+  #tab-tables table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  #tab-tables th { background: #f5f4f0; font-size: 0.68rem; font-weight: 700; color: #888; text-transform: uppercase; padding: 5px 10px; text-align: left; border-bottom: 1px solid #eee; }
+  #tab-tables td { padding: 6px 10px; border-bottom: 1px solid #f2f2f2; vertical-align: middle; }
+  #tab-tables tr:last-child td { border-bottom: none; }
+  #tab-tables .pron { color: #555; font-weight: 600; }
+  #tab-tables .note { font-size: 0.68rem; color: #aaa; }
+  #tab-tables .hi { color: #c0392b; font-weight: 700; }
+  #tab-tables .hl { background: #fffbe6; }
+  #tab-tables .rule-box { background: #f0f7ff; border-left: 3px solid #4a90d9; border-radius: 0 8px 8px 0; padding: 8px 12px; font-size: 0.8rem; color: #333; margin: 0 14px 14px; line-height: 1.6; }
+</style>
+
+<!-- 所有格 -->
+<h2>所有格形容詞 Adjectifs possessifs</h2>
+<div class="tbl-card">
+  <div class="tbl-title">mon / ma / mes … leur / leurs</div>
+  <table>
+    <tr><th>主詞</th><th>陽性單數</th><th>陰性單數</th><th>複數</th></tr>
+    <tr><td>je</td><td class="pron">mon</td><td class="pron">ma</td><td class="pron">mes</td></tr>
+    <tr><td>tu</td><td class="pron">ton</td><td class="pron">ta</td><td class="pron">tes</td></tr>
+    <tr><td>il / elle</td><td class="pron">son</td><td class="pron">sa</td><td class="pron">ses</td></tr>
+    <tr><td>nous</td><td class="pron">notre</td><td class="pron">notre</td><td class="pron">nos</td></tr>
+    <tr><td>vous</td><td class="pron">votre</td><td class="pron">votre</td><td class="pron">vos</td></tr>
+    <tr><td>ils / elles</td><td class="pron">leur</td><td class="pron">leur</td><td class="pron">leurs</td></tr>
+  </table>
+</div>
+<div class="rule-box">⚠️ 陰性名詞若以<b>母音或 h</b> 開頭 → 用 <b class="hi">mon / ton / son</b>（不用 ma/ta/sa）<br>
+ex. <b>mon</b> amie，<b>mon</b> oncle（amie 是陰性但母音開頭）</div>
+
+<!-- 冠詞 -->
+<h2>冠詞 Articles</h2>
+<div class="tbl-card">
+  <div class="tbl-title">定冠詞 vs 不定冠詞</div>
+  <table>
+    <tr><th></th><th>陽性單數</th><th>陰性單數</th><th>複數</th></tr>
+    <tr><td class="note">定冠詞（特指）</td><td class="pron">le</td><td class="pron">la</td><td class="pron">les</td></tr>
+    <tr><td class="note">不定冠詞（泛指）</td><td class="pron">un</td><td class="pron">une</td><td class="pron">des</td></tr>
+    <tr class="hl"><td class="note">母音 / h 前縮寫</td><td class="pron hi">l'</td><td class="pron hi">l'</td><td class="pron">les（不變）</td></tr>
+    <tr><td class="note">de + 定冠詞</td><td class="pron">du</td><td class="pron">de la</td><td class="pron">des</td></tr>
+    <tr><td class="note">à + 定冠詞</td><td class="pron">au</td><td class="pron">à la</td><td class="pron">aux</td></tr>
+  </table>
+</div>
+<div class="rule-box">un/une = 「其中一個」（未確定） → <b>J'habite dans un appartement.</b><br>
+le/la = 「就是那個」（已確定） → <b>C'est la Tour Eiffel.</b>（全世界只有一個）</div>
+
+<!-- 疑問詞 -->
+<h2>疑問詞 Mots interrogatifs</h2>
+<div class="tbl-card">
+  <div class="tbl-title">問什麼用什麼</div>
+  <table>
+    <tr><th>法文</th><th>意思</th><th>例句</th></tr>
+    <tr><td class="pron">Qui ?</td><td>誰 Who</td><td class="note">Qui est-ce ?</td></tr>
+    <tr><td class="pron">Où ?</td><td>哪裡 Where</td><td class="note">Tu habites où ?</td></tr>
+    <tr><td class="pron">Quand ?</td><td>什麼時候 When</td><td class="note">Quand arrives-tu ?</td></tr>
+    <tr><td class="pron">Comment ?</td><td>怎麼 How</td><td class="note">Comment tu t'appelles ?</td></tr>
+    <tr><td class="pron">Combien ?</td><td>多少 How many</td><td class="note">Vous avez combien d'enfants ?</td></tr>
+    <tr><td class="pron">Pourquoi ?</td><td>為什麼 Why</td><td class="note">Pourquoi ? → Parce que…</td></tr>
+    <tr><td class="pron">Qu'est-ce que ?</td><td>什麼 What</td><td class="note">Qu'est-ce que tu fais ?</td></tr>
+    <tr><td class="pron">Quel / Quelle ?</td><td>哪個 Which</td><td class="note">Quelle rue ? Quel quartier ?</td></tr>
+  </table>
+</div>
+
+<!-- 動詞變位 -->
+<h2>動詞變位 Conjugaisons</h2>
+<div class="tbl-card">
+  <div class="tbl-title">être / avoir</div>
+  <table>
+    <tr><th></th><th>être 是</th><th>avoir 有</th></tr>
+    <tr><td>je / j'</td><td class="pron">suis</td><td class="pron">ai</td></tr>
+    <tr><td>tu</td><td class="pron">es</td><td class="pron">as</td></tr>
+    <tr><td>il / elle / on</td><td class="pron">est</td><td class="pron">a</td></tr>
+    <tr><td>nous</td><td class="pron">sommes</td><td class="pron">avons</td></tr>
+    <tr><td>vous</td><td class="pron">êtes</td><td class="pron">avez</td></tr>
+    <tr><td>ils / elles</td><td class="pron">sont</td><td class="pron">ont</td></tr>
+  </table>
+</div>
+<div class="tbl-card">
+  <div class="tbl-title">-ER 規則動詞（parler 範例）</div>
+  <table>
+    <tr><th></th><th>字尾</th><th>parler</th><th>habiter</th><th>aimer</th></tr>
+    <tr><td>je</td><td class="hi">-e</td><td class="pron">parle</td><td class="pron">habite</td><td class="pron">aime</td></tr>
+    <tr><td>tu</td><td class="hi">-es</td><td class="pron">parles</td><td class="pron">habites</td><td class="pron">aimes</td></tr>
+    <tr><td>il/elle/on</td><td class="hi">-e</td><td class="pron">parle</td><td class="pron">habite</td><td class="pron">aime</td></tr>
+    <tr><td>nous</td><td class="hi">-ons</td><td class="pron">parlons</td><td class="pron">habitons</td><td class="pron">aimons</td></tr>
+    <tr><td>vous</td><td class="hi">-ez</td><td class="pron">parlez</td><td class="pron">habitez</td><td class="pron">aimez</td></tr>
+    <tr><td>ils/elles</td><td class="hi">-ent</td><td class="pron">parlent</td><td class="pron">habitent</td><td class="pron">aiment</td></tr>
+  </table>
+</div>
+<div class="tbl-card">
+  <div class="tbl-title">-GER 特殊動詞（nous 加 e）</div>
+  <table>
+    <tr><th></th><th>nager</th><th>manger</th><th>voyager</th></tr>
+    <tr><td>je/tu/il</td><td class="pron">nage</td><td class="pron">mange</td><td class="pron">voyage</td></tr>
+    <tr class="hl"><td>nous</td><td class="pron hi">nageons</td><td class="pron hi">mangeons</td><td class="pron hi">voyageons</td></tr>
+    <tr><td>vous</td><td class="pron">nagez</td><td class="pron">mangez</td><td class="pron">voyagez</td></tr>
+    <tr><td>ils/elles</td><td class="pron">nagent</td><td class="pron">mangent</td><td class="pron">voyagent</td></tr>
+  </table>
+</div>
+
+<!-- 職業性別 -->
+<h2>職業性別變化 Professions</h2>
+<div class="tbl-card">
+  <div class="tbl-title">字尾規則</div>
+  <table>
+    <tr><th>陽性字尾</th><th>陰性字尾</th><th>陽性例</th><th>陰性例</th></tr>
+    <tr><td class="pron">-e</td><td class="pron">-e（不變）</td><td>fleuriste</td><td>fleuriste</td></tr>
+    <tr><td class="pron">-eur</td><td class="pron hi">-euse</td><td>coiffeur</td><td>coiffeuse</td></tr>
+    <tr><td class="pron">-teur</td><td class="pron hi">-trice</td><td>acteur</td><td>actrice</td></tr>
+    <tr><td class="pron">-ien</td><td class="pron hi">-ienne</td><td>informaticien</td><td>informaticienne</td></tr>
+    <tr><td class="pron">-er</td><td class="pron hi">-ère</td><td>infirmier</td><td>infirmière</td></tr>
+    <tr><td class="pron">-t / -r</td><td class="pron hi">-te / -re</td><td>étudiant, professeur</td><td>étudiante, professeure</td></tr>
+  </table>
+</div>
+
+<!-- 國籍形容詞 -->
+<h2>國籍形容詞 Nationalités</h2>
+<div class="tbl-card">
+  <div class="tbl-title">陰性 = 陽性 + e（大原則）</div>
+  <table>
+    <tr><th>陽性</th><th>陰性</th><th>中文</th></tr>
+    <tr><td class="pron">français</td><td class="pron">française</td><td>法國人</td></tr>
+    <tr><td class="pron">américain</td><td class="pron">américaine</td><td>美國人</td></tr>
+    <tr><td class="pron">japonais</td><td class="pron">japonaise</td><td>日本人</td></tr>
+    <tr><td class="pron">espagnol</td><td class="pron">espagnole</td><td>西班牙人</td></tr>
+    <tr><td class="pron">chinois</td><td class="pron">chinoise</td><td>中國人</td></tr>
+    <tr><td class="pron">taiwanais</td><td class="pron">taiwanaise</td><td>台灣人</td></tr>
+    <tr><td class="pron">italien</td><td class="pron hi">italienne</td><td>義大利人（-ien→-ienne）</td></tr>
+    <tr><td class="pron">suisse</td><td class="pron">suisse（不變）</td><td>瑞士人（-e 結尾不變）</td></tr>
+  </table>
+</div>
+
+</div>
+<!-- ═══════════════ END TAB 3 ═══════════════ -->
+
 <script>
 
 function switchTab(tab) {
-  document.getElementById('tab-basics').style.display = tab === 'basics' ? '' : 'none';
-  document.getElementById('tab-sons').style.display   = tab === 'sons'   ? '' : 'none';
-  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (i===0) === (tab==='basics')));
+  document.getElementById('tab-basics').style.display  = tab === 'basics'  ? '' : 'none';
+  document.getElementById('tab-sons').style.display    = tab === 'sons'    ? '' : 'none';
+  document.getElementById('tab-tables').style.display  = tab === 'tables'  ? '' : 'none';
+  const order = ['basics','sons','tables'];
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', order[i] === tab));
   if (tab === 'sons') {
-    // iOS audio unlock on tab switch
     const a = document.getElementById('player'); if (a) a.load();
   }
 }
