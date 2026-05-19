@@ -448,6 +448,36 @@ const BANK = [
   { lesson:2, type:'choose', q:'以下哪句「parler + 語言」用法正確？',             hint:'語言前不加冠詞', a:'Je parle français.|Je parle le français.', aNote:'parler + 語言 → 直接接，不加冠詞（但 aimer le français 要加）' },
   { lesson:2, type:'choose', q:'Qui / Où / Comment / Combien / Pourquoi，哪個問「在哪裡」？', hint:'Where', a:'Où', aNote:'Où = Where；Qui = Who；Comment = How；Combien = How much/many；Pourquoi = Why' },
   { lesson:2, type:'choose', q:'71 和 81，哪個有「et」？為什麼？',               hint:'soixante + onze', a:'71（soixante et onze）有 et；81（quatre-vingt-un）沒有', aNote:'21-71 的個位為 1 用 et；80 之後完全不用 et' },
+
+  // ── 第3課 ──────────────────────────────────────────────
+  // fill × 6
+  { lesson:3, type:'fill', q:'J\'habite dans _____ appartement avec une amie.', hint:'un/une/le/la/l\'', a:'un', aNote:'appartement 是陽性，且是「眾多公寓之一」，用不定冠詞 un' },
+  { lesson:3, type:'fill', q:'Tu es à _____ université à Paris ?',              hint:'un/une/le/la/l\'', a:'l\'', aNote:'université 是陰性且母音開頭，定冠詞縮寫成 l\'' },
+  { lesson:3, type:'fill', q:'Nous _____ dans la piscine tous les matins.',     hint:'nager，nous 那格', a:'nageons', aNote:'nager：nous nageons（加 e 保持 /ʒ/ 音，否則 nagon- 會變硬音）' },
+  { lesson:3, type:'fill', q:'Mon frère est marié. _____ femme est fleuriste.', hint:'his = ?', a:'Sa', aNote:'femme 是陰性，主詞是 mon frère（il）→ sa femme' },
+  { lesson:3, type:'fill', q:'_____ neveux adorent les enfants de Clara.',      hint:'his = ? + 複數', a:'Ses', aNote:'ses = his/her，複數名詞前用 ses' },
+  { lesson:3, type:'fill', q:'C\'est _____ amie Sophia.',                       hint:'mon/ma/mes，注意母音', a:'mon', aNote:'amie 雖是陰性但以母音 a 開頭，避免連音用 mon（不用 ma）' },
+
+  // trans × 5
+  { lesson:3, type:'trans', q:'我超愛電影，但我討厭滑雪。',          hint:'adorer / détester + skier', a:'J\'adore le cinéma, mais je déteste skier.', aNote:'adorer = 超愛（比 aimer 強）；détester + 動詞原形直接接', askClaude:true },
+  { lesson:3, type:'trans', q:'我游泳不太行。',                       hint:'Je ne suis pas...', a:'Je ne suis pas fort(e) en natation.', aNote:'fort(e) en + 運動名詞，表示「某方面不擅長」', askClaude:true },
+  { lesson:3, type:'trans', q:'我弟弟已婚，他有兩個孩子。',          hint:'marié / il a', a:'Mon frère est marié. Il a deux enfants.', aNote:'', askClaude:true },
+  { lesson:3, type:'trans', q:'我們的朋友 Robin 和 Aya 會來。',      hint:'nos amis', a:'Nos amis Robin et Aya arrivent.|Nos amis Robin et Aya viennent.', aNote:'複數用 nos（notre 的複數）', askClaude:true },
+  { lesson:3, type:'trans', q:'你妹妹有小孩嗎？沒有，她沒有孩子。', hint:'Ta sœur / elle n\'a pas...', a:'Ta sœur a des enfants ? Non, elle n\'a pas d\'enfant.', aNote:'否定句 pas de / pas d\'（不說 pas des）', askClaude:true },
+
+  // gender × 5（職業變化）
+  { lesson:3, type:'gender', q:'coiffeur → 女性形？',       hint:'-eur → ?', a:'coiffeuse', aNote:'-eur 結尾職業 → -euse（coiffeur 是美髮師）' },
+  { lesson:3, type:'gender', q:'acteur → 女性形？',         hint:'-teur → ?', a:'actrice', aNote:'-teur 結尾 → -trice（注意不是 acteure）' },
+  { lesson:3, type:'gender', q:'informaticien → 女性形？',  hint:'-ien → ?', a:'informaticienne', aNote:'-ien → -ienne（加 ne，類似 italien→italienne）' },
+  { lesson:3, type:'gender', q:'infirmier → 女性形？',      hint:'-er → ?', a:'infirmière', aNote:'-er → -ère（加重音符，護理師）' },
+  { lesson:3, type:'gender', q:'facteur → 女性形？',        hint:'-teur → ?', a:'factrice', aNote:'-teur → -trice（郵差，與 acteur 同規則）' },
+
+  // choose × 5
+  { lesson:3, type:'choose', q:'「打籃球」用哪個說法？',     hint:'jouer / faire', a:'jouer au basket|faire du basket', aNote:'兩個都對！jouer à（球類遊戲）和 faire de（所有運動）都可用' },
+  { lesson:3, type:'choose', q:'「ma amie」為什麼錯？正確寫法？', hint:'母音開頭', a:'mon amie（陰性名詞若以母音開頭，ma→mon）', aNote:'ma amie 兩個母音碰撞，改用 mon amie（不是 m\'amie）' },
+  { lesson:3, type:'choose', q:'son / sa / ses，哪個填入空格？「_____ enfants jouent ici.」', hint:'enfants 是複數', a:'Ses', aNote:'複數名詞前用 ses（不管陰陽性）' },
+  { lesson:3, type:'choose', q:'「nous nageons」vs「nous nagons」，哪個正確？為什麼？', hint:'g + o 的發音', a:'nous nageons（保持 /ʒ/ 軟音需加 e）', aNote:'g+o 會變硬音，加 e 後 ge+ons 維持 /ʒ/；同規則：mangeons、voyageons' },
+  { lesson:3, type:'choose', q:'la mer / la mère / le maire，哪個是「市長」？', hint:'政治人物', a:'le/la maire（市長）', aNote:'mer = 海；mère = 母親；maire = 市長。三個發音相同！' },
 ];
 
 // ── 狀態 ──────────────────────────────────────────────────────
