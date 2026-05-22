@@ -551,6 +551,16 @@
   #tab-tables .hi { color: #c0392b; font-weight: 700; }
   #tab-tables .hl { background: #fffbe6; }
   #tab-tables .rule-box { background: #f0f7ff; border-left: 3px solid #4a90d9; border-radius: 0 8px 8px 0; padding: 8px 12px; font-size: 0.8rem; color: #333; margin: 0 14px 14px; line-height: 1.6; }
+  #tab-tables .pron { cursor: pointer; border-radius: 5px; transition: background 0.12s; -webkit-tap-highlight-color: transparent; }
+  #tab-tables .pron:hover, #tab-tables .pron:active { background: #e8f4ff; }
+  #tab-tables .pron.playing { background: #e6f4e6; color: #2a7a2a; }
+  #tab-tables .tbl-note-wrap { border-top: 1px solid #f0f0ee; padding: 8px 14px 10px; }
+  #tab-tables .tbl-note-btn { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px 4px 9px; background: none; border: 1.5px solid #e0ddd8; border-radius: 20px; font-size: 0.72rem; color: #bbb; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+  #tab-tables .tbl-note-btn.has-note { border-color: #4a90d9; color: #4a90d9; background: #f0f7ff; }
+  #tab-tables .tbl-note-btn:hover { border-color: #aaa; color: #777; }
+  #tab-tables .tbl-note-box { margin-top: 8px; display: none; }
+  #tab-tables .tbl-note-ta { width: 100%; box-sizing: border-box; min-height: 64px; border: 1.5px solid #e0ddd8; border-radius: 8px; padding: 8px 10px; font-size: 0.82rem; font-family: inherit; resize: vertical; outline: none; line-height: 1.5; background: #fafaf8; }
+  #tab-tables .tbl-note-ta:focus { border-color: #4a90d9; background: #fff; }
 </style>
 
 <!-- 所有格 -->
@@ -758,10 +768,18 @@ function initVoices() {
 speechSynthesis.onvoiceschanged = initVoices;
 initVoices();
 
+function cleanSpeak(text) {
+  return text
+    .replace(/[\u{1F300}-\u{1FAFF}]/gu, '')
+    .replace(/[☀-➿]/g, '')
+    .replace(/[！!❤♥⭐💡×✅🔊▶■⚠]/g, '')
+    .replace(/\s{2,}/g, ' ').trim();
+}
+
 function speak(text, el) {
   speechSynthesis.cancel();
   if (currentCard) currentCard.classList.remove('playing');
-  const utt = new SpeechSynthesisUtterance(text);
+  const utt = new SpeechSynthesisUtterance(cleanSpeak(text));
   utt.lang = 'fr-FR';
   if (frVoice) utt.voice = frVoice;
   utt.rate = slowMode ? 0.65 : 0.85;
@@ -989,6 +1007,71 @@ const audio = document.getElementById('player');
       editor.addEventListener('mousedown', ev => ev.stopPropagation());
     });
   });
+
+  // ── Tab 3 文法表：.pron 點擊發音 ─────────────────────────
+  let tblPlaying = null;
+  document.querySelectorAll('#tab-tables .pron').forEach(td => {
+    const raw = td.textContent.trim();
+    if (!raw || raw.length > 60) return;  // 跳過太長或空的
+    td.addEventListener('click', () => {
+      if (tblPlaying) tblPlaying.classList.remove('playing');
+      speechSynthesis.cancel();
+      const utt = new SpeechSynthesisUtterance(cleanSpeak(raw));
+      utt.lang = 'fr-FR';
+      if (frVoice) utt.voice = frVoice;
+      utt.rate = 0.8;
+      tblPlaying = td;
+      td.classList.add('playing');
+      utt.onend = utt.onerror = () => td.classList.remove('playing');
+      speechSynthesis.speak(utt);
+    });
+  });
+
+  // ── Tab 3 文法表：.tbl-card 筆記 ─────────────────────────
+  (function() {
+    const TBL_KEY = 'fr_tbl_notes';
+    const tblNotes = JSON.parse(localStorage.getItem(TBL_KEY) || '{}');
+    function saveTbl() { localStorage.setItem(TBL_KEY, JSON.stringify(tblNotes)); }
+
+    document.querySelectorAll('#tab-tables .tbl-card').forEach((card, i) => {
+      const titleEl = card.querySelector('.tbl-title');
+      const key = 'tbl_' + (titleEl ? titleEl.textContent.trim().slice(0, 30) : i);
+      const existing = tblNotes[key] || '';
+
+      const wrap = document.createElement('div');
+      wrap.className = 'tbl-note-wrap';
+
+      const btn = document.createElement('button');
+      btn.className = 'tbl-note-btn' + (existing ? ' has-note' : '');
+      btn.innerHTML = '✏️ 筆記' + (existing ? ' <span>▼</span>' : ' <span>▶</span>');
+
+      const box = document.createElement('div');
+      box.className = 'tbl-note-box';
+      box.style.display = existing ? '' : 'none';
+
+      const ta = document.createElement('textarea');
+      ta.className = 'tbl-note-ta';
+      ta.placeholder = '隨手記下想法、例外、例句…';
+      ta.value = existing;
+      box.appendChild(ta);
+      wrap.appendChild(btn);
+      wrap.appendChild(box);
+      card.appendChild(wrap);
+
+      btn.addEventListener('click', () => {
+        const open = box.style.display !== 'none';
+        box.style.display = open ? 'none' : '';
+        btn.querySelector('span').textContent = open ? '▶' : '▼';
+        if (!open) ta.focus();
+      });
+      ta.addEventListener('input', () => {
+        const val = ta.value;
+        if (val) tblNotes[key] = val; else delete tblNotes[key];
+        saveTbl();
+        btn.classList.toggle('has-note', !!val);
+      });
+    });
+  })();
 
 </script>
 </body>

@@ -220,12 +220,104 @@
 
     /* 動詞卡片裡的喇叭放在動詞名稱旁 */
     .verb-name .tts-btn { vertical-align: middle; margin-left: 4px; }
+
+    /* ── 課程導覽 ── */
+    .lesson-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #f0f0ee;
+      display: flex;
+      gap: 8px;
+      padding: 10px 0 8px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+      flex-wrap: wrap;
+    }
+    .lesson-nav button {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 99px;
+      border: 1.5px solid #ccc;
+      background: #fff;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .lesson-nav button:hover { border-color: #4a90d9; color: #4a90d9; }
+    .lesson-nav button.active { background: #4a90d9; border-color: #4a90d9; color: #fff; }
+
+    /* ── details / summary 課程折疊 ── */
+    details.lesson-group { margin-bottom: 12px; }
+    details.lesson-group > summary {
+      list-style: none;
+      cursor: pointer;
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      user-select: none;
+      margin-bottom: 0;
+      transition: box-shadow 0.15s;
+    }
+    details.lesson-group > summary::-webkit-details-marker { display: none; }
+    details.lesson-group > summary:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+    details.lesson-group[open] > summary { border-radius: 12px 12px 0 0; margin-bottom: 2px; }
+    .summary-chevron {
+      font-size: 0.8rem;
+      color: #aaa;
+      transition: transform 0.2s;
+      margin-left: auto;
+    }
+    details.lesson-group[open] .summary-chevron { transform: rotate(90deg); }
+    .summary-num {
+      font-size: 0.7rem;
+      font-weight: 800;
+      background: #4a90d9;
+      color: #fff;
+      padding: 2px 10px;
+      border-radius: 99px;
+    }
+    .summary-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #333;
+    }
+    .summary-topics {
+      font-size: 0.75rem;
+      color: #888;
+    }
+    details.lesson-group[open] > .unit:first-of-type { border-radius: 0; }
+
+    /* ── Unit 筆記 ── */
+    .unit-note-wrap { margin-top: 14px; border-top: 1px solid #f0f0ee; padding-top: 10px; }
+    .unit-note-btn { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px 4px 9px; background: none; border: 1.5px solid #e0ddd8; border-radius: 20px; font-size: 0.72rem; color: #bbb; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+    .unit-note-btn.has-note { border-color: #4a90d9; color: #4a90d9; background: #f0f7ff; }
+    .unit-note-btn:hover { border-color: #aaa; color: #777; }
+    .unit-note-box { margin-top: 8px; }
+    .unit-note-ta { width: 100%; box-sizing: border-box; min-height: 72px; border: 1.5px solid #e0ddd8; border-radius: 8px; padding: 8px 10px; font-size: 0.82rem; color: #333; font-family: inherit; resize: vertical; outline: none; line-height: 1.5; background: #fafaf8; }
+    .unit-note-ta:focus { border-color: #4a90d9; background: #fff; }
   </style>
 </head>
 <body>
 
 <h1>法語筆記 · CLB7</h1>
 <p class="meta">發音練習 → <a href="french_basics.html">french_basics.html</a>（GitHub Pages）</p>
+
+<nav class="lesson-nav" id="lessonNav"></nav>
+
+<details class="lesson-group" id="lesson-1">
+<summary>
+  <span class="summary-num">第1課</span>
+  <span class="summary-title">問候 · 動詞 · 國籍 · 日期</span>
+  <span class="summary-topics">être · avoir · s'appeler · aimer · 國籍形容詞 · 序數</span>
+  <span class="summary-chevron">▶</span>
+</summary>
 
 <!-- ════════ 第1課：問候與課堂用語 ════════ -->
 <div class="unit">
@@ -472,8 +564,589 @@
   </div>
 </div>
 
+</details>
+
+<details class="lesson-group" id="lesson-2" open>
+<summary>
+  <span class="summary-num">第2課</span>
+  <span class="summary-title">冠詞 · 介詞 · habiter · Quel</span>
+  <span class="summary-topics">le/la/un/une · en/au/aux/à · 發音提醒 · 課堂釐清</span>
+  <span class="summary-chevron">▶</span>
+</summary>
+
+<!-- ════════ 第2課：冠詞、介詞、habiter ════════ -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第2課</span>
+    <span class="unit-title">冠詞、介詞與日常詞彙</span>
+    <span class="unit-lesson">Unité 2</span>
+  </div>
+
+  <h3>定冠詞 Articles définis</h3>
+  <div class="rule">
+    <div class="label">規則</div>
+    每個名詞都有性別，冠詞隨之變化：
+    <span class="fr-ex">le</span>（陽性單數）、<span class="fr-ex">la</span>（陰性單數）、<span class="fr-ex">l'</span>（母音/啞音 h 開頭）、<span class="fr-ex">les</span>（複數）<br>
+    判斷性別：字尾 <strong>-e</strong> → 通常陰性（la）；字尾子音 → 通常陽性（le）；母音開頭 → l'
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">le sport</span><span class="zh">運動（陽性）</span></li>
+    <li><span class="fr">le cinéma</span><span class="zh">電影（陽性）</span></li>
+    <li><span class="fr">le café</span><span class="zh">咖啡（陽性，-é 非一般陰性 -e）</span></li>
+    <li><span class="fr">la musique</span><span class="zh">音樂（陰性）</span></li>
+    <li><span class="fr">la ville</span><span class="zh">城市（陰性）</span></li>
+    <li><span class="fr">l'histoire</span><span class="zh">歷史（陰性，母音開頭）</span></li>
+    <li><span class="fr">l'art</span><span class="zh">藝術（陽性，母音開頭）</span></li>
+    <li><span class="fr">les amis</span><span class="zh">朋友們（複數）</span></li>
+  </ul>
+
+  <h3>不定冠詞 Articles indéfinis</h3>
+  <div class="rule">
+    <div class="label">規則</div>
+    <span class="fr-ex">un</span>（陽性單數，「一個」）、<span class="fr-ex">une</span>（陰性單數）、<span class="fr-ex">des</span>（複數，「一些」）<br>
+    定冠詞 le/la = 特定的某個（彼此都知道是哪個）；不定冠詞 un/une = 泛指（不特定）
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">un appartement</span><span class="zh">一間公寓</span></li>
+    <li><span class="fr">une ville</span><span class="zh">一座城市</span></li>
+    <li><span class="fr">des amis</span><span class="zh">一些朋友</span></li>
+    <li><span class="fr">le chien</span><span class="zh">那隻狗（特定，彼此知道是哪隻）</span></li>
+    <li><span class="fr">un chien</span><span class="zh">一隻狗（泛指）</span></li>
+  </ul>
+
+  <h3>介詞 + 國家／城市</h3>
+  <div class="rule">
+    <div class="label">規則</div>
+    「在/去某地」根據國家性別與單複數選介詞：<br>
+    陰性國家（字尾 -e）或母音開頭 → <span class="fr-ex">en</span><br>
+    陽性國家（字尾非 -e）→ <span class="fr-ex">au</span><br>
+    複數國家 → <span class="fr-ex">aux</span><br>
+    城市 → <span class="fr-ex">à</span>（台灣例外：島嶼無性別，也用 à）
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">en France / en Italie / en Chine</span><span class="zh">在／去法國、義大利、中國（陰性）</span></li>
+    <li><span class="fr">au Canada / au Mexique / au Brésil</span><span class="zh">在／去加拿大、墨西哥、巴西（陽性）</span></li>
+    <li><span class="fr">aux États-Unis / aux Pays-Bas</span><span class="zh">在／去美國、荷蘭（複數）</span></li>
+    <li><span class="fr">à Paris / à Lyon / à Taipei</span><span class="zh">在／去巴黎、里昂、台北（城市）</span></li>
+    <li><span class="fr">à Taiwan</span><span class="zh">在／去台灣（例外：島嶼，無性別）</span></li>
+  </ul>
+  <div class="note">
+    💡 <strong>記憶法：</strong><br>
+    字尾 <strong>-e</strong> → 陰性 → <strong>en</strong>（la France → en France）<br>
+    字尾子音 → 陽性 → <strong>au</strong>（le Canada → au Canada）<br>
+    字尾 <strong>-s</strong> → 複數 → <strong>aux</strong>（les États-Unis → aux États-Unis）<br>
+    城市一律 → <strong>à</strong>
+  </div>
+
+  <h3>動詞 habiter（住）</h3>
+  <div class="verb-card">
+    <div class="verb-title">habiter — to live / reside</div>
+    <div class="conj-row"><span class="conj-pro">je / j'</span><span class="conj-fr">habite</span></div>
+    <div class="conj-row"><span class="conj-pro">tu</span><span class="conj-fr">habites</span></div>
+    <div class="conj-row"><span class="conj-pro">il / elle / on</span><span class="conj-fr">habite</span></div>
+    <div class="conj-row"><span class="conj-pro">nous</span><span class="conj-fr">habitons</span></div>
+    <div class="conj-row"><span class="conj-pro">vous</span><span class="conj-fr">habitez</span></div>
+    <div class="conj-row"><span class="conj-pro">ils / elles</span><span class="conj-fr">habitent</span></div>
+  </div>
+  <div class="note">
+    💡 <strong>on = nous（口語）：</strong><br>
+    <span class="fr-ex">On habite à Lyon.</span> = <span class="fr-ex">Nous habitons à Lyon.</span><br>
+    「on」動詞變位同 il/elle，但口語中意思等於「我們」；也可泛指「人們」
+  </div>
+
+  <h3>疑問形容詞 Quel / Quelle</h3>
+  <div class="rule">
+    <div class="label">規則</div>
+    「哪個／什麼」，四種寫法但發音完全相同 [kɛl]：<br>
+    <span class="fr-ex">quel</span>（陽性單數）、<span class="fr-ex">quelle</span>（陰性單數）、<span class="fr-ex">quels</span>（陽性複數）、<span class="fr-ex">quelles</span>（陰性複數）
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">Tu habites dans quelle ville ?</span><span class="zh">你住在哪個城市？</span></li>
+    <li><span class="fr">Tu parles quelle langue ?</span><span class="zh">你說什麼語言？</span></li>
+    <li><span class="fr">Quel âge as-tu ?</span><span class="zh">你幾歲？</span></li>
+    <li><span class="fr">Tu aimes quelle musique ?</span><span class="zh">你喜歡什麼音樂？</span></li>
+  </ul>
+
+  <h3>詞彙：休閒與日常</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">l'art (m)</span><span class="zh">藝術</span></li>
+    <li><span class="fr">le cinéma (m)</span><span class="zh">電影</span></li>
+    <li><span class="fr">la musique (f)</span><span class="zh">音樂</span></li>
+    <li><span class="fr">le sport (m)</span><span class="zh">運動</span></li>
+    <li><span class="fr">les langues (f.pl)</span><span class="zh">語言</span></li>
+    <li><span class="fr">la bande dessinée (f)</span><span class="zh">法式漫畫（BD）</span></li>
+    <li><span class="fr">la librairie (f)</span><span class="zh">書店 ⚠️（不是圖書館！）</span></li>
+    <li><span class="fr">la bibliothèque (f)</span><span class="zh">圖書館</span></li>
+    <li><span class="fr">la rue (f)</span><span class="zh">街道</span></li>
+    <li><span class="fr">le quartier (m)</span><span class="zh">街區、社區</span></li>
+    <li><span class="fr">sympa</span><span class="zh">不錯、友善（sympathique 的縮寫，口語）</span></li>
+  </ul>
+  <div class="note">
+    💡 <strong>Faux ami（假朋友）：</strong><br>
+    <span class="fr-ex">la librairie</span> = bookstore 書店（看起來像 library，但不是！）<br>
+    <span class="fr-ex">la bibliothèque</span> = library 圖書館
+  </div>
+
+  <h3>電話號碼與數字規則</h3>
+  <div class="rule">
+    <div class="label">規則</div>
+    法文電話號碼兩位兩位念：<span class="fr-ex">06 80 72 86 45</span><br>
+    → zéro six, quatre-vingts, soixante-douze, quatre-vingt-six, quarante-cinq<br>
+    小數點用 <span class="fr-ex">virgule</span>（逗號），不用 point：<span class="fr-ex">4,8</span> → « quatre virgule huit »
+  </div>
+
+  <div class="note">
+    💡 <strong>et 只出現在 21–71，80+1 反而沒有：</strong><br>
+    21→71 的「個位為 1」一律加 <strong>et</strong>：<span class="fr-ex">vingt et un</span>、<span class="fr-ex">trente et un</span>… <span class="fr-ex">soixante et un</span><br>
+    71 特別：60＋<strong>11</strong>（不是 60+1），卻一樣有 et：<span class="fr-ex">soixante et onze</span><br>
+    72 開始就沒有 et：<span class="fr-ex">soixante-douze</span>、<span class="fr-ex">soixante-treize</span>…<br>
+    80 之後完全沒有 et，連 81 也沒有：<span class="fr-ex">quatre-vingt-un</span>（不是 quatre-vingt et un）
+  </div>
+
+  <h3>⚠️ 老師糾正發音</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Emma</span><span class="zh">雙 m 要念清楚 [ɛ-ma]，不能輕音帶過</span></li>
+    <li><span class="fr">les z'États-Unis</span><span class="zh">liaison：les 的 s 遇母音開頭要連音，不能分開念</span></li>
+    <li><span class="fr">Sénégalais / Sénégalaise</span><span class="zh">[se-ne-ga-lɛ/lɛz]，記憶：「賽內街」</span></li>
+    <li><span class="fr">quatre-vingts</span><span class="zh">[katʁə.vɛ̃]，老師確認這是難點，多練習</span></li>
+  </ul>
+
+  <h3>❓ 課堂釐清</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">J'aime aller en France.</span><span class="zh">兩動詞連用：第一個變位，第二個用原形不變（aller 不加 s/e）</span></li>
+    <li><span class="fr">On habite à Lyon.</span><span class="zh">on = nous（口語），但動詞變位同 il/elle → habite，不是 habitons</span></li>
+    <li><span class="fr">quel / quelle / quels / quelles</span><span class="zh">四種寫法發音完全相同 [kɛl]，依名詞性別與單複數選</span></li>
+    <li><span class="fr">à Taiwan</span><span class="zh">台灣是島嶼，無性別，視同城市用 à（不用 en 或 au）</span></li>
+    <li><span class="fr">la librairie ≠ library</span><span class="zh">假朋友！librairie = 書店；圖書館 = bibliothèque</span></li>
+    <li><span class="fr">4,8 → quatre virgule huit</span><span class="zh">法文小數用 virgule（逗號），不用 point（句點）</span></li>
+    <li><span class="fr">06 89 34 72 51</span><span class="zh">電話號碼兩位兩位念，念成一位一位對方會聽不懂</span></li>
+    <li><span class="fr">septante / huitante / nonante</span><span class="zh">比利時/瑞士的 70/80/90，比法國規律，考試不考但聽得懂即可</span></li>
+  </ul>
+</div>
+
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第2課</span>
+    <span class="unit-title">疑問詞 · 國家性別 · Parler</span>
+    <span class="unit-lesson">Unité 2</span>
+  </div>
+
+  <h3>疑問詞 Mots interrogatifs</h3>
+  <div class="rule">
+    <div class="label">規則</div>
+    問句開頭詞（疑問詞），放句首或句尾皆可。<br>
+    <span class="fr-ex">Quel/Quelle</span> 是形容詞（修飾名詞）；其他疑問詞是代詞或副詞。
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">Qui ?</span><span class="zh">誰？Who?</span></li>
+    <li><span class="fr">Où ?</span><span class="zh">在哪裡？Where?</span></li>
+    <li><span class="fr">Pourquoi ?</span><span class="zh">為什麼？Why? → 回答用 <strong>parce que</strong>（因為）</span></li>
+    <li><span class="fr">Comment ?</span><span class="zh">怎麼？How?</span></li>
+    <li><span class="fr">Combien ?</span><span class="zh">多少（數量）？How many / How much?</span></li>
+    <li><span class="fr">Qu'est-ce que ?</span><span class="zh">什麼？What?（主詞後接動詞）</span></li>
+    <li><span class="fr">Quel / Quelle ?</span><span class="zh">哪個？（接名詞，隨性別變化）→ 見第2課冠詞區塊</span></li>
+  </ul>
+  <ul class="phrase-list">
+    <li><span class="fr">Qui est-ce ? / C'est qui ?</span><span class="zh">這是誰？</span></li>
+    <li><span class="fr">Tu habites où ?</span><span class="zh">你住在哪裡？</span></li>
+    <li><span class="fr">Pourquoi tu aimes le sport ?</span><span class="zh">你為什麼喜歡運動？</span></li>
+    <li><span class="fr">Parce que c'est sympa !</span><span class="zh">因為很好玩！</span></li>
+    <li><span class="fr">Combien de langues tu parles ?</span><span class="zh">你說幾種語言？</span></li>
+  </ul>
+
+  <h3>國家名詞的性別規則</h3>
+  <div class="rule">
+    <div class="label">規則</div>
+    字尾為 <strong>-e</strong> → 陰性（la）→ 介詞用 <span class="fr-ex">en</span><br>
+    字尾非 -e → 陽性（le）→ 介詞用 <span class="fr-ex">au</span><br>
+    複數 → 介詞用 <span class="fr-ex">aux</span><br>
+    ⚠️ 例外：<strong>le Mexique、le Mozambique、le Cambodge</strong>（字尾 -e 但陽性）→ au Mexique
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">la France, l'Italie, la Suisse, la Chine</span><span class="zh">字尾 -e → 陰性（en）</span></li>
+    <li><span class="fr">le Canada, le Brésil, le Japon</span><span class="zh">字尾子音 → 陽性（au）</span></li>
+    <li><span class="fr">le Mexique</span><span class="zh">⚠️ 例外：字尾 -e 但陽性 → au Mexique</span></li>
+    <li><span class="fr">les États-Unis, les Pays-Bas, les Philippines</span><span class="zh">複數 → aux</span></li>
+    <li><span class="fr">Taiwan, Chypre</span><span class="zh">島嶼無性別 → à Taiwan（同城市）</span></li>
+  </ul>
+
+  <h3>動詞 parler（說/說話）— ER 動詞模板</h3>
+  <div class="rule">
+    <div class="label">規則</div>
+    法文 90%+ 的動詞都是 <strong>-ER</strong> 動詞，parler 是標準模板。<br>
+    je/tu/il/elle + <strong>e/es/e</strong>（結尾不發音）；nous <strong>ons</strong>；vous <strong>ez</strong>；ils/elles <strong>ent</strong>（不發音）
+  </div>
+  <div class="verb-card">
+    <div class="verb-title">parler — to speak</div>
+    <div class="conj-row"><span class="conj-pro">je</span><span class="conj-fr">parle</span></div>
+    <div class="conj-row"><span class="conj-pro">tu</span><span class="conj-fr">parles</span></div>
+    <div class="conj-row"><span class="conj-pro">il / elle / on</span><span class="conj-fr">parle</span></div>
+    <div class="conj-row"><span class="conj-pro">nous</span><span class="conj-fr">parlons</span></div>
+    <div class="conj-row"><span class="conj-pro">vous</span><span class="conj-fr">parlez</span></div>
+    <div class="conj-row"><span class="conj-pro">ils / elles</span><span class="conj-fr">parlent</span></div>
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">Je parle chinois, taïwanais et anglais.</span><span class="zh">我說中文、台語和英文。</span></li>
+    <li><span class="fr">Tu parles quelle langue ?</span><span class="zh">你說什麼語言？</span></li>
+    <li><span class="fr">Il parle français et espagnol.</span><span class="zh">他說法文和西班牙文。</span></li>
+  </ul>
+  <div class="note">
+    💡 <strong>語言不加冠詞：</strong><br>
+    <span class="fr-ex">Je parle français.</span>（正確）→ 語言名稱前不加 le/la<br>
+    <span class="fr-ex">J'aime le français.</span>（也對）→ aimer 後面要加冠詞<br>
+    動詞 parler + 語言 = 直接接，不加冠詞
+  </div>
+
+  <h3>練習句（書本 articulation）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Je m'appelle Emma, je suis brésilienne et j'aime le cinéma.</span><span class="zh">我叫 Emma，我是巴西人，我喜歡電影。</span></li>
+    <li><span class="fr">Elle s'appelle Sanae, elle est japonaise et elle aime l'art.</span><span class="zh">她叫 Sanae，她是日本人，她喜歡藝術。</span></li>
+    <li><span class="fr">Tu es chinois et tu aimes le sport.</span><span class="zh">你是中國人，你喜歡運動。</span></li>
+    <li><span class="fr">Il est suisse et il aime les langues.</span><span class="zh">他是瑞士人，他喜歡語言。</span></li>
+    <li><span class="fr">Je suis sénégalaise et j'aime la musique.</span><span class="zh">我是塞內加爾人，我喜歡音樂。</span></li>
+  </ul>
+</div>
+
+</details>
+
+<details class="lesson-group" id="lesson-3" open>
+<summary><span class="summary-num">第3課</span><span class="summary-title">冠詞、喜好、家人、所有格、職業</span></summary>
+
+<!-- ──────────── 冠詞複習 ──────────── -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第3課</span>
+    <span class="unit-title">冠詞複習：un/une vs le/la</span>
+    <span class="unit-lesson">Unité 3</span>
+  </div>
+
+  <div class="rule">
+    <div class="label">核心規則</div>
+    <b>不定冠詞 un/une</b>＝「其中一個」，複數用 <span class="fr-ex">des</span>，尚未確定是哪一個：<br>
+    <span class="fr-ex">J'habite dans un appartement avec une amie.</span>（很多公寓中的一間）<br>
+    <b>定冠詞 le/la/l'/les</b>＝「就是那個」，已知是哪一個：<br>
+    <span class="fr-ex">C'est la rue des Arts.</span>（那條特定的街）<br><br>
+    ⚠️ <b>只有一個存在的事物 → 只能用 le/la：</b><br>
+    <span class="fr-ex">la Tour Eiffel</span>（全世界只有一個，不說 une Tour Eiffel）
+  </div>
+
+  <div class="rule">
+    <div class="label">母音前 l'</div>
+    le/la 遇到母音開頭的名詞縮寫成 <b>l'</b>，但 un/une <b>不變</b>：<br>
+    <span class="fr-ex">l'université (f.)</span> → <span class="fr-ex">une université</span>（不說 une 'université）<br>
+    <span class="fr-ex">l'appartement (m.)</span> → <span class="fr-ex">un appartement</span>
+  </div>
+
+  <h3>Les lieux 地點</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">l'appartement (m.)</span><span class="zh">公寓</span></li>
+    <li><span class="fr">la maison</span><span class="zh">房子（獨棟）</span></li>
+    <li><span class="fr">la mer</span><span class="zh">海（非大洋）</span></li>
+    <li><span class="fr">la plage</span><span class="zh">沙灘</span></li>
+    <li><span class="fr">le quartier</span><span class="zh">街區、鄰里</span></li>
+    <li><span class="fr">la rue</span><span class="zh">街道</span></li>
+    <li><span class="fr">l'université (f.)</span><span class="zh">大學</span></li>
+    <li><span class="fr">le colocataire / la colocataire</span><span class="zh">室友（共租）</span></li>
+    <li><span class="fr">le locataire / la locataire</span><span class="zh">房客（租屋者）</span></li>
+  </ul>
+
+  <div class="note">
+    💡 <strong>容易混淆三個音：</strong><br>
+    <span class="fr-ex">la mer</span>（海）／<span class="fr-ex">la mère</span>（媽媽）／<span class="fr-ex">le/la maire</span>（市長）— 發音完全相同！<br>
+    市長若為女性，正式說法：<span class="fr-ex">Madame le Maire</span>（傳統）或 <span class="fr-ex">Madame la Mairesse</span>（現代）
+  </div>
+</div>
+
+<!-- ──────────── 喜好 ──────────── -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第3課</span>
+    <span class="unit-title">表達喜好 + 運動休閒</span>
+    <span class="unit-lesson">Unité 3</span>
+  </div>
+
+  <h3>Exprimer ses goûts 表達喜好（程度由強到弱）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">J'adore le cinéma. ❤❤</span><span class="zh">我超愛電影（最強）</span></li>
+    <li><span class="fr">J'aime le sport. ❤</span><span class="zh">我喜歡運動</span></li>
+    <li><span class="fr">Je n'aime pas la danse.</span><span class="zh">我不喜歡跳舞</span></li>
+    <li><span class="fr">Je n'adore pas.</span><span class="zh">我不是很愛（還可以接受）</span></li>
+    <li><span class="fr">Elle déteste skier. ✗✗</span><span class="zh">她討厭滑雪（最強厭惡）</span></li>
+    <li><span class="fr">Je ne suis pas fort(e) en natation.</span><span class="zh">我游泳不太行</span></li>
+  </ul>
+
+  <div class="compare-table">
+    <div class="compare-title">Aimer / Détester 完整變位</div>
+    <table>
+      <tr><th></th><th>aimer</th><th>détester</th></tr>
+      <tr><td>je</td><td class="m">aime</td><td class="m">déteste</td></tr>
+      <tr><td>tu</td><td class="m">aimes</td><td class="m">détestes</td></tr>
+      <tr><td>il/elle/on</td><td class="m">aime</td><td class="m">déteste</td></tr>
+      <tr><td>nous</td><td class="m">aimons</td><td class="m">détestons</td></tr>
+      <tr><td>vous</td><td class="m">aimez</td><td class="m">détestez</td></tr>
+      <tr><td>ils/elles</td><td class="m">aiment</td><td class="m">détestent</td></tr>
+    </table>
+  </div>
+
+  <h3>Les loisirs 休閒活動</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">la danse / danser</span><span class="zh">舞蹈／跳舞</span></li>
+    <li><span class="fr">la natation / nager</span><span class="zh">游泳（名詞／動詞）</span></li>
+    <li><span class="fr">le ski / skier</span><span class="zh">滑雪（名詞／動詞）</span></li>
+    <li><span class="fr">la marche / marcher</span><span class="zh">步行（名詞／動詞）</span></li>
+    <li><span class="fr">le basket / le foot</span><span class="zh">籃球／足球</span></li>
+  </ul>
+
+  <div class="rule">
+    <div class="label">faire vs jouer</div>
+    <b>faire de + 運動</b>（適用所有運動）：<br>
+    <span class="fr-ex">faire de la danse</span>，<span class="fr-ex">faire de la natation</span>，<span class="fr-ex">faire du basket</span><br><br>
+    <b>jouer à + 球類遊戲</b>（只適用有「玩」概念的球類）：<br>
+    <span class="fr-ex">jouer au basket</span>，<span class="fr-ex">jouer au foot</span><br>
+    ⚠️ <span class="fr-ex">marcher</span>、<span class="fr-ex">nager</span> 不是「遊戲」，不能用 jouer
+  </div>
+
+  <h3>Les instruments de musique 樂器</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">la guitare</span><span class="zh">吉他（f.）</span></li>
+    <li><span class="fr">le piano</span><span class="zh">鋼琴（m.）</span></li>
+    <li><span class="fr">le violon</span><span class="zh">小提琴（m.）</span></li>
+    <li><span class="fr">le tambour</span><span class="zh">鼓（m.）</span></li>
+    <li><span class="fr">la batterie</span><span class="zh">爵士鼓組（f.）</span></li>
+    <li><span class="fr">la place (de cinéma)</span><span class="zh">電影票（一張位子）</span></li>
+  </ul>
+</div>
+
+<!-- ──────────── nager 特殊拼寫 ──────────── -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第3課</span>
+    <span class="unit-title">特殊 ER 動詞：-ger 結尾（nager、manger…）</span>
+    <span class="unit-lesson">Unité 3</span>
+  </div>
+
+  <div class="rule">
+    <div class="label">規則</div>
+    法文 <b>g + o/a</b> → 發硬音 /g/（如 gâteau）<br>
+    但 <b>g + e/i</b> → 發軟音 /ʒ/（如 manger）<br>
+    → <b>nous</b> 的 -ons 前面是 o，所以要加 <b>e</b> 保持軟音：<br>
+    <span class="fr-ex">nous nageons</span>（不是 nagonss）<br>
+    <span class="fr-ex">nous mangeons</span>，<span class="fr-ex">nous voyageons</span>（同規則）
+  </div>
+
+  <div class="compare-table">
+    <div class="compare-title">nager 完整變位</div>
+    <table>
+      <tr><td>je</td><td class="m">nage</td></tr>
+      <tr><td>tu</td><td class="m">nages</td></tr>
+      <tr><td>il/elle/on</td><td class="m">nage</td></tr>
+      <tr><td>nous</td><td class="m">nageons ⚠️</td></tr>
+      <tr><td>vous</td><td class="m">nagez</td></tr>
+      <tr><td>ils/elles</td><td class="m">nagent</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ──────────── 家人 ──────────── -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第3課</span>
+    <span class="unit-title">La famille 家人</span>
+    <span class="unit-lesson">Unité 3</span>
+  </div>
+
+  <ul class="phrase-list">
+    <li><span class="fr">les grands-parents</span><span class="zh">祖父母／外祖父母</span></li>
+    <li><span class="fr">la grand-mère (mamie)</span><span class="zh">奶奶／外婆（mamie 暱稱）</span></li>
+    <li><span class="fr">le grand-père (papi)</span><span class="zh">爺爺／外公（papi 暱稱）</span></li>
+    <li><span class="fr">la mère (maman)</span><span class="zh">媽媽（maman 直接稱呼時用）</span></li>
+    <li><span class="fr">le père (papa)</span><span class="zh">爸爸（papa 直接稱呼時用）</span></li>
+    <li><span class="fr">le fils / la fille</span><span class="zh">兒子／女兒</span></li>
+    <li><span class="fr">le fils unique / la fille unique</span><span class="zh">獨生子／獨生女</span></li>
+    <li><span class="fr">le frère / la sœur</span><span class="zh">兄弟／姐妹</span></li>
+    <li><span class="fr">les petits-enfants</span><span class="zh">孫子女</span></li>
+    <li><span class="fr">le petit-fils / la petite-fille</span><span class="zh">孫子／孫女</span></li>
+    <li><span class="fr">l'oncle (m.) / la tante</span><span class="zh">伯叔舅（通用）／姑阿姨（通用）</span></li>
+    <li><span class="fr">le cousin / la cousine</span><span class="zh">表兄弟／表姐妹（不分父系母系）</span></li>
+    <li><span class="fr">le neveu / la nièce</span><span class="zh">姪子／姪女（兄弟姐妹之子女）</span></li>
+    <li><span class="fr">le mari / la femme</span><span class="zh">丈夫／妻子（femme 也是「女人」）</span></li>
+    <li><span class="fr">la belle-mère / le beau-père</span><span class="zh">婆婆∕岳母 ／ 公公∕岳父</span></li>
+    <li><span class="fr">la belle-sœur / le beau-frère</span><span class="zh">嫂嫂∕弟媳∕大姑等 ／ 大伯∕小叔等</span></li>
+    <li><span class="fr">être marié(e) / célibataire</span><span class="zh">已婚／單身</span></li>
+  </ul>
+
+  <div class="note">
+    💡 <strong>法文親戚稱謂比中文簡單很多：</strong><br>
+    oncle = 所有叔伯舅舅；tante = 所有姑姑阿姨。分不清誰是誰就加名字：<span class="fr-ex">Tati Régine</span>、<span class="fr-ex">Tati Stéphanie</span><br>
+    <br>
+    💡 <strong>Ta fille, c'est la nièce de ta sœur.</strong>（你的女兒，是你妹妹的姪女）
+  </div>
+</div>
+
+<!-- ──────────── 所有格 KEY POINT ──────────── -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第3課 ⭐</span>
+    <span class="unit-title">Les adjectifs possessifs 所有格形容詞</span>
+    <span class="unit-lesson">Unité 3</span>
+  </div>
+
+  <div class="compare-table">
+    <div class="compare-title">完整表格（今日重點）</div>
+    <table>
+      <tr><th>主詞</th><th>陽性單數</th><th>陰性單數</th><th>複數</th></tr>
+      <tr><td>je</td><td class="m">mon</td><td class="f">ma</td><td class="m">mes</td></tr>
+      <tr><td>tu</td><td class="m">ton</td><td class="f">ta</td><td class="m">tes</td></tr>
+      <tr><td>il/elle</td><td class="m">son</td><td class="f">sa</td><td class="m">ses</td></tr>
+      <tr><td>nous</td><td class="m">notre</td><td class="f">notre</td><td class="m">nos</td></tr>
+      <tr><td>vous</td><td class="m">votre</td><td class="f">votre</td><td class="m">vos</td></tr>
+      <tr><td>ils/elles</td><td class="m">leur</td><td class="f">leur</td><td class="m">leurs</td></tr>
+    </table>
+  </div>
+
+  <div class="rule">
+    <div class="label">⚠️ 母音例外</div>
+    陰性名詞若以<b>母音或 h</b>開頭，用 <b>mon / ton / son</b>（不用 ma/ta/sa）：<br>
+    <span class="fr-ex">mon amie</span>（不說 ma amie）<span style="color:#aaa">← amie 是陰性但母音開頭</span><br>
+    <span class="fr-ex">mon amie Robin / mon amie Sophia</span><br>
+    <span class="fr-ex">mon oncle</span>（oncle 是陽性，也以母音開頭）
+  </div>
+
+  <h3>例句練習</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">mon frère, sa femme et ses enfants</span><span class="zh">我弟弟、他的太太和他的孩子們</span></li>
+    <li><span class="fr">Sophia et son mari</span><span class="zh">Sophia 和她的丈夫</span></li>
+    <li><span class="fr">nos amis Robin et Aya</span><span class="zh">我們的朋友 Robin 和 Aya</span></li>
+    <li><span class="fr">l'ami de mon père</span><span class="zh">我爸爸的朋友（de = 的）</span></li>
+    <li><span class="fr">J'ai un oncle. Il a 48 ans.</span><span class="zh">我有一個叔叔，他48歲</span></li>
+    <li><span class="fr">Ses neveux adorent les enfants de Clara.</span><span class="zh">他的姪子們很喜歡Clara的孩子</span></li>
+    <li><span class="fr">Notre fille déteste le sport.</span><span class="zh">我們的女兒討厭運動</span></li>
+  </ul>
+</div>
+
+<!-- ──────────── 職業性別 ──────────── -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第3課</span>
+    <span class="unit-title">Les professions 職業的性別變化</span>
+    <span class="unit-lesson">Unité 3</span>
+  </div>
+
+  <div class="compare-table">
+    <div class="compare-title">字尾變化規則</div>
+    <table>
+      <tr><th>陽性字尾</th><th>例</th><th>陰性字尾</th><th>例</th></tr>
+      <tr><td class="m">-e</td><td class="m">fleuriste</td><td class="f">-e（不變）</td><td class="f">fleuriste</td></tr>
+      <tr><td class="m">-eur</td><td class="m">coiffeur</td><td class="f">-euse</td><td class="f">coiffeuse</td></tr>
+      <tr><td class="m">-teur</td><td class="m">acteur</td><td class="f">-trice</td><td class="f">actrice</td></tr>
+      <tr><td class="m">-ien</td><td class="m">informaticien</td><td class="f">-ienne</td><td class="f">informaticienne</td></tr>
+      <tr><td class="m">-er</td><td class="m">infirmier</td><td class="f">-ère</td><td class="f">infirmière</td></tr>
+      <tr><td class="m">-t / -r</td><td class="m">étudiant, professeur</td><td class="f">-te / -re</td><td class="f">étudiante, professeure</td></tr>
+    </table>
+  </div>
+
+  <ul class="phrase-list">
+    <li><span class="fr">acteur / actrice</span><span class="zh">演員</span></li>
+    <li><span class="fr">coiffeur / coiffeuse</span><span class="zh">美髮師</span></li>
+    <li><span class="fr">traducteur / traductrice</span><span class="zh">翻譯</span></li>
+    <li><span class="fr">facteur / factrice</span><span class="zh">郵差</span></li>
+    <li><span class="fr">informaticien / informaticienne</span><span class="zh">資訊人員</span></li>
+    <li><span class="fr">infirmier / infirmière</span><span class="zh">護理師</span></li>
+    <li><span class="fr">étudiant / étudiante</span><span class="zh">學生</span></li>
+    <li><span class="fr">professeur / professeure</span><span class="zh">老師</span></li>
+    <li><span class="fr">fleuriste</span><span class="zh">花店老闆（陰陽同形）</span></li>
+  </ul>
+</div>
+
+<!-- ──────────── 商店 ──────────── -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第3課</span>
+    <span class="unit-title">Les commerces 商店與商人</span>
+    <span class="unit-lesson">Unité 3</span>
+  </div>
+
+  <div class="compare-table">
+    <div class="compare-title">商店 → 商人（陽性 / 陰性）</div>
+    <table>
+      <tr><th>商店</th><th>陽性</th><th>陰性</th></tr>
+      <tr><td class="m">la boucherie</td><td class="m">le boucher</td><td class="f">la bouchère</td></tr>
+      <tr><td class="m">la boulangerie</td><td class="m">le boulanger</td><td class="f">la boulangère</td></tr>
+      <tr><td class="m">l'épicerie (f.)</td><td class="m">l'épicier</td><td class="f">l'épicière</td></tr>
+      <tr><td class="m">la fromagerie</td><td class="m">le fromager</td><td class="f">la fromagère</td></tr>
+      <tr><td class="m">la poissonnerie</td><td class="m">le poissonnier</td><td class="f">la poissonnière</td></tr>
+    </table>
+  </div>
+
+  <ul class="phrase-list">
+    <li><span class="fr">le marché</span><span class="zh">市場</span></li>
+    <li><span class="fr">le supermarché</span><span class="zh">超市（super = 大型）</span></li>
+    <li><span class="fr">l'hypermarché</span><span class="zh">大賣場（hyper = 超大型）</span></li>
+  </ul>
+
+  <div class="note">
+    💡 <strong>商店名 = 商人名 + -ie：</strong>boulanger → boulangerie（麵包師 → 麵包店）<br>
+    商人不只是「賣」，還包括「製作」技術，跟台灣店員（店員）概念不同。
+  </div>
+</div>
+
+<!-- ──────────── 課文 ──────────── -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第3課</span>
+    <span class="unit-title">課文：Préparer notre mariage 準備婚禮</span>
+    <span class="unit-lesson">Unité 3</span>
+  </div>
+
+  <ul class="phrase-list">
+    <li><span class="fr">Je prépare la liste des invités pour notre mariage.</span><span class="zh">我在準備我們婚禮的賓客名單。</span></li>
+    <li><span class="fr">J'invite mes parents, ma grand-mère.</span><span class="zh">我邀請我的父母、我的奶奶。</span></li>
+    <li><span class="fr">Mon frère, sa femme et ses enfants.</span><span class="zh">我弟弟、他的妻子和他的孩子們。</span></li>
+    <li><span class="fr">Nos amis Robin et Aya.</span><span class="zh">我們的朋友 Robin 和 Aya。</span></li>
+    <li><span class="fr">Monsieur Bertoli, l'ami de mon père.</span><span class="zh">Bertoli 先生，我爸爸的朋友。</span></li>
+    <li><span class="fr">Son petit-fils a deux mois.</span><span class="zh">他的孫子兩個月大。</span></li>
+    <li><span class="fr">Ses neveux adorent les enfants de Clara.</span><span class="zh">他的姪子們很愛 Clara 的孩子。</span></li>
+  </ul>
+
+  <div class="note">
+    💡 <strong>文化：Cannes 坎城</strong><br>
+    À Cannes, il y a des fresques (= des peintures sur les murs).<br>
+    Elles montrent des personnalités du cinéma, des lieux, des films.<br>
+    坎城牆上有電影明星的壁畫，是名副其實的「電影之城」。
+  </div>
+</div>
+
+</details>
 
 <script>
+// ── 課程導覽列 ─────────────────────────────────────────────
+(function() {
+  const nav = document.getElementById('lessonNav');
+  const groups = document.querySelectorAll('details.lesson-group');
+  groups.forEach(function(d) {
+    const sumEl = d.querySelector('summary .summary-num');
+    const label = sumEl ? sumEl.textContent : d.id;
+    const btn = document.createElement('button');
+    btn.textContent = label;
+    if (d.open) btn.classList.add('active');
+    btn.addEventListener('click', function() {
+      d.open = true;
+      d.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelectorAll('.lesson-nav button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+    nav.appendChild(btn);
+  });
+  // 更新 active 狀態
+  groups.forEach(function(d, i) {
+    d.addEventListener('toggle', function() {
+      const btns = nav.querySelectorAll('button');
+      if (d.open) { btns[i] && btns[i].classList.add('active'); }
+      else { btns[i] && btns[i].classList.remove('active'); }
+    });
+  });
+})();
+
 // ── TTS ─────────────────────────────────────────────────────
 let frVoice = null, activeTtsEl = null;
 
@@ -485,10 +1158,31 @@ function initVoice() {
 speechSynthesis.onvoiceschanged = initVoice;
 initVoice();
 
+function cleanForTts(text) {
+  return text
+    .replace(/\s*\([mf]\.?p?l?\.?\)/gi, '')       // 去掉 (m) (f) (f.pl)
+    .replace(/ \/ /g, ', ')                         // 斜線停頓
+    .replace(/[\u{1F300}-\u{1FAFF}]/gu, '')        // emoji 表情/符號
+    .replace(/[☀-➿]/g, '')               // ⚠️ ❤ ★ ✓ ✗ 等雜項符號
+    .replace(/[！!❤♥⭐💡×✅🔊▶■]/g, '')           // 其他裝飾字元
+    .replace(/\s{2,}/g, ' ')                        // 多餘空白
+    .trim();
+}
+
+function phoneToFrench(text) {
+  // 把 "06 80 72 86 45" 這類電話格式轉成法文讀法
+  // 先偵測是否符合電話格式：全部是空格分隔的數字組（2–3組以上）
+  const parts = text.trim().split(/\s+/);
+  if (parts.length < 3 || !parts.every(p => /^\d{2}$/.test(p))) return null;
+  const nums = { '00':'zéro zéro','01':'zéro un','02':'zéro deux','03':'zéro trois','04':'zéro quatre','05':'zéro cinq','06':'zéro six','07':'zéro sept','08':'zéro huit','09':'zéro neuf','10':'dix','11':'onze','12':'douze','13':'treize','14':'quatorze','15':'quinze','16':'seize','17':'dix-sept','18':'dix-huit','19':'dix-neuf','20':'vingt','21':'vingt et un','22':'vingt-deux','23':'vingt-trois','24':'vingt-quatre','25':'vingt-cinq','26':'vingt-six','27':'vingt-sept','28':'vingt-huit','29':'vingt-neuf','30':'trente','31':'trente et un','32':'trente-deux','33':'trente-trois','34':'trente-quatre','35':'trente-cinq','36':'trente-six','37':'trente-sept','38':'trente-huit','39':'trente-neuf','40':'quarante','41':'quarante et un','42':'quarante-deux','43':'quarante-trois','44':'quarante-quatre','45':'quarante-cinq','46':'quarante-six','47':'quarante-sept','48':'quarante-huit','49':'quarante-neuf','50':'cinquante','51':'cinquante et un','52':'cinquante-deux','53':'cinquante-trois','54':'cinquante-quatre','55':'cinquante-cinq','56':'cinquante-six','57':'cinquante-sept','58':'cinquante-huit','59':'cinquante-neuf','60':'soixante','61':'soixante et un','62':'soixante-deux','63':'soixante-trois','64':'soixante-quatre','65':'soixante-cinq','66':'soixante-six','67':'soixante-sept','68':'soixante-huit','69':'soixante-neuf','70':'soixante-dix','71':'soixante et onze','72':'soixante-douze','73':'soixante-treize','74':'soixante-quatorze','75':'soixante-quinze','76':'soixante-seize','77':'soixante-dix-sept','78':'soixante-dix-huit','79':'soixante-dix-neuf','80':'quatre-vingts','81':'quatre-vingt-un','82':'quatre-vingt-deux','83':'quatre-vingt-trois','84':'quatre-vingt-quatre','85':'quatre-vingt-cinq','86':'quatre-vingt-six','87':'quatre-vingt-sept','88':'quatre-vingt-huit','89':'quatre-vingt-neuf','90':'quatre-vingt-dix','91':'quatre-vingt-onze','92':'quatre-vingt-douze','93':'quatre-vingt-treize','94':'quatre-vingt-quatorze','95':'quatre-vingt-quinze','96':'quatre-vingt-seize','97':'quatre-vingt-dix-sept','98':'quatre-vingt-dix-huit','99':'quatre-vingt-dix-neuf' };
+  return parts.map(p => nums[p] || p).join(', ');
+}
+
 function ttsSpeak(text, btn) {
   speechSynthesis.cancel();
   if (activeTtsEl) activeTtsEl.classList.remove('playing');
-  const cleaned = text.replace(/ \/ /g, ', ');
+  const phone = phoneToFrench(text);
+  const cleaned = phone ? phone : cleanForTts(text);
   const utt = new SpeechSynthesisUtterance(cleaned);
   utt.lang = 'fr-FR';
   utt.rate = 0.7;
@@ -545,6 +1239,55 @@ document.querySelectorAll('.fr-ex').forEach(el => {
   const text = el.textContent.trim();
   if (text) el.appendChild(makeTtsBtn(text));
 });
+
+// ── Unit 筆記 ──────────────────────────────────────────────
+(function() {
+  const NOTES_KEY = 'fr_unit_notes';
+  const notes = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}');
+
+  function saveNotes() { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); }
+
+  document.querySelectorAll('.unit').forEach((unit, i) => {
+    const titleEl = unit.querySelector('.unit-title');
+    const key = 'u_' + (titleEl ? titleEl.textContent.trim().slice(0, 40) : i);
+    const existing = notes[key] || '';
+
+    const wrap = document.createElement('div');
+    wrap.className = 'unit-note-wrap';
+
+    const btn = document.createElement('button');
+    btn.className = 'unit-note-btn' + (existing ? ' has-note' : '');
+    btn.innerHTML = '✏️ 筆記' + (existing ? ' <span>▼</span>' : ' <span>▶</span>');
+
+    const box = document.createElement('div');
+    box.className = 'unit-note-box';
+    box.style.display = existing ? '' : 'none';
+
+    const ta = document.createElement('textarea');
+    ta.className = 'unit-note-ta';
+    ta.placeholder = '隨手記下想法、疑問、例句…';
+    ta.value = existing;
+    box.appendChild(ta);
+
+    wrap.appendChild(btn);
+    wrap.appendChild(box);
+    unit.appendChild(wrap);
+
+    btn.addEventListener('click', () => {
+      const open = box.style.display !== 'none';
+      box.style.display = open ? 'none' : '';
+      btn.querySelector('span').textContent = open ? '▶' : '▼';
+      if (!open) ta.focus();
+    });
+
+    ta.addEventListener('input', () => {
+      const val = ta.value;
+      if (val) notes[key] = val; else delete notes[key];
+      saveNotes();
+      btn.classList.toggle('has-note', !!val);
+    });
+  });
+})();
 </script>
 </body>
 </html>
