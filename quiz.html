@@ -193,6 +193,57 @@
     .btn-do-weak { background: #fff0f0; color: #c00; flex: 1; padding: 11px; border-radius: 10px; border: 1.5px solid #f0b0b0; font-size: 0.88rem; font-weight: 600; cursor: pointer; }
     .btn-do-weak:disabled { opacity: 0.35; cursor: default; }
 
+    .mode-btn.active.m-drill { border-color: #c05a00; color: #c05a00; background: #fff8f0; }
+
+    /* ── ⚡ 快速測驗 ── */
+    .drill-card { background: #fff; border-radius: 16px; padding: 24px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .drill-top { display: flex; align-items: center; margin-bottom: 18px; gap: 10px; }
+    .drill-count { font-size: 0.72rem; font-weight: 700; color: #aaa; white-space: nowrap; }
+    .drill-pbar { flex: 1; height: 5px; background: #eee; border-radius: 99px; overflow: hidden; }
+    .drill-pbar-fill { height: 100%; background: #c05a00; border-radius: 99px; transition: width 0.3s; }
+    .drill-q { font-size: 1.05rem; font-weight: 600; line-height: 1.7; margin-bottom: 20px; text-align: center; min-height: 54px; }
+    .drill-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .drill-opt {
+      border: 2px solid #e8e8e6; background: #fafaf8; border-radius: 12px;
+      padding: 14px 8px; font-size: 0.92rem; font-weight: 600; cursor: pointer;
+      transition: all 0.15s; font-family: inherit; color: #2c2c2c;
+      text-align: center; line-height: 1.4;
+    }
+    .drill-opt:hover:not(:disabled) { border-color: #2c2c2c; background: #f0f0ee; }
+    .drill-opt.correct { border-color: #2a7a4f !important; background: #e8f5ee !important; color: #1a5a2a !important; }
+    .drill-opt.wrong   { border-color: #c00 !important;    background: #fde8e8 !important; color: #900 !important; }
+    .drill-opt.reveal  { border-color: #2a7a4f; background: #f0fbf5; color: #2a7a4f; }
+    .drill-opt:disabled { cursor: default; }
+    .drill-note { font-size: 0.8rem; color: #666; line-height: 1.6; padding: 8px 12px;
+      background: #f8f8f6; border-radius: 8px; border-left: 3px solid #ccc;
+      min-height: 34px; opacity: 0; transition: opacity 0.2s; }
+    .drill-note.show { opacity: 1; }
+    .drill-note.ok  { border-left-color: #2a7a4f; }
+    .drill-note.bad { border-left-color: #c00; }
+    .drill-done { background: #fff; border-radius: 16px; padding: 32px 22px;
+      text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .drill-done h2 { font-size: 1.1rem; margin-bottom: 4px; }
+    .drill-done-big { font-size: 3rem; font-weight: 800; margin: 10px 0 2px; }
+    .drill-done-pct { font-size: 0.9rem; color: #888; margin-bottom: 6px; }
+    .drill-done-msg { font-size: 0.85rem; color: #555; margin-bottom: 22px; line-height: 1.6; }
+    .drill-next  { background: #2c2c2c; color: #fff; width: 100%; padding: 12px; border-radius: 10px;
+      border: none; font-size: 0.92rem; font-weight: 600; cursor: pointer; margin-top: 12px;
+      display: none; }
+    .drill-next.show { display: block; }
+    .drill-hard-badge  { display: inline-block; font-size: 0.62rem; font-weight: 700;
+      background: #fff0e0; color: #c05a00; border: 1px solid #f0c080;
+      padding: 1px 7px; border-radius: 5px; margin-bottom: 8px; }
+    .drill-chain-badge { display: inline-block; font-size: 0.62rem; font-weight: 700;
+      background: #e8f0fe; color: #1a56db; border: 1px solid #b8d0f8;
+      padding: 1px 7px; border-radius: 5px; margin-bottom: 8px; }
+    .drill-review-banner { background: #fff8f0; border: 1.5px solid #f0c080; border-radius: 8px;
+      padding: 6px 12px; font-size: 0.75rem; font-weight: 600; color: #c05a00;
+      margin-bottom: 10px; text-align: center; }
+    .drill-retry { background: #c05a00; color: #fff; width: 100%; padding: 12px; border-radius: 10px;
+      border: none; font-size: 0.92rem; font-weight: 600; cursor: pointer; margin-bottom: 8px; }
+    .drill-back  { background: #f0f0ee; color: #555; width: 100%; padding: 10px; border-radius: 10px;
+      border: 1.5px solid #ddd; font-size: 0.84rem; font-weight: 600; cursor: pointer; }
+
     /* toast */
     .toast {
       position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
@@ -218,9 +269,10 @@
   <button class="mode-btn active" id="mNormal" onclick="setMode('normal')">📚 一般練習</button>
   <button class="mode-btn m-weak"  id="mWeak"   onclick="setMode('weak')">🎯 弱點模式</button>
   <button class="mode-btn m-mixed" id="mMixed"  onclick="setMode('mixed')">🔀 混合複習</button>
+  <button class="mode-btn m-drill" id="mDrill"  onclick="setMode('drill')">⚡ 快速測驗</button>
 </div>
 
-<div class="filter-row">
+<div class="filter-row" id="typeRow">
   <button class="ctrl-btn active" id="btnAll"    onclick="setType('all')">全部類型</button>
   <button class="ctrl-btn"        id="btnFill"   onclick="setType('fill')">動詞填空</button>
   <button class="ctrl-btn"        id="btnTrans"  onclick="setType('trans')">翻譯</button>
@@ -230,14 +282,14 @@
 </div>
 <div class="filter-row" id="lessonRow"></div>
 
-<div class="progress-text">
+<div class="progress-text" id="progressText">
   <span id="progressLabel">第 1 題</span>
   <div class="score-chip">
     <span class="chip-ok" id="scoreOk">✓ 0</span>
     <span class="chip-no" id="scoreNo">✗ 0</span>
   </div>
 </div>
-<div class="progress-bar-wrap">
+<div class="progress-bar-wrap" id="progressBarWrap">
   <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
 </div>
 
@@ -525,11 +577,17 @@ function setLesson(lesson) {
 
 function setMode(mode) {
   filterMode = mode;
-  ['normal','weak','mixed'].forEach(m => {
+  ['normal','weak','mixed','drill'].forEach(m => {
     const el = document.getElementById('m' + m.charAt(0).toUpperCase() + m.slice(1));
     if (el) el.classList.toggle('active', m === mode);
   });
-  restart();
+  const isDrill = mode === 'drill';
+  ['typeRow','lessonRow','progressText','progressBarWrap'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = isDrill ? 'none' : '';
+  });
+  if (isDrill) startDrill();
+  else restart();
 }
 
 function getPool() {
@@ -768,6 +826,374 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── ⚡ 快速測驗題庫（107 題：動詞 · 所有格 · 冠詞 · 形容詞一致 · 進階）────
+const AGREE_BANK = [
+  // ── être（10）──
+  { q:'Je ___ taïwanais.',           opts:['suis','es','est','sont'],           a:'suis',   note:'être : je → suis' },
+  { q:'Tu ___ étudiant(e) ?',        opts:['suis','es','est','sommes'],         a:'es',     note:'être : tu → es' },
+  { q:'Elle ___ professeure.',       opts:['suis','es','est','sont'],           a:'est',    note:'être : il/elle → est' },
+  { q:'Nous ___ à Taipei.',          opts:['sommes','êtes','sont','suis'],      a:'sommes', note:'être : nous → sommes' },
+  { q:'Ils ___ canadiens.',          opts:['est','sont','sommes','êtes'],       a:'sont',   note:'être : ils/elles → sont' },
+  { q:'Vous ___ professeurs ?',      opts:['est','sont','êtes','sommes'],       a:'êtes',   note:'être : vous → êtes' },
+  { q:'On ___ en retard.',           opts:['suis','es','est','sommes'],         a:'est',    note:'on → même conjugaison que il/elle → est' },
+  { q:'Il ___ médecin.',             opts:['suis','es','est','sont'],           a:'est',    note:'être : il → est' },
+  { q:'Elles ___ françaises.',       opts:['est','sont','sommes','êtes'],       a:'sont',   note:'être : elles → sont' },
+  { q:'Ma sœur ___ coiffeuse.',      opts:['suis','es','est','sont'],           a:'est',    note:'ma sœur = elle → est' },
+
+  // ── avoir（10）──
+  { q:"J'___ 25 ans.",               opts:['ai','as','a','avons'],              a:'ai',     note:"avoir : j'ai（年齡用 avoir，不用 être）" },
+  { q:'Elle ___ deux enfants.',      opts:['ai','as','a','ont'],                a:'a',      note:'avoir : il/elle → a' },
+  { q:'Vous ___ quel âge ?',         opts:['avons','avez','ont','as'],          a:'avez',   note:'avoir : vous → avez' },
+  { q:'Nous ___ faim.',              opts:['ai','as','avons','ont'],             a:'avons',  note:'avoir : nous → avons（avoir faim = 餓）' },
+  { q:'Tu ___ soif ?',               opts:['ai','as','a','avons'],              a:'as',     note:'avoir : tu → as（avoir soif = 渴）' },
+  { q:"J'___ froid.",                opts:['ai','as','a','avons'],              a:'ai',     note:"avoir : j'ai（avoir froid = 冷）" },
+  { q:'Il ___ un frère.',            opts:['ai','as','a','ont'],                a:'a',      note:'avoir : il → a' },
+  { q:'Elles ___ une voiture rouge.',opts:['ai','as','a','ont'],                a:'ont',    note:'avoir : elles → ont' },
+  { q:"On ___ besoin d'aide.",       opts:['ai','as','a','avons'],              a:'a',      note:'on → même forme que il/elle → a' },
+  { q:'Ils ___ beaucoup de travail.',opts:['avons','avez','ont','as'],          a:'ont',    note:'avoir : ils → ont' },
+
+  // ── -er 動詞（20）──
+  { q:'Il ___ à Paris.  (habiter)',          opts:['habite','habites','habitons','habitez'],    a:'habite',    note:'habiter : il → habite' },
+  { q:'Nous ___ ensemble.  (manger)',        opts:['mangons','mangeons','mangez','mangent'],    a:'mangeons',  note:'manger : nous → mangeons（加 e 保持 /ʒ/ 軟音）' },
+  { q:'Elles ___ le français.  (parler)',    opts:['parle','parles','parlons','parlent'],       a:'parlent',   note:'parler : elles → parlent（-ent 不發音）' },
+  { q:'Tu ___ à la piscine ?  (nager)',      opts:['nageons','nages','nagez','nage'],           a:'nages',     note:'nager : tu → nages' },
+  { q:'Vous ___ le tennis ?  (aimer)',       opts:['aime','aimes','aimez','aiment'],            a:'aimez',     note:'aimer : vous → aimez' },
+  { q:'Elle ___ les chats.  (aimer)',        opts:['aime','aimes','aimons','aiment'],           a:'aime',      note:'aimer : elle → aime' },
+  { q:'Ils ___ la pizza.  (aimer)',          opts:['aime','aimes','aimons','aiment'],           a:'aiment',    note:'aimer : ils → aiment（-ent 不發音）' },
+  { q:'Je ___ le français.  (parler)',       opts:['parle','parles','parlons','parlez'],        a:'parle',     note:'parler : je → parle' },
+  { q:'Nous ___ trop vite.  (parler)',       opts:['parle','parles','parlons','parlez'],        a:'parlons',   note:'parler : nous → parlons' },
+  { q:'Vous ___ à Montréal ?  (habiter)',    opts:['habite','habites','habitons','habitez'],    a:'habitez',   note:'habiter : vous → habitez' },
+  { q:'Je ___ un film.  (regarder)',         opts:['regarde','regardes','regardons','regardent'],a:'regarde',   note:'regarder : je → regarde' },
+  { q:'Ils ___ la télé.  (regarder)',        opts:['regarde','regardes','regardons','regardent'],a:'regardent', note:'regarder : ils → regardent（-ent 不發音）' },
+  { q:'Vous ___ ici ?  (manger)',            opts:['mange','manges','mangeons','mangez'],       a:'mangez',    note:'manger : vous → mangez' },
+  { q:'Je ___ tous les jours.  (nager)',     opts:['nageons','nages','nagez','nage'],           a:'nage',      note:'nager : je → nage' },
+  { q:'Je ___ à Taipei.  (travailler)',      opts:['travaille','travailles','travaillons','travaillez'], a:'travaille',   note:'travailler : je → travaille' },
+  { q:'Tu ___ où ?  (travailler)',           opts:['travaille','travailles','travaillons','travaillez'], a:'travailles',  note:'travailler : tu → travailles' },
+  { q:'Nous ___ ensemble.  (travailler)',    opts:['travaille','travailles','travaillons','travaillez'], a:'travaillons', note:'travailler : nous → travaillons' },
+  { q:"J'___ la radio.  (écouter)",          opts:['écoute','écoutes','écoutons','écoutent'],   a:'écoute',    note:"écouter : j'écoute（母音 → j'）" },
+  { q:'Ils ___ de la musique.  (écouter)',   opts:['écoute','écoutes','écoutons','écoutent'],   a:'écoutent',  note:'écouter : ils → écoutent' },
+  { q:'Je ___ un appartement.  (chercher)',  opts:['cherche','cherches','cherchons','cherchez'],a:'cherche',   note:'chercher : je → cherche' },
+
+  // ── 所有格形容詞（20）──
+  { q:"C'est ___ ami.  （他的）",           opts:['son','sa','ses','mon'],          a:'son',   note:'ami（m）→ son ami' },
+  { q:"C'est ___ amie.  （他的）",          opts:['son','sa','ses','ma'],           a:'son',   note:'⚠️ amie 以母音開頭 → son amie（不用 sa！）' },
+  { q:'___ sœurs arrivent.  （他的）',      opts:['Son','Sa','Ses','Mon'],          a:'Ses',   note:'sœurs 複數 → ses（複數不分陰陽）' },
+  { q:'Tu aimes ___ travail ?  （你的）',   opts:['ton','ta','tes','son'],          a:'ton',   note:'travail（m）→ ton travail' },
+  { q:'___ amis sont sympas.  （我們的）',  opts:['Notre','Nos','Son','Leur'],      a:'Nos',   note:'amis 複數 → nos（notre = 單數）' },
+  { q:"___ mère est gentille.  （你的）",   opts:['Ton','Ta','Tes','Sa'],           a:'Ta',    note:'mère（f）→ ta mère' },
+  { q:"C'est ___ vélo.  （我的 m）",        opts:['mon','ma','mes','son'],          a:'mon',   note:'vélo（m）→ mon vélo' },
+  { q:"C'est ___ voiture.  （我的 f）",     opts:['mon','ma','mes','son'],          a:'ma',    note:'voiture（f）→ ma voiture' },
+  { q:"Ce sont ___ livres.  （我的 pl）",   opts:['mon','ma','mes','ses'],          a:'mes',   note:'livres 複數 → mes livres' },
+  { q:"C'est ___ père.  （你的 m）",        opts:['ton','ta','tes','son'],          a:'ton',   note:'père（m）→ ton père' },
+  { q:"Ce sont ___ amis.  （你的 pl）",     opts:['ton','ta','tes','ses'],          a:'tes',   note:'amis 複數 → tes amis' },
+  { q:"C'est ___ chien.  （他/她的 m）",    opts:['son','sa','ses','mon'],          a:'son',   note:'chien（m）→ son chien' },
+  { q:"C'est ___ maison.  （他/她的 f）",   opts:['son','sa','ses','ma'],           a:'sa',    note:'maison（f，不以母音開頭）→ sa maison' },
+  { q:"C'est ___ appartement.  （我們的）", opts:['Notre','Nos','Leur','Son'],      a:'Notre', note:'appartement 單數 → notre（不是 nos）' },
+  { q:"C'est ___ voiture.  （你們的 f）",   opts:['votre','vos','notre','nos'],     a:'votre', note:'voiture 單數 → votre' },
+  { q:"Ce sont ___ affaires.  （你們的 pl）",opts:['votre','vos','notre','nos'],    a:'vos',   note:'affaires 複數 → vos affaires' },
+  { q:"C'est ___ chat.  （他們的 sg）",     opts:['leur','leurs','son','ses'],      a:'leur',  note:'chat 單數 → leur chat（leur 不加 s）' },
+  { q:"Ce sont ___ enfants.  （他們的 pl）",opts:['leur','leurs','son','ses'],      a:'leurs', note:'enfants 複數 → leurs enfants（加 s）' },
+  { q:"C'est ___ école.  （我的 f+母音）",  opts:['mon','ma','mes','son'],          a:'mon',   note:'école（f）以母音開頭 → mon école（和 mon amie 同規則）' },
+  { q:"___ frère s'appelle Paul.  （他的）",opts:['Son','Sa','Ses','Mon'],          a:'Son',   note:'frère（m）→ Son frère' },
+
+  // ── 冠詞（13）──
+  { q:"J'aime ___ musique.",         opts:['le','la',"l'",'les'],           a:'la',    note:'musique（f）→ la musique' },
+  { q:"C'est ___ hôpital.",          opts:['un','une','le','la'],           a:'un',    note:'hôpital（m）→ un hôpital' },
+  { q:'Je vais ___ France.',         opts:['en','au','à','aux'],            a:'en',    note:'France（陰性）→ en France' },
+  { q:'Il habite ___ Canada.',       opts:['en','au','à','aux'],            a:'au',    note:'Canada（陽性）→ au Canada' },
+  { q:"Je n'ai pas ___ voiture.",    opts:['un','une','de','des'],          a:'de',    note:"否定句：un/une/des → de/d'" },
+  { q:"J'aime ___ cinéma.",          opts:['le','la',"l'",'les'],           a:'le',    note:'cinéma（m）→ le cinéma' },
+  { q:"C'est ___ université.",       opts:['un','une','le','la'],           a:'une',   note:'université（f）→ une université' },
+  { q:'Elle va ___ Japon.',          opts:['en','au','à','aux'],            a:'au',    note:'Japon（m）→ au Japon' },
+  { q:'Tu vas ___ États-Unis ?',     opts:['en','au','à','aux'],            a:'aux',   note:'États-Unis（複數）→ aux États-Unis' },
+  { q:'Je mange ___ pain.',          opts:['le','du','de la',"de l'"],      a:'du',    note:'pain（m）→ du pain（du = de + le，部分冠詞）' },
+  { q:"Elle boit ___ eau.",          opts:['la',"de l'",'du',"l'"],         a:"de l'", note:"eau（f, 母音）→ de l'eau（部分冠詞）" },
+  { q:'Il a ___ voitures.',          opts:['les','des','de','une'],         a:'des',   note:'voitures 複數不定 → des voitures' },
+  { q:"Je n'ai pas ___ frères.",     opts:['de','des','les','un'],          a:'de',    note:"否定句：pas de + 名詞（不用 des）" },
+
+  // ── 形容詞性數一致（15）──
+  { q:'Elle est ___.  (français)',            opts:['français','française','françaises','de France'],  a:'française',  note:'elle → 陰性 → française' },
+  { q:'Ils sont ___.  (canadien)',            opts:['canadien','canadienne','canadiens','canadiennes'],a:'canadiens',  note:'ils → 陽性複數 → canadiens' },
+  { q:'Ce sont des actrices ___.  (français)',opts:['français','française','françaises','de France'],  a:'françaises', note:'actrices 陰性複數 → françaises' },
+  { q:'Il est ___.  (français)',              opts:['français','française','françaises','de France'],  a:'français',   note:'il → 陽性單數 → français（不變）' },
+  { q:'Mon père est ___.  (grand)',           opts:['grand','grande','grands','grandes'],              a:'grand',      note:'père（m, sg）→ grand（基本形）' },
+  { q:'Ma mère est ___.  (grand)',            opts:['grand','grande','grands','grandes'],              a:'grande',     note:'mère（f, sg）→ grande（加 e）' },
+  { q:'Mes frères sont ___.  (petit)',        opts:['petit','petite','petits','petites'],              a:'petits',     note:'frères（m, pl）→ petits（加 s）' },
+  { q:'Mes sœurs sont ___.  (petit)',         opts:['petit','petite','petits','petites'],              a:'petites',    note:'sœurs（f, pl）→ petites（加 es）' },
+  { q:'Il est très ___.  (intelligent)',      opts:['intelligent','intelligente','intelligents','intelligentes'],a:'intelligent',   note:'il → 陽性 → intelligent' },
+  { q:'Elle est très ___.  (intelligent)',    opts:['intelligent','intelligente','intelligents','intelligentes'],a:'intelligente',  note:'elle → 陰性 → intelligente' },
+  { q:'Il est ___.  (beau)',                  opts:['beau','belle','beaux','belles'],                 a:'beau',       note:'beau（m, sg）；複數是 beaux' },
+  { q:'Elle est ___.  (beau)',                opts:['beau','belle','beaux','belles'],                 a:'belle',      note:'beau → belle（陰性例外）' },
+  { q:'Il est ___.  (italien)',               opts:['italien','italienne','italiens','italiennes'],    a:'italien',    note:'il → 陽性 → italien' },
+  { q:'Elle est ___.  (italien)',             opts:['italien','italienne','italiens','italiennes'],    a:'italienne',  note:'elle → 陰性 → italienne（-ien → -ienne）' },
+  { q:'Ils sont très ___.  (sympa)',          opts:['sympa','sympas','sympathique','sympaths'],        a:'sympas',     note:'sympa 不分陰陽，複數加 s → sympas' },
+
+  // ── 運動（2）──
+  { q:'Je joue ___ tennis.',   opts:['au','du','à la','de'],   a:'au', note:'jouer à + le → au tennis' },
+  { q:'Elle fait ___ vélo.',   opts:['du','au','de la','le'],  a:'du', note:'faire de + le → du vélo' },
+
+  // ── 職業陰陽性（2）──
+  { q:'Mon frère est ___.  (infirmier)', opts:['infirmier','infirmière','infirmiers','infirmières'], a:'infirmier', note:'frère（m）→ 陽性職業 infirmier' },
+  { q:'Ma sœur est ___.  (acteur)',      opts:['acteur','acteure','actrice','actrices'],             a:'actrice',   note:'-teur → -trice（女性）；ma sœur = elle' },
+
+  // ── 🔥 進階挑戰（15）──
+  { q:'「她的哥哥是廚師。」\n___ est cuisinier.',
+    opts:['Son frère','Sa frère','Son sœur','Ses frères'],
+    a:'Son frère', hard:true,
+    note:'frère（m）→ son frère；cuisinier = 陽性 → 確認主詞是男性' },
+  { q:'「我們的女兒很聰明。」\nNotre ___ est intelligente.',
+    opts:['fils','fille','filles','garçon'],
+    a:'fille', hard:true,
+    note:'intelligente 陰性 → 主詞是女性 → fille；notre = 單數（不是 nos）' },
+  { q:'「他的朋友（女）來了。」\n___ est arrivée.',
+    opts:['Son ami','Son amie','Sa amie','Ses amies'],
+    a:'Son amie', hard:true,
+    note:'⚠️ amie 以母音開頭 → son amie（不用 sa）；arrivée = 陰性確認是女性' },
+  { q:'「我的姐妹們是護士。」\nMes sœurs sont ___.',
+    opts:['infirmier','infirmière','infirmiers','infirmières'],
+    a:'infirmières', hard:true,
+    note:'sœurs = 陰性複數 → infirmières；推理：陰性 + 複數 → -ières' },
+  { q:'「你的哥哥是演員嗎？」\nTon frère est ___ ?',
+    opts:['acteur','actrice','acteurs','actrices'],
+    a:'acteur', hard:true,
+    note:'frère（m）→ acteur（陽性）；-teur → -trice 只用於女性' },
+  { q:'「她是美髮師。」\nElle est ___.',
+    opts:['coiffeur','coiffeuse','coiffeurs','coiffeuses'],
+    a:'coiffeuse', hard:true,
+    note:'elle → 陰性職業；coiffeur（m）→ coiffeuse（f）：-eur → -euse' },
+  { q:'「我的女朋友是資訊工程師。」\nMon amie est ___.',
+    opts:['informaticien','informaticienne','informaticiens','informaticiennes'],
+    a:'informaticienne', hard:true,
+    note:'amie（f）→ informaticienne；-ien → -ienne（同 italian → italienne）' },
+  { q:'「她的兩個女兒是義大利人。」\nSes deux filles sont ___.',
+    opts:['italien','italienne','italiens','italiennes'],
+    a:'italiennes', hard:true,
+    note:'filles = 陰性複數 → italiennes；推理：女兒→陰性，兩個→複數' },
+  { q:'「我的鄰居（女）是郵差。」\nMa voisine est ___.',
+    opts:['facteur','factrice','facteurs','factrices'],
+    a:'factrice', hard:true,
+    note:'voisine（f）→ factrice；facteur → factrice（-teur → -trice，同 acteur）' },
+  { q:'「我們的孩子們都是台灣人。」\nNos enfants sont ___.',
+    opts:['taïwanais','taïwanaise','taïwanaises','taïwanaiss'],
+    a:'taïwanais', hard:true,
+    note:'enfants 混合性別複數 → 陽性複數 taïwanais（不加 e）' },
+  { q:'「我們的兒子是資訊工程師。」\nNotre ___ est informaticien.',
+    opts:['fille','fils','enfant','garçon'],
+    a:'fils', hard:true,
+    note:'informaticien = 陽性 → 主詞是男性 → fils（兒子）；notre = 單數' },
+  { q:'「她的媽媽是美髮師。」\nSa mère est ___.',
+    opts:['coiffeur','coiffeuse','coiffeurs','coiffeuses'],
+    a:'coiffeuse', hard:true,
+    note:'mère（f）→ 陰性職業；coiffeur → coiffeuse（-eur → -euse）' },
+  { q:'「你的朋友（男）是郵差。」\nTon ___ est facteur.',
+    opts:['ami','amie','amis','amies'],
+    a:'ami', hard:true,
+    note:'facteur = 陽性職業 → 主詞是男性 → ami（m）；ton + 母音 → ton ami' },
+  { q:'「她的同事（女）是老師。」\nSa collègue est ___.',
+    opts:['professeur','professeure','professeurs','professeures'],
+    a:'professeure', hard:true,
+    note:'collègue（f）→ 陰性老師 → professeure（法語認可的現代女性形）' },
+  { q:'「你們的女兒們是護士。」\nVos ___ sont infirmières.',
+    opts:['fils','fille','filles','enfants'],
+    a:'filles', hard:true,
+    note:'infirmières = 陰性複數 → 主詞是女性複數 → filles；vos = 複數所有格' },
+
+  // ── 🔗 情境推理（Nina/Théo 對話，人稱連鎖）──
+  { q:"Nina parle de son frère.\n« ___ femme est très gentille. »",
+    opts:['son','sa','ses','ma'], a:'sa', chain:true,
+    note:'son frère = il → sa femme（他的妻子；femme = f → sa）' },
+  { q:"Théo parle de sa cousine Clara.\n« ___ fils s'appelle Raphaël. »",
+    opts:['son','sa','ses','leur'], a:'son', chain:true,
+    note:'fils（m）→ son fils（Clara 的兒子；即使 Clara 是女性，fils 是陽性 → son）' },
+  { q:"Théo parle de sa cousine Clara.\n« ___ fille adore les animaux. »",
+    opts:['son','sa','ses','leur'], a:'sa', chain:true,
+    note:'fille（f，不以母音開頭）→ sa fille（Clara 的女兒）' },
+  { q:"Nina parle de son neveu et sa nièce.\n« ___ adorent les enfants de Clara. »",
+    opts:['Il','Elle','Ils','Elles'], a:'Ils', chain:true,
+    note:'neveu（m）+ nièce（f）= 混合複數 → ils（陽性複數）' },
+  { q:"Nina demande à Théo :\n« ___ cousine Clara est libre ? »",
+    opts:['Mon','Ma','Ton','Ta'], a:'Ta', chain:true,
+    note:'Nina 問 Théo → 用「你的」→ ton/ta；cousine（f）→ ta cousine' },
+  { q:"Théo parle de Sofia et son mari.\n« ___ enfants sont adorables. »",
+    opts:['Son','Sa','Ses','Leurs'], a:'Leurs', chain:true,
+    note:'Sofia + son mari = deux personnes → leurs enfants（他們的）' },
+  { q:"Théo parle de Nessim.\n« ___ est célibataire. »",
+    opts:['Il','Elle','Ils','Elles'], a:'Il', chain:true,
+    note:'Nessim = homme → il est célibataire' },
+  { q:"M. Bertoli a un petit-fils de 2 mois.\n« ___ petit-fils est adorable ! »",
+    opts:['Son','Sa','Ses','Leur'], a:'Son', chain:true,
+    note:'petit-fils（m）→ son petit-fils（M. Bertoli 的孫子）' },
+  { q:"Théo explique qu'il n'a pas de frères.\n« Je suis ___ unique. »",
+    opts:['fils','fille','garçon','enfant'], a:'fils', chain:true,
+    note:'Théo = homme → fils unique（不是 fille unique）' },
+  { q:"Nina parle de son frère.\n« Chez ___, ils sont quatre. »",
+    opts:['moi','lui','elle','eux'], a:'lui', chain:true,
+    note:'son frère = il → chez lui（在他家）' },
+  { q:"Théo parle de ses grands-parents.\n« ___ sont importants pour moi. »",
+    opts:['Il','Elle','Ils','Elles'], a:'Ils', chain:true,
+    note:'grands-parents（複數，混合性別）→ ils' },
+  { q:"Théo parle de son oncle Paul.\n« ___ est le mari de ma tante Olivia. »",
+    opts:['Il','Elle','Ils','Elles'], a:'Il', chain:true,
+    note:'mon oncle Paul = homme → il' },
+];
+
+// ── Drill SRS（常錯多出現）──────────────────────────────────────
+function drillQId(q) {
+  return 'dq_' + q.q.slice(0,25).replace(/[^a-zA-Z0-9一-鿿]/g,'_');
+}
+function getDrillSRS(q) {
+  try { return JSON.parse(localStorage.getItem('clb7_'+drillQId(q))) || {w:0,c:0}; }
+  catch(e) { return {w:0,c:0}; }
+}
+function recordDrillResult(q, ok) {
+  const srs = getDrillSRS(q);
+  if (ok) srs.c++; else srs.w++;
+  try { localStorage.setItem('clb7_'+drillQId(q), JSON.stringify(srs)); } catch(e) {}
+}
+// 加權取樣：答錯越多次，出現機率越高（最多 4 倍）
+function weightedSample(arr, n) {
+  const pool = [];
+  arr.forEach(q => {
+    const w = Math.min(getDrillSRS(q).w, 3);
+    for (let i = 0; i < 1 + w; i++) pool.push(q);
+  });
+  const shuffled = shuffle(pool);
+  const seen = new Set();
+  const result = [];
+  for (const q of shuffled) {
+    if (!seen.has(q.q)) { seen.add(q.q); result.push({...q}); }
+    if (result.length >= n) break;
+  }
+  if (result.length < n) {
+    for (const q of shuffle(arr)) {
+      if (!seen.has(q.q)) { seen.add(q.q); result.push({...q}); }
+      if (result.length >= n) break;
+    }
+  }
+  return result;
+}
+
+// ── Drill 狀態 ──────────────────────────────────────────────────
+let drillQueue = [], drillIdx = 0, drillScore = 0, drillWrong = [];
+let drillPhase = 'main'; // 'main' | 'review'
+let drillMainScore = 0, drillMainTotal = 20, drillRetrying = false;
+const DRILL_TOTAL = 20;
+
+function startDrill() {
+  drillQueue = weightedSample(AGREE_BANK, DRILL_TOTAL);
+  drillIdx = 0; drillScore = 0; drillWrong = [];
+  drillPhase = 'main'; drillMainScore = 0; drillMainTotal = DRILL_TOTAL; drillRetrying = false;
+  renderDrill();
+}
+
+function renderDrill() {
+  const area = document.getElementById('quizArea');
+
+  // 判斷是否進入複習或結束
+  if (drillIdx >= drillQueue.length) {
+    if (drillPhase === 'main') {
+      drillMainScore = drillScore;
+      drillMainTotal = drillQueue.length;
+      if (drillWrong.length > 0) {
+        // 直接銜接錯題，不顯示中間畫面
+        drillPhase = 'review';
+        drillQueue = shuffle(drillWrong).map(q => ({...q}));
+        drillWrong = []; drillIdx = 0; drillScore = 0; drillRetrying = false;
+        // fall through
+      } else { renderDrillDone(); return; }
+    } else { renderDrillDone(); return; }
+  }
+
+  const q = drillQueue[drillIdx];
+  const inReview = drillPhase === 'review';
+  const pct = Math.round((drillIdx / drillQueue.length) * 100);
+
+  const topLabel   = inReview ? `🔁 複習 ${drillIdx + 1}/${drillQueue.length}` : `⚡ ${drillIdx + 1}/20`;
+  const scoreLabel = inReview ? `主輪 ${drillMainScore}/${drillMainTotal}` : `${drillScore} ✓`;
+  const badge = q.chain ? '<div class="drill-chain-badge">🔗 情境推理</div>'
+              : q.hard  ? '<div class="drill-hard-badge">🔥 進階</div>' : '';
+  const reviewBanner = inReview ? `
+    <div class="drill-review-banner">
+      ${drillRetrying ? '↺ 答錯了，再試一次' : '🔁 答對才能繼續'}
+      &nbsp;·&nbsp; 主輪得分 ${drillMainScore} / ${drillMainTotal}
+    </div>` : '';
+
+  area.innerHTML = `
+    <div class="drill-card">
+      <div class="drill-top">
+        <div class="drill-count">${topLabel}</div>
+        <div class="drill-pbar"><div class="drill-pbar-fill" style="width:${pct}%"></div></div>
+        <div class="drill-count">${scoreLabel}</div>
+      </div>
+      ${reviewBanner}${badge}
+      <div class="drill-q" style="white-space:pre-line">${q.q}</div>
+      <div class="drill-opts" id="drillOpts">
+        ${q.opts.map((opt,i) => `
+          <button class="drill-opt" id="dopt${i}" data-opt="${opt.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}"
+            onclick="pickOpt(this, this.dataset.opt)">${opt}</button>`).join('')}
+      </div>
+      <div class="drill-note" id="drillNote"></div>
+      ${!inReview ? '<button class="drill-next" id="drillNext" onclick="nextDrillQ()">下一題 →</button>' : ''}
+    </div>`;
+}
+
+function pickOpt(btn, chosen) {
+  const q = drillQueue[drillIdx];
+  document.querySelectorAll('.drill-opt').forEach(b => b.disabled = true);
+
+  const correct = chosen.trim() === q.a.trim();
+  recordDrillResult(q, correct);
+
+  if (correct) {
+    drillScore++;
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.drill-opt').forEach(b => {
+      if (b.textContent.trim() === q.a.trim()) b.classList.add('reveal');
+    });
+    if (drillPhase === 'main' && !drillWrong.find(x => x.q === q.q)) drillWrong.push({...q});
+  }
+
+  const note = document.getElementById('drillNote');
+  note.textContent = q.note;
+  note.className = 'drill-note show ' + (correct ? 'ok' : 'bad');
+
+  if (drillPhase === 'main') {
+    document.getElementById('drillNext').classList.add('show');
+  } else {
+    // 複習模式：自動跳題
+    if (correct) {
+      drillRetrying = false;
+      setTimeout(() => { drillIdx++; renderDrill(); }, 900);
+    } else {
+      drillRetrying = true;
+      setTimeout(() => { renderDrill(); }, 1500); // 同題再來
+    }
+  }
+}
+
+function nextDrillQ() { drillIdx++; renderDrill(); }
+
+function renderDrillDone() {
+  const pct = drillMainTotal > 0 ? Math.round(drillMainScore / drillMainTotal * 100) : 100;
+  const hadReview = drillPhase === 'review';
+  const emoji = pct === 100 ? '🎯' : pct >= 80 ? '💪' : pct >= 60 ? '📖' : '🔁';
+  const msg   = pct === 100 ? '完美！一題不差！'
+              : hadReview   ? '錯題全清，加油！'
+              : pct >= 80   ? '很不錯，繼續練！' : '再多跑幾輪！';
+
+  document.getElementById('quizArea').innerHTML = `
+    <div class="drill-done">
+      <h2>${emoji} 完成！</h2>
+      <div class="drill-done-big">${drillMainScore} / ${drillMainTotal}</div>
+      <div class="drill-done-pct">答對率 ${pct}%${hadReview ? '　（已完成錯題複習）' : ''}</div>
+      <div class="drill-done-msg">${msg}</div>
+      <button class="drill-retry" onclick="startDrill()">🔄 新的 20 題</button>
+      <button class="drill-back"  onclick="setMode('normal')">← 離開</button>
+    </div>`;
 }
 
 // 啟動

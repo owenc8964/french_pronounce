@@ -294,14 +294,21 @@
     }
     details.lesson-group[open] > .unit:first-of-type { border-radius: 0; }
 
-    /* ── Unit 筆記 ── */
-    .unit-note-wrap { margin-top: 14px; border-top: 1px solid #f0f0ee; padding-top: 10px; }
-    .unit-note-btn { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px 4px 9px; background: none; border: 1.5px solid #e0ddd8; border-radius: 20px; font-size: 0.72rem; color: #bbb; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+    /* ── Unit 筆記（按鈕在 header 右側） ── */
+    .unit-note-btn { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px 3px 8px; background: none; border: 1.5px solid #e0ddd8; border-radius: 20px; font-size: 0.7rem; color: #ccc; cursor: pointer; font-family: inherit; transition: all 0.15s; flex-shrink: 0; }
     .unit-note-btn.has-note { border-color: #4a90d9; color: #4a90d9; background: #f0f7ff; }
     .unit-note-btn:hover { border-color: #aaa; color: #777; }
-    .unit-note-box { margin-top: 8px; }
+    .unit-note-box { margin-top: 8px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #f0f0ee; }
     .unit-note-ta { width: 100%; box-sizing: border-box; min-height: 72px; border: 1.5px solid #e0ddd8; border-radius: 8px; padding: 8px 10px; font-size: 0.82rem; color: #333; font-family: inherit; resize: vertical; outline: none; line-height: 1.5; background: #fafaf8; }
     .unit-note-ta:focus { border-color: #4a90d9; background: #fff; }
+
+    /* ── 行內備注（雙擊 li） ── */
+    .phrase-list li { flex-wrap: wrap; }
+    .li-note-wrap { width: 100%; padding: 4px 0 6px; }
+    .li-note-ta { width: 100%; min-height: 44px; border: 1.5px solid #e0ddd8; border-radius: 6px; padding: 5px 8px; font-size: 0.78rem; color: #555; font-family: inherit; resize: none; outline: none; line-height: 1.5; background: #fefdf6; }
+    .li-note-ta:focus { border-color: #4a90d9; background: #fff; }
+    .li-note-ta::placeholder { color: #ccc; }
+    .phrase-list li.has-li-note { background: #fefcf0; border-radius: 6px; padding-left: 6px; margin: 0 -6px; padding-right: 6px; }
   </style>
 </head>
 <body>
@@ -1240,38 +1247,38 @@ document.querySelectorAll('.fr-ex').forEach(el => {
   if (text) el.appendChild(makeTtsBtn(text));
 });
 
-// ── Unit 筆記 ──────────────────────────────────────────────
+// ── Unit 筆記（按鈕在 header 右側） ──────────────────────────
 (function() {
   const NOTES_KEY = 'fr_unit_notes';
   const notes = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}');
-
   function saveNotes() { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); }
 
   document.querySelectorAll('.unit').forEach((unit, i) => {
     const titleEl = unit.querySelector('.unit-title');
+    const header  = unit.querySelector('.unit-header');
     const key = 'u_' + (titleEl ? titleEl.textContent.trim().slice(0, 40) : i);
     const existing = notes[key] || '';
 
-    const wrap = document.createElement('div');
-    wrap.className = 'unit-note-wrap';
-
+    // 按鈕放進 header
     const btn = document.createElement('button');
     btn.className = 'unit-note-btn' + (existing ? ' has-note' : '');
-    btn.innerHTML = '✏️ 筆記' + (existing ? ' <span>▼</span>' : ' <span>▶</span>');
+    btn.innerHTML = '✏️ 筆記 <span>' + (existing ? '▼' : '▶') + '</span>';
+    if (header) header.appendChild(btn);
 
+    // textarea 插在 header 正下方
     const box = document.createElement('div');
     box.className = 'unit-note-box';
     box.style.display = existing ? '' : 'none';
-
     const ta = document.createElement('textarea');
     ta.className = 'unit-note-ta';
     ta.placeholder = '隨手記下想法、疑問、例句…';
     ta.value = existing;
     box.appendChild(ta);
-
-    wrap.appendChild(btn);
-    wrap.appendChild(box);
-    unit.appendChild(wrap);
+    if (header && header.nextSibling) {
+      unit.insertBefore(box, header.nextSibling);
+    } else {
+      unit.appendChild(box);
+    }
 
     btn.addEventListener('click', () => {
       const open = box.style.display !== 'none';
@@ -1287,6 +1294,55 @@ document.querySelectorAll('.fr-ex').forEach(el => {
       btn.classList.toggle('has-note', !!val);
     });
   });
+})();
+
+// ── 行內備注（雙擊 phrase-list li） ──────────────────────────
+(function() {
+  const KEY = 'fr_li_notes';
+  const liNotes = JSON.parse(localStorage.getItem(KEY) || '{}');
+  function save() { localStorage.setItem(KEY, JSON.stringify(liNotes)); }
+
+  document.querySelectorAll('.phrase-list li').forEach((li, i) => {
+    const noteKey = 'li_' + li.textContent.trim().slice(0, 60).replace(/\s+/g, '_');
+    const existing = liNotes[noteKey] || '';
+
+    // 若已有備注，直接展開
+    if (existing) {
+      addNoteBox(li, noteKey, existing, true);
+      li.classList.add('has-li-note');
+    }
+
+    li.addEventListener('dblclick', (e) => {
+      if (e.target.tagName === 'TEXTAREA') return; // 不要在 textarea 內觸發
+      let wrap = li.querySelector('.li-note-wrap');
+      if (!wrap) {
+        wrap = addNoteBox(li, noteKey, '', false);
+      }
+      const visible = wrap.style.display !== 'none';
+      wrap.style.display = visible ? 'none' : '';
+      if (!visible) wrap.querySelector('textarea').focus();
+    });
+  });
+
+  function addNoteBox(li, noteKey, initVal, show) {
+    const wrap = document.createElement('div');
+    wrap.className = 'li-note-wrap';
+    wrap.style.display = show ? '' : 'none';
+    const ta = document.createElement('textarea');
+    ta.className = 'li-note-ta';
+    ta.placeholder = '備注（再次雙擊收合）…';
+    ta.value = initVal;
+    ta.rows = 2;
+    wrap.appendChild(ta);
+    li.appendChild(wrap);
+    ta.addEventListener('input', () => {
+      const val = ta.value;
+      if (val) liNotes[noteKey] = val; else delete liNotes[noteKey];
+      save();
+      li.classList.toggle('has-li-note', !!val);
+    });
+    return wrap;
+  }
 })();
 </script>
 </body>
