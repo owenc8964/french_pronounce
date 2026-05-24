@@ -828,7 +828,7 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-// ── ⚡ 快速測驗題庫（107 題：動詞 · 所有格 · 冠詞 · 形容詞一致 · 進階）────
+// ── ⚡ 快速測驗題庫（229 題：動詞 · 所有格 · 冠詞 · 形容詞一致 · 國籍 · 介係詞 · 單複數 · 進階）────
 const AGREE_BANK = [
   // ── être（10）──
   { q:'Je ___ taïwanais.',           opts:['suis','es','est','sont'],           a:'suis',   note:'être : je → suis' },
@@ -1037,6 +1037,156 @@ const AGREE_BANK = [
   { q:"Théo parle de son oncle Paul.\n« ___ est le mari de ma tante Olivia. »",
     opts:['Il','Elle','Ils','Elles'], a:'Il', chain:true,
     note:'mon oncle Paul = homme → il' },
+
+  // ── 🌍 國籍形容詞 — 陰陽變化（Unité 1）──
+  { q:'Elle est ___.  (suédois)',          opts:['suédois','suédoise','suédoises','suédoisement'],      a:'suédoise',    note:'suédois → suédoise（加 e，-s 不發音）' },
+  { q:'Elle est ___.  (grec)',             opts:['grec','grecque','grecque','grecs'],                   a:'grecque',     note:'⚠️ grec → grecque（-c → -que，不規則！）' },
+  { q:'Elle est ___.  (japonais)',         opts:['japonais','japonaise','japonaises','japonaisant'],    a:'japonaise',   note:'japonais → japonaise（加 e）' },
+  { q:'Elle est ___.  (tunisien)',         opts:['tunisien','tunisienne','tunisiennes','tunisiens'],    a:'tunisienne',  note:'tunisien → tunisienne（-ien → -ienne，同 italienne）' },
+  { q:'Elle est ___.  (colombien)',        opts:['colombien','colombienne','colombiens','colombiennes'],a:'colombienne', note:'colombien → colombienne（-ien → -ienne）' },
+  { q:'Elle est ___.  (turc)',             opts:['turc','turque','turcs','turques'],                    a:'turque',      note:'⚠️ turc → turque（-c → -que，不規則！同 grec）' },
+  { q:'Elle est ___.  (anglais)',          opts:['anglais','anglaise','anglaises','anglaisement'],      a:'anglaise',    note:'anglais → anglaise（加 e）' },
+  { q:'Elle est ___.  (espagnol)',         opts:['espagnol','espagnole','espagnols','espagnoles'],      a:'espagnole',   note:'espagnol → espagnole（加 e）' },
+  { q:'Elle est ___.  (allemand)',         opts:['allemand','allemande','allemands','allemandes'],      a:'allemande',   note:'allemand → allemande（加 e）' },
+  { q:'Elle est ___.  (marocain)',         opts:['marocain','marocaine','marocains','marocaines'],      a:'marocaine',   note:'marocain → marocaine（加 e）' },
+  { q:'Elle est ___.  (argentin)',         opts:['argentin','argentine','argentins','argentines'],      a:'argentine',   note:'argentin → argentine（加 e）' },
+  { q:'Il/Elle est ___.  (belge)',         opts:['belge','belgien','belgienne','belgiane'],             a:'belge',       note:'belge：陰陽同形，男女不變（不規則例外）' },
+  { q:'Elle est ___.  (sénégalais)',       opts:['sénégalais','sénégalaise','sénégalaises','sénégalaisement'], a:'sénégalaise', note:'sénégalais → sénégalaise（加 e）' },
+  { q:'Elle est ___.  (coréen)',           opts:['coréen','coréenne','coréens','coréennes'],            a:'coréenne',    note:'coréen → coréenne（-en → -enne，雙 n）' },
+
+  // ── 🌍 國籍 — 複數（陽性複數 / 陰性複數）──
+  { q:'Ils sont ___.  (suédois)',          opts:['suédois','suédoise','suédoisent','suédoises'],        a:'suédois',     note:'suédois（以 -s 結尾）→ 陽性複數不變' },
+  { q:'Ils sont ___.  (japonais)',         opts:['japonais','japonaise','japonaisant','japonaises'],    a:'japonais',    note:'japonais（以 -s 結尾）→ 陽性複數不變' },
+  { q:'Elles sont ___.  (espagnol)',       opts:['espagnol','espagnole','espagnols','espagnoles'],      a:'espagnoles',  note:'espagnoles：陰性複數 → +es' },
+  { q:'Elles sont ___.  (allemand)',       opts:['allemand','allemande','allemands','allemandes'],      a:'allemandes',  note:'allemandes：陰性複數 → +es' },
+  { q:'Ils sont ___.  (tunisien)',         opts:['tunisien','tunisienne','tunisiens','tunisiennes'],    a:'tunisiens',   note:'tunisiens：陽性複數 → +s（-ien → -iens）' },
+  { q:'Elles sont ___.  (colombien)',      opts:['colombien','colombienne','colombiens','colombiennes'],a:'colombiennes',note:'colombiennes：陰性複數 → -ienne + s' },
+
+  // ── ✈️ Prépositions + pays（Unité 1）──
+  { q:'Elle habite ___ Russie.',           opts:['en','au','à','aux'],  a:'en',  note:'Russie（陰性國名）→ en Russie' },
+  { q:'Il est né ___ Portugal.',           opts:['en','au','à','aux'],  a:'au',  note:'Portugal（陽性）→ au Portugal（à + le）' },
+  { q:'Elle habite ___ Pays-Bas.',         opts:['en','au','à','aux'],  a:'aux', note:'Pays-Bas（複數）→ aux Pays-Bas（à + les）' },
+  { q:'Il habite ___ Chine.',              opts:['en','au','à','aux'],  a:'en',  note:'Chine（陰性）→ en Chine' },
+  { q:'Il est né ___ Sénégal.',            opts:['en','au','à','aux'],  a:'au',  note:'Sénégal（陽性）→ au Sénégal' },
+  { q:'Elle est née ___ Argentine.',       opts:['en','au','à','aux'],  a:'en',  note:'Argentine（陰性）→ en Argentine' },
+  { q:'Il habite ___ Allemagne.',          opts:['en','au','à','aux'],  a:'en',  note:'Allemagne（陰性）→ en Allemagne' },
+  { q:'Elle est née ___ Belgique.',        opts:['en','au','à','aux'],  a:'en',  note:'Belgique（陰性）→ en Belgique' },
+  { q:'Il habite ___ Vietnam.',            opts:['en','au','à','aux'],  a:'au',  note:'Vietnam（陽性）→ au Vietnam' },
+  { q:'Il est né ___ Tunisie.',            opts:['en','au','à','aux'],  a:'en',  note:'Tunisie（陰性）→ en Tunisie' },
+  { q:'Il habite ___ Maroc.',              opts:['en','au','à','aux'],  a:'au',  note:'Maroc（陽性）→ au Maroc' },
+  { q:'Elle habite ___ Corée.',            opts:['en','au','à','aux'],  a:'en',  note:'Corée（陰性）→ en Corée' },
+
+  // ── 📰 Articles définis — le/la/l'/les（Unité 1-2）──
+  { q:"J'aime ___ art.",                   opts:['le','la',"l'",'les'], a:"l'",  note:"art（m, 母音 a）→ l'art" },
+  { q:'Il aime ___ sport.',                opts:['le','la',"l'",'les'], a:'le',  note:'sport（m）→ le sport' },
+  { q:"Elle adore ___ histoire.",          opts:['le','la',"l'",'les'], a:"l'",  note:"histoire（f, h muet + 母音）→ l'histoire" },
+  { q:'Ils aiment ___ langues.',           opts:['le','la',"l'",'les'], a:'les', note:'langues（複數）→ les langues' },
+  { q:'Tu aimes ___ danse ?',              opts:['le','la',"l'",'les'], a:'la',  note:'danse（f）→ la danse' },
+  { q:"J'adore ___ café.",                 opts:['le','la',"l'",'les'], a:'le',  note:'café（m）→ le café（aimer + défini = goût général）' },
+  { q:"Elle aime ___ Espagne.",            opts:['le','la',"l'",'les'], a:"l'",  note:"Espagne（f, 母音 E）→ l'Espagne" },
+  { q:"Il aime ___ Algérie.",              opts:['le','la',"l'",'les'], a:"l'",  note:"Algérie（f, 母音 A）→ l'Algérie" },
+  { q:"Tu aimes ___ géographie ?",        opts:['le','la',"l'",'les'], a:'la',  note:'géographie（f）→ la géographie' },
+  { q:"C'est ___ langue de Paul.",         opts:['le','la',"l'",'les'], a:'la',  note:'langue（f）→ la langue' },
+
+  // ── 🥖 Articles partitifs — du/de la/de l'/des（Unité 3）──
+  { q:'Je mange ___ poisson.',             opts:['du','de la',"de l'",'des'],  a:'du',     note:'poisson（m）→ du poisson（de + le）' },
+  { q:'Il y a ___ beurre ?',              opts:['du','de la',"de l'",'des'],  a:'du',     note:'beurre（m）→ du beurre' },
+  { q:'Nous mangeons ___ pâtes.',          opts:['du','de la',"de l'",'des'],  a:'des',    note:'pâtes（複數）→ des pâtes' },
+  { q:'Je voudrais ___ café.',             opts:['du','de la',"de l'",'des'],  a:'du',     note:'café（m）→ du café（部分冠詞）' },
+  { q:'Tu veux ___ fromage ?',             opts:['du','de la',"de l'",'des'],  a:'du',     note:'fromage（m）→ du fromage' },
+  { q:'Il y a ___ légumes ?',             opts:['du','de la',"de l'",'des'],  a:'des',    note:'légumes（複數）→ des légumes' },
+  { q:"J'achète ___ huile d'olive.",       opts:['du','de la',"de l'",'des'],  a:"de l'",  note:"huile（f, 母音 h muet）→ de l'huile" },
+  { q:'Vous mangez ___ viande ?',          opts:['du','de la',"de l'",'des'],  a:'de la',  note:'viande（f）→ de la viande' },
+  { q:'Elle boit ___ thé.',               opts:['du','de la',"de l'",'des'],  a:'du',     note:'thé（m）→ du thé' },
+  { q:'Il mange ___ glace.',              opts:['du','de la',"de l'",'des'],  a:'de la',  note:'glace（f）→ de la glace' },
+
+  // ── 🔢 Singulier / Pluriel（Unité 3）──
+  { q:"J'aime les ___.  (fruit)",          opts:['fruit','fruits','de fruits','du fruit'],              a:'fruits',      note:'les + 名詞 → 複數：fruits（加 s）' },
+  { q:'Tu achètes trois ___.  (croissant)',opts:['croissant','croissants','des croissant','de croissant'], a:'croissants', note:'trois → 複數：croissants（加 s）' },
+  { q:"J'achète deux ___ de pommes.  (kilo)", opts:['kilo','kilos','kilots','de kilo'],               a:'kilos',       note:'deux → 複數：kilos（加 s）' },
+  { q:"Il y a une ___ ici.  (boulangerie)", opts:['boulangerie','boulangeries','boulangerise','boulangeriement'], a:'boulangerie', note:'une → 單數：boulangerie（不加 s）' },
+  { q:'Il y a trois ___ dans mon quartier.  (épicerie)', opts:['épicerie','épiceries','épiceriement','épiceriest'], a:'épiceries', note:'trois → 複數：épiceries（加 s）' },
+  { q:'Je mange deux ___.  (œuf)',         opts:['œuf','œufs','des œuf','de œuf'],                     a:'œufs',        note:'deux → 複數：œufs（加 s；注意 f 不發音）' },
+  { q:'Il y a un ___ dans ma rue.  (poissonnier)', opts:['poissonnier','poissonniers','poissonniere','poissonnieur'], a:'poissonnier', note:'un → 單數：poissonnier（不加 s）' },
+  { q:"J'achète des ___ au marché.  (tomate)", opts:['tomate','tomates','tomâte','tomatez'],           a:'tomates',     note:'des → 複數：tomates（加 s）' },
+
+  // ── 🟢 Verbes en -ir — choisir / finir（Unité 3）──
+  { q:'Je ___ le plat.  (choisir)',        opts:['choisis','choisit','choisissons','choisissez'],       a:'choisis',     note:'choisir : je → choisis（-is）' },
+  { q:'Tu ___ le dessert ?  (choisir)',    opts:['choisis','choisit','choisissons','choisissent'],      a:'choisis',     note:'choisir : tu → choisis（-is，同 je）' },
+  { q:'Il ___ le restaurant.  (choisir)', opts:['choisis','choisit','choisissons','choisissent'],      a:'choisit',     note:'choisir : il → choisit（-it，加 t）' },
+  { q:'Nous ___ le menu.  (choisir)',      opts:['choisis','choisit','choisissons','choisissez'],       a:'choisissons', note:'choisir : nous → choisissons（-issons）' },
+  { q:"Vous ___ l'entrée ?  (choisir)",   opts:['choisis','choisit','choisissons','choisissez'],       a:'choisissez',  note:'choisir : vous → choisissez（-issez）' },
+  { q:'Ils ___ un menu végétarien.  (choisir)', opts:['choisis','choisit','choisissons','choisissent'], a:'choisissent', note:'choisir : ils → choisissent（-issent）' },
+  { q:'Je ___ mon assiette.  (finir)',     opts:['finis','finit','finissons','finissez'],               a:'finis',       note:'finir : je → finis（-is）' },
+  { q:'Elle ___ le café.  (finir)',        opts:['finis','finit','finissons','finissent'],              a:'finit',       note:'finir : elle → finit（-it，加 t）' },
+  { q:'Vous ___ la salade ?  (finir)',     opts:['finis','finit','finissons','finissez'],               a:'finissez',    note:'finir : vous → finissez（-issez）' },
+  { q:'Ils ne ___ pas leur assiette.  (finir)', opts:['finis','finit','finissons','finissent'],        a:'finissent',   note:'finir : ils → finissent（-issent）' },
+  { q:'Nous ___ les courses.  (finir)',    opts:['finis','finit','finissons','finissez'],               a:'finissons',   note:'finir : nous → finissons（-issons）' },
+
+  // ── 🚶 Verbe aller（Unité 3）──
+  { q:'Je ___ au marché.  (aller)',        opts:['vais','vas','va','allons'],   a:'vais',    note:'aller : je → vais（完全不規則！）' },
+  { q:'Tu ___ à la boulangerie ?  (aller)', opts:['vais','vas','va','vont'],   a:'vas',     note:'aller : tu → vas（不規則）' },
+  { q:'Elle ___ chez le boucher.  (aller)', opts:['vais','vas','va','allons'],  a:'va',     note:'aller : il/elle → va（不規則）' },
+  { q:'Nous ___ au supermarché.  (aller)', opts:['vais','allons','allez','vont'], a:'allons', note:'aller : nous → allons（規則部分）' },
+  { q:'Ils ___ aux caisses.  (aller)',     opts:['va','allons','allez','vont'],  a:'vont',   note:'aller : ils → vont（不規則）' },
+  { q:'Vous ___ où ?  (aller)',            opts:['vais','allons','allez','vont'], a:'allez',  note:'aller : vous → allez（規則部分）' },
+  { q:"On ___ à l'épicerie.  (aller)",    opts:['vais','vas','va','allons'],   a:'va',      note:'on → 等同 il/elle → va' },
+  { q:'Mon fils ___ chez le boulanger.  (aller)', opts:['vais','vas','va','vont'], a:'va',  note:'mon fils = il → va' },
+
+  // ── 🏪 Prépositions de lieu — chez/à/au（Unité 3）──
+  { q:'Je vais ___ boulangerie.',          opts:['chez la','à la','au',"à l'"],  a:'à la',   note:'boulangerie（f, lieu）→ à la boulangerie' },
+  { q:'On va ___ marché.',                 opts:['chez le','à la','au','aux'],   a:'au',     note:'marché（m, lieu）→ au marché（à + le）' },
+  { q:'Je vais ___ fromagère.',            opts:['chez la','à la','au','chez le'], a:'chez la', note:'fromagère = 人（商人）→ chez la fromagère' },
+  { q:"Tu vas ___ épicerie bio ?",         opts:["chez l'","à l'",'au','à la'],  a:"à l'",   note:"épicerie（f, 母音）→ à l'épicerie" },
+  { q:'Je paie ___ caisses.',              opts:['chez les','à la','aux','au'],   a:'aux',    note:'caisses（複數）→ aux caisses（à + les）' },
+  { q:'On achète le pain ___ boulanger.',  opts:['chez le','à la','au','à le'],  a:'chez le', note:'boulanger = 人 → chez le boulanger' },
+  { q:'Vous faites vos courses ___ supermarché ?', opts:['chez le','à la','au','aux'], a:'au', note:'supermarché（m, lieu）→ au supermarché' },
+  { q:"Il va ___ épicière.",               opts:["chez l'","à l'",'au','chez le'], a:"chez l'", note:"épicière = 人（f, 母音）→ chez l'épicière" },
+
+  // ── ❓ Quel/Quelle/Quels/Quelles（Unité 1）──
+  { q:'___ âge vous avez ?',              opts:['Quel','Quelle','Quels','Quelles'], a:'Quel',    note:'âge（m, sg）→ Quel（陽性單數）' },
+  { q:'___ est votre adresse ?',           opts:['Quel','Quelle','Quels','Quelles'], a:'Quelle',  note:'adresse（f）→ Quelle（陰性單數）' },
+  { q:'___ langues vous parlez ?',         opts:['Quel','Quelle','Quels','Quelles'], a:'Quelles', note:'langues（f, pl）→ Quelles（陰性複數）' },
+  { q:'___ est votre nationalité ?',       opts:['Quel','Quelle','Quels','Quelles'], a:'Quelle',  note:'nationalité（f）→ Quelle（陰性單數）' },
+  { q:'___ sport vous pratiquez ?',        opts:['Quel','Quelle','Quels','Quelles'], a:'Quel',    note:'sport（m, sg）→ Quel（陽性單數）' },
+  { q:'___ artistes tu aimes ?',           opts:['Quel','Quelle','Quels','Quelles'], a:'Quels',   note:'artistes（m, pl）→ Quels（陽性複數）' },
+  { q:'Dans ___ pays tu habites ?',        opts:['quel','quelle','quels','quelles'], a:'quel',    note:'pays（m）→ quel pays（陽性單數）' },
+  { q:'___ villes de France tu aimes ?',   opts:['Quel','Quelle','Quels','Quelles'], a:'Quelles', note:'villes（f, pl）→ Quelles（陰性複數）' },
+  { q:'Tu habites dans ___ quartier ?',    opts:['quel','quelle','quels','quelles'], a:'quel',    note:'quartier（m）→ quel quartier（陽性單數）' },
+
+  // ── 👔 Professions — 陰陽性（Unité 2 補充）──
+  { q:'Ma sœur est ___.  (étudiant)',      opts:['étudiant','étudiante','étudiants','étudiantes'],     a:'étudiante',   note:'sœur（f）→ étudiante（加 e）' },
+  { q:'Mon frère est ___.  (étudiant)',    opts:['étudiant','étudiante','étudiants','étudiantes'],     a:'étudiant',    note:'frère（m）→ étudiant（基本形）' },
+  { q:'Ma cousine est ___.  (fleuriste)',  opts:['fleuriste','fleuristesse','fleuristeur','fleuristière'], a:'fleuriste', note:'fleuriste：陰陽同形，不需加 e' },
+  { q:'Mon oncle est ___.  (fleuriste)',   opts:['fleuriste','fleuriste femme','fleuristeur','fleuriston'], a:'fleuriste', note:'fleuriste：陰陽同形，男女都用 fleuriste' },
+  { q:'Ma tante est ___.  (professeur)',   opts:['professeur','professeure','professeuse','professeuse'], a:'professeure', note:'tante（f）→ professeure（法語認可的現代女性形）' },
+  { q:'Mon médecin est une femme.\nElle est ___.', opts:['médecin','médecine','médicin','médecine'],  a:'médecin',     note:'médecin：陰陽同形，女醫生也說 médecin（不變）' },
+
+  // ── 🔗 情境推理（補充 — 購物 / 家庭延伸）──
+  { q:"Théo parle de son ami Nessim.\n« Nessim va ___ marché tous les dimanches. »",
+    opts:['au','à la','chez le','aux'], a:'au', chain:true,
+    note:'marché（m, lieu）→ au marché（à + le）' },
+  { q:"Nina fait les courses.\n« Elle achète le pain ___ boulangerie. »",
+    opts:['à la','au','chez la',"à l'"], a:'à la', chain:true,
+    note:'boulangerie（f, lieu）→ à la boulangerie' },
+  { q:"Sofia et son mari préparent le dîner.\n« ___ cuisinent ensemble. »",
+    opts:['Il','Elle','Ils','Elles'], a:'Ils', chain:true,
+    note:'Sofia（f）+ son mari（m）= couple mixte → ils（混合複數用陽性）' },
+  { q:"Théo parle de sa tante Olivia.\n« ___ est professeure à l'université. »",
+    opts:['Il','Elle','Ils','Elles'], a:'Elle', chain:true,
+    note:'sa tante Olivia = femme → elle est professeure' },
+  { q:"Nina parle de son neveu.\n« ___ a 8 ans. »",
+    opts:['Il','Elle','Ils','Elles'], a:'Il', chain:true,
+    note:'neveu = garçon → il（男性單數）' },
+  { q:"Nina parle de ses parents.\n« ___ habitent chez mon frère. »",
+    opts:['Il','Elle','Ils','Elles'], a:'Ils', chain:true,
+    note:'mes parents（père + mère = couple）→ ils（混合複數）' },
+  { q:"Théo parle du petit-fils de M. Bertoli.\n« ___ a seulement 2 mois ! »",
+    opts:['Il','Elle','Ils','Elles'], a:'Il', chain:true,
+    note:'le petit-fils = garçon → il' },
+  { q:"Nina parle de son frère.\n« À la maison, ___ sont quatre : lui, sa femme et ses deux enfants. »",
+    opts:['ils','elles','il','on'], a:'ils', chain:true,
+    note:'lui（m）+ sa femme（f）+ enfants = groupe mixte → ils（只要有一個男性就用 ils）' },
 ];
 
 // ── Drill SRS（常錯多出現）──────────────────────────────────────
