@@ -5,6 +5,36 @@
 
 ---
 
+## 戰略分析：A1 → CLB7（B2）一年路線圖
+
+### 最高優先：接下來必須攻的文法
+| 優先 | 主題 | 時間點 |
+|------|------|--------|
+| ★★★ | Passé composé（être vs avoir + 分詞配合） | 第5課起 |
+| ★★★ | PC vs imparfait 情境判斷 | B1 衝刺期 |
+| ★★★ | COD/COI 代名詞（le/la/lui/leur/y/en） | A2 後期 |
+| ★★ | 否定句 ne...jamais/plus/rien | A2 |
+| ★★ | 相對代名詞 qui/que/dont/où | B1 |
+| ★ | Subjonctif（B2 必考） | B1 後期 |
+
+### Quiz 系統下一步演進
+目前 AGREE_BANK 練「選正確的形」（247 題）。  
+下個階段需加：
+- **情境判斷題**：給情境選 PC vs IMP
+- **錯誤偵測題**：這句哪裡錯？
+- **純輸出題**（無選項）：填空/翻譯
+
+### 一年時間表
+```
+現在（A1）→ 第3個月  : A2 衝刺（PC, IMP, 代名詞, 否定）
+第3-6個月             : A2 完成 → B1
+第6-9個月             : B1（時態綜合/相對子句/複雜句構）
+第9-12個月            : B2/CLB7 衝刺（subjonctif/聽力/寫作）
+```
+前提：每週上課 + 每天 30 分鐘自學（聽力輸入尤其重要）。
+
+---
+
 ## 專案概覽
 
 四個互相連動的 HTML 檔，部分推上 GitHub Pages：
@@ -291,3 +321,26 @@ A：確認在 Tab 3（📊 文法表），點藍色粗體 `.pron` 格。Tab 1/2 
 
 **Q：快速測驗的錯題怎麼處理？**
 A：主輪 20 題答完後，錯的題目無縫接續（不顯示中間畫面），review 輪答錯會原地重試直到答對。主輪分數在進入 review 輪前已鎖定。
+
+---
+
+## 下個 Session 啟動 Prompt
+
+> 把以下這段貼給新的 Claude Code session：
+
+```
+請先讀 HANDOFF.md（在 /Users/owen/Documents/Claude/Project/CLB test/France CLB7/）。
+
+Owen 在學法語，目標一年內考過 CLB7（B2）。目前完成第4課，系統包含：
+- french_notes.html：課堂筆記（第1-4課）
+- quiz.html：SRS 題庫（BANK 140題）+ 快速測驗（AGREE_BANK 247題）
+- map.html：課程地圖（13/60格已解鎖）
+- french_basics.html：數字/發音/文法表
+
+【本次任務】（請從這裡描述要做什麼）
+```
+
+常見任務範例：
+- 「這是第N課的筆記，請整理並直接寫進檔案」→ Claude 自動加筆記+quiz題+建議解鎖地圖格
+- 「請參考 PDF 補充 passé composé 的快速測驗題」
+- 「quiz.html 加入 PC vs imparfait 情境判斷題，第5課」
