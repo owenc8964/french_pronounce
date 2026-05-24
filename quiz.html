@@ -530,6 +530,37 @@ const BANK = [
   { lesson:3, type:'choose', q:'son / sa / ses，哪個填入空格？「_____ enfants jouent ici.」', hint:'enfants 是複數', a:'Ses', aNote:'複數名詞前用 ses（不管陰陽性）' },
   { lesson:3, type:'choose', q:'「nous nageons」vs「nous nagons」，哪個正確？為什麼？', hint:'g + o 的發音', a:'nous nageons（保持 /ʒ/ 軟音需加 e）', aNote:'g+o 會變硬音，加 e 後 ge+ons 維持 /ʒ/；同規則：mangeons、voyageons' },
   { lesson:3, type:'choose', q:'la mer / la mère / le maire，哪個是「市長」？', hint:'政治人物', a:'le/la maire（市長）', aNote:'mer = 海；mère = 母親；maire = 市長。三個發音相同！' },
+
+  // ── 第4課：顏色 · 食物 · 購物介係詞 · acheter/payer ──
+  { lesson:4, type:'fill',   q:'J\'_____ des légumes au marché.  (acheter)',     hint:'je 單數 → è',          a:'achète',          aNote:'acheter：je → j\'achète（e → è 在單數）' },
+  { lesson:4, type:'fill',   q:'Nous _____ un panier par semaine.  (acheter)',   hint:'nous → achetons',      a:'achetons',        aNote:'acheter：nous → achetons（去掉 è，還原 e）' },
+  { lesson:4, type:'fill',   q:'Ils _____ le pain à la boulangerie.  (acheter)', hint:'ils → ent + accent',   a:'achètent',        aNote:'acheter：ils → achètent（-ent 不發音，但 è 有音）' },
+  { lesson:4, type:'fill',   q:'Je _____ par carte.  (payer)',                   hint:'paie ou paye',         a:'paie|paye',       aNote:'payer：je paie / je paye 兩種都正確（-ayer 動詞）' },
+  { lesson:4, type:'fill',   q:'Nous _____ en espèces.  (payer)',                hint:'nous → payons',        a:'payons',          aNote:'payer：nous → payons（保留 y）' },
+  { lesson:4, type:'fill',   q:'Je vais _____ les courses.  (faire)',            hint:'aller + infinitif',    a:'faire',           aNote:'近未來：aller + infinitif；je vais faire = 我要去做' },
+  { lesson:4, type:'fill',   q:'Pour acheter la viande, on va _____ boucherie.', hint:'à + la',               a:'à la',            aNote:'boucherie（f, lieu）→ à la boucherie' },
+  { lesson:4, type:'fill',   q:'Le week-end, les Français vont _____ marché.',   hint:'à + le = ?',           a:'au',              aNote:'marché（m）→ au marché（à + le = au）' },
+  { lesson:4, type:'fill',   q:'Pour le poisson, je vais _____ poissonnier.',    hint:'chez + personne',      a:'chez le',         aNote:'poissonnier = 人 → chez le poissonnier（chez + personne）' },
+  { lesson:4, type:'fill',   q:'Je paie _____ caisses automatiques.',            hint:'à + les = ?',          a:'aux',             aNote:'caisses（pl）→ aux caisses（à + les = aux）' },
+
+  { lesson:4, type:'trans',  q:'我想要一條法棍，謝謝。',         hint:'voudrais / s\'il vous plaît', a:'Je voudrais une baguette, s\'il vous plaît.', aNote:'je voudrais = conditionnel，比 je veux 有禮貌；baguette = 法棍', askClaude:true },
+  { lesson:4, type:'trans',  q:'這個多少錢？',                   hint:'coûte / combien',            a:'Combien ça coûte ? | Ça coûte combien ?', aNote:'兩種語序都正確；coûter = 花費（只用 il/elle/ça）', askClaude:true },
+  { lesson:4, type:'trans',  q:'您怎麼付款？刷卡還是現金？',      hint:'comment / carte / espèces',  a:'Vous payez comment ? Par carte ou en espèces ?', aNote:'en espèces = 付現；par carte = 刷卡', askClaude:true },
+  { lesson:4, type:'trans',  q:'我要去買東西。（近未來）',         hint:'aller + infinitif',          a:'Je vais faire les courses.', aNote:'近未來：je vais + faire；les courses = 買東西（食物類）', askClaude:true },
+  { lesson:4, type:'trans',  q:'就這樣了，謝謝。',               hint:'ce sera tout',               a:'Ce sera tout, merci.', aNote:'Ce sera tout = 就這樣，常用於結帳時', askClaude:true },
+
+  { lesson:4, type:'gender', q:'un polo _____  (vert)',                hint:'陽性單數',             a:'vert',      aNote:'polo（m, sg）→ vert（基本形）' },
+  { lesson:4, type:'gender', q:'une robe _____  (vert)',               hint:'陰性單數',             a:'verte',     aNote:'robe（f）→ verte（加 e）' },
+  { lesson:4, type:'gender', q:'des chaussures _____  (blanc)',        hint:'陰性複數，例外！',      a:'blanches',  aNote:'chaussures（f, pl）→ blanches；blanc → blanche（-c → -che 例外）' },
+  { lesson:4, type:'gender', q:'un t-shirt _____  (orange)',           hint:'水果名，不變！',        a:'orange',    aNote:'orange：水果名兼顏色 → 不分陰陽，不加 s/e；un t-shirt orange' },
+  { lesson:4, type:'gender', q:'des bottes _____  (marron)',           hint:'水果名，不變！',        a:'marron',    aNote:'marron：栗子兼顏色 → 不加 s/e；des bottes marron' },
+  { lesson:4, type:'gender', q:'une robe _____  (violet)',             hint:'-et → -ette',          a:'violette',  aNote:'violet → violette（-et → -ette，子音重複）' },
+  { lesson:4, type:'gender', q:'des fleurs _____  (bleu)',             hint:'陰性複數',             a:'bleues',    aNote:'fleurs（f, pl）→ bleues（加 es）' },
+
+  { lesson:4, type:'choose', q:'去魚店可以說哪兩種？',                 hint:'lieu vs personne',     a:'à la poissonnerie|chez le poissonnier', aNote:'chez = 後面跟人；à la = 後面跟地方，兩種說法都可' },
+  { lesson:4, type:'choose', q:'「Je _____ du poisson. (acheter)」填哪個？',  hint:'je 單數',       a:'achète',    aNote:'acheter je → achète（e → è 在 je/tu/il/ils）' },
+  { lesson:4, type:'choose', q:'「我要一瓶橄欖油」的正確法文？',       hint:'de + 量詞',            a:'une bouteille d\'huile d\'olive', aNote:'數量詞後加 de（去冠詞）：une bouteille de + 名詞；huile 以母音開頭 → d\'' },
+  { lesson:4, type:'choose', q:'carte bleue 在法國是什麼？',           hint:'不是信用卡',            a:'簽帳卡（debit card）', aNote:'carte bleue / carte bancaire = 簽帳卡，法國刷卡為主，少用現金' },
 ];
 
 // ── 狀態 ──────────────────────────────────────────────────────
@@ -828,7 +859,7 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-// ── ⚡ 快速測驗題庫（229 題：動詞 · 所有格 · 冠詞 · 形容詞一致 · 國籍 · 介係詞 · 單複數 · 進階）────
+// ── ⚡ 快速測驗題庫（247 題：動詞 · 所有格 · 冠詞 · 形容詞一致 · 國籍 · 介係詞 · 單複數 · 顏色 · 進階）────
 const AGREE_BANK = [
   // ── être（10）──
   { q:'Je ___ taïwanais.',           opts:['suis','es','est','sont'],           a:'suis',   note:'être : je → suis' },
@@ -1161,6 +1192,26 @@ const AGREE_BANK = [
   { q:'Mon oncle est ___.  (fleuriste)',   opts:['fleuriste','fleuriste femme','fleuristeur','fleuriston'], a:'fleuriste', note:'fleuriste：陰陽同形，男女都用 fleuriste' },
   { q:'Ma tante est ___.  (professeur)',   opts:['professeur','professeure','professeuse','professeuse'], a:'professeure', note:'tante（f）→ professeure（法語認可的現代女性形）' },
   { q:'Mon médecin est une femme.\nElle est ___.', opts:['médecin','médecine','médicin','médecine'],  a:'médecin',     note:'médecin：陰陽同形，女醫生也說 médecin（不變）' },
+
+  // ── 🎨 Couleurs — 陰陽/複數一致（Unité 4）──
+  { q:'un polo ___  (vert)',                opts:['vert','verte','verts','vertes'],                   a:'vert',      note:'polo（m, sg）→ vert（基本形）' },
+  { q:'une robe ___  (vert)',               opts:['vert','verte','verts','vertes'],                   a:'verte',     note:'robe（f, sg）→ verte（加 e）' },
+  { q:'des polos ___  (vert)',              opts:['vert','verte','verts','vertes'],                   a:'verts',     note:'polos（m, pl）→ verts（加 s）' },
+  { q:'des robes ___  (vert)',              opts:['vert','verte','verts','vertes'],                   a:'vertes',    note:'robes（f, pl）→ vertes（加 es）' },
+  { q:'un sac ___  (bleu)',                 opts:['bleu','bleue','bleus','bleues'],                   a:'bleu',      note:'sac（m, sg）→ bleu（基本形）' },
+  { q:'une veste ___  (bleu)',              opts:['bleu','bleue','bleus','bleues'],                   a:'bleue',     note:'veste（f, sg）→ bleue（加 e）' },
+  { q:'des chaussures ___  (bleu)',         opts:['bleu','bleue','bleus','bleues'],                   a:'bleues',    note:'chaussures（f, pl）→ bleues（加 es）' },
+  { q:'une chemise ___  (blanc)',           opts:['blanc','blanche','blancs','blanches'],              a:'blanche',   note:'⚠️ blanc → blanche（-c → -che，例外！）' },
+  { q:'des chemises ___  (blanc)',          opts:['blanc','blanche','blancs','blanches'],              a:'blanches',  note:'chemises（f, pl）→ blanches（-c → -che + s）' },
+  { q:'un t-shirt ___  (orange)',           opts:['orange','orangée','oranges','orangée'],             a:'orange',    note:'⚠️ orange：水果名兼顏色 → 不分陰陽，不加 s/e（invariable）' },
+  { q:'des jupes ___  (orange)',            opts:['orange','orangées','oranges','orangée'],            a:'orange',    note:'⚠️ des jupes orange（不加 s！orange = invariable）' },
+  { q:'un sac ___  (marron)',               opts:['marron','marronne','marrons','marron'],             a:'marron',    note:'⚠️ marron：栗子兼顏色 → invariable（不加 s/e）' },
+  { q:'des bottes ___  (marron)',           opts:['marron','marronnes','marrons','marronne'],          a:'marron',    note:'⚠️ des bottes marron（不加 s！marron = invariable）' },
+  { q:'une robe ___  (violet)',             opts:['violet','violette','violets','violettes'],          a:'violette',  note:'violet → violette（-et → -ette，子音重複）' },
+  { q:'des fleurs ___  (violet)',           opts:['violet','violette','violets','violettes'],          a:'violettes', note:'fleurs（f, pl）→ violettes（-ette + s）' },
+  { q:'un manteau ___  (gris)',             opts:['gris','grise','gris','grises'],                    a:'gris',      note:'manteau（m）→ gris（以 -s 結尾，陽性單數不變）' },
+  { q:'une veste ___  (gris)',              opts:['gris','grise','griss','grises'],                   a:'grise',     note:'veste（f）→ grise（加 e）' },
+  { q:'C\'est ___ voiture.  (blanc)',       opts:['blanc','blanche','blancs','blanches'],              a:'blanche',   note:'voiture（f）→ blanche（blanc 的陰性例外）' },
 
   // ── 🔗 情境推理（補充 — 購物 / 家庭延伸）──
   { q:"Théo parle de son ami Nessim.\n« Nessim va ___ marché tous les dimanches. »",

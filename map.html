@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLB7 法語地圖</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #07080f;
+  color: #ddd8cc;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  padding-bottom: 48px;
+}
+header {
+  text-align: center;
+  padding: 28px 16px 20px;
+  background: linear-gradient(180deg, #0d1020 0%, transparent 100%);
+}
+.map-title {
+  font-size: 1.8rem;
+  letter-spacing: 3px;
+  color: #f0c060;
+  text-shadow: 0 0 28px rgba(240,192,96,0.55), 0 0 60px rgba(240,192,96,0.18);
+}
+.map-sub {
+  font-size: 0.76rem;
+  color: #445060;
+  margin-top: 7px;
+  letter-spacing: 1px;
+}
+
+/* ── Stats bar ── */
+.stats-bar { max-width: 760px; margin: 0 auto 20px; padding: 0 16px; }
+.stats-inner {
+  background: #0d1020;
+  border: 1px solid #1a2438;
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.stats-label { font-size: 0.72rem; color: #445060; letter-spacing: 1px; text-transform: uppercase; }
+.stats-val   { font-size: 1rem; color: #f0c060; font-weight: 700; }
+.prog-track  { background: #141928; border-radius: 4px; height: 8px; overflow: hidden; margin-bottom: 10px; }
+.prog-fill   { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #2a7a50, #60d090); transition: width 1.2s ease; }
+.chips       { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip        { font-size: 0.68rem; padding: 3px 10px; border-radius: 10px; letter-spacing: 0.5px; }
+.chip-green  { background: #0c2218; color: #60d090; border: 1px solid #1a4a2a; }
+.chip-blue   { background: #0c1828; color: #60a0d0; border: 1px solid #1a3a5a; }
+.chip-yellow { background: #221800; color: #f0c060; border: 1px solid #4a3a10; }
+
+/* ── Legend ── */
+.legend {
+  display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+  padding: 0 16px 18px;
+  font-size: 0.7rem; color: #404858;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-sq   { width: 11px; height: 11px; border-radius: 3px; }
+.sq-on  { background: #1e5035; }
+.sq-off { background: #141820; }
+.sq-a1  { background: #60d090; }
+.sq-a2  { background: #60a0d0; }
+.sq-b1  { background: #d0a060; }
+.sq-b2  { background: #c080d0; }
+
+/* ── Zone ── */
+.zone-wrap  { max-width: 980px; margin: 0 auto 28px; padding: 0 16px; }
+.zone-head  {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px; padding-bottom: 8px;
+  border-bottom: 1px solid;
+}
+.zone-icon  { font-size: 1.05rem; }
+.zone-name  { font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
+.zone-desc  { font-size: 0.65rem; margin-left: auto; }
+.zone-prog  { font-size: 0.68rem; white-space: nowrap; margin-left: 8px; }
+
+.zone-a1 .zone-head { border-color: #1a4030; }
+.zone-a1 .zone-name { color: #60d090; }
+.zone-a1 .zone-desc { color: #2a5040; }
+.zone-a1 .zone-prog { color: #3a8060; }
+
+.zone-a2 .zone-head { border-color: #1a3050; }
+.zone-a2 .zone-name { color: #60a0d0; }
+.zone-a2 .zone-desc { color: #2a4060; }
+.zone-a2 .zone-prog { color: #3a6090; }
+
+.zone-b1 .zone-head { border-color: #382e10; }
+.zone-b1 .zone-name { color: #d0a060; }
+.zone-b1 .zone-desc { color: #584820; }
+.zone-b1 .zone-prog { color: #806030; }
+
+.zone-b2 .zone-head { border-color: #3a1a38; }
+.zone-b2 .zone-name { color: #c080d0; }
+.zone-b2 .zone-desc { color: #582858; }
+.zone-b2 .zone-prog { color: #804880; }
+
+.zone-b2 .tile.unlocked { border-color: #4a1a48; box-shadow: 0 0 10px rgba(180,80,200,0.10); }
+.zone-b2 .tile.unlocked .tile-badge { background: #180018; color: #c080d0; }
+
+/* ── Grid ── */
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+/* ── Tile ── */
+.tile {
+  border-radius: 8px;
+  padding: 10px 9px 9px;
+  cursor: pointer;
+  transition: transform 0.12s, filter 0.15s, box-shadow 0.15s;
+  position: relative;
+  min-height: 92px;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+.tile:active { transform: scale(0.95); }
+
+.tile.unlocked { background: #101828; border: 1px solid transparent; }
+.zone-a1 .tile.unlocked { border-color: #1d5035; box-shadow: 0 0 10px rgba(60,190,100,0.10); }
+.zone-a2 .tile.unlocked { border-color: #1d3a5a; box-shadow: 0 0 10px rgba(60,130,210,0.10); }
+.zone-b1 .tile.unlocked { border-color: #4a3a18; box-shadow: 0 0 10px rgba(210,155,60,0.10); }
+.tile.unlocked:hover { transform: translateY(-2px); filter: brightness(1.18); }
+
+.tile.locked  { background: #090b12; border: 1px solid #12151e; cursor: pointer; }
+.tile.locked:hover { filter: brightness(1.25); }
+
+.tile-icon  { font-size: 1.2rem; margin-bottom: 4px; line-height: 1; }
+.tile-name  { font-size: 0.72rem; font-weight: 600; line-height: 1.3; margin-bottom: 3px; }
+.tile.unlocked .tile-name { color: #ddd8cc; }
+.tile.locked  .tile-name  { color: #2c3340; }
+.tile-hint  { font-size: 0.6rem; line-height: 1.45; margin-top: auto; }
+.tile.unlocked .tile-hint { color: #556070; }
+.tile.locked  .tile-hint  { color: #1c2028; }
+
+.tile-badge {
+  display: inline-block;
+  font-size: 0.57rem;
+  padding: 1px 5px;
+  border-radius: 6px;
+  margin-top: 5px;
+  width: fit-content;
+}
+.zone-a1 .tile.unlocked .tile-badge { background: #0c2218; color: #60d090; }
+.zone-a2 .tile.unlocked .tile-badge { background: #0c1828; color: #60a0d0; }
+.zone-b1 .tile.unlocked .tile-badge { background: #180e00; color: #d0a060; }
+
+.fog-mark { position: absolute; top: 6px; right: 7px; font-size: 0.62rem; opacity: 0.15; }
+
+/* ── Slide-up Panel ── */
+.panel-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 60;
+  align-items: flex-end;
+  justify-content: center;
+}
+.panel-overlay.open { display: flex; }
+.panel {
+  background: #0d1222;
+  border: 1px solid #1e2a40;
+  border-bottom: none;
+  border-radius: 14px 14px 0 0;
+  padding: 20px 22px 36px;
+  max-width: 560px;
+  width: 100%;
+  animation: slideUp 0.2s ease;
+}
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.panel-drag { width: 36px; height: 3px; background: #253048; border-radius: 2px; margin: 0 auto 18px; }
+.panel-head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+.panel-icon-big { font-size: 2rem; }
+.panel-title { font-size: 1.1rem; color: #f0c060; line-height: 1.3; }
+.panel-zone  { font-size: 0.68rem; color: #445060; margin-top: 3px; letter-spacing: 1px; }
+.panel-close { margin-left: auto; background: none; border: none; color: #445060; font-size: 1.3rem; cursor: pointer; padding: 2px 4px; }
+.panel-close:hover { color: #c0c8d8; }
+.panel-status {
+  display: inline-block; font-size: 0.7rem;
+  padding: 3px 10px; border-radius: 8px; margin-bottom: 13px;
+}
+.status-on  { background: #0c2218; color: #60d090; border: 1px solid #1a4a2a; }
+.status-off { background: #181818; color: #445060; border: 1px solid #252525; }
+.panel-body { font-size: 0.82rem; line-height: 1.8; color: #7a8a9a; }
+.panel-body.fogged { opacity: 0.5; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .tile-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .tile { min-height: 82px; padding: 8px 7px; }
+  .tile-icon { font-size: 1rem; }
+  .tile-name { font-size: 0.67rem; }
+  .tile-hint { display: none; }
+  .map-title { font-size: 1.4rem; }
+}
+@media (max-width: 400px) {
+  .tile-grid { grid-template-columns: repeat(2, 1fr); }
+  .zone-desc { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="map-title">🗺 CLB7 法語地圖</div>
+  <div class="map-sub">Carte d'exploration · Français CLB 7 / NCLC B2</div>
+</header>
+
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stats-row">
+      <span class="stats-label">探索進度</span>
+      <span class="stats-val" id="progPct">—</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="progFill" style="width:0%"></div>
+    </div>
+    <div class="chips">
+      <span class="chip chip-green"  id="chipUnlock">—</span>
+      <span class="chip chip-blue"   id="chipLesson">—</span>
+      <span class="chip chip-yellow" id="chipPace">—</span>
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-sq sq-on"></div> 已解鎖</div>
+  <div class="legend-item"><div class="legend-sq sq-off"></div> 未探索</div>
+  <div class="legend-item"><div class="legend-sq sq-a1"></div> A1 基礎</div>
+  <div class="legend-item"><div class="legend-sq sq-a2"></div> A2 進階</div>
+  <div class="legend-item"><div class="legend-sq sq-b1"></div> B1 進階</div>
+  <div class="legend-item"><div class="legend-sq sq-b2"></div> B2 目標</div>
+</div>
+
+<div id="mapRoot"></div>
+
+<div class="panel-overlay" id="overlay" onclick="bgClose(event)">
+  <div class="panel" id="panel">
+    <div class="panel-drag"></div>
+    <div class="panel-head">
+      <div class="panel-icon-big" id="pIcon"></div>
+      <div>
+        <div class="panel-title" id="pTitle"></div>
+        <div class="panel-zone"  id="pZone"></div>
+      </div>
+      <button class="panel-close" onclick="closePanel()">✕</button>
+    </div>
+    <div class="panel-status" id="pStatus"></div>
+    <div class="panel-body"   id="pBody"></div>
+  </div>
+</div>
+
+<script>
+const CURRENT_LESSON = 4;
+const TOTAL_LESSONS  = 35;
+
+const TILES = [
+  // ── A1 ──────────────────────────────────────────────────────────
+  { id:'greetings',    zone:'A1', icon:'👋', name:'Salutations',
+    hint:'Bonjour · Merci · Au revoir', unlocked:true, lesson:1,
+    detail:'Formules de politesse essentielles: bonjour, bonsoir, bonne nuit, merci, de rien, s\'il vous plaît, excusez-moi, pardon. Informel: salut, ciao. Prises de congé: au revoir, à bientôt, à demain, à tout à l\'heure.' },
+
+  { id:'classroom',    zone:'A1', icon:'🏫', name:'Salle de classe',
+    hint:'Répétez · Comment dit-on...', unlocked:true, lesson:1,
+    detail:'Instructions en classe: répétez, lisez, écrivez, ouvrez le livre, levez la main, asseyez-vous. Pour l\'apprenant: je ne comprends pas, pouvez-vous répéter? plus lentement s\'il vous plaît, comment dit-on... en français?' },
+
+  { id:'alphabet',     zone:'A1', icon:'🔤', name:"L'alphabet",
+    hint:'26 lettres · accents · épeler', unlocked:false,
+    detail:'Les 26 lettres et leur prononciation française. Accents: aigu (é), grave (è/à/ù), circonflexe (ê/â/î/ô/û), tréma (ï/ë), cédille (ç). Liaisons et enchaînements. Épeler son prénom et son nom de famille.' },
+
+  { id:'numbers',      zone:'A1', icon:'🔢', name:'Les nombres',
+    hint:'0–100 · Ordinaux', unlocked:true, lesson:1,
+    detail:'Cardinaux 0–100. Particularités: 70–79 (soixante-dix…), 80–99 (quatre-vingts…). Ordinaux: premier/première, deuxième, troisième… vingtième. Utilisation dans les dates et les adresses.' },
+
+  { id:'heure',        zone:'A1', icon:'⏰', name:"L'heure",
+    hint:'Il est deux heures et demie', unlocked:false,
+    detail:'Demander et dire l\'heure: il est… heures, quelle heure est-il? Quart, demie, moins le quart. Format officiel 14h00 vs. familier 2h de l\'après-midi. Horaires de train, rendez-vous, ouverture de magasins.' },
+
+  { id:'nationality',  zone:'A1', icon:'🌍', name:'Nationalités',
+    hint:'Masculin / Féminin / Pluriel', unlocked:true, lesson:1,
+    detail:'Adjectifs de nationalité et accord: canadien/canadienne, français/française, chinois/chinoise, américain/américaine, japonais/japonaise, coréen/coréenne. Règles d\'accord: ajout de -e au féminin, doublement de consonne, formes irrégulières.' },
+
+  { id:'family',       zone:'A1', icon:'👨‍👩‍👧', name:'La famille',
+    hint:'Père · Mère · Frère · Sœur', unlocked:true, lesson:3,
+    detail:'Membres de la famille: père/mère, frère/sœur, fils/fille, grand-père/grand-mère, oncle/tante, cousin/cousine, mari/femme, enfant. Adjectifs possessifs: mon père, ta mère, ses parents. Se présenter: j\'ai deux frères.' },
+
+  { id:'description',  zone:'A1', icon:'🪞', name:'Description physique',
+    hint:'Grand · Brun · Sympa', unlocked:false,
+    detail:'Description physique: grand/petit, gros/mince, blond/brun/roux, les yeux bleus/verts/noirs, jeune/âgé, beau/belle. Caractère: sympa, gentil/gentille, timide, drôle, intelligent/intelligente, sérieux/sérieuse. Il/elle est…' },
+
+  { id:'dates',        zone:'A1', icon:'📅', name:'Dates & saisons',
+    hint:'Lundi · Janvier · Printemps', unlocked:true, lesson:1,
+    detail:'7 jours: lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche. 12 mois. 4 saisons: printemps, été, automne, hiver. Dire la date: Nous sommes le lundi 12 janvier 2026. Mon anniversaire est le… Quelle est la date?' },
+
+  { id:'couleurs',     zone:'A1', icon:'🎨', name:'Les couleurs',
+    hint:'Rouge · Bleu · Vert · Jaune', unlocked:true, lesson:4,
+    detail:'Couleurs et accord: rouge, bleu/bleue, vert/verte, jaune, orange (invariable), blanc/blanche, noir/noire, gris/grise, rose, violet/violette, marron (invariable). Accord avec le nom: une robe bleue, des yeux verts.' },
+
+  { id:'etre-avoir',   zone:'A1', icon:'⚡', name:'Être & Avoir',
+    hint:'Je suis · Tu as · Il est', unlocked:true, lesson:1,
+    detail:'Conjugaison présent de être (je suis, tu es, il/elle est, nous sommes, vous êtes, ils/elles sont) et avoir (j\'ai, tu as, il/elle a, nous avons, vous avez, ils/elles ont). + s\'appeler (je m\'appelle…) et aimer (j\'aime…).' },
+
+  { id:'er-verbs',     zone:'A1', icon:'📝', name:'Verbes en -ER',
+    hint:'Parler · Manger · Habiter', unlocked:true, lesson:2,
+    detail:'Plus de 90% des verbes français. Modèle parler: je parle, tu parles, il parle, nous parlons, vous parlez, ils parlent. Particularités orthographiques: manger (nous mangeons), commencer (nous commençons), acheter (j\'achète).' },
+
+  { id:'articles',     zone:'A1', icon:'📚', name:'Articles',
+    hint:'le · la · un · une · des', unlocked:true, lesson:2,
+    detail:'Articles définis (le, la, l\', les) pour ce qu\'on connaît. Indéfinis (un, une, des) pour l\'introduction. Contractions: du (de+le), au (à+le), des (de+les), aux (à+les). Genre: chaque nom est masculin ou féminin en français.' },
+
+  { id:'pronouns',     zone:'A1', icon:'👤', name:'Pronoms sujets',
+    hint:'Je · Tu · Il · Nous · Vous', unlocked:false,
+    detail:'Je, tu, il, elle, on, nous, vous, ils, elles. Distinction tu (informel/singulier) / vous (formel ou pluriel). On = nous dans la conversation courante. Pronoms toniques: moi, toi, lui, elle, nous, vous, eux, elles.' },
+
+  { id:'questions',    zone:'A1', icon:'❓', name:'Questions simples',
+    hint:'Qui? Quoi? Où? Comment?', unlocked:false,
+    detail:'3 façons: (1) intonation montante, (2) est-ce que + sujet + verbe, (3) inversion verbe-sujet. Mots interrogatifs: qui, que/quoi, où, quand, comment, combien, pourquoi, quel/quelle/quels/quelles.' },
+
+  // ── A2 ──────────────────────────────────────────────────────────
+  { id:'maison',       zone:'A2', icon:'🏠', name:'La maison',
+    hint:'Salon · Cuisine · Chambre', unlocked:false,
+    detail:'Pièces: salon, cuisine, chambre, salle de bain, salle à manger, entrée, couloir, bureau, cave, grenier, balcon. Meubles et électroménager courants. Décrire son logement: un appartement de 3 pièces au 4e étage.' },
+
+  { id:'routine',      zone:'A2', icon:'☀️', name:'Routine quotidienne',
+    hint:'Se lever · Se doucher · Dormir', unlocked:false,
+    detail:'Verbes pronominaux réfléchis: se lever, se laver, se brosser les dents, s\'habiller, se coucher, se reposer. Raconter sa journée typique. Fréquences: tous les jours, le matin, le soir, d\'habitude, toujours, souvent.' },
+
+  { id:'nourriture',   zone:'A2', icon:'🥐', name:'Nourriture & repas',
+    hint:'Café · Baguette · Fromage', unlocked:true, lesson:4,
+    detail:'Aliments et boissons typiques. 3 repas: petit-déjeuner, déjeuner, dîner. Commander au restaurant, exprimer ses goûts. Articles partitifs: du pain, de la soupe, de l\'eau, des légumes. Je mange du fromage. Je ne mange pas de viande.' },
+
+  { id:'transports',   zone:'A2', icon:'🚇', name:'Les transports',
+    hint:'Métro · Bus · Train · Avion', unlocked:false,
+    detail:'Moyens + prépositions: à pied, à vélo, en bus/métro/train/voiture/avion. Acheter un billet, se renseigner sur les horaires, prendre ou manquer un train. Indiquer une destination: je vais à Montréal, je prends le métro ligne 2.' },
+
+  { id:'ville',        zone:'A2', icon:'🏙️', name:'La ville',
+    hint:'Gare · Pharmacie · Banque', unlocked:false,
+    detail:'Lieux en ville: la gare, la poste, la banque, l\'hôpital, la pharmacie, le marché, la mairie, le musée, la bibliothèque, la boulangerie. Donner des directions: tournez à gauche, continuez tout droit, c\'est à 200 mètres, prenez la 2e rue.' },
+
+  { id:'vetements',    zone:'A2', icon:'👗', name:'Vêtements',
+    hint:'Robe · Pantalon · Taille', unlocked:false,
+    detail:'Vêtements: robe, pantalon, chemise, veste, manteau, pull, chaussures, chaussettes, écharpe. Acheter: quelle est votre taille? Je cherche… en quelle couleur? C\'est combien? Ça me va bien / ça ne me va pas, c\'est trop grand.' },
+
+  { id:'meteo',        zone:'A2', icon:'⛅', name:'La météo',
+    hint:'Il fait beau · Il pleut · Il neige', unlocked:false,
+    detail:'Il fait beau/mauvais, chaud/froid, il pleut (pleuvoir), il neige (neiger), il y a du soleil/vent/brouillard/nuages, il fait… degrés. Prévoir: il va pleuvoir demain. Météo québécoise: tempête, verglas, canicule.' },
+
+  { id:'loisirs',      zone:'A2', icon:'⚽', name:'Loisirs & sports',
+    hint:'Football · Cinéma · Lecture', unlocked:true, lesson:3,
+    detail:'Sports, hobbies, activités culturelles. Fréquences: tous les jours, souvent, parfois, rarement, jamais. Exprimer ses préférences: j\'aime/j\'adore/je préfère/je déteste + infinitif. Proposer: on va au cinéma ce soir?' },
+
+  { id:'achats',       zone:'A2', icon:'🛒', name:'Les achats',
+    hint:'Combien ça coûte? · Les prix', unlocked:false,
+    detail:'Quantités: un kilo de, une bouteille de, une douzaine de, 500 grammes de. Les prix: c\'est combien? ça coûte… dollars/euros. Payer: par carte, en espèces. Rendre la monnaie. Au marché, à la boulangerie, au supermarché.' },
+
+  { id:'sante',        zone:'A2', icon:'🏥', name:'Santé & corps',
+    hint:"J'ai mal à la tête · Chez le médecin", unlocked:false,
+    detail:'Parties du corps: la tête, le bras, la jambe, le ventre, le dos, la gorge, le nez, les dents. Exprimer la douleur: j\'ai mal à… Chez le médecin: j\'ai de la fièvre, je tousse, je suis fatigué. Médicaments, ordonnance, pharmacie.' },
+
+  { id:'ir-re',        zone:'A2', icon:'🔧', name:'Verbes -IR & -RE',
+    hint:'Finir · Vendre · Prendre', unlocked:true, lesson:4,
+    detail:'Réguliers -IR: finir (je finis, tu finis, il finit, nous finissons…), choisir, remplir, réfléchir. Réguliers -RE: vendre (je vends, tu vends, il vend, nous vendons…), répondre. Irréguliers: prendre, mettre, partir, sortir, venir.' },
+
+  { id:'passe',        zone:'A2', icon:'⏮️', name:'Passé composé',
+    hint:"J'ai mangé · Je suis allé(e)", unlocked:false,
+    detail:'Pour les actions terminées. Auxiliaire avoir + participe passé: j\'ai mangé, tu as fini, il a vendu. Auxiliaire être: 14 verbes (aller, venir, partir, arriver, naître, mourir, monter, descendre, rester, tomber…) + accord du participe.' },
+
+  { id:'imparfait',    zone:'A2', icon:'🌊', name:"L'imparfait",
+    hint:"C'était · Je mangeais · Il faisait", unlocked:false,
+    detail:'Pour descriptions et habitudes passées. Formation: radical nous présent + -ais/-ais/-ait/-ions/-iez/-aient. Contraste passé composé (action précise) vs. imparfait (contexte, habitude). Quand j\'étais enfant, je jouais…' },
+
+  { id:'futur-proche', zone:'A2', icon:'🔮', name:'Futur proche',
+    hint:'Je vais partir · Tu vas finir', unlocked:false,
+    detail:'Aller (conjugué au présent) + infinitif pour le futur immédiat ou prévu. Je vais partir ce soir, elle va travailler demain. Négation: je ne vais pas… Interrogation: est-ce que tu vas venir? Vs. futur simple pour projets lointains.' },
+
+  { id:'negation',     zone:'A2', icon:'🚫', name:'Négation & quantités',
+    hint:'Ne...pas · Rien · Jamais', unlocked:false,
+    detail:'Négations: ne…pas (général), ne…jamais (never), ne…plus (no more), ne…rien (nothing), ne…personne (nobody), ne…que (only). Partitifs à la forme négative: du pain → pas de pain. Quantités: beaucoup de, peu de, assez de, trop de.' },
+
+  // ── B1 ──────────────────────────────────────────────────────────
+  { id:'travail',      zone:'B1', icon:'💼', name:'Travail & emploi',
+    hint:'CV · Entretien · Bureau', unlocked:false,
+    detail:'Professions et milieu de travail. Chercher un emploi: CV, lettre de motivation, entretien d\'embauche. Parler de son expérience et ses compétences. Vocabulaire: réunion, collègue, patron, délai, congé, salaire, contrat.' },
+
+  { id:'etudes',       zone:'B1', icon:'🎓', name:'Études & école',
+    hint:'Université · Cours · Examen', unlocked:false,
+    detail:'Système scolaire (maternelle → université). Matières, cours, examens, résultats, diplômes. Décrire son parcours académique. Difficultés et succès. Différences entre systèmes français et québécois (CÉGEP, université).' },
+
+  { id:'voyages',      zone:'B1', icon:'✈️', name:'Voyages & tourisme',
+    hint:'Hôtel · Musée · Office de tourisme', unlocked:false,
+    detail:'Planifier un voyage: réserver un hôtel, acheter des billets, demander des informations touristiques, visiter des sites. Raconter un voyage passé en détail. Parler de différentes destinations francophones.' },
+
+  { id:'actualites',   zone:'B1', icon:'📰', name:'Actualités & société',
+    hint:'Nouvelles · Politique · Environnement', unlocked:false,
+    detail:'Comprendre et discuter des nouvelles. Vocabulaire: politique, économie, environnement, société, manifestation, loi, gouvernement. Rapporter un événement, exprimer une opinion nuancée sur des sujets d\'actualité.' },
+
+  { id:'culture',      zone:'B1', icon:'🗼', name:'Culture francophone',
+    hint:'Paris · Québec · Gastronomie', unlocked:false,
+    detail:'Culture, histoire et société françaises et québécoises. Littérature, cinéma, musique francophones. Fêtes et traditions (Noël, Pâques, la Saint-Jean au Québec, le 14 juillet en France). Différences culturelles à travers la francophonie.' },
+
+  { id:'opinions',     zone:'B1', icon:'💬', name:'Opinions & débats',
+    hint:'Je pense que · Selon moi', unlocked:false,
+    detail:'Exprimer et défendre ses opinions: je pense que, je crois que, selon moi, à mon avis, il me semble que. Nuancer: cependant, néanmoins, pourtant, d\'un côté… de l\'autre. Concéder: c\'est vrai que, certes, mais…' },
+
+  { id:'problemes',    zone:'B1', icon:'🔍', name:'Résoudre des problèmes',
+    hint:'Se plaindre · Démarches admin.', unlocked:false,
+    detail:'Situations problématiques: faire une réclamation, se plaindre poliment, faire des démarches administratives. Formulaires, services publics, assurances. Proposer des solutions, négocier, demander de l\'aide. Au téléphone avec un service.' },
+
+  { id:'experiences',  zone:'B1', icon:'📖', name:'Raconter une expérience',
+    hint:"Hier j'ai... C'était incroyable", unlocked:false,
+    detail:'Narration détaillée: combiner passé composé et imparfait, situer dans le temps (d\'abord, ensuite, puis, finalement), décrire des émotions et des réactions. Raconter une anecdote, un événement marquant, un souvenir d\'enfance.' },
+
+  { id:'lecture',      zone:'B1', icon:'📄', name:'Compréhension écrite',
+    hint:'Articles · Courriels · Documents', unlocked:false,
+    detail:'Lire et comprendre des textes de longueur moyenne: articles de presse, courriels formels et informels, petites annonces, modes d\'emploi, programmes, menus, billets de train. Identifier l\'idée principale et les détails importants.' },
+
+  { id:'rediger',      zone:'B1', icon:'✍️', name:'Rédiger en français',
+    hint:'Courriels formels · Lettres', unlocked:false,
+    detail:'Écrire des courriels formels (Madame, Monsieur, Veuillez agréer…) et informels. Lettres, messages structurés. Connecteurs logiques: d\'abord, ensuite, de plus, enfin, par conséquent, cependant. Cohérence et longueur appropriée.' },
+
+  { id:'futur',        zone:'B1', icon:'🌟', name:'Futur & conditionnel',
+    hint:'Je parlerai · Je voudrais', unlocked:false,
+    detail:'Futur simple: radical (infinitif pour la plupart) + -ai/-as/-a/-ons/-ez/-ont. Irréguliers: être (ser-), avoir (aur-), aller (ir-), faire (fer-), venir (viendr-), pouvoir (pourr-). Conditionnel présent: politesse, hypothèses (si + imparfait + cond.).' },
+
+  { id:'subjonctif',   zone:'B1', icon:'🌀', name:'Subjonctif présent',
+    hint:'Il faut que · Bien que', unlocked:false,
+    detail:'Subjonctif après: il faut que, vouloir que, bien que, pour que, à moins que, avant que, bien que. Formation: radical ils présent + -e/-es/-e/-ions/-iez/-ent. Irréguliers importants: être (soit), avoir (ait), aller (aille), faire (fasse).' },
+
+  { id:'relatifs',     zone:'B1', icon:'🔗', name:'Pronoms relatifs',
+    hint:'qui · que · dont · où', unlocked:false,
+    detail:'Relier deux propositions. Qui (sujet): l\'homme qui parle. Que (COD): le livre que je lis. Dont (COI/possession): le prof dont je parle / la maison dont il est fier. Où (lieu ou temps): la ville où j\'habite, le jour où il est arrivé.' },
+
+  { id:'discours',     zone:'B1', icon:'💭', name:'Discours indirect',
+    hint:"Il a dit que · Elle m'a demandé", unlocked:false,
+    detail:'Rapporter des paroles: changement de pronoms et de temps (présent → imparfait, PC → plus-que-parfait). Verbes introducteurs: dire, demander, répondre, expliquer, affirmer. Interrogation indirecte: il demande si/quand/comment/pourquoi…' },
+
+  { id:'idiomes',      zone:'B1', icon:'🎭', name:'Expressions idiomatiques',
+    hint:'Avoir le cafard · Casser les pieds', unlocked:false,
+    detail:'Expressions figées du français courant: avoir le cafard (être déprimé), casser les pieds (agacer), avoir du pain sur la planche (beaucoup à faire), poser un lapin (ne pas se présenter), il pleut des cordes (pleuvoir très fort), coûter les yeux de la tête (très cher).' },
+
+  // ── B2 ──────────────────────────────────────────────────────────
+  { id:'pluperfect',   zone:'B2', icon:'⏪', name:'Plus-que-parfait',
+    hint:"J'avais mangé · Elle était partie", unlocked:false,
+    detail:'Pour ce qui s\'était passé avant un autre événement passé. Formation: avoir/être à l\'imparfait + participe passé. J\'avais déjà mangé quand il est arrivé. Souvent combiné avec le passé composé ou l\'imparfait dans un récit.' },
+
+  { id:'cond-passe',   zone:'B2', icon:'😔', name:'Conditionnel passé',
+    hint:"J'aurais dû · Tu aurais pu", unlocked:false,
+    detail:'Pour les regrets, reproches et hypothèses passées. Formation: avoir/être au conditionnel + participe passé. J\'aurais dû partir plus tôt. Si j\'avais su, je n\'aurais pas accepté. Système hypothétique complet: si + PQP + cond. passé.' },
+
+  { id:'subj-passe',   zone:'B2', icon:'🌀', name:'Subjonctif passé',
+    hint:"Bien qu'il soit parti · Avant qu'elle ait fini", unlocked:false,
+    detail:'Subjonctif passé pour des actions antérieures dans des propositions subordonnées. Formation: avoir/être au subjonctif présent + participe passé. Je suis content qu\'il soit venu. Bien qu\'elle ait travaillé dur, elle n\'a pas réussi.' },
+
+  { id:'passe-simple', zone:'B2', icon:'📜', name:'Passé simple',
+    hint:'Il parla · Elle fut · Ils vinrent', unlocked:false,
+    detail:'Temps littéraire utilisé dans les textes écrits formels, la littérature et l\'histoire. Pas utilisé à l\'oral. Reconnaître les formes: il parla, elle finit, il vint, elle fut, il eut. Remplacé par le passé composé dans la langue courante.' },
+
+  { id:'concordance',  zone:'B2', icon:'🔄', name:'Concordance des temps',
+    hint:'Discours direct vs indirect avancé', unlocked:false,
+    detail:'Harmonisation des temps dans les phrases complexes et le discours indirect. Présent → imparfait, futur → conditionnel, passé composé → plus-que-parfait. Il pensait que tu viendrais. Elle croyait qu\'il avait déjà terminé.' },
+
+  { id:'passive',      zone:'B2', icon:'🔃', name:'Voix passive',
+    hint:'La lettre a été écrite par Marie', unlocked:false,
+    detail:'Voix passive: sujet + être (temps voulu) + participe passé (accordé) + par + agent. Le gâteau a été mangé par les enfants. Se faire + infinitif: il s\'est fait renvoyer. Passive dans les textes formels, journalistiques, scientifiques.' },
+
+  { id:'gerondif',     zone:'B2', icon:'🌊', name:'Gérondif & part. présent',
+    hint:'En mangeant · Tout en parlant', unlocked:false,
+    detail:'Gérondif (en + -ant): simultanéité, manière, condition. Il écoute de la musique en travaillant. Participe présent: adjectif verbal. Une femme souriante. Différence gérondif / participe présent. Emplois stylistiques dans les textes avancés.' },
+
+  { id:'pron-avances', zone:'B2', icon:'🔗', name:'Pronoms avancés',
+    hint:'y · en · ordre double · lequel', unlocked:false,
+    detail:'Pronoms y (lieu, COI) et en (partitif, COI de). J\'y pense. Il en a besoin. Ordre des pronoms doubles: me/te/se/nous/vous + le/la/les + lui/leur + y + en. Pronoms relatifs composés: lequel, auquel, duquel. Pronoms démonstratifs: celui-ci, celle-là.' },
+
+  { id:'registres',    zone:'B2', icon:'🎭', name:'Registres de langue',
+    hint:'Soutenu · Courant · Familier · Argot', unlocked:false,
+    detail:'Les 4 registres: soutenu (textes littéraires), courant (communication quotidienne formelle), familier (amis, famille), argot (verlan, expressions populaires). Adapter son expression au contexte. Ne pas mélanger les registres. Exemples: voiture/bagnole, manger/bouffer, très/vachement.' },
+
+  { id:'connecteurs',  zone:'B2', icon:'🧵', name:'Connecteurs avancés',
+    hint:'Néanmoins · Or · Quant à · Bien que', unlocked:false,
+    detail:'Connecteurs logiques de niveau avancé. Opposition: or, néanmoins, toutefois, en revanche. Concession: bien que, quoique, malgré. Cause: vu que, étant donné que, attendu que. Conséquence: si bien que, de sorte que, au point que. Transition: quant à, pour ce qui est de.' },
+
+  { id:'argumentation',zone:'B2', icon:'✍️', name:'Argumentation écrite',
+    hint:'Thèse · Antithèse · Synthèse', unlocked:false,
+    detail:'Rédiger un texte argumentatif structuré (plan dialectique: thèse, antithèse, synthèse). Introduction avec accroche, développement avec exemples concrets, conclusion avec ouverture. Vocabulaire pour introduire arguments, nuancer, concéder, réfuter. Longueur 300–500 mots.' },
+
+  { id:'textes-longs', zone:'B2', icon:'📰', name:'Textes complexes',
+    hint:'Articles · Essais · Rapports', unlocked:false,
+    detail:'Lire et comprendre des textes longs et complexes sur des sujets abstraits ou spécialisés: éditoriaux, essais, rapports, textes littéraires, articles académiques. Identifier le raisonnement implicite, l\'ironie, les nuances de sens. Vocabulaire étendu et expressions figées.' },
+
+  { id:'vocab-pro',    zone:'B2', icon:'💡', name:'Vocabulaire avancé',
+    hint:'Champs lexicaux · Nuances · Synonymes', unlocked:false,
+    detail:'Vocabulaire riche et précis pour des sujets abstraits: économie, politique, environnement, société, philosophie, sciences. Maîtrise des nuances entre synonymes (demander / solliciter / exiger / réclamer). Préfixes et suffixes pour enrichir le vocabulaire.' },
+
+  { id:'nuances',      zone:'B2', icon:'🎨', name:'Nuances & subtilités',
+    hint:'Ironie · Implication · Sous-entendu', unlocked:false,
+    detail:'Comprendre et utiliser les nuances du français: ironie, humour, litote, euphémisme, hyperbole. Inférences et implicites culturels. Distinguer le sens littéral du sens figuré. Expressions polysémiques. Lecture entre les lignes dans les textes et conversations.' },
+
+  { id:'autonomie',    zone:'B2', icon:'🏆', name:'Autonomie langagière',
+    hint:'CLB7 · Communiquer sans effort', unlocked:false,
+    detail:'Niveau CLB 7 / B2 atteint: communiquer avec aisance et spontanéité avec des locuteurs natifs. Comprendre l\'essentiel de sujets complexes. S\'exprimer de façon claire et détaillée. Expliquer un point de vue en donnant les avantages et inconvénients. Vous êtes maintenant autonome en français.' },
+];
+
+const ZONES = [
+  { key:'A1', icon:'🌿', name:'A1 — Village de départ', desc:'基礎法語 · Débutant' },
+  { key:'A2', icon:'🏙️', name:'A2 — La Ville',          desc:'進階日常 · Élémentaire' },
+  { key:'B1', icon:'🗼', name:'B1 — La Métropole',       desc:'中階流利 · Intermédiaire' },
+  { key:'B2', icon:'🏆', name:'B2 — La Capitale',        desc:'CLB7 目標達成 · Avancé' },
+];
+
+function buildMap() {
+  const total    = TILES.length;
+  const unlocked = TILES.filter(t => t.unlocked).length;
+  const pct      = Math.round(unlocked / total * 100);
+
+  document.getElementById('progPct').textContent  = pct + '%';
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('chipUnlock').textContent = `已解鎖 ${unlocked} / ${total} 個區域`;
+  document.getElementById('chipLesson').textContent = `第 ${CURRENT_LESSON} 課 / 預計 ${TOTAL_LESSONS} 課`;
+
+  const lessonPct = Math.round(CURRENT_LESSON / TOTAL_LESSONS * 100);
+  const paceEl = document.getElementById('chipPace');
+  if (pct > lessonPct + 5) {
+    paceEl.textContent = '🚀 進度超前'; paceEl.className = 'chip chip-blue';
+  } else if (pct < lessonPct - 5) {
+    paceEl.textContent = '⚠ 需要加速'; paceEl.className = 'chip chip-yellow';
+  } else {
+    paceEl.textContent = '✓ 節奏正常'; paceEl.className = 'chip chip-green';
+  }
+
+  const root = document.getElementById('mapRoot');
+  ZONES.forEach(zone => {
+    const zoneTiles = TILES.filter(t => t.zone === zone.key);
+    const zoneOn    = zoneTiles.filter(t => t.unlocked).length;
+
+    const wrap = document.createElement('div');
+    wrap.className = `zone-wrap zone-${zone.key.toLowerCase()}`;
+
+    wrap.innerHTML = `
+      <div class="zone-head">
+        <span class="zone-icon">${zone.icon}</span>
+        <span class="zone-name">${zone.name}</span>
+        <span class="zone-desc">${zone.desc}</span>
+        <span class="zone-prog">${zoneOn}/${zoneTiles.length}</span>
+      </div>
+      <div class="tile-grid" id="grid-${zone.key}"></div>
+    `;
+
+    root.appendChild(wrap);
+
+    const grid = document.getElementById('grid-' + zone.key);
+    zoneTiles.forEach(tile => {
+      const el = document.createElement('div');
+      el.className = `tile ${tile.unlocked ? 'unlocked' : 'locked'}`;
+      el.onclick = () => openPanel(tile);
+      el.innerHTML = `
+        <div class="tile-icon">${tile.icon}</div>
+        <div class="tile-name">${tile.name}</div>
+        <div class="tile-hint">${tile.hint}</div>
+        ${tile.unlocked
+          ? `<div class="tile-badge">第 ${tile.lesson} 課</div>`
+          : `<span class="fog-mark">〰</span>`}
+      `;
+      grid.appendChild(el);
+    });
+  });
+}
+
+const ZONE_LABELS = {
+  A1: 'A1 — 基礎法語 · Débutant',
+  A2: 'A2 — 進階日常 · Élémentaire',
+  B1: 'B1 — 中階流利 · Intermédiaire',
+  B2: 'B2 — CLB7 目標 · Avancé',
+};
+
+function openPanel(tile) {
+  document.getElementById('pIcon').textContent  = tile.icon;
+  document.getElementById('pTitle').textContent = tile.name;
+  document.getElementById('pZone').textContent  = ZONE_LABELS[tile.zone];
+
+  const statusEl = document.getElementById('pStatus');
+  const bodyEl   = document.getElementById('pBody');
+
+  if (tile.unlocked) {
+    statusEl.textContent = `✓ 已解鎖 — 第 ${tile.lesson} 課`;
+    statusEl.className   = 'panel-status status-on';
+    bodyEl.className     = 'panel-body';
+  } else {
+    statusEl.textContent = '◌ 未探索 — 尚未開圖';
+    statusEl.className   = 'panel-status status-off';
+    bodyEl.className     = 'panel-body fogged';
+  }
+  bodyEl.textContent = tile.detail;
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closePanel() {
+  document.getElementById('overlay').classList.remove('open');
+}
+
+function bgClose(e) {
+  if (e.target === document.getElementById('overlay')) closePanel();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+
+buildMap();
+</script>
+</body>
+</html>
