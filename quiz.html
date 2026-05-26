@@ -244,6 +244,41 @@
     .drill-back  { background: #f0f0ee; color: #555; width: 100%; padding: 10px; border-radius: 10px;
       border: 1.5px solid #ddd; font-size: 0.84rem; font-weight: 600; cursor: pointer; }
 
+    /* ── 疑慮旗標按鈕 ── */
+    .drill-flag-btn {
+      width: 20px; height: 20px; border-radius: 50%;
+      border: 2px solid #ddd; background: #fafaf8; cursor: pointer;
+      flex-shrink: 0; transition: all 0.15s; padding: 0;
+    }
+    .drill-flag-btn:hover { border-color: #e74c3c; background: #fff0f0; }
+    .drill-flag-btn.flagged { border-color: #e74c3c; background: #e74c3c; }
+
+    /* ── 練習回饋 ── */
+    .drill-feedback-section {
+      margin-top: 18px; text-align: left;
+      border-top: 1px solid #f0f0ee; padding-top: 14px;
+    }
+    .drill-feedback-label {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: #bbb; margin-bottom: 8px;
+    }
+    .drill-feedback-area {
+      width: 100%; border: 1.5px solid #e0e0de; border-radius: 10px;
+      padding: 10px 14px; font-size: 0.88rem; font-family: inherit;
+      resize: vertical; min-height: 80px; outline: none;
+      background: #fafaf8; box-sizing: border-box;
+    }
+    .drill-feedback-area:focus { border-color: #2c2c2c; background: #fff; }
+    .drill-feedback-save {
+      background: #2c2c2c; color: #fff; border: none; border-radius: 8px;
+      padding: 8px 16px; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    }
+.drill-flagged-list { margin-bottom: 12px; }
+    .drill-flagged-item {
+      font-size: 0.82rem; color: #666; padding: 5px 0;
+      border-bottom: 1px solid #f0f0ee; line-height: 1.4;
+    }
+
     /* toast */
     .toast {
       position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
@@ -561,6 +596,118 @@ const BANK = [
   { lesson:4, type:'choose', q:'「Je _____ du poisson. (acheter)」填哪個？',  hint:'je 單數',       a:'achète',    aNote:'acheter je → achète（e → è 在 je/tu/il/ils）' },
   { lesson:4, type:'choose', q:'「我要一瓶橄欖油」的正確法文？',       hint:'de + 量詞',            a:'une bouteille d\'huile d\'olive', aNote:'數量詞後加 de（去冠詞）：une bouteille de + 名詞；huile 以母音開頭 → d\'' },
   { lesson:4, type:'choose', q:'carte bleue 在法國是什麼？',           hint:'不是信用卡',            a:'簽帳卡（debit card）', aNote:'carte bleue / carte bancaire = 簽帳卡，法國刷卡為主，少用現金' },
+
+  // ── 作業本補充：Unité 1 — 國籍形容詞 ──
+  { lesson:1, type:'gender', q:'suisse → 女性形？',       hint:'注意：不變！', a:'suisse',       aNote:'suisse 男女同形（la Suisse 瑞士）' },
+  { lesson:1, type:'gender', q:'congolais → 女性形？',    hint:'-ais → ?',     a:'congolaise',   aNote:'-ais → -aise（du Congo）' },
+  { lesson:1, type:'gender', q:'tunisien → 女性形？',     hint:'-ien → ?',     a:'tunisienne',   aNote:'-ien → -ienne（de Tunisie）' },
+  { lesson:1, type:'gender', q:'sénégalais → 女性形？',   hint:'-ais → ?',     a:'sénégalaise',  aNote:'-ais → -aise（du Sénégal）' },
+  { lesson:1, type:'gender', q:'allemand → 女性形？',     hint:'+e',           a:'allemande',    aNote:'-and → -ande（d 開始發音）' },
+  { lesson:1, type:'gender', q:'argentin → 女性形？',     hint:'+e',           a:'argentine',    aNote:'-in → -ine（de Argentine）' },
+  { lesson:1, type:'gender', q:'espagnol → 女性形？',     hint:'+e',           a:'espagnole',    aNote:'-ol → -ole（d\'Espagne）' },
+  { lesson:1, type:'gender', q:'polonais → 女性形？',     hint:'-ais → ?',     a:'polonaise',    aNote:'-ais → -aise（de Pologne）' },
+
+  // ── 作業本補充：Unité 1 — quel/quelle/quels/quelles ──
+  { lesson:1, type:'fill', q:'Tu habites à _____ adresse ? (quel)',    hint:'adresse = 陰性',      a:'quelle',   aNote:'adresse（f, sg）→ quelle' },
+  { lesson:1, type:'fill', q:'Vous aimez _____ artistes ? (quel)',     hint:'artistes = 複陽',     a:'quels',    aNote:'artistes（m, pl）→ quels' },
+  { lesson:1, type:'fill', q:'_____ langues tu parles ? (quel)',       hint:'langues = 複陰',      a:'Quelles',  aNote:'langues（f, pl）→ quelles' },
+  { lesson:1, type:'fill', q:'_____ est la date de naissance ? (quel)', hint:'date = 陰性',        a:'Quelle',   aNote:'date（f, sg）→ quelle（問陰性單數）' },
+  { lesson:1, type:'choose', q:'「你住在哪個城市？」中 quel 要變成？', hint:'ville = 陰性',        a:'quelle',   aNote:'ville（f）→ quelle ville（陰性單數）' },
+
+  // ── 作業本補充：Unité 2 — -er 動詞 ──
+  { lesson:2, type:'fill', q:'Elle _____ la radio chaque matin. (écouter)',       hint:'elle + -er', a:'écoute',    aNote:'écouter → elle écoute' },
+  { lesson:2, type:'fill', q:'Vous _____ des films français ? (regarder)',         hint:'vous + -er', a:'regardez',  aNote:'regarder → vous regardez（-ez）' },
+  { lesson:2, type:'fill', q:'Les amis _____ le ski. (détester)',                  hint:'ils + -er',  a:'détestent', aNote:'détester → ils détestent（-ent 不發音）' },
+  { lesson:2, type:'fill', q:'Je _____ le dimanche au parc. (marcher)',            hint:'je + -er',   a:'marche',    aNote:'marcher → je marche' },
+
+  // ── 作業本補充：Unité 2 — 所有格 notre/nos/votre/vos/leur/leurs ──
+  { lesson:2, type:'fill', q:'Nous avons trois enfants. Ce sont _____ enfants.',   hint:'our + 複數', a:'nos',    aNote:'nous → nos（複數）；單數用 notre' },
+  { lesson:2, type:'fill', q:'Vous avez deux filles. Ce sont _____ filles.',       hint:'your + 複數',a:'vos',    aNote:'vous → vos（複數）；單數用 votre' },
+  { lesson:2, type:'fill', q:'Elles ont des amis. Ce sont _____ amis.',            hint:'their + 複數',a:'leurs',  aNote:'ils/elles → leurs（複數）；單數用 leur' },
+  { lesson:2, type:'fill', q:'On a un appartement. C\'est _____ appartement.',     hint:'our + 單數', a:'notre',  aNote:'nous/on → notre（單數）；複數用 nos' },
+  { lesson:2, type:'choose', q:'leur / leurs：「Ce sont _____ enfants.」填哪個？',  hint:'enfants 複數', a:'leurs', aNote:'leur（單數）vs leurs（複數）跟名詞的單複數走' },
+
+  // ── 作業本補充：Unité 2 — 職業陰陽 ──
+  { lesson:2, type:'gender', q:'professeur → 女性形？', hint:'加 e', a:'professeure', aNote:'professeur → professeure（直接加 e，不是 euse）' },
+  { lesson:2, type:'gender', q:'étudiant → 女性形？',   hint:'+e',   a:'étudiante',   aNote:'étudiant → étudiante（+e）' },
+
+  // ── 作業本補充：Unité 3 — 部分冠詞填空 ──
+  { lesson:3, type:'fill', q:'Nous mangeons _____ viande au restaurant.',  hint:'viande = 陰性，非特定量',  a:'de la',  aNote:'viande（f）→ de la viande（部分冠詞）' },
+  { lesson:3, type:'fill', q:'Tu commandes _____ eau, s\'il te plaît ?',   hint:'eau = 陰性，母音開頭',     a:"de l'",  aNote:"eau（f, 母音）→ de l'eau" },
+  { lesson:3, type:'fill', q:'Je mange beaucoup _____ pâtes.',             hint:'beaucoup de + ?',          a:'de',     aNote:'beaucoup de + 名詞（de 不加冠詞）' },
+  { lesson:3, type:'fill', q:'Il y a un peu _____ sel dans la soupe.',     hint:'un peu de + ?',            a:'de',     aNote:'un peu de + 名詞（de 不加冠詞）' },
+  { lesson:3, type:'fill', q:'Jean-Pierre aime les pâtes, il mange beaucoup _____ pâtes.', hint:'beaucoup', a:'de',  aNote:'量詞後直接接 de（不用冠詞）：beaucoup de pâtes' },
+
+  // ── 作業本補充：Unité 4 — c\'est / il est / elle est ──
+  { lesson:4, type:'choose', q:'「_____ un touriste」填 C\'est 還是 Il est？',      hint:'後有冠詞 un', a:"C'est",  aNote:"C'est + un/une/des + nom；Il est + adjectif 或職業（不加冠詞）" },
+  { lesson:4, type:'choose', q:'「_____ allemand.」填 C\'est 還是 Il est？',        hint:'後有形容詞', a:'Il est', aNote:"Il est + adjectif（不加冠詞）；C'est + article + nom" },
+  { lesson:4, type:'fill',   q:'Rouen ? _____ une ville française.',                hint:"c'est + 冠詞 + nom", a:"C'est", aNote:"C'est + une ville（有冠詞 → c'est）" },
+  { lesson:4, type:'fill',   q:'L\'artiste s\'appelle Snek et _____ grenoblois.',   hint:'形容詞，無冠詞', a:'il est', aNote:"il est + adjectif（直接形容詞，不加冠詞）" },
+  { lesson:4, type:'trans',  q:'巴黎是法國的一個城市。',  hint:"C'est / une", a:"Paris, c'est une ville française.", aNote:"C'est + article + nom；Paris（專有名詞）通常放主語", askClaude:true },
+
+  // ── 作業本補充：Unité 4 — 頻率副詞 ──
+  { lesson:4, type:'choose', q:'souvent / toujours / jamais，哪個是「總是」？', hint:'always', a:'toujours', aNote:'toujours = always；souvent = often；jamais（ne...jamais）= never' },
+  { lesson:4, type:'fill',   q:'On ne va _____ au musée le mardi.',               hint:'never',  a:'jamais',   aNote:'ne...jamais = never（jamais 放動詞後面）' },
+  { lesson:4, type:'fill',   q:'Jonathan va à la bibliothèque lundi, mardi et mercredi. Il y va _____ .', hint:'always', a:'toujours', aNote:'三天都去 = toujours（always）' },
+  { lesson:4, type:'trans',  q:'我從不去看展覽。',  hint:'ne...jamais',  a:'Je ne vais jamais aux expositions.', aNote:'ne...jamais + lieu：aux expositions（à + les）', askClaude:true },
+
+  // ── 作業本補充：Unité 4 — 交通方式介系詞 ──
+  { lesson:4, type:'choose', q:'「騎腳踏車」用哪個介系詞？',          hint:'非機動交通', a:'à vélo',   aNote:'非機動：à pied / à vélo / à trottinette；機動：en bus / en voiture / en train' },
+  { lesson:4, type:'choose', q:'「步行」用哪個介系詞？',              hint:'no vehicle', a:'à pied',   aNote:'à pied = on foot（步行）' },
+  { lesson:4, type:'fill',   q:'Je vais à l\'école _____ bus.',       hint:'機動交通',   a:'en',       aNote:'en + 機動交通：en bus / en voiture / en métro / en train' },
+  { lesson:4, type:'choose', q:'en bus / en vélo / à vélo，哪個正確？', hint:'vélo 用哪個介系詞', a:'à vélo', aNote:'vélo（非機動）→ à vélo；機動車輛用 en' },
+
+  // ── 第5課：商店 · 不定冠詞 · 餐廳 · -ir 動詞 · faire ──
+
+  // fill：-ir 動詞變位
+  { lesson:5, type:'fill', q:'Tu _____ le dessert. (choisir)',               hint:'tu → -is',         a:'choisis',      aNote:'choisir：tu → choisis（-ir 動詞，tu 去 -ir 加 -is）' },
+  { lesson:5, type:'fill', q:'Il _____ son repas. (choisir)',                hint:'il → -it',         a:'choisit',      aNote:'choisir：il → choisit（加 -it）' },
+  { lesson:5, type:'fill', q:'Nous _____ le menu. (choisir)',               hint:'nous → -issons',   a:'choisissons',  aNote:'choisir：nous → choisissons（加 -iss- 是 -ir 動詞特徵）' },
+  { lesson:5, type:'fill', q:'Vous _____ une formule ? (choisir)',          hint:'vous → -issez',    a:'choisissez',   aNote:'choisir：vous → choisissez' },
+  { lesson:5, type:'fill', q:'Ils _____ le plat du jour. (choisir)',        hint:'ils → -issent',    a:'choisissent',  aNote:'choisir：ils → choisissent' },
+  { lesson:5, type:'fill', q:'Je _____ mon assiette. (finir)',              hint:'je → -is',         a:'finis',        aNote:'finir：je → finis（-ir 動詞，je 去 -ir 加 -is）' },
+  { lesson:5, type:'fill', q:'Nous _____ le dessert. (finir)',              hint:'nous → -issons',   a:'finissons',    aNote:'finir：nous → finissons' },
+  { lesson:5, type:'fill', q:'Elles ne _____ pas leur assiette. (finir)',   hint:'elles → -issent',  a:'finissent',    aNote:'finir：elles → finissent' },
+
+  // fill：faire + manger
+  { lesson:5, type:'fill', q:'Vous _____ la cuisine ce soir ? (faire)',     hint:'vous = faites !',  a:'faites',       aNote:'faire：vous → faites（不規則，非 *faisez）' },
+  { lesson:5, type:'fill', q:'Nous _____ les courses samedi. (faire)',      hint:'nous → faisons',   a:'faisons',      aNote:'faire：nous → faisons' },
+  { lesson:5, type:'fill', q:'Ils _____ du sport. (faire)',                 hint:'ils → font',       a:'font',         aNote:'faire：ils → font（不規則）' },
+  { lesson:5, type:'fill', q:'Nous _____ au restaurant. (manger)',          hint:'nous → -geons !',  a:'mangeons',     aNote:'manger：nous → mangeons（保留 e，防止 g 硬音）' },
+
+  // fill：不定冠詞
+  { lesson:5, type:'fill', q:'Je mange _____ poisson. (不定量，陽性)',      hint:'de + le = ?',      a:'du',           aNote:'du = de + le；poisson（m）→ du poisson（不確定數量）' },
+  { lesson:5, type:'fill', q:'Elle mange _____ viande. (不定量，陰性)',     hint:'de la',            a:'de la',        aNote:'viande（f）→ de la viande（不定量冠詞）' },
+  { lesson:5, type:'fill', q:'Il boit _____ eau. (不定量，母音)',           hint:'de l\'',           a:'de l\'',       aNote:'eau 以母音開頭 → de l\'eau（縮音）' },
+  { lesson:5, type:'fill', q:'Je mange _____ pâtes. (不定量，複數)',        hint:'des',              a:'des',          aNote:'pâtes（f, pl）→ des pâtes（不定量複數）' },
+  { lesson:5, type:'fill', q:'Je ne mange pas _____ viande. (否定)',        hint:'否定句冠詞變化',   a:'de',           aNote:'否定句：pas de + 名詞（du/de la/des 全換成 de）' },
+  { lesson:5, type:'fill', q:'Il n\'y a pas _____ dessert. (否定)',         hint:'否定冠詞',         a:'de',           aNote:'否定句 → pas de dessert（不管原冠詞是什麼）' },
+
+  // trans：餐廳點餐
+  { lesson:5, type:'trans', q:'今日主菜是什麼？',                            hint:'plat du jour / quel', a:'Quel est le plat du jour ?', aNote:'quel（m, sg）+ est + le plat du jour', askClaude:true },
+  { lesson:5, type:'trans', q:'我要白汁小牛肉。（口語點餐）',                hint:'Pour moi',            a:'Pour moi, la blanquette de veau.', aNote:'Pour moi = 給我；口語點餐不用動詞', askClaude:true },
+  { lesson:5, type:'trans', q:'請給我帳單。',                                hint:'l\'addition',         a:'L\'addition, s\'il vous plaît.', aNote:'l\'addition（f）= 帳單；正式場合用 s\'il vous plaît', askClaude:true },
+  { lesson:5, type:'trans', q:'請給我一壺自來水。',                          hint:'carafe / plaît',      a:'Une carafe d\'eau, s\'il vous plaît.', aNote:'carafe d\'eau = 自來水（免費）；d\' = de + eau（縮音）', askClaude:true },
+  { lesson:5, type:'trans', q:'你們選前菜還是甜點？（-ir 動詞 vous）',      hint:'choisir / ou',        a:'Vous choisissez une entrée ou un dessert ?', aNote:'choisir → vous choisissez；ou = 或', askClaude:true },
+  { lesson:5, type:'trans', q:'他們在做購物。（faire）',                     hint:'ils / les courses',   a:'Ils font les courses.', aNote:'faire → ils font；faire les courses = 買日常食物', askClaude:true },
+
+  // gender：餐廳詞彙
+  { lesson:5, type:'gender', q:'_____ addition (l\' / le / la)',            hint:'結帳',               a:'l\'',          aNote:'addition（f）→ l\'addition（母音開頭縮音）' },
+  { lesson:5, type:'gender', q:'_____ assiette (l\' / le / la)',            hint:'盤子',               a:'l\'',          aNote:'assiette（f）→ l\'assiette（母音開頭縮音）' },
+  { lesson:5, type:'gender', q:'_____ fourchette (le / la)',                hint:'叉子',               a:'la',           aNote:'fourchette（f）→ la fourchette' },
+  { lesson:5, type:'gender', q:'_____ couteau (le / la)',                   hint:'刀子',               a:'le',           aNote:'couteau（m）→ le couteau' },
+  { lesson:5, type:'gender', q:'_____ formule (le / la)',                   hint:'套餐',               a:'la',           aNote:'formule（f）→ la formule' },
+  { lesson:5, type:'gender', q:'_____ plat (le / la)',                      hint:'主菜',               a:'le',           aNote:'plat（m）→ le plat' },
+  { lesson:5, type:'gender', q:'_____ entrée (le / la)',                    hint:'前菜',               a:'l\'',          aNote:'entrée（f）→ l\'entrée（母音開頭）' },
+
+  // choose：不定冠詞規則 / 餐廳
+  { lesson:5, type:'choose', q:'「我不吃魚」否定句的冠詞用哪個？',          hint:'否定 → de',          a:'Je ne mange pas de poisson.', aNote:'否定句：pas de（不管 poisson 陽性，不用 du）' },
+  { lesson:5, type:'choose', q:'以下哪句描述 à la carte 正確？',           hint:'vs formule/menu',    a:'單點，每道菜分開計費', aNote:'à la carte = 單點；formule = 2道套餐；menu = 3道套餐' },
+  { lesson:5, type:'choose', q:'法國免費自來水怎麼點？',                    hint:'carafe vs bouteille', a:'Une carafe d\'eau, s\'il vous plaît.', aNote:'carafe d\'eau = 自來水（免費）；bouteille d\'eau = 瓶裝水（收費）' },
+  { lesson:5, type:'choose', q:'牛排「à point」是幾分熟？',                hint:'bleu→saignant→?→bien cuit', a:'五分熟', aNote:'bleu（極生）→ saignant（三分）→ à point（五分）→ bien cuit（全熟）' },
+  { lesson:5, type:'choose', q:'以下哪個 -ir 動詞 nous 形正確？',          hint:'-issons',            a:'nous choisissons', aNote:'choisir → nous choisissons（加 -iss-；非 *choisonss 或 *choisonnes）' },
+  { lesson:5, type:'choose', q:'faire 的 vous 形是？',                     hint:'不規則！',           a:'vous faites', aNote:'faire：vous → faites（不規則，不是 *faisez）' },
+  { lesson:5, type:'choose', q:'aller 的 ils 形是？',                      hint:'不規則',             a:'ils vont', aNote:'aller → ils vont（不規則；非 *ils allent）' },
 ];
 
 // ── 狀態 ──────────────────────────────────────────────────────
@@ -1276,39 +1423,87 @@ function weightedSample(arr, n) {
   return result;
 }
 
+// ── Drill 疑慮旗標 ───────────────────────────────────────────────
+function getDrillFlags() {
+  try { return new Set(JSON.parse(localStorage.getItem('clb7_drill_flags')) || []); }
+  catch(e) { return new Set(); }
+}
+function saveDrillFlags(flags) {
+  try { localStorage.setItem('clb7_drill_flags', JSON.stringify([...flags])); } catch(e) {}
+}
+function toggleDrillFlag() {
+  const q = drillQueue[drillIdx];
+  if (!q) return;
+  const qid = drillQId(q);
+  const flags = getDrillFlags();
+  if (flags.has(qid)) flags.delete(qid); else flags.add(qid);
+  saveDrillFlags(flags);
+  const btn = document.getElementById('drillFlagBtn');
+  if (btn) {
+    btn.classList.toggle('flagged', flags.has(qid));
+    btn.title = flags.has(qid) ? '已標記疑慮（再按取消）' : '標記此題有疑慮';
+  }
+}
+
+// ── Drill 練習回饋 ───────────────────────────────────────────────
+function saveDrillFeedback() {
+  const text = (document.getElementById('drillFeedbackText') || {}).value || '';
+  if (!text.trim()) { showToast('請先輸入回饋內容'); return; }
+  const sessions = JSON.parse(localStorage.getItem('clb7_drill_sessions') || '[]');
+  const flags = getDrillFlags();
+  sessions.unshift({
+    date: new Date().toISOString(),
+    mainScore: drillMainScore, mainTotal: drillMainTotal,
+    feedback: text.trim(), flagged: [...flags]
+  });
+  if (sessions.length > 50) sessions.length = 50;
+  localStorage.setItem('clb7_drill_sessions', JSON.stringify(sessions));
+  document.getElementById('drillFeedbackText').value = '';
+  showToast('回饋已儲存！');
+}
+
 // ── Drill 狀態 ──────────────────────────────────────────────────
 let drillQueue = [], drillIdx = 0, drillScore = 0, drillWrong = [];
 let drillPhase = 'main'; // 'main' | 'review'
-let drillMainScore = 0, drillMainTotal = 20, drillRetrying = false;
+let drillMainScore = 0, drillMainTotal = 20;
+let drillReviewWrong = []; // 當前複習子輪的錯題，累積到子輪結束才重考
 const DRILL_TOTAL = 20;
 
 function startDrill() {
   drillQueue = weightedSample(AGREE_BANK, DRILL_TOTAL);
   drillIdx = 0; drillScore = 0; drillWrong = [];
-  drillPhase = 'main'; drillMainScore = 0; drillMainTotal = DRILL_TOTAL; drillRetrying = false;
+  drillPhase = 'main'; drillMainScore = 0; drillMainTotal = DRILL_TOTAL;
+  drillReviewWrong = [];
   renderDrill();
 }
 
 function renderDrill() {
   const area = document.getElementById('quizArea');
 
-  // 判斷是否進入複習或結束
   if (drillIdx >= drillQueue.length) {
     if (drillPhase === 'main') {
       drillMainScore = drillScore;
       drillMainTotal = drillQueue.length;
       if (drillWrong.length > 0) {
-        // 直接銜接錯題，不顯示中間畫面
         drillPhase = 'review';
         drillQueue = shuffle(drillWrong).map(q => ({...q}));
-        drillWrong = []; drillIdx = 0; drillScore = 0; drillRetrying = false;
-        // fall through
+        drillWrong = []; drillIdx = 0; drillScore = 0; drillReviewWrong = [];
+        // fall through to render first review question
       } else { renderDrillDone(); return; }
-    } else { renderDrillDone(); return; }
+    } else {
+      // 複習子輪結束：有新錯題就再開一輪，否則完成
+      if (drillReviewWrong.length > 0) {
+        drillQueue = shuffle(drillReviewWrong).map(q => ({...q}));
+        drillReviewWrong = []; drillIdx = 0; drillScore = 0;
+        // fall through to render first question of new sub-round
+      } else { renderDrillDone(); return; }
+    }
   }
 
   const q = drillQueue[drillIdx];
   const inReview = drillPhase === 'review';
+  const flags = getDrillFlags();
+  const isFlagged = flags.has(drillQId(q));
   const pct = Math.round((drillIdx / drillQueue.length) * 100);
 
   const topLabel   = inReview ? `🔁 複習 ${drillIdx + 1}/${drillQueue.length}` : `⚡ ${drillIdx + 1}/20`;
@@ -1316,10 +1511,7 @@ function renderDrill() {
   const badge = q.chain ? '<div class="drill-chain-badge">🔗 情境推理</div>'
               : q.hard  ? '<div class="drill-hard-badge">🔥 進階</div>' : '';
   const reviewBanner = inReview ? `
-    <div class="drill-review-banner">
-      ${drillRetrying ? '↺ 答錯了，再試一次' : '🔁 答對才能繼續'}
-      &nbsp;·&nbsp; 主輪得分 ${drillMainScore} / ${drillMainTotal}
-    </div>` : '';
+    <div class="drill-review-banner">🔁 複習輪 &nbsp;·&nbsp; 主輪得分 ${drillMainScore} / ${drillMainTotal}</div>` : '';
 
   area.innerHTML = `
     <div class="drill-card">
@@ -1327,6 +1519,8 @@ function renderDrill() {
         <div class="drill-count">${topLabel}</div>
         <div class="drill-pbar"><div class="drill-pbar-fill" style="width:${pct}%"></div></div>
         <div class="drill-count">${scoreLabel}</div>
+        <button class="drill-flag-btn${isFlagged ? ' flagged' : ''}" id="drillFlagBtn"
+          onclick="toggleDrillFlag()" title="${isFlagged ? '已標記疑慮（再按取消）' : '標記此題有疑慮'}"></button>
       </div>
       ${reviewBanner}${badge}
       <div class="drill-q" style="white-space:pre-line">${q.q}</div>
@@ -1336,7 +1530,7 @@ function renderDrill() {
             onclick="pickOpt(this, this.dataset.opt)">${opt}</button>`).join('')}
       </div>
       <div class="drill-note" id="drillNote"></div>
-      ${!inReview ? '<button class="drill-next" id="drillNext" onclick="nextDrillQ()">下一題 →</button>' : ''}
+      <button class="drill-next" id="drillNext" onclick="nextDrillQ()">下一題 →</button>
     </div>`;
 }
 
@@ -1355,24 +1549,32 @@ function pickOpt(btn, chosen) {
     document.querySelectorAll('.drill-opt').forEach(b => {
       if (b.textContent.trim() === q.a.trim()) b.classList.add('reveal');
     });
-    if (drillPhase === 'main' && !drillWrong.find(x => x.q === q.q)) drillWrong.push({...q});
+    if (drillPhase === 'main') {
+      if (!drillWrong.find(x => x.q === q.q)) drillWrong.push({...q});
+    } else {
+      // 複習輪：只有一題的子輪答錯 → 原題重試（下一題按鈕不推進 drillIdx）
+      // 多題子輪答錯 → 累積到子輪結束後再考
+      if (drillQueue.length > 1) {
+        if (!drillReviewWrong.find(x => x.q === q.q)) drillReviewWrong.push({...q});
+      }
+    }
   }
 
   const note = document.getElementById('drillNote');
   note.textContent = q.note;
   note.className = 'drill-note show ' + (correct ? 'ok' : 'bad');
 
-  if (drillPhase === 'main') {
-    document.getElementById('drillNext').classList.add('show');
-  } else {
-    // 複習模式：自動跳題
-    if (correct) {
-      drillRetrying = false;
-      setTimeout(() => { drillIdx++; renderDrill(); }, 900);
+  const nextBtn = document.getElementById('drillNext');
+  if (nextBtn) {
+    // 只有一題的複習子輪答錯：按鈕重試而非推進
+    if (!correct && drillPhase === 'review' && drillQueue.length === 1) {
+      nextBtn.textContent = '↺ 重試此題';
+      nextBtn.onclick = () => renderDrill();
     } else {
-      drillRetrying = true;
-      setTimeout(() => { renderDrill(); }, 1500); // 同題再來
+      nextBtn.textContent = '下一題 →';
+      nextBtn.onclick = nextDrillQ;
     }
+    nextBtn.classList.add('show');
   }
 }
 
@@ -1386,14 +1588,129 @@ function renderDrillDone() {
               : hadReview   ? '錯題全清，加油！'
               : pct >= 80   ? '很不錯，繼續練！' : '再多跑幾輪！';
 
+  const flags = getDrillFlags();
+  const flaggedHtml = flags.size > 0
+    ? `<div class="drill-feedback-label" style="margin-top:16px">⚑ 標記疑慮的題目（${flags.size} 題）</div>
+       <div class="drill-flagged-list">${
+         [...flags].map(id => {
+           const fq = AGREE_BANK.find(x => drillQId(x) === id);
+           return fq ? `<div class="drill-flagged-item">❓ ${fq.q}</div>` : '';
+         }).join('')
+       }</div>` : '';
+
   document.getElementById('quizArea').innerHTML = `
     <div class="drill-done">
       <h2>${emoji} 完成！</h2>
       <div class="drill-done-big">${drillMainScore} / ${drillMainTotal}</div>
       <div class="drill-done-pct">答對率 ${pct}%${hadReview ? '　（已完成錯題複習）' : ''}</div>
       <div class="drill-done-msg">${msg}</div>
-      <button class="drill-retry" onclick="startDrill()">🔄 新的 20 題</button>
+      ${flaggedHtml}
+      <div class="drill-feedback-section">
+        <div class="drill-feedback-label">這次練習的筆記 / 回饋</div>
+        <textarea class="drill-feedback-area" id="drillFeedbackText"
+          placeholder="記錄目標、哪裡卡住、下次想練什麼..."></textarea>
+        <button class="drill-feedback-save" style="margin-top:8px" onclick="saveDrillFeedback()">儲存回饋</button>
+      </div>
+      <button class="drill-retry" onclick="startDrill()" style="margin-top:16px">🔄 新的 20 題</button>
+      <button class="drill-back" style="border-color:#9b59b6;color:#7b39a6;margin-top:8px"
+        onclick="renderDrillWeakAnalysis()">📊 弱點分析</button>
       <button class="drill-back"  onclick="setMode('normal')">← 離開</button>
+    </div>`;
+}
+
+// ── 弱點分析 ─────────────────────────────────────────────────────
+function renderDrillWeakAnalysis() {
+  const stats = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key.startsWith('clb7_dq_')) continue;
+    try {
+      const data = JSON.parse(localStorage.getItem(key));
+      if (!data || (data.w === 0 && data.c === 0)) continue;
+      const qid = key.replace('clb7_', '');
+      const q = AGREE_BANK.find(x => drillQId(x) === qid);
+      if (q) stats.push({ q: q.q, a: q.a, note: q.note || '', w: data.w, c: data.c, total: data.w + data.c });
+    } catch(e) {}
+  }
+
+  if (stats.length === 0) {
+    document.getElementById('quizArea').innerHTML = `
+      <div class="drill-done"><h2>📊 弱點分析</h2>
+        <div class="drill-done-msg" style="margin-bottom:20px">還沒有足夠的答題紀錄，多練幾輪再來看！</div>
+        <button class="drill-back" onclick="renderDrillDone()">← 返回</button>
+      </div>`;
+    return;
+  }
+
+  stats.sort((a, b) => b.w - a.w || b.total - a.total);
+  const totalQ = stats.length;
+  const totalAttempts = stats.reduce((s, x) => s + x.total, 0);
+  const totalWrong   = stats.reduce((s, x) => s + x.w, 0);
+  const overallPct   = Math.round((totalAttempts - totalWrong) / totalAttempts * 100);
+
+  const sessions = JSON.parse(localStorage.getItem('clb7_drill_sessions') || '[]');
+  const recentSess  = sessions.slice(0, 5);
+  const sessionHtml = recentSess.length > 0
+    ? recentSess.map(s => {
+        const d = new Date(s.date);
+        const label = `${d.getMonth()+1}/${d.getDate()} ${s.mainScore}/${s.mainTotal}`;
+        const fb = s.feedback ? ' — ' + s.feedback.slice(0, 35) + (s.feedback.length > 35 ? '…' : '') : '';
+        return `<div class="drill-flagged-item">${label}${fb}</div>`;
+      }).join('')
+    : '<div class="drill-flagged-item" style="color:#bbb">無回饋記錄</div>';
+
+  const top = stats.slice(0, 15);
+  const topHtml = top.map(s => {
+    const ep = Math.round(s.w / s.total * 100);
+    return `<div class="drill-flagged-item">
+      <span style="color:#e74c3c;font-weight:700;width:36px;display:inline-block">錯${s.w}</span>
+      <span style="color:#bbb;font-size:0.7rem;margin-right:8px">${ep}%</span>${s.q}
+    </div>`;
+  }).join('');
+
+  const flags = getDrillFlags();
+  const flagLines = flags.size > 0
+    ? [...flags].map(id => { const fq = AGREE_BANK.find(x => drillQId(x) === id); return fq ? `⚑ ${fq.q}` : ''; }).filter(Boolean)
+    : ['（無旗標）'];
+
+  const copyText = [
+    `=== 弱點分析 ${new Date().toLocaleDateString('zh-TW')} ===`,
+    `練習過 ${totalQ} 題，共答 ${totalAttempts} 次，整體答對率 ${overallPct}%`,
+    '',
+    '【錯最多的題 Top 15】',
+    ...top.map((s, i) => `${i+1}. 錯${s.w}次（${Math.round(s.w/s.total*100)}%）　${s.q}　→ ${s.a}`),
+    '',
+    '【最近練習回饋】',
+    ...recentSess.map(s => {
+      const d = new Date(s.date);
+      return `${d.getMonth()+1}/${d.getDate()} ${s.mainScore}/${s.mainTotal} — ${s.feedback || '（無回饋）'}`;
+    }),
+    '',
+    '【被旗標的疑慮題目】',
+    ...flagLines
+  ].join('\n');
+
+  document.getElementById('quizArea').innerHTML = `
+    <div class="drill-done" style="text-align:left">
+      <h2 style="text-align:center">📊 弱點分析</h2>
+      <div style="text-align:center;margin-bottom:16px">
+        <div class="drill-done-big" style="font-size:2.2rem">${overallPct}%</div>
+        <div class="drill-done-pct">整體答對率 &nbsp;·&nbsp; ${totalQ} 題已練習 &nbsp;·&nbsp; 共 ${totalAttempts} 次</div>
+      </div>
+      <div class="drill-feedback-label">錯最多的題目（Top 15）</div>
+      <div class="drill-flagged-list">${topHtml}</div>
+      <div class="drill-feedback-label" style="margin-top:14px">最近練習回饋</div>
+      <div class="drill-flagged-list">${sessionHtml}</div>
+      <div class="drill-feedback-label" style="margin-top:14px">複製給 Claude 分析</div>
+      <textarea class="drill-feedback-area" id="analysisText"
+        style="min-height:120px;font-size:0.75rem;font-family:monospace" readonly>${copyText}</textarea>
+      <button class="drill-feedback-save" style="margin-top:8px" onclick="
+        const ta = document.getElementById('analysisText');
+        ta.select(); ta.setSelectionRange(0,99999);
+        try { document.execCommand('copy'); showToast('已複製！貼給 Claude 分析'); }
+        catch(e) { showToast('請手動全選複製'); }
+      ">📋 複製全部</button>
+      <button class="drill-retry" onclick="renderDrillDone()" style="margin-top:12px">← 返回</button>
     </div>`;
 }
 
