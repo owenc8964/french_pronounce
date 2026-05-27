@@ -143,7 +143,9 @@
     }
     .btn:active { transform: scale(0.97); }
     .btn-next    { background: #2c2c2c; color: #fff; flex: 1; }
-    .btn-claude  { background: #f0f0ee; color: #555; border: 1.5px solid #ddd; }
+    .btn-claude   { background: #f0f0ee; color: #555; border: 1.5px solid #ddd; }
+    .btn-override { background: none; color: #888; border: 1.5px solid #ccc; font-size: 0.8rem; }
+    .btn-override:hover { border-color: #2a7a4f; color: #2a7a4f; background: #f2fbf6; }
 
     .tts-btn {
       border: none; background: none; cursor: pointer;
@@ -230,6 +232,13 @@
       border: none; font-size: 0.92rem; font-weight: 600; cursor: pointer; margin-top: 12px;
       display: none; }
     .drill-next.show { display: block; }
+    .drill-override-btn {
+      display: block; width: 100%; padding: 9px; margin-bottom: 8px;
+      background: none; border: 1.5px solid #ccc; border-radius: 10px;
+      color: #888; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+      font-family: inherit; transition: all 0.15s;
+    }
+    .drill-override-btn:hover { border-color: #2a7a4f; color: #2a7a4f; background: #f2fbf6; }
     .drill-hard-badge  { display: inline-block; font-size: 0.62rem; font-weight: 700;
       background: #fff0e0; color: #c05a00; border: 1px solid #f0c080;
       padding: 1px 7px; border-radius: 5px; margin-bottom: 8px; }
@@ -857,6 +866,7 @@ function renderCard() {
         </div>
         <div class="btn-row">
           ${q.askClaude ? `<button class="btn btn-claude" onclick="askClaude()">問 Claude</button>` : ''}
+          <button class="btn btn-override" id="btnOverride" onclick="overrideCorrect()" style="display:none">其實對 ✓</button>
           <button class="btn btn-next" onclick="nextQ()">下一題 →</button>
         </div>
       </div>
@@ -907,8 +917,40 @@ function checkAnswer() {
     if (!q._review && !resurface.find(r => r.q === q.q)) {
       resurface.push({ ...q, _review: true });
     }
+    // Show override button
+    const ob = document.getElementById('btnOverride');
+    if (ob) ob.style.display = '';
   }
 
+  updateProgress();
+  renderStats();
+}
+
+function overrideCorrect() {
+  const q = queue[current];
+  // 修正 SRS：撤銷一次錯誤，補記一次正確
+  const id = qId(q);
+  const srs = getSRS(id);
+  if (srs.w > 0) srs.w--;
+  srs.c++;
+  setSRS(id, srs);
+  // 修正本次分數
+  scoreOk++; scoreNo--;
+  const xp = q._review ? 5 : 10;
+  sessionXP += xp;
+  addXP(xp);
+  // 從複習隊列移除
+  resurface = resurface.filter(r => r.q !== q.q);
+  // 更新 UI
+  const inp = document.getElementById('ansInput');
+  if (inp) { inp.classList.remove('wrong'); inp.classList.add('correct'); }
+  const banner = document.getElementById('resultBanner');
+  if (banner) banner.className = 'result-banner ok';
+  const rt = document.getElementById('resultText');
+  if (rt) rt.textContent = '✓ 已更正為正確';
+  const ca = document.getElementById('correctAns');
+  if (ca) ca.style.display = 'none';
+  document.getElementById('btnOverride').style.display = 'none';
   updateProgress();
   renderStats();
 }
@@ -1530,6 +1572,9 @@ function renderDrill() {
             onclick="pickOpt(this, this.dataset.opt)">${opt}</button>`).join('')}
       </div>
       <div class="drill-note" id="drillNote"></div>
+      <div id="drillOverrideWrap" style="display:none">
+        <button class="drill-override-btn" onclick="overrideDrillCorrect()">其實對 ✓</button>
+      </div>
       <button class="drill-next" id="drillNext" onclick="nextDrillQ()">下一題 →</button>
     </div>`;
 }
@@ -1558,6 +1603,9 @@ function pickOpt(btn, chosen) {
         if (!drillReviewWrong.find(x => x.q === q.q)) drillReviewWrong.push({...q});
       }
     }
+    // 顯示「其實對」按鈕
+    const ow = document.getElementById('drillOverrideWrap');
+    if (ow) ow.style.display = '';
   }
 
   const note = document.getElementById('drillNote');
@@ -1576,6 +1624,26 @@ function pickOpt(btn, chosen) {
     }
     nextBtn.classList.add('show');
   }
+}
+
+function overrideDrillCorrect() {
+  const q = drillQueue[drillIdx];
+  // 修正 drill SRS：撤銷一次錯誤
+  const srs = getDrillSRS(q);
+  if (srs.w > 0) srs.w--;
+  srs.c++;
+  try { localStorage.setItem('clb7_'+drillQId(q), JSON.stringify(srs)); } catch(e) {}
+  // 修正分數
+  drillScore++;
+  // 從錯題隊列移除
+  drillWrong = drillWrong.filter(x => x.q !== q.q);
+  drillReviewWrong = drillReviewWrong.filter(x => x.q !== q.q);
+  // 更新 UI
+  document.getElementById('drillOverrideWrap').style.display = 'none';
+  const note = document.getElementById('drillNote');
+  if (note) note.className = 'drill-note show ok';
+  const nextBtn = document.getElementById('drillNext');
+  if (nextBtn) { nextBtn.textContent = '下一題 →'; nextBtn.onclick = nextDrillQ; }
 }
 
 function nextDrillQ() { drillIdx++; renderDrill(); }

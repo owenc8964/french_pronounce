@@ -182,8 +182,9 @@
 
 <div class="controls">
   <div class="btn-row">
-    <button class="diff-btn active" data-diff="easy" onclick="setDiff('easy')">初級 — 關鍵格空白</button>
-    <button class="diff-btn"        data-diff="hard" onclick="setDiff('hard')">中級 — 全部空白</button>
+    <button class="diff-btn active" data-diff="easy" onclick="setDiff('easy')">初級 — 關鍵格</button>
+    <button class="diff-btn"        data-diff="mid"  onclick="setDiff('mid')">中級 — 首字提示</button>
+    <button class="diff-btn"        data-diff="hard" onclick="setDiff('hard')">高級 — 全部空白</button>
   </div>
   <div class="btn-row" id="typeRow">
     <button class="type-btn active" data-type="all"     onclick="setType('all')">全部</button>
@@ -570,7 +571,7 @@ const TABLES = [
 // ════════════════════════════════════════════════════════════
 // 狀態
 // ════════════════════════════════════════════════════════════
-let diff       = 'easy';
+let diff       = 'easy';  // 'easy' | 'mid' | 'hard'
 let typeFilter = 'all';
 let queue      = [];
 let qIdx       = 0;
@@ -655,10 +656,19 @@ function renderCard() {
   const tbl = queue[qIdx];
 
   // 計算哪些格子是空白的
-  // isBlank({ a, h }) → diff=hard: 全空；diff=easy: 只空 h=true 的
+  // easy: 只空 h=true 的格子
+  // mid : 全空，但顯示首字提示（placeholder）
+  // hard: 全空，無提示
   function isBlank(cell) {
     if (typeof cell === 'string') return false;
-    return diff === 'hard' || cell.h === true;
+    return diff === 'mid' || diff === 'hard' || cell.h === true;
+  }
+  // 中級首字提示：取前 N 個字元 + "…"
+  function getHint(answer) {
+    const s = answer.trim();
+    if (!s || diff !== 'mid') return '';
+    const n = s.length > 4 ? 2 : 1;
+    return s.slice(0, n) + '…';
   }
 
   let inputIdx = 0;
@@ -679,6 +689,7 @@ function renderCard() {
         tableHTML += `<td><input class="fill-input" type="text"
           id="inp_${ri}_${ci}"
           data-ans="${escH(cell.a)}"
+          placeholder="${escH(getHint(cell.a))}"
           autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
           onkeydown="handleKey(event)"
           onfocus="onFocus(this)" onblur="onBlur()"></td>`;
@@ -834,8 +845,8 @@ function renderSummary() {
   }).join('');
 
   const medal = pct >= 90 ? '🏆' : pct >= 70 ? '⭐' : pct >= 50 ? '💪' : '📖';
-  const nextDiff = diff === 'easy' ? 'hard' : 'easy';
-  const nextLabel = diff === 'easy' ? '挑戰中級' : '回到初級';
+  const nextDiff  = diff === 'easy' ? 'mid' : diff === 'mid' ? 'hard' : 'easy';
+  const nextLabel = diff === 'easy' ? '挑戰中級 →' : diff === 'mid' ? '挑戰高級 →' : '回到初級';
 
   document.getElementById('cardArea').innerHTML = `
 <div class="summary">
