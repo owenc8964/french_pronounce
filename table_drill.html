@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>表格填空 · CLB7</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f0f0ee;
+      color: #2c2c2c;
+      padding: 24px 20px 60px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    h1 { font-size: 1.1rem; font-weight: 700; margin-bottom: 3px; }
+    .meta { font-size: 0.75rem; color: #aaa; margin-bottom: 20px; }
+    .meta a { color: #aaa; text-decoration: none; border-bottom: 1px solid #ddd; }
+
+    /* ── Controls ── */
+    .controls { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+    .btn-row { display: flex; gap: 6px; flex-wrap: wrap; }
+
+    .diff-btn, .type-btn {
+      font-size: 0.78rem; font-weight: 700;
+      padding: 5px 15px; border-radius: 99px;
+      border: 1.5px solid #ccc; background: #fff; color: #555;
+      cursor: pointer; transition: all 0.15s; font-family: inherit;
+    }
+    .diff-btn:hover, .type-btn:hover { border-color: #4a90d9; color: #4a90d9; }
+    .diff-btn.active { background: #2c2c2c; border-color: #2c2c2c; color: #fff; }
+    .type-btn.active { background: #4a90d9; border-color: #4a90d9; color: #fff; }
+
+    /* ── Progress ── */
+    .progress-section { margin-bottom: 14px; }
+    .progress-info {
+      display: flex; justify-content: space-between;
+      font-size: 0.76rem; color: #999; margin-bottom: 5px;
+    }
+    .progress-track { height: 3px; background: #e0e0de; border-radius: 2px; }
+    .progress-fill { height: 3px; background: #4a90d9; border-radius: 2px; transition: width 0.35s; }
+
+    /* ── Accent bar ── */
+    .accent-bar {
+      display: none; flex-wrap: wrap; gap: 4px;
+      padding: 8px 0 6px; margin-bottom: 4px;
+    }
+    .accent-bar.visible { display: flex; }
+    .acc-btn {
+      min-width: 30px; height: 30px; border: 1.5px solid #ddd;
+      border-radius: 6px; background: #fff; font-size: 0.9rem;
+      cursor: pointer; font-family: inherit; transition: all 0.1s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .acc-btn:hover { border-color: #4a90d9; background: #f0f7ff; color: #4a90d9; }
+
+    /* ── Card ── */
+    .card {
+      background: #fff; border-radius: 14px;
+      padding: 20px 22px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+
+    .card-header {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 12px; flex-wrap: wrap;
+    }
+    .lesson-badge {
+      font-size: 0.63rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: #fff; background: #4a90d9;
+      padding: 2px 8px; border-radius: 5px;
+    }
+    .type-badge {
+      font-size: 0.63rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: #fff; padding: 2px 8px; border-radius: 5px;
+    }
+    .type-badge.verb    { background: #2c7be5; }
+    .type-badge.adj     { background: #d4640a; }
+    .type-badge.article { background: #2ca85c; }
+    .type-badge.prep    { background: #8b2ce5; }
+
+    .card-title { font-size: 1.05rem; font-weight: 700; }
+    .card-zh    { font-size: 0.82rem; color: #999; }
+    .tts-card-btn {
+      margin-left: auto; padding: 0; width: 30px; height: 30px;
+      border: none; background: none; cursor: pointer;
+      font-size: 1.05rem; opacity: 0.55; transition: opacity 0.15s;
+      border-radius: 6px; display: flex; align-items: center; justify-content: center;
+    }
+    .tts-card-btn:hover { opacity: 1; background: #f4f4f2; }
+
+    .card-note {
+      font-size: 0.8rem; color: #905800;
+      background: #fff8e0; border-left: 3px solid #d4a017;
+      border-radius: 0 6px 6px 0; padding: 7px 12px;
+      margin-bottom: 14px; line-height: 1.65;
+    }
+
+    /* ── Fill table ── */
+    .fill-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+    .fill-table th {
+      font-size: 0.67rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: #bbb; background: #fafaf8;
+      padding: 7px 12px; text-align: left;
+      border-bottom: 2px solid #f0f0ee;
+    }
+    .fill-table td {
+      padding: 7px 12px; border-bottom: 1px solid #f0f0ee;
+      font-size: 0.86rem; vertical-align: middle;
+    }
+    .fill-table tr:last-child td { border-bottom: none; }
+    .fill-table td.lbl { color: #888; font-size: 0.8rem; }
+    .fill-table td.shown { font-weight: 600; }
+
+    /* ── Input cells ── */
+    .fill-input {
+      width: 100%; padding: 5px 9px;
+      font-size: 0.86rem; font-weight: 600;
+      border: 1.5px solid #d8d8d5; border-radius: 7px; outline: none;
+      font-family: inherit; color: #2c2c2c; background: #fafaf8;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .fill-input:focus { border-color: #4a90d9; background: #fff; }
+    .fill-input.ok    { border-color: #2ca85c !important; background: #f0faf5 !important; color: #1a7a40 !important; }
+    .fill-input.bad   { border-color: #e05520 !important; background: #fff5f1 !important; color: #c0411a !important; }
+    .fill-input:disabled { opacity: 1; }
+    .correct-hint { font-size: 0.74rem; color: #2ca85c; display: block; margin-top: 3px; }
+    .wrong-hint   { font-size: 0.74rem; color: #e05520; display: block; margin-top: 3px; }
+
+    /* ── Actions ── */
+    .card-actions { display: flex; align-items: center; gap: 10px; margin-top: 2px; }
+    .check-btn {
+      padding: 9px 24px; background: #2c2c2c; color: #fff;
+      border: none; border-radius: 9px; font-size: 0.88rem; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: opacity 0.15s;
+    }
+    .check-btn:hover { opacity: 0.85; }
+    .check-btn:disabled { opacity: 0.35; cursor: default; }
+    .next-btn {
+      padding: 9px 24px; background: #4a90d9; color: #fff;
+      border: none; border-radius: 9px; font-size: 0.88rem; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: opacity 0.15s; display: none;
+    }
+    .next-btn:hover { opacity: 0.88; }
+    .card-score-chip { margin-left: auto; font-size: 0.8rem; color: #999; }
+
+    /* ── Summary ── */
+    .summary {
+      background: #fff; border-radius: 14px; padding: 28px 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07); text-align: center;
+    }
+    .sum-title  { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+    .sum-pct    { font-size: 2.4rem; font-weight: 800; color: #4a90d9; margin-bottom: 4px; }
+    .sum-sub    { font-size: 0.78rem; color: #aaa; margin-bottom: 20px; }
+    .sum-list   { text-align: left; margin-bottom: 22px; }
+    .sum-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 6px 0; border-bottom: 1px solid #f0f0ee; font-size: 0.84rem;
+    }
+    .sum-row:last-child { border-bottom: none; }
+    .sum-row span:last-child { font-weight: 700; min-width: 48px; text-align: right; }
+    .restart-btn {
+      padding: 10px 24px; background: #2c2c2c; color: #fff;
+      border: none; border-radius: 9px; font-size: 0.86rem; font-weight: 700;
+      cursor: pointer; font-family: inherit; margin: 0 5px;
+    }
+    .restart-btn:hover { opacity: 0.85; }
+    .restart-btn.ghost {
+      background: #fff; color: #444; border: 1.5px solid #ccc;
+    }
+    .restart-btn.ghost:hover { border-color: #4a90d9; color: #4a90d9; }
+  </style>
+</head>
+<body>
+
+<h1>表格填空 · CLB7</h1>
+<p class="meta">← <a href="french_notes.html">筆記</a> &nbsp;·&nbsp; <a href="quiz.html">單題快速測驗</a></p>
+
+<div class="controls">
+  <div class="btn-row">
+    <button class="diff-btn active" data-diff="easy" onclick="setDiff('easy')">初級 — 關鍵格空白</button>
+    <button class="diff-btn"        data-diff="hard" onclick="setDiff('hard')">中級 — 全部空白</button>
+  </div>
+  <div class="btn-row" id="typeRow">
+    <button class="type-btn active" data-type="all"     onclick="setType('all')">全部</button>
+    <button class="type-btn"        data-type="verb"    onclick="setType('verb')">動詞</button>
+    <button class="type-btn"        data-type="adj"     onclick="setType('adj')">形容詞</button>
+    <button class="type-btn"        data-type="article" onclick="setType('article')">冠詞</button>
+    <button class="type-btn"        data-type="prep"    onclick="setType('prep')">介係詞</button>
+  </div>
+</div>
+
+<div class="progress-section">
+  <div class="progress-info">
+    <span id="progText">第 1 / — 題</span>
+    <span id="scoreText">0 ✓ · 0 ✗</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+</div>
+
+<div class="accent-bar" id="accentBar"></div>
+
+<div id="cardArea"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// 題庫資料
+// 每行（row）是一個 array：
+//   - 字串 → 直接顯示（不空白）
+//   - { a:'答案', h:bool } → 答案格；h=true = 初級也空白；h=false = 僅中級空白
+// ════════════════════════════════════════════════════════════
+
+const TABLES = [
+
+  // ── 動詞 ────────────────────────────────────────────────
+
+  {
+    id:'etre', title:'être', zh:'是（身分・狀態）',
+    type:'verb', lesson:1,
+    note:'混淆點：ils sont（être）vs ils ont（avoir）；sommes / êtes 要特別記',
+    headers:['人稱','變位'],
+    rows:[
+      ["je / j'",       {a:'suis',   h:true }],
+      ['tu',            {a:'es',     h:true }],
+      ['il / elle / on',{a:'est',    h:false}],
+      ['nous',          {a:'sommes', h:true }],
+      ['vous',          {a:'êtes',   h:true }],
+      ['ils / elles',   {a:'sont',   h:true }],
+    ]
+  },
+
+  {
+    id:'avoir', title:'avoir', zh:'有',
+    type:'verb', lesson:1,
+    note:'ils ont（avoir）vs ils sont（être）— 常混淆！',
+    headers:['人稱','變位'],
+    rows:[
+      ["je / j'",     {a:'ai',    h:true }],
+      ['tu',          {a:'as',    h:true }],
+      ['il / elle',   {a:'a',     h:false}],
+      ['nous',        {a:'avons', h:true }],
+      ['vous',        {a:'avez',  h:true }],
+      ['ils / elles', {a:'ont',   h:true }],
+    ]
+  },
+
+  {
+    id:'aller', title:'aller', zh:'去',
+    type:'verb', lesson:2,
+    note:'全不規則：vais / vas / va / allons / allez / vont',
+    headers:['人稱','變位'],
+    rows:[
+      ['je',          {a:'vais',   h:true }],
+      ['tu',          {a:'vas',    h:true }],
+      ['il / elle',   {a:'va',     h:false}],
+      ['nous',        {a:'allons', h:true }],
+      ['vous',        {a:'allez',  h:true }],
+      ['ils / elles', {a:'vont',   h:true }],
+    ]
+  },
+
+  {
+    id:'faire', title:'faire', zh:'做・製作',
+    type:'verb', lesson:5,
+    note:'⚠️ vous faites（不規則！不是 *faisez）；ils font（不是 *faisent）',
+    headers:['人稱','變位'],
+    rows:[
+      ["je / j'",     {a:'fais',    h:false}],
+      ['tu',          {a:'fais',    h:false}],
+      ['il / elle',   {a:'fait',    h:false}],
+      ['nous',        {a:'faisons', h:true }],
+      ['vous',        {a:'faites',  h:true }],
+      ['ils / elles', {a:'font',    h:true }],
+    ]
+  },
+
+  {
+    id:'parler', title:'parler', zh:'說話（規則 -er 動詞）',
+    type:'verb', lesson:1,
+    note:'-er 動詞語尾：-e / -es / -e / -ons / -ez / -ent（s'il vous plaît 發音：-e/-es/-ent 結尾不發音）',
+    headers:['人稱','變位'],
+    rows:[
+      ['je',          {a:'parle',   h:false}],
+      ['tu',          {a:'parles',  h:false}],
+      ['il / elle',   {a:'parle',   h:false}],
+      ['nous',        {a:'parlons', h:true }],
+      ['vous',        {a:'parlez',  h:true }],
+      ['ils / elles', {a:'parlent', h:true }],
+    ]
+  },
+
+  {
+    id:'aimer', title:'aimer', zh:'喜歡（規則 -er，母音開頭）',
+    type:'verb', lesson:1,
+    note:"je → j'aime（母音開頭縮音）；s'appeler 同理",
+    headers:['人稱','變位'],
+    rows:[
+      ["j'",          {a:'aime',   h:false}],
+      ['tu',          {a:'aimes',  h:false}],
+      ['il / elle',   {a:'aime',   h:false}],
+      ['nous',        {a:'aimons', h:true }],
+      ['vous',        {a:'aimez',  h:true }],
+      ['ils / elles', {a:'aiment', h:true }],
+    ]
+  },
+
+  {
+    id:'sappeler', title:"s'appeler", zh:'叫做（反身動詞）',
+    type:'verb', lesson:1,
+    note:'je/tu/il/ils → -ll-（s'appelle）；nous/vous → -l-（appelons）',
+    headers:['人稱','變位'],
+    rows:[
+      ['je',          {a:"m'appelle",    h:true }],
+      ['tu',          {a:"t'appelles",   h:true }],
+      ['il / elle',   {a:"s'appelle",    h:false}],
+      ['nous',        {a:'nous appelons',h:true }],
+      ['vous',        {a:'vous appelez', h:true }],
+      ['ils / elles', {a:"s'appellent",  h:true }],
+    ]
+  },
+
+  {
+    id:'acheter', title:'acheter', zh:'買（e → è 變音）',
+    type:'verb', lesson:4,
+    note:'je/tu/il/ils：e → è（重音符）；nous/vous 還原 e',
+    headers:['人稱','變位'],
+    rows:[
+      ["je / j'",     {a:'achète',   h:true }],
+      ['tu',          {a:'achètes',  h:true }],
+      ['il / elle',   {a:'achète',   h:false}],
+      ['nous',        {a:'achetons', h:true }],
+      ['vous',        {a:'achetez',  h:true }],
+      ['ils / elles', {a:'achètent', h:true }],
+    ]
+  },
+
+  {
+    id:'choisir', title:'choisir', zh:'選擇（-ir 動詞）',
+    type:'verb', lesson:5,
+    note:'je/tu/il 加 -is/-is/-it；nous/vous/ils 加 -iss-（-ir 動詞第二組特徵）',
+    headers:['人稱','變位'],
+    rows:[
+      ['je',          {a:'choisis',     h:false}],
+      ['tu',          {a:'choisis',     h:false}],
+      ['il / elle',   {a:'choisit',     h:false}],
+      ['nous',        {a:'choisissons', h:true }],
+      ['vous',        {a:'choisissez',  h:true }],
+      ['ils / elles', {a:'choisissent', h:true }],
+    ]
+  },
+
+  {
+    id:'finir', title:'finir', zh:'完成・結束（-ir 動詞）',
+    type:'verb', lesson:5,
+    note:'同 choisir：nous/vous/ils 加 -iss-',
+    headers:['人稱','變位'],
+    rows:[
+      ['je',          {a:'finis',     h:false}],
+      ['tu',          {a:'finis',     h:false}],
+      ['il / elle',   {a:'finit',     h:false}],
+      ['nous',        {a:'finissons', h:true }],
+      ['vous',        {a:'finissez',  h:true }],
+      ['ils / elles', {a:'finissent', h:true }],
+    ]
+  },
+
+  {
+    id:'manger', title:'manger', zh:'吃（-ger 動詞）',
+    type:'verb', lesson:5,
+    note:'nous mang-e-ons：保留 e，防止 g 變硬音 [ɡ]（nager/voyager 同理）',
+    headers:['人稱','變位'],
+    rows:[
+      ['je',          {a:'mange',    h:false}],
+      ['tu',          {a:'manges',   h:false}],
+      ['il / elle',   {a:'mange',    h:false}],
+      ['nous',        {a:'mangeons', h:true }],
+      ['vous',        {a:'mangez',   h:true }],
+      ['ils / elles', {a:'mangent',  h:true }],
+    ]
+  },
+
+  // ── 不規則動詞總表（mega） ────────────────────────────────
+
+  {
+    id:'irreg-all', title:'être · avoir · aller · faire', zh:'四大不規則動詞對照',
+    type:'verb', lesson:5,
+    note:'⭐ 四個必背不規則動詞。ils ont/sont/vont/font — 注意區分！',
+    headers:['人稱','être','avoir','aller','faire'],
+    rows:[
+      ["je / j'",     {a:'suis',   h:true },{a:'ai',    h:true },{a:'vais',   h:true },{a:'fais',    h:false}],
+      ['tu',          {a:'es',     h:true },{a:'as',    h:true },{a:'vas',    h:true },{a:'fais',    h:false}],
+      ['il / elle',   {a:'est',    h:false},{a:'a',     h:false},{a:'va',     h:false},{a:'fait',    h:false}],
+      ['nous',        {a:'sommes', h:true },{a:'avons', h:true },{a:'allons', h:true },{a:'faisons', h:true }],
+      ['vous',        {a:'êtes',   h:true },{a:'avez',  h:true },{a:'allez',  h:true },{a:'faites',  h:true }],
+      ['ils / elles', {a:'sont',   h:true },{a:'ont',   h:true },{a:'vont',   h:true },{a:'font',    h:true }],
+    ]
+  },
+
+  // ── 形容詞 ───────────────────────────────────────────────
+
+  {
+    id:'adj-vert', title:'vert', zh:'綠色',
+    type:'adj', lesson:4,
+    note: '+e → verte（陰性）；+s / +es（複數）',
+    headers:['性數','形式'],
+    rows:[
+      ['m. sg', {a:'vert',   h:false}],
+      ['f. sg', {a:'verte',  h:true }],
+      ['m. pl', {a:'verts',  h:true }],
+      ['f. pl', {a:'vertes', h:true }],
+    ]
+  },
+
+  {
+    id:'adj-blanc', title:'blanc', zh:'白色',
+    type:'adj', lesson:4,
+    note:'例外：blanc → blanche（-c → -che，不加 e）',
+    headers:['性數','形式'],
+    rows:[
+      ['m. sg', {a:'blanc',   h:false}],
+      ['f. sg', {a:'blanche', h:true }],
+      ['m. pl', {a:'blancs',  h:true }],
+      ['f. pl', {a:'blanches',h:true }],
+    ]
+  },
+
+  {
+    id:'adj-violet', title:'violet', zh:'紫色',
+    type:'adj', lesson:4,
+    note:'-et → -ette（子音重複）；複數：-ets / -ettes',
+    headers:['性數','形式'],
+    rows:[
+      ['m. sg', {a:'violet',   h:false}],
+      ['f. sg', {a:'violette', h:true }],
+      ['m. pl', {a:'violets',  h:true }],
+      ['f. pl', {a:'violettes',h:true }],
+    ]
+  },
+
+  {
+    id:'adj-orange', title:'orange / marron', zh:'橙色 / 棕色（不變化）',
+    type:'adj', lesson:4,
+    note:'水果名兼顏色 → 所有性數皆不變（不加 e 也不加 s）',
+    headers:['性數','orange','marron'],
+    rows:[
+      ['m. sg', {a:'orange',h:false},{a:'marron',h:false}],
+      ['f. sg', {a:'orange',h:true },{a:'marron',h:true }],
+      ['m. pl', {a:'orange',h:true },{a:'marron',h:true }],
+      ['f. pl', {a:'orange',h:true },{a:'marron',h:true }],
+    ]
+  },
+
+  {
+    id:'adj-francais', title:'français', zh:'法國人（-ais 國籍）',
+    type:'adj', lesson:1,
+    note:'-ais → -aise（陰性）；複數：-ais / -aises',
+    headers:['性數','形式'],
+    rows:[
+      ['m. sg', {a:'français',   h:false}],
+      ['f. sg', {a:'française',  h:true }],
+      ['m. pl', {a:'français',   h:true }],
+      ['f. pl', {a:'françaises', h:true }],
+    ]
+  },
+
+  {
+    id:'adj-tunisien', title:'tunisien', zh:'突尼西亞人（-ien 國籍）',
+    type:'adj', lesson:1,
+    note:'-ien → -ienne（-n 重複 + e）；-en/-on/-an 型同理',
+    headers:['性數','形式'],
+    rows:[
+      ['m. sg', {a:'tunisien',    h:false}],
+      ['f. sg', {a:'tunisienne',  h:true }],
+      ['m. pl', {a:'tunisiens',   h:true }],
+      ['f. pl', {a:'tunisiennes', h:true }],
+    ]
+  },
+
+  {
+    id:'adj-espagnol', title:'espagnol', zh:'西班牙人（-ol 國籍）',
+    type:'adj', lesson:1,
+    note:'-ol → -ole（加 e）；複數：-ols / -oles',
+    headers:['性數','形式'],
+    rows:[
+      ['m. sg', {a:'espagnol',   h:false}],
+      ['f. sg', {a:'espagnole',  h:true }],
+      ['m. pl', {a:'espagnols',  h:true }],
+      ['f. pl', {a:'espagnoles', h:true }],
+    ]
+  },
+
+  // ── 冠詞 ────────────────────────────────────────────────
+
+  {
+    id:'partitif', title:'部分冠詞（du / de la…）', zh:'不定量：說「一些」時用',
+    type:'article', lesson:5,
+    note:'否定句全換成 de / d\'（不管原冠詞性數）',
+    headers:['性數','冠詞','例句'],
+    rows:[
+      ['m. sg',    {a:'du',    h:true},'Je mange ___ poisson.'],
+      ['f. sg',    {a:'de la', h:true},'Je mange ___ viande.'],
+      ['母音開頭', {a:"de l'", h:true},"Je bois ___ eau."],
+      ['複數',     {a:'des',   h:true},'Je mange ___ pâtes.'],
+      ['否定句',   {a:'de',    h:true},'Je ne mange pas ___ viande.'],
+    ]
+  },
+
+  {
+    id:'defini', title:'定冠詞（le / la / l\' / les）', zh:'指特定・已知的事物',
+    type:'article', lesson:1,
+    note:"母音或 h 啞音前 → l'（縮音）；複數統一用 les",
+    headers:['性數','冠詞','例句'],
+    rows:[
+      ['m. sg',    {a:'le',  h:false},'Je préfère ___ poisson.'],
+      ['f. sg',    {a:'la',  h:false},"J'aime ___ viande."],
+      ['母音開頭', {a:"l'",  h:true },"Je bois ___ eau."],
+      ['複數',     {a:'les', h:true },'Je mange ___ pâtes.'],
+    ]
+  },
+
+  {
+    id:'indefini', title:'不定冠詞（un / une / des）', zh:'泛指：第一次提到或非特定',
+    type:'article', lesson:1,
+    note:"否定句 → pas de（不用 pas un/une）；母音前 un 末音連誦：un[n]ami",
+    headers:['性數','冠詞','例句'],
+    rows:[
+      ['m. sg', {a:'un',   h:false},"C'est ___ restaurant."],
+      ['f. sg', {a:'une',  h:false},"C'est ___ boulangerie."],
+      ['複數',  {a:'des',  h:true },"Ce sont ___ étudiants."],
+      ['否定',  {a:'de',   h:true },"Ce n'est pas ___ problème."],
+    ]
+  },
+
+  // ── 介係詞 ──────────────────────────────────────────────
+
+  {
+    id:'transport', title:'交通介係詞（à / en）', zh:'非機動 → à；機動 → en',
+    type:'prep', lesson:4,
+    note:'à pied / à vélo：非機動交通；en bus / en voiture：機動（有引擎）',
+    headers:['交通方式','介係詞','例句'],
+    rows:[
+      ['pied（步行）',    {a:'à', h:true },'Je vais au bureau ___ pied.'],
+      ['vélo（腳踏車）',  {a:'à', h:true },'Il va au marché ___ vélo.'],
+      ['bus（公車）',     {a:'en',h:true },'Je vais à l\'école ___ bus.'],
+      ['voiture（汽車）', {a:'en',h:true },'Elle va au travail ___ voiture.'],
+      ['train（火車）',   {a:'en',h:false},'Il va à Paris ___ train.'],
+      ['métro（地鐵）',   {a:'en',h:false},'Nous allons ___ métro.'],
+    ]
+  },
+
+  {
+    id:'commerce', title:'商店介係詞（chez / à la）', zh:'chez + 人；à la / au + 地點',
+    type:'prep', lesson:5,
+    note:'chez + 職業人稱 = 在某人的店；à la/au + 商店名 = 在某間店（兩種說法都對）',
+    headers:['說法','介係詞','例句'],
+    rows:[
+      ['chez + 人（在某人的店）', {a:'chez le',h:true },"J'achète ___ boulanger."],
+      ['à la + 商店（f.）',       {a:'à la',   h:true },"J'achète ___ boulangerie."],
+      ['au + 商店（m.）',          {a:'au',     h:true },'Je vais ___ supermarché.'],
+      ["à l' + 母音商店",          {a:"à l'",   h:true },"Je vais ___ épicerie."],
+    ]
+  },
+
+];
+
+// ════════════════════════════════════════════════════════════
+// 狀態
+// ════════════════════════════════════════════════════════════
+let diff       = 'easy';
+let typeFilter = 'all';
+let queue      = [];
+let qIdx       = 0;
+let totalOk    = 0, totalBad = 0;
+let activeInp  = null;
+let results    = [];   // { title, ok, total }
+
+// ════════════════════════════════════════════════════════════
+// 初始化
+// ════════════════════════════════════════════════════════════
+(function init() {
+  // 重音符號列
+  const ACCENTS = ['é','è','ê','ë','à','â','ç','ù','û','î','ï','ô','œ','æ'];
+  document.getElementById('accentBar').innerHTML =
+    ACCENTS.map(c => `<button class="acc-btn" onmousedown="insAcc(event,'${c}')">${c}</button>`).join('');
+
+  startSession();
+})();
+
+function insAcc(e, ch) {
+  e.preventDefault();
+  if (!activeInp) return;
+  const i = activeInp, s = i.selectionStart, end = i.selectionEnd;
+  i.value = i.value.slice(0, s) + ch + i.value.slice(end);
+  i.selectionStart = i.selectionEnd = s + 1;
+  i.focus();
+}
+
+// ════════════════════════════════════════════════════════════
+// 過濾 & 流程
+// ════════════════════════════════════════════════════════════
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startSession() {
+  const src = typeFilter === 'all' ? TABLES : TABLES.filter(t => t.type === typeFilter);
+  queue = shuffle(src);
+  qIdx = 0; totalOk = 0; totalBad = 0; results = [];
+  updateProgress();
+  renderCard();
+}
+
+function setDiff(d) {
+  diff = d;
+  document.querySelectorAll('.diff-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.diff === d));
+  startSession();
+}
+
+function setType(t) {
+  typeFilter = t;
+  document.querySelectorAll('.type-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.type === t));
+  startSession();
+}
+
+// ════════════════════════════════════════════════════════════
+// 進度列
+// ════════════════════════════════════════════════════════════
+function updateProgress() {
+  const n = queue.length;
+  document.getElementById('progText').textContent =
+    n ? `第 ${Math.min(qIdx + 1, n)} / ${n} 題` : '—';
+  document.getElementById('scoreText').textContent = `${totalOk} ✓ · ${totalBad} ✗`;
+  document.getElementById('progFill').style.width =
+    n ? (qIdx / n * 100) + '%' : '0%';
+}
+
+// ════════════════════════════════════════════════════════════
+// 渲染卡片
+// ════════════════════════════════════════════════════════════
+const TYPE_LABEL = { verb:'動詞', adj:'形容詞', article:'冠詞', prep:'介係詞' };
+
+function renderCard() {
+  if (qIdx >= queue.length) { renderSummary(); return; }
+  const tbl = queue[qIdx];
+
+  // 計算哪些格子是空白的
+  // isBlank({ a, h }) → diff=hard: 全空；diff=easy: 只空 h=true 的
+  function isBlank(cell) {
+    if (typeof cell === 'string') return false;
+    return diff === 'hard' || cell.h === true;
+  }
+
+  let inputIdx = 0;
+  let tableHTML = '';
+
+  // 表頭
+  tableHTML += '<thead><tr>';
+  tbl.headers.forEach(h => { tableHTML += `<th>${h}</th>`; });
+  tableHTML += '</tr></thead><tbody>';
+
+  // 資料行
+  tbl.rows.forEach((row, ri) => {
+    tableHTML += '<tr>';
+    row.forEach((cell, ci) => {
+      if (typeof cell === 'string') {
+        tableHTML += `<td class="${ci === 0 ? 'lbl' : ''}">${escH(cell)}</td>`;
+      } else if (isBlank(cell)) {
+        tableHTML += `<td><input class="fill-input" type="text"
+          id="inp_${ri}_${ci}"
+          data-ans="${escH(cell.a)}"
+          autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
+          onkeydown="handleKey(event)"
+          onfocus="onFocus(this)" onblur="onBlur()"></td>`;
+        inputIdx++;
+      } else {
+        tableHTML += `<td class="shown">${escH(cell.a)}</td>`;
+      }
+    });
+    tableHTML += '</tr>';
+  });
+  tableHTML += '</tbody>';
+
+  const hasInputs = inputIdx > 0;
+
+  document.getElementById('cardArea').innerHTML = `
+<div class="card" id="activeCard">
+  <div class="card-header">
+    <span class="lesson-badge">第${tbl.lesson}課</span>
+    <span class="type-badge ${tbl.type}">${TYPE_LABEL[tbl.type]}</span>
+    <span class="card-title">${escH(tbl.title)}</span>
+    <span class="card-zh">— ${escH(tbl.zh)}</span>
+    <button class="tts-card-btn" data-tts="${escH(tbl.title)}" onclick="ttsSpeak(this.dataset.tts)">🔊</button>
+  </div>
+  ${tbl.note ? `<div class="card-note">${tbl.note}</div>` : ''}
+  <table class="fill-table">${tableHTML}</table>
+  <div class="card-actions">
+    <button class="check-btn" id="checkBtn" onclick="checkAll()"
+      ${!hasInputs ? 'disabled' : ''}>確認答案</button>
+    <button class="next-btn" id="nextBtn" onclick="nextCard()">下一題 →</button>
+    <span class="card-score-chip" id="chipScore"></span>
+  </div>
+</div>`;
+
+  // 聚焦第一個空格
+  const first = document.querySelector('.fill-input');
+  if (first) first.focus();
+}
+
+function escH(s) {
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+// ════════════════════════════════════════════════════════════
+// 輸入事件
+// ════════════════════════════════════════════════════════════
+function onFocus(inp) {
+  activeInp = inp;
+  document.getElementById('accentBar').classList.add('visible');
+}
+function onBlur() {
+  setTimeout(() => {
+    if (!document.querySelector('.fill-input:focus')) {
+      document.getElementById('accentBar').classList.remove('visible');
+      activeInp = null;
+    }
+  }, 160);
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter') {
+    const inputs = [...document.querySelectorAll('.fill-input:not([disabled])')];
+    const allFilled = inputs.every(i => i.value.trim());
+    if (allFilled) {
+      checkAll();
+    } else {
+      // 跳到下一個未填的格
+      const cur = e.target;
+      const idx = inputs.indexOf(cur);
+      const next = inputs.slice(idx + 1).find(i => !i.value.trim())
+                || inputs.find(i => !i.value.trim());
+      if (next) next.focus();
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// 答案確認
+// ════════════════════════════════════════════════════════════
+function norm(s) {
+  return s.trim().toLowerCase()
+    .replace(/['']/g, "'")   // 統一撇號
+    .replace(/\s+/g, ' ');
+}
+
+function checkAll() {
+  const inputs = [...document.querySelectorAll('.fill-input')];
+  if (!inputs.length) return;
+
+  let ok = 0;
+  inputs.forEach(inp => {
+    const answers = inp.dataset.ans.split('|').map(norm);
+    const userVal = norm(inp.value);
+    const correct = answers.includes(userVal);
+    inp.disabled = true;
+    if (correct) {
+      inp.classList.add('ok');
+      ok++;
+    } else {
+      inp.classList.add('bad');
+      const hint = document.createElement('span');
+      hint.className = 'wrong-hint';
+      hint.textContent = '✓ ' + inp.dataset.ans.replace(/\|/g, ' / ');
+      inp.parentNode.appendChild(hint);
+    }
+  });
+
+  const total = inputs.length;
+  const bad   = total - ok;
+  totalOk  += ok;
+  totalBad += bad;
+  results.push({ title: queue[qIdx].title, ok, total });
+
+  // UI 更新
+  document.getElementById('checkBtn').style.display = 'none';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'inline-block';
+  if (qIdx === queue.length - 1) nextBtn.textContent = '查看結果 →';
+
+  const pct = Math.round(ok / total * 100);
+  document.getElementById('chipScore').textContent =
+    `${ok} / ${total} ✓ （${pct}%）`;
+
+  document.getElementById('accentBar').classList.remove('visible');
+  updateProgress();
+}
+
+function nextCard() {
+  qIdx++;
+  updateProgress();
+  renderCard();
+}
+
+// ════════════════════════════════════════════════════════════
+// 總結畫面
+// ════════════════════════════════════════════════════════════
+function renderSummary() {
+  document.getElementById('accentBar').classList.remove('visible');
+  const tot = totalOk + totalBad;
+  const pct = tot ? Math.round(totalOk / tot * 100) : 0;
+
+  const rows = results.map(r => {
+    const allOk = r.ok === r.total;
+    const color = allOk ? '#2ca85c' : r.ok === 0 ? '#e05520' : '#d4a017';
+    return `<div class="sum-row">
+      <span>${escH(r.title)}</span>
+      <span style="color:${color}">${r.ok} / ${r.total}</span>
+    </div>`;
+  }).join('');
+
+  const medal = pct >= 90 ? '🏆' : pct >= 70 ? '⭐' : pct >= 50 ? '💪' : '📖';
+  const nextDiff = diff === 'easy' ? 'hard' : 'easy';
+  const nextLabel = diff === 'easy' ? '挑戰中級' : '回到初級';
+
+  document.getElementById('cardArea').innerHTML = `
+<div class="summary">
+  <div class="sum-title">${medal} 練習完成！</div>
+  <div class="sum-pct">${pct}%</div>
+  <div class="sum-sub">${totalOk} 格正確 / ${tot} 格總計</div>
+  <div class="sum-list">${rows}</div>
+  <button class="restart-btn" onclick="startSession()">🔄 再來一次</button>
+  <button class="restart-btn ghost" onclick="setDiff('${nextDiff}')">${nextLabel}</button>
+</div>`;
+
+  document.getElementById('progFill').style.width = '100%';
+  document.getElementById('progText').textContent = `完成 ${queue.length} 題`;
+}
+
+// ════════════════════════════════════════════════════════════
+// TTS
+// ════════════════════════════════════════════════════════════
+let frVoice = null;
+function initVoice() {
+  frVoice = speechSynthesis.getVoices().find(v => /am[eé]lie/i.test(v.name))
+         || speechSynthesis.getVoices().find(v => /thomas/i.test(v.name))
+         || null;
+}
+speechSynthesis.onvoiceschanged = initVoice;
+initVoice();
+
+function ttsSpeak(text) {
+  speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text.replace(/·/g, ' '));
+  utt.lang = 'fr-FR'; utt.rate = 0.75;
+  if (frVoice) utt.voice = frVoice;
+  speechSynthesis.speak(utt);
+}
+</script>
+</body>
+</html>
