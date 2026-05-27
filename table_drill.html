@@ -656,19 +656,26 @@ function renderCard() {
   const tbl = queue[qIdx];
 
   // 計算哪些格子是空白的
-  // easy: 只空 h=true 的格子
-  // mid : 全空，但顯示首字提示（placeholder）
-  // hard: 全空，無提示
-  function isBlank(cell) {
+  // easy: 只空 h=true 的格子（h=false 的行作為提示顯示）
+  // mid : 找最後一個含有 h=false 格子的行，只保留那行，其他全空
+  // hard: 全空
+
+  // 預先計算「中級提示行」：最後一個包含 h=false 格子的 row index
+  const midHintRow = (() => {
+    let idx = -1;
+    tbl.rows.forEach((row, i) => {
+      if (row.some(c => typeof c === 'object' && c.h === false)) idx = i;
+    });
+    return idx;
+  })();
+
+  function isBlank(cell, rowIdx) {
     if (typeof cell === 'string') return false;
-    return diff === 'mid' || diff === 'hard' || cell.h === true;
-  }
-  // 中級首字提示：取前 N 個字元 + "…"
-  function getHint(answer) {
-    const s = answer.trim();
-    if (!s || diff !== 'mid') return '';
-    const n = s.length > 4 ? 2 : 1;
-    return s.slice(0, n) + '…';
+    if (diff === 'hard') return true;
+    if (diff === 'easy') return cell.h === true;
+    // diff === 'mid'：只有 midHintRow 的 h=false 格子顯示，其他全空
+    if (rowIdx === midHintRow && cell.h === false) return false;
+    return true;
   }
 
   let inputIdx = 0;
@@ -685,11 +692,10 @@ function renderCard() {
     row.forEach((cell, ci) => {
       if (typeof cell === 'string') {
         tableHTML += `<td class="${ci === 0 ? 'lbl' : ''}">${escH(cell)}</td>`;
-      } else if (isBlank(cell)) {
+      } else if (isBlank(cell, ri)) {
         tableHTML += `<td><input class="fill-input" type="text"
           id="inp_${ri}_${ci}"
           data-ans="${escH(cell.a)}"
-          placeholder="${escH(getHint(cell.a))}"
           autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
           onkeydown="handleKey(event)"
           onfocus="onFocus(this)" onblur="onBlur()"></td>`;
