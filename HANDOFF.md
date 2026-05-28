@@ -37,13 +37,14 @@
 
 ## 專案概覽
 
-四個互相連動的 HTML 檔，部分推上 GitHub Pages：
+五個互相連動的 HTML 檔，部分推上 GitHub Pages：
 
 | 檔案 | 用途 | 部署 |
 |------|------|------|
 | `french_notes.html` | 課堂筆記（本機查閱） | 本機 only |
 | `french_basics.html` | 數字/發音/文法表（三個 tab） | https://owenc8964.github.io/french_pronounce/french_basics.html |
 | `quiz.html` | 抽考練習 SRS + 快速測驗 | https://owenc8964.github.io/french_pronounce/quiz.html |
+| `table_drill.html` | 表格填空練習（動詞/形容詞/冠詞/介係詞） | https://owenc8964.github.io/french_pronounce/table_drill.html |
 | `map.html` | CLB7 課程地圖（本機查閱） | 本機 only |
 
 **本機路徑：** `/Users/owen/Documents/Claude/Project/CLB test/France CLB7/`
@@ -55,10 +56,11 @@
 ## 目前進度
 
 - **課程：** CLB7（目標 B2），目前 A1 階段
-- **已上：** 第 1–4 課
-- **Quiz BANK 題數：** 140 題（課程 SRS 練習，第 1–4 課）
+- **已上：** 第 1–5 課
+- **Quiz BANK 題數：** 220 題（課程 SRS 練習，第 1–5 課）
+  - 第1課 63 / 第2課 54 / 第3課 26 / 第4課 39 / 第5課 38
 - **AGREE_BANK 題數：** 247 題（⚡ 快速測驗 專用）
-- **地圖進度：** 13 / 60 格已解鎖（CURRENT_LESSON = 4）
+- **地圖進度：** 13 / 60 格已解鎖（CURRENT_LESSON = 4，建議第5課後解鎖 nourriture）
 
 ### 已解鎖的地圖格子
 
@@ -67,6 +69,13 @@ A1: greetings, classroom, numbers, nationality, dates, etre-avoir,
     er-verbs, articles, family, couleurs
 A2: loisirs, nourriture, ir-re
 ```
+
+### 第5課已涵蓋內容（french_notes Lesson 5）
+- 商店與店員（boulangerie/boucherie/épicerie/poissonnerie/fromagerie + chez vs à la）
+- 不定量冠詞（du / de la / de l' / des）+ 否定句 → pas de
+- 餐廳點餐：菜單結構・料理・點餐句型・牛排熟度・餐桌擺設
+- -ir 動詞（choisir/finir）、manger（nous mangeons）
+- 不規則動詞總表：être / avoir / aller / faire
 
 ---
 
@@ -92,6 +101,7 @@ A2: loisirs, nourriture, ir-re
 
 **Tab 1：🔢 數字 / 星期 / 月份**
 - 數字卡片（0–99、特殊規律如 71/81）、星期、月份
+- **十位數 dizaines 區塊：** 10/20/30/40/50/60/70/80/90 全部獨立展示，含 soixante-dix/quatre-vingts/quatre-vingt-dix 規律說明
 - 雙擊加備注
 
 **Tab 2：🎵 Sons du Français**
@@ -105,7 +115,7 @@ A2: loisirs, nourriture, ir-re
 
 ### `quiz.html`
 
-#### 課程練習 BANK（114 題，第 1–3 課）
+#### 課程練習 BANK（220 題，第 1–5 課）
 
 - 題庫在 `const BANK = [...]`，每題格式：
 
@@ -119,6 +129,12 @@ A2: loisirs, nourriture, ir-re
 - **SRS 系統：** 每題答對/錯記在 `localStorage`（key: `clb7_q_...`），錯 2 次以上 = 弱點題
 - **三種模式：** 📚 一般練習 / 🎯 弱點模式 / 🔀 混合複習
 - **加新課題目：** append 到 BANK 陣列尾端，`lesson` 填對應課號
+
+**「其實對 ✓」覆蓋按鈕：**
+- 當系統判斷錯誤時，答題卡片下方（SRS 模式）和填空格（drill 模式）各有一個「其實對 ✓」按鈕
+- 按下後：`srs.w--; srs.c++;`，分數改為答對，同時從錯題複習佇列移除
+- 用於口音/拼法微差但語意正確的情況（例如多/少一個空格）
+- SRS 模式：`overrideCorrect()`、drill 模式：`overrideDrillCorrect()`
 
 #### ⚡ 快速測驗（AGREE_BANK，119 題）
 
@@ -155,21 +171,77 @@ A2: loisirs, nourriture, ir-re
 
 **答題流程（Phase State Machine）：**
 - 主輪（`drillPhase = 'main'`）：答完 20 題 → 分數鎖定
-- 複習輪（`drillPhase = 'review'`）：錯的題目無縫銜接在主輪後
-  - 答對 → 900ms 後自動下一題
-  - 答錯 → 1500ms 後重試同題（直到答對）
-- 複習輪完成 → 顯示總結（主輪分數 + 複習輪改正題數）
+- 主輪結束後，若有錯題 → 進入複習輪（`drillPhase = 'review'`）
+- 複習輪採**分輪制**（不在當場立即重試）：
+  - 答對 → 顯示解說，等待手動按「下一題」
+  - 答錯 → 顯示解說，等待手動按「下一題」，**錯題累積到子輪結束才開下一輪重考**
+  - 若整個子輪只有 1 題且答錯 → 「↺ 重試此題」按鈕，原題重試
+- 每一輪結束後，若還有新錯題 → 再開一個子輪；直到全部答對才顯示完成畫面
+- 主輪分數在進入複習輪前已鎖定
+
+**疑慮旗標功能（⚑）：**
+- 每題右上角有一個小紅圓點按鈕
+- 點擊 → 標記此題有疑慮（題目錯誤 or 答案有疑問）；再按取消
+- 旗標存入 `localStorage`（key: `clb7_drill_flags`，格式：題目 ID 的 Set）
+- 完成畫面會列出所有被標記的題目，供下次更新時審查
+
+**練習回饋功能（完成後）：**
+- 完成畫面下方有 textarea，可輸入本次練習的目標 / 狀況 / 心得
+- 支援語音輸入（🎙 按鈕，Web Speech API，語言 zh-TW）
+- 回饋存入 `localStorage`（key: `clb7_drill_sessions`，格式：最近 50 筆，含日期 / 分數 / 旗標清單）
 
 **情境推理（🔗 chain 題）：**
 - 以 Nina/Théo 婚禮賓客名單為情境
 - 考多步推理：「Théo 的媽媽的姐妹的丈夫 → 他是 → son oncle」
 - AGREE_BANK 項目加 `chain: true` 標記，顯示時有藍色 🔗 badge
 
+### `table_drill.html`
+
+表格填空練習，練習動詞變位、形容詞、冠詞、介係詞等需要大量機械記憶的內容。
+
+**三個難度：**
+| 難度 | 空格規則 |
+|------|----------|
+| 初級 | 僅顯示 `h:true`（較難）的格子為空白，`h:false`（核心）格有提示 |
+| 中級 | 演算法：找最後一個含 `h:false` 格的列（`midHintRow`），只顯示該列的 `h:false` 格，其餘全空 |
+| 高級 | 全部空白 |
+
+**資料結構：** 每列為陣列，元素可為字串（固定顯示）或 `{a:'答案', h:bool}` 物件  
+- `h:false` = 核心知識（初級會顯示作為提示）  
+- `h:true` = 延伸知識（初級就要填）
+
+**目前 21 個表格：**
+- 動詞：être / avoir / aller / faire / parler / aimer / s'appeler / acheter / choisir / finir / manger + 四動詞綜合（être/avoir/aller/faire × 6 人稱）
+- 形容詞：vert / blanc / violet / orange+marron / français / tunisien / espagnol + 所有格（6×3 完整表）
+- 冠詞：部分冠詞（du/de la/de l'/des/de）/ 定冠詞 / 不定冠詞
+- 介係詞：交通（à/en × 6 種）/ 商店（chez/à la/au/à l'）
+
+**特色功能：** 口音輸入列（é/è/ê/ë/à/â/ç/ù/û/î/ï/ô/œ/æ）、TTS、每格 ✓/✗ 即時反饋、完成摘要、進度條
+
+**加新表格：** 在 `const TABLES = [...]` 尾端加新物件，格式參考現有表格。
+
+---
+
 ### `map.html`
 
 - 60 格地圖，4 個區域：A1（15）/ A2（15）/ B1（15）/ B2（15）
 - 解鎖：找 tile 的 `id`，把 `unlocked:false` 改成 `unlocked:true, lesson:N`
 - 更新 `const CURRENT_LESSON = N;`
+
+---
+
+## 題庫更新前的 SOP（Claude 每次必做）
+
+**⚠️ Owen 在 GitHub Pages 上練習（手機或其他裝置），不在這台電腦上。**
+**因此無法自動讀取練習資料，更新前請先請 Owen 做這件事：**
+
+> 「請開 quiz.html → 完成畫面按「📊 弱點分析」→ 按「📋 複製全部」→ 貼給我」
+
+拿到分析資料後：
+1. 找出 `topWrong` 的共同錯誤模式
+2. 看 `recentSessions.feedback` 用戶感知的困難
+3. 看 `flagged` 有問題的題目
+4. 根據分析改題、補題，結果寫進 memory
 
 ---
 
@@ -320,7 +392,7 @@ A：`buildLessonButtons()` 自動從 BANK 讀取 lesson 值，加了新題重新
 A：確認在 Tab 3（📊 文法表），點藍色粗體 `.pron` 格。Tab 1/2 不適用此功能。
 
 **Q：快速測驗的錯題怎麼處理？**
-A：主輪 20 題答完後，錯的題目無縫接續（不顯示中間畫面），review 輪答錯會原地重試直到答對。主輪分數在進入 review 輪前已鎖定。
+A：主輪 20 題答完後，錯的題目進入複習輪（分輪制）。每輪結束後才集中重考錯題，而不是當下立即重試。若子輪只剩 1 題且答錯，才會原題重試（避免永遠循環）。每題右上角有紅點可標記疑慮，完成後可輸入練習回饋。
 
 ---
 
@@ -331,11 +403,14 @@ A：主輪 20 題答完後，錯的題目無縫接續（不顯示中間畫面）
 ```
 請先讀 HANDOFF.md（在 /Users/owen/Documents/Claude/Project/CLB test/France CLB7/）。
 
-Owen 在學法語，目標一年內考過 CLB7（B2）。目前完成第4課，系統包含：
-- french_notes.html：課堂筆記（第1-4課）
-- quiz.html：SRS 題庫（BANK 140題）+ 快速測驗（AGREE_BANK 247題）
-- map.html：課程地圖（13/60格已解鎖）
-- french_basics.html：數字/發音/文法表
+Owen 在學法語，目標一年內考過 CLB7（B2）。目前完成第5課，系統包含：
+- french_notes.html：課堂筆記（第1-5課）
+- quiz.html：SRS 題庫（BANK 220題，第1-5課）+ 快速測驗（AGREE_BANK 247題）
+- table_drill.html：表格填空練習（動詞/形容詞/冠詞/介係詞，21個表格，三難度）
+- map.html：課程地圖（13/60格已解鎖，建議第5課後解鎖 nourriture）
+- french_basics.html：數字/發音/文法表（含十位數 dizaines）
+
+GitHub Pages：https://owenc8964.github.io/french_pronounce/
 
 【本次任務】（請從這裡描述要做什麼）
 ```
