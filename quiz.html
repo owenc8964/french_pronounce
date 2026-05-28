@@ -483,14 +483,14 @@ const BANK = [
   { lesson:1, type:'gender', q:'américain → 女性形？',         hint:'+ e', a:'américaine', aNote:'鼻音 -ain 變 -aine' },
   { lesson:1, type:'gender', q:'japonais → 女性形？',          hint:'+ e', a:'japonaise', aNote:'' },
   // 判斷
-  { lesson:1, type:'choose', q:'見到不認識的人，問好用 tu 還是 vous？',  hint:'', a:'vous', aNote:'陌生人、長輩、正式場合' },
-  { lesson:1, type:'choose', q:'對朋友問好，用 tu 還是 vous？',          hint:'', a:'tu', aNote:'朋友、家人、小孩' },
-  { lesson:1, type:'choose', q:'「我25歲」用 être 還是 avoir？',         hint:'年齡', a:'avoir', aNote:"J'ai 25 ans. 法文年齡說「擁有」幾年" },
-  { lesson:1, type:'choose', q:'「1號」的特殊說法是？',                  hint:'序數', a:'le premier|premier', aNote:'只有1號用 premier，其他用數字' },
-  { lesson:1, type:'choose', q:'法文國籍要大寫嗎？',                     hint:'', a:'不用|不大寫|non|no', aNote:'國籍形容詞小寫，只有國家名稱大寫' },
-  { lesson:1, type:'choose', q:'mercredi 來自哪顆行星？',                hint:'拉丁文', a:'水星|mercure|Mercure', aNote:'mercredi ← Mercure（水星）' },
-  { lesson:1, type:'choose', q:'lundi 來自什麼？',                       hint:'拉丁文', a:'月亮|lune', aNote:'lundi ← luna（月亮）' },
-  { lesson:1, type:'choose', q:'否定句的結構是？',                       hint:'ne…', a:'ne…pas|ne ... pas|ne pas', aNote:'ne + 動詞 + pas，母音前 ne → n\'' },
+  { lesson:1, type:'choose', q:'見到不認識的人，問好用 tu 還是 vous？',  hint:'', a:'vous', aNote:'陌生人、長輩、正式場合', opts:['tu','vous'] },
+  { lesson:1, type:'choose', q:'對朋友問好，用 tu 還是 vous？',          hint:'', a:'tu', aNote:'朋友、家人、小孩', opts:['tu','vous'] },
+  { lesson:1, type:'choose', q:'「我25歲」用 être 還是 avoir？',         hint:'年齡', a:'avoir', aNote:"J'ai 25 ans. 法文年齡說「擁有」幾年", opts:['être','avoir'] },
+  { lesson:1, type:'choose', q:'「1號」的特殊說法是？',                  hint:'序數', a:'le premier|premier', aNote:'只有1號用 premier，其他用數字', opts:['le un','le premier','le numéro','le ordinal'] },
+  { lesson:1, type:'choose', q:'法文國籍要大寫嗎？',                     hint:'', a:'不用|不大寫|non|no', aNote:'國籍形容詞小寫，只有國家名稱大寫', opts:['要大寫','不用'] },
+  { lesson:1, type:'choose', q:'mercredi 來自哪顆行星？',                hint:'拉丁文', a:'水星|mercure|Mercure', aNote:'mercredi ← Mercure（水星）', opts:['金星','水星','木星','火星'] },
+  { lesson:1, type:'choose', q:'lundi 來自什麼？',                       hint:'拉丁文', a:'月亮|lune', aNote:'lundi ← luna（月亮）', opts:['太陽','月亮','火星','土星'] },
+  { lesson:1, type:'choose', q:'否定句的結構是？',                       hint:'ne…', a:'ne...pas|ne … pas|ne pas', aNote:"ne + 動詞 + pas，母音前 ne → n'", opts:['ne...pas','non...pas','ne...non','pas...ne'] },
 
   // ── 第2課：冠詞、介詞、habiter ──────────────────────────────────
   { lesson:2, type:'fill', q:'J\'_____ à Taipei. (habiter)',                    hint:'je + habiter', a:'J\'habite à Taipei.|habite', aNote:'habiter → j\'habite（字尾加 e，je → j\' 因母音）' },
@@ -517,10 +517,10 @@ const BANK = [
   { lesson:2, type:'gender', q:'histoire → 陽性 or 陰性？冠詞是？',             hint:'字尾 -e，母音開頭', a:'陰性 → l\'histoire', aNote:'l\'histoire（f），母音開頭用 l\'' },
   { lesson:2, type:'gender', q:'café → 陽性 or 陰性？冠詞是？',                 hint:'-é 結尾≠陰性 -e', a:'陽性 → le café', aNote:'le café（m），帶重音的 -é 不算陰性字尾 -e' },
 
-  { lesson:2, type:'choose', q:'librairie 和 bibliothèque，哪個是「圖書館」？', hint:'faux ami（假朋友）', a:'bibliothèque', aNote:'librairie = 書店；bibliothèque = 圖書館' },
-  { lesson:2, type:'choose', q:'「on」在口語中等於哪個主詞？動詞怎麼變？',     hint:'動詞變位同 il/elle', a:'nous；動詞用 il/elle 的變位（-e）', aNote:'On habite = Nous habitons，但動詞是 habite 不是 habitons' },
-  { lesson:2, type:'choose', q:'以下哪個介詞 + 國家組合是正確的？', hint:'注意陽陰複數', a:'au Canada|en France|aux États-Unis', aNote:'le Canada → au；la France → en；les États-Unis → aux' },
-  { lesson:2, type:'choose', q:'「台灣」要用哪個介詞？為什麼？',                hint:'島嶼無性別', a:'à Taiwan', aNote:'台灣被視為島嶼/城市，無明確性別，用 à（同城市）' },
+  { lesson:2, type:'choose', q:'librairie 和 bibliothèque，哪個是「圖書館」？', hint:'faux ami（假朋友）', a:'bibliothèque', aNote:'librairie = 書店；bibliothèque = 圖書館', opts:['librairie','bibliothèque'] },
+  { lesson:2, type:'choose', q:'「on」在口語中等於哪個主詞？', hint:'動詞變位同 il/elle', a:'nous', aNote:'On habite = Nous habitons，但動詞是 habite 不是 habitons', opts:['tu','nous','vous','ils'] },
+  { lesson:2, type:'choose', q:'以下哪個介詞 + 國家組合是正確的？', hint:'注意陽陰複數', a:'au Canada|en France|aux États-Unis', aNote:'le Canada → au；la France → en；les États-Unis → aux', opts:['au Canada / en France / aux États-Unis','en Canada / à France / au États-Unis','à Canada / en France / au États-Unis','au Canada / à France / au États-Unis'] },
+  { lesson:2, type:'choose', q:'「台灣」要用哪個介詞？',                hint:'島嶼無性別', a:'à Taiwan', aNote:'台灣被視為島嶼/城市，無明確性別，用 à（同城市）', opts:['à Taiwan','en Taiwan','au Taiwan','aux Taïwan'] },
   { lesson:2, type:'choose', q:'法文電話號碼 06 89 34 72 51 怎麼念？',           hint:'兩位兩位念', a:'zéro six, quatre-vingt-neuf, trente-quatre, soixante-douze, cinquante et un', aNote:'法文電話號碼兩位兩位念' },
 
   // ── 第2課補充：疑問詞、parler、國家性別 ──────────────────────────
@@ -540,10 +540,10 @@ const BANK = [
   { lesson:2, type:'gender', q:'Mexique → 陰性 or 陽性？用哪個介詞去那裡？',     hint:'⚠️ 例外！字尾 -e 但…', a:'陽性例外 → au Mexique', aNote:'le Mexique = 例外，字尾 -e 卻是陽性 → au' },
   { lesson:2, type:'gender', q:'États-Unis → 單數 or 複數？用哪個介詞去那裡？', hint:'les + 複數', a:'複數 → aux États-Unis', aNote:'les États-Unis（複數）→ aux' },
 
-  { lesson:2, type:'choose', q:'「為什麼」用哪個疑問詞？回答時用什麼？',           hint:'Why / Because', a:'Pourquoi ? → Parce que...', aNote:'Pourquoi ? = Why? / Parce que = Because' },
-  { lesson:2, type:'choose', q:'以下哪句「parler + 語言」用法正確？',             hint:'語言前不加冠詞', a:'Je parle français.|Je parle le français.', aNote:'parler + 語言 → 直接接，不加冠詞（但 aimer le français 要加）' },
-  { lesson:2, type:'choose', q:'Qui / Où / Comment / Combien / Pourquoi，哪個問「在哪裡」？', hint:'Where', a:'Où', aNote:'Où = Where；Qui = Who；Comment = How；Combien = How much/many；Pourquoi = Why' },
-  { lesson:2, type:'choose', q:'71 和 81，哪個有「et」？為什麼？',               hint:'soixante + onze', a:'71（soixante et onze）有 et；81（quatre-vingt-un）沒有', aNote:'21-71 的個位為 1 用 et；80 之後完全不用 et' },
+  { lesson:2, type:'choose', q:'「為什麼」用哪個疑問詞？',           hint:'Why', a:'Pourquoi', aNote:'Pourquoi ? = Why? 回答用 Parce que...', opts:['Qui','Où','Comment','Pourquoi'] },
+  { lesson:2, type:'choose', q:'以下哪句「parler + 語言」用法正確？',             hint:'語言前不加冠詞', a:'Je parle français.|Je parle le français.', aNote:'兩句都對！parler + 語言可加冠詞也可不加（但 aimer le français 要加）', opts:['Je parle français.','Je parle le français.','Je parle de français.','Je parle en français.'] },
+  { lesson:2, type:'choose', q:'Qui / Où / Comment / Combien / Pourquoi，哪個問「在哪裡」？', hint:'Where', a:'Où', aNote:'Où = Where；Qui = Who；Comment = How；Combien = How much/many；Pourquoi = Why', opts:['Qui','Où','Comment','Pourquoi'] },
+  { lesson:2, type:'choose', q:'71 和 81，哪個有「et」？',               hint:'soixante + onze', a:'71 有 et，81 沒有|71（soixante et onze）有 et；81（quatre-vingt-un）沒有', aNote:'21-71 的個位為 1 用 et；80 之後完全不用 et', opts:['71 有 et，81 沒有','81 有 et，71 沒有','兩個都有 et','兩個都沒有 et'] },
 
   // ── 第3課 ──────────────────────────────────────────────
   // fill × 6
@@ -569,11 +569,11 @@ const BANK = [
   { lesson:3, type:'gender', q:'facteur → 女性形？',        hint:'-teur → ?', a:'factrice', aNote:'-teur → -trice（郵差，與 acteur 同規則）' },
 
   // choose × 5
-  { lesson:3, type:'choose', q:'「打籃球」用哪個說法？',     hint:'jouer / faire', a:'jouer au basket|faire du basket', aNote:'兩個都對！jouer à（球類遊戲）和 faire de（所有運動）都可用' },
-  { lesson:3, type:'choose', q:'「ma amie」為什麼錯？正確寫法？', hint:'母音開頭', a:'mon amie（陰性名詞若以母音開頭，ma→mon）', aNote:'ma amie 兩個母音碰撞，改用 mon amie（不是 m\'amie）' },
-  { lesson:3, type:'choose', q:'son / sa / ses，哪個填入空格？「_____ enfants jouent ici.」', hint:'enfants 是複數', a:'Ses', aNote:'複數名詞前用 ses（不管陰陽性）' },
-  { lesson:3, type:'choose', q:'「nous nageons」vs「nous nagons」，哪個正確？為什麼？', hint:'g + o 的發音', a:'nous nageons（保持 /ʒ/ 軟音需加 e）', aNote:'g+o 會變硬音，加 e 後 ge+ons 維持 /ʒ/；同規則：mangeons、voyageons' },
-  { lesson:3, type:'choose', q:'la mer / la mère / le maire，哪個是「市長」？', hint:'政治人物', a:'le/la maire（市長）', aNote:'mer = 海；mère = 母親；maire = 市長。三個發音相同！' },
+  { lesson:3, type:'choose', q:'「打籃球」用哪個說法？',     hint:'jouer / faire', a:'jouer au basket|faire du basket', aNote:'兩個都對！jouer à（球類遊戲）和 faire de（所有運動）都可用', opts:['jouer au basket','faire du basket','jouer du basket','faire au basket'] },
+  { lesson:3, type:'choose', q:'「ma amie」為什麼錯？正確寫法？', hint:'母音開頭', a:'mon amie', aNote:'ma amie 兩個母音碰撞，改用 mon amie（不是 m\'amie）', opts:['mon amie',"m'amie",'ma amie','mone amie'] },
+  { lesson:3, type:'choose', q:'son / sa / ses，哪個填入空格？「_____ enfants jouent ici.」', hint:'enfants 是複數', a:'Ses|ses', aNote:'複數名詞前用 ses（不管陰陽性）', opts:['son','sa','ses'] },
+  { lesson:3, type:'choose', q:'「nous nageons」vs「nous nagons」，哪個正確？', hint:'g + o 的發音', a:'nous nageons', aNote:'g+o 會變硬音，加 e 後 ge+ons 維持 /ʒ/；同規則：mangeons、voyageons', opts:['nous nageons','nous nagons'] },
+  { lesson:3, type:'choose', q:'la mer / la mère / le maire，哪個是「市長」？', hint:'政治人物', a:'le/la maire|maire', aNote:'mer = 海；mère = 母親；maire = 市長。三個發音相同！', opts:['la mer','la mère','le/la maire'] },
 
   // ── 第4課：顏色 · 食物 · 購物介係詞 · acheter/payer ──
   { lesson:4, type:'fill',   q:'J\'_____ des légumes au marché.  (acheter)',     hint:'je 單數 → è',          a:'achète',          aNote:'acheter：je → j\'achète（e → è 在單數）' },
@@ -601,10 +601,10 @@ const BANK = [
   { lesson:4, type:'gender', q:'une robe _____  (violet)',             hint:'-et → -ette',          a:'violette',  aNote:'violet → violette（-et → -ette，子音重複）' },
   { lesson:4, type:'gender', q:'des fleurs _____  (bleu)',             hint:'陰性複數',             a:'bleues',    aNote:'fleurs（f, pl）→ bleues（加 es）' },
 
-  { lesson:4, type:'choose', q:'去魚店可以說哪兩種？',                 hint:'lieu vs personne',     a:'à la poissonnerie|chez le poissonnier', aNote:'chez = 後面跟人；à la = 後面跟地方，兩種說法都可' },
-  { lesson:4, type:'choose', q:'「Je _____ du poisson. (acheter)」填哪個？',  hint:'je 單數',       a:'achète',    aNote:'acheter je → achète（e → è 在 je/tu/il/ils）' },
-  { lesson:4, type:'choose', q:'「我要一瓶橄欖油」的正確法文？',       hint:'de + 量詞',            a:'une bouteille d\'huile d\'olive', aNote:'數量詞後加 de（去冠詞）：une bouteille de + 名詞；huile 以母音開頭 → d\'' },
-  { lesson:4, type:'choose', q:'carte bleue 在法國是什麼？',           hint:'不是信用卡',            a:'簽帳卡（debit card）', aNote:'carte bleue / carte bancaire = 簽帳卡，法國刷卡為主，少用現金' },
+  { lesson:4, type:'choose', q:'去魚店可以說哪兩種？',                 hint:'lieu vs personne',     a:'à la poissonnerie|chez le poissonnier', aNote:'chez = 後面跟人；à la = 後面跟地方，兩種說法都可', opts:['à la poissonnerie','chez le poissonnier','au poissonnerie','chez la poissonnerie'] },
+  { lesson:4, type:'choose', q:'「Je _____ du poisson. (acheter)」填哪個？',  hint:'je 單數',       a:'achète',    aNote:'acheter je → achète（e → è 在 je/tu/il/ils）', opts:['achète','achetes','achetons','achetez'] },
+  { lesson:4, type:'choose', q:'「我要一瓶橄欖油」的正確法文？',       hint:'de + 量詞',            a:"une bouteille d'huile d'olive", aNote:"數量詞後加 de（去冠詞）：une bouteille de + 名詞；huile 以母音開頭 → d'", opts:["une bouteille d'huile d'olive","une bouteille de huile d'olive","une bouteille d'huile olive","un bouteille d'huile d'olive"] },
+  { lesson:4, type:'choose', q:'carte bleue 在法國是什麼？',           hint:'不是信用卡',            a:'簽帳卡（debit card）|簽帳卡', aNote:'carte bleue / carte bancaire = 簽帳卡，法國刷卡為主，少用現金', opts:['信用卡（credit card）','簽帳卡（debit card）','預付卡（prepaid）','交通卡（transit）'] },
 
   // ── 作業本補充：Unité 1 — 國籍形容詞 ──
   { lesson:1, type:'gender', q:'suisse → 女性形？',       hint:'注意：不變！', a:'suisse',       aNote:'suisse 男女同形（la Suisse 瑞士）' },
@@ -621,7 +621,7 @@ const BANK = [
   { lesson:1, type:'fill', q:'Vous aimez _____ artistes ? (quel)',     hint:'artistes = 複陽',     a:'quels',    aNote:'artistes（m, pl）→ quels' },
   { lesson:1, type:'fill', q:'_____ langues tu parles ? (quel)',       hint:'langues = 複陰',      a:'Quelles',  aNote:'langues（f, pl）→ quelles' },
   { lesson:1, type:'fill', q:'_____ est la date de naissance ? (quel)', hint:'date = 陰性',        a:'Quelle',   aNote:'date（f, sg）→ quelle（問陰性單數）' },
-  { lesson:1, type:'choose', q:'「你住在哪個城市？」中 quel 要變成？', hint:'ville = 陰性',        a:'quelle',   aNote:'ville（f）→ quelle ville（陰性單數）' },
+  { lesson:1, type:'choose', q:'「你住在哪個城市？」中 quel 要變成？', hint:'ville = 陰性',        a:'quelle',   aNote:'ville（f）→ quelle ville（陰性單數）', opts:['quel','quelle','quels','quelles'] },
 
   // ── 作業本補充：Unité 2 — -er 動詞 ──
   { lesson:2, type:'fill', q:'Elle _____ la radio chaque matin. (écouter)',       hint:'elle + -er', a:'écoute',    aNote:'écouter → elle écoute' },
@@ -634,7 +634,7 @@ const BANK = [
   { lesson:2, type:'fill', q:'Vous avez deux filles. Ce sont _____ filles.',       hint:'your + 複數',a:'vos',    aNote:'vous → vos（複數）；單數用 votre' },
   { lesson:2, type:'fill', q:'Elles ont des amis. Ce sont _____ amis.',            hint:'their + 複數',a:'leurs',  aNote:'ils/elles → leurs（複數）；單數用 leur' },
   { lesson:2, type:'fill', q:'On a un appartement. C\'est _____ appartement.',     hint:'our + 單數', a:'notre',  aNote:'nous/on → notre（單數）；複數用 nos' },
-  { lesson:2, type:'choose', q:'leur / leurs：「Ce sont _____ enfants.」填哪個？',  hint:'enfants 複數', a:'leurs', aNote:'leur（單數）vs leurs（複數）跟名詞的單複數走' },
+  { lesson:2, type:'choose', q:'leur / leurs：「Ce sont _____ enfants.」填哪個？',  hint:'enfants 複數', a:'leurs', aNote:'leur（單數）vs leurs（複數）跟名詞的單複數走', opts:['leur','leurs'] },
 
   // ── 作業本補充：Unité 2 — 職業陰陽 ──
   { lesson:2, type:'gender', q:'professeur → 女性形？', hint:'加 e', a:'professeure', aNote:'professeur → professeure（直接加 e，不是 euse）' },
@@ -648,23 +648,23 @@ const BANK = [
   { lesson:3, type:'fill', q:'Jean-Pierre aime les pâtes, il mange beaucoup _____ pâtes.', hint:'beaucoup', a:'de',  aNote:'量詞後直接接 de（不用冠詞）：beaucoup de pâtes' },
 
   // ── 作業本補充：Unité 4 — c\'est / il est / elle est ──
-  { lesson:4, type:'choose', q:'「_____ un touriste」填 C\'est 還是 Il est？',      hint:'後有冠詞 un', a:"C'est",  aNote:"C'est + un/une/des + nom；Il est + adjectif 或職業（不加冠詞）" },
-  { lesson:4, type:'choose', q:'「_____ allemand.」填 C\'est 還是 Il est？',        hint:'後有形容詞', a:'Il est', aNote:"Il est + adjectif（不加冠詞）；C'est + article + nom" },
+  { lesson:4, type:'choose', q:'「_____ un touriste」填 C\'est 還是 Il est？',      hint:'後有冠詞 un', a:"C'est",  aNote:"C'est + un/une/des + nom；Il est + adjectif 或職業（不加冠詞）", opts:["C'est",'Il est'] },
+  { lesson:4, type:'choose', q:'「_____ allemand.」填 C\'est 還是 Il est？',        hint:'後有形容詞', a:'Il est', aNote:"Il est + adjectif（不加冠詞）；C'est + article + nom", opts:["C'est",'Il est'] },
   { lesson:4, type:'fill',   q:'Rouen ? _____ une ville française.',                hint:"c'est + 冠詞 + nom", a:"C'est", aNote:"C'est + une ville（有冠詞 → c'est）" },
   { lesson:4, type:'fill',   q:'L\'artiste s\'appelle Snek et _____ grenoblois.',   hint:'形容詞，無冠詞', a:'il est', aNote:"il est + adjectif（直接形容詞，不加冠詞）" },
   { lesson:4, type:'trans',  q:'巴黎是法國的一個城市。',  hint:"C'est / une", a:"Paris, c'est une ville française.", aNote:"C'est + article + nom；Paris（專有名詞）通常放主語", askClaude:true },
 
   // ── 作業本補充：Unité 4 — 頻率副詞 ──
-  { lesson:4, type:'choose', q:'souvent / toujours / jamais，哪個是「總是」？', hint:'always', a:'toujours', aNote:'toujours = always；souvent = often；jamais（ne...jamais）= never' },
+  { lesson:4, type:'choose', q:'souvent / toujours / jamais，哪個是「總是」？', hint:'always', a:'toujours', aNote:'toujours = always；souvent = often；jamais（ne...jamais）= never', opts:['souvent','toujours','jamais'] },
   { lesson:4, type:'fill',   q:'On ne va _____ au musée le mardi.',               hint:'never',  a:'jamais',   aNote:'ne...jamais = never（jamais 放動詞後面）' },
   { lesson:4, type:'fill',   q:'Jonathan va à la bibliothèque lundi, mardi et mercredi. Il y va _____ .', hint:'always', a:'toujours', aNote:'三天都去 = toujours（always）' },
   { lesson:4, type:'trans',  q:'我從不去看展覽。',  hint:'ne...jamais',  a:'Je ne vais jamais aux expositions.', aNote:'ne...jamais + lieu：aux expositions（à + les）', askClaude:true },
 
   // ── 作業本補充：Unité 4 — 交通方式介系詞 ──
-  { lesson:4, type:'choose', q:'「騎腳踏車」用哪個介系詞？',          hint:'非機動交通', a:'à vélo',   aNote:'非機動：à pied / à vélo / à trottinette；機動：en bus / en voiture / en train' },
-  { lesson:4, type:'choose', q:'「步行」用哪個介系詞？',              hint:'no vehicle', a:'à pied',   aNote:'à pied = on foot（步行）' },
+  { lesson:4, type:'choose', q:'「騎腳踏車」用哪個介系詞？',          hint:'非機動交通', a:'à vélo',   aNote:'非機動：à pied / à vélo / à trottinette；機動：en bus / en voiture / en train', opts:['à vélo','en vélo','de vélo','par vélo'] },
+  { lesson:4, type:'choose', q:'「步行」用哪個介系詞？',              hint:'no vehicle', a:'à pied',   aNote:'à pied = on foot（步行）', opts:['à pied','en pied','de pied','par pied'] },
   { lesson:4, type:'fill',   q:'Je vais à l\'école _____ bus.',       hint:'機動交通',   a:'en',       aNote:'en + 機動交通：en bus / en voiture / en métro / en train' },
-  { lesson:4, type:'choose', q:'en bus / en vélo / à vélo，哪個正確？', hint:'vélo 用哪個介系詞', a:'à vélo', aNote:'vélo（非機動）→ à vélo；機動車輛用 en' },
+  { lesson:4, type:'choose', q:'en bus / en vélo / à vélo，哪個用法正確？', hint:'vélo 用哪個介系詞', a:'à vélo', aNote:'vélo（非機動）→ à vélo；機動車輛用 en', opts:['en bus','en vélo','à vélo','de vélo'] },
 
   // ── 第5課：商店 · 不定冠詞 · 餐廳 · -ir 動詞 · faire ──
 
@@ -710,13 +710,13 @@ const BANK = [
   { lesson:5, type:'gender', q:'_____ entrée (le / la)',                    hint:'前菜',               a:'l\'',          aNote:'entrée（f）→ l\'entrée（母音開頭）' },
 
   // choose：不定冠詞規則 / 餐廳
-  { lesson:5, type:'choose', q:'「我不吃魚」否定句的冠詞用哪個？',          hint:'否定 → de',          a:'Je ne mange pas de poisson.', aNote:'否定句：pas de（不管 poisson 陽性，不用 du）' },
-  { lesson:5, type:'choose', q:'以下哪句描述 à la carte 正確？',           hint:'vs formule/menu',    a:'單點，每道菜分開計費', aNote:'à la carte = 單點；formule = 2道套餐；menu = 3道套餐' },
-  { lesson:5, type:'choose', q:'法國免費自來水怎麼點？',                    hint:'carafe vs bouteille', a:'Une carafe d\'eau, s\'il vous plaît.', aNote:'carafe d\'eau = 自來水（免費）；bouteille d\'eau = 瓶裝水（收費）' },
-  { lesson:5, type:'choose', q:'牛排「à point」是幾分熟？',                hint:'bleu→saignant→?→bien cuit', a:'五分熟', aNote:'bleu（極生）→ saignant（三分）→ à point（五分）→ bien cuit（全熟）' },
-  { lesson:5, type:'choose', q:'以下哪個 -ir 動詞 nous 形正確？',          hint:'-issons',            a:'nous choisissons', aNote:'choisir → nous choisissons（加 -iss-；非 *choisonss 或 *choisonnes）' },
-  { lesson:5, type:'choose', q:'faire 的 vous 形是？',                     hint:'不規則！',           a:'vous faites', aNote:'faire：vous → faites（不規則，不是 *faisez）' },
-  { lesson:5, type:'choose', q:'aller 的 ils 形是？',                      hint:'不規則',             a:'ils vont', aNote:'aller → ils vont（不規則；非 *ils allent）' },
+  { lesson:5, type:'choose', q:'「我不吃魚」否定句的冠詞用哪個？',          hint:'否定 → de',          a:'Je ne mange pas de poisson.', aNote:'否定句：pas de（不管 poisson 陽性，不用 du）', opts:['Je ne mange pas du poisson.','Je ne mange pas de poisson.','Je ne mange pas d\'un poisson.','Je ne mange pas poisson.'] },
+  { lesson:5, type:'choose', q:'以下哪句描述 à la carte 正確？',           hint:'vs formule/menu',    a:'單點，每道菜分開計費', aNote:'à la carte = 單點；formule = 2道套餐；menu = 3道套餐', opts:['單點，每道菜分開計費','2道套餐固定價格','3道套餐固定價格','廚師推薦套餐'] },
+  { lesson:5, type:'choose', q:'法國免費自來水怎麼點？',                    hint:'carafe vs bouteille', a:"Une carafe d'eau, s'il vous plaît.", aNote:"carafe d'eau = 自來水（免費）；bouteille d'eau = 瓶裝水（收費）", opts:["Une carafe d'eau, s'il vous plaît.","Une bouteille d'eau, s'il vous plaît.","De l'eau plate, s'il vous plaît.",'L\'eau du robinet, s\'il vous plaît.'] },
+  { lesson:5, type:'choose', q:'牛排「à point」是幾分熟？',                hint:'bleu→saignant→?→bien cuit', a:'五分熟', aNote:'bleu（極生）→ saignant（三分）→ à point（五分）→ bien cuit（全熟）', opts:['三分熟','五分熟','七分熟','全熟'] },
+  { lesson:5, type:'choose', q:'以下哪個 -ir 動詞 nous 形正確？',          hint:'-issons',            a:'nous choisissons', aNote:'choisir → nous choisissons（加 -iss-；非 *choisisons 或 *choisonnes）', opts:['nous choisisons','nous choisissons','nous choissions','nous choisonnes'] },
+  { lesson:5, type:'choose', q:'faire 的 vous 形是？',                     hint:'不規則！',           a:'vous faites', aNote:'faire：vous → faites（不規則，不是 *faisez）', opts:['vous faisez','vous faites','vous fairez','vous faire'] },
+  { lesson:5, type:'choose', q:'aller 的 ils 形是？',                      hint:'不規則',             a:'ils vont', aNote:'aller → ils vont（不規則；非 *ils allent）', opts:['ils allent','ils vont','ils allons','ils allez'] },
 ];
 
 // ── 狀態 ──────────────────────────────────────────────────────
@@ -848,12 +848,19 @@ function renderCard() {
       </div>
       <div class="question">${q.q}</div>
       ${q.hint ? `<div class="hint">提示：${q.hint}</div>` : ''}
+      ${q.opts ? `
+      <div class="drill-opts" id="bankOpts">
+        ${q.opts.map((opt,i) => `
+          <button class="drill-opt bank-opt" id="bopt${i}"
+            data-opt="${opt.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}"
+            onclick="pickBankOpt(this, this.dataset.opt)">${opt}</button>`).join('')}
+      </div>` : `
       <div class="input-row">
         <input class="answer-input" id="ansInput" type="text"
                placeholder="輸入答案，按 Enter 確認" autocomplete="off" autocorrect="off"
                spellcheck="false">
         <button class="btn-submit" id="btnSubmit" onclick="checkAnswer()">確認</button>
-      </div>
+      </div>`}
       <div class="result" id="result">
         <div class="result-banner" id="resultBanner">
           <span id="resultText"></span>
@@ -873,8 +880,10 @@ function renderCard() {
     </div>`;
 
   const input = document.getElementById('ansInput');
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') checkAnswer(); });
-  input.focus();
+  if (input) {
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') checkAnswer(); });
+    input.focus();
+  }
 
   const ttsBtn = document.getElementById('ttsBtn');
   if (ttsBtn) {
@@ -951,6 +960,49 @@ function overrideCorrect() {
   const ca = document.getElementById('correctAns');
   if (ca) ca.style.display = 'none';
   document.getElementById('btnOverride').style.display = 'none';
+  updateProgress();
+  renderStats();
+}
+
+function pickBankOpt(btn, chosen) {
+  if (answered) return;
+  answered = true;
+  const q = queue[current];
+  const ok = isCorrect(chosen, q.a);
+
+  document.querySelectorAll('.bank-opt').forEach(b => b.disabled = true);
+
+  if (ok) {
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.bank-opt').forEach(b => {
+      if (isCorrect(b.dataset.opt, q.a)) b.classList.add('reveal');
+    });
+  }
+
+  const banner = document.getElementById('resultBanner');
+  banner.className = 'result-banner ' + (ok ? 'ok' : 'no');
+  document.getElementById('resultText').textContent = ok ? '✓ 正確！' : '✗ 再想想';
+  if (!ok) document.getElementById('correctAns').style.display = 'block';
+  document.getElementById('result').classList.add('show');
+
+  recordResult(q, ok);
+
+  if (ok) {
+    scoreOk++;
+    const xp = q._review ? 5 : 10;
+    sessionXP += xp;
+    addXP(xp);
+  } else {
+    scoreNo++;
+    if (!q._review && !resurface.find(r => r.q === q.q)) {
+      resurface.push({ ...q, _review: true });
+    }
+    const ob = document.getElementById('btnOverride');
+    if (ob) ob.style.display = '';
+  }
+
   updateProgress();
   renderStats();
 }
