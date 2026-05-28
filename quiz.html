@@ -724,6 +724,7 @@ let queue = [], resurface = [], resurfaceDone = false;
 let current = 0, scoreOk = 0, scoreNo = 0, answered = false;
 let filterType = 'all', filterLesson = 'all', filterMode = 'normal';
 let sessionXP = 0;
+const SESSION_SIZE = 20;
 const TYPE_LABEL = { fill:'動詞填空', trans:'翻譯', gender:'陰陽性', choose:'判斷' };
 const TYPE_CLASS  = { fill:'type-fill', trans:'type-trans', gender:'type-gender', choose:'type-choose' };
 
@@ -799,9 +800,39 @@ function getPool() {
   return pool;
 }
 
+function buildSession(pool) {
+  if (pool.length <= SESSION_SIZE) return shuffle(pool);
+  // 分層抽樣：按 type 比例，確保每種都有機會出現
+  const types = [...new Set(pool.map(q => q.type))];
+  const slots = {};
+  let filled = 0;
+  // 先給每種 type 至少 1 個保底位
+  types.forEach(t => { slots[t] = 1; filled += 1; });
+  // 剩餘名額按題量比例分配
+  const remain = SESSION_SIZE - filled;
+  types.forEach(t => {
+    const extra = Math.floor((pool.filter(q => q.type === t).length / pool.length) * remain);
+    slots[t] += extra;
+    filled += extra;
+  });
+  // 補齊剩餘零頭（可能因 floor 少幾個）
+  let leftover = SESSION_SIZE - filled;
+  for (const t of shuffle(types)) {
+    if (leftover <= 0) break;
+    slots[t]++; leftover--;
+  }
+  // 從各 type 中隨機取對應數量
+  const result = [];
+  types.forEach(t => {
+    const group = shuffle(pool.filter(q => q.type === t));
+    result.push(...group.slice(0, slots[t]));
+  });
+  return shuffle(result);
+}
+
 function restart() {
   resurface = []; resurfaceDone = false;
-  queue = shuffle(getPool());
+  queue = buildSession(getPool());
   current = 0; scoreOk = 0; scoreNo = 0; answered = false; sessionXP = 0;
   updateProgress();
   renderCard();
