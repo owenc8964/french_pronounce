@@ -494,6 +494,23 @@ const TABLES = [
     ]
   },
 
+  // ── 所有格形容詞 ─────────────────────────────────────────
+
+  {
+    id:'possessif', title:'Adjectifs possessifs', zh:'所有格形容詞（mon/ton/son…）',
+    type:'adj', lesson:2,
+    note:'⚠️ 母音開頭的陰性名詞前：ma/ta/sa → mon/ton/son！例：mon amie（不是 *ma amie）\nnous/vous：m.sg 和 f.sg 同形（notre/votre）\nleur 不分陰陽，只有複數加 -s（leurs）',
+    headers:['主詞（誰的）','m. sg','f. sg','pl.'],
+    rows:[
+      ['je（我的）',           {a:'mon',   h:false},{a:'ma',    h:false},{a:'mes',   h:false}],
+      ['tu（你的）',           {a:'ton',   h:true },{a:'ta',    h:true },{a:'tes',   h:true }],
+      ['il / elle（他 / 她的）',{a:'son',  h:true },{a:'sa',    h:true },{a:'ses',   h:true }],
+      ['nous（我們的）',        {a:'notre', h:false},{a:'notre', h:false},{a:'nos',   h:false}],
+      ['vous（您 / 你們的）',   {a:'votre', h:false},{a:'votre', h:false},{a:'vos',   h:false}],
+      ['ils / elles（他們的）', {a:'leur',  h:true },{a:'leur',  h:true },{a:'leurs', h:true }],
+    ]
+  },
+
   // ── 冠詞 ────────────────────────────────────────────────
 
   {

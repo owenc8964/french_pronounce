@@ -214,6 +214,18 @@
   <div class="grid-num" id="grid-0-20"></div>
 </div>
 
+<!-- ── 十位數 dizaines ── -->
+<div class="section">
+  <div class="section-title">十位數 dizaines（30 / 40 / 50 / 60…）</div>
+  <div class="grid-num" id="grid-tens"></div>
+  <div class="hint">
+    <b>30–60</b> 直接背（trente / quarante / cinquante / soixante）<br>
+    <b>70</b> = soixante<b>-dix</b>（60+10）｜<b>71</b> = soixante <b>et</b> onze（例外加 et）<br>
+    <b>80</b> = quatre-<b>vingts</b>（4×20，單獨用才有 s）｜<b>81</b> = quatre-vingt-<b>un</b>（不加 et！）<br>
+    <b>90</b> = quatre-vingt-<b>dix</b>（4×20+10）
+  </div>
+</div>
+
 <!-- ── 數字規律 ── -->
 <div class="section">
   <div class="section-title">數字規律</div>
@@ -707,6 +719,12 @@ const NUM_0_20 = [
   [18,'dix-huit'],[19,'dix-neuf'],[20,'vingt'],
 ];
 
+const NUM_TENS = [
+  [10,'dix'],[20,'vingt'],[30,'trente'],[40,'quarante'],
+  [50,'cinquante'],[60,'soixante'],[70,'soixante-dix'],
+  [80,'quatre-vingts'],[90,'quatre-vingt-dix'],
+];
+
 const NUM_PATTERN = [
   [21,'vingt et un'],[32,'trente-deux'],[43,'quarante-trois'],
   [54,'cinquante-quatre'],[65,'soixante-cinq'],[71,'soixante et onze'],
@@ -875,6 +893,12 @@ function card(id, speakText, topHTML, frHTML, subHTML, type) {
 const g020 = document.getElementById('grid-0-20');
 NUM_0_20.forEach(([n, fr]) => {
   g020.appendChild(card(`num-${n}`, fr, n, fr, '', 'n'));
+});
+
+// 十位數
+const gtens = document.getElementById('grid-tens');
+NUM_TENS.forEach(([n, fr]) => {
+  gtens.appendChild(card(`num-${n}`, fr, n, fr, '', 'n'));
 });
 
 // 規律示例
