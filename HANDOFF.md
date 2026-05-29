@@ -55,12 +55,12 @@
 
 ## 目前進度
 
-- **課程：** CLB7（目標 B2），目前 A1 階段
-- **已上：** 第 1–5 課
-- **Quiz BANK 題數：** 220 題（課程 SRS 練習，第 1–5 課）
-  - 第1課 63 / 第2課 54 / 第3課 26 / 第4課 39 / 第5課 38
+- **課程：** CLB7（目標 B2），目前 A1/A2 交界
+- **已上：** 第 1–6 課
+- **Quiz BANK 題數：** 236 題（課程 SRS 練習，第 1–6 課）
+  - 第1課 63 / 第2課 54 / 第3課 26 / 第4課 39 / 第5課 38 / 第6課 16
 - **AGREE_BANK 題數：** 247 題（⚡ 快速測驗 專用）
-- **地圖進度：** 13 / 60 格已解鎖（CURRENT_LESSON = 4，建議第5課後解鎖 nourriture）
+- **地圖進度：** 13 / 60 格已解鎖（CURRENT_LESSON = 4，建議解鎖 heure + transports）
 
 ### 已解鎖的地圖格子
 
@@ -69,6 +69,19 @@ A1: greetings, classroom, numbers, nationality, dates, etre-avoir,
     er-verbs, articles, family, couleurs
 A2: loisirs, nourriture, ir-re
 ```
+
+### 建議下次解鎖（第6課後）
+- `heure`（A1 區，時間表達）
+- `transports`（A2 區，交通工具）
+- 更新 `CURRENT_LESSON = 6`
+
+### 第6課已涵蓋內容（french_notes Lesson 6）
+- L'heure：heure 陰性 / midi / minuit / et quart / et demie / moins le quart / 12h vs 24h 系統
+- 否定擴充：ne...jamais / ne...rien / ne...personne / ne...plus
+- 城市詞彙：centre-ville / banlieue / quartier / voies（rue/avenue/boulevard）/ lieux（mairie/gare/commissariat 等 14 個）
+- voilà/voici 區別 + près de / loin de 距離表達
+- Les transports：à（非機動）vs en（機動）完整表 + covoiturage / gratuit
+- L'impératif：tu/nous/vous 三人稱、-ER tu 去 s、être/avoir/aller 不規則、否定命令句
 
 ### 第5課已涵蓋內容（french_notes Lesson 5）
 - 商店與店員（boulangerie/boucherie/épicerie/poissonnerie/fromagerie + chez vs à la）
@@ -115,7 +128,7 @@ A2: loisirs, nourriture, ir-re
 
 ### `quiz.html`
 
-#### 課程練習 BANK（220 題，第 1–5 課）
+#### 課程練習 BANK（236 題，第 1–6 課）
 
 - 題庫在 `const BANK = [...]`，每題格式：
 
@@ -368,6 +381,18 @@ B2: pluperfect, cond-passe, subj-passe, passe-simple, concordance,
 
 ---
 
+## 本次 Session 修復的 Bug（2026-05-29）
+
+| 問題 | 根本原因 | 修法 |
+|------|----------|------|
+| quiz choose 題沒有選項按鈕 | BANK 的 choose 題沒有 `opts` 陣列，`renderCard()` 只有文字輸入框 | 全部 40/41 題加上 `opts`；新增 `pickBankOpt()` 函式；`renderCard()` 有 opts 就顯示按鈕 |
+| quiz 一次出 220 題 | `restart()` 把整個 BANK 全丟入 queue，沒有 session 上限 | 加 `SESSION_SIZE = 20`，改用 `buildSession()` 分層抽樣，確保 choose 每次出現 3–4 題 |
+| quiz 提示直接洩題 | hint 預設顯示，`hint:'je + habiter'` 這種等於答案 | 改為「💡 提示」按鈕，點擊才顯示 |
+| table_drill 完全空白 | `note` 欄位中的法文縮寫 `s'il vous plaît` 和 `s'appelle` 的單引號截斷 JS 字串 → 整個 script 解析失敗 | 移除衝突文字 / 改用雙引號包字串 |
+| table_drill easy 模式全空格 | 部分冠詞、商店介係詞表格全部 h:true，easy 模式沒有任何提示格 | 各表格改 2 個格子為 h:false，提供基礎範例作為提示 |
+
+---
+
 ## 規劃中的功能（尚未實作）
 
 - **Phase 3：** map ↔ quiz 打通（點地圖格子跳到對應 quiz）
@@ -403,11 +428,11 @@ A：主輪 20 題答完後，錯的題目進入複習輪（分輪制）。每輪
 ```
 請先讀 HANDOFF.md（在 /Users/owen/Documents/Claude/Project/CLB test/France CLB7/）。
 
-Owen 在學法語，目標一年內考過 CLB7（B2）。目前完成第5課，系統包含：
-- french_notes.html：課堂筆記（第1-5課）
-- quiz.html：SRS 題庫（BANK 220題，第1-5課）+ 快速測驗（AGREE_BANK 247題）
+Owen 在學法語，目標一年內考過 CLB7（B2）。目前完成第6課，系統包含：
+- french_notes.html：課堂筆記（第1-6課）
+- quiz.html：SRS 題庫（BANK 236題，第1-6課）+ 快速測驗（AGREE_BANK 247題）
 - table_drill.html：表格填空練習（動詞/形容詞/冠詞/介係詞，21個表格，三難度）
-- map.html：課程地圖（13/60格已解鎖，建議第5課後解鎖 nourriture）
+- map.html：課程地圖（13/60格已解鎖，建議解鎖 heure + transports，CURRENT_LESSON → 6）
 - french_basics.html：數字/發音/文法表（含十位數 dizaines）
 
 GitHub Pages：https://owenc8964.github.io/french_pronounce/
