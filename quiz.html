@@ -94,7 +94,13 @@
     }
 
     .question { font-size: 1rem; font-weight: 600; line-height: 1.6; margin-bottom: 6px; }
-    .hint { font-size: 0.78rem; color: #bbb; margin-bottom: 14px; }
+    .hint { font-size: 0.78rem; color: #888; margin-bottom: 14px; }
+    .hint-btn {
+      font-size: 0.75rem; color: #aaa; background: none; border: 1.5px dashed #ddd;
+      border-radius: 8px; padding: 4px 12px; cursor: pointer; margin-bottom: 14px;
+      font-family: inherit; transition: all 0.15s;
+    }
+    .hint-btn:hover { color: #666; border-color: #aaa; }
 
     /* ── 輸入 ── */
     .input-row { display: flex; gap: 8px; margin-bottom: 4px; }
@@ -878,7 +884,9 @@ function renderCard() {
         </div>
       </div>
       <div class="question">${q.q}</div>
-      ${q.hint ? `<div class="hint">提示：${q.hint}</div>` : ''}
+      ${q.hint ? `
+      <button class="hint-btn" id="hintBtn" onclick="revealHint()">💡 提示</button>
+      <div class="hint" id="hintBox" style="display:none">提示：${q.hint}</div>` : ''}
       ${q.opts ? `
       <div class="drill-opts" id="bankOpts">
         ${q.opts.map((opt,i) => `
@@ -993,6 +1001,13 @@ function overrideCorrect() {
   document.getElementById('btnOverride').style.display = 'none';
   updateProgress();
   renderStats();
+}
+
+function revealHint() {
+  const btn = document.getElementById('hintBtn');
+  const box = document.getElementById('hintBox');
+  if (btn) btn.style.display = 'none';
+  if (box) box.style.display = '';
 }
 
 function pickBankOpt(btn, chosen) {

@@ -519,11 +519,11 @@ const TABLES = [
     note:'否定句全換成 de / d\'（不管原冠詞性數）',
     headers:['性數','冠詞','例句'],
     rows:[
-      ['m. sg',    {a:'du',    h:true},'Je mange ___ poisson.'],
-      ['f. sg',    {a:'de la', h:true},'Je mange ___ viande.'],
-      ['母音開頭', {a:"de l'", h:true},"Je bois ___ eau."],
-      ['複數',     {a:'des',   h:true},'Je mange ___ pâtes.'],
-      ['否定句',   {a:'de',    h:true},'Je ne mange pas ___ viande.'],
+      ['m. sg',    {a:'du',    h:false},'Je mange ___ poisson.'],
+      ['f. sg',    {a:'de la', h:true },'Je mange ___ viande.'],
+      ['母音開頭', {a:"de l'", h:true },"Je bois ___ eau."],
+      ['複數',     {a:'des',   h:true },'Je mange ___ pâtes.'],
+      ['否定句',   {a:'de',    h:false},'Je ne mange pas ___ viande.'],
     ]
   },
 
@@ -561,12 +561,12 @@ const TABLES = [
     note:'à pied / à vélo：非機動交通；en bus / en voiture：機動（有引擎）',
     headers:['交通方式','介係詞','例句'],
     rows:[
-      ['pied（步行）',    {a:'à', h:true },'Je vais au bureau ___ pied.'],
+      ['pied（步行）',    {a:'à', h:false},'Je vais au bureau ___ pied.'],
       ['vélo（腳踏車）',  {a:'à', h:true },'Il va au marché ___ vélo.'],
-      ['bus（公車）',     {a:'en',h:true },'Je vais à l\'école ___ bus.'],
+      ['bus（公車）',     {a:'en',h:false},'Je vais à l\'école ___ bus.'],
       ['voiture（汽車）', {a:'en',h:true },'Elle va au travail ___ voiture.'],
-      ['train（火車）',   {a:'en',h:false},'Il va à Paris ___ train.'],
-      ['métro（地鐵）',   {a:'en',h:false},'Nous allons ___ métro.'],
+      ['train（火車）',   {a:'en',h:true },'Il va à Paris ___ train.'],
+      ['métro（地鐵）',   {a:'en',h:true },'Nous allons ___ métro.'],
     ]
   },
 
@@ -576,8 +576,8 @@ const TABLES = [
     note:'chez + 職業人稱 = 在某人的店；à la/au + 商店名 = 在某間店（兩種說法都對）',
     headers:['說法','介係詞','例句'],
     rows:[
-      ['chez + 人（在某人的店）', {a:'chez le',h:true },"J'achète ___ boulanger."],
-      ['à la + 商店（f.）',       {a:'à la',   h:true },"J'achète ___ boulangerie."],
+      ['chez + 人（在某人的店）', {a:'chez le',h:false},"J'achète ___ boulanger."],
+      ['à la + 商店（f.）',       {a:'à la',   h:false},"J'achète ___ boulangerie."],
       ['au + 商店（m.）',          {a:'au',     h:true },'Je vais ___ supermarché.'],
       ["à l' + 母音商店",          {a:"à l'",   h:true },"Je vais ___ épicerie."],
     ]
