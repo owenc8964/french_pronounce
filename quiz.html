@@ -723,6 +723,30 @@ const BANK = [
   { lesson:5, type:'choose', q:'以下哪個 -ir 動詞 nous 形正確？',          hint:'-issons',            a:'nous choisissons', aNote:'choisir → nous choisissons（加 -iss-；非 *choisisons 或 *choisonnes）', opts:['nous choisisons','nous choisissons','nous choissions','nous choisonnes'] },
   { lesson:5, type:'choose', q:'faire 的 vous 形是？',                     hint:'不規則！',           a:'vous faites', aNote:'faire：vous → faites（不規則，不是 *faisez）', opts:['vous faisez','vous faites','vous fairez','vous faire'] },
   { lesson:5, type:'choose', q:'aller 的 ils 形是？',                      hint:'不規則',             a:'ils vont', aNote:'aller → ils vont（不規則；非 *ils allent）', opts:['ils allent','ils vont','ils allons','ils allez'] },
+
+  // ── Leçon 6：時間・城市・否定・命令句 ──────────────────────────
+
+  // fill × 6
+  { lesson:6, type:'fill', q:"Il est _____ heure et demie. (1:30)",         hint:'heure 是陰性',              a:"Il est une heure et demie.|une heure et demie|une", aNote:"heure 是陰性 → une（不是 un）" },
+  { lesson:6, type:'fill', q:"_____ dans le bus ! (monter, vous)",           hint:'impératif vous = 去掉主詞',  a:"Montez dans le bus !|Montez",        aNote:'monter → vous montez → Montez（impératif）' },
+  { lesson:6, type:'fill', q:"N'_____ pas de tickets ! (acheter, vous)",     hint:'impératif négatif',          a:"N'achetez pas de tickets !|achetez", aNote:"impératif 否定：Ne + verbe + pas；-ER vous → -ez" },
+  { lesson:6, type:'fill', q:"Je ne connais _____ à Paris.",                 hint:'nobody = ?',                 a:"Je ne connais personne à Paris.|personne", aNote:'ne...personne = 不認識任何人（personne 放動詞後）' },
+  { lesson:6, type:'fill', q:"Il ne fait _____ de sport. (no more)",         hint:'no more / no longer',        a:"Il ne fait plus de sport.|plus",      aNote:"ne...plus = 不再；ne...rien = 什麼都沒；ne...personne = 沒有任何人" },
+  { lesson:6, type:'fill', q:"La gare n'est pas _____ de chez moi.",         hint:'opposite of près',           a:"La gare n'est pas loin de chez moi.|loin", aNote:'loin（遠）vs près（近）；搭配 loin de / près de + 地點' },
+
+  // trans × 5
+  { lesson:6, type:'trans', q:'幾點了？',                                    hint:'quelle / heure / être',      a:'Quelle heure est-il ?',                    aNote:'', askClaude:true },
+  { lesson:6, type:'trans', q:'現在是一點半。',                              hint:'une heure / et demie',       a:'Il est une heure et demie.',               aNote:'heure 陰性 → une heure（不是 un）', askClaude:true },
+  { lesson:6, type:'trans', q:'我從不去劇院。',                              hint:'ne...jamais / théâtre',      a:'Je ne vais jamais au théâtre.',            aNote:'jamais 緊接動詞後，ne 在動詞前', askClaude:true },
+  { lesson:6, type:'trans', q:'搭地鐵去！（命令句，對 vous）',               hint:'impératif / prendre',        a:'Prenez le métro !',                        aNote:'prendre → vous prenez → Prenez（不規則）', askClaude:true },
+  { lesson:6, type:'trans', q:'市政廳離市中心不遠。',                        hint:'mairie / loin / centre-ville', a:"La mairie n'est pas loin du centre-ville.", aNote:"loin de + le → loin du（縮合冠詞）", askClaude:true },
+
+  // choose × 5
+  { lesson:6, type:'choose', q:'「heure」是陰性還是陽性？',                  hint:'une ou un ?',                a:'陰性',    aNote:'une heure（不是 *un heure）；例外：midi / minuit 是陽性', opts:['陽性（un heure）','陰性（une heure）'] },
+  { lesson:6, type:'choose', q:'正午 12:00 pm 用法文怎麼說？',               hint:'不說 douze heures',          a:'midi',    aNote:'midi = 正午（pm）；minuit = 午夜（am）；兩者皆陽性', opts:['midi','minuit','douze heures','demi-journée'] },
+  { lesson:6, type:'choose', q:'voici vs voilà，哪個表示「這裡是⋯」？',      hint:'ici = here',                 a:'voici',   aNote:"voici（ici=這裡）= here is；voilà（là=那裡）= there is，也作感嘆 voilà !", opts:['voilà','voici'] },
+  { lesson:6, type:'choose', q:'être 的 impératif tu 形是？',                hint:'不規則，不是 es',             a:'Sois',    aNote:'être impératif：Sois / Soyons / Soyez（完全不規則）', opts:['Es','Sois','Étais','Être'] },
+  { lesson:6, type:'choose', q:'-ER 動詞 impératif tu 形字尾為？',           hint:'比現在式少一個字母',          a:'-e',      aNote:'Tu regardes → Regarde !（-ER 動詞 tu 形去掉 s）；非 -ER 動詞保留 s', opts:['-es','-e','-ez','-ons'] },
 ];
 
 // ── 狀態 ──────────────────────────────────────────────────────
