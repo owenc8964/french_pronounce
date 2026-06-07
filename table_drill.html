@@ -596,6 +596,8 @@ let totalOk    = 0, totalBad = 0;
 let activeInp  = null;
 let results    = [];   // { title, ok, total }
 
+const TYPE_LABEL = { verb:'動詞', adj:'形容詞', article:'冠詞', prep:'介係詞' };
+
 // ════════════════════════════════════════════════════════════
 // 初始化
 // ════════════════════════════════════════════════════════════
@@ -666,8 +668,6 @@ function updateProgress() {
 // ════════════════════════════════════════════════════════════
 // 渲染卡片
 // ════════════════════════════════════════════════════════════
-const TYPE_LABEL = { verb:'動詞', adj:'形容詞', article:'冠詞', prep:'介係詞' };
-
 function renderCard() {
   if (qIdx >= queue.length) { renderSummary(); return; }
   const tbl = queue[qIdx];

@@ -747,6 +747,95 @@ const BANK = [
   { lesson:6, type:'choose', q:'voici vs voilà，哪個表示「這裡是⋯」？',      hint:'ici = here',                 a:'voici',   aNote:"voici（ici=這裡）= here is；voilà（là=那裡）= there is，也作感嘆 voilà !", opts:['voilà','voici'] },
   { lesson:6, type:'choose', q:'être 的 impératif tu 形是？',                hint:'不規則，不是 es',             a:'Sois',    aNote:'être impératif：Sois / Soyons / Soyez（完全不規則）', opts:['Es','Sois','Étais','Être'] },
   { lesson:6, type:'choose', q:'-ER 動詞 impératif tu 形字尾為？',           hint:'比現在式少一個字母',          a:'-e',      aNote:'Tu regardes → Regarde !（-ER 動詞 tu 形去掉 s）；非 -ER 動詞保留 s', opts:['-es','-e','-ez','-ons'] },
+
+  // ══════════════════════════════════════════════════════
+  // 第 7 課：交通・連接詞・服裝・動詞三組
+  // 來源：Unité 4 p.46-48 + Unité 5 p.55-66
+  // ══════════════════════════════════════════════════════
+
+  // ── 連接詞 pour / parce que / mais / avec / sans（PDF p.47）──
+  { lesson:7, type:'choose', q:'「為了遠距離移動，汽車很方便，_____ 不環保。」空格填什麼？', hint:'轉折', a:'mais', aNote:'mais = 但是（表轉折）；這裡不是原因，而是對比', opts:['parce que','mais','pour','avec'] },
+  { lesson:7, type:'choose', q:'「我們喜歡市中心，_____ 沒有汽車。」空格填？',              hint:'因為', a:'parce qu\'', aNote:"parce qu'（母音前縮寫）表原因；sans voitures = 無汽車（沒冠詞）", opts:['pour','sans','parce qu\'','mais'] },
+  { lesson:7, type:'choose', q:'「_____ 上學，我們不騎滑板車。」空格填？',                  hint:'目的 + 動詞原形', a:'Pour', aNote:'pour + 動詞原形 = 為了做某事；後接目標', opts:['Parce que','Pour','Mais','Sans'] },
+  { lesson:7, type:'choose', q:'「我不走路去大學，_____ 太遠了。」空格填？',               hint:'因為', a:'parce que', aNote:'parce que 表原因（接完整句子）；pour 接動詞原形', opts:['pour','sans','mais','parce que'] },
+  { lesson:7, type:'fill',   q:'「他帶著妻子去上班。」Avec _____ femme, il va au travail. (所有格)', hint:'他的 = ?', a:'sa|sa femme', aNote:'femme（f）→ sa（他/她的，陰性）' },
+  { lesson:7, type:'fill',   q:'「我沒有車去大學。」Je vais à l\'université _____ voiture.', hint:'沒有 + 名詞', a:'sans|sans voiture', aNote:"sans + 名詞（不加冠詞）= without；sans voiture（不是 sans une voiture）" },
+
+  // ── 交通工具（PDF p.48）──
+  { lesson:7, type:'choose', q:'步行怎麼說？',           hint:'à + ?', a:'à pied',       aNote:'非機動 → 介詞 à：à pied / à vélo / à trottinette', opts:['en pied','à pied','en marche','au pied'] },
+  { lesson:7, type:'choose', q:'騎腳踏車怎麼說？',       hint:'à + ?', a:'à vélo',       aNote:'à vélo（非機動用 à）；en voiture（機動用 en）', opts:['en vélo','à vélo','avec vélo','par vélo'] },
+  { lesson:7, type:'choose', q:'搭地鐵怎麼說？',         hint:'en + ?', a:'en métro',    aNote:'機動交通工具用 en：en bus / en métro / en voiture / en train', opts:['à métro','en métro','par métro','au métro'] },
+  { lesson:7, type:'choose', q:'共乘（carpooling）法文是？', hint:'co- = 共', a:'le covoiturage', aNote:'covoiturage = carpooling；可以 mixer les moyens de transport（混搭）', opts:['le partage','le covoiturage','le transport commun','le carpooling'] },
+  { lesson:7, type:'fill',   q:'公車站或地鐵站的兩種說法：l\'_____ 和 la _____', hint:'stop / station', a:'arrêt|station|arrêt et la station', aNote:"l'arrêt de bus / la station de métro，兩者都指「站」" },
+  { lesson:7, type:'fill',   q:'「從這裡一直到那裡。」D\'ici _____ là-bas.',              hint:'until / up to', a:"jusqu'à|jusqu'à là-bas", aNote:"jusqu'à = until/up to；接母音 → jusqu'au（jusqu'à + le）" },
+
+  // ── 大數字（PDF p.48）──
+  { lesson:7, type:'choose', q:'2 222 000 法文怎麼說？', hint:'deux millions...', a:'deux millions deux cent vingt-deux mille', aNote:'million 複數加 s；mille 永遠不加 s', opts:['deux million deux cent vingt-deux mille','deux millions deux cent vingt-deux mille','deux millions deux cents vingt-deux mille','deux milliard deux cent vingt-deux mille'] },
+  { lesson:7, type:'choose', q:'mille 複數要加 s 嗎？', hint:'規則例外', a:'不加 s，mille 不變', aNote:'mille 永遠不加 s（例外）；million/milliard 複數加 s', opts:['加 s → milles','不加 s，mille 不變','視情況加 s','跟 cent 一樣'] },
+
+  // ── 形容詞性數一致（PDF p.55）──
+  { lesson:7, type:'choose', q:'Tu portes une robe _____ （elegant 陰性）',  hint:'robe = f', a:'élégante', aNote:'élégant → 陰性加 -e → élégante；robe（f）要配陰性形容詞', opts:['élégant','élégants','élégante','élégantes'] },
+  { lesson:7, type:'choose', q:'Vous vendez des chaussures _____ （noir）',  hint:'chaussures = f.pl.', a:'noires', aNote:'noir → 陰性 noire → 複數陰性 noires；chaussures 是陰性複數', opts:['noir','noirs','noire','noires'] },
+  { lesson:7, type:'choose', q:'Il vend son costume _____ （gris）',         hint:'costume = m', a:'gris', aNote:'gris 陽性單數結尾已是 s，不再加 s（gris → gris）；陰性才是 grise', opts:['gris','grise','grises','grisé'] },
+  { lesson:7, type:'fill',   q:'En été, elle porte des jupes _____ （court）et des t-shirts _____ （simple）.', hint:'陰性複數', a:'courtes, simples|courtes|simples', aNote:'court → 陰性 courte → 複數 courtes；simple → 陰性不變 → 複數 simples' },
+
+  // ── 形容詞位置（PDF p.58）──
+  { lesson:7, type:'choose', q:'「一件優雅的西裝」形容詞 élégant 放在名詞哪邊？', hint:'BAGS 以外的形容詞', a:'後面：un costume élégant', aNote:'顏色、形狀、材質等描述性形容詞放名詞後；BAGS（beau/grand/bon/vieux）等放前', opts:['前面：un élégant costume','後面：un costume élégant'] },
+  { lesson:7, type:'choose', q:'「一件美麗的裙子」形容詞 jolie 放在名詞哪邊？', hint:'joli 是 BAGS 類', a:'前面：une jolie jupe', aNote:'joli/beau/grand/bon/vieux/nouveau/petit 等放名詞前', opts:['前面：une jolie jupe','後面：une jupe jolie'] },
+
+  // ── 指示形容詞 ce/cet/cette/ces（PDF p.59）──
+  { lesson:7, type:'choose', q:'「這個手機殼」：_____ coque de téléphone（coque = f）', hint:'陰性', a:'Cette', aNote:'cette = 陰性單數；ce = 陽性子音；cet = 陽性母音/h；ces = 複數', opts:['Ce','Cet','Cette','Ces'] },
+  { lesson:7, type:'choose', q:'「這個手機殼」：_____ étui（étui = m，母音開頭）',       hint:'陽性母音開頭', a:'Cet', aNote:"cet 用在陽性單數母音或 h 開頭的名詞（發音連讀）：cet étui、cet homme", opts:['Ce','Cet','Cette','Ces'] },
+  { lesson:7, type:'choose', q:'「這些耳機」：_____ écouteurs（複數）',                   hint:'複數不分性別', a:'Ces', aNote:'ces = 所有複數（不分陰陽性）', opts:['Ce','Cet','Cette','Ces'] },
+  { lesson:7, type:'fill',   q:'「這件大衣」_____ manteau（manteau = m，子音開頭）',      hint:'陽性子音', a:'Ce|Ce manteau', aNote:'ce = 陽性單數子音開頭；cet = 陽性單數母音/h 開頭' },
+
+  // ── 材質介詞 en（課堂）──
+  { lesson:7, type:'choose', q:'「皮革材質」怎麼說？',  hint:'en + matière', a:'en cuir',   aNote:'材質固定用 en：en cuir（皮）/ en coton（棉）/ en laine（羊毛）/ en or（金）', opts:['de cuir','avec cuir','en cuir','du cuir'] },
+  { lesson:7, type:'choose', q:'「羊毛材質」怎麼說？',  hint:'wool',         a:'en laine',  aNote:'en laine = in wool；laine（f）= 羊毛', opts:['en laine','en coton','en cuir','en soie'] },
+  { lesson:7, type:'choose', q:'argent 的兩個意思是？', hint:'銀 / 錢',     a:'錢 + 銀（silver）', aNote:'argent = money（錢）也 = silver（銀）；因為古硬幣都是銀製的！', opts:['錢 + 金（gold）','錢 + 銀（silver）','銀 + 銅','錢 + 銅'] },
+
+  // ── vendre 動詞變位（課堂）──
+  { lesson:7, type:'fill',   q:'je _____ （vendre）',          hint:'第三組', a:'vends', aNote:'vendre：je vends / tu vends / il vend / nous vendons / vous vendez / ils vendent' },
+  { lesson:7, type:'fill',   q:'nous _____ （vendre）',        hint:'加 -ons', a:'vendons', aNote:'vendre nous → vendons（規則）' },
+  { lesson:7, type:'fill',   q:'ils _____ （vendre）',         hint:'-ent', a:'vendent', aNote:'vendre ils → vendent（注意 d 後直接加 -ent）' },
+
+  // ── mettre 動詞變位（課堂）──
+  { lesson:7, type:'fill',   q:'je _____ （mettre）',          hint:'tt 或 t？', a:'mets', aNote:"mettre：je mets / tu mets / il met（單 t）/ nous mettons / vous mettez / ils mettent（雙 tt）" },
+  { lesson:7, type:'fill',   q:'nous _____ （mettre）',        hint:'⚠️ 雙 tt', a:'mettons', aNote:'nous mettons（tt）；vous mettez（tt）；ils mettent（tt）— 複數全部雙 t！' },
+  { lesson:7, type:'choose', q:'mettre 的 il 形是？',           hint:'單 t',    a:'il met', aNote:'je/tu/il → 單 t：mets/mets/met；nous/vous/ils → 雙 tt', opts:['il mets','il met','il mett','il mette'] },
+  { lesson:7, type:'choose', q:'「我把手機放進包包。」用哪個動詞？', hint:'放入', a:'mettre', aNote:'mettre = 放（put）也 = 穿上（put on）；porter 強調「穿著」的狀態', opts:['porter','mettre','prendre','avoir'] },
+
+  // ── 動詞三組（課堂）──
+  { lesson:7, type:'choose', q:'finir 屬於第幾組動詞？',          hint:'-IR', a:'第二組', aNote:'第二組 = -IR 結尾（finir / choisir / partir）；nous → finissons（加 -iss-）', opts:['第一組','第二組','第三組'] },
+  { lesson:7, type:'choose', q:'vendre 屬於第幾組動詞？',         hint:'-RE 結尾', a:'第三組', aNote:'第三組 = 不規則（-RE/-OIR/avoir/être⋯）；需個別記', opts:['第一組','第二組','第三組'] },
+  { lesson:7, type:'choose', q:'aller 屬於第幾組動詞？',          hint:'字尾像第一組但…', a:'第三組（不規則）', aNote:'aller 雖以 -ER 結尾，卻是不規則動詞（第三組）：vais/vas/va/allons/allez/vont', opts:['第一組','第二組','第三組（不規則）'] },
+  { lesson:7, type:'choose', q:'pouvoir 屬於第幾組？',            hint:'-OIR', a:'第三組', aNote:'pouvoir / vouloir / savoir → -OIR 結尾，都是第三組不規則', opts:['第一組','第二組','第三組'] },
+
+  // ── 服裝詞彙（PDF p.57 + 課堂）──
+  { lesson:7, type:'choose', q:'運動鞋法文是？',      hint:'sports shoes', a:'des baskets', aNote:'baskets = 運動鞋（複數）；chaussures = 鞋子（通稱）', opts:['des bottes','des baskets','des sandales','des talons'] },
+  { lesson:7, type:'choose', q:'毛衣法文是？',        hint:'sweater / pullover', a:'un pull', aNote:'un pull = 毛衣；un manteau = 大衣；une veste = 夾克', opts:['un manteau','un pull','une veste','un gilet'] },
+  { lesson:7, type:'choose', q:'手提包法文是？',      hint:'handbag', a:'un sac à main', aNote:'sac à main（手提包）；sac à dos = 背包', opts:['un sac à dos','un sac à main','une valise','un porte-monnaie'] },
+  { lesson:7, type:'fill',   q:'「全新的」法文：_____ / _____ （陽性 / 陰性）', hint:'new', a:'neuf, neuve|neuf|neuve', aNote:'neuf（m）/ neuve（f）= 全新的；二手 = d\'occasion' },
+  { lesson:7, type:'choose', q:'「二手的」法文是？',  hint:"d'occasion", a:"d'occasion", aNote:"d'occasion = used / second-hand；neuf/neuve = brand new", opts:["d'occasion","de seconde","d'utilisation","de vieille"] },
+
+  // ── 尺碼問法（課堂）──
+  { lesson:7, type:'choose', q:'「你穿幾號（衣服）？」怎麼問？', hint:'faire', a:'Tu fais quelle taille ?', aNote:'taille = 尺碼；Tu fais du S/M/L/XL — 動詞用 faire（不是 avoir）', opts:['Tu as quelle taille ?','Tu fais quelle taille ?','Tu portes quelle taille ?','Tu mets quelle taille ?'] },
+  { lesson:7, type:'choose', q:'「你穿幾號鞋？」怎麼問？',       hint:'chausser', a:'Tu chausses combien ?', aNote:'chausser = to wear shoes（鞋的尺碼動詞）；Tu chausses du 42', opts:['Tu fais combien de chaussures ?','Tu portes quel numéro ?','Tu chausses combien ?','Tu mets quel pied ?'] },
+  { lesson:7, type:'fill',   q:'「我 180 公分。」Je _____ 1m80.',  hint:'faire', a:'fais|Je fais 1m80', aNote:'身高也用 faire：Je fais 1m80 / Tu fais combien ？' },
+
+  // ── 時尚表達（課堂）──
+  { lesson:7, type:'choose', q:'「這很流行 / trendy」法文是？', hint:'tendance', a:"C'est à la mode. / C'est tendance.", aNote:"à la mode = tendance = trendy；Ce n'est pas à la mode = not trendy", opts:["C'est beau.","C'est à la mode. / C'est tendance.","C'est parfait.","C'est moderne."] },
+  { lesson:7, type:'choose', q:'「Il me plaît」這句話是誰在喜歡誰？', hint:'主詞是物', a:'「物」讓「我」喜歡（it pleases me）', aNote:'plaire 結構：il me plaît = it pleases me；主詞 il = 那件物，me = 我。非「我喜歡它」的語序', opts:['我喜歡它（je 是主詞）','「物」讓「我」喜歡（it pleases me）','我們互相喜歡','它不喜歡我'] },
+  { lesson:7, type:'fill',   q:'「這件衣服穿在我身上很適合。」Il me _____ bien.', hint:'look good on me', a:'va|va bien', aNote:'il me va bien = it looks good on me（aller = to suit/fit）' },
+
+  // ── 翻譯練習（課堂句型）──
+  { lesson:7, type:'trans', q:'為了去加拿大，我學法文。',                      hint:'pour / apprendre / français',  a:'Pour aller au Canada, j\'apprends le français.',          aNote:'pour + 動詞原形 = 目的；aller（不規則）', askClaude:true },
+  { lesson:7, type:'trans', q:'我開車上班，因為太遠了。',                      hint:'parce que / loin',             a:'Je prends ma voiture pour aller au travail parce que c\'est loin.', aNote:'parce que 接完整句子；pour 接動詞原形', askClaude:true },
+  { lesson:7, type:'trans', q:'週末我不用車。',                                hint:'le week-end / sans',           a:'Le week-end, je fais sans la voiture.',                   aNote:'faire sans = to do without；le week-end 放句首', askClaude:true },
+  { lesson:7, type:'trans', q:'她賣黑色和藍色的洋裝。',                        hint:'vendre / robe / noir / bleu',  a:'Elle vend des robes noires et bleues.',                   aNote:'形容詞配合名詞性數：robe（f.pl）→ noires/bleues（後置）', askClaude:true },
+  { lesson:7, type:'trans', q:'這件皮夾克多少錢？',                            hint:'veste en cuir / coûter',       a:'Combien coûte cette veste en cuir ?',                     aNote:'cette（陰性）+ veste（f）；en cuir = 皮革材質', askClaude:true },
+  { lesson:7, type:'trans', q:'我喜歡這件洋裝，它穿在我身上很適合。',          hint:'plaire / aller bien',          a:'Cette robe me plaît, elle me va bien.',                   aNote:'me plaît（我喜歡）；me va bien（穿起來合身）', askClaude:true },
+  { lesson:7, type:'trans', q:'你穿幾號？我穿 L。',                            hint:'taille / faire',               a:'Tu fais quelle taille ? Je fais du L.',                   aNote:'faire du S/M/L/XL（尺碼用 faire + du）', askClaude:true },
 ];
 
 // ── 狀態 ──────────────────────────────────────────────────────
