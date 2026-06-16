@@ -985,6 +985,33 @@ const BANK = [
   { lesson:9, topic:'frequency-adverbs', type:'choose', q:'「le jeudi」與「tous les jeudis」意思上的關係？', hint:'相同 vs 不同', a:'意思完全相同，都表示「每個星期四」', aNote:'le + 星期（單數）＝ tous les + 星期（複數），都是「每週固定」的意思', opts:['意思完全相同，都表示「每個星期四」','le jeudi 只指某一個星期四','tous les jeudis 比較少發生','兩者文法不同，意思也不同'] },
   { lesson:9, topic:'frequency-adverbs', type:'choose', q:'沒有冠詞的「jeudi」（無 le）是什麼意思？', hint:'特定 vs 固定', a:'只指某一個特定的星期四', aNote:'jeudi（無冠詞）＝ 某一次星期四；le jeudi ＝ 每週固定的星期四', opts:['只指某一個特定的星期四','每個星期四','從不會發生','跟 le jeudi 一樣'] },
   { lesson:9, topic:'frequency-adverbs', type:'trans',  q:'我們每週二、週日都有法文課。', hint:'le mardi et le dimanche', a:'On a cours de français le mardi et le dimanche.', aNote:'le + 星期 = 每週固定；等於 tous les mardis et tous les dimanches', askClaude:true },
+
+  // ══════════════════ 🧩 句型框架庫（來自 Duolingo 113 張錯題截圖分析，5大誤區）══════════════════
+  // lesson:0 = 不屬於特定課堂，對應筆記的「🧩 句型框架庫」(#frame-lib)
+  // ── 誤區1：冠詞選擇（音樂/不可數液體最常錯）──
+  { lesson:0, topic:'articles', type:'fill',   q:"J'écoute _____ jazz. (du/le/la)", hint:'音樂類用部分冠詞', a:'du', aNote:'Duolingo常見錯誤：音樂類（du jazz/du rock）用部分冠詞 du，不是 le/la' },
+  { lesson:0, topic:'articles', type:'trans',  q:'我喝牛奶。', hint:'不可數液體', a:'Je bois du lait.', aNote:'lait（不可數液體）→ du lait（部分冠詞）；Duolingo錯題常漏掉或選錯冠詞', askClaude:true },
+  { lesson:0, topic:'articles', type:'choose', q:'聽音樂類型（爵士、搖滾⋯）的冠詞通常用哪個？', hint:'部分冠詞', a:'du（部分冠詞）', aNote:'écouter du jazz / du rock / de la musique classique，音樂類大多用部分冠詞', opts:['du（部分冠詞）','le（定冠詞）','un（不定冠詞）','沒有冠詞'] },
+
+  // ── 誤區2：動詞變位（tu es / je viens / elle veut 易混淆）──
+  { lesson:0, topic:'etre-avoir', type:'fill',   q:'Tu _____ content ? (être，常見錯寫成 tu est)', hint:'être tu形', a:'es', aNote:"Duolingo常見錯誤：tu est（×）→ tu es（✓），être 的 tu 形沒有 t" },
+  { lesson:0, topic:'irregular-verbs-3rd-group', type:'fill', q:'Je _____ de Taïwan. (venir，常見錯寫成 je vient)', hint:'venir je形', a:'viens', aNote:'Duolingo常見錯誤：je vient（×）→ je viens（✓），venir je/tu 形是 viens 不是 vient' },
+  { lesson:0, topic:'pouvoir-vouloir', type:'fill', q:'Elle _____ partir. (vouloir，常見錯寫成 elle veux)', hint:'vouloir elle形', a:'veut', aNote:'Duolingo常見錯誤：elle veux（×）→ elle veut（✓），vouloir 的 il/elle 形是 veut 不是 veux（veux 是 je/tu 形）' },
+
+  // ── 誤區3：介詞 à + 地點（常漏掉 à）──
+  { lesson:0, topic:'preposition-place-transport', type:'fill', q:'On va _____ piscine. (常漏掉 à)', hint:'aller + à la', a:'à la', aNote:'Duolingo常見錯誤：On va la piscine（×，漏掉à）→ On va à la piscine（✓）' },
+  { lesson:0, topic:'preposition-place-transport', type:'trans', q:'我們去游泳池。', hint:'aller + à la piscine', a:'On va à la piscine.', aNote:'「去某地」結構永遠是 aller + à/au/à la/chez + 地點，à 不能省略', askClaude:true },
+  { lesson:0, topic:'preposition-place-transport', type:'choose', q:'「去某地」aller 後面一定要接什麼？', hint:'à 不能省略', a:'à / au / à la / chez + 地點', aNote:'Duolingo常見錯誤就是漏掉這個 à；aller 後面不能直接接地點名詞', opts:['à / au / à la / chez + 地點','直接接地點，不用介詞','de + 地點','en + 地點（所有地點都用en）'] },
+
+  // ── 誤區4：ce / cet / cette / ces（陽性母音開頭常忘記用 cet）──
+  { lesson:0, topic:'demonstrative-adj', type:'fill', q:'_____ animal (常見錯寫成 le animal)', hint:'母音開頭陽性', a:'cet', aNote:"Duolingo常見錯誤：le animal（×）→ l'animal 或 cet animal（✓），陽性母音開頭名詞要連音" },
+  { lesson:0, topic:'demonstrative-adj', type:'choose', q:'「le animal」為什麼是錯的？', hint:'母音開頭連音', a:"animal 是母音開頭的陽性名詞，定冠詞要變成 l'，指示詞要變成 cet", aNote:"母音/啞音h開頭的陽性單數名詞，不論定冠詞或指示詞都要切換成連音形式：l'animal / cet animal", opts:["animal 是母音開頭的陽性名詞，定冠詞要變成 l'，指示詞要變成 cet",'animal 其實是陰性名詞','le 在任何情況都不能加在動物名詞前','這句其實是對的'] },
+  { lesson:0, topic:'demonstrative-adj', type:'fill', q:'_____ hôtel (母音/啞音h開頭)', hint:'cet', a:'cet', aNote:'hôtel 的 h 不發音，視為母音開頭 → cet hôtel' },
+
+  // ── 誤區5：avoir vs être 感受句（人的感受用 avoir，物的狀態用 être）──
+  { lesson:0, topic:'etre-avoir', type:'fill', q:'他覺得熱。Il _____ chaud. (常見錯寫成 il est chaud)', hint:'人的感受用avoir', a:'a', aNote:'Duolingo常見錯誤：il est chaud（物是熱的）vs il a chaud（人覺得熱）混用，人的感受要用 avoir' },
+  { lesson:0, topic:'etre-avoir', type:'choose', q:'「il est chaud」跟「il a chaud」差別？', hint:'物 vs 人', a:'il est chaud=物是熱的；il a chaud=人覺得熱', aNote:'人的感受幾乎都用 avoir：avoir faim/froid/chaud/peur/besoin de', opts:['il est chaud=物是熱的；il a chaud=人覺得熱','兩句意思完全一樣','il a chaud 才是正確說法，il est chaud 永遠是錯的','只有 il est chaud 正確'] },
+  { lesson:0, topic:'etre-avoir', type:'trans', q:'我餓了。', hint:'avoir + faim', a:'J\'ai faim.', aNote:'感受句用 avoir：j\'ai faim/froid/chaud/peur/besoin de', askClaude:true },
 ];
 
 // ── 狀態 ──────────────────────────────────────────────────────
@@ -1010,7 +1037,8 @@ function buildLessonButtons() {
   const row = document.getElementById('lessonRow');
   row.innerHTML = `<button class="ctrl-btn active" id="btnLessonAll" onclick="setLesson('all')">全部課堂</button>`;
   lessons.forEach(l => {
-    row.innerHTML += `<button class="ctrl-btn" id="btnLesson${l}" onclick="setLesson(${l})">第${l}課</button>`;
+    const label = l === 0 ? '🧩 框架庫' : `第${l}課`;
+    row.innerHTML += `<button class="ctrl-btn" id="btnLesson${l}" onclick="setLesson(${l})">${label}</button>`;
   });
 }
 
@@ -2202,7 +2230,11 @@ function showTopicMap() {
   const stats = computeTopicStats();
   const rows = stats.map(s => {
     const label = TOPIC_LABELS[s.topic] || s.topic;
-    const noteLinks = s.lessons.map(l => `<a class="topic-note-link" href="french_notes.html#lesson-${l}" target="_blank">📖 第${l}課</a>`).join(' ');
+    const noteLinks = s.lessons.map(l => {
+      const anchor = l === 0 ? 'frame-lib' : `lesson-${l}`;
+      const label  = l === 0 ? '🧩 框架庫' : `📖 第${l}課`;
+      return `<a class="topic-note-link" href="french_notes.html#${anchor}" target="_blank">${label}</a>`;
+    }).join(' ');
     let pctClass = 'none', pctText = '—', barColor = '#e4e4e2', barWidth = '0%';
     if (s.pct !== null) {
       pctClass = s.pct < 60 ? 'weak' : (s.pct < 80 ? 'mid' : 'ok');
