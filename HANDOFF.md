@@ -56,11 +56,27 @@
 ## 目前進度
 
 - **課程：** CLB7（目標 B2），目前 A1/A2 交界
-- **已上：** 第 1–6 課
-- **Quiz BANK 題數：** 236 題（課程 SRS 練習，第 1–6 課）
-  - 第1課 63 / 第2課 54 / 第3課 26 / 第4課 39 / 第5課 38 / 第6課 16
+- **已上：** 第 1–7 課
+- **Quiz BANK 題數：** 292 題（課程 SRS 練習，第 1–7 課）
+  - 第1課 63 / 第2課 54 / 第3課 26 / 第4課 39 / 第5課 38 / 第6課 16 / 第7課 56
 - **AGREE_BANK 題數：** 247 題（⚡ 快速測驗 專用）
-- **地圖進度：** 13 / 60 格已解鎖（CURRENT_LESSON = 4，建議解鎖 heure + transports）
+- **地圖進度：** 13 / 60 格已解鎖（CURRENT_LESSON = 4，建議解鎖 heure + transports，第7課對應 transports 已涵蓋更深入內容、待補 vetements）
+
+### 第7課已涵蓋內容（french_notes Lesson 7，來源：Édito Cahier Unité 4 p.46-48 + Unité 5 p.55-66）
+- Se déplacer：按距離給建議（marcher/trottinette/vélo/covoiturage）、jusqu'à、arrêt/station/ligne/itinéraire
+- 連接詞 pour/parce que/mais/avec/sans + la semaine vs le week-end
+- 服裝購物（Vinted 情境）：衣物/配件詞彙、材質 en cuir/coton/laine、neuf vs d'occasion、尺碼問法、時尚表達（il me plaît / il me va bien）
+- vendre & mettre 完整變位（mettre 注意 nous/vous/ils 雙 tt）
+- 動詞三組分類（-ER/-IR/不規則）
+- 大數字（million/milliard 複數規則）
+
+### 🧩 句型框架庫（新功能，2026-06-期間新增）
+- 不屬於任何課，獨立放在 `french_notes.html` 最上方（`<div class="unit" id="frame-lib">`，第1課 details 之前）
+- 頂部 meta 列有快捷連結 `<a href="#frame-lib">🧩 句型框架庫</a>`
+- 動機：Owen 反饋「選字會選，但串不成句」→ 需要先背句型骨架，再換詞練習
+- 內容：7 個框架（主詞+動詞+冠詞+名詞 / à+地點 / 否定句 / 形容詞性數一致 / il y a / avoir 感受句 / ce-cet-cette-ces）
+- 例句直接取自 Owen 的 Duolingo 截圖錯題（見下方分析），更有記憶點
+- **下次可擴充**：可以再加框架（如 COD/COI 代名詞句型、futur proche 等），格式參考現有 7 個
 
 ### 已解鎖的地圖格子
 
@@ -391,6 +407,24 @@ B2: pluperfect, cond-passe, subj-passe, passe-simple, concordance,
 | table_drill 完全空白 | `note` 欄位中的法文縮寫 `s'il vous plaît` 和 `s'appelle` 的單引號截斷 JS 字串 → 整個 script 解析失敗 | 移除衝突文字 / 改用雙引號包字串 |
 | table_drill easy 模式全空格 | 部分冠詞、商店介係詞表格全部 h:true，easy 模式沒有任何提示格 | 各表格改 2 個格子為 h:false，提供基礎範例作為提示 |
 
+## 本次 Session 修復的 Bug（第7課那次）
+
+| 問題 | 根本原因 | 修法 |
+|------|----------|------|
+| table_drill 完全沒題目（cardArea 空白） | `TYPE_LABEL` 用 `const` 宣告在第671行，但頁面載入的 IIFE 在第602行就執行 `startSession()`→`renderCard()`，存取尚未初始化的 `const` → temporal dead zone ReferenceError，靜默失敗 | 把 `TYPE_LABEL` 宣告移到 IIFE 之前（狀態變數區） |
+| quiz 新增第7課題目後，瀏覽器讀到 0 題 | 瀏覽器快取住舊版 JS，沒有反映檔案最新內容 | `window.location.reload(true)` 強制重新整理 |
+
+### quiz 錯題複習機制改版（本次調整）
+
+舊機制：答錯的題目集中到 `resurface` 陣列，主隊列跑完後彈出「複習錯題」分隔卡，按按鈕才開始複習輪；複習輪裡再答錯就直接消失，不會再考。
+
+新機制（Owen 要求：「錯的題目應該直接接續在後頭作答，再錯就排到下一輪後頭，做到對為止」）：
+- 移除 `resurface` / `resurfaceDone` 變數
+- 答錯時直接 `queue.push({ ...q, _review: true })` — 題目立刻接到當前隊列尾端，同一個 session 內會自動再考一次
+- 再答錯 → 再 push 一次，持續累積在隊列尾端，直到答對才會被 `overrideCorrect()` 從後方隊列移除
+- `renderCard()` 不再檢查 resurface，純粹看 `current >= queue.length` 就結束
+- 影響範圍：只動了課程練習 BANK 的 SRS 流程（`recordResult` + `pickBankOpt` 的答錯分支 + `overrideCorrect`），**沒有動到 ⚡快速測驗（AGREE_BANK）的分輪複習機制**，那邊維持原本「子輪結束才開下一輪」的設計
+
 ---
 
 ## 規劃中的功能（尚未實作）
@@ -399,6 +433,25 @@ B2: pluperfect, cond-passe, subj-passe, passe-simple, concordance,
 - **Phase 4：** 日常練習流程（今日新題 + SRS 弱點混合）
 - **文法表擴充：** 每學新語法就往 Tab 3 補表格
 - **AGREE_BANK 擴充：** 加入更多情境鏈題（家庭、工作場景等）
+- **句型框架庫擴充：** 目前只有 7 個框架，可視 Owen 學習進度加入新框架（futur proche、COD/COI 代名詞句型等）
+
+---
+
+## Duolingo 錯題分析（2026-06 期間，113 張截圖）
+
+Owen 反饋：Duolingo 的句子很有學習意義（會糾正出他以為對的誤區），但截圖之後不知道怎麼歸納整理、加深記憶。已分析 `/Users/owen/Desktop/duolinguo/` 下 113 張截圖（用 Agent 逐張讀取），整理出 5 大誤區並寫入句型框架庫：
+
+1. **冠詞選擇**（錯誤率最高）：le/la/un/une/du/de la/des 混用，尤其音樂類（du jazz）、不可數液體（du lait）
+2. **動詞變位**：tu/vous/il/elle 形混淆（tu est→tu es、je vient→je viens、elle veux→elle veut）
+3. **介詞 à + 地點**：常漏掉 à（On va la piscine → On va à la piscine）
+4. **ce/cet/cette/ces**：陽性母音開頭名詞忘記用 cet（le animal → cet animal）
+5. **avoir vs être 感受句**：il est chaud（物熱）vs il a chaud（人覺得熱）混用
+
+**已處理：** 上述 5 大誤區的代表句已整理進 `french_notes.html` 的句型框架庫（框架1-7）。
+
+**尚未處理：** 截圖裡還有其他次要錯誤類型（代詞 ça/eux、副詞位置、pas du tout vs pas d'accord 等），若 Owen 之後想要更完整的錯題本或想把這些補進 quiz 題庫，可以重新 Agent 讀取同一批截圖（路徑不變），或請 Owen 持續把新的 Duolingo 截圖存進同一個資料夾，下次一次處理。
+
+**桌面資料夾：** `/Users/owen/Desktop/duolinguo/`（Owen 持續儲存新截圖的地方，目前 113 張，命名格式 IMG_XXXX.PNG）
 
 ---
 
@@ -428,14 +481,17 @@ A：主輪 20 題答完後，錯的題目進入複習輪（分輪制）。每輪
 ```
 請先讀 HANDOFF.md（在 /Users/owen/Documents/Claude/Project/CLB test/France CLB7/）。
 
-Owen 在學法語，目標一年內考過 CLB7（B2）。目前完成第6課，系統包含：
-- french_notes.html：課堂筆記（第1-6課）
-- quiz.html：SRS 題庫（BANK 236題，第1-6課）+ 快速測驗（AGREE_BANK 247題）
+Owen 在學法語，目標一年內考過 CLB7（B2）。目前完成第7課，系統包含：
+- french_notes.html：課堂筆記（第1-7課）+ 句型框架庫（不分課，頂部快捷連結 #frame-lib）
+- quiz.html：SRS 題庫（BANK 292題，第1-7課，錯題會直接接續在隊列後重考至答對）+ 快速測驗（AGREE_BANK 247題）
 - table_drill.html：表格填空練習（動詞/形容詞/冠詞/介係詞，21個表格，三難度）
-- map.html：課程地圖（13/60格已解鎖，建議解鎖 heure + transports，CURRENT_LESSON → 6）
+- map.html：課程地圖（13/60格已解鎖，建議解鎖 heure + transports，CURRENT_LESSON → 6 仍待更新到 7）
 - french_basics.html：數字/發音/文法表（含十位數 dizaines）
 
 GitHub Pages：https://owenc8964.github.io/french_pronounce/
+（注意：french_notes.html 和 map.html 只在本機，不會出現在 GitHub Pages 上）
+
+如果 Owen 提到「handout」，先確認他是指「下一堂課的課文 PDF」還是「HANDOFF.md 交接文件」— 這兩個詞容易聽混。
 
 【本次任務】（請從這裡描述要做什麼）
 ```
