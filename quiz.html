@@ -839,7 +839,7 @@ const BANK = [
 ];
 
 // ── 狀態 ──────────────────────────────────────────────────────
-let queue = [], resurface = [], resurfaceDone = false;
+let queue = [];
 let current = 0, scoreOk = 0, scoreNo = 0, answered = false;
 let filterType = 'all', filterLesson = 'all', filterMode = 'normal';
 let sessionXP = 0;
@@ -950,7 +950,6 @@ function buildSession(pool) {
 }
 
 function restart() {
-  resurface = []; resurfaceDone = false;
   queue = buildSession(getPool());
   current = 0; scoreOk = 0; scoreNo = 0; answered = false; sessionXP = 0;
   updateProgress();
@@ -959,7 +958,7 @@ function restart() {
 
 function updateProgress() {
   const total = queue.length, done = current;
-  const inReview = resurfaceDone === false && resurface.length > 0 && current >= queue.length;
+  const remaining = total - done;
   document.getElementById('progressLabel').textContent =
     total === 0 ? '沒有題目' : `第 ${Math.min(done + 1, total)} 題 / 共 ${total} 題`;
   document.getElementById('progressFill').style.width =
@@ -971,15 +970,7 @@ function updateProgress() {
 function renderCard() {
   const area = document.getElementById('quizArea');
 
-  // All done — check for resurface round
-  if (current >= queue.length) {
-    if (resurface.length > 0 && !resurfaceDone) {
-      showReviewDivider();
-      return;
-    }
-    showDoneCard();
-    return;
-  }
+  if (current >= queue.length) { showDoneCard(); return; }
 
   const q = queue[current];
   const isReviewQ = q._review === true;
@@ -1074,10 +1065,8 @@ function checkAnswer() {
     addXP(xp);
   } else {
     scoreNo++;
-    // Queue for resurface (once only, not if already a review card)
-    if (!q._review && !resurface.find(r => r.q === q.q)) {
-      resurface.push({ ...q, _review: true });
-    }
+    // 答錯 → 直接加到隊列尾巴，直到答對為止
+    queue.push({ ...q, _review: true });
     // Show override button
     const ob = document.getElementById('btnOverride');
     if (ob) ob.style.display = '';
@@ -1100,8 +1089,9 @@ function overrideCorrect() {
   const xp = q._review ? 5 : 10;
   sessionXP += xp;
   addXP(xp);
-  // 從複習隊列移除
-  resurface = resurface.filter(r => r.q !== q.q);
+  // 從後方隊列移除（答對了，不用再考一次）
+  const next = queue.findIndex((r, i) => i > current && r.q === q.q && r._review);
+  if (next !== -1) queue.splice(next, 1);
   // 更新 UI
   const inp = document.getElementById('ansInput');
   if (inp) { inp.classList.remove('wrong'); inp.classList.add('correct'); }
@@ -1155,9 +1145,7 @@ function pickBankOpt(btn, chosen) {
     addXP(xp);
   } else {
     scoreNo++;
-    if (!q._review && !resurface.find(r => r.q === q.q)) {
-      resurface.push({ ...q, _review: true });
-    }
+    queue.push({ ...q, _review: true });
     const ob = document.getElementById('btnOverride');
     if (ob) ob.style.display = '';
   }
