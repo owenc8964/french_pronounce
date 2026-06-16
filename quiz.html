@@ -905,6 +905,60 @@ const BANK = [
   { lesson:8, type:'fill',   q:'我化妝：Je me _____.', hint:'maquiller', a:'maquille', aNote:'se maquiller = 化妝' },
   { lesson:8, type:'fill',   q:'我整理頭髮：Je me _____.', hint:'coiffer', a:'coiffe', aNote:'se coiffer = 整理頭髮' },
   { lesson:8, type:'trans',  q:'我每天早上8點醒來，洗澡，然後穿衣服。', hint:'se réveiller / se doucher / s\'habiller', a:'Je me réveille à 8h, je me douche, et je m\'habille.', aNote:'三個反身動詞依序排列，主詞都是 je → me', askClaude:true },
+
+  // ══════════════════ 第9課 ══════════════════
+  // ── une journée vs un jour ──
+  { lesson:9, type:'choose', q:'「祝你有美好的一天」要說？', hint:'journée', a:'Bonne journée !', aNote:'bonjour 只是「嗨」；bonne journée 才是祝福語', opts:['Bonjour !','Bonne journée !','Bon jour !','Bonne nuit !'] },
+  { lesson:9, type:'choose', q:'journée 跟 jour 的差別？', hint:'醒著 vs 24小時', a:'journée = 白天醒著的時間；jour = 24小時的一天', aNote:'journée 強調「過的這段時光」', opts:['journée = 白天醒著的時間；jour = 24小時的一天','兩個完全一樣','jour 才有陰陽性','journée 專指晚上'] },
+
+  // ── 反身動詞現在式 + 否定句 ──
+  { lesson:9, type:'fill',   q:'s\'habiller 變位：tu _____', hint:'母音開頭縮寫', a:"t'habilles", aNote:'te + habilles → 母音前縮寫成 t\'habilles' },
+  { lesson:9, type:'fill',   q:'s\'habiller 變位：nous _____', hint:'nous 不縮寫', a:'nous habillons', aNote:'nous/vous 接母音開頭動詞不縮寫' },
+  { lesson:9, type:'fill',   q:'否定句「我沒有在7點醒來」：Je _____ me réveille pas à 7h.', hint:'ne 放哪裡', a:'ne', aNote:'ne 放在反身代詞「前面」：je ne me réveille pas' },
+  { lesson:9, type:'choose', q:'反身動詞否定句的 ne 要放在哪裡？', hint:'je [ne] me [verbe] pas', a:'反身代詞的前面', aNote:'je ne me réveille pas（不是 je me ne réveille pas）', opts:['反身代詞的前面','反身代詞的後面','句子最後','verbe 後面，pas 前面'] },
+  { lesson:9, type:'trans',  q:'你幾點起床？我6點起床。', hint:'se réveiller', a:'Tu te réveilles à quelle heure ? Je me réveille à 6h.', aNote:'se réveiller 現在式：je me réveille / tu te réveilles', askClaude:true },
+
+  // ── 起床/睡覺系列辨析 ──
+  { lesson:9, type:'choose', q:'「上床躺下」（還沒睡著）法文是？', hint:'進入床的動作', a:'se coucher', aNote:'se coucher = 躺下進入床；不一定馬上睡著', opts:['se coucher','se lever','dormir','s\'endormir'] },
+  { lesson:9, type:'choose', q:'「入睡」（從醒著到睡著的那一刻）法文是？', hint:'瞬間動作', a:"s'endormir", aNote:"s'endormir = 入睡的瞬間；dormir = 睡著的狀態", opts:["s'endormir",'se coucher','se lever','se réveiller'] },
+  { lesson:9, type:'trans',  q:'我22點上床，但3點才睡著。', hint:'se coucher / s\'endormir', a:"Je me couche à 22h, mais je m'endors à 3h.", aNote:"se coucher（上床）≠ s'endormir（睡著）— 中間在失眠", askClaude:true },
+  { lesson:9, type:'fill',   q:'失眠：faire des _____', hint:'insomnie', a:'insomnies', aNote:'faire des insomnies = 失眠' },
+
+  // ── 一天作息閱讀詞彙 ──
+  { lesson:9, type:'fill',   q:'提問（不能說 demander des questions）：_____ des questions', hint:'poser', a:'poser', aNote:'poser des questions = 發問；demander = 請求某人做事' },
+  { lesson:9, type:'choose', q:'法文 interview 通常用在哪種情境？', hint:'記者', a:'記者採訪', aNote:'法文 interview 只用在記者採訪，求職面試不用這個字', opts:['記者採訪','求職面試','法庭審問','醫生問診'] },
+  { lesson:9, type:'fill',   q:'洗碗：faire la _____', hint:'vaisselle', a:'vaisselle', aNote:'vaisselle = 餐具總稱；faire la vaisselle = 洗碗' },
+  { lesson:9, type:'fill',   q:'慢跑：faire du _____', hint:'jogging', a:'jogging', aNote:'faire du jogging = 慢跑' },
+  { lesson:9, type:'choose', q:'「DIY手工修繕」法文怎麼說？', hint:'bricoler', a:'le bricolage', aNote:'bricolage = DIY手工修繕（名詞），bricoler = 動詞', opts:['le bricolage','la cuisine','la vaisselle','le jogging'] },
+  { lesson:9, type:'choose', q:'電視在口語中通常怎麼簡稱？', hint:'télé', a:'la télé', aNote:'télévision 太正式，口語幾乎都說 la télé', opts:['la télé','la TV','le télé','la vision'] },
+  { lesson:9, type:'trans',  q:'她停止工作然後回家。', hint:'arrêter de / rentrer', a:'Elle arrête de travailler et elle rentre à la maison.', aNote:'arrêter de + 原形動詞', askClaude:true },
+
+  // ── on vs nous ──
+  { lesson:9, type:'choose', q:'「沒人知道他叫什麼名字」要用 on 還是 nous？', hint:'泛指大眾', a:'on', aNote:'on 可以泛指「沒有人、大家」，nous 只能指「你和我」這群特定人', opts:['on','nous','vous','ils'] },
+  { lesson:9, type:'fill',   q:'on 的動詞變位形式跟誰一樣？', hint:'第三人稱單數', a:'il/elle', aNote:'on 永遠用 il/elle 的變位形式：on va, on fait, on est' },
+  { lesson:9, type:'trans',  q:'我們今晚要去看電影嗎？（口語）', hint:'on', a:'On va au cinéma ce soir ?', aNote:'口語中 on 常直接取代 nous，更自然親切', askClaude:true },
+
+  // ── pouvoir vs vouloir ──
+  { lesson:9, type:'fill',   q:'pouvoir 變位：nous _____', hint:'pouvons', a:'pouvons', aNote:'pouvoir：je peux/tu peux/il peut/nous pouvons/vous pouvez/ils peuvent' },
+  { lesson:9, type:'fill',   q:'vouloir 變位：ils _____', hint:'veulent', a:'veulent', aNote:'vouloir：je veux/tu veux/il veut/nous voulons/vous voulez/ils veulent' },
+  { lesson:9, type:'choose', q:'「Tu veux aller au théâtre ?」這句問的是什麼？', hint:'意願 vs 可行性', a:'問你想不想去（已知你能去）', aNote:'vouloir 問意願；pouvoir 問可行性（有沒有空、有沒有錢）', opts:['問你想不想去（已知你能去）','問你能不能去（已知你想去）','問你去過沒有','問你喜歡誰'] },
+  { lesson:9, type:'choose', q:'「Tu peux aller au théâtre ?」這句問的是什麼？', hint:'意願 vs 可行性', a:'問你能不能去（已知你想去）', aNote:'pouvoir 問可行性；vouloir 問意願', opts:['問你想不想去（已知你能去）','問你能不能去（已知你想去）','問你去過沒有','問你喜歡誰'] },
+  { lesson:9, type:'fill',   q:'「我不想」（另一種說法，用 envie）：Je n\'ai pas _____.', hint:'envie', a:'envie', aNote:'avoir envie de = 想要；je n\'ai pas envie = 我不想' },
+  { lesson:9, type:'trans',  q:'我可以做這件事。', hint:'pouvoir / le', a:'Je peux le faire.', aNote:'le = 那件事，代替前面提過的東西', askClaude:true },
+
+  // ── 邀約句型 ──
+  { lesson:9, type:'choose', q:'「你有興趣嗎？」最口語的問法？', hint:'ça', a:'Ça te dit ?', aNote:'ça（這件事）+ te（對你）+ dit（説，引申為吸引）', opts:['Ça te dit ?','Tu es content ?','Tu aimes ?','C\'est toi ?'] },
+  { lesson:9, type:'choose', q:'接受邀約最自然的回答是？', hint:'plaisir', a:'Avec plaisir !', aNote:'D\'accord ! / Pourquoi pas ! / Avec plaisir ! 都是接受邀約的常見說法', opts:['Avec plaisir !','Je suis désolé(e).','Je n\'ai pas envie.','Je ne peux pas.'] },
+  { lesson:9, type:'choose', q:'拒絕邀約並表達歉意要說？', hint:'désolé', a:'Je ne peux pas, je suis désolé(e).', aNote:'désolé(e) = 抱歉的（陰性加 e）', opts:['Je ne peux pas, je suis désolé(e).','Avec plaisir !','D\'accord !','Pourquoi pas !'] },
+  { lesson:9, type:'trans',  q:'你想去劇院嗎？— 好啊！', hint:'vouloir / D\'accord', a:'Tu veux aller au théâtre ? — D\'accord !', aNote:'theatre 邀約句型 + 接受', askClaude:true },
+
+  // ── 頻率副詞 ──
+  { lesson:9, type:'choose', q:'頻率副詞「從不」到「總是」的正確排序？', hint:'jamais → toujours', a:'jamais < rarement < parfois < souvent < toujours', aNote:'從不 < 很少 < 有時候 < 常常 < 總是', opts:['jamais < rarement < parfois < souvent < toujours','toujours < souvent < parfois < rarement < jamais','parfois < jamais < souvent < rarement < toujours','souvent < toujours < jamais < rarement < parfois'] },
+  { lesson:9, type:'fill',   q:'我很少去劇院：Je vais _____ au théâtre.', hint:'rarement', a:'rarement', aNote:'rarement（很少）放在動詞後面' },
+  { lesson:9, type:'choose', q:'頻率副詞 jamais/rarement/parfois/souvent 一般放在句子的哪裡？', hint:'位置規則', a:'動詞後面', aNote:'這幾個頻率副詞放在動詞後面；le jeudi / tous les jeudis 則放句首或句尾', opts:['動詞後面','動詞前面','句子最前面','句子最後面，不能在其他位置'] },
+  { lesson:9, type:'choose', q:'「le jeudi」與「tous les jeudis」意思上的關係？', hint:'相同 vs 不同', a:'意思完全相同，都表示「每個星期四」', aNote:'le + 星期（單數）＝ tous les + 星期（複數），都是「每週固定」的意思', opts:['意思完全相同，都表示「每個星期四」','le jeudi 只指某一個星期四','tous les jeudis 比較少發生','兩者文法不同，意思也不同'] },
+  { lesson:9, type:'choose', q:'沒有冠詞的「jeudi」（無 le）是什麼意思？', hint:'特定 vs 固定', a:'只指某一個特定的星期四', aNote:'jeudi（無冠詞）＝ 某一次星期四；le jeudi ＝ 每週固定的星期四', opts:['只指某一個特定的星期四','每個星期四','從不會發生','跟 le jeudi 一樣'] },
+  { lesson:9, type:'trans',  q:'我們每週二、週日都有法文課。', hint:'le mardi et le dimanche', a:'On a cours de français le mardi et le dimanche.', aNote:'le + 星期 = 每週固定；等於 tous les mardis et tous les dimanches', askClaude:true },
 ];
 
 // ── 狀態 ──────────────────────────────────────────────────────

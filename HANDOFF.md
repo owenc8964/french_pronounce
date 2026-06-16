@@ -56,11 +56,21 @@
 ## 目前進度
 
 - **課程：** CLB7（目標 B2），目前 A1/A2 交界
-- **已上：** 第 1–8 課
-- **Quiz BANK 題數：** 342 題（課程 SRS 練習，第 1–8 課）
-  - 第1課 63 / 第2課 54 / 第3課 26 / 第4課 39 / 第5課 38 / 第6課 16 / 第7課 56 / 第8課 50
+- **已上：** 第 1–9 課
+- **Quiz BANK 題數：** 379 題（課程 SRS 練習，第 1–9 課）
+  - 第1課 63 / 第2課 54 / 第3課 26 / 第4課 39 / 第5課 38 / 第6課 16 / 第7課 56 / 第8課 50 / 第9課 37
 - **AGREE_BANK 題數：** 247 題（⚡ 快速測驗 專用）
-- **地圖進度：** 19 / 60 格已解鎖（CURRENT_LESSON = 8）。本次新解鎖：heure、transports（對應第6課）、vetements（對應第7課）、meteo、futur-proche、routine（對應第8課）
+- **地圖進度：** 19 / 60 格已解鎖（CURRENT_LESSON = 9）。第9課內容（反身動詞/pouvoir vs vouloir/頻率副詞/邀約句型）沒有對應到新的地圖格子，已涵蓋的格子維持不變
+
+### 第9課已涵蓋內容（french_notes Lesson 9，來源：Édito Unité 6，0616 課堂逐字稿+講義截圖）
+- une journée（白天醒著的時間）vs un jour（24小時）
+- 反身動詞現在式完整變位（se réveiller/s'habiller）+ 否定句結構（ne 放反身代詞前面）
+- 起床/睡覺系列動詞辨析：se lever/se coucher/dormir/s'endormir/se réveiller/se brosser les dents/se raser
+- 一天作息閱讀詞彙（記者 Mathilde Boulesteix 範文）：se promener/s'organiser/poser des questions/filmer/discuter/arrêter de/rentrer/surfer/bricolage/faire la cuisine·vaisselle·jogging
+- on vs nous 區別（on 泛指大眾 + 口語替代 nous，變位同 il/elle）
+- pouvoir vs vouloir 完整變位 + 用法區別（問可行性 vs 問意願）+ avoir envie de
+- 邀約句型：proposer/accepter/refuser une sortie（On va au théâtre? / D'accord! / Ça te dit? / Je n'ai pas envie.）
+- 頻率副詞 jamais/rarement/parfois/souvent/toujours（位置規則：動詞後）+ le jeudi vs tous les jeudis（句首/句尾，意思相同）
 
 ### 第8課已涵蓋內容（french_notes Lesson 8，來源：Édito Unité 5-6，0614 課堂逐字稿+講義截圖）
 - 形容詞位置（前置 vs 後置）：petit/grand/bon/beau/joli/nouveau 等短形容詞前置，顏色/國籍/材質一律後置；beau→bel/belle/beaux、nouveau→nouvel/nouvelle/nouveaux 母音變形；des→de（形容詞前置+複數時）
@@ -491,11 +501,11 @@ A：主輪 20 題答完後，錯的題目進入複習輪（分輪制）。每輪
 ```
 請先讀 HANDOFF.md（在 /Users/owen/Documents/Claude/Project/CLB test/France CLB7/）。
 
-Owen 在學法語，目標一年內考過 CLB7（B2）。目前完成第8課，系統包含：
-- french_notes.html：課堂筆記（第1-8課）+ 句型框架庫（不分課，頂部快捷連結 #frame-lib）
-- quiz.html：SRS 題庫（BANK 342題，第1-8課，錯題會直接接續在隊列後重考至答對）+ 快速測驗（AGREE_BANK 247題）
+Owen 在學法語，目標一年內考過 CLB7（B2）。目前完成第9課，系統包含：
+- french_notes.html：課堂筆記（第1-9課）+ 句型框架庫（不分課，頂部快捷連結 #frame-lib）
+- quiz.html：SRS 題庫（BANK 379題，第1-9課，錯題會直接接續在隊列後重考至答對）+ 快速測驗（AGREE_BANK 247題）
 - table_drill.html：表格填空練習（動詞/形容詞/冠詞/介係詞，21個表格，三難度）
-- map.html：課程地圖（19/60格已解鎖，CURRENT_LESSON = 8）
+- map.html：課程地圖（19/60格已解鎖，CURRENT_LESSON = 9）
 - french_basics.html：數字/發音/文法表（含十位數 dizaines）
 
 GitHub Pages：https://owenc8964.github.io/french_pronounce/
