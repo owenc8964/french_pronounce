@@ -264,7 +264,7 @@ header {
 </div>
 
 <script>
-const CURRENT_LESSON = 4;
+const CURRENT_LESSON = 8;
 const TOTAL_LESSONS  = 35;
 
 const TILES = [
@@ -286,7 +286,7 @@ const TILES = [
     detail:'Cardinaux 0–100. Particularités: 70–79 (soixante-dix…), 80–99 (quatre-vingts…). Ordinaux: premier/première, deuxième, troisième… vingtième. Utilisation dans les dates et les adresses.' },
 
   { id:'heure',        zone:'A1', icon:'⏰', name:"L'heure",
-    hint:'Il est deux heures et demie', unlocked:false,
+    hint:'Il est deux heures et demie', unlocked:true, lesson:6,
     detail:'Demander et dire l\'heure: il est… heures, quelle heure est-il? Quart, demie, moins le quart. Format officiel 14h00 vs. familier 2h de l\'après-midi. Horaires de train, rendez-vous, ouverture de magasins.' },
 
   { id:'nationality',  zone:'A1', icon:'🌍', name:'Nationalités',
@@ -335,7 +335,7 @@ const TILES = [
     detail:'Pièces: salon, cuisine, chambre, salle de bain, salle à manger, entrée, couloir, bureau, cave, grenier, balcon. Meubles et électroménager courants. Décrire son logement: un appartement de 3 pièces au 4e étage.' },
 
   { id:'routine',      zone:'A2', icon:'☀️', name:'Routine quotidienne',
-    hint:'Se lever · Se doucher · Dormir', unlocked:false,
+    hint:'Se lever · Se doucher · Dormir', unlocked:true, lesson:8,
     detail:'Verbes pronominaux réfléchis: se lever, se laver, se brosser les dents, s\'habiller, se coucher, se reposer. Raconter sa journée typique. Fréquences: tous les jours, le matin, le soir, d\'habitude, toujours, souvent.' },
 
   { id:'nourriture',   zone:'A2', icon:'🥐', name:'Nourriture & repas',
@@ -343,7 +343,7 @@ const TILES = [
     detail:'Aliments et boissons typiques. 3 repas: petit-déjeuner, déjeuner, dîner. Commander au restaurant, exprimer ses goûts. Articles partitifs: du pain, de la soupe, de l\'eau, des légumes. Je mange du fromage. Je ne mange pas de viande.' },
 
   { id:'transports',   zone:'A2', icon:'🚇', name:'Les transports',
-    hint:'Métro · Bus · Train · Avion', unlocked:false,
+    hint:'Métro · Bus · Train · Avion', unlocked:true, lesson:6,
     detail:'Moyens + prépositions: à pied, à vélo, en bus/métro/train/voiture/avion. Acheter un billet, se renseigner sur les horaires, prendre ou manquer un train. Indiquer une destination: je vais à Montréal, je prends le métro ligne 2.' },
 
   { id:'ville',        zone:'A2', icon:'🏙️', name:'La ville',
@@ -351,11 +351,11 @@ const TILES = [
     detail:'Lieux en ville: la gare, la poste, la banque, l\'hôpital, la pharmacie, le marché, la mairie, le musée, la bibliothèque, la boulangerie. Donner des directions: tournez à gauche, continuez tout droit, c\'est à 200 mètres, prenez la 2e rue.' },
 
   { id:'vetements',    zone:'A2', icon:'👗', name:'Vêtements',
-    hint:'Robe · Pantalon · Taille', unlocked:false,
+    hint:'Robe · Pantalon · Taille', unlocked:true, lesson:7,
     detail:'Vêtements: robe, pantalon, chemise, veste, manteau, pull, chaussures, chaussettes, écharpe. Acheter: quelle est votre taille? Je cherche… en quelle couleur? C\'est combien? Ça me va bien / ça ne me va pas, c\'est trop grand.' },
 
   { id:'meteo',        zone:'A2', icon:'⛅', name:'La météo',
-    hint:'Il fait beau · Il pleut · Il neige', unlocked:false,
+    hint:'Il fait beau · Il pleut · Il neige', unlocked:true, lesson:8,
     detail:'Il fait beau/mauvais, chaud/froid, il pleut (pleuvoir), il neige (neiger), il y a du soleil/vent/brouillard/nuages, il fait… degrés. Prévoir: il va pleuvoir demain. Météo québécoise: tempête, verglas, canicule.' },
 
   { id:'loisirs',      zone:'A2', icon:'⚽', name:'Loisirs & sports',
@@ -383,7 +383,7 @@ const TILES = [
     detail:'Pour descriptions et habitudes passées. Formation: radical nous présent + -ais/-ais/-ait/-ions/-iez/-aient. Contraste passé composé (action précise) vs. imparfait (contexte, habitude). Quand j\'étais enfant, je jouais…' },
 
   { id:'futur-proche', zone:'A2', icon:'🔮', name:'Futur proche',
-    hint:'Je vais partir · Tu vas finir', unlocked:false,
+    hint:'Je vais partir · Tu vas finir', unlocked:true, lesson:8,
     detail:'Aller (conjugué au présent) + infinitif pour le futur immédiat ou prévu. Je vais partir ce soir, elle va travailler demain. Négation: je ne vais pas… Interrogation: est-ce que tu vas venir? Vs. futur simple pour projets lointains.' },
 
   { id:'negation',     zone:'A2', icon:'🚫', name:'Négation & quantités',

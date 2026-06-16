@@ -56,11 +56,21 @@
 ## 目前進度
 
 - **課程：** CLB7（目標 B2），目前 A1/A2 交界
-- **已上：** 第 1–7 課
-- **Quiz BANK 題數：** 292 題（課程 SRS 練習，第 1–7 課）
-  - 第1課 63 / 第2課 54 / 第3課 26 / 第4課 39 / 第5課 38 / 第6課 16 / 第7課 56
+- **已上：** 第 1–8 課
+- **Quiz BANK 題數：** 342 題（課程 SRS 練習，第 1–8 課）
+  - 第1課 63 / 第2課 54 / 第3課 26 / 第4課 39 / 第5課 38 / 第6課 16 / 第7課 56 / 第8課 50
 - **AGREE_BANK 題數：** 247 題（⚡ 快速測驗 專用）
-- **地圖進度：** 13 / 60 格已解鎖（CURRENT_LESSON = 4，建議解鎖 heure + transports，第7課對應 transports 已涵蓋更深入內容、待補 vetements）
+- **地圖進度：** 19 / 60 格已解鎖（CURRENT_LESSON = 8）。本次新解鎖：heure、transports（對應第6課）、vetements（對應第7課）、meteo、futur-proche、routine（對應第8課）
+
+### 第8課已涵蓋內容（french_notes Lesson 8，來源：Édito Unité 5-6，0614 課堂逐字稿+講義截圖）
+- 形容詞位置（前置 vs 後置）：petit/grand/bon/beau/joli/nouveau 等短形容詞前置，顏色/國籍/材質一律後置；beau→bel/belle/beaux、nouveau→nouvel/nouvelle/nouveaux 母音變形；des→de（形容詞前置+複數時）
+- 服飾/配件/材質補充詞彙（imperméable、bijoux、ceinture、parapluie/parasol、en cuir/laine/soie/lin）
+- 尺碼量法：faire（衣服）vs chausser（鞋子）、tour de taille/poitrine
+- 天氣 météo（il fait/il y a/il pleut/il neige 三種結構）+ 時間定位（en/au + 季節、en + 月份、début/mi/fin + 月份）
+- Futur proche 完整變位（aller + infinitif）+ venir 變位
+- 指示形容詞 ce/cet/cette/ces（含母音變形 cet，與定冠詞唯一性對比 la tour Eiffel）
+- 科技/日常物品詞彙 + "Ça sert à quoi ?" 句型 + se connecter/se repérer 反身動詞 vs 一般動詞對比（類比 appeler/s'appeler）
+- 反身動詞日常作息（se réveiller/se doucher/s'habiller/se coiffer/se maquiller/se coucher）
 
 ### 第7課已涵蓋內容（french_notes Lesson 7，來源：Édito Cahier Unité 4 p.46-48 + Unité 5 p.55-66）
 - Se déplacer：按距離給建議（marcher/trottinette/vélo/covoiturage）、jusqu'à、arrêt/station/ligne/itinéraire
@@ -82,14 +92,14 @@
 
 ```
 A1: greetings, classroom, numbers, nationality, dates, etre-avoir,
-    er-verbs, articles, family, couleurs
-A2: loisirs, nourriture, ir-re
+    er-verbs, articles, family, couleurs, heure
+A2: loisirs, nourriture, ir-re, transports, vetements, meteo,
+    futur-proche, routine
 ```
 
-### 建議下次解鎖（第6課後）
-- `heure`（A1 區，時間表達）
-- `transports`（A2 區，交通工具）
-- 更新 `CURRENT_LESSON = 6`
+### 建議下次解鎖
+- 第9課若教 passé composé → 解鎖 `passe`（A2 區）
+- 第9課若教 ne...pas 以外的否定句型已涵蓋（第6課已解鎖否定擴充內容但 `negation` 格子尚未點亮）→ 可評估是否該解鎖 `negation`
 
 ### 第6課已涵蓋內容（french_notes Lesson 6）
 - L'heure：heure 陰性 / midi / minuit / et quart / et demie / moins le quart / 12h vs 24h 系統
@@ -481,11 +491,11 @@ A：主輪 20 題答完後，錯的題目進入複習輪（分輪制）。每輪
 ```
 請先讀 HANDOFF.md（在 /Users/owen/Documents/Claude/Project/CLB test/France CLB7/）。
 
-Owen 在學法語，目標一年內考過 CLB7（B2）。目前完成第7課，系統包含：
-- french_notes.html：課堂筆記（第1-7課）+ 句型框架庫（不分課，頂部快捷連結 #frame-lib）
-- quiz.html：SRS 題庫（BANK 292題，第1-7課，錯題會直接接續在隊列後重考至答對）+ 快速測驗（AGREE_BANK 247題）
+Owen 在學法語，目標一年內考過 CLB7（B2）。目前完成第8課，系統包含：
+- french_notes.html：課堂筆記（第1-8課）+ 句型框架庫（不分課，頂部快捷連結 #frame-lib）
+- quiz.html：SRS 題庫（BANK 342題，第1-8課，錯題會直接接續在隊列後重考至答對）+ 快速測驗（AGREE_BANK 247題）
 - table_drill.html：表格填空練習（動詞/形容詞/冠詞/介係詞，21個表格，三難度）
-- map.html：課程地圖（13/60格已解鎖，建議解鎖 heure + transports，CURRENT_LESSON → 6 仍待更新到 7）
+- map.html：課程地圖（19/60格已解鎖，CURRENT_LESSON = 8）
 - french_basics.html：數字/發音/文法表（含十位數 dizaines）
 
 GitHub Pages：https://owenc8964.github.io/french_pronounce/
