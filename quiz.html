@@ -302,6 +302,31 @@
       transition: opacity 0.2s; white-space: nowrap;
     }
     .toast.show { opacity: 1; }
+
+    /* ── 📊 能力地圖 ── */
+    .topic-row { padding: 10px 0; border-bottom: 1px solid #f0f0ee; }
+    .topic-row-top { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .topic-name { flex: 1; font-size: 0.85rem; font-weight: 600; color: #333; min-width: 0; }
+    .topic-sub  { font-size: 0.68rem; color: #aaa; margin-bottom: 4px; }
+    .topic-pct  { font-size: 0.85rem; font-weight: 800; white-space: nowrap; min-width: 40px; text-align: right; flex-shrink: 0; }
+    .topic-pct.weak { color: #c00; }
+    .topic-pct.mid  { color: #c07000; }
+    .topic-pct.ok   { color: #1a6b2a; }
+    .topic-pct.none { color: #bbb; font-weight: 600; }
+    .topic-bar-wrap { width: 50px; height: 5px; background: #eee; border-radius: 99px; overflow: hidden; flex-shrink: 0; }
+    .topic-bar-fill { height: 100%; border-radius: 99px; }
+    .topic-links { display: flex; gap: 5px; flex-wrap: wrap; }
+    .topic-note-link {
+      font-size: 0.68rem; color: #3b6fd4; text-decoration: none; white-space: nowrap;
+      border: 1px solid #cdd9f5; border-radius: 6px; padding: 2px 7px; flex-shrink: 0;
+    }
+    .topic-note-link:hover { background: #f0f4ff; }
+    .export-btn {
+      background: #f0f4ff; color: #2a4fa0; border: 1.5px solid #cdd9f5; border-radius: 10px;
+      padding: 9px 14px; font-size: 0.82rem; font-weight: 600; cursor: pointer; width: 100%;
+      margin-top: 10px; font-family: inherit;
+    }
+    .export-hint { font-size: 0.7rem; color: #aaa; margin-top: 6px; line-height: 1.5; }
   </style>
 </head>
 <body>
@@ -313,6 +338,7 @@
   <span class="stat-chip fire" id="chipStreak">🔥 —</span>
   <span class="stat-chip star" id="chipXP">⭐ —</span>
   <span class="stat-chip weak" id="chipWeak" onclick="setMode('weak')">🎯 — 弱點</span>
+  <span class="stat-chip" id="chipTopicMap" onclick="showTopicMap()" style="border-color:#3b6fd4;color:#2a4fa0;cursor:pointer">📊 能力地圖</span>
 </div>
 
 <div class="mode-row">
@@ -441,312 +467,312 @@ function renderStats() {
 // ── 題庫 ─────────────────────────────────────────────────────
 const BANK = [
   // 動詞填空 ── être
-  { lesson:1, type:'fill', q:'Je _____ (être) taïwanais.',          hint:'être 現在式', a:'Je suis taïwanais|suis', aNote:'être → je suis' },
-  { lesson:1, type:'fill', q:'Tu _____ (être) français ?',           hint:'être 現在式', a:'Tu es français|es', aNote:'être → tu es' },
-  { lesson:1, type:'fill', q:'Elle _____ (être) coréenne.',          hint:'être 現在式', a:'Elle est coréenne|est', aNote:'être → il/elle est' },
-  { lesson:1, type:'fill', q:'Nous _____ (être) canadiens.',         hint:'être 現在式', a:'Nous sommes canadiens|sommes', aNote:'être → nous sommes' },
-  { lesson:1, type:'fill', q:'Vous _____ (être) professeur ?',       hint:'être 現在式', a:'Vous êtes professeur|êtes', aNote:'être → vous êtes' },
-  { lesson:1, type:'fill', q:'Ils _____ (être) italiens.',           hint:'être 現在式', a:'Ils sont italiens|sont', aNote:'être → ils/elles sont' },
+  { lesson:1, topic:'etre-avoir', type:'fill', q:'Je _____ (être) taïwanais.',          hint:'être 現在式', a:'Je suis taïwanais|suis', aNote:'être → je suis' },
+  { lesson:1, topic:'etre-avoir', type:'fill', q:'Tu _____ (être) français ?',           hint:'être 現在式', a:'Tu es français|es', aNote:'être → tu es' },
+  { lesson:1, topic:'etre-avoir', type:'fill', q:'Elle _____ (être) coréenne.',          hint:'être 現在式', a:'Elle est coréenne|est', aNote:'être → il/elle est' },
+  { lesson:1, topic:'etre-avoir', type:'fill', q:'Nous _____ (être) canadiens.',         hint:'être 現在式', a:'Nous sommes canadiens|sommes', aNote:'être → nous sommes' },
+  { lesson:1, topic:'etre-avoir', type:'fill', q:'Vous _____ (être) professeur ?',       hint:'être 現在式', a:'Vous êtes professeur|êtes', aNote:'être → vous êtes' },
+  { lesson:1, topic:'etre-avoir', type:'fill', q:'Ils _____ (être) italiens.',           hint:'être 現在式', a:'Ils sont italiens|sont', aNote:'être → ils/elles sont' },
   // 動詞填空 ── avoir
-  { lesson:1, type:'fill', q:"J'_____ (avoir) 25 ans.",              hint:'avoir 現在式（年齡）', a:"J'ai 25 ans|ai", aNote:"avoir → j'ai　⚠️ 年齡用 avoir 不用 être" },
-  { lesson:1, type:'fill', q:'Tu _____ (avoir) des enfants ?',       hint:'avoir 現在式', a:'Tu as des enfants|as', aNote:'avoir → tu as' },
-  { lesson:1, type:'fill', q:'Elle _____ (avoir) onze mois.',        hint:'avoir 現在式', a:'Elle a onze mois|a', aNote:'avoir → il/elle a' },
-  { lesson:1, type:'fill', q:'Nous _____ (avoir) un chien.',         hint:'avoir 現在式', a:'Nous avons un chien|avons', aNote:'avoir → nous avons' },
-  { lesson:1, type:'fill', q:'Vous _____ (avoir) quel âge ?',        hint:'avoir 現在式', a:'Vous avez quel âge|avez', aNote:'avoir → vous avez' },
-  { lesson:1, type:'fill', q:'Ils _____ (avoir) une voiture.',       hint:'avoir 現在式', a:'Ils ont une voiture|ont', aNote:'avoir → ils/elles ont' },
+  { lesson:1, topic:'etre-avoir', type:'fill', q:"J'_____ (avoir) 25 ans.",              hint:'avoir 現在式（年齡）', a:"J'ai 25 ans|ai", aNote:"avoir → j'ai　⚠️ 年齡用 avoir 不用 être" },
+  { lesson:1, topic:'etre-avoir', type:'fill', q:'Tu _____ (avoir) des enfants ?',       hint:'avoir 現在式', a:'Tu as des enfants|as', aNote:'avoir → tu as' },
+  { lesson:1, topic:'etre-avoir', type:'fill', q:'Elle _____ (avoir) onze mois.',        hint:'avoir 現在式', a:'Elle a onze mois|a', aNote:'avoir → il/elle a' },
+  { lesson:1, topic:'etre-avoir', type:'fill', q:'Nous _____ (avoir) un chien.',         hint:'avoir 現在式', a:'Nous avons un chien|avons', aNote:'avoir → nous avons' },
+  { lesson:1, topic:'etre-avoir', type:'fill', q:'Vous _____ (avoir) quel âge ?',        hint:'avoir 現在式', a:'Vous avez quel âge|avez', aNote:'avoir → vous avez' },
+  { lesson:1, topic:'etre-avoir', type:'fill', q:'Ils _____ (avoir) une voiture.',       hint:'avoir 現在式', a:'Ils ont une voiture|ont', aNote:'avoir → ils/elles ont' },
   // 動詞填空 ── s'appeler
-  { lesson:1, type:'fill', q:"Je _____ (s'appeler) Owen.",           hint:'反身動詞', a:"Je m'appelle Owen|m'appelle", aNote:"je me appelle → je m'appelle（母音縮寫）" },
-  { lesson:1, type:'fill', q:"Tu _____ (s'appeler) comment ?",       hint:'反身動詞', a:"Tu t'appelles comment|t'appelles", aNote:"s'appeler → tu t'appelles" },
-  { lesson:1, type:'fill', q:"Elle _____ (s'appeler) Marie.",        hint:'反身動詞', a:"Elle s'appelle Marie|s'appelle", aNote:"s'appeler → il/elle s'appelle" },
-  { lesson:1, type:'fill', q:"Nous _____ (s'appeler) les Martin.",   hint:'反身動詞', a:'Nous nous appelons les Martin|nous appelons', aNote:"s'appeler → nous nous appelons" },
+  { lesson:1, topic:'reflexive-verbs', type:'fill', q:"Je _____ (s'appeler) Owen.",           hint:'反身動詞', a:"Je m'appelle Owen|m'appelle", aNote:"je me appelle → je m'appelle（母音縮寫）" },
+  { lesson:1, topic:'reflexive-verbs', type:'fill', q:"Tu _____ (s'appeler) comment ?",       hint:'反身動詞', a:"Tu t'appelles comment|t'appelles", aNote:"s'appeler → tu t'appelles" },
+  { lesson:1, topic:'reflexive-verbs', type:'fill', q:"Elle _____ (s'appeler) Marie.",        hint:'反身動詞', a:"Elle s'appelle Marie|s'appelle", aNote:"s'appeler → il/elle s'appelle" },
+  { lesson:1, topic:'reflexive-verbs', type:'fill', q:"Nous _____ (s'appeler) les Martin.",   hint:'反身動詞', a:'Nous nous appelons les Martin|nous appelons', aNote:"s'appeler → nous nous appelons" },
   // 動詞填空 ── aimer
-  { lesson:1, type:'fill', q:"J'_____ (aimer) le français.",         hint:'規則 -ER 動詞', a:"J'aime le français|aime", aNote:"-ER 動詞：je → e（j'aime）" },
-  { lesson:1, type:'fill', q:'Tu _____ (aimer) la musique ?',        hint:'規則 -ER 動詞', a:'Tu aimes la musique|aimes', aNote:'aimer → tu aimes' },
-  { lesson:1, type:'fill', q:'Nous _____ (aimer) voyager.',          hint:'規則 -ER 動詞', a:'Nous aimons voyager|aimons', aNote:'aimer → nous aimons' },
-  { lesson:1, type:'fill', q:'Ils _____ (aimer) le sport.',          hint:'規則 -ER 動詞（字尾 -ent 不發音）', a:'Ils aiment le sport|aiment', aNote:'aimer → ils aiment（-ent 不發音）' },
+  { lesson:1, topic:'er-verbs', type:'fill', q:"J'_____ (aimer) le français.",         hint:'規則 -ER 動詞', a:"J'aime le français|aime", aNote:"-ER 動詞：je → e（j'aime）" },
+  { lesson:1, topic:'er-verbs', type:'fill', q:'Tu _____ (aimer) la musique ?',        hint:'規則 -ER 動詞', a:'Tu aimes la musique|aimes', aNote:'aimer → tu aimes' },
+  { lesson:1, topic:'er-verbs', type:'fill', q:'Nous _____ (aimer) voyager.',          hint:'規則 -ER 動詞', a:'Nous aimons voyager|aimons', aNote:'aimer → nous aimons' },
+  { lesson:1, topic:'er-verbs', type:'fill', q:'Ils _____ (aimer) le sport.',          hint:'規則 -ER 動詞（字尾 -ent 不發音）', a:'Ils aiment le sport|aiment', aNote:'aimer → ils aiment（-ent 不發音）' },
   // 翻譯
-  { lesson:1, type:'trans', q:'我是台灣人。（男）',           hint:'nationality masc.', a:'Je suis taïwanais.', aNote:'', askClaude:true },
-  { lesson:1, type:'trans', q:'我是台灣人。（女）',           hint:'nationality fem.', a:'Je suis taïwanaise.', aNote:'', askClaude:true },
-  { lesson:1, type:'trans', q:'你好嗎？（對朋友）',           hint:'informal', a:'Ça va ?|Tu vas bien ?', aNote:'兩種都可以', askClaude:true },
-  { lesson:1, type:'trans', q:'您好嗎？（正式）',             hint:'formal', a:'Vous allez bien ?', aNote:'', askClaude:true },
-  { lesson:1, type:'trans', q:'我聽不懂。',                   hint:'négation ne…pas', a:'Je ne comprends pas.', aNote:'ne + 動詞 + pas', askClaude:true },
-  { lesson:1, type:'trans', q:'可以再說一次嗎？（正式）',     hint:'', a:"Vous pouvez répéter s'il vous plaît ?|Vous pouvez répéter, s'il vous plaît ?", aNote:'', askClaude:true },
-  { lesson:1, type:'trans', q:'對不起，我遲到了。',            hint:'', a:'Excusez-moi, je suis en retard.', aNote:'', askClaude:true },
-  { lesson:1, type:'trans', q:'這怎麼拼？',                   hint:'', a:"Comment ça s'écrit ?", aNote:'', askClaude:true },
-  { lesson:1, type:'trans', q:'祝你有美好的一天！（道別時）', hint:'不是打招呼，是道別', a:'Bonne journée !|Bonne journée', aNote:'Bonjour 打招呼 ≠ Bonne journée 道別', askClaude:true },
-  { lesson:1, type:'trans', q:'我的生日是6月4日。',           hint:'le + 數字 + 月份', a:"Mon anniversaire, c'est le 4 juin.", aNote:'', askClaude:true },
-  { lesson:1, type:'trans', q:'5月1日是勞動節。',             hint:'1號的例外說法', a:"Le premier mai, c'est la fête du Travail.", aNote:'1號說 premier，不說 un', askClaude:true },
-  { lesson:1, type:'trans', q:"Demain, c'est mercredi.",       hint:'fr → zh', a:'明天是星期三。|明天是星期三', aNote:'', askClaude:true },
-  { lesson:1, type:'trans', q:"Je n'ai pas d'enfant.",         hint:'否定句 fr → zh', a:"我沒有小孩。|我沒有孩子。|我沒有小孩|我沒有孩子", aNote:"ne…pas + un/une → de/d'", askClaude:true },
+  { lesson:1, topic:'etre-avoir', type:'trans', q:'我是台灣人。（男）',           hint:'nationality masc.', a:'Je suis taïwanais.', aNote:'', askClaude:true },
+  { lesson:1, topic:'etre-avoir', type:'trans', q:'我是台灣人。（女）',           hint:'nationality fem.', a:'Je suis taïwanaise.', aNote:'', askClaude:true },
+  { lesson:1, topic:'greetings-politeness', type:'trans', q:'你好嗎？（對朋友）',           hint:'informal', a:'Ça va ?|Tu vas bien ?', aNote:'兩種都可以', askClaude:true },
+  { lesson:1, topic:'greetings-politeness', type:'trans', q:'您好嗎？（正式）',             hint:'formal', a:'Vous allez bien ?', aNote:'', askClaude:true },
+  { lesson:1, topic:'negation', type:'trans', q:'我聽不懂。',                   hint:'négation ne…pas', a:'Je ne comprends pas.', aNote:'ne + 動詞 + pas', askClaude:true },
+  { lesson:1, topic:'greetings-politeness', type:'trans', q:'可以再說一次嗎？（正式）',     hint:'', a:"Vous pouvez répéter s'il vous plaît ?|Vous pouvez répéter, s'il vous plaît ?", aNote:'', askClaude:true },
+  { lesson:1, topic:'greetings-politeness', type:'trans', q:'對不起，我遲到了。',            hint:'', a:'Excusez-moi, je suis en retard.', aNote:'', askClaude:true },
+  { lesson:1, topic:'greetings-politeness', type:'trans', q:'這怎麼拼？',                   hint:'', a:"Comment ça s'écrit ?", aNote:'', askClaude:true },
+  { lesson:1, topic:'daily-routine-vocab', type:'trans', q:'祝你有美好的一天！（道別時）', hint:'不是打招呼，是道別', a:'Bonne journée !|Bonne journée', aNote:'Bonjour 打招呼 ≠ Bonne journée 道別', askClaude:true },
+  { lesson:1, topic:'numbers-dates-heure', type:'trans', q:'我的生日是6月4日。',           hint:'le + 數字 + 月份', a:"Mon anniversaire, c'est le 4 juin.", aNote:'', askClaude:true },
+  { lesson:1, topic:'numbers-dates-heure', type:'trans', q:'5月1日是勞動節。',             hint:'1號的例外說法', a:"Le premier mai, c'est la fête du Travail.", aNote:'1號說 premier，不說 un', askClaude:true },
+  { lesson:1, topic:'numbers-dates-heure', type:'trans', q:"Demain, c'est mercredi.",       hint:'fr → zh', a:'明天是星期三。|明天是星期三', aNote:'', askClaude:true },
+  { lesson:1, topic:'negation', type:'trans', q:"Je n'ai pas d'enfant.",         hint:'否定句 fr → zh', a:"我沒有小孩。|我沒有孩子。|我沒有小孩|我沒有孩子", aNote:"ne…pas + un/une → de/d'", askClaude:true },
   // 陰陽性
-  { lesson:1, type:'gender', q:'français → 女性形？',         hint:'+ e', a:'française', aNote:'尾音 s 開始發音' },
-  { lesson:1, type:'gender', q:'coréen → 女性形？',            hint:'子音雙寫', a:'coréenne', aNote:'-éen → + ne，雙寫 n' },
-  { lesson:1, type:'gender', q:'italien → 女性形？',           hint:'子音雙寫', a:'italienne', aNote:'-ien → + ne' },
-  { lesson:1, type:'gender', q:'canadien → 女性形？',          hint:'子音雙寫', a:'canadienne', aNote:'-ien → + ne' },
-  { lesson:1, type:'gender', q:'grec → 女性形？',              hint:'例外', a:'grecque', aNote:'例外：+ que' },
-  { lesson:1, type:'gender', q:'turc → 女性形？',              hint:'例外', a:'turque', aNote:'例外：+ que' },
-  { lesson:1, type:'gender', q:'belge → 女性形？',             hint:'已是 e 結尾', a:'belge', aNote:'不變' },
-  { lesson:1, type:'gender', q:'américain → 女性形？',         hint:'+ e', a:'américaine', aNote:'鼻音 -ain 變 -aine' },
-  { lesson:1, type:'gender', q:'japonais → 女性形？',          hint:'+ e', a:'japonaise', aNote:'' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'français → 女性形？',         hint:'+ e', a:'française', aNote:'尾音 s 開始發音' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'coréen → 女性形？',            hint:'子音雙寫', a:'coréenne', aNote:'-éen → + ne，雙寫 n' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'italien → 女性形？',           hint:'子音雙寫', a:'italienne', aNote:'-ien → + ne' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'canadien → 女性形？',          hint:'子音雙寫', a:'canadienne', aNote:'-ien → + ne' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'grec → 女性形？',              hint:'例外', a:'grecque', aNote:'例外：+ que' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'turc → 女性形？',              hint:'例外', a:'turque', aNote:'例外：+ que' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'belge → 女性形？',             hint:'已是 e 結尾', a:'belge', aNote:'不變' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'américain → 女性形？',         hint:'+ e', a:'américaine', aNote:'鼻音 -ain 變 -aine' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'japonais → 女性形？',          hint:'+ e', a:'japonaise', aNote:'' },
   // 判斷
-  { lesson:1, type:'choose', q:'見到不認識的人，問好用 tu 還是 vous？',  hint:'', a:'vous', aNote:'陌生人、長輩、正式場合', opts:['tu','vous'] },
-  { lesson:1, type:'choose', q:'對朋友問好，用 tu 還是 vous？',          hint:'', a:'tu', aNote:'朋友、家人、小孩', opts:['tu','vous'] },
-  { lesson:1, type:'choose', q:'「我25歲」用 être 還是 avoir？',         hint:'年齡', a:'avoir', aNote:"J'ai 25 ans. 法文年齡說「擁有」幾年", opts:['être','avoir'] },
-  { lesson:1, type:'choose', q:'「1號」的特殊說法是？',                  hint:'序數', a:'le premier|premier', aNote:'只有1號用 premier，其他用數字', opts:['le un','le premier','le numéro','le ordinal'] },
-  { lesson:1, type:'choose', q:'法文國籍要大寫嗎？',                     hint:'', a:'不用|不大寫|non|no', aNote:'國籍形容詞小寫，只有國家名稱大寫', opts:['要大寫','不用'] },
-  { lesson:1, type:'choose', q:'mercredi 來自哪顆行星？',                hint:'拉丁文', a:'水星|mercure|Mercure', aNote:'mercredi ← Mercure（水星）', opts:['金星','水星','木星','火星'] },
-  { lesson:1, type:'choose', q:'lundi 來自什麼？',                       hint:'拉丁文', a:'月亮|lune', aNote:'lundi ← luna（月亮）', opts:['太陽','月亮','火星','土星'] },
-  { lesson:1, type:'choose', q:'否定句的結構是？',                       hint:'ne…', a:'ne...pas|ne … pas|ne pas', aNote:"ne + 動詞 + pas，母音前 ne → n'", opts:['ne...pas','non...pas','ne...non','pas...ne'] },
+  { lesson:1, topic:'greetings-politeness', type:'choose', q:'見到不認識的人，問好用 tu 還是 vous？',  hint:'', a:'vous', aNote:'陌生人、長輩、正式場合', opts:['tu','vous'] },
+  { lesson:1, topic:'greetings-politeness', type:'choose', q:'對朋友問好，用 tu 還是 vous？',          hint:'', a:'tu', aNote:'朋友、家人、小孩', opts:['tu','vous'] },
+  { lesson:1, topic:'etre-avoir', type:'choose', q:'「我25歲」用 être 還是 avoir？',         hint:'年齡', a:'avoir', aNote:"J'ai 25 ans. 法文年齡說「擁有」幾年", opts:['être','avoir'] },
+  { lesson:1, topic:'numbers-dates-heure', type:'choose', q:'「1號」的特殊說法是？',                  hint:'序數', a:'le premier|premier', aNote:'只有1號用 premier，其他用數字', opts:['le un','le premier','le numéro','le ordinal'] },
+  { lesson:1, topic:'adjective-agreement', type:'choose', q:'法文國籍要大寫嗎？',                     hint:'', a:'不用|不大寫|non|no', aNote:'國籍形容詞小寫，只有國家名稱大寫', opts:['要大寫','不用'] },
+  { lesson:1, topic:'numbers-dates-heure', type:'choose', q:'mercredi 來自哪顆行星？',                hint:'拉丁文', a:'水星|mercure|Mercure', aNote:'mercredi ← Mercure（水星）', opts:['金星','水星','木星','火星'] },
+  { lesson:1, topic:'numbers-dates-heure', type:'choose', q:'lundi 來自什麼？',                       hint:'拉丁文', a:'月亮|lune', aNote:'lundi ← luna（月亮）', opts:['太陽','月亮','火星','土星'] },
+  { lesson:1, topic:'negation', type:'choose', q:'否定句的結構是？',                       hint:'ne…', a:'ne...pas|ne … pas|ne pas', aNote:"ne + 動詞 + pas，母音前 ne → n'", opts:['ne...pas','non...pas','ne...non','pas...ne'] },
 
   // ── 第2課：冠詞、介詞、habiter ──────────────────────────────────
-  { lesson:2, type:'fill', q:'J\'_____ à Taipei. (habiter)',                    hint:'je + habiter', a:'J\'habite à Taipei.|habite', aNote:'habiter → j\'habite（字尾加 e，je → j\' 因母音）' },
-  { lesson:2, type:'fill', q:'Tu _____ dans quelle ville ? (habiter)',           hint:'tu + habiter', a:'Tu habites dans quelle ville ?|habites', aNote:'tu habites（字尾加 -es）' },
-  { lesson:2, type:'fill', q:'On _____ dans un appartement. (habiter)',          hint:'on → 同 il/elle 變位', a:'On habite dans un appartement.|habite', aNote:'on → habite（同 il/elle）' },
-  { lesson:2, type:'fill', q:'Nous _____ à Lyon. (habiter)',                     hint:'nous + habiter', a:'Nous habitons à Lyon.|habitons', aNote:'nous habitons（字尾加 -ons）' },
-  { lesson:2, type:'fill', q:'J\'aime _____ musique. (定冠詞)',                  hint:'musique 是陰性', a:'J\'aime la musique.|la', aNote:'la musique（陰性）' },
-  { lesson:2, type:'fill', q:'J\'aime _____ sport. (定冠詞)',                   hint:'sport 是陽性', a:'J\'aime le sport.|le', aNote:'le sport（陽性）' },
-  { lesson:2, type:'fill', q:'Il y a _____ chiens dehors. (不定冠詞複數)',       hint:'複數不定冠詞', a:'Il y a des chiens dehors.|des', aNote:'des = 複數不定冠詞「一些」' },
-  { lesson:2, type:'fill', q:'Je vais _____ France. (介詞)',                     hint:'la France → ?', a:'Je vais en France.|en', aNote:'陰性/字尾 -e 國家 → en' },
-  { lesson:2, type:'fill', q:'Il habite _____ Canada. (介詞)',                   hint:'le Canada → ?', a:'Il habite au Canada.|au', aNote:'陽性國家 → au（= à + le）' },
-  { lesson:2, type:'fill', q:'Elle est née _____ États-Unis. (介詞)',            hint:'les États-Unis → ?', a:'Elle est née aux États-Unis.|aux', aNote:'複數國家 → aux（= à + les）' },
+  { lesson:2, topic:'er-verbs', type:'fill', q:'J\'_____ à Taipei. (habiter)',                    hint:'je + habiter', a:'J\'habite à Taipei.|habite', aNote:'habiter → j\'habite（字尾加 e，je → j\' 因母音）' },
+  { lesson:2, topic:'er-verbs', type:'fill', q:'Tu _____ dans quelle ville ? (habiter)',           hint:'tu + habiter', a:'Tu habites dans quelle ville ?|habites', aNote:'tu habites（字尾加 -es）' },
+  { lesson:2, topic:'er-verbs', type:'fill', q:'On _____ dans un appartement. (habiter)',          hint:'on → 同 il/elle 變位', a:'On habite dans un appartement.|habite', aNote:'on → habite（同 il/elle）' },
+  { lesson:2, topic:'er-verbs', type:'fill', q:'Nous _____ à Lyon. (habiter)',                     hint:'nous + habiter', a:'Nous habitons à Lyon.|habitons', aNote:'nous habitons（字尾加 -ons）' },
+  { lesson:2, topic:'articles', type:'fill', q:'J\'aime _____ musique. (定冠詞)',                  hint:'musique 是陰性', a:'J\'aime la musique.|la', aNote:'la musique（陰性）' },
+  { lesson:2, topic:'articles', type:'fill', q:'J\'aime _____ sport. (定冠詞)',                   hint:'sport 是陽性', a:'J\'aime le sport.|le', aNote:'le sport（陽性）' },
+  { lesson:2, topic:'articles', type:'fill', q:'Il y a _____ chiens dehors. (不定冠詞複數)',       hint:'複數不定冠詞', a:'Il y a des chiens dehors.|des', aNote:'des = 複數不定冠詞「一些」' },
+  { lesson:2, topic:'preposition-country', type:'fill', q:'Je vais _____ France. (介詞)',                     hint:'la France → ?', a:'Je vais en France.|en', aNote:'陰性/字尾 -e 國家 → en' },
+  { lesson:2, topic:'preposition-country', type:'fill', q:'Il habite _____ Canada. (介詞)',                   hint:'le Canada → ?', a:'Il habite au Canada.|au', aNote:'陽性國家 → au（= à + le）' },
+  { lesson:2, topic:'preposition-country', type:'fill', q:'Elle est née _____ États-Unis. (介詞)',            hint:'les États-Unis → ?', a:'Elle est née aux États-Unis.|aux', aNote:'複數國家 → aux（= à + les）' },
 
-  { lesson:2, type:'trans', q:'你住在哪個城市？',                               hint:'habiter / quelle / ville', a:'Tu habites dans quelle ville ?|Tu habites quelle ville ?', aNote:'quelle（陰性）隨 ville（f）', askClaude:true },
-  { lesson:2, type:'trans', q:'我住在台北的一間公寓。',                          hint:'habiter / appartement / à', a:'J\'habite dans un appartement à Taipei.', aNote:'un appartement（陽性不定冠詞）', askClaude:true },
-  { lesson:2, type:'trans', q:'我們住在里昂。（口語，用 on）',                   hint:'on + habiter', a:'On habite à Lyon.', aNote:'on = nous 口語版，動詞同 il/elle', askClaude:true },
-  { lesson:2, type:'trans', q:'我喜歡音樂和電影。',                              hint:'la musique / le cinéma', a:'J\'aime la musique et le cinéma.', aNote:'定冠詞 la/le', askClaude:true },
-  { lesson:2, type:'trans', q:'你喜歡什麼音樂？',                               hint:'quelle + musique', a:'Tu aimes quelle musique ?', aNote:'quelle（陰性）隨 musique（f）', askClaude:true },
-  { lesson:2, type:'trans', q:'她去法國，他去加拿大。',                          hint:'en / au', a:'Elle va en France, il va au Canada.', aNote:'France（陰性）→ en；Canada（陽性）→ au', askClaude:true },
+  { lesson:2, topic:'question-words', type:'trans', q:'你住在哪個城市？',                               hint:'habiter / quelle / ville', a:'Tu habites dans quelle ville ?|Tu habites quelle ville ?', aNote:'quelle（陰性）隨 ville（f）', askClaude:true },
+  { lesson:2, topic:'articles', type:'trans', q:'我住在台北的一間公寓。',                          hint:'habiter / appartement / à', a:'J\'habite dans un appartement à Taipei.', aNote:'un appartement（陽性不定冠詞）', askClaude:true },
+  { lesson:2, topic:'on-vs-nous', type:'trans', q:'我們住在里昂。（口語，用 on）',                   hint:'on + habiter', a:'On habite à Lyon.', aNote:'on = nous 口語版，動詞同 il/elle', askClaude:true },
+  { lesson:2, topic:'articles', type:'trans', q:'我喜歡音樂和電影。',                              hint:'la musique / le cinéma', a:'J\'aime la musique et le cinéma.', aNote:'定冠詞 la/le', askClaude:true },
+  { lesson:2, topic:'question-words', type:'trans', q:'你喜歡什麼音樂？',                               hint:'quelle + musique', a:'Tu aimes quelle musique ?', aNote:'quelle（陰性）隨 musique（f）', askClaude:true },
+  { lesson:2, topic:'preposition-country', type:'trans', q:'她去法國，他去加拿大。',                          hint:'en / au', a:'Elle va en France, il va au Canada.', aNote:'France（陰性）→ en；Canada（陽性）→ au', askClaude:true },
 
-  { lesson:2, type:'gender', q:'sport → 陽性 or 陰性？冠詞是？',                hint:'字尾為子音', a:'陽性 → le sport', aNote:'le sport（m）' },
-  { lesson:2, type:'gender', q:'musique → 陽性 or 陰性？冠詞是？',              hint:'字尾為 -e', a:'陰性 → la musique', aNote:'la musique（f）' },
-  { lesson:2, type:'gender', q:'art → 陽性 or 陰性？冠詞是？',                  hint:'母音開頭', a:'陽性 → l\'art', aNote:'l\'art（m），母音開頭用 l\'，但本身陽性' },
-  { lesson:2, type:'gender', q:'histoire → 陽性 or 陰性？冠詞是？',             hint:'字尾 -e，母音開頭', a:'陰性 → l\'histoire', aNote:'l\'histoire（f），母音開頭用 l\'' },
-  { lesson:2, type:'gender', q:'café → 陽性 or 陰性？冠詞是？',                 hint:'-é 結尾≠陰性 -e', a:'陽性 → le café', aNote:'le café（m），帶重音的 -é 不算陰性字尾 -e' },
+  { lesson:2, topic:'adjective-agreement', type:'gender', q:'sport → 陽性 or 陰性？冠詞是？',                hint:'字尾為子音', a:'陽性 → le sport', aNote:'le sport（m）' },
+  { lesson:2, topic:'adjective-agreement', type:'gender', q:'musique → 陽性 or 陰性？冠詞是？',              hint:'字尾為 -e', a:'陰性 → la musique', aNote:'la musique（f）' },
+  { lesson:2, topic:'adjective-agreement', type:'gender', q:'art → 陽性 or 陰性？冠詞是？',                  hint:'母音開頭', a:'陽性 → l\'art', aNote:'l\'art（m），母音開頭用 l\'，但本身陽性' },
+  { lesson:2, topic:'adjective-agreement', type:'gender', q:'histoire → 陽性 or 陰性？冠詞是？',             hint:'字尾 -e，母音開頭', a:'陰性 → l\'histoire', aNote:'l\'histoire（f），母音開頭用 l\'' },
+  { lesson:2, topic:'adjective-agreement', type:'gender', q:'café → 陽性 or 陰性？冠詞是？',                 hint:'-é 結尾≠陰性 -e', a:'陽性 → le café', aNote:'le café（m），帶重音的 -é 不算陰性字尾 -e' },
 
-  { lesson:2, type:'choose', q:'librairie 和 bibliothèque，哪個是「圖書館」？', hint:'faux ami（假朋友）', a:'bibliothèque', aNote:'librairie = 書店；bibliothèque = 圖書館', opts:['librairie','bibliothèque'] },
-  { lesson:2, type:'choose', q:'「on」在口語中等於哪個主詞？', hint:'動詞變位同 il/elle', a:'nous', aNote:'On habite = Nous habitons，但動詞是 habite 不是 habitons', opts:['tu','nous','vous','ils'] },
-  { lesson:2, type:'choose', q:'以下哪個介詞 + 國家組合是正確的？', hint:'注意陽陰複數', a:'au Canada|en France|aux États-Unis', aNote:'le Canada → au；la France → en；les États-Unis → aux', opts:['au Canada / en France / aux États-Unis','en Canada / à France / au États-Unis','à Canada / en France / au États-Unis','au Canada / à France / au États-Unis'] },
-  { lesson:2, type:'choose', q:'「台灣」要用哪個介詞？',                hint:'島嶼無性別', a:'à Taiwan', aNote:'台灣被視為島嶼/城市，無明確性別，用 à（同城市）', opts:['à Taiwan','en Taiwan','au Taiwan','aux Taïwan'] },
-  { lesson:2, type:'choose', q:'法文電話號碼 06 89 34 72 51 怎麼念？',           hint:'兩位兩位念', a:'zéro six, quatre-vingt-neuf, trente-quatre, soixante-douze, cinquante et un', aNote:'法文電話號碼兩位兩位念' },
+  { lesson:2, topic:'vocab-places-city', type:'choose', q:'librairie 和 bibliothèque，哪個是「圖書館」？', hint:'faux ami（假朋友）', a:'bibliothèque', aNote:'librairie = 書店；bibliothèque = 圖書館', opts:['librairie','bibliothèque'] },
+  { lesson:2, topic:'on-vs-nous', type:'choose', q:'「on」在口語中等於哪個主詞？', hint:'動詞變位同 il/elle', a:'nous', aNote:'On habite = Nous habitons，但動詞是 habite 不是 habitons', opts:['tu','nous','vous','ils'] },
+  { lesson:2, topic:'preposition-country', type:'choose', q:'以下哪個介詞 + 國家組合是正確的？', hint:'注意陽陰複數', a:'au Canada|en France|aux États-Unis', aNote:'le Canada → au；la France → en；les États-Unis → aux', opts:['au Canada / en France / aux États-Unis','en Canada / à France / au États-Unis','à Canada / en France / au États-Unis','au Canada / à France / au États-Unis'] },
+  { lesson:2, topic:'preposition-country', type:'choose', q:'「台灣」要用哪個介詞？',                hint:'島嶼無性別', a:'à Taiwan', aNote:'台灣被視為島嶼/城市，無明確性別，用 à（同城市）', opts:['à Taiwan','en Taiwan','au Taiwan','aux Taïwan'] },
+  { lesson:2, topic:'numbers-dates-heure', type:'choose', q:'法文電話號碼 06 89 34 72 51 怎麼念？',           hint:'兩位兩位念', a:'zéro six, quatre-vingt-neuf, trente-quatre, soixante-douze, cinquante et un', aNote:'法文電話號碼兩位兩位念' },
 
   // ── 第2課補充：疑問詞、parler、國家性別 ──────────────────────────
-  { lesson:2, type:'fill', q:'Je _____ chinois, taïwanais et anglais. (parler)', hint:'je + parler', a:'Je parle chinois, taïwanais et anglais.|parle', aNote:'parler → je parle（語言前不加冠詞）' },
-  { lesson:2, type:'fill', q:'Tu _____ quelle langue ? (parler)',                 hint:'tu + parler', a:'Tu parles quelle langue ?|parles', aNote:'tu parles' },
-  { lesson:2, type:'fill', q:'Il _____ français et espagnol. (parler)',           hint:'il + parler', a:'Il parle français et espagnol.|parle', aNote:'il parle（同 je）' },
-  { lesson:2, type:'fill', q:'Vous _____ anglais ? (parler)',                     hint:'vous + parler', a:'Vous parlez anglais ?|parlez', aNote:'vous parlez（字尾 -ez）' },
-  { lesson:2, type:'fill', q:'Je vais _____ Mexique. (介詞)',                     hint:'le Mexique → 陽性，但字尾 -e！', a:'Je vais au Mexique.|au', aNote:'le Mexique = 例外！字尾 -e 但陽性 → au' },
+  { lesson:2, topic:'er-verbs', type:'fill', q:'Je _____ chinois, taïwanais et anglais. (parler)', hint:'je + parler', a:'Je parle chinois, taïwanais et anglais.|parle', aNote:'parler → je parle（語言前不加冠詞）' },
+  { lesson:2, topic:'er-verbs', type:'fill', q:'Tu _____ quelle langue ? (parler)',                 hint:'tu + parler', a:'Tu parles quelle langue ?|parles', aNote:'tu parles' },
+  { lesson:2, topic:'er-verbs', type:'fill', q:'Il _____ français et espagnol. (parler)',           hint:'il + parler', a:'Il parle français et espagnol.|parle', aNote:'il parle（同 je）' },
+  { lesson:2, topic:'er-verbs', type:'fill', q:'Vous _____ anglais ? (parler)',                     hint:'vous + parler', a:'Vous parlez anglais ?|parlez', aNote:'vous parlez（字尾 -ez）' },
+  { lesson:2, topic:'preposition-country', type:'fill', q:'Je vais _____ Mexique. (介詞)',                     hint:'le Mexique → 陽性，但字尾 -e！', a:'Je vais au Mexique.|au', aNote:'le Mexique = 例外！字尾 -e 但陽性 → au' },
 
-  { lesson:2, type:'trans', q:'你說幾種語言？',                                   hint:'Combien / parler / langue', a:'Combien de langues tu parles ?|Tu parles combien de langues ?', aNote:'Combien de + 名詞', askClaude:true },
-  { lesson:2, type:'trans', q:'為什麼你喜歡法文？因為很好玩！',                   hint:'Pourquoi / parce que / sympa', a:'Pourquoi tu aimes le français ? Parce que c\'est sympa !', aNote:'Pourquoi → Parce que（因為）', askClaude:true },
-  { lesson:2, type:'trans', q:'她是哪裡人？她是義大利人。',                       hint:'Qui / d\'où / italienne', a:'Elle est d\'où ? Elle est italienne.', aNote:'D\'où es-tu ? = 你是哪裡人？', askClaude:true },
-  { lesson:2, type:'trans', q:'我說中文，不說西班牙文。',                          hint:'parler / ne...pas', a:'Je parle chinois, je ne parle pas espagnol.', aNote:'語言前不加冠詞；否定 ne...pas', askClaude:true },
+  { lesson:2, topic:'question-words', type:'trans', q:'你說幾種語言？',                                   hint:'Combien / parler / langue', a:'Combien de langues tu parles ?|Tu parles combien de langues ?', aNote:'Combien de + 名詞', askClaude:true },
+  { lesson:2, topic:'question-words', type:'trans', q:'為什麼你喜歡法文？因為很好玩！',                   hint:'Pourquoi / parce que / sympa', a:'Pourquoi tu aimes le français ? Parce que c\'est sympa !', aNote:'Pourquoi → Parce que（因為）', askClaude:true },
+  { lesson:2, topic:'question-words', type:'trans', q:'她是哪裡人？她是義大利人。',                       hint:'Qui / d\'où / italienne', a:'Elle est d\'où ? Elle est italienne.', aNote:'D\'où es-tu ? = 你是哪裡人？', askClaude:true },
+  { lesson:2, topic:'negation', type:'trans', q:'我說中文，不說西班牙文。',                          hint:'parler / ne...pas', a:'Je parle chinois, je ne parle pas espagnol.', aNote:'語言前不加冠詞；否定 ne...pas', askClaude:true },
 
-  { lesson:2, type:'gender', q:'France → 陰性 or 陽性？用哪個介詞去那裡？',      hint:'字尾 -e', a:'陰性 → en France', aNote:'la France（字尾 -e）→ en' },
-  { lesson:2, type:'gender', q:'Canada → 陰性 or 陽性？用哪個介詞去那裡？',      hint:'字尾子音', a:'陽性 → au Canada', aNote:'le Canada（字尾 -a）→ au' },
-  { lesson:2, type:'gender', q:'Mexique → 陰性 or 陽性？用哪個介詞去那裡？',     hint:'⚠️ 例外！字尾 -e 但…', a:'陽性例外 → au Mexique', aNote:'le Mexique = 例外，字尾 -e 卻是陽性 → au' },
-  { lesson:2, type:'gender', q:'États-Unis → 單數 or 複數？用哪個介詞去那裡？', hint:'les + 複數', a:'複數 → aux États-Unis', aNote:'les États-Unis（複數）→ aux' },
+  { lesson:2, topic:'preposition-country', type:'gender', q:'France → 陰性 or 陽性？用哪個介詞去那裡？',      hint:'字尾 -e', a:'陰性 → en France', aNote:'la France（字尾 -e）→ en' },
+  { lesson:2, topic:'preposition-country', type:'gender', q:'Canada → 陰性 or 陽性？用哪個介詞去那裡？',      hint:'字尾子音', a:'陽性 → au Canada', aNote:'le Canada（字尾 -a）→ au' },
+  { lesson:2, topic:'preposition-country', type:'gender', q:'Mexique → 陰性 or 陽性？用哪個介詞去那裡？',     hint:'⚠️ 例外！字尾 -e 但…', a:'陽性例外 → au Mexique', aNote:'le Mexique = 例外，字尾 -e 卻是陽性 → au' },
+  { lesson:2, topic:'preposition-country', type:'gender', q:'États-Unis → 單數 or 複數？用哪個介詞去那裡？', hint:'les + 複數', a:'複數 → aux États-Unis', aNote:'les États-Unis（複數）→ aux' },
 
-  { lesson:2, type:'choose', q:'「為什麼」用哪個疑問詞？',           hint:'Why', a:'Pourquoi', aNote:'Pourquoi ? = Why? 回答用 Parce que...', opts:['Qui','Où','Comment','Pourquoi'] },
-  { lesson:2, type:'choose', q:'以下哪句「parler + 語言」用法正確？',             hint:'語言前不加冠詞', a:'Je parle français.|Je parle le français.', aNote:'兩句都對！parler + 語言可加冠詞也可不加（但 aimer le français 要加）', opts:['Je parle français.','Je parle le français.','Je parle de français.','Je parle en français.'] },
-  { lesson:2, type:'choose', q:'Qui / Où / Comment / Combien / Pourquoi，哪個問「在哪裡」？', hint:'Where', a:'Où', aNote:'Où = Where；Qui = Who；Comment = How；Combien = How much/many；Pourquoi = Why', opts:['Qui','Où','Comment','Pourquoi'] },
-  { lesson:2, type:'choose', q:'71 和 81，哪個有「et」？',               hint:'soixante + onze', a:'71 有 et，81 沒有|71（soixante et onze）有 et；81（quatre-vingt-un）沒有', aNote:'21-71 的個位為 1 用 et；80 之後完全不用 et', opts:['71 有 et，81 沒有','81 有 et，71 沒有','兩個都有 et','兩個都沒有 et'] },
+  { lesson:2, topic:'question-words', type:'choose', q:'「為什麼」用哪個疑問詞？',           hint:'Why', a:'Pourquoi', aNote:'Pourquoi ? = Why? 回答用 Parce que...', opts:['Qui','Où','Comment','Pourquoi'] },
+  { lesson:2, topic:'articles', type:'choose', q:'以下哪句「parler + 語言」用法正確？',             hint:'語言前不加冠詞', a:'Je parle français.|Je parle le français.', aNote:'兩句都對！parler + 語言可加冠詞也可不加（但 aimer le français 要加）', opts:['Je parle français.','Je parle le français.','Je parle de français.','Je parle en français.'] },
+  { lesson:2, topic:'question-words', type:'choose', q:'Qui / Où / Comment / Combien / Pourquoi，哪個問「在哪裡」？', hint:'Where', a:'Où', aNote:'Où = Where；Qui = Who；Comment = How；Combien = How much/many；Pourquoi = Why', opts:['Qui','Où','Comment','Pourquoi'] },
+  { lesson:2, topic:'numbers-dates-heure', type:'choose', q:'71 和 81，哪個有「et」？',               hint:'soixante + onze', a:'71 有 et，81 沒有|71（soixante et onze）有 et；81（quatre-vingt-un）沒有', aNote:'21-71 的個位為 1 用 et；80 之後完全不用 et', opts:['71 有 et，81 沒有','81 有 et，71 沒有','兩個都有 et','兩個都沒有 et'] },
 
   // ── 第3課 ──────────────────────────────────────────────
   // fill × 6
-  { lesson:3, type:'fill', q:'J\'habite dans _____ appartement avec une amie.', hint:'un/une/le/la/l\'', a:'un', aNote:'appartement 是陽性，且是「眾多公寓之一」，用不定冠詞 un' },
-  { lesson:3, type:'fill', q:'Tu es à _____ université à Paris ?',              hint:'un/une/le/la/l\'', a:'l\'', aNote:'université 是陰性且母音開頭，定冠詞縮寫成 l\'' },
-  { lesson:3, type:'fill', q:'Nous _____ dans la piscine tous les matins.',     hint:'nager，nous 那格', a:'nageons', aNote:'nager：nous nageons（加 e 保持 /ʒ/ 音，否則 nagon- 會變硬音）' },
-  { lesson:3, type:'fill', q:'Mon frère est marié. _____ femme est fleuriste.', hint:'his = ?', a:'Sa', aNote:'femme 是陰性，主詞是 mon frère（il）→ sa femme' },
-  { lesson:3, type:'fill', q:'_____ neveux adorent les enfants de Clara.',      hint:'his = ? + 複數', a:'Ses', aNote:'ses = his/her，複數名詞前用 ses' },
-  { lesson:3, type:'fill', q:'C\'est _____ amie Sophia.',                       hint:'mon/ma/mes，注意母音', a:'mon', aNote:'amie 雖是陰性但以母音 a 開頭，避免連音用 mon（不用 ma）' },
+  { lesson:3, topic:'articles', type:'fill', q:'J\'habite dans _____ appartement avec une amie.', hint:'un/une/le/la/l\'', a:'un', aNote:'appartement 是陽性，且是「眾多公寓之一」，用不定冠詞 un' },
+  { lesson:3, topic:'articles', type:'fill', q:'Tu es à _____ université à Paris ?',              hint:'un/une/le/la/l\'', a:'l\'', aNote:'université 是陰性且母音開頭，定冠詞縮寫成 l\'' },
+  { lesson:3, topic:'er-verbs', type:'fill', q:'Nous _____ dans la piscine tous les matins.',     hint:'nager，nous 那格', a:'nageons', aNote:'nager：nous nageons（加 e 保持 /ʒ/ 音，否則 nagon- 會變硬音）' },
+  { lesson:3, topic:'family-possessives', type:'fill', q:'Mon frère est marié. _____ femme est fleuriste.', hint:'his = ?', a:'Sa', aNote:'femme 是陰性，主詞是 mon frère（il）→ sa femme' },
+  { lesson:3, topic:'family-possessives', type:'fill', q:'_____ neveux adorent les enfants de Clara.',      hint:'his = ? + 複數', a:'Ses', aNote:'ses = his/her，複數名詞前用 ses' },
+  { lesson:3, topic:'possessives', type:'fill', q:'C\'est _____ amie Sophia.',                       hint:'mon/ma/mes，注意母音', a:'mon', aNote:'amie 雖是陰性但以母音 a 開頭，避免連音用 mon（不用 ma）' },
 
   // trans × 5
-  { lesson:3, type:'trans', q:'我超愛電影，但我討厭滑雪。',          hint:'adorer / détester + skier', a:'J\'adore le cinéma, mais je déteste skier.', aNote:'adorer = 超愛（比 aimer 強）；détester + 動詞原形直接接', askClaude:true },
-  { lesson:3, type:'trans', q:'我游泳不太行。',                       hint:'Je ne suis pas...', a:'Je ne suis pas fort(e) en natation.', aNote:'fort(e) en + 運動名詞，表示「某方面不擅長」', askClaude:true },
-  { lesson:3, type:'trans', q:'我弟弟已婚，他有兩個孩子。',          hint:'marié / il a', a:'Mon frère est marié. Il a deux enfants.', aNote:'', askClaude:true },
-  { lesson:3, type:'trans', q:'我們的朋友 Robin 和 Aya 會來。',      hint:'nos amis', a:'Nos amis Robin et Aya arrivent.|Nos amis Robin et Aya viennent.', aNote:'複數用 nos（notre 的複數）', askClaude:true },
-  { lesson:3, type:'trans', q:'你妹妹有小孩嗎？沒有，她沒有孩子。', hint:'Ta sœur / elle n\'a pas...', a:'Ta sœur a des enfants ? Non, elle n\'a pas d\'enfant.', aNote:'否定句 pas de / pas d\'（不說 pas des）', askClaude:true },
+  { lesson:3, topic:'likes-hobbies-sports', type:'trans', q:'我超愛電影，但我討厭滑雪。',          hint:'adorer / détester + skier', a:'J\'adore le cinéma, mais je déteste skier.', aNote:'adorer = 超愛（比 aimer 強）；détester + 動詞原形直接接', askClaude:true },
+  { lesson:3, topic:'likes-hobbies-sports', type:'trans', q:'我游泳不太行。',                       hint:'Je ne suis pas...', a:'Je ne suis pas fort(e) en natation.', aNote:'fort(e) en + 運動名詞，表示「某方面不擅長」', askClaude:true },
+  { lesson:3, topic:'family-possessives', type:'trans', q:'我弟弟已婚，他有兩個孩子。',          hint:'marié / il a', a:'Mon frère est marié. Il a deux enfants.', aNote:'', askClaude:true },
+  { lesson:3, topic:'family-possessives', type:'trans', q:'我們的朋友 Robin 和 Aya 會來。',      hint:'nos amis', a:'Nos amis Robin et Aya arrivent.|Nos amis Robin et Aya viennent.', aNote:'複數用 nos（notre 的複數）', askClaude:true },
+  { lesson:3, topic:'negation', type:'trans', q:'你妹妹有小孩嗎？沒有，她沒有孩子。', hint:'Ta sœur / elle n\'a pas...', a:'Ta sœur a des enfants ? Non, elle n\'a pas d\'enfant.', aNote:'否定句 pas de / pas d\'（不說 pas des）', askClaude:true },
 
   // gender × 5（職業變化）
-  { lesson:3, type:'gender', q:'coiffeur → 女性形？',       hint:'-eur → ?', a:'coiffeuse', aNote:'-eur 結尾職業 → -euse（coiffeur 是美髮師）' },
-  { lesson:3, type:'gender', q:'acteur → 女性形？',         hint:'-teur → ?', a:'actrice', aNote:'-teur 結尾 → -trice（注意不是 acteure）' },
-  { lesson:3, type:'gender', q:'informaticien → 女性形？',  hint:'-ien → ?', a:'informaticienne', aNote:'-ien → -ienne（加 ne，類似 italien→italienne）' },
-  { lesson:3, type:'gender', q:'infirmier → 女性形？',      hint:'-er → ?', a:'infirmière', aNote:'-er → -ère（加重音符，護理師）' },
-  { lesson:3, type:'gender', q:'facteur → 女性形？',        hint:'-teur → ?', a:'factrice', aNote:'-teur → -trice（郵差，與 acteur 同規則）' },
+  { lesson:3, topic:'adjective-agreement', type:'gender', q:'coiffeur → 女性形？',       hint:'-eur → ?', a:'coiffeuse', aNote:'-eur 結尾職業 → -euse（coiffeur 是美髮師）' },
+  { lesson:3, topic:'adjective-agreement', type:'gender', q:'acteur → 女性形？',         hint:'-teur → ?', a:'actrice', aNote:'-teur 結尾 → -trice（注意不是 acteure）' },
+  { lesson:3, topic:'adjective-agreement', type:'gender', q:'informaticien → 女性形？',  hint:'-ien → ?', a:'informaticienne', aNote:'-ien → -ienne（加 ne，類似 italien→italienne）' },
+  { lesson:3, topic:'adjective-agreement', type:'gender', q:'infirmier → 女性形？',      hint:'-er → ?', a:'infirmière', aNote:'-er → -ère（加重音符，護理師）' },
+  { lesson:3, topic:'adjective-agreement', type:'gender', q:'facteur → 女性形？',        hint:'-teur → ?', a:'factrice', aNote:'-teur → -trice（郵差，與 acteur 同規則）' },
 
   // choose × 5
-  { lesson:3, type:'choose', q:'「打籃球」用哪個說法？',     hint:'jouer / faire', a:'jouer au basket|faire du basket', aNote:'兩個都對！jouer à（球類遊戲）和 faire de（所有運動）都可用', opts:['jouer au basket','faire du basket','jouer du basket','faire au basket'] },
-  { lesson:3, type:'choose', q:'「ma amie」為什麼錯？正確寫法？', hint:'母音開頭', a:'mon amie', aNote:'ma amie 兩個母音碰撞，改用 mon amie（不是 m\'amie）', opts:['mon amie',"m'amie",'ma amie','mone amie'] },
-  { lesson:3, type:'choose', q:'son / sa / ses，哪個填入空格？「_____ enfants jouent ici.」', hint:'enfants 是複數', a:'Ses|ses', aNote:'複數名詞前用 ses（不管陰陽性）', opts:['son','sa','ses'] },
-  { lesson:3, type:'choose', q:'「nous nageons」vs「nous nagons」，哪個正確？', hint:'g + o 的發音', a:'nous nageons', aNote:'g+o 會變硬音，加 e 後 ge+ons 維持 /ʒ/；同規則：mangeons、voyageons', opts:['nous nageons','nous nagons'] },
-  { lesson:3, type:'choose', q:'la mer / la mère / le maire，哪個是「市長」？', hint:'政治人物', a:'le/la maire|maire', aNote:'mer = 海；mère = 母親；maire = 市長。三個發音相同！', opts:['la mer','la mère','le/la maire'] },
+  { lesson:3, topic:'likes-hobbies-sports', type:'choose', q:'「打籃球」用哪個說法？',     hint:'jouer / faire', a:'jouer au basket|faire du basket', aNote:'兩個都對！jouer à（球類遊戲）和 faire de（所有運動）都可用', opts:['jouer au basket','faire du basket','jouer du basket','faire au basket'] },
+  { lesson:3, topic:'possessives', type:'choose', q:'「ma amie」為什麼錯？正確寫法？', hint:'母音開頭', a:'mon amie', aNote:'ma amie 兩個母音碰撞，改用 mon amie（不是 m\'amie）', opts:['mon amie',"m'amie",'ma amie','mone amie'] },
+  { lesson:3, topic:'adjective-agreement', type:'choose', q:'son / sa / ses，哪個填入空格？「_____ enfants jouent ici.」', hint:'enfants 是複數', a:'Ses|ses', aNote:'複數名詞前用 ses（不管陰陽性）', opts:['son','sa','ses'] },
+  { lesson:3, topic:'er-verbs', type:'choose', q:'「nous nageons」vs「nous nagons」，哪個正確？', hint:'g + o 的發音', a:'nous nageons', aNote:'g+o 會變硬音，加 e 後 ge+ons 維持 /ʒ/；同規則：mangeons、voyageons', opts:['nous nageons','nous nagons'] },
+  { lesson:3, topic:'vocab-places-city', type:'choose', q:'la mer / la mère / le maire，哪個是「市長」？', hint:'政治人物', a:'le/la maire|maire', aNote:'mer = 海；mère = 母親；maire = 市長。三個發音相同！', opts:['la mer','la mère','le/la maire'] },
 
   // ── 第4課：顏色 · 食物 · 購物介係詞 · acheter/payer ──
-  { lesson:4, type:'fill',   q:'J\'_____ des légumes au marché.  (acheter)',     hint:'je 單數 → è',          a:'achète',          aNote:'acheter：je → j\'achète（e → è 在單數）' },
-  { lesson:4, type:'fill',   q:'Nous _____ un panier par semaine.  (acheter)',   hint:'nous → achetons',      a:'achetons',        aNote:'acheter：nous → achetons（去掉 è，還原 e）' },
-  { lesson:4, type:'fill',   q:'Ils _____ le pain à la boulangerie.  (acheter)', hint:'ils → ent + accent',   a:'achètent',        aNote:'acheter：ils → achètent（-ent 不發音，但 è 有音）' },
-  { lesson:4, type:'fill',   q:'Je _____ par carte.  (payer)',                   hint:'paie ou paye',         a:'paie|paye',       aNote:'payer：je paie / je paye 兩種都正確（-ayer 動詞）' },
-  { lesson:4, type:'fill',   q:'Nous _____ en espèces.  (payer)',                hint:'nous → payons',        a:'payons',          aNote:'payer：nous → payons（保留 y）' },
-  { lesson:4, type:'fill',   q:'Je vais _____ les courses.  (faire)',            hint:'aller + infinitif',    a:'faire',           aNote:'近未來：aller + infinitif；je vais faire = 我要去做' },
-  { lesson:4, type:'fill',   q:'Pour acheter la viande, on va _____ boucherie.', hint:'à + la',               a:'à la',            aNote:'boucherie（f, lieu）→ à la boucherie' },
-  { lesson:4, type:'fill',   q:'Le week-end, les Français vont _____ marché.',   hint:'à + le = ?',           a:'au',              aNote:'marché（m）→ au marché（à + le = au）' },
-  { lesson:4, type:'fill',   q:'Pour le poisson, je vais _____ poissonnier.',    hint:'chez + personne',      a:'chez le',         aNote:'poissonnier = 人 → chez le poissonnier（chez + personne）' },
-  { lesson:4, type:'fill',   q:'Je paie _____ caisses automatiques.',            hint:'à + les = ?',          a:'aux',             aNote:'caisses（pl）→ aux caisses（à + les = aux）' },
+  { lesson:4, topic:'preposition-place-transport', type:'fill',   q:'J\'_____ des légumes au marché.  (acheter)',     hint:'je 單數 → è',          a:'achète',          aNote:'acheter：je → j\'achète（e → è 在單數）' },
+  { lesson:4, topic:'vocab-shopping', type:'fill',   q:'Nous _____ un panier par semaine.  (acheter)',   hint:'nous → achetons',      a:'achetons',        aNote:'acheter：nous → achetons（去掉 è，還原 e）' },
+  { lesson:4, topic:'vocab-shopping', type:'fill',   q:'Ils _____ le pain à la boulangerie.  (acheter)', hint:'ils → ent + accent',   a:'achètent',        aNote:'acheter：ils → achètent（-ent 不發音，但 è 有音）' },
+  { lesson:4, topic:'vocab-shopping', type:'fill',   q:'Je _____ par carte.  (payer)',                   hint:'paie ou paye',         a:'paie|paye',       aNote:'payer：je paie / je paye 兩種都正確（-ayer 動詞）' },
+  { lesson:4, topic:'vocab-shopping', type:'fill',   q:'Nous _____ en espèces.  (payer)',                hint:'nous → payons',        a:'payons',          aNote:'payer：nous → payons（保留 y）' },
+  { lesson:4, topic:'irregular-verbs-3rd-group', type:'fill',   q:'Je vais _____ les courses.  (faire)',            hint:'aller + infinitif',    a:'faire',           aNote:'近未來：aller + infinitif；je vais faire = 我要去做' },
+  { lesson:4, topic:'preposition-place-transport', type:'fill',   q:'Pour acheter la viande, on va _____ boucherie.', hint:'à + la',               a:'à la',            aNote:'boucherie（f, lieu）→ à la boucherie' },
+  { lesson:4, topic:'preposition-place-transport', type:'fill',   q:'Le week-end, les Français vont _____ marché.',   hint:'à + le = ?',           a:'au',              aNote:'marché（m）→ au marché（à + le = au）' },
+  { lesson:4, topic:'preposition-place-transport', type:'fill',   q:'Pour le poisson, je vais _____ poissonnier.',    hint:'chez + personne',      a:'chez le',         aNote:'poissonnier = 人 → chez le poissonnier（chez + personne）' },
+  { lesson:4, topic:'vocab-shopping', type:'fill',   q:'Je paie _____ caisses automatiques.',            hint:'à + les = ?',          a:'aux',             aNote:'caisses（pl）→ aux caisses（à + les = aux）' },
 
-  { lesson:4, type:'trans',  q:'我想要一條法棍，謝謝。',         hint:'voudrais / s\'il vous plaît', a:'Je voudrais une baguette, s\'il vous plaît.', aNote:'je voudrais = conditionnel，比 je veux 有禮貌；baguette = 法棍', askClaude:true },
-  { lesson:4, type:'trans',  q:'這個多少錢？',                   hint:'coûte / combien',            a:'Combien ça coûte ? | Ça coûte combien ?', aNote:'兩種語序都正確；coûter = 花費（只用 il/elle/ça）', askClaude:true },
-  { lesson:4, type:'trans',  q:'您怎麼付款？刷卡還是現金？',      hint:'comment / carte / espèces',  a:'Vous payez comment ? Par carte ou en espèces ?', aNote:'en espèces = 付現；par carte = 刷卡', askClaude:true },
-  { lesson:4, type:'trans',  q:'我要去買東西。（近未來）',         hint:'aller + infinitif',          a:'Je vais faire les courses.', aNote:'近未來：je vais + faire；les courses = 買東西（食物類）', askClaude:true },
-  { lesson:4, type:'trans',  q:'就這樣了，謝謝。',               hint:'ce sera tout',               a:'Ce sera tout, merci.', aNote:'Ce sera tout = 就這樣，常用於結帳時', askClaude:true },
+  { lesson:4, topic:'pouvoir-vouloir', type:'trans',  q:'我想要一條法棍，謝謝。',         hint:'voudrais / s\'il vous plaît', a:'Je voudrais une baguette, s\'il vous plaît.', aNote:'je voudrais = conditionnel，比 je veux 有禮貌；baguette = 法棍', askClaude:true },
+  { lesson:4, topic:'question-words', type:'trans',  q:'這個多少錢？',                   hint:'coûte / combien',            a:'Combien ça coûte ? | Ça coûte combien ?', aNote:'兩種語序都正確；coûter = 花費（只用 il/elle/ça）', askClaude:true },
+  { lesson:4, topic:'vocab-shopping', type:'trans',  q:'您怎麼付款？刷卡還是現金？',      hint:'comment / carte / espèces',  a:'Vous payez comment ? Par carte ou en espèces ?', aNote:'en espèces = 付現；par carte = 刷卡', askClaude:true },
+  { lesson:4, topic:'vocab-shopping', type:'trans',  q:'我要去買東西。（近未來）',         hint:'aller + infinitif',          a:'Je vais faire les courses.', aNote:'近未來：je vais + faire；les courses = 買東西（食物類）', askClaude:true },
+  { lesson:4, topic:'vocab-shopping', type:'trans',  q:'就這樣了，謝謝。',               hint:'ce sera tout',               a:'Ce sera tout, merci.', aNote:'Ce sera tout = 就這樣，常用於結帳時', askClaude:true },
 
-  { lesson:4, type:'gender', q:'un polo _____  (vert)',                hint:'陽性單數',             a:'vert',      aNote:'polo（m, sg）→ vert（基本形）' },
-  { lesson:4, type:'gender', q:'une robe _____  (vert)',               hint:'陰性單數',             a:'verte',     aNote:'robe（f）→ verte（加 e）' },
-  { lesson:4, type:'gender', q:'des chaussures _____  (blanc)',        hint:'陰性複數，例外！',      a:'blanches',  aNote:'chaussures（f, pl）→ blanches；blanc → blanche（-c → -che 例外）' },
-  { lesson:4, type:'gender', q:'un t-shirt _____  (orange)',           hint:'水果名，不變！',        a:'orange',    aNote:'orange：水果名兼顏色 → 不分陰陽，不加 s/e；un t-shirt orange' },
-  { lesson:4, type:'gender', q:'des bottes _____  (marron)',           hint:'水果名，不變！',        a:'marron',    aNote:'marron：栗子兼顏色 → 不加 s/e；des bottes marron' },
-  { lesson:4, type:'gender', q:'une robe _____  (violet)',             hint:'-et → -ette',          a:'violette',  aNote:'violet → violette（-et → -ette，子音重複）' },
-  { lesson:4, type:'gender', q:'des fleurs _____  (bleu)',             hint:'陰性複數',             a:'bleues',    aNote:'fleurs（f, pl）→ bleues（加 es）' },
+  { lesson:4, topic:'adjective-agreement', type:'gender', q:'un polo _____  (vert)',                hint:'陽性單數',             a:'vert',      aNote:'polo（m, sg）→ vert（基本形）' },
+  { lesson:4, topic:'adjective-agreement', type:'gender', q:'une robe _____  (vert)',               hint:'陰性單數',             a:'verte',     aNote:'robe（f）→ verte（加 e）' },
+  { lesson:4, topic:'adjective-agreement', type:'gender', q:'des chaussures _____  (blanc)',        hint:'陰性複數，例外！',      a:'blanches',  aNote:'chaussures（f, pl）→ blanches；blanc → blanche（-c → -che 例外）' },
+  { lesson:4, topic:'adjective-agreement', type:'gender', q:'un t-shirt _____  (orange)',           hint:'水果名，不變！',        a:'orange',    aNote:'orange：水果名兼顏色 → 不分陰陽，不加 s/e；un t-shirt orange' },
+  { lesson:4, topic:'adjective-agreement', type:'gender', q:'des bottes _____  (marron)',           hint:'水果名，不變！',        a:'marron',    aNote:'marron：栗子兼顏色 → 不加 s/e；des bottes marron' },
+  { lesson:4, topic:'adjective-agreement', type:'gender', q:'une robe _____  (violet)',             hint:'-et → -ette',          a:'violette',  aNote:'violet → violette（-et → -ette，子音重複）' },
+  { lesson:4, topic:'adjective-agreement', type:'gender', q:'des fleurs _____  (bleu)',             hint:'陰性複數',             a:'bleues',    aNote:'fleurs（f, pl）→ bleues（加 es）' },
 
-  { lesson:4, type:'choose', q:'去魚店可以說哪兩種？',                 hint:'lieu vs personne',     a:'à la poissonnerie|chez le poissonnier', aNote:'chez = 後面跟人；à la = 後面跟地方，兩種說法都可', opts:['à la poissonnerie','chez le poissonnier','au poissonnerie','chez la poissonnerie'] },
-  { lesson:4, type:'choose', q:'「Je _____ du poisson. (acheter)」填哪個？',  hint:'je 單數',       a:'achète',    aNote:'acheter je → achète（e → è 在 je/tu/il/ils）', opts:['achète','achetes','achetons','achetez'] },
-  { lesson:4, type:'choose', q:'「我要一瓶橄欖油」的正確法文？',       hint:'de + 量詞',            a:"une bouteille d'huile d'olive", aNote:"數量詞後加 de（去冠詞）：une bouteille de + 名詞；huile 以母音開頭 → d'", opts:["une bouteille d'huile d'olive","une bouteille de huile d'olive","une bouteille d'huile olive","un bouteille d'huile d'olive"] },
-  { lesson:4, type:'choose', q:'carte bleue 在法國是什麼？',           hint:'不是信用卡',            a:'簽帳卡（debit card）|簽帳卡', aNote:'carte bleue / carte bancaire = 簽帳卡，法國刷卡為主，少用現金', opts:['信用卡（credit card）','簽帳卡（debit card）','預付卡（prepaid）','交通卡（transit）'] },
+  { lesson:4, topic:'preposition-place-transport', type:'choose', q:'去魚店可以說哪兩種？',                 hint:'lieu vs personne',     a:'à la poissonnerie|chez le poissonnier', aNote:'chez = 後面跟人；à la = 後面跟地方，兩種說法都可', opts:['à la poissonnerie','chez le poissonnier','au poissonnerie','chez la poissonnerie'] },
+  { lesson:4, topic:'vocab-shopping', type:'choose', q:'「Je _____ du poisson. (acheter)」填哪個？',  hint:'je 單數',       a:'achète',    aNote:'acheter je → achète（e → è 在 je/tu/il/ils）', opts:['achète','achetes','achetons','achetez'] },
+  { lesson:4, topic:'articles', type:'choose', q:'「我要一瓶橄欖油」的正確法文？',       hint:'de + 量詞',            a:"une bouteille d'huile d'olive", aNote:"數量詞後加 de（去冠詞）：une bouteille de + 名詞；huile 以母音開頭 → d'", opts:["une bouteille d'huile d'olive","une bouteille de huile d'olive","une bouteille d'huile olive","un bouteille d'huile d'olive"] },
+  { lesson:4, topic:'vocab-shopping', type:'choose', q:'carte bleue 在法國是什麼？',           hint:'不是信用卡',            a:'簽帳卡（debit card）|簽帳卡', aNote:'carte bleue / carte bancaire = 簽帳卡，法國刷卡為主，少用現金', opts:['信用卡（credit card）','簽帳卡（debit card）','預付卡（prepaid）','交通卡（transit）'] },
 
   // ── 作業本補充：Unité 1 — 國籍形容詞 ──
-  { lesson:1, type:'gender', q:'suisse → 女性形？',       hint:'注意：不變！', a:'suisse',       aNote:'suisse 男女同形（la Suisse 瑞士）' },
-  { lesson:1, type:'gender', q:'congolais → 女性形？',    hint:'-ais → ?',     a:'congolaise',   aNote:'-ais → -aise（du Congo）' },
-  { lesson:1, type:'gender', q:'tunisien → 女性形？',     hint:'-ien → ?',     a:'tunisienne',   aNote:'-ien → -ienne（de Tunisie）' },
-  { lesson:1, type:'gender', q:'sénégalais → 女性形？',   hint:'-ais → ?',     a:'sénégalaise',  aNote:'-ais → -aise（du Sénégal）' },
-  { lesson:1, type:'gender', q:'allemand → 女性形？',     hint:'+e',           a:'allemande',    aNote:'-and → -ande（d 開始發音）' },
-  { lesson:1, type:'gender', q:'argentin → 女性形？',     hint:'+e',           a:'argentine',    aNote:'-in → -ine（de Argentine）' },
-  { lesson:1, type:'gender', q:'espagnol → 女性形？',     hint:'+e',           a:'espagnole',    aNote:'-ol → -ole（d\'Espagne）' },
-  { lesson:1, type:'gender', q:'polonais → 女性形？',     hint:'-ais → ?',     a:'polonaise',    aNote:'-ais → -aise（de Pologne）' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'suisse → 女性形？',       hint:'注意：不變！', a:'suisse',       aNote:'suisse 男女同形（la Suisse 瑞士）' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'congolais → 女性形？',    hint:'-ais → ?',     a:'congolaise',   aNote:'-ais → -aise（du Congo）' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'tunisien → 女性形？',     hint:'-ien → ?',     a:'tunisienne',   aNote:'-ien → -ienne（de Tunisie）' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'sénégalais → 女性形？',   hint:'-ais → ?',     a:'sénégalaise',  aNote:'-ais → -aise（du Sénégal）' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'allemand → 女性形？',     hint:'+e',           a:'allemande',    aNote:'-and → -ande（d 開始發音）' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'argentin → 女性形？',     hint:'+e',           a:'argentine',    aNote:'-in → -ine（de Argentine）' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'espagnol → 女性形？',     hint:'+e',           a:'espagnole',    aNote:'-ol → -ole（d\'Espagne）' },
+  { lesson:1, topic:'adjective-agreement', type:'gender', q:'polonais → 女性形？',     hint:'-ais → ?',     a:'polonaise',    aNote:'-ais → -aise（de Pologne）' },
 
   // ── 作業本補充：Unité 1 — quel/quelle/quels/quelles ──
-  { lesson:1, type:'fill', q:'Tu habites à _____ adresse ? (quel)',    hint:'adresse = 陰性',      a:'quelle',   aNote:'adresse（f, sg）→ quelle' },
-  { lesson:1, type:'fill', q:'Vous aimez _____ artistes ? (quel)',     hint:'artistes = 複陽',     a:'quels',    aNote:'artistes（m, pl）→ quels' },
-  { lesson:1, type:'fill', q:'_____ langues tu parles ? (quel)',       hint:'langues = 複陰',      a:'Quelles',  aNote:'langues（f, pl）→ quelles' },
-  { lesson:1, type:'fill', q:'_____ est la date de naissance ? (quel)', hint:'date = 陰性',        a:'Quelle',   aNote:'date（f, sg）→ quelle（問陰性單數）' },
-  { lesson:1, type:'choose', q:'「你住在哪個城市？」中 quel 要變成？', hint:'ville = 陰性',        a:'quelle',   aNote:'ville（f）→ quelle ville（陰性單數）', opts:['quel','quelle','quels','quelles'] },
+  { lesson:1, topic:'question-words', type:'fill', q:'Tu habites à _____ adresse ? (quel)',    hint:'adresse = 陰性',      a:'quelle',   aNote:'adresse（f, sg）→ quelle' },
+  { lesson:1, topic:'question-words', type:'fill', q:'Vous aimez _____ artistes ? (quel)',     hint:'artistes = 複陽',     a:'quels',    aNote:'artistes（m, pl）→ quels' },
+  { lesson:1, topic:'question-words', type:'fill', q:'_____ langues tu parles ? (quel)',       hint:'langues = 複陰',      a:'Quelles',  aNote:'langues（f, pl）→ quelles' },
+  { lesson:1, topic:'numbers-dates-heure', type:'fill', q:'_____ est la date de naissance ? (quel)', hint:'date = 陰性',        a:'Quelle',   aNote:'date（f, sg）→ quelle（問陰性單數）' },
+  { lesson:1, topic:'question-words', type:'choose', q:'「你住在哪個城市？」中 quel 要變成？', hint:'ville = 陰性',        a:'quelle',   aNote:'ville（f）→ quelle ville（陰性單數）', opts:['quel','quelle','quels','quelles'] },
 
   // ── 作業本補充：Unité 2 — -er 動詞 ──
-  { lesson:2, type:'fill', q:'Elle _____ la radio chaque matin. (écouter)',       hint:'elle + -er', a:'écoute',    aNote:'écouter → elle écoute' },
-  { lesson:2, type:'fill', q:'Vous _____ des films français ? (regarder)',         hint:'vous + -er', a:'regardez',  aNote:'regarder → vous regardez（-ez）' },
-  { lesson:2, type:'fill', q:'Les amis _____ le ski. (détester)',                  hint:'ils + -er',  a:'détestent', aNote:'détester → ils détestent（-ent 不發音）' },
-  { lesson:2, type:'fill', q:'Je _____ le dimanche au parc. (marcher)',            hint:'je + -er',   a:'marche',    aNote:'marcher → je marche' },
+  { lesson:2, topic:'er-verbs', type:'fill', q:'Elle _____ la radio chaque matin. (écouter)',       hint:'elle + -er', a:'écoute',    aNote:'écouter → elle écoute' },
+  { lesson:2, topic:'er-verbs', type:'fill', q:'Vous _____ des films français ? (regarder)',         hint:'vous + -er', a:'regardez',  aNote:'regarder → vous regardez（-ez）' },
+  { lesson:2, topic:'er-verbs', type:'fill', q:'Les amis _____ le ski. (détester)',                  hint:'ils + -er',  a:'détestent', aNote:'détester → ils détestent（-ent 不發音）' },
+  { lesson:2, topic:'er-verbs', type:'fill', q:'Je _____ le dimanche au parc. (marcher)',            hint:'je + -er',   a:'marche',    aNote:'marcher → je marche' },
 
   // ── 作業本補充：Unité 2 — 所有格 notre/nos/votre/vos/leur/leurs ──
-  { lesson:2, type:'fill', q:'Nous avons trois enfants. Ce sont _____ enfants.',   hint:'our + 複數', a:'nos',    aNote:'nous → nos（複數）；單數用 notre' },
-  { lesson:2, type:'fill', q:'Vous avez deux filles. Ce sont _____ filles.',       hint:'your + 複數',a:'vos',    aNote:'vous → vos（複數）；單數用 votre' },
-  { lesson:2, type:'fill', q:'Elles ont des amis. Ce sont _____ amis.',            hint:'their + 複數',a:'leurs',  aNote:'ils/elles → leurs（複數）；單數用 leur' },
-  { lesson:2, type:'fill', q:'On a un appartement. C\'est _____ appartement.',     hint:'our + 單數', a:'notre',  aNote:'nous/on → notre（單數）；複數用 nos' },
-  { lesson:2, type:'choose', q:'leur / leurs：「Ce sont _____ enfants.」填哪個？',  hint:'enfants 複數', a:'leurs', aNote:'leur（單數）vs leurs（複數）跟名詞的單複數走', opts:['leur','leurs'] },
+  { lesson:2, topic:'family-possessives', type:'fill', q:'Nous avons trois enfants. Ce sont _____ enfants.',   hint:'our + 複數', a:'nos',    aNote:'nous → nos（複數）；單數用 notre' },
+  { lesson:2, topic:'family-possessives', type:'fill', q:'Vous avez deux filles. Ce sont _____ filles.',       hint:'your + 複數',a:'vos',    aNote:'vous → vos（複數）；單數用 votre' },
+  { lesson:2, topic:'possessives', type:'fill', q:'Elles ont des amis. Ce sont _____ amis.',            hint:'their + 複數',a:'leurs',  aNote:'ils/elles → leurs（複數）；單數用 leur' },
+  { lesson:2, topic:'on-vs-nous', type:'fill', q:'On a un appartement. C\'est _____ appartement.',     hint:'our + 單數', a:'notre',  aNote:'nous/on → notre（單數）；複數用 nos' },
+  { lesson:2, topic:'family-possessives', type:'choose', q:'leur / leurs：「Ce sont _____ enfants.」填哪個？',  hint:'enfants 複數', a:'leurs', aNote:'leur（單數）vs leurs（複數）跟名詞的單複數走', opts:['leur','leurs'] },
 
   // ── 作業本補充：Unité 2 — 職業陰陽 ──
-  { lesson:2, type:'gender', q:'professeur → 女性形？', hint:'加 e', a:'professeure', aNote:'professeur → professeure（直接加 e，不是 euse）' },
-  { lesson:2, type:'gender', q:'étudiant → 女性形？',   hint:'+e',   a:'étudiante',   aNote:'étudiant → étudiante（+e）' },
+  { lesson:2, topic:'adjective-agreement', type:'gender', q:'professeur → 女性形？', hint:'加 e', a:'professeure', aNote:'professeur → professeure（直接加 e，不是 euse）' },
+  { lesson:2, topic:'adjective-agreement', type:'gender', q:'étudiant → 女性形？',   hint:'+e',   a:'étudiante',   aNote:'étudiant → étudiante（+e）' },
 
   // ── 作業本補充：Unité 3 — 部分冠詞填空 ──
-  { lesson:3, type:'fill', q:'Nous mangeons _____ viande au restaurant.',  hint:'viande = 陰性，非特定量',  a:'de la',  aNote:'viande（f）→ de la viande（部分冠詞）' },
-  { lesson:3, type:'fill', q:'Tu commandes _____ eau, s\'il te plaît ?',   hint:'eau = 陰性，母音開頭',     a:"de l'",  aNote:"eau（f, 母音）→ de l'eau" },
-  { lesson:3, type:'fill', q:'Je mange beaucoup _____ pâtes.',             hint:'beaucoup de + ?',          a:'de',     aNote:'beaucoup de + 名詞（de 不加冠詞）' },
-  { lesson:3, type:'fill', q:'Il y a un peu _____ sel dans la soupe.',     hint:'un peu de + ?',            a:'de',     aNote:'un peu de + 名詞（de 不加冠詞）' },
-  { lesson:3, type:'fill', q:'Jean-Pierre aime les pâtes, il mange beaucoup _____ pâtes.', hint:'beaucoup', a:'de',  aNote:'量詞後直接接 de（不用冠詞）：beaucoup de pâtes' },
+  { lesson:3, topic:'articles', type:'fill', q:'Nous mangeons _____ viande au restaurant.',  hint:'viande = 陰性，非特定量',  a:'de la',  aNote:'viande（f）→ de la viande（部分冠詞）' },
+  { lesson:3, topic:'articles', type:'fill', q:'Tu commandes _____ eau, s\'il te plaît ?',   hint:'eau = 陰性，母音開頭',     a:"de l'",  aNote:"eau（f, 母音）→ de l'eau" },
+  { lesson:3, topic:'articles', type:'fill', q:'Je mange beaucoup _____ pâtes.',             hint:'beaucoup de + ?',          a:'de',     aNote:'beaucoup de + 名詞（de 不加冠詞）' },
+  { lesson:3, topic:'articles', type:'fill', q:'Il y a un peu _____ sel dans la soupe.',     hint:'un peu de + ?',            a:'de',     aNote:'un peu de + 名詞（de 不加冠詞）' },
+  { lesson:3, topic:'articles', type:'fill', q:'Jean-Pierre aime les pâtes, il mange beaucoup _____ pâtes.', hint:'beaucoup', a:'de',  aNote:'量詞後直接接 de（不用冠詞）：beaucoup de pâtes' },
 
   // ── 作業本補充：Unité 4 — c\'est / il est / elle est ──
-  { lesson:4, type:'choose', q:'「_____ un touriste」填 C\'est 還是 Il est？',      hint:'後有冠詞 un', a:"C'est",  aNote:"C'est + un/une/des + nom；Il est + adjectif 或職業（不加冠詞）", opts:["C'est",'Il est'] },
-  { lesson:4, type:'choose', q:'「_____ allemand.」填 C\'est 還是 Il est？',        hint:'後有形容詞', a:'Il est', aNote:"Il est + adjectif（不加冠詞）；C'est + article + nom", opts:["C'est",'Il est'] },
-  { lesson:4, type:'fill',   q:'Rouen ? _____ une ville française.',                hint:"c'est + 冠詞 + nom", a:"C'est", aNote:"C'est + une ville（有冠詞 → c'est）" },
-  { lesson:4, type:'fill',   q:'L\'artiste s\'appelle Snek et _____ grenoblois.',   hint:'形容詞，無冠詞', a:'il est', aNote:"il est + adjectif（直接形容詞，不加冠詞）" },
-  { lesson:4, type:'trans',  q:'巴黎是法國的一個城市。',  hint:"C'est / une", a:"Paris, c'est une ville française.", aNote:"C'est + article + nom；Paris（專有名詞）通常放主語", askClaude:true },
+  { lesson:4, topic:'cest-il-est', type:'choose', q:'「_____ un touriste」填 C\'est 還是 Il est？',      hint:'後有冠詞 un', a:"C'est",  aNote:"C'est + un/une/des + nom；Il est + adjectif 或職業（不加冠詞）", opts:["C'est",'Il est'] },
+  { lesson:4, topic:'cest-il-est', type:'choose', q:'「_____ allemand.」填 C\'est 還是 Il est？',        hint:'後有形容詞', a:'Il est', aNote:"Il est + adjectif（不加冠詞）；C'est + article + nom", opts:["C'est",'Il est'] },
+  { lesson:4, topic:'cest-il-est', type:'fill',   q:'Rouen ? _____ une ville française.',                hint:"c'est + 冠詞 + nom", a:"C'est", aNote:"C'est + une ville（有冠詞 → c'est）" },
+  { lesson:4, topic:'cest-il-est', type:'fill',   q:'L\'artiste s\'appelle Snek et _____ grenoblois.',   hint:'形容詞，無冠詞', a:'il est', aNote:"il est + adjectif（直接形容詞，不加冠詞）" },
+  { lesson:4, topic:'cest-il-est', type:'trans',  q:'巴黎是法國的一個城市。',  hint:"C'est / une", a:"Paris, c'est une ville française.", aNote:"C'est + article + nom；Paris（專有名詞）通常放主語", askClaude:true },
 
   // ── 作業本補充：Unité 4 — 頻率副詞 ──
-  { lesson:4, type:'choose', q:'souvent / toujours / jamais，哪個是「總是」？', hint:'always', a:'toujours', aNote:'toujours = always；souvent = often；jamais（ne...jamais）= never', opts:['souvent','toujours','jamais'] },
-  { lesson:4, type:'fill',   q:'On ne va _____ au musée le mardi.',               hint:'never',  a:'jamais',   aNote:'ne...jamais = never（jamais 放動詞後面）' },
-  { lesson:4, type:'fill',   q:'Jonathan va à la bibliothèque lundi, mardi et mercredi. Il y va _____ .', hint:'always', a:'toujours', aNote:'三天都去 = toujours（always）' },
-  { lesson:4, type:'trans',  q:'我從不去看展覽。',  hint:'ne...jamais',  a:'Je ne vais jamais aux expositions.', aNote:'ne...jamais + lieu：aux expositions（à + les）', askClaude:true },
+  { lesson:4, topic:'frequency-adverbs', type:'choose', q:'souvent / toujours / jamais，哪個是「總是」？', hint:'always', a:'toujours', aNote:'toujours = always；souvent = often；jamais（ne...jamais）= never', opts:['souvent','toujours','jamais'] },
+  { lesson:4, topic:'negation', type:'fill',   q:'On ne va _____ au musée le mardi.',               hint:'never',  a:'jamais',   aNote:'ne...jamais = never（jamais 放動詞後面）' },
+  { lesson:4, topic:'frequency-adverbs', type:'fill',   q:'Jonathan va à la bibliothèque lundi, mardi et mercredi. Il y va _____ .', hint:'always', a:'toujours', aNote:'三天都去 = toujours（always）' },
+  { lesson:4, topic:'negation', type:'trans',  q:'我從不去看展覽。',  hint:'ne...jamais',  a:'Je ne vais jamais aux expositions.', aNote:'ne...jamais + lieu：aux expositions（à + les）', askClaude:true },
 
   // ── 作業本補充：Unité 4 — 交通方式介系詞 ──
-  { lesson:4, type:'choose', q:'「騎腳踏車」用哪個介系詞？',          hint:'非機動交通', a:'à vélo',   aNote:'非機動：à pied / à vélo / à trottinette；機動：en bus / en voiture / en train', opts:['à vélo','en vélo','de vélo','par vélo'] },
-  { lesson:4, type:'choose', q:'「步行」用哪個介系詞？',              hint:'no vehicle', a:'à pied',   aNote:'à pied = on foot（步行）', opts:['à pied','en pied','de pied','par pied'] },
-  { lesson:4, type:'fill',   q:'Je vais à l\'école _____ bus.',       hint:'機動交通',   a:'en',       aNote:'en + 機動交通：en bus / en voiture / en métro / en train' },
-  { lesson:4, type:'choose', q:'en bus / en vélo / à vélo，哪個用法正確？', hint:'vélo 用哪個介系詞', a:'à vélo', aNote:'vélo（非機動）→ à vélo；機動車輛用 en', opts:['en bus','en vélo','à vélo','de vélo'] },
+  { lesson:4, topic:'preposition-place-transport', type:'choose', q:'「騎腳踏車」用哪個介系詞？',          hint:'非機動交通', a:'à vélo',   aNote:'非機動：à pied / à vélo / à trottinette；機動：en bus / en voiture / en train', opts:['à vélo','en vélo','de vélo','par vélo'] },
+  { lesson:4, topic:'preposition-place-transport', type:'choose', q:'「步行」用哪個介系詞？',              hint:'no vehicle', a:'à pied',   aNote:'à pied = on foot（步行）', opts:['à pied','en pied','de pied','par pied'] },
+  { lesson:4, topic:'preposition-place-transport', type:'fill',   q:'Je vais à l\'école _____ bus.',       hint:'機動交通',   a:'en',       aNote:'en + 機動交通：en bus / en voiture / en métro / en train' },
+  { lesson:4, topic:'preposition-place-transport', type:'choose', q:'en bus / en vélo / à vélo，哪個用法正確？', hint:'vélo 用哪個介系詞', a:'à vélo', aNote:'vélo（非機動）→ à vélo；機動車輛用 en', opts:['en bus','en vélo','à vélo','de vélo'] },
 
   // ── 第5課：商店 · 不定冠詞 · 餐廳 · -ir 動詞 · faire ──
 
   // fill：-ir 動詞變位
-  { lesson:5, type:'fill', q:'Tu _____ le dessert. (choisir)',               hint:'tu → -is',         a:'choisis',      aNote:'choisir：tu → choisis（-ir 動詞，tu 去 -ir 加 -is）' },
-  { lesson:5, type:'fill', q:'Il _____ son repas. (choisir)',                hint:'il → -it',         a:'choisit',      aNote:'choisir：il → choisit（加 -it）' },
-  { lesson:5, type:'fill', q:'Nous _____ le menu. (choisir)',               hint:'nous → -issons',   a:'choisissons',  aNote:'choisir：nous → choisissons（加 -iss- 是 -ir 動詞特徵）' },
-  { lesson:5, type:'fill', q:'Vous _____ une formule ? (choisir)',          hint:'vous → -issez',    a:'choisissez',   aNote:'choisir：vous → choisissez' },
-  { lesson:5, type:'fill', q:'Ils _____ le plat du jour. (choisir)',        hint:'ils → -issent',    a:'choisissent',  aNote:'choisir：ils → choisissent' },
-  { lesson:5, type:'fill', q:'Je _____ mon assiette. (finir)',              hint:'je → -is',         a:'finis',        aNote:'finir：je → finis（-ir 動詞，je 去 -ir 加 -is）' },
-  { lesson:5, type:'fill', q:'Nous _____ le dessert. (finir)',              hint:'nous → -issons',   a:'finissons',    aNote:'finir：nous → finissons' },
-  { lesson:5, type:'fill', q:'Elles ne _____ pas leur assiette. (finir)',   hint:'elles → -issent',  a:'finissent',    aNote:'finir：elles → finissent' },
+  { lesson:5, topic:'ir-re-verbs', type:'fill', q:'Tu _____ le dessert. (choisir)',               hint:'tu → -is',         a:'choisis',      aNote:'choisir：tu → choisis（-ir 動詞，tu 去 -ir 加 -is）' },
+  { lesson:5, topic:'ir-re-verbs', type:'fill', q:'Il _____ son repas. (choisir)',                hint:'il → -it',         a:'choisit',      aNote:'choisir：il → choisit（加 -it）' },
+  { lesson:5, topic:'ir-re-verbs', type:'fill', q:'Nous _____ le menu. (choisir)',               hint:'nous → -issons',   a:'choisissons',  aNote:'choisir：nous → choisissons（加 -iss- 是 -ir 動詞特徵）' },
+  { lesson:5, topic:'ir-re-verbs', type:'fill', q:'Vous _____ une formule ? (choisir)',          hint:'vous → -issez',    a:'choisissez',   aNote:'choisir：vous → choisissez' },
+  { lesson:5, topic:'ir-re-verbs', type:'fill', q:'Ils _____ le plat du jour. (choisir)',        hint:'ils → -issent',    a:'choisissent',  aNote:'choisir：ils → choisissent' },
+  { lesson:5, topic:'ir-re-verbs', type:'fill', q:'Je _____ mon assiette. (finir)',              hint:'je → -is',         a:'finis',        aNote:'finir：je → finis（-ir 動詞，je 去 -ir 加 -is）' },
+  { lesson:5, topic:'ir-re-verbs', type:'fill', q:'Nous _____ le dessert. (finir)',              hint:'nous → -issons',   a:'finissons',    aNote:'finir：nous → finissons' },
+  { lesson:5, topic:'ir-re-verbs', type:'fill', q:'Elles ne _____ pas leur assiette. (finir)',   hint:'elles → -issent',  a:'finissent',    aNote:'finir：elles → finissent' },
 
   // fill：faire + manger
-  { lesson:5, type:'fill', q:'Vous _____ la cuisine ce soir ? (faire)',     hint:'vous = faites !',  a:'faites',       aNote:'faire：vous → faites（不規則，非 *faisez）' },
-  { lesson:5, type:'fill', q:'Nous _____ les courses samedi. (faire)',      hint:'nous → faisons',   a:'faisons',      aNote:'faire：nous → faisons' },
-  { lesson:5, type:'fill', q:'Ils _____ du sport. (faire)',                 hint:'ils → font',       a:'font',         aNote:'faire：ils → font（不規則）' },
-  { lesson:5, type:'fill', q:'Nous _____ au restaurant. (manger)',          hint:'nous → -geons !',  a:'mangeons',     aNote:'manger：nous → mangeons（保留 e，防止 g 硬音）' },
+  { lesson:5, topic:'irregular-verbs-3rd-group', type:'fill', q:'Vous _____ la cuisine ce soir ? (faire)',     hint:'vous = faites !',  a:'faites',       aNote:'faire：vous → faites（不規則，非 *faisez）' },
+  { lesson:5, topic:'irregular-verbs-3rd-group', type:'fill', q:'Nous _____ les courses samedi. (faire)',      hint:'nous → faisons',   a:'faisons',      aNote:'faire：nous → faisons' },
+  { lesson:5, topic:'irregular-verbs-3rd-group', type:'fill', q:'Ils _____ du sport. (faire)',                 hint:'ils → font',       a:'font',         aNote:'faire：ils → font（不規則）' },
+  { lesson:5, topic:'er-verbs', type:'fill', q:'Nous _____ au restaurant. (manger)',          hint:'nous → -geons !',  a:'mangeons',     aNote:'manger：nous → mangeons（保留 e，防止 g 硬音）' },
 
   // fill：不定冠詞
-  { lesson:5, type:'fill', q:'Je mange _____ poisson. (不定量，陽性)',      hint:'de + le = ?',      a:'du',           aNote:'du = de + le；poisson（m）→ du poisson（不確定數量）' },
-  { lesson:5, type:'fill', q:'Elle mange _____ viande. (不定量，陰性)',     hint:'de la',            a:'de la',        aNote:'viande（f）→ de la viande（不定量冠詞）' },
-  { lesson:5, type:'fill', q:'Il boit _____ eau. (不定量，母音)',           hint:'de l\'',           a:'de l\'',       aNote:'eau 以母音開頭 → de l\'eau（縮音）' },
-  { lesson:5, type:'fill', q:'Je mange _____ pâtes. (不定量，複數)',        hint:'des',              a:'des',          aNote:'pâtes（f, pl）→ des pâtes（不定量複數）' },
-  { lesson:5, type:'fill', q:'Je ne mange pas _____ viande. (否定)',        hint:'否定句冠詞變化',   a:'de',           aNote:'否定句：pas de + 名詞（du/de la/des 全換成 de）' },
-  { lesson:5, type:'fill', q:'Il n\'y a pas _____ dessert. (否定)',         hint:'否定冠詞',         a:'de',           aNote:'否定句 → pas de dessert（不管原冠詞是什麼）' },
+  { lesson:5, topic:'articles', type:'fill', q:'Je mange _____ poisson. (不定量，陽性)',      hint:'de + le = ?',      a:'du',           aNote:'du = de + le；poisson（m）→ du poisson（不確定數量）' },
+  { lesson:5, topic:'articles', type:'fill', q:'Elle mange _____ viande. (不定量，陰性)',     hint:'de la',            a:'de la',        aNote:'viande（f）→ de la viande（不定量冠詞）' },
+  { lesson:5, topic:'articles', type:'fill', q:'Il boit _____ eau. (不定量，母音)',           hint:'de l\'',           a:'de l\'',       aNote:'eau 以母音開頭 → de l\'eau（縮音）' },
+  { lesson:5, topic:'articles', type:'fill', q:'Je mange _____ pâtes. (不定量，複數)',        hint:'des',              a:'des',          aNote:'pâtes（f, pl）→ des pâtes（不定量複數）' },
+  { lesson:5, topic:'articles', type:'fill', q:'Je ne mange pas _____ viande. (否定)',        hint:'否定句冠詞變化',   a:'de',           aNote:'否定句：pas de + 名詞（du/de la/des 全換成 de）' },
+  { lesson:5, topic:'articles', type:'fill', q:'Il n\'y a pas _____ dessert. (否定)',         hint:'否定冠詞',         a:'de',           aNote:'否定句 → pas de dessert（不管原冠詞是什麼）' },
 
   // trans：餐廳點餐
-  { lesson:5, type:'trans', q:'今日主菜是什麼？',                            hint:'plat du jour / quel', a:'Quel est le plat du jour ?', aNote:'quel（m, sg）+ est + le plat du jour', askClaude:true },
-  { lesson:5, type:'trans', q:'我要白汁小牛肉。（口語點餐）',                hint:'Pour moi',            a:'Pour moi, la blanquette de veau.', aNote:'Pour moi = 給我；口語點餐不用動詞', askClaude:true },
-  { lesson:5, type:'trans', q:'請給我帳單。',                                hint:'l\'addition',         a:'L\'addition, s\'il vous plaît.', aNote:'l\'addition（f）= 帳單；正式場合用 s\'il vous plaît', askClaude:true },
-  { lesson:5, type:'trans', q:'請給我一壺自來水。',                          hint:'carafe / plaît',      a:'Une carafe d\'eau, s\'il vous plaît.', aNote:'carafe d\'eau = 自來水（免費）；d\' = de + eau（縮音）', askClaude:true },
-  { lesson:5, type:'trans', q:'你們選前菜還是甜點？（-ir 動詞 vous）',      hint:'choisir / ou',        a:'Vous choisissez une entrée ou un dessert ?', aNote:'choisir → vous choisissez；ou = 或', askClaude:true },
-  { lesson:5, type:'trans', q:'他們在做購物。（faire）',                     hint:'ils / les courses',   a:'Ils font les courses.', aNote:'faire → ils font；faire les courses = 買日常食物', askClaude:true },
+  { lesson:5, topic:'vocab-shopping', type:'trans', q:'今日主菜是什麼？',                            hint:'plat du jour / quel', a:'Quel est le plat du jour ?', aNote:'quel（m, sg）+ est + le plat du jour', askClaude:true },
+  { lesson:5, topic:'vocab-shopping', type:'trans', q:'我要白汁小牛肉。（口語點餐）',                hint:'Pour moi',            a:'Pour moi, la blanquette de veau.', aNote:'Pour moi = 給我；口語點餐不用動詞', askClaude:true },
+  { lesson:5, topic:'vocab-shopping', type:'trans', q:'請給我帳單。',                                hint:'l\'addition',         a:'L\'addition, s\'il vous plaît.', aNote:'l\'addition（f）= 帳單；正式場合用 s\'il vous plaît', askClaude:true },
+  { lesson:5, topic:'vocab-shopping', type:'trans', q:'請給我一壺自來水。',                          hint:'carafe / plaît',      a:'Une carafe d\'eau, s\'il vous plaît.', aNote:'carafe d\'eau = 自來水（免費）；d\' = de + eau（縮音）', askClaude:true },
+  { lesson:5, topic:'ir-re-verbs', type:'trans', q:'你們選前菜還是甜點？（-ir 動詞 vous）',      hint:'choisir / ou',        a:'Vous choisissez une entrée ou un dessert ?', aNote:'choisir → vous choisissez；ou = 或', askClaude:true },
+  { lesson:5, topic:'irregular-verbs-3rd-group', type:'trans', q:'他們在做購物。（faire）',                     hint:'ils / les courses',   a:'Ils font les courses.', aNote:'faire → ils font；faire les courses = 買日常食物', askClaude:true },
 
   // gender：餐廳詞彙
-  { lesson:5, type:'gender', q:'_____ addition (l\' / le / la)',            hint:'結帳',               a:'l\'',          aNote:'addition（f）→ l\'addition（母音開頭縮音）' },
-  { lesson:5, type:'gender', q:'_____ assiette (l\' / le / la)',            hint:'盤子',               a:'l\'',          aNote:'assiette（f）→ l\'assiette（母音開頭縮音）' },
-  { lesson:5, type:'gender', q:'_____ fourchette (le / la)',                hint:'叉子',               a:'la',           aNote:'fourchette（f）→ la fourchette' },
-  { lesson:5, type:'gender', q:'_____ couteau (le / la)',                   hint:'刀子',               a:'le',           aNote:'couteau（m）→ le couteau' },
-  { lesson:5, type:'gender', q:'_____ formule (le / la)',                   hint:'套餐',               a:'la',           aNote:'formule（f）→ la formule' },
-  { lesson:5, type:'gender', q:'_____ plat (le / la)',                      hint:'主菜',               a:'le',           aNote:'plat（m）→ le plat' },
-  { lesson:5, type:'gender', q:'_____ entrée (le / la)',                    hint:'前菜',               a:'l\'',          aNote:'entrée（f）→ l\'entrée（母音開頭）' },
+  { lesson:5, topic:'adjective-agreement', type:'gender', q:'_____ addition (l\' / le / la)',            hint:'結帳',               a:'l\'',          aNote:'addition（f）→ l\'addition（母音開頭縮音）' },
+  { lesson:5, topic:'adjective-agreement', type:'gender', q:'_____ assiette (l\' / le / la)',            hint:'盤子',               a:'l\'',          aNote:'assiette（f）→ l\'assiette（母音開頭縮音）' },
+  { lesson:5, topic:'adjective-agreement', type:'gender', q:'_____ fourchette (le / la)',                hint:'叉子',               a:'la',           aNote:'fourchette（f）→ la fourchette' },
+  { lesson:5, topic:'adjective-agreement', type:'gender', q:'_____ couteau (le / la)',                   hint:'刀子',               a:'le',           aNote:'couteau（m）→ le couteau' },
+  { lesson:5, topic:'adjective-agreement', type:'gender', q:'_____ formule (le / la)',                   hint:'套餐',               a:'la',           aNote:'formule（f）→ la formule' },
+  { lesson:5, topic:'adjective-agreement', type:'gender', q:'_____ plat (le / la)',                      hint:'主菜',               a:'le',           aNote:'plat（m）→ le plat' },
+  { lesson:5, topic:'adjective-agreement', type:'gender', q:'_____ entrée (le / la)',                    hint:'前菜',               a:'l\'',          aNote:'entrée（f）→ l\'entrée（母音開頭）' },
 
   // choose：不定冠詞規則 / 餐廳
-  { lesson:5, type:'choose', q:'「我不吃魚」否定句的冠詞用哪個？',          hint:'否定 → de',          a:'Je ne mange pas de poisson.', aNote:'否定句：pas de（不管 poisson 陽性，不用 du）', opts:['Je ne mange pas du poisson.','Je ne mange pas de poisson.','Je ne mange pas d\'un poisson.','Je ne mange pas poisson.'] },
-  { lesson:5, type:'choose', q:'以下哪句描述 à la carte 正確？',           hint:'vs formule/menu',    a:'單點，每道菜分開計費', aNote:'à la carte = 單點；formule = 2道套餐；menu = 3道套餐', opts:['單點，每道菜分開計費','2道套餐固定價格','3道套餐固定價格','廚師推薦套餐'] },
-  { lesson:5, type:'choose', q:'法國免費自來水怎麼點？',                    hint:'carafe vs bouteille', a:"Une carafe d'eau, s'il vous plaît.", aNote:"carafe d'eau = 自來水（免費）；bouteille d'eau = 瓶裝水（收費）", opts:["Une carafe d'eau, s'il vous plaît.","Une bouteille d'eau, s'il vous plaît.","De l'eau plate, s'il vous plaît.",'L\'eau du robinet, s\'il vous plaît.'] },
-  { lesson:5, type:'choose', q:'牛排「à point」是幾分熟？',                hint:'bleu→saignant→?→bien cuit', a:'五分熟', aNote:'bleu（極生）→ saignant（三分）→ à point（五分）→ bien cuit（全熟）', opts:['三分熟','五分熟','七分熟','全熟'] },
-  { lesson:5, type:'choose', q:'以下哪個 -ir 動詞 nous 形正確？',          hint:'-issons',            a:'nous choisissons', aNote:'choisir → nous choisissons（加 -iss-；非 *choisisons 或 *choisonnes）', opts:['nous choisisons','nous choisissons','nous choissions','nous choisonnes'] },
-  { lesson:5, type:'choose', q:'faire 的 vous 形是？',                     hint:'不規則！',           a:'vous faites', aNote:'faire：vous → faites（不規則，不是 *faisez）', opts:['vous faisez','vous faites','vous fairez','vous faire'] },
-  { lesson:5, type:'choose', q:'aller 的 ils 形是？',                      hint:'不規則',             a:'ils vont', aNote:'aller → ils vont（不規則；非 *ils allent）', opts:['ils allent','ils vont','ils allons','ils allez'] },
+  { lesson:5, topic:'articles', type:'choose', q:'「我不吃魚」否定句的冠詞用哪個？',          hint:'否定 → de',          a:'Je ne mange pas de poisson.', aNote:'否定句：pas de（不管 poisson 陽性，不用 du）', opts:['Je ne mange pas du poisson.','Je ne mange pas de poisson.','Je ne mange pas d\'un poisson.','Je ne mange pas poisson.'] },
+  { lesson:5, topic:'vocab-shopping', type:'choose', q:'以下哪句描述 à la carte 正確？',           hint:'vs formule/menu',    a:'單點，每道菜分開計費', aNote:'à la carte = 單點；formule = 2道套餐；menu = 3道套餐', opts:['單點，每道菜分開計費','2道套餐固定價格','3道套餐固定價格','廚師推薦套餐'] },
+  { lesson:5, topic:'vocab-shopping', type:'choose', q:'法國免費自來水怎麼點？',                    hint:'carafe vs bouteille', a:"Une carafe d'eau, s'il vous plaît.", aNote:"carafe d'eau = 自來水（免費）；bouteille d'eau = 瓶裝水（收費）", opts:["Une carafe d'eau, s'il vous plaît.","Une bouteille d'eau, s'il vous plaît.","De l'eau plate, s'il vous plaît.",'L\'eau du robinet, s\'il vous plaît.'] },
+  { lesson:5, topic:'vocab-shopping', type:'choose', q:'牛排「à point」是幾分熟？',                hint:'bleu→saignant→?→bien cuit', a:'五分熟', aNote:'bleu（極生）→ saignant（三分）→ à point（五分）→ bien cuit（全熟）', opts:['三分熟','五分熟','七分熟','全熟'] },
+  { lesson:5, topic:'ir-re-verbs', type:'choose', q:'以下哪個 -ir 動詞 nous 形正確？',          hint:'-issons',            a:'nous choisissons', aNote:'choisir → nous choisissons（加 -iss-；非 *choisisons 或 *choisonnes）', opts:['nous choisisons','nous choisissons','nous choissions','nous choisonnes'] },
+  { lesson:5, topic:'irregular-verbs-3rd-group', type:'choose', q:'faire 的 vous 形是？',                     hint:'不規則！',           a:'vous faites', aNote:'faire：vous → faites（不規則，不是 *faisez）', opts:['vous faisez','vous faites','vous fairez','vous faire'] },
+  { lesson:5, topic:'irregular-verbs-3rd-group', type:'choose', q:'aller 的 ils 形是？',                      hint:'不規則',             a:'ils vont', aNote:'aller → ils vont（不規則；非 *ils allent）', opts:['ils allent','ils vont','ils allons','ils allez'] },
 
   // ── Leçon 6：時間・城市・否定・命令句 ──────────────────────────
 
   // fill × 6
-  { lesson:6, type:'fill', q:"Il est _____ heure et demie. (1:30)",         hint:'heure 是陰性',              a:"Il est une heure et demie.|une heure et demie|une", aNote:"heure 是陰性 → une（不是 un）" },
-  { lesson:6, type:'fill', q:"_____ dans le bus ! (monter, vous)",           hint:'impératif vous = 去掉主詞',  a:"Montez dans le bus !|Montez",        aNote:'monter → vous montez → Montez（impératif）' },
-  { lesson:6, type:'fill', q:"N'_____ pas de tickets ! (acheter, vous)",     hint:'impératif négatif',          a:"N'achetez pas de tickets !|achetez", aNote:"impératif 否定：Ne + verbe + pas；-ER vous → -ez" },
-  { lesson:6, type:'fill', q:"Je ne connais _____ à Paris.",                 hint:'nobody = ?',                 a:"Je ne connais personne à Paris.|personne", aNote:'ne...personne = 不認識任何人（personne 放動詞後）' },
-  { lesson:6, type:'fill', q:"Il ne fait _____ de sport. (no more)",         hint:'no more / no longer',        a:"Il ne fait plus de sport.|plus",      aNote:"ne...plus = 不再；ne...rien = 什麼都沒；ne...personne = 沒有任何人" },
-  { lesson:6, type:'fill', q:"La gare n'est pas _____ de chez moi.",         hint:'opposite of près',           a:"La gare n'est pas loin de chez moi.|loin", aNote:'loin（遠）vs près（近）；搭配 loin de / près de + 地點' },
+  { lesson:6, topic:'numbers-dates-heure', type:'fill', q:"Il est _____ heure et demie. (1:30)",         hint:'heure 是陰性',              a:"Il est une heure et demie.|une heure et demie|une", aNote:"heure 是陰性 → une（不是 un）" },
+  { lesson:6, topic:'imperative-mood', type:'fill', q:"_____ dans le bus ! (monter, vous)",           hint:'impératif vous = 去掉主詞',  a:"Montez dans le bus !|Montez",        aNote:'monter → vous montez → Montez（impératif）' },
+  { lesson:6, topic:'vocab-shopping', type:'fill', q:"N'_____ pas de tickets ! (acheter, vous)",     hint:'impératif négatif',          a:"N'achetez pas de tickets !|achetez", aNote:"impératif 否定：Ne + verbe + pas；-ER vous → -ez" },
+  { lesson:6, topic:'negation', type:'fill', q:"Je ne connais _____ à Paris.",                 hint:'nobody = ?',                 a:"Je ne connais personne à Paris.|personne", aNote:'ne...personne = 不認識任何人（personne 放動詞後）' },
+  { lesson:6, topic:'negation', type:'fill', q:"Il ne fait _____ de sport. (no more)",         hint:'no more / no longer',        a:"Il ne fait plus de sport.|plus",      aNote:"ne...plus = 不再；ne...rien = 什麼都沒；ne...personne = 沒有任何人" },
+  { lesson:6, topic:'preposition-place-transport', type:'fill', q:"La gare n'est pas _____ de chez moi.",         hint:'opposite of près',           a:"La gare n'est pas loin de chez moi.|loin", aNote:'loin（遠）vs près（近）；搭配 loin de / près de + 地點' },
 
   // trans × 5
-  { lesson:6, type:'trans', q:'幾點了？',                                    hint:'quelle / heure / être',      a:'Quelle heure est-il ?',                    aNote:'', askClaude:true },
-  { lesson:6, type:'trans', q:'現在是一點半。',                              hint:'une heure / et demie',       a:'Il est une heure et demie.',               aNote:'heure 陰性 → une heure（不是 un）', askClaude:true },
-  { lesson:6, type:'trans', q:'我從不去劇院。',                              hint:'ne...jamais / théâtre',      a:'Je ne vais jamais au théâtre.',            aNote:'jamais 緊接動詞後，ne 在動詞前', askClaude:true },
-  { lesson:6, type:'trans', q:'搭地鐵去！（命令句，對 vous）',               hint:'impératif / prendre',        a:'Prenez le métro !',                        aNote:'prendre → vous prenez → Prenez（不規則）', askClaude:true },
-  { lesson:6, type:'trans', q:'市政廳離市中心不遠。',                        hint:'mairie / loin / centre-ville', a:"La mairie n'est pas loin du centre-ville.", aNote:"loin de + le → loin du（縮合冠詞）", askClaude:true },
+  { lesson:6, topic:'numbers-dates-heure', type:'trans', q:'幾點了？',                                    hint:'quelle / heure / être',      a:'Quelle heure est-il ?',                    aNote:'', askClaude:true },
+  { lesson:6, topic:'numbers-dates-heure', type:'trans', q:'現在是一點半。',                              hint:'une heure / et demie',       a:'Il est une heure et demie.',               aNote:'heure 陰性 → une heure（不是 un）', askClaude:true },
+  { lesson:6, topic:'negation', type:'trans', q:'我從不去劇院。',                              hint:'ne...jamais / théâtre',      a:'Je ne vais jamais au théâtre.',            aNote:'jamais 緊接動詞後，ne 在動詞前', askClaude:true },
+  { lesson:6, topic:'imperative-mood', type:'trans', q:'搭地鐵去！（命令句，對 vous）',               hint:'impératif / prendre',        a:'Prenez le métro !',                        aNote:'prendre → vous prenez → Prenez（不規則）', askClaude:true },
+  { lesson:6, topic:'articles', type:'trans', q:'市政廳離市中心不遠。',                        hint:'mairie / loin / centre-ville', a:"La mairie n'est pas loin du centre-ville.", aNote:"loin de + le → loin du（縮合冠詞）", askClaude:true },
 
   // choose × 5
-  { lesson:6, type:'choose', q:'「heure」是陰性還是陽性？',                  hint:'une ou un ?',                a:'陰性',    aNote:'une heure（不是 *un heure）；例外：midi / minuit 是陽性', opts:['陽性（un heure）','陰性（une heure）'] },
-  { lesson:6, type:'choose', q:'正午 12:00 pm 用法文怎麼說？',               hint:'不說 douze heures',          a:'midi',    aNote:'midi = 正午（pm）；minuit = 午夜（am）；兩者皆陽性', opts:['midi','minuit','douze heures','demi-journée'] },
-  { lesson:6, type:'choose', q:'voici vs voilà，哪個表示「這裡是⋯」？',      hint:'ici = here',                 a:'voici',   aNote:"voici（ici=這裡）= here is；voilà（là=那裡）= there is，也作感嘆 voilà !", opts:['voilà','voici'] },
-  { lesson:6, type:'choose', q:'être 的 impératif tu 形是？',                hint:'不規則，不是 es',             a:'Sois',    aNote:'être impératif：Sois / Soyons / Soyez（完全不規則）', opts:['Es','Sois','Étais','Être'] },
-  { lesson:6, type:'choose', q:'-ER 動詞 impératif tu 形字尾為？',           hint:'比現在式少一個字母',          a:'-e',      aNote:'Tu regardes → Regarde !（-ER 動詞 tu 形去掉 s）；非 -ER 動詞保留 s', opts:['-es','-e','-ez','-ons'] },
+  { lesson:6, topic:'numbers-dates-heure', type:'choose', q:'「heure」是陰性還是陽性？',                  hint:'une ou un ?',                a:'陰性',    aNote:'une heure（不是 *un heure）；例外：midi / minuit 是陽性', opts:['陽性（un heure）','陰性（une heure）'] },
+  { lesson:6, topic:'numbers-dates-heure', type:'choose', q:'正午 12:00 pm 用法文怎麼說？',               hint:'不說 douze heures',          a:'midi',    aNote:'midi = 正午（pm）；minuit = 午夜（am）；兩者皆陽性', opts:['midi','minuit','douze heures','demi-journée'] },
+  { lesson:6, topic:'voici-voila', type:'choose', q:'voici vs voilà，哪個表示「這裡是⋯」？',      hint:'ici = here',                 a:'voici',   aNote:"voici（ici=這裡）= here is；voilà（là=那裡）= there is，也作感嘆 voilà !", opts:['voilà','voici'] },
+  { lesson:6, topic:'imperative-mood', type:'choose', q:'être 的 impératif tu 形是？',                hint:'不規則，不是 es',             a:'Sois',    aNote:'être impératif：Sois / Soyons / Soyez（完全不規則）', opts:['Es','Sois','Étais','Être'] },
+  { lesson:6, topic:'imperative-mood', type:'choose', q:'-ER 動詞 impératif tu 形字尾為？',           hint:'比現在式少一個字母',          a:'-e',      aNote:'Tu regardes → Regarde !（-ER 動詞 tu 形去掉 s）；非 -ER 動詞保留 s', opts:['-es','-e','-ez','-ons'] },
 
   // ══════════════════════════════════════════════════════
   // 第 7 課：交通・連接詞・服裝・動詞三組
@@ -754,211 +780,211 @@ const BANK = [
   // ══════════════════════════════════════════════════════
 
   // ── 連接詞 pour / parce que / mais / avec / sans（PDF p.47）──
-  { lesson:7, type:'choose', q:'「為了遠距離移動，汽車很方便，_____ 不環保。」空格填什麼？', hint:'轉折', a:'mais', aNote:'mais = 但是（表轉折）；這裡不是原因，而是對比', opts:['parce que','mais','pour','avec'] },
-  { lesson:7, type:'choose', q:'「我們喜歡市中心，_____ 沒有汽車。」空格填？',              hint:'因為', a:'parce qu\'', aNote:"parce qu'（母音前縮寫）表原因；sans voitures = 無汽車（沒冠詞）", opts:['pour','sans','parce qu\'','mais'] },
-  { lesson:7, type:'choose', q:'「_____ 上學，我們不騎滑板車。」空格填？',                  hint:'目的 + 動詞原形', a:'Pour', aNote:'pour + 動詞原形 = 為了做某事；後接目標', opts:['Parce que','Pour','Mais','Sans'] },
-  { lesson:7, type:'choose', q:'「我不走路去大學，_____ 太遠了。」空格填？',               hint:'因為', a:'parce que', aNote:'parce que 表原因（接完整句子）；pour 接動詞原形', opts:['pour','sans','mais','parce que'] },
-  { lesson:7, type:'fill',   q:'「他帶著妻子去上班。」Avec _____ femme, il va au travail. (所有格)', hint:'他的 = ?', a:'sa|sa femme', aNote:'femme（f）→ sa（他/她的，陰性）' },
-  { lesson:7, type:'fill',   q:'「我沒有車去大學。」Je vais à l\'université _____ voiture.', hint:'沒有 + 名詞', a:'sans|sans voiture', aNote:"sans + 名詞（不加冠詞）= without；sans voiture（不是 sans une voiture）" },
+  { lesson:7, topic:'connectors-pour-parceque', type:'choose', q:'「為了遠距離移動，汽車很方便，_____ 不環保。」空格填什麼？', hint:'轉折', a:'mais', aNote:'mais = 但是（表轉折）；這裡不是原因，而是對比', opts:['parce que','mais','pour','avec'] },
+  { lesson:7, topic:'connectors-pour-parceque', type:'choose', q:'「我們喜歡市中心，_____ 沒有汽車。」空格填？',              hint:'因為', a:'parce qu\'', aNote:"parce qu'（母音前縮寫）表原因；sans voitures = 無汽車（沒冠詞）", opts:['pour','sans','parce qu\'','mais'] },
+  { lesson:7, topic:'connectors-pour-parceque', type:'choose', q:'「_____ 上學，我們不騎滑板車。」空格填？',                  hint:'目的 + 動詞原形', a:'Pour', aNote:'pour + 動詞原形 = 為了做某事；後接目標', opts:['Parce que','Pour','Mais','Sans'] },
+  { lesson:7, topic:'connectors-pour-parceque', type:'choose', q:'「我不走路去大學，_____ 太遠了。」空格填？',               hint:'因為', a:'parce que', aNote:'parce que 表原因（接完整句子）；pour 接動詞原形', opts:['pour','sans','mais','parce que'] },
+  { lesson:7, topic:'possessives', type:'fill',   q:'「他帶著妻子去上班。」Avec _____ femme, il va au travail. (所有格)', hint:'他的 = ?', a:'sa|sa femme', aNote:'femme（f）→ sa（他/她的，陰性）' },
+  { lesson:7, topic:'articles', type:'fill',   q:'「我沒有車去大學。」Je vais à l\'université _____ voiture.', hint:'沒有 + 名詞', a:'sans|sans voiture', aNote:"sans + 名詞（不加冠詞）= without；sans voiture（不是 sans une voiture）" },
 
   // ── 交通工具（PDF p.48）──
-  { lesson:7, type:'choose', q:'步行怎麼說？',           hint:'à + ?', a:'à pied',       aNote:'非機動 → 介詞 à：à pied / à vélo / à trottinette', opts:['en pied','à pied','en marche','au pied'] },
-  { lesson:7, type:'choose', q:'騎腳踏車怎麼說？',       hint:'à + ?', a:'à vélo',       aNote:'à vélo（非機動用 à）；en voiture（機動用 en）', opts:['en vélo','à vélo','avec vélo','par vélo'] },
-  { lesson:7, type:'choose', q:'搭地鐵怎麼說？',         hint:'en + ?', a:'en métro',    aNote:'機動交通工具用 en：en bus / en métro / en voiture / en train', opts:['à métro','en métro','par métro','au métro'] },
-  { lesson:7, type:'choose', q:'共乘（carpooling）法文是？', hint:'co- = 共', a:'le covoiturage', aNote:'covoiturage = carpooling；可以 mixer les moyens de transport（混搭）', opts:['le partage','le covoiturage','le transport commun','le carpooling'] },
-  { lesson:7, type:'fill',   q:'公車站或地鐵站的兩種說法：l\'_____ 和 la _____', hint:'stop / station', a:'arrêt|station|arrêt et la station', aNote:"l'arrêt de bus / la station de métro，兩者都指「站」" },
-  { lesson:7, type:'fill',   q:'「從這裡一直到那裡。」D\'ici _____ là-bas.',              hint:'until / up to', a:"jusqu'à|jusqu'à là-bas", aNote:"jusqu'à = until/up to；接母音 → jusqu'au（jusqu'à + le）" },
+  { lesson:7, topic:'preposition-place-transport', type:'choose', q:'步行怎麼說？',           hint:'à + ?', a:'à pied',       aNote:'非機動 → 介詞 à：à pied / à vélo / à trottinette', opts:['en pied','à pied','en marche','au pied'] },
+  { lesson:7, topic:'preposition-place-transport', type:'choose', q:'騎腳踏車怎麼說？',       hint:'à + ?', a:'à vélo',       aNote:'à vélo（非機動用 à）；en voiture（機動用 en）', opts:['en vélo','à vélo','avec vélo','par vélo'] },
+  { lesson:7, topic:'preposition-place-transport', type:'choose', q:'搭地鐵怎麼說？',         hint:'en + ?', a:'en métro',    aNote:'機動交通工具用 en：en bus / en métro / en voiture / en train', opts:['à métro','en métro','par métro','au métro'] },
+  { lesson:7, topic:'preposition-place-transport', type:'choose', q:'共乘（carpooling）法文是？', hint:'co- = 共', a:'le covoiturage', aNote:'covoiturage = carpooling；可以 mixer les moyens de transport（混搭）', opts:['le partage','le covoiturage','le transport commun','le carpooling'] },
+  { lesson:7, topic:'preposition-place-transport', type:'fill',   q:'公車站或地鐵站的兩種說法：l\'_____ 和 la _____', hint:'stop / station', a:'arrêt|station|arrêt et la station', aNote:"l'arrêt de bus / la station de métro，兩者都指「站」" },
+  { lesson:7, topic:'preposition-place-transport', type:'fill',   q:'「從這裡一直到那裡。」D\'ici _____ là-bas.',              hint:'until / up to', a:"jusqu'à|jusqu'à là-bas", aNote:"jusqu'à = until/up to；接母音 → jusqu'au（jusqu'à + le）" },
 
   // ── 大數字（PDF p.48）──
-  { lesson:7, type:'choose', q:'2 222 000 法文怎麼說？', hint:'deux millions...', a:'deux millions deux cent vingt-deux mille', aNote:'million 複數加 s；mille 永遠不加 s', opts:['deux million deux cent vingt-deux mille','deux millions deux cent vingt-deux mille','deux millions deux cents vingt-deux mille','deux milliard deux cent vingt-deux mille'] },
-  { lesson:7, type:'choose', q:'mille 複數要加 s 嗎？', hint:'規則例外', a:'不加 s，mille 不變', aNote:'mille 永遠不加 s（例外）；million/milliard 複數加 s', opts:['加 s → milles','不加 s，mille 不變','視情況加 s','跟 cent 一樣'] },
+  { lesson:7, topic:'numbers-dates-heure', type:'choose', q:'2 222 000 法文怎麼說？', hint:'deux millions...', a:'deux millions deux cent vingt-deux mille', aNote:'million 複數加 s；mille 永遠不加 s', opts:['deux million deux cent vingt-deux mille','deux millions deux cent vingt-deux mille','deux millions deux cents vingt-deux mille','deux milliard deux cent vingt-deux mille'] },
+  { lesson:7, topic:'numbers-dates-heure', type:'choose', q:'mille 複數要加 s 嗎？', hint:'規則例外', a:'不加 s，mille 不變', aNote:'mille 永遠不加 s（例外）；million/milliard 複數加 s', opts:['加 s → milles','不加 s，mille 不變','視情況加 s','跟 cent 一樣'] },
 
   // ── 形容詞性數一致（PDF p.55）──
-  { lesson:7, type:'choose', q:'Tu portes une robe _____ （elegant 陰性）',  hint:'robe = f', a:'élégante', aNote:'élégant → 陰性加 -e → élégante；robe（f）要配陰性形容詞', opts:['élégant','élégants','élégante','élégantes'] },
-  { lesson:7, type:'choose', q:'Vous vendez des chaussures _____ （noir）',  hint:'chaussures = f.pl.', a:'noires', aNote:'noir → 陰性 noire → 複數陰性 noires；chaussures 是陰性複數', opts:['noir','noirs','noire','noires'] },
-  { lesson:7, type:'choose', q:'Il vend son costume _____ （gris）',         hint:'costume = m', a:'gris', aNote:'gris 陽性單數結尾已是 s，不再加 s（gris → gris）；陰性才是 grise', opts:['gris','grise','grises','grisé'] },
-  { lesson:7, type:'fill',   q:'En été, elle porte des jupes _____ （court）et des t-shirts _____ （simple）.', hint:'陰性複數', a:'courtes, simples|courtes|simples', aNote:'court → 陰性 courte → 複數 courtes；simple → 陰性不變 → 複數 simples' },
+  { lesson:7, topic:'vocab-clothing-size', type:'choose', q:'Tu portes une robe _____ （elegant 陰性）',  hint:'robe = f', a:'élégante', aNote:'élégant → 陰性加 -e → élégante；robe（f）要配陰性形容詞', opts:['élégant','élégants','élégante','élégantes'] },
+  { lesson:7, topic:'adjective-agreement', type:'choose', q:'Vous vendez des chaussures _____ （noir）',  hint:'chaussures = f.pl.', a:'noires', aNote:'noir → 陰性 noire → 複數陰性 noires；chaussures 是陰性複數', opts:['noir','noirs','noire','noires'] },
+  { lesson:7, topic:'adjective-agreement', type:'choose', q:'Il vend son costume _____ （gris）',         hint:'costume = m', a:'gris', aNote:'gris 陽性單數結尾已是 s，不再加 s（gris → gris）；陰性才是 grise', opts:['gris','grise','grises','grisé'] },
+  { lesson:7, topic:'vocab-weather-season', type:'fill',   q:'En été, elle porte des jupes _____ （court）et des t-shirts _____ （simple）.', hint:'陰性複數', a:'courtes, simples|courtes|simples', aNote:'court → 陰性 courte → 複數 courtes；simple → 陰性不變 → 複數 simples' },
 
   // ── 形容詞位置（PDF p.58）──
-  { lesson:7, type:'choose', q:'「一件優雅的西裝」形容詞 élégant 放在名詞哪邊？', hint:'BAGS 以外的形容詞', a:'後面：un costume élégant', aNote:'顏色、形狀、材質等描述性形容詞放名詞後；BAGS（beau/grand/bon/vieux）等放前', opts:['前面：un élégant costume','後面：un costume élégant'] },
-  { lesson:7, type:'choose', q:'「一件美麗的裙子」形容詞 jolie 放在名詞哪邊？', hint:'joli 是 BAGS 類', a:'前面：une jolie jupe', aNote:'joli/beau/grand/bon/vieux/nouveau/petit 等放名詞前', opts:['前面：une jolie jupe','後面：une jupe jolie'] },
+  { lesson:7, topic:'adjective-position', type:'choose', q:'「一件優雅的西裝」形容詞 élégant 放在名詞哪邊？', hint:'BAGS 以外的形容詞', a:'後面：un costume élégant', aNote:'顏色、形狀、材質等描述性形容詞放名詞後；BAGS（beau/grand/bon/vieux）等放前', opts:['前面：un élégant costume','後面：un costume élégant'] },
+  { lesson:7, topic:'adjective-position', type:'choose', q:'「一件美麗的裙子」形容詞 jolie 放在名詞哪邊？', hint:'joli 是 BAGS 類', a:'前面：une jolie jupe', aNote:'joli/beau/grand/bon/vieux/nouveau/petit 等放名詞前', opts:['前面：une jolie jupe','後面：une jupe jolie'] },
 
   // ── 指示形容詞 ce/cet/cette/ces（PDF p.59）──
-  { lesson:7, type:'choose', q:'「這個手機殼」：_____ coque de téléphone（coque = f）', hint:'陰性', a:'Cette', aNote:'cette = 陰性單數；ce = 陽性子音；cet = 陽性母音/h；ces = 複數', opts:['Ce','Cet','Cette','Ces'] },
-  { lesson:7, type:'choose', q:'「這個手機殼」：_____ étui（étui = m，母音開頭）',       hint:'陽性母音開頭', a:'Cet', aNote:"cet 用在陽性單數母音或 h 開頭的名詞（發音連讀）：cet étui、cet homme", opts:['Ce','Cet','Cette','Ces'] },
-  { lesson:7, type:'choose', q:'「這些耳機」：_____ écouteurs（複數）',                   hint:'複數不分性別', a:'Ces', aNote:'ces = 所有複數（不分陰陽性）', opts:['Ce','Cet','Cette','Ces'] },
-  { lesson:7, type:'fill',   q:'「這件大衣」_____ manteau（manteau = m，子音開頭）',      hint:'陽性子音', a:'Ce|Ce manteau', aNote:'ce = 陽性單數子音開頭；cet = 陽性單數母音/h 開頭' },
+  { lesson:7, topic:'vocab-tech-objects', type:'choose', q:'「這個手機殼」：_____ coque de téléphone（coque = f）', hint:'陰性', a:'Cette', aNote:'cette = 陰性單數；ce = 陽性子音；cet = 陽性母音/h；ces = 複數', opts:['Ce','Cet','Cette','Ces'] },
+  { lesson:7, topic:'demonstrative-adj', type:'choose', q:'「這個手機殼」：_____ étui（étui = m，母音開頭）',       hint:'陽性母音開頭', a:'Cet', aNote:"cet 用在陽性單數母音或 h 開頭的名詞（發音連讀）：cet étui、cet homme", opts:['Ce','Cet','Cette','Ces'] },
+  { lesson:7, topic:'adjective-agreement', type:'choose', q:'「這些耳機」：_____ écouteurs（複數）',                   hint:'複數不分性別', a:'Ces', aNote:'ces = 所有複數（不分陰陽性）', opts:['Ce','Cet','Cette','Ces'] },
+  { lesson:7, topic:'demonstrative-adj', type:'fill',   q:'「這件大衣」_____ manteau（manteau = m，子音開頭）',      hint:'陽性子音', a:'Ce|Ce manteau', aNote:'ce = 陽性單數子音開頭；cet = 陽性單數母音/h 開頭' },
 
   // ── 材質介詞 en（課堂）──
-  { lesson:7, type:'choose', q:'「皮革材質」怎麼說？',  hint:'en + matière', a:'en cuir',   aNote:'材質固定用 en：en cuir（皮）/ en coton（棉）/ en laine（羊毛）/ en or（金）', opts:['de cuir','avec cuir','en cuir','du cuir'] },
-  { lesson:7, type:'choose', q:'「羊毛材質」怎麼說？',  hint:'wool',         a:'en laine',  aNote:'en laine = in wool；laine（f）= 羊毛', opts:['en laine','en coton','en cuir','en soie'] },
-  { lesson:7, type:'choose', q:'argent 的兩個意思是？', hint:'銀 / 錢',     a:'錢 + 銀（silver）', aNote:'argent = money（錢）也 = silver（銀）；因為古硬幣都是銀製的！', opts:['錢 + 金（gold）','錢 + 銀（silver）','銀 + 銅','錢 + 銅'] },
+  { lesson:7, topic:'vocab-clothing-size', type:'choose', q:'「皮革材質」怎麼說？',  hint:'en + matière', a:'en cuir',   aNote:'材質固定用 en：en cuir（皮）/ en coton（棉）/ en laine（羊毛）/ en or（金）', opts:['de cuir','avec cuir','en cuir','du cuir'] },
+  { lesson:7, topic:'vocab-clothing-size', type:'choose', q:'「羊毛材質」怎麼說？',  hint:'wool',         a:'en laine',  aNote:'en laine = in wool；laine（f）= 羊毛', opts:['en laine','en coton','en cuir','en soie'] },
+  { lesson:7, topic:'vocab-shopping', type:'choose', q:'argent 的兩個意思是？', hint:'銀 / 錢',     a:'錢 + 銀（silver）', aNote:'argent = money（錢）也 = silver（銀）；因為古硬幣都是銀製的！', opts:['錢 + 金（gold）','錢 + 銀（silver）','銀 + 銅','錢 + 銅'] },
 
   // ── vendre 動詞變位（課堂）──
-  { lesson:7, type:'fill',   q:'je _____ （vendre）',          hint:'第三組', a:'vends', aNote:'vendre：je vends / tu vends / il vend / nous vendons / vous vendez / ils vendent' },
-  { lesson:7, type:'fill',   q:'nous _____ （vendre）',        hint:'加 -ons', a:'vendons', aNote:'vendre nous → vendons（規則）' },
-  { lesson:7, type:'fill',   q:'ils _____ （vendre）',         hint:'-ent', a:'vendent', aNote:'vendre ils → vendent（注意 d 後直接加 -ent）' },
+  { lesson:7, topic:'ir-re-verbs', type:'fill',   q:'je _____ （vendre）',          hint:'第三組', a:'vends', aNote:'vendre：je vends / tu vends / il vend / nous vendons / vous vendez / ils vendent' },
+  { lesson:7, topic:'ir-re-verbs', type:'fill',   q:'nous _____ （vendre）',        hint:'加 -ons', a:'vendons', aNote:'vendre nous → vendons（規則）' },
+  { lesson:7, topic:'ir-re-verbs', type:'fill',   q:'ils _____ （vendre）',         hint:'-ent', a:'vendent', aNote:'vendre ils → vendent（注意 d 後直接加 -ent）' },
 
   // ── mettre 動詞變位（課堂）──
-  { lesson:7, type:'fill',   q:'je _____ （mettre）',          hint:'tt 或 t？', a:'mets', aNote:"mettre：je mets / tu mets / il met（單 t）/ nous mettons / vous mettez / ils mettent（雙 tt）" },
-  { lesson:7, type:'fill',   q:'nous _____ （mettre）',        hint:'⚠️ 雙 tt', a:'mettons', aNote:'nous mettons（tt）；vous mettez（tt）；ils mettent（tt）— 複數全部雙 t！' },
-  { lesson:7, type:'choose', q:'mettre 的 il 形是？',           hint:'單 t',    a:'il met', aNote:'je/tu/il → 單 t：mets/mets/met；nous/vous/ils → 雙 tt', opts:['il mets','il met','il mett','il mette'] },
-  { lesson:7, type:'choose', q:'「我把手機放進包包。」用哪個動詞？', hint:'放入', a:'mettre', aNote:'mettre = 放（put）也 = 穿上（put on）；porter 強調「穿著」的狀態', opts:['porter','mettre','prendre','avoir'] },
+  { lesson:7, topic:'ir-re-verbs', type:'fill',   q:'je _____ （mettre）',          hint:'tt 或 t？', a:'mets', aNote:"mettre：je mets / tu mets / il met（單 t）/ nous mettons / vous mettez / ils mettent（雙 tt）" },
+  { lesson:7, topic:'ir-re-verbs', type:'fill',   q:'nous _____ （mettre）',        hint:'⚠️ 雙 tt', a:'mettons', aNote:'nous mettons（tt）；vous mettez（tt）；ils mettent（tt）— 複數全部雙 t！' },
+  { lesson:7, topic:'ir-re-verbs', type:'choose', q:'mettre 的 il 形是？',           hint:'單 t',    a:'il met', aNote:'je/tu/il → 單 t：mets/mets/met；nous/vous/ils → 雙 tt', opts:['il mets','il met','il mett','il mette'] },
+  { lesson:7, topic:'ir-re-verbs', type:'choose', q:'「我把手機放進包包。」用哪個動詞？', hint:'放入', a:'mettre', aNote:'mettre = 放（put）也 = 穿上（put on）；porter 強調「穿著」的狀態', opts:['porter','mettre','prendre','avoir'] },
 
   // ── 動詞三組（課堂）──
-  { lesson:7, type:'choose', q:'finir 屬於第幾組動詞？',          hint:'-IR', a:'第二組', aNote:'第二組 = -IR 結尾（finir / choisir / partir）；nous → finissons（加 -iss-）', opts:['第一組','第二組','第三組'] },
-  { lesson:7, type:'choose', q:'vendre 屬於第幾組動詞？',         hint:'-RE 結尾', a:'第三組', aNote:'第三組 = 不規則（-RE/-OIR/avoir/être⋯）；需個別記', opts:['第一組','第二組','第三組'] },
-  { lesson:7, type:'choose', q:'aller 屬於第幾組動詞？',          hint:'字尾像第一組但…', a:'第三組（不規則）', aNote:'aller 雖以 -ER 結尾，卻是不規則動詞（第三組）：vais/vas/va/allons/allez/vont', opts:['第一組','第二組','第三組（不規則）'] },
-  { lesson:7, type:'choose', q:'pouvoir 屬於第幾組？',            hint:'-OIR', a:'第三組', aNote:'pouvoir / vouloir / savoir → -OIR 結尾，都是第三組不規則', opts:['第一組','第二組','第三組'] },
+  { lesson:7, topic:'ir-re-verbs', type:'choose', q:'finir 屬於第幾組動詞？',          hint:'-IR', a:'第二組', aNote:'第二組 = -IR 結尾（finir / choisir / partir）；nous → finissons（加 -iss-）', opts:['第一組','第二組','第三組'] },
+  { lesson:7, topic:'ir-re-verbs', type:'choose', q:'vendre 屬於第幾組動詞？',         hint:'-RE 結尾', a:'第三組', aNote:'第三組 = 不規則（-RE/-OIR/avoir/être⋯）；需個別記', opts:['第一組','第二組','第三組'] },
+  { lesson:7, topic:'irregular-verbs-3rd-group', type:'choose', q:'aller 屬於第幾組動詞？',          hint:'字尾像第一組但…', a:'第三組（不規則）', aNote:'aller 雖以 -ER 結尾，卻是不規則動詞（第三組）：vais/vas/va/allons/allez/vont', opts:['第一組','第二組','第三組（不規則）'] },
+  { lesson:7, topic:'pouvoir-vouloir', type:'choose', q:'pouvoir 屬於第幾組？',            hint:'-OIR', a:'第三組', aNote:'pouvoir / vouloir / savoir → -OIR 結尾，都是第三組不規則', opts:['第一組','第二組','第三組'] },
 
   // ── 服裝詞彙（PDF p.57 + 課堂）──
-  { lesson:7, type:'choose', q:'運動鞋法文是？',      hint:'sports shoes', a:'des baskets', aNote:'baskets = 運動鞋（複數）；chaussures = 鞋子（通稱）', opts:['des bottes','des baskets','des sandales','des talons'] },
-  { lesson:7, type:'choose', q:'毛衣法文是？',        hint:'sweater / pullover', a:'un pull', aNote:'un pull = 毛衣；un manteau = 大衣；une veste = 夾克', opts:['un manteau','un pull','une veste','un gilet'] },
-  { lesson:7, type:'choose', q:'手提包法文是？',      hint:'handbag', a:'un sac à main', aNote:'sac à main（手提包）；sac à dos = 背包', opts:['un sac à dos','un sac à main','une valise','un porte-monnaie'] },
-  { lesson:7, type:'fill',   q:'「全新的」法文：_____ / _____ （陽性 / 陰性）', hint:'new', a:'neuf, neuve|neuf|neuve', aNote:'neuf（m）/ neuve（f）= 全新的；二手 = d\'occasion' },
-  { lesson:7, type:'choose', q:'「二手的」法文是？',  hint:"d'occasion", a:"d'occasion", aNote:"d'occasion = used / second-hand；neuf/neuve = brand new", opts:["d'occasion","de seconde","d'utilisation","de vieille"] },
+  { lesson:7, topic:'vocab-clothing-size', type:'choose', q:'運動鞋法文是？',      hint:'sports shoes', a:'des baskets', aNote:'baskets = 運動鞋（複數）；chaussures = 鞋子（通稱）', opts:['des bottes','des baskets','des sandales','des talons'] },
+  { lesson:7, topic:'vocab-clothing-size', type:'choose', q:'毛衣法文是？',        hint:'sweater / pullover', a:'un pull', aNote:'un pull = 毛衣；un manteau = 大衣；une veste = 夾克', opts:['un manteau','un pull','une veste','un gilet'] },
+  { lesson:7, topic:'vocab-clothing-size', type:'choose', q:'手提包法文是？',      hint:'handbag', a:'un sac à main', aNote:'sac à main（手提包）；sac à dos = 背包', opts:['un sac à dos','un sac à main','une valise','un porte-monnaie'] },
+  { lesson:7, topic:'vocab-clothing-size', type:'fill',   q:'「全新的」法文：_____ / _____ （陽性 / 陰性）', hint:'new', a:'neuf, neuve|neuf|neuve', aNote:'neuf（m）/ neuve（f）= 全新的；二手 = d\'occasion' },
+  { lesson:7, topic:'vocab-clothing-size', type:'choose', q:'「二手的」法文是？',  hint:"d'occasion", a:"d'occasion", aNote:"d'occasion = used / second-hand；neuf/neuve = brand new", opts:["d'occasion","de seconde","d'utilisation","de vieille"] },
 
   // ── 尺碼問法（課堂）──
-  { lesson:7, type:'choose', q:'「你穿幾號（衣服）？」怎麼問？', hint:'faire', a:'Tu fais quelle taille ?', aNote:'taille = 尺碼；Tu fais du S/M/L/XL — 動詞用 faire（不是 avoir）', opts:['Tu as quelle taille ?','Tu fais quelle taille ?','Tu portes quelle taille ?','Tu mets quelle taille ?'] },
-  { lesson:7, type:'choose', q:'「你穿幾號鞋？」怎麼問？',       hint:'chausser', a:'Tu chausses combien ?', aNote:'chausser = to wear shoes（鞋的尺碼動詞）；Tu chausses du 42', opts:['Tu fais combien de chaussures ?','Tu portes quel numéro ?','Tu chausses combien ?','Tu mets quel pied ?'] },
-  { lesson:7, type:'fill',   q:'「我 180 公分。」Je _____ 1m80.',  hint:'faire', a:'fais|Je fais 1m80', aNote:'身高也用 faire：Je fais 1m80 / Tu fais combien ？' },
+  { lesson:7, topic:'vocab-clothing-size', type:'choose', q:'「你穿幾號（衣服）？」怎麼問？', hint:'faire', a:'Tu fais quelle taille ?', aNote:'taille = 尺碼；Tu fais du S/M/L/XL — 動詞用 faire（不是 avoir）', opts:['Tu as quelle taille ?','Tu fais quelle taille ?','Tu portes quelle taille ?','Tu mets quelle taille ?'] },
+  { lesson:7, topic:'question-words', type:'choose', q:'「你穿幾號鞋？」怎麼問？',       hint:'chausser', a:'Tu chausses combien ?', aNote:'chausser = to wear shoes（鞋的尺碼動詞）；Tu chausses du 42', opts:['Tu fais combien de chaussures ?','Tu portes quel numéro ?','Tu chausses combien ?','Tu mets quel pied ?'] },
+  { lesson:7, topic:'question-words', type:'fill',   q:'「我 180 公分。」Je _____ 1m80.',  hint:'faire', a:'fais|Je fais 1m80', aNote:'身高也用 faire：Je fais 1m80 / Tu fais combien ？' },
 
   // ── 時尚表達（課堂）──
-  { lesson:7, type:'choose', q:'「這很流行 / trendy」法文是？', hint:'tendance', a:"C'est à la mode. / C'est tendance.", aNote:"à la mode = tendance = trendy；Ce n'est pas à la mode = not trendy", opts:["C'est beau.","C'est à la mode. / C'est tendance.","C'est parfait.","C'est moderne."] },
-  { lesson:7, type:'choose', q:'「Il me plaît」這句話是誰在喜歡誰？', hint:'主詞是物', a:'「物」讓「我」喜歡（it pleases me）', aNote:'plaire 結構：il me plaît = it pleases me；主詞 il = 那件物，me = 我。非「我喜歡它」的語序', opts:['我喜歡它（je 是主詞）','「物」讓「我」喜歡（it pleases me）','我們互相喜歡','它不喜歡我'] },
-  { lesson:7, type:'fill',   q:'「這件衣服穿在我身上很適合。」Il me _____ bien.', hint:'look good on me', a:'va|va bien', aNote:'il me va bien = it looks good on me（aller = to suit/fit）' },
+  { lesson:7, topic:'vocab-clothing-size', type:'choose', q:'「這很流行 / trendy」法文是？', hint:'tendance', a:"C'est à la mode. / C'est tendance.", aNote:"à la mode = tendance = trendy；Ce n'est pas à la mode = not trendy", opts:["C'est beau.","C'est à la mode. / C'est tendance.","C'est parfait.","C'est moderne."] },
+  { lesson:7, topic:'vocab-clothing-size', type:'choose', q:'「Il me plaît」這句話是誰在喜歡誰？', hint:'主詞是物', a:'「物」讓「我」喜歡（it pleases me）', aNote:'plaire 結構：il me plaît = it pleases me；主詞 il = 那件物，me = 我。非「我喜歡它」的語序', opts:['我喜歡它（je 是主詞）','「物」讓「我」喜歡（it pleases me）','我們互相喜歡','它不喜歡我'] },
+  { lesson:7, topic:'vocab-clothing-size', type:'fill',   q:'「這件衣服穿在我身上很適合。」Il me _____ bien.', hint:'look good on me', a:'va|va bien', aNote:'il me va bien = it looks good on me（aller = to suit/fit）' },
 
   // ── 翻譯練習（課堂句型）──
-  { lesson:7, type:'trans', q:'為了去加拿大，我學法文。',                      hint:'pour / apprendre / français',  a:'Pour aller au Canada, j\'apprends le français.',          aNote:'pour + 動詞原形 = 目的；aller（不規則）', askClaude:true },
-  { lesson:7, type:'trans', q:'我開車上班，因為太遠了。',                      hint:'parce que / loin',             a:'Je prends ma voiture pour aller au travail parce que c\'est loin.', aNote:'parce que 接完整句子；pour 接動詞原形', askClaude:true },
-  { lesson:7, type:'trans', q:'週末我不用車。',                                hint:'le week-end / sans',           a:'Le week-end, je fais sans la voiture.',                   aNote:'faire sans = to do without；le week-end 放句首', askClaude:true },
-  { lesson:7, type:'trans', q:'她賣黑色和藍色的洋裝。',                        hint:'vendre / robe / noir / bleu',  a:'Elle vend des robes noires et bleues.',                   aNote:'形容詞配合名詞性數：robe（f.pl）→ noires/bleues（後置）', askClaude:true },
-  { lesson:7, type:'trans', q:'這件皮夾克多少錢？',                            hint:'veste en cuir / coûter',       a:'Combien coûte cette veste en cuir ?',                     aNote:'cette（陰性）+ veste（f）；en cuir = 皮革材質', askClaude:true },
-  { lesson:7, type:'trans', q:'我喜歡這件洋裝，它穿在我身上很適合。',          hint:'plaire / aller bien',          a:'Cette robe me plaît, elle me va bien.',                   aNote:'me plaît（我喜歡）；me va bien（穿起來合身）', askClaude:true },
-  { lesson:7, type:'trans', q:'你穿幾號？我穿 L。',                            hint:'taille / faire',               a:'Tu fais quelle taille ? Je fais du L.',                   aNote:'faire du S/M/L/XL（尺碼用 faire + du）', askClaude:true },
+  { lesson:7, topic:'preposition-country', type:'trans', q:'為了去加拿大，我學法文。',                      hint:'pour / apprendre / français',  a:'Pour aller au Canada, j\'apprends le français.',          aNote:'pour + 動詞原形 = 目的；aller（不規則）', askClaude:true },
+  { lesson:7, topic:'preposition-place-transport', type:'trans', q:'我開車上班，因為太遠了。',                      hint:'parce que / loin',             a:'Je prends ma voiture pour aller au travail parce que c\'est loin.', aNote:'parce que 接完整句子；pour 接動詞原形', askClaude:true },
+  { lesson:7, topic:'connectors-pour-parceque', type:'trans', q:'週末我不用車。',                                hint:'le week-end / sans',           a:'Le week-end, je fais sans la voiture.',                   aNote:'faire sans = to do without；le week-end 放句首', askClaude:true },
+  { lesson:7, topic:'adjective-agreement', type:'trans', q:'她賣黑色和藍色的洋裝。',                        hint:'vendre / robe / noir / bleu',  a:'Elle vend des robes noires et bleues.',                   aNote:'形容詞配合名詞性數：robe（f.pl）→ noires/bleues（後置）', askClaude:true },
+  { lesson:7, topic:'question-words', type:'trans', q:'這件皮夾克多少錢？',                            hint:'veste en cuir / coûter',       a:'Combien coûte cette veste en cuir ?',                     aNote:'cette（陰性）+ veste（f）；en cuir = 皮革材質', askClaude:true },
+  { lesson:7, topic:'vocab-clothing-size', type:'trans', q:'我喜歡這件洋裝，它穿在我身上很適合。',          hint:'plaire / aller bien',          a:'Cette robe me plaît, elle me va bien.',                   aNote:'me plaît（我喜歡）；me va bien（穿起來合身）', askClaude:true },
+  { lesson:7, topic:'vocab-clothing-size', type:'trans', q:'你穿幾號？我穿 L。',                            hint:'taille / faire',               a:'Tu fais quelle taille ? Je fais du L.',                   aNote:'faire du S/M/L/XL（尺碼用 faire + du）', askClaude:true },
 
   // ══════════════════ 第8課 ══════════════════
   // ── 形容詞位置 ──
-  { lesson:8, type:'choose', q:'下列哪個形容詞通常放在名詞「前面」？', hint:'短・常見', a:'grand', aNote:'petit/grand/bon/beau/joli/nouveau/vieux/jeune/gros 放前面，其餘大多後置', opts:['bleu','grand','français','connecté'] },
-  { lesson:8, type:'choose', q:'下列哪個形容詞放在名詞「後面」？', hint:'顏色/國籍/材質一定後置', a:'noire', aNote:'顏色、國籍、材質、形狀類形容詞一律後置', opts:['petit','beau','noire','joli'] },
-  { lesson:8, type:'fill',   q:'一台新電腦（母音開頭，nouveau 要變形）：un _____ ordinateur', hint:'nouveau → 母音前變形', a:'nouvel', aNote:'nouveau 在母音/啞音h開頭的陽性名詞前變 nouvel' },
-  { lesson:8, type:'fill',   q:'一個美男子（bel/belle 特殊用法）：un _____ homme', hint:'beau → 母音前變形', a:'bel', aNote:'beau 在母音/啞音h開頭的陽性名詞前變 bel；homme 的 h 不發音視為母音開頭' },
-  { lesson:8, type:'fill',   q:'一輛新車（陰性）：une _____ voiture', hint:'nouveau 陰性形', a:'nouvelle', aNote:'nouveau 陰性永遠是 nouvelle' },
-  { lesson:8, type:'fill',   q:'一些漂亮的物品（複數，注意冠詞）：_____ beaux objets', hint:'des → ? （形容詞在前）', a:'de', aNote:'形容詞放在複數名詞前面時，des 要變成 de：de beaux objets' },
-  { lesson:8, type:'gender', q:'beau 的陰性形是？', hint:'特殊變化', a:'belle', aNote:'beau → belle（陰性），複數陽性 beaux' },
-  { lesson:8, type:'gender', q:'nouveau 的陽性複數形是？', hint:'X結尾', a:'nouveaux', aNote:'nouveau 複數加 x：nouveaux' },
+  { lesson:8, topic:'adjective-position', type:'choose', q:'下列哪個形容詞通常放在名詞「前面」？', hint:'短・常見', a:'grand', aNote:'petit/grand/bon/beau/joli/nouveau/vieux/jeune/gros 放前面，其餘大多後置', opts:['bleu','grand','français','connecté'] },
+  { lesson:8, topic:'adjective-position', type:'choose', q:'下列哪個形容詞放在名詞「後面」？', hint:'顏色/國籍/材質一定後置', a:'noire', aNote:'顏色、國籍、材質、形狀類形容詞一律後置', opts:['petit','beau','noire','joli'] },
+  { lesson:8, topic:'adjective-position', type:'fill',   q:'一台新電腦（母音開頭，nouveau 要變形）：un _____ ordinateur', hint:'nouveau → 母音前變形', a:'nouvel', aNote:'nouveau 在母音/啞音h開頭的陽性名詞前變 nouvel' },
+  { lesson:8, topic:'adjective-position', type:'fill',   q:'一個美男子（bel/belle 特殊用法）：un _____ homme', hint:'beau → 母音前變形', a:'bel', aNote:'beau 在母音/啞音h開頭的陽性名詞前變 bel；homme 的 h 不發音視為母音開頭' },
+  { lesson:8, topic:'adjective-position', type:'fill',   q:'一輛新車（陰性）：une _____ voiture', hint:'nouveau 陰性形', a:'nouvelle', aNote:'nouveau 陰性永遠是 nouvelle' },
+  { lesson:8, topic:'adjective-position', type:'fill',   q:'一些漂亮的物品（複數，注意冠詞）：_____ beaux objets', hint:'des → ? （形容詞在前）', a:'de', aNote:'形容詞放在複數名詞前面時，des 要變成 de：de beaux objets' },
+  { lesson:8, topic:'adjective-agreement', type:'gender', q:'beau 的陰性形是？', hint:'特殊變化', a:'belle', aNote:'beau → belle（陰性），複數陽性 beaux' },
+  { lesson:8, topic:'adjective-agreement', type:'gender', q:'nouveau 的陽性複數形是？', hint:'X結尾', a:'nouveaux', aNote:'nouveau 複數加 x：nouveaux' },
 
   // ── 服飾/配件/材質補充 ──
-  { lesson:8, type:'fill',   q:'雨衣（口語簡稱）：l\'imper_____able / l\'imper', hint:'imper+', a:'méable', aNote:'imperméable = 防水的，口語簡稱 imper' },
-  { lesson:8, type:'choose', q:'「珠寶」bijou 的複數是？', hint:'不規則複數', a:'bijoux', aNote:'bijou 複數加 x：les bijoux（規律：-ou 結尾常加 x）', opts:['bijous','bijoux','bijoues','bijou'] },
-  { lesson:8, type:'choose', q:'「太陽眼鏡」怎麼說？', hint:'soleil', a:'les lunettes de soleil', aNote:'lunettes（眼鏡，恆複數）+ de soleil', opts:['les lunettes de soleil','les lunettes de pluie','le parasol','la casquette'] },
-  { lesson:8, type:'fill',   q:'雨傘 le para_____（防雨）', hint:'para + pluie', a:'pluie', aNote:'parapluie = para（against）+ pluie（雨）；parasol = 防太陽' },
-  { lesson:8, type:'trans',  q:'她穿藍色的襯衫。', hint:'porter / chemise / bleu', a:'Elle porte une chemise bleue.', aNote:'chemise（f）→ bleue 陰性配合', askClaude:true },
-  { lesson:8, type:'trans',  q:'這個皮革背包很漂亮。', hint:'sac à dos / en cuir / beau', a:'Ce sac à dos en cuir est beau.', aNote:'sac à dos（陽性，子音開頭）→ ce；beau 放後面當補語不用變位置規則', askClaude:true },
+  { lesson:8, topic:'vocab-clothing-size', type:'fill',   q:'雨衣（口語簡稱）：l\'imper_____able / l\'imper', hint:'imper+', a:'méable', aNote:'imperméable = 防水的，口語簡稱 imper' },
+  { lesson:8, topic:'vocab-clothing-size', type:'choose', q:'「珠寶」bijou 的複數是？', hint:'不規則複數', a:'bijoux', aNote:'bijou 複數加 x：les bijoux（規律：-ou 結尾常加 x）', opts:['bijous','bijoux','bijoues','bijou'] },
+  { lesson:8, topic:'vocab-clothing-size', type:'choose', q:'「太陽眼鏡」怎麼說？', hint:'soleil', a:'les lunettes de soleil', aNote:'lunettes（眼鏡，恆複數）+ de soleil', opts:['les lunettes de soleil','les lunettes de pluie','le parasol','la casquette'] },
+  { lesson:8, topic:'vocab-clothing-size', type:'fill',   q:'雨傘 le para_____（防雨）', hint:'para + pluie', a:'pluie', aNote:'parapluie = para（against）+ pluie（雨）；parasol = 防太陽' },
+  { lesson:8, topic:'vocab-clothing-size', type:'trans',  q:'她穿藍色的襯衫。', hint:'porter / chemise / bleu', a:'Elle porte une chemise bleue.', aNote:'chemise（f）→ bleue 陰性配合', askClaude:true },
+  { lesson:8, topic:'vocab-clothing-size', type:'trans',  q:'這個皮革背包很漂亮。', hint:'sac à dos / en cuir / beau', a:'Ce sac à dos en cuir est beau.', aNote:'sac à dos（陽性，子音開頭）→ ce；beau 放後面當補語不用變位置規則', askClaude:true },
 
   // ── 尺碼 ──
-  { lesson:8, type:'fill',   q:'你穿幾號鞋？Tu _____ combien ?', hint:'chausser', a:'chausses', aNote:'chausser = 穿鞋尺碼專用動詞；衣服尺碼用 faire' },
-  { lesson:8, type:'choose', q:'問衣服尺碼用哪個動詞？', hint:'faire vs chausser', a:'faire', aNote:'Tu fais quelle taille ?（衣服）vs Tu chausses combien ?（鞋子）', opts:['faire','chausser','porter','mettre'] },
+  { lesson:8, topic:'question-words', type:'fill',   q:'你穿幾號鞋？Tu _____ combien ?', hint:'chausser', a:'chausses', aNote:'chausser = 穿鞋尺碼專用動詞；衣服尺碼用 faire' },
+  { lesson:8, topic:'question-words', type:'choose', q:'問衣服尺碼用哪個動詞？', hint:'faire vs chausser', a:'faire', aNote:'Tu fais quelle taille ?（衣服）vs Tu chausses combien ?（鞋子）', opts:['faire','chausser','porter','mettre'] },
 
   // ── 天氣 ──
-  { lesson:8, type:'fill',   q:'天氣很冷：Il _____ froid.', hint:'faire', a:'fait', aNote:'il fait + 形容詞/度數：天氣描述固定用 faire' },
-  { lesson:8, type:'fill',   q:'下雪了：Il _____.', hint:'neiger', a:'neige', aNote:'neiger 只有 il 這個形（無人稱動詞）' },
-  { lesson:8, type:'fill',   q:'有風：Il y a du _____.', hint:'vent', a:'vent', aNote:'il y a + du/de la + 名詞（風、太陽、霧都用這個結構）' },
-  { lesson:8, type:'choose', q:'「天氣不好」最口語的說法？', hint:'moche', a:'Il fait moche.', aNote:'moche = 不好看/差，口語常用來說天氣差', opts:['Il fait moche.','Il fait beau.','Il y a du soleil.','Il fait chaud.'] },
-  { lesson:8, type:'fill',   q:'在春天：_____ printemps', hint:'例外', a:'au', aNote:'其他季節用 en（en hiver/été/automne），春天例外用 au printemps' },
-  { lesson:8, type:'fill',   q:'在一月：_____ janvier', hint:'月份固定用法', a:'en', aNote:'月份前一律用 en' },
-  { lesson:8, type:'trans',  q:'聖誕節在十二月。', hint:'Noël / en', a:'Noël, c\'est en décembre.', aNote:'月份用 en；年份也用 en（en 2025）', askClaude:true },
-  { lesson:8, type:'trans',  q:'明天天氣會很冷，會下雪。', hint:'futur proche / il va', a:'Demain, il va faire froid, il va neiger.', aNote:'天氣的未來式也用 futur proche：il va + infinitif', askClaude:true },
+  { lesson:8, topic:'vocab-weather-season', type:'fill',   q:'天氣很冷：Il _____ froid.', hint:'faire', a:'fait', aNote:'il fait + 形容詞/度數：天氣描述固定用 faire' },
+  { lesson:8, topic:'vocab-weather-season', type:'fill',   q:'下雪了：Il _____.', hint:'neiger', a:'neige', aNote:'neiger 只有 il 這個形（無人稱動詞）' },
+  { lesson:8, topic:'vocab-weather-season', type:'fill',   q:'有風：Il y a du _____.', hint:'vent', a:'vent', aNote:'il y a + du/de la + 名詞（風、太陽、霧都用這個結構）' },
+  { lesson:8, topic:'vocab-weather-season', type:'choose', q:'「天氣不好」最口語的說法？', hint:'moche', a:'Il fait moche.', aNote:'moche = 不好看/差，口語常用來說天氣差', opts:['Il fait moche.','Il fait beau.','Il y a du soleil.','Il fait chaud.'] },
+  { lesson:8, topic:'vocab-weather-season', type:'fill',   q:'在春天：_____ printemps', hint:'例外', a:'au', aNote:'其他季節用 en（en hiver/été/automne），春天例外用 au printemps' },
+  { lesson:8, topic:'vocab-weather-season', type:'fill',   q:'在一月：_____ janvier', hint:'月份固定用法', a:'en', aNote:'月份前一律用 en' },
+  { lesson:8, topic:'vocab-weather-season', type:'trans',  q:'聖誕節在十二月。', hint:'Noël / en', a:'Noël, c\'est en décembre.', aNote:'月份用 en；年份也用 en（en 2025）', askClaude:true },
+  { lesson:8, topic:'futur-proche', type:'trans',  q:'明天天氣會很冷，會下雪。', hint:'futur proche / il va', a:'Demain, il va faire froid, il va neiger.', aNote:'天氣的未來式也用 futur proche：il va + infinitif', askClaude:true },
 
   // ── Futur proche ──
-  { lesson:8, type:'fill',   q:'明晚我要把洋裝做完：Demain soir, je _____ finir la robe.', hint:'aller 現在式', a:'vais', aNote:'futur proche = aller（現在）+ infinitif；je → vais' },
-  { lesson:8, type:'fill',   q:'冬天會很難過：L\'hiver _____ être difficile.', hint:'aller 現在式 il/elle', a:'va', aNote:'il/elle/on → va' },
-  { lesson:8, type:'fill',   q:'下星期我們要織一件毛衣：La semaine prochaine, nous _____ tricoter un pull.', hint:'aller 現在式 nous', a:'allons', aNote:'nous → allons' },
-  { lesson:8, type:'fill',   q:'你們將要學習：Vous _____ apprendre.', hint:'aller 現在式 vous', a:'allez', aNote:'vous → allez' },
-  { lesson:8, type:'fill',   q:'她們會很開心：Mes filles _____ être contentes.', hint:'aller 現在式 ils/elles', a:'vont', aNote:'ils/elles → vont' },
-  { lesson:8, type:'choose', q:'futur proche 的結構是？', hint:'兩個動詞', a:'aller（現在）+ 動詞原形', aNote:'第二個動詞不變位，永遠用原形', opts:['aller（現在）+ 動詞原形','aller（過去）+ 過去分詞','venir + de + 原形','être + 過去分詞'] },
-  { lesson:8, type:'trans',  q:'我明天要去買菜。', hint:'faire les courses / futur proche', a:'Je vais faire les courses demain.', aNote:'futur proche + demain 確定是明天而非現在馬上', askClaude:true },
+  { lesson:8, topic:'futur-proche', type:'fill',   q:'明晚我要把洋裝做完：Demain soir, je _____ finir la robe.', hint:'aller 現在式', a:'vais', aNote:'futur proche = aller（現在）+ infinitif；je → vais' },
+  { lesson:8, topic:'futur-proche', type:'fill',   q:'冬天會很難過：L\'hiver _____ être difficile.', hint:'aller 現在式 il/elle', a:'va', aNote:'il/elle/on → va' },
+  { lesson:8, topic:'futur-proche', type:'fill',   q:'下星期我們要織一件毛衣：La semaine prochaine, nous _____ tricoter un pull.', hint:'aller 現在式 nous', a:'allons', aNote:'nous → allons' },
+  { lesson:8, topic:'futur-proche', type:'fill',   q:'你們將要學習：Vous _____ apprendre.', hint:'aller 現在式 vous', a:'allez', aNote:'vous → allez' },
+  { lesson:8, topic:'futur-proche', type:'fill',   q:'她們會很開心：Mes filles _____ être contentes.', hint:'aller 現在式 ils/elles', a:'vont', aNote:'ils/elles → vont' },
+  { lesson:8, topic:'futur-proche', type:'choose', q:'futur proche 的結構是？', hint:'兩個動詞', a:'aller（現在）+ 動詞原形', aNote:'第二個動詞不變位，永遠用原形', opts:['aller（現在）+ 動詞原形','aller（過去）+ 過去分詞','venir + de + 原形','être + 過去分詞'] },
+  { lesson:8, topic:'futur-proche', type:'trans',  q:'我明天要去買菜。', hint:'faire les courses / futur proche', a:'Je vais faire les courses demain.', aNote:'futur proche + demain 確定是明天而非現在馬上', askClaude:true },
 
   // ── venir ──
-  { lesson:8, type:'fill',   q:'venir 變位：il _____', hint:'venir il/elle', a:'vient', aNote:'venir：je viens/tu viens/il vient/nous venons/vous venez/ils viennent' },
-  { lesson:8, type:'fill',   q:'venir 變位：ils _____', hint:'venir ils/elles，雙n', a:'viennent', aNote:'ils/elles viennent（雙 n，不規則）' },
-  { lesson:8, type:'fill',   q:'歡迎大家來（廣告用語）：Venez _____ !', hint:'很多人', a:'nombreux', aNote:'venez nombreux = welcome everyone，字面「來得眾多」' },
+  { lesson:8, topic:'irregular-verbs-3rd-group', type:'fill',   q:'venir 變位：il _____', hint:'venir il/elle', a:'vient', aNote:'venir：je viens/tu viens/il vient/nous venons/vous venez/ils viennent' },
+  { lesson:8, topic:'irregular-verbs-3rd-group', type:'fill',   q:'venir 變位：ils _____', hint:'venir ils/elles，雙n', a:'viennent', aNote:'ils/elles viennent（雙 n，不規則）' },
+  { lesson:8, topic:'irregular-verbs-3rd-group', type:'fill',   q:'歡迎大家來（廣告用語）：Venez _____ !', hint:'很多人', a:'nombreux', aNote:'venez nombreux = welcome everyone，字面「來得眾多」' },
 
   // ── ce/cet/cette/ces ──
-  { lesson:8, type:'fill',   q:'這台電腦（母音開頭）：_____ ordinateur', hint:'ce → 母音前變形', a:'cet', aNote:'ce 在母音/啞音h開頭的陽性名詞前變 cet' },
-  { lesson:8, type:'fill',   q:'這個行李箱（陰性）：_____ valise', hint:'cette', a:'cette', aNote:'陰性單數一律用 cette' },
-  { lesson:8, type:'fill',   q:'這些手機是 iPhone：_____ téléphones sont des iPhones.', hint:'複數', a:'ces', aNote:'複數不分陰陽，一律用 ces' },
-  { lesson:8, type:'gender', q:'ce 在陰性單數時要變成？', hint:'cette', a:'cette', aNote:'ce（陽性）→ cette（陰性）→ ces（複數）' },
-  { lesson:8, type:'choose', q:'為什麼 la tour Eiffel 不能說 cette tour Eiffel？', hint:'唯一性', a:'因為鐵塔只有一座，已經唯一確定，不需要從多個中指出特定一個', aNote:'cette 用在「有多個同類東西，要指出特定一個」的情境', opts:['因為鐵塔只有一座，已經唯一確定，不需要從多個中指出特定一個','因為 tour 是陽性','因為 Eiffel 是專有名詞不能加任何冠詞','文法上沒有差別，兩者皆可'] },
+  { lesson:8, topic:'vocab-tech-objects', type:'fill',   q:'這台電腦（母音開頭）：_____ ordinateur', hint:'ce → 母音前變形', a:'cet', aNote:'ce 在母音/啞音h開頭的陽性名詞前變 cet' },
+  { lesson:8, topic:'demonstrative-adj', type:'fill',   q:'這個行李箱（陰性）：_____ valise', hint:'cette', a:'cette', aNote:'陰性單數一律用 cette' },
+  { lesson:8, topic:'vocab-tech-objects', type:'fill',   q:'這些手機是 iPhone：_____ téléphones sont des iPhones.', hint:'複數', a:'ces', aNote:'複數不分陰陽，一律用 ces' },
+  { lesson:8, topic:'adjective-agreement', type:'gender', q:'ce 在陰性單數時要變成？', hint:'cette', a:'cette', aNote:'ce（陽性）→ cette（陰性）→ ces（複數）' },
+  { lesson:8, topic:'demonstrative-adj', type:'choose', q:'為什麼 la tour Eiffel 不能說 cette tour Eiffel？', hint:'唯一性', a:'因為鐵塔只有一座，已經唯一確定，不需要從多個中指出特定一個', aNote:'cette 用在「有多個同類東西，要指出特定一個」的情境', opts:['因為鐵塔只有一座，已經唯一確定，不需要從多個中指出特定一個','因為 tour 是陽性','因為 Eiffel 是專有名詞不能加任何冠詞','文法上沒有差別，兩者皆可'] },
 
   // ── 科技物品 + Ça sert à quoi ──
-  { lesson:8, type:'choose', q:'「藍牙喇叭」une enceinte Bluetooth，enceinte 是？', hint:'不是耳機', a:'喇叭/音響', aNote:'enceinte = speaker（音響），不是耳機（écouteurs）', opts:['耳機','喇叭/音響','手錶','行動電源'] },
-  { lesson:8, type:'fill',   q:'行動電源（口語）：la batterie _____', hint:'externe', a:'externe', aNote:'batterie externe = power bank' },
-  { lesson:8, type:'fill',   q:'「這是做什麼用的？」：Ça sert à _____ ?', hint:'quoi', a:'quoi', aNote:'Ça sert à quoi ? = À quoi ça sert ?（兩種語序皆可）' },
-  { lesson:8, type:'trans',  q:'這是用來打電話的。', hint:'sert à + 原形', a:'Ça sert à téléphoner.', aNote:'sert à + 動詞原形 = 用來做…', askClaude:true },
-  { lesson:8, type:'trans',  q:'這支智能手錶是用來定位的。', hint:'montre connectée / se repérer', a:'Cette montre connectée sert à se repérer.', aNote:'se repérer = 自己找到方向/定位（反身動詞）', askClaude:true },
-  { lesson:8, type:'choose', q:'connecter 與 se connecter 的差別？', hint:'反身動詞', a:'connecter = 連接某物；se connecter = 自己上線/登入', aNote:'加 se 表示動作回到自己身上，類似 appeler vs s\'appeler', opts:['沒有差別','connecter = 連接某物；se connecter = 自己上線/登入','se connecter 是過去式','connecter 才是對的，se connecter 是錯的'] },
+  { lesson:8, topic:'vocab-tech-objects', type:'choose', q:'「藍牙喇叭」une enceinte Bluetooth，enceinte 是？', hint:'不是耳機', a:'喇叭/音響', aNote:'enceinte = speaker（音響），不是耳機（écouteurs）', opts:['耳機','喇叭/音響','手錶','行動電源'] },
+  { lesson:8, topic:'vocab-tech-objects', type:'fill',   q:'行動電源（口語）：la batterie _____', hint:'externe', a:'externe', aNote:'batterie externe = power bank' },
+  { lesson:8, topic:'vocab-tech-objects', type:'fill',   q:'「這是做什麼用的？」：Ça sert à _____ ?', hint:'quoi', a:'quoi', aNote:'Ça sert à quoi ? = À quoi ça sert ?（兩種語序皆可）' },
+  { lesson:8, topic:'vocab-tech-objects', type:'trans',  q:'這是用來打電話的。', hint:'sert à + 原形', a:'Ça sert à téléphoner.', aNote:'sert à + 動詞原形 = 用來做…', askClaude:true },
+  { lesson:8, topic:'reflexive-verbs', type:'trans',  q:'這支智能手錶是用來定位的。', hint:'montre connectée / se repérer', a:'Cette montre connectée sert à se repérer.', aNote:'se repérer = 自己找到方向/定位（反身動詞）', askClaude:true },
+  { lesson:8, topic:'reflexive-verbs', type:'choose', q:'connecter 與 se connecter 的差別？', hint:'反身動詞', a:'connecter = 連接某物；se connecter = 自己上線/登入', aNote:'加 se 表示動作回到自己身上，類似 appeler vs s\'appeler', opts:['沒有差別','connecter = 連接某物；se connecter = 自己上線/登入','se connecter 是過去式','connecter 才是對的，se connecter 是錯的'] },
 
   // ── 反身動詞：日常作息 ──
-  { lesson:8, type:'fill',   q:'我醒來：Je _____ réveille.', hint:'se réveiller', a:'me', aNote:'反身代詞配合主詞：je me / tu te / il se' },
-  { lesson:8, type:'fill',   q:'我洗澡：Je me _____.', hint:'doucher', a:'douche', aNote:'se doucher = 洗澡（je me douche）' },
-  { lesson:8, type:'fill',   q:'我化妝：Je me _____.', hint:'maquiller', a:'maquille', aNote:'se maquiller = 化妝' },
-  { lesson:8, type:'fill',   q:'我整理頭髮：Je me _____.', hint:'coiffer', a:'coiffe', aNote:'se coiffer = 整理頭髮' },
-  { lesson:8, type:'trans',  q:'我每天早上8點醒來，洗澡，然後穿衣服。', hint:'se réveiller / se doucher / s\'habiller', a:'Je me réveille à 8h, je me douche, et je m\'habille.', aNote:'三個反身動詞依序排列，主詞都是 je → me', askClaude:true },
+  { lesson:8, topic:'reflexive-verbs', type:'fill',   q:'我醒來：Je _____ réveille.', hint:'se réveiller', a:'me', aNote:'反身代詞配合主詞：je me / tu te / il se' },
+  { lesson:8, topic:'reflexive-verbs', type:'fill',   q:'我洗澡：Je me _____.', hint:'doucher', a:'douche', aNote:'se doucher = 洗澡（je me douche）' },
+  { lesson:8, topic:'reflexive-verbs', type:'fill',   q:'我化妝：Je me _____.', hint:'maquiller', a:'maquille', aNote:'se maquiller = 化妝' },
+  { lesson:8, topic:'reflexive-verbs', type:'fill',   q:'我整理頭髮：Je me _____.', hint:'coiffer', a:'coiffe', aNote:'se coiffer = 整理頭髮' },
+  { lesson:8, topic:'reflexive-verbs', type:'trans',  q:'我每天早上8點醒來，洗澡，然後穿衣服。', hint:'se réveiller / se doucher / s\'habiller', a:'Je me réveille à 8h, je me douche, et je m\'habille.', aNote:'三個反身動詞依序排列，主詞都是 je → me', askClaude:true },
 
   // ══════════════════ 第9課 ══════════════════
   // ── une journée vs un jour ──
-  { lesson:9, type:'choose', q:'「祝你有美好的一天」要說？', hint:'journée', a:'Bonne journée !', aNote:'bonjour 只是「嗨」；bonne journée 才是祝福語', opts:['Bonjour !','Bonne journée !','Bon jour !','Bonne nuit !'] },
-  { lesson:9, type:'choose', q:'journée 跟 jour 的差別？', hint:'醒著 vs 24小時', a:'journée = 白天醒著的時間；jour = 24小時的一天', aNote:'journée 強調「過的這段時光」', opts:['journée = 白天醒著的時間；jour = 24小時的一天','兩個完全一樣','jour 才有陰陽性','journée 專指晚上'] },
+  { lesson:9, topic:'daily-routine-vocab', type:'choose', q:'「祝你有美好的一天」要說？', hint:'journée', a:'Bonne journée !', aNote:'bonjour 只是「嗨」；bonne journée 才是祝福語', opts:['Bonjour !','Bonne journée !','Bon jour !','Bonne nuit !'] },
+  { lesson:9, topic:'adjective-agreement', type:'choose', q:'journée 跟 jour 的差別？', hint:'醒著 vs 24小時', a:'journée = 白天醒著的時間；jour = 24小時的一天', aNote:'journée 強調「過的這段時光」', opts:['journée = 白天醒著的時間；jour = 24小時的一天','兩個完全一樣','jour 才有陰陽性','journée 專指晚上'] },
 
   // ── 反身動詞現在式 + 否定句 ──
-  { lesson:9, type:'fill',   q:'s\'habiller 變位：tu _____', hint:'母音開頭縮寫', a:"t'habilles", aNote:'te + habilles → 母音前縮寫成 t\'habilles' },
-  { lesson:9, type:'fill',   q:'s\'habiller 變位：nous _____', hint:'nous 不縮寫', a:'nous habillons', aNote:'nous/vous 接母音開頭動詞不縮寫' },
-  { lesson:9, type:'fill',   q:'否定句「我沒有在7點醒來」：Je _____ me réveille pas à 7h.', hint:'ne 放哪裡', a:'ne', aNote:'ne 放在反身代詞「前面」：je ne me réveille pas' },
-  { lesson:9, type:'choose', q:'反身動詞否定句的 ne 要放在哪裡？', hint:'je [ne] me [verbe] pas', a:'反身代詞的前面', aNote:'je ne me réveille pas（不是 je me ne réveille pas）', opts:['反身代詞的前面','反身代詞的後面','句子最後','verbe 後面，pas 前面'] },
-  { lesson:9, type:'trans',  q:'你幾點起床？我6點起床。', hint:'se réveiller', a:'Tu te réveilles à quelle heure ? Je me réveille à 6h.', aNote:'se réveiller 現在式：je me réveille / tu te réveilles', askClaude:true },
+  { lesson:9, topic:'reflexive-verbs', type:'fill',   q:'s\'habiller 變位：tu _____', hint:'母音開頭縮寫', a:"t'habilles", aNote:'te + habilles → 母音前縮寫成 t\'habilles' },
+  { lesson:9, topic:'reflexive-verbs', type:'fill',   q:'s\'habiller 變位：nous _____', hint:'nous 不縮寫', a:'nous habillons', aNote:'nous/vous 接母音開頭動詞不縮寫' },
+  { lesson:9, topic:'reflexive-verbs', type:'fill',   q:'否定句「我沒有在7點醒來」：Je _____ me réveille pas à 7h.', hint:'ne 放哪裡', a:'ne', aNote:'ne 放在反身代詞「前面」：je ne me réveille pas' },
+  { lesson:9, topic:'reflexive-verbs', type:'choose', q:'反身動詞否定句的 ne 要放在哪裡？', hint:'je [ne] me [verbe] pas', a:'反身代詞的前面', aNote:'je ne me réveille pas（不是 je me ne réveille pas）', opts:['反身代詞的前面','反身代詞的後面','句子最後','verbe 後面，pas 前面'] },
+  { lesson:9, topic:'reflexive-verbs', type:'trans',  q:'你幾點起床？我6點起床。', hint:'se réveiller', a:'Tu te réveilles à quelle heure ? Je me réveille à 6h.', aNote:'se réveiller 現在式：je me réveille / tu te réveilles', askClaude:true },
 
   // ── 起床/睡覺系列辨析 ──
-  { lesson:9, type:'choose', q:'「上床躺下」（還沒睡著）法文是？', hint:'進入床的動作', a:'se coucher', aNote:'se coucher = 躺下進入床；不一定馬上睡著', opts:['se coucher','se lever','dormir','s\'endormir'] },
-  { lesson:9, type:'choose', q:'「入睡」（從醒著到睡著的那一刻）法文是？', hint:'瞬間動作', a:"s'endormir", aNote:"s'endormir = 入睡的瞬間；dormir = 睡著的狀態", opts:["s'endormir",'se coucher','se lever','se réveiller'] },
-  { lesson:9, type:'trans',  q:'我22點上床，但3點才睡著。', hint:'se coucher / s\'endormir', a:"Je me couche à 22h, mais je m'endors à 3h.", aNote:"se coucher（上床）≠ s'endormir（睡著）— 中間在失眠", askClaude:true },
-  { lesson:9, type:'fill',   q:'失眠：faire des _____', hint:'insomnie', a:'insomnies', aNote:'faire des insomnies = 失眠' },
+  { lesson:9, topic:'reflexive-verbs', type:'choose', q:'「上床躺下」（還沒睡著）法文是？', hint:'進入床的動作', a:'se coucher', aNote:'se coucher = 躺下進入床；不一定馬上睡著', opts:['se coucher','se lever','dormir','s\'endormir'] },
+  { lesson:9, topic:'reflexive-verbs', type:'choose', q:'「入睡」（從醒著到睡著的那一刻）法文是？', hint:'瞬間動作', a:"s'endormir", aNote:"s'endormir = 入睡的瞬間；dormir = 睡著的狀態", opts:["s'endormir",'se coucher','se lever','se réveiller'] },
+  { lesson:9, topic:'reflexive-verbs', type:'trans',  q:'我22點上床，但3點才睡著。', hint:'se coucher / s\'endormir', a:"Je me couche à 22h, mais je m'endors à 3h.", aNote:"se coucher（上床）≠ s'endormir（睡著）— 中間在失眠", askClaude:true },
+  { lesson:9, topic:'daily-routine-vocab', type:'fill',   q:'失眠：faire des _____', hint:'insomnie', a:'insomnies', aNote:'faire des insomnies = 失眠' },
 
   // ── 一天作息閱讀詞彙 ──
-  { lesson:9, type:'fill',   q:'提問（不能說 demander des questions）：_____ des questions', hint:'poser', a:'poser', aNote:'poser des questions = 發問；demander = 請求某人做事' },
-  { lesson:9, type:'choose', q:'法文 interview 通常用在哪種情境？', hint:'記者', a:'記者採訪', aNote:'法文 interview 只用在記者採訪，求職面試不用這個字', opts:['記者採訪','求職面試','法庭審問','醫生問診'] },
-  { lesson:9, type:'fill',   q:'洗碗：faire la _____', hint:'vaisselle', a:'vaisselle', aNote:'vaisselle = 餐具總稱；faire la vaisselle = 洗碗' },
-  { lesson:9, type:'fill',   q:'慢跑：faire du _____', hint:'jogging', a:'jogging', aNote:'faire du jogging = 慢跑' },
-  { lesson:9, type:'choose', q:'「DIY手工修繕」法文怎麼說？', hint:'bricoler', a:'le bricolage', aNote:'bricolage = DIY手工修繕（名詞），bricoler = 動詞', opts:['le bricolage','la cuisine','la vaisselle','le jogging'] },
-  { lesson:9, type:'choose', q:'電視在口語中通常怎麼簡稱？', hint:'télé', a:'la télé', aNote:'télévision 太正式，口語幾乎都說 la télé', opts:['la télé','la TV','le télé','la vision'] },
-  { lesson:9, type:'trans',  q:'她停止工作然後回家。', hint:'arrêter de / rentrer', a:'Elle arrête de travailler et elle rentre à la maison.', aNote:'arrêter de + 原形動詞', askClaude:true },
+  { lesson:9, topic:'daily-routine-vocab', type:'fill',   q:'提問（不能說 demander des questions）：_____ des questions', hint:'poser', a:'poser', aNote:'poser des questions = 發問；demander = 請求某人做事' },
+  { lesson:9, topic:'daily-routine-vocab', type:'choose', q:'法文 interview 通常用在哪種情境？', hint:'記者', a:'記者採訪', aNote:'法文 interview 只用在記者採訪，求職面試不用這個字', opts:['記者採訪','求職面試','法庭審問','醫生問診'] },
+  { lesson:9, topic:'daily-routine-vocab', type:'fill',   q:'洗碗：faire la _____', hint:'vaisselle', a:'vaisselle', aNote:'vaisselle = 餐具總稱；faire la vaisselle = 洗碗' },
+  { lesson:9, topic:'daily-routine-vocab', type:'fill',   q:'慢跑：faire du _____', hint:'jogging', a:'jogging', aNote:'faire du jogging = 慢跑' },
+  { lesson:9, topic:'daily-routine-vocab', type:'choose', q:'「DIY手工修繕」法文怎麼說？', hint:'bricoler', a:'le bricolage', aNote:'bricolage = DIY手工修繕（名詞），bricoler = 動詞', opts:['le bricolage','la cuisine','la vaisselle','le jogging'] },
+  { lesson:9, topic:'daily-routine-vocab', type:'choose', q:'電視在口語中通常怎麼簡稱？', hint:'télé', a:'la télé', aNote:'télévision 太正式，口語幾乎都說 la télé', opts:['la télé','la TV','le télé','la vision'] },
+  { lesson:9, topic:'daily-routine-vocab', type:'trans',  q:'她停止工作然後回家。', hint:'arrêter de / rentrer', a:'Elle arrête de travailler et elle rentre à la maison.', aNote:'arrêter de + 原形動詞', askClaude:true },
 
   // ── on vs nous ──
-  { lesson:9, type:'choose', q:'「沒人知道他叫什麼名字」要用 on 還是 nous？', hint:'泛指大眾', a:'on', aNote:'on 可以泛指「沒有人、大家」，nous 只能指「你和我」這群特定人', opts:['on','nous','vous','ils'] },
-  { lesson:9, type:'fill',   q:'on 的動詞變位形式跟誰一樣？', hint:'第三人稱單數', a:'il/elle', aNote:'on 永遠用 il/elle 的變位形式：on va, on fait, on est' },
-  { lesson:9, type:'trans',  q:'我們今晚要去看電影嗎？（口語）', hint:'on', a:'On va au cinéma ce soir ?', aNote:'口語中 on 常直接取代 nous，更自然親切', askClaude:true },
+  { lesson:9, topic:'on-vs-nous', type:'choose', q:'「沒人知道他叫什麼名字」要用 on 還是 nous？', hint:'泛指大眾', a:'on', aNote:'on 可以泛指「沒有人、大家」，nous 只能指「你和我」這群特定人', opts:['on','nous','vous','ils'] },
+  { lesson:9, topic:'on-vs-nous', type:'fill',   q:'on 的動詞變位形式跟誰一樣？', hint:'第三人稱單數', a:'il/elle', aNote:'on 永遠用 il/elle 的變位形式：on va, on fait, on est' },
+  { lesson:9, topic:'on-vs-nous', type:'trans',  q:'我們今晚要去看電影嗎？（口語）', hint:'on', a:'On va au cinéma ce soir ?', aNote:'口語中 on 常直接取代 nous，更自然親切', askClaude:true },
 
   // ── pouvoir vs vouloir ──
-  { lesson:9, type:'fill',   q:'pouvoir 變位：nous _____', hint:'pouvons', a:'pouvons', aNote:'pouvoir：je peux/tu peux/il peut/nous pouvons/vous pouvez/ils peuvent' },
-  { lesson:9, type:'fill',   q:'vouloir 變位：ils _____', hint:'veulent', a:'veulent', aNote:'vouloir：je veux/tu veux/il veut/nous voulons/vous voulez/ils veulent' },
-  { lesson:9, type:'choose', q:'「Tu veux aller au théâtre ?」這句問的是什麼？', hint:'意願 vs 可行性', a:'問你想不想去（已知你能去）', aNote:'vouloir 問意願；pouvoir 問可行性（有沒有空、有沒有錢）', opts:['問你想不想去（已知你能去）','問你能不能去（已知你想去）','問你去過沒有','問你喜歡誰'] },
-  { lesson:9, type:'choose', q:'「Tu peux aller au théâtre ?」這句問的是什麼？', hint:'意願 vs 可行性', a:'問你能不能去（已知你想去）', aNote:'pouvoir 問可行性；vouloir 問意願', opts:['問你想不想去（已知你能去）','問你能不能去（已知你想去）','問你去過沒有','問你喜歡誰'] },
-  { lesson:9, type:'fill',   q:'「我不想」（另一種說法，用 envie）：Je n\'ai pas _____.', hint:'envie', a:'envie', aNote:'avoir envie de = 想要；je n\'ai pas envie = 我不想' },
-  { lesson:9, type:'trans',  q:'我可以做這件事。', hint:'pouvoir / le', a:'Je peux le faire.', aNote:'le = 那件事，代替前面提過的東西', askClaude:true },
+  { lesson:9, topic:'pouvoir-vouloir', type:'fill',   q:'pouvoir 變位：nous _____', hint:'pouvons', a:'pouvons', aNote:'pouvoir：je peux/tu peux/il peut/nous pouvons/vous pouvez/ils peuvent' },
+  { lesson:9, topic:'pouvoir-vouloir', type:'fill',   q:'vouloir 變位：ils _____', hint:'veulent', a:'veulent', aNote:'vouloir：je veux/tu veux/il veut/nous voulons/vous voulez/ils veulent' },
+  { lesson:9, topic:'pouvoir-vouloir', type:'choose', q:'「Tu veux aller au théâtre ?」這句問的是什麼？', hint:'意願 vs 可行性', a:'問你想不想去（已知你能去）', aNote:'vouloir 問意願；pouvoir 問可行性（有沒有空、有沒有錢）', opts:['問你想不想去（已知你能去）','問你能不能去（已知你想去）','問你去過沒有','問你喜歡誰'] },
+  { lesson:9, topic:'pouvoir-vouloir', type:'choose', q:'「Tu peux aller au théâtre ?」這句問的是什麼？', hint:'意願 vs 可行性', a:'問你能不能去（已知你想去）', aNote:'pouvoir 問可行性；vouloir 問意願', opts:['問你想不想去（已知你能去）','問你能不能去（已知你想去）','問你去過沒有','問你喜歡誰'] },
+  { lesson:9, topic:'pouvoir-vouloir', type:'fill',   q:'「我不想」（另一種說法，用 envie）：Je n\'ai pas _____.', hint:'envie', a:'envie', aNote:'avoir envie de = 想要；je n\'ai pas envie = 我不想' },
+  { lesson:9, topic:'pouvoir-vouloir', type:'trans',  q:'我可以做這件事。', hint:'pouvoir / le', a:'Je peux le faire.', aNote:'le = 那件事，代替前面提過的東西', askClaude:true },
 
   // ── 邀約句型 ──
-  { lesson:9, type:'choose', q:'「你有興趣嗎？」最口語的問法？', hint:'ça', a:'Ça te dit ?', aNote:'ça（這件事）+ te（對你）+ dit（説，引申為吸引）', opts:['Ça te dit ?','Tu es content ?','Tu aimes ?','C\'est toi ?'] },
-  { lesson:9, type:'choose', q:'接受邀約最自然的回答是？', hint:'plaisir', a:'Avec plaisir !', aNote:'D\'accord ! / Pourquoi pas ! / Avec plaisir ! 都是接受邀約的常見說法', opts:['Avec plaisir !','Je suis désolé(e).','Je n\'ai pas envie.','Je ne peux pas.'] },
-  { lesson:9, type:'choose', q:'拒絕邀約並表達歉意要說？', hint:'désolé', a:'Je ne peux pas, je suis désolé(e).', aNote:'désolé(e) = 抱歉的（陰性加 e）', opts:['Je ne peux pas, je suis désolé(e).','Avec plaisir !','D\'accord !','Pourquoi pas !'] },
-  { lesson:9, type:'trans',  q:'你想去劇院嗎？— 好啊！', hint:'vouloir / D\'accord', a:'Tu veux aller au théâtre ? — D\'accord !', aNote:'theatre 邀約句型 + 接受', askClaude:true },
+  { lesson:9, topic:'social-invitations', type:'choose', q:'「你有興趣嗎？」最口語的問法？', hint:'ça', a:'Ça te dit ?', aNote:'ça（這件事）+ te（對你）+ dit（説，引申為吸引）', opts:['Ça te dit ?','Tu es content ?','Tu aimes ?','C\'est toi ?'] },
+  { lesson:9, topic:'pouvoir-vouloir', type:'choose', q:'接受邀約最自然的回答是？', hint:'plaisir', a:'Avec plaisir !', aNote:'D\'accord ! / Pourquoi pas ! / Avec plaisir ! 都是接受邀約的常見說法', opts:['Avec plaisir !','Je suis désolé(e).','Je n\'ai pas envie.','Je ne peux pas.'] },
+  { lesson:9, topic:'pouvoir-vouloir', type:'choose', q:'拒絕邀約並表達歉意要說？', hint:'désolé', a:'Je ne peux pas, je suis désolé(e).', aNote:'désolé(e) = 抱歉的（陰性加 e）', opts:['Je ne peux pas, je suis désolé(e).','Avec plaisir !','D\'accord !','Pourquoi pas !'] },
+  { lesson:9, topic:'pouvoir-vouloir', type:'trans',  q:'你想去劇院嗎？— 好啊！', hint:'vouloir / D\'accord', a:'Tu veux aller au théâtre ? — D\'accord !', aNote:'theatre 邀約句型 + 接受', askClaude:true },
 
   // ── 頻率副詞 ──
-  { lesson:9, type:'choose', q:'頻率副詞「從不」到「總是」的正確排序？', hint:'jamais → toujours', a:'jamais < rarement < parfois < souvent < toujours', aNote:'從不 < 很少 < 有時候 < 常常 < 總是', opts:['jamais < rarement < parfois < souvent < toujours','toujours < souvent < parfois < rarement < jamais','parfois < jamais < souvent < rarement < toujours','souvent < toujours < jamais < rarement < parfois'] },
-  { lesson:9, type:'fill',   q:'我很少去劇院：Je vais _____ au théâtre.', hint:'rarement', a:'rarement', aNote:'rarement（很少）放在動詞後面' },
-  { lesson:9, type:'choose', q:'頻率副詞 jamais/rarement/parfois/souvent 一般放在句子的哪裡？', hint:'位置規則', a:'動詞後面', aNote:'這幾個頻率副詞放在動詞後面；le jeudi / tous les jeudis 則放句首或句尾', opts:['動詞後面','動詞前面','句子最前面','句子最後面，不能在其他位置'] },
-  { lesson:9, type:'choose', q:'「le jeudi」與「tous les jeudis」意思上的關係？', hint:'相同 vs 不同', a:'意思完全相同，都表示「每個星期四」', aNote:'le + 星期（單數）＝ tous les + 星期（複數），都是「每週固定」的意思', opts:['意思完全相同，都表示「每個星期四」','le jeudi 只指某一個星期四','tous les jeudis 比較少發生','兩者文法不同，意思也不同'] },
-  { lesson:9, type:'choose', q:'沒有冠詞的「jeudi」（無 le）是什麼意思？', hint:'特定 vs 固定', a:'只指某一個特定的星期四', aNote:'jeudi（無冠詞）＝ 某一次星期四；le jeudi ＝ 每週固定的星期四', opts:['只指某一個特定的星期四','每個星期四','從不會發生','跟 le jeudi 一樣'] },
-  { lesson:9, type:'trans',  q:'我們每週二、週日都有法文課。', hint:'le mardi et le dimanche', a:'On a cours de français le mardi et le dimanche.', aNote:'le + 星期 = 每週固定；等於 tous les mardis et tous les dimanches', askClaude:true },
+  { lesson:9, topic:'frequency-adverbs', type:'choose', q:'頻率副詞「從不」到「總是」的正確排序？', hint:'jamais → toujours', a:'jamais < rarement < parfois < souvent < toujours', aNote:'從不 < 很少 < 有時候 < 常常 < 總是', opts:['jamais < rarement < parfois < souvent < toujours','toujours < souvent < parfois < rarement < jamais','parfois < jamais < souvent < rarement < toujours','souvent < toujours < jamais < rarement < parfois'] },
+  { lesson:9, topic:'frequency-adverbs', type:'fill',   q:'我很少去劇院：Je vais _____ au théâtre.', hint:'rarement', a:'rarement', aNote:'rarement（很少）放在動詞後面' },
+  { lesson:9, topic:'frequency-adverbs', type:'choose', q:'頻率副詞 jamais/rarement/parfois/souvent 一般放在句子的哪裡？', hint:'位置規則', a:'動詞後面', aNote:'這幾個頻率副詞放在動詞後面；le jeudi / tous les jeudis 則放句首或句尾', opts:['動詞後面','動詞前面','句子最前面','句子最後面，不能在其他位置'] },
+  { lesson:9, topic:'frequency-adverbs', type:'choose', q:'「le jeudi」與「tous les jeudis」意思上的關係？', hint:'相同 vs 不同', a:'意思完全相同，都表示「每個星期四」', aNote:'le + 星期（單數）＝ tous les + 星期（複數），都是「每週固定」的意思', opts:['意思完全相同，都表示「每個星期四」','le jeudi 只指某一個星期四','tous les jeudis 比較少發生','兩者文法不同，意思也不同'] },
+  { lesson:9, topic:'frequency-adverbs', type:'choose', q:'沒有冠詞的「jeudi」（無 le）是什麼意思？', hint:'特定 vs 固定', a:'只指某一個特定的星期四', aNote:'jeudi（無冠詞）＝ 某一次星期四；le jeudi ＝ 每週固定的星期四', opts:['只指某一個特定的星期四','每個星期四','從不會發生','跟 le jeudi 一樣'] },
+  { lesson:9, topic:'frequency-adverbs', type:'trans',  q:'我們每週二、週日都有法文課。', hint:'le mardi et le dimanche', a:'On a cours de français le mardi et le dimanche.', aNote:'le + 星期 = 每週固定；等於 tous les mardis et tous les dimanches', askClaude:true },
 ];
 
 // ── 狀態 ──────────────────────────────────────────────────────
@@ -2102,6 +2128,154 @@ function renderDrillWeakAnalysis() {
       ">📋 複製全部</button>
       <button class="drill-retry" onclick="renderDrillDone()" style="margin-top:12px">← 返回</button>
     </div>`;
+}
+
+// ── 📊 能力地圖（topic 統計） ──────────────────────────────────
+const TOPIC_LABELS = {
+  'etre-avoir': 'être / avoir 動詞',
+  'reflexive-verbs': '反身動詞',
+  'er-verbs': '-ER 規則動詞',
+  'greetings-politeness': '問候與禮貌用語',
+  'negation': '否定句',
+  'daily-routine-vocab': '日常作息詞彙',
+  'numbers-dates-heure': '數字・日期・時間',
+  'adjective-agreement': '形容詞性數配合',
+  'articles': '冠詞（定冠詞/不定冠詞/部分冠詞）',
+  'preposition-country': '國家介係詞（en/au/aux）',
+  'question-words': '疑問詞',
+  'on-vs-nous': 'on vs nous',
+  'vocab-places-city': '城市/地點詞彙',
+  'family-possessives': '家庭與所有格',
+  'possessives': '所有格形容詞',
+  'likes-hobbies-sports': '喜好與運動',
+  'preposition-place-transport': '地點/交通介係詞',
+  'vocab-shopping': '購物與餐廳詞彙',
+  'irregular-verbs-3rd-group': '第三組不規則動詞',
+  'pouvoir-vouloir': 'pouvoir vs vouloir',
+  'cest-il-est': "c'est vs il est",
+  'frequency-adverbs': '頻率副詞',
+  'ir-re-verbs': '-IR / -RE 動詞',
+  'imperative-mood': '命令式',
+  'voici-voila': 'voici vs voilà',
+  'connectors-pour-parceque': '連接詞（pour/parce que/mais/sans）',
+  'vocab-clothing-size': '服飾配件與尺碼',
+  'vocab-weather-season': '天氣與季節',
+  'adjective-position': '形容詞位置',
+  'vocab-tech-objects': '科技/日常物品',
+  'demonstrative-adj': '指示形容詞（ce/cet/cette/ces）',
+  'futur-proche': 'futur proche',
+  'social-invitations': '邀約句型',
+};
+
+function computeTopicStats() {
+  const byTopic = {};
+  BANK.forEach(q => {
+    const t = q.topic || 'misc';
+    if (!byTopic[t]) byTopic[t] = { w:0, c:0, lessons:new Set(), total:0 };
+    const srs = getSRS(qId(q));
+    byTopic[t].w += srs.w;
+    byTopic[t].c += srs.c;
+    byTopic[t].lessons.add(q.lesson);
+    byTopic[t].total++;
+  });
+  return Object.entries(byTopic).map(([topic, d]) => {
+    const attempts = d.w + d.c;
+    const pct = attempts > 0 ? Math.round((d.c / attempts) * 100) : null;
+    return {
+      topic, pct, attempts, totalQ: d.total,
+      lessons: [...d.lessons].sort((a,b)=>a-b),
+    };
+  }).sort((a, b) => {
+    // 沒練過的排最後；有練過的依正確率由低到高（最弱排前面）
+    if (a.pct === null && b.pct === null) return 0;
+    if (a.pct === null) return 1;
+    if (b.pct === null) return -1;
+    return a.pct - b.pct;
+  });
+}
+
+function showTopicMap() {
+  ['typeRow','lessonRow','progressText','progressBarWrap'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  const stats = computeTopicStats();
+  const rows = stats.map(s => {
+    const label = TOPIC_LABELS[s.topic] || s.topic;
+    const noteLinks = s.lessons.map(l => `<a class="topic-note-link" href="french_notes.html#lesson-${l}" target="_blank">📖 第${l}課</a>`).join(' ');
+    let pctClass = 'none', pctText = '—', barColor = '#e4e4e2', barWidth = '0%';
+    if (s.pct !== null) {
+      pctClass = s.pct < 60 ? 'weak' : (s.pct < 80 ? 'mid' : 'ok');
+      pctText = s.pct + '%';
+      barColor = s.pct < 60 ? '#e74c3c' : (s.pct < 80 ? '#c07000' : '#2a7a4f');
+      barWidth = s.pct + '%';
+    }
+    return `
+      <div class="topic-row">
+        <div class="topic-row-top">
+          <div class="topic-name">${label}</div>
+          <div class="topic-bar-wrap"><div class="topic-bar-fill" style="width:${barWidth};background:${barColor}"></div></div>
+          <div class="topic-pct ${pctClass}">${pctText}</div>
+        </div>
+        <div class="topic-sub">${s.totalQ} 題 ${s.attempts > 0 ? `· 已答 ${s.attempts} 次` : '· 尚未練習'}</div>
+        <div class="topic-links">${noteLinks}</div>
+      </div>`;
+  }).join('');
+
+  const weakCount = stats.filter(s => s.pct !== null && s.pct < 60).length;
+
+  document.getElementById('quizArea').innerHTML = `
+    <div class="drill-done" style="text-align:left">
+      <h2 style="text-align:center">📊 能力地圖</h2>
+      <div style="text-align:center;margin-bottom:14px">
+        <div class="drill-done-pct">按文法主題統計正確率，不分課堂 &nbsp;·&nbsp; 紅色 = 弱點主題（&lt;60%）共 ${weakCount} 個</div>
+      </div>
+      ${rows}
+      <button class="export-btn" onclick="exportAllData()">📥 匯出完整數據（給 Claude 分析）</button>
+      <div class="export-hint">會下載一個 JSON 檔，內含所有題目對錯紀錄與時間戳記。把檔案傳給 Claude，就能比對你上次的進度，分析這段時間哪些主題進步了、哪些還弱。</div>
+      <button class="btn-restart" style="margin-top:14px" onclick="closeTopicMap()">← 返回練習</button>
+    </div>`;
+}
+
+function closeTopicMap() {
+  ['typeRow','lessonRow','progressText','progressBarWrap'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = '';
+  });
+  restart();
+}
+
+function exportAllData() {
+  const data = {
+    exportedAt: new Date().toISOString(),
+    srs: {}, drillSrs: {}, game: null, drillSessions: null, drillFlags: null,
+  };
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key || !key.startsWith('clb7_')) continue;
+    let val;
+    try { val = JSON.parse(localStorage.getItem(key)); } catch(e) { val = localStorage.getItem(key); }
+    if (key.startsWith('clb7_dq_')) data.drillSrs[key] = val;
+    else if (key.startsWith('clb7_q_')) data.srs[key] = val;
+    else if (key === 'clb7_game') data.game = val;
+    else if (key === 'clb7_drill_sessions') data.drillSessions = val;
+    else if (key === 'clb7_drill_flags') data.drillFlags = val;
+    else data[key] = val;
+  }
+  // 附上每個 topic 目前的統計快照，方便不寫程式就能看到摘要
+  data.topicSummary = computeTopicStats().map(s => ({
+    topic: s.topic, label: TOPIC_LABELS[s.topic] || s.topic,
+    pct: s.pct, attempts: s.attempts, totalQuestions: s.totalQ, lessons: s.lessons,
+  }));
+
+  const stamp = data.exportedAt.replace(/[:.]/g, '-');
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `clb7_export_${stamp}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('已下載！把檔案傳給 Claude 分析進度');
 }
 
 // 啟動

@@ -164,12 +164,12 @@ A2: loisirs, nourriture, ir-re, transports, vetements, meteo,
 
 ### `quiz.html`
 
-#### 課程練習 BANK（236 題，第 1–6 課）
+#### 課程練習 BANK（379 題，第 1–9 課）
 
 - 題庫在 `const BANK = [...]`，每題格式：
 
 ```js
-{ lesson:N, type:'fill'|'trans'|'gender'|'choose',
+{ lesson:N, topic:'topic-key', type:'fill'|'trans'|'gender'|'choose',
   q:'題目', hint:'提示', a:'答案|別案', aNote:'說明',
   askClaude:true  // 只有 trans 題才加
 }
@@ -177,7 +177,25 @@ A2: loisirs, nourriture, ir-re, transports, vetements, meteo,
 
 - **SRS 系統：** 每題答對/錯記在 `localStorage`（key: `clb7_q_...`），錯 2 次以上 = 弱點題
 - **三種模式：** 📚 一般練習 / 🎯 弱點模式 / 🔀 混合複習
-- **加新課題目：** append 到 BANK 陣列尾端，`lesson` 填對應課號
+- **加新課題目：** append 到 BANK 陣列尾端，`lesson` 填對應課號，`topic` 從下方「能力地圖」的 topic key 清單挑一個最貼切的（沒有合適的可以新增，但要同步加進 `TOPIC_LABELS`）
+
+#### 📊 能力地圖（2026-06-16 新增，跨課程主題診斷）
+
+Owen 反饋：希望系統能告訴他「哪個文法主題還弱」，不是只看第幾課，而是跨課程統計，並能連回筆記複習。
+
+- 入口：頂部 stat-bar 的「📊 能力地圖」chip（`showTopicMap()`）
+- 每題除了 `lesson` 外都加了 `topic` 標籤（33 個跨課程文法/詞彙主題，定義在 `TOPIC_LABELS`，例如 `etre-avoir`、`adjective-agreement`、`futur-proche`、`reflexive-verbs`...）
+- `computeTopicStats()` 依 topic 彙總所有題目的 SRS 對錯次數，算出正確率，**由弱到強排序**（紅 <60%、橘 60-79%、綠 ≥80%、灰 = 尚未練習）
+- 每個主題列出對應的課堂編號徽章（例如「📖 第4課」），點擊會開 `french_notes.html#lesson-N`（筆記每課的 `<details id="lesson-N">` 本來就有錨點，可直接跳轉複習）— **此連結只在本機打開 french_notes.html 才有用，手機開 GitHub Pages 版的 quiz.html 點了不會有反應**（因為 french_notes.html 沒有部署到 Pages）
+- 下方有「📥 匯出完整數據」按鈕（`exportAllData()`），會下載一個帶時間戳記的 JSON 檔（`clb7_export_<timestamp>.json`），內容包含：
+  - 所有題目的 SRS 紀錄（`srs`）、快速測驗 SRS（`drillSrs`）、XP/streak（`game`）、練習回饋歷史（`drillSessions`）、旗標（`drillFlags`）
+  - `topicSummary`：當下每個主題的正確率快照（不用寫程式也能直接看懂）
+  - `exportedAt`：ISO 時間戳記
+
+**給下個 session 的 Claude：Owen 會不定期把這個匯出檔案貼/傳給你分析進度。**
+- 因為 localStorage 裡的次數是「累計總數」不是「單次紀錄」，所以即使 Owen 重複傳同一份或時間相近的兩份檔案，也不會造成重複計算錯誤——順序顛倒或重複貼上都不影響正確性。
+- 拿到新檔案時，**先看 `exportedAt`**：如果這個時間戳記跟你記得（memory 裡）的「上次處理過的時間戳記」相同或更早，告訴 Owen 這是舊資料，不重新分析；如果是新的，就跟上一份做差異比對（哪些 topic 正確率上升/下降），並把這次的 `exportedAt` 記進 memory，方便下次比對。
+- 分析完後建議的格式：「這段時間（A → B）哪些主題進步、哪些還弱、建議下一步練什麼」，而不是只重複當下快照。
 
 **「其實對 ✓」覆蓋按鈕：**
 - 當系統判斷錯誤時，答題卡片下方（SRS 模式）和填空格（drill 模式）各有一個「其實對 ✓」按鈕
