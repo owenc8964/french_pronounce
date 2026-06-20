@@ -259,6 +259,26 @@
     .drill-back  { background: #f0f0ee; color: #555; width: 100%; padding: 10px; border-radius: 10px;
       border: 1.5px solid #ddd; font-size: 0.84rem; font-weight: 600; cursor: pointer; }
 
+    /* ── 學習曲線 / topic sprint ── */
+    .curve-wrap { background: #fafaf8; border-radius: 10px; padding: 12px 14px; margin-bottom: 18px; }
+    .curve-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #bbb; margin-bottom: 6px; }
+    .curve-chart { width: 100%; height: 72px; display: block; }
+    .topic-sprint-btn {
+      font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 5px;
+      background: #fff0e0; color: #c05a00; border: 1.5px solid #f0c080;
+      cursor: pointer; white-space: nowrap; flex-shrink: 0; font-family: inherit;
+    }
+    .topic-sprint-btn:hover { background: #ffe4c0; }
+    .topic-delta { font-size: 0.72rem; font-weight: 700; white-space: nowrap; margin-left: 4px; }
+    .topic-delta.up   { color: #2a7a4f; }
+    .topic-delta.down { color: #c00; }
+    .topic-delta.same { color: #bbb; }
+    .note-link {
+      font-size: 0.72rem; color: #3b6fd4; text-decoration: none;
+      border-bottom: 1px dashed #b0c4f0; margin-left: 6px;
+    }
+    .note-link:hover { color: #1a4fb0; }
+
     /* ── 疑慮旗標按鈕 ── */
     .drill-flag-btn {
       width: 20px; height: 20px; border-radius: 50%;
@@ -1190,6 +1210,14 @@ function renderCard() {
           <div class="label">正確答案</div>
           <div class="fr-ans">${displayA}</div>
           ${q.aNote ? `<div class="ans-note">📌 ${q.aNote}</div>` : ''}
+          <div style="margin-top:6px">
+            ${(() => {
+              const ta = q.topic && TOPIC_NOTE_ANCHORS[q.topic];
+              const anchor = ta || (q.lesson === 0 ? 'frame-lib' : 'lesson-' + q.lesson);
+              const lbl = ta ? (TOPIC_LABELS[q.topic] || q.topic) : (q.lesson === 0 ? '框架庫' : `第${q.lesson}課`);
+              return `<a class="note-link" href="french_notes.html#${anchor}" target="_blank">📖 複習：${lbl}</a>`;
+            })()}
+          </div>
         </div>
         <div class="btn-row">
           ${q.askClaude ? `<button class="btn btn-claude" onclick="askClaude()">問 Claude</button>` : ''}
@@ -1805,6 +1833,42 @@ const AGREE_BANK = [
     note:'lui（m）+ sa femme（f）+ enfants = groupe mixte → ils（只要有一個男性就用 ils）' },
 ];
 
+// ── AGREE_BANK topic 標記（按出現順序對應 count）──────────────────
+const AGREE_TOPIC_RANGES = [
+  { count:10, topic:'etre-avoir' },
+  { count:10, topic:'etre-avoir' },
+  { count:20, topic:'er-verbs' },
+  { count:20, topic:'possessives' },
+  { count:13, topic:'articles' },
+  { count:15, topic:'adjective-agreement' },
+  { count: 2, topic:'likes-hobbies-sports' },
+  { count: 2, topic:'adjective-agreement' },
+  { count:15, topic:'family-possessives' },
+  { count:12, topic:'family-possessives' },
+  { count:14, topic:'adjective-agreement' },
+  { count: 6, topic:'adjective-agreement' },
+  { count:12, topic:'preposition-country' },
+  { count:10, topic:'articles' },
+  { count:10, topic:'articles' },
+  { count: 8, topic:'articles' },
+  { count:11, topic:'ir-re-verbs' },
+  { count: 8, topic:'irregular-verbs-3rd-group' },
+  { count: 8, topic:'preposition-place-transport' },
+  { count: 9, topic:'question-words' },
+  { count: 6, topic:'adjective-agreement' },
+  { count:18, topic:'adjective-agreement' },
+  { count: 8, topic:'preposition-place-transport' },
+];
+(function() {
+  let i = 0;
+  AGREE_TOPIC_RANGES.forEach(r => {
+    for (let n = 0; n < r.count; n++) {
+      if (AGREE_BANK[i]) AGREE_BANK[i].topic = r.topic;
+      i++;
+    }
+  });
+})();
+
 // ── Drill SRS（常錯多出現）──────────────────────────────────────
 function drillQId(q) {
   return 'dq_' + q.q.slice(0,25).replace(/[^a-zA-Z0-9一-鿿]/g,'_');
@@ -2195,6 +2259,58 @@ const TOPIC_LABELS = {
   'social-invitations': '邀約句型',
 };
 
+function getOverallPct() {
+  let w = 0, c = 0;
+  BANK.forEach(q => { const s = getSRS(qId(q)); w += s.w; c += s.c; });
+  const total = w + c;
+  return total > 0 ? Math.round(c / total * 100) : null;
+}
+
+function saveSnapshot() {
+  const today = new Date().toISOString().slice(0, 10);
+  const snaps = JSON.parse(localStorage.getItem('clb7_snapshots') || '[]');
+  if (snaps.length && snaps[snaps.length - 1].date === today) return;
+  const topics = computeTopicStats().map(s => ({ topic: s.topic, pct: s.pct, attempts: s.attempts }));
+  snaps.push({ date: today, overallPct: getOverallPct(), topics });
+  if (snaps.length > 60) snaps.shift();
+  localStorage.setItem('clb7_snapshots', JSON.stringify(snaps));
+}
+
+const TOPIC_NOTE_ANCHORS = {
+  'etre-avoir':                'topic-etre-avoir',
+  'er-verbs':                  'topic-er-verbs',
+  'reflexive-verbs':           'topic-reflexive-verbs',
+  'adjective-agreement':       'topic-adjective-agreement',
+  'adjective-position':        'topic-adjective-position',
+  'articles':                  'topic-articles',
+  'question-words':            'topic-question-words',
+  'preposition-country':       'topic-preposition-country',
+  'likes-hobbies-sports':      'topic-likes-hobbies-sports',
+  'family-possessives':        'topic-family-possessives',
+  'possessives':               'topic-possessives',
+  'vocab-shopping':            'topic-vocab-shopping',
+  'preposition-place-transport':'topic-preposition-place-transport',
+  'ir-re-verbs':               'topic-ir-re-verbs',
+  'irregular-verbs-3rd-group': 'topic-ir-re-verbs',
+  'numbers-dates-heure':       'topic-numbers-dates-heure',
+  'negation':                  'topic-negation',
+  'frequency-adverbs':         'topic-frequency-adverbs',
+  'vocab-places-city':         'topic-vocab-places-city',
+  'imperative-mood':           'topic-imperative-mood',
+  'connectors-pour-parceque':  'topic-connectors-pour-parceque',
+  'vocab-clothing-size':       'topic-vocab-clothing-size',
+  'vocab-weather-season':      'topic-vocab-weather-season',
+  'futur-proche':              'topic-futur-proche',
+  'demonstrative-adj':         'topic-demonstrative-adj',
+  'vocab-tech-objects':        'topic-vocab-tech-objects',
+  'daily-routine-vocab':       'topic-daily-routine-vocab',
+  'on-vs-nous':                'topic-on-vs-nous',
+  'pouvoir-vouloir':           'topic-pouvoir-vouloir',
+  'social-invitations':        'topic-social-invitations',
+  'cest-il-est':               'topic-cest-il-est',
+  'voici-voila':               'lesson-2',
+};
+
 function computeTopicStats() {
   const byTopic = {};
   BANK.forEach(q => {
@@ -2204,6 +2320,15 @@ function computeTopicStats() {
     byTopic[t].w += srs.w;
     byTopic[t].c += srs.c;
     byTopic[t].lessons.add(q.lesson);
+    byTopic[t].total++;
+  });
+  AGREE_BANK.forEach(q => {
+    if (!q.topic) return;
+    const t = q.topic;
+    if (!byTopic[t]) byTopic[t] = { w:0, c:0, lessons:new Set(), total:0 };
+    const srs = getDrillSRS(q);
+    byTopic[t].w += srs.w;
+    byTopic[t].c += srs.c;
     byTopic[t].total++;
   });
   return Object.entries(byTopic).map(([topic, d]) => {
@@ -2222,19 +2347,52 @@ function computeTopicStats() {
   });
 }
 
+function buildCurveChart(snaps) {
+  const pts = snaps.filter(s => s.overallPct !== null);
+  if (pts.length < 2) return '<div style="font-size:0.75rem;color:#bbb;text-align:center;padding:16px 0">資料不足（需至少 2 天練習紀錄）</div>';
+  const W = 400, H = 64, PAD = 8;
+  const vals = pts.map(s => s.overallPct);
+  const min = Math.max(0, Math.min(...vals) - 5);
+  const max = Math.min(100, Math.max(...vals) + 5);
+  const xStep = (W - PAD * 2) / (pts.length - 1);
+  const toX = i => PAD + i * xStep;
+  const toY = v => H - PAD - ((v - min) / (max - min || 1)) * (H - PAD * 2);
+  const pathD = pts.map((s, i) => `${i === 0 ? 'M' : 'L'}${toX(i).toFixed(1)},${toY(s.overallPct).toFixed(1)}`).join(' ');
+  const dots = pts.map((s, i) => `<circle cx="${toX(i).toFixed(1)}" cy="${toY(s.overallPct).toFixed(1)}" r="3" fill="#3b6fd4"/><title>${s.date}: ${s.overallPct}%</title>`).join('');
+  const firstDate = pts[0].date.slice(5);
+  const lastDate  = pts[pts.length-1].date.slice(5);
+  const trend = vals[vals.length-1] - vals[0];
+  const trendStr = trend > 0 ? `↑ +${trend}%` : trend < 0 ? `↓ ${trend}%` : '持平';
+  const trendColor = trend > 0 ? '#2a7a4f' : trend < 0 ? '#c00' : '#aaa';
+  return `
+    <svg class="curve-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+      <line x1="${PAD}" y1="${toY(60).toFixed(1)}" x2="${W-PAD}" y2="${toY(60).toFixed(1)}" stroke="#f0c080" stroke-width="1" stroke-dasharray="3,3"/>
+      <path d="${pathD}" fill="none" stroke="#3b6fd4" stroke-width="2" stroke-linejoin="round"/>
+      ${dots}
+      <text x="${PAD}" y="${H-1}" font-size="9" fill="#bbb">${firstDate}</text>
+      <text x="${W-PAD}" y="${H-1}" font-size="9" fill="#bbb" text-anchor="end">${lastDate}</text>
+    </svg>
+    <div style="font-size:0.72rem;color:${trendColor};font-weight:700;text-align:right">${trendStr}（${pts.length} 天紀錄）</div>`;
+}
+
 function showTopicMap() {
   ['typeRow','lessonRow','progressText','progressBarWrap'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
   const stats = computeTopicStats();
+  const snaps = JSON.parse(localStorage.getItem('clb7_snapshots') || '[]');
+  const prevSnap = snaps.length >= 2 ? snaps[snaps.length - 2] : null;
+  const prevMap = prevSnap ? Object.fromEntries(prevSnap.topics.map(t => [t.topic, t.pct])) : {};
+
   const rows = stats.map(s => {
     const label = TOPIC_LABELS[s.topic] || s.topic;
     const noteLinks = s.lessons.map(l => {
       const anchor = l === 0 ? 'frame-lib' : `lesson-${l}`;
-      const label  = l === 0 ? '🧩 框架庫' : `📖 第${l}課`;
-      return `<a class="topic-note-link" href="french_notes.html#${anchor}" target="_blank">${label}</a>`;
+      const lbl    = l === 0 ? '🧩 框架庫' : `📖 第${l}課`;
+      return `<a class="topic-note-link" href="french_notes.html#${anchor}" target="_blank">${lbl}</a>`;
     }).join(' ');
+
     let pctClass = 'none', pctText = '—', barColor = '#e4e4e2', barWidth = '0%';
     if (s.pct !== null) {
       pctClass = s.pct < 60 ? 'weak' : (s.pct < 80 ? 'mid' : 'ok');
@@ -2242,12 +2400,26 @@ function showTopicMap() {
       barColor = s.pct < 60 ? '#e74c3c' : (s.pct < 80 ? '#c07000' : '#2a7a4f');
       barWidth = s.pct + '%';
     }
+
+    let deltaHtml = '';
+    if (s.pct !== null && prevSnap && prevMap[s.topic] !== undefined && prevMap[s.topic] !== null) {
+      const diff = s.pct - prevMap[s.topic];
+      if (diff > 0) deltaHtml = `<span class="topic-delta up">↑${diff}%</span>`;
+      else if (diff < 0) deltaHtml = `<span class="topic-delta down">↓${Math.abs(diff)}%</span>`;
+      else deltaHtml = `<span class="topic-delta same">–</span>`;
+    }
+
+    const sprintBtn = (s.pct !== null && s.pct < 80)
+      ? `<button class="topic-sprint-btn" onclick="startTopicSprint('${s.topic}')">⚡ 衝刺</button>` : '';
+
     return `
       <div class="topic-row">
         <div class="topic-row-top">
           <div class="topic-name">${label}</div>
           <div class="topic-bar-wrap"><div class="topic-bar-fill" style="width:${barWidth};background:${barColor}"></div></div>
           <div class="topic-pct ${pctClass}">${pctText}</div>
+          ${deltaHtml}
+          ${sprintBtn}
         </div>
         <div class="topic-sub">${s.totalQ} 題 ${s.attempts > 0 ? `· 已答 ${s.attempts} 次` : '· 尚未練習'}</div>
         <div class="topic-links">${noteLinks}</div>
@@ -2255,12 +2427,17 @@ function showTopicMap() {
   }).join('');
 
   const weakCount = stats.filter(s => s.pct !== null && s.pct < 60).length;
+  const curveHtml = buildCurveChart(snaps);
 
   document.getElementById('quizArea').innerHTML = `
     <div class="drill-done" style="text-align:left">
       <h2 style="text-align:center">📊 能力地圖</h2>
       <div style="text-align:center;margin-bottom:14px">
         <div class="drill-done-pct">按文法主題統計正確率，不分課堂 &nbsp;·&nbsp; 紅色 = 弱點主題（&lt;60%）共 ${weakCount} 個</div>
+      </div>
+      <div class="curve-wrap">
+        <div class="curve-label">整體正確率學習曲線（每日快照）</div>
+        ${curveHtml}
       </div>
       ${rows}
       <button class="export-btn" onclick="exportAllData()">📥 匯出完整數據（給 Claude 分析）</button>
@@ -2275,6 +2452,23 @@ function closeTopicMap() {
     if (el) el.style.display = '';
   });
   restart();
+}
+
+function startTopicSprint(topic) {
+  ['typeRow','lessonRow','progressText','progressBarWrap'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = '';
+  });
+  const label = TOPIC_LABELS[topic] || topic;
+  // 先放錯題，沒有錯題就放全部
+  let pool = BANK.filter(q => q.topic === topic && wrongCount(q) > 0);
+  if (pool.length === 0) pool = BANK.filter(q => q.topic === topic);
+  queue = shuffle(pool);
+  current = 0; scoreOk = 0; scoreNo = 0; sessionXP = 0;
+  answered = false; resurface = []; resurfaceDone = false;
+  showToast(`⚡ 衝刺模式：${label}（${queue.length} 題）`);
+  updateProgress();
+  renderCard();
 }
 
 function exportAllData() {
@@ -2313,6 +2507,7 @@ function exportAllData() {
 // 啟動
 buildLessonButtons();
 renderStats();
+saveSnapshot();
 restart();
 </script>
 </body>
