@@ -1032,6 +1032,50 @@ const BANK = [
   { lesson:0, topic:'etre-avoir', type:'fill', q:'他覺得熱。Il _____ chaud. (常見錯寫成 il est chaud)', hint:'人的感受用avoir', a:'a', aNote:'Duolingo常見錯誤：il est chaud（物是熱的）vs il a chaud（人覺得熱）混用，人的感受要用 avoir' },
   { lesson:0, topic:'etre-avoir', type:'choose', q:'「il est chaud」跟「il a chaud」差別？', hint:'物 vs 人', a:'il est chaud=物是熱的；il a chaud=人覺得熱', aNote:'人的感受幾乎都用 avoir：avoir faim/froid/chaud/peur/besoin de', opts:['il est chaud=物是熱的；il a chaud=人覺得熱','兩句意思完全一樣','il a chaud 才是正確說法，il est chaud 永遠是錯的','只有 il est chaud 正確'] },
   { lesson:0, topic:'etre-avoir', type:'trans', q:'我餓了。', hint:'avoir + faim', a:'J\'ai faim.', aNote:'感受句用 avoir：j\'ai faim/froid/chaud/peur/besoin de', askClaude:true },
+
+  // ══════════════════ 第10課：家事動詞 ══════════════════
+  { lesson:10, topic:'household-chores', type:'choose', q:'「買菜購物」怎麼說？', hint:'複數！', a:'faire les courses', aNote:'les courses（複數）= 日常購物/買菜；le cours = 課堂；une course = 比賽', opts:['faire les courses','faire les cours','faire du shopping','faire une course'] },
+  { lesson:10, topic:'household-chores', type:'fill',   q:'打掃家裡：faire _____ ménage', hint:'定冠詞', a:'le', aNote:'faire le ménage = 打掃整個家；ménage 是陽性名詞 → le ménage' },
+  { lesson:10, topic:'household-chores', type:'fill',   q:'洗碗：faire _____ vaisselle', hint:'定冠詞', a:'la', aNote:'faire la vaisselle = 洗碗；vaisselle 是陰性名詞 → la vaisselle' },
+  { lesson:10, topic:'household-chores', type:'fill',   q:'洗衣服：faire _____ lessive', hint:'不定冠詞陰性', a:'une', aNote:'faire une lessive = 洗一次衣服（有限次數，所以用 une）' },
+  { lesson:10, topic:'household-chores', type:'choose', q:'「做 DIY・修繕」可以用哪個動詞替代 faire du bricolage？', hint:'同字根', a:'bricoler', aNote:'faire du bricolage ↔ bricoler，兩個都對；課，jardinage ↔ jardiner，cuisine ↔ cuisiner', opts:['bricoler','cuisiner','jardiner','ménager'] },
+  { lesson:10, topic:'household-chores', type:'choose', q:'「faire les courses」和「faire une course」意思不同，區別是？', hint:'複數 vs 單數', a:'les courses（複數）= 買菜；une course（單數）= 比賽', aNote:'⚠️ 這是很常見的陷阱：複數 courses 跟單數 course 意思完全不一樣', opts:['les courses（複數）= 買菜；une course（單數）= 比賽','les courses = 一次採購；une course = 多次採購','兩個意思一樣，都是購物','courses 是口語，course 是書面語'] },
+  { lesson:10, topic:'household-chores', type:'fill',   q:'洗衣機的法文：la _____ à laver', hint:'機器', a:'machine', aNote:'la machine à laver = 洗衣機（預設是洗衣，le lave-linge 也可以）；le lave-vaisselle = 洗碗機' },
+  { lesson:10, topic:'household-chores', type:'trans',  q:'他做飯，我洗碗。', hint:'cuisiner / faire la vaisselle', a:'Il fait la cuisine, je fais la vaisselle.', aNote:'faire la cuisine 或 cuisiner 都可以表達做飯', askClaude:true },
+  { lesson:10, topic:'household-chores', type:'choose', q:'哪一個家事「不能」用簡單動詞（如 jardiner）替代，只能用 faire + 名詞？', hint:'無對應動詞', a:'faire la vaisselle', aNote:'vaisselle 沒有對應的動詞形式；bricolage→bricoler、jardinage→jardiner、cuisine→cuisiner', opts:['faire la vaisselle','faire du jardinage','faire du bricolage','faire la cuisine'] },
+  { lesson:10, topic:'household-chores', type:'trans',  q:'週末我做園藝。', hint:'jardinage', a:'Le week-end, je fais du jardinage.', aNote:'faire du jardinage 或 jardiner 都可以', askClaude:true },
+
+  // ══════════════════ 第10課：Passé récent ══════════════════
+  { lesson:10, topic:'passe-recent', type:'fill',   q:'「剛剛做了…」的句型結構是？', hint:'venir de + ___', a:'infinitif', aNote:'Passé récent = venir de + 原形動詞（infinitif）；要變位的是 venir，後面動詞原形不變' },
+  { lesson:10, topic:'passe-recent', type:'fill',   q:'Je _____ de finir. (venir，我剛剛結束)', hint:'venir je形', a:'viens', aNote:'venir 的 je/tu 形都是 viens；passé récent = je viens de + infinitif' },
+  { lesson:10, topic:'passe-recent', type:'fill',   q:'Il _____ de partir. (venir，他剛走)', hint:'venir il形', a:'vient', aNote:'venir 的 il/elle 形是 vient（注意拼法：t 結尾，不發音）' },
+  { lesson:10, topic:'passe-recent', type:'fill',   q:'Nous _____ d\'arriver. (venir，我們剛到)', hint:'venir nous形', a:'venons', aNote:'venir nous形 = venons；注意 de 在母音前縮寫成 d\'' },
+  { lesson:10, topic:'passe-recent', type:'choose', q:'「我剛做完洗碗」的正確說法？', hint:'venir de', a:'Je viens de faire la vaisselle.', aNote:'venir de + infinitif；faire 是原形不變，只有 venir 需要變位', opts:['Je viens de faire la vaisselle.','J\'ai fait la vaisselle.','Je fais la vaisselle.','Je vais faire la vaisselle.'] },
+  { lesson:10, topic:'passe-recent', type:'choose', q:'「venir de」和「aller + infinitif」分別表示什麼時間概念？', hint:'剛才 vs 馬上', a:'venir de = 剛才（passé）；aller + inf = 即將（futur）', aNote:'三種近未/近過去：Je viens de faire（剛做完）/ Je fais（現在做）/ Je vais faire（要去做）', opts:['venir de = 剛才（passé）；aller + inf = 即將（futur）','venir de = 即將；aller + inf = 剛才','兩個都是未來式','兩個都是過去式'] },
+  { lesson:10, topic:'passe-recent', type:'fill',   q:'她剛開始：Elle vient _____ commencer.', hint:'de + inf', a:'de', aNote:'venir de + infinitif；母音前：de → d\'（elle vient d\'arriver）' },
+  { lesson:10, topic:'passe-recent', type:'trans',  q:'他們剛買票。', hint:'venir de + acheter', a:'Ils viennent d\'acheter des places.', aNote:'venir ils形 = viennent；des places = 票（電影票/音樂廳票）', askClaude:true },
+  { lesson:10, topic:'passe-recent', type:'trans',  q:'我剛發現一部新影集。', hint:'venir de + découvrir', a:'Je viens de découvrir une nouvelle série.', aNote:'découvrir 不規則動詞；série = 影集（séries Netflix…）', askClaude:true },
+  { lesson:10, topic:'passe-recent', type:'choose', q:'「Vous venez de finir ?」是問什麼？', hint:'時態', a:'你們剛結束了嗎？', aNote:'passé récent 疑問句，用語調（句末升調）或 est-ce que 就可以表達問句', opts:['你們剛結束了嗎？','你們要去結束嗎？','你們正在結束嗎？','你們結束過了嗎？'] },
+
+  // ══════════════════ 第10課：外貌描述 ══════════════════
+  { lesson:10, topic:'physical-description', type:'choose', q:'頭髮是紅色要用哪個詞？', hint:'不是 rouge！', a:'roux / rousse', aNote:'頭髮紅色 = roux（陽）/ rousse（陰）；rouge 是一般紅色（口紅、蘋果），不用在頭髮上', opts:['roux / rousse','rouge / rouge','rouge / rosse','roux / rouge'] },
+  { lesson:10, topic:'physical-description', type:'choose', q:'眼睛是棕色要用哪個詞？', hint:'不是 brun！', a:'marron', aNote:'眼睛棕色 = marron（不變詞，不加 s）；brun 用於頭髮棕色；marron 對眼睛和物品', opts:['marron','brun','brune','châtain'] },
+  { lesson:10, topic:'physical-description', type:'choose', q:'頭髮是棕色要用哪個詞？', hint:'不是 marron！', a:'brun / brune', aNote:'頭髮棕色 = brun（陽）/ brune（陰）；marron 用於眼睛和物品，頭髮要用 brun', opts:['brun / brune','marron','châtain','blond'] },
+  { lesson:10, topic:'physical-description', type:'fill',   q:'「禿頭」：il est _____', hint:'chauve', a:'chauve', aNote:'chauve = 禿頭（陽陰同形）；être chauve，不用 avoir' },
+  { lesson:10, topic:'physical-description', type:'choose', q:'「他有鬍子」（整臉）怎麼說？', hint:'avoir', a:'il a la barbe / il est barbu', aNote:'la barbe = 鬍子（整臉）；la moustache = 唇上方的小鬍子；也可說 il est barbu（有鬍子的）', opts:['il a la barbe / il est barbu','il est barbe','il a barbu','il fait la barbe'] },
+  { lesson:10, topic:'physical-description', type:'fill',   q:'「他看起來很壯」：Il a l\'air _____.', hint:'形容詞', a:'fort', aNote:'avoir l\'air + adj = 看起來像（不確定）；比 il est fort（他確實很壯）語氣更軟' },
+  { lesson:10, topic:'physical-description', type:'choose', q:'cheveux（頭髮）是陽性還是陰性？變形容詞時要注意什麼？', hint:'性數配合', a:'陽性複數，形容詞配陽性複數形', aNote:'les cheveux bruns（不是 brunes）；cheveux 固定是陽性複數，形容詞要配陽性複數', opts:['陽性複數，形容詞配陽性複數形','陰性複數，形容詞配陰性複數形','陽性單數，形容詞配陽性單數形','視情況而定'] },
+  { lesson:10, topic:'physical-description', type:'choose', q:'「marron」作為顏色詞時，複數形是什麼？', hint:'不變詞', a:'marron（不變，不加 s）', aNote:'marron / orange / châtain 等「從物品借來的顏色詞」是不變詞（invariable），不加 s 或 e', opts:['marron（不變，不加 s）','marrons（加 s）','marronne（加 e）','marronnes（加 es）'] },
+  { lesson:10, topic:'physical-description', type:'trans',  q:'她有長的捲曲棕色頭髮。', hint:'longs / frisés / bruns', a:'Elle a les cheveux longs, frisés et bruns.', aNote:'cheveux 是陽性複數 → longs, frisés, bruns（全部陽性複數形）', askClaude:true },
+
+  // ══════════════════ 第10課：性格形容詞 ══════════════════
+  { lesson:10, topic:'character-adjectives', type:'choose', q:'「gentil」的陰性形式？', hint:'雙寫 l', a:'gentille', aNote:'gentil → gentille（雙寫 l 再加 e）；méchant → méchante（普通加 e）', opts:['gentille','gentile','gentile','gentils'] },
+  { lesson:10, topic:'character-adjectives', type:'fill',   q:'「courageux」的陰性形式？', hint:'-eux → -euse', a:'courageuse', aNote:'-eux → -euse 規則：courageux→courageuse, généreux→généreuse, sérieux→sérieuse' },
+  { lesson:10, topic:'character-adjectives', type:'choose', q:'「il est gentil」和「il est généreux」有什麼差別？', hint:'個性 vs 行動', a:'gentil = 善良個性；généreux = 行動上常為別人做事', aNote:'gentil 強調個性特質；généreux 強調常付出、慷慨的具體行為表現', opts:['gentil = 善良個性；généreux = 行動上常為別人做事','兩個完全同義可互換','gentil = 外向；généreux = 內向','généreux 比 gentil 更正面'] },
+  { lesson:10, topic:'character-adjectives', type:'fill',   q:'「她很幽默好笑」：Elle est _____.', hint:'不分陰陽', a:'drôle', aNote:'drôle = 有趣、好笑，陽陰同形（不變化）；sociable, dynamique, calme 也是同形' },
+  { lesson:10, topic:'character-adjectives', type:'choose', q:'「comme」在比較句裡的意思？', hint:'比較', a:'像、就像（like）', aNote:'comme = like；Il est né en 1998, comme moi.（他1998年生，跟我一樣）；bleu comme le ciel（藍得像天空）', opts:['像、就像（like）','因為（because）','所以（so）','但是（but）'] },
+  { lesson:10, topic:'character-adjectives', type:'choose', q:'「assez」有兩個意思，分別是？', hint:'足夠 / 相當', a:'① 足夠（enough）② 相當・挺（pretty/quite）', aNote:'Il a assez dormi.（他睡夠了）vs Il est assez grand.（他挺高的）——依上下文判斷', opts:['① 足夠（enough）② 相當・挺（pretty/quite）','① 太（too much）② 一點點（a little）','① 從不 ② 總是','只有一個意思：足夠'] },
+  { lesson:10, topic:'character-adjectives', type:'trans',  q:'她很認真，跟我完全不一樣。', hint:'sérieuse / comme', a:'Elle est sérieuse, pas comme moi.', aNote:'pas comme moi = 不像我；comme 也可以用在否定：pas comme + 名詞', askClaude:true },
 ];
 
 // ── 狀態 ──────────────────────────────────────────────────────
@@ -2257,6 +2301,10 @@ const TOPIC_LABELS = {
   'demonstrative-adj': '指示形容詞（ce/cet/cette/ces）',
   'futur-proche': 'futur proche',
   'social-invitations': '邀約句型',
+  'household-chores': '家事動詞（faire + 名詞）',
+  'passe-recent': 'Passé récent（venir de）',
+  'physical-description': '外貌描述',
+  'character-adjectives': '性格形容詞',
 };
 
 function getOverallPct() {
@@ -2309,6 +2357,10 @@ const TOPIC_NOTE_ANCHORS = {
   'social-invitations':        'topic-social-invitations',
   'cest-il-est':               'topic-cest-il-est',
   'voici-voila':               'lesson-2',
+  'household-chores':          'topic-household-chores',
+  'passe-recent':              'topic-passe-recent',
+  'physical-description':      'topic-physical-description',
+  'character-adjectives':      'topic-character-adjectives',
 };
 
 function computeTopicStats() {
