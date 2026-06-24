@@ -164,10 +164,14 @@
 
     /* ── 比較表 ── */
     .compare-table {
-      width: 100%;
-      border-collapse: collapse;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       font-size: 0.85rem;
       margin-bottom: 10px;
+    }
+    .compare-table table {
+      width: 100%;
+      border-collapse: collapse;
     }
     .compare-table th {
       background: #f0f0ee;
@@ -178,6 +182,7 @@
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: #999;
+      white-space: nowrap;
     }
     .compare-table td { padding: 7px 12px; border-bottom: 1px solid #f0f0ee; }
     .compare-table tr:last-child td { border-bottom: none; }
@@ -2964,6 +2969,7 @@
     <span class="unit-title" id="topic-household-chores">Activités domestiques（家事 · faire + 名詞）</span>
   </div>
   <p class="unit-intro">家事動詞幾乎全用 <strong>faire</strong> + 名詞，若有可替代的動詞（cuisiner, jardiner…）用 <strong>faire du/de la</strong>；不可替代的動作（vaisselle, ménage）則用 <strong>faire la/le</strong>。</p>
+  <div class="compare-table">
   <table>
     <tr><th>表達</th><th>意思</th><th>可替代動詞</th></tr>
     <tr><td class="m">faire du bricolage</td><td>做 DIY、修繕</td><td>bricoler</td></tr>
@@ -2974,6 +2980,7 @@
     <tr><td class="m">faire la vaisselle</td><td>洗碗</td><td>—</td></tr>
     <tr><td class="m">faire le ménage</td><td>打掃家裡</td><td>—</td></tr>
   </table>
+  </div>
   <div class="note">
     ⚠️ <strong>les courses ≠ les cours</strong>：<br>
     <span class="fr-ex">faire les courses</span>（複數）= 買菜購物。<br>
@@ -2989,6 +2996,7 @@
     <span class="unit-tag">第10課</span>
     <span class="unit-title">Le temps libre（休閒活動）</span>
   </div>
+  <div class="compare-table">
   <table>
     <tr><th>表達</th><th>意思</th><th>備註</th></tr>
     <tr><td class="m">faire du dessin / dessiner</td><td>畫畫</td><td>aller à un cours de dessin = 去上畫畫課</td></tr>
@@ -3003,6 +3011,7 @@
     <tr><td class="m">surfer sur internet</td><td>上網</td><td></td></tr>
     <tr><td class="m">voir des amis / sa famille</td><td>見朋友/家人</td><td></td></tr>
   </table>
+  </div>
   <div class="note">
     <strong>se promener vs se balader</strong>：兩個都是「出去走走、沒有特定目的」，可互換。<br>
     差別：<span class="fr-ex">promener</span>（及物）= 帶某人/動物去走；<span class="fr-ex">se promener</span> 和 <span class="fr-ex">se balader</span> 作為反身動詞時意思相同。
@@ -3016,6 +3025,7 @@
     <span class="unit-title" id="topic-passe-recent">Passé récent — venir de + infinitif（剛剛做了…）</span>
   </div>
   <p class="unit-intro">用來表達「剛才做完的事」，不算正式時態，只是一個固定句型。要變位的是 <strong>venir</strong>，後面的動詞保持原形（infinitif）。</p>
+  <div class="compare-table">
   <table>
     <tr><th>人稱</th><th>venir 變位</th><th>例句</th></tr>
     <tr><td>je</td><td class="m">viens</td><td><span class="fr-ex">Je viens de faire la vaisselle.</span> 我剛洗完碗。</td></tr>
@@ -3025,6 +3035,7 @@
     <tr><td>vous</td><td class="m">venez</td><td><span class="fr-ex">Vous venez de finir ?</span> 你們剛結束？</td></tr>
     <tr><td>ils/elles</td><td class="m">viennent</td><td><span class="fr-ex">Ils viennent d'acheter des places.</span> 他們剛買票。</td></tr>
   </table>
+  </div>
   <div class="note">
     <strong>venir de vs futur proche 對比：</strong><br>
     <span class="fr-ex">Je viens de faire la vaisselle.</span> → 剛做完（過去，已結束）<br>
@@ -3045,6 +3056,7 @@
     <span class="unit-tag">第10課</span>
     <span class="unit-title" id="topic-physical-description">La description physique（外貌描述）</span>
   </div>
+  <div class="compare-table">
   <table>
     <tr><th>類別</th><th>表達</th><th>意思</th></tr>
     <tr><td rowspan="4">體型</td><td class="m">grand / grande</td><td>高（tall）</td></tr>
@@ -3066,6 +3078,7 @@
     <tr><td class="m">les cheveux courts / longs</td><td>短髮 / 長髮</td></tr>
     <tr><td class="m">les cheveux frisés / raides</td><td>捲髮 / 直髮</td></tr>
   </table>
+  </div>
   <div class="note">
     <strong>cheuveux（頭髮）是陽性複數</strong> → 形容詞配陽性複數：<span class="fr-ex">les cheveux bruns</span>（不是 brunes）。<br><br>
     <strong>顏色規則整理：</strong><br>
@@ -3084,6 +3097,7 @@
     <span class="unit-tag">第10課</span>
     <span class="unit-title" id="topic-character-adjectives">Le caractère（性格形容詞）</span>
   </div>
+  <div class="compare-table">
   <table>
     <tr><th>陽性</th><th>陰性</th><th>意思</th></tr>
     <tr><td class="m">gentil</td><td class="m">gentille</td><td>善良（↔ méchant/méchante）</td></tr>
@@ -3099,6 +3113,7 @@
     <tr><td class="m">drôle</td><td class="m">drôle</td><td>有趣、搞笑（同形）</td></tr>
     <tr><td class="m">calme</td><td class="m">calme</td><td>冷靜（同形）</td></tr>
   </table>
+  </div>
   <div class="note">
     <strong>gentil vs généreux：</strong><br>
     <span class="fr-ex">Il est gentil</span> = 他是善良的人（個性）<br>
@@ -3129,6 +3144,7 @@
     <span class="unit-title" id="topic-stress-pronouns">Pronoms toniques（重讀人稱代詞）</span>
   </div>
   <p class="unit-intro">一般代詞（je/tu/il…）用在動詞前後；重讀代詞（pronoms toniques）用於強調、比較、以及 <strong>chez + 人</strong> 的句型。</p>
+  <div class="compare-table">
   <table>
     <tr><th>人稱</th><th>一般代詞</th><th>重讀代詞</th></tr>
     <tr><td>je</td><td>je / me</td><td class="m">moi</td></tr>
@@ -3140,6 +3156,7 @@
     <tr><td>ils</td><td>ils / les</td><td class="m">eux</td></tr>
     <tr><td>elles</td><td>elles / les</td><td class="m">elles</td></tr>
   </table>
+  </div>
   <div class="note">
     ⚠️ <strong>il → lui（不是 il），ils → eux（不是 ils）</strong>；elle / nous / vous 跟一般代詞相同。<br><br>
     <strong>① chez + pronom tonique</strong>（在某人家）<br>
@@ -3155,11 +3172,13 @@
     <span class="unit-tag">第11課</span>
     <span class="unit-title" id="topic-demenager">Déménager vs Emménager（搬出 vs 搬入）</span>
   </div>
+  <div class="compare-table">
   <table>
     <tr><th>動詞</th><th>意思</th><th>例句</th></tr>
     <tr><td class="m">déménager</td><td>搬出（move out）</td><td><span class="fr-ex">On a déménagé il y a 10 jours.</span></td></tr>
     <tr><td class="m">emménager</td><td>搬入（move in）</td><td><span class="fr-ex">On emménage dans le nouvel appartement.</span></td></tr>
   </table>
+  </div>
   <div class="note">
     順序：先 <strong>déménager</strong>（從舊家搬出），再 <strong>emménager</strong>（搬進新家）——兩個是不同方向，不能互換。<br>
     問來訪時間：<span class="fr-ex">Tu veux venir quand ?</span> → 回答：<span class="fr-ex">Samedi / Aujourd'hui / Demain / Le 24.</span>
@@ -3172,6 +3191,7 @@
     <span class="unit-tag">第11課</span>
     <span class="unit-title" id="topic-logement-vocab">Le logement — les pièces et l'équipement（住房詞彙）</span>
   </div>
+  <div class="compare-table">
   <table>
     <tr><th>詞彙</th><th>意思</th><th>備註</th></tr>
     <tr><td colspan="3" class="m">🏠 Intérieur（室內）</td></tr>
@@ -3192,6 +3212,7 @@
     <tr><td class="m">le lave-vaisselle</td><td>洗碗機</td><td>法國家庭幾乎都有</td></tr>
     <tr><td class="m">la cuisinière</td><td>瓦斯爐／電磁爐</td><td></td></tr>
   </table>
+  </div>
   <div class="note">
     <strong>問住房大小：</strong><br>
     <span class="fr-ex">Quelle est la surface ?</span> → <span class="fr-ex">La maison fait 100 m² (mètres carrés).</span>（≈ 30坪）<br>
@@ -3206,6 +3227,7 @@
     <span class="unit-title" id="topic-passe-compose">Le passé composé (1) — avoir + participe passé</span>
   </div>
   <p class="unit-intro">表示「已完成、已結束」的過去動作。結構 = <strong>avoir（現在式）+ participe passé（過去分詞）</strong>。-ER 動詞的過去分詞規則：去掉 -er，加 <strong>-é</strong>。</p>
+  <div class="compare-table">
   <table>
     <tr><th>avoir 變位</th><th>+ participe passé</th><th>例（trouver → trouvé）</th></tr>
     <tr><td class="m">j'ai</td><td rowspan="6">-ER → 去掉 -er 加 <strong>-é</strong></td><td><span class="fr-ex">j'ai trouvé</span></td></tr>
@@ -3215,6 +3237,8 @@
     <tr><td class="m">vous avez</td><td><span class="fr-ex">vous avez trouvé</span></td></tr>
     <tr><td class="m">ils/elles ont</td><td><span class="fr-ex">ils ont trouvé</span></td></tr>
   </table>
+  </div>
+  <div class="compare-table">
   <table>
     <tr><th>動詞</th><th>過去分詞</th><th>例句</th></tr>
     <tr><td class="m">trouver</td><td class="m">trouvé</td><td><span class="fr-ex">Vous avez trouvé des meubles ?</span>（你們找到家具了嗎？）</td></tr>
@@ -3224,6 +3248,7 @@
     <tr><td class="m">chercher</td><td class="m">cherché</td><td><span class="fr-ex">Nous avons cherché des meubles.</span></td></tr>
     <tr><td class="m">oublier</td><td class="m">oublié</td><td><span class="fr-ex">Tu as oublié de fermer la porte.</span></td></tr>
   </table>
+  </div>
   <div class="note">
     <strong>否定：n' + avoir + pas + participe passé</strong><br>
     <span class="fr-ex">On n'a pas trouvé de lit.</span>（我們沒找到床）<br>
@@ -3246,6 +3271,7 @@
     <span class="unit-title" id="topic-prepositions-lieu2">Les prépositions de lieu (2)（位置介系詞）</span>
   </div>
   <img src="assets/l11-prepositions-lieu.png" alt="位置介系詞向日葵圖" style="width:100%;border-radius:8px;margin-bottom:12px;display:block;">
+  <div class="compare-table">
   <table>
     <tr><th>介系詞</th><th>意思</th><th>例句</th></tr>
     <tr><td class="m">à gauche (de)</td><td>在…左邊</td><td><span class="fr-ex">à gauche du canapé</span></td></tr>
@@ -3258,6 +3284,7 @@
     <tr><td class="m">en face (de)</td><td>在…對面</td><td><span class="fr-ex">en face du canapé</span></td></tr>
     <tr><td class="m">entre</td><td>在…之間</td><td><span class="fr-ex">entre les deux chaises</span></td></tr>
   </table>
+  </div>
   <div class="note">
     <strong>縮寫：de + le = du、de + les = des</strong><br>
     <span class="fr-ex">à côté du meuble</span>（不是 de le）&emsp;<span class="fr-ex">à droite des fenêtres</span>（不是 de les）
@@ -3270,6 +3297,7 @@
     <span class="unit-tag">第11課</span>
     <span class="unit-title" id="topic-immeuble">L'immeuble（公寓大樓詞彙）</span>
   </div>
+  <div class="compare-table">
   <table>
     <tr><th>詞彙</th><th>意思</th><th>備註</th></tr>
     <tr><td class="m">l'appartement (m.)</td><td>公寓</td><td></td></tr>
@@ -3284,6 +3312,7 @@
     <tr><td class="m">la résidence</td><td>住宅社區</td><td></td></tr>
     <tr><td class="m">le/la voisin(e)</td><td>鄰居</td><td>Respectez vos voisins !</td></tr>
   </table>
+  </div>
 </div>
 
 <!-- ════════ 第11課：Interdiction / Demande ════════ -->
@@ -3293,6 +3322,7 @@
     <span class="unit-title" id="topic-interdiction-demande">Interdiction / Demande（禁止與請求句型）</span>
   </div>
   <p class="unit-intro">公寓規約（règlement intérieur）常見這幾種句型，都接 <strong>infinitif</strong>（動詞原形）。</p>
+  <div class="compare-table">
   <table>
     <tr><th>類型</th><th>句型</th><th>例句</th></tr>
     <tr><td rowspan="3">禁止</td>
@@ -3311,6 +3341,7 @@
     <tr><td class="m">Prière de + inf.</td>
         <td><span class="fr-ex">Prière de trier vos déchets.</span>（請做好垃圾分類）</td></tr>
   </table>
+  </div>
   <div class="note">
     <strong>道歉句型（s'excuser）：</strong><br>
     <span class="fr-ex">Désolé(e) pour le bruit.</span> ／ <span class="fr-ex">Pardon d'avance pour le bruit.</span>（提前為噪音道歉）
@@ -3324,12 +3355,14 @@
     <span class="unit-title" id="topic-cod-pronouns">Les pronoms COD (1)（直接受詞代詞）</span>
   </div>
   <p class="unit-intro">COD（Complément d'Objet Direct）取代句子中的直接受詞（人或物），放在動詞<strong>前面</strong>。</p>
+  <div class="compare-table">
   <table>
     <tr><th></th><th>單數</th><th>複數</th></tr>
     <tr><td>陽性</td><td class="m">le</td><td rowspan="3" class="m">les</td></tr>
     <tr><td>陰性</td><td class="m">la</td></tr>
     <tr><td>母音／啞音 h 前</td><td class="m">l'</td></tr>
   </table>
+  </div>
   <div class="note">
     <strong>替換示範：</strong><br>
     <span class="fr-ex">Je connais Sophie.</span> → <span class="fr-ex">Je <strong>la</strong> connais.</span><br>
@@ -3351,6 +3384,7 @@
     <span class="unit-tag">第11課</span>
     <span class="unit-title" id="topic-meubles">Les meubles（家具詞彙）</span>
   </div>
+  <div class="compare-table">
   <table>
     <tr><th>詞彙</th><th>意思</th><th>例句</th></tr>
     <tr><td class="m">les meubles (m.pl.)</td><td>家具（總稱）</td><td><span class="fr-ex">Vous avez trouvé des meubles ?</span></td></tr>
@@ -3362,6 +3396,7 @@
     <tr><td class="m">une table basse</td><td>茶几</td><td></td></tr>
     <tr><td class="m">des objets de décoration</td><td>裝飾物品</td><td></td></tr>
   </table>
+  </div>
 </div>
 
 <!-- ════════ 第11課：Vide grenier ════════ -->
