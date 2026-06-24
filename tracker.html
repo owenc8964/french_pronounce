@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>時數追蹤 — CLB7</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #07080f;
+  color: #ddd8cc;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  padding: 28px 16px 60px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 1.5rem; letter-spacing: 2px; color: #f0c060;
+  text-shadow: 0 0 20px rgba(240,192,96,0.4);
+  text-align: center; margin-bottom: 4px;
+}
+.sub { text-align: center; font-size: 0.75rem; color: #445060; margin-bottom: 28px; letter-spacing: 1px; }
+
+nav { text-align: center; margin-bottom: 20px; }
+nav a { color: #445060; font-size: 0.75rem; text-decoration: none; margin: 0 10px; }
+nav a:hover { color: #f0c060; }
+
+/* Countdown */
+.countdown-box {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 16px;
+}
+.countdown-days { font-size: 3rem; font-weight: 700; color: #f0c060;
+  text-shadow: 0 0 24px rgba(240,192,96,0.4); line-height: 1; }
+.countdown-label { font-size: 0.72rem; color: #445060; letter-spacing: 1px; text-transform: uppercase; margin-top: 6px; }
+.countdown-date { font-size: 0.8rem; color: #334050; margin-top: 4px; }
+
+/* Progress bar */
+.prog-section { background: #0d1020; border: 1px solid #1a2438; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+.prog-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.prog-label { font-size: 0.72rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; }
+.prog-val { font-size: 0.95rem; color: #f0c060; font-weight: 700; }
+.prog-track { background: #141928; border-radius: 4px; height: 10px; overflow: hidden; margin-bottom: 8px; }
+.prog-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #2a5a7a, #60a0d0); transition: width 0.8s ease; }
+.prog-sub { font-size: 0.72rem; color: #334050; text-align: right; }
+
+/* Stats grid */
+.stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.stat-box { background: #0d1020; border: 1px solid #1a2438; border-radius: 10px; padding: 14px 12px; text-align: center; }
+.stat-val { font-size: 1.5rem; font-weight: 700; color: #60a0d0; }
+.stat-label { font-size: 0.65rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+/* Timer */
+.timer-card { background: #0d1020; border: 1px solid #1a2438; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+.card-title { font-size: 0.72rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+.type-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.type-btn {
+  padding: 7px 14px; border-radius: 20px; border: 1px solid #1a2438;
+  background: #141928; color: #667080; font-size: 0.8rem; cursor: pointer;
+  font-family: inherit; transition: all 0.15s;
+}
+.type-btn.active { background: #1a2438; color: #f0c060; border-color: #f0c060; }
+
+.timer-display {
+  font-size: 3.5rem; font-weight: 700; text-align: center;
+  color: #ddd8cc; letter-spacing: 4px; margin-bottom: 16px;
+  font-variant-numeric: tabular-nums;
+}
+.timer-display.running { color: #60d090; text-shadow: 0 0 20px rgba(96,208,144,0.3); }
+
+.btn-row { display: flex; gap: 10px; justify-content: center; }
+button {
+  padding: 12px 28px; border-radius: 8px; border: none;
+  font-size: 0.9rem; cursor: pointer; font-family: inherit;
+  transition: opacity 0.15s, transform 0.1s;
+}
+button:active { transform: scale(0.97); }
+.btn-start { background: #1d5035; color: #60d090; }
+.btn-stop  { background: #4a1a18; color: #d07060; }
+.btn-log   { background: #1a2a4a; color: #60a0d0; }
+.btn-reset { background: #141928; color: #445060; }
+button:hover { opacity: 0.85; }
+button:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* Log */
+.log-title { font-size: 0.72rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.log-entry {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 8px; padding: 10px 14px; margin-bottom: 8px;
+}
+.log-left { display: flex; flex-direction: column; gap: 3px; }
+.log-date { font-size: 0.7rem; color: #445060; }
+.log-type { font-size: 0.82rem; color: #ddd8cc; }
+.log-dur  { font-size: 1rem; font-weight: 700; color: #60a0d0; }
+.empty { text-align: center; color: #334050; font-size: 0.85rem; padding: 32px 0; }
+
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: #1d5035; color: #60d090; padding: 10px 22px;
+  border-radius: 24px; font-size: 0.82rem; transition: transform 0.25s ease;
+  pointer-events: none; z-index: 99;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<h1>⏱ 時數追蹤</h1>
+<p class="sub">每次學習都計時 · 對準 700 小時目標</p>
+
+<nav>
+  <a href="quiz.html">Quiz</a>
+  <a href="map.html">地圖</a>
+  <a href="writing.html">造句</a>
+  <a href="french_notes.html">筆記</a>
+</nav>
+
+<!-- Countdown -->
+<div class="countdown-box">
+  <div class="countdown-days" id="daysLeft">—</div>
+  <div class="countdown-label">距離考試剩餘天數</div>
+  <div class="countdown-date">目標：2027年6月1日考過 CLB 7</div>
+</div>
+
+<!-- Progress to 700h -->
+<div class="prog-section">
+  <div class="prog-header">
+    <span class="prog-label">累積時數進度</span>
+    <span class="prog-val" id="hoursVal">0 / 700 小時</span>
+  </div>
+  <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  <div class="prog-sub" id="progSub">還需要 700 小時</div>
+</div>
+
+<!-- Stats -->
+<div class="stats-row">
+  <div class="stat-box">
+    <div class="stat-val" id="statToday">0h</div>
+    <div class="stat-label">今天</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val" id="statWeek">0h</div>
+    <div class="stat-label">本週</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val" id="statTotal">0h</div>
+    <div class="stat-label">累積總計</div>
+  </div>
+</div>
+
+<!-- Timer -->
+<div class="timer-card">
+  <div class="card-title">本次 Session 計時</div>
+  <div class="type-row" id="typeRow">
+    <button class="type-btn active" data-type="Quiz">🃏 Quiz</button>
+    <button class="type-btn" data-type="筆記複習">📖 筆記複習</button>
+    <button class="type-btn" data-type="口說">🗣 口說</button>
+    <button class="type-btn" data-type="聽力">🎧 聽力</button>
+    <button class="type-btn" data-type="造句">✍️ 造句</button>
+  </div>
+  <div class="timer-display" id="timerDisplay">00:00:00</div>
+  <div class="btn-row">
+    <button class="btn-start" id="btnStart">▶ 開始</button>
+    <button class="btn-stop"  id="btnStop"  disabled>⏹ 暫停</button>
+    <button class="btn-log"   id="btnLog"   disabled>✅ 記錄</button>
+    <button class="btn-reset" id="btnReset">↺ 重置</button>
+  </div>
+</div>
+
+<!-- Log -->
+<div class="log-title">學習記錄</div>
+<div id="logList"></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY = 'clb7_tracker';
+const GOAL_H = 700;
+const EXAM_DATE = new Date('2027-06-01T00:00:00');
+
+function load() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } }
+function save(d) { localStorage.setItem(KEY, JSON.stringify(d)); }
+
+// Countdown
+function updateCountdown() {
+  const now = new Date(); now.setHours(0,0,0,0);
+  const diff = Math.ceil((EXAM_DATE - now) / 86400000);
+  document.getElementById('daysLeft').textContent = diff > 0 ? diff : 0;
+}
+
+// Stats
+function fmtH(sec) {
+  const h = sec / 3600;
+  return h < 10 ? h.toFixed(1) + 'h' : Math.round(h) + 'h';
+}
+
+function updateStats() {
+  const data = load();
+  const totalSec = data.reduce((s, e) => s + e.sec, 0);
+  const totalH = totalSec / 3600;
+
+  // Today
+  const todayStr = new Date().toLocaleDateString('zh-TW');
+  const todaySec = data.filter(e => e.date === todayStr).reduce((s, e) => s + e.sec, 0);
+
+  // This week
+  const now = new Date();
+  const weekStart = new Date(now); weekStart.setDate(now.getDate() - now.getDay());
+  weekStart.setHours(0,0,0,0);
+  const weekSec = data.filter(e => new Date(e.ts) >= weekStart).reduce((s, e) => s + e.sec, 0);
+
+  document.getElementById('statToday').textContent = fmtH(todaySec);
+  document.getElementById('statWeek').textContent  = fmtH(weekSec);
+  document.getElementById('statTotal').textContent = fmtH(totalSec);
+
+  const pct = Math.min(100, totalH / GOAL_H * 100);
+  document.getElementById('progFill').style.width = pct.toFixed(1) + '%';
+  document.getElementById('hoursVal').textContent  = `${totalH.toFixed(1)} / ${GOAL_H} 小時`;
+  const remain = Math.max(0, GOAL_H - totalH);
+  document.getElementById('progSub').textContent = remain > 0
+    ? `還需要 ${remain.toFixed(1)} 小時`
+    : '✓ 已達目標！';
+}
+
+function renderLog() {
+  const data = load().slice().reverse().slice(0, 30);
+  const el = document.getElementById('logList');
+  if (data.length === 0) { el.innerHTML = '<div class="empty">還沒有記錄 — 計時後按「記錄」儲存</div>'; return; }
+  el.innerHTML = data.map(e => {
+    const m = Math.floor(e.sec / 60), h = Math.floor(m / 60), rm = m % 60;
+    const dur = h > 0 ? `${h}h ${rm}m` : `${m}m`;
+    return `<div class="log-entry">
+      <div class="log-left">
+        <span class="log-date">${e.date}</span>
+        <span class="log-type">${e.type}</span>
+      </div>
+      <span class="log-dur">${dur}</span>
+    </div>`;
+  }).join('');
+}
+
+// Timer
+let elapsed = 0, startTs = null, interval = null;
+let selectedType = 'Quiz';
+
+function fmtTimer(sec) {
+  const h = String(Math.floor(sec / 3600)).padStart(2,'0');
+  const m = String(Math.floor((sec % 3600) / 60)).padStart(2,'0');
+  const s = String(sec % 60).padStart(2,'0');
+  return `${h}:${m}:${s}`;
+}
+
+function tick() {
+  elapsed = Math.floor((Date.now() - startTs) / 1000) + (elapsed || 0);
+  startTs = Date.now();
+  document.getElementById('timerDisplay').textContent = fmtTimer(elapsed);
+}
+
+document.getElementById('typeRow').addEventListener('click', e => {
+  const btn = e.target.closest('.type-btn');
+  if (!btn) return;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedType = btn.dataset.type;
+});
+
+document.getElementById('btnStart').addEventListener('click', () => {
+  startTs = Date.now();
+  interval = setInterval(() => {
+    elapsed++;
+    document.getElementById('timerDisplay').textContent = fmtTimer(elapsed);
+  }, 1000);
+  document.getElementById('timerDisplay').classList.add('running');
+  document.getElementById('btnStart').disabled = true;
+  document.getElementById('btnStop').disabled = false;
+  document.getElementById('btnLog').disabled = false;
+});
+
+document.getElementById('btnStop').addEventListener('click', () => {
+  clearInterval(interval); interval = null;
+  document.getElementById('timerDisplay').classList.remove('running');
+  document.getElementById('btnStart').disabled = false;
+  document.getElementById('btnStop').disabled = true;
+});
+
+document.getElementById('btnLog').addEventListener('click', () => {
+  if (elapsed < 60) { showToast('至少計時 1 分鐘才能記錄'); return; }
+  clearInterval(interval); interval = null;
+  const data = load();
+  data.push({
+    ts: Date.now(),
+    date: new Date().toLocaleDateString('zh-TW'),
+    type: selectedType,
+    sec: elapsed
+  });
+  save(data);
+  elapsed = 0; startTs = null;
+  document.getElementById('timerDisplay').textContent = '00:00:00';
+  document.getElementById('timerDisplay').classList.remove('running');
+  document.getElementById('btnStart').disabled = false;
+  document.getElementById('btnStop').disabled = true;
+  document.getElementById('btnLog').disabled = true;
+  updateStats();
+  renderLog();
+  showToast('✓ 已記錄！繼續加油');
+});
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  clearInterval(interval); interval = null;
+  elapsed = 0; startTs = null;
+  document.getElementById('timerDisplay').textContent = '00:00:00';
+  document.getElementById('timerDisplay').classList.remove('running');
+  document.getElementById('btnStart').disabled = false;
+  document.getElementById('btnStop').disabled = true;
+  document.getElementById('btnLog').disabled = true;
+});
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+updateCountdown();
+updateStats();
+renderLog();
+</script>
+</body>
+</html>
