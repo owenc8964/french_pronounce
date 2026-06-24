@@ -1,87 +1,154 @@
 # CLB7 法語學習系統 — 交接文件
 
-> 給新 session 的 Claude：Owen 在學法語（CLB7 課程，目前 A1/A2），
-> 這份文件是完整的專案快照，讀完就能直接上手。
+> **給新 session 的 Claude：**
+> Owen 的目標只有一個：**2027年6月1日前考過 CLB 7（B2）**。
+> 所有工具、系統、計畫都以「真的考過」為前提，不是模擬努力。
+> 讀完這份文件就能接上脈絡，直接繼續推進。
 
 ---
 
-## 最新進度（2026-06-17 更新）
+## 核心目標與現況（2026-06-25 更新）
 
-- 學習時間：2026-05-14 ~ 2026-06-17（34天）
-- 完成課程：9堂，平均 3.7 天/課
-- Quiz BANK：379題（包含Duolingo框架庫15題）
-- 最大文法缺口：passé composé（尚無題目）
-
----
-
-## 戰略分析：A1 → CLB7（B2）一年路線圖
-
-### 最高優先：接下來必須攻的文法
-
-1. **passé composé** — 最大弱點，avoir/être + participe passé，accord 規則
-2. **反身動詞** (verbes pronominaux) — 已在第9課出現，需強化
-3. **pronoms COD/COI** — 代詞替換，B1 必備
-4. **subjonctif présent** — 進入 B1/B2 的門檻
+| 項目 | 內容 |
+|------|------|
+| **目標** | CLB 7（= CEFR B2）|
+| **考試** | TEF Canada 或 TCF Canada |
+| **截止日** | 2027年6月1日 |
+| **剩餘天數** | 341 天 |
+| **目前程度** | A1，第11課，約 20 小時課時 |
+| **每天目標** | 1.5–2 小時有效練習（含通勤被動聽力）|
+| **總時數目標** | 700 小時（多方研究數據交叉驗證）|
 
 ---
 
-## 檔案結構
+## 重要認知：CLB 7 是什麼
+
+- CLB 7 ≈ **B2**（不是 B1，比原本以為的高一級）
+- TEF/TCF Canada 考 **四技能**：聽力、閱讀、寫作、口說
+- **四個技能全部要到 CLB 7**，最低分那個才是你的等級
+- 聽力每題只有 **54 秒**，是最多人低估的環節
+- 考試技巧是獨立技能，語法好≠考試會過
+
+---
+
+## 一年藍圖
+
+| 階段 | 時間 | 核心任務 | 累積時數 |
+|------|------|---------|---------|
+| **A1 完成** | 現在 → 2026年8月底 | 日常生活能不看筆記說清楚 | +80小時 |
+| **A2** | 2026年9–11月 | 聽懂對話、寫簡單短文 | +200小時 |
+| **B1 + 考試格式入門** | 2026年12月–2027年2月 | 表達意見、80字短文 | +200小時 |
+| **B2 + 模考班衝刺** | 2027年3–5月 | TEF/TCF 模擬、四技能同步到位 | +150小時 |
+| **考試** | 2027年6月1日前 | — | 700小時 |
+
+---
+
+## 老師的角色 vs Owen 的角色
+
+- **老師** = 方向校正、錯誤糾正（羅盤）
+- **Owen** = 速度管理、策略執行（駕駛）
+- 老師說：A1 先打好基礎，A2 以後才針對考試方向訓練
+- Owen 決定何時 A1 夠了可以往前走，不等老師宣布
+
+---
+
+## A1「真的完成」的標準
+
+> 不看筆記、不開提示，能用法文說清楚：
+> - 我是誰、住哪、做什麼
+> - 我的家長什麼樣
+> - 我今天做了什麼（passé composé）
+> - 我喜歡什麼
+
+---
+
+## Owen 的學習現況與條件
+
+**有在做的：**
+- 上課（家教，方向校正）
+- Duolingo（口說輸出）
+- 通勤聽 Podcast + 女兒聽法文兒歌（聽力輸入）
+- 本系統 Quiz + 筆記複習
+
+**缺的：**
+- 寫作輸出（A2 以後開始）
+- 口說產出的即時糾錯（頻率還不夠）
+
+**現實條件：**
+- 有工作、有家庭，不是全職學生
+- 每天沒有完整 2 小時的固定空檔
+- 通勤、零碎時間是真實資產
+- 最後衝刺考慮報**模考班**（預計 2027年 3–4 月）
+
+---
+
+## 這個 Session 討論到的工法（待實作）
+
+### 1. 每日造句練習（最高優先）
+- 每天寫 **2 句法文**（不要多，要頻繁）
+- 對應當天複習的課的語法
+- 用 Claude AI 評分，格式固定：
+
+```
+你是法語 A1/A2 老師。請評估以下學生寫的法文句子：
+
+[句子1]
+[句子2]
+
+請用以下格式回覆（不要多說）：
+分數：X/10
+錯誤：（沒有就寫「無」）
+正確版：
+建議：（一句話）
+```
+
+- 拿到分數後記錄：日期 / 分數
+- 統計：累積次數 + 平均分
+
+### 2. 計時器與時數追蹤
+- 網頁版 session 計時器（存 localStorage）
+- 記錄：日期 / 類型（Quiz / 看筆記 / 複習）/ 時長
+- 顯示：本週時數、累積時數、距離 700 小時還差多少
+
+### 3. 地圖校正
+- `map.html` 現在停在第9課，需要更新到第11課
+- 地圖結構：總共 35 課，60 格，A1/A2/B1/B2 各 15 格
+
+### 4. 定期檢查點（建議每兩週）
+- 匯出 quiz 數據（`exportAllData()`）傳給 Claude 做趨勢分析
+- 造句平均分有沒有在提升
+- 本週有效時數是否達標
+- 哪個 topic 還在弱點區
+
+---
+
+## 現有系統狀態（2026-06-25）
 
 | 檔案 | 用途 | 狀態 |
 |------|------|------|
-| `quiz.html` | 主 quiz 系統，SRS + 能力地圖 | GitHub Pages 部署 |
-| `french_notes.html` | 第1-9課筆記 | git 追蹤，未部署 |
-| `map.html` | 課程地圖（60格） | git 追蹤，未部署 |
-| `table_drill.html` | 動詞變位練習 | GitHub Pages 部署 |
-| `french_basics.html` | 基礎發音 | GitHub Pages 部署 |
+| `quiz.html` | 主 quiz 系統，SRS + 能力地圖 | ✅ GitHub Pages 部署 |
+| `french_notes.html` | 第1–11課筆記 | ✅ 已更新，表格格式修正 |
+| `map.html` | 課程地圖（60格） | ⚠️ 停在第9課，待更新 |
+| `table_drill.html` | 動詞變位練習 | ✅ GitHub Pages 部署 |
+| `french_basics.html` | 基礎發音 | ✅ GitHub Pages 部署 |
+
+**Quiz 題庫：** 第1–11課，共 432+ 題（今日新增第11課 53 題）
+
+**第11課涵蓋：** pronoms toniques、住房詞彙、passé composé、介系詞 (2)、禁止請求句型、COD 代詞
 
 ---
 
-## Quiz 系統重要細節
+## 下一步（依優先序）
 
-### SRS key pattern
-- `clb7_q_{id}` → `{w, c, last}` (wrong, correct, lastDate)
-- `clb7_dq_{id}` → drill SRS
-
-### topic tag 系統（33個主題）
-- 全部 379 題都有 `topic:'xxx'` 欄位
-- `TOPIC_LABELS` dict 有中文對照
-- lesson:0 = 框架庫（Duolingo 誤區 + 句型慣用法，不是真實課次）
-
-### 匯出 JSON 分析協議
-- `exportAllData()` 下載含 `exportedAt` 時間戳的 JSON
-- **先確認** exportedAt 是否比上次分析更新，避免重複分析
-- 趨勢分析 = 兩個快照的 `topicSummary[].pct` 差值
+1. **實作每日造句記錄功能**（最直接連結到掌握程度）
+2. **實作計時器 + 時數追蹤**（量的透明化）
+3. **更新地圖到第11課**
+4. **兩週後** 匯出 quiz 數據做第一次趨勢分析
 
 ---
 
-## 第8課筆記（2026-06-14上課）
-9 單元：形容詞位置、衣服/配件/材質、尺寸、天氣+季節、futur proche、venir變位、ce/cet/cette/ces、科技物品+ça sert à quoi、每日作息反身動詞
+## 核心原則（每次 session 開始前確認）
 
-## 第9課筆記（2026-06-16上課）
-8 單元：journée vs jour、反身動詞變位+否定、睡眠用語差別、Mathilde Boulesteix閱讀詞彙、on vs nous、pouvoir vs vouloir、邀約句型、頻率副詞
-
----
-
-## 地圖解鎖狀態（19/60格）
-
-已解鎖主題：salutations, alphabet, chiffres, couleurs, famille, nourriture, boissons, corps, maison, ville, verbes-er, etre-avoir, articles, adjectifs, heure(L6), transports(L6), vetements(L7), meteo(L8), futur-proche(L8), routine(L8)
-
----
-
-## Duolingo 5大誤區（lesson:0）
-
-已轉為15題進入 BANK：
-1. 冠詞 (articles)：du jazz, du lait, 音樂類冠詞
-2. 動詞變位 (etre-avoir, irregular-verbs-3rd-group)：tu es, je viens, elle veut
-3. à+地點介詞 (preposition-place-transport)：On va à la piscine
-4. ce/cet (demonstrative-adj)：cet animal, cet hôtel
-5. avoir感受句 (etre-avoir)：Il a chaud, J'ai faim
-
----
-
-## 下一步建議
-
-1. **第10課**：上完後補充 french_notes.html + quiz 題目（passé composé 優先）
-2. **定期匯出 JSON**：每2週下載一次傳給 Claude 做趨勢分析
-3. **地圖解鎖**：可考慮新增 passé-composé, pronoms-cod 格子
+> 我們在追一個真實目標。
+> 不玩努力的遊戲，不做白努力的事。
+> 每一個動作都問：「這讓我更接近 2027年6月1日考過 CLB 7 嗎？」
