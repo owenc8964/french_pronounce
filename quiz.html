@@ -1076,6 +1076,81 @@ const BANK = [
   { lesson:10, topic:'character-adjectives', type:'choose', q:'「comme」在比較句裡的意思？', hint:'比較', a:'像、就像（like）', aNote:'comme = like；Il est né en 1998, comme moi.（他1998年生，跟我一樣）；bleu comme le ciel（藍得像天空）', opts:['像、就像（like）','因為（because）','所以（so）','但是（but）'] },
   { lesson:10, topic:'character-adjectives', type:'choose', q:'「assez」有兩個意思，分別是？', hint:'足夠 / 相當', a:'① 足夠（enough）② 相當・挺（pretty/quite）', aNote:'Il a assez dormi.（他睡夠了）vs Il est assez grand.（他挺高的）——依上下文判斷', opts:['① 足夠（enough）② 相當・挺（pretty/quite）','① 太（too much）② 一點點（a little）','① 從不 ② 總是','只有一個意思：足夠'] },
   { lesson:10, topic:'character-adjectives', type:'trans',  q:'她很認真，跟我完全不一樣。', hint:'sérieuse / comme', a:'Elle est sérieuse, pas comme moi.', aNote:'pas comme moi = 不像我；comme 也可以用在否定：pas comme + 名詞', askClaude:true },
+
+  // ══════════════════════════════════════════════════════════════
+  // 第11課：住房・Passé composé・介系詞・COD・Pronoms toniques
+  // ══════════════════════════════════════════════════════════════
+
+  // ── Pronoms toniques ─────────────────────────────────────────
+  { lesson:11, topic:'pronoms-toniques', type:'fill',   q:'il → 重讀代詞是？',                  hint:'⚠️ 不是 il', a:'lui', aNote:'il → lui（常見錯誤：不是 il）；elle 和一般代詞相同' },
+  { lesson:11, topic:'pronoms-toniques', type:'fill',   q:'ils → 重讀代詞是？',                  hint:'⚠️ 不是 ils', a:'eux', aNote:'ils → eux（常見錯誤：不是 ils）；elles 和一般代詞相同' },
+  { lesson:11, topic:'pronoms-toniques', type:'fill',   q:'「在他家」：chez _____',              hint:'il → ?', a:'lui', aNote:'chez lui = 在他家；chez + pronom tonique' },
+  { lesson:11, topic:'pronoms-toniques', type:'fill',   q:'「在他們家」：chez _____',            hint:'ils → ?', a:'eux', aNote:'chez eux = 在他們家' },
+  { lesson:11, topic:'pronoms-toniques', type:'choose', q:'「我嘛，我很愛喝咖啡」強調句型？',   hint:'重讀代詞放句首', a:'Moi, j\'adore le café.', aNote:'強調主詞：Moi, j\'adore / Toi, tu aimes…，重讀代詞放句首再接正常主詞+動詞', opts:['Moi, j\'adore le café.','Je moi adore le café.','Il moi, j\'adore le café.','Lui, j\'adore le café.'] },
+  { lesson:11, topic:'pronoms-toniques', type:'choose', q:'「和我一樣」怎麼說？',                hint:'比較 / comme', a:'comme moi', aNote:'comme + pronom tonique；pas comme moi = 不像我', opts:['comme moi','comme je','avec moi','pour moi'] },
+  { lesson:11, topic:'pronoms-toniques', type:'trans',  q:'我喜歡咖啡，你呢？', hint:'et toi', a:'J\'aime le café, et toi ?', aNote:'et toi ? = 你呢？（強調對方）', askClaude:true },
+  { lesson:11, topic:'pronoms-toniques', type:'trans',  q:'他在他家工作。', hint:'chez lui', a:'Il travaille chez lui.', aNote:'chez lui = 在他自己家（pronom tonique）', askClaude:true },
+
+  // ── Déménager vs Emménager ───────────────────────────────────
+  { lesson:11, topic:'vocab-housing', type:'choose', q:'「搬出舊家」用哪個動詞？', hint:'dé- 前綴 = 離開', a:'déménager', aNote:'déménager = 搬出（move out）；emménager = 搬入（move in）；順序：先 dé- 再 em-', opts:['déménager','emménager','aménager','ménager'] },
+  { lesson:11, topic:'vocab-housing', type:'choose', q:'「搬進新公寓」用哪個動詞？', hint:'em- 前綴 = 進入', a:'emménager', aNote:'emménager = 搬入（move in）；On emménage dans le nouvel appartement.', opts:['déménager','emménager','partir','arriver'] },
+  { lesson:11, topic:'vocab-housing', type:'fill',   q:'他們十天前搬家了：Ils ont déménagé _____ dix jours.', hint:'「…前」的表達', a:'il y a', aNote:'il y a + 時間 = …前；il y a 10 jours（10天前）/ il y a une semaine（一週前）' },
+
+  // ── Les pièces et l'équipement ───────────────────────────────
+  { lesson:11, topic:'vocab-housing', type:'choose', q:'chambre 和 pièce 有什麼差別？', hint:'泛指 vs 臥室', a:'chambre = 臥室；pièce = 泛指任何房間', aNote:'pièce 是泛稱（any room）；chambre 特指臥室；Il y a 4 pièces 指4個房間（含廚房）', opts:['chambre = 臥室；pièce = 泛指任何房間','兩個完全同義','pièce = 臥室；chambre = 廚房','chambre 只用在飯店'] },
+  { lesson:11, topic:'vocab-housing', type:'choose', q:'salon + salle à manger 合一稱為？', hint:'起居室', a:'le séjour', aNote:'le séjour = 客廳和餐廳合一的起居室（open-plan living）', opts:['le séjour','la salle','le salon','la chambre'] },
+  { lesson:11, topic:'vocab-housing', type:'fill',   q:'「閣樓」怎麼說？（vide-_____ = 跳蚤市集）', hint:'堆雜物的地方', a:'grenier', aNote:'le grenier = 閣樓；vide-grenier（清空閣樓）= 法國的車庫拍賣文化' },
+  { lesson:11, topic:'vocab-housing', type:'fill',   q:'「冰箱」的口語俗稱（品牌名轉通用詞）：le _____', hint:'不是 réfrigérateur', a:'frigo', aNote:'le frigo = 冰箱（réfrigérateur 的口語縮寫；和英文的 fridge 同字根）' },
+  { lesson:11, topic:'vocab-housing', type:'choose', q:'「問住房坪數」怎麼說？', hint:'surface / m²', a:'Quelle est la surface ?', aNote:'Quelle est la surface ? → La maison fait 100 m²（100平方公尺 ≈ 30坪）', opts:['Quelle est la surface ?','Combien d\'étages ?','C\'est grand comment ?','Quelle est la taille ?'] },
+  { lesson:11, topic:'vocab-housing', type:'trans',  q:'浴室在哪裡？', hint:'salle de bain', a:'Où est la salle de bain ?', aNote:'la salle de bain = 浴室（bain = 浴缸）', askClaude:true },
+
+  // ── L'immeuble ───────────────────────────────────────────────
+  { lesson:11, topic:'vocab-housing', type:'choose', q:'ascenseur、couloir、escalier、hall 有什麼共同點？', hint:'公共空間', a:'都是 parties communes（公共區域）', aNote:'公寓的 parties communes = 所有住戶共用的空間（電梯、走廊、樓梯、大廳）', opts:['都是 parties communes（公共區域）','都在室外','都屬於私人空間','都是廚房設備'] },
+  { lesson:11, topic:'vocab-housing', type:'fill',   q:'「腳踏車停放室」：le local à _____', hint:'véhicule à pédales', a:'vélos', aNote:'le local à vélos = 腳踏車停放室；le local à poubelles = 垃圾房' },
+  { lesson:11, topic:'vocab-housing', type:'trans',  q:'請尊重你的鄰居！', hint:'Respectez / voisins', a:'Respectez vos voisins !', aNote:'voisin(e) = 鄰居；Respectez（vous 命令式）', askClaude:true },
+
+  // ── Interdiction / Demande ───────────────────────────────────
+  { lesson:11, topic:'interdiction-demande', type:'choose', q:'「禁止吸菸」哪個說法是錯的？', hint:'三種正確格式', a:'Pas fumer.', aNote:'正確：Défense de fumer. / Interdiction de fumer. / Il est interdit de fumer.；Ne pas fumer. 也對（Ne pas + infinitif）', opts:['Défense de fumer.','Il est interdit de fumer.','Pas fumer.','Ne pas fumer.'] },
+  { lesson:11, topic:'interdiction-demande', type:'fill',   q:'「請關門」（禮貌請求）：Merci _____ fermer la porte d\'entrée.', hint:'Merci + ?', a:'de', aNote:'Merci de + infinitif = 禮貌請求；Prière de + infinitif 也是同類句型' },
+  { lesson:11, topic:'interdiction-demande', type:'choose', q:'「Prière de trier vos déchets.」是什麼意思？', hint:'trier = 分類；déchets = 垃圾', a:'請做好垃圾分類。', aNote:'Prière de + infinitif = 禮貌請求；trier = 分類；déchets = 垃圾', opts:['請做好垃圾分類。','禁止丟垃圾。','禁止在此停留。','請保持安靜。'] },
+  { lesson:11, topic:'interdiction-demande', type:'fill',   q:'「禁止在草坪上走」：_____ de marcher sur la pelouse.', hint:'名詞式禁止', a:'Défense', aNote:'Défense de + infinitif = 禁止；pelouse = 草坪' },
+  { lesson:11, topic:'interdiction-demande', type:'trans',  q:'提前為噪音道歉。', hint:'Pardon d\'avance / bruit', a:'Pardon d\'avance pour le bruit.', aNote:'d\'avance = 提前；pour le bruit = 為了噪音；也可說 Désolé(e) pour le bruit.', askClaude:true },
+
+  // ── Passé composé ────────────────────────────────────────────
+  { lesson:11, topic:'passe-compose', type:'fill',   q:'trouver → 過去分詞是？', hint:'-ER 動詞規則', a:'trouvé', aNote:'-ER 動詞：去掉 -er，加 -é → trouver → trouvé' },
+  { lesson:11, topic:'passe-compose', type:'fill',   q:'acheter → 過去分詞是？', hint:'-ER 動詞規則', a:'acheté', aNote:'acheter → acheté（-er → -é）' },
+  { lesson:11, topic:'passe-compose', type:'fill',   q:'déménager → 過去分詞是？', hint:'-ER 動詞規則', a:'déménagé', aNote:'déménager → déménagé（-er → -é）' },
+  { lesson:11, topic:'passe-compose', type:'fill',   q:'「你們找到家具了嗎？」：Vous _____ trouvé des meubles ?', hint:'avoir 現在式（vous）', a:'avez', aNote:'passé composé = avoir（現在式）+ participe passé；vous → avez' },
+  { lesson:11, topic:'passe-compose', type:'fill',   q:'「我們10天前搬家了」：On _____ déménagé il y a 10 jours.', hint:'avoir 現在式（on）', a:'a', aNote:'on → il/elle/on → a；On a déménagé il y a 10 jours.' },
+  { lesson:11, topic:'passe-compose', type:'fill',   q:'「我們沒找到床」：On n\'_____ pas trouvé de lit.', hint:'否定：ne…pas 包住 avoir', a:'a', aNote:'否定：n\' + avoir + pas + participe passé；母音前 ne → n\'' },
+  { lesson:11, topic:'passe-compose', type:'choose', q:'Passé composé 否定句，ne 和 pas 放在哪裡？', hint:'包住 avoir', a:'ne 在 avoir 前，pas 在 avoir 後（participe passé 前）', aNote:'On n\'a pas trouvé = ne + a + pas + trouvé；⚠️ ne → n\' 因為 avoir 以母音開頭', opts:['ne 在 avoir 前，pas 在 avoir 後（participe passé 前）','ne 和 pas 包住整個句子','ne 在 participe passé 前，pas 在後','pas 在動詞最後'] },
+  { lesson:11, topic:'passe-compose', type:'fill',   q:'「他們買了一個衣櫃」：Ils _____ acheté une armoire.', hint:'avoir（ils）', a:'ont', aNote:'ils/elles → ont；Ils ont acheté une armoire.' },
+  { lesson:11, topic:'passe-compose', type:'trans',  q:'我買了一張床和兩張扶手椅。', hint:'avoir + acheté', a:'J\'ai acheté un lit et deux fauteuils.', aNote:'j\'ai acheté（passé composé）；⚠️ fauteuil（m）= 扶手椅', askClaude:true },
+  { lesson:11, topic:'passe-compose', type:'trans',  q:'他們沒有裝潢公寓。', hint:'décorer / négation', a:'Ils n\'ont pas décoré l\'appartement.|Ils n\'ont pas décoré leur appartement.', aNote:'n\' + ont + pas + décoré；décorer → décoré', askClaude:true },
+  { lesson:11, topic:'passe-compose', type:'trans',  q:'你忘記關門了。', hint:'oublier / porte', a:'Tu as oublié de fermer la porte.', aNote:'oublier de + infinitif = 忘記做…；oublier → oublié', askClaude:true },
+
+  // ── Prépositions de lieu (2) ─────────────────────────────────
+  { lesson:11, topic:'prepositions-lieu2', type:'choose', q:'「在沙發旁邊」怎麼說？', hint:'côté', a:'à côté du canapé', aNote:'à côté de + le = à côté du；⚠️ de + le = du', opts:['à côté du canapé','à côté le canapé','à côté de canapé','au côté du canapé'] },
+  { lesson:11, topic:'prepositions-lieu2', type:'fill',   q:'「在窗戶右邊」：à droite _____ la fenêtre', hint:'de + la = ?', a:'de', aNote:'à droite de la fenêtre（la 不縮寫，de la 保持原樣）；à côté du（de + le）、à côté des（de + les）' },
+  { lesson:11, topic:'prepositions-lieu2', type:'fill',   q:'「在兩張椅子之間」：_____ les deux chaises', hint:'between', a:'entre', aNote:'entre = 在…之間（between）；entre 後接名詞不需要 de' },
+  { lesson:11, topic:'prepositions-lieu2', type:'fill',   q:'「在沙發對面」：en face _____ canapé', hint:'de + le = ?', a:'du', aNote:'en face de + le = en face du；de + le = du' },
+  { lesson:11, topic:'prepositions-lieu2', type:'choose', q:'「de + les」縮寫成？', hint:'縮寫規則', a:'des', aNote:'de + le = du；de + les = des；de + la 和 de + l\' 不縮寫', opts:['des','les','aux','du'] },
+  { lesson:11, topic:'prepositions-lieu2', type:'trans',  q:'花瓶在電視旁邊。', hint:'à côté de', a:'Le vase est à côté de la télé.|Le vase est à côté de la télévision.', aNote:'à côté de + la télé（陰性，不縮寫）', askClaude:true },
+  { lesson:11, topic:'prepositions-lieu2', type:'trans',  q:'把地毯放在桌子下面。', hint:'mettre / sous', a:'Je place le tapis sous la table.|Mets le tapis sous la table.', aNote:'sous = 在…下面；place/mets = 放', askClaude:true },
+
+  // ── Les pronoms COD ──────────────────────────────────────────
+  { lesson:11, topic:'cod-pronouns', type:'choose', q:'「Je connais Sophie.」用 COD 代替 Sophie：', hint:'Sophie 是陰性', a:'Je la connais.', aNote:'Sophie（陰性單數）→ la；COD 放在動詞前', opts:['Je la connais.','Je le connais.','Je lui connais.','Je les connais.'] },
+  { lesson:11, topic:'cod-pronouns', type:'choose', q:'「J\'adore ce film.」用 COD 代替 ce film：', hint:'film 是陽性，但注意母音', a:'Je l\'adore.', aNote:'ce film（陽性）→ le，但後接母音開頭動詞 adore → 縮寫成 l\'；Je l\'adore.', opts:['Je l\'adore.','Je le adore.','Je la adore.','Je lui adore.'] },
+  { lesson:11, topic:'cod-pronouns', type:'fill',   q:'「Il aime ses voisins.」→ Il _____ aime.', hint:'voisins = 複數', a:'les', aNote:'ses voisins（複數）→ les；les 放在動詞前：Il les aime.' },
+  { lesson:11, topic:'cod-pronouns', type:'fill',   q:'COD 否定句：「我不認識她」：Je ne _____ connais pas.', hint:'COD 放哪裡', a:'la', aNote:'否定：ne + COD + 動詞 + pas；Je ne la connais pas.（la 在動詞前，ne…pas 包住動詞）' },
+  { lesson:11, topic:'cod-pronouns', type:'choose', q:'COD 和 COI 最大的差別？', hint:'介系詞', a:'COD = 直接受詞（無介系詞）；COI = 間接受詞（有 à）', aNote:'COD：J\'aime Sophie → Je la aime；COI：Je parle à Sophie → 後續課程學', opts:['COD = 直接受詞（無介系詞）；COI = 間接受詞（有 à）','COD 用在人；COI 用在物','COD 放動詞後；COI 放動詞前','兩個意思完全相同'] },
+  { lesson:11, topic:'cod-pronouns', type:'trans',  q:'你認識 Marc 和 Lydia 嗎？— 我有點認識他們。', hint:'les / un peu', a:'Tu connais Marc et Lydia ? — Je les connais un peu.', aNote:'Marc et Lydia（複數）→ les；un peu = 有點、一些', askClaude:true },
+  { lesson:11, topic:'cod-pronouns', type:'trans',  q:'我很愛這個街區，我覺得它很宜人。', hint:'le / trouver / agréable', a:'J\'adore ce quartier, je le trouve très agréable.', aNote:'ce quartier（陽性）→ le；trouver + adj. = 覺得…（le trouve agréable）', askClaude:true },
+
+  // ── Les meubles ──────────────────────────────────────────────
+  { lesson:11, topic:'vocab-housing', type:'fill',   q:'「沙發」：un _____', hint:'French borrow word', a:'canapé', aNote:'un canapé = 沙發；un fauteuil = 扶手椅（有扶手的單人椅）' },
+  { lesson:11, topic:'vocab-housing', type:'choose', q:'canapé 和 fauteuil 的差別？', hint:'人數 / 形狀', a:'canapé = 多人沙發；fauteuil = 單人扶手椅', aNote:'canapé（複數人坐）vs fauteuil（單人有扶手椅）；法文客廳通常有 un canapé + deux fauteuils', opts:['canapé = 多人沙發；fauteuil = 單人扶手椅','兩個都是單人椅','canapé = 臥室用；fauteuil = 客廳用','fauteuil = 沙發；canapé = 椅子'] },
+  { lesson:11, topic:'vocab-housing', type:'fill',   q:'「衣櫃」：une _____', hint:'garde-robe 的替代說法', a:'armoire', aNote:'une armoire = 衣櫃；un bureau = 書桌；une table basse = 茶几' },
 ];
 
 // ── 狀態 ──────────────────────────────────────────────────────
