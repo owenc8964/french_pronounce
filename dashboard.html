@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLB7 指揮中心</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #07080f; color: #ddd8cc;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh; padding: 24px 16px 60px;
+  max-width: 720px; margin: 0 auto;
+}
+
+/* Header */
+.header { text-align: center; margin-bottom: 24px; }
+.header h1 { font-size: 1.3rem; letter-spacing: 3px; color: #f0c060;
+  text-shadow: 0 0 24px rgba(240,192,96,0.45); }
+.header .sub { font-size: 0.7rem; color: #334050; letter-spacing: 1px; margin-top: 5px; }
+
+/* Alert bar */
+.alerts { margin-bottom: 16px; }
+.alert {
+  display: flex; align-items: center; gap: 10px;
+  background: #1a0a0a; border: 1px solid #4a1a18;
+  border-radius: 8px; padding: 10px 14px; margin-bottom: 8px;
+  font-size: 0.82rem; color: #d07060;
+}
+.alert.warn { background: #1a1200; border-color: #4a3a10; color: #c09040; }
+.alert.ok   { background: #0a1a0c; border-color: #1a4a1a; color: #60d090; }
+
+/* Today's prescription */
+.rx-card {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 14px; padding: 20px; margin-bottom: 16px;
+}
+.rx-title {
+  font-size: 0.68rem; color: #445060; text-transform: uppercase;
+  letter-spacing: 1.5px; margin-bottom: 14px;
+}
+.rx-item {
+  display: flex; align-items: center; gap: 14px;
+  background: #141928; border-radius: 10px;
+  padding: 14px 16px; margin-bottom: 10px;
+  text-decoration: none; color: inherit;
+  border: 1px solid transparent;
+  transition: border-color 0.15s, transform 0.1s;
+  cursor: pointer;
+}
+.rx-item:hover { border-color: #f0c060; transform: translateY(-1px); }
+.rx-item.done { opacity: 0.45; }
+.rx-icon { font-size: 1.4rem; flex-shrink: 0; }
+.rx-body { flex: 1; }
+.rx-action { font-size: 0.92rem; font-weight: 600; color: #ddd8cc; }
+.rx-why    { font-size: 0.72rem; color: #445060; margin-top: 3px; }
+.rx-badge  {
+  font-size: 0.68rem; padding: 3px 10px; border-radius: 10px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.badge-red    { background: #2a0a08; color: #d07060; border: 1px solid #4a1a18; }
+.badge-yellow { background: #221800; color: #c09040; border: 1px solid #4a3a10; }
+.badge-green  { background: #0a1a0c; color: #60d090; border: 1px solid #1a4a1a; }
+.badge-blue   { background: #0a1428; color: #60a0d0; border: 1px solid #1a3a5a; }
+.badge-grey   { background: #141928; color: #445060; border: 1px solid #1a2438; }
+
+/* Stats row */
+.stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 16px; }
+.stat-box {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 10px; padding: 14px 10px; text-align: center;
+}
+.stat-val   { font-size: 1.4rem; font-weight: 700; color: #f0c060; }
+.stat-label { font-size: 0.62rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+/* Countdown */
+.countdown {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 10px; padding: 14px 18px; margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cd-days { font-size: 2rem; font-weight: 700; color: #f0c060; }
+.cd-right { text-align: right; }
+.cd-label { font-size: 0.68rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; }
+.cd-date  { font-size: 0.78rem; color: #334050; margin-top: 2px; }
+
+/* Progress bar */
+.prog-card {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 10px; padding: 16px 18px; margin-bottom: 16px;
+}
+.prog-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.prog-label  { font-size: 0.68rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; }
+.prog-val    { font-size: 0.88rem; color: #f0c060; font-weight: 700; }
+.prog-track  { background: #141928; border-radius: 4px; height: 8px; overflow: hidden; margin-bottom: 6px; }
+.prog-fill   { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+.fill-hours  { background: linear-gradient(90deg, #1a5070, #60a0d0); }
+.fill-pace   { background: linear-gradient(90deg, #1a5035, #60d090); }
+.prog-sub    { font-size: 0.68rem; color: #334050; text-align: right; }
+
+/* Milestones */
+.milestones {
+  display: flex; gap: 0; margin-bottom: 16px;
+  background: #0d1020; border: 1px solid #1a2438; border-radius: 10px;
+  overflow: hidden;
+}
+.milestone {
+  flex: 1; padding: 12px 10px; text-align: center;
+  border-right: 1px solid #1a2438; position: relative;
+}
+.milestone:last-child { border-right: none; }
+.ms-label { font-size: 0.62rem; color: #445060; text-transform: uppercase; letter-spacing: 0.8px; }
+.ms-date  { font-size: 0.75rem; color: #ddd8cc; font-weight: 600; margin: 3px 0; }
+.ms-days  { font-size: 0.65rem; color: #334050; }
+.milestone.past .ms-date  { color: #60d090; }
+.milestone.past .ms-days  { color: #2a6040; }
+.milestone.current .ms-date { color: #f0c060; }
+.milestone.current { background: #0d1428; }
+
+/* Topic health */
+.topic-card {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 10px; padding: 16px 18px; margin-bottom: 16px;
+}
+.topic-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 0; border-bottom: 1px solid #0d1020;
+}
+.topic-row:last-child { border-bottom: none; }
+.topic-name { flex: 1; font-size: 0.8rem; color: #aaa8a0; }
+.topic-bar-wrap { width: 80px; height: 6px; background: #141928; border-radius: 99px; overflow: hidden; }
+.topic-bar-fill { height: 100%; border-radius: 99px; }
+.fill-weak { background: #c03020; }
+.fill-mid  { background: #c09040; }
+.fill-ok   { background: #2a7a50; }
+.fill-none { background: #1a2438; }
+.topic-pct { font-size: 0.78rem; font-weight: 700; min-width: 36px; text-align: right; }
+.pct-weak { color: #d07060; }
+.pct-mid  { color: #c09040; }
+.pct-ok   { color: #60d090; }
+.pct-none { color: #334050; }
+.topic-count { font-size: 0.65rem; color: #334050; min-width: 40px; text-align: right; }
+
+/* Quick nav */
+.nav-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+.nav-btn {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 10px; padding: 14px 16px;
+  text-decoration: none; color: #ddd8cc;
+  display: flex; align-items: center; gap: 10px;
+  transition: border-color 0.15s, transform 0.1s;
+}
+.nav-btn:hover { border-color: #445060; transform: translateY(-1px); }
+.nav-icon { font-size: 1.2rem; }
+.nav-label { font-size: 0.85rem; font-weight: 600; }
+.nav-sub   { font-size: 0.68rem; color: #445060; margin-top: 2px; }
+
+.section-title {
+  font-size: 0.68rem; color: #334050; text-transform: uppercase;
+  letter-spacing: 1.5px; margin: 20px 0 10px;
+}
+</style>
+</head>
+<body>
+<script src="questions.js"></script>
+
+<div class="header">
+  <h1>CLB7 指揮中心</h1>
+  <div class="sub">今天做什麼，這裡告訴你</div>
+</div>
+
+<!-- Alerts -->
+<div class="alerts" id="alerts"></div>
+
+<!-- Today's prescription -->
+<div class="rx-card">
+  <div class="rx-title">📋 今日處方</div>
+  <div id="rxList"></div>
+</div>
+
+<!-- Stats -->
+<div class="stats-row">
+  <div class="stat-box">
+    <div class="stat-val" id="statStreak">—</div>
+    <div class="stat-label">連續天數 🔥</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val" id="statWeek">—</div>
+    <div class="stat-label">本週時數</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val" id="statWriting">—</div>
+    <div class="stat-label">造句週均分</div>
+  </div>
+</div>
+
+<!-- Countdown + milestones -->
+<div class="countdown">
+  <div>
+    <div class="cd-label">距離考試</div>
+    <div class="cd-days" id="cdDays">—</div>
+    <div class="cd-label">天</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-label">目標</div>
+    <div class="cd-date">2027年6月1日</div>
+    <div class="cd-date" id="cdPace" style="margin-top:4px;font-size:0.72rem;"></div>
+  </div>
+</div>
+
+<div class="milestones" id="milestones"></div>
+
+<!-- 700h progress -->
+<div class="prog-card">
+  <div class="prog-header">
+    <span class="prog-label">700 小時目標</span>
+    <span class="prog-val" id="hoursVal">— / 700h</span>
+  </div>
+  <div class="prog-track"><div class="prog-fill fill-hours" id="hoursFill" style="width:0%"></div></div>
+  <div class="prog-sub" id="hoursSub"></div>
+</div>
+
+<!-- Topic health -->
+<div class="section-title">Topic 健康度（Quiz 正確率）</div>
+<div class="topic-card" id="topicHealth"></div>
+
+<!-- Quick nav -->
+<div class="section-title">快速入口</div>
+<div class="nav-grid">
+  <a class="nav-btn" href="quiz.html">
+    <span class="nav-icon">🃏</span>
+    <div><div class="nav-label">Quiz</div><div class="nav-sub">SRS 題庫練習</div></div>
+  </a>
+  <a class="nav-btn" href="writing.html">
+    <span class="nav-icon">✍️</span>
+    <div><div class="nav-label">每日造句</div><div class="nav-sub" id="navWritingSub">今天還沒做</div></div>
+  </a>
+  <a class="nav-btn" href="tracker.html">
+    <span class="nav-icon">⏱</span>
+    <div><div class="nav-label">計時器</div><div class="nav-sub" id="navTrackerSub">開始記錄時數</div></div>
+  </a>
+  <a class="nav-btn" href="map.html">
+    <span class="nav-icon">🗺</span>
+    <div><div class="nav-label">課程地圖</div><div class="nav-sub">第 11 課</div></div>
+  </a>
+  <a class="nav-btn" href="french_notes.html">
+    <span class="nav-icon">📖</span>
+    <div><div class="nav-label">筆記</div><div class="nav-sub">第 1–11 課</div></div>
+  </a>
+  <a class="nav-btn" href="table_drill.html">
+    <span class="nav-icon">⚡</span>
+    <div><div class="nav-label">動詞變位</div><div class="nav-sub">快速演練</div></div>
+  </a>
+</div>
+
+<script>
+// ── 常數 ─────────────────────────────────────────────────────
+const EXAM_DATE  = new Date('2027-06-01T00:00:00');
+const GOAL_H     = 700;
+const MILESTONES = [
+  { label:'A1 完成', date:'2026-08-31' },
+  { label:'A2 完成', date:'2026-11-30' },
+  { label:'B1 完成', date:'2027-02-28' },
+  { label:'B2 考試', date:'2027-06-01' },
+];
+const TOPIC_LABELS = {
+  'etre-avoir':               'Être & Avoir',
+  'er-verbs':                 'Verbes -ER',
+  'reflexive-verbs':          'Verbes réfléchis',
+  'greetings-politeness':     'Salutations',
+  'negation':                 'Négation',
+  'numbers-basic':            'Nombres',
+  'articles':                 'Articles',
+  'possessives':              'Possessifs',
+  'adjective-agreement':      'Accord adjectif',
+  'family-possessives':       'Famille',
+  'question-words':           'Questions',
+  'likes-hobbies-sports':     'Loisirs',
+  'couleurs':                 'Couleurs',
+  'preposition-country':      'Prép. pays',
+  'preposition-place-transport': 'Prép. lieu',
+  'ir-re-verbs':              'Verbes -IR/-RE',
+  'irregular-verbs-3rd-group':'Verbes irrég.',
+  'heure':                    'Heure',
+  'futur-proche':             'Futur proche',
+  'passe-compose':            'Passé composé',
+  'vocab-housing':            'Logement',
+  'pronoms-toniques':         'Pronoms toniques',
+  'cod-pronouns':             'Pronoms COD',
+  'prohibition-request':      'Interdiction / Requête',
+};
+
+// ── 資料讀取 ─────────────────────────────────────────────────
+function todayStr() {
+  return new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
+}
+
+function getWritingData()  { try { return JSON.parse(localStorage.getItem('clb7_writing'))  || []; } catch { return []; } }
+function getTrackerData()  { try { return JSON.parse(localStorage.getItem('clb7_tracker'))  || []; } catch { return []; } }
+function getGameData()     { try { return JSON.parse(localStorage.getItem('clb7_game'))      || {xp:0,streak:0,lastDate:''}; } catch { return {xp:0,streak:0,lastDate:''}; } }
+
+function getTopicStats() {
+  // 從 BANK 算每個 topic 的 {correct, total}
+  const stats = {};
+  const getId = q => 'clb7_q_' + q.q.slice(0,30).replace(/[^a-zA-Z0-9一-鿿]/g,'_');
+
+  BANK.forEach(q => {
+    const key  = 'clb7_' + qId(q);
+    let srs;
+    try { srs = JSON.parse(localStorage.getItem(key)) || {w:0,c:0}; }
+    catch { srs = {w:0,c:0}; }
+    if (!stats[q.topic]) stats[q.topic] = {c:0, w:0, total: 0};
+    stats[q.topic].c += srs.c;
+    stats[q.topic].w += srs.w;
+    stats[q.topic].total++;
+  });
+
+  // 算正確率
+  Object.keys(stats).forEach(t => {
+    const s = stats[t];
+    const attempts = s.c + s.w;
+    s.attempts = attempts;
+    s.pct = attempts > 0 ? Math.round(s.c / attempts * 100) : null;
+  });
+  return stats;
+}
+
+function getTrackerToday() {
+  const data = getTrackerData();
+  const today = todayStr();
+  return data.filter(e => e.date === today).reduce((s,e) => s + e.sec, 0);
+}
+
+function getTrackerWeek() {
+  const data = getTrackerData();
+  const now = new Date();
+  const weekStart = new Date(now); weekStart.setDate(now.getDate() - now.getDay()); weekStart.setHours(0,0,0,0);
+  return data.filter(e => new Date(e.ts) >= weekStart).reduce((s,e) => s + e.sec, 0);
+}
+
+function getTrackerTotal() {
+  return getTrackerData().reduce((s,e) => s + e.sec, 0);
+}
+
+function writingDoneToday() {
+  const today = todayStr();
+  return getWritingData().some(e => e.date === today);
+}
+
+function writingWeekAvg() {
+  const data = getWritingData();
+  const now = new Date();
+  const weekStart = new Date(now); weekStart.setDate(now.getDate() - 7); weekStart.setHours(0,0,0,0);
+  const recent = data.filter(e => {
+    const d = new Date(e.date.replace(/\//g,'-')); return d >= weekStart;
+  });
+  if (recent.length === 0) return null;
+  return (recent.reduce((s,e) => s + e.score, 0) / recent.length).toFixed(1);
+}
+
+// ── 今日處方生成 ─────────────────────────────────────────────
+function buildPrescription(topicStats, todaySec) {
+  const items = [];
+
+  // 1. 找最弱 topic（有做過的，正確率最低）
+  const rankedTopics = Object.entries(topicStats)
+    .filter(([,s]) => s.attempts >= 3 && s.pct !== null)
+    .sort(([,a],[,b]) => a.pct - b.pct);
+
+  const weakest = rankedTopics[0];
+  const label   = weakest ? (TOPIC_LABELS[weakest[0]] || weakest[0]) : null;
+
+  if (weakest && weakest[1].pct < 80) {
+    items.push({
+      icon: '🃏',
+      action: `Quiz — ${label}`,
+      why: `正確率 ${weakest[1].pct}%，需要加強`,
+      badge: weakest[1].pct < 60 ? 'badge-red' : 'badge-yellow',
+      badgeText: weakest[1].pct < 60 ? '弱點' : '待加強',
+      href: 'quiz.html',
+      done: false,
+    });
+  } else {
+    items.push({
+      icon: '🃏',
+      action: 'Quiz — 自由練習',
+      why: label ? `${label} 等 topic 正確率良好，繼續保持` : '開始做 Quiz，建立資料',
+      badge: 'badge-blue',
+      badgeText: '維持',
+      href: 'quiz.html',
+      done: false,
+    });
+  }
+
+  // 2. 造句
+  const wDone = writingDoneToday();
+  items.push({
+    icon: '✍️',
+    action: '每日造句 2 句',
+    why: wDone ? '今天已完成！' : '還沒做，10 分鐘內可完成',
+    badge: wDone ? 'badge-green' : 'badge-red',
+    badgeText: wDone ? '✓ 完成' : '未完成',
+    href: 'writing.html',
+    done: wDone,
+  });
+
+  // 3. 時數
+  const todayH = todaySec / 3600;
+  const todayTarget = 1.5;
+  const todayDone = todayH >= todayTarget;
+  items.push({
+    icon: '⏱',
+    action: todayDone ? `今日時數已達標（${todayH.toFixed(1)}h）` : `計時學習，目標今天再 ${(todayTarget - todayH).toFixed(1)}h`,
+    why: `每天 1.5–2 小時是達成 700h 的關鍵`,
+    badge: todayDone ? 'badge-green' : (todayH > 0 ? 'badge-yellow' : 'badge-grey'),
+    badgeText: todayDone ? '✓ 達標' : (todayH > 0 ? `${todayH.toFixed(1)}h` : '0h'),
+    href: 'tracker.html',
+    done: todayDone,
+  });
+
+  return items;
+}
+
+// ── 警報生成 ─────────────────────────────────────────────────
+function buildAlerts(topicStats, game) {
+  const alerts = [];
+  const tracker = getTrackerData();
+
+  // 最後一次練習距今天數
+  if (tracker.length > 0) {
+    const last = new Date(Math.max(...tracker.map(e => e.ts)));
+    const daysSince = Math.floor((Date.now() - last) / 86400000);
+    if (daysSince >= 2) alerts.push({ type:'err', msg:`⚠️ 已有 ${daysSince} 天沒有記錄學習時數` });
+  } else {
+    alerts.push({ type:'warn', msg:`⚡ 還沒有計時記錄，開始用計時器追蹤每次學習吧` });
+  }
+
+  // 造句連續
+  const writing = getWritingData();
+  if (writing.length > 0) {
+    const lastW = new Date(writing[writing.length-1].date.replace(/\//g,'-'));
+    const daysSinceW = Math.floor((Date.now() - lastW) / 86400000);
+    if (daysSinceW >= 3) alerts.push({ type:'warn', msg:`📝 已有 ${daysSinceW} 天沒有造句，輸出能力會退步` });
+  }
+
+  // 嚴重弱點 topic
+  const critical = Object.entries(topicStats)
+    .filter(([,s]) => s.attempts >= 5 && s.pct < 60)
+    .map(([t]) => TOPIC_LABELS[t] || t);
+  if (critical.length) alerts.push({ type:'err', msg:`🔴 嚴重弱點：${critical.join('、')}（正確率 < 60%）` });
+
+  // 本週時數不足
+  const weekH = getTrackerWeek() / 3600;
+  const today = new Date();
+  const dayOfWeek = today.getDay() || 7;
+  const weekTarget = dayOfWeek * (10/7);
+  if (weekH < weekTarget * 0.6 && weekH > 0)
+    alerts.push({ type:'warn', msg:`📉 本週時數 ${weekH.toFixed(1)}h，進度落後（目標 ${weekTarget.toFixed(1)}h）` });
+
+  if (alerts.length === 0)
+    alerts.push({ type:'ok', msg:`✅ 目前沒有警報，繼續保持！` });
+
+  return alerts;
+}
+
+// ── 渲染 ─────────────────────────────────────────────────────
+function render() {
+  const topicStats  = getTopicStats();
+  const game        = getGameData();
+  const todaySec    = getTrackerToday();
+  const totalSec    = getTrackerTotal();
+  const weekSec     = getTrackerWeek();
+  const weekAvg     = writingWeekAvg();
+
+  // Countdown
+  const now = new Date(); now.setHours(0,0,0,0);
+  const daysLeft = Math.max(0, Math.ceil((EXAM_DATE - now) / 86400000));
+  document.getElementById('cdDays').textContent = daysLeft;
+
+  // Pace
+  const totalH = totalSec / 3600;
+  const daysElapsed = 341 - daysLeft; // started 2026-06-25
+  const paceNeeded = (GOAL_H - totalH) / Math.max(1, daysLeft);
+  document.getElementById('cdPace').textContent =
+    `需每天 ${paceNeeded.toFixed(1)}h 才能達標`;
+
+  // Milestones
+  const msEl = document.getElementById('milestones');
+  msEl.innerHTML = MILESTONES.map(m => {
+    const d = new Date(m.date); d.setHours(0,0,0,0);
+    const diff = Math.ceil((d - now) / 86400000);
+    const cls  = diff < 0 ? 'past' : (diff < 90 ? 'current' : '');
+    const sub  = diff < 0 ? '已過' : `${diff} 天後`;
+    const dateStr = d.toLocaleDateString('zh-TW', {month:'numeric', day:'numeric'});
+    return `<div class="milestone ${cls}">
+      <div class="ms-label">${m.label}</div>
+      <div class="ms-date">${dateStr}</div>
+      <div class="ms-days">${sub}</div>
+    </div>`;
+  }).join('');
+
+  // 700h progress
+  const pct = Math.min(100, totalH / GOAL_H * 100);
+  document.getElementById('hoursFill').style.width = pct.toFixed(1) + '%';
+  document.getElementById('hoursVal').textContent = `${totalH.toFixed(1)} / ${GOAL_H}h`;
+  document.getElementById('hoursSub').textContent = `還需 ${Math.max(0, GOAL_H - totalH).toFixed(1)} 小時`;
+
+  // Stats
+  document.getElementById('statStreak').textContent = game.streak || 0;
+  document.getElementById('statWeek').textContent   = (weekSec/3600).toFixed(1) + 'h';
+  document.getElementById('statWriting').textContent = weekAvg ? weekAvg : '—';
+
+  // Nav subs
+  document.getElementById('navWritingSub').textContent = writingDoneToday() ? '今天已完成 ✓' : '今天還沒做';
+  const todayH = todaySec / 3600;
+  document.getElementById('navTrackerSub').textContent = todayH > 0
+    ? `今天 ${todayH.toFixed(1)}h` : '開始記錄時數';
+
+  // Alerts
+  const alertsEl = document.getElementById('alerts');
+  const alertData = buildAlerts(topicStats, game);
+  alertsEl.innerHTML = alertData.map(a =>
+    `<div class="alert ${a.type === 'err' ? '' : a.type === 'warn' ? 'warn' : 'ok'}">${a.msg}</div>`
+  ).join('');
+
+  // Prescription
+  const rx = buildPrescription(topicStats, todaySec);
+  document.getElementById('rxList').innerHTML = rx.map(item => `
+    <a class="rx-item ${item.done ? 'done' : ''}" href="${item.href}">
+      <span class="rx-icon">${item.icon}</span>
+      <div class="rx-body">
+        <div class="rx-action">${item.action}</div>
+        <div class="rx-why">${item.why}</div>
+      </div>
+      <span class="rx-badge ${item.badge}">${item.badgeText}</span>
+    </a>
+  `).join('');
+
+  // Topic health
+  const sorted = Object.entries(topicStats).sort(([,a],[,b]) => {
+    if (a.pct === null && b.pct === null) return 0;
+    if (a.pct === null) return 1;
+    if (b.pct === null) return -1;
+    return a.pct - b.pct;
+  });
+
+  document.getElementById('topicHealth').innerHTML = sorted.map(([topic, s]) => {
+    const label = TOPIC_LABELS[topic] || topic;
+    const pct   = s.pct;
+    const fillCls = pct === null ? 'fill-none' : pct < 60 ? 'fill-weak' : pct < 80 ? 'fill-mid' : 'fill-ok';
+    const pctCls  = pct === null ? 'pct-none'  : pct < 60 ? 'pct-weak'  : pct < 80 ? 'pct-mid'  : 'pct-ok';
+    const pctTxt  = pct === null ? '—' : pct + '%';
+    return `<div class="topic-row">
+      <span class="topic-name">${label}</span>
+      <div class="topic-bar-wrap"><div class="topic-bar-fill ${fillCls}" style="width:${pct||0}%"></div></div>
+      <span class="topic-pct ${pctCls}">${pctTxt}</span>
+      <span class="topic-count">${s.attempts}題</span>
+    </div>`;
+  }).join('');
+}
+
+render();
+</script>
+</body>
+</html>
