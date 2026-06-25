@@ -325,6 +325,11 @@ document.getElementById('btnSave').addEventListener('click', () => {
   updateStats();
   renderHistory();
   showToast(`✓ 已記錄 ${score}/10 分！`);
+
+  const guided = new URLSearchParams(location.search).get('guided') === '1';
+  if (guided) {
+    setTimeout(() => { location.href = 'dashboard.html'; }, 1200);
+  }
 });
 
 updateStats();

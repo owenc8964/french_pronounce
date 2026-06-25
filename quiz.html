@@ -846,6 +846,8 @@ function showDoneCard() {
   addXP(bonus); sessionXP += bonus;
   touchStreak();
   renderStats();
+  // 標記今天已做過 quiz（供 dashboard 讀取）
+  localStorage.setItem('clb7_quiz_done', new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'}));
 
   // Top weak questions across whole bank
   const weakList = BANK
@@ -1557,14 +1559,16 @@ saveSnapshot();
       const banner = document.createElement('div');
       banner.id = 'guidedBanner';
       banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#1d5035;color:#60d090;text-align:center;padding:14px;font-size:0.9rem;z-index:200;display:none;';
-      banner.innerHTML = '✅ Quiz 完成！<a href="dashboard.html" style="color:#fff;margin-left:12px;text-decoration:underline;">回今日學習 →</a>';
+      banner.innerHTML = '✅ Quiz 完成！<a href="dashboard.html" style="color:#fff;margin-left:12px;font-weight:700;text-decoration:underline;">回今日學習 →</a>';
       document.body.appendChild(banner);
-      // 監聽 session 結束（出現 restart 按鈕時）
+      // 監聽 #quizArea 出現 .btn-restart（session 結束卡）
       const obs = new MutationObserver(() => {
-        const endBtn = document.querySelector('.restart-btn, [onclick="restart()"]');
-        if (endBtn) { banner.style.display = 'block'; obs.disconnect(); }
+        if (document.querySelector('#quizArea .btn-restart')) {
+          banner.style.display = 'block';
+          obs.disconnect();
+        }
       });
-      obs.observe(document.body, { childList: true, subtree: true });
+      obs.observe(document.getElementById('quizArea') || document.body, { childList: true, subtree: true });
     }
   } else {
     restart();

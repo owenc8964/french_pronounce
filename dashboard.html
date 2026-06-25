@@ -375,6 +375,10 @@ function writingWeekAvg() {
 }
 
 // ── 今日處方生成 ─────────────────────────────────────────────
+function quizDoneToday() {
+  return localStorage.getItem('clb7_quiz_done') === todayStr();
+}
+
 function buildPrescription(topicStats, todaySec) {
   const items = [];
 
@@ -386,25 +390,26 @@ function buildPrescription(topicStats, todaySec) {
   const weakest = rankedTopics[0];
   const label   = weakest ? (TOPIC_LABELS[weakest[0]] || weakest[0]) : null;
 
+  const qDone = quizDoneToday();
   if (weakest && weakest[1].pct < 80) {
     items.push({
       icon: '🃏',
       action: `Quiz — ${label}`,
-      why: `正確率 ${weakest[1].pct}%，需要加強`,
-      badge: weakest[1].pct < 60 ? 'badge-red' : 'badge-yellow',
-      badgeText: weakest[1].pct < 60 ? '弱點' : '待加強',
+      why: qDone ? '今天已完成！' : `正確率 ${weakest[1].pct}%，需要加強`,
+      badge: qDone ? 'badge-green' : (weakest[1].pct < 60 ? 'badge-red' : 'badge-yellow'),
+      badgeText: qDone ? '✓ 完成' : (weakest[1].pct < 60 ? '弱點' : '待加強'),
       href: `quiz.html?topic=${weakest[0]}&guided=1`,
-      done: false,
+      done: qDone,
     });
   } else {
     items.push({
       icon: '🃏',
       action: 'Quiz — 自由練習',
-      why: label ? `${label} 等 topic 正確率良好，繼續保持` : '開始做 Quiz，建立資料',
-      badge: 'badge-blue',
-      badgeText: '維持',
+      why: qDone ? '今天已完成！' : (label ? `${label} 等 topic 正確率良好，繼續保持` : '開始做 Quiz，建立資料'),
+      badge: qDone ? 'badge-green' : 'badge-blue',
+      badgeText: qDone ? '✓ 完成' : '維持',
       href: 'quiz.html?guided=1',
-      done: false,
+      done: qDone,
     });
   }
 
@@ -416,7 +421,7 @@ function buildPrescription(topicStats, todaySec) {
     why: wDone ? '今天已完成！' : '還沒做，10 分鐘內可完成',
     badge: wDone ? 'badge-green' : 'badge-red',
     badgeText: wDone ? '✓ 完成' : '未完成',
-    href: 'writing.html',
+    href: 'writing.html?guided=1',
     done: wDone,
   });
 
