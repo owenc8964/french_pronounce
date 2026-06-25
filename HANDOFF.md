@@ -7,6 +7,26 @@
 
 ---
 
+## 🔁 交付前自動試跑原則（每個功能必做，不等 Owen 說）
+
+實作完成後，**Claude 自己先試跑整個流程**，確認沒問題才回報。
+
+**標準流程：**
+1. 啟動 preview server（`python3 -m http.server 7788`，serverId 記起來）
+2. `preview_eval` 清空相關 localStorage key，模擬全新狀態
+3. 用 `preview_eval` / `preview_click` / `preview_fill` 跑完整 happy path
+4. `preview_screenshot` 確認畫面正確
+5. 主動找邊緣情況：資料空白時、今天已完成時、guided=1 跳轉時
+6. 發現 bug → 自己修 → 重跑 → 確認
+7. **全部通過後** 才 commit + push，再回報 Owen
+
+**不做的事：**
+- ❌ 做完就說「應該可以了」
+- ❌ 讓 Owen 自己去點看看
+- ❌ 發現問題才說「你要不要試試看」
+
+---
+
 ## ⚠️ 做事的核心前提（每次 session 必讀，不可跳過）
 
 **我們在建的不是一堆分開的工具。我們在建一個監控整個學習過程的系統。**
