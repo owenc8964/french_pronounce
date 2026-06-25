@@ -593,6 +593,24 @@ function buildSession(pool) {
   return shuffle(result);
 }
 
+const FILTER_IDS = ['mode-row', 'typeRow', 'lessonRow'];
+function lockFilters() {
+  document.querySelector('.mode-row')?.style.setProperty('pointer-events','none');
+  document.querySelector('.mode-row')?.style.setProperty('opacity','0.35');
+  ['typeRow','lessonRow'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.style.pointerEvents = 'none'; el.style.opacity = '0.35'; }
+  });
+}
+function unlockFilters() {
+  document.querySelector('.mode-row')?.style.removeProperty('pointer-events');
+  document.querySelector('.mode-row')?.style.removeProperty('opacity');
+  ['typeRow','lessonRow'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.style.pointerEvents = ''; el.style.opacity = ''; }
+  });
+}
+
 function restart() {
   queue = buildSession(getPool());
   current = 0; scoreOk = 0; scoreNo = 0; answered = false; sessionXP = 0;
@@ -615,6 +633,7 @@ function renderCard() {
   const area = document.getElementById('quizArea');
 
   if (current >= queue.length) { showDoneCard(); return; }
+  lockFilters();
 
   const q = queue[current];
   const isReviewQ = q._review === true;
@@ -841,6 +860,7 @@ function skipReview() {
 }
 
 function showDoneCard() {
+  unlockFilters();
   // Award session completion bonus
   const bonus = scoreOk >= queue.length * 0.8 ? 50 : 20;
   addXP(bonus); sessionXP += bonus;
@@ -1551,27 +1571,26 @@ saveSnapshot();
   const params = new URLSearchParams(location.search);
   const topicParam = params.get('topic');
   const guided = params.get('guided') === '1';
+
   if (topicParam) {
     startTopicSprint(topicParam);
-    if (guided) {
-      // 完成後顯示「回今日學習」提示
-      const orig = window.showSessionEnd || null;
-      const banner = document.createElement('div');
-      banner.id = 'guidedBanner';
-      banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#1d5035;color:#60d090;text-align:center;padding:14px;font-size:0.9rem;z-index:200;display:none;';
-      banner.innerHTML = '✅ Quiz 完成！<a href="dashboard.html" style="color:#fff;margin-left:12px;font-weight:700;text-decoration:underline;">回今日學習 →</a>';
-      document.body.appendChild(banner);
-      // 監聽 #quizArea 出現 .btn-restart（session 結束卡）
-      const obs = new MutationObserver(() => {
-        if (document.querySelector('#quizArea .btn-restart')) {
-          banner.style.display = 'block';
-          obs.disconnect();
-        }
-      });
-      obs.observe(document.getElementById('quizArea') || document.body, { childList: true, subtree: true });
-    }
   } else {
     restart();
+  }
+
+  if (guided) {
+    const banner = document.createElement('div');
+    banner.id = 'guidedBanner';
+    banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#1d5035;color:#60d090;text-align:center;padding:14px;font-size:0.9rem;z-index:200;display:none;';
+    banner.innerHTML = '✅ Quiz 完成！<a href="dashboard.html" style="color:#fff;margin-left:12px;font-weight:700;text-decoration:underline;">回今日學習 →</a>';
+    document.body.appendChild(banner);
+    const obs = new MutationObserver(() => {
+      if (document.querySelector('#quizArea .btn-restart')) {
+        banner.style.display = 'block';
+        obs.disconnect();
+      }
+    });
+    obs.observe(document.getElementById('quizArea') || document.body, { childList: true, subtree: true });
   }
 })();
 </script>
