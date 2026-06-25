@@ -14,10 +14,23 @@ body {
 }
 
 /* Header */
-.header { text-align: center; margin-bottom: 24px; }
+.header { text-align: center; margin-bottom: 20px; }
 .header h1 { font-size: 1.3rem; letter-spacing: 3px; color: #f0c060;
   text-shadow: 0 0 24px rgba(240,192,96,0.45); }
 .header .sub { font-size: 0.7rem; color: #334050; letter-spacing: 1px; margin-top: 5px; }
+
+/* Start button */
+.start-btn {
+  display: block; width: 100%; padding: 18px;
+  background: linear-gradient(135deg, #1d5035, #2a7a50);
+  color: #60d090; border: none; border-radius: 14px;
+  font-size: 1.1rem; font-weight: 700; letter-spacing: 1px;
+  cursor: pointer; font-family: inherit; margin-bottom: 20px;
+  box-shadow: 0 0 24px rgba(60,190,100,0.15);
+  transition: transform 0.1s, opacity 0.15s;
+}
+.start-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+.start-btn:active { transform: scale(0.98); }
 
 /* Alert bar */
 .alerts { margin-bottom: 16px; }
@@ -168,6 +181,9 @@ body {
   <h1>CLB7 指揮中心</h1>
   <div class="sub">今天做什麼，這裡告訴你</div>
 </div>
+
+<!-- Start button -->
+<button class="start-btn" id="startBtn">▶ 開始今日學習</button>
 
 <!-- Alerts -->
 <div class="alerts" id="alerts"></div>
@@ -377,7 +393,7 @@ function buildPrescription(topicStats, todaySec) {
       why: `正確率 ${weakest[1].pct}%，需要加強`,
       badge: weakest[1].pct < 60 ? 'badge-red' : 'badge-yellow',
       badgeText: weakest[1].pct < 60 ? '弱點' : '待加強',
-      href: 'quiz.html',
+      href: `quiz.html?topic=${weakest[0]}&guided=1`,
       done: false,
     });
   } else {
@@ -387,7 +403,7 @@ function buildPrescription(topicStats, todaySec) {
       why: label ? `${label} 等 topic 正確率良好，繼續保持` : '開始做 Quiz，建立資料',
       badge: 'badge-blue',
       badgeText: '維持',
-      href: 'quiz.html',
+      href: 'quiz.html?guided=1',
       done: false,
     });
   }
@@ -560,6 +576,18 @@ function render() {
 }
 
 render();
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  const rx = buildPrescription(getTopicStats(), getTrackerToday());
+  const next = rx.find(item => !item.done);
+  if (next) {
+    location.href = next.href;
+  } else {
+    // 全部完成
+    document.getElementById('startBtn').textContent = '✅ 今日任務全部完成！';
+    document.getElementById('startBtn').style.background = 'linear-gradient(135deg, #0a1a0c, #1a4a1a)';
+  }
+});
 </script>
 </body>
 </html>
