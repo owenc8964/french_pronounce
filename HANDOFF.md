@@ -238,28 +238,46 @@ CLB 7 考的是第三層。Quiz 答對率高 ≠ 考試會過。
 
 ---
 
-## 現有系統狀態（2026-06-25）
+## 現有系統狀態（2026-06-26）
 
 | 檔案 | 用途 | 狀態 |
 |------|------|------|
-| `quiz.html` | 主 quiz 系統，SRS + 能力地圖 | ✅ GitHub Pages 部署 |
-| `french_notes.html` | 第1–11課筆記 | ✅ 已更新，表格格式修正 |
-| `map.html` | 課程地圖（60格） | ⚠️ 停在第9課，待更新 |
+| `dashboard.html` | 指揮中心：今日處方、警報、倒數、700h 進度 | ✅ 完成，GitHub Pages 部署 |
+| `quiz.html` | SRS Quiz，432+ 題，URL 參數 guided 流程 | ✅ 完成，已抽出 questions.js |
+| `questions.js` | 共用題庫（BANK + AGREE_BANK），quiz/dashboard 共享 | ✅ 完成 |
+| `writing.html` | 每日 2 句造句，複製 prompt → claude.ai → 貼回記錄 | ✅ 完成，guided 回 dashboard |
+| `tracker.html` | 計時器 + 時數追蹤，700h 進度條，距考倒數 | ✅ 完成 |
+| `map.html` | 課程地圖（60格），已更新到第11課 | ✅ 完成 |
+| `french_notes.html` | 第1–11課筆記 | ✅ 完成 |
 | `table_drill.html` | 動詞變位練習 | ✅ GitHub Pages 部署 |
 | `french_basics.html` | 基礎發音 | ✅ GitHub Pages 部署 |
 
-**Quiz 題庫：** 第1–11課，共 432+ 題（今日新增第11課 53 題）
+**GitHub Pages 網址：** https://owenc8964.github.io/french_pronounce/dashboard.html
 
-**第11課涵蓋：** pronoms toniques、住房詞彙、passé composé、介系詞 (2)、禁止請求句型、COD 代詞
+**Quiz 題庫：** 第1–11課，共 432+ 題
+
+**智慧引導流程（已完成）：**
+- dashboard → 開始今日學習 → quiz（最弱 topic，?topic=xxx&guided=1）
+- quiz 完成 → 顯示 banner「回今日學習 →」→ dashboard（Quiz ✓ 完成）
+- dashboard → 每日造句（?guided=1）→ 存檔後自動跳回 dashboard（造句 ✓ 完成）
+- localStorage key `clb7_quiz_done`（今日日期字串）追蹤 quiz 是否完成
+
+**關鍵 localStorage keys：**
+- `clb7_quiz_done` → 今日日期字串（quiz 完成標記）
+- `clb7_writing` → [{date, s1, s2, score, reply}]
+- `clb7_tracker` → [{ts, date, type, sec}]
+- `clb7_<qId>` → {w, c, last}（SRS 單題記錄）
+- `clb7_game` → {xp, streak, lastDate}
 
 ---
 
 ## 下一步（依優先序）
 
-1. **實作每日造句記錄功能**（最直接連結到掌握程度）
-2. **實作計時器 + 時數追蹤**（量的透明化）
-3. **更新地圖到第11課**
-4. **兩週後** 匯出 quiz 數據做第一次趨勢分析
+1. **speaking.html** — 口說日誌：貼逐字稿、輸入糾錯次數/類型，長期追蹤口說進步
+2. **listening.html** — 聽力日誌：時數、來源、理解度 %
+3. **dashboard 四技能平衡視圖** — 整合 speaking/listening 數據
+4. **Duolingo 週報輸入區** — 每週貼 Duolingo 總結，dashboard 讀取
+5. **兩週後** 匯出 quiz 數據做第一次趨勢分析
 
 ---
 
