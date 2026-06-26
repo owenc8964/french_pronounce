@@ -267,6 +267,10 @@ body {
     <span class="nav-icon">⚡</span>
     <div><div class="nav-label">動詞變位</div><div class="nav-sub">快速演練</div></div>
   </a>
+  <a class="nav-btn" href="speaking.html">
+    <span class="nav-icon">🗣</span>
+    <div><div class="nav-label">口說日誌</div><div class="nav-sub" id="navSpeakingSub">記錄糾錯</div></div>
+  </a>
 </div>
 
 <script>
@@ -311,8 +315,9 @@ function todayStr() {
   return new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
 }
 
-function getWritingData()  { try { return JSON.parse(localStorage.getItem('clb7_writing'))  || []; } catch { return []; } }
-function getTrackerData()  { try { return JSON.parse(localStorage.getItem('clb7_tracker'))  || []; } catch { return []; } }
+function getWritingData()   { try { return JSON.parse(localStorage.getItem('clb7_writing'))   || []; } catch { return []; } }
+function getTrackerData()   { try { return JSON.parse(localStorage.getItem('clb7_tracker'))   || []; } catch { return []; } }
+function getSpeakingData()  { try { return JSON.parse(localStorage.getItem('clb7_speaking'))  || []; } catch { return []; } }
 function getGameData()     { try { return JSON.parse(localStorage.getItem('clb7_game'))      || {xp:0,streak:0,lastDate:''}; } catch { return {xp:0,streak:0,lastDate:''}; } }
 
 function getTopicStats() {
@@ -536,6 +541,17 @@ function render() {
   const todayH = todaySec / 3600;
   document.getElementById('navTrackerSub').textContent = todayH > 0
     ? `今天 ${todayH.toFixed(1)}h` : '開始記錄時數';
+  (() => {
+    const now = new Date(); now.setHours(0,0,0,0);
+    const dow = now.getDay();
+    const startOfWeek = new Date(now); startOfWeek.setDate(now.getDate() - dow);
+    const weekMins = getSpeakingData().filter(e => {
+      const d = new Date(e.date.replace(/\//g,'-')); d.setHours(0,0,0,0);
+      return d >= startOfWeek;
+    }).reduce((s,e)=>s+(+e.min||0),0);
+    document.getElementById('navSpeakingSub').textContent = weekMins > 0
+      ? `本週 ${weekMins} min` : '記錄糾錯';
+  })();
 
   // Alerts
   const alertsEl = document.getElementById('alerts');

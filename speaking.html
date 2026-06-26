@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>口說日誌 — CLB7</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #07080f;
+  color: #ddd8cc;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  padding: 28px 16px 60px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  color: #f0c060;
+  text-shadow: 0 0 20px rgba(240,192,96,0.4);
+  text-align: center;
+  margin-bottom: 4px;
+}
+.sub { text-align: center; font-size: 0.75rem; color: #445060; margin-bottom: 28px; letter-spacing: 1px; }
+
+/* Stats */
+.stats-row {
+  display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 10px; margin-bottom: 28px;
+}
+.stat-box {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 10px; padding: 14px 10px; text-align: center;
+}
+.stat-val { font-size: 1.5rem; font-weight: 700; color: #f0c060; }
+.stat-label { font-size: 0.6rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+/* Cards */
+.card {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 12px; padding: 20px; margin-bottom: 16px;
+}
+.card-title { font-size: 0.72rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+.date-display { font-size: 1rem; color: #f0c060; margin-bottom: 14px; }
+
+/* Form elements */
+label { font-size: 0.8rem; color: #667080; display: block; margin-bottom: 5px; margin-top: 12px; }
+label:first-of-type { margin-top: 0; }
+
+select, input[type="number"], input[type="text"] {
+  width: 100%; background: #141928; border: 1px solid #1a2438;
+  border-radius: 8px; color: #ddd8cc; font-size: 0.95rem;
+  padding: 10px 12px; font-family: inherit;
+  transition: border-color 0.15s;
+}
+select:focus, input:focus { outline: none; border-color: #f0c060; }
+
+textarea {
+  width: 100%; background: #141928; border: 1px solid #1a2438;
+  border-radius: 8px; color: #ddd8cc; font-size: 0.9rem;
+  padding: 12px; resize: vertical; min-height: 80px;
+  font-family: inherit; transition: border-color 0.15s;
+}
+textarea:focus { outline: none; border-color: #f0c060; }
+textarea::placeholder { color: #334050; }
+
+/* Error type chips */
+.err-grid {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px;
+}
+.err-chip {
+  display: flex; align-items: center; gap: 6px;
+  background: #141928; border: 1px solid #1a2438;
+  border-radius: 20px; padding: 6px 12px;
+  font-size: 0.78rem; color: #667080; cursor: pointer;
+  transition: all 0.15s; user-select: none;
+}
+.err-chip input[type="checkbox"] { display: none; }
+.err-chip.active {
+  background: #1a2438; border-color: #e06040; color: #e08060;
+}
+
+/* Buttons */
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+button {
+  padding: 10px 20px; border-radius: 8px; border: none;
+  font-size: 0.88rem; cursor: pointer; font-family: inherit;
+  transition: opacity 0.15s, transform 0.1s;
+}
+button:active { transform: scale(0.97); }
+.btn-save { background: #1d5035; color: #60d090; }
+.btn-save:hover { opacity: 0.85; }
+.btn-save:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-back { background: #1a2438; color: #6080a0; text-decoration: none;
+  padding: 10px 20px; border-radius: 8px; font-size: 0.88rem; display: inline-block; }
+.btn-back:hover { opacity: 0.85; }
+
+/* History */
+.section-title {
+  font-size: 0.7rem; color: #445060; text-transform: uppercase;
+  letter-spacing: 2px; margin-bottom: 12px; margin-top: 28px;
+}
+.entry {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 10px; padding: 14px; margin-bottom: 10px;
+}
+.entry-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.entry-date { font-size: 0.8rem; color: #445060; }
+.entry-meta { display: flex; gap: 10px; align-items: center; }
+.entry-type {
+  font-size: 0.72rem; background: #1a2438; color: #60a0d0;
+  padding: 2px 8px; border-radius: 10px;
+}
+.entry-min { font-size: 0.78rem; color: #f0c060; font-weight: 600; }
+.entry-errs { font-size: 0.75rem; color: #e08060; margin-bottom: 4px; }
+.entry-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+.entry-chip {
+  font-size: 0.68rem; background: #1a0c08; color: #c06040;
+  border: 1px solid #3a1810; padding: 2px 7px; border-radius: 10px;
+}
+.entry-notes { font-size: 0.8rem; color: #667080; margin-top: 6px; line-height: 1.5; }
+.entry-transcript {
+  font-size: 0.78rem; color: #4a5a6a; margin-top: 6px;
+  line-height: 1.5; white-space: pre-wrap;
+  max-height: 80px; overflow: hidden; cursor: pointer;
+  transition: max-height 0.3s;
+}
+.entry-transcript.expanded { max-height: 400px; }
+.entry-transcript-toggle { font-size: 0.7rem; color: #3a5070; cursor: pointer; margin-top: 3px; }
+
+.empty { color: #334050; font-size: 0.85rem; text-align: center; padding: 24px; }
+
+/* Error trend */
+.err-trend {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 12px; padding: 18px; margin-bottom: 16px;
+}
+.err-trend-title { font-size: 0.7rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.err-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
+.err-bar-label { font-size: 0.75rem; color: #667080; width: 90px; flex-shrink: 0; }
+.err-bar-wrap { flex: 1; background: #141928; border-radius: 4px; height: 8px; overflow: hidden; }
+.err-bar-fill { height: 100%; background: #e06040; border-radius: 4px; transition: width 0.4s; }
+.err-bar-count { font-size: 0.72rem; color: #e08060; width: 24px; text-align: right; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: #1d5035; color: #60d090; padding: 10px 20px;
+  border-radius: 8px; font-size: 0.85rem; opacity: 0;
+  transition: all 0.25s; pointer-events: none; z-index: 99;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<h1>🗣 口說日誌</h1>
+<p class="sub">SPEAKING LOG — 追蹤每次口說練習、糾錯類型</p>
+
+<!-- Stats -->
+<div class="stats-row">
+  <div class="stat-box">
+    <div class="stat-val" id="statSessions">0</div>
+    <div class="stat-label">總次數</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val" id="statMins">0</div>
+    <div class="stat-label">總分鐘</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val" id="statStreak">0</div>
+    <div class="stat-label">連續天</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val" id="statThisWeek">0</div>
+    <div class="stat-label">本週 min</div>
+  </div>
+</div>
+
+<!-- Error trend -->
+<div class="err-trend" id="errTrend" style="display:none">
+  <div class="err-trend-title">🔴 糾錯熱點（累積次數）</div>
+  <div id="errBars"></div>
+</div>
+
+<!-- Log form -->
+<div class="card">
+  <div class="card-title">新增口說記錄</div>
+  <div class="date-display" id="todayDate"></div>
+
+  <label>練習類型</label>
+  <select id="sessType">
+    <option value="家教">家教上課</option>
+    <option value="Duolingo">Duolingo 口說</option>
+    <option value="自練">自練（跟讀/錄音）</option>
+    <option value="其他">其他</option>
+  </select>
+
+  <label>時長（分鐘）</label>
+  <input type="number" id="sessMin" min="1" max="240" placeholder="例：30" />
+
+  <label>糾錯總次數</label>
+  <input type="number" id="errCount" min="0" max="99" placeholder="0" />
+
+  <label>糾錯類型（可多選）</label>
+  <div class="err-grid" id="errTypeGrid">
+    <label class="err-chip" id="chip_pron">
+      <input type="checkbox" value="發音"> 發音
+    </label>
+    <label class="err-chip" id="chip_verb">
+      <input type="checkbox" value="動詞變位"> 動詞變位
+    </label>
+    <label class="err-chip" id="chip_agree">
+      <input type="checkbox" value="性數配合"> 性數配合
+    </label>
+    <label class="err-chip" id="chip_vocab">
+      <input type="checkbox" value="詞彙"> 詞彙
+    </label>
+    <label class="err-chip" id="chip_struct">
+      <input type="checkbox" value="句型結構"> 句型結構
+    </label>
+    <label class="err-chip" id="chip_other">
+      <input type="checkbox" value="其他"> 其他
+    </label>
+  </div>
+
+  <label>逐字稿 / 筆記（選填）</label>
+  <textarea id="sessTranscript" placeholder="貼上課堂逐字稿，或記錄今天說了什麼…"></textarea>
+
+  <label>備注（選填）</label>
+  <input type="text" id="sessNotes" placeholder="例：今天時態用得比上次好，但 être 還是忘" />
+
+  <div class="btn-row">
+    <button class="btn-save" id="btnSave">✓ 儲存記錄</button>
+    <a href="dashboard.html" class="btn-back">← Dashboard</a>
+  </div>
+</div>
+
+<!-- History -->
+<div class="section-title">歷史記錄</div>
+<div id="historyList"></div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const KEY = 'clb7_speaking';
+
+const ERR_TYPES = ['發音','動詞變位','性數配合','詞彙','句型結構','其他'];
+
+function load() {
+  try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; }
+}
+function save(data) { localStorage.setItem(KEY, JSON.stringify(data)); }
+
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function updateStats() {
+  const data = load();
+  document.getElementById('statSessions').textContent = data.length;
+  document.getElementById('statMins').textContent = data.reduce((s,e)=>s+(+e.min||0),0);
+
+  // streak
+  let streak = 0;
+  if (data.length) {
+    const today = new Date(); today.setHours(0,0,0,0);
+    const dates = [...new Set(data.map(e=>e.date))].sort().reverse();
+    let check = new Date(today);
+    for (const d of dates) {
+      const dDate = new Date(d.replace(/\//g,'-')); dDate.setHours(0,0,0,0);
+      const diff = (check - dDate) / 86400000;
+      if (diff <= 1) { streak++; check = dDate; } else break;
+    }
+  }
+  document.getElementById('statStreak').textContent = streak;
+
+  // this week
+  const now = new Date(); now.setHours(0,0,0,0);
+  const dayOfWeek = now.getDay(); // 0=Sun
+  const startOfWeek = new Date(now); startOfWeek.setDate(now.getDate() - dayOfWeek);
+  const weekMins = data.filter(e => {
+    const d = new Date(e.date.replace(/\//g,'-')); d.setHours(0,0,0,0);
+    return d >= startOfWeek;
+  }).reduce((s,e)=>s+(+e.min||0),0);
+  document.getElementById('statThisWeek').textContent = weekMins;
+}
+
+function updateErrTrend() {
+  const data = load();
+  if (data.length === 0) { document.getElementById('errTrend').style.display = 'none'; return; }
+  const counts = {};
+  ERR_TYPES.forEach(t => counts[t] = 0);
+  data.forEach(e => (e.errTypes||[]).forEach(t => { if (counts[t]!==undefined) counts[t]++; }));
+  const max = Math.max(...Object.values(counts), 1);
+  if (max === 0) { document.getElementById('errTrend').style.display = 'none'; return; }
+  document.getElementById('errTrend').style.display = 'block';
+  const sorted = ERR_TYPES.map(t=>({t, c:counts[t]})).sort((a,b)=>b.c-a.c);
+  document.getElementById('errBars').innerHTML = sorted.map(({t,c}) => `
+    <div class="err-bar-row">
+      <div class="err-bar-label">${t}</div>
+      <div class="err-bar-wrap"><div class="err-bar-fill" style="width:${Math.round(c/max*100)}%"></div></div>
+      <div class="err-bar-count">${c}</div>
+    </div>
+  `).join('');
+}
+
+function renderHistory() {
+  const data = load().slice().reverse();
+  const el = document.getElementById('historyList');
+  if (data.length === 0) {
+    el.innerHTML = '<div class="empty">還沒有記錄 — 今天開始吧！</div>';
+    return;
+  }
+  el.innerHTML = data.map((e, i) => {
+    const chips = (e.errTypes||[]).map(t=>`<span class="entry-chip">${escHtml(t)}</span>`).join('');
+    const errLine = (e.errCount != null && e.errCount !== '')
+      ? `<div class="entry-errs">糾錯 ${e.errCount} 次${chips ? ' ·' : ''}</div>` : '';
+    const chipsHtml = chips ? `<div class="entry-chips">${chips}</div>` : '';
+    const transcriptHtml = e.transcript
+      ? `<div class="entry-transcript" id="tr_${i}" onclick="toggleTr(${i})">${escHtml(e.transcript)}</div>
+         <div class="entry-transcript-toggle" onclick="toggleTr(${i})">▼ 展開逐字稿</div>` : '';
+    const notesHtml = e.notes ? `<div class="entry-notes">💬 ${escHtml(e.notes)}</div>` : '';
+    return `
+      <div class="entry">
+        <div class="entry-header">
+          <span class="entry-date">${e.date}</span>
+          <div class="entry-meta">
+            <span class="entry-type">${escHtml(e.type||'')}</span>
+            <span class="entry-min">${e.min||0} min</span>
+          </div>
+        </div>
+        ${errLine}${chipsHtml}${notesHtml}${transcriptHtml}
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleTr(i) {
+  const el = document.getElementById('tr_'+i);
+  if (el) el.classList.toggle('expanded');
+}
+
+// Chip toggle — use checkbox change to avoid label double-fire
+document.querySelectorAll('.err-chip input[type="checkbox"]').forEach(cb => {
+  cb.addEventListener('change', () => {
+    cb.closest('.err-chip').classList.toggle('active', cb.checked);
+  });
+});
+
+function getSelectedErrTypes() {
+  return [...document.querySelectorAll('.err-chip input[type="checkbox"]:checked')]
+    .map(cb => cb.value);
+}
+
+document.getElementById('btnSave').addEventListener('click', () => {
+  const type = document.getElementById('sessType').value;
+  const min = document.getElementById('sessMin').value.trim();
+  if (!min || +min <= 0) { showToast('請輸入練習時長'); return; }
+
+  const errCount = document.getElementById('errCount').value.trim();
+  const errTypes = getSelectedErrTypes();
+  const transcript = document.getElementById('sessTranscript').value.trim();
+  const notes = document.getElementById('sessNotes').value.trim();
+
+  const data = load();
+  data.push({ date: todayStr(), type, min: +min, errCount: errCount==='' ? null : +errCount, errTypes, transcript, notes });
+  save(data);
+
+  // reset form
+  document.getElementById('sessMin').value = '';
+  document.getElementById('errCount').value = '';
+  document.getElementById('sessTranscript').value = '';
+  document.getElementById('sessNotes').value = '';
+  document.querySelectorAll('.err-chip').forEach(c => c.classList.remove('active'));
+
+  updateStats();
+  updateErrTrend();
+  renderHistory();
+  showToast('✓ 口說記錄已儲存！');
+});
+
+// Init
+document.getElementById('todayDate').textContent = todayStr();
+updateStats();
+updateErrTrend();
+renderHistory();
+</script>
+</body>
+</html>
