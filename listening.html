@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>聽力日誌 — CLB7</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #07080f;
+  color: #ddd8cc;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  padding: 28px 16px 60px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  color: #f0c060;
+  text-shadow: 0 0 20px rgba(240,192,96,0.4);
+  text-align: center;
+  margin-bottom: 4px;
+}
+.sub { text-align: center; font-size: 0.75rem; color: #445060; margin-bottom: 28px; letter-spacing: 1px; }
+
+.stats-row {
+  display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 10px; margin-bottom: 28px;
+}
+.stat-box {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 10px; padding: 14px 10px; text-align: center;
+}
+.stat-val { font-size: 1.5rem; font-weight: 700; color: #f0c060; }
+.stat-label { font-size: 0.6rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+/* Source breakdown */
+.breakdown {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 12px; padding: 18px; margin-bottom: 16px;
+  display: none;
+}
+.breakdown-title { font-size: 0.7rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.src-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
+.src-bar-label { font-size: 0.75rem; color: #667080; width: 100px; flex-shrink: 0; }
+.src-bar-wrap { flex: 1; background: #141928; border-radius: 4px; height: 8px; overflow: hidden; }
+.src-bar-fill { height: 100%; background: #6080d0; border-radius: 4px; transition: width 0.4s; }
+.src-bar-min { font-size: 0.72rem; color: #6080d0; width: 40px; text-align: right; }
+
+/* Card */
+.card {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 12px; padding: 20px; margin-bottom: 16px;
+}
+.card-title { font-size: 0.72rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+.date-display { font-size: 1rem; color: #f0c060; margin-bottom: 14px; }
+
+label { font-size: 0.8rem; color: #667080; display: block; margin-bottom: 5px; margin-top: 12px; }
+
+select, input[type="number"], input[type="text"] {
+  width: 100%; background: #141928; border: 1px solid #1a2438;
+  border-radius: 8px; color: #ddd8cc; font-size: 0.95rem;
+  padding: 10px 12px; font-family: inherit; transition: border-color 0.15s;
+}
+select:focus, input:focus { outline: none; border-color: #f0c060; }
+
+/* Comprehension slider */
+.comp-row { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+input[type="range"] {
+  flex: 1; -webkit-appearance: none; height: 6px;
+  background: #141928; border-radius: 4px; outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 18px; height: 18px;
+  border-radius: 50%; background: #f0c060; cursor: pointer;
+}
+.comp-val { font-size: 1.1rem; font-weight: 700; min-width: 44px; text-align: center; }
+.comp-hi  { color: #60d090; }
+.comp-mid { color: #c09040; }
+.comp-lo  { color: #d07060; }
+
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+button {
+  padding: 10px 20px; border-radius: 8px; border: none;
+  font-size: 0.88rem; cursor: pointer; font-family: inherit;
+  transition: opacity 0.15s, transform 0.1s;
+}
+button:active { transform: scale(0.97); }
+.btn-save { background: #1d5035; color: #60d090; }
+.btn-save:hover { opacity: 0.85; }
+.btn-back { background: #1a2438; color: #6080a0; text-decoration: none;
+  padding: 10px 20px; border-radius: 8px; font-size: 0.88rem; display: inline-block; }
+.btn-back:hover { opacity: 0.85; }
+
+.section-title {
+  font-size: 0.7rem; color: #445060; text-transform: uppercase;
+  letter-spacing: 2px; margin-bottom: 12px; margin-top: 28px;
+}
+.entry {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 10px; padding: 14px; margin-bottom: 10px;
+}
+.entry-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.entry-date { font-size: 0.8rem; color: #445060; }
+.entry-meta { display: flex; gap: 10px; align-items: center; }
+.entry-source {
+  font-size: 0.72rem; background: #1a2438; color: #60a0d0;
+  padding: 2px 8px; border-radius: 10px;
+}
+.entry-min { font-size: 0.78rem; color: #f0c060; font-weight: 600; }
+.entry-comp { font-size: 0.78rem; font-weight: 700; }
+.entry-notes { font-size: 0.8rem; color: #667080; margin-top: 5px; line-height: 1.5; }
+
+.empty { color: #334050; font-size: 0.85rem; text-align: center; padding: 24px; }
+
+.toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: #1d5035; color: #60d090; padding: 10px 20px;
+  border-radius: 8px; font-size: 0.85rem; opacity: 0;
+  transition: all 0.25s; pointer-events: none; z-index: 99;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<h1>🎧 聽力日誌</h1>
+<p class="sub">LISTENING LOG — 追蹤每次聽力輸入、理解度趨勢</p>
+
+<div class="stats-row">
+  <div class="stat-box">
+    <div class="stat-val" id="statTotal">0</div>
+    <div class="stat-label">總分鐘</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val" id="statWeek">0</div>
+    <div class="stat-label">本週 min</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val" id="statAvgComp">—</div>
+    <div class="stat-label">平均理解度</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val" id="statSessions">0</div>
+    <div class="stat-label">總次數</div>
+  </div>
+</div>
+
+<div class="breakdown" id="breakdown">
+  <div class="breakdown-title">🎵 來源分布（累積分鐘）</div>
+  <div id="srcBars"></div>
+</div>
+
+<div class="card">
+  <div class="card-title">新增聽力記錄</div>
+  <div class="date-display" id="todayDate"></div>
+
+  <label>來源</label>
+  <select id="sessSource">
+    <option value="Podcast">Podcast（通勤）</option>
+    <option value="兒歌">法文兒歌（女兒）</option>
+    <option value="家教">家教上課</option>
+    <option value="YouTube">YouTube</option>
+    <option value="影集/電影">影集／電影</option>
+    <option value="其他">其他</option>
+  </select>
+
+  <label>時長（分鐘）</label>
+  <input type="number" id="sessMin" min="1" max="300" placeholder="例：20" />
+
+  <label>理解度（%）</label>
+  <div class="comp-row">
+    <input type="range" id="compSlider" min="0" max="100" step="5" value="50" />
+    <div class="comp-val comp-mid" id="compDisplay">50%</div>
+  </div>
+
+  <label>備注（選填）</label>
+  <input type="text" id="sessNotes" placeholder="例：今天 Podcast 大概能抓到 6 成意思" />
+
+  <div class="btn-row">
+    <button class="btn-save" id="btnSave">✓ 儲存記錄</button>
+    <a href="dashboard.html" class="btn-back">← Dashboard</a>
+  </div>
+</div>
+
+<div class="section-title">歷史記錄</div>
+<div id="historyList"></div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const KEY = 'clb7_listening';
+const SOURCES = ['Podcast','兒歌','家教','YouTube','影集/電影','其他'];
+
+function load() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } }
+function save(d) { localStorage.setItem(KEY, JSON.stringify(d)); }
+
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+}
+function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function compClass(c) {
+  if (c >= 70) return 'comp-hi';
+  if (c >= 40) return 'comp-mid';
+  return 'comp-lo';
+}
+
+function updateStats() {
+  const data = load();
+  const totalMin = data.reduce((s,e)=>s+(+e.min||0), 0);
+  document.getElementById('statTotal').textContent = totalMin;
+  document.getElementById('statSessions').textContent = data.length;
+
+  const now = new Date(); now.setHours(0,0,0,0);
+  const dow = now.getDay();
+  const startOfWeek = new Date(now); startOfWeek.setDate(now.getDate() - dow);
+  const weekMin = data.filter(e => {
+    const d = new Date(e.date.replace(/\//g,'-')); d.setHours(0,0,0,0);
+    return d >= startOfWeek;
+  }).reduce((s,e)=>s+(+e.min||0), 0);
+  document.getElementById('statWeek').textContent = weekMin;
+
+  const withComp = data.filter(e => e.comp != null);
+  const avgComp = withComp.length
+    ? Math.round(withComp.reduce((s,e)=>s+e.comp,0) / withComp.length)
+    : null;
+  const compEl = document.getElementById('statAvgComp');
+  compEl.textContent = avgComp != null ? avgComp + '%' : '—';
+  compEl.className = 'stat-val' + (avgComp != null ? ' ' + compClass(avgComp) : '');
+}
+
+function updateBreakdown() {
+  const data = load();
+  if (!data.length) { document.getElementById('breakdown').style.display = 'none'; return; }
+  const mins = {};
+  SOURCES.forEach(s => mins[s] = 0);
+  data.forEach(e => { if (mins[e.source] !== undefined) mins[e.source] += (+e.min||0); });
+  const max = Math.max(...Object.values(mins), 1);
+  const hasData = Object.values(mins).some(v => v > 0);
+  if (!hasData) { document.getElementById('breakdown').style.display = 'none'; return; }
+  document.getElementById('breakdown').style.display = 'block';
+  const sorted = SOURCES.map(s=>({s, m:mins[s]})).sort((a,b)=>b.m-a.m).filter(x=>x.m>0);
+  document.getElementById('srcBars').innerHTML = sorted.map(({s,m}) => `
+    <div class="src-bar-row">
+      <div class="src-bar-label">${escHtml(s)}</div>
+      <div class="src-bar-wrap"><div class="src-bar-fill" style="width:${Math.round(m/max*100)}%"></div></div>
+      <div class="src-bar-min">${m} min</div>
+    </div>
+  `).join('');
+}
+
+function renderHistory() {
+  const data = load().slice().reverse();
+  const el = document.getElementById('historyList');
+  if (!data.length) { el.innerHTML = '<div class="empty">還沒有記錄 — 今天開始吧！</div>'; return; }
+  el.innerHTML = data.map(e => {
+    const cc = compClass(e.comp ?? 50);
+    const compHtml = e.comp != null ? `<span class="entry-comp ${cc}">${e.comp}%</span>` : '';
+    const notesHtml = e.notes ? `<div class="entry-notes">💬 ${escHtml(e.notes)}</div>` : '';
+    return `
+      <div class="entry">
+        <div class="entry-header">
+          <span class="entry-date">${e.date}</span>
+          <div class="entry-meta">
+            <span class="entry-source">${escHtml(e.source)}</span>
+            <span class="entry-min">${e.min} min</span>
+            ${compHtml}
+          </div>
+        </div>
+        ${notesHtml}
+      </div>
+    `;
+  }).join('');
+}
+
+// Slider
+const slider = document.getElementById('compSlider');
+const compDisplay = document.getElementById('compDisplay');
+slider.addEventListener('input', () => {
+  const v = +slider.value;
+  compDisplay.textContent = v + '%';
+  compDisplay.className = 'comp-val ' + compClass(v);
+});
+
+document.getElementById('btnSave').addEventListener('click', () => {
+  const min = document.getElementById('sessMin').value.trim();
+  if (!min || +min <= 0) { showToast('請輸入時長'); return; }
+  const source = document.getElementById('sessSource').value;
+  const comp = +slider.value;
+  const notes = document.getElementById('sessNotes').value.trim();
+
+  const data = load();
+  data.push({ date: todayStr(), source, min: +min, comp, notes });
+  save(data);
+
+  document.getElementById('sessMin').value = '';
+  document.getElementById('sessNotes').value = '';
+  slider.value = 50;
+  compDisplay.textContent = '50%';
+  compDisplay.className = 'comp-val comp-mid';
+
+  updateStats();
+  updateBreakdown();
+  renderHistory();
+  showToast('✓ 聽力記錄已儲存！');
+});
+
+document.getElementById('todayDate').textContent = todayStr();
+updateStats();
+updateBreakdown();
+renderHistory();
+</script>
+
+<!-- 懸浮快速筆記 -->
+<style>
+#qnoteBtn{position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#1a2438;border:1px solid #2a3858;color:#f0c060;font-size:1.2rem;cursor:pointer;z-index:999;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,0.5);transition:transform 0.15s;}
+#qnoteBtn:hover{transform:scale(1.1);}
+#qnotePanel{position:fixed;bottom:72px;right:20px;width:280px;background:#0d1020;border:1px solid #2a3858;border-radius:12px;padding:14px;z-index:998;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.6);}
+#qnotePanel.open{display:block;}
+#qnoteTitle{font-size:0.7rem;color:#445060;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+#qnoteTxt{width:100%;background:#141928;border:1px solid #1a2438;border-radius:8px;color:#ddd8cc;font-size:0.85rem;padding:8px;resize:none;height:80px;font-family:inherit;}
+#qnoteTxt:focus{outline:none;border-color:#f0c060;}
+#qnoteSave{margin-top:8px;width:100%;padding:8px;background:#1d5035;color:#60d090;border:none;border-radius:8px;font-size:0.82rem;cursor:pointer;font-family:inherit;}
+#qnoteCount{font-size:0.68rem;color:#334050;margin-top:6px;text-align:right;}
+</style>
+<button id="qnoteBtn" title="快速筆記">📝</button>
+<div id="qnotePanel">
+  <div id="qnoteTitle">快速筆記（存給 Claude 看）</div>
+  <textarea id="qnoteTxt" placeholder="記下問題、想法、bug…"></textarea>
+  <button id="qnoteSave">儲存筆記</button>
+  <div id="qnoteCount"></div>
+  <button id="qnoteCopy" style="margin-top:6px;width:100%;padding:7px;background:#1a2438;color:#60a0d0;border:none;border-radius:8px;font-size:0.78rem;cursor:pointer;font-family:inherit;">📋 複製全部給 Claude</button>
+</div>
+<script>
+(function(){
+  const KEY='clb7_quick_notes';
+  const page=location.pathname.split('/').pop()||'unknown';
+  function loadNotes(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch{return[];}}
+  function saveNotes(d){localStorage.setItem(KEY,JSON.stringify(d));}
+  function updateCount(){const n=loadNotes();document.getElementById('qnoteCount').textContent=n.length?`共 ${n.length} 則筆記`:'還沒有筆記';}
+  document.getElementById('qnoteBtn').addEventListener('click',()=>{
+    document.getElementById('qnotePanel').classList.toggle('open');
+    updateCount();
+  });
+  document.getElementById('qnoteSave').addEventListener('click',()=>{
+    const txt=document.getElementById('qnoteTxt').value.trim();
+    if(!txt)return;
+    const notes=loadNotes();
+    const d=new Date();
+    notes.push({date:`${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`,time:`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`,page,note:txt});
+    saveNotes(notes);
+    document.getElementById('qnoteTxt').value='';
+    updateCount();
+  });
+  document.getElementById('qnoteCopy').addEventListener('click',()=>{
+    const notes=loadNotes();
+    if(!notes.length){alert('還沒有筆記');return;}
+    const text='【CLB7 快速筆記】\n'+notes.map(n=>`[${n.date} ${n.time} @ ${n.page}] ${n.note}`).join('\n');
+    navigator.clipboard.writeText(text).then(()=>{
+      document.getElementById('qnoteCopy').textContent='✓ 已複製！';
+      setTimeout(()=>document.getElementById('qnoteCopy').textContent='📋 複製全部給 Claude',2000);
+    });
+  });
+})();
+</script>
+</body>
+</html>

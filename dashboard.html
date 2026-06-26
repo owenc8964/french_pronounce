@@ -271,6 +271,10 @@ body {
     <span class="nav-icon">🗣</span>
     <div><div class="nav-label">口說日誌</div><div class="nav-sub" id="navSpeakingSub">記錄糾錯</div></div>
   </a>
+  <a class="nav-btn" href="listening.html">
+    <span class="nav-icon">🎧</span>
+    <div><div class="nav-label">聽力日誌</div><div class="nav-sub" id="navListeningSub">記錄輸入</div></div>
+  </a>
 </div>
 
 <script>
@@ -317,7 +321,8 @@ function todayStr() {
 
 function getWritingData()   { try { return JSON.parse(localStorage.getItem('clb7_writing'))   || []; } catch { return []; } }
 function getTrackerData()   { try { return JSON.parse(localStorage.getItem('clb7_tracker'))   || []; } catch { return []; } }
-function getSpeakingData()  { try { return JSON.parse(localStorage.getItem('clb7_speaking'))  || []; } catch { return []; } }
+function getSpeakingData()   { try { return JSON.parse(localStorage.getItem('clb7_speaking'))   || []; } catch { return []; } }
+function getListeningData()  { try { return JSON.parse(localStorage.getItem('clb7_listening'))  || []; } catch { return []; } }
 function getGameData()     { try { return JSON.parse(localStorage.getItem('clb7_game'))      || {xp:0,streak:0,lastDate:''}; } catch { return {xp:0,streak:0,lastDate:''}; } }
 
 function getTopicStats() {
@@ -551,6 +556,12 @@ function render() {
     }).reduce((s,e)=>s+(+e.min||0),0);
     document.getElementById('navSpeakingSub').textContent = weekMins > 0
       ? `本週 ${weekMins} min` : '記錄糾錯';
+    const listenWeekMins = getListeningData().filter(e => {
+      const d = new Date(e.date.replace(/\//g,'-')); d.setHours(0,0,0,0);
+      return d >= startOfWeek;
+    }).reduce((s,e)=>s+(+e.min||0),0);
+    document.getElementById('navListeningSub').textContent = listenWeekMins > 0
+      ? `本週 ${listenWeekMins} min` : '記錄輸入';
   })();
 
   // Alerts
