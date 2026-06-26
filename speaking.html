@@ -401,5 +401,57 @@ updateStats();
 updateErrTrend();
 renderHistory();
 </script>
+<!-- 懸浮快速筆記 -->
+<style>
+#qnoteBtn{position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#1a2438;border:1px solid #2a3858;color:#f0c060;font-size:1.2rem;cursor:pointer;z-index:999;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,0.5);transition:transform 0.15s;}
+#qnoteBtn:hover{transform:scale(1.1);}
+#qnotePanel{position:fixed;bottom:72px;right:20px;width:280px;background:#0d1020;border:1px solid #2a3858;border-radius:12px;padding:14px;z-index:998;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.6);}
+#qnotePanel.open{display:block;}
+#qnoteTitle{font-size:0.7rem;color:#445060;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+#qnoteTxt{width:100%;background:#141928;border:1px solid #1a2438;border-radius:8px;color:#ddd8cc;font-size:0.85rem;padding:8px;resize:none;height:80px;font-family:inherit;}
+#qnoteTxt:focus{outline:none;border-color:#f0c060;}
+#qnoteSave{margin-top:8px;width:100%;padding:8px;background:#1d5035;color:#60d090;border:none;border-radius:8px;font-size:0.82rem;cursor:pointer;font-family:inherit;}
+#qnoteCount{font-size:0.68rem;color:#334050;margin-top:6px;text-align:right;}
+</style>
+<button id="qnoteBtn" title="快速筆記">📝</button>
+<div id="qnotePanel">
+  <div id="qnoteTitle">快速筆記（存給 Claude 看）</div>
+  <textarea id="qnoteTxt" placeholder="記下問題、想法、bug…"></textarea>
+  <button id="qnoteSave">儲存筆記</button>
+  <div id="qnoteCount"></div>
+  <button id="qnoteCopy" style="margin-top:6px;width:100%;padding:7px;background:#1a2438;color:#60a0d0;border:none;border-radius:8px;font-size:0.78rem;cursor:pointer;font-family:inherit;">📋 複製全部給 Claude</button>
+</div>
+<script>
+(function(){
+  const KEY='clb7_quick_notes';
+  const page=location.pathname.split('/').pop()||'unknown';
+  function loadNotes(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch{return[];}}
+  function saveNotes(d){localStorage.setItem(KEY,JSON.stringify(d));}
+  function updateCount(){const n=loadNotes();document.getElementById('qnoteCount').textContent=n.length?`共 ${n.length} 則筆記`:'還沒有筆記';}
+  document.getElementById('qnoteBtn').addEventListener('click',()=>{
+    document.getElementById('qnotePanel').classList.toggle('open');
+    updateCount();
+  });
+  document.getElementById('qnoteSave').addEventListener('click',()=>{
+    const txt=document.getElementById('qnoteTxt').value.trim();
+    if(!txt)return;
+    const notes=loadNotes();
+    const d=new Date();
+    notes.push({date:`${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`,time:`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`,page,note:txt});
+    saveNotes(notes);
+    document.getElementById('qnoteTxt').value='';
+    updateCount();
+  });
+  document.getElementById('qnoteCopy').addEventListener('click',()=>{
+    const notes=loadNotes();
+    if(!notes.length){alert('還沒有筆記');return;}
+    const text='【CLB7 快速筆記】\n'+notes.map(n=>`[${n.date} ${n.time} @ ${n.page}] ${n.note}`).join('\n');
+    navigator.clipboard.writeText(text).then(()=>{
+      document.getElementById('qnoteCopy').textContent='✓ 已複製！';
+      setTimeout(()=>document.getElementById('qnoteCopy').textContent='📋 複製全部給 Claude',2000);
+    });
+  });
+})();
+</script>
 </body>
 </html>
