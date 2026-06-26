@@ -242,7 +242,7 @@ function renderLog() {
 }
 
 // Timer
-let elapsed = 0, startTs = null, interval = null;
+let elapsed = 0, interval = null;
 let selectedType = 'Quiz';
 
 function fmtTimer(sec) {
@@ -250,12 +250,6 @@ function fmtTimer(sec) {
   const m = String(Math.floor((sec % 3600) / 60)).padStart(2,'0');
   const s = String(sec % 60).padStart(2,'0');
   return `${h}:${m}:${s}`;
-}
-
-function tick() {
-  elapsed = Math.floor((Date.now() - startTs) / 1000) + (elapsed || 0);
-  startTs = Date.now();
-  document.getElementById('timerDisplay').textContent = fmtTimer(elapsed);
 }
 
 document.getElementById('typeRow').addEventListener('click', e => {
@@ -270,7 +264,6 @@ function timerRunning() { return interval !== null; }
 
 function startTimer() {
   if (timerRunning()) return;
-  startTs = Date.now();
   interval = setInterval(() => {
     elapsed++;
     document.getElementById('timerDisplay').textContent = fmtTimer(elapsed);
@@ -304,7 +297,7 @@ document.getElementById('btnLog').addEventListener('click', () => {
     sec: elapsed
   });
   save(data);
-  elapsed = 0; startTs = null;
+  elapsed = 0;
   document.getElementById('timerDisplay').textContent = '00:00:00';
   document.getElementById('btnLog').disabled = true;
   updateStats();
@@ -314,7 +307,7 @@ document.getElementById('btnLog').addEventListener('click', () => {
 
 document.getElementById('btnReset').addEventListener('click', () => {
   pauseTimer();
-  elapsed = 0; startTs = null;
+  elapsed = 0;
   document.getElementById('timerDisplay').textContent = '00:00:00';
   document.getElementById('btnLog').disabled = true;
 });
