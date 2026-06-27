@@ -172,6 +172,26 @@ body {
   font-size: 0.68rem; color: #334050; text-transform: uppercase;
   letter-spacing: 1.5px; margin: 20px 0 10px;
 }
+
+/* Four Skills */
+.skill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 4px; }
+.skill-card {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 10px; padding: 14px 16px;
+  text-decoration: none; color: inherit;
+  transition: border-color 0.15s;
+}
+.skill-card:hover { border-color: #445060; }
+.skill-name { font-size: 0.65rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.skill-val  { font-size: 1.4rem; font-weight: 700; color: #f0c060; line-height: 1; }
+.skill-sub  { font-size: 0.65rem; color: #334050; margin-top: 4px; }
+.skill-bar-wrap { background: #141928; border-radius: 3px; height: 4px; margin-top: 8px; overflow: hidden; }
+.skill-bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+.bar-listen { background: #6080d0; }
+.bar-read   { background: #c09040; }
+.bar-write  { background: #60d090; }
+.bar-speak  { background: #d06080; }
+.skill-val.dim { color: #334050; font-size: 1rem; }
 </style>
 </head>
 <body>
@@ -235,6 +255,10 @@ body {
   <div class="prog-track"><div class="prog-fill fill-hours" id="hoursFill" style="width:0%"></div></div>
   <div class="prog-sub" id="hoursSub"></div>
 </div>
+
+<!-- Four Skills -->
+<div class="section-title">四技能現況</div>
+<div class="skill-grid" id="skillGrid"></div>
 
 <!-- Topic health -->
 <div class="section-title">Topic 健康度（Quiz 正確率）</div>
@@ -562,6 +586,57 @@ function render() {
     }).reduce((s,e)=>s+(+e.min||0),0);
     document.getElementById('navListeningSub').textContent = listenWeekMins > 0
       ? `本週 ${listenWeekMins} min` : '記錄輸入';
+  })();
+
+  // Four Skills
+  (() => {
+    const now = new Date(); now.setHours(0,0,0,0);
+    const dow = now.getDay();
+    const sow = new Date(now); sow.setDate(now.getDate() - dow);
+    const inWeek = e => { const d = new Date(e.date.replace(/\//g,'-')); d.setHours(0,0,0,0); return d >= sow; };
+
+    // 聽力：本週分鐘
+    const listenMins = getListeningData().filter(inWeek).reduce((s,e)=>s+(+e.min||0),0);
+    const listenAvgComp = (() => {
+      const w = getListeningData().filter(inWeek).filter(e=>e.comp!=null);
+      return w.length ? Math.round(w.reduce((s,e)=>s+e.comp,0)/w.length) : null;
+    })();
+
+    // 閱讀：Quiz 本週正確率（加權）
+    const qPct = (() => {
+      let c=0,t=0;
+      Object.keys(localStorage).filter(k=>k.startsWith('clb7_')).forEach(k=>{
+        try{ const v=JSON.parse(localStorage.getItem(k));
+          if(v && typeof v.c==='number'){ c+=v.c; t+=(v.c+(v.w||0)); } }catch{}
+      });
+      return t>0 ? Math.round(c/t*100) : null;
+    })();
+
+    // 寫作：本週造句平均分
+    const writeMins = getWritingData().filter(inWeek);
+    const writeAvg = writeMins.length ? (writeMins.reduce((s,e)=>s+(+e.score||0),0)/writeMins.length).toFixed(1) : null;
+
+    // 口說：本週分鐘
+    const speakMins = getSpeakingData().filter(inWeek).reduce((s,e)=>s+(+e.min||0),0);
+
+    const skills = [
+      { key:'listen', name:'🎧 聽力', href:'listening.html', val: listenMins?`${listenMins} min`:'未記錄',
+        sub: listenAvgComp!=null?`理解度 ${listenAvgComp}%`:'記錄理解度', bar: Math.min(100,listenMins/90*100), cls:'bar-listen' },
+      { key:'read',   name:'📖 閱讀', href:'quiz.html',      val: qPct!=null?`${qPct}%`:'未做題',
+        sub: '本週 Quiz 正確率', bar: qPct??0, cls:'bar-read' },
+      { key:'write',  name:'✍️ 寫作', href:'writing.html',   val: writeAvg!=null?`${writeAvg}/10`:'未記錄',
+        sub: `本週 ${writeMins.length} 次造句`, bar: writeAvg!=null?writeAvg*10:0, cls:'bar-write' },
+      { key:'speak',  name:'🗣 口說', href:'speaking.html',  val: speakMins?`${speakMins} min`:'未記錄',
+        sub: '本週口說時數', bar: Math.min(100,speakMins/60*100), cls:'bar-speak' },
+    ];
+
+    document.getElementById('skillGrid').innerHTML = skills.map(s=>`
+      <a class="skill-card" href="${s.href}">
+        <div class="skill-name">${s.name}</div>
+        <div class="skill-val${s.val==='未記錄'||s.val==='未做題'?' dim':''}">${s.val}</div>
+        <div class="skill-sub">${s.sub}</div>
+        <div class="skill-bar-wrap"><div class="skill-bar-fill ${s.cls}" style="width:${s.bar.toFixed(0)}%"></div></div>
+      </a>`).join('');
   })();
 
   // Alerts
