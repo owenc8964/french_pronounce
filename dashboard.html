@@ -173,6 +173,53 @@ body {
   letter-spacing: 1.5px; margin: 20px 0 10px;
 }
 
+/* Duolingo */
+.duo-card {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
+}
+.duo-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+}
+.duo-title { font-size: 0.68rem; color: #445060; text-transform: uppercase; letter-spacing: 1.5px; }
+.duo-input-btn {
+  font-size: 0.7rem; padding: 4px 10px; background: #141928;
+  border: 1px solid #2a3858; border-radius: 6px; color: #60a0d0;
+  cursor: pointer; font-family: inherit;
+}
+.duo-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 10px; }
+.duo-stat { text-align: center; }
+.duo-stat-val { font-size: 1.1rem; font-weight: 700; color: #f0c060; }
+.duo-stat-label { font-size: 0.6rem; color: #445060; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; }
+.duo-trend { font-size: 0.65rem; margin-top: 3px; }
+.trend-up   { color: #60d090; }
+.trend-down { color: #d07060; }
+.trend-same { color: #445060; }
+.duo-cumul {
+  display: flex; gap: 16px; padding-top: 10px;
+  border-top: 1px solid #141928; font-size: 0.72rem; color: #445060;
+}
+.duo-cumul span { color: #60a0d0; font-weight: 600; }
+.duo-input-panel {
+  display: none; margin-top: 12px; padding-top: 12px;
+  border-top: 1px solid #141928;
+}
+.duo-input-panel.open { display: block; }
+.duo-input-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 10px; }
+.duo-field { display: flex; flex-direction: column; gap: 4px; }
+.duo-field label { font-size: 0.62rem; color: #445060; text-transform: uppercase; letter-spacing: 0.8px; }
+.duo-field input {
+  background: #141928; border: 1px solid #1a2438; border-radius: 6px;
+  color: #ddd8cc; font-size: 0.9rem; padding: 6px 8px; font-family: inherit;
+  text-align: center; width: 100%;
+}
+.duo-field input:focus { outline: none; border-color: #f0c060; }
+.duo-save-btn {
+  width: 100%; padding: 8px; background: #1d5035; color: #60d090;
+  border: none; border-radius: 8px; font-size: 0.82rem; cursor: pointer; font-family: inherit;
+}
+.duo-week-label { font-size: 0.62rem; color: #334050; margin-bottom: 8px; }
+
 /* Four Skills */
 .skill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 4px; }
 .skill-card {
@@ -254,6 +301,36 @@ body {
   </div>
   <div class="prog-track"><div class="prog-fill fill-hours" id="hoursFill" style="width:0%"></div></div>
   <div class="prog-sub" id="hoursSub"></div>
+</div>
+
+<!-- Duolingo -->
+<div class="section-title">Duolingo 週報</div>
+<div class="duo-card">
+  <div class="duo-header">
+    <div class="duo-title">🦜 本週數據</div>
+    <button class="duo-input-btn" id="duoToggle">＋ 輸入本週</button>
+  </div>
+  <div class="duo-grid" id="duoGrid">
+    <div class="duo-stat"><div class="duo-stat-val" id="duoStreak">—</div><div class="duo-stat-label">🔥 連勝</div><div class="duo-trend" id="duoStreakT"></div></div>
+    <div class="duo-stat"><div class="duo-stat-val" id="duoXP">—</div><div class="duo-stat-label">⚡ XP</div><div class="duo-trend" id="duoXPT"></div></div>
+    <div class="duo-stat"><div class="duo-stat-val" id="duoMin">—</div><div class="duo-stat-label">⏱ 分鐘</div><div class="duo-trend" id="duoMinT"></div></div>
+    <div class="duo-stat"><div class="duo-stat-val" id="duoUnits">—</div><div class="duo-stat-label">📚 單元</div><div class="duo-trend" id="duoUnitsT"></div></div>
+  </div>
+  <div class="duo-cumul">
+    累計 XP：<span id="duoCumulXP">—</span>
+    &nbsp;·&nbsp; 累計學習：<span id="duoCumulMin">—</span>
+    &nbsp;·&nbsp; 已記錄 <span id="duoWeeks">0</span> 週
+  </div>
+  <div class="duo-input-panel" id="duoPanel">
+    <div class="duo-week-label" id="duoWeekLabel"></div>
+    <div class="duo-input-row">
+      <div class="duo-field"><label>🔥 連勝天數</label><input type="number" id="inStreak" placeholder="66"></div>
+      <div class="duo-field"><label>⚡ 經驗值</label><input type="number" id="inXP" placeholder="3430"></div>
+      <div class="duo-field"><label>⏱ 分鐘</label><input type="number" id="inMin" placeholder="294"></div>
+      <div class="duo-field"><label>📚 單元</label><input type="number" id="inUnits" placeholder="74"></div>
+    </div>
+    <button class="duo-save-btn" id="duoSave">儲存本週數據</button>
+  </div>
 </div>
 
 <!-- Four Skills -->
@@ -681,6 +758,87 @@ function render() {
     </div>`;
   }).join('');
 }
+
+// ── Duolingo ─────────────────────────────────────────────────
+function isoWeek(d = new Date()) {
+  const t = new Date(d); t.setHours(0,0,0,0);
+  t.setDate(t.getDate() + 3 - (t.getDay() + 6) % 7);
+  const w1 = new Date(t.getFullYear(), 0, 4);
+  return t.getFullYear() + '-W' + String(1 + Math.round(((t - w1) / 86400000 - 3 + (w1.getDay() + 6) % 7) / 7)).padStart(2, '0');
+}
+
+function getDuoData() { try { return JSON.parse(localStorage.getItem('clb7_duo')) || []; } catch { return []; } }
+
+function renderDuo() {
+  const data = getDuoData();
+  const week = isoWeek();
+  const cur  = data.find(d => d.week === week);
+  const prev = data.length >= 2 ? data[data.length - (cur ? 2 : 1)] : null;
+
+  function trend(curV, prevV) {
+    if (!curV || !prevV || prevV === 0) return '';
+    const pct = Math.round((curV - prevV) / prevV * 100);
+    if (pct > 0) return `<span class="trend-up">↑${pct}%</span>`;
+    if (pct < 0) return `<span class="trend-down">↓${Math.abs(pct)}%</span>`;
+    return `<span class="trend-same">→ 持平</span>`;
+  }
+
+  if (cur) {
+    document.getElementById('duoStreak').textContent = cur.streak;
+    document.getElementById('duoXP').textContent     = cur.xp.toLocaleString();
+    document.getElementById('duoMin').textContent    = cur.min;
+    document.getElementById('duoUnits').textContent  = cur.units;
+    document.getElementById('duoStreakT').innerHTML  = trend(cur.streak, prev?.streak);
+    document.getElementById('duoXPT').innerHTML      = trend(cur.xp,     prev?.xp);
+    document.getElementById('duoMinT').innerHTML     = trend(cur.min,    prev?.min);
+    document.getElementById('duoUnitsT').innerHTML   = trend(cur.units,  prev?.units);
+  }
+
+  const totalXP  = data.reduce((s, d) => s + (d.xp  || 0), 0);
+  const totalMin = data.reduce((s, d) => s + (d.min || 0), 0);
+  document.getElementById('duoCumulXP').textContent  = totalXP.toLocaleString();
+  document.getElementById('duoCumulMin').textContent = totalMin >= 60
+    ? `${Math.floor(totalMin/60)}h ${totalMin%60}min` : `${totalMin}min`;
+  document.getElementById('duoWeeks').textContent    = data.length;
+  document.getElementById('duoWeekLabel').textContent = `當前週次：${week}`;
+}
+
+renderDuo();
+
+document.getElementById('duoToggle').addEventListener('click', () => {
+  const panel = document.getElementById('duoPanel');
+  const isOpen = panel.classList.toggle('open');
+  document.getElementById('duoToggle').textContent = isOpen ? '✕ 收起' : '＋ 輸入本週';
+  if (isOpen) {
+    const data = getDuoData();
+    const cur  = data.find(d => d.week === isoWeek());
+    if (cur) {
+      document.getElementById('inStreak').value = cur.streak;
+      document.getElementById('inXP').value     = cur.xp;
+      document.getElementById('inMin').value    = cur.min;
+      document.getElementById('inUnits').value  = cur.units;
+    }
+  }
+});
+
+document.getElementById('duoSave').addEventListener('click', () => {
+  const streak = +document.getElementById('inStreak').value;
+  const xp     = +document.getElementById('inXP').value;
+  const min    = +document.getElementById('inMin').value;
+  const units  = +document.getElementById('inUnits').value;
+  if (!xp && !min) return;
+  const data = getDuoData();
+  const week = isoWeek();
+  const idx  = data.findIndex(d => d.week === week);
+  const entry = { week, streak, xp, min, units };
+  if (idx >= 0) data[idx] = entry; else data.push(entry);
+  localStorage.setItem('clb7_duo', JSON.stringify(data));
+  renderDuo();
+  document.getElementById('duoPanel').classList.remove('open');
+  document.getElementById('duoToggle').textContent = '＋ 輸入本週';
+  document.getElementById('duoSave').textContent = '✓ 已儲存！';
+  setTimeout(() => document.getElementById('duoSave').textContent = '儲存本週數據', 2000);
+});
 
 render();
 
