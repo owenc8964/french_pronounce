@@ -220,6 +220,20 @@ body {
 }
 .duo-week-label { font-size: 0.62rem; color: #334050; margin-bottom: 8px; }
 
+/* 週趨勢 */
+.trend-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+.trend-table th, .trend-table td {
+  padding: 7px 6px; text-align: center;
+  border-bottom: 1px solid #141928; color: #aaa8a0;
+}
+.trend-table th { color: #445060; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.5px; }
+.trend-table .trend-lbl { text-align: left; color: #445060; font-size: 0.68rem; white-space: nowrap; }
+.trend-table .cur-col { color: #f0c060; }
+.trend-table tbody tr:last-child td { border-bottom: none; }
+.trend-up-cell   { color: #60d090 !important; }
+.trend-down-cell { color: #d07060 !important; }
+.trend-pending   { font-size: 0.75rem; color: #334050; text-align: center; padding: 16px 0; }
+
 /* Four Skills */
 .skill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 4px; }
 .skill-card {
@@ -335,6 +349,12 @@ body {
     </div>
     <button class="duo-save-btn" id="duoSave">儲存本週數據</button>
   </div>
+</div>
+
+<!-- 週趨勢 -->
+<div class="section-title">週趨勢分析</div>
+<div class="duo-card">
+  <div id="trendSection"><div class="trend-pending">載入中…</div></div>
 </div>
 
 <!-- Four Skills -->
@@ -848,6 +868,116 @@ function renderDuo() {
 }
 
 renderDuo();
+
+// ── 週趨勢快照 ────────────────────────────────────────────
+function getSnapshots() { try { return JSON.parse(localStorage.getItem('clb7_snapshots')) || []; } catch { return []; } }
+
+function weekBoundsForIso(weekStr) {
+  const [yr, w] = weekStr.split('-W').map(Number);
+  const jan4 = new Date(yr, 0, 4);
+  const startW1 = new Date(jan4); startW1.setDate(jan4.getDate() - (jan4.getDay() + 6) % 7);
+  const start = new Date(startW1); start.setDate(startW1.getDate() + (w - 1) * 7);
+  start.setHours(0, 0, 0, 0);
+  const end = new Date(start); end.setDate(start.getDate() + 7);
+  return { start, end };
+}
+
+function weekLabel(weekStr) {
+  const { start } = weekBoundsForIso(weekStr);
+  return `${start.getMonth() + 1}/${start.getDate()}`;
+}
+
+function computeWeekData(weekStr) {
+  const { start, end } = weekBoundsForIso(weekStr);
+  const inRange = e => { const d = new Date(e.date.replace(/\//g, '-')); d.setHours(0,0,0,0); return d >= start && d < end; };
+
+  const trackerSec = getTrackerData()
+    .filter(e => { const t = new Date(e.ts); return t >= start && t < end; })
+    .reduce((s, e) => s + e.sec, 0);
+
+  const writing = getWritingData().filter(inRange);
+  const listen  = getListeningData().filter(inRange);
+  const speak   = getSpeakingData().filter(inRange);
+
+  const quizAttempts = BANK.filter(q => {
+    try { const v = JSON.parse(localStorage.getItem('clb7_' + qId(q)));
+      return v && v.last >= start.getTime() && v.last < end.getTime(); }
+    catch { return false; }
+  }).length;
+
+  const duo = getDuoData().find(d => d.week === weekStr);
+
+  return {
+    week: weekStr,
+    totalH:       +(trackerSec / 3600).toFixed(1),
+    quizAttempts,
+    writingCount: writing.length,
+    writingAvg:   writing.length ? +(writing.reduce((s,e)=>s+(+e.score||0),0)/writing.length).toFixed(1) : null,
+    listenMin:    listen.reduce((s,e)=>s+(+e.min||0),0),
+    speakMin:     speak.reduce((s,e)=>s+(+e.min||0),0),
+    duoXP:        duo?.xp ?? null,
+  };
+}
+
+function autoSnapshot() {
+  const d = new Date(); d.setDate(d.getDate() - 7);
+  const prevWeek = isoWeek(d);
+  const snaps = getSnapshots();
+  if (!snaps.find(s => s.week === prevWeek)) {
+    snaps.push(computeWeekData(prevWeek));
+    localStorage.setItem('clb7_snapshots', JSON.stringify(snaps));
+  }
+}
+
+function renderTrend() {
+  autoSnapshot();
+  const snaps = getSnapshots().slice(-3);
+  const cur   = { ...computeWeekData(isoWeek()), isCurrent: true };
+  const all   = [...snaps, cur];
+
+  const el = document.getElementById('trendSection');
+
+  if (all.length < 2) {
+    el.innerHTML = '<div class="trend-pending">數據累積中，下週起自動顯示趨勢 📊</div>';
+    return;
+  }
+
+  const rows = [
+    { label: '學習時數', key: 'totalH',       fmt: v => v + 'h' },
+    { label: 'Quiz 做題', key: 'quizAttempts', fmt: v => v + '題' },
+    { label: '造句次數',  key: 'writingCount', fmt: v => v + '次' },
+    { label: '造句均分',  key: 'writingAvg',   fmt: v => v != null ? v + '/10' : '—' },
+    { label: '聽力',     key: 'listenMin',    fmt: v => v ? v + 'min' : '—' },
+    { label: '口說',     key: 'speakMin',     fmt: v => v ? v + 'min' : '—' },
+    { label: 'Duo XP',  key: 'duoXP',        fmt: v => v != null ? v.toLocaleString() : '—' },
+  ];
+
+  const headers = all.map(w =>
+    `<th class="${w.isCurrent ? 'cur-col' : ''}">${w.isCurrent ? '本週' : weekLabel(w.week)}</th>`
+  ).join('');
+
+  const bodyRows = rows.map(r => {
+    const cells = all.map((w, i) => {
+      const val  = w[r.key];
+      const prev = i > 0 ? all[i - 1][r.key] : null;
+      let cls = w.isCurrent ? 'cur-col' : '';
+      let arrow = '';
+      if (prev != null && val != null && val !== prev) {
+        if (val > prev) { arrow = ' ↑'; cls += ' trend-up-cell'; }
+        else            { arrow = ' ↓'; cls += ' trend-down-cell'; }
+      }
+      return `<td class="${cls.trim()}">${r.fmt(val)}${arrow}</td>`;
+    }).join('');
+    return `<tr><td class="trend-lbl">${r.label}</td>${cells}</tr>`;
+  }).join('');
+
+  el.innerHTML = `<table class="trend-table">
+    <thead><tr><th></th>${headers}</tr></thead>
+    <tbody>${bodyRows}</tbody>
+  </table>`;
+}
+
+renderTrend();
 
 document.getElementById('duoToggle').addEventListener('click', () => {
   const panel = document.getElementById('duoPanel');
