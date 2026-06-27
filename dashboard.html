@@ -239,6 +239,10 @@ body {
 .bar-write  { background: #60d090; }
 .bar-speak  { background: #d06080; }
 .skill-val.dim { color: #334050; font-size: 1rem; }
+.skill-trend { font-size: 0.62rem; margin-top: 5px; }
+.skill-trend .up   { color: #60d090; }
+.skill-trend .down { color: #d07060; }
+.skill-trend .same { color: #334050; }
 </style>
 </head>
 <body>
@@ -669,42 +673,81 @@ function render() {
   (() => {
     const now = new Date(); now.setHours(0,0,0,0);
     const dow = now.getDay();
-    const sow = new Date(now); sow.setDate(now.getDate() - dow);
-    const inWeek = e => { const d = new Date(e.date.replace(/\//g,'-')); d.setHours(0,0,0,0); return d >= sow; };
+    const sow  = new Date(now); sow.setDate(now.getDate() - dow);          // 本週開始
+    const sowL = new Date(sow); sowL.setDate(sow.getDate() - 7);           // 上週開始
+    const inThisWeek = e => { const d = new Date(e.date.replace(/\//g,'-')); d.setHours(0,0,0,0); return d >= sow; };
+    const inLastWeek = e => { const d = new Date(e.date.replace(/\//g,'-')); d.setHours(0,0,0,0); return d >= sowL && d < sow; };
 
-    // 聽力：本週分鐘
-    const listenMins = getListeningData().filter(inWeek).reduce((s,e)=>s+(+e.min||0),0);
-    const listenAvgComp = (() => {
-      const w = getListeningData().filter(inWeek).filter(e=>e.comp!=null);
+    function trendHtml(cur, prev, unit='') {
+      if (prev == null || cur == null) return '';
+      if (prev === 0) return cur > 0 ? `<span class="up">↑ 新增</span>` : '';
+      const pct = Math.round((cur - prev) / prev * 100);
+      if (pct > 0)  return `<span class="up">↑${pct}% vs 上週</span>`;
+      if (pct < 0)  return `<span class="down">↓${Math.abs(pct)}% vs 上週</span>`;
+      return `<span class="same">→ 與上週持平</span>`;
+    }
+
+    // 聽力
+    const listenAll  = getListeningData();
+    const listenCur  = listenAll.filter(inThisWeek).reduce((s,e)=>s+(+e.min||0),0);
+    const listenPrev = listenAll.filter(inLastWeek).reduce((s,e)=>s+(+e.min||0),0);
+    const listenComp = (() => {
+      const w = listenAll.filter(inThisWeek).filter(e=>e.comp!=null);
       return w.length ? Math.round(w.reduce((s,e)=>s+e.comp,0)/w.length) : null;
     })();
 
-    // 閱讀：Quiz 本週正確率（加權）
+    // 閱讀：用 BANK + qId 精準計算（累計正確率）
     const qPct = (() => {
-      let c=0,t=0;
-      Object.keys(localStorage).filter(k=>k.startsWith('clb7_')).forEach(k=>{
-        try{ const v=JSON.parse(localStorage.getItem(k));
-          if(v && typeof v.c==='number'){ c+=v.c; t+=(v.c+(v.w||0)); } }catch{}
+      let c=0, t=0;
+      BANK.forEach(q => {
+        try {
+          const v = JSON.parse(localStorage.getItem('clb7_' + qId(q)));
+          if (v) { c += (v.c||0); t += (v.c||0) + (v.w||0); }
+        } catch {}
       });
-      return t>0 ? Math.round(c/t*100) : null;
+      return t > 0 ? Math.round(c/t*100) : null;
     })();
+    // 閱讀本週做題數（SRS last 欄位在本週範圍內）
+    const readCurAttempts = BANK.filter(q => {
+      try { const v = JSON.parse(localStorage.getItem('clb7_' + qId(q))); return v && v.last >= sow.getTime(); } catch { return false; }
+    }).length;
+    const readPrevAttempts = BANK.filter(q => {
+      try { const v = JSON.parse(localStorage.getItem('clb7_' + qId(q))); return v && v.last >= sowL.getTime() && v.last < sow.getTime(); } catch { return false; }
+    }).length;
 
-    // 寫作：本週造句平均分
-    const writeMins = getWritingData().filter(inWeek);
-    const writeAvg = writeMins.length ? (writeMins.reduce((s,e)=>s+(+e.score||0),0)/writeMins.length).toFixed(1) : null;
+    // 寫作
+    const writeAll  = getWritingData();
+    const writeCur  = writeAll.filter(inThisWeek);
+    const writePrev = writeAll.filter(inLastWeek);
+    const writeAvg     = writeCur.length  ? (writeCur.reduce((s,e)=>s+(+e.score||0),0)/writeCur.length).toFixed(1)  : null;
+    const writeAvgPrev = writePrev.length ? (writePrev.reduce((s,e)=>s+(+e.score||0),0)/writePrev.length)            : null;
 
-    // 口說：本週分鐘
-    const speakMins = getSpeakingData().filter(inWeek).reduce((s,e)=>s+(+e.min||0),0);
+    // 口說
+    const speakAll  = getSpeakingData();
+    const speakCur  = speakAll.filter(inThisWeek).reduce((s,e)=>s+(+e.min||0),0);
+    const speakPrev = speakAll.filter(inLastWeek).reduce((s,e)=>s+(+e.min||0),0);
 
     const skills = [
-      { key:'listen', name:'🎧 聽力', href:'listening.html', val: listenMins?`${listenMins} min`:'未記錄',
-        sub: listenAvgComp!=null?`理解度 ${listenAvgComp}%`:'記錄理解度', bar: Math.min(100,listenMins/90*100), cls:'bar-listen' },
-      { key:'read',   name:'📖 閱讀', href:'quiz.html',      val: qPct!=null?`${qPct}%`:'未做題',
-        sub: '本週 Quiz 正確率', bar: qPct??0, cls:'bar-read' },
-      { key:'write',  name:'✍️ 寫作', href:'writing.html',   val: writeAvg!=null?`${writeAvg}/10`:'未記錄',
-        sub: `本週 ${writeMins.length} 次造句`, bar: writeAvg!=null?writeAvg*10:0, cls:'bar-write' },
-      { key:'speak',  name:'🗣 口說', href:'speaking.html',  val: speakMins?`${speakMins} min`:'未記錄',
-        sub: '本週口說時數', bar: Math.min(100,speakMins/60*100), cls:'bar-speak' },
+      { key:'listen', name:'🎧 聽力', href:'listening.html',
+        val:  listenCur ? `${listenCur} min` : '未記錄',
+        sub:  listenComp!=null ? `理解度 ${listenComp}%` : '記錄理解度',
+        bar:  Math.min(100, listenCur/90*100), cls:'bar-listen',
+        trend: trendHtml(listenCur, listenPrev) },
+      { key:'read', name:'📖 閱讀', href:'quiz.html',
+        val:  qPct!=null ? `${qPct}%` : '未做題',
+        sub:  readCurAttempts ? `本週練習 ${readCurAttempts} 題` : '本週 Quiz 正確率',
+        bar:  qPct??0, cls:'bar-read',
+        trend: trendHtml(readCurAttempts, readPrevAttempts, '題') },
+      { key:'write', name:'✍️ 寫作', href:'writing.html',
+        val:  writeAvg!=null ? `${writeAvg}/10` : '未記錄',
+        sub:  `本週 ${writeCur.length} 次造句`,
+        bar:  writeAvg!=null ? writeAvg*10 : 0, cls:'bar-write',
+        trend: trendHtml(writeAvg!=null?+writeAvg:null, writeAvgPrev) },
+      { key:'speak', name:'🗣 口說', href:'speaking.html',
+        val:  speakCur ? `${speakCur} min` : '未記錄',
+        sub:  '本週口說時數',
+        bar:  Math.min(100, speakCur/60*100), cls:'bar-speak',
+        trend: trendHtml(speakCur, speakPrev) },
     ];
 
     document.getElementById('skillGrid').innerHTML = skills.map(s=>`
@@ -713,6 +756,7 @@ function render() {
         <div class="skill-val${s.val==='未記錄'||s.val==='未做題'?' dim':''}">${s.val}</div>
         <div class="skill-sub">${s.sub}</div>
         <div class="skill-bar-wrap"><div class="skill-bar-fill ${s.cls}" style="width:${s.bar.toFixed(0)}%"></div></div>
+        ${s.trend ? `<div class="skill-trend">${s.trend}</div>` : ''}
       </a>`).join('');
   })();
 
