@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture · CLB7</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #07080f; color: #ddd8cc;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh; padding: 24px 16px 80px;
+  max-width: 680px; margin: 0 auto;
+}
+
+/* Header */
+.header { text-align: center; margin-bottom: 20px; }
+.header h1 { font-size: 1.2rem; letter-spacing: 2px; color: #f0c060;
+  text-shadow: 0 0 20px rgba(240,192,96,0.35); }
+.header .back { font-size: 0.72rem; color: #445060; text-decoration: none;
+  display: inline-block; margin-bottom: 8px; }
+.header .back:hover { color: #f0c060; }
+
+/* Timer strip */
+.timer-strip {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 10px; padding: 10px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.timer-val { font-size: 1.4rem; font-weight: 700; color: #60a0d0; font-variant-numeric: tabular-nums; }
+.timer-label { font-size: 0.65rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; }
+.score-live { font-size: 0.88rem; font-weight: 700; color: #60d090; }
+
+/* Article selector */
+.article-select {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 12px; padding: 16px 18px; margin-bottom: 16px;
+}
+.sel-title { font-size: 0.65rem; color: #445060; text-transform: uppercase;
+  letter-spacing: 1.5px; margin-bottom: 12px; }
+.article-list { display: flex; flex-direction: column; gap: 8px; }
+.article-btn {
+  display: flex; align-items: center; gap: 12px;
+  background: #141928; border: 1px solid #1a2438;
+  border-radius: 8px; padding: 12px 14px;
+  cursor: pointer; color: inherit; font-family: inherit;
+  transition: border-color 0.15s, transform 0.1s; text-align: left;
+}
+.article-btn:hover { border-color: #445060; transform: translateX(2px); }
+.article-btn.done { opacity: 0.5; }
+.article-btn.done .art-badge { background: #0a1a0c; color: #60d090; border-color: #1a4a1a; }
+.art-num { font-size: 0.72rem; color: #445060; min-width: 22px; font-weight: 700; }
+.art-body { flex: 1; }
+.art-title { font-size: 0.88rem; font-weight: 600; color: #ddd8cc; }
+.art-meta { font-size: 0.68rem; color: #445060; margin-top: 2px; }
+.art-badge {
+  font-size: 0.62rem; padding: 2px 8px; border-radius: 8px; white-space: nowrap;
+  background: #141928; color: #445060; border: 1px solid #1a2438;
+}
+
+/* Reading panel */
+.reading-panel { display: none; }
+.reading-panel.active { display: block; }
+
+.article-card {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 12px; padding: 20px 22px; margin-bottom: 16px;
+}
+.article-card .art-heading {
+  font-size: 0.65rem; color: #445060; text-transform: uppercase;
+  letter-spacing: 1.5px; margin-bottom: 10px;
+}
+.article-text {
+  font-size: 0.92rem; line-height: 1.75; color: #c8c4b8;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+.article-text strong { color: #ddd8cc; }
+
+/* Questions */
+.questions-block { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+.q-card {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 10px; padding: 16px 18px;
+}
+.q-num { font-size: 0.65rem; color: #445060; letter-spacing: 1px; margin-bottom: 6px; }
+.q-text { font-size: 0.9rem; font-weight: 600; color: #ddd8cc; margin-bottom: 12px; line-height: 1.5; }
+.options { display: flex; flex-direction: column; gap: 7px; }
+.opt-btn {
+  background: #141928; border: 1.5px solid #1a2438;
+  border-radius: 8px; padding: 10px 14px;
+  font-size: 0.84rem; color: #aaa8a0; font-family: inherit;
+  cursor: pointer; text-align: left; transition: all 0.12s;
+}
+.opt-btn:hover:not(:disabled) { border-color: #445060; color: #ddd8cc; }
+.opt-btn.selected { border-color: #f0c060; color: #f0c060; background: #1a1800; }
+.opt-btn.correct  { border-color: #60d090; color: #60d090; background: #0a1a0c; }
+.opt-btn.wrong    { border-color: #d07060; color: #d07060; background: #1a0a08; }
+.opt-btn:disabled { cursor: default; }
+
+/* Feedback */
+.q-feedback {
+  margin-top: 10px; padding: 10px 12px;
+  border-radius: 7px; font-size: 0.8rem; line-height: 1.5;
+  display: none;
+}
+.q-feedback.show { display: block; }
+.q-feedback.correct-fb { background: #0a1a0c; border: 1px solid #1a4a1a; color: #60d090; }
+.q-feedback.wrong-fb   { background: #1a0a08; border: 1px solid #4a1a18; color: #d07060; }
+
+/* Submit row */
+.submit-row { display: flex; gap: 10px; margin-bottom: 24px; }
+.submit-btn {
+  flex: 1; padding: 14px;
+  background: linear-gradient(135deg, #1d5035, #2a7a50);
+  color: #60d090; border: none; border-radius: 10px;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+.submit-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+.back-list-btn {
+  padding: 14px 20px;
+  background: #141928; color: #445060; border: 1px solid #1a2438;
+  border-radius: 10px; font-size: 0.85rem; cursor: pointer; font-family: inherit;
+  transition: border-color 0.15s;
+}
+.back-list-btn:hover { border-color: #445060; color: #ddd8cc; }
+
+/* Result panel */
+.result-panel {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 12px; padding: 24px 22px; margin-bottom: 16px;
+  text-align: center;
+}
+.result-score { font-size: 3rem; font-weight: 700; color: #f0c060; margin-bottom: 6px; }
+.result-label { font-size: 0.75rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+.result-time  { font-size: 0.82rem; color: #60a0d0; margin-bottom: 20px; }
+.result-msg   { font-size: 0.9rem; color: #aaa8a0; margin-bottom: 24px; line-height: 1.6; }
+.result-actions { display: flex; gap: 10px; }
+.btn-retry {
+  flex: 1; padding: 13px;
+  background: #141928; color: #ddd8cc; border: 1px solid #1a2438;
+  border-radius: 10px; font-size: 0.85rem; cursor: pointer; font-family: inherit;
+}
+.btn-next {
+  flex: 1; padding: 13px;
+  background: linear-gradient(135deg, #1d5035, #2a7a50);
+  color: #60d090; border: none; border-radius: 10px;
+  font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: inherit;
+}
+
+/* History */
+.history-card {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 10px; padding: 16px 18px; margin-bottom: 16px;
+}
+.history-title { font-size: 0.65rem; color: #445060; text-transform: uppercase;
+  letter-spacing: 1.5px; margin-bottom: 12px; }
+.history-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 0; border-bottom: 1px solid #0d1020; font-size: 0.78rem;
+}
+.history-row:last-child { border-bottom: none; }
+.h-date { color: #445060; min-width: 80px; }
+.h-art  { flex: 1; color: #aaa8a0; }
+.h-score { font-weight: 700; min-width: 40px; text-align: right; }
+.h-score.perfect { color: #60d090; }
+.h-score.good    { color: #c09040; }
+.h-score.poor    { color: #d07060; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a class="back" href="dashboard.html">← Retour au tableau de bord</a>
+  <h1>📖 LECTURE</h1>
+</div>
+
+<!-- Timer strip -->
+<div class="timer-strip">
+  <div>
+    <div class="timer-label">Temps</div>
+    <div class="timer-val" id="timerVal">0:00</div>
+  </div>
+  <div style="text-align:right">
+    <div class="timer-label">Score du jour</div>
+    <div class="score-live" id="scoreLive">—</div>
+  </div>
+</div>
+
+<!-- Article list panel -->
+<div id="listPanel">
+  <div class="article-select">
+    <div class="sel-title">Choisir un texte</div>
+    <div class="article-list" id="articleList"></div>
+  </div>
+
+  <div class="history-card" id="historyCard" style="display:none">
+    <div class="history-title">Historique récent</div>
+    <div id="historyRows"></div>
+  </div>
+</div>
+
+<!-- Reading panel -->
+<div class="reading-panel" id="readingPanel">
+  <div class="article-card">
+    <div class="art-heading" id="panelHeading"></div>
+    <div class="article-text" id="panelText"></div>
+  </div>
+
+  <div class="questions-block" id="questionsBlock"></div>
+
+  <div class="submit-row">
+    <button class="back-list-btn" onclick="showList()">← Liste</button>
+    <button class="submit-btn" id="submitBtn" onclick="submitAnswers()">Vérifier mes réponses</button>
+  </div>
+</div>
+
+<!-- Result panel -->
+<div class="reading-panel" id="resultPanel">
+  <div class="result-panel">
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-label">Questions correctes</div>
+    <div class="result-time" id="resultTime"></div>
+    <div class="result-msg" id="resultMsg"></div>
+    <div class="result-actions">
+      <button class="btn-retry" onclick="retryArticle()">Réessayer</button>
+      <button class="btn-next" onclick="showList()">Choisir un autre texte</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Article bank ──────────────────────────────────────────────
+const ARTICLES = [
+  {
+    id: 'a1',
+    title: 'La famille de Marie',
+    level: 'A1',
+    theme: 'Famille',
+    text: `Marie habite à Montréal avec sa famille. Elle a un frère qui s'appelle Thomas et une sœur qui s'appelle Léa. Son père travaille dans un hôpital. Il est médecin. Sa mère est professeure dans une école primaire. Le dimanche, toute la famille mange ensemble. Marie aime beaucoup ces repas en famille.`,
+    questions: [
+      {
+        q: "Où est-ce que Marie habite ?",
+        opts: ["À Paris", "À Montréal", "À Lyon", "À Québec"],
+        ans: 1,
+        expl: "Le texte dit : « Marie habite à Montréal »."
+      },
+      {
+        q: "Quel est le métier du père de Marie ?",
+        opts: ["Professeur", "Médecin", "Cuisinier", "Ingénieur"],
+        ans: 1,
+        expl: "« Son père travaille dans un hôpital. Il est médecin. »"
+      },
+      {
+        q: "Quand est-ce que la famille mange ensemble ?",
+        opts: ["Le samedi", "Tous les jours", "Le dimanche", "Le vendredi"],
+        ans: 2,
+        expl: "« Le dimanche, toute la famille mange ensemble. »"
+      }
+    ]
+  },
+  {
+    id: 'a2',
+    title: 'Mon appartement',
+    level: 'A1',
+    theme: 'Logement',
+    text: `J'ai un petit appartement au troisième étage. Il y a un salon, une cuisine, une chambre et une salle de bain. La cuisine est petite mais moderne. Dans le salon, j'ai un canapé bleu et une grande télévision. Ma chambre est calme parce qu'elle donne sur un jardin. J'aime beaucoup mon appartement.`,
+    questions: [
+      {
+        q: "À quel étage se trouve l'appartement ?",
+        opts: ["Au premier", "Au deuxième", "Au troisième", "Au quatrième"],
+        ans: 2,
+        expl: "« J'ai un petit appartement au troisième étage. »"
+      },
+      {
+        q: "De quelle couleur est le canapé ?",
+        opts: ["Rouge", "Vert", "Blanc", "Bleu"],
+        ans: 3,
+        expl: "« Dans le salon, j'ai un canapé bleu. »"
+      },
+      {
+        q: "Pourquoi la chambre est-elle calme ?",
+        opts: ["Elle est grande", "Elle est loin de la rue", "Elle donne sur un jardin", "Elle est au sous-sol"],
+        ans: 2,
+        expl: "« Ma chambre est calme parce qu'elle donne sur un jardin. »"
+      }
+    ]
+  },
+  {
+    id: 'a3',
+    title: 'Une journée à l\'école',
+    level: 'A1+',
+    theme: 'Routine',
+    text: `Lucas a douze ans. Il va à l'école du lundi au vendredi. Il se lève à sept heures. Il prend son petit-déjeuner : du pain avec du beurre et un verre de lait. À huit heures, il prend le bus. Les cours commencent à huit heures et demie. Il a six heures de cours par jour. Après l'école, il fait ses devoirs et il joue avec ses amis.`,
+    questions: [
+      {
+        q: "Qu'est-ce que Lucas mange au petit-déjeuner ?",
+        opts: ["Des céréales et du café", "Du pain avec du beurre et du lait", "Des fruits et du jus d'orange", "Des œufs et du fromage"],
+        ans: 1,
+        expl: "« Il prend son petit-déjeuner : du pain avec du beurre et un verre de lait. »"
+      },
+      {
+        q: "Comment est-ce que Lucas va à l'école ?",
+        opts: ["En voiture", "À vélo", "En bus", "À pied"],
+        ans: 2,
+        expl: "« À huit heures, il prend le bus. »"
+      },
+      {
+        q: "Combien d'heures de cours Lucas a-t-il par jour ?",
+        opts: ["Quatre heures", "Cinq heures", "Six heures", "Sept heures"],
+        ans: 2,
+        expl: "« Il a six heures de cours par jour. »"
+      }
+    ]
+  },
+  {
+    id: 'a4',
+    title: 'Au marché',
+    level: 'A1+',
+    theme: 'Achats',
+    text: `Tous les samedis matin, Madame Dupont va au marché. Elle achète des légumes frais : des carottes, des tomates et des courgettes. Elle achète aussi du fromage et du poulet pour le repas du dimanche. Aujourd'hui, elle dépense vingt-cinq euros. Le marchand lui donne un sac en papier. Madame Dupont est contente parce que les légumes sont beaux et pas trop chers.`,
+    questions: [
+      {
+        q: "Quand est-ce que Madame Dupont va au marché ?",
+        opts: ["Tous les dimanches matin", "Tous les lundis", "Tous les samedis matin", "Tous les vendredis soir"],
+        ans: 2,
+        expl: "« Tous les samedis matin, Madame Dupont va au marché. »"
+      },
+      {
+        q: "Combien d'argent est-ce qu'elle dépense aujourd'hui ?",
+        opts: ["Quinze euros", "Vingt euros", "Vingt-cinq euros", "Trente euros"],
+        ans: 2,
+        expl: "« Aujourd'hui, elle dépense vingt-cinq euros. »"
+      },
+      {
+        q: "Pourquoi est-ce que Madame Dupont est contente ?",
+        opts: ["Le marché est proche de sa maison", "Les légumes sont beaux et pas trop chers", "Le marchand lui offre un cadeau", "Elle trouve un nouveau fromage"],
+        ans: 1,
+        expl: "« Madame Dupont est contente parce que les légumes sont beaux et pas trop chers. »"
+      }
+    ]
+  },
+  {
+    id: 'a5',
+    title: 'Un message de Sophie',
+    level: 'A1+',
+    theme: 'Communication',
+    text: `Salut Antoine,\n\nJe t'écris pour te donner des nouvelles. Je suis en vacances à Nice depuis lundi. Il fait très beau et il fait trente degrés ! Je vais à la plage tous les jours. J'ai visité le vieux Nice hier : c'est vraiment magnifique ! Je rentre à Montréal samedi prochain. On peut se voir dimanche ?\n\nBisous,\nSophie`,
+    questions: [
+      {
+        q: "Où est Sophie en ce moment ?",
+        opts: ["À Paris", "À Nice", "À Lyon", "À Marseille"],
+        ans: 1,
+        expl: "« Je suis en vacances à Nice depuis lundi. »"
+      },
+      {
+        q: "Quel temps fait-il ?",
+        opts: ["Il pleut", "Il neige", "Il fait beau et trente degrés", "Il fait froid"],
+        ans: 2,
+        expl: "« Il fait très beau et il fait trente degrés ! »"
+      },
+      {
+        q: "Quand est-ce que Sophie rentre à Montréal ?",
+        opts: ["Lundi prochain", "Mercredi prochain", "Vendredi prochain", "Samedi prochain"],
+        ans: 3,
+        expl: "« Je rentre à Montréal samedi prochain. »"
+      }
+    ]
+  },
+  {
+    id: 'a6',
+    title: 'La recette de la soupe',
+    level: 'A1+',
+    theme: 'Recette',
+    text: `Ingrédients pour 4 personnes : 3 carottes, 2 pommes de terre, 1 oignon, 1 litre de bouillon de légumes, sel et poivre.\n\nPréparation : Coupez les légumes en petits morceaux. Faites chauffer le bouillon dans une grande casserole. Ajoutez les légumes. Faites cuire pendant vingt minutes. Mixez la soupe. Ajoutez du sel et du poivre. Servez chaud avec du pain frais.`,
+    questions: [
+      {
+        q: "Pour combien de personnes est cette recette ?",
+        opts: ["Pour 2 personnes", "Pour 3 personnes", "Pour 4 personnes", "Pour 6 personnes"],
+        ans: 2,
+        expl: "« Ingrédients pour 4 personnes »"
+      },
+      {
+        q: "Combien de temps faut-il pour cuire les légumes ?",
+        opts: ["Dix minutes", "Quinze minutes", "Vingt minutes", "Trente minutes"],
+        ans: 2,
+        expl: "« Faites cuire pendant vingt minutes. »"
+      },
+      {
+        q: "Qu'est-ce qu'on ajoute à la fin de la recette ?",
+        opts: ["Du sucre et du lait", "Du sel et du poivre", "Du beurre et de la crème", "Du fromage et des herbes"],
+        ans: 1,
+        expl: "« Ajoutez du sel et du poivre. »"
+      }
+    ]
+  },
+  {
+    id: 'a7',
+    title: 'Les transports à Montréal',
+    level: 'A1+',
+    theme: 'Ville',
+    text: `Montréal a un bon réseau de transports en commun. Il y a le métro, les bus et les vélos en libre-service. Le métro a quatre lignes et plus de soixante-huit stations. Il fonctionne tous les jours de cinq heures à une heure du matin. Un trajet coûte trois dollars cinquante. On peut aussi acheter un abonnement mensuel pour économiser de l'argent.`,
+    questions: [
+      {
+        q: "Combien de lignes de métro y a-t-il à Montréal ?",
+        opts: ["Deux lignes", "Trois lignes", "Quatre lignes", "Cinq lignes"],
+        ans: 2,
+        expl: "« Le métro a quatre lignes et plus de soixante-huit stations. »"
+      },
+      {
+        q: "À quelle heure ferme le métro ?",
+        opts: ["À minuit", "À une heure du matin", "À deux heures du matin", "À onze heures du soir"],
+        ans: 1,
+        expl: "« Il fonctionne tous les jours de cinq heures à une heure du matin. »"
+      },
+      {
+        q: "Quel est le prix d'un trajet en métro ?",
+        opts: ["Deux dollars", "Deux dollars cinquante", "Trois dollars", "Trois dollars cinquante"],
+        ans: 3,
+        expl: "« Un trajet coûte trois dollars cinquante. »"
+      }
+    ]
+  },
+  {
+    id: 'a8',
+    title: 'Une annonce d\'appartement',
+    level: 'A1+',
+    theme: 'Logement',
+    text: `À LOUER — Grand appartement lumineux\n\nSitué au 2e étage, cet appartement de 65 m² comprend : un salon spacieux, deux chambres, une cuisine équipée et une salle de bain. Chauffage inclus dans le loyer. Parking disponible en supplément. Proche du métro (5 minutes à pied). Loyer : 1 400 $ par mois. Disponible à partir du 1er août. Pour plus d'informations, appelez le 514-555-0192.`,
+    questions: [
+      {
+        q: "Quelle est la superficie de l'appartement ?",
+        opts: ["45 m²", "55 m²", "65 m²", "75 m²"],
+        ans: 2,
+        expl: "« cet appartement de 65 m² »"
+      },
+      {
+        q: "Qu'est-ce qui est inclus dans le loyer ?",
+        opts: ["Le parking", "Le chauffage", "L'électricité", "Internet"],
+        ans: 1,
+        expl: "« Chauffage inclus dans le loyer. »"
+      },
+      {
+        q: "Quand est-ce que l'appartement est disponible ?",
+        opts: ["À partir du 1er juillet", "À partir du 1er août", "À partir du 1er septembre", "À partir du 1er octobre"],
+        ans: 1,
+        expl: "« Disponible à partir du 1er août. »"
+      }
+    ]
+  }
+];
+
+// ── State ──────────────────────────────────────────────────────
+let currentArticleIdx = null;
+let userAnswers = {};
+let submitted = false;
+let startTime = null;
+let timerInterval = null;
+let elapsedSec = 0;
+
+// ── Init ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  renderArticleList();
+  renderHistory();
+  updateScoreLive();
+  startTimer();
+});
+
+// ── Timer ──────────────────────────────────────────────────────
+function startTimer() {
+  startTime = Date.now();
+  elapsedSec = 0;
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    elapsedSec = Math.floor((Date.now() - startTime) / 1000);
+    const m = Math.floor(elapsedSec / 60);
+    const s = elapsedSec % 60;
+    document.getElementById('timerVal').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  }, 500);
+}
+
+function fmtTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m} min ${s.toString().padStart(2,'0')} sec`;
+}
+
+// ── Score ──────────────────────────────────────────────────────
+function updateScoreLive() {
+  const records = getRecords();
+  const today = todayStr();
+  const todayRecs = records.filter(r => r.date === today);
+  if (!todayRecs.length) { document.getElementById('scoreLive').textContent = '—'; return; }
+  const total = todayRecs.reduce((a,b) => a + b.total, 0);
+  const correct = todayRecs.reduce((a,b) => a + b.correct, 0);
+  document.getElementById('scoreLive').textContent = `${correct}/${total}`;
+}
+
+function todayStr() {
+  return new Date().toISOString().slice(0,10);
+}
+
+function getRecords() {
+  try { return JSON.parse(localStorage.getItem('clb7_reading') || '[]'); } catch { return []; }
+}
+
+function saveRecord(rec) {
+  const records = getRecords();
+  records.push(rec);
+  localStorage.setItem('clb7_reading', JSON.stringify(records));
+}
+
+// ── Article list ──────────────────────────────────────────────
+function renderArticleList() {
+  const records = getRecords();
+  const doneIds = new Set(records.map(r => r.id));
+
+  const list = document.getElementById('articleList');
+  list.innerHTML = '';
+  ARTICLES.forEach((a, idx) => {
+    const done = doneIds.has(a.id);
+    const lastScore = records.filter(r => r.id === a.id).slice(-1)[0];
+    const scoreText = lastScore ? `${lastScore.correct}/${lastScore.total}` : a.level;
+
+    const btn = document.createElement('button');
+    btn.className = 'article-btn' + (done ? ' done' : '');
+    btn.innerHTML = `
+      <div class="art-num">${idx + 1}</div>
+      <div class="art-body">
+        <div class="art-title">${a.title}</div>
+        <div class="art-meta">${a.theme} · ${a.questions.length} questions</div>
+      </div>
+      <div class="art-badge">${done ? '✓ ' + scoreText : a.level}</div>
+    `;
+    btn.onclick = () => openArticle(idx);
+    list.appendChild(btn);
+  });
+}
+
+// ── Open article ──────────────────────────────────────────────
+function openArticle(idx) {
+  currentArticleIdx = idx;
+  userAnswers = {};
+  submitted = false;
+  const a = ARTICLES[idx];
+
+  document.getElementById('panelHeading').textContent = `${a.level} · ${a.theme}  —  ${a.title}`;
+  document.getElementById('panelText').innerHTML = a.text.replace(/\n/g, '<br>');
+
+  // Build questions
+  const block = document.getElementById('questionsBlock');
+  block.innerHTML = '';
+  a.questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `qcard-${qi}`;
+    card.innerHTML = `
+      <div class="q-num">QUESTION ${qi + 1}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options" id="opts-${qi}">
+        ${q.opts.map((o, oi) => `
+          <button class="opt-btn" data-qi="${qi}" data-oi="${oi}" onclick="selectOpt(${qi},${oi})">${o}</button>
+        `).join('')}
+      </div>
+      <div class="q-feedback" id="fb-${qi}"></div>
+    `;
+    block.appendChild(card);
+  });
+
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').textContent = 'Vérifier mes réponses';
+
+  showPanel('readingPanel');
+}
+
+// ── Select option ─────────────────────────────────────────────
+function selectOpt(qi, oi) {
+  if (submitted) return;
+  userAnswers[qi] = oi;
+  const opts = document.querySelectorAll(`#opts-${qi} .opt-btn`);
+  opts.forEach((b, i) => {
+    b.classList.toggle('selected', i === oi);
+  });
+}
+
+// ── Submit ────────────────────────────────────────────────────
+function submitAnswers() {
+  const a = ARTICLES[currentArticleIdx];
+  const totalQ = a.questions.length;
+  const answered = Object.keys(userAnswers).length;
+
+  if (answered < totalQ) {
+    const unanswered = totalQ - answered;
+    if (!confirm(`Il reste ${unanswered} question(s) sans réponse. Continuer quand même ?`)) return;
+  }
+
+  submitted = true;
+  let correct = 0;
+
+  a.questions.forEach((q, qi) => {
+    const chosen = userAnswers[qi];
+    const isCorrect = chosen === q.ans;
+    if (isCorrect) correct++;
+
+    const opts = document.querySelectorAll(`#opts-${qi} .opt-btn`);
+    opts.forEach((b, i) => {
+      b.disabled = true;
+      if (i === q.ans) b.classList.add('correct');
+      if (i === chosen && !isCorrect) b.classList.add('wrong');
+    });
+
+    const fb = document.getElementById(`fb-${qi}`);
+    fb.className = 'q-feedback show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+    fb.textContent = (isCorrect ? '✓ ' : '✗ ') + q.expl;
+  });
+
+  // Save record
+  const timeTaken = elapsedSec;
+  saveRecord({
+    id: a.id,
+    title: a.title,
+    date: todayStr(),
+    correct,
+    total: totalQ,
+    sec: timeTaken
+  });
+
+  // Show result after short delay
+  setTimeout(() => showResult(correct, totalQ, timeTaken), 800);
+}
+
+// ── Result panel ──────────────────────────────────────────────
+function showResult(correct, total, sec) {
+  document.getElementById('resultScore').textContent = `${correct} / ${total}`;
+  document.getElementById('resultTime').textContent = `Temps : ${fmtTime(sec)}`;
+
+  const pct = Math.round(correct / total * 100);
+  let msg = '';
+  if (pct === 100) msg = 'Parfait ! Vous avez tout compris. 🎉';
+  else if (pct >= 67) msg = 'Bien ! Relisez les explications pour les erreurs.';
+  else msg = 'Continuez à pratiquer. La lecture s\'améliore avec la répétition.';
+
+  document.getElementById('resultMsg').textContent = msg;
+  showPanel('resultPanel');
+  updateScoreLive();
+  renderArticleList();
+  renderHistory();
+}
+
+function retryArticle() {
+  openArticle(currentArticleIdx);
+}
+
+// ── Panel switching ───────────────────────────────────────────
+function showList() {
+  submitted = false;
+  currentArticleIdx = null;
+  showPanel('listPanel');
+}
+
+function showPanel(id) {
+  ['listPanel','readingPanel','resultPanel'].forEach(p => {
+    const el = document.getElementById(p);
+    if (p === 'listPanel') el.style.display = (p === id ? 'block' : 'none');
+    else el.classList.toggle('active', p === id);
+  });
+}
+
+// ── History ───────────────────────────────────────────────────
+function renderHistory() {
+  const records = getRecords();
+  const card = document.getElementById('historyCard');
+  if (!records.length) { card.style.display = 'none'; return; }
+  card.style.display = 'block';
+
+  const recent = records.slice(-8).reverse();
+  const rows = document.getElementById('historyRows');
+  rows.innerHTML = recent.map(r => {
+    const pct = Math.round(r.correct / r.total * 100);
+    const cls = pct === 100 ? 'perfect' : pct >= 67 ? 'good' : 'poor';
+    return `<div class="history-row">
+      <div class="h-date">${r.date}</div>
+      <div class="h-art">${r.title}</div>
+      <div class="h-score ${cls}">${r.correct}/${r.total}</div>
+    </div>`;
+  }).join('');
+}
+
+// Init panel state
+document.getElementById('listPanel').style.display = 'block';
+</script>
+</body>
+</html>
