@@ -665,6 +665,58 @@ const BANK = [
   { lesson:11, topic:'vocab-housing', type:'fill',   q:'「沙發」：un _____', hint:'French borrow word', a:'canapé', aNote:'un canapé = 沙發；un fauteuil = 扶手椅（有扶手的單人椅）' },
   { lesson:11, topic:'vocab-housing', type:'choose', q:'canapé 和 fauteuil 的差別？', hint:'人數 / 形狀', a:'canapé = 多人沙發；fauteuil = 單人扶手椅', aNote:'canapé（複數人坐）vs fauteuil（單人有扶手椅）；法文客廳通常有 un canapé + deux fauteuils', opts:['canapé = 多人沙發；fauteuil = 單人扶手椅','兩個都是單人椅','canapé = 臥室用；fauteuil = 客廳用','fauteuil = 沙發；canapé = 椅子'] },
   { lesson:11, topic:'vocab-housing', type:'fill',   q:'「衣櫃」：une _____', hint:'garde-robe 的替代說法', a:'armoire', aNote:'une armoire = 衣櫃；un bureau = 書桌；une table basse = 茶几' },
+
+  // ════════ 第12課：En forme ! ════════
+
+  // ── 身體部位 ──────────────────────────────────────────────
+  { lesson:12, topic:'body-health', type:'fill',   q:'背部：le _____', hint:'常說 j\'ai mal au...', a:'dos', aNote:'le dos = 背部；j\'ai mal au dos = 背痛（dos 是陽性 → au）' },
+  { lesson:12, topic:'body-health', type:'fill',   q:'膝蓋：le _____', hint:'複數 les genoux', a:'genou', aNote:'le genou = 膝蓋；j\'ai mal au genou = 膝蓋痛' },
+  { lesson:12, topic:'body-health', type:'fill',   q:'喉嚨：la _____', hint:'j\'ai mal à la...', a:'gorge', aNote:'la gorge = 喉嚨；j\'ai mal à la gorge = 喉嚨痛' },
+  { lesson:12, topic:'body-health', type:'fill',   q:'眼睛（複數）：les _____', hint:'不規則複數', a:'yeux', aNote:'l\'œil → les yeux（不規則複數！）；j\'ai mal aux yeux' },
+  { lesson:12, topic:'body-health', type:'fill',   q:'耳朵：l\'_____ (f.)', hint:'陰性名詞', a:'oreille', aNote:'l\'oreille（陰性）；j\'ai mal à l\'oreille = 耳朵痛' },
+  { lesson:12, topic:'body-health', type:'choose', q:'「我頭痛」正確說法是？', hint:'tête 是陰性', a:'J\'ai mal à la tête.', aNote:'tête = la tête（陰性）→ à la tête；au = à + le，à la 不縮合', opts:['J\'ai mal à la tête.','J\'ai mal au tête.','Je suis mal à la tête.','J\'ai douleur à la tête.'] },
+  { lesson:12, topic:'body-health', type:'choose', q:'「我背痛」正確說法是？', hint:'dos 是陽性', a:'J\'ai mal au dos.', aNote:'dos = le dos（陽性）→ au dos（à + le = au）', opts:['J\'ai mal au dos.','J\'ai mal à le dos.','J\'ai mal à la dos.','Je suis mal au dos.'] },
+  { lesson:12, topic:'body-health', type:'fill',   q:'「我牙痛」：J\'ai mal _____ dents.', hint:'dents = les dents（複數）', a:'aux', aNote:'les dents（複數）→ à + les = aux；J\'ai mal aux dents.' },
+  { lesson:12, topic:'body-health', type:'trans',  q:'我膝蓋痛。', hint:'genou = 陽性', a:'J\'ai mal au genou.', aNote:'genou（陽性）→ au genou', askClaude:true },
+  { lesson:12, topic:'body-health', type:'trans',  q:'她喉嚨痛和頭痛。', hint:'gorge + tête', a:'Elle a mal à la gorge et à la tête.', aNote:'gorge（陰性）→ à la gorge；tête（陰性）→ à la tête', askClaude:true },
+
+  // ── 健康詞彙 ──────────────────────────────────────────────
+  { lesson:12, topic:'body-health', type:'choose', q:'「流感」法文是？', hint:'比 rhume 嚴重，會發燒', a:'la grippe', aNote:'la grippe = 流感（發燒）；un rhume = 普通感冒（流鼻水）；兩個不同！', opts:['la grippe','le rhume','la toux','la fièvre'] },
+  { lesson:12, topic:'body-health', type:'choose', q:'un rhume 和 la grippe 的差別？', hint:'嚴重程度', a:'rhume = 輕微感冒；grippe = 流感（發燒）', aNote:'rhume 是輕微的，grippe 是嚴重的，grippe 通常伴隨 la fièvre（發燒）', opts:['rhume = 輕微感冒；grippe = 流感（發燒）','兩個都是流感的說法','rhume 是發燒；grippe 是咳嗽','沒有差別，可以互換'] },
+  { lesson:12, topic:'body-health', type:'fill',   q:'咳嗽（動詞）：_____', hint:'la toux 是名詞', a:'tousser', aNote:'tousser = 咳嗽（動詞）；la toux = 咳嗽（名詞）；éternuer = 打噴嚏' },
+  { lesson:12, topic:'body-health', type:'fill',   q:'「我發燒了」：J\'ai de la _____', hint:'體溫升高', a:'fièvre', aNote:'la fièvre = 發燒；J\'ai 39°C. 也可以直接說體溫' },
+  { lesson:12, topic:'body-health', type:'choose', q:'去看醫生，醫生問你「Qu\'est-ce qui vous arrive ?」是什麼意思？', hint:'arrive 這裡不是「到達」', a:'你怎麼了？發生什麼事了？', aNote:'Qu\'est-ce qui vous arrive ? = What happened to you? 是醫生問診的標準問法', opts:['你怎麼了？發生什麼事了？','你什麼時候到的？','你住在哪裡？','你叫什麼名字？'] },
+  { lesson:12, topic:'body-health', type:'fill',   q:'線上看診：la _____', hint:'télé + consultation', a:'téléconsultation', aNote:'téléconsultation = 線上看診；visite à domicile = 醫生到府看診（相反）' },
+  { lesson:12, topic:'body-health', type:'choose', q:'「prendre rendez-vous」的意思是？', hint:'常見的日常動作', a:'預約（約時間）', aNote:'prendre rendez-vous = to make an appointment；Je vais prendre rendez-vous chez le médecin.', opts:['預約（約時間）','拿藥','去醫院','量體重'] },
+
+  // ── 情緒表達 ──────────────────────────────────────────────
+  { lesson:12, topic:'body-health', type:'choose', q:'「我感覺很好（身體狀態）」正確說法？', hint:'se sentir vs sentir', a:'Je me sens bien.', aNote:'se sentir = to feel；me sens = 反身動詞；sentir seul = 聞到；「je sens bien」= 我聞起來很香，意思完全不同！', opts:['Je me sens bien.','Je sens bien.','Je me son bien.','Je suis sens bien.'] },
+  { lesson:12, topic:'body-health', type:'fill',   q:'「我精力充沛」：Je suis en pleine _____', hint:'aussi: être en forme', a:'forme', aNote:'être en (pleine) forme = 精力充沛；en forme 也可以表示「身材好」' },
+  { lesson:12, topic:'body-health', type:'choose', q:'heureux 和 malheureux 的關係？', hint:'mal- 這個前綴', a:'malheureux = mal + heureux，是 heureux 的反義詞（不快樂）', aNote:'mal- 是否定前綴（如 malade = mal + ade）；heureux = 快樂；malheureux = 不快樂', opts:['malheureux = mal + heureux，是 heureux 的反義詞（不快樂）','兩個意思一樣，都是快樂','malheureux 表示生病','malheureux 是 heureux 的複數'] },
+  { lesson:12, topic:'body-health', type:'trans',  q:'我很擔心，我感覺不太好。', hint:'inquiet + se sentir', a:'Je suis inquiet et je ne me sens pas bien.', aNote:'inquiet（男）/ inquiète（女）；se sentir：否定 = je ne me sens pas', askClaude:true },
+
+  // ── Passé composé (2) — 不規則動詞 ──────────────────────────
+  { lesson:12, topic:'passe-compose', type:'fill',   q:'lire → passé composé（j\'ai…）：J\'ai _____ des articles.', hint:'lire 是不規則動詞', a:'lu', aNote:'lire → lu（不規則）；J\'ai lu des articles = 我讀了一些文章' },
+  { lesson:12, topic:'passe-compose', type:'fill',   q:'faire → passé composé：J\'ai _____ des recherches.', hint:'faire 是最常見的不規則', a:'fait', aNote:'faire → fait；J\'ai fait des recherches = 我做了一些調查' },
+  { lesson:12, topic:'passe-compose', type:'fill',   q:'apprendre → passé composé：J\'ai _____ à respirer.', hint:'appris 還是apprendu？', a:'appris', aNote:'apprendre → appris（不規則）；J\'ai appris à respirer = 我學會了呼吸' },
+  { lesson:12, topic:'passe-compose', type:'fill',   q:'pouvoir → passé composé：J\'ai _____ recommencer.', hint:'pouvoir 的過去分詞只有 2 個字母', a:'pu', aNote:'pouvoir → pu；J\'ai pu recommencer = 我能夠重新開始' },
+  { lesson:12, topic:'passe-compose', type:'fill',   q:'vouloir → passé composé：Je n\'ai pas _____ prendre de médicaments.', hint:'vouloir 的過去分詞', a:'voulu', aNote:'vouloir → voulu；Je n\'ai pas voulu = 我不想要（過去）' },
+  { lesson:12, topic:'passe-compose', type:'fill',   q:'avoir → passé composé：J\'ai _____ mal au dos l\'année dernière.', hint:'avoir 的 participe passé', a:'eu', aNote:'avoir → eu；J\'ai eu mal au dos = 我之前背痛過　⚠️ eu 讀音像「u」' },
+  { lesson:12, topic:'passe-compose', type:'fill',   q:'être → passé composé：J\'ai _____ fatigué.', hint:'être 用 avoir 做助動詞！', a:'été', aNote:'être → été；⚠️ être 的 passé composé 用 avoir（不是 être）：J\'ai été = I was/have been' },
+  { lesson:12, topic:'passe-compose', type:'choose', q:'下列哪個動詞 passé composé 用 être（不是 avoir）？', hint:'移動方向的動詞', a:'aller', aNote:'aller 用 être：je suis allé(e)；其他三個都用 avoir', opts:['aller','lire','faire','avoir'] },
+  { lesson:12, topic:'passe-compose', type:'choose', q:'「我（女）去了醫生那裡」正確說法？', hint:'aller 用 être，女性要加 e', a:'Je suis allée chez le médecin.', aNote:'aller → être；女性：allée（加 e）；男性：allé（不加）', opts:['Je suis allée chez le médecin.','J\'ai allé chez le médecin.','Je suis allé chez le médecin.','J\'ai été chez le médecin.'] },
+  { lesson:12, topic:'passe-compose', type:'choose', q:'為什麼 se lever 的 passé composé 用 être？', hint:'se 動詞的規則', a:'所有 se（反身）動詞都用 être', aNote:'規則：所有反身動詞（se + 動詞）都用 être；je me suis levé(e)、il s\'est levé', opts:['所有 se（反身）動詞都用 être','se lever 是移動動詞','se lever 是不規則動詞','沒有規則，要背'] },
+  { lesson:12, topic:'passe-compose', type:'fill',   q:'「她（女）沒有睡好」：Elle n\'a pas _____ cette nuit.', hint:'dormir → IR 動詞', a:'dormi', aNote:'dormir（IR 動詞）→ dormi；用 avoir；Elle n\'a pas dormi = 她昨晚沒睡' },
+  { lesson:12, topic:'passe-compose', type:'trans',  q:'我去了藥局，我買了一些維他命 C。', hint:'aller（être）+ acheter（avoir）', a:'Je suis allé(e) à la pharmacie, j\'ai acheté de la vitamine C.', aNote:'aller → je suis allé(e)（être）；acheter → j\'ai acheté（avoir，ER 動詞）', askClaude:true },
+  { lesson:12, topic:'passe-compose', type:'trans',  q:'他去看了專科醫生，做了一些運動。', hint:'aller + faire', a:'Il est allé voir un médecin spécialiste. Il a fait des exercices.', aNote:'aller（être）：il est allé；faire（avoir）：il a fait', askClaude:true },
+
+  // ── Pronom y ──────────────────────────────────────────────
+  { lesson:12, topic:'pronom-y', type:'fill',   q:'「Je vais à l\'hôpital.」→ J\'_____ vais.', hint:'y 替換地點', a:'y', aNote:'y 替換「à + 地點」；放在動詞前：J\'y vais.' },
+  { lesson:12, topic:'pronom-y', type:'fill',   q:'「Elle travaille à la pharmacie.」→ Elle _____ travaille.', hint:'y 放哪裡', a:'y', aNote:'y 放在動詞前；Elle y travaille.' },
+  { lesson:12, topic:'pronom-y', type:'fill',   q:'y 的否定句：「我不去那裡」：Je n\'_____ vais pas.', hint:'y 在 ne…pas 裡面', a:'y', aNote:'否定：ne + y + 動詞 + pas；Je n\'y vais pas.（y 夾在 ne 和動詞之間）' },
+  { lesson:12, topic:'pronom-y', type:'choose', q:'y 可以替換哪種詞語？', hint:'不是人，不是物品', a:'地點（à / dans / en + 地點）', aNote:'y = 地點代名詞；le/la/les = 人或物品；y remplace un complément de lieu', opts:['地點（à / dans / en + 地點）','人名','物品','時間'] },
+  { lesson:12, topic:'pronom-y', type:'choose', q:'「Tu vas au travail à quelle heure ? — J\'_____ vais à 8h.」', hint:'au travail = 地點', a:'y', aNote:'au travail 是地點 → y；J\'y vais à 8h.（y 替換 au travail）', opts:['y','le','la','lui'] },
+  { lesson:12, topic:'pronom-y', type:'trans',  q:'你在醫院工作嗎？— 是的，我在那裡工作五天。', hint:'y 替換 à l\'hôpital', a:'Tu travailles à l\'hôpital ? — Oui, j\'y travaille cinq jours par semaine.', aNote:'à l\'hôpital → y；j\'y travaille（y 在動詞前）', askClaude:true },
 ];
 // ── ID 函數 ──
 function qId(q) {
