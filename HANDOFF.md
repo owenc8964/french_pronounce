@@ -77,16 +77,14 @@
 
 ---
 
-## 本 session 做了什麼（2026-06-27）
+## 本 session 做了什麼（2026-06-28）
 
-1. **speaking.html 新增** — 口說日誌，含糾錯熱點長條圖（6種類型）、chip 雙觸發 bug 修正
-2. **三個 bug 修正：**
-   - Quiz fill-in：中文 IME Enter 誤送出 → `compositionstart/end` 修正
-   - 懸浮 📝 快速筆記：貼到 quiz/dashboard/writing/speaking/tracker 五頁，含「複製全部給 Claude」
-   - 計時器：dashboard → `tracker.html?autostart=1` 自動開始；切換分頁自動暫停
-3. **listening.html 新增** — 聽力日誌，含理解度滑桿、來源分布圖
-4. **dashboard 四技能視圖** — 聽力/閱讀/寫作/口說本週現況卡片，點擊跳對應頁面
-5. **code review 死碼清除** — `tracker.html` 的 `tick()` 函式和 `startTs` 變數
+1. **Duolingo 週報區塊** — dashboard 新增輸入面板，存 `clb7_duo`，顯示本週數據＋比上週趨勢＋累計 XP/分鐘
+2. **四技能視圖優化** — 閱讀改用 BANK + qId 精準計算；四技能全部加本週 vs 上週 ↑↓% 箭頭
+3. **週趨勢分析架構** — 自動快照上週數據（`clb7_snapshots`），最多顯示 4 週橫向對比表，7/11 起有真實數據
+4. **第12課筆記** — 身體部位、健康詞彙、情緒表達、Passé composé(2)、Pronom y（完整加進 french_notes.html）
+5. **第12課 Quiz** — 新增 51 題（body-health 21 + passe-compose 擴充 + pronom-y 6）
+6. **閱讀理解題庫開始建立** — 測試 2 批共 8 篇，Owen 全對（24/24）；A1 太簡單，A1+ 文章 OK 但**題幹法文太難**，下次問題需簡化或加中文提示
 
 ---
 
@@ -113,10 +111,16 @@
 
 ## 下一步（依優先序）
 
-1. **Duolingo 週報輸入區** — 每週貼 Duolingo 總結，dashboard 讀取（streak、XP、時數）
-2. **四技能視圖優化** — 目前閱讀欄掃描全部 localStorage key 效能稍差，可改用 questions.js BANK 做正確率計算；另外考慮加「最近7天趨勢」小箭頭
-3. **兩週後（2026-07-11）** 匯出 quiz 數據做第一次趨勢分析
-4. **listening/speaking dashboard 警報** — 超過 3 天沒記錄口說/聽力要提醒
+1. **閱讀理解題庫建進系統** — 把 8 篇已測試的短文做成 `reading.html`，計時做題＋記錄分數進 dashboard；題目語言改為中文或加提示
+2. **CLB 等級自動判定** — 用 Quiz 正確率判斷 A1/A2/B1 達標（各 topic 均達 75%），顯示在 dashboard
+3. **listening/speaking dashboard 警報** — 超過 3 天沒記錄口說/聽力要提醒
+4. **閱讀題庫擴充到 20 篇** — 涵蓋更多格式（食譜、新聞短訊、社群貼文）
+
+## 關鍵設計決定（本 session 確認）
+
+- 閱讀理解難度：**文章 A1+ 沒問題，但問題語言要用中文或加提示**（Owen 24/24 全對但說題幹看不懂）
+- 週趨勢：用 ISO week 字串做 key，每次開 dashboard 自動快照上週
+- CLB 等級：**不用課數判定，用 Quiz 正確率**（課數只是家教堂數，不對應程度）
 
 ---
 
