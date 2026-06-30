@@ -85,7 +85,7 @@ const BANK = [
 
   { lesson:2, topic:'vocab-places-city', type:'choose', q:'librairie 和 bibliothèque，哪個是「圖書館」？', hint:'faux ami（假朋友）', a:'bibliothèque', aNote:'librairie = 書店；bibliothèque = 圖書館', opts:['librairie','bibliothèque'] },
   { lesson:2, topic:'on-vs-nous', type:'choose', q:'「on」在口語中等於哪個主詞？', hint:'動詞變位同 il/elle', a:'nous', aNote:'On habite = Nous habitons，但動詞是 habite 不是 habitons', opts:['tu','nous','vous','ils'] },
-  { lesson:2, topic:'preposition-country', type:'choose', q:'以下哪個介詞 + 國家組合是正確的？', hint:'注意陽陰複數', a:'au Canada|en France|aux États-Unis', aNote:'le Canada → au；la France → en；les États-Unis → aux', opts:['au Canada / en France / aux États-Unis','en Canada / à France / au États-Unis','à Canada / en France / au États-Unis','au Canada / à France / au États-Unis'] },
+  { lesson:2, topic:'preposition-country', type:'choose', q:'以下哪個介詞 + 國家組合是正確的？', hint:'注意陽陰複數', a:'au Canada / en France / aux États-Unis', aNote:'le Canada → au；la France → en；les États-Unis → aux', opts:['au Canada / en France / aux États-Unis','en Canada / à France / au États-Unis','à Canada / en France / au États-Unis','au Canada / à France / au États-Unis'] },
   { lesson:2, topic:'preposition-country', type:'choose', q:'「台灣」要用哪個介詞？',                hint:'島嶼無性別', a:'à Taiwan', aNote:'台灣被視為島嶼/城市，無明確性別，用 à（同城市）', opts:['à Taiwan','en Taiwan','au Taiwan','aux Taïwan'] },
   { lesson:2, topic:'numbers-dates-heure', type:'choose', q:'法文電話號碼 06 89 34 72 51 怎麼念？',           hint:'兩位兩位念', a:'zéro six, quatre-vingt-neuf, trente-quatre, soixante-douze, cinquante et un', aNote:'法文電話號碼兩位兩位念' },
 
