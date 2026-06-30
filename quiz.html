@@ -389,6 +389,21 @@
   <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
 </div>
 
+<div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+  <button id="pauseBtn" onclick="togglePause()"
+    style="background:#fff;border:1.5px solid #ddd;border-radius:8px;padding:5px 14px;font-size:0.78rem;font-weight:600;color:#777;cursor:pointer;font-family:inherit;">
+    ⏸ 暫停
+  </button>
+</div>
+<div id="pauseOverlay" style="display:none;background:#f8f8f6;border:2px solid #ddd;border-radius:14px;padding:40px 20px;text-align:center;margin-bottom:12px;">
+  <div style="font-size:2rem;margin-bottom:8px">⏸</div>
+  <div style="font-size:1.1rem;font-weight:700;color:#333;margin-bottom:6px">已暫停</div>
+  <div style="font-size:0.8rem;color:#aaa;margin-bottom:20px">題目已鎖定，隨時繼續</div>
+  <button onclick="togglePause()"
+    style="background:#2c2c2c;color:#fff;border:none;border-radius:10px;padding:12px 32px;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:inherit;">
+    ▶ 繼續練習
+  </button>
+</div>
 <div id="quizArea"></div>
 <div class="toast" id="toast"></div>
 
@@ -864,6 +879,13 @@ function skipReview() {
 
 function showDoneCard() {
   unlockFilters();
+  // 熱身模式 → 顯示課程選擇器
+  if (window._warmupMode && !window._warmupDone) {
+    window._warmupDone = true;
+    touchStreak(); renderStats();
+    showLessonPicker(scoreOk, queue.length);
+    return;
+  }
   // Award session completion bonus
   const bonus = scoreOk >= queue.length * 0.8 ? 50 : 20;
   addXP(bonus); sessionXP += bonus;
@@ -1569,19 +1591,70 @@ buildLessonButtons();
 renderStats();
 saveSnapshot();
 
-// URL 參數：?topic=xxx 直接進 topic sprint；?guided=1 完成後回 dashboard
-(function() {
-  const params = new URLSearchParams(location.search);
-  const topicParam = params.get('topic');
-  const guided = params.get('guided') === '1';
+// ── 暫停功能 ──────────────────────────────────────────────────
+let paused = false;
+function togglePause() {
+  paused = !paused;
+  const overlay = document.getElementById('pauseOverlay');
+  const area    = document.getElementById('quizArea');
+  const btn     = document.getElementById('pauseBtn');
+  overlay.style.display = paused ? 'block' : 'none';
+  area.style.display    = paused ? 'none'  : 'block';
+  btn.textContent       = paused ? '▶ 繼續' : '⏸ 暫停';
+  btn.style.color       = paused ? '#c07000' : '#777';
+  btn.style.borderColor = paused ? '#f5a623' : '#ddd';
+}
 
-  if (topicParam) {
+// ── URL 參數：warmup / lesson / topic / guided ─────────────────
+(function() {
+  const params     = new URLSearchParams(location.search);
+  const topicParam = params.get('topic');
+  const lessonParam= params.get('lesson');
+  const modeParam  = params.get('mode');
+  const guided     = params.get('guided') === '1';
+  const isWarmup   = modeParam === 'warmup';
+
+  if (isWarmup) {
+    // 熱身模式：5 題隨機，完成後顯示課程選擇器
+    window._warmupMode = true;
+    const origSize = SESSION_SIZE;
+    // 暫時覆蓋 buildSession 讓它只出 5 題
+    const origBuild = window.buildSession;
+    window._warmupDone = false;
+    // 用全部題庫但只取 5 題
+    filterLesson = 'all';
+    filterType   = 'all';
+    filterMode   = 'normal';
+    queue = shuffle(getPool()).slice(0, 5);
+    current = 0; scoreOk = 0; scoreNo = 0; answered = false; sessionXP = 0;
+    updateProgress();
+    renderCard();
+    // 隱藏篩選列（熱身不需要選課）
+    document.querySelectorAll('.mode-row, #typeRow, #lessonRow').forEach(el => {
+      el.style.display = 'none';
+    });
+    document.querySelector('h1').insertAdjacentHTML('afterend',
+      '<div style="font-size:0.72rem;color:#aaa;margin-bottom:10px;text-align:center">🔥 熱身模式 — 5 題隨機複習</div>');
+  } else if (lessonParam) {
+    // 直接進某課
+    const ln = parseInt(lessonParam);
+    filterLesson = ln;
+    document.querySelectorAll('#lessonRow .ctrl-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(`btnLesson${ln}`)?.classList.add('active');
+    restart();
+    // 隱藏篩選列，顯示當前課次標題
+    document.querySelectorAll('.mode-row, #typeRow, #lessonRow').forEach(el => el.style.display='none');
+    const label = ln === 0 ? '🧩 框架庫' : `第 ${ln} 課`;
+    document.querySelector('h1').insertAdjacentHTML('afterend',
+      `<div style="font-size:0.72rem;color:#aaa;margin-bottom:10px;text-align:center">📚 ${label} 專項練習</div>`);
+  } else if (topicParam) {
     startTopicSprint(topicParam);
   } else {
     restart();
   }
 
-  if (guided) {
+  // guided banner — 熱身完成後不用 banner，改走課程選擇器
+  if (guided && !isWarmup) {
     const banner = document.createElement('div');
     banner.id = 'guidedBanner';
     banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#1d5035;color:#60d090;text-align:center;padding:14px;font-size:0.9rem;z-index:200;display:none;';
@@ -1596,6 +1669,40 @@ saveSnapshot();
     obs.observe(document.getElementById('quizArea') || document.body, { childList: true, subtree: true });
   }
 })();
+
+// 熱身完成後顯示課程選擇器（由 showDoneCard 呼叫）
+function showLessonPicker(warmupScore, warmupTotal) {
+  const lessons = [...new Set(BANK.map(q => q.lesson))].filter(l => l > 0).sort((a,b)=>a-b);
+  const guided  = new URLSearchParams(location.search).get('guided') === '1';
+  const backLink = guided ? `<a href="dashboard.html" style="display:block;text-align:center;margin-top:16px;color:#aaa;font-size:0.78rem;">↩ 跳過複習，回指揮中心</a>` : '';
+
+  const rows = lessons.map(l => {
+    const topicsForLesson = [...new Set(BANK.filter(q=>q.lesson===l).map(q=>q.topic))];
+    const qCount = BANK.filter(q=>q.lesson===l).length;
+    return `
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0ee;">
+        <div style="min-width:46px;font-size:0.75rem;font-weight:700;color:#555">第${l}課</div>
+        <div style="flex:1;font-size:0.78rem;color:#666">${qCount} 題</div>
+        <a href="french_notes.html#lesson-${l}" target="_blank"
+           style="padding:5px 10px;background:#f4f4f0;border:1px solid #ddd;border-radius:6px;font-size:0.72rem;color:#555;text-decoration:none;white-space:nowrap;">
+          📖 複習筆記
+        </a>
+        <a href="quiz.html?lesson=${l}${guided?'&guided=1':''}"
+           style="padding:5px 10px;background:#2c2c2c;border:none;border-radius:6px;font-size:0.72rem;color:#fff;text-decoration:none;white-space:nowrap;">
+          ▶ 開始 Quiz
+        </a>
+      </div>`;
+  }).join('');
+
+  document.getElementById('quizArea').innerHTML = `
+    <div class="done-card" style="padding:20px">
+      <h2>熱身完成 🔥</h2>
+      <div class="done-big">${warmupScore} / ${warmupTotal}</div>
+      <div class="done-sub" style="margin-bottom:20px">選一課複習筆記，然後做該課 Quiz</div>
+      <div style="text-align:left">${rows}</div>
+      ${backLink}
+    </div>`;
+}
 </script>
 <!-- 懸浮快速筆記 -->
 <style>
@@ -1633,7 +1740,13 @@ saveSnapshot();
     if(!txt)return;
     const notes=loadNotes();
     const d=new Date();
-    notes.push({date:`${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`,time:`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`,page,note:txt});
+    // 抓當前題目文字與 lesson/topic
+    let qContext='';
+    try {
+      const q = typeof queue!=='undefined' && queue[current];
+      if(q) qContext=`[題目：${q.q}｜第${q.lesson}課 ${q.topic}] `;
+    } catch(e){}
+    notes.push({date:`${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`,time:`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`,page,note:qContext+txt});
     saveNotes(notes);
     document.getElementById('qnoteTxt').value='';
     updateCount();

@@ -539,7 +539,7 @@ function buildPrescription(topicStats, todaySec) {
       why: qDone ? '今天已完成！' : `正確率 ${weakest[1].pct}%，需要加強`,
       badge: qDone ? 'badge-green' : (weakest[1].pct < 60 ? 'badge-red' : 'badge-yellow'),
       badgeText: qDone ? '✓ 完成' : (weakest[1].pct < 60 ? '弱點' : '待加強'),
-      href: `quiz.html?topic=${weakest[0]}&guided=1`,
+      href: `quiz.html?mode=warmup&guided=1`,
       done: qDone,
     });
   } else {
@@ -549,7 +549,7 @@ function buildPrescription(topicStats, todaySec) {
       why: qDone ? '今天已完成！' : (label ? `${label} 等 topic 正確率良好，繼續保持` : '開始做 Quiz，建立資料'),
       badge: qDone ? 'badge-green' : 'badge-blue',
       badgeText: qDone ? '✓ 完成' : '維持',
-      href: 'quiz.html?guided=1',
+      href: 'quiz.html?mode=warmup&guided=1',
       done: qDone,
     });
   }
