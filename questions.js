@@ -31,7 +31,7 @@ const BANK = [
   { lesson:1, topic:'greetings-politeness', type:'trans', q:'您好嗎？（正式）',             hint:'formal', a:'Vous allez bien ?', aNote:'', askClaude:true },
   { lesson:1, topic:'negation', type:'trans', q:'我聽不懂。',                   hint:'négation ne…pas', a:'Je ne comprends pas.', aNote:'ne + 動詞 + pas', askClaude:true },
   { lesson:1, topic:'greetings-politeness', type:'trans', q:'可以再說一次嗎？（正式）',     hint:'', a:"Vous pouvez répéter s'il vous plaît ?|Vous pouvez répéter, s'il vous plaît ?", aNote:'', askClaude:true },
-  { lesson:1, topic:'greetings-politeness', type:'trans', q:'對不起，我遲到了。',            hint:'', a:'Excusez-moi, je suis en retard.', aNote:'', askClaude:true },
+  { lesson:1, topic:'greetings-politeness', type:'trans', q:'對不起，我遲到了。',            hint:'', a:'Excusez-moi, je suis en retard.', aNote:'⚠️ 中文「了」≠ passé composé！法文用現在式 je suis en retard（我現在是遲到的狀態）', askClaude:true },
   { lesson:1, topic:'greetings-politeness', type:'trans', q:'這怎麼拼？',                   hint:'', a:"Comment ça s'écrit ?", aNote:'', askClaude:true },
   { lesson:1, topic:'daily-routine-vocab', type:'trans', q:'祝你有美好的一天！（道別時）', hint:'不是打招呼，是道別', a:'Bonne journée !|Bonne journée', aNote:'Bonjour 打招呼 ≠ Bonne journée 道別', askClaude:true },
   { lesson:1, topic:'numbers-dates-heure', type:'trans', q:'我的生日是6月4日。',           hint:'le + 數字 + 月份', a:"Mon anniversaire, c'est le 4 juin.", aNote:'', askClaude:true },
@@ -641,7 +641,7 @@ const BANK = [
   { lesson:11, topic:'passe-compose', type:'fill',   q:'「他們買了一個衣櫃」：Ils _____ acheté une armoire.', hint:'avoir（ils）', a:'ont', aNote:'ils/elles → ont；Ils ont acheté une armoire.' },
   { lesson:11, topic:'passe-compose', type:'trans',  q:'我買了一張床和兩張扶手椅。', hint:'avoir + acheté', a:'J\'ai acheté un lit et deux fauteuils.', aNote:'j\'ai acheté（passé composé）；⚠️ fauteuil（m）= 扶手椅', askClaude:true },
   { lesson:11, topic:'passe-compose', type:'trans',  q:'他們沒有裝潢公寓。', hint:'décorer / négation', a:'Ils n\'ont pas décoré l\'appartement.|Ils n\'ont pas décoré leur appartement.', aNote:'n\' + ont + pas + décoré；décorer → décoré', askClaude:true },
-  { lesson:11, topic:'passe-compose', type:'trans',  q:'你忘記關門了。', hint:'oublier / porte', a:'Tu as oublié de fermer la porte.', aNote:'oublier de + infinitif = 忘記做…；oublier → oublié', askClaude:true },
+  { lesson:11, topic:'passe-compose', type:'trans',  q:'你忘記關門了。', hint:'oublier / porte', a:'Tu as oublié de fermer la porte.', aNote:'✅ 這是 passé composé（過去式）：tu as oublié；oublier de + infinitif = 忘記做…；oublier → oublié', askClaude:true },
 
   // ── Prépositions de lieu (2) ─────────────────────────────────
   { lesson:11, topic:'prepositions-lieu2', type:'choose', q:'「在沙發旁邊」怎麼說？', hint:'côté', a:'à côté du canapé', aNote:'à côté de + le = à côté du；⚠️ de + le = du', opts:['à côté du canapé','à côté le canapé','à côté de canapé','au côté du canapé'] },
