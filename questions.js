@@ -717,6 +717,46 @@ const BANK = [
   { lesson:12, topic:'pronom-y', type:'choose', q:'y 可以替換哪種詞語？', hint:'不是人，不是物品', a:'地點（à / dans / en + 地點）', aNote:'y = 地點代名詞；le/la/les = 人或物品；y remplace un complément de lieu', opts:['地點（à / dans / en + 地點）','人名','物品','時間'] },
   { lesson:12, topic:'pronom-y', type:'choose', q:'「Tu vas au travail à quelle heure ? — J\'_____ vais à 8h.」', hint:'au travail = 地點', a:'y', aNote:'au travail 是地點 → y；J\'y vais à 8h.（y 替換 au travail）', opts:['y','le','la','lui'] },
   { lesson:12, topic:'pronom-y', type:'trans',  q:'你在醫院工作嗎？— 是的，我在那裡工作五天。', hint:'y 替換 à l\'hôpital', a:'Tu travailles à l\'hôpital ? — Oui, j\'y travaille cinq jours par semaine.', aNote:'à l\'hôpital → y；j\'y travaille（y 在動詞前）', askClaude:true },
+
+  // ── 第13課：Sport & bien-être・Il faut vs Devoir・Alimentation・Vacances ──
+  // 健身房詞彙
+  { lesson:13, topic:'vocab-sport-gym', type:'choose', q:'salle de sport 和 gymnase 的差別？', hint:'一個是健身，一個是體操', a:'salle de sport = 健身房；gymnase = 體操場', aNote:'gymnase 是做 gymnastique 的地方；一般說「去健身」用 salle de sport', opts:['salle de sport = 健身房；gymnase = 體操場','兩者意思完全相同','gymnase = 健身房；salle de sport = 體操場','salle de sport 是學校用，gymnase 是商業用'] },
+  { lesson:13, topic:'vocab-sport-gym', type:'choose', q:'appareil 在健身房語境中是什麼意思？', hint:'cf. appareil photo', a:'健身器材（機器）', aNote:'appareil = 機器裝置；appareil photo = 相機；appareil de sport = 健身器材', opts:['健身器材（機器）','教練','更衣室','飲料機'] },
+  { lesson:13, topic:'vocab-sport-gym', type:'choose', q:'allumer 的反義詞是？', hint:'開 vs 關', a:'éteindre', aNote:'allumer = 開（電器）；éteindre = 關（電器）；Il faut éteindre les appareils après l\'utilisation.', opts:['éteindre','fermer','sortir','partir'] },
+  { lesson:13, topic:'vocab-sport-gym', type:'trans', q:'使用完器材後要清潔。', hint:'nettoyer / après l\'utilisation', a:'Il faut nettoyer les appareils après l\'utilisation.', aNote:'nettoyer = 清潔；après l\'utilisation = 使用後；il faut = 必須', askClaude:true },
+  { lesson:13, topic:'vocab-sport-gym', type:'choose', q:'進三溫暖必須穿什麼？', hint:'maillot de…', a:'un maillot de bain', aNote:'maillot de bain = 泳衣；serviette de bain = 浴巾（放器材上用）', opts:['un maillot de bain','une serviette de bain','un manteau','des chaussures de sport'] },
+  { lesson:13, topic:'vocab-sport-gym', type:'gender', q:'vestiaire（更衣室）→ 陰性 or 陽性？', hint:'le / la ?', a:'陽性 → le vestiaire', aNote:'le vestiaire（m）；la douche（f）；la serviette（f）；le sauna（m）' },
+
+  // Il faut vs Devoir
+  { lesson:13, topic:'ilfaut-devoir', type:'choose', q:'Il faut 和 il doit 最主要的差別是？', hint:'通則 vs 個人', a:'il faut = 通則建議（針對所有人）；il doit = 某人的具體義務', aNote:'Il faut faire du sport = 大家都應該；Il doit faire du sport = 他（因健康狀況）必須', opts:['il faut = 通則建議（針對所有人）；il doit = 某人的具體義務','兩者意思完全相同','il faut 比較強烈','il doit 是過去式'] },
+  { lesson:13, topic:'ilfaut-devoir', type:'fill', q:'devoir 變位：vous _____ faire du sport.', hint:'devez / dois / doit', a:'devez', aNote:'devoir：je dois / tu dois / il doit / nous devons / vous devez / ils doivent' },
+  { lesson:13, topic:'ilfaut-devoir', type:'fill', q:'devoir 變位：ils _____ manger équilibré.', hint:'doivent', a:'doivent', aNote:'ils/elles doivent（注意拼法，不是 doives）' },
+  { lesson:13, topic:'ilfaut-devoir', type:'choose', q:'falloir（il faut）的過去式 passé composé 是？', hint:'il + avoir + participe passé', a:'il a fallu', aNote:'falloir → il a fallu（passé composé）；imparfait = il fallait；永遠只有 il，不說 j\'ai fallu', opts:['il a fallu','j\'ai fallu','il est fallu','ils ont fallu'] },
+  { lesson:13, topic:'ilfaut-devoir', type:'choose', q:'「當時必須等待」用哪個時態和句型？', hint:'imparfait de falloir', a:'Il fallait attendre.', aNote:'imparfait de falloir = il fallait；passé composé = il a fallu', opts:['Il fallait attendre.','Il faut attendre.','Il a fallu attend.','Je fallais attendre.'] },
+  { lesson:13, topic:'ilfaut-devoir', type:'trans', q:'他必須喝兩公升的水（個人義務）。', hint:'devoir / litre', a:'Il doit boire deux litres d\'eau par jour.|Il doit boire 2 litres d\'eau par jour.', aNote:'個人義務 → il doit；il faut 是通則（大家都要）', askClaude:true },
+
+  // 給建議的三種方式
+  { lesson:13, topic:'giving-advice', type:'choose', q:'用命令式給建議和用 il faut 給建議，語氣差別是？', hint:'直接 vs 通則', a:'命令式較直接（針對對方）；il faut 是通則（針對所有人）', aNote:'Fais du sport！= 你去做（直接）；Il faut faire du sport = 大家都要做（通則）', opts:['命令式較直接（針對對方）；il faut 是通則（針對所有人）','兩者完全一樣','il faut 比命令式更強烈','命令式是過去式'] },
+  { lesson:13, topic:'giving-advice', type:'trans', q:'你可以騎腳踏車（建議）。（tu）', hint:'pouvoir + vélo', a:'Tu peux faire du vélo.', aNote:'給建議用 pouvoir：tu peux + infinitif；若強制才用 devoir', askClaude:true },
+  { lesson:13, topic:'giving-advice', type:'choose', q:'以下哪句是「建議」而非「義務」？', hint:'pouvoir vs devoir', a:'Vous pouvez pratiquer le yoga.', aNote:'pouvoir = 可以（建議）；devoir = 必須（義務）；il faut 視語境可兩用', opts:['Vous pouvez pratiquer le yoga.','Vous devez pratiquer le yoga.','Il faut faire ça.','Tu dois manger sain.'] },
+
+  // 運動詞彙
+  { lesson:13, topic:'vocab-sport-activities', type:'choose', q:'la course à pied 是什麼運動？', hint:'pied = 腳', a:'跑步', aNote:'course = 賽跑/奔跑；course à pied = 用腳跑步 = jogging；course 也可指賽車（course automobile）', opts:['跑步','游泳','騎車','跳繩'] },
+  { lesson:13, topic:'vocab-sport-activities', type:'choose', q:'la musculation 是什麼運動？', hint:'muscles', a:'重訓（肌力訓練）', aNote:'musculation 來自 muscle；salle de musculation = 重訓室', opts:['重訓（肌力訓練）','游泳','體操','柔道'] },
+  { lesson:13, topic:'vocab-sport-activities', type:'trans', q:'多動對你的健康有好處。', hint:'bouger / santé', a:'Bougez plus pour votre santé.|Pour votre santé, bougez plus !', aNote:'bouger = 動；法國政府廣告語：Pour votre santé, bougez plus !', askClaude:true },
+
+  // 飲食詞彙
+  { lesson:13, topic:'vocab-alimentation', type:'choose', q:'alimentation équilibrée 和 alimentation saine 的關係是？', hint:'均衡 vs 健康', a:'意思相近，均衡飲食即為健康飲食', aNote:'équilibré = 均衡；saine = 健康；兩者在飲食語境中幾乎同義', opts:['意思相近，均衡飲食即為健康飲食','完全不同意思','équilibré 比 saine 更嚴格','saine 是形容人，équilibré 形容食物'] },
+  { lesson:13, topic:'vocab-alimentation', type:'choose', q:'le saumon（鮭魚）在飲食上屬於哪一類？', hint:'課本說 attention…', a:'aliment gras（油脂類）', aNote:'Le saumon est un aliment gras. 雖然是健康脂肪（omega-3），但仍算 gras', opts:['aliment gras（油脂類）','aliment sucré（甜食類）','aliment salé（鹹食類）','aliment sans calorie'] },
+  { lesson:13, topic:'vocab-alimentation', type:'fill', q:'「균衡飲食」法文：une alimentation _____.', hint:'以 é 結尾的形容詞', a:'équilibrée', aNote:'équilibré → 陰性 équilibrée（alimentation 是陰性）' },
+  { lesson:13, topic:'vocab-alimentation', type:'choose', q:'以下哪個形容詞描述「甜食」？', hint:'sucre → ?', a:'sucré(e)', aNote:'sucre = 糖；sucré = 甜的；gras = 油膩的；salé = 鹹的', opts:['sucré(e)','gras(se)','salé(e)','équilibré(e)'] },
+
+  // 假期詞彙
+  { lesson:13, topic:'vocab-vacances', type:'choose', q:'hébergement 是什麼意思？', hint:'un endroit où dormir', a:'住宿（泛指所有可住的地方）', aNote:'hébergement = 住宿；logement = 住所；location = 租屋；chambre d\'hôte = 民宿', opts:['住宿（泛指所有可住的地方）','交通工具','行程表','機票'] },
+  { lesson:13, topic:'vocab-vacances', type:'choose', q:'parasol 和 parapluie 的差別？', hint:'soleil vs pluie', a:'parasol = 遮陽傘；parapluie = 雨傘', aNote:'para- = 防；sol = 太陽（soleil）；pluie = 雨；課本插圖：忘了帶 parasol！', opts:['parasol = 遮陽傘；parapluie = 雨傘','parasol = 雨傘；parapluie = 遮陽傘','兩者相同','parasol 是室內用'] },
+  { lesson:13, topic:'vocab-vacances', type:'choose', q:'chambre d\'hôte 和 hôtel 的差別？', hint:'hôte = 主人', a:'chambre d\'hôte 是住在主人家裡的房間（民宿）', aNote:'hôte = 主人；chambre d\'hôte = 主人提供的房間 = B&B/民宿；hôtel = 一般旅館', opts:['chambre d\'hôte 是住在主人家裡的房間（民宿）','完全相同','chambre d\'hôte 比較貴','hôtel 是給朋友住的'] },
+  { lesson:13, topic:'vocab-vacances', type:'trans', q:'我們忘了帶陽傘！', hint:'oublier / parasol / passé composé', a:'On a oublié le parasol !', aNote:'✅ 這是 passé composé：on a oublié；parasol = 遮陽傘（≠ parapluie 雨傘）', askClaude:true },
+  { lesson:13, topic:'vocab-vacances', type:'choose', q:'l\'échange de maison（換屋）的優點是？', hint:'gratuit + confortable', a:'免費且和租屋一樣舒適', aNote:'Les logements sont aussi confortables que des locations, mais ils sont gratuits.', opts:['免費且和租屋一樣舒適','比旅館貴但更自由','需要付費但比較安全','只適合短期（1-2天）'] },
 ];
 // ── ID 函數 ──
 function qId(q) {
