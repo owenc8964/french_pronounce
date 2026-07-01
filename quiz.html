@@ -153,6 +153,19 @@
     .btn-override { background: none; color: #888; border: 1.5px solid #ccc; font-size: 0.8rem; }
     .btn-override:hover { border-color: #2a7a4f; color: #2a7a4f; background: #f2fbf6; }
 
+    /* ── 心聲筆記 ── */
+    .qvoice-row { display: flex; align-items: center; gap: 8px; margin: 8px 0 2px; flex-wrap: wrap; }
+    .btn-voice { background: none; border: 1.5px solid #e0ddd8; border-radius: 20px; padding: 4px 12px; font-size: 0.75rem; color: #aaa; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
+    .btn-voice:hover { border-color: #4a90d9; color: #4a90d9; }
+    .btn-voice.has-note { border-color: #4a90d9; color: #4a90d9; background: #f0f7ff; }
+    .qvoice-preview { font-size: 0.75rem; color: #999; font-style: italic; }
+    .qvoice-area { background: #f8f8f6; border-radius: 8px; padding: 8px 10px; margin: 4px 0 6px; display: none; }
+    .qvoice-area textarea { width: 100%; min-height: 52px; border: 1.5px solid #e0ddd8; border-radius: 6px; padding: 6px 8px; font-size: 0.82rem; font-family: inherit; resize: none; outline: none; background: #fff; color: #333; line-height: 1.5; }
+    .qvoice-area textarea:focus { border-color: #4a90d9; }
+    .voice-btns { display: flex; gap: 6px; margin-top: 6px; }
+    .voice-save-btn { flex: 1; padding: 6px; background: #1d5035; color: #60d090; border: none; border-radius: 6px; font-size: 0.78rem; cursor: pointer; font-family: inherit; }
+    .voice-cancel-btn { padding: 6px 10px; background: none; color: #aaa; border: 1.5px solid #e0ddd8; border-radius: 6px; font-size: 0.78rem; cursor: pointer; font-family: inherit; }
+
     .tts-btn {
       border: none; background: none; cursor: pointer;
       font-size: 1.1rem; padding: 4px 6px; opacity: 0.7;
@@ -700,6 +713,20 @@ function renderCard() {
             })()}
           </div>
         </div>
+        ${(() => {
+          const existing = loadQNotes().find(n => n.qid === qId(q));
+          return `<div class="qvoice-row">
+            <button class="btn-voice${existing ? ' has-note' : ''}" id="btnVoice" onclick="toggleQVoice()">${existing ? '💬 已記心聲' : '💬 加心聲'}</button>
+            ${existing ? `<span class="qvoice-preview">${existing.note.slice(0,28)}${existing.note.length > 28 ? '…' : ''}</span>` : ''}
+          </div>
+          <div class="qvoice-area" id="qvoiceArea">
+            <textarea id="qvoiceTxt" placeholder="這題哪裡卡？老師說了什麼？想到什麼…">${existing ? existing.note : ''}</textarea>
+            <div class="voice-btns">
+              <button class="voice-save-btn" onclick="saveQVoice()">存下來</button>
+              <button class="voice-cancel-btn" onclick="document.getElementById('qvoiceArea').style.display='none'">取消</button>
+            </div>
+          </div>`;
+        })()}
         <div class="btn-row">
           ${q.askClaude ? `<button class="btn btn-claude" onclick="askClaude()">問 Claude</button>` : ''}
           <button class="btn btn-override" id="btnOverride" onclick="overrideCorrect()" style="display:none">其實對 ✓</button>
@@ -733,6 +760,7 @@ function checkAnswer() {
   answered = true;
   const q = queue[current];
   const ok = isCorrect(val, q.a);
+  lastOk = ok;
 
   input.disabled = true;
   document.getElementById('btnSubmit').disabled = true;
@@ -807,6 +835,7 @@ function pickBankOpt(btn, chosen) {
   answered = true;
   const q = queue[current];
   const ok = isCorrect(chosen, q.a);
+  lastOk = ok;
 
   document.querySelectorAll('.bank-opt').forEach(b => b.disabled = true);
 
@@ -1725,6 +1754,41 @@ function showLessonPicker(warmupScore, warmupTotal) {
   <button id="qnoteCopy" style="margin-top:6px;width:100%;padding:7px;background:#1a2438;color:#60a0d0;border:none;border-radius:8px;font-size:0.78rem;cursor:pointer;font-family:inherit;">📋 複製全部給 Claude</button>
 </div>
 <script>
+// ── 心聲筆記（每題）────────────────────────────────────────────
+const QNOTES_KEY = 'clb7_qnotes';
+let lastOk = false;
+function loadQNotes() { try { return JSON.parse(localStorage.getItem(QNOTES_KEY)) || []; } catch { return []; } }
+function saveQNotesArr(d) { localStorage.setItem(QNOTES_KEY, JSON.stringify(d)); }
+
+function toggleQVoice() {
+  const area = document.getElementById('qvoiceArea');
+  if (!area) return;
+  const isHidden = getComputedStyle(area).display === 'none';
+  area.style.display = isHidden ? 'block' : 'none';
+  if (isHidden) {
+    const ta = document.getElementById('qvoiceTxt');
+    if (ta) ta.focus();
+  }
+}
+
+function saveQVoice() {
+  const q = queue[current];
+  const ta = document.getElementById('qvoiceTxt');
+  if (!ta) return;
+  const note = ta.value.trim();
+  if (!note) return;
+  const qid = qId(q);
+  const d = new Date();
+  const notes = loadQNotes().filter(n => n.qid !== qid);
+  notes.push({ qid, q: q.q, topic: q.topic || '', lesson: q.lesson || 0, ok: lastOk, note,
+    date: d.toLocaleDateString('zh-TW') });
+  saveQNotesArr(notes);
+  const area = document.getElementById('qvoiceArea');
+  if (area) area.style.display = 'none';
+  const btn = document.getElementById('btnVoice');
+  if (btn) { btn.textContent = '💬 已記心聲'; btn.classList.add('has-note'); }
+}
+
 (function(){
   const KEY='clb7_quick_notes';
   const page=location.pathname.split('/').pop()||'unknown';
@@ -1752,10 +1816,20 @@ function showLessonPicker(warmupScore, warmupTotal) {
     updateCount();
   });
   document.getElementById('qnoteCopy').addEventListener('click',()=>{
-    const notes=loadNotes();
-    if(!notes.length){alert('還沒有筆記');return;}
-    const text='【CLB7 快速筆記】\n'+notes.map(n=>`[${n.date} ${n.time} @ ${n.page}] ${n.note}`).join('\n');
-    navigator.clipboard.writeText(text).then(()=>{
+    const quick=loadNotes();
+    const qnotes=loadQNotes();
+    if(!quick.length && !qnotes.length){alert('還沒有筆記');return;}
+    const lines=[];
+    if(quick.length){
+      lines.push('=== 快速筆記 ===');
+      quick.forEach(n=>lines.push(`[${n.date} ${n.time}] ${n.note}`));
+    }
+    if(qnotes.length){
+      lines.push('');
+      lines.push('=== 每題心聲（題目・對錯・心得）===');
+      qnotes.forEach(n=>lines.push(`[${n.date}|L${n.lesson} ${n.topic}|${n.ok?'✓':'✗'}] ${n.q}\n  → ${n.note}`));
+    }
+    navigator.clipboard.writeText(lines.join('\n')).then(()=>{
       document.getElementById('qnoteCopy').textContent='✓ 已複製！';
       setTimeout(()=>document.getElementById('qnoteCopy').textContent='📋 複製全部給 Claude',2000);
     });
