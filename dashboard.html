@@ -386,11 +386,15 @@ body {
   </a>
   <a class="nav-btn" href="french_notes.html">
     <span class="nav-icon">📖</span>
-    <div><div class="nav-label">筆記</div><div class="nav-sub">第 1–11 課</div></div>
+    <div><div class="nav-label">筆記</div><div class="nav-sub">第 1–13 課</div></div>
   </a>
   <a class="nav-btn" href="table_drill.html">
     <span class="nav-icon">⚡</span>
     <div><div class="nav-label">動詞變位</div><div class="nav-sub">快速演練</div></div>
+  </a>
+  <a class="nav-btn" href="verb_reference.html">
+    <span class="nav-icon">📘</span>
+    <div><div class="nav-label">核心動詞</div><div class="nav-sub">être avoir faire…</div></div>
   </a>
   <a class="nav-btn" href="speaking.html">
     <span class="nav-icon">🗣</span>
@@ -404,6 +408,16 @@ body {
     <span class="nav-icon">📖</span>
     <div><div class="nav-label">閱讀理解</div><div class="nav-sub" id="navReadingSub">8 篇短文</div></div>
   </a>
+</div>
+
+<!-- 心聲總覽 -->
+<div class="section-title" style="margin-top:18px;">心聲總覽</div>
+<div id="voicePanel" style="background:#fff;border-radius:12px;padding:14px 16px;margin-bottom:10px;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+    <span id="voiceCount" style="font-size:0.82rem;color:#666;">載入中…</span>
+    <button id="voiceCopy" style="font-size:0.78rem;padding:5px 12px;background:#1a2438;color:#60a0d0;border:none;border-radius:8px;cursor:pointer;font-family:inherit;">📋 複製全部給 Claude</button>
+  </div>
+  <div id="voiceList"></div>
 </div>
 
 <script>
@@ -1084,6 +1098,70 @@ document.getElementById('startBtn').addEventListener('click', () => {
       setTimeout(()=>document.getElementById('qnoteCopy').textContent='📋 複製全部給 Claude',2000);
     });
   });
+})();
+
+// ── 心聲總覽 ─────────────────────────────────────────────────
+(function(){
+  function loadVoices(){
+    const sections = [
+      { key:'clb7_quick_notes', label:'Dashboard 快速筆記', type:'array',
+        fmt: n => `[${n.date||''}] ${n.note||n}` },
+      { key:'clb7_qnotes',      label:'Quiz 每題心聲',     type:'array',
+        fmt: n => `[${n.date||''}] (${n.topic||''} L${n.lesson||''} ${n.ok?'✓':'✗'}) ${n.q||''} → ${n.note||''}` },
+      { key:'fr_unit_notes',    label:'課程筆記心聲',       type:'object',
+        fmt: (v,k) => `[${k}] ${v}` },
+      { key:'vr_verb_notes',    label:'核心動詞筆記',       type:'object',
+        fmt: (v,k) => `[${k}] ${v}` },
+    ];
+
+    let totalCount = 0;
+    let listHtml = '';
+    let copyLines = ['=== 心聲總覽（複製給 Claude）===',''];
+
+    sections.forEach(s => {
+      const raw = localStorage.getItem(s.key);
+      if(!raw) return;
+      let items = [];
+      try {
+        const parsed = JSON.parse(raw);
+        if(s.type==='array'){
+          items = (Array.isArray(parsed)?parsed:[]).map(n => s.fmt(n));
+        } else {
+          items = Object.entries(parsed).filter(([,v])=>v&&v.trim()).map(([k,v]) => s.fmt(v,k));
+        }
+      } catch(e){ return; }
+      if(!items.length) return;
+
+      totalCount += items.length;
+      listHtml += `<div style="margin-bottom:12px;">
+        <div style="font-size:0.78rem;font-weight:600;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em;">${s.label}（${items.length} 則）</div>
+        ${items.map(t=>`<div style="font-size:0.82rem;color:#444;border-left:3px solid #d0e8ff;padding-left:8px;margin-bottom:4px;line-height:1.5;">${t.replace(/</g,'&lt;')}</div>`).join('')}
+      </div>`;
+
+      copyLines.push(`── ${s.label} ──`);
+      items.forEach(t => copyLines.push('• '+t));
+      copyLines.push('');
+    });
+
+    const countEl = document.getElementById('voiceCount');
+    const listEl  = document.getElementById('voiceList');
+    if(!totalCount){
+      countEl.textContent = '還沒有任何心聲筆記';
+      listEl.innerHTML = '<div style="color:#aaa;font-size:0.82rem;text-align:center;padding:12px 0;">在 Quiz / 筆記 / 核心動詞 頁面記下心聲，會自動匯總在這裡</div>';
+    } else {
+      countEl.textContent = `共 ${totalCount} 則筆記`;
+      listEl.innerHTML = listHtml;
+    }
+
+    document.getElementById('voiceCopy').onclick = function(){
+      if(!totalCount){ return; }
+      navigator.clipboard.writeText(copyLines.join('\n')).then(()=>{
+        this.textContent='✓ 已複製！';
+        setTimeout(()=>this.textContent='📋 複製全部給 Claude',2000);
+      });
+    };
+  }
+  loadVoices();
 })();
 </script>
 </body>
