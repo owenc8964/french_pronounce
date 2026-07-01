@@ -869,6 +869,53 @@
 </div>
 
 <script>
+// ── 每動詞個人筆記 ────────────────────────────────────────────
+(function() {
+  const KEY = 'vr_verb_notes';
+  const notes = JSON.parse(localStorage.getItem(KEY) || '{}');
+  function save() { localStorage.setItem(KEY, JSON.stringify(notes)); }
+
+  document.querySelectorAll('.unit[id]').forEach(unit => {
+    const verbId = unit.id;
+    const header = unit.querySelector('.unit-header');
+    if (!header) return;
+
+    // 筆記按鈕
+    const btn = document.createElement('button');
+    btn.className = 'vr-note-btn' + (notes[verbId] ? ' has-note' : '');
+    btn.textContent = notes[verbId] ? '📝 筆記' : '+ 筆記';
+    btn.title = '加個人筆記';
+    btn.style.cssText = 'margin-left:auto;font-size:0.68rem;padding:3px 10px;border-radius:20px;border:1.5px solid #e0ddd8;background:none;color:#bbb;cursor:pointer;font-family:inherit;transition:all 0.15s;flex-shrink:0;';
+    if (notes[verbId]) btn.style.cssText += 'border-color:#4a90d9;color:#4a90d9;background:#f0f7ff;';
+    header.appendChild(btn);
+
+    // 筆記區塊
+    const box = document.createElement('div');
+    box.style.cssText = 'display:none;margin:0 0 14px;padding-bottom:12px;border-bottom:1px solid #f0f0ee;';
+    const ta = document.createElement('textarea');
+    ta.value = notes[verbId] || '';
+    ta.placeholder = `${verbId} 的個人心聲：老師特別強調什麼？哪裡容易搞混？`;
+    ta.style.cssText = 'width:100%;min-height:64px;border:1.5px solid #e0ddd8;border-radius:8px;padding:8px 10px;font-size:0.82rem;color:#333;font-family:inherit;resize:vertical;outline:none;line-height:1.5;background:#fafaf8;box-sizing:border-box;';
+    ta.addEventListener('focus', () => ta.style.borderColor = '#4a90d9');
+    ta.addEventListener('blur', () => {
+      ta.style.borderColor = '#e0ddd8';
+      const v = ta.value.trim();
+      if (v) { notes[verbId] = v; btn.classList.add('has-note'); btn.textContent = '📝 筆記'; btn.style.cssText += 'border-color:#4a90d9;color:#4a90d9;background:#f0f7ff;'; }
+      else { delete notes[verbId]; btn.classList.remove('has-note'); btn.textContent = '+ 筆記'; }
+      save();
+    });
+    box.appendChild(ta);
+    // 在 unit-header 後插入
+    header.insertAdjacentElement('afterend', box);
+
+    btn.addEventListener('click', () => {
+      const isOpen = box.style.display !== 'none';
+      box.style.display = isOpen ? 'none' : '';
+      if (!isOpen) ta.focus();
+    });
+  });
+})();
+
 function tts(text) {
   if (!('speechSynthesis' in window)) return;
   const u = new SpeechSynthesisUtterance(text);
