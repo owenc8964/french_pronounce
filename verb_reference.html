@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>核心動詞總整理</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f0f0ee;
+      color: #2c2c2c;
+      padding: 24px 20px;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    h1 { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; }
+    .meta { font-size: 0.75rem; color: #aaa; margin-bottom: 24px; }
+    .meta a { color: #aaa; text-decoration: none; border-bottom: 1px solid #ddd; }
+
+    /* ── 動詞導覽 ── */
+    .verb-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #f0f0ee;
+      display: flex;
+      gap: 8px;
+      padding: 10px 0 8px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #ddd;
+      flex-wrap: wrap;
+    }
+    .verb-nav a {
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 5px 16px;
+      border-radius: 99px;
+      border: 1.5px solid #ccc;
+      background: #fff;
+      color: #555;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .verb-nav a:hover { border-color: #4a90d9; color: #4a90d9; }
+
+    /* ── 章節 ── */
+    .unit {
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px 22px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .unit-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1.5px solid #f0f0ee;
+    }
+    .unit-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #fff;
+      background: #2c2c2c;
+      padding: 2px 8px;
+      border-radius: 5px;
+    }
+    .unit-tag.blue   { background: #4a90d9; }
+    .unit-tag.green  { background: #2a9d5c; }
+    .unit-tag.red    { background: #c0392b; }
+    .unit-tag.purple { background: #7b52ab; }
+    .unit-tag.orange { background: #d4630a; }
+    .unit-tag.teal   { background: #0f7777; }
+    .unit-tag.pink   { background: #b5306a; }
+
+    .unit-title { font-size: 1.05rem; font-weight: 700; }
+    .unit-sub   { font-size: 0.75rem; color: #999; }
+
+    h3 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #aaa;
+      margin: 20px 0 10px;
+    }
+    h3:first-child { margin-top: 0; }
+
+    /* ── 規則框 ── */
+    .rule {
+      background: #f8f8f6;
+      border-left: 3px solid #2c2c2c;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+    .rule .label {
+      font-size: 0.67rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #aaa;
+      margin-bottom: 4px;
+    }
+
+    /* ── 注意框 ── */
+    .note {
+      background: #fff8e0;
+      border-left: 3px solid #d4a017;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+    .note strong { color: #a07010; }
+
+    /* ── 比較框 ── */
+    .contrast {
+      background: #f0f7ff;
+      border-left: 3px solid #4a90d9;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+    .contrast .label {
+      font-size: 0.67rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #4a90d9;
+      margin-bottom: 4px;
+    }
+
+    /* ── 變位卡片 ── */
+    .conj-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .conj-card {
+      background: #f8f8f6;
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .conj-card .verb-title {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #aaa;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .conj-card .verb-title strong {
+      font-size: 0.92rem;
+      color: #2c2c2c;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .conj-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 3px 0;
+      border-bottom: 1px solid #efefed;
+      font-size: 0.84rem;
+    }
+    .conj-row:last-child { border-bottom: none; }
+    .conj-pro  { color: #999; font-size: 0.78rem; min-width: 55px; }
+    .conj-fr   { font-weight: 600; color: #2c2c2c; display: inline-flex; align-items: center; gap: 4px; }
+    .conj-irr  { font-size: 0.65rem; color: #c0392b; font-weight: 600; margin-left: 4px; }
+
+    /* ── 句型列表 ── */
+    .phrase-list { list-style: none; }
+    .phrase-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid #f0f0ee;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      flex-wrap: wrap;
+    }
+    .phrase-list li:last-child { border-bottom: none; }
+    .fr  { font-weight: 600; color: #2c2c2c; min-width: 210px; }
+    .zh  { color: #666; }
+    .ex  { width: 100%; font-size: 0.8rem; color: #aaa; padding-left: 0; font-style: italic; margin-top: 2px; }
+
+    /* ── 用法 badge ── */
+    .use-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: #f0f0ee;
+      color: #777;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .use-badge.aux    { background: #e8f0fe; color: #1a56db; }
+    .use-badge.expr   { background: #e6f4ea; color: #1e7e34; }
+    .use-badge.bodily { background: #fce8e6; color: #c0392b; }
+    .use-badge.time   { background: #fff3cd; color: #856404; }
+    .use-badge.modal  { background: #f3e8ff; color: #7b52ab; }
+
+    /* ── 比較表 ── */
+    .compare-table {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+    .compare-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .compare-table th {
+      background: #f0f0ee;
+      padding: 7px 12px;
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #999;
+      white-space: nowrap;
+    }
+    .compare-table td { padding: 7px 12px; border-bottom: 1px solid #f0f0ee; vertical-align: top; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table .fr-col  { font-weight: 600; color: #2c2c2c; }
+    .compare-table .zh-col  { color: #666; font-size: 0.82rem; }
+    .compare-table .note-col{ font-size: 0.75rem; color: #aaa; }
+    .compare-table tr:hover td { background: #f8f8f6; }
+
+    /* ── TTS ── */
+    .tts-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px; height: 26px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      opacity: 0.6;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      padding: 0;
+      flex-shrink: 0;
+      transition: opacity 0.15s;
+    }
+    .tts-btn:hover { opacity: 1; }
+
+    p { font-size: 0.88rem; line-height: 1.7; margin-bottom: 8px; }
+
+    @media (max-width: 540px) {
+      .conj-grid { grid-template-columns: 1fr; }
+      .fr { min-width: unset; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<h1>核心動詞總整理</h1>
+<p class="meta">être · avoir · faire · aller · pouvoir · devoir · vouloir ·
+  <a href="french_notes.html">← 課堂筆記</a> ·
+  <a href="dashboard.html">Dashboard</a>
+</p>
+
+<nav class="verb-nav">
+  <a href="#etre">être</a>
+  <a href="#avoir">avoir</a>
+  <a href="#faire">faire</a>
+  <a href="#aller">aller</a>
+  <a href="#pouvoir">pouvoir</a>
+  <a href="#devoir">devoir</a>
+  <a href="#vouloir">vouloir</a>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     ÊTRE
+════════════════════════════════════════════ -->
+<div class="unit" id="etre">
+  <div class="unit-header">
+    <span class="unit-tag blue">動詞</span>
+    <span class="unit-title">être <button class="tts-btn" onclick="tts('être')">🔊</button></span>
+    <span class="unit-sub">是 · 在 · 助動詞</span>
+  </div>
+
+  <h3>現在式變位</h3>
+  <div class="conj-grid" style="grid-template-columns:1fr;">
+    <div class="conj-card">
+      <div class="verb-title">現在式 <strong>être</strong> <button class="tts-btn" onclick="ttsConj(['je suis','tu es','il est','nous sommes','vous êtes','ils sont'])">🔊</button></div>
+      <div class="conj-row"><span class="conj-pro">je</span><span class="conj-fr"><button class="tts-btn" onclick="tts('je suis')">🔊</button>suis<span class="conj-irr">不規則</span></span></div>
+      <div class="conj-row"><span class="conj-pro">tu</span><span class="conj-fr"><button class="tts-btn" onclick="tts('tu es')">🔊</button>es</span></div>
+      <div class="conj-row"><span class="conj-pro">il/elle/on</span><span class="conj-fr"><button class="tts-btn" onclick="tts('il est')">🔊</button>est</span></div>
+      <div class="conj-row"><span class="conj-pro">nous</span><span class="conj-fr"><button class="tts-btn" onclick="tts('nous sommes')">🔊</button>sommes</span></div>
+      <div class="conj-row"><span class="conj-pro">vous</span><span class="conj-fr"><button class="tts-btn" onclick="tts('vous êtes')">🔊</button>êtes</span></div>
+      <div class="conj-row"><span class="conj-pro">ils/elles</span><span class="conj-fr"><button class="tts-btn" onclick="tts('ils sont')">🔊</button>sont</span></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>命令式（完全不規則）：</strong>
+    Sois calme. / Soyons patients. / Soyez à l'heure.
+  </div>
+
+  <h3>用法一覽</h3>
+  <ul class="phrase-list">
+    <li>
+      <span class="use-badge">身份職業</span>
+      <span class="fr">Je suis étudiant(e). <button class="tts-btn" onclick="tts('Je suis étudiant.')">🔊</button></span>
+      <span class="zh">我是學生。</span>
+      <span class="ex">⚠️ 職業前不加冠詞：Je suis médecin.（不是 un médecin）</span>
+    </li>
+    <li>
+      <span class="use-badge">國籍</span>
+      <span class="fr">Je suis taïwanais(e). <button class="tts-btn" onclick="tts('Je suis taïwanais.')">🔊</button></span>
+      <span class="zh">我是台灣人。</span>
+      <span class="ex">國籍形容詞小寫，且不加冠詞</span>
+    </li>
+    <li>
+      <span class="use-badge">地點</span>
+      <span class="fr">Je suis à Taipei. <button class="tts-btn" onclick="tts('Je suis à Taipei.')">🔊</button></span>
+      <span class="zh">我在台北。</span>
+    </li>
+    <li>
+      <span class="use-badge">描述狀態</span>
+      <span class="fr">Je suis fatigué(e). <button class="tts-btn" onclick="tts('Je suis fatigué.')">🔊</button></span>
+      <span class="zh">我很累。</span>
+      <span class="ex">形容詞要跟主詞配合陰陽性</span>
+    </li>
+    <li>
+      <span class="use-badge aux">助動詞</span>
+      <span class="fr">Elle est partie. <button class="tts-btn" onclick="tts('Elle est partie.')">🔊</button></span>
+      <span class="zh">她離開了。（passé composé）</span>
+      <span class="ex">être 助動詞 → 過去分詞要配合主詞陰陽複數</span>
+    </li>
+    <li>
+      <span class="use-badge aux">反身助動詞</span>
+      <span class="fr">Il s'est levé. <button class="tts-btn" onclick="tts('Il s\'est levé.')">🔊</button></span>
+      <span class="zh">他起床了。</span>
+      <span class="ex">所有反身動詞的 passé composé 都用 être</span>
+    </li>
+    <li>
+      <span class="use-badge time">正在進行</span>
+      <span class="fr">Je suis en train de manger. <button class="tts-btn" onclick="tts('Je suis en train de manger.')">🔊</button></span>
+      <span class="zh">我正在吃東西。</span>
+      <span class="ex">être en train de + inf. = 正在做～（強調進行中）</span>
+    </li>
+  </ul>
+
+  <h3>passé composé — 用 être 的動詞</h3>
+  <div class="rule">
+    <div class="label">記憶口訣：DR MRS VANDERTRAMP + 所有反身動詞</div>
+    Devenir / Revenir · Monter / Rester / Sortir · Venir / Aller / Naître · Descendre / Entrer / Rentrer / Tomber / Retourner / Arriver / Mourir / Partir
+  </div>
+  <div class="note"><strong>記法：</strong>這些全是「移動方向」或「存在狀態改變」的動詞。過去分詞要像形容詞一樣配合主詞：<br>
+  Il est allé → Elle est allée → Ils sont allés → Elles sont allées
+  </div>
+
+  <h3>c'est vs il est／elle est</h3>
+  <div class="compare-table">
+    <table>
+      <tr><th>情境</th><th>用法</th><th>例句</th></tr>
+      <tr>
+        <td>指人身份（後接冠詞）</td>
+        <td class="fr-col">C'est + un/une/le…</td>
+        <td><span class="fr-col">C'est un médecin.</span> <span class="zh-col">他是醫生。</span></td>
+      </tr>
+      <tr>
+        <td>指人職業（不加冠詞）</td>
+        <td class="fr-col">Il/Elle est + 職業</td>
+        <td><span class="fr-col">Il est médecin.</span> <span class="zh-col">他是醫生。（同義，更口語）</span></td>
+      </tr>
+      <tr>
+        <td>指物品或情況</td>
+        <td class="fr-col">C'est + adj.</td>
+        <td><span class="fr-col">C'est difficile.</span> <span class="zh-col">這很難。</span></td>
+      </tr>
+      <tr>
+        <td>描述具體某物的性質</td>
+        <td class="fr-col">Il/Elle est + adj.</td>
+        <td><span class="fr-col">Elle est belle, cette voiture.</span> <span class="zh-col">這台車很漂亮。</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <h3>常用固定表達</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">être en retard <button class="tts-btn" onclick="tts('Je suis en retard.')">🔊</button></span><span class="zh">遲到（是現在狀態，用現在式）</span></li>
+    <li><span class="fr">être en avance <button class="tts-btn" onclick="tts('Je suis en avance.')">🔊</button></span><span class="zh">提早到</span></li>
+    <li><span class="fr">être à l'heure <button class="tts-btn" onclick="tts('Je suis à l\'heure.')">🔊</button></span><span class="zh">準時</span></li>
+    <li><span class="fr">être d'accord <button class="tts-btn" onclick="tts('Je suis d\'accord.')">🔊</button></span><span class="zh">同意</span></li>
+    <li><span class="fr">être de retour <button class="tts-btn" onclick="tts('Je suis de retour.')">🔊</button></span><span class="zh">回來了</span></li>
+    <li><span class="fr">C'est ça. <button class="tts-btn" onclick="tts('C\'est ça.')">🔊</button></span><span class="zh">就是這樣。/ 沒錯。</span></li>
+    <li><span class="fr">C'est à moi. <button class="tts-btn" onclick="tts('C\'est à moi.')">🔊</button></span><span class="zh">這是我的。（表所有）</span></li>
+  </ul>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     AVOIR
+════════════════════════════════════════════ -->
+<div class="unit" id="avoir">
+  <div class="unit-header">
+    <span class="unit-tag green">動詞</span>
+    <span class="unit-title">avoir <button class="tts-btn" onclick="tts('avoir')">🔊</button></span>
+    <span class="unit-sub">有 · 年齡 · 感覺 · 助動詞</span>
+  </div>
+
+  <h3>現在式變位</h3>
+  <div class="conj-grid" style="grid-template-columns:1fr;">
+    <div class="conj-card">
+      <div class="verb-title">現在式 <strong>avoir</strong> <button class="tts-btn" onclick="ttsConj([\"j'ai\",\"tu as\",\"il a\",\"nous avons\",\"vous avez\",\"ils ont\"])">🔊</button></div>
+      <div class="conj-row"><span class="conj-pro">j'</span><span class="conj-fr"><button class="tts-btn" onclick="tts('j\\'ai')">🔊</button>ai<span class="conj-irr">不規則</span></span></div>
+      <div class="conj-row"><span class="conj-pro">tu</span><span class="conj-fr"><button class="tts-btn" onclick="tts('tu as')">🔊</button>as</span></div>
+      <div class="conj-row"><span class="conj-pro">il/elle/on</span><span class="conj-fr"><button class="tts-btn" onclick="tts('il a')">🔊</button>a</span></div>
+      <div class="conj-row"><span class="conj-pro">nous</span><span class="conj-fr"><button class="tts-btn" onclick="tts('nous avons')">🔊</button>avons</span></div>
+      <div class="conj-row"><span class="conj-pro">vous</span><span class="conj-fr"><button class="tts-btn" onclick="tts('vous avez')">🔊</button>avez</span></div>
+      <div class="conj-row"><span class="conj-pro">ils/elles</span><span class="conj-fr"><button class="tts-btn" onclick="tts('ils ont')">🔊</button>ont</span></div>
+    </div>
+  </div>
+  <div class="note"><strong>命令式（不規則）：</strong> Aie confiance ! / Ayons du courage ! / Ayez la bonté de…</div>
+
+  <h3>用法一覽</h3>
+  <ul class="phrase-list">
+    <li>
+      <span class="use-badge">擁有</span>
+      <span class="fr">J'ai un chien. <button class="tts-btn" onclick="tts('J\\'ai un chien.')">🔊</button></span>
+      <span class="zh">我有一隻狗。</span>
+    </li>
+    <li>
+      <span class="use-badge bodily">年齡</span>
+      <span class="fr">J'ai 25 ans. <button class="tts-btn" onclick="tts('J\\'ai vingt-cinq ans.')">🔊</button></span>
+      <span class="zh">我 25 歲。</span>
+      <span class="ex">⚠️ 年齡一定用 avoir，絕對不用 être！</span>
+    </li>
+    <li>
+      <span class="use-badge aux">助動詞</span>
+      <span class="fr">J'ai mangé une pomme. <button class="tts-btn" onclick="tts('J\\'ai mangé une pomme.')">🔊</button></span>
+      <span class="zh">我吃了一顆蘋果。（passé composé）</span>
+      <span class="ex">大多數動詞的 passé composé 用 avoir</span>
+    </li>
+    <li>
+      <span class="use-badge">存在</span>
+      <span class="fr">Il y a un problème. <button class="tts-btn" onclick="tts('Il y a un problème.')">🔊</button></span>
+      <span class="zh">有一個問題。</span>
+      <span class="ex">il y a = there is / there are，單複數一律用這個形式</span>
+    </li>
+  </ul>
+
+  <h3>avoir + 名詞（身體感受）</h3>
+  <div class="rule"><div class="label">結構</div>avoir + 名詞（<strong>不加</strong>冠詞）= 感受到某種狀態</div>
+  <ul class="phrase-list">
+    <li><span class="fr">avoir faim <button class="tts-btn" onclick="tts('J\\'ai faim.')">🔊</button></span><span class="zh">餓</span></li>
+    <li><span class="fr">avoir soif <button class="tts-btn" onclick="tts('J\\'ai soif.')">🔊</button></span><span class="zh">渴</span></li>
+    <li><span class="fr">avoir froid <button class="tts-btn" onclick="tts('J\\'ai froid.')">🔊</button></span><span class="zh">冷</span></li>
+    <li><span class="fr">avoir chaud <button class="tts-btn" onclick="tts('J\\'ai chaud.')">🔊</button></span><span class="zh">熱</span></li>
+    <li><span class="fr">avoir peur (de) <button class="tts-btn" onclick="tts('J\\'ai peur.')">🔊</button></span><span class="zh">害怕</span><span class="ex">J'ai peur des araignées. 我怕蜘蛛。</span></li>
+    <li><span class="fr">avoir mal à + 部位 <button class="tts-btn" onclick="tts('J\\'ai mal à la tête.')">🔊</button></span><span class="zh">（某處）痛</span><span class="ex">J'ai mal à la tête. 我頭痛。/ J'ai mal aux dents. 我牙痛。</span></li>
+    <li><span class="fr">avoir sommeil <button class="tts-btn" onclick="tts('J\\'ai sommeil.')">🔊</button></span><span class="zh">睏、想睡</span></li>
+    <li><span class="fr">avoir honte <button class="tts-btn" onclick="tts('J\\'ai honte.')">🔊</button></span><span class="zh">羞恥、丟臉</span></li>
+    <li><span class="fr">avoir raison <button class="tts-btn" onclick="tts('Tu as raison.')">🔊</button></span><span class="zh">有道理、說得對</span></li>
+    <li><span class="fr">avoir tort <button class="tts-btn" onclick="tts('J\\'ai tort.')">🔊</button></span><span class="zh">說錯了、做錯了</span></li>
+    <li><span class="fr">avoir de la chance <button class="tts-btn" onclick="tts('J\\'ai de la chance.')">🔊</button></span><span class="zh">很幸運</span></li>
+  </ul>
+
+  <h3>avoir + de + infinitif（需要、想要、習慣）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">avoir besoin de <button class="tts-btn" onclick="tts('J\\'ai besoin de dormir.')">🔊</button></span><span class="zh">需要</span><span class="ex">J'ai besoin de dormir. 我需要睡覺。</span></li>
+    <li><span class="fr">avoir envie de <button class="tts-btn" onclick="tts('J\\'ai envie de manger.')">🔊</button></span><span class="zh">想要、渴望</span><span class="ex">J'ai envie de voyager. 我想去旅行。</span></li>
+    <li><span class="fr">avoir l'habitude de <button class="tts-btn" onclick="tts('J\\'ai l\\'habitude de me lever tôt.')">🔊</button></span><span class="zh">習慣於</span><span class="ex">J'ai l'habitude de me lever tôt. 我習慣早起。</span></li>
+    <li><span class="fr">avoir du mal à <button class="tts-btn" onclick="tts('J\\'ai du mal à comprendre.')">🔊</button></span><span class="zh">難以、吃力地</span><span class="ex">J'ai du mal à comprendre. 我很難理解。</span></li>
+    <li><span class="fr">avoir l'air + adj. <button class="tts-btn" onclick="tts('Tu as l\\'air fatigué.')">🔊</button></span><span class="zh">看起來…</span><span class="ex">Tu as l'air fatigué. 你看起來很累。</span></li>
+    <li><span class="fr">avoir l'intention de <button class="tts-btn" onclick="tts('J\\'ai l\\'intention de partir demain.')">🔊</button></span><span class="zh">打算</span><span class="ex">J'ai l'intention de partir demain. 我打算明天走。</span></li>
+  </ul>
+
+  <h3>il y a — 時間表達</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Il y a 2 ans <button class="tts-btn" onclick="tts('Il y a deux ans')">🔊</button></span><span class="zh">2年前</span><span class="ex">il y a + 時間 → 距今多久以前</span></li>
+    <li><span class="fr">Ça fait 2 ans que… <button class="tts-btn" onclick="tts('Ça fait deux ans que j\\'apprends le français.')">🔊</button></span><span class="zh">已經 2 年了…</span><span class="ex">ça fait + 時間 + que → 持續到現在的時間</span></li>
+  </ul>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     FAIRE
+════════════════════════════════════════════ -->
+<div class="unit" id="faire">
+  <div class="unit-header">
+    <span class="unit-tag red">動詞</span>
+    <span class="unit-title">faire <button class="tts-btn" onclick="tts('faire')">🔊</button></span>
+    <span class="unit-sub">做 · 製作 · 天氣 · 運動 · 家務</span>
+  </div>
+
+  <h3>現在式變位</h3>
+  <div class="conj-grid" style="grid-template-columns:1fr;">
+    <div class="conj-card">
+      <div class="verb-title">現在式 <strong>faire</strong> <button class="tts-btn" onclick="ttsConj(['je fais','tu fais','il fait','nous faisons','vous faites','ils font'])">🔊</button></div>
+      <div class="conj-row"><span class="conj-pro">je</span><span class="conj-fr"><button class="tts-btn" onclick="tts('je fais')">🔊</button>fais</span></div>
+      <div class="conj-row"><span class="conj-pro">tu</span><span class="conj-fr"><button class="tts-btn" onclick="tts('tu fais')">🔊</button>fais</span></div>
+      <div class="conj-row"><span class="conj-pro">il/elle/on</span><span class="conj-fr"><button class="tts-btn" onclick="tts('il fait')">🔊</button>fait</span></div>
+      <div class="conj-row"><span class="conj-pro">nous</span><span class="conj-fr"><button class="tts-btn" onclick="tts('nous faisons')">🔊</button>faisons<span class="conj-irr">fez-</span></span></div>
+      <div class="conj-row"><span class="conj-pro">vous</span><span class="conj-fr"><button class="tts-btn" onclick="tts('vous faites')">🔊</button>faites<span class="conj-irr">例外！</span></span></div>
+      <div class="conj-row"><span class="conj-pro">ils/elles</span><span class="conj-fr"><button class="tts-btn" onclick="tts('ils font')">🔊</button>font<span class="conj-irr">不規則</span></span></div>
+    </div>
+  </div>
+  <div class="note"><strong>命令式：</strong> Fais attention ! / Faisons du sport ! / Faites-le ! ← faire 的命令式 tu 形<strong>不加 s</strong></div>
+
+  <h3>天氣（il fait…）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Il fait beau. <button class="tts-btn" onclick="tts('Il fait beau.')">🔊</button></span><span class="zh">天氣好。</span></li>
+    <li><span class="fr">Il fait mauvais. <button class="tts-btn" onclick="tts('Il fait mauvais.')">🔊</button></span><span class="zh">天氣不好。</span></li>
+    <li><span class="fr">Il fait chaud. <button class="tts-btn" onclick="tts('Il fait chaud.')">🔊</button></span><span class="zh">天氣熱。</span><span class="ex">⚠️ 天氣用 il fait，人的感覺用 j'ai（j'ai chaud = 我覺得熱）</span></li>
+    <li><span class="fr">Il fait froid. <button class="tts-btn" onclick="tts('Il fait froid.')">🔊</button></span><span class="zh">天氣冷。</span></li>
+    <li><span class="fr">Il fait du vent. <button class="tts-btn" onclick="tts('Il fait du vent.')">🔊</button></span><span class="zh">有風。</span></li>
+    <li><span class="fr">Il fait du soleil. <button class="tts-btn" onclick="tts('Il fait du soleil.')">🔊</button></span><span class="zh">出太陽。</span></li>
+  </ul>
+
+  <h3>運動 / 活動（faire du/de la/de l'…）</h3>
+  <div class="rule"><div class="label">結構</div>faire + du（陽性）/ de la（陰性）/ de l'（母音）+ 運動名稱</div>
+  <ul class="phrase-list">
+    <li><span class="fr">faire du sport <button class="tts-btn" onclick="tts('Je fais du sport.')">🔊</button></span><span class="zh">做運動</span></li>
+    <li><span class="fr">faire du vélo <button class="tts-btn" onclick="tts('Je fais du vélo.')">🔊</button></span><span class="zh">騎腳踏車</span></li>
+    <li><span class="fr">faire de la natation <button class="tts-btn" onclick="tts('Je fais de la natation.')">🔊</button></span><span class="zh">游泳</span></li>
+    <li><span class="fr">faire de la randonnée <button class="tts-btn" onclick="tts('Je fais de la randonnée.')">🔊</button></span><span class="zh">健行</span></li>
+    <li><span class="fr">faire du yoga <button class="tts-btn" onclick="tts('Je fais du yoga.')">🔊</button></span><span class="zh">做瑜珈</span></li>
+    <li><span class="fr">faire de la musculation <button class="tts-btn" onclick="tts('Je fais de la musculation.')">🔊</button></span><span class="zh">重訓</span></li>
+  </ul>
+
+  <h3>家務</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">faire la cuisine <button class="tts-btn" onclick="tts('Je fais la cuisine.')">🔊</button></span><span class="zh">做飯、下廚</span></li>
+    <li><span class="fr">faire le ménage <button class="tts-btn" onclick="tts('Je fais le ménage.')">🔊</button></span><span class="zh">打掃家裡</span></li>
+    <li><span class="fr">faire la vaisselle <button class="tts-btn" onclick="tts('Je fais la vaisselle.')">🔊</button></span><span class="zh">洗碗</span></li>
+    <li><span class="fr">faire les courses <button class="tts-btn" onclick="tts('Je fais les courses.')">🔊</button></span><span class="zh">採購、買菜</span></li>
+    <li><span class="fr">faire le lit <button class="tts-btn" onclick="tts('Je fais le lit.')">🔊</button></span><span class="zh">整理床鋪</span></li>
+    <li><span class="fr">faire la lessive <button class="tts-btn" onclick="tts('Je fais la lessive.')">🔊</button></span><span class="zh">洗衣服</span></li>
+  </ul>
+
+  <h3>其他常用固定表達</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">faire attention (à) <button class="tts-btn" onclick="tts('Fais attention !')">🔊</button></span><span class="zh">注意</span><span class="ex">Fais attention à la voiture ! 小心車子！</span></li>
+    <li><span class="fr">faire semblant de <button class="tts-btn" onclick="tts('Il fait semblant de dormir.')">🔊</button></span><span class="zh">假裝</span><span class="ex">Il fait semblant de dormir. 他假裝在睡覺。</span></li>
+    <li><span class="fr">faire une promenade <button class="tts-btn" onclick="tts('Je fais une promenade.')">🔊</button></span><span class="zh">散步</span></li>
+    <li><span class="fr">faire un voyage <button class="tts-btn" onclick="tts('Je fais un voyage en France.')">🔊</button></span><span class="zh">旅行</span></li>
+    <li><span class="fr">faire des études <button class="tts-btn" onclick="tts('Je fais des études de français.')">🔊</button></span><span class="zh">念書、求學</span></li>
+    <li><span class="fr">faire la fête <button class="tts-btn" onclick="tts('On fait la fête ce soir.')">🔊</button></span><span class="zh">派對、狂歡</span></li>
+    <li><span class="fr">faire des progrès <button class="tts-btn" onclick="tts('Je fais des progrès en français.')">🔊</button></span><span class="zh">進步</span></li>
+    <li><span class="fr">ça fait… que <button class="tts-btn" onclick="tts('Ça fait trois ans que j\\'apprends le français.')">🔊</button></span><span class="zh">已經…（表持續時間）</span><span class="ex">Ça fait 3 ans que j'apprends le français. 我學法語已經 3 年了。</span></li>
+  </ul>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     ALLER
+════════════════════════════════════════════ -->
+<div class="unit" id="aller">
+  <div class="unit-header">
+    <span class="unit-tag purple">動詞</span>
+    <span class="unit-title">aller <button class="tts-btn" onclick="tts('aller')">🔊</button></span>
+    <span class="unit-sub">去 · 近未來 · 健康問候</span>
+  </div>
+
+  <h3>現在式變位</h3>
+  <div class="conj-grid" style="grid-template-columns:1fr;">
+    <div class="conj-card">
+      <div class="verb-title">現在式 <strong>aller</strong> <button class="tts-btn" onclick="ttsConj(['je vais','tu vas','il va','nous allons','vous allez','ils vont'])">🔊</button></div>
+      <div class="conj-row"><span class="conj-pro">je</span><span class="conj-fr"><button class="tts-btn" onclick="tts('je vais')">🔊</button>vais<span class="conj-irr">完全不規則</span></span></div>
+      <div class="conj-row"><span class="conj-pro">tu</span><span class="conj-fr"><button class="tts-btn" onclick="tts('tu vas')">🔊</button>vas</span></div>
+      <div class="conj-row"><span class="conj-pro">il/elle/on</span><span class="conj-fr"><button class="tts-btn" onclick="tts('il va')">🔊</button>va</span></div>
+      <div class="conj-row"><span class="conj-pro">nous</span><span class="conj-fr"><button class="tts-btn" onclick="tts('nous allons')">🔊</button>allons</span></div>
+      <div class="conj-row"><span class="conj-pro">vous</span><span class="conj-fr"><button class="tts-btn" onclick="tts('vous allez')">🔊</button>allez</span></div>
+      <div class="conj-row"><span class="conj-pro">ils/elles</span><span class="conj-fr"><button class="tts-btn" onclick="tts('ils vont')">🔊</button>vont<span class="conj-irr">不規則</span></span></div>
+    </div>
+  </div>
+
+  <h3>用法一覽</h3>
+  <ul class="phrase-list">
+    <li>
+      <span class="use-badge">移動</span>
+      <span class="fr">Je vais au travail. <button class="tts-btn" onclick="tts('Je vais au travail.')">🔊</button></span>
+      <span class="zh">我去上班。</span>
+      <span class="ex">去 + 地方：aller à / au / en / aux + 地點</span>
+    </li>
+    <li>
+      <span class="use-badge aux">近未來</span>
+      <span class="fr">Je vais manger. <button class="tts-btn" onclick="tts('Je vais manger.')">🔊</button></span>
+      <span class="zh">我要去吃東西了。（即將發生）</span>
+      <span class="ex">aller + infinitif = 快要 / 打算做的事（futur proche）</span>
+    </li>
+    <li>
+      <span class="use-badge expr">問候</span>
+      <span class="fr">Comment allez-vous ? <button class="tts-btn" onclick="tts('Comment allez-vous ?')">🔊</button></span>
+      <span class="zh">您好嗎？（正式）</span>
+    </li>
+    <li>
+      <span class="use-badge expr">問候</span>
+      <span class="fr">Ça va ? / Je vais bien. <button class="tts-btn" onclick="tts('Ça va ? Je vais bien, merci.')">🔊</button></span>
+      <span class="zh">還好嗎？/ 我很好。</span>
+    </li>
+    <li>
+      <span class="use-badge expr">合適</span>
+      <span class="fr">Cette couleur te va bien. <button class="tts-btn" onclick="tts('Cette couleur te va bien.')">🔊</button></span>
+      <span class="zh">這個顏色很適合你。</span>
+      <span class="ex">aller à quelqu'un = 適合某人（衣服/顏色）</span>
+    </li>
+  </ul>
+
+  <h3>aller à / au / en / aux — 去哪裡</h3>
+  <div class="compare-table">
+    <table>
+      <tr><th>目的地類型</th><th>介詞</th><th>例句</th></tr>
+      <tr><td>城市</td><td class="fr-col">à</td><td><span class="fr-col">aller à Paris / à Taipei</span></td></tr>
+      <tr><td>陰性國家（-e 結尾）</td><td class="fr-col">en</td><td><span class="fr-col">aller en France / en Chine</span></td></tr>
+      <tr><td>陽性國家</td><td class="fr-col">au</td><td><span class="fr-col">aller au Canada / au Japon</span></td></tr>
+      <tr><td>複數國家</td><td class="fr-col">aux</td><td><span class="fr-col">aller aux États-Unis</span></td></tr>
+      <tr><td>島嶼（台灣）</td><td class="fr-col">à</td><td><span class="fr-col">aller à Taïwan</span> <span class="zh-col">（視為城市）</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     POUVOIR
+════════════════════════════════════════════ -->
+<div class="unit" id="pouvoir">
+  <div class="unit-header">
+    <span class="unit-tag orange">動詞</span>
+    <span class="unit-title">pouvoir <button class="tts-btn" onclick="tts('pouvoir')">🔊</button></span>
+    <span class="unit-sub">能 · 可以 · 許可 · 禮貌請求</span>
+  </div>
+
+  <h3>現在式變位</h3>
+  <div class="conj-grid" style="grid-template-columns:1fr;">
+    <div class="conj-card">
+      <div class="verb-title">現在式 <strong>pouvoir</strong> <button class="tts-btn" onclick="ttsConj(['je peux','tu peux','il peut','nous pouvons','vous pouvez','ils peuvent'])">🔊</button></div>
+      <div class="conj-row"><span class="conj-pro">je</span><span class="conj-fr"><button class="tts-btn" onclick="tts('je peux')">🔊</button>peux<span class="conj-irr">不規則</span></span></div>
+      <div class="conj-row"><span class="conj-pro">tu</span><span class="conj-fr"><button class="tts-btn" onclick="tts('tu peux')">🔊</button>peux</span></div>
+      <div class="conj-row"><span class="conj-pro">il/elle/on</span><span class="conj-fr"><button class="tts-btn" onclick="tts('il peut')">🔊</button>peut</span></div>
+      <div class="conj-row"><span class="conj-pro">nous</span><span class="conj-fr"><button class="tts-btn" onclick="tts('nous pouvons')">🔊</button>pouvons</span></div>
+      <div class="conj-row"><span class="conj-pro">vous</span><span class="conj-fr"><button class="tts-btn" onclick="tts('vous pouvez')">🔊</button>pouvez</span></div>
+      <div class="conj-row"><span class="conj-pro">ils/elles</span><span class="conj-fr"><button class="tts-btn" onclick="tts('ils peuvent')">🔊</button>peuvent<span class="conj-irr">eu→euv</span></span></div>
+    </div>
+  </div>
+
+  <h3>用法一覽</h3>
+  <ul class="phrase-list">
+    <li>
+      <span class="use-badge modal">能力</span>
+      <span class="fr">Je peux nager 1 km. <button class="tts-btn" onclick="tts('Je peux nager un kilomètre.')">🔊</button></span>
+      <span class="zh">我能游 1 公里。（有條件/能力）</span>
+    </li>
+    <li>
+      <span class="use-badge modal">許可</span>
+      <span class="fr">Tu peux sortir maintenant. <button class="tts-btn" onclick="tts('Tu peux sortir maintenant.')">🔊</button></span>
+      <span class="zh">你現在可以出去了。（給許可）</span>
+    </li>
+    <li>
+      <span class="use-badge modal">禮貌請求</span>
+      <span class="fr">Vous pouvez répéter ? <button class="tts-btn" onclick="tts('Vous pouvez répéter, s\\'il vous plaît ?')">🔊</button></span>
+      <span class="zh">可以再說一次嗎？</span>
+      <span class="ex">比命令句「Répétez !」禮貌得多</span>
+    </li>
+    <li>
+      <span class="use-badge modal">可能性</span>
+      <span class="fr">Il peut pleuvoir demain. <button class="tts-btn" onclick="tts('Il peut pleuvoir demain.')">🔊</button></span>
+      <span class="zh">明天可能會下雨。</span>
+    </li>
+    <li>
+      <span class="use-badge expr">建議</span>
+      <span class="fr">Tu peux faire du vélo. <button class="tts-btn" onclick="tts('Tu peux faire du vélo.')">🔊</button></span>
+      <span class="zh">你可以去騎腳踏車。（溫和建議）</span>
+      <span class="ex">pouvoir 建議語氣最溫和，比 devoir / il faut 柔和</span>
+    </li>
+  </ul>
+
+  <div class="contrast">
+    <div class="label">pouvoir vs savoir — 都有「能/會」的意思，差別在哪？</div>
+    <strong>pouvoir</strong>：有機會/條件/許可去做某事<br>
+    → Je peux conduire. 我可以開車。（我有駕照、車子在這）<br><br>
+    <strong>savoir</strong>：知道怎麼做（技能、知識）<br>
+    → Je sais conduire. 我會開車。（我學過）<br><br>
+    Je sais nager, mais je ne peux pas nager aujourd'hui. （腳受傷了）<br>
+    我會游泳，但今天不能游。
+  </div>
+
+  <h3>條件式 — pourrait（更禮貌）</h3>
+  <div class="rule">
+    <div class="label">條件式現在</div>
+    je pourrais / tu pourrais / il pourrait / nous pourrions / vous pourriez / ils pourraient<br>
+    → <strong>Vous pourriez répéter ?</strong> 比 Vous pouvez répéter ? 更禮貌
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     DEVOIR
+════════════════════════════════════════════ -->
+<div class="unit" id="devoir">
+  <div class="unit-header">
+    <span class="unit-tag teal">動詞</span>
+    <span class="unit-title">devoir <button class="tts-btn" onclick="tts('devoir')">🔊</button></span>
+    <span class="unit-sub">必須 · 應該 · 推測 · 欠（錢）</span>
+  </div>
+
+  <h3>現在式變位</h3>
+  <div class="conj-grid" style="grid-template-columns:1fr;">
+    <div class="conj-card">
+      <div class="verb-title">現在式 <strong>devoir</strong> <button class="tts-btn" onclick="ttsConj(['je dois','tu dois','il doit','nous devons','vous devez','ils doivent'])">🔊</button></div>
+      <div class="conj-row"><span class="conj-pro">je</span><span class="conj-fr"><button class="tts-btn" onclick="tts('je dois')">🔊</button>dois<span class="conj-irr">不規則</span></span></div>
+      <div class="conj-row"><span class="conj-pro">tu</span><span class="conj-fr"><button class="tts-btn" onclick="tts('tu dois')">🔊</button>dois</span></div>
+      <div class="conj-row"><span class="conj-pro">il/elle/on</span><span class="conj-fr"><button class="tts-btn" onclick="tts('il doit')">🔊</button>doit</span></div>
+      <div class="conj-row"><span class="conj-pro">nous</span><span class="conj-fr"><button class="tts-btn" onclick="tts('nous devons')">🔊</button>devons</span></div>
+      <div class="conj-row"><span class="conj-pro">vous</span><span class="conj-fr"><button class="tts-btn" onclick="tts('vous devez')">🔊</button>devez</span></div>
+      <div class="conj-row"><span class="conj-pro">ils/elles</span><span class="conj-fr"><button class="tts-btn" onclick="tts('ils doivent')">🔊</button>doivent<span class="conj-irr">oi→oiv</span></span></div>
+    </div>
+  </div>
+
+  <h3>用法一覽</h3>
+  <ul class="phrase-list">
+    <li>
+      <span class="use-badge modal">義務</span>
+      <span class="fr">Tu dois faire tes devoirs. <button class="tts-btn" onclick="tts('Tu dois faire tes devoirs.')">🔊</button></span>
+      <span class="zh">你必須做功課。</span>
+    </li>
+    <li>
+      <span class="use-badge modal">推測</span>
+      <span class="fr">Il doit être fatigué. <button class="tts-btn" onclick="tts('Il doit être fatigué.')">🔊</button></span>
+      <span class="zh">他應該是累了。（推斷）</span>
+      <span class="ex">devoir 表推測時，語氣接近「一定是/應該是」</span>
+    </li>
+    <li>
+      <span class="use-badge">欠</span>
+      <span class="fr">Je dois 20 € à Marie. <button class="tts-btn" onclick="tts('Je dois vingt euros à Marie.')">🔊</button></span>
+      <span class="zh">我欠 Marie 20 歐元。</span>
+    </li>
+  </ul>
+
+  <h3>devoir vs il faut vs pouvoir — 建議語氣強弱</h3>
+  <div class="compare-table">
+    <table>
+      <tr><th>句子</th><th>語氣</th><th>說明</th></tr>
+      <tr>
+        <td class="fr-col">Tu dois faire du sport.</td>
+        <td>強 / 義務</td>
+        <td class="zh-col">你必須運動。（針對你）</td>
+      </tr>
+      <tr>
+        <td class="fr-col">Il faut faire du sport.</td>
+        <td>中 / 通則</td>
+        <td class="zh-col">（大家）應該運動。（普遍規則）</td>
+      </tr>
+      <tr>
+        <td class="fr-col">Tu devrais faire du sport.</td>
+        <td>柔和 / 建議</td>
+        <td class="zh-col">你應該（去）運動。（條件式，委婉）</td>
+      </tr>
+      <tr>
+        <td class="fr-col">Tu peux faire du sport.</td>
+        <td>最柔 / 選項</td>
+        <td class="zh-col">你可以去運動。（只是建議）</td>
+      </tr>
+    </table>
+  </div>
+
+  <h3>條件式 devrais — 委婉建議</h3>
+  <div class="rule">
+    <div class="label">條件式現在（devoir）</div>
+    je devrais / tu devrais / il devrait / nous devrions / vous devriez / ils devraient<br><br>
+    <strong>Tu devrais dormir plus.</strong> 你應該多睡一點。（建議，不是命令）<br>
+    <strong>Vous devriez consulter un médecin.</strong> 您應該去看醫生。
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     VOULOIR
+════════════════════════════════════════════ -->
+<div class="unit" id="vouloir">
+  <div class="unit-header">
+    <span class="unit-tag pink">動詞</span>
+    <span class="unit-title">vouloir <button class="tts-btn" onclick="tts('vouloir')">🔊</button></span>
+    <span class="unit-sub">想要 · voudrais（禮貌）· 表達意思</span>
+  </div>
+
+  <h3>現在式變位</h3>
+  <div class="conj-grid" style="grid-template-columns:1fr;">
+    <div class="conj-card">
+      <div class="verb-title">現在式 <strong>vouloir</strong> <button class="tts-btn" onclick="ttsConj(['je veux','tu veux','il veut','nous voulons','vous voulez','ils veulent'])">🔊</button></div>
+      <div class="conj-row"><span class="conj-pro">je</span><span class="conj-fr"><button class="tts-btn" onclick="tts('je veux')">🔊</button>veux<span class="conj-irr">不規則</span></span></div>
+      <div class="conj-row"><span class="conj-pro">tu</span><span class="conj-fr"><button class="tts-btn" onclick="tts('tu veux')">🔊</button>veux</span></div>
+      <div class="conj-row"><span class="conj-pro">il/elle/on</span><span class="conj-fr"><button class="tts-btn" onclick="tts('il veut')">🔊</button>veut</span></div>
+      <div class="conj-row"><span class="conj-pro">nous</span><span class="conj-fr"><button class="tts-btn" onclick="tts('nous voulons')">🔊</button>voulons</span></div>
+      <div class="conj-row"><span class="conj-pro">vous</span><span class="conj-fr"><button class="tts-btn" onclick="tts('vous voulez')">🔊</button>voulez</span></div>
+      <div class="conj-row"><span class="conj-pro">ils/elles</span><span class="conj-fr"><button class="tts-btn" onclick="tts('ils veulent')">🔊</button>veulent<span class="conj-irr">eu→euv</span></span></div>
+    </div>
+  </div>
+
+  <h3>用法一覽</h3>
+  <ul class="phrase-list">
+    <li>
+      <span class="use-badge">想要（直接）</span>
+      <span class="fr">Je veux un café. <button class="tts-btn" onclick="tts('Je veux un café.')">🔊</button></span>
+      <span class="zh">我要一杯咖啡。（直接，有點強）</span>
+    </li>
+    <li>
+      <span class="use-badge expr">想要（禮貌）</span>
+      <span class="fr">Je voudrais un café. <button class="tts-btn" onclick="tts('Je voudrais un café.')">🔊</button></span>
+      <span class="zh">我想要一杯咖啡。（條件式，禮貌）</span>
+      <span class="ex">在餐廳、店家點餐請一律用 voudrais，不要用 veux</span>
+    </li>
+    <li>
+      <span class="use-badge expr">意思是</span>
+      <span class="fr">Que veut dire « sympa » ? <button class="tts-btn" onclick="tts('Que veut dire sympa ?')">🔊</button></span>
+      <span class="zh">「sympa」是什麼意思？</span>
+      <span class="ex">vouloir dire = 意思是、想表達的是</span>
+    </li>
+    <li>
+      <span class="use-badge expr">願意</span>
+      <span class="fr">Je veux bien. <button class="tts-btn" onclick="tts('Je veux bien.')">🔊</button></span>
+      <span class="zh">我很樂意。（接受提議）</span>
+      <span class="ex">vouloir bien = être d'accord / accepter with enthusiasm</span>
+    </li>
+    <li>
+      <span class="use-badge">想做</span>
+      <span class="fr">Je veux apprendre le français. <button class="tts-btn" onclick="tts('Je veux apprendre le français.')">🔊</button></span>
+      <span class="zh">我想學法語。</span>
+      <span class="ex">vouloir + inf.（後面接動詞原型）</span>
+    </li>
+  </ul>
+
+  <h3>條件式 voudrais — 禮貌說法</h3>
+  <div class="rule">
+    <div class="label">條件式現在（vouloir）</div>
+    je voudrais / tu voudrais / il voudrait / nous voudrions / vous voudriez / ils voudraient<br><br>
+    <strong>Je voudrais réserver une table.</strong> 我想訂一桌。<br>
+    <strong>Je voudrais savoir si…</strong> 我想知道是否……
+  </div>
+
+  <div class="contrast">
+    <div class="label">vouloir vs avoir envie de — 都是「想要」，差別？</div>
+    <strong>vouloir</strong>：比較強烈的意志、決定，可能包含要求<br>
+    → Je veux partir. 我要走了。（已決定）<br><br>
+    <strong>avoir envie de</strong>：比較像欲望、心情上的想要，比較輕鬆<br>
+    → J'ai envie de partir en vacances. 我好想去度假。（衝動/渴望）
+  </div>
+
+  <h3>常用表達</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Qu'est-ce que tu veux ? <button class="tts-btn" onclick="tts('Qu\\'est-ce que tu veux ?')">🔊</button></span><span class="zh">你要什麼？/ 你想怎樣？</span></li>
+    <li><span class="fr">Comme tu veux. <button class="tts-btn" onclick="tts('Comme tu veux.')">🔊</button></span><span class="zh">隨你。/ 都可以。</span></li>
+    <li><span class="fr">Qu'est-ce que ça veut dire ? <button class="tts-btn" onclick="tts('Qu\\'est-ce que ça veut dire ?')">🔊</button></span><span class="zh">這是什麼意思？</span></li>
+    <li><span class="fr">Tu veux venir avec nous ? <button class="tts-btn" onclick="tts('Tu veux venir avec nous ?')">🔊</button></span><span class="zh">你想一起來嗎？（邀約）</span></li>
+    <li><span class="fr">Veuillez patienter. <button class="tts-btn" onclick="tts('Veuillez patienter.')">🔊</button></span><span class="zh">請稍候。（正式書面 / 廣播）</span><span class="ex">Veuillez = vouloir 命令式（vous），非常正式</span></li>
+  </ul>
+</div>
+
+<script>
+function tts(text) {
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'fr-FR';
+  u.rate = 0.85;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+function ttsConj(forms) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  let i = 0;
+  function next() {
+    if (i >= forms.length) return;
+    const u = new SpeechSynthesisUtterance(forms[i++]);
+    u.lang = 'fr-FR';
+    u.rate = 0.8;
+    u.onend = next;
+    speechSynthesis.speak(u);
+  }
+  next();
+}
+</script>
+</body>
+</html>
