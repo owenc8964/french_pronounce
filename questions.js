@@ -757,6 +757,39 @@ const BANK = [
   { lesson:13, topic:'vocab-vacances', type:'choose', q:'chambre d\'hôte 和 hôtel 的差別？', hint:'hôte = 主人', a:'chambre d\'hôte 是住在主人家裡的房間（民宿）', aNote:'hôte = 主人；chambre d\'hôte = 主人提供的房間 = B&B/民宿；hôtel = 一般旅館', opts:['chambre d\'hôte 是住在主人家裡的房間（民宿）','完全相同','chambre d\'hôte 比較貴','hôtel 是給朋友住的'] },
   { lesson:13, topic:'vocab-vacances', type:'trans', q:'我們忘了帶陽傘！', hint:'oublier / parasol / passé composé', a:'On a oublié le parasol !', aNote:'✅ 這是 passé composé：on a oublié；parasol = 遮陽傘（≠ parapluie 雨傘）', askClaude:true },
   { lesson:13, topic:'vocab-vacances', type:'choose', q:'l\'échange de maison（換屋）的優點是？', hint:'gratuit + confortable', a:'免費且和租屋一樣舒適', aNote:'Les logements sont aussi confortables que des locations, mais ils sont gratuits.', opts:['免費且和租屋一樣舒適','比旅館貴但更自由','需要付費但比較安全','只適合短期（1-2天）'] },
+
+  // ── 第13課補充（自動優化 2026-07-01）──────────────────────────────
+
+  // social-invitations（邀約用語）
+  { lesson:9, topic:'social-invitations', type:'fill', q:'On va au cinéma ce soir. Tu _____ ?（venir）', hint:'tu + venir', a:'Tu viens|viens', aNote:'venir → tu viens（不規則，常見邀約句）' },
+  { lesson:9, topic:'social-invitations', type:'trans', q:'你想來嗎？（口語）', hint:'Ça te dit ?', a:'Ça te dit ?', aNote:"ça te dit ? = 你感興趣嗎？最自然的邀約問句", askClaude:true },
+  { lesson:9, topic:'social-invitations', type:'choose', q:'婉拒邀約最客氣的說法是？', hint:'désolé(e)', a:'Je suis désolé(e), je ne peux pas.', aNote:'désolé(e) 先表歉意，再說無法赴約，是最禮貌的拒絕方式', opts:["Je suis désolé(e), je ne peux pas.",'Non.','Je ne veux pas.','Je suis occupé.'] },
+  { lesson:9, topic:'social-invitations', type:'choose', q:'接受邀約說「沒問題」最常用哪句？', hint:'不是 oui', a:'Avec plaisir !|D\'accord !|Pourquoi pas !', aNote:"Avec plaisir ! / D'accord ! / Pourquoi pas ! 三種都可以接受邀約", opts:["Avec plaisir !",'Oui, je sais.','C\'est vrai.','Je comprends.'] },
+  { lesson:9, topic:'social-invitations', type:'trans', q:'我們去咖啡廳吧！（建議，使用 on）', hint:'On y va ?', a:'On va au café ?|On y va ?', aNote:'On va + 地點 或 On y va ? 都是口語建議句', askClaude:true },
+  { lesson:9, topic:'social-invitations', type:'fill', q:'Tu _____ venir à la fête ? (pouvoir)', hint:'tu + pouvoir', a:'Tu peux venir à la fête ?|peux', aNote:'pouvoir → tu peux（邀約詢問是否能來）' },
+  { lesson:9, topic:'social-invitations', type:'choose', q:'「週末你有空嗎？」的法文是？', hint:'libre / week-end', a:'Tu es libre ce week-end ?', aNote:'être libre = 有空；ce week-end = 這個週末', opts:['Tu es libre ce week-end ?','Tu as du temps libre ?','Tu veux le week-end ?','C\'est le week-end ?'] },
+  { lesson:9, topic:'social-invitations', type:'trans', q:'要不要一起吃晚飯？（on）', hint:'On + dîner + ensemble', a:'On dîne ensemble ?', aNote:'On + présent 用疑問語調可以是邀約', askClaude:true },
+  { lesson:9, topic:'social-invitations', type:'choose', q:'「à bientôt」表達的是？', hint:'prochaine fois', a:'下次見', aNote:'à bientôt = see you soon；à demain = 明天見；au revoir = 再見（較正式）', opts:['下次見','謝謝','對不起','怎麼了'] },
+
+  // imperative-mood 補充（命令式）
+  { lesson:6, topic:'imperative-mood', type:'fill', q:'_____ tes devoirs ! (faire, tu)', hint:'-ER 去 s；faire 不規則', a:'Fais tes devoirs !|Fais', aNote:'faire 命令式：Fais（tu）/ Faisons / Faites（vous）——完全不規則，不加 s' },
+  { lesson:6, topic:'imperative-mood', type:'fill', q:'_____ à la maison ! (rester, vous)', hint:'vous 命令式 = 現在式去掉主詞', a:'Restez à la maison !|Restez', aNote:'rester → vous restez → Restez !（-ER 動詞 vous 形）' },
+  { lesson:6, topic:'imperative-mood', type:'fill', q:'_____ du sport ! (faire, nous)', hint:'nous 命令式', a:'Faisons du sport !|Faisons', aNote:'faire → nous faisons → Faisons !（不規則 faire，nous 形照現在式）' },
+  { lesson:6, topic:'imperative-mood', type:'choose', q:'avoir 的命令式 tu 形是？', hint:'完全不規則', a:'Aie', aNote:'avoir 命令式：Aie（tu）/ Ayons / Ayez（vous）——完全不規則', opts:['Aie','As','Ayé','Avez'] },
+  { lesson:6, topic:'imperative-mood', type:'trans', q:'不要緊張！（對 tu）', hint:'ne…pas + stresser', a:'Ne te stresse pas !', aNote:'se stresser = 緊張（反身動詞）；命令式否定：Ne + te + stresse + pas', askClaude:true },
+  { lesson:6, topic:'imperative-mood', type:'choose', q:'「Venez ici !」是命令誰？', hint:'ici = 這裡', a:'vous（多人或正式一人）', aNote:'Venez = venir 的 vous 命令式；tu 形是 Viens；nous 形是 Venons', opts:['vous（多人或正式一人）','tu（單數非正式）','nous（包含說話者）','on（非正式我們）'] },
+
+  // giving-advice 補充（給建議）
+  { lesson:13, topic:'giving-advice', type:'fill', q:'Je te _____ de faire du sport. (conseiller)', hint:'conseiller → je te conseille', a:'Je te conseille de faire du sport.|conseille', aNote:'conseiller + de + infinitif：我建議你做運動' },
+  { lesson:13, topic:'giving-advice', type:'trans', q:'你應該多睡覺。（devoir）', hint:'tu + devoir + dormir', a:'Tu devrais dormir plus.', aNote:'devrais = devoir 條件式（更委婉的建議，比 tu dois 溫和）', askClaude:true },
+  { lesson:13, topic:'giving-advice', type:'fill', q:'Il _____ faire du sport tous les jours. (falloir)', hint:'falloir → il faut', a:'Il faut faire du sport tous les jours.|faut', aNote:'il faut + infinitif = 必須/需要（通則性建議）' },
+  { lesson:13, topic:'giving-advice', type:'choose', q:'哪句建議語氣最強（接近命令）？', hint:'devoir vs pouvoir vs conseiller', a:'Tu dois manger des légumes.', aNote:'devoir = 必須（最強）；pouvoir = 可以（建議）；Je te conseille = 我建議（最柔和）', opts:['Tu dois manger des légumes.','Tu peux manger des légumes.','Je te conseille de manger des légumes.','Il faudrait manger des légumes.'] },
+
+  // vocab-alimentation 補充（飲食詞彙）
+  { lesson:13, topic:'vocab-alimentation', type:'choose', q:'「manger équilibré」是什麼意思？', hint:'équilibré = 均衡', a:'吃得均衡（各類食物都攝取）', aNote:'manger équilibré = 吃均衡飲食；≠ manger léger（吃清淡）≠ manger peu（少吃）', opts:['吃得均衡（各類食物都攝取）','只吃蔬菜','少量多餐','不吃油脂'] },
+  { lesson:13, topic:'vocab-alimentation', type:'fill', q:'Il faut éviter les aliments _____. (gras)', hint:'複數陽性形容詞', a:'Il faut éviter les aliments gras.|gras', aNote:'gras（m sg）→ gras（m pl 不加 s，已以 -s 結尾）；陰性 grasse' },
+  { lesson:13, topic:'vocab-alimentation', type:'trans', q:'你要多喝水。', hint:'boire / eau / devoir', a:'Tu dois boire plus d\'eau.', aNote:"boire = 喝（不規則）；de l'eau = 水（帶部分冠詞）", askClaude:true },
+  { lesson:13, topic:'vocab-alimentation', type:'choose', q:'以下哪個是「蛋白質」類食物？', hint:'protéine', a:'le poulet（雞肉）', aNote:'poulet / viande / poisson / légumineuses 都是蛋白質來源；saumon 是 gras（脂肪類）', opts:['le poulet（雞肉）','le sucre','le beurre','les pâtes'] },
 ];
 // ── ID 函數 ──
 function qId(q) {
