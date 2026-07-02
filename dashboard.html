@@ -108,6 +108,7 @@ body {
 .prog-track  { background: #141928; border-radius: 4px; height: 8px; overflow: hidden; margin-bottom: 6px; }
 .prog-fill   { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
 .fill-hours  { background: linear-gradient(90deg, #1a5070, #60a0d0); }
+.fill-clb    { background: linear-gradient(90deg, #1d5035, #60d090); }
 .fill-pace   { background: linear-gradient(90deg, #1a5035, #60d090); }
 .prog-sub    { font-size: 0.68rem; color: #334050; text-align: right; }
 
@@ -311,6 +312,16 @@ body {
 
 <div class="milestones" id="milestones"></div>
 
+<!-- CLB 等級判定 -->
+<div class="prog-card">
+  <div class="prog-header">
+    <span class="prog-label">📐 等級判定（Quiz 正確率）</span>
+    <span class="prog-val" id="clbLevelVal">—</span>
+  </div>
+  <div class="prog-track"><div class="prog-fill fill-clb" id="clbFill" style="width:0%"></div></div>
+  <div class="prog-sub" id="clbSub"></div>
+</div>
+
 <!-- 700h progress -->
 <div class="prog-card">
   <div class="prog-header">
@@ -406,7 +417,7 @@ body {
   </a>
   <a class="nav-btn" href="reading.html">
     <span class="nav-icon">📖</span>
-    <div><div class="nav-label">閱讀理解</div><div class="nav-sub" id="navReadingSub">8 篇短文</div></div>
+    <div><div class="nav-label">閱讀理解</div><div class="nav-sub" id="navReadingSub">20 篇短文</div></div>
   </a>
 </div>
 
@@ -469,6 +480,17 @@ function getTrackerData()   { try { return JSON.parse(localStorage.getItem('clb7
 function getSpeakingData()   { try { return JSON.parse(localStorage.getItem('clb7_speaking'))   || []; } catch { return []; } }
 function getListeningData()  { try { return JSON.parse(localStorage.getItem('clb7_listening'))  || []; } catch { return []; } }
 function getGameData()     { try { return JSON.parse(localStorage.getItem('clb7_game'))      || {xp:0,streak:0,lastDate:''}; } catch { return {xp:0,streak:0,lastDate:''}; } }
+function getReadingData()   { try { return JSON.parse(localStorage.getItem('clb7_reading'))   || []; } catch { return []; } }
+
+function readingTodayStr() {
+  // reading.html 用本地 ISO 日期（YYYY-MM-DD）
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function readingDoneToday() {
+  return getReadingData().some(r => r.date === readingTodayStr());
+}
 
 function getTopicStats() {
   // 從 BANK 算每個 topic 的 {correct, total}
@@ -580,7 +602,20 @@ function buildPrescription(topicStats, todaySec) {
     done: wDone,
   });
 
-  // 3. 時數
+  // 3. 閱讀理解
+  const rDone = readingDoneToday();
+  const rAll  = getReadingData();
+  items.push({
+    icon: '📖',
+    action: '閱讀理解 1 篇',
+    why: rDone ? '今天已完成！' : (rAll.length ? '純法文短文，真實 TCF 訓練' : '還沒開始，從第 1 篇開始'),
+    badge: rDone ? 'badge-green' : 'badge-red',
+    badgeText: rDone ? '✓ 完成' : '未完成',
+    href: 'reading.html',
+    done: rDone,
+  });
+
+  // 4. 時數
   const todayH = todaySec / 3600;
   const todayTarget = 1.5;
   const todayDone = todayH >= todayTarget;
@@ -595,6 +630,26 @@ function buildPrescription(topicStats, todaySec) {
   });
 
   return items;
+}
+
+// ── CLB 等級判定 ─────────────────────────────────────────────
+// 規則（已確認）：不用課數，用 Quiz 正確率——該等級所有 topic ≥75% 且每 topic 至少 5 題次
+// 目前題庫全部是 A1 教材（Édito A1，lessons 0–13）；開始 A2 教材後在此加 lesson 範圍分級
+function renderClbLevel(topicStats) {
+  const MIN_ATTEMPTS = 5, PASS_PCT = 75;
+  const topics = Object.entries(topicStats);
+  if (!topics.length) return;
+  const passed   = topics.filter(([,s]) => s.attempts >= MIN_ATTEMPTS && s.pct >= PASS_PCT).length;
+  const failed   = topics.filter(([,s]) => s.attempts >= MIN_ATTEMPTS && s.pct <  PASS_PCT).length;
+  const untested = topics.length - passed - failed;
+
+  const allPassed = passed === topics.length;
+  document.getElementById('clbLevelVal').textContent = allPassed ? 'A1 達標 ✓' : `A1 進行中`;
+  document.getElementById('clbFill').style.width = (passed / topics.length * 100).toFixed(0) + '%';
+  document.getElementById('clbSub').textContent =
+    `${passed}/${topics.length} topics 達標（≥${PASS_PCT}%）`
+    + (failed ? ` · ${failed} 個未達標` : '')
+    + (untested ? ` · ${untested} 個練習量不足（<${MIN_ATTEMPTS} 題次）` : '');
 }
 
 // ── 警報生成 ─────────────────────────────────────────────────
@@ -617,6 +672,20 @@ function buildAlerts(topicStats, game) {
     const lastW = new Date(writing[writing.length-1].date.replace(/\//g,'-'));
     const daysSinceW = Math.floor((Date.now() - lastW) / 86400000);
     if (daysSinceW >= 3) alerts.push({ type:'warn', msg:`📝 已有 ${daysSinceW} 天沒有造句，輸出能力會退步` });
+  }
+
+  // 聽力 / 口說 超過 3 天沒記錄
+  const listening = getListeningData();
+  if (listening.length > 0) {
+    const lastL = new Date(listening[listening.length-1].date.replace(/\//g,'-'));
+    const daysSinceL = Math.floor((Date.now() - lastL) / 86400000);
+    if (daysSinceL > 3) alerts.push({ type:'warn', msg:`🎧 已有 ${daysSinceL} 天沒有聽力記錄，輸入量不能斷` });
+  }
+  const speaking = getSpeakingData();
+  if (speaking.length > 0) {
+    const lastS = new Date(speaking[speaking.length-1].date.replace(/\//g,'-'));
+    const daysSinceS = Math.floor((Date.now() - lastS) / 86400000);
+    if (daysSinceS > 3) alerts.push({ type:'warn', msg:`🗣 已有 ${daysSinceS} 天沒有口說記錄，開口練習不能停` });
   }
 
   // 嚴重弱點 topic
@@ -652,6 +721,9 @@ function render() {
   const now = new Date(); now.setHours(0,0,0,0);
   const daysLeft = Math.max(0, Math.ceil((EXAM_DATE - now) / 86400000));
   document.getElementById('cdDays').textContent = daysLeft;
+
+  // CLB 等級判定
+  renderClbLevel(topicStats);
 
   // Pace
   const totalH = totalSec / 3600;
@@ -707,6 +779,9 @@ function render() {
     }).reduce((s,e)=>s+(+e.min||0),0);
     document.getElementById('navListeningSub').textContent = listenWeekMins > 0
       ? `本週 ${listenWeekMins} min` : '記錄輸入';
+    const readDoneArts = new Set(getReadingData().map(r => r.id)).size;
+    document.getElementById('navReadingSub').textContent = readingDoneToday()
+      ? '今天已完成 ✓' : (readDoneArts ? `已完成 ${readDoneArts} 篇` : '純法文短文');
   })();
 
   // Four Skills
@@ -736,7 +811,7 @@ function render() {
       return w.length ? Math.round(w.reduce((s,e)=>s+e.comp,0)/w.length) : null;
     })();
 
-    // 閱讀：用 BANK + qId 精準計算（累計正確率）
+    // Quiz 累計正確率（放在閱讀卡副標）
     const qPct = (() => {
       let c=0, t=0;
       BANK.forEach(q => {
@@ -747,13 +822,18 @@ function render() {
       });
       return t > 0 ? Math.round(c/t*100) : null;
     })();
-    // 閱讀本週做題數（SRS last 欄位在本週範圍內）
-    const readCurAttempts = BANK.filter(q => {
-      try { const v = JSON.parse(localStorage.getItem('clb7_' + qId(q))); return v && v.last >= sow.getTime(); } catch { return false; }
-    }).length;
-    const readPrevAttempts = BANK.filter(q => {
-      try { const v = JSON.parse(localStorage.getItem('clb7_' + qId(q))); return v && v.last >= sowL.getTime() && v.last < sow.getTime(); } catch { return false; }
-    }).length;
+    // 閱讀理解（reading.html 短文成績）
+    const readAll      = getReadingData();
+    const readCurRecs  = readAll.filter(inThisWeek);
+    const readPrevRecs = readAll.filter(inLastWeek);
+    const readPct = recs => {
+      const t = recs.reduce((s,r)=>s+(+r.total||0),0);
+      const c = recs.reduce((s,r)=>s+(+r.correct||0),0);
+      return t > 0 ? Math.round(c/t*100) : null;
+    };
+    const readCurPct  = readPct(readCurRecs);
+    const readPrevPct = readPct(readPrevRecs);
+    const readAllPct  = readPct(readAll);
 
     // 寫作
     const writeAll  = getWritingData();
@@ -773,11 +853,13 @@ function render() {
         sub:  listenComp!=null ? `理解度 ${listenComp}%` : '記錄理解度',
         bar:  Math.min(100, listenCur/90*100), cls:'bar-listen',
         trend: trendHtml(listenCur, listenPrev) },
-      { key:'read', name:'📖 閱讀', href:'quiz.html',
-        val:  qPct!=null ? `${qPct}%` : '未做題',
-        sub:  readCurAttempts ? `本週練習 ${readCurAttempts} 題` : '本週 Quiz 正確率',
-        bar:  qPct??0, cls:'bar-read',
-        trend: trendHtml(readCurAttempts, readPrevAttempts, '題') },
+      { key:'read', name:'📖 閱讀', href:'reading.html',
+        val:  readCurPct!=null ? `${readCurPct}%` : (readAllPct!=null ? `${readAllPct}%` : '未做題'),
+        sub:  readCurRecs.length
+                ? `本週 ${readCurRecs.length} 篇 · Quiz ${qPct!=null ? qPct+'%' : '—'}`
+                : `短文理解 · Quiz ${qPct!=null ? qPct+'%' : '—'}`,
+        bar:  (readCurPct ?? readAllPct ?? qPct) ?? 0, cls:'bar-read',
+        trend: trendHtml(readCurPct, readPrevPct) },
       { key:'write', name:'✍️ 寫作', href:'writing.html',
         val:  writeAvg!=null ? `${writeAvg}/10` : '未記錄',
         sub:  `本週 ${writeCur.length} 次造句`,

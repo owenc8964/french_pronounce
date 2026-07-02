@@ -264,7 +264,7 @@ header {
 </div>
 
 <script>
-const CURRENT_LESSON = 11;
+const CURRENT_LESSON = 13;
 const TOTAL_LESSONS  = 35;
 
 const TILES = [
@@ -298,7 +298,7 @@ const TILES = [
     detail:'Membres de la famille: père/mère, frère/sœur, fils/fille, grand-père/grand-mère, oncle/tante, cousin/cousine, mari/femme, enfant. Adjectifs possessifs: mon père, ta mère, ses parents. Se présenter: j\'ai deux frères.' },
 
   { id:'description',  zone:'A1', icon:'🪞', name:'Description physique',
-    hint:'Grand · Brun · Sympa', unlocked:false,
+    hint:'Grand · Brun · Sympa', unlocked:true, lesson:10,
     detail:'Description physique: grand/petit, gros/mince, blond/brun/roux, les yeux bleus/verts/noirs, jeune/âgé, beau/belle. Caractère: sympa, gentil/gentille, timide, drôle, intelligent/intelligente, sérieux/sérieuse. Il/elle est…' },
 
   { id:'dates',        zone:'A1', icon:'📅', name:'Dates & saisons',
@@ -326,7 +326,7 @@ const TILES = [
     detail:'Je, tu, il, elle, on, nous, vous, ils, elles. Distinction tu (informel/singulier) / vous (formel ou pluriel). On = nous dans la conversation courante. Pronoms toniques: moi, toi, lui, elle, nous, vous, eux, elles.' },
 
   { id:'questions',    zone:'A1', icon:'❓', name:'Questions simples',
-    hint:'Qui? Quoi? Où? Comment?', unlocked:false,
+    hint:'Qui? Quoi? Où? Comment?', unlocked:true, lesson:2,
     detail:'3 façons: (1) intonation montante, (2) est-ce que + sujet + verbe, (3) inversion verbe-sujet. Mots interrogatifs: qui, que/quoi, où, quand, comment, combien, pourquoi, quel/quelle/quels/quelles.' },
 
   // ── A2 ──────────────────────────────────────────────────────────
@@ -363,12 +363,16 @@ const TILES = [
     detail:'Sports, hobbies, activités culturelles. Fréquences: tous les jours, souvent, parfois, rarement, jamais. Exprimer ses préférences: j\'aime/j\'adore/je préfère/je déteste + infinitif. Proposer: on va au cinéma ce soir?' },
 
   { id:'achats',       zone:'A2', icon:'🛒', name:'Les achats',
-    hint:'Combien ça coûte? · Les prix', unlocked:false,
+    hint:'Combien ça coûte? · Les prix', unlocked:true, lesson:5,
     detail:'Quantités: un kilo de, une bouteille de, une douzaine de, 500 grammes de. Les prix: c\'est combien? ça coûte… dollars/euros. Payer: par carte, en espèces. Rendre la monnaie. Au marché, à la boulangerie, au supermarché.' },
 
   { id:'sante',        zone:'A2', icon:'🏥', name:'Santé & corps',
-    hint:"J'ai mal à la tête · Chez le médecin", unlocked:false,
-    detail:'Parties du corps: la tête, le bras, la jambe, le ventre, le dos, la gorge, le nez, les dents. Exprimer la douleur: j\'ai mal à… Chez le médecin: j\'ai de la fièvre, je tousse, je suis fatigué. Médicaments, ordonnance, pharmacie.' },
+    hint:"J'ai mal à la tête · Chez le médecin", unlocked:true, lesson:12,
+    detail:'Parties du corps: la tête, le bras, la jambe, le ventre, le dos, la gorge, le nez, les dents. Exprimer la douleur: j\'ai mal à… Chez le médecin: j\'ai de la fièvre, je tousse, je suis fatigué. Émotions: stressé, content, en forme. Pronom y: j\'y vais. Médicaments, ordonnance, pharmacie.' },
+
+  { id:'conseils',     zone:'A2', icon:'💡', name:'Conseils & obligations',
+    hint:'Il faut · Devoir · Donner des conseils', unlocked:true, lesson:13,
+    detail:'Exprimer l\'obligation et donner des conseils: il faut + infinitif (obligation générale), devoir + infinitif (obligation personnelle: je dois, tu dois, il doit, nous devons, vous devez, ils doivent). Conseils santé et sport: il faut boire de l\'eau, tu dois dormir huit heures. Vocabulaire du gymnase (musculation, entraînement) et de l\'alimentation équilibrée.' },
 
   { id:'ir-re',        zone:'A2', icon:'🔧', name:'Verbes -IR & -RE',
     hint:'Finir · Vendre · Prendre', unlocked:true, lesson:4,
@@ -387,7 +391,7 @@ const TILES = [
     detail:'Aller (conjugué au présent) + infinitif pour le futur immédiat ou prévu. Je vais partir ce soir, elle va travailler demain. Négation: je ne vais pas… Interrogation: est-ce que tu vas venir? Vs. futur simple pour projets lointains.' },
 
   { id:'negation',     zone:'A2', icon:'🚫', name:'Négation & quantités',
-    hint:'Ne...pas · Rien · Jamais', unlocked:false,
+    hint:'Ne...pas · Rien · Jamais', unlocked:true, lesson:6,
     detail:'Négations: ne…pas (général), ne…jamais (never), ne…plus (no more), ne…rien (nothing), ne…personne (nobody), ne…que (only). Partitifs à la forme négative: du pain → pas de pain. Quantités: beaucoup de, peu de, assez de, trop de.' },
 
   // ── B1 ──────────────────────────────────────────────────────────
