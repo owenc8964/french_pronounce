@@ -13,7 +13,7 @@
 
 **標準流程：**
 1. 啟動 preview server（用 `.claude/launch.json` 的 `france-clb7`，serverId 記起來）
-2. `preview_eval` 清空相關 localStorage key，模擬全新狀態
+2. `preview_eval` 清空**相關** localStorage key，模擬全新狀態（⚠️ 只清特定 key，**不要 `localStorage.clear()` 全清**——preview 和真機可能同 origin）
 3. 用 `preview_eval` / `preview_click` / `preview_fill` 跑完整 happy path
 4. `preview_screenshot` 確認畫面正確
 5. 主動找邊緣情況：資料空白時、今天已完成時、guided=1 跳轉時
@@ -32,93 +32,127 @@
 **我們在建的不是一堆分開的工具。我們在建一個監控整個學習過程的系統。**
 
 **真正需要的是一個大腦（`dashboard.html`）：**
-- 讀取所有工具的 localStorage 數據（quiz 每題對錯、造句分數、學習時數）
+- 讀取所有工具的 localStorage 數據（quiz 每題對錯、造句分數、學習時數、反射格數、錯題）
 - 計算每個 topic 的正確率，找出最弱的地方
 - 告訴 Owen 今天具體要做什麼（不是 Owen 自己決定）
 - 發出警報：超過 N 天沒練、某 topic 正確率掉了、造句分數退步、時數進度落後
 
 **每次新增功能前，先問：這個功能的數據，dashboard 讀得到嗎？讀到之後，能影響「今日處方」嗎？如果不能，這個功能意義不大。**
 
+**Owen 對系統的期待（他的原話意象）**：dashboard 要像「**精神時光屋**」——每天進去出來就扎實堆疊，全盤學習但精準掌握重點，重點練到反射，考試範圍的東西全面夠熟。
+
 ---
 
-## 核心目標與現況（2026-06-29 更新）
+## 📐 學習策略（2026-07-02 與 Owen 確立，所有工具設計照此方向）
+
+Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的答案：
+
+1. **動詞分兩層，標準不同**：
+   - **核心 9 動詞（être/avoir/faire/aller/devoir/pouvoir/vouloir/venir/prendre）→ 練到「反射」**：一秒內出口，不經過想表格。它們是文法骨架（助動詞、futur proche、情態動詞）。
+   - **其他動詞 → 只練「套模式」**：90% 是 -er 規則動詞；口語中很多變位同音（parle/parles/parlent），書面表格的量是假的。不追求「背完」。
+2. **A1–B1 產出時態只有**：présent、passé composé、futur proche（＋B1 imparfait、je voudrais）。
+3. **單字背「塊」不背「詞」**：不背 mal，背 j'ai mal à la tête；不背 sport，背 faire du sport。
+4. **練習與複習並重（Owen 明確要求）**：提取練習之後，**正確資訊必須再輸入腦袋**——所有練習工具答錯都要有清楚直接正確的正解呈現，且錯題集中進「今日錯題本」供睡前掃一遍。解說不能模糊。
+
+---
+
+## 核心目標與現況（2026-07-03 更新）
 
 | 項目 | 內容 |
 |------|------|
 | **目標** | CLB 7（= CEFR B2）|
 | **考試** | TEF Canada 或 TCF Canada |
 | **截止日** | 2027年6月1日 |
-| **剩餘天數** | 約 337 天 |
+| **剩餘天數** | 約 333 天 |
 | **目前程度** | A1，第13課，約 22 小時課時 |
 | **每天目標** | 1.5–2 小時有效練習（含通勤被動聽力）|
 | **總時數目標** | 700 小時（多方研究數據交叉驗證）|
 
 ---
 
-## 現有系統狀態（2026-06-29）
+## 現有系統狀態（2026-07-03）
 
 | 檔案 | 用途 | 狀態 |
 |------|------|------|
-| `dashboard.html` | 指揮中心：今日處方、警報、倒數、700h 進度、四技能視圖 | ✅ 完成，GitHub Pages 部署 |
-| `quiz.html` | SRS Quiz，550+ 題，熱身模式/課程選擇器/暫停功能 | ✅ 完成 |
+| `dashboard.html` | 指揮中心：今日處方（5項）、**今日錯題本**、警報、CLB 等級判定、倒數、700h、四技能、週趨勢 | ✅ 完成 |
+| `quiz.html` | SRS Quiz，550+ 題，熱身模式/課程選擇器/暫停/更正誤判 | ✅ 完成 |
+| `verb_sprint.html` | **動詞反射衝刺**：60秒、9動詞×6人稱、起手計時、反射熱力圖 | ✅ 新增（07-02）|
 | `questions.js` | 共用題庫（BANK + AGREE_BANK），第1–13課 | ✅ 完成 |
-| `reading.html` | 閱讀理解，8 篇 A1–A1+ 短文，計時+記分 | ✅ 完成，dashboard 已連結 |
+| `reading.html` | 閱讀理解，**20 篇** A1–A1+ 短文（含新聞/社群貼文/食譜/菜單/氣象/邀請/掛號信/小廣告/明信片）| ✅ 擴充（07-02）|
 | `writing.html` | 每日 2 句造句，複製 prompt → claude.ai → 貼回記錄 | ✅ 完成 |
 | `tracker.html` | 計時器（autostart、切分頁自動暫停）+ 700h 進度 | ✅ 完成 |
-| `speaking.html` | 口說日誌：類型/時長/糾錯次數+類型/逐字稿 | ✅ 完成 |
-| `listening.html` | 聽力日誌：來源/時長/理解度滑桿/來源分布圖 | ✅ 完成 |
-| `map.html` | 課程地圖（60格），第13課 | ✅ 完成 |
+| `speaking.html` | 口說日誌 | ✅ 完成 |
+| `listening.html` | 聽力日誌 | ✅ 完成 |
+| `map.html` | 課程地圖（61格），**已更新至第13課** | ✅ 更新（07-02）|
 | `french_notes.html` | 第1–13課筆記 | ✅ 完成 |
-| `table_drill.html` | 動詞變位練習 | ✅ GitHub Pages 部署 |
+| `table_drill.html` | 動詞變位練習（舊版，功能被 verb_sprint 部分取代）| ✅ 部署 |
 
 **GitHub Pages 網址：** https://owenc8964.github.io/french_pronounce/dashboard.html
 
+**今日處方順序**：🃏 Quiz（最弱topic）→ ⚡ 反射衝刺 → ✍️ 造句 → 📖 閱讀 → ⏱ 時數
+
 ---
 
-## 本 session 做了什麼（2026-06-29）
+## 本 session 做了什麼（2026-07-02 ～ 07-03，共 3 個 commit 已推）
 
-1. **`reading.html` 新增** — 8 篇 A1–A1+ 法文短文，純法文題目（3題/篇），計時，答錯有解說，分數存 `clb7_reading`，dashboard 已加連結
-2. **Quiz 流程重設計** — 「開始今日學習」改為：熱身 5 題 → 課程選擇器（複習筆記 + 開始該課 Quiz） → 完成後回 dashboard 造句
-3. **Quiz 暫停功能** — 新增 ⏸ 暫停鍵，題目鎖定，隨時繼續
-4. **快速筆記改進** — 存筆記時自動抓當前題目文字＋第幾課 topic，不再脈絡不明
-5. **答案 bug 修正** — 第2課「介詞+國家組合」選擇題 `a` 欄位與 opts 不一致（永遠判錯）→ 已修正
-6. **aNote 補充** — 「遲到了」→ 法文用現在式（非 PC）；「忘記關門了」→ 標示是 passé composé
-7. **第13課筆記** — 健身房詞彙、il faut vs devoir、給建議三種方式、飲食詞彙（gras/salé/sucré）、假期詞彙（Unité 9 開頭）
-8. **第13課 Quiz** — 新增 27 題，涵蓋本課所有主題
+### Commit `6ffcf6a` — 上次五項待辦全部完成
+1. **閱讀進今日處方**：讀 `clb7_reading`，未做顯示紅色未完成；四技能「閱讀」欄改用短文成績（本週優先、fallback 累計），Quiz 正確率移到副標
+2. **CLB 等級判定卡**（里程碑下方）：所有 topic 正確率 ≥75% 且各 ≥5 題次才算 A1 達標；顯示 X/51 達標、未達標數、練習量不足數
+3. **聽力/口說警報**：超過 3 天沒記錄出現提醒
+4. **閱讀題庫 8→20 篇**（a9–a20），純法文＋解說，難度貼合第13課（présent＋PC＋futur proche）
+5. **map.html 到第13課**：解鎖 Santé & corps（L12）、新增 Conseils & obligations 地塊（L13 il faut/devoir）；並補解鎖早已教過的外貌描述（L10）、疑問句、購物、否定句
+6. **修 bug**：reading.html `todayStr()` 用 `toISOString()`（UTC），早上做的記錄會變前一天 → 改本地日期
+
+### Commit `235c03b` — 動詞反射衝刺（策略討論後 Owen 拍板）
+- `verb_sprint.html`：60 秒衝刺，隨機出 `vous ___ (être)`，打字＋Enter
+- **量測起手時間**（出題→第一個按鍵）；**反射 = 連 3 次答對且中位起手 <2 秒**
+- 9×6 熱力圖（綠反射/黃慢/紅錯/灰未測）＝「要多熟」的看得見標準
+- SRS 加權出題（錯4倍/未測3倍/慢2倍/反射1倍），不連續出同格
+- 遵守既有 UX 原則：**答錯暫停計時**＋大字正解＋提示唸出聲＋手動繼續；衝刺後錯格進複習輪（單格答錯重試同格）；完成畫面回饋 textarea（存 sessions 最後一筆的 `fb`）
+- 容錯：去重音（etes=êtes）、去開頭代名詞（j'ai=ai）
+- dashboard：處方第 2 項（顯示「還有 X 格未達反射」）＋快速入口 nav
+- 修 bug：送出的 Enter 冒泡到「繼續」監聽器，答錯畫面被瞬間跳過 → `stopPropagation`
+
+### Commit `25ab840` — 今日錯題本＋重大 bug 修復
+- **統一錯題日誌 `clb7_wrong_log`**：quiz（`recordResult`）、reading（submit 判錯）、sprint（`recordAttempt`）答錯即寫入；同題同日去重計次（n）；保留最近 300 筆
+- **dashboard「📕 今日錯題本」**（處方正下方）：來源標籤＋題目＋綠色正解＋解說；衝刺錯題附**完整六人稱變位表**；quiz 解說空白 fallback 顯示提示；「錯 N 次」紅字
+- quiz「更正為正確」（`overrideCorrect`）同步呼叫 `unlogWrong` 移除
+- **重大 bug**：quiz 每日 topic 快照（`{date, topics}`）與 dashboard 週趨勢快照（`{week,...}`）**共用 `clb7_snapshots`**，格式混入後 `renderTrend` 拋錯 → **整頁 script 中斷，dashboard 全空白**（Owen 真機很可能也中招）。修法：topic 快照改用 `clb7_topic_snapshots`，quiz 和 dashboard 都加 `migrateSnapshots()` 自動搬遷，dashboard `getSnapshots()` 加 `.filter(s => s.week)` 防禦
+- 修 quiz `saveSnapshot()` 的 toISOString UTC 時區 bug（同 reading）
+
+### 其他
+- 學習策略已寫進 memory（`project_clb7_strategy.md`）
+- ⚠️ 測試時曾在 preview origin（localhost:7788）`localStorage.clear()` 全清一次，已向 Owen 坦白；之後只清特定 key
 
 ---
 
 ## 關鍵 localStorage keys
 
 - `clb7_quiz_done` → 今日日期字串（quiz 完成標記）
-- `clb7_reading` → [{id, title, date, correct, total, sec}]（閱讀理解記錄）
+- `clb7_reading` → [{id, title, date, correct, total, sec}]（date 為**本地 ISO** `2026-07-02`）
 - `clb7_writing` → [{date, s1, s2, score, reply}]
 - `clb7_tracker` → [{ts, date, type, sec}]
-- `clb7_speaking` → [{date, type, min, errCount, errTypes, transcript, notes}]
-- `clb7_listening` → [{date, source, min, comp, notes}]
+- `clb7_speaking` / `clb7_listening` → 口說/聽力日誌
 - `clb7_<qId>` → {w, c, last}（SRS 單題記錄）
 - `clb7_game` → {xp, streak, lastDate}
-- `clb7_quick_notes` → [{date, time, page, note}]（懸浮筆記，現在含題目脈絡）
+- `clb7_quick_notes` → 懸浮筆記
+- `clb7_sprint_cells` → {"être_0": {h:[{o,f,t}…最近5筆]}}（o=對錯, f=起手ms, t=時間戳）
+- `clb7_sprint_sessions` → [{date, att, cor, avgFk, reflex, sec, fb?}]（date 為 **zh-TW** `2026/07/02`）
+- `clb7_wrong_log` → [{d, t, src:'quiz'|'reading'|'sprint', q, a, note, hint?, title?, n}]（d 為 **zh-TW** 格式）
+- `clb7_snapshots` → **只放週趨勢格式** [{week:'2026-W26', totalH, quizAttempts, …}]
+- `clb7_topic_snapshots` → quiz 每日 topic 快照 [{date, overallPct, topics}]（date 為本地 ISO）
 
----
-
-## 智慧引導流程（已完成）
-
-- dashboard → **開始今日學習** → `quiz.html?mode=warmup&guided=1`（5 題熱身）
-- 熱身完 → **課程選擇器**（第1–12課，各有「複習筆記」+「開始 Quiz」）
-- 點「複習筆記」→ `french_notes.html#lesson-X`（直接跳到對應課）
-- 點「開始 Quiz」→ `quiz.html?lesson=X&guided=1`（該課專項練習）
-- Quiz 完成 → banner「回今日學習 →」→ dashboard → 造句
+**⚠️ 日期格式地雷**：dashboard/tracker/writing/sprint/wrong_log 用 zh-TW（`2026/07/02`）；reading 記錄和 topic 快照用本地 ISO（`2026-07-02`）。跨工具比對日期時要用**同一格式的 helper**，不要混。所有 todayStr 一律用本地時間，**禁用 toISOString()**（UTC 偏移已炸過兩次）。
 
 ---
 
 ## 下一步（依優先序）
 
-1. **閱讀理解加進 dashboard 今日處方** — 讀取 `clb7_reading`，今天還沒做就出現在今日任務；閱讀成績加進四技能視圖的「閱讀」欄
-2. **CLB 等級自動判定** — 用 Quiz 正確率判斷 A1/A2/B1 達標（各 topic 均達 75%），顯示在 dashboard
-3. **listening/speaking dashboard 警報** — 超過 3 天沒記錄口說/聽力要提醒
-4. **閱讀題庫擴充到 20 篇** — 涵蓋更多格式（食譜、新聞短訊、社群貼文）
-5. **map.html 更新到第13課** — 目前地圖停在第11課
+1. **Owen 試用三個新功能**（反射衝刺、錯題本、閱讀新 20 篇）→ 收回饋調整。衝刺完成畫面和 quiz 的回饋 textarea 記得讀（`clb7_sprint_sessions` 的 fb、`clb7_drill_sessions`）
+2. **單字塊 SRS**（候選，Owen 未拍板）：從課堂筆記＋閱讀文章抽 chunk（faire du vélo、avoir besoin de）挖空出題
+3. **verb_sprint 擴充**（等 54 格大面積變綠後）：passé composé 助動詞選擇＋participes passés、後續 imparfait
+4. **verb_sprint.html 補懸浮筆記 snippet**（現有六頁都有，這頁還沒加）
+5. **錯題本可能的延伸**：昨日錯題回顧（隔日再測一次才算真的記住）
 
 ---
 
@@ -126,17 +160,22 @@
 
 - 閱讀題目語言：**保持純法文**——讓 Owen 從上下文推敲，答錯有解說；這才是真實 TCF 訓練
 - 週趨勢：用 ISO week 字串做 key，每次開 dashboard 自動快照上週
-- CLB 等級：**不用課數判定，用 Quiz 正確率**（課數只是家教堂數，不對應程度）
-- 熱身後的課程選擇器：**不強迫選哪課**，Owen 自己決定今天要複習哪課
+- CLB 等級：**不用課數判定，用 Quiz 正確率**（≥75% 且 ≥5 題次，全 topic 達標）
+- 熱身後的課程選擇器：**不強迫選哪課**，Owen 自己決定
+- 反射標準：**起手時間**（第一鍵延遲）而非總作答時間——打字速度不影響判定
+- 錯題不立即重試，**整輪結束才複習**（quiz 分輪制、sprint 複習輪皆同）；答錯後**手動**按下一題
 
 ---
 
 ## 注意事項
 
-- **懸浮筆記 snippet** 在 quiz/dashboard/writing/speaking/tracker/listening 六頁都有，未來新增頁面記得加
-- **quiz.html `choose` 類型題** 的 `a` 欄位必須和 `opts` 裡的字串**完全一致**，不能用 `|` 分隔（`|` 是多答案格式，`choose` 不適用）
-- **tracker autostart** 只有從 dashboard「開始計時」才會帶 `?autostart=1`，直接開 tracker.html 不會自動啟動
-- **preview server 快取問題**：`questions.js` 會被瀏覽器快取，改完後 preview 裡測試需要新開 server 或 hard reload；實際在 GitHub Pages 用 Cmd+Shift+R 即可
+- **懸浮筆記 snippet** 在 quiz/dashboard/writing/speaking/tracker/listening 六頁都有，未來新增頁面記得加（verb_sprint 還沒有）
+- **quiz.html `choose` 類型題** 的 `a` 欄位必須和 `opts` 裡的字串**完全一致**，不能用 `|` 分隔
+- **tracker autostart** 只有從 dashboard「開始計時」才會帶 `?autostart=1`
+- **preview server 快取**：`questions.js` 會被快取，改完後要新開 server 或 hard reload
+- **`clb7_snapshots` 絕對不要再寫入非 `{week:...}` 格式**——會讓 dashboard 整頁掛掉（已修一次，有防禦但別再犯）
+- **新練習工具的判錯點記得呼叫 `logWrong()`**（格式見 quiz.html，三個檔案各有一份複本）——錯題本才收得到
+- **`logWrong` 是複製貼上的三份**（quiz/reading/sprint 各一）＋ dashboard 一份讀取端，改格式要四處同步
 
 ---
 
