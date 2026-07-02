@@ -383,6 +383,10 @@ body {
     <span class="nav-icon">🃏</span>
     <div><div class="nav-label">Quiz</div><div class="nav-sub">SRS 題庫練習</div></div>
   </a>
+  <a class="nav-btn" href="verb_sprint.html">
+    <span class="nav-icon">⚡</span>
+    <div><div class="nav-label">反射衝刺</div><div class="nav-sub" id="navSprintSub">動詞變位計時</div></div>
+  </a>
   <a class="nav-btn" href="writing.html">
     <span class="nav-icon">✍️</span>
     <div><div class="nav-label">每日造句</div><div class="nav-sub" id="navWritingSub">今天還沒做</div></div>
@@ -492,6 +496,28 @@ function readingDoneToday() {
   return getReadingData().some(r => r.date === readingTodayStr());
 }
 
+// ── 動詞反射衝刺（verb_sprint.html）──────────────────────────
+const SPRINT_VERBS = ['être','avoir','faire','aller','devoir','pouvoir','vouloir','venir','prendre'];
+const SPRINT_TOTAL = SPRINT_VERBS.length * 6;
+function getSprintCells()    { try { return JSON.parse(localStorage.getItem('clb7_sprint_cells')) || {}; } catch { return {}; } }
+function getSprintSessions() { try { return JSON.parse(localStorage.getItem('clb7_sprint_sessions')) || []; } catch { return []; } }
+function sprintDoneToday()   { return getSprintSessions().some(s => s.date === todayStr()); }
+function sprintReflexCount() {
+  // 與 verb_sprint.html 的 cellState 同規則：最近 3 次全對且中位起手 ≤ 2 秒
+  const cells = getSprintCells();
+  let n = 0;
+  SPRINT_VERBS.forEach(v => { for (let pi=0; pi<6; pi++) {
+    const h = (cells[v+'_'+pi]||{}).h;
+    if (!h || h.length < 3) continue;
+    if (!h[h.length-1].o) continue;
+    const last3 = h.slice(-3);
+    if (!last3.every(x => x.o)) continue;
+    const fks = last3.map(x => x.f).sort((a,b)=>a-b);
+    if (fks[1] <= 2000) n++;
+  }});
+  return n;
+}
+
 function getTopicStats() {
   // 從 BANK 算每個 topic 的 {correct, total}
   const stats = {};
@@ -590,7 +616,22 @@ function buildPrescription(topicStats, todaySec) {
     });
   }
 
-  // 2. 造句
+  // 2. 動詞反射衝刺
+  const spDone = sprintDoneToday();
+  const spReflex = sprintReflexCount();
+  items.push({
+    icon: '⚡',
+    action: '動詞反射衝刺 60 秒',
+    why: spDone ? '今天已完成！' : (spReflex >= SPRINT_TOTAL
+      ? '54 格全反射，維持手感'
+      : `還有 ${SPRINT_TOTAL - spReflex} 格未達反射（${spReflex}/${SPRINT_TOTAL}）`),
+    badge: spDone ? 'badge-green' : 'badge-red',
+    badgeText: spDone ? '✓ 完成' : '未完成',
+    href: 'verb_sprint.html?guided=1',
+    done: spDone,
+  });
+
+  // 3. 造句
   const wDone = writingDoneToday();
   items.push({
     icon: '✍️',
@@ -602,7 +643,7 @@ function buildPrescription(topicStats, todaySec) {
     done: wDone,
   });
 
-  // 3. 閱讀理解
+  // 4. 閱讀理解
   const rDone = readingDoneToday();
   const rAll  = getReadingData();
   items.push({
@@ -615,7 +656,7 @@ function buildPrescription(topicStats, todaySec) {
     done: rDone,
   });
 
-  // 4. 時數
+  // 5. 時數
   const todayH = todaySec / 3600;
   const todayTarget = 1.5;
   const todayDone = todayH >= todayTarget;
@@ -782,6 +823,8 @@ function render() {
     const readDoneArts = new Set(getReadingData().map(r => r.id)).size;
     document.getElementById('navReadingSub').textContent = readingDoneToday()
       ? '今天已完成 ✓' : (readDoneArts ? `已完成 ${readDoneArts} 篇` : '純法文短文');
+    document.getElementById('navSprintSub').textContent = sprintDoneToday()
+      ? '今天已完成 ✓' : `反射 ${sprintReflexCount()}/${SPRINT_TOTAL} 格`;
   })();
 
   // Four Skills
