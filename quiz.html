@@ -468,6 +468,30 @@ function recordResult(q, ok) {
   if (ok) srs.c++; else srs.w++;
   srs.last = Date.now();
   setSRS(id, srs);
+  if (!ok) logWrong({ src:'quiz', q: q.q, a: q.a.split('|')[0], note: q.aNote || '', hint: q.hint || '', topic: q.topic });
+}
+
+// ── 今日錯題本（dashboard 讀 clb7_wrong_log）──────────────────
+function logWrong(entry) {
+  try {
+    const log = JSON.parse(localStorage.getItem('clb7_wrong_log')) || [];
+    const d = new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
+    const dup = log.find(e => e.d === d && e.src === entry.src && e.q === entry.q);
+    if (dup) { dup.n = (dup.n||1) + 1; dup.t = Date.now(); }
+    else log.push({ ...entry, d, t: Date.now(), n: 1 });
+    localStorage.setItem('clb7_wrong_log', JSON.stringify(log.slice(-300)));
+  } catch(e) {}
+}
+function unlogWrong(src, qText) {
+  try {
+    const log = JSON.parse(localStorage.getItem('clb7_wrong_log')) || [];
+    const d = new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
+    const idx = log.findIndex(e => e.d === d && e.src === src && e.q === qText);
+    if (idx !== -1) {
+      if ((log[idx].n||1) > 1) log[idx].n--; else log.splice(idx, 1);
+      localStorage.setItem('clb7_wrong_log', JSON.stringify(log));
+    }
+  } catch(e) {}
 }
 function weakScore(q) {
   const { w, c } = getSRS(qId(q));
@@ -801,6 +825,7 @@ function overrideCorrect() {
   if (srs.w > 0) srs.w--;
   srs.c++;
   setSRS(id, srs);
+  unlogWrong('quiz', q.q);   // 錯題本同步移除
   // 修正本次分數
   scoreOk++; scoreNo--;
   const xp = q._review ? 5 : 10;
@@ -1373,14 +1398,32 @@ function getOverallPct() {
   return total > 0 ? Math.round(c / total * 100) : null;
 }
 
+// ⚠️ 每日 topic 快照用 clb7_topic_snapshots；clb7_snapshots 屬於 dashboard 週趨勢（{week:...} 格式），
+//    兩者格式不同，混在同一個 key 會讓 dashboard 載入時整頁掛掉
+function migrateSnapshots() {
+  try {
+    const raw = JSON.parse(localStorage.getItem('clb7_snapshots')) || [];
+    const topicSnaps = raw.filter(s => s && !s.week && s.date);
+    if (!topicSnaps.length) return;
+    const existing = JSON.parse(localStorage.getItem('clb7_topic_snapshots')) || [];
+    const dates = new Set(existing.map(s => s.date));
+    topicSnaps.forEach(s => { if (!dates.has(s.date)) existing.push(s); });
+    existing.sort((a,b) => a.date.localeCompare(b.date));
+    localStorage.setItem('clb7_topic_snapshots', JSON.stringify(existing.slice(-60)));
+    localStorage.setItem('clb7_snapshots', JSON.stringify(raw.filter(s => s && s.week)));
+  } catch(e) {}
+}
+
 function saveSnapshot() {
-  const today = new Date().toISOString().slice(0, 10);
-  const snaps = JSON.parse(localStorage.getItem('clb7_snapshots') || '[]');
+  // 本地日期，不用 toISOString()（UTC 會讓早上的快照記成前一天）
+  const d = new Date();
+  const today = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const snaps = JSON.parse(localStorage.getItem('clb7_topic_snapshots') || '[]');
   if (snaps.length && snaps[snaps.length - 1].date === today) return;
   const topics = computeTopicStats().map(s => ({ topic: s.topic, pct: s.pct, attempts: s.attempts }));
   snaps.push({ date: today, overallPct: getOverallPct(), topics });
   if (snaps.length > 60) snaps.shift();
-  localStorage.setItem('clb7_snapshots', JSON.stringify(snaps));
+  localStorage.setItem('clb7_topic_snapshots', JSON.stringify(snaps));
 }
 
 const TOPIC_NOTE_ANCHORS = {
@@ -1492,9 +1535,9 @@ function showTopicMap() {
     if (el) el.style.display = 'none';
   });
   const stats = computeTopicStats();
-  const snaps = JSON.parse(localStorage.getItem('clb7_snapshots') || '[]');
+  const snaps = JSON.parse(localStorage.getItem('clb7_topic_snapshots') || '[]');
   const prevSnap = snaps.length >= 2 ? snaps[snaps.length - 2] : null;
-  const prevMap = prevSnap ? Object.fromEntries(prevSnap.topics.map(t => [t.topic, t.pct])) : {};
+  const prevMap = (prevSnap && prevSnap.topics) ? Object.fromEntries(prevSnap.topics.map(t => [t.topic, t.pct])) : {};
 
   const rows = stats.map(s => {
     const label = TOPIC_LABELS[s.topic] || s.topic;
@@ -1618,6 +1661,7 @@ function exportAllData() {
 // 啟動
 buildLessonButtons();
 renderStats();
+migrateSnapshots();
 saveSnapshot();
 
 // ── 暫停功能 ──────────────────────────────────────────────────

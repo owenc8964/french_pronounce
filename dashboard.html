@@ -109,6 +109,18 @@ body {
 .prog-fill   { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
 .fill-hours  { background: linear-gradient(90deg, #1a5070, #60a0d0); }
 .fill-clb    { background: linear-gradient(90deg, #1d5035, #60d090); }
+
+/* 今日錯題本 */
+.wb-item { background: #141928; border: 1px solid #1a2438; border-radius: 10px;
+  padding: 12px 14px; margin-bottom: 8px; }
+.wb-meta { font-size: 0.62rem; color: #445060; margin-bottom: 6px;
+  text-transform: uppercase; letter-spacing: 0.5px; }
+.wb-meta .wb-times { color: #d07060; }
+.wb-q    { font-size: 0.88rem; color: #ddd8cc; margin-bottom: 7px; line-height: 1.45; }
+.wb-a    { font-size: 0.98rem; color: #60d090; font-weight: 700; margin-bottom: 5px; line-height: 1.45; }
+.wb-note { font-size: 0.78rem; color: #8a94a8; line-height: 1.55;
+  border-top: 1px dashed #1a2438; padding-top: 6px; margin-top: 2px; }
+.wb-empty { font-size: 0.78rem; color: #445060; line-height: 1.6; }
 .fill-pace   { background: linear-gradient(90deg, #1a5035, #60d090); }
 .prog-sub    { font-size: 0.68rem; color: #334050; text-align: right; }
 
@@ -278,6 +290,12 @@ body {
 <div class="rx-card">
   <div class="rx-title">📋 今日處方</div>
   <div id="rxList"></div>
+</div>
+
+<!-- 今日錯題本 -->
+<div class="rx-card">
+  <div class="rx-title">📕 今日錯題本 <span id="wbCount" style="color:#d07060;"></span></div>
+  <div id="wbList"></div>
 </div>
 
 <!-- Stats -->
@@ -673,6 +691,30 @@ function buildPrescription(topicStats, todaySec) {
   return items;
 }
 
+// ── 今日錯題本 ────────────────────────────────────────────────
+function getWrongLog() { try { return JSON.parse(localStorage.getItem('clb7_wrong_log')) || []; } catch { return []; } }
+function esc(s) { return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderWrongBook() {
+  const today = todayStr();
+  const items = getWrongLog().filter(e => e.d === today).sort((a,b) => b.t - a.t);
+  const SRC = { quiz:'🃏 Quiz', sprint:'⚡ 衝刺', reading:'📖 閱讀' };
+  document.getElementById('wbCount').textContent = items.length ? `${items.length} 題` : '';
+  const list = document.getElementById('wbList');
+  if (!items.length) {
+    list.innerHTML = '<div class="wb-empty">今天沒有錯題記錄。做完練習後回來掃一遍——睡前把正解再輸入一次，記憶固化效果最好。</div>';
+    return;
+  }
+  list.innerHTML = items.map(e => `
+    <div class="wb-item">
+      <div class="wb-meta">${SRC[e.src]||e.src}${e.n>1 ? ` · <span class="wb-times">錯 ${e.n} 次</span>` : ''}${e.title ? ` · ${esc(e.title)}` : ''}</div>
+      <div class="wb-q">${esc(e.q)}</div>
+      <div class="wb-a">✓ ${esc(e.a)}</div>
+      ${e.note ? `<div class="wb-note">${esc(e.note)}</div>`
+               : (e.hint ? `<div class="wb-note">提示：${esc(e.hint)}</div>` : '')}
+    </div>`).join('');
+}
+
 // ── CLB 等級判定 ─────────────────────────────────────────────
 // 規則（已確認）：不用課數，用 Quiz 正確率——該等級所有 topic ≥75% 且每 topic 至少 5 題次
 // 目前題庫全部是 A1 教材（Édito A1，lessons 0–13）；開始 A2 教材後在此加 lesson 範圍分級
@@ -765,6 +807,9 @@ function render() {
 
   // CLB 等級判定
   renderClbLevel(topicStats);
+
+  // 今日錯題本
+  renderWrongBook();
 
   // Pace
   const totalH = totalSec / 3600;
@@ -1015,7 +1060,26 @@ function renderDuo() {
 renderDuo();
 
 // ── 週趨勢快照 ────────────────────────────────────────────
-function getSnapshots() { try { return JSON.parse(localStorage.getItem('clb7_snapshots')) || []; } catch { return []; } }
+// ⚠️ clb7_snapshots 只放週趨勢格式（{week:...}）；quiz 的每日 topic 快照在 clb7_topic_snapshots
+//    getSnapshots 過濾非 week 格式，避免混入資料讓 renderTrend 掛掉（會中斷整頁 script）
+function getSnapshots() {
+  try { return (JSON.parse(localStorage.getItem('clb7_snapshots')) || []).filter(s => s && s.week); }
+  catch { return []; }
+}
+
+function migrateSnapshots() {
+  try {
+    const raw = JSON.parse(localStorage.getItem('clb7_snapshots')) || [];
+    const topicSnaps = raw.filter(s => s && !s.week && s.date);
+    if (!topicSnaps.length) return;
+    const existing = JSON.parse(localStorage.getItem('clb7_topic_snapshots')) || [];
+    const dates = new Set(existing.map(s => s.date));
+    topicSnaps.forEach(s => { if (!dates.has(s.date)) existing.push(s); });
+    existing.sort((a,b) => a.date.localeCompare(b.date));
+    localStorage.setItem('clb7_topic_snapshots', JSON.stringify(existing.slice(-60)));
+    localStorage.setItem('clb7_snapshots', JSON.stringify(raw.filter(s => s && s.week)));
+  } catch(e) {}
+}
 
 function weekBoundsForIso(weekStr) {
   const [yr, w] = weekStr.split('-W').map(Number);
@@ -1122,6 +1186,7 @@ function renderTrend() {
   </table>`;
 }
 
+migrateSnapshots();
 renderTrend();
 
 document.getElementById('duoToggle').addEventListener('click', () => {

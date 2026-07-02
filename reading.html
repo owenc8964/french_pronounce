@@ -838,6 +838,18 @@ function saveRecord(rec) {
   localStorage.setItem('clb7_reading', JSON.stringify(records));
 }
 
+// ── 今日錯題本（dashboard 讀 clb7_wrong_log）──────────────────
+function logWrong(entry) {
+  try {
+    const log = JSON.parse(localStorage.getItem('clb7_wrong_log')) || [];
+    const d = new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
+    const dup = log.find(e => e.d === d && e.src === entry.src && e.q === entry.q);
+    if (dup) { dup.n = (dup.n||1) + 1; dup.t = Date.now(); }
+    else log.push({ ...entry, d, t: Date.now(), n: 1 });
+    localStorage.setItem('clb7_wrong_log', JSON.stringify(log.slice(-300)));
+  } catch(e) {}
+}
+
 // ── Article list ──────────────────────────────────────────────
 function renderArticleList() {
   const records = getRecords();
@@ -940,6 +952,8 @@ function submitAnswers() {
     const fb = document.getElementById(`fb-${qi}`);
     fb.className = 'q-feedback show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
     fb.textContent = (isCorrect ? '✓ ' : '✗ ') + q.expl;
+
+    if (!isCorrect) logWrong({ src:'reading', q: q.q, a: q.opts[q.ans], note: q.expl, title: a.title });
   });
 
   // Save record
