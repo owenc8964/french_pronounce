@@ -274,6 +274,7 @@ body {
 </head>
 <body>
 <script src="questions.js"></script>
+<script src="chunks.js"></script>
 
 <div class="header">
   <h1>CLB7 指揮中心</h1>
@@ -404,6 +405,10 @@ body {
   <a class="nav-btn" href="verb_sprint.html">
     <span class="nav-icon">⚡</span>
     <div><div class="nav-label">反射衝刺</div><div class="nav-sub" id="navSprintSub">動詞變位計時</div></div>
+  </a>
+  <a class="nav-btn" href="review.html">
+    <span class="nav-icon">📦</span>
+    <div><div class="nav-label">複習卡</div><div class="nav-sub" id="navReviewSub">一包 3–5 分鐘</div></div>
   </a>
   <a class="nav-btn" href="writing.html">
     <span class="nav-icon">✍️</span>
@@ -652,7 +657,22 @@ function buildPrescription(topicStats, todaySec) {
     done: spDone,
   });
 
-  // 3. 造句
+  // 3. 複習卡（碎片時間：一包 3–5 分鐘）
+  const rvDone = reviewDoneToday();
+  const rvDue  = chunkDueCount();
+  items.push({
+    icon: '📦',
+    action: '複習卡一包（10 張）',
+    why: rvDone
+      ? (rvDue > 0 ? `今天做過了！還有 ${rvDue} 張到期，有空再清一包` : '今天做過了，到期卡已清空！')
+      : (rvDue > 0 ? `${rvDue} 張到期＋新卡，3–5 分鐘` : '新卡等你開，3–5 分鐘'),
+    badge: rvDone ? 'badge-green' : 'badge-red',
+    badgeText: rvDone ? '✓ 完成' : '未完成',
+    href: 'review.html?guided=1',
+    done: rvDone,
+  });
+
+  // 4. 造句
   const wDone = writingDoneToday();
   items.push({
     icon: '✍️',
@@ -664,7 +684,7 @@ function buildPrescription(topicStats, todaySec) {
     done: wDone,
   });
 
-  // 4. 閱讀理解
+  // 5. 閱讀理解
   const rDone = readingDoneToday();
   const rAll  = getReadingData();
   items.push({
@@ -677,7 +697,7 @@ function buildPrescription(topicStats, todaySec) {
     done: rDone,
   });
 
-  // 5. 時數
+  // 6. 時數
   const todayH = todaySec / 3600;
   const todayTarget = 1.5;
   const todayDone = todayH >= todayTarget;
@@ -694,6 +714,18 @@ function buildPrescription(topicStats, todaySec) {
   return items;
 }
 
+// ── 複習卡（review.html）────────────────────────────────────
+function getChunkSrs()        { try { return JSON.parse(localStorage.getItem('clb7_chunk_srs')) || {}; } catch { return {}; } }
+function getReviewSessions()  { try { return JSON.parse(localStorage.getItem('clb7_review_sessions')) || []; } catch { return []; } }
+function reviewDoneToday()    { return getReviewSessions().some(s => s.date === todayStr()); }
+function chunkDueCount() {
+  if (typeof CHUNKS === 'undefined') return 0;
+  const srs = getChunkSrs();
+  const now = new Date(); now.setHours(0,0,0,0);
+  const isGrad = r => r && (r.days||[]).length >= 3 && r.iv >= 3;
+  return CHUNKS.filter(c => srs[c.id] && srs[c.id].due <= now.getTime() && !isGrad(srs[c.id])).length;
+}
+
 // ── 今日錯題本 ────────────────────────────────────────────────
 function getWrongLog() { try { return JSON.parse(localStorage.getItem('clb7_wrong_log')) || []; } catch { return []; } }
 function esc(s) { return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -701,7 +733,7 @@ function esc(s) { return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;'
 function renderWrongBook() {
   const today = todayStr();
   const items = getWrongLog().filter(e => e.d === today).sort((a,b) => b.t - a.t);
-  const SRC = { quiz:'🃏 Quiz', sprint:'⚡ 衝刺', reading:'📖 閱讀' };
+  const SRC = { quiz:'🃏 Quiz', sprint:'⚡ 衝刺', reading:'📖 閱讀', review:'📦 複習卡' };
   document.getElementById('wbCount').textContent = items.length ? `${items.length} 題` : '';
   const list = document.getElementById('wbList');
   if (!items.length) {
@@ -873,6 +905,10 @@ function render() {
       ? '今天已完成 ✓' : (readDoneArts ? `已完成 ${readDoneArts} 篇` : '純法文短文');
     document.getElementById('navSprintSub').textContent = sprintDoneToday()
       ? '今天已完成 ✓' : `反射 ${sprintReflexCount()}/${SPRINT_TOTAL} 格`;
+    const rvDueN = chunkDueCount();
+    document.getElementById('navReviewSub').textContent = reviewDoneToday()
+      ? (rvDueN > 0 ? `已做 · 剩 ${rvDueN} 張到期` : '今天已完成 ✓')
+      : (rvDueN > 0 ? `${rvDueN} 張到期` : '一包 3–5 分鐘');
   })();
 
   // Four Skills

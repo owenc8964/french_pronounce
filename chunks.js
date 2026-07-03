@@ -1,0 +1,4645 @@
+// 卡片庫 — 自動從 french_notes.html 抽取（phrase-list + 詞彙表，逐列解析）
+// 新課筆記加入後要重跑抽取腳本（見 HANDOFF「複習卡系統」）
+const CHUNKS = [
+ {
+  "id": "L1_Bonjour___Bonsoir",
+  "lesson": 1,
+  "fr": "Bonjour / Bonsoir",
+  "zh": "你好（白天）／晚上好",
+  "note": ""
+ },
+ {
+  "id": "L1_Salut__",
+  "lesson": 1,
+  "fr": "Salut !",
+  "zh": "嗨！（朋友之間）",
+  "note": ""
+ },
+ {
+  "id": "L1__a_va_____Tu_vas_bien__",
+  "lesson": 1,
+  "fr": "Ça va ? / Tu vas bien ?",
+  "zh": "你好嗎？",
+  "note": ""
+ },
+ {
+  "id": "L1_Vous_allez_bien__",
+  "lesson": 1,
+  "fr": "Vous allez bien ?",
+  "zh": "您好嗎？（正式）",
+  "note": ""
+ },
+ {
+  "id": "L1_Oui__ça_va__merci__Et_to",
+  "lesson": 1,
+  "fr": "Oui, ça va, merci. Et toi ?",
+  "zh": "好，謝謝。你呢？",
+  "note": ""
+ },
+ {
+  "id": "L1_Très_bien__merci__Et_vou",
+  "lesson": 1,
+  "fr": "Très bien, merci. Et vous ?",
+  "zh": "很好，謝謝。您呢？（正式）",
+  "note": ""
+ },
+ {
+  "id": "L1_Au_revoir_____bientôt",
+  "lesson": 1,
+  "fr": "Au revoir / À bientôt",
+  "zh": "再見／待會見",
+  "note": ""
+ },
+ {
+  "id": "L1___demain_____lundi",
+  "lesson": 1,
+  "fr": "À demain / À lundi",
+  "zh": "明天見／星期一見",
+  "note": ""
+ },
+ {
+  "id": "L1___plus_____plus_tard",
+  "lesson": 1,
+  "fr": "À plus / À plus tard",
+  "zh": "之後見（不指定時間）／待會見（當天）",
+  "note": ""
+ },
+ {
+  "id": "L1_Ciao",
+  "lesson": 1,
+  "fr": "Ciao",
+  "zh": "義大利語借詞，法國人說再見常用",
+  "note": ""
+ },
+ {
+  "id": "L1_Bonne_journée__",
+  "lesson": 1,
+  "fr": "Bonne journée !",
+  "zh": "祝你有美好的一天！（對話結束時說，等於 goodbye）",
+  "note": ""
+ },
+ {
+  "id": "L1_Bonne_soirée___Bonne_nui",
+  "lesson": 1,
+  "fr": "Bonne soirée / Bonne nuit",
+  "zh": "晚上愉快／晚安",
+  "note": ""
+ },
+ {
+  "id": "L1_Comment_ça_s'écrit__",
+  "lesson": 1,
+  "fr": "Comment ça s'écrit ?",
+  "zh": "這怎麼拼／寫？",
+  "note": ""
+ },
+ {
+  "id": "L1_Vous_pouvez_répéter__s'i",
+  "lesson": 1,
+  "fr": "Vous pouvez répéter, s'il vous plaît ?",
+  "zh": "可以再說一次嗎？（正式）",
+  "note": ""
+ },
+ {
+  "id": "L1_Tu_peux_répéter__",
+  "lesson": 1,
+  "fr": "Tu peux répéter ?",
+  "zh": "可以再說一次嗎？（朋友）",
+  "note": ""
+ },
+ {
+  "id": "L1_Je_ne_comprends_pas_",
+  "lesson": 1,
+  "fr": "Je ne comprends pas.",
+  "zh": "我聽不懂。",
+  "note": ""
+ },
+ {
+  "id": "L1_Comment_on_dit__en_franç",
+  "lesson": 1,
+  "fr": "Comment on dit… en français ?",
+  "zh": "……用法文怎麼說？",
+  "note": ""
+ },
+ {
+  "id": "L1_Excusez_moi__je_suis_en_",
+  "lesson": 1,
+  "fr": "Excusez-moi, je suis en retard.",
+  "zh": "對不起，我遲到了。",
+  "note": ""
+ },
+ {
+  "id": "L1_S'il_vous_plaît___S'il_t",
+  "lesson": 1,
+  "fr": "S'il vous plaît / S'il te plaît",
+  "zh": "請（正式／朋友）",
+  "note": ""
+ },
+ {
+  "id": "L1_Pardon____Excusez_moi___",
+  "lesson": 1,
+  "fr": "Pardon. / Excusez-moi. / Excuse-moi.",
+  "zh": "不好意思 / 對不起（正式／朋友）",
+  "note": ""
+ },
+ {
+  "id": "L1_Je___Moi",
+  "lesson": 1,
+  "fr": "Je → Moi",
+  "zh": "我（強調）",
+  "note": ""
+ },
+ {
+  "id": "L1_Tu___Toi",
+  "lesson": 1,
+  "fr": "Tu → Toi",
+  "zh": "你（強調）",
+  "note": ""
+ },
+ {
+  "id": "L1_Vous___Vous",
+  "lesson": 1,
+  "fr": "Vous → Vous",
+  "zh": "您／你們（不變）",
+  "note": ""
+ },
+ {
+  "id": "L1_Je_suis_taïwanais___taïw",
+  "lesson": 1,
+  "fr": "Je suis taïwanais / taïwanaise.",
+  "zh": "我是台灣人。（男／女）",
+  "note": ""
+ },
+ {
+  "id": "L1_Tu_es_français__",
+  "lesson": 1,
+  "fr": "Tu es français ?",
+  "zh": "你是法國人嗎？",
+  "note": ""
+ },
+ {
+  "id": "L1_Non__je_suis_suisse_",
+  "lesson": 1,
+  "fr": "Non, je suis suisse.",
+  "zh": "不，我是瑞士人。",
+  "note": ""
+ },
+ {
+  "id": "L1_Elle_s'appelle_Jolie__El",
+  "lesson": 1,
+  "fr": "Elle s'appelle Jolie. Elle est japonaise.",
+  "zh": "她叫 Jolie，她是日本人。",
+  "note": ""
+ },
+ {
+  "id": "L1_Nous_sommes_taïwanais___",
+  "lesson": 1,
+  "fr": "Nous sommes taïwanais / taïwanaises.",
+  "zh": "我們是台灣人。（複數男／女）",
+  "note": ""
+ },
+ {
+  "id": "L1_Aujourd'hui__c'est_le_ma",
+  "lesson": 1,
+  "fr": "Aujourd'hui, c'est le mardi 12 mai 2026.",
+  "zh": "今天是2026年5月12日，星期二。",
+  "note": ""
+ },
+ {
+  "id": "L1_Demain__c'est_mercredi_",
+  "lesson": 1,
+  "fr": "Demain, c'est mercredi.",
+  "zh": "明天是星期三。",
+  "note": ""
+ },
+ {
+  "id": "L1_Mon_anniversaire__c'est_",
+  "lesson": 1,
+  "fr": "Mon anniversaire, c'est le 4 juin.",
+  "zh": "我的生日是6月4日。",
+  "note": ""
+ },
+ {
+  "id": "L1_La_fête_nationale__c'est",
+  "lesson": 1,
+  "fr": "La fête nationale, c'est le 14 juillet.",
+  "zh": "法國國慶日是7月14日。",
+  "note": ""
+ },
+ {
+  "id": "L1_Le_premier_mai__c'est_la",
+  "lesson": 1,
+  "fr": "Le premier mai, c'est la fête du Travail.",
+  "zh": "5月1日是勞動節。",
+  "note": ""
+ },
+ {
+  "id": "L2_le_sport",
+  "lesson": 2,
+  "fr": "le sport",
+  "zh": "運動（陽性）",
+  "note": ""
+ },
+ {
+  "id": "L2_le_cinéma",
+  "lesson": 2,
+  "fr": "le cinéma",
+  "zh": "電影（陽性）",
+  "note": ""
+ },
+ {
+  "id": "L2_le_café",
+  "lesson": 2,
+  "fr": "le café",
+  "zh": "咖啡（陽性，-é 非一般陰性 -e）",
+  "note": ""
+ },
+ {
+  "id": "L2_la_musique",
+  "lesson": 2,
+  "fr": "la musique",
+  "zh": "音樂（陰性）",
+  "note": ""
+ },
+ {
+  "id": "L2_la_ville",
+  "lesson": 2,
+  "fr": "la ville",
+  "zh": "城市（陰性）",
+  "note": ""
+ },
+ {
+  "id": "L2_l'histoire",
+  "lesson": 2,
+  "fr": "l'histoire",
+  "zh": "歷史（陰性，母音開頭）",
+  "note": ""
+ },
+ {
+  "id": "L2_l'art",
+  "lesson": 2,
+  "fr": "l'art",
+  "zh": "藝術（陽性，母音開頭）",
+  "note": ""
+ },
+ {
+  "id": "L2_les_amis",
+  "lesson": 2,
+  "fr": "les amis",
+  "zh": "朋友們（複數）",
+  "note": ""
+ },
+ {
+  "id": "L2_un_appartement",
+  "lesson": 2,
+  "fr": "un appartement",
+  "zh": "一間公寓",
+  "note": ""
+ },
+ {
+  "id": "L2_une_ville",
+  "lesson": 2,
+  "fr": "une ville",
+  "zh": "一座城市",
+  "note": ""
+ },
+ {
+  "id": "L2_des_amis",
+  "lesson": 2,
+  "fr": "des amis",
+  "zh": "一些朋友",
+  "note": ""
+ },
+ {
+  "id": "L2_le_chien",
+  "lesson": 2,
+  "fr": "le chien",
+  "zh": "那隻狗（特定，彼此知道是哪隻）",
+  "note": ""
+ },
+ {
+  "id": "L2_un_chien",
+  "lesson": 2,
+  "fr": "un chien",
+  "zh": "一隻狗（泛指）",
+  "note": ""
+ },
+ {
+  "id": "L2_en_France___en_Italie___",
+  "lesson": 2,
+  "fr": "en France / en Italie / en Chine",
+  "zh": "在／去法國、義大利、中國（陰性）",
+  "note": ""
+ },
+ {
+  "id": "L2_au_Canada___au_Mexique__",
+  "lesson": 2,
+  "fr": "au Canada / au Mexique / au Brésil",
+  "zh": "在／去加拿大、墨西哥、巴西（陽性）",
+  "note": ""
+ },
+ {
+  "id": "L2_aux__tats_Unis___aux_Pay",
+  "lesson": 2,
+  "fr": "aux États-Unis / aux Pays-Bas",
+  "zh": "在／去美國、荷蘭（複數）",
+  "note": ""
+ },
+ {
+  "id": "L2_à_Paris___à_Lyon___à_Tai",
+  "lesson": 2,
+  "fr": "à Paris / à Lyon / à Taipei",
+  "zh": "在／去巴黎、里昂、台北（城市）",
+  "note": ""
+ },
+ {
+  "id": "L2_à_Taiwan",
+  "lesson": 2,
+  "fr": "à Taiwan",
+  "zh": "在／去台灣（例外：島嶼，無性別）",
+  "note": ""
+ },
+ {
+  "id": "L2_Tu_habites_dans_quelle_v",
+  "lesson": 2,
+  "fr": "Tu habites dans quelle ville ?",
+  "zh": "你住在哪個城市？",
+  "note": ""
+ },
+ {
+  "id": "L2_Tu_parles_quelle_langue_",
+  "lesson": 2,
+  "fr": "Tu parles quelle langue ?",
+  "zh": "你說什麼語言？",
+  "note": ""
+ },
+ {
+  "id": "L2_Quel_âge_as_tu__",
+  "lesson": 2,
+  "fr": "Quel âge as-tu ?",
+  "zh": "你幾歲？",
+  "note": ""
+ },
+ {
+  "id": "L2_Tu_aimes_quelle_musique_",
+  "lesson": 2,
+  "fr": "Tu aimes quelle musique ?",
+  "zh": "你喜歡什麼音樂？",
+  "note": ""
+ },
+ {
+  "id": "L2_l'art__m_",
+  "lesson": 2,
+  "fr": "l'art (m)",
+  "zh": "藝術",
+  "note": ""
+ },
+ {
+  "id": "L2_le_cinéma__m_",
+  "lesson": 2,
+  "fr": "le cinéma (m)",
+  "zh": "電影",
+  "note": ""
+ },
+ {
+  "id": "L2_la_musique__f_",
+  "lesson": 2,
+  "fr": "la musique (f)",
+  "zh": "音樂",
+  "note": ""
+ },
+ {
+  "id": "L2_le_sport__m_",
+  "lesson": 2,
+  "fr": "le sport (m)",
+  "zh": "運動",
+  "note": ""
+ },
+ {
+  "id": "L2_les_langues__f_pl_",
+  "lesson": 2,
+  "fr": "les langues (f.pl)",
+  "zh": "語言",
+  "note": ""
+ },
+ {
+  "id": "L2_la_bande_dessinée__f_",
+  "lesson": 2,
+  "fr": "la bande dessinée (f)",
+  "zh": "法式漫畫（BD）",
+  "note": ""
+ },
+ {
+  "id": "L2_la_librairie__f_",
+  "lesson": 2,
+  "fr": "la librairie (f)",
+  "zh": "書店 ⚠️（不是圖書館！）",
+  "note": ""
+ },
+ {
+  "id": "L2_la_bibliothèque__f_",
+  "lesson": 2,
+  "fr": "la bibliothèque (f)",
+  "zh": "圖書館",
+  "note": ""
+ },
+ {
+  "id": "L2_la_rue__f_",
+  "lesson": 2,
+  "fr": "la rue (f)",
+  "zh": "街道",
+  "note": ""
+ },
+ {
+  "id": "L2_le_quartier__m_",
+  "lesson": 2,
+  "fr": "le quartier (m)",
+  "zh": "街區、社區",
+  "note": ""
+ },
+ {
+  "id": "L2_sympa",
+  "lesson": 2,
+  "fr": "sympa",
+  "zh": "不錯、友善（sympathique 的縮寫，口語）",
+  "note": ""
+ },
+ {
+  "id": "L2_Emma",
+  "lesson": 2,
+  "fr": "Emma",
+  "zh": "雙 m 要念清楚 [ɛ-ma]，不能輕音帶過",
+  "note": ""
+ },
+ {
+  "id": "L2_les_z'_tats_Unis",
+  "lesson": 2,
+  "fr": "les z'États-Unis",
+  "zh": "liaison：les 的 s 遇母音開頭要連音，不能分開念",
+  "note": ""
+ },
+ {
+  "id": "L2_Sénégalais___Sénégalaise",
+  "lesson": 2,
+  "fr": "Sénégalais / Sénégalaise",
+  "zh": "[se-ne-ga-lɛ/lɛz]，記憶：「賽內街」",
+  "note": ""
+ },
+ {
+  "id": "L2_quatre_vingts",
+  "lesson": 2,
+  "fr": "quatre-vingts",
+  "zh": "[katʁə.vɛ̃]，老師確認這是難點，多練習",
+  "note": ""
+ },
+ {
+  "id": "L2_J'aime_aller_en_France_",
+  "lesson": 2,
+  "fr": "J'aime aller en France.",
+  "zh": "兩動詞連用：第一個變位，第二個用原形不變（aller 不加 s/e）",
+  "note": ""
+ },
+ {
+  "id": "L2_On_habite_à_Lyon_",
+  "lesson": 2,
+  "fr": "On habite à Lyon.",
+  "zh": "on = nous（口語），但動詞變位同 il/elle → habite，不是 habitons",
+  "note": ""
+ },
+ {
+  "id": "L2_quel___quelle___quels___",
+  "lesson": 2,
+  "fr": "quel / quelle / quels / quelles",
+  "zh": "四種寫法發音完全相同 [kɛl]，依名詞性別與單複數選",
+  "note": ""
+ },
+ {
+  "id": "L2_la_librairie___library",
+  "lesson": 2,
+  "fr": "la librairie ≠ library",
+  "zh": "假朋友！librairie = 書店；圖書館 = bibliothèque",
+  "note": ""
+ },
+ {
+  "id": "L2_______quatre_virgule_hui",
+  "lesson": 2,
+  "fr": "4,8 → quatre virgule huit",
+  "zh": "法文小數用 virgule（逗號），不用 point（句點）",
+  "note": ""
+ },
+ {
+  "id": "L2_______________",
+  "lesson": 2,
+  "fr": "06 89 34 72 51",
+  "zh": "電話號碼兩位兩位念，念成一位一位對方會聽不懂",
+  "note": ""
+ },
+ {
+  "id": "L2_septante___huitante___no",
+  "lesson": 2,
+  "fr": "septante / huitante / nonante",
+  "zh": "比利時/瑞士的 70/80/90，比法國規律，考試不考但聽得懂即可",
+  "note": ""
+ },
+ {
+  "id": "L2_Qui__",
+  "lesson": 2,
+  "fr": "Qui ?",
+  "zh": "誰？Who?",
+  "note": ""
+ },
+ {
+  "id": "L2_Où__",
+  "lesson": 2,
+  "fr": "Où ?",
+  "zh": "在哪裡？Where?",
+  "note": ""
+ },
+ {
+  "id": "L2_Pourquoi__",
+  "lesson": 2,
+  "fr": "Pourquoi ?",
+  "zh": "為什麼？Why? → 回答用 parce que（因為）",
+  "note": ""
+ },
+ {
+  "id": "L2_Comment__",
+  "lesson": 2,
+  "fr": "Comment ?",
+  "zh": "怎麼？How?",
+  "note": ""
+ },
+ {
+  "id": "L2_Combien__",
+  "lesson": 2,
+  "fr": "Combien ?",
+  "zh": "多少（數量）？How many / How much?",
+  "note": ""
+ },
+ {
+  "id": "L2_Qu'est_ce_que__",
+  "lesson": 2,
+  "fr": "Qu'est-ce que ?",
+  "zh": "什麼？What?（主詞後接動詞）",
+  "note": ""
+ },
+ {
+  "id": "L2_Quel___Quelle__",
+  "lesson": 2,
+  "fr": "Quel / Quelle ?",
+  "zh": "哪個？（接名詞，隨性別變化）→ 見第2課冠詞區塊",
+  "note": ""
+ },
+ {
+  "id": "L2_Qui_est_ce_____C'est_qui",
+  "lesson": 2,
+  "fr": "Qui est-ce ? / C'est qui ?",
+  "zh": "這是誰？",
+  "note": ""
+ },
+ {
+  "id": "L2_Tu_habites_où__",
+  "lesson": 2,
+  "fr": "Tu habites où ?",
+  "zh": "你住在哪裡？",
+  "note": ""
+ },
+ {
+  "id": "L2_Pourquoi_tu_aimes_le_spo",
+  "lesson": 2,
+  "fr": "Pourquoi tu aimes le sport ?",
+  "zh": "你為什麼喜歡運動？",
+  "note": ""
+ },
+ {
+  "id": "L2_Parce_que_c'est_sympa__",
+  "lesson": 2,
+  "fr": "Parce que c'est sympa !",
+  "zh": "因為很好玩！",
+  "note": ""
+ },
+ {
+  "id": "L2_Combien_de_langues_tu_pa",
+  "lesson": 2,
+  "fr": "Combien de langues tu parles ?",
+  "zh": "你說幾種語言？",
+  "note": ""
+ },
+ {
+  "id": "L2_la_France__l'Italie__la_",
+  "lesson": 2,
+  "fr": "la France, l'Italie, la Suisse, la Chine",
+  "zh": "字尾 -e → 陰性（en）",
+  "note": ""
+ },
+ {
+  "id": "L2_le_Canada__le_Brésil__le",
+  "lesson": 2,
+  "fr": "le Canada, le Brésil, le Japon",
+  "zh": "字尾子音 → 陽性（au）",
+  "note": ""
+ },
+ {
+  "id": "L2_le_Mexique",
+  "lesson": 2,
+  "fr": "le Mexique",
+  "zh": "⚠️ 例外：字尾 -e 但陽性 → au Mexique",
+  "note": ""
+ },
+ {
+  "id": "L2_les__tats_Unis__les_Pays",
+  "lesson": 2,
+  "fr": "les États-Unis, les Pays-Bas, les Philippines",
+  "zh": "複數 → aux",
+  "note": ""
+ },
+ {
+  "id": "L2_Taiwan__Chypre",
+  "lesson": 2,
+  "fr": "Taiwan, Chypre",
+  "zh": "島嶼無性別 → à Taiwan（同城市）",
+  "note": ""
+ },
+ {
+  "id": "L2_Je_parle_chinois__taïwan",
+  "lesson": 2,
+  "fr": "Je parle chinois, taïwanais et anglais.",
+  "zh": "我說中文、台語和英文。",
+  "note": ""
+ },
+ {
+  "id": "L2_Il_parle_français_et_esp",
+  "lesson": 2,
+  "fr": "Il parle français et espagnol.",
+  "zh": "他說法文和西班牙文。",
+  "note": ""
+ },
+ {
+  "id": "L2_Je_m'appelle_Emma__je_su",
+  "lesson": 2,
+  "fr": "Je m'appelle Emma, je suis brésilienne et j'aime le cinéma.",
+  "zh": "我叫 Emma，我是巴西人，我喜歡電影。",
+  "note": ""
+ },
+ {
+  "id": "L2_Elle_s'appelle_Sanae__el",
+  "lesson": 2,
+  "fr": "Elle s'appelle Sanae, elle est japonaise et elle aime l'art.",
+  "zh": "她叫 Sanae，她是日本人，她喜歡藝術。",
+  "note": ""
+ },
+ {
+  "id": "L2_Tu_es_chinois_et_tu_aime",
+  "lesson": 2,
+  "fr": "Tu es chinois et tu aimes le sport.",
+  "zh": "你是中國人，你喜歡運動。",
+  "note": ""
+ },
+ {
+  "id": "L2_Il_est_suisse_et_il_aime",
+  "lesson": 2,
+  "fr": "Il est suisse et il aime les langues.",
+  "zh": "他是瑞士人，他喜歡語言。",
+  "note": ""
+ },
+ {
+  "id": "L2_Je_suis_sénégalaise_et_j",
+  "lesson": 2,
+  "fr": "Je suis sénégalaise et j'aime la musique.",
+  "zh": "我是塞內加爾人，我喜歡音樂。",
+  "note": ""
+ },
+ {
+  "id": "L3_l'appartement__m__",
+  "lesson": 3,
+  "fr": "l'appartement (m.)",
+  "zh": "公寓",
+  "note": ""
+ },
+ {
+  "id": "L3_la_maison",
+  "lesson": 3,
+  "fr": "la maison",
+  "zh": "房子（獨棟）",
+  "note": ""
+ },
+ {
+  "id": "L3_la_mer",
+  "lesson": 3,
+  "fr": "la mer",
+  "zh": "海（非大洋）",
+  "note": ""
+ },
+ {
+  "id": "L3_la_plage",
+  "lesson": 3,
+  "fr": "la plage",
+  "zh": "沙灘",
+  "note": ""
+ },
+ {
+  "id": "L3_le_quartier",
+  "lesson": 3,
+  "fr": "le quartier",
+  "zh": "街區、鄰里",
+  "note": ""
+ },
+ {
+  "id": "L3_la_rue",
+  "lesson": 3,
+  "fr": "la rue",
+  "zh": "街道",
+  "note": ""
+ },
+ {
+  "id": "L3_l'université__f__",
+  "lesson": 3,
+  "fr": "l'université (f.)",
+  "zh": "大學",
+  "note": ""
+ },
+ {
+  "id": "L3_le_colocataire___la_colo",
+  "lesson": 3,
+  "fr": "le colocataire / la colocataire",
+  "zh": "室友（共租）",
+  "note": ""
+ },
+ {
+  "id": "L3_le_locataire___la_locata",
+  "lesson": 3,
+  "fr": "le locataire / la locataire",
+  "zh": "房客（租屋者）",
+  "note": ""
+ },
+ {
+  "id": "L3_J'adore_le_cinéma____",
+  "lesson": 3,
+  "fr": "J'adore le cinéma. ❤❤",
+  "zh": "我超愛電影（最強）",
+  "note": ""
+ },
+ {
+  "id": "L3_J'aime_le_sport___",
+  "lesson": 3,
+  "fr": "J'aime le sport. ❤",
+  "zh": "我喜歡運動",
+  "note": ""
+ },
+ {
+  "id": "L3_Je_n'aime_pas_la_danse_",
+  "lesson": 3,
+  "fr": "Je n'aime pas la danse.",
+  "zh": "我不喜歡跳舞",
+  "note": ""
+ },
+ {
+  "id": "L3_Je_n'adore_pas_",
+  "lesson": 3,
+  "fr": "Je n'adore pas.",
+  "zh": "我不是很愛（還可以接受）",
+  "note": ""
+ },
+ {
+  "id": "L3_Elle_déteste_skier____",
+  "lesson": 3,
+  "fr": "Elle déteste skier. ✗✗",
+  "zh": "她討厭滑雪（最強厭惡）",
+  "note": ""
+ },
+ {
+  "id": "L3_Je_ne_suis_pas_fort_e__e",
+  "lesson": 3,
+  "fr": "Je ne suis pas fort(e) en natation.",
+  "zh": "我游泳不太行",
+  "note": ""
+ },
+ {
+  "id": "L3_la_danse___danser",
+  "lesson": 3,
+  "fr": "la danse / danser",
+  "zh": "舞蹈／跳舞",
+  "note": ""
+ },
+ {
+  "id": "L3_la_natation___nager",
+  "lesson": 3,
+  "fr": "la natation / nager",
+  "zh": "游泳（名詞／動詞）",
+  "note": ""
+ },
+ {
+  "id": "L3_le_ski___skier",
+  "lesson": 3,
+  "fr": "le ski / skier",
+  "zh": "滑雪（名詞／動詞）",
+  "note": ""
+ },
+ {
+  "id": "L3_la_marche___marcher",
+  "lesson": 3,
+  "fr": "la marche / marcher",
+  "zh": "步行（名詞／動詞）",
+  "note": ""
+ },
+ {
+  "id": "L3_le_basket___le_foot",
+  "lesson": 3,
+  "fr": "le basket / le foot",
+  "zh": "籃球／足球",
+  "note": ""
+ },
+ {
+  "id": "L3_la_guitare",
+  "lesson": 3,
+  "fr": "la guitare",
+  "zh": "吉他（f.）",
+  "note": ""
+ },
+ {
+  "id": "L3_le_piano",
+  "lesson": 3,
+  "fr": "le piano",
+  "zh": "鋼琴（m.）",
+  "note": ""
+ },
+ {
+  "id": "L3_le_violon",
+  "lesson": 3,
+  "fr": "le violon",
+  "zh": "小提琴（m.）",
+  "note": ""
+ },
+ {
+  "id": "L3_le_tambour",
+  "lesson": 3,
+  "fr": "le tambour",
+  "zh": "鼓（m.）",
+  "note": ""
+ },
+ {
+  "id": "L3_la_batterie",
+  "lesson": 3,
+  "fr": "la batterie",
+  "zh": "爵士鼓組（f.）",
+  "note": ""
+ },
+ {
+  "id": "L3_la_place__de_cinéma_",
+  "lesson": 3,
+  "fr": "la place (de cinéma)",
+  "zh": "電影票（一張位子）",
+  "note": ""
+ },
+ {
+  "id": "L3_les_grands_parents",
+  "lesson": 3,
+  "fr": "les grands-parents",
+  "zh": "祖父母／外祖父母",
+  "note": ""
+ },
+ {
+  "id": "L3_la_grand_mère__mamie_",
+  "lesson": 3,
+  "fr": "la grand-mère (mamie)",
+  "zh": "奶奶／外婆（mamie 暱稱）",
+  "note": ""
+ },
+ {
+  "id": "L3_le_grand_père__papi_",
+  "lesson": 3,
+  "fr": "le grand-père (papi)",
+  "zh": "爺爺／外公（papi 暱稱）",
+  "note": ""
+ },
+ {
+  "id": "L3_la_mère__maman_",
+  "lesson": 3,
+  "fr": "la mère (maman)",
+  "zh": "媽媽（maman 直接稱呼時用）",
+  "note": ""
+ },
+ {
+  "id": "L3_le_père__papa_",
+  "lesson": 3,
+  "fr": "le père (papa)",
+  "zh": "爸爸（papa 直接稱呼時用）",
+  "note": ""
+ },
+ {
+  "id": "L3_le_fils___la_fille",
+  "lesson": 3,
+  "fr": "le fils / la fille",
+  "zh": "兒子／女兒",
+  "note": ""
+ },
+ {
+  "id": "L3_le_fils_unique___la_fill",
+  "lesson": 3,
+  "fr": "le fils unique / la fille unique",
+  "zh": "獨生子／獨生女",
+  "note": ""
+ },
+ {
+  "id": "L3_le_frère___la_s_ur",
+  "lesson": 3,
+  "fr": "le frère / la sœur",
+  "zh": "兄弟／姐妹",
+  "note": ""
+ },
+ {
+  "id": "L3_les_petits_enfants",
+  "lesson": 3,
+  "fr": "les petits-enfants",
+  "zh": "孫子女",
+  "note": ""
+ },
+ {
+  "id": "L3_le_petit_fils___la_petit",
+  "lesson": 3,
+  "fr": "le petit-fils / la petite-fille",
+  "zh": "孫子／孫女",
+  "note": ""
+ },
+ {
+  "id": "L3_l'oncle__m_____la_tante",
+  "lesson": 3,
+  "fr": "l'oncle (m.) / la tante",
+  "zh": "伯叔舅（通用）／姑阿姨（通用）",
+  "note": ""
+ },
+ {
+  "id": "L3_le_cousin___la_cousine",
+  "lesson": 3,
+  "fr": "le cousin / la cousine",
+  "zh": "表兄弟／表姐妹（不分父系母系）",
+  "note": ""
+ },
+ {
+  "id": "L3_le_neveu___la_nièce",
+  "lesson": 3,
+  "fr": "le neveu / la nièce",
+  "zh": "姪子／姪女（兄弟姐妹之子女）",
+  "note": ""
+ },
+ {
+  "id": "L3_le_mari___la_femme",
+  "lesson": 3,
+  "fr": "le mari / la femme",
+  "zh": "丈夫／妻子（femme 也是「女人」）",
+  "note": ""
+ },
+ {
+  "id": "L3_la_belle_mère___le_beau_",
+  "lesson": 3,
+  "fr": "la belle-mère / le beau-père",
+  "zh": "婆婆∕岳母 ／ 公公∕岳父",
+  "note": ""
+ },
+ {
+  "id": "L3_la_belle_s_ur___le_beau_",
+  "lesson": 3,
+  "fr": "la belle-sœur / le beau-frère",
+  "zh": "嫂嫂∕弟媳∕大姑等 ／ 大伯∕小叔等",
+  "note": ""
+ },
+ {
+  "id": "L3_être_marié_e____célibata",
+  "lesson": 3,
+  "fr": "être marié(e) / célibataire",
+  "zh": "已婚／單身",
+  "note": ""
+ },
+ {
+  "id": "L3_mon_frère__sa_femme_et_s",
+  "lesson": 3,
+  "fr": "mon frère, sa femme et ses enfants",
+  "zh": "我弟弟、他的太太和他的孩子們",
+  "note": ""
+ },
+ {
+  "id": "L3_Sophia_et_son_mari",
+  "lesson": 3,
+  "fr": "Sophia et son mari",
+  "zh": "Sophia 和她的丈夫",
+  "note": ""
+ },
+ {
+  "id": "L3_nos_amis_Robin_et_Aya",
+  "lesson": 3,
+  "fr": "nos amis Robin et Aya",
+  "zh": "我們的朋友 Robin 和 Aya",
+  "note": ""
+ },
+ {
+  "id": "L3_l'ami_de_mon_père",
+  "lesson": 3,
+  "fr": "l'ami de mon père",
+  "zh": "我爸爸的朋友（de = 的）",
+  "note": ""
+ },
+ {
+  "id": "L3_J'ai_un_oncle__Il_a____a",
+  "lesson": 3,
+  "fr": "J'ai un oncle. Il a 48 ans.",
+  "zh": "我有一個叔叔，他48歲",
+  "note": ""
+ },
+ {
+  "id": "L3_Ses_neveux_adorent_les_e",
+  "lesson": 3,
+  "fr": "Ses neveux adorent les enfants de Clara.",
+  "zh": "他的姪子們很喜歡Clara的孩子",
+  "note": ""
+ },
+ {
+  "id": "L3_Notre_fille_déteste_le_s",
+  "lesson": 3,
+  "fr": "Notre fille déteste le sport.",
+  "zh": "我們的女兒討厭運動",
+  "note": ""
+ },
+ {
+  "id": "L3_acteur___actrice",
+  "lesson": 3,
+  "fr": "acteur / actrice",
+  "zh": "演員",
+  "note": ""
+ },
+ {
+  "id": "L3_coiffeur___coiffeuse",
+  "lesson": 3,
+  "fr": "coiffeur / coiffeuse",
+  "zh": "美髮師",
+  "note": ""
+ },
+ {
+  "id": "L3_traducteur___traductrice",
+  "lesson": 3,
+  "fr": "traducteur / traductrice",
+  "zh": "翻譯",
+  "note": ""
+ },
+ {
+  "id": "L3_facteur___factrice",
+  "lesson": 3,
+  "fr": "facteur / factrice",
+  "zh": "郵差",
+  "note": ""
+ },
+ {
+  "id": "L3_informaticien___informat",
+  "lesson": 3,
+  "fr": "informaticien / informaticienne",
+  "zh": "資訊人員",
+  "note": ""
+ },
+ {
+  "id": "L3_infirmier___infirmière",
+  "lesson": 3,
+  "fr": "infirmier / infirmière",
+  "zh": "護理師",
+  "note": ""
+ },
+ {
+  "id": "L3_étudiant___étudiante",
+  "lesson": 3,
+  "fr": "étudiant / étudiante",
+  "zh": "學生",
+  "note": ""
+ },
+ {
+  "id": "L3_professeur___professeure",
+  "lesson": 3,
+  "fr": "professeur / professeure",
+  "zh": "老師",
+  "note": ""
+ },
+ {
+  "id": "L3_fleuriste",
+  "lesson": 3,
+  "fr": "fleuriste",
+  "zh": "花店老闆（陰陽同形）",
+  "note": ""
+ },
+ {
+  "id": "L3_le_marché",
+  "lesson": 3,
+  "fr": "le marché",
+  "zh": "市場",
+  "note": ""
+ },
+ {
+  "id": "L3_le_supermarché",
+  "lesson": 3,
+  "fr": "le supermarché",
+  "zh": "超市（super = 大型）",
+  "note": ""
+ },
+ {
+  "id": "L3_l'hypermarché",
+  "lesson": 3,
+  "fr": "l'hypermarché",
+  "zh": "大賣場（hyper = 超大型）",
+  "note": ""
+ },
+ {
+  "id": "L3_Je_prépare_la_liste_des_",
+  "lesson": 3,
+  "fr": "Je prépare la liste des invités pour notre mariage.",
+  "zh": "我在準備我們婚禮的賓客名單。",
+  "note": ""
+ },
+ {
+  "id": "L3_J'invite_mes_parents__ma",
+  "lesson": 3,
+  "fr": "J'invite mes parents, ma grand-mère.",
+  "zh": "我邀請我的父母、我的奶奶。",
+  "note": ""
+ },
+ {
+  "id": "L3_Mon_frère__sa_femme_et_s",
+  "lesson": 3,
+  "fr": "Mon frère, sa femme et ses enfants.",
+  "zh": "我弟弟、他的妻子和他的孩子們。",
+  "note": ""
+ },
+ {
+  "id": "L3_Nos_amis_Robin_et_Aya_",
+  "lesson": 3,
+  "fr": "Nos amis Robin et Aya.",
+  "zh": "我們的朋友 Robin 和 Aya。",
+  "note": ""
+ },
+ {
+  "id": "L3_Monsieur_Bertoli__l'ami_",
+  "lesson": 3,
+  "fr": "Monsieur Bertoli, l'ami de mon père.",
+  "zh": "Bertoli 先生，我爸爸的朋友。",
+  "note": ""
+ },
+ {
+  "id": "L3_Son_petit_fils_a_deux_mo",
+  "lesson": 3,
+  "fr": "Son petit-fils a deux mois.",
+  "zh": "他的孫子兩個月大。",
+  "note": ""
+ },
+ {
+  "id": "L3__e",
+  "lesson": 3,
+  "fr": "-e",
+  "zh": "-e（不變）",
+  "note": "fleuriste"
+ },
+ {
+  "id": "L4_célibataire",
+  "lesson": 4,
+  "fr": "célibataire",
+  "zh": "單身（官方文件用語，不等於「沒有伴侶」）",
+  "note": ""
+ },
+ {
+  "id": "L4_en_couple",
+  "lesson": 4,
+  "fr": "en couple",
+  "zh": "有伴侶（口語）",
+  "note": ""
+ },
+ {
+  "id": "L4_se_marier",
+  "lesson": 4,
+  "fr": "se marier",
+  "zh": "結婚（動詞）",
+  "note": ""
+ },
+ {
+  "id": "L4_le_mariage",
+  "lesson": 4,
+  "fr": "le mariage",
+  "zh": "婚禮 / 婚姻（名詞）",
+  "note": ""
+ },
+ {
+  "id": "L4_le_mari___la_femme",
+  "lesson": 4,
+  "fr": "le mari / la femme",
+  "zh": "丈夫 / 妻子（婚後稱謂）",
+  "note": ""
+ },
+ {
+  "id": "L4_le_marié___la_mariée",
+  "lesson": 4,
+  "fr": "le marié / la mariée",
+  "zh": "新郎 / 新娘（婚禮當天）",
+  "note": ""
+ },
+ {
+  "id": "L4_le_petit_ami___la_petite",
+  "lesson": 4,
+  "fr": "le petit ami / la petite amie",
+  "zh": "男友 / 女友",
+  "note": ""
+ },
+ {
+  "id": "L4_le_petit_copain___la_pet",
+  "lesson": 4,
+  "fr": "le petit copain / la petite copine",
+  "zh": "男友 / 女友（口語，同義）",
+  "note": ""
+ },
+ {
+  "id": "L4_le_collège___collégien__",
+  "lesson": 4,
+  "fr": "le collège → collégien / collégienne",
+  "zh": "國中（約12–15歲）",
+  "note": ""
+ },
+ {
+  "id": "L4_le_lycée___lycéen___lycé",
+  "lesson": 4,
+  "fr": "le lycée → lycéen / lycéenne",
+  "zh": "高中（約15–18歲）",
+  "note": ""
+ },
+ {
+  "id": "L4_l'université___étudiant_",
+  "lesson": 4,
+  "fr": "l'université → étudiant / étudiante",
+  "zh": "大學生",
+  "note": ""
+ },
+ {
+  "id": "L4_la_boulangerie___le_boul",
+  "lesson": 4,
+  "fr": "la boulangerie / le boulanger, la boulangère",
+  "zh": "麵包店 / 麵包師",
+  "note": ""
+ },
+ {
+  "id": "L4_la_boucherie___le_bouche",
+  "lesson": 4,
+  "fr": "la boucherie / le boucher, la bouchère",
+  "zh": "肉店 / 肉販",
+  "note": ""
+ },
+ {
+  "id": "L4_la_fromagerie___le_froma",
+  "lesson": 4,
+  "fr": "la fromagerie / le fromager, la fromagère",
+  "zh": "起司店 / 起司師",
+  "note": ""
+ },
+ {
+  "id": "L4_la_poissonnerie___le_poi",
+  "lesson": 4,
+  "fr": "la poissonnerie / le poissonnier, la poissonnière",
+  "zh": "魚店 / 魚販",
+  "note": ""
+ },
+ {
+  "id": "L4_l'épicerie__f_____l'épic",
+  "lesson": 4,
+  "fr": "l'épicerie (f.) / l'épicier, l'épicière",
+  "zh": "雜貨店 / 雜貨商",
+  "note": ""
+ },
+ {
+  "id": "L4_le_marché",
+  "lesson": 4,
+  "fr": "le marché",
+  "zh": "市場（週末去市場買新鮮食材）",
+  "note": ""
+ },
+ {
+  "id": "L4_le_supermarché",
+  "lesson": 4,
+  "fr": "le supermarché",
+  "zh": "超市",
+  "note": ""
+ },
+ {
+  "id": "L4_les_caisses_automatiques",
+  "lesson": 4,
+  "fr": "les caisses automatiques (f.pl.)",
+  "zh": "自動結帳機",
+  "note": ""
+ },
+ {
+  "id": "L4_les_céréales__f_pl_____l",
+  "lesson": 4,
+  "fr": "les céréales (f.pl.) : la farine, les pâtes (f.pl.), le riz",
+  "zh": "穀物：麵粉、義大利麵、米飯",
+  "note": ""
+ },
+ {
+  "id": "L4_l'huile_d'olive__f__",
+  "lesson": 4,
+  "fr": "l'huile d'olive (f.)",
+  "zh": "橄欖油",
+  "note": ""
+ },
+ {
+  "id": "L4_l'_uf__m_____des__ufs",
+  "lesson": 4,
+  "fr": "l'œuf (m.) → des œufs",
+  "zh": "雞蛋（複數：des œufs）",
+  "note": ""
+ },
+ {
+  "id": "L4_le_poisson___le_poulet__",
+  "lesson": 4,
+  "fr": "le poisson / le poulet / la viande",
+  "zh": "魚 / 雞肉 / 肉類",
+  "note": ""
+ },
+ {
+  "id": "L4_une_boîte_de_thon",
+  "lesson": 4,
+  "fr": "une boîte de thon",
+  "zh": "一罐鮪魚",
+  "note": ""
+ },
+ {
+  "id": "L4_une_bouteille_de_jus_de_",
+  "lesson": 4,
+  "fr": "une bouteille de jus de pommes",
+  "zh": "一瓶蘋果汁（de = 由…做成）",
+  "note": ""
+ },
+ {
+  "id": "L4_un_kilo_de_pommes",
+  "lesson": 4,
+  "fr": "un kilo de pommes",
+  "zh": "一公斤蘋果",
+  "note": ""
+ },
+ {
+  "id": "L4_un_panier_de_légumes",
+  "lesson": 4,
+  "fr": "un panier de légumes",
+  "zh": "一籃蔬菜",
+  "note": ""
+ },
+ {
+  "id": "L4_un_paquet_de_pâtes",
+  "lesson": 4,
+  "fr": "un paquet de pâtes",
+  "zh": "一包義大利麵",
+  "note": ""
+ },
+ {
+  "id": "L4_un_pot_de_crème",
+  "lesson": 4,
+  "fr": "un pot de crème",
+  "zh": "一罐鮮奶油",
+  "note": ""
+ },
+ {
+  "id": "L4_Je_voudrais_une_baguette",
+  "lesson": 4,
+  "fr": "Je voudrais une baguette, s'il vous plaît.",
+  "zh": "我想要一條法棍，謝謝。（voudrais = vouloir 的條件式，比 je veux 有禮貌）",
+  "note": ""
+ },
+ {
+  "id": "L4_C'est_à_qui__",
+  "lesson": 4,
+  "fr": "C'est à qui ?",
+  "zh": "輪到誰了？（商店常用）",
+  "note": ""
+ },
+ {
+  "id": "L4_Ce_sera_tout__",
+  "lesson": 4,
+  "fr": "Ce sera tout ?",
+  "zh": "就這樣嗎？（店員問顧客）",
+  "note": ""
+ },
+ {
+  "id": "L4_Oui__ce_sera_tout_",
+  "lesson": 4,
+  "fr": "Oui, ce sera tout.",
+  "zh": "是的，就這樣。",
+  "note": ""
+ },
+ {
+  "id": "L4_Vous_payez_comment__",
+  "lesson": 4,
+  "fr": "Vous payez comment ?",
+  "zh": "您怎麼付款？",
+  "note": ""
+ },
+ {
+  "id": "L4_Par_carte_bancaire_",
+  "lesson": 4,
+  "fr": "Par carte bancaire.",
+  "zh": "刷卡。（carte bleue = 簽帳卡，非信用卡）",
+  "note": ""
+ },
+ {
+  "id": "L4_En_espèces_",
+  "lesson": 4,
+  "fr": "En espèces.",
+  "zh": "付現金。",
+  "note": ""
+ },
+ {
+  "id": "L4_Combien_coûte_une_baguet",
+  "lesson": 4,
+  "fr": "Combien coûte une baguette ? / Ça coûte combien ?",
+  "zh": "一條法棍多少錢？",
+  "note": ""
+ },
+ {
+  "id": "L4_Elle_coûte___euro_____a_",
+  "lesson": 4,
+  "fr": "Elle coûte 1 euro. / Ça coûte 1 euro.",
+  "zh": "它賣一歐元。",
+  "note": ""
+ },
+ {
+  "id": "L4___________seize_euros_qu",
+  "lesson": 4,
+  "fr": "16,90 € = seize euros quatre-vingt-dix",
+  "zh": "金額讀法：單位放在中間（seize euros quatre-vingt-dix）",
+  "note": ""
+ },
+ {
+  "id": "L5_la_viande__f__",
+  "lesson": 5,
+  "fr": "la viande (f.)",
+  "zh": "肉",
+  "note": ""
+ },
+ {
+  "id": "L5_le_poisson__m__",
+  "lesson": 5,
+  "fr": "le poisson (m.)",
+  "zh": "魚",
+  "note": ""
+ },
+ {
+  "id": "L5_le_fromage__m__",
+  "lesson": 5,
+  "fr": "le fromage (m.)",
+  "zh": "起司",
+  "note": ""
+ },
+ {
+  "id": "L5_le_pain__m__",
+  "lesson": 5,
+  "fr": "le pain (m.)",
+  "zh": "麵包",
+  "note": ""
+ },
+ {
+  "id": "L5_les_légumes__m_pl__",
+  "lesson": 5,
+  "fr": "les légumes (m.pl.)",
+  "zh": "蔬菜",
+  "note": ""
+ },
+ {
+  "id": "L5_les_fruits__m_pl__",
+  "lesson": 5,
+  "fr": "les fruits (m.pl.)",
+  "zh": "水果",
+  "note": ""
+ },
+ {
+  "id": "L5_les_pâtes__f_pl__",
+  "lesson": 5,
+  "fr": "les pâtes (f.pl.)",
+  "zh": "義大利麵 / 麵食",
+  "note": ""
+ },
+ {
+  "id": "L5_le_riz__m__",
+  "lesson": 5,
+  "fr": "le riz (m.)",
+  "zh": "米飯",
+  "note": ""
+ },
+ {
+  "id": "L5_l'huile__f__",
+  "lesson": 5,
+  "fr": "l'huile (f.)",
+  "zh": "油",
+  "note": ""
+ },
+ {
+  "id": "L5_les__ufs__m_pl__",
+  "lesson": 5,
+  "fr": "les œufs (m.pl.)",
+  "zh": "雞蛋",
+  "note": ""
+ },
+ {
+  "id": "L5_la_farine__f__",
+  "lesson": 5,
+  "fr": "la farine (f.)",
+  "zh": "麵粉",
+  "note": ""
+ },
+ {
+  "id": "L5_le_beurre__m__",
+  "lesson": 5,
+  "fr": "le beurre (m.)",
+  "zh": "奶油",
+  "note": ""
+ },
+ {
+  "id": "L5_Je_commande_de_l'eau_",
+  "lesson": 5,
+  "fr": "Je commande de l'eau.",
+  "zh": "我點水。",
+  "note": ""
+ },
+ {
+  "id": "L5_Je_mange_du_pain_avec_du",
+  "lesson": 5,
+  "fr": "Je mange du pain avec du beurre.",
+  "zh": "我吃麵包配奶油。",
+  "note": ""
+ },
+ {
+  "id": "L5_On_a_de_la_blanquette_de",
+  "lesson": 5,
+  "fr": "On a de la blanquette de veau.",
+  "zh": "我們有白汁小牛肉。",
+  "note": ""
+ },
+ {
+  "id": "L5_Je_ne_mange_pas_de_viand",
+  "lesson": 5,
+  "fr": "Je ne mange pas de viande.",
+  "zh": "我不吃肉。",
+  "note": ""
+ },
+ {
+  "id": "L5_Il_n'y_a_pas_de_dessert_",
+  "lesson": 5,
+  "fr": "Il n'y a pas de dessert aujourd'hui.",
+  "zh": "今天沒有甜點。",
+  "note": ""
+ },
+ {
+  "id": "L5_l'entrée__f__",
+  "lesson": 5,
+  "fr": "l'entrée (f.)",
+  "zh": "前菜",
+  "note": ""
+ },
+ {
+  "id": "L5_le_plat__du_jour___m__",
+  "lesson": 5,
+  "fr": "le plat (du jour) (m.)",
+  "zh": "主菜（今日主菜）",
+  "note": ""
+ },
+ {
+  "id": "L5_le_dessert__m__",
+  "lesson": 5,
+  "fr": "le dessert (m.)",
+  "zh": "甜點",
+  "note": ""
+ },
+ {
+  "id": "L5_la_formule__f__",
+  "lesson": 5,
+  "fr": "la formule (f.)",
+  "zh": "套餐",
+  "note": ""
+ },
+ {
+  "id": "L5_l'addition__f__",
+  "lesson": 5,
+  "fr": "l'addition (f.)",
+  "zh": "帳單",
+  "note": ""
+ },
+ {
+  "id": "L5_le_sel__m_____le_poivre_",
+  "lesson": 5,
+  "fr": "le sel (m.) / le poivre (m.)",
+  "zh": "鹽 / 胡椒",
+  "note": ""
+ },
+ {
+  "id": "L5_la_carafe_d'eau",
+  "lesson": 5,
+  "fr": "la carafe d'eau",
+  "zh": "一壺自來水（法國免費）",
+  "note": ""
+ },
+ {
+  "id": "L5_sur_place___à_emporter",
+  "lesson": 5,
+  "fr": "sur place / à emporter",
+  "zh": "內用 / 外帶",
+  "note": ""
+ },
+ {
+  "id": "L5_la_blanquette_de_veau",
+  "lesson": 5,
+  "fr": "la blanquette de veau",
+  "zh": "白汁小牛肉（法國家常菜）",
+  "note": ""
+ },
+ {
+  "id": "L5_le_steak_frites",
+  "lesson": 5,
+  "fr": "le steak-frites",
+  "zh": "牛排配薯條",
+  "note": ""
+ },
+ {
+  "id": "L5_le_croque_monsieur_végét",
+  "lesson": 5,
+  "fr": "le croque-monsieur végétarien",
+  "zh": "素版烤熱三明治",
+  "note": ""
+ },
+ {
+  "id": "L5_le_magret_de_canard",
+  "lesson": 5,
+  "fr": "le magret de canard",
+  "zh": "鴨胸肉",
+  "note": ""
+ },
+ {
+  "id": "L5_la_quiche",
+  "lesson": 5,
+  "fr": "la quiche",
+  "zh": "法式鹹派",
+  "note": ""
+ },
+ {
+  "id": "L5_le_gâteau_mousse_au_choc",
+  "lesson": 5,
+  "fr": "le gâteau mousse au chocolat",
+  "zh": "巧克力慕斯蛋糕",
+  "note": ""
+ },
+ {
+  "id": "L5_la_glace",
+  "lesson": 5,
+  "fr": "la glace",
+  "zh": "冰淇淋",
+  "note": ""
+ },
+ {
+  "id": "L5_le_riz_au_lait",
+  "lesson": 5,
+  "fr": "le riz au lait",
+  "zh": "牛奶米布丁",
+  "note": ""
+ },
+ {
+  "id": "L5_la_tarte_aux_pommes",
+  "lesson": 5,
+  "fr": "la tarte aux pommes",
+  "zh": "蘋果塔",
+  "note": ""
+ },
+ {
+  "id": "L5_le_café_crème",
+  "lesson": 5,
+  "fr": "le café crème",
+  "zh": "加奶咖啡（類似拿鐵）",
+  "note": ""
+ },
+ {
+  "id": "L5_Quel_est_le_plat_du_jour",
+  "lesson": 5,
+  "fr": "Quel est le plat du jour ?",
+  "zh": "今日主菜是什麼？",
+  "note": ""
+ },
+ {
+  "id": "L5_Je_voudrais_le_steak_fri",
+  "lesson": 5,
+  "fr": "Je voudrais le steak-frites.",
+  "zh": "我想要牛排薯條。（正式點餐）",
+  "note": ""
+ },
+ {
+  "id": "L5_Pour_moi__la_blanquette_",
+  "lesson": 5,
+  "fr": "Pour moi, la blanquette de veau.",
+  "zh": "我要白汁小牛肉。（口語）",
+  "note": ""
+ },
+ {
+  "id": "L5_Une_formule_entrée_plat_",
+  "lesson": 5,
+  "fr": "Une formule entrée/plat, s'il vous plaît.",
+  "zh": "請給我前菜+主菜套餐。",
+  "note": ""
+ },
+ {
+  "id": "L5_L'addition__s'il_vous_pl",
+  "lesson": 5,
+  "fr": "L'addition, s'il vous plaît.",
+  "zh": "請給我帳單。",
+  "note": ""
+ },
+ {
+  "id": "L5_Une_carafe_d'eau__s'il_v",
+  "lesson": 5,
+  "fr": "Une carafe d'eau, s'il vous plaît.",
+  "zh": "請給我一壺水。（免費）",
+  "note": ""
+ },
+ {
+  "id": "L5_Avec_plaisir__",
+  "lesson": 5,
+  "fr": "Avec plaisir !",
+  "zh": "很樂意！（服務員回應）",
+  "note": ""
+ },
+ {
+  "id": "L5_Bonne_dégustation__",
+  "lesson": 5,
+  "fr": "Bonne dégustation !",
+  "zh": "請慢用！（比 bon appétit 更精緻）",
+  "note": ""
+ },
+ {
+  "id": "L5_C'est_bon__",
+  "lesson": 5,
+  "fr": "C'est bon !",
+  "zh": "好吃！",
+  "note": ""
+ },
+ {
+  "id": "L5_C'est_délicieux__",
+  "lesson": 5,
+  "fr": "C'est délicieux !",
+  "zh": "太美味了！",
+  "note": ""
+ },
+ {
+  "id": "L5_C'est_mauvais_",
+  "lesson": 5,
+  "fr": "C'est mauvais.",
+  "zh": "不好吃。",
+  "note": ""
+ },
+ {
+  "id": "L5_C'est_pas_mal_",
+  "lesson": 5,
+  "fr": "C'est pas mal.",
+  "zh": "還不錯。（口語縮略）",
+  "note": ""
+ },
+ {
+  "id": "L5_l'assiette__f__",
+  "lesson": 5,
+  "fr": "l'assiette (f.)",
+  "zh": "盤子",
+  "note": ""
+ },
+ {
+  "id": "L5_la_fourchette__f__",
+  "lesson": 5,
+  "fr": "la fourchette (f.)",
+  "zh": "叉子",
+  "note": ""
+ },
+ {
+  "id": "L5_le_couteau__m__",
+  "lesson": 5,
+  "fr": "le couteau (m.)",
+  "zh": "刀子",
+  "note": ""
+ },
+ {
+  "id": "L5_la_cuillère__f__",
+  "lesson": 5,
+  "fr": "la cuillère (f.)",
+  "zh": "湯匙",
+  "note": ""
+ },
+ {
+  "id": "L5_le_verre__m__",
+  "lesson": 5,
+  "fr": "le verre (m.)",
+  "zh": "玻璃杯",
+  "note": ""
+ },
+ {
+  "id": "L5_la_carafe__f__",
+  "lesson": 5,
+  "fr": "la carafe (f.)",
+  "zh": "水壺 / 玻璃瓶",
+  "note": ""
+ },
+ {
+  "id": "L5_faire_les_courses",
+  "lesson": 5,
+  "fr": "faire les courses",
+  "zh": "購物（買食物日用品）",
+  "note": ""
+ },
+ {
+  "id": "L5_faire_la_cuisine",
+  "lesson": 5,
+  "fr": "faire la cuisine",
+  "zh": "做飯",
+  "note": ""
+ },
+ {
+  "id": "L5_faire_du_sport",
+  "lesson": 5,
+  "fr": "faire du sport",
+  "zh": "運動",
+  "note": ""
+ },
+ {
+  "id": "L5_Qu'est_ce_que_tu_fais__",
+  "lesson": 5,
+  "fr": "Qu'est-ce que tu fais ?",
+  "zh": "你在做什麼？",
+  "note": ""
+ },
+ {
+  "id": "L5_Ils_ont_des_enfants_",
+  "lesson": 5,
+  "fr": "Ils ont des enfants.",
+  "zh": "他們有孩子。（avoir）",
+  "note": ""
+ },
+ {
+  "id": "L5_Ils_sont_professeurs_",
+  "lesson": 5,
+  "fr": "Ils sont professeurs.",
+  "zh": "他們是老師。（être）",
+  "note": ""
+ },
+ {
+  "id": "L5_Ils_vont_au_marché_",
+  "lesson": 5,
+  "fr": "Ils vont au marché.",
+  "zh": "他們去市場。（aller）",
+  "note": ""
+ },
+ {
+  "id": "L5_Ils_font_la_cuisine_",
+  "lesson": 5,
+  "fr": "Ils font la cuisine.",
+  "zh": "他們做飯。（faire）",
+  "note": ""
+ },
+ {
+  "id": "L5_la_boulangerie",
+  "lesson": 5,
+  "fr": "la boulangerie",
+  "zh": "麵包・甜點",
+  "note": "麵包・甜點"
+ },
+ {
+  "id": "L5_la_boucherie",
+  "lesson": 5,
+  "fr": "la boucherie",
+  "zh": "肉類",
+  "note": "肉類"
+ },
+ {
+  "id": "L5_l'épicerie",
+  "lesson": 5,
+  "fr": "l'épicerie",
+  "zh": "雜貨（蔬果、罐頭…）",
+  "note": "雜貨（蔬果、罐頭…）"
+ },
+ {
+  "id": "L5_la_poissonnerie",
+  "lesson": 5,
+  "fr": "la poissonnerie",
+  "zh": "魚・海鮮",
+  "note": "魚・海鮮"
+ },
+ {
+  "id": "L5_la_fromagerie",
+  "lesson": 5,
+  "fr": "la fromagerie",
+  "zh": "起司",
+  "note": "起司"
+ },
+ {
+  "id": "L5_la_pâtisserie",
+  "lesson": 5,
+  "fr": "la pâtisserie",
+  "zh": "蛋糕・甜點",
+  "note": "蛋糕・甜點"
+ },
+ {
+  "id": "L6_midi",
+  "lesson": 6,
+  "fr": "midi",
+  "zh": "正午 12:00 pm（陽性）",
+  "note": ""
+ },
+ {
+  "id": "L6_minuit",
+  "lesson": 6,
+  "fr": "minuit",
+  "zh": "午夜 12:00 am（陽性）",
+  "note": ""
+ },
+ {
+  "id": "L6_du_matin",
+  "lesson": 6,
+  "fr": "du matin",
+  "zh": "早上（8h du matin）",
+  "note": ""
+ },
+ {
+  "id": "L6_de_l'après_midi",
+  "lesson": 6,
+  "fr": "de l'après-midi",
+  "zh": "下午（4h de l'après-midi）",
+  "note": ""
+ },
+ {
+  "id": "L6_du_soir",
+  "lesson": 6,
+  "fr": "du soir",
+  "zh": "晚上（8h du soir）",
+  "note": ""
+ },
+ {
+  "id": "L6_le_centre_ville",
+  "lesson": 6,
+  "fr": "le centre-ville",
+  "zh": "市中心",
+  "note": ""
+ },
+ {
+  "id": "L6_la_banlieue",
+  "lesson": 6,
+  "fr": "la banlieue",
+  "zh": "郊區（非市中心）",
+  "note": ""
+ },
+ {
+  "id": "L6_le_quartier",
+  "lesson": 6,
+  "fr": "le quartier",
+  "zh": "街區、社區",
+  "note": ""
+ },
+ {
+  "id": "L6_la_rue",
+  "lesson": 6,
+  "fr": "la rue",
+  "zh": "街（一般道路）",
+  "note": ""
+ },
+ {
+  "id": "L6_l'avenue__f__",
+  "lesson": 6,
+  "fr": "l'avenue (f.)",
+  "zh": "大道（有商店＋行人）",
+  "note": ""
+ },
+ {
+  "id": "L6_le_boulevard",
+  "lesson": 6,
+  "fr": "le boulevard",
+  "zh": "林蔭大道（以車為主）",
+  "note": ""
+ },
+ {
+  "id": "L6_le_chemin",
+  "lesson": 6,
+  "fr": "le chemin",
+  "zh": "小路",
+  "note": ""
+ },
+ {
+  "id": "L6_le_carrefour",
+  "lesson": 6,
+  "fr": "le carrefour",
+  "zh": "十字路口（也是家樂福！）",
+  "note": ""
+ },
+ {
+  "id": "L6_le_quai",
+  "lesson": 6,
+  "fr": "le quai",
+  "zh": "河岸邊、碼頭",
+  "note": ""
+ },
+ {
+  "id": "L6_le_pont",
+  "lesson": 6,
+  "fr": "le pont",
+  "zh": "橋",
+  "note": ""
+ },
+ {
+  "id": "L6_la_place",
+  "lesson": 6,
+  "fr": "la place",
+  "zh": "廣場（開放空間）",
+  "note": ""
+ },
+ {
+  "id": "L6_le_fleuve",
+  "lesson": 6,
+  "fr": "le fleuve",
+  "zh": "大河（流入海的）",
+  "note": ""
+ },
+ {
+  "id": "L6_la_mairie",
+  "lesson": 6,
+  "fr": "la mairie",
+  "zh": "市政廳（前面有法國國旗）",
+  "note": ""
+ },
+ {
+  "id": "L6_la_gare",
+  "lesson": 6,
+  "fr": "la gare",
+  "zh": "火車站",
+  "note": ""
+ },
+ {
+  "id": "L6_le_commissariat",
+  "lesson": 6,
+  "fr": "le commissariat",
+  "zh": "警察局",
+  "note": ""
+ },
+ {
+  "id": "L6_la_banque",
+  "lesson": 6,
+  "fr": "la banque",
+  "zh": "銀行",
+  "note": ""
+ },
+ {
+  "id": "L6_la_bibliothèque",
+  "lesson": 6,
+  "fr": "la bibliothèque",
+  "zh": "圖書館（非 librairie = 書店）",
+  "note": ""
+ },
+ {
+  "id": "L6_l'église__f__",
+  "lesson": 6,
+  "fr": "l'église (f.)",
+  "zh": "教堂",
+  "note": ""
+ },
+ {
+  "id": "L6_la_cathédrale",
+  "lesson": 6,
+  "fr": "la cathédrale",
+  "zh": "大教堂",
+  "note": ""
+ },
+ {
+  "id": "L6_la_fontaine",
+  "lesson": 6,
+  "fr": "la fontaine",
+  "zh": "噴泉",
+  "note": ""
+ },
+ {
+  "id": "L6_le_musée",
+  "lesson": 6,
+  "fr": "le musée",
+  "zh": "博物館",
+  "note": ""
+ },
+ {
+  "id": "L6_le_parc___le_jardin",
+  "lesson": 6,
+  "fr": "le parc / le jardin",
+  "zh": "公園 / 花園",
+  "note": ""
+ },
+ {
+  "id": "L6_la_poste",
+  "lesson": 6,
+  "fr": "la poste",
+  "zh": "郵局",
+  "note": ""
+ },
+ {
+  "id": "L6_le_théâtre",
+  "lesson": 6,
+  "fr": "le théâtre",
+  "zh": "劇院（cinéma = 電影院）",
+  "note": ""
+ },
+ {
+  "id": "L6_le_kiosque__à_journaux_",
+  "lesson": 6,
+  "fr": "le kiosque (à journaux)",
+  "zh": "報亭",
+  "note": ""
+ },
+ {
+  "id": "L6_l'école__f__",
+  "lesson": 6,
+  "fr": "l'école (f.)",
+  "zh": "學校",
+  "note": ""
+ },
+ {
+  "id": "L6_voici",
+  "lesson": 6,
+  "fr": "voici",
+  "zh": "這裡是⋯（ici = 這裡，手邊的）",
+  "note": ""
+ },
+ {
+  "id": "L6_voilà",
+  "lesson": 6,
+  "fr": "voilà",
+  "zh": "那裡是⋯ / 瞧！（là = 那裡，也用來介紹某人）",
+  "note": ""
+ },
+ {
+  "id": "L6_près_de_chez_moi",
+  "lesson": 6,
+  "fr": "près de chez moi",
+  "zh": "在我家附近",
+  "note": ""
+ },
+ {
+  "id": "L6_loin_du_centre",
+  "lesson": 6,
+  "fr": "loin du centre",
+  "zh": "離市中心很遠",
+  "note": ""
+ },
+ {
+  "id": "L6_Il_n'est_pas_loin_",
+  "lesson": 6,
+  "fr": "Il n'est pas loin.",
+  "zh": "不遠。（pas loin ≈ près）",
+  "note": ""
+ },
+ {
+  "id": "L6_les_transports_en_commun",
+  "lesson": 6,
+  "fr": "les transports en commun (m.)",
+  "zh": "大眾交通工具",
+  "note": ""
+ },
+ {
+  "id": "L6_le_covoiturage",
+  "lesson": 6,
+  "fr": "le covoiturage",
+  "zh": "共乘（carpooling）",
+  "note": ""
+ },
+ {
+  "id": "L6_gratuit___gratuite",
+  "lesson": 6,
+  "fr": "gratuit / gratuite",
+  "zh": "免費的",
+  "note": ""
+ },
+ {
+  "id": "L6_se_déplacer",
+  "lesson": 6,
+  "fr": "se déplacer",
+  "zh": "移動、出行",
+  "note": ""
+ },
+ {
+  "id": "L6_économiser_de_l'argent",
+  "lesson": 6,
+  "fr": "économiser de l'argent",
+  "zh": "省錢",
+  "note": ""
+ },
+ {
+  "id": "L6_Prenez_le_métro__",
+  "lesson": 6,
+  "fr": "Prenez le métro !",
+  "zh": "搭地鐵去！",
+  "note": ""
+ },
+ {
+  "id": "L6_Montez_dans_le_bus_",
+  "lesson": 6,
+  "fr": "Montez dans le bus.",
+  "zh": "上公車。",
+  "note": ""
+ },
+ {
+  "id": "L6_Descendez_à_l'arrêt_Répu",
+  "lesson": 6,
+  "fr": "Descendez à l'arrêt République.",
+  "zh": "在共和廣場站下車。",
+  "note": ""
+ },
+ {
+  "id": "L6_N'achetez_pas_de_tickets",
+  "lesson": 6,
+  "fr": "N'achetez pas de tickets.",
+  "zh": "不用買票。（否定命令）",
+  "note": ""
+ },
+ {
+  "id": "L6_Regarde_sur_ton_téléphon",
+  "lesson": 6,
+  "fr": "Regarde sur ton téléphone.",
+  "zh": "看你的手機。（tu 形）",
+  "note": ""
+ },
+ {
+  "id": "L6_Sois_sympa__",
+  "lesson": 6,
+  "fr": "Sois sympa !",
+  "zh": "友善一點！（être tu）",
+  "note": ""
+ },
+ {
+  "id": "L6_Ayez_confiance__",
+  "lesson": 6,
+  "fr": "Ayez confiance !",
+  "zh": "要有信心！（avoir vous）",
+  "note": ""
+ },
+ {
+  "id": "L6_____etc_",
+  "lesson": 6,
+  "fr": ":10 etc.",
+  "zh": "直接加分鐘",
+  "note": "Il est deux heures dix."
+ },
+ {
+  "id": "L6_toujours",
+  "lesson": 6,
+  "fr": "toujours",
+  "zh": "總是 always",
+  "note": "Je vais toujours au musée."
+ },
+ {
+  "id": "L6_souvent",
+  "lesson": 6,
+  "fr": "souvent",
+  "zh": "常常 often",
+  "note": "Je vais souvent au musée."
+ },
+ {
+  "id": "L6_déjà",
+  "lesson": 6,
+  "fr": "déjà",
+  "zh": "已經 already",
+  "note": "Nous avons déjà vu ce film."
+ },
+ {
+  "id": "L6_jamais",
+  "lesson": 6,
+  "fr": "jamais",
+  "zh": "從不 never",
+  "note": "Je ne vais jamais au théâtre."
+ },
+ {
+  "id": "L6_ne_____jamais",
+  "lesson": 6,
+  "fr": "ne ... jamais",
+  "zh": "從不",
+  "note": "Je ne vais jamais au cinéma."
+ },
+ {
+  "id": "L6_ne_____rien",
+  "lesson": 6,
+  "fr": "ne ... rien",
+  "zh": "什麼都不",
+  "note": "Elle ne boit rien."
+ },
+ {
+  "id": "L6_ne_____personne",
+  "lesson": 6,
+  "fr": "ne ... personne",
+  "zh": "沒有任何人",
+  "note": "Je ne connais personne ici."
+ },
+ {
+  "id": "L6_ne_____plus",
+  "lesson": 6,
+  "fr": "ne ... plus",
+  "zh": "不再（已停止）",
+  "note": "Il ne fait plus de sport."
+ },
+ {
+  "id": "L7_se_déplacer",
+  "lesson": 7,
+  "fr": "se déplacer",
+  "zh": "移動、出行（反身動詞）",
+  "note": ""
+ },
+ {
+  "id": "L7_l'arrêt__m_____la_statio",
+  "lesson": 7,
+  "fr": "l'arrêt (m.) / la station",
+  "zh": "（公車）站 / （地鐵）站，意思相同",
+  "note": ""
+ },
+ {
+  "id": "L7_la_ligne",
+  "lesson": 7,
+  "fr": "la ligne",
+  "zh": "路線（ex. la ligne bleue）",
+  "note": ""
+ },
+ {
+  "id": "L7_l'itinéraire__m__",
+  "lesson": 7,
+  "fr": "l'itinéraire (m.)",
+  "zh": "路線圖、行程路徑",
+  "note": ""
+ },
+ {
+  "id": "L7_la_carte_de_transport",
+  "lesson": 7,
+  "fr": "la carte de transport",
+  "zh": "交通卡（悠遊卡）",
+  "note": ""
+ },
+ {
+  "id": "L7_le_ticket___le_jeton",
+  "lesson": 7,
+  "fr": "le ticket / le jeton",
+  "zh": "票 / 代幣（台灣地鐵用 jeton）",
+  "note": ""
+ },
+ {
+  "id": "L7_louer_une_voiture",
+  "lesson": 7,
+  "fr": "louer une voiture",
+  "zh": "租車（louer = to rent）",
+  "note": ""
+ },
+ {
+  "id": "L7_monter_dans_le_bus",
+  "lesson": 7,
+  "fr": "monter dans le bus",
+  "zh": "上公車",
+  "note": ""
+ },
+ {
+  "id": "L7_d'ici_jusqu'à_là_bas",
+  "lesson": 7,
+  "fr": "d'ici jusqu'à là-bas",
+  "zh": "從這裡一直到那裡",
+  "note": ""
+ },
+ {
+  "id": "L7_Pour_aller_au_travail__j",
+  "lesson": 7,
+  "fr": "Pour aller au travail, je prends ma voiture.",
+  "zh": "去上班我開車。",
+  "note": ""
+ },
+ {
+  "id": "L7_Ma_famille_n'utilise_que",
+  "lesson": 7,
+  "fr": "Ma famille n'utilise que les transports en commun.",
+  "zh": "我家只用大眾交通。",
+  "note": ""
+ },
+ {
+  "id": "L7_Au_Japon__on_va_louer_un",
+  "lesson": 7,
+  "fr": "Au Japon, on va louer une voiture.",
+  "zh": "在日本我們要租車。",
+  "note": ""
+ },
+ {
+  "id": "L7_Ne_prends_pas_la_voiture",
+  "lesson": 7,
+  "fr": "Ne prends pas la voiture.",
+  "zh": "不要開車。（否定命令 tu）",
+  "note": ""
+ },
+ {
+  "id": "L7_La_semaine__j'utilise_le",
+  "lesson": 7,
+  "fr": "La semaine, j'utilise les transports en commun.",
+  "zh": "工作日我搭大眾交通。",
+  "note": ""
+ },
+ {
+  "id": "L7_Le_week_end__je_prends_m",
+  "lesson": 7,
+  "fr": "Le week-end, je prends ma voiture.",
+  "zh": "週末我開車。",
+  "note": ""
+ },
+ {
+  "id": "L7_un_jean__m__",
+  "lesson": 7,
+  "fr": "un jean (m.)",
+  "zh": "牛仔褲（複數 des jeans）",
+  "note": ""
+ },
+ {
+  "id": "L7_une_jupe__f__",
+  "lesson": 7,
+  "fr": "une jupe (f.)",
+  "zh": "裙子",
+  "note": ""
+ },
+ {
+  "id": "L7_une_robe__f__",
+  "lesson": 7,
+  "fr": "une robe (f.)",
+  "zh": "洋裝",
+  "note": ""
+ },
+ {
+  "id": "L7_un_t_shirt__m__",
+  "lesson": 7,
+  "fr": "un t-shirt (m.)",
+  "zh": "T恤",
+  "note": ""
+ },
+ {
+  "id": "L7_une_chemise__f__",
+  "lesson": 7,
+  "fr": "une chemise (f.)",
+  "zh": "（男）襯衫",
+  "note": ""
+ },
+ {
+  "id": "L7_un_short__m__",
+  "lesson": 7,
+  "fr": "un short (m.)",
+  "zh": "短褲",
+  "note": ""
+ },
+ {
+  "id": "L7_un_pull__m__",
+  "lesson": 7,
+  "fr": "un pull (m.)",
+  "zh": "毛衣、厚上衣（sweater）",
+  "note": ""
+ },
+ {
+  "id": "L7_un_pantalon__m__",
+  "lesson": 7,
+  "fr": "un pantalon (m.)",
+  "zh": "長褲",
+  "note": ""
+ },
+ {
+  "id": "L7_une_veste__f__",
+  "lesson": 7,
+  "fr": "une veste (f.)",
+  "zh": "外套、夾克",
+  "note": ""
+ },
+ {
+  "id": "L7_un_costume__m__",
+  "lesson": 7,
+  "fr": "un costume (m.)",
+  "zh": "西裝",
+  "note": ""
+ },
+ {
+  "id": "L7_des_baskets__f_pl__",
+  "lesson": 7,
+  "fr": "des baskets (f.pl.)",
+  "zh": "運動鞋（sports shoes）",
+  "note": ""
+ },
+ {
+  "id": "L7_des_chaussures__f_pl__",
+  "lesson": 7,
+  "fr": "des chaussures (f.pl.)",
+  "zh": "鞋子",
+  "note": ""
+ },
+ {
+  "id": "L7_une_ceinture__f__",
+  "lesson": 7,
+  "fr": "une ceinture (f.)",
+  "zh": "皮帶",
+  "note": ""
+ },
+ {
+  "id": "L7_des_lunettes_de_soleil__",
+  "lesson": 7,
+  "fr": "des lunettes de soleil (f.pl.)",
+  "zh": "太陽眼鏡",
+  "note": ""
+ },
+ {
+  "id": "L7_un_sac_à_main__m__",
+  "lesson": 7,
+  "fr": "un sac à main (m.)",
+  "zh": "手提包（handbag）",
+  "note": ""
+ },
+ {
+  "id": "L7_des_bijoux__m_pl__",
+  "lesson": 7,
+  "fr": "des bijoux (m.pl.)",
+  "zh": "首飾、珠寶（jewellery）",
+  "note": ""
+ },
+ {
+  "id": "L7_neuf___neuve",
+  "lesson": 7,
+  "fr": "neuf / neuve",
+  "zh": "全新的（new）",
+  "note": ""
+ },
+ {
+  "id": "L7_d'occasion",
+  "lesson": 7,
+  "fr": "d'occasion",
+  "zh": "二手的（used）",
+  "note": ""
+ },
+ {
+  "id": "L7_le_prix",
+  "lesson": 7,
+  "fr": "le prix",
+  "zh": "價格（combien ça coûte ?）",
+  "note": ""
+ },
+ {
+  "id": "L7_cher___chère",
+  "lesson": 7,
+  "fr": "cher / chère",
+  "zh": "貴",
+  "note": ""
+ },
+ {
+  "id": "L7_pas_cher___bon_marché",
+  "lesson": 7,
+  "fr": "pas cher / bon marché",
+  "zh": "便宜（法語沒有「便宜」一字，說「不貴」或「好市場」）",
+  "note": ""
+ },
+ {
+  "id": "L7_une_bonne_affaire",
+  "lesson": 7,
+  "fr": "une bonne affaire",
+  "zh": "划算、好買賣（good deal）",
+  "note": ""
+ },
+ {
+  "id": "L7_les_affaires__f_pl__",
+  "lesson": 7,
+  "fr": "les affaires (f.pl.)",
+  "zh": "東西（mes affaires = my things）也可指「生意」：un homme d'affaires = 商人",
+  "note": ""
+ },
+ {
+  "id": "L7_Tu_fais_quelle_taille__",
+  "lesson": 7,
+  "fr": "Tu fais quelle taille ?",
+  "zh": "你穿幾號？（衣服）",
+  "note": ""
+ },
+ {
+  "id": "L7_Je_fais_du_S___M___L___X",
+  "lesson": 7,
+  "fr": "Je fais du S / M / L / XL.",
+  "zh": "我穿 S / M / L / XL。",
+  "note": ""
+ },
+ {
+  "id": "L7_Tu_fais_du____",
+  "lesson": 7,
+  "fr": "Tu fais du 38.",
+  "zh": "你穿 38 號。（褲子褲頭尺寸）",
+  "note": ""
+ },
+ {
+  "id": "L7_Tu_chausses_combien__",
+  "lesson": 7,
+  "fr": "Tu chausses combien ?",
+  "zh": "你穿幾號鞋？",
+  "note": ""
+ },
+ {
+  "id": "L7_Je_chausse_du____",
+  "lesson": 7,
+  "fr": "Je chausse du 42.",
+  "zh": "我穿 42 號鞋。",
+  "note": ""
+ },
+ {
+  "id": "L7_Tu_fais_combien__",
+  "lesson": 7,
+  "fr": "Tu fais combien ?",
+  "zh": "你幾公分？（身高）",
+  "note": ""
+ },
+ {
+  "id": "L7_Je_fais__m___",
+  "lesson": 7,
+  "fr": "Je fais 1m80.",
+  "zh": "我 180 公分。",
+  "note": ""
+ },
+ {
+  "id": "L7_C'est_à_la_mode____C'est",
+  "lesson": 7,
+  "fr": "C'est à la mode. / C'est tendance.",
+  "zh": "這很流行。（= trendy）",
+  "note": ""
+ },
+ {
+  "id": "L7_Ce_n'est_pas_à_la_mode_",
+  "lesson": 7,
+  "fr": "Ce n'est pas à la mode.",
+  "zh": "這不流行了。",
+  "note": ""
+ },
+ {
+  "id": "L7_Il___Elle_me_plaît_",
+  "lesson": 7,
+  "fr": "Il / Elle me plaît.",
+  "zh": "我喜歡它。（plaire = to please；主詞是「物」！）",
+  "note": ""
+ },
+ {
+  "id": "L7_Je_trouve_ça_joli_e__",
+  "lesson": 7,
+  "fr": "Je trouve ça joli(e).",
+  "zh": "我覺得這很好看。",
+  "note": ""
+ },
+ {
+  "id": "L7_Il_me_va_bien_",
+  "lesson": 7,
+  "fr": "Il me va bien.",
+  "zh": "這件穿起來很適合我。（look good on me）",
+  "note": ""
+ },
+ {
+  "id": "L7_Il_adore_la_mode_",
+  "lesson": 7,
+  "fr": "Il adore la mode.",
+  "zh": "他很愛時尚。",
+  "note": ""
+ },
+ {
+  "id": "L7_mille",
+  "lesson": 7,
+  "fr": "mille",
+  "zh": "1 000（注意：不加 s）",
+  "note": ""
+ },
+ {
+  "id": "L7_un_million___deux_millio",
+  "lesson": 7,
+  "fr": "un million / deux millions",
+  "zh": "1 000 000（複數加 s）",
+  "note": ""
+ },
+ {
+  "id": "L7_un_milliard___deux_milli",
+  "lesson": 7,
+  "fr": "un milliard / deux milliards",
+  "zh": "1 000 000 000（複數加 s）",
+  "note": ""
+ },
+ {
+  "id": "L7_parce_que___parce_qu'",
+  "lesson": 7,
+  "fr": "parce que / parce qu'",
+  "zh": "原因（因為）",
+  "note": "Parce que c'est pratique."
+ },
+ {
+  "id": "L7_mais",
+  "lesson": 7,
+  "fr": "mais",
+  "zh": "轉折（但是）",
+  "note": "Mais ça coûte cher."
+ },
+ {
+  "id": "L7_avec",
+  "lesson": 7,
+  "fr": "avec",
+  "zh": "伴隨（和、帶著）",
+  "note": "Avec mon mari."
+ },
+ {
+  "id": "L7_la_semaine___en_semaine",
+  "lesson": 7,
+  "fr": "la semaine / en semaine",
+  "zh": "工作日",
+  "note": "週一～週五（5天）"
+ },
+ {
+  "id": "L7_le_week_end",
+  "lesson": 7,
+  "fr": "le week-end",
+  "zh": "週末",
+  "note": "週六、週日（2天）"
+ },
+ {
+  "id": "L7_une_semaine",
+  "lesson": 7,
+  "fr": "une semaine",
+  "zh": "一整週",
+  "note": "7天"
+ },
+ {
+  "id": "L8_un_beau_sac_à_dos",
+  "lesson": 8,
+  "fr": "un beau sac à dos",
+  "zh": "一個漂亮的背包（子音開頭，用 beau）",
+  "note": ""
+ },
+ {
+  "id": "L8_un_bel_immeuble",
+  "lesson": 8,
+  "fr": "un bel immeuble",
+  "zh": "一棟漂亮的建築（母音開頭，beau → bel）",
+  "note": ""
+ },
+ {
+  "id": "L8_un_bel_homme",
+  "lesson": 8,
+  "fr": "un bel homme",
+  "zh": "一個美男子（h 不發音，視為母音開頭）",
+  "note": ""
+ },
+ {
+  "id": "L8_un_nouvel_ordinateur",
+  "lesson": 8,
+  "fr": "un nouvel ordinateur",
+  "zh": "一台新電腦（母音開頭，nouveau → nouvel）",
+  "note": ""
+ },
+ {
+  "id": "L8_une_nouvelle_voiture",
+  "lesson": 8,
+  "fr": "une nouvelle voiture",
+  "zh": "一輛新車（陰性 nouvelle）",
+  "note": ""
+ },
+ {
+  "id": "L8_de_beaux_objets",
+  "lesson": 8,
+  "fr": "de beaux objets",
+  "zh": "一些漂亮的物品（複數 beaux；des → de，因為形容詞在前）",
+  "note": ""
+ },
+ {
+  "id": "L8_la_chemise___le_t_shirt_",
+  "lesson": 8,
+  "fr": "la chemise / le t-shirt / le pull",
+  "zh": "襯衫 / T恤 / 毛衣",
+  "note": ""
+ },
+ {
+  "id": "L8_le_pantalon___le_jean___",
+  "lesson": 8,
+  "fr": "le pantalon / le jean / la jupe",
+  "zh": "長褲 / 牛仔褲 / 裙子",
+  "note": ""
+ },
+ {
+  "id": "L8_le_gilet___le_manteau",
+  "lesson": 8,
+  "fr": "le gilet / le manteau",
+  "zh": "背心、針織外套 / 大衣",
+  "note": ""
+ },
+ {
+  "id": "L8_l'imperméable__m_____l'i",
+  "lesson": 8,
+  "fr": "l'imperméable (m.) / l'imper",
+  "zh": "雨衣（口語簡稱 imper）",
+  "note": ""
+ },
+ {
+  "id": "L8_le_costume",
+  "lesson": 8,
+  "fr": "le costume",
+  "zh": "整套西裝（外套+褲子）",
+  "note": ""
+ },
+ {
+  "id": "L8_la_robe__courte_",
+  "lesson": 8,
+  "fr": "la robe (courte)",
+  "zh": "（短）洋裝；注意 court 陰性加 -e，t 才發音",
+  "note": ""
+ },
+ {
+  "id": "L8_le_bijou___les_bijoux",
+  "lesson": 8,
+  "fr": "le bijou / les bijoux",
+  "zh": "珠寶（複數不規則：-x）",
+  "note": ""
+ },
+ {
+  "id": "L8_la_ceinture___le_chapeau",
+  "lesson": 8,
+  "fr": "la ceinture / le chapeau / la casquette",
+  "zh": "腰帶 / 帽子 / 鴨舌帽",
+  "note": ""
+ },
+ {
+  "id": "L8_les_chaussures__f_____le",
+  "lesson": 8,
+  "fr": "les chaussures (f.) / les baskets / les bottes",
+  "zh": "鞋子 / 運動鞋 / 靴子",
+  "note": ""
+ },
+ {
+  "id": "L8_la_cravate___les_lunette",
+  "lesson": 8,
+  "fr": "la cravate / les lunettes de soleil",
+  "zh": "領帶 / 太陽眼鏡",
+  "note": ""
+ },
+ {
+  "id": "L8_le_parapluie___le_paraso",
+  "lesson": 8,
+  "fr": "le parapluie / le parasol",
+  "zh": "雨傘（防雨 para+pluie） / 陽傘（防太陽 para+soleil）",
+  "note": ""
+ },
+ {
+  "id": "L8_le_sac_à_main___le_sac_à",
+  "lesson": 8,
+  "fr": "le sac à main / le sac à dos",
+  "zh": "手提包（女用） / 背包",
+  "note": ""
+ },
+ {
+  "id": "L8_blanc_blanche__bleu__gri",
+  "lesson": 8,
+  "fr": "blanc/blanche, bleu, gris/grise, jaune",
+  "zh": "白、藍、灰、黃",
+  "note": ""
+ },
+ {
+  "id": "L8_marron__noir_noire__rose",
+  "lesson": 8,
+  "fr": "marron, noir/noire, rose, rouge, vert/verte, orange",
+  "zh": "棕、黑、粉、紅、綠、橘",
+  "note": ""
+ },
+ {
+  "id": "L8_rouge___jaune___orange__",
+  "lesson": 8,
+  "fr": "rouge + jaune = orange ; bleu + jaune = vert",
+  "zh": "調色口訣",
+  "note": ""
+ },
+ {
+  "id": "L8_en_coton___en_laine___en",
+  "lesson": 8,
+  "fr": "en coton / en laine / en soie",
+  "zh": "棉 / 羊毛 / 絲",
+  "note": ""
+ },
+ {
+  "id": "L8_en_cuir___en_jean___en_l",
+  "lesson": 8,
+  "fr": "en cuir / en jean / en lin",
+  "zh": "皮革 / 牛仔布 / 麻（夏天材質）",
+  "note": ""
+ },
+ {
+  "id": "L8_Tu_fais_quelle_taille__",
+  "lesson": 8,
+  "fr": "Tu fais quelle taille ?",
+  "zh": "你穿幾號？（衣服尺碼）",
+  "note": ""
+ },
+ {
+  "id": "L8_Je_fais_du_S___M___L___X",
+  "lesson": 8,
+  "fr": "Je fais du S / M / L / XL.",
+  "zh": "我穿 S / M / L / XL。",
+  "note": ""
+ },
+ {
+  "id": "L8_Tu_chausses_combien__",
+  "lesson": 8,
+  "fr": "Tu chausses combien ?",
+  "zh": "你穿幾號鞋？（chausser = 穿鞋）",
+  "note": ""
+ },
+ {
+  "id": "L8_Je_chausse_du____",
+  "lesson": 8,
+  "fr": "Je chausse du 42.",
+  "zh": "我穿 42 號鞋。",
+  "note": ""
+ },
+ {
+  "id": "L8_mon_tour_de_taille___mon",
+  "lesson": 8,
+  "fr": "mon tour de taille / mon tour de poitrine",
+  "zh": "我的腰圍 / 我的胸圍（tour = 一圈）",
+  "note": ""
+ },
+ {
+  "id": "L8_la_pointure",
+  "lesson": 8,
+  "fr": "la pointure",
+  "zh": "鞋子尺碼專用字（taille 是衣服尺碼）",
+  "note": ""
+ },
+ {
+  "id": "L8_Il_fait_beau____Il_y_a_d",
+  "lesson": 8,
+  "fr": "Il fait beau. / Il y a du soleil.",
+  "zh": "天氣好。/ 有太陽。",
+  "note": ""
+ },
+ {
+  "id": "L8_Il_fait_mauvais____Il_fa",
+  "lesson": 8,
+  "fr": "Il fait mauvais. / Il fait moche.",
+  "zh": "天氣不好。（moche 較口語）",
+  "note": ""
+ },
+ {
+  "id": "L8_Il_fait_chaud____Il_fait",
+  "lesson": 8,
+  "fr": "Il fait chaud. / Il fait froid.",
+  "zh": "天氣熱。 / 天氣冷。",
+  "note": ""
+ },
+ {
+  "id": "L8_Il_pleut____Il_neige_",
+  "lesson": 8,
+  "fr": "Il pleut. / Il neige.",
+  "zh": "下雨。 / 下雪。",
+  "note": ""
+ },
+ {
+  "id": "L8_Il_y_a_du_vent____Il_y_a",
+  "lesson": 8,
+  "fr": "Il y a du vent. / Il y a du brouillard.",
+  "zh": "有風。 / 有霧。",
+  "note": ""
+ },
+ {
+  "id": "L8_Il_fait____degrés____Il_",
+  "lesson": 8,
+  "fr": "Il fait 30 degrés. / Il fait -10°C.",
+  "zh": "氣溫 30 度。/ 零下 10 度。",
+  "note": ""
+ },
+ {
+  "id": "L8_en_hiver__en_été__en_aut",
+  "lesson": 8,
+  "fr": "en hiver, en été, en automne",
+  "zh": "在冬天、夏天、秋天（用 en）",
+  "note": ""
+ },
+ {
+  "id": "L8_au_printemps",
+  "lesson": 8,
+  "fr": "au printemps",
+  "zh": "在春天（例外用 au，因為 printemps 發音關係）",
+  "note": ""
+ },
+ {
+  "id": "L8_en_janvier__en_avril__en",
+  "lesson": 8,
+  "fr": "en janvier, en avril, en juillet…",
+  "zh": "月份前一律用 en",
+  "note": ""
+ },
+ {
+  "id": "L8_début_septembre___mi_sep",
+  "lesson": 8,
+  "fr": "début septembre / mi-septembre / fin septembre",
+  "zh": "九月初 / 九月中 / 九月底",
+  "note": ""
+ },
+ {
+  "id": "L8_Noël__c'est_en_décembre_",
+  "lesson": 8,
+  "fr": "Noël, c'est en décembre.",
+  "zh": "聖誕節在十二月。（年份也用 en：en 2025）",
+  "note": ""
+ },
+ {
+  "id": "L8_Demain_soir__je_vais_fin",
+  "lesson": 8,
+  "fr": "Demain soir, je vais finir la robe.",
+  "zh": "明晚我要把洋裝做完。",
+  "note": ""
+ },
+ {
+  "id": "L8_L'hiver_va_être_difficil",
+  "lesson": 8,
+  "fr": "L'hiver va être difficile.",
+  "zh": "冬天會很難過。",
+  "note": ""
+ },
+ {
+  "id": "L8_La_semaine_prochaine__no",
+  "lesson": 8,
+  "fr": "La semaine prochaine, nous allons tricoter un pull.",
+  "zh": "下星期我們要織一件毛衣。",
+  "note": ""
+ },
+ {
+  "id": "L8_Mes_filles_vont_être_con",
+  "lesson": 8,
+  "fr": "Mes filles vont être contentes.",
+  "zh": "我女兒們會很開心。",
+  "note": ""
+ },
+ {
+  "id": "L8_Venez_nombreux__",
+  "lesson": 8,
+  "fr": "Venez nombreux !",
+  "zh": "歡迎所有人來！（nombreux = 很多人，廣告用語）",
+  "note": ""
+ },
+ {
+  "id": "L8_ce_téléphone",
+  "lesson": 8,
+  "fr": "ce téléphone",
+  "zh": "這支手機（子音開頭，陽性單數）",
+  "note": ""
+ },
+ {
+  "id": "L8_cet_ordinateur",
+  "lesson": 8,
+  "fr": "cet ordinateur",
+  "zh": "這台電腦（母音開頭，ce → cet）",
+  "note": ""
+ },
+ {
+  "id": "L8_cette_valise",
+  "lesson": 8,
+  "fr": "cette valise",
+  "zh": "這個行李箱（陰性單數）",
+  "note": ""
+ },
+ {
+  "id": "L8_ces_téléphones_sont_des_",
+  "lesson": 8,
+  "fr": "ces téléphones sont des iPhones.",
+  "zh": "這些手機是 iPhone。（複數 ces，不分陰陽）",
+  "note": ""
+ },
+ {
+  "id": "L8_le_téléphone__portable__",
+  "lesson": 8,
+  "fr": "le téléphone (portable) / le smartphone",
+  "zh": "（手機）/ 智慧型手機",
+  "note": ""
+ },
+ {
+  "id": "L8_la_montre_connectée",
+  "lesson": 8,
+  "fr": "la montre connectée",
+  "zh": "智能手錶（connecté = 連網的）",
+  "note": ""
+ },
+ {
+  "id": "L8_l'ordinateur__portable__",
+  "lesson": 8,
+  "fr": "l'ordinateur (portable) / la tablette",
+  "zh": "（筆記型）電腦 / 平板",
+  "note": ""
+ },
+ {
+  "id": "L8_les_écouteurs_sans_fil",
+  "lesson": 8,
+  "fr": "les écouteurs sans fil",
+  "zh": "無線耳機",
+  "note": ""
+ },
+ {
+  "id": "L8_une_enceinte__Bluetooth_",
+  "lesson": 8,
+  "fr": "une enceinte (Bluetooth)",
+  "zh": "（藍牙）喇叭（不是耳機！是音響）",
+  "note": ""
+ },
+ {
+  "id": "L8_la_batterie_externe",
+  "lesson": 8,
+  "fr": "la batterie externe",
+  "zh": "行動電源（口語也說 power bank）",
+  "note": ""
+ },
+ {
+  "id": "L8_le_porte_clés___le_porte",
+  "lesson": 8,
+  "fr": "le porte-clés / le portefeuille",
+  "zh": "鑰匙圈 / 錢包",
+  "note": ""
+ },
+ {
+  "id": "L8_le_cadre_photo___l'étui",
+  "lesson": 8,
+  "fr": "le cadre photo / l'étui",
+  "zh": "相框 / （眼鏡等的）盒子・套",
+  "note": ""
+ },
+ {
+  "id": "L8_la_valise",
+  "lesson": 8,
+  "fr": "la valise",
+  "zh": "行李箱",
+  "note": ""
+ },
+ {
+  "id": "L8_carré_e____rond_e____rec",
+  "lesson": 8,
+  "fr": "carré(e) / rond(e) / rectangulaire",
+  "zh": "方形 / 圓形 / 長方形",
+  "note": ""
+ },
+ {
+  "id": "L8_léger_légère___lourd_e_",
+  "lesson": 8,
+  "fr": "léger/légère / lourd(e)",
+  "zh": "輕的 / 重的",
+  "note": ""
+ },
+ {
+  "id": "L8_le_poids___la_taille",
+  "lesson": 8,
+  "fr": "le poids / la taille",
+  "zh": "重量 / 大小尺寸",
+  "note": ""
+ },
+ {
+  "id": "L8__a_sert_à_quoi_______quo",
+  "lesson": 8,
+  "fr": "Ça sert à quoi ? / À quoi ça sert ?",
+  "zh": "這是做什麼用的？（兩種語序都可以）",
+  "note": ""
+ },
+ {
+  "id": "L8__a_sert_à_téléphoner_",
+  "lesson": 8,
+  "fr": "Ça sert à téléphoner.",
+  "zh": "這是用來打電話的。（sert à + 原形動詞）",
+  "note": ""
+ },
+ {
+  "id": "L8__a_sert_à_écouter_de_la_",
+  "lesson": 8,
+  "fr": "Ça sert à écouter de la musique.",
+  "zh": "這是用來聽音樂的。",
+  "note": ""
+ },
+ {
+  "id": "L8__a_sert_à_se_repérer____",
+  "lesson": 8,
+  "fr": "Ça sert à se repérer. / Ça sert à se connecter.",
+  "zh": "這是用來定位的。/ 用來連網的。",
+  "note": ""
+ },
+ {
+  "id": "L8_se_réveiller",
+  "lesson": 8,
+  "fr": "se réveiller",
+  "zh": "醒來（je me réveille）",
+  "note": ""
+ },
+ {
+  "id": "L8_se_lever",
+  "lesson": 8,
+  "fr": "se lever",
+  "zh": "起床（je me lève）",
+  "note": ""
+ },
+ {
+  "id": "L8_se_doucher",
+  "lesson": 8,
+  "fr": "se doucher",
+  "zh": "洗澡（je me douche）",
+  "note": ""
+ },
+ {
+  "id": "L8_s'habiller___mettre_des_",
+  "lesson": 8,
+  "fr": "s'habiller / mettre des vêtements",
+  "zh": "穿衣服（je m'habille / je mets des vêtements）",
+  "note": ""
+ },
+ {
+  "id": "L8_se_coiffer",
+  "lesson": 8,
+  "fr": "se coiffer",
+  "zh": "整理頭髮（je me coiffe）",
+  "note": ""
+ },
+ {
+  "id": "L8_se_maquiller",
+  "lesson": 8,
+  "fr": "se maquiller",
+  "zh": "化妝（je me maquille）",
+  "note": ""
+ },
+ {
+  "id": "L8_prendre_le_petit_déjeune",
+  "lesson": 8,
+  "fr": "prendre le petit déjeuner",
+  "zh": "吃早餐（不是反身動詞）",
+  "note": ""
+ },
+ {
+  "id": "L8_se_coucher",
+  "lesson": 8,
+  "fr": "se coucher",
+  "zh": "上床睡覺（je me couche）",
+  "note": ""
+ },
+ {
+  "id": "L9_un_jour",
+  "lesson": 9,
+  "fr": "un jour",
+  "zh": "一天（24小時的概念）",
+  "note": ""
+ },
+ {
+  "id": "L9_une_journée",
+  "lesson": 9,
+  "fr": "une journée",
+  "zh": "白天醒著的時間（不含睡覺）",
+  "note": ""
+ },
+ {
+  "id": "L9_Bonne_journée__",
+  "lesson": 9,
+  "fr": "Bonne journée !",
+  "zh": "祝你有美好的一天！（不是 bonjour，bonjour 只是「嗨」）",
+  "note": ""
+ },
+ {
+  "id": "L9_se_lever",
+  "lesson": 9,
+  "fr": "se lever",
+  "zh": "起床、下床（離開床的動作）",
+  "note": ""
+ },
+ {
+  "id": "L9_se_coucher",
+  "lesson": 9,
+  "fr": "se coucher",
+  "zh": "上床、躺下準備睡（進入床的動作，不一定馬上睡著）",
+  "note": ""
+ },
+ {
+  "id": "L9_dormir",
+  "lesson": 9,
+  "fr": "dormir",
+  "zh": "睡覺（睡著的狀態）",
+  "note": ""
+ },
+ {
+  "id": "L9_s'endormir",
+  "lesson": 9,
+  "fr": "s'endormir",
+  "zh": "入睡（從醒著進入睡著的那個瞬間）",
+  "note": ""
+ },
+ {
+  "id": "L9_se_réveiller",
+  "lesson": 9,
+  "fr": "se réveiller",
+  "zh": "醒來（睜開眼睛）",
+  "note": ""
+ },
+ {
+  "id": "L9_se_brosser_les_dents",
+  "lesson": 9,
+  "fr": "se brosser les dents",
+  "zh": "刷牙",
+  "note": ""
+ },
+ {
+  "id": "L9_se_raser",
+  "lesson": 9,
+  "fr": "se raser",
+  "zh": "刮鬍子",
+  "note": ""
+ },
+ {
+  "id": "L9_faire_des_insomnies___l'",
+  "lesson": 9,
+  "fr": "faire des insomnies / l'insomnie",
+  "zh": "失眠",
+  "note": ""
+ },
+ {
+  "id": "L9_se_promener",
+  "lesson": 9,
+  "fr": "se promener",
+  "zh": "散步",
+  "note": ""
+ },
+ {
+  "id": "L9_s'organiser",
+  "lesson": 9,
+  "fr": "s'organiser",
+  "zh": "安排自己（的事情）",
+  "note": ""
+ },
+ {
+  "id": "L9_une_émission",
+  "lesson": 9,
+  "fr": "une émission",
+  "zh": "（電視/廣播）節目",
+  "note": ""
+ },
+ {
+  "id": "L9_un_e__collègue",
+  "lesson": 9,
+  "fr": "un(e) collègue",
+  "zh": "同事",
+  "note": ""
+ },
+ {
+  "id": "L9_une_compétition__sportiv",
+  "lesson": 9,
+  "fr": "une compétition (sportive)",
+  "zh": "（體育）競賽",
+  "note": ""
+ },
+ {
+  "id": "L9_interviewer___une_interv",
+  "lesson": 9,
+  "fr": "interviewer / une interview",
+  "zh": "採訪（法文 interview 只用在記者採訪，不用於求職面試）",
+  "note": ""
+ },
+ {
+  "id": "L9_poser_des_questions",
+  "lesson": 9,
+  "fr": "poser des questions",
+  "zh": "提問（不能說 demander des questions）",
+  "note": ""
+ },
+ {
+  "id": "L9_filmer",
+  "lesson": 9,
+  "fr": "filmer",
+  "zh": "錄影、拍攝",
+  "note": ""
+ },
+ {
+  "id": "L9_discuter___une_discussio",
+  "lesson": 9,
+  "fr": "discuter / une discussion",
+  "zh": "聊、討論（法文比英文 discuss 輕鬆，可以只是閒聊）",
+  "note": ""
+ },
+ {
+  "id": "L9_arrêter_de_travailler",
+  "lesson": 9,
+  "fr": "arrêter de travailler",
+  "zh": "停止工作（arrêter de + 原形）",
+  "note": ""
+ },
+ {
+  "id": "L9_rentrer__à_la_maison_",
+  "lesson": 9,
+  "fr": "rentrer (à la maison)",
+  "zh": "回家",
+  "note": ""
+ },
+ {
+  "id": "L9_surfer_sur_internet",
+  "lesson": 9,
+  "fr": "surfer sur internet",
+  "zh": "上網瀏覽",
+  "note": ""
+ },
+ {
+  "id": "L9_le_bricolage___bricoler",
+  "lesson": 9,
+  "fr": "le bricolage / bricoler",
+  "zh": "DIY手工修繕 / 做手工修繕",
+  "note": ""
+ },
+ {
+  "id": "L9_faire_la_cuisine",
+  "lesson": 9,
+  "fr": "faire la cuisine",
+  "zh": "做飯",
+  "note": ""
+ },
+ {
+  "id": "L9_faire_la_vaisselle",
+  "lesson": 9,
+  "fr": "faire la vaisselle",
+  "zh": "洗碗（vaisselle = 所有餐具的總稱）",
+  "note": ""
+ },
+ {
+  "id": "L9_faire_la_table",
+  "lesson": 9,
+  "fr": "faire la table",
+  "zh": "擺餐桌（把 vaisselle 放上桌準備用餐）",
+  "note": ""
+ },
+ {
+  "id": "L9_faire_du_jogging",
+  "lesson": 9,
+  "fr": "faire du jogging",
+  "zh": "慢跑",
+  "note": ""
+ },
+ {
+  "id": "L9_un_film_policier",
+  "lesson": 9,
+  "fr": "un film policier",
+  "zh": "警匪片",
+  "note": ""
+ },
+ {
+  "id": "L9_On_ne_sait_pas_comment_i",
+  "lesson": 9,
+  "fr": "On ne sait pas comment il s'appelle.",
+  "zh": "沒人知道他叫什麼名字。（on = 沒有人特定指稱、泛指大眾）",
+  "note": ""
+ },
+ {
+  "id": "L9_Les_Français_n'aiment_pa",
+  "lesson": 9,
+  "fr": "Les Français n'aiment pas ça. / On n'aime pas ça.",
+  "zh": "法國人不喜歡這個。（on 可指某個群體，包含說話者自己）",
+  "note": ""
+ },
+ {
+  "id": "L9_On_va_au_cinéma_ce_soir_",
+  "lesson": 9,
+  "fr": "On va au cinéma ce soir ?",
+  "zh": "我們今晚要去看電影嗎？（口語中 on 常直接取代 nous，更自然親切）",
+  "note": ""
+ },
+ {
+  "id": "L9_Je_peux_le_faire_",
+  "lesson": 9,
+  "fr": "Je peux le faire.",
+  "zh": "我可以做這件事。（le = 那件事，代替前面提過的東西）",
+  "note": ""
+ },
+ {
+  "id": "L9_Je_ne_peux_pas_",
+  "lesson": 9,
+  "fr": "Je ne peux pas.",
+  "zh": "我不能。（沒辦法、沒空）",
+  "note": ""
+ },
+ {
+  "id": "L9_Je_ne_veux_pas____Je_n'a",
+  "lesson": 9,
+  "fr": "Je ne veux pas. / Je n'ai pas envie.",
+  "zh": "我不想。（envie = 想做的慾望，n'avoir pas envie = 不想做）",
+  "note": ""
+ },
+ {
+  "id": "L9__a_te_dit__",
+  "lesson": 9,
+  "fr": "Ça te dit ?",
+  "zh": "你有興趣嗎？（ça = 這件事，te = 對你來說；更口語的問法）",
+  "note": ""
+ },
+ {
+  "id": "L9__a_lui_dit__",
+  "lesson": 9,
+  "fr": "Ça lui dit ?",
+  "zh": "他/她有興趣嗎？（lui = 他/她，間接受詞代名詞）",
+  "note": ""
+ },
+ {
+  "id": "L9_le_jeudi",
+  "lesson": 9,
+  "fr": "le jeudi",
+  "zh": "每個星期四（單數定冠詞 + 星期 = 固定每週這天，不是只說某一個星期四）",
+  "note": ""
+ },
+ {
+  "id": "L9_tous_les_jeudis",
+  "lesson": 9,
+  "fr": "tous les jeudis",
+  "zh": "每個星期四（複數，意思和 le jeudi 完全相同）",
+  "note": ""
+ },
+ {
+  "id": "L9_jeudi",
+  "lesson": 9,
+  "fr": "jeudi",
+  "zh": "星期四（沒有冠詞 = 只指某一個特定的星期四）",
+  "note": ""
+ },
+ {
+  "id": "L10_Qu'est_ce_que_tu_viens_d",
+  "lesson": 10,
+  "fr": "Qu'est-ce que tu viens de dire ?",
+  "zh": "你剛說什麼？",
+  "note": ""
+ },
+ {
+  "id": "L10_Elle_vient_de_commencer_",
+  "lesson": 10,
+  "fr": "Elle vient de commencer, donc elle est encore là.",
+  "zh": "她剛開始，所以她還在。",
+  "note": ""
+ },
+ {
+  "id": "L10_faire_du_bricolage",
+  "lesson": 10,
+  "fr": "faire du bricolage",
+  "zh": "做 DIY、修繕",
+  "note": "bricoler"
+ },
+ {
+  "id": "L10_faire_les_courses",
+  "lesson": 10,
+  "fr": "faire les courses",
+  "zh": "買菜、購物（食品）",
+  "note": "—（⚠️ 複數！）"
+ },
+ {
+  "id": "L10_faire_la_cuisine___faire",
+  "lesson": 10,
+  "fr": "faire la cuisine / faire à manger",
+  "zh": "煮飯",
+  "note": "cuisiner"
+ },
+ {
+  "id": "L10_faire_du_jardinage",
+  "lesson": 10,
+  "fr": "faire du jardinage",
+  "zh": "園藝",
+  "note": "jardiner"
+ },
+ {
+  "id": "L10_faire_une_lessive",
+  "lesson": 10,
+  "fr": "faire une lessive",
+  "zh": "洗衣服",
+  "note": "—"
+ },
+ {
+  "id": "L10_faire_la_vaisselle",
+  "lesson": 10,
+  "fr": "faire la vaisselle",
+  "zh": "洗碗",
+  "note": "—"
+ },
+ {
+  "id": "L10_faire_le_ménage",
+  "lesson": 10,
+  "fr": "faire le ménage",
+  "zh": "打掃家裡",
+  "note": "—"
+ },
+ {
+  "id": "L10_faire_du_dessin___dessin",
+  "lesson": 10,
+  "fr": "faire du dessin / dessiner",
+  "zh": "畫畫",
+  "note": "aller à un cours de dessin = 去上畫畫課"
+ },
+ {
+  "id": "L10_se_promener___se_balader",
+  "lesson": 10,
+  "fr": "se promener / se balader",
+  "zh": "散步",
+  "note": "promener qqn = 帶某人/寵物去走走"
+ },
+ {
+  "id": "L10_faire_des_sorties___sort",
+  "lesson": 10,
+  "fr": "faire des sorties / sortir",
+  "zh": "出去玩、與朋友外出",
+  "note": "Elle fait beaucoup de sorties avec ses amis"
+ },
+ {
+  "id": "L10_écouter_de_la_musique___",
+  "lesson": 10,
+  "fr": "écouter de la musique / la radio",
+  "zh": "聽音樂/廣播",
+  "note": ""
+ },
+ {
+  "id": "L10_faire_du_jogging___du_sp",
+  "lesson": 10,
+  "fr": "faire du jogging / du sport",
+  "zh": "跑步、運動",
+  "note": ""
+ },
+ {
+  "id": "L10_jouer_à_un_jeu_vidéo",
+  "lesson": 10,
+  "fr": "jouer à un jeu vidéo",
+  "zh": "打電動",
+  "note": "jouer = 玩，jeu = 遊戲（同字根）"
+ },
+ {
+  "id": "L10_jouer_à_des_jeux_de_soci",
+  "lesson": 10,
+  "fr": "jouer à des jeux de société",
+  "zh": "玩桌遊",
+  "note": "Monopoly、棋類…"
+ },
+ {
+  "id": "L10_lire",
+  "lesson": 10,
+  "fr": "lire",
+  "zh": "看書",
+  "note": ""
+ },
+ {
+  "id": "L10_regarder_la_télé___un_fi",
+  "lesson": 10,
+  "fr": "regarder la télé / un film",
+  "zh": "看電視/電影",
+  "note": "télévision → la télé（口語縮寫）"
+ },
+ {
+  "id": "L10_surfer_sur_internet",
+  "lesson": 10,
+  "fr": "surfer sur internet",
+  "zh": "上網",
+  "note": ""
+ },
+ {
+  "id": "L10_voir_des_amis___sa_famil",
+  "lesson": 10,
+  "fr": "voir des amis / sa famille",
+  "zh": "見朋友/家人",
+  "note": ""
+ },
+ {
+  "id": "L11_Vous_avez_trouvé_des_meu",
+  "lesson": 11,
+  "fr": "Vous avez trouvé des meubles ?",
+  "zh": "你們找到家具了嗎？",
+  "note": ""
+ },
+ {
+  "id": "L11_On_n'a_pas_trouvé_de_lit",
+  "lesson": 11,
+  "fr": "On n'a pas trouvé de lit, mais on a trouvé deux fauteuils.",
+  "zh": "我們沒找到床，但找到兩張扶手椅。",
+  "note": ""
+ },
+ {
+  "id": "L11_Ils_ont_déménagé_il_y_a_",
+  "lesson": 11,
+  "fr": "Ils ont déménagé il y a dix jours.",
+  "zh": "他們十天前搬家了。",
+  "note": ""
+ },
+ {
+  "id": "L11_Tu_connais_Marc_et_Lydia",
+  "lesson": 11,
+  "fr": "Tu connais Marc et Lydia ? — Je les connais un peu.",
+  "zh": "你認識 Marc 和 Lydia 嗎？— 我有點認識他們。",
+  "note": ""
+ },
+ {
+  "id": "L11_J'adore_ce_quartier__je_",
+  "lesson": 11,
+  "fr": "J'adore ce quartier, je le trouve très agréable.",
+  "zh": "我很愛這個街區，我覺得它很宜人。",
+  "note": ""
+ },
+ {
+  "id": "L11_Tu_as_vu_Sophie_____Non_",
+  "lesson": 11,
+  "fr": "Tu as vu Sophie ? — Non, je ne l'ai pas vue.",
+  "zh": "你有看到 Sophie 嗎？— 沒，我沒看到她。",
+  "note": ""
+ },
+ {
+  "id": "L11_déménager",
+  "lesson": 11,
+  "fr": "déménager",
+  "zh": "搬出（move out）",
+  "note": "On a déménagé il y a 10 jours."
+ },
+ {
+  "id": "L11_emménager",
+  "lesson": 11,
+  "fr": "emménager",
+  "zh": "搬入（move in）",
+  "note": "On emménage dans le nouvel appartement."
+ },
+ {
+  "id": "L11_la_chambre",
+  "lesson": 11,
+  "fr": "la chambre",
+  "zh": "臥室",
+  "note": "⚠️ chambre = 臥室；pièce = 泛指任何房間"
+ },
+ {
+  "id": "L11_la_salle_de_bain",
+  "lesson": 11,
+  "fr": "la salle de bain",
+  "zh": "浴室",
+  "note": "bain = 浴缸；se baigner = 泡澡／游泳"
+ },
+ {
+  "id": "L11_la_cuisine",
+  "lesson": 11,
+  "fr": "la cuisine",
+  "zh": "廚房",
+  "note": ""
+ },
+ {
+  "id": "L11_le_salon",
+  "lesson": 11,
+  "fr": "le salon",
+  "zh": "客廳",
+  "note": ""
+ },
+ {
+  "id": "L11_la_salle_à_manger",
+  "lesson": 11,
+  "fr": "la salle à manger",
+  "zh": "餐廳",
+  "note": ""
+ },
+ {
+  "id": "L11_le_séjour",
+  "lesson": 11,
+  "fr": "le séjour",
+  "zh": "起居室",
+  "note": "salon + salle à manger 合一 = le séjour"
+ },
+ {
+  "id": "L11_le_grenier",
+  "lesson": 11,
+  "fr": "le grenier",
+  "zh": "閣樓",
+  "note": "法國人堆雜物的地方 → vide-grenier"
+ },
+ {
+  "id": "L11_la_terrasse",
+  "lesson": 11,
+  "fr": "la terrasse",
+  "zh": "露台",
+  "note": "法國人愛在 terrasse 喝咖啡、吃飯"
+ },
+ {
+  "id": "L11_le_jardin",
+  "lesson": 11,
+  "fr": "le jardin",
+  "zh": "花園",
+  "note": ""
+ },
+ {
+  "id": "L11_le_frigo",
+  "lesson": 11,
+  "fr": "le frigo",
+  "zh": "冰箱",
+  "note": "réfrigérateur 的俗稱（品牌名轉通用詞，同 renard 取代 goupil）"
+ },
+ {
+  "id": "L11_le_four_à_micro_ondes",
+  "lesson": 11,
+  "fr": "le four à micro-ondes",
+  "zh": "微波爐",
+  "note": "也說 le micro-ondes；four 單獨用 = 烤箱"
+ },
+ {
+  "id": "L11_le_lave_linge",
+  "lesson": 11,
+  "fr": "le lave-linge",
+  "zh": "洗衣機",
+  "note": "linge = 待洗的衣物（dirty laundry）"
+ },
+ {
+  "id": "L11_le_lave_vaisselle",
+  "lesson": 11,
+  "fr": "le lave-vaisselle",
+  "zh": "洗碗機",
+  "note": "法國家庭幾乎都有"
+ },
+ {
+  "id": "L11_la_cuisinière",
+  "lesson": 11,
+  "fr": "la cuisinière",
+  "zh": "瓦斯爐／電磁爐",
+  "note": ""
+ },
+ {
+  "id": "L11_j'ai",
+  "lesson": 11,
+  "fr": "j'ai",
+  "zh": "-ER → 去掉 -er 加 -é",
+  "note": "j'ai trouvé"
+ },
+ {
+  "id": "L11_à_gauche__de_",
+  "lesson": 11,
+  "fr": "à gauche (de)",
+  "zh": "在…左邊",
+  "note": "à gauche du canapé"
+ },
+ {
+  "id": "L11_à_droite__de_",
+  "lesson": 11,
+  "fr": "à droite (de)",
+  "zh": "在…右邊",
+  "note": "à droite de la fenêtre"
+ },
+ {
+  "id": "L11_sur",
+  "lesson": 11,
+  "fr": "sur",
+  "zh": "在…上面",
+  "note": "sur la table"
+ },
+ {
+  "id": "L11_sous",
+  "lesson": 11,
+  "fr": "sous",
+  "zh": "在…下面",
+  "note": "sous la chaise"
+ },
+ {
+  "id": "L11_devant",
+  "lesson": 11,
+  "fr": "devant",
+  "zh": "在…前面",
+  "note": "devant le canapé"
+ },
+ {
+  "id": "L11_derrière",
+  "lesson": 11,
+  "fr": "derrière",
+  "zh": "在…後面",
+  "note": "Je place la table derrière le canapé."
+ },
+ {
+  "id": "L11_à_côté__de_",
+  "lesson": 11,
+  "fr": "à côté (de)",
+  "zh": "在…旁邊",
+  "note": "à côté des fenêtres"
+ },
+ {
+  "id": "L11_en_face__de_",
+  "lesson": 11,
+  "fr": "en face (de)",
+  "zh": "在…對面",
+  "note": "en face du canapé"
+ },
+ {
+  "id": "L11_entre",
+  "lesson": 11,
+  "fr": "entre",
+  "zh": "在…之間",
+  "note": "entre les deux chaises"
+ },
+ {
+  "id": "L11_l'appartement__m__",
+  "lesson": 11,
+  "fr": "l'appartement (m.)",
+  "zh": "公寓",
+  "note": ""
+ },
+ {
+  "id": "L11_l'ascenseur__m__",
+  "lesson": 11,
+  "fr": "l'ascenseur (m.)",
+  "zh": "電梯",
+  "note": "parties communes（公共區域）"
+ },
+ {
+  "id": "L11_le_couloir",
+  "lesson": 11,
+  "fr": "le couloir",
+  "zh": "走廊",
+  "note": "parties communes"
+ },
+ {
+  "id": "L11_l'escalier__m__",
+  "lesson": 11,
+  "fr": "l'escalier (m.)",
+  "zh": "樓梯",
+  "note": "parties communes"
+ },
+ {
+  "id": "L11_le_hall",
+  "lesson": 11,
+  "fr": "le hall",
+  "zh": "大廳入口",
+  "note": "parties communes"
+ },
+ {
+  "id": "L11_le_balcon",
+  "lesson": 11,
+  "fr": "le balcon",
+  "zh": "陽台",
+  "note": ""
+ },
+ {
+  "id": "L11_le_local_à_poubelles",
+  "lesson": 11,
+  "fr": "le local à poubelles",
+  "zh": "垃圾房",
+  "note": ""
+ },
+ {
+  "id": "L11_le_local_à_vélos",
+  "lesson": 11,
+  "fr": "le local à vélos",
+  "zh": "腳踏車停放室",
+  "note": ""
+ },
+ {
+  "id": "L11_la_pelouse",
+  "lesson": 11,
+  "fr": "la pelouse",
+  "zh": "草坪",
+  "note": "Défense de marcher sur la pelouse."
+ },
+ {
+  "id": "L11_la_résidence",
+  "lesson": 11,
+  "fr": "la résidence",
+  "zh": "住宅社區",
+  "note": ""
+ },
+ {
+  "id": "L11_le_la_voisin_e_",
+  "lesson": 11,
+  "fr": "le/la voisin(e)",
+  "zh": "鄰居",
+  "note": "Respectez vos voisins !"
+ },
+ {
+  "id": "L11_les_meubles__m_pl__",
+  "lesson": 11,
+  "fr": "les meubles (m.pl.)",
+  "zh": "家具（總稱）",
+  "note": "Vous avez trouvé des meubles ?"
+ },
+ {
+  "id": "L11_un_lit",
+  "lesson": 11,
+  "fr": "un lit",
+  "zh": "床",
+  "note": "On n'a pas trouvé de lit."
+ },
+ {
+  "id": "L11_un_canapé",
+  "lesson": 11,
+  "fr": "un canapé",
+  "zh": "沙發",
+  "note": "Je place la table derrière le canapé."
+ },
+ {
+  "id": "L11_un_fauteuil",
+  "lesson": 11,
+  "fr": "un fauteuil",
+  "zh": "扶手椅",
+  "note": "On a trouvé deux fauteuils pas chers."
+ },
+ {
+  "id": "L11_une_armoire",
+  "lesson": 11,
+  "fr": "une armoire",
+  "zh": "衣櫃",
+  "note": "On cherche aussi une armoire."
+ },
+ {
+  "id": "L11_un_bureau",
+  "lesson": 11,
+  "fr": "un bureau",
+  "zh": "書桌",
+  "note": ""
+ },
+ {
+  "id": "L11_une_table_basse",
+  "lesson": 11,
+  "fr": "une table basse",
+  "zh": "茶几",
+  "note": ""
+ },
+ {
+  "id": "L11_des_objets_de_décoration",
+  "lesson": 11,
+  "fr": "des objets de décoration",
+  "zh": "裝飾物品",
+  "note": ""
+ },
+ {
+  "id": "L12_le_bras",
+  "lesson": 12,
+  "fr": "le bras",
+  "zh": "手臂",
+  "note": ""
+ },
+ {
+  "id": "L12_le_dos",
+  "lesson": 12,
+  "fr": "le dos",
+  "zh": "背部",
+  "note": "j'ai mal au dos = 背痛"
+ },
+ {
+  "id": "L12_le_genou",
+  "lesson": 12,
+  "fr": "le genou",
+  "zh": "膝蓋",
+  "note": "複數：les genoux"
+ },
+ {
+  "id": "L12_la_gorge",
+  "lesson": 12,
+  "fr": "la gorge",
+  "zh": "喉嚨",
+  "note": "j'ai mal à la gorge = 喉嚨痛"
+ },
+ {
+  "id": "L12_la_jambe",
+  "lesson": 12,
+  "fr": "la jambe",
+  "zh": "腿",
+  "note": ""
+ },
+ {
+  "id": "L12_la_main",
+  "lesson": 12,
+  "fr": "la main",
+  "zh": "手",
+  "note": ""
+ },
+ {
+  "id": "L12_le_pied",
+  "lesson": 12,
+  "fr": "le pied",
+  "zh": "腳",
+  "note": ""
+ },
+ {
+  "id": "L12_la_tête",
+  "lesson": 12,
+  "fr": "la tête",
+  "zh": "頭",
+  "note": ""
+ },
+ {
+  "id": "L12_le_ventre",
+  "lesson": 12,
+  "fr": "le ventre",
+  "zh": "肚子",
+  "note": ""
+ },
+ {
+  "id": "L12_la_bouche",
+  "lesson": 12,
+  "fr": "la bouche",
+  "zh": "嘴巴",
+  "note": ""
+ },
+ {
+  "id": "L12_la_dent___les_dents",
+  "lesson": 12,
+  "fr": "la dent / les dents",
+  "zh": "牙齒",
+  "note": "le dentiste = 牙醫"
+ },
+ {
+  "id": "L12_le_nez",
+  "lesson": 12,
+  "fr": "le nez",
+  "zh": "鼻子",
+  "note": ""
+ },
+ {
+  "id": "L12_l'_il__m_____les_yeux",
+  "lesson": 12,
+  "fr": "l'œil (m.) / les yeux",
+  "zh": "眼睛",
+  "note": "⚠️ 不規則複數：œil → yeux"
+ },
+ {
+  "id": "L12_l'oreille__f__",
+  "lesson": 12,
+  "fr": "l'oreille (f.)",
+  "zh": "耳朵",
+  "note": ""
+ },
+ {
+  "id": "L12_la_fièvre",
+  "lesson": 12,
+  "fr": "la fièvre",
+  "zh": "發燒",
+  "note": "J'ai 39°C."
+ },
+ {
+  "id": "L12_la_grippe",
+  "lesson": 12,
+  "fr": "la grippe",
+  "zh": "流感",
+  "note": "比 rhume 嚴重，會發燒"
+ },
+ {
+  "id": "L12_un_rhume",
+  "lesson": 12,
+  "fr": "un rhume",
+  "zh": "感冒（輕微）",
+  "note": "流鼻水、輕微不適"
+ },
+ {
+  "id": "L12_tousser___la_toux",
+  "lesson": 12,
+  "fr": "tousser / la toux",
+  "zh": "咳嗽 / 咳嗽（名詞）",
+  "note": ""
+ },
+ {
+  "id": "L12_éternuer",
+  "lesson": 12,
+  "fr": "éternuer",
+  "zh": "打噴嚏",
+  "note": ""
+ },
+ {
+  "id": "L12_malade",
+  "lesson": 12,
+  "fr": "malade",
+  "zh": "生病的",
+  "note": "Je suis malade."
+ },
+ {
+  "id": "L12_l'hôpital__m__",
+  "lesson": 12,
+  "fr": "l'hôpital (m.)",
+  "zh": "醫院",
+  "note": "Je suis allé à l'hôpital."
+ },
+ {
+  "id": "L12_la_pharmacie",
+  "lesson": 12,
+  "fr": "la pharmacie",
+  "zh": "藥局",
+  "note": ""
+ },
+ {
+  "id": "L12_le_paracétamol",
+  "lesson": 12,
+  "fr": "le paracétamol",
+  "zh": "普拿疼",
+  "note": ""
+ },
+ {
+  "id": "L12_le_sirop",
+  "lesson": 12,
+  "fr": "le sirop",
+  "zh": "糖漿（止咳藥）",
+  "note": ""
+ },
+ {
+  "id": "L12_la_radio",
+  "lesson": 12,
+  "fr": "la radio",
+  "zh": "X 光",
+  "note": ""
+ },
+ {
+  "id": "L12_la_vitamine_C",
+  "lesson": 12,
+  "fr": "la vitamine C",
+  "zh": "維他命 C",
+  "note": ""
+ },
+ {
+  "id": "L12_la_visite_à_domicile",
+  "lesson": 12,
+  "fr": "la visite à domicile",
+  "zh": "醫生到府看診",
+  "note": "↔ téléconsultation（線上看診）"
+ },
+ {
+  "id": "L12_le_médecin___le_docteur",
+  "lesson": 12,
+  "fr": "le médecin / le docteur",
+  "zh": "醫生",
+  "note": "chez mon médecin = 去看醫生"
+ },
+ {
+  "id": "L12_le_dentiste",
+  "lesson": 12,
+  "fr": "le dentiste",
+  "zh": "牙醫",
+  "note": "médecin spécialiste des dents"
+ },
+ {
+  "id": "L12_l'infirmier___l'infirmiè",
+  "lesson": 12,
+  "fr": "l'infirmier / l'infirmière",
+  "zh": "護士（男/女）",
+  "note": ""
+ },
+ {
+  "id": "L12_le_pharmacien___la_pharm",
+  "lesson": 12,
+  "fr": "le pharmacien / la pharmacienne",
+  "zh": "藥師（男/女）",
+  "note": ""
+ },
+ {
+  "id": "L13_la_salle_de_sport",
+  "lesson": 13,
+  "fr": "la salle de sport",
+  "zh": "健身房",
+  "note": "(f) ≠ gymnase（體操場/學校體育館）"
+ },
+ {
+  "id": "L13_le_gymnase",
+  "lesson": 13,
+  "fr": "le gymnase",
+  "zh": "體育館（體操）",
+  "note": "(m) 做 gymnastique 的地方"
+ },
+ {
+  "id": "L13_l'appareil__de_sport_",
+  "lesson": 13,
+  "fr": "l'appareil (de sport)",
+  "zh": "健身器材",
+  "note": "(m) appareil = 機器裝置（cf. appareil photo = 相機）"
+ },
+ {
+  "id": "L13_le_vestiaire",
+  "lesson": 13,
+  "fr": "le vestiaire",
+  "zh": "更衣室",
+  "note": "(m) "
+ },
+ {
+  "id": "L13_la_douche",
+  "lesson": 13,
+  "fr": "la douche",
+  "zh": "淋浴",
+  "note": "(f) prendre une douche = 洗澡"
+ },
+ {
+  "id": "L13_le_sauna",
+  "lesson": 13,
+  "fr": "le sauna",
+  "zh": "三溫暖",
+  "note": "(m) "
+ },
+ {
+  "id": "L13_la_serviette_de_bain",
+  "lesson": 13,
+  "fr": "la serviette de bain",
+  "zh": "浴巾",
+  "note": "(f) 放在器材上用"
+ },
+ {
+  "id": "L13_le_maillot_de_bain",
+  "lesson": 13,
+  "fr": "le maillot de bain",
+  "zh": "泳衣",
+  "note": "(m) 進三溫暖必穿"
+ },
+ {
+  "id": "L13_le_coach___l'entraîneur",
+  "lesson": 13,
+  "fr": "le coach / l'entraîneur",
+  "zh": "教練",
+  "note": "(m) entraîner = 訓練；entraîneur = 訓練者"
+ },
+ {
+  "id": "L13_le_professeur_particulie",
+  "lesson": 13,
+  "fr": "le professeur particulier",
+  "zh": "私人教練／家教",
+  "note": "(m) particulier = 一對一的人"
+ },
+ {
+  "id": "L13_le_certificat_médical",
+  "lesson": 13,
+  "fr": "le certificat médical",
+  "zh": "醫療證明",
+  "note": "(m) 入會前有時需要"
+ },
+ {
+  "id": "L13_allumer",
+  "lesson": 13,
+  "fr": "allumer",
+  "zh": "開（電器）",
+  "note": "allumer ≠ éteindre（關）"
+ },
+ {
+  "id": "L13_éteindre",
+  "lesson": 13,
+  "fr": "éteindre",
+  "zh": "關（電器）",
+  "note": "éteindre son téléphone = 關手機"
+ },
+ {
+  "id": "L13_nettoyer",
+  "lesson": 13,
+  "fr": "nettoyer",
+  "zh": "清潔、擦乾淨",
+  "note": "après l'utilisation（使用後清潔器材）"
+ },
+ {
+  "id": "L13_Pouvoir___inf_",
+  "lesson": 13,
+  "fr": "Pouvoir + inf.",
+  "zh": "較婉轉，是建議",
+  "note": "較婉轉，是建議"
+ },
+ {
+  "id": "L13_Il_faut___inf_",
+  "lesson": 13,
+  "fr": "Il faut + inf.",
+  "zh": "一般通則，針對所有人",
+  "note": "一般通則，針對所有人"
+ },
+ {
+  "id": "L13_la_corde_à_sauter",
+  "lesson": 13,
+  "fr": "la corde à sauter",
+  "zh": "跳繩",
+  "note": "100–150 kcal / 20 min"
+ },
+ {
+  "id": "L13_la_marche_rapide",
+  "lesson": 13,
+  "fr": "la marche rapide",
+  "zh": "快走",
+  "note": "150–300 kcal / 30 min"
+ },
+ {
+  "id": "L13_le_yoga",
+  "lesson": 13,
+  "fr": "le yoga",
+  "zh": "瑜伽",
+  "note": "150–300 kcal / 1h"
+ },
+ {
+  "id": "L13_faire_de_la_trottinette",
+  "lesson": 13,
+  "fr": "faire de la trottinette",
+  "zh": "騎滑板車",
+  "note": "150–300 kcal"
+ },
+ {
+  "id": "L13_jardiner",
+  "lesson": 13,
+  "fr": "jardiner",
+  "zh": "園藝",
+  "note": "300–450 kcal / 1h30"
+ },
+ {
+  "id": "L13_la_natation",
+  "lesson": 13,
+  "fr": "la natation",
+  "zh": "游泳",
+  "note": "300–450 kcal / 30 min"
+ },
+ {
+  "id": "L13_la_course_à_pied",
+  "lesson": 13,
+  "fr": "la course à pied",
+  "zh": "跑步",
+  "note": "+450 kcal / 30 min"
+ },
+ {
+  "id": "L13_le_judo",
+  "lesson": 13,
+  "fr": "le judo",
+  "zh": "柔道",
+  "note": "+450 kcal"
+ },
+ {
+  "id": "L13_le_rugby",
+  "lesson": 13,
+  "fr": "le rugby",
+  "zh": "橄欖球",
+  "note": "+450 kcal / match"
+ },
+ {
+  "id": "L13_le_tennis",
+  "lesson": 13,
+  "fr": "le tennis",
+  "zh": "網球",
+  "note": "+450 kcal / 1h30"
+ },
+ {
+  "id": "L13_la_musculation",
+  "lesson": 13,
+  "fr": "la musculation",
+  "zh": "重訓",
+  "note": "+450 kcal / 1h30"
+ },
+ {
+  "id": "L13_la_gymnastique",
+  "lesson": 13,
+  "fr": "la gymnastique",
+  "zh": "體操",
+  "note": "300–450 kcal / 1h30"
+ },
+ {
+  "id": "L13_le_volley__le_volley_bal",
+  "lesson": 13,
+  "fr": "le volley (le volley-ball)",
+  "zh": "排球",
+  "note": "+450 kcal"
+ },
+ {
+  "id": "L13_l'alimentation_saine",
+  "lesson": 13,
+  "fr": "l'alimentation saine",
+  "zh": "健康飲食",
+  "note": "(f) avoir une alimentation saine"
+ },
+ {
+  "id": "L13_équilibré_e_",
+  "lesson": 13,
+  "fr": "équilibré(e)",
+  "zh": "均衡的",
+  "note": "(adj) une alimentation équilibrée（= saine）"
+ },
+ {
+  "id": "L13_gras___grasse",
+  "lesson": 13,
+  "fr": "gras / grasse",
+  "zh": "油脂多的",
+  "note": "(adj) Le saumon est un aliment gras."
+ },
+ {
+  "id": "L13_salé_e_",
+  "lesson": 13,
+  "fr": "salé(e)",
+  "zh": "鹹的",
+  "note": "(adj) les aliments salés（鹹食）"
+ },
+ {
+  "id": "L13_sucré_e_",
+  "lesson": 13,
+  "fr": "sucré(e)",
+  "zh": "甜的",
+  "note": "(adj) les aliments sucrés（甜食）"
+ },
+ {
+  "id": "L13_l'huile",
+  "lesson": 13,
+  "fr": "l'huile",
+  "zh": "食用油",
+  "note": "(f) huile d'olive（橄欖油）"
+ },
+ {
+  "id": "L13_la_calorie___kcal",
+  "lesson": 13,
+  "fr": "la calorie / kcal",
+  "zh": "卡路里",
+  "note": "(f) beaucoup de calories dans les sucrés"
+ },
+ {
+  "id": "L13_le_produit",
+  "lesson": 13,
+  "fr": "le produit",
+  "zh": "食品/產品",
+  "note": "(m) produits gras, salés, sucrés"
+ },
+ {
+  "id": "L13_le_saumon",
+  "lesson": 13,
+  "fr": "le saumon",
+  "zh": "鮭魚",
+  "note": "(m) aliment gras mais bon pour la santé"
+ },
+ {
+  "id": "L13_le_chocolat_noir",
+  "lesson": 13,
+  "fr": "le chocolat noir",
+  "zh": "黑巧克力",
+  "note": "(m) bon pour la santé mais beaucoup de calories"
+ },
+ {
+  "id": "L13_les_vacances",
+  "lesson": 13,
+  "fr": "les vacances",
+  "zh": "假期",
+  "note": "(f pl) 永遠複數；Bonnes vacances !"
+ },
+ {
+  "id": "L13_l'hébergement",
+  "lesson": 13,
+  "fr": "l'hébergement",
+  "zh": "住宿（泛指）",
+  "note": "(m) un endroit où dormir"
+ },
+ {
+  "id": "L13_le_logement",
+  "lesson": 13,
+  "fr": "le logement",
+  "zh": "住所/住處",
+  "note": "(m) logement = place to live"
+ },
+ {
+  "id": "L13_la_location",
+  "lesson": 13,
+  "fr": "la location",
+  "zh": "租屋/租借",
+  "note": "(f) louer = 租；location = 租的東西"
+ },
+ {
+  "id": "L13_la_chambre_d'hôte",
+  "lesson": 13,
+  "fr": "la chambre d'hôte",
+  "zh": "民宿（主人同住）",
+  "note": "(f) hôte = 主人；住在別人家裡的房間"
+ },
+ {
+  "id": "L13_l'échange_de_maison",
+  "lesson": 13,
+  "fr": "l'échange de maison",
+  "zh": "換屋度假",
+  "note": "(m) 互換住所，gratuit（免費）"
+ },
+ {
+  "id": "L13_le_camping",
+  "lesson": 13,
+  "fr": "le camping",
+  "zh": "露營",
+  "note": "(m) dormir sous une tente"
+ },
+ {
+  "id": "L13_la_tente",
+  "lesson": 13,
+  "fr": "la tente",
+  "zh": "帳篷",
+  "note": "(f) "
+ },
+ {
+  "id": "L13_le_van",
+  "lesson": 13,
+  "fr": "le van",
+  "zh": "廂型車（車旅）",
+  "note": "(m) voyage en van = 車旅"
+ },
+ {
+  "id": "L13_le_parasol",
+  "lesson": 13,
+  "fr": "le parasol",
+  "zh": "陽傘（遮陽）",
+  "note": "(m) ≠ parapluie（雨傘）"
+ },
+ {
+  "id": "L13_parapluie",
+  "lesson": 13,
+  "fr": "parapluie",
+  "zh": "雨傘",
+  "note": "(m) para- = 防；pluie = 雨"
+ },
+ {
+  "id": "L13_la_météo",
+  "lesson": 13,
+  "fr": "la météo",
+  "zh": "天氣（預報）",
+  "note": "(f) La météo peut être un problème."
+ },
+ {
+  "id": "L13_peut_être",
+  "lesson": 13,
+  "fr": "peut-être",
+  "zh": "也許、可能",
+  "note": "(adv) ⚠️ peut-être 是一個詞，≠ peut être（能夠是）"
+ },
+ {
+  "id": "L13_gratuit_e_",
+  "lesson": 13,
+  "fr": "gratuit(e)",
+  "zh": "免費的",
+  "note": "(adj) Les logements sont gratuits. （換屋）"
+ },
+ {
+  "id": "L13_écologique",
+  "lesson": 13,
+  "fr": "écologique",
+  "zh": "環保的",
+  "note": "(adj) plus écologique que l'avion"
+ },
+ {
+  "id": "L13_indépendant_e_",
+  "lesson": 13,
+  "fr": "indépendant(e)",
+  "zh": "自由/獨立的",
+  "note": "(adj) être indépendant avec un van"
+ }
+];

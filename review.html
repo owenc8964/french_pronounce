@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartes · CLB7</title>
+<script>window.__loadErrs=[];window.addEventListener('error',e=>window.__loadErrs.push((e.message||'')+' @'+(e.filename||'')+':'+(e.lineno||'')));</script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #07080f; color: #ddd8cc;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh; padding: 24px 16px 80px;
+  max-width: 680px; margin: 0 auto;
+}
+.header { text-align: center; margin-bottom: 20px; }
+.header h1 { font-size: 1.2rem; letter-spacing: 2px; color: #f0c060;
+  text-shadow: 0 0 20px rgba(240,192,96,0.35); }
+.header .back { font-size: 0.72rem; color: #445060; text-decoration: none;
+  display: inline-block; margin-bottom: 8px; }
+.header .back:hover { color: #f0c060; }
+.header .sub { font-size: 0.7rem; color: #445060; margin-top: 4px; }
+
+.card-box {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 12px; padding: 16px 18px; margin-bottom: 16px;
+}
+.card-title { font-size: 0.65rem; color: #445060; text-transform: uppercase;
+  letter-spacing: 1.5px; margin-bottom: 12px; }
+
+/* Start stats */
+.stat-row { display: flex; gap: 10px; margin-bottom: 4px; }
+.st-box { flex: 1; background: #141928; border: 1px solid #1a2438; border-radius: 10px;
+  padding: 12px 8px; text-align: center; }
+.st-val { font-size: 1.3rem; font-weight: 700; color: #60a0d0; }
+.st-val.hot { color: #f0c060; }
+.st-val.grad { color: #60d090; }
+.st-label { font-size: 0.6rem; color: #445060; margin-top: 4px; }
+
+.start-btn {
+  width: 100%; padding: 16px; border: none; border-radius: 12px;
+  background: linear-gradient(135deg, #1d5035, #2a7048);
+  color: #d0f0d8; font-size: 1rem; font-weight: 700; cursor: pointer;
+  font-family: inherit; letter-spacing: 1px; margin-bottom: 10px;
+}
+.start-btn:hover { filter: brightness(1.15); }
+.start-btn:disabled { opacity: 0.4; cursor: default; }
+.start-hint { font-size: 0.7rem; color: #445060; text-align: center; margin-bottom: 16px; }
+
+/* Flashcard */
+.progress-line { display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px; font-size: 0.72rem; color: #445060; }
+.progress-line .pk-score { color: #60d090; font-weight: 700; }
+.flashcard {
+  background: #0d1020; border: 1px solid #1a2438; border-radius: 16px;
+  padding: 40px 24px 30px; text-align: center; margin-bottom: 14px;
+  min-height: 320px; display: flex; flex-direction: column; justify-content: center;
+}
+.fc-lesson { font-size: 0.62rem; color: #60a0d0; background: #141928;
+  border: 1px solid #1a2438; border-radius: 8px; padding: 3px 10px;
+  display: inline-block; margin: 0 auto 20px; letter-spacing: 1px; }
+.fc-front-zh { font-size: 1.6rem; font-weight: 700; color: #ddd8cc; line-height: 1.5; }
+.fc-think { font-size: 0.7rem; color: #445060; margin-top: 22px; }
+.fc-fr { font-size: 1.7rem; font-weight: 700; color: #60d090; line-height: 1.45;
+  margin-top: 18px; }
+.fc-note { font-size: 0.8rem; color: #8a94a8; line-height: 1.6; margin-top: 16px;
+  border-top: 1px dashed #1a2438; padding-top: 12px; }
+.fc-speak {
+  margin-top: 16px; background: #141928; border: 1px solid #2a3858; color: #60a0d0;
+  border-radius: 10px; padding: 8px 20px; font-size: 0.85rem; cursor: pointer;
+  font-family: inherit; align-self: center;
+}
+.fc-speak:hover { border-color: #60a0d0; }
+
+.flip-btn {
+  width: 100%; padding: 15px; border: none; border-radius: 12px;
+  background: #1a2438; color: #60a0d0; font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+}
+.flip-btn:hover { filter: brightness(1.3); }
+.grade-row { display: flex; gap: 10px; }
+.grade-btn { flex: 1; padding: 15px; border: none; border-radius: 12px;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+.grade-no  { background: #3a1a16; color: #d07060; border: 1px solid #5a2420; }
+.grade-no:hover  { filter: brightness(1.35); }
+.grade-ok  { background: #0f2818; color: #60d090; border: 1px solid #1d5035; }
+.grade-ok:hover  { filter: brightness(1.35); }
+.key-hint { text-align: center; font-size: 0.62rem; color: #334050; margin-top: 10px; }
+
+/* Done */
+.done-big { font-size: 2.4rem; font-weight: 700; color: #f0c060; text-align: center; }
+.done-label { font-size: 0.68rem; color: #445060; text-align: center;
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+.done-line { font-size: 0.82rem; color: #8a94a8; text-align: center; margin-bottom: 6px; }
+.btn-row { display: flex; gap: 10px; margin-top: 16px; }
+.btn-again { flex: 1; padding: 13px; border: none; border-radius: 10px;
+  background: linear-gradient(135deg, #1d5035, #2a7048); color: #d0f0d8;
+  font-size: 0.92rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+.btn-home { flex: 1; padding: 13px; border: 1px solid #1a2438; border-radius: 10px;
+  background: #141928; color: #8a94a8; font-size: 0.92rem; font-weight: 700;
+  cursor: pointer; font-family: inherit; text-align: center; text-decoration: none; }
+.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a class="back" href="dashboard.html">← Retour au tableau de bord</a>
+  <h1>📦 CARTES DE RÉVISION</h1>
+  <div class="sub">先回想、唸出聲，再翻開 — 一包 3–5 分鐘，隨時做一包</div>
+</div>
+
+<!-- Start -->
+<div id="startScreen">
+  <div class="card-box">
+    <div class="card-title">今日狀態</div>
+    <div class="stat-row">
+      <div class="st-box"><div class="st-val hot" id="stDue">—</div><div class="st-label">到期待複習</div></div>
+      <div class="st-box"><div class="st-val" id="stNew">—</div><div class="st-label">今日新卡額度</div></div>
+      <div class="st-box"><div class="st-val grad" id="stGrad">—</div><div class="st-label">已畢業</div></div>
+    </div>
+  </div>
+  <button class="start-btn" id="startBtn">▶ 做一包（10 張）</button>
+  <div class="start-hint" id="startHint"></div>
+</div>
+
+<!-- Session -->
+<div id="sessionScreen" class="hidden">
+  <div class="progress-line">
+    <span id="pkProgress">1 / 10</span>
+    <span id="pkPhase"></span>
+    <span class="pk-score" id="pkScore">✓ 0</span>
+  </div>
+  <div class="flashcard" id="flashcard">
+    <span class="fc-lesson" id="fcLesson"></span>
+    <div class="fc-front-zh" id="fcZh"></div>
+    <div class="fc-think" id="fcThink">🧠 先回想法文，唸出聲，再翻開</div>
+    <div class="fc-fr hidden" id="fcFr"></div>
+    <div class="fc-note hidden" id="fcNote"></div>
+    <button class="fc-speak hidden" id="fcSpeak">🔊 再聽一次</button>
+  </div>
+  <button class="flip-btn" id="flipBtn">翻開（空白鍵）</button>
+  <div class="grade-row hidden" id="gradeRow">
+    <button class="grade-btn grade-no" id="gradeNo">✗ 不會（1）</button>
+    <button class="grade-btn grade-ok" id="gradeOk">✓ 會了（2）</button>
+  </div>
+  <div class="key-hint">空白鍵翻開 · 1 不會 · 2 會了</div>
+</div>
+
+<!-- Done -->
+<div id="doneScreen" class="hidden">
+  <div class="card-box">
+    <div class="done-big" id="doneScore">—</div>
+    <div class="done-label">一次答對 / 總卡數</div>
+    <div class="done-line" id="doneToday"></div>
+    <div class="done-line" id="doneDue"></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-again" id="againBtn">📦 再做一包</button>
+    <a class="btn-home" href="dashboard.html">回指揮中心</a>
+  </div>
+</div>
+
+<script src="chunks.js"></script>
+<script>
+// ── SRS 設定（successive relearning：3 個不同天答對＋間隔 ≥14 天 = 畢業）──
+const INTERVALS = [1, 3, 7, 14, 30];   // 天
+const PACKET_SIZE = 10;
+const NEW_PER_DAY = 10;
+
+// ── localStorage ─────────────────────────────────────────────
+function getSrs()   { try { return JSON.parse(localStorage.getItem('clb7_chunk_srs')) || {}; } catch { return {}; } }
+function saveSrs(s) { localStorage.setItem('clb7_chunk_srs', JSON.stringify(s)); }
+function getSessions() { try { return JSON.parse(localStorage.getItem('clb7_review_sessions')) || []; } catch { return []; } }
+function todayStr() {
+  return new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
+}
+function dayStart(d = new Date()) { const t = new Date(d); t.setHours(0,0,0,0); return t.getTime(); }
+
+function newCountToday() {
+  try {
+    const v = JSON.parse(localStorage.getItem('clb7_chunk_newcount'));
+    return (v && v.date === todayStr()) ? v.n : 0;
+  } catch { return 0; }
+}
+function bumpNewCount() {
+  localStorage.setItem('clb7_chunk_newcount', JSON.stringify({ date: todayStr(), n: newCountToday() + 1 }));
+}
+
+function isGraduated(rec) {
+  return rec && (rec.days||[]).length >= 3 && rec.iv >= 3;
+}
+function dueCards() {
+  const srs = getSrs(), now = dayStart();
+  return CHUNKS.filter(c => srs[c.id] && srs[c.id].due <= now && !isGraduated(srs[c.id]))
+    .sort((a,b) => srs[a.id].due - srs[b.id].due);
+}
+function newCards() {
+  const srs = getSrs();
+  // 新卡：新課優先（13 → 1），課內照筆記順序
+  return CHUNKS.filter(c => !srs[c.id]).sort((a,b) => b.lesson - a.lesson);
+}
+function gradCount() {
+  const srs = getSrs();
+  return CHUNKS.filter(c => isGraduated(srs[c.id])).length;
+}
+
+// ── 發音（TTS）──────────────────────────────────────────────
+let frVoice = null;
+function pickVoice() {
+  const vs = speechSynthesis.getVoices().filter(v => v.lang.startsWith('fr'));
+  frVoice = vs.find(v => v.lang === 'fr-FR') || vs[0] || null;
+}
+if ('speechSynthesis' in window) {
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+function speak(text) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  // 去掉括號注記與斜線變體，只唸主要法文
+  const clean = text.replace(/\(.*?\)/g, '').split('/')[0].trim();
+  const u = new SpeechSynthesisUtterance(clean);
+  u.lang = 'fr-FR'; u.rate = 0.9;
+  if (frVoice) u.voice = frVoice;
+  speechSynthesis.speak(u);
+}
+
+// ── 錯題本 ───────────────────────────────────────────────────
+function logWrong(entry) {
+  try {
+    const log = JSON.parse(localStorage.getItem('clb7_wrong_log')) || [];
+    const d = todayStr();
+    const dup = log.find(e => e.d === d && e.src === entry.src && e.q === entry.q);
+    if (dup) { dup.n = (dup.n||1) + 1; dup.t = Date.now(); }
+    else log.push({ ...entry, d, t: Date.now(), n: 1 });
+    localStorage.setItem('clb7_wrong_log', JSON.stringify(log.slice(-300)));
+  } catch(e) {}
+}
+
+// ── Session state ────────────────────────────────────────────
+let packet = [];        // [{card, isNew}]
+let idx = 0;
+let flipped = false;
+let firstTryOk = 0, firstTryTotal = 0;
+let attempted = new Set();  // 本包第一次見過的卡（判斷 first-try）
+
+function buildPacket() {
+  const due = dueCards();
+  const packet_ = due.slice(0, PACKET_SIZE).map(c => ({ card: c, isNew: false }));
+  if (packet_.length < PACKET_SIZE) {
+    const room = Math.min(PACKET_SIZE - packet_.length, NEW_PER_DAY - newCountToday());
+    if (room > 0) newCards().slice(0, room).forEach(c => packet_.push({ card: c, isNew: true }));
+  }
+  return packet_;
+}
+
+function renderStart() {
+  const due = dueCards().length;
+  const newLeft = Math.max(0, NEW_PER_DAY - newCountToday());
+  document.getElementById('stDue').textContent = due;
+  document.getElementById('stNew').textContent = newLeft;
+  document.getElementById('stGrad').textContent = gradCount() + '/' + CHUNKS.length;
+  const total = due + Math.min(newLeft, Math.max(0, PACKET_SIZE - due));
+  const btn = document.getElementById('startBtn');
+  if (due === 0 && (newLeft === 0 || newCards().length === 0)) {
+    btn.disabled = true;
+    btn.textContent = '✅ 今天的卡都做完了';
+    document.getElementById('startHint').textContent = '明天會有新的到期卡。想加練可以去 Quiz 或反射衝刺。';
+  } else {
+    btn.disabled = false;
+    btn.textContent = `▶ 做一包（${Math.min(PACKET_SIZE, due + newLeft)} 張）`;
+    document.getElementById('startHint').textContent =
+      due > PACKET_SIZE ? `到期 ${due} 張，建議今天多做幾包清掉` : '一包約 3–5 分鐘';
+  }
+}
+
+function startPacket() {
+  packet = buildPacket();
+  if (!packet.length) return;
+  idx = 0; firstTryOk = 0; firstTryTotal = 0;
+  attempted = new Set();
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('doneScreen').classList.add('hidden');
+  document.getElementById('sessionScreen').classList.remove('hidden');
+  renderCard();
+}
+
+function renderCard() {
+  if (idx >= packet.length) { finishPacket(); return; }
+  const { card, isNew } = packet[idx];
+  flipped = false;
+  document.getElementById('pkProgress').textContent = `${Math.min(idx+1, packet.length)} / ${packet.length}`;
+  document.getElementById('pkPhase').textContent = isNew ? '🆕 新卡' : '🔁 複習';
+  document.getElementById('pkScore').textContent = `✓ ${firstTryOk}`;
+  document.getElementById('fcLesson').textContent = `第 ${card.lesson} 課`;
+  document.getElementById('fcZh').textContent = card.zh;
+  document.getElementById('fcThink').classList.remove('hidden');
+  document.getElementById('fcFr').classList.add('hidden');
+  document.getElementById('fcNote').classList.add('hidden');
+  document.getElementById('fcSpeak').classList.add('hidden');
+  document.getElementById('flipBtn').classList.remove('hidden');
+  document.getElementById('gradeRow').classList.add('hidden');
+}
+
+function flip() {
+  if (flipped || idx >= packet.length) return;
+  flipped = true;
+  const { card } = packet[idx];
+  document.getElementById('fcThink').classList.add('hidden');
+  const fr = document.getElementById('fcFr');
+  fr.textContent = card.fr; fr.classList.remove('hidden');
+  if (card.note) {
+    const n = document.getElementById('fcNote');
+    n.textContent = card.note; n.classList.remove('hidden');
+  }
+  document.getElementById('fcSpeak').classList.remove('hidden');
+  document.getElementById('flipBtn').classList.add('hidden');
+  document.getElementById('gradeRow').classList.remove('hidden');
+  speak(card.fr);   // 翻開自動發音 — 眼睛＋耳朵同步輸入
+}
+
+function grade(ok) {
+  if (!flipped || idx >= packet.length) return;
+  const { card, isNew } = packet[idx];
+  const first = !attempted.has(card.id);
+  if (first) {
+    attempted.add(card.id);
+    firstTryTotal++;
+    if (ok) firstTryOk++;
+  }
+
+  const srs = getSrs();
+  const today = todayStr();
+  let rec = srs[card.id];
+  if (!rec) {
+    rec = { iv: 0, due: 0, days: [], ok: 0, no: 0 };
+    if (isNew) bumpNewCount();
+  }
+  if (ok) {
+    rec.ok++;
+    if (!rec.days.includes(today)) rec.days.push(today);
+    rec.days = rec.days.slice(-10);
+    if (!first) { /* 包內重試成功：間隔不再前進，維持原 due（今天已排 +1）*/ }
+    else rec.iv = Math.min(rec.iv + (rec.due ? 1 : 0), INTERVALS.length - 1);
+    rec.due = dayStart() + INTERVALS[rec.iv] * 86400000;
+  } else {
+    rec.no++;
+    rec.iv = 0;
+    rec.due = dayStart() + 86400000;   // 明天再來
+    packet.push(packet[idx]);           // 包尾重試（successive relearning：當日至少一次答對）
+    logWrong({ src: 'review', q: card.zh, a: card.fr, note: card.note || '', title: `第 ${card.lesson} 課` });
+  }
+  rec.last = Date.now();
+  srs[card.id] = rec;
+  saveSrs(srs);
+
+  idx++;
+  renderCard();
+}
+
+function finishPacket() {
+  document.getElementById('sessionScreen').classList.add('hidden');
+  document.getElementById('doneScreen').classList.remove('hidden');
+  document.getElementById('doneScore').textContent = `${firstTryOk} / ${firstTryTotal}`;
+
+  const ses = getSessions();
+  ses.push({ date: todayStr(), cards: firstTryTotal, ok: firstTryOk, ts: Date.now() });
+  localStorage.setItem('clb7_review_sessions', JSON.stringify(ses.slice(-100)));
+
+  const todayPk = ses.filter(s => s.date === todayStr());
+  const todayCards = todayPk.reduce((s,x) => s + x.cards, 0);
+  document.getElementById('doneToday').textContent =
+    `今天已做 ${todayPk.length} 包 · ${todayCards} 張卡`;
+  const due = dueCards().length;
+  document.getElementById('doneDue').textContent = due > 0
+    ? `還有 ${due} 張到期卡 — 有空再做一包` : '今日到期卡全部清空 ✅';
+  document.getElementById('againBtn').style.display =
+    (due === 0 && (newCountToday() >= NEW_PER_DAY || newCards().length === 0)) ? 'none' : '';
+}
+
+// ── 事件 ─────────────────────────────────────────────────────
+document.getElementById('startBtn').addEventListener('click', startPacket);
+document.getElementById('againBtn').addEventListener('click', startPacket);
+document.getElementById('flipBtn').addEventListener('click', flip);
+document.getElementById('gradeNo').addEventListener('click', () => grade(false));
+document.getElementById('gradeOk').addEventListener('click', () => grade(true));
+document.getElementById('fcSpeak').addEventListener('click', () => speak(packet[idx].card.fr));
+document.addEventListener('keydown', e => {
+  if (document.getElementById('sessionScreen').classList.contains('hidden')) return;
+  if (e.key === ' ') { e.preventDefault(); flip(); }
+  if (e.key === '1') grade(false);
+  if (e.key === '2') grade(true);
+});
+
+// ── 自動計時：練習時間自動記入 clb7_tracker（type: auto-review）──
+(function(){
+  const TYPE='review', TICK=15, IDLE_MS=60000;
+  let acc=0, lastAct=Date.now();
+  ['keydown','pointerdown','scroll','touchstart'].forEach(ev =>
+    document.addEventListener(ev, () => lastAct=Date.now(), {passive:true}));
+  setInterval(() => {
+    if (document.visibilityState==='visible' && Date.now()-lastAct < IDLE_MS) acc += TICK;
+  }, TICK*1000);
+  function flushTime(){
+    if (acc < 30) return;
+    try {
+      const d = new Date();
+      const data = JSON.parse(localStorage.getItem('clb7_tracker')) || [];
+      data.push({ ts: Date.now(),
+        date: `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`,
+        type: 'auto-'+TYPE, sec: acc });
+      localStorage.setItem('clb7_tracker', JSON.stringify(data));
+      acc = 0;
+    } catch(e) {}
+  }
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState==='hidden') flushTime(); });
+  window.addEventListener('pagehide', flushTime);
+})();
+
+// ── 初始化 ────────────────────────────────────────────────────
+renderStart();
+if (new URLSearchParams(location.search).get('guided') === '1') startPacket();
+</script>
+</body>
+</html>
