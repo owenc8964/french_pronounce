@@ -74,7 +74,9 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 
 | 檔案 | 用途 | 狀態 |
 |------|------|------|
-| `dashboard.html` | 指揮中心：今日處方（5項）、**今日錯題本**、警報、CLB 等級判定、倒數、700h、四技能、週趨勢 | ✅ 完成 |
+| `dashboard.html` | 指揮中心：今日處方（6項）、**今日錯題本**、警報、CLB 等級判定、倒數、700h、四技能、週趨勢 | ✅ 完成 |
+| `review.html` | **複習卡**：一包10張3–5分鐘、SRS＋successive relearning、TTS 發音 | ✅ 新增（07-03）|
+| `chunks.js` | 卡片庫：663 張，自動從筆記抽取（1–13課） | ✅ 新增（07-03）|
 | `quiz.html` | SRS Quiz，550+ 題，熱身模式/課程選擇器/暫停/更正誤判 | ✅ 完成 |
 | `verb_sprint.html` | **動詞反射衝刺**：60秒、9動詞×6人稱、起手計時、反射熱力圖 | ✅ 新增（07-02）|
 | `questions.js` | 共用題庫（BANK + AGREE_BANK），第1–13課 | ✅ 完成 |
@@ -89,7 +91,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 
 **GitHub Pages 網址：** https://owenc8964.github.io/french_pronounce/dashboard.html
 
-**今日處方順序**：🃏 Quiz（最弱topic）→ ⚡ 反射衝刺 → ✍️ 造句 → 📖 閱讀 → ⏱ 時數
+**今日處方順序**：🃏 Quiz（最弱topic）→ ⚡ 反射衝刺 → 📦 複習卡 → ✍️ 造句 → 📖 閱讀 → ⏱ 時數
 
 ---
 
@@ -141,18 +143,34 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 - `clb7_wrong_log` → [{d, t, src:'quiz'|'reading'|'sprint', q, a, note, hint?, title?, n}]（d 為 **zh-TW** 格式）
 - `clb7_snapshots` → **只放週趨勢格式** [{week:'2026-W26', totalH, quizAttempts, …}]
 - `clb7_topic_snapshots` → quiz 每日 topic 快照 [{date, overallPct, topics}]（date 為本地 ISO）
+- `clb7_chunk_srs` → 複習卡 SRS {cardId: {iv, due, days:[…], ok, no, last}}（days＝答對的不同天，zh-TW 格式）
+- `clb7_review_sessions` → [{date, cards, ok, ts}]（複習包記錄，最近 100）
+- `clb7_chunk_newcount` → {date, n}（今日已開新卡數，上限 10）
 
 **⚠️ 日期格式地雷**：dashboard/tracker/writing/sprint/wrong_log 用 zh-TW（`2026/07/02`）；reading 記錄和 topic 快照用本地 ISO（`2026-07-02`）。跨工具比對日期時要用**同一格式的 helper**，不要混。所有 todayStr 一律用本地時間，**禁用 toISOString()**（UTC 偏移已炸過兩次）。
 
 ---
 
+## 複習卡系統（2026-07-03 上線，survey 後設計）
+
+**設計依據**（survey 結論，Owen 確認的碎片時間模式）：
+- Successive relearning（提取＋跨天間隔）是文獻最強組合技；3×5分鐘 > 1×15分鐘 → 碎片時間是最優解不是妥協
+- 卡片流內建 pretest（先回想再翻開）＋ production（唸出聲）＋ TTS（翻開自動發音）
+- 間隔 1/3/7/14/30 天；畢業＝3 個不同天答對＋間隔≥14天；新卡上限 10/天
+- 答錯 → 包尾重試（當日至少一次成功）＋進錯題本＋明天再到期
+
+**卡片庫維護（重要）**：`chunks.js` 由 french_notes.html 自動抽取。**每次新增課程筆記後要重跑抽取腳本**（node 逐列解析：A. phrase-list 的 fr/zh/note span；B. 三欄表 td.m+zh+note；C. 四欄表 fr+詞性+zh+note；D. 三欄無class表。跳過 th/colspan 列、zh 欄無中文的變位表）。id 格式 `L{課}_{fr前24字}`，重生成時既有卡 id 不變（SRS 記錄不丟失）。
+
+---
+
 ## 下一步（依優先序）
 
-1. **Owen 試用三個新功能**（反射衝刺、錯題本、閱讀新 20 篇）→ 收回饋調整。衝刺完成畫面和 quiz 的回饋 textarea 記得讀（`clb7_sprint_sessions` 的 fb、`clb7_drill_sessions`）
-2. **單字塊 SRS**（候選，Owen 未拍板）：從課堂筆記＋閱讀文章抽 chunk（faire du vélo、avoir besoin de）挖空出題
-3. **verb_sprint 擴充**（等 54 格大面積變綠後）：passé composé 助動詞選擇＋participes passés、後續 imparfait
-4. **verb_sprint.html 補懸浮筆記 snippet**（現有六頁都有，這頁還沒加）
-5. **錯題本可能的延伸**：昨日錯題回顧（隔日再測一次才算真的記住）
+1. **Owen 試用四個新功能**（反射衝刺、錯題本、閱讀 TCF 式題、複習卡）→ 收回饋調整。衝刺完成畫面和 quiz 的回饋 textarea 記得讀（`clb7_sprint_sessions` 的 fb、`clb7_drill_sessions`）
+2. **聽寫（Dictée）工具**（已與 Owen 討論、方向確認）：TTS 唸題庫句子 → Owen 聽寫 → 比對；聽力主動輸入的最短路徑
+3. **閱讀文章整篇 TTS 朗讀＋錯題本發音鍵**（配音計畫的剩餘部分）
+4. **verb_sprint 擴充**（等 54 格大面積變綠後）：passé composé 助動詞＋participes、imparfait
+5. **verb_sprint.html / review.html 補懸浮筆記 snippet**
+6. **錯題本延伸**：昨日錯題回顧（隔日再測）
 
 ---
 
