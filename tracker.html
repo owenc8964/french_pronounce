@@ -292,7 +292,7 @@ document.getElementById('btnLog').addEventListener('click', () => {
   const data = load();
   data.push({
     ts: Date.now(),
-    date: new Date().toLocaleDateString('zh-TW'),
+    date: new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'}),
     type: selectedType,
     sec: elapsed
   });

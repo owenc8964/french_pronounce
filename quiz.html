@@ -2,6 +2,7 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
+<script>window.__loadErrs=[];window.addEventListener('error',e=>window.__loadErrs.push((e.message||'')+' @'+(e.filename||'')+':'+(e.lineno||'')));</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>法語抽考 · A1</title>
   <style>
@@ -470,6 +471,12 @@ function recordResult(q, ok) {
   setSRS(id, srs);
   if (!ok) logWrong({ src:'quiz', q: q.q, a: q.a.split('|')[0], note: q.aNote || '', hint: q.hint || '', topic: q.topic });
 }
+
+// ── 心聲筆記（每題）資料層——renderCard 會用到，必須在主 script ──
+const QNOTES_KEY = 'clb7_qnotes';
+let lastOk = false;
+function loadQNotes() { try { return JSON.parse(localStorage.getItem(QNOTES_KEY)) || []; } catch { return []; } }
+function saveQNotesArr(d) { localStorage.setItem(QNOTES_KEY, JSON.stringify(d)); }
 
 // ── 今日錯題本（dashboard 讀 clb7_wrong_log）──────────────────
 function logWrong(entry) {
@@ -1664,6 +1671,32 @@ renderStats();
 migrateSnapshots();
 saveSnapshot();
 
+// ── 自動計時：練習時間自動記入 clb7_tracker（type: auto-quiz）────
+// 頁面可見＋60 秒內有操作才累計；切走/關頁自動寫入（≥30 秒才記）
+(function(){
+  const TYPE='quiz', TICK=15, IDLE_MS=60000;
+  let acc=0, lastAct=Date.now();
+  ['keydown','pointerdown','scroll','touchstart'].forEach(ev =>
+    document.addEventListener(ev, () => lastAct=Date.now(), {passive:true}));
+  setInterval(() => {
+    if (document.visibilityState==='visible' && Date.now()-lastAct < IDLE_MS) acc += TICK;
+  }, TICK*1000);
+  function flushTime(){
+    if (acc < 30) return;
+    try {
+      const d = new Date();
+      const data = JSON.parse(localStorage.getItem('clb7_tracker')) || [];
+      data.push({ ts: Date.now(),
+        date: `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`,
+        type: 'auto-'+TYPE, sec: acc });
+      localStorage.setItem('clb7_tracker', JSON.stringify(data));
+      acc = 0;
+    } catch(e) {}
+  }
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState==='hidden') flushTime(); });
+  window.addEventListener('pagehide', flushTime);
+})();
+
 // ── 暫停功能 ──────────────────────────────────────────────────
 let paused = false;
 function togglePause() {
@@ -1798,12 +1831,9 @@ function showLessonPicker(warmupScore, warmupTotal) {
   <button id="qnoteCopy" style="margin-top:6px;width:100%;padding:7px;background:#1a2438;color:#60a0d0;border:none;border-radius:8px;font-size:0.78rem;cursor:pointer;font-family:inherit;">📋 複製全部給 Claude</button>
 </div>
 <script>
-// ── 心聲筆記（每題）────────────────────────────────────────────
-const QNOTES_KEY = 'clb7_qnotes';
-let lastOk = false;
-function loadQNotes() { try { return JSON.parse(localStorage.getItem(QNOTES_KEY)) || []; } catch { return []; } }
-function saveQNotesArr(d) { localStorage.setItem(QNOTES_KEY, JSON.stringify(d)); }
-
+// ── 心聲筆記（每題）UI ─────────────────────────────────────────
+// ⚠️ QNOTES_KEY / lastOk / loadQNotes / saveQNotesArr 定義在主 script（renderCard 載入時就要用，
+//    放這裡會 ReferenceError 讓初始渲染整個掛掉——warmup 模式曾因此完全空白）
 function toggleQVoice() {
   const area = document.getElementById('qvoiceArea');
   if (!area) return;

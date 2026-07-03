@@ -565,7 +565,10 @@ function getTopicStats() {
 function getTrackerToday() {
   const data = getTrackerData();
   const today = todayStr();
-  return data.filter(e => e.date === today).reduce((s,e) => s + e.sec, 0);
+  // 舊 tracker 記錄的日期無補零（2026/7/3），比對前正規化
+  const norm = s => String(s||'').split('/').map(x => x.padStart(2,'0')).join('/');
+  const t = norm(today);
+  return data.filter(e => norm(e.date) === t).reduce((s,e) => s + e.sec, 0);
 }
 
 function getTrackerWeek() {

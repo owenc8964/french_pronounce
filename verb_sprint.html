@@ -110,6 +110,17 @@ body {
 .ds-label { font-size: 0.6rem; color: #445060; margin-top: 3px; }
 .improved-line { font-size: 0.8rem; color: #60d090; text-align: center; margin-bottom: 8px; }
 
+/* 錯過動詞的完整變位表 */
+.conj-wrap { display: flex; flex-wrap: wrap; gap: 10px; }
+.conj-block { background: #141928; border: 1px solid #1a2438; border-radius: 10px;
+  padding: 12px 16px; flex: 1 1 160px; max-width: 210px; }
+.conj-verb { color: #f0c060; font-weight: 700; margin-bottom: 8px;
+  font-size: 0.95rem; letter-spacing: 1px; }
+.conj-table { border-collapse: collapse; }
+.conj-table td { font-size: 0.84rem; padding: 2px 7px; }
+.conj-p { color: #8a94a8; text-align: right; white-space: nowrap; }
+.conj-f { color: #60d090; font-weight: 700; }
+
 textarea.fb-input {
   width: 100%; background: #141928; border: 1px solid #1a2438; border-radius: 8px;
   color: #ddd8cc; font-size: 0.85rem; padding: 10px; resize: none; height: 70px;
@@ -192,6 +203,10 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
       <div class="ds-box"><div class="ds-val good" id="doneReflex">—</div><div class="ds-label">反射格數</div></div>
     </div>
     <div class="improved-line" id="improvedLine"></div>
+  </div>
+  <div class="card hidden" id="missedCard">
+    <div class="card-title">📖 本輪錯過的動詞 — 把完整變位再輸入一次</div>
+    <div class="conj-wrap" id="missedTables"></div>
   </div>
   <div class="card">
     <div class="card-title">反射熱力圖</div>
@@ -318,6 +333,7 @@ let firstKeyTs = 0;        // 第一個按鍵時間
 let sprintCorrect = 0, sprintAttempts = 0;
 let fkList = [];           // 答對題的起手時間
 let wrongCells = [];       // 衝刺輪錯的格子（進複習輪）
+let missedVerbs = new Set(); // 本輪（含複習輪）錯過的動詞 → 結算顯示完整變位表
 let reviewQueue = [], reviewWrong = [], reviewIdx = 0;
 let reflexBefore = 0;
 
@@ -327,6 +343,7 @@ function startSprint() {
   timeLeft = SPRINT_SEC; paused = false;
   sprintCorrect = 0; sprintAttempts = 0;
   fkList = []; wrongCells = []; lastCell = null;
+  missedVerbs = new Set();
   reflexBefore = reflexCount(getCells());
   document.getElementById('startScreen').classList.add('hidden');
   document.getElementById('doneScreen').classList.add('hidden');
@@ -381,6 +398,7 @@ function recordAttempt(vi, pi, ok, fk) {
   cells[key].h = cells[key].h.slice(-HIST_MAX);
   saveCells(cells);
   if (!ok) {
+    missedVerbs.add(vi);
     const v = VERBS[vi];
     logWrong({
       src: 'sprint',
@@ -478,6 +496,22 @@ function showDone() {
   document.getElementById('improvedLine').textContent =
     diff > 0 ? `🎉 本輪新增 ${diff} 格反射！` : (diff < 0 ? `📉 掉了 ${-diff} 格反射，再衝一輪拿回來` : '');
 
+  // 錯過動詞 → 完整變位表（正確資訊再輸入）
+  const mc = document.getElementById('missedCard');
+  if (missedVerbs.size) {
+    mc.classList.remove('hidden');
+    document.getElementById('missedTables').innerHTML = [...missedVerbs].sort((a,b)=>a-b).map(vi => {
+      const v = VERBS[vi];
+      return `<div class="conj-block">
+        <div class="conj-verb">${v.inf}</div>
+        <table class="conj-table">${PERSONS.map((p,i) =>
+          `<tr><td class="conj-p">${p}</td><td class="conj-f">${v.forms[i]}</td></tr>`).join('')}</table>
+      </div>`;
+    }).join('');
+  } else {
+    mc.classList.add('hidden');
+  }
+
   renderHeatmap('heatmapDone');
 
   saveSession({
@@ -522,6 +556,31 @@ renderHeatmap('heatmap');
   }
 })();
 if (new URLSearchParams(location.search).get('guided') === '1') startSprint();
+
+// ── 自動計時：練習時間自動記入 clb7_tracker（type: auto-sprint）──
+(function(){
+  const TYPE='sprint', TICK=15, IDLE_MS=60000;
+  let acc=0, lastAct=Date.now();
+  ['keydown','pointerdown','scroll','touchstart'].forEach(ev =>
+    document.addEventListener(ev, () => lastAct=Date.now(), {passive:true}));
+  setInterval(() => {
+    if (document.visibilityState==='visible' && Date.now()-lastAct < IDLE_MS) acc += TICK;
+  }, TICK*1000);
+  function flushTime(){
+    if (acc < 30) return;
+    try {
+      const d = new Date();
+      const data = JSON.parse(localStorage.getItem('clb7_tracker')) || [];
+      data.push({ ts: Date.now(),
+        date: `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`,
+        type: 'auto-'+TYPE, sec: acc });
+      localStorage.setItem('clb7_tracker', JSON.stringify(data));
+      acc = 0;
+    } catch(e) {}
+  }
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState==='hidden') flushTime(); });
+  window.addEventListener('pagehide', flushTime);
+})();
 </script>
 </body>
 </html>
