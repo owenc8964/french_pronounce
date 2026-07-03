@@ -4641,5 +4641,740 @@ const CHUNKS = [
   "fr": "indépendant(e)",
   "zh": "自由/獨立的",
   "note": "(adj) être indépendant avec un van"
+ },
+ {
+  "id": "L14_quelqu'un",
+  "lesson": 14,
+  "fr": "quelqu'un",
+  "zh": "某人",
+  "note": ""
+ },
+ {
+  "id": "L14_quelque_chose",
+  "lesson": 14,
+  "fr": "quelque chose",
+  "zh": "某事、某東西",
+  "note": ""
+ },
+ {
+  "id": "L14_Est_ce_que_le_petit_déje",
+  "lesson": 14,
+  "fr": "Est-ce que le petit déjeuner est compris ?",
+  "zh": "早餐有含嗎？",
+  "note": ""
+ },
+ {
+  "id": "L14_Est_ce_que_les_animaux_s",
+  "lesson": 14,
+  "fr": "Est-ce que les animaux sont acceptés ?",
+  "zh": "可以帶寵物嗎？",
+  "note": ""
+ },
+ {
+  "id": "L14_Est_ce_qu'il_y_a_un_park",
+  "lesson": 14,
+  "fr": "Est-ce qu'il y a un parking pour les voitures ?",
+  "zh": "有停車場嗎？",
+  "note": ""
+ },
+ {
+  "id": "L14_J'arrive_le____et_je_par",
+  "lesson": 14,
+  "fr": "J'arrive le 25 et je pars le 28.",
+  "zh": "我 25 號到、28 號走。",
+  "note": ""
+ },
+ {
+  "id": "L14_bon___meilleur__que_",
+  "lesson": 14,
+  "fr": "bon → meilleur (que)",
+  "zh": "好 → 更好",
+  "note": "❌ plus bon ✅ La cuisine est meilleure au « Bistrot de la mer » que « Chez Albert »."
+ },
+ {
+  "id": "L14_mauvais___pire__que_",
+  "lesson": 14,
+  "fr": "mauvais → pire (que)",
+  "zh": "壞 → 更壞",
+  "note": "❌ plus mauvais ✅ pire"
+ },
+ {
+  "id": "L14_J'aime_le_café__mais_le_",
+  "lesson": 14,
+  "fr": "J'aime le café, mais le thé est meilleur.",
+  "zh": "我喜歡咖啡，但茶更好。",
+  "note": ""
+ },
+ {
+  "id": "L14_de_la___de",
+  "lesson": 14,
+  "fr": "de la → de",
+  "zh": "陰性國家 la 直接拿掉",
+  "note": "la France → je viens de France（不說 de la France）"
+ },
+ {
+  "id": "L14_de_du___d'_devant_a__e__",
+  "lesson": 14,
+  "fr": "de/du → d' devant a, e, i, o, u",
+  "zh": "母音前縮寫",
+  "note": "d'Irlande、d'Irak、d'Amsterdam"
+ },
+ {
+  "id": "L14_Je_viens_de_Taïwan_",
+  "lesson": 14,
+  "fr": "Je viens de Taïwan.",
+  "zh": "台灣不加冠詞",
+  "note": "跟城市一樣處理（我們不說 le Taïwan，就像不說 le Bordeaux）"
+ },
+ {
+  "id": "L14_Il_est_sorti____Elle_est",
+  "lesson": 14,
+  "fr": "Il est sorti. / Elle est sortie.",
+  "zh": "他出去了／她出去了",
+  "note": "陰性 +e"
+ },
+ {
+  "id": "L14_Ils_sont_sortis____Elles",
+  "lesson": 14,
+  "fr": "Ils sont sortis. / Elles sont sorties.",
+  "zh": "他們／她們出去了",
+  "note": "複數 +s；全女性 +es"
+ },
+ {
+  "id": "L14_nous_sommes_allé_e_s",
+  "lesson": 14,
+  "fr": "nous sommes allé(e)s",
+  "zh": "我們去了",
+  "note": "nous 是誰決定加不加 e：一男九女也算「有男」→ 不加 e；全女才加"
+ },
+ {
+  "id": "L14_C'est_un_pays_génial__",
+  "lesson": 14,
+  "fr": "C'est un pays génial !",
+  "zh": "這國家超讚！",
+  "note": ""
+ },
+ {
+  "id": "L14_C'est_magnifique__",
+  "lesson": 14,
+  "fr": "C'est magnifique !",
+  "zh": "太美了！",
+  "note": "L'Islande est magnifique."
+ },
+ {
+  "id": "L14_Les_gens_sont_gentils_",
+  "lesson": 14,
+  "fr": "Les gens sont gentils.",
+  "zh": "人很友善",
+  "note": "les gens = 泛指人們"
+ },
+ {
+  "id": "L14_C'est_sympa_et_animé_",
+  "lesson": 14,
+  "fr": "C'est sympa et animé.",
+  "zh": "很棒又熱鬧",
+  "note": "animé = 熱鬧（≠ 英文 anime 動畫！）Taipei est très animé."
+ },
+ {
+  "id": "L14_Alors__le_wwoofing__qu'e",
+  "lesson": 14,
+  "fr": "Alors, le wwoofing, qu'est-ce que c'est ?",
+  "zh": "那麼，wwoofing 是什麼？",
+  "note": "Alors + qu'est-ce que c'est = 開啟話題萬用組"
+ },
+ {
+  "id": "L14__a_va__",
+  "lesson": 14,
+  "fr": "Ça va ?",
+  "zh": "（課堂上）這樣懂嗎？",
+  "note": "不只是問好——老師確認理解的口頭禪"
+ },
+ {
+  "id": "L14_On_peut_passer_ça_",
+  "lesson": 14,
+  "fr": "On peut passer ça.",
+  "zh": "這個我們可以跳過",
+  "note": ""
+ },
+ {
+  "id": "L14_Je_vais_te_montrer_",
+  "lesson": 14,
+  "fr": "Je vais te montrer.",
+  "zh": "我示範給你看",
+  "note": ""
+ },
+ {
+  "id": "L14_C'est_pareil_",
+  "lesson": 14,
+  "fr": "C'est pareil.",
+  "zh": "一樣的意思",
+  "note": "allé 和 parti 差在哪？C'est pareil."
+ },
+ {
+  "id": "L14_Je_ne_connais_pas_non_pl",
+  "lesson": 14,
+  "fr": "Je ne connais pas non plus.",
+  "zh": "我也不認識",
+  "note": "non plus = 否定句的「也」（肯定句用 aussi）"
+ },
+ {
+  "id": "L14_Je_ne_connais_que_Monet_",
+  "lesson": 14,
+  "fr": "Je ne connais que Monet.",
+  "zh": "我只認識莫內",
+  "note": "⭐ ne... que = 只——超好用句型"
+ },
+ {
+  "id": "L14_Non__je_ne_crois_pas_",
+  "lesson": 14,
+  "fr": "Non, je ne crois pas.",
+  "zh": "不，我不這麼認為",
+  "note": ""
+ },
+ {
+  "id": "L14_C'est_à_côté_de_l'Espagn",
+  "lesson": 14,
+  "fr": "C'est à côté de l'Espagne.",
+  "zh": "在西班牙旁邊",
+  "note": ""
+ },
+ {
+  "id": "L14_C'est_près_de_où_je_vis_",
+  "lesson": 14,
+  "fr": "C'est près de où je vis.",
+  "zh": "離我住的地方很近",
+  "note": ""
+ },
+ {
+  "id": "L14_Je_t'envoie_ça_sur_AirDr",
+  "lesson": 14,
+  "fr": "Je t'envoie ça sur AirDrop.",
+  "zh": "我用 AirDrop 傳給你",
+  "note": "envoyer qqch à qqn 的現代日常版"
+ },
+ {
+  "id": "L14_Tu_peux_dire___",
+  "lesson": 14,
+  "fr": "Tu peux dire...",
+  "zh": "你可以說...",
+  "note": ""
+ },
+ {
+  "id": "L14___la_semaine_prochaine__",
+  "lesson": 14,
+  "fr": "À la semaine prochaine !",
+  "zh": "下週見！",
+  "note": ""
+ },
+ {
+  "id": "L14_meilleur___plus_bon",
+  "lesson": 14,
+  "fr": "meilleur ≠ plus bon",
+  "zh": "差點說出 plus bon",
+  "note": "跟英文不說 more good 一樣；只有 bon→meilleur、mauvais→pire 兩個例外"
+ },
+ {
+  "id": "L14_le_wwoofing",
+  "lesson": 14,
+  "fr": "le wwoofing",
+  "zh": "農場志工換宿",
+  "note": "(m) 工作 4 小時/天換免費食宿"
+ },
+ {
+  "id": "L14_la_micro_aventure",
+  "lesson": 14,
+  "fr": "la micro-aventure",
+  "zh": "微探險",
+  "note": "(f) près de chez vous 的小冒險"
+ },
+ {
+  "id": "L14_l'argent",
+  "lesson": 14,
+  "fr": "l'argent",
+  "zh": "錢",
+  "note": "(m) ⚠️ 也是「銀」——古時用銀當錢；en argent = 銀製的"
+ },
+ {
+  "id": "L14_biologique",
+  "lesson": 14,
+  "fr": "biologique",
+  "zh": "有機的",
+  "note": "(adj) une ferme biologique 有機農場；≠ 英文 biological"
+ },
+ {
+  "id": "L14_gratuit___gratuitement",
+  "lesson": 14,
+  "fr": "gratuit / gratuitement",
+  "zh": "免費的／免費地",
+  "note": "(adj) c'est gratuit（形容詞）；manger gratuitement（副詞）"
+ },
+ {
+  "id": "L14_courageux___courageuse",
+  "lesson": 14,
+  "fr": "courageux / courageuse",
+  "zh": "勇敢的",
+  "note": "(adj) -eux → -euse"
+ },
+ {
+  "id": "L14_l'aventure",
+  "lesson": 14,
+  "fr": "l'aventure",
+  "zh": "冒險",
+  "note": "(f) vous adorez l'aventure ?"
+ },
+ {
+  "id": "L14_une_expérience",
+  "lesson": 14,
+  "fr": "une expérience",
+  "zh": "體驗、經驗",
+  "note": "(f) faites une expérience différente"
+ },
+ {
+  "id": "L14_un_igloo",
+  "lesson": 14,
+  "fr": "un igloo",
+  "zh": "冰屋",
+  "note": "(m) nuit dans un igloo（微探險例子）"
+ },
+ {
+  "id": "L14_extraordinaire",
+  "lesson": 14,
+  "fr": "extraordinaire",
+  "zh": "非凡的",
+  "note": "(adj) vivez quelques heures extraordinaires !"
+ },
+ {
+  "id": "L14_offrir__à_qqn_",
+  "lesson": 14,
+  "fr": "offrir (à qqn)",
+  "zh": "送（給某人）",
+  "note": "on lui a offert une journée = 我們送了他一天（COI）"
+ },
+ {
+  "id": "L14_une_journée",
+  "lesson": 14,
+  "fr": "une journée",
+  "zh": "一整天",
+  "note": "(f) une journée au circuit du Mans"
+ },
+ {
+  "id": "L14_la_campagne",
+  "lesson": 14,
+  "fr": "la campagne",
+  "zh": "鄉下",
+  "note": "(f) à la campagne；⚠️ 不是 champagne（香檳）！"
+ },
+ {
+  "id": "L14_l'île",
+  "lesson": 14,
+  "fr": "l'île",
+  "zh": "島",
+  "note": "(f) Taïwan est une île"
+ },
+ {
+  "id": "L14_la_mer",
+  "lesson": 14,
+  "fr": "la mer",
+  "zh": "海",
+  "note": "(f) à la mer"
+ },
+ {
+  "id": "L14_la_montagne",
+  "lesson": 14,
+  "fr": "la montagne",
+  "zh": "山",
+  "note": "(f) à la montagne"
+ },
+ {
+  "id": "L14_le_village",
+  "lesson": 14,
+  "fr": "le village",
+  "zh": "村莊",
+  "note": "(m) visiter un village traditionnel"
+ },
+ {
+  "id": "L14_l'hébergement",
+  "lesson": 14,
+  "fr": "l'hébergement",
+  "zh": "住宿（總稱）",
+  "note": "(m) 可以睡覺的地方的統稱"
+ },
+ {
+  "id": "L14_le_camping",
+  "lesson": 14,
+  "fr": "le camping",
+  "zh": "露營／露營區",
+  "note": "(m) 野營帳篷或 camping de vacances（有 mobil-home 的營地）"
+ },
+ {
+  "id": "L14_la_tente",
+  "lesson": 14,
+  "fr": "la tente",
+  "zh": "帳篷",
+  "note": "(f) on dort sous une tente（睡「在帳篷下」）"
+ },
+ {
+  "id": "L14_la_chambre_d'hôtes",
+  "lesson": 14,
+  "fr": "la chambre d'hôtes",
+  "zh": "民宿（含主人）",
+  "note": "(f) une chambre avec des personnes = 跟屋主住"
+ },
+ {
+  "id": "L14_l'échange_d'appartements",
+  "lesson": 14,
+  "fr": "l'échange d'appartements",
+  "zh": "換屋",
+  "note": "(m) échange de maisons 同理；上一課看過"
+ },
+ {
+  "id": "L14_la_ferme",
+  "lesson": 14,
+  "fr": "la ferme",
+  "zh": "農場",
+  "note": "(f) une maison avec des animaux à la campagne"
+ },
+ {
+  "id": "L14_la_location__de_vacances",
+  "lesson": 14,
+  "fr": "la location (de vacances)",
+  "zh": "度假租屋",
+  "note": "(f) ⚠️ location = 租，不是英文 location！租一週；長租一年也叫 location"
+ },
+ {
+  "id": "L14_le_logement",
+  "lesson": 14,
+  "fr": "le logement",
+  "zh": "住所",
+  "note": "(m) housing 總稱；location 是租的行為"
+ },
+ {
+  "id": "L14_l'auberge_de_jeunesse",
+  "lesson": 14,
+  "fr": "l'auberge de jeunesse",
+  "zh": "青年旅館",
+  "note": "(f) jeunesse = 年輕；多人一室（老師在里昂住過兩週）"
+ },
+ {
+  "id": "L14_l'avion___l'aéroport",
+  "lesson": 14,
+  "fr": "l'avion → l'aéroport",
+  "zh": "飛機 → 機場",
+  "note": "(m) 🔊 a-é-ro-port 四個音節，不是英文 air-port"
+ },
+ {
+  "id": "L14_le_van",
+  "lesson": 14,
+  "fr": "le van",
+  "zh": "廂型車",
+  "note": "(m) 跟英文一樣"
+ },
+ {
+  "id": "L14_se_baigner",
+  "lesson": 14,
+  "fr": "se baigner",
+  "zh": "玩水、泡水",
+  "note": "反身動詞"
+ },
+ {
+  "id": "L14_bronzer",
+  "lesson": 14,
+  "fr": "bronzer",
+  "zh": "曬黑、日光浴",
+  "note": "bronze 是古銅色 → bronzer = 變成這個顏色"
+ },
+ {
+  "id": "L14_faire_de_la_randonnée",
+  "lesson": 14,
+  "fr": "faire de la randonnée",
+  "zh": "健行",
+  "note": "= hiking"
+ },
+ {
+  "id": "L14_faire_du_surf",
+  "lesson": 14,
+  "fr": "faire du surf",
+  "zh": "衝浪",
+  "note": ""
+ },
+ {
+  "id": "L14_goûter_la_cuisine_locale",
+  "lesson": 14,
+  "fr": "goûter la cuisine locale",
+  "zh": "品嚐當地菜",
+  "note": "goûter = 品嚐（動詞）"
+ },
+ {
+  "id": "L14_le_goûter",
+  "lesson": 14,
+  "fr": "le goûter",
+  "zh": "下午點心",
+  "note": "(m) 🇫🇷 法國小孩四點的點心時間；因為晚餐吃很晚（19h30–20h）"
+ },
+ {
+  "id": "L14_prendre_des_photos",
+  "lesson": 14,
+  "fr": "prendre des photos",
+  "zh": "拍照",
+  "note": ""
+ },
+ {
+  "id": "L14_l'arrivée___le_départ",
+  "lesson": 14,
+  "fr": "l'arrivée / le départ",
+  "zh": "抵達／離開",
+  "note": "(f) date d'arrivée、date de départ"
+ },
+ {
+  "id": "L14_la_chambre_simple___doub",
+  "lesson": 14,
+  "fr": "la chambre simple / double / familiale",
+  "zh": "單人房／雙人房／家庭房",
+  "note": "(f) "
+ },
+ {
+  "id": "L14_le_lit_simple___double__",
+  "lesson": 14,
+  "fr": "le lit simple / double / bébé",
+  "zh": "單人床／雙人床／嬰兒床",
+  "note": "(m) "
+ },
+ {
+  "id": "L14_le_petit_déjeuner_est_co",
+  "lesson": 14,
+  "fr": "le petit déjeuner est compris",
+  "zh": "早餐含在內",
+  "note": "compris = inclus；是分詞當形容詞，不是動詞變位！"
+ },
+ {
+  "id": "L14_les_animaux_sont_accepté",
+  "lesson": 14,
+  "fr": "les animaux sont acceptés",
+  "zh": "接受寵物",
+  "note": "同上：accepté 分詞當形容詞"
+ },
+ {
+  "id": "L14_le_parking_privé___publi",
+  "lesson": 14,
+  "fr": "le parking privé / public",
+  "zh": "私人／公共停車場",
+  "note": "(m) une école privée / publique 同一組字（法國人偏好公立學校）"
+ },
+ {
+  "id": "L14_un_adulte___un_enfant",
+  "lesson": 14,
+  "fr": "un adulte / un enfant",
+  "zh": "成人／小孩",
+  "note": "(m) 幾歲算 enfant 每家標準不同，要確認"
+ },
+ {
+  "id": "L14_du___au____juillet",
+  "lesson": 14,
+  "fr": "du 5 au 11 juillet",
+  "zh": "7月5日到11日",
+  "note": "du... au... = from... to..."
+ },
+ {
+  "id": "L14_à_quelle_date__",
+  "lesson": 14,
+  "fr": "à quelle date ?",
+  "zh": "什麼日期？",
+  "note": "問訂房日期"
+ },
+ {
+  "id": "L14_proche",
+  "lesson": 14,
+  "fr": "proche",
+  "zh": "近的",
+  "note": "(adj) = près；beaucoup plus proche 近很多"
+ },
+ {
+  "id": "L14_neuf___ancien",
+  "lesson": 14,
+  "fr": "neuf / ancien",
+  "zh": "新的／舊的（物）",
+  "note": "(adj) ⚠️ 物品用 neuf/ancien"
+ },
+ {
+  "id": "L14_jeune___vieux",
+  "lesson": 14,
+  "fr": "jeune / vieux",
+  "zh": "年輕的／老的（人）",
+  "note": "(adj) ⚠️ 人用 jeune/vieux——Je suis plus jeune que ma sœur."
+ },
+ {
+  "id": "L14_celui___celle",
+  "lesson": 14,
+  "fr": "celui / celle",
+  "zh": "那個（the one）",
+  "note": "(m) celui-là = that one；比較兩家旅館時用"
+ },
+ {
+  "id": "L14_la_proximité",
+  "lesson": 14,
+  "fr": "la proximité",
+  "zh": "距離、鄰近程度",
+  "note": "(f) proximité du centre-ville 900 m"
+ },
+ {
+  "id": "L14_le_bâtiment",
+  "lesson": 14,
+  "fr": "le bâtiment",
+  "zh": "建築物",
+  "note": "(m) beauté du bâtiment 建築美感"
+ },
+ {
+  "id": "L14_l'année_de_construction",
+  "lesson": 14,
+  "fr": "l'année de construction",
+  "zh": "建造年份",
+  "note": "(f) 1965"
+ },
+ {
+  "id": "L14_écologique",
+  "lesson": 14,
+  "fr": "écologique",
+  "zh": "環保的",
+  "note": "(adj) Le vélo est plus écologique que l'avion."
+ },
+ {
+  "id": "L14_agréable",
+  "lesson": 14,
+  "fr": "agréable",
+  "zh": "宜人的、舒服的",
+  "note": "(adj) Les vacances à la mer sont aussi agréables que..."
+ },
+ {
+  "id": "L14_Il_est_rentré_de_Taïwan_",
+  "lesson": 14,
+  "fr": "Il est rentré de Taïwan.",
+  "zh": "他從台灣回來了",
+  "note": "rentrer de + 地方"
+ },
+ {
+  "id": "L14_Elles_sont_parties_où_ce",
+  "lesson": 14,
+  "fr": "Elles sont parties où cet été ?",
+  "zh": "她們今年夏天去了哪？",
+  "note": "過去式（已經出發了）；parties 全女性 +es"
+ },
+ {
+  "id": "L14_Elle_est_arrivée_à_la_pl",
+  "lesson": 14,
+  "fr": "Elle est arrivée à la plage.",
+  "zh": "她到海灘了",
+  "note": "arrivée +e"
+ },
+ {
+  "id": "L14_il_y_a_trois_jours",
+  "lesson": 14,
+  "fr": "il y a trois jours",
+  "zh": "三天前",
+  "note": "⭐ il y a + 時間 = ...之前；Elle est arrivée au Kazakhstan il y a trois jours."
+ },
+ {
+  "id": "L14_l'année_dernière___proch",
+  "lesson": 14,
+  "fr": "l'année dernière / prochaine",
+  "zh": "去年／明年",
+  "note": "dernière 上一個、prochaine 下一個；À la semaine prochaine ! 下週見"
+ },
+ {
+  "id": "L14_une_région",
+  "lesson": 14,
+  "fr": "une région",
+  "zh": "地區（法國行政區）",
+  "note": "(f) en + région：en Bretagne, en Provence, en Normandie"
+ },
+ {
+  "id": "L14_un_endroit",
+  "lesson": 14,
+  "fr": "un endroit",
+  "zh": "地點、地方",
+  "note": "(m) C'est un endroit parfait pour la randonnée."
+ },
+ {
+  "id": "L14_un_champ",
+  "lesson": 14,
+  "fr": "un champ",
+  "zh": "田野",
+  "note": "(m) des champs（Cézanne 的畫）"
+ },
+ {
+  "id": "L14_une_rivière",
+  "lesson": 14,
+  "fr": "une rivière",
+  "zh": "河",
+  "note": "(f) Courbet 的畫裡有"
+ },
+ {
+  "id": "L14_l'herbe",
+  "lesson": 14,
+  "fr": "l'herbe",
+  "zh": "草",
+  "note": "(f) de l'herbe verte"
+ },
+ {
+  "id": "L14_un_chemin",
+  "lesson": 14,
+  "fr": "un chemin",
+  "zh": "小路",
+  "note": "(m) Monet 的畫裡有"
+ },
+ {
+  "id": "L14_un_lac",
+  "lesson": 14,
+  "fr": "un lac",
+  "zh": "湖",
+  "note": "(m) un lac dans le bois de Boulogne"
+ },
+ {
+  "id": "L14_un_canard",
+  "lesson": 14,
+  "fr": "un canard",
+  "zh": "鴨子",
+  "note": "(m) il y a aussi deux canards"
+ },
+ {
+  "id": "L14_faire_du_bateau",
+  "lesson": 14,
+  "fr": "faire du bateau",
+  "zh": "划船",
+  "note": "Deux femmes font du bateau."
+ },
+ {
+  "id": "L14_se_promener",
+  "lesson": 14,
+  "fr": "se promener",
+  "zh": "散步",
+  "note": "agréable pour se promener"
+ },
+ {
+  "id": "L14_un_an___une_année",
+  "lesson": 14,
+  "fr": "un an / une année",
+  "zh": "年",
+  "note": "(m) 數字用 an（un an）；強調期間用 année（plusieurs années）"
+ },
+ {
+  "id": "L14__gne_____campagne__monta",
+  "lesson": 14,
+  "fr": "-gne [ɲ]：campagne, montagne",
+  "zh": "唸成了 champagne",
+  "note": "軟鼻音「涅」，一點點就好；campagne（鄉下）≠ champagne（香檳）是兩個字！"
+ },
+ {
+  "id": "L14_ville__vil_",
+  "lesson": 14,
+  "fr": "ville [vil]",
+  "zh": "套用 -ille = [ij] 規則",
+  "note": "⚠️ ville、village 是例外，L 要發出來；famille、travaille 才唸 [ij]"
+ },
+ {
+  "id": "L14_aéroport",
+  "lesson": 14,
+  "fr": "aéroport",
+  "zh": "唸成英文 air-port",
+  "note": "法文四個音節：a-é-ro-port"
  }
 ];

@@ -790,6 +790,58 @@ const BANK = [
   { lesson:13, topic:'vocab-alimentation', type:'fill', q:'Il faut éviter les aliments _____. (gras)', hint:'複數陽性形容詞', a:'Il faut éviter les aliments gras.|gras', aNote:'gras（m sg）→ gras（m pl 不加 s，已以 -s 結尾）；陰性 grasse' },
   { lesson:13, topic:'vocab-alimentation', type:'trans', q:'你要多喝水。', hint:'boire / eau / devoir', a:'Tu dois boire plus d\'eau.', aNote:"boire = 喝（不規則）；de l'eau = 水（帶部分冠詞）", askClaude:true },
   { lesson:13, topic:'vocab-alimentation', type:'choose', q:'以下哪個是「蛋白質」類食物？', hint:'protéine', a:'le poulet（雞肉）', aNote:'poulet / viande / poisson / légumineuses 都是蛋白質來源；saumon 是 gras（脂肪類）', opts:['le poulet（雞肉）','le sucre','le beurre','les pâtes'] },
+
+  // ═══ 第14課：比較級 ═══
+  { lesson:14, topic:'comparaison', type:'fill', q:'Le camping est _____ cher que l\'hôtel.（露營比旅館便宜）', hint:'劣等比較', a:'moins', aNote:'moins + 形容詞 + que = 比較不…' },
+  { lesson:14, topic:'comparaison', type:'fill', q:'La voiture est _____ confortable que le train.（汽車比火車更舒服）', hint:'優等比較', a:'plus', aNote:'plus + 形容詞 + que' },
+  { lesson:14, topic:'comparaison', type:'fill', q:'Mon van est _____ pratique que le van de Léo.（一樣實用）', hint:'等同比較', a:'aussi', aNote:'aussi + 形容詞 + que = 和…一樣' },
+  { lesson:14, topic:'comparaison', type:'fill', q:'J\'aime le café, mais le thé est _____.（更好）', hint:'bon 的比較級，不能用 plus', a:'meilleur', aNote:'bon → meilleur；❌ plus bon（跟英文不說 more good 一樣）' },
+  { lesson:14, topic:'comparaison', type:'fill', q:'Ce film est _____ que le livre.（更糟）', hint:'mauvais 的比較級', a:'pire', aNote:'mauvais → pire；❌ plus mauvais' },
+  { lesson:14, topic:'comparaison', type:'choose', q:'「這間旅館離市中心近很多」的「近很多」怎麼說？', hint:'程度修飾', a:'beaucoup plus proche', aNote:'beaucoup plus = 多很多；un peu plus = 多一點', opts:['beaucoup plus proche','très plus proche','beaucoup proche','plus beaucoup proche'] },
+  { lesson:14, topic:'comparaison', type:'choose', q:'形容「舊旅館（物品）」用哪個字？', hint:'人和物用的字不同', a:'ancien', aNote:'物品用 neuf/ancien；人用 jeune/vieux', opts:['ancien','vieux','jeune','âgé'] },
+  { lesson:14, topic:'comparaison', type:'trans', q:'我比我姊姊年輕。', hint:'jeune', a:'Je suis plus jeune que ma sœur.', aNote:'plus jeune（人用 jeune，不用 neuf）', askClaude:true },
+  { lesson:14, topic:'comparaison', type:'trans', q:'腳踏車比飛機更環保。', hint:'écologique', a:'Le vélo est plus écologique que l\'avion.', aNote:'', askClaude:true },
+  { lesson:14, topic:'comparaison', type:'fill', q:'Les vacances à la mer sont aussi _____ que les vacances à la montagne.（一樣宜人，注意配合）', hint:'agréable ＋ 複數配合', a:'agréables', aNote:'形容詞跟主詞 les vacances（陰性複數）配合 → agréables' },
+
+  // ═══ 第14課：來源介系詞 de/du/des/d' ═══
+  { lesson:14, topic:'preposition-country', type:'fill', q:'Je reviens _____ Danemark.（陽性國家）', hint:'de + le = ?', a:'du', aNote:'陽性國家用 du（= de + le）' },
+  { lesson:14, topic:'preposition-country', type:'fill', q:'J\'arrive _____ Nouvelle-Zélande.（陰性國家）', hint:'陰性直接用', a:'de', aNote:'陰性國家：la 拿掉直接 de（不說 de la France）' },
+  { lesson:14, topic:'preposition-country', type:'fill', q:'Nathan vient _____ États-Unis.（複數國家）', hint:'de + les = ?', a:'des', aNote:'des = de + les（縮合冠詞），跟複數 un/une/des 的 des 不同身分！' },
+  { lesson:14, topic:'preposition-country', type:'fill', q:'Yvonne vient _____ Irlande.（母音開頭）', hint:'a e i o u 前', a:"d'", aNote:"de/du → d' devant 母音：d'Irlande、d'Irak、d'Amsterdam" },
+  { lesson:14, topic:'preposition-country', type:'fill', q:'Je viens _____ Taïwan.', hint:'台灣的特殊規則', a:'de', aNote:'台灣不加冠詞，跟城市同規則（不說 le Taïwan）→ 直接 de' },
+  { lesson:14, topic:'preposition-country', type:'fill', q:'Je reviens _____ Copenhague.（城市）', hint:'城市規則', a:'de', aNote:'城市一律 de（母音開頭才 d\'）' },
+  { lesson:14, topic:'preposition-country', type:'choose', q:'Saïda et Franck reviennent ___ Maroc.', hint:'Maroc 陽性', a:'du', aNote:'le Maroc 陽性 → du', opts:['du','de','des',"d'"] },
+  { lesson:14, topic:'preposition-country', type:'choose', q:'Michel vient ___ Pays-Bas.', hint:'Pays-Bas 複數', a:'des', aNote:'les Pays-Bas（荷蘭，複數）→ des', opts:['des','du','de',"d'"] },
+  { lesson:14, topic:'preposition-country', type:'trans', q:'她從希臘來。', hint:'la Grèce 陰性', a:'Elle vient de Grèce.|Elle arrive de Grèce.', aNote:'陰性國家 la 拿掉 → de Grèce', askClaude:true },
+
+  // ═══ 第14課：passé composé avec être（性數配合）═══
+  { lesson:14, topic:'passe-compose', type:'fill', q:'Elle est _____ (arriver) à la plage.', hint:'être 助動詞＋陰性配合', a:'arrivée', aNote:'être 當助動詞 → 分詞跟主詞配合：elle → arrivée（+e）' },
+  { lesson:14, topic:'passe-compose', type:'fill', q:'Elles sont _____ (partir) où cet été ?', hint:'全女性複數', a:'parties', aNote:'elles（全女性複數）→ parties（+es）' },
+  { lesson:14, topic:'passe-compose', type:'fill', q:'Il est _____ (rentrer) de vacances hier.', hint:'陽性單數', a:'rentré', aNote:'il → rentré（不加 e）；rentrer de = 從…回來' },
+  { lesson:14, topic:'passe-compose', type:'fill', q:'L\'année dernière, nous sommes _____ (aller) à Nice.（我們＝你和你太太）', hint:'一男一女的 nous', a:'allés', aNote:'混合性別 → 用陽性複數 allés（有一個男生就不加 e）' },
+  { lesson:14, topic:'passe-compose', type:'fill', q:'Gustave Courbet est _____ (naître) en Franche-Comté.', hint:'naître 的分詞', a:'né', aNote:'naître → né（出生）；il est né = he was born' },
+  { lesson:14, topic:'passe-compose', type:'fill', q:'Claude Monet est _____ (mourir) à Giverny.', hint:'mourir 的分詞', a:'mort', aNote:'mourir → mort（過世）；naître 和 mourir 都用 être' },
+  { lesson:14, topic:'passe-compose', type:'choose', q:'哪一句的性數配合是「錯」的？', hint:'être 家族才要配合', a:'Elle est sorti hier soir.', aNote:'elle → sortie（要加 e）；其他三句都正確', opts:['Elle est sorti hier soir.','Ils sont sortis ensemble.','Elle est sortie hier soir.','Il est sorti ce matin.'] },
+  { lesson:14, topic:'passe-compose', type:'fill', q:'Elle est arrivée au Kazakhstan _____ trois jours.（三天前）', hint:'「…之前」的說法', a:'il y a', aNote:'il y a + 時間 = …前（ago）；il y a trois jours = 三天前' },
+  { lesson:14, topic:'passe-compose', type:'trans', q:'摩洛哥打敗了荷蘭。', hint:'battre 用 avoir', a:'Le Maroc a battu les Pays-Bas.', aNote:'battre → battu；一般動詞用 avoir，分詞不用配合', askClaude:true },
+
+  // ═══ 第14課：訂房 ═══
+  { lesson:14, topic:'reservation-hotel', type:'trans', q:'我想訂一間房，7月5日到7月11日，兩個大人一個小孩。', hint:'du... au... / pour', a:'Je voudrais réserver une chambre du 5 juillet au 11 juillet pour deux adultes et un enfant.|Je voudrais réserver une chambre du 5 au 11 juillet pour deux adultes et un enfant.', aNote:'課堂上自己組出來的句子！du X au Y = 從X日到Y日', askClaude:true },
+  { lesson:14, topic:'reservation-hotel', type:'trans', q:'早餐有含嗎？', hint:'compris', a:'Est-ce que le petit déjeuner est compris ?|Le petit déjeuner est compris ?', aNote:'compris 是分詞當形容詞（= included），不是動詞變位', askClaude:true },
+  { lesson:14, topic:'reservation-hotel', type:'trans', q:'可以帶寵物嗎？（寵物被接受嗎）', hint:'acceptés', a:'Est-ce que les animaux sont acceptés ?|Les animaux sont acceptés ?', aNote:'les animaux（複數）→ acceptés', askClaude:true },
+  { lesson:14, topic:'reservation-hotel', type:'choose', q:'法文 email 的結尾敬語是？', hint:'老師每封信都寫', a:'Cordialement', aNote:'Cordialement = Best regards；正式 email 標配', opts:['Cordialement','Bonjour','Au revoir','Merci beaucoup'] },
+  { lesson:14, topic:'reservation-hotel', type:'choose', q:'「青年旅館」的法文是？', hint:'jeunesse = 年輕', a:"l'auberge de jeunesse", aNote:'auberge = 小旅店；jeunesse = 青年', opts:["l'auberge de jeunesse","l'hôtel de jeunesse","la maison de jeunesse","le camping de jeunesse"] },
+  { lesson:14, topic:'reservation-hotel', type:'choose', q:'「度假租屋（租一週的那種）」是？', hint:'⚠️ 假朋友', a:'la location de vacances', aNote:'location = 租（不是英文的地點 location！）', opts:['la location de vacances','le logement de vacances','la position de vacances','la place de vacances'] },
+
+  // ═══ 第14課：度假詞彙＋quelque ═══
+  { lesson:14, topic:'vocab-vacances', type:'choose', q:'On dort sous une tente dans cet hébergement.——這是哪種住宿？', hint:'sous = 在…下', a:'un camping', aNote:'tente（帳篷）→ camping', opts:['un camping','une ferme','une location','un hôtel'] },
+  { lesson:14, topic:'vocab-vacances', type:'choose', q:'C\'est une maison avec des animaux à la campagne.——這是？', hint:'有動物的', a:'une ferme', aNote:'ferme = 農場（wwoofing 就在這裡工作）', opts:['une ferme','un camping','une auberge','un village'] },
+  { lesson:14, topic:'vocab-vacances', type:'fill', q:'Vivez _____ heures extraordinaires !（度過「幾個」小時）', hint:'quelque 家族', a:'quelques', aNote:'quelques + 複數名詞 = 一些；quelqu\'un = 某人；quelque chose = 某事' },
+  { lesson:14, topic:'vocab-vacances', type:'fill', q:'_____ (choisir, vous) la micro-aventure !（命令式）', hint:'-IR 動詞 vous 命令式', a:'Choisissez', aNote:'choisir：nous choisissons / vous choisissez（-ss- 出現在複數）' },
+  { lesson:14, topic:'vocab-vacances', type:'choose', q:'「Taipei est très animé」的 animé 是什麼意思？', hint:'不是動畫！', a:'熱鬧的', aNote:'animé = 熱鬧、有活力（≠ 英文 anime）', opts:['熱鬧的','有動畫的','安靜的','古老的'] },
+  { lesson:14, topic:'vocab-vacances', type:'choose', q:'bronzer 是什麼意思？', hint:'bronze 是一種顏色', a:'曬黑、做日光浴', aNote:'bronze 古銅色 → bronzer 變成古銅色 = 曬黑', opts:['曬黑、做日光浴','游泳','擦防曬','戴銅手環'] },
+  { lesson:14, topic:'vocab-vacances', type:'fill', q:'Je ne connais _____ Monet.（我「只」認識莫內）', hint:'ne... que', a:'que', aNote:'ne... que = 只（老師課堂原句：Je ne connais que Monet）' },
+  { lesson:14, topic:'vocab-vacances', type:'trans', q:'這是一個健行的完美地點。', hint:'endroit', a:'C\'est un endroit parfait pour la randonnée.', aNote:'un endroit = 地點；la randonnée = 健行', askClaude:true },
 ];
 // ── ID 函數 ──
 function qId(q) {
