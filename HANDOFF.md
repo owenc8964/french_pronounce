@@ -112,6 +112,8 @@ Owen 回饋核心痛點：**每日練習像沒終點的迷宮，計時器不會�
 4. **dashboard 中樞改造**：頂部 session bar（進行中顯示：大字計時、⏸暫停、🏁結束並記錄→寫入 `clb7_tracker` type:'session'→自動進 700h；toast 回饋分鐘數）；「開始今日學習」改為啟動 session＋前往第一個未完成步驟；`buildPrescription` 改成 6 步番号（含新步驟 ② 研讀＋專項 Quiz），render 加番号圓圈＋`rx-now` 高亮第一個未完成。
 5. **quiz.html**：熱身 5 題完成時 set `clb7_warmup_done`（步驟①的完成旗標，與步驟② 的 `clb7_quiz_done` 分開）。
 
+6. **Duolingo 週報種子**：dashboard 加 `DUO_SEED` 陣列＋`seedDuo()`，載入時 upsert 進 `clb7_duo`（不覆蓋其他週）；`renderDuo` 找不到當週就顯示最新一筆。Owen 給截圖只需改一行。基準 2026-W27 = {streak:73, xp:5901, min:288, units:104}。更新方式見 memory `reference_duolingo_update`。
+
 **端到端實測通過（preview localhost:7788，真的跑完）**：開始→跨頁（dashboard→quiz→reading→dashboard）計時連續、暫停凍結、回 dashboard bar 顯示；模擬 27 分鐘結算→`clb7_tracker` 寫入一筆、700h 由 0→0.5h、toast 正確；實際做完熱身 5 題→`clb7_warmup_done` 真的被 set、課程選擇器（步驟②）出現；dashboard 番号順序＋👉高亮正確（截圖存證）。
 
 ---
