@@ -1102,11 +1102,32 @@ function isoWeek(d = new Date()) {
 
 function getDuoData() { try { return JSON.parse(localStorage.getItem('clb7_duo')) || []; } catch { return []; } }
 
+// ── Duolingo 週數據種子（Owen 給截圖 → Claude 更新此處即可）────────
+// 每筆：{week(ISO 週), streak 連勝, xp 經驗, min 分鐘, units 單元}
+// 載入時自動 upsert 進 clb7_duo，不影響 Owen 手動輸入的其他週。
+const DUO_SEED = [
+  { week: '2026-W27', streak: 73, xp: 5901, min: 288, units: 104 }, // 2026-07-05 週報截圖
+];
+function seedDuo() {
+  let data = getDuoData();
+  let changed = false;
+  DUO_SEED.forEach(seed => {
+    const i = data.findIndex(d => d.week === seed.week);
+    if (i < 0) { data.push(seed); changed = true; }
+    else {
+      const merged = { ...data[i], ...seed };
+      if (JSON.stringify(data[i]) !== JSON.stringify(merged)) { data[i] = merged; changed = true; }
+    }
+  });
+  data.sort((a, b) => String(a.week).localeCompare(String(b.week))); // 最新週排最後
+  if (changed) localStorage.setItem('clb7_duo', JSON.stringify(data));
+}
+
 function renderDuo() {
   const data = getDuoData();
   const week = isoWeek();
-  const cur  = data.find(d => d.week === week);
-  const prev = data.length >= 2 ? data[data.length - (cur ? 2 : 1)] : null;
+  const cur  = data.find(d => d.week === week) || data[data.length - 1]; // 沒有當週就顯示最新一筆
+  const prev = data.length >= 2 ? data[data.length - 2] : null;
 
   function trend(curV, prevV) {
     if (!curV || !prevV || prevV === 0) return '';
@@ -1136,6 +1157,7 @@ function renderDuo() {
   document.getElementById('duoWeekLabel').textContent = `當前週次：${week}`;
 }
 
+seedDuo();
 renderDuo();
 
 // ── 週趨勢快照 ────────────────────────────────────────────
