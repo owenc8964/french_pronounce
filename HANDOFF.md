@@ -90,6 +90,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `table_drill.html` | 動詞變位練習（舊版，功能被 verb_sprint 部分取代）| ✅ 部署 |
 
 | `session_timer.js` | **跨頁 session 計時器**：一次訓練＝一個 session，timestamp 累計、跨頁連續、練習頁常駐 pill、dashboard 端 bar 結算寫入 700h | ✅ 新增（07-05）|
+| `sync_supabase.js` | **跨裝置同步**：所有 clb7_* 存到 Supabase，開頁 pull 合併、變動 debounce 2.5s 自動 push、離頁再 push。掛在全部練習頁＋dashboard | ✅ 新增（07-05）|
 
 **GitHub Pages 網址：** https://owenc8964.github.io/french_pronounce/dashboard.html
 
@@ -118,6 +119,19 @@ Owen 回饋核心痛點：**每日練習像沒終點的迷宮，計時器不會�
 6. **Duolingo 週報種子**：dashboard 加 `DUO_SEED` 陣列＋`seedDuo()`，載入時 upsert 進 `clb7_duo`（不覆蓋其他週）；`renderDuo` 找不到當週就顯示最新一筆。Owen 給截圖只需改一行。基準 2026-W27 = {streak:73, xp:5901, min:288, units:104}。更新方式見 memory `reference_duolingo_update`。
 
 **端到端實測通過（preview localhost:7788，真的跑完）**：開始→跨頁（dashboard→quiz→reading→dashboard）計時連續、暫停凍結、回 dashboard bar 顯示；模擬 27 分鐘結算→`clb7_tracker` 寫入一筆、700h 由 0→0.5h、toast 正確；實際做完熱身 5 題→`clb7_warmup_done` 真的被 set、課程選擇器（步驟②）出現；dashboard 番号順序＋👉高亮正確（截圖存證）。
+
+---
+
+## 跨裝置同步（Supabase，2026-07-05 上線）
+
+Owen 用多台裝置（手機／iPad），要時間/進度一起記錄。localStorage 是單機本地，故接 Supabase 當雲端中繼。
+
+- **後端**：Supabase 專案 `hgkqyrglftljxaieberm`，表 `clb7_sync(id text pk, payload jsonb, updated_at)`，RLS 開，policy select/insert/update 全 true（無登入）。用 **publishable key**（`sb_publishable_...`，設計為可公開，配 RLS）。前端用 REST（免 SDK）。
+- **前端 `sync_supabase.js`**：`ROOM='owen-clb7-k9f3a72q'`（所有裝置共用的房間鑰匙）。開頁 `pull()` 把雲端合併進 local；hook `localStorage.setItem`，clb7_* 一變 debounce 2.5s `push()`；pagehide/隱藏再 push。合併規則同 sync.html：陣列用 ts/id/week 去重、per-key 物件取 last 較新、game 取大、日期字串取新——**時數不重複計**。
+- **實測通過**：A 記 720s → 自動上雲 → B（清空 local）開頁自動 pull 到、dashboard 顯示 0.2h。insert/upsert/read round-trip 都 200/201。測完已清雲端假資料。
+- **已知限制（MVP 可接受）**：last-write-wins——push 是整包覆蓋，只靠「開頁先 pull」防丟。若兩台**同時**開著互動，後 push 的可能蓋掉對方剛存的新資料。單人不同時用沒問題。要更強需 per-key 寫或 push 前先 pull。
+- **安全**：publishable key 會出現在前端原始碼（公開 repo），配 ROOM 鑰匙＝知道網址的人才可能存取；非高敏資料，已向 Owen 說明。要更嚴再加登入。
+- ⚠️ preview 測時 `sync_supabase.js` 會被快取，改完要帶 `?_cb=時間戳` hard reload 才載新版（本次踩過）。
 
 ---
 
