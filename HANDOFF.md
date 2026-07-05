@@ -89,13 +89,34 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `french_notes.html` | 第1–14課筆記；**14課起新增「🎙老師的課堂法語」「🔊發音警報」固定欄目** | ✅ 更新（07-03）|
 | `table_drill.html` | 動詞變位練習（舊版，功能被 verb_sprint 部分取代）| ✅ 部署 |
 
+| `session_timer.js` | **跨頁 session 計時器**：一次訓練＝一個 session，timestamp 累計、跨頁連續、練習頁常駐 pill、dashboard 端 bar 結算寫入 700h | ✅ 新增（07-05）|
+
 **GitHub Pages 網址：** https://owenc8964.github.io/french_pronounce/dashboard.html
 
-**今日處方順序**：🃏 Quiz（最弱topic）→ ⚡ 反射衝刺 → 📦 複習卡 → ✍️ 造句 → 📖 閱讀 → ⏱ 時數
+**今日處方順序（07-05 改為番号一本道）**：① 🔥 熱身 Quiz 5題 → ② 📚 研讀＋專項 Quiz → ③ ⚡ 反射衝刺 → ④ 📦 複習卡 → ⑤ ✍️ 造句 → ⑥ 📖 閱讀。時數不再是步驟，改由頂部 session 計時器全程累計。dashboard 高亮第一個未完成步驟（👉 現在做這個），中樞＝永遠的終點。
 
 ---
 
-## 本 session 做了什麼（2026-07-02 ～ 07-03，共 3 個 commit 已推）
+## 本 session 做了什麼（2026-07-05：跨頁計時器＋一本道流程）
+
+Owen 回饋核心痛點：**每日練習像沒終點的迷宮，計時器不會動、不知道做了多久、做完5題不知下一步、程式會掛、沒成功跑完過**。診斷後確認全是設計缺陷（非錯覺）：
+- 舊計時只活在 `tracker.html`，做 quiz/reading 時完全沒有可見計時；各練習頁其實有「隱藏」自動計時寫入 `clb7_tracker`，但使用者看不到、不信任、無法暫停、沒有「一次 session 從頭到尾」的概念。
+- `guided=1` 只是各頁自動起手，**頁與頁之間沒有串接**，回 dashboard 要自己找下一項 → 迷宮感。
+
+**與 Owen 確認的方向**（AskUserQuestion）：維持 dashboard 中樞（不做自動跳頁）＋加跨頁計時＋明確番号順序；步驟＝暖身→研讀專項→反射→複習→產出；Duolingo 沿用既有 `clb7_duo` 輸入面板（Owen 會定期丟數據給 Claude 填）。
+
+**做了什麼：**
+1. **`session_timer.js`（新檔，核心）**：`window.ClbSession` API（start/pause/resume/toggle/finish/discard/elapsedSec）。用 `clb7_session = {active,running,startedAt,accSec}`，**timestamp 累計**所以換頁後計時連續。練習頁右上角常駐 pill（時間＋⏸＋🏁回結算）。單段不間斷上限 3h 防忘記結算暴衝。
+2. **各練習頁掛載**：quiz/review/reading/writing/verb_sprint 都 `<script src="session_timer.js">`；reading 處方 href 補 `guided=1`。
+3. **防雙重計入**：quiz/review/reading/verb_sprint 的隱藏自動計時 `flushTime()` 開頭加 `if (ClbSession.isActive()){acc=0;return;}`——session 進行中只由 session_timer 記錄一次。
+4. **dashboard 中樞改造**：頂部 session bar（進行中顯示：大字計時、⏸暫停、🏁結束並記錄→寫入 `clb7_tracker` type:'session'→自動進 700h；toast 回饋分鐘數）；「開始今日學習」改為啟動 session＋前往第一個未完成步驟；`buildPrescription` 改成 6 步番号（含新步驟 ② 研讀＋專項 Quiz），render 加番号圓圈＋`rx-now` 高亮第一個未完成。
+5. **quiz.html**：熱身 5 題完成時 set `clb7_warmup_done`（步驟①的完成旗標，與步驟② 的 `clb7_quiz_done` 分開）。
+
+**端到端實測通過（preview localhost:7788，真的跑完）**：開始→跨頁（dashboard→quiz→reading→dashboard）計時連續、暫停凍結、回 dashboard bar 顯示；模擬 27 分鐘結算→`clb7_tracker` 寫入一筆、700h 由 0→0.5h、toast 正確；實際做完熱身 5 題→`clb7_warmup_done` 真的被 set、課程選擇器（步驟②）出現；dashboard 番号順序＋👉高亮正確（截圖存證）。
+
+---
+
+## 之前 session 做了什麼（2026-07-02 ～ 07-03，共 3 個 commit 已推）
 
 ### Commit `6ffcf6a` — 上次五項待辦全部完成
 1. **閱讀進今日處方**：讀 `clb7_reading`，未做顯示紅色未完成；四技能「閱讀」欄改用短文成績（本週優先、fallback 累計），Quiz 正確率移到副標
@@ -146,6 +167,9 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 - `clb7_chunk_srs` → 複習卡 SRS {cardId: {iv, due, days:[…], ok, no, last}}（days＝答對的不同天，zh-TW 格式）
 - `clb7_review_sessions` → [{date, cards, ok, ts}]（複習包記錄，最近 100）
 - `clb7_chunk_newcount` → {date, n}（今日已開新卡數，上限 10）
+- `clb7_session` → {active, running, startedAt(ms), accSec}（跨頁 session 計時器狀態；結束時清除）
+- `clb7_warmup_done` → 今日日期字串 zh-TW（處方步驟① 熱身完成旗標；步驟② 用 `clb7_quiz_done`）
+- `clb7_tracker` 新增 `type:'session'` 一筆＝一次完整訓練的總時間（結算寫入，計入 700h）
 
 **⚠️ 日期格式地雷**：dashboard/tracker/writing/sprint/wrong_log 用 zh-TW（`2026/07/02`）；reading 記錄和 topic 快照用本地 ISO（`2026-07-02`）。跨工具比對日期時要用**同一格式的 helper**，不要混。所有 todayStr 一律用本地時間，**禁用 toISOString()**（UTC 偏移已炸過兩次）。
 

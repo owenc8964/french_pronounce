@@ -943,6 +943,8 @@ function showDoneCard() {
   // 熱身模式 → 顯示課程選擇器
   if (window._warmupMode && !window._warmupDone) {
     window._warmupDone = true;
+    // 標記今天熱身已完成（dashboard 步驟1讀取）
+    localStorage.setItem('clb7_warmup_done', new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'}));
     touchStreak(); renderStats();
     showLessonPicker(scoreOk, queue.length);
     return;
@@ -1684,6 +1686,7 @@ saveSnapshot();
     if (document.visibilityState==='visible' && Date.now()-lastAct < IDLE_MS) acc += TICK;
   }, TICK*1000);
   function flushTime(){
+    if (window.ClbSession && window.ClbSession.isActive()) { acc = 0; return; } // session 進行中由 session_timer 統一計時，避免雙重計入
     if (acc < 30) return;
     try {
       const d = new Date();
@@ -1912,5 +1915,6 @@ function saveQVoice() {
   });
 })();
 </script>
+<script src="session_timer.js"></script>
 </body>
 </html>

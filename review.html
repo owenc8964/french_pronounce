@@ -403,6 +403,7 @@ document.addEventListener('keydown', e => {
     if (document.visibilityState==='visible' && Date.now()-lastAct < IDLE_MS) acc += TICK;
   }, TICK*1000);
   function flushTime(){
+    if (window.ClbSession && window.ClbSession.isActive()) { acc = 0; return; } // session 進行中由 session_timer 統一計時，避免雙重計入
     if (acc < 30) return;
     try {
       const d = new Date();
@@ -422,5 +423,6 @@ document.addEventListener('keydown', e => {
 renderStart();
 if (new URLSearchParams(location.search).get('guided') === '1') startPacket();
 </script>
+<script src="session_timer.js"></script>
 </body>
 </html>

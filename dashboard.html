@@ -32,6 +32,40 @@ body {
 .start-btn:hover { opacity: 0.9; transform: translateY(-1px); }
 .start-btn:active { transform: scale(0.98); }
 
+/* Session 計時器 bar（session 進行中顯示） */
+.sess-bar {
+  background: linear-gradient(135deg, #10241a, #123a26);
+  border: 1px solid #2c6b45; border-radius: 14px;
+  padding: 16px 18px; margin-bottom: 20px;
+  box-shadow: 0 0 24px rgba(60,190,100,0.12);
+}
+.sess-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.sess-label { font-size: 0.68rem; color: #4a8a63; text-transform: uppercase; letter-spacing: 1.5px; }
+.sess-time { font-size: 1.9rem; font-weight: 700; color: #7fe0a0; font-family: ui-monospace, Menlo, Consolas, monospace; letter-spacing: 1px; }
+.sess-actions { display: flex; gap: 8px; margin-top: 12px; }
+.sess-btn {
+  flex: 1; padding: 11px; border-radius: 10px; border: 1px solid #2c6b45;
+  background: #0d1f15; color: #7fe0a0; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+}
+.sess-btn:active { transform: scale(0.98); }
+.sess-btn.sess-finish { background: #1d5035; color: #b8f0c8; border-color: #3c8b5f; }
+.sess-target { font-size: 0.72rem; color: #4a8a63; margin-top: 10px; text-align: center; }
+
+/* 番号順序步驟 */
+.rx-num {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+  background: #1a2438; color: #667890; font-size: 0.72rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.rx-item.done .rx-num { background: #0a1a0c; color: #3c8b5f; }
+.rx-item.rx-now {
+  border-color: #f0c060;
+  box-shadow: 0 0 0 1px #f0c060, 0 0 18px rgba(240,192,96,0.15);
+  background: #1a1a12;
+}
+.rx-item.rx-now .rx-num { background: #f0c060; color: #1a1200; }
+
 /* Alert bar */
 .alerts { margin-bottom: 16px; }
 .alert {
@@ -275,6 +309,7 @@ body {
 <body>
 <script src="questions.js"></script>
 <script src="chunks.js"></script>
+<script src="session_timer.js"></script>
 
 <div class="header">
   <h1>CLB7 指揮中心</h1>
@@ -283,6 +318,19 @@ body {
 
 <!-- Start button -->
 <button class="start-btn" id="startBtn">▶ 開始今日學習</button>
+
+<!-- Session 計時器（進行中顯示） -->
+<div class="sess-bar" id="sessBar" style="display:none;">
+  <div class="sess-top">
+    <span class="sess-label">⏱ 本次訓練</span>
+    <span class="sess-time" id="sessTime">00:00:00</span>
+  </div>
+  <div class="sess-actions">
+    <button class="sess-btn" id="sessPause">⏸ 暫停</button>
+    <button class="sess-btn sess-finish" id="sessFinish">🏁 結束並記錄</button>
+  </div>
+  <div class="sess-target" id="sessTarget"></div>
+</div>
 
 <!-- Alerts -->
 <div class="alerts" id="alerts"></div>
@@ -610,46 +658,48 @@ function quizDoneToday() {
   return localStorage.getItem('clb7_quiz_done') === todayStr();
 }
 
+// 一次訓練＝一本道六步：暖身 → 研讀專項 → 反射 → 複習 → 造句 → 閱讀
+// 時間不再是一個步驟，改由頂部 session 計時器全程累計（見 session_timer.js）
 function buildPrescription(topicStats, todaySec) {
   const items = [];
+  const today = todayStr();
 
-  // 1. 找最弱 topic（有做過的，正確率最低）
+  // 找最弱 topic（給步驟提示用）
   const rankedTopics = Object.entries(topicStats)
     .filter(([,s]) => s.attempts >= 3 && s.pct !== null)
     .sort(([,a],[,b]) => a.pct - b.pct);
-
   const weakest = rankedTopics[0];
   const label   = weakest ? (TOPIC_LABELS[weakest[0]] || weakest[0]) : null;
 
-  const qDone = quizDoneToday();
-  if (weakest && weakest[1].pct < 80) {
-    items.push({
-      icon: '🃏',
-      action: `Quiz — ${label}`,
-      why: qDone ? '今天已完成！' : `正確率 ${weakest[1].pct}%，需要加強`,
-      badge: qDone ? 'badge-green' : (weakest[1].pct < 60 ? 'badge-red' : 'badge-yellow'),
-      badgeText: qDone ? '✓ 完成' : (weakest[1].pct < 60 ? '弱點' : '待加強'),
-      href: `quiz.html?mode=warmup&guided=1`,
-      done: qDone,
-    });
-  } else {
-    items.push({
-      icon: '🃏',
-      action: 'Quiz — 自由練習',
-      why: qDone ? '今天已完成！' : (label ? `${label} 等 topic 正確率良好，繼續保持` : '開始做 Quiz，建立資料'),
-      badge: qDone ? 'badge-green' : 'badge-blue',
-      badgeText: qDone ? '✓ 完成' : '維持',
-      href: 'quiz.html?mode=warmup&guided=1',
-      done: qDone,
-    });
-  }
+  // 步驟 1：熱身 Quiz 5 題
+  const wuDone = localStorage.getItem('clb7_warmup_done') === today;
+  items.push({
+    n: 1, icon: '🔥', action: '熱身 Quiz 5 題',
+    why: wuDone ? '今天已完成！' : (weakest && weakest[1].pct < 80
+      ? `隨機 5 題暖機（目前最弱：${label} ${weakest[1].pct}%）`
+      : '隨機 5 題，暖機抓手感'),
+    badge: wuDone ? 'badge-green' : 'badge-blue',
+    badgeText: wuDone ? '✓ 完成' : '開始',
+    href: 'quiz.html?mode=warmup&guided=1',
+    done: wuDone,
+  });
 
-  // 2. 動詞反射衝刺
+  // 步驟 2：研讀 + 專項 Quiz（挑一課，先讀筆記再做該課題）
+  const lqDone = quizDoneToday(); // clb7_quiz_done = 完成一次課程/專項 quiz
+  items.push({
+    n: 2, icon: '📚', action: '研讀 + 專項 Quiz',
+    why: lqDone ? '今天已完成！' : '挑一課：先開筆記研讀，再做該課題目（提取＋輸入）',
+    badge: lqDone ? 'badge-green' : 'badge-red',
+    badgeText: lqDone ? '✓ 完成' : '未完成',
+    href: 'quiz.html?guided=1',
+    done: lqDone,
+  });
+
+  // 步驟 3：動詞反射衝刺
   const spDone = sprintDoneToday();
   const spReflex = sprintReflexCount();
   items.push({
-    icon: '⚡',
-    action: '動詞反射衝刺 60 秒',
+    n: 3, icon: '⚡', action: '動詞反射衝刺 60 秒',
     why: spDone ? '今天已完成！' : (spReflex >= SPRINT_TOTAL
       ? '54 格全反射，維持手感'
       : `還有 ${SPRINT_TOTAL - spReflex} 格未達反射（${spReflex}/${SPRINT_TOTAL}）`),
@@ -659,14 +709,13 @@ function buildPrescription(topicStats, todaySec) {
     done: spDone,
   });
 
-  // 3. 複習卡（碎片時間：一包 3–5 分鐘）
+  // 步驟 4：複習卡一包
   const rvDone = reviewDoneToday();
   const rvDue  = chunkDueCount();
   items.push({
-    icon: '📦',
-    action: '複習卡一包（10 張）',
+    n: 4, icon: '📦', action: '複習卡一包（10 張）',
     why: rvDone
-      ? (rvDue > 0 ? `今天做過了！還有 ${rvDue} 張到期，有空再清一包` : '今天做過了，到期卡已清空！')
+      ? (rvDue > 0 ? `做過了！還有 ${rvDue} 張到期，有空再清一包` : '做過了，到期卡已清空！')
       : (rvDue > 0 ? `${rvDue} 張到期＋新卡，3–5 分鐘` : '新卡等你開，3–5 分鐘'),
     badge: rvDone ? 'badge-green' : 'badge-red',
     badgeText: rvDone ? '✓ 完成' : '未完成',
@@ -674,43 +723,27 @@ function buildPrescription(topicStats, todaySec) {
     done: rvDone,
   });
 
-  // 4. 造句
+  // 步驟 5：造句 2 句（產出）
   const wDone = writingDoneToday();
   items.push({
-    icon: '✍️',
-    action: '每日造句 2 句',
-    why: wDone ? '今天已完成！' : '還沒做，10 分鐘內可完成',
+    n: 5, icon: '✍️', action: '造句 2 句（產出）',
+    why: wDone ? '今天已完成！' : '複製 prompt → Claude 批改 → 貼回，約 10 分鐘',
     badge: wDone ? 'badge-green' : 'badge-red',
     badgeText: wDone ? '✓ 完成' : '未完成',
     href: 'writing.html?guided=1',
     done: wDone,
   });
 
-  // 5. 閱讀理解
+  // 步驟 6：閱讀理解 1 篇（產出）
   const rDone = readingDoneToday();
   const rAll  = getReadingData();
   items.push({
-    icon: '📖',
-    action: '閱讀理解 1 篇',
+    n: 6, icon: '📖', action: '閱讀理解 1 篇（產出）',
     why: rDone ? '今天已完成！' : (rAll.length ? '純法文短文，真實 TCF 訓練' : '還沒開始，從第 1 篇開始'),
     badge: rDone ? 'badge-green' : 'badge-red',
     badgeText: rDone ? '✓ 完成' : '未完成',
-    href: 'reading.html',
+    href: 'reading.html?guided=1',
     done: rDone,
-  });
-
-  // 6. 時數
-  const todayH = todaySec / 3600;
-  const todayTarget = 1.5;
-  const todayDone = todayH >= todayTarget;
-  items.push({
-    icon: '⏱',
-    action: todayDone ? `今日時數已達標（${todayH.toFixed(1)}h）` : `計時學習，目標今天再 ${(todayTarget - todayH).toFixed(1)}h`,
-    why: `每天 1.5–2 小時是達成 700h 的關鍵`,
-    badge: todayDone ? 'badge-green' : (todayH > 0 ? 'badge-yellow' : 'badge-grey'),
-    badgeText: todayDone ? '✓ 達標' : (todayH > 0 ? `${todayH.toFixed(1)}h` : '0h'),
-    href: 'tracker.html',
-    done: todayDone,
   });
 
   return items;
@@ -1018,18 +1051,23 @@ function render() {
     `<div class="alert ${a.type === 'err' ? '' : a.type === 'warn' ? 'warn' : 'ok'}">${a.msg}</div>`
   ).join('');
 
-  // Prescription
+  // Prescription（番号順序 + 「現在做這個」高亮第一個未完成）
   const rx = buildPrescription(topicStats, todaySec);
+  const firstUndone = rx.find(i => !i.done);
   document.getElementById('rxList').innerHTML = rx.map(item => `
-    <a class="rx-item ${item.done ? 'done' : ''}" href="${item.href}">
+    <a class="rx-item ${item.done ? 'done' : ''} ${item === firstUndone ? 'rx-now' : ''}" href="${item.href}">
+      <span class="rx-num">${item.done ? '✓' : item.n}</span>
       <span class="rx-icon">${item.icon}</span>
       <div class="rx-body">
-        <div class="rx-action">${item.action}</div>
+        <div class="rx-action">${item === firstUndone ? '👉 ' : ''}${item.action}</div>
         <div class="rx-why">${item.why}</div>
       </div>
       <span class="rx-badge ${item.badge}">${item.badgeText}</span>
     </a>
   `).join('');
+
+  // Session 計時器 bar 狀態
+  renderSessionBar(todaySec);
 
   // Topic health
   const sorted = Object.entries(topicStats).sort(([,a],[,b]) => {
@@ -1265,18 +1303,81 @@ document.getElementById('duoSave').addEventListener('click', () => {
   setTimeout(() => document.getElementById('duoSave').textContent = '儲存本週數據', 2000);
 });
 
+// ── Session 計時器 bar（跨頁 continuous timer 的 dashboard 端）──────
+let _sessTick = null;
+function fmtSess(sec) {
+  const h = String(Math.floor(sec / 3600)).padStart(2, '0');
+  const m = String(Math.floor((sec % 3600) / 60)).padStart(2, '0');
+  const s = String(Math.floor(sec % 60)).padStart(2, '0');
+  return `${h}:${m}:${s}`;
+}
+function renderSessionBar(todaySec) {
+  const active = !!(window.ClbSession && ClbSession.isActive());
+  const bar = document.getElementById('sessBar');
+  const btn = document.getElementById('startBtn');
+  if (active) {
+    bar.style.display = 'block';
+    btn.style.display = 'none';
+    updateSessBar(todaySec);
+    if (!_sessTick) _sessTick = setInterval(() => updateSessBar(getTrackerToday()), 1000);
+  } else {
+    bar.style.display = 'none';
+    btn.style.display = 'block';
+    if (_sessTick) { clearInterval(_sessTick); _sessTick = null; }
+  }
+}
+function updateSessBar(todaySec) {
+  if (!(window.ClbSession && ClbSession.isActive())) return;
+  const sec = ClbSession.elapsedSec();
+  const running = ClbSession.running();
+  const timeEl = document.getElementById('sessTime');
+  timeEl.textContent = fmtSess(sec);
+  timeEl.style.opacity = running ? '1' : '0.55';
+  document.getElementById('sessPause').textContent = running ? '⏸ 暫停' : '▶ 繼續';
+  const projH = (todaySec + sec) / 3600;   // 今日已記錄 + 本次進行中
+  const tgt = 1.5;
+  document.getElementById('sessTarget').textContent = projH >= tgt
+    ? `今日累計 ${projH.toFixed(1)}h ✓ 已達 1.5h 目標`
+    : `今日累計 ${projH.toFixed(1)}h，離今天 1.5h 目標還差 ${(tgt - projH).toFixed(1)}h`;
+}
+function dashToast(msg) {
+  let t = document.getElementById('dashToast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'dashToast';
+    t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#123a26;color:#b8f0c8;border:1px solid #3c8b5f;padding:12px 20px;border-radius:12px;font-size:0.9rem;z-index:99999;box-shadow:0 4px 20px rgba(0,0,0,.5);';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(t._h);
+  t._h = setTimeout(() => { t.style.display = 'none'; }, 3200);
+}
+
 render();
 
+// 開始今日學習 → 啟動跨頁計時器，並前往第一個未完成步驟
 document.getElementById('startBtn').addEventListener('click', () => {
+  ClbSession.start();
   const rx = buildPrescription(getTopicStats(), getTrackerToday());
   const next = rx.find(item => !item.done);
-  if (next) {
-    location.href = next.href;
-  } else {
-    // 全部完成
-    document.getElementById('startBtn').textContent = '✅ 今日任務全部完成！';
-    document.getElementById('startBtn').style.background = 'linear-gradient(135deg, #0a1a0c, #1a4a1a)';
-  }
+  render(); // 顯示 session bar
+  if (next) { location.href = next.href; }
+  else { dashToast('今日六步已完成 🎉 額外練習也會計時'); }
+});
+
+// 暫停／繼續
+document.getElementById('sessPause').addEventListener('click', () => {
+  ClbSession.toggle();
+  updateSessBar(getTrackerToday());
+});
+
+// 結束並記錄 → 寫入 700h
+document.getElementById('sessFinish').addEventListener('click', () => {
+  const r = ClbSession.finish();
+  if (_sessTick) { clearInterval(_sessTick); _sessTick = null; }
+  render();
+  dashToast(r.recorded ? `✅ 本次 ${Math.round(r.sec / 60)} 分鐘已記入 700h 進度` : '本次不足 1 分鐘，未記錄');
 });
 </script>
 <!-- 懸浮快速筆記 -->
