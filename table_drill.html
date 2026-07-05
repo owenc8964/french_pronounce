@@ -858,6 +858,9 @@ function renderSummary() {
   const tot = totalOk + totalBad;
   const pct = tot ? Math.round(totalOk / tot * 100) : 0;
 
+  // 標記今天填表格已完成（dashboard 步驟③讀取）
+  try { localStorage.setItem('clb7_drill_done', new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'})); } catch(e) {}
+
   const rows = results.map(r => {
     const allOk = r.ok === r.total;
     const color = allOk ? '#2ca85c' : r.ok === 0 ? '#e05520' : '#d4a017';
@@ -905,5 +908,6 @@ function ttsSpeak(text) {
   speechSynthesis.speak(utt);
 }
 </script>
+<script src="session_timer.js"></script>
 </body>
 </html>

@@ -93,7 +93,10 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 
 **GitHub Pages 網址：** https://owenc8964.github.io/french_pronounce/dashboard.html
 
-**今日處方順序（07-05 改為番号一本道）**：① 🔥 熱身 Quiz 5題 → ② 📚 研讀＋專項 Quiz → ③ ⚡ 反射衝刺 → ④ 📦 複習卡 → ⑤ ✍️ 造句 → ⑥ 📖 閱讀。時數不再是步驟，改由頂部 session 計時器全程累計。dashboard 高亮第一個未完成步驟（👉 現在做這個），中樞＝永遠的終點。
+**今日處方順序（07-05 改番号一本道，7步）**：① 🔥 熱身 Quiz 5題 → ② 📚 研讀＋專項 Quiz（策略選課器）→ ③ 📝 填表格（冠詞／動詞變位，table_drill）→ ④ ⚡ 反射衝刺 → ⑤ 📦 複習卡 → ⑥ ✍️ 造句 → ⑦ 📖 閱讀。時數不再是步驟，改由頂部 session 計時器全程累計。dashboard 高亮第一個未完成步驟（👉 現在做這個），中樞＝永遠的終點。
+
+- **步驟② 策略選課器 `showStudyPicker()`**（quiz.html?guided=1 直接進入，不再直接出題）：每課算練習量／錯誤率／幾天沒練，排序＝未練過優先→錯誤率高→量少→久沒練；第一名標「👉 建議先練」＋理由。`lessonStats()` 用 getSRS/qId。
+- **步驟③ 填表格 `table_drill.html`**：既有的表格填空（動詞六人稱變位表＋定/不定/部分冠詞，type 可篩動詞/冠詞/形容詞/介係詞），本次補上 `session_timer.js`＋完成時 `clb7_drill_done`。dashboard 讀此旗標判定完成。（TODO：table_drill 答錯尚未 logWrong 進錯題本，之後補）
 
 ---
 
@@ -171,6 +174,7 @@ Owen 回饋核心痛點：**每日練習像沒終點的迷宮，計時器不會�
 - `clb7_chunk_newcount` → {date, n}（今日已開新卡數，上限 10）
 - `clb7_session` → {active, running, startedAt(ms), accSec}（跨頁 session 計時器狀態；結束時清除）
 - `clb7_warmup_done` → 今日日期字串 zh-TW（處方步驟① 熱身完成旗標；步驟② 用 `clb7_quiz_done`）
+- `clb7_drill_done` → 今日日期字串 zh-TW（處方步驟③ 填表格 table_drill 完成旗標）
 - `clb7_tracker` 新增 `type:'session'` 一筆＝一次完整訓練的總時間（結算寫入，計入 700h）
 
 **⚠️ 日期格式地雷**：dashboard/tracker/writing/sprint/wrong_log 用 zh-TW（`2026/07/02`）；reading 記錄和 topic 快照用本地 ISO（`2026-07-02`）。跨工具比對日期時要用**同一格式的 helper**，不要混。所有 todayStr 一律用本地時間，**禁用 toISOString()**（UTC 偏移已炸過兩次）。

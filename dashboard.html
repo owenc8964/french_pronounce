@@ -695,11 +695,22 @@ function buildPrescription(topicStats, todaySec) {
     done: lqDone,
   });
 
-  // 步驟 3：動詞反射衝刺
+  // 步驟 3：填表格（冠詞／動詞變位表）
+  const dlDone = localStorage.getItem('clb7_drill_done') === today;
+  items.push({
+    n: 3, icon: '📝', action: '填表格：冠詞／動詞變位',
+    why: dlDone ? '今天已完成！' : '定／不定／部分冠詞、動詞六人稱變位，把表格填到熟',
+    badge: dlDone ? 'badge-green' : 'badge-red',
+    badgeText: dlDone ? '✓ 完成' : '未完成',
+    href: 'table_drill.html?guided=1',
+    done: dlDone,
+  });
+
+  // 步驟 4：動詞反射衝刺
   const spDone = sprintDoneToday();
   const spReflex = sprintReflexCount();
   items.push({
-    n: 3, icon: '⚡', action: '動詞反射衝刺 60 秒',
+    n: 4, icon: '⚡', action: '動詞反射衝刺 60 秒',
     why: spDone ? '今天已完成！' : (spReflex >= SPRINT_TOTAL
       ? '54 格全反射，維持手感'
       : `還有 ${SPRINT_TOTAL - spReflex} 格未達反射（${spReflex}/${SPRINT_TOTAL}）`),
@@ -709,11 +720,11 @@ function buildPrescription(topicStats, todaySec) {
     done: spDone,
   });
 
-  // 步驟 4：複習卡一包
+  // 步驟 5：複習卡一包
   const rvDone = reviewDoneToday();
   const rvDue  = chunkDueCount();
   items.push({
-    n: 4, icon: '📦', action: '複習卡一包（10 張）',
+    n: 5, icon: '📦', action: '複習卡一包（10 張）',
     why: rvDone
       ? (rvDue > 0 ? `做過了！還有 ${rvDue} 張到期，有空再清一包` : '做過了，到期卡已清空！')
       : (rvDue > 0 ? `${rvDue} 張到期＋新卡，3–5 分鐘` : '新卡等你開，3–5 分鐘'),
@@ -723,10 +734,10 @@ function buildPrescription(topicStats, todaySec) {
     done: rvDone,
   });
 
-  // 步驟 5：造句 2 句（產出）
+  // 步驟 6：造句 2 句（產出）
   const wDone = writingDoneToday();
   items.push({
-    n: 5, icon: '✍️', action: '造句 2 句（產出）',
+    n: 6, icon: '✍️', action: '造句 2 句（產出）',
     why: wDone ? '今天已完成！' : '複製 prompt → Claude 批改 → 貼回，約 10 分鐘',
     badge: wDone ? 'badge-green' : 'badge-red',
     badgeText: wDone ? '✓ 完成' : '未完成',
@@ -734,11 +745,11 @@ function buildPrescription(topicStats, todaySec) {
     done: wDone,
   });
 
-  // 步驟 6：閱讀理解 1 篇（產出）
+  // 步驟 7：閱讀理解 1 篇（產出）
   const rDone = readingDoneToday();
   const rAll  = getReadingData();
   items.push({
-    n: 6, icon: '📖', action: '閱讀理解 1 篇（產出）',
+    n: 7, icon: '📖', action: '閱讀理解 1 篇（產出）',
     why: rDone ? '今天已完成！' : (rAll.length ? '純法文短文，真實 TCF 訓練' : '還沒開始，從第 1 篇開始'),
     badge: rDone ? 'badge-green' : 'badge-red',
     badgeText: rDone ? '✓ 完成' : '未完成',

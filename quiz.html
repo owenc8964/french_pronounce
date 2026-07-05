@@ -1760,12 +1760,16 @@ function togglePause() {
       `<div style="font-size:0.72rem;color:#aaa;margin-bottom:10px;text-align:center">📚 ${label} 專項練習</div>`);
   } else if (topicParam) {
     startTopicSprint(topicParam);
+  } else if (guided) {
+    // 第二關「研讀＋專項」：先看策略選課器，不直接出題
+    showStudyPicker();
   } else {
     restart();
   }
 
-  // guided banner — 熱身完成後不用 banner，改走課程選擇器
-  if (guided && !isWarmup) {
+  // guided banner「回今日學習」— 只在「直接帶 lesson 做題」時需要；
+  // 熱身模式走課程選擇器、選課器自己有回鏈，都不需要 banner。
+  if (guided && lessonParam) {
     const banner = document.createElement('div');
     banner.id = 'guidedBanner';
     banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#1d5035;color:#60d090;text-align:center;padding:14px;font-size:0.9rem;z-index:200;display:none;';
@@ -1812,6 +1816,68 @@ function showLessonPicker(warmupScore, warmupTotal) {
       <div class="done-sub" style="margin-bottom:20px">選一課複習筆記，然後做該課 Quiz</div>
       <div style="text-align:left">${rows}</div>
       ${backLink}
+    </div>`;
+}
+
+// ── 步驟②「研讀＋專項」策略選課器（quiz.html?guided=1 直接進入）──────
+// 策略：沒練過的課最優先 → 錯誤率高 → 練習量少 → 久沒複習。事半功倍。
+function lessonStats() {
+  const lessons = [...new Set(BANK.map(q => q.lesson))].filter(l => l > 0).sort((a,b)=>a-b);
+  const arr = lessons.map(l => {
+    const qs = BANK.filter(q => q.lesson === l);
+    let c=0, w=0, lastMax=0;
+    qs.forEach(q => { const s = getSRS(qId(q)); c += s.c; w += s.w; if (s.last) lastMax = Math.max(lastMax, s.last); });
+    const attempts = c + w;
+    return { l, qCount: qs.length, attempts, wrong: w,
+             errRate: attempts ? w/attempts : null,
+             daysSince: lastMax ? Math.floor((Date.now()-lastMax)/86400000) : null };
+  });
+  const maxAtt = Math.max(1, ...arr.map(s => s.attempts));
+  arr.forEach(s => {
+    if (s.attempts === 0) { s.score = 1.5; s.reason = '還沒練過，先建資料'; s.tag = '新'; }
+    else {
+      const errPart = s.errRate || 0;
+      const lowPart = 1 - s.attempts / maxAtt;
+      s.score = errPart * 0.6 + lowPart * 0.4;
+      if (s.errRate >= 0.4)                 { s.reason = `錯誤率 ${Math.round(s.errRate*100)}%，最該加強`; s.tag = '弱'; }
+      else if (s.attempts <= maxAtt * 0.3)  { s.reason = `只練過 ${s.attempts} 次，量偏少`; s.tag = '少'; }
+      else if (s.daysSince != null && s.daysSince >= 5) { s.reason = `${s.daysSince} 天沒複習`; s.tag = '久'; }
+      else                                  { s.reason = `正確率 ${Math.round((1-s.errRate)*100)}%，維持`; s.tag = ''; }
+    }
+  });
+  return arr;
+}
+
+function showStudyPicker() {
+  // 隱藏 quiz 的篩選列與進度／暫停（選課器不是在做題）
+  document.querySelectorAll('.mode-row, #typeRow, #lessonRow, #progressText, #progressBarWrap, #pauseBtn')
+    .forEach(el => { if (el) el.style.display = 'none'; });
+  const ranked = lessonStats().sort((a,b) => b.score - a.score);
+  const rows = ranked.map((s, i) => {
+    const top = i === 0;
+    const tagColor = s.tag === '弱' ? '#e05520' : s.tag === '新' ? '#2c7fb8' : s.tag === '少' ? '#d4a017' : s.tag === '久' ? '#b8572c' : '#8a8a86';
+    const tagBadge = s.tag ? `<span style="background:${tagColor};color:#fff;font-size:0.62rem;padding:1px 6px;border-radius:8px;margin-left:6px;">${s.tag}</span>` : '';
+    return `
+      <div style="display:flex;align-items:center;gap:8px;padding:11px 10px;border-radius:8px;margin-bottom:6px;
+                  ${top ? 'background:#fff8e6;border:1.5px solid #f0c060;' : 'border-bottom:1px solid #f0f0ee;'}">
+        <div style="min-width:52px;font-size:0.75rem;font-weight:700;color:#333">第${s.l}課${tagBadge}</div>
+        <div style="flex:1;font-size:0.7rem;color:#777;line-height:1.35">
+          ${top ? '<b style="color:#c08010">👉 建議先練</b> · ' : ''}${s.reason}<br>
+          <span style="color:#aaa">${s.qCount} 題${s.attempts ? ` · 已練 ${s.attempts} 次` : ''}</span>
+        </div>
+        <a href="french_notes.html#lesson-${s.l}" target="_blank"
+           style="padding:5px 9px;background:#f4f4f0;border:1px solid #ddd;border-radius:6px;font-size:0.7rem;color:#555;text-decoration:none;white-space:nowrap;">📖 筆記</a>
+        <a href="quiz.html?lesson=${s.l}&guided=1"
+           style="padding:5px 9px;background:${top ? '#c08010' : '#2c2c2c'};border:none;border-radius:6px;font-size:0.7rem;color:#fff;text-decoration:none;white-space:nowrap;">▶ 做題</a>
+      </div>`;
+  }).join('');
+
+  document.getElementById('quizArea').innerHTML = `
+    <div class="done-card" style="padding:20px">
+      <h2 style="margin-bottom:4px">研讀 + 專項 📚</h2>
+      <div class="done-sub" style="margin-bottom:16px">先開筆記研讀，再做該課題目。順序已按「最該練」排好</div>
+      <div style="text-align:left">${rows}</div>
+      <a href="dashboard.html" style="display:block;text-align:center;margin-top:16px;color:#aaa;font-size:0.78rem;">↩ 回指揮中心</a>
     </div>`;
 }
 </script>
