@@ -1798,7 +1798,7 @@ function showLessonPicker(warmupScore, warmupTotal) {
       <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0ee;">
         <div style="min-width:46px;font-size:0.75rem;font-weight:700;color:#555">第${l}課</div>
         <div style="flex:1;font-size:0.78rem;color:#666">${qCount} 題</div>
-        <a href="french_notes.html#lesson-${l}" target="_blank"
+        <a href="french_notes.html#lesson-${l}"
            style="padding:5px 10px;background:#f4f4f0;border:1px solid #ddd;border-radius:6px;font-size:0.72rem;color:#555;text-decoration:none;white-space:nowrap;">
           📖 複習筆記
         </a>
@@ -1865,7 +1865,7 @@ function showStudyPicker() {
           ${top ? '<b style="color:#c08010">👉 建議先練</b> · ' : ''}${s.reason}<br>
           <span style="color:#aaa">${s.qCount} 題${s.attempts ? ` · 已練 ${s.attempts} 次` : ''}</span>
         </div>
-        <a href="french_notes.html#lesson-${s.l}" target="_blank"
+        <a href="french_notes.html#lesson-${s.l}"
            style="padding:5px 9px;background:#f4f4f0;border:1px solid #ddd;border-radius:6px;font-size:0.7rem;color:#555;text-decoration:none;white-space:nowrap;">📖 筆記</a>
         <a href="quiz.html?lesson=${s.l}&guided=1"
            style="padding:5px 9px;background:${top ? '#c08010' : '#2c2c2c'};border:none;border-radius:6px;font-size:0.7rem;color:#fff;text-decoration:none;white-space:nowrap;">▶ 做題</a>

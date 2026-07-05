@@ -595,6 +595,7 @@ let qIdx       = 0;
 let totalOk    = 0, totalBad = 0;
 let activeInp  = null;
 let results    = [];   // { title, ok, total }
+const ROUND_SIZE = 6;  // 一輪只出 6 個表，避免一次太多（可再開一輪）
 
 const TYPE_LABEL = { verb:'動詞', adj:'形容詞', article:'冠詞', prep:'介係詞' };
 
@@ -633,7 +634,8 @@ function shuffle(arr) {
 
 function startSession() {
   const src = typeFilter === 'all' ? TABLES : TABLES.filter(t => t.type === typeFilter);
-  queue = shuffle(src);
+  window._roundPool = src.length;
+  queue = shuffle(src).slice(0, ROUND_SIZE);
   qIdx = 0; totalOk = 0; totalBad = 0; results = [];
   updateProgress();
   renderCard();
@@ -878,9 +880,9 @@ function renderSummary() {
 <div class="summary">
   <div class="sum-title">${medal} 練習完成！</div>
   <div class="sum-pct">${pct}%</div>
-  <div class="sum-sub">${totalOk} 格正確 / ${tot} 格總計</div>
+  <div class="sum-sub">${totalOk} 格正確 / ${tot} 格總計 · 這輪 ${queue.length} 個表（此類共 ${window._roundPool || TABLES.length} 個）</div>
   <div class="sum-list">${rows}</div>
-  <button class="restart-btn" onclick="startSession()">🔄 再來一次</button>
+  <button class="restart-btn" onclick="startSession()">🔄 再練 ${ROUND_SIZE} 個</button>
   <button class="restart-btn ghost" onclick="setDiff('${nextDiff}')">${nextLabel}</button>
 </div>`;
 

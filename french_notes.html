@@ -4404,5 +4404,34 @@ document.querySelectorAll('.fr-ex').forEach(el => {
   }
 })();
 </script>
+
+<!-- 研讀計時 pill（session 進行中顯示） -->
+<script src="session_timer.js"></script>
+
+<!-- 每課插入「▶ 做這課專項 Quiz」按鈕，研讀完直接串到該課題目 -->
+<script>
+(function(){
+  document.querySelectorAll('details.lesson-group').forEach(function(d){
+    var m = (d.id || '').match(/lesson-(\d+)/);
+    if (!m) return;
+    var n = m[1];
+    var sum = d.querySelector('summary');
+    if (!sum) return;
+    var bar = document.createElement('div');
+    bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:4px 0 14px;';
+    bar.innerHTML =
+      '<a href="quiz.html?lesson=' + n + '&guided=1" ' +
+      'style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#1d5035;color:#fff;' +
+      'border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;">▶ 做這課專項 Quiz</a>' +
+      '<a href="table_drill.html?guided=1" ' +
+      'style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#f4f4f0;color:#555;' +
+      'border:1px solid #ddd;border-radius:8px;font-size:0.85rem;text-decoration:none;">📝 填這類表格</a>' +
+      '<a href="dashboard.html" ' +
+      'style="display:inline-flex;align-items:center;gap:6px;padding:8px 12px;color:#999;font-size:0.8rem;text-decoration:none;">↩ 回指揮中心</a>';
+    // 插在 summary 之後（課標題下方），展開就看得到
+    sum.insertAdjacentElement('afterend', bar);
+  });
+})();
+</script>
 </body>
 </html>
