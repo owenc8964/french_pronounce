@@ -122,6 +122,33 @@ Owen 回饋核心痛點：**每日練習像沒終點的迷宮，計時器不會�
 
 ---
 
+## 本 session 第三輪修正（2026-07-06：閒置自動暫停＋verb_sprint 補發音）
+
+Owen 實際使用後回饋兩個新問題：①「計時已經跑三小時了，但完全沒操作」②「動詞時態速答（verb_sprint）沒有發音按鈕」。
+
+### 1. 找到「計時跑3小時」的根因：上一輪加的「自動開始計時」有副作用
+上一輪為了修「填表格沒被計時」，把 session_timer.js 改成任何練習頁載入就自動 `API.start()`。但這樣一來，只要頁面開著完全不操作，時間還是照時鐘一直跑，最多跑到 `MAX_STRETCH_MS`（3小時）才自動停——這正是 Owen 說「跑了三小時但完全沒操作」的原因。
+
+**修法：加「閒置自動暫停」**（`session_timer.js`）：
+- 監聽 `keydown/pointerdown/touchstart/scroll/click/mousemove`，記錄 `lastActivity`。
+- 每 5 秒檢查一次：若 session 正在跑且超過 `IDLE_LIMIT_MS`（3 分鐘）沒有任何操作，自動呼叫新方法 `pauseAtTime(lastActivity)`——**用「最後操作時間」當停止點**，正確排除閒置那段，不是暫停當下才算，這樣才不會把發呆的時間也算進 700h。
+- 這個閒置偵測是全站共用（dashboard 和練習頁都適用），不只練習頁。
+
+**實測**：直接驗證 `pauseAtTime` 計算邏輯正確（模擬「5分鐘前開始，第20秒就閒置」→ 正確只記 20 秒，不含後面的閒置時間）；把門檻暫時調到 4 秒做端到端測試，確認「完全不操作 6 秒後自動暫停」「持續操作 7 秒不會被誤判」都正確，測完已改回 3 分鐘。
+⚠️ 踩到 preview server 的瀏覽器快取問題（改完 session_timer.js，直接 reload 頁面還是載到舊版，連重開 server 都沒用）——這次用 `fetch(...).then(eval(...))` 直接抓最新原始碼在頁面內重新執行來繞過快取做測試；正式環境（GitHub Pages）沒有這個問題，push 後照常會拿到新版，只是「préview 測試時」要注意。
+
+### 2. verb_sprint.html（動詞時態速答）補上發音按鈕
+**診斷**：整個 verb_sprint.html 完全沒有 TTS/發音功能（連 `speechSynthesis` 都沒用到），雖然答錯畫面寫著「唸出聲再繼續」卻沒給發音範例。
+
+**修法**：搬 table_drill.html 那套簡易 TTS（`ttsSpeak`＋Amélie/Thomas 法語女聲/男聲偵測）過來，加兩個發音點：
+- 出題時，動詞原形（如「aller」）旁加🔊，隨時可以聽原形怎麼唸。
+- **答錯時最重要**：正解顯示旁加🔊，而且**答錯當下自動唸一次正解**（人稱+變位，如「nous allons」），不用額外點——直接呼應原本就寫的「唸出聲再繼續」提示。
+- 代名詞清理：「il / elle」「ils / elles」這種帶斜線的只唸第一個代名詞（斜線唸出來很怪），用 regex `(\S+) \/ \S+ → $1` 只清代名詞部分，後面的動詞變位保留（不是整串從第一個斜線切掉）。
+
+**實測**：喇叭按鈕存在且正確綁定；點擊唸出的內容用攔截 `speechSynthesis.speak` 驗證正確（"aller"、答錯自動唸兩次「nous allons」）；斜線清理邏輯直接測試「il / elle peut」→「il peut」、「ils / elles veulent」→「ils veulent」、「être」（無斜線）不受影響，全部正確。
+
+---
+
 ## 本 session 又做了什麼（2026-07-06 下半場：table_drill 大修＋同步可靠度）
 
 Owen 換機器實測後回饋：①換機器進度沒跟上，又回去用同一台 ②填表格中途切難度會直接重來 ③填表格答錯沒有像其他模式一樣進複習輪 ④填表格時間好像沒同步計時 ⑤填表格內容感覺還停留在早期階段。逐一診斷後：
@@ -310,7 +337,7 @@ Owen 用多台裝置（手機／iPad），要時間/進度一起記錄。localSt
 - **懸浮筆記 snippet** 在 quiz/dashboard/writing/speaking/tracker/listening 六頁都有，未來新增頁面記得加（verb_sprint 還沒有）
 - **quiz.html `choose` 類型題** 的 `a` 欄位必須和 `opts` 裡的字串**完全一致**，不能用 `|` 分隔
 - **tracker autostart** 只有從 dashboard「開始計時」才會帶 `?autostart=1`
-- **preview server 快取**：`questions.js` 會被快取，改完後要新開 server 或 hard reload
+- **preview server 快取**：`questions.js`／`session_timer.js` 等共用 script 會被瀏覽器快取，改完後**新開 server 都可能沒用**（踩過），最可靠是 `fetch(url,{cache:'no-store'}).then(r=>r.text()).then(eval)` 直接在頁面內重新執行最新原始碼來測
 - **`clb7_snapshots` 絕對不要再寫入非 `{week:...}` 格式**——會讓 dashboard 整頁掛掉（已修一次，有防禦但別再犯）
 - **新練習工具的判錯點記得呼叫 `logWrong()`**（格式見 quiz.html，三個檔案各有一份複本）——錯題本才收得到
 - **`logWrong` 是複製貼上的三份**（quiz/reading/sprint 各一）＋ dashboard 一份讀取端，改格式要四處同步

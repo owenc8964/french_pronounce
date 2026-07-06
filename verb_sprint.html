@@ -181,7 +181,11 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
     <div style="text-align:right"><div class="strip-label">Score</div><div class="score-live" id="scoreLive">0</div></div>
   </div>
   <div class="card prompt-card">
-    <div class="prompt-verb" id="promptVerb"></div>
+    <div class="prompt-verb">
+      <span id="promptVerb"></span>
+      <button type="button" id="promptVerbTts" title="聽動詞原形發音"
+        style="background:none;border:none;color:#60a0d0;font-size:0.9rem;cursor:pointer;vertical-align:middle;margin-left:4px;">🔊</button>
+    </div>
     <div class="prompt-line"><span id="promptPerson"></span> <span class="blank">_____</span></div>
     <input class="answer-input" id="answerInput" type="text"
       autocomplete="off" autocapitalize="off" spellcheck="false"
@@ -381,6 +385,7 @@ function nextQuestion() {
   }
   const [vi,pi] = cur;
   document.getElementById('promptVerb').textContent = VERBS[vi].inf;
+  document.getElementById('promptVerbTts').onclick = () => ttsSpeak(VERBS[vi].inf);
   document.getElementById('promptPerson').textContent = PERSONS[pi];
   const inp = document.getElementById('answerInput');
   inp.value = ''; inp.disabled = false;
@@ -451,10 +456,14 @@ function submit() {
     paused = true;
     inp.classList.add('flash-bad'); inp.disabled = true;
     const fb = document.getElementById('feedbackBox');
-    fb.innerHTML = `<div class="fb-wrong">✗ 正確：<b>${PERSONS[pi]} ${VERBS[vi].forms[pi]}</b>（${VERBS[vi].inf}）</div>
+    fb.innerHTML = `<div class="fb-wrong">✗ 正確：<b>${PERSONS[pi]} ${VERBS[vi].forms[pi]}</b>（${VERBS[vi].inf}）
+      <button type="button" id="wrongTtsBtn" title="聽正確發音"
+        style="background:none;border:none;color:#60d090;font-size:1rem;cursor:pointer;vertical-align:middle;margin-left:4px;">🔊</button></div>
       <button class="next-btn" id="contBtn">繼續 →（Enter）</button>
       <div class="fb-hint">唸出聲再繼續，嘴巴也要記得</div>`;
     document.getElementById('contBtn').onclick = resumeAfterWrong;
+    document.getElementById('wrongTtsBtn').onclick = () => ttsSpeak(`${PERSONS[pi]} ${VERBS[vi].forms[pi]}`);
+    ttsSpeak(`${PERSONS[pi]} ${VERBS[vi].forms[pi]}`); // 答錯時自動唸一次正解，不用額外點
   }
 }
 
@@ -556,6 +565,25 @@ renderHeatmap('heatmap');
   }
 })();
 if (new URLSearchParams(location.search).get('guided') === '1') startSprint();
+
+// ── TTS 發音 ──────────────────────────────────────────────────
+let frVoice = null;
+function initVoice() {
+  frVoice = speechSynthesis.getVoices().find(v => /am[eé]lie/i.test(v.name))
+         || speechSynthesis.getVoices().find(v => /thomas/i.test(v.name))
+         || null;
+}
+speechSynthesis.onvoiceschanged = initVoice;
+initVoice();
+function ttsSpeak(text) {
+  speechSynthesis.cancel();
+  // "il / elle peut" 這種只把代名詞的斜線部分收成第一個念（"il peut"），後面動詞變位保留
+  const clean = text.replace(/(\S+) \/ \S+/, '$1');
+  const utt = new SpeechSynthesisUtterance(clean);
+  utt.lang = 'fr-FR'; utt.rate = 0.75;
+  if (frVoice) utt.voice = frVoice;
+  speechSynthesis.speak(utt);
+}
 
 // ── 自動計時：練習時間自動記入 clb7_tracker（type: auto-sprint）──
 (function(){

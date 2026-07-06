@@ -87,10 +87,36 @@
     },
 
     // 放棄目前 session（不記錄）
-    discard: function () { try { localStorage.removeItem(SKEY); } catch (e) {} }
+    discard: function () { try { localStorage.removeItem(SKEY); } catch (e) {} },
+
+    // 暫停到「指定的時間點」而非「現在」——用來把閒置那段時間排除在計時之外
+    pauseAtTime: function (stopAt) {
+      var s = load();
+      if (!s || !s.running) return;
+      var clamped = Math.max(s.startedAt, Math.min(stopAt, now()));
+      s.accSec += (clamped - s.startedAt) / 1000;
+      s.running = false;
+      save(s);
+    }
   };
 
   window.ClbSession = API;
+
+  // ── 閒置自動暫停（不管 dashboard 還是練習頁都適用）──────────
+  // 之前「打開頁面就自動計時」會導致：開著頁面完全沒操作，時間照時鐘一直跑，
+  // 最多跑到 3 小時上限才停（Owen 真的遇到「計時跑了三小時但完全沒操作」）。
+  // 現在改成：超過 IDLE_LIMIT_MS 沒有任何操作，自動暫停，且用「最後操作時間」
+  // 當停止點，正確排除閒置那段，不會把發呆/沒碰的時間也算進去。
+  var IDLE_LIMIT_MS = 3 * 60 * 1000; // 3 分鐘沒操作視為閒置
+  var lastActivity = now();
+  ['keydown', 'pointerdown', 'touchstart', 'scroll', 'click', 'mousemove'].forEach(function (ev) {
+    document.addEventListener(ev, function () { lastActivity = now(); }, { passive: true });
+  });
+  setInterval(function () {
+    if (API.running() && (now() - lastActivity > IDLE_LIMIT_MS)) {
+      API.pauseAtTime(lastActivity);
+    }
+  }, 5000);
 
   function fmt(sec) {
     var h = String(Math.floor(sec / 3600)).padStart(2, '0');
