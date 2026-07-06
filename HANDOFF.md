@@ -122,6 +122,42 @@ Owen 回饋核心痛點：**每日練習像沒終點的迷宮，計時器不會�
 
 ---
 
+## 本 session 又做了什麼（2026-07-06 下半場：table_drill 大修＋同步可靠度）
+
+Owen 換機器實測後回饋：①換機器進度沒跟上，又回去用同一台 ②填表格中途切難度會直接重來 ③填表格答錯沒有像其他模式一樣進複習輪 ④填表格時間好像沒同步計時 ⑤填表格內容感覺還停留在早期階段。逐一診斷後：
+
+### 1. 根因診斷：session_timer.js 只在 `ClbSession.isActive()` 時才顯示/計時
+`ensurePill()` 開頭就 `if (!API.isActive()) return;`——如果不是從 dashboard「開始今日學習」按鈕進來（例如直接點某個練習連結、或書籤直接開），session 根本沒啟動，時間當然不會動。**修法**：`boot()` 改成任何非 dashboard 頁面載入時，若 session 未啟動就自動 `API.start()`。這樣不管怎麼進練習頁都會被計時，不再依賴唯一入口。
+
+### 2. 跨裝置同步可靠度加強（sync_supabase.js）
+- debounce 從 2500ms 縮短到 700ms：完成一步後，趁頁面還在前景就有更高機會把 push 送出去，減少「還沒送出就被切走/背景」導致的漏同步。
+- 新增：分頁/App **切回前景時也會 `pull()`**（原本只有切到背景時 `push()`）。這樣「本來就開著的分頁/裝置切回來」也會自動抓另一台剛做的更新，不用重新整理才看得到。
+- ⚠️ 跨機同步目前仍只保證「完成與否」的勾勾，不保證「同一題答到一半」的位置（這是先前跟 Owen 確認過的既定範圍）。
+
+### 3. table_drill.html 加錯題複習輪
+仿照 quiz.html 的 main/review phase 設計：新增 `phase`／`roundWrong`／`reviewPassCount`／`onSummary` 狀態。主輪（6個表）做完後，答錯過的表格會自動進複習輪重考，直到該輪全對才顯示總結；複習輪不重複計入 `totalOk`/`totalBad`/`results`（主輪成績保持誠實，不因後來複習輪答對而洗掉原始錯誤紀錄），總結畫面會顯示「複習 N 輪後全部做對」。複習輪卡片上方有明顯 banner 提示。
+
+### 4. table_drill.html 切換難度/類型不再直接重來
+新增 `hasRoundProgress()`：若這一輪已有進度（`qIdx>0` 或 `results.length>0`）且不在結束畫面（`onSummary`），切難度/類型前會 `confirm()` 詢問「這一輪還沒做完，換了會重新開始，確定要換嗎？」，取消則不動；在結束畫面按「挑戰中級/初級」則不會問（因為那一輪已經結束，沒東西可丟）。
+
+### 5. table_drill.html 內容擴充：25 個表格 → 36 個，第5課 → 第13課
+**診斷**：舊題庫 verb/adj/article/prep 全部集中在第1、2、4、5課，Owen 現在在第14課，題庫完全跟不上進度。**修法**：從 french_notes.html 擷取後續課程內容補進去：
+- **第7課動詞**：vendre（-re動詞）、mettre（雙寫tt）、porter
+- **第8課動詞**：venir（雙寫nn，être家族）
+- **第9課動詞**：pouvoir、vouloir（全不規則，常混淆）
+- **第12課 passé composé**：pc-trouver（avoir+規則ER過去分詞完整六人稱，答案是兩個字如「as trouvé」）
+- **第13課 passé composé**：pc-irreg-participe（lire→lu/faire→fait/apprendre→appris/pouvoir→pu/vouloir→voulu/avoir→eu/être→été/dormir→dormi 共8個不規則過去分詞）、pc-etre-verbs（15個être動詞的過去分詞：aller/venir/partir/arriver/entrer/sortir/monter/descendre/tomber/rester/retourner/passer/devenir/naître/mourir）
+- **第10課形容詞**：adj-gentil（-l雙寫+e不規則）、adj-eux（sérieux/courageux/généreux 的 -eux→-euse模式，共用一張表3個例字）
+
+沒有涵蓋每一課每個文法點（例如第11課COD代詞、第14課比較級這類非表格形狀的內容留給 quiz.html 處理），優先做「跟現有 headers/rows schema 乾淨吻合、且是核心文法重點」的內容，passé composé 是 Owen 現在正在學的東西，優先度最高。
+
+### 6. ⚠️ 測試方法修正（記取上次教訓）
+這次測試前，先把 `sync_supabase.js` 的 `ROOM` 暫時改成 `'TEST-DO-NOT-USE-DELETE-BEFORE-COMMIT'`，跑完所有測試（含切背景/切前景觸發 push/pull 的驗證）才改回 `'owen-clb7-k9f3a72q'` 並用 grep 確認沒有殘留測試字串——這次沒有再污染 Owen 的正式雲端資料。
+
+**全部功能 preview 實測通過**：直接開 table_drill（不經 dashboard）自動起算計時、36個表格新舊內容都在、pc-trouver 正確顯示兩字答案與「第12課」標籤、複習輪機制（答錯→複習輪→答對→顯示「複習1輪後全部做對」、主輪成績不被洗掉）、切換難度有進度時跳確認框（取消不動/確定才重來）、結束畫面切難度不跳確認框、切背景觸發POST、切前景觸發GET、dashboard 本身不會被自動啟動 session 影響（isDash 保護仍正常）。
+
+---
+
 ## 本 session 做了什麼（2026-07-06：筆記回饋＋順序輪替＋統計＋一次重大事故）
 
 Owen 回饋四件事：①筆記頁沒有回饋機制，且第6課發現多處例句缺發音/翻譯 ②想要每日完成統計、找出最常漏掉哪一步 ③想要順序不要一成不變，且能自訂 ④跨機器要能接續進度。逐一確認方向後（AskUserQuestion：順序選「自動微調＋可鎖定」；跨機深度選「同步完成與否即可」；1.5h太長 Owen 說「我會自己中斷」不需要拆段功能）：

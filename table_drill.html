@@ -401,6 +401,156 @@ const TABLES = [
     ]
   },
 
+  // ── 第7–9課動詞（07-06 補上，原本題庫只到第5課）─────────────
+
+  {
+    id:'vendre', title:'vendre', zh:'賣（-re 動詞）',
+    type:'verb', lesson:7,
+    note:'-re 動詞語尾：-s / -s / -（不加）/ -ons / -ez / -ent',
+    headers:['人稱','變位'],
+    rows:[
+      ['je',          {a:'vends',   h:false}],
+      ['tu',          {a:'vends',   h:true }],
+      ['il / elle',   {a:'vend',    h:true }],
+      ['nous',        {a:'vendons', h:true }],
+      ['vous',        {a:'vendez',  h:true }],
+      ['ils / elles', {a:'vendent', h:true }],
+    ]
+  },
+
+  {
+    id:'mettre', title:'mettre', zh:'放・穿',
+    type:'verb', lesson:7,
+    note:'⚠️ nous/vous/ils 雙寫 tt：mettons / mettez / mettent',
+    headers:['人稱','變位'],
+    rows:[
+      ['je',          {a:'mets',    h:false}],
+      ['tu',          {a:'mets',    h:true }],
+      ['il / elle',   {a:'met',     h:true }],
+      ['nous',        {a:'mettons', h:true }],
+      ['vous',        {a:'mettez',  h:true }],
+      ['ils / elles', {a:'mettent', h:true }],
+    ]
+  },
+
+  {
+    id:'porter', title:'porter', zh:'穿（戴）',
+    type:'verb', lesson:7,
+    note:'規則 -er 動詞',
+    headers:['人稱','變位'],
+    rows:[
+      ['je',          {a:'porte',   h:false}],
+      ['tu',          {a:'portes',  h:true }],
+      ['il / elle',   {a:'porte',   h:true }],
+      ['nous',        {a:'portons', h:true }],
+      ['vous',        {a:'portez',  h:true }],
+      ['ils / elles', {a:'portent', h:true }],
+    ]
+  },
+
+  {
+    id:'venir', title:'venir', zh:'來',
+    type:'verb', lesson:8,
+    note:'⚠️ ils/elles 雙寫 nn：viennent；助動詞用 être（devenir/revenir 同家族也是）',
+    headers:['人稱','變位'],
+    rows:[
+      ['je',          {a:'viens',   h:false}],
+      ['tu',          {a:'viens',   h:true }],
+      ['il / elle',   {a:'vient',   h:true }],
+      ['nous',        {a:'venons',  h:true }],
+      ['vous',        {a:'venez',   h:true }],
+      ['ils / elles', {a:'viennent',h:true }],
+    ]
+  },
+
+  {
+    id:'pouvoir', title:'pouvoir', zh:'能、可以',
+    type:'verb', lesson:9,
+    note:'全不規則；問「能不能」用 pouvoir，問「想不想」用 vouloir——意思不同別混',
+    headers:['人稱','變位'],
+    rows:[
+      ['je',            {a:'peux',   h:false}],
+      ['tu',            {a:'peux',   h:true }],
+      ['il / elle / on',{a:'peut',   h:true }],
+      ['nous',          {a:'pouvons',h:true }],
+      ['vous',          {a:'pouvez', h:true }],
+      ['ils / elles',   {a:'peuvent',h:true }],
+    ]
+  },
+
+  {
+    id:'vouloir', title:'vouloir', zh:'想要',
+    type:'verb', lesson:9,
+    note:'全不規則，變化型態跟 pouvoir 很像（peux/veux, peut/veut, peuvent/veulent）',
+    headers:['人稱','變位'],
+    rows:[
+      ['je',            {a:'veux',   h:false}],
+      ['tu',            {a:'veux',   h:true }],
+      ['il / elle / on',{a:'veut',   h:true }],
+      ['nous',          {a:'voulons',h:true }],
+      ['vous',          {a:'voulez', h:true }],
+      ['ils / elles',   {a:'veulent',h:true }],
+    ]
+  },
+
+  // ── 第12–13課：passé composé（Owen 目前正在學的文法重點）──────
+
+  {
+    id:'pc-trouver', title:'passé composé — trouver', zh:'找到（avoir + participe，規則 -ER 動詞）',
+    type:'verb', lesson:12,
+    note:'公式：avoir（現在式）+ participe passé；-ER 動詞的過去分詞 = 去掉 -er 加 -é',
+    headers:['人稱','avoir + participe'],
+    rows:[
+      ["j'",          {a:'ai trouvé',     h:false}],
+      ['tu',          {a:'as trouvé',     h:true }],
+      ['il / elle',   {a:'a trouvé',      h:true }],
+      ['nous',        {a:'avons trouvé',  h:true }],
+      ['vous',        {a:'avez trouvé',   h:true }],
+      ['ils / elles', {a:'ont trouvé',    h:true }],
+    ]
+  },
+
+  {
+    id:'pc-irreg-participe', title:'不規則過去分詞', zh:'passé composé 用 avoir 的常見不規則動詞',
+    type:'verb', lesson:13,
+    note:'⭐ 這幾個要背起來，不能用規則推：-ER→é／-IR→i 都不適用',
+    headers:['動詞','過去分詞'],
+    rows:[
+      ['lire',      {a:'lu',     h:true }],
+      ['faire',     {a:'fait',   h:false}],
+      ['apprendre', {a:'appris', h:true }],
+      ['pouvoir',   {a:'pu',     h:true }],
+      ['vouloir',   {a:'voulu', h:true }],
+      ['avoir',     {a:'eu',     h:true }],
+      ['être',      {a:'été',    h:true }],
+      ['dormir',    {a:'dormi',  h:true }],
+    ]
+  },
+
+  {
+    id:'pc-etre-verbs', title:'être 動詞過去分詞（陽性單數）', zh:'passé composé 用 être 的移動動詞（記憶口訣15+個）',
+    type:'verb', lesson:13,
+    note:'⚠️ être 動詞的過去分詞要跟主詞做性數配合（陰性+e／複數+s），這裡先練陽性單數基本形',
+    headers:['動詞','過去分詞'],
+    rows:[
+      ['aller',     {a:'allé',    h:false}],
+      ['venir',     {a:'venu',    h:true }],
+      ['partir',    {a:'parti',   h:true }],
+      ['arriver',   {a:'arrivé',  h:true }],
+      ['entrer',    {a:'entré',   h:true }],
+      ['sortir',    {a:'sorti',   h:true }],
+      ['monter',    {a:'monté',   h:true }],
+      ['descendre', {a:'descendu',h:true }],
+      ['tomber',    {a:'tombé',   h:true }],
+      ['rester',    {a:'resté',   h:true }],
+      ['retourner', {a:'retourné',h:true }],
+      ['passer',    {a:'passé',   h:true }],
+      ['devenir',   {a:'devenu',  h:true }],
+      ['naître',    {a:'né',      h:true }],
+      ['mourir',    {a:'mort',    h:true }],
+    ]
+  },
+
   // ── 形容詞 ───────────────────────────────────────────────
 
   {
@@ -491,6 +641,34 @@ const TABLES = [
       ['f. sg', {a:'espagnole',  h:true }],
       ['m. pl', {a:'espagnols',  h:true }],
       ['f. pl', {a:'espagnoles', h:true }],
+    ]
+  },
+
+  // ── 第10課：性格形容詞（07-06 補上）───────────────────────
+
+  {
+    id:'adj-gentil', title:'gentil', zh:'善良（第10課性格形容詞）',
+    type:'adj', lesson:10,
+    note:'⚠️ 不規則：-l 雙寫 + e → gentille（不是 *gentile）',
+    headers:['性數','形式'],
+    rows:[
+      ['m. sg', {a:'gentil',    h:false}],
+      ['f. sg', {a:'gentille',  h:true }],
+      ['m. pl', {a:'gentils',   h:true }],
+      ['f. pl', {a:'gentilles', h:true }],
+    ]
+  },
+
+  {
+    id:'adj-eux', title:'-eux 形容詞（sérieux / courageux / généreux）', zh:'-eux → -euse（陰性）；陽性複數不變，仍是 -eux',
+    type:'adj', lesson:10,
+    note:'⚠️ 陽性複數是 -eux 不加 s（本來就 x 結尾）；陰性複數才加 s：-euses',
+    headers:['性數','sérieux','courageux','généreux'],
+    rows:[
+      ['m. sg', {a:'sérieux',   h:false},{a:'courageux',  h:false},{a:'généreux',  h:false}],
+      ['f. sg', {a:'sérieuse',  h:true }, {a:'courageuse', h:true }, {a:'généreuse', h:true }],
+      ['m. pl', {a:'sérieux',   h:true }, {a:'courageux',  h:true }, {a:'généreux',  h:true }],
+      ['f. pl', {a:'sérieuses', h:true }, {a:'courageuses',h:true }, {a:'généreuses',h:true }],
     ]
   },
 
@@ -594,8 +772,12 @@ let queue      = [];
 let qIdx       = 0;
 let totalOk    = 0, totalBad = 0;
 let activeInp  = null;
-let results    = [];   // { title, ok, total }
+let results    = [];   // { title, ok, total }（只記主輪，複習輪不重複記）
 const ROUND_SIZE = 6;  // 一輪只出 6 個表，避免一次太多（可再開一輪）
+let phase      = 'main'; // 'main' | 'review'：主輪做完，答錯的表格會進複習輪重考，直到全對
+let roundWrong = [];      // 這一輪（主輪或複習輪）目前為止答錯（ok<total）的表格物件
+let reviewPassCount = 0;  // 這次做了幾輪複習（供結束畫面顯示）
+let onSummary  = false;   // 是否已經在結束畫面（這輪已完整結束，切難度/類型不用再問）
 
 const TYPE_LABEL = { verb:'動詞', adj:'形容詞', article:'冠詞', prep:'介係詞' };
 
@@ -637,11 +819,20 @@ function startSession() {
   window._roundPool = src.length;
   queue = shuffle(src).slice(0, ROUND_SIZE);
   qIdx = 0; totalOk = 0; totalBad = 0; results = [];
+  phase = 'main'; roundWrong = []; reviewPassCount = 0; onSummary = false;
   updateProgress();
   renderCard();
 }
 
+// 這一輪是否已經有進度（答過至少一個表，或正在複習輪）——用來決定切換難度/類型前要不要先問
+function hasRoundProgress() {
+  if (onSummary) return false; // 已經在結束畫面＝這輪做完了，沒東西可丟
+  return queue.length > 0 && (qIdx > 0 || results.length > 0);
+}
+
 function setDiff(d) {
+  if (d === diff) return;
+  if (hasRoundProgress() && !confirm('這一輪還沒做完，換難度會重新開始這一輪，確定要換嗎？')) return;
   diff = d;
   document.querySelectorAll('.diff-btn').forEach(b =>
     b.classList.toggle('active', b.dataset.diff === d));
@@ -649,6 +840,8 @@ function setDiff(d) {
 }
 
 function setType(t) {
+  if (t === typeFilter) return;
+  if (hasRoundProgress() && !confirm('這一輪還沒做完，換類型會重新開始這一輪，確定要換嗎？')) return;
   typeFilter = t;
   document.querySelectorAll('.type-btn').forEach(b =>
     b.classList.toggle('active', b.dataset.type === t));
@@ -660,8 +853,8 @@ function setType(t) {
 // ════════════════════════════════════════════════════════════
 function updateProgress() {
   const n = queue.length;
-  document.getElementById('progText').textContent =
-    n ? `第 ${Math.min(qIdx + 1, n)} / ${n} 題` : '—';
+  const label = phase === 'review' ? `🔁複習 ${Math.min(qIdx + 1, n)} / ${n}` : `第 ${Math.min(qIdx + 1, n)} / ${n} 題`;
+  document.getElementById('progText').textContent = n ? label : '—';
   document.getElementById('scoreText').textContent = `${totalOk} ✓ · ${totalBad} ✗`;
   document.getElementById('progFill').style.width =
     n ? (qIdx / n * 100) + '%' : '0%';
@@ -671,7 +864,21 @@ function updateProgress() {
 // 渲染卡片
 // ════════════════════════════════════════════════════════════
 function renderCard() {
-  if (qIdx >= queue.length) { renderSummary(); return; }
+  if (qIdx >= queue.length) {
+    // 這一輪（主輪或複習輪）結束：有答錯的表格就開下一個複習輪重考，直到全對
+    if (roundWrong.length > 0) {
+      phase = 'review';
+      reviewPassCount++;
+      queue = shuffle(roundWrong);
+      roundWrong = [];
+      qIdx = 0;
+      updateProgress();
+      // 不 return，繼續往下渲染這個複習輪的第一題
+    } else {
+      renderSummary();
+      return;
+    }
+  }
   const tbl = queue[qIdx];
 
   // 計算哪些格子是空白的
@@ -729,8 +936,13 @@ function renderCard() {
 
   const hasInputs = inputIdx > 0;
 
+  const reviewBanner = phase === 'review'
+    ? `<div style="background:#2a1e00;border:1px solid #4a3a10;color:#f0c060;border-radius:8px;padding:8px 12px;font-size:0.78rem;margin-bottom:10px;">🔁 複習輪 — 剛才這張表格答錯了，重新填到全對為止</div>`
+    : '';
+
   document.getElementById('cardArea').innerHTML = `
 <div class="card" id="activeCard">
+  ${reviewBanner}
   <div class="card-header">
     <span class="lesson-badge">第${tbl.lesson}課</span>
     <span class="type-badge ${tbl.type}">${TYPE_LABEL[tbl.type]}</span>
@@ -828,15 +1040,23 @@ function checkAll() {
 
   const total = inputs.length;
   const bad   = total - ok;
-  totalOk  += ok;
-  totalBad += bad;
-  results.push({ title: queue[qIdx].title, ok, total });
+
+  // 只有主輪計入總分/結果列表；複習輪只是拿來重考，不重複計分
+  if (phase === 'main') {
+    totalOk  += ok;
+    totalBad += bad;
+    results.push({ title: queue[qIdx].title, ok, total });
+  }
+  // 這格有錯 → 這張表格進這一輪的錯題堆，輪次結束後開複習輪重考直到全對
+  if (bad > 0) roundWrong.push(queue[qIdx]);
 
   // UI 更新
   document.getElementById('checkBtn').style.display = 'none';
   const nextBtn = document.getElementById('nextBtn');
   nextBtn.style.display = 'inline-block';
-  if (qIdx === queue.length - 1) nextBtn.textContent = '查看結果 →';
+  if (qIdx === queue.length - 1) {
+    nextBtn.textContent = (roundWrong.length > 0) ? '🔁 複習答錯的 →' : '查看結果 →';
+  }
 
   const pct = Math.round(ok / total * 100);
   document.getElementById('chipScore').textContent =
@@ -856,6 +1076,7 @@ function nextCard() {
 // 總結畫面
 // ════════════════════════════════════════════════════════════
 function renderSummary() {
+  onSummary = true; // 這輪已完整結束，之後切難度/類型不用再問「要不要重來」
   document.getElementById('accentBar').classList.remove('visible');
   const tot = totalOk + totalBad;
   const pct = tot ? Math.round(totalOk / tot * 100) : 0;
@@ -881,19 +1102,23 @@ function renderSummary() {
   const medal = pct >= 90 ? '🏆' : pct >= 70 ? '⭐' : pct >= 50 ? '💪' : '📖';
   const nextDiff  = diff === 'easy' ? 'mid' : diff === 'mid' ? 'hard' : 'easy';
   const nextLabel = diff === 'easy' ? '挑戰中級 →' : diff === 'mid' ? '挑戰高級 →' : '回到初級';
+  // queue 到這裡已經是最後一個複習輪的內容（可能只剩1-2個表），要顯示主輪大小要用 results.length
+  const reviewLine = reviewPassCount > 0
+    ? `<div class="sum-sub" style="color:#60d090">🔁 複習 ${reviewPassCount} 輪後，答錯的表格全部做對了！</div>` : '';
 
   document.getElementById('cardArea').innerHTML = `
 <div class="summary">
   <div class="sum-title">${medal} 練習完成！</div>
   <div class="sum-pct">${pct}%</div>
-  <div class="sum-sub">${totalOk} 格正確 / ${tot} 格總計 · 這輪 ${queue.length} 個表（此類共 ${window._roundPool || TABLES.length} 個）</div>
+  <div class="sum-sub">${totalOk} 格正確 / ${tot} 格總計 · 這輪 ${results.length} 個表（此類共 ${window._roundPool || TABLES.length} 個）</div>
+  ${reviewLine}
   <div class="sum-list">${rows}</div>
   <button class="restart-btn" onclick="startSession()">🔄 再練 ${ROUND_SIZE} 個</button>
   <button class="restart-btn ghost" onclick="setDiff('${nextDiff}')">${nextLabel}</button>
 </div>`;
 
   document.getElementById('progFill').style.width = '100%';
-  document.getElementById('progText').textContent = `完成 ${queue.length} 題`;
+  document.getElementById('progText').textContent = `完成 ${results.length} 題`;
 }
 
 // ════════════════════════════════════════════════════════════

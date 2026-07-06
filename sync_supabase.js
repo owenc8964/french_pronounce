@@ -83,7 +83,8 @@
   }
 
   var t = null;
-  function sched() { clearTimeout(t); t = setTimeout(push, 2500); }
+  // 縮短到 700ms：完成一步立刻就有機會推上雲端，減少「還沒推完就被切走/背景」丟失的機率
+  function sched() { clearTimeout(t); t = setTimeout(push, 700); }
 
   // hook setItem：本地 clb7_* 一變就排程上傳（apply 用原生 _si，避免遞迴）
   var _si = localStorage.setItem;
@@ -96,5 +97,8 @@
 
   pull();                                                   // 開頁先拉遠端合併
   window.addEventListener('pagehide', push);
-  document.addEventListener('visibilitychange', function () { if (document.hidden) push(); });
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) push();
+    else pull();  // 切回這個分頁／裝置時，重新拉一次，抓另一台裝置剛做的進度
+  });
 })();

@@ -143,6 +143,9 @@
   }
 
   function boot() {
+    // 不管是不是從 dashboard「開始今日學習」進來，只要打開任何練習頁就自動起算，
+    // 避免「直接點進某個練習」時完全沒被計時（之前只有從 dashboard 按鈕進來才會計時）
+    if (!API.isActive()) API.start();
     ensurePill();
     refresh();
     setInterval(function () { ensurePill(); refresh(); }, 1000);
