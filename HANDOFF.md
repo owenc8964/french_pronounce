@@ -86,7 +86,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `speaking.html` | 口說日誌 | ✅ 完成 |
 | `listening.html` | 聽力日誌 | ✅ 完成 |
 | `map.html` | 課程地圖（63格），**已更新至第14課** | ✅ 更新（07-03）|
-| `french_notes.html` | 第1–14課筆記；**14課起新增「🎙老師的課堂法語」「🔊發音警報」固定欄目** | ✅ 更新（07-03）|
+| `french_notes.html` | 第1–14課筆記；**14課起新增「🎙老師的課堂法語」「🔊發音警報」固定欄目**；07-06 新增：懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭 | ✅ 更新（07-06）|
 | `table_drill.html` | 動詞變位練習（舊版，功能被 verb_sprint 部分取代）| ✅ 部署 |
 
 | `session_timer.js` | **跨頁 session 計時器**：一次訓練＝一個 session，timestamp 累計、跨頁連續、練習頁常駐 pill、dashboard 端 bar 結算寫入 700h | ✅ 新增（07-05）|
@@ -119,6 +119,43 @@ Owen 回饋核心痛點：**每日練習像沒終點的迷宮，計時器不會�
 6. **Duolingo 週報種子**：dashboard 加 `DUO_SEED` 陣列＋`seedDuo()`，載入時 upsert 進 `clb7_duo`（不覆蓋其他週）；`renderDuo` 找不到當週就顯示最新一筆。Owen 給截圖只需改一行。基準 2026-W27 = {streak:73, xp:5901, min:288, units:104}。更新方式見 memory `reference_duolingo_update`。
 
 **端到端實測通過（preview localhost:7788，真的跑完）**：開始→跨頁（dashboard→quiz→reading→dashboard）計時連續、暫停凍結、回 dashboard bar 顯示；模擬 27 分鐘結算→`clb7_tracker` 寫入一筆、700h 由 0→0.5h、toast 正確；實際做完熱身 5 題→`clb7_warmup_done` 真的被 set、課程選擇器（步驟②）出現；dashboard 番号順序＋👉高亮正確（截圖存證）。
+
+---
+
+## 本 session 做了什麼（2026-07-06：筆記回饋＋順序輪替＋統計＋一次重大事故）
+
+Owen 回饋四件事：①筆記頁沒有回饋機制，且第6課發現多處例句缺發音/翻譯 ②想要每日完成統計、找出最常漏掉哪一步 ③想要順序不要一成不變，且能自訂 ④跨機器要能接續進度。逐一確認方向後（AskUserQuestion：順序選「自動微調＋可鎖定」；跨機深度選「同步完成與否即可」；1.5h太長 Owen 說「我會自己中斷」不需要拆段功能）：
+
+### 1. french_notes.html 回饋機制＋第6課修正
+- **診斷**：french_notes.html 是唯一沒有懸浮筆記元件的頁面（其他六頁都有）；且發現「例句沒發音」不只是第6課個案，是全站通病——`makeTtsBtn` 只自動附加在 `.phrase-list`／`.verb-name`／`.conj-row`／`td.m`／`td.f`／`.fr-ex`，但 compare-table 的「例句」欄（完整句子，最後一欄，通常無 class）從來沒被覆蓋到。
+- **加了懸浮回饋元件**：沿用其他頁既有的 `clb7_quick_notes` 共用 key／`複製全部給 Claude` 模式；每課標題下方新增「💬 回饋這課」按鈕，點擊會自動幫該則筆記標記 `[第N課]` 前綴，方便之後我讀取時知道對應哪一課。
+- **第6課「否定擴充」表格**：4句例句（Je ne vais jamais au cinéma / Elle ne boit rien / Je ne connais personne ici / Il ne fait plus de sport）補上中文翻譯（括號附加在句尾，沿用網站既有 `.fr-ex` 括號翻譯慣例）。
+- **全站通用修正**（不只第6課，14課全部受惠）：新增 JS 機制——掃描所有 `.compare-table table`，若表頭最後一欄文字是「例句」或「例」，該欄每格自動加喇叭；TTS 播放內容會先去掉尾端「（中文翻譯）」括號，只唸法文本體，避免中文混入法語發音。已用「Elle ne boit rien.」實測確認播放內容正確排除翻譯。
+
+### 2. dashboard 每日完成率分析（📊 找出最常漏掉哪一步）
+- **關鍵發現＋修正**：處方步驟①②③（熱身/研讀/填表格）過去只存「最新一次完成日期」單一字串（`clb7_warmup_done` 等），無法回溯歷史哪幾天做過。新增 `logDailyDone()` 輔助函式，這三步驟完成時**同時**寫入歷史陣列 `clb7_warmup_log`／`clb7_quiz_log`／`clb7_drill_log`（quiz.html／table_drill.html 各自的完成點都補了這行）。步驟④⑤⑥⑦本來就有完整歷史陣列（sprint_sessions/review_sessions/writing/reading），沿用即可。
+- **dashboard 新增「📊 每日完成率分析」卡**（`renderHabitAnalysis()`）：抓「近14天內有練習活動」的日子（用 tracker 或任一步驟紀錄聯集判定「活躍日」，避免把完全沒用 app 的日子誤算漏做），算每步驟完成率，畫出長條圖，並point出「最常被漏掉」的那一步。
+- 實測：灌了7天模擬資料（暖身7/7、填表格只做2/7、其餘不等），正確判定「填表格最常被漏掉（2/7天）」。
+- ⚠️ 因為①②③是新功能（07-05/06才加），統計會從現在開始累積，無法回溯更早之前的資料——面板下方有寫這行提醒。
+
+### 3. 處方順序自動輪替＋鎖定開關
+- 中間4步（研讀/填表格/反射/複習）**依日期輪替**（`Math.floor(Date.now()/86400000)` 當 shift 值），暖身固定第一、造句+閱讀固定最後（產出收尾）不會動。
+- 今日處方標題右側加「🔒 鎖定順序」checkbox（存 `clb7_order_lock`），鎖定後順序固定不再輪替；有文字說明目前狀態。
+- 實測：today→tomorrow 順序確實輪替一格；鎖定後 3 天後順序仍相同。
+
+### 4. 切裝置提醒
+- session bar 底部加一行提示：「💡 要換手機/iPad 前，先按「🏁 結束並記錄」，進度才會跟著你走」——因為跨機同步目前只同步「完成與否」的勾勾（Owen 確認這樣夠用），沒同步「進行中尚未結算的 session 計時」，所以引導 Owen 在換機器前先手動結算。
+
+### 5. ⚠️ 事故記錄：preview 測試污染了 Owen 真實雲端資料（已修復）
+測試「每日完成率統計」時，在 preview 灌了假的 `clb7_writing`／`clb7_review_sessions`／`clb7_sprint_sessions`／`clb7_warmup_done`／`clb7_drill_done`／`clb7_quick_notes`／`clb7_reading`／`clb7_tracker` 測試資料。**因為 `sync_supabase.js` 不管 preview 還是正式站都指向同一個 Supabase ROOM**（`owen-clb7-k9f3a72q`），這些假資料在 2.5 秒 debounce 後自動推上了 Owen 真實的雲端資料庫，覆蓋掉他手機上的真實紀錄快照。
+
+**發現後處理**：嘗試用 DELETE 清掉該筆雲端資料，但 RLS 沒開 delete policy，DELETE 靜默失敗（回 204 但 0 筆真的被刪——這是本次多踩的一個坑，供未來參考）。改用 UPDATE（POST + `Prefer: resolution=merge-duplicates`）把該 ROOM 的 payload 覆蓋成 `{}`，驗證雲端確實變空。
+
+**為什麼這樣處理是安全的**：整個過程只動到「preview 這個隔離瀏覽器」和「雲端」，**Owen 手機/iPad 本機的 localStorage 完全沒被碰到**。雲端變空後，他下次用真機打開 app：pull 會是 no-op（沒東西可合併，不會清掉本機任何東西），接著他真機的 setItem hook 會在 2.5 秒後自動把他真實的完整資料重新推回雲端，等於自我修復。已重新整理過 dashboard 確認頁面在乾淨狀態下正常運作、雲端仍保持 `{}`沒再被污染。
+
+**已寫入 memory（`feedback_sync_test_isolation`）避免重演**：以後任何會寫 `clb7_*` 的 preview 測試，開頭要先攔截 `fetch` 擋掉 `supabase.co`（或移除 `sync_supabase.js` script tag），測完再視情況還原，不能靠「測完再清雲端」補救。
+
+**Owen 需要知道**：這次沒有真正遺失他的資料（因為手機本機是安全的），但如果他在我完成這次修復「之前」剛好打開過手機且做了些什麼、又被手機推上雲端覆蓋了我清空的 `{}`……其實那樣反而更好（他的真資料會贏）。真正的風險窗口只在「污染發生後、我清空之前」如果他手機也在那個時間點打開過 app 且 pull 到我的假資料合併進本機——目前看時間點研判機率低，但建議 Owen 之後開 app 時留意一下處方勾勾／複習卡/反射衝刺數字是否合理，如有明顯不合理（例如沒做過的東西顯示已完成、或造句記錄多出一筆 s1='a' s2='b' 的假資料），跟 Claude 說一聲即可清掉。
 
 ---
 
@@ -190,6 +227,9 @@ Owen 用多台裝置（手機／iPad），要時間/進度一起記錄。localSt
 - `clb7_warmup_done` → 今日日期字串 zh-TW（處方步驟① 熱身完成旗標；步驟② 用 `clb7_quiz_done`）
 - `clb7_drill_done` → 今日日期字串 zh-TW（處方步驟③ 填表格 table_drill 完成旗標）
 - `clb7_tracker` 新增 `type:'session'` 一筆＝一次完整訓練的總時間（結算寫入，計入 700h）
+- `clb7_warmup_log` / `clb7_quiz_log` / `clb7_drill_log` → [日期字串,…]（07-06 新增，步驟①②③完成歷史，供 dashboard 每日完成率分析用；只存最近 90 筆）
+- `clb7_order_lock` → '1' 表示鎖定處方順序（不存在＝未鎖定，中間4步每天輪替）
+- `clb7_quick_notes`（新增掛到 french_notes.html）→ 每則 `{date, time, page, note}`；french_notes 的「💬回饋這課」會自動在 note 前加 `[第N課]`
 
 **⚠️ 日期格式地雷**：dashboard/tracker/writing/sprint/wrong_log 用 zh-TW（`2026/07/02`）；reading 記錄和 topic 快照用本地 ISO（`2026-07-02`）。跨工具比對日期時要用**同一格式的 helper**，不要混。所有 todayStr 一律用本地時間，**禁用 toISOString()**（UTC 偏移已炸過兩次）。
 

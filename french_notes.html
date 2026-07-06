@@ -1863,10 +1863,10 @@
   <div class="compare-table">
     <table>
       <tr><th>結構</th><th>意思</th><th>例句</th></tr>
-      <tr><td class="m">ne ... jamais</td><td>從不</td><td>Je ne vais jamais au cinéma.</td></tr>
-      <tr><td class="m">ne ... rien</td><td>什麼都不</td><td>Elle ne boit rien.</td></tr>
-      <tr><td class="m">ne ... personne</td><td>沒有任何人</td><td>Je ne connais personne ici.</td></tr>
-      <tr><td class="m">ne ... plus</td><td>不再（已停止）</td><td>Il ne fait plus de sport.</td></tr>
+      <tr><td class="m">ne ... jamais</td><td>從不</td><td>Je ne vais jamais au cinéma.（我從不去電影院）</td></tr>
+      <tr><td class="m">ne ... rien</td><td>什麼都不</td><td>Elle ne boit rien.（她什麼都不喝）</td></tr>
+      <tr><td class="m">ne ... personne</td><td>沒有任何人</td><td>Je ne connais personne ici.（我在這裡誰都不認識）</td></tr>
+      <tr><td class="m">ne ... plus</td><td>不再（已停止）</td><td>Il ne fait plus de sport.（他不再運動了）</td></tr>
     </table>
   </div>
 
@@ -4306,6 +4306,29 @@ document.querySelectorAll('.fr-ex').forEach(el => {
   if (text) el.appendChild(makeTtsBtn(text));
 });
 
+// 全站「例句／例」欄自動加喇叭：compare-table 表頭最後一欄若是「例句」或「例」，
+// 該欄每格都是完整法文句子（原本只有 td.m 單字有聲音，句子沒有）。
+// 尾端「（中文翻譯）」只是註解，不唸；用去掉尾端括號的版本餵給 TTS。
+document.querySelectorAll('.compare-table table').forEach(table => {
+  const headRow = table.querySelector('tr');
+  if (!headRow) return;
+  const ths = headRow.querySelectorAll('th');
+  if (!ths.length) return;
+  const lastHeader = ths[ths.length - 1].textContent.trim();
+  if (lastHeader !== '例句' && lastHeader !== '例') return;
+  table.querySelectorAll('tr').forEach((row, i) => {
+    if (i === 0) return; // 跳過表頭列
+    const tds = row.querySelectorAll('td');
+    if (!tds.length) return;
+    const lastTd = tds[tds.length - 1];
+    if (lastTd.querySelector('.tts-btn')) return; // 已經有喇叭就跳過
+    const raw = lastTd.textContent.trim();
+    const frOnly = raw.replace(/[（(][^）)]*[）)]\s*$/, '').trim();
+    if (!frOnly) return;
+    lastTd.appendChild(makeTtsBtn(frOnly));
+  });
+});
+
 // ── Unit 筆記（按鈕在 header 右側） ──────────────────────────
 (function() {
   const NOTES_KEY = 'fr_unit_notes';
@@ -4427,10 +4450,89 @@ document.querySelectorAll('.fr-ex').forEach(el => {
       '<a href="table_drill.html?guided=1" ' +
       'style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#f4f4f0;color:#555;' +
       'border:1px solid #ddd;border-radius:8px;font-size:0.85rem;text-decoration:none;">📝 填這類表格</a>' +
+      '<button type="button" class="fn-fb-btn" data-lesson="' + n + '" ' +
+      'style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#141928;color:#f0c060;' +
+      'border:1px solid #2a3858;border-radius:8px;font-size:0.85rem;cursor:pointer;font-family:inherit;">💬 回饋這課</button>' +
       '<a href="dashboard.html" ' +
       'style="display:inline-flex;align-items:center;gap:6px;padding:8px 12px;color:#999;font-size:0.8rem;text-decoration:none;">↩ 回指揮中心</a>';
     // 插在 summary 之後（課標題下方），展開就看得到
     sum.insertAdjacentElement('afterend', bar);
+  });
+})();
+</script>
+
+<!-- 懸浮快速筆記／回饋（其他頁都有，這頁原本漏掉；這裡多支援「每課回饋」按鈕自動標記課次） -->
+<style>
+#qnoteBtn{position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#1a2438;border:1px solid #2a3858;color:#f0c060;font-size:1.2rem;cursor:pointer;z-index:999;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,0.5);transition:transform 0.15s;}
+#qnoteBtn:hover{transform:scale(1.1);}
+#qnotePanel{position:fixed;bottom:72px;right:20px;width:280px;background:#0d1020;border:1px solid #2a3858;border-radius:12px;padding:14px;z-index:998;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.6);}
+#qnotePanel.open{display:block;}
+#qnoteTitle{font-size:0.7rem;color:#445060;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+#qnoteTxt{width:100%;background:#141928;border:1px solid #1a2438;border-radius:8px;color:#ddd8cc;font-size:0.85rem;padding:8px;resize:none;height:80px;font-family:inherit;}
+#qnoteTxt:focus{outline:none;border-color:#f0c060;}
+#qnoteSave{margin-top:8px;width:100%;padding:8px;background:#1d5035;color:#60d090;border:none;border-radius:8px;font-size:0.82rem;cursor:pointer;font-family:inherit;}
+#qnoteCount{font-size:0.68rem;color:#334050;margin-top:6px;text-align:right;}
+#qnoteTag{font-size:0.7rem;color:#f0c060;margin-bottom:6px;display:none;}
+</style>
+<button id="qnoteBtn" title="筆記回饋">📝</button>
+<div id="qnotePanel">
+  <div id="qnoteTitle">筆記回饋（存給 Claude 看，下次更新會讀）</div>
+  <div id="qnoteTag"></div>
+  <textarea id="qnoteTxt" placeholder="哪裡看不懂、缺發音、缺翻譯、內容有問題…"></textarea>
+  <button id="qnoteSave">儲存回饋</button>
+  <div id="qnoteCount"></div>
+  <button id="qnoteCopy" style="margin-top:6px;width:100%;padding:7px;background:#1a2438;color:#60a0d0;border:none;border-radius:8px;font-size:0.78rem;cursor:pointer;font-family:inherit;">📋 複製全部給 Claude</button>
+</div>
+<script>
+(function(){
+  const KEY='clb7_quick_notes';
+  const page='french_notes.html';
+  let fbLesson = null; // 目前透過「💬回饋這課」開啟時記錄課次
+  function loadNotes(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch(e){return[];}}
+  function saveNotes(d){localStorage.setItem(KEY,JSON.stringify(d));}
+  function updateCount(){const n=loadNotes();document.getElementById('qnoteCount').textContent=n.length?`共 ${n.length} 則筆記`:'還沒有筆記';}
+  function openPanel(lesson){
+    fbLesson = lesson || null;
+    const tag = document.getElementById('qnoteTag');
+    if (fbLesson) { tag.textContent = '📍 第' + fbLesson + '課'; tag.style.display='block'; }
+    else { tag.style.display='none'; }
+    document.getElementById('qnotePanel').classList.add('open');
+    updateCount();
+    document.getElementById('qnoteTxt').focus();
+  }
+  document.getElementById('qnoteBtn').addEventListener('click', () => {
+    document.getElementById('qnotePanel').classList.toggle('open');
+    updateCount();
+  });
+  document.querySelectorAll('.fn-fb-btn').forEach(btn => {
+    btn.addEventListener('click', () => openPanel(btn.dataset.lesson));
+  });
+  document.getElementById('qnoteSave').addEventListener('click', () => {
+    const txt = document.getElementById('qnoteTxt').value.trim();
+    if (!txt) return;
+    const notes = loadNotes();
+    const d = new Date();
+    const prefix = fbLesson ? `[第${fbLesson}課] ` : '';
+    notes.push({
+      date: `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`,
+      time: `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`,
+      page, note: prefix + txt
+    });
+    saveNotes(notes);
+    document.getElementById('qnoteTxt').value = '';
+    fbLesson = null;
+    document.getElementById('qnoteTag').style.display = 'none';
+    updateCount();
+  });
+  document.getElementById('qnoteCopy').addEventListener('click', () => {
+    const quick = loadNotes();
+    if (!quick.length) { alert('還沒有筆記'); return; }
+    const lines = ['=== 筆記回饋 ==='];
+    quick.forEach(n => lines.push(`[${n.date} ${n.time}${n.page && n.page!=='french_notes.html' ? '|'+n.page : ''}] ${n.note}`));
+    navigator.clipboard.writeText(lines.join('\n')).then(() => {
+      document.getElementById('qnoteCopy').textContent = '✓ 已複製！';
+      setTimeout(() => document.getElementById('qnoteCopy').textContent = '📋 複製全部給 Claude', 2000);
+    });
   });
 })();
 </script>

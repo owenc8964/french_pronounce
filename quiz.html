@@ -489,6 +489,15 @@ function logWrong(entry) {
     localStorage.setItem('clb7_wrong_log', JSON.stringify(log.slice(-300)));
   } catch(e) {}
 }
+// ── 每日完成歷史（供 dashboard 統計「最常漏掉哪一步」）──────────
+// key 例如 clb7_warmup_log / clb7_quiz_log：陣列存日期字串，每天最多一筆
+function logDailyDone(key, dateStr) {
+  try {
+    const log = JSON.parse(localStorage.getItem(key)) || [];
+    if (!log.includes(dateStr)) log.push(dateStr);
+    localStorage.setItem(key, JSON.stringify(log.slice(-90)));
+  } catch(e) {}
+}
 function unlogWrong(src, qText) {
   try {
     const log = JSON.parse(localStorage.getItem('clb7_wrong_log')) || [];
@@ -944,7 +953,11 @@ function showDoneCard() {
   if (window._warmupMode && !window._warmupDone) {
     window._warmupDone = true;
     // 標記今天熱身已完成（dashboard 步驟1讀取）
-    localStorage.setItem('clb7_warmup_done', new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'}));
+    {
+      const d = new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
+      localStorage.setItem('clb7_warmup_done', d);
+      logDailyDone('clb7_warmup_log', d);
+    }
     touchStreak(); renderStats();
     showLessonPicker(scoreOk, queue.length);
     return;
@@ -955,7 +968,11 @@ function showDoneCard() {
   touchStreak();
   renderStats();
   // 標記今天已做過 quiz（供 dashboard 讀取）
-  localStorage.setItem('clb7_quiz_done', new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'}));
+  {
+    const d = new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
+    localStorage.setItem('clb7_quiz_done', d);
+    logDailyDone('clb7_quiz_log', d);
+  }
 
   // Top weak questions across whole bank
   const weakList = BANK

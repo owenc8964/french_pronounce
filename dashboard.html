@@ -281,6 +281,16 @@ body {
 .trend-down-cell { color: #d07060 !important; }
 .trend-pending   { font-size: 0.75rem; color: #334050; text-align: center; padding: 16px 0; }
 
+/* 每日完成率分析（哪一步最常漏掉） */
+.habit-insight { font-size: 0.8rem; color: #ddd8cc; margin-bottom: 14px; line-height: 1.5; }
+.habit-insight b { color: #f0c060; }
+.habit-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.habit-label { font-size: 0.72rem; color: #8a95a5; width: 62px; flex-shrink: 0; }
+.habit-bar-wrap { flex: 1; height: 8px; background: #141928; border-radius: 4px; overflow: hidden; }
+.habit-bar { height: 100%; border-radius: 4px; transition: width 0.2s; }
+.habit-pct { font-size: 0.7rem; color: #667890; width: 40px; text-align: right; flex-shrink: 0; }
+.habit-note { font-size: 0.65rem; color: #334050; margin-top: 10px; line-height: 1.5; }
+
 /* Four Skills */
 .skill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 4px; }
 .skill-card {
@@ -331,6 +341,9 @@ body {
     <button class="sess-btn sess-finish" id="sessFinish">🏁 結束並記錄</button>
   </div>
   <div class="sess-target" id="sessTarget"></div>
+  <div style="font-size:0.66rem;color:#3a6a4d;text-align:center;margin-top:6px;">
+    💡 要換手機/iPad 前，先按「🏁 結束並記錄」，進度才會跟著你走
+  </div>
 </div>
 
 <!-- Alerts -->
@@ -338,7 +351,13 @@ body {
 
 <!-- Today's prescription -->
 <div class="rx-card">
-  <div class="rx-title">📋 今日處方</div>
+  <div class="rx-title" style="display:flex;align-items:center;justify-content:space-between;">
+    <span>📋 今日處方</span>
+    <label style="display:flex;align-items:center;gap:5px;font-size:0.62rem;color:#556;text-transform:none;letter-spacing:0;cursor:pointer;">
+      <input type="checkbox" id="orderLockChk" style="cursor:pointer;">🔒 鎖定順序
+    </label>
+  </div>
+  <div id="rxOrderNote" style="font-size:0.66rem;color:#445060;margin-bottom:10px;"></div>
   <div id="rxList"></div>
 </div>
 
@@ -428,6 +447,12 @@ body {
     </div>
     <button class="duo-save-btn" id="duoSave">儲存本週數據</button>
   </div>
+</div>
+
+<!-- 每日完成率分析（哪一步最常漏掉） -->
+<div class="section-title">📊 每日完成率分析</div>
+<div class="duo-card">
+  <div id="habitSection"><div class="trend-pending">載入中…</div></div>
 </div>
 
 <!-- 週趨勢 -->
@@ -661,8 +686,22 @@ function quizDoneToday() {
 
 // 一次訓練＝一本道六步：暖身 → 研讀專項 → 反射 → 複習 → 造句 → 閱讀
 // 時間不再是一個步驟，改由頂部 session 計時器全程累計（見 session_timer.js）
+// 中間 4 步（研讀/填表格/反射/複習）每天自動輪替順序，避免一成不變；
+// 暖身固定第一、造句+閱讀固定最後（產出收尾）。clb7_order_lock=1 時固定不輪替。
+function isOrderLocked() { return localStorage.getItem('clb7_order_lock') === '1'; }
+function rotateArray(arr, shift) {
+  const n = arr.length;
+  const s = ((shift % n) + n) % n;
+  return arr.slice(s).concat(arr.slice(0, s));
+}
+function getMiddleOrder() {
+  const MIDDLE = ['study', 'drill', 'sprint', 'review'];
+  if (isOrderLocked()) return MIDDLE;
+  const dayIndex = Math.floor(Date.now() / 86400000); // 每天遞增 1，順序跟著換
+  return rotateArray(MIDDLE, dayIndex);
+}
+
 function buildPrescription(topicStats, todaySec) {
-  const items = [];
   const today = todayStr();
 
   // 找最弱 topic（給步驟提示用）
@@ -672,93 +711,78 @@ function buildPrescription(topicStats, todaySec) {
   const weakest = rankedTopics[0];
   const label   = weakest ? (TOPIC_LABELS[weakest[0]] || weakest[0]) : null;
 
-  // 步驟 1：熱身 Quiz 5 題
   const wuDone = localStorage.getItem('clb7_warmup_done') === today;
-  items.push({
-    n: 1, icon: '🔥', action: '熱身 Quiz 5 題',
-    why: wuDone ? '今天已完成！' : (weakest && weakest[1].pct < 80
-      ? `隨機 5 題暖機（目前最弱：${label} ${weakest[1].pct}%）`
-      : '隨機 5 題，暖機抓手感'),
-    badge: wuDone ? 'badge-green' : 'badge-blue',
-    badgeText: wuDone ? '✓ 完成' : '開始',
-    href: 'quiz.html?mode=warmup&guided=1',
-    done: wuDone,
-  });
-
-  // 步驟 2：研讀 + 專項 Quiz（挑一課，先讀筆記再做該課題）
-  const lqDone = quizDoneToday(); // clb7_quiz_done = 完成一次課程/專項 quiz
-  items.push({
-    n: 2, icon: '📚', action: '研讀 + 專項 Quiz',
-    why: lqDone ? '今天已完成！' : '挑一課：先開筆記研讀，再做該課題目（提取＋輸入）',
-    badge: lqDone ? 'badge-green' : 'badge-red',
-    badgeText: lqDone ? '✓ 完成' : '未完成',
-    href: 'quiz.html?guided=1',
-    done: lqDone,
-  });
-
-  // 步驟 3：填表格（冠詞／動詞變位表）
+  const lqDone = quizDoneToday();
   const dlDone = localStorage.getItem('clb7_drill_done') === today;
-  items.push({
-    n: 3, icon: '📝', action: '填表格：冠詞／動詞變位',
-    why: dlDone ? '今天已完成！' : '定／不定／部分冠詞、動詞六人稱變位，把表格填到熟',
-    badge: dlDone ? 'badge-green' : 'badge-red',
-    badgeText: dlDone ? '✓ 完成' : '未完成',
-    href: 'table_drill.html?guided=1',
-    done: dlDone,
-  });
-
-  // 步驟 4：動詞反射衝刺
   const spDone = sprintDoneToday();
   const spReflex = sprintReflexCount();
-  items.push({
-    n: 4, icon: '⚡', action: '動詞反射衝刺 60 秒',
-    why: spDone ? '今天已完成！' : (spReflex >= SPRINT_TOTAL
-      ? '54 格全反射，維持手感'
-      : `還有 ${SPRINT_TOTAL - spReflex} 格未達反射（${spReflex}/${SPRINT_TOTAL}）`),
-    badge: spDone ? 'badge-green' : 'badge-red',
-    badgeText: spDone ? '✓ 完成' : '未完成',
-    href: 'verb_sprint.html?guided=1',
-    done: spDone,
-  });
-
-  // 步驟 5：複習卡一包
   const rvDone = reviewDoneToday();
   const rvDue  = chunkDueCount();
-  items.push({
-    n: 5, icon: '📦', action: '複習卡一包（10 張）',
-    why: rvDone
-      ? (rvDue > 0 ? `做過了！還有 ${rvDue} 張到期，有空再清一包` : '做過了，到期卡已清空！')
-      : (rvDue > 0 ? `${rvDue} 張到期＋新卡，3–5 分鐘` : '新卡等你開，3–5 分鐘'),
-    badge: rvDone ? 'badge-green' : 'badge-red',
-    badgeText: rvDone ? '✓ 完成' : '未完成',
-    href: 'review.html?guided=1',
-    done: rvDone,
-  });
-
-  // 步驟 6：造句 2 句（產出）
   const wDone = writingDoneToday();
-  items.push({
-    n: 6, icon: '✍️', action: '造句 2 句（產出）',
-    why: wDone ? '今天已完成！' : '複製 prompt → Claude 批改 → 貼回，約 10 分鐘',
-    badge: wDone ? 'badge-green' : 'badge-red',
-    badgeText: wDone ? '✓ 完成' : '未完成',
-    href: 'writing.html?guided=1',
-    done: wDone,
-  });
-
-  // 步驟 7：閱讀理解 1 篇（產出）
   const rDone = readingDoneToday();
   const rAll  = getReadingData();
-  items.push({
-    n: 7, icon: '📖', action: '閱讀理解 1 篇（產出）',
-    why: rDone ? '今天已完成！' : (rAll.length ? '純法文短文，真實 TCF 訓練' : '還沒開始，從第 1 篇開始'),
-    badge: rDone ? 'badge-green' : 'badge-red',
-    badgeText: rDone ? '✓ 完成' : '未完成',
-    href: 'reading.html?guided=1',
-    done: rDone,
-  });
 
-  return items;
+  // key → 該步驟內容（不含 n，n 由最終順序決定）
+  const stepDefs = {
+    warmup: {
+      icon: '🔥', action: '熱身 Quiz 5 題',
+      why: wuDone ? '今天已完成！' : (weakest && weakest[1].pct < 80
+        ? `隨機 5 題暖機（目前最弱：${label} ${weakest[1].pct}%）`
+        : '隨機 5 題，暖機抓手感'),
+      badge: wuDone ? 'badge-green' : 'badge-blue',
+      badgeText: wuDone ? '✓ 完成' : '開始',
+      href: 'quiz.html?mode=warmup&guided=1', done: wuDone,
+    },
+    study: {
+      icon: '📚', action: '研讀 + 專項 Quiz',
+      why: lqDone ? '今天已完成！' : '挑一課：先開筆記研讀，再做該課題目（提取＋輸入）',
+      badge: lqDone ? 'badge-green' : 'badge-red',
+      badgeText: lqDone ? '✓ 完成' : '未完成',
+      href: 'quiz.html?guided=1', done: lqDone,
+    },
+    drill: {
+      icon: '📝', action: '填表格：冠詞／動詞變位',
+      why: dlDone ? '今天已完成！' : '定／不定／部分冠詞、動詞六人稱變位，把表格填到熟',
+      badge: dlDone ? 'badge-green' : 'badge-red',
+      badgeText: dlDone ? '✓ 完成' : '未完成',
+      href: 'table_drill.html?guided=1', done: dlDone,
+    },
+    sprint: {
+      icon: '⚡', action: '動詞反射衝刺 60 秒',
+      why: spDone ? '今天已完成！' : (spReflex >= SPRINT_TOTAL
+        ? '54 格全反射，維持手感'
+        : `還有 ${SPRINT_TOTAL - spReflex} 格未達反射（${spReflex}/${SPRINT_TOTAL}）`),
+      badge: spDone ? 'badge-green' : 'badge-red',
+      badgeText: spDone ? '✓ 完成' : '未完成',
+      href: 'verb_sprint.html?guided=1', done: spDone,
+    },
+    review: {
+      icon: '📦', action: '複習卡一包（10 張）',
+      why: rvDone
+        ? (rvDue > 0 ? `做過了！還有 ${rvDue} 張到期，有空再清一包` : '做過了，到期卡已清空！')
+        : (rvDue > 0 ? `${rvDue} 張到期＋新卡，3–5 分鐘` : '新卡等你開，3–5 分鐘'),
+      badge: rvDone ? 'badge-green' : 'badge-red',
+      badgeText: rvDone ? '✓ 完成' : '未完成',
+      href: 'review.html?guided=1', done: rvDone,
+    },
+    writing: {
+      icon: '✍️', action: '造句 2 句（產出）',
+      why: wDone ? '今天已完成！' : '複製 prompt → Claude 批改 → 貼回，約 10 分鐘',
+      badge: wDone ? 'badge-green' : 'badge-red',
+      badgeText: wDone ? '✓ 完成' : '未完成',
+      href: 'writing.html?guided=1', done: wDone,
+    },
+    reading: {
+      icon: '📖', action: '閱讀理解 1 篇（產出）',
+      why: rDone ? '今天已完成！' : (rAll.length ? '純法文短文，真實 TCF 訓練' : '還沒開始，從第 1 篇開始'),
+      badge: rDone ? 'badge-green' : 'badge-red',
+      badgeText: rDone ? '✓ 完成' : '未完成',
+      href: 'reading.html?guided=1', done: rDone,
+    },
+  };
+
+  const order = ['warmup', ...getMiddleOrder(), 'writing', 'reading'];
+  return order.map((key, i) => ({ n: i + 1, key, ...stepDefs[key] }));
 }
 
 // ── 複習卡（review.html）────────────────────────────────────
@@ -1064,6 +1088,10 @@ function render() {
   ).join('');
 
   // Prescription（番号順序 + 「現在做這個」高亮第一個未完成）
+  document.getElementById('orderLockChk').checked = isOrderLocked();
+  document.getElementById('rxOrderNote').textContent = isOrderLocked()
+    ? '順序已鎖定，天天固定'
+    : '中間 4 步每天自動輪替順序，避免練到麻木';
   const rx = buildPrescription(topicStats, todaySec);
   const firstUndone = rx.find(i => !i.done);
   document.getElementById('rxList').innerHTML = rx.map(item => `
@@ -1299,8 +1327,74 @@ function renderTrend() {
   </table>`;
 }
 
+// ── 每日完成率分析（哪一步最常漏掉）──────────────────────────
+// 步驟①②③（熱身/研讀/填表格）只存「最新一次」的單一日期字串，
+// 07-05 起額外寫入歷史陣列（clb7_warmup_log 等）才能回溯統計；
+// ④⑤⑥⑦本來就有完整歷史（sessions/writing/reading 陣列）。
+function isoToZh(iso) { return String(iso || '').replace(/-/g, '/'); }
+function zhDateNDaysAgo(n) {
+  const d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate() - n);
+  return d.toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
+}
+function habitLog(key) { try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; } }
+
+const HABIT_STEPS = [
+  { label: '🔥熱身',   getDates: () => habitLog('clb7_warmup_log') },
+  { label: '📚研讀',   getDates: () => habitLog('clb7_quiz_log') },
+  { label: '📝填表格', getDates: () => habitLog('clb7_drill_log') },
+  { label: '⚡反射',   getDates: () => getSprintSessions().map(s => s.date) },
+  { label: '📦複習',   getDates: () => getReviewSessions().map(s => s.date) },
+  { label: '✍️造句',   getDates: () => getWritingData().map(w => w.date) },
+  { label: '📖閱讀',   getDates: () => getReadingData().map(r => isoToZh(r.date)) },
+];
+
+function renderHabitAnalysis() {
+  const WINDOW_DAYS = 14;
+  const dateList = [];
+  for (let i = WINDOW_DAYS - 1; i >= 0; i--) dateList.push(zhDateNDaysAgo(i));
+
+  const stepDateSets = HABIT_STEPS.map(s => new Set(s.getDates()));
+
+  // 「有練習的日子」= tracker 有計時紀錄，或任一步驟當天有完成紀錄
+  const activeSet = new Set(getTrackerData().map(e => e.date));
+  stepDateSets.forEach(set => set.forEach(d => activeSet.add(d)));
+  const activeDays = dateList.filter(d => activeSet.has(d));
+
+  const el = document.getElementById('habitSection');
+  if (!activeDays.length) {
+    el.innerHTML = '<div class="trend-pending">還沒有練習紀錄，開始做第一天就會累積統計。</div>';
+    return;
+  }
+
+  const stepStats = HABIT_STEPS.map((s, i) => {
+    const doneCount = activeDays.filter(d => stepDateSets[i].has(d)).length;
+    return { label: s.label, doneCount, total: activeDays.length, pct: Math.round(doneCount / activeDays.length * 100) };
+  });
+  const worst = [...stepStats].sort((a, b) => a.pct - b.pct)[0];
+
+  const insight = worst.pct < 100
+    ? `近 ${activeDays.length} 個練習日中，<b>${worst.label}</b> 最常被漏掉（只做了 ${worst.doneCount}/${activeDays.length} 天）`
+    : `近 ${activeDays.length} 個練習日，7 步都沒漏過，狀態很穩！`;
+
+  const rowsHtml = stepStats.map(s => {
+    const color = s.pct >= 80 ? '#60d090' : s.pct >= 50 ? '#c09040' : '#d07060';
+    return `<div class="habit-row">
+      <div class="habit-label">${s.label}</div>
+      <div class="habit-bar-wrap"><div class="habit-bar" style="width:${s.pct}%;background:${color}"></div></div>
+      <div class="habit-pct">${s.doneCount}/${s.total}</div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="habit-insight">📊 ${insight}</div>
+    ${rowsHtml}
+    <div class="habit-note">統計範圍：近 ${activeDays.length} 個有練習的日子（沒用過的日子不計入）。研讀／填表格步驟從 2026-07-05 才開始累積歷史，之前的資料無法回溯。</div>
+  `;
+}
+
 migrateSnapshots();
 renderTrend();
+renderHabitAnalysis();
 
 document.getElementById('duoToggle').addEventListener('click', () => {
   const panel = document.getElementById('duoPanel');
@@ -1412,6 +1506,13 @@ document.getElementById('sessFinish').addEventListener('click', () => {
   if (_sessTick) { clearInterval(_sessTick); _sessTick = null; }
   render();
   dashToast(r.recorded ? `✅ 本次 ${Math.round(r.sec / 60)} 分鐘已記入 700h 進度` : '本次不足 1 分鐘，未記錄');
+});
+
+// 鎖定/解鎖每日處方順序輪替
+document.getElementById('orderLockChk').addEventListener('change', (e) => {
+  if (e.target.checked) localStorage.setItem('clb7_order_lock', '1');
+  else localStorage.removeItem('clb7_order_lock');
+  render();
 });
 </script>
 <!-- 懸浮快速筆記 -->

@@ -860,8 +860,14 @@ function renderSummary() {
   const tot = totalOk + totalBad;
   const pct = tot ? Math.round(totalOk / tot * 100) : 0;
 
-  // 標記今天填表格已完成（dashboard 步驟③讀取）
-  try { localStorage.setItem('clb7_drill_done', new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'})); } catch(e) {}
+  // 標記今天填表格已完成（dashboard 步驟③讀取）＋寫進歷史（供 dashboard 統計用）
+  try {
+    const d = new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
+    localStorage.setItem('clb7_drill_done', d);
+    const log = JSON.parse(localStorage.getItem('clb7_drill_log')) || [];
+    if (!log.includes(d)) log.push(d);
+    localStorage.setItem('clb7_drill_log', JSON.stringify(log.slice(-90)));
+  } catch(e) {}
 
   const rows = results.map(r => {
     const allOk = r.ok === r.total;
