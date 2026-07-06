@@ -122,6 +122,26 @@ Owen 回饋核心痛點：**每日練習像沒終點的迷宮，計時器不會�
 
 ---
 
+## 本 session 第四輪（2026-07-06：聽力真實資源＋TTS聽力測驗）
+
+Owen 問「有沒有辦法上網找到聽力資源，或我自己出題」，並且想要「前三個直接嵌入檔案」。查證後動手做了 `listening.html` 大改：
+
+### 1. 真實聽力資源（嵌入，不是抓取）
+- 查證發現：RFI「Journal en français facile」是法語教學界公認 A2–B1 過渡期最推薦的聽力素材（很多人拿來準備 TCF/TEF）；InnerFrench podcast 主持人刻意放慢語速適合 A1/A2；TCF Canada 有官方格式（39題選擇題）免費模擬題。
+- **合法嵌入方式**：RFI 和 InnerFrench 都用 **Spotify 官方 embed iframe**（`open.spotify.com/embed/show/{id}`，Spotify 自己提供的嵌入功能，不是抓取版權內容）直接嵌進 `listening.html`，可以在頁面內播放。
+- TCF Canada 是商業練習站，無法嵌入（會被 X-Frame-Options 擋），改用連結卡開新分頁。
+- ⚠️ WebFetch 工具無法直接讀取 rfi.fr／francaisfacile.rfi.fr（該網域擋爬蟲），所以沒辦法自動抓每日文字稿來出題——這是為什麼真實資源只能「連過去」，沒辦法動態生成對應的理解題。
+
+### 2. 我自己出的 TTS 聽力測驗（`LISTENING_BANK`，8篇）
+內容對齊 Owen 已經學過的課程（第1、3、5、6、9、11、12、13課主題：自我介紹/天氣/市場購物/約診/度假計畫/搬家/看醫生/上週末，涵蓋現在式、部分冠詞、passé composé、futur proche），流程仿照 `reading.html` 但**先聽不看字**：
+- 播放（可重播，用既有的 fr-FR TTS，Amélie/Thomas 語音）→ 按「開始作答」→ 3 題選擇題 → 提交判分 → **可展開逐字稿對照**。
+- 完成會**自動寫入 `clb7_listening`**（沿用既有的聽力日誌 key，`source:'TTS測驗'`，`min` 用字數/130wpm估計，`comp`=答對率，`notes` 附書名+課次+對錯），所以完全吃得到頁面原本就有的統計/來源分布/歷史列表，不用另外做一套。
+- 補上 `listening.html` 原本缺的 `session_timer.js`／`sync_supabase.js`（之前漏掛，這頁沒被計時也沒同步）。
+
+**實測**：Spotify 嵌入播放器正確顯示（RFI/InnerFrench 都能看到最新一集標題）；TTS播放內容正確；選2對1錯送出→ 判分正確標示對錯選項→ 自動寫入日誌（comp:67, notes正確附課次）→ dashboard式統計（總分鐘/總次數/平均理解度）即時更新→ 逐字稿展開正確→ 清單正確標記「✓今天做過」。測試前後都切了隔離測試房間，沒污染正式雲端。
+
+---
+
 ## 本 session 第三輪修正（2026-07-06：閒置自動暫停＋verb_sprint 補發音）
 
 Owen 實際使用後回饋兩個新問題：①「計時已經跑三小時了，但完全沒操作」②「動詞時態速答（verb_sprint）沒有發音按鈕」。
@@ -274,7 +294,7 @@ Owen 用多台裝置（手機／iPad），要時間/進度一起記錄。localSt
 - `clb7_reading` → [{id, title, date, correct, total, sec}]（date 為**本地 ISO** `2026-07-02`）
 - `clb7_writing` → [{date, s1, s2, score, reply}]
 - `clb7_tracker` → [{ts, date, type, sec}]
-- `clb7_speaking` / `clb7_listening` → 口說/聽力日誌
+- `clb7_speaking` / `clb7_listening` → 口說/聽力日誌；`clb7_listening` 07-06起可能有 `source:'TTS測驗'` 的自動記錄（含 `quizId` 對應 `LISTENING_BANK` 的題目id）
 - `clb7_<qId>` → {w, c, last}（SRS 單題記錄）
 - `clb7_game` → {xp, streak, lastDate}
 - `clb7_quick_notes` → 懸浮筆記

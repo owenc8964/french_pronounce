@@ -115,6 +115,61 @@ button:active { transform: scale(0.97); }
 
 .empty { color: #334050; font-size: 0.85rem; text-align: center; padding: 24px; }
 
+/* 真實聽力資源 */
+.res-card {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 12px; padding: 18px; margin-bottom: 16px;
+}
+.res-title { font-size: 0.72rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.res-desc { font-size: 0.78rem; color: #667080; margin-bottom: 14px; line-height: 1.5; }
+.res-item { margin-bottom: 18px; }
+.res-item:last-child { margin-bottom: 0; }
+.res-item-label { font-size: 0.82rem; color: #ddd8cc; font-weight: 600; margin-bottom: 4px; }
+.res-item-why { font-size: 0.72rem; color: #556; margin-bottom: 8px; }
+.res-link-card {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: #141928; border: 1px solid #1a2438; border-radius: 10px;
+  padding: 12px 14px; text-decoration: none; color: inherit;
+  transition: border-color 0.15s;
+}
+.res-link-card:hover { border-color: #60a0d0; }
+.res-link-title { font-size: 0.85rem; color: #ddd8cc; font-weight: 600; }
+.res-link-sub { font-size: 0.7rem; color: #556; margin-top: 2px; }
+.res-link-arrow { color: #60a0d0; font-size: 1.1rem; }
+
+/* 聽力測驗（TTS 出題） */
+.quiz-list-item {
+  display: flex; align-items: center; gap: 10px;
+  background: #141928; border: 1px solid #1a2438; border-radius: 10px;
+  padding: 12px 14px; margin-bottom: 8px; cursor: pointer;
+  transition: border-color 0.15s;
+}
+.quiz-list-item:hover { border-color: #f0c060; }
+.quiz-list-item.done { opacity: 0.5; }
+.quiz-lesson-badge { font-size: 0.66rem; color: #60a0d0; background: #0d1020; border: 1px solid #1a2438; border-radius: 6px; padding: 2px 7px; flex-shrink: 0; }
+.quiz-list-title { flex: 1; font-size: 0.85rem; color: #ddd8cc; }
+.quiz-panel { display: none; }
+.quiz-panel.active { display: block; }
+.listen-phase { text-align: center; padding: 20px 0; }
+.play-btn {
+  width: 90px; height: 90px; border-radius: 50%; border: none;
+  background: linear-gradient(135deg, #1d5035, #2a7a50); color: #60d090;
+  font-size: 2.2rem; cursor: pointer; margin-bottom: 16px;
+}
+.play-hint { font-size: 0.78rem; color: #667080; margin-bottom: 20px; }
+.q-block { background: #141928; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+.q-text { font-size: 0.88rem; color: #ddd8cc; margin-bottom: 10px; }
+.q-opt {
+  display: block; width: 100%; text-align: left; background: #0d1020;
+  border: 1.5px solid #1a2438; border-radius: 8px; padding: 9px 12px;
+  color: #aaa8a0; font-size: 0.82rem; margin-bottom: 6px; cursor: pointer; font-family: inherit;
+}
+.q-opt.selected { border-color: #f0c060; color: #f0c060; }
+.q-opt.correct { border-color: #60d090; color: #60d090; background: #0a1a0c; }
+.q-opt.wrong { border-color: #d07060; color: #d07060; background: #1a0a08; }
+.transcript-box { background: #141928; border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 0.85rem; color: #c8c4b8; line-height: 1.7; display: none; }
+.transcript-box.show { display: block; }
+
 .toast {
   position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
   background: #1d5035; color: #60d090; padding: 10px 20px;
@@ -151,6 +206,50 @@ button:active { transform: scale(0.97); }
 <div class="breakdown" id="breakdown">
   <div class="breakdown-title">🎵 來源分布（累積分鐘）</div>
   <div id="srcBars"></div>
+</div>
+
+<!-- 真實聽力資源（外部真人語速內容） -->
+<div class="res-card">
+  <div class="res-title">🌍 真實聽力資源</div>
+  <div class="res-desc">TTS 練習對齊你學過的內容，但真正的考試/真人語速還是要靠這些真實素材習慣。</div>
+
+  <div class="res-item">
+    <div class="res-item-label">RFI — Journal en français facile</div>
+    <div class="res-item-why">法語教學界公認 A2–B1 過渡期最推薦的聽力素材，簡化語速的真實新聞，很多人拿來準備 TCF/TEF。</div>
+    <iframe style="border-radius:10px" src="https://open.spotify.com/embed/show/0AVkxaaQWUC6QAn38x5OmR?utm_source=generator&theme=0"
+      width="100%" height="152" frameBorder="0" allowfullscreen=""
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+
+  <div class="res-item">
+    <div class="res-item-label">InnerFrench（Podcast）</div>
+    <div class="res-item-why">主持人刻意放慢語速，A1/A2 適合當起步聽力，官網有逐字稿可對照。</div>
+    <iframe style="border-radius:10px" src="https://open.spotify.com/embed/show/00h8GrMQbmSAfiNWYPLvhx?utm_source=generator&theme=0"
+      width="100%" height="152" frameBorder="0" allowfullscreen=""
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+
+  <div class="res-item">
+    <div class="res-item-label">TCF Canada 官方格式模擬題</div>
+    <div class="res-item-why">照真正考試格式（39題選擇題）的免費模擬題，最直接練「考試會長什麼樣子」。這是商業練習站，無法內嵌，點下方直接開新分頁。</div>
+    <a class="res-link-card" href="https://www.tcfca.com/se-preparer/tcf-canada-comprehension-orale/" target="_blank" rel="noopener">
+      <div>
+        <div class="res-link-title">TCF Canada — Compréhension Orale</div>
+        <div class="res-link-sub">tcfca.com · 免費模擬測驗</div>
+      </div>
+      <span class="res-link-arrow">↗</span>
+    </a>
+  </div>
+</div>
+
+<!-- 聽力測驗（TTS 出題，對齊已學課程） -->
+<div class="card">
+  <div class="card-title">🎧 聽力測驗（內容對齊你學過的課程）</div>
+  <div class="res-desc" style="margin-bottom:14px;">先聽（可重播），聽完才作答，答完會顯示逐字稿讓你對照。</div>
+  <div id="quizListWrap">
+    <div id="quizList"></div>
+  </div>
+  <div id="quizPanel" class="quiz-panel"></div>
 </div>
 
 <div class="card">
@@ -318,6 +417,198 @@ document.getElementById('todayDate').textContent = todayStr();
 updateStats();
 updateBreakdown();
 renderHistory();
+
+// ════════════════════════════════════════════════════════════
+// 🎧 聽力測驗（TTS 出題，內容對齊已學課程，不是真人語速）
+// ════════════════════════════════════════════════════════════
+const LISTENING_BANK = [
+  { id:'l01', lesson:1, title:'Se présenter', done_key:'listen_l01',
+    script:"Bonjour ! Je m'appelle Claire. J'ai vingt-cinq ans. Je suis française et j'habite à Lyon. Je suis professeure. J'aime beaucoup le cinéma et la musique.",
+    questions:[
+      { q:"Comment s'appelle la personne ?", opts:['Claire','Sophie','Marie'], a:'Claire' },
+      { q:'Quelle est sa profession ?', opts:['Étudiante','Professeure','Médecin'], a:'Professeure' },
+      { q:'Où habite-t-elle ?', opts:['Paris','Lyon','Marseille'], a:'Lyon' },
+    ]},
+  { id:'l02', lesson:3, title:'La météo', done_key:'listen_l02',
+    script:"Aujourd'hui, il fait beau à Paris. Il y a du soleil et il fait vingt-deux degrés. Mais demain, il va pleuvoir toute la journée. Alors, n'oublie pas ton parapluie !",
+    questions:[
+      { q:"Quel temps fait-il aujourd'hui ?", opts:['Il pleut','Il fait beau','Il neige'], a:'Il fait beau' },
+      { q:'Quelle est la température ?', opts:['12 degrés','22 degrés','32 degrés'], a:'22 degrés' },
+      { q:"Qu'est-ce qu'il faut prendre demain ?", opts:['Un manteau','Un parapluie','Des lunettes de soleil'], a:'Un parapluie' },
+    ]},
+  { id:'l03', lesson:5, title:'Au marché', done_key:'listen_l03',
+    script:"Ce matin, je vais au marché. J'achète du pain, des pommes et un peu de fromage. Je n'achète pas de viande parce que je suis végétarienne. Après, je rentre à la maison pour préparer le déjeuner.",
+    questions:[
+      { q:'Où va la personne ce matin ?', opts:['Au restaurant','Au marché','À la pharmacie'], a:'Au marché' },
+      { q:"Pourquoi n'achète-t-elle pas de viande ?", opts:["Elle n'aime pas ça",'Elle est végétarienne',"C'est trop cher"], a:'Elle est végétarienne' },
+      { q:"Qu'est-ce qu'elle va faire après ?", opts:['Dormir','Préparer le déjeuner','Aller au travail'], a:'Préparer le déjeuner' },
+    ]},
+  { id:'l04', lesson:6, title:'Un rendez-vous', done_key:'listen_l04',
+    script:"Allô Marc, c'est Julie. On a rendez-vous chez le médecin cet après-midi. Le rendez-vous est à quinze heures trente. Est-ce que tu peux venir me chercher à quinze heures ? Je t'attends devant la pharmacie.",
+    questions:[
+      { q:'À quelle heure est le rendez-vous ?', opts:['15h','15h30','16h'], a:'15h30' },
+      { q:'Où est-ce que Julie attend Marc ?', opts:['Chez le médecin','Devant la pharmacie','À la maison'], a:'Devant la pharmacie' },
+      { q:'Chez qui ont-ils rendez-vous ?', opts:['Le dentiste','Le médecin','Le professeur'], a:'Le médecin' },
+    ]},
+  { id:'l05', lesson:11, title:'Le déménagement', done_key:'listen_l05',
+    script:"Nous avons déménagé la semaine dernière. Notre nouvel appartement a deux chambres, une cuisine et un salon. Il n'y a pas de garage, mais il y a un petit balcon. Le loyer est un peu cher, mais le quartier est très calme.",
+    questions:[
+      { q:'Quand ont-ils déménagé ?', opts:['Hier','La semaine dernière','Le mois dernier'], a:'La semaine dernière' },
+      { q:"Combien de chambres a l'appartement ?", opts:['Une','Deux','Trois'], a:'Deux' },
+      { q:'Comment est le quartier ?', opts:['Bruyant','Calme','Dangereux'], a:'Calme' },
+    ]},
+  { id:'l06', lesson:13, title:'Chez le médecin', done_key:'listen_l06',
+    script:"Paul a mal au dos depuis deux jours. Il est allé chez le médecin ce matin. Le médecin lui a dit de se reposer et de ne pas faire de sport pendant une semaine. Paul est très triste parce qu'il adore le football.",
+    questions:[
+      { q:'Depuis quand Paul a-t-il mal au dos ?', opts:['Un jour','Deux jours','Une semaine'], a:'Deux jours' },
+      { q:"Qu'est-ce que le médecin lui a conseillé ?", opts:['Faire plus de sport','Se reposer','Prendre des médicaments'], a:'Se reposer' },
+      { q:'Pourquoi Paul est-il triste ?', opts:['Il n\'aime pas le médecin','Il adore le football','Il doit travailler'], a:'Il adore le football' },
+    ]},
+  { id:'l07', lesson:12, title:'Le week-end dernier', done_key:'listen_l07',
+    script:"Le week-end dernier, je suis allée à la montagne avec des amis. Nous avons marché pendant trois heures. Le soir, nous avons mangé dans un petit restaurant et nous sommes rentrés très tard. C'était fatigant, mais très agréable.",
+    questions:[
+      { q:'Où est-elle allée le week-end dernier ?', opts:['À la mer','À la montagne','À la campagne'], a:'À la montagne' },
+      { q:'Combien de temps ont-ils marché ?', opts:['Une heure','Deux heures','Trois heures'], a:'Trois heures' },
+      { q:'Comment était le week-end ?', opts:['Ennuyeux','Fatigant mais agréable','Terrible'], a:'Fatigant mais agréable' },
+    ]},
+  { id:'l08', lesson:9, title:'Projets de vacances', done_key:'listen_l08',
+    script:"Cet été, je vais partir en vacances au Portugal avec ma famille. Nous allons rester une semaine à Lisbonne et puis nous allons visiter Porto. Mon fils va apprendre à nager à la piscine de l'hôtel.",
+    questions:[
+      { q:'Où vont-ils partir en vacances ?', opts:['En Espagne','Au Portugal','En Italie'], a:'Au Portugal' },
+      { q:'Combien de temps vont-ils rester à Lisbonne ?', opts:['Trois jours','Une semaine','Un mois'], a:'Une semaine' },
+      { q:"Qu'est-ce que le fils va apprendre ?", opts:['À nager','À parler anglais','À faire du vélo'], a:'À nager' },
+    ]},
+];
+
+let lqFrVoice = null;
+function lqInitVoice() {
+  lqFrVoice = speechSynthesis.getVoices().find(v => /am[eé]lie/i.test(v.name))
+           || speechSynthesis.getVoices().find(v => /thomas/i.test(v.name))
+           || null;
+}
+speechSynthesis.onvoiceschanged = lqInitVoice;
+lqInitVoice();
+function lqSpeak(text) {
+  speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'fr-FR'; utt.rate = 0.78;
+  if (lqFrVoice) utt.voice = lqFrVoice;
+  speechSynthesis.speak(utt);
+}
+
+function listenQuizDoneToday(id) {
+  return load().some(e => e.date === todayStr() && e.quizId === id);
+}
+
+function renderQuizList() {
+  const wrap = document.getElementById('quizList');
+  wrap.innerHTML = LISTENING_BANK.map(item => `
+    <div class="quiz-list-item ${listenQuizDoneToday(item.id) ? 'done' : ''}" data-id="${item.id}">
+      <span class="quiz-lesson-badge">第${item.lesson}課</span>
+      <span class="quiz-list-title">${escHtml(item.title)}</span>
+      <span style="color:#556;font-size:0.75rem;">${listenQuizDoneToday(item.id) ? '✓ 今天做過' : '▶'}</span>
+    </div>
+  `).join('');
+  wrap.querySelectorAll('.quiz-list-item').forEach(el => {
+    el.addEventListener('click', () => startListenQuiz(el.dataset.id));
+  });
+}
+
+let lqCurrent = null, lqAnswers = {};
+
+function startListenQuiz(id) {
+  lqCurrent = LISTENING_BANK.find(x => x.id === id);
+  lqAnswers = {};
+  document.getElementById('quizListWrap').style.display = 'none';
+  const panel = document.getElementById('quizPanel');
+  panel.classList.add('active');
+  panel.innerHTML = `
+    <div class="listen-phase">
+      <button class="play-btn" id="lqPlayBtn">🔊</button>
+      <div class="play-hint">點擊播放，可以重複聽幾次都沒關係</div>
+      <button class="btn-save" id="lqReadyBtn">我聽完了，開始作答 →</button>
+      <div style="margin-top:14px;"><a href="#" id="lqBackBtn" style="color:#556;font-size:0.78rem;">← 換一篇</a></div>
+    </div>`;
+  document.getElementById('lqPlayBtn').addEventListener('click', () => lqSpeak(lqCurrent.script));
+  document.getElementById('lqReadyBtn').addEventListener('click', renderLqQuestions);
+  document.getElementById('lqBackBtn').addEventListener('click', (e) => { e.preventDefault(); backToQuizList(); });
+}
+
+function backToQuizList() {
+  speechSynthesis.cancel();
+  document.getElementById('quizPanel').classList.remove('active');
+  document.getElementById('quizPanel').innerHTML = '';
+  document.getElementById('quizListWrap').style.display = 'block';
+  renderQuizList();
+}
+
+function renderLqQuestions() {
+  const panel = document.getElementById('quizPanel');
+  panel.innerHTML = `
+    <div style="margin-bottom:10px;"><button class="btn-save" id="lqReplayBtn" style="background:#1a2438;color:#60a0d0;">🔊 重播一次</button></div>
+    ${lqCurrent.questions.map((q,qi) => `
+      <div class="q-block">
+        <div class="q-text">${qi+1}. ${escHtml(q.q)}</div>
+        ${q.opts.map(opt => `<button type="button" class="q-opt" data-qi="${qi}" data-opt="${escHtml(opt)}">${escHtml(opt)}</button>`).join('')}
+      </div>
+    `).join('')}
+    <button class="btn-save" id="lqSubmitBtn" style="width:100%;margin-top:6px;">提交答案</button>
+  `;
+  document.getElementById('lqReplayBtn').addEventListener('click', () => lqSpeak(lqCurrent.script));
+  panel.querySelectorAll('.q-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const qi = btn.dataset.qi;
+      panel.querySelectorAll(`.q-opt[data-qi="${qi}"]`).forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      lqAnswers[qi] = btn.dataset.opt;
+    });
+  });
+  document.getElementById('lqSubmitBtn').addEventListener('click', gradeLqQuiz);
+}
+
+function gradeLqQuiz() {
+  const panel = document.getElementById('quizPanel');
+  let correct = 0;
+  lqCurrent.questions.forEach((q, qi) => {
+    panel.querySelectorAll(`.q-opt[data-qi="${qi}"]`).forEach(b => {
+      b.disabled = true;
+      if (b.dataset.opt === q.a) b.classList.add('correct');
+      else if (b.dataset.opt === lqAnswers[qi]) b.classList.add('wrong');
+    });
+    if (lqAnswers[qi] === q.a) correct++;
+  });
+  const total = lqCurrent.questions.length;
+  const pct = Math.round(correct / total * 100);
+
+  // 自動記入聽力日誌（讓上面的統計/來源分布都吃得到這筆）
+  const words = lqCurrent.script.split(/\s+/).length;
+  const estMin = Math.max(1, Math.round(words / 130)); // 粗估：法文TTS語速約130字/分鐘
+  const data = load();
+  data.push({ date: todayStr(), source: 'TTS測驗', min: estMin, comp: pct, notes: `《${lqCurrent.title}》第${lqCurrent.lesson}課 · 答對 ${correct}/${total}`, quizId: lqCurrent.id });
+  save(data);
+  updateStats(); updateBreakdown(); renderHistory();
+
+  const resultHtml = `
+    <div style="text-align:center;padding:10px 0 16px;">
+      <div style="font-size:2rem;font-weight:700;color:${pct>=70?'#60d090':pct>=40?'#c09040':'#d07060'}">${correct} / ${total}</div>
+      <div style="font-size:0.78rem;color:#556;margin-top:4px;">答對率 ${pct}%</div>
+    </div>
+    <button class="btn-save" id="lqShowScriptBtn" style="width:100%;">📄 顯示逐字稿對照</button>
+    <div class="transcript-box" id="lqTranscript">${escHtml(lqCurrent.script)}</div>
+    <div style="display:flex;gap:10px;margin-top:14px;">
+      <button class="btn-save" id="lqAgainBtn" style="flex:1;">🔄 再聽一次這篇</button>
+      <a href="#" id="lqDoneBtn" class="btn-back" style="flex:1;text-align:center;">← 回列表</a>
+    </div>
+  `;
+  panel.insertAdjacentHTML('beforeend', resultHtml);
+  document.getElementById('lqShowScriptBtn').addEventListener('click', () => {
+    document.getElementById('lqTranscript').classList.toggle('show');
+  });
+  document.getElementById('lqAgainBtn').addEventListener('click', () => startListenQuiz(lqCurrent.id));
+  document.getElementById('lqDoneBtn').addEventListener('click', (e) => { e.preventDefault(); backToQuizList(); });
+}
+
+renderQuizList();
 </script>
 
 <!-- 懸浮快速筆記 -->
@@ -372,5 +663,7 @@ renderHistory();
   });
 })();
 </script>
+<script src="session_timer.js"></script>
+<script src="sync_supabase.js"></script>
 </body>
 </html>
