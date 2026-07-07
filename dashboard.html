@@ -1504,6 +1504,7 @@ document.getElementById('sessPause').addEventListener('click', () => {
 document.getElementById('sessFinish').addEventListener('click', () => {
   const r = ClbSession.finish();
   if (_sessTick) { clearInterval(_sessTick); _sessTick = null; }
+  if (window.ClbSync) ClbSync.push(); // 結算立刻嘗試同步，不等debounce
   render();
   dashToast(r.recorded ? `✅ 本次 ${Math.round(r.sec / 60)} 分鐘已記入 700h 進度` : '本次不足 1 分鐘，未記錄');
 });

@@ -253,6 +253,7 @@ function getSessions() { try { return JSON.parse(localStorage.getItem('clb7_spri
 function saveSession(s) {
   const arr = getSessions(); arr.push(s);
   localStorage.setItem('clb7_sprint_sessions', JSON.stringify(arr.slice(-50)));
+  if (window.ClbSync) ClbSync.push(); // 做完立刻嘗試同步，不等debounce
 }
 function todayStr() {
   return new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
@@ -569,9 +570,12 @@ if (new URLSearchParams(location.search).get('guided') === '1') startSprint();
 // ── TTS 發音 ──────────────────────────────────────────────────
 let frVoice = null;
 function initVoice() {
-  frVoice = speechSynthesis.getVoices().find(v => /am[eé]lie/i.test(v.name))
-         || speechSynthesis.getVoices().find(v => /thomas/i.test(v.name))
-         || null;
+  const vs = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith('fr'));
+  frVoice = vs.find(v => /am[eé]lie|thomas/i.test(v.name))
+         || vs.find(v => /premium|enhanced|amélior|plus/i.test(v.name))
+         || vs.find(v => v.localService === false)
+         || vs.find(v => v.lang === 'fr-FR')
+         || vs[0] || null;
 }
 speechSynthesis.onvoiceschanged = initVoice;
 initVoice();

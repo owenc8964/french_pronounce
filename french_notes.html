@@ -4217,9 +4217,12 @@
 let frVoice = null, activeTtsEl = null;
 
 function initVoice() {
-  frVoice = speechSynthesis.getVoices().find(v => /am[eé]lie/i.test(v.name))
-         || speechSynthesis.getVoices().find(v => /thomas/i.test(v.name))
-         || null;
+  const vs = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith('fr'));
+  frVoice = vs.find(v => /am[eé]lie|thomas/i.test(v.name))
+         || vs.find(v => /premium|enhanced|amélior|plus/i.test(v.name))
+         || vs.find(v => v.localService === false)
+         || vs.find(v => v.lang === 'fr-FR')
+         || vs[0] || null;
 }
 speechSynthesis.onvoiceschanged = initVoice;
 initVoice();

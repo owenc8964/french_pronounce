@@ -139,6 +139,7 @@ body {
     <div class="fc-note hidden" id="fcNote"></div>
     <button class="fc-speak hidden" id="fcSpeak">🔊 再聽一次</button>
   </div>
+  <button type="button" id="fcConfusedBtn" style="width:100%;background:none;border:none;color:#556;font-size:0.72rem;padding:6px 0;cursor:pointer;font-family:inherit;">🤔 這張卡語意不清 → 回報</button>
   <button class="flip-btn" id="flipBtn">翻開（空白鍵）</button>
   <div class="grade-row hidden" id="gradeRow">
     <button class="grade-btn grade-no" id="gradeNo">✗ 不會（1）</button>
@@ -190,10 +191,21 @@ function bumpNewCount() {
 function isGraduated(rec) {
   return rec && (rec.days||[]).length >= 3 && rec.iv >= 3;
 }
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 function dueCards() {
   const srs = getSrs(), now = dayStart();
-  return CHUNKS.filter(c => srs[c.id] && srs[c.id].due <= now && !isGraduated(srs[c.id]))
-    .sort((a,b) => srs[a.id].due - srs[b.id].due);
+  const list = CHUNKS.filter(c => srs[c.id] && srs[c.id].due <= now && !isGraduated(srs[c.id]));
+  // 先洗牌再依到期時間排序：到期時間不同的還是嚴格照時間排（早到期優先，SRS核心原則不變），
+  // 但同一個到期時間點的一批卡，每次順序都不同——否則到期卡數量超過一包時，
+  // 每天永遠拿到「同一批、同樣順序」的前幾張，感覺像整包重複（Owen 07-07 回報）
+  return shuffle(list).sort((a,b) => srs[a.id].due - srs[b.id].due);
 }
 function newCards() {
   const srs = getSrs();
@@ -206,10 +218,16 @@ function gradCount() {
 }
 
 // ── 發音（TTS）──────────────────────────────────────────────
+// 優先順序：Amélie/Thomas（macOS內建高品質）→ 名字含 premium/enhanced/amélior（使用者另外下載的加強版）
+// → 非本機服務的雲端語音（localService===false 通常代表品質較好）→ 隨便一個 fr 語音
 let frVoice = null;
 function pickVoice() {
-  const vs = speechSynthesis.getVoices().filter(v => v.lang.startsWith('fr'));
-  frVoice = vs.find(v => v.lang === 'fr-FR') || vs[0] || null;
+  const vs = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith('fr'));
+  frVoice = vs.find(v => /am[eé]lie|thomas/i.test(v.name))
+         || vs.find(v => /premium|enhanced|amélior|plus/i.test(v.name))
+         || vs.find(v => v.localService === false)
+         || vs.find(v => v.lang === 'fr-FR')
+         || vs[0] || null;
 }
 if ('speechSynthesis' in window) {
   pickVoice();
@@ -367,6 +385,7 @@ function finishPacket() {
   const ses = getSessions();
   ses.push({ date: todayStr(), cards: firstTryTotal, ok: firstTryOk, ts: Date.now() });
   localStorage.setItem('clb7_review_sessions', JSON.stringify(ses.slice(-100)));
+  if (window.ClbSync) ClbSync.push(); // 做完一包立刻嘗試同步，不等debounce，減少切裝置來不及的機率
 
   const todayPk = ses.filter(s => s.date === todayStr());
   const todayCards = todayPk.reduce((s,x) => s + x.cards, 0);
@@ -422,6 +441,87 @@ document.addEventListener('keydown', e => {
 // ── 初始化 ────────────────────────────────────────────────────
 renderStart();
 if (new URLSearchParams(location.search).get('guided') === '1') startPacket();
+</script>
+
+<!-- 懸浮回饋（review.html 原本沒有，補上；卡片旁的「🤔語意不清」會自動標記當前卡） -->
+<style>
+#qnoteBtn{position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#1a2438;border:1px solid #2a3858;color:#f0c060;font-size:1.2rem;cursor:pointer;z-index:999;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,0.5);transition:transform 0.15s;}
+#qnoteBtn:hover{transform:scale(1.1);}
+#qnotePanel{position:fixed;bottom:72px;right:20px;width:280px;background:#0d1020;border:1px solid #2a3858;border-radius:12px;padding:14px;z-index:998;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.6);}
+#qnotePanel.open{display:block;}
+#qnoteTitle{font-size:0.7rem;color:#445060;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+#qnoteTag{font-size:0.7rem;color:#f0c060;margin-bottom:6px;display:none;}
+#qnoteTxt{width:100%;background:#141928;border:1px solid #1a2438;border-radius:8px;color:#ddd8cc;font-size:0.85rem;padding:8px;resize:none;height:80px;font-family:inherit;}
+#qnoteTxt:focus{outline:none;border-color:#f0c060;}
+#qnoteSave{margin-top:8px;width:100%;padding:8px;background:#1d5035;color:#60d090;border:none;border-radius:8px;font-size:0.82rem;cursor:pointer;font-family:inherit;}
+#qnoteCount{font-size:0.68rem;color:#334050;margin-top:6px;text-align:right;}
+</style>
+<button id="qnoteBtn" title="快速筆記">📝</button>
+<div id="qnotePanel">
+  <div id="qnoteTitle">快速筆記（存給 Claude 看）</div>
+  <div id="qnoteTag"></div>
+  <textarea id="qnoteTxt" placeholder="記下問題、想法、bug…"></textarea>
+  <button id="qnoteSave">儲存筆記</button>
+  <div id="qnoteCount"></div>
+  <button id="qnoteCopy" style="margin-top:6px;width:100%;padding:7px;background:#1a2438;color:#60a0d0;border:none;border-radius:8px;font-size:0.78rem;cursor:pointer;font-family:inherit;">📋 複製全部給 Claude</button>
+</div>
+<script>
+(function(){
+  const KEY='clb7_quick_notes';
+  const page='review.html';
+  let noteTag = null; // 「🤔這張卡語意不清」點擊時會記錄目前卡片內容
+  function loadNotes(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch{return[];}}
+  function saveNotes(d){localStorage.setItem(KEY,JSON.stringify(d));}
+  function updateCount(){const n=loadNotes();document.getElementById('qnoteCount').textContent=n.length?`共 ${n.length} 則筆記`:'還沒有筆記';}
+  function openPanel(tag){
+    noteTag = tag || null;
+    const tagEl = document.getElementById('qnoteTag');
+    if (noteTag) { tagEl.textContent = '📍 ' + noteTag; tagEl.style.display = 'block'; }
+    else { tagEl.style.display = 'none'; }
+    document.getElementById('qnotePanel').classList.add('open');
+    updateCount();
+    document.getElementById('qnoteTxt').focus();
+  }
+  document.getElementById('qnoteBtn').addEventListener('click', () => {
+    document.getElementById('qnotePanel').classList.toggle('open');
+    updateCount();
+  });
+  document.getElementById('fcConfusedBtn').addEventListener('click', () => {
+    // 抓目前這張卡的中文提示/法文答案/課次，方便之後批次修 chunks.js
+    let tag = '';
+    try {
+      const { card } = packet[idx];
+      tag = `[第${card.lesson}課] ${card.zh} → ${card.fr}`;
+    } catch(e) {}
+    openPanel(tag || '這張卡');
+  });
+  document.getElementById('qnoteSave').addEventListener('click', () => {
+    const txt = document.getElementById('qnoteTxt').value.trim();
+    if (!txt) return;
+    const notes = loadNotes();
+    const d = new Date();
+    const prefix = noteTag ? `${noteTag}｜` : '';
+    notes.push({
+      date: `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`,
+      time: `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`,
+      page, note: prefix + txt
+    });
+    saveNotes(notes);
+    document.getElementById('qnoteTxt').value = '';
+    noteTag = null;
+    document.getElementById('qnoteTag').style.display = 'none';
+    updateCount();
+  });
+  document.getElementById('qnoteCopy').addEventListener('click', () => {
+    const notes = loadNotes();
+    if (!notes.length) { alert('還沒有筆記'); return; }
+    const text = '【CLB7 快速筆記】\n' + notes.map(n => `[${n.date} ${n.time} @ ${n.page}] ${n.note}`).join('\n');
+    navigator.clipboard.writeText(text).then(() => {
+      document.getElementById('qnoteCopy').textContent = '✓ 已複製！';
+      setTimeout(() => document.getElementById('qnoteCopy').textContent = '📋 複製全部給 Claude', 2000);
+    });
+  });
+})();
 </script>
 <script src="session_timer.js"></script>
 <script src="sync_supabase.js"></script>

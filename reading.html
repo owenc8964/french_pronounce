@@ -836,6 +836,7 @@ function saveRecord(rec) {
   const records = getRecords();
   records.push(rec);
   localStorage.setItem('clb7_reading', JSON.stringify(records));
+  if (window.ClbSync) ClbSync.push(); // 做完立刻嘗試同步，不等debounce
 }
 
 // ── 自動計時：練習時間自動記入 clb7_tracker（type: auto-reading）─

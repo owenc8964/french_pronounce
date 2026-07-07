@@ -122,6 +122,26 @@ Owen 回饋核心痛點：**每日練習像沒終點的迷宮，計時器不會�
 
 ---
 
+## 本 session 第五輪（2026-07-07：複習卡順序/發音/同步三個真bug）
+
+Owen 回饋四件事：①跨機器進度還是不一樣 ②複習卡今天題目跟昨天一樣、到第二輪才不同，懷疑順序固定 ③發音接錯程式、他下載的高品質語音沒被用到、聽起來很機器音 ④有些卡片語意不清看不懂要回答什麼。逐一查證後，**②③是真的 bug，不是錯覺**：
+
+### 1. 複習卡順序固定（真bug，已修）
+`review.html` 的 `dueCards()` 只依到期時間 `.sort()`，**完全沒有隨機打亂**。JS 的 sort 是穩定排序，所以「到期時間相同」的一批卡，每次都照 `CHUNKS` 陣列原始順序排列——如果到期卡數量超過一包（10張），每天永遠只吃到「同一批、同樣順序」的前10張，看起來就像整包重複。**修法**：加 `shuffle()`，洗牌後再排序（到期時間不同的還是嚴格照時間排，早到期優先的SRS原則不變；只有「同一到期時間點」內的卡每次順序不同）。**實測**：灌15張同到期時間的卡，連續三次呼叫 `dueCards()`，順序確實三次都不同。
+
+### 2. review.html 發音邏輯跟其他頁不一致（真bug，已修）
+全站找過：quiz/table_drill/verb_sprint/french_notes/listening 都會優先找 Amélie/Thomas 高品質語音，**只有 `review.html` 是「隨便抓第一個 fr 語音」**（`vs[0]`）——這就是 Owen 覺得複習卡發音特別糊、特別機器音的根因。**修法**：review.html 改成跟其他頁一致的邏輯，而且**全站統一升級**成更寬容的優先序：Amélie/Thomas → 名字含 premium/enhanced/amélior/plus（涵蓋 Owen 自己下載的加強版語音，不管叫什麼名字）→ `localService===false`（雲端服務語音，通常比本機語音好）→ `fr-FR` → 隨便一個。同時補上 `verb_reference.html`（原本完全沒篩選邏輯，直接用系統預設）。**實測**：模擬「只有兩個語音、都不叫amelie/thomas」的情境，正確選中 `localService:false` 那個。
+⚠️ 沒問到 Owen 下載的語音確切叫什麼名字（AskUserQuestion 選項不足2個被拒），改用「寬容啟發式」規則，之後如果還是選不對，需要問他系統設定裡實際看到的語音名稱，把名字精準加進 regex。
+
+### 3. 跨裝置同步：完成時主動立即 push（強化）
+之前的同步是「debounce 700ms 後才推」，如果做完立刻切裝置，理論上仍有極小機率來不及。**修法**：在 review.html（finishPacket）、writing.html（save）、reading.html（saveRecord）、verb_sprint.html（saveSession）、table_drill.html（drill_done寫入處）、quiz.html（warmup_done/quiz_done）、dashboard.html（結算按鈕）**完成的當下都主動呼叫 `ClbSync.push()`**，不再只靠 debounce 或 visibilitychange。**實測**：完整跑一包複習卡（10張全對），確認 `fetch POST` 真的在完成當下被觸發，不用等。
+⚠️ Owen 說的「跨機器進度不一樣」還沒有 100% 定位到單一根因（可能是這個 timing 問題造成的，也可能跟 review.html 的順序固定問題疊加讓他誤以為是同步沒生效），這次先把「立即push」這個已知風險點堵起來，如果他之後還遇到，需要問清楚具體操作步驟（哪台裝置做完哪個動作、多久後看第二台）才能精準抓根因。
+
+### 4. review.html 補回饋機制（順便解決「語意不清」問題）
+`review.html` 原本完全沒有懸浮回饋元件（其他頁都有），現在補上，並且卡片旁加「🤔 這張卡語意不清」按鈕，點了會自動帶入目前卡片的完整內容（第幾課、中文提示、法文答案）存進 `clb7_quick_notes`，供 Owen 之後用「複製給 Claude」一次匯出。**這是解決「有些題目語意不清」的機制**：768張卡不可能一次全部人工檢查過，改成 Owen 複習時順手標記，之後我批次去 `chunks.js` 修對應的卡。**實測**：點擊後正確帶出「[第1課] 你好嗎？ → Ça va ? / Tu vas bien ?」這樣的完整標記存進筆記。
+
+---
+
 ## 本 session 第四輪（2026-07-06：聽力真實資源＋TTS聽力測驗）
 
 Owen 問「有沒有辦法上網找到聽力資源，或我自己出題」，並且想要「前三個直接嵌入檔案」。查證後動手做了 `listening.html` 大改：

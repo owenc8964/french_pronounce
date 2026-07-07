@@ -1088,6 +1088,7 @@ function renderSummary() {
     const log = JSON.parse(localStorage.getItem('clb7_drill_log')) || [];
     if (!log.includes(d)) log.push(d);
     localStorage.setItem('clb7_drill_log', JSON.stringify(log.slice(-90)));
+    if (window.ClbSync) ClbSync.push(); // 做完立刻嘗試同步，不等debounce
   } catch(e) {}
 
   const rows = results.map(r => {
@@ -1126,9 +1127,12 @@ function renderSummary() {
 // ════════════════════════════════════════════════════════════
 let frVoice = null;
 function initVoice() {
-  frVoice = speechSynthesis.getVoices().find(v => /am[eé]lie/i.test(v.name))
-         || speechSynthesis.getVoices().find(v => /thomas/i.test(v.name))
-         || null;
+  const vs = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith('fr'));
+  frVoice = vs.find(v => /am[eé]lie|thomas/i.test(v.name))
+         || vs.find(v => /premium|enhanced|amélior|plus/i.test(v.name))
+         || vs.find(v => v.localService === false)
+         || vs.find(v => v.lang === 'fr-FR')
+         || vs[0] || null;
 }
 speechSynthesis.onvoiceschanged = initVoice;
 initVoice();
