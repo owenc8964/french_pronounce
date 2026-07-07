@@ -78,7 +78,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 
 | 檔案 | 用途 | 狀態 |
 |------|------|------|
-| `dashboard.html` | 指揮中心：今日處方（7步番号）、📊每日完成率分析、今日錯題本、警報、CLB等級判定、倒數、700h、四技能、週趨勢、Duolingo週報、🔒鎖定順序開關 | ✅ |
+| `dashboard.html` | 指揮中心：今日處方（**8步番号**，07-07新增第⑥步造句練習）、📊每日完成率分析、今日錯題本、警報、CLB等級判定、倒數、700h、四技能、週趨勢、Duolingo週報、🔒鎖定順序開關 | ✅ |
 | `session_timer.js` | 跨頁 session 計時器：`window.ClbSession` API，timestamp累計跨頁連續、練習頁常駐pill、**閒置3分鐘自動暫停**（用最後操作時間當停止點，不算閒置時間）、dashboard結算寫入700h | ✅ |
 | `sync_supabase.js` | 跨裝置同步：所有 `clb7_*` 存到 Supabase，開頁pull合併、變動debounce **700ms**（原2.5s縮短）自動push、**切前景也會pull**（原本只有切背景push）、離頁再push、各頁完成關鍵動作時**主動立即push**（不等debounce）|✅|
 | `quiz.html` | SRS Quiz 550+題，熱身模式、**策略選課器**（未練過/錯誤率高/量少/久沒練 排序）、暫停、更正誤判 | ✅ |
@@ -87,6 +87,8 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `review.html` | 複習卡：一包10張、SRS+successive relearning，**到期卡池已加洗牌**（避免同一批到期卡每天同順序重複）、發音邏輯已跟其他頁統一、卡片旁加「🤔語意不清」回饋按鈕 | ✅ 修復（07-07）|
 | `reading.html` | 閱讀理解 20篇 A1–A1+短文，純法文+解說 | ✅ |
 | `writing.html` | 每日2句造句，複製prompt→claude.ai→貼回記錄 | ✅ |
+| `sentence_drill.html` | **新增（07-07）**：中翻法造句練習，每天固定5句新句＋到期複習，沿用review.html同一套SRS引擎（1/3/7/14/30天），**答錯排到這輪最後重考，磨到全部答對才算完成**，跟review.html的卡片機制共用「包尾重試」邏輯 | ✅ 新建 |
+| `sentences.js` | **新增（07-07）**：常用句庫（目前88句，第1–14課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
 | `listening.html` | 聽力：**真實資源**（RFI Journal en français facile + InnerFrench，Spotify官方embed播放器）+ **自出TTS聽力測驗**（8篇，對齊已學課程，先聽不看字→作答→判分→逐字稿對照，自動記入日誌） | ✅ 大改（07-06）|
 | `french_notes.html` | 第1–14課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音） | ✅ 修復（07-07）|
 | `chunks.js` | 複習卡庫：768張，自動從筆記抽取（1–14課） | ✅ |
@@ -98,7 +100,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 
 **GitHub Pages 網址：** https://owenc8964.github.io/french_pronounce/dashboard.html
 
-**今日處方順序（7步番号，中間4步依日期自動輪替）**：① 🔥 熱身 Quiz 5題 → ② 📚 研讀＋專項 Quiz（策略選課器）→ ③ 📝 填表格（table_drill）→ ④ ⚡ 反射衝刺 → ⑤ 📦 複習卡 → ⑥ ✍️ 造句 → ⑦ 📖 閱讀。①⑥⑦固定頭尾，中間②③④⑤每天輪替順序（`clb7_order_lock`可鎖定）。時數不是步驟，由頂部 session bar 全程累計，完成按🏁結算才寫入700h。
+**今日處方順序（8步番号，中間5步依日期自動輪替，07-07新增造句練習後從7步變8步）**：① 🔥 熱身 Quiz 5題 → ②–⑥ 研讀＋專項Quiz／填表格／反射衝刺／複習卡／**造句練習（背5句常用句）** 每天輪替順序 → ⑦ ✍️ 造句（產出）→ ⑧ 📖 閱讀。①⑦⑧固定頭尾，中間5步輪替（`clb7_order_lock`可鎖定）。時數不是步驟，由頂部 session bar 全程累計，完成按🏁結算才寫入700h。
 
 ---
 
@@ -175,6 +177,14 @@ Owen回饋4件事：①很多例句沒發音 ②課文填空排版太擠、字�
 
 **已用preview實測**：開lesson-13/14、逐一screenshot確認17個note-box都變黃底樣式、choisir卡片渲染正確且喇叭可點、課文填空逐句顯示、畫家表格例句欄喇叭出現、console無錯誤。
 
+### 07-07：新增造句練習（sentence_drill.html）——中翻法背誦，磨到全對
+Owen想到一個新方法：先背課本例句（中翻法），當天考，隔幾天再考。討論後確立設計：
+- **內容來源**：不是自動抽取chunks.js，是**人工精選**的常用句庫（新建`sentences.js`，這次先手動從第1–14課筆記挑了88句真正實用、完整的句子種子起來，之後跟`chunks.js`/`table_drill.html`一樣，Owen每次給新課筆記/逐字稿時要一起補進去，見上方「卡片庫維護」）。
+- **獨立新頁面**：`sentence_drill.html`，跟`review.html`分開（不共用同一個抽卡池），但**直接沿用review.html整套SRS引擎**（1/3/7/14/30天間隔、包尾重試機制）——發現review.html的`grade(false)`本來就會把答錯的卡`packet.push()`回這一輪的最後面重考，直到答對才放過，這正好完全符合「磨到完全正確為止」的需求，不用另外設計新邏輯。
+- **每天固定5句新句**（`NEW_PER_DAY=5`，Owen指定的數字）＋所有到期複習句（句庫規模小，不像chunks需要分包，一次全部做完）。
+- **dashboard整合**：加入處方中間的輪替群組（從4步變5步，`study/drill/sprint/review/sentence`一起輪替），今日處方從7步變8步；`HABIT_STEPS`、今日錯題本的`SRC`來源標籤都同步加上。
+- **已用preview實測**：清空`clb7_sentence_*`、跑完整流程確認新句正確抽取（第1課優先）、翻卡發音正常、故意答錯一句確認packet從5筆變6筆且該句重新排到最後、最終跑完顯示「4/5」正確反映首次答對率、dashboard正確顯示8步且新步驟✓完成、錯題本正確記錄。全程用隔離ROOM測試，完後已改回正式ROOM並grep確認無殘留。
+
 ---
 
 ## 之前 session 做了什麼（2026-07-02 ～ 07-03）
@@ -199,6 +209,8 @@ Owen回饋4件事：①很多例句沒發音 ②課文填空排版太擠、字�
 
 **卡片庫維護**：`chunks.js`由french_notes.html自動抽取。每次新增課程筆記後要重跑抽取腳本（node逐列解析phrase-list/三欄表/四欄表）。id格式`L{課}_{fr前24字}`，重生成時既有卡id不變（SRS記錄不丟失）。
 
+**⚠️ 07-07新增：`sentences.js`跟`chunks.js`維護方式不同——每次 Owen 給新課筆記/逐字稿時，這三份都要一起補**：①`chunks.js`（自動抽取，跑腳本）②`table_drill.html`的`TABLES`題庫（人工加表格）③`sentences.js`（**人工精選**，不是自動抽取——從新課內容挑「真的常用、值得先背」的完整句子，過濾掉單字/詞組對，id格式`S_L{課}_{序號}`接續該課現有最大序號）。這是 Owen 明確要求的（07-07討論造句練習設計時提出），忘記其中一項＝新課內容沒進到對應練習系統。
+
 ---
 
 ## 關鍵 localStorage keys
@@ -221,6 +233,9 @@ Owen回饋4件事：①很多例句沒發音 ②課文填空排版太擠、字�
 - `clb7_chunk_srs` → 複習卡SRS {cardId: {iv, due, days, ok, no, last}}
 - `clb7_review_sessions` → [{date, cards, ok, ts}]（最近100）
 - `clb7_chunk_newcount` → {date, n}（今日新卡數，上限10）
+- `clb7_sentence_srs` → 造句練習SRS，跟`clb7_chunk_srs`同結構但完全獨立的key（不共用池子）
+- `clb7_sentence_sessions` → [{date, cards, ok, ts}]（最近100，供dashboard判斷步驟完成＋habit分析）
+- `clb7_sentence_newcount` → {date, n}（今日新句數，固定上限5，這是Owen明確要求的數字）
 - `clb7_session` → {active, running, startedAt, accSec}（session計時器狀態，不同步到雲端，結束時清除）
 - `clb7_order_lock` → '1'表示鎖定處方順序
 - `clb7_duo` → Duolingo週報，`DUO_SEED`種子upsert進去
@@ -259,8 +274,8 @@ Owen回饋4件事：①很多例句沒發音 ②課文填空排版太擠、字�
 
 ## 注意事項
 
-- **懸浮回饋 snippet 覆蓋**（2026-07-07現況）：dashboard/quiz/writing/speaking/tracker/listening/review/french_notes 共8頁有；**verb_sprint/reading/table_drill/verb_reference 這4頁還沒有**，未來需要時記得補
-- **session_timer.js 覆蓋**：quiz/writing/listening/review/french_notes/verb_sprint/reading/table_drill 共8頁有；speaking/tracker/verb_reference 沒有（speaking/tracker是獨立日誌工具不在7步流程內，可不補；verb_reference不在主流程，視需要補）
+- **懸浮回饋 snippet 覆蓋**（2026-07-07現況）：dashboard/quiz/writing/speaking/tracker/listening/review/french_notes/**sentence_drill** 共9頁有；**verb_sprint/reading/table_drill/verb_reference 這4頁還沒有**，未來需要時記得補
+- **session_timer.js 覆蓋**：quiz/writing/listening/review/french_notes/verb_sprint/reading/table_drill/**sentence_drill** 共9頁有；speaking/tracker/verb_reference 沒有（speaking/tracker是獨立日誌工具不在處方流程內，可不補；verb_reference不在主流程，視需要補）
 - **quiz.html `choose` 類型題** 的`a`欄位必須和`opts`裡的字串**完全一致**，不能用`|`分隔
 - **`clb7_snapshots` 絕對不要再寫入非 `{week:...}` 格式**——會讓dashboard整頁掛掉（已修一次，有防禦但別再犯）
 - **新練習工具的判錯點記得呼叫 `logWrong()`**（quiz/reading/sprint各一份複本，格式要四處同步）——錯題本才收得到

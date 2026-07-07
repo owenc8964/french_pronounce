@@ -1,0 +1,121 @@
+// 常用句庫（中翻法造句練習用）— sentence_drill.html 專用
+// 跟 chunks.js 不同：這裡只放「完整、真的常用、值得先背」的句子，用意在練造句反射，
+// 不是自動抽取全部筆記內容。每次 Owen 給新課筆記/逐字稿時，人工從中挑選補進來。
+// 格式跟 chunks.js 對齊：{ id, lesson, fr, zh, note }
+const SENTENCES = [
+  // 第1課
+  { id: 'S_L1_1', lesson: 1, fr: 'Ça va ?', zh: '你好嗎？', note: '' },
+  { id: 'S_L1_2', lesson: 1, fr: 'Oui, ça va, merci. Et toi ?', zh: '好，謝謝，你呢？', note: '' },
+  { id: 'S_L1_3', lesson: 1, fr: 'Vous pouvez répéter, s\'il vous plaît ?', zh: '可以再說一次嗎？（正式）', note: '' },
+  { id: 'S_L1_4', lesson: 1, fr: 'Excusez-moi, je suis en retard.', zh: '對不起，我遲到了。', note: '' },
+  { id: 'S_L1_5', lesson: 1, fr: 'Je suis taïwanais.', zh: '我是台灣人。（男生；女生說 taïwanaise）', note: '' },
+  { id: 'S_L1_6', lesson: 1, fr: 'Mon anniversaire, c\'est le 4 juin.', zh: '我的生日是6月4日。', note: '' },
+
+  // 第2課
+  { id: 'S_L2_1', lesson: 2, fr: 'Tu habites dans quelle ville ?', zh: '你住在哪個城市？', note: '' },
+  { id: 'S_L2_2', lesson: 2, fr: 'Tu parles quelle langue ?', zh: '你說什麼語言？', note: '' },
+  { id: 'S_L2_3', lesson: 2, fr: 'Pourquoi tu aimes le sport ?', zh: '你為什麼喜歡運動？', note: '' },
+  { id: 'S_L2_4', lesson: 2, fr: 'Parce que c\'est sympa !', zh: '因為很好玩！', note: '' },
+  { id: 'S_L2_5', lesson: 2, fr: 'Combien de langues tu parles ?', zh: '你說幾種語言？', note: '' },
+  { id: 'S_L2_6', lesson: 2, fr: 'Je parle chinois, taïwanais et anglais.', zh: '我說中文、台語和英文。', note: '' },
+  { id: 'S_L2_7', lesson: 2, fr: 'Je m\'appelle Emma, je suis brésilienne et j\'aime le cinéma.', zh: '我叫 Emma，我是巴西人，我喜歡電影。', note: '自我介紹萬用模板' },
+
+  // 第3課
+  { id: 'S_L3_1', lesson: 3, fr: 'Je n\'aime pas la danse.', zh: '我不喜歡跳舞。', note: '' },
+  { id: 'S_L3_2', lesson: 3, fr: 'Je ne suis pas fort en natation.', zh: '我游泳不太行。', note: '' },
+  { id: 'S_L3_3', lesson: 3, fr: 'J\'ai un oncle. Il a 48 ans.', zh: '我有一個叔叔，他48歲。', note: '' },
+  { id: 'S_L3_4', lesson: 3, fr: 'Notre fille déteste le sport.', zh: '我們的女兒討厭運動。', note: '' },
+  { id: 'S_L3_5', lesson: 3, fr: 'Je prépare la liste des invités pour notre mariage.', zh: '我在準備我們婚禮的賓客名單。', note: '' },
+  { id: 'S_L3_6', lesson: 3, fr: 'Son petit-fils a deux mois.', zh: '他的孫子兩個月大。', note: '' },
+
+  // 第4課
+  { id: 'S_L4_1', lesson: 4, fr: 'Je voudrais une baguette, s\'il vous plaît.', zh: '我想要一條法棍，謝謝。', note: 'voudrais 比 je veux 有禮貌' },
+  { id: 'S_L4_2', lesson: 4, fr: 'Combien coûte une baguette ?', zh: '一條法棍多少錢？', note: '' },
+  { id: 'S_L4_3', lesson: 4, fr: 'Elle coûte 1 euro.', zh: '它賣一歐元。', note: '' },
+
+  // 第5課
+  { id: 'S_L5_1', lesson: 5, fr: 'Je mange du pain avec du beurre.', zh: '我吃麵包配奶油。', note: '' },
+  { id: 'S_L5_2', lesson: 5, fr: 'Je ne mange pas de viande.', zh: '我不吃肉。', note: '' },
+  { id: 'S_L5_3', lesson: 5, fr: 'Il n\'y a pas de dessert aujourd\'hui.', zh: '今天沒有甜點。', note: '' },
+  { id: 'S_L5_4', lesson: 5, fr: 'Quel est le plat du jour ?', zh: '今日主菜是什麼？', note: '' },
+  { id: 'S_L5_5', lesson: 5, fr: 'Pour moi, la blanquette de veau.', zh: '我要白汁小牛肉。（口語點餐）', note: '' },
+  { id: 'S_L5_6', lesson: 5, fr: 'Une carafe d\'eau, s\'il vous plaît.', zh: '請給我一壺水。（免費）', note: '' },
+  { id: 'S_L5_7', lesson: 5, fr: 'Qu\'est-ce que tu fais ?', zh: '你在做什麼？', note: '' },
+
+  // 第6課
+  { id: 'S_L6_1', lesson: 6, fr: 'Il n\'est pas loin.', zh: '不遠。', note: '' },
+  { id: 'S_L6_2', lesson: 6, fr: 'Prenez le métro !', zh: '搭地鐵！（命令式）', note: '' },
+  { id: 'S_L6_3', lesson: 6, fr: 'Montez dans le bus.', zh: '上公車。', note: '' },
+  { id: 'S_L6_4', lesson: 6, fr: 'Descendez à l\'arrêt République.', zh: '在共和站下車。', note: '' },
+  { id: 'S_L6_5', lesson: 6, fr: 'N\'achetez pas de tickets.', zh: '不要買票。', note: '' },
+  { id: 'S_L6_6', lesson: 6, fr: 'Ayez confiance !', zh: '要有信心！', note: '' },
+
+  // 第7課
+  { id: 'S_L7_1', lesson: 7, fr: 'Pour aller au travail, je prends ma voiture.', zh: '去上班我開車。', note: '' },
+  { id: 'S_L7_2', lesson: 7, fr: 'Ma famille n\'utilise que les transports en commun.', zh: '我家只用大眾交通。', note: '' },
+  { id: 'S_L7_3', lesson: 7, fr: 'Ne prends pas la voiture.', zh: '不要開車。（否定命令）', note: '' },
+  { id: 'S_L7_4', lesson: 7, fr: 'La semaine, j\'utilise les transports en commun.', zh: '工作日我搭大眾交通。', note: '' },
+  { id: 'S_L7_5', lesson: 7, fr: 'Le week-end, je prends ma voiture.', zh: '週末我開車。', note: '' },
+  { id: 'S_L7_6', lesson: 7, fr: 'Tu fais quelle taille ?', zh: '你穿幾號？', note: '' },
+  { id: 'S_L7_7', lesson: 7, fr: 'Il me plaît.', zh: '我喜歡它。（plaire，主詞是物）', note: '' },
+
+  // 第8課
+  { id: 'S_L8_1', lesson: 8, fr: 'Il fait beau.', zh: '天氣好。', note: '' },
+  { id: 'S_L8_2', lesson: 8, fr: 'Il fait mauvais.', zh: '天氣不好。', note: '' },
+  { id: 'S_L8_3', lesson: 8, fr: 'Il pleut.', zh: '下雨。', note: '' },
+  { id: 'S_L8_4', lesson: 8, fr: 'Il fait 30 degrés.', zh: '氣溫30度。', note: '' },
+  { id: 'S_L8_5', lesson: 8, fr: 'Demain soir, je vais finir la robe.', zh: '明晚我要把洋裝做完。', note: '' },
+  { id: 'S_L8_6', lesson: 8, fr: 'La semaine prochaine, nous allons tricoter un pull.', zh: '下星期我們要織一件毛衣。', note: '' },
+  { id: 'S_L8_7', lesson: 8, fr: 'Mes filles vont être contentes.', zh: '我女兒們會很開心。', note: '' },
+  { id: 'S_L8_8', lesson: 8, fr: 'Ça sert à écouter de la musique.', zh: '這是用來聽音樂的。', note: '' },
+
+  // 第9課
+  { id: 'S_L9_1', lesson: 9, fr: 'On ne sait pas comment il s\'appelle.', zh: '沒人知道他叫什麼名字。', note: 'on = 泛指' },
+  { id: 'S_L9_2', lesson: 9, fr: 'On va au cinéma ce soir ?', zh: '我們今晚要去看電影嗎？', note: '' },
+  { id: 'S_L9_3', lesson: 9, fr: 'Je ne veux pas.', zh: '我不想。', note: '' },
+  { id: 'S_L9_4', lesson: 9, fr: 'Je n\'ai pas envie.', zh: '我不想做。', note: '' },
+
+  // 第10課
+  { id: 'S_L10_1', lesson: 10, fr: 'Qu\'est-ce que tu viens de dire ?', zh: '你剛說什麼？', note: '' },
+  { id: 'S_L10_2', lesson: 10, fr: 'Elle vient de commencer, donc elle est encore là.', zh: '她剛開始，所以她還在。', note: '' },
+
+  // 第11課
+  { id: 'S_L11_1', lesson: 11, fr: 'Vous avez trouvé des meubles ?', zh: '你們找到家具了嗎？', note: '' },
+  { id: 'S_L11_2', lesson: 11, fr: 'On n\'a pas trouvé de lit, mais on a trouvé deux fauteuils.', zh: '我們沒找到床，但找到兩張扶手椅。', note: '' },
+  { id: 'S_L11_3', lesson: 11, fr: 'Ils ont déménagé il y a dix jours.', zh: '他們十天前搬家了。', note: '' },
+  { id: 'S_L11_4', lesson: 11, fr: 'Tu connais Marc et Lydia ?', zh: '你認識 Marc 和 Lydia 嗎？', note: '' },
+  { id: 'S_L11_5', lesson: 11, fr: 'J\'adore ce quartier, je le trouve très agréable.', zh: '我很愛這個街區，我覺得它很宜人。', note: '' },
+  { id: 'S_L11_6', lesson: 11, fr: 'Tu as vu Sophie ?', zh: '你有看到 Sophie 嗎？', note: '' },
+
+  // 第12課
+  { id: 'S_L12_1', lesson: 12, fr: 'Qu\'est-ce qui vous arrive ?', zh: '你怎麼了？', note: '' },
+  { id: 'S_L12_2', lesson: 12, fr: 'Vous vous sentez comment ?', zh: '你感覺怎麼樣？', note: '' },
+  { id: 'S_L12_3', lesson: 12, fr: 'J\'ai mal à la tête.', zh: '我頭痛。', note: '' },
+  { id: 'S_L12_4', lesson: 12, fr: 'Je suis malade.', zh: '我生病了。', note: '' },
+  { id: 'S_L12_5', lesson: 12, fr: 'Je suis fatigué.', zh: '我很累。', note: '' },
+  { id: 'S_L12_6', lesson: 12, fr: 'Je suis en pleine forme.', zh: '我精力充沛。', note: '' },
+  { id: 'S_L12_7', lesson: 12, fr: 'Je suis allé chez le médecin.', zh: '我去看醫生了。', note: '' },
+  { id: 'S_L12_8', lesson: 12, fr: 'Je vais prendre rendez-vous chez un spécialiste.', zh: '我要跟專科醫生預約。', note: '' },
+
+  // 第13課
+  { id: 'S_L13_1', lesson: 13, fr: 'Il faut apporter sa serviette de bain.', zh: '要帶浴巾。', note: '' },
+  { id: 'S_L13_2', lesson: 13, fr: 'Il ne faut pas utiliser son téléphone portable.', zh: '不可以用手機。', note: '' },
+  { id: 'S_L13_3', lesson: 13, fr: 'Il faut nettoyer les appareils après l\'utilisation.', zh: '用完要清潔器材。', note: '' },
+  { id: 'S_L13_4', lesson: 13, fr: 'Bougez plus !', zh: '多動！', note: '' },
+  { id: 'S_L13_5', lesson: 13, fr: 'Pour votre santé, bougez plus !', zh: '為了您的健康，多動！', note: '' },
+  { id: 'S_L13_6', lesson: 13, fr: 'Il faut boire 2L d\'eau.', zh: '要喝2公升的水。', note: '' },
+  { id: 'S_L13_7', lesson: 13, fr: 'Vous aimez les aliments salés ?', zh: '你喜歡鹹的食物嗎？', note: '' },
+  { id: 'S_L13_8', lesson: 13, fr: 'On a oublié le parasol !', zh: '我們忘了帶陽傘！', note: '' },
+
+  // 第14課
+  { id: 'S_L14_1', lesson: 14, fr: 'Est-ce que le petit déjeuner est compris ?', zh: '早餐有含嗎？', note: '' },
+  { id: 'S_L14_2', lesson: 14, fr: 'Est-ce que les animaux sont acceptés ?', zh: '可以帶寵物嗎？', note: '' },
+  { id: 'S_L14_3', lesson: 14, fr: 'Est-ce qu\'il y a un parking pour les voitures ?', zh: '有停車場嗎？', note: '' },
+  { id: 'S_L14_4', lesson: 14, fr: 'J\'arrive le 25 et je pars le 28.', zh: '我25號到、28號走。', note: '' },
+  { id: 'S_L14_5', lesson: 14, fr: 'J\'aime le café, mais le thé est meilleur.', zh: '我喜歡咖啡，但茶更好。', note: '' },
+  { id: 'S_L14_6', lesson: 14, fr: 'Je ne connais que Monet.', zh: '我只認識莫內。', note: 'ne...que = 只' },
+  { id: 'S_L14_7', lesson: 14, fr: 'C\'est à côté de l\'Espagne.', zh: '在西班牙旁邊。', note: '' },
+  { id: 'S_L14_8', lesson: 14, fr: 'Je viens de Taïwan.', zh: '我來自台灣。', note: '' },
+  { id: 'S_L14_9', lesson: 14, fr: 'Il est rentré de Taïwan.', zh: '他從台灣回來了。', note: '' },
+  { id: 'S_L14_10', lesson: 14, fr: 'Elle est arrivée à la plage.', zh: '她到海灘了。', note: '' },
+];
