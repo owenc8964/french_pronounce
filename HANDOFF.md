@@ -88,7 +88,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `reading.html` | 閱讀理解 20篇 A1–A1+短文，純法文+解說 | ✅ |
 | `writing.html` | 每日2句造句，複製prompt→claude.ai→貼回記錄 | ✅ |
 | `listening.html` | 聽力：**真實資源**（RFI Journal en français facile + InnerFrench，Spotify官方embed播放器）+ **自出TTS聽力測驗**（8篇，對齊已學課程，先聽不看字→作答→判分→逐字稿對照，自動記入日誌） | ✅ 大改（07-06）|
-| `french_notes.html` | 第1–14課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表） | ✅ 修復（07-07）|
+| `french_notes.html` | 第1–14課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音） | ✅ 修復（07-07）|
 | `chunks.js` | 複習卡庫：768張，自動從筆記抽取（1–14課） | ✅ |
 | `questions.js` | 共用題庫（BANK + AGREE_BANK），第1–13課 | ✅ |
 | `verb_reference.html` | 動詞參考表，發音邏輯已跟其他頁統一（原本完全沒篩選） | ✅ 修復（07-07）|
@@ -160,6 +160,20 @@ Owen回饋4件事：①跨機器進度還是不一樣 ②複習卡今天題目�
 
 ### 07-07：第13/14課表格漏class="m"（喇叭消失+行距變緊是同根因）
 Owen很生氣地回報第13、14課格式跑掉——沒發音記號、行距變近。查證：這個網站規則是法文欄要標`class="m"`才會自動加喇叭，第13課（健身房/運動/飲食/假期詞彙）+第14課（wwoofing/度假詞彙三表/訂房/比較形容詞/PC être例句/法國地區詞彙）共14個詞彙表製表時漏標了。「行距變緊」不是CSS跑掉，是少了喇叭圖示佔用的高度視覺上顯得擠——兩症狀同根因。逐表核對欄位語意後只修14個純詞彙表，2個概念對照表（Il faut vs Devoir、給建議的三種方式）欄位混雜中法文故意不動。已寫進memory `feedback_notes_table_format`（規則從1條擴成2條）。
+
+### 07-07：第13/14課排版大修（note-box系統性CSS bug＋choisir/文化框/課文填空重做）
+Owen回饋4件事：①很多例句沒發音 ②課文填空排版太擠、字全部黏一起、沒發音 ③choisir變位呈現跟其他頁動詞不一樣 ④拉力賽車/法式露營的文化說明呈現不好看，以前比較像對話框。
+
+**根因找到一個系統性bug**：第13/14課全部17個`<div class="note-box">`（健身房規定、Devoir變位、給建議、文化說明…幾乎每個小節的補充框）用的`note-box`這個class**在CSS裡根本沒有定義**——整份文件只有`.note`（黃底、左邊框、💡風格，第1–12課都用這個）有樣式。第13/14課筆記者當初打錯class名字，17個框全部裸奔變成無背景無邊框的純文字，這就是「跟以前不同、不像對話框、沒質感」的真正原因，不是CSS被誰改壞。
+
+**修法**：
+- CSS `.note {` 改成 `.note, .note-box {`（[french_notes.html:84](french_notes.html:84)）——一行修好全部17個框，不用逐一改HTML的class名稱，風險最低。
+- **課文填空**（L13飲食）：原本整段法文塞在一個`<span class="fr">`裡、答案用`<u>`底線標，改成`<ul class="phrase-list">`逐句拆開，每句配中文翻譯＋答案改`<b>`加粗（跟全站慣例一致），自動吃到`.phrase-list li`喇叭規則。
+- **choisir變位**：原本是`<b>`+斜線分隔的純文字塞在note-box裡，改成跟être/avoir同款的`.verb-grid > .verb-card`卡片（[french_notes.html:3892](french_notes.html:3892)附近），自動吃到`.verb-name`/`.conj-row`喇叭規則；命令式例句拆成獨立phrase-list一行。
+- **24 heures du Mans／法式露營文化框**：從`note-box`+純`<b>`文字改成`.note`+💡圖示+`<br>`分行，內嵌關鍵詞（24 heures du Mans、une journée au circuit du Mans、mobil-home、caravane、camping-car）包`<span class="fr-ex">`吃到全站`.fr-ex`喇叭規則。
+- **順手補的例句喇叭缺口**（全域掃描第13/14課後發現的，不只Owen點名的）：「給建議的三種方式」表格`例句`欄不是最後一欄，不會被全站的「表頭=例句/例自動加喇叭」規則抓到，手動包`.fr-ex`補上；「Il faut vs Devoir」對照表是轉置表格（例句是列不是欄），同樣手動補；「畫家×地區×PC」表格表頭原本寫「重點句（全是passé composé！）」不match自動偵測的精確字串，改名`例句`＋額外備註移到`compare-title`（沿用「Les lieux」那種寫法），4句畫家例句就自動吃到喇叭；「🇫🇷順帶學到」裡裸露的「Le Maroc a battu les Pays-Bas.」補`.fr-ex`。
+
+**已用preview實測**：開lesson-13/14、逐一screenshot確認17個note-box都變黃底樣式、choisir卡片渲染正確且喇叭可點、課文填空逐句顯示、畫家表格例句欄喇叭出現、console無錯誤。
 
 ---
 
