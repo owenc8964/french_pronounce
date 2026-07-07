@@ -842,6 +842,39 @@ const BANK = [
   { lesson:14, topic:'vocab-vacances', type:'choose', q:'bronzer 是什麼意思？', hint:'bronze 是一種顏色', a:'曬黑、做日光浴', aNote:'bronze 古銅色 → bronzer 變成古銅色 = 曬黑', opts:['曬黑、做日光浴','游泳','擦防曬','戴銅手環'] },
   { lesson:14, topic:'vocab-vacances', type:'fill', q:'Je ne connais _____ Monet.（我「只」認識莫內）', hint:'ne... que', a:'que', aNote:'ne... que = 只（老師課堂原句：Je ne connais que Monet）' },
   { lesson:14, topic:'vocab-vacances', type:'trans', q:'這是一個健行的完美地點。', hint:'endroit', a:'C\'est un endroit parfait pour la randonnée.', aNote:'un endroit = 地點；la randonnée = 健行', askClaude:true },
+
+  // ═══ 第15課：imparfait 無人稱動詞 ═══
+  { lesson:15, topic:'imparfait', type:'fill', q:'Aujourd\'hui il fait beau, hier il _____ (faire) mauvais.', hint:'imparfait', a:'faisait', aNote:'présent nous faisons → 去掉ons → fais- → il faisait' },
+  { lesson:15, topic:'imparfait', type:'fill', q:'Aujourd\'hui il y a du soleil, hier il y _____ (avoir) des nuages.', hint:'imparfait', a:'avait', aNote:'nous avons → av- → il y avait' },
+  { lesson:15, topic:'imparfait', type:'fill', q:'C\'est très bien maintenant, hier _____ (être) aussi très intéressant.', hint:'être 不規則', a:'c\'était', aNote:'être 唯一不規則，字根是 ét-（不是從 nous 變位去找）' },
+  { lesson:15, topic:'imparfait', type:'choose', q:'imparfait 主要用來做什麼？', hint:'', a:'描述過去的狀態/背景', aNote:'跟passé composé（完成的動作）不同，imparfait描述沒有明確起訖點的狀態', opts:['敘述一個已完成的動作','描述過去的狀態/背景','表達未來的計畫'] },
+  { lesson:15, topic:'imparfait', type:'choose', q:'être 的 imparfait 字根是？', hint:'唯一例外', a:'ét-', aNote:'j\'étais, tu étais, il était……其他動詞都從présent的nous變位找字根', opts:['fais-','av-','ét-'] },
+  { lesson:15, topic:'imparfait', type:'trans', q:'那時天氣不好。', hint:'il faisait', a:'Il faisait mauvais.', aNote:'', askClaude:true },
+  { lesson:15, topic:'imparfait', type:'trans', q:'那時有雲。', hint:'il y avait', a:'Il y avait des nuages.', aNote:'', askClaude:true },
+  { lesson:15, topic:'imparfait', type:'choose', q:'「il fait froid」和「c\'était froid」哪個是形容天氣？', hint:'', a:'il fait froid', aNote:'il fait 專門形容天氣，c\'est是一般描述，兩者不能互換', opts:['il fait froid','c\'était froid','兩個都可以'] },
+
+  // ═══ 第15課：passé composé être/avoir 複習 ═══
+  { lesson:15, topic:'passe-compose', type:'choose', q:'Il ___ (naître) en 1990.', hint:'naître 用哪個助動詞', a:'est né', aNote:'naître 是19個être動詞之一', opts:['a né','est né'] },
+  { lesson:15, topic:'passe-compose', type:'choose', q:'Elle ___ (voir) des animaux.', hint:'voir 不是移動動詞', a:'a vu', aNote:'voir 用 avoir——不是「做了什麼像旅行的事」就用être，要看動詞本身在不在être清單裡', opts:['a vu','est vue'] },
+  { lesson:15, topic:'passe-compose', type:'choose', q:'Vous ___ (prendre) des photos.', hint:'prendre 不是移動動詞', a:'avez pris', aNote:'prendre 用 avoir', opts:['avez pris','êtes pris'] },
+
+  // ═══ 第15課：COD代名詞 me/te/nous/vous（延續cod-pronouns topic）═══
+  { lesson:15, topic:'cod-pronouns', type:'fill', q:'Le droit _____ (intéresser, moi) beaucoup.', hint:'COD me → m\'', a:'m\'intéresse', aNote:'me 在母音前縮寫成 m\'' },
+  { lesson:15, topic:'cod-pronouns', type:'trans', q:'我懂你。', hint:'COD te', a:'Je te comprends.', aNote:'', askClaude:true },
+  { lesson:15, topic:'cod-pronouns', type:'choose', q:'COD代名詞（me/te/nous/vous/le/la/les）放在動詞的前面還是後面？', hint:'', a:'前面', aNote:'跟英文相反：Tu m\'aides（你幫我），不是Tu aides moi', opts:['前面','後面'] },
+  { lesson:15, topic:'cod-pronouns', type:'fill', q:'Tu _____ (aider, moi) à faire cet exercice ?', hint:'COD me', a:'m\'aides', aNote:'aider qqn 直接接受詞，me→m\'' },
+
+  // ═══ 第15課：自然詞彙 ═══
+  { lesson:15, topic:'vocab-nature', type:'trans', q:'田野', hint:'', a:'le champ', aNote:'', askClaude:true },
+  { lesson:15, topic:'vocab-nature', type:'trans', q:'森林', hint:'', a:'la forêt', aNote:'', askClaude:true },
+  { lesson:15, topic:'vocab-nature', type:'trans', q:'潛水', hint:'faire de la...', a:'faire de la plongée', aNote:'', askClaude:true },
+  { lesson:15, topic:'vocab-nature', type:'choose', q:'「戲水、泡水」怎麼說？', hint:'反身動詞', a:'se baigner', aNote:'se baigner dans les Calanques', opts:['se baigner','bronzer','plonger','pique-niquer'] },
+
+  // ═══ 第15課：大學詞彙 ═══
+  { lesson:15, topic:'universite-vocab', type:'trans', q:'大學餐廳', hint:'口語簡稱resto U', a:'le restaurant universitaire|le resto U', aNote:'', askClaude:true },
+  { lesson:15, topic:'universite-vocab', type:'trans', q:'系辦、行政處', hint:'', a:'le secrétariat', aNote:'', askClaude:true },
+  { lesson:15, topic:'universite-vocab', type:'choose', q:'法國「licence」（學士）要讀幾年？', hint:'', a:'3年', aNote:'licence 3年、master 5年、doctorat 8年', opts:['2年','3年','4年'] },
+  { lesson:15, topic:'universite-vocab', type:'trans', q:'旁聽一堂課', hint:'assister à... en amphi', a:'assister à un cours', aNote:'amphi = 階梯教室', askClaude:true },
 ];
 // ── ID 函數 ──
 function qId(q) {

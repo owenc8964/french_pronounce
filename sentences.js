@@ -118,4 +118,16 @@ const SENTENCES = [
   { id: 'S_L14_8', lesson: 14, fr: 'Je viens de Taïwan.', zh: '我來自台灣。', note: '' },
   { id: 'S_L14_9', lesson: 14, fr: 'Il est rentré de Taïwan.', zh: '他從台灣回來了。', note: '' },
   { id: 'S_L14_10', lesson: 14, fr: 'Elle est arrivée à la plage.', zh: '她到海灘了。', note: '' },
+
+  // 第15課
+  { id: 'S_L15_1', lesson: 15, fr: 'Il faisait beau.', zh: '那時天氣好。', note: 'imparfait 描述過去狀態' },
+  { id: 'S_L15_2', lesson: 15, fr: 'Il y avait des nuages.', zh: '那時有雲。', note: '' },
+  { id: 'S_L15_3', lesson: 15, fr: 'C\'était très intéressant.', zh: '那時很有趣。', note: '' },
+  { id: 'S_L15_4', lesson: 15, fr: 'Je suis en vacances chez des amis.', zh: '我在朋友家度假。', note: '' },
+  { id: 'S_L15_5', lesson: 15, fr: 'À bientôt !', zh: '再會！', note: '明信片結尾用語' },
+  { id: 'S_L15_6', lesson: 15, fr: 'Le droit m\'intéresse.', zh: '法律讓我感興趣。', note: 'COD代名詞 m\'' },
+  { id: 'S_L15_7', lesson: 15, fr: 'Je te comprends.', zh: '我懂你。', note: '' },
+  { id: 'S_L15_8', lesson: 15, fr: 'Tu m\'aides à faire cet exercice ?', zh: '你可以幫我做這個練習嗎？', note: '' },
+  { id: 'S_L15_9', lesson: 15, fr: 'J\'étudie le droit.', zh: '我讀法律系。', note: '' },
+  { id: 'S_L15_10', lesson: 15, fr: 'Les cours sont excellents.', zh: '課程很棒。', note: '' },
 ];

@@ -67,7 +67,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | **目標** | CLB 7（= CEFR B2）|
 | **考試** | TEF Canada 或 TCF Canada |
 | **截止日** | 2027年6月1日 |
-| **目前程度** | A1，第14課，約 24+ 小時課時 |
+| **目前程度** | A1→A2過渡，第15課，約 24+ 小時課時 |
 | **每天目標** | 1.5–2 小時有效練習（含通勤被動聽力）|
 | **總時數目標** | 700 小時（多方研究數據交叉驗證）|
 | **產出能力評估的落差** | 系統目前對「辨識/回想」（quiz正確率、複習卡）評分很扎實，但對「口說/寫作/聽力理解」幾乎沒有真正評分機制——造句是 Claude 口頭給分沒有系統化趨勢，speaking/listening 日誌只記錄有沒有做、不評分內容。若要更準評估，未來可考慮定期做完整模擬 TCF/TEF 口說寫作題並照官方標準評分記錄趨勢（已跟 Owen 提過，尚未實作，見下方「下一步」）|
@@ -82,21 +82,21 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `session_timer.js` | 跨頁 session 計時器：`window.ClbSession` API，timestamp累計跨頁連續、練習頁常駐pill、**閒置3分鐘自動暫停**（用最後操作時間當停止點，不算閒置時間）、dashboard結算寫入700h | ✅ |
 | `sync_supabase.js` | 跨裝置同步：所有 `clb7_*` 存到 Supabase，開頁pull合併、變動debounce **700ms**（原2.5s縮短）自動push、**切前景也會pull**（原本只有切背景push）、離頁再push、各頁完成關鍵動作時**主動立即push**（不等debounce）|✅|
 | `quiz.html` | SRS Quiz 550+題，熱身模式、**策略選課器**（未練過/錯誤率高/量少/久沒練 排序）、暫停、更正誤判 | ✅ |
-| `table_drill.html` | 表格填空：36個表格（涵蓋第1–13課，含passé composé系列），**錯題複習輪**（答錯進複習輪直到全對，主輪成績不被洗掉）、切難度/類型有進度時confirm確認、一輪6個表 | ✅ 大修（07-06/07）|
+| `table_drill.html` | 表格填空：37個表格（涵蓋第1–15課，含passé composé系列、07-07新增imparfait無人稱動詞表），**錯題複習輪**（答錯進複習輪直到全對，主輪成績不被洗掉）、切難度/類型有進度時confirm確認、一輪6個表 | ✅ 大修（07-06/07）|
 | `verb_sprint.html` | 動詞反射衝刺：60秒、9動詞×6人稱、起手計時、反射熱力圖，**已補TTS發音**（原形+答錯自動唸正解） | ✅ |
 | `review.html` | 複習卡：一包10張、SRS+successive relearning，**到期卡池已加洗牌**（避免同一批到期卡每天同順序重複）、發音邏輯已跟其他頁統一、卡片旁加「🤔語意不清」回饋按鈕 | ✅ 修復（07-07）|
 | `reading.html` | 閱讀理解 20篇 A1–A1+短文，純法文+解說 | ✅ |
 | `writing.html` | 每日2句造句，複製prompt→claude.ai→貼回記錄 | ✅ |
 | `sentence_drill.html` | **新增（07-07）**：中翻法造句練習，每天固定5句新句＋到期複習，沿用review.html同一套SRS引擎（1/3/7/14/30天），**答錯排到這輪最後重考，磨到全部答對才算完成**，跟review.html的卡片機制共用「包尾重試」邏輯 | ✅ 新建 |
-| `sentences.js` | **新增（07-07）**：常用句庫（目前88句，第1–14課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
+| `sentences.js` | **新增（07-07）**：常用句庫（目前98句，第1–15課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
 | `listening.html` | 聽力：**真實資源**（RFI Journal en français facile + InnerFrench，Spotify官方embed播放器）+ **自出TTS聽力測驗**（8篇，對齊已學課程，先聽不看字→作答→判分→逐字稿對照，自動記入日誌） | ✅ 大改（07-06）|
 | `french_notes.html` | 第1–14課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音） | ✅ 修復（07-07）|
-| `chunks.js` | 複習卡庫：768張，自動從筆記抽取（1–14課） | ✅ |
-| `questions.js` | 共用題庫（BANK + AGREE_BANK），第1–13課 | ✅ |
+| `chunks.js` | 複習卡庫：856張，自動從筆記抽取（1–15課，07-07補第15課88張） | ✅ |
+| `questions.js` | 共用題庫（BANK 638題 + AGREE_BANK 247題），第1–15課（07-07新增imparfait/vocab-nature/universite-vocab三個topic） | ✅ |
 | `verb_reference.html` | 動詞參考表，發音邏輯已跟其他頁統一（原本完全沒篩選） | ✅ 修復（07-07）|
 | `tracker.html` | 舊版計時器（autostart、切分頁自動暫停）+ 700h 進度，功能已被 session_timer.js 取代但保留 | 舊版 |
 | `speaking.html` | 口說日誌（僅記錄有無/時長，不評分內容） | ✅ |
-| `map.html` | 課程地圖（63格），已更新至第14課 | ✅ |
+| `map.html` | 課程地圖（63格），已更新至第15課（解鎖imparfait+études&école兩塊） | ✅ |
 
 **GitHub Pages 網址：** https://owenc8964.github.io/french_pronounce/dashboard.html
 
@@ -184,6 +184,19 @@ Owen想到一個新方法：先背課本例句（中翻法），當天考，隔�
 - **每天固定5句新句**（`NEW_PER_DAY=5`，Owen指定的數字）＋所有到期複習句（句庫規模小，不像chunks需要分包，一次全部做完）。
 - **dashboard整合**：加入處方中間的輪替群組（從4步變5步，`study/drill/sprint/review/sentence`一起輪替），今日處方從7步變8步；`HABIT_STEPS`、今日錯題本的`SRC`來源標籤都同步加上。
 - **已用preview實測**：清空`clb7_sentence_*`、跑完整流程確認新句正確抽取（第1課優先）、翻卡發音正常、故意答錯一句確認packet從5筆變6筆且該句重新排到最後、最終跑完顯示「4/5」正確反映首次答對率、dashboard正確顯示8步且新步驟✓完成、錯題本正確記錄。全程用隔離ROOM測試，完後已改回正式ROOM並grep確認無殘留。
+
+### 07-07：第15課筆記整理＋六項連動全部補齊（首次完整走一次擴充版流程）
+Owen貼了第15課逐字稿（英中法混雜、老師課堂即時翻譯），附8張截圖（`~/Desktop/0707/`，課本原頁掃描）。內容：明信片寫法、passé composé(être)複習、**imparfait無人稱動詞**（本課主要新文法：il fait/il y a/c'est → il faisait/il y avait/c'était）、自然詞彙（地點/植物/動物/活動）、肉類詞彙與英法同源文化背景、Château d'If文化、大學生大使閱讀文本＋詞彙（Parcoursup、licence/master/doctorat）、談論學業、**COD代名詞me/te/nous/vous**（延伸自之前學過的le/la/les）。
+
+**筆記整理方式**：逐字稿本身很亂（老師中英法夾雜口語翻譯、語音辨識雜訊），改用**8張課本截圖當作準確的法文原文來源**核對，逐字稿只拿來抓「老師實際強調什麼、Owen在哪裡卡關」。四件套照`skill_transcript_notes`格式全部產出：筆記本體（13個unit，見`french_notes.html` lesson-15）、🎙老師課堂法語、🔊發音警報（bronze/bronzer詞性混淆、vous dites不規則）、📋糾錯摘要（重點：passé composé的être/avoir選擇反覆卡關，這是本課最大困難點；COD代名詞兩個家族搞混；il fait vs c'était主動發問——這題問得好）。
+
+**六項連動第一次完整走過一遍**（見上方「卡片庫維護」清單，07-07討論造句練習時才擴充成六項）：
+1. `chunks.js`：這次沒寫自動parser，改用hand-curated node腳本（scratchpad一次性腳本）直接生成88張新卡append進去，用跟既有卡一致的id規則（`L15_{fr前24字}`slug化）算出id、跟現有768張的id集合比對去重。768→856張。
+2. `questions.js`：新增23題（imparfait 8題、passe-compose複習3題、cod-pronouns延伸4題、vocab-nature 4題、universite-vocab 4題），`BANK`615→638。同步在`dashboard.html`和`quiz.html`的`TOPIC_LABELS`加上三個新topic（`imparfait`/`vocab-nature`/`universite-vocab`）。**順便發現**quiz.html的TOPIC_LABELS本來就比dashboard.html少很多key（vocab-vacances、passe-compose等好幾個topic都沒有，會fallback顯示英文原始key）——這是既有的小bug不在本次範圍，已用`spawn_task`記錄成獨立任務給Owen之後決定要不要修。
+3. `table_drill.html`：新增1個表格`imparfait-impersonnel`（il fait/il y a/c'est三格填空，type:verb, lesson:15）。
+4. `sentences.js`：新增10句（S_L15_1~10），88→98句。
+5. `map.html`：**沒有新建tile**，改成把地圖裡本來就存在、`unlocked:false`的兩個「未來規劃佔位格」（`imparfait`、`etudes`，B1區的Études&école）直接改成`unlocked:true, lesson:15`並更新detail文字對齊實際教的內容——地圖本來就有預先規劃63格涵蓋到B2，很多超前的格子是佔位，只要真的教到了就解鎖，不用另外新增格子。`CURRENT_LESSON`14→15。
+6. **驗證方式踩到一個preview工具的已知限制並解決**：quiz.html/dashboard.html的`questions.js`是用`<script src>`載入、`const BANK = [...]`宣告——想用`fetch+eval`重新載入验证時，因為`const`在同一個global lexical scope不能重複宣告，會拿到「表面上执行成功、但實際上還是舊binding」的偽陽性（這比HANDOFF原本記錄的「單純快取」更陰險，是JS作用域問題不是快取問題）。最後改用**注入iframe或直接把測試用的假資料push進當前頁面已載入的`BANK`陣列、用`filterLesson=15; restart()`直接驅動UI渲染**來驗證quiz.html的渲染／評分邏輯正確，另外用**Node直接eval檔案內容**（不經過瀏覽器）驗證資料本身語法正確、count正確——两条路径互補，都通過。⚠️ 以後驗證這類`const`宣告的共用.js檔案，不要迷信fetch+eval，直接Node驗證資料+瀏覽器內用`.push()`注入測UI比較可靠。
 
 ---
 

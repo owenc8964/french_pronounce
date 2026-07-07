@@ -5376,5 +5376,621 @@ const CHUNKS = [
   "fr": "aéroport",
   "zh": "唸成英文 air-port",
   "note": "法文四個音節：a-é-ro-port"
+ },
+ {
+  "id": "L15_Salut___Bonjour",
+  "lesson": 15,
+  "fr": "Salut / Bonjour",
+  "zh": "嗨／你好（明信片開頭）",
+  "note": ""
+ },
+ {
+  "id": "L15_Cher_______",
+  "lesson": 15,
+  "fr": "Cher + 男生名字",
+  "zh": "親愛的...（陽性）",
+  "note": ""
+ },
+ {
+  "id": "L15_Ch_re_______",
+  "lesson": 15,
+  "fr": "Chère + 女生名字",
+  "zh": "親愛的...（陰性）",
+  "note": ""
+ },
+ {
+  "id": "L15___bient_t__",
+  "lesson": 15,
+  "fr": "À bientôt !",
+  "zh": "再會！（明信片結尾）",
+  "note": ""
+ },
+ {
+  "id": "L15_Bisous___Je_t_embrasse",
+  "lesson": 15,
+  "fr": "Bisous / Je t'embrasse",
+  "zh": "親一個／抱你（信末用語）",
+  "note": ""
+ },
+ {
+  "id": "L15_Je_suis_en_vacances_chez",
+  "lesson": 15,
+  "fr": "Je suis en vacances chez des amis à Marseille. C'est génial !",
+  "zh": "我在馬賽朋友家度假，超讚的！",
+  "note": ""
+ },
+ {
+  "id": "L15_Je_vais___la_plage__je_m",
+  "lesson": 15,
+  "fr": "Je vais à la plage, je me baigne dans les Calanques et je bronze !",
+  "zh": "我去海灘，在Calanques峽灣戲水、曬太陽！",
+  "note": ""
+ },
+ {
+  "id": "L15_Hier__il_ne_faisait_pas_",
+  "lesson": 15,
+  "fr": "Hier, il ne faisait pas beau. Il y avait des nuages.",
+  "zh": "昨天天氣不好，有雲。",
+  "note": ""
+ },
+ {
+  "id": "L15_Ce_n_est_pas_normal___Ma",
+  "lesson": 15,
+  "fr": "Ce n'est pas normal à Marseille !",
+  "zh": "這在馬賽不正常！",
+  "note": ""
+ },
+ {
+  "id": "L15_Alors__j_ai_visit__le_Mu",
+  "lesson": 15,
+  "fr": "Alors, j'ai visité le Mucem. C'était très intéressant !",
+  "zh": "於是我去參觀了Mucem博物館，很有趣！",
+  "note": ""
+ },
+ {
+  "id": "L15_Aujourd_hui__j_ai_pris_l",
+  "lesson": 15,
+  "fr": "Aujourd'hui, j'ai pris le bateau.",
+  "zh": "今天我搭了船。",
+  "note": ""
+ },
+ {
+  "id": "L15_J_ai_visit__le_ch_teau_d",
+  "lesson": 15,
+  "fr": "J'ai visité le château d'If.",
+  "zh": "我參觀了伊夫堡。",
+  "note": ""
+ },
+ {
+  "id": "L15_Il_se_trouve_sur_une__le",
+  "lesson": 15,
+  "fr": "Il se trouve sur une île à 4 kilomètres de Marseille.",
+  "zh": "它位於離馬賽4公里的一座島上。",
+  "note": "se trouver = 位於"
+ },
+ {
+  "id": "L15_Et_demain__je_vais_faire",
+  "lesson": 15,
+  "fr": "Et demain, je vais faire une randonnée à cheval avec mes amis pour découvrir la Provence.",
+  "zh": "明天我要跟朋友騎馬健行探索普羅旺斯。",
+  "note": ""
+ },
+ {
+  "id": "L15_On_va_pique_niquer__je_s",
+  "lesson": 15,
+  "fr": "On va pique-niquer, je suis très contente !",
+  "zh": "我們要野餐，我好開心！",
+  "note": ""
+ },
+ {
+  "id": "L15_il_fait___il_faisait",
+  "lesson": 15,
+  "fr": "il fait → il faisait",
+  "zh": "天氣（présent → imparfait）",
+  "note": ""
+ },
+ {
+  "id": "L15_il_y_a___il_y_avait",
+  "lesson": 15,
+  "fr": "il y a → il y avait",
+  "zh": "有（présent → imparfait）",
+  "note": ""
+ },
+ {
+  "id": "L15_c_est___c__tait",
+  "lesson": 15,
+  "fr": "c'est → c'était",
+  "zh": "是（présent → imparfait）",
+  "note": ""
+ },
+ {
+  "id": "L15_Hier__il_faisait_mauvais",
+  "lesson": 15,
+  "fr": "Hier, il faisait mauvais.",
+  "zh": "昨天天氣不好（imparfait）",
+  "note": ""
+ },
+ {
+  "id": "L15_Hier__il_y_avait_des_nua",
+  "lesson": 15,
+  "fr": "Hier, il y avait des nuages.",
+  "zh": "昨天有雲（imparfait）",
+  "note": ""
+ },
+ {
+  "id": "L15_Hier__il_faisait_froid_",
+  "lesson": 15,
+  "fr": "Hier, il faisait froid.",
+  "zh": "昨天天氣冷（imparfait）",
+  "note": ""
+ },
+ {
+  "id": "L15_Hier__c__tait_calme_",
+  "lesson": 15,
+  "fr": "Hier, c'était calme.",
+  "zh": "昨天很平靜（imparfait）",
+  "note": ""
+ },
+ {
+  "id": "L15_Tu_es_parti___la_Martini",
+  "lesson": 15,
+  "fr": "Tu es parti à la Martinique.",
+  "zh": "你去了馬提尼克島（partir用être）",
+  "note": ""
+ },
+ {
+  "id": "L15_Nous_avons_fait_du_surf_",
+  "lesson": 15,
+  "fr": "Nous avons fait du surf.",
+  "zh": "我們去衝浪了（faire用avoir）",
+  "note": ""
+ },
+ {
+  "id": "L15_Il_est_n__en_Franche_Com",
+  "lesson": 15,
+  "fr": "Il est né en Franche-Comté.",
+  "zh": "他在弗朗什-孔泰出生（naître用être）",
+  "note": ""
+ },
+ {
+  "id": "L15_Je_suis_sorti_tous_les_s",
+  "lesson": 15,
+  "fr": "Je suis sorti tous les soirs !",
+  "zh": "我每晚都出去！（sortir用être）",
+  "note": ""
+ },
+ {
+  "id": "L15_Elle_a_vu_des_animaux_",
+  "lesson": 15,
+  "fr": "Elle a vu des animaux.",
+  "zh": "她看到了動物（voir用avoir）",
+  "note": ""
+ },
+ {
+  "id": "L15_Vous_avez_pris_des_photo",
+  "lesson": 15,
+  "fr": "Vous avez pris des photos.",
+  "zh": "你們拍了照片（prendre用avoir）",
+  "note": ""
+ },
+ {
+  "id": "L15_le_champ",
+  "lesson": 15,
+  "fr": "le champ",
+  "zh": "田野",
+  "note": ""
+ },
+ {
+  "id": "L15_le_chemin",
+  "lesson": 15,
+  "fr": "le chemin",
+  "zh": "小路",
+  "note": ""
+ },
+ {
+  "id": "L15_la_for_t",
+  "lesson": 15,
+  "fr": "la forêt",
+  "zh": "森林",
+  "note": ""
+ },
+ {
+  "id": "L15_le_lac",
+  "lesson": 15,
+  "fr": "le lac",
+  "zh": "湖",
+  "note": ""
+ },
+ {
+  "id": "L15_la_plage",
+  "lesson": 15,
+  "fr": "la plage",
+  "zh": "海灘",
+  "note": ""
+ },
+ {
+  "id": "L15_la_rivi_re",
+  "lesson": 15,
+  "fr": "la rivière",
+  "zh": "河",
+  "note": ""
+ },
+ {
+  "id": "L15_l_arbre",
+  "lesson": 15,
+  "fr": "l'arbre",
+  "zh": "樹",
+  "note": ""
+ },
+ {
+  "id": "L15_la_fleur",
+  "lesson": 15,
+  "fr": "la fleur",
+  "zh": "花",
+  "note": ""
+ },
+ {
+  "id": "L15_l_herbe",
+  "lesson": 15,
+  "fr": "l'herbe",
+  "zh": "草",
+  "note": ""
+ },
+ {
+  "id": "L15_la_plante",
+  "lesson": 15,
+  "fr": "la plante",
+  "zh": "植物",
+  "note": ""
+ },
+ {
+  "id": "L15_le_canard",
+  "lesson": 15,
+  "fr": "le canard",
+  "zh": "鴨子",
+  "note": ""
+ },
+ {
+  "id": "L15_le_chat",
+  "lesson": 15,
+  "fr": "le chat",
+  "zh": "貓",
+  "note": ""
+ },
+ {
+  "id": "L15_le_cheval",
+  "lesson": 15,
+  "fr": "le cheval",
+  "zh": "馬",
+  "note": ""
+ },
+ {
+  "id": "L15_le_chien",
+  "lesson": 15,
+  "fr": "le chien",
+  "zh": "狗",
+  "note": ""
+ },
+ {
+  "id": "L15_le_lapin",
+  "lesson": 15,
+  "fr": "le lapin",
+  "zh": "兔子",
+  "note": ""
+ },
+ {
+  "id": "L15_l_oiseau",
+  "lesson": 15,
+  "fr": "l'oiseau",
+  "zh": "鳥",
+  "note": ""
+ },
+ {
+  "id": "L15_le_poisson",
+  "lesson": 15,
+  "fr": "le poisson",
+  "zh": "魚",
+  "note": ""
+ },
+ {
+  "id": "L15_la_poule",
+  "lesson": 15,
+  "fr": "la poule",
+  "zh": "母雞",
+  "note": ""
+ },
+ {
+  "id": "L15_la_vache",
+  "lesson": 15,
+  "fr": "la vache",
+  "zh": "母牛",
+  "note": ""
+ },
+ {
+  "id": "L15_faire_du_bateau",
+  "lesson": 15,
+  "fr": "faire du bateau",
+  "zh": "划船",
+  "note": ""
+ },
+ {
+  "id": "L15_faire_de_la_plong_e",
+  "lesson": 15,
+  "fr": "faire de la plongée",
+  "zh": "潛水",
+  "note": ""
+ },
+ {
+  "id": "L15_pique_niquer",
+  "lesson": 15,
+  "fr": "pique-niquer",
+  "zh": "野餐",
+  "note": "je pique-nique, tu pique-niques…（規則動詞）"
+ },
+ {
+  "id": "L15_faire_une_randonn_e___ch",
+  "lesson": 15,
+  "fr": "faire une randonnée à cheval",
+  "zh": "騎馬健行",
+  "note": ""
+ },
+ {
+  "id": "L15_se_baigner",
+  "lesson": 15,
+  "fr": "se baigner",
+  "zh": "戲水、泡水",
+  "note": "se baigner dans les Calanques"
+ },
+ {
+  "id": "L15_bronzer",
+  "lesson": 15,
+  "fr": "bronzer",
+  "zh": "曬太陽、曬黑",
+  "note": "⚠️ 不是「bronze」（銅色/材質名詞），bronzer 是動詞"
+ },
+ {
+  "id": "L15_le_b_uf",
+  "lesson": 15,
+  "fr": "le bœuf",
+  "zh": "牛肉",
+  "note": "對應動物 ox/cow，英文肉名 beef"
+ },
+ {
+  "id": "L15_le_mouton",
+  "lesson": 15,
+  "fr": "le mouton",
+  "zh": "羊肉",
+  "note": "對應動物 sheep，英文肉名 mutton"
+ },
+ {
+  "id": "L15_le_porc",
+  "lesson": 15,
+  "fr": "le porc",
+  "zh": "豬肉",
+  "note": "對應動物 pig，英文肉名 pork"
+ },
+ {
+  "id": "L15_le_veau",
+  "lesson": 15,
+  "fr": "le veau",
+  "zh": "小牛肉",
+  "note": "對應動物 calf，英文肉名 veal"
+ },
+ {
+  "id": "L15_l__tudiant_ambassadeur",
+  "lesson": 15,
+  "fr": "l'étudiant ambassadeur",
+  "zh": "學生大使",
+  "note": ""
+ },
+ {
+  "id": "L15_les__tudes_sup_rieures",
+  "lesson": 15,
+  "fr": "les études supérieures",
+  "zh": "高等教育",
+  "note": "= université"
+ },
+ {
+  "id": "L15_la_formation",
+  "lesson": 15,
+  "fr": "la formation",
+  "zh": "學程、科系",
+  "note": ""
+ },
+ {
+  "id": "L15__changer_sur_la_vie__tud",
+  "lesson": 15,
+  "fr": "échanger sur la vie étudiante",
+  "zh": "交流學生生活",
+  "note": ""
+ },
+ {
+  "id": "L15_poser_une_question",
+  "lesson": 15,
+  "fr": "poser une question",
+  "zh": "提問",
+  "note": ""
+ },
+ {
+  "id": "L15_assister___un_cours__en_",
+  "lesson": 15,
+  "fr": "assister à un cours (en amphi)",
+  "zh": "旁聽一堂課（在大講堂）",
+  "note": "amphi = amphithéâtre"
+ },
+ {
+  "id": "L15_visiter_le_campus",
+  "lesson": 15,
+  "fr": "visiter le campus",
+  "zh": "參觀校園",
+  "note": ""
+ },
+ {
+  "id": "L15_interroger",
+  "lesson": 15,
+  "fr": "interroger",
+  "zh": "詢問、提問",
+  "note": "= poser des questions"
+ },
+ {
+  "id": "L15_un_sujet",
+  "lesson": 15,
+  "fr": "un sujet",
+  "zh": "主題",
+  "note": ""
+ },
+ {
+  "id": "L15_un_m_tier",
+  "lesson": 15,
+  "fr": "un métier",
+  "zh": "職業",
+  "note": ""
+ },
+ {
+  "id": "L15_le_restaurant_universita",
+  "lesson": 15,
+  "fr": "le restaurant universitaire",
+  "zh": "大學餐廳",
+  "note": "口語簡稱 le resto U"
+ },
+ {
+  "id": "L15_le_secr_tariat",
+  "lesson": 15,
+  "fr": "le secrétariat",
+  "zh": "（大學）系辦、行政處",
+  "note": ""
+ },
+ {
+  "id": "L15_Parcoursup",
+  "lesson": 15,
+  "fr": "Parcoursup",
+  "zh": "法國大學選校系統",
+  "note": "線上申請大學用"
+ },
+ {
+  "id": "L15_Les_futurs__tudiants_nou",
+  "lesson": 15,
+  "fr": "Les futurs étudiants nous interrogent sur beaucoup de sujets.",
+  "zh": "未來的學生會問我們很多主題的問題。",
+  "note": ""
+ },
+ {
+  "id": "L15_Quels_m_tiers_on_peut_fa",
+  "lesson": 15,
+  "fr": "Quels métiers on peut faire après ces études ?",
+  "zh": "讀完這個科系可以做什麼工作？",
+  "note": ""
+ },
+ {
+  "id": "L15_Combien_il_y_a_d_heures_",
+  "lesson": 15,
+  "fr": "Combien il y a d'heures de cours par semaine ?",
+  "zh": "一週有幾小時的課？",
+  "note": ""
+ },
+ {
+  "id": "L15_Comment_est_le_restauran",
+  "lesson": 15,
+  "fr": "Comment est le restaurant universitaire ?",
+  "zh": "大學餐廳怎麼樣？",
+  "note": ""
+ },
+ {
+  "id": "L15_Nous_avons_parl__des_cou",
+  "lesson": 15,
+  "fr": "Nous avons parlé des cours et de l'université. C'était très intéressant.",
+  "zh": "我們聊了課程和大學的事，很有趣。",
+  "note": ""
+ },
+ {
+  "id": "L15_Pour_contacter_les__tudi",
+  "lesson": 15,
+  "fr": "Pour contacter les étudiants ambassadeurs, allez sur Parcoursup ou demandez au secrétariat de votre future université.",
+  "zh": "要聯絡學生大使，上Parcoursup網站，或問你未來大學的系辦。",
+  "note": ""
+ },
+ {
+  "id": "L15_J__tudie_le_droit_",
+  "lesson": 15,
+  "fr": "J'étudie le droit.",
+  "zh": "我讀法律系。",
+  "note": ""
+ },
+ {
+  "id": "L15_J__tudie_l_anatomie_",
+  "lesson": 15,
+  "fr": "J'étudie l'anatomie.",
+  "zh": "我讀解剖學。",
+  "note": ""
+ },
+ {
+  "id": "L15_Je_suis__tudiant_e__en_l",
+  "lesson": 15,
+  "fr": "Je suis étudiant(e) en licence/master d'économie.",
+  "zh": "我是經濟系學士生/碩士生。",
+  "note": ""
+ },
+ {
+  "id": "L15_Je_suis_en_quatri_me_ann",
+  "lesson": 15,
+  "fr": "Je suis en quatrième année.",
+  "zh": "我大四了。",
+  "note": ""
+ },
+ {
+  "id": "L15_J_ai_eu_ma_licence_l_ann",
+  "lesson": 15,
+  "fr": "J'ai eu ma licence l'année dernière.",
+  "zh": "我去年拿到學士學位。",
+  "note": ""
+ },
+ {
+  "id": "L15_Les_cours_sont_excellent",
+  "lesson": 15,
+  "fr": "Les cours sont excellents.",
+  "zh": "課程很棒。",
+  "note": ""
+ },
+ {
+  "id": "L15_L_universit____La_biblio",
+  "lesson": 15,
+  "fr": "L'université / La bibliothèque est agréable.",
+  "zh": "學校／圖書館很舒適。",
+  "note": ""
+ },
+ {
+  "id": "L15_Le_resto_U_n_est_pas_che",
+  "lesson": 15,
+  "fr": "Le resto U n'est pas cher.",
+  "zh": "大學餐廳不貴。",
+  "note": ""
+ },
+ {
+  "id": "L15_Le_droit_m_int_resse_",
+  "lesson": 15,
+  "fr": "Le droit m'intéresse.",
+  "zh": "法律讓我感興趣",
+  "note": "COD代名詞 m'"
+ },
+ {
+  "id": "L15_Je_te_comprends_",
+  "lesson": 15,
+  "fr": "Je te comprends.",
+  "zh": "我懂你",
+  "note": "COD代名詞 te"
+ },
+ {
+  "id": "L15_Ils_vous__coutent_",
+  "lesson": 15,
+  "fr": "Ils vous écoutent.",
+  "zh": "他們聽你們說",
+  "note": "COD代名詞 vous"
+ },
+ {
+  "id": "L15_Tu_m_aides___faire_cet_e",
+  "lesson": 15,
+  "fr": "Tu m'aides à faire cet exercice ?",
+  "zh": "你可以幫我做這個練習嗎？",
+  "note": "COD代名詞 m'"
  }
 ];
