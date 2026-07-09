@@ -537,6 +537,32 @@ const LISTENING_BANK = [
       { q:'Combien de temps vont-ils rester à Lisbonne ?', opts:['Trois jours','Une semaine','Un mois'], a:'Une semaine' },
       { q:"Qu'est-ce que le fils va apprendre ?", opts:['À nager','À parler anglais','À faire du vélo'], a:'À nager' },
     ]},
+
+  // ── 真人語速版（audioUrl）：真實音檔 + Claude 自出的 TCF/TEF 考試風格題（非對方網站原題）──
+  { id:'r01', lesson:15, title:'À la boulangerie（真人語速）', done_key:'listen_r01',
+    audioUrl:'https://www.podcastfrancaisfacile.com/wp-content/uploads/files/boulangerie2.mp3',
+    durationSec:33, sourceUrl:'https://www.podcastfrancaisfacile.com/dialogue/acheter-du-pain-a-la-boulangerie.html', sourceLabel:'podcastfrancaisfacile.com',
+    questions:[
+      { q:'Où se passe cette scène ?', opts:['Dans une boulangerie','Dans un restaurant','Dans une pharmacie'], a:'Dans une boulangerie' },
+      { q:"Qu'est-ce que le client achète, en plus des baguettes et des pains au chocolat ?", opts:['Des croissants aux amandes','Un gâteau','Du pain de campagne'], a:'Des croissants aux amandes' },
+      { q:"Combien coûte l'achat au total ?", opts:['8,20 €','6,50 €','10 €'], a:'8,20 €' },
+    ]},
+  { id:'r02', lesson:15, title:'À la gare（真人語速）', done_key:'listen_r02',
+    audioUrl:'https://www.podcastfrancaisfacile.com/wp-content/uploads/files/a-la-gare.mp3',
+    durationSec:55, sourceUrl:'https://www.podcastfrancaisfacile.com/podcast/a-la-gare.html', sourceLabel:'podcastfrancaisfacile.com',
+    questions:[
+      { q:'Quelle est la destination du billet ?', opts:['Paris','Lyon','Marseille'], a:'Paris' },
+      { q:'Pourquoi la cliente choisit-elle le premier train ?', opts:['Elle veut arriver avant onze heures','Il est moins cher','Il y a plus de places'], a:'Elle veut arriver avant onze heures' },
+      { q:'Est-ce que la cliente a une réduction ?', opts:['Non','Oui, une réduction étudiant','Oui, une réduction senior'], a:'Non' },
+    ]},
+  { id:'r03', lesson:15, title:'Au marché（真人語速）', done_key:'listen_r03',
+    audioUrl:'https://www.podcastfrancaisfacile.com/wp-content/uploads/files/au-marche.mp3',
+    durationSec:42, sourceUrl:'https://www.podcastfrancaisfacile.com/communication/au-marche-faire-ses-courses-dialogue-fle-francais-apprendre-learn.html', sourceLabel:'podcastfrancaisfacile.com',
+    questions:[
+      { q:'Chez qui la cliente fait-elle ses achats ?', opts:['Un marchand de fruits et légumes','Un boucher','Un boulanger'], a:'Un marchand de fruits et légumes' },
+      { q:"Qu'est-ce que la cliente achète en plus des tomates et des oignons ?", opts:['Une laitue','Des pommes','Du pain'], a:'Une laitue' },
+      { q:'Combien paie-t-elle au total ?', opts:['3 euros','5 euros','8 euros'], a:'3 euros' },
+    ]},
 ];
 
 let lqFrVoice = null;
@@ -567,6 +593,7 @@ function renderQuizList() {
   wrap.innerHTML = LISTENING_BANK.map(item => `
     <div class="quiz-list-item ${listenQuizDoneToday(item.id) ? 'done' : ''}" data-id="${item.id}">
       <span class="quiz-lesson-badge">第${item.lesson}課</span>
+      ${item.audioUrl ? '<span class="quiz-lesson-badge" style="background:#1d5035;color:#60d090;">🎧真人</span>' : ''}
       <span class="quiz-list-title">${escHtml(item.title)}</span>
       <span style="color:#556;font-size:0.75rem;">${listenQuizDoneToday(item.id) ? '✓ 今天做過' : '▶'}</span>
     </div>
@@ -584,14 +611,18 @@ function startListenQuiz(id) {
   document.getElementById('quizListWrap').style.display = 'none';
   const panel = document.getElementById('quizPanel');
   panel.classList.add('active');
+  const isReal = !!lqCurrent.audioUrl;
   panel.innerHTML = `
     <div class="listen-phase">
-      <button class="play-btn" id="lqPlayBtn">🔊</button>
-      <div class="play-hint">點擊播放，可以重複聽幾次都沒關係</div>
+      ${isReal
+        ? `<audio controls preload="none" style="width:100%;border-radius:10px;margin-bottom:10px;"><source src="${lqCurrent.audioUrl}" type="audio/mpeg"></audio>
+           <div class="play-hint">真人語速音檔，可以重複聽幾次都沒關係</div>`
+        : `<button class="play-btn" id="lqPlayBtn">🔊</button>
+           <div class="play-hint">點擊播放，可以重複聽幾次都沒關係</div>`}
       <button class="btn-save" id="lqReadyBtn">我聽完了，開始作答 →</button>
       <div style="margin-top:14px;"><a href="#" id="lqBackBtn" style="color:#556;font-size:0.78rem;">← 換一篇</a></div>
     </div>`;
-  document.getElementById('lqPlayBtn').addEventListener('click', () => lqSpeak(lqCurrent.script));
+  if (!isReal) document.getElementById('lqPlayBtn').addEventListener('click', () => lqSpeak(lqCurrent.script));
   document.getElementById('lqReadyBtn').addEventListener('click', renderLqQuestions);
   document.getElementById('lqBackBtn').addEventListener('click', (e) => { e.preventDefault(); backToQuizList(); });
 }
@@ -606,8 +637,11 @@ function backToQuizList() {
 
 function renderLqQuestions() {
   const panel = document.getElementById('quizPanel');
+  const isReal = !!lqCurrent.audioUrl;
   panel.innerHTML = `
-    <div style="margin-bottom:10px;"><button class="btn-save" id="lqReplayBtn" style="background:#1a2438;color:#60a0d0;">🔊 重播一次</button></div>
+    <div style="margin-bottom:10px;">${isReal
+      ? `<audio controls preload="none" style="width:100%;border-radius:10px;"><source src="${lqCurrent.audioUrl}" type="audio/mpeg"></audio>`
+      : `<button class="btn-save" id="lqReplayBtn" style="background:#1a2438;color:#60a0d0;">🔊 重播一次</button>`}</div>
     ${lqCurrent.questions.map((q,qi) => `
       <div class="q-block">
         <div class="q-text">${qi+1}. ${escHtml(q.q)}</div>
@@ -616,7 +650,7 @@ function renderLqQuestions() {
     `).join('')}
     <button class="btn-save" id="lqSubmitBtn" style="width:100%;margin-top:6px;">提交答案</button>
   `;
-  document.getElementById('lqReplayBtn').addEventListener('click', () => lqSpeak(lqCurrent.script));
+  if (!isReal) document.getElementById('lqReplayBtn').addEventListener('click', () => lqSpeak(lqCurrent.script));
   panel.querySelectorAll('.q-opt').forEach(btn => {
     btn.addEventListener('click', () => {
       const qi = btn.dataset.qi;
@@ -643,10 +677,12 @@ function gradeLqQuiz() {
   const pct = Math.round(correct / total * 100);
 
   // 自動記入聽力日誌（讓上面的統計/來源分布都吃得到這筆）
-  const words = lqCurrent.script.split(/\s+/).length;
-  const estMin = Math.max(1, Math.round(words / 130)); // 粗估：法文TTS語速約130字/分鐘
+  const isReal = !!lqCurrent.audioUrl;
+  const estMin = isReal
+    ? Math.max(1, Math.round(lqCurrent.durationSec / 60))
+    : Math.max(1, Math.round(lqCurrent.script.split(/\s+/).length / 130)); // 粗估：法文TTS語速約130字/分鐘
   const data = load();
-  data.push({ date: todayStr(), source: 'TTS測驗', min: estMin, comp: pct, notes: `《${lqCurrent.title}》第${lqCurrent.lesson}課 · 答對 ${correct}/${total}`, quizId: lqCurrent.id });
+  data.push({ date: todayStr(), source: isReal ? '真人語速測驗' : 'TTS測驗', min: estMin, comp: pct, notes: `《${lqCurrent.title}》第${lqCurrent.lesson}課 · 答對 ${correct}/${total}`, quizId: lqCurrent.id });
   save(data);
   updateStats(); updateBreakdown(); renderHistory();
 
@@ -655,17 +691,24 @@ function gradeLqQuiz() {
       <div style="font-size:2rem;font-weight:700;color:${pct>=70?'#60d090':pct>=40?'#c09040':'#d07060'}">${correct} / ${total}</div>
       <div style="font-size:0.78rem;color:#556;margin-top:4px;">答對率 ${pct}%</div>
     </div>
-    <button class="btn-save" id="lqShowScriptBtn" style="width:100%;">📄 顯示逐字稿對照</button>
-    <div class="transcript-box" id="lqTranscript">${escHtml(lqCurrent.script)}</div>
+    ${isReal
+      ? `<a class="res-link-card" href="${lqCurrent.sourceUrl}" target="_blank" rel="noopener">
+           <div><div class="res-link-title">📄 去對照逐字稿</div><div class="res-link-sub">${escHtml(lqCurrent.sourceLabel)}</div></div>
+           <span class="res-link-arrow">↗</span>
+         </a>`
+      : `<button class="btn-save" id="lqShowScriptBtn" style="width:100%;">📄 顯示逐字稿對照</button>
+         <div class="transcript-box" id="lqTranscript">${escHtml(lqCurrent.script)}</div>`}
     <div style="display:flex;gap:10px;margin-top:14px;">
       <button class="btn-save" id="lqAgainBtn" style="flex:1;">🔄 再聽一次這篇</button>
       <a href="#" id="lqDoneBtn" class="btn-back" style="flex:1;text-align:center;">← 回列表</a>
     </div>
   `;
   panel.insertAdjacentHTML('beforeend', resultHtml);
-  document.getElementById('lqShowScriptBtn').addEventListener('click', () => {
-    document.getElementById('lqTranscript').classList.toggle('show');
-  });
+  if (!isReal) {
+    document.getElementById('lqShowScriptBtn').addEventListener('click', () => {
+      document.getElementById('lqTranscript').classList.toggle('show');
+    });
+  }
   document.getElementById('lqAgainBtn').addEventListener('click', () => startListenQuiz(lqCurrent.id));
   document.getElementById('lqDoneBtn').addEventListener('click', (e) => { e.preventDefault(); backToQuizList(); });
 }
