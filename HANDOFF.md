@@ -89,7 +89,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `writing.html` | 每日2句造句，複製prompt→claude.ai→貼回記錄 | ✅ |
 | `sentence_drill.html` | **新增（07-07）**：中翻法造句練習，每天固定5句新句＋到期複習，沿用review.html同一套SRS引擎（1/3/7/14/30天），**答錯排到這輪最後重考，磨到全部答對才算完成**，跟review.html的卡片機制共用「包尾重試」邏輯 | ✅ 新建 |
 | `sentences.js` | **新增（07-07）**：常用句庫（目前98句，第1–15課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
-| `listening.html` | 聽力：**真實資源**（RFI Journal en français facile + InnerFrench，Spotify官方embed播放器）+ **自出TTS聽力測驗**（8篇，對齊已學課程，先聽不看字→作答→判分→逐字稿對照，自動記入日誌） | ✅ 大改（07-06）|
+| `listening.html` | 聽力：**真實資源**（RFI Journal en français facile + InnerFrench，Spotify官方embed播放器；**07-07新增**Podcast Français Facile的A1對話系列，連結卡不內嵌）+ **自出TTS聽力測驗**（8篇，對齊已學課程，先聽不看字→作答→判分→逐字稿對照，自動記入日誌） | ✅ 大改（07-06）|
 | `french_notes.html` | 第1–14課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音） | ✅ 修復（07-07）|
 | `chunks.js` | 複習卡庫：856張，自動從筆記抽取（1–15課，07-07補第15課88張） | ✅ |
 | `questions.js` | 共用題庫（BANK 638題 + AGREE_BANK 247題），第1–15課（07-07新增imparfait/vocab-nature/universite-vocab三個topic） | ✅ |
