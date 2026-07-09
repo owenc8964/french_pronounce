@@ -78,7 +78,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 
 | 檔案 | 用途 | 狀態 |
 |------|------|------|
-| `dashboard.html` | 指揮中心：今日處方（**8步番号**，07-07新增第⑥步造句練習）、📊每日完成率分析、今日錯題本、警報、CLB等級判定、倒數、700h、四技能、週趨勢、Duolingo週報、🔒鎖定順序開關 | ✅ |
+| `dashboard.html` | 指揮中心：今日處方（**9步番号**，07-07新增造句練習、07-09新增聽力真人語速測驗）、📊每日完成率分析、今日錯題本、警報、CLB等級判定、倒數、700h、四技能、週趨勢、Duolingo週報、🔒鎖定順序開關 | ✅ |
 | `session_timer.js` | 跨頁 session 計時器：`window.ClbSession` API，timestamp累計跨頁連續、練習頁常駐pill、**閒置3分鐘自動暫停**（用最後操作時間當停止點，不算閒置時間）、dashboard結算寫入700h | ✅ |
 | `sync_supabase.js` | 跨裝置同步：所有 `clb7_*` 存到 Supabase，開頁pull合併、變動debounce **700ms**（原2.5s縮短）自動push、**切前景也會pull**（原本只有切背景push）、離頁再push、各頁完成關鍵動作時**主動立即push**（不等debounce）|✅|
 | `quiz.html` | SRS Quiz 550+題，熱身模式、**策略選課器**（未練過/錯誤率高/量少/久沒練 排序）、暫停、更正誤判 | ✅ |
@@ -89,7 +89,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `writing.html` | 每日2句造句，複製prompt→claude.ai→貼回記錄 | ✅ |
 | `sentence_drill.html` | **新增（07-07）**：中翻法造句練習，每天固定5句新句＋到期複習，沿用review.html同一套SRS引擎（1/3/7/14/30天），**答錯排到這輪最後重考，磨到全部答對才算完成**，跟review.html的卡片機制共用「包尾重試」邏輯 | ✅ 新建 |
 | `sentences.js` | **新增（07-07）**：常用句庫（目前98句，第1–15課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
-| `listening.html` | 聽力：**真實資源**（RFI Journal en français facile + InnerFrench，Spotify官方embed播放器；**07-07新增**Podcast Français Facile的A1對話系列，連結卡不內嵌）+ **自出TTS聽力測驗**（8篇，對齊已學課程，先聽不看字→作答→判分→逐字稿對照，自動記入日誌） | ✅ 大改（07-06）|
+| `listening.html` | 聽力：**真實資源**（RFI + InnerFrench Spotify embed；Podcast Français Facile的A1對話系列連結卡）+ **自出TTS聽力測驗**（8篇，對齊已學課程）+ **07-09/07-10新增「真人語速測驗」**（LISTENING_BANK的`audioUrl`類型：真實mp3直接播放＋Claude原創TCF/TEF風格選擇題，目前7篇：麵包店/車站/市場/肉店/魚店/藥局/問路，逐字稿核對用連結卡連到來源、不存對方文字）| ✅ 大改（07-06～07-10）|
 | `french_notes.html` | 第1–14課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音） | ✅ 修復（07-07）|
 | `chunks.js` | 複習卡庫：856張，自動從筆記抽取（1–15課，07-07補第15課88張） | ✅ |
 | `questions.js` | 共用題庫（BANK 638題 + AGREE_BANK 247題），第1–15課（07-07新增imparfait/vocab-nature/universite-vocab三個topic） | ✅ |
@@ -100,7 +100,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 
 **GitHub Pages 網址：** https://owenc8964.github.io/french_pronounce/dashboard.html
 
-**今日處方順序（8步番号，中間5步依日期自動輪替，07-07新增造句練習後從7步變8步）**：① 🔥 熱身 Quiz 5題 → ②–⑥ 研讀＋專項Quiz／填表格／反射衝刺／複習卡／**造句練習（背5句常用句）** 每天輪替順序 → ⑦ ✍️ 造句（產出）→ ⑧ 📖 閱讀。①⑦⑧固定頭尾，中間5步輪替（`clb7_order_lock`可鎖定）。時數不是步驟，由頂部 session bar 全程累計，完成按🏁結算才寫入700h。
+**今日處方順序（9步番号，中間6步依日期自動輪替）**：① 🔥 熱身 Quiz 5題 → ②–⑦ 研讀＋專項Quiz／填表格／反射衝刺／複習卡／造句練習（背5句常用句）／**聽力真人語速測驗（1篇）** 每天輪替順序 → ⑧ ✍️ 造句（產出）→ ⑨ 📖 閱讀。①⑧⑨固定頭尾，中間6步輪替（`clb7_order_lock`可鎖定）。時數不是步驟，由頂部 session bar 全程累計，完成按🏁結算才寫入700h。
 
 ---
 
@@ -197,6 +197,21 @@ Owen貼了第15課逐字稿（英中法混雜、老師課堂即時翻譯），�
 4. `sentences.js`：新增10句（S_L15_1~10），88→98句。
 5. `map.html`：**沒有新建tile**，改成把地圖裡本來就存在、`unlocked:false`的兩個「未來規劃佔位格」（`imparfait`、`etudes`，B1區的Études&école）直接改成`unlocked:true, lesson:15`並更新detail文字對齊實際教的內容——地圖本來就有預先規劃63格涵蓋到B2，很多超前的格子是佔位，只要真的教到了就解鎖，不用另外新增格子。`CURRENT_LESSON`14→15。
 6. **驗證方式踩到一個preview工具的已知限制並解決**：quiz.html/dashboard.html的`questions.js`是用`<script src>`載入、`const BANK = [...]`宣告——想用`fetch+eval`重新載入验证時，因為`const`在同一個global lexical scope不能重複宣告，會拿到「表面上执行成功、但實際上還是舊binding」的偽陽性（這比HANDOFF原本記錄的「單純快取」更陰險，是JS作用域問題不是快取問題）。最後改用**注入iframe或直接把測試用的假資料push進當前頁面已載入的`BANK`陣列、用`filterLesson=15; restart()`直接驅動UI渲染**來驗證quiz.html的渲染／評分邏輯正確，另外用**Node直接eval檔案內容**（不經過瀏覽器）驗證資料本身語法正確、count正確——两条路径互補，都通過。⚠️ 以後驗證這類`const`宣告的共用.js檔案，不要迷信fetch+eval，直接Node驗證資料+瀏覽器內用`.push()`注入測UI比較可靠。
+
+### 07-09/07-10：聽力真人語速測驗——排進每日處方＋擴充到7篇
+Owen釐清listening.html的核心定位：不是只做TTS練習，而是「真人音檔（來自網路）＋Claude自己出的TCF/TEF風格模擬題」，而且**一定要排進每日處方**，不能只是選做的頁面連結。並且明確要求：新內容盡量用真人來源，不要再用TTS生成；既有TTS若保留要確保用高品質語音（既有的Amélie/Thomas優先邏輯已經滿足這點，不用改）。
+
+**技術設計**：`LISTENING_BANK`新增`audioUrl`類型（跟原本`script`的TTS類型並存於同一陣列）：
+- 有`audioUrl`的卡：播放真實mp3（`<audio controls>`），不用TTS
+- 題目全部是**Claude自己寫的原創題**，不是抄對方網站附的簡單練習題
+- 逐字稿核對步驟：有`audioUrl`的卡改成連結卡連到`sourceUrl`（對方原頁面），**不把對方逐字稿存進本站程式碼**——這是刻意的版權考量，跟TTS類型「直接顯示script文字」的呈現方式不同
+- 記錄到`clb7_listening`時`source`欄位標`真人語速測驗`（跟原本`TTS測驗`區分），時長用手動量測的`durationSec`而非字數估算
+
+**排進每日處方**：`dashboard.html`新增`listenDoneToday()`（檢查今天有無`source:'真人語速測驗'`的記錄）、加入`MIDDLE`輪替群組（study/drill/sprint/review/sentence/**listen**，6項輪替）、`stepDefs.listen`、`HABIT_STEPS`。今日處方變成9步番号。`listening.html`補上`?guided=1`參數處理（自動挑一篇今天沒做過的真人語速測驗開始，跟其他頁面guided模式一致）。
+
+**內容擴充**：用claude-in-chrome瀏覽器逐篇造訪 podcastfrancaisfacile.com 的對話庫（該站有上百篇免費A1~進階日常對話，音檔+逐字稿+理解題都公開），確認每篇的真實mp3連結（不用猜的），自己聽懂內容後寫3題原創選擇題。目前做了7篇（麵包店/車站/市場/肉店/魚店/藥局/問路，涵蓋A1~A2的購物/交通/健康/問路情境），全部在preview逐篇實測過音檔真的能播放（用`new Audio()`量測實際秒數）、題目渲染正確、評分正確、記錄正確寫入。⚠️ 這只是先做7篇，之後可以照同一套模式繼續擴充更多主題/更高難度（B1+）的真人音檔。
+
+**版權處理原則（這次確立，之後比照辦理）**：真人音檔可以直接embed播放（串流對方伺服器，不下載存本地）；題目一律自己原創，不抄對方的；逐字稿一律連結出去，不存進repo。
 
 ---
 

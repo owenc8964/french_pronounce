@@ -563,6 +563,38 @@ const LISTENING_BANK = [
       { q:"Qu'est-ce que la cliente achète en plus des tomates et des oignons ?", opts:['Une laitue','Des pommes','Du pain'], a:'Une laitue' },
       { q:'Combien paie-t-elle au total ?', opts:['3 euros','5 euros','8 euros'], a:'3 euros' },
     ]},
+  { id:'r04', lesson:15, title:'À la boucherie（真人語速）', done_key:'listen_r04',
+    audioUrl:'https://www.podcastfrancaisfacile.com/wp-content/uploads/files/a-la-boucherie.mp3',
+    durationSec:244, sourceUrl:'https://www.podcastfrancaisfacile.com/dialogue/bonjour-bienven-1.html', sourceLabel:'podcastfrancaisfacile.com',
+    questions:[
+      { q:'Où se passe cette scène ?', opts:['Chez le boucher','Chez le poissonnier','À la pharmacie'], a:'Chez le boucher' },
+      { q:'Pour combien de personnes le client achète-t-il le filet mignon ?', opts:['Trois','Deux','Quatre'], a:'Trois' },
+      { q:'Combien coûte le poulet rôti ?', opts:['15 euros','10 euros','20 euros'], a:'15 euros' },
+    ]},
+  { id:'r05', lesson:15, title:'Chez le poissonnier（真人語速）', done_key:'listen_r05',
+    audioUrl:'https://www.podcastfrancaisfacile.com/wp-content/uploads/2016/05/chez-le-poissonnier.mp3',
+    durationSec:62, sourceUrl:'https://www.podcastfrancaisfacile.com/dialogue/dialogue-chez-le-poissonnier.html', sourceLabel:'podcastfrancaisfacile.com',
+    questions:[
+      { q:"Qu'est-ce que la cliente achète pour deux personnes, en plus du merlan ?", opts:['De la soupe de poisson','Des huîtres','Du saumon'], a:'De la soupe de poisson' },
+      { q:'Qu\'est-ce que le poissonnier offre gratuitement à la cliente ?', opts:['Les croutons','Le merlan','Les crevettes'], a:'Les croutons' },
+      { q:'Combien paie la cliente au total ?', opts:['18,50 €','20 €','15 €'], a:'18,50 €' },
+    ]},
+  { id:'r06', lesson:15, title:'À la pharmacie（真人語速）', done_key:'listen_r06',
+    audioUrl:'https://www.podcastfrancaisfacile.com/wp-content/uploads/files/situation-communication-pharmacie.mp3',
+    durationSec:232, sourceUrl:'https://www.podcastfrancaisfacile.com/podcast/la-pharmacie-1.html', sourceLabel:'podcastfrancaisfacile.com',
+    questions:[
+      { q:'Dans la première situation, qui est malade ?', opts:['La femme du client','Le client lui-même','Son enfant'], a:'La femme du client' },
+      { q:'Est-ce que cette personne a de la fièvre ?', opts:['Non','Oui','On ne sait pas'], a:'Non' },
+      { q:'Dans la deuxième situation, depuis quand l\'homme a-t-il mal au ventre ?', opts:['Depuis ce matin','Depuis hier','Depuis une semaine'], a:'Depuis ce matin' },
+    ]},
+  { id:'r07', lesson:15, title:'Demander son chemin（真人語速）', done_key:'listen_r07',
+    audioUrl:'https://www.podcastfrancaisfacile.com/wp-content/uploads/files/dans-la-rue.mp3',
+    durationSec:43, sourceUrl:'https://www.podcastfrancaisfacile.com/podcast/demander-son-chemin-dans-la-rue.html', sourceLabel:'podcastfrancaisfacile.com',
+    questions:[
+      { q:"Qu'est-ce que l'homme cherche ?", opts:['Une rue','Une pharmacie','Une gare'], a:'Une rue' },
+      { q:'Quelle ligne de bus peut-il prendre ?', opts:['La ligne 21','La ligne 12','La ligne 30'], a:'La ligne 21' },
+      { q:'Est-ce que la destination est loin ?', opts:['Oui, c\'est loin','Non, c\'est tout près','On ne sait pas'], a:'Oui, c\'est loin' },
+    ]},
 ];
 
 let lqFrVoice = null;
@@ -714,6 +746,12 @@ function gradeLqQuiz() {
 }
 
 renderQuizList();
+
+// guided=1（從dashboard處方點進來）：自動挑一篇今天還沒做的真人語速測驗開始
+if (new URLSearchParams(location.search).get('guided') === '1') {
+  const next = LISTENING_BANK.find(x => x.audioUrl && !listenQuizDoneToday(x.id));
+  if (next) startListenQuiz(next.id);
+}
 </script>
 
 <!-- 懸浮快速筆記 -->

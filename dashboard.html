@@ -672,6 +672,11 @@ function writingDoneToday() {
   return getWritingData().some(e => e.date === today);
 }
 
+function listenDoneToday() {
+  const today = todayStr();
+  return getListeningData().some(e => e.date === today && e.source === '真人語速測驗');
+}
+
 function writingWeekAvg() {
   const data = getWritingData();
   const now = new Date();
@@ -699,7 +704,7 @@ function rotateArray(arr, shift) {
   return arr.slice(s).concat(arr.slice(0, s));
 }
 function getMiddleOrder() {
-  const MIDDLE = ['study', 'drill', 'sprint', 'review', 'sentence'];
+  const MIDDLE = ['study', 'drill', 'sprint', 'review', 'sentence', 'listen'];
   if (isOrderLocked()) return MIDDLE;
   const dayIndex = Math.floor(Date.now() / 86400000); // 每天遞增 1，順序跟著換
   return rotateArray(MIDDLE, dayIndex);
@@ -724,6 +729,7 @@ function buildPrescription(topicStats, todaySec) {
   const rvDue  = chunkDueCount();
   const stDone = sentenceDoneToday();
   const stDue  = sentenceDueCount();
+  const lnDone = listenDoneToday();
   const wDone = writingDoneToday();
   const rDone = readingDoneToday();
   const rAll  = getReadingData();
@@ -779,6 +785,13 @@ function buildPrescription(topicStats, todaySec) {
       badge: stDone ? 'badge-green' : 'badge-red',
       badgeText: stDone ? '✓ 完成' : '未完成',
       href: 'sentence_drill.html?guided=1', done: stDone,
+    },
+    listen: {
+      icon: '🎧', action: '聽力真人語速測驗（1篇）',
+      why: lnDone ? '今天已完成！' : '真實音檔（不是TTS），聽完作答，練真正考試會聽到的語速',
+      badge: lnDone ? 'badge-green' : 'badge-red',
+      badgeText: lnDone ? '✓ 完成' : '未完成',
+      href: 'listening.html?guided=1', done: lnDone,
     },
     writing: {
       icon: '✍️', action: '造句 2 句（產出）',
@@ -1372,6 +1385,7 @@ const HABIT_STEPS = [
   { label: '⚡反射',   getDates: () => getSprintSessions().map(s => s.date) },
   { label: '📦複習',   getDates: () => getReviewSessions().map(s => s.date) },
   { label: '🗣️背句',   getDates: () => getSentenceSessions().map(s => s.date) },
+  { label: '🎧聽力',   getDates: () => getListeningData().filter(e => e.source === '真人語速測驗').map(e => e.date) },
   { label: '✍️造句',   getDates: () => getWritingData().map(w => w.date) },
   { label: '📖閱讀',   getDates: () => getReadingData().map(r => isoToZh(r.date)) },
 ];
