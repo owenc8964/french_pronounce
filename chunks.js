@@ -5992,5 +5992,565 @@ const CHUNKS = [
   "fr": "Tu m'aides à faire cet exercice ?",
   "zh": "你可以幫我做這個練習嗎？",
   "note": "COD代名詞 m'"
+ },
+ {
+  "id": "L16_C_est_une_pause_pendant_",
+  "lesson": 16,
+  "fr": "C'est une pause pendant les études.",
+  "zh": "這是學業中的一個空檔",
+  "note": "pendant + 明確期間"
+ },
+ {
+  "id": "L16_La_c_sure_dure_longtemps",
+  "lesson": 16,
+  "fr": "La césure dure longtemps ?",
+  "zh": "空檔年持續很久嗎？",
+  "note": "longtemps 只問長短，跟現在有沒有繼續無關"
+ },
+ {
+  "id": "L16_Nous_avons_toujours_le_s",
+  "lesson": 16,
+  "fr": "Nous avons toujours le statut étudiant.",
+  "zh": "我們現在還保有學生身份",
+  "note": "toujours + 現在式 = 還在繼續"
+ },
+ {
+  "id": "L16_Je_suis_arriv_e_en_Franc",
+  "lesson": 16,
+  "fr": "Je suis arrivée en France à deux ans.",
+  "zh": "我兩歲的時候到法國",
+  "note": "à + 年紀 = 時間點"
+ },
+ {
+  "id": "L16_Je_suis_arriv_e_en_Franc_2",
+  "lesson": 16,
+  "fr": "Je suis arrivée en France il y a deux ans.",
+  "zh": "我兩年前到法國",
+  "note": "il y a = 距今多久，動作已結束"
+ },
+ {
+  "id": "L16_Je_suis_dentiste_depuis_",
+  "lesson": 16,
+  "fr": "Je suis dentiste depuis douze ans.",
+  "zh": "我當牙醫師已經12年了",
+  "note": "depuis = 從那時到現在，狀態持續"
+ },
+ {
+  "id": "L16_le_dipl_me",
+  "lesson": 16,
+  "fr": "le diplôme",
+  "zh": "學位、畢業證書",
+  "note": ""
+ },
+ {
+  "id": "L16_l_enseignant_e_",
+  "lesson": 16,
+  "fr": "l'enseignant(e)",
+  "zh": "教師",
+  "note": "跟 le professeur 同義，較中性正式"
+ },
+ {
+  "id": "L16_l__tudiant_e_",
+  "lesson": 16,
+  "fr": "l'étudiant(e)",
+  "zh": "大學生",
+  "note": ""
+ },
+ {
+  "id": "L16__tudier",
+  "lesson": 16,
+  "fr": "étudier",
+  "zh": "學習、研讀",
+  "note": ""
+ },
+ {
+  "id": "L16_faire_des__tudes",
+  "lesson": 16,
+  "fr": "faire des études",
+  "zh": "唸書、就學",
+  "note": "= étudier"
+ },
+ {
+  "id": "L16_faire_un_stage",
+  "lesson": 16,
+  "fr": "faire un stage",
+  "zh": "實習",
+  "note": "un stagiaire = 實習生"
+ },
+ {
+  "id": "L16_s_inscrire____",
+  "lesson": 16,
+  "fr": "s'inscrire (à)",
+  "zh": "報名、註冊",
+  "note": "je me suis inscrit(e) à..."
+ },
+ {
+  "id": "L16_la_note",
+  "lesson": 16,
+  "fr": "la note",
+  "zh": "成績、分數",
+  "note": "法國滿分20分，不是100分"
+ },
+ {
+  "id": "L16_le_commerce",
+  "lesson": 16,
+  "fr": "le commerce",
+  "zh": "商業",
+  "note": ""
+ },
+ {
+  "id": "L16_le_droit",
+  "lesson": 16,
+  "fr": "le droit",
+  "zh": "法律",
+  "note": "⚠️ 別跟 drôle（好笑的）搞混"
+ },
+ {
+  "id": "L16_l__conomie",
+  "lesson": 16,
+  "fr": "l'économie",
+  "zh": "經濟",
+  "note": ""
+ },
+ {
+  "id": "L16_l_informatique",
+  "lesson": 16,
+  "fr": "l'informatique",
+  "zh": "資訊工程",
+  "note": ""
+ },
+ {
+  "id": "L16_les_langues",
+  "lesson": 16,
+  "fr": "les langues",
+  "zh": "外語（研究語言本身）",
+  "note": ""
+ },
+ {
+  "id": "L16_les_lettres",
+  "lesson": 16,
+  "fr": "les lettres",
+  "zh": "文學",
+  "note": "跟 langues 不同科系"
+ },
+ {
+  "id": "L16_les_math_matiques__les_m",
+  "lesson": 16,
+  "fr": "les mathématiques (les maths)",
+  "zh": "數學",
+  "note": ""
+ },
+ {
+  "id": "L16_les_sciences",
+  "lesson": 16,
+  "fr": "les sciences",
+  "zh": "科學",
+  "note": ""
+ },
+ {
+  "id": "L16_La_France_est_un_pays_qu",
+  "lesson": 16,
+  "fr": "La France est un pays qui change.",
+  "zh": "法國是個一直在變的國家",
+  "note": "qui 取代主詞"
+ },
+ {
+  "id": "L16_C_est_un_m_tier_que_j_ad",
+  "lesson": 16,
+  "fr": "C'est un métier que j'adore.",
+  "zh": "這是我熱愛的職業",
+  "note": "que 取代受詞（COD）"
+ },
+ {
+  "id": "L16_J_ai_un_travail_qui_est_",
+  "lesson": 16,
+  "fr": "J'ai un travail qui est intéressant.",
+  "zh": "我的工作很有趣",
+  "note": "qui + 動詞（qui當主詞）"
+ },
+ {
+  "id": "L16_J_ai_des_coll_gues_que_j",
+  "lesson": 16,
+  "fr": "J'ai des collègues que j'aime beaucoup.",
+  "zh": "我有很喜歡的同事",
+  "note": "que + 主詞 + 動詞"
+ },
+ {
+  "id": "L16_Je_suis_com_dienne_et_da",
+  "lesson": 16,
+  "fr": "Je suis comédienne et danseuse. En France ou à l'étranger, je change souvent de ville pour mon travail.",
+  "zh": "我是女演員兼舞者。在法國或國外，我常為了工作換城市。",
+  "note": "Elsa"
+ },
+ {
+  "id": "L16_C_est_un_m_tier_que_j_ad_2",
+  "lesson": 16,
+  "fr": "C'est un métier que j'adore mais, parfois, c'est difficile : j'ai un rythme très différent du rythme des autres Français.",
+  "zh": "這是我熱愛的職業，但有時很難：我的作息跟其他法國人很不一樣。",
+  "note": ""
+ },
+ {
+  "id": "L16_Je_suis_n_e_en_Alg_rie_e",
+  "lesson": 16,
+  "fr": "Je suis née en Algérie et je suis arrivée en France à deux ans. Je suis informaticienne.",
+  "zh": "我在阿爾及利亞出生，兩歲時到法國。我是資訊工程師。",
+  "note": "Hana"
+ },
+ {
+  "id": "L16_La_France_est_un_pays_qu_2",
+  "lesson": 16,
+  "fr": "La France est un pays qui change mais qui garde aussi ses traditions.",
+  "zh": "法國是個一直在變、但也保留傳統的國家。",
+  "note": ""
+ },
+ {
+  "id": "L16_Je_travaille_comme_chauf",
+  "lesson": 16,
+  "fr": "Je travaille comme chauffeur. J'ai créé mon entreprise de transport de personnes.",
+  "zh": "我當司機。我創立了自己的載客運輸公司。",
+  "note": "Cyril"
+ },
+ {
+  "id": "L16__tre_ind_pendant__c_est_",
+  "lesson": 16,
+  "fr": "Être indépendant, c'est une chose que j'aime. Je n'ai pas de chef, pas de directeur. Je rêve de développer cette entreprise !",
+  "zh": "獨立工作是我喜歡的事。我沒有老闆、沒有主管。我夢想把這間公司做大！",
+  "note": ""
+ },
+ {
+  "id": "L16_le_bureau",
+  "lesson": 16,
+  "fr": "le bureau",
+  "zh": "辦公室",
+  "note": ""
+ },
+ {
+  "id": "L16_le_poste",
+  "lesson": 16,
+  "fr": "le poste",
+  "zh": "職位／辦公桌位子",
+  "note": "⚠️ 雙重意思"
+ },
+ {
+  "id": "L16_le_contrat",
+  "lesson": 16,
+  "fr": "le contrat",
+  "zh": "合約",
+  "note": "signer un contrat"
+ },
+ {
+  "id": "L16_les_horaires",
+  "lesson": 16,
+  "fr": "les horaires",
+  "zh": "上班時段",
+  "note": ""
+ },
+ {
+  "id": "L16_la_machine___caf_",
+  "lesson": 16,
+  "fr": "la machine à café",
+  "zh": "咖啡機",
+  "note": ""
+ },
+ {
+  "id": "L16_la_pause_d_jeuner",
+  "lesson": 16,
+  "fr": "la pause-déjeuner",
+  "zh": "午休",
+  "note": "法國通常只有一個正式休息時段"
+ },
+ {
+  "id": "L16_le_restaurant_d_entrepri",
+  "lesson": 16,
+  "fr": "le restaurant d'entreprise",
+  "zh": "公司餐廳",
+  "note": "只有大公司才有"
+ },
+ {
+  "id": "L16_le_salaire",
+  "lesson": 16,
+  "fr": "le salaire",
+  "zh": "薪水",
+  "note": ""
+ },
+ {
+  "id": "L16_le_t_l_travail___faire_d",
+  "lesson": 16,
+  "fr": "le télétravail / faire du télétravail",
+  "zh": "遠端工作",
+  "note": "動詞可說 télétravailler（非正式）"
+ },
+ {
+  "id": "L16_l_agriculteur___l_agricu",
+  "lesson": 16,
+  "fr": "l'agriculteur / l'agricultrice",
+  "zh": "農夫",
+  "note": ""
+ },
+ {
+  "id": "L16_l_artiste__m__f__",
+  "lesson": 16,
+  "fr": "l'artiste (m./f.)",
+  "zh": "藝術家",
+  "note": ""
+ },
+ {
+  "id": "L16_le_boucher___la_bouch_re",
+  "lesson": 16,
+  "fr": "le boucher / la bouchère",
+  "zh": "肉販",
+  "note": ""
+ },
+ {
+  "id": "L16_le_chauffeur",
+  "lesson": 16,
+  "fr": "le chauffeur",
+  "zh": "司機",
+  "note": ""
+ },
+ {
+  "id": "L16_le_com_dien___la_com_die",
+  "lesson": 16,
+  "fr": "le comédien / la comédienne",
+  "zh": "演員（不限電影，脫口秀也算）",
+  "note": ""
+ },
+ {
+  "id": "L16_le_danseur___la_danseuse",
+  "lesson": 16,
+  "fr": "le danseur / la danseuse",
+  "zh": "舞者",
+  "note": ""
+ },
+ {
+  "id": "L16_le_la_journaliste",
+  "lesson": 16,
+  "fr": "le/la journaliste",
+  "zh": "記者",
+  "note": ""
+ },
+ {
+  "id": "L16_le_la_libraire",
+  "lesson": 16,
+  "fr": "le/la libraire",
+  "zh": "書店店員",
+  "note": ""
+ },
+ {
+  "id": "L16_le_la_photographe",
+  "lesson": 16,
+  "fr": "le/la photographe",
+  "zh": "攝影師",
+  "note": ""
+ },
+ {
+  "id": "L16_le_policier___la_polici_",
+  "lesson": 16,
+  "fr": "le policier / la policière",
+  "zh": "警察",
+  "note": ""
+ },
+ {
+  "id": "L16_communiquer",
+  "lesson": 16,
+  "fr": "communiquer",
+  "zh": "溝通",
+  "note": ""
+ },
+ {
+  "id": "L16__crire_un_mail",
+  "lesson": 16,
+  "fr": "écrire un mail",
+  "zh": "寫信/寫email",
+  "note": ""
+ },
+ {
+  "id": "L16_lire_un_rapport",
+  "lesson": 16,
+  "fr": "lire un rapport",
+  "zh": "讀報告",
+  "note": ""
+ },
+ {
+  "id": "L16_s_organiser",
+  "lesson": 16,
+  "fr": "s'organiser",
+  "zh": "安排自己的工作/行程",
+  "note": ""
+ },
+ {
+  "id": "L16_pr_parer_une_r_union",
+  "lesson": 16,
+  "fr": "préparer une réunion",
+  "zh": "準備會議",
+  "note": ""
+ },
+ {
+  "id": "L16_travailler_sur_un_dossie",
+  "lesson": 16,
+  "fr": "travailler sur un dossier",
+  "zh": "處理一份文件/案子",
+  "note": ""
+ },
+ {
+  "id": "L16_le_mail___le_courriel",
+  "lesson": 16,
+  "fr": "le mail / le courriel",
+  "zh": "email",
+  "note": "實體信件是 le courrier（假朋友）"
+ },
+ {
+  "id": "L16_l_ordinateur__portable_",
+  "lesson": 16,
+  "fr": "l'ordinateur (portable)",
+  "zh": "（筆記型）電腦",
+  "note": ""
+ },
+ {
+  "id": "L16_le_t_l_phone___le_smartp",
+  "lesson": 16,
+  "fr": "le téléphone / le smartphone",
+  "zh": "電話/智慧型手機",
+  "note": ""
+ },
+ {
+  "id": "L16_la_visioconf_rence",
+  "lesson": 16,
+  "fr": "la visioconférence",
+  "zh": "視訊會議",
+  "note": ""
+ },
+ {
+  "id": "L16_le_chef___la_cheffe",
+  "lesson": 16,
+  "fr": "le chef / la cheffe",
+  "zh": "主管",
+  "note": ""
+ },
+ {
+  "id": "L16_le_la_coll_gue",
+  "lesson": 16,
+  "fr": "le/la collègue",
+  "zh": "同事",
+  "note": ""
+ },
+ {
+  "id": "L16_le_directeur___la_direct",
+  "lesson": 16,
+  "fr": "le directeur / la directrice",
+  "zh": "總監、負責整間公司的人",
+  "note": ""
+ },
+ {
+  "id": "L16_l__quipe__f__",
+  "lesson": 16,
+  "fr": "l'équipe (f.)",
+  "zh": "團隊",
+  "note": ""
+ },
+ {
+  "id": "L16_le_la_responsable",
+  "lesson": 16,
+  "fr": "le/la responsable",
+  "zh": "主管、負責人",
+  "note": ""
+ },
+ {
+  "id": "L16_Je_travaille_beaucoup_",
+  "lesson": 16,
+  "fr": "Je travaille beaucoup.",
+  "zh": "我工作很多",
+  "note": "beaucoup 修飾動詞"
+ },
+ {
+  "id": "L16_Je_suis_tr_s_content_",
+  "lesson": 16,
+  "fr": "Je suis très content.",
+  "zh": "我很開心",
+  "note": "très 修飾形容詞"
+ },
+ {
+  "id": "L16_Je_suis_trop_fatigu__",
+  "lesson": 16,
+  "fr": "Je suis trop fatigué.",
+  "zh": "我太累了",
+  "note": "trop 帶負面意味，暗示想改變狀況"
+ },
+ {
+  "id": "L16_C_est_trop_bien__",
+  "lesson": 16,
+  "fr": "C'est trop bien !",
+  "zh": "這太好了！",
+  "note": "口語中trop有時反而加強正面語氣"
+ },
+ {
+  "id": "L16_Je_suis_pour_le_t_l_trav",
+  "lesson": 16,
+  "fr": "Je suis pour le télétravail parce que c'est pratique.",
+  "zh": "我贊成遠端工作，因為很方便。",
+  "note": ""
+ },
+ {
+  "id": "L16_Je_suis_contre_le_t_l_tr",
+  "lesson": 16,
+  "fr": "Je suis contre le télétravail parce que je n'aime pas travailler à la maison.",
+  "zh": "我反對遠端工作，因為我不喜歡在家工作。",
+  "note": ""
+ },
+ {
+  "id": "L16_Mon_patron_est_contre_le",
+  "lesson": 16,
+  "fr": "Mon patron est contre le télétravail.",
+  "zh": "我老闆反對遠端工作。",
+  "note": "patron = 老闆"
+ },
+ {
+  "id": "L16__a_ne_veut_pas_dire___",
+  "lesson": 16,
+  "fr": "Ça ne veut pas dire...",
+  "zh": "這不代表......",
+  "note": "澄清誤解時的開頭"
+ },
+ {
+  "id": "L16_Tu_comprends_tout_de_sui",
+  "lesson": 16,
+  "fr": "Tu comprends tout de suite ?",
+  "zh": "你馬上就懂了？",
+  "note": ""
+ },
+ {
+  "id": "L16_On_va_voir_le_prochain_",
+  "lesson": 16,
+  "fr": "On va voir le prochain.",
+  "zh": "我們來看下一個。",
+  "note": ""
+ },
+ {
+  "id": "L16_Est_ce_que_toi__tu____",
+  "lesson": 16,
+  "fr": "Est-ce que toi, tu...?",
+  "zh": "那你呢，你......？",
+  "note": "換人提問的起手式"
+ },
+ {
+  "id": "L16_Tout___fait_",
+  "lesson": 16,
+  "fr": "Tout à fait.",
+  "zh": "完全正確、沒錯。",
+  "note": ""
+ },
+ {
+  "id": "L16__a__on_va_voir_l__",
+  "lesson": 16,
+  "fr": "Ça, on va voir là.",
+  "zh": "這個我們接下來會看到。",
+  "note": ""
+ },
+ {
+  "id": "L16_Je_ne_sais_pas_si_c_est_",
+  "lesson": 16,
+  "fr": "Je ne sais pas si c'est un mot officiel, mais tout le monde comprend.",
+  "zh": "我不知道這是不是正式的字，但大家都聽得懂。",
+  "note": ""
  }
 ];

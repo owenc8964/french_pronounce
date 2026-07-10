@@ -130,4 +130,16 @@ const SENTENCES = [
   { id: 'S_L15_8', lesson: 15, fr: 'Tu m\'aides à faire cet exercice ?', zh: '你可以幫我做這個練習嗎？', note: '' },
   { id: 'S_L15_9', lesson: 15, fr: 'J\'étudie le droit.', zh: '我讀法律系。', note: '' },
   { id: 'S_L15_10', lesson: 15, fr: 'Les cours sont excellents.', zh: '課程很棒。', note: '' },
+
+  // 第16課
+  { id: 'S_L16_1', lesson: 16, fr: 'Nous avons toujours le statut étudiant.', zh: '我們現在還保有學生身份。', note: 'toujours + 現在式' },
+  { id: 'S_L16_2', lesson: 16, fr: 'Pierre a étudié le droit pendant deux ans, mais maintenant il étudie le commerce.', zh: '皮耶讀了兩年法律，但現在他在讀商業。', note: 'pendant + 明確期間' },
+  { id: 'S_L16_3', lesson: 16, fr: 'Je suis dentiste depuis douze ans.', zh: '我當牙醫師已經12年了。', note: 'depuis + 持續到現在' },
+  { id: 'S_L16_4', lesson: 16, fr: "C'est un métier que j'adore.", zh: '這是我熱愛的職業。', note: 'que 取代受詞' },
+  { id: 'S_L16_5', lesson: 16, fr: 'La France est un pays qui change.', zh: '法國是個一直在變的國家。', note: 'qui 取代主詞' },
+  { id: 'S_L16_6', lesson: 16, fr: "J'ai un travail qui est intéressant.", zh: '我的工作很有趣。', note: '' },
+  { id: 'S_L16_7', lesson: 16, fr: "J'ai des collègues que j'aime beaucoup.", zh: '我有很喜歡的同事。', note: '' },
+  { id: 'S_L16_8', lesson: 16, fr: "Je suis pour le télétravail parce que c'est pratique.", zh: '我贊成遠端工作，因為很方便。', note: 'être pour + parce que' },
+  { id: 'S_L16_9', lesson: 16, fr: 'Je travaille beaucoup en ce moment.', zh: '我最近工作很多。', note: 'beaucoup + 動詞' },
+  { id: 'S_L16_10', lesson: 16, fr: 'Je suis trop fatigué.', zh: '我太累了。', note: 'trop 帶負面意味' },
 ];

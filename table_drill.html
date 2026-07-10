@@ -82,6 +82,7 @@
     .type-badge.adj     { background: #d4640a; }
     .type-badge.article { background: #2ca85c; }
     .type-badge.prep    { background: #8b2ce5; }
+    .type-badge.gram    { background: #c02a5c; }
 
     .card-title { font-size: 1.05rem; font-weight: 700; }
     .card-zh    { font-size: 0.82rem; color: #999; }
@@ -192,6 +193,7 @@
     <button class="type-btn"        data-type="adj"     onclick="setType('adj')">形容詞</button>
     <button class="type-btn"        data-type="article" onclick="setType('article')">冠詞</button>
     <button class="type-btn"        data-type="prep"    onclick="setType('prep')">介係詞</button>
+    <button class="type-btn"        data-type="gram"    onclick="setType('gram')">文法詞</button>
   </div>
 </div>
 
@@ -563,6 +565,51 @@ const TABLES = [
     ]
   },
 
+  {
+    id:'duree-pendant-longtemps-toujours', title:'la durée', zh:'pendant／longtemps／toujours 選填',
+    type:'gram', lesson:16,
+    note:'longtemps=只問長短；pendant=明確期間；toujours=現在還在繼續（配現在式）',
+    headers:['句子','填入'],
+    rows:[
+      ["C'est une pause ...... les études.",                        {a:'pendant',   h:false}],
+      ["La césure dure ...... ?",                                    {a:'longtemps', h:true }],
+      ["Nous avons ...... le statut étudiant.",                      {a:'toujours',  h:true }],
+      ["Pierre a étudié le droit ...... deux ans, mais maintenant il étudie le commerce.", {a:'pendant', h:true}],
+      ["Nous sommes restés en Angleterre ...... cinq ans.",          {a:'pendant',   h:true }],
+      ["Nous y avons habité ......",                                 {a:'longtemps', h:true }],
+    ]
+  },
+
+  {
+    id:'qui-que', title:'pronoms relatifs qui / que', zh:'關係代詞選填',
+    type:'gram', lesson:16,
+    note:'qui取代主詞，後面直接接動詞；que取代受詞，後面接主詞+動詞',
+    headers:['句子','填入'],
+    rows:[
+      ["La France est un pays ...... change.",                       {a:'qui', h:false}],
+      ["C'est un métier ...... j'adore.",                            {a:'que', h:true }],
+      ["J'ai des collègues ...... sont sympathiques.",                {a:'qui', h:true }],
+      ["C'est une entreprise ...... nous connaissons bien.",         {a:'que', h:true }],
+      ["J'ai des horaires ...... sont difficiles.",                  {a:'qui', h:true }],
+      ["C'est une idée ...... est intéressante !",                   {a:'qui', h:true }],
+    ]
+  },
+
+  {
+    id:'intensite-adverbes', title:"l'intensité", zh:'un peu／assez／très／beaucoup／trop 選填',
+    type:'gram', lesson:16,
+    note:'très只接形容詞；beaucoup只接動詞；un peu/assez/trop兩者都可接',
+    headers:['句子','填入'],
+    rows:[
+      ["Je suis ...... content ! (+++)",                             {a:'très',     h:false}],
+      ["Je travaille ...... . (+++)",                                {a:'beaucoup', h:true }],
+      ["J'ai une visioconférence ...... importante aujourd'hui. (+++)", {a:'très',  h:true }],
+      ["Tu travailles ...... cette semaine ! (+++)",                 {a:'beaucoup', h:true }],
+      ["Je ne peux pas venir, je suis ...... fatigué. (négatif)",     {a:'trop',     h:true }],
+      ["On est ...... seuls avec son ordinateur. (+)",                {a:'un peu',   h:true }],
+    ]
+  },
+
   // ── 形容詞 ───────────────────────────────────────────────
 
   {
@@ -791,7 +838,7 @@ let roundWrong = [];      // 這一輪（主輪或複習輪）目前為止答錯
 let reviewPassCount = 0;  // 這次做了幾輪複習（供結束畫面顯示）
 let onSummary  = false;   // 是否已經在結束畫面（這輪已完整結束，切難度/類型不用再問）
 
-const TYPE_LABEL = { verb:'動詞', adj:'形容詞', article:'冠詞', prep:'介係詞' };
+const TYPE_LABEL = { verb:'動詞', adj:'形容詞', article:'冠詞', prep:'介係詞', gram:'文法詞' };
 
 // ════════════════════════════════════════════════════════════
 // 初始化

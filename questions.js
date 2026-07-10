@@ -875,6 +875,40 @@ const BANK = [
   { lesson:15, topic:'universite-vocab', type:'trans', q:'系辦、行政處', hint:'', a:'le secrétariat', aNote:'', askClaude:true },
   { lesson:15, topic:'universite-vocab', type:'choose', q:'法國「licence」（學士）要讀幾年？', hint:'', a:'3年', aNote:'licence 3年、master 5年、doctorat 8年', opts:['2年','3年','4年'] },
   { lesson:15, topic:'universite-vocab', type:'trans', q:'旁聽一堂課', hint:'assister à... en amphi', a:'assister à un cours', aNote:'amphi = 階梯教室', askClaude:true },
+
+  // ── 第16課：durée（pendant/longtemps/toujours/depuis） ──
+  { lesson:16, topic:'duree', type:'choose', q:'哪個詞只問「時間長不長」，跟現在有沒有繼續無關？', hint:'', a:'longtemps', aNote:'longtemps純粹講長度；toujours才是專講現在還在做', opts:['longtemps','toujours','pendant'] },
+  { lesson:16, topic:'duree', type:'choose', q:'toujours 表示「還在繼續」時，動詞要用什麼時態？', hint:'', a:'現在式', aNote:'Je suis toujours à l\'université（不能用passé composé）', opts:['現在式','passé composé','futur proche'] },
+  { lesson:16, topic:'duree', type:'fill', q:"Pierre a étudié le droit _____ deux ans, mais maintenant il étudie le commerce.", hint:'明確期間+已結束', a:'pendant', aNote:'pendant + 名詞 = 明確算得出來的期間' },
+  { lesson:16, topic:'duree', type:'fill', q:"Nous avons _____ le statut étudiant.", hint:'現在還保有', a:'toujours', aNote:'toujours + 現在式 = 還在繼續' },
+  { lesson:16, topic:'duree', type:'choose', q:'「Je suis dentiste depuis douze ans.」意思是？', hint:'', a:'從12年前當牙醫到現在', aNote:'depuis = 從那時持續到現在', opts:['從12年前當牙醫到現在','12年前當過牙醫，現在不是了','12年後會當牙醫'] },
+  { lesson:16, topic:'duree', type:'choose', q:'「il y a deux ans」是什麼意思？', hint:'', a:'兩年前（動作已結束）', aNote:'跟「à deux ans」（在兩歲時）、「depuis deux ans」（持續兩年到現在）不同', opts:['兩年前（動作已結束）','在兩歲的時候','持續兩年到現在'] },
+  { lesson:16, topic:'duree', type:'trans', q:'我贊成遠端工作，因為很方便。', hint:'être pour + parce que', a:'Je suis pour le télétravail parce que c\'est pratique.', aNote:'', askClaude:true },
+  { lesson:16, topic:'duree', type:'trans', q:'這是學業中的一個空檔。', hint:'pendant', a:'C\'est une pause pendant les études.', aNote:'', askClaude:true },
+
+  // ── 第16課：qui / que 關係代詞 ──
+  { lesson:16, topic:'qui-que', type:'choose', q:'La France est un pays ___ change.', hint:'change的主詞是「pays」', a:'qui', aNote:'qui取代主詞，後面直接接動詞', opts:['qui','que'] },
+  { lesson:16, topic:'qui-que', type:'choose', q:"C'est un métier ___ j'adore.", hint:'j\'adore的受詞是「métier」', a:'que', aNote:'que取代受詞（COD），後面接主詞+動詞', opts:['qui','que'] },
+  { lesson:16, topic:'qui-que', type:'choose', q:"J'ai des collègues ___ sont sympathiques.", hint:'', a:'qui', aNote:'qui + 動詞（qui本身當主詞）', opts:['qui','que'] },
+  { lesson:16, topic:'qui-que', type:'choose', q:"C'est une entreprise ___ nous connaissons bien.", hint:'', a:'que', aNote:'que + 主詞(nous) + 動詞', opts:['qui','que'] },
+  { lesson:16, topic:'qui-que', type:'fill', q:"J'ai un métier _____ il adore.", hint:'que 在母音前要縮寫', a:"qu'", aNote:"que → qu' 在母音/啞音h前；qui 永遠不縮寫" },
+  { lesson:16, topic:'qui-que', type:'choose', q:'qui 遇到母音開頭的字（如 il, elle）要不要縮寫？', hint:'', a:'不用，qui永遠不縮寫', aNote:'只有que會縮寫成qu\'，qui不會', opts:['不用，qui永遠不縮寫','要縮寫成qu\''] },
+  { lesson:16, topic:'qui-que', type:'trans', q:'我的工作很有趣。（用qui合併成一句）', hint:'J\'ai un travail. Ce travail est intéressant.', a:"J'ai un travail qui est intéressant.", aNote:'', askClaude:true },
+  { lesson:16, topic:'qui-que', type:'trans', q:'我有很喜歡的同事。（用que合併成一句）', hint:'J\'ai des collègues. J\'aime beaucoup ces collègues.', a:"J'ai des collègues que j'aime beaucoup.", aNote:'', askClaude:true },
+
+  // ── 第16課：l'intensité（un peu/assez/très/beaucoup/trop） ──
+  { lesson:16, topic:'intensite', type:'choose', q:'très 修飾什麼？', hint:'', a:'形容詞', aNote:'très只能接形容詞，beaucoup只能接動詞', opts:['形容詞','動詞','名詞'] },
+  { lesson:16, topic:'intensite', type:'choose', q:'beaucoup 修飾什麼？', hint:'', a:'動詞', aNote:'Je travaille beaucoup（不能說je travaille très）', opts:['形容詞','動詞','名詞'] },
+  { lesson:16, topic:'intensite', type:'fill', q:'Je suis _____ content ! (+++)', hint:'content是形容詞', a:'très', aNote:'très + 形容詞' },
+  { lesson:16, topic:'intensite', type:'fill', q:'Tu travailles _____ cette semaine ! (+++)', hint:'travailles是動詞', a:'beaucoup', aNote:'beaucoup + 動詞' },
+  { lesson:16, topic:'intensite', type:'choose', q:'「trop」通常帶什麼語感？', hint:'', a:'負面（超過該有的量，暗示想改變）', aNote:'Je suis trop fatigué暗示累到想改變狀況；très fatigué只是描述程度', opts:['負面（超過該有的量，暗示想改變）','完全中性','只能用在好事上'] },
+
+  // ── 第16課：職場詞彙 ──
+  { lesson:16, topic:'metier-travail-vocab', type:'trans', q:'合約', hint:'', a:'le contrat', aNote:'', askClaude:true },
+  { lesson:16, topic:'metier-travail-vocab', type:'trans', q:'薪水', hint:'', a:'le salaire', aNote:'', askClaude:true },
+  { lesson:16, topic:'metier-travail-vocab', type:'trans', q:'遠端工作', hint:'faire du...', a:'le télétravail|faire du télétravail', aNote:'', askClaude:true },
+  { lesson:16, topic:'metier-travail-vocab', type:'choose', q:'法文的「mail」是什麼意思？', hint:'跟英文不一樣', a:'email', aNote:'法文mail/courriel=email；實體信件是le courrier，是個假朋友', opts:['email','實體信件','包裹'] },
+  { lesson:16, topic:'metier-travail-vocab', type:'trans', q:'肉販', hint:'', a:'le boucher|la bouchère', aNote:'', askClaude:true },
 ];
 // ── ID 函數 ──
 function qId(q) {
