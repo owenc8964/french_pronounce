@@ -96,7 +96,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `verb_reference.html` | 動詞參考表，發音邏輯已跟其他頁統一（原本完全沒篩選） | ✅ 修復（07-07）|
 | `tracker.html` | 舊版計時器（autostart、切分頁自動暫停）+ 700h 進度，功能已被 session_timer.js 取代但保留 | 舊版 |
 | `speaking.html` | 口說日誌（僅記錄有無/時長，不評分內容） | ✅ |
-| `map.html` | 課程地圖（63格），已更新至第16課（解鎖imparfait+études&école+**07-10新增travail+relatifs兩塊**） | ✅ |
+| `map.html` | 課程地圖（63格），已更新至第16課（解鎖imparfait+études&école+travail+relatifs）；**07-11新增「📐文法大局觀」分頁**——把63格裡`gram:true`的26個純文法格重新依7大類（動詞現在式/時態/語氣建議被動、代名詞、冠詞疑問句否定、形容詞比較、連接詞論述）分組展示，每格保留原本CEFR配色，已解鎖格可點連結跳回`french_notes.html`對應課次複習 | ✅ |
 
 **GitHub Pages 網址：** https://owenc8964.github.io/french_pronounce/dashboard.html
 
@@ -243,6 +243,18 @@ Owen回饋：儀表板計時器很不穩，「動不動就斷掉」，具體是�
 
 **驗證**：用`fetch(url,{cache:'no-store'}).then(eval)`重新載入最新`session_timer.js`（避開preview的.js快取，這是HANDOFF已知的坑）後直接在console模擬兩個情境——① 呼叫兩次`start()`確認累計秒數不會被洗成0 ② 用`Object.defineProperty(document,'hidden',{get:()=>true})`偽裝分頁進入背景，確認閒置檢查迴圈跑過一次tick後`running`依然是true。兩個情境都通過。另外也在dashboard實測正常情況下的暫停/繼續，確認沒有因為這次修改而弄壞原本就正常的行為。
 
+### 07-11：查了每個分頁是否都有計時器＋新增map.html「文法大局觀」分頁
+
+Owen問「確定現有的每個分頁都有計時嗎？」，沒有直接信HANDOFF舊清單，改用`grep`逐一查證每個`.html`檔案是否include `session_timer.js`。結論：**9步今日處方用到的頁面（quiz/table_drill/verb_sprint/review/sentence_drill/listening/writing/reading+dashboard）全部都有**；`speaking`/`tracker`/`map`/`verb_reference`故意不計時（合理，不是練習頁）；但發現一個真缺口——`french_basics.html`（發音練習：數字/星期/月份/Sons du Français/文法表，是`french_notes.html`頂部導覽列直接連過去的真實互動工具）完全沒有計時器，在裡面練習的時間不會算進700h。另外也發現4個孤兒檔案（`french_sounds.html`/`index.html`/`time_editor.html`/`french_notes拷貝.html`，都未加入git、沒有任何頁面連過去）。Owen當下選擇「先不用」處理這兩件事，留待之後決定。
+
+**後續聊到買書/免費資源找文法練習**，Owen自己意識到一個更根本的問題：他沒有「文法大局觀」，不知道法語文法的全貌跟自己卡在哪裡，所以不確定該去外面找什麼內容整理進系統。查了現況發現：`questions.js`的`BANK`已經有40+個`topic`在追蹤正確率（`dashboard.html`的`getTopicStats()`），但只被攤成一條扁平的「嚴重弱點」警示文字，沒有分類、沒有大局觀視覺化。
+
+**做的事**：不新增資料源，直接重組`map.html`既有的63格`TILES`——幫其中26格純文法點（動詞現在式/時態/語氣建議被動、代名詞、冠詞疑問句否定、形容詞比較、連接詞論述，7大類）標記`gram:true, cat:'...'`，新增「📐文法大局觀」分頁（跟原本「🗺課程地圖」分頁切換），依文法類別重新分組展示，**每格保留自己原本的CEFR等級配色**（用新的`tz-a1/a2/b1/b2`class，不依賴外層容器的zone class，所以同一個文法類別裡可以同時看到A2綠、B1橙、B2紫混在一起，直接呈現「這塊文法我從哪裡學到哪裡」的進度感）。已解鎖的格子在detail面板新增「📖回筆記完整複習這個文法點→」連結，直接跳`french_notes.html#lesson-N`。
+
+**驗證**：preview測試——分頁切換正常、文法大局觀render出全部26格分7類、已解鎖格點擊面板正確顯示連結（href正確指向對應課次）、未解鎖格正確隱藏連結、切回原本課程地圖分頁功能沒有被破壞（面板點擊/開合都正常）。
+
+⚠️ **待Owen決定的兩件事（沒有動，留給下次）**：①`french_basics.html`要不要補`session_timer.js` ②4個孤兒檔案（`french_sounds.html`/`index.html`/`time_editor.html`/`french_notes拷貝.html`）要清掉還是接進系統。
+
 ---
 
 ## 之前 session 做了什麼（2026-07-02 ～ 07-03）
@@ -322,6 +334,8 @@ Owen回饋：儀表板計時器很不穩，「動不動就斷掉」，具體是�
 6. **verb_sprint擴充**（等54格大面積變綠後）：passé composé助動詞+participes、imparfait。
 7. **產出能力真實評分**（見上方核心目標與現況表）：若要更準評估口說/寫作程度，可考慮定期完整模擬TCF/TEF口說寫作題並照官方標準評分記錄趨勢。
 8. **錯題本延伸**：昨日錯題回顧（隔日再測）。
+9. **french_basics.html 缺計時器**（07-11發現）：`french_notes.html`頂部導覽直接連過去的發音練習真實互動工具（數字/星期/月份/Sons du Français/文法表），完全沒有`session_timer.js`，裡面練習的時間不會算進700h。Owen說先不用處理，之後要做的話只要照其他練習頁的模式補一行`<script src="session_timer.js">`即可。
+10. **4個孤兒檔案待決定**（07-11發現，都未加入git、沒有任何頁面連過去）：`french_sounds.html`、`index.html`（兩個title都是"Sons du Français"，內容可能跟french_basics.html重複）、`time_editor.html`、`french_notes拷貝.html`（筆記備份/複本）。要清掉還是接進系統，問過Owen他說先不用，留著晚點決定。
 
 ---
 

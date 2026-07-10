@@ -105,6 +105,38 @@ header {
 .zone-b2 .tile.unlocked { border-color: #4a1a48; box-shadow: 0 0 10px rgba(180,80,200,0.10); }
 .zone-b2 .tile.unlocked .tile-badge { background: #180018; color: #c080d0; }
 
+/* ── View tabs（課程地圖 / 文法大局觀）── */
+.view-tabs { display: flex; gap: 8px; justify-content: center; margin: 0 16px 20px; }
+.view-tab {
+  background: #0d1020; border: 1px solid #1a2438; color: #667080;
+  padding: 8px 18px; border-radius: 20px; font-size: 0.8rem; cursor: pointer;
+  font-family: inherit; transition: all 0.15s;
+}
+.view-tab.active { background: #1a2438; color: #f0c060; border-color: #3a3050; }
+.view-tab:hover { color: #ddd8cc; }
+
+/* ── 文法大局觀：每個 tile 依自己原本的 CEFR 等級上色（不看外層分類容器）── */
+.cat-wrap .zone-head { border-color: #1e2a40; }
+.cat-wrap .zone-name { color: #a8b0c0; }
+.cat-wrap .zone-desc { color: #445060; }
+.cat-wrap .zone-prog { color: #667080; }
+
+.tile.unlocked.tz-a1 { border-color: #1d5035; box-shadow: 0 0 10px rgba(60,190,100,0.10); }
+.tile.unlocked.tz-a1 .tile-badge { background: #0c2218; color: #60d090; }
+.tile.unlocked.tz-a2 { border-color: #1d3a5a; box-shadow: 0 0 10px rgba(60,130,210,0.10); }
+.tile.unlocked.tz-a2 .tile-badge { background: #0c1828; color: #60a0d0; }
+.tile.unlocked.tz-b1 { border-color: #4a3a18; box-shadow: 0 0 10px rgba(210,155,60,0.10); }
+.tile.unlocked.tz-b1 .tile-badge { background: #180e00; color: #d0a060; }
+.tile.unlocked.tz-b2 { border-color: #4a1a48; box-shadow: 0 0 10px rgba(180,80,200,0.10); }
+.tile.unlocked.tz-b2 .tile-badge { background: #180018; color: #c080d0; }
+
+.panel-note-link {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 14px;
+  background: #12351f; color: #7fe0a0; border: 1px solid #2c6b45;
+  padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; text-decoration: none;
+}
+.panel-note-link:hover { opacity: 0.85; }
+
 /* ── Grid ── */
 .tile-grid {
   display: grid;
@@ -245,7 +277,13 @@ header {
   <div class="legend-item"><div class="legend-sq sq-b2"></div> B2 目標</div>
 </div>
 
+<div class="view-tabs">
+  <button class="view-tab active" id="tabMap">🗺 課程地圖</button>
+  <button class="view-tab" id="tabGram">📐 文法大局觀</button>
+</div>
+
 <div id="mapRoot"></div>
+<div id="gramRoot" style="display:none;"></div>
 
 <div class="panel-overlay" id="overlay" onclick="bgClose(event)">
   <div class="panel" id="panel">
@@ -260,6 +298,7 @@ header {
     </div>
     <div class="panel-status" id="pStatus"></div>
     <div class="panel-body"   id="pBody"></div>
+    <a class="panel-note-link" id="pNoteLink" href="#" style="display:none;">📖 回筆記完整複習這個文法點 →</a>
   </div>
 </div>
 
@@ -309,23 +348,23 @@ const TILES = [
     hint:'Rouge · Bleu · Vert · Jaune', unlocked:true, lesson:4,
     detail:'Couleurs et accord: rouge, bleu/bleue, vert/verte, jaune, orange (invariable), blanc/blanche, noir/noire, gris/grise, rose, violet/violette, marron (invariable). Accord avec le nom: une robe bleue, des yeux verts.' },
 
-  { id:'etre-avoir',   zone:'A1', icon:'⚡', name:'Être & Avoir',
+  { id:'etre-avoir',   zone:'A1', icon:'⚡', name:'Être & Avoir', gram:true, cat:'verbe-present',
     hint:'Je suis · Tu as · Il est', unlocked:true, lesson:1,
     detail:'Conjugaison présent de être (je suis, tu es, il/elle est, nous sommes, vous êtes, ils/elles sont) et avoir (j\'ai, tu as, il/elle a, nous avons, vous avez, ils/elles ont). + s\'appeler (je m\'appelle…) et aimer (j\'aime…).' },
 
-  { id:'er-verbs',     zone:'A1', icon:'📝', name:'Verbes en -ER',
+  { id:'er-verbs',     zone:'A1', icon:'📝', name:'Verbes en -ER', gram:true, cat:'verbe-present',
     hint:'Parler · Manger · Habiter', unlocked:true, lesson:2,
     detail:'Plus de 90% des verbes français. Modèle parler: je parle, tu parles, il parle, nous parlons, vous parlez, ils parlent. Particularités orthographiques: manger (nous mangeons), commencer (nous commençons), acheter (j\'achète).' },
 
-  { id:'articles',     zone:'A1', icon:'📚', name:'Articles',
+  { id:'articles',     zone:'A1', icon:'📚', name:'Articles', gram:true, cat:'base',
     hint:'le · la · un · une · des', unlocked:true, lesson:2,
     detail:'Articles définis (le, la, l\', les) pour ce qu\'on connaît. Indéfinis (un, une, des) pour l\'introduction. Contractions: du (de+le), au (à+le), des (de+les), aux (à+les). Genre: chaque nom est masculin ou féminin en français.' },
 
-  { id:'pronouns',     zone:'A1', icon:'👤', name:'Pronoms sujets',
+  { id:'pronouns',     zone:'A1', icon:'👤', name:'Pronoms sujets', gram:true, cat:'verbe-present',
     hint:'Je · Tu · Il · Nous · Vous', unlocked:true, lesson:11,
     detail:'Je, tu, il, elle, on, nous, vous, ils, elles. Distinction tu (informel/singulier) / vous (formel ou pluriel). On = nous dans la conversation courante. Pronoms toniques: moi, toi, lui, elle, nous, vous, eux, elles.' },
 
-  { id:'questions',    zone:'A1', icon:'❓', name:'Questions simples',
+  { id:'questions',    zone:'A1', icon:'❓', name:'Questions simples', gram:true, cat:'base',
     hint:'Qui? Quoi? Où? Comment?', unlocked:true, lesson:2,
     detail:'3 façons: (1) intonation montante, (2) est-ce que + sujet + verbe, (3) inversion verbe-sujet. Mots interrogatifs: qui, que/quoi, où, quand, comment, combien, pourquoi, quel/quelle/quels/quelles.' },
 
@@ -370,7 +409,7 @@ const TILES = [
     hint:"J'ai mal à la tête · Chez le médecin", unlocked:true, lesson:12,
     detail:'Parties du corps: la tête, le bras, la jambe, le ventre, le dos, la gorge, le nez, les dents. Exprimer la douleur: j\'ai mal à… Chez le médecin: j\'ai de la fièvre, je tousse, je suis fatigué. Émotions: stressé, content, en forme. Pronom y: j\'y vais. Médicaments, ordonnance, pharmacie.' },
 
-  { id:'comparaison',  zone:'A2', icon:'⚖️', name:'La comparaison',
+  { id:'comparaison',  zone:'A2', icon:'⚖️', name:'La comparaison', gram:true, cat:'adjectifs',
     hint:'plus / aussi / moins + que', unlocked:true, lesson:14,
     detail:'Comparatifs : plus + adjectif + que (supériorité), aussi + adjectif + que (égalité), moins + adjectif + que (infériorité). Exceptions : bon → meilleur, mauvais → pire (jamais « plus bon / plus mauvais »). Nuances : beaucoup plus, un peu plus. L\'adjectif s\'accorde avec le sujet. Personnes : jeune/vieux ; choses : neuf/ancien.' },
 
@@ -378,27 +417,27 @@ const TILES = [
     hint:'Camping · Réserver une chambre', unlocked:true, lesson:14,
     detail:'Lieux : la campagne, l\'île, la mer, la montagne, le village. Hébergements : le camping, la chambre d\'hôtes, la ferme, la location de vacances, l\'auberge de jeunesse, la tente. Réserver : je voudrais réserver une chambre du 5 au 11 juillet pour deux adultes et un enfant ; le petit déjeuner est compris ? Provenance : venir de/du/des + pays. Activités : se baigner, bronzer, faire de la randonnée.' },
 
-  { id:'conseils',     zone:'A2', icon:'💡', name:'Conseils & obligations',
+  { id:'conseils',     zone:'A2', icon:'💡', name:'Conseils & obligations', gram:true, cat:'verbe-mode',
     hint:'Il faut · Devoir · Donner des conseils', unlocked:true, lesson:13,
     detail:'Exprimer l\'obligation et donner des conseils: il faut + infinitif (obligation générale), devoir + infinitif (obligation personnelle: je dois, tu dois, il doit, nous devons, vous devez, ils doivent). Conseils santé et sport: il faut boire de l\'eau, tu dois dormir huit heures. Vocabulaire du gymnase (musculation, entraînement) et de l\'alimentation équilibrée.' },
 
-  { id:'ir-re',        zone:'A2', icon:'🔧', name:'Verbes -IR & -RE',
+  { id:'ir-re',        zone:'A2', icon:'🔧', name:'Verbes -IR & -RE', gram:true, cat:'verbe-present',
     hint:'Finir · Vendre · Prendre', unlocked:true, lesson:4,
     detail:'Réguliers -IR: finir (je finis, tu finis, il finit, nous finissons…), choisir, remplir, réfléchir. Réguliers -RE: vendre (je vends, tu vends, il vend, nous vendons…), répondre. Irréguliers: prendre, mettre, partir, sortir, venir.' },
 
-  { id:'passe',        zone:'A2', icon:'⏮️', name:'Passé composé',
+  { id:'passe',        zone:'A2', icon:'⏮️', name:'Passé composé', gram:true, cat:'verbe-temps',
     hint:"J'ai mangé · Je suis allé(e)", unlocked:true, lesson:11,
     detail:'Pour les actions terminées. Auxiliaire avoir + participe passé: j\'ai mangé, tu as fini, il a vendu. Auxiliaire être: 14 verbes (aller, venir, partir, arriver, naître, mourir, monter, descendre, rester, tomber…) + accord du participe.' },
 
-  { id:'imparfait',    zone:'A2', icon:'🌊', name:"L'imparfait",
+  { id:'imparfait',    zone:'A2', icon:'🌊', name:"L'imparfait", gram:true, cat:'verbe-temps',
     hint:"C'était · Il faisait · Il y avait", unlocked:true, lesson:15,
     detail:'Pour descriptions au passé (pas des actions). Formation: radical nous présent + -ais/-ais/-ait/-ions/-iez/-aient (être est irrégulier: j\'étais). Cette leçon: verbes impersonnels seulement — il fait→il faisait, il y a→il y avait, c\'est→c\'était. Contraste avec passé composé: description (imparfait) vs. action terminée (passé composé). L\'usage complet (habitudes personnelles: je mangeais) arrive en B1.' },
 
-  { id:'futur-proche', zone:'A2', icon:'🔮', name:'Futur proche',
+  { id:'futur-proche', zone:'A2', icon:'🔮', name:'Futur proche', gram:true, cat:'verbe-temps',
     hint:'Je vais partir · Tu vas finir', unlocked:true, lesson:8,
     detail:'Aller (conjugué au présent) + infinitif pour le futur immédiat ou prévu. Je vais partir ce soir, elle va travailler demain. Négation: je ne vais pas… Interrogation: est-ce que tu vas venir? Vs. futur simple pour projets lointains.' },
 
-  { id:'negation',     zone:'A2', icon:'🚫', name:'Négation & quantités',
+  { id:'negation',     zone:'A2', icon:'🚫', name:'Négation & quantités', gram:true, cat:'base',
     hint:'Ne...pas · Rien · Jamais', unlocked:true, lesson:6,
     detail:'Négations: ne…pas (général), ne…jamais (never), ne…plus (no more), ne…rien (nothing), ne…personne (nobody), ne…que (only). Partitifs à la forme négative: du pain → pas de pain. Quantités: beaucoup de, peu de, assez de, trop de.' },
 
@@ -423,7 +462,7 @@ const TILES = [
     hint:'Paris · Québec · Gastronomie', unlocked:false,
     detail:'Culture, histoire et société françaises et québécoises. Littérature, cinéma, musique francophones. Fêtes et traditions (Noël, Pâques, la Saint-Jean au Québec, le 14 juillet en France). Différences culturelles à travers la francophonie.' },
 
-  { id:'opinions',     zone:'B1', icon:'💬', name:'Opinions & débats',
+  { id:'opinions',     zone:'B1', icon:'💬', name:'Opinions & débats', gram:true, cat:'discours',
     hint:'Je pense que · Selon moi', unlocked:false,
     detail:'Exprimer et défendre ses opinions: je pense que, je crois que, selon moi, à mon avis, il me semble que. Nuancer: cependant, néanmoins, pourtant, d\'un côté… de l\'autre. Concéder: c\'est vrai que, certes, mais…' },
 
@@ -443,19 +482,19 @@ const TILES = [
     hint:'Courriels formels · Lettres', unlocked:false,
     detail:'Écrire des courriels formels (Madame, Monsieur, Veuillez agréer…) et informels. Lettres, messages structurés. Connecteurs logiques: d\'abord, ensuite, de plus, enfin, par conséquent, cependant. Cohérence et longueur appropriée.' },
 
-  { id:'futur',        zone:'B1', icon:'🌟', name:'Futur & conditionnel',
+  { id:'futur',        zone:'B1', icon:'🌟', name:'Futur & conditionnel', gram:true, cat:'verbe-temps',
     hint:'Je parlerai · Je voudrais', unlocked:false,
     detail:'Futur simple: radical (infinitif pour la plupart) + -ai/-as/-a/-ons/-ez/-ont. Irréguliers: être (ser-), avoir (aur-), aller (ir-), faire (fer-), venir (viendr-), pouvoir (pourr-). Conditionnel présent: politesse, hypothèses (si + imparfait + cond.).' },
 
-  { id:'subjonctif',   zone:'B1', icon:'🌀', name:'Subjonctif présent',
+  { id:'subjonctif',   zone:'B1', icon:'🌀', name:'Subjonctif présent', gram:true, cat:'verbe-mode',
     hint:'Il faut que · Bien que', unlocked:false,
     detail:'Subjonctif après: il faut que, vouloir que, bien que, pour que, à moins que, avant que, bien que. Formation: radical ils présent + -e/-es/-e/-ions/-iez/-ent. Irréguliers importants: être (soit), avoir (ait), aller (aille), faire (fasse).' },
 
-  { id:'relatifs',     zone:'B1', icon:'🔗', name:'Pronoms relatifs',
+  { id:'relatifs',     zone:'B1', icon:'🔗', name:'Pronoms relatifs', gram:true, cat:'pronoms',
     hint:'qui · que · dont · où', unlocked:true, lesson:16,
     detail:'Relier deux propositions. Qui (sujet): l\'homme qui parle, la France est un pays qui change. Que (COD): le livre que je lis, c\'est un métier que j\'adore. Astuce: qui ne s\'élide jamais, que → qu\' devant voyelle. (Dont et où — pas encore vus, arrivent plus tard.)' },
 
-  { id:'discours',     zone:'B1', icon:'💭', name:'Discours indirect',
+  { id:'discours',     zone:'B1', icon:'💭', name:'Discours indirect', gram:true, cat:'discours',
     hint:"Il a dit que · Elle m'a demandé", unlocked:false,
     detail:'Rapporter des paroles: changement de pronoms et de temps (présent → imparfait, PC → plus-que-parfait). Verbes introducteurs: dire, demander, répondre, expliquer, affirmer. Interrogation indirecte: il demande si/quand/comment/pourquoi…' },
 
@@ -464,35 +503,35 @@ const TILES = [
     detail:'Expressions figées du français courant: avoir le cafard (être déprimé), casser les pieds (agacer), avoir du pain sur la planche (beaucoup à faire), poser un lapin (ne pas se présenter), il pleut des cordes (pleuvoir très fort), coûter les yeux de la tête (très cher).' },
 
   // ── B2 ──────────────────────────────────────────────────────────
-  { id:'pluperfect',   zone:'B2', icon:'⏪', name:'Plus-que-parfait',
+  { id:'pluperfect',   zone:'B2', icon:'⏪', name:'Plus-que-parfait', gram:true, cat:'verbe-temps',
     hint:"J'avais mangé · Elle était partie", unlocked:false,
     detail:'Pour ce qui s\'était passé avant un autre événement passé. Formation: avoir/être à l\'imparfait + participe passé. J\'avais déjà mangé quand il est arrivé. Souvent combiné avec le passé composé ou l\'imparfait dans un récit.' },
 
-  { id:'cond-passe',   zone:'B2', icon:'😔', name:'Conditionnel passé',
+  { id:'cond-passe',   zone:'B2', icon:'😔', name:'Conditionnel passé', gram:true, cat:'verbe-temps',
     hint:"J'aurais dû · Tu aurais pu", unlocked:false,
     detail:'Pour les regrets, reproches et hypothèses passées. Formation: avoir/être au conditionnel + participe passé. J\'aurais dû partir plus tôt. Si j\'avais su, je n\'aurais pas accepté. Système hypothétique complet: si + PQP + cond. passé.' },
 
-  { id:'subj-passe',   zone:'B2', icon:'🌀', name:'Subjonctif passé',
+  { id:'subj-passe',   zone:'B2', icon:'🌀', name:'Subjonctif passé', gram:true, cat:'verbe-mode',
     hint:"Bien qu'il soit parti · Avant qu'elle ait fini", unlocked:false,
     detail:'Subjonctif passé pour des actions antérieures dans des propositions subordonnées. Formation: avoir/être au subjonctif présent + participe passé. Je suis content qu\'il soit venu. Bien qu\'elle ait travaillé dur, elle n\'a pas réussi.' },
 
-  { id:'passe-simple', zone:'B2', icon:'📜', name:'Passé simple',
+  { id:'passe-simple', zone:'B2', icon:'📜', name:'Passé simple', gram:true, cat:'verbe-temps',
     hint:'Il parla · Elle fut · Ils vinrent', unlocked:false,
     detail:'Temps littéraire utilisé dans les textes écrits formels, la littérature et l\'histoire. Pas utilisé à l\'oral. Reconnaître les formes: il parla, elle finit, il vint, elle fut, il eut. Remplacé par le passé composé dans la langue courante.' },
 
-  { id:'concordance',  zone:'B2', icon:'🔄', name:'Concordance des temps',
+  { id:'concordance',  zone:'B2', icon:'🔄', name:'Concordance des temps', gram:true, cat:'verbe-temps',
     hint:'Discours direct vs indirect avancé', unlocked:false,
     detail:'Harmonisation des temps dans les phrases complexes et le discours indirect. Présent → imparfait, futur → conditionnel, passé composé → plus-que-parfait. Il pensait que tu viendrais. Elle croyait qu\'il avait déjà terminé.' },
 
-  { id:'passive',      zone:'B2', icon:'🔃', name:'Voix passive',
+  { id:'passive',      zone:'B2', icon:'🔃', name:'Voix passive', gram:true, cat:'verbe-mode',
     hint:'La lettre a été écrite par Marie', unlocked:false,
     detail:'Voix passive: sujet + être (temps voulu) + participe passé (accordé) + par + agent. Le gâteau a été mangé par les enfants. Se faire + infinitif: il s\'est fait renvoyer. Passive dans les textes formels, journalistiques, scientifiques.' },
 
-  { id:'gerondif',     zone:'B2', icon:'🌊', name:'Gérondif & part. présent',
+  { id:'gerondif',     zone:'B2', icon:'🌊', name:'Gérondif & part. présent', gram:true, cat:'verbe-mode',
     hint:'En mangeant · Tout en parlant', unlocked:false,
     detail:'Gérondif (en + -ant): simultanéité, manière, condition. Il écoute de la musique en travaillant. Participe présent: adjectif verbal. Une femme souriante. Différence gérondif / participe présent. Emplois stylistiques dans les textes avancés.' },
 
-  { id:'pron-avances', zone:'B2', icon:'🔗', name:'Pronoms avancés',
+  { id:'pron-avances', zone:'B2', icon:'🔗', name:'Pronoms avancés', gram:true, cat:'pronoms',
     hint:'y · en · ordre double · lequel', unlocked:false,
     detail:'Pronoms y (lieu, COI) et en (partitif, COI de). J\'y pense. Il en a besoin. Ordre des pronoms doubles: me/te/se/nous/vous + le/la/les + lui/leur + y + en. Pronoms relatifs composés: lequel, auquel, duquel. Pronoms démonstratifs: celui-ci, celle-là.' },
 
@@ -500,7 +539,7 @@ const TILES = [
     hint:'Soutenu · Courant · Familier · Argot', unlocked:false,
     detail:'Les 4 registres: soutenu (textes littéraires), courant (communication quotidienne formelle), familier (amis, famille), argot (verlan, expressions populaires). Adapter son expression au contexte. Ne pas mélanger les registres. Exemples: voiture/bagnole, manger/bouffer, très/vachement.' },
 
-  { id:'connecteurs',  zone:'B2', icon:'🧵', name:'Connecteurs avancés',
+  { id:'connecteurs',  zone:'B2', icon:'🧵', name:'Connecteurs avancés', gram:true, cat:'discours',
     hint:'Néanmoins · Or · Quant à · Bien que', unlocked:false,
     detail:'Connecteurs logiques de niveau avancé. Opposition: or, néanmoins, toutefois, en revanche. Concession: bien que, quoique, malgré. Cause: vu que, étant donné que, attendu que. Conséquence: si bien que, de sorte que, au point que. Transition: quant à, pour ce qui est de.' },
 
@@ -604,19 +643,90 @@ function openPanel(tile) {
 
   const statusEl = document.getElementById('pStatus');
   const bodyEl   = document.getElementById('pBody');
+  const linkEl   = document.getElementById('pNoteLink');
 
   if (tile.unlocked) {
     statusEl.textContent = `✓ 已解鎖 — 第 ${tile.lesson} 課`;
     statusEl.className   = 'panel-status status-on';
     bodyEl.className     = 'panel-body';
+    linkEl.href = `french_notes.html#lesson-${tile.lesson}`;
+    linkEl.style.display = 'inline-flex';
   } else {
     statusEl.textContent = '◌ 未探索 — 尚未開圖';
     statusEl.className   = 'panel-status status-off';
     bodyEl.className     = 'panel-body fogged';
+    linkEl.style.display = 'none';
   }
   bodyEl.textContent = tile.detail;
   document.getElementById('overlay').classList.add('open');
 }
+
+// ════════════════════════════════════════════════════════════
+// 📐 文法大局觀：把 TILES 裡 gram:true 的項目依文法類別（cat）重新分組展示
+// 每個 tile 保留自己原本的 CEFR 等級配色（tz-a1/a2/b1/b2），不看外層分類容器
+// ════════════════════════════════════════════════════════════
+const GRAM_CATS = [
+  { key:'verbe-present', icon:'⚡',  name:'動詞 — 現在式基礎' },
+  { key:'verbe-temps',   icon:'⏱️', name:'動詞 — 時態' },
+  { key:'verbe-mode',    icon:'🌀',  name:'動詞 — 語氣・建議・被動' },
+  { key:'pronoms',       icon:'🔗',  name:'代名詞' },
+  { key:'base',          icon:'📚',  name:'冠詞・疑問句・否定' },
+  { key:'adjectifs',     icon:'⚖️', name:'形容詞・比較' },
+  { key:'discours',      icon:'💬',  name:'連接詞・論述表達' },
+];
+
+let gramBuilt = false;
+function buildGrammarMap() {
+  if (gramBuilt) return;
+  gramBuilt = true;
+  const gramTiles = TILES.filter(t => t.gram);
+  const root = document.getElementById('gramRoot');
+
+  GRAM_CATS.forEach(cat => {
+    const catTiles = gramTiles.filter(t => t.cat === cat.key);
+    if (!catTiles.length) return;
+    const catOn = catTiles.filter(t => t.unlocked).length;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'zone-wrap cat-wrap';
+    wrap.innerHTML = `
+      <div class="zone-head">
+        <span class="zone-icon">${cat.icon}</span>
+        <span class="zone-name">${cat.name}</span>
+        <span class="zone-prog">${catOn}/${catTiles.length}</span>
+      </div>
+      <div class="tile-grid" id="gramgrid-${cat.key}"></div>
+    `;
+    root.appendChild(wrap);
+
+    const grid = document.getElementById('gramgrid-' + cat.key);
+    catTiles.forEach(tile => {
+      const el = document.createElement('div');
+      el.className = `tile ${tile.unlocked ? 'unlocked' : 'locked'} tz-${tile.zone.toLowerCase()}`;
+      el.onclick = () => openPanel(tile);
+      el.innerHTML = `
+        <div class="tile-icon">${tile.icon}</div>
+        <div class="tile-name">${tile.name}</div>
+        <div class="tile-hint">${tile.hint}</div>
+        ${tile.unlocked
+          ? `<div class="tile-badge">第 ${tile.lesson} 課</div>`
+          : `<span class="fog-mark">〰</span>`}
+      `;
+      grid.appendChild(el);
+    });
+  });
+}
+
+function switchView(view) {
+  const isMap = view === 'map';
+  document.getElementById('mapRoot').style.display  = isMap ? 'block' : 'none';
+  document.getElementById('gramRoot').style.display = isMap ? 'none' : 'block';
+  document.getElementById('tabMap').classList.toggle('active', isMap);
+  document.getElementById('tabGram').classList.toggle('active', !isMap);
+  if (!isMap) buildGrammarMap();
+}
+document.getElementById('tabMap').addEventListener('click', () => switchView('map'));
+document.getElementById('tabGram').addEventListener('click', () => switchView('gram'));
 
 function closePanel() {
   document.getElementById('overlay').classList.remove('open');
