@@ -79,7 +79,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | 檔案 | 用途 | 狀態 |
 |------|------|------|
 | `dashboard.html` | 指揮中心：今日處方（**9步番号**，07-07新增造句練習、07-09新增聽力真人語速測驗）、📊每日完成率分析、今日錯題本、警報、CLB等級判定、倒數、700h、四技能、週趨勢、Duolingo週報、🔒鎖定順序開關 | ✅ |
-| `session_timer.js` | 跨頁 session 計時器：`window.ClbSession` API，timestamp累計跨頁連續、練習頁常駐pill、**閒置3分鐘自動暫停**（用最後操作時間當停止點，不算閒置時間）、dashboard結算寫入700h | ✅ |
+| `session_timer.js` | 跨頁 session 計時器：`window.ClbSession` API，timestamp累計跨頁連續、練習頁常駐pill、**閒置3分鐘自動暫停**（用最後操作時間當停止點，不算閒置時間）、dashboard結算寫入700h、**07-11修復多分頁閒置搶跑＋start()洗掉進度兩個bug**（背景分頁不做閒置檢查、start()對已啟動session防呆） | ✅ 修復（07-11）|
 | `sync_supabase.js` | 跨裝置同步：所有 `clb7_*` 存到 Supabase，開頁pull合併、變動debounce **700ms**（原2.5s縮短）自動push、**切前景也會pull**（原本只有切背景push）、離頁再push、各頁完成關鍵動作時**主動立即push**（不等debounce）|✅|
 | `quiz.html` | SRS Quiz 550+題，熱身模式、**策略選課器**（未練過/錯誤率高/量少/久沒練 排序）、暫停、更正誤判 | ✅ |
 | `table_drill.html` | 表格填空：40個表格（涵蓋第1–16課，含passé composé系列、imparfait無人稱動詞表、**07-10新增「文法詞」類型**：durée/qui-que/intensité 3表），**錯題複習輪**（答錯進複習輪直到全對，主輪成績不被洗掉）、切難度/類型有進度時confirm確認、一輪6個表 | ✅ 大修（07-06/07/10）|
@@ -230,6 +230,18 @@ Owen貼了第16課逐字稿（英中法混雜、老師課堂即時口語翻譯�
 4. `sentences.js`：新增10句（S_L16_1~10），98→108句。
 5. `map.html`：**沒有新建tile**，把兩個本來就存在、`unlocked:false`的B1區佔位格（`travail`「Travail & emploi」、`relatifs`「Pronoms relatifs」）改成`unlocked:true, lesson:16`，並改寫detail文字對齊實際教的內容（relatifs保留「dont/où還沒教，之後才會教」的備註，跟L15的imparfait tile处理方式一致）。`CURRENT_LESSON` 15→16。
 6. **驗證方式**：全部用preview逐一實測——`french_notes.html`確認11個unit渲染正確、表格喇叭圖示正常；`map.html`確認CURRENT_LESSON顯示16、travail/relatifs兩個tile的class變成`tile unlocked`；`quiz.html?lesson=16`跑了一題choose題確認答案比對正確（綠色高亮）；`table_drill.html`切「文法詞」篩選器，三個新表格逐一填完，15/15全對；`sentence_drill.html`確認總數108句、開始一輪不crash。全程用隔離ROOM測試，測完已改回正式ROOM並grep確認無殘留字串。
+
+### 07-11：修好「計時動不動就斷掉」——兩個真bug（多分頁閒置搶跑＋開始鍵洗掉進度）
+
+Owen回饋：儀表板計時器很不穩，「動不動就斷掉」，具體是「數字整個重置回0或直接消失」，而且「按繼續，三秒後又停了變回原樣」。逐一查證`session_timer.js`後找到兩個獨立的真bug：
+
+- **Bug 1（對應「按繼續三秒後又停」）**：閒置偵測（`IDLE_LIMIT_MS`=3分鐘，每5秒檢查一次）的`lastActivity`是**每個分頁自己的記憶體變數**，但它控制的`clb7_session.running`是**跨分頁共用**的localStorage狀態。如果Owen開了第二個分頁（例如忘記關的舊練習頁），那個背景分頁的`lastActivity`早就過期，但它的5秒檢查迴圈還是持續在跑——一旦偵測到「running && 閒置超過3分鐘」就會呼叫`pauseAtTime`把session暫停回去，完全不管是不是另一個分頁剛剛按了「繼續」。這解釋了「按繼續、幾秒後又斷」：不是繼續鍵本身壞了，是另一個背景分頁的舊計時器把它蓋回去。
+  **修法**：加`document.hidden`判斷——閒置檢查迴圈開頭直接`if (document.hidden) return;`（背景分頁完全不檢查閒置）；分頁從背景切回前景時（`visibilitychange`且非hidden）把`lastActivity`重置成現在，避免把「切走的這段時間」誤判成閒置。
+
+- **Bug 2（對應「數字整個重置回0」）**：`ClbSession.start()`原本是無條件`save({accSec:0,...})`，完全不檢查是否已經有session在跑。目前唯一呼叫點是dashboard的「開始今日學習」按鈕，理論上session一啟動該按鈕就會被隱藏，但如果Owen開了第二個dashboard分頁/視窗（那個分頁的DOM還沒被告知session已啟動，按鈕依然顯示），在那邊誤按下去就會把正在跑、已經累積的時間直接洗成0。
+  **修法**：`start()`加防呆——如果session已經`active`，不重置`accSec`，頂多把`running`重新設回true（等同resume），不會再把已累積的時間洗掉。
+
+**驗證**：用`fetch(url,{cache:'no-store'}).then(eval)`重新載入最新`session_timer.js`（避開preview的.js快取，這是HANDOFF已知的坑）後直接在console模擬兩個情境——① 呼叫兩次`start()`確認累計秒數不會被洗成0 ② 用`Object.defineProperty(document,'hidden',{get:()=>true})`偽裝分頁進入背景，確認閒置檢查迴圈跑過一次tick後`running`依然是true。兩個情境都通過。另外也在dashboard實測正常情況下的暫停/繼續，確認沒有因為這次修改而弄壞原本就正常的行為。
 
 ---
 

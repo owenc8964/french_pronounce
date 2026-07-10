@@ -31,6 +31,9 @@
     running: function () { var s = load(); return !!(s && s.running); },
 
     start: function () {
+      // 防呆：session 已經在跑（例如另一個分頁/視窗已經開始了）就不要洗掉已累計的時間
+      var s = load();
+      if (s && s.active) { if (!s.running) { s.startedAt = now(); s.running = true; save(s); } return; }
       save({ active: true, running: true, startedAt: now(), accSec: 0 });
     },
 
@@ -112,7 +115,16 @@
   ['keydown', 'pointerdown', 'touchstart', 'scroll', 'click', 'mousemove'].forEach(function (ev) {
     document.addEventListener(ev, function () { lastActivity = now(); }, { passive: true });
   });
+  // ⚠️ 2026-07-11 修復：閒置偵測只能認自己這個分頁的操作。如果 Owen 開了第二個分頁
+  // （例如另一頁練習頁忘記關），那個背景分頁的 lastActivity 早就過期，它的閒置計時器
+  // 還是每5秒繼續跑，會把「剛在別的分頁按繼續」的 session 又立刻暫停回去
+  // （症狀：按繼續、3秒後又停住）。修法：分頁切到背景時完全不檢查；切回前景時
+  // 把 lastActivity 重置成現在，不要把「切走的這段時間」也當成閒置。
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) lastActivity = now();
+  });
   setInterval(function () {
+    if (document.hidden) return;
     if (API.running() && (now() - lastActivity > IDLE_LIMIT_MS)) {
       API.pauseAtTime(lastActivity);
     }
