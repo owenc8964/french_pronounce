@@ -311,6 +311,14 @@ button:active { transform: scale(0.97); }
   <div id="quizPanel" class="quiz-panel"></div>
 </div>
 
+<!-- 文化深掘 Podcast（實驗中，跟課程進度無關，兩人對談＋中文講解＋法文重點穿插） -->
+<div class="card" id="cultureCard">
+  <div class="card-title">🎙️ 文化深掘 Podcast <span style="font-weight:400;text-transform:none;color:#8a94a8;">（實驗中）</span></div>
+  <div class="res-desc" style="margin-bottom:14px;">跟課程進度無關，想聽哪篇就聽。中文聊天講解為主、法文重點詞句穿插——挖「為什麼法文長這樣」，幫助記憶、也對應到考試會用到的規則。</div>
+  <div id="cultureListWrap"><div id="cultureList"></div></div>
+  <div id="culturePanel" class="quiz-panel"></div>
+</div>
+
 <div class="card">
   <div class="card-title">新增聽力記錄</div>
   <div class="date-display" id="todayDate"></div>
@@ -350,7 +358,7 @@ button:active { transform: scale(0.97); }
 
 <script>
 const KEY = 'clb7_listening';
-const SOURCES = ['Podcast','兒歌','家教','YouTube','影集/電影','其他'];
+const SOURCES = ['Podcast','兒歌','家教','YouTube','影集/電影','文化深掘','其他'];
 
 function load() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } }
 function save(d) { localStorage.setItem(KEY, JSON.stringify(d)); }
@@ -598,6 +606,7 @@ const LISTENING_BANK = [
 ];
 
 let lqFrVoice = null;
+let cpCurrentEpisode = null;
 function lqInitVoice() {
   const vs = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith('fr'));
   lqFrVoice = vs.find(v => /am[eé]lie|thomas/i.test(v.name))
@@ -746,6 +755,75 @@ function gradeLqQuiz() {
 }
 
 renderQuizList();
+
+// ════════════════════════════════════════════════════════════
+// 🎙️ 文化深掘 Podcast：Owen 用 NotebookLM 自己生成的音檔（見 assets/podcast/NOTEBOOKLM_PROMPT.md）
+// 這裡只負責播放本地 mp3 檔＋記錄聽完，不做任何 TTS——音檔品質完全交給 NotebookLM
+// 新增一集：Owen 把 mp3 放進 assets/podcast/，跟 Claude 說標題/檔名，在下面 CULTURE_BANK 補一筆
+// ════════════════════════════════════════════════════════════
+const CULTURE_BANK = [
+  // { id:'c01', title:'為什麼法文名詞有陰陽性？', teaser:'le 跟 la 的秘密', file:'assets/podcast/c01_陰陽性由來.mp3' },
+];
+
+function cultureDoneToday(id) { return load().some(e => e.date === todayStr() && e.cultureId === id); }
+
+function renderCultureList() {
+  const wrap = document.getElementById('cultureList');
+  if (!CULTURE_BANK.length) {
+    wrap.innerHTML = `<div class="empty" style="padding:16px;">還沒有音檔——用 <code>assets/podcast/NOTEBOOKLM_PROMPT.md</code> 的 prompt 去 NotebookLM 生成，存進 <code>assets/podcast/</code> 資料夾，跟 Claude 說一聲就會登記上來。</div>`;
+    return;
+  }
+  wrap.innerHTML = CULTURE_BANK.map(ep => `
+    <div class="quiz-list-item ${cultureDoneToday(ep.id) ? 'done' : ''}" data-id="${ep.id}">
+      <span class="quiz-lesson-badge" style="background:#3a1d50;color:#c090f0;">🎙️</span>
+      <span class="quiz-list-title">${escHtml(ep.title)}</span>
+      <span style="color:#556;font-size:0.75rem;">${cultureDoneToday(ep.id) ? '✓ 今天聽過' : '▶'}</span>
+    </div>
+  `).join('');
+  wrap.querySelectorAll('.quiz-list-item').forEach(el => {
+    el.addEventListener('click', () => openCultureEpisode(el.dataset.id));
+  });
+}
+
+function cpMarkDone() {
+  const audioEl = document.getElementById('cpAudio');
+  const min = audioEl && audioEl.duration && !isNaN(audioEl.duration) ? Math.max(1, Math.round(audioEl.duration / 60)) : 12;
+  const data = load();
+  data.push({ date: todayStr(), source: '文化深掘', min, comp: null, notes: `《${cpCurrentEpisode.title}》`, cultureId: cpCurrentEpisode.id });
+  save(data);
+  updateStats(); updateBreakdown(); renderHistory();
+  showToast('✓ 已記錄這篇文化深掘！');
+}
+
+function openCultureEpisode(id) {
+  cpCurrentEpisode = CULTURE_BANK.find(x => x.id === id);
+  document.getElementById('cultureListWrap').style.display = 'none';
+  const panel = document.getElementById('culturePanel');
+  panel.classList.add('active');
+  panel.innerHTML = `
+    <div style="margin-bottom:10px;color:#8a94a8;font-size:0.78rem;">${escHtml(cpCurrentEpisode.teaser || '')}</div>
+    <audio id="cpAudio" controls preload="metadata" style="width:100%;border-radius:10px;margin-bottom:14px;">
+      <source src="${escHtml(cpCurrentEpisode.file)}" type="audio/mpeg">
+    </audio>
+    <div class="btn-row">
+      <button class="btn-save" id="cpDoneBtn" style="background:#3a1d50;color:#c090f0;">✓ 標記聽完</button>
+    </div>
+    <div style="margin-top:14px;"><a href="#" id="cpBackBtn" style="color:#556;font-size:0.78rem;">← 換一篇</a></div>
+  `;
+  document.getElementById('cpDoneBtn').addEventListener('click', cpMarkDone);
+  document.getElementById('cpBackBtn').addEventListener('click', (e) => { e.preventDefault(); backToCultureList(); });
+}
+
+function backToCultureList() {
+  const audioEl = document.getElementById('cpAudio');
+  if (audioEl) audioEl.pause();
+  document.getElementById('culturePanel').classList.remove('active');
+  document.getElementById('culturePanel').innerHTML = '';
+  document.getElementById('cultureListWrap').style.display = 'block';
+  renderCultureList();
+}
+
+renderCultureList();
 
 // guided=1（從dashboard處方點進來）：自動挑一篇今天還沒做的真人語速測驗開始
 if (new URLSearchParams(location.search).get('guided') === '1') {

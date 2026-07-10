@@ -89,7 +89,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `writing.html` | 每日2句造句，複製prompt→claude.ai→貼回記錄 | ✅ |
 | `sentence_drill.html` | **新增（07-07）**：中翻法造句練習，每天固定5句新句＋到期複習，沿用review.html同一套SRS引擎（1/3/7/14/30天），**答錯排到這輪最後重考，磨到全部答對才算完成**，跟review.html的卡片機制共用「包尾重試」邏輯 | ✅ 新建 |
 | `sentences.js` | **新增（07-07）**：常用句庫（目前98句，第1–15課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
-| `listening.html` | 聽力：**真實資源**（RFI + InnerFrench Spotify embed；Podcast Français Facile的A1對話系列連結卡）+ **自出TTS聽力測驗**（8篇，對齊已學課程）+ **07-09/07-10新增「真人語速測驗」**（LISTENING_BANK的`audioUrl`類型：真實mp3直接播放＋Claude原創TCF/TEF風格選擇題，目前7篇：麵包店/車站/市場/肉店/魚店/藥局/問路，逐字稿核對用連結卡連到來源、不存對方文字）| ✅ 大改（07-06～07-10）|
+| `listening.html` | 聽力：**真實資源**（RFI + InnerFrench Spotify embed；Podcast Français Facile的A1對話系列連結卡）+ **自出TTS聽力測驗**（8篇，對齊已學課程）+ **07-09/07-10新增「真人語速測驗」**（LISTENING_BANK的`audioUrl`類型：真實mp3直接播放＋Claude原創TCF/TEF風格選擇題，目前7篇：麵包店/車站/市場/肉店/魚店/藥局/問路，逐字稿核對用連結卡連到來源、不存對方文字）+ **07-10新增「文化深掘Podcast」板塊**（見下方07-10記錄，目前CULTURE_BANK是空陣列，等Owen放音檔進來）| ✅ 大改（07-06～07-10）|
 | `french_notes.html` | 第1–14課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音） | ✅ 修復（07-07）|
 | `chunks.js` | 複習卡庫：856張，自動從筆記抽取（1–15課，07-07補第15課88張） | ✅ |
 | `questions.js` | 共用題庫（BANK 638題 + AGREE_BANK 247題），第1–15課（07-07新增imparfait/vocab-nature/universite-vocab三個topic） | ✅ |
@@ -250,7 +250,7 @@ Owen釐清listening.html的核心定位：不是只做TTS練習，而是「真�
 - `clb7_reading` → [{id, title, date, correct, total, sec}]（date為**本地ISO** `2026-07-02`）
 - `clb7_writing` → [{date, s1, s2, score, reply}]
 - `clb7_tracker` → [{ts, date, type, sec}]；`type:'session'`一筆＝一次完整訓練總時間（結算寫入，計入700h）
-- `clb7_speaking` / `clb7_listening` → 口說/聽力日誌；`clb7_listening`可能有`source:'TTS測驗'`自動記錄（含`quizId`對應`LISTENING_BANK`）
+- `clb7_speaking` / `clb7_listening` → 口說/聽力日誌；`clb7_listening`可能有`source:'TTS測驗'`（含`quizId`對應`LISTENING_BANK`）或`source:'文化深掘'`（含`cultureId`對應`CULTURE_BANK`，07-10新增）自動記錄
 - `clb7_<qId>` → {w, c, last}（SRS單題記錄）
 - `clb7_game` → {xp, streak, lastDate}
 - `clb7_quick_notes` → 懸浮筆記，每則{date, time, page, note}；french_notes/review會自動加`[第N課]`前綴
@@ -274,14 +274,15 @@ Owen釐清listening.html的核心定位：不是只做TTS練習，而是「真�
 
 ## 下一步（依優先序，2026-07-10 更新）
 
-0. **⭐ 文化/語源深掘 podcast（07-10 新確立，Owen明確想做的下一個大功能）**：
-   - **動機**：Owen覺得現有筆記（french_notes.html）是老師課堂上為了一年內考過而快速抓重點的筆記，不夠深；他想要「為什麼法文長這樣」的理解——語言背後的歷史/社會/文化脈絡，建立法文底蘊，但仍要服務於「快速學會法文」這個主軸，不能變成無關的發散。
-   - **形式（Owen已明確拍板）**：
-     - **獨立系列，不跟課程進度綁**——哪一課教到什麼不重要，可以隨時聽任何一篇
-     - **音檔為主**，情境是「車上聽」「在家躺著拉筋聽」——**要有podcast聊天感**，不是唸課文/唸條列重點那種生硬感，語氣要像輕鬆聊天節目
-     - 內容方向範例（已跟Owen討論過的路線）：法文為什麼有陰陽性、法國大革命跟語言規範化、tu/vous稱謂的由來、地名/月份字源……每篇都要能勾回他已經學過或會遇到的東西，不是憑空發散的冷知識
-   - **技術方向（尚未拍板，下個session要確認）**：內容是Claude研究整合寫的原創腳本（不是抄某個網站），用高品質TTS唸出來，語氣要調成對話/聊天感而非朗讀感（可能需要寫成兩人對話稿、或至少用更口語的措辭與停頓，而非條列式文章直接唸）。要不要放進listening.html的一個新板塊、要不要排進每日處方、一篇大概幾分鐘、多久出一篇——這些都還沒定案。
-   - **⚠️ 下個session開場記得先問**：這個功能要叫什麼名字/放哪個頁面、第一篇想聽什麼主題當範例、TTS聊天感的呈現方式（單人講述 or 兩人對談腳本）Owen比較想要哪種。
+0. **⭐ 文化/語源深掘 podcast（07-10 定案，架構已改成 NotebookLM 產出，不再用瀏覽器 TTS）**：
+   - **動機**：Owen覺得現有筆記（french_notes.html）是老師課堂上為了一年內考過而快速抓重點的筆記，不夠深；他想要「為什麼法文長這樣」的理解——語言背後的歷史/社會/文化脈絡，建立法文底蘊，但仍要服務於「快速學會法文」這個主軸。
+   - **⚠️ 07-10 走過一輪失敗經驗，記下來避免重踩**：第一版做了瀏覽器 SpeechSynthesis 逐行朗讀（CULTURE_BANK 陣列存對話稿，中文zh語音+法文fr語音交替），Owen 實測後回饋「聽起來像Google翻譯、機器人感很重、聽不下去」，長度也不夠（原本才4-6分鐘，Owen要通勤10-15分鐘）。討論付費TTS API（ElevenLabs/Google Cloud/OpenAI）方案後，Owen 提出更好的做法：**他本來就有付費NotebookLM，直接用NotebookLM的Audio Overview生成，音質是Google正規pipeline，不用另外弄API金鑰、不用我操心成本**。
+   - **最終架構（已實作）**：
+     - Claude的角色不是寫深度內容或逐字稿，而是**寫好「prompt方向」**——NotebookLM自己做deep research通常比手動查資料更快更廣，重點是告訴它「為什麼要聽」「要聽成什麼樣子」。Prompt指南見 [`assets/podcast/NOTEBOOKLM_PROMPT.md`](assets/podcast/NOTEBOOKLM_PROMPT.md)，核心精神是 Owen 原話：「把我排好的書櫃翻倒，再用更好更適合我的方式重新排列上去，翻倒重整的過程協助我用各種角度寫入，我更能四面八方的串上」——不是要NotebookLM複述已知規則，是要它用歷史/文化/語源角度重新organize、幫他建立更多記憶掛勾（可以用口訣/諧音/故事聯想）。
+     - Owen 用該prompt去NotebookLM生成音檔（可以順便上傳`french_notes.html`內容或`assets/`裡的課本PDF當素材），下載mp3後放進 **`assets/podcast/`資料夾**，跟Claude說一聲標題/檔名/聽感，Claude把它登記進 `listening.html` 的 `CULTURE_BANK` 陣列。
+     - `listening.html`的「🎙️文化深掘Podcast」板塊（07-10新增）目前是**空陣列**，純粹讀取本地mp3檔播放（`<audio controls>`）＋「✓標記聽完」寫入`clb7_listening`（`source:'文化深掘'`，時長取`audio.duration`），完全不涉及任何TTS或API呼叫，零成本。已用preview實測過空狀態渲染、假資料播放面板、標記完成寫入紀錄，都正常，且已確認沒有污染Owen真實Supabase雲端（測試後直接查雲端payload驗證過）。
+     - 目標長度10-15分鐘（單段通勤），還沒決定要不要排進每日處方——Owen說先做幾篇試效果再決定，不用急著綁進9步番号處方。
+   - **下一步**：等 Owen 用 `NOTEBOOKLM_PROMPT.md` 生成第一篇音檔（候補主題已列在該檔案裡，陰陽性由來排第一），放進`assets/podcast/`後通知 Claude 登記。
 
 1. **verb_reference.html 語音名稱確認**：Owen下載了比較好的語音，目前用啟發式規則猜（premium/enhanced/amélior/localService===false），若還是選不對，需要問他系統設定裡看到的確切語音名稱，寫死進regex。
 2. **chunks.js 批次修正**：Owen會用review.html的「🤔這張卡語意不清」持續標記卡片，累積到一定數量後，去`clb7_quick_notes`裡撈出這些回饋，批次修chunks.js對應的卡（中文提示語意不清、上下文缺失等）。
