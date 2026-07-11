@@ -5202,7 +5202,18 @@ document.querySelectorAll('.compare-table table').forEach(table => {
 #qnoteSave{margin-top:8px;width:100%;padding:8px;background:#1d5035;color:#60d090;border:none;border-radius:8px;font-size:0.82rem;cursor:pointer;font-family:inherit;}
 #qnoteCount{font-size:0.68rem;color:#334050;margin-top:6px;text-align:right;}
 #qnoteTag{font-size:0.7rem;color:#f0c060;margin-bottom:6px;display:none;}
+
+/* 筆記標記：選字後標🔴不熟／⭐重點 */
+mark.mk-weak{background:#4a1f1f;color:#ffb3a7;padding:1px 2px;border-radius:3px;cursor:pointer;}
+mark.mk-key{background:#4a3f10;color:#ffe08a;padding:1px 2px;border-radius:3px;cursor:pointer;}
+.mk-toolbar{position:fixed;z-index:1000;display:none;gap:4px;background:#0d1020;border:1px solid #2a3858;border-radius:8px;padding:5px;box-shadow:0 4px 16px rgba(0,0,0,0.5);}
+.mk-toolbar button{background:#1a2438;border:none;color:#ddd8cc;border-radius:6px;padding:6px 10px;font-size:0.8rem;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.mk-toolbar button:hover{filter:brightness(1.3);}
 </style>
+<div class="mk-toolbar" id="mkToolbar">
+  <button type="button" id="mkBtnWeak">🔴 不熟</button>
+  <button type="button" id="mkBtnKey">⭐ 重點</button>
+</div>
 <button id="qnoteBtn" title="筆記回饋">📝</button>
 <div id="qnotePanel">
   <div id="qnoteTitle">筆記回饋（存給 Claude 看，下次更新會讀）</div>
@@ -5211,6 +5222,11 @@ document.querySelectorAll('.compare-table table').forEach(table => {
   <button id="qnoteSave">儲存回饋</button>
   <div id="qnoteCount"></div>
   <button id="qnoteCopy" style="margin-top:6px;width:100%;padding:7px;background:#1a2438;color:#60a0d0;border:none;border-radius:8px;font-size:0.78rem;cursor:pointer;font-family:inherit;">📋 複製全部給 Claude</button>
+  <div style="margin-top:12px;border-top:1px solid #1a2438;padding-top:10px;">
+    <div style="font-size:0.7rem;color:#445060;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">筆記標記（選取文字後標🔴不熟／⭐重點）</div>
+    <div id="mkCount" style="font-size:0.75rem;color:#8a94a8;margin-bottom:6px;">還沒有標記</div>
+    <button id="mkCopyBtn" style="width:100%;padding:7px;background:#1a2438;color:#60a0d0;border:none;border-radius:8px;font-size:0.78rem;cursor:pointer;font-family:inherit;">📋 複製標記給 Claude</button>
+  </div>
 </div>
 <script>
 (function(){
@@ -5263,6 +5279,158 @@ document.querySelectorAll('.compare-table table').forEach(table => {
       setTimeout(() => document.getElementById('qnoteCopy').textContent = '📋 複製全部給 Claude', 2000);
     });
   });
+})();
+</script>
+
+<!-- 筆記標記：選字後標🔴不熟／⭐重點，存進 clb7_notes_marks，重整頁面會用文字比對重新套用 -->
+<script>
+(function(){
+  const MKEY = 'clb7_notes_marks';
+  function loadMarks(){ try{ return JSON.parse(localStorage.getItem(MKEY))||[]; }catch(e){ return []; } }
+  function saveMarks(m){ localStorage.setItem(MKEY, JSON.stringify(m)); }
+  function todayZh(){
+    const d = new Date();
+    return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+  }
+
+  function lessonOf(node){
+    const el = node.nodeType === 1 ? node : node.parentElement;
+    const group = el && el.closest('details.lesson-group');
+    if (!group) return null;
+    const m = (group.id || '').match(/lesson-(\d+)/);
+    return m ? +m[1] : null;
+  }
+
+  // 在 root 底下用純文字比對找出 text 第一次出現的位置，回傳一個 Range（用於重整頁面後重新套用標記）
+  function findTextRange(root, text) {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let node, full = '';
+    const nodes = [];
+    while (node = walker.nextNode()) {
+      if (node.parentElement && node.parentElement.closest('script, style, mark.mk-weak, mark.mk-key')) continue;
+      nodes.push({ node, start: full.length });
+      full += node.textContent;
+    }
+    const pos = full.indexOf(text);
+    if (pos < 0) return null;
+    const end = pos + text.length;
+    let sN, sO, eN, eO;
+    for (const n of nodes) {
+      const nEnd = n.start + n.node.textContent.length;
+      if (sN === undefined && pos >= n.start && pos < nEnd) { sN = n.node; sO = pos - n.start; }
+      if (eN === undefined && end > n.start && end <= nEnd) { eN = n.node; eO = end - n.start; }
+    }
+    if (!sN || !eN) return null;
+    const r = document.createRange();
+    r.setStart(sN, sO); r.setEnd(eN, eO);
+    return r;
+  }
+
+  function applyMark(range, cls, markId) {
+    const mk = document.createElement('mark');
+    mk.className = cls;
+    mk.dataset.markId = markId;
+    mk.title = '點擊移除這個標記';
+    mk.appendChild(range.extractContents());
+    range.insertNode(mk);
+    return mk;
+  }
+
+  function removeMarkEl(mk) {
+    const parent = mk.parentNode;
+    while (mk.firstChild) parent.insertBefore(mk.firstChild, mk);
+    parent.removeChild(mk);
+    parent.normalize();
+  }
+
+  function reapplyMarks() {
+    loadMarks().forEach(m => {
+      const group = document.getElementById('lesson-' + m.lesson);
+      if (!group) return;
+      const range = findTextRange(group, m.text);
+      if (!range) return;
+      try { applyMark(range, m.type === 'weak' ? 'mk-weak' : 'mk-key', m.id); } catch (e) {}
+    });
+  }
+
+  function updateMarkCount() {
+    const el = document.getElementById('mkCount');
+    if (!el) return;
+    const marks = loadMarks();
+    const weak = marks.filter(m => m.type === 'weak').length;
+    const key = marks.filter(m => m.type === 'key').length;
+    el.textContent = marks.length ? `🔴 ${weak} 個不熟 · ⭐ ${key} 個重點` : '還沒有標記';
+  }
+
+  const toolbar = document.getElementById('mkToolbar');
+  let pendingRange = null;
+
+  document.addEventListener('mouseup', (e) => {
+    if (e.target.closest('#mkToolbar')) return;
+    setTimeout(() => {
+      const sel = window.getSelection();
+      if (!sel || sel.isCollapsed || sel.rangeCount === 0) { toolbar.style.display = 'none'; return; }
+      const text = sel.toString().trim();
+      if (!text || text.length > 400) { toolbar.style.display = 'none'; return; }
+      const range = sel.getRangeAt(0);
+      const container = range.commonAncestorContainer;
+      const groupEl = (container.nodeType === 1 ? container : container.parentElement)?.closest('details.lesson-group');
+      if (!groupEl) { toolbar.style.display = 'none'; return; } // 只在課程筆記範圍內才顯示（不含頁首/懸浮元件）
+      pendingRange = range.cloneRange();
+      const rect = range.getBoundingClientRect();
+      toolbar.style.display = 'flex';
+      toolbar.style.left = Math.max(8, rect.left) + 'px';
+      toolbar.style.top = Math.max(8, rect.top - 42) + 'px';
+    }, 10);
+  });
+  document.addEventListener('mousedown', (e) => {
+    if (!e.target.closest('#mkToolbar')) toolbar.style.display = 'none';
+  });
+
+  function markSelection(type) {
+    if (!pendingRange) return;
+    const text = pendingRange.toString().trim();
+    if (!text) return;
+    const lesson = lessonOf(pendingRange.commonAncestorContainer);
+    if (!lesson) return;
+    const id = 'm' + Date.now() + Math.random().toString(36).slice(2, 6);
+    try { applyMark(pendingRange, type === 'weak' ? 'mk-weak' : 'mk-key', id); }
+    catch (e) { return; }
+    const marks = loadMarks();
+    marks.push({ id, lesson, type, text: text.slice(0, 300), date: todayZh() });
+    saveMarks(marks);
+    toolbar.style.display = 'none';
+    window.getSelection().removeAllRanges();
+    updateMarkCount();
+  }
+  document.getElementById('mkBtnWeak').addEventListener('click', () => markSelection('weak'));
+  document.getElementById('mkBtnKey').addEventListener('click', () => markSelection('key'));
+
+  document.addEventListener('click', (e) => {
+    const mk = e.target.closest('mark.mk-weak, mark.mk-key');
+    if (!mk) return;
+    if (!confirm('移除這個標記？')) return;
+    saveMarks(loadMarks().filter(m => m.id !== mk.dataset.markId));
+    removeMarkEl(mk);
+    updateMarkCount();
+  });
+
+  const mkCopyBtn = document.getElementById('mkCopyBtn');
+  mkCopyBtn.addEventListener('click', () => {
+    const marks = loadMarks();
+    if (!marks.length) { alert('還沒有標記'); return; }
+    const lines = ['=== 筆記標記 ==='];
+    marks.slice().sort((a, b) => a.lesson - b.lesson).forEach(m => {
+      lines.push(`[第${m.lesson}課 ${m.type === 'weak' ? '🔴不熟' : '⭐重點'}] ${m.text}`);
+    });
+    navigator.clipboard.writeText(lines.join('\n')).then(() => {
+      mkCopyBtn.textContent = '✓ 已複製！';
+      setTimeout(() => mkCopyBtn.textContent = '📋 複製標記給 Claude', 2000);
+    });
+  });
+
+  reapplyMarks();
+  updateMarkCount();
 })();
 </script>
 </body>

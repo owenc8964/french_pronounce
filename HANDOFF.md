@@ -89,8 +89,8 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `writing.html` | 每日2句造句，複製prompt→claude.ai→貼回記錄 | ✅ |
 | `sentence_drill.html` | **新增（07-07）**：中翻法造句練習，每天固定5句新句＋到期複習，沿用review.html同一套SRS引擎（1/3/7/14/30天），**答錯排到這輪最後重考，磨到全部答對才算完成**，跟review.html的卡片機制共用「包尾重試」邏輯、**07-11同步補上🔴手動標記不熟**（跟review.html共用同一個`clb7_hard_flags`，id前綴不同不會撞） | ✅ 新建（07-11補標記功能）|
 | `sentences.js` | **新增（07-07）**：常用句庫（目前108句，第1–16課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
-| `listening.html` | 聽力：**真實資源**（RFI + InnerFrench Spotify embed；Podcast Français Facile的A1對話系列連結卡）+ **自出TTS聽力測驗**（8篇，對齊已學課程）+ **07-09/07-10新增「真人語速測驗」**（LISTENING_BANK的`audioUrl`類型：真實mp3直接播放＋Claude原創TCF/TEF風格選擇題，目前7篇：麵包店/車站/市場/肉店/魚店/藥局/問路，逐字稿核對用連結卡連到來源、不存對方文字）+ **07-10新增「文化深掘Podcast」板塊**（見下方07-10記錄，目前CULTURE_BANK是空陣列，等Owen放音檔進來）| ✅ 大改（07-06～07-10）|
-| `french_notes.html` | 第1–16課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音） | ✅ 修復（07-07）|
+| `listening.html` | 聽力：**真實資源**（RFI + InnerFrench Spotify embed；Podcast Français Facile的A1對話系列連結卡）+ **自出TTS聽力測驗**（8篇，對齊已學課程）+ **07-09/07-10/07-11新增「真人語速測驗」**（LISTENING_BANK的`audioUrl`類型：真實mp3直接播放＋Claude原創TCF/TEF風格選擇題，目前10篇：麵包店/車站/市場/肉店/魚店/藥局/問路/**起司店/咖啡廳/郵局**，逐字稿核對用連結卡連到來源、不存對方文字）+ **07-10新增「文化深掘Podcast」板塊**（見下方07-10記錄，目前CULTURE_BANK是空陣列，等Owen放音檔進來）| ✅ 大改（07-06～07-11）|
+| `french_notes.html` | 第1–16課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音）、**07-11新增選字標記**（選取文字後可標🔴不熟／⭐重點，存`clb7_notes_marks`，重整頁面用文字比對重新套用，懸浮面板有「複製標記給Claude」） | ✅ 修復（07-07/11）|
 | `chunks.js` | 複習卡庫：936張，自動從筆記抽取（1–16課，07-07補第15課88張、07-10補第16課80張） | ✅ |
 | `questions.js` | 共用題庫（BANK 664題 + AGREE_BANK 247題），第1–16課（07-07新增imparfait/vocab-nature/universite-vocab、07-10新增duree/qui-que/intensite/metier-travail-vocab四個topic） | ✅ |
 | `verb_reference.html` | 動詞參考表，發音邏輯已跟其他頁統一（原本完全沒篩選） | ✅ 修復（07-07）|
@@ -270,6 +270,16 @@ Owen提出的功能：複習不熟的單字時可以直接點紅點標記，隨�
 
 ⚠️ **測試中意外驗證到一個既有的sync系統限制（不是這次新增的bug）**：切換`sync_supabase.js`的`ROOM`前後，如果本機剛`removeItem`清掉某個`clb7_*` key，但之前那個key在還沒切換ROOM時已經被debounce push到舊ROOM的雲端，之後任何頁面的`pull()`時機只要跟這次清除有時間差，舊值有可能又從舊ROOM雲端被拉回本機（因為`apply()`邏輯是「本機沒有這個key就直接寫回」，不分辨是「本來沒有」還是「剛被使用者清掉」）。這次因此在本機重新看到已經清掉的測試資料，但直接查詢**真實**Supabase payload確認沒有污染到正式雲端。已經寫進上面「注意事項」的Supabase教訓小節，以後要更嚴謹驗證「真的清乾淨」的話，要直接查雲端payload，不能只看本機localStorage或畫面沒異常。
 
+### 07-11：french_notes.html 選字標記＋listening.html 補3篇缺題目的真人語速音檔
+
+Owen回饋兩件事：①筆記「白花花一片」，想要能在上面選字標記重點/不熟，而且「如果Claude讀得到感覺更好」②聽力頁有些嵌入的音檔沒有配題目，「看得到逐字稿的應該都要出題」。
+
+**筆記選字標記**：跟review.html的🔴標記是不同機制（那個是整張卡一鍵標記，這個是筆記裡任意選一段文字）。做法：監聽`mouseup`偵測文字選取，選取範圍要落在`details.lesson-group`裡才顯示浮動工具列（🔴不熟／⭐重點），點擊後用`Range.extractContents()`+`insertNode()`把選取的文字包進`<mark>`（這個方法比`surroundContents()`更穩，選取範圍跨越多個element邊界也不會丟例外），同時記錄`{lesson, type, text, date}`進`clb7_notes_marks`。**持久化的難題**：`<mark>`包住的DOM在重新整理頁面後就消失了（筆記本體是靜態HTML，不是從資料庫渲染），解法是頁面載入時對每一筆記錄，在對應`lesson-N`容器內用純文字比對（TreeWalker掃過所有文字節點串起來找子字串位置）重新定位、重新包一次`<mark>`——找不到就跳過（例如筆記內容之後被改寫，舊標記的文字不存在了），不強求。點已存在的標記可以移除（跳確認對話框）。這次還沿用了既有的懸浮回饋面板（`qnotePanel`），加了一小節顯示標記數量+「複製標記給Claude」按鈕，呼應Owen說的「如果你讀得到感覺更好」。
+
+**listening.html補題目**：查了「真實聽力資源」區塊的Podcast Français Facile六篇（麵包店/車站/起司店/市場/咖啡廳/郵局），發現麵包店/車站/市場三篇因為07-09/07-10已經被搬進`LISTENING_BANK`重新出過題（同一個mp3，兩處都有），但**起司店（fromager1.mp3）、咖啡廳（cafe-situation1.mp3）、郵局（a-la-poste.mp3）這三篇只有播放器+連結卡，完全沒有配題目**——這就是Owen說的缺口。用瀏覽器實際造訪對方三個頁面讀逐字稿（chez-le-fromager-13.html／au-caf-1.html／dialogue-a-la-poste.html），確認內容後照HANDOFF既有的版權原則（自己原創題目、不抄對方的、不存逐字稿進repo）各寫3題選擇題，新增`r08`/`r09`/`r10`進`LISTENING_BANK`。音檔實際秒數用`new Audio()`量測（起司店35秒、咖啡廳12秒、郵局36秒）。
+
+**驗證**：兩個功能都在preview跑過完整流程——筆記標記測了🔴跟⭐兩種類型、確認`<mark>`正確渲染、重整頁面後標記正確重新套用（持久化驗證通過）、點擊移除也正常；listening.html三篇新題目都跑了「聽→答題→3/3全對→正確寫入`clb7_listening`」的完整流程。⚠️ **這次也踩到一個自己的疏忌**：開始測試前忘記檢查`sync_supabase.js`的ROOM是不是還在TEST，結果整段測試都是在正式ROOM上跑的——事後直接查詢真實Supabase payload確認沒有污染（`clb7_notes_marks`不存在、`clb7_listening`只有原本真實的1筆），這次算運氣好没出事，但這提醒**下次每次要測試寫入`clb7_*`的功能前，都要重新確認ROOM現在是什麼值，不能假設前一個任務测完就會自動還原成TEST**。
+
 ---
 
 ## 之前 session 做了什麼（2026-07-02 ～ 07-03）
@@ -322,6 +332,7 @@ Owen提出的功能：複習不熟的單字時可以直接點紅點標記，隨�
 - `clb7_sentence_sessions` → [{date, cards, ok, ts}]（最近100，供dashboard判斷步驟完成＋habit分析）
 - `clb7_sentence_newcount` → {date, n}（今日新句數，固定上限5，這是Owen明確要求的數字）
 - `clb7_hard_flags` → {cardId: {count, last}}（07-11新增，Owen在review.html/sentence_drill.html手動點🔴累加，不看對錯，跟SRS的w/c完全獨立；未到期的標記卡會被`bonusFlaggedCards()`加碼塞進當天包，卡數上限見各檔`FLAG_BONUS_MAX`）
+- `clb7_notes_marks` → [{id, lesson, type:'weak'|'key', text, date}]（07-11新增，french_notes.html選字標記，重整頁面靠純文字比對重新找到位置套用`<mark>`，找不到就跳過不強求）
 - `clb7_session` → {active, running, startedAt, accSec}（session計時器狀態，不同步到雲端，結束時清除）
 - `clb7_order_lock` → '1'表示鎖定處方順序
 - `clb7_duo` → Duolingo週報，`DUO_SEED`種子upsert進去
