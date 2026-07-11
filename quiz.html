@@ -427,6 +427,7 @@
 
 <script src="questions.js"></script>
 <script src="gram_rules.js"></script>
+<script src="codex.js"></script>
 <script>
 // ── TTS ──────────────────────────────────────────────────────
 let frVoice = null, activeTtsEl = null;
@@ -758,7 +759,9 @@ function renderCard() {
               const ta = q.topic && TOPIC_NOTE_ANCHORS[q.topic];
               const anchor = ta || (q.lesson === 0 ? 'frame-lib' : 'lesson-' + q.lesson);
               const lbl = ta ? (TOPIC_LABELS[q.topic] || q.topic) : (q.lesson === 0 ? '框架庫' : `第${q.lesson}課`);
-              return `<a class="note-link" href="french_notes.html#${anchor}" target="_blank">📖 複習：${lbl}</a>`;
+              const cx = q.topic && codexLocate(q.topic);   // 📍記憶宮殿門牌（07-11 codex）
+              return `<a class="note-link" href="french_notes.html#${anchor}" target="_blank">📖 複習：${lbl}</a>`
+                + (cx ? ` <a class="note-link" href="map.html#cx-${cx.num}" target="_blank" style="margin-left:8px">📍 ${cx.num} ${cx.name}</a>` : '');
             })()}
           </div>
         </div>

@@ -138,6 +138,7 @@
 
 <script src="questions.js"></script>
 <script src="gram_rules.js"></script>
+<script src="codex.js"></script>
 <script>
 /* ============================================================
    文法路徑練習器 — 階段2（半開卷）/ 階段3（遮規則）
@@ -341,6 +342,10 @@ function renderQuestion() {
           <div class="label">正確答案</div>
           <div class="fr-ans">${q.a.split('|')[0]}</div>
           ${q.aNote ? `<div class="ans-note">📌 ${q.aNote}</div>` : ''}
+          ${(() => {                          // 📍記憶宮殿門牌（07-11 codex）
+            const cx = q.topic && codexLocate(q.topic);
+            return cx ? `<div style="margin-top:6px"><a href="map.html#cx-${cx.num}" target="_blank" style="font-size:0.72rem;color:#3b6fd4;text-decoration:none">📍 ${cx.num} ${cx.name} — 打開資料庫門牌</a></div>` : '';
+          })()}
           <div class="rule-remind" id="ruleRemind" style="display:none"></div>
         </div>
         <div class="btn-row">

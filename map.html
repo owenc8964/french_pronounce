@@ -229,6 +229,64 @@ header {
 .panel-body { font-size: 0.82rem; line-height: 1.8; color: #7a8a9a; white-space: pre-line; }
 .panel-body.fogged { opacity: 0.5; }
 
+/* ── 📚 文法資料庫（codex，07-11 記憶宮殿） ── */
+.cx-toolbar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:0 16px 14px; }
+.cx-btn { background:#0d1020; border:1px solid #1a2438; color:#8890a0; padding:6px 12px;
+  border-radius:16px; font-size:0.72rem; cursor:pointer; font-family:inherit; }
+.cx-btn:hover { color:#ddd8cc; }
+.cx-lvl { padding:5px 10px; border-radius:14px; font-size:0.7rem; font-weight:700; cursor:pointer;
+  border:1px solid transparent; opacity:0.35; }
+.cx-lvl.on { opacity:1; }
+.cx-lvl.la1 { background:#0f3822; color:#5ed492; }
+.cx-lvl.la2 { background:#102c48; color:#62aef2; }
+.cx-lvl.lb1 { background:#3c2a08; color:#f0b050; }
+.cx-lvl.lb2 { background:#320e46; color:#c88af2; }
+.cx-search { flex:1; min-width:140px; background:#0d1020; border:1px solid #1a2438; color:#ddd8cc;
+  padding:7px 12px; border-radius:16px; font-size:0.78rem; font-family:inherit; outline:none; }
+.cx-search:focus { border-color:#f0c060; }
+.cx-chapter { margin:0 16px 12px; background:#0b0e1c; border:1px solid #161c30; border-radius:14px; overflow:hidden; }
+.cx-ch-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; }
+.cx-ch-head:hover { background:#0f1426; }
+.cx-ch-num { font-family:ui-monospace,Menlo,monospace; font-size:0.95rem; font-weight:800; color:#f0c060;
+  background:#1a2438; border-radius:8px; padding:2px 10px; }
+.cx-ch-name { font-size:0.95rem; font-weight:700; color:#e8e2d4; }
+.cx-ch-fr { font-size:0.72rem; color:#556070; margin-left:auto; }
+.cx-ch-arrow { color:#445060; font-size:0.75rem; transition:transform .15s; }
+.cx-chapter.open .cx-ch-arrow { transform:rotate(90deg); }
+.cx-ch-body { display:none; padding:0 12px 12px; }
+.cx-chapter.open .cx-ch-body { display:block; }
+.cx-section { margin-top:10px; }
+.cx-sec-head { font-size:0.76rem; font-weight:700; color:#8890a8; padding:4px 6px; letter-spacing:0.03em; }
+.cx-sec-head .cx-n { color:#c0a050; font-family:ui-monospace,Menlo,monospace; margin-right:6px; }
+.cx-item { border:1px solid #161c30; border-radius:10px; margin-bottom:5px; background:#0d1120; }
+.cx-it-row { display:flex; align-items:baseline; gap:8px; padding:9px 12px; cursor:pointer; flex-wrap:wrap; }
+.cx-it-row:hover { background:#111730; }
+.cx-n { font-family:ui-monospace,Menlo,monospace; font-size:0.72rem; font-weight:700; color:#f0c060; white-space:nowrap; }
+.cx-it-name { font-size:0.82rem; font-weight:600; color:#ddd8cc; }
+.cx-it-fr { font-size:0.7rem; color:#556070; }
+.cx-it-brief { font-size:0.7rem; color:#66708a; width:100%; padding-left:2px; }
+.cx-pill { font-size:0.58rem; font-weight:800; padding:1px 7px; border-radius:8px; margin-left:auto; }
+.cx-body { display:none; padding:2px 14px 12px; border-top:1px dashed #1a2340; }
+.cx-item.open .cx-body { display:block; }
+.cx-item.flash { animation:cxflash 1.6s ease-out; }
+@keyframes cxflash { 0%,60% { box-shadow:0 0 0 2px #f0c060; } 100% { box-shadow:none; } }
+.cx-pts { list-style:none; margin:10px 0 0; }
+.cx-pts li { font-size:0.76rem; color:#b8bcc8; line-height:1.7; padding-left:1.1em; text-indent:-1.1em; margin-bottom:3px; }
+.cx-pts li::before { content:'▸ '; color:#c0a050; }
+.cx-ex { margin-top:8px; border-top:1px dashed #1a2340; padding-top:8px; }
+.cx-ex-row { font-size:0.76rem; margin-bottom:4px; display:flex; gap:8px; flex-wrap:wrap; align-items:baseline; }
+.cx-ex-row .fr { color:#e8e2d4; font-weight:600; cursor:pointer; }
+.cx-ex-row .fr:hover { color:#f0c060; }
+.cx-ex-row .zh { color:#66708a; }
+.cx-exc { margin-top:8px; background:#2a1214; border:1px solid #4a2026; border-radius:8px; padding:8px 10px; }
+.cx-exc div { font-size:0.72rem; color:#e09098; line-height:1.6; }
+.cx-vs { margin-top:8px; background:#2a2410; border:1px solid #4a4020; border-radius:8px; padding:8px 10px; }
+.cx-vs a { font-size:0.72rem; color:#f0c060; text-decoration:none; display:block; line-height:1.6; }
+.cx-vs a:hover { text-decoration:underline; }
+.cx-links { margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; }
+.cx-links a { font-size:0.7rem; color:#62aef2; text-decoration:none; }
+.cx-links a:hover { text-decoration:underline; }
+
 /* 文法大局觀：學習階段 pill（07-11文法框架） */
 .stage-pill { font-size: 0.6rem; font-weight: 700; display: inline-block; padding: 2px 7px; border-radius: 5px; margin-top: 4px; }
 .sp-1 { background: #2a3548; color: #90a8c8; }
@@ -289,10 +347,12 @@ header {
 <div class="view-tabs">
   <button class="view-tab active" id="tabMap">🗺 課程地圖</button>
   <button class="view-tab" id="tabGram">📐 文法大局觀</button>
+  <button class="view-tab" id="tabCodex">📚 文法資料庫</button>
 </div>
 
 <div id="mapRoot"></div>
 <div id="gramRoot" style="display:none;"></div>
+<div id="codexRoot" style="display:none;"></div>
 
 <div class="panel-overlay" id="overlay" onclick="bgClose(event)">
   <div class="panel" id="panel">
@@ -314,6 +374,7 @@ header {
 
 <script src="questions.js"></script>
 <script src="gram_rules.js"></script>
+<script src="codex.js"></script>
 <script>
 const CURRENT_LESSON = 16;
 const TOTAL_LESSONS  = 35;
@@ -657,6 +718,7 @@ function openPanel(tile) {
   const bodyEl   = document.getElementById('pBody');
   const linkEl   = document.getElementById('pNoteLink');
   document.getElementById('pTrainLink').style.display = 'none';  // 課程地圖的格子不顯示練習按鈕
+  document.querySelectorAll('.cx-panel-link').forEach(el => el.remove());
 
   if (tile.unlocked) {
     statusEl.textContent = `✓ 已解鎖 — 第 ${tile.lesson} 課`;
@@ -749,6 +811,7 @@ function buildGrammarMap() {
 
 // 文法點專用面板：階段狀態＋規則摘要＋「去練習」按鈕
 function openGramPanel(p) {
+  document.querySelectorAll('.cx-panel-link').forEach(el => el.remove());  // 清掉上次插入的門牌
   document.getElementById('pIcon').textContent  = p.icon;
   document.getElementById('pTitle').textContent = p.name;
   document.getElementById('pZone').textContent  = ZONE_LABELS[p.zone];
@@ -779,6 +842,12 @@ function openGramPanel(p) {
       trainEl.textContent = '🧪 去考題混考 →';
     }
     trainEl.style.display = 'inline-flex';
+    // 📚 連到資料庫座標（用該點第一個 topic 的門牌）
+    const cxLoc = (p.topics || []).map(t => codexLocate(t)).find(x => x);
+    if (cxLoc) {
+      trainEl.insertAdjacentHTML('afterend',
+        `<a class="panel-note-link cx-panel-link" href="#cx-${cxLoc.num}" onclick="closePanel();cxJump(event,'${cxLoc.num}')">📚 ${cxLoc.num} 資料庫門牌 →</a>`);
+    }
   } else {
     statusEl.textContent = '◌ 未開課 — 教到才解鎖';
     statusEl.className   = 'panel-status status-off';
@@ -790,16 +859,147 @@ function openGramPanel(p) {
   document.getElementById('overlay').classList.add('open');
 }
 
+// ════════════════════════════════════════════════════════════
+// 📚 文法資料庫（codex.js，07-11 記憶宮殿）
+// 見林：全縮＝9章一眼看完；見樹：點章展節與條目、點條目展細節
+// 每條有永久座標（cx-5-2-2 可被 quiz/gram_trainer 的📍連結直達）
+// ════════════════════════════════════════════════════════════
+const CX_LVL_CLASS = { A1:'la1', A2:'la2', B1:'lb1', B2:'lb2' };
+let codexBuilt = false;
+const cxLvlOn = { A1:true, A2:true, B1:true, B2:true };
+
+function cxEsc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+function buildCodex() {
+  if (codexBuilt) return;
+  codexBuilt = true;
+  const root = document.getElementById('codexRoot');
+
+  const bar = document.createElement('div');
+  bar.className = 'cx-toolbar';
+  bar.innerHTML = `
+    <button class="cx-btn" onclick="cxToggleAll(true)">全部展開</button>
+    <button class="cx-btn" onclick="cxToggleAll(false)">全部縮起</button>
+    ${['A1','A2','B1','B2'].map(l =>
+      `<span class="cx-lvl ${CX_LVL_CLASS[l]} on" id="cxlvl-${l}" onclick="cxLvlToggle('${l}')">${l}</span>`).join('')}
+    <input class="cx-search" id="cxSearch" placeholder="搜尋規則、例句、座標…" oninput="cxFilter()">`;
+  root.appendChild(bar);
+
+  CODEX.forEach(ch => {
+    const chEl = document.createElement('div');
+    chEl.className = 'cx-chapter';
+    chEl.id = 'cx-' + ch.n;
+    let inner = `
+      <div class="cx-ch-head" onclick="this.parentElement.classList.toggle('open')">
+        <span class="cx-ch-arrow">▶</span>
+        <span class="cx-ch-num">${ch.n}</span>
+        <span class="cx-ch-name">${cxEsc(ch.name)}</span>
+        <span class="cx-ch-fr">${cxEsc(ch.fr)}</span>
+      </div><div class="cx-ch-body">`;
+    (ch.sections || []).forEach(sec => {
+      inner += `<div class="cx-section" id="cx-${sec.n}">
+        <div class="cx-sec-head"><span class="cx-n">${sec.n}</span>${cxEsc(sec.name)} · ${cxEsc(sec.fr)}</div>`;
+      (sec.items || []).forEach(it => {
+        const lvlCls = CX_LVL_CLASS[it.lvl] || 'la1';
+        inner += `
+        <div class="cx-item" id="cx-${it.n}" data-lvl="${it.lvl}" data-search="${cxEsc((it.n+' '+it.name+' '+it.fr+' '+it.brief+' '+(it.pts||[]).join(' ')+' '+(it.ex||[]).map(e=>e.fr+' '+e.zh).join(' ')).toLowerCase())}">
+          <div class="cx-it-row" onclick="this.parentElement.classList.toggle('open')">
+            <span class="cx-n">${it.n}</span>
+            <span class="cx-it-name">${cxEsc(it.name)}</span>
+            <span class="cx-it-fr">${cxEsc(it.fr)}</span>
+            <span class="cx-pill cx-lvl ${lvlCls} on">${it.lvl}</span>
+            <span class="cx-it-brief">${cxEsc(it.brief)}</span>
+          </div>
+          <div class="cx-body">
+            <ul class="cx-pts">${(it.pts||[]).map(p => `<li>${cxEsc(p)}</li>`).join('')}</ul>
+            ${(it.ex && it.ex.length) ? `<div class="cx-ex">${it.ex.map(e =>
+              `<div class="cx-ex-row"><span class="fr" onclick="cxSpeak(this)">🔊 ${cxEsc(e.fr)}</span><span class="zh">${cxEsc(e.zh)}</span></div>`).join('')}</div>` : ''}
+            ${(it.exc && it.exc.length) ? `<div class="cx-exc">${it.exc.map(x => `<div>⚠️ ${cxEsc(x)}</div>`).join('')}</div>` : ''}
+            ${(it.vs && it.vs.length) ? `<div class="cx-vs">${it.vs.map(v =>
+              `<a href="#cx-${v.n}" onclick="cxJump(event,'${v.n}')">🆚 ${v.n} ${cxEsc((CODEX_BY_N[v.n]||{}).name||'')} — ${cxEsc(v.note)}</a>`).join('')}</div>` : ''}
+            <div class="cx-links">
+              ${(it.gram && (GRAM_POINTS.find(g=>g.id===it.gram)||{}).unlocked) ? `<a href="gram_trainer.html?point=${it.gram}">📐 去練這個文法點 →</a>` : ''}
+            </div>
+          </div>
+        </div>`;
+      });
+      inner += `</div>`;
+    });
+    inner += `</div>`;
+    chEl.innerHTML = inner;
+    root.appendChild(chEl);
+  });
+}
+
+function cxSpeak(el) {
+  const text = el.textContent.replace(/^🔊\s*/, '');
+  speechSynthesis.cancel();
+  const vs = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith('fr'));
+  const voice = vs.find(v => /am[eé]lie|thomas/i.test(v.name))
+             || vs.find(v => /premium|enhanced|amélior|plus/i.test(v.name))
+             || vs.find(v => v.localService === false) || vs.find(v => v.lang === 'fr-FR') || vs[0];
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'fr-FR'; u.rate = 0.7;
+  if (voice) u.voice = voice;
+  speechSynthesis.speak(u);
+}
+
+function cxToggleAll(open) {
+  document.querySelectorAll('#codexRoot .cx-chapter').forEach(c => c.classList.toggle('open', open));
+  document.querySelectorAll('#codexRoot .cx-item').forEach(i => i.classList.toggle('open', open));
+}
+function cxLvlToggle(l) {
+  cxLvlOn[l] = !cxLvlOn[l];
+  document.getElementById('cxlvl-' + l).classList.toggle('on', cxLvlOn[l]);
+  cxFilter();
+}
+function cxFilter() {
+  const q = (document.getElementById('cxSearch').value || '').trim().toLowerCase();
+  document.querySelectorAll('#codexRoot .cx-item').forEach(it => {
+    const lvlOk = cxLvlOn[it.dataset.lvl];
+    const qOk = !q || it.dataset.search.indexOf(q) >= 0;
+    it.style.display = (lvlOk && qOk) ? '' : 'none';
+    if (q && qOk) {                    // 搜尋命中時自動展開所在章
+      const ch = it.closest('.cx-chapter');
+      if (ch) ch.classList.add('open');
+    }
+  });
+}
+// 直達某座標：展開所在章＋條目、捲動、閃一下（記憶宮殿的門牌導航）
+function cxJump(evt, n) {
+  if (evt) evt.preventDefault();
+  switchView('codex');
+  const el = document.getElementById('cx-' + n);
+  if (!el) return;
+  const ch = el.closest('.cx-chapter') || el;
+  ch.classList.add('open');
+  if (el.classList.contains('cx-item')) el.classList.add('open');
+  else el.querySelectorAll('.cx-item').forEach(i => i.classList.add('open'));
+  el.scrollIntoView({ behavior:'smooth', block:'center' });
+  el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+}
+
 function switchView(view) {
-  const isMap = view === 'map';
-  document.getElementById('mapRoot').style.display  = isMap ? 'block' : 'none';
-  document.getElementById('gramRoot').style.display = isMap ? 'none' : 'block';
-  document.getElementById('tabMap').classList.toggle('active', isMap);
-  document.getElementById('tabGram').classList.toggle('active', !isMap);
-  if (!isMap) buildGrammarMap();
+  document.getElementById('mapRoot').style.display   = view === 'map'   ? 'block' : 'none';
+  document.getElementById('gramRoot').style.display  = view === 'gram'  ? 'block' : 'none';
+  document.getElementById('codexRoot').style.display = view === 'codex' ? 'block' : 'none';
+  document.getElementById('tabMap').classList.toggle('active',  view === 'map');
+  document.getElementById('tabGram').classList.toggle('active', view === 'gram');
+  document.getElementById('tabCodex').classList.toggle('active', view === 'codex');
+  if (view === 'gram') buildGrammarMap();
+  if (view === 'codex') buildCodex();
 }
 document.getElementById('tabMap').addEventListener('click', () => switchView('map'));
 document.getElementById('tabGram').addEventListener('click', () => switchView('gram'));
+document.getElementById('tabCodex').addEventListener('click', () => switchView('codex'));
+
+// #cx-5-2-2 直達（quiz/gram_trainer 的📍連結進來）
+function cxHandleHash() {
+  const m = location.hash.match(/^#cx-([\d-]+)$/);
+  if (m) cxJump(null, m[1]);
+}
+window.addEventListener('hashchange', cxHandleHash);
+if (location.hash.startsWith('#cx-')) { setTimeout(cxHandleHash, 50); }
 
 function closePanel() {
   document.getElementById('overlay').classList.remove('open');
