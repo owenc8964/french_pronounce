@@ -285,6 +285,28 @@ header {
 .cx-pt-ex .fr:hover { color:#f0c060; }
 .cx-pt-ex .zh { font-size:0.7rem; color:#66708a; margin-left:8px; }
 .cx-term { color:#7fb4f0; border-bottom:1px dashed #3a5680; cursor:help; }
+/* v3 條目=小文章（07-12）：固定順序的可開合段落＋表格 */
+.cx-sec2 { margin-top:8px; border:1px solid #1a2340; border-radius:8px; overflow:hidden; }
+.cx-sec2-head { display:flex; align-items:center; gap:6px; padding:7px 10px; cursor:pointer;
+  font-size:0.72rem; font-weight:700; color:#8890a8; background:#0f1428; }
+.cx-sec2-head:hover { color:#c8cede; }
+.cx-sec2-head .arr { font-size:0.6rem; color:#445060; transition:transform .15s; }
+.cx-sec2.open .cx-sec2-head .arr { transform:rotate(90deg); }
+.cx-sec2-head .cnt { margin-left:auto; font-size:0.62rem; color:#445060; font-weight:400; }
+.cx-sec2-body { display:none; padding:4px 10px 10px; }
+.cx-sec2.open .cx-sec2-body { display:block; }
+.cx-grid { width:100%; border-collapse:collapse; margin-top:8px; font-size:0.74rem; }
+.cx-grid th { background:#141b34; color:#c0a050; font-weight:700; padding:5px 8px; border:1px solid #1e2848; text-align:left; }
+.cx-grid td { padding:5px 8px; border:1px solid #1e2848; color:#c8cede; }
+.cx-grid td .fr2 { cursor:pointer; color:#e8e2d4; font-weight:600; }
+.cx-grid td .fr2:hover { color:#f0c060; }
+.cx-mnem { margin-top:8px; font-size:0.72rem; color:#a08838; background:#1a1608; border:1px dashed #3a3010;
+  border-radius:8px; padding:7px 10px; line-height:1.6; }
+.cx-usage li { font-size:0.76rem; color:#b8bcc8; line-height:1.7; margin-bottom:3px; padding-left:1.1em; text-indent:-1.1em; list-style:none; }
+.cx-usage li::before { content:'◦ '; color:#7fb4f0; }
+.cx-see { margin-top:2px; }
+.cx-see a { font-size:0.72rem; color:#f0c060; text-decoration:none; display:inline-block; margin-right:12px; }
+.cx-see a:hover { text-decoration:underline; }
 #cxTip { position:fixed; max-width:300px; background:#182238; border:1px solid #3a5680; border-radius:10px;
   padding:10px 12px; font-size:0.74rem; color:#cfd6e4; line-height:1.6; z-index:1000; display:none;
   box-shadow:0 6px 24px rgba(0,0,0,0.5); }
@@ -968,24 +990,7 @@ function buildCodex() {
             <span class="cx-pill cx-lvl ${lvlCls} on">${it.lvl}</span>
             <span class="cx-it-brief">${cxEsc(it.brief)}</span>
           </div>
-          <div class="cx-body">
-            ${(it.ex && it.ex.length) ? `<div class="cx-anchor"><div class="cx-anchor-label">🎧 先看句子，唸出聲</div>${it.ex.map(e =>
-              `<div class="cx-anchor-row"><span class="fr" onclick="cxSpeak(this)">🔊 ${cxEsc(e.fr)}</span><span class="zh">${cxEsc(e.zh)}</span></div>`).join('')}</div>` : ''}
-            <ul class="cx-pts">${(it.pts||[]).map(p => typeof p === 'string'
-              ? `<li>${cxTermify(cxEsc(p))}</li>`
-              : `<li>${cxTermify(cxEsc(p.r))}${p.fr ? `<div class="cx-pt-ex"><span class="fr" onclick="cxSpeak(this)">🔊 ${cxEsc(p.fr)}</span><span class="zh">${cxEsc(p.zh||'')}</span></div>` : ''}</li>`).join('')}</ul>
-            ${(it.exc && it.exc.length) ? `<div class="cx-exc">${it.exc.map(x => `<div>⚠️ ${cxTermify(cxEsc(x))}</div>`).join('')}</div>` : ''}
-            ${(it.vs && it.vs.length) ? `<div class="cx-vs">${it.vs.map(v =>
-              `<a href="#cx-${v.n}" onclick="cxJump(event,'${v.n}')">🆚 ${v.n} ${cxEsc((CODEX_BY_N[v.n]||{}).name||'')} — ${cxEsc(v.note)}</a>`).join('')}</div>` : ''}
-            <div class="cx-links">
-              ${(() => {   // ⚡讀完馬上考：這條（或所在節）有對應題庫就給直達鈕
-                const ts = (it.topics && it.topics.length) ? it.topics : (sec.topics || []);
-                const t = ts.find(x => BANK.some(q => q.topic === x));
-                return t ? `<a class="cx-quiz-btn" href="quiz.html?topic=${t}" target="_blank">⚡ 用這條考我 →</a>` : '';
-              })()}
-              ${(it.gram && (GRAM_POINTS.find(g=>g.id===it.gram)||{}).unlocked) ? `<a href="gram_trainer.html?point=${it.gram}">📐 去練這個文法點 →</a>` : ''}
-            </div>
-          </div>
+          <div class="cx-body">${cxItemBody(it, sec)}</div>
         </div>`;
       });
       inner += `</div>`;
@@ -994,6 +999,75 @@ function buildCodex() {
     chEl.innerHTML = inner;
     root.appendChild(chEl);
   });
+}
+
+// v3 條目=小文章：固定房間佈局（記憶宮殿：每條同順序）
+// 🎧錨句(常開) → 📖規則(常開,含表格/💡記法) → 🕐使用時機 → ⚠️例外 → 🆚易混淆 → 💬更多例句（後四段可開合）→ 🔗相關
+function cxSub(icon, title, cnt, body, open) {
+  return `<div class="cx-sec2${open ? ' open' : ''}">
+    <div class="cx-sec2-head" onclick="this.parentElement.classList.toggle('open');event.stopPropagation()">
+      <span class="arr">▶</span>${icon} ${title}<span class="cnt">${cnt}</span></div>
+    <div class="cx-sec2-body">${body}</div></div>`;
+}
+function cxExRow(e, cls) {
+  return `<div class="${cls}"><span class="fr" onclick="cxSpeak(this)">🔊 ${cxEsc(e.fr)}</span><span class="zh">${cxEsc(e.zh || '')}</span></div>`;
+}
+function cxGridHtml(g) {
+  const cell = c => /[a-zàâäéèêëîïôöùûüç]/i.test(c)
+    ? `<span class="fr2" onclick="cxSpeak(this)">${cxEsc(c)}</span>` : cxEsc(c);
+  return `<table class="cx-grid">
+    <tr>${g.head.map(h => `<th>${cxEsc(h)}</th>`).join('')}</tr>
+    ${g.rows.map(r => `<tr>${r.map(c => `<td>${cell(c)}</td>`).join('')}</tr>`).join('')}
+  </table>`;
+}
+function cxItemBody(it, sec) {
+  let h = '';
+  // 🎧 錨句
+  if (it.ex && it.ex.length) {
+    h += `<div class="cx-anchor"><div class="cx-anchor-label">🎧 先看句子，唸出聲</div>${it.ex.map(e => cxExRow(e, 'cx-anchor-row')).join('')}</div>`;
+  }
+  // 📖 規則（常開本文：條列＋表格＋💡記法）
+  h += `<ul class="cx-pts">${(it.pts || []).map(p => typeof p === 'string'
+    ? `<li>${cxTermify(cxEsc(p))}</li>`
+    : `<li>${cxTermify(cxEsc(p.r))}${p.fr ? `<div class="cx-pt-ex"><span class="fr" onclick="cxSpeak(this)">🔊 ${cxEsc(p.fr)}</span><span class="zh">${cxEsc(p.zh || '')}</span></div>` : ''}</li>`).join('')}</ul>`;
+  if (it.grid) h += cxGridHtml(it.grid);
+  if (it.mnem) h += `<div class="cx-mnem">💡 記法：${cxEsc(it.mnem)}</div>`;
+  // 🕐 使用時機
+  if (it.usage && it.usage.length) {
+    h += cxSub('🕐', '使用時機', it.usage.length + ' 條',
+      `<ul class="cx-usage">${it.usage.map(u => typeof u === 'string'
+        ? `<li>${cxTermify(cxEsc(u))}</li>`
+        : `<li>${cxTermify(cxEsc(u.r))}${u.fr ? `<div class="cx-pt-ex"><span class="fr" onclick="cxSpeak(this)">🔊 ${cxEsc(u.fr)}</span><span class="zh">${cxEsc(u.zh || '')}</span></div>` : ''}</li>`).join('')}</ul>`, false);
+  }
+  // ⚠️ 例外
+  if (it.exc && it.exc.length) {
+    h += cxSub('⚠️', '例外', it.exc.length + ' 條',
+      `<div class="cx-exc" style="margin-top:4px">${it.exc.map(x => `<div>⚠️ ${cxTermify(cxEsc(x))}</div>`).join('')}</div>`, false);
+  }
+  // 🆚 易混淆（含跳轉；可帶對照小表）
+  if (it.vs && it.vs.length) {
+    h += cxSub('🆚', '相近比較・易混淆', it.vs.length + ' 組',
+      it.vs.map(v => `<div style="margin-bottom:6px">
+        <a class="cx-vs-link" style="font-size:0.74rem;color:#f0c060;text-decoration:none" href="#cx-${v.n}" onclick="cxJump(event,'${v.n}')">🆚 ${v.n} ${cxEsc((CODEX_BY_N[v.n] || {}).name || '')} →</a>
+        <span style="font-size:0.72rem;color:#8890a8"> — ${cxTermify(cxEsc(v.note))}</span>
+        ${v.grid ? cxGridHtml(v.grid) : ''}</div>`).join(''), false);
+  }
+  // 💬 更多例句
+  if (it.more && it.more.length) {
+    h += cxSub('💬', '更多例句', it.more.length + ' 句',
+      it.more.map(e => cxExRow(e, 'cx-anchor-row')).join(''), false);
+  }
+  // 🔗 相關條目＋行動按鈕
+  const seeLinks = (it.see || []).map(n =>
+    `<a href="#cx-${n}" onclick="cxJump(event,'${n}')">🔗 ${n} ${cxEsc((CODEX_BY_N[n] || {}).name || '')}</a>`).join('');
+  const ts = (it.topics && it.topics.length) ? it.topics : ((sec && sec.topics) || []);
+  const t = ts.find(x => BANK.some(q => q.topic === x));
+  h += `<div class="cx-links cx-see">
+    ${seeLinks}
+    ${t ? `<a class="cx-quiz-btn" href="quiz.html?topic=${t}" target="_blank">⚡ 用這條考我 →</a>` : ''}
+    ${(it.gram && (GRAM_POINTS.find(g => g.id === it.gram) || {}).unlocked) ? `<a href="gram_trainer.html?point=${it.gram}">📐 去練這個文法點 →</a>` : ''}
+  </div>`;
+  return h;
 }
 
 function cxSpeak(el) {
