@@ -764,7 +764,9 @@ function openGramPanel(p) {
     statusEl.className   = 'panel-status status-on';
     bodyEl.className     = 'panel-body';
     bodyEl.textContent   = p.rule
-      ? p.rule.title + '\n' + p.rule.points.map(x => '▸ ' + x).join('\n')
+      ? p.rule.title
+        + (p.rule.why ? '\n\n🧭 ' + p.rule.why : '')
+        + '\n\n' + p.rule.points.map(x => '▸ ' + x).join('\n')
       : ((TILES.find(t => t.id === p.id) || {}).detail || '');
     noteEl.href = `french_notes.html#lesson-${p.lessons[0]}`;
     noteEl.style.display = 'inline-flex';

@@ -64,7 +64,7 @@ Owen（A1→A2）。文法題錯誤率高、多規則疊加時互相干擾、錯
 
 ## 資料
 
-- **新檔 `gram_rules.js`**：`const GRAM_POINTS = [{id, name, icon, zone, cat, lessons:[..], topics:[..], unlocked, rule:{title, points:[中文要點], examples:[{fr, zh}]}}]`。19現役＋13未開課（未開課只有基本欄位無rule）。單一真相來源：map文法大局觀、trainer、quiz gating、dashboard 都讀它。
+- **新檔 `gram_rules.js`**：`const GRAM_POINTS = [{id, name, icon, zone, cat, lessons:[..], topics:[..], unlocked, rule:{title, why, points:[中文要點], examples:[{fr, zh}]}}]`。19現役＋13未開課（未開課只有基本欄位無rule）。單一真相來源：map文法大局觀、trainer、quiz gating、dashboard 都讀它。`why`（07-11 Owen 要求全系統化）＝「為什麼長這樣」由上而下大局觀，顯示順序 title→why→points→examples，語氣紅線：解釋到規則為止、不說故事。
 - **新 localStorage key `clb7_gram_stage`**：`{pointId: {stage, hist:[{d, stage, acc}]}}`（per-key物件，sync自動同步）。沒有記錄的現役點預設 stage=2（= Owen 的「全部重走」，不用寫初始化資料）。
 - **新 localStorage key `clb7_flagged_qs`**：`[{id: qId(q), d, src, q}]`（陣列，sync以id去重）。
 

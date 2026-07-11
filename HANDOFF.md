@@ -287,6 +287,7 @@ Owen 的核心回饋（這次最大的方向轉變）：「記不熟就直接進
 - **檢舉審核流程**：Owen按🚩→題目立即從quiz/trainer所有出題池消失→dashboard警報顯示待審數→**下次session Claude要主動查`clb7_flagged_qs`（從Supabase payload或請Owen報數字），修好題目後把該筆從陣列移除，題目自動回池**。
 - **題池偏薄待補**（已spawn_task）：relatifs打字題僅3題、duree-temps僅4題、imparfait僅5題。
 - **v2待做**：干擾配對自動偵測+對照卡（Owen說「一句話A/B/C三個文法，第一次錯B第二次錯A」的互相干擾問題，等框架跑順再上）；階段5非動詞類反射。
+- **07-11 加碼：🧭「為什麼長這樣」層（why layer）**。Owen 把學習哲學說完整（《駭客任務》式由上而下、上下夾攻、不說故事——詳見 memory `feedback_content_restructure_philosophy` 07-11補充＋`assets/podcast/NOTEBOOKLM_PROMPT.md`），並明確要求這方向不只給 podcast、**整個系統都要有**。實作：19個現役點的 `rule` 各加 `why` 欄位（一段由上而下的設計邏輯：拉丁文遺產/發音侵蝕/高頻磨損/母音相撞禁忌等，把「例外」解釋成歷史必然），gram_trainer 規則卡與 map 大局觀面板都顯示，**順序刻意是 title→why→points→examples（先大局再細節，順序本身就是哲學）**。同時更新 podcast 指南為 Owen 親排的四大模組15集課綱，每集標了對應文法點（podcast 由上而下＋trainer 由下而上＝上下夾攻）。
 
 **驗證**（全程隔離ROOM）：trainer完整跑過「選點→階段2答錯重考→規則提醒→首次5/6升階→階段3規則卡收起→答錯自動翻開→SRS只在階段3寫入→🚩檢舉從池移除」；map大局觀32格7類、面板三種狀態（現役/未開課/課程地圖格）都對；quiz檢舉後分數回正+錯題本移除；dashboard步驟②推薦與✓完成、🚩警報。測完清掉preview的`clb7_gram_stage`/`clb7_flagged_qs`、切回正式ROOM、grep無殘留、**直接curl真實Supabase payload確認326個key裡沒有測試key**。
 
@@ -326,7 +327,7 @@ Owen回饋兩件事：①筆記「白花花一片」，想要能在上面選字�
 
 **⚠️ 07-07新增：`sentences.js`跟`chunks.js`維護方式不同——每次 Owen 給新課筆記/逐字稿時，這三份都要一起補**：①`chunks.js`（自動抽取，跑腳本）②`table_drill.html`的`TABLES`題庫（人工加表格）③`sentences.js`（**人工精選**，不是自動抽取——從新課內容挑「真的常用、值得先背」的完整句子，過濾掉單字/詞組對，id格式`S_L{課}_{序號}`接續該課現有最大序號）。這是 Owen 明確要求的（07-07討論造句練習設計時提出），忘記其中一項＝新課內容沒進到對應練習系統。
 
-**⚠️ 07-11新增第七項連動：`gram_rules.js`**——新課教到新文法時：對應 `GRAM_POINTS` 佔位點改 `unlocked:true`＋補 `lessons`/`topics`/`rule`（規則卡）；若是全新文法點（地圖佔位裡沒有的）就新增一個點。忘記＝新文法進不了文法路徑，quiz選課器也不會給🪜提示。
+**⚠️ 07-11新增第七項連動：`gram_rules.js`**——新課教到新文法時：對應 `GRAM_POINTS` 佔位點改 `unlocked:true`＋補 `lessons`/`topics`/`rule`（規則卡，**必含 `why` 欄位**——「為什麼長這樣」的由上而下解釋，例外要寫成歷史的自然結果不是要背的規定，語氣紅線：講到足以解釋規則就停、不說故事，見 memory `feedback_content_restructure_philosophy`）；若是全新文法點（地圖佔位裡沒有的）就新增一個點。忘記＝新文法進不了文法路徑，quiz選課器也不會給🪜提示。
 
 ---
 

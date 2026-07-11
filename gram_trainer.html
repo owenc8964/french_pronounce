@@ -42,6 +42,10 @@
   }
   .rule-card.hidden-rule { display:none; }
   .rule-title { font-size:0.85rem; font-weight:700; color:#8a6d00; margin-bottom:8px; }
+  .rule-why {
+    font-size:0.78rem; color:#6a5a20; line-height:1.7; background:rgba(255,255,255,0.55);
+    border-radius:8px; padding:8px 10px; margin-bottom:10px;
+  }
   .rule-points { list-style:none; }
   .rule-points li { font-size:0.8rem; line-height:1.65; padding-left:1.1em; text-indent:-1.1em; margin-bottom:4px; }
   .rule-points li::before { content:'▸ '; color:#c0a030; }
@@ -301,6 +305,7 @@ function renderQuestion() {
   const ruleHtml = `
     <div class="rule-card${open ? '' : ' hidden-rule'}" id="ruleCard">
       <div class="rule-title">📐 ${r.title}</div>
+      ${r.why ? `<div class="rule-why">🧭 ${r.why}</div>` : ''}
       <ul class="rule-points">${r.points.map(p => `<li>${p}</li>`).join('')}</ul>
       <div class="rule-ex">${r.examples.map(e =>
         `<div class="rule-ex-row"><span class="fr" onclick="speak(this.textContent)">🔊 ${e.fr}</span><span class="zh">${e.zh}</span></div>`).join('')}
