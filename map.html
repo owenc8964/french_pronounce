@@ -226,8 +226,17 @@ header {
 }
 .status-on  { background: #0c2218; color: #60d090; border: 1px solid #1a4a2a; }
 .status-off { background: #181818; color: #445060; border: 1px solid #252525; }
-.panel-body { font-size: 0.82rem; line-height: 1.8; color: #7a8a9a; }
+.panel-body { font-size: 0.82rem; line-height: 1.8; color: #7a8a9a; white-space: pre-line; }
 .panel-body.fogged { opacity: 0.5; }
+
+/* 文法大局觀：學習階段 pill（07-11文法框架） */
+.stage-pill { font-size: 0.6rem; font-weight: 700; display: inline-block; padding: 2px 7px; border-radius: 5px; margin-top: 4px; }
+.sp-1 { background: #2a3548; color: #90a8c8; }
+.sp-2 { background: #4a3a10; color: #f0c060; }
+.sp-3 { background: #1a3050; color: #70aef0; }
+.sp-4 { background: #143824; color: #60d090; }
+.sp-5 { background: #38104a; color: #c080f0; }
+.sp-done { background: #185030; color: #70e8a0; }
 
 /* ── Responsive ── */
 @media (max-width: 640px) {
@@ -299,9 +308,12 @@ header {
     <div class="panel-status" id="pStatus"></div>
     <div class="panel-body"   id="pBody"></div>
     <a class="panel-note-link" id="pNoteLink" href="#" style="display:none;">📖 回筆記完整複習這個文法點 →</a>
+    <a class="panel-note-link" id="pTrainLink" href="#" style="display:none;">📐 去練習 →</a>
   </div>
 </div>
 
+<script src="questions.js"></script>
+<script src="gram_rules.js"></script>
 <script>
 const CURRENT_LESSON = 16;
 const TOTAL_LESSONS  = 35;
@@ -644,6 +656,7 @@ function openPanel(tile) {
   const statusEl = document.getElementById('pStatus');
   const bodyEl   = document.getElementById('pBody');
   const linkEl   = document.getElementById('pNoteLink');
+  document.getElementById('pTrainLink').style.display = 'none';  // 課程地圖的格子不顯示練習按鈕
 
   if (tile.unlocked) {
     statusEl.textContent = `✓ 已解鎖 — 第 ${tile.lesson} 課`;
@@ -662,59 +675,117 @@ function openPanel(tile) {
 }
 
 // ════════════════════════════════════════════════════════════
-// 📐 文法大局觀：把 TILES 裡 gram:true 的項目依文法類別（cat）重新分組展示
-// 每個 tile 保留自己原本的 CEFR 等級配色（tz-a1/a2/b1/b2），不看外層分類容器
+// 📐 文法大局觀：改由 gram_rules.js 的 GRAM_POINTS 渲染（07-11文法框架）
+// 每格保留 CEFR 等級配色（tz-a1/a2/b1/b2）＋顯示學習階段 badge
+// GRAM_CATS / GRAM_STAGES / gramStageOf 皆來自 gram_rules.js
 // ════════════════════════════════════════════════════════════
-const GRAM_CATS = [
-  { key:'verbe-present', icon:'⚡',  name:'動詞 — 現在式基礎' },
-  { key:'verbe-temps',   icon:'⏱️', name:'動詞 — 時態' },
-  { key:'verbe-mode',    icon:'🌀',  name:'動詞 — 語氣・建議・被動' },
-  { key:'pronoms',       icon:'🔗',  name:'代名詞' },
-  { key:'base',          icon:'📚',  name:'冠詞・疑問句・否定' },
-  { key:'adjectifs',     icon:'⚖️', name:'形容詞・比較' },
-  { key:'discours',      icon:'💬',  name:'連接詞・論述表達' },
-];
+
+// 該點所有 topic 是否已達精熟（沿用CLB判定：每topic正確率≥75%且≥5題次）
+function pointMastered(p) {
+  if (!p.topics.length) return false;
+  return p.topics.every(t => {
+    let w = 0, c = 0;
+    BANK.filter(q => q.topic === t).forEach(q => {
+      try {
+        const s = JSON.parse(localStorage.getItem('clb7_' + qId(q)));
+        if (s) { w += s.w || 0; c += s.c || 0; }
+      } catch(e) {}
+    });
+    return (w + c) >= 5 && c / (w + c) >= 0.75;
+  });
+}
+
+function gramBadgeOf(p) {
+  if (!p.unlocked) return { cls:'sp-0', text:'🔒 未開課' };
+  const st = gramStageOf(p.id);
+  if (st >= 4 && pointMastered(p)) return { cls:'sp-done', text:'✅ 熟' };
+  const info = GRAM_STAGES[st];
+  return { cls:'sp-' + st, text: info.icon + ' ' + info.label };
+}
 
 let gramBuilt = false;
 function buildGrammarMap() {
   if (gramBuilt) return;
   gramBuilt = true;
-  const gramTiles = TILES.filter(t => t.gram);
   const root = document.getElementById('gramRoot');
 
-  GRAM_CATS.forEach(cat => {
-    const catTiles = gramTiles.filter(t => t.cat === cat.key);
-    if (!catTiles.length) return;
-    const catOn = catTiles.filter(t => t.unlocked).length;
+  Object.keys(GRAM_CATS).forEach(key => {
+    const cat = GRAM_CATS[key];
+    const pts = GRAM_POINTS.filter(p => p.cat === key);
+    if (!pts.length) return;
+    const catOn = pts.filter(p => p.unlocked).length;
 
     const wrap = document.createElement('div');
     wrap.className = 'zone-wrap cat-wrap';
     wrap.innerHTML = `
       <div class="zone-head">
         <span class="zone-icon">${cat.icon}</span>
-        <span class="zone-name">${cat.name}</span>
-        <span class="zone-prog">${catOn}/${catTiles.length}</span>
+        <span class="zone-name">${cat.label}</span>
+        <span class="zone-prog">${catOn}/${pts.length}</span>
       </div>
-      <div class="tile-grid" id="gramgrid-${cat.key}"></div>
+      <div class="tile-grid" id="gramgrid-${key}"></div>
     `;
     root.appendChild(wrap);
 
-    const grid = document.getElementById('gramgrid-' + cat.key);
-    catTiles.forEach(tile => {
+    const grid = document.getElementById('gramgrid-' + key);
+    pts.forEach(p => {
+      const badge = gramBadgeOf(p);
+      const hint = p.rule ? p.rule.title : (TILES.find(t => t.id === p.id) || {}).hint || '';
       const el = document.createElement('div');
-      el.className = `tile ${tile.unlocked ? 'unlocked' : 'locked'} tz-${tile.zone.toLowerCase()}`;
-      el.onclick = () => openPanel(tile);
+      el.className = `tile ${p.unlocked ? 'unlocked' : 'locked'} tz-${p.zone.toLowerCase()}`;
+      el.onclick = () => openGramPanel(p);
       el.innerHTML = `
-        <div class="tile-icon">${tile.icon}</div>
-        <div class="tile-name">${tile.name}</div>
-        <div class="tile-hint">${tile.hint}</div>
-        ${tile.unlocked
-          ? `<div class="tile-badge">第 ${tile.lesson} 課</div>`
+        <div class="tile-icon">${p.icon}</div>
+        <div class="tile-name">${p.name}</div>
+        <div class="tile-hint">${hint}</div>
+        ${p.unlocked
+          ? `<div class="stage-pill ${badge.cls}">${badge.text}</div>`
           : `<span class="fog-mark">〰</span>`}
       `;
       grid.appendChild(el);
     });
   });
+}
+
+// 文法點專用面板：階段狀態＋規則摘要＋「去練習」按鈕
+function openGramPanel(p) {
+  document.getElementById('pIcon').textContent  = p.icon;
+  document.getElementById('pTitle').textContent = p.name;
+  document.getElementById('pZone').textContent  = ZONE_LABELS[p.zone];
+
+  const statusEl = document.getElementById('pStatus');
+  const bodyEl   = document.getElementById('pBody');
+  const noteEl   = document.getElementById('pNoteLink');
+  const trainEl  = document.getElementById('pTrainLink');
+
+  if (p.unlocked) {
+    const badge = gramBadgeOf(p);
+    statusEl.textContent = `${badge.text} — 第 ${p.lessons.join('、')} 課`;
+    statusEl.className   = 'panel-status status-on';
+    bodyEl.className     = 'panel-body';
+    bodyEl.textContent   = p.rule
+      ? p.rule.title + '\n' + p.rule.points.map(x => '▸ ' + x).join('\n')
+      : ((TILES.find(t => t.id === p.id) || {}).detail || '');
+    noteEl.href = `french_notes.html#lesson-${p.lessons[0]}`;
+    noteEl.style.display = 'inline-flex';
+    const st = gramStageOf(p.id);
+    if (st < 4) {
+      trainEl.href = `gram_trainer.html?point=${p.id}`;
+      trainEl.textContent = `${GRAM_STAGES[st].icon} 去${GRAM_STAGES[st].label}練習 →`;
+    } else {
+      trainEl.href = 'quiz.html';
+      trainEl.textContent = '🧪 去考題混考 →';
+    }
+    trainEl.style.display = 'inline-flex';
+  } else {
+    statusEl.textContent = '◌ 未開課 — 教到才解鎖';
+    statusEl.className   = 'panel-status status-off';
+    bodyEl.className     = 'panel-body fogged';
+    bodyEl.textContent   = (TILES.find(t => t.id === p.id) || {}).detail || '之後的課程會教到。';
+    noteEl.style.display = 'none';
+    trainEl.style.display = 'none';
+  }
+  document.getElementById('overlay').classList.add('open');
 }
 
 function switchView(view) {

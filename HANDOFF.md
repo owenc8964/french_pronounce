@@ -93,6 +93,8 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `french_notes.html` | 第1–16課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音）、**07-11新增選字標記**（選取文字後可標🔴不熟／⭐重點，存`clb7_notes_marks`，重整頁面用文字比對重新套用，懸浮面板有「複製標記給Claude」） | ✅ 修復（07-07/11）|
 | `chunks.js` | 複習卡庫：936張，自動從筆記抽取（1–16課，07-07補第15課88張、07-10補第16課80張），**07-11修正2張第14課語意不清的卡**（`L14_de_la___de`／`L14_Je_viens_de_Taïwan_`，改成完整可翻譯的中文句子） | ✅ |
 | `questions.js` | 共用題庫（BANK 664題 + AGREE_BANK 247題），第1–16課（07-07新增imparfait/vocab-nature/universite-vocab、07-10新增duree/qui-que/intensite/metier-travail-vocab四個topic），**07-11新增53個`zh`欄位**：fill題型裡完全沒有中文語境的53題（集中第1–6課），補上完整中文句意 | ✅ |
+| `gram_rules.js` | **新增（07-11）**：文法框架單一真相來源——`GRAM_POINTS` 32個文法點（19現役+13未開課佔位）含 topics 對應與規則卡（中文要點+法文例句）、`GRAM_CATS`7大類、`gramStageOf`/`gramSetStage`/`gramFlaggedIds`/`gramFlagQuestion` helpers。map/gram_trainer/quiz/dashboard 四頁共用 | ✅ 新建 |
+| `gram_trainer.html` | **新增（07-11）**：文法路徑練習器——階段2半開卷（規則卡固定顯示）/階段3遮規則（答錯自動翻開），只出打字題杜絕選項污染，包尾重試磨到全對，首次作答≥80%升階，每階段可手動跳過；完成寫`clb7_quiz_done`（=步驟②）；階段2不寫SRS（開卷不灌精熟統計）、階段3寫；guided=1自動挑「階段最低+錯誤率最高」的點 | ✅ 新建 |
 | `verb_reference.html` | 動詞參考表，發音邏輯已跟其他頁統一（原本完全沒篩選） | ✅ 修復（07-07）|
 | `tracker.html` | 舊版計時器（autostart、切分頁自動暫停）+ 700h 進度，功能已被 session_timer.js 取代但保留 | 舊版 |
 | `speaking.html` | 口說日誌（僅記錄有無/時長，不評分內容） | ✅ |
@@ -270,6 +272,24 @@ Owen提出的功能：複習不熟的單字時可以直接點紅點標記，隨�
 
 ⚠️ **測試中意外驗證到一個既有的sync系統限制（不是這次新增的bug）**：切換`sync_supabase.js`的`ROOM`前後，如果本機剛`removeItem`清掉某個`clb7_*` key，但之前那個key在還沒切換ROOM時已經被debounce push到舊ROOM的雲端，之後任何頁面的`pull()`時機只要跟這次清除有時間差，舊值有可能又從舊ROOM雲端被拉回本機（因為`apply()`邏輯是「本機沒有這個key就直接寫回」，不分辨是「本來沒有」還是「剛被使用者清掉」）。這次因此在本機重新看到已經清掉的測試資料，但直接查詢**真實**Supabase payload確認沒有污染到正式雲端。已經寫進上面「注意事項」的Supabase教訓小節，以後要更嚴謹驗證「真的清乾淨」的話，要直接查雲端payload，不能只看本機localStorage或畫面沒異常。
 
+### 07-11：文法學習框架（Grammar Path）上線——五階段狀態機＋🚩檢舉機制
+
+Owen 的核心回饋（這次最大的方向轉變）：「記不熟就直接進考題，一直把正確錯誤的答案混在一起；有時候題目出錯我又一直被洗錯的選項」「先把整個大學習框架建立好再說」。診斷：現有系統只有「測驗」沒有「學習」，筆記讀完直接進考題中間沒有階梯；且低熟練度做選擇題有 negative suggestion effect——錯誤選項會跟正確答案一起被記住。
+
+**三個 Owen 拍板的設計決定**：①已學過的19個文法點**全部重走**（初始stage=2，用「沒有記錄=stage 2」實現，不用寫初始化資料）②半開卷題目**沿用現有題庫**換介面 ③🚩檢舉機制一起做。完整 PRD 見 [`PRD.md`](PRD.md)。
+
+**五階段**：0未開課→1📖理解→2🪜半開卷（規則卡全程可見+打字題）→3🎯遮規則（答錯才翻開）→4🧪考題（quiz混考，精熟=沿用CLB標準≥75%且≥5題次）→5⚡反射（v2）。階段2/3**絕不出選擇題**。
+
+**實作**（詳見上方系統狀態表 gram_rules.js / gram_trainer.html 兩列）：
+- `map.html` 文法大局觀分頁改由 `GRAM_POINTS` 渲染（26→32格，含6個新增點：determinants/reflechis/imperatif/prepositions/adjectifs-accord/duree-temps——這些是教過但原地圖沒有對應文法格的），每格顯示階段pill，面板加「去練習→」按鈕。**map.html 原本自己的 `const GRAM_CATS` 陣列已刪除**（跟 gram_rules.js 的同名常數相撞），課程地圖分頁不受影響（63格照舊）。
+- `quiz.html`：`getPool()`/`startTopicSprint()` 排除被檢舉的題；結果區加🚩按鈕（`flagCurrentQ()`：分數回正、錯題本移除、複習輪複本一併拔掉）；策略選課器每課列出「還沒走完路徑的文法點」（🪜連結直達trainer，軟性提示不硬鎖——硬鎖會癱瘓每日流程）。
+- `dashboard.html`：步驟②從「研讀+專項Quiz」改成「📐文法路徑」（`gramRecText()`推薦邏輯跟trainer的guided一致；完成判定沿用`clb7_quiz_done`，歷史統計不斷裂）；警報區加「🚩有N題被檢舉停用中」；錯題本SRC加`gram:'📐 文法路徑'`。
+- **檢舉審核流程**：Owen按🚩→題目立即從quiz/trainer所有出題池消失→dashboard警報顯示待審數→**下次session Claude要主動查`clb7_flagged_qs`（從Supabase payload或請Owen報數字），修好題目後把該筆從陣列移除，題目自動回池**。
+- **題池偏薄待補**（已spawn_task）：relatifs打字題僅3題、duree-temps僅4題、imparfait僅5題。
+- **v2待做**：干擾配對自動偵測+對照卡（Owen說「一句話A/B/C三個文法，第一次錯B第二次錯A」的互相干擾問題，等框架跑順再上）；階段5非動詞類反射。
+
+**驗證**（全程隔離ROOM）：trainer完整跑過「選點→階段2答錯重考→規則提醒→首次5/6升階→階段3規則卡收起→答錯自動翻開→SRS只在階段3寫入→🚩檢舉從池移除」；map大局觀32格7類、面板三種狀態（現役/未開課/課程地圖格）都對；quiz檢舉後分數回正+錯題本移除；dashboard步驟②推薦與✓完成、🚩警報。測完清掉preview的`clb7_gram_stage`/`clb7_flagged_qs`、切回正式ROOM、grep無殘留、**直接curl真實Supabase payload確認326個key裡沒有測試key**。
+
 ### 07-11：french_notes.html 選字標記＋listening.html 補3篇缺題目的真人語速音檔
 
 Owen回饋兩件事：①筆記「白花花一片」，想要能在上面選字標記重點/不熟，而且「如果Claude讀得到感覺更好」②聽力頁有些嵌入的音檔沒有配題目，「看得到逐字稿的應該都要出題」。
@@ -306,6 +326,8 @@ Owen回饋兩件事：①筆記「白花花一片」，想要能在上面選字�
 
 **⚠️ 07-07新增：`sentences.js`跟`chunks.js`維護方式不同——每次 Owen 給新課筆記/逐字稿時，這三份都要一起補**：①`chunks.js`（自動抽取，跑腳本）②`table_drill.html`的`TABLES`題庫（人工加表格）③`sentences.js`（**人工精選**，不是自動抽取——從新課內容挑「真的常用、值得先背」的完整句子，過濾掉單字/詞組對，id格式`S_L{課}_{序號}`接續該課現有最大序號）。這是 Owen 明確要求的（07-07討論造句練習設計時提出），忘記其中一項＝新課內容沒進到對應練習系統。
 
+**⚠️ 07-11新增第七項連動：`gram_rules.js`**——新課教到新文法時：對應 `GRAM_POINTS` 佔位點改 `unlocked:true`＋補 `lessons`/`topics`/`rule`（規則卡）；若是全新文法點（地圖佔位裡沒有的）就新增一個點。忘記＝新文法進不了文法路徑，quiz選課器也不會給🪜提示。
+
 ---
 
 ## 關鍵 localStorage keys
@@ -333,6 +355,8 @@ Owen回饋兩件事：①筆記「白花花一片」，想要能在上面選字�
 - `clb7_sentence_newcount` → {date, n}（今日新句數，固定上限5，這是Owen明確要求的數字）
 - `clb7_hard_flags` → {cardId: {count, last}}（07-11新增，Owen在review.html/sentence_drill.html手動點🔴累加，不看對錯，跟SRS的w/c完全獨立；未到期的標記卡會被`bonusFlaggedCards()`加碼塞進當天包，卡數上限見各檔`FLAG_BONUS_MAX`）
 - `clb7_notes_marks` → [{id, lesson, type:'weak'|'key', text, date}]（07-11新增，french_notes.html選字標記，重整頁面靠純文字比對重新找到位置套用`<mark>`，找不到就跳過不強求）
+- `clb7_gram_stage` → {pointId: {stage, hist:[{d, stage, acc}]}}（07-11文法框架，現役點沒記錄=stage 2「全部重走」預設，見gram_rules.js `gramStageOf`）
+- `clb7_flagged_qs` → [{id: qId(q), d, src, q}]（07-11檢舉待審題，quiz/gram_trainer出題池都排除；**Claude每次session要檢查這份清單**，修好題後移除該筆放回題池）
 - `clb7_session` → {active, running, startedAt, accSec}（session計時器狀態，不同步到雲端，結束時清除）
 - `clb7_order_lock` → '1'表示鎖定處方順序
 - `clb7_duo` → Duolingo週報，`DUO_SEED`種子upsert進去

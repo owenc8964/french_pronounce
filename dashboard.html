@@ -318,6 +318,7 @@ body {
 </head>
 <body>
 <script src="questions.js"></script>
+<script src="gram_rules.js"></script>
 <script src="chunks.js"></script>
 <script src="sentences.js"></script>
 <script src="session_timer.js"></script>
@@ -714,6 +715,29 @@ function getMiddleOrder() {
   return rotateArray(MIDDLE, dayIndex);
 }
 
+// 文法路徑推薦（07-11文法框架）：階段最低優先，同階段錯誤率高優先——跟 gram_trainer 的 guided 邏輯一致
+function gramRecText() {
+  try {
+    const active = GRAM_POINTS.filter(p => p.unlocked && p.topics.length);
+    const errRate = p => {
+      let w = 0, c = 0;
+      BANK.filter(q => p.topics.indexOf(q.topic) >= 0).forEach(q => {
+        try { const s = JSON.parse(localStorage.getItem('clb7_' + qId(q))); if (s) { w += s.w||0; c += s.c||0; } } catch(e) {}
+      });
+      return (w + c) === 0 ? 0 : w / (w + c);
+    };
+    active.sort((a, b) => {
+      const sa = gramStageOf(a.id), sb = gramStageOf(b.id);
+      if (sa !== sb) return sa - sb;
+      return errRate(b) - errRate(a);
+    });
+    const rec = active[0];
+    if (!rec) return '所有文法點都走完路徑了，去 quiz 混考累積精熟';
+    const st = GRAM_STAGES[gramStageOf(rec.id)];
+    return `推薦：${rec.name}（${st.icon}${st.label}）— 規則卡陪練一輪 6 題，磨到全對`;
+  } catch(e) { return '規則卡陪練一輪 6 題，磨到全對'; }
+}
+
 function buildPrescription(topicStats, todaySec) {
   const today = todayStr();
 
@@ -750,11 +774,11 @@ function buildPrescription(topicStats, todaySec) {
       href: 'quiz.html?mode=warmup&guided=1', done: wuDone,
     },
     study: {
-      icon: '📚', action: '研讀 + 專項 Quiz',
-      why: lqDone ? '今天已完成！' : '挑一課：先開筆記研讀，再做該課題目（提取＋輸入）',
+      icon: '📐', action: '文法路徑（規則卡陪練）',
+      why: lqDone ? '今天已完成！' : gramRecText(),
       badge: lqDone ? 'badge-green' : 'badge-red',
       badgeText: lqDone ? '✓ 完成' : '未完成',
-      href: 'quiz.html?guided=1', done: lqDone,
+      href: 'gram_trainer.html?guided=1', done: lqDone,
     },
     drill: {
       icon: '📝', action: '填表格：冠詞／動詞變位',
@@ -848,7 +872,7 @@ function esc(s) { return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;'
 function renderWrongBook() {
   const today = todayStr();
   const items = getWrongLog().filter(e => e.d === today).sort((a,b) => b.t - a.t);
-  const SRC = { quiz:'🃏 Quiz', sprint:'⚡ 衝刺', reading:'📖 閱讀', review:'📦 複習卡', sentence:'🗣️ 造句練習' };
+  const SRC = { quiz:'🃏 Quiz', sprint:'⚡ 衝刺', reading:'📖 閱讀', review:'📦 複習卡', sentence:'🗣️ 造句練習', gram:'📐 文法路徑' };
   document.getElementById('wbCount').textContent = items.length ? `${items.length} 題` : '';
   const list = document.getElementById('wbList');
   if (!items.length) {
@@ -926,6 +950,12 @@ function buildAlerts(topicStats, game) {
     .filter(([,s]) => s.attempts >= 5 && s.pct < 60)
     .map(([t]) => TOPIC_LABELS[t] || t);
   if (critical.length) alerts.push({ type:'err', msg:`🔴 嚴重弱點：${critical.join('、')}（正確率 < 60%）` });
+
+  // 🚩 被檢舉待審的題目（07-11文法框架）：提醒下次丟給 Claude 審核修復
+  try {
+    const flagged = JSON.parse(localStorage.getItem('clb7_flagged_qs') || '[]');
+    if (flagged.length) alerts.push({ type:'warn', msg:`🚩 有 ${flagged.length} 題被你檢舉停用中，下次開 Claude session 時請他審核修復` });
+  } catch(e) {}
 
   // 本週時數不足
   const weekH = getTrackerWeek() / 3600;
