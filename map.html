@@ -273,6 +273,23 @@ header {
 .cx-pts { list-style:none; margin:10px 0 0; }
 .cx-pts li { font-size:0.76rem; color:#b8bcc8; line-height:1.7; padding-left:1.1em; text-indent:-1.1em; margin-bottom:3px; }
 .cx-pts li::before { content:'▸ '; color:#c0a050; }
+/* 先句後規改版（07-12）：錨句區在最上、每條規則帶自己的例句、術語可點 */
+.cx-anchor { margin-top:10px; background:#101830; border:1px solid #1e2c50; border-radius:10px; padding:10px 12px; }
+.cx-anchor-label { font-size:0.62rem; font-weight:800; color:#5a688a; letter-spacing:0.08em; margin-bottom:6px; }
+.cx-anchor-row { margin-bottom:7px; }
+.cx-anchor-row .fr { display:block; font-size:0.92rem; font-weight:700; color:#f0ead8; cursor:pointer; line-height:1.5; }
+.cx-anchor-row .fr:hover { color:#f0c060; }
+.cx-anchor-row .zh { font-size:0.74rem; color:#7a86a0; }
+.cx-pt-ex { text-indent:0; margin:2px 0 6px 0; padding:4px 8px; border-left:2px solid #2a3858; }
+.cx-pt-ex .fr { font-size:0.78rem; color:#d8d2c0; font-weight:600; cursor:pointer; }
+.cx-pt-ex .fr:hover { color:#f0c060; }
+.cx-pt-ex .zh { font-size:0.7rem; color:#66708a; margin-left:8px; }
+.cx-term { color:#7fb4f0; border-bottom:1px dashed #3a5680; cursor:help; }
+#cxTip { position:fixed; max-width:300px; background:#182238; border:1px solid #3a5680; border-radius:10px;
+  padding:10px 12px; font-size:0.74rem; color:#cfd6e4; line-height:1.6; z-index:1000; display:none;
+  box-shadow:0 6px 24px rgba(0,0,0,0.5); }
+#cxTip b { color:#7fb4f0; display:block; margin-bottom:3px; }
+.cx-quiz-btn { font-size:0.7rem; color:#f0c060 !important; }
 .cx-ex { margin-top:8px; border-top:1px dashed #1a2340; padding-top:8px; }
 .cx-ex-row { font-size:0.76rem; margin-bottom:4px; display:flex; gap:8px; flex-wrap:wrap; align-items:baseline; }
 .cx-ex-row .fr { color:#e8e2d4; font-weight:600; cursor:pointer; }
@@ -353,6 +370,7 @@ header {
 <div id="mapRoot"></div>
 <div id="gramRoot" style="display:none;"></div>
 <div id="codexRoot" style="display:none;"></div>
+<div id="cxTip"></div>
 
 <div class="panel-overlay" id="overlay" onclick="bgClose(event)">
   <div class="panel" id="panel">
@@ -870,6 +888,46 @@ const cxLvlOn = { A1:true, A2:true, B1:true, B2:true };
 
 function cxEsc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
 
+// 術語白話字典：把已跳脫文字裡的術語包成可點小標籤（每段文字每個術語只包第一次；
+// 先長後短避免「冠詞」吃掉「部分冠詞」；用佔位符兩段式替換避免巢狀誤包）
+const CX_TERM_KEYS = Object.keys(CODEX_TERMS).sort((a, b) => b.length - a.length);
+function cxTermify(escaped) {
+  let s = escaped;
+  const found = [];
+  CX_TERM_KEYS.forEach((term, i) => {
+    const idx = s.indexOf(term);
+    if (idx >= 0) {
+      s = s.slice(0, idx) + '' + i + '' + s.slice(idx + term.length);
+      found.push(i);
+    }
+  });
+  found.forEach(i => {
+    const term = CX_TERM_KEYS[i];
+    s = s.replace('' + i + '',
+      `<span class="cx-term" onclick="cxShowTerm(event,'${term}')">${term}</span>`);
+  });
+  return s;
+}
+function cxShowTerm(evt, term) {
+  evt.stopPropagation();                        // 不要順便展開/收合條目
+  const tip = document.getElementById('cxTip');
+  tip.innerHTML = `<b>${term}</b>${cxEsc(CODEX_TERMS[term] || '')}`;
+  tip.style.display = 'block';
+  const pad = 10, w = Math.min(300, window.innerWidth - 2 * pad);
+  tip.style.maxWidth = w + 'px';
+  let x = Math.min(evt.clientX, window.innerWidth - w - pad);
+  let y = evt.clientY + 14;
+  if (y + 120 > window.innerHeight) y = evt.clientY - 130;
+  tip.style.left = Math.max(pad, x) + 'px';
+  tip.style.top = Math.max(pad, y) + 'px';
+}
+document.addEventListener('click', e => {
+  if (!e.target.classList || !e.target.classList.contains('cx-term')) {
+    const tip = document.getElementById('cxTip');
+    if (tip) tip.style.display = 'none';
+  }
+});
+
 function buildCodex() {
   if (codexBuilt) return;
   codexBuilt = true;
@@ -911,13 +969,20 @@ function buildCodex() {
             <span class="cx-it-brief">${cxEsc(it.brief)}</span>
           </div>
           <div class="cx-body">
-            <ul class="cx-pts">${(it.pts||[]).map(p => `<li>${cxEsc(p)}</li>`).join('')}</ul>
-            ${(it.ex && it.ex.length) ? `<div class="cx-ex">${it.ex.map(e =>
-              `<div class="cx-ex-row"><span class="fr" onclick="cxSpeak(this)">🔊 ${cxEsc(e.fr)}</span><span class="zh">${cxEsc(e.zh)}</span></div>`).join('')}</div>` : ''}
-            ${(it.exc && it.exc.length) ? `<div class="cx-exc">${it.exc.map(x => `<div>⚠️ ${cxEsc(x)}</div>`).join('')}</div>` : ''}
+            ${(it.ex && it.ex.length) ? `<div class="cx-anchor"><div class="cx-anchor-label">🎧 先看句子，唸出聲</div>${it.ex.map(e =>
+              `<div class="cx-anchor-row"><span class="fr" onclick="cxSpeak(this)">🔊 ${cxEsc(e.fr)}</span><span class="zh">${cxEsc(e.zh)}</span></div>`).join('')}</div>` : ''}
+            <ul class="cx-pts">${(it.pts||[]).map(p => typeof p === 'string'
+              ? `<li>${cxTermify(cxEsc(p))}</li>`
+              : `<li>${cxTermify(cxEsc(p.r))}${p.fr ? `<div class="cx-pt-ex"><span class="fr" onclick="cxSpeak(this)">🔊 ${cxEsc(p.fr)}</span><span class="zh">${cxEsc(p.zh||'')}</span></div>` : ''}</li>`).join('')}</ul>
+            ${(it.exc && it.exc.length) ? `<div class="cx-exc">${it.exc.map(x => `<div>⚠️ ${cxTermify(cxEsc(x))}</div>`).join('')}</div>` : ''}
             ${(it.vs && it.vs.length) ? `<div class="cx-vs">${it.vs.map(v =>
               `<a href="#cx-${v.n}" onclick="cxJump(event,'${v.n}')">🆚 ${v.n} ${cxEsc((CODEX_BY_N[v.n]||{}).name||'')} — ${cxEsc(v.note)}</a>`).join('')}</div>` : ''}
             <div class="cx-links">
+              ${(() => {   // ⚡讀完馬上考：這條（或所在節）有對應題庫就給直達鈕
+                const ts = (it.topics && it.topics.length) ? it.topics : (sec.topics || []);
+                const t = ts.find(x => BANK.some(q => q.topic === x));
+                return t ? `<a class="cx-quiz-btn" href="quiz.html?topic=${t}" target="_blank">⚡ 用這條考我 →</a>` : '';
+              })()}
               ${(it.gram && (GRAM_POINTS.find(g=>g.id===it.gram)||{}).unlocked) ? `<a href="gram_trainer.html?point=${it.gram}">📐 去練這個文法點 →</a>` : ''}
             </div>
           </div>
