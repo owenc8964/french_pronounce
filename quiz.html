@@ -95,6 +95,10 @@
     }
 
     .question { font-size: 1rem; font-weight: 600; line-height: 1.6; margin-bottom: 6px; }
+    .q-zh {
+      font-size: 0.85rem; color: #555; background: #f4f6fb; border-left: 3px solid #3b6fd4;
+      border-radius: 4px; padding: 6px 10px; margin-bottom: 10px; line-height: 1.5;
+    }
     .hint { font-size: 0.78rem; color: #888; margin-bottom: 14px; }
     .hint-btn {
       font-size: 0.75rem; color: #aaa; background: none; border: 1.5px dashed #ddd;
@@ -721,6 +725,7 @@ function renderCard() {
         </div>
       </div>
       <div class="question">${q.q}</div>
+      ${q.zh ? `<div class="q-zh">🈶 ${q.zh}</div>` : ''}
       ${q.hint ? `
       <button class="hint-btn" id="hintBtn" onclick="revealHint()">💡 提示</button>
       <div class="hint" id="hintBox" style="display:none">提示：${q.hint}</div>` : ''}

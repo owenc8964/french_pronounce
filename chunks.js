@@ -4708,9 +4708,9 @@ const CHUNKS = [
  {
   "id": "L14_de_la___de",
   "lesson": 14,
-  "fr": "de la → de",
-  "zh": "陰性國家 la 直接拿掉",
-  "note": "la France → je viens de France（不說 de la France）"
+  "fr": "Je viens de France.",
+  "zh": "我來自法國。（陰性國家：de la 要縮成 de，不說 de la France）",
+  "note": "同樣規則：la Chine → je viens de Chine"
  },
  {
   "id": "L14_de_du___d'_devant_a__e__",
@@ -4723,8 +4723,8 @@ const CHUNKS = [
   "id": "L14_Je_viens_de_Taïwan_",
   "lesson": 14,
   "fr": "Je viens de Taïwan.",
-  "zh": "台灣不加冠詞",
-  "note": "跟城市一樣處理（我們不說 le Taïwan，就像不說 le Bordeaux）"
+  "zh": "我來自台灣。（國名不加冠詞，跟城市一樣處理）",
+  "note": "我們不說 le Taïwan，就像不說 le Bordeaux"
  },
  {
   "id": "L14_Il_est_sorti____Elle_est",
