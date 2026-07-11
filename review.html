@@ -55,7 +55,18 @@ body {
   background: #0d1020; border: 1px solid #1a2438; border-radius: 16px;
   padding: 40px 24px 30px; text-align: center; margin-bottom: 14px;
   min-height: 320px; display: flex; flex-direction: column; justify-content: center;
+  position: relative;
 }
+.fc-flag-btn {
+  position: absolute; top: 10px; right: 12px;
+  background: none; border: none; cursor: pointer; font-size: 1rem;
+  padding: 4px 6px; display: flex; align-items: center; gap: 3px;
+  font-family: inherit; border-radius: 8px; opacity: 0.55; transition: opacity 0.15s, transform 0.1s;
+}
+.fc-flag-btn:hover { opacity: 1; }
+.fc-flag-btn:active { transform: scale(0.9); }
+.fc-flag-btn.flagged { opacity: 1; background: #2a1210; }
+.fc-flag-count { font-size: 0.68rem; color: #e08070; font-weight: 700; }
 .fc-lesson { font-size: 0.62rem; color: #60a0d0; background: #141928;
   border: 1px solid #1a2438; border-radius: 8px; padding: 3px 10px;
   display: inline-block; margin: 0 auto 20px; letter-spacing: 1px; }
@@ -132,6 +143,7 @@ body {
     <span class="pk-score" id="pkScore">✓ 0</span>
   </div>
   <div class="flashcard" id="flashcard">
+    <button type="button" class="fc-flag-btn" id="fcFlagBtn" title="標記這張卡不熟，之後會多考幾次">🔴<span class="fc-flag-count" id="fcFlagCount"></span></button>
     <span class="fc-lesson" id="fcLesson"></span>
     <div class="fc-front-zh" id="fcZh"></div>
     <div class="fc-think" id="fcThink">🧠 先回想法文，唸出聲，再翻開</div>
@@ -190,6 +202,26 @@ function bumpNewCount() {
 
 function isGraduated(rec) {
   return rec && (rec.days||[]).length >= 3 && rec.iv >= 3;
+}
+
+// ── 🔴 手動標記「不熟」：跟 SRS 對錯無關，Owen 自己覺得沒抓穩就點一下累加，
+// 之後這張卡會被優先加碼塞進今天的包，多考幾次（見 buildPacket 的 bonus 區塊）
+const FLAG_BONUS_MAX = 2;
+function getFlags() { try { return JSON.parse(localStorage.getItem('clb7_hard_flags')) || {}; } catch { return {}; } }
+function saveFlags(f) { localStorage.setItem('clb7_hard_flags', JSON.stringify(f)); }
+function flagCard(cardId) {
+  const flags = getFlags();
+  const rec = flags[cardId] || { count: 0 };
+  rec.count++; rec.last = todayStr();
+  flags[cardId] = rec;
+  saveFlags(flags);
+  return rec.count;
+}
+function renderFlagBadge(cardId) {
+  const flags = getFlags();
+  const n = flags[cardId] ? flags[cardId].count : 0;
+  document.getElementById('fcFlagCount').textContent = n > 0 ? ('×' + n) : '';
+  document.getElementById('fcFlagBtn').classList.toggle('flagged', n > 0);
 }
 function shuffle(arr) {
   const a = [...arr];
@@ -263,6 +295,19 @@ let flipped = false;
 let firstTryOk = 0, firstTryTotal = 0;
 let attempted = new Set();  // 本包第一次見過的卡（判斷 first-try）
 
+// 標記過不熟、但「本來今天不會自然排到」的卡（本來就到期的卡本身就會出現，不用額外加碼）
+// 用「是否自然到期」判斷，不用「有沒有被排進這次的packet」——後者受shuffle()影響，
+// 每次算出來的已在包內名單可能不同，會讓提示數字跟實際加碼數量對不起來。
+// excludeIds 只用來防「這張卡剛好也被抽成今天的新卡」時重複加入同一張。
+function bonusFlaggedCards(excludeIds = new Set()) {
+  const flags = getFlags(), srs = getSrs(), now = dayStart();
+  const naturallyDue = c => srs[c.id] && srs[c.id].due <= now && !isGraduated(srs[c.id]);
+  return CHUNKS
+    .filter(c => flags[c.id] && flags[c.id].count > 0 && !naturallyDue(c) && !excludeIds.has(c.id))
+    .sort((a, b) => flags[b.id].count - flags[a.id].count)
+    .slice(0, FLAG_BONUS_MAX);
+}
+
 function buildPacket() {
   const due = dueCards();
   const packet_ = due.slice(0, PACKET_SIZE).map(c => ({ card: c, isNew: false }));
@@ -270,6 +315,8 @@ function buildPacket() {
     const room = Math.min(PACKET_SIZE - packet_.length, NEW_PER_DAY - newCountToday());
     if (room > 0) newCards().slice(0, room).forEach(c => packet_.push({ card: c, isNew: true }));
   }
+  const already = new Set(packet_.map(p => p.card.id));
+  bonusFlaggedCards(already).forEach(c => packet_.push({ card: c, isNew: false, isBonus: true }));
   return packet_;
 }
 
@@ -288,8 +335,10 @@ function renderStart() {
   } else {
     btn.disabled = false;
     btn.textContent = `▶ 做一包（${Math.min(PACKET_SIZE, due + newLeft)} 張）`;
+    const bonusN = bonusFlaggedCards().length;
     document.getElementById('startHint').textContent =
-      due > PACKET_SIZE ? `到期 ${due} 張，建議今天多做幾包清掉` : '一包約 3–5 分鐘';
+      (due > PACKET_SIZE ? `到期 ${due} 張，建議今天多做幾包清掉` : '一包約 3–5 分鐘') +
+      (bonusN ? ` · 🔴 +${bonusN} 張你標記過不熟的卡會加碼考` : '');
   }
 }
 
@@ -306,10 +355,10 @@ function startPacket() {
 
 function renderCard() {
   if (idx >= packet.length) { finishPacket(); return; }
-  const { card, isNew } = packet[idx];
+  const { card, isNew, isBonus } = packet[idx];
   flipped = false;
   document.getElementById('pkProgress').textContent = `${Math.min(idx+1, packet.length)} / ${packet.length}`;
-  document.getElementById('pkPhase').textContent = isNew ? '🆕 新卡' : '🔁 複習';
+  document.getElementById('pkPhase').textContent = isNew ? '🆕 新卡' : (isBonus ? '🔴 加碼複習（你標記過不熟）' : '🔁 複習');
   document.getElementById('pkScore').textContent = `✓ ${firstTryOk}`;
   document.getElementById('fcLesson').textContent = `第 ${card.lesson} 課`;
   document.getElementById('fcZh').textContent = card.zh;
@@ -319,6 +368,7 @@ function renderCard() {
   document.getElementById('fcSpeak').classList.add('hidden');
   document.getElementById('flipBtn').classList.remove('hidden');
   document.getElementById('gradeRow').classList.add('hidden');
+  renderFlagBadge(card.id);
 }
 
 function flip() {
@@ -405,6 +455,12 @@ document.getElementById('flipBtn').addEventListener('click', flip);
 document.getElementById('gradeNo').addEventListener('click', () => grade(false));
 document.getElementById('gradeOk').addEventListener('click', () => grade(true));
 document.getElementById('fcSpeak').addEventListener('click', () => speak(packet[idx].card.fr));
+document.getElementById('fcFlagBtn').addEventListener('click', () => {
+  if (idx >= packet.length) return;
+  const { card } = packet[idx];
+  flagCard(card.id);
+  renderFlagBadge(card.id);
+});
 document.addEventListener('keydown', e => {
   if (document.getElementById('sessionScreen').classList.contains('hidden')) return;
   if (e.key === ' ') { e.preventDefault(); flip(); }

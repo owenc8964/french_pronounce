@@ -84,10 +84,10 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `quiz.html` | SRS Quiz 550+題，熱身模式、**策略選課器**（未練過/錯誤率高/量少/久沒練 排序）、暫停、更正誤判 | ✅ |
 | `table_drill.html` | 表格填空：40個表格（涵蓋第1–16課，含passé composé系列、imparfait無人稱動詞表、**07-10新增「文法詞」類型**：durée/qui-que/intensité 3表），**錯題複習輪**（答錯進複習輪直到全對，主輪成績不被洗掉）、切難度/類型有進度時confirm確認、一輪6個表 | ✅ 大修（07-06/07/10）|
 | `verb_sprint.html` | 動詞反射衝刺：60秒、9動詞×6人稱、起手計時、反射熱力圖，**已補TTS發音**（原形+答錯自動唸正解） | ✅ |
-| `review.html` | 複習卡：一包10張、SRS+successive relearning，**到期卡池已加洗牌**（避免同一批到期卡每天同順序重複）、發音邏輯已跟其他頁統一、卡片旁加「🤔語意不清」回饋按鈕 | ✅ 修復（07-07）|
+| `review.html` | 複習卡：一包10張、SRS+successive relearning，**到期卡池已加洗牌**（避免同一批到期卡每天同順序重複）、發音邏輯已跟其他頁統一、卡片旁加「🤔語意不清」回饋按鈕、**07-11新增🔴手動標記不熟**（`clb7_hard_flags`，累加次數，未到期的標記卡會加碼塞進當天包，最多`FLAG_BONUS_MAX`張） | ✅ 修復（07-07/11）|
 | `reading.html` | 閱讀理解 20篇 A1–A1+短文，純法文+解說 | ✅ |
 | `writing.html` | 每日2句造句，複製prompt→claude.ai→貼回記錄 | ✅ |
-| `sentence_drill.html` | **新增（07-07）**：中翻法造句練習，每天固定5句新句＋到期複習，沿用review.html同一套SRS引擎（1/3/7/14/30天），**答錯排到這輪最後重考，磨到全部答對才算完成**，跟review.html的卡片機制共用「包尾重試」邏輯 | ✅ 新建 |
+| `sentence_drill.html` | **新增（07-07）**：中翻法造句練習，每天固定5句新句＋到期複習，沿用review.html同一套SRS引擎（1/3/7/14/30天），**答錯排到這輪最後重考，磨到全部答對才算完成**，跟review.html的卡片機制共用「包尾重試」邏輯、**07-11同步補上🔴手動標記不熟**（跟review.html共用同一個`clb7_hard_flags`，id前綴不同不會撞） | ✅ 新建（07-11補標記功能）|
 | `sentences.js` | **新增（07-07）**：常用句庫（目前108句，第1–16課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
 | `listening.html` | 聽力：**真實資源**（RFI + InnerFrench Spotify embed；Podcast Français Facile的A1對話系列連結卡）+ **自出TTS聽力測驗**（8篇，對齊已學課程）+ **07-09/07-10新增「真人語速測驗」**（LISTENING_BANK的`audioUrl`類型：真實mp3直接播放＋Claude原創TCF/TEF風格選擇題，目前7篇：麵包店/車站/市場/肉店/魚店/藥局/問路，逐字稿核對用連結卡連到來源、不存對方文字）+ **07-10新增「文化深掘Podcast」板塊**（見下方07-10記錄，目前CULTURE_BANK是空陣列，等Owen放音檔進來）| ✅ 大改（07-06～07-10）|
 | `french_notes.html` | 第1–16課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音） | ✅ 修復（07-07）|
@@ -255,6 +255,21 @@ Owen問「確定現有的每個分頁都有計時嗎？」，沒有直接信HAND
 
 ⚠️ **待Owen決定的兩件事（沒有動，留給下次）**：①`french_basics.html`要不要補`session_timer.js` ②4個孤兒檔案（`french_sounds.html`/`index.html`/`time_editor.html`/`french_notes拷貝.html`）要清掉還是接進系統。
 
+### 07-11：複習卡＋造句練習新增🔴手動標記「不熟」
+
+Owen提出的功能：複習不熟的單字時可以直接點紅點標記，隨複習次數累加，讓他知道要抓哪個重點看，系統也能依標記次數多考幾次。
+
+**設計決定**：這是Owen主觀認定「沒抓穩」的信號，刻意跟SRS的對錯（w/c）分開存，不影響既有SRS的間隔演算法——避免「明明因為運氣答對但其實還是不熟」跟「明明答錯只是手滑」這兩種情況被系統誤判。
+
+**實作**（`review.html`＋`sentence_drill.html`，共用同一套邏輯跟同一個`clb7_hard_flags` key，chunks.js的id前綴`L{n}_`跟sentences.js的`S_L{n}_`不會撞）：
+- 卡片右上角新增🔴按鈕，點一次該卡的count+1，累計次數直接顯示在按鈕旁（🔴×N）
+- `bonusFlaggedCards()`：抓出「有標記、但今天不會自然到期」的卡（用SRS到期時間判斷，不用是否已經被排進當次packet判斷——後者會受`shuffle()`影響，每次呼叫可能給出不同的「已在包內」名單，導致提示數字跟實際加碼數量對不起來，這個坑是這次寫的時候自己踩到又修好的），依標記次數排序，取前`FLAG_BONUS_MAX`張（review.html=2、sentence_drill.html=1）額外塞進當天的包，UI標示「🔴加碼複習（你標記過不熟）」
+- 開始畫面的提示文字也會先預告「+N張你標記過不熟的卡會加碼考」
+
+**驗證**：用console模擬「同一批flag連續呼叫`bonusFlaggedCards()`8次結果是否一致」確認修好shuffle不一致的問題（修好後穩定回傳同一個數字）；也用真實UI點擊（不只是console）跑過一次「開始複習→點紅點→看到🔴×1即時更新」的完整互動。
+
+⚠️ **測試中意外驗證到一個既有的sync系統限制（不是這次新增的bug）**：切換`sync_supabase.js`的`ROOM`前後，如果本機剛`removeItem`清掉某個`clb7_*` key，但之前那個key在還沒切換ROOM時已經被debounce push到舊ROOM的雲端，之後任何頁面的`pull()`時機只要跟這次清除有時間差，舊值有可能又從舊ROOM雲端被拉回本機（因為`apply()`邏輯是「本機沒有這個key就直接寫回」，不分辨是「本來沒有」還是「剛被使用者清掉」）。這次因此在本機重新看到已經清掉的測試資料，但直接查詢**真實**Supabase payload確認沒有污染到正式雲端。已經寫進上面「注意事項」的Supabase教訓小節，以後要更嚴謹驗證「真的清乾淨」的話，要直接查雲端payload，不能只看本機localStorage或畫面沒異常。
+
 ---
 
 ## 之前 session 做了什麼（2026-07-02 ～ 07-03）
@@ -306,6 +321,7 @@ Owen問「確定現有的每個分頁都有計時嗎？」，沒有直接信HAND
 - `clb7_sentence_srs` → 造句練習SRS，跟`clb7_chunk_srs`同結構但完全獨立的key（不共用池子）
 - `clb7_sentence_sessions` → [{date, cards, ok, ts}]（最近100，供dashboard判斷步驟完成＋habit分析）
 - `clb7_sentence_newcount` → {date, n}（今日新句數，固定上限5，這是Owen明確要求的數字）
+- `clb7_hard_flags` → {cardId: {count, last}}（07-11新增，Owen在review.html/sentence_drill.html手動點🔴累加，不看對錯，跟SRS的w/c完全獨立；未到期的標記卡會被`bonusFlaggedCards()`加碼塞進當天包，卡數上限見各檔`FLAG_BONUS_MAX`）
 - `clb7_session` → {active, running, startedAt, accSec}（session計時器狀態，不同步到雲端，結束時清除）
 - `clb7_order_lock` → '1'表示鎖定處方順序
 - `clb7_duo` → Duolingo週報，`DUO_SEED`種子upsert進去
@@ -364,6 +380,7 @@ Owen問「確定現有的每個分頁都有計時嗎？」，沒有直接信HAND
 - **french_notes.html 表格規則（兩條都要滿足）**：①`<table>`包在`<div class="compare-table">`裡，否則無樣式無發音 ②法文欄`<td>`要標`class="m"`，否則有樣式但沒發音、視覺上行距顯得緊（見memory `feedback_notes_table_format`）
 - **table_drill.html 一輪只出6個表**（`ROUND_SIZE`），答錯進複習輪直到全對；切難度/類型有進度時會confirm確認
 - **Supabase測試污染教訓**：任何會寫`clb7_*`的preview測試，開頭先把`sync_supabase.js`的`ROOM`改成測試值，測完改回並grep確認無殘留
+- **⚠️ 07-11新增：切回正式ROOM後，localStorage裡清掉的測試key可能被pull()又拉回來**——如果在還是TEST ROOM時setItem過某個clb7_*key（會排程debounce push到TEST雲端），之後即使用removeItem清掉本機，只要之後任何頁面的pull()時機跟這個清除有時間差（例如切分頁觸發visibilitychange），舊值還是可能從TEST雲端被拉回本機（apply()邏輯是「本機沒有這個key就直接寫入」，不管本機是「本來沒有」還是「剛被清掉」）。改完ROOM後不要只看畫面沒異常就當作乾淨，要直接查詢真實Supabase payload（`curl`該ROOM的`clb7_sync`）確認雲端真的没有殘留字串，比只信本機localStorage清空更保險。
 
 ---
 
