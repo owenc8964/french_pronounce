@@ -2057,7 +2057,7 @@ const CODEX_PART2 = [
     pts:[
       {r:'字根固定用ils現在式砍掉-ent，字尾統一是e/es/e/ions/iez/ent',
        fr:'ils finissent → que je finisse', zh:'他們結束 → 我（虛擬）結束'},
-      {r:'je/tu/il/ils四形發音跟直陳式現在式一模一樣，只有nous/vous形跟imparfait同形',
+      {r:'-er動詞的je/tu/il/ils四形發音跟直陳式現在式一模一樣（其他組聽得出差別：je finis vs que je finisse）；nous/vous形一律跟imparfait同形',
        fr:'que je parle, que nous parlions', zh:'我說、我們說（nous形跟imparfait同形）'},
       {r:'高頻不規則字根要單獨背：être→sois、avoir→aie、aller→aille、faire→fasse、pouvoir→puisse、savoir→sache',
        fr:"que tu sois, que j'aie, qu'il aille", zh:'你是、我有、他去（虛擬式）'},
