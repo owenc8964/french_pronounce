@@ -292,6 +292,24 @@ Owen 的核心回饋（這次最大的方向轉變）：「記不熟就直接進
 
 **驗證**（全程隔離ROOM）：trainer完整跑過「選點→階段2答錯重考→規則提醒→首次5/6升階→階段3規則卡收起→答錯自動翻開→SRS只在階段3寫入→🚩檢舉從池移除」；map大局觀32格7類、面板三種狀態（現役/未開課/課程地圖格）都對；quiz檢舉後分數回正+錯題本移除；dashboard步驟②推薦與✓完成、🚩警報。測完清掉preview的`clb7_gram_stage`/`clb7_flagged_qs`、切回正式ROOM、grep無殘留、**直接curl真實Supabase payload確認326個key裡沒有測試key**。
 
+### 07-12（三）：路線圖＋依課出題寫作＋🧭今日心法卡（Fable 最終批）
+
+Owen 三個定案：①里程碑**以課程等級分野（A1/A2/B1/B2）不用月曆** ②「每天寫2句」廢除（要憑空發揮創意，自然不會寫）→ **依今天念的課出題** ③學習方法＋通關理由要每天在 dashboard 跳出來提醒，**而且他自己寫的要優先於 Claude 寫的**（他原話：「我更知道我自己要的或相信的」）。
+
+**新檔三份（Fable 親寫的判斷核心）**：
+- [`ROADMAP.md`](ROADMAP.md)：A1/A2/B1/B2 各階段的訓練配比（70/30→60/40→50/50→30/70）、輸出階梯（A1 依課寫3-4句→A2 tâche1→B1 tâche1+2＋**中段診斷性首考**→B2 論說文＋真人口說）、畢業條件、進場動作。鐵則：挫折感是儀表（出現在剛好高一小步＝正常）；換階段才換任務形態。**換階段＝dashboard 的 `CLB_STAGE` 改一行＋照該階段進場動作逐條做**。
+- [`RUBRICS.md`](RUBRICS.md)：分級評分尺（A2/B1/B2 寫作＋口說），批改者守則（一次最多糾2-3錯、錯誤標📍codex座標、禁泛泛鼓勵/超綱建議）。**之後任何 session 批改 Owen 產出前必讀**。
+- [`writing_tasks.js`](writing_tasks.js)：16課×2題寫作題庫（情境＋指定材料＋下筆順序）。第七項連動再+1：新課要補2題。
+- [`creed.js`](creed.js)：學習心法14條＋通關理由14條（每條有依據，禁雞湯）。
+
+**接線（原派 Sonnet，因月額度上限改 Fable 親做，已全部實測）**：
+- `clb7_last_lesson` = {lesson, d}：quiz.html 帶 `?lesson=N` 進入時＋gram_trainer `startPoint()` 時寫入（取該點最新課次）。
+- writing.html：guided 顯示任務卡（今天課次的2題依日期輪替；今天沒念課→16課選課列），複製的 prompt 含任務全文＋**A2尺批改指令**（回覆首行維持「分數：X/10」相容既有解析），記錄多存 lesson/taskId 欄位。
+- dashboard.html：新「🧭 今日心法」卡（Owen自己的 `clb7_creed_own` 輪播優先＋💪why＋🛠️how 各一條依日輪播＋📐文法路徑階段統計＋輸入框「＋收進清單」）；`CLB_STAGE='A1'` 常數＋各階段摘要；步驟⑧文案改「針對今天的課寫一則」。
+- 新 keys：`clb7_last_lesson`、`clb7_creed_own`（皆走既有 sync）。
+- 驗證：隔離ROOM 實測 quiz→last_lesson 寫入、writing 任務卡 W16a＋prompt 含 A2 尺＋記錄含 lesson/taskId、dashboard 三元素（階段tag/心法輪播/文法統計）＋自寫條目優先顯示。測後清測試 key、ROOM 還原、curl 真實雲端確認無殘留。
+- ⚠️ **Claude 訂閱月額度已撞上限**（背景 subagent 跑不動了）——之後的 session 開場先確認額度狀態再派工。
+
 ### 07-12（續）：條目升級 v3「維基式小文章」
 
 Owen 看完 v2 再回饋：「見樹的狀況不夠細緻，好像只是告訴我這顆樹叫什麼名字，剩下一問三不知」「註解太攏統或太隨性」，點名要維基式詳盡＋條目內開合＋「文法規則/例外/使用時機/例句/相近比較/易混淆」＋互相連結。
@@ -387,6 +405,8 @@ Owen回饋兩件事：①筆記「白花花一片」，想要能在上面選字�
 - `clb7_sentence_sessions` → [{date, cards, ok, ts}]（最近100，供dashboard判斷步驟完成＋habit分析）
 - `clb7_sentence_newcount` → {date, n}（今日新句數，固定上限5，這是Owen明確要求的數字）
 - `clb7_hard_flags` → {cardId: {count, last}}（07-11新增，Owen在review.html/sentence_drill.html手動點🔴累加，不看對錯，跟SRS的w/c完全獨立；未到期的標記卡會被`bonusFlaggedCards()`加碼塞進當天包，卡數上限見各檔`FLAG_BONUS_MAX`）
+- `clb7_last_lesson` → {lesson, d}（07-12新增，quiz帶lesson參數/gram_trainer startPoint時寫入，writing.html依課出題用）
+- `clb7_creed_own` → [{text, d}]（07-12新增，Owen自己寫的心法/信念，dashboard輪播優先於creed.js內建條目）
 - `clb7_notes_marks` → [{id, lesson, type:'weak'|'key', text, date}]（07-11新增，french_notes.html選字標記，重整頁面靠純文字比對重新找到位置套用`<mark>`，找不到就跳過不強求）
 - `clb7_gram_stage` → {pointId: {stage, hist:[{d, stage, acc}]}}（07-11文法框架，現役點沒記錄=stage 2「全部重走」預設，見gram_rules.js `gramStageOf`）
 - `clb7_flagged_qs` → [{id: qId(q), d, src, q}]（07-11檢舉待審題，quiz/gram_trainer出題池都排除；**Claude每次session要檢查這份清單**，修好題後移除該筆放回題池）

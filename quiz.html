@@ -1807,6 +1807,8 @@ function togglePause() {
   } else if (lessonParam) {
     // 直接進某課
     const ln = parseInt(lessonParam);
+    // 記錄「今天念哪一課」（07-12，writing.html 依課出題用）
+    if (ln > 0) try { localStorage.setItem('clb7_last_lesson', JSON.stringify({ lesson: ln, d: new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'}) })); } catch(e) {}
     filterLesson = ln;
     document.querySelectorAll('#lessonRow .ctrl-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(`btnLesson${ln}`)?.classList.add('active');

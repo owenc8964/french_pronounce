@@ -277,6 +277,10 @@ function renderPicker() {
 function startPoint(pid) {
   point = GRAM_POINTS.find(p => p.id === pid);
   if (!point) return;
+  // 記錄「今天念哪一課」（07-12，取該點最新課次，writing.html 依課出題用）
+  if (point.lessons && point.lessons.length) {
+    try { localStorage.setItem('clb7_last_lesson', JSON.stringify({ lesson: point.lessons[point.lessons.length - 1], d: new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'}) })); } catch(e) {}
+  }
   stage = gramStageOf(pid);
   if (stage < 2) stage = 2;
   if (stage > 3) {

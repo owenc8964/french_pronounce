@@ -148,11 +148,23 @@ nav a:hover { color: #f0c060; }
 
 <!-- Form -->
 <div class="card">
-  <div class="card-title">今日造句</div>
+  <div class="card-title">今日寫作</div>
   <div class="date-display" id="todayDate"></div>
 
-  <textarea id="s1" placeholder="句子 1：用今天複習的語法造一句…"></textarea>
-  <textarea id="s2" placeholder="句子 2：再造一句，不同情境…"></textarea>
+  <!-- 依課出題任務卡（07-12，writing_tasks.js；讀不到今日課次時顯示選課列） -->
+  <div id="taskCard" style="display:none;background:#101830;border:1px solid #1e2c50;border-radius:12px;padding:12px 14px;margin-bottom:12px;">
+    <div style="font-size:0.62rem;color:#5a688a;letter-spacing:0.08em;margin-bottom:4px;" id="taskLessonTag"></div>
+    <div style="font-size:0.9rem;font-weight:700;color:#e8e2d4;margin-bottom:6px;" id="taskTitle"></div>
+    <div style="font-size:0.78rem;color:#b8bcc8;line-height:1.6;margin-bottom:8px;" id="taskText"></div>
+    <div style="font-size:0.72rem;color:#8890a8;line-height:1.7;" id="taskUse"></div>
+    <div style="font-size:0.68rem;color:#5a688a;margin-top:6px;" id="taskFrame"></div>
+  </div>
+  <div id="lessonPicker" style="display:none;font-size:0.72rem;color:#8890a8;margin-bottom:10px;">
+    今天還沒做研讀步驟——先選一課出題：<span id="lessonBtns"></span>
+  </div>
+
+  <textarea id="s1" placeholder="把你的訊息寫在這裡（3-4 句）…"></textarea>
+  <textarea id="s2" placeholder="（自由加寫，可留空）" style="min-height:48px;"></textarea>
 
   <div class="btn-row" style="margin-bottom:18px;">
     <button class="btn-copy" id="btnEval">🚀 送給 Claude 評分</button>
@@ -174,8 +186,45 @@ nav a:hover { color: #f0c060; }
 
 <div class="toast" id="toast"></div>
 
+<script src="writing_tasks.js"></script>
 <script>
 const KEY = 'clb7_writing';
+
+// ── 依課出題（07-12）────────────────────────────────────────
+let activeTask = null;
+function pickTask(lesson) {
+  const pool = (typeof WRITING_TASKS !== 'undefined') ? WRITING_TASKS.filter(t => t.lesson === lesson) : [];
+  if (!pool.length) return null;
+  const day = Math.floor(Date.now() / 86400000);
+  return pool[day % pool.length];      // 同一課兩題依日期輪替
+}
+function showTask(lesson) {
+  activeTask = pickTask(lesson);
+  if (!activeTask) return;
+  document.getElementById('lessonPicker').style.display = 'none';
+  document.getElementById('taskCard').style.display = 'block';
+  document.getElementById('taskLessonTag').textContent = `第 ${activeTask.lesson} 課 · ${activeTask.id}`;
+  document.getElementById('taskTitle').textContent = activeTask.title;
+  document.getElementById('taskText').textContent = activeTask.task;
+  document.getElementById('taskUse').innerHTML = '指定材料（都要用上）：' +
+    activeTask.use.map(u => `<b style="color:#e8e2d4">${escHtml(u)}</b>`).join('｜');
+  document.getElementById('taskFrame').textContent = '下筆順序：' + activeTask.frame;
+}
+function initTask() {
+  let lesson = null;
+  try {
+    const ll = JSON.parse(localStorage.getItem('clb7_last_lesson') || 'null');
+    if (ll && ll.d === todayStr()) lesson = ll.lesson;
+  } catch(e) {}
+  if (lesson) { showTask(lesson); return; }
+  // 今天沒念課 → 顯示選課列
+  const picker = document.getElementById('lessonPicker');
+  picker.style.display = 'block';
+  const btns = document.getElementById('lessonBtns');
+  let html = '';
+  for (let i = 1; i <= 16; i++) html += `<a href="#" onclick="showTask(${i});return false;" style="color:#62aef2;margin-right:8px;text-decoration:none;">${i}</a>`;
+  btns.innerHTML = html;
+}
 
 function load() {
   try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; }
@@ -216,9 +265,12 @@ function updateStats() {
 function buildPrompt() {
   const s1 = document.getElementById('s1').value.trim();
   const s2 = document.getElementById('s2').value.trim();
-  const line1 = s1 || '（句子 1）';
-  const line2 = s2 || '（句子 2）';
-  return `你是法語 A1/A2 老師。請評估以下學生寫的法文句子：\n\n${line1}\n${line2}\n\n請用以下格式回覆（不要多說）：\n分數：X/10\n錯誤：（沒有就寫「無」）\n正確版：\n建議：（一句話）`;
+  const body = [s1, s2].filter(Boolean).join('\n') || '（尚未輸入）';
+  const taskPart = activeTask
+    ? `題目（第${activeTask.lesson}課）：${activeTask.task}\n指定材料：${activeTask.use.join('、')}\n\n`
+    : '';
+  // 評分規則對齊 RUBRICS.md 的 A2 尺
+  return `你是法語老師，學生程度 A1→A2（學了不到三個月）。${taskPart}學生寫的內容：\n\n${body}\n\n請用 A2 尺批改：四個維度各 0-2 分——任務完成（指定材料都用上了嗎）、可理解度、動詞（變位大致正確即可）、名詞組（冠詞與性別）。忽略重音符號漏打與句式單調，不要給超過 A2 的建議。\n\n回覆格式（不要多說別的）：\n分數：X/10（四維加總×1.25四捨五入）\n四維：任務X 理解X 動詞X 名詞X\n最該修的兩個錯：（各附正確寫法；若知道對應文法點請標出）\n做得好的一點：\n重寫示範：（只重寫最差的一句）`;
 }
 
 function updatePrompt() {
@@ -277,6 +329,7 @@ function parseScore(text) {
 
 // Init
 document.getElementById('todayDate').textContent = todayStr();
+initTask();   // 依課出題（07-12）
 
 document.getElementById('btnEval').addEventListener('click', () => {
   const s1 = document.getElementById('s1').value.trim();
@@ -316,7 +369,9 @@ document.getElementById('btnSave').addEventListener('click', () => {
   if (score === null) { showToast('找不到分數，請確認貼上的內容正確'); return; }
 
   const data = load();
-  data.push({ date: todayStr(), s1, s2, score, reply });
+  data.push({ date: todayStr(), s1, s2, score, reply,
+              lesson: activeTask ? activeTask.lesson : null,
+              taskId: activeTask ? activeTask.id : null });
   save(data);
 
   document.getElementById('s1').value = '';

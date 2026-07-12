@@ -319,6 +319,7 @@ body {
 <body>
 <script src="questions.js"></script>
 <script src="gram_rules.js"></script>
+<script src="creed.js"></script>
 <script src="chunks.js"></script>
 <script src="sentences.js"></script>
 <script src="session_timer.js"></script>
@@ -345,6 +346,20 @@ body {
   <div class="sess-target" id="sessTarget"></div>
   <div style="font-size:0.66rem;color:#3a6a4d;text-align:center;margin-top:6px;">
     💡 要換手機/iPad 前，先按「🏁 結束並記錄」，進度才會跟著你走
+  </div>
+</div>
+
+<!-- 🧭 今日心法（creed.js 輪播＋Owen 自己的清單優先） -->
+<div class="rx-card" id="creedCard" style="padding:12px 16px;">
+  <div class="rx-title" style="display:flex;justify-content:space-between;align-items:center;">
+    <span>🧭 今日心法</span>
+    <span id="creedStage" style="font-size:0.62rem;color:#f0c060;text-transform:none;letter-spacing:0;"></span>
+  </div>
+  <div id="creedList" style="font-size:0.78rem;line-height:1.7;color:#b8bcc8;"></div>
+  <div style="display:flex;gap:6px;margin-top:10px;">
+    <input id="creedInput" placeholder="想到什麼就餵進來（你寫的輪播優先）"
+      style="flex:1;background:#0d1020;border:1px solid #1a2438;border-radius:8px;color:#ddd8cc;font-size:0.74rem;padding:7px 10px;font-family:inherit;outline:none;">
+    <button onclick="creedAdd()" style="background:#1a2438;border:1px solid #2a3858;color:#f0c060;border-radius:8px;padding:0 12px;font-size:0.74rem;cursor:pointer;font-family:inherit;">＋收進清單</button>
   </div>
 </div>
 
@@ -715,6 +730,64 @@ function getMiddleOrder() {
   return rotateArray(MIDDLE, dayIndex);
 }
 
+// ── 🧭 今日心法（07-12）：Owen 自己寫的（clb7_creed_own）輪播優先，creed.js 的補位 ──
+// ── 🗺️ 階段（07-12）：換階段改這一行＋照 ROADMAP.md 該階段「進場動作」逐條做 ──
+const CLB_STAGE = 'A1';
+const STAGE_INFO = {
+  A1: { now:'輸入70／輸出30——寫作依課出題、口說盲說，不碰考試題型', next:'升A2條件：A1課程上完＋文法大局觀A1區全部到🧪考題' },
+  A2: { now:'輸入60／輸出40——寫作進TCF tâche 1（60字簡訊）、口說盲說2分鐘', next:'升B1條件：A2課程上完＋全topic正確率≥70%＋能講2分鐘日常主題' },
+  B1: { now:'輸入50／輸出50——tâche 1+2完整練、⭐中段報診斷性首考', next:'升B2條件：B1課程上完＋首考成績到手' },
+  B2: { now:'輸入30／輸出70——論說文＋真人口說每週1次＋雙週全真模擬', next:'死線前排2次正式考（TCF隔30天可重考）' },
+};
+function creedOwn() { try { return JSON.parse(localStorage.getItem('clb7_creed_own')) || []; } catch { return []; } }
+function creedAdd() {
+  const inp = document.getElementById('creedInput');
+  const txt = inp.value.trim();
+  if (!txt) return;
+  const own = creedOwn();
+  own.push({ text: txt, d: todayStr() });
+  localStorage.setItem('clb7_creed_own', JSON.stringify(own));
+  if (window.ClbSync) ClbSync.push();
+  inp.value = '';
+  renderCreed();
+}
+function creedDel(i) {
+  if (!confirm('刪掉這一條？')) return;
+  const own = creedOwn();
+  own.splice(i, 1);
+  localStorage.setItem('clb7_creed_own', JSON.stringify(own));
+  renderCreed();
+}
+function renderCreed() {
+  const day = Math.floor(Date.now() / 86400000);   // 依日期輪播，跨裝置同日同句
+  const own = creedOwn();
+  const whys = CREED.filter(c => c.t === 'why');
+  const hows = CREED.filter(c => c.t === 'how');
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  let html = '';
+  if (own.length) {
+    const i = day % own.length;
+    html += `<div style="margin-bottom:6px;color:#f0e0b0;">🖊️ ${esc(own[i].text)} <span onclick="creedDel(${i})" style="color:#445060;cursor:pointer;font-size:0.66rem;">✕</span></div>`;
+  }
+  html += `<div style="margin-bottom:6px;">💪 ${esc(whys[day % whys.length].text)}</div>`;
+  html += `<div>🛠️ ${esc(hows[day % hows.length].text)}</div>`;
+  // 📐 文法路徑總覽（07-12）：各階段點數一眼看
+  try {
+    const cnt = { 2:0, 3:0, 4:0 }; let mastered = 0;
+    GRAM_POINTS.filter(p => p.unlocked).forEach(p => {
+      const st = gramStageOf(p.id);
+      if (st >= 4) cnt[4]++; else cnt[st] = (cnt[st] || 0) + 1;
+    });
+    html += `<div style="margin-top:8px;padding-top:8px;border-top:1px dashed #1a2438;font-size:0.7rem;color:#66708a;">
+      📐 文法路徑：🪜半開卷 ${cnt[2]}｜🎯遮規則 ${cnt[3]}｜🧪考題 ${cnt[4]}
+      <a href="map.html" style="color:#62aef2;text-decoration:none;margin-left:8px;">大局觀 →</a></div>`;
+  } catch(e) {}
+  document.getElementById('creedList').innerHTML = html;
+  const st = STAGE_INFO[CLB_STAGE];
+  document.getElementById('creedStage').textContent = `階段 ${CLB_STAGE} · ${st.now}`;
+  document.getElementById('creedStage').title = st.next;
+}
+
 // 文法路徑推薦（07-11文法框架）：階段最低優先，同階段錯誤率高優先——跟 gram_trainer 的 guided 邏輯一致
 function gramRecText() {
   try {
@@ -822,8 +895,15 @@ function buildPrescription(topicStats, todaySec) {
       href: 'listening.html?guided=1', done: lnDone,
     },
     writing: {
-      icon: '✍️', action: '造句 2 句（產出）',
-      why: wDone ? '今天已完成！' : '複製 prompt → Claude 批改 → 貼回，約 10 分鐘',
+      icon: '✍️', action: '針對今天的課寫一則（3-4句）',
+      why: wDone ? '今天已完成！' : (() => {
+        try {
+          const ll = JSON.parse(localStorage.getItem('clb7_last_lesson') || 'null');
+          return (ll && ll.d === today)
+            ? `第${ll.lesson}課的情境任務——材料都給你，把空填滿就是一篇`
+            : '先做研讀步驟，寫作題目會跟著今天念的課走';
+        } catch(e) { return '情境任務＋指定材料，把空填滿就是一篇'; }
+      })(),
       badge: wDone ? 'badge-green' : 'badge-red',
       badgeText: wDone ? '✓ 完成' : '未完成',
       href: 'writing.html?guided=1', done: wDone,
@@ -973,6 +1053,7 @@ function buildAlerts(topicStats, game) {
 
 // ── 渲染 ─────────────────────────────────────────────────────
 function render() {
+  renderCreed();   // 🧭 今日心法＋階段（07-12）
   const topicStats  = getTopicStats();
   const game        = getGameData();
   const todaySec    = getTrackerToday();
