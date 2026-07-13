@@ -394,6 +394,11 @@ header {
 <div id="codexRoot" style="display:none;"></div>
 <div id="cxTip"></div>
 
+<div id="gramReadBar" style="display:none;position:fixed;bottom:20px;left:20px;right:20px;max-width:640px;margin:0 auto;background:#0d1020;border:1px solid #f0c060;border-radius:12px;padding:14px 18px;z-index:998;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,0.6);">
+  <span id="gramReadMsg" style="font-size:0.82rem;color:#ddd8cc;">📚 今天的文法閱讀：讀完這條了嗎？</span>
+  <button id="gramReadDoneBtn" style="background:#1d5035;color:#60d090;border:none;border-radius:8px;padding:8px 16px;font-size:0.82rem;cursor:pointer;font-family:inherit;flex-shrink:0;">✓ 讀完了</button>
+</div>
+
 <div class="panel-overlay" id="overlay" onclick="bgClose(event)">
   <div class="panel" id="panel">
     <div class="panel-drag"></div>
@@ -1151,6 +1156,36 @@ function bgClose(e) {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
 
 buildMap();
+
+// ── 📚文法閱讀完成標記（07-16新增）：dashboard 帶 ?read=座標 進來時顯示 ──
+(function(){
+  const readN = new URLSearchParams(location.search).get('read');
+  if (!readN) return;
+  const bar = document.getElementById('gramReadBar');
+  const msg = document.getElementById('gramReadMsg');
+  const btn = document.getElementById('gramReadDoneBtn');
+  const today = () => new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
+  function render() {
+    bar.style.display = 'flex';
+    if (localStorage.getItem('clb7_gramread_done') === today()) {
+      msg.textContent = '✅ 今天的文法閱讀已完成';
+      btn.style.display = 'none';
+    }
+  }
+  btn.addEventListener('click', () => {
+    localStorage.setItem('clb7_gramread_done', today());
+    try {
+      const log = JSON.parse(localStorage.getItem('clb7_gramread_log')) || [];
+      log.push(today());
+      localStorage.setItem('clb7_gramread_log', JSON.stringify(log.slice(-200)));
+    } catch(e) {}
+    if (window.ClbSync) ClbSync.push();
+    render();
+  });
+  render();
+})();
 </script>
+<script src="session_timer.js"></script>
+<script src="sync_supabase.js"></script>
 </body>
 </html>

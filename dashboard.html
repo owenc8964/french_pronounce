@@ -319,6 +319,7 @@ body {
 <body>
 <script src="questions.js"></script>
 <script src="gram_rules.js"></script>
+<script src="codex.js"></script>
 <script src="creed.js"></script>
 <script src="chunks.js"></script>
 <script src="sentences.js"></script>
@@ -794,7 +795,8 @@ function renderCreed() {
 }
 
 // 文法路徑推薦（07-11文法框架）：階段最低優先，同階段錯誤率高優先——跟 gram_trainer 的 guided 邏輯一致
-function gramRecText() {
+// 07-16：抽出 gramRecPoint() 回傳推薦的點物件本身，讓「📚文法閱讀」步驟可以跟「📐文法路徑」配對同一個點
+function gramRecPoint() {
   try {
     const active = GRAM_POINTS.filter(p => p.unlocked && p.topics.length);
     const errRate = p => {
@@ -809,7 +811,12 @@ function gramRecText() {
       if (sa !== sb) return sa - sb;
       return errRate(b) - errRate(a);
     });
-    const rec = active[0];
+    return active[0] || null;
+  } catch(e) { return null; }
+}
+function gramRecText() {
+  try {
+    const rec = gramRecPoint();
     if (!rec) return '所有文法點都走完路徑了，去 quiz 混考累積精熟';
     const st = GRAM_STAGES[gramStageOf(rec.id)];
     return `推薦：${rec.name}（${st.icon}${st.label}）— 規則卡陪練一輪 6 題，磨到全對`;
@@ -827,6 +834,7 @@ function buildPrescription(topicStats, todaySec) {
   const label   = weakest ? (TOPIC_LABELS[weakest[0]] || weakest[0]) : null;
 
   const wuDone = localStorage.getItem('clb7_warmup_done') === today;
+  const grDone = localStorage.getItem('clb7_gramread_done') === today;
   const lqDone = quizDoneToday();
   const dlDone = localStorage.getItem('clb7_drill_done') === today;
   const spDone = sprintDoneToday();
@@ -852,6 +860,29 @@ function buildPrescription(topicStats, todaySec) {
       badge: wuDone ? 'badge-green' : 'badge-blue',
       badgeText: wuDone ? '✓ 完成' : '開始',
       href: 'quiz.html?mode=warmup&guided=1', done: wuDone,
+    },
+    gramread: {
+      icon: '📚', action: '文法閱讀（記憶宮殿條目）',
+      why: (() => {
+        if (grDone) return '今天已完成！';
+        try {
+          const pt = gramRecPoint();
+          const entries = pt && typeof codexEntriesForGram === 'function' ? codexEntriesForGram(pt.id) : [];
+          return entries.length
+            ? `讀 ${entries[0]}（${pt.name}）— 讀完接著練規則卡，先懂為什麼再練`
+            : '今天推薦的點還沒有對應條目，直接去文法資料庫翻翻';
+        } catch(e) { return '讀今天要練的文法點對應條目，先懂為什麼再練'; }
+      })(),
+      badge: grDone ? 'badge-green' : 'badge-red',
+      badgeText: grDone ? '✓ 完成' : '未完成',
+      href: (() => {
+        try {
+          const pt = gramRecPoint();
+          const entries = pt && typeof codexEntriesForGram === 'function' ? codexEntriesForGram(pt.id) : [];
+          return entries.length ? `map.html?read=${entries[0]}#cx-${entries[0]}` : 'map.html';
+        } catch(e) { return 'map.html'; }
+      })(),
+      done: grDone,
     },
     study: {
       icon: '📐', action: '文法路徑（規則卡陪練）',
@@ -931,7 +962,9 @@ function buildPrescription(topicStats, todaySec) {
     },
   };
 
-  const order = ['warmup', ...getMiddleOrder(), 'writing', 'reading'];
+  // 07-16：📚文法閱讀固定接在📐文法路徑前面（先讀後練），跟著 study 一起輪替、不獨立輪替
+  const middleOrder = getMiddleOrder().flatMap(k => k === 'study' ? ['gramread', 'study'] : [k]);
+  const order = ['warmup', ...middleOrder, 'writing', 'reading'];
   return order.map((key, i) => ({ n: i + 1, key, ...stepDefs[key] }));
 }
 
@@ -1530,6 +1563,7 @@ function habitLog(key) { try { return JSON.parse(localStorage.getItem(key)) || [
 
 const HABIT_STEPS = [
   { label: '🔥熱身',   getDates: () => habitLog('clb7_warmup_log') },
+  { label: '📚文法閱讀', getDates: () => habitLog('clb7_gramread_log') },
   { label: '📚研讀',   getDates: () => habitLog('clb7_quiz_log') },
   { label: '📝填表格', getDates: () => habitLog('clb7_drill_log') },
   { label: '⚡反射',   getDates: () => getSprintSessions().map(s => s.date) },

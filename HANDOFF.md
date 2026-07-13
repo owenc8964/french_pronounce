@@ -312,6 +312,21 @@ Owen 貼了一份自己寫的 AI prompt構想：不是背別人寫的範文，�
 
 ⚠️ **仍待 Owen 決定**：A2/B1/B2 版本的內容也要走「Owen 先答、Claude 再修」的流程，還是等 SRS 判定畢業後 Claude 直接主動加深？（目前設計是後者：卡片畢業進 `clb7_ac_upgrade_ready`，Claude 主動生成下一版本；如果 Owen 想要每次升級都親自重新回答一次會更貼近真實想法，需要再問一次要不要改流程）
 
+### 07-16（續）：📚文法閱讀補上——文法框架的「階段1理解」原來從沒被走過
+
+Owen 追問「文法閱讀似乎還沒排齁」。查證後發現：`gram_rules.js` 的五階段設計裡本來就有「1📖理解」，但 07-11 拍板「現役19點全部重走」時實作成「沒記錄=直接視為階段2」，**階段1從未被實際走過**——`codex.js`（記憶宮殿122條深度內容）目前只能靠自己點進 `map.html` 📚文法資料庫分頁翻，沒有排進每日流程、沒有完成紀錄。
+
+確認兩個設計決定（AskUserQuestion）：①選哪一條讀＝**跟當天📐文法路徑推薦的點配對**（讀完接著練，上下呼應）②排程位置＝**固定接在📐文法路徑前面**（不是獨立輪替項，是跟著 study 一起移動的配對，讀完才練）。
+
+**實作**：
+- `codex.js`：新增 `CODEX_BY_GRAM` 反查索引＋`codexEntriesForGram(gramId)`——用條目既有的 `gram` 欄位（本來就存在，連去練習用）反查某個文法點對應哪些記憶宮殿座標。
+- `dashboard.html`：`gramRecText()` 拆出 `gramRecPoint()`（回傳推薦點物件本身，不只是文字），供新步驟複用同一個推薦邏輯；新增 `stepDefs.gramread`（連到 `map.html?read={座標}#cx-{座標}`，用既有 hash 直達機制自動展開捲動）；`getMiddleOrder()` 輪替陣列不變，改在攤平順序時把 `study` 展開成 `['gramread','study']`（無論 study 那天轉到哪個位置，文法閱讀永遠緊接在它前面）；`HABIT_STEPS`／📊每日完成率分析加入這一欄；新增 `codex.js` script include。
+- `map.html`：新增 `?read=座標` 參數處理——帶著這個參數進來時，頁面底部浮現「📚今天的文法閱讀：讀完這條了嗎？」條，點「✓讀完了」寫入 `clb7_gramread_done`/`clb7_gramread_log` 並 `ClbSync.push()`；**順便補上 `session_timer.js`＋`sync_supabase.js`**（map.html 之前完全沒有這兩個，因為它一直被當成「不在主流程」的參考頁，現在文法閱讀變成每日必做步驟，時間該算進700h、完成狀態也要跨裝置同步）。
+
+**驗證**（隔離ROOM）：dashboard 正確顯示「讀 5-5-1（Futur proche）」且與同一天📐文法路徑推薦的「Futur proche」完全配對一致；點連結進 map.html 確認自動切到文法資料庫分頁、展開第5章、捲動並閃爍 5-5-1 條目、底部完成條正確顯示；點「✓讀完了」後 `clb7_gramread_done`/`log` 正確寫入、按鈕消失、文字變「✅ 已完成」；回 dashboard 確認步驟5顯示「✓ 完成」、📊每日完成率分析grid正確新增「📚文法閱讀 1/10」欄位。測完清除 `clb7_gramread_*`、ROOM 還原、grep+curl 確認無殘留。
+
+⚠️ **待確認**：`map.html` 新增計時器後，Owen 之後如果只是想「隨便逛逛地圖/文法大局觀」（不是走每日文法閱讀步驟）也會被算時間——這是合理的（逛文法資料庫也是真實學習時間），但如果 Owen 覺得不對可以再拿掉。
+
 ### 07-12（三）：路線圖＋依課出題寫作＋🧭今日心法卡（Fable 最終批）
 
 Owen 三個定案：①里程碑**以課程等級分野（A1/A2/B1/B2）不用月曆** ②「每天寫2句」廢除（要憑空發揮創意，自然不會寫）→ **依今天念的課出題** ③學習方法＋通關理由要每天在 dashboard 跳出來提醒，**而且他自己寫的要優先於 Claude 寫的**（他原話：「我更知道我自己要的或相信的」）。
@@ -432,6 +447,7 @@ Owen回饋兩件事：①筆記「白花花一片」，想要能在上面選字�
 - `clb7_flagged_qs` → [{id: qId(q), d, src, q}]（07-11檢舉待審題，quiz/gram_trainer出題池都排除；**Claude每次session要檢查這份清單**，修好題後移除該筆放回題池）
 - `clb7_answercard_srs` / `clb7_answercard_sessions` / `clb7_answercard_newcount` → Answer Card（07-16新增）的 SRS 狀態，跟 `clb7_sentence_srs` 同結構但獨立的池子，id 格式 `AC{n}`（跟 `L{n}_`/`S_L{n}_` 不會撞，可共用 `clb7_hard_flags`）
 - `clb7_ac_upgrade_ready` → [cardId,…]（07-16新增，Answer Card 首次畢業時記進來；**Claude每次session要檢查這份清單**，幫該卡寫出下一個 CEFR 版本 push 進 `answer_cards.js` 的 `versions[]`，寫完移除該筆）
+- `clb7_gramread_done` / `clb7_gramread_log` → 今日日期字串／歷史陣列（07-16新增，📚文法閱讀步驟，在 map.html 點「✓讀完了」寫入，跟 clb7_warmup_done 同款式）
 - `clb7_session` → {active, running, startedAt, accSec}（session計時器狀態，不同步到雲端，結束時清除）
 - `clb7_order_lock` → '1'表示鎖定處方順序
 - `clb7_duo` → Duolingo週報，`DUO_SEED`種子upsert進去

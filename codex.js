@@ -3380,3 +3380,11 @@ function codexLocate(topic) {
   return { num: n, name: node.name };
 }
 
+// gram_rules.js 文法點id → 該點涵蓋的所有記憶宮殿條目座標（07-16新增，
+// 供 dashboard「📚文法閱讀」步驟配對當天「📐文法路徑」推薦的點）
+const CODEX_BY_GRAM = {};
+CODEX.forEach(ch => (ch.sections || []).forEach(sec => (sec.items || []).forEach(it => {
+  if (it.gram) (CODEX_BY_GRAM[it.gram] = CODEX_BY_GRAM[it.gram] || []).push(it.n);
+})));
+function codexEntriesForGram(gramId) { return CODEX_BY_GRAM[gramId] || []; }
+
