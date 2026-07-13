@@ -322,6 +322,7 @@ body {
 <script src="creed.js"></script>
 <script src="chunks.js"></script>
 <script src="sentences.js"></script>
+<script src="answer_cards.js"></script>
 <script src="session_timer.js"></script>
 <script src="sync_supabase.js"></script>
 
@@ -504,6 +505,10 @@ body {
   <a class="nav-btn" href="writing.html">
     <span class="nav-icon">✍️</span>
     <div><div class="nav-label">每日造句</div><div class="nav-sub" id="navWritingSub">今天還沒做</div></div>
+  </a>
+  <a class="nav-btn" href="answer_card.html">
+    <span class="nav-icon">🗣️</span>
+    <div><div class="nav-label">Answer Card</div><div class="nav-sub" id="navAnswerCardSub">高頻話題答案卡</div></div>
   </a>
   <a class="nav-btn" href="tracker.html?autostart=1">
     <span class="nav-icon">⏱</span>
@@ -937,6 +942,16 @@ function chunkDueCount() {
 function getSentenceSrs()      { try { return JSON.parse(localStorage.getItem('clb7_sentence_srs')) || {}; } catch { return {}; } }
 function getSentenceSessions() { try { return JSON.parse(localStorage.getItem('clb7_sentence_sessions')) || []; } catch { return []; } }
 function sentenceDoneToday()   { return getSentenceSessions().some(s => s.date === todayStr()); }
+
+// ── Answer Card（answer_card.html，07-16新增）──────────────
+function getAnswerCardSrs() { try { return JSON.parse(localStorage.getItem('clb7_answercard_srs')) || {}; } catch { return {}; } }
+function answerCardDueCount() {
+  if (typeof ANSWER_CARDS === 'undefined') return 0;
+  const srs = getAnswerCardSrs();
+  const now = new Date(); now.setHours(0,0,0,0);
+  const isGrad = r => r && (r.days||[]).length >= 3 && r.iv >= 3;
+  return ANSWER_CARDS.filter(c => srs[c.id] && srs[c.id].due <= now.getTime() && !isGrad(srs[c.id])).length;
+}
 function sentenceDueCount() {
   if (typeof SENTENCES === 'undefined') return 0;
   const srs = getSentenceSrs();
@@ -1037,6 +1052,12 @@ function buildAlerts(topicStats, game) {
     if (flagged.length) alerts.push({ type:'warn', msg:`🚩 有 ${flagged.length} 題被你檢舉停用中，下次開 Claude session 時請他審核修復` });
   } catch(e) {}
 
+  // ⭐ Answer Card 已熟練待升級（07-16新增）：提醒下次丟給 Claude 補下一個 CEFR 版本
+  try {
+    const upReady = JSON.parse(localStorage.getItem('clb7_ac_upgrade_ready') || '[]');
+    if (upReady.length) alerts.push({ type:'ok', msg:`⭐ 有 ${upReady.length} 張 Answer Card 熟練了，下次開 Claude session 請他升級到更豐富的版本` });
+  } catch(e) {}
+
   // 本週時數不足
   const weekH = getTrackerWeek() / 3600;
   const today = new Date();
@@ -1135,6 +1156,9 @@ function render() {
     document.getElementById('navReviewSub').textContent = reviewDoneToday()
       ? (rvDueN > 0 ? `已做 · 剩 ${rvDueN} 張到期` : '今天已完成 ✓')
       : (rvDueN > 0 ? `${rvDueN} 張到期` : '一包 3–5 分鐘');
+    const acDueN = answerCardDueCount();
+    document.getElementById('navAnswerCardSub').textContent = acDueN > 0
+      ? `${acDueN} 張到期複習` : '高頻話題答案卡';
   })();
 
   // Four Skills

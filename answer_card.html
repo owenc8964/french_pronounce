@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Answer Card · CLB7</title>
+<script>window.__loadErrs=[];window.addEventListener('error',e=>window.__loadErrs.push((e.message||'')+' @'+(e.filename||'')+':'+(e.lineno||'')));</script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #07080f; color: #ddd8cc;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh; padding: 24px 16px 80px;
+  max-width: 680px; margin: 0 auto;
+}
+.header { text-align: center; margin-bottom: 20px; }
+.header h1 { font-size: 1.2rem; letter-spacing: 2px; color: #f0c060;
+  text-shadow: 0 0 20px rgba(240,192,96,0.35); }
+.header .back { font-size: 0.72rem; color: #445060; text-decoration: none;
+  display: inline-block; margin-bottom: 8px; }
+.header .back:hover { color: #f0c060; }
+.header .sub { font-size: 0.7rem; color: #445060; margin-top: 4px; }
+
+.card-box {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 12px; padding: 16px 18px; margin-bottom: 16px;
+}
+.card-title { font-size: 0.65rem; color: #445060; text-transform: uppercase;
+  letter-spacing: 1.5px; margin-bottom: 12px; }
+
+.stat-row { display: flex; gap: 10px; margin-bottom: 4px; }
+.st-box { flex: 1; background: #141928; border: 1px solid #1a2438; border-radius: 10px;
+  padding: 12px 8px; text-align: center; }
+.st-val { font-size: 1.3rem; font-weight: 700; color: #60a0d0; }
+.st-val.hot { color: #f0c060; }
+.st-val.grad { color: #60d090; }
+.st-label { font-size: 0.6rem; color: #445060; margin-top: 4px; }
+
+.start-btn {
+  width: 100%; padding: 16px; border: none; border-radius: 12px;
+  background: linear-gradient(135deg, #1d5035, #2a7048);
+  color: #d0f0d8; font-size: 1rem; font-weight: 700; cursor: pointer;
+  font-family: inherit; letter-spacing: 1px; margin-bottom: 10px;
+}
+.start-btn:hover { filter: brightness(1.15); }
+.start-btn:disabled { opacity: 0.4; cursor: default; }
+.start-hint { font-size: 0.7rem; color: #445060; text-align: center; margin-bottom: 16px; }
+
+.progress-line { display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px; font-size: 0.72rem; color: #445060; }
+.progress-line .pk-score { color: #60d090; font-weight: 700; }
+.flashcard {
+  background: #0d1020; border: 1px solid #1a2438; border-radius: 16px;
+  padding: 36px 22px 26px; text-align: left; margin-bottom: 14px;
+  min-height: 340px; display: flex; flex-direction: column; justify-content: center;
+  position: relative;
+}
+.fc-flag-btn {
+  position: absolute; top: 10px; right: 12px;
+  background: none; border: none; cursor: pointer; font-size: 1rem;
+  padding: 4px 6px; display: flex; align-items: center; gap: 3px;
+  font-family: inherit; border-radius: 8px; opacity: 0.55; transition: opacity 0.15s, transform 0.1s;
+}
+.fc-flag-btn:hover { opacity: 1; }
+.fc-flag-btn:active { transform: scale(0.9); }
+.fc-flag-btn.flagged { opacity: 1; background: #2a1210; }
+.fc-flag-count { font-size: 0.68rem; color: #e08070; font-weight: 700; }
+.fc-topic { font-size: 0.62rem; color: #60a0d0; background: #141928;
+  border: 1px solid #1a2438; border-radius: 8px; padding: 3px 10px;
+  display: inline-block; margin-bottom: 6px; letter-spacing: 1px; }
+.fc-level { font-size: 0.62rem; color: #f0c060; background: #201a08;
+  border: 1px solid #3a2e10; border-radius: 8px; padding: 3px 10px;
+  display: inline-block; margin-bottom: 16px; margin-left: 6px; letter-spacing: 1px; }
+.fc-q-fr { font-size: 1.15rem; font-weight: 700; color: #ddd8cc; line-height: 1.5; font-style: italic; }
+.fc-q-zh { font-size: 0.9rem; color: #8a94a8; line-height: 1.6; margin-top: 8px; }
+.fc-think { font-size: 0.7rem; color: #445060; margin-top: 22px; text-align: center; }
+.fc-fr { font-size: 1.15rem; font-weight: 700; color: #60d090; line-height: 1.6;
+  margin-top: 18px; border-top: 1px dashed #1a2438; padding-top: 16px; }
+.fc-zh { font-size: 0.85rem; color: #8a94a8; line-height: 1.6; margin-top: 10px; }
+.fc-speak {
+  margin-top: 16px; background: #141928; border: 1px solid #2a3858; color: #60a0d0;
+  border-radius: 10px; padding: 8px 20px; font-size: 0.85rem; cursor: pointer;
+  font-family: inherit; align-self: flex-start;
+}
+.fc-speak:hover { border-color: #60a0d0; }
+
+.flip-btn {
+  width: 100%; padding: 15px; border: none; border-radius: 12px;
+  background: #1a2438; color: #60a0d0; font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+}
+.flip-btn:hover { filter: brightness(1.3); }
+.grade-row { display: flex; gap: 10px; }
+.grade-btn { flex: 1; padding: 15px; border: none; border-radius: 12px;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+.grade-no  { background: #3a1a16; color: #d07060; border: 1px solid #5a2420; }
+.grade-no:hover  { filter: brightness(1.35); }
+.grade-ok  { background: #0f2818; color: #60d090; border: 1px solid #1d5035; }
+.grade-ok:hover  { filter: brightness(1.35); }
+.key-hint { text-align: center; font-size: 0.62rem; color: #334050; margin-top: 10px; }
+
+.done-big { font-size: 2.4rem; font-weight: 700; color: #f0c060; text-align: center; }
+.done-label { font-size: 0.68rem; color: #445060; text-align: center;
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+.done-line { font-size: 0.82rem; color: #8a94a8; text-align: center; margin-bottom: 6px; }
+.btn-row { display: flex; gap: 10px; margin-top: 16px; }
+.btn-again { flex: 1; padding: 13px; border: none; border-radius: 10px;
+  background: linear-gradient(135deg, #1d5035, #2a7048); color: #d0f0d8;
+  font-size: 0.92rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+.btn-home { flex: 1; padding: 13px; border: 1px solid #1a2438; border-radius: 10px;
+  background: #141928; color: #8a94a8; font-size: 0.92rem; font-weight: 700;
+  cursor: pointer; font-family: inherit; text-align: center; text-decoration: none; }
+.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a class="back" href="dashboard.html">← 回指揮中心</a>
+  <h1>🗣️ Answer Card</h1>
+  <div class="sub">問題出現 → 腦中自己回答（法文）→ 翻開核對你自己的話 → 沒講到位排到後面重考</div>
+</div>
+
+<!-- Start -->
+<div id="startScreen">
+  <div class="card-box">
+    <div class="card-title">今日狀態</div>
+    <div class="stat-row">
+      <div class="st-box"><div class="st-val hot" id="stDue">—</div><div class="st-label">到期待複習</div></div>
+      <div class="st-box"><div class="st-val" id="stNew">—</div><div class="st-label">今日新卡額度（3）</div></div>
+      <div class="st-box"><div class="st-val grad" id="stGrad">—</div><div class="st-label">已熟練</div></div>
+    </div>
+  </div>
+  <button class="start-btn" id="startBtn">▶ 開始練答案卡</button>
+  <div class="start-hint" id="startHint"></div>
+</div>
+
+<!-- Session -->
+<div id="sessionScreen" class="hidden">
+  <div class="progress-line">
+    <span id="pkProgress">1 / 5</span>
+    <span id="pkPhase"></span>
+    <span class="pk-score" id="pkScore">✓ 0</span>
+  </div>
+  <div class="flashcard" id="flashcard">
+    <button type="button" class="fc-flag-btn" id="fcFlagBtn" title="標記這張卡不熟，之後會多考幾次">🔴<span class="fc-flag-count" id="fcFlagCount"></span></button>
+    <span class="fc-topic" id="fcTopic"></span>
+    <span class="fc-level" id="fcLevelTag"></span>
+    <div class="fc-q-fr" id="fcQFr"></div>
+    <div class="fc-q-zh" id="fcQZh"></div>
+    <div class="fc-think" id="fcThink">🧠 先在腦中用法文回答，再翻開核對</div>
+    <div class="fc-fr hidden" id="fcFr"></div>
+    <div class="fc-zh hidden" id="fcZh2"></div>
+    <button class="fc-speak hidden" id="fcSpeak">🔊 再聽一次</button>
+  </div>
+  <button type="button" id="fcConfusedBtn" style="width:100%;background:none;border:none;color:#556;font-size:0.72rem;padding:6px 0;cursor:pointer;font-family:inherit;">🤔 這張卡想調整內容 → 回報</button>
+  <button class="flip-btn" id="flipBtn">翻開（空白鍵）</button>
+  <div class="grade-row hidden" id="gradeRow">
+    <button class="grade-btn grade-no" id="gradeNo">✗ 答不出來（1）</button>
+    <button class="grade-btn grade-ok" id="gradeOk">✓ 答對了（2）</button>
+  </div>
+  <div class="key-hint">空白鍵翻開 · 1 答不出來 · 2 答對了</div>
+</div>
+
+<!-- Done -->
+<div id="doneScreen" class="hidden">
+  <div class="card-box">
+    <div class="done-big" id="doneScore">—</div>
+    <div class="done-label">一次答對 / 總卡數</div>
+    <div class="done-line" id="doneToday"></div>
+    <div class="done-line" id="doneDue"></div>
+    <div class="done-line" id="doneUpgrade" style="color:#f0c060;"></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-again" id="againBtn">🗣️ 再做一輪</button>
+    <a class="btn-home" href="dashboard.html">回指揮中心</a>
+  </div>
+</div>
+
+<script src="answer_cards.js"></script>
+<script>
+// ── SRS 設定（跟 sentence_drill.html/review.html 同一套：successive relearning）──
+const INTERVALS = [1, 3, 7, 14, 30];   // 天
+const NEW_PER_DAY = 3;                 // 每天固定新增 3 張（比單句重，量放小一點）
+
+// ── localStorage ─────────────────────────────────────────────
+function getSrs()   { try { return JSON.parse(localStorage.getItem('clb7_answercard_srs')) || {}; } catch { return {}; } }
+function saveSrs(s) { localStorage.setItem('clb7_answercard_srs', JSON.stringify(s)); }
+function getSessions() { try { return JSON.parse(localStorage.getItem('clb7_answercard_sessions')) || []; } catch { return []; } }
+function todayStr() {
+  return new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
+}
+function dayStart(d = new Date()) { const t = new Date(d); t.setHours(0,0,0,0); return t.getTime(); }
+
+function newCountToday() {
+  try {
+    const v = JSON.parse(localStorage.getItem('clb7_answercard_newcount'));
+    return (v && v.date === todayStr()) ? v.n : 0;
+  } catch { return 0; }
+}
+function bumpNewCount() {
+  localStorage.setItem('clb7_answercard_newcount', JSON.stringify({ date: todayStr(), n: newCountToday() + 1 }));
+}
+
+function isGraduated(rec) {
+  return rec && (rec.days||[]).length >= 3 && rec.iv >= 3;
+}
+
+// ── 🔴 手動標記「不熟」：跟 review.html/sentence_drill.html 共用同一個 clb7_hard_flags key
+// （id 前綴 AC{n} 跟 L{n}_.../S_L{n}_ 不會撞）
+const FLAG_BONUS_MAX = 1;
+function getFlags() { try { return JSON.parse(localStorage.getItem('clb7_hard_flags')) || {}; } catch { return {}; } }
+function saveFlags(f) { localStorage.setItem('clb7_hard_flags', JSON.stringify(f)); }
+function flagCard(cardId) {
+  const flags = getFlags();
+  const rec = flags[cardId] || { count: 0 };
+  rec.count++; rec.last = todayStr();
+  flags[cardId] = rec;
+  saveFlags(flags);
+  return rec.count;
+}
+function renderFlagBadge(cardId) {
+  const flags = getFlags();
+  const n = flags[cardId] ? flags[cardId].count : 0;
+  document.getElementById('fcFlagCount').textContent = n > 0 ? ('×' + n) : '';
+  document.getElementById('fcFlagBtn').classList.toggle('flagged', n > 0);
+}
+function bonusFlaggedCards(excludeIds = new Set()) {
+  const flags = getFlags(), srs = getSrs(), now = dayStart();
+  const naturallyDue = c => srs[c.id] && srs[c.id].due <= now && !isGraduated(srs[c.id]);
+  return ANSWER_CARDS
+    .filter(c => flags[c.id] && flags[c.id].count > 0 && !naturallyDue(c) && !excludeIds.has(c.id))
+    .sort((a, b) => flags[b.id].count - flags[a.id].count)
+    .slice(0, FLAG_BONUS_MAX);
+}
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function dueCards() {
+  const srs = getSrs(), now = dayStart();
+  const list = ANSWER_CARDS.filter(c => srs[c.id] && srs[c.id].due <= now && !isGraduated(srs[c.id]));
+  return shuffle(list).sort((a,b) => srs[a.id].due - srs[b.id].due);
+}
+function newCards() {
+  const srs = getSrs();
+  return ANSWER_CARDS.filter(c => !srs[c.id]);
+}
+function gradCount() {
+  const srs = getSrs();
+  return ANSWER_CARDS.filter(c => isGraduated(srs[c.id])).length;
+}
+
+// ── ⭐ 升級待辦：卡片首次畢業時記進 clb7_ac_upgrade_ready，
+// 下次 Claude session 要檢查這份清單，幫忙把該卡寫出下一個 CEFR 版本 ──
+function getUpgradeReady() { try { return JSON.parse(localStorage.getItem('clb7_ac_upgrade_ready')) || []; } catch { return []; } }
+function markUpgradeReady(cardId) {
+  const list = getUpgradeReady();
+  if (!list.includes(cardId)) {
+    list.push(cardId);
+    localStorage.setItem('clb7_ac_upgrade_ready', JSON.stringify(list));
+  }
+}
+
+// ── 發音（TTS）── 跟全站其他頁同一套語音優先序 ──────────────
+let frVoice = null;
+function pickVoice() {
+  const vs = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith('fr'));
+  frVoice = vs.find(v => /am[eé]lie|thomas/i.test(v.name))
+         || vs.find(v => /premium|enhanced|amélior|plus/i.test(v.name))
+         || vs.find(v => v.localService === false)
+         || vs.find(v => v.lang === 'fr-FR')
+         || vs[0] || null;
+}
+if ('speechSynthesis' in window) {
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+function speak(text) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const clean = text.replace(/\(.*?\)/g, '').split('/')[0].trim();
+  const u = new SpeechSynthesisUtterance(clean);
+  u.lang = 'fr-FR'; u.rate = 0.9;
+  if (frVoice) u.voice = frVoice;
+  speechSynthesis.speak(u);
+}
+
+// ── 錯題本 ───────────────────────────────────────────────────
+function logWrong(entry) {
+  try {
+    const log = JSON.parse(localStorage.getItem('clb7_wrong_log')) || [];
+    const d = todayStr();
+    const dup = log.find(e => e.d === d && e.src === entry.src && e.q === entry.q);
+    if (dup) { dup.n = (dup.n||1) + 1; dup.t = Date.now(); }
+    else log.push({ ...entry, d, t: Date.now(), n: 1 });
+    localStorage.setItem('clb7_wrong_log', JSON.stringify(log.slice(-300)));
+  } catch(e) {}
+}
+
+// ── Session state ────────────────────────────────────────────
+let packet = [];        // [{card, isNew}]
+let idx = 0;
+let flipped = false;
+let firstTryOk = 0, firstTryTotal = 0;
+let attempted = new Set();
+let upgradedThisSession = [];
+
+function buildPacket() {
+  const due = dueCards().map(c => ({ card: c, isNew: false }));
+  const room = Math.max(0, NEW_PER_DAY - newCountToday());
+  if (room > 0) newCards().slice(0, room).forEach(c => due.push({ card: c, isNew: true }));
+  const already = new Set(due.map(p => p.card.id));
+  bonusFlaggedCards(already).forEach(c => due.push({ card: c, isNew: false, isBonus: true }));
+  return due;
+}
+
+function renderStart() {
+  const due = dueCards().length;
+  const newLeft = Math.max(0, NEW_PER_DAY - newCountToday());
+  document.getElementById('stDue').textContent = due;
+  document.getElementById('stNew').textContent = newLeft;
+  document.getElementById('stGrad').textContent = gradCount() + '/' + ANSWER_CARDS.length;
+  const btn = document.getElementById('startBtn');
+  if (due === 0 && (newLeft === 0 || newCards().length === 0)) {
+    btn.disabled = true;
+    btn.textContent = '✅ 今天的答案卡都做完了';
+    document.getElementById('startHint').textContent = '明天會有到期複習（新卡目前 15 張全部見過後就不再有新卡）。';
+  } else {
+    btn.disabled = false;
+    const total = due + Math.min(newLeft, newCards().length);
+    btn.textContent = `▶ 開始（${total} 張）`;
+    const bonusN = bonusFlaggedCards().length;
+    document.getElementById('startHint').textContent = (due > 0
+      ? `${due} 張到期複習 + 最多 ${Math.min(newLeft, newCards().length)} 張新卡`
+      : '看到問題先自己回答，翻開核對你自己的話') + (bonusN ? ` · 🔴 +${bonusN} 張你標記過不熟的卡會加碼考` : '');
+  }
+}
+
+function startPacket() {
+  packet = buildPacket();
+  if (!packet.length) return;
+  idx = 0; firstTryOk = 0; firstTryTotal = 0;
+  attempted = new Set();
+  upgradedThisSession = [];
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('doneScreen').classList.add('hidden');
+  document.getElementById('sessionScreen').classList.remove('hidden');
+  renderCard();
+}
+
+function renderCard() {
+  if (idx >= packet.length) { finishPacket(); return; }
+  const { card, isNew, isBonus } = packet[idx];
+  const v = acActiveVersion(card);
+  flipped = false;
+  document.getElementById('pkProgress').textContent = `${Math.min(idx+1, packet.length)} / ${packet.length}`;
+  document.getElementById('pkPhase').textContent = isNew ? '🆕 新卡' : (isBonus ? '🔴 加碼複習（你標記過不熟）' : '🔁 複習');
+  document.getElementById('pkScore').textContent = `✓ ${firstTryOk}`;
+  document.getElementById('fcTopic').textContent = card.title;
+  document.getElementById('fcLevelTag').textContent = v.level;
+  document.getElementById('fcQFr').textContent = card.q_fr;
+  document.getElementById('fcQZh').textContent = card.q_zh;
+  document.getElementById('fcThink').classList.remove('hidden');
+  document.getElementById('fcFr').classList.add('hidden');
+  document.getElementById('fcZh2').classList.add('hidden');
+  document.getElementById('fcSpeak').classList.add('hidden');
+  renderFlagBadge(card.id);
+  document.getElementById('flipBtn').classList.remove('hidden');
+  document.getElementById('gradeRow').classList.add('hidden');
+}
+
+function flip() {
+  if (flipped || idx >= packet.length) return;
+  flipped = true;
+  const { card } = packet[idx];
+  const v = acActiveVersion(card);
+  document.getElementById('fcThink').classList.add('hidden');
+  const fr = document.getElementById('fcFr');
+  fr.textContent = v.fr; fr.classList.remove('hidden');
+  const zh = document.getElementById('fcZh2');
+  zh.textContent = v.zh; zh.classList.remove('hidden');
+  document.getElementById('fcSpeak').classList.remove('hidden');
+  document.getElementById('flipBtn').classList.add('hidden');
+  document.getElementById('gradeRow').classList.remove('hidden');
+  speak(v.fr);
+}
+
+function grade(ok) {
+  if (!flipped || idx >= packet.length) return;
+  const { card, isNew } = packet[idx];
+  const v = acActiveVersion(card);
+  const first = !attempted.has(card.id);
+  if (first) {
+    attempted.add(card.id);
+    firstTryTotal++;
+    if (ok) firstTryOk++;
+  }
+
+  const srs = getSrs();
+  const today = todayStr();
+  let rec = srs[card.id];
+  const wasGraduated = isGraduated(rec);
+  if (!rec) {
+    rec = { iv: 0, due: 0, days: [], ok: 0, no: 0 };
+    if (isNew) bumpNewCount();
+  }
+  if (ok) {
+    rec.ok++;
+    if (!rec.days.includes(today)) rec.days.push(today);
+    rec.days = rec.days.slice(-10);
+    if (first) rec.iv = Math.min(rec.iv + (rec.due ? 1 : 0), INTERVALS.length - 1);
+    rec.due = dayStart() + INTERVALS[rec.iv] * 86400000;
+  } else {
+    rec.no++;
+    rec.iv = 0;
+    rec.due = dayStart() + 86400000;
+    packet.push(packet[idx]);   // 排到這輪最後重考——磨到當天答對為止
+    logWrong({ src: 'answercard', q: card.q_zh, a: v.fr, note: card.title, title: card.title });
+  }
+  rec.last = Date.now();
+  srs[card.id] = rec;
+  saveSrs(srs);
+
+  if (!wasGraduated && isGraduated(rec)) {
+    markUpgradeReady(card.id);
+    upgradedThisSession.push(card.title);
+  }
+
+  idx++;
+  renderCard();
+}
+
+function finishPacket() {
+  document.getElementById('sessionScreen').classList.add('hidden');
+  document.getElementById('doneScreen').classList.remove('hidden');
+  document.getElementById('doneScore').textContent = `${firstTryOk} / ${firstTryTotal}`;
+
+  const ses = getSessions();
+  ses.push({ date: todayStr(), cards: firstTryTotal, ok: firstTryOk, ts: Date.now() });
+  localStorage.setItem('clb7_answercard_sessions', JSON.stringify(ses.slice(-100)));
+  if (window.ClbSync) ClbSync.push();
+
+  const todayPk = ses.filter(s => s.date === todayStr());
+  const todayCards = todayPk.reduce((s,x) => s + x.cards, 0);
+  document.getElementById('doneToday').textContent =
+    `今天已做 ${todayPk.length} 輪 · ${todayCards} 張（全部磨到答對）`;
+  const due = dueCards().length;
+  document.getElementById('doneDue').textContent = due > 0
+    ? `還有 ${due} 張到期複習 — 有空再做一輪` : '今日到期複習全部清空 ✅';
+  document.getElementById('doneUpgrade').textContent = upgradedThisSession.length
+    ? `⭐ 「${upgradedThisSession.join('、')}」已經熟了，下次請 Claude 幫忙升級到更豐富的版本` : '';
+  document.getElementById('againBtn').style.display =
+    (due === 0 && (newCountToday() >= NEW_PER_DAY || newCards().length === 0)) ? 'none' : '';
+}
+
+// ── 事件 ─────────────────────────────────────────────────────
+document.getElementById('startBtn').addEventListener('click', startPacket);
+document.getElementById('againBtn').addEventListener('click', startPacket);
+document.getElementById('flipBtn').addEventListener('click', flip);
+document.getElementById('gradeNo').addEventListener('click', () => grade(false));
+document.getElementById('gradeOk').addEventListener('click', () => grade(true));
+document.getElementById('fcSpeak').addEventListener('click', () => speak(acActiveVersion(packet[idx].card).fr));
+document.getElementById('fcFlagBtn').addEventListener('click', () => {
+  if (idx >= packet.length) return;
+  const { card } = packet[idx];
+  flagCard(card.id);
+  renderFlagBadge(card.id);
+});
+document.addEventListener('keydown', e => {
+  if (document.getElementById('sessionScreen').classList.contains('hidden')) return;
+  if (e.key === ' ') { e.preventDefault(); flip(); }
+  if (e.key === '1') grade(false);
+  if (e.key === '2') grade(true);
+});
+
+// ── 自動計時：練習時間自動記入 clb7_tracker（type: auto-answercard）──
+(function(){
+  const TYPE='answercard', TICK=15, IDLE_MS=60000;
+  let acc=0, lastAct=Date.now();
+  ['keydown','pointerdown','scroll','touchstart'].forEach(ev =>
+    document.addEventListener(ev, () => lastAct=Date.now(), {passive:true}));
+  setInterval(() => {
+    if (document.visibilityState==='visible' && Date.now()-lastAct < IDLE_MS) acc += TICK;
+  }, TICK*1000);
+  function flushTime(){
+    if (window.ClbSession && window.ClbSession.isActive()) { acc = 0; return; }
+    if (acc < 30) return;
+    try {
+      const d = new Date();
+      const data = JSON.parse(localStorage.getItem('clb7_tracker')) || [];
+      data.push({ ts: Date.now(),
+        date: `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`,
+        type: 'auto-'+TYPE, sec: acc });
+      localStorage.setItem('clb7_tracker', JSON.stringify(data));
+      acc = 0;
+    } catch(e) {}
+  }
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState==='hidden') flushTime(); });
+  window.addEventListener('pagehide', flushTime);
+})();
+
+// ── 初始化 ────────────────────────────────────────────────────
+renderStart();
+if (new URLSearchParams(location.search).get('guided') === '1') startPacket();
+</script>
+
+<!-- 懸浮回饋 -->
+<style>
+#qnoteBtn{position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#1a2438;border:1px solid #2a3858;color:#f0c060;font-size:1.2rem;cursor:pointer;z-index:999;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,0.5);transition:transform 0.15s;}
+#qnoteBtn:hover{transform:scale(1.1);}
+#qnotePanel{position:fixed;bottom:72px;right:20px;width:280px;background:#0d1020;border:1px solid #2a3858;border-radius:12px;padding:14px;z-index:998;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.6);}
+#qnotePanel.open{display:block;}
+#qnoteTitle{font-size:0.7rem;color:#445060;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+#qnoteTag{font-size:0.7rem;color:#f0c060;margin-bottom:6px;display:none;}
+#qnoteTxt{width:100%;background:#141928;border:1px solid #1a2438;border-radius:8px;color:#ddd8cc;font-size:0.85rem;padding:8px;resize:none;height:80px;font-family:inherit;}
+#qnoteTxt:focus{outline:none;border-color:#f0c060;}
+#qnoteSave{margin-top:8px;width:100%;padding:8px;background:#1d5035;color:#60d090;border:none;border-radius:8px;font-size:0.82rem;cursor:pointer;font-family:inherit;}
+#qnoteCount{font-size:0.68rem;color:#334050;margin-top:6px;text-align:right;}
+</style>
+<button id="qnoteBtn" title="快速筆記">📝</button>
+<div id="qnotePanel">
+  <div id="qnoteTitle">快速筆記（存給 Claude 看）</div>
+  <div id="qnoteTag"></div>
+  <textarea id="qnoteTxt" placeholder="記下問題、想法、bug…"></textarea>
+  <button id="qnoteSave">儲存筆記</button>
+  <div id="qnoteCount"></div>
+  <button id="qnoteCopy" style="margin-top:6px;width:100%;padding:7px;background:#1a2438;color:#60a0d0;border:none;border-radius:8px;font-size:0.78rem;cursor:pointer;font-family:inherit;">📋 複製全部給 Claude</button>
+</div>
+<script>
+(function(){
+  const KEY='clb7_quick_notes';
+  const page='answer_card.html';
+  let noteTag = null;
+  function loadNotes(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch{return[];}}
+  function saveNotes(d){localStorage.setItem(KEY,JSON.stringify(d));}
+  function updateCount(){const n=loadNotes();document.getElementById('qnoteCount').textContent=n.length?`共 ${n.length} 則筆記`:'還沒有筆記';}
+  function openPanel(tag){
+    noteTag = tag || null;
+    const tagEl = document.getElementById('qnoteTag');
+    if (noteTag) { tagEl.textContent = '📍 ' + noteTag; tagEl.style.display = 'block'; }
+    else { tagEl.style.display = 'none'; }
+    document.getElementById('qnotePanel').classList.add('open');
+    updateCount();
+    document.getElementById('qnoteTxt').focus();
+  }
+  document.getElementById('qnoteBtn').addEventListener('click', () => {
+    document.getElementById('qnotePanel').classList.toggle('open');
+    updateCount();
+  });
+  document.getElementById('fcConfusedBtn').addEventListener('click', () => {
+    let tag = '';
+    try {
+      const { card } = packet[idx];
+      tag = `[${card.title}] ${card.q_zh}`;
+    } catch(e) {}
+    openPanel(tag || '這張卡');
+  });
+  document.getElementById('qnoteSave').addEventListener('click', () => {
+    const txt = document.getElementById('qnoteTxt').value.trim();
+    if (!txt) return;
+    const notes = loadNotes();
+    const d = new Date();
+    const prefix = noteTag ? `${noteTag}｜` : '';
+    notes.push({
+      date: `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`,
+      time: `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`,
+      page, note: prefix + txt
+    });
+    saveNotes(notes);
+    document.getElementById('qnoteTxt').value = '';
+    noteTag = null;
+    document.getElementById('qnoteTag').style.display = 'none';
+    updateCount();
+  });
+  document.getElementById('qnoteCopy').addEventListener('click', () => {
+    const notes = loadNotes();
+    if (!notes.length) { alert('還沒有筆記'); return; }
+    const text = '【CLB7 快速筆記】\n' + notes.map(n => `[${n.date} ${n.time} @ ${n.page}] ${n.note}`).join('\n');
+    navigator.clipboard.writeText(text).then(() => {
+      document.getElementById('qnoteCopy').textContent = '✓ 已複製！';
+      setTimeout(() => document.getElementById('qnoteCopy').textContent = '📋 複製全部給 Claude', 2000);
+    });
+  });
+})();
+</script>
+<script src="session_timer.js"></script>
+<script src="sync_supabase.js"></script>
+</body>
+</html>

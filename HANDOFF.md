@@ -97,6 +97,8 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `gram_trainer.html` | **新增（07-11）**：文法路徑練習器——階段2半開卷（規則卡固定顯示）/階段3遮規則（答錯自動翻開），只出打字題杜絕選項污染，包尾重試磨到全對，首次作答≥80%升階，每階段可手動跳過；完成寫`clb7_quiz_done`（=步驟②）；階段2不寫SRS（開卷不灌精熟統計）、階段3寫；guided=1自動挑「階段最低+錯誤率最高」的點 | ✅ 新建 |
 | `codex.js` | **新增（07-11晚）**：📚文法資料庫（記憶宮殿）資料層——9大章50節122條，A1→B2全境（A1:29/A2:47/B1:34/B2:12），每條永久座標（如`5-2-2`）＋brief＋說明＋例句＋⚠️例外＋🆚相似對比＋topic對應（37個topic有門牌）。**座標鐵律：一經指定永不重編**（Owen靠位置記憶）。`codexLocate(topic)`給練習頁定位用 | ✅ 新建 |
 | `verb_reference.html` | 動詞參考表，發音邏輯已跟其他頁統一（原本完全沒篩選） | ✅ 修復（07-07）|
+| `answer_cards.js` | **新增（07-16）**：TEF Canada 高頻話題 Answer Card 資料——15個主題（自我介紹/家庭/工作/教育/興趣/飲食/旅行/加拿大/住家/購物/健康/科技/環保/社交/未來計畫），內容是 Owen 真實回答經 Claude 修成正確法文的 A1 種子版本，`versions[]` 之後會長出 A2/B1/B2 | ✅ 新建 |
+| `answer_card.html` | **新增（07-16）**：Answer Card 練習頁，完全複用 sentence_drill.html 的 SRS 引擎（1/3/7/14/30天、包尾重試、🔴手動標記），差異：新卡上限3/天（內容較重）、卡片首次畢業自動記進 `clb7_ac_upgrade_ready`（下次 session 要檢查，幫該卡寫下一版本）。目前只掛 dashboard 快速入口連結，**還沒排進9步番号處方**（Owen 要先試用再決定） | ✅ 新建 |
 | `tracker.html` | 舊版計時器（autostart、切分頁自動暫停）+ 700h 進度，功能已被 session_timer.js 取代但保留 | 舊版 |
 | `speaking.html` | 口說日誌（僅記錄有無/時長，不評分內容） | ✅ |
 | `map.html` | 課程地圖（63格），已更新至第16課（解鎖imparfait+études&école+travail+relatifs）；**07-11新增「📐文法大局觀」分頁**——把63格裡`gram:true`的26個純文法格重新依7大類（動詞現在式/時態/語氣建議被動、代名詞、冠詞疑問句否定、形容詞比較、連接詞論述）分組展示，每格保留原本CEFR配色，已解鎖格可點連結跳回`french_notes.html`對應課次複習 | ✅ |
@@ -292,6 +294,22 @@ Owen 的核心回饋（這次最大的方向轉變）：「記不熟就直接進
 
 **驗證**（全程隔離ROOM）：trainer完整跑過「選點→階段2答錯重考→規則提醒→首次5/6升階→階段3規則卡收起→答錯自動翻開→SRS只在階段3寫入→🚩檢舉從池移除」；map大局觀32格7類、面板三種狀態（現役/未開課/課程地圖格）都對；quiz檢舉後分數回正+錯題本移除；dashboard步驟②推薦與✓完成、🚩警報。測完清掉preview的`clb7_gram_stage`/`clb7_flagged_qs`、切回正式ROOM、grep無殘留、**直接curl真實Supabase payload確認326個key裡沒有測試key**。
 
+### 07-16：Answer Card 系統上線——高頻話題答案卡，內容是 Owen 自己的真實故事
+
+Owen 貼了一份自己寫的 AI prompt構想：不是背別人寫的範文，而是建立「同一份答案持續長大（A1→A2→B1→B2）」的高頻話題答案庫，練到「看到問題→法文自然浮現」。討論後定案三個設計分岔點（AskUserQuestion 問的）：①練習模式＝**文字回想**，先做這個（複用 sentence_drill.html 引擎，不做錄音口說）②版本升級＝**系統依SRS數據自動建議**（卡片畢業時記進待辦清單，不是日期到就換）③範圍＝**一次搭好 TEF Canada 15 個高頻主題**的骨架。
+
+**內容產出方式（這次最關鍵的設計調整，Owen 主動提出）**：不是 Claude 編故事，是 **Claude 先出問題（中文）→ Owen 用中文/破碎法文真實回答自己的人生→ Claude 修成正確道地的 A1 版本**。15題一次問完，Owen 一次答完（自我介紹/家庭/工作/教育/興趣/飲食/旅行/加拿大移民動機/住家/購物/健康/科技/環保/社交/未來計畫），Claude 逐題核對修正（過程中 Owen 挑出3處問題：工作那句兩句話沒連接詞太生硬、AI寫成IA才對法文縮寫順序、社交那句意思弄反——都是根據 Owen 真實回答二次修正，不是憑空生成）。
+
+**實作**：
+- `answer_cards.js`：15張卡，每張 `{id, topic, title, q_fr, q_zh, versions:[{level,d,fr,zh}]}`，目前每張只有 A1 版本（Owen 的真實內容，文法限制在他學過範圍：現在式為主+少量passé composé/futur proche/qui關係代名詞）。
+- `answer_card.html`：完全複刻 sentence_drill.html 的引擎（SRS 1/3/7/14/30天、包尾重試磨到全對、🔴手動標記共用 `clb7_hard_flags`、懸浮回饋、自動計時）；差異點——新卡上限**3/天**（比單句重）；卡片首次畢業（3不同天答對+iv≥3）自動記進 `clb7_ac_upgrade_ready`，dashboard 警報會提醒「下次開 Claude session 請他升級」。
+- dashboard.html：快速入口加「🗣️ Answer Card」連結（顯示到期複習數）；alerts 區加 ⭐ 升級待辦提醒。**這次沒有排進9步番号處方**——是新東西，先讓 Owen 試用幾天再決定要不要正式綁進每日流程（跟07-10文化深掘podcast「先做幾篇試效果再決定」是同一個保守模式）。
+- 這是一套**獨立內容池**，不掛六/七項連動清單（跟 sentence_drill.html 當初上線時一樣，先獨立驗證，之後若併入每日流程再評估要不要接 last_lesson 等機制）。
+
+**驗證**（隔離ROOM）：preview 跑完整流程——3張新卡（1新1複習1加碼位置都測過）、翻卡渲染問題/答案/中文對，故意答錯1張確認排到本輪最後重考、二次答對後 packet 正確結束、完成畫面 2/3 分數正確、SRS record 三卡都正確寫入（due=明天）、wrong_log 正確記錄答錯的家庭卡、newcount 正確計數3；用 JS 直接驗證 `isGraduated`/`markUpgradeReady` 邏輯（畢業判定 true/false 各一案例、重複呼叫不重複加入清單）；dashboard 端驗證快速入口 sub 文字顯示、⭐升級提醒 alert 正確渲染、📕今日錯題本正確顯示 answercard 來源。測完清除 `clb7_answercard_*`／`clb7_ac_upgrade_ready`／wrong_log 裡的 answercard 筆，ROOM 切回正式值，grep 確認 repo 無殘留字串，curl 真實 Supabase payload（330 keys）確認沒有 answercard 相關 key 洩漏。
+
+⚠️ **待 Owen 決定**：①要不要把 Answer Card 排進每日9步處方（目前只是快速入口的選做功能）②A2/B1/B2 版本的內容也要走「Owen 先答、Claude 再修」的流程，還是等 SRS 判定畢業後 Claude 直接主動加深？（目前設計是後者：卡片畢業進 `clb7_ac_upgrade_ready`，Claude 主動生成下一版本；如果 Owen 想要每次升級都親自重新回答一次會更貼近真實想法，需要再問一次要不要改流程）
+
 ### 07-12（三）：路線圖＋依課出題寫作＋🧭今日心法卡（Fable 最終批）
 
 Owen 三個定案：①里程碑**以課程等級分野（A1/A2/B1/B2）不用月曆** ②「每天寫2句」廢除（要憑空發揮創意，自然不會寫）→ **依今天念的課出題** ③學習方法＋通關理由要每天在 dashboard 跳出來提醒，**而且他自己寫的要優先於 Claude 寫的**（他原話：「我更知道我自己要的或相信的」）。
@@ -410,6 +428,8 @@ Owen回饋兩件事：①筆記「白花花一片」，想要能在上面選字�
 - `clb7_notes_marks` → [{id, lesson, type:'weak'|'key', text, date}]（07-11新增，french_notes.html選字標記，重整頁面靠純文字比對重新找到位置套用`<mark>`，找不到就跳過不強求）
 - `clb7_gram_stage` → {pointId: {stage, hist:[{d, stage, acc}]}}（07-11文法框架，現役點沒記錄=stage 2「全部重走」預設，見gram_rules.js `gramStageOf`）
 - `clb7_flagged_qs` → [{id: qId(q), d, src, q}]（07-11檢舉待審題，quiz/gram_trainer出題池都排除；**Claude每次session要檢查這份清單**，修好題後移除該筆放回題池）
+- `clb7_answercard_srs` / `clb7_answercard_sessions` / `clb7_answercard_newcount` → Answer Card（07-16新增）的 SRS 狀態，跟 `clb7_sentence_srs` 同結構但獨立的池子，id 格式 `AC{n}`（跟 `L{n}_`/`S_L{n}_` 不會撞，可共用 `clb7_hard_flags`）
+- `clb7_ac_upgrade_ready` → [cardId,…]（07-16新增，Answer Card 首次畢業時記進來；**Claude每次session要檢查這份清單**，幫該卡寫出下一個 CEFR 版本 push 進 `answer_cards.js` 的 `versions[]`，寫完移除該筆）
 - `clb7_session` → {active, running, startedAt, accSec}（session計時器狀態，不同步到雲端，結束時清除）
 - `clb7_order_lock` → '1'表示鎖定處方順序
 - `clb7_duo` → Duolingo週報，`DUO_SEED`種子upsert進去
