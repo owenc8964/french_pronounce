@@ -98,7 +98,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `codex.js` | **新增（07-11晚）**：📚文法資料庫（記憶宮殿）資料層——9大章50節122條，A1→B2全境（A1:29/A2:47/B1:34/B2:12），每條永久座標（如`5-2-2`）＋brief＋說明＋例句＋⚠️例外＋🆚相似對比＋topic對應（37個topic有門牌）。**座標鐵律：一經指定永不重編**（Owen靠位置記憶）。`codexLocate(topic)`給練習頁定位用 | ✅ 新建 |
 | `verb_reference.html` | 動詞參考表，發音邏輯已跟其他頁統一（原本完全沒篩選） | ✅ 修復（07-07）|
 | `answer_cards.js` | **新增（07-16）**：TEF Canada 高頻話題 Answer Card 資料——15個主題（自我介紹/家庭/工作/教育/興趣/飲食/旅行/加拿大/住家/購物/健康/科技/環保/社交/未來計畫），內容是 Owen 真實回答經 Claude 修成正確法文的 A1 種子版本，`versions[]` 之後會長出 A2/B1/B2 | ✅ 新建 |
-| `answer_card.html` | **新增（07-16）**：Answer Card 練習頁，完全複用 sentence_drill.html 的 SRS 引擎（1/3/7/14/30天、包尾重試、🔴手動標記），差異：新卡上限3/天（內容較重）、卡片首次畢業自動記進 `clb7_ac_upgrade_ready`（下次 session 要檢查，幫該卡寫下一版本）。目前只掛 dashboard 快速入口連結，**還沒排進9步番号處方**（Owen 要先試用再決定） | ✅ 新建 |
+| `answer_card.html` | **新增（07-16）**：Answer Card 練習頁，完全複用 sentence_drill.html 的 SRS 引擎（1/3/7/14/30天、包尾重試、🔴手動標記），差異：新卡上限3/天（內容較重）、卡片首次畢業自動記進 `clb7_ac_upgrade_ready`（下次 session 要檢查，幫該卡寫下一版本）。**07-16 當天 Owen 決定排進每日9步番号**（中間輪替群組6→7步：study/drill/sprint/review/sentence/answercard/listen），📊每日完成率分析同步加入此步驟 | ✅ 新建，已排進處方 |
 | `tracker.html` | 舊版計時器（autostart、切分頁自動暫停）+ 700h 進度，功能已被 session_timer.js 取代但保留 | 舊版 |
 | `speaking.html` | 口說日誌（僅記錄有無/時長，不評分內容） | ✅ |
 | `map.html` | 課程地圖（63格），已更新至第16課（解鎖imparfait+études&école+travail+relatifs）；**07-11新增「📐文法大局觀」分頁**——把63格裡`gram:true`的26個純文法格重新依7大類（動詞現在式/時態/語氣建議被動、代名詞、冠詞疑問句否定、形容詞比較、連接詞論述）分組展示，每格保留原本CEFR配色，已解鎖格可點連結跳回`french_notes.html`對應課次複習 | ✅ |
@@ -308,7 +308,9 @@ Owen 貼了一份自己寫的 AI prompt構想：不是背別人寫的範文，�
 
 **驗證**（隔離ROOM）：preview 跑完整流程——3張新卡（1新1複習1加碼位置都測過）、翻卡渲染問題/答案/中文對，故意答錯1張確認排到本輪最後重考、二次答對後 packet 正確結束、完成畫面 2/3 分數正確、SRS record 三卡都正確寫入（due=明天）、wrong_log 正確記錄答錯的家庭卡、newcount 正確計數3；用 JS 直接驗證 `isGraduated`/`markUpgradeReady` 邏輯（畢業判定 true/false 各一案例、重複呼叫不重複加入清單）；dashboard 端驗證快速入口 sub 文字顯示、⭐升級提醒 alert 正確渲染、📕今日錯題本正確顯示 answercard 來源。測完清除 `clb7_answercard_*`／`clb7_ac_upgrade_ready`／wrong_log 裡的 answercard 筆，ROOM 切回正式值，grep 確認 repo 無殘留字串，curl 真實 Supabase payload（330 keys）確認沒有 answercard 相關 key 洩漏。
 
-⚠️ **待 Owen 決定**：①要不要把 Answer Card 排進每日9步處方（目前只是快速入口的選做功能）②A2/B1/B2 版本的內容也要走「Owen 先答、Claude 再修」的流程，還是等 SRS 判定畢業後 Claude 直接主動加深？（目前設計是後者：卡片畢業進 `clb7_ac_upgrade_ready`，Claude 主動生成下一版本；如果 Owen 想要每次升級都親自重新回答一次會更貼近真實想法，需要再問一次要不要改流程）
+**07-16 當天追加**：Owen 確認要把 Answer Card 排進每日9步番号（已完成，見上方系統表＋下面「排程」小節），中間輪替群組從6步變7步（study/drill/sprint/review/sentence/answercard/listen）；問清楚「還有文法部分」的意思後確認是指既有的📐文法路徑（gram_trainer，`study`鍵）——Owen 提醒不要漏掉/打散它，這次調整維持它原位不動，只是把 Answer Card 加進同一個輪替群組。已用 preview 驗證（隔離ROOM）：`#rxList` 正確顯示10步含「Answer Card 高頻話題答案卡」、📊每日完成率分析grid正確顯示「🗣️答案卡 0/9」新欄位、原有欄位數字不受影響、無 console 錯誤。測完 ROOM 還原、grep+curl 確認雲端無殘留。
+
+⚠️ **仍待 Owen 決定**：A2/B1/B2 版本的內容也要走「Owen 先答、Claude 再修」的流程，還是等 SRS 判定畢業後 Claude 直接主動加深？（目前設計是後者：卡片畢業進 `clb7_ac_upgrade_ready`，Claude 主動生成下一版本；如果 Owen 想要每次升級都親自重新回答一次會更貼近真實想法，需要再問一次要不要改流程）
 
 ### 07-12（三）：路線圖＋依課出題寫作＋🧭今日心法卡（Fable 最終批）
 
