@@ -729,7 +729,7 @@ function rotateArray(arr, shift) {
   return arr.slice(s).concat(arr.slice(0, s));
 }
 function getMiddleOrder() {
-  const MIDDLE = ['study', 'drill', 'sprint', 'review', 'sentence', 'listen'];
+  const MIDDLE = ['study', 'drill', 'sprint', 'review', 'sentence', 'answercard', 'listen'];
   if (isOrderLocked()) return MIDDLE;
   const dayIndex = Math.floor(Date.now() / 86400000); // 每天遞增 1，順序跟著換
   return rotateArray(MIDDLE, dayIndex);
@@ -835,6 +835,8 @@ function buildPrescription(topicStats, todaySec) {
   const rvDue  = chunkDueCount();
   const stDone = sentenceDoneToday();
   const stDue  = sentenceDueCount();
+  const acDone = answerCardDoneToday();
+  const acDue  = answerCardDueCount();
   const lnDone = listenDoneToday();
   const wDone = writingDoneToday();
   const rDone = readingDoneToday();
@@ -892,6 +894,13 @@ function buildPrescription(topicStats, todaySec) {
       badgeText: stDone ? '✓ 完成' : '未完成',
       href: 'sentence_drill.html?guided=1', done: stDone,
     },
+    answercard: {
+      icon: '🗣️', action: 'Answer Card 高頻話題答案卡',
+      why: acDone ? '今天已完成！' : (acDue > 0 ? `${acDue} 張到期複習＋最多3張新卡，看到問題自己先答` : '3張新卡，看到問題先自己回答，翻開核對你自己的話'),
+      badge: acDone ? 'badge-green' : 'badge-red',
+      badgeText: acDone ? '✓ 完成' : '未完成',
+      href: 'answer_card.html?guided=1', done: acDone,
+    },
     listen: {
       icon: '🎧', action: '聽力真人語速測驗（1篇）',
       why: lnDone ? '今天已完成！' : '真實音檔（不是TTS），聽完作答，練真正考試會聽到的語速',
@@ -945,6 +954,8 @@ function sentenceDoneToday()   { return getSentenceSessions().some(s => s.date =
 
 // ── Answer Card（answer_card.html，07-16新增）──────────────
 function getAnswerCardSrs() { try { return JSON.parse(localStorage.getItem('clb7_answercard_srs')) || {}; } catch { return {}; } }
+function getAnswerCardSessions() { try { return JSON.parse(localStorage.getItem('clb7_answercard_sessions')) || []; } catch { return []; } }
+function answerCardDoneToday() { return getAnswerCardSessions().some(s => s.date === todayStr()); }
 function answerCardDueCount() {
   if (typeof ANSWER_CARDS === 'undefined') return 0;
   const srs = getAnswerCardSrs();
@@ -1524,6 +1535,7 @@ const HABIT_STEPS = [
   { label: '⚡反射',   getDates: () => getSprintSessions().map(s => s.date) },
   { label: '📦複習',   getDates: () => getReviewSessions().map(s => s.date) },
   { label: '🗣️背句',   getDates: () => getSentenceSessions().map(s => s.date) },
+  { label: '🗣️答案卡', getDates: () => getAnswerCardSessions().map(s => s.date) },
   { label: '🎧聽力',   getDates: () => getListeningData().filter(e => e.source === '真人語速測驗').map(e => e.date) },
   { label: '✍️造句',   getDates: () => getWritingData().map(w => w.date) },
   { label: '📖閱讀',   getDates: () => getReadingData().map(r => isoToZh(r.date)) },
