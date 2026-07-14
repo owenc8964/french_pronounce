@@ -94,6 +94,13 @@ button:disabled { opacity: 0.35; cursor: not-allowed; }
 .log-date { font-size: 0.7rem; color: #445060; }
 .log-type { font-size: 0.82rem; color: #ddd8cc; }
 .log-dur  { font-size: 1rem; font-weight: 700; color: #60a0d0; }
+.log-right { display: flex; align-items: center; gap: 10px; }
+.log-actions { display: flex; gap: 4px; }
+.log-actions button {
+  background: none; border: none; cursor: pointer; font-size: 0.85rem;
+  padding: 4px 6px; border-radius: 6px; opacity: 0.55; transition: opacity 0.15s;
+}
+.log-actions button:hover { opacity: 1; background: #1a2438; }
 .empty { text-align: center; color: #334050; font-size: 0.85rem; padding: 32px 0; }
 
 .toast {
@@ -236,9 +243,44 @@ function renderLog() {
         <span class="log-date">${e.date}</span>
         <span class="log-type">${e.type}</span>
       </div>
-      <span class="log-dur">${dur}</span>
+      <div class="log-right">
+        <span class="log-dur">${dur}</span>
+        <div class="log-actions">
+          <button onclick="editLogEntry(${e.ts})" title="改時長">✏️</button>
+          <button onclick="deleteLogEntry(${e.ts})" title="刪除這筆">🗑</button>
+        </div>
+      </div>
     </div>`;
   }).join('');
+}
+
+// 記錄記錯了：改時長（分鐘）或整筆刪除——用 ts 當唯一鍵定位
+function editLogEntry(ts) {
+  const data = load();
+  const rec = data.find(e => e.ts === ts);
+  if (!rec) return;
+  const curMin = Math.round(rec.sec / 60);
+  const input = prompt(`「${rec.date} · ${rec.type}」目前 ${curMin} 分鐘，改成幾分鐘？`, curMin);
+  if (input === null) return;
+  const min = parseInt(input, 10);
+  if (!Number.isFinite(min) || min <= 0) { showToast('請輸入大於 0 的分鐘數'); return; }
+  rec.sec = min * 60;
+  save(data);
+  if (window.ClbSync) ClbSync.push();
+  updateStats();
+  renderLog();
+  showToast('✓ 已更新這筆記錄');
+}
+function deleteLogEntry(ts) {
+  const data = load();
+  const rec = data.find(e => e.ts === ts);
+  if (!rec) return;
+  if (!confirm(`確定要刪除「${rec.date} · ${rec.type}」這筆記錄嗎？`)) return;
+  save(data.filter(e => e.ts !== ts));
+  if (window.ClbSync) ClbSync.push();
+  updateStats();
+  renderLog();
+  showToast('✓ 已刪除');
 }
 
 // Timer
@@ -387,5 +429,6 @@ renderLog();
   });
 })();
 </script>
+<script src="sync_supabase.js"></script>
 </body>
 </html>
