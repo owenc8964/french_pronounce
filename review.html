@@ -241,8 +241,10 @@ function dueCards() {
 }
 function newCards() {
   const srs = getSrs();
-  // 新卡：新課優先（13 → 1），課內照筆記順序
-  return CHUNKS.filter(c => !srs[c.id]).sort((a,b) => b.lesson - a.lesson);
+  // 07-16修復：原本「新課優先」排序讓最高課次的卡長期霸占每日10張新卡額度
+  // （Owen真實資料：9天6次複習，21張卡全部卡在第14/16課，其他課完全沒進複習池，
+  // 天天重複同一小撮卡）。改成全部未教過的卡打散抽，快速擴大複習池廣度、覆蓋全部課次。
+  return shuffle(CHUNKS.filter(c => !srs[c.id]));
 }
 function gradCount() {
   const srs = getSrs();
