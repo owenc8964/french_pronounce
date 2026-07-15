@@ -455,10 +455,11 @@ function renderSummary() {
   const acc = total === 0 ? 0 : okN / total;
   const passed = acc >= 0.8;
 
-  // 完成一輪 = 今日處方步驟②完成（沿用 quiz 的 key，歷史統計不斷裂）
+  // 07-16：改用專屬key，不再共用clb7_quiz_done——Owen要求「複習一課+quiz」
+  // 跟「文法路徑」分開追蹤，兩個都要做，不是做其中一個就算數
   const d = new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
-  localStorage.setItem('clb7_quiz_done', d);
-  logDailyDone('clb7_quiz_log', d);
+  localStorage.setItem('clb7_gramtrainer_done', d);
+  logDailyDone('clb7_gramtrainer_log', d);
 
   let stageMsg = '';
   if (passed) {

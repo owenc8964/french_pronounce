@@ -731,6 +731,10 @@ function writingWeekAvg() {
 function quizDoneToday() {
   return localStorage.getItem('clb7_quiz_done') === todayStr();
 }
+// 07-16：文法路徑（gram_trainer）改用專屬key，不再共用clb7_quiz_done
+function gramTrainerDoneToday() {
+  return localStorage.getItem('clb7_gramtrainer_done') === todayStr();
+}
 
 // 一次訓練＝一本道六步：暖身 → 研讀專項 → 反射 → 複習 → 造句 → 閱讀
 // 時間不再是一個步驟，改由頂部 session 計時器全程累計（見 session_timer.js）
@@ -743,7 +747,7 @@ function rotateArray(arr, shift) {
   return arr.slice(s).concat(arr.slice(0, s));
 }
 function getMiddleOrder() {
-  const MIDDLE = ['study', 'drill', 'sprint', 'review', 'sentence', 'answercard', 'listen', 'shadowing'];
+  const MIDDLE = ['study', 'lesson_quiz', 'drill', 'sprint', 'review', 'sentence', 'answercard', 'listen', 'shadowing'];
   if (isOrderLocked()) return MIDDLE;
   const dayIndex = Math.floor(Date.now() / 86400000); // 每天遞增 1，順序跟著換
   return rotateArray(MIDDLE, dayIndex);
@@ -848,7 +852,8 @@ function buildPrescription(topicStats, todaySec) {
 
   const wuDone = localStorage.getItem('clb7_warmup_done') === today;
   const grDone = localStorage.getItem('clb7_gramread_done') === today;
-  const lqDone = quizDoneToday();
+  const lqDone = gramTrainerDoneToday();
+  const sqDone = quizDoneToday();   // 07-16新增：研讀＋專項Quiz，跟文法路徑分開追蹤
   const dlDone = localStorage.getItem('clb7_drill_done') === today;
   const spDone = sprintDoneToday();
   const spReflex = sprintReflexCount();
@@ -904,6 +909,13 @@ function buildPrescription(topicStats, todaySec) {
       badge: lqDone ? 'badge-green' : 'badge-red',
       badgeText: lqDone ? '✓ 完成' : '未完成',
       href: 'gram_trainer.html?guided=1', done: lqDone,
+    },
+    lesson_quiz: {
+      icon: '📚', action: '研讀＋專項Quiz（挑一課）',
+      why: sqDone ? '今天已完成！' : '挑一課：先開筆記研讀，再做該課題目（提取＋輸入）',
+      badge: sqDone ? 'badge-green' : 'badge-red',
+      badgeText: sqDone ? '✓ 完成' : '未完成',
+      href: 'quiz.html?guided=1', done: sqDone,
     },
     drill: {
       icon: '📝', action: '填表格：冠詞／動詞變位',
@@ -1594,6 +1606,7 @@ const HABIT_STEPS = [
   { label: '🔥熱身',   getDates: () => habitLog('clb7_warmup_log') },
   { label: '📚文法閱讀', getDates: () => habitLog('clb7_gramread_log') },
   { label: '📚研讀',   getDates: () => habitLog('clb7_quiz_log') },
+  { label: '📐文法路徑', getDates: () => habitLog('clb7_gramtrainer_log') },
   { label: '📝填表格', getDates: () => habitLog('clb7_drill_log') },
   { label: '⚡反射',   getDates: () => getSprintSessions().map(s => s.date) },
   { label: '📦複習',   getDates: () => getReviewSessions().map(s => s.date) },
