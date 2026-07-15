@@ -202,7 +202,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'futur-proche', name:'Futur proche', icon:'🔮', zone:'A2', cat:'verbe-temps',
-    lessons:[8], topics:['futur-proche'], unlocked:true,
+    lessons:[8], topics:['futur-proche'], unlocked:false,  // 07-16：Owen反映還沒學到，暫鎖（原本標lesson8教過，跟實際進度對不上）
     rule:{
       title:'近未來 — aller 變位 + 原形動詞',
       why:'跟英文 "I\'m going to..." 一模一樣的演化：「走去做某事」的移動動詞，講久了移動的意思淡掉、只剩「即將」。口語法文偏愛它勝過未來式，理由很實際：只要會 aller 的六格，任何動詞的未來都能講——不用學新字尾。這是口語永遠的方向：用「幫手字＋原形」取代「背新變位」。',

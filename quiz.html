@@ -620,6 +620,11 @@ function setMode(mode) {
 function getPool() {
   const flagged = gramFlaggedIds();                            // 🚩被檢舉待審的題不出
   let pool = BANK.filter(q => flagged.indexOf(qId(q)) < 0);
+  // 07-16：文法點被鎖（unlocked:false，還沒真的教到）的topic不出題——避免試題超前實際課程進度
+  pool = pool.filter(q => {
+    const gp = typeof gramPointOfTopic === 'function' ? gramPointOfTopic(q.topic) : null;
+    return !gp || gp.unlocked;
+  });
   if (filterType   !== 'all') pool = pool.filter(q => q.type   === filterType);
   if (filterLesson !== 'all') pool = pool.filter(q => q.lesson === filterLesson);
 
