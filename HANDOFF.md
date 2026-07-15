@@ -25,7 +25,9 @@
 - ❌ 讓 Owen 自己去點看看
 - ❌ 發現問題才說「你要不要試試看」
 
-⚠️ **測試涉及寫入 `clb7_*` 的功能前，一律先把 `sync_supabase.js` 的 `ROOM` 常數暫時改成 `'TEST-DO-NOT-USE-DELETE-BEFORE-COMMIT'`**，測完改回 `'owen-clb7-k9f3a72q'` 並 grep 確認沒有殘留測試字串再 commit。因為 preview 和正式站共用同一個 Supabase ROOM，測試資料會直接污染 Owen 真實雲端（已踩過一次，見下方事故記錄）。
+⚠️ **測試涉及寫入 `clb7_*` 的功能前，一律先把 `sync_supabase.js` 的 `ROOM` 常數暫時改成 `'TEST-DO-NOT-USE-DELETE-BEFORE-COMMIT'`**，測完改回 `'owen-clb7-k9f3a72q'` 並 grep 確認沒有殘留測試字串再 commit。因為 preview 和正式站共用同一個 Supabase ROOM，測試資料會直接污染 Owen 真實雲端（已踩過兩次，見下方事故記錄）。
+
+⚠️⚠️ **07-16 新增鐵律：ROOM 改回正式值之後，立刻 `preview_stop`，中間不要再 navigate 或跟 preview 分頁互動**——`push()` 是把「當下這個分頁的 localStorage 整包蓋過去」（不是跟雲端合併，合併邏輯只用在 pull），`var ROOM` 是頁面載入當下綁定的值，只要改完檔案後又重新導覽/留著分頁在背景，新頁面會用檔案目前值重新綁定；如果這個 preview 來源當下的 localStorage 不是正式資料的完整鏡像（幾乎必然不是），任何背景事件（`visibilitychange`/`pagehide`/debounce）都會把它整包蓋掉正式雲端。**改完 ROOM 後的下一步只能是 `preview_stop`，不能是任何形式的頁面互動或再次 navigate。**
 
 ⚠️ **preview server 會快取 `.js` 檔**（`questions.js`／`session_timer.js`／`sync_supabase.js` 等），改完直接 reload 甚至重開 server 都可能還是舊版。最可靠驗證方式：`fetch(url,{cache:'no-store'}).then(r=>r.text()).then(eval)` 直接在頁面內重新執行最新原始碼。正式環境（GitHub Pages）沒有這個快取問題。
 
@@ -81,7 +83,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `dashboard.html` | 指揮中心：今日處方（**9步番号**，07-07新增造句練習、07-09新增聽力真人語速測驗）、📊每日完成率分析、今日錯題本、警報、CLB等級判定、倒數、700h、四技能、週趨勢、Duolingo週報、🔒鎖定順序開關 | ✅ |
 | `session_timer.js` | 跨頁 session 計時器：`window.ClbSession` API，timestamp累計跨頁連續、練習頁常駐pill、**閒置3分鐘自動暫停**（用最後操作時間當停止點，不算閒置時間）、dashboard結算寫入700h、**07-11修復多分頁閒置搶跑＋start()洗掉進度兩個bug**（背景分頁不做閒置檢查、start()對已啟動session防呆） | ✅ 修復（07-11）|
 | `sync_supabase.js` | 跨裝置同步：所有 `clb7_*` 存到 Supabase，開頁pull合併、變動debounce **700ms**（原2.5s縮短）自動push、**切前景也會pull**（原本只有切背景push）、離頁再push、各頁完成關鍵動作時**主動立即push**（不等debounce）|✅|
-| `quiz.html` | SRS Quiz 550+題，熱身模式、**策略選課器**（未練過/錯誤率高/量少/久沒練 排序）、暫停、更正誤判、**07-11新增`.q-zh`區塊**：fill題型若有`zh`欄位直接顯示中文句意（不用點提示） | ✅ 修復（07-11）|
+| `quiz.html` | SRS Quiz 550+題，熱身模式、**策略選課器**（未練過/錯誤率高/量少/久沒練 排序）、暫停、更正誤判、**07-11新增`.q-zh`區塊**：fill題型若有`zh`欄位直接顯示中文句意（不用點提示）、**07-16新增`getPool()`過濾**：topic對應的文法點若在`GRAM_POINTS`被鎖（`unlocked:false`）就不出題 | ✅ 修復（07-11/16）|
 | `table_drill.html` | 表格填空：40個表格（涵蓋第1–16課，含passé composé系列、imparfait無人稱動詞表、**07-10新增「文法詞」類型**：durée/qui-que/intensité 3表），**錯題複習輪**（答錯進複習輪直到全對，主輪成績不被洗掉）、切難度/類型有進度時confirm確認、一輪6個表 | ✅ 大修（07-06/07/10）|
 | `verb_sprint.html` | 動詞反射衝刺：60秒、9動詞×6人稱、起手計時、反射熱力圖，**已補TTS發音**（原形+答錯自動唸正解） | ✅ |
 | `review.html` | 複習卡：一包10張、SRS+successive relearning，**到期卡池已加洗牌**（避免同一批到期卡每天同順序重複）、發音邏輯已跟其他頁統一、卡片旁加「🤔語意不清」回饋按鈕、**07-11新增🔴手動標記不熟**（`clb7_hard_flags`，累加次數，未到期的標記卡會加碼塞進當天包，最多`FLAG_BONUS_MAX`張） | ✅ 修復（07-07/11）|
@@ -89,7 +91,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `writing.html` | 每日2句造句，複製prompt→claude.ai→貼回記錄 | ✅ |
 | `sentence_drill.html` | **新增（07-07）**：中翻法造句練習，每天固定5句新句＋到期複習，沿用review.html同一套SRS引擎（1/3/7/14/30天），**答錯排到這輪最後重考，磨到全部答對才算完成**，跟review.html的卡片機制共用「包尾重試」邏輯、**07-11同步補上🔴手動標記不熟**（跟review.html共用同一個`clb7_hard_flags`，id前綴不同不會撞） | ✅ 新建（07-11補標記功能）|
 | `sentences.js` | **新增（07-07）**：常用句庫（目前108句，第1–16課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
-| `listening.html` | 聽力：**真實資源**（RFI + InnerFrench Spotify embed；Podcast Français Facile的A1對話系列連結卡）+ **自出TTS聽力測驗**（8篇，對齊已學課程）+ **07-09/07-10/07-11新增「真人語速測驗」**（LISTENING_BANK的`audioUrl`類型：真實mp3直接播放＋Claude原創TCF/TEF風格選擇題，目前10篇：麵包店/車站/市場/肉店/魚店/藥局/問路/**起司店/咖啡廳/郵局**，逐字稿核對用連結卡連到來源、不存對方文字）+ **07-10新增「文化深掘Podcast」板塊**（見下方07-10記錄，目前CULTURE_BANK是空陣列，等Owen放音檔進來）| ✅ 大改（07-06～07-11）|
+| `listening.html` | 聽力：**真實資源**（RFI + InnerFrench Spotify embed；Podcast Français Facile的A1對話系列連結卡）+ **自出TTS聽力測驗**（8篇，對齊已學課程）+ **07-09/07-10/07-11新增「真人語速測驗」**（LISTENING_BANK的`audioUrl`類型：真實mp3直接播放＋Claude原創TCF/TEF風格選擇題，目前10篇：麵包店/車站/市場/肉店/魚店/藥局/問路/**起司店/咖啡廳/郵局**，逐字稿核對用連結卡連到來源、不存對方文字）+ **07-10新增「文化深掘Podcast」板塊**（見下方07-10記錄，目前CULTURE_BANK是空陣列，等Owen放音檔進來）+ **07-16新增「🎬影集精讀Shadowing」板塊**（記錄集數/第幾遍/第2遍可貼整理的句型，`?shadow=1`從dashboard進來自動捲到這張卡）| ✅ 大改（07-06～07-16）|
 | `french_notes.html` | 第1–16課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音）、**07-11新增選字標記**（選取文字後可標🔴不熟／⭐重點，存`clb7_notes_marks`，重整頁面用文字比對重新套用，懸浮面板有「複製標記給Claude」） | ✅ 修復（07-07/11）|
 | `chunks.js` | 複習卡庫：936張，自動從筆記抽取（1–16課，07-07補第15課88張、07-10補第16課80張），**07-11修正2張第14課語意不清的卡**（`L14_de_la___de`／`L14_Je_viens_de_Taïwan_`，改成完整可翻譯的中文句子） | ✅ |
 | `questions.js` | 共用題庫（BANK 664題 + AGREE_BANK 247題），第1–16課（07-07新增imparfait/vocab-nature/universite-vocab、07-10新增duree/qui-que/intensite/metier-travail-vocab四個topic），**07-11新增53個`zh`欄位**：fill題型裡完全沒有中文語境的53題（集中第1–6課），補上完整中文句意 | ✅ |
@@ -293,6 +295,41 @@ Owen 的核心回饋（這次最大的方向轉變）：「記不熟就直接進
 - **07-11 加碼：🧭「為什麼長這樣」層（why layer）**。Owen 把學習哲學說完整（《駭客任務》式由上而下、上下夾攻、不說故事——詳見 memory `feedback_content_restructure_philosophy` 07-11補充＋`assets/podcast/NOTEBOOKLM_PROMPT.md`），並明確要求這方向不只給 podcast、**整個系統都要有**。實作：19個現役點的 `rule` 各加 `why` 欄位（一段由上而下的設計邏輯：拉丁文遺產/發音侵蝕/高頻磨損/母音相撞禁忌等，把「例外」解釋成歷史必然），gram_trainer 規則卡與 map 大局觀面板都顯示，**順序刻意是 title→why→points→examples（先大局再細節，順序本身就是哲學）**。同時更新 podcast 指南為 Owen 親排的四大模組15集課綱，每集標了對應文法點（podcast 由上而下＋trainer 由下而上＝上下夾攻）。
 
 **驗證**（全程隔離ROOM）：trainer完整跑過「選點→階段2答錯重考→規則提醒→首次5/6升階→階段3規則卡收起→答錯自動翻開→SRS只在階段3寫入→🚩檢舉從池移除」；map大局觀32格7類、面板三種狀態（現役/未開課/課程地圖格）都對；quiz檢舉後分數回正+錯題本移除；dashboard步驟②推薦與✓完成、🚩警報。測完清掉preview的`clb7_gram_stage`/`clb7_flagged_qs`、切回正式ROOM、grep無殘留、**直接curl真實Supabase payload確認326個key裡沒有測試key**。
+
+### 07-16（事故記錄）：正式雲端第二次被推成空 `{}`，已自我修復，測試protocol已補強
+
+當晚在做完好幾個功能（Answer Card、📚文法閱讀、tracker編輯/刪除、🎬影集精讀）之後，例行 curl 確認正式雲端時發現 `owen-clb7-k9f3a72q` 這個房間的 payload 變成空的 `{}`。查證後確認：**每一輪「ROOM切TEST→測試→清資料→ROOM切回正式→grep確認」都有照做**，但漏掉一步——切回正式值之後，preview 分頁還開著、還在被 navigate/互動，而 `push()` 的設計是把「當下分頁的 localStorage 整包蓋過去」（不是跟雲端合併，合併只發生在 `pull()`），所以某次分頁背景事件（`visibilitychange`/`pagehide`/debounce）觸發的自動上傳，就把一份不完整的內容整包蓋掉了正式雲端資料。
+
+**判斷資料沒事的依據**：①Owen 真實裝置（手機/電腦）的 localStorage 是完全不同網域，不會被 preview 碰到 ②`apply({})` 對空 payload 是 no-op（`Object.keys({})` 是空陣列，迴圈不會執行，不會刪除本機任何 key）——所以就算 Owen 的裝置在雲端空的時候拉取一次，本機資料也毫髮無傷 ③請 Owen 開一次正式網站後，`updated_at` 更新、payload 恢復（342 keys，`clb7_tracker` 從事故前 1934 筆變 2072 筆——不只恢復還持續成長，證實資料全程沒有流失，只是雲端中繼站短暫被蓋空）。
+
+**協定補強**（已寫進上方「交付前自動試跑原則」跟 memory `feedback_sync_test_isolation`）：**ROOM 改回正式值之後，下一步只能是 `preview_stop`，不能再 navigate 或跟分頁互動**——這是這次補上的關鍵鐵律，之前的協定只顧到「檔案值」有沒有切對，沒顧到「已經開著的分頁背景事件」這個風險窗口。
+
+---
+
+### 07-16：CLB_STAGE 切到 A2＋鎖住 futur-proche（跟真實課程進度校準）
+
+兩件事都是同一個主題——**系統內部標記的教學進度要跟 Owen 真實上課進度對齊，不能各自假設**：
+
+1. **CLB_STAGE 'A1'→'A2'**：老師確認 A1 課本教完、已進 A2 內容。Owen 拍板「換階段以真實課程進度為準，不強求內部精熟度100%達標」——完整討論過程、進場動作待辦清單都在 [`ROADMAP.md`](ROADMAP.md)「老師課堂實測資訊」段落，這裡不重複。
+2. **鎖住 `futur-proche`**：Owen 反映「還沒學到未來式」，但 `gram_rules.js` 標記它 `lessons:[8]` 已教過、`unlocked:true`，導致📐文法路徑／📚文法閱讀一直推薦它。改法：①`gram_rules.js` 該點 `unlocked` 改 `false` ②**光改這個還不夠**——`quiz.html` 的 `getPool()` 原本完全不檢查 `GRAM_POINTS.unlocked`（只濾 type/lesson/檢舉），所以就算文法點被鎖，`topic:'futur-proche'` 的題目還是會在warmup/topic sprint隨機抽到。補上過濾：`gramPointOfTopic(q.topic)` 對應的點若 `unlocked:false` 就直接排除，不只是不推薦。table_drill.html/sentences.js/writing_tasks.js 掃過沒有futur-proche相關內容，不用動。
+   **驗證方式**：preview的.js快取讓瀏覽器內驗證看到假的`true`（已知坑），改用 **Node直接require/eval `gram_rules.js`** 確認資料本身正確（`unlocked:false`），再用**隔離的mock物件單元測試** `getPool()` 新加的過濾判斷式三種情境（鎖住的topic排除／沒鎖的topic保留／沒對應文法點的詞彙類topic保留）皆正確，不依賴會被快取誤導的瀏覽器即時驗證。
+   ⚠️ **未做但值得問 Owen 的後續**：`GRAM_POINTS` 裡其他18個現役點的 `lessons` 標記會不會也有同樣「跟實際教學進度對不上」的情況？這次只修了 Owen 主動點名的 futur-proche，沒有逐一覆核其他點。
+
+### 07-16：新增「🎬影集精讀 Shadowing」每日步驟——Extra Français/Peppa Pig反覆看＋句型整理＋跟讀
+
+Owen 提出一套以「影片反覆觀看＋Language Reactor雙字幕＋shadowing跟讀」為核心的輸入方法論（詳見他貼的完整設計文件：不追新集數、同一集看5-10次榨乾內容、四遍分工：①理解劇情②整理10個核心句型③跟讀3-5次④隔天複習）。討論後把這份文件裡另外兩個大概念做了收斂決定：
+
+- **「Topic Card」（6時態固定欄位框架）併入 Answer Card 的版本成長藍圖**，不另建系統——15題現在都是A1版，之後升級依序補passé composé／imparfait+futur／conditionnel+opinion，沿用現有 `answer_cards.js`/`answer_card.html` 引擎，不重複問 Owen 同一批主題兩次。**當晚已問了14題passé composé版本的問題等 Owen 回答**（見上方對話，V2內容尚未生成，是下一步待做）。
+- **「Core Sentence Library」（跨主題高頻連接語句庫）併入 `sentences.js`**，不重建新系統——之後 Owen 從影片整理出的句型，用同一套「人工精選、共用SRS引擎」模式收進去，差別只是來源從課堂變成自主看片。
+- **影集/Language Reactor/shadowing 本身不需要新系統**——那是 Owen 在 Chrome 上的操作流程，Claude 接手的環節只有「整理他抓出來的句型」這個動作。
+
+**唯一真的排進系統的新東西**：`listening.html` 新增「🎬 影集精讀 Shadowing」卡片——記錄集數/第幾遍（①理解②整理句型③跟讀④複習）、第2遍可貼上整理的句型原文（存進 log 供之後整理，還沒自動化，要等 Claude 之後手動處理）；`dashboard.html` 加入獨立輪替步驟（中間輪替群組6→7→**8**項：study/drill/sprint/review/sentence/answercard/listen/shadowing，跟現有🎧聽力步驟並存，Owen明確選擇「新增獨立項目，接受每天最多12步」而不是合併取代）。
+
+**驗證**（隔離ROOM，用真實UI事件觸發存檔按鈕而非只呼叫函式）：填表單→選第2遍→貼3句→點擊真實儲存按鈕→確認`clb7_listening`正確寫入含`sentences[]`陣列；進度提示文字正確算出「下次建議第幾遍」；歷史清單正確顯示；dashboard正確顯示第8步「✓完成」、📊每日完成率統計新增「🎬影集精讀 1/9」欄位。測完清除測試key、ROOM還原——**但這輪測試後續发现了上面那則「正式雲端被推空」的事故，時間點就在這次測試之後，已經記錄並補強協定。**
+
+⚠️ **待Owen提供真實內容才能做的後續**：等 Owen 用 Extra Français/Peppa Pig 實際做完一次「第2遍整理句型」並貼上真實內容，Claude 要把這些句型手動整理進 `sentences.js`（比照現有「人工精選」維護模式），這是「後續整理」承諾的具體動作，現在還沒有真實資料可以整理。
+
+---
 
 ### 07-16：Answer Card 系統上線——高頻話題答案卡，內容是 Owen 自己的真實故事
 
