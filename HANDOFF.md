@@ -306,6 +306,16 @@ Owen 的核心回饋（這次最大的方向轉變）：「記不熟就直接進
 
 ---
 
+### 07-16：恢復「研讀＋專項Quiz」每日步驟，跟文法路徑分開獨立追蹤
+
+之前討論「研讀+quiz移除」時 Owen 一度認同這個改動（07-11被📐文法路徑取代），但後來想清楚後反悔：**「研讀一課+quiz練習」（挑一課、開筆記研讀、做該課題目）跟「文法路徑」（單一文法點的規則卡陪練）切入角度不同，兩個都值得每天練，不是取代關係**。
+
+**根因**：`gram_trainer.html` 完成時寫的是 `clb7_quiz_done`/`clb7_quiz_log`（07-11設計時刻意共用quiz的key，圖歷史統計不斷裂），這表示只要做了gram_trainer**或**quiz.html任一個，兩者都會顯示「完成」——這正是為什麼07-11之後「研讀+quiz」這個獨立需求感覺消失了：它其實還在，只是完成判定被gram_trainer共用掉了。
+
+**修法**：`gram_trainer.html` 改寫專屬的 `clb7_gramtrainer_done`/`clb7_gramtrainer_log`；`clb7_quiz_done`/`clb7_quiz_log` 恢復原本專屬quiz.html的意義。dashboard新增 `lesson_quiz` 步驟（📚研讀＋專項Quiz（挑一課），href `quiz.html?guided=1`）跟 `study` 步驟（📐文法路徑）各自獨立判定完成，中間輪替群組加入 `lesson_quiz`（9項）。
+
+**驗證**：preview模擬「只做gram_trainer」確認📐文法路徑✓、📚研讀+Quiz仍未完成；再模擬「做quiz.html」確認📚研讀+Quiz也✓、📐文法路徑不受影響地維持✓（兩者互不干擾）；📊每日完成率統計正確拆成兩欄（📚研讀＋📐文法路徑）。測完清資料、ROOM還原、確認雲端無殘留。
+
 ### 07-16：CLB_STAGE 切到 A2＋鎖住 futur-proche（跟真實課程進度校準）
 
 兩件事都是同一個主題——**系統內部標記的教學進度要跟 Owen 真實上課進度對齊，不能各自假設**：
