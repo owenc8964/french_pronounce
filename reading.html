@@ -215,6 +215,7 @@ body {
     <button class="back-list-btn" onclick="showList()">← Liste</button>
     <button class="submit-btn" id="submitBtn" onclick="submitAnswers()">Vérifier mes réponses</button>
   </div>
+  <div style="text-align:center;font-size:0.7rem;color:#556;margin-top:8px;" id="reviewHint"></div>
 </div>
 
 <!-- Result panel -->
@@ -934,8 +935,11 @@ function openArticle(idx) {
     block.appendChild(card);
   });
 
-  document.getElementById('submitBtn').disabled = false;
-  document.getElementById('submitBtn').textContent = 'Vérifier mes réponses';
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = false;
+  btn.textContent = 'Vérifier mes réponses';
+  btn.onclick = submitAnswers;   // 重置成原本的驗證行為（上一篇若答完會被改成查看結果）
+  document.getElementById('reviewHint').textContent = '';
 
   showPanel('readingPanel');
 }
@@ -994,8 +998,12 @@ function submitAnswers() {
     sec: timeTaken
   });
 
-  // Show result after short delay
-  setTimeout(() => showResult(correct, totalQ, timeTaken), 800);
+  // 07-16修復：不再自動800ms跳結果（沒時間看解說）——改成按鈕留在畫面上，
+  // Owen 自己看完每題解說、想繼續了再手動點「查看結果」
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = 'Voir le résultat →';
+  btn.onclick = () => showResult(correct, totalQ, timeTaken);
+  document.getElementById('reviewHint').textContent = '慢慢看每題的解說，看完再點上面的按鈕看總分';
 }
 
 // ── Result panel ──────────────────────────────────────────────
