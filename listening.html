@@ -319,6 +319,37 @@ button:active { transform: scale(0.97); }
   <div id="culturePanel" class="quiz-panel"></div>
 </div>
 
+<!-- 🎬 影集精讀 Shadowing（Extra Français / Peppa Pig，反覆看同一集榨乾內容） -->
+<div class="card" id="shadowCard">
+  <div class="card-title">🎬 影集精讀 Shadowing</div>
+  <div class="res-desc" style="margin-bottom:14px;">不要一直追新集數——同一集看5-10次榨乾它。①理解劇情 ②整理10個核心句型（不是單字）③每句跟讀3-5次 ④隔天快速複習昨天整理的句型。</div>
+
+  <label>影集／集數</label>
+  <input type="text" id="shEpisode" list="shEpisodeList" placeholder="例：Extra Français S1E1 或 Peppa Pig - Muddy Puddles">
+  <datalist id="shEpisodeList"></datalist>
+
+  <label>這次是第幾遍？</label>
+  <select id="shPass">
+    <option value="1">① 理解劇情（不暫停）</option>
+    <option value="2">② 整理10個核心句型</option>
+    <option value="3">③ 跟讀 Shadowing（每句3-5次）</option>
+    <option value="4">④ 快速複習昨天的句型</option>
+  </select>
+
+  <label>時長（分鐘）</label>
+  <input type="number" id="shMin" min="1" max="180" placeholder="例：15">
+
+  <label id="shSentLabel" style="display:none;">整理的核心句型（一行一句，法文優先，可加中文）</label>
+  <textarea id="shSentences" style="display:none;" placeholder="Je pense que...&#10;Il faut...&#10;Ça dépend."></textarea>
+
+  <div class="btn-row">
+    <button class="btn-save" id="shSaveBtn">✓ 記錄這次精讀</button>
+  </div>
+
+  <div id="shProgressNote" style="font-size:0.76rem;color:#8a94a8;margin-top:10px;"></div>
+  <div id="shHistory" style="margin-top:12px;"></div>
+</div>
+
 <div class="card">
   <div class="card-title">新增聽力記錄</div>
   <div class="date-display" id="todayDate"></div>
@@ -849,10 +880,87 @@ function backToCultureList() {
 
 renderCultureList();
 
+// ════════════════════════════════════════════════════════════
+// 🎬 影集精讀 Shadowing（07-16新增）：Extra Français / Peppa Pig，
+// 反覆看同一集榨乾內容——不追新集數。記錄存進同一個 clb7_listening，
+// source:'影集Shadowing'，pass=2時額外存整理的句型原文（sentences[]），
+// 供之後 Claude 整理進句型庫（見 HANDOFF「後續整理」待辦）。
+// ════════════════════════════════════════════════════════════
+function shadowEntries() { return load().filter(e => e.source === '影集Shadowing'); }
+function shadowDoneToday() { return shadowEntries().some(e => e.date === todayStr()); }
+
+function shPassLabel(n) {
+  return { 1:'① 理解劇情', 2:'② 整理句型', 3:'③ 跟讀Shadowing', 4:'④ 複習句型' }[n] || '';
+}
+
+function renderShadowEpisodeList() {
+  const names = [...new Set(shadowEntries().map(e => e.episode).filter(Boolean))];
+  document.getElementById('shEpisodeList').innerHTML = names.map(n => `<option value="${escHtml(n)}">`).join('');
+}
+
+function renderShadowProgress() {
+  const entries = shadowEntries();   // 陣列本來就是依 push 順序＝時間順序，最後一筆＝最新
+  const note = document.getElementById('shProgressNote');
+  if (!entries.length) { note.textContent = '還沒有記錄——挑一集開始「①理解」。'; return; }
+  const latest = entries[entries.length - 1];
+  const nextPass = latest.pass < 4 ? latest.pass + 1 : 1;
+  note.textContent = `上次：《${latest.episode}》${shPassLabel(latest.pass)}（${latest.date}）— 建議下次：${latest.pass < 4 ? shPassLabel(nextPass) + '（同一集）' : '換下一集，從①理解開始'}`;
+}
+
+function renderShadowHistory() {
+  const entries = shadowEntries().slice(-8).reverse();
+  const el = document.getElementById('shHistory');
+  if (!entries.length) { el.innerHTML = ''; return; }
+  el.innerHTML = '<div style="font-size:0.7rem;color:#445060;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">最近精讀記錄</div>' +
+    entries.map(e => `<div style="display:flex;justify-content:space-between;font-size:0.78rem;color:#8a94a8;padding:4px 0;border-bottom:1px solid #1a2438;">
+      <span>${escHtml(e.episode || '')} · ${shPassLabel(e.pass)}</span><span style="color:#445060;">${e.date}</span>
+    </div>`).join('');
+}
+
+document.getElementById('shPass').addEventListener('change', (e) => {
+  const isPass2 = e.target.value === '2';
+  document.getElementById('shSentLabel').style.display = isPass2 ? 'block' : 'none';
+  document.getElementById('shSentences').style.display = isPass2 ? 'block' : 'none';
+});
+
+document.getElementById('shSaveBtn').addEventListener('click', () => {
+  const episode = document.getElementById('shEpisode').value.trim();
+  if (!episode) { showToast('請填影集/集數名稱'); return; }
+  const pass = parseInt(document.getElementById('shPass').value, 10);
+  const min = parseInt(document.getElementById('shMin').value, 10) || 15;
+  const sentRaw = document.getElementById('shSentences').value.trim();
+  const sentences = pass === 2 && sentRaw ? sentRaw.split('\n').map(s => s.trim()).filter(Boolean) : undefined;
+
+  const data = load();
+  data.push({
+    date: todayStr(), source: '影集Shadowing', min, comp: null,
+    notes: `《${episode}》${shPassLabel(pass)}`,
+    episode, pass, ...(sentences ? { sentences } : {})
+  });
+  save(data);
+
+  document.getElementById('shEpisode').value = '';
+  document.getElementById('shMin').value = '';
+  document.getElementById('shSentences').value = '';
+  document.getElementById('shSentLabel').style.display = 'none';
+  document.getElementById('shSentences').style.display = 'none';
+
+  updateStats(); updateBreakdown(); renderHistory();
+  renderShadowEpisodeList(); renderShadowProgress(); renderShadowHistory();
+  showToast('✓ 已記錄這次精讀！');
+});
+
+renderShadowEpisodeList(); renderShadowProgress(); renderShadowHistory();
+
 // guided=1（從dashboard處方點進來）：自動挑一篇今天還沒做的真人語速測驗開始
 if (new URLSearchParams(location.search).get('guided') === '1') {
   const next = LISTENING_BANK.find(x => x.audioUrl && !listenQuizDoneToday(x.id));
   if (next) startListenQuiz(next.id);
+}
+// shadow=1（dashboard「🎬影集精讀」步驟點進來）：捲到影集精讀卡片並聚焦輸入框
+if (new URLSearchParams(location.search).get('shadow') === '1') {
+  document.getElementById('shadowCard').scrollIntoView({ behavior:'smooth', block:'start' });
+  document.getElementById('shEpisode').focus();
 }
 </script>
 

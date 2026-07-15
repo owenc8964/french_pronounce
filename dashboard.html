@@ -706,6 +706,16 @@ function listenDoneToday() {
   return getListeningData().some(e => e.date === today && e.source === '真人語速測驗');
 }
 
+// ── 🎬 影集精讀 Shadowing（07-16新增）──────────────────────
+function shadowingDoneToday() {
+  const today = todayStr();
+  return getListeningData().some(e => e.date === today && e.source === '影集Shadowing');
+}
+function shadowingLastEntry() {
+  const entries = getListeningData().filter(e => e.source === '影集Shadowing');
+  return entries.length ? entries[entries.length - 1] : null;
+}
+
 function writingWeekAvg() {
   const data = getWritingData();
   const now = new Date();
@@ -733,7 +743,7 @@ function rotateArray(arr, shift) {
   return arr.slice(s).concat(arr.slice(0, s));
 }
 function getMiddleOrder() {
-  const MIDDLE = ['study', 'drill', 'sprint', 'review', 'sentence', 'answercard', 'listen'];
+  const MIDDLE = ['study', 'drill', 'sprint', 'review', 'sentence', 'answercard', 'listen', 'shadowing'];
   if (isOrderLocked()) return MIDDLE;
   const dayIndex = Math.floor(Date.now() / 86400000); // 每天遞增 1，順序跟著換
   return rotateArray(MIDDLE, dayIndex);
@@ -849,6 +859,7 @@ function buildPrescription(topicStats, todaySec) {
   const acDone = answerCardDoneToday();
   const acDue  = answerCardDueCount();
   const lnDone = listenDoneToday();
+  const shDone = shadowingDoneToday();
   const wDone = writingDoneToday();
   const rDone = readingDoneToday();
   const rAll  = getReadingData();
@@ -941,6 +952,21 @@ function buildPrescription(topicStats, todaySec) {
       badge: lnDone ? 'badge-green' : 'badge-red',
       badgeText: lnDone ? '✓ 完成' : '未完成',
       href: 'listening.html?guided=1', done: lnDone,
+    },
+    shadowing: {
+      icon: '🎬', action: '影集精讀 Shadowing',
+      why: shDone ? '今天已完成！' : (() => {
+        const last = shadowingLastEntry();
+        if (!last) return '挑一集 Extra Français/Peppa Pig，先看一遍理解劇情';
+        const passLabel = {1:'①理解',2:'②整理句型',3:'③跟讀',4:'④複習'};
+        const nextPass = last.pass < 4 ? last.pass + 1 : 1;
+        return last.pass < 4
+          ? `《${last.episode}》繼續下一遍：${passLabel[nextPass]}`
+          : `《${last.episode}》已做完4遍，換下一集從①理解開始`;
+      })(),
+      badge: shDone ? 'badge-green' : 'badge-red',
+      badgeText: shDone ? '✓ 完成' : '未完成',
+      href: 'listening.html?shadow=1', done: shDone,
     },
     writing: {
       icon: '✍️', action: '針對今天的課寫一則（3-4句）',
@@ -1574,6 +1600,7 @@ const HABIT_STEPS = [
   { label: '🗣️背句',   getDates: () => getSentenceSessions().map(s => s.date) },
   { label: '🗣️答案卡', getDates: () => getAnswerCardSessions().map(s => s.date) },
   { label: '🎧聽力',   getDates: () => getListeningData().filter(e => e.source === '真人語速測驗').map(e => e.date) },
+  { label: '🎬影集精讀', getDates: () => getListeningData().filter(e => e.source === '影集Shadowing').map(e => e.date) },
   { label: '✍️造句',   getDates: () => getWritingData().map(w => w.date) },
   { label: '📖閱讀',   getDates: () => getReadingData().map(r => isoToZh(r.date)) },
 ];
