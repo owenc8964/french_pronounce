@@ -347,7 +347,7 @@ function renderCard() {
   document.getElementById('pkProgress').textContent = `${Math.min(idx+1, packet.length)} / ${packet.length}`;
   document.getElementById('pkPhase').textContent = isNew ? '🆕 新句' : (isBonus ? '🔴 加碼複習（你標記過不熟）' : '🔁 複習');
   document.getElementById('pkScore').textContent = `✓ ${firstTryOk}`;
-  document.getElementById('fcLesson').textContent = `第 ${card.lesson} 課`;
+  document.getElementById('fcLesson').textContent = card.src ? `🎬 ${card.src}` : `第 ${card.lesson} 課`;
   document.getElementById('fcZh').textContent = card.zh;
   document.getElementById('fcThink').classList.remove('hidden');
   document.getElementById('fcFr').classList.add('hidden');

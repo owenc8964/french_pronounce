@@ -142,4 +142,14 @@ const SENTENCES = [
   { id: 'S_L16_8', lesson: 16, fr: "Je suis pour le télétravail parce que c'est pratique.", zh: '我贊成遠端工作，因為很方便。', note: 'être pour + parce que' },
   { id: 'S_L16_9', lesson: 16, fr: 'Je travaille beaucoup en ce moment.', zh: '我最近工作很多。', note: 'beaucoup + 動詞' },
   { id: 'S_L16_10', lesson: 16, fr: 'Je suis trop fatigué.', zh: '我太累了。', note: 'trop 帶負面意味' },
+
+  // Extra Français E1（2026-07-17 影集精讀 pipeline 首批：真實口語、全部在已學文法內）
+  { id: 'S_EX1_1', lesson: 0, src: 'Extra E1', fr: "Quoi de neuf ?", zh: '有什麼新鮮事？（見面寒暄）', note: '口語超高頻開場' },
+  { id: 'S_EX1_2', lesson: 0, src: 'Extra E1', fr: 'Tu veux boire quelque chose ?', zh: '你想喝點什麼嗎？（招待客人）', note: 'vouloir + 原形' },
+  { id: 'S_EX1_3', lesson: 0, src: 'Extra E1', fr: "C'est clair ?", zh: '聽清楚了嗎？／明白嗎？（強勢確認）', note: '劇中機翻誤譯成「天氣晴朗」的高頻口語' },
+  { id: 'S_EX1_4', lesson: 0, src: 'Extra E1', fr: 'Tu te souviens de moi ?', zh: '你還記得我嗎？', note: 'se souvenir de（反身動詞）' },
+  { id: 'S_EX1_5', lesson: 0, src: 'Extra E1', fr: "Je n'en peux plus !", zh: '我再也受不了了！', note: '整塊背，不拆解 en' },
+  { id: 'S_EX1_6', lesson: 0, src: 'Extra E1', fr: "Ça m'est égal.", zh: '我無所謂。／隨便。', note: '整塊背' },
+  { id: 'S_EX1_7', lesson: 0, src: 'Extra E1', fr: 'Je peux te parler un instant ?', zh: '我可以跟你說句話嗎？', note: 'pouvoir + COD代名詞 te' },
+  { id: 'S_EX1_8', lesson: 0, src: 'Extra E1', fr: 'Il faut faire la fête !', zh: '該慶祝一下！', note: 'il faut + 原形' },
 ];
