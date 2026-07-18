@@ -152,4 +152,16 @@ const SENTENCES = [
   { id: 'S_EX1_6', lesson: 0, src: 'Extra E1', fr: "Ça m'est égal.", zh: '我無所謂。／隨便。', note: '整塊背' },
   { id: 'S_EX1_7', lesson: 0, src: 'Extra E1', fr: 'Je peux te parler un instant ?', zh: '我可以跟你說句話嗎？', note: 'pouvoir + COD代名詞 te' },
   { id: 'S_EX1_8', lesson: 0, src: 'Extra E1', fr: 'Il faut faire la fête !', zh: '該慶祝一下！', note: 'il faut + 原形' },
+
+  // ── 第17課（A2・passé composé）──
+  { id: 'S_L17_1', lesson: 17, fr: "J'ai reçu un message.", zh: '我收到一則訊息。', note: 'recevoir → reçu' },
+  { id: 'S_L17_2', lesson: 17, fr: "J'ai obtenu mon diplôme l'année dernière.", zh: '我去年拿到文憑。', note: 'obtenir → obtenu' },
+  { id: 'S_L17_3', lesson: 17, fr: 'Ils se sont mariés il y a deux ans.', zh: '他們兩年前結婚了。', note: '反身動詞配 être，分詞+s' },
+  { id: 'S_L17_4', lesson: 17, fr: 'Ma fille est née il y a un an.', zh: '我女兒一年前出生。', note: 'naître 配 être+配合；il y a=距今…前' },
+  { id: 'S_L17_5', lesson: 17, fr: "Tu as lu le roman ? — Non, je ne l'ai pas lu.", zh: '你讀了那本小說嗎？——沒有，我沒讀。', note: 'COD 代名詞夾在 ne 和 ai 中間' },
+  { id: 'S_L17_6', lesson: 17, fr: "J'ai ouvert mon magasin il y a deux ans.", zh: '我兩年前開了我的店。', note: 'ouvrir → ouvert' },
+  { id: 'S_L17_7', lesson: 17, fr: 'Je vis à Taïwan depuis cinq ans.', zh: '我住在台灣五年了（還住著）。', note: 'depuis + 現在式' },
+  { id: 'S_L17_8', lesson: 17, fr: "J'ai vécu à Taïwan pendant cinq ans.", zh: '我在台灣住過五年（已結束）。', note: 'pendant + passé composé' },
+  { id: 'S_L17_9', lesson: 17, fr: 'Je suis mort de rire.', zh: '我笑死了。（MDR）', note: '口語；女生說 morte' },
+  { id: 'S_L17_10', lesson: 17, fr: 'Je me lève à six heures.', zh: '我六點起床。（DELF口說高頻）', note: '現在式 je me lève，不是 je me lever' },
 ];

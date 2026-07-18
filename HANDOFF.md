@@ -441,6 +441,24 @@ Owen回饋兩件事：①筆記「白花花一片」，想要能在上面選字�
 
 做了：新增 `CLAUDE.md`（本專案首個），收四類鐵律——內容鐵律（真實教材來源／個人化內容不代筆／codex 座標永不重編／compare-table 表格格式）、測試鐵律（ROOM 切換＋preview_stop 協定摘要，細節仍指回本檔）、交付鐵律（自動試跑／dashboard 大腦檢查）、**新增「討論模式」約定：Owen 說「先討論」→ 只提問提案不動檔案**。同場也補了牙科專案（專屬牙科看診系統生成）的 CLAUDE.md：加討論模式＋「牙位左右鐵律」section（FDI 象限病人視角、鏡像呈現、用 dental MCP `get_tooth_orientation` 查方位、改動後截圖用基準牙驗證），該專案改動已照其維護協議備份至 `backups/CLAUDE.md.bak-20260717`。
 
+### 07-17：第17課（A2・passé composé 完整版）入庫——DELF口說實測劇本＋17個être動詞＋不規則分詞全表
+
+Owen 貼了兩堂課的資料：07-13 一見鐘情閱讀（該堂逐字稿未入庫，只留痕跡在 ROADMAP）＋07-17 這堂的完整逐字稿（含跟老師的口說模擬對話）、A2課本 passé composé 單元頁面截圖、DELF A1 口說考官文件PDF。這是 **A2 課程第一課**，內容量特別大（DELF考試結構＋17個être動詞完整清單＋16個不規則過去分詞＋DELF口說第1部分14句個人答案劇本），連帶四項連動的資料量也跟著放大。
+
+**筆記內容**（`french_notes.html` lesson-17，9個unit）：DELF A1口說三部曲（結構表＋第2部分字卡題池19個主題＋第3部分角色扮演套路）、口說實測劇本（老師實問→Owen真實答案修正版14句，直接可當DELF第1部分個人答案庫）、passé composé助動詞二分（avoir/être/反身動詞三分表）、**17個être動詞清單**（課本原文，訂正舊筆記寫的「19個」為官方17個＋反身動詞另計）、過去分詞三條規則線＋16個不規則分詞全表、il y a vs dans／depuis vs pendant時間結構總對決、口語文化角（MDR、encore的兩個意思）、老師課堂法語、發音警報、糾錯摘要。
+
+**八項連動**：
+1. `questions.js`：新增14題（passe-compose 11題+duree 3題），`BANK` 664→678。
+2. `sentences.js`：新增10句（S_L17_1~10），108→118句。
+3. `chunks.js`：hand-curated腳本生成40張新卡（19個不規則分詞原形/分詞對+21個句子塊），936→976張；踩到一次逗號語法錯誤（腳本 join 邏輯漏掉陣列最後一元素前的逗號），`node --check`當場抓到並修正。
+4. `table_drill.html`：新增2個表格（`participes-irreguliers-1/2`，各8列，涵蓋16個不規則分詞），36→38個表格。
+5. `gram_rules.js`：`passe` 點 `lessons` 補17、`why`/`points` 的「14個」全部訂正為「17個」（跟課本官方清單校準）。
+6. `codex.js`：`5-2-2`（être家族＋配合）的規則內容同步「14→17」訂正，`exc` 提及14常客的三處也一併修正。
+7. `map.html`：`CURRENT_LESSON` 16→17；沒有新增/解鎖tile（第17課是A2課本的延續單元，沒有對應A1地圖佔位格）。
+8. **驗證**（隔離ROOM）：quiz.html 14題全部渲染正確（choose選項合法性、q-zh區塊顯示）；table_drill 兩個新表格rows數正確；map.html 三處資料點（CURRENT_LESSON/gram_rules的17個/codex的17個/座標總數181不變）全過；console無錯誤。**這次確實踩到07-16事故後補強的鐵律**：ROOM改回正式值後下一步立刻 `preview_stop`，沒有再navigate或互動，curl確認雲端353 keys、updated_at是Owen真機活動、無殘留測試字串。
+
+⚠️ **07-13那堂課的逐字稿沒有正式入庫**——ROADMAP.md「老師課堂實測資訊」段落有摘要記錄（DELF考試結構、通過門檻、老師應試哲學），但一見鐘情閱讀文本本身（Leïla Bekhti/Tahar Rahim passé composé文章）沒有進 french_notes.html。如果 Owen 之後想要這篇也整理進筆記，需要他重新提供原文或截圖。
+
 ---
 
 ## 之前 session 做了什麼（2026-07-02 ～ 07-03）

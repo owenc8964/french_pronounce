@@ -218,13 +218,13 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'passe', name:'Passé composé & passé récent', icon:'⏮️', zone:'A2', cat:'verbe-temps',
-    lessons:[10,11,14], topics:['passe-compose','passe-recent'], unlocked:true,
+    lessons:[10,11,14,17], topics:['passe-compose','passe-recent'], unlocked:true,
     rule:{
       title:'複合過去式 — 助動詞（avoir/être）+ 過去分詞',
       why:'J\'ai mangé 字面是「我擁有 被吃完的東西」——用「有＋完成品」表達過去，這樣就不用為過去式背一整套新變位（又是口語的偷懶智慧，英文 have eaten 同款）。être 家族的動詞（去/來/出生/死…）不是「做了什麼」而是「主詞自己變成了什麼狀態、移到了哪裡」——所以分詞像形容詞一樣描述主詞，也因此要跟主詞配合（elle est sortie 加 e，跟 elle est grande 同一個道理）。venir de + 原形是 aller + 原形的鏡像：「從做完某事走過來」＝剛剛做完。',
       points:[
         '大多數動詞用 avoir：J\'ai mangé、Ils ont acheté、Vous avez trouvé',
-        '14個移動/狀態動詞用 être（aller, venir, partir, arriver, rester, tomber…）：Je suis allé(e)',
+        '17個移動/狀態動詞用 être（A2課本清單：aller, venir, revenir, arriver, partir, rentrer, retourner, monter, descendre, entrer, sortir, tomber, naître, mourir, devenir, rester, passer）＋全部反身動詞：Je suis allé(e)',
         '⚠️ 用 être 時過去分詞要配合主詞：Elle est sortie（+e）、Ils sont partis（+s）',
         '過去分詞：-er→é（mangé）、-ir→i（fini）、-re→u（vendu）',
         '否定包助動詞：On n\'a pas trouvé de lit',

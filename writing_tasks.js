@@ -106,4 +106,10 @@ const WRITING_TASKS = [
     use:['Je travaille … depuis …', 'au bureau / à la clinique', 'écrire des mails / voir des patients'], frame:'做多久（depuis+現在式！） → 地點 → 兩件日常任務' },
   { lesson:16, id:'W16b', title:'遠距工作表態', task:'用 3-4 句表態：你支持還是反對遠距工作，為什麼（一個理由就好）。',
     use:['Je suis pour / contre le télétravail', 'parce que …', "c'est un travail que j'aime"], frame:'立場 → 理由（parce que） → 用 qui/que 加一句' },
+
+  // ── 第17課（A2・passé composé——進入 A2 階段，任務升級成 TCF tâche 1 形態：40-60字訊息）──
+  { lesson:17, id:'W17a', title:'週末做了什麼（給朋友的訊息）', task:'朋友問你週末過得如何。回一則 40-60 字的訊息：說三件你做過的事（passé composé，至少一個不規則分詞、至少一個 être 動詞）。',
+    use:["J'ai + 分詞", 'Je suis allé(e) / resté(e) …', 'Et toi ?'], frame:'招呼一句 → 三件事（PC） → 丟回給對方' },
+  { lesson:17, id:'W17b', title:'報告一件最近的大事', task:'寫 40-60 字跟法國筆友報告一件你人生最近的事（開店/搬家/小孩出生/拿到證照…），說它是多久以前發生的、之後到現在如何。',
+    use:['il y a + 時長', "J'ai … / Je suis …（PC）", 'depuis + 現在式'], frame:'什麼事（PC） → 多久前（il y a） → 持續到現在的狀態（depuis+現在式）' },
 ];

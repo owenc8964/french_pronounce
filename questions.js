@@ -909,6 +909,22 @@ const BANK = [
   { lesson:16, topic:'metier-travail-vocab', type:'trans', q:'遠端工作', hint:'faire du...', a:'le télétravail|faire du télétravail', aNote:'', askClaude:true },
   { lesson:16, topic:'metier-travail-vocab', type:'choose', q:'法文的「mail」是什麼意思？', hint:'跟英文不一樣', a:'email', aNote:'法文mail/courriel=email；實體信件是le courrier，是個假朋友', opts:['email','實體信件','包裹'] },
   { lesson:16, topic:'metier-travail-vocab', type:'trans', q:'肉販', hint:'', a:'le boucher|la bouchère', aNote:'', askClaude:true },
+
+  // ── 第 17 課：A2 passé composé 完整版（助動詞二分/不規則分詞/il y a vs dans/depuis vs pendant）──
+  { lesson:17, topic:'passe-compose', type:'fill', q:"J'ai _____ un message. (recevoir)", zh:'我收到一則訊息。', hint:'c+u 要小尾巴', a:'reçu', aNote:'recevoir → reçu（ç 只在 u 前）' },
+  { lesson:17, topic:'passe-compose', type:'fill', q:"J'ai _____ mon diplôme l'année dernière. (obtenir)", zh:'我去年拿到文憑。', hint:'tenir → tenu', a:'obtenu', aNote:'obtenir → obtenu（跟 tenir/venir 同家族）' },
+  { lesson:17, topic:'passe-compose', type:'fill', q:'Hier, Mbappé a _____ un but. (mettre)', zh:'昨天姆巴佩進了一球。', hint:'雙t不見了', a:'mis', aNote:'mettre → mis；mettre un but＝進球' },
+  { lesson:17, topic:'passe-compose', type:'fill', q:"Tu as _____ le roman de Gaël Faye ? (lire)", zh:'你讀了 Gaël Faye 的小說嗎？', hint:'一個音節', a:'lu', aNote:'lire → lu' },
+  { lesson:17, topic:'passe-compose', type:'fill', q:"J'ai _____ à Taïwan pendant cinq ans. (vivre)", zh:'我在台灣住過五年（已結束）。', hint:'vécu', a:'vécu', aNote:'vivre → vécu；pendant＝閉合的一段' },
+  { lesson:17, topic:'passe-compose', type:'fill', q:'Elle est _____ à Paris en 1900. (naître)', zh:'她1900年生於巴黎。', hint:'être家族，主詞陰性', a:'née', aNote:'naître → né；配 être 要跟主詞配合 +e' },
+  { lesson:17, topic:'passe-compose', type:'fill', q:"J'ai _____ mon magasin il y a deux ans. (ouvrir)", zh:'我兩年前開了我的店。', hint:'-ert 結尾', a:'ouvert', aNote:'ouvrir → ouvert；c\'est ouvert（開著）是形容詞不是PC' },
+  { lesson:17, topic:'passe-compose', type:'choose', q:'「Ils _____ mariés il y a deux ans.」空格填什麼？', hint:'反身動詞的助動詞', a:'se sont', aNote:'反身動詞一律配 être：ils se sont mariés（分詞+s）', opts:['se sont','s\'ont','sont','ont'] },
+  { lesson:17, topic:'passe-compose', type:'choose', q:'下列哪個動詞的 passé composé 用 avoir？', hint:'17個être動詞之外', a:'vivre', aNote:'vivre→j\'ai vécu 用avoir；venir/mourir/rester 都在17個être動詞清單裡', opts:['vivre','venir','mourir','rester'] },
+  { lesson:17, topic:'passe-compose', type:'fill', q:"Tu as reçu mon message ? — Non, je ne _____ ai pas reçu.", zh:'收到我的訊息了嗎？——沒有，我沒收到它。', hint:'COD代名詞縮寫', a:"l'", aNote:'COD 放助動詞前：je ne l\'ai pas reçu（ne + l\' + ai + pas）' },
+  { lesson:17, topic:'duree', type:'choose', q:'「我一年後要去台灣（還沒發生）」用哪個？', hint:'跟英文 in 同邏輯', a:'dans un an', aNote:'dans＝未來的…之後；il y a＝過去的…之前', opts:['dans un an','il y a un an','depuis un an','pendant un an'] },
+  { lesson:17, topic:'duree', type:'fill', q:'Ma fille est née _____ un an.', zh:'我女兒一年前出生。', hint:'ago', a:'il y a', aNote:'il y a + 時長＝距今…前（動作已結束）' },
+  { lesson:17, topic:'duree', type:'choose', q:'「Je _____ à Taïwan depuis cinq ans.」空格填什麼？', hint:'depuis 的時態鐵律', a:'vis', aNote:'depuis＝持續到現在→配現在式：je vis；已結束的五年才說 j\'ai vécu pendant cinq ans', opts:['vis','ai vécu','vivais','vivre'] },
+  { lesson:17, topic:'passe-compose', type:'trans', q:'我笑死了。（口語）', hint:'MDR 的全寫', a:'Je suis mort de rire.|Je suis morte de rire.', aNote:'mort de + 名詞＝…死了；訊息縮寫 MDR', askClaude:true },
 ];
 // ── ID 函數 ──
 function qId(q) {

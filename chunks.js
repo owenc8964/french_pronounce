@@ -6552,5 +6552,285 @@ const CHUNKS = [
   "fr": "Je ne sais pas si c'est un mot officiel, mais tout le monde comprend.",
   "zh": "我不知道這是不是正式的字，但大家都聽得懂。",
   "note": ""
- }
+ },
+ {
+  "id": "L17_avoir___eu",
+  "lesson": 17,
+  "fr": "avoir → eu",
+  "zh": "過去分詞：有",
+  "note": "J'ai eu"
+ },
+ {
+  "id": "L17_devoir___dû",
+  "lesson": 17,
+  "fr": "devoir → dû",
+  "zh": "過去分詞：必須（我當時不得不）",
+  "note": "J'ai dû partir."
+ },
+ {
+  "id": "L17_dire___dit",
+  "lesson": 17,
+  "fr": "dire → dit",
+  "zh": "過去分詞：說",
+  "note": "J'ai dit"
+ },
+ {
+  "id": "L17_écrire___écrit",
+  "lesson": 17,
+  "fr": "écrire → écrit",
+  "zh": "過去分詞：寫",
+  "note": "J'ai écrit"
+ },
+ {
+  "id": "L17_être___été",
+  "lesson": 17,
+  "fr": "être → été",
+  "zh": "過去分詞：是（j'ai été＝我去過/當過一次）",
+  "note": "J'ai été au lac une fois."
+ },
+ {
+  "id": "L17_faire___fait",
+  "lesson": 17,
+  "fr": "faire → fait",
+  "zh": "過去分詞：做",
+  "note": "J'ai fait"
+ },
+ {
+  "id": "L17_mettre___mis",
+  "lesson": 17,
+  "fr": "mettre → mis",
+  "zh": "過去分詞：放（也＝進球）",
+  "note": "Mbappé a mis un but."
+ },
+ {
+  "id": "L17_naître___né",
+  "lesson": 17,
+  "fr": "naître → né",
+  "zh": "過去分詞：出生（配être要配合）",
+  "note": "Elle est née."
+ },
+ {
+  "id": "L17_mourir___mort",
+  "lesson": 17,
+  "fr": "mourir → mort",
+  "zh": "過去分詞：死（配être）",
+  "note": "Il est mort hier."
+ },
+ {
+  "id": "L17_ouvrir___ouvert",
+  "lesson": 17,
+  "fr": "ouvrir → ouvert",
+  "zh": "過去分詞：開",
+  "note": "J'ai ouvert la porte."
+ },
+ {
+  "id": "L17_prendre___pris",
+  "lesson": 17,
+  "fr": "prendre → pris",
+  "zh": "過去分詞：拿/搭",
+  "note": "J'ai pris le métro."
+ },
+ {
+  "id": "L17_recevoir___reçu",
+  "lesson": 17,
+  "fr": "recevoir → reçu",
+  "zh": "過去分詞：收到（c+u要ç）",
+  "note": "J'ai reçu un message."
+ },
+ {
+  "id": "L17_tenir___tenu___obtenir__",
+  "lesson": 17,
+  "fr": "tenir → tenu / obtenir → obtenu",
+  "zh": "過去分詞：握住/取得",
+  "note": "J'ai obtenu mon diplôme."
+ },
+ {
+  "id": "L17_venir___venu___devenir__",
+  "lesson": 17,
+  "fr": "venir → venu / devenir → devenu",
+  "zh": "過去分詞：來/變成（配être）",
+  "note": "Il est venu."
+ },
+ {
+  "id": "L17_vivre___vécu",
+  "lesson": 17,
+  "fr": "vivre → vécu",
+  "zh": "過去分詞：住/活",
+  "note": "J'ai vécu à Taïwan pendant cinq ans."
+ },
+ {
+  "id": "L17_lire___lu",
+  "lesson": 17,
+  "fr": "lire → lu",
+  "zh": "過去分詞：讀（一個音節，不是li-u）",
+  "note": "Tu as lu le roman ?"
+ },
+ {
+  "id": "L17_perdre___perdu",
+  "lesson": 17,
+  "fr": "perdre → perdu",
+  "zh": "過去分詞：丟失",
+  "note": "J'ai perdu"
+ },
+ {
+  "id": "L17_vouloir___voulu",
+  "lesson": 17,
+  "fr": "vouloir → voulu",
+  "zh": "過去分詞：想要",
+  "note": "J'ai voulu"
+ },
+ {
+  "id": "L17_voir___vu",
+  "lesson": 17,
+  "fr": "voir → vu",
+  "zh": "過去分詞：看見",
+  "note": "J'ai vu"
+ },
+ {
+  "id": "L17_Ils_se_sont_mariés_il_y_",
+  "lesson": 17,
+  "fr": "Ils se sont mariés il y a deux ans.",
+  "zh": "他們兩年前結婚了",
+  "note": "反身動詞配être，分詞+s"
+ },
+ {
+  "id": "L17_Je_me_suis_installée_à_L",
+  "lesson": 17,
+  "fr": "Je me suis installée à Lyon.",
+  "zh": "我（女）在里昂安頓下來了",
+  "note": "反身動詞PC，陰性+e"
+ },
+ {
+  "id": "L17_Je_suis_tombée_amoureuse",
+  "lesson": 17,
+  "fr": "Je suis tombée amoureuse de la France.",
+  "zh": "我（女）愛上了法國",
+  "note": "tomber amoureux de 固定搭配"
+ },
+ {
+  "id": "L17_Ma_fille_est_née_il_y_a_",
+  "lesson": 17,
+  "fr": "Ma fille est née il y a un an.",
+  "zh": "我女兒一年前出生",
+  "note": "il y a＝距今…前"
+ },
+ {
+  "id": "L17_J_ai_ouvert_mon_magasin_",
+  "lesson": 17,
+  "fr": "J'ai ouvert mon magasin il y a deux ans.",
+  "zh": "我兩年前開了店",
+  "note": "c'est ouvert（開著）是形容詞不是PC"
+ },
+ {
+  "id": "L17_Je_ne_l_ai_pas_reçu_",
+  "lesson": 17,
+  "fr": "Je ne l'ai pas reçu.",
+  "zh": "我沒收到它",
+  "note": "COD代名詞夾在ne和ai中間"
+ },
+ {
+  "id": "L17_Je_ne_l_ai_pas_mangé_",
+  "lesson": 17,
+  "fr": "Je ne l'ai pas mangé.",
+  "zh": "我沒吃它",
+  "note": "COD+PC否定的完整包法"
+ },
+ {
+  "id": "L17_Je_vis_à_Taïwan_depuis_c",
+  "lesson": 17,
+  "fr": "Je vis à Taïwan depuis cinq ans.",
+  "zh": "我住台灣五年了（還住著）",
+  "note": "depuis＋現在式"
+ },
+ {
+  "id": "L17_J_ai_vécu_à_Taïwan_penda",
+  "lesson": 17,
+  "fr": "J'ai vécu à Taïwan pendant cinq ans.",
+  "zh": "我在台灣住過五年（已結束）",
+  "note": "pendant＋PC"
+ },
+ {
+  "id": "L17_dans_un_an",
+  "lesson": 17,
+  "fr": "dans un an",
+  "zh": "一年後（還沒發生）",
+  "note": "跟英文in one year同邏輯；il y a un an＝一年前"
+ },
+ {
+  "id": "L17_l_année_dernière",
+  "lesson": 17,
+  "fr": "l'année dernière",
+  "zh": "去年",
+  "note": "la semaine dernière＝上週，同模式"
+ },
+ {
+  "id": "L17_Je_suis_mort_de_rire_",
+  "lesson": 17,
+  "fr": "Je suis mort de rire.",
+  "zh": "我笑死了（MDR）",
+  "note": "mort de + 名詞＝…死了；口語"
+ },
+ {
+  "id": "L17_Je_suis_mort_de_froid_",
+  "lesson": 17,
+  "fr": "Je suis mort de froid.",
+  "zh": "我冷死了",
+  "note": "同 mort de 系列"
+ },
+ {
+  "id": "L17_Pas_encore_",
+  "lesson": 17,
+  "fr": "Pas encore.",
+  "zh": "還沒",
+  "note": "encore＝再/還；pas encore＝not yet"
+ },
+ {
+  "id": "L17_J_ai_tenu_deux_ans_",
+  "lesson": 17,
+  "fr": "J'ai tenu deux ans.",
+  "zh": "我撐了兩年",
+  "note": "tenir＝握住，也＝撐住（工作）"
+ },
+ {
+  "id": "L17_la_marque",
+  "lesson": 17,
+  "fr": "la marque",
+  "zh": "品牌",
+  "note": "Quelle marque de téléphone ?（DELF字卡高頻）"
+ },
+ {
+  "id": "L17_le_numéro_de_téléphone",
+  "lesson": 17,
+  "fr": "le numéro de téléphone",
+  "zh": "電話號碼",
+  "note": "Quel est votre numéro de téléphone ?"
+ },
+ {
+  "id": "L17_une_action_ponctuelle",
+  "lesson": 17,
+  "fr": "une action ponctuelle",
+  "zh": "一次性的動作（課本對PC用途的定義）",
+  "note": "PC=講過去有起訖的動作"
+ },
+ {
+  "id": "L17_Comment_ça_s_écrit__",
+  "lesson": 17,
+  "fr": "Comment ça s'écrit ?",
+  "zh": "怎麼拼？",
+  "note": "DELF口說第一部分必考"
+ },
+ {
+  "id": "L17_Je_viens_de_Keelung_",
+  "lesson": 17,
+  "fr": "Je viens de Keelung.",
+  "zh": "我來自基隆（ville d'origine的答法）",
+  "note": "venir de + 城市"
+ },
+ {
+  "id": "L17_au_vingt_et_unième_étage",
+  "lesson": 17,
+  "fr": "au vingt-et-unième étage",
+  "zh": "在21樓",
+  "note": "樓層用序數：vingt-et-unième"
+ },
 ];

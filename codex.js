@@ -1476,7 +1476,7 @@ const CODEX = [
       {r:'講來自哪裡、剛做完什麼', fr:"Tu viens d'où ?", zh:'你從哪裡來？'},
       {r:'描述「變成」用devenir', fr:'Il devient de plus en plus patient.', zh:'他變得越來越有耐心。'},
     ],
-    exc:['venir的複合過去式用être不用avoir（屬於être家族14常客之一，見5-2-2）'],
+    exc:['venir的複合過去式用être不用avoir（屬於être家族17個動詞之一，見5-2-2）'],
     more:[
       {fr:'Nous venons de finir le projet.', zh:'我們剛完成這個計畫。'},
       {fr:'Tu te souviens de moi ?', zh:'你記得我嗎？'},
@@ -1502,7 +1502,7 @@ const CODEX = [
       {r:'講離開、出發的時間', fr:'Le train part à 8h.', zh:'火車八點出發。'},
       {r:'描述睡眠、感官這類日常動作', fr:'Je dors huit heures par nuit.', zh:'我每晚睡八小時。'},
     ],
-    exc:['partir、sortir複合過去式用être（屬於14常客），dormir、sentir、servir則用avoir——同模式動詞助動詞不見得一樣，要分開記'],
+    exc:['partir、sortir複合過去式用être（屬於17個être動詞），dormir、sentir、servir則用avoir——同模式動詞助動詞不見得一樣，要分開記'],
     more:[
       {fr:'Ils sortent tous les vendredis soir.', zh:'他們每個星期五晚上都出門。'},
       {fr:'Tu sens cette odeur ?', zh:'你聞到這個味道嗎？'},
@@ -1750,7 +1750,7 @@ const CODEX_PART2 = [
       {r:'描述已完成、發生過的單一事件', fr:"Hier, j'ai visité le musée.", zh:'昨天我參觀了博物館。'},
       {r:'口語敘述過去經歷的預設時態', fr:"J'ai déjà mangé.", zh:'我已經吃過了。'},
     ],
-    exc:['être家族（14常客）和反身動詞不用avoir，改用être當助動詞（見5-2-2、5-2-3）'],
+    exc:['être家族（17個動詞）和反身動詞不用avoir，改用être當助動詞（見5-2-2、5-2-3）'],
     more:[
       {fr:'Nous avons fini le projet.', zh:'我們完成了這個計畫。'},
       {fr:"Elle n'a pas compris la question.", zh:'她沒聽懂這個問題。'},
@@ -1762,7 +1762,7 @@ const CODEX_PART2 = [
     ex:[{fr:'Elle est arrivée hier.', zh:'她昨天到了。'},
         {fr:'Ils sont nés en France.', zh:'他們在法國出生。'}],
     pts:[
-      {r:'14個「移動／狀態轉變」動詞的複合過去式改用être當助動詞：aller, venir, partir, arriver, entrer, sortir, monter, descendre, rester, tomber, naître, mourir, retourner, passer',
+      {r:'17個「移動／狀態轉變」動詞的複合過去式改用être當助動詞（A2課本清單）：aller, venir, revenir, arriver, partir, rentrer, retourner, monter, descendre, entrer, sortir, tomber, naître, mourir, devenir, rester, passer',
        fr:'Elle est sortie hier soir.', zh:'她昨晚出門了。'},
       {r:'用être時，過去分詞像形容詞一樣要配合主詞的性數——跟elle est grande同一套配合邏輯',
        fr:'Elle est arrivée. Ils sont partis.', zh:'她到了（+e）。他們走了（+s）。'},
