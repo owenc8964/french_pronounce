@@ -457,7 +457,7 @@ Owen 貼了兩堂課的資料：07-13 一見鐘情閱讀（該堂逐字稿未入
 7. `map.html`：`CURRENT_LESSON` 16→17；沒有新增/解鎖tile（第17課是A2課本的延續單元，沒有對應A1地圖佔位格）。
 8. **驗證**（隔離ROOM）：quiz.html 14題全部渲染正確（choose選項合法性、q-zh區塊顯示）；table_drill 兩個新表格rows數正確；map.html 三處資料點（CURRENT_LESSON/gram_rules的17個/codex的17個/座標總數181不變）全過；console無錯誤。**這次確實踩到07-16事故後補強的鐵律**：ROOM改回正式值後下一步立刻 `preview_stop`，沒有再navigate或互動，curl確認雲端353 keys、updated_at是Owen真機活動、無殘留測試字串。
 
-⚠️ **07-13那堂課的逐字稿沒有正式入庫**——ROADMAP.md「老師課堂實測資訊」段落有摘要記錄（DELF考試結構、通過門檻、老師應試哲學），但一見鐘情閱讀文本本身（Leïla Bekhti/Tahar Rahim passé composé文章）沒有進 french_notes.html。如果 Owen 之後想要這篇也整理進筆記，需要他重新提供原文或截圖。
+✅ **07-13課文缺口已補（同日追加）**：Owen 貼了課文截圖《Une histoire d'amour comme au cinéma》（Leïla Bekhti/Tahar Rahim真實故事，Julia Duranton, *Cosmopolitan*, 24 juin 2021），整理進 lesson-17 新增的「📖課文閱讀」unit——逐句法中對照＋課本標記的passé composé動詞形用`<b>`加粗（一次示範avoir/être/反身三種助動詞情境，剛好對上5-2章節）＋詞彙筆記（coup de foudre、faire connaissance、prendre son temps等5個高頻慣用語）。這5個慣用語同步補進`chunks.js`（981→986張，注意這是**課文附帶的可重用語塊**，不是課文敘事本身——課文講的是名人的故事不是Owen會講的話，沒有整批塞進sentences.js，這個判斷依據跟memory `feedback_personal_content_authenticity`一致：不代替Owen講話）。lesson-17 summary 標題同步補上課文書名號。preview驗證：18句全部正確掛TTS喇叭、bold動詞形正確渲染、視覺排版確認。這次筆記瀏覽沒有寫入風險資料，未切TEST ROOM（純靜態內容展示，不涉及quiz/SRS等會寫`clb7_*`的互動）。
 
 ---
 

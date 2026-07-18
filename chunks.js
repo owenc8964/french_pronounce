@@ -6833,4 +6833,39 @@ const CHUNKS = [
   "zh": "在21樓",
   "note": "樓層用序數：vingt-et-unième"
  },
+ {
+  "id": "L17_le_coup_de_foudre",
+  "lesson": 17,
+  "fr": "le coup de foudre",
+  "zh": "一見鐘情",
+  "note": "字面：閃電打到；課文《Une histoire d'amour》註解：amour immédiat, à la première vue"
+ },
+ {
+  "id": "L17_faire_connaissance",
+  "lesson": 17,
+  "fr": "faire connaissance",
+  "zh": "認識、結識",
+  "note": "faire的固定搭配，不是connaître"
+ },
+ {
+  "id": "L17_prendre_son_temps",
+  "lesson": 17,
+  "fr": "prendre son temps",
+  "zh": "慢慢來、不急",
+  "note": "課文《Une histoire d'amour》貫穿全文的主題句，出現兩次"
+ },
+ {
+  "id": "L17_agrandir_la_famille",
+  "lesson": 17,
+  "fr": "agrandir la famille",
+  "zh": "擴大家庭",
+  "note": "生小孩的委婉說法"
+ },
+ {
+  "id": "L17_accueillir_un_enfant",
+  "lesson": 17,
+  "fr": "accueillir un enfant",
+  "zh": "迎接一個孩子",
+  "note": "比 avoir un enfant 更文學/正式"
+ },
 ];
