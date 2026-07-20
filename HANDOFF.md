@@ -459,6 +459,18 @@ Owen 貼了兩堂課的資料：07-13 一見鐘情閱讀（該堂逐字稿未入
 
 ✅ **07-13課文缺口已補（同日追加）**：Owen 貼了課文截圖《Une histoire d'amour comme au cinéma》（Leïla Bekhti/Tahar Rahim真實故事，Julia Duranton, *Cosmopolitan*, 24 juin 2021），整理進 lesson-17 新增的「📖課文閱讀」unit——逐句法中對照＋課本標記的passé composé動詞形用`<b>`加粗（一次示範avoir/être/反身三種助動詞情境，剛好對上5-2章節）＋詞彙筆記（coup de foudre、faire connaissance、prendre son temps等5個高頻慣用語）。這5個慣用語同步補進`chunks.js`（981→986張，注意這是**課文附帶的可重用語塊**，不是課文敘事本身——課文講的是名人的故事不是Owen會講的話，沒有整批塞進sentences.js，這個判斷依據跟memory `feedback_personal_content_authenticity`一致：不代替Owen講話）。lesson-17 summary 標題同步補上課文書名號。preview驗證：18句全部正確掛TTS喇叭、bold動詞形正確渲染、視覺排版確認。這次筆記瀏覽沒有寫入風險資料，未切TEST ROOM（純靜態內容展示，不涉及quiz/SRS等會寫`clb7_*`的互動）。
 
+另外把課文的10個passé composé句子（真實課文原句，不是編的）改成填空/選擇題補進`questions.js`（678→688），涵蓋avoir/être家族/反身動詞/否定PC四種助動詞情境——preview用真實UI注入驗證了兩題最容易判錯的（否定句`n'ont pas voulu`含撇號、反身動詞choose題`se sont`），SRS判分邏輯都正確。
+
+### 07-20（事故記錄）：正式雲端第三次被推空（353→2 keys），已自我修復，找到部分根因
+
+在驗證上述10題quiz題目時，**忘記先把`sync_supabase.js`的ROOM切成TEST**就直接用真實ROOM在preview跑了`checkAnswer()`兩次（測否定句與反身動詞choose題），各寫入一筆SRS記錄。發現疏失後立刻`removeItem`清掉本機的兩筆測試key、`preview_stop`。但事後curl確認真實雲端時，payload從353個key暴跌到只剩2個（`clb7_duo`、`clb7_snapshots`），時間戳跟這輪測試時間相近。
+
+**根因分析（跟07-16同機制，但這次量級對不上我的測試範圍）**：我這兩筆測試SRS記錄的寫入/清除不足以解釋353→2這麼大的落差——當時這個preview分頁本身有332個`clb7_*` key（是先前分頁遺留、從雲端pull過的完整鏡像），就算debounce真的在移除前後各推了一次，也應該是332或334個key，不是2個。**推測**：中斷期間（context compaction/session gap）可能有另一個完全乾淨、沒有pull過任何資料的分頁或環境，用真實ROOM開啟了`dashboard.html`——`clb7_snapshots`是dashboard載入時自動產生的週快照、`clb7_duo`是舊的種子殘留，這兩個key會在「近乎全新的localStorage」下自然存在，其他351個key則完全沒有，跟推空後的payload形狀吻合。**沒有找到那個分頁/環境的直接證據**，只是形狀比對出的合理推測，不是確認的根因。
+
+**判斷資料沒事的依據（沿用07-16建立的邏輯）**：apply()對雲端payload是「有的key才覆蓋本機，沒有的key不刪本機」，Owen真實裝置的本機資料完全不受影響。請Owen直接打開正式網站後，`updated_at`更新、payload從2恢復到353（跟事故前key數完全一致），curl確認259個quiz SRS key、21張複習卡進度、`clb7_gram_stage`、`clb7_last_lesson`全部完整，兩筆測試污染key確認不存在。**全程沒有真實資料遺失**，只是雲端中繼站又被短暫推空。
+
+**協定缺口（07-16補強後仍然發生第三次，說明「記得切ROOM」這件事本身不可靠）**：這次是**忘記切TEST ROOM**才直接動手測試——不是協定執行有漏洞，是根本沒啟動協定。07-16的補強（ROOM切正式值後立刻preview_stop）解決的是「切換後的風險窗口」，但沒解決「一開始就忘記切」這個更前面的失誤點。**下一個 session 起：任何要跑`checkAnswer()`/`grade()`/會寫SRS或`clb7_*`的操作前，先執行`grep "var ROOM" sync_supabase.js`確認現在是不是TEST值再動手，不要憑記憶判斷「這應該不會寫入」——這條已經是CLAUDE.md鐵律但這次證明光有鐵律不夠，要養成「動手前先grep確認」的具體動作**，而不是「應該有切」的印象。
+
 ---
 
 ## 之前 session 做了什麼（2026-07-02 ～ 07-03）

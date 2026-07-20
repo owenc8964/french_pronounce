@@ -925,6 +925,18 @@ const BANK = [
   { lesson:17, topic:'duree', type:'fill', q:'Ma fille est née _____ un an.', zh:'我女兒一年前出生。', hint:'ago', a:'il y a', aNote:'il y a + 時長＝距今…前（動作已結束）' },
   { lesson:17, topic:'duree', type:'choose', q:'「Je _____ à Taïwan depuis cinq ans.」空格填什麼？', hint:'depuis 的時態鐵律', a:'vis', aNote:'depuis＝持續到現在→配現在式：je vis；已結束的五年才說 j\'ai vécu pendant cinq ans', opts:['vis','ai vécu','vivais','vivre'] },
   { lesson:17, topic:'passe-compose', type:'trans', q:'我笑死了。（口語）', hint:'MDR 的全寫', a:'Je suis mort de rire.|Je suis morte de rire.', aNote:'mort de + 名詞＝…死了；訊息縮寫 MDR', askClaude:true },
+
+  // ── 課文《Une histoire d'amour comme au cinéma》改編題（真實課文句子，avoir/être/反身/否定四種情境）──
+  { lesson:17, topic:'passe-compose', type:'fill', q:'Leïla Bekhti _____ (raconter) sa rencontre avec son mari.', zh:'Leïla Bekhti 講述了她與丈夫相遇的故事。', hint:'-er動詞規則分詞', a:'a raconté', aNote:'raconter → raconté（avoir，不配合）' },
+  { lesson:17, topic:'passe-compose', type:'fill', q:'Les deux acteurs _____ (faire) connaissance en 2008.', zh:'這兩位演員在2008年認識彼此。', hint:'faire → fait', a:'ont fait', aNote:'faire connaissance＝結識（固定搭配）' },
+  { lesson:17, topic:'passe-compose', type:'fill', q:'Immédiatement, il y _____ (avoir) une connexion entre eux.', zh:'兩人立刻產生了連結。', hint:'avoir → eu', a:'a eu', aNote:'il y a（有）的passé composé：il y a eu' },
+  { lesson:17, topic:'passe-compose', type:'fill', q:'Ils _____ (choisir) de rester professionnels.', zh:'他們選擇保持專業。', hint:'-ir規則動詞', a:'ont choisi', aNote:'choisir → choisi（avoir）' },
+  { lesson:17, topic:'passe-compose', type:'choose', q:'「Ils _____ mariés deux ans après leur rencontre.」空格填什麼？', hint:'反身動詞助動詞', a:'se sont', aNote:'反身動詞一律配être：ils se sont mariés（分詞+s跟主詞配合）', opts:['se sont','ont','se ont','sont'] },
+  { lesson:17, topic:'passe-compose', type:'fill', q:'Encore une fois, ils _____ (prendre) leur temps.', zh:'他們又再一次慢慢來。', hint:'prendre → pris', a:'ont pris', aNote:'prendre son temps＝慢慢來（固定搭配）' },
+  { lesson:17, topic:'passe-compose', type:'fill', q:'Leur premier enfant Souleymane _____ (naître) en 2017.', zh:'他們的第一個孩子2017年出生。', hint:'être家族，陽性主詞', a:'est né', aNote:'naître配être；enfant是陽性，né不加e' },
+  { lesson:17, topic:'passe-compose', type:'fill', q:'Ils _____ (accueillir) une petite fille en 2020.', zh:'他們在2020年迎來一個女兒。', hint:'accueillir → accueilli', a:'ont accueilli', aNote:'accueillir un enfant比avoir un enfant更文學/正式' },
+  { lesson:17, topic:'passe-compose', type:'fill', q:'Ils _____ (ne pas vouloir) dire son prénom aux médias.', zh:'他們不願意向媒體透露孩子的名字。', hint:'否定PC：ne+助動詞+pas+分詞', a:"n'ont pas voulu", aNote:'vouloir → voulu；否定包住助動詞ont' },
+  { lesson:17, topic:'passe-compose', type:'fill', q:'Tahar Rahim _____ (déclarer) dans une interview avec le magazine Elle.', zh:'Tahar Rahim 在《Elle》雜誌的專訪中表示。', hint:'-er動詞規則分詞', a:'a déclaré', aNote:'déclarer → déclaré（avoir）' },
 ];
 // ── ID 函數 ──
 function qId(q) {
