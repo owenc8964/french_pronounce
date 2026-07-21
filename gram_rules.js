@@ -252,7 +252,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'negation', name:'Négation & quantités', icon:'🚫', zone:'A2', cat:'base',
-    lessons:[1,6,16], topics:['negation','frequency-adverbs','intensite'], unlocked:true,
+    lessons:[1,6,16,18], topics:['negation','frequency-adverbs','intensite'], unlocked:true,
     rule:{
       title:'否定家族＋頻率＋強度 — ne...X 換尾巴',
       why:'原本真正的否定詞只有 ne，後面那些字全是加強語氣的名詞：pas＝一步（「連一步都不走」）、personne＝一個人、rien＝一件東西（拉丁 rem）、jamais＝永遠。講了幾百年，加強的字反而搶走了否定的意義——這就是為什麼今天「換尾巴」就換否定意思，也是為什麼口語常把 ne 丟掉（je sais pas）：真正扛意義的是尾巴。否定後冠詞變 de 跟 beaucoup de 同邏輯——數量歸零也是一種數量。',
@@ -262,11 +262,15 @@ const GRAM_POINTS = [
         '頻率光譜：toujours（總是）> souvent > parfois > rarement > jamais',
         '強度光譜：un peu < assez < très/beaucoup < trop（過頭，帶負面）',
         'très + 形容詞（très grand）；beaucoup + 動詞後（je mange beaucoup）',
+        'passé composé 裡 pas/plus/rien/jamais 夾在助動詞和分詞中間（il n\'a rien mangé）；personne是例外，放分詞後面（il n\'a vu personne）',
+        'personne 當主詞放動詞/助動詞前（Personne n\'est venu）；當受詞（COD）放動詞/分詞後（Je n\'ai vu personne）——跟一般主詞位置規則一致，不是特例',
       ],
       examples:[
         { fr:'On ne va jamais au musée le mardi.', zh:'我們星期二從不去博物館。' },
         { fr:'Je ne connais personne à Paris.', zh:'我在巴黎誰都不認識。' },
         { fr:'Il travaille trop.', zh:'他工作過頭了。（trop帶負面）' },
+        { fr:"Je n'ai rencontré personne à la fête.", zh:'我在派對上誰都沒遇到。（PC中personne放分詞後）' },
+        { fr:"Il ne fait plus de boxe.", zh:'他不再打拳了。（狀態改變）' },
       ]}},
 
   { id:'adjectifs-accord', name:'Accord & place des adjectifs', icon:'🎨', zone:'A2', cat:'adjectifs',

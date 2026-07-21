@@ -69,7 +69,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | **目標** | CLB 7（= CEFR B2）|
 | **考試** | TEF Canada 或 TCF Canada |
 | **截止日** | 2027年6月1日 |
-| **目前程度** | A1→A2過渡，第16課，約 24+ 小時課時 |
+| **目前程度** | A2（07-16已切換CLB_STAGE），第18課 |
 | **每天目標** | 1.5–2 小時有效練習（含通勤被動聽力）|
 | **總時數目標** | 700 小時（多方研究數據交叉驗證）|
 | **產出能力評估的落差** | 系統目前對「辨識/回想」（quiz正確率、複習卡）評分很扎實，但對「口說/寫作/聽力理解」幾乎沒有真正評分機制——造句是 Claude 口頭給分沒有系統化趨勢，speaking/listening 日誌只記錄有沒有做、不評分內容。若要更準評估，未來可考慮定期做完整模擬 TCF/TEF 口說寫作題並照官方標準評分記錄趨勢（已跟 Owen 提過，尚未實作，見下方「下一步」）|
@@ -84,26 +84,26 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `session_timer.js` | 跨頁 session 計時器：`window.ClbSession` API，timestamp累計跨頁連續、練習頁常駐pill、**閒置3分鐘自動暫停**（用最後操作時間當停止點，不算閒置時間）、dashboard結算寫入700h、**07-11修復多分頁閒置搶跑＋start()洗掉進度兩個bug**（背景分頁不做閒置檢查、start()對已啟動session防呆） | ✅ 修復（07-11）|
 | `sync_supabase.js` | 跨裝置同步：所有 `clb7_*` 存到 Supabase，開頁pull合併、變動debounce **700ms**（原2.5s縮短）自動push、**切前景也會pull**（原本只有切背景push）、離頁再push、各頁完成關鍵動作時**主動立即push**（不等debounce）|✅|
 | `quiz.html` | SRS Quiz 550+題，熱身模式、**策略選課器**（未練過/錯誤率高/量少/久沒練 排序）、暫停、更正誤判、**07-11新增`.q-zh`區塊**：fill題型若有`zh`欄位直接顯示中文句意（不用點提示）、**07-16新增`getPool()`過濾**：topic對應的文法點若在`GRAM_POINTS`被鎖（`unlocked:false`）就不出題 | ✅ 修復（07-11/16）|
-| `table_drill.html` | 表格填空：**42個表格**（涵蓋第1–17課，含passé composé系列、imparfait無人稱動詞表、durée/qui-que/intensité「文法詞」類型、**07-17新增2個不規則分詞表**），**錯題複習輪**（答錯進複習輪直到全對，主輪成績不被洗掉）、切難度/類型有進度時confirm確認、一輪6個表 | ✅ 大修（07-06/07/10/17）|
+| `table_drill.html` | 表格填空：**43個表格**（涵蓋第1–18課，含passé composé系列、imparfait無人稱動詞表、durée/qui-que/intensité/**négation（07-21新增）**「文法詞」類型），**錯題複習輪**（答錯進複習輪直到全對，主輪成績不被洗掉）、切難度/類型有進度時confirm確認、一輪6個表 | ✅ 大修（07-06/07/10/17/21）|
 | `verb_sprint.html` | 動詞反射衝刺：60秒、9動詞×6人稱、起手計時、反射熱力圖，**已補TTS發音**（原形+答錯自動唸正解） | ✅ |
 | `review.html` | 複習卡：一包10張、SRS+successive relearning，**到期卡池已加洗牌**（避免同一批到期卡每天同順序重複）、發音邏輯已跟其他頁統一、卡片旁加「🤔語意不清」回饋按鈕、**07-11新增🔴手動標記不熟**（`clb7_hard_flags`，累加次數，未到期的標記卡會加碼塞進當天包，最多`FLAG_BONUS_MAX`張） | ✅ 修復（07-07/11）|
 | `reading.html` | 閱讀理解 20篇 A1–A1+短文，純法文+解說 | ✅ |
 | `writing.html` | 每日2句造句，複製prompt→claude.ai→貼回記錄 | ✅ |
 | `sentence_drill.html` | **新增（07-07）**：中翻法造句練習，每天固定5句新句＋到期複習，沿用review.html同一套SRS引擎（1/3/7/14/30天），**答錯排到這輪最後重考，磨到全部答對才算完成**，跟review.html的卡片機制共用「包尾重試」邏輯、**07-11同步補上🔴手動標記不熟**（跟review.html共用同一個`clb7_hard_flags`，id前綴不同不會撞） | ✅ 新建（07-11補標記功能）|
-| `sentences.js` | **新增（07-07）**：常用句庫（目前108句，第1–16課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
+| `sentences.js` | **新增（07-07）**：常用句庫（目前136句，第1–18課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
 | `listening.html` | 聽力：**真實資源**（RFI + InnerFrench Spotify embed；Podcast Français Facile的A1對話系列連結卡）+ **自出TTS聽力測驗**（8篇，對齊已學課程）+ **07-09/07-10/07-11新增「真人語速測驗」**（LISTENING_BANK的`audioUrl`類型：真實mp3直接播放＋Claude原創TCF/TEF風格選擇題，目前10篇：麵包店/車站/市場/肉店/魚店/藥局/問路/**起司店/咖啡廳/郵局**，逐字稿核對用連結卡連到來源、不存對方文字）+ **07-10新增「文化深掘Podcast」板塊**（見下方07-10記錄，目前CULTURE_BANK是空陣列，等Owen放音檔進來）+ **07-16新增「🎬影集精讀Shadowing」板塊**（記錄集數/第幾遍/第2遍可貼整理的句型，`?shadow=1`從dashboard進來自動捲到這張卡）| ✅ 大改（07-06～07-16）|
-| `french_notes.html` | 第1–16課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音）、**07-11新增選字標記**（選取文字後可標🔴不熟／⭐重點，存`clb7_notes_marks`，重整頁面用文字比對重新套用，懸浮面板有「複製標記給Claude」） | ✅ 修復（07-07/11）|
-| `chunks.js` | 複習卡庫：**986張**，自動從筆記抽取（1–17課，07-07補第15課88張、07-10補第16課80張、07-17補第17課45張含課文慣用語），**07-11修正2張第14課語意不清的卡** | ✅ |
-| `questions.js` | 共用題庫（**BANK 688題** + AGREE_BANK 247題），第1–17課，**07-11新增53個`zh`欄位**（fill題型無中文語境的補句意）、**07-17新增第17課24題**（passé composé/duree，含10題課文改編句） | ✅ |
-| `gram_rules.js` | **新增（07-11）**：文法框架單一真相來源——`GRAM_POINTS` 32個文法點（19現役+13未開課佔位）含 topics 對應與規則卡（中文要點+法文例句）、`GRAM_CATS`7大類、`gramStageOf`/`gramSetStage`/`gramFlaggedIds`/`gramFlagQuestion` helpers。map/gram_trainer/quiz/dashboard 四頁共用 | ✅ 新建 |
+| `french_notes.html` | 第1–18課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音）、**07-11新增選字標記**（選取文字後可標🔴不熟／⭐重點，存`clb7_notes_marks`，重整頁面用文字比對重新套用，懸浮面板有「複製標記給Claude」） | ✅ 修復（07-07/11）|
+| `chunks.js` | 複習卡庫：**1016張**，自動從筆記抽取（1–18課，07-07補第15課88張、07-10補第16課80張、07-17補第17課40張含課文慣用語、07-21補第18課35張），**07-11修正2張第14課語意不清的卡** | ✅ |
+| `questions.js` | 共用題庫（**BANK 704題** + AGREE_BANK 247題），第1–18課，**07-11新增53個`zh`欄位**（fill題型無中文語境的補句意）、**07-17新增第17課24題**（passé composé/duree，含10題課文改編句）、**07-21新增第18課16題**（vocab-parcours-vie新topic + negation完整版） | ✅ |
+| `gram_rules.js` | **新增（07-11）**：文法框架單一真相來源——`GRAM_POINTS` 32個文法點（19現役+13未開課佔位）含 topics 對應與規則卡（中文要點+法文例句）、`GRAM_CATS`7大類、`gramStageOf`/`gramSetStage`/`gramFlaggedIds`/`gramFlagQuestion` helpers。map/gram_trainer/quiz/dashboard 四頁共用。**07-21**：`negation`點補lesson 18＋passé composé中的位置規則／personne主詞vs受詞兩條rule points | ✅ 新建 |
 | `gram_trainer.html` | **新增（07-11）**：文法路徑練習器——階段2半開卷（規則卡固定顯示）/階段3遮規則（答錯自動翻開），只出打字題杜絕選項污染，包尾重試磨到全對，首次作答≥80%升階，每階段可手動跳過；完成寫`clb7_quiz_done`（=步驟②）；階段2不寫SRS（開卷不灌精熟統計）、階段3寫；guided=1自動挑「階段最低+錯誤率最高」的點 | ✅ 新建 |
-| `codex.js` | **新增（07-11晚）**：📚文法資料庫（記憶宮殿）資料層——9大章50節122條，A1→B2全境（A1:29/A2:47/B1:34/B2:12），每條永久座標（如`5-2-2`）＋brief＋說明＋例句＋⚠️例外＋🆚相似對比＋topic對應（37個topic有門牌）。**座標鐵律：一經指定永不重編**（Owen靠位置記憶）。`codexLocate(topic)`給練習頁定位用 | ✅ 新建 |
+| `codex.js` | **新增（07-11晚）**：📚文法資料庫（記憶宮殿）資料層——9大章50節122條，A1→B2全境（A1:29/A2:47/B1:34/B2:12），每條永久座標（如`5-2-2`）＋brief＋說明＋例句＋⚠️例外＋🆚相似對比＋topic對應（37個topic有門牌）。**座標鐵律：一經指定永不重編**（Owen靠位置記憶）。`codexLocate(topic)`給練習頁定位用。**07-21**：7-2-2補「personne當主詞vs受詞位置」pts（座標數不變，122條） | ✅ 新建 |
 | `verb_reference.html` | 動詞參考表，發音邏輯已跟其他頁統一（原本完全沒篩選） | ✅ 修復（07-07）|
 | `answer_cards.js` | **新增（07-16）**：TEF Canada 高頻話題 Answer Card 資料——15個主題（自我介紹/家庭/工作/教育/興趣/飲食/旅行/加拿大/住家/購物/健康/科技/環保/社交/未來計畫），內容是 Owen 真實回答經 Claude 修成正確法文的 A1 種子版本，`versions[]` 之後會長出 A2/B1/B2 | ✅ 新建 |
 | `answer_card.html` | **新增（07-16）**：Answer Card 練習頁，完全複用 sentence_drill.html 的 SRS 引擎（1/3/7/14/30天、包尾重試、🔴手動標記），差異：新卡上限3/天（內容較重）、卡片首次畢業自動記進 `clb7_ac_upgrade_ready`（下次 session 要檢查，幫該卡寫下一版本）。**07-16 當天 Owen 決定排進每日9步番号**（中間輪替群組6→7步：study/drill/sprint/review/sentence/answercard/listen），📊每日完成率分析同步加入此步驟 | ✅ 新建，已排進處方 |
 | `tracker.html` | 舊版計時器（autostart、切分頁自動暫停）+ 700h 進度，功能已被 session_timer.js 取代但保留；**07-16新增：`clb7_tracker` 記錄清單補上 ✏️改時長／🗑刪除**（Owen 發現記錯了以前只能存進去無法修正），順便補上 `sync_supabase.js`（原本完全沒同步）；dashboard session bar 加連結入口 | ✅ 修復（07-16）|
 | `speaking.html` | 口說日誌（僅記錄有無/時長，不評分內容） | ✅ |
-| `map.html` | 課程地圖（63格），已更新至第17課；**07-11新增「📐文法大局觀」分頁**（7大類文法點階段badge）＋**07-11晚新增第三分頁「📚文法資料庫」**（codex.js的9章122條，見林/見樹展開、等級篩選、搜尋、`#cx-5-2-2`座標直達）| ✅ |
+| `map.html` | 課程地圖（63格），已更新至第18課；**07-11新增「📐文法大局觀」分頁**（7大類文法點階段badge）＋**07-11晚新增第三分頁「📚文法資料庫」**（codex.js的9章122條，見林/見樹展開、等級篩選、搜尋、`#cx-5-2-2`座標直達）；**07-21**：`travail`tile的detail補上第18課「chercher/trouver」「專業artistique」職業詞彙 | ✅ |
 | `ROADMAP.md` | **新增（07-12）**：CLB7考試路線圖，**以課程等級（A1/A2/B1/B2）分野，不用月曆**——每階段定訓練配比、輸出練習形態、畢業條件、進場動作。**07-13補「老師課堂實測資訊」**：DELF/TEF考試結構完整記錄、口說三部曲、字卡題池、老師應試哲學。dashboard讀`CLB_STAGE`常數決定處方文案，換階段=改這一行+照該階段進場動作逐條做 | ✅ 新建 |
 | `RUBRICS.md` | **新增（07-12）**：寫作/口說分級評分尺（A2/B1/B2三把尺，各自問不同問題——A2問「溝通成立嗎」不用B2標準打擊人）＋批改者守則（一次最多糾2-3錯、錯誤標📍codex座標、禁泛泛鼓勵）。writing.html的複製prompt已內建A2尺批改指令 | ✅ 新建 |
 | `writing_tasks.js` | **新增（07-12）**：依課出題寫作題庫，取代「憑空造2句」——情境任務＋指定材料＋下筆順序。目前第1–17課共34題（每課2題），第17課W17a/W17b已是A2 tâche1形態（40-60字訊息） | ✅ 新建 |
@@ -475,6 +475,23 @@ Owen 貼了兩堂課的資料：07-13 一見鐘情閱讀（該堂逐字稿未入
 **判斷資料沒事的依據（沿用07-16建立的邏輯）**：apply()對雲端payload是「有的key才覆蓋本機，沒有的key不刪本機」，Owen真實裝置的本機資料完全不受影響。請Owen直接打開正式網站後，`updated_at`更新、payload從2恢復到353（跟事故前key數完全一致），curl確認259個quiz SRS key、21張複習卡進度、`clb7_gram_stage`、`clb7_last_lesson`全部完整，兩筆測試污染key確認不存在。**全程沒有真實資料遺失**，只是雲端中繼站又被短暫推空。
 
 **協定缺口（07-16補強後仍然發生第三次，說明「記得切ROOM」這件事本身不可靠）**：這次是**忘記切TEST ROOM**才直接動手測試——不是協定執行有漏洞，是根本沒啟動協定。07-16的補強（ROOM切正式值後立刻preview_stop）解決的是「切換後的風險窗口」，但沒解決「一開始就忘記切」這個更前面的失誤點。**下一個 session 起：任何要跑`checkAnswer()`/`grade()`/會寫SRS或`clb7_*`的操作前，先執行`grep "var ROOM" sync_supabase.js`確認現在是不是TEST值再動手，不要憑記憶判斷「這應該不會寫入」——這條已經是CLAUDE.md鐵律但這次證明光有鐵律不夠，要養成「動手前先grep確認」的具體動作**，而不是「應該有切」的印象。
+
+---
+
+### 07-21：第18課（A2・Parcours de vie＋La négation完整版）入庫——DELF/A2課本人生大事詞彙＋假期閱讀文＋否定句位置規則
+
+Owen 貼了 `~/Desktop/0721/` 5張課本截圖（Parcours de vie 詞彙頁、Vacances en famille 課文、法語縮字文化框、表達喜好句型框、La phrase négative 文法頁）＋一份英中法混雜的課堂逐字稿。內容：**Parcours de vie**（戀愛/結婚/生子/搬家/離婚等人生階段動詞、la vie personnelle 名詞、學業職涯詞彙、professions artistiques 陰陽性例外）、課文《Vacances en famille》（全家運動活動：canoë-kayak/stand-up paddle/vélo/via ferrata）、Pour parler de ses goûts（喜好強度光譜）、**La négation 完整版**（延續第1/6/16課的 ne...pas/jamais/plus/rien/personne，這次補齊四組「肯定↔否定」對照＋passé composé 裡的位置規則＋personne 當主詞 vs 受詞的差異，這是本課最重要的新增文法細節）。
+
+**九項連動全部補齊**（沿用07-11起確立的清單，逐一核對）：
+1. `french_notes.html`：新增 `lesson-18`，8個unit（Parcours de vie動詞/vie personnelle名詞、學業職涯+professions artistiques、課文閱讀、表達喜好、La négation完整版、老師課堂法語、發音警報、糾錯摘要），106處喇叭、30則phrase-list、8個compare-table。
+2. `questions.js`：新增16題（vocab-parcours-vie新topic 6題、likes-hobbies-sports 2題、negation 8題），`BANK` 688→704；`quiz.html`/`dashboard.html`的`TOPIC_LABELS`同步補`vocab-parcours-vie`。
+3. `chunks.js`：hand-curated腳本生成35張新卡（沿用07-10確立的id碰撞遞增後綴規則），981→1016張。
+4. `table_drill.html`：新增1個「文法詞」表格`negation-mots`（rien/personne/jamais/plus選填，6列），42→43個表格。
+5. `sentences.js`：新增10句（S_L18_1~10），126→136句。
+6. `gram_rules.js`：既有`negation`點（07-11已建立，涵蓋pas/jamais/plus/rien/personne+頻率/強度）補`lessons`陣列加18、新增2條rule points（PC中的位置規則、personne主詞vs受詞）＋2個新example。**這是延伸既有文法點，不是新建**——因為négation框架本來就橫跨多課逐步加深，不是每次都要開新點。
+7. `map.html`：`CURRENT_LESSON` 17→18；否定句已透過GRAM_POINTS驅動的「📐文法大局觀」分頁自動反映，不用手動改tile；`travail`（B1 zone，lesson:16）tile的detail欄位補上這次的chercher/trouver區分＋professions artistiques完整例子（沒有新建tile，跟L17「內容是既有主題延伸就不硬造新格子」的處理方式一致）。
+8. `codex.js`：7-2-2（jamais/plus/rien/personne换尾巴）補1條新pts——personne當主詞放動詞前、當受詞放動詞後，跟一般主詞位置規則一致（不是新座標，122條總數不變）。
+9. **驗證**（隔離ROOM，開始preview前已用`grep "var ROOM"`確認並手動切TEST——這是07-20事故後補上的具體動作，這次確實先做了）：quiz.html topic sprint模式顯示「⚡衝刺模式：人生大事詞彙（Parcours de vie）（6題）」且用真實UI作答「Elle cherche du travail...→trouvé」顯示「✓正確！」（SRS寫入路徑全通）；table_drill.html「文法詞」篩選器確認4個表格（含negation-mots）都在池中；review.html/sentence_drill.html console驗證CHUNKS/SENTENCES正確載入18課新資料；map.html console驗證CURRENT_LESSON=18、GRAM_POINTS的negation.lessons含18、codex.js總座標仍122條。測完ROOM改回正式值後**立刻preview_stop，沒有再navigate或互動**（07-16/07-20鐵律），grep確認repo無`TEST-DO-NOT-USE`殘留字串。
 
 ---
 

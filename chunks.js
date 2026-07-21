@@ -6868,4 +6868,249 @@ const CHUNKS = [
   "zh": "迎接一個孩子",
   "note": "比 avoir un enfant 更文學/正式"
  },
+ {
+  "id": "L18_avoir_un_coup_de_foudre_",
+  "lesson": 18,
+  "fr": "avoir un coup de foudre pour quelqu'un",
+  "zh": "對某人一見鍾情",
+  "note": "coup＝重擊；跟coup de soleil（曬傷）、coup de poing（一拳）同構詞"
+ },
+ {
+  "id": "L18_déménager_puis_s_instal",
+  "lesson": 18,
+  "fr": "déménager, puis s'installer",
+  "zh": "先搬家，再安頓下來",
+  "note": "兩個動作一前一後"
+ },
+ {
+  "id": "L18_être_célibataire_ou_en_c",
+  "lesson": 18,
+  "fr": "être célibataire ou en couple",
+  "zh": "單身或穩定交往中",
+  "note": ""
+ },
+ {
+  "id": "L18_faire_connaissance",
+  "lesson": 18,
+  "fr": "faire connaissance",
+  "zh": "認識、結識",
+  "note": "faire的固定搭配，不是connaître"
+ },
+ {
+  "id": "L18_se_faire_des_ami_e_s",
+  "lesson": 18,
+  "fr": "se faire des ami(e)s",
+  "zh": "交朋友",
+  "note": ""
+ },
+ {
+  "id": "L18_se_marier_avec_quelqu_un",
+  "lesson": 18,
+  "fr": "se marier avec quelqu'un",
+  "zh": "跟某人結婚",
+  "note": ""
+ },
+ {
+  "id": "L18_se_séparer_de_quelqu_un",
+  "lesson": 18,
+  "fr": "se séparer de quelqu'un",
+  "zh": "跟某人分手",
+  "note": "適用任何伴侶關係，不限已婚"
+ },
+ {
+  "id": "L18_tomber_amoureux_amoureu",
+  "lesson": 18,
+  "fr": "tomber amoureux, amoureuse de quelqu'un",
+  "zh": "愛上某人",
+  "note": "可以是慢慢發生，跟coup de foudre的「瞬間」對比"
+ },
+ {
+  "id": "L18_une_connaissance_pas_un",
+  "lesson": 18,
+  "fr": "une connaissance, pas un ami",
+  "zh": "點頭之交，不是朋友",
+  "note": "connaître（認識，動詞）≠ une connaissance（點頭之交，名詞）"
+ },
+ {
+  "id": "L18_le_conjoint_la_conjoint",
+  "lesson": 18,
+  "fr": "le conjoint, la conjointe",
+  "zh": "同居伴侶",
+  "note": "不用結婚也能這樣稱呼"
+ },
+ {
+  "id": "L18_le_marié_la_mariée",
+  "lesson": 18,
+  "fr": "le marié, la mariée",
+  "zh": "新郎、新娘",
+  "note": "只在結婚當天用，婚後改叫le mari/la femme"
+ },
+ {
+  "id": "L18_c_est_la_plus_belle_renc",
+  "lesson": 18,
+  "fr": "c'est la plus belle rencontre",
+  "zh": "這是最美的相遇",
+  "note": "la rencontre可以加形容詞"
+ },
+ {
+  "id": "L18_chercher_du_travail",
+  "lesson": 18,
+  "fr": "chercher du travail",
+  "zh": "找工作（還沒找到）",
+  "note": "trouver du travail才是已經找到"
+ },
+ {
+  "id": "L18_obtenir_un_diplôme",
+  "lesson": 18,
+  "fr": "obtenir un diplôme",
+  "zh": "取得文憑",
+  "note": "tenir握住→obtenir取得，同一字根"
+ },
+ {
+  "id": "L18_travailler_dans_une_entr",
+  "lesson": 18,
+  "fr": "travailler dans une entreprise",
+  "zh": "在企業工作",
+  "note": "醫生/牙醫診所不叫entreprise，叫cabinet"
+ },
+ {
+  "id": "L18_un_cabinet_dentaire",
+  "lesson": 18,
+  "fr": "un cabinet dentaire",
+  "zh": "牙醫診所",
+  "note": "醫療診所固定用cabinet，不用entreprise"
+ },
+ {
+  "id": "L18_un_e_écrivain_e_",
+  "lesson": 18,
+  "fr": "un(e) écrivain(e)",
+  "zh": "作家（寫書）",
+  "note": "跟寫歌的compositeur、寫劇本的scénariste分開"
+ },
+ {
+  "id": "L18_un_compositeur_une_comp",
+  "lesson": 18,
+  "fr": "un compositeur, une compositrice",
+  "zh": "作曲家（寫歌）",
+  "note": "-teur→-trice規則變化"
+ },
+ {
+  "id": "L18_un_chanteur_une_chanteu",
+  "lesson": 18,
+  "fr": "un chanteur, une chanteuse",
+  "zh": "歌手",
+  "note": "⚠️例外：-teur→-teuse，不是-trice"
+ },
+ {
+  "id": "L18_un_e_scénariste",
+  "lesson": 18,
+  "fr": "un(e) scénariste",
+  "zh": "編劇",
+  "note": "寫電影劇本 scénario 的人"
+ },
+ {
+  "id": "L18_profiter_de_l_eau_fraîch",
+  "lesson": 18,
+  "fr": "profiter de l'eau fraîche",
+  "zh": "享受清涼的水",
+  "note": ""
+ },
+ {
+  "id": "L18_faire_une_balade_sur_une",
+  "lesson": 18,
+  "fr": "faire une balade sur une rivière",
+  "zh": "在河上隨意划行、閒晃",
+  "note": "balade＝promenade的同義字"
+ },
+ {
+  "id": "L18_un_bon_moyen_de_rester_e",
+  "lesson": 18,
+  "fr": "un bon moyen de rester en bonne santé",
+  "zh": "保持健康的好方法",
+  "note": "moyen＝manière的近義字"
+ },
+ {
+  "id": "L18_en_plein_air",
+  "lesson": 18,
+  "fr": "en plein air",
+  "zh": "戶外",
+  "note": "對比en intérieur（室內）"
+ },
+ {
+  "id": "L18_permettre_aux_plus_petit",
+  "lesson": 18,
+  "fr": "permettre aux plus petits de monter sans problème",
+  "zh": "讓小小孩也能順利往上爬",
+  "note": "les plus petits＝相對大人而言的小孩；monter比escalader廣義"
+ },
+ {
+  "id": "L18_Vous_n_avez_rien_oublié_",
+  "lesson": 18,
+  "fr": "Vous n'avez rien oublié ?",
+  "zh": "你什麼都沒忘吧？",
+  "note": "法文反著問：你沒忘記什麼——不是英文式「你忘了什麼嗎」"
+ },
+ {
+  "id": "L18_Ce_n_est_pas_du_tout_mon",
+  "lesson": 18,
+  "fr": "Ce n'est pas du tout mon truc.",
+  "zh": "這完全不是我的菜",
+  "note": "mon truc是mon chose的口語替代字"
+ },
+ {
+  "id": "L18_Ma_passion_c_est_les_je",
+  "lesson": 18,
+  "fr": "Ma passion, c'est les jeux vidéo.",
+  "zh": "我的熱情所在是電玩",
+  "note": "強調真心熱愛的固定句型 Ma passion, c'est..."
+ },
+ {
+  "id": "L18_J_aime_bien_sortir_",
+  "lesson": 18,
+  "fr": "J'aime bien sortir.",
+  "zh": "我還蠻喜歡出門的",
+  "note": "j'aime bien比j'aime弱，不是「很喜歡」"
+ },
+ {
+  "id": "L18_Je_ne_connais_personne_i",
+  "lesson": 18,
+  "fr": "Je ne connais personne ici.",
+  "zh": "我在這裡誰都不認識",
+  "note": "personne當COD，放動詞後"
+ },
+ {
+  "id": "L18_Je_n_ai_rencontré_person",
+  "lesson": 18,
+  "fr": "Je n'ai rencontré personne.",
+  "zh": "我沒遇到任何人",
+  "note": "PC裡personne是例外，放分詞後面（不是夾在中間）"
+ },
+ {
+  "id": "L18_Personne_n_est_là_",
+  "lesson": 18,
+  "fr": "Personne n'est là.",
+  "zh": "沒有人在這裡",
+  "note": "personne當主詞時放在最前面，跟一般主詞規則一樣"
+ },
+ {
+  "id": "L18_Il_ne_fait_plus_de_boxe_",
+  "lesson": 18,
+  "fr": "Il ne fait plus de boxe.",
+  "zh": "他不再打拳了",
+  "note": "ne...plus＝狀態改變（曾經做過，現在停了）"
+ },
+ {
+  "id": "L18_Elle_n_a_jamais_fait_de_",
+  "lesson": 18,
+  "fr": "Elle n'a jamais fait de l'escalade.",
+  "zh": "她從沒做過攀岩",
+  "note": "jamais夾在助動詞a和分詞fait中間"
+ },
+ {
+  "id": "L18_Il_n_y_a_plus_de_pain_",
+  "lesson": 18,
+  "fr": "Il n'y a plus de pain.",
+  "zh": "麵包沒了",
+  "note": "否定的plus，s不發音，跟肯定「更多」的plus發音不同"
+ },
 ];

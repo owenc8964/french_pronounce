@@ -2596,6 +2596,8 @@ const CODEX_PART2 = [
        fr:'Personne ne sait. Rien ne va.', zh:'沒有人知道。什麼都不順。'},
       {r:'⚠️ plus在否定意義時最後的s不發音，發音的話反而變成「更多」的肯定意思——同一個字兩種發音兩種意思',
        fr:"Il n'y a plus de pain.", zh:'麵包沒了。（plus不發音=否定）'},
+      {r:'personne 的位置看它在句子裡的角色：當主詞放在動詞（或助動詞）前面，跟一般主詞位置規則完全一致；當受詞（COD）才放在動詞/分詞後面',
+       fr:"Personne n'est venu. / Je n'ai vu personne.", zh:'沒有人來。（主詞在前）／我誰都沒看到。（COD在後）'},
     ],
     grid:{head:['否定尾巴','意思','例句'],
           rows:[['jamais','從不','Je ne bois jamais de café.'],

@@ -610,6 +610,21 @@ const TABLES = [
     ]
   },
 
+  {
+    id:'negation-mots', title:'la négation', zh:'rien／personne／jamais／plus 選填',
+    type:'gram', lesson:18,
+    note:'rien=沒東西、personne=沒人、jamais=從不、plus=不再；personne在passé composé裡放分詞後面（例外，其他三個夾在助動詞跟分詞中間）',
+    headers:['句子','填入'],
+    rows:[
+      ["Il n'a ...... mangé ce matin. (沒吃東西)",                     {a:'rien',    h:false}],
+      ["Nous n'avons ...... vu ce film. (從沒看過)",                   {a:'jamais',  h:true }],
+      ["Il ne fait ...... de sport depuis son opération. (不再做了)",   {a:'plus',    h:true }],
+      ["Elle n'a rencontré ...... à la fête. (誰都沒遇到，PC受詞)",      {a:'personne', h:true }],
+      ["...... n'est venu à la réunion. (沒有人來，personne當主詞)",     {a:'Personne', h:true }],
+      ["Je ne connais ...... dans cette ville. (誰都不認識)",           {a:'personne', h:true }],
+    ]
+  },
+
   // ── 形容詞 ───────────────────────────────────────────────
 
   {

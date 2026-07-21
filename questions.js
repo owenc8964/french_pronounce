@@ -937,6 +937,24 @@ const BANK = [
   { lesson:17, topic:'passe-compose', type:'fill', q:'Ils _____ (accueillir) une petite fille en 2020.', zh:'他們在2020年迎來一個女兒。', hint:'accueillir → accueilli', a:'ont accueilli', aNote:'accueillir un enfant比avoir un enfant更文學/正式' },
   { lesson:17, topic:'passe-compose', type:'fill', q:'Ils _____ (ne pas vouloir) dire son prénom aux médias.', zh:'他們不願意向媒體透露孩子的名字。', hint:'否定PC：ne+助動詞+pas+分詞', a:"n'ont pas voulu", aNote:'vouloir → voulu；否定包住助動詞ont' },
   { lesson:17, topic:'passe-compose', type:'fill', q:'Tahar Rahim _____ (déclarer) dans une interview avec le magazine Elle.', zh:'Tahar Rahim 在《Elle》雜誌的專訪中表示。', hint:'-er動詞規則分詞', a:'a déclaré', aNote:'déclarer → déclaré（avoir）' },
+
+  // ── 第18課：Parcours de vie 詞彙＋否定句完整版 ──
+  { lesson:18, topic:'vocab-parcours-vie', type:'trans', q:'我五年前搬家了，現在我安頓下來了。', hint:'déménager / s\'installer', a:"J'ai déménagé il y a cinq ans, maintenant je suis installé(e).", aNote:'déménager接著才s\'installer，兩個動作有先後', askClaude:true },
+  { lesson:18, topic:'vocab-parcours-vie', type:'choose', q:'「我對他一見鍾情」怎麼說？', hint:'coup de foudre 還是 tomber amoureux', a:"J'ai eu un coup de foudre pour lui.", aNote:'coup de foudre＝瞬間；tomber amoureux可以是慢慢發生', opts:["J'ai eu un coup de foudre pour lui.","Je suis tombé amoureux pendant longtemps.","J'ai un conjoint pour lui.","Je connais une connaissance de lui."] },
+  { lesson:18, topic:'vocab-parcours-vie', type:'fill', q:'Elle cherche du travail, mais elle ne l\'a pas encore _____ .', zh:'她在找工作，但還沒找到。', hint:'find（已完成）', a:'trouvé', aNote:'chercher＝找（過程）；trouver＝找到（結果）' },
+  { lesson:18, topic:'vocab-parcours-vie', type:'choose', q:'寫書的人叫作？', hint:'跟寫歌/寫劇本的人分開', a:'un écrivain', aNote:'écrivain寫書、compositeur寫歌、scénariste寫電影劇本', opts:['un écrivain','un compositeur','un scénariste','un interprète'] },
+  { lesson:18, topic:'vocab-parcours-vie', type:'fill', q:'Elle est chanteuse, il est _____ . (musicien的陰性形不用，這裡要chanteur的陽性搭檔)', zh:'她是女歌手，他是男歌手。', hint:'chanteur的陰性是chanteuse（例外）', a:'chanteur', aNote:'chanteur→chanteuse是-eur/-euse例外，不是一般的-teur/-trice' },
+  { lesson:18, topic:'vocab-parcours-vie', type:'trans', q:'她離婚了，現在單身。', hint:'divorcer / célibataire', a:'Elle a divorcé, maintenant elle est célibataire.', aNote:'divorcer專指已婚者；沒結婚分手要用se séparer', askClaude:true },
+  { lesson:18, topic:'likes-hobbies-sports', type:'choose', q:'「這完全不是我的菜」法文怎麼說最道地？', hint:'比 je n\'aime pas 更強烈的口語說法', a:"Ce n'est pas du tout mon truc.", aNote:'mon truc是mon chose的口語替代；ce n\'est pas du tout＝完全不是', opts:["Ce n'est pas du tout mon truc.","J'aime bien ça beaucoup.","C'est ma passion complètement.","Je suis fan de ça pas."] },
+  { lesson:18, topic:'likes-hobbies-sports', type:'fill', q:"J'aime _____ sortir. (比 j'aime 弱一點的說法)", zh:'我還蠻喜歡出門的。', hint:'aime + 一個字＝比較保留', a:'bien', aNote:'j\'aime bien比j\'aime弱，不是「很喜歡」的意思，這是常見誤會' },
+  { lesson:18, topic:'negation', type:'choose', q:'「Personne」當句子的主詞時，位置放在哪裡？', hint:'跟一般主詞規則一樣', a:'動詞前面（跟ne一起）', aNote:'Personne n\'est là.——當主詞時放最前面；當受詞（COD）才放動詞/分詞後面', opts:['動詞前面（跟ne一起）','動詞後面','句尾','分詞後面'] },
+  { lesson:18, topic:'negation', type:'fill', q:"Je n'ai rencontré _____ à la fête. (nobody, PC)", zh:'我在派對上誰都沒遇到。', hint:'personne在PC裡的位置是例外', a:'personne', aNote:'personne當COD時放在分詞後面（Je n\'ai rencontré personne），不像pas/rien夾在中間' },
+  { lesson:18, topic:'negation', type:'choose', q:'「Il n'+"'"+'a rien mangé.」中，rien放在哪兩個字中間？', hint:'跟pas同一個位置規則', a:'助動詞和過去分詞之間', aNote:'pas/plus/rien/jamais在PC裡都夾在助動詞和分詞中間；只有personne是例外放分詞後', opts:['助動詞和過去分詞之間','分詞和受詞之間','主詞和助動詞之間','句尾'] },
+  { lesson:18, topic:'negation', type:'fill', q:'Il a encore gagné une compétition. → Il n\'a _____ gagné de compétition.', zh:'他又贏了一場比賽。→他沒有再贏得比賽了。', hint:'狀態改變的否定：encore→?', a:'plus', aNote:'encore（再次發生）↔ ne...plus（不再發生），是「狀態改變」這組的否定' },
+  { lesson:18, topic:'negation', type:'fill', q:'Nous avons déjà vu ce film. → Nous n\'avons _____ vu ce film.', zh:'我們已經看過這部電影。→我們從沒看過這部電影。', hint:'時間頻率的否定：déjà→?', a:'jamais', aNote:'déjà（已經）↔ ne...jamais（從未），時間頻率這組的否定' },
+  { lesson:18, topic:'negation', type:'trans', q:'她從沒做過攀岩。', hint:'ne...jamais + PC', a:"Elle n'a jamais fait de l'escalade.", aNote:'jamais夾在助動詞a和分詞fait中間', askClaude:true },
+  { lesson:18, topic:'negation', type:'choose', q:'否定詞 "plus"（不再）跟肯定詞 "plus"（更多）唸法差在哪？', hint:'發音警報：s 的有無', a:'否定s不發音，肯定s要發音', aNote:'ne...plus的s是靜音的；plus de、moins/plus比較級的plus要發s音——同拼字兩種意思兩種發音', opts:['否定s不發音，肯定s要發音','否定s要發音，肯定s不發音','兩者都發音','兩者都不發音'] },
+  { lesson:18, topic:'negation', type:'trans', q:'他們沒有邀請任何人來婚禮。', hint:'personne當COD', a:"Ils n'ont invité personne à leur mariage.", aNote:'invité tout le monde → invité personne，personne放分詞後', askClaude:true },
 ];
 // ── ID 函數 ──
 function qId(q) {
