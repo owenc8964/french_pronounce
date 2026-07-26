@@ -885,6 +885,13 @@ const BANK = [
   { lesson:16, topic:'duree', type:'choose', q:'「il y a deux ans」是什麼意思？', hint:'', a:'兩年前（動作已結束）', aNote:'跟「à deux ans」（在兩歲時）、「depuis deux ans」（持續兩年到現在）不同', opts:['兩年前（動作已結束）','在兩歲的時候','持續兩年到現在'] },
   { lesson:16, topic:'duree', type:'trans', q:'我贊成遠端工作，因為很方便。', hint:'être pour + parce que', a:'Je suis pour le télétravail parce que c\'est pratique.', aNote:'', askClaude:true },
   { lesson:16, topic:'duree', type:'trans', q:'這是學業中的一個空檔。', hint:'pendant', a:'C\'est une pause pendant les études.', aNote:'', askClaude:true },
+  { lesson:16, topic:'duree', type:'fill', q:"J'habite à Lyon _____ trois ans.", zh:'我住在里昂三年了（現在還住著）。', hint:'從過去持續到現在→動詞用現在式', a:'depuis', aNote:'depuis = 開口的括號，起點在過去、還連著現在' },
+  { lesson:16, topic:'duree', type:'fill', q:"Je suis arrivée en France _____ deux ans.", zh:'我兩歲時抵達法國。', hint:'在幾歲時', a:'à', aNote:'à + 年紀 = 在幾歲時（不是depuis也不是il y a）' },
+  { lesson:16, topic:'duree', type:'fill', q:"Ils ont déménagé _____ dix jours.", zh:'他們十天前搬家了。', hint:'ago，動作已結束', a:'il y a', aNote:'il y a + 時長 = 過去某個時間點，跟depuis方向相反' },
+  { lesson:16, topic:'duree', type:'trans', q:'她在那家公司工作了三年（已經離職了）。', hint:'pendant，動作已結束', a:'Elle a travaillé pendant trois ans dans cette entreprise.', aNote:'pendant = 閉合的括號，一段已結束的期間', askClaude:true },
+  { lesson:16, topic:'duree', type:'fill', q:'Ça dure _____ ?', zh:'這要花很久嗎？（只問長短，跟現在有沒有繼續無關）', hint:'', a:'longtemps', aNote:'longtemps 純粹講長度，不像toujours隱含「還在繼續」' },
+  { lesson:16, topic:'duree', type:'trans', q:'他一直都很樂觀，即使失敗了也是。', hint:'toujours + 現在式', a:'Il est toujours optimiste, même après un échec.', aNote:'toujours 表示現在還在繼續的狀態，動詞用現在式', askClaude:true },
+  { lesson:16, topic:'duree', type:'trans', q:'我十年前搬到台北。', hint:'il y a + 時長', a:"J'ai déménagé à Taipei il y a dix ans.", aNote:'il y a = 距今…前，動作已結束', askClaude:true },
 
   // ── 第16課：qui / que 關係代詞 ──
   { lesson:16, topic:'qui-que', type:'choose', q:'La France est un pays ___ change.', hint:'change的主詞是「pays」', a:'qui', aNote:'qui取代主詞，後面直接接動詞', opts:['qui','que'] },

@@ -429,7 +429,7 @@ function logWrong(entry) {
 
 function submit() {
   const inp = document.getElementById('answerInput');
-  if (inp.disabled || !inp.value.trim()) return;
+  if (inp.disabled) return;
   const [vi,pi] = cur;
   const ok = isCorrect(inp.value, vi, pi);
   const fk = firstKeyTs ? firstKeyTs - promptTs : 9999;
