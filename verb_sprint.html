@@ -245,6 +245,7 @@ const TOTAL_CELLS = VERBS.length * 6;
 const SPRINT_SEC = 60;
 const REFLEX_MS = 2000;   // 起手（第一個按鍵）2 秒內 = 反射
 const HIST_MAX = 5;       // 每格保留最近 5 次
+const THINK_TIMEOUT_MS = 6000;   // 想太久（卡住/發呆不答）超過這個時間，自動當作沒答出來，揭曉正解
 
 // ── localStorage ─────────────────────────────────────────────
 function getCells()    { try { return JSON.parse(localStorage.getItem('clb7_sprint_cells')) || {}; } catch { return {}; } }
@@ -331,6 +332,7 @@ function renderHeatmap(elId) {
 let phase = 'idle';        // idle | sprint | review | done
 let timeLeft = SPRINT_SEC;
 let timerInt = null;
+let questionTimer = null;  // 單題想太久自動揭曉用
 let paused = false;
 let cur = null;            // [vi, pi]
 let promptTs = 0;          // 出題時間
@@ -394,6 +396,13 @@ function nextQuestion() {
   document.getElementById('feedbackBox').innerHTML = '';
   inp.focus();
   promptTs = performance.now(); firstKeyTs = 0;
+
+  // 想太久（卡住/發呆，連 Enter 都沒按）→ 自動當作沒答出來，揭曉正解，不讓整輪時間空耗在一格上
+  clearTimeout(questionTimer);
+  questionTimer = setTimeout(() => {
+    if (phase === 'done' || inp.disabled) return;
+    submit();
+  }, THINK_TIMEOUT_MS);
 }
 
 function recordAttempt(vi, pi, ok, fk) {
@@ -430,6 +439,7 @@ function logWrong(entry) {
 function submit() {
   const inp = document.getElementById('answerInput');
   if (inp.disabled) return;
+  clearTimeout(questionTimer);
   const [vi,pi] = cur;
   const ok = isCorrect(inp.value, vi, pi);
   const fk = firstKeyTs ? firstKeyTs - promptTs : 9999;
@@ -491,6 +501,7 @@ function endSprint() {
 
 function showDone() {
   phase = 'done';
+  clearTimeout(questionTimer);
   document.getElementById('sprintScreen').classList.add('hidden');
   document.getElementById('doneScreen').classList.remove('hidden');
 
