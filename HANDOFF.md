@@ -112,7 +112,8 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 
 **GitHub Pages 網址：** https://owenc8964.github.io/french_pronounce/dashboard.html
 
-**今日處方順序（9步番号，中間6步依日期自動輪替）**：① 🔥 熱身 Quiz 5題 → ②–⑦ 研讀＋專項Quiz／填表格／反射衝刺／複習卡／造句練習（背5句常用句）／**聽力真人語速測驗（1篇）** 每天輪替順序 → ⑧ ✍️ 造句（產出）→ ⑨ 📖 閱讀。①⑧⑨固定頭尾，中間6步輪替（`clb7_order_lock`可鎖定）。時數不是步驟，由頂部 session bar 全程累計，完成按🏁結算才寫入700h。
+**今日處方順序（⚠️ 2026-07-28 更正：實際是 13 步，不是舊版寫的 9 步）**：① 🔥 熱身 Quiz 5題 → ②–⑪ 中間 10 步依日期自動輪替（`dashboard.html:751` 的 `MIDDLE` 9 項：📐文法路徑／📚研讀＋專項Quiz／填表格／反射衝刺／複習卡／造句練習／Answer Card／聽力真人語速／影集精讀，其中 `study`（文法路徑）在 `:1009` 被展開成「📚文法閱讀＋📐文法路徑」兩步、永遠成對移動）→ ⑫ ✍️ 寫作（產出）→ ⑬ 📖 閱讀。頭尾固定，中間輪替（`clb7_order_lock` 可鎖定）。時數不是步驟，由頂部 session bar 全程累計，完成按🏁結算才寫入700h。
+⚠️ **13 步估時 110–145 分鐘，已經吃滿每日 1.5–2h 上限**；真實完成率只有第①步穩定（13/15），其餘中位數約 20%——瘦身方案見 [`SURVEY_2026-07.md`](SURVEY_2026-07.md) A-1，等 Owen 拍板。
 
 ---
 
@@ -525,6 +526,28 @@ Owen貼了`~/Desktop/0726/`5張課本截圖（Les loisirs詞彙頁、Les indicat
 
 ---
 
+### 07-28：系統性 Survey（Opus 5）——報告見 [`SURVEY_2026-07.md`](SURVEY_2026-07.md)，修了 2 個低風險 bug
+
+Owen 派工要求做一次三面向（教學法／使用體驗／技術健康度）的全系統檢視，**先出報告再動手**，中高風險項目一律只寫報告不實作。**全程沒開 preview、沒有任何寫入 `clb7_*` 的操作**，ROOM 從頭到尾是正式值；對雲端只做唯讀 GET（這也是這份報告最有價值的地方——第一次拿真實使用資料來驗證系統設計）。
+
+**用真實雲端資料查到的三件事（過去都只能靠推測）**：
+1. **700h 已落後約 2 倍**：`clb7_tracker` 累計 25.2h／24 個日曆天＝1.05h/天；距死線 308 天，需要 **2.19h/天且一天不休**。dashboard 的 `paceNeeded` 早就算得出來，但沒有任何警報把落後講白。
+2. **處方實際上是 13 步不是 9 步**（`dashboard.html:751` 的 `MIDDLE` 9 項＋`:1009` 把 study 展開成 gramread+study＋頭尾 3 步），估時 110–145 分鐘＝已經吃滿甚至超過每日 1.5–2h 上限。**真實完成率：第①步熱身 13/15，其餘 12 步中位數約 20%**（填表格 2/15、閱讀 2/15、答案卡 1/15）。HANDOFF 從 07-09 起寫的「9步番号」已經連續兩輪沒跟上程式。
+3. **寫作 0/15、口說 0/15**——ROADMAP A2 要求輸出佔 40%、寫作週 3 篇、口說週 3 次，實際雲端**連 `clb7_writing`／`clb7_speaking` 這兩個 key 都不存在**。寫作的機制其實是完整的（RUBRICS 尺＋分數解析＋週趨勢），問題是它排在第 12 步輪不到；口說則是真的沒有任何功能（`speaking.html` 只記時長不評分，RUBRICS 的口說尺沒有任何檔案實作，「盲說」只存在於 dashboard 的階段文案裡）。
+
+**已修（各自獨立 commit）**：
+- `8195270` — `gram_rules.js` 的 `opinions`（B1 未開課佔位點）掛著 `connectors-pour-parceque`，害 quiz 的 `getPool()` 把第 7 課 5 題 pour/parce que/mais **從 07-16 起整批排除**。清空該佔位點的 topics（跟其他 12 個佔位點一致）。node 驗證：該 topic 可出題數 0→5，`futur-proche` 維持鎖住未受波及。
+- `fb63a48` — `dashboard.html` 錯題本 `SRC` 對照表缺 `answercard`，答案卡錯題顯示成原始英文 key。
+
+**查完確認「沒問題」的項目（省下次 session 重查）**：
+- 四套 SRS 參數**一致**：review／sentence_drill／answer_card 的 `INTERVALS`、畢業判定、包尾重試邏輯逐行等價，只有新卡上限不同（10／5／3）。
+- `french_notes.html` **沒有**重複的懸浮回饋 script（`#qnotePanel` 僅 1 份、script/style 標籤配對正確、重複 id 0 個）；唯一同名的 `saveNotes` 兩份各自包在獨立 IIFE 裡，不是 bug。`<table>` 123 個 vs `compare-table` 123 個，表格鐵律 100% 遵守。
+- `table_drill.html` 雖然不吃 `?guided=1`，但它的 `init()` 本來就無條件 `startSession()`，開頁即開練——不是缺口。真正沒處理 guided 的只有 `reading.html`。
+
+**報告裡列了 14 條待 Owen 決定的項目**，前三名：處方瘦身、補口說、雲端縮水保護（比備份更根本——三次推空都是「不完整的 localStorage 整包蓋掉雲端」，`push()` 加一道 key 數縮水閘就能堵住機制本身）。其餘包括：`sentences.js` 有 83/146 句跟 `chunks.js` 完全重複（兩套 SRS 練同一句）、⚡快速測驗 247 題 dashboard 完全讀不到、Owen 手寫筆記的 6 個 `fr_*` key 從來不同步也不在備份裡、4 個孤兒檔案的處置建議（含 `index.html` 目前是正式站首頁這件事）。
+
+---
+
 ## 之前 session 做了什麼（2026-07-02 ～ 07-03）
 
 ### Commit `6ffcf6a`
@@ -593,9 +616,12 @@ Owen貼了`~/Desktop/0726/`5張課本截圖（Les loisirs詞彙頁、Les indicat
 
 ---
 
-## 下一步（依優先序，2026-07-20 更新）
+## 下一步（依優先序，2026-07-28 更新）
+
+**⚠️ 2026-07-28 起：完整的待辦與待決定清單請看 [`SURVEY_2026-07.md`](SURVEY_2026-07.md) 文末「需要 Owen 決定的清單」（14 條，附優先序與風險等級）。下面這份舊清單保留，但已被 survey 涵蓋的項目會標註。**
 
 **⭐⭐⭐ 最高優先：雲端已經被推空三次（07-06/07-16/07-20），該考慮自動備份**
+> 📌 2026-07-28 補：survey C-1 提出比備份更根本的一層——**`push()` 加「縮水保護」**（推之前先看雲端 key 數，本機不到一半就拒推）。三次事故都是「不完整的 localStorage 整包蓋掉完整雲端」，這道閘直接堵住機制本身，而備份只是事後救。建議順序：縮水保護 → repo 每日快照 → （非必要）Supabase 第二張表。
 
 三次事故都靠「Owen真機一開自我修復」僥倖過關，沒有真的丟資料，但這是運氣不是設計。Owen 07-20 已同意「之後可以考慮」，還沒動手。方案構想：每天（或每次 push 前）把雲端 payload 存一份快照到別的地方（例如另一個 Supabase 表、或存進 git repo 的一個 json 檔），這樣萬一哪次真的沒能自我修復也有得救。**不急，但下次有空檔可以問 Owen 要不要現在做。**
 
@@ -635,13 +661,13 @@ Owen 回饋：「抽考很多題目 句子挖空 其實是翻譯 沒有中文會
 1. **verb_reference.html 語音名稱確認**：Owen下載了比較好的語音，目前用啟發式規則猜（premium/enhanced/amélior/localService===false），若還是選不對，需要問他系統設定裡看到的確切語音名稱，寫死進regex。
 2. **chunks.js 批次修正**：Owen會用review.html的「🤔這張卡語意不清」持續標記卡片，累積到一定數量後，去`clb7_quick_notes`裡撈出這些回饋，批次修chunks.js對應的卡（中文提示語意不清、上下文缺失等）。
 3. **聽寫（Dictée）工具**：已與Owen討論、方向確認，尚未實作。TTS唸題庫句子→Owen聽寫→比對。
-4. **table_drill.html 答錯未寫入 clb7_wrong_log**：目前只有quiz/reading/sprint三處logWrong，table_drill的錯題沒有進今日錯題本，待補。
+4. **table_drill.html 答錯未寫入 clb7_wrong_log**：（📌 07-28 重新核對：`logWrong()` 現在有 **7 份複本**——quiz/reading/sprint/review/sentence_drill/answer_card/gram_trainer，`table_drill` 仍然沒有。補之前先決定要「抄第 8 份」還是「抽成共用的 `wrong_log.js`」，見 SURVEY B-4／C-2。）
 5. **「法國地區×畫家」表格發音**：內容是完整敘述句夾雜粗體標記，目前故意跳過沒加喇叭，如果Owen要，需要另外設計清理邏輯過濾粗體符號再TTS。
 6. **verb_sprint擴充**（等54格大面積變綠後）：passé composé助動詞+participes、imparfait。
 7. ~~產出能力真實評分~~ ✅ **已被07-12的RUBRICS.md+ROADMAP.md取代**——分級評分尺（A2/B1/B2）＋writing.html內建批改指令的prompt已解決這個問題，不用再列待辦。
 8. **錯題本延伸**：昨日錯題回顧（隔日再測）。
 9. **french_basics.html 缺計時器**（07-11發現）：`french_notes.html`頂部導覽直接連過去的發音練習真實互動工具（數字/星期/月份/Sons du Français/文法表），完全沒有`session_timer.js`，裡面練習的時間不會算進700h。Owen說先不用處理，之後要做的話只要照其他練習頁的模式補一行`<script src="session_timer.js">`即可。
-10. **4個孤兒檔案待決定**（07-11發現，都未加入git、沒有任何頁面連過去）：`french_sounds.html`、`index.html`（兩個title都是"Sons du Français"，內容可能跟french_basics.html重複）、`time_editor.html`、`french_notes拷貝.html`（筆記備份/複本）。要清掉還是接進系統，問過Owen他說先不用，留著晚點決定。
+10. **4個孤兒檔案待決定**（07-11發現）：📌 **07-28 已逐檔查完內容並給出具體建議，見 SURVEY B-5**——`french_notes拷貝.html`（只有 lesson-1~3、內容 100% 已被現行筆記涵蓋）建議刪；`french_sounds.html`（370KB 裡 352KB 是單一內嵌 base64 音檔、內容是 `french_basics.html` 的子集）建議刪；`index.html`（**已被 git 追蹤，而且它就是正式站根目錄首頁**——現在打開網站根目錄看到的是一頁發音表不是 dashboard）建議改寫成轉址／入口頁；`time_editor.html`（音檔剪輯小工具）建議保留但搬進 `assets/tools/`。**四項都是動檔案＝中高風險，等 Owen 點頭再做。**
 
 ---
 
@@ -662,8 +688,9 @@ Owen 回饋：「抽考很多題目 句子挖空 其實是翻譯 沒有中文會
 
 ## 注意事項
 
-- **懸浮回饋 snippet 覆蓋**（2026-07-07現況）：dashboard/quiz/writing/speaking/tracker/listening/review/french_notes/**sentence_drill** 共9頁有；**verb_sprint/reading/table_drill/verb_reference 這4頁還沒有**，未來需要時記得補
-- **session_timer.js 覆蓋**：quiz/writing/listening/review/french_notes/verb_sprint/reading/table_drill/**sentence_drill** 共9頁有；speaking/tracker/verb_reference 沒有（speaking/tracker是獨立日誌工具不在處方流程內，可不補；verb_reference不在主流程，視需要補）
+- **懸浮回饋 snippet 覆蓋**（2026-07-28 重新 grep 核對）：answer_card/dashboard/french_notes/gram_trainer/listening/quiz/review/sentence_drill/speaking/tracker/writing 共 **11 頁**有；**table_drill／reading／verb_sprint（三者都在每日處方裡）＋ verb_reference／map 沒有**——前三頁是真缺口，需要時補
+- **session_timer.js 覆蓋**（2026-07-28 重新核對）：answer_card/dashboard/french_notes/gram_trainer/listening/map/quiz/reading/review/sentence_drill/table_drill/verb_sprint/writing 共 **13 頁**有；speaking/tracker/verb_reference/**french_basics** 沒有（前三個是日誌或參考頁可不補；`french_basics.html` 是真缺口，見「下一步」第9條）
+- **sync_supabase.js 覆蓋**：上述 13 頁＋tracker 共 14 頁；⚠️ 它只收集 `clb7_` 開頭的 key——`french_notes`／`french_basics`／`verb_reference` 的 6 個 `fr_*`／`vr_*` 手寫筆記 key **完全不同步、也不在任何備份裡**（見 SURVEY C-3）
 - **quiz.html `choose` 類型題** 的`a`欄位必須和`opts`裡的字串**完全一致**，不能用`|`分隔
 - **`clb7_snapshots` 絕對不要再寫入非 `{week:...}` 格式**——會讓dashboard整頁掛掉（已修一次，有防禦但別再犯）
 - **新練習工具的判錯點記得呼叫 `logWrong()`**（quiz/reading/sprint各一份複本，格式要四處同步）——錯題本才收得到
