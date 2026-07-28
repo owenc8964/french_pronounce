@@ -132,6 +132,12 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
   border: none; border-radius: 8px; font-size: 0.82rem; cursor: pointer; font-family: inherit;
 }
 .btn-row { display: flex; gap: 10px; margin-top: 16px; }
+.mode-btn {
+  flex: 1; padding: 10px; border: 1px solid #1a2438; border-radius: 10px;
+  background: #0d1020; color: #445060; font-size: 0.85rem; font-weight: 700;
+  cursor: pointer; font-family: inherit; letter-spacing: 0.5px;
+}
+.mode-btn.active { background: #1a2438; color: #f0c060; border-color: #2a3858; }
 .btn-again {
   flex: 1; padding: 13px; border: none; border-radius: 10px;
   background: linear-gradient(135deg, #1d5035, #2a7048); color: #d0f0d8;
@@ -155,8 +161,12 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
 
 <!-- ── Start screen ── -->
 <div id="startScreen">
+  <div class="btn-row" id="modeToggle" style="margin-bottom:14px;">
+    <button class="mode-btn active" id="modeBtnPresent" type="button">Présent</button>
+    <button class="mode-btn" id="modeBtnPc" type="button">Passé composé</button>
+  </div>
   <div class="card">
-    <div class="card-title">反射熱力圖 — Présent</div>
+    <div class="card-title">反射熱力圖 — <span id="hmModeLabel">Présent</span></div>
     <div class="hm-summary">已達反射 <b id="hmReflexCount">0</b> / 54 格</div>
     <div id="heatmap"></div>
     <div class="hm-legend">
@@ -241,6 +251,25 @@ const VERBS = [
   { inf: 'venir',   forms: ['viens','viens','vient','venons','venez','viennent'] },
   { inf: 'prendre', forms: ['prends','prends','prend','prenons','prenez','prennent'] },
 ];
+
+// ── 動詞資料（passé composé，07-26新增）── être動詞用 | 分隔陰陽性皆可（isCorrect兩者都接受，顯示/發音只取第一個）
+const VERBS_PC = [
+  { inf: 'être',    forms: ['ai été','as été','a été','avons été','avez été','ont été'] },
+  { inf: 'avoir',   forms: ['ai eu','as eu','a eu','avons eu','avez eu','ont eu'] },
+  { inf: 'faire',   forms: ['ai fait','as fait','a fait','avons fait','avez fait','ont fait'] },
+  { inf: 'aller',   forms: ['suis allé|suis allée','es allé|es allée','est allé|est allée','sommes allés|sommes allées','êtes allé|êtes allée|êtes allés|êtes allées','sont allés|sont allées'] },
+  { inf: 'devoir',  forms: ['ai dû','as dû','a dû','avons dû','avez dû','ont dû'] },
+  { inf: 'pouvoir', forms: ['ai pu','as pu','a pu','avons pu','avez pu','ont pu'] },
+  { inf: 'vouloir', forms: ['ai voulu','as voulu','a voulu','avons voulu','avez voulu','ont voulu'] },
+  { inf: 'venir',   forms: ['suis venu|suis venue','es venu|es venue','est venu|est venue','sommes venus|sommes venues','êtes venu|êtes venue|êtes venus|êtes venues','sont venus|sont venues'] },
+  { inf: 'prendre', forms: ['ai pris','as pris','a pris','avons pris','avez pris','ont pris'] },
+];
+
+let mode = 'present';   // 'present' | 'pc'
+function V() { return mode === 'pc' ? VERBS_PC : VERBS; }
+function primaryForm(s) { return s.split('|')[0]; }
+function cellsStoreKey()   { return mode === 'pc' ? 'clb7_sprint_cells_pc'    : 'clb7_sprint_cells'; }
+function sessionsStoreKey(){ return mode === 'pc' ? 'clb7_sprint_sessions_pc' : 'clb7_sprint_sessions'; }
 const TOTAL_CELLS = VERBS.length * 6;
 const SPRINT_SEC = 60;
 const REFLEX_MS = 2000;   // 起手（第一個按鍵）2 秒內 = 反射
@@ -248,18 +277,18 @@ const HIST_MAX = 5;       // 每格保留最近 5 次
 const THINK_TIMEOUT_MS = 6000;   // 想太久（卡住/發呆不答）超過這個時間，自動當作沒答出來，揭曉正解
 
 // ── localStorage ─────────────────────────────────────────────
-function getCells()    { try { return JSON.parse(localStorage.getItem('clb7_sprint_cells')) || {}; } catch { return {}; } }
-function saveCells(c)  { localStorage.setItem('clb7_sprint_cells', JSON.stringify(c)); }
-function getSessions() { try { return JSON.parse(localStorage.getItem('clb7_sprint_sessions')) || []; } catch { return []; } }
+function getCells()    { try { return JSON.parse(localStorage.getItem(cellsStoreKey())) || {}; } catch { return {}; } }
+function saveCells(c)  { localStorage.setItem(cellsStoreKey(), JSON.stringify(c)); }
+function getSessions() { try { return JSON.parse(localStorage.getItem(sessionsStoreKey())) || []; } catch { return []; } }
 function saveSession(s) {
   const arr = getSessions(); arr.push(s);
-  localStorage.setItem('clb7_sprint_sessions', JSON.stringify(arr.slice(-50)));
+  localStorage.setItem(sessionsStoreKey(), JSON.stringify(arr.slice(-50)));
   if (window.ClbSync) ClbSync.push(); // 做完立刻嘗試同步，不等debounce
 }
 function todayStr() {
   return new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
 }
-function cellKey(vi, pi) { return VERBS[vi].inf + '_' + pi; }
+function cellKey(vi, pi) { return V()[vi].inf + '_' + pi; }
 
 // ── 格子狀態 ──────────────────────────────────────────────────
 // new    未測 / weak 上次錯 / slow 會但慢 / reflex 連3對且中位起手<2s
@@ -275,7 +304,7 @@ function cellState(hist) {
 }
 function reflexCount(cells) {
   let n = 0;
-  VERBS.forEach((v,vi) => { for (let pi=0; pi<6; pi++) {
+  V().forEach((v,vi) => { for (let pi=0; pi<6; pi++) {
     if (cellState((cells[cellKey(vi,pi)]||{}).h) === 'reflex') n++;
   }});
   return n;
@@ -289,7 +318,8 @@ function normalize(s) {
     .replace(/\s+/g, '');
 }
 function isCorrect(input, vi, pi) {
-  return normalize(input) === normalize(VERBS[vi].forms[pi]);
+  const norm = normalize(input);
+  return V()[vi].forms[pi].split('|').some(alt => normalize(alt) === norm);
 }
 
 // ── 加權取樣 ──────────────────────────────────────────────────
@@ -297,7 +327,7 @@ const WEIGHT = { weak: 4, new: 3, slow: 2, reflex: 1 };
 let lastCell = null;
 function pickCell(cells) {
   const pool = [];
-  VERBS.forEach((v,vi) => { for (let pi=0; pi<6; pi++) {
+  V().forEach((v,vi) => { for (let pi=0; pi<6; pi++) {
     const key = cellKey(vi,pi);
     if (key === lastCell) continue;               // 不連續出同一格
     const w = WEIGHT[cellState((cells[key]||{}).h)];
@@ -314,11 +344,11 @@ function renderHeatmap(elId) {
   const short = ['je','tu','il','nous','vous','ils'];
   let html = '<table class="hm-table"><tr><th></th>' +
     short.map(p=>`<th>${p}</th>`).join('') + '</tr>';
-  VERBS.forEach((v,vi) => {
+  V().forEach((v,vi) => {
     html += `<tr><td class="verb-name">${v.inf}</td>`;
     for (let pi=0; pi<6; pi++) {
       const st = cellState((cells[cellKey(vi,pi)]||{}).h);
-      html += `<td class="hm-cell hm-${st}" title="${PERSONS[pi]} ${v.inf} → ${v.forms[pi]}"></td>`;
+      html += `<td class="hm-cell hm-${st}" title="${PERSONS[pi]} ${v.inf} → ${primaryForm(v.forms[pi])}"></td>`;
     }
     html += '</tr>';
   });
@@ -355,7 +385,7 @@ function startSprint() {
   document.getElementById('startScreen').classList.add('hidden');
   document.getElementById('doneScreen').classList.add('hidden');
   document.getElementById('sprintScreen').classList.remove('hidden');
-  document.getElementById('phaseTag').textContent = '衝刺';
+  document.getElementById('phaseTag').textContent = mode === 'pc' ? '衝刺 · PC' : '衝刺';
   document.getElementById('phaseTag').classList.remove('review');
   document.getElementById('scoreLive').textContent = '0';
   updateTimer();
@@ -387,8 +417,8 @@ function nextQuestion() {
     cur = reviewQueue[reviewIdx];
   }
   const [vi,pi] = cur;
-  document.getElementById('promptVerb').textContent = VERBS[vi].inf;
-  document.getElementById('promptVerbTts').onclick = () => ttsSpeak(VERBS[vi].inf);
+  document.getElementById('promptVerb').textContent = V()[vi].inf;
+  document.getElementById('promptVerbTts').onclick = () => ttsSpeak(V()[vi].inf);
   document.getElementById('promptPerson').textContent = PERSONS[pi];
   const inp = document.getElementById('answerInput');
   inp.value = ''; inp.disabled = false;
@@ -414,12 +444,13 @@ function recordAttempt(vi, pi, ok, fk) {
   saveCells(cells);
   if (!ok) {
     missedVerbs.add(vi);
-    const v = VERBS[vi];
+    const v = V()[vi];
+    const tag = mode === 'pc' ? ' [passé composé]' : '';
     logWrong({
       src: 'sprint',
-      q: `${PERSONS[pi]} _____ (${v.inf})`,
-      a: `${PERSONS[pi]} ${v.forms[pi]}`,
-      note: v.inf + '：' + PERSONS.map((p,i) => `${p} ${v.forms[i]}`).join(' · '),
+      q: `${PERSONS[pi]} _____ (${v.inf})${tag}`,
+      a: `${PERSONS[pi]} ${primaryForm(v.forms[pi])}`,
+      note: v.inf + '：' + PERSONS.map((p,i) => `${p} ${primaryForm(v.forms[i])}`).join(' · '),
     });
   }
 }
@@ -467,14 +498,15 @@ function submit() {
     paused = true;
     inp.classList.add('flash-bad'); inp.disabled = true;
     const fb = document.getElementById('feedbackBox');
-    fb.innerHTML = `<div class="fb-wrong">✗ 正確：<b>${PERSONS[pi]} ${VERBS[vi].forms[pi]}</b>（${VERBS[vi].inf}）
+    const answerShown = `${PERSONS[pi]} ${primaryForm(V()[vi].forms[pi])}`;
+    fb.innerHTML = `<div class="fb-wrong">✗ 正確：<b>${answerShown}</b>（${V()[vi].inf}）
       <button type="button" id="wrongTtsBtn" title="聽正確發音"
         style="background:none;border:none;color:#60d090;font-size:1rem;cursor:pointer;vertical-align:middle;margin-left:4px;">🔊</button></div>
       <button class="next-btn" id="contBtn">繼續 →（Enter）</button>
       <div class="fb-hint">唸出聲再繼續，嘴巴也要記得</div>`;
     document.getElementById('contBtn').onclick = resumeAfterWrong;
-    document.getElementById('wrongTtsBtn').onclick = () => ttsSpeak(`${PERSONS[pi]} ${VERBS[vi].forms[pi]}`);
-    ttsSpeak(`${PERSONS[pi]} ${VERBS[vi].forms[pi]}`); // 答錯時自動唸一次正解，不用額外點
+    document.getElementById('wrongTtsBtn').onclick = () => ttsSpeak(answerShown);
+    ttsSpeak(answerShown); // 答錯時自動唸一次正解，不用額外點
   }
 }
 
@@ -522,11 +554,11 @@ function showDone() {
   if (missedVerbs.size) {
     mc.classList.remove('hidden');
     document.getElementById('missedTables').innerHTML = [...missedVerbs].sort((a,b)=>a-b).map(vi => {
-      const v = VERBS[vi];
+      const v = V()[vi];
       return `<div class="conj-block">
         <div class="conj-verb">${v.inf}</div>
         <table class="conj-table">${PERSONS.map((p,i) =>
-          `<tr><td class="conj-p">${p}</td><td class="conj-f">${v.forms[i]}</td></tr>`).join('')}</table>
+          `<tr><td class="conj-p">${p}</td><td class="conj-f">${primaryForm(v.forms[i])}</td></tr>`).join('')}</table>
       </div>`;
     }).join('');
   } else {
@@ -565,17 +597,26 @@ document.getElementById('fbSave').addEventListener('click', () => {
   setTimeout(() => document.getElementById('fbSave').textContent = '儲存回饋', 1500);
 });
 
-// ── 初始化 ────────────────────────────────────────────────────
-renderHeatmap('heatmap');
-(() => {
+// ── 初始化／模式切換 ──────────────────────────────────────────
+function refreshStartScreen() {
+  renderHeatmap('heatmap');
+  document.getElementById('hmModeLabel').textContent = mode === 'pc' ? 'Passé composé' : 'Présent';
+  document.getElementById('modeBtnPresent').classList.toggle('active', mode !== 'pc');
+  document.getElementById('modeBtnPc').classList.toggle('active', mode === 'pc');
   const ses = getSessions();
+  const recentCard = document.getElementById('recentCard');
   if (ses.length) {
-    document.getElementById('recentCard').style.display = '';
+    recentCard.style.display = '';
     document.getElementById('recentList').innerHTML = ses.slice(-5).reverse().map(s =>
       `${s.date} — ${s.cor} 題 · 正確率 ${s.att?Math.round(s.cor/s.att*100):0}% · 起手 ${s.avgFk?(s.avgFk/1000).toFixed(1)+'s':'—'} · 反射 ${s.reflex}/54`
     ).join('<br>');
+  } else {
+    recentCard.style.display = 'none';
   }
-})();
+}
+document.getElementById('modeBtnPresent').addEventListener('click', () => { mode = 'present'; refreshStartScreen(); });
+document.getElementById('modeBtnPc').addEventListener('click', () => { mode = 'pc'; refreshStartScreen(); });
+refreshStartScreen();
 if (new URLSearchParams(location.search).get('guided') === '1') startSprint();
 
 // ── TTS 發音 ──────────────────────────────────────────────────

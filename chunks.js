@@ -7113,4 +7113,172 @@ const CHUNKS = [
   "zh": "麵包沒了",
   "note": "否定的plus，s不發音，跟肯定「更多」的plus發音不同"
  },
+ {
+  "id": "L19_faire_une_balade",
+  "lesson": 19,
+  "fr": "faire une balade",
+  "zh": "散步、隨意閒晃",
+  "note": "＝une promenade"
+ },
+ {
+  "id": "L19_faire_une_visite_guidée",
+  "lesson": 19,
+  "fr": "faire une visite guidée",
+  "zh": "參加一個有導覽的參觀行程",
+  "note": ""
+ },
+ {
+  "id": "L19_visiter_une_exposition",
+  "lesson": 19,
+  "fr": "visiter une exposition",
+  "zh": "參觀展覽",
+  "note": "visiter一定接地點"
+ },
+ {
+  "id": "L19_voir_une_pièce_de_théâtr",
+  "lesson": 19,
+  "fr": "voir une pièce de théâtre",
+  "zh": "看一齣戲",
+  "note": "表演/戲劇用voir不用visiter"
+ },
+ {
+  "id": "L19_l_accrobranche",
+  "lesson": 19,
+  "fr": "l'accrobranche",
+  "zh": "樹頂繩索探險",
+  "note": ""
+ },
+ {
+  "id": "L19_être_amateur_de_football",
+  "lesson": 19,
+  "fr": "être amateur de football",
+  "zh": "對足球很有研究、很熱衷",
+  "note": "être amateur de + 名詞≠單講amateur（業餘）"
+ },
+ {
+  "id": "L19_faire_une_compétition_de",
+  "lesson": 19,
+  "fr": "faire une compétition de vélo",
+  "zh": "參加一場自行車比賽",
+  "note": "une compétition讓活動變可數"
+ },
+ {
+  "id": "L19_faire_une_randonnée_à_vé",
+  "lesson": 19,
+  "fr": "faire une randonnée à vélo de trois heures",
+  "zh": "騎一趟三小時的腳踏車行程",
+  "note": "跟faire du vélo（泛指不可數）對比"
+ },
+ {
+  "id": "L19_jouer_aux_jeux_vidéo",
+  "lesson": 19,
+  "fr": "jouer aux jeux vidéo",
+  "zh": "打電動",
+  "note": "jouer à + 遊戲"
+ },
+ {
+  "id": "L19_faire_un_tableau",
+  "lesson": 19,
+  "fr": "faire un tableau",
+  "zh": "畫一幅畫",
+  "note": "tableau＝一幅畫的實體"
+ },
+ {
+  "id": "L19_Ça_te_dit_",
+  "lesson": 19,
+  "fr": "Ça te dit ?",
+  "zh": "你有興趣嗎？",
+  "note": "邀約常用句"
+ },
+ {
+  "id": "L19_On_se_retrouve_chez_moi_",
+  "lesson": 19,
+  "fr": "On se retrouve chez moi à 19h ?",
+  "zh": "我們19點在我家碰面好嗎？",
+  "note": ""
+ },
+ {
+  "id": "L19_Ça_marche_",
+  "lesson": 19,
+  "fr": "Ça marche !",
+  "zh": "成交！說定了！",
+  "note": "口語，字面「它走」"
+ },
+ {
+  "id": "L19_Je_m_excuse_mais_je_ne_",
+  "lesson": 19,
+  "fr": "Je m'excuse, mais je ne peux pas.",
+  "zh": "抱歉，但我不行。",
+  "note": "婉拒邀約的完整句"
+ },
+ {
+  "id": "L19_Ce_n_est_pas_possible_",
+  "lesson": 19,
+  "fr": "Ce n'est pas possible.",
+  "zh": "沒辦法、不可能。",
+  "note": "婉拒用語"
+ },
+ {
+  "id": "L19_J_ai_fait_ma_première_co",
+  "lesson": 19,
+  "fr": "J'ai fait ma première compétition il y a onze ans.",
+  "zh": "我十一年前參加了第一場比賽。",
+  "note": "il y a + 時長＝過去…前"
+ },
+ {
+  "id": "L19_Pendant_deux_semaines_j",
+  "lesson": 19,
+  "fr": "Pendant deux semaines, j'ai fait la connaissance de beaucoup d'athlètes.",
+  "zh": "這兩週我認識了很多選手。",
+  "note": "pendant＝明確的一段期間"
+ },
+ {
+  "id": "L19_Les_places_sont_en_vente",
+  "lesson": 19,
+  "fr": "Les places sont en vente depuis hier.",
+  "zh": "票昨天開始賣了（現在還在賣）。",
+  "note": "depuis＝持續到現在"
+ },
+ {
+  "id": "L19_de_nouvelles_expériences",
+  "lesson": 19,
+  "fr": "de nouvelles expériences",
+  "zh": "新的經驗",
+  "note": "形容詞放名詞前面，des要縮成de"
+ },
+ {
+  "id": "L19_Je_l_ai_fait_moi_même_",
+  "lesson": 19,
+  "fr": "Je l'ai fait moi-même.",
+  "zh": "我自己做的。",
+  "note": "moi-même＝我自己"
+ },
+ {
+  "id": "L19_Ta_fille_a_les_mêmes_yeu",
+  "lesson": 19,
+  "fr": "Ta fille a les mêmes yeux que toi.",
+  "zh": "你女兒的眼睛跟你一樣。",
+  "note": "les mêmes + 名詞＝相同的"
+ },
+ {
+  "id": "L19_même_si_nous_venons_de_p",
+  "lesson": 19,
+  "fr": "même si nous venons de pays différents",
+  "zh": "即使我們來自不同的國家",
+  "note": "même si＝即使（讓步連接詞）"
+ },
+ {
+  "id": "L19_le_nouvel_entraîneur",
+  "lesson": 19,
+  "fr": "le nouvel entraîneur",
+  "zh": "新教練",
+  "note": "entraîneur名詞≠entraîner動詞"
+ },
+ {
+  "id": "L19_médaille_d_or_d_argent_",
+  "lesson": 19,
+  "fr": "médaille d'or, d'argent, de bronze",
+  "zh": "金牌、銀牌、銅牌",
+  "note": "argent也有「銀」的意思"
+ },
 ];

@@ -962,6 +962,29 @@ const BANK = [
   { lesson:18, topic:'negation', type:'trans', q:'她從沒做過攀岩。', hint:'ne...jamais + PC', a:"Elle n'a jamais fait de l'escalade.", aNote:'jamais夾在助動詞a和分詞fait中間', askClaude:true },
   { lesson:18, topic:'negation', type:'choose', q:'否定詞 "plus"（不再）跟肯定詞 "plus"（更多）唸法差在哪？', hint:'發音警報：s 的有無', a:'否定s不發音，肯定s要發音', aNote:'ne...plus的s是靜音的；plus de、moins/plus比較級的plus要發s音——同拼字兩種意思兩種發音', opts:['否定s不發音，肯定s要發音','否定s要發音，肯定s不發音','兩者都發音','兩者都不發音'] },
   { lesson:18, topic:'negation', type:'trans', q:'他們沒有邀請任何人來婚禮。', hint:'personne當COD', a:"Ils n'ont invité personne à leur mariage.", aNote:'invité tout le monde → invité personne，personne放分詞後', askClaude:true },
+
+  // ── 第19課：Les loisirs詞彙＋indicateurs de temps複習＋passé composé/négation總複習 ──
+  { lesson:19, topic:'vocab-loisirs', type:'choose', q:'「一項水上站立划槳運動」怎麼說？', hint:'不要只講一半', a:'le stand-up paddle', aNote:'le paddle單獨講是球拍運動，水上活動一定要講全stand-up paddle', opts:['le stand-up paddle','le paddle','le canoë','la randonnée'] },
+  { lesson:19, topic:'vocab-loisirs', type:'fill', q:"Je suis _____ de football, je regarde tous les matchs. (熱衷、很有研究)", zh:'我對足球很有研究，每場比賽都看。', hint:'être ___ de + 名詞', a:'amateur', aNote:'être amateur de + 名詞＝真心熱衷且懂很多，不是「業餘」的意思' },
+  { lesson:19, topic:'vocab-loisirs', type:'choose', q:'「visiter」後面可以接哪個？', hint:'一定接地方', a:'un musée', aNote:'visiter接地點（un musée/une exposition）；看電影/表演要用voir', opts:['un musée','un film','un spectacle','une série'] },
+  { lesson:19, topic:'vocab-loisirs', type:'fill', q:'Nous allons _____ une pièce de théâtre ce soir. (看，不是visiter)', zh:'我們今晚要去看一齣戲。', hint:'voir', a:'voir', aNote:'表演/戲劇/電影用voir，不用visiter' },
+  { lesson:19, topic:'vocab-loisirs', type:'trans', q:'我週末喜歡做園藝跟畫畫。', hint:'jardiner / peindre', a:'Le week-end, j\'aime jardiner et peindre.', aNote:'', askClaude:true },
+  { lesson:19, topic:'duree', type:'choose', q:'「Mon frère est aux Francofolies _____ mardi.」（從週二一直到現在還在）', hint:'還在繼續', a:'depuis', aNote:'depuis＝持續到現在，配現在式être', opts:['depuis','il y a','pendant','dans'] },
+  { lesson:19, topic:'duree', type:'choose', q:'「Hier, nous avons fait du canoë _____ quatre heures.」（一段明確期間，已結束）', hint:'', a:'pendant', aNote:'pendant + 時長＝明確的一段期間', opts:['pendant','il y a','depuis','à'] },
+  { lesson:19, topic:'duree', type:'fill', q:"J'ai déjà fait cette randonnée _____ deux ans. (兩年前做過，已結束)", zh:'我兩年前做過這趟健行了。', hint:'ago', a:'il y a', aNote:'il y a + 時長＝過去某個時間點，動作已結束' },
+  { lesson:19, topic:'passe-compose', type:'fill', q:'Mon cousin _____ (faire) du hip-hop hier.', zh:'我表弟昨天跳了街舞。', hint:'faire → fait（avoir）', a:'a fait', aNote:'faire恆用avoir，分詞fait不隨主詞變化' },
+  { lesson:19, topic:'passe-compose', type:'fill', q:'Les enfants _____ (jouer) aux jeux vidéo hier soir.', zh:'孩子們昨晚打了電動。', hint:'jouer → joué（avoir）', a:'ont joué', aNote:'jouer是規則-er動詞，avoir+joué' },
+  { lesson:19, topic:'passe-compose', type:'fill', q:'Marie _____ (naître) au Sénégal.', zh:'瑪麗在塞內加爾出生。', hint:'être家族，陰性主詞', a:'est née', aNote:'naître配être，Marie是陰性要加e：née' },
+  { lesson:19, topic:'passe-compose', type:'choose', q:'「Nous _____ à l\'accrobranche.」（我們去了樹頂繩索探險）空格填什麼？', hint:'aller配être', a:'sommes allé(e)s', aNote:'aller配être，nous分詞要加s（陰性再加e）', opts:['sommes allé(e)s','avons allé','sommes aller','avons été'] },
+  { lesson:19, topic:'passe-compose', type:'fill', q:'Julie et Simon _____ (se marier) en 2020.', zh:'茱莉和西蒙在2020年結婚了。', hint:'反身動詞恆配être', a:'se sont mariés', aNote:'反身動詞一律être，分詞+s跟主詞（複數）配合' },
+  { lesson:19, topic:'negation', type:'trans', q:'我的小孩不再踢足球了。（重組：plus/foot/mes/jouent/ne/enfants/au）', hint:'ne...plus', a:'Mes enfants ne jouent plus au foot.', aNote:'ne...plus夾住變位動詞jouent', askClaude:true },
+  { lesson:19, topic:'negation', type:'trans', q:'博物館裡沒有人。（重組：dans/le/il/personne/n\'/a/y/musée）', hint:'il n\'y a personne', a:"Il n'y a personne dans le musée.", aNote:'personne當受詞放動詞後', askClaude:true },
+  { lesson:19, topic:'negation', type:'trans', q:'這個週末我們什麼都沒做。（重組：week-end/nous/rien/n\'/ce/avons/fait）', hint:'ne...rien + PC', a:"Nous n'avons rien fait ce week-end.", aNote:'rien夾在avons和fait中間', askClaude:true },
+  { lesson:19, topic:'negation', type:'trans', q:'我從沒去過馬戲團。（重組：suis/allé/jamais/cirque/au/je/ne）', hint:'ne...jamais + PC', a:"Je ne suis jamais allé au cirque.", aNote:'aller配être，jamais夾在suis和allé中間', askClaude:true },
+  { lesson:19, topic:'adjective-position', type:'choose', q:'「我為了累積新經驗」空格該填哪個？「pour faire _____ expériences nouvelles」', hint:'des還是de？形容詞在後', a:'des', aNote:'expériences nouvelles（形容詞在後）維持des；但de nouvelles expériences（形容詞在前）des要縮成de', opts:['des','de',"d'",'les'] },
+  { lesson:19, topic:'adjective-position', type:'fill', q:"J'ai décidé de faire _____ nouvelles expériences. (形容詞在前)", zh:'我決定要累積新的經驗。', hint:'形容詞放名詞前，des要縮', a:'de', aNote:'de nouvelles expériences：nouvelles放在expériences前面，des→de' },
+  { lesson:19, topic:'social-invitations', type:'choose', q:'邀約被拒後，對方要說「那就這樣說定了」，最自然的說法？', hint:'口語，字面「它走」', a:'Ça marche.', aNote:'ça marche＝成交/說定了，口語常用', opts:['Ça marche.','Ça fonctionne.','C\'est vrai.','Ça y est.'] },
+  { lesson:19, topic:'social-invitations', type:'trans', q:'抱歉，但我不行，我有一個工作會議。', hint:'Je m\'excuse / rendez-vous de travail', a:"Je m'excuse, mais je ne peux pas, j'ai un rendez-vous de travail.", aNote:'', askClaude:true },
 ];
 // ── ID 函數 ──
 function qId(q) {

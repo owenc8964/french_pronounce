@@ -218,7 +218,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'passe', name:'Passé composé & passé récent', icon:'⏮️', zone:'A2', cat:'verbe-temps',
-    lessons:[10,11,14,17], topics:['passe-compose','passe-recent'], unlocked:true,
+    lessons:[10,11,14,17,19], topics:['passe-compose','passe-recent'], unlocked:true,
     rule:{
       title:'複合過去式 — 助動詞（avoir/être）+ 過去分詞',
       why:'J\'ai mangé 字面是「我擁有 被吃完的東西」——用「有＋完成品」表達過去，這樣就不用為過去式背一整套新變位（又是口語的偷懶智慧，英文 have eaten 同款）。être 家族的動詞（去/來/出生/死…）不是「做了什麼」而是「主詞自己變成了什麼狀態、移到了哪裡」——所以分詞像形容詞一樣描述主詞，也因此要跟主詞配合（elle est sortie 加 e，跟 elle est grande 同一個道理）。venir de + 原形是 aller + 原形的鏡像：「從做完某事走過來」＝剛剛做完。',
@@ -252,7 +252,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'negation', name:'Négation & quantités', icon:'🚫', zone:'A2', cat:'base',
-    lessons:[1,6,16,18], topics:['negation','frequency-adverbs','intensite'], unlocked:true,
+    lessons:[1,6,16,18,19], topics:['negation','frequency-adverbs','intensite'], unlocked:true,
     rule:{
       title:'否定家族＋頻率＋強度 — ne...X 換尾巴',
       why:'原本真正的否定詞只有 ne，後面那些字全是加強語氣的名詞：pas＝一步（「連一步都不走」）、personne＝一個人、rien＝一件東西（拉丁 rem）、jamais＝永遠。講了幾百年，加強的字反而搶走了否定的意義——這就是為什麼今天「換尾巴」就換否定意思，也是為什麼口語常把 ne 丟掉（je sais pas）：真正扛意義的是尾巴。否定後冠詞變 de 跟 beaucoup de 同邏輯——數量歸零也是一種數量。',
@@ -274,7 +274,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'adjectifs-accord', name:'Accord & place des adjectifs', icon:'🎨', zone:'A2', cat:'adjectifs',
-    lessons:[7,8,10], topics:['adjective-agreement','adjective-position'], unlocked:true,
+    lessons:[7,8,10,19], topics:['adjective-agreement','adjective-position'], unlocked:true,
     rule:{
       title:'形容詞 — 性數配合＋大多放名詞後面',
       why:'形容詞是名詞的衛星，衛星穿主星的制服——這是拉丁文傳下來的整套配合邏輯，跟冠詞、所有格是同一件事。位置的大原則：客觀分類的形容詞放後面（une voiture rouge），少數超高頻的主觀評價字（美醜好壞大小新舊，BAGS）搶到名詞前面的黃金位置。bel/nouvel 母音前變形跟 mon amie 完全同一個理由：法文不准兩個母音相撞。',
@@ -325,7 +325,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'duree-temps', name:'La durée (pendant · depuis · il y a)', icon:'⏳', zone:'A2', cat:'base',
-    lessons:[16], topics:['duree'], unlocked:true,
+    lessons:[16,19], topics:['duree'], unlocked:true,
     rule:{
       title:'時間表達四天王 — 問自己「事情結束了沒」',
       why:'法文切時間只看一件事：括號閉合了沒。pendant 是閉合的括號（一段有頭有尾的時間），il y a 是往回量到過去的一個點，depuis 是開口的括號——起點在過去、另一端還連著現在。「depuis 要配現在式」不是例外，是法文最誠實的地方：事情現在還在發生，當然用現在式（J\'habite ici depuis deux ans＝我現在還住著）。中文和英文都用過去式講這種句子，所以這格才需要特別練。',
