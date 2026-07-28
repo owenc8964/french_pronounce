@@ -1054,7 +1054,7 @@ function esc(s) { return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;'
 function renderWrongBook() {
   const today = todayStr();
   const items = getWrongLog().filter(e => e.d === today).sort((a,b) => b.t - a.t);
-  const SRC = { quiz:'🃏 Quiz', sprint:'⚡ 衝刺', reading:'📖 閱讀', review:'📦 複習卡', sentence:'🗣️ 造句練習', gram:'📐 文法路徑' };
+  const SRC = { quiz:'🃏 Quiz', sprint:'⚡ 衝刺', reading:'📖 閱讀', review:'📦 複習卡', sentence:'🗣️ 造句練習', gram:'📐 文法路徑', answercard:'🗣️ 答案卡' };
   document.getElementById('wbCount').textContent = items.length ? `${items.length} 題` : '';
   const list = document.getElementById('wbList');
   if (!items.length) {
