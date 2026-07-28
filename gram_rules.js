@@ -359,7 +359,10 @@ const GRAM_POINTS = [
       ]}},
 
   // ═══ 未開課（B1/B2 佔位，教到才解鎖） ══════════════════════
-  { id:'opinions',     name:'Opinions & débats',        icon:'💬', zone:'B1', cat:'discours',    lessons:[], topics:['connectors-pour-parceque'], unlocked:false },
+  // ⚠️ topics 刻意留空：這是 B1「表達立場/論述」的佔位點，之前掛著 connectors-pour-parceque，
+  //    導致 quiz.html 的 getPool() 把第7課 pour/parce que/mais 那 5 題整批當成「超前進度」排除。
+  //    pour/parce que 第2/7/16課都教過，不該被鎖。教到 B1 論述時再把新 topic 掛回來。
+  { id:'opinions',     name:'Opinions & débats',        icon:'💬', zone:'B1', cat:'discours',    lessons:[], topics:[], unlocked:false },
   { id:'futur',        name:'Futur & conditionnel',     icon:'🌟', zone:'B1', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
   { id:'subjonctif',   name:'Subjonctif présent',       icon:'🌀', zone:'B1', cat:'verbe-mode',  lessons:[], topics:[], unlocked:false },
   { id:'discours',     name:'Discours indirect',        icon:'💭', zone:'B1', cat:'discours',    lessons:[], topics:[], unlocked:false },
