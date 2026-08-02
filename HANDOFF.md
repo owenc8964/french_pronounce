@@ -69,7 +69,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | **目標** | CLB 7（= CEFR B2）|
 | **考試** | TEF Canada 或 TCF Canada |
 | **截止日** | 2027年6月1日 |
-| **目前程度** | A2（07-16已切換CLB_STAGE），第19課 |
+| **目前程度** | A2（07-16已切換CLB_STAGE），第20課 |
 | **每天目標** | 1.5–2 小時有效練習（含通勤被動聽力）|
 | **總時數目標** | 700 小時（多方研究數據交叉驗證）|
 | **產出能力評估的落差** | 系統目前對「辨識/回想」（quiz正確率、複習卡）評分很扎實，但對「口說/寫作/聽力理解」幾乎沒有真正評分機制——造句是 Claude 口頭給分沒有系統化趨勢，speaking/listening 日誌只記錄有沒有做、不評分內容。若要更準評估，未來可考慮定期做完整模擬 TCF/TEF 口說寫作題並照官方標準評分記錄趨勢（已跟 Owen 提過，尚未實作，見下方「下一步」）|
@@ -84,17 +84,17 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `session_timer.js` | 跨頁 session 計時器：`window.ClbSession` API，timestamp累計跨頁連續、練習頁常駐pill、**閒置3分鐘自動暫停**（用最後操作時間當停止點，不算閒置時間）、dashboard結算寫入700h、**07-11修復多分頁閒置搶跑＋start()洗掉進度兩個bug**（背景分頁不做閒置檢查、start()對已啟動session防呆） | ✅ 修復（07-11）|
 | `sync_supabase.js` | 跨裝置同步：所有 `clb7_*` 存到 Supabase，開頁pull合併、變動debounce **700ms**（原2.5s縮短）自動push、**切前景也會pull**（原本只有切背景push）、離頁再push、各頁完成關鍵動作時**主動立即push**（不等debounce）|✅|
 | `quiz.html` | SRS Quiz 550+題，熱身模式、**策略選課器**（未練過/錯誤率高/量少/久沒練 排序）、暫停、更正誤判、**07-11新增`.q-zh`區塊**：fill題型若有`zh`欄位直接顯示中文句意（不用點提示）、**07-16新增`getPool()`過濾**：topic對應的文法點若在`GRAM_POINTS`被鎖（`unlocked:false`）就不出題 | ✅ 修復（07-11/16）|
-| `table_drill.html` | 表格填空：**43個表格**（涵蓋第1–19課，含passé composé系列、imparfait無人稱動詞表、durée/qui-que/intensité/**négation（07-21新增）**「文法詞」類型），**錯題複習輪**（答錯進複習輪直到全對，主輪成績不被洗掉）、切難度/類型有進度時confirm確認、一輪6個表 | ✅ 大修（07-06/07/10/17/21）|
+| `table_drill.html` | 表格填空：**44個表格**（涵蓋第1–20課，含passé composé系列、imparfait無人稱動詞表、durée/qui-que/intensité/**négation（07-21新增）**「文法詞」類型），**錯題複習輪**（答錯進複習輪直到全對，主輪成績不被洗掉）、切難度/類型有進度時confirm確認、一輪6個表 | ✅ 大修（07-06/07/10/17/21）|
 | `verb_sprint.html` | 動詞反射衝刺：60秒、9動詞×6人稱、起手計時、反射熱力圖，**已補TTS發音**（原形+答錯自動唸正解）、**07-21修復2個bug**（空白提交卡死不前進、單題想太久卡住不揭曉，見下方07-24記錄）、**07-26新增passé composé模式**（Présent/PC切換按鈕，`VERBS_PC`含être動詞陰陽性雙解，獨立localStorage key `clb7_sprint_cells_pc`/`clb7_sprint_sessions_pc`不跟présent混，isCorrect支援`\|`多解比對） | ✅ 修復＋新模式（07-21/26）|
 | `review.html` | 複習卡：一包10張、SRS+successive relearning，**到期卡池已加洗牌**（避免同一批到期卡每天同順序重複）、發音邏輯已跟其他頁統一、卡片旁加「🤔語意不清」回饋按鈕、**07-11新增🔴手動標記不熟**（`clb7_hard_flags`，累加次數，未到期的標記卡會加碼塞進當天包，最多`FLAG_BONUS_MAX`張） | ✅ 修復（07-07/11）|
-| `reading.html` | 閱讀理解 20篇 A1–A1+短文，純法文+解說 | ✅ |
+| `reading.html` | 閱讀理解 **21篇**（A1–A1+ 20篇＋**08-02新增第一篇A2** `a21` Le marché du samedi：課文改寫版，非原文照抄，見08-02記錄的版權處理），純法文+解說 | ✅ |
 | `writing.html` | 每日2句造句，複製prompt→claude.ai→貼回記錄 | ✅ |
 | `sentence_drill.html` | **新增（07-07）**：中翻法造句練習，每天固定5句新句＋到期複習，沿用review.html同一套SRS引擎（1/3/7/14/30天），**答錯排到這輪最後重考，磨到全部答對才算完成**，跟review.html的卡片機制共用「包尾重試」邏輯、**07-11同步補上🔴手動標記不熟**（跟review.html共用同一個`clb7_hard_flags`，id前綴不同不會撞） | ✅ 新建（07-11補標記功能）|
-| `sentences.js` | **新增（07-07）**：常用句庫（目前146句，第1–19課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
+| `sentences.js` | **新增（07-07）**：常用句庫（目前156句，第1–20課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
 | `listening.html` | 聽力：**真實資源**（RFI + InnerFrench Spotify embed；Podcast Français Facile的A1對話系列連結卡）+ **自出TTS聽力測驗**（8篇，對齊已學課程）+ **07-09/07-10/07-11新增「真人語速測驗」**（LISTENING_BANK的`audioUrl`類型：真實mp3直接播放＋Claude原創TCF/TEF風格選擇題，目前10篇：麵包店/車站/市場/肉店/魚店/藥局/問路/**起司店/咖啡廳/郵局**，逐字稿核對用連結卡連到來源、不存對方文字）+ **07-10新增「文化深掘Podcast」板塊**（見下方07-10記錄，目前CULTURE_BANK是空陣列，等Owen放音檔進來）+ **07-16新增「🎬影集精讀Shadowing」板塊**（記錄集數/第幾遍/第2遍可貼整理的句型，`?shadow=1`從dashboard進來自動捲到這張卡）| ✅ 大改（07-06～07-16）|
 | `french_notes.html` | 第1–19課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音）、**07-11新增選字標記**（選取文字後可標🔴不熟／⭐重點，存`clb7_notes_marks`，重整頁面用文字比對重新套用，懸浮面板有「複製標記給Claude」） | ✅ 修復（07-07/11）|
-| `chunks.js` | 複習卡庫：**1040張**，自動從筆記抽取（1–19課，07-07補第15課88張、07-10補第16課80張、07-17補第17課40張含課文慣用語、07-21補第18課35張、07-26補第19課24張），**07-11修正2張第14課語意不清的卡** | ✅ |
-| `questions.js` | 共用題庫（**BANK 732題** + AGREE_BANK 247題），第1–19課，**07-11新增53個`zh`欄位**（fill題型無中文語境的補句意）、**07-17新增第17課24題**（passé composé/duree，含10題課文改編句）、**07-21新增第18課16題**（vocab-parcours-vie新topic + negation完整版）、**07-26新增第19課21題**（vocab-loisirs新topic、passé composé/negation/duree/adjective-position/social-invitations總複習） | ✅ |
+| `chunks.js` | 複習卡庫：**1110張**，自動從筆記抽取（1–20課，07-07補第15課88張、07-10補第16課80張、07-17補第17課40張含課文慣用語、07-21補第18課35張、07-26補第19課24張、08-02補第20課70張），**07-11修正2張第14課語意不清的卡** | ✅ |
+| `questions.js` | 共用題庫（**BANK 758題** + AGREE_BANK 247題），第1–20課，**07-11新增53個`zh`欄位**（fill題型無中文語境的補句意）、**07-17新增第17課24題**（passé composé/duree，含10題課文改編句）、**07-21新增第18課16題**（vocab-parcours-vie新topic + negation完整版）、**07-26新增第19課21題**（vocab-loisirs新topic、passé composé/negation/duree/adjective-position/social-invitations總複習）、**08-02新增第20課26題**（imparfait完整變位 + vocab-souvenirs新topic） | ✅ |
 | `gram_rules.js` | **新增（07-11）**：文法框架單一真相來源——`GRAM_POINTS` 32個文法點（19現役+13未開課佔位）含 topics 對應與規則卡（中文要點+法文例句）、`GRAM_CATS`7大類、`gramStageOf`/`gramSetStage`/`gramFlaggedIds`/`gramFlagQuestion` helpers。map/gram_trainer/quiz/dashboard 四頁共用。**07-21**：`negation`點補lesson 18＋passé composé中的位置規則／personne主詞vs受詞兩條rule points。**07-26**：`negation`/`duree-temps`/`passe`/`adjectifs-accord`四點的`lessons`陣列補19 | ✅ 新建 |
 | `gram_trainer.html` | **新增（07-11）**：文法路徑練習器——階段2半開卷（規則卡固定顯示）/階段3遮規則（答錯自動翻開），只出打字題杜絕選項污染，包尾重試磨到全對，首次作答≥80%升階，每階段可手動跳過；完成寫`clb7_quiz_done`（=步驟②）；階段2不寫SRS（開卷不灌精熟統計）、階段3寫；guided=1自動挑「階段最低+錯誤率最高」的點 | ✅ 新建 |
 | `codex.js` | **新增（07-11晚）**：📚文法資料庫（記憶宮殿）資料層——9大章50節122條，A1→B2全境（A1:29/A2:47/B1:34/B2:12），每條永久座標（如`5-2-2`）＋brief＋說明＋例句＋⚠️例外＋🆚相似對比＋topic對應（37個topic有門牌）。**座標鐵律：一經指定永不重編**（Owen靠位置記憶）。`codexLocate(topic)`給練習頁定位用。**07-21**：7-2-2補「personne當主詞vs受詞位置」pts（座標數不變，122條） | ✅ 新建 |
@@ -566,6 +566,36 @@ Owen 派工要求做一次三面向（教學法／使用體驗／技術健康度
 - **建議動手順序**：第一批 **`0-1`＋`0-2`**（一個修復既有步驟不需新素材、一個補最划算的洞且能自動計分）→ 第二批 `0-3`＋`0-4` → 第三批階段 1 內容擴充與 Dictée。**`0-2`／`0-3` 會動到新頁面／新 key，依 CLAUDE.md 新功能三步驟要先寫 PRD。**
 
 **報告文末列了 17 條待 Owen 決定的項目**（聽力口說 5 條在最前面）。系統結構面的其餘重點：`sentences.js` 有 83/146 句跟 `chunks.js` 完全重複（兩套 SRS 練同一句、呈現方式逐行相同）、⚡快速測驗 247 題 dashboard 完全讀不到（`clb7_dq_*` 有 64 筆真實資料但 `grep clb7_dq dashboard.html` = 0）、手寫筆記的 6 個 `fr_*`／`vr_*` key 從來不同步也不在備份裡（全系統最不可重新生成的內容）、雲端縮水保護（比備份更根本：三次推空都是「不完整的 localStorage 整包蓋掉雲端」，`push()` 加一道 key 數縮水閘就堵住機制本身）、4 個孤兒檔案的處置建議（含 `index.html` 目前就是正式站首頁）。
+
+---
+
+### 08-02：第20課（A2・Je me souviens・l'imparfait 完整變位）入庫收尾＋課文改編進閱讀題庫
+
+Owen 貼了第20課逐字稿＋4張課本截圖（`~/Desktop/0728/`：Unité 2 扉頁、Saveurs de Corse 課文頁、Madeleine de Proust 文化框＋「Pour raconter un souvenir」表達框、l'imparfait 完整文法頁含他手寫的 Entraînement 答案）。同一則訊息他提出本次的新想法：**「課文都可以納入做閱讀題目」**。
+
+⚠️ **開場踩到的判斷錯誤（之後 session 注意）**：一開始沒有先看 `git status` 的未 commit 內容就規劃工作，把 Owen 說的「只改那非常非常微量的部分，不要大改」誤讀成「改寫幅度要極小」。實際上他的意思是**第20課大部分已經做完了、只要補缺口**——`git status` 那批 `M` 檔案就是前一個 session 未 commit 的成果。**教訓：開場檢查的 `git status` 不是只看「是不是 repo」，要實際看未 commit 的 diff 內容。**
+
+**前一個 session 已完成（本次未動）**：`french_notes.html` 的 `lesson-20`（11 個 unit、382 行：回憶詞彙／saveurs 味道與食物／姿勢與夜晚場景／imparfait 完整變位／imparfait vs PC／-er-é-ais 三胞胎的 mordre 代換法／課文摘要／文化小知識／老師課堂法語／發音警報／糾錯摘要）、`questions.js`（+26題，`imparfait`＋新 topic `vocab-souvenirs`，BANK 732→758）、`sentences.js`（S_L20_1~10，146→156）、`quiz.html`／`dashboard.html` 的 `TOPIC_LABELS`（imparfait 標籤從「無人稱動詞」改成「完整變位」＋新增 vocab-souvenirs）。
+
+**本次補完的 6 個缺口**：
+1. `chunks.js`：hand-curated node 腳本生成 70 張 L20 卡，**1040→1110**。⚠️ 踩到新坑：腳本用 `/\n\];\s*$/` 取代插入時，原檔結尾已有 `},` 導致產生 `},,` 語法錯誤——**之後寫這類注入腳本，取代後一定要立刻回讀並實際 parse 驗證**（本次腳本內建的回讀只數 id 沒 parse，所以沒當場抓到）。
+2. `table_drill.html`：新增 `imparfait-radical`（type:verb, lesson:20, 8 row），**43→44 個表格**。8 個 row 刻意各收一種字根陷阱：parler(-er 規則)／finir(-iss-)／écrire(v)／prendre／voir(voy-)／être(ét- 唯一例外)／manger(-ger 保留 e)／étudier(雙 i)。
+3. `gram_rules.js`：`imparfait` 點從 `L'imparfait (impersonnel)`／`lessons:[15]` **升級成完整版**——改名 `L'imparfait`、`lessons:[15,20]`、規則要點 3→9 條、`why` 補上兩層原理（為什麼字根要繞道 nous 形＝nous 形保留了真字根；為什麼字根都避開 r 音＝不跟未來式 -rai/-ras 撞聲音）、examples 補到 4 句。
+4. `map.html`：`CURRENT_LESSON` 19→20；`imparfait` tile 的 `lesson` 15→20、hint 改成 `Je me souviens · C'était · Il faisait`、detail 改寫（**移除了原本寫的「L'usage complet arrive en B1」**，並補上 L15/L20 分野與三個拼字陷阱）。
+5. `codex.js`：`5-3-2`（imparfait 的變位）與 `5-3-3`（PC vs imparfait 鏡頭論）的 `lvl` **B1→A2**（實際已教到）。**座標鐵律遵守：只改 lvl 欄位，編號一個都沒動，前後都是 122 條**。內容本來就寫得完整，沒有改寫。
+6. `reading.html`：見下方獨立段落。
+
+**📖 課文進閱讀題庫（Owen 本次的新想法，已實作）**：
+- **動機成立且補到真缺口**：`reading.html` 原本 20 篇**全部是 A1／A1+ 的原創短文**，但 Owen 已在 A2 第20課——閱讀是今日處方第⑬步（最後一步），內容卻停在他早就跨過的程度，這一步等於在空轉。課文入題還有原創短文給不了的好處：**跟筆記／句庫／quiz 是同一批詞彙**，能互相加固。
+- **⚠️ 版權處理（本次確立，之後每課比照）**：課本（Edito A1）是商業教材，而這個 repo 是**公開的 GitHub Pages**，所以**課文原文不進 `reading.html`**。做法是**改寫版＋原創題**：保留本課詞彙、句型與文法點，但人物／地點／情節全部換掉。這跟 07-09 聽力已確立的「串流不下載／題目原創／逐字稿連結出去」是同一條原則，也跟 07-26 第19課課文改用「摘要＋短引用」一致。**筆記本體（`french_notes.html`）裡引用課文短句做講解不受影響**，那是教學摘引。額外好處：課文 Owen 上課已讀過，原文照抄只測得到記憶，改寫版才測得出真的看懂。
+- **成品**：`a21`「Le marché du samedi」（`level:'A2'`，**全庫第一篇 A2**；theme `Souvenirs`）——布列塔尼 Quimper 的週六市集童年回憶，14 個 imparfait 形＋2 個 passé composé 作對比，鋪滿本課詞彙（se rappeler／à cette époque／parfois／de temps en temps／humide／délicieux／odeur／debout／replonger dans mon enfance／madeleine de Proust）。3 題原創理解題，**第2題直接考 imparfait vs PC 的辨別**（四個選項裡只有一個是 PC）。
+
+**驗證**（照交付鐵律，隔離 ROOM 全程遵守）：
+- **資料層**：寫了一支 `verify_l20.js` 一次驗 8 個檔（scratchpad），涵蓋卡數／題數／句數／表格結構／文法點欄位／座標數不變／文章欄位／答案索引範圍／ROOM 是否正式值。全綠。
+- **瀏覽器層**（ROOM 已切 `TEST-DO-NOT-USE-DELETE-BEFORE-COMMIT`，並用 `fetch(cache:'no-store')` **實際確認 preview 供應的就是 TEST 值**才開始測）：`table_drill` 新表 8 格答案正確載入＋note 顯示＋評分正確（故意填「nous étudions」少一個 i 被判錯 ✅）；`reading` a21 清單顯示 A2 徽章、面板標題正確、故意 2對1錯 → 分數 2/3、✓✗ 正確、錯題給出完整解說、`clb7_reading` 寫入欄位齊全；`map` 顯示「第 20 課」、tile lesson=20、codex 5-3-1/2/3 都是 A2 且座標無重複。
+- **收尾**：清掉測試寫入的 a21 紀錄 → ROOM 改回 `owen-clb7-k9f3a72q` → **下一步立刻 `preview_stop`**（中間沒有再 navigate 或跟分頁互動）→ grep 全 repo 確認無 `TEST-DO-NOT-USE` 殘留、`sync_supabase.js` diff 為零。
+
+**📌 一則自我更正（避免之後 session 被誤導）**：驗證中我一度用 `grep -c "n:'[0-9]*-[0-9]*-[0-9]*'"` 數 codex 座標得到 149，因此誤判「HANDOFF 寫的 122 條已過期」。**實際 parse `CODEX` 結構得到的是 122 條，HANDOFF 一直是對的**——grep 把交叉引用之類的字串也算進去了。**數 codex 條目要 parse 結構（`CODEX → sections → items`），不要用 grep 數。**
 
 ---
 

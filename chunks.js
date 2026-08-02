@@ -7281,4 +7281,487 @@ const CHUNKS = [
   "zh": "金牌、銀牌、銅牌",
   "note": "argent也有「銀」的意思"
  },
+ {
+  "id": "L20_se_souvenir_de",
+  "lesson": 20,
+  "fr": "se souvenir de",
+  "zh": "記得、想起",
+  "note": "反身動詞，後面一定接 de：je me souviens de ce jour"
+ },
+ {
+  "id": "L20_se_rappeler",
+  "lesson": 20,
+  "fr": "se rappeler",
+  "zh": "記得、想起",
+  "note": "意思跟 se souvenir 一樣，但直接接受詞、不加 de"
+ },
+ {
+  "id": "L20_un_souvenir",
+  "lesson": 20,
+  "fr": "un souvenir",
+  "zh": "回憶；紀念品",
+  "note": "兩個意思同一個字——紀念品就是「一段回憶」"
+ },
+ {
+  "id": "L20_la_mémoire",
+  "lesson": 20,
+  "fr": "la mémoire",
+  "zh": "記憶（力）",
+  "note": "腦內裝置；souvenir 是裝在裡面的一則則內容"
+ },
+ {
+  "id": "L20_l_enfance",
+  "lesson": 20,
+  "fr": "l'enfance",
+  "zh": "童年",
+  "note": "replonger dans mon enfance＝一頭栽回童年"
+ },
+ {
+  "id": "L20_oublier",
+  "lesson": 20,
+  "fr": "oublier",
+  "zh": "忘記",
+  "note": "impossible de les oublier＝不可能忘掉"
+ },
+ {
+  "id": "L20_graver",
+  "lesson": 20,
+  "fr": "graver",
+  "zh": "刻（在…上）",
+  "note": "gravé dans ma mémoire＝刻在我記憶裡"
+ },
+ {
+  "id": "L20_être_attaché_e_à",
+  "lesson": 20,
+  "fr": "être attaché(e) à",
+  "zh": "依戀、捨不得",
+  "note": "可對地方也可對人：attaché à cet endroit / à lui"
+ },
+ {
+  "id": "L20_mon_plus_mauvais_souveni",
+  "lesson": 20,
+  "fr": "mon plus mauvais souvenir",
+  "zh": "我最糟的回憶",
+  "note": "⚠️ mauvais＝壞的，要加 le/mon plus 才是最高級"
+ },
+ {
+  "id": "L20_dire",
+  "lesson": 20,
+  "fr": "dire",
+  "zh": "說（說出一句話）",
+  "note": "dire quelque chose à quelqu'un"
+ },
+ {
+  "id": "L20_parler_de",
+  "lesson": 20,
+  "fr": "parler de",
+  "zh": "談論、講到",
+  "note": "je vais vous parler de ma maison"
+ },
+ {
+  "id": "L20_raconter",
+  "lesson": 20,
+  "fr": "raconter",
+  "zh": "敘述、講故事",
+  "note": "有情節的才用 raconter：raconter mes souvenirs"
+ },
+ {
+  "id": "L20_répondre_à",
+  "lesson": 20,
+  "fr": "répondre à",
+  "zh": "回答",
+  "note": "考卷高頻：Répondez en français."
+ },
+ {
+  "id": "L20_sourire",
+  "lesson": 20,
+  "fr": "sourire",
+  "zh": "微笑",
+  "note": "Souriez !＝笑一個！（跟 rire 笑出聲不同）"
+ },
+ {
+  "id": "L20_replonger_dans",
+  "lesson": 20,
+  "fr": "replonger dans",
+  "zh": "再次一頭栽進…",
+  "note": "plonger＝潛入，re- 是再一次"
+ },
+ {
+  "id": "L20_tenir_la_main",
+  "lesson": 20,
+  "fr": "tenir la main",
+  "zh": "牽手",
+  "note": "je lui tenais la main＝我牽著她的手"
+ },
+ {
+  "id": "L20_tremper",
+  "lesson": 20,
+  "fr": "tremper",
+  "zh": "浸、泡",
+  "note": "tremper sa tartine dans le café"
+ },
+ {
+  "id": "L20_goûter",
+  "lesson": 20,
+  "fr": "goûter",
+  "zh": "嚐一口",
+  "note": "juste pour goûter＝只是嚐嚐看"
+ },
+ {
+  "id": "L20_se_déplacer",
+  "lesson": 20,
+  "fr": "se déplacer",
+  "zh": "移動、往來奔波",
+  "note": "不只搬家：je me déplace souvent pour mon travail"
+ },
+ {
+  "id": "L20_la_saveur",
+  "lesson": 20,
+  "fr": "la saveur",
+  "zh": "風味、滋味",
+  "note": "不限食物，任何品味到的味道；Saveurs de Corse"
+ },
+ {
+  "id": "L20_l_odeur",
+  "lesson": 20,
+  "fr": "l'odeur",
+  "zh": "氣味（中性）",
+  "note": "好聞難聞都能用"
+ },
+ {
+  "id": "L20_le_parfum",
+  "lesson": 20,
+  "fr": "le parfum",
+  "zh": "香味；香水",
+  "note": "不只是香水！le parfum des fleurs＝花香"
+ },
+ {
+  "id": "L20_sentir",
+  "lesson": 20,
+  "fr": "sentir",
+  "zh": "聞起來；聞",
+  "note": "ça sentait bon＝（當時）聞起來好香"
+ },
+ {
+  "id": "L20_culinaire",
+  "lesson": 20,
+  "fr": "culinaire",
+  "zh": "烹飪的、跟吃有關的",
+  "note": "des souvenirs culinaires＝關於吃的回憶"
+ },
+ {
+  "id": "L20_délicieux_délicieuse",
+  "lesson": 20,
+  "fr": "délicieux, délicieuse",
+  "zh": "美味的"
+ },
+ {
+  "id": "L20_la_confiture",
+  "lesson": 20,
+  "fr": "la confiture",
+  "zh": "果醬",
+  "note": "本課出現最多次的字"
+ },
+ {
+  "id": "L20_la_figue",
+  "lesson": 20,
+  "fr": "la figue",
+  "zh": "無花果"
+ },
+ {
+  "id": "L20_l_abricot",
+  "lesson": 20,
+  "fr": "l'abricot",
+  "zh": "杏桃"
+ },
+ {
+  "id": "L20_la_clémentine",
+  "lesson": 20,
+  "fr": "la clémentine",
+  "zh": "小柑橘",
+  "note": "也是女生名字"
+ },
+ {
+  "id": "L20_la_tartine",
+  "lesson": 20,
+  "fr": "la tartine",
+  "zh": "塗醬麵包片",
+  "note": "預設是「麵包＋抹的東西」：tartine de confiture/de beurre"
+ },
+ {
+  "id": "L20_le_beurre",
+  "lesson": 20,
+  "fr": "le beurre",
+  "zh": "奶油"
+ },
+ {
+  "id": "L20_le_beignet",
+  "lesson": 20,
+  "fr": "le beignet",
+  "zh": "炸糕、甜甜圈類點心",
+  "note": "科西嘉叫 frappes，老師家鄉叫 merveilles"
+ },
+ {
+  "id": "L20_la_madeleine",
+  "lesson": 20,
+  "fr": "la madeleine",
+  "zh": "瑪德蓮蛋糕",
+  "note": "貝殼形小蛋糕，也是本課關鍵文化詞"
+ },
+ {
+  "id": "L20_le_café_au_lait",
+  "lesson": 20,
+  "fr": "le café au lait",
+  "zh": "咖啡歐蕾",
+  "note": "法國人早餐會把麵包泡進去"
+ },
+ {
+  "id": "L20_assis_e_",
+  "lesson": 20,
+  "fr": "assis(e)",
+  "zh": "坐著",
+  "note": "on adorait manger assis＝我們超愛坐著吃"
+ },
+ {
+  "id": "L20_debout",
+  "lesson": 20,
+  "fr": "debout",
+  "zh": "站著",
+  "note": "不變化，永遠是 debout"
+ },
+ {
+  "id": "L20_couché_e_",
+  "lesson": 20,
+  "fr": "couché(e)",
+  "zh": "躺著、睡下",
+  "note": "來自 se coucher（就寢）"
+ },
+ {
+  "id": "L20_allongé_e_",
+  "lesson": 20,
+  "fr": "allongé(e)",
+  "zh": "躺著、平躺",
+  "note": "allongés dans l'herbe＝躺在草地上"
+ },
+ {
+  "id": "L20_la_maison_familiale",
+  "lesson": 20,
+  "fr": "la maison familiale",
+  "zh": "老家、家族的房子",
+  "note": "familial(e) 是形容詞"
+ },
+ {
+  "id": "L20_la_cheminée",
+  "lesson": 20,
+  "fr": "la cheminée",
+  "zh": "壁爐；煙囪",
+  "note": "跟英文 chimney 同源"
+ },
+ {
+  "id": "L20_le_feu",
+  "lesson": 20,
+  "fr": "le feu",
+  "zh": "火",
+  "note": "第14課學過 un feu de forêt"
+ },
+ {
+  "id": "L20_le_jardin",
+  "lesson": 20,
+  "fr": "le jardin",
+  "zh": "花園、院子"
+ },
+ {
+  "id": "L20_l_herbe",
+  "lesson": 20,
+  "fr": "l'herbe",
+  "zh": "草、草地"
+ },
+ {
+  "id": "L20_humide",
+  "lesson": 20,
+  "fr": "humide",
+  "zh": "潮濕的"
+ },
+ {
+  "id": "L20_une_étoile",
+  "lesson": 20,
+  "fr": "une étoile",
+  "zh": "星星",
+  "note": "跟西班牙文 estrella 同源（拉丁文 stella）"
+ },
+ {
+  "id": "L20_la_Grande_Ourse",
+  "lesson": 20,
+  "fr": "la Grande Ourse",
+  "zh": "大熊座（北斗七星）",
+  "note": "ours＝熊，所以是「大熊」"
+ },
+ {
+  "id": "L20_une_étoile_filante",
+  "lesson": 20,
+  "fr": "une étoile filante",
+  "zh": "流星",
+  "note": "filer＝飛快移動"
+ },
+ {
+  "id": "L20_faire_un_v_u",
+  "lesson": 20,
+  "fr": "faire un vœu",
+  "zh": "許願",
+  "note": "看到流星要說：Fais un vœu !"
+ },
+ {
+  "id": "L20_le_printemps",
+  "lesson": 20,
+  "fr": "le printemps",
+  "zh": "春天",
+  "note": "au printemps；其他季節用 en"
+ },
+ {
+  "id": "L20_à_cette_époque",
+  "lesson": 20,
+  "fr": "à cette époque",
+  "zh": "那個時候",
+  "note": "講一段人生時期，配 imparfait"
+ },
+ {
+  "id": "L20_chaque_jour_tous_les_j",
+  "lesson": 20,
+  "fr": "chaque jour ＝ tous les jours",
+  "zh": "每天",
+  "note": "chaque 不變化、後面接單數"
+ },
+ {
+  "id": "L20_de_temps_en_temps",
+  "lesson": 20,
+  "fr": "de temps en temps",
+  "zh": "偶爾、時不時",
+  "note": "老師說超好用，也可拿來謙虛"
+ },
+ {
+  "id": "L20_parfois",
+  "lesson": 20,
+  "fr": "parfois",
+  "zh": "有時候",
+  "note": "parfois＋imparfait＝重複發生的習慣"
+ },
+ {
+  "id": "L20_d_abord",
+  "lesson": 20,
+  "fr": "d'abord",
+  "zh": "首先",
+  "note": "講故事的開場路標"
+ },
+ {
+  "id": "L20_encore_aujourd_hui",
+  "lesson": 20,
+  "fr": "encore aujourd'hui",
+  "zh": "直到今天仍然",
+  "note": "encore 這裡不是「再一次」"
+ },
+ {
+  "id": "L20_quand_j_étais_petit_e_",
+  "lesson": 20,
+  "fr": "quand j'étais petit(e)",
+  "zh": "當我小時候",
+  "note": "口說寫作萬用開場，必背"
+ },
+ {
+  "id": "L20_nous_faisons_je_faisai",
+  "lesson": 20,
+  "fr": "nous faisons → je faisais",
+  "zh": "faire 的 imparfait",
+  "note": "⚠️ 拼 fai- 但唸 /fə/，法文少數拼寫騙人的常用字"
+ },
+ {
+  "id": "L20_nous_finissons_je_fini",
+  "lesson": 20,
+  "fr": "nous finissons → je finissais",
+  "zh": "finir 的 imparfait",
+  "note": "⚠️ 不能砍原形！-ir 動詞的 nous 形多了 -iss-"
+ },
+ {
+  "id": "L20_nous_écrivons_j_écriva",
+  "lesson": 20,
+  "fr": "nous écrivons → j'écrivais",
+  "zh": "écrire 的 imparfait",
+  "note": "⚠️ écri- 是錯的，要用 nous 形裡的 v"
+ },
+ {
+  "id": "L20_nous_sommes_j_étais",
+  "lesson": 20,
+  "fr": "nous sommes ❌ → j'étais",
+  "zh": "être 的 imparfait（唯一例外）",
+  "note": "字根 ét-，不從 nous 形推"
+ },
+ {
+  "id": "L20_nous_étudions_nous_étu",
+  "lesson": 20,
+  "fr": "nous étudions → nous étudiions",
+  "zh": "étudier 的 imparfait",
+  "note": "⚠️ 雙 i：字根 étudi-＋字尾 -ions"
+ },
+ {
+  "id": "L20_je_mangeais_nous_mangi",
+  "lesson": 20,
+  "fr": "je mangeais / nous mangions",
+  "zh": "manger 的 imparfait",
+  "note": "字尾 a 開頭要補 e；字尾 i 開頭不用"
+ },
+ {
+  "id": "L20_je_déplaçais_nous_dépl",
+  "lesson": 20,
+  "fr": "je déplaçais / nous déplacions",
+  "zh": "déplacer 的 imparfait",
+  "note": "c 遇 a 要加尾巴變 ç；遇 i 不用"
+ },
+ {
+  "id": "L20_Souriez_",
+  "lesson": 20,
+  "fr": "Souriez !",
+  "zh": "笑一個！",
+  "note": "拍照時的固定說法"
+ },
+ {
+  "id": "L20_Sans_hésiter_",
+  "lesson": 20,
+  "fr": "Sans hésiter.",
+  "zh": "毫不猶豫。",
+  "note": "Ma préférée, sans hésiter, c'est la figue."
+ },
+ {
+  "id": "L20_Bon_d_accord_",
+  "lesson": 20,
+  "fr": "Bon, d'accord.",
+  "zh": "好吧，那好。",
+  "note": "⚠️ 句首的 bon 是「勉強接受」的語氣詞，不會單獨說"
+ },
+ {
+  "id": "L20_Juste_pour_goûter_",
+  "lesson": 20,
+  "fr": "Juste pour goûter.",
+  "zh": "只是嚐一口而已。",
+  "note": "juste＝只是"
+ },
+ {
+  "id": "L20_Fais_un_v_u_",
+  "lesson": 20,
+  "fr": "Fais un vœu !",
+  "zh": "快許願！",
+  "note": "看到流星的反應，跟中文一樣"
+ },
+ {
+  "id": "L20_Ça_me_replonge_dans_mon_",
+  "lesson": 20,
+  "fr": "Ça me replonge dans mon enfance.",
+  "zh": "這讓我一下子回到童年。",
+  "note": "看到懷舊的東西就可以用"
+ },
+ {
+  "id": "L20_C_est_ma_madeleine_de_Pr",
+  "lesson": 20,
+  "fr": "C'est ma madeleine de Proust.",
+  "zh": "這是我的普魯斯特瑪德蓮。",
+  "note": "指任何會瞬間喚回童年的東西（物品/歌/顏色/氣味）"
+ },
 ];

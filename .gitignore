@@ -1,2 +1,7 @@
 .DS_Store
 .claude/settings.local.json
+
+# 課本／講義 PDF：① 單檔遠超 GitHub 100MB 上限，push 會直接失敗
+# ② 是商業教材掃描檔，而這個 repo 是公開的 GitHub Pages
+# 只當本地參考來源用，永遠不要 commit（防止 `git add .` 誤傷）
+assets/*.pdf
