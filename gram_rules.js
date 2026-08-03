@@ -116,6 +116,29 @@ const GRAM_POINTS = [
         { fr:"Tu m'aides ?", zh:'你幫我嗎？（me→m\'）' },
       ]}},
 
+  { id:'pronoms-y-en', name:'Pronoms y / en (lieu)', icon:'📍', zone:'A2', cat:'pronoms',
+    lessons:[21], topics:['pronoms-y-en'], unlocked:true,
+    rule:{
+      title:'y 與 en — 兩個地方代名詞',
+      why:'法文不喜歡把講過的地方再講一次，所以給了兩個超短的替身。它們的分工不是隨機的：y 來自拉丁文 ibi（在那裡），en 來自 inde（從那裡）——一個管「在／去」，一個管「從」，兩千年沒變過。所以判斷方式不是背表，是問方向：這句是「去那裡」還是「從那裡回來」。而它們之所以插在動詞前面，跟 COD 代名詞同一個原因——都是被磨到沒有重音的小音節，只能靠在動詞身上站著。',
+      points:[
+        'y ＝ 取代 à／sur／sous／dans ＋ 地點：「在那裡、去那裡」',
+        'en ＝ 取代 de／du／de la／des ＋ 地點：「從那裡（來／回來／離開）」',
+        '⚡ 判斷口訣：先問「這句是去還是回」——去/在→y，從那裡→en',
+        '位置：夾在主詞和動詞中間（J\'y vais／Je m\'y promène）',
+        '⚠️ passé composé 放在「助動詞」前面，不是分詞前面：Il en est parti ✅／Il est en parti ❌',
+        '⚠️ 否定把 ne…pas 包住「y/en＋助動詞」整組：On n\'y a pas dormi',
+        '同一個問句可以用 y 也可以用 en，取決於你自己怎麼造回答句：je n\'en suis pas sorti（沿用 sortir de）vs j\'y suis encore（改講「還在那裡」）',
+        'ici（近）／là-bas（遠）也能代替地方，常跟 y 互換：J\'y vais ＝ Je vais là-bas',
+        '⚠️ Il part en Australie 的 en 是「去某國」的介係詞，不是代名詞——代名詞要用 y（Il y va）',
+      ],
+      examples:[
+        { fr:'Le climat est agréable sur cette île ? — Oui, il y est très agréable.', zh:'這島氣候好嗎？——那裡很好。（sur→y）' },
+        { fr:"Tu reviens de la plage ? — Oui, j'en reviens à l'instant.", zh:'你從海灘回來？——剛回來。（de→en）' },
+        { fr:"Vous avez dormi sous la tente ? — Non, on n'y a pas dormi.", zh:'睡帳篷了嗎？——沒睡那裡。（否定＋PC 的位置）' },
+        { fr:'Il est parti du chalet ? — Il en est parti à 6 h.', zh:'他從木屋走了？——6點從那裡走的。' },
+      ]}},
+
   { id:'questions', name:'Questions simples', icon:'❓', zone:'A1', cat:'base',
     lessons:[1,2], topics:['question-words'], unlocked:true,
     rule:{

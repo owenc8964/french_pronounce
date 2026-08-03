@@ -7764,4 +7764,432 @@ const CHUNKS = [
   "zh": "這是我的普魯斯特瑪德蓮。",
   "note": "指任何會瞬間喚回童年的東西（物品/歌/顏色/氣味）"
  },
+ {
+  "id": "L21_la_vue",
+  "lesson": 21,
+  "fr": "la vue",
+  "zh": "視覺；景色",
+  "note": "五感之一；也指「景色」：une vue magnifique"
+ },
+ {
+  "id": "L21_l_odorat",
+  "lesson": 21,
+  "fr": "l'odorat",
+  "zh": "嗅覺",
+  "note": "⚠️ 跟 l'odeur（氣味）不同：odorat 是能力，odeur 是聞到的東西"
+ },
+ {
+  "id": "L21_le_goût",
+  "lesson": 21,
+  "fr": "le goût",
+  "zh": "味覺；味道",
+  "note": "名詞；「去嚐」是動詞 goûter"
+ },
+ {
+  "id": "L21_le_toucher",
+  "lesson": 21,
+  "fr": "le toucher",
+  "zh": "觸覺",
+  "note": "五感之一"
+ },
+ {
+  "id": "L21_l_ouïe",
+  "lesson": 21,
+  "fr": "l'ouïe",
+  "zh": "聽覺",
+  "note": "唸 /wi/（像 oui）；動詞是 entendre／écouter"
+ },
+ {
+  "id": "L21_voir",
+  "lesson": 21,
+  "fr": "voir",
+  "zh": "看到（被動、非刻意）",
+  "note": "J'ai vu des oiseaux＝我看到一些鳥"
+ },
+ {
+  "id": "L21_regarder",
+  "lesson": 21,
+  "fr": "regarder",
+  "zh": "看（刻意、專注）",
+  "note": "⚠️ 電影一定用 regarder：J'ai regardé un film"
+ },
+ {
+  "id": "L21_entendre",
+  "lesson": 21,
+  "fr": "entendre",
+  "zh": "聽到（被動）",
+  "note": "跟 voir 同邏輯"
+ },
+ {
+  "id": "L21_écouter",
+  "lesson": 21,
+  "fr": "écouter",
+  "zh": "聽（專注）",
+  "note": "跟 regarder 同邏輯"
+ },
+ {
+  "id": "L21_le_bruit",
+  "lesson": 21,
+  "fr": "le bruit",
+  "zh": "聲音、噪音",
+  "note": "中性偏負面"
+ },
+ {
+  "id": "L21_le_chant_des_oiseaux",
+  "lesson": 21,
+  "fr": "le chant des oiseaux",
+  "zh": "鳥鳴",
+  "note": "le chant＝鳴叫、歌聲（來自 chanter）"
+ },
+ {
+  "id": "L21_sentir_bon_sentir_mauv",
+  "lesson": 21,
+  "fr": "sentir bon ≠ sentir mauvais",
+  "zh": "聞起來香／難聞",
+  "note": "⚠️ 後面接 bon/mauvais 不變化"
+ },
+ {
+  "id": "L21_Ça_sent_mauvais_",
+  "lesson": 21,
+  "fr": "Ça sent mauvais.",
+  "zh": "（口語）這下不妙了。",
+  "note": "字面是「聞起來很臭」，實際用來講不好的預感"
+ },
+ {
+  "id": "L21_l_album_photos",
+  "lesson": 21,
+  "fr": "l'album photos",
+  "zh": "相簿",
+  "note": "⚠️ photos 恆用複數"
+ },
+ {
+  "id": "L21_développer_des_photos",
+  "lesson": 21,
+  "fr": "développer des photos",
+  "zh": "沖洗照片",
+  "note": "développer 這裡不是「發展」"
+ },
+ {
+  "id": "L21_un_souvenir_d_enfance",
+  "lesson": 21,
+  "fr": "un souvenir d'enfance",
+  "zh": "童年回憶"
+ },
+ {
+  "id": "L21_un_souvenir_d_adolescenc",
+  "lesson": 21,
+  "fr": "un souvenir d'adolescence",
+  "zh": "青少年時期的回憶"
+ },
+ {
+  "id": "L21_un_souvenir_de_jeunesse",
+  "lesson": 21,
+  "fr": "un souvenir de jeunesse",
+  "zh": "年輕時的回憶",
+  "note": "⚠️ la jeunesse 約 20–25 歲，不是童年"
+ },
+ {
+  "id": "L21_un_souvenir_d_école",
+  "lesson": 21,
+  "fr": "un souvenir d'école",
+  "zh": "學校的回憶"
+ },
+ {
+  "id": "L21_un_souvenir_de_famille",
+  "lesson": 21,
+  "fr": "un souvenir de famille",
+  "zh": "家庭回憶"
+ },
+ {
+  "id": "L21_un_souvenir_de_vacances",
+  "lesson": 21,
+  "fr": "un souvenir de vacances",
+  "zh": "假期回憶",
+  "note": "vacances 恆複數"
+ },
+ {
+  "id": "L21_l_adolescence",
+  "lesson": 21,
+  "fr": "l'adolescence",
+  "zh": "青春期"
+ },
+ {
+  "id": "L21_la_jeunesse",
+  "lesson": 21,
+  "fr": "la jeunesse",
+  "zh": "年輕時期（約20-25歲）",
+  "note": "⚠️ 比 adolescence 大，別翻成童年"
+ },
+ {
+  "id": "L21_agréable",
+  "lesson": 21,
+  "fr": "agréable",
+  "zh": "愉快的"
+ },
+ {
+  "id": "L21_joyeux_joyeuse",
+  "lesson": 21,
+  "fr": "joyeux, joyeuse",
+  "zh": "歡樂的",
+  "note": "Joyeux anniversaire !＝生日快樂"
+ },
+ {
+  "id": "L21_heureux_heureuse",
+  "lesson": 21,
+  "fr": "heureux, heureuse",
+  "zh": "幸福的、開心的",
+  "note": "反義是 triste"
+ },
+ {
+  "id": "L21_triste",
+  "lesson": 21,
+  "fr": "triste",
+  "zh": "悲傷的",
+  "note": "heureux／joyeux 的反義"
+ },
+ {
+  "id": "L21_inoubliable",
+  "lesson": 21,
+  "fr": "inoubliable",
+  "zh": "難忘的",
+  "note": "⚠️ 中性：好到難忘、爛到難忘都能用"
+ },
+ {
+  "id": "L21_Joyeux_anniversaire_",
+  "lesson": 21,
+  "fr": "Joyeux anniversaire !",
+  "zh": "生日快樂！",
+  "note": "也可以說 Bon anniversaire !"
+ },
+ {
+  "id": "L21_y_à_sur_sous_dan",
+  "lesson": 21,
+  "fr": "y ＝ à / sur / sous / dans ＋ 地點",
+  "zh": "y＝在那裡／去那裡",
+  "note": "看到 à, sur, sous, dans 就用 y"
+ },
+ {
+  "id": "L21_en_de_du_de_la_d",
+  "lesson": 21,
+  "fr": "en ＝ de / du / de la / des ＋ 地點",
+  "zh": "en＝從那裡",
+  "note": "看到 de 開頭就用 en"
+ },
+ {
+  "id": "L21_J_y_vais_souvent_",
+  "lesson": 21,
+  "fr": "J'y vais souvent.",
+  "zh": "我常去那裡。",
+  "note": "y 夾在主詞和動詞之間"
+ },
+ {
+  "id": "L21_Oui_j_en_reviens_à_l_in",
+  "lesson": 21,
+  "fr": "Oui, j'en reviens à l'instant.",
+  "zh": "對，我剛從那裡回來。",
+  "note": "à l'instant＝剛剛"
+ },
+ {
+  "id": "L21_Il_en_est_parti_à_six_he",
+  "lesson": 21,
+  "fr": "Il en est parti à six heures.",
+  "zh": "他六點從那裡離開。",
+  "note": "⚠️ passé composé 裡 y/en 放助動詞前面"
+ },
+ {
+  "id": "L21_Non_on_n_y_a_pas_dormi_",
+  "lesson": 21,
+  "fr": "Non, on n'y a pas dormi.",
+  "zh": "不，我們沒在那裡睡。",
+  "note": "否定＋PC：n'＋y＋助動詞＋pas＋分詞"
+ },
+ {
+  "id": "L21_Je_m_y_promène_très_souv",
+  "lesson": 21,
+  "fr": "Je m'y promène très souvent.",
+  "zh": "我很常在那裡散步。",
+  "note": "反身動詞：me→m'，再接 y"
+ },
+ {
+  "id": "L21_J_y_suis_encore_",
+  "lesson": 21,
+  "fr": "J'y suis encore.",
+  "zh": "我還在那裡。",
+  "note": "跟 je n'en suis pas sorti 是同一題的兩種答法"
+ },
+ {
+  "id": "L21_là_bas",
+  "lesson": 21,
+  "fr": "là-bas",
+  "zh": "那裡（較遠）",
+  "note": "可以代替 y：Je vais là-bas ＝ J'y vais"
+ },
+ {
+  "id": "L21_ici",
+  "lesson": 21,
+  "fr": "ici",
+  "zh": "這裡（離說話者近）",
+  "note": "跟 là-bas 相對"
+ },
+ {
+  "id": "L21_venir_de",
+  "lesson": 21,
+  "fr": "venir de",
+  "zh": "來自（出身）",
+  "note": "⚠️ Tu viens du Japon ?＝你是日本來的嗎"
+ },
+ {
+  "id": "L21_revenir_de",
+  "lesson": 21,
+  "fr": "revenir de",
+  "zh": "從…回來（去了一趟）",
+  "note": "⚠️ Tu reviens du Japon ?＝你剛從日本回來嗎"
+ },
+ {
+  "id": "L21_repartir",
+  "lesson": 21,
+  "fr": "repartir",
+  "zh": "再次離開（來過一趟又走）",
+  "note": "本來就不是那裡的人，走時用 repartir"
+ },
+ {
+  "id": "L21_redescendre",
+  "lesson": 21,
+  "fr": "redescendre",
+  "zh": "（上去之後）再下來",
+  "note": "re-＝再一次"
+ },
+ {
+  "id": "L21_remonter",
+  "lesson": 21,
+  "fr": "remonter",
+  "zh": "再上去一次"
+ },
+ {
+  "id": "L21_le_paysage",
+  "lesson": 21,
+  "fr": "le paysage",
+  "zh": "風景、景色",
+  "note": "本課關鍵字"
+ },
+ {
+  "id": "L21_marquer_quelqu_un",
+  "lesson": 21,
+  "fr": "marquer quelqu'un",
+  "zh": "在某人心裡留下深刻印記",
+  "note": "⚠️ 不是「標記」：ça me marque＝我忘不掉"
+ },
+ {
+  "id": "L21_à_jamais",
+  "lesson": 21,
+  "fr": "à jamais",
+  "zh": "永遠地",
+  "note": "marquer à jamais＝一輩子忘不了"
+ },
+ {
+  "id": "L21_en_pleine_nature",
+  "lesson": 21,
+  "fr": "en pleine nature",
+  "zh": "在大自然裡"
+ },
+ {
+  "id": "L21_touristique",
+  "lesson": 21,
+  "fr": "touristique",
+  "zh": "觀光的、遊客多的"
+ },
+ {
+  "id": "L21_magique",
+  "lesson": 21,
+  "fr": "magique",
+  "zh": "神奇的"
+ },
+ {
+  "id": "L21_une_grande_variété_de",
+  "lesson": 21,
+  "fr": "une grande variété de",
+  "zh": "非常多樣的…",
+  "note": "la variété＝多樣性"
+ },
+ {
+  "id": "L21_classé_au_patrimoine_mon",
+  "lesson": 21,
+  "fr": "classé au patrimoine mondial de l'UNESCO",
+  "zh": "列入UNESCO世界遺產",
+  "note": "le patrimoine＝遺產"
+ },
+ {
+  "id": "L21_sublime",
+  "lesson": 21,
+  "fr": "sublime",
+  "zh": "絕美的",
+  "note": "比 magnifique 更強"
+ },
+ {
+  "id": "L21_le_sommet",
+  "lesson": 21,
+  "fr": "le sommet",
+  "zh": "山頂"
+ },
+ {
+  "id": "L21_l_intérieur_de_l_île",
+  "lesson": 21,
+  "fr": "l'intérieur de l'île",
+  "zh": "島的內陸"
+ },
+ {
+  "id": "L21_la_barrière_de_corail",
+  "lesson": 21,
+  "fr": "la barrière de corail",
+  "zh": "珊瑚礁",
+  "note": "le corail＝珊瑚"
+ },
+ {
+  "id": "L21_le_silence",
+  "lesson": 21,
+  "fr": "le silence",
+  "zh": "寂靜"
+ },
+ {
+  "id": "L21_s_évader",
+  "lesson": 21,
+  "fr": "s'évader",
+  "zh": "逃離日常、放空",
+  "note": "原意是越獄，引申為度假式抽離"
+ },
+ {
+  "id": "L21_faire_l_ascension_de",
+  "lesson": 21,
+  "fr": "faire l'ascension de",
+  "zh": "攀登…",
+  "note": "l'ascension＝登頂"
+ },
+ {
+  "id": "L21_enchanté_e_",
+  "lesson": 21,
+  "fr": "enchanté(e)",
+  "zh": "陶醉的；幸會",
+  "note": "⚠️ 兩義：課文是「非常開心」，初次見面才是「幸會」"
+ },
+ {
+  "id": "L21_Que_demander_de_plus_",
+  "lesson": 21,
+  "fr": "Que demander de plus ?",
+  "zh": "夫復何求？",
+  "note": "已經很完美時的固定說法"
+ },
+ {
+  "id": "L21_au_bord_de_la_mer",
+  "lesson": 21,
+  "fr": "au bord de la mer",
+  "zh": "在海邊",
+  "note": "le bord＝邊（Bordeaux 就是 bord de l'eau 來的）"
+ },
+ {
+  "id": "L21_espérer",
+  "lesson": 21,
+  "fr": "espérer",
+  "zh": "希望",
+  "note": "名詞是 l'espoir；-er 動詞"
+ },
 ];
