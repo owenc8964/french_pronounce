@@ -206,6 +206,8 @@ body {
 <div class="reading-panel" id="readingPanel">
   <div class="article-card">
     <div class="art-heading" id="panelHeading"></div>
+    <!-- 發音三層控制列（tts_reader.js 自己填內容）──整段／單句／單字 -->
+    <div id="ttsBar"></div>
     <div class="article-text" id="panelText"></div>
   </div>
 
@@ -838,6 +840,7 @@ let submitted = false;
 let startTime = null;
 let timerInterval = null;
 let elapsedSec = 0;
+let ttsCtl = null;              // 目前這篇的朗讀控制器（tts_reader.js）
 
 // ── Init ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -967,7 +970,18 @@ function openArticle(idx) {
   const a = ARTICLES[idx];
 
   document.getElementById('panelHeading').textContent = `${a.level} · ${a.theme}  —  ${a.title}`;
-  document.getElementById('panelText').innerHTML = a.text.replace(/\n/g, '<br>');
+
+  // 發音三層：整段連續朗讀＋高亮／點句／點字（tts_reader.js，全站共用）
+  // mount() 會先 stopAll()，所以切文章一定不會跟上一篇疊音
+  if (window.TtsReader) {
+    ttsCtl = TtsReader.mount({
+      textEl: document.getElementById('panelText'),
+      barEl:  document.getElementById('ttsBar'),
+      text:   a.text
+    });
+  } else {
+    document.getElementById('panelText').innerHTML = a.text.replace(/\n/g, '<br>');
+  }
 
   // Build questions
   const block = document.getElementById('questionsBlock');
@@ -1090,6 +1104,8 @@ function showList() {
 }
 
 function showPanel(id) {
+  // 離開閱讀面板一定要中止朗讀（不然會在清單／結果頁繼續唸）
+  if (id !== 'readingPanel' && window.TtsReader) TtsReader.stopAll();
   ['listPanel','readingPanel','resultPanel'].forEach(p => {
     const el = document.getElementById(p);
     if (p === 'listPanel') el.style.display = (p === id ? 'block' : 'none');
@@ -1120,6 +1136,7 @@ function renderHistory() {
 // Init panel state
 document.getElementById('listPanel').style.display = 'block';
 </script>
+<script src="tts_reader.js"></script>
 <script src="session_timer.js"></script>
 <script src="sync_supabase.js"></script>
 </body>

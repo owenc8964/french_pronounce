@@ -87,12 +87,12 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `table_drill.html` | 表格填空：**45個表格**（涵蓋第1–21課，含passé composé系列、imparfait無人稱動詞表、durée/qui-que/intensité/**négation（07-21新增）**「文法詞」類型），**錯題複習輪**（答錯進複習輪直到全對，主輪成績不被洗掉）、切難度/類型有進度時confirm確認、一輪6個表 | ✅ 大修（07-06/07/10/17/21）|
 | `verb_sprint.html` | 動詞反射衝刺：60秒、9動詞×6人稱、起手計時、反射熱力圖，**已補TTS發音**（原形+答錯自動唸正解）、**07-21修復2個bug**（空白提交卡死不前進、單題想太久卡住不揭曉，見下方07-24記錄）、**07-26新增passé composé模式**（Présent/PC切換按鈕，`VERBS_PC`含être動詞陰陽性雙解，獨立localStorage key `clb7_sprint_cells_pc`/`clb7_sprint_sessions_pc`不跟présent混，isCorrect支援`\|`多解比對） | ✅ 修復＋新模式（07-21/26）|
 | `review.html` | 複習卡：一包10張、SRS+successive relearning，**到期卡池已加洗牌**（避免同一批到期卡每天同順序重複）、發音邏輯已跟其他頁統一、卡片旁加「🤔語意不清」回饋按鈕、**07-11新增🔴手動標記不熟**（`clb7_hard_flags`，累加次數，未到期的標記卡會加碼塞進當天包，最多`FLAG_BONUS_MAX`張） | ✅ 修復（07-07/11）|
-| `reading.html` | 閱讀理解 **22篇**（A1–A1+ 20篇＋**A2 2篇**：`a21` Le marché du samedi（08-02）、`a22` Un souvenir de Lanyu（08-03，同時是 lesson-21 的「平行閱讀」）——都是原創短文非原文照抄，見08-02／08-03記錄），純法文+解說 | ✅ |
+| `reading.html` | 閱讀理解 **22篇**（A1–A1+ 20篇＋**A2 2篇**：`a21` Le marché du samedi（08-02）、`a22` Un souvenir de Lanyu（08-03，同時是 lesson-21 的「平行閱讀」）——都是原創短文非原文照抄，見08-02／08-03記錄），純法文+解說、**08-04新增發音三層**（整段連讀＋高亮／點句／點字，靠 `tts_reader.js`；本頁原本一個字都唸不出來） | ✅ 新增發音（08-04）|
 | `writing.html` | 每日2句造句，複製prompt→claude.ai→貼回記錄 | ✅ |
 | `sentence_drill.html` | **新增（07-07）**：中翻法造句練習，每天固定5句新句＋到期複習，沿用review.html同一套SRS引擎（1/3/7/14/30天），**答錯排到這輪最後重考，磨到全部答對才算完成**，跟review.html的卡片機制共用「包尾重試」邏輯、**07-11同步補上🔴手動標記不熟**（跟review.html共用同一個`clb7_hard_flags`，id前綴不同不會撞） | ✅ 新建（07-11補標記功能）|
 | `sentences.js` | **新增（07-07）**：常用句庫（目前166句，第1–21課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
 | `listening.html` | 聽力：**真實資源**（RFI + InnerFrench Spotify embed；Podcast Français Facile的A1對話系列連結卡）+ **自出TTS聽力測驗**（8篇，對齊已學課程）+ **07-09/07-10/07-11新增「真人語速測驗」**（LISTENING_BANK的`audioUrl`類型：真實mp3直接播放＋Claude原創TCF/TEF風格選擇題，目前10篇：麵包店/車站/市場/肉店/魚店/藥局/問路/**起司店/咖啡廳/郵局**，逐字稿核對用連結卡連到來源、不存對方文字）+ **07-10新增「文化深掘Podcast」板塊**（見下方07-10記錄，目前CULTURE_BANK是空陣列，等Owen放音檔進來）+ **07-16新增「🎬影集精讀Shadowing」板塊**（記錄集數/第幾遍/第2遍可貼整理的句型，`?shadow=1`從dashboard進來自動捲到這張卡）| ✅ 大改（07-06～07-16）|
-| `french_notes.html` | 第1–19課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音）、**07-11新增選字標記**（選取文字後可標🔴不熟／⭐重點，存`clb7_notes_marks`，重整頁面用文字比對重新套用，懸浮面板有「複製標記給Claude」） | ✅ 修復（07-07/11）|
+| `french_notes.html` | 第1–19課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音）、**07-11新增選字標記**（選取文字後可標🔴不熟／⭐重點，存`clb7_notes_marks`，重整頁面用文字比對重新套用，懸浮面板有「複製標記給Claude」）、**08-04第21課平行閱讀加「整段連續朗讀」**（只加整段層、刻意不加單字層，原因見08-04記錄） | ✅ 修復（07-07/11）＋整段朗讀（08-04）|
 | `chunks.js` | 複習卡庫：**1173張**，自動從筆記抽取（1–21課，07-07補第15課88張、07-10補第16課80張、07-17補第17課40張含課文慣用語、07-21補第18課35張、07-26補第19課24張、08-02補第20課70張、08-03補第21課63張），**07-11修正2張第14課語意不清的卡** | ✅ |
 | `questions.js` | 共用題庫（**BANK 785題** + AGREE_BANK 247題），第1–21課，**07-11新增53個`zh`欄位**（fill題型無中文語境的補句意）、**07-17新增第17課24題**（passé composé/duree，含10題課文改編句）、**07-21新增第18課16題**（vocab-parcours-vie新topic + negation完整版）、**07-26新增第19課21題**（vocab-loisirs新topic、passé composé/negation/duree/adjective-position/social-invitations總複習）、**08-02新增第20課26題**（imparfait完整變位 + vocab-souvenirs新topic）、**08-03新增第21課27題**（pronoms-y-en＋vocab-sens 兩個新topic） | ✅ |
 | `gram_rules.js` | **新增（07-11）**：文法框架單一真相來源——`GRAM_POINTS` 32個文法點（19現役+13未開課佔位）含 topics 對應與規則卡（中文要點+法文例句）、`GRAM_CATS`7大類、`gramStageOf`/`gramSetStage`/`gramFlaggedIds`/`gramFlagQuestion` helpers。map/gram_trainer/quiz/dashboard 四頁共用。**07-21**：`negation`點補lesson 18＋passé composé中的位置規則／personne主詞vs受詞兩條rule points。**07-26**：`negation`/`duree-temps`/`passe`/`adjectifs-accord`四點的`lessons`陣列補19 | ✅ 新建 |
@@ -108,6 +108,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `RUBRICS.md` | **新增（07-12）**：寫作/口說分級評分尺（A2/B1/B2三把尺，各自問不同問題——A2問「溝通成立嗎」不用B2標準打擊人）＋批改者守則（一次最多糾2-3錯、錯誤標📍codex座標、禁泛泛鼓勵）。writing.html的複製prompt已內建A2尺批改指令 | ✅ 新建 |
 | `writing_tasks.js` | **新增（07-12）**：依課出題寫作題庫，取代「憑空造2句」——情境任務＋指定材料＋下筆順序。目前第1–17課共34題（每課2題），第17課W17a/W17b已是A2 tâche1形態（40-60字訊息） | ✅ 新建 |
 | `creed.js` | **新增（07-12）**：學習心法14條＋通關理由14條（每條有依據，禁雞湯），dashboard「🧭今日心法」卡每天輪播，Owen自己寫的`clb7_creed_own`優先於內建條目 | ✅ 新建 |
+| `tts_reader.js` | **新增（08-04）**：發音顆粒度三層共用模組（PLAN A-9／S7）——`TtsReader.mount()`（純文字→段落/句/字三層）、`mountList()`（既有「一句一元素」結構只加整段層、不動 DOM）、`speak()`、`stopAll()`。語音篩選沿用全站統一優先序；語速偏好存 `ttsr_rate`（**刻意不用 `clb7_` 前綴，不進 Supabase 同步負載**）。目前掛在 `reading.html` 與 `french_notes.html` 第21課平行閱讀兩處；**其餘 12 個各自實作 TTS 的頁面沒有動**（要重構先問 Owen）| ✅ 新建 |
 | `CODEX_STYLE.md` | **新增（07-12）**：codex.js條目撰寫規範——固定房間佈局（🎧錨句/📖規則+表格+💡記法/🕐使用時機/⚠️例外/🆚易混淆/💬更多例句/🔗相關），任何session擴寫條目前必讀 | ✅ 新建 |
 
 **GitHub Pages 網址：** https://owenc8964.github.io/french_pronounce/dashboard.html
@@ -633,6 +634,45 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 **⚠️ 兩個重複踩到的坑（下次直接照做）**：
 1. **preview 的 `.js` 快取又出現**：quiz 頁面載入的 `BANK` still 758，但 `fetch('/questions.js',{cache:'no-store'})` 抓到的檔案確實有 27 題第21課。**判斷方法**：比對「頁面已載入的陣列長度」vs「fetch 到的檔案內容」，兩者不一致就是快取不是資料問題。**驗證 UI 的做法**：把 fetch 到的新題目 `BANK.push()` 進頁面已載入的陣列（`const` 不能重新宣告，eval 整檔會是偽陽性）。
 2. **生成腳本的逗號坑**（08-02 踩過）：這次腳本改成「不補前導逗號」＋**寫入後立刻 eval 實際 parse**，順利避開。之後寫這類注入腳本一律要有寫入後的 parse 驗證，只數 id 不夠。
+
+---
+
+### 08-04：發音顆粒度三層上線（PLAN S7／A-9）——新增共用模組 `tts_reader.js`
+
+Owen 08-03 的需求原話：「如果是整段文章，可以的話發音除了整段唸完，還有只念單句甚至單字的功能」。最大缺口是 **`reading.html` 完全沒有 TTS**——22 篇閱讀短文一個字都唸不出來，而閱讀是今日處方第⑬步。
+
+**做法：寫成共用模組，不是第 14 份複製貼上的 TTS。** 全站已有 13 頁各自實作 `SpeechSynthesisUtterance`，這次新增 `tts_reader.js` 一支，只掛在兩個地方（reading.html、french_notes.html 第21課平行閱讀），**其餘 12 頁一個字都沒動**（重構既有頁面要先問 Owen，見 PLAN 實作要點 3）。
+
+**三層的實際長相（reading.html）**：文章卡上方一條 sticky 控制列（手機優先，按鈕都 40px 高、在文字上方不擋字）：
+- **整段**：`▶ 朗讀全文` → 逐句 speak，句與句之間 420ms 停頓、**換段落 800ms**，同時高亮當前句並在捲出畫面時自動捲回來。再按一次是 `⏸ 暫停`，變成 `▶ 續播（第 N 句）`。另有 `⏹ 停止`、`🐢 語速`（0.6/0.75/0.9/1.0 循環，存 `ttsr_rate`）。
+- **單句**：預設「🔊 點句」模式，點段落裡任一句就只唸那句、唸完停住不會續唸下一句。
+- **單字**：切「🔤 點字」模式，點任一個法文單字唸該字。
+- 兩種點讀用**模式切換**而非「點字=長按」之類的隱藏手勢——手機上手指點不準，兩者疊在同一個 tap 會互搶。
+
+**四個實作上的判斷（之後改這支模組前先看這裡）**：
+1. **暫停用 `cancel()`＋記住句號，不用 `speechSynthesis.pause()`**——`pause()/resume()` 在 iOS Safari 不可靠。代價是續播會**從那一句的開頭重唸**（不是從中間接），對語言學習反而是好事，已在按鈕文字寫明第幾句。
+2. **切字不能用空白切**：正則是「字母序列＋可含內部撇號/連字號」，所以 `l'odeur`／`aujourd'hui`／`peut-être`／`est-ce` 都是**一個 token**（唸起來才對），標點與 emoji 不會被當字。22 篇實測切出 182 句、1435 個可點單字，還原純文字跟原文逐字比對零遺漏。
+3. **斷句有縮寫白名單**：`M.`／`Mme`／`Dr.`／`etc.` 與「數字.」後面不切，避免 `M. Dupont` 被切成兩句。
+4. **語速偏好用 `ttsr_rate` 不用 `clb7_` 前綴**——`sync_supabase.js` 是**看前綴**決定要不要上傳（`k.indexOf('clb7_')===0`），一個 UI 偏好沒必要進雲端負載。
+
+**french_notes.html 只加整段層，刻意不加單字層（重要，之後不要「順手補上」）**：單字層必須把句子 `innerHTML` 改寫成一個個 span，但本頁的選字標記（`clb7_notes_marks`）重整頁面時是用 `TreeWalker` 純文字比對 + `Range.extractContents()` 重新套用標記——範圍一旦切到 span 中間就會把 DOM 攪爛。本頁單句層本來就有（每句後面的 🔊），所以只補真正缺的整段連讀。另外**包了一層 `ttsSpeak()`**：本頁原本的單句喇叭只做 `speechSynthesis.cancel()`，模組不會知道自己被打斷、會誤以為那句唸完而自動接下一句 → 包一層先 `TtsReader.stopAll()`，兩邊不會搶著唸（已實測）。
+> 順帶一提：兩篇「課文摘要」（第20課 Saveurs de Corse、第21課 Une vue de rêve）**沒有掛**，因為那兩塊是純中文逐句翻譯、沒有法文可以連讀。第21課平行閱讀是筆記裡唯一真正「整篇法文可順著讀」的段落。
+
+**驗證**（隔離 ROOM 全程遵守）：
+- **資料層**：`verify_tts.js`（scratchpad）把模組在 Node 裡 stub 起來跑——斷句 6 個 case（含縮寫、無句點結尾）、切字 5 個 case（élision／連字號／數字）、22 篇文章逐篇比對純文字無遺漏＋句子編號連續、頁面接線（兩頁都有載入與呼叫、french_notes 的 `wordLayer:false` 還在）、模組不寫任何 `clb7_*` key、語音篩選三段優先序都在、ROOM 是正式值。全綠。
+- **瀏覽器層**（375×812 手機視窗；先 `fetch('/sync_supabase.js',{cache:'no-store'})` **確認 preview 供應的就是 TEST ROOM** 才開始測）：
+  - a22 整段朗讀**14 句一路唸到底**（記錄每一次 `speak()` 的文字，順序完全正確、用的是 Amélie、rate 0.75）；
+  - 暫停→**沒有任何新 utterance**、高亮停在那一句、按鈕顯示「續播（第 4 句）」；續播→**從第 4 句重新唸**再接著往下（log 裡那句出現兩次，符合設計）；
+  - 點第 8 句 → 只唸那一句、唸完不續唸下一句、高亮清掉；
+  - 切「點字」→ 點 `L'odeur` → 唸出的正是 `L'odeur`（élision 沒被拆開）；
+  - `⏹ 停止` 與朗讀中按「← Liste」→ 都立刻靜音、無殘留 utterance（**不疊音**）；切到另一篇文章時模式重置回「點句」；
+  - french_notes 第21課平行閱讀：整段連讀高亮跑在 `.fr` 上、**只唸法文不唸中文翻譯**、15 個單句 🔊 全數保留、DOM 沒有被插入任何 `.ttsr-w`；朗讀中按某句 🔊 → 整段朗讀正確中止、只唸那一句；
+  - console 無錯誤。
+- **收尾**：清掉測試留下的 `ttsr_rate` → 確認今天沒有任何 `clb7_reading`／`clb7_tracker`／`clb7_wrong_log`／`clb7_notes_marks` 測試寫入（全程沒交卷、沒標記）→ ROOM 改回 `owen-clb7-k9f3a72q` → **下一步立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留、`sync_supabase.js` diff 為零。
+
+**⚠️ 一個 preview 自動化的坑（不是產品 bug，但會浪費時間）**：`scrollIntoView()` 之後**同一個 JS 呼叫裡**讀 `getBoundingClientRect()` 拿到的可能是捲動前的座標，照著點會點空。要嘛分兩次呼叫（先捲、再量），要嘛量完立刻點、中間不要插入 screenshot。這次在 french_notes 上就因此連兩次點空，誤以為按鈕壞了——實際上 `elementFromPoint` 顯示按鈕就在那裡，直接呼叫 `btn.onclick()` 一次就動。
+
+**還沒做、留給之後的**：其餘 12 個各自實作 TTS 的頁面（review/quiz/table_drill/verb_sprint/…）仍是各自一份程式碼，**要不要收攏到這支模組要先問 Owen**（一次動 12 個檔案風險不低，且那些頁面都是單句層、現況沒壞）。
 
 ---
 

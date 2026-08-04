@@ -6417,7 +6417,7 @@
   <div class="note">
     這篇是<b>照課文的形態、用本課文法與詞彙寫的同級短文</b>（主題換成蘭嶼）。課文那篇是別人的文章、只能摘要，這篇你可以<b>整段從頭讀到尾</b>——句型、時態、詞彙都跟課文同一掛，讀順了課文就讀得懂。
   </div>
-  <ul class="phrase-list">
+  <ul class="phrase-list" id="l21-parallel">
     <li><span class="fr">Il y a des voyages qu'on n'oublie jamais.</span><span class="zh">有些旅行是永遠不會忘記的。</span></li>
     <li><span class="fr">Pour moi, c'est l'île de Lanyu, au sud-est de Taïwan.</span><span class="zh">對我來說，就是台灣東南方的蘭嶼。</span></li>
     <li><span class="fr">J'y suis allé pour la première fois il y a trois ans, avec deux amis.</span><span class="zh">三年前我第一次去那裡，跟兩個朋友一起。</span><span class="note">⭐ y＝à Lanyu；il y a trois ans＝三年前（第16課）</span></li>
@@ -7026,6 +7026,49 @@ mark.mk-key{background:#4a3f10;color:#ffe08a;padding:1px 2px;border-radius:3px;c
 
   reapplyMarks();
   updateMarkCount();
+})();
+</script>
+
+<!-- 平行閱讀的「整段連續朗讀」（tts_reader.js，跟 reading.html 同一支模組）─────────
+     ⚠️ 這裡只掛「整段層」，刻意不掛單字層：單字層要把句子 innerHTML 改寫成一個個
+     <span>，而選字標記（clb7_notes_marks）重整頁面時是用 Range + extractContents()
+     依純文字比對重新套用，範圍一旦切到 span 中間就會把 DOM 攪爛。單句層本頁本來就
+     有（每個 li 後面的 🔊），所以只補真正缺的整段連讀。 -->
+<style>
+  /* 筆記頁是淺色主題，覆寫模組的深色預設 */
+  #l21-ttsbar {
+    --ttsr-bg: #fff; --ttsr-btn-bg: #f8f8f6; --ttsr-fg: #2c2c2c;
+    --ttsr-line: #d8d8d4; --ttsr-accent: #c0392b; --ttsr-dim: #888;
+    /* 本頁頂部已經有一條 sticky 課次導覽列，這條再 sticky 會兩層互相打架 */
+    position: static;
+  }
+  .phrase-list .fr.on { background: rgba(192,57,43,0.14); border-radius: 4px; }
+</style>
+<script src="tts_reader.js"></script>
+<script>
+(function () {
+  const ul = document.getElementById('l21-parallel');
+  if (!ul || !window.TtsReader) return;
+  const bar = document.createElement('div');
+  bar.id = 'l21-ttsbar';
+  ul.parentNode.insertBefore(bar, ul);
+  TtsReader.mountList({
+    listEl: ul,
+    barEl: bar,
+    itemSelector: 'li',
+    markEl: '.fr',                       // 高亮法文那一段，不含中文翻譯
+    textOf: li => (li.querySelector('.fr') || {}).textContent || '',
+    wordLayer: false,                    // 不改寫 DOM（見上方註解）
+    tapModes: false,                     // 點句／點字切換用不到（本頁已有每句 🔊）
+    hint: '整篇連著唸，句與句之間會停頓；朗讀中高亮目前這句。單句發音用每句後面的 🔊'
+  });
+
+  // 本頁原本的單句喇叭 ttsSpeak() 只做 speechSynthesis.cancel()，模組不會知道被打斷、
+  // 會誤以為那句唸完而自動接下一句 → 包一層，先讓模組正式中止，避免兩邊搶著唸
+  if (typeof window.ttsSpeak === 'function') {
+    const origTtsSpeak = window.ttsSpeak;
+    window.ttsSpeak = function () { TtsReader.stopAll(); return origTtsSpeak.apply(this, arguments); };
+  }
 })();
 </script>
 </body>
