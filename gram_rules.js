@@ -305,9 +305,9 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'adjectifs-accord', name:'Accord & place des adjectifs', icon:'🎨', zone:'A2', cat:'adjectifs',
-    lessons:[7,8,10,19], topics:['adjective-agreement','adjective-position'], unlocked:true,
+    lessons:[7,8,10,19,22], topics:['adjective-agreement','adjective-position'], unlocked:true,
     rule:{
-      title:'形容詞 — 性數配合＋大多放名詞後面',
+      title:'形容詞 — 性數配合＋位置決定意思',
       why:'形容詞是名詞的衛星，衛星穿主星的制服——這是拉丁文傳下來的整套配合邏輯，跟冠詞、所有格是同一件事。位置的大原則：客觀分類的形容詞放後面（une voiture rouge），少數超高頻的主觀評價字（美醜好壞大小新舊，BAGS）搶到名詞前面的黃金位置。bel/nouvel 母音前變形跟 mon amie 完全同一個理由：法文不准兩個母音相撞。',
       points:[
         '基本配合：陰性+e（grand→grande）、複數+s（grands）、陰複+es（grandes）',
@@ -315,11 +315,18 @@ const GRAM_POINTS = [
         '大多放名詞後：une robe bleue；BAGS類（美醜好壞大小新舊）放前面：un beau garçon、une nouvelle voiture',
         '母音前特殊形：beau→bel（un bel homme）、nouveau→nouvel（un nouvel ordinateur）',
         '形容詞在前時 des → de：de beaux objets',
+        '⚠️ 國籍・顏色・形狀三類「一律」放名詞後（客觀分類）：une île espagnole、des bateaux blancs',
+        '⚡ 兩個形容詞同時出現：短的在前、國籍/顏色在後，名詞夾中間——un bon restaurant français、de gros bateaux blancs',
+        '✍️ 本該在後的形容詞刻意提前＝強調，句子更有感情：Les boutiques incroyables → Les incroyables boutiques !',
+        '⚠️ 少數形容詞位置改變意思，最常見的是 propre：mon propre mug（我自己的）vs un mug propre（乾淨的）',
       ],
       examples:[
         { fr:'Elle porte des jupes courtes.', zh:'她穿短裙。（陰複+es）' },
         { fr:'Un bel homme.', zh:'一個美男子。（母音前beau→bel）' },
         { fr:'De beaux objets.', zh:'一些漂亮的物品。（形容詞在前des→de）' },
+        { fr:'un bon restaurant français', zh:'一家好的法式餐廳（短的在前、國籍在後）' },
+        { fr:"d'excellentes épices", zh:'一些極好的香料（形容詞在前，母音前 des→d\'）' },
+        { fr:'mon propre mug / un mug propre', zh:'我自己的杯子／一個乾淨的杯子（位置改變意思）' },
       ]}},
 
   { id:'comparaison', name:'La comparaison', icon:'⚖️', zone:'A2', cat:'adjectifs',

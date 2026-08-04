@@ -8416,4 +8416,456 @@ const CHUNKS = [
   "zh": "（延伸）我們無法相信。",
   "note": "跟課文的 on en revient enchanté 同結構，但這句是固定用法「難以置信」｜🎙老師課堂口語"
  },
+ {
+  "id": "L22_Quel_temps_fait_il_",
+  "lesson": 22,
+  "fr": "Quel temps fait-il ?",
+  "zh": "天氣怎麼樣？",
+  "note": "標準問法；回答一律用 Il fait…"
+ },
+ {
+  "id": "L22_Il_fait_beau_Il_fait_",
+  "lesson": 22,
+  "fr": "Il fait beau. / Il fait mauvais.",
+  "zh": "天氣好／天氣不好",
+  "note": "⚠️ 下雨下雪例外：Il pleut. / Il neige."
+ },
+ {
+  "id": "L22_le_temps",
+  "lesson": 22,
+  "fr": "le temps",
+  "zh": "天氣；時間",
+  "note": "⚠️ 一字兩義：Quel temps fait-il ?（天氣）／Je n'ai pas le temps（時間）"
+ },
+ {
+  "id": "L22_la_canicule",
+  "lesson": 22,
+  "fr": "la canicule",
+  "zh": "熱浪",
+  "note": "⚠️ 太熱＋持續太久才叫 canicule（heat wave），不是單純的熱"
+ },
+ {
+  "id": "L22_la_chaleur",
+  "lesson": 22,
+  "fr": "la chaleur",
+  "zh": "熱、高溫",
+  "note": "單純的熱，程度沒有 canicule 強"
+ },
+ {
+  "id": "L22_la_fraîcheur",
+  "lesson": 22,
+  "fr": "la fraîcheur",
+  "zh": "涼爽",
+  "note": "⚠️ 不是冷！18-20度那種舒服的涼；froid 才是冷"
+ },
+ {
+  "id": "L22_le_ciel_bleu_le_ciel_g",
+  "lesson": 22,
+  "fr": "le ciel bleu / le ciel gris",
+  "zh": "藍天／灰濛濛的天空",
+  "note": "un temps gris＝陰天"
+ },
+ {
+  "id": "L22_le_climat",
+  "lesson": 22,
+  "fr": "le climat",
+  "zh": "氣候",
+  "note": "⚠️ climat＝長期氣候；météo＝當下天氣"
+ },
+ {
+  "id": "L22_l_orage",
+  "lesson": 22,
+  "fr": "l'orage",
+  "zh": "暴風雨、雷雨",
+  "note": "⚠️ 整個天氣現象；雷聲是 le tonnerre"
+ },
+ {
+  "id": "L22_le_tonnerre",
+  "lesson": 22,
+  "fr": "le tonnerre",
+  "zh": "雷（聲）",
+  "note": "打雷那個聲音"
+ },
+ {
+  "id": "L22_la_pluie_il_pleut",
+  "lesson": 22,
+  "fr": "la pluie / il pleut",
+  "zh": "雨／下雨"
+ },
+ {
+  "id": "L22_le_soleil",
+  "lesson": 22,
+  "fr": "le soleil",
+  "zh": "太陽",
+  "note": "il fait du soleil＝出太陽"
+ },
+ {
+  "id": "L22_la_température_les_degr",
+  "lesson": 22,
+  "fr": "la température (les degrés)",
+  "zh": "溫度（度數）",
+  "note": "Il fait 30 degrés."
+ },
+ {
+  "id": "L22_un_temps_humide_un_tem",
+  "lesson": 22,
+  "fr": "un temps humide ≠ un temps sec",
+  "zh": "潮濕的天氣／乾燥的天氣",
+  "note": "sec 的陰性是 sèche"
+ },
+ {
+  "id": "L22_le_vent_souffler",
+  "lesson": 22,
+  "fr": "le vent / souffler",
+  "zh": "風／吹",
+  "note": "Le vent souffle à 80 km/h."
+ },
+ {
+  "id": "L22_La_météo_annonce_des_ora",
+  "lesson": 22,
+  "fr": "La météo annonce des orages.",
+  "zh": "氣象預報說有雷雨。",
+  "note": "annoncer＝預報"
+ },
+ {
+  "id": "L22_à_marée_basse_à_marée_",
+  "lesson": 22,
+  "fr": "à marée basse ≠ à marée haute",
+  "zh": "退潮時／漲潮時",
+  "note": "la marée＝潮汐"
+ },
+ {
+  "id": "L22_la_côte",
+  "lesson": 22,
+  "fr": "la côte",
+  "zh": "海岸",
+  "note": "⚠️ 可能是岩岸，不一定有沙灘（跟 plage 不同）"
+ },
+ {
+  "id": "L22_la_dune",
+  "lesson": 22,
+  "fr": "la dune",
+  "zh": "沙丘",
+  "note": "法國最有名的是 la dune du Pilat（歐洲最高）"
+ },
+ {
+  "id": "L22_la_mouette",
+  "lesson": 22,
+  "fr": "la mouette",
+  "zh": "海鷗"
+ },
+ {
+  "id": "L22_le_port",
+  "lesson": 22,
+  "fr": "le port",
+  "zh": "港口"
+ },
+ {
+  "id": "L22_le_sable",
+  "lesson": 22,
+  "fr": "le sable",
+  "zh": "沙"
+ },
+ {
+  "id": "L22_la_prairie",
+  "lesson": 22,
+  "fr": "la prairie",
+  "zh": "草原、牧草地",
+  "note": "à la campagne"
+ },
+ {
+  "id": "L22_le_chalet",
+  "lesson": 22,
+  "fr": "le chalet",
+  "zh": "木屋",
+  "note": "à la montagne"
+ },
+ {
+  "id": "L22_un_bon_restaurant_frança",
+  "lesson": 22,
+  "fr": "un bon restaurant français",
+  "zh": "一家好的法式餐廳",
+  "note": "⭐ 短形容詞在前、國籍在後，名詞夾中間"
+ },
+ {
+  "id": "L22_une_petite_île_espagnole",
+  "lesson": 22,
+  "fr": "une petite île espagnole",
+  "zh": "一座西班牙小島",
+  "note": "⭐ petite 在前、espagnole（國籍）在後，兩個都配陰性"
+ },
+ {
+  "id": "L22_de_gros_bateaux_blancs",
+  "lesson": 22,
+  "fr": "de gros bateaux blancs",
+  "zh": "一些白色大船",
+  "note": "⭐ gros 在前→des變de；blancs（顏色）在後配陽性複數"
+ },
+ {
+  "id": "L22_de_jolies_espadrilles",
+  "lesson": 22,
+  "fr": "de jolies espadrilles",
+  "zh": "一些漂亮的草編鞋",
+  "note": "⭐ 形容詞放複數名詞前 → des 縮成 de"
+ },
+ {
+  "id": "L22_d_excellentes_épices",
+  "lesson": 22,
+  "fr": "d'excellentes épices",
+  "zh": "一些極好的香料",
+  "note": "⭐ 母音前再縮成 d'；épice 陰性所以 excellentes 加 es"
+ },
+ {
+  "id": "L22_mon_propre_mug",
+  "lesson": 22,
+  "fr": "mon propre mug",
+  "zh": "我自己的杯子",
+  "note": "⚠️ propre 在名詞前＝「自己的」"
+ },
+ {
+  "id": "L22_un_mug_propre",
+  "lesson": 22,
+  "fr": "un mug propre",
+  "zh": "一個乾淨的杯子",
+  "note": "⚠️ propre 在名詞後＝「乾淨的」"
+ },
+ {
+  "id": "L22_Les_incroyables_boutique",
+  "lesson": 22,
+  "fr": "Les incroyables boutiques !",
+  "zh": "那些超誇張的店！",
+  "note": "本該在後的形容詞刻意提前＝強調，句子更有感情"
+ },
+ {
+  "id": "L22_au_quotidien",
+  "lesson": 22,
+  "fr": "au quotidien",
+  "zh": "日常地、每天",
+  "note": "Je fais ça au quotidien."
+ },
+ {
+  "id": "L22_quotidien_hebdomadaire",
+  "lesson": 22,
+  "fr": "quotidien / hebdomadaire / mensuel / annuel",
+  "zh": "每日／每週／每月／每年的",
+  "note": "一整組一起記"
+ },
+ {
+  "id": "L22_la_pause",
+  "lesson": 22,
+  "fr": "la pause",
+  "zh": "休息時間",
+  "note": "la pause déjeuner／la pause café"
+ },
+ {
+  "id": "L22_selon_une_étude",
+  "lesson": 22,
+  "fr": "selon une étude",
+  "zh": "根據一項研究",
+  "note": "寫作引述句型"
+ },
+ {
+  "id": "L22_universel_le_",
+  "lesson": 22,
+  "fr": "universel(le)",
+  "zh": "普世的、人人都懂的"
+ },
+ {
+  "id": "L22_entrer_en_contact_avec",
+  "lesson": 22,
+  "fr": "entrer en contact avec",
+  "zh": "跟…建立連結"
+ },
+ {
+  "id": "L22_les_personnes_âgées",
+  "lesson": 22,
+  "fr": "les personnes âgées",
+  "zh": "長者",
+  "note": "âgé＝年長的"
+ },
+ {
+  "id": "L22_le_bulletin_météo",
+  "lesson": 22,
+  "fr": "le bulletin météo",
+  "zh": "氣象預報（節目）"
+ },
+ {
+  "id": "L22_prévoir_les_prévisions",
+  "lesson": 22,
+  "fr": "prévoir / les prévisions",
+  "zh": "預測／預報"
+ },
+ {
+  "id": "L22_être_accro_à",
+  "lesson": 22,
+  "fr": "être accro à",
+  "zh": "離不開、上癮",
+  "note": "口語"
+ },
+ {
+  "id": "L22_ramener",
+  "lesson": 22,
+  "fr": "ramener",
+  "zh": "帶回來",
+  "note": "ramener des souvenirs＝帶紀念品回來"
+ },
+ {
+  "id": "L22_prolonger",
+  "lesson": 22,
+  "fr": "prolonger",
+  "zh": "延長",
+  "note": "prolonger la période des congés"
+ },
+ {
+  "id": "L22_les_congés",
+  "lesson": 22,
+  "fr": "les congés",
+  "zh": "（有薪）假期",
+  "note": "Je suis en congé.／prendre des congés＝請假"
+ },
+ {
+  "id": "L22_prendre_des_congés",
+  "lesson": 22,
+  "fr": "prendre des congés",
+  "zh": "請假、休假",
+  "note": "J'ai 10 jours de congé par an."
+ },
+ {
+  "id": "L22_une_dépense",
+  "lesson": 22,
+  "fr": "une dépense",
+  "zh": "開銷、花費",
+  "note": "動詞 dépenser＝花錢"
+ },
+ {
+  "id": "L22_incontournable",
+  "lesson": 22,
+  "fr": "incontournable",
+  "zh": "躲不掉的、必經的",
+  "note": "contourner＝繞過 → in-contournable"
+ },
+ {
+  "id": "L22_un_montant_moyen",
+  "lesson": 22,
+  "fr": "un montant moyen",
+  "zh": "平均金額",
+  "note": "montant ≒ prix；moyen＝平均的"
+ },
+ {
+  "id": "L22_opter_pour",
+  "lesson": 22,
+  "fr": "opter pour",
+  "zh": "選擇",
+  "note": "＝choisir，比較正式"
+ },
+ {
+  "id": "L22_un_globe_trotteur",
+  "lesson": 22,
+  "fr": "un globe-trotteur",
+  "zh": "環球旅人"
+ },
+ {
+  "id": "L22_les_espadrilles",
+  "lesson": 22,
+  "fr": "les espadrilles",
+  "zh": "草編鞋",
+  "note": "巴斯克地區的特產"
+ },
+ {
+  "id": "L22_les_épices",
+  "lesson": 22,
+  "fr": "les épices",
+  "zh": "香料",
+  "note": "une épice（陰性）"
+ },
+ {
+  "id": "L22_la_marinière",
+  "lesson": 22,
+  "fr": "la marinière",
+  "zh": "（法式）橫條衫",
+  "note": "來自 le marin（水手）"
+ },
+ {
+  "id": "L22_un_produit_local",
+  "lesson": 22,
+  "fr": "un produit local",
+  "zh": "在地產品"
+ },
+ {
+  "id": "L22_en_forme_de",
+  "lesson": 22,
+  "fr": "en forme de",
+  "zh": "…造型的",
+  "note": "un magnet en forme de Statue de la Liberté"
+ },
+ {
+  "id": "L22_parler_de_la_pluie_et_du",
+  "lesson": 22,
+  "fr": "parler de la pluie et du beau temps",
+  "zh": "閒聊、聊無關緊要的事",
+  "note": "⭐ 超實用慣用語，字面是「聊雨和好天氣」"
+ },
+ {
+  "id": "L22_hexagonal_e_",
+  "lesson": 22,
+  "fr": "hexagonal(e)",
+  "zh": "法國（本土）的",
+  "note": "因為法國本土形狀像六邊形（l'Hexagone）"
+ },
+ {
+  "id": "L22_le_Pays_basque",
+  "lesson": 22,
+  "fr": "le Pays basque",
+  "zh": "巴斯克地區",
+  "note": "橫跨法西邊界，不是國家；有自己的語言與旗幟"
+ },
+ {
+  "id": "L22_un_restaurant_gastronomi",
+  "lesson": 22,
+  "fr": "un restaurant gastronomique / étoilé",
+  "zh": "米其林星級餐廳",
+  "note": "étoile＝星星 → étoilé＝有星星的"
+ },
+ {
+  "id": "L22_un_ciel_étoilé",
+  "lesson": 22,
+  "fr": "un ciel étoilé",
+  "zh": "滿天星斗的夜空",
+  "note": "同一個 étoilé 用在天空"
+ },
+ {
+  "id": "L22_l_armée_de_terre_l_arm",
+  "lesson": 22,
+  "fr": "l'armée de terre / l'armée de l'air / la marine",
+  "zh": "陸軍／空軍／海軍",
+  "note": "老師的妹妹是 météorologue dans la marine"
+ },
+ {
+  "id": "L22_ravi_e_de_te_rencontrer",
+  "lesson": 22,
+  "fr": "ravi(e) de te rencontrer",
+  "zh": "很高興認識你",
+  "note": "＝Enchanté；ravi＝非常開心"
+ },
+ {
+  "id": "L22_Il_bise_",
+  "lesson": 22,
+  "fr": "Il bise !",
+  "zh": "好冷！（比利時說法）",
+  "note": "bise＝寒風"
+ },
+ {
+  "id": "L22_Il_neigeote_",
+  "lesson": 22,
+  "fr": "Il neigeote !",
+  "zh": "下小雪（瑞士、加拿大說法）",
+  "note": "⚠️ 法國本土不這樣說，因為雪下得少"
+ },
+ {
+  "id": "L22_Rentre_le_chien_il_va_a",
+  "lesson": 22,
+  "fr": "Rentre le chien, il va avoir peur.",
+  "zh": "把狗帶進來，牠會害怕。",
+  "note": "rentrer 這裡是及物「把…帶進來」"
+ },
 ];
