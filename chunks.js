@@ -8192,4 +8192,228 @@ const CHUNKS = [
   "zh": "希望",
   "note": "名詞是 l'espoir；-er 動詞"
  },
+ {
+  "id": "L15_On_va_revenir_au_passé_c",
+  "lesson": 15,
+  "fr": "On va revenir au passé composé.",
+  "zh": "我們回到passé composé。",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L15_Ça_va_C_est_bon_",
+  "lesson": 15,
+  "fr": "Ça va ? C'est bon ?",
+  "zh": "懂了嗎？可以嗎？（確認理解口頭禪）",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L15_Vous_voyez_",
+  "lesson": 15,
+  "fr": "Vous voyez ?",
+  "zh": "你們看到了嗎？（懂了嗎）",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L15_Vous_connaissez_les_stea",
+  "lesson": 15,
+  "fr": "Vous connaissez les steaks frites ?",
+  "zh": "你們知道牛排薯條這道菜嗎？",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L15_C_est_à_toi_",
+  "lesson": 15,
+  "fr": "C'est à toi !",
+  "zh": "輪到你了！",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L15_Je_ne_vous_comprends_pas",
+  "lesson": 15,
+  "fr": "Je ne vous comprends pas.",
+  "zh": "我聽不懂你們（說的）。",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L15_Au_fait_",
+  "lesson": 15,
+  "fr": "Au fait !",
+  "zh": "對了、順帶一提！",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L17_C_est_un_truc_",
+  "lesson": 17,
+  "fr": "C'est un truc.",
+  "zh": "這是個小訣竅／小玩意（truc＝萬用的「東西」）",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L17_Ah_non_je_ne_vais_pas_t",
+  "lesson": 17,
+  "fr": "Ah non, je ne vais pas te dire.",
+  "zh": "啊不，我不告訴你（賣關子）",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L17_Parlez_moi_de_votre_fami",
+  "lesson": 17,
+  "fr": "Parlez-moi de votre famille.",
+  "zh": "跟我聊聊您的家庭（考官指令句型 Parlez-moi de...）",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L17_Ou_toute_autre_question_",
+  "lesson": 17,
+  "fr": "Ou toute autre question adaptée au niveau A1.",
+  "zh": "或任何適合A1程度的其他問題（考官文件用語）",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L18_Ma_s_ur_et_son_mari_ont_",
+  "lesson": 18,
+  "fr": "Ma sœur et son mari ont eu un enfant l'année dernière.",
+  "zh": "我姊姊和她先生去年生了一個小孩（l'année dernière＝去年；année是陰性，配dernière）",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L18_Ils_sont_tombés_amoureux",
+  "lesson": 18,
+  "fr": "Ils sont tombés amoureux en 2019.",
+  "zh": "他們2019年墜入愛河（tomber配être，注意這裡跟avoir un coup de foudre不同，用的是tomber）",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L18_Je_vais_me_marier_l_an_p",
+  "lesson": 18,
+  "fr": "Je vais me marier l'an prochain.",
+  "zh": "我明年要結婚（futur proche反身動詞：vais me marier，不是vais marier）",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L18_Elle_n_est_pas_célibatai",
+  "lesson": 18,
+  "fr": "Elle n'est pas célibataire, elle vit en couple.",
+  "zh": "她不是單身，她穩定交往中（vivre：je vis, tu vis, il vit, nous vivons——單數三個人稱都是S結尾）",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L18_Je_me_suis_installé_e_à",
+  "lesson": 18,
+  "fr": "Je me suis installé(e) à Taipei il y a cinq ans.",
+  "zh": "我五年前在台北定居下來（s'installer的passé composé）",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L18_Tu_préfères_vendredi_ou_",
+  "lesson": 18,
+  "fr": "Tu préfères vendredi ou dimanche ?",
+  "zh": "你比較想約週五還是週日？（排下次上課常聽到的問法）",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L18_On_peut_arrêter_là_",
+  "lesson": 18,
+  "fr": "On peut arrêter là.",
+  "zh": "我們可以在這裡先停（下課用語）",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L19_Le_nouvel_entraîneur_c_",
+  "lesson": 19,
+  "fr": "Le nouvel entraîneur, c'est Zidane.",
+  "zh": "新教練是席丹（entraîneur名詞＝教練，entraîner動詞＝訓練/教練別人）",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L19_Ça_marche__2",
+  "lesson": 19,
+  "fr": "Ça marche.",
+  "zh": "成交、說定了（口語，字面「它走」，等同ça me va）",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L19_Ça_fonctionne_",
+  "lesson": 19,
+  "fr": "Ça fonctionne.",
+  "zh": "它（機器/東西）運作正常——形容「物品」用fonctionne比marche更準確",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L20_Tu_vois_Là_c_est_la_G",
+  "lesson": 20,
+  "fr": "Tu vois ? Là, c'est la Grande Ourse.",
+  "zh": "你看到嗎？那邊，那是大熊座。",
+  "note": "指東西給人看的口語起手式｜🎙老師課堂口語"
+ },
+ {
+  "id": "L20_Oh_une_étoile_filante_",
+  "lesson": 20,
+  "fr": "Oh, une étoile filante ! Fais un vœu !",
+  "zh": "喔，流星！快許願！",
+  "note": "跟中文一模一樣的反應｜🎙老師課堂口語"
+ },
+ {
+  "id": "L20_C_est_quoi_parfois_",
+  "lesson": 20,
+  "fr": "C'est quoi, parfois ?",
+  "zh": "parfois 是什麼意思？",
+  "note": "老師抽問的固定句型，也可以反過來自己問：C'est quoi, « saveur » ?｜🎙老師課堂口語"
+ },
+ {
+  "id": "L20_Est_ce_que_tu_partais_en",
+  "lesson": 20,
+  "fr": "Est-ce que tu partais en vacances avec tes parents quand tu étais petit ?",
+  "zh": "你小時候會跟父母去度假嗎？",
+  "note": "整句就是 imparfait 的實戰示範，也是口說考試會被問的題型｜🎙老師課堂口語"
+ },
+ {
+  "id": "L20_Ce_n_est_pas_très_loin_",
+  "lesson": 20,
+  "fr": "Ce n'est pas très loin.",
+  "zh": "不算太遠。",
+  "note": "🎙老師課堂口語"
+ },
+ {
+  "id": "L21_On_peut_essayer_ensemble",
+  "lesson": 21,
+  "fr": "On peut essayer ensemble.",
+  "zh": "我們可以一起試試看。",
+  "note": "課堂帶練習的起手式｜🎙老師課堂口語"
+ },
+ {
+  "id": "L21_D_abord_je_le_lis_au_pr",
+  "lesson": 21,
+  "fr": "D'abord, je le lis au présent. Et après, tu essayes de le mettre à l'imparfait.",
+  "zh": "我先用現在式唸一遍，然後你試著把它改成未完成式。",
+  "note": "mettre à＝把…改成（某個時態）｜🎙老師課堂口語"
+ },
+ {
+  "id": "L21_Tu_l_as_fait_ou_non_",
+  "lesson": 21,
+  "fr": "Tu l'as fait ou non ?",
+  "zh": "你做了沒？",
+  "note": "問作業的固定句｜🎙老師課堂口語"
+ },
+ {
+  "id": "L21_On_est_bon_",
+  "lesson": 21,
+  "fr": "On est bon ?",
+  "zh": "我們 OK 了嗎？／都懂了嗎？",
+  "note": "課堂確認用語，比 Vous comprenez ? 口語｜🎙老師課堂口語"
+ },
+ {
+  "id": "L21_Il_n_y_a_pas_besoin_de_c",
+  "lesson": 21,
+  "fr": "Il n'y a pas besoin de chercher.",
+  "zh": "不需要去找。",
+  "note": "講 être 不用找 nous 形時說的｜🎙老師課堂口語"
+ },
+ {
+  "id": "L21_On_n_en_revient_pas_",
+  "lesson": 21,
+  "fr": "On n'en revient pas.",
+  "zh": "（延伸）我們無法相信。",
+  "note": "跟課文的 on en revient enchanté 同結構，但這句是固定用法「難以置信」｜🎙老師課堂口語"
+ },
 ];

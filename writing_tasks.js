@@ -1,5 +1,5 @@
 /* ============================================================
-   writing_tasks.js — 依課出題的寫作題庫（A1階段，第1–16課）
+   writing_tasks.js — 依課出題的寫作題庫（第1–21課）
    ------------------------------------------------------------
    設計依據（2026-07-12 Owen 定案）：「每天寫2句」要憑空發揮創意，
    自然不會寫 → 改成依今天念的課出題：情境任務＋指定材料（該課
@@ -8,6 +8,10 @@
    ⚠️ 新課教到時照第七項連動補2題（維護方式同 sentences.js 人工精選）。
    欄位：lesson / id / title / task(情境，中文) / use(指定材料，至少用上全部)
         / frame(下筆順序提示) — 都是「給材料」不是「考創意」。
+   ⭐ 2026-08-03 題型升級（第18課起）：除了「指定材料」再加「指定篇章結構」——
+   frame 欄以 ⭐ 開頭者會強制要求用時序/轉折/因果連接詞把句子串成段落。
+   理由：舊題型只到「寫幾個正確的句子」（項目層），但 B1→B2 考的是把想法
+   串起來的能力（篇章層）。見 PLAN_2026-08.md 的 A-5／A-6。
    ============================================================ */
 
 const WRITING_TASKS = [
@@ -112,4 +116,31 @@ const WRITING_TASKS = [
     use:["J'ai + 分詞", 'Je suis allé(e) / resté(e) …', 'Et toi ?'], frame:'招呼一句 → 三件事（PC） → 丟回給對方' },
   { lesson:17, id:'W17b', title:'報告一件最近的大事', task:'寫 40-60 字跟法國筆友報告一件你人生最近的事（開店/搬家/小孩出生/拿到證照…），說它是多久以前發生的、之後到現在如何。',
     use:['il y a + 時長', "J'ai … / Je suis …（PC）", 'depuis + 現在式'], frame:'什麼事（PC） → 多久前（il y a） → 持續到現在的狀態（depuis+現在式）' },
+
+  // ── 第18課（Parcours de vie ＋ la négation 完整版）
+  //    ⚠️ 從這裡開始題型升級：除了「指定材料」，再加「指定篇章結構」——
+  //    強制使用時序/轉折連接詞，訓練把句子串成段落的能力（見 PLAN_2026-08.md A-5）。
+  { lesson:18, id:'W18a', title:'我的人生歷程（時序連接詞）', task:'寫 60-80 字介紹你的人生歷程：三到四個階段（求學/工作/搬家/成家…）。',
+    use:['d\'abord', 'ensuite / puis', 'enfin', 'passé composé'], frame:'⭐ 必須用連接詞串起來：D\'abord, j\'ai … → Ensuite, … → Puis, … → Enfin, aujourd\'hui …（不要寫成沒有連接詞的流水句）' },
+  { lesson:18, id:'W18b', title:'我沒做過／不再做的事', task:'寫 50-60 字講三件事：一件你從來沒做過的、一件你已經不做了的、一件你現在還在做的。',
+    use:['ne … jamais', 'ne … plus', 'toujours / encore'], frame:'⭐ 三種否定＋轉折連接詞：從沒做過（ne...jamais） → 但是（mais）曾經做現在停了（ne...plus） → 相反地（en revanche）現在還在做的' },
+
+  // ── 第19課（Les loisirs ＋ 時間指示詞 ＋ 邀約）
+  { lesson:19, id:'W19a', title:'邀朋友出去（訊息）', task:'寫一則 40-60 字的訊息邀法國朋友週末一起做某個活動：說活動是什麼、時間地點、為什麼推薦。',
+    use:['Ça te dit de …', 'On pourrait …', 'parce que'], frame:'招呼 → 提議（Ça te dit de…） → 時間地點 → 一個理由（parce que） → 問對方意見' },
+  { lesson:19, id:'W19b', title:'我的休閒習慣（時間表達）', task:'寫 60-80 字描述一項你的休閒活動：多久前開始、做了多久、現在還做不做。',
+    use:['il y a + 時長（開始）', 'pendant + 時長（持續期間）', 'depuis + 現在式（到現在）'], frame:'⭐ 三個時間詞各用一次：什麼時候開始（il y a） → 做了多久（pendant） → 現在還在做（depuis + 現在式）' },
+
+  // ── 第20課（Je me souviens ＋ imparfait 完整變位）
+  //    W20a 直接對應課本的 Production écrite → DELF 題型（描述一段回憶，50字以上）
+  { lesson:20, id:'W20a', title:'一段快樂的回憶（DELF 題型）', task:'描述一段快樂的回憶：當時幾歲、在哪裡、跟誰、常做什麼（60-80 字）。⚠️ 整段都在描述過去的場景與習慣，所以幾乎全部用 imparfait。',
+    use:["Quand j'étais petit(e)", 'imparfait（至少 5 個不同動詞）', 'chaque jour / souvent / de temps en temps'], frame:'⭐ 開場定位（Quand j\'étais petit(e), j\'avais … ans） → 地點與人（c\'était / il y avait） → 常做的事（imparfait ＋ 頻率副詞） → 收尾感受' },
+  { lesson:20, id:'W20b', title:'以前 vs 現在（兩個時態並存）', task:'寫 60-80 字對比「以前」跟「現在」：一個你以前常做但後來改變的習慣，說改變是什麼時候發生的。',
+    use:['Avant, je … （imparfait）', 'mais un jour, j\'ai … （passé composé）', 'Aujourd\'hui, je … （現在式）'], frame:'⭐ 三個時態各司其職：以前的習慣（imparfait） → 但是發生了一件事（mais ＋ PC，單次事件） → 所以現在（donc ＋ 現在式）' },
+
+  // ── 第21課（Le souvenir ＋ pronoms y/en ＋ 五感）
+  { lesson:21, id:'W21a', title:'一個讓你難忘的地方', task:'寫 80-100 字介紹一個你去過、印象深刻的地方：在哪、去過幾次、當時聽到聞到看到什麼、為什麼忘不了。',
+    use:['y（至少一次）', 'en（至少一次）', '五感詞彙（l\'odeur / le bruit / la vue）', 'marquer à jamais'], frame:'⭐ 仿課文結構：這是什麼地方 → 我什麼時候去的（J\'y suis allé…） → 那裡有什麼（on y trouve…） → 感官細節（l\'odeur de… / le bruit de…） → 收尾（Ce paysage m\'a marqué à jamais）' },
+  { lesson:21, id:'W21b', title:'推薦一個地方（說服型）', task:'寫 80-100 字推薦台灣的一個地方給法國朋友：為什麼值得去、去了會體驗到什麼、給一個實用建議。',
+    use:['C\'est un endroit qui …', 'on y trouve / on en revient …', 'Que demander de plus ?', '祈使句給建議'], frame:'⭐ 論證結構：先下結論（值得去） → 兩個理由（d\'abord… ensuite…） → 讓步（C\'est un peu touristique, mais…） → 實用建議（祈使句：Mettez… / Faites…）' },
 ];
