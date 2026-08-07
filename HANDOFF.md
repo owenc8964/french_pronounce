@@ -631,6 +631,39 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **瀏覽器層**（切 TEST ROOM，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入＋故意把 `sous la tente` 填成 en 被判錯；reading a22 故意 2對1錯 → 分數與 ✓✗ 與解說都正確、紀錄欄位齊全；french_notes lesson-21 渲染 11 unit／11 表格全包 compare-table／**161 個 🔊 tts-btn**／導覽列 21 個按鈕含第21課；quiz `?lesson=21` 實際出到 y/en 題目並答對計分；**`getPool()` 放行全部 27 題**（確認沒踩到 07-16 那個「文法點被鎖導致整批題目消失」的坑）；map 顯示第21課、tile 與 codex 3-4-5 都正確。
 - **收尾**：清掉測試寫入的 a22 紀錄與該題 SRS key → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留。
 
+### 08-07：教學典範轉移——認知壓縮框架＋Anki 分工制（**下個 session 必讀**）
+
+這天沒有寫新課，做的是**整套系統的方向調整**。產出四份文件，`CLAUDE.md` 也改了。
+
+**起點**：Owen 提出 French OS brief（見 `FRENCH_OS.md` 第1節）——核心診斷是「**瓶頸不是不知道，是還需要想**」。目標不是更會算法文，是讓法文逐漸不需要算。
+
+**① `CLAUDE.md` 新增「教學鐵律」（行為層，即刻生效）**
+答錯時**先分類再回應**：概念缺口（解釋）／自動化缺口（**直接給壓縮練習，禁止重講規則**）／偶發失誤（一句帶過）。判準不明時問「這規則你講得出來嗎」——講得出來就不要解釋。
+
+**② `FRENCH_OS.md`（認知壓縮框架）**
+診斷核心是**區塊拆解**：一句話由哪幾塊疊起來、哪塊壞了。⚠️ 中途踩到一個大坑：**初版把核心寫成「量延遲＋算變異係數」，被 Owen 指出漂掉了**——他要的是「推測/詢問大腦走了哪幾步」，我卻翻譯成裝計時器，那是工程解法不是教學解法。已改寫成以「錯誤的形狀」與「問一句」為主，量測降級成事後佐證。**下個 session 不要再往量測方向走。**
+
+**③ `BLOCKS.md`（26 塊區塊清單，系統骨架）**
+系統的最小單位從「題目」換成「**區塊**」＝產出時要跑的運算。跟 codex 的 123 條知識點不同層。
+⚠️ **最重要的分類：形式塊 vs 感知塊**——形式塊（élision/過去分詞/冠詞縮合）靠**提速**壓縮；感知塊（時態選擇/冠詞選擇/語氣選擇/形容詞位置/回指追蹤/連接詞）被自動化的是**視角本身**，**提速練習無效**，要靠在真實句子出現時反覆喚醒。初版沒分這兩類是設計錯誤。
+
+**④ `ARCH_2026-08_ANKI.md` ＋ `ANKI_SETUP.md`（資料架構）**
+Owen 決定不再讓 Claude 自建 Anki。分工：**Anki**＝Note庫＋卡片模板＋FSRS排程；**Claude**＝語言分析＋策略＋Knowledge Graph；**asbplayer**＝素材擷取。
+稽核發現：`review.html`／`sentence_drill.html`／`answer_card.html` 是**三份逐行等價的 SRS 引擎**（587/571/594 行），加 quiz 單題 SRS 與 verb_sprint 格子歷史＝**五套排程系統**。
+⚠️ **Knowledge Graph 已經存在**——`codex.js` 就是，`KnowledgeGraphNode` 直接填座標，不要另建。
+⚠️ **課本內容也遷進 Anki**（Owen 拍板）。分界：**記憶與提取→Anki；考試形態訓練（quiz/填表格/動詞衝刺/寫作/聽力/閱讀/口說）→Claude 系統**。
+**下一步**：Owen 要先在 Anki 建 24 欄 Note Type（步驟見 `ANKI_SETUP.md`），建好後拿第22課 15–20 則產第一批 TSV 跑通循環，**才**談遷移 1271 張與自動化。
+
+**⑤ `codex.js` 新增 `5-9` 節／`5-9-1`「選時態的四個開關」**（123→124 條，既有座標未動）
+WHEN／CAMERA／REALITY／RELATION 四問，是時態與語氣選擇的上層決策程序。A2 階段只需跑②③兩問。內含對「長動作用 imparfait」這個常見誤解的明確反駁。
+
+**實測診斷（第一次用新方法）**：Owen 寫四句，發現 ①`J'ai mangé`／`Je suis allé` 五塊全對但標「想」→ COMPRESS；②`Je besoin de ça` **只缺一塊**（besoin 是名詞要 avoir 扛，他的 `de ça` 是對的）；③`J'ai allé` **秒答但錯**——**同一結構想過就對、秒答就錯，代表 être/avoir 是算出來的不是反射，速度一上來就被預設的 `j'ai` 蓋掉**。
+⚠️ 又踩一坑：第一版壓縮練習排成**完美交錯**（avoir/être/avoir/être），Owen 三四題就抓到節奏照輪——**練到的變成模式辨識不是提取**。已寫進 `FRENCH_OS.md` 設計鐵律：**亂序、連段長度不規則**。改成亂序後他回報瓶頸移動到**分詞提取**（單字要想）。
+
+**Owen 的 GPT 資料夾（`~/Desktop/ＧＰＴ/`，11 張系統圖）**：已**逐張核對完畢，內容零錯誤**（連 `Il aura oublié.` 推測過去、conditionnel 新聞未證實用法、passé antérieur 搭配都正確）。定位＝**感知塊的鏡頭校正表，不是看懂就收起來的參考書**。現在該用的只有 3 張（3/9 PC vs imparfait、1/9＋9/9 四問），其餘 6 張講的是還沒學的時態，等課本教到再拿出來。
+
+---
+
 ### 08-05：第22課（A2・Quel temps fait-il？・la place de l'adjectif）完整入庫
 
 Owen 貼了第22課逐字稿＋10張課本截圖（`~/Desktop/0804/`：Parlons météo 課文頁、La météo 詞彙方框、À la mer／à la campagne／à la montagne 三組地點詞、各地天氣方言文化框、La place de l'adjectif 完整文法頁含手寫答案、Pourquoi on achète des souvenirs 課文頁、y/en 練習含手寫答案）。
