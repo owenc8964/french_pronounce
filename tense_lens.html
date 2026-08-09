@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>時態鏡頭 · CLB7</title>
+<script>window.__loadErrs=[];window.addEventListener('error',e=>window.__loadErrs.push((e.message||'')+' @'+(e.filename||'')+':'+(e.lineno||'')));</script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #07080f; color: #ddd8cc;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh; padding: 24px 16px 80px;
+  max-width: 680px; margin: 0 auto;
+}
+.header { text-align: center; margin-bottom: 20px; }
+.header h1 { font-size: 1.2rem; letter-spacing: 2px; color: #f0c060;
+  text-shadow: 0 0 20px rgba(240,192,96,0.35); }
+.header .back { font-size: 0.72rem; color: #445060; text-decoration: none;
+  display: inline-block; margin-bottom: 8px; }
+.header .back:hover { color: #f0c060; }
+.header .sub { font-size: 0.7rem; color: #445060; margin-top: 4px; }
+
+.card-box {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 12px; padding: 16px 18px; margin-bottom: 16px;
+}
+.card-title { font-size: 0.65rem; color: #445060; text-transform: uppercase;
+  letter-spacing: 1.5px; margin-bottom: 12px; }
+
+.stat-row { display: flex; gap: 10px; margin-bottom: 4px; }
+.st-box { flex: 1; background: #141928; border: 1px solid #1a2438; border-radius: 10px;
+  padding: 12px 8px; text-align: center; }
+.st-val { font-size: 1.3rem; font-weight: 700; color: #60a0d0; }
+.st-val.hot { color: #f0c060; }
+.st-val.grad { color: #60d090; }
+.st-label { font-size: 0.6rem; color: #445060; margin-top: 4px; }
+
+.lvl-row { display: flex; gap: 8px; margin: 14px 0 4px; }
+.lvl-btn { flex: 1; padding: 10px 6px; border: 1px solid #1a2438; border-radius: 10px;
+  background: #141928; color: #7a8a9a; font-size: 0.75rem; cursor: pointer;
+  font-family: inherit; }
+.lvl-btn.on { border-color: #f0c060; color: #f0c060; background: #1c1a10; }
+.lvl-note { font-size: 0.66rem; color: #445060; margin-top: 8px; line-height: 1.6; }
+
+.start-btn {
+  width: 100%; padding: 16px; border: none; border-radius: 12px;
+  background: linear-gradient(135deg, #1d5035, #2a7048);
+  color: #d0f0d8; font-size: 1rem; font-weight: 700; cursor: pointer;
+  font-family: inherit; letter-spacing: 1px; margin-bottom: 10px;
+}
+.start-btn:hover { filter: brightness(1.15); }
+.start-btn:disabled { opacity: 0.4; cursor: default; }
+.start-hint { font-size: 0.7rem; color: #445060; text-align: center; margin-bottom: 16px; }
+
+.progress-line { display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px; font-size: 0.72rem; color: #445060; }
+.progress-line .pk-score { color: #60d090; font-weight: 700; }
+
+/* 句子卡 */
+.sent-box { background: #0d1020; border: 1px solid #1a2438; border-radius: 16px;
+  padding: 22px 20px 18px; margin-bottom: 14px; position: relative; }
+.sent-zh { font-size: 0.85rem; color: #7a8a9a; margin-bottom: 10px; line-height: 1.6; }
+.sent-fr { font-size: 1.24rem; color: #e8e2d4; line-height: 1.75; letter-spacing: 0.3px; }
+.sent-fr mark { background: rgba(240,192,96,0.18); color: #f0c060; font-weight: 700;
+  padding: 1px 5px; border-radius: 5px; border-bottom: 2px solid #f0c060; }
+.sent-tools { display: flex; gap: 8px; margin-top: 14px; }
+.tool-btn { background: #141928; border: 1px solid #1a2438; color: #60a0d0;
+  border-radius: 8px; padding: 7px 12px; font-size: 0.72rem; cursor: pointer;
+  font-family: inherit; }
+.tool-btn:hover { border-color: #60a0d0; }
+.tool-btn.flagged { color: #d06060; border-color: #d06060; }
+.target-hint { font-size: 0.66rem; color: #445060; margin-top: 12px; }
+
+/* 四個開關 */
+.sw { background: #0d1020; border: 1px solid #1a2438; border-radius: 12px;
+  padding: 13px 14px; margin-bottom: 9px; transition: border-color .15s; }
+.sw.active { border-color: #2a3a52; }
+.sw.locked { opacity: 0.75; }
+.sw-q { font-size: 0.78rem; color: #9aa8b8; margin-bottom: 9px; }
+.sw-q b { color: #f0c060; font-weight: 700; margin-right: 4px; }
+.sw-opts { display: flex; gap: 6px; flex-wrap: wrap; }
+.sw-opt { flex: 1 1 auto; min-width: 84px; padding: 10px 8px; border-radius: 9px;
+  border: 1px solid #1a2438; background: #141928; color: #9aa8b8;
+  font-size: 0.76rem; cursor: pointer; font-family: inherit; text-align: center; }
+.sw-opt:hover:not(:disabled) { border-color: #60a0d0; color: #cfe0f0; }
+.sw-opt:disabled { cursor: default; }
+.sw-opt.picked { border-color: #60a0d0; color: #cfe0f0; background: #16233a; }
+.sw-opt.right { border-color: #2a7048; background: #14301f; color: #8ce0a8; }
+.sw-opt.wrong { border-color: #7a2a2a; background: #2a1414; color: #e08a8a; }
+
+/* 揭曉 */
+.reveal { background: #0d1020; border: 1px solid #1a2438; border-radius: 12px;
+  padding: 16px 16px 14px; margin-top: 4px; }
+.reveal.ok { border-color: #2a7048; }
+.reveal.no { border-color: #7a2a2a; }
+.rv-verdict { font-size: 0.8rem; font-weight: 700; margin-bottom: 8px; }
+.rv-verdict.ok { color: #60d090; }
+.rv-verdict.no { color: #e08a8a; }
+.rv-cell { font-size: 1.06rem; color: #f0c060; font-weight: 700; margin-bottom: 4px; }
+.rv-cx { font-size: 0.66rem; color: #445060; margin-bottom: 11px; }
+.rv-cx a { color: #60a0d0; text-decoration: none; }
+.rv-cx a:hover { text-decoration: underline; }
+.rv-why { font-size: 0.83rem; color: #b8c4d0; line-height: 1.85; }
+.next-btn { width: 100%; padding: 14px; border: none; border-radius: 12px;
+  background: linear-gradient(135deg, #1d3550, #2a5070); color: #cfe0f0;
+  font-size: 0.92rem; font-weight: 700; cursor: pointer; font-family: inherit;
+  margin-top: 12px; letter-spacing: 1px; }
+.next-btn:hover { filter: brightness(1.2); }
+
+/* 結算 */
+.done-box { text-align: center; padding: 30px 20px; }
+.done-box h2 { color: #f0c060; font-size: 1.05rem; margin-bottom: 16px; letter-spacing: 1px; }
+.done-score { font-size: 2.2rem; font-weight: 700; color: #60d090; margin-bottom: 6px; }
+.done-sub { font-size: 0.74rem; color: #445060; margin-bottom: 20px; line-height: 1.7; }
+.miss-list { text-align: left; margin: 16px 0; font-size: 0.76rem; }
+.miss-item { background: #141928; border-left: 3px solid #7a2a2a; border-radius: 6px;
+  padding: 9px 11px; margin-bottom: 7px; color: #9aa8b8; line-height: 1.6; }
+.miss-item b { color: #e8e2d4; }
+
+#qnoteBtn { position: fixed; right: 16px; bottom: 16px; width: 48px; height: 48px;
+  border-radius: 50%; background: #1a2438; color: #f0c060; border: 1px solid #2a3a52;
+  font-size: 1.2rem; cursor: pointer; z-index: 90; }
+#qnotePanel { position: fixed; right: 16px; bottom: 74px; width: 280px;
+  background: #0d1020; border: 1px solid #2a3a52; border-radius: 12px; padding: 12px;
+  display: none; z-index: 91; }
+#qnotePanel.open { display: block; }
+#qnotePanel textarea { width: 100%; height: 80px; background: #141928; border: 1px solid #1a2438;
+  border-radius: 8px; color: #ddd8cc; padding: 8px; font-family: inherit; font-size: 0.8rem; resize: none; }
+#qnotePanel button { width: 100%; margin-top: 8px; padding: 8px; background: #1d5035;
+  color: #d0f0d8; border: none; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 0.8rem; }
+#qnoteTag { font-size: 0.68rem; color: #f0c060; margin-bottom: 6px; display: none; line-height: 1.5; }
+#qnoteCount { font-size: 0.68rem; color: #445060; margin-top: 6px; text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="dashboard.html" class="back">← 回儀表板</a>
+  <h1>🔭 時態鏡頭</h1>
+  <div class="sub">每句跑一次四個開關 · codex 5-9-1</div>
+</div>
+
+<div id="startView">
+  <div class="card-box">
+    <div class="card-title">今日</div>
+    <div class="stat-row">
+      <div class="st-box"><div class="st-val hot" id="stDue">–</div><div class="st-label">今天要跑</div></div>
+      <div class="st-box"><div class="st-val" id="stNew">–</div><div class="st-label">新句</div></div>
+      <div class="st-box"><div class="st-val grad" id="stGrad">–</div><div class="st-label">已內化</div></div>
+    </div>
+    <div class="lvl-row">
+      <button class="lvl-btn" id="lvlLearned">只練已學（A1–A2）</button>
+      <button class="lvl-btn on" id="lvlAll">全部到 B2</button>
+    </div>
+    <div class="lvl-note" id="lvlNote"></div>
+  </div>
+  <button class="start-btn" id="startBtn">開始</button>
+  <div class="start-hint">感知塊靠反覆喚醒，不靠練快——慢慢想沒關係，重點是每次都真的跑過那四問。</div>
+</div>
+
+<div id="drillView" style="display:none">
+  <div class="progress-line">
+    <span id="pkPos"></span>
+    <span class="pk-score" id="pkScore"></span>
+  </div>
+
+  <div class="sent-box">
+    <div class="sent-zh" id="sentZh"></div>
+    <div class="sent-fr" id="sentFr"></div>
+    <div class="sent-tools">
+      <button class="tool-btn" id="btnSpeak">🔊 唸</button>
+      <button class="tool-btn" id="btnFlag">🔴 不熟 <span id="flagCount"></span></button>
+      <button class="tool-btn" id="btnConfused">🤔 這題怪怪的</button>
+    </div>
+    <div class="target-hint">↑ 只針對標黃的那個動詞跑開關</div>
+  </div>
+
+  <div class="sw" id="sw1">
+    <div class="sw-q"><b>①</b>我這句想做什麼？</div>
+    <div class="sw-opts">
+      <button class="sw-opt" data-s="1" data-v="reel">報告現實</button>
+      <button class="sw-opt" data-s="1" data-v="dist">保留距離</button>
+      <button class="sw-opt" data-s="1" data-v="stance">表達立場</button>
+    </div>
+  </div>
+  <div class="sw" id="sw2">
+    <div class="sw-q"><b>②</b>我站在哪個時間點看？</div>
+    <div class="sw-opts">
+      <button class="sw-opt" data-s="2" data-v="passe">過去</button>
+      <button class="sw-opt" data-s="2" data-v="present">現在</button>
+      <button class="sw-opt" data-s="2" data-v="futur">未來</button>
+      <button class="sw-opt" data-s="2" data-v="na">由主句決定</button>
+    </div>
+  </div>
+  <div class="sw" id="sw3">
+    <div class="sw-q"><b>③</b>我要怎麼拍它？</div>
+    <div class="sw-opts">
+      <button class="sw-opt" data-s="3" data-v="event">完整事件</button>
+      <button class="sw-opt" data-s="3" data-v="scene">展開中的畫面</button>
+      <button class="sw-opt" data-s="3" data-v="na">這題不適用</button>
+    </div>
+  </div>
+  <div class="sw" id="sw4">
+    <div class="sw-q"><b>④</b>到那個點，它完成了嗎？</div>
+    <div class="sw-opts">
+      <button class="sw-opt" data-s="4" data-v="direct">直接看它</button>
+      <button class="sw-opt" data-s="4" data-v="done">已經完成</button>
+    </div>
+  </div>
+
+  <div id="revealBox"></div>
+</div>
+
+<div id="doneView" style="display:none"></div>
+
+<button id="qnoteBtn">📝</button>
+<div id="qnotePanel">
+  <div id="qnoteTag"></div>
+  <textarea id="qnoteTxt" placeholder="記下問題、想法、bug…"></textarea>
+  <button id="qnoteSave">儲存筆記</button>
+  <div id="qnoteCount"></div>
+  <button id="qnoteCopy" style="margin-top:6px;width:100%;padding:7px;background:#1a2438;color:#60a0d0;border:none;border-radius:8px;font-size:0.78rem;cursor:pointer;font-family:inherit;">📋 複製全部給 Claude</button>
+</div>
+
+<script src="tense_lens.js"></script>
+<script>
+// ── 常數 ─────────────────────────────────────────────────────
+const INTERVALS = [1, 3, 7, 14, 30];
+const NEW_PER_DAY = 8;      // 感知塊要常遇到，給得比造句(5)寬
+const ROUND_SIZE  = 12;
+
+const SW_LABEL = {
+  1: { reel:'報告現實', dist:'保留距離', stance:'表達立場' },
+  2: { passe:'過去', present:'現在', futur:'未來', na:'由主句決定' },
+  3: { event:'完整事件', scene:'展開中的畫面', na:'這題不適用' },
+  4: { direct:'直接看它', done:'已經完成' },
+};
+
+// ── localStorage ─────────────────────────────────────────────
+function getSrs()   { try { return JSON.parse(localStorage.getItem('clb7_lens_srs')) || {}; } catch { return {}; } }
+function saveSrs(s) { localStorage.setItem('clb7_lens_srs', JSON.stringify(s)); }
+function getSessions() { try { return JSON.parse(localStorage.getItem('clb7_lens_sessions')) || []; } catch { return []; } }
+function todayStr() {
+  return new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'});
+}
+function dayStart(d = new Date()) { const t = new Date(d); t.setHours(0,0,0,0); return t.getTime(); }
+function newCountToday() {
+  try {
+    const v = JSON.parse(localStorage.getItem('clb7_lens_newcount'));
+    return (v && v.date === todayStr()) ? v.n : 0;
+  } catch { return 0; }
+}
+function bumpNewCount() {
+  localStorage.setItem('clb7_lens_newcount', JSON.stringify({ date: todayStr(), n: newCountToday() + 1 }));
+}
+function isGraduated(rec) { return rec && (rec.days||[]).length >= 3 && rec.iv >= 3; }
+
+// ── 等級篩選 ─────────────────────────────────────────────────
+function getLevelMode() { return localStorage.getItem('lens_level') === 'learned' ? 'learned' : 'all'; }
+function setLevelMode(m) { localStorage.setItem('lens_level', m); }
+function pool() {
+  return getLevelMode() === 'learned'
+    ? LENS.filter(c => c.lvl === 'A1' || c.lvl === 'A2')
+    : LENS;
+}
+
+// ── 🔴 不熟旗標（跟 review/sentence_drill 共用 clb7_hard_flags；TL_ 前綴不會撞）
+const FLAG_BONUS_MAX = 2;
+function getFlags() { try { return JSON.parse(localStorage.getItem('clb7_hard_flags')) || {}; } catch { return {}; } }
+function saveFlags(f) { localStorage.setItem('clb7_hard_flags', JSON.stringify(f)); }
+function flagCard(id) {
+  const f = getFlags(); const r = f[id] || { count: 0 };
+  r.count++; r.last = todayStr(); f[id] = r; saveFlags(f); return r.count;
+}
+function renderFlagBadge(id) {
+  const f = getFlags(); const n = f[id] ? f[id].count : 0;
+  document.getElementById('flagCount').textContent = n > 0 ? ('×' + n) : '';
+  document.getElementById('btnFlag').classList.toggle('flagged', n > 0);
+}
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function dueCards() {
+  const srs = getSrs(), now = dayStart();
+  const list = pool().filter(c => srs[c.id] && srs[c.id].due <= now && !isGraduated(srs[c.id]));
+  return shuffle(list).sort((a,b) => srs[a.id].due - srs[b.id].due);
+}
+function newCards() {
+  const srs = getSrs();
+  // 新題：先把已學等級跑熟再往上，等級內亂序（避免照題庫順序＝可預測的模式，見 FRENCH_OS 設計鐵律）
+  const rank = { A1:0, A2:1, B1:2, B2:3 };
+  return shuffle(pool().filter(c => !srs[c.id])).sort((a,b) => rank[a.lvl] - rank[b.lvl]);
+}
+function gradCount() { const srs = getSrs(); return pool().filter(c => isGraduated(srs[c.id])).length; }
+function bonusFlagged(exclude = new Set()) {
+  const flags = getFlags(), srs = getSrs(), now = dayStart();
+  const naturallyDue = c => srs[c.id] && srs[c.id].due <= now && !isGraduated(srs[c.id]);
+  return pool()
+    .filter(c => flags[c.id] && flags[c.id].count > 0 && !naturallyDue(c) && !exclude.has(c.id))
+    .sort((a,b) => flags[b.id].count - flags[a.id].count)
+    .slice(0, FLAG_BONUS_MAX);
+}
+
+// ── 發音（跟全站同一套語音優先序）─────────────────────────────
+let frVoice = null;
+function pickVoice() {
+  const vs = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith('fr'));
+  frVoice = vs.find(v => /am[eé]lie|thomas/i.test(v.name))
+         || vs.find(v => /premium|enhanced|amélior|plus/i.test(v.name))
+         || vs.find(v => v.localService === false)
+         || vs.find(v => v.lang === 'fr-FR') || vs[0] || null;
+}
+if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(text) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/\(.*?\)/g, '').trim());
+  u.lang = 'fr-FR'; u.rate = 0.9;
+  if (frVoice) u.voice = frVoice;
+  speechSynthesis.speak(u);
+}
+
+// ── 錯題本 ───────────────────────────────────────────────────
+function logWrong(entry) {
+  try {
+    const log = JSON.parse(localStorage.getItem('clb7_wrong_log')) || [];
+    const d = todayStr();
+    const dup = log.find(e => e.d === d && e.src === entry.src && e.q === entry.q);
+    if (dup) { dup.n = (dup.n||1) + 1; dup.t = Date.now(); }
+    else log.push({ ...entry, d, t: Date.now(), n: 1 });
+    localStorage.setItem('clb7_wrong_log', JSON.stringify(log.slice(-300)));
+  } catch(e) {}
+}
+
+// ── 狀態 ─────────────────────────────────────────────────────
+let packet = [], idx = 0, answers = {}, revealed = false;
+let firstTryOk = 0, firstTryTotal = 0, attempted = new Set();
+let missed = [], retryQueue = [], inRetry = false;
+
+function buildPacket() {
+  const due = dueCards().map(c => ({ card: c, isNew: false }));
+  const room = Math.max(0, NEW_PER_DAY - newCountToday());
+  if (room > 0) newCards().slice(0, room).forEach(c => due.push({ card: c, isNew: true }));
+  const already = new Set(due.map(p => p.card.id));
+  bonusFlagged(already).forEach(c => due.push({ card: c, isNew: false, isBonus: true }));
+  return shuffle(due).slice(0, ROUND_SIZE);
+}
+
+// ── 畫面 ─────────────────────────────────────────────────────
+function escapeHtml(s) {
+  return s.replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+}
+// target 可能用直/彎撇號，比對時正規化，但輸出保留原字串
+function highlight(fr, target) {
+  const norm = x => x.replace(/[’‘]/g, "'");
+  const nf = norm(fr), nt = norm(target);
+  const i = nf.indexOf(nt);
+  if (i < 0) return escapeHtml(fr);
+  return escapeHtml(fr.slice(0, i)) + '<mark>' + escapeHtml(fr.slice(i, i + target.length)) + '</mark>' + escapeHtml(fr.slice(i + target.length));
+}
+
+function renderStart() {
+  const srs = getSrs();
+  document.getElementById('stDue').textContent  = dueCards().length;
+  document.getElementById('stNew').textContent  = Math.max(0, NEW_PER_DAY - newCountToday());
+  document.getElementById('stGrad').textContent = gradCount() + '/' + pool().length;
+  const mode = getLevelMode();
+  document.getElementById('lvlLearned').classList.toggle('on', mode === 'learned');
+  document.getElementById('lvlAll').classList.toggle('on', mode === 'all');
+  document.getElementById('lvlNote').textContent = mode === 'learned'
+    ? '只出課本教過的時態（présent / passé composé / imparfait / futur proche / passé récent），共 ' + pool().length + ' 題。'
+    : '含還沒教到的 B1–B2 時態（PQP／futur simple／conditionnel／subjonctif／passé simple），共 ' + pool().length + ' 題。這些是「只認不產」——先讓鏡頭認得出來，等課本教到再要求你自己造。';
+  document.getElementById('startBtn').disabled = pool().length === 0;
+}
+
+function renderCard() {
+  const { card } = packet[idx];
+  answers = {}; revealed = false;
+  document.getElementById('sentZh').textContent = card.zh;
+  document.getElementById('sentFr').innerHTML = highlight(card.fr, card.target);
+  document.getElementById('revealBox').innerHTML = '';
+  [1,2,3,4].forEach(n => {
+    const box = document.getElementById('sw' + n);
+    box.classList.remove('locked'); box.classList.add('active');
+    box.querySelectorAll('.sw-opt').forEach(b => {
+      b.disabled = false;
+      b.classList.remove('picked','right','wrong');
+    });
+  });
+  document.getElementById('pkPos').textContent =
+    (inRetry ? '複習輪 ' : '') + (idx + 1) + ' / ' + packet.length + (packet[idx].isNew ? '　·　新' : '');
+  document.getElementById('pkScore').textContent =
+    firstTryTotal ? firstTryOk + '/' + firstTryTotal : '';
+  renderFlagBadge(card.id);
+}
+
+function onPick(e) {
+  if (revealed) return;
+  const btn = e.currentTarget;
+  const s = btn.dataset.s;
+  answers[s] = btn.dataset.v;
+  const box = document.getElementById('sw' + s);
+  box.querySelectorAll('.sw-opt').forEach(b => b.classList.remove('picked'));
+  btn.classList.add('picked');
+  if (answers[1] && answers[2] && answers[3] && answers[4]) doReveal();
+}
+
+function doReveal() {
+  revealed = true;
+  const { card } = packet[idx];
+  const cell = CELLS[card.cell];
+  const truth = { 1: cell.s1, 2: cell.s2, 3: cell.s3, 4: cell.s4 };
+  let allOk = true;
+  [1,2,3,4].forEach(n => {
+    const box = document.getElementById('sw' + n);
+    box.classList.add('locked'); box.classList.remove('active');
+    box.querySelectorAll('.sw-opt').forEach(b => {
+      b.disabled = true;
+      if (b.dataset.v === truth[n]) b.classList.add('right');
+      else if (b.dataset.v === answers[n]) b.classList.add('wrong');
+    });
+    if (answers[n] !== truth[n]) allOk = false;
+  });
+
+  const wrongList = [1,2,3,4].filter(n => answers[n] !== truth[n])
+    .map(n => '第' + '①②③④'[n-1] + '關：你選「' + SW_LABEL[n][answers[n]] + '」，答案是「' + SW_LABEL[n][truth[n]] + '」');
+
+  document.getElementById('revealBox').innerHTML =
+    '<div class="reveal ' + (allOk ? 'ok' : 'no') + '">' +
+      '<div class="rv-verdict ' + (allOk ? 'ok' : 'no') + '">' +
+        (allOk ? '✓ 四關全對' : '✗ ' + wrongList.join('　／　')) + '</div>' +
+      '<div class="rv-cell">' + escapeHtml(cell.label) + '</div>' +
+      '<div class="rv-cx">codex <a href="map.html#cx-' + card.cx + '">' + card.cx + '</a>　·　' + card.lvl + '</div>' +
+      '<div class="rv-why">' + escapeHtml(card.why) + '</div>' +
+    '</div>' +
+    '<button class="next-btn" id="nextBtn">' + (idx + 1 >= packet.length ? '看結果 →' : '下一題 →') + '</button>';
+  document.getElementById('nextBtn').addEventListener('click', nextCard);
+
+  // 計分＋SRS 一律只看「首答」——複習輪的目的是當日至少成功一次，
+  // 不該把首答錯的題目往上推間隔（設計依據見 HANDOFF「複習卡系統設計依據」）
+  if (!attempted.has(card.id)) {
+    attempted.add(card.id);
+    firstTryTotal++;
+    if (allOk) firstTryOk++;
+    else {
+      missed.push({ card, wrongList });
+      logWrong({
+        src: 'lens',
+        q: card.fr + '　→　' + card.target,
+        a: cell.label,
+        note: wrongList.join('；'),
+        title: 'codex ' + card.cx,
+      });
+    }
+    updateSrs(card, allOk);
+  }
+  // 答錯就回鍋（含複習輪再錯），直到當天答對一次為止
+  if (!allOk) retryQueue.push({ card, isNew: false });
+  document.getElementById('pkScore').textContent = firstTryOk + '/' + firstTryTotal;
+}
+
+function updateSrs(card, ok) {
+  const srs = getSrs();
+  const rec = srs[card.id] || { iv: 0, days: [], ok: 0, no: 0 };
+  const today = todayStr();
+  if (ok) {
+    rec.ok = (rec.ok||0) + 1;
+    if (!rec.days.includes(today)) rec.days.push(today);
+    rec.iv = INTERVALS[Math.min(rec.days.length - 1, INTERVALS.length - 1)] || 1;
+  } else {
+    rec.no = (rec.no||0) + 1;
+    rec.iv = 1;
+  }
+  rec.last = today;
+  rec.due = dayStart() + rec.iv * 86400000;
+  if (!srs[card.id] && packet[idx].isNew) bumpNewCount();
+  srs[card.id] = rec;
+  saveSrs(srs);
+}
+
+function nextCard() {
+  idx++;
+  if (idx < packet.length) { renderCard(); window.scrollTo(0,0); return; }
+  if (retryQueue.length) {
+    inRetry = true; packet = shuffle(retryQueue); retryQueue = []; idx = 0;
+    renderCard(); window.scrollTo(0,0); return;
+  }
+  finish();
+}
+
+function finish() {
+  const pct = firstTryTotal ? Math.round(firstTryOk / firstTryTotal * 100) : 0;
+  const ses = getSessions();
+  ses.push({ date: todayStr(), cards: firstTryTotal, ok: firstTryOk, ts: Date.now() });
+  localStorage.setItem('clb7_lens_sessions', JSON.stringify(ses.slice(-100)));
+  localStorage.setItem('clb7_lens_done', todayStr());
+  try {
+    const log = JSON.parse(localStorage.getItem('clb7_lens_log')) || [];
+    if (log[log.length-1] !== todayStr()) log.push(todayStr());
+    localStorage.setItem('clb7_lens_log', JSON.stringify(log.slice(-90)));
+  } catch(e) {}
+
+  document.getElementById('drillView').style.display = 'none';
+  const dv = document.getElementById('doneView');
+  dv.style.display = 'block';
+  dv.innerHTML =
+    '<div class="card-box done-box">' +
+      '<h2>這輪跑完了</h2>' +
+      '<div class="done-score">' + pct + '%</div>' +
+      '<div class="done-sub">首答 ' + firstTryOk + ' / ' + firstTryTotal + ' 題四關全對</div>' +
+      (missed.length
+        ? '<div class="miss-list">' + missed.map(m =>
+            '<div class="miss-item"><b>' + escapeHtml(m.card.fr) + '</b><br>' +
+            escapeHtml(CELLS[m.card.cell].label) + '　·　' + escapeHtml(m.wrongList.join('；')) + '</div>').join('') +
+          '</div>'
+        : '<div class="done-sub">沒有漏接的。</div>') +
+      '<button class="start-btn" onclick="location.reload()">再跑一輪</button>' +
+      '<a href="dashboard.html" style="display:block;margin-top:10px;color:#445060;font-size:0.74rem;text-decoration:none;">← 回儀表板</a>' +
+    '</div>';
+  window.scrollTo(0,0);
+}
+
+// ── 事件 ─────────────────────────────────────────────────────
+document.querySelectorAll('.sw-opt').forEach(b => b.addEventListener('click', onPick));
+document.getElementById('lvlLearned').addEventListener('click', () => { setLevelMode('learned'); renderStart(); });
+document.getElementById('lvlAll').addEventListener('click', () => { setLevelMode('all'); renderStart(); });
+document.getElementById('startBtn').addEventListener('click', () => {
+  packet = buildPacket();
+  if (!packet.length) { alert('今天沒有到期的題目了。可以切「全部到 B2」拿新題，或明天再來。'); return; }
+  idx = 0; firstTryOk = 0; firstTryTotal = 0; attempted = new Set();
+  missed = []; retryQueue = []; inRetry = false;
+  document.getElementById('startView').style.display = 'none';
+  document.getElementById('drillView').style.display = 'block';
+  renderCard();
+});
+document.getElementById('btnSpeak').addEventListener('click', () => speak(packet[idx].card.fr));
+document.getElementById('btnFlag').addEventListener('click', () => {
+  flagCard(packet[idx].card.id); renderFlagBadge(packet[idx].card.id);
+});
+
+renderStart();
+</script>
+
+<script>
+(function(){
+  const KEY='clb7_quick_notes';
+  const page='tense_lens.html';
+  let noteTag = null;
+  function loadNotes(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch{return[];}}
+  function saveNotes(d){localStorage.setItem(KEY,JSON.stringify(d));}
+  function updateCount(){const n=loadNotes();document.getElementById('qnoteCount').textContent=n.length?`共 ${n.length} 則筆記`:'還沒有筆記';}
+  function openPanel(tag){
+    noteTag = tag || null;
+    const tagEl = document.getElementById('qnoteTag');
+    if (noteTag) { tagEl.textContent = '📍 ' + noteTag; tagEl.style.display = 'block'; }
+    else { tagEl.style.display = 'none'; }
+    document.getElementById('qnotePanel').classList.add('open');
+    updateCount();
+    document.getElementById('qnoteTxt').focus();
+  }
+  document.getElementById('qnoteBtn').addEventListener('click', () => {
+    document.getElementById('qnotePanel').classList.toggle('open');
+    updateCount();
+  });
+  document.getElementById('btnConfused').addEventListener('click', () => {
+    let tag = '';
+    try { const c = packet[idx].card; tag = `[codex ${c.cx}] ${c.fr} → ${c.target}`; } catch(e) {}
+    openPanel(tag || '這題');
+  });
+  document.getElementById('qnoteSave').addEventListener('click', () => {
+    const txt = document.getElementById('qnoteTxt').value.trim();
+    if (!txt) return;
+    const notes = loadNotes();
+    const d = new Date();
+    const prefix = noteTag ? `${noteTag}｜` : '';
+    notes.push({
+      date: `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`,
+      time: `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`,
+      page, note: prefix + txt
+    });
+    saveNotes(notes);
+    document.getElementById('qnoteTxt').value = '';
+    noteTag = null;
+    document.getElementById('qnoteTag').style.display = 'none';
+    updateCount();
+  });
+  document.getElementById('qnoteCopy').addEventListener('click', () => {
+    const notes = loadNotes();
+    if (!notes.length) { alert('還沒有筆記'); return; }
+    const text = '【CLB7 快速筆記】\n' + notes.map(n => `[${n.date} ${n.time} @ ${n.page}] ${n.note}`).join('\n');
+    navigator.clipboard.writeText(text).then(() => {
+      document.getElementById('qnoteCopy').textContent = '✓ 已複製！';
+      setTimeout(() => document.getElementById('qnoteCopy').textContent = '📋 複製全部給 Claude', 2000);
+    });
+  });
+})();
+</script>
+<script src="session_timer.js"></script>
+<script src="sync_supabase.js"></script>
+</body>
+</html>
