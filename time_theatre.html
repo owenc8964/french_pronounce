@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>時間劇場 · CLB7</title>
+<script>window.__loadErrs=[];window.addEventListener('error',e=>window.__loadErrs.push((e.message||'')+' @'+(e.filename||'')+':'+(e.lineno||'')));</script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background:#07080f; color:#ddd8cc; font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh; padding:24px 16px 80px; max-width:680px; margin:0 auto; }
+.header { text-align:center; margin-bottom:20px; }
+.header h1 { font-size:1.2rem; letter-spacing:2px; color:#f0c060; text-shadow:0 0 20px rgba(240,192,96,.35); }
+.header .back { font-size:.72rem; color:#445060; text-decoration:none; display:inline-block; margin-bottom:8px; }
+.header .back:hover { color:#f0c060; }
+.header .sub { font-size:.7rem; color:#445060; margin-top:4px; }
+
+.card-box { background:#0d1020; border:1px solid #1a2438; border-radius:12px; padding:16px 18px; margin-bottom:16px; }
+.card-title { font-size:.65rem; color:#445060; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:12px; }
+.stat-row { display:flex; gap:10px; }
+.st-box { flex:1; background:#141928; border:1px solid #1a2438; border-radius:10px; padding:12px 8px; text-align:center; }
+.st-val { font-size:1.3rem; font-weight:700; color:#60a0d0; }
+.st-val.hot { color:#f0c060; } .st-val.grad { color:#60d090; }
+.st-label { font-size:.6rem; color:#445060; margin-top:4px; }
+.legend { font-size:.68rem; color:#66788c; line-height:2; margin-top:14px; }
+.legend b { color:#9aa8b8; font-weight:600; }
+.start-btn { width:100%; padding:16px; border:none; border-radius:12px;
+  background:linear-gradient(135deg,#1d5035,#2a7048); color:#d0f0d8; font-size:1rem;
+  font-weight:700; cursor:pointer; font-family:inherit; letter-spacing:1px; margin-bottom:10px; }
+.start-btn:hover { filter:brightness(1.15); }
+.start-hint { font-size:.7rem; color:#445060; text-align:center; margin-bottom:16px; line-height:1.8; }
+
+.progress-line { display:flex; justify-content:space-between; font-size:.72rem; color:#445060; margin-bottom:14px; }
+.progress-line .pk-score { color:#60d090; font-weight:700; }
+
+.stage { background:#0d1020; border:1px solid #1a2438; border-radius:16px; padding:18px 14px 12px; margin-bottom:14px; }
+.stage svg { width:100%; height:auto; display:block; }
+.era-tag { font-size:.66rem; color:#445060; text-align:center; margin-top:6px; letter-spacing:1px; }
+
+.answer-box { background:#0d1020; border:1px solid #1a2438; border-radius:12px; padding:14px; margin-bottom:10px; }
+.answer-box label { font-size:.72rem; color:#7a8a9a; display:block; margin-bottom:8px; }
+#ansInput { width:100%; background:#141928; border:1px solid #2a3a52; border-radius:9px;
+  color:#e8e2d4; padding:13px 12px; font-family:inherit; font-size:1.02rem; resize:none; height:66px; }
+#ansInput:focus { outline:none; border-color:#60a0d0; }
+.btn-row { display:flex; gap:8px; margin-top:10px; }
+.act-btn { flex:1; padding:13px; border:none; border-radius:10px; font-family:inherit;
+  font-size:.88rem; font-weight:700; cursor:pointer; letter-spacing:.5px; }
+.act-btn.go { background:linear-gradient(135deg,#1d3550,#2a5070); color:#cfe0f0; }
+.act-btn.go:hover { filter:brightness(1.2); }
+.act-btn.ghost { background:#141928; color:#66788c; border:1px solid #1a2438; flex:0 0 auto; padding:13px 16px; }
+.act-btn.ghost:hover { color:#9aa8b8; }
+
+.reveal { border-radius:12px; padding:15px 16px; margin-bottom:10px; background:#0d1020; border:1px solid #1a2438; }
+.reveal.ok { border-color:#2a7048; } .reveal.no { border-color:#7a2a2a; }
+.rv-verdict { font-size:.82rem; font-weight:700; margin-bottom:10px; line-height:1.7; }
+.rv-verdict.ok { color:#60d090; } .rv-verdict.no { color:#e08a8a; }
+.rv-fr { font-size:1.12rem; color:#e8e2d4; line-height:1.7; margin-bottom:4px; }
+.rv-fr mark { background:rgba(240,192,96,.18); color:#f0c060; font-weight:700; padding:1px 5px;
+  border-radius:5px; border-bottom:2px solid #f0c060; }
+.rv-zh { font-size:.78rem; color:#7a8a9a; margin-bottom:10px; }
+.rv-note { font-size:.82rem; color:#b8c4d0; line-height:1.85; }
+.rv-cx { font-size:.66rem; color:#445060; margin-top:9px; }
+.rv-cx a { color:#60a0d0; text-decoration:none; } .rv-cx a:hover { text-decoration:underline; }
+.yours { font-size:.76rem; color:#66788c; margin-bottom:8px; word-break:break-word; }
+.yours i { color:#e08a8a; font-style:normal; }
+
+/* 四開關除錯（只在答錯/求助時展開）*/
+.debug { background:#0d1020; border:1px dashed #2a3a52; border-radius:12px; padding:14px; margin-bottom:10px; }
+.debug h4 { font-size:.72rem; color:#f0c060; margin-bottom:4px; letter-spacing:1px; }
+.debug .dh { font-size:.68rem; color:#445060; margin-bottom:11px; line-height:1.7; }
+.dsw { margin-bottom:9px; }
+.dsw-q { font-size:.74rem; color:#9aa8b8; margin-bottom:5px; }
+.dsw-q b { color:#f0c060; margin-right:4px; }
+.dsw-a { font-size:.78rem; color:#cfe0f0; background:#141928; border:1px solid #1a2438;
+  border-radius:8px; padding:8px 10px; }
+.dsw-a.diff { border-color:#7a2a2a; color:#e08a8a; }
+
+.done-box { text-align:center; padding:30px 20px; }
+.done-box h2 { color:#f0c060; font-size:1.05rem; margin-bottom:16px; letter-spacing:1px; }
+.done-score { font-size:2.2rem; font-weight:700; color:#60d090; margin-bottom:6px; }
+.done-sub { font-size:.74rem; color:#445060; margin-bottom:20px; line-height:1.7; }
+.miss-item { background:#141928; border-left:3px solid #7a2a2a; border-radius:6px; padding:9px 11px;
+  margin-bottom:7px; color:#9aa8b8; line-height:1.6; font-size:.76rem; text-align:left; }
+.miss-item b { color:#e8e2d4; }
+
+#qnoteBtn { position:fixed; right:16px; bottom:16px; width:48px; height:48px; border-radius:50%;
+  background:#1a2438; color:#f0c060; border:1px solid #2a3a52; font-size:1.2rem; cursor:pointer; z-index:90; }
+#qnotePanel { position:fixed; right:16px; bottom:74px; width:280px; background:#0d1020;
+  border:1px solid #2a3a52; border-radius:12px; padding:12px; display:none; z-index:91; }
+#qnotePanel.open { display:block; }
+#qnotePanel textarea { width:100%; height:80px; background:#141928; border:1px solid #1a2438;
+  border-radius:8px; color:#ddd8cc; padding:8px; font-family:inherit; font-size:.8rem; resize:none; }
+#qnotePanel button { width:100%; margin-top:8px; padding:8px; background:#1d5035; color:#d0f0d8;
+  border:none; border-radius:8px; cursor:pointer; font-family:inherit; font-size:.8rem; }
+#qnoteTag { font-size:.68rem; color:#f0c060; margin-bottom:6px; display:none; line-height:1.5; }
+#qnoteCount { font-size:.68rem; color:#445060; margin-top:6px; text-align:center; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="dashboard.html" class="back">← 回儀表板</a>
+  <h1>🎬 時間劇場</h1>
+  <div class="sub">看形狀，直接說出一整句 · 用中文想沒關係</div>
+</div>
+
+<div id="startView">
+  <div class="card-box">
+    <div class="card-title">今日</div>
+    <div class="stat-row">
+      <div class="st-box"><div class="st-val hot" id="stDue">–</div><div class="st-label">今天要演</div></div>
+      <div class="st-box"><div class="st-val" id="stNew">–</div><div class="st-label">新場景</div></div>
+      <div class="st-box"><div class="st-val grad" id="stGrad">–</div><div class="st-label">已內化</div></div>
+    </div>
+    <div class="legend">
+      <b>▬▬▬</b> 長條＝一直在進行、不交代起訖<br>
+      <b>●</b> 點＝發生的那一下，有邊界<br>
+      <b>⚑</b> 旗子＝你站的位置（參考點）<br>
+      <b>✓</b> 旗子左邊打勾＝到那個點已經完成<br>
+      <b>虛線框</b>＝這不是真的（假設／禮貌／後悔）<br>
+      <b>雲朵框</b>＝這是我的立場，不是在報導事實
+    </div>
+  </div>
+  <button class="start-btn" id="startBtn">開演</button>
+  <div class="start-hint">看著形狀直接打出一整句法文。<br>
+  <b style="color:#7a8a9a">用中文想「這是長條還是點」完全可以</b>——要拆掉的是「中文句子→翻成法文」那條路，<br>
+  不是中文本身。中文的「正在」「了」會替你扛掉鏡頭，形狀不會。<br>
+  想不出來就按「用中文想一下」，它給你形狀的中文描述，不是那句的翻譯。</div>
+</div>
+
+<div id="playView" style="display:none">
+  <div class="progress-line"><span id="pkPos"></span><span class="pk-score" id="pkScore"></span></div>
+  <div class="stage"><div id="stageSvg"></div><div class="era-tag" id="eraTag"></div></div>
+  <div class="answer-box">
+    <label>把這個形狀說成一句法文</label>
+    <textarea id="ansInput" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="…"></textarea>
+    <div class="btn-row">
+      <button class="act-btn go" id="btnSubmit">說出來</button>
+      <button class="act-btn ghost" id="btnZh">用中文想一下</button>
+      <button class="act-btn ghost" id="btnHelp">卡住了</button>
+    </div>
+    <div id="zhHint" style="display:none;margin-top:10px;padding:10px 12px;background:#141928;
+      border:1px solid #2a3a52;border-radius:9px;font-size:.8rem;color:#9aa8b8;line-height:1.75;"></div>
+  </div>
+  <div id="outBox"></div>
+</div>
+
+<div id="doneView" style="display:none"></div>
+
+<button id="qnoteBtn">📝</button>
+<div id="qnotePanel">
+  <div id="qnoteTag"></div>
+  <textarea id="qnoteTxt" placeholder="記下問題、想法、bug…"></textarea>
+  <button id="qnoteSave">儲存筆記</button>
+  <div id="qnoteCount"></div>
+  <button id="qnoteCopy" style="margin-top:6px;width:100%;padding:7px;background:#1a2438;color:#60a0d0;border:none;border-radius:8px;font-size:0.78rem;cursor:pointer;font-family:inherit;">📋 複製全部給 Claude</button>
+</div>
+
+<script src="tense_lens.js"></script>
+<script src="time_theatre.js"></script>
+<script>
+const INTERVALS=[1,3,7,14,30];
+const NEW_PER_DAY=6, ROUND_SIZE=10;
+const SW_Q={1:'我這句想做什麼？',2:'我站在哪個時間點看？',3:'我要怎麼拍它？',4:'到那個點，它完成了嗎？'};
+const SW_LABEL={
+ 1:{reel:'報告現實',dist:'保留距離',stance:'表達立場'},
+ 2:{passe:'過去',present:'現在',futur:'未來',na:'由主句決定'},
+ 3:{event:'完整事件',scene:'展開中的畫面',na:'不適用'},
+ 4:{direct:'直接看它',done:'已經完成'}};
+
+function getSrs(){try{return JSON.parse(localStorage.getItem('clb7_theatre_srs'))||{};}catch{return{};}}
+function saveSrs(s){localStorage.setItem('clb7_theatre_srs',JSON.stringify(s));}
+function getSessions(){try{return JSON.parse(localStorage.getItem('clb7_theatre_sessions'))||[];}catch{return[];}}
+function todayStr(){return new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'});}
+function dayStart(d=new Date()){const t=new Date(d);t.setHours(0,0,0,0);return t.getTime();}
+function newCountToday(){try{const v=JSON.parse(localStorage.getItem('clb7_theatre_newcount'));return(v&&v.date===todayStr())?v.n:0;}catch{return 0;}}
+function bumpNewCount(){localStorage.setItem('clb7_theatre_newcount',JSON.stringify({date:todayStr(),n:newCountToday()+1}));}
+function isGraduated(r){return r&&(r.days||[]).length>=3&&r.iv>=3;}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function dueScenes(){const s=getSrs(),n=dayStart();return shuffle(SCENES.filter(c=>s[c.id]&&s[c.id].due<=n&&!isGraduated(s[c.id])));}
+function newScenes(){const s=getSrs();return shuffle(SCENES.filter(c=>!s[c.id]));}
+function gradCount(){const s=getSrs();return SCENES.filter(c=>isGraduated(s[c.id])).length;}
+
+function logWrong(entry){try{
+  const log=JSON.parse(localStorage.getItem('clb7_wrong_log'))||[];const d=todayStr();
+  const dup=log.find(e=>e.d===d&&e.src===entry.src&&e.q===entry.q);
+  if(dup){dup.n=(dup.n||1)+1;dup.t=Date.now();}else log.push({...entry,d,t:Date.now(),n:1});
+  localStorage.setItem('clb7_wrong_log',JSON.stringify(log.slice(-300)));}catch(e){}}
+
+// ── 比對用正規化：去重音、統一撇號、小寫、壓空白 ───────────────
+function norm(s){
+  return s.normalize('NFD').replace(/[̀-ͯ]/g,'')
+          .replace(/[’‘`]/g,"'").toLowerCase().replace(/\s+/g,' ').trim();
+}
+// ⚠️ 一定要用詞邊界，不能用 includes()：
+//    "deja vu" 含 "a vu"、"arrivera" 含 "arrive"、"resterai" 含 "reste"，
+//    用子字串比對會把正確答案診斷成別的格子。
+function hasPhrase(hayNorm, needle){
+  const n = norm(needle).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return new RegExp("(^|[^a-z0-9])" + n + "($|[^a-z0-9])").test(hayNorm);
+}
+
+// ── 形狀繪製 ─────────────────────────────────────────────────
+const ERA_TAG={past:'⟵ 過去',now:'現在',future:'未來 ⟶'};
+function drawScene(sc){
+  const W=600,H=190,PADL=28,PADR=28,AXIS=118,span=W-PADL-PADR;
+  const x=p=>PADL+span*(p/100);
+  let g='';
+  // 世界框
+  if(sc.world==='unreal')
+    g+=`<rect x="6" y="6" width="${W-12}" height="${H-12}" rx="16" fill="none" stroke="#7a6a3a" stroke-width="2" stroke-dasharray="9 7" opacity=".85"/>`;
+  else if(sc.world==='stance')
+    g+=`<rect x="6" y="6" width="${W-12}" height="${H-12}" rx="26" fill="rgba(140,110,190,.09)" stroke="#7a5aa0" stroke-width="2" stroke-dasharray="2 6" opacity=".9"/>`;
+  // 時間軸
+  g+=`<line x1="${PADL}" y1="${AXIS}" x2="${W-PADR}" y2="${AXIS}" stroke="#2a3a52" stroke-width="2"/>`;
+  g+=`<polygon points="${W-PADR},${AXIS} ${W-PADR-11},${AXIS-5} ${W-PADR-11},${AXIS+5}" fill="#2a3a52"/>`;
+  // 旗子
+  if(sc.flagAt!=null){
+    const fx=x(sc.flagAt);
+    g+=`<line x1="${fx}" y1="${AXIS-72}" x2="${fx}" y2="${AXIS+22}" stroke="#f0c060" stroke-width="2" stroke-dasharray="4 4" opacity=".85"/>`;
+    g+=`<text x="${fx}" y="${AXIS+40}" text-anchor="middle" font-size="19" fill="#f0c060">⚑</text>`;
+  }
+  // 圖形
+  sc.items.forEach((it,i)=>{
+    // 由上往下＝句子的先後順序（item0 畫最上面），讀圖順序跟說出來的順序一致
+    const row=AXIS-34-(sc.items.length-1-i)*46;
+    if(it.kind==='band'){
+      const x1=x(it.from),x2=x(it.to);
+      g+=`<rect x="${x1}" y="${row-13}" width="${x2-x1}" height="26" rx="13" fill="rgba(96,160,208,.22)" stroke="#60a0d0" stroke-width="2"/>`;
+      g+=`<text x="${(x1+x2)/2}" y="${row+8}" text-anchor="middle" font-size="21">${it.icon}</text>`;
+    } else {
+      const cx0=x(it.from), w=it.to!=null?(x(it.to)-cx0):0;
+      if(w>0){
+        g+=`<rect x="${cx0}" y="${row-15}" width="${w}" height="30" rx="7" fill="rgba(224,138,138,.22)" stroke="#e08a8a" stroke-width="2.5"/>`;
+        g+=`<text x="${cx0+w/2}" y="${row+9}" text-anchor="middle" font-size="21">${it.icon}</text>`;
+      } else {
+        g+=`<circle cx="${cx0}" cy="${row}" r="17" fill="rgba(224,138,138,.22)" stroke="#e08a8a" stroke-width="2.5"/>`;
+        g+=`<text x="${cx0}" y="${row+8}" text-anchor="middle" font-size="20">${it.icon}</text>`;
+      }
+      g+=`<line x1="${cx0}" y1="${row+17}" x2="${cx0}" y2="${AXIS-3}" stroke="#e08a8a" stroke-width="1.5" opacity=".55"/>`;
+    }
+    if(it.done){
+      const dx=(it.to!=null&&it.kind!=='band')?x(it.to):x(it.from);
+      g+=`<text x="${dx+23}" y="${row-9}" font-size="17" fill="#60d090">✓</text>`;
+    }
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img">${g}</svg>`;
+}
+
+// ── 判定 ─────────────────────────────────────────────────────
+// 只看動詞落在哪一格，不看整句對錯（詞彙/配合/拼字交給別的工具）
+function grade(sc,input){
+  const t=norm(input);
+  return sc.slots.map(sl=>{
+    if(sl.accept.some(a=>hasPhrase(t,a))) return {ok:true,slot:sl};
+    // 較長的錯誤寫法優先比對，避免短的先攔截（例：'ne suis pas venu' 要贏過 'suis'）
+    const hit=Object.keys(sl.confuse||{}).sort((a,b)=>b.length-a.length).find(k=>hasPhrase(t,k));
+    return {ok:false,slot:sl,usedCell:hit?sl.confuse[hit]:null,usedText:hit||null};
+  });
+}
+function switchDiff(rightCell,wrongCell){
+  const R=CELLS[rightCell],Wc=CELLS[wrongCell];
+  if(!R||!Wc) return [];
+  const out=[];
+  [['s1',1],['s2',2],['s3',3],['s4',4]].forEach(([k,n])=>{ if(R[k]!==Wc[k]) out.push({n,right:R[k],wrong:Wc[k]}); });
+  return out;
+}
+
+// ── 狀態 ─────────────────────────────────────────────────────
+let packet=[],idx=0,answered=false,attempted=new Set();
+let firstTryOk=0,firstTryTotal=0,missed=[],retryQueue=[],inRetry=false,usedHelp=false;
+
+function buildPacket(){
+  const due=dueScenes();
+  const room=Math.max(0,NEW_PER_DAY-newCountToday());
+  const fresh=room>0?newScenes().slice(0,room):[];
+  return shuffle([...due.map(c=>({sc:c,isNew:false})),...fresh.map(c=>({sc:c,isNew:true}))]).slice(0,ROUND_SIZE);
+}
+function esc(s){return s.replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+// 在參考句裡把每個 slot 的動詞標黃。用詞邊界找，且從後往前插入標籤，
+// 免得前面插了 <mark> 之後把後面的索引推掉。
+function markVerbs(fr,slots){
+  const nf=norm(fr);
+  const spans=[];
+  slots.forEach(sl=>{
+    for(const a of sl.accept){
+      const n=norm(a).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+      const m=new RegExp("(^|[^a-z0-9])("+n+")($|[^a-z0-9])").exec(nf);
+      if(m){
+        const st=m.index+m[1].length;
+        if(!spans.some(s=>st<s.end&&st+m[2].length>s.start)) spans.push({start:st,end:st+m[2].length});
+        break;
+      }
+    }
+  });
+  spans.sort((a,b)=>a.start-b.start);
+  let out='', pos=0;
+  spans.forEach(s=>{ out+=esc(fr.slice(pos,s.start))+'<mark>'+esc(fr.slice(s.start,s.end))+'</mark>'; pos=s.end; });
+  return out+esc(fr.slice(pos));
+}
+
+function renderStart(){
+  document.getElementById('stDue').textContent=dueScenes().length;
+  document.getElementById('stNew').textContent=Math.max(0,NEW_PER_DAY-newCountToday());
+  document.getElementById('stGrad').textContent=gradCount()+'/'+SCENES.length;
+}
+function renderScene(){
+  const {sc}=packet[idx];
+  answered=false; usedHelp=false;
+  document.getElementById('stageSvg').innerHTML=drawScene(sc);
+  document.getElementById('eraTag').textContent=ERA_TAG[sc.era]||'';
+  document.getElementById('outBox').innerHTML='';
+  const inp=document.getElementById('ansInput');
+  inp.value=''; inp.disabled=false;
+  const zh=document.getElementById('zhHint'); zh.style.display='none'; zh.textContent='';
+  document.getElementById('btnSubmit').disabled=false;
+  document.getElementById('btnZh').disabled=false;
+  document.getElementById('btnHelp').disabled=false;
+  document.getElementById('pkPos').textContent=(inRetry?'重演 ':'')+(idx+1)+' / '+packet.length+(packet[idx].isNew?'　·　新':'');
+  document.getElementById('pkScore').textContent=firstTryTotal?firstTryOk+'/'+firstTryTotal:'';
+  inp.focus();
+}
+
+function submit(fromHelp){
+  if(answered) return;
+  const {sc}=packet[idx];
+  const input=document.getElementById('ansInput').value;
+  if(!fromHelp&&!input.trim()){ document.getElementById('ansInput').focus(); return; }
+  answered=true;
+  const res=fromHelp?sc.slots.map(sl=>({ok:false,slot:sl,usedCell:null,usedText:null})):grade(sc,input);
+  const allOk=!fromHelp&&res.every(r=>r.ok);
+
+  // 逐格診斷：能指出是第幾關讀錯，就指出來
+  const lines=[];
+  res.filter(r=>!r.ok).forEach(r=>{
+    const right=CELLS[r.slot.cell];
+    if(r.usedCell){
+      const d=switchDiff(r.slot.cell,r.usedCell);
+      const w=CELLS[r.usedCell];
+      lines.push('你用了 <i>'+esc(r.usedText)+'</i>（'+esc(w?w.label:r.usedCell)+'）'+
+        (d.length?'　→　差在第'+d.map(x=>'①②③④'[x.n-1]).join('')+'關：'+
+          d.map(x=>'「'+SW_LABEL[x.n][x.wrong]+'」該是「'+SW_LABEL[x.n][x.right]+'」').join('；'):''));
+    } else if(!fromHelp){
+      lines.push('這個形狀要的是 <i>'+esc(right.label)+'</i>');
+    }
+  });
+
+  let html='';
+  if(!fromHelp&&input.trim()) html+='<div class="yours">你打的：'+esc(input.trim())+'</div>';
+  html+='<div class="reveal '+(allOk?'ok':'no')+'">'+
+    '<div class="rv-verdict '+(allOk?'ok':'no')+'">'+
+      (allOk?'✓ 形狀讀對了':(fromHelp?'看一次答案':'✗ '+(lines.join('<br>')||'再看一次形狀')))+'</div>'+
+    (!allOk&&!fromHelp&&lines.length===0?'':'')+
+    '<div class="rv-fr">'+markVerbs(sc.fr,sc.slots)+'</div>'+
+    '<div class="rv-zh">'+esc(sc.zh)+'</div>'+
+    '<div class="rv-note">'+esc(sc.note)+'</div>'+
+    '<div class="rv-cx">codex <a href="map.html#cx-'+sc.cx+'">'+sc.cx+'</a>　·　'+sc.lvl+'</div></div>';
+
+  // 答錯／求助 → 展開四開關當除錯工具（不是預設路徑）
+  if(!allOk){
+    html+='<div class="debug"><h4>回頭跑一次四個開關</h4>'+
+      '<div class="dh">這不是你平常該走的路，是卡住時用來找出哪一關讀錯的。</div>'+
+      sc.slots.map((sl,i)=>{
+        const c=CELLS[sl.cell];
+        const r=res[i];
+        const d=(r&&r.usedCell)?switchDiff(sl.cell,r.usedCell):[];
+        const bad=new Set(d.map(x=>x.n));
+        return '<div style="margin-bottom:12px"><div class="dsw-q" style="color:#f0c060;margin-bottom:6px">'+
+          esc(sl.accept[0])+'　→　'+esc(c.label)+'</div>'+
+          [1,2,3,4].map(n=>'<div class="dsw"><div class="dsw-q"><b>'+'①②③④'[n-1]+'</b>'+SW_Q[n]+'</div>'+
+            '<div class="dsw-a'+(bad.has(n)?' diff':'')+'">'+SW_LABEL[n][c['s'+n]]+'</div></div>').join('')+
+          '</div>';
+      }).join('')+'</div>';
+  }
+  html+='<button class="act-btn go" style="width:100%" id="nextBtn">'+(idx+1>=packet.length?'看結果 →':'下一場 →')+'</button>';
+  document.getElementById('outBox').innerHTML=html;
+  document.getElementById('nextBtn').addEventListener('click',next);
+  document.getElementById('ansInput').disabled=true;
+  document.getElementById('btnSubmit').disabled=true;
+  document.getElementById('btnZh').disabled=true;
+  document.getElementById('btnHelp').disabled=true;
+
+  if(!attempted.has(sc.id)){
+    attempted.add(sc.id); firstTryTotal++;
+    if(allOk) firstTryOk++;
+    else{
+      missed.push({sc,lines});
+      logWrong({src:'theatre',q:'【時間劇場】'+sc.fr,a:sc.slots.map(s=>CELLS[s.cell].label).join(' + '),
+        note:(fromHelp?'（按了卡住）':input.trim().slice(0,60)),title:'codex '+sc.cx});
+    }
+    updateSrs(sc,allOk);
+  }
+  if(!allOk) retryQueue.push({sc,isNew:false});
+  document.getElementById('pkScore').textContent=firstTryOk+'/'+firstTryTotal;
+  document.getElementById('outBox').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function updateSrs(sc,ok){
+  const srs=getSrs(); const isFirst=!srs[sc.id];
+  const rec=srs[sc.id]||{iv:0,days:[],ok:0,no:0};
+  const today=todayStr();
+  if(ok){ rec.ok++; if(!rec.days.includes(today)) rec.days.push(today);
+    rec.iv=INTERVALS[Math.min(rec.days.length-1,INTERVALS.length-1)]||1; }
+  else { rec.no++; rec.iv=1; }
+  rec.last=today; rec.due=dayStart()+rec.iv*86400000;
+  if(isFirst&&packet[idx].isNew) bumpNewCount();
+  srs[sc.id]=rec; saveSrs(srs);
+}
+
+function next(){
+  idx++;
+  if(idx<packet.length){ renderScene(); window.scrollTo(0,0); return; }
+  if(retryQueue.length){ inRetry=true; packet=shuffle(retryQueue); retryQueue=[]; idx=0;
+    renderScene(); window.scrollTo(0,0); return; }
+  finish();
+}
+function finish(){
+  const pct=firstTryTotal?Math.round(firstTryOk/firstTryTotal*100):0;
+  const ses=getSessions();
+  ses.push({date:todayStr(),cards:firstTryTotal,ok:firstTryOk,ts:Date.now()});
+  localStorage.setItem('clb7_theatre_sessions',JSON.stringify(ses.slice(-100)));
+  localStorage.setItem('clb7_theatre_done',todayStr());
+  try{const log=JSON.parse(localStorage.getItem('clb7_theatre_log'))||[];
+    if(log[log.length-1]!==todayStr()) log.push(todayStr());
+    localStorage.setItem('clb7_theatre_log',JSON.stringify(log.slice(-90)));}catch(e){}
+  document.getElementById('playView').style.display='none';
+  const dv=document.getElementById('doneView'); dv.style.display='block';
+  dv.innerHTML='<div class="card-box done-box"><h2>散場</h2>'+
+    '<div class="done-score">'+pct+'%</div>'+
+    '<div class="done-sub">首次就把形狀讀對 '+firstTryOk+' / '+firstTryTotal+' 場</div>'+
+    (missed.length?missed.map(m=>'<div class="miss-item"><b>'+esc(m.sc.fr)+'</b><br>'+
+      esc(m.sc.zh)+'</div>').join(''):'<div class="done-sub">全部一次到位。</div>')+
+    '<button class="start-btn" onclick="location.reload()">再演一輪</button>'+
+    '<a href="dashboard.html" style="display:block;margin-top:10px;color:#445060;font-size:.74rem;text-decoration:none;">← 回儀表板</a></div>';
+  window.scrollTo(0,0);
+}
+
+document.getElementById('startBtn').addEventListener('click',()=>{
+  packet=buildPacket();
+  if(!packet.length){ alert('今天沒有到期的場景了，明天再來。'); return; }
+  idx=0; firstTryOk=0; firstTryTotal=0; attempted=new Set();
+  missed=[]; retryQueue=[]; inRetry=false;
+  document.getElementById('startView').style.display='none';
+  document.getElementById('playView').style.display='block';
+  renderScene();
+});
+document.getElementById('btnSubmit').addEventListener('click',()=>submit(false));
+document.getElementById('btnHelp').addEventListener('click',()=>submit(true));
+// 用中文想一下：給的是「形狀的中文描述」，不是那句法文的中文翻譯——
+// 中文用來推理形狀是合法的鷹架，中文句子拿來翻譯才是要拆掉的那條路。
+document.getElementById('btnZh').addEventListener('click',()=>{
+  if(answered) return;
+  const el=document.getElementById('zhHint');
+  el.textContent='🧭 '+(packet[idx].sc.shapeZh||'');
+  el.style.display='block';
+  document.getElementById('ansInput').focus();
+});
+document.getElementById('ansInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&(e.metaKey||e.ctrlKey)){ e.preventDefault(); submit(false); }
+});
+renderStart();
+</script>
+
+<script>
+(function(){
+  const KEY='clb7_quick_notes'; const page='time_theatre.html';
+  let noteTag=null;
+  function loadNotes(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch{return[];}}
+  function saveNotes(d){localStorage.setItem(KEY,JSON.stringify(d));}
+  function updateCount(){const n=loadNotes();document.getElementById('qnoteCount').textContent=n.length?`共 ${n.length} 則筆記`:'還沒有筆記';}
+  document.getElementById('qnoteBtn').addEventListener('click',()=>{
+    document.getElementById('qnotePanel').classList.toggle('open'); updateCount();});
+  document.getElementById('qnoteSave').addEventListener('click',()=>{
+    const txt=document.getElementById('qnoteTxt').value.trim(); if(!txt) return;
+    const notes=loadNotes(); const d=new Date();
+    let tag=''; try{ tag='[時間劇場] '+packet[idx].sc.fr; }catch(e){}
+    notes.push({date:`${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`,
+      time:`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`,
+      page, note:(tag?tag+'｜':'')+txt});
+    saveNotes(notes); document.getElementById('qnoteTxt').value=''; updateCount();});
+  document.getElementById('qnoteCopy').addEventListener('click',()=>{
+    const notes=loadNotes(); if(!notes.length){alert('還沒有筆記');return;}
+    const text='【CLB7 快速筆記】\n'+notes.map(n=>`[${n.date} ${n.time} @ ${n.page}] ${n.note}`).join('\n');
+    navigator.clipboard.writeText(text).then(()=>{
+      document.getElementById('qnoteCopy').textContent='✓ 已複製！';
+      setTimeout(()=>document.getElementById('qnoteCopy').textContent='📋 複製全部給 Claude',2000);});});
+})();
+</script>
+<script src="session_timer.js"></script>
+<script src="sync_supabase.js"></script>
+</body>
+</html>
