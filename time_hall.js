@@ -74,7 +74,7 @@ const HALL = [
         fr:'Luc arrivera à vingt heures.', zh:'Luc 二十點會到。', cell:'fsimple' },
       b:{ n:'6', tense:'futur antérieur', alias:'驗收經理',
         desc:'先站到未來，再回頭看哪件事已完成。',
-        fr:'À vingt et une heures, Luc sera déjà arrivé.', zh:'到二十一點，Luc 應該已經到了。' } },
+        fr:'À vingt et une heures, Luc sera déjà arrivé.', zh:'到二十一點，Luc 應該已經到了。', cell:'fanterieur' } },
   ],
   extra:{ title:'現在附近的兩個特寫工具', items:[
     { label:'passé récent / venir de + 不定詞', fr:"Luc vient d'arriver.", zh:'Luc 剛到。' },
@@ -133,7 +133,7 @@ const HALL = [
       cell:'fsimple',
       ex:[{fr:'Luc arrivera à vingt heures.',zh:'Luc 二十點會到。'}],
       foot:'用途：預測／承諾／安排。' },
-    { n:'3', name:'futur antérieur ／ 未來回望式', rule:'我先站到未來，再回頭看哪件事已完成。',
+    { n:'3', name:'futur antérieur ／ 未來回望式', rule:'我先站到未來，再回頭看哪件事已完成。', cell:'fanterieur',
       ex:[{fr:'À vingt et une heures, Luc sera déjà arrivé.',zh:'到二十一點，Luc 應該已經到了。'}],
       foot:'時間視角的樓梯：現在 → Luc 抵達 → 21:00 回頭看。' },
   ],
@@ -200,7 +200,7 @@ const HALL = [
       {label:'讓步', fr:'bien que …', zh:''},
       {label:'時間界線', fr:'avant que …', zh:''} ],
       foot:'通常表示與主句同時或在其之後。' },
-    { n:'2', name:'subjonctif passé', alias:'已完成事件的立場式', items:[
+    { n:'2', name:'subjonctif passé', alias:'已完成事件的立場式', cell:'subjpasse', items:[
       {label:'', fr:'Je suis contente que Luc soit venu.', zh:'我很高興 Luc 來了。'},
       {label:'', fr:"Je regrette qu'il soit parti.", zh:'我遺憾他已經離開。'} ],
       foot:'表示在主句立場之前，從句動作已完成。' },

@@ -24,17 +24,27 @@
 const CELLS = {
   imperatif : { s1:'act',   s2:'na',      s3:'na',    s4:'direct', label:'impératif',            cx:'6-1-1', lvl:'A2' },
   present   : { s1:'reel',  s2:'present', s3:'na',    s4:'direct', label:'présent',              cx:'5-1-1', lvl:'A1' },
+  // ⚠️ pc 的 s4 是 'direct' 不是 'done'，這是刻意的，不要「修」它（08-10 核對過）：
+  //    時間劇院 2/9 與 9/9 的表把 passé composé 放在「現在世界」的已完成欄，跟 présent 配對；
+  //    但「四開關×14時態」海報的九宮格把它放在「過去（事件）」。**兩張圖本身就不一致。**
+  //    原因：PC 在形態上確實是現在完成式（avoir/être 現在式＋分詞），但在現代法文裡
+  //    它已經接收了簡單過去的工作。那兩張表排的是**形式的對稱**（單一形 ↔ 複合形），
+  //    不是四個開關。其他四列剛好兩者重合，只有這一列因為 PC 漂移了才會打架。
+  //    本系統一律採「PC＝過去的完整事件」——codex 5-2-1／5-3-3 和全部工具都建立在這上面，
+  //    改成 done 會同時弄壞 32 個劇場場景與上百題鏡頭。
   pc        : { s1:'reel',  s2:'passe',   s3:'event', s4:'direct', label:'passé composé',        cx:'5-2-1', lvl:'A2' },
   imp       : { s1:'reel',  s2:'passe',   s3:'scene', s4:'direct', label:'imparfait',            cx:'5-3-1', lvl:'A2' },
   pqp       : { s1:'reel',  s2:'passe',   s3:'na',    s4:'done',   label:'plus-que-parfait',     cx:'5-4-1', lvl:'B1' },
   fproche   : { s1:'reel',  s2:'futur',   s3:'na',    s4:'direct', label:'futur proche',         cx:'5-5-1', lvl:'A2' },
   fsimple   : { s1:'reel',  s2:'futur',   s3:'na',    s4:'direct', label:'futur simple',         cx:'5-5-2', lvl:'B1' },
+  fanterieur: { s1:'reel',  s2:'futur',   s3:'na',    s4:'done',   label:'futur antérieur',      cx:'5-5-3', lvl:'B2' },
   precent   : { s1:'reel',  s2:'passe',   s3:'na',    s4:'direct', label:'passé récent',         cx:'5-6-1', lvl:'A2' },
   psimple   : { s1:'reel',  s2:'passe',   s3:'event', s4:'direct', label:'passé simple',         cx:'5-7-1', lvl:'B2' },
   condpoli  : { s1:'dist',  s2:'present', s3:'na',    s4:'direct', label:'conditionnel présent（禮貌）', cx:'6-2-1', lvl:'A2' },
   condhypo  : { s1:'dist',  s2:'futur',   s3:'na',    s4:'direct', label:'conditionnel présent（假設結果）', cx:'6-2-2', lvl:'B1' },
   condpasse : { s1:'dist',  s2:'passe',   s3:'na',    s4:'done',   label:'conditionnel passé',   cx:'6-2-3', lvl:'B2' },
   subj      : { s1:'stance',s2:'na',      s3:'na',    s4:'direct', label:'subjonctif présent',   cx:'6-3-1', lvl:'B1' },
+  subjpasse : { s1:'stance',s2:'na',      s3:'na',    s4:'done',   label:'subjonctif passé',     cx:'6-3-4', lvl:'B2' },
   siimp     : { s1:'dist',  s2:'futur',   s3:'na',    s4:'direct', label:'si + imparfait（假設條件）', cx:'6-6-1', lvl:'B1' },
   sipqp     : { s1:'dist',  s2:'passe',   s3:'na',    s4:'done',   label:'si + plus-que-parfait（反事實）', cx:'6-6-1', lvl:'B2' },
   sipres    : { s1:'reel',  s2:'present', s3:'na',    s4:'direct', label:'si + présent（真實條件）', cx:'6-6-1', lvl:'A2' },
@@ -221,6 +231,22 @@ const LENS = [
   why:'剛剛完成。若用 j\'ai mangé，只是陳述吃過，少了「所以現在不餓」的即時因果。' },
 { id:'TL_pr_5b', fr:'Je viens de manger, je n’ai pas faim.', zh:'我剛吃過，不餓。', target:"n'ai pas faim", cell:'present', cx:'5-6-1', lvl:'A2',
   why:'現在的狀態。avoir faim 是狀態不是事件。' },
+
+// ═══ futur antérieur（08-10 codex 補了 5-5-3 才進得來）═════════
+{ id:'TL_fa_1', fr:"Quand tu arriveras, j'aurai terminé.", zh:'等你到的時候，我已經完成了。', target:'aurai terminé', cell:'fanterieur', cx:'5-5-3', lvl:'B2',
+  why:'②時間點是未來，但④開關翻到「已完成」——你抵達那一刻是參考點，我做完發生在那之前。跟 PQP 是同一個動作放在不同時間軸上。' },
+{ id:'TL_fa_2', fr:'À vingt et une heures, Luc sera déjà arrivé.', zh:'到二十一點，Luc 應該已經到了。', target:'sera déjà arrivé', cell:'fanterieur', cx:'5-5-3', lvl:'B2',
+  why:'明確的未來時間點就是參考點。être 家族一樣用 être，分詞配合主詞——形式層跟 passé composé 同一套。' },
+{ id:'TL_fa_3', fr:'Il aura oublié.', zh:'他大概是忘了。（推測）', target:'aura oublié', cell:'fanterieur', cx:'5-5-3', lvl:'B2',
+  why:'⚠️ 這句講的是過去，不是未來。未來完成式拿來推測已經發生的事，等於中文的「大概是…吧」。跟 conditionnel 的傳聞用法是同一類語氣距離，只是走未來這條路。' },
+
+// ═══ subjonctif passé（08-10 codex 補了 6-3-4 才進得來）════════
+{ id:'TL_sjp_1', fr:'Je suis contente que Luc soit venu.', zh:'我很高興 Luc 來了。', target:'soit venu', cell:'subjpasse', cx:'6-3-4', lvl:'B2',
+  why:'①仍然是表達立場（情緒），觸發器跟 subjonctif présent 完全一樣。換成 passé 的唯一理由是④：他來這件事發生在我高興之前。' },
+{ id:'TL_sjp_2', fr:"Je regrette qu'il soit parti.", zh:'我遺憾他已經離開。', target:'soit parti', cell:'subjpasse', cx:'6-3-4', lvl:'B2',
+  why:'遺憾的是已經發生的事。若說 que je regrette qu\'il parte，變成遺憾他「要走」這件事還沒發生。' },
+{ id:'TL_sjp_3', fr:"Je doute qu'elle ait compris.", zh:'我懷疑她聽懂了沒。', target:'ait compris', cell:'subjpasse', cx:'6-3-4', lvl:'B2',
+  why:'懷疑＝立場；聽懂這件事比我懷疑更早。判斷方法只有一句：從句比主句早就用 passé。' },
 
 // ═══ passé simple（只認不產）══════════════════════════════════
 { id:'TL_ps_1', fr:'Il ouvrit la porte et sortit.', zh:'他開門出去了。（小說體）', target:'ouvrit', cell:'psimple', cx:'5-7-1', lvl:'B2',
