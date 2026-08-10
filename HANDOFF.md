@@ -675,7 +675,25 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 **⚠️ 順手發現：四個背景 worktree 的 ROOM 停在 TEST 值**
 `adoring-mccarthy`／`suspicious-mclaren`／`focused-morse`／`exciting-volhard` 的 `sync_supabase.js` 都是 `TEST-DO-NOT-USE`。測試中很正常，但**那些 session 若沒復原就 commit、再 merge 進 main，Owen 的同步會直接死掉**。合併 S2–S6 前先跑 `grep -rn "var ROOM" .claude/worktrees/*/sync_supabase.js`。我沒動別人的 worktree。
 
-**還沒做**：兩個工具都還**沒接進 `dashboard.html` 今日處方、也沒進 `map.html`**（背景 session 正在動 dashboard，避免衝突）。`clb7_lens_done`／`clb7_theatre_done` 已經照 `clb7_warmup_done` 同款式寫好了，接的時候直接讀即可。Owen 提過的「dashboard 模式＝進到那個時區」還沒做。
+**④ 「學習不是只有題目」（08-10 第四次修正，最根本的一次）**
+> 「很多東西可以不用用題目做，算是讀／浸潤／體驗式學習。題目是驗收或輸入輸出的過程，但學習不是只有題目。」
+> 「我給你那個 GPT 資料夾內容，我甚至覺得有需要重複讓我學習／思考。」
+
+前面兩個工具本質都是**測量儀器**，把「答對」當成學習本身。→ 新增第三個，`time_hall.html`（時間劇院）：**沒有題目、沒有計分、沒有 SRS**，只有讀 ＋「今天讀過了」。卡片可前後翻、記住上次讀到哪張、下次接著給下一張（重複但不重複同一張）、點法文可發音。
+
+**GPT 資料夾的處理方式（之後擴充照這個做）**
+- ⚠️ **不搬圖檔**：11 張共約 38MB，且 repo 會 push 到公開 GitHub Pages。改成**文字＋SVG 轉錄**——體積小、可連 codex 座標、手機好讀，而且才能「重複出現」。
+- ⚠️ **只轉錄實際看過的**：目前 5 張（時間劇院 1/9、3/9、4/9、7/9 ＋「四開關×14 時態」海報的九宮格）。**2/9、5/9、6/9、8/9、9/9 還沒看過，`time_hall.js` 裡標了 ⛔ 待轉錄**。要補就去讀 `~/Desktop/ＧＰＴ/` 的 PNG，照既有 `kind` 格式加。**絕對不要憑印象補**——BLOCKS.md 已警告「LLM 生成的圖，錯誤會長得跟正確的一模一樣」。
+- 系列的骨架：一個故事貫穿（Luc 今晚會不會來／Luc 離開／我抵達），每張把一個時態寫成一個角色（別名＋時間軸＋vs 對照＋一句話靈魂）。
+
+**📌 核對出兩件事（重要）**
+1. **Owen 給的四個開關順序，就是時間劇院 1/9 的原文**，不是他自己重排的。另一張「四開關×14 時態」海報用的是 WHEN 先——**兩張圖本來就不同調**。codex 5-9-1 現在對齊 1/9。
+2. **1/9 的①有四個選項，我原本漏了第四個：推動對方行動 → impératif**。已補齊：`CELLS` 新增 `imperatif` 格、`tense_lens.html`／`time_theatre.html` 兩頁①都加按鈕與標籤、codex 5-9-1 ① 改寫、`tense_lens.js` 補 4 題（取自 codex 6-1-1）。題庫 133→**137**，格子 15→**16**，無空格子。
+
+**⚠️ 浸潤素材的真實缺口（下個 session 會撞到）**
+`reading.html` 23 篇裡**只有 a21／a22／a23 三篇是敘事體**（過去式動詞 11／8／9 個），其餘 20 篇都是 A1 的菜單、廣告、時刻表，全présent——**拿來做時態浸潤等於沒有素材**。要做「時態透視鏡」（讀文章時把時態的形狀浮在文字上）之前，得先補敘事текст。內容鐵律允許原創閱讀短文（a22／a23 本來就是 Claude 寫的），建議的做法：**詞彙鎖在已學課次，時態放到 B2**——他每個字都讀得懂，新的只有文法的質地。這個想法已跟 Owen 說過，他沒有反對，但**還沒實作**。
+
+**還沒做**：三個工具都還**沒接進 `dashboard.html` 今日處方、也沒進 `map.html`**（背景 session 正在動 dashboard，避免衝突）。`clb7_lens_done`／`clb7_theatre_done`／`clb7_hall_done` 都照 `clb7_warmup_done` 同款式寫好了，接的時候直接讀即可。Owen 提過的「dashboard 模式＝進到那個時區」還沒做。
 
 ---
 
