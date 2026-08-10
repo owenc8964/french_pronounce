@@ -745,7 +745,7 @@ function gramTrainerDoneToday() {
 
 // 一次訓練＝一本道六步：暖身 → 研讀專項 → 反射 → 複習 → 造句 → 閱讀
 // 時間不再是一個步驟，改由頂部 session 計時器全程累計（見 session_timer.js）
-// 中間 4 步（研讀/填表格/反射/複習）每天自動輪替順序，避免一成不變；
+// 中間各步（研讀/填表格/反射/複習/時態…）每天自動輪替順序，避免一成不變；
 // 暖身固定第一、造句+閱讀固定最後（產出收尾）。clb7_order_lock=1 時固定不輪替。
 function isOrderLocked() { return localStorage.getItem('clb7_order_lock') === '1'; }
 function rotateArray(arr, shift) {
@@ -754,7 +754,7 @@ function rotateArray(arr, shift) {
   return arr.slice(s).concat(arr.slice(0, s));
 }
 function getMiddleOrder() {
-  const MIDDLE = ['study', 'lesson_quiz', 'drill', 'sprint', 'review', 'sentence', 'answercard', 'listen', 'shadowing'];
+  const MIDDLE = ['study', 'lesson_quiz', 'drill', 'sprint', 'review', 'sentence', 'answercard', 'listen', 'shadowing', 'tense_read', 'tense_drill'];
   if (isOrderLocked()) return MIDDLE;
   const dayIndex = Math.floor(Date.now() / 86400000); // 每天遞增 1，順序跟著換
   return rotateArray(MIDDLE, dayIndex);
@@ -875,6 +875,14 @@ function buildPrescription(topicStats, todaySec) {
   const wDone = writingDoneToday();
   const rDone = readingDoneToday();
   const rAll  = getReadingData();
+
+  // 時態感知塊（08-10）：浸潤與驗收各一步，兩支工具每天交替，避免同一支練到麻木
+  const tzRead   = hallDoneToday() || xrayDoneToday();
+  const tzDrill  = lensDoneToday() || theatreDoneToday();
+  const evenDay  = Math.floor(Date.now() / 86400000) % 2 === 0;
+  const lensDue  = tenseDueCount('clb7_lens_srs');
+  const thDue    = tenseDueCount('clb7_theatre_srs');
+  const xrayRead = xrayReadCount();
 
   // key → 該步驟內容（不含 n，n 由最終順序決定）
   const stepDefs = {
@@ -1008,6 +1016,26 @@ function buildPrescription(topicStats, todaySec) {
       badgeText: rDone ? '✓ 完成' : '未完成',
       href: 'reading.html?guided=1', done: rDone,
     },
+    // 🎭 浸潤：讀，不做題。Owen 08-10：「題目是驗收，學習不是只有題目。」
+    tense_read: {
+      icon: '🎭', action: '時態浸潤（讀，不做題）',
+      why: tzRead ? '今天已讀！' : (evenDay
+        ? '時間劇院：十張角色卡輪著讀，讀到有興趣點標題直接進記憶宮殿'
+        : `時態透視鏡：先關著燈把故事讀完，再開燈看時間的形狀（已讀 ${xrayRead}/6 篇）`),
+      badge: tzRead ? 'badge-green' : 'badge-blue',
+      badgeText: tzRead ? '✓ 完成' : '去讀',
+      href: evenDay ? 'time_hall.html' : 'tense_xray.html', done: tzRead,
+    },
+    // 🔭 驗收：跑一次四個開關／把形狀說成一整句
+    tense_drill: {
+      icon: '🔭', action: '時態四個開關',
+      why: tzDrill ? '今天已完成！' : (evenDay
+        ? `時態鏡頭：看句子跑一次四個開關${lensDue ? `（${lensDue} 題到期）` : ''}`
+        : `時間劇場：看時間的形狀，直接打出一整句${thDue ? `（${thDue} 場到期）` : ''}`),
+      badge: tzDrill ? 'badge-green' : 'badge-red',
+      badgeText: tzDrill ? '✓ 完成' : '未完成',
+      href: evenDay ? 'tense_lens.html' : 'time_theatre.html', done: tzDrill,
+    },
   };
 
   // 07-16：📚文法閱讀固定接在📐文法路徑前面（先讀後練），跟著 study 一起輪替、不獨立輪替
@@ -1050,6 +1078,26 @@ function sentenceDueCount() {
   const now = new Date(); now.setHours(0,0,0,0);
   const isGrad = r => r && (r.days||[]).length >= 3 && r.iv >= 3;
   return SENTENCES.filter(c => srs[c.id] && srs[c.id].due <= now.getTime() && !isGrad(srs[c.id])).length;
+}
+
+// ── 時態感知塊四工具（08-10）─────────────────────────────────
+// 刻意只讀 localStorage，不載入 tense_lens.js／time_theatre.js 等題庫檔：
+// 到期數可以直接從 SRS 記錄算（有 due/days/iv 就夠），不需要題目清單，
+// 這樣 dashboard 不用多加 script 標籤，跟其他 session 的衝突面最小。
+function getLensSessions()    { try { return JSON.parse(localStorage.getItem('clb7_lens_sessions')) || []; } catch { return []; } }
+function getTheatreSessions() { try { return JSON.parse(localStorage.getItem('clb7_theatre_sessions')) || []; } catch { return []; } }
+function lensDoneToday()      { return getLensSessions().some(s => s.date === todayStr()); }
+function theatreDoneToday()   { return getTheatreSessions().some(s => s.date === todayStr()); }
+function hallDoneToday()      { return localStorage.getItem('clb7_hall_done') === todayStr(); }
+function xrayDoneToday()      { return localStorage.getItem('clb7_xray_done') === todayStr(); }
+function xrayReadCount()      { try { return (JSON.parse(localStorage.getItem('clb7_xray_read')) || []).length; } catch { return 0; } }
+function tenseDueCount(key) {
+  try {
+    const srs = JSON.parse(localStorage.getItem(key)) || {};
+    const now = new Date(); now.setHours(0,0,0,0);
+    const isGrad = r => r && (r.days||[]).length >= 3 && r.iv >= 3;
+    return Object.values(srs).filter(r => r && r.due <= now.getTime() && !isGrad(r)).length;
+  } catch { return 0; }
 }
 
 // ── 今日錯題本 ────────────────────────────────────────────────
@@ -1362,7 +1410,7 @@ function render() {
   document.getElementById('orderLockChk').checked = isOrderLocked();
   document.getElementById('rxOrderNote').textContent = isOrderLocked()
     ? '順序已鎖定，天天固定'
-    : '中間 4 步每天自動輪替順序，避免練到麻木';
+    : '中間各步每天自動輪替順序，避免練到麻木';
   const rx = buildPrescription(topicStats, todaySec);
   const firstUndone = rx.find(i => !i.done);
   document.getElementById('rxList').innerHTML = rx.map(item => `
@@ -1623,6 +1671,8 @@ const HABIT_STEPS = [
   { label: '🎬影集精讀', getDates: () => getListeningData().filter(e => e.source === '影集Shadowing').map(e => e.date) },
   { label: '✍️造句',   getDates: () => getWritingData().map(w => w.date) },
   { label: '📖閱讀',   getDates: () => getReadingData().map(r => isoToZh(r.date)) },
+  { label: '🎭時態浸潤', getDates: () => habitLog('clb7_hall_log').concat(habitLog('clb7_xray_log')) },
+  { label: '🔭時態開關', getDates: () => getLensSessions().map(s => s.date).concat(getTheatreSessions().map(s => s.date)) },
 ];
 
 function renderHabitAnalysis() {
