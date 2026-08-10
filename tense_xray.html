@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>時態透視鏡 · CLB7</title>
+<script>window.__loadErrs=[];window.addEventListener('error',e=>window.__loadErrs.push((e.message||'')+' @'+(e.filename||'')+':'+(e.lineno||'')));</script>
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:#0b0a10; color:#e6e0d2; font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh; padding:22px 16px 90px; max-width:720px; margin:0 auto; }
+.header { text-align:center; margin-bottom:16px; }
+.header .back { font-size:.72rem; color:#5a5344; text-decoration:none; display:inline-block; margin-bottom:8px; }
+.header h1 { font-size:1.22rem; letter-spacing:3px; color:#e0c060; text-shadow:0 0 22px rgba(224,192,96,.3); }
+.header .sub { font-size:.7rem; color:#6a6250; margin-top:5px; }
+
+.pick { background:#12101a; border:1px solid #322a3e; border-radius:14px; padding:14px; margin-bottom:14px; }
+.pick h3 { font-size:.68rem; color:#5a5344; letter-spacing:1.5px; margin-bottom:11px; }
+.trow { display:flex; align-items:center; gap:10px; background:#1a1624; border:1px solid #3a3048;
+  border-radius:10px; padding:11px 13px; margin-bottom:7px; cursor:pointer; }
+.trow:hover { border-color:#c9a227; }
+.trow.on { border-color:#e0c060; background:#221c14; }
+.trow .lv { flex:0 0 auto; font-size:.62rem; color:#12101a; background:#c9a227;
+  border-radius:5px; padding:2px 6px; font-weight:700; }
+.trow .tt { flex:1; }
+.trow .tt b { display:block; font-size:.94rem; color:#e8dcc0; font-family:Georgia,serif; }
+.trow .tt span { font-size:.7rem; color:#8a7f68; }
+.trow .rd { font-size:.7rem; color:#60d090; }
+
+.bar { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+.tg { flex:1 1 auto; padding:11px 12px; border-radius:10px; border:1px solid #3a3048;
+  background:#1a1624; color:#8a7f68; font-size:.78rem; cursor:pointer; font-family:inherit; }
+.tg.on { border-color:#e0c060; color:#e0c060; background:#221c14; }
+
+.art { background:#12101a; border:1px solid #322a3e; border-radius:16px; padding:22px 20px; margin-bottom:12px; }
+.art .src { font-size:.62rem; color:#5a5344; letter-spacing:1.5px; }
+.art h2 { font-size:1.4rem; color:#e8dcc0; font-family:Georgia,serif; margin-top:6px; }
+.art .zht { font-size:.82rem; color:#c9a227; margin-top:4px; }
+.art .focus { font-size:.7rem; color:#8a7f68; margin-top:8px; font-style:italic; }
+.art .intro { font-size:.8rem; color:#9a9080; line-height:1.95; margin-top:13px; padding:12px;
+  background:#1a1624; border-left:3px solid #c9a227; border-radius:6px; }
+
+.para { margin-top:20px; }
+.para p.fr { font-size:1.1rem; line-height:2.5; color:#e8dcc0; font-family:Georgia,'Times New Roman',serif; }
+.para p.zh { font-size:.8rem; color:#8a7f68; line-height:1.95; margin-top:9px;
+  padding-left:11px; border-left:2px solid #2a2334; display:none; }
+.para p.zh.show { display:block; }
+.spk { background:none; border:none; color:#5a5344; cursor:pointer; font-size:.8rem; padding:2px 5px; }
+.spk:hover { color:#e0c060; }
+
+/* 動詞：只有開燈時才有形狀 */
+.v { cursor:pointer; padding-bottom:1px; border-bottom:2px solid transparent; position:relative; white-space:nowrap; }
+.v .ck { font-size:.6em; color:#60d090; vertical-align:super; margin-left:1px; opacity:0; }
+body.xray .v .ck { opacity:1; }
+body.xray .v-scene { border-bottom:3px solid #60a0d0; }
+body.xray .v-event { border-bottom:3px solid #e08a8a; }
+body.xray .v-now   { border-bottom:2px dotted #4a4458; }
+body.xray .v-fut   { border-bottom:3px solid #6ac4a0; }
+body.xray .v-dist  { border-bottom:3px dashed #e0c060; }
+body.xray .v-stance{ border-bottom:3px double #b48ae0; }
+body.xray .v-act   { border-bottom:3px solid #e09a50; font-weight:700; }
+body.xray .v:hover { background:rgba(224,192,96,.12); border-radius:3px; }
+
+.legend { background:#12101a; border:1px solid #322a3e; border-radius:12px; padding:13px; margin-bottom:12px; display:none; }
+body.xray .legend { display:block; }
+.legend h4 { font-size:.68rem; color:#5a5344; letter-spacing:1.5px; margin-bottom:10px; }
+.lg { display:flex; flex-wrap:wrap; gap:7px; }
+.lg span { font-size:.72rem; color:#b8ac94; background:#1a1624; border:1px solid #3a3048;
+  border-radius:7px; padding:5px 9px; }
+.lg i { font-style:normal; padding-bottom:1px; }
+.lg .s-scene { border-bottom:3px solid #60a0d0; }
+.lg .s-event { border-bottom:3px solid #e08a8a; }
+.lg .s-now   { border-bottom:2px dotted #4a4458; }
+.lg .s-fut   { border-bottom:3px solid #6ac4a0; }
+.lg .s-dist  { border-bottom:3px dashed #e0c060; }
+.lg .s-stance{ border-bottom:3px double #b48ae0; }
+.lg .s-act   { border-bottom:3px solid #e09a50; }
+
+#pop { position:fixed; z-index:99; max-width:290px; background:#1a1624; border:1px solid #c9a227;
+  border-radius:11px; padding:12px 13px; display:none; box-shadow:0 8px 30px rgba(0,0,0,.6); }
+#pop.open { display:block; }
+#pop .pl { font-size:.98rem; color:#e0c060; font-family:Georgia,serif; }
+#pop .pa { font-size:.72rem; color:#c9a227; margin:3px 0 8px; }
+#pop .pw { font-size:.78rem; color:#b8ac94; line-height:1.85; }
+#pop .pc2 { font-size:.66rem; color:#5a5344; margin-top:9px; padding-top:8px; border-top:1px solid #2a2334; }
+#pop .pc2 a { color:#c9a227; text-decoration:none; }
+#pop .pc2 a:hover { text-decoration:underline; }
+
+.done-btn { width:100%; padding:15px; border:none; border-radius:12px; margin-top:4px;
+  background:linear-gradient(135deg,#3a2f18,#5a4820); color:#e8dcc0; font-size:.92rem;
+  font-weight:700; cursor:pointer; font-family:inherit; letter-spacing:2px; }
+.done-btn.ok { background:#1d3a28; color:#8ce0a8; }
+.foot-note { font-size:.7rem; color:#5a5344; text-align:center; margin-top:12px; line-height:1.9; }
+
+#qnoteBtn { position:fixed; right:16px; bottom:16px; width:48px; height:48px; border-radius:50%;
+  background:#1e1a28; color:#e0c060; border:1px solid #3a3048; font-size:1.2rem; cursor:pointer; z-index:90; }
+#qnotePanel { position:fixed; right:16px; bottom:74px; width:280px; background:#12101a;
+  border:1px solid #3a3048; border-radius:12px; padding:12px; display:none; z-index:91; }
+#qnotePanel.open { display:block; }
+#qnotePanel textarea { width:100%; height:80px; background:#1e1a28; border:1px solid #322a3e;
+  border-radius:8px; color:#e6e0d2; padding:8px; font-family:inherit; font-size:.8rem; resize:none; }
+#qnotePanel button { width:100%; margin-top:8px; padding:8px; background:#3a2f18; color:#e8dcc0;
+  border:none; border-radius:8px; cursor:pointer; font-family:inherit; font-size:.8rem; }
+#qnoteCount { font-size:.68rem; color:#5a5344; margin-top:6px; text-align:center; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="dashboard.html" class="back">← 回儀表板</a>
+  <h1>時態透視鏡</h1>
+  <div class="sub">先讀故事 · 想看時間的形狀再開燈</div>
+</div>
+
+<div class="pick"><h3>選一篇</h3><div id="list"></div></div>
+
+<div class="bar">
+  <button class="tg" id="tgX">💡 開燈：看時間的形狀</button>
+  <button class="tg" id="tgZh">🈶 中文</button>
+</div>
+
+<div class="legend"><h4>形狀怎麼讀</h4><div class="lg" id="lg"></div></div>
+
+<div id="stage"></div>
+
+<button class="done-btn" id="doneBtn">今天讀過了</button>
+<div class="foot-note">沒有題目，也不計分。<br>
+先關著燈把故事讀完，再開燈看一次同一篇——<br>
+你會發現長條跟點本來就在那裡，只是平常看不見。</div>
+
+<div id="pop"></div>
+
+<button id="qnoteBtn">📝</button>
+<div id="qnotePanel">
+  <textarea id="qnoteTxt" placeholder="記下想法…"></textarea>
+  <button id="qnoteSave">儲存筆記</button>
+  <div id="qnoteCount"></div>
+</div>
+
+<script src="tense_xray.js"></script>
+<script>
+function todayStr(){return new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'});}
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+
+let frVoice=null;
+function pickVoice(){
+  const vs=speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().startsWith('fr'));
+  frVoice=vs.find(v=>/am[eé]lie|thomas/i.test(v.name))
+        ||vs.find(v=>/premium|enhanced|amélior|plus/i.test(v.name))
+        ||vs.find(v=>v.localService===false)||vs.find(v=>v.lang==='fr-FR')||vs[0]||null;
+}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function speak(t){ if(!('speechSynthesis' in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t); u.lang='fr-FR'; u.rate=.85;
+  if(frVoice)u.voice=frVoice; speechSynthesis.speak(u); }
+
+// [[動詞|格子]] → span；未開燈時 CSS 不畫任何形狀，讀起來就是普通文章
+function renderPara(src){
+  let out='', last=0;
+  const re=/\[\[(.+?)\|([a-z]+)\]\]/g; let m;
+  while((m=re.exec(src))!==null){
+    out+=esc(src.slice(last,m.index));
+    const cell=m[2], sh=SHAPES[cell];
+    if(!sh){ out+=esc(m[1]); }           // 未知格子就當普通文字，不要炸掉整篇
+    else out+='<span class="v v-'+sh.fam+'" data-cell="'+cell+'">'+esc(m[1])+
+      (sh.done?'<span class="ck">✓</span>':'')+'</span>';
+    last=re.lastIndex;
+  }
+  return out+esc(src.slice(last));
+}
+const plain=s=>s.replace(/\[\[(.+?)\|[a-z]+\]\]/g,'$1');
+
+// ── 狀態 ─────────────────────────────────────────────────────
+function readSet(){ try{return new Set(JSON.parse(localStorage.getItem('clb7_xray_read'))||[]);}catch{return new Set();} }
+function markRead(id){ const s=readSet(); s.add(id);
+  localStorage.setItem('clb7_xray_read',JSON.stringify([...s])); }
+let cur = Math.max(0, TEXTS.findIndex(t=>!readSet().has(t.id)));
+let xray = localStorage.getItem('xray_on')==='1';
+let showZh = localStorage.getItem('xray_zh')==='1';
+
+function renderList(){
+  const rd=readSet();
+  document.getElementById('list').innerHTML=TEXTS.map((t,i)=>
+    '<div class="trow'+(i===cur?' on':'')+'" data-i="'+i+'">'+
+    '<span class="lv">'+esc(t.lvl)+'</span>'+
+    '<span class="tt"><b>'+esc(t.title)+'</b><span>'+esc(t.zh)+'　·　'+esc(t.focus)+'</span></span>'+
+    (rd.has(t.id)?'<span class="rd">✓</span>':'')+'</div>').join('');
+  document.querySelectorAll('.trow').forEach(e=>e.addEventListener('click',()=>{
+    cur=+e.dataset.i; renderList(); renderArt(); window.scrollTo(0,0); }));
+}
+function renderLegend(){
+  const fams=[['scene','展開中的畫面'],['event','完整事件'],['now','現在／真實條件'],
+    ['fut','未來'],['dist','保留距離（不是真的）'],['stance','表達立場'],['act','推動行動']];
+  document.getElementById('lg').innerHTML=fams.map(([f,n])=>
+    '<span><i class="s-'+f+'">'+n+'</i></span>').join('')+
+    '<span><i style="color:#60d090">✓</i> ＝到參考點已完成</span>';
+}
+function renderArt(){
+  const t=TEXTS[cur];
+  document.getElementById('stage').innerHTML=
+    '<div class="art"><div class="src">'+esc(t.lvl)+'　·　'+esc(t.focus)+'</div>'+
+    '<h2>'+esc(t.title)+'</h2><div class="zht">'+esc(t.zh)+'</div>'+
+    '<div class="intro">'+esc(t.intro)+'</div>'+
+    t.paras.map((p,i)=>'<div class="para"><p class="fr">'+renderPara(p)+
+      ' <button class="spk" data-t="'+esc(plain(p))+'">🔊</button></p>'+
+      '<p class="zh'+(showZh?' show':'')+'">'+esc(t.zhParas[i]||'')+'</p></div>').join('')+
+    '</div>';
+  document.querySelectorAll('.spk').forEach(e=>e.addEventListener('click',ev=>{
+    ev.stopPropagation(); speak(e.dataset.t); }));
+  document.querySelectorAll('.v').forEach(e=>e.addEventListener('click',ev=>{
+    ev.stopPropagation(); showPop(e); }));
+  refreshDone();
+}
+function showPop(el){
+  const sh=SHAPES[el.dataset.cell]; if(!sh) return;
+  const p=document.getElementById('pop');
+  // 讀到有興趣就往下鑽 → 文法記憶宮殿
+  p.innerHTML='<div class="pl">'+esc(sh.label)+'</div><div class="pa">'+esc(sh.alias)+'</div>'+
+    '<div class="pw">'+esc(sh.why)+'</div>'+
+    '<div class="pc2">↗ <a href="map.html#cx-'+esc(sh.cx)+'">進文法記憶宮殿 codex '+esc(sh.cx)+'</a>'+
+    (xray?'':'　·　開燈後這個形狀會直接畫在字上')+'</div>';
+  p.classList.add('open');
+  const r=el.getBoundingClientRect(), pr=p.getBoundingClientRect();
+  let left=Math.min(Math.max(8,r.left), window.innerWidth-pr.width-8);
+  let top=r.bottom+8;
+  if(top+pr.height>window.innerHeight-8) top=Math.max(8,r.top-pr.height-8);
+  p.style.left=left+'px'; p.style.top=top+'px';
+}
+document.addEventListener('click',()=>document.getElementById('pop').classList.remove('open'));
+
+function applyToggles(){
+  document.body.classList.toggle('xray',xray);
+  document.getElementById('tgX').classList.toggle('on',xray);
+  document.getElementById('tgZh').classList.toggle('on',showZh);
+  document.querySelectorAll('.para p.zh').forEach(e=>e.classList.toggle('show',showZh));
+  localStorage.setItem('xray_on',xray?'1':'0');
+  localStorage.setItem('xray_zh',showZh?'1':'0');
+}
+document.getElementById('tgX').addEventListener('click',()=>{xray=!xray;applyToggles();});
+document.getElementById('tgZh').addEventListener('click',()=>{showZh=!showZh;applyToggles();});
+
+function refreshDone(){
+  const b=document.getElementById('doneBtn');
+  const ok=readSet().has(TEXTS[cur].id);
+  b.classList.toggle('ok',ok);
+  b.textContent=ok?'✓ 這篇讀過了':'今天讀過了';
+}
+document.getElementById('doneBtn').addEventListener('click',()=>{
+  markRead(TEXTS[cur].id);
+  localStorage.setItem('clb7_xray_done',todayStr());
+  try{const log=JSON.parse(localStorage.getItem('clb7_xray_log'))||[];
+    if(log[log.length-1]!==todayStr())log.push(todayStr());
+    localStorage.setItem('clb7_xray_log',JSON.stringify(log.slice(-90)));}catch(e){}
+  renderList(); refreshDone();
+});
+
+renderLegend(); renderList(); renderArt(); applyToggles();
+</script>
+
+<script>
+(function(){
+  const KEY='clb7_quick_notes', page='tense_xray.html';
+  const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))||[];}catch{return[];}};
+  const upd=()=>{const n=load();document.getElementById('qnoteCount').textContent=n.length?`共 ${n.length} 則筆記`:'還沒有筆記';};
+  document.getElementById('qnoteBtn').addEventListener('click',e=>{
+    e.stopPropagation();
+    document.getElementById('qnotePanel').classList.toggle('open');upd();});
+  document.getElementById('qnotePanel').addEventListener('click',e=>e.stopPropagation());
+  document.getElementById('qnoteSave').addEventListener('click',()=>{
+    const t=document.getElementById('qnoteTxt').value.trim(); if(!t)return;
+    const n=load(),d=new Date();
+    let tag=''; try{tag='[透視鏡 '+TEXTS[cur].title+'] ';}catch(e){}
+    n.push({date:`${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`,
+      time:`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`,
+      page,note:tag+t});
+    localStorage.setItem(KEY,JSON.stringify(n));
+    document.getElementById('qnoteTxt').value='';upd();});
+})();
+</script>
+<script src="session_timer.js"></script>
+<script src="sync_supabase.js"></script>
+</body>
+</html>

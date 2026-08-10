@@ -30,8 +30,14 @@ a { color:#c9a227; }
   border:1px solid #3a3048; border-radius:16px; padding:24px 20px 20px; margin-bottom:14px;
   box-shadow:0 0 40px rgba(0,0,0,.5) inset; }
 .src { font-size:.62rem; color:#5a5344; letter-spacing:1.5px; margin-bottom:10px; }
-.card h2 { font-size:1.45rem; color:#e8dcc0; letter-spacing:1px; line-height:1.35;
+.card h2 { font-size:1.45rem; letter-spacing:1px; line-height:1.35;
   font-family:Georgia,'Times New Roman',serif; }
+.card h2 a { color:#e8dcc0; text-decoration:none; border-bottom:1px dashed #4a4258; }
+.card h2 a:hover { color:#e0c060; border-bottom-color:#c9a227; }
+.card h2 a:after { content:' ↗'; font-size:.6em; color:#5a5344; vertical-align:super; }
+.palace-hint { font-size:.64rem; color:#5a5344; margin-top:7px; }
+.cxa { color:inherit; text-decoration:none; border-bottom:1px dashed #4a4258; }
+.cxa:hover { color:#e0c060; border-bottom-color:#c9a227; }
 .card .sub2 { font-size:.9rem; color:#c9a227; margin-top:5px; letter-spacing:1px; }
 .card .lead { font-size:.83rem; color:#9a9080; margin-top:12px; line-height:1.9;
   padding-bottom:14px; border-bottom:1px solid #2a2334; }
@@ -196,6 +202,7 @@ td.off { color:#3a3048; }
   <div id="qnoteCount"></div>
 </div>
 
+<script src="tense_lens.js"></script>
 <script src="time_hall.js"></script>
 <script>
 function todayStr(){return new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'});}
@@ -221,6 +228,13 @@ function lastIdx(){ const v=parseInt(localStorage.getItem('hall_pos')||'-1',10);
 function saveIdx(i){ localStorage.setItem('hall_pos',String(i)); }
 let idx = (lastIdx()+1) % HALL.length;
 
+// 讀到有興趣就往下鑽：標題與各個角色/門/欄名都能點進文法記憶宮殿（codex）
+const palace=(cx,text)=>cx?'<a href="map.html#cx-'+esc(cx)+'">'+esc(text)+'</a>':esc(text);
+// 由格子反查座標（CELLS 來自 tense_lens.js）
+const cxOf=cell=>(typeof CELLS!=='undefined'&&CELLS[cell])?CELLS[cell].cx:null;
+const palaceCell=(cell,text)=>{const cx=cxOf(cell);
+  return cx?'<a class="cxa" href="map.html#cx-'+esc(cx)+'">'+esc(text)+'</a>':esc(text);};
+
 const frLine=(e)=>'<div class="ex-row"><div class="fr" data-fr="'+esc(e.fr)+'">'+esc(e.fr)+'</div>'+
   (e.zh?'<div class="zh">'+esc(e.zh)+'</div>':'')+(e.tag?'<div class="tagline">'+esc(e.tag)+'</div>':'')+'</div>';
 const clashBlock=(cl)=>'<div class="clash"><div class="fr" data-fr="'+esc(cl.fr)+'">'+esc(cl.fr)+'</div>'+
@@ -230,7 +244,8 @@ const clashBlock=(cl)=>'<div class="clash"><div class="fr" data-fr="'+esc(cl.fr)
 function render(){
   const c=HALL[idx];
   let h='<div class="card"><div class="src">'+esc(c.src)+'</div>'+
-        '<h2>'+esc(c.title)+'</h2><div class="sub2">'+esc(c.sub)+'</div>'+
+        '<h2>'+palace(c.cx,c.title)+'</h2><div class="sub2">'+esc(c.sub)+'</div>'+
+        '<div class="palace-hint">↗ 點標題進文法記憶宮殿（codex '+esc(c.cx)+'）</div>'+
         '<div class="lead">'+esc(c.lead)+'</div>';
 
   if(c.kind==='framework'){
@@ -266,7 +281,7 @@ function render(){
 
   if(c.kind==='doors'){
     h+='<div class="doors">'+c.doors.map(d=>
-      '<div class="door"><div class="n">'+esc(d.n)+'</div><h3>'+esc(d.name)+'</h3>'+
+      '<div class="door"><div class="n">'+esc(d.n)+'</div><h3>'+palaceCell(d.cell,d.name)+'</h3>'+
       '<div class="rule">'+esc(d.rule)+'</div>'+d.ex.map(frLine).join('')+
       '<div class="foot">'+esc(d.foot)+'</div></div>').join('')+'</div>';
   }
@@ -280,7 +295,7 @@ function render(){
 
   if(c.kind==='cast'){
     h+='<div class="cast-head">'+c.colHead.map(x=>'<div>'+esc(x)+'</div>').join('')+'</div>';
-    const role=r=>'<div class="role"><div class="rn">'+esc(r.n)+'</div><h4>'+esc(r.tense)+'</h4>'+
+    const role=r=>'<div class="role"><div class="rn">'+esc(r.n)+'</div><h4>'+palaceCell(r.cell,r.tense)+'</h4>'+
       '<div class="alias">'+esc(r.alias)+'</div><div class="desc">'+esc(r.desc)+'</div>'+
       frLine({fr:r.fr,zh:r.zh})+'</div>';
     h+=c.worlds.map(w=>'<div class="world"><div class="world-name">'+esc(w.name)+'</div>'+
@@ -292,7 +307,7 @@ function render(){
 
   if(c.kind==='uses'){
     h+='<div class="uses">'+c.cols.map(col=>
-      '<div class="ucol"><div class="un">'+esc(col.n)+'</div><h3>'+esc(col.name)+'</h3>'+
+      '<div class="ucol"><div class="un">'+esc(col.n)+'</div><h3>'+palaceCell(col.cell,col.name)+'</h3>'+
       '<div class="alias">'+esc(col.alias)+'</div>'+
       col.items.map(i=>'<div class="uitem">'+(i.label?'<div class="lab">'+esc(i.label)+'</div>':'')+
         frLine({fr:i.fr,zh:i.zh})+'</div>').join('')+
