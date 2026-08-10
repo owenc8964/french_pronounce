@@ -2139,8 +2139,8 @@ const CODEX_PART2 = [
     ex:[{fr:'Il pleuvait quand je suis sorti.', zh:'我出門時正在下雨。（背景＋事件）'},
         {fr:"Quand je suis arrivé, Luc était déjà parti.", zh:'我到的時候 Luc 已經離開了。（過去的更早以前）'}],
     pts:[
-      {r:'① INTENT 我這句想做什麼？——報告現實（indicatif）／保留距離（conditionnel）／表達立場（subjonctif）。這是最大的分岔，決定跳到哪一列，所以先問',
-       fr:'Il vient. ／ Il viendrait. ／ Je veux qu\'il vienne.', zh:'他來（報告）／他可能會來（保留距離）／我要他來（我的立場）'},
+      {r:'① INTENT 我這句想做什麼？——報告現實（indicatif）／保留距離、可能性（conditionnel）／把事情放進願望、情緒、必要、判斷裡（subjonctif）／推動對方行動（impératif）。這是最大的分岔，決定跳到哪一列，所以先問',
+       fr:'Il vient. ／ Il viendrait. ／ Je veux qu\'il vienne. ／ Viens !', zh:'他來（報告）／他可能會來（保留距離）／我要他來（我的立場）／你來！（推動行動）'},
       {r:'② WHEN 我站在哪個時間點看？——過去／現在／未來',
        fr:'hier / aujourd\'hui / demain', zh:'昨天／今天／明天'},
       {r:'③ CAMERA 我要怎麼拍它？——完整事件（從外面看，有頭有尾）還是展開中的畫面（進到裡面，不交代起訖）',

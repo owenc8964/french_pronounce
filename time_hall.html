@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>時間劇院 · CLB7</title>
+<script>window.__loadErrs=[];window.addEventListener('error',e=>window.__loadErrs.push((e.message||'')+' @'+(e.filename||'')+':'+(e.lineno||'')));</script>
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:#0b0a10; color:#e6e0d2; font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh; padding:22px 16px 90px; max-width:720px; margin:0 auto; }
+a { color:#c9a227; }
+.header { text-align:center; margin-bottom:16px; }
+.header .back { font-size:.72rem; color:#5a5344; text-decoration:none; display:inline-block; margin-bottom:8px; }
+.header h1 { font-size:1.22rem; letter-spacing:3px; color:#e0c060;
+  text-shadow:0 0 22px rgba(224,192,96,.3); font-weight:700; }
+.header .sub { font-size:.7rem; color:#6a6250; margin-top:5px; letter-spacing:1px; }
+
+.navbar { display:flex; align-items:center; gap:8px; margin-bottom:14px; }
+.nav-btn { background:#171420; border:1px solid #322a3e; color:#a99a7a; border-radius:9px;
+  padding:9px 13px; font-size:.8rem; cursor:pointer; font-family:inherit; }
+.nav-btn:hover { border-color:#c9a227; color:#e0c060; }
+.nav-btn:disabled { opacity:.3; cursor:default; }
+.dots { flex:1; display:flex; gap:6px; justify-content:center; }
+.dot { width:8px; height:8px; border-radius:50%; background:#322a3e; cursor:pointer; }
+.dot.on { background:#e0c060; }
+
+/* 卡片 —— 劇院感：暗底、金線、襯線標題 */
+.card { background:linear-gradient(180deg,#171420 0%,#12101a 100%);
+  border:1px solid #3a3048; border-radius:16px; padding:24px 20px 20px; margin-bottom:14px;
+  box-shadow:0 0 40px rgba(0,0,0,.5) inset; }
+.src { font-size:.62rem; color:#5a5344; letter-spacing:1.5px; margin-bottom:10px; }
+.card h2 { font-size:1.45rem; color:#e8dcc0; letter-spacing:1px; line-height:1.35;
+  font-family:Georgia,'Times New Roman',serif; }
+.card .sub2 { font-size:.9rem; color:#c9a227; margin-top:5px; letter-spacing:1px; }
+.card .lead { font-size:.83rem; color:#9a9080; margin-top:12px; line-height:1.9;
+  padding-bottom:14px; border-bottom:1px solid #2a2334; }
+
+.sw { margin-top:16px; }
+.sw-h { font-size:.92rem; color:#e8dcc0; margin-bottom:9px; }
+.sw-h b { color:#c9a227; font-family:Georgia,serif; margin-right:7px; font-size:1.05rem; }
+.sw-o { display:flex; flex-wrap:wrap; gap:7px; }
+.opt { background:#1e1a28; border:1px solid #3a3048; border-radius:8px;
+  padding:8px 11px; font-size:.79rem; color:#b8ac94; }
+.opt i { font-style:normal; color:#c9a227; }
+
+.two { display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
+.half { flex:1 1 260px; background:#1a1624; border:1px solid #3a3048; border-radius:12px; padding:14px; }
+.half h3 { font-size:1rem; color:#e0c060; font-family:Georgia,serif; }
+.half .tag { font-size:.7rem; color:#8a7f68; margin:3px 0 10px; }
+.half ul { list-style:none; }
+.half li { font-size:.79rem; color:#b8ac94; line-height:1.95; padding-left:14px; position:relative; }
+.half li:before { content:'·'; position:absolute; left:2px; color:#c9a227; }
+
+.ex { margin-top:10px; padding-top:10px; border-top:1px solid #2a2334; }
+.ex-row { margin-bottom:9px; }
+.fr { font-size:.98rem; color:#e8dcc0; line-height:1.6; font-family:Georgia,serif; cursor:pointer; }
+.fr:hover { color:#e0c060; }
+.zh { font-size:.74rem; color:#8a7f68; margin-top:2px; }
+.tagline { font-size:.66rem; color:#6a6250; margin-top:2px; font-style:italic; }
+
+.clash { margin-top:16px; background:#1a1624; border:1px solid #3a3048; border-radius:12px; padding:14px; }
+.clash .fr { text-align:center; margin-bottom:11px; }
+.clash .cols { display:flex; gap:10px; }
+.clash .col { flex:1; text-align:center; padding:9px; border-radius:8px; font-size:.76rem; }
+.clash .col.a { background:rgba(96,160,208,.13); border:1px solid #3a5a78; color:#8ab8d8; }
+.clash .col.b { background:rgba(224,138,138,.13); border:1px solid #7a4040; color:#e0a0a0; }
+.clash .col b { display:block; font-size:.9rem; margin-bottom:3px; font-family:Georgia,serif; }
+
+.tl { display:flex; align-items:center; gap:0; margin:16px 0 4px; }
+.tl-step { flex:1; text-align:center; font-size:.72rem; color:#b8ac94; position:relative; padding-top:22px; }
+.tl-step:before { content:''; position:absolute; top:8px; left:0; right:0; height:2px; background:#3a3048; }
+.tl-step:after { content:''; position:absolute; top:4px; left:50%; width:10px; height:10px;
+  margin-left:-5px; border-radius:50%; background:#c9a227; }
+
+.doors { display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
+.door { flex:1 1 210px; background:#1a1624; border:1px solid #3a3048; border-radius:14px 14px 8px 8px;
+  padding:15px 13px; }
+.door .n { width:26px; height:26px; border-radius:50%; background:#2a2334; border:1px solid #c9a227;
+  color:#e0c060; font-size:.8rem; display:flex; align-items:center; justify-content:center; margin-bottom:9px; }
+.door h3 { font-size:.95rem; color:#e8dcc0; line-height:1.45; }
+.door .rule { font-size:.74rem; color:#c9a227; margin:8px 0 10px; line-height:1.6;
+  font-family:Georgia,serif; padding-bottom:9px; border-bottom:1px solid #2a2334; }
+.door .foot { font-size:.72rem; color:#8a7f68; margin-top:9px; padding-top:8px;
+  border-top:1px solid #2a2334; }
+
+.gridwrap { margin-top:16px; overflow-x:auto; }
+table { border-collapse:collapse; width:100%; min-width:460px; font-size:.76rem; }
+th,td { border:1px solid #322a3e; padding:9px 8px; text-align:center; }
+th { background:#1e1a28; color:#c9a227; font-weight:600; font-size:.72rem; }
+td:first-child { background:#1a1624; color:#a99a7a; text-align:right; font-size:.72rem; }
+td.on { color:#e8dcc0; font-family:Georgia,serif; }
+td.off { color:#3a3048; }
+
+.warn { margin-top:14px; background:rgba(224,138,138,.07); border-left:3px solid #7a4040;
+  border-radius:6px; padding:11px 13px; font-size:.79rem; color:#c4b8a4; line-height:1.9; }
+.warn b { color:#e0a0a0; }
+.soul { margin-top:18px; padding:14px; text-align:center; background:rgba(201,162,39,.07);
+  border-top:1px solid #3a3048; border-bottom:1px solid #3a3048; border-radius:6px;
+  font-size:.9rem; color:#e0c060; line-height:1.8; font-family:Georgia,serif; }
+.cxline { font-size:.66rem; color:#5a5344; margin-top:12px; text-align:center; }
+.cxline a { color:#8a7f68; text-decoration:none; }
+.cxline a:hover { color:#c9a227; }
+
+.done-btn { width:100%; padding:15px; border:none; border-radius:12px; margin-top:6px;
+  background:linear-gradient(135deg,#3a2f18,#5a4820); color:#e8dcc0; font-size:.92rem;
+  font-weight:700; cursor:pointer; font-family:inherit; letter-spacing:2px; }
+.done-btn:hover { filter:brightness(1.25); }
+.done-btn.ok { background:#1d3a28; color:#8ce0a8; }
+.foot-note { font-size:.7rem; color:#5a5344; text-align:center; margin-top:12px; line-height:1.9; }
+
+#qnoteBtn { position:fixed; right:16px; bottom:16px; width:48px; height:48px; border-radius:50%;
+  background:#1e1a28; color:#e0c060; border:1px solid #3a3048; font-size:1.2rem; cursor:pointer; z-index:90; }
+#qnotePanel { position:fixed; right:16px; bottom:74px; width:280px; background:#12101a;
+  border:1px solid #3a3048; border-radius:12px; padding:12px; display:none; z-index:91; }
+#qnotePanel.open { display:block; }
+#qnotePanel textarea { width:100%; height:80px; background:#1e1a28; border:1px solid #322a3e;
+  border-radius:8px; color:#e6e0d2; padding:8px; font-family:inherit; font-size:.8rem; resize:none; }
+#qnotePanel button { width:100%; margin-top:8px; padding:8px; background:#3a2f18; color:#e8dcc0;
+  border:none; border-radius:8px; cursor:pointer; font-family:inherit; font-size:.8rem; }
+#qnoteCount { font-size:.68rem; color:#5a5344; margin-top:6px; text-align:center; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="dashboard.html" class="back">← 回儀表板</a>
+  <h1>時間劇院</h1>
+  <div class="sub">Une seule histoire, plusieurs regards</div>
+</div>
+
+<div class="navbar">
+  <button class="nav-btn" id="prev">←</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="next">→</button>
+</div>
+
+<div id="stage"></div>
+
+<button class="done-btn" id="doneBtn">今天讀過了</button>
+<div class="foot-note">這裡沒有題目，也不計分。<br>
+感知塊靠一直看到它變成預設視角，不靠答對。<br>
+點任何一句法文可以聽發音。</div>
+
+<button id="qnoteBtn">📝</button>
+<div id="qnotePanel">
+  <textarea id="qnoteTxt" placeholder="記下想法…"></textarea>
+  <button id="qnoteSave">儲存筆記</button>
+  <div id="qnoteCount"></div>
+</div>
+
+<script src="time_hall.js"></script>
+<script>
+function todayStr(){return new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'});}
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+
+// ── 發音（跟全站同一套語音優先序）───────────────────────────────
+let frVoice=null;
+function pickVoice(){
+  const vs=speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().startsWith('fr'));
+  frVoice=vs.find(v=>/am[eé]lie|thomas/i.test(v.name))
+        ||vs.find(v=>/premium|enhanced|amélior|plus/i.test(v.name))
+        ||vs.find(v=>v.localService===false)||vs.find(v=>v.lang==='fr-FR')||vs[0]||null;
+}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function speak(t){ if(!('speechSynthesis' in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t.replace(/\(.*?\)/g,'').trim());
+  u.lang='fr-FR'; u.rate=.88; if(frVoice)u.voice=frVoice; speechSynthesis.speak(u); }
+
+// ── 讀到哪張（下次接著給下一張，才會「重複但不重複同一張」）──────
+function lastIdx(){ const v=parseInt(localStorage.getItem('hall_pos')||'-1',10);
+  return isNaN(v)?-1:v; }
+function saveIdx(i){ localStorage.setItem('hall_pos',String(i)); }
+let idx = (lastIdx()+1) % HALL.length;
+
+const frLine=(e)=>'<div class="ex-row"><div class="fr" data-fr="'+esc(e.fr)+'">'+esc(e.fr)+'</div>'+
+  '<div class="zh">'+esc(e.zh)+'</div>'+(e.tag?'<div class="tagline">'+esc(e.tag)+'</div>':'')+'</div>';
+
+function render(){
+  const c=HALL[idx];
+  let h='<div class="card"><div class="src">'+esc(c.src)+'</div>'+
+        '<h2>'+esc(c.title)+'</h2><div class="sub2">'+esc(c.sub)+'</div>'+
+        '<div class="lead">'+esc(c.lead)+'</div>';
+
+  if(c.kind==='framework'){
+    c.switches.forEach(s=>{
+      h+='<div class="sw"><div class="sw-h"><b>'+s.n+'</b>'+esc(s.q)+'</div><div class="sw-o">'+
+        s.opts.map(o=>'<div class="opt">'+esc(o.label)+(o.to?' → <i>'+esc(o.to)+'</i>':'')+'</div>').join('')+
+        '</div></div>';
+    });
+  }
+
+  if(c.kind==='pair'){
+    h+='<div class="two">'+[c.left,c.right].map(s=>
+      '<div class="half"><h3>'+esc(s.name)+'</h3><div class="tag">'+esc(s.tag)+'</div>'+
+      '<ul>'+s.points.map(p=>'<li>'+esc(p)+'</li>').join('')+'</ul>'+
+      '<div class="ex">'+s.ex.map(frLine).join('')+'</div></div>').join('')+'</div>';
+    h+='<div class="clash"><div class="fr" data-fr="'+esc(c.clash.fr)+'">'+esc(c.clash.fr)+'</div>'+
+       '<div class="cols"><div class="col a"><b>'+esc(c.clash.a.t)+'</b>'+esc(c.clash.a.note)+'</div>'+
+       '<div class="col b"><b>'+esc(c.clash.b.t)+'</b>'+esc(c.clash.b.note)+'</div></div></div>';
+  }
+
+  if(c.kind==='character'){
+    h+='<div class="tl">'+c.timeline.map(t=>'<div class="tl-step">'+esc(t)+'</div>').join('')+'</div>';
+    h+='<div class="clash">'+frLine(c.anchor)+'</div>';
+    h+='<div class="half" style="margin-top:14px"><h3>'+esc(c.alias)+'</h3>'+
+       '<ul>'+c.points.map(p=>'<li>'+esc(p)+'</li>').join('')+'</ul></div>';
+    h+='<div class="two">'+[c.vs.left,c.vs.right].map(s=>
+      '<div class="half"><h3>'+esc(s.name)+'</h3><div class="tag">'+esc(s.q)+'</div>'+
+      frLine({fr:s.fr,zh:s.zh})+'</div>').join('')+'</div>';
+    h+='<div class="clash"><div class="fr" data-fr="'+esc(c.combo.fr)+'">'+esc(c.combo.fr)+'</div>'+
+       '<div class="cols"><div class="col a"><b>'+esc(c.combo.a.t)+'</b>'+esc(c.combo.a.note)+'</div>'+
+       '<div class="col b"><b>'+esc(c.combo.b.t)+'</b>'+esc(c.combo.b.note)+'</div></div></div>';
+  }
+
+  if(c.kind==='doors'){
+    h+='<div class="doors">'+c.doors.map(d=>
+      '<div class="door"><div class="n">'+esc(d.n)+'</div><h3>'+esc(d.name)+'</h3>'+
+      '<div class="rule">'+esc(d.rule)+'</div>'+d.ex.map(frLine).join('')+
+      '<div class="foot">'+esc(d.foot)+'</div></div>').join('')+'</div>';
+  }
+
+  if(c.kind==='grid'){
+    h+='<div class="gridwrap"><table><tr>'+c.head.map(x=>'<th>'+esc(x)+'</th>').join('')+'</tr>'+
+      c.rows.map(r=>'<tr>'+r.map((x,i)=>i===0?'<td>'+esc(x)+'</td>'
+        :'<td class="'+(x==='—'?'off':'on')+'">'+esc(x)+'</td>').join('')+'</tr>').join('')+
+      '</table></div>';
+  }
+
+  if(c.warn) h+='<div class="warn">'+c.warn.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')+'</div>';
+  if(c.soul) h+='<div class="soul">'+esc(c.soul)+'</div>';
+  h+='<div class="cxline">codex <a href="map.html#cx-'+esc(c.cx)+'">'+esc(c.cx)+'</a></div></div>';
+
+  document.getElementById('stage').innerHTML=h;
+  document.getElementById('dots').innerHTML=HALL.map((_,i)=>
+    '<div class="dot'+(i===idx?' on':'')+'" data-i="'+i+'"></div>').join('');
+  document.getElementById('prev').disabled = idx===0;
+  document.getElementById('next').disabled = idx===HALL.length-1;
+  saveIdx(idx);
+  document.querySelectorAll('.fr').forEach(e=>e.addEventListener('click',()=>speak(e.dataset.fr)));
+  document.querySelectorAll('.dot').forEach(e=>e.addEventListener('click',()=>{idx=+e.dataset.i;render();window.scrollTo(0,0);}));
+  window.scrollTo(0,0);
+}
+document.getElementById('prev').addEventListener('click',()=>{if(idx>0){idx--;render();}});
+document.getElementById('next').addEventListener('click',()=>{if(idx<HALL.length-1){idx++;render();}});
+
+function refreshDone(){
+  const b=document.getElementById('doneBtn');
+  const ok=localStorage.getItem('clb7_hall_done')===todayStr();
+  b.classList.toggle('ok',ok);
+  b.textContent=ok?'✓ 今天讀過了':'今天讀過了';
+}
+document.getElementById('doneBtn').addEventListener('click',()=>{
+  localStorage.setItem('clb7_hall_done',todayStr());
+  try{const log=JSON.parse(localStorage.getItem('clb7_hall_log'))||[];
+    if(log[log.length-1]!==todayStr())log.push(todayStr());
+    localStorage.setItem('clb7_hall_log',JSON.stringify(log.slice(-90)));}catch(e){}
+  refreshDone();
+});
+render(); refreshDone();
+</script>
+
+<script>
+(function(){
+  const KEY='clb7_quick_notes', page='time_hall.html';
+  const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))||[];}catch{return[];}};
+  const upd=()=>{const n=load();document.getElementById('qnoteCount').textContent=n.length?`共 ${n.length} 則筆記`:'還沒有筆記';};
+  document.getElementById('qnoteBtn').addEventListener('click',()=>{
+    document.getElementById('qnotePanel').classList.toggle('open');upd();});
+  document.getElementById('qnoteSave').addEventListener('click',()=>{
+    const t=document.getElementById('qnoteTxt').value.trim(); if(!t)return;
+    const n=load(),d=new Date();
+    let tag=''; try{tag='[時間劇院 '+HALL[idx].title+'] ';}catch(e){}
+    n.push({date:`${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`,
+      time:`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`,
+      page,note:tag+t});
+    localStorage.setItem(KEY,JSON.stringify(n));
+    document.getElementById('qnoteTxt').value='';upd();});
+})();
+</script>
+<script src="session_timer.js"></script>
+<script src="sync_supabase.js"></script>
+</body>
+</html>

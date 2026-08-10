@@ -14,12 +14,15 @@
 //   cell   = 答案格，四個開關的答案由 CELLS 表推出，不逐題重複寫
 //   why    = 揭曉後的解說，只講「為什麼是這格」，不重講規則
 
-// ── 四個開關的答案表（Owen 2026-08-08 定版的排序）──────────────
-// ① INTENT  reel=報告現實 / dist=保留距離 / stance=表達立場
+// ── 四個開關的答案表 ─────────────────────────────────────────
+// 排序來自 Owen 的「法文時間劇院 1/9」（08-10 核對：那就是圖上的原文，
+// 不是他自己重排的；另一張「四個開關×14時態」海報用的是 WHEN 先，兩張本來就不同調）。
+// ① INTENT  reel=報告現實 / dist=保留距離 / stance=表達立場 / act=推動對方行動
 // ② WHEN    passe / present / futur / na=由主句決定
 // ③ CAMERA  event=完整事件 / scene=展開中的畫面 / na=不適用
 // ④ RELATION direct=直接看 / done=到參考點已完成
 const CELLS = {
+  imperatif : { s1:'act',   s2:'na',      s3:'na',    s4:'direct', label:'impératif',            cx:'6-1-1', lvl:'A2' },
   present   : { s1:'reel',  s2:'present', s3:'na',    s4:'direct', label:'présent',              cx:'5-1-1', lvl:'A1' },
   pc        : { s1:'reel',  s2:'passe',   s3:'event', s4:'direct', label:'passé composé',        cx:'5-2-1', lvl:'A2' },
   imp       : { s1:'reel',  s2:'passe',   s3:'scene', s4:'direct', label:'imparfait',            cx:'5-3-1', lvl:'A2' },
@@ -38,6 +41,16 @@ const CELLS = {
 };
 
 const LENS = [
+
+// ═══ impératif（①的第四個選項，時間劇院 1/9 有、我原本漏掉）═════
+{ id:'TL_imp0_1', fr:'Montez dans le bus !', zh:'上公車！', target:'Montez', cell:'imperatif', cx:'6-1-1', lvl:'A2',
+  why:'①開關不是「報告現實」而是「推動對方行動」——說話者不是在描述誰上了車，是要你上車。②時間點不由這個動詞決定。' },
+{ id:'TL_imp0_2', fr:'Finis ton assiette !', zh:'把你的盤子吃完！', target:'Finis', cell:'imperatif', cx:'6-1-1', lvl:'A2',
+  why:'命令式砍掉主詞直接說動詞。-ir 動詞的 tu 形保留 s（跟 -er 動詞不同），那是形式層的事。' },
+{ id:'TL_imp0_3', fr:"N'achetez pas de tickets !", zh:'別買票！', target:"N'achetez pas", cell:'imperatif', cx:'6-1-1', lvl:'A2',
+  why:'否定的命令式，ne…pas 把動詞包住。①仍然是推動對方行動——只是推的方向是「不要做」。' },
+{ id:'TL_imp0_4', fr:'Appelle-moi.', zh:'打給我。', target:'Appelle', cell:'imperatif', cx:'6-1-1', lvl:'A2',
+  why:'⚠️ 這句出現在 si 三扇門的第一扇：Si Luc vient, appelle-moi.——真實條件的主句可以是 présent／futur simple／impératif 三種，這是第三種。' },
 
 // ═══ présent ══════════════════════════════════════════════════
 { id:'TL_pres_1', fr:'Je travaille depuis 8h.', zh:'我從八點工作到現在。', target:'travaille', cell:'present', cx:'5-1-1', lvl:'A1',
