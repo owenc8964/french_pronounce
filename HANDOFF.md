@@ -631,7 +631,55 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **瀏覽器層**（切 TEST ROOM，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入＋故意把 `sous la tente` 填成 en 被判錯；reading a22 故意 2對1錯 → 分數與 ✓✗ 與解說都正確、紀錄欄位齊全；french_notes lesson-21 渲染 11 unit／11 表格全包 compare-table／**161 個 🔊 tts-btn**／導覽列 21 個按鈕含第21課；quiz `?lesson=21` 實際出到 y/en 題目並答對計分；**`getPool()` 放行全部 27 題**（確認沒踩到 07-16 那個「文法點被鎖導致整批題目消失」的坑）；map 顯示第21課、tile 與 codex 3-4-5 都正確。
 - **收尾**：清掉測試寫入的 a22 紀錄與該題 SRS key → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留。
 
-### 08-07：教學典範轉移——認知壓縮框架＋Anki 分工制（**下個 session 必讀**）
+### 08-10：時態感知塊落地成兩個工具——時態鏡頭 ＋ 時間劇場（**下個 session 必讀**）
+
+08-07 把「感知塊要靠反覆喚醒」寫成了框架，但那天只有文件沒有工具。這兩天把它做出來，而且**中途被 Owen 修正了三次，每次都改到設計的根**。三次修正比工具本身重要，先寫：
+
+**① Owen 重排了四個開關（08-08）**
+他自己給的順序是 ①我這句想做什麼（報告現實／保留距離／表達立場）②我站在哪個時間點看 ③我要怎麼拍它 ④到那個點完成了嗎。比我原本的 WHEN→CAMERA→REALITY→RELATION 好，因為①決定跳到哪一列、是最大的分岔該先問。而且巧的是 A2 階段一樣只跑②③（①恆為報告現實、④還沒學），**編號不用改就自洽，座標記憶不受影響**。`codex.js` 5-9-1 已改成他的版本。
+
+**② 「不是非學過法文文法才能用，是套用思考方法」（08-08）**
+我原本把未學時態設成「只認不產」——那是把法文知識當入場券。他說反了：**看懂時間的形狀不需要法文**。所以場景庫/題庫**四個開關從第一天全開，不按「學過沒」篩選**。⚠️ 下個 session 不要再往「先學會才能練」的方向退。
+
+**③ 「思考過程還是可以先用中文建立，硬要純法文肯定失敗」（08-10）**
+這條直接打臉我第一版的標語「沒有中文可以依賴」。正確的分界是：
+- ❌ 要拆掉的：**中文句子 → 翻成法文**（中文的「正在」「了」會替他扛掉鏡頭，他就永遠不用自己選）
+- ✅ 要留著的：**用中文推理「這是長條還是點」**（他法文還不夠好，硬要純法文思考會當場卡死）
+→ 每個場景加 `shapeZh`＝**形狀的中文描述**，不是那句法文的中文翻譯。已驗證提示不會洩漏 `zh`。**這兩者的差別就是整個工具成不成立的分界線，改這支程式前先讀懂這句。**
+
+**產出的兩個工具（定位不同，不要合併）**
+| | `tense_lens.html` 🔭 時態鏡頭 | `time_theatre.html` 🎬 時間劇場 |
+|---|---|---|
+| 給什麼 | 一個法文句子，標黃一個動詞 | 只有時間的形狀，沒有句子 |
+| 做什麼 | 跑四個開關（點①②③④） | 直接打出一整句法文 |
+| 練的是 | **裝鏡頭**（認得出來） | **用鏡頭**（產出整塊） |
+| 四開關 | 就是主路徑 | 降級成答錯才展開的除錯工具 |
+| 題數 | 133 題 / 15 格 | 32 場景 / 15 格 |
+| key | `clb7_lens_*` | `clb7_theatre_*` |
+
+⚠️ 時態鏡頭是**鷹架不是終點**——它讓你點①②③④，那正是 Owen 說的「一點一點串成」。長期要往時間劇場那端走。
+
+**素材來源（重要，之後擴充照這個做）**：法文 100% 取自 `codex.js` 第5章時態＋第6章語氣的既有例句，Claude 未自創任何一句。發現 **codex 的節結構就是現成的標籤**（5-4 底下全是 PQP、6-3 全是 subjonctif），比正則判時態可靠得多。原本以為素材不夠（`sentences.js`＋`chunks.js`＋`reading.html` 對 futur simple/PQP/subjonctif 幾乎是 0 句），是 codex 補上的。
+
+**兩個 si 子句獨立成格（設計重點）**：`Si j'étais riche` 的 imparfait 跟③鏡頭完全無關，是①保留距離；`Si j'avais su` 的 PQP 是①距離＋④完成。純看形式判時態就會在這裡錯，所以 `siimp`／`sipqp`／`sipres` 各自成格。
+
+**⚠️ 兩個字串比對的坑（會靜默給出錯誤診斷，最難抓）**
+1. **不可用 `includes()` 比對動詞，一律用詞邊界**：`deja vu` 含 `a vu`、`arrivera` 含 `arrive`、`resterai` 含 `reste`、`acheterais` 含 `achete`——子字串會把**正確答案診斷成別的格子**。
+2. **詞邊界的字元類不可把撇號算成字母**：用 `[^a-z0-9']` 會讓 `j'étais` 永遠對不上 `étais`，32 場有 **7 場變成無解**。要用 `[^a-z0-9]`。這條是法文特有（élision），**只有「拿參考句去模擬作答」才抓得到，結構檢查抓不到**。之後任何法文自動批改都先寫這個模擬。
+
+**⚠️ preview localStorage 會在 preview_stop→preview_start 之間被清空（本次新發現）**
+第二輪測試開始時，preview 瀏覽器的 `clb7_*` 從 ~350 個變成 **0 個**。不是程式 bug，是 in-app 瀏覽器清了 site data。**本次無害**（全程 ROOM=TEST，且我是先 `preview_stop` 才復原 ROOM）。但這正是「雲端被推空三次」的機制現形：**空的 localStorage ＋ 正式 ROOM ＝ `push()` 直接把雲端洗掉**。→ 這是 SURVEY C-1「push 縮水保護」該做的實證，建議提高優先序。
+**同時修正一條收尾順序**：測完**先 `preview_stop` 再復原 ROOM** 比反過來安全（頁面記憶體裡還是舊的 TEST 值，先關掉就完全不可能推到正式）。
+**唯讀查核正式雲端的正確寫法**（HANDOFF 舊敘述漏了欄位名）：`clb7_sync` 的主鍵欄位是 **`id`** 不是 `room` → `/rest/v1/clb7_sync?id=eq.<ROOM>&select=payload,updated_at`。本次查核：正式雲端 **374 個 key**、`clb7_tracker` 51 筆、無 lens/theatre 殘留。
+
+**⚠️ 順手發現：四個背景 worktree 的 ROOM 停在 TEST 值**
+`adoring-mccarthy`／`suspicious-mclaren`／`focused-morse`／`exciting-volhard` 的 `sync_supabase.js` 都是 `TEST-DO-NOT-USE`。測試中很正常，但**那些 session 若沒復原就 commit、再 merge 進 main，Owen 的同步會直接死掉**。合併 S2–S6 前先跑 `grep -rn "var ROOM" .claude/worktrees/*/sync_supabase.js`。我沒動別人的 worktree。
+
+**還沒做**：兩個工具都還**沒接進 `dashboard.html` 今日處方、也沒進 `map.html`**（背景 session 正在動 dashboard，避免衝突）。`clb7_lens_done`／`clb7_theatre_done` 已經照 `clb7_warmup_done` 同款式寫好了，接的時候直接讀即可。Owen 提過的「dashboard 模式＝進到那個時區」還沒做。
+
+---
+
+### 08-07：教學典範轉移——認知壓縮框架＋Anki 分工制
 
 這天沒有寫新課，做的是**整套系統的方向調整**。產出四份文件，`CLAUDE.md` 也改了。
 
