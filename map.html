@@ -420,6 +420,9 @@ header {
 <script src="questions.js"></script>
 <script src="gram_rules.js"></script>
 <script src="codex.js"></script>
+<!-- 08-10：只為了判斷「這個座標有沒有對應的時態工具」，不參與地圖本身的渲染 -->
+<script src="tense_lens.js"></script>
+<script src="time_hall.js"></script>
 <script>
 const CURRENT_LESSON = 22;
 const TOTAL_LESSONS  = 35;
@@ -1071,12 +1074,34 @@ function cxItemBody(it, sec) {
     `<a href="#cx-${n}" onclick="cxJump(event,'${n}')">🔗 ${n} ${cxEsc((CODEX_BY_N[n] || {}).name || '')}</a>`).join('');
   const ts = (it.topics && it.topics.length) ? it.topics : ((sec && sec.topics) || []);
   const t = ts.find(x => BANK.some(q => q.topic === x));
+  // 08-10：時態／語氣的條目多給兩個出口，把記憶宮殿跟四個開關那組工具接起來
+  // （工具端已支援 ?cx=，會直接聚焦到這個座標，不用自己找）
+  const tz = cxTenseTools(it.n);
   h += `<div class="cx-links cx-see">
     ${seeLinks}
     ${t ? `<a class="cx-quiz-btn" href="quiz.html?topic=${t}" target="_blank">⚡ 用這條考我 →</a>` : ''}
     ${(it.gram && (GRAM_POINTS.find(g => g.id === it.gram) || {}).unlocked) ? `<a href="gram_trainer.html?point=${it.gram}">📐 去練這個文法點 →</a>` : ''}
+    ${tz.lens ? `<a href="tense_lens.html?cx=${it.n}">🔭 用四個開關練這條 →</a>` : ''}
+    ${tz.hall ? `<a href="time_hall.html?cx=${it.n}">🎭 時間劇院怎麼講它 →</a>` : ''}
   </div>`;
   return h;
+}
+
+// 這個座標有沒有對應的時態工具？（題庫檔沒載到就一律回 false，不影響地圖）
+function cxTenseTools(n) {
+  const out = { lens: false, hall: false };
+  try {
+    if (typeof LENS !== 'undefined' && typeof CELLS !== 'undefined')
+      out.lens = LENS.some(c => c.cx === n || (CELLS[c.cell] && CELLS[c.cell].cx === n));
+    if (typeof HALL !== 'undefined')
+      out.hall = HALL.some(c => {
+        if (c.cx === n) return true;
+        const cells = [c.cell, ...(c.doors || []).map(d => d.cell), ...(c.cols || []).map(d => d.cell),
+          ...(c.worlds || []).flatMap(w => [w.a.cell, w.b.cell])].filter(Boolean);
+        return cells.some(k => typeof CELLS !== 'undefined' && CELLS[k] && CELLS[k].cx === n);
+      });
+  } catch (e) {}
+  return out;
 }
 
 function cxSpeak(el) {

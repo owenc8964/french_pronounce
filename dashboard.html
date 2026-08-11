@@ -324,6 +324,8 @@ body {
 <script src="chunks.js"></script>
 <script src="sentences.js"></script>
 <script src="answer_cards.js"></script>
+<!-- 08-10：🕐法語時區的今日校正卡要讀 HALL；到期數仍從 SRS 算，沒有載入其他題庫檔 -->
+<script src="time_hall.js"></script>
 <script src="session_timer.js"></script>
 <script src="sync_supabase.js"></script>
 
@@ -370,6 +372,16 @@ body {
 
 <!-- Alerts -->
 <div class="alerts" id="alerts"></div>
+
+<!-- 🕐 法語時區：四個開關常駐（08-10）。感知塊的鏡頭校正表要一直在旁邊，不是看懂就收起來 -->
+<div class="rx-card" id="tzCard" style="display:none;border-color:#3a3048;">
+  <div class="rx-title" style="display:flex;align-items:center;justify-content:space-between;">
+    <span>🕐 法語時區</span>
+    <a href="time_hall.html" style="font-size:0.62rem;color:#60a0d0;text-decoration:none;text-transform:none;letter-spacing:0;">進時間劇院 →</a>
+  </div>
+  <div id="tzSwitches" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;"></div>
+  <div id="tzToday" style="font-size:0.72rem;color:#8a7f68;line-height:1.85;padding-top:9px;border-top:1px solid #1a2438;"></div>
+</div>
 
 <!-- Today's prescription -->
 <div class="rx-card">
@@ -1213,8 +1225,37 @@ function buildAlerts(topicStats, game) {
 }
 
 // ── 渲染 ─────────────────────────────────────────────────────
+// ── 🕐 法語時區（08-10）─────────────────────────────────────
+// Owen：「讓我融入法國人思考時態的世界觀…非得那樣思考」
+// 四個開關印在儀表板上，每天再輪播一張時間劇院的卡當今日校正。
+const TZ_SWITCHES = [
+  ['①', '我這句話想做什麼？', '報告現實 / 保留距離 / 表達立場 / 推動行動'],
+  ['②', '我站在哪個時間點看？', '過去 / 現在 / 未來'],
+  ['③', '我要怎麼拍它？', '完整事件 / 展開中的畫面'],
+  ['④', '到那個點，它完成了嗎？', '直接看它 / 已完成'],
+];
+function renderTimeZone() {
+  const card = document.getElementById('tzCard');
+  if (!card) return;
+  card.style.display = 'block';
+  document.getElementById('tzSwitches').innerHTML = TZ_SWITCHES.map(([n, q, opts]) =>
+    `<div style="flex:1 1 calc(50% - 6px);min-width:150px;background:#101828;border:1px solid #1a2438;border-radius:9px;padding:9px 10px;">
+       <div style="font-size:0.72rem;color:#e8dcc0;"><b style="color:#f0c060;margin-right:4px;">${n}</b>${esc(q)}</div>
+       <div style="font-size:0.64rem;color:#556;margin-top:4px;line-height:1.6;">${esc(opts)}</div>
+     </div>`).join('');
+  const el = document.getElementById('tzToday');
+  if (typeof HALL === 'undefined' || !HALL.length) {
+    el.innerHTML = '每次遇到動詞就跑一次這四問——不是背表，是每次都真的跑過。';
+    return;
+  }
+  const c = HALL[Math.floor(Date.now() / 86400000) % HALL.length];  // 每天換一張
+  el.innerHTML = `<b style="color:#c9a227;">今日校正 · ${esc(c.src)}</b>　${esc(c.soul || c.lead || '')}
+    <a href="time_hall.html?cx=${esc(c.cx)}" style="color:#60a0d0;text-decoration:none;white-space:nowrap;">　讀這張 →</a>`;
+}
+
 function render() {
   renderCreed();   // 🧭 今日心法＋階段（07-12）
+  renderTimeZone();
   const topicStats  = getTopicStats();
   const game        = getGameData();
   const todaySec    = getTrackerToday();

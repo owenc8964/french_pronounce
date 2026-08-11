@@ -142,6 +142,10 @@ body {
 </div>
 
 <div id="startView">
+  <div class="card-box" id="focusBox" style="display:none;border-color:#f0c060;background:#1c1a10">
+    <div style="font-size:.8rem;color:#f0c060;line-height:1.8" id="focusTxt"></div>
+    <a href="tense_lens.html" style="display:inline-block;margin-top:9px;font-size:.72rem;color:#60a0d0;text-decoration:none">← 改回今天的排程</a>
+  </div>
   <div class="card-box">
     <div class="card-title">今日</div>
     <div class="stat-row">
@@ -260,10 +264,22 @@ function isGraduated(rec) { return rec && (rec.days||[]).length >= 3 && rec.iv >
 // ── 等級篩選 ─────────────────────────────────────────────────
 function getLevelMode() { return localStorage.getItem('lens_level') === 'learned' ? 'learned' : 'all'; }
 function setLevelMode(m) { localStorage.setItem('lens_level', m); }
+
+// ?cx=5-4-1 → 只練這個座標（從 map.html 的記憶宮殿條目直接跳過來用）
+// 收兩種：題目自己的 cx，以及題目所屬格子的 cx（例如 5-4-1 要收得到全部 pqp 題）
+const FOCUS_CX = new URLSearchParams(location.search).get('cx');
+function inFocus(c) {
+  if (!FOCUS_CX) return true;
+  return c.cx === FOCUS_CX || (CELLS[c.cell] && CELLS[c.cell].cx === FOCUS_CX);
+}
 function pool() {
-  return getLevelMode() === 'learned'
+  const base = getLevelMode() === 'learned'
     ? LENS.filter(c => c.lvl === 'A1' || c.lvl === 'A2')
     : LENS;
+  const f = base.filter(inFocus);
+  // 聚焦後如果一題都不剩（例如只練已學但那條是 B2），就不要給空白畫面，退回全部等級
+  if (FOCUS_CX && !f.length) return LENS.filter(inFocus);
+  return f;
 }
 
 // ── 🔴 不熟旗標（跟 review/sentence_drill 共用 clb7_hard_flags；TL_ 前綴不會撞）
@@ -342,6 +358,8 @@ let firstTryOk = 0, firstTryTotal = 0, attempted = new Set();
 let missed = [], retryQueue = [], inRetry = false;
 
 function buildPacket() {
+  // 聚焦模式是「從條目跳過來想馬上練這條」，不受每日新題上限與到期排程限制
+  if (FOCUS_CX) return shuffle(pool().map(c => ({ card: c, isNew: false }))).slice(0, ROUND_SIZE);
   const due = dueCards().map(c => ({ card: c, isNew: false }));
   const room = Math.max(0, NEW_PER_DAY - newCountToday());
   if (room > 0) newCards().slice(0, room).forEach(c => due.push({ card: c, isNew: true }));
@@ -365,6 +383,16 @@ function highlight(fr, target) {
 
 function renderStart() {
   const srs = getSrs();
+  if (FOCUS_CX) {
+    const n = pool().length;
+    // 標籤要抓「座標對應的那個格子」，不是池子第一題的格子——
+    // 5-4-1 的雙動詞句同時含 pc，抓第一題會顯示成 passé composé
+    const key = Object.keys(CELLS).find(k => CELLS[k].cx === FOCUS_CX);
+    const lab = key ? CELLS[key].label : '';
+    document.getElementById('focusBox').style.display = 'block';
+    document.getElementById('focusTxt').textContent =
+      '🎯 聚焦 codex ' + FOCUS_CX + (lab ? '（' + lab + '）' : '') + '：這一輪只出這條的 ' + n + ' 題，不受每日新題上限與到期排程限制。';
+  }
   document.getElementById('stDue').textContent  = dueCards().length;
   document.getElementById('stNew').textContent  = Math.max(0, NEW_PER_DAY - newCountToday());
   document.getElementById('stGrad').textContent = gradCount() + '/' + pool().length;

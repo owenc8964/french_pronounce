@@ -227,6 +227,21 @@ function lastIdx(){ const v=parseInt(localStorage.getItem('hall_pos')||'-1',10);
   return isNaN(v)?-1:v; }
 function saveIdx(i){ localStorage.setItem('hall_pos',String(i)); }
 let idx = (lastIdx()+1) % HALL.length;
+// ?cx=5-4-1 → 直接翻到講那條的那張卡（從 map.html 的記憶宮殿條目跳過來）
+// ⚠️ 要有優先序：總覽卡（2/9 的角色表、9/9、海報）幾乎每個格子都沾得到邊，
+//    不排序的話 5-4-1 會開到 2/9 總覽，而不是 4/9 那張專講 PQP 的。
+(function(){
+  const want=new URLSearchParams(location.search).get('cx');
+  if(!want) return;
+  const cxOfCell=k=>(typeof CELLS!=='undefined'&&CELLS[k])?CELLS[k].cx:null;
+  const tiers=[
+    c=>c.cx===want,                                             // ① 整張卡就是在講它
+    c=>c.cell&&cxOfCell(c.cell)===want,                         // ② 角色卡的主角
+    c=>[...(c.doors||[]),...(c.cols||[])].some(d=>d.cell&&cxOfCell(d.cell)===want),  // ③ 某一扇門/某一欄
+    c=>(c.worlds||[]).some(w=>[w.a,w.b].some(x=>x.cell&&cxOfCell(x.cell)===want)),   // ④ 總覽表裡的一格
+  ];
+  for(const t of tiers){ const i=HALL.findIndex(t); if(i>=0){ idx=i; return; } }
+})();
 
 // 讀到有興趣就往下鑽：標題與各個角色/門/欄名都能點進文法記憶宮殿（codex）
 const palace=(cx,text)=>cx?'<a href="map.html#cx-'+esc(cx)+'">'+esc(text)+'</a>':esc(text);
