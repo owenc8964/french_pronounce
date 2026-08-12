@@ -424,7 +424,7 @@ header {
 <script src="tense_lens.js"></script>
 <script src="time_hall.js"></script>
 <script>
-const CURRENT_LESSON = 22;
+const CURRENT_LESSON = 23;
 const TOTAL_LESSONS  = 35;
 
 const TILES = [
@@ -562,6 +562,10 @@ const TILES = [
     hint:'Ne...pas · Rien · Jamais', unlocked:true, lesson:6,
     detail:'Négations: ne…pas (général), ne…jamais (never), ne…plus (no more), ne…rien (nothing), ne…personne (nobody), ne…que (only). Partitifs à la forme négative: du pain → pas de pain. Quantités: beaucoup de, peu de, assez de, trop de.' },
 
+  { id:'location',     zone:'A2', icon:'🔑', name:'Se loger & louer',
+    hint:'Annonce · Loyer · Colocation', unlocked:true, lesson:23,
+    detail:'Chercher un toit (leçon 23). Types: le logement, l\'appartement (un logement) vs l\'immeuble (tout le bâtiment), le studio, le T1/T2 (les pièces ne comptent ni la cuisine ni la salle de bain), la résidence universitaire, le foyer. Parties: la pièce, la salle d\'eau, une cuisine américaine, un coin bureau, la véranda, la buanderie. L\'immeuble: le rez-de-chaussée (RDC — le premier étage français = le 2e étage taïwanais), la cave / le sous-sol, le garage (couvert) vs un parking (à ciel ouvert), sans ascenseur. L\'annonce: ancien ≠ neuf, calme ≠ bruyant, clair ≠ sombre (clair ≠ foncé pour les couleurs), disponible (= available, pas gratuit !), équipé, meublé, rénové (c\'était déjà un logement) vs aménagé (ça ne l\'était pas), la superficie en mètres carrés, bon marché. Les frais: le loyer, les charges (charges comprises), l\'abonnement à Internet, l\'assurance, le chauffage. Les habitants: le/la propriétaire, le/la locataire, la colocation (chacun paie sa part) vs la cohabitation intergénérationnelle (on habite chez quelqu\'un). Grammaire de la leçon: les pronoms relatifs qui / que / où.' },
+
   { id:'pronoms-y-en', zone:'A2', icon:'📍', name:'Pronoms y / en (lieu)', gram:true, cat:'pronoms',
     hint:"J'y vais · J'en reviens", unlocked:true, lesson:21,
     detail:'Deux pronoms de lieu. Y remplace à/sur/sous/dans + lieu (où l\'on est ou va): Il part en Australie → Il y va. Le climat est agréable sur cette île → Il y est très agréable. EN remplace de/du/de la/des + lieu (d\'où l\'on vient): Tu reviens de la plage ? → J\'en reviens. Il est parti du chalet → Il en est parti. Astuce: demander « on va ou on revient ? » plutôt que mémoriser les prépositions. Place: entre le sujet et le verbe (je m\'y promène); au passé composé, devant l\'auxiliaire (il en est parti, pas « il est en parti »); à la négation, ne…pas encadre le groupe (on n\'y a pas dormi). Ici / là-bas peuvent aussi remplacer un lieu. (Y et en avec des choses — j\'y pense, j\'en ai besoin — et l\'ordre des doubles pronoms arrivent plus tard.)' },
@@ -616,8 +620,8 @@ const TILES = [
     detail:'Subjonctif après: il faut que, vouloir que, bien que, pour que, à moins que, avant que, bien que. Formation: radical ils présent + -e/-es/-e/-ions/-iez/-ent. Irréguliers importants: être (soit), avoir (ait), aller (aille), faire (fasse).' },
 
   { id:'relatifs',     zone:'B1', icon:'🔗', name:'Pronoms relatifs', gram:true, cat:'pronoms',
-    hint:'qui · que · dont · où', unlocked:true, lesson:16,
-    detail:'Relier deux propositions. Qui (sujet): l\'homme qui parle, la France est un pays qui change. Que (COD): le livre que je lis, c\'est un métier que j\'adore. Astuce: qui ne s\'élide jamais, que → qu\' devant voyelle. (Dont et où — pas encore vus, arrivent plus tard.)' },
+    hint:'qui · que · où · (dont)', unlocked:true, lesson:23,
+    detail:'Relier deux propositions avec un seul mot, sans répéter le nom. Qui (sujet): l\'homme qui parle, une personne qui partage un appartement — après qui, le verbe arrive directement. Que (COD): le livre que je lis, des personnes que vous ne connaissez pas — après que, un nouveau sujet arrive d\'abord. Où (complément de lieu, et aussi de temps): Voici la chambre où je dors (= je dors dans la chambre), le jour où nous nous sommes rencontrés. Test du prof: si l\'anglais dit where → où; si l\'anglais dit that/which → qui ou que. Piège: l\'antécédent peut être un lieu et demander quand même que — la pièce que je préfère (which I prefer), un studio que mes parents ont acheté (c\'est la maison qu\'ils ont achetée = COD). Astuce: qui ne s\'élide jamais, que → qu\' devant voyelle (un foyer qu\'il aime). (Dont — pas encore vu, arrive plus tard.)' },
 
   { id:'discours',     zone:'B1', icon:'💭', name:'Discours indirect', gram:true, cat:'discours',
     hint:"Il a dit que · Elle m'a demandé", unlocked:false,

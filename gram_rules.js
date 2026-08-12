@@ -380,20 +380,26 @@ const GRAM_POINTS = [
       ]}},
 
   // ═══ B1（已教的部分） ══════════════════════════════════════
-  { id:'relatifs', name:'Pronoms relatifs (qui · que)', icon:'🔗', zone:'B1', cat:'pronoms',
-    lessons:[16], topics:['qui-que'], unlocked:true,
+  { id:'relatifs', name:'Pronoms relatifs (qui · que · où)', icon:'🔗', zone:'B1', cat:'pronoms',
+    lessons:[16,23], topics:['qui-que'], unlocked:true,
     rule:{
-      title:'關係代名詞 qui / que — 看後面缺主詞還是缺受詞',
-      why:'法文早就把拉丁文的「格」（主格/受格字尾）丟光了，唯獨在這裡留了一對活化石：qui 是主格（它自己當子句的主詞），que 是受格（子句另有主詞、它當受詞）。所以選 qui 還是 que 從來不是背搭配，是看你挖掉的那個洞原本是主詞還是受詞——qui 後面直接接動詞（洞在主詞位），que 後面先出現新主詞（洞在受詞位）。',
+      title:'關係代名詞 qui / que / où — 看子句裡缺的是主詞、受詞還是地方',
+      why:'法文早就把拉丁文的「格」（主格/受格字尾）丟光了，唯獨在這裡留了一對活化石：qui 是主格（它自己當子句的主詞），que 是受格（子句另有主詞、它當受詞）。所以選 qui 還是 que 從來不是背搭配，是看你挖掉的那個洞原本是主詞還是受詞——qui 後面直接接動詞（洞在主詞位），que 後面先出現新主詞（洞在受詞位）。où 走的是另一條路：它本來就是疑問詞「哪裡」，被借來補「在那個地方」這個洞，所以先行詞看起來像不像地方不是判準，判準是子句裡缺的到底是哪一格。',
       points:[
         'qui 代替主詞（qui後面直接接動詞）：la France est un pays qui change',
         'que 代替受詞（que後面有新的主詞）：c\'est un métier que j\'adore',
-        '判斷口訣：關係子句裡「動詞前有沒有人」——沒有→qui、有→que',
-        'qui 永不縮寫；que 母音前變 qu\'：le livre qu\'il lit',
+        'où 代替地點補語（原句是「介詞＋地方」）：Voici la chambre où je dors.（= je dors dans la chambre）',
+        '判斷口訣：關係子句裡「動詞前有沒有人」——沒有→qui、有→que；講的是「在那個地方」→où',
+        '老師的測試法：翻成英文能用 where 才是 où；只能用 that / which 就是 qui / que',
+        '⚠️ 最常踩的陷阱：先行詞是地方也不一定用 où——la pièce que je préfère（which I prefer，缺的是受詞）、un studio que mes parents ont acheté（買的是那間房＝受詞）',
+        'où 也能接時間：le jour où nous nous sommes rencontrés（quand 不是關係代名詞）',
+        'qui 永不縮寫；que 母音前變 qu\'：le livre qu\'il lit、un foyer qu\'il aime',
       ],
       examples:[
         { fr:"L'homme qui parle est mon prof.", zh:'正在說話的那個人是我老師。（qui+動詞）' },
         { fr:"C'est un métier que j'adore.", zh:'這是一個我熱愛的職業。（que+主詞je）' },
+        { fr:"Voici la chambre où je dors.", zh:'這就是我睡的房間。（où＝dans la chambre）' },
+        { fr:"Le salon est la pièce que je préfère.", zh:'客廳是我最喜歡的房間。（⚠️ 是 que 不是 où）' },
       ]}},
 
   // ═══ 未開課（B1/B2 佔位，教到才解鎖） ══════════════════════

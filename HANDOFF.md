@@ -631,7 +631,38 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **瀏覽器層**（切 TEST ROOM，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入＋故意把 `sous la tente` 填成 en 被判錯；reading a22 故意 2對1錯 → 分數與 ✓✗ 與解說都正確、紀錄欄位齊全；french_notes lesson-21 渲染 11 unit／11 表格全包 compare-table／**161 個 🔊 tts-btn**／導覽列 21 個按鈕含第21課；quiz `?lesson=21` 實際出到 y/en 題目並答對計分；**`getPool()` 放行全部 27 題**（確認沒踩到 07-16 那個「文法點被鎖導致整批題目消失」的坑）；map 顯示第21課、tile 與 codex 3-4-5 都正確。
 - **收尾**：清掉測試寫入的 a22 紀錄與該題 SRS key → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留。
 
-### 08-12：第23課入庫（做到一半）＋筆記格式檢查器（**下個 session 從這裡接**）
+### 08-12（續）：第23課剩下的 7 項連動全部補完（九項到齊）
+
+接上一則的接手點做完。**下面每一項都跑過資料層驗證＋瀏覽器實測，全綠。**
+
+3. **`chunks.js`**：新增 **86 張** L23 卡，1271→**1357**。
+   - ⚠️ **抽取腳本不在 repo 裡，每次都是現寫的**。這次先用 L19~L22 的 237 張卡**反推出 id 規則並全數驗證通過**，再拿來生 L23，確保新舊規則一致：`id = 'L' + 課 + '_' + fr.slice(0,24).replace(/[^a-zA-Z0-9À-ÿ]+/g,'_')`，撞名補 `_2`。（更早期的課用的是「逐字元替換、不合併連續底線」的舊版，所以 L1 的 `L1__a_va_____Tu_vas_bien__` 長那樣——**舊卡 id 一律不動**，SRS 記錄靠它。）
+   - **不是純機器抽取，是抽取＋人工汰選**（L22 也是這樣做的）：跟舊課完全重複的字丟掉（`la chambre`／`la cuisine`／`le salon`／`le balcon`／`le grenier`／`l'ascenseur`／`le local à vélos` 等第11課早就有了、`faire le ménage` 第10課有），只留本課真正新增的區辨（`la salle d'eau`、`une cuisine américaine`、`le rez-de-chaussée`、`rénové vs aménagé`、`neuf ≠ nouveau`、`colocation vs cohabitation`…）。
+4. **`sentences.js`**：`S_L23_1~10`，176→**186**。10 句全部是 qui/que/où 的實句＋住宿詞彙，其中 4 句就是老師課堂反覆講的陷阱句。
+5. **`table_drill.html`**：新增 `relatifs-qui-que-ou`（type:gram, lesson:23，9 列＝首列示範＋8 格填空，qui 3／que 3／où 2＋一格考 `qu'il` 縮寫），46→**47** 表。
+6. **`gram_rules.js`**：`relatifs` 點**升級**（沒有新開點）——名稱補 où、`lessons:[16]`→`[16,23]`、規則要點 4→**8 條**（加 où 代替地點補語、老師的 where 測試法、⚠️ 先行詞是地方也可能要 que 的陷阱、où 可接時間）、`why` 補寫 où 的來歷、例句 2→4 句。
+7. **`codex.js`**：**確認不用動**，3-5-1/2/3 已完整涵蓋 qui/que/où，座標鐵律遵守（驗證腳本有專門檢查這三個座標還在）。
+8. **`map.html`**：`CURRENT_LESSON` 22→**23**；`relatifs` tile 的 hint／detail／lesson 全部更新（指到第23課，detail 補 où 與陷阱）；**新增 A2 tile `location`「🔑 Se loger & louer」**（64→65 格）。
+   - **為什麼要新開一格**（上一則留的問題，這次的判斷）：`maison`(L11) 是房間與家具、`vacances`(L14) 是度假住宿，**租屋這一整套（廣告怎麼讀、每月付什麼、房東房客室友）沒有任何一格裝得下**。記憶宮殿要有門牌才記得住，所以開新格而不是把 L23 塞進 `maison`。
+9. **`reading.html`**：新增 `a24`「Ma colocation à Taipei」（A2／Logement），23→**24** 篇。內文就是筆記裡的平行閱讀同一篇（驗證腳本會比對兩邊是不是同一篇），3 題理解題全部打在本課痛點上（que vs où 的陷阱、où 代替什麼、charges comprises）。
+- 另外：`quiz.html`／`dashboard.html` 兩處 `TOPIC_LABELS` 補 `vocab-logement`，並把 `qui-que` 的顯示名改成「qui/que/où」。
+
+**⚠️ 兩個留給 Owen 決定、這次刻意沒動的**（都會搬動記憶位置，所以不自作主張）：
+- `gram_rules.js` 的 `relatifs.zone` 目前是 **B1**，但課本在 **A2** 教。改了會讓這個點在地圖上換區。
+- `codex.js` 的 3-5 全節 `lvl` 標 **B1**，同樣問題；`CODEX_STYLE` 也規定 `lvl` 未經 Owen 同意不改。
+- 兩個要改就一起改（同一個文法點的兩個門面），要嘛都留 B1。
+
+**驗證**（隔離 ROOM 全程遵守）：
+- **資料層**：`verify_l23.js`（scratchpad）一次驗九個檔＋額外檢查，**全綠 0 錯 0 提醒**。除了各檔數量／欄位／id 唯一，特別驗了：舊課卡片仍是 1271 張沒被重編（SRS 不掉）、**10 句 sentences 逐句比對確認真的出自 lesson-23 筆記**（教材鐵律：禁止自創法文教材）、codex 3-5-1~3 還在、a24 每題 `ans` 都指到有效選項、`getPool()` 放行全部 31 題 L23 題目（沒踩到 07-16「文法點被鎖題目整批消失」的坑）、ROOM 是正式值。
+- **`node tools/check_notes.js`**：10 條全綠（第23課筆記本來就是上一則修好的狀態，這次沒再漂）。
+- **瀏覽器層**（ROOM 已切 TEST，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入，**故意把「la pièce ...... je préfère」填成 où 被判錯並顯示 ✓que**、`qu'il` 縮寫被接受；reading a24 從清單點進去（走真實 UI 不是直接呼叫函式）、故意 2對1錯 → `clb7_reading` 寫入 `{id:'a24', correct:2, total:3, sec, date}` 欄位齊全＋錯題給出完整解說；french_notes lesson-23 渲染 14 unit／12 表格全包 compare-table／**166 個 🔊**／`p.fr` 0 個／導覽列 23 個按鈕；map 顯示「第 23 課 / 預計 35 課」、location 與 relatifs 兩格都是「第 23 課」、筆記連結指向 `#lesson-23`；gram_trainer 的 relatifs 規則卡 8 條要點與 4 例句全部渲染；quiz `?lesson=23` 池子 31 題（vocab-logement 19＋qui-que 12）、標籤兩處都有、第一題就出到 L23 的句子（**只看池子沒作答，不寫 SRS**）；sentence_drill 句庫 186；review 卡庫 1357；dashboard 無 console error、無 undefined。
+- **收尾**：清掉測試寫入的 a24 紀錄與錯題本那一筆（`clb7_reading` 還原成進來時的 4 筆）→ ROOM 改回 `owen-clb7-k9f3a72q` → **下一步立刻 `preview_stop`** → grep 確認主工作區無 `TEST-DO-NOT-USE` 殘留（只剩文件裡在講這條規則的文字）、`sync_supabase.js` diff 為零。
+
+---
+
+### 08-12：第23課入庫（做到一半）＋筆記格式檢查器
+
+> ✅ **下面列的 7 項已經在上一則補完了**，這則保留當紀錄，不要再做一次。
 
 **⚠️ 這一課只做了 2/9，其餘 7 項還沒做。** 下面寫清楚做了什麼、還缺什麼。
 

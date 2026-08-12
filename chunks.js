@@ -8868,4 +8868,606 @@ const CHUNKS = [
   "zh": "把狗帶進來，牠會害怕。",
   "note": "rentrer 這裡是及物「把…帶進來」"
  },
+ {
+  "id": "L23_un_toit",
+  "lesson": 23,
+  "fr": "un toit",
+  "zh": "屋頂 → 引申「住的地方」",
+  "note": "課文標題 comment trouver un toit＝怎麼找到住的地方"
+ },
+ {
+  "id": "L23_l_immeuble",
+  "lesson": 23,
+  "fr": "l'immeuble",
+  "zh": "大樓（整棟）",
+  "note": "⚠️ 跟 appartement 差在整棟 vs 一戶：un appartement dans un immeuble"
+ },
+ {
+  "id": "L23_le_studio",
+  "lesson": 23,
+  "fr": "le studio",
+  "zh": "套房（一房到底）",
+  "note": "床、廚房全在同一個空間，沒有隔間"
+ },
+ {
+  "id": "L23_le_T1_le_T2",
+  "lesson": 23,
+  "fr": "le T1 / le T2",
+  "zh": "一房／兩房",
+  "note": "T＝type、F＝famille；⚠️ 數字不含廚房與衛浴"
+ },
+ {
+  "id": "L23_un_T2_un_séjour_une_",
+  "lesson": 23,
+  "fr": "un T2 = un séjour + une chambre",
+  "zh": "一個客廳＋一個房間",
+  "note": "法文數 pièces 不算廚房、不算衛浴——那兩個每間都有"
+ },
+ {
+  "id": "L23_la_résidence_universitai",
+  "lesson": 23,
+  "fr": "la résidence universitaire",
+  "zh": "大學宿舍",
+  "note": "課文：法國只有 12% 學生住這裡"
+ },
+ {
+  "id": "L23_le_foyer",
+  "lesson": 23,
+  "fr": "le foyer",
+  "zh": "青年公寓；收容之家",
+  "note": "foyer de jeunes travailleurs 收 16–30 歲"
+ },
+ {
+  "id": "L23_Loue_appartement_deux_pi",
+  "lesson": 23,
+  "fr": "Loue appartement deux pièces.",
+  "zh": "出租兩房公寓。",
+  "note": "課本廣告原句；裡面其實還有 cuisine、salle de bain、balcon"
+ },
+ {
+  "id": "L23_la_pièce",
+  "lesson": 23,
+  "fr": "la pièce",
+  "zh": "房間（計數單位）",
+  "note": "算「幾房」用它：une grande pièce principale"
+ },
+ {
+  "id": "L23_la_salle_d_eau",
+  "lesson": 23,
+  "fr": "la salle d'eau",
+  "zh": "浴室（＝la salle de bain）",
+  "note": "兩個字同義，salle de bain 更常用；老師記法：最需要水的那間"
+ },
+ {
+  "id": "L23_une_cuisine_américaine",
+  "lesson": 23,
+  "fr": "une cuisine américaine",
+  "zh": "開放式廚房",
+  "note": "對著客廳或飯廳的那種"
+ },
+ {
+  "id": "L23_un_coin_bureau",
+  "lesson": 23,
+  "fr": "un coin bureau",
+  "zh": "書桌角落",
+  "note": "coin＝角落"
+ },
+ {
+  "id": "L23_la_véranda",
+  "lesson": 23,
+  "fr": "la véranda",
+  "zh": "玻璃陽光房",
+  "note": "在裡面又像在外面，通常有屋頂但看得到外面"
+ },
+ {
+  "id": "L23_la_buanderie",
+  "lesson": 23,
+  "fr": "la buanderie",
+  "zh": "洗衣間",
+  "note": "放洗衣機、晾衣服的房間"
+ },
+ {
+  "id": "L23_le_rez_de_chaussée",
+  "lesson": 23,
+  "fr": "le rez-de-chaussée",
+  "zh": "一樓（地面層）",
+  "note": "⚠️ 電梯按鈕寫 RDC；chaussée＝路面 → 貼著路面那層"
+ },
+ {
+  "id": "L23_l_étage",
+  "lesson": 23,
+  "fr": "l'étage",
+  "zh": "樓層（樓上）",
+  "note": "⚠️ 法文 premier étage＝台灣二樓；au quatrième étage＝台灣五樓"
+ },
+ {
+  "id": "L23_la_cave_le_sous_sol",
+  "lesson": 23,
+  "fr": "la cave / le sous-sol",
+  "zh": "地下室",
+  "note": "sol＝地面，sous-sol＝地面之下；電梯上寫 SS1、SS2"
+ },
+ {
+  "id": "L23_le_garage",
+  "lesson": 23,
+  "fr": "le garage",
+  "zh": "車庫",
+  "note": "動詞 garer＝停車；⚠️ 有牆有門才叫 garage，露天的叫 un parking"
+ },
+ {
+  "id": "L23_sans_ascenseur",
+  "lesson": 23,
+  "fr": "sans ascenseur",
+  "zh": "沒有電梯",
+  "note": "租屋廣告常見，代表要爬樓梯"
+ },
+ {
+  "id": "L23_une_annonce",
+  "lesson": 23,
+  "fr": "une annonce",
+  "zh": "啟事、廣告",
+  "note": "任何張貼給人看的都算：annonce de travail（徵人）／annonce de location（招租）"
+ },
+ {
+  "id": "L23_ancien_ne_neuf_neuve",
+  "lesson": 23,
+  "fr": "ancien(ne) ≠ neuf, neuve",
+  "zh": "老舊的 ≠ 全新的",
+  "note": "租屋廣告的固定對照組"
+ },
+ {
+  "id": "L23_calme_bruyant_e_",
+  "lesson": 23,
+  "fr": "calme ≠ bruyant(e)",
+  "zh": "安靜的 ≠ 吵的",
+  "note": "bruit＝噪音 → bruyant"
+ },
+ {
+  "id": "L23_clair_e_sombre",
+  "lesson": 23,
+  "fr": "clair(e) ≠ sombre",
+  "zh": "明亮的 ≠ 昏暗的",
+  "note": "講空間用這組：un studio très clair"
+ },
+ {
+  "id": "L23_clair_foncé",
+  "lesson": 23,
+  "fr": "clair ≠ foncé",
+  "zh": "淺 ≠ 深",
+  "note": "講顏色用這組：vert clair（淺綠）／vert foncé（深綠）"
+ },
+ {
+  "id": "L23_l_ombre",
+  "lesson": 23,
+  "fr": "l'ombre",
+  "zh": "影子",
+  "note": "mon ombre＝我的影子；sombre 就是「被 ombre 蓋滿」＝暗"
+ },
+ {
+  "id": "L23_disponible",
+  "lesson": 23,
+  "fr": "disponible",
+  "zh": "可入住的、有空的",
+  "note": "⚠️ 不是 gratuit（免費）！是英文的 available"
+ },
+ {
+  "id": "L23_équipé_e_",
+  "lesson": 23,
+  "fr": "équipé(e)",
+  "zh": "配備齊全的",
+  "note": "une cuisine équipée＝廚房家電都有"
+ },
+ {
+  "id": "L23_meublé_e_",
+  "lesson": 23,
+  "fr": "meublé(e)",
+  "zh": "附家具的",
+  "note": "⚠️ 來自 un meuble（家具）"
+ },
+ {
+  "id": "L23_rénové_e_",
+  "lesson": 23,
+  "fr": "rénové(e)",
+  "zh": "翻新的",
+  "note": "本來就是住的地方，只是舊了 → 弄新。Magnifique T2 rénové"
+ },
+ {
+  "id": "L23_aménagé_e_",
+  "lesson": 23,
+  "fr": "aménagé(e)",
+  "zh": "改建成可住的",
+  "note": "本來不是住的地方（閣樓、農舍）→ 改成能住。同字根：déménager 搬走／le ménage 打掃"
+ },
+ {
+  "id": "L23_la_superficie",
+  "lesson": 23,
+  "fr": "la superficie",
+  "zh": "面積",
+  "note": "單位是 le mètre carré (m²)；台灣一坪約 3–4 平方公尺"
+ },
+ {
+  "id": "L23_bon_marché_pas_cher",
+  "lesson": 23,
+  "fr": "bon marché / pas cher",
+  "zh": "便宜的",
+  "note": "⚠️ 法文沒有單一個字對應英文 cheap"
+ },
+ {
+  "id": "L23_neuf_nouveau",
+  "lesson": 23,
+  "fr": "neuf ≠ nouveau",
+  "zh": "全新的（沒人用過）≠ 新的（對我而言是新的）",
+  "note": "Cette maison neuve（從沒人住過）／le nouvel iPhone（新款，不代表沒人用過）"
+ },
+ {
+  "id": "L23_le_loyer",
+  "lesson": 23,
+  "fr": "le loyer",
+  "zh": "房租",
+  "note": "⚠️ 同字根：louer（租）／location（租的房子）／locataire（房客）"
+ },
+ {
+  "id": "L23_les_charges",
+  "lesson": 23,
+  "fr": "les charges",
+  "zh": "管理費（水電網等雜費）",
+  "note": "⚠️ charges comprises＝含雜費，租屋廣告必看的一句"
+ },
+ {
+  "id": "L23_les_frais",
+  "lesson": 23,
+  "fr": "les frais",
+  "zh": "費用",
+  "note": "⚠️ 一字兩義：frais 當形容詞是「新鮮的」（les fruits frais）"
+ },
+ {
+  "id": "L23_l_abonnement_à_Internet",
+  "lesson": 23,
+  "fr": "l'abonnement à Internet",
+  "zh": "網路月租",
+  "note": "abonnement＝訂閱、月租"
+ },
+ {
+  "id": "L23_l_assurance",
+  "lesson": 23,
+  "fr": "l'assurance",
+  "zh": "保險",
+  "note": "法國租屋強制要保"
+ },
+ {
+  "id": "L23_le_chauffage",
+  "lesson": 23,
+  "fr": "le chauffage",
+  "zh": "暖氣",
+  "note": "⚠️ 來自 chaud（熱）／chauffer（加熱）"
+ },
+ {
+  "id": "L23_un_ménage",
+  "lesson": 23,
+  "fr": "un ménage",
+  "zh": "一戶人家",
+  "note": "⚠️ 同一個字：faire le ménage＝打掃（第10課）；un ménage＝一戶人家"
+ },
+ {
+  "id": "L23_580_par_mois_charges_c",
+  "lesson": 23,
+  "fr": "580 € par mois charges comprises.",
+  "zh": "每月 580 歐，含水電網等雜費。",
+  "note": "comprendre 除了「理解」還有「包含」"
+ },
+ {
+  "id": "L23_le_la_propriétaire",
+  "lesson": 23,
+  "fr": "le / la propriétaire",
+  "zh": "房東（產權人）",
+  "note": "propriété＝財產"
+ },
+ {
+  "id": "L23_le_la_locataire",
+  "lesson": 23,
+  "fr": "le / la locataire",
+  "zh": "房客",
+  "note": "⚠️ location 是「租的那個房子」，locataire 是「租的那個人」"
+ },
+ {
+  "id": "L23_la_colocation",
+  "lesson": 23,
+  "fr": "la colocation",
+  "zh": "合租",
+  "note": "大家一起租同一戶，每個人付自己那份，地位平等"
+ },
+ {
+  "id": "L23_le_la_colocataire",
+  "lesson": 23,
+  "fr": "le / la colocataire",
+  "zh": "室友",
+  "note": "課文：可能是朋友，也可能是完全不認識的人"
+ },
+ {
+  "id": "L23_la_cohabitation_intergén",
+  "lesson": 23,
+  "fr": "la cohabitation intergénérationnelle",
+  "zh": "（跨世代）同住",
+  "note": "⚠️ 你住進別人的家；inter＝之間、génération＝世代"
+ },
+ {
+  "id": "L23_vivre_seul_e_en_coupl",
+  "lesson": 23,
+  "fr": "vivre seul(e) / en couple / en colocation",
+  "zh": "獨居／跟伴侶住／合租",
+  "note": "課文開頭的三種統計分類"
+ },
+ {
+  "id": "L23_une_chambre_gratuite_ou_",
+  "lesson": 23,
+  "fr": "une chambre gratuite ou à faible loyer",
+  "zh": "免費或低租金的房間",
+  "note": "⚠️ faible 本義是「虛弱」，這裡是「低」"
+ },
+ {
+  "id": "L23_J_habite_dans_une_maison",
+  "lesson": 23,
+  "fr": "J'habite dans une maison qui est grande.",
+  "zh": "我住在一間很大的房子。",
+  "note": "qui 代替主詞，後面直接接動詞（= La maison est grande.）"
+ },
+ {
+  "id": "L23_Je_vis_dans_une_maison_q",
+  "lesson": 23,
+  "fr": "Je vis dans une maison que j'aime beaucoup.",
+  "zh": "我住在一間我很喜歡的房子。",
+  "note": "que 代替直接受詞，後面先出現新主詞（= J'aime beaucoup la maison.）"
+ },
+ {
+  "id": "L23_Je_loue_la_maison_où_j_h",
+  "lesson": 23,
+  "fr": "Je loue la maison où j'habite.",
+  "zh": "我租我住的那間房子。",
+  "note": "où 代替地點補語"
+ },
+ {
+  "id": "L23_qu_il_qu_elle_qu_on",
+  "lesson": 23,
+  "fr": "qu'il / qu'elle / qu'on",
+  "zh": "que 在母音前的縮寫",
+  "note": "⚠️ qui 永遠不縮寫；唸起來 qu'il [kil] vs qui [ki]"
+ },
+ {
+  "id": "L23_le_jour_où_nous_nous_som",
+  "lesson": 23,
+  "fr": "le jour où nous nous sommes rencontrés",
+  "zh": "我們相遇的那一天",
+  "note": "où 也可以接時間；⚠️ quand 不是關係代名詞"
+ },
+ {
+  "id": "L23_des_offres_qui_mettent_e",
+  "lesson": 23,
+  "fr": "des offres qui mettent en contact propriétaires et futurs locataires",
+  "zh": "把房東和未來房客牽上線的訊息",
+  "note": "qui 後面直接是動詞 mettent"
+ },
+ {
+  "id": "L23_des_personnes_que_vous_n",
+  "lesson": 23,
+  "fr": "des personnes que vous ne connaissez pas",
+  "zh": "你不認識的那些人",
+  "note": "que 後面先出現主詞 vous"
+ },
+ {
+  "id": "L23_Je_loue_un_studio_qui_es",
+  "lesson": 23,
+  "fr": "Je loue un studio qui est dans une ferme.",
+  "zh": "我租一間在農場裡的套房。",
+  "note": "後面是動詞 est → qui"
+ },
+ {
+  "id": "L23_Le_salon_est_la_pièce_qu",
+  "lesson": 23,
+  "fr": "Le salon est la pièce que je préfère.",
+  "zh": "客廳是我最喜歡的房間。",
+  "note": "⚠️ 是 que 不是 où：英文是 which I prefer，不是 where I prefer"
+ },
+ {
+  "id": "L23_Les_résidences_universit",
+  "lesson": 23,
+  "fr": "Les résidences universitaires sont des lieux où on trouve beaucoup d'étudiants.",
+  "zh": "大學宿舍是能找到很多學生的地方。",
+  "note": "lieux＝地點 → où"
+ },
+ {
+  "id": "L23_Les_colocataires_sont_de",
+  "lesson": 23,
+  "fr": "Les colocataires sont des personnes qui partagent un appartement.",
+  "zh": "室友是分租同一間公寓的人。",
+  "note": "後面是動詞 partagent → qui"
+ },
+ {
+  "id": "L23_Voici_la_chambre_où_je_d",
+  "lesson": 23,
+  "fr": "Voici la chambre où je dors.",
+  "zh": "這就是我睡的房間。",
+  "note": "拆回兩句：Je dors dans la chambre → 介詞＋地點 → où"
+ },
+ {
+  "id": "L23_Il_vit_dans_un_foyer_qu_",
+  "lesson": 23,
+  "fr": "Il vit dans un foyer qu'il aime beaucoup.",
+  "zh": "他住在一間他很喜歡的青年公寓。",
+  "note": "que + il → qu'il（縮寫）"
+ },
+ {
+  "id": "L23_Mon_propriétaire_est_un_",
+  "lesson": 23,
+  "fr": "Mon propriétaire est un homme que j'aime beaucoup.",
+  "zh": "我房東是個我很喜歡的人。",
+  "note": "J'aime beaucoup mon propriétaire → 受詞 → que"
+ },
+ {
+  "id": "L23_Ma_s_ur_vit_dans_un_stud",
+  "lesson": 23,
+  "fr": "Ma sœur vit dans un studio que mes parents ont acheté l'année dernière.",
+  "zh": "我姊住在一間我爸媽去年買的套房。",
+  "note": "⚠️ 買的是那間房（受詞）→ que，不是 où"
+ },
+ {
+  "id": "L23_un_bel_immeuble_ancien",
+  "lesson": 23,
+  "fr": "un bel immeuble ancien",
+  "zh": "一棟漂亮的老大樓",
+  "note": "母音前 beau → bel；發音跟 belle 一樣，拼字是陽性"
+ },
+ {
+  "id": "L23_le_nouvel_iPhone",
+  "lesson": 23,
+  "fr": "le nouvel iPhone",
+  "zh": "新款 iPhone",
+  "note": "母音前 nouveau → nouvel"
+ },
+ {
+  "id": "L23_un_vieil_appartement",
+  "lesson": 23,
+  "fr": "un vieil appartement",
+  "zh": "一間老公寓",
+  "note": "母音前 vieux → vieil"
+ },
+ {
+  "id": "L23_des_bons_plans",
+  "lesson": 23,
+  "fr": "des bons plans",
+  "zh": "好門路、優惠情報",
+  "note": "課文：找便宜租屋的門路"
+ },
+ {
+  "id": "L23_mettre_en_contact",
+  "lesson": 23,
+  "fr": "mettre en contact",
+  "zh": "牽線、讓雙方接上頭",
+  "note": "des offres qui mettent en contact propriétaires et locataires"
+ },
+ {
+  "id": "L23_à_l_extérieur_de_la_vill",
+  "lesson": 23,
+  "fr": "à l'extérieur de la ville",
+  "zh": "在市區外面",
+  "note": "課文：往市區外面找比較便宜"
+ },
+ {
+  "id": "L23_en_échange_de",
+  "lesson": 23,
+  "fr": "en échange de",
+  "zh": "作為交換",
+  "note": "en échange de votre présence＝交換條件是你人在那裡"
+ },
+ {
+  "id": "L23_le_courrier",
+  "lesson": 23,
+  "fr": "le courrier",
+  "zh": "信件（實體的）",
+  "note": "s'occuper du courrier＝處理信件"
+ },
+ {
+  "id": "L23_s_occuper_de",
+  "lesson": 23,
+  "fr": "s'occuper de",
+  "zh": "處理、照顧",
+  "note": "s'occuper des plantes＝照顧植物"
+ },
+ {
+  "id": "L23_Studio_de_33_m_à_louer_",
+  "lesson": 23,
+  "fr": "Studio de 33 m² à louer dans un quartier calme.",
+  "zh": "33 平方公尺套房出租，位於安靜的社區。",
+  "note": "廣告 ⓐ"
+ },
+ {
+  "id": "L23_Aménagé_dans_un_ancien_g",
+  "lesson": 23,
+  "fr": "Aménagé dans un ancien grenier, au quatrième étage sans ascenseur.",
+  "zh": "由舊閣樓改建，位於（法式）四樓、沒有電梯。",
+  "note": "廣告 ⓐ；quatrième étage＝台灣五樓"
+ },
+ {
+  "id": "L23_Il_comprend_une_chambre_",
+  "lesson": 23,
+  "fr": "Il comprend une chambre avec un coin bureau, un séjour et un balcon.",
+  "zh": "它包含一間附書桌角的臥室、一個客廳和一個陽台。",
+  "note": "⚠️ comprendre 這裡是「包含」不是「理解」"
+ },
+ {
+  "id": "L23_Située_à_proximité_du_po",
+  "lesson": 23,
+  "fr": "Située à proximité du port, cette maison neuve propose 18 chambres meublées.",
+  "zh": "位於港口附近，這棟全新的房子提供 18 間附家具的房間。",
+  "note": "à proximité de＝在…附近"
+ },
+ {
+  "id": "L23_les_espaces_communs",
+  "lesson": 23,
+  "fr": "les espaces communs",
+  "zh": "公共空間",
+  "note": "coliving 的公共廚房、客廳、花園"
+ },
+ {
+  "id": "L23_Ça_se_passe_bien_Ça_s",
+  "lesson": 23,
+  "fr": "Ça se passe bien. / Ça se passe mal.",
+  "zh": "（事情）進行得順利／很糟。",
+  "note": "🎙課文也用了 une colocation qui se passe bien"
+ },
+ {
+  "id": "L23_Aujourd_hui_ça_va_mieux",
+  "lesson": 23,
+  "fr": "Aujourd'hui, ça va mieux.",
+  "zh": "今天好一點了。",
+  "note": "🎙mieux＝比較好（bien 的比較級）"
+ },
+ {
+  "id": "L23_Est_ce_que_tu_trouves_qu",
+  "lesson": 23,
+  "fr": "Est-ce que tu trouves que ta maison est confortable ?",
+  "zh": "你覺得你家舒適嗎？",
+  "note": "🎙trouver que＝覺得（比 penser que 更口語）"
+ },
+ {
+  "id": "L23_Je_viens_de_lire_cette_a",
+  "lesson": 23,
+  "fr": "Je viens de lire cette annonce.",
+  "zh": "我剛讀了這則廣告。",
+  "note": "🎙venir de＋原形＝剛剛做完（第20課 passé récent）"
+ },
+ {
+  "id": "L23_Je_ne_les_connaissais_pa",
+  "lesson": 23,
+  "fr": "Je ne les connaissais pas, mais c'est devenu des amis.",
+  "zh": "我本來不認識他們，但後來變成朋友了。",
+  "note": "🎙devenir＝變成；c'est devenu＝變成了"
+ },
+ {
+  "id": "L23_C_est_le_seul_problème_",
+  "lesson": 23,
+  "fr": "C'est le seul problème.",
+  "zh": "那是唯一的問題。",
+  "note": "🎙seul＝唯一的（放名詞前）"
+ },
+ {
+  "id": "L23_Tu_es_l_étudiant_que_je_",
+  "lesson": 23,
+  "fr": "Tu es l'étudiant que je préfère.",
+  "zh": "你是我最喜歡的學生。",
+  "note": "🎙老師示範 que 的日常用法，說法國人一天講很多次"
+ },
+ {
+  "id": "L23_Ça_c_est_l_endroit_où_j",
+  "lesson": 23,
+  "fr": "Ça, c'est l'endroit où j'habite.",
+  "zh": "這就是我住的地方。",
+  "note": "🎙endroit＝地方（跟 lieu 同義，更口語）"
+ },
+ {
+  "id": "L23_On_n_a_pas_besoin_d_appr",
+  "lesson": 23,
+  "fr": "On n'a pas besoin d'apprendre ça, on va juste lire.",
+  "zh": "這個不用背，我們只要讀過去就好。",
+  "note": "🎙老師篩選重點時的固定說法"
+ },
 ];
