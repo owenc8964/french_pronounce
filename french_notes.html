@@ -163,6 +163,31 @@
     }
 
     /* ── 比較表 ── */
+    /* 2026-08-12：compare-title 全站用了 107 次卻一直沒有樣式（從第3課就這樣），
+       unit-intro／verb-title 同樣沒定義。補上，讓所有課的表格標題有一致外觀。 */
+    .compare-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #7a6a3a;
+      background: #faf6ea;
+      border-left: 3px solid #d9b44a;
+      padding: 6px 10px;
+      margin-bottom: 6px;
+      border-radius: 0 4px 4px 0;
+    }
+    .unit-intro {
+      font-size: 0.85rem;
+      color: #555;
+      line-height: 1.9;
+      margin-bottom: 10px;
+    }
+    .verb-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #7a6a3a;
+      margin-bottom: 5px;
+    }
     .compare-table {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
@@ -569,7 +594,7 @@
     例：français（s 不發音）→ française（s 發音）
   </div>
 
-  <table class="compare-table">
+  <div class="compare-table"><table>
     <thead>
       <tr><th>男性</th><th>女性</th><th>規則</th></tr>
     </thead>
@@ -591,7 +616,7 @@
       <tr><td class="m">grec</td><td class="f">grecque</td><td class="rule-col">例外：+ que</td></tr>
       <tr><td class="m">turc</td><td class="f">turque</td><td class="rule-col">例外：+ que</td></tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="note">
     💡 <strong>-ien 為什麼要雙寫 n？</strong><br>
@@ -1509,7 +1534,7 @@
   </div>
 
   <h3>商店 → 店員</h3>
-  <table class="compare-table">
+  <div class="compare-table"><table>
     <tr><th>商店 (le commerce)</th><th>男店員 (m)</th><th>女店員 (f)</th><th>賣什麼</th></tr>
     <tr><td>la boulangerie</td><td class="m">le boulanger</td><td class="f">la boulangère</td><td>麵包・甜點</td></tr>
     <tr><td>la boucherie</td><td class="m">le boucher</td><td class="f">la bouchère</td><td>肉類</td></tr>
@@ -1518,7 +1543,7 @@
     <tr><td>la fromagerie</td><td class="m">le fromager</td><td class="f">la fromagère</td><td>起司</td></tr>
     <tr><td>la pâtisserie</td><td class="m">le pâtissier</td><td class="f">la pâtissière</td><td>蛋糕・甜點</td></tr>
     <tr><td>le supermarché</td><td colspan="2" style="color:#888;font-size:0.82rem">超市（無特定店員稱謂）</td><td>一站式購物</td></tr>
-  </table>
+  </table></div>
 
   <div class="rule">
     <div class="label">介係詞搭配</div>
@@ -1554,13 +1579,13 @@
 
   <div class="rule">
     <div class="label">用法：說「一些…」，數量不確定時用</div>
-    <table class="compare-table" style="margin-top:6px">
+    <div class="compare-table"><table style="margin-top:6px">
       <tr><th>性數</th><th>冠詞</th><th>例句</th></tr>
       <tr><td>陽性單數</td><td><strong>du</strong> (= de + le)</td><td>Je mange <strong>du</strong> poisson.</td></tr>
       <tr><td>陰性單數</td><td><strong>de la</strong></td><td>Je mange <strong>de la</strong> viande.</td></tr>
       <tr><td>母音開頭</td><td><strong>de l'</strong></td><td>Je bois <strong>de l'</strong>eau.</td></tr>
       <tr><td>複數</td><td><strong>des</strong></td><td>Je mange <strong>des</strong> pâtes.</td></tr>
-    </table>
+    </table></div>
   </div>
 
   <div class="note">
@@ -1645,13 +1670,13 @@
   </ul>
 
   <h3>牛排熟度</h3>
-  <table class="compare-table">
+  <div class="compare-table"><table>
     <tr><th>法語</th><th>熟度</th></tr>
-    <tr><td><strong>bleu</strong></td><td>極生（幾乎生的）</td></tr>
-    <tr><td><strong>saignant</strong></td><td>三分熟</td></tr>
-    <tr><td><strong>à point</strong></td><td>五分熟（推薦）</td></tr>
-    <tr><td><strong>bien cuit</strong></td><td>全熟</td></tr>
-  </table>
+    <tr><td class="m"><strong>bleu</strong></td><td>極生（幾乎生的）</td></tr>
+    <tr><td class="m"><strong>saignant</strong></td><td>三分熟</td></tr>
+    <tr><td class="m"><strong>à point</strong></td><td>五分熟（推薦）</td></tr>
+    <tr><td class="m"><strong>bien cuit</strong></td><td>全熟</td></tr>
+  </table></div>
 
   <h3>餐桌擺設 (la vaisselle)</h3>
   <ul class="phrase-list">
@@ -1734,7 +1759,7 @@
   <h3>⭐ 不規則動詞對照表</h3>
   <div class="note">以下四個是最常用的不規則動詞，必須完整記住。</div>
   <div style="overflow-x:auto">
-    <table class="compare-table" style="min-width:480px">
+    <div class="compare-table"><table style="min-width:480px">
       <tr>
         <th>人稱</th>
         <th>être<br><span style="font-weight:400;font-size:0.75rem;color:#aaa">是（身分/狀態）</span></th>
@@ -1748,7 +1773,7 @@
       <tr><td>nous</td><td class="m">sommes</td><td class="m">avons</td><td class="m">allons</td><td class="m">faisons</td></tr>
       <tr><td>vous</td><td class="m">êtes</td><td class="m">avez</td><td class="m">allez</td><td class="m">faites</td></tr>
       <tr><td>ils / elles</td><td class="m">sont</td><td class="m">ont</td><td class="m">vont</td><td class="m">font</td></tr>
-    </table>
+    </table></div>
   </div>
   <div class="note" style="margin-top:8px">
     <strong>記憶口訣：</strong>aller 的 vous 形是 <strong>allez</strong>（非 *allez）；faire 的 vous 形是 <strong>faites</strong>（非 *faisez，例外！）；
@@ -3665,15 +3690,15 @@
   <div class="note-box">
     <b>健身房規定常用句型（il faut / il ne faut pas）：</b>
     <ul class="phrase-list">
-      <li>Il faut apporter sa serviette de bain. <span class="zh">要帶浴巾</span></li>
-      <li>Il faut apprendre à utiliser les appareils. <span class="zh">要學會使用器材</span></li>
-      <li>Il faut éteindre les appareils après l'utilisation. <span class="zh">用完要關機器</span></li>
-      <li>Il faut nettoyer les appareils après l'utilisation. <span class="zh">用完要清潔器材</span></li>
-      <li>Il faut porter un maillot de bain pour aller au sauna. <span class="zh">進三溫暖要穿泳衣</span></li>
-      <li>Il ne faut pas utiliser son téléphone portable. <span class="zh">不可以用手機</span></li>
-      <li>Il ne faut pas écouter de la musique fort. <span class="zh">不可以大聲放音樂</span></li>
-      <li>Il ne faut pas laisser des objets de valeur dans le vestiaire. <span class="zh">不可把貴重物品放更衣室</span></li>
-      <li>Il ne faut pas marcher avec des chaussures de rue. <span class="zh">不可穿街鞋入場</span></li>
+      <li><span class="fr">Il faut apporter sa serviette de bain.</span><span class="zh">要帶浴巾</span></li>
+      <li><span class="fr">Il faut apprendre à utiliser les appareils.</span><span class="zh">要學會使用器材</span></li>
+      <li><span class="fr">Il faut éteindre les appareils après l'utilisation.</span><span class="zh">用完要關機器</span></li>
+      <li><span class="fr">Il faut nettoyer les appareils après l'utilisation.</span><span class="zh">用完要清潔器材</span></li>
+      <li><span class="fr">Il faut porter un maillot de bain pour aller au sauna.</span><span class="zh">進三溫暖要穿泳衣</span></li>
+      <li><span class="fr">Il ne faut pas utiliser son téléphone portable.</span><span class="zh">不可以用手機</span></li>
+      <li><span class="fr">Il ne faut pas écouter de la musique fort.</span><span class="zh">不可以大聲放音樂</span></li>
+      <li><span class="fr">Il ne faut pas laisser des objets de valeur dans le vestiaire.</span><span class="zh">不可把貴重物品放更衣室</span></li>
+      <li><span class="fr">Il ne faut pas marcher avec des chaussures de rue.</span><span class="zh">不可穿街鞋入場</span></li>
     </ul>
   </div>
 </div>
@@ -3733,10 +3758,10 @@
   <div class="note-box">
     <b>對話中常用：</b>
     <ul class="phrase-list">
-      <li>Tu peux laver la voiture. <span class="zh">你可以洗車（建議）</span></li>
-      <li>Vous pouvez pratiquer le yoga. <span class="zh">您可以練瑜伽（建議）</span></li>
-      <li>Courir 30 minutes ! <span class="zh">跑步30分鐘！（命令式）</span></li>
-      <li>Il faut bouger plus. <span class="zh">要多動（通則建議）</span></li>
+      <li><span class="fr">Tu peux laver la voiture.</span><span class="zh">你可以洗車（建議）</span></li>
+      <li><span class="fr">Vous pouvez pratiquer le yoga.</span><span class="zh">您可以練瑜伽（建議）</span></li>
+      <li><span class="fr">Courir 30 minutes !</span><span class="zh">跑步30分鐘！（命令式）</span></li>
+      <li><span class="fr">Il faut bouger plus.</span><span class="zh">要多動（通則建議）</span></li>
     </ul>
     <div class="aNote">⚠️ 命令式 ne pas + infinitif 表示禁止：<span class="fr">Ne pas utiliser son téléphone.</span></div>
   </div>
@@ -3769,10 +3794,10 @@
   <div class="note-box">
     <b>重要句型：</b>
     <ul class="phrase-list">
-      <li>Bouger plus ! <span class="zh">多動！</span><span class="aNote"> bouger = 移動；口語「Bouge pas」= 別動</span></li>
-      <li>Pour votre santé, bougez plus ! <span class="zh">為了您的健康，多動！（法國政府廣告語）</span></li>
-      <li>perdre des calories <span class="zh">燃燒卡路里</span></li>
-      <li>entre 300 et 450 calories <span class="zh">300到450卡路里之間</span></li>
+      <li><span class="fr">Bouger plus !</span><span class="zh">多動！</span><span class="aNote"> bouger = 移動；口語「Bouge pas」= 別動</span></li>
+      <li><span class="fr">Pour votre santé, bougez plus !</span><span class="zh">為了您的健康，多動！（法國政府廣告語）</span></li>
+      <li><span class="fr">perdre des calories</span><span class="zh">燃燒卡路里</span></li>
+      <li><span class="fr">entre 300 et 450 calories</span><span class="zh">300到450卡路里之間</span></li>
     </ul>
   </div>
 </div>
@@ -3841,17 +3866,17 @@
   <div class="note-box">
     <b>5種另類假期：</b>
     <ul class="phrase-list">
-      <li><b>Le sport-loisir</b> <span class="zh">：運動度假</span></li>
-      <li><b>Le voyage en van</b> <span class="zh">：van 車旅（有 transport + hébergement 兩用）</span></li>
-      <li><b>L'échange de maison</b> <span class="zh">：換屋（gratuit，跟 location 一樣舒適）</span></li>
-      <li><b>Le woofing</b> <span class="zh">：農場志工換宿</span></li>
-      <li><b>La micro-aventure</b> <span class="zh">：微探險（近郊、生態）</span></li>
+      <li><span class="fr">Le sport-loisir</span><span class="zh">：運動度假</span></li>
+      <li><span class="fr">Le voyage en van</span><span class="zh">：van 車旅（有 transport + hébergement 兩用）</span></li>
+      <li><span class="fr">L'échange de maison</span><span class="zh">：換屋（gratuit，跟 location 一樣舒適）</span></li>
+      <li><span class="fr">Le woofing</span><span class="zh">：農場志工換宿</span></li>
+      <li><span class="fr">La micro-aventure</span><span class="zh">：微探險（近郊、生態）</span></li>
     </ul>
     <b>重要例句：</b>
     <ul class="phrase-list">
-      <li>Ces logements sont aussi confortables que des locations, mais ils sont gratuits. <span class="zh">這些住所和租屋一樣舒適，但是免費的。</span></li>
-      <li>C'est plus écologique que l'avion ou la voiture. <span class="zh">比飛機或汽車更環保。</span></li>
-      <li>On a oublié le parasol ! <span class="zh">我們忘了帶陽傘！（passé composé）</span></li>
+      <li><span class="fr">Ces logements sont aussi confortables que des locations, mais ils sont gratuits.</span><span class="zh">這些住所和租屋一樣舒適，但是免費的。</span></li>
+      <li><span class="fr">C'est plus écologique que l'avion ou la voiture.</span><span class="zh">比飛機或汽車更環保。</span></li>
+      <li><span class="fr">On a oublié le parasol !</span><span class="zh">我們忘了帶陽傘！（passé composé）</span></li>
     </ul>
   </div>
 </div>
@@ -6909,6 +6934,419 @@
       <li><span class="fr">mon propre mug propre</span><span class="zh">立刻理解同一個字可以前後各用一次、各表一義</span><span class="note">這個概念第一次遇到就抓住，代表位置規則真的聽懂了</span></li>
     </ul>
   </div>
+</div>
+
+</details>
+
+<details class="lesson-group" id="lesson-23" open>
+<summary><span class="summary-num">第23課</span><span class="summary-title">【A2・Unité 3 Comme à la maison：住宿與租屋詞彙・les pronoms relatifs qui / que / où（本課主文法）・課文 Étudiants : comment trouver un toit ?／À louer】</span></summary>
+
+<div class="note">
+  <strong>本課範圍：</strong>進入課本 <b>Unité 3「Comme à la maison」</b>。詞彙主軸是<b>住宿與租屋</b>——房子的種類、房子的每一個部分、租屋廣告怎麼讀、每個月要付哪些費用、跟誰一起住；文法主軸是 <b>關係代名詞 qui / que / où</b>，用一個字把兩句話黏成一句，不用重複同一個名詞。老師強調這條「考 A2、B1 很好用，而且我們講話一直在用」。
+</div>
+
+<!-- 詞彙 1：住宿種類 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第23課 📖</span>
+    <span class="unit-title">Les types de logement——住宿的種類（課本方框）</span>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">Les types de logement</div>
+  <table>
+    <tr><th>法文</th><th>詞性</th><th>中文</th><th>備注</th></tr>
+    <tr><td class="m">le logement</td><td>n.m.</td><td>住所（統稱）</td><td>最中性的字，涵蓋所有能住的地方</td></tr>
+    <tr><td class="m">un toit</td><td>n.m.</td><td>屋頂 → 引申「住的地方」</td><td>⚠️ 本義是屋頂。課文標題 <b>comment trouver un toit</b>＝怎麼找到住的地方（跟中文「有片瓦遮頭」同一個比喻）</td></tr>
+    <tr><td class="m">l'appartement</td><td>n.m.</td><td>公寓（一戶）</td><td>你住的那一戶</td></tr>
+    <tr><td class="m">l'immeuble</td><td>n.m.</td><td>大樓（整棟）</td><td>⚠️ 跟 appartement 差在整棟 vs 一戶：<b>un appartement dans un immeuble</b></td></tr>
+    <tr><td class="m">la maison</td><td>n.f.</td><td>房子（獨棟）</td><td>—</td></tr>
+    <tr><td class="m">le studio</td><td>n.m.</td><td>套房（一房到底）</td><td>床、廚房全在同一個空間，沒有隔間</td></tr>
+    <tr><td class="m">le T1 / T2、le F1 / F2</td><td>—</td><td>一房／兩房</td><td>T＝type、F＝famille。⚠️ 數字<b>不含</b>廚房與衛浴，見下方說明</td></tr>
+    <tr><td class="m">la résidence (universitaire)</td><td>n.f.</td><td>（大學）宿舍</td><td>課文說法國只有 12% 學生住這裡</td></tr>
+    <tr><td class="m">le foyer</td><td>n.m.</td><td>青年公寓；收容之家</td><td>老師補充：foyer de jeunes travailleurs 收 16–30 歲；也可指 famille d'accueil 那種寄養家庭</td></tr>
+    <tr><td class="m">l'auberge de jeunesse</td><td>n.f.</td><td>青年旅館</td><td>⚠️ 第 14 課學過。老師：找房子那段期間可以先住這裡</td></tr>
+  </table>
+  </div>
+  <div class="note-box">
+    <b>⚠️ T2 為什麼是「兩房」卻有廚房跟浴室？（老師特別解釋）</b>
+    <ul class="phrase-list">
+      <li><span class="fr">un T2 = un séjour + une chambre</span><span class="zh">一個客廳＋一個房間</span><span class="note">法文數 pièces <b>不算廚房、不算衛浴</b>——因為那兩個每間房子都有，不構成差別</span></li>
+      <li><span class="fr">Loue appartement deux pièces</span><span class="zh">出租兩房公寓</span><span class="note">課本廣告原句。裡面其實有 chambre＋séjour＋cuisine＋salle de bain＋balcon</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 詞彙 2：住所的各個部分 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第23課 📖</span>
+    <span class="unit-title">Les parties d'un logement——房子裡面（課本方框）</span>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">Les parties d'un logement</div>
+  <table>
+    <tr><th>法文</th><th>詞性</th><th>中文</th><th>備注</th></tr>
+    <tr><td class="m">la pièce</td><td>n.f.</td><td>房間（計數單位）</td><td>算「幾房」用它：une grande pièce principale</td></tr>
+    <tr><td class="m">la chambre</td><td>n.f.</td><td>臥室</td><td>睡覺的那間</td></tr>
+    <tr><td class="m">le salon = le séjour</td><td>n.m.</td><td>客廳</td><td>⚠️ 兩個字同義。老師：séjour 感覺是加拿大比較常用</td></tr>
+    <tr><td class="m">la salle à manger</td><td>n.f.</td><td>飯廳</td><td>有些房子有獨立飯廳，只用來吃飯</td></tr>
+    <tr><td class="m">la cuisine</td><td>n.f.</td><td>廚房</td><td>une cuisine américaine＝開放式廚房（對著客廳或飯廳）</td></tr>
+    <tr><td class="m">la salle de bain = la salle d'eau</td><td>n.f.</td><td>浴室</td><td>⚠️ 兩個字同義，salle de bain 更常用。老師的記法：<b>最需要水的那間</b></td></tr>
+    <tr><td class="m">le bureau</td><td>n.m.</td><td>書房；辦公桌</td><td>un coin bureau＝書桌角落（coin＝角落）</td></tr>
+    <tr><td class="m">le couloir</td><td>n.m.</td><td>走廊</td><td>房間跟房間之間那條</td></tr>
+    <tr><td class="m">le balcon</td><td>n.m.</td><td>陽台</td><td>—</td></tr>
+    <tr><td class="m">la véranda</td><td>n.f.</td><td>玻璃陽光房</td><td>老師：在裡面又像在外面，通常有屋頂但看得到外面</td></tr>
+    <tr><td class="m">la buanderie</td><td>n.f.</td><td>洗衣間</td><td>放洗衣機、晾衣服的房間</td></tr>
+  </table>
+  </div>
+</div>
+
+<!-- 詞彙 3：整棟樓 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第23課 📖</span>
+    <span class="unit-title">L'immeuble ou la maison——整棟樓有什麼（課本方框）</span>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">L'immeuble ou la maison</div>
+  <table>
+    <tr><th>法文</th><th>詞性</th><th>中文</th><th>備注</th></tr>
+    <tr><td class="m">le rez-de-chaussée</td><td>n.m.</td><td>一樓（地面層）</td><td>⚠️ 電梯按鈕寫 <b>RDC</b>。老師拆字：<b>rez</b> 來自「靠近」、<b>chaussée</b> 是路面 → 貼著路面那層</td></tr>
+    <tr><td class="m">l'étage</td><td>n.m.</td><td>樓層（樓上）</td><td>⚠️ 法文的 premier étage 是<b>台灣的二樓</b>：au quatrième étage＝台灣的五樓</td></tr>
+    <tr><td class="m">l'ascenseur</td><td>n.m.</td><td>電梯</td><td>廣告寫 <b>sans ascenseur</b>＝沒電梯（要爬樓梯）</td></tr>
+    <tr><td class="m">la cave / le sous-sol</td><td>n.f. / n.m.</td><td>地下室</td><td>sol＝地面，sous-sol＝地面之下。電梯上寫 SS1、SS2</td></tr>
+    <tr><td class="m">le grenier</td><td>n.m.</td><td>閣樓</td><td>屋頂底下那層，通常拿來堆東西、不住人</td></tr>
+    <tr><td class="m">le garage</td><td>n.m.</td><td>車庫</td><td>⚠️ 動詞是 <b>garer</b>（停車）。老師：有牆有門的才叫 garage，露天的叫 <b>un parking</b></td></tr>
+    <tr><td class="m">le local à vélos</td><td>n.m.</td><td>腳踏車停放間</td><td>老師：住家少見，大學裡很常見</td></tr>
+    <tr><td class="m">le jardin</td><td>n.m.</td><td>花園</td><td>—</td></tr>
+  </table>
+  </div>
+</div>
+
+<!-- 詞彙 4：租屋廣告 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第23課 📖</span>
+    <span class="unit-title">L'annonce immobilière——租屋廣告怎麼讀（課本方框）</span>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">L'annonce immobilière</div>
+  <table>
+    <tr><th>法文</th><th>詞性</th><th>中文</th><th>備注</th></tr>
+    <tr><td class="m">une annonce</td><td>n.f.</td><td>啟事、廣告</td><td>老師：任何張貼出來給人看的都算——annonce de travail（徵人）、annonce de location（招租）</td></tr>
+    <tr><td class="m">ancien(ne) ≠ neuf, neuve</td><td>adj.</td><td>老舊的 ≠ 全新的</td><td>⚠️ 見下方 neuf vs nouveau</td></tr>
+    <tr><td class="m">calme ≠ bruyant(e)</td><td>adj.</td><td>安靜的 ≠ 吵的</td><td>bruit＝噪音 → bruyant</td></tr>
+    <tr><td class="m">clair(e) ≠ sombre</td><td>adj.</td><td>明亮的 ≠ 昏暗的</td><td>⚠️ 見下方 clair/foncé/sombre/ombre 四個字</td></tr>
+    <tr><td class="m">confortable</td><td>adj.</td><td>舒適的</td><td>跟英文幾乎一樣，好記</td></tr>
+    <tr><td class="m">disponible</td><td>adj.</td><td>可入住的、有空的</td><td>⚠️ 不是 gratuit（免費）！是英文的 <b>available</b></td></tr>
+    <tr><td class="m">équipé(e)</td><td>adj.</td><td>配備齊全的</td><td>une cuisine équipée＝廚房家電都有</td></tr>
+    <tr><td class="m">meublé(e)</td><td>adj.</td><td>附家具的</td><td>⚠️ 來自 <b>un meuble</b>（家具）</td></tr>
+    <tr><td class="m">rénové(e)</td><td>adj.</td><td>翻新的</td><td>⚠️ 跟 aménagé 差在哪，見下方</td></tr>
+    <tr><td class="m">aménagé(e)</td><td>adj.</td><td>改建成可住的</td><td>aménagé dans un ancien grenier＝把舊閣樓改成住處</td></tr>
+    <tr><td class="m">la superficie</td><td>n.f.</td><td>面積</td><td>單位是 <b>le mètre carré (m²)</b>；老師：台灣的一坪約 3–4 平方公尺</td></tr>
+    <tr><td class="m">bon marché / pas cher</td><td>adj.</td><td>便宜的</td><td>⚠️ 法文<b>沒有</b>單一個字對應英文 cheap。巴黎還有間百貨就叫 Le Bon Marché</td></tr>
+  </table>
+  </div>
+  <div class="note-box">
+    <b>⚠️ 四個「亮/暗」的字，老師一次講完：</b>
+    <ul class="phrase-list">
+      <li><span class="fr">clair ≠ foncé</span><span class="zh">淺 ≠ 深</span><span class="note">講<b>顏色</b>用這組：vert clair（淺綠）／vert foncé（深綠）</span></li>
+      <li><span class="fr">clair ≠ sombre</span><span class="zh">明亮 ≠ 昏暗</span><span class="note">講<b>空間</b>用這組：un studio très clair（採光很好的套房）</span></li>
+      <li><span class="fr">l'ombre</span><span class="zh">影子</span><span class="note">mon ombre＝我的影子。<b>sombre</b> 就是「被 ombre 蓋滿」＝暗</span></li>
+    </ul>
+  </div>
+  <div class="note-box">
+    <b>⚠️ rénové vs aménagé——老師花了一段講的差別：</b>
+    <ul class="phrase-list">
+      <li><span class="fr">rénové</span><span class="zh">翻新</span><span class="note"><b>本來就是住的地方</b>，只是舊了 → 弄新。Magnifique T2 rénové</span></li>
+      <li><span class="fr">aménagé</span><span class="zh">改建</span><span class="note"><b>本來不是住的地方</b>（閣樓、農舍）→ 改成能住。Aménagé dans un ancien grenier</span></li>
+      <li><span class="fr">déménager</span><span class="zh">搬家</span><span class="note">同字根一起記：aménager 整修／déménager 搬走／le ménage 打掃</span></li>
+    </ul>
+  </div>
+  <div class="note-box">
+    <b>⚠️ neuf vs nouveau——都翻成「新」，但完全不同：</b>
+    <ul class="phrase-list">
+      <li><span class="fr">neuf / neuve</span><span class="zh">全新的（沒被用過）</span><span class="note">Cette maison neuve＝這棟全新的房子。老師：買二手貨時對方會說 neuf 表示「從沒人用過」</span></li>
+      <li><span class="fr">nouveau / nouvelle</span><span class="zh">新的（對我而言是新的）</span><span class="note">le nouvel iPhone＝新款 iPhone（不代表沒人用過）</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 詞彙 5：費用 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第23課 📖</span>
+    <span class="unit-title">Les frais et les services——每個月要付什麼（課本方框）</span>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">Les frais et les services</div>
+  <table>
+    <tr><th>法文</th><th>詞性</th><th>中文</th><th>備注</th></tr>
+    <tr><td class="m">le loyer</td><td>n.m.</td><td>房租</td><td>⚠️ 跟 louer（租）、location（租的房子）、locataire（房客）同字根</td></tr>
+    <tr><td class="m">les charges</td><td>n.f.pl.</td><td>管理費（水電網等雜費）</td><td>⚠️ <b>charges comprises</b>＝含雜費，租屋廣告必看的一句</td></tr>
+    <tr><td class="m">les frais</td><td>n.m.pl.</td><td>費用</td><td>⚠️ 一字兩義：frais 當形容詞是「新鮮的」（les fruits frais）</td></tr>
+    <tr><td class="m">l'abonnement à Internet</td><td>n.m.</td><td>網路月租</td><td>abonnement＝訂閱、月租</td></tr>
+    <tr><td class="m">l'assurance</td><td>n.f.</td><td>保險</td><td>法國租屋強制要保</td></tr>
+    <tr><td class="m">le chauffage</td><td>n.m.</td><td>暖氣</td><td>⚠️ 來自 chaud（熱）／chauffer（加熱）。老師：台灣不需要</td></tr>
+    <tr><td class="m">l'eau / l'électricité / le gaz</td><td>n.f. / n.f. / n.m.</td><td>水／電／瓦斯</td><td>—</td></tr>
+    <tr><td class="m">le ménage</td><td>n.m.</td><td>打掃</td><td>⚠️ faire le ménage＝打掃。<b>un ménage</b> 又可以指「一戶人家」</td></tr>
+  </table>
+  </div>
+  <div class="note">
+    💡 <b>老師的閱讀關鍵：</b><span class="fr-ex">580 € par mois charges comprises.</span> 這句話的意思是「580 歐<b>已經含</b>水電網」。<b>comprendre</b> 除了「理解」還有「包含」——課本廣告 <span class="fr-ex">Il comprend une chambre…</span> 就是「它<b>包含</b>一間房」。
+  </div>
+</div>
+
+<!-- 詞彙 6：住的人 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第23課 📖</span>
+    <span class="unit-title">Les habitant(e)s——跟誰住、誰是誰（課本方框）</span>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">Les habitant(e)s</div>
+  <table>
+    <tr><th>法文</th><th>詞性</th><th>中文</th><th>備注</th></tr>
+    <tr><td class="m">le / la propriétaire</td><td>n.</td><td>房東（產權人）</td><td>propriété＝財產</td></tr>
+    <tr><td class="m">le / la locataire</td><td>n.</td><td>房客</td><td>⚠️ 老師：<b>location</b> 是「租的那個房子」，<b>locataire</b> 是「租的那個人」</td></tr>
+    <tr><td class="m">la colocation</td><td>n.f.</td><td>合租</td><td>跟別人分租一戶，各付各的</td></tr>
+    <tr><td class="m">le / la colocataire</td><td>n.</td><td>室友</td><td>課文：可能是朋友，也可能是完全不認識的人</td></tr>
+    <tr><td class="m">la cohabitation</td><td>n.f.</td><td>同住</td><td>⚠️ 跟 colocation 的差別見下方</td></tr>
+    <tr><td class="m">vivre seul(e) / en couple / en colocation</td><td>—</td><td>獨居／跟伴侶住／合租</td><td>課文開頭的三種統計分類</td></tr>
+  </table>
+  </div>
+  <div class="note-box">
+    <b>⚠️ colocation vs cohabitation（老師特別區分，很容易混）：</b>
+    <ul class="phrase-list">
+      <li><span class="fr">la colocation</span><span class="zh">合租</span><span class="note">大家一起租同一戶，<b>每個人付自己那份</b>，地位平等</span></li>
+      <li><span class="fr">la cohabitation (intergénérationnelle)</span><span class="zh">（跨世代）同住</span><span class="note">你住進<b>別人的家</b>。inter＝之間、génération＝世代 → 年輕人住進長輩家</span></li>
+      <li><span class="fr">une chambre gratuite ou à faible loyer</span><span class="zh">免費或低租金的房間</span><span class="note">⚠️ <b>faible</b> 本義是「虛弱」，這裡是「低」。交換條件是 <b>votre présence</b>（你人在）＋小幫忙</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ⭐⭐⭐ 主文法 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第23課 ⭐⭐⭐</span>
+    <span class="unit-title">Les pronoms relatifs qui / que / où——本課主文法</span>
+  </div>
+  <div class="note">
+    <b>它在做什麼：</b>用一個字把<b>兩句話黏成一句</b>，避免重複同一個名詞。<br>
+    <span class="fr-ex">Nous habitons dans un immeuble. Notre immeuble a 8 étages.</span><br>
+    → <span class="fr-ex">Nous habitons dans un immeuble <b>qui</b> a 8 étages.</span>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">Qui, que et où（課本 Fonctionnement 表）</div>
+  <table>
+    <tr><th>關係詞</th><th>它代替原句的什麼</th><th>後面接什麼</th><th>課本例句</th></tr>
+    <tr><td class="m">qui</td><td>主詞（sujet）</td><td><b>直接接動詞</b></td><td class="m">J'habite dans une maison <b>qui est</b> grande.（= La maison est grande.）</td></tr>
+    <tr><td class="m">que</td><td>直接受詞（COD）</td><td><b>先出現新主詞</b></td><td class="m">Je vis dans une maison <b>que j'</b>aime beaucoup.（= J'aime beaucoup la maison.）</td></tr>
+    <tr><td class="m">où</td><td>地點補語（也可以是時間）</td><td>新主詞</td><td class="m">Je loue la maison <b>où j'</b>habite.（= J'habite dans une maison louée.）</td></tr>
+  </table>
+  </div>
+  <div class="note-box">
+    <b>🔑 老師給的三步判斷法（考試現場就照這個跑）：</b>
+    <ul class="phrase-list">
+      <li><span class="fr">後面直接是動詞 → qui</span><span class="zh">動詞前沒有人</span><span class="note">des offres <b>qui mettent</b> en contact…／une personne <b>qui partage</b>…</span></li>
+      <li><span class="fr">後面先出現代名詞或主詞 → que</span><span class="zh">動詞前已經有人了</span><span class="note">une annonce <b>que je</b> viens de lire／des personnes <b>que vous</b> ne connaissez pas</span></li>
+      <li><span class="fr">講的是「在那個地方」→ où</span><span class="zh">用英文 where 測試</span><span class="note">老師的訣竅：<b>翻成英文能用 where 就是 où，只能用 that/which 就是 qui/que</b></span></li>
+    </ul>
+  </div>
+  <div class="note-box">
+    <b>⚠️ 三個必記的細節：</b>
+    <ul class="phrase-list">
+      <li><span class="fr">que → qu' 母音前縮寫</span><span class="zh">qu'il、qu'elle、qu'on</span><span class="note">課本 Remarque 特別標。<b>qui 永遠不縮寫</b>：qui il 不會變 qu'il</span></li>
+      <li><span class="fr">où 不是 quand</span><span class="zh">「…的那天」也用 où</span><span class="note">le jour <b>où</b> nous nous sommes rencontrés。quand 不是關係代名詞</span></li>
+      <li><span class="fr">que 後面常接「你」的偏好或動作</span><span class="zh">que je préfère、que j'aime</span><span class="note">老師觀察：que 後面很常是跟自己有關的動詞（偏好、剛做的事）</span></li>
+    </ul>
+  </div>
+  <div class="note">
+    💡 <b>為什麼是這樣（不用死背）：</b>法文早就把拉丁文的「格」丟光了，只在這裡留下一對活化石——<b>qui 是主格</b>（它自己當子句主詞，所以後面直接接動詞），<b>que 是受格</b>（子句另有主詞、它當受詞）。所以選哪個從來不是背搭配，是看你<b>挖掉的那個洞原本是主詞還是受詞</b>。完整說明見記憶宮殿 <b>3-5-1 / 3-5-2 / 3-5-3</b>。
+  </div>
+  <div class="note-box">
+    <b>📝 課本 Entraînement 練習（老師課堂帶過的答案）：</b>
+    <ul class="phrase-list">
+      <li><span class="fr">Je loue un studio qui est dans une ferme.</span><span class="zh">我租一間在農場裡的套房。</span><span class="note">後面是動詞 est → qui</span></li>
+      <li><span class="fr">Le salon est la pièce que je préfère.</span><span class="zh">客廳是我最喜歡的房間。</span><span class="note">⚠️ 老師提醒：這裡不是「我偏好的地方」，是 which I prefer → que。若寫成 où je préfère dormir 才是 où</span></li>
+      <li><span class="fr">Les résidences universitaires sont des lieux où on trouve beaucoup d'étudiants.</span><span class="zh">大學宿舍是能找到很多學生的地方。</span><span class="note">lieux＝地點 → où</span></li>
+      <li><span class="fr">Les colocataires sont des personnes qui partagent un appartement.</span><span class="zh">室友是分租同一間公寓的人。</span><span class="note">後面是動詞 partagent → qui</span></li>
+      <li><span class="fr">Voici la chambre où je dors.</span><span class="zh">這就是我睡的房間。</span><span class="note">拆回兩句：Voici la chambre. + Je dors <b>dans la chambre</b>. → 有介詞＋地點 → où</span></li>
+      <li><span class="fr">Il vit dans un foyer qu'il aime beaucoup.</span><span class="zh">他住在一間他很喜歡的青年公寓。</span><span class="note">que + il → <b>qu'il</b>（縮寫）</span></li>
+      <li><span class="fr">Mon propriétaire est un homme que j'aime beaucoup.</span><span class="zh">我房東是個我很喜歡的人。</span><span class="note">Reformulez 題：J'aime beaucoup mon propriétaire → 受詞 → que</span></li>
+      <li><span class="fr">Ma sœur vit dans un studio que mes parents ont acheté l'année dernière.</span><span class="zh">我姊住在一間我爸媽去年買的套房。</span><span class="note">⚠️ 老師強調：<b>不是</b> où my parents bought——買的是那間房（受詞）→ que</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 文法補充：bel / nouvel -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第23課 📐</span>
+    <span class="unit-title">un bel immeuble——母音前的特殊陽性形</span>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">母音前變形的三個高頻形容詞</div>
+  <table>
+    <tr><th>陽性</th><th>母音前（陽性）</th><th>陰性</th><th>例句</th></tr>
+    <tr><td class="m">beau</td><td class="m">bel</td><td class="m">belle</td><td class="m">un <b>bel</b> immeuble ancien</td></tr>
+    <tr><td class="m">nouveau</td><td class="m">nouvel</td><td class="m">nouvelle</td><td class="m">le <b>nouvel</b> iPhone</td></tr>
+    <tr><td class="m">vieux</td><td class="m">vieil</td><td class="m">vieille</td><td class="m">un <b>vieil</b> appartement</td></tr>
+  </table>
+  </div>
+  <div class="note">
+    💡 <b>為什麼：</b>這三個字放在<b>名詞前面</b>（第22課學的：短形容詞放前面），碰到母音開頭的名詞時，beau + immeuble 兩個母音撞在一起很難唸，所以借用陰性的音變出一個 <b>bel</b>。老師：<span class="fr-ex">un beau immeuble</span> ❌ →　<span class="fr-ex">un bel immeuble</span> ✅。發音跟 belle 一樣，但拼字是陽性。
+  </div>
+</div>
+
+<!-- 課文 A -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第23課 📄</span>
+    <span class="unit-title">課文 A：Étudiants : comment trouver un toit ?——逐句全文中譯</span>
+  </div>
+  <div class="note">
+    來源：課本 Documents A（www.letudiant.fr / www.senat.fr）。下面是逐句中譯，可以順著讀完等於讀完整篇。
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">逐句中譯</div>
+  <table>
+    <tr><th>句</th><th>中文</th><th>要注意的字</th></tr>
+    <tr><td>1</td><td>33% 的學生住在父母家，33% 租房子住（獨居或跟伴侶），12% 住大學宿舍。</td><td class="m">vivent en location / en résidence universitaire</td></tr>
+    <tr><td>2</td><td>要找住的地方不總是容易，但還是有一些「好門路」可以找到便宜的租屋。</td><td class="m">des bons plans（好門路）／bon marché</td></tr>
+    <tr><td>3</td><td>舉例來說，你可以看你們大學的網路平台。</td><td class="m">la plateforme web</td></tr>
+    <tr><td>4</td><td>上面常常有不錯的訊息，把房東和未來的房客<b>牽上線</b>。</td><td class="m">⚠️ qui <b>mettent en contact</b> propriétaires et futurs locataires</td></tr>
+    <tr><td>5</td><td>你可以跟一個或多個室友分租一間公寓。</td><td class="m">partager / un ou plusieurs colocataires</td></tr>
+    <tr><td>6</td><td>這些室友可能是朋友，也可能是你不認識的人。</td><td class="m">⚠️ des personnes <b>que</b> vous ne connaissez pas</td></tr>
+    <tr><td>7</td><td>有很多資訊（例如 la carte des colocs 這個網站），而且合租可以住到更大又更便宜的地方。</td><td class="m">plus grand et moins cher</td></tr>
+    <tr><td>8</td><td>一段順利的合租，也能一起共度不少好時光。</td><td class="m">⚠️ une colocation <b>qui se passe bien</b>（進行得順利）</td></tr>
+    <tr><td>9</td><td>另一個可能是往市區外面找。</td><td class="m">à l'extérieur de la ville</td></tr>
+    <tr><td>10</td><td>在鄉下，住的地方通常比較便宜。</td><td class="m">à la campagne / moins chers</td></tr>
+    <tr><td>11</td><td>Campus Vert 這個農民協會提供 20 到 40 平方公尺的 T1、T2 套房，改建自農舍，所以是在大自然裡。</td><td class="m">aménagés dans des fermes / en pleine nature</td></tr>
+    <tr><td>12</td><td>透過跨世代同住，一位長者提供你一間免費或低租金的房間。</td><td class="m">la cohabitation intergénérationnelle / à faible loyer</td></tr>
+    <tr><td>13</td><td>交換條件是你人在那裡，以及一些小幫忙，例如處理信件或照顧植物。</td><td class="m">⚠️ en échange de votre <b>présence</b> / s'occuper du <b>courrier</b>（實體信件）</td></tr>
+    <tr><td>14</td><td>這對所有人來說都是個實用的解方。</td><td class="m">une solution pratique pour tout le monde</td></tr>
+  </table>
+  </div>
+  <div class="note">
+    💡 <b>老師補充的背景：</b>法國學生找房很難——可租的公寓少、競爭的學生多，而且學生沒收入，房東寧可租給有工作的人。老師自己 2024 年在里昂<b>找了四個星期都沒找到</b>，最後是靠合租解決的。
+  </div>
+</div>
+
+<!-- 課文 B -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第23課 📄</span>
+    <span class="unit-title">課文 B：À louer——三則租屋廣告逐句中譯</span>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">廣告 ⓐ Studio très clair</div>
+  <table>
+    <tr><th>法文（關鍵句）</th><th>中文</th></tr>
+    <tr><td class="m">Studio de 33 m² à louer dans un quartier calme.</td><td>33 平方公尺套房出租，位於安靜的社區。</td></tr>
+    <tr><td class="m">Aménagé dans un ancien grenier, au quatrième étage sans ascenseur, très clair.</td><td>由舊閣樓改建，位於（法式）四樓、<b>沒有電梯</b>，採光極佳。</td></tr>
+    <tr><td class="m">Une grande pièce principale avec une cuisine américaine et une salle d'eau.</td><td>一個大主空間，附開放式廚房與一間衛浴。</td></tr>
+    <tr><td class="m">580 € par mois charges comprises.</td><td>每月 580 歐，<b>含水電網等雜費</b>。</td></tr>
+  </table>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">廣告 ⓑ Magnifique T2 rénové</div>
+  <table>
+    <tr><th>法文（關鍵句）</th><th>中文</th></tr>
+    <tr><td class="m">Loue appartement deux pièces rénové dans un bel immeuble ancien du centre-ville, avec une cave.</td><td>出租市中心一棟<b>漂亮老樓</b>裡翻新過的兩房公寓，附地下室。</td></tr>
+    <tr><td class="m">Il comprend une chambre avec un coin bureau, un séjour, une petite cuisine équipée, une salle de bain et un balcon.</td><td>它<b>包含</b>一間附書桌角的臥室、一個客廳、一間小的配備廚房、一間浴室和一個陽台。</td></tr>
+    <tr><td class="m">Loyer de 895 € par mois.</td><td>月租 895 歐。</td></tr>
+  </table>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">廣告 ⓒ Coliving à Marseille</div>
+  <table>
+    <tr><th>法文（關鍵句）</th><th>中文</th></tr>
+    <tr><td class="m">Située à proximité du port, cette maison neuve propose 18 chambres et studios meublés en location.</td><td>位於<b>港口附近</b>，這棟<b>全新</b>的房子提供 18 間附家具的房間與套房出租。</td></tr>
+    <tr><td class="m">Ses espaces communs sont : deux cuisines, un salon / salle à manger confortable, une véranda et une buanderie, un garage et un grand jardin.</td><td>公共空間有：兩間廚房、一個舒適的客廳／飯廳、一間玻璃陽光房和一間洗衣間、一個車庫和一座大花園。</td></tr>
+    <tr><td class="m">De 650 € à 1090 € par mois.</td><td>每月 650 至 1090 歐。</td></tr>
+    <tr><td class="m">Le coliving est un logement partagé avec des espaces privés, des espaces communs et des services.</td><td>Coliving 是一種共享住宅，有私人空間、公共空間與各項服務。</td></tr>
+  </table>
+  </div>
+</div>
+
+<!-- 平行閱讀 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第23課 📖</span>
+    <span class="unit-title">平行閱讀：Ma colocation à Taipei（本課文法與詞彙全套，可整段讀完）</span>
+  </div>
+  <div class="note">
+    這篇用本課全部詞彙與 qui / que / où 寫成，程度對齊 A2。同一篇也放進 <b>閱讀理解</b>（a24）。
+  </div>
+    <ul class="phrase-list">
+    <li><span class="fr">L'année dernière, j'ai cherché un logement pendant six semaines.</span><span class="zh">去年我找房子找了六個星期。</span><span class="note">passé composé＝有頭有尾的一整段</span></li>
+    <li><span class="fr">Je voulais un studio qui est clair et pas trop cher, mais à Taipei ce n'est pas facile.</span><span class="zh">我想要一間採光好又不太貴的套房，但在台北這並不容易。</span><span class="note">⭐ qui＋動詞 est（子句缺主詞）</span></li>
+    <li><span class="fr">Finalement, j'ai trouvé une colocation.</span><span class="zh">最後我找到了一個合租。</span></li>
+    <li><span class="fr">C'est un appartement de 85 mètres carrés que je partage avec deux colocataires.</span><span class="zh">那是一間 85 平方公尺、我跟兩個室友分租的公寓。</span><span class="note">⭐ que＋主詞 je（子句缺受詞）</span></li>
+    <li><span class="fr">Il y a trois chambres, une cuisine équipée, un salon confortable et une petite salle de bain.</span><span class="zh">有三間房、一間配備齊全的廚房、一個舒適的客廳和一間小浴室。</span></li>
+    <li><span class="fr">Ma chambre est la pièce que je préfère.</span><span class="zh">我的房間是我最喜歡的那一間。</span><span class="note">⭐ 跟課本 Entraînement 同款：是 que 不是 où</span></li>
+    <li><span class="fr">Elle est au quatrième étage, sans ascenseur, mais elle est très claire.</span><span class="zh">它在四樓、沒有電梯，但採光非常好。</span><span class="note">法式 quatrième étage＝台灣五樓</span></li>
+    <li><span class="fr">Le salon est l'endroit où nous mangeons ensemble le soir.</span><span class="zh">客廳是我們晚上一起吃飯的地方。</span><span class="note">⭐ où＝地點補語</span></li>
+    <li><span class="fr">Le quartier est calme, avec beaucoup de bars et de restaurants.</span><span class="zh">這個社區很安靜，有很多酒吧和餐廳。</span></li>
+    <li><span class="fr">C'est un peu bruyant le week-end, mais c'est le seul problème.</span><span class="zh">週末有點吵，但那是唯一的問題。</span><span class="note">calme ≠ bruyant</span></li>
+    <li><span class="fr">Le loyer n'est pas cher : 400 euros par personne et par mois, charges comprises.</span><span class="zh">房租不貴：每人每月 400 歐，含雜費。</span><span class="note">charges comprises＝含水電網</span></li>
+    <li><span class="fr">Mes colocataires, je ne les connaissais pas avant.</span><span class="zh">我的室友，我以前並不認識他們。</span><span class="note">imparfait＝過去的背景狀態</span></li>
+    <li><span class="fr">Aujourd'hui, ce sont des amis.</span><span class="zh">今天，他們是朋友了。</span></li>
+  </ul>
+</div>
+</div>
+
+<!-- 老師課堂法語 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第23課 🎙</span>
+    <span class="unit-title">老師課堂法語（真實口語，值得整句背）</span>
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">Ça se passe mal.</span><span class="zh">（事情）進行得很糟。</span><span class="note">🎙老師課堂口語。ça se passe＝事情在進行；反面 <b>ça se passe bien</b>。課文也用了 une colocation qui se passe bien</span></li>
+    <li><span class="fr">Aujourd'hui, ça va mieux.</span><span class="zh">今天好一點了。</span><span class="note">🎙mieux＝比較好（bien 的比較級）</span></li>
+    <li><span class="fr">On n'a pas besoin d'apprendre ça, on va juste lire.</span><span class="zh">這個不用背，我們只要讀過去就好。</span><span class="note">🎙老師篩選重點時的固定說法</span></li>
+    <li><span class="fr">Est-ce que tu trouves que ta maison est confortable ?</span><span class="zh">你覺得你家舒適嗎？</span><span class="note">🎙trouver que＝覺得（比 penser que 更口語）</span></li>
+    <li><span class="fr">Je viens de lire cette annonce.</span><span class="zh">我剛讀了這則廣告。</span><span class="note">🎙venir de＋原形＝剛剛做完（第20課 passé récent，本課課文又出現）</span></li>
+    <li><span class="fr">Je ne les connaissais pas, mais c'est devenu des amis.</span><span class="zh">我本來不認識他們，但後來變成朋友了。</span><span class="note">🎙devenir＝變成；c'est devenu＝變成了（passé composé）</span></li>
+    <li><span class="fr">C'est le seul problème.</span><span class="zh">那是唯一的問題。</span><span class="note">🎙seul＝唯一的（放名詞前）</span></li>
+    <li><span class="fr">Tu es l'étudiant que je préfère.</span><span class="zh">你是我最喜歡的學生。</span><span class="note">🎙老師示範 que 的日常用法，說這種句子法國人一天講很多次</span></li>
+    <li><span class="fr">Ça, c'est l'endroit où j'habite.</span><span class="zh">這就是我住的地方。</span><span class="note">🎙endroit＝地方（跟 lieu 同義，更口語）</span></li>
+  </ul>
+</div>
+
+<!-- 發音警報 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第23課 🔊</span>
+    <span class="unit-title">發音警報</span>
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">un bel immeuble</span><span class="zh">一棟漂亮的大樓</span><span class="note">bel 跟 belle 發音<b>完全一樣</b>；immeuble 的 eu 是圓唇的 [œ]</span></li>
+    <li><span class="fr">le rez-de-chaussée</span><span class="zh">一樓</span><span class="note">rez 的 z <b>不發音</b>：[re-də-ʃo-se]</span></li>
+    <li><span class="fr">l'ascenseur</span><span class="zh">電梯</span><span class="note">sc 唸 [s] 不是 [sk]：[a-sɑ̃-sœʁ]</span></li>
+    <li><span class="fr">la buanderie</span><span class="zh">洗衣間</span><span class="note">bu-an 兩個音節分開：[bɥɑ̃d-ʁi]</span></li>
+    <li><span class="fr">charges comprises</span><span class="zh">含雜費</span><span class="note">連在一起唸，s 要連音到 comprises：[ʃaʁʒ-kɔ̃-pʁiz]</span></li>
+    <li><span class="fr">qu'il / qu'elle / qu'on</span><span class="zh">que 的縮寫</span><span class="note">⚠️ 唸起來跟 <b>qui</b> 很像但不同：qu'il [kil] vs qui [ki]</span></li>
+    <li><span class="fr">neuf / neuve</span><span class="zh">全新的</span><span class="note">陽性 neuf 的 f 要發音 [nœf]；陰性 neuve [nœv]</span></li>
+  </ul>
+</div>
+
+<!-- 糾錯摘要 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第23課 ✅</span>
+    <span class="unit-title">本課糾錯摘要</span>
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">colocation ↔ cohabitation 一直搞混</span><span class="zh">課堂上反覆問「colocation 是什麼」</span><span class="note">記法：<b>co-locataire</b> 都是房客、各付各的；<b>co-habitation</b> 是住進別人家。字根 locataire 就是關鍵</span></li>
+    <li><span class="fr">把 disponible 當成「免費」</span><span class="zh">disponible ≠ gratuit</span><span class="note">disponible＝available（可入住／有空）；gratuit 才是免費</span></li>
+    <li><span class="fr">le salon est la pièce ___ je préfère 想填 où</span><span class="zh">被「地方」誤導</span><span class="note">⚠️ 老師的測試法：翻成英文是 <b>which I prefer</b> 不是 where I prefer → 用 <b>que</b>。要是 où je préfère <b>dormir</b> 才是 où</span></li>
+    <li><span class="fr">ma sœur vit dans un studio ___ mes parents ont acheté 想填 où</span><span class="zh">同一個陷阱</span><span class="note">買的是「那間房」＝受詞 → <b>que</b>。判準永遠是「子句裡缺主詞還是缺受詞」，不是先行詞看起來像不像地方</span></li>
+    <li><span class="fr">étage 的樓層換算</span><span class="zh">au quatrième étage 到底是幾樓</span><span class="note">法國的 premier étage＝台灣二樓，所以 quatrième étage＝台灣五樓。地面層叫 rez-de-chaussée</span></li>
+    <li><span class="fr">neuf 只想到數字 9</span><span class="zh">看到 maison neuve 愣住</span><span class="note">neuf 同時是「9」和「全新的」。看位置：在名詞後面當形容詞就是「全新」</span></li>
+  </ul>
 </div>
 
 </details>
