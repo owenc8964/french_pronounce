@@ -631,6 +631,52 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **瀏覽器層**（切 TEST ROOM，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入＋故意把 `sous la tente` 填成 en 被判錯；reading a22 故意 2對1錯 → 分數與 ✓✗ 與解說都正確、紀錄欄位齊全；french_notes lesson-21 渲染 11 unit／11 表格全包 compare-table／**161 個 🔊 tts-btn**／導覽列 21 個按鈕含第21課；quiz `?lesson=21` 實際出到 y/en 題目並答對計分；**`getPool()` 放行全部 27 題**（確認沒踩到 07-16 那個「文法點被鎖導致整批題目消失」的坑）；map 顯示第21課、tile 與 codex 3-4-5 都正確。
 - **收尾**：清掉測試寫入的 a22 紀錄與該題 SRS key → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留。
 
+### 08-12：第23課入庫（做到一半）＋筆記格式檢查器（**下個 session 從這裡接**）
+
+**⚠️ 這一課只做了 2/9，其餘 7 項還沒做。** 下面寫清楚做了什麼、還缺什麼。
+
+**已完成**
+1. `french_notes.html` 新增 `lesson-23`（Unité 3 Comme à la maison），14 個 unit。
+2. `questions.js` +31 題，BANK 850→**881**（`vocab-logement` 新 topic 19 題、`qui-que` 既有 topic 補 12 題含 où）。
+
+**⛔ 還沒做（照九項連動補完）**
+3. `chunks.js` — 跑抽取腳本補 L23 卡片
+4. `sentences.js` — 人工精選 S_L23_1~10
+5. `table_drill.html` — 加 qui/que/où 選填表
+6. `gram_rules.js` — `relatifs` 點要**升級**：目前 `lessons:[16]`、名稱只有「qui · que」、**缺 où**。補 lesson 23 與 où 的規則/例句。⚠️ `zone` 目前是 B1 但課本在 A2 教，**要不要改 zone 先問 Owen**（動 zone 會搬動地圖上的位置，影響記憶宮殿）
+7. `codex.js` — **不用動**（已查證 3-5-1/2/3 完整涵蓋 qui/que/où）。⚠️ 但 3-5 全節標 B1，課本在 A2 教；`lvl` 依 CODEX_STYLE 未經 Owen 同意不改，先問
+8. `map.html` — `CURRENT_LESSON` 22→**23**；住宿主題要不要新增 tile
+9. `reading.html` — 新增 `a24`（用筆記裡的平行閱讀 Ma colocation à Taipei）
+另外：`quiz.html` 與 `dashboard.html` 兩處 `TOPIC_LABELS` 要補 `vocab-logement`
+
+**課本重點（截圖在 `~/Desktop/0811/`，5 張）**：主文法 qui/que/où；詞彙是住宿與租屋。老師的判斷法：後面直接接動詞→qui、先出現主詞→que、講地方→où（**用英文 where 測試**）。兩個他反覆卡住的陷阱：`la pièce que je préfère`（是 que 不是 où）、`un studio que mes parents ont acheté`（買的是房子＝受詞）。
+
+---
+
+### 08-12：筆記格式漂移的制度性修法——`tools/check_notes.js`（**寫新課筆記前必讀**）
+
+> Owen：「我覺得很奇特 筆記怎麼每次都會變動，做筆記時要有習慣先去看格式跟做法吧！」
+
+**他是對的，而且根因是制度不是手誤**：`CLAUDE.md` 的筆記鐵律只寫了表格兩條，沒寫平行閱讀要用 `phrase-list`、沒寫哪些 class 該有樣式。規則沒寫全 ＋ 沒先看範本 ＝ 每次都會漂一點。
+
+**→ 新增 `tools/check_notes.js`。加完新課筆記必跑：`node tools/check_notes.js`，全綠才算連動完成。**
+
+10 條檢查：標籤平衡／表格包 `compare-table`／法文欄標 `class="m"`／**法文句不可用 `<p class="fr">`**／平行閱讀要用 `phrase-list`／summary 與 unit 結構／**class 一定要有 CSS 定義**／課次連號／`phrase-list` 裡的法文要包 `span.fr`。
+
+⚠️ **規則是照系統實際的發音掛載寫的，不是照假設**（`french_notes.html` 的 JS：`.compare-table td.m` / `td.f` / `.fr-ex` 才會長喇叭）。所以「法文放在 `fr-ex` 裡」是合法寫法；「純中文的 li」也合法（課文逐句中譯刻意只放中文，法文原文有版權不上公開站）。寫規則時我一開始用內容猜，誤報到 122 條，最後改成**用欄位位置判定**才收斂。
+
+**它一跑就抓出的既有漂移（都已修）**：
+- **5 個表格把 class 標在 `<table>` 自己身上** → `.compare-table table/th/td` 全部失效，樣式一直沒生效
+- **`compare-title` 全站用 107 次卻沒有 CSS 定義**（從第 3 課就這樣）；`unit-intro`、`verb-title` 同樣沒定義 → 已補樣式
+- **25 個 li 的法文裸放或包在 `<b>` 裡**（lesson-5/9/12/13 等）→ 沒有 🔊、`chunks.js` 也撈不到 → 已改包 `<span class="fr">`
+- lesson-5 牛排熟度表的法文欄沒標 `m`
+
+⚠️ **我自己也犯了同一個錯**：第23課的平行閱讀本來寫成 `<p class="fr">` 段落，等於沒發音、進不了複習卡。已改回 21/22 課的 `phrase-list` 一句一 `<li>`。**下次寫筆記前先開一課現成的看，再動手。**
+
+📌 **建議（要 Owen 點頭）**：把「加完筆記必跑 `node tools/check_notes.js`」寫進 `CLAUDE.md` 的內容鐵律第 4 條。CLAUDE.md 註明改前要先問，所以這次沒動。
+
+---
+
 ### 08-10：時態感知塊落地成兩個工具——時態鏡頭 ＋ 時間劇場（**下個 session 必讀**）
 
 08-07 把「感知塊要靠反覆喚醒」寫成了框架，但那天只有文件沒有工具。這兩天把它做出來，而且**中途被 Owen 修正了三次，每次都改到設計的根**。三次修正比工具本身重要，先寫：
