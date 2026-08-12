@@ -10,7 +10,12 @@
 1. **真實教材來源**：要 Owen 背誦、複習、練習的內容（quiz 題目、複習卡、句庫、造句題）必須出自 `french_notes.html` 或 Owen 提供的課程材料，**禁止 Claude 自創法文句子當教材**。已核准的例外：聽力/閱讀「理解測驗」的題幹與短文可原創，但詞彙句型必須對齊已學課次
 2. **個人化內容不代筆**：代表 Owen 本人的回答（如 `answer_cards.js`）先讓他用自己的話講，Claude 只修正語法（見 memory `feedback_personal_content_authenticity`）
 3. **codex.js 座標永不重編**：編號（如 `5-2-2`）一經指定就是永久門牌，Owen 靠位置記憶
-4. **筆記表格格式**：`french_notes.html` 所有 `<table>` 包在 `<div class="compare-table">` 裡、法文欄 `<td>` 標 `class="m"`（細則與例外見 memory `feedback_notes_table_format`）
+4. **筆記格式**（2026-08-12 擴寫。Owen：「筆記怎麼每次都會變動，做筆記時要有習慣先去看格式跟做法吧！」）
+   - **動手前先開一課現成的看**（建議最近一課），照著寫，不要憑記憶
+   - 表格：所有 `<table>` 包在 `<div class="compare-table">` 裡（class 不可標在 `<table>` 自己身上）、法文欄 `<td>` 標 `class="m"`
+   - **法文句子的載體是 `<ul class="phrase-list">` 的 `<li><span class="fr">`**，⛔ 不可以用 `<p class="fr">` 段落——那樣不會長發音鍵，`chunks.js` 也撈不到
+   - 用到的 class 一定要有 CSS 定義（`compare-title` 曾經全站用 107 次卻沒樣式）
+   - **寫完必跑 `node tools/check_notes.js`，全綠才算完成**；細則與例外見 memory `feedback_notes_table_format`
 
 ## 教學鐵律（2026-08-07 建立，優先於一切教學直覺）
 > 依據：Owen 的 French OS brief。完整框架見 `FRENCH_OS.md`。
