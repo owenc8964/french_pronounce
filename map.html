@@ -424,7 +424,7 @@ header {
 <script src="tense_lens.js"></script>
 <script src="time_hall.js"></script>
 <script>
-const CURRENT_LESSON = 23;
+const CURRENT_LESSON = 24;
 const TOTAL_LESSONS  = 35;
 
 const TILES = [
@@ -445,9 +445,9 @@ const TILES = [
     hint:'0–100 · Ordinaux', unlocked:true, lesson:1,
     detail:'Cardinaux 0–100. Particularités: 70–79 (soixante-dix…), 80–99 (quatre-vingts…). Ordinaux: premier/première, deuxième, troisième… vingtième. Utilisation dans les dates et les adresses.' },
 
-  { id:'heure',        zone:'A1', icon:'⏰', name:"L'heure",
-    hint:'Il est deux heures et demie', unlocked:true, lesson:6,
-    detail:'Demander et dire l\'heure: il est… heures, quelle heure est-il? Quart, demie, moins le quart. Format officiel 14h00 vs. familier 2h de l\'après-midi. Horaires de train, rendez-vous, ouverture de magasins.' },
+  { id:'heure',        zone:'A1', icon:'⏰', name:"L'heure", gram:true, cat:'base',
+    hint:'13 h 45 · moins le quart', unlocked:true, lesson:24,
+    detail:'Demander et dire l\'heure : quelle heure est-il ? il est… heures. DEUX SYSTÈMES (repris en détail leçon 24). Officiel — examens, horaires, télévision, billets : 24 heures, on lit les chiffres (treize heures quarante-cinq). Courant — à l\'oral : 12 heures, on regarde le cadran (deux heures moins le quart). Avant la demie on ajoute : et quart (+15), et demie (+30), et vingt. Après la demie on regarde l\'heure suivante : moins vingt, moins le quart, moins dix. ⚠️ La demie est la frontière et elle reste du côté de « et » : une heure et demie, jamais « moins trente ». ⚠️ le quart (15 min) et la demie (30 min) sont deux mots différents — dire « moins et demie » mélange les deux systèmes. Heure est féminin : une heure, la demie. Il faut maîtriser les deux : l\'examen écrit donne l\'officiel, le prof vous interroge en courant.' },
 
   { id:'nationality',  zone:'A1', icon:'🌍', name:'Nationalités',
     hint:'Masculin / Féminin / Pluriel', unlocked:true, lesson:1,
@@ -565,6 +565,10 @@ const TILES = [
   { id:'location',     zone:'A2', icon:'🔑', name:'Se loger & louer',
     hint:'Annonce · Loyer · Colocation', unlocked:true, lesson:23,
     detail:'Chercher un toit (leçon 23). Types: le logement, l\'appartement (un logement) vs l\'immeuble (tout le bâtiment), le studio, le T1/T2 (les pièces ne comptent ni la cuisine ni la salle de bain), la résidence universitaire, le foyer. Parties: la pièce, la salle d\'eau, une cuisine américaine, un coin bureau, la véranda, la buanderie. L\'immeuble: le rez-de-chaussée (RDC — le premier étage français = le 2e étage taïwanais), la cave / le sous-sol, le garage (couvert) vs un parking (à ciel ouvert), sans ascenseur. L\'annonce: ancien ≠ neuf, calme ≠ bruyant, clair ≠ sombre (clair ≠ foncé pour les couleurs), disponible (= available, pas gratuit !), équipé, meublé, rénové (c\'était déjà un logement) vs aménagé (ça ne l\'était pas), la superficie en mètres carrés, bon marché. Les frais: le loyer, les charges (charges comprises), l\'abonnement à Internet, l\'assurance, le chauffage. Les habitants: le/la propriétaire, le/la locataire, la colocation (chacun paie sa part) vs la cohabitation intergénérationnelle (on habite chez quelqu\'un). Grammaire de la leçon: les pronoms relatifs qui / que / où.' },
+
+  { id:'delf-lecture', zone:'A2', icon:'📄', name:'DELF A2 · Lecture',
+    hint:'Lire pour s\'orienter · Repérer', unlocked:true, lesson:24,
+    detail:'Stratégie de lecture pour l\'examen (leçon 24) — comment gagner tous les points sans tout comprendre. Les quatre types de documents : lire pour s\'orienter (horaires, annonces, programmes), lire des instructions (règles, interdictions), lire une correspondance (carte postale, courriel privé), associer documents et personnes. Les cinq règles du prof : 1) Lisez d\'abord les questions — sinon on lit sans savoir quoi chercher. 2) Entourez tous les chiffres (heure, âge, tarif, date). 3) Repérez trois mots-clés par document : quelle activité, quand, quel nom. 4) Si vous ne connaissez pas un mot, ne vous inquiétez pas : essayez de comprendre grâce aux autres mots. 5) Éliminez ce qui est sûrement faux — il y a toujours des documents qui ne servent à personne. Les consignes à connaître : lisez, observez, répondez aux questions, entourez, repérez, complétez le tableau, associez, cochez, choisissez. Vocabulaire des documents : le tarif (par an / par mois / par trimestre), le moins cher, à partir de, tout compris, hors transport, un séjour, une émission, une chaîne. Attention : trimestre (4 par an) ≠ semestre (2 par an) ; le goûter (le repas de 16 h) ≠ goûter (le verbe).' },
 
   { id:'pronoms-y-en', zone:'A2', icon:'📍', name:'Pronoms y / en (lieu)', gram:true, cat:'pronoms',
     hint:"J'y vais · J'en reviens", unlocked:true, lesson:21,

@@ -224,4 +224,15 @@ const SENTENCES = [
   { id: 'S_L23_8', lesson: 23, fr: 'Le loyer n\'est pas cher : 400 euros par personne et par mois, charges comprises.', zh: '房租不貴：每人每月 400 歐，含雜費。', note: 'charges comprises＝含水電網，租屋廣告必看的一句' },
   { id: 'S_L23_9', lesson: 23, fr: 'Est-ce que tu trouves que ta maison est confortable ?', zh: '你覺得你家舒適嗎？', note: '🎙trouver que＝覺得（比 penser que 更口語）' },
   { id: 'S_L23_10', lesson: 23, fr: 'Ça, c\'est l\'endroit où j\'habite.', zh: '這就是我住的地方。', note: '🎙endroit＝地方（跟 lieu 同義，更口語）' },
+
+  { id: 'S_L24_1', lesson: 24, fr: 'Lisez d\'abord les questions.', zh: '先讀題目。', note: '⭐⭐⭐ 老師的第一鐵律：先看題目才知道要去文件哪裡找' },
+  { id: 'S_L24_2', lesson: 24, fr: 'Entourez tous les chiffres.', zh: '把所有數字圈起來。', note: '找資訊題全靠數字：heure／âge／tarif／date。entourer 來自 tour（圈）' },
+  { id: 'S_L24_3', lesson: 24, fr: 'Essayez de comprendre grâce aux autres mots.', zh: '試著靠其他字去理解。', note: '課本原句。grâce à＝多虧了、靠著；essayer de＋原形' },
+  { id: 'S_L24_4', lesson: 24, fr: 'À quelle heure commence l\'atelier de cuisine ?', zh: '烹飪工作坊幾點開始？', note: 'À quelle heure＝幾點；倒裝的疑問語序' },
+  { id: 'S_L24_5', lesson: 24, fr: 'Quelle activité est la moins chère par an ?', zh: '哪個活動一年最便宜？', note: '⭐ le/la moins cher(-ère)＝最便宜；比價前要換成同一個週期' },
+  { id: 'S_L24_6', lesson: 24, fr: 'Quelle activité propose-t-on le week-end ?', zh: '週末有哪些活動？', note: 'proposer＝提供選擇；propose-t-on 的 -t- 是為了好唸才插進去的' },
+  { id: 'S_L24_7', lesson: 24, fr: 'Vous ne devez pas faire d\'erreurs.', zh: '你不能出錯。', note: '🎙老師講這場考試的標準。devoir 的否定＝不可以' },
+  { id: 'S_L24_8', lesson: 24, fr: 'On peut sauter et revenir après.', zh: '可以先跳過，等一下再回來。', note: '🎙卡住時的正確動作。sauter＝跳過' },
+  { id: 'S_L24_9', lesson: 24, fr: 'Il faut continuer, c\'est normal d\'oublier.', zh: '要繼續下去，會忘記是正常的。', note: '🎙il faut＋原形；c\'est normal de＋原形' },
+  { id: 'S_L24_10', lesson: 24, fr: 'Je peux t\'envoyer ce livre aussi.', zh: '我也可以把這本書寄給你。', note: '🎙envoyer＝寄送；te→t\' 母音前縮寫' },
 ];

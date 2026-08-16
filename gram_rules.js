@@ -379,6 +379,28 @@ const GRAM_POINTS = [
         { fr:'Ils ont déménagé il y a dix jours.', zh:'他們十天前搬家了。（il y a=之前）' },
       ]}},
 
+  { id:'heure', name:"L'heure (officielle · courante)", icon:'🕐', zone:'A2', cat:'base',
+    lessons:[24], topics:['numbers-dates-heure'], unlocked:true,
+    rule:{
+      title:'報時的兩套系統 — 半點是分界線，它站在 et 那一邊',
+      why:'法文有兩套報時法，不是「正式/隨便」的差別，是兩種不同的計數方式。官方版（24 小時制）是行政與交通系統的產物——火車時刻表不能有 am/pm 的歧義，所以直接把數字唸完，treize heures quarante-cinq。口語版留著更古老的邏輯：人講時間是看鐘面指針，快到整點時你講的不是「一點四十五」，是「差一刻到兩點」。所以 moins 不是文法規則，是「指針已經過半、眼睛自動去看下一個整點」這件事的語言化。半點之所以不能說 moins，是因為指針正好在正中間——它還沒開始往下一個整點靠，你也就還沒有理由改用倒數。',
+      points:[
+        '官方版（考卷／電視表／車票）：24 小時制，直接唸數字 → treize heures quarante-cinq',
+        '口語版（講話）：12 小時制，用鐘面 → deux heures moins le quart',
+        '過半之前用 et：et quart（+15）、et demie（+30）、et vingt（+20）',
+        '過半之後改看下一個整點差多少，用 moins：moins vingt、moins le quart、moins dix',
+        '⚠️⚠️ 半點只能說 et demie，不可以說 moins trente／moins la demie（老師當場糾正過）',
+        '⚠️ le quart＝15 分鐘、la demie＝30 分鐘，兩個字不可以混用',
+        'heure 是陰性，所以配 une heure、demie 要加 e（見記憶宮殿 9-4-3）',
+        '兩套都要會：考題寫官方版（看得懂才找得到答案），老師問你時用口語版（聽得懂才答得出來）',
+      ],
+      examples:[
+        { fr:'Il est treize heures quarante-cinq.', zh:'13:45（官方版，考卷上的寫法）' },
+        { fr:'Il est deux heures moins le quart.', zh:'差一刻兩點（口語版，同一個時間）' },
+        { fr:'Il est une heure et demie.', zh:'一點半（⚠️ 半點一律 et demie，不能用 moins）' },
+        { fr:'À quelle heure commence l\'atelier de cuisine ?', zh:'烹飪工作坊幾點開始？' },
+      ]}},
+
   // ═══ B1（已教的部分） ══════════════════════════════════════
   { id:'relatifs', name:'Pronoms relatifs (qui · que · où)', icon:'🔗', zone:'B1', cat:'pronoms',
     lessons:[16,23], topics:['qui-que'], unlocked:true,

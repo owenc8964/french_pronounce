@@ -631,6 +631,63 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **瀏覽器層**（切 TEST ROOM，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入＋故意把 `sous la tente` 填成 en 被判錯；reading a22 故意 2對1錯 → 分數與 ✓✗ 與解說都正確、紀錄欄位齊全；french_notes lesson-21 渲染 11 unit／11 表格全包 compare-table／**161 個 🔊 tts-btn**／導覽列 21 個按鈕含第21課；quiz `?lesson=21` 實際出到 y/en 題目並答對計分；**`getPool()` 放行全部 27 題**（確認沒踩到 07-16 那個「文法點被鎖導致整批題目消失」的坑）；map 顯示第21課、tile 與 codex 3-4-5 都正確。
 - **收尾**：清掉測試寫入的 a22 紀錄與該題 SRS key → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留。
 
+### 08-16：第24課（DELF A2 閱讀實戰）入庫＋九項連動＋**筆記格式的第二次制度性修法**
+
+**這堂不是課本新課，是考試訓練**——老師拿《Le DELF A2 100% réussite》帶 Owen 跑一次 compréhension des écrits。
+
+**⚠️ 先記一條 Owen 當場給的糾正（比這課內容更重要）**
+
+他丟了逐字稿＋8 張截圖＋整本 PDF，同時問「老師要我把單字丟進 Anki，你可以幫我嗎」。我一開始只去讀 Anki 架構文件，他馬上說：
+
+> 「我沒有把重點都放在 anki 今天的筆記也好好做，**解題方法在這種專攻考試的課程中也很重要**」
+
+→ **他丟課堂材料進來，預設就是要走完整的筆記＋九項連動**，不要因為他同時問了別的事就把筆記降級。而且**解題方法＝教材**，要跟文法詞彙一樣有 unit、有題目、有地圖門牌。已寫進 memory `feedback_exam_strategy_is_content`。
+
+**九項連動**
+1. `french_notes.html`：新增 `lesson-24`，14 個 unit／13 表格（四張考卷與四種題型／⭐老師的五條解題法／考試指令動詞 consignes／**時刻兩套說法**／價格與週期／電視節目／運動廣告／餐廳描述／行程與文化活動關鍵字／明信片題型的四個陷阱／平行閱讀／老師課堂法語／發音警報／糾錯摘要）。
+2. `questions.js`：+36 題，881→**917**。三個新 topic：`strategie-lecture`（**10 題，解題法自成一個 topic**）、`vocab-consignes`（8）、`vocab-annonces`（12），另外 `numbers-dates-heure` 補 6 題。
+3. `chunks.js`：+81 張，1357→**1438**（解題法的五條指令也做成卡）。
+4. `sentences.js`：`S_L24_1~10`，186→**196**。
+5. `table_drill.html`：+2 表，47→**49**——`heure-officielle-courante`（官方版→口語版換算，8 題）、`consignes-examen`（中文→法文指令動詞，8 題）。
+6. `gram_rules.js`：**新增文法點 `heure`**（A2，8 條要點）。`why` 寫的是「moins 不是文法規則，是指針過半、眼睛自動去看下一個整點這件事的語言化；半點還沒開始往下一個整點靠，所以還沒有理由改用倒數」。
+7. `codex.js`：**新增 `9-4-5`「官方時刻 vs 口語時刻」**，122→**127 條**。⚠️ 9-4-1~4 完全沒動，只在節末追加；含官方／口語對照 grid。
+8. `map.html`：`CURRENT_LESSON` 23→**24**；**新增 A2 tile `delf-lecture`**（解題方法終於有門牌）；`heure` tile **沒有另開新格**——查到 A1 區早就有一格，改成把既有那格補強（lesson 6→24、補兩套系統說明）。
+9. `reading.html`：新增 `a25`「Programme de la Maison de la culture」（A2／Examen），24→**25 篇**。這篇刻意做成**節目表型文件**而不是散文，三題全部在練今天的技能（時刻換算／換算後比價／週末定位）。
+- `quiz.html`／`dashboard.html` 補三個新 topic 標籤，並補上 dashboard 一直缺的 `numbers-dates-heure`。
+
+---
+
+### 08-16：筆記格式第二次修法——`span.note` 撞 `div.note`（**改筆記 CSS 前必讀**）
+
+> Owen 當天看到成品：「**今天筆記格式很有問題喔**」
+
+**分成兩類，要分清楚**：
+
+**(A) 我當天弄壞的（已修）**
+- 時刻表**三欄全標 `class="m"`** → 第一欄「13 h 00」根本不是法文卻長出喇叭，一列三個 🔊。第23課一列只有一個。
+- 五條解題法整段塞在 `note-box`＋長備注的 `phrase-list` 裡；**第23課的主結構是表格**。已把「五條解題法」「明信片四個陷阱」改回 `compare-table`。
+- `<td class="m">① Lire pour s'orienter</td>` 把圈圈編號包進法文格 → TTS 會唸出「①」。
+
+**(B) 從第 3 課就存在、被這課放大的（Owen 說「改」，已修）**
+- **`<span class="note">` 跟 `<div class="note">`（黃色注意框）共用同一個 class 名** → 每一則條列的備注都被套上黃底＋左金線＋整塊撐滿，🔊 被擠到下一行單獨站著。**21、23 課全都這樣**，`check_notes.js` 前 10 條抓不到（它只檢查「class 有沒有定義」，不檢查「同一個名字被當兩種東西用」）。
+- 修法：加 `.phrase-list li > span.note{}` 覆蓋成行內灰字＋可收縮，再用 `order` 把 🔊 排到法文正後方。⚠️ **不要去改 `.note{}` 本身**——那會把全站的黃色注意框一起弄壞。
+- 結果：全站 1043 個條列，**0 個還是黃塊**；剩 43 個 🔊 換行的都是法文句本身超過 100 字自然折行，正常。
+
+**→ `check_notes.js` 新增第 11 條：「同名 class 不可以同時當區塊與行內用」**（有撞名就要求 CSS 裡有 `span.X` 的覆蓋規則）。**它一跑就抓到另一個**：`aNote` 用了 3 次但全站沒有這個 class 的樣式，那三段一直是裸的 → 已改成 `note`。
+
+**驗證**
+- 資料層 `verify_l24.js`（scratchpad）九項全綠。除了各檔數量／id 唯一，特別驗了：**a25 的比價題用程式實算過**（danse 240 < cuisine 25×12=300 < natation 120×4=480，答案指向 danse）——第一版我把答案寫成 cuisine，就是這條檢查抓出來的；還有「14 h 45 的口語說法」不可以寫成 `quinze heures moins le quart`（混用兩套系統，筆記裡同一處也一起修了）；9-4-1~4 座標沒動；10 句 sentences 逐句比對確認出自 lesson-24 筆記。
+- `node tools/check_notes.js` 11 條全綠。
+- 瀏覽器層（隔離 ROOM，全程遵守）：`table_drill` 新表**故意把 13 h 30 填成 moins trente（就是他今天講錯的那句）被判錯** ✓、consignes 表故意填 Reparez 被判錯 ✓；`reading` a25 走真實 UI 三題全對、`clb7_reading` 欄位齊全、解說有出現換算式；`quiz ?lesson=24` 池子 36 題四個 topic 標籤都在；`map` 顯示第 24 課、delf-lecture 與 heure 兩格都指到第 24 課；`gram_trainer` 的 heure 規則卡 9 題半開卷、半點規則有出現；筆記全站重掃 0 個黃塊。
+- 收尾：清掉 a25 測試紀錄 → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認主工作區無 `TEST-DO-NOT-USE`、`sync_supabase.js` diff 為零。
+
+**⏭ 下一步（Owen 的 Anki 需求，還沒動）**
+老師要他把學過的單字全部丟進 Anki 背熟。**這件事專案早就設計好了**：`ARCH_2026-08_ANKI.md`（分工契約：記憶提取交給 Anki／考試形態訓練留在這套系統）＋`ANKI_SETUP.md`（24 欄 Note Type 與兩個模板的建置步驟）。**卡在第一步：Owen 還沒在 Anki 桌面版建 `FR_Mining` Note Type**。他建好回報之後，就照 `ARCH` 第 10 節先拿一課當白老鼠產 TSV（原訂第 22 課），跑通完整循環再談遷移 1438 張。
+
+**📌 順手記下的既有問題（沒動，之後可處理）**：`verify_l24.js` 掃到 6 個已解鎖文法點在地圖上沒有對應 tile（determinants／prepositions／reflechis／imperatif／adjectifs-accord／duree-temps），點開只會顯示「之後的課程會教到。」；另外 codex 的 `imparfait` topic 掛在兩個地方。
+
+---
+
 ### 08-12（續）：第23課剩下的 7 項連動全部補完（九項到齊）
 
 接上一則的接手點做完。**下面每一項都跑過資料層驗證＋瀏覽器實測，全綠。**

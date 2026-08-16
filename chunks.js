@@ -9470,4 +9470,569 @@ const CHUNKS = [
   "zh": "這個不用背，我們只要讀過去就好。",
   "note": "🎙老師篩選重點時的固定說法"
  },
+ {
+  "id": "L24_une_épreuve",
+  "lesson": 24,
+  "fr": "une épreuve",
+  "zh": "一場考試、一個測驗項目",
+  "note": "⚠️ 不是「經驗」（那是 expérience）。DELF 有四場 épreuves"
+ },
+ {
+  "id": "L24_la_compréhension_écrite",
+  "lesson": 24,
+  "fr": "la compréhension écrite",
+  "zh": "閱讀理解",
+  "note": "compréhension＝理解／production＝產出；écrite＝書面／orale＝口語"
+ },
+ {
+  "id": "L24_la_production_orale",
+  "lesson": 24,
+  "fr": "la production orale",
+  "zh": "口說產出",
+  "note": "四場考試之一"
+ },
+ {
+  "id": "L24_Lisez_d_abord_les_questi",
+  "lesson": 24,
+  "fr": "Lisez d'abord les questions.",
+  "zh": "先讀題目。",
+  "note": "⭐⭐⭐ 老師的第一鐵律：先看題目才知道要去文件哪裡找"
+ },
+ {
+  "id": "L24_Entourez_tous_les_chiffr",
+  "lesson": 24,
+  "fr": "Entourez tous les chiffres.",
+  "zh": "把所有數字圈起來。",
+  "note": "找資訊題全靠數字：heure／âge／tarif／date"
+ },
+ {
+  "id": "L24_Repérez_les_mots_clés_",
+  "lesson": 24,
+  "fr": "Repérez les mots-clés.",
+  "zh": "找出關鍵字。",
+  "note": "每份文件只抓三個：什麼活動／什麼時候／叫什麼名字"
+ },
+ {
+  "id": "L24_Essayez_de_comprendre_gr",
+  "lesson": 24,
+  "fr": "Essayez de comprendre grâce aux autres mots.",
+  "zh": "試著靠其他字去理解。",
+  "note": "課本原句前半：Si vous ne connaissez pas un mot, ne vous inquiétez pas"
+ },
+ {
+  "id": "L24_grâce_à",
+  "lesson": 24,
+  "fr": "grâce à",
+  "zh": "多虧了、靠著",
+  "note": "grâce aux autres mots＝靠旁邊的字"
+ },
+ {
+  "id": "L24_Éliminez_ce_qui_est_sûre",
+  "lesson": 24,
+  "fr": "Éliminez ce qui est sûrement faux.",
+  "zh": "先把確定不是的刪掉。",
+  "note": "配對題文件數跟人數不一樣，一定有用不到的 → 刪去法"
+ },
+ {
+  "id": "L24_Faire_des_associations_e",
+  "lesson": 24,
+  "fr": "Faire des associations entre les documents.",
+  "zh": "在不同文件之間建立連結。",
+  "note": "課本 PRÊT POUR L'EXAMEN：配對是比較出來的，不是一份一份獨立判斷"
+ },
+ {
+  "id": "L24_entourer",
+  "lesson": 24,
+  "fr": "entourer",
+  "zh": "圈起來",
+  "note": "⚠️ 來自 tour（圈、繞一圈）→ 畫一圈把它圍住"
+ },
+ {
+  "id": "L24_repérer",
+  "lesson": 24,
+  "fr": "repérer",
+  "zh": "找出、定位",
+  "note": "⚠️ 不是 réparer（修理）。在一堆東西裡把它認出來"
+ },
+ {
+  "id": "L24_associer_A_à_B",
+  "lesson": 24,
+  "fr": "associer A à B",
+  "zh": "把 A 跟 B 配對",
+  "note": "配對題的固定指令：Associez chaque document à la personne correspondante"
+ },
+ {
+  "id": "L24_cocher",
+  "lesson": 24,
+  "fr": "cocher",
+  "zh": "打勾",
+  "note": "新版 DELF A2 閱讀全部是打勾的選擇題"
+ },
+ {
+  "id": "L24_Complétez_le_tableau_",
+  "lesson": 24,
+  "fr": "Complétez le tableau.",
+  "zh": "請填表。",
+  "note": "le tableau＝表格（也是「畫作」「黑板」）"
+ },
+ {
+  "id": "L24_Observez_les_documents_",
+  "lesson": 24,
+  "fr": "Observez les documents.",
+  "zh": "請看這些文件。",
+  "note": "用在圖表、時刻表這種要用看的文件"
+ },
+ {
+  "id": "L24_s_entraîner",
+  "lesson": 24,
+  "fr": "s'entraîner",
+  "zh": "訓練、操練",
+  "note": "課本章名。同字根 un entraîneur＝教練"
+ },
+ {
+  "id": "L24_se_préparer",
+  "lesson": 24,
+  "fr": "se préparer",
+  "zh": "準備",
+  "note": "⚠️ 跟 s'entraîner 分工：préparer 是學方法，entraîner 是實際下去練"
+ },
+ {
+  "id": "L24_treize_heures_quarante_c",
+  "lesson": 24,
+  "fr": "treize heures quarante-cinq",
+  "zh": "13:45（官方說法）",
+  "note": "考卷、電視表、車票用這套：24 小時制直接唸數字"
+ },
+ {
+  "id": "L24_deux_heures_moins_le_qua",
+  "lesson": 24,
+  "fr": "deux heures moins le quart",
+  "zh": "差一刻兩點（＝13:45）",
+  "note": "⚠️ le quart＝15分鐘。口語版說法"
+ },
+ {
+  "id": "L24_une_heure_et_demie",
+  "lesson": 24,
+  "fr": "une heure et demie",
+  "zh": "一點半",
+  "note": "⚠️⚠️ 老師：到半點就不能用 moins，一律 et demie"
+ },
+ {
+  "id": "L24_deux_heures_et_quart",
+  "lesson": 24,
+  "fr": "deux heures et quart",
+  "zh": "兩點十五分",
+  "note": "過半之前用 et（et quart／et demie），過半之後才改 moins"
+ },
+ {
+  "id": "L24_à_partir_de",
+  "lesson": 24,
+  "fr": "à partir de",
+  "zh": "從…起（起跳）",
+  "note": "⚠️ à partir de 8 ans＝8 歲以上；à partir de 899 €＝899 歐起"
+ },
+ {
+  "id": "L24_par_an_par_mois_par_",
+  "lesson": 24,
+  "fr": "par an / par mois / par trimestre",
+  "zh": "每年／每月／每季",
+  "note": "⭐ 比價前一定要換成同一個單位"
+ },
+ {
+  "id": "L24_un_trimestre",
+  "lesson": 24,
+  "fr": "un trimestre",
+  "zh": "一季（三個月）",
+  "note": "tri-＝三 → 一年四個。⚠️ 但法國的學校一年只跑三個 trimestre"
+ },
+ {
+  "id": "L24_un_semestre",
+  "lesson": 24,
+  "fr": "un semestre",
+  "zh": "一學期（半年）",
+  "note": "semi-＝半 → 一年兩個。台灣的學校是這種"
+ },
+ {
+  "id": "L24_le_moins_cher",
+  "lesson": 24,
+  "fr": "le moins cher",
+  "zh": "最便宜的",
+  "note": "⭐ 廣告題必考：Quel est le séjour le moins cher ?"
+ },
+ {
+  "id": "L24_tout_compris",
+  "lesson": 24,
+  "fr": "tout compris",
+  "zh": "全部包含",
+  "note": "跟第23課的 charges comprises 同一個 comprendre＝包含"
+ },
+ {
+  "id": "L24_hors_transport",
+  "lesson": 24,
+  "fr": "hors transport",
+  "zh": "不含交通",
+  "note": "⚠️ hors＝在…之外。跟 tout compris 相反"
+ },
+ {
+  "id": "L24_cent_quatre_vingts",
+  "lesson": 24,
+  "fr": "cent quatre-vingts",
+  "zh": "180",
+  "note": "⚠️ 100 是 cent，<b>不說 un cent</b>（mille 也一樣不加 un）"
+ },
+ {
+  "id": "L24_la_chaîne",
+  "lesson": 24,
+  "fr": "la chaîne",
+  "zh": "頻道",
+  "note": "⚠️ 也是「鏈子」。Quelle chaîne propose… ?＝哪一台有…"
+ },
+ {
+  "id": "L24_un_téléfilm",
+  "lesson": 24,
+  "fr": "un téléfilm",
+  "zh": "電視電影",
+  "note": "為電視拍的單集電影，跟 série（影集）不同"
+ },
+ {
+  "id": "L24_un_magazine_littéraire",
+  "lesson": 24,
+  "fr": "un magazine littéraire",
+  "zh": "文學節目",
+  "note": "⚠️ magazine 在節目表裡是「專題節目」不是雜誌"
+ },
+ {
+  "id": "L24_proposer",
+  "lesson": 24,
+  "fr": "proposer",
+  "zh": "提供（讓人選）",
+  "note": "⭐ 把選項擺出來讓對方挑，跟英文 propose 一樣"
+ },
+ {
+  "id": "L24_la_patinoire",
+  "lesson": 24,
+  "fr": "la patinoire",
+  "zh": "溜冰場",
+  "note": "⚠️ 今天答錯的那題。patin（冰刀）→ patiner → patinoire"
+ },
+ {
+  "id": "L24_chausser_ses_patins",
+  "lesson": 24,
+  "fr": "chausser ses patins",
+  "zh": "穿上冰刀鞋",
+  "note": "chausser＝穿（鞋）；la chaussure＝鞋子"
+ },
+ {
+  "id": "L24_glisser",
+  "lesson": 24,
+  "fr": "glisser",
+  "zh": "滑",
+  "note": "⭐ 判斷「冬季運動 les sports d'hiver」的關鍵字"
+ },
+ {
+  "id": "L24_les_sports_d_hiver",
+  "lesson": 24,
+  "fr": "les sports d'hiver",
+  "zh": "冬季運動",
+  "note": "⭐ 配對題的分類詞"
+ },
+ {
+  "id": "L24_l_escalade",
+  "lesson": 24,
+  "fr": "l'escalade",
+  "zh": "攀岩",
+  "note": "⭐ 對應「grimper（爬）」——配對題就是找對得上的那個字"
+ },
+ {
+  "id": "L24_grimper",
+  "lesson": 24,
+  "fr": "grimper",
+  "zh": "攀爬",
+  "note": "Peter adore la montagne et grimper → 對上 escalade"
+ },
+ {
+  "id": "L24_sans_corde_une_paroi_",
+  "lesson": 24,
+  "fr": "sans corde / une paroi / un tapis",
+  "zh": "不用繩子／岩壁／墊子",
+  "note": "三個字湊起來就知道是室內抱石攀岩"
+ },
+ {
+  "id": "L24_la_randonnée",
+  "lesson": 24,
+  "fr": "la randonnée",
+  "zh": "健行",
+  "note": "可以在山上也可以在鄉間：randonnée dans la campagne"
+ },
+ {
+  "id": "L24_le_vélodrome",
+  "lesson": 24,
+  "fr": "le vélodrome",
+  "zh": "自行車場",
+  "note": "-drome＝場地（跟 aérodrome 同構）"
+ },
+ {
+  "id": "L24_se_déplacer_à_vélo",
+  "lesson": 24,
+  "fr": "se déplacer à vélo",
+  "zh": "騎腳踏車移動",
+  "note": "Manuel se déplace toujours à vélo＝他到哪都騎車"
+ },
+ {
+  "id": "L24_foncer",
+  "lesson": 24,
+  "fr": "foncer",
+  "zh": "衝、飆",
+  "note": "Foncez au vélodrome !＝衝去自行車場吧！"
+ },
+ {
+  "id": "L24_les_sensations_fortes",
+  "lesson": 24,
+  "fr": "les sensations fortes",
+  "zh": "強烈刺激",
+  "note": "⭐ 廣告在講刺激型運動的固定說法"
+ },
+ {
+  "id": "L24_nager_en_extérieur",
+  "lesson": 24,
+  "fr": "nager en extérieur",
+  "zh": "在戶外游泳",
+  "note": "⭐ 對應 rivières et lacs（野泳），不是泳池"
+ },
+ {
+  "id": "L24_les_sports_automobiles",
+  "lesson": 24,
+  "fr": "les sports automobiles",
+  "zh": "賽車運動",
+  "note": "automobile＝汽車（moto 才是機車）"
+ },
+ {
+  "id": "L24_accueillir",
+  "lesson": 24,
+  "fr": "accueillir",
+  "zh": "容納、接待",
+  "note": "⭐ peut accueillir plus de 20 personnes＝人數多的關鍵字。同字根 l'accueil＝櫃台"
+ },
+ {
+  "id": "L24_une_cuisine_régionale",
+  "lesson": 24,
+  "fr": "une cuisine régionale",
+  "zh": "地方菜",
+  "note": "對照 des plats étrangers（外國菜）"
+ },
+ {
+  "id": "L24_des_plats_étrangers",
+  "lesson": 24,
+  "fr": "des plats étrangers",
+  "zh": "外國菜",
+  "note": "跟 du monde entier（全世界的）指同一件事"
+ },
+ {
+  "id": "L24_le_monde_entier",
+  "lesson": 24,
+  "fr": "le monde entier",
+  "zh": "全世界",
+  "note": "⚠️ 別跟 tout le monde（大家、每個人）搞混"
+ },
+ {
+  "id": "L24_à_base_de_viande",
+  "lesson": 24,
+  "fr": "à base de viande",
+  "zh": "以肉為基底的",
+  "note": "⭐ 素食者那題的排除線索：看到 viande 直接刪掉"
+ },
+ {
+  "id": "L24_végétarien_ne_",
+  "lesson": 24,
+  "fr": "végétarien(ne)",
+  "zh": "素食的（人）"
+ },
+ {
+  "id": "L24_la_cuisine_méditerranéen",
+  "lesson": 24,
+  "fr": "la cuisine méditerranéenne",
+  "zh": "地中海料理",
+  "note": "la Méditerranée＝地中海"
+ },
+ {
+  "id": "L24_assister_à_un_spectacle",
+  "lesson": 24,
+  "fr": "assister à un spectacle",
+  "zh": "觀賞表演",
+  "note": "un spectacle de danse＝舞蹈表演"
+ },
+ {
+  "id": "L24_chaleureux_chaleureuse",
+  "lesson": 24,
+  "fr": "chaleureux / chaleureuse",
+  "zh": "熱情的、溫馨的",
+  "note": "來自 chaleur（熱，第22課）→ 形容氣氛"
+ },
+ {
+  "id": "L24_en_plein_centre_ville",
+  "lesson": 24,
+  "fr": "en plein centre-ville",
+  "zh": "就在市中心",
+  "note": "en plein＝正在…的正中央（en pleine nature＝在大自然裡）"
+ },
+ {
+  "id": "L24_un_lieu_pour_goûter_avec",
+  "lesson": 24,
+  "fr": "un lieu pour goûter avec ses enfants",
+  "zh": "可以帶小孩吃下午茶的地方",
+  "note": "⚠️ 這裡的 goûter 是下午茶不是品嘗——判斷靠 avec ses enfants"
+ },
+ {
+  "id": "L24_un_séjour",
+  "lesson": 24,
+  "fr": "un séjour",
+  "zh": "行程、一段停留",
+  "note": "⚠️ 同字兩義：第23課的 le séjour 是「客廳」"
+ },
+ {
+  "id": "L24_Départ_possible_du_21_02",
+  "lesson": 24,
+  "fr": "Départ possible du 21/02 au 13/03.",
+  "zh": "可出發日期：2/21～3/13。",
+  "note": "⭐ 「你某段時間有空能選哪個」就是在考這一行"
+ },
+ {
+  "id": "L24_les_raquettes_à_neige",
+  "lesson": 24,
+  "fr": "les raquettes à neige",
+  "zh": "雪鞋",
+  "note": "raquette 也是球拍——形狀像所以共用一個字"
+ },
+ {
+  "id": "L24_le_ski_de_randonnée_nord",
+  "lesson": 24,
+  "fr": "le ski de randonnée nordique",
+  "zh": "北歐式越野滑雪",
+  "note": "⭐ 「想滑雪」那題的唯一線索"
+ },
+ {
+  "id": "L24_les_chiens_de_traîneau",
+  "lesson": 24,
+  "fr": "les chiens de traîneau",
+  "zh": "狗拉雪橇"
+ },
+ {
+  "id": "L24_l_intensité_physique",
+  "lesson": 24,
+  "fr": "l'intensité physique",
+  "zh": "體力強度",
+  "note": "廣告用方格數表示"
+ },
+ {
+  "id": "L24_un_film_historique",
+  "lesson": 24,
+  "fr": "un film historique",
+  "zh": "歷史片",
+  "note": "其他類型：une comédie（喜劇）、un drame（劇情片）"
+ },
+ {
+  "id": "L24_réalisé_par_",
+  "lesson": 24,
+  "fr": "réalisé par…",
+  "zh": "由…執導",
+  "note": "le réalisateur＝導演；Avec… 後面接演員"
+ },
+ {
+  "id": "L24_une_visite_guidée",
+  "lesson": 24,
+  "fr": "une visite guidée",
+  "zh": "導覽參觀",
+  "note": "visite guidée en français＝法語導覽"
+ },
+ {
+  "id": "L24_l_inscription_obligatoir",
+  "lesson": 24,
+  "fr": "l'inscription obligatoire",
+  "zh": "必須報名",
+  "note": "s'inscrire＝報名；obligatoire＝強制的。à l'accueil＝在櫃台"
+ },
+ {
+  "id": "L24_la_guerre",
+  "lesson": 24,
+  "fr": "la guerre",
+  "zh": "戰爭",
+  "note": "⚠️ 今天問過。C'est la guerre.＝那是戰爭時期"
+ },
+ {
+  "id": "L24_un_général_l_armée",
+  "lesson": 24,
+  "fr": "un général / l'armée",
+  "zh": "將軍／軍隊",
+  "note": "De Gaulle 是 jeune général"
+ },
+ {
+  "id": "L24_les_coulisses",
+  "lesson": 24,
+  "fr": "les coulisses",
+  "zh": "幕後",
+  "note": "vivre les coulisses＝體驗幕後"
+ },
+ {
+  "id": "L24_les_artisans",
+  "lesson": 24,
+  "fr": "les artisans",
+  "zh": "職人、手工業者",
+  "note": "Parcours gourmand 那份文件的關鍵字"
+ },
+ {
+  "id": "L24_un_stage_professionnel",
+  "lesson": 24,
+  "fr": "un stage professionnel",
+  "zh": "實習",
+  "note": "faire un stage＝去實習；un(e) stagiaire＝實習生"
+ },
+ {
+  "id": "L24_une_exposition",
+  "lesson": 24,
+  "fr": "une exposition",
+  "zh": "展覽",
+  "note": "⭐ 選項會寫成 musée（博物館）"
+ },
+ {
+  "id": "L24_Comment_vas_tu_",
+  "lesson": 24,
+  "fr": "Comment vas-tu ?",
+  "zh": "你好嗎？",
+  "note": "⭐ 私人信件的開場固定句，另一句是 J'espère que tu vas bien"
+ },
+ {
+  "id": "L24_Bises_Je_t_embrasse",
+  "lesson": 24,
+  "fr": "Bises / Je t'embrasse",
+  "zh": "親親（信末問候）",
+  "note": "⭐ 熟人之間的結尾固定句，正式信不能用"
+ },
+ {
+  "id": "L24_Vous_ne_devez_pas_faire_",
+  "lesson": 24,
+  "fr": "Vous ne devez pas faire d'erreurs.",
+  "zh": "你不能出錯。",
+  "note": "🎙老師講這場考試的標準：資訊都在紙上，要全對"
+ },
+ {
+  "id": "L24_On_peut_sauter_et_reveni",
+  "lesson": 24,
+  "fr": "On peut sauter et revenir après.",
+  "zh": "可以先跳過，等一下再回來。",
+  "note": "🎙卡住時的正確動作——不要停在同一題"
+ },
+ {
+  "id": "L24_Il_faut_continuer_c_est",
+  "lesson": 24,
+  "fr": "Il faut continuer, c'est normal d'oublier.",
+  "zh": "要繼續下去，會忘記是正常的。",
+  "note": "🎙學得快就一直有新字進來，忘記不是退步"
+ },
+ {
+  "id": "L24_Je_peux_t_envoyer_ce_liv",
+  "lesson": 24,
+  "fr": "Je peux t'envoyer ce livre aussi.",
+  "zh": "我也可以把這本書寄給你。",
+  "note": "🎙envoyer＝寄送"
+ },
 ];

@@ -152,6 +152,31 @@
     .fr { font-weight: 600; color: #2c2c2c; min-width: 200px; }
     .zh { color: #666; }
 
+    /* 2026-08-16：span.note 跟 div.note（黃色注意框）共用同一個 class 名，
+       所以每一則條列的備注都被套上黃底＋左金線＋整塊撐滿，🔊 被擠到下一行單獨站著。
+       從第 3 課就這樣，check_notes.js 抓不到（它只檢查 class 有沒有定義、不檢查撞名）。
+       這裡把 phrase-list 裡的行內備注拉回灰色小字，並讓它能收縮，
+       這樣 fr／zh／note／🔊 會排在同一列——跟表格的視覺一致。
+       ⚠️ 不要改成 .note{} 本身，那會把整站的黃色注意框一起弄壞。 */
+    .phrase-list li > span.note {
+      background: none;
+      border-left: none;
+      border-radius: 0;
+      padding: 0;
+      margin-bottom: 0;
+      flex: 1 1 240px;
+      min-width: 0;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #888;
+    }
+    /* 🔊 排在法文正後方（跟表格裡「法文格＋喇叭」的位置一致），
+       備注排最後——備注太長換行時，喇叭才不會被拖到下一行落單。 */
+    .phrase-list li > span.fr   { order: 0; }
+    .phrase-list li > .tts-btn  { order: 1; }
+    .phrase-list li > span.zh   { order: 2; }
+    .phrase-list li > span.note { order: 3; }
+
     @media (max-width: 540px) {
       .phrase-list li {
         flex-wrap: wrap;
@@ -3737,7 +3762,7 @@
       <li>Imparfait：<span class="fr">Il fallait porter un maillot de bain.</span> <span class="zh">（當時）必須穿泳衣</span></li>
       <li>Passé composé：<span class="fr">Il a fallu attendre.</span> <span class="zh">（那次）必須等待</span></li>
     </ul>
-    <div class="aNote">⚠️ falloir 只有 il（永遠不說 je faut / tu faut）；devoir 則所有人稱都可以用</div>
+    <div class="note">⚠️ falloir 只有 il（永遠不說 je faut / tu faut）；devoir 則所有人稱都可以用</div>
   </div>
 </div>
 
@@ -3763,7 +3788,7 @@
       <li><span class="fr">Courir 30 minutes !</span><span class="zh">跑步30分鐘！（命令式）</span></li>
       <li><span class="fr">Il faut bouger plus.</span><span class="zh">要多動（通則建議）</span></li>
     </ul>
-    <div class="aNote">⚠️ 命令式 ne pas + infinitif 表示禁止：<span class="fr">Ne pas utiliser son téléphone.</span></div>
+    <div class="note">⚠️ 命令式 ne pas + infinitif 表示禁止：<span class="fr">Ne pas utiliser son téléphone.</span></div>
   </div>
 </div>
 
@@ -3794,7 +3819,7 @@
   <div class="note-box">
     <b>重要句型：</b>
     <ul class="phrase-list">
-      <li><span class="fr">Bouger plus !</span><span class="zh">多動！</span><span class="aNote"> bouger = 移動；口語「Bouge pas」= 別動</span></li>
+      <li><span class="fr">Bouger plus !</span><span class="zh">多動！</span><span class="note"> bouger = 移動；口語「Bouge pas」= 別動</span></li>
       <li><span class="fr">Pour votre santé, bougez plus !</span><span class="zh">為了您的健康，多動！（法國政府廣告語）</span></li>
       <li><span class="fr">perdre des calories</span><span class="zh">燃燒卡路里</span></li>
       <li><span class="fr">entre 300 et 450 calories</span><span class="zh">300到450卡路里之間</span></li>
@@ -7346,6 +7371,438 @@
     <li><span class="fr">ma sœur vit dans un studio ___ mes parents ont acheté 想填 où</span><span class="zh">同一個陷阱</span><span class="note">買的是「那間房」＝受詞 → <b>que</b>。判準永遠是「子句裡缺主詞還是缺受詞」，不是先行詞看起來像不像地方</span></li>
     <li><span class="fr">étage 的樓層換算</span><span class="zh">au quatrième étage 到底是幾樓</span><span class="note">法國的 premier étage＝台灣二樓，所以 quatrième étage＝台灣五樓。地面層叫 rez-de-chaussée</span></li>
     <li><span class="fr">neuf 只想到數字 9</span><span class="zh">看到 maison neuve 愣住</span><span class="note">neuf 同時是「9」和「全新的」。看位置：在名詞後面當形容詞就是「全新」</span></li>
+  </ul>
+</div>
+
+</details>
+
+<details class="lesson-group" id="lesson-24" open>
+<summary><span class="summary-num">第24課</span><span class="summary-title">【A2・DELF A2 閱讀實戰：四種題型・老師的五條解題法・考試指令動詞・時刻兩套說法・運動與餐廳廣告詞彙】</span></summary>
+
+<div class="note">
+  <strong>本課範圍：</strong>這堂<b>不是課本新課，是考試訓練</b>——老師拿《Le DELF A2 100% réussite》帶你跑一次 <b>compréhension des écrits（閱讀）</b>。重點有兩層：①<b>解題方法</b>（怎麼在不完全看懂的情況下把分數拿滿）②<b>題目裡反覆出現的詞彙</b>（指令動詞、時刻、價格週期、運動、餐廳）。老師講得很直白：<b>這種題型不能錯，要拿滿分</b>——因為資訊都在紙上，考的是你會不會找。
+</div>
+
+<!-- 考試結構 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第24課 🎯</span>
+    <span class="unit-title">DELF A2 的四張考卷——先知道自己在打哪一場</span>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">Les quatre épreuves du DELF A2</div>
+  <table>
+    <tr><th>法文</th><th>中文</th><th>備注</th></tr>
+    <tr><td class="m">la compréhension orale</td><td>聽力理解</td><td>課本同一系列有音檔，掃 QR 就能練</td></tr>
+    <tr><td class="m">la compréhension écrite (des écrits)</td><td>閱讀理解</td><td>⭐ <b>今天練的就是這場</b></td></tr>
+    <tr><td class="m">la production écrite</td><td>寫作產出</td><td>—</td></tr>
+    <tr><td class="m">la production orale</td><td>口說產出</td><td>老師：這兩場（口說／寫作）是我們可以一起練的</td></tr>
+    <tr><td class="m">une épreuve</td><td>一場考試、一個測驗項目</td><td>⚠️ 不是「經驗」（那是 expérience）</td></tr>
+  </table>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">閱讀這一場的四種題型（順序固定，認出題型就知道怎麼下手）</div>
+  <table>
+    <tr><th>法文題型名</th><th>文件長什麼樣</th><th>要你做什麼</th></tr>
+    <tr><td class="m">Lire pour s'orienter</td><td>時刻表、節目表、廣告、行程表</td><td>找出<b>數字型資訊</b>：幾點、多少錢、幾歲、哪一天</td></tr>
+    <tr><td class="m">Lire des instructions</td><td>規則、告示、說明</td><td>看懂<b>能做什麼／不能做什麼</b>（défense de…、il faut…）</td></tr>
+    <tr><td class="m">Lire une correspondance</td><td>明信片、私人 email</td><td>從一段私人訊息裡抓事實（人在哪、住哪、幾點做什麼）</td></tr>
+    <tr><td class="m">Associer documents et personnes</td><td>6 份小廣告 ＋ 6–8 個人</td><td><b>配對</b>：每個人該去哪一份</td></tr>
+  </table>
+  </div>
+  <div class="note">
+    💡 <b>老師的整體判斷：</b>A2 這場閱讀<b>不難，但要全對</b>。答案全部寫在文件上，沒有推理、沒有言外之意——錯了就是「沒找到」或「看錯字」。<b>B2 才是真的難</b>（文章長、主題抽象，像「該不該當數位遊牧」那種），要靠速讀跟直接定位。
+  </div>
+</div>
+
+<!-- ⭐⭐⭐ 解題法 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第24課 ⭐⭐⭐</span>
+    <span class="unit-title">老師的五條解題法（考試現場就照這個跑）</span>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">老師的五條解題法（照順序跑）</div>
+  <table>
+    <tr><th>法文</th><th>中文</th><th>為什麼／怎麼用</th></tr>
+    <tr><td class="m">Lisez d'abord les questions.</td><td>先讀題目。</td><td>⭐⭐⭐ 老師的 <b>number one rule</b>：先看題目才知道要去哪裡找。先讀文章＝浪費時間又記不住</td></tr>
+    <tr><td class="m">Entourez tous les chiffres.</td><td>把所有數字圈起來。</td><td>①型題目全靠數字：heure／âge／tarif／date。先圈，眼睛就不用重找</td></tr>
+    <tr><td class="m">Repérez les mots-clés.</td><td>找出關鍵字。</td><td>每份文件只抓三個：什麼活動／什麼時候／叫什麼名字</td></tr>
+    <tr><td class="m">Essayez de comprendre grâce aux autres mots.</td><td>用旁邊的字去猜。</td><td>課本原句前半：Si vous ne connaissez pas un mot, ne vous inquiétez pas</td></tr>
+    <tr><td class="m">Éliminez ce qui est sûrement faux.</td><td>先把確定不是的刪掉。</td><td>配對題文件數跟人數不一樣，一定有用不到的 → 刪去法</td></tr>
+  </table>
+  </div>
+  <div class="note">
+    🎯 <b>今天實際發生的一次示範（值得記住）：</b>Exercice 2 的 <span class="fr-ex">Chaussez vos patins !</span> 你第一直覺選了 Peter（愛山、愛攀爬），但正解是 Kristel（愛冬季運動）。<b>卡住的原因不是推理錯，是不認識 patin（冰刀）</b>。老師的處理方式不是叫你去查字典，是<b>先跳過去看下一份</b>——等到 escalade／sommet 那份確定給了 Peter、剩下的自然就對上了。<b>看不懂的那一份，留到最後用刪去法解決。</b>
+  </div>
+  <div class="note-box">
+    <b>📌 課本自己的 PRÊT POUR L'EXAMEN 三條（跟老師講的同一件事）：</b>
+    <ul class="phrase-list">
+      <li><span class="fr">Lire les textes plusieurs fois.</span><span class="zh">文章要讀好幾次。</span><span class="note">短文件很短，讀第二次的成本很低，但漏看的代價是整題</span></li>
+      <li><span class="fr">Repérer les mots-clés.</span><span class="zh">找出關鍵字。</span></li>
+      <li><span class="fr">Faire des associations entre les divers documents.</span><span class="zh">在不同文件之間建立連結。</span><span class="note">配對題是「互相比較」出來的，不是一份一份獨立判斷</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 指令動詞 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第24課 ⭐⭐</span>
+    <span class="unit-title">Les consignes——考試指令動詞（看不懂指令＝直接失分）</span>
+  </div>
+  <div class="note">
+    <strong>為什麼獨立一節：</strong>這些字<b>不會出現在題目答案裡，只出現在指示句</b>，所以平常上課不太練到，但看錯一個就整題做錯方向。它們幾乎都是<b>命令式 vous 形</b>（-ez 結尾）。
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">Les consignes de l'examen</div>
+  <table>
+    <tr><th>法文</th><th>中文</th><th>備注</th></tr>
+    <tr><td class="m">Lisez…</td><td>請閱讀…</td><td>lire</td></tr>
+    <tr><td class="m">Observez…</td><td>請觀察…</td><td>用在圖表、時刻表這種要用看的文件</td></tr>
+    <tr><td class="m">Répondez aux questions.</td><td>請回答問題。</td><td>répondre <b>à</b> — 介詞是 à，aux questions</td></tr>
+    <tr><td class="m">Entourez…</td><td>請圈起來</td><td>⚠️ 今天卡過：來自 <b>tour</b>（圈、繞一圈）→ entourer＝畫一圈把它圍住</td></tr>
+    <tr><td class="m">Repérez…</td><td>請找出、請定位</td><td>⚠️ 不是「修理」（那是 réparer）。repérer＝在一堆東西裡把它認出來</td></tr>
+    <tr><td class="m">Complétez le tableau.</td><td>請填表。</td><td>le tableau＝表格（也是「畫作」「黑板」）</td></tr>
+    <tr><td class="m">Associez A à B.</td><td>請把 A 跟 B 配對。</td><td>④型配對題的固定指令</td></tr>
+    <tr><td class="m">Cochez la bonne réponse.</td><td>請勾選正確答案。</td><td>cocher＝打勾。新版 A2 <b>全部是選擇題</b></td></tr>
+    <tr><td class="m">Choisissez…</td><td>請選擇…</td><td>choisir</td></tr>
+  </table>
+  </div>
+  <div class="note-box">
+    <b>⚠️ 兩個長很像但意思不同的字：</b>
+    <ul class="phrase-list">
+      <li><span class="fr">s'entraîner</span><span class="zh">訓練、操練</span><span class="note">課本章名 <b>S'ENTRAÎNER</b>＝做題訓練。同字根 un entraîneur＝教練</span></li>
+      <li><span class="fr">se préparer</span><span class="zh">準備</span><span class="note">課本另一章名 <b>SE PRÉPARER</b>＝學方法、打底。老師特別分：préparer 是學怎麼做，entraîner 是實際下去練</span></li>
+      <li><span class="fr">une activité ≠ une épreuve ≠ un exercice</span><span class="zh">練習活動／考試項目／習題</span><span class="note">課本的 Activité 是暖身、Exercice 是仿真題、Épreuve 是真正的一場考試</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 時刻 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第24課 🕐</span>
+    <span class="unit-title">L'heure——兩套報時法，考試給你的是官方版</span>
+  </div>
+  <div class="note">
+    <strong>核心：</strong>法文報時有<b>兩套系統</b>。考卷、電視表、車票一律用<b>官方版（24 小時制，直接唸數字）</b>；講話時用<b>口語版（12 小時制，會用 et quart／et demie／moins le quart）</b>。<b>兩套都要能聽懂，因為題目寫官方版、老師問你的時候用口語版。</b>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">同一個時間的兩種說法</div>
+  <table>
+    <tr><th>寫成</th><th>官方版（考卷／電視表）</th><th>口語版（日常對話）</th></tr>
+    <tr><td>13 h 00</td><td class="m">treize heures</td><td class="m">une heure (de l'après-midi)</td></tr>
+    <tr><td>13 h 45</td><td class="m">treize heures quarante-cinq</td><td class="m">deux heures moins le quart</td></tr>
+    <tr><td>13 h 30</td><td class="m">treize heures trente</td><td class="m">une heure et demie</td></tr>
+    <tr><td>14 h 15</td><td class="m">quatorze heures quinze</td><td class="m">deux heures et quart</td></tr>
+    <tr><td>14 h 50</td><td class="m">quatorze heures cinquante</td><td class="m">trois heures moins dix</td></tr>
+  </table>
+  </div>
+  <div class="note-box">
+    <b>⚠️ 老師當場糾正你的兩件事：</b>
+    <ul class="phrase-list">
+      <li><span class="fr">quatorze heures moins le quart</span><span class="zh">差一刻兩點（＝13h45）</span><span class="note">⚠️ 你講成 moins et demie。le quart＝15分、la demie＝30分</span></li>
+      <li><span class="fr">une heure et demie</span><span class="zh">一點半</span><span class="note">⚠️⚠️ 老師：到半點就不能用 moins，一律 et demie。moins 只用在過半之後</span></li>
+    </ul>
+  </div>
+  <div class="note">
+    💡 <b>怎麼想才不用每次重算：</b>指針過半之前用 <b>et</b>（往前加：et quart／et demie／et vingt），過半之後改成<b>看下一個整點還差多少</b>用 <b>moins</b>。<b>半點是分界線本身，所以它屬於「et」那一邊。</b>
+  </div>
+</div>
+
+<!-- 價格與週期 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第24課 💶</span>
+    <span class="unit-title">Les tarifs——價格與週期（廣告題一定考的換算）</span>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">Le tarif et la période</div>
+  <table>
+    <tr><th>法文</th><th>中文</th><th>備注</th></tr>
+    <tr><td class="m">le tarif / le prix</td><td>費用／價格</td><td>廣告上寫 <b>Tarif :</b>，表格欄位也叫 Tarif / Prix</td></tr>
+    <tr><td class="m">par an</td><td>每年</td><td>300 € par an＝一年 300 歐</td></tr>
+    <tr><td class="m">par mois</td><td>每月</td><td>15 € par mois → 一年是 <b>cent quatre-vingts</b> 歐（180）</td></tr>
+    <tr><td class="m">par trimestre</td><td>每季</td><td>⚠️ 見下方 trimestre vs semestre</td></tr>
+    <tr><td class="m">le moins cher</td><td>最便宜的</td><td>⭐ 廣告題必考：<b>Quel est le séjour le moins cher ?</b></td></tr>
+    <tr><td class="m">à partir de</td><td>從…起（起跳）</td><td>⚠️ 今天卡過。<b>à partir de 8 ans</b>＝8 歲以上；<b>à partir de 899 €</b>＝899 歐起</td></tr>
+    <tr><td class="m">de 5 à 77 ans</td><td>5 到 77 歲</td><td>年齡區間的另一種寫法</td></tr>
+    <tr><td class="m">tout compris</td><td>全部包含</td><td>跟第23課的 <b>charges comprises</b> 同一個 comprendre＝包含</td></tr>
+    <tr><td class="m">hors transport</td><td>不含交通</td><td>⚠️ <b>hors</b>＝在…之外 → 這項要另外付。跟 tout compris 剛好相反</td></tr>
+  </table>
+  </div>
+  <div class="note-box">
+    <b>⚠️ trimestre vs semestre——法國學制跟台灣不一樣（老師花了一段講）：</b>
+    <ul class="phrase-list">
+      <li><span class="fr">un trimestre</span><span class="zh">一季（三個月）</span><span class="note">tri-＝三 → 一年有 <b>quatre trimestres</b>。但<b>法國的學校一年只跑三個 trimestre</b>（第四季是放假）</span></li>
+      <li><span class="fr">un semestre</span><span class="zh">一學期（半年）</span><span class="note">semi-＝半 → 一年兩個。<b>台灣的學校是這種</b></span></li>
+      <li><span class="fr">75 € par trimestre</span><span class="zh">每季 75 歐</span><span class="note">⚠️ 你一開始把 trimestre 想成半年。看到 par trimestre 要先問「一年幾個」才能比價</span></li>
+    </ul>
+    <b>💡 為什麼要換算：</b>題目問「哪個最便宜」時，各家寫的週期不一樣（par an／par mois／par trimestre），<b>不換成同一個單位就比不出來</b>——這就是這題真正在考的東西。
+  </div>
+  <div class="note">
+    ⚠️ <b>數字上的一個小糾正：</b>100 是 <span class="fr-ex">cent</span>，<b>不說 un cent</b>（跟 mille 一樣，前面不加 un）。180＝<span class="fr-ex">cent quatre-vingts</span>。
+  </div>
+</div>
+
+<!-- 電視節目 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第24課 📺</span>
+    <span class="unit-title">La télévision——節目表題型的詞彙（Activité 1）</span>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">Les programmes télé</div>
+  <table>
+    <tr><th>法文</th><th>詞性</th><th>中文</th><th>備注</th></tr>
+    <tr><td class="m">la chaîne</td><td>n.f.</td><td>頻道</td><td>⚠️ 一字多義：也是「鏈子」。<b>Quelle chaîne propose… ?</b>＝哪一台有…</td></tr>
+    <tr><td class="m">le journal</td><td>n.m.</td><td>新聞（節目）；報紙</td><td>電視表上的 Le journal 是新聞時段，不是報紙</td></tr>
+    <tr><td class="m">la météo</td><td>n.f.</td><td>氣象</td><td>第22課學過</td></tr>
+    <tr><td class="m">une émission</td><td>n.f.</td><td>節目（泛稱）</td><td>une émission sur le sport＝運動節目；une émission musicale＝音樂節目</td></tr>
+    <tr><td class="m">un jeu</td><td>n.m.</td><td>遊戲節目</td><td>複數 des jeu<b>x</b>。題目問 une émission de jeux＝益智／猜謎節目</td></tr>
+    <tr><td class="m">une série</td><td>n.f.</td><td>影集</td><td>—</td></tr>
+    <tr><td class="m">un téléfilm</td><td>n.m.</td><td>電視電影</td><td>為電視拍的單集電影，跟 série 不同</td></tr>
+    <tr><td class="m">un magazine littéraire</td><td>n.m.</td><td>文學節目</td><td>⚠️ magazine 在這裡是「專題節目」不是雜誌</td></tr>
+    <tr><td class="m">proposer</td><td>v.</td><td>提供（讓人選）</td><td>⭐ 老師解釋：proposer 是<b>把選項擺出來讓對方挑</b>，跟英文 propose 一樣</td></tr>
+  </table>
+  </div>
+  <div class="note-box">
+    <b>🇫🇷 該知道的文化常識（老師說「這是你自己該有的知識」）：</b>
+    <ul class="phrase-list">
+      <li><span class="fr">TF1</span><span class="zh">法國第一大電視台</span><span class="note">私營，自成一家（son propre groupe）</span></li>
+      <li><span class="fr">France 2 / France 3 / France 5</span><span class="zh">法國公共電視集團</span><span class="note">同一個集團的不同頻道，考題最常拿 TF1／France 2／France 3 三台做對照</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 運動 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第24課 🏃</span>
+    <span class="unit-title">Le sport——配對題的六份運動廣告（Exercice 2）</span>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">Les sports et les lieux</div>
+  <table>
+    <tr><th>法文</th><th>中文</th><th>備注</th></tr>
+    <tr><td class="m">la patinoire</td><td>溜冰場</td><td>⚠️ 今天答錯的那題。字根 <b>patin</b>（冰刀鞋）→ patiner（溜冰）→ patinoire（場地）</td></tr>
+    <tr><td class="m">chausser ses patins</td><td>穿上冰刀鞋</td><td>chausser＝穿（鞋）；la chaussure＝鞋子</td></tr>
+    <tr><td class="m">glisser</td><td>滑</td><td>⭐ 判斷「冬季運動」的關鍵字：<b>les sports d'hiver</b>＋glisser</td></tr>
+    <tr><td class="m">l'escalade (f.) / grimper</td><td>攀岩／攀爬</td><td>escalade 是名詞、grimper 是動詞，<b>兩個都是往上爬</b></td></tr>
+    <tr><td class="m">le sommet</td><td>山頂</td><td>第21、22課出現過。En route pour les sommets＝往山頂前進</td></tr>
+    <tr><td class="m">sans corde / une paroi / un tapis</td><td>不用繩子／岩壁／墊子</td><td>抱石攀岩的三個字，湊起來就知道是室內攀岩</td></tr>
+    <tr><td class="m">la randonnée</td><td>健行</td><td>可以在山上也可以在鄉間；<b>randonnée dans la campagne</b> 就是鄉間健行</td></tr>
+    <tr><td class="m">la promenade / se promener</td><td>散步</td><td>比 randonnée 輕鬆，第21課學過</td></tr>
+    <tr><td class="m">le vélodrome</td><td>自行車場</td><td>-drome＝場地（跟 aérodrome 同構）</td></tr>
+    <tr><td class="m">se déplacer (à vélo)</td><td>（騎車）移動、通勤</td><td>Manuel se déplace toujours à vélo＝他到哪都騎車</td></tr>
+    <tr><td class="m">foncer</td><td>衝、飆</td><td>Foncez au vélodrome !＝衝去自行車場吧！</td></tr>
+    <tr><td class="m">les sensations fortes</td><td>強烈刺激</td><td>⭐ 廣告在講刺激型運動的固定說法</td></tr>
+    <tr><td class="m">nager / la nage</td><td>游泳（動詞／名詞）</td><td>la natation 是運動項目名；nager en extérieur＝在戶外游</td></tr>
+    <tr><td class="m">les milieux naturels : rivières et lacs</td><td>自然水域：河流與湖泊</td><td>⭐ 判斷「野泳」而不是泳池的關鍵字</td></tr>
+    <tr><td class="m">les sports automobiles</td><td>賽車運動</td><td>automobile＝汽車（moto 才是機車）</td></tr>
+    <tr><td class="m">en famille</td><td>全家一起</td><td>⭐ Paloma veut un sport calme en famille → 對上 gym suédoise famille du dimanche</td></tr>
+  </table>
+  </div>
+  <div class="note">
+    🔍 <b>這題的配對邏輯（老師示範的思路）：</b>每個人的描述裡都藏一個<b>詞根線索</b>，跟廣告裡的字對上就行——<span class="fr-ex">grimper</span> 對 <span class="fr-ex">escalade</span>、<span class="fr-ex">sports d'hiver</span> 對 <span class="fr-ex">patinoire</span>、<span class="fr-ex">promenades</span> 對 <span class="fr-ex">randonnées</span>、<span class="fr-ex">sports aquatiques</span> 對 <span class="fr-ex">nager</span>。<b>不是讀懂整份廣告，是找那一個對得上的字。</b>
+  </div>
+</div>
+
+<!-- 餐廳 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第24課 🍽</span>
+    <span class="unit-title">Les restaurants——配對題的六份餐廳描述（Exercice 3）</span>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">Décrire un restaurant</div>
+  <table>
+    <tr><th>法文</th><th>中文</th><th>備注</th></tr>
+    <tr><td class="m">accueillir</td><td>容納、接待</td><td>peut accueillir plus de 20 personnes＝可容納 20 人以上。⭐ 人數多的關鍵字</td></tr>
+    <tr><td class="m">une cuisine régionale</td><td>地方菜</td><td>對照 <b>des plats étrangers</b>（外國菜）</td></tr>
+    <tr><td class="m">des plats étrangers</td><td>外國菜</td><td>étranger＝外國的；跟 <b>du monde entier</b>（全世界的）指同一件事</td></tr>
+    <tr><td class="m">le monde entier</td><td>全世界</td><td>⚠️ 別跟 <b>tout le monde</b>（大家、每個人）搞混——差一個 tout 意思差很多</td></tr>
+    <tr><td class="m">exotique</td><td>異國風的</td><td>老師：法文的 exotique 是「來自遠方的、不是本地的」</td></tr>
+    <tr><td class="m">à base de viande</td><td>以肉為基底的</td><td>⭐ 素食者那題的排除線索：à base de viande → 一定不是給 végétarienne 的</td></tr>
+    <tr><td class="m">végétarien(ne)</td><td>素食的（人）</td><td>—</td></tr>
+    <tr><td class="m">la cuisine méditerranéenne</td><td>地中海料理</td><td>la Méditerranée＝地中海</td></tr>
+    <tr><td class="m">un spectacle</td><td>表演、秀</td><td>un spectacle de danse＝舞蹈表演；<b>assister à un spectacle</b>＝觀賞表演</td></tr>
+    <tr><td class="m">un concert tous les soirs</td><td>每晚有演唱會</td><td>⭐ 「想邊吃邊聽音樂」那位的線索</td></tr>
+    <tr><td class="m">chaleureux / chaleureuse</td><td>熱情的、溫馨的</td><td>來自 chaleur（熱，第22課）→ 形容氣氛</td></tr>
+    <tr><td class="m">en plein centre-ville</td><td>就在市中心</td><td>en plein＝正在…的正中央（en pleine nature＝在大自然裡）</td></tr>
+    <tr><td class="m">une connexion à Internet gratuite</td><td>免費網路</td><td>⚠️ gratuit＝免費（第23課才分過 gratuit ≠ disponible）</td></tr>
+  </table>
+  </div>
+  <div class="note-box">
+    <b>⚠️ goûter 的兩個身分（老師特別停下來講）：</b>
+    <ul class="phrase-list">
+      <li><span class="fr">goûter</span><span class="zh">（動詞）品嘗</span><span class="note">venez goûter des plats originaux＝來嘗嘗特別的菜</span></li>
+      <li><span class="fr">le goûter</span><span class="zh">（名詞）下午點心時間</span><span class="note">⭐ 法國小孩放學後約<b>四點</b>吃的那一餐，介於午餐和晚餐之間</span></li>
+      <li><span class="fr">un lieu pour goûter avec ses enfants</span><span class="zh">可以帶小孩吃下午茶的地方</span><span class="note">⚠️ 這句裡的 goûter 是<b>下午茶</b>不是「品嘗」——判斷靠 avec ses enfants</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 行程與活動 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第24課 🗝</span>
+    <span class="unit-title">Repérer les mots-clés——行程與文化活動（Activité 4、5）</span>
+  </div>
+  <div class="note">
+    <strong>練法：</strong>一份文件只圈<b>三個關鍵字</b>，訓練「不讀完也能答」。行程看 <b>價格／活動／日期區間</b>；文化活動看 <b>類型／日期／名稱</b>。
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">Un séjour（旅遊行程廣告）</div>
+  <table>
+    <tr><th>法文</th><th>中文</th><th>備注</th></tr>
+    <tr><td class="m">un séjour</td><td>行程、一段停留</td><td>來自 séjourner（停留）。第23課的 le séjour 是「客廳」——<b>同字兩義</b></td></tr>
+    <tr><td class="m">7 jours / 6 nuits</td><td>七天六夜</td><td>廣告固定寫法</td></tr>
+    <tr><td class="m">départ possible du 21/02 au 13/03</td><td>可出發日期：2/21～3/13</td><td>⭐ 「你 3/6–3/13 有空可以選哪個」就是在考這一行</td></tr>
+    <tr><td class="m">disponible</td><td>有空的</td><td>第23課學過（那時是「可入住」），這裡是<b>人有空</b></td></tr>
+    <tr><td class="m">les raquettes à neige</td><td>雪鞋</td><td>raquette 也是球拍——形狀像所以共用一個字</td></tr>
+    <tr><td class="m">le ski de randonnée nordique</td><td>北歐式越野滑雪</td><td>⭐ 「想滑雪」那題的唯一線索</td></tr>
+    <tr><td class="m">les chiens de traîneau</td><td>狗拉雪橇</td><td>—</td></tr>
+    <tr><td class="m">un séjour en itinérance</td><td>移動式行程（每天換地方）</td><td>—</td></tr>
+    <tr><td class="m">l'intensité physique</td><td>體力強度</td><td>廣告用方格數表示</td></tr>
+  </table>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">Un programme culturel（文化活動節目單）</div>
+  <table>
+    <tr><th>法文</th><th>中文</th><th>備注</th></tr>
+    <tr><td class="m">un film historique</td><td>歷史片</td><td>其他類型：une comédie（喜劇）、un drame（劇情片）</td></tr>
+    <tr><td class="m">réalisé par…</td><td>由…執導</td><td>le réalisateur＝導演</td></tr>
+    <tr><td class="m">avec…</td><td>主演…</td><td>節目單上 Avec 後面接演員</td></tr>
+    <tr><td class="m">une visite guidée</td><td>導覽參觀</td><td>guidée＝有人帶的。<b>visite guidée en français</b>＝法語導覽</td></tr>
+    <tr><td class="m">l'inscription obligatoire</td><td>必須報名</td><td>s'inscrire＝報名；obligatoire＝強制的</td></tr>
+    <tr><td class="m">à l'accueil</td><td>在櫃台／服務處</td><td>accueil 跟 accueillir 同字根</td></tr>
+    <tr><td class="m">la guerre</td><td>戰爭</td><td>⚠️ 今天問過。C'est la guerre.＝那是戰爭時期</td></tr>
+    <tr><td class="m">un général / l'armée</td><td>將軍／軍隊</td><td>De Gaulle 是 jeune général</td></tr>
+    <tr><td class="m">les artisans</td><td>職人、手工業者</td><td>Parcours gourmand 那份的關鍵字</td></tr>
+    <tr><td class="m">les coulisses</td><td>幕後</td><td>vivre les coulisses＝體驗幕後</td></tr>
+  </table>
+  </div>
+  <div class="note-box">
+    <b>🇫🇷 文化常識（老師補充）：</b>
+    <ul class="phrase-list">
+      <li><span class="fr">Charles de Gaulle</span><span class="zh">戴高樂</span><span class="note">法國前總統，把戰後法國帶起來的人。<b>巴黎機場 CDG 就是以他命名</b>——法文唸「de-GOL」，不是英文的唸法</span></li>
+      <li><span class="fr">l'Alliance française</span><span class="zh">法國文化協會</span><span class="note">全球推廣法語與法國文化的機構，也是辦 DELF 考試的單位之一</span></li>
+      <li><span class="fr">François Truffaut</span><span class="zh">楚浮</span><span class="note">法國新浪潮導演，節目表上出現的 <b>film de François Truffaut</b> 是常識級的名字</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 私人訊息 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第24課 ✉️</span>
+    <span class="unit-title">Lire une correspondance——明信片／私人訊息怎麼讀（Exercice 5）</span>
+  </div>
+  <div class="note">
+    <strong>題型長相：</strong>一張明信片或一封短信，下面 6 題選擇（每題 1 分）。問的都是<b>事實</b>：人在哪個國家、住誰家、在哪上班、什麼時段做什麼、怎麼去下一個地方。<b>三個選項通常都是文章裡出現過的字</b>——所以不能看到就選，要看它在句子裡扮演什麼角色。
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">這題型的專用陷阱（今天全部踩過一次）</div>
+  <table>
+    <tr><th>文章寫的</th><th>中文</th><th>陷阱在哪</th></tr>
+    <tr><td class="m">chez des amis de mes parents</td><td>住在父母的朋友家</td><td>⚠️ 選項有「住家人家」。文章出現 parents，但住的是他們的<b>朋友</b>——<b>字有出現不等於是答案</b></td></tr>
+    <tr><td class="m">France / Canada / États-Unis</td><td>文章提到三個國家</td><td>她的國家／人在的地方／週末要去玩的地方。問「她在哪」要找<b>現在人在哪</b></td></tr>
+    <tr><td class="m">je pars avec lui au travail en voiture</td><td>我跟他開車去上班</td><td>⚠️ 三個交通工具各去不同地方：voiture→上班、bus→紐約、avion→回家。<b>要看目的地</b></td></tr>
+    <tr><td class="m">l'après-midi, je vais voir des expositions</td><td>下午我去看展覽</td><td>兩題連著考：先問時段（après-midi），再問景點（exposition→musée）。<b>第二題的答案藏在第一題那句裡</b></td></tr>
+  </table>
+  </div>
+  <div class="compare-table">
+    <div class="compare-title">私人信件的詞彙與結構</div>
+  <table>
+    <tr><th>法文</th><th>中文</th><th>備注</th></tr>
+    <tr><td class="m">un stage (professionnel)</td><td>實習</td><td>faire un stage＝去實習；un(e) stagiaire＝實習生（第18課學過）</td></tr>
+    <tr><td class="m">une exposition</td><td>展覽</td><td>⭐ 對應選項的 <b>musée</b>（博物館）</td></tr>
+    <tr><td class="m">le fleuve</td><td>大河（流入海的）</td><td>le fleuve Saint-Laurent＝聖羅倫斯河。⚠️ 支流叫 la rivière</td></tr>
+    <tr><td class="m">un(e) collègue</td><td>同事</td><td>第16課學過</td></tr>
+    <tr><td class="m">Comment vas-tu ?</td><td>你好嗎？</td><td>⭐ 私人信件的<b>開場固定句</b>，另一個常見的是 J'espère que tu vas bien</td></tr>
+    <tr><td class="m">Bises / Je t'embrasse</td><td>親親（信末問候）</td><td>⭐ 熟人之間的<b>結尾固定句</b>，正式信不能用</td></tr>
+  </table>
+  </div>
+  <div class="note">
+    ✍️ <b>老師提醒的一件事：</b>法國人寫信<b>非常講究客套</b>——開頭一句問候、結尾一句祝福是必備的，<b>不是可有可無的裝飾</b>。這在寫作那一場（production écrite）會直接算分。
+  </div>
+</div>
+
+<!-- 平行閱讀 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第24課 📖</span>
+    <span class="unit-title">平行閱讀：用今天的方法讀一份自製節目表（可整段讀完）</span>
+  </div>
+  <div class="note">
+    這篇用本課的指令動詞、時刻、價格週期與活動詞彙寫成，程度對齊 A2。<b>照五條解題法讀：先看最後三句問題，再回頭找。</b>同一份也放進 <b>閱讀理解</b>（a25）。
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">Observez le programme de la Maison de la culture et répondez aux questions.</span><span class="zh">請看文化中心的節目表並回答問題。</span><span class="note">⭐ 指令句：observer＋répondre à</span></li>
+    <li><span class="fr">Cours de danse : le mardi à 18 h 30, à partir de 12 ans, 240 € par an.</span><span class="zh">舞蹈課：週二 18:30，12 歲以上，一年 240 歐。</span><span class="note">à partir de＝起跳；par an＝每年</span></li>
+    <li><span class="fr">Atelier de cuisine : le samedi à 14 h 45, de 8 à 77 ans, 25 € par mois.</span><span class="zh">烹飪工作坊：週六 14:45，8 到 77 歲，每月 25 歐。</span><span class="note">14 h 45 口語說 trois heures moins le quart（差一刻三點）</span></li>
+    <li><span class="fr">Club de natation : le dimanche à 9 h 00, à partir de 6 mois, 120 € par trimestre.</span><span class="zh">游泳社：週日 9:00，6 個月大以上，每季 120 歐。</span><span class="note">⚠️ par trimestre → 一年要乘以幾？先換算再比價</span></li>
+    <li><span class="fr">Visite guidée du musée : le jeudi à 13 h 15, tout compris, inscription obligatoire à l'accueil.</span><span class="zh">博物館導覽：週四 13:15，全部包含，須在櫃台報名。</span><span class="note">tout compris＝全包；inscription obligatoire＝必須報名</span></li>
+    <li><span class="fr">Quelle activité propose-t-on le week-end ?</span><span class="zh">週末有哪些活動？</span><span class="note">proposer＝提供選擇；le week-end＝samedi et dimanche</span></li>
+    <li><span class="fr">Quelle activité est la moins chère par an ?</span><span class="zh">哪個活動一年最便宜？</span><span class="note">⭐ le moins cher＋換算成 par an 才比得出來</span></li>
+    <li><span class="fr">À quelle heure commence l'atelier de cuisine ?</span><span class="zh">烹飪工作坊幾點開始？</span><span class="note">答案就在表上，考的是你會不會定位</span></li>
+  </ul>
+</div>
+
+<!-- 老師課堂法語 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第24課 🎙</span>
+    <span class="unit-title">老師課堂法語（真實口語，值得整句背）</span>
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">Lisez d'abord les questions.</span><span class="zh">先讀題目。</span><span class="note">🎙老師反覆講的第一鐵律</span></li>
+    <li><span class="fr">Entourez tous les chiffres.</span><span class="zh">把所有數字圈起來。</span><span class="note">🎙entourer＝畫圈圍住</span></li>
+    <li><span class="fr">Vous ne devez pas faire d'erreurs.</span><span class="zh">你不能出錯。</span><span class="note">🎙老師講這場考試的標準：資訊都在紙上，要全對</span></li>
+    <li><span class="fr">Essayez de comprendre grâce aux autres mots.</span><span class="zh">試著靠其他字去理解。</span><span class="note">🎙grâce à＝多虧了、靠著。課本原句</span></li>
+    <li><span class="fr">On peut sauter et revenir après.</span><span class="zh">可以先跳過，等一下再回來。</span><span class="note">🎙卡住時的正確動作——不要停在同一題</span></li>
+    <li><span class="fr">C'est quite simple, non ?</span><span class="zh">這很簡單，對吧？</span><span class="note">🎙老師確認你有沒有跟上的口頭禪（正規說法是 C'est assez simple）</span></li>
+    <li><span class="fr">Ici, on ne doit pas écrire le numéro.</span><span class="zh">這裡不用把號碼寫出來。</span><span class="note">🎙做練習時老師交代範圍的說法</span></li>
+    <li><span class="fr">Je peux t'envoyer ce livre aussi.</span><span class="zh">我也可以把這本書寄給你。</span><span class="note">🎙envoyer＝寄送</span></li>
+    <li><span class="fr">Il faut continuer, c'est normal d'oublier.</span><span class="zh">要繼續下去，會忘記是正常的。</span><span class="note">🎙老師談你忘字的問題：學得快就一直有新字進來，忘記不是退步</span></li>
+  </ul>
+</div>
+
+<!-- 發音警報 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第24課 🔊</span>
+    <span class="unit-title">發音警報</span>
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">De Gaulle</span><span class="zh">戴高樂</span><span class="note">⚠️ 唸 [də-ɡol]「de-GOL」，不要用英文的唸法；機場代碼 CDG</span></li>
+    <li><span class="fr">une épreuve</span><span class="zh">一場考試</span><span class="note">eu 是圓唇的 [œ]：[e-pʁœv]</span></li>
+    <li><span class="fr">entourez / repérez</span><span class="zh">圈起來／找出</span><span class="note">命令式 -ez 結尾唸 [e]，不唸出 z</span></li>
+    <li><span class="fr">le quart</span><span class="zh">一刻鐘</span><span class="note">t 不發音：[kaʁ]。跟 quatre [katʁ] 不一樣</span></li>
+    <li><span class="fr">la patinoire</span><span class="zh">溜冰場</span><span class="note">[pa-ti-nwaʁ]，oi 唸 [wa]</span></li>
+    <li><span class="fr">l'escalade</span><span class="zh">攀岩</span><span class="note">[ɛs-ka-lad]，開頭的 e 是短的 [ɛ] 不是 [e]</span></li>
+    <li><span class="fr">accueillir</span><span class="zh">容納、接待</span><span class="note">⚠️ cue 這裡唸 [kœ] 不是 [sy]：[a-kœ-jiʁ]</span></li>
+    <li><span class="fr">un trimestre / un semestre</span><span class="zh">一季／一學期</span><span class="note">兩個都是 -mestre [mɛstʁ]，差在前面 tri-／se-</span></li>
+  </ul>
+</div>
+
+<!-- 糾錯摘要 -->
+<div class="unit">
+  <div class="unit-header">
+    <span class="unit-tag">第24課 ✅</span>
+    <span class="unit-title">本課糾錯摘要</span>
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">13 h 45 說成「moins et demie」</span><span class="zh">quart 跟 demie 混在一起</span><span class="note">⚠️ 正解 <b>quatorze heures moins le quart</b>。le quart＝15分、la demie＝30分</span></li>
+    <li><span class="fr">半點想用 moins 表達</span><span class="zh">「差三十分到兩點」</span><span class="note">⚠️ 老師：<b>到半點就不能用 moins</b>，半點一律 <b>et demie</b>。moins 只用在過半之後</span></li>
+    <li><span class="fr">Chaussez vos patins 配給 Peter</span><span class="zh">不認識 patin 就猜錯人</span><span class="note">patin＝冰刀 → patinoire＝溜冰場 → 屬於 <b>sports d'hiver</b>（Kristel）。Peter 的線索是 grimper→escalade</span></li>
+    <li><span class="fr">par trimestre 以為是半年</span><span class="zh">trimestre ↔ semestre 搞反</span><span class="note">tri-＝三 → 一年四個 trimestre（法國學校跑三個）；semi-＝半 → 一年兩個 semestre</span></li>
+    <li><span class="fr">100 說成 un cent</span><span class="zh">多加了 un</span><span class="note">⚠️ 法文的 <b>cent</b> 跟 <b>mille</b> 前面都不加 un。180＝cent quatre-vingts</span></li>
+    <li><span class="fr">à partir de 8 ans 一時反應不過來</span><span class="zh">卡在 partir（離開）</span><span class="note">à partir de＝從…起（英文 from）。看到它就是在講<b>起始點</b>：年齡、日期、價格都可以</span></li>
+    <li><span class="fr">goûter 只想到「品嘗」</span><span class="zh">un lieu pour goûter avec ses enfants</span><span class="note">加了冠詞的 <b>le goûter</b> 是下午茶（約四點那一餐）。判斷靠上下文有沒有小孩、時間</span></li>
+    <li><span class="fr">先讀文章再看題目</span><span class="zh">習慣性從頭讀起</span><span class="note">⚠️⚠️ 老師的第一鐵律就是反過來：<b>先讀題目</b>，才知道要找什麼。這一條改掉，速度差很多</span></li>
   </ul>
 </div>
 

@@ -936,6 +936,40 @@ const TABLES = [
     ]
   },
 
+  {
+    id:'heure-officielle-courante', title:"l'heure : officielle → courante", zh:'把考卷上的時刻換成口語說法（本課糾錯點）',
+    type:'gram', lesson:24,
+    note:'考卷／電視表用官方版（24小時制直接唸數字），講話用口語版。⚠️ 過半點之前用 et（et quart／et demie），過半之後看下一個整點差多少用 moins。半點是分界線本身，算 et 那一邊——不可以說 moins trente',
+    headers:['官方版（考卷上的寫法）','口語版'],
+    rows:[
+      ['13 h 00',  {a:"une heure|une heure de l'après-midi", h:false}],
+      ['13 h 45',  {a:'deux heures moins le quart',          h:true }],
+      ['13 h 30',  {a:'une heure et demie',                  h:true }],
+      ['14 h 15',  {a:'deux heures et quart',                h:true }],
+      ['14 h 50',  {a:'trois heures moins dix',              h:true }],
+      ['16 h 30',  {a:'quatre heures et demie',              h:true }],
+      ['18 h 45',  {a:'sept heures moins le quart',          h:true }],
+      ['20 h 20',  {a:'huit heures vingt',                   h:true }],
+    ]
+  },
+
+  {
+    id:'consignes-examen', title:'les consignes de l\'examen', zh:'考試指令動詞（看不懂指令＝直接失分）',
+    type:'gram', lesson:24,
+    note:'全部是命令式 vous 形（-ez 結尾）。這些字只出現在指示句、不出現在答案裡，所以平常最少練到，但看錯一個就整題做錯方向',
+    headers:['指令的意思','法文（命令式 vous 形）'],
+    rows:[
+      ['請閱讀…',        {a:'Lisez|lisez',           h:false}],
+      ['請把…圈起來',    {a:'Entourez|entourez',     h:true }],
+      ['請找出、定位…',  {a:'Repérez|repérez',       h:true }],
+      ['請把…配對',      {a:'Associez|associez',     h:true }],
+      ['請打勾',         {a:'Cochez|cochez',         h:true }],
+      ['請填表',         {a:'Complétez|complétez',   h:true }],
+      ['請觀察…',        {a:'Observez|observez',     h:true }],
+      ['請回答問題',     {a:'Répondez aux questions|répondez aux questions', h:true }],
+    ]
+  },
+
 ];
 
 // ════════════════════════════════════════════════════════════

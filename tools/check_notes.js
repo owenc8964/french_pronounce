@@ -159,6 +159,23 @@ const CHECKS = [
       });
     });
   }],
+
+  // 2026-08-16：Owen「今天筆記格式很有問題」。原因是 span.note 跟 div.note（黃色注意框）
+  // 共用同一個 class 名，行內備注被套成整塊黃底、🔊 被擠到下一行落單——從第 3 課就這樣，
+  // 前 10 條都抓不到，因為它們只檢查「class 有沒有定義」，不檢查「同一個名字被當兩種東西用」。
+  ['同名 class 不可以同時當區塊與行內用（會互相套樣式）', () => {
+    const blockUse  = new Set();
+    const inlineUse = new Set();
+    body.replace(/<div class="([^"]+)"/g,  (m, c) => (c.split(/\s+/).forEach(x => blockUse.add(x)), m));
+    body.replace(/<span class="([^"]+)"/g, (m, c) => (c.split(/\s+/).forEach(x => inlineUse.add(x)), m));
+    [...blockUse].filter(c => inlineUse.has(c)).forEach(c => {
+      // 撞名本身不一定壞，壞的是「沒有針對行內版寫覆蓋規則」
+      const hasOverride = new RegExp('span\\.' + c.replace(/[-]/g, '\\-') + '\\s*[,{]').test(css);
+      if (!hasOverride)
+        fail(`class="${c}" 同時用在 <div> 與 <span>，但 CSS 沒有 span.${c} 的覆蓋規則`
+             + `——區塊樣式會套到行內文字上（padding／背景／邊框整塊撐開）`);
+    });
+  }],
 ];
 
 console.log('── french_notes.html 格式檢查 ──');
