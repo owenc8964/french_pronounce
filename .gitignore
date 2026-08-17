@@ -5,3 +5,7 @@
 # ② 是商業教材掃描檔，而這個 repo 是公開的 GitHub Pages
 # 只當本地參考來源用，永遠不要 commit（防止 `git add .` 誤傷）
 assets/*.pdf
+
+# 課堂逐字稿：內含 Owen 的家庭、工作、生活對話（家人病史、同事、住處等）
+# 這個 repo 是公開的 GitHub Pages —— 逐字稿永遠只留本機，不 commit
+transcripts/
