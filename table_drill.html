@@ -1169,7 +1169,8 @@ function renderCard() {
           onfocus="onFocus(this)" onblur="onBlur()"></td>`;
         inputIdx++;
       } else {
-        tableHTML += `<td class="shown">${escH(cell.a)}</td>`;
+        // 多解格（a 用 | 分隔）在「顯示格」只印第一個寫法，不要把 S'il|s'il 這種原始字串露給使用者
+        tableHTML += `<td class="shown">${escH(String(cell.a).split('|')[0])}</td>`;
       }
     });
     tableHTML += '</tr>';

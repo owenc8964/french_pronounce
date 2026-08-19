@@ -631,6 +631,26 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **瀏覽器層**（切 TEST ROOM，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入＋故意把 `sous la tente` 填成 en 被判錯；reading a22 故意 2對1錯 → 分數與 ✓✗ 與解說都正確、紀錄欄位齊全；french_notes lesson-21 渲染 11 unit／11 表格全包 compare-table／**161 個 🔊 tts-btn**／導覽列 21 個按鈕含第21課；quiz `?lesson=21` 實際出到 y/en 題目並答對計分；**`getPool()` 放行全部 27 題**（確認沒踩到 07-16 那個「文法點被鎖導致整批題目消失」的坑）；map 顯示第21課、tile 與 codex 3-4-5 都正確。
 - **收尾**：清掉測試寫入的 a22 紀錄與該題 SRS key → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留。
 
+### 08-19（續）：第25課瀏覽器層補測——**抓到一個真 bug（第24課就埋下的）**
+
+上一段結尾寫「本課沒有做瀏覽器層實測」，這個 session 把它補完。全程照隔離協定：先 grep 確認 ROOM 是正式值 → 改成 TEST → **用攔截 `window.fetch` 的方式確認頁面實際打出去的 URL 是 `id=eq.TEST-DO-NOT-USE-...`**（比讀檔案內容更硬，直接證明執行中的那份不是快取的舊檔）→ 測完清資料 → ROOM 改回 → 立刻 `preview_stop` → grep 確認無殘留。
+
+**🐛 找到的 bug：多解格的「顯示格」會把 `S'il|s'il` 原始字串印給使用者看**
+- `table_drill.html` 的「初級一顯關格」會送一格答案當範例，那格直接印 `cell.a`。答案含 `|` 多解時，畫面就出現 `S'il|s'il`、`Lisez|lisez`、`une heure|une heure de l'après-midi`。
+- **不只第25課**：全站 13 個含 `|` 的格子分佈在 3 張表，其中 3 個是顯示格——`heure-officielle-courante`（L24）、`consignes-examen`（L24）、`condition-si-drill`（L25）。**第24課入庫時就埋下了，當時沒測到。**
+- 修法：顯示格只印第一個寫法（`String(cell.a).split('|')[0]`）。判分完全沒動（`checkAll` 仍拿完整 `dataset.ans` 去 split 比對），答錯時的 `✓ a / b` 提示本來就有 `.replace(/\|/g,' / ')`，也沒動。
+- 修完三張表都重驗：顯示格分別變成 `S'il`／`Lisez`／`une heure`；`si`／`SI`／`s'il` 三種寫法仍然全判對；單解表的顯示格（`moins`）不受影響。
+
+**其餘全部通過**
+- **quiz `?lesson=25`**：38 題全數載入（comparaison 13／condition-si 7／vocab-meubles 8／vocab-quartier 10），實跑答錯→正解與 📖第25課／📍2-3 座標連結都出來、答錯的題目推進包尾重試（20題變21題）、答對加 XP。**用頁面自己的 `isCorrect()` 把 38 題的標準答案逐一回打，全過**；29 題 choose 全部有 opts、每題恰好一個選項算對、無重複選項。
+- **table_drill**：新表 `comparatif-mots`(8)／`condition-si-drill`(7) 正常渲染（第25課 badge、文法詞類型、note 提示框），故意把「Les jeunes déménagent ...... que」填 aussi 被判錯並顯示 `✓ autant`——正是本課最容易錯的那格。全站 51 張表、id 無重複。
+- **reading a26**「Mon quartier à Taipei」：26 篇、id 無重複；三層發音鍵（朗讀全文／點句／點字／0.75×）都在；實跑 2對1錯 → 高亮與 `expl` 解說正確、`clb7_reading` 寫入 `{id:'a26',correct:2,total:3}` 欄位齊全。
+- `node tools/check_notes.js` 11 條全綠。
+
+**⚠️ 順手發現（沒動，留給下個 session 判斷）**
+- `.claude/worktrees/` 下有 4 個舊 worktree，其中 3 個的 `sync_supabase.js` 還停在 TEST ROOM。它們不在 git 追蹤內、也沒人會去開，但 `python3 -m http.server` 是從專案根目錄起的，理論上那些路徑也被服務出去。**建議哪天順手清掉沒在用的 worktree。**
+- `questions.js` 第25課的 3 題 `trans` 沒有 `aNote`（「房間數跟我們家一樣多」「如果你有空，可以來我家一趟」「會沒事的，別擔心」）。全站 154 題 trans 有 36 題沒有，不是本課的退步，但這三題都正好壓在本課痛點上，補解說的 CP 值高。
+
 ### 08-19：第25課（A2・La comparaison・La condition）入庫＋九項連動
 
 Owen 貼了 08-18 那堂的完整逐字稿＋8 張課本截圖（`~/Desktop/0818/`）。主文法是**比較級**，第二文法是 **si 條件句**，詞彙收掉 Unité 3 的家具／設備／街區，最後開了 Unité 4。
@@ -661,7 +681,7 @@ Owen 貼了 08-18 那堂的完整逐字稿＋8 張課本截圖（`~/Desktop/0818
 - `node tools/check_notes.js` 11 條全綠。
 - 資料層逐項驗證全綠，其中**驗證器抓到一個真問題**：`J'aime mieux ce quartier.` 進了句庫但筆記裡沒有逐字出現（違反教材鐵律「句子必須出自筆記」）→ 已把老師課堂原話補進筆記的 bon/bien 那個 note-box。⚠️ 這條檢查每課都要跑。
 - 另驗了：舊課 1438 張卡未被動到、卡片與 tile id 唯一、2-3 節與 6-6-1 座標未動、getPool 放行全部 38 題、ROOM 是正式值。
-- ⚠️ **本課沒有做瀏覽器層實測**（session 已過長，且改動型態與第23/24課相同、資料層與格式檢查都全綠）。下個 session 若要保險，可補測 `quiz.html?lesson=25`、`table_drill` 兩張新表、`reading` a26。
+- ~~⚠️ 本課沒有做瀏覽器層實測~~ → **08-19（續）已補測完畢**（quiz L25／table_drill 兩張新表／reading a26 全過，並抓到一個第24課就埋下的多解顯示格 bug，見上一段）。
 
 **⚠️ 累積待 Owen 決定的 lvl／zone 問題（已經第三次遇到）**
 課本在 A2 教、但系統標 B1 的點越來越多：`relatifs`(gram zone B1)、codex `3-5` 全節、codex `2-3-4`。**建議下次一次問一次改完**，不要每課再問一遍。
