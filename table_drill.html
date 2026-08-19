@@ -970,6 +970,39 @@ const TABLES = [
     ]
   },
 
+
+  {
+    id:'comparatif-mots', title:'la comparaison : quel mot ?', zh:'比較級：這裡該用哪個字（本課主文法）',
+    type:'gram', lesson:25,
+    note:'⚠️ 同等級要看詞類：形容詞／副詞用 aussi；動詞與名詞用 autant。名詞前一定要加 de。優等的不規則只有 meilleur（bon）／mieux（bien）／pire（mauvais・mal）',
+    headers:['句子','填入'],
+    rows:[
+      ["La chambre de Tom est ...... grande que celle d'Anna.（比較小）", {a:'moins',     h:false}],
+      ["Nous habitons ...... loin que vous.（一樣遠）",                   {a:'aussi',     h:true }],
+      ["Les jeunes déménagent ...... que les personnes âgées.（一樣多）", {a:'autant',    h:true }],
+      ["Il y a ...... chambres que dans notre maison.（一樣多的房間）",   {a:'autant de', h:true }],
+      ["Il y a ...... chambres qu'avant.（比以前更多房間）",              {a:'plus de',   h:true }],
+      ["Mon four n'est pas bon, je dois acheter un ...... four.",         {a:'meilleur',  h:true }],
+      ["On vit bien en ville, mais on vit ...... à la campagne.",         {a:'mieux',     h:true }],
+      ["J'aime ...... ce quartier.（我更喜歡這一區）",                     {a:'mieux',     h:true }],
+    ]
+  },
+
+  {
+    id:'condition-si-drill', title:'si + présent', zh:'si 條件句：縮寫與結果時態',
+    type:'gram', lesson:25,
+    note:"條件那半永遠是現在式；結果可以是現在式（陳述）或命令式（語氣更強）。⚠️ si → s' 只在 il / ils 前面，si on／si elle 都不縮",
+    headers:['句子','填入'],
+    rows:[
+      ["...... pleut, on peut aller au Centre de la BD.（如果下雨）",       {a:"S'il|s'il", h:false}],
+      ["...... on part vivre sur une île déserte…（如果我們去荒島）",       {a:'Si|si',     h:true }],
+      ["...... elle est disponible, elle peut passer.（如果她有空）",       {a:'Si|si',     h:true }],
+      ["Si tu es malade, ...... à la pharmacie !（去，aller 命令式 tu）",   {a:'va',        h:true }],
+      ["Si tes voisins sont bruyants, ...... d'appartement !（換，命令式）", {a:'change',    h:true }],
+      ["Si vous avez un problème, ......-moi.（打給我，命令式 vous）",       {a:'appelez',   h:true }],
+      ["...... fait froid, on met le chauffage.（如果天氣冷）",             {a:"S'il|s'il", h:true }],
+    ]
+  },
 ];
 
 // ════════════════════════════════════════════════════════════

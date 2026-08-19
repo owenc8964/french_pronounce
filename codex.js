@@ -2514,7 +2514,36 @@ const CODEX_PART2 = [
       {fr:"Si nous avions plus d'argent, nous achèterions cette maison.", zh:'如果我們有更多錢，我們會買這棟房子。'},
       {fr:"Si elle avait su, elle ne serait pas partie.", zh:'如果她那時知道，她就不會走了。'},
     ],
-    see:['6-2-2','6-2-3'] },
+    see:['6-2-2','6-2-3'] },,
+  { n:'6-6-2', lvl:'A2', name:'si 的基本式（A2）', fr:'si + présent',
+    brief:'條件用現在式，結果用現在式或命令式',
+    ex:[{fr:'Si je veux lire, je vais à la bibliothèque.', zh:'如果我想看書，我就去圖書館。'},
+        {fr:'Si tu es malade, va à la pharmacie !', zh:'如果你不舒服，就去藥局！'}],
+    pts:[
+      {r:'⚠️ 座標順序說明：這是邏輯上最先學的一式，但依座標鐵律只能在節末追加，所以編號在 6-6-1（B1 三式總表）之後',
+       fr:'si + présent + présent / impératif', zh:'A2 只需要這一組'},
+      {r:'結果用現在式＝陳述一個常態、一件事實',
+       fr:'Si je veux lire, je vais à la bibliothèque.', zh:'（每次都這樣）'},
+      {r:'結果用命令式＝語氣更強，帶勸告或指示；命令式沒有主詞，直接把動作丟給對方',
+       fr:'Si tu es malade, va à la pharmacie !', zh:'（叫你去）'},
+      {r:'⚠️ si → s\' 只在 il / ils 前面——因為 si 和 il 都是 i 開頭唸不順，純粹是發音問題不是文法',
+       fr:"S'il pleut, on peut aller au Centre de la BD.", zh:'如果下雨，我們可以去漫畫中心。'},
+      {r:'⚠️⚠️ si on、si elle、si tu 都不縮寫（老師：很多法國人自己會寫錯成 si il）',
+       fr:'Si on part vivre sur une île déserte…', zh:'如果我們去荒島生活…'},
+    ],
+    grid:{head:['結構','例句','語氣'],
+          rows:[['si + présent + présent','Si je veux lire, je vais à la bibliothèque.','陳述常態'],
+                ['si + présent + impératif','Si tu es malade, va à la pharmacie !','勸告、指示']]},
+    usage:[
+      {r:'講一個日常的因果常態', fr:"S'il fait froid, on met le chauffage.", zh:'如果冷，我們就開暖氣。'},
+      {r:'約時間、給對方選擇', fr:"Si ça t'arrange, tu peux passer chez moi.", zh:'如果你方便，可以來我家一趟。'},
+    ],
+    exc:['si 之後永遠不用未來式——「如果明天下雨」是 s\'il pleut demain，不是 s\'il pleuvra'],
+    more:[
+      {fr:'Si tes voisins sont bruyants, change d\'appartement !', zh:'如果鄰居很吵，就換公寓吧！'},
+      {fr:'Si vous avez un problème, appelez-moi.', zh:'如果您有問題，打給我。'},
+    ],
+    gram:'condition-si', see:['6-6-1','6-2-2'] }
  ]},
 
  { n:'6-7', name:'義務與建議', fr:'Obligation et conseil', items:[

@@ -10035,4 +10035,421 @@ const CHUNKS = [
   "zh": "我也可以把這本書寄給你。",
   "note": "🎙envoyer＝寄送"
  },
+ {
+  "id": "L25_moins_que_aussi_",
+  "lesson": 25,
+  "fr": "moins ... que / aussi ... que / plus ... que",
+  "zh": "比較級三式（配副詞與形容詞）",
+  "note": "⭐ 形容詞副詞夾在中間：moins grande que"
+ },
+ {
+  "id": "L25_autant_que",
+  "lesson": 25,
+  "fr": "autant que",
+  "zh": "一樣多（配動詞）",
+  "note": "⚠️ 動詞的同等用 autant，不能用 aussi"
+ },
+ {
+  "id": "L25_autant_de_que",
+  "lesson": 25,
+  "fr": "autant de ... que",
+  "zh": "一樣多的…（配名詞）",
+  "note": "⚠️ 名詞前一定要加 de。Il y a autant de chambres que…"
+ },
+ {
+  "id": "L25_plus_de_moins_de",
+  "lesson": 25,
+  "fr": "plus de / moins de",
+  "zh": "更多的／更少的（配名詞）",
+  "note": "⚠️ 名詞比較都要 de，跟 beaucoup de 同一條規則"
+ },
+ {
+  "id": "L25_meilleur_e_",
+  "lesson": 25,
+  "fr": "meilleur(e)",
+  "zh": "更好的（bon 的優等）",
+  "note": "⛔ 不是 plus bon。形容詞，要配合性數"
+ },
+ {
+  "id": "L25_mieux",
+  "lesson": 25,
+  "fr": "mieux",
+  "zh": "更好地（bien 的優等）",
+  "note": "⛔ 不是 plus bien。副詞，不變。J'aime mieux ce quartier"
+ },
+ {
+  "id": "L25_pire",
+  "lesson": 25,
+  "fr": "pire",
+  "zh": "更糟的（mauvais / mal 的優等）",
+  "note": "也可以說 plus mauvais／plus mal，兩個都通"
+ },
+ {
+  "id": "L25_Tant_pis_",
+  "lesson": 25,
+  "fr": "Tant pis !",
+  "zh": "算了！",
+  "note": "⭐ 古比較級 pis 唯一活下來的地方"
+ },
+ {
+  "id": "L25_Je_me_sens_bien_",
+  "lesson": 25,
+  "fr": "Je me sens bien.",
+  "zh": "我感覺很好。",
+  "note": "⛔ 不能說 je me sens bon。講感覺一律 bien"
+ },
+ {
+  "id": "L25_J_aime_bien_le_foot_",
+  "lesson": 25,
+  "fr": "J'aime bien le foot.",
+  "zh": "我還蠻喜歡足球的。",
+  "note": "⚠️ 加 bien 反而變弱：j'aime bien ＜ j'aime ＜ j'aime beaucoup"
+ },
+ {
+  "id": "L25_Si_je_veux_lire_je_vais",
+  "lesson": 25,
+  "fr": "Si je veux lire, je vais à la bibliothèque.",
+  "zh": "如果我想看書，我就去圖書館。",
+  "note": "⭐ si ＋ 現在式 ＋ 現在式（陳述常態）"
+ },
+ {
+  "id": "L25_Si_tu_es_malade_va_à_la",
+  "lesson": 25,
+  "fr": "Si tu es malade, va à la pharmacie !",
+  "zh": "如果你不舒服，就去藥局！",
+  "note": "⭐ si ＋ 現在式 ＋ 命令式（語氣更強）"
+ },
+ {
+  "id": "L25_S_il_pleut_on_peut_alle",
+  "lesson": 25,
+  "fr": "S'il pleut, on peut aller au Centre de la BD.",
+  "zh": "如果下雨，我們可以去漫畫中心。",
+  "note": "⚠️ si ＋ il → s'il。BD＝bande dessinée＝漫畫"
+ },
+ {
+  "id": "L25_Si_on_part_vivre_sur_une",
+  "lesson": 25,
+  "fr": "Si on part vivre sur une île déserte…",
+  "zh": "如果我們去荒島生活…",
+  "note": "⚠️⚠️ si on 不縮寫——只有 il／ils 前面縮"
+ },
+ {
+  "id": "L25_le_canapé_le_sofa_le",
+  "lesson": 25,
+  "fr": "le canapé = le sofa = le divan",
+  "zh": "沙發",
+  "note": "⭐ 三個同義，canapé 最常用"
+ },
+ {
+  "id": "L25_le_canapé_lit",
+  "lesson": 25,
+  "fr": "le canapé-lit",
+  "zh": "沙發床",
+  "note": "小房子很實用"
+ },
+ {
+  "id": "L25_la_chaise",
+  "lesson": 25,
+  "fr": "la chaise",
+  "zh": "椅子"
+ },
+ {
+  "id": "L25_l_étagère",
+  "lesson": 25,
+  "fr": "l'étagère",
+  "zh": "層架、書架",
+  "note": "⚠️ 來自 étage（樓層）——架子有很多層"
+ },
+ {
+  "id": "L25_le_lit_une_place_deux",
+  "lesson": 25,
+  "fr": "le lit (une place / deux places)",
+  "zh": "床（單人／雙人）",
+  "note": "⚠️ 用 place 算，不是 personne"
+ },
+ {
+  "id": "L25_le_placard",
+  "lesson": 25,
+  "fr": "le placard",
+  "zh": "櫥櫃、壁櫃"
+ },
+ {
+  "id": "L25_les_rangements",
+  "lesson": 25,
+  "fr": "les rangements",
+  "zh": "收納空間（統稱）",
+  "note": "來自 ranger（收拾）"
+ },
+ {
+  "id": "L25_la_table_basse",
+  "lesson": 25,
+  "fr": "la table basse",
+  "zh": "茶几",
+  "note": "basse＝矮的"
+ },
+ {
+  "id": "L25_la_table_de_chevet",
+  "lesson": 25,
+  "fr": "la table de chevet",
+  "zh": "床頭櫃",
+  "note": "le chevet＝床頭"
+ },
+ {
+  "id": "L25_être_au_chevet_de_quelqu",
+  "lesson": 25,
+  "fr": "être au chevet de quelqu'un",
+  "zh": "守在某人（病）床邊照顧",
+  "note": "⚠️ 帶沉重語氣，用在陪伴重病者"
+ },
+ {
+  "id": "L25_le_tabouret",
+  "lesson": 25,
+  "fr": "le tabouret",
+  "zh": "凳子（無靠背）"
+ },
+ {
+  "id": "L25_Asseyez_vous_",
+  "lesson": 25,
+  "fr": "Asseyez-vous.",
+  "zh": "請坐。",
+  "note": "⭐ s'asseoir 的命令式 vous 形"
+ },
+ {
+  "id": "L25_le_cadre_photo_",
+  "lesson": 25,
+  "fr": "le cadre (photo)",
+  "zh": "相框",
+  "note": "⚠️ cadre 另一義是「幹部、主管」"
+ },
+ {
+  "id": "L25_le_coussin",
+  "lesson": 25,
+  "fr": "le coussin",
+  "zh": "抱枕、靠墊",
+  "note": "⚠️ 別跟 le cousin（表堂兄弟）搞混：coussin [s]／cousin [z]"
+ },
+ {
+  "id": "L25_l_horloge",
+  "lesson": 25,
+  "fr": "l'horloge",
+  "zh": "時鐘（掛鐘）",
+  "note": "⚠️ 陰性。L'horloge donne l'heure"
+ },
+ {
+  "id": "L25_le_rideau",
+  "lesson": 25,
+  "fr": "le rideau",
+  "zh": "窗簾",
+  "note": "⭐ le rideau de douche＝浴簾"
+ },
+ {
+  "id": "L25_les_appareils_électromén",
+  "lesson": 25,
+  "fr": "les appareils électroménagers",
+  "zh": "家電（統稱）",
+  "note": "⚠️ électro＋ménager。ménage 又出現（第23課 faire le ménage）"
+ },
+ {
+  "id": "L25_le_réfrigérateur_le_fr",
+  "lesson": 25,
+  "fr": "le réfrigérateur = le frigo",
+  "zh": "冰箱",
+  "note": "口語一律 frigo"
+ },
+ {
+  "id": "L25_le_lave_linge_la_machi",
+  "lesson": 25,
+  "fr": "le lave-linge = la machine à laver",
+  "zh": "洗衣機",
+  "note": "le linge＝衣物布品"
+ },
+ {
+  "id": "L25_la_couette",
+  "lesson": 25,
+  "fr": "la couette",
+  "zh": "羽絨被",
+  "note": "⭐ On dort avec pour ne pas avoir froid la nuit"
+ },
+ {
+  "id": "L25_l_évier_le_lavabo",
+  "lesson": 25,
+  "fr": "l'évier / le lavabo",
+  "zh": "廚房水槽／洗手台",
+  "note": "⚠️ évier 在廚房，lavabo 在浴室"
+ },
+ {
+  "id": "L25_le_chauffage_la_clim",
+  "lesson": 25,
+  "fr": "le chauffage / la clim",
+  "zh": "暖氣／冷氣",
+  "note": "clim 是 climatisation 的簡稱，口語都講 clim"
+ },
+ {
+  "id": "L25_l_avenue",
+  "lesson": 25,
+  "fr": "l'avenue",
+  "zh": "大道",
+  "note": "比 la rue 寬"
+ },
+ {
+  "id": "L25_les_bureaux",
+  "lesson": 25,
+  "fr": "les bureaux",
+  "zh": "辦公大樓、辦公區",
+  "note": "⚠️ 單數 le bureau 是辦公室／書桌"
+ },
+ {
+  "id": "L25_les_espaces_verts",
+  "lesson": 25,
+  "fr": "les espaces verts",
+  "zh": "綠地",
+  "note": "⚠️ 不一定是公園，一小塊草地也算"
+ },
+ {
+  "id": "L25_animé_e_vivant_e_",
+  "lesson": 25,
+  "fr": "animé(e) = vivant(e)",
+  "zh": "熱鬧的、有活力的",
+  "note": "⭐ 課本當同義詞考"
+ },
+ {
+  "id": "L25_mourant_e_",
+  "lesson": 25,
+  "fr": "mourant(e)",
+  "zh": "正在沒落的",
+  "note": "⚠️ 老師補充：Les centres-villes sont de plus en plus mourants"
+ },
+ {
+  "id": "L25_tranquille",
+  "lesson": 25,
+  "fr": "tranquille",
+  "zh": "安靜的、悠閒的",
+  "note": "⭐ 別人問 Ça va ? 可以回 Tranquille（還行）"
+ },
+ {
+  "id": "L25_commerçant_e_",
+  "lesson": 25,
+  "fr": "commerçant(e)",
+  "zh": "商店多的／店主",
+  "note": "un quartier commerçant 的反面是 un quartier calme"
+ },
+ {
+  "id": "L25_chic",
+  "lesson": 25,
+  "fr": "chic",
+  "zh": "高級的、時髦的",
+  "note": "un quartier chic＝高級住宅區（也就是貴）"
+ },
+ {
+  "id": "L25_Zut_",
+  "lesson": 25,
+  "fr": "Zut !",
+  "zh": "可惡！糟了！",
+  "note": "⚠️ merde 的委婉版"
+ },
+ {
+  "id": "L25_Mince_",
+  "lesson": 25,
+  "fr": "Mince !",
+  "zh": "糟糕！可惜！",
+  "note": "⚠️ 一字兩義：mince 當形容詞是「瘦的」"
+ },
+ {
+  "id": "L25_C_est_dommage_",
+  "lesson": 25,
+  "fr": "C'est dommage.",
+  "zh": "真可惜。",
+  "note": "最中性常用的失望語"
+ },
+ {
+  "id": "L25_C_est_pas_grave_",
+  "lesson": 25,
+  "fr": "C'est pas grave.",
+  "zh": "沒關係。",
+  "note": "完整是 Ce n'est pas grave，口語省略 ne"
+ },
+ {
+  "id": "L25_Ça_va_aller_",
+  "lesson": 25,
+  "fr": "Ça va aller.",
+  "zh": "會沒事的。",
+  "note": "⭐ 安慰人最好用的一句"
+ },
+ {
+  "id": "L25_Courage_",
+  "lesson": 25,
+  "fr": "Courage !",
+  "zh": "加油！撐住！",
+  "note": "不是「勇氣」，是打氣用語"
+ },
+ {
+  "id": "L25_T_inquiète_",
+  "lesson": 25,
+  "fr": "T'inquiète.",
+  "zh": "別擔心。",
+  "note": "⚠️ ne 跟 pas 都省略了，字面像肯定但意思是否定。寫作不能這樣寫"
+ },
+ {
+  "id": "L25_Ça_m_arrange_Ça_ne_m_",
+  "lesson": 25,
+  "fr": "Ça m'arrange. / Ça ne m'arrange pas.",
+  "zh": "這樣對我方便／不方便。",
+  "note": "⭐ 約時間必備。si ça t'arrange＝如果你方便"
+ },
+ {
+  "id": "L25_passer_voir_quelqu_un_",
+  "lesson": 25,
+  "fr": "passer (voir quelqu'un)",
+  "zh": "順道過去（看某人）",
+  "note": "⚠️ 不是久留，是「過去一下」"
+ },
+ {
+  "id": "L25_pareil_le_",
+  "lesson": 25,
+  "fr": "pareil(le)",
+  "zh": "一樣的",
+  "note": "Tu es pareil que ton père＝你跟你爸一個樣"
+ },
+ {
+  "id": "L25_C_est_clair_",
+  "lesson": 25,
+  "fr": "C'est clair !",
+  "zh": "那還用說！",
+  "note": "⭐ 很口語的強烈同意"
+ },
+ {
+  "id": "L25_Je_pense_la_même_chose_",
+  "lesson": 25,
+  "fr": "Je pense la même chose.",
+  "zh": "我也這麼想。",
+  "note": "la même chose＝同一件事"
+ },
+ {
+  "id": "L25_rendre_",
+  "lesson": 25,
+  "fr": "rendre + 形容詞",
+  "zh": "使…變成…",
+  "note": "⭐ C'est ça qui le rend beau。rendre 另一義是「歸還」"
+ },
+ {
+  "id": "L25_défiler",
+  "lesson": 25,
+  "fr": "défiler",
+  "zh": "走秀",
+  "note": "le défilé＝時裝秀、遊行"
+ },
+ {
+  "id": "L25_un_corps_parfait",
+  "lesson": 25,
+  "fr": "un corps parfait",
+  "zh": "完美的身體",
+  "note": "課文主題：誰定義完美"
+ },
+ {
+  "id": "L25_Chaque_corps_est_unique_",
+  "lesson": 25,
+  "fr": "Chaque corps est unique.",
+  "zh": "每個身體都是獨一無二的。",
+  "note": "課文金句"
+ },
 ];

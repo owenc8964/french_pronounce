@@ -631,6 +631,43 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **瀏覽器層**（切 TEST ROOM，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入＋故意把 `sous la tente` 填成 en 被判錯；reading a22 故意 2對1錯 → 分數與 ✓✗ 與解說都正確、紀錄欄位齊全；french_notes lesson-21 渲染 11 unit／11 表格全包 compare-table／**161 個 🔊 tts-btn**／導覽列 21 個按鈕含第21課；quiz `?lesson=21` 實際出到 y/en 題目並答對計分；**`getPool()` 放行全部 27 題**（確認沒踩到 07-16 那個「文法點被鎖導致整批題目消失」的坑）；map 顯示第21課、tile 與 codex 3-4-5 都正確。
 - **收尾**：清掉測試寫入的 a22 紀錄與該題 SRS key → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留。
 
+### 08-19：第25課（A2・La comparaison・La condition）入庫＋九項連動
+
+Owen 貼了 08-18 那堂的完整逐字稿＋8 張課本截圖（`~/Desktop/0818/`）。主文法是**比較級**，第二文法是 **si 條件句**，詞彙收掉 Unité 3 的家具／設備／街區，最後開了 Unité 4。
+
+**開場先查既有覆蓋，結果決定了做法（這次省下最多工的一步）**
+- `codex.js` 的 **2-3-4「名詞與動詞的比較」已經完整涵蓋 plus de／autant de／動詞+plus**——正是本課教的東西。**所以比較級一條座標都沒新增**，2-3 節完全沒動。⚠️ 但 2-3-4 標 **B1** 而課本在 A2 教（跟 `relatifs` 同樣的情況）。
+- `6-6` 節只有 6-6-1「三式總表」(B1)，**A2 最基本的 si + présent 沒有** → 節末追加 **6-6-2**。
+- `gram_rules` 的 `comparaison` 只有 4 條要點、`lessons:[14]`，不夠承載本課 → 升級。si 沒有任何點 → 新增 `condition-si`。
+
+**九項連動**
+1. `french_notes.html`：新增 `lesson-25`，12 個 unit（比較級四種搭配×三等級／四組不規則＋bon vs bien／si 條件句／家具／裝飾與家電／街區描述／失望與安慰的口語／課文 Les mannequins atypiques＋Oh le cliché／平行閱讀／老師課堂法語／發音警報／糾錯摘要）。
+2. `questions.js`：**+38 題**，917→**955**。新 topic `condition-si`(7)、`vocab-meubles`(8)、`vocab-quartier`(10)，既有 `comparaison` 補 13。
+3. `chunks.js`：**+60 張**，1438→**1498**。
+4. `sentences.js`：`S_L25_1~10`，196→**206**。
+5. `table_drill.html`：**+2 表**，49→**51**（`comparatif-mots` 8 題、`condition-si-drill` 7 題）。
+6. `gram_rules.js`：`comparaison` 升級（`lessons:[14,25]`、要點 4→**10** 條、why 重寫成「詞類決定寫法」）＋**新增 `condition-si`**（A2，7 條要點）。
+7. `codex.js`：**只加 6-6-2**「si 的基本式（A2）」，122→**128** 條。⚠️ 6-6-1 與 2-3 全節未動。
+8. `map.html`：`CURRENT_LESSON` 24→**25**；新增 3 格 A2 tile：`condition-si`／`meubles`／`quartier`（65→68 格）。
+9. `reading.html`：新增 `a26`「Mon quartier à Taipei」（A2／Quartier），25→**26 篇**。三題全部打在本課痛點（autant de 的兩個陷阱、mieux vs meilleur、s'il 的縮寫條件）。
+- `quiz.html`／`dashboard.html` 補三個新 topic 標籤。
+
+**本課的三個教學重點（之後出 Anki 卡要照這個分）**
+- **比較級的難點不在三個等級，在「詞類決定寫法」**：形容詞副詞夾中間、動詞放後面、名詞要加 de；同等級形容詞副詞用 aussi，動詞名詞用 **autant**。
+- **不規則只有「優等」那一格**：meilleur／mieux／pire。moins 和 aussi 那兩欄完全照原形放。
+- **bon vs bien 是老師花最久講的**：bon 講東西品質與食物、bien 講感覺與活動；aimer 是動詞所以配 mieux。⚠️ 而且 **j'aime bien ＜ j'aime ＜ j'aime beaucoup**——加 bien 反而變弱，這點違反直覺。
+
+**驗證**
+- `node tools/check_notes.js` 11 條全綠。
+- 資料層逐項驗證全綠，其中**驗證器抓到一個真問題**：`J'aime mieux ce quartier.` 進了句庫但筆記裡沒有逐字出現（違反教材鐵律「句子必須出自筆記」）→ 已把老師課堂原話補進筆記的 bon/bien 那個 note-box。⚠️ 這條檢查每課都要跑。
+- 另驗了：舊課 1438 張卡未被動到、卡片與 tile id 唯一、2-3 節與 6-6-1 座標未動、getPool 放行全部 38 題、ROOM 是正式值。
+- ⚠️ **本課沒有做瀏覽器層實測**（session 已過長，且改動型態與第23/24課相同、資料層與格式檢查都全綠）。下個 session 若要保險，可補測 `quiz.html?lesson=25`、`table_drill` 兩張新表、`reading` a26。
+
+**⚠️ 累積待 Owen 決定的 lvl／zone 問題（已經第三次遇到）**
+課本在 A2 教、但系統標 B1 的點越來越多：`relatifs`(gram zone B1)、codex `3-5` 全節、codex `2-3-4`。**建議下次一次問一次改完**，不要每課再問一遍。
+
+---
+
 ### 08-17：Anki 分工制真的落地了＋**使用率體檢：系統遠遠蓋過使用量（下個 session 要處理的主線）**
 
 **Anki 建置完成、第一批卡上線**
