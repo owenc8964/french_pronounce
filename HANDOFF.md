@@ -660,9 +660,24 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 
 ⚠️ **preview 的 `.js` 快取這次真的咬人**：改完 `codex.js` 後，分頁重新載入（連 `force` 導覽、加 query string 都試過）拿到的還是舊版，害我一度以為修沒生效。**可靠的驗法**：`fetch('/codex.js?v='+Date.now(),{cache:'no-store'})` 抓原始碼，再用 `new Function(src+'; return codexLocate;')()` 在函式作用域裡跑（不能用 `eval`，`const CODEX` 會撞重複宣告）。正式站是 GitHub Pages，沒這個問題。
 
+**第三輪（Owen：「把那 33 題沒有 aNote 的翻譯題也補完」）→ 全站 154 題 trans 100% 有解說**
+
+補完的 33 題分佈：L1(7)／L3(1)／L6(1)／L14(1)／L15(9)／L16(8)／L19(2)／L20(3)／L23(2)。**每一條解說都先在 `french_notes.html` 裡撈到對應段落才寫**，不是自己編——做法是寫一支小工具把答案字串丟進筆記做上下文比對（scratchpad `ctx.js`），撈不到的就換關鍵詞再找，33 題全部找得到出處。
+
+寫解說時的取捨（之後補 aNote 照這個標準）：
+- **文法題**：講「為什麼是這個形」，不是重述答案。例：qui 後面直接接動詞／que 後面要接主詞＋動詞，並附「拆回兩句看主詞還受詞」的判斷法。
+- **詞彙題**：一律補 <b>詞性冠詞</b>＋同組詞＋容易撞的鄰居。例：le champ（田野）補上「別跟 le chemin 搞混，只差一個字母」；le boucher 補上「去店用 à la boucherie、去人用 chez le boucher」。
+- **老師講過的對比優先寫進去**：colocation（事）vs colocataire（人）、il fait（天氣）vs c'est（整體感覺，Owen 當堂問過的問題）、location vs locataire。
+- 沒有把握出自筆記的話一律不寫。
+
+**驗證**：`node --check` 通過；BANK 仍是 955 題（沒有誤刪誤增）；**用頁面自己的 `renderCard()` 把 154 題 trans 逐一渲染**，檢查 0 題出現 `&lt;b&gt;`（HTML 被跳脫）、0 題殘留反斜線、0 題空解說、每題都有 📌 區塊；另外挑一題實跑答錯截圖確認版面。ROOM 隔離照協定走完（開頭攔 fetch 確認是 TEST 房間、測完清資料並把乾淨狀態 push 回 TEST 房、改回正式值、`preview_stop`、grep 無殘留）。
+
+⚠️ 清資料時發現的細節：**上一輪清掉的錯題又出現了**——因為當時只清本機 localStorage，資料早已被 debounce push 到 TEST 雲端房間，新分頁一開又 pull 回來。**所以測試清理要清完再 push 一次**（在 ROOM 還是 TEST 的時候），不然清了等於沒清。
+
+全庫現在只剩 1 題沒有 `aNote`：L1 的 gender 題「japonais → 女性形？」——那題答案本身就是重點，不需要解說。
+
 **⚠️ 順手發現（沒動，留給下個 session 判斷）**
 - `.claude/worktrees/` 下有 4 個舊 worktree，其中 3 個的 `sync_supabase.js` 還停在 TEST ROOM。它們不在 git 追蹤內、也沒人會去開，但 `python3 -m http.server` 是從專案根目錄起的，理論上那些路徑也被服務出去。**建議哪天順手清掉沒在用的 worktree。**
-- 全站還有 33 題 `trans` 沒有 `aNote`（第25課的 3 題已補完）。不急，但答錯時只有正解沒有解說，跟「練習與複習並重」的原則有落差。
 
 ### 08-19：第25課（A2・La comparaison・La condition）入庫＋九項連動
 
