@@ -647,9 +647,22 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **reading a26**「Mon quartier à Taipei」：26 篇、id 無重複；三層發音鍵（朗讀全文／點句／點字／0.75×）都在；實跑 2對1錯 → 高亮與 `expl` 解說正確、`clb7_reading` 寫入 `{id:'a26',correct:2,total:3}` 欄位齊全。
 - `node tools/check_notes.js` 11 條全綠。
 
+**Owen 說「補」之後的第二輪（同一天）：補解說＋又抓到兩個 codex 的問題**
+
+1. **第25課 3 題 `trans` 的 `aNote` 補上**（原本是空字串）。解說全部取自筆記裡老師的原話，不是自己編：
+   - 「房間數跟我們家一樣多」→ 名詞同等比較的兩個陷阱（用 autant 不用 aussi ／名詞前一定要 de）
+   - 「如果你有空，可以來我家一趟」→ si ＋現在式＋現在式；si 只在 il／ils 前縮寫，si tu／si on／si elle 都不縮；passer＝順道過去
+   - 「會沒事的，別擔心」→ T'inquiète 是 Ne t'inquiète pas 連 ne 和 pas 都省掉的超口語版，字面像肯定但意思是別擔心；**老師特別說寫作文不能這樣寫**
+   三題都在瀏覽器實跑答錯，確認 `<b>` 有粗體、撇號沒被吃掉、📌 解說完整顯示。
+2. **🐛 `codex.js` 的 `6-6-1` 後面多打一個逗號（`},,`）** → items 陣列出現一個 sparse hole，`6-6` 節長度算成 3 個但實際只有 2 條。`forEach` 會跳過 hole 所以沒炸，但**任何用 index 取值的程式碼都會拿到 undefined**，條目統計也會多算一條。已修，全檔 128 條、零空洞。
+3. **🐛 `6-6-2` 沒掛 `topics`** → `codexLocate('condition-si')` 回 null，**si 條件句的題目答完沒有 📍 座標鍵可以跳回記憶宮殿**（比較級那些題有，因為 2-3 節有掛）。補上 `topics:['condition-si']` 後，該題的連結正確變成 `map.html#cx-6-6-2 → 📍 6-6-2 si 的基本式（A2）`。
+   ⚠️ **這是新課連動的一個系統性漏點**：新增 codex 條目時如果只寫 `gram:` 沒寫 `topics:`，練習頁就定位不到它。之後每課驗證要加一條「新 topic 都 `codexLocate()` 得到座標（詞彙類 topic 除外）」。
+
+⚠️ **preview 的 `.js` 快取這次真的咬人**：改完 `codex.js` 後，分頁重新載入（連 `force` 導覽、加 query string 都試過）拿到的還是舊版，害我一度以為修沒生效。**可靠的驗法**：`fetch('/codex.js?v='+Date.now(),{cache:'no-store'})` 抓原始碼，再用 `new Function(src+'; return codexLocate;')()` 在函式作用域裡跑（不能用 `eval`，`const CODEX` 會撞重複宣告）。正式站是 GitHub Pages，沒這個問題。
+
 **⚠️ 順手發現（沒動，留給下個 session 判斷）**
 - `.claude/worktrees/` 下有 4 個舊 worktree，其中 3 個的 `sync_supabase.js` 還停在 TEST ROOM。它們不在 git 追蹤內、也沒人會去開，但 `python3 -m http.server` 是從專案根目錄起的，理論上那些路徑也被服務出去。**建議哪天順手清掉沒在用的 worktree。**
-- `questions.js` 第25課的 3 題 `trans` 沒有 `aNote`（「房間數跟我們家一樣多」「如果你有空，可以來我家一趟」「會沒事的，別擔心」）。全站 154 題 trans 有 36 題沒有，不是本課的退步，但這三題都正好壓在本課痛點上，補解說的 CP 值高。
+- 全站還有 33 題 `trans` 沒有 `aNote`（第25課的 3 題已補完）。不急，但答錯時只有正解沒有解說，跟「練習與複習並重」的原則有落差。
 
 ### 08-19：第25課（A2・La comparaison・La condition）入庫＋九項連動
 

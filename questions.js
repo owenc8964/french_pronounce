@@ -1208,7 +1208,7 @@ const BANK = [
   { lesson:25, topic:'comparaison', type:'choose', q:'bon 跟 bien 怎麼分？', hint:'老師花最久講這組', a:'bon 講東西品質與食物；bien 講感覺與活動', aNote:'C\'est bon !（好吃）／Je me sens bien.（我感覺很好）。⛔ 不能說 je me sens bon', opts:['bon 講東西品質與食物；bien 講感覺與活動','完全同義','bon 是形容詞、bien 是名詞','bon 用在人、bien 用在物'] },
   { lesson:25, topic:'comparaison', type:'choose', q:'把這三個排出強度高低：j\'aime／j\'aime bien／j\'aime beaucoup', hint:'反直覺', a:'j\'aime bien ＜ j\'aime ＜ j\'aime beaucoup', aNote:'⚠️ 加了 bien 反而<b>變弱</b>（喜歡，但沒到愛）。老師特別提醒這點違反直覺', opts:['j\'aime bien ＜ j\'aime ＜ j\'aime beaucoup','j\'aime ＜ j\'aime bien ＜ j\'aime beaucoup','三個一樣強','j\'aime beaucoup ＜ j\'aime ＜ j\'aime bien'] },
   { lesson:25, topic:'comparaison', type:'choose', q:'Tant pis ! 是什麼意思？它保留了什麼古語？', hint:'老師講過的慣用語', a:'「算了」——保留了古比較級 pis', aNote:'古早的比較級 <b>pis</b> 現在只活在這個慣用語裡，其他地方一律用 pire', opts:['「算了」——保留了古比較級 pis','「太好了」','「更糟」','「一樣」'] },
-  { lesson:25, topic:'comparaison', type:'trans', q:'房間數跟我們家一樣多。', hint:'autant de ... que', a:'Il y a autant de chambres que dans notre maison.', aNote:'', askClaude:true },
+  { lesson:25, topic:'comparaison', type:'trans', q:'房間數跟我們家一樣多。', hint:'autant de ... que', a:'Il y a autant de chambres que dans notre maison.', aNote:'名詞的同等比較有兩個陷阱：①用 <b>autant</b> 不是 aussi——aussi 只配形容詞與副詞；②名詞前一定要加 <b>de</b>（plus de／moins de／autant de），跟 beaucoup de 同一條規則。', askClaude:true },
 
   { lesson:25, topic:'condition-si', type:'choose', q:'si 條件句裡，「條件」那半用什麼時態？', hint:'A2 只有一種', a:'現在式', aNote:'⚠️ si 之後永遠不用未來式。「如果明天下雨」是 s\'il pleut demain，不是 s\'il pleuvra', opts:['現在式','未來式','未完成式','命令式'] },
   { lesson:25, topic:'condition-si', type:'choose', q:'「結果」那半可以用哪兩種？', hint:'課本 Formation 表', a:'現在式（陳述常態）或命令式（語氣更強）', aNote:'Si je veux lire, je vais à la bibliothèque.（常態）／Si tu es malade, va à la pharmacie !（勸告）', opts:['現在式（陳述常態）或命令式（語氣更強）','只能用現在式','只能用未來式','現在式或未完成式'] },
@@ -1216,7 +1216,7 @@ const BANK = [
   { lesson:25, topic:'condition-si', type:'choose', q:'si 在哪些字前面會縮寫成 s\'？', hint:'比你想的少', a:'只有 il 和 ils', aNote:'⚠️⚠️ si on、si elle、si tu 都<b>不</b>縮寫。老師說很多法國人自己也會寫錯成 si il', opts:['只有 il 和 ils','所有母音開頭的字','il、elle、on 都會','ils 和 elles'] },
   { lesson:25, topic:'condition-si', type:'choose', q:'Si tu es malade, va à la pharmacie ! 的 va 是什麼語氣？為什麼比較強？', hint:'沒有主詞', a:'命令式——沒有主詞，直接把動作丟給對方', aNote:'對照 Si tu es malade, tu vas à la pharmacie（陳述）。命令式讓它變成勸告或指示', opts:['命令式——沒有主詞，直接把動作丟給對方','未來式','條件式','虛擬式'] },
   { lesson:25, topic:'condition-si', type:'fill', q:'Si tes voisins sont bruyants, _____ d\'appartement !（就換公寓吧，changer 的 tu 命令式）', hint:'-ER 動詞的 tu 命令式要去掉 s', a:'change', aNote:'-ER 動詞的 tu 命令式去掉字尾 s：tu changes → change !' },
-  { lesson:25, topic:'condition-si', type:'trans', q:'如果你有空，可以來我家一趟。', hint:'si / disponible / passer', a:'Si tu es disponible, tu peux passer chez moi.', aNote:'', askClaude:true },
+  { lesson:25, topic:'condition-si', type:'trans', q:'如果你有空，可以來我家一趟。', hint:'si / disponible / passer', a:'Si tu es disponible, tu peux passer chez moi.', aNote:'<b>si ＋ 現在式，結果也用現在式</b>。⚠️ si 只在 il／ils 前面縮寫（S\'il fait très chaud, on met la clim.），<b>si tu／si on／si elle 都不縮</b>。passer＝順道過去一趟，不是久留。', askClaude:true },
 
   { lesson:25, topic:'vocab-meubles', type:'choose', q:'沙發有三種說法，是哪三個？', hint:'課本方框', a:'le canapé = le sofa = le divan', aNote:'⭐ 三個同義，老師說 canapé 最常用。另有 le canapé-lit＝沙發床', opts:['le canapé = le sofa = le divan','le fauteuil = la chaise = le tabouret','le placard = l\'étagère = le rangement','le lit = la couette = le coussin'] },
   { lesson:25, topic:'vocab-meubles', type:'choose', q:'l\'étagère（層架）跟哪個字同字根？', hint:'因為它有很多層', a:'l\'étage（樓層）', aNote:'⭐ 架子有很多「層」，就像大樓有很多「樓」。第23課學過 étage', opts:["l'étage（樓層）",'la table（桌子）',"l'étoile（星星）",'le tabouret（凳子）'] },
@@ -1236,7 +1236,7 @@ const BANK = [
   { lesson:25, topic:'vocab-quartier', type:'choose', q:'表達失望的三個說法是？', hint:'課本 Pour exprimer sa déception', a:'Zut ! / Mince ! / C\'est dommage.', aNote:'⚠️ zut 和 mince 都是 <b>merde</b> 的委婉版。mince 另一個意思是「瘦的」', opts:["Zut ! / Mince ! / C'est dommage.","Courage ! / Ça va aller. / C'est pas grave.","C'est vrai ! / C'est ça. / C'est clair !",'Bien ! / Bon ! / Mieux !'] },
   { lesson:25, topic:'vocab-quartier', type:'choose', q:'口語的 T\'inquiète. 是什麼意思？為什麼奇怪？', hint:'字面跟意思相反', a:'「別擔心」——ne 和 pas 都被省略，字面看起來卻像肯定', aNote:'完整是 Ne t\'inquiète pas → 口語 T\'inquiète pas → 更口語 T\'inquiète。⚠️ 寫作文不能這樣寫', opts:['「別擔心」——ne 和 pas 都被省略，字面看起來卻像肯定','「你擔心吧」','「我很擔心」','「別煩我」'] },
   { lesson:25, topic:'vocab-quartier', type:'choose', q:'Ça m\'arrange. 是什麼意思？', hint:'約時間時很好用', a:'這樣對我方便', aNote:'⭐ 否定：Ça ne m\'arrange pas。<b>si ça t\'arrange</b>＝如果你方便的話', opts:['這樣對我方便','這樣我很生氣','幫我整理一下','這樣比較貴'] },
-  { lesson:25, topic:'vocab-quartier', type:'trans', q:'會沒事的，別擔心。', hint:'兩句安慰語連用', a:"Ça va aller, t'inquiète.", aNote:'', askClaude:true },
+  { lesson:25, topic:'vocab-quartier', type:'trans', q:'會沒事的，別擔心。', hint:'兩句安慰語連用', a:"Ça va aller, t'inquiète.", aNote:'兩句安慰語常連在一起用。Ça va aller 字面是「事情會走下去」；<b>T\'inquiète</b> 是 Ne t\'inquiète pas 的超口語版，ne 和 pas 都省掉——⚠️ 字面看起來像肯定「你擔心」，意思仍然是別擔心。老師：口語很多人這樣講，<b>但寫作文不能這樣寫</b>。', askClaude:true },
 ];
 // ── ID 函數 ──
 function qId(q) {
