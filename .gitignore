@@ -9,3 +9,7 @@ assets/*.pdf
 # 課堂逐字稿：內含 Owen 的家庭、工作、生活對話（家人病史、同事、住處等）
 # 這個 repo 是公開的 GitHub Pages —— 逐字稿永遠只留本機，不 commit
 transcripts/
+
+# Anki 匯入檔：卡片內容含 Owen 的個人例句與教練註記，且真正的真相來源是 Anki 收藏檔本身
+# （有 AnkiWeb 同步當備份）。這裡只當工作區，永遠只留本機
+anki/

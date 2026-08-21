@@ -22,8 +22,14 @@ def load_collection():
     if not os.path.exists(COL):
         print('⚠️  找不到收藏檔，只做檔案本身的檢查：', COL)
         return {}
-    tmp = os.path.join(tempfile.mkdtemp(), 'col.anki2')
+    # ⚠️ Anki 開著的時候，最新的變更還在 collection.anki2-wal 裡，
+    #    只複製主檔會讀到舊資料（2026-08-19 踩過：匯完卻查到沒進去）。
+    d = tempfile.mkdtemp()
+    tmp = os.path.join(d, 'collection.anki2')
     shutil.copy(COL, tmp)
+    for ext in ('-wal', '-shm'):
+        if os.path.exists(COL + ext):
+            shutil.copy(COL + ext, tmp + ext)
     con = sqlite3.connect(tmp)
     out = {}
     for (flds,) in con.execute('select flds from notes'):

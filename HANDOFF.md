@@ -659,7 +659,11 @@ Owen 在手機 AnkiWeb 上看到卡片正面直接印出 `「Je n'ai pas <b>le t
 1. `tools/anki_precheck.py`：匯入前的守門員。擋三件事——**撞號但內容不同**（覆蓋別張卡）、**含 HTML 標籤**（正面印出裸露 `<b>`）、**欄位數不是 24**。只讀收藏檔複本。實測：repair 檔與 batch02 全綠、v2 直接被擋下 35 個衝突。
 2. `ANKI_SETUP.md` 新增兩節：「**ExternalID 是永久門牌**」（跟 codex 座標同一條鐵律：永不重用重編，新一批從收藏檔最大號 +1 開始）與「**匯入前一定要先跑守門員**」。
 
-**Owen 只剩一件事**：匯入 `~/Desktop/anki_repair_lost3.tsv`（3 張，precheck 已驗全綠）。
+**收尾（08-21 Owen 匯完，Claude 驗過）**：**69 張 note、裸露標籤 0、無重複句子、REC_067~069 三張都回來了、複習紀錄完好**（19 張複習過、revlog 53 筆）。
+
+- ⚠️ **驗證時踩到 WAL 坑**：第一次查到還是 66 張，以為他沒匯——其實 Anki 開著，最新變更還在 `collection.anki2-wal`，只複製主檔會讀到舊資料。`anki_precheck.py` 已修成連 `-wal`／`-shm` 一起複製。
+- **桌面清乾淨了**：TSV 移進專案 `anki/`（**已加進 .gitignore**，只留本機；真相來源是收藏檔本身，AnkiWeb 同步就是備份），作廢的 v2 丟 `anki/_已匯入作廢/`，兩個 `.bak-html` 備份確認跟現行檔逐字元等價後刪除。
+- Owen 的指示已寫進 memory `feedback_self_test`：**產卡交出去之前 Claude 自己先跑 precheck**，不要再讓他當地雷偵測器。
 
 ---
 
