@@ -648,7 +648,18 @@ Owen 在手機 AnkiWeb 上看到卡片正面直接印出 `「Je n'ai pas <b>le t
 
 **順帶查到：`anki_batch02_recycled.tsv` 的 7 張從沒匯入過**（REC_060~066）。資料庫裡剛好就是 v2 的 59 張，batch02 獨有的那 7 張不在裡面。
 
-**Owen 要做的（Claude 不能代勞，要在他自己的 Anki 桌面版點）**：把兩個檔案各匯入一次（筆記類型 FR_Mining、Tab 分隔、既有筆記＝更新、第1欄比對）。v2 會原地修好那 18 張、排程進度不受影響；batch02 會補上 7 張新卡。
+**Owen 匯入後的檢查結果（Claude 讀收藏檔驗的）——裸露標籤修好了，但暴露出更嚴重的第二個問題**
+
+- ✅ 66 張 note、**裸露標籤 0 張**、batch02 的 7 張新卡全部進來、沒有重複句子。
+- ⛔ **但「兩個檔一起匯」這個建議是錯的（Claude 的判斷失誤）**：`anki_batch02_recycled.tsv` 跟 `anki_recycled_v2.tsv` **各自從 REC_001 開始編號，中間差一號**——同一個 ExternalID 在兩個檔裡是不同的卡。當初只比對了「ID 有沒有重疊」（36 個），沒有比對「同一個 ID 的內容是不是同一張卡」，結果 batch02 蓋掉 35 張錯位的卡。
+- **實際損失：3 張內容完全消失**（`La cave est sous la maison.`／`Un séjour de 7 jours en Corse.`／`un magazine hebdomadaire`），另 3 張被合併進別張卡的說明裡。**排程沒有受損**——被覆蓋的 36 個 ID 當時複習紀錄都是 0（revlog 53 筆、19 張複習過的卡都不在受影響範圍）。
+- **修復**：3 張用全新號碼 REC_067~069 重發成 `~/Desktop/anki_repair_lost3.tsv`；`anki_recycled_v2.tsv` 已改名成 `.已作廢-請勿匯入`（**它現在跟收藏檔全面衝突，再匯一次會把 35 張重新打散**）。收藏檔目前的權威編號＝batch02 那一套。
+
+**制度性修法（這次的重點，不是修那 3 張）**
+1. `tools/anki_precheck.py`：匯入前的守門員。擋三件事——**撞號但內容不同**（覆蓋別張卡）、**含 HTML 標籤**（正面印出裸露 `<b>`）、**欄位數不是 24**。只讀收藏檔複本。實測：repair 檔與 batch02 全綠、v2 直接被擋下 35 個衝突。
+2. `ANKI_SETUP.md` 新增兩節：「**ExternalID 是永久門牌**」（跟 codex 座標同一條鐵律：永不重用重編，新一批從收藏檔最大號 +1 開始）與「**匯入前一定要先跑守門員**」。
+
+**Owen 只剩一件事**：匯入 `~/Desktop/anki_repair_lost3.tsv`（3 張，precheck 已驗全綠）。
 
 ---
 
