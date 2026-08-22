@@ -99,6 +99,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `gram_trainer.html` | **新增（07-11）**：文法路徑練習器——階段2半開卷（規則卡固定顯示）/階段3遮規則（答錯自動翻開），只出打字題杜絕選項污染，包尾重試磨到全對，首次作答≥80%升階，每階段可手動跳過；完成寫`clb7_quiz_done`（=步驟②）；階段2不寫SRS（開卷不灌精熟統計）、階段3寫；guided=1自動挑「階段最低+錯誤率最高」的點 | ✅ 新建 |
 | `codex.js` | **新增（07-11晚）**：📚文法資料庫（記憶宮殿）資料層——9大章50節123條，A1→B2全境（08-03新增3-4-5後：A1:29/A2:50/B1:32/B2:12），每條永久座標（如`5-2-2`）＋brief＋說明＋例句＋⚠️例外＋🆚相似對比＋topic對應（37個topic有門牌）。**座標鐵律：一經指定永不重編**（Owen靠位置記憶）。`codexLocate(topic)`給練習頁定位用。**07-21**：7-2-2補「personne當主詞vs受詞位置」pts（座標數不變，122條）。**08-02**：5-3-2／5-3-3 的 lvl B1→A2（實際已教到，座標不動）。**08-03**：新增 `3-4-5`「en＝從那個地方」補上 3-4 節唯一缺口（122→123，3-4-1~4 完全沒動）。⚠️ **數條目要 parse `CODEX→sections→items`，用 grep 會多算交叉引用** | ✅ 新建 |
 | `verb_reference.html` | 動詞參考表，發音邏輯已跟其他頁統一（原本完全沒篩選） | ✅ 修復（07-07）|
+| `verb_forms.html`＋`verbs_full.js` | **新增（08-22）**：動詞變位總覽——22 個動詞（核心9＋高頻不規則10＋規則樣本3）× 13 個時態到 B2。**不是變位表大全，是「詞幹經濟學」**：資料只存四個詞幹（futur 詞幹／現在式 nous／現在式 ils／過去分詞）＋現在式六格＋passé simple 型，其餘 40 幾格由 `conjugate()` 現場推導——頁面用計算證明它在教的規則。每個時態掛 📍 codex 座標（13 個全部驗過有對應元素）、🔊 整組唸六個人稱、等級篩選（考前 A1–B1／全部到 B2／只看 B2）、`?v=prendre` 深連結、列印友善 | ✅ 新建 |
 | `answer_cards.js` | **新增（07-16）**：TEF Canada 高頻話題 Answer Card 資料——15個主題（自我介紹/家庭/工作/教育/興趣/飲食/旅行/加拿大/住家/購物/健康/科技/環保/社交/未來計畫），內容是 Owen 真實回答經 Claude 修成正確法文的 A1 種子版本，`versions[]` 之後會長出 A2/B1/B2 | ✅ 新建 |
 | `answer_card.html` | **新增（07-16）**：Answer Card 練習頁，完全複用 sentence_drill.html 的 SRS 引擎（1/3/7/14/30天、包尾重試、🔴手動標記），差異：新卡上限3/天（內容較重）、卡片首次畢業自動記進 `clb7_ac_upgrade_ready`（下次 session 要檢查，幫該卡寫下一版本）。**07-16 當天 Owen 決定排進每日9步番号**（中間輪替群組6→7步：study/drill/sprint/review/sentence/answercard/listen），📊每日完成率分析同步加入此步驟 | ✅ 新建，已排進處方 |
 | `tracker.html` | 舊版計時器（autostart、切分頁自動暫停）+ 700h 進度，功能已被 session_timer.js 取代但保留；**07-16新增：`clb7_tracker` 記錄清單補上 ✏️改時長／🗑刪除**（Owen 發現記錯了以前只能存進去無法修正），順便補上 `sync_supabase.js`（原本完全沒同步）；dashboard session bar 加連結入口 | ✅ 修復（07-16）|
@@ -630,6 +631,35 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **資料層**：`verify_l21.js`（scratchpad）一次驗 9 個檔全綠——卡數/題數/句數/表格結構/文法點欄位/codex 座標數與 3-4-1~4 仍在/文章欄位/筆記表格鐵律/ROOM 是正式值。另外特地驗了 **choose 題的正解都在 opts 裡**（不然會出現永遠答不對的題目）。
 - **瀏覽器層**（切 TEST ROOM，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入＋故意把 `sous la tente` 填成 en 被判錯；reading a22 故意 2對1錯 → 分數與 ✓✗ 與解說都正確、紀錄欄位齊全；french_notes lesson-21 渲染 11 unit／11 表格全包 compare-table／**161 個 🔊 tts-btn**／導覽列 21 個按鈕含第21課；quiz `?lesson=21` 實際出到 y/en 題目並答對計分；**`getPool()` 放行全部 27 題**（確認沒踩到 07-16 那個「文法點被鎖導致整批題目消失」的坑）；map 顯示第21課、tile 與 codex 3-4-5 都正確。
 - **收尾**：清掉測試寫入的 a22 紀錄與該題 SRS key → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留。
+
+### 08-22：動詞變位總覽上線——不是變位表大全，是「詞幹經濟學」
+
+Owen 提的：「動詞變位的介紹或考前快速複習表單……一個 prendre，所有有可能的變化形式什麼。」
+
+**先改了切入角度再動手。** 一個動詞到 B2 攤平是 13 個時態 × 6 人稱 ≈ 80 格，那正好是教學鐵律要避開的「背表格」。但同一份資料換個組法就變成壓縮：法文所有時態只從**四個詞幹**長出來——futur 詞幹（→futur simple＋conditionnel）、現在式 nous（→imparfait、現在分詞、subj 的 nous/vous）、現在式 ils（→subj 的 je/tu/il/ils）、過去分詞（→全部複合時態）。所以「80 格」實際上是 **4 個要記的 ＋ 已經會的字尾**。
+
+**架構決定：資料只存要記的，其餘推導**
+- `verbs_full.js` 每個動詞只手寫：présent 六格、futur 詞幹、過去分詞、助動詞、passé simple 詞幹＋型，加上真的不規則的 subj／impératif／imparfait 詞幹。
+- `conjugate()` 現場算出 13 個時態。**這樣做不只是省事——頁面是用計算證明它在教的那條規則**，而且改規則＝改一個函式，不是校對 1700 個手寫格子（22×13×6）。
+- 每個時態卡都附「怎麼長出來的」一行，例如 imparfait 那張直接寫「現在式 nous『prenons』去掉 -ons ＝ pren- ＋ -ais/-ais/-ait…」。
+
+**⚠️ 中途抓到自己的一個教學錯誤**：第一版的詞幹面板對 être 顯示「現在式 nous ＝ sommes-」「現在式 ils ＝ sont-」——那是把規則硬套在例外上，**會教錯**。改成不規則動詞直接顯示真正的來源（être 的 imparfait 詞幹是 ét-、subjonctif 標「不規則」並列出 que je sois／que nous soyons）。
+
+**收錄 22 個動詞**（Owen 選的範圍）：核心 9（être/avoir/faire/aller/pouvoir/devoir/vouloir/venir/prendre）＋高頻不規則 10（savoir/voir/dire/mettre/partir/sortir/écrire/lire/boire/connaître）＋規則樣本 3（attendre -re／parler -er／finir 第二組 -ir）。
+
+**定位（Owen 也選了）：先做純參考表，不加自測。** 理由是 08-17 的使用率體檢——他固定在用的只有兩個工具，再加一個要作答的頁很可能變藏書閣。所以這頁不產數據、不進今日處方，是「考前掃一眼」的工具，跟 `map.html` 同一類。⚠️ **這代表 dashboard 讀不到它**，之後若要讓它進處方，得先加遮欄自測。
+
+**跟既有工具的分工**（頁尾直接放了三個連結）：`tense_lens`／`time_theatre` 管「該用哪個時態」（感知），`verb_sprint` 管「形式反射」，`verb_reference` 管「用法慣用語」，這頁補的是第三塊：**形式與生成邏輯**。
+
+**驗證**
+- Node 端把 22 個動詞的 futur／imparfait／subjonctif／passé composé／passé simple 第一人稱全部印出來逐行核對，22 行全對。
+- 瀏覽器端：22 動詞 × 13 時態 × 6 人稱全部生成無 undefined／空格錯誤；切動詞、三段等級篩選（9／13／4 張卡）、`?v=être` 深連結、詞幹面板的例外標示、dashboard 新入口都實測過。
+- **13 個 codex 座標全部驗過在 `map.html` 有對應元素**（`#cx-5-3-1` 實測會展開並 flash）。
+- ROOM 隔離照協定走完（本頁有掛 session_timer＋sync，會寫 clb7_*）。
+
+⚠️ 順手發現：`verb_reference.html` 是全站唯一沒掛 `session_timer.js` 的練習頁（07-11 那次全站清查漏掉它），在那頁讀動詞不計時數。沒動，留給下次。
+
+---
 
 ### 08-19（續2）：Anki 卡片正面印出裸露的 `<b>` —— 是匯入的勾選框，不是檔案也不是 AnkiWeb
 
