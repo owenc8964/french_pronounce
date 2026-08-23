@@ -10451,5 +10451,705 @@ const CHUNKS = [
   "fr": "Chaque corps est unique.",
   "zh": "每個身體都是獨一無二的。",
   "note": "課文金句"
+ },,
+ {
+  "id": "L26_Ils_ne_se_sentent_pas_bi",
+  "lesson": 26,
+  "fr": "Ils ne se sentent pas bien dans leur peau.",
+  "zh": "他們對自己不自在。",
+  "note": "⭐ se sentir bien dans sa peau＝字面「在自己的皮膚裡感覺舒服」＝自我接納。整塊記"
  },
+ {
+  "id": "L26_déclare_t_il",
+  "lesson": 26,
+  "fr": "déclare-t-il",
+  "zh": "他表示。",
+  "note": "⚠️ 這個 -t- 沒有任何意思，純粹為了好唸（déclare il 唸起來卡）。只出現在 il／elle／on 前面：déclare-t-elle、déclare-t-on"
+ },
+ {
+  "id": "L26_Mais_c_est_nous_qui_port",
+  "lesson": 26,
+  "fr": "Mais c'est nous qui portons les vêtements.",
+  "zh": "但穿衣服的是我們。",
+  "note": "⭐ 全文結論句。c'est … qui 是強調句型；這裡的 nous ＝一般人，不是模特兒"
+ },
+ {
+  "id": "L26_un_sosie",
+  "lesson": 26,
+  "fr": "un sosie",
+  "zh": "長得一模一樣的人（替身）",
+  "note": "⭐ 英文的 look-alike／doppelgänger。老師：Michael Jackson 有很多 sosies"
+ },
+ {
+  "id": "L26_Il_ne_ressemble_plus_aut",
+  "lesson": 26,
+  "fr": "Il ne ressemble plus autant qu'avant à l'empereur.",
+  "zh": "他不再像以前那麼像皇帝了。",
+  "note": "⭐⭐ 三個東西疊在一起：ne … plus（不再）＋ autant que（一樣多）＋ avant（以前）＝「不再像以前那麼…」"
+ },
+ {
+  "id": "L26_l_empereur",
+  "lesson": 26,
+  "fr": "l'empereur",
+  "zh": "皇帝",
+  "note": "拿破崙的頭銜。文章用它代稱本尊，避免一直重複名字"
+ },
+ {
+  "id": "L26_Je_n_ai_plus_du_tout_la",
+  "lesson": 26,
+  "fr": "Je n'ai plus du tout la tête de l'emploi.",
+  "zh": "我完全沒有那個樣子了。",
+  "note": "⭐ avoir la tête de l'emploi＝長得就是那個工作的樣子。⚠️ 老師警告：這句拿來說別人可能很失禮（暗指他「活該做這種工作」）"
+ },
+ {
+  "id": "L26_Il_avait_le_bon_physique",
+  "lesson": 26,
+  "fr": "Il avait le bon physique.",
+  "zh": "他有適合的外型。",
+  "note": "⭐ 課本第6題答案：「avoir le physique idéal pour un travail」就是這句"
+ },
+ {
+  "id": "L26_le_même_visage_rond_que",
+  "lesson": 26,
+  "fr": "le même visage rond que Bonaparte",
+  "zh": "跟波拿巴一樣的圓臉",
+  "note": "⭐⭐ le même ＋ 名詞 ＋ que——本課主文法的課文出處"
+ },
+ {
+  "id": "L26_Mais_il_ne_suffit_pas_d",
+  "lesson": 26,
+  "fr": "Mais il ne suffit pas d'être petit pour être Napoléon.",
+  "zh": "但光是矮並不足以成為拿破崙。",
+  "note": "⭐ il ne suffit pas de ＋ 原形＝光是…還不夠"
+ },
+ {
+  "id": "L26_Il_est_musclé_et_sec",
+  "lesson": 26,
+  "fr": "Il est musclé et sec.",
+  "zh": "他有肌肉而且精瘦。",
+  "note": "⭐ 這組能並存，就證明 sec ≠ mince——sec 講的是沒有多餘脂肪"
+ },
+ {
+  "id": "L26_avoir_bonne_mine",
+  "lesson": 26,
+  "fr": "avoir bonne mine",
+  "zh": "氣色好",
+  "note": "⭐ la mine 指的是臉色——看起來精神好、狀態好"
+ },
+ {
+  "id": "L26_avoir_mauvaise_mine",
+  "lesson": 26,
+  "fr": "avoir mauvaise mine",
+  "zh": "氣色差",
+  "note": "⚠️ 看得出來人有狀況。可以接著問 ça va ?"
+ },
+ {
+  "id": "L26_avoir_un_corps_parfait",
+  "lesson": 26,
+  "fr": "avoir un corps parfait",
+  "zh": "有完美的身材",
+  "note": "le corps＝身體"
+ },
+ {
+  "id": "L26_les_canons_de_beauté",
+  "lesson": 26,
+  "fr": "les canons de beauté",
+  "zh": "審美標準",
+  "note": "＝les critères de beauté。老師：兩個說法一樣"
+ },
+ {
+  "id": "L26_être_bien_dans_sa_peau",
+  "lesson": 26,
+  "fr": "être bien dans sa peau",
+  "zh": "自在、接納自己",
+  "note": "⭐ 也可以說 se sentir bien dans sa peau。整塊記，不要拆"
+ },
+ {
+  "id": "L26_Le_vêtement_te_rend_beau",
+  "lesson": 26,
+  "fr": "Le vêtement te rend beau.",
+  "zh": "這件衣服讓你變好看。",
+  "note": "⭐⭐ rendre ＋ 形容詞＝使…變得…。主詞是衣服"
+ },
+ {
+  "id": "L26_Il_a_le_même_nez_que_son",
+  "lesson": 26,
+  "fr": "Il a le même nez que son père.",
+  "zh": "他的鼻子跟他爸一樣。",
+  "note": "⭐ 相似：même 前面要有冠詞，而且跟名詞配合（le même / la même / les mêmes）"
+ },
+ {
+  "id": "L26_Il_achète_autant_de_vête",
+  "lesson": 26,
+  "fr": "Il achète autant de vêtements que moi.",
+  "zh": "他買的衣服跟我一樣多。",
+  "note": "⭐ 數量：autant de ＋ 名詞。跟第25課同一條規則——講數量就有 de"
+ },
+ {
+  "id": "L26_Il_a_le_même_visage_rond",
+  "lesson": 26,
+  "fr": "Il a le même visage rond que Bonaparte.",
+  "zh": "他跟波拿巴一樣有圓臉。",
+  "note": "⭐ 課文B的句子——這就是為什麼課本把兩篇排在一起"
+ },
+ {
+  "id": "L26_Ces_deux_robes_sont_pare",
+  "lesson": 26,
+  "fr": "Ces deux robes sont pareilles.",
+  "zh": "這兩件洋裝一樣。",
+  "note": "⭐ pareil＝égal、identique。要跟名詞配合性數：pareil／pareille／pareils／pareilles"
+ },
+ {
+  "id": "L26_Ils_parlent_autant_l_un",
+  "lesson": 26,
+  "fr": "Ils parlent autant l'un que l'autre.",
+  "zh": "他們兩個一樣多話。",
+  "note": "⭐ 兩個人在你面前，不用講名字，直接「一個跟另一個一樣」。老師示範：兩個很吵的小孩就這樣講"
+ },
+ {
+  "id": "L26_Tout_va_bien",
+  "lesson": 26,
+  "fr": "Tout va bien.",
+  "zh": "一切都好。",
+  "note": "⭐ 這裡的 tout ＝ toutes les choses，永遠寫 t-o-u-t，不配合任何東西"
+ },
+ {
+  "id": "L26_J_achète_des_vêtements_t",
+  "lesson": 26,
+  "fr": "J'achète des vêtements tous les trois mois.",
+  "zh": "我每三個月買一次衣服。",
+  "note": "⭐ tous les ＋ 數字 ＋ 時間＝每隔多久一次。⚠️ 這裡不能換成 chaque"
+ },
+ {
+  "id": "L26_J_ai_passé_toute_l_année",
+  "lesson": 26,
+  "fr": "J'ai passé toute l'année à jouer au golf.",
+  "zh": "我整年都在打高爾夫。",
+  "note": "⭐ passer ＋ 時間 ＋ à ＋ 原形＝花時間做某事"
+ },
+ {
+  "id": "L26_Chaque_défaut_peut_être",
+  "lesson": 26,
+  "fr": "Chaque « défaut » peut être vu comme une « qualité ».",
+  "zh": "每個「缺點」都可以被看成一個「優點」。",
+  "note": "⭐ 全文主旨句。être vu comme＝被視為"
+ },
+ {
+  "id": "L26_Vous_êtes_doué_e_pour_la",
+  "lesson": 26,
+  "fr": "Vous êtes doué(e) pour la communication.",
+  "zh": "你有溝通的天分。",
+  "note": "⭐ être doué pour＝有…的天分。老師岔題講法國球員 Doué 就是這個字"
+ },
+ {
+  "id": "L26_On_peut_compter_sur_votr",
+  "lesson": 26,
+  "fr": "On peut compter sur votre prudence et votre tact.",
+  "zh": "大家可以信賴你的謹慎和分寸。",
+  "note": "⭐ compter sur qqn＝依靠某人（tu peux compter sur moi＝你可以靠我）；le tact＝分寸、體貼（課本註解：respect, délicatesse）"
+ },
+ {
+  "id": "L26_Vous_ne_supportez_pas_le",
+  "lesson": 26,
+  "fr": "Vous ne supportez pas le bazar ?",
+  "zh": "你受不了一團亂？",
+  "note": "⭐ supporter＝忍受；le bazar＝亂七八糟（老師：來自中東那種很雜亂的市集）"
+ },
+ {
+  "id": "L26_Ça_vous_fait_gagner_un_t",
+  "lesson": 26,
+  "fr": "Ça vous fait gagner un temps fou.",
+  "zh": "這替你省下超多時間。",
+  "note": "⭐⭐ 兩個要點：法文說「贏時間」（gagner du temps）不說「省」；un temps fou＝超多時間（fou 字面是瘋狂）"
+ },
+ {
+  "id": "L26_Chaque_faiblesse_est_aus",
+  "lesson": 26,
+  "fr": "Chaque faiblesse est aussi une force.",
+  "zh": "每個弱點同時也是一種力量。",
+  "note": "⭐ 結論句。⚠️ 這裡的 aussi ＝「也」，不是比較級的 aussi"
+ },
+ {
+  "id": "L26_Le_savoir_rend_plus_tolé",
+  "lesson": 26,
+  "fr": "Le savoir rend plus tolérant avec les autres et soi-même.",
+  "zh": "知道這件事，會讓人對別人和自己更寬容。",
+  "note": "⭐ le savoir＝知識（動詞當名詞用）；rendre ＋ 形容詞 又出現一次；soi-même＝自己（泛指，不指定人稱）"
+ },
+ {
+  "id": "L26_Il_ne_semble_pas_croire",
+  "lesson": 26,
+  "fr": "Il ne semble pas croire en la bonté humaine.",
+  "zh": "他似乎不相信人性本善。",
+  "note": "⭐ 老師：所以他的故事結局常常很慘。la bonté＝善良"
+ },
+ {
+  "id": "L26_Pendant_l_été_la_cigale",
+  "lesson": 26,
+  "fr": "Pendant l'été, la cigale chante tous les jours.",
+  "zh": "夏天，蟬每天唱歌。",
+  "note": "⭐ tous les jours ＝本課文法"
+ },
+ {
+  "id": "L26_Qu_est_ce_que_tu_as_fait",
+  "lesson": 26,
+  "fr": "Qu'est-ce que tu as fait pendant l'été ?",
+  "zh": "你夏天做了什麼？",
+  "note": "⭐ passé composé 問句"
+ },
+ {
+  "id": "L26_La_fourmi_n_est_pas_prêt",
+  "lesson": 26,
+  "fr": "La fourmi n'est pas prêteuse : c'est là son moindre défaut.",
+  "zh": "螞蟻不愛借東西給人，這是牠最小的缺點。",
+  "note": "⭐ un défaut 又出現了——課本把課文C跟這篇排在一起不是巧合"
+ },
+ {
+  "id": "L26_On_peut_voir_la_suite",
+  "lesson": 26,
+  "fr": "On peut voir la suite.",
+  "zh": "我們可以看接下來的部分。",
+  "note": "🎙 la suite＝後續。開始上課接續上次進度時說的"
+ },
+ {
+  "id": "L26_Tu_te_rappelles",
+  "lesson": 26,
+  "fr": "Tu te rappelles ?",
+  "zh": "你記得嗎？",
+  "note": "🎙 ＝ tu te souviens ?（第20課學過的那組）"
+ },
+ {
+  "id": "L26_Ça_veut_dire_quoi",
+  "lesson": 26,
+  "fr": "Ça veut dire quoi ?",
+  "zh": "這是什麼意思？",
+  "note": "🎙 口語問法（正式是 qu'est-ce que ça veut dire ?）。Owen 自己要會主動用這句"
+ },
+ {
+  "id": "L26_Ce_n_est_pas_grave",
+  "lesson": 26,
+  "fr": "Ce n'est pas grave.",
+  "zh": "沒關係。",
+  "note": "🎙 課本印錯字時老師說的"
+ },
+ {
+  "id": "L26_On_peut_s_en_sortir",
+  "lesson": 26,
+  "fr": "On peut s'en sortir.",
+  "zh": "我們應付得來。",
+  "note": "🎙 s'en sortir＝脫困、搞定，很常用"
+ },
+ {
+  "id": "L26_Tu_n_as_pas_de_problème",
+  "lesson": 26,
+  "fr": "Tu n'as pas de problème avec le mot « gros » ?",
+  "zh": "你對「胖」這個字沒有意見吧？",
+  "note": "🎙 老師確認學生會不會不舒服時說的"
+ },
+ {
+  "id": "L26_Normalement_tu_ne_dis_pa",
+  "lesson": 26,
+  "fr": "Normalement, tu ne dis pas à quelqu'un qu'il est gros.",
+  "zh": "一般來說，你不會對別人說他胖。",
+  "note": "🎙 社會語用的提醒"
+ },
+ {
+  "id": "L26_Je_pense_que_ce_texte_es",
+  "lesson": 26,
+  "fr": "Je pense que ce texte est un peu difficile.",
+  "zh": "我覺得這篇文章有點難。",
+  "note": "🎙 老師自己承認課文難度時說的"
+ },
+ {
+  "id": "L26_On_peut_regarder_rapidem",
+  "lesson": 26,
+  "fr": "On peut regarder rapidement.",
+  "zh": "我們可以快速看一下。",
+  "note": "🎙 rapidement＝快速地"
+ },
+ {
+  "id": "L26_C_est_quoi_ça_veut_dire",
+  "lesson": 26,
+  "fr": "C'est quoi, ça veut dire quoi ?",
+  "zh": "這是什麼、什麼意思？",
+  "note": "🎙 完全口語的追問方式"
+ },
+ {
+  "id": "L26_Tu_peux_compter_sur_moi",
+  "lesson": 26,
+  "fr": "Tu peux compter sur moi.",
+  "zh": "你可以信賴我。",
+  "note": "🎙 老師解釋 compter sur 時給的例句"
+ },
+ {
+  "id": "L26_chaque_famille",
+  "lesson": 26,
+  "fr": "chaque famille",
+  "zh": "想說「我對家裡每個人都稱讚」",
+  "note": "⚠️ 那是「每個家庭」。要說 chaque membre de ma famille——chaque 是一個一個看"
+ },
+ {
+  "id": "L26_costaud_e",
+  "lesson": 26,
+  "fr": "costaud(e)",
+  "zh": "壯",
+  "note": "⚠️ 跟胖不一樣——是 big & strong。「il est costaud」是稱讚"
+ },
+ {
+  "id": "L26_corpulent_e",
+  "lesson": 26,
+  "fr": "corpulent(e)",
+  "zh": "壯碩、體型大",
+  "note": "比較文雅，重點在「佔空間」而不是脂肪"
+ },
+ {
+  "id": "L26_taille_plus",
+  "lesson": 26,
+  "fr": "taille plus",
+  "zh": "大尺碼",
+  "note": "從服裝尺碼來的說法（plus size），最中性"
+ },
+ {
+  "id": "L26_rond_e",
+  "lesson": 26,
+  "fr": "rond(e)",
+  "zh": "圓潤",
+  "note": "臉（un visage rond）跟身材（elle est ronde）都能用，比 gros 溫和"
+ },
+ {
+  "id": "L26_barbu_e",
+  "lesson": 26,
+  "fr": "barbu(e)",
+  "zh": "有鬍子的",
+  "note": "adj｜la barbe＝鬍子"
+ },
+ {
+  "id": "L26_chauve",
+  "lesson": 26,
+  "fr": "chauve",
+  "zh": "禿頭的",
+  "note": "adj｜⚠️ 全禿或剃光。課本註解 1 就是這個字"
+ },
+ {
+  "id": "L26_dégarni_e",
+  "lesson": 26,
+  "fr": "dégarni(e)",
+  "zh": "頭髮稀疏的",
+  "note": "adj｜⚠️ 兩側還有、頂上沒了。跟 chauve 不一樣"
+ },
+ {
+  "id": "L26_les_cheveux",
+  "lesson": 26,
+  "fr": "les cheveux",
+  "zh": "頭髮",
+  "note": "m.pl｜永遠複數。gris／blancs／blonds／bruns／châtains／courts／longs"
+ },
+ {
+  "id": "L26_châtain",
+  "lesson": 26,
+  "fr": "châtain",
+  "zh": "栗色的",
+  "note": "adj｜老師：brun 跟 châtain 很接近，都是深髮色"
+ },
+ {
+  "id": "L26_la_fossette",
+  "lesson": 26,
+  "fr": "la fossette",
+  "zh": "酒窩",
+  "note": "f｜臉頰或下巴上都可能有"
+ },
+ {
+  "id": "L26_le_menton",
+  "lesson": 26,
+  "fr": "le menton",
+  "zh": "下巴",
+  "note": "m｜la fossette au menton＝下巴的酒窩"
+ },
+ {
+  "id": "L26_le_sourire",
+  "lesson": 26,
+  "fr": "le sourire",
+  "zh": "微笑",
+  "note": "m｜sourire 也是動詞"
+ },
+ {
+  "id": "L26_le_visage",
+  "lesson": 26,
+  "fr": "le visage",
+  "zh": "臉",
+  "note": "m｜⚠️ 跟 la tête（頭）不同。un visage rond＝圓臉"
+ },
+ {
+  "id": "L26_âgé_e",
+  "lesson": 26,
+  "fr": "âgé(e)",
+  "zh": "年長的",
+  "note": "adj｜＝vieux／vieille（口語）≠ jeune。⚠️ âgé 比 vieux 客氣"
+ },
+ {
+  "id": "L26_fort_e",
+  "lesson": 26,
+  "fr": "fort(e)",
+  "zh": "強壯的",
+  "note": "adj｜⚠️ 也可以形容心理：c'est une personne forte＝她內心很強大"
+ },
+ {
+  "id": "L26_mesurer_1_60_m",
+  "lesson": 26,
+  "fr": "mesurer 1,60 m",
+  "zh": "身高160公分",
+  "note": "v｜唸 un mètre soixante"
+ },
+ {
+  "id": "L26_musclé_e",
+  "lesson": 26,
+  "fr": "musclé(e)",
+  "zh": "有肌肉的",
+  "note": "adj｜le muscle＝肌肉"
+ },
+ {
+  "id": "L26_mince",
+  "lesson": 26,
+  "fr": "mince",
+  "zh": "纖細的",
+  "note": "adj｜⚠️ ＝skinny，強調細。老師：課本把 sec 跟 mince 畫等號，但其實不完全一樣"
+ },
+ {
+  "id": "L26_ressembler_à",
+  "lesson": 26,
+  "fr": "ressembler à",
+  "zh": "像…",
+  "note": "Tu ressembles à ton père. ／ 用代名詞：Tu me ressembles."
+ },
+ {
+  "id": "L26_être_le_sosie_de",
+  "lesson": 26,
+  "fr": "être le sosie de",
+  "zh": "是…的分身",
+  "note": "Il est le sosie de Napoléon.（長得一模一樣的人）"
+ },
+ {
+  "id": "L26_avoir_la_tête_de_l_emplo",
+  "lesson": 26,
+  "fr": "avoir la tête de l'emploi",
+  "zh": "長得就是那個樣子",
+  "note": "⚠️ 稱讚或侮辱都可以，看語境。老師說拿來說別人很失禮"
+ },
+ {
+  "id": "L26_une_qualité",
+  "lesson": 26,
+  "fr": "une qualité",
+  "zh": "優點",
+  "note": "f｜↔ un défaut"
+ },
+ {
+  "id": "L26_un_défaut",
+  "lesson": 26,
+  "fr": "un défaut",
+  "zh": "缺點",
+  "note": "m｜課本標題：les qualités de vos défauts"
+ },
+ {
+  "id": "L26_bavard_e",
+  "lesson": 26,
+  "fr": "bavard(e)",
+  "zh": "多話的",
+  "note": "adj｜bavarder＝閒聊"
+ },
+ {
+  "id": "L26_bruyant_e",
+  "lesson": 26,
+  "fr": "bruyant(e)",
+  "zh": "吵的",
+  "note": "adj｜le bruit＝噪音"
+ },
+ {
+  "id": "L26_sans_gêne",
+  "lesson": 26,
+  "fr": "sans gêne",
+  "zh": "沒分寸的",
+  "note": "adj｜⚠️ gêner＝打擾 → sans gêne＝不介意打擾別人"
+ },
+ {
+  "id": "L26_sociable",
+  "lesson": 26,
+  "fr": "sociable",
+  "zh": "好相處的",
+  "note": "adj｜不等於「社交強」，是「跟人相處沒問題」"
+ },
+ {
+  "id": "L26_spontané_e",
+  "lesson": 26,
+  "fr": "spontané(e)",
+  "zh": "直接的、不假思索的",
+  "note": "adj｜↔ réfléchi"
+ },
+ {
+  "id": "L26_doué_e_pour",
+  "lesson": 26,
+  "fr": "doué(e) pour",
+  "zh": "有…天分的",
+  "note": "adj｜être doué pour la communication"
+ },
+ {
+  "id": "L26_timide",
+  "lesson": 26,
+  "fr": "timide",
+  "zh": "害羞的",
+  "note": "adj｜課本：être d'un naturel timide"
+ },
+ {
+  "id": "L26_réfléchi_e",
+  "lesson": 26,
+  "fr": "réfléchi(e)",
+  "zh": "深思熟慮的",
+  "note": "adj｜réfléchir＝思考"
+ },
+ {
+  "id": "L26_déranger",
+  "lesson": 26,
+  "fr": "déranger",
+  "zh": "打擾",
+  "note": "v｜＝gêner"
+ },
+ {
+  "id": "L26_compter_sur",
+  "lesson": 26,
+  "fr": "compter sur",
+  "zh": "信賴、依靠",
+  "note": "v｜Tu peux compter sur moi."
+ },
+ {
+  "id": "L26_la_prudence",
+  "lesson": 26,
+  "fr": "la prudence",
+  "zh": "謹慎",
+  "note": "f｜prudent(e)＝謹慎的"
+ },
+ {
+  "id": "L26_le_tact",
+  "lesson": 26,
+  "fr": "le tact",
+  "zh": "分寸、體貼",
+  "note": "m｜課本註解：respect, délicatesse"
+ },
+ {
+  "id": "L26_maniaque",
+  "lesson": 26,
+  "fr": "maniaque",
+  "zh": "有潔癖的、龜毛的",
+  "note": "adj｜⚠️ 是負面的「過頭」，不是英文的 maniac（瘋子）"
+ },
+ {
+  "id": "L26_le_désordre",
+  "lesson": 26,
+  "fr": "le désordre",
+  "zh": "亂",
+  "note": "m｜↔ l'ordre"
+ },
+ {
+  "id": "L26_énerver",
+  "lesson": 26,
+  "fr": "énerver",
+  "zh": "使煩躁",
+  "note": "v｜être énervé＝很煩"
+ },
+ {
+  "id": "L26_supporter",
+  "lesson": 26,
+  "fr": "supporter",
+  "zh": "忍受",
+  "note": "v｜⚠️ 不是英文的 support（支持）"
+ },
+ {
+  "id": "L26_le_bazar",
+  "lesson": 26,
+  "fr": "le bazar",
+  "zh": "一團亂",
+  "note": "m｜老師：來自那種很雜亂的市集"
+ },
+ {
+  "id": "L26_ordonné_e",
+  "lesson": 26,
+  "fr": "ordonné(e)",
+  "zh": "有條理的",
+  "note": "adj｜l'ordre＝秩序"
+ },
+ {
+  "id": "L26_tolérant_e",
+  "lesson": 26,
+  "fr": "tolérant(e)",
+  "zh": "寬容的",
+  "note": "adj｜結論句：rend plus tolérant"
+ },
+ {
+  "id": "L26_soi_même",
+  "lesson": 26,
+  "fr": "soi-même",
+  "zh": "自己",
+  "note": "pron｜⚠️ 泛指用 soi-même（不指定人稱時一律用這個）"
+ },
+ {
+  "id": "L26_le_renard",
+  "lesson": 26,
+  "fr": "le renard",
+  "zh": "狐狸",
+  "note": "intelligent et menteur（聰明但愛說謊）"
+ },
+ {
+  "id": "L26_le_loup",
+  "lesson": 26,
+  "fr": "le loup",
+  "zh": "狼",
+  "note": "indépendant mais souvent un peu stupide（獨立但常常有點笨）"
+ },
+ {
+  "id": "L26_l_agneau",
+  "lesson": 26,
+  "fr": "l'agneau",
+  "zh": "羔羊",
+  "note": "doux et honnête（溫和誠實）"
+ },
+ {
+  "id": "L26_le_lion",
+  "lesson": 26,
+  "fr": "le lion",
+  "zh": "獅子",
+  "note": "autoritaire et cruel（專斷殘忍）"
+ },
+ {
+  "id": "L26_le_rat",
+  "lesson": 26,
+  "fr": "le rat",
+  "zh": "老鼠",
+  "note": "superficiel en groupe, curieux et réfléchi seul（在群體裡膚淺，單獨時好奇又深思）"
+ },
+ {
+  "id": "L26_la_grenouille",
+  "lesson": 26,
+  "fr": "la grenouille",
+  "zh": "青蛙",
+  "note": "envieuse et prétentieuse（愛嫉妒又自命不凡）"
+ },
+ {
+  "id": "L26_la_fourmi",
+  "lesson": 26,
+  "fr": "la fourmi",
+  "zh": "螞蟻",
+  "note": "inquiète et travailleuse（焦慮又勤勞）"
+ },
+ {
+  "id": "L26_la_cigale",
+  "lesson": 26,
+  "fr": "la cigale",
+  "zh": "蟬",
+  "note": "optimiste et paresseuse（樂觀又懶惰）"
+ },
+ {
+  "id": "L26_gagner_un_temps_fou",
+  "lesson": 26,
+  "fr": "gagner un temps fou",
+  "zh": "逐字翻成 win time 覺得怪",
+  "note": "法文說「贏時間」不說「省時間」：gagner du temps"
+ }
 ];

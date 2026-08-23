@@ -1002,8 +1002,35 @@ const TABLES = [
       ["Si vous avez un problème, ......-moi.（打給我，命令式 vous）",       {a:'appelez',   h:true }],
       ["...... fait froid, on met le chauffage.（如果天氣冷）",             {a:"S'il|s'il", h:true }],
     ]
-  },
+  },,
+  { id:'comparaison-egalite', title:'aussi / le même / autant', zh:'相同與等量：詞類決定用哪個字（第26課主文法）', type:'gram', lesson:26,
+    note:'⚠️ 形容詞副詞用 aussi；動詞名詞用 autant；名詞講「相似」換成 le／la／les même(s) ＋ que。名詞講數量別忘了 de',
+    headers:['句子','填入'],
+    rows:[
+      ['Mathieu n\'est pas ...... grand que son père.（一樣高）', {a:'aussi', h:false}],
+      ['Ils parlent ...... l\'un que l\'autre.（一樣多話）', {a:'autant', h:true}],
+      ['J\'ai les cheveux ...... longs que l\'année dernière.（一樣長）', {a:'aussi', h:true}],
+      ['Mon fils me ressemble ...... que ma fille.（一樣像）', {a:'autant', h:true}],
+      ['Je ne fais pas ...... de sport que ma sœur.（一樣多的運動）', {a:'autant', h:true}],
+      ['Il a ...... nez que son père.（一樣的鼻子）', {a:'le même', h:true}],
+      ['Elle a ...... yeux que sa sœur.（一樣的眼睛）', {a:'les mêmes', h:true}],
+      ['Il achète ...... vêtements que moi.（一樣多的衣服）', {a:'autant de', h:true}],
+    ] },
+
+  { id:'tout-chaque-drill', title:'tout / toute / tous / toutes / chaque', zh:'全部 vs 每一個：看名詞的性數（第26課）', type:'gram', lesson:26,
+    note:'⚠️ chaque 永遠不變化＋單數名詞；tout 要跟名詞配合性數。tout 當中性代名詞（＝所有東西）時永遠寫 tout',
+    headers:['句子','填入'],
+    rows:[
+      ['...... le monde a des défauts.（le monde 陽性單數）', {a:'Tout|tout', h:false}],
+      ['Le coach donne ...... ces conseils.（conseil 陽性複數）', {a:'tous', h:true}],
+      ['...... les qualités ont un opposé positif.（qualité 陰性複數）', {a:'Toutes|toutes', h:true}],
+      ['Nous avons passé ...... l\'heure à parler.（heure 陰性單數）', {a:'toute', h:true}],
+      ['...... qualité peut cacher un défaut.（每一個，後面單數）', {a:'Chaque|chaque', h:true}],
+      ['...... va bien.（一切都好，中性代名詞）', {a:'Tout|tout', h:true}],
+      ['J\'achète des vêtements ...... les trois mois.（每三個月）', {a:'tous', h:true}],
+    ] },
 ];
+
 
 // ════════════════════════════════════════════════════════════
 // 狀態

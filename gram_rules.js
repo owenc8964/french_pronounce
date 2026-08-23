@@ -330,7 +330,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'comparaison', name:'La comparaison', icon:'⚖️', zone:'A2', cat:'adjectifs',
-    lessons:[14,25], topics:['comparaison'], unlocked:true,
+    lessons:[14,25,26], topics:['comparaison'], unlocked:true,
     rule:{
       title:'比較級 — 先問「我在比什麼詞類」，詞類決定寫法',
       why:'三個等級（moins／aussi・autant／plus）是固定的，真正決定寫法的是你在比什麼詞類。副詞和形容詞是「性質」，比較詞把它夾在中間；動詞是「動作」，沒辦法被夾住，所以比較詞只能跟在後面；名詞是「數量」，而法文講不確定的數量一律要 de——所以 plus de／moins de／autant de 的那個 de 不是新規則，是 beaucoup de 那條規則在比較句裡的同一張臉。同等級的 aussi 與 autant 也是同一個道理：aussi 修飾性質（形容詞副詞），autant 衡量分量（動作與數量），中文都翻成「一樣」，法文分得很清楚。',
@@ -372,6 +372,28 @@ const GRAM_POINTS = [
         { fr:'Si tu es malade, va à la pharmacie !', zh:'如果你不舒服，就去藥局！（現在式＋命令式，語氣強）' },
         { fr:'S\'il pleut, on peut aller au Centre de la BD.', zh:'如果下雨，我們可以去漫畫中心。（si + il → s\'il）' },
         { fr:'Si on part vivre sur une île déserte…', zh:'如果我們去荒島生活…（⚠️ si on 不縮寫）' },
+      ]}},
+
+  { id:'tout-chaque', name:'Tout / chaque (全部 vs 每一個)', icon:'🔢', zone:'A2', cat:'base',
+    lessons:[26], topics:['tout-chaque'], unlocked:true,
+    rule:{
+      title:'tout / toute / tous / toutes vs chaque — 整批看還是一個一個看',
+      why:'這兩個字中文都可以翻成「每」，但法文分得很清楚：chaque 是把東西一個一個拆開看，所以後面永遠是單數，而且 chaque 本身完全不變化；tout 是把東西當成一整批看，所以它要跟那批名詞配合性數，後面通常還帶著冠詞（tous les jours）。第三種身分最容易漏掉——tout 也可以單獨當中性代名詞用，意思是「所有東西」（Tout va bien），這時它不配合任何東西，永遠寫 t-o-u-t。⚠️ 真正的陷阱在於 tout 跟 tous 唸起來一模一樣，所以這是一條「用看的」規則不是「用聽的」規則：要寫對只能回頭看名詞是什麼性數。',
+      points:[
+        'chaque ＋ 單數名詞，chaque 永遠不變化 → Chaque qualité peut cacher un défaut',
+        'tout / toute / tous / toutes 要跟名詞配合性數 → J\'aime tous les aspects de sa personnalité',
+        '⚠️ tout 跟 tous 同音——只能靠後面的名詞決定寫法',
+        'tout 當中性代名詞＝「所有東西」時不變化 → Tout va bien / Tout ira bien',
+        'tous les ＋ 數字 ＋ 時間＝每隔多久一次 → tous les trois mois（⚠️ 這個結構不能換 chaque）',
+        '很多情況兩個都對：tous les jours ＝ chaque jour、toutes les semaines ＝ chaque semaine',
+        '⚠️ chaque 要指到「一個一個」的單位：chaque membre de ma famille，不是 chaque famille',
+        'passer ＋ 時間 ＋ à ＋ 原形：J\'ai passé toute l\'année à jouer au golf',
+      ],
+      examples:[
+        { fr:'Chaque qualité peut cacher un défaut.', zh:'每個優點都可能藏著一個缺點。（chaque ＋ 單數）' },
+        { fr:'J\'aime tous les aspects de sa personnalité.', zh:'我喜歡他個性的每一面。（tous ＋ 陽性複數）' },
+        { fr:'Toutes les qualités ont un opposé positif.', zh:'所有優點都有正面的另一面。（toutes ＋ 陰性複數）' },
+        { fr:'Tout va bien.', zh:'一切都好。（中性代名詞，不變化）' },
       ]}},
 
   { id:'conseils', name:'Conseils & obligations', icon:'💡', zone:'A2', cat:'verbe-mode',

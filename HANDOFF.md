@@ -93,7 +93,7 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `sentences.js` | **新增（07-07）**：常用句庫（目前176句，第1–22課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
 | `listening.html` | 聽力：**真實資源**（RFI + InnerFrench Spotify embed；Podcast Français Facile的A1對話系列連結卡）+ **自出TTS聽力測驗**（8篇，對齊已學課程）+ **07-09/07-10/07-11新增「真人語速測驗」**（LISTENING_BANK的`audioUrl`類型：真實mp3直接播放＋Claude原創TCF/TEF風格選擇題，目前10篇：麵包店/車站/市場/肉店/魚店/藥局/問路/**起司店/咖啡廳/郵局**，逐字稿核對用連結卡連到來源、不存對方文字）+ **07-10新增「文化深掘Podcast」板塊**（見下方07-10記錄，目前CULTURE_BANK是空陣列，等Owen放音檔進來）+ **07-16新增「🎬影集精讀Shadowing」板塊**（記錄集數/第幾遍/第2遍可貼整理的句型，`?shadow=1`從dashboard進來自動捲到這張卡）| ✅ 大改（07-06～07-16）|
 | `french_notes.html` | 第1–19課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音）、**07-11新增選字標記**（選取文字後可標🔴不熟／⭐重點，存`clb7_notes_marks`，重整頁面用文字比對重新套用，懸浮面板有「複製標記給Claude」）、**08-04第21課平行閱讀加「整段連續朗讀」**（只加整段層、刻意不加單字層，原因見08-04記錄） | ✅ 修復（07-07/11）＋整段朗讀（08-04）|
-| `chunks.js` | 複習卡庫：**1271張**，自動從筆記抽取（1–22課，07-07補第15課88張、07-10補第16課80張、07-17補第17課40張含課文慣用語、07-21補第18課35張、07-26補第19課24張、08-02補第20課70張、08-03補第21課63張、08-04補32張老師課堂口語、08-05補第22課66張），**07-11修正2張第14課語意不清的卡** | ✅ |
+| `chunks.js` | 複習卡庫：**1599張**，自動從筆記抽取（1–22課，07-07補第15課88張、07-10補第16課80張、07-17補第17課40張含課文慣用語、07-21補第18課35張、07-26補第19課24張、08-02補第20課70張、08-03補第21課63張、08-04補32張老師課堂口語、08-05補第22課66張），**07-11修正2張第14課語意不清的卡** | ✅ |
 | `questions.js` | 共用題庫（**BANK 850題** + AGREE_BANK 247題），第1–22課，**07-11新增53個`zh`欄位**（fill題型無中文語境的補句意）、**07-17新增第17課24題**（passé composé/duree，含10題課文改編句）、**07-21新增第18課16題**（vocab-parcours-vie新topic + negation完整版）、**07-26新增第19課21題**（vocab-loisirs新topic、passé composé/negation/duree/adjective-position/social-invitations總複習）、**08-02新增第20課26題**（imparfait完整變位 + vocab-souvenirs新topic）、**08-03新增第21課27題**（pronoms-y-en＋vocab-sens 兩個新topic）、**08-04新增41題跨課「易混淆詞對」**（新topic paires-confusables，見08-04記錄）、**08-05新增第22課24題**（vocab-meteo新topic＋adjective-position補題） | ✅ |
 | `gram_rules.js` | **新增（07-11）**：文法框架單一真相來源——`GRAM_POINTS` 32個文法點（19現役+13未開課佔位）含 topics 對應與規則卡（中文要點+法文例句）、`GRAM_CATS`7大類、`gramStageOf`/`gramSetStage`/`gramFlaggedIds`/`gramFlagQuestion` helpers。map/gram_trainer/quiz/dashboard 四頁共用。**07-21**：`negation`點補lesson 18＋passé composé中的位置規則／personne主詞vs受詞兩條rule points。**07-26**：`negation`/`duree-temps`/`passe`/`adjectifs-accord`四點的`lessons`陣列補19 | ✅ 新建 |
 | `gram_trainer.html` | **新增（07-11）**：文法路徑練習器——階段2半開卷（規則卡固定顯示）/階段3遮規則（答錯自動翻開），只出打字題杜絕選項污染，包尾重試磨到全對，首次作答≥80%升階，每階段可手動跳過；完成寫`clb7_quiz_done`（=步驟②）；階段2不寫SRS（開卷不灌精熟統計）、階段3寫；guided=1自動挑「階段最低+錯誤率最高」的點 | ✅ 新建 |
@@ -631,6 +631,47 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **資料層**：`verify_l21.js`（scratchpad）一次驗 9 個檔全綠——卡數/題數/句數/表格結構/文法點欄位/codex 座標數與 3-4-1~4 仍在/文章欄位/筆記表格鐵律/ROOM 是正式值。另外特地驗了 **choose 題的正解都在 opts 裡**（不然會出現永遠答不對的題目）。
 - **瀏覽器層**（切 TEST ROOM，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入＋故意把 `sous la tente` 填成 en 被判錯；reading a22 故意 2對1錯 → 分數與 ✓✗ 與解說都正確、紀錄欄位齊全；french_notes lesson-21 渲染 11 unit／11 表格全包 compare-table／**161 個 🔊 tts-btn**／導覽列 21 個按鈕含第21課；quiz `?lesson=21` 實際出到 y/en 題目並答對計分；**`getPool()` 放行全部 27 題**（確認沒踩到 07-16 那個「文法點被鎖導致整批題目消失」的坑）；map 顯示第21課、tile 與 codex 3-4-5 都正確。
 - **收尾**：清掉測試寫入的 a22 紀錄與該題 SRS key → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留。
+
+### 08-23：第26課（A2・比較的第二層・tout vs chaque・外貌與性格・拉封丹）入庫＋九項連動
+
+Owen 貼了 08-23 那堂的完整逐字稿＋8 張課本截圖（`~/Desktop/0823/`）。這一課是**三篇課文一次上完**（非典型模特兒後半、拿破崙的替身、缺點的優點），加上 Unité 4 的全部外貌與性格詞彙、兩個文法點、還有拉封丹寓言的文化段。**份量大約是平常一課的兩倍。**
+
+**兩個文法的關係要先講清楚（這決定了怎麼寫筆記）**
+- 第25課教的是「比多少」（plus／moins／aussi・autant ＋ que），這一課補的是「比相同」——**判準完全一樣，還是看詞類**：形容詞副詞 aussi、動詞名詞 autant、名詞要講「相似」換 `le/la/les même(s) … que`、講「數量相等」用 `autant de … que`，另外 `pareil(le)` 是形容詞不接 que。所以筆記把它定位成「比較的**第二層**」而不是新東西。
+- `tout / toute / tous / toutes` vs `chaque`：一個整批看（要配合性數）、一個一個一個看（永遠不變化＋單數）。⚠️ 真正的陷阱是 **tout 跟 tous 同音**——這是條「用看的」規則。
+
+**九項連動**
+1. `french_notes.html`：新增 `lesson-26`，**16 個 unit**（三篇課文各一、外貌詞彙三組、相似、主文法、tout/chaque、性格詞彙總表、拉封丹＋動物性格表、平行閱讀、老師課堂法語、發音警報、糾錯摘要）。129 句法文、12 張表、246 個發音鍵。
+2. `questions.js`：**+39 題**，955→**994**。新 topic `tout-chaque`(10)、`vocab-apparence`(8)、`vocab-caractere`(9)，既有 `comparaison` 補 12。
+3. `chunks.js`：**+100 張**，1499→**1599**。
+4. `sentences.js`：`S_L26_1~10`，206→**216**。
+5. `table_drill.html`：**+2 表**，52→**54**（`comparaison-egalite` 8 題、`tout-chaque-drill` 7 題）。
+6. `gram_rules.js`：`comparaison` 的 `lessons` 補 26＋**新增 `tout-chaque`**（A2，8 條要點）。
+7. `codex.js`：**新增 2 條**，128→**130**——`1-6-4`「chaque 與 tout」（1-6 節末追加）、`2-3-5`「le même que 與 pareil」（2-3 節末追加）。⚠️ 既有座標一條都沒動。
+8. `map.html`：`CURRENT_LESSON` 25→**26**；新增 3 格 A2 tile（`tout-chaque`／`apparence`／`caractere`）。
+9. `reading.html`：新增 `a27`「Deux frères, deux caractères」（A2／Caractère），26→**27 篇**。三題全打在本課痛點（aussi vs autant 的判準、chaque＋單數 vs tout 配合、sec vs mince）。
+- `quiz.html`／`dashboard.html` 補三個新 topic 標籤。
+
+**新工具：`tools/extract_chunks.js`（複習卡抽取器，這次終於進 repo）**
+之前每課都說「重跑 chunks.js 抽取腳本」，但那支腳本從來沒進版控（跟 Anki 產生器一樣寫在 scratchpad 就沒了）。這次寫進 `tools/`：
+- 抽兩種來源（跟筆記格式鐵律綁在一起）：`ul.phrase-list` 的 li、以及第一欄是 `td class="m"` 的詞彙表列。
+- **id 撞號要遞增 `_2`／`_3`，不能 skip**（07-10 靜默漏卡的那個坑寫進註解了）。
+- ⚠️ **加了選卡規則**：第一版抽出 **188 張**，是前幾課的三倍，會把複習包灌爆。現在只收「詞彙表全部＋標 ⭐/🎙 的句子＋真正的短塊（≤22 字且不是完整句）」，其餘課文長句留在筆記裡當閱讀材料。**這條規則以後每課都適用。**
+
+**驗證**
+- `node tools/check_notes.js` 11 條全綠。
+- 資料層：BANK 994、CHUNKS 1599（**舊課 1498 張一張沒被動到**）、句庫 216、表格 54、codex 130 條**零空洞**、tile 72 格、文章 27 篇，各檔 id 皆無重複。
+- 瀏覽器層（TEST ROOM 隔離，開頭攔 fetch 確認房間）：**`getPool()` 放行全部 39 題**（沒踩到 07-16「文法點被鎖整批題目消失」的坑）、39 題逐一渲染 0 個 HTML 跳脫 0 個空解說、tout-chaque 題的 📍 連到 `map.html#cx-1-6-4`、兩張新表實填實判（含故意答錯看提示）、a27 完整作答、筆記 16 unit／12 表全包 `compare-table`、`#cx-1-6-4` 深連結會展開 flash、review.html 讀得到 100 張新卡。
+- ⚠️ **又抓到一次 `<b>` 跳脫**：`codex.js` 的 `pts` 在 `map.html` 是走 `cxEsc()` 的，我第一版在 2-3-5 寫了 `<b>不接 que</b>`，會直接印出裸露標籤（跟 Anki 那次同一類問題）。已改成「」。**codex.js 現在全檔 0 個 HTML 標籤。**
+
+**⚠️ 這一課的份量問題（要跟 Owen 確認）**
+100 張複習卡是平常的 1.5 倍（前幾課 60–70）。原因是這課有三篇課文＋Unité 4 全部詞彙。review.html 每天有包量上限所以不會單日爆掉，但**排隊會變長**。如果他覺得太重，最快的調法是把選卡規則再收緊（只收詞彙表＋⭐句）。
+
+**⚠️ 順手發現（沒動）**
+- `chunks.js` 有 **41 組法文重複**的卡片（都是舊課之間互相撞的，第26課沒有貢獻任何一組）。哪天可以清一次。
+- `quiz.html` 的 `TOPIC_LABELS` 有 **13 個舊 topic 沒有標籤**（`vocab-vacances`、`body-health`、`passe-compose`…），畫面會直接印出英文 id。純顯示問題，不影響出題。
+
+---
 
 ### 08-22：動詞變位總覽上線——不是變位表大全，是「詞幹經濟學」
 
