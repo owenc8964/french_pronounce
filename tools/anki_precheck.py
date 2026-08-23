@@ -62,6 +62,27 @@ def check(path, db):
         print('  ⛔ 含 HTML 標籤的行：', [t[1] for t in tagged[:5]],
               '…' if len(tagged) > 5 else '')
 
+    # ⛔ 題幹必須唯一決定答案（2026-08-17 Owen 指出的設計錯誤：題幹是情境氛圍、
+    #    答案卻是一個特定句子，中間的推理只存在 Claude 腦裡，他無法自我評分）
+    # 判準不是「開頭是哪個動詞」——「說你五年前在台北定居下來」其實是中翻法，
+    # 題幹唯一決定答案，不該擋。真正的問題是題幹沒有指定要哪一句：
+    #   ⛔「講你小時候每天早上做的一件事」→ 答案可以有一百種
+    #   ✅「說你五年前在台北定居下來」    → 只有一句
+    OPEN_START = ('解釋', '描述', '談談', '聊聊')          # 本質上就是開放的
+    OPEN_MARK = ('一件', '一個例子', '舉一個', '舉例', '任何', '你想到的', '隨便')
+    def is_open(q):
+        q = q.strip()
+        return q.startswith(OPEN_START) or any(m in q for m in OPEN_MARK)
+    open_prompts = [(i, f[0]) for i, f in rows if len(f) > 12 and is_open(f[12])]
+    if open_prompts:
+        problems += len(open_prompts)
+        print('  ⛔ 題幹是開放式的（唯一決定不了答案）：', [p[1] for p in open_prompts[:5]])
+
+    empty = [f[0] for _, f in rows if len(f) > 13 and (not f[12].strip() or not f[13].strip())]
+    if empty:
+        problems += len(empty)
+        print('  ⛔ 題幹或答案是空的：', empty[:5])
+
     new, upd, clash = [], [], []
     for i, f in rows:
         key = f[0]
