@@ -104,10 +104,32 @@ def check(path, db):
         print(f'  ❌ 有 {problems} 個問題，先修再匯')
     return problems
 
+def check_ownership(paths):
+    """⛔ 一個 ExternalID 只能被一個檔案擁有。
+    要修一張舊卡就改「原本那個檔案」裡的那一列，不要另開修復檔——
+    兩個檔案同時定義一個 ID，就是 2026-08-19 弄丟 3 張卡的那個結構。"""
+    own = {}
+    for path in paths:
+        for line in io.open(path, encoding='utf-8'):
+            key = line.split('\t')[0].strip()
+            if key:
+                own.setdefault(key, []).append(os.path.basename(path))
+    dup = {k: v for k, v in own.items() if len(set(v)) > 1}
+    if dup:
+        print('\n⛔ 同一個 ID 被多個檔案定義（一個 ID 只能有一個擁有者）：')
+        for k, v in list(dup.items())[:10]:
+            print(f'     {k} ← {", ".join(sorted(set(v)))}')
+        return len(dup)
+    if len(paths) > 1:
+        print(f'\n✅ {len(paths)} 個檔案共 {len(own)} 個 ID，沒有重疊')
+    return 0
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print(__doc__); sys.exit(2)
     db = load_collection()
     print(f'收藏檔目前 {len(db)} 張 note')
-    total = sum(check(p, db) for p in sys.argv[1:])
+    paths = sys.argv[1:]
+    total = sum(check(p, db) for p in paths)
+    total += check_ownership(paths)
     sys.exit(1 if total else 0)
