@@ -23,6 +23,37 @@ body { background:#07080f; color:#ddd8cc; font-family:'Segoe UI',system-ui,sans-
 .zh-bar button { padding:6px 14px; border-radius:20px; border:1px solid #1a2438; background:#0d1020;
   color:#7a8a9a; font-family:inherit; font-size:.7rem; cursor:pointer; }
 .zh-bar button.on { border-color:#f0c060; color:#f0c060; }
+.zh-bar button.on.drill { border-color:#e07a86; color:#e07a86; }
+
+/* 特訓模式 */
+.drill-box { border:1px dashed #4a3a10; border-radius:10px; padding:14px; margin-top:12px; text-align:center; }
+.drill-say { font-size:.8rem; color:#f0c060; line-height:1.8; }
+.drill-hint { font-size:.7rem; color:#445060; margin-top:6px; line-height:1.7; }
+.drill-reveal { width:100%; margin-top:12px; padding:14px; border:none; border-radius:10px;
+  font-family:inherit; font-size:.9rem; font-weight:700; cursor:pointer;
+  background:linear-gradient(135deg,#3a2a08,#5a4210); color:#f0c060; }
+.model { text-align:left; background:#12241a; border:1px solid #1d4030; border-radius:10px;
+  padding:10px 13px; margin-top:8px; font-size:.9rem; line-height:1.6; }
+.model .mfr { font-family:Georgia,serif; }
+.model .mzh { display:block; font-size:.74rem; color:#7a8a9a; margin-top:3px; }
+.model .mnt { display:block; font-size:.7rem; margin-top:6px; padding-top:6px;
+  border-top:1px dashed rgba(255,255,255,.12); line-height:1.6; }
+.lure { text-align:left; font-size:.7rem; color:#5a6a7a; margin-top:8px; line-height:1.7; }
+.lure summary { cursor:pointer; color:#7a8a9a; }
+.self { display:flex; gap:8px; margin-top:12px; }
+.self button { flex:1; padding:12px 6px; border-radius:10px; border:1px solid #1a2438;
+  background:#141928; color:#ddd8cc; font-family:inherit; font-size:.78rem; cursor:pointer; }
+.self button.y:hover { border-color:#2a7048; color:#60d090; }
+.self button.n:hover { border-color:#4a3a10; color:#f0b050; }
+.self button.x:hover { border-color:#4a2028; color:#e07a86; }
+.fk { font-size:.66rem; color:#445060; margin-top:8px; }
+.fk b.fast { color:#60d090; } .fk b.slow { color:#f0b050; }
+.heat { display:flex; flex-direction:column; gap:5px; margin-top:8px; }
+.heat div { font-size:.72rem; padding:7px 10px; border-radius:8px; background:#141928;
+  border:1px solid #1a2438; line-height:1.55; }
+.heat div.slow { border-color:#4a3a10; } .heat div.no { border-color:#4a2028; }
+.heat .hfr { font-family:Georgia,serif; color:#ddd8cc; }
+.heat .hms { float:right; color:#7a8a9a; font-size:.68rem; }
 .zh-bar .hint { font-size:.62rem; color:#39424f; }
 
 .scene-btn, .role-btn {
@@ -44,10 +75,13 @@ body { background:#07080f; color:#ddd8cc; font-family:'Segoe UI',system-ui,sans-
 .bubble .fr { font-family:Georgia,serif; }
 .bubble .zh { display:block; font-size:.74rem; color:#7a8a9a; margin-top:3px; }
 .bubble .nt { display:block; font-size:.7rem; margin-top:6px; padding-top:6px; border-top:1px dashed rgba(255,255,255,.12); line-height:1.6; }
+.bubble .srcTag, .model .srcTag { display:block; font-size:.6rem; color:#39424f; margin-top:4px; letter-spacing:.3px; }
 .them { align-self:flex-start; background:#141928; border:1px solid #1a2438; }
 .me   { align-self:flex-end;   background:#12241a; border:1px solid #1d4030; }
 .me.bad  { background:#241214; border-color:#4a2028; }
 .me.ok   { background:#241f10; border-color:#4a3a10; }
+.them.bad { background:#241214; border-color:#4a2028; }   /* 雙角模式：左邊那一側也是你講的 */
+.them.ok  { background:#241f10; border-color:#4a3a10; }
 .tag { font-size:.62rem; padding:1px 6px; border-radius:4px; margin-left:6px; vertical-align:middle; }
 .tag.good { background:#0f3822; color:#5ed492; }
 .tag.ok   { background:#3c2a08; color:#f0b050; }
@@ -103,19 +137,48 @@ try { zhOn = localStorage.getItem('rp_zh') === '1'; } catch(e) {}
 function setZh(v) { zhOn = v; try { localStorage.setItem('rp_zh', v ? '1' : '0'); } catch(e) {}
   if (scene && node) rerender(); else pickScene(); }
 
+/* 🔥 特訓模式（2026-08-25 Owen：「我目標是對這些對答跟可能的問題需要的能力足夠熟練，
+   不只是會依序看懂這樣而已」）
+   讀懂模式＝看三個選項挑一個，練的是**辨識**；玩第二次還會記得順序。
+   特訓模式＝**選項先遮住**，只給中文提示，你自己開口講，講完才按「揭曉」對答案，
+   並且**量從題目出現到你按揭曉的秒數**（跟 verb_sprint 同一套「起手時間」邏輯）——
+   起手時間才是「熟練」的證據，答對但想了八秒不算熟。
+   自評三鍵（講出來了／很接近／講不出來）比打字比對更接近口說考試，也不會被拼字卡住。 */
+let drill = false;
+try { drill = localStorage.getItem('rp_drill') === '1'; } catch(e) {}
+function setDrill(v) { drill = v; try { localStorage.setItem('rp_drill', v ? '1' : '0'); } catch(e) {}
+  if (scene && role) startPlay(role); else if (scene) chooseScene(scene.id); else pickScene(); }
+
+const REFLEX_MS = 3000;          // 起手 3 秒內＝不用想（跟 verb_sprint 的反射門檻同一個數量級）
+let askedAt = 0;                 // 這一題題目出現的時間戳
+let drillLog = [];               // [{node, tip, fr, ms, self:'ok'|'near'|'no'}]
+
 let scene = null, role = null, node = null, log = [], score = { good:0, ok:0, bad:0 };
 let hitChk = new Set(), missteps = [];
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const TAG_FR = { good:'naturel', ok:'correct', bad:'impoli' };
 const TAG_ZH = { good:'自然', ok:'可以', bad:'失禮' };
-const otherRole = () => Object.keys(scene.roles).find(k => k !== role);
+/* 🎭 雙角模式（2026-08-25 Owen：「我希望我可以做到整段應對流暢，可以瞬間切換角色那種」）
+   一般模式下對方那一側是自動講的；雙角模式**每一句都輪到你**——
+   你要在同一段對話裡不斷切換立場（顧客問價 → 下一句你就是店員報價）。
+   配上 🔥 特訓模式＝整段每一句都要自己產出，這是這個工具能給的最高壓。 */
+const BOTH = '__both__';
+const otherRole = () => role === BOTH ? Object.keys(scene.roles)[0]
+                                      : Object.keys(scene.roles).find(k => k !== role);
+const isMine = who => role === BOTH ? true : who === role;
+const alignAs = () => role === BOTH ? Object.keys(scene.roles)[0] : role;
 
 function zhBar() {
   return `<div class="zh-bar">
     <button class="${zhOn ? '' : 'on'}" onclick="setZh(false)">🇫🇷 純法語</button>
     <button class="${zhOn ? 'on' : ''}" onclick="setZh(true)">中文輔助</button>
     <span class="hint">${zhOn ? '每句都有中文' : '選錯才翻中文'}</span>
+  </div>
+  <div class="zh-bar">
+    <button class="${drill ? '' : 'on'}" onclick="setDrill(false)">📖 讀懂模式</button>
+    <button class="${drill ? 'on drill' : ''}" onclick="setDrill(true)">🔥 特訓模式</button>
+    <span class="hint">${drill ? '遮選項＋量秒數' : '看選項挑一個'}</span>
   </div>`;
 }
 
@@ -152,13 +215,16 @@ function chooseScene(id) {
         <button class="role-btn" onclick="startPlay('${k}')">${esc(label)}
           <span class="s-meta">${esc((scene.roleHints || {})[k] || '')}</span>
         </button>`).join('')}
+      <button class="role-btn" onclick="startPlay('${BOTH}')" style="border-color:#4a3a10">🎭 兩邊都我演
+        <span class="s-meta">整段一個人跑完，<b style="color:#f0c060">每一句都要切換立場</b>——最接近「整段應對流暢」的練法</span>
+      </button>
       <button class="role-btn" onclick="pickScene()" style="color:#445060">← 換一個情境</button>
     </div>`;
 }
 
 function startPlay(r) {
   role = r; node = scene.start; log = []; score = { good:0, ok:0, bad:0 };
-  hitChk = new Set(); missteps = [];
+  hitChk = new Set(); missteps = []; drillLog = []; askedAt = 0;
   $('root').innerHTML = zhBar()
     + `<div class="card-box"><div class="chat" id="chat"></div><div id="turn"></div></div>`;
   step();
@@ -174,8 +240,10 @@ function rerender() {
 
 /* b = {who, fr, zh, note, tag} */
 function bubbleHTML(b) {
-  const mine = b.who === role;
-  const cls = mine ? 'me' + (b.tag && b.tag !== 'good' ? ' ' + b.tag : '') : 'them';
+  const mine = isMine(b.who);
+  const right = b.who === alignAs();                  // 雙角模式仍照角色左右分邊，才讀得出是對話
+  const cls = right ? 'me' + (b.tag && b.tag !== 'good' ? ' ' + b.tag : '')
+                    : (role === BOTH && b.tag && b.tag !== 'good' ? 'them ' + b.tag : 'them');
   const label = b.who === 'system' ? '' : ((scene.speakers || {})[b.who] || b.who);
   // 純法語模式：中文只在「選錯／次佳」時自動翻出來（那是回饋不是拐杖），其餘藏在 💬 後面
   const showZh = zhOn || (b.tag && b.tag !== 'good');
@@ -188,6 +256,7 @@ function bubbleHTML(b) {
     ${tagTxt ? `<span class="tag ${b.tag}">${esc(tagTxt)}</span>` : ''}
     ${b.zh ? `<span class="zh"${showZh ? '' : ' style="display:none"'}>${esc(b.zh)}</span>` : ''}
     ${b.note ? `<span class="nt"${showZh ? '' : ' style="display:none"'}>${b.note}</span>` : ''}
+    ${b.src ? `<span class="srcTag">📖 ${esc(b.src)}</span>` : ''}
   </div>`;
 }
 
@@ -201,19 +270,19 @@ function step() {
   if (nd.speaker === 'system') return finish();
 
   if (nd.choices) {
-    if (nd.speaker !== role) {
+    if (nd.speaker !== role && role !== BOTH) {
       // 這一輪不是玩家的角色 → 自動選一個「自然」的講法，讓劇情往下走。
       // ⚠️ 要隨機挑，不能永遠挑第一個：分岔點如果落在對方那一側（例如問路的人被叫去搭公車
       //    還是用走的），固定挑第一個會讓另一條路<b>永遠走不到</b>。
       const goods = nd.choices.filter(c => c.tag === 'good');
       const pool = goods.length ? goods : nd.choices;
       const auto = pool[Math.floor(Math.random() * pool.length)];
-      push({ who:nd.speaker, fr:auto.fr, zh:auto.zh, note:null, tag:null });
+      push({ who:nd.speaker, fr:auto.fr, zh:auto.zh, note:null, tag:null, src:auto.src });
       node = auto.next; return step();
     }
     return renderTurn();
   }
-  push({ who:nd.speaker, fr:nd.line, zh:nd.zh, note:nd.note, tag:null });
+  push({ who:nd.speaker, fr:nd.line, zh:nd.zh, note:nd.note, tag:null, src:nd.src });
   node = nd.next;
   setTimeout(step, 260);
 }
@@ -221,6 +290,8 @@ function step() {
 function renderTurn() {
   const nd = scene.nodes[node];
   if (!nd || !nd.choices) return;
+  askedAt = Date.now();                       // 起手時間從題目出現開始算
+  if (drill) return renderDrill(nd);
   $('turn').innerHTML = `
     ${nd.tip ? `<div class="tip">💬 ${esc(nd.tip)}</div>` : ''}
     <div class="choices">
@@ -231,10 +302,86 @@ function renderTurn() {
     </div>`;
 }
 
+/* ── 特訓模式：先產出 ──────────────────────────────
+   只給中文提示，選項全部遮住。你先開口把法文講出來，再按「揭曉」對答案。 */
+function renderDrill(nd) {
+  $('turn').innerHTML = `
+    ${nd.tip ? `<div class="tip">💬 ${esc(nd.tip)}</div>` : ''}
+    <div class="drill-box">
+      <div class="drill-say">🎤 現在<b>開口講出來</b>（不要先看答案）</div>
+      <div class="drill-hint">講完再按下面——秒數會被記下來，<b>想太久就算會也還不夠熟</b></div>
+      <button class="drill-reveal" onclick="reveal()">揭曉答案</button>
+    </div>`;
+}
+
+/* 揭曉：秀出參考答案（所有 good）＋誘答收在 details 裡，然後自評 */
+function reveal() {
+  const nd = scene.nodes[node];
+  const ms = Date.now() - askedAt;
+  const goods = nd.choices.filter(c => c.tag === 'good');
+  const lures = nd.choices.filter(c => c.tag !== 'good');
+  const fast = ms <= REFLEX_MS;
+  $('turn').innerHTML = `
+    ${nd.tip ? `<div class="tip">💬 ${esc(nd.tip)}</div>` : ''}
+    <div class="drill-box" style="text-align:left">
+      <div class="fk">起手 <b class="${fast ? 'fast' : 'slow'}">${(ms / 1000).toFixed(1)} 秒</b>${fast ? '　⚡ 不用想' : '　🐢 還在組裝'}</div>
+      ${goods.map(c => `<div class="model">
+        <span class="mfr">${esc(c.fr)}</span>
+        <button class="tts" onclick="say(this)" data-fr="${esc(c.fr)}">🔊</button>
+        <span class="mzh">${esc(c.zh)}</span>
+        <span class="mnt">${c.note}</span>
+        ${c.src ? `<span class="srcTag">📖 ${esc(c.src)}</span>` : ''}</div>`).join('')}
+      ${lures.length ? `<details class="lure"><summary>⚠️ 另外 ${lures.length} 個是誘答（點開看為什麼不能用）</summary>
+        ${lures.map(c => `<div style="margin-top:6px"><b style="font-family:Georgia,serif">${esc(c.fr)}</b>
+          <span class="tag ${c.tag}">${zhOn ? TAG_ZH[c.tag] : TAG_FR[c.tag]}</span><br>${c.note}</div>`).join('')}
+        </details>` : ''}
+      <div class="drill-say" style="margin-top:14px;text-align:center">你剛剛講的，跟上面比對起來？</div>
+      <div class="self">
+        <button class="y" onclick="selfAssess('ok',${ms})">✅ 講出來了</button>
+        <button class="n" onclick="selfAssess('near',${ms})">🤏 很接近</button>
+        <button class="x" onclick="selfAssess('no',${ms})">❌ 講不出來</button>
+      </div>
+    </div>`;
+}
+
+/* 自評之後：記錄 → 沿著「自然」的講法往下走（特訓模式不讓你選誘答，誘答只當教材） */
+function selfAssess(self, ms) {
+  const nd = scene.nodes[node];
+  const goods = nd.choices.filter(c => c.tag === 'good');
+  const c = goods.length ? goods[Math.floor(Math.random() * goods.length)] : nd.choices[0];
+  drillLog.push({ node, tip: nd.tip || '', fr: c.fr, ms, self });
+  saveCell(node, ms, self);
+  score[self === 'ok' ? 'good' : self === 'near' ? 'ok' : 'bad']++;
+  if (self !== 'ok') {
+    logWrong({ src:'情境特訓', q:`${scene.zh}｜${nd.tip || scene.fr}`, a:c.fr,
+               note:`自評「${self === 'near' ? '很接近' : '講不出來'}」，起手 ${(ms/1000).toFixed(1)} 秒`,
+               title:scene.zh });
+  }
+  push({ who:nd.speaker, fr:c.fr, zh:c.zh, note:c.note, src:c.src,
+         tag: self === 'ok' ? 'good' : self === 'near' ? 'ok' : 'bad' });
+  $('turn').innerHTML = '';
+  node = c.next;
+  setTimeout(step, 260);
+}
+
+/* 每個節點的歷史（跟 verb_sprint 的 clb7_sprint_cells 同款：只留最近 5 筆） */
+function saveCell(nodeId, ms, self) {
+  try {
+    const key = 'clb7_rp_cells';
+    const all = JSON.parse(localStorage.getItem(key)) || {};
+    const id = `${scene.id}::${nodeId}`;
+    const cell = all[id] || { h: [] };
+    cell.h.push({ t: ms, s: self, d: new Date().toLocaleDateString('zh-TW') });
+    cell.h = cell.h.slice(-5);
+    all[id] = cell;
+    localStorage.setItem(key, JSON.stringify(all));
+  } catch(e) {}
+}
+
 function choose(i) {
   const nd = scene.nodes[node], c = nd.choices[i];
   score[c.tag] = (score[c.tag] || 0) + 1;
-  push({ who:nd.speaker, fr:c.fr, zh:c.zh, note:c.note, tag:c.tag });
+  push({ who:nd.speaker, fr:c.fr, zh:c.zh, note:c.note, tag:c.tag, src:c.src });
   if (c.tag !== 'good') {
     missteps.push(c);
     logWrong({ src:'情境扮演', q:`${scene.zh}｜${nd.tip || scene.fr}`, a:c.fr,
@@ -261,27 +408,69 @@ function finish() {
   const total = score.good + score.ok + score.bad;
   $('turn').innerHTML = `
     <div class="tip" style="color:#60d090">✓ 對話走完了</div>
+    ${drill ? drillSummary() : `
     <div style="font-size:.8rem;line-height:1.9">
       ${zhOn ? TAG_ZH.good : TAG_FR.good} <b style="color:#60d090">${score.good}</b> ·
       ${zhOn ? TAG_ZH.ok : TAG_FR.ok} <b style="color:#f0b050">${score.ok}</b> ·
       ${zhOn ? TAG_ZH.bad : TAG_FR.bad} <b style="color:#e07a86">${score.bad}</b>　（共 ${total} 次選擇）
-    </div>
+    </div>`}
     <div class="card-title" style="margin-top:14px">這條路走過的固定套路</div>
     <div class="chk">${scene.checklist.map(x =>
       `<span class="${hitChk.has(x) ? 'hit' : ''}">${hitChk.has(x) ? '✓' : '·'} ${esc(x)}</span>`).join('')}</div>
     ${hitChk.size < scene.checklist.length
       ? `<div class="src-note">⚠️ 沒亮的那幾格是<b>你這條路沒走到的步驟</b>——換個選擇會走到不同劇情。考試抽到這個情境時，五步都要出現。</div>` : ''}
-    ${missteps.length ? `<div class="card-title" style="margin-top:14px">要記住的幾句（已進今日錯題本）</div>
+    ${(!drill && missteps.length) ? `<div class="card-title" style="margin-top:14px">要記住的幾句（已進今日錯題本）</div>
       <div class="recap">${missteps.map(c => `<div class="r-item ${c.tag}">
         <span class="r-fr">${esc(c.fr)}</span> <span class="tag ${c.tag}">${zhOn ? TAG_ZH[c.tag] : TAG_FR[c.tag]}</span>
         <span class="r-note">${c.note}</span></div>`).join('')}</div>` : ''}
     <div class="btn-row">
-      <button onclick="startPlay('${otherRole()}')">🔄 換角色再演一次</button>
+      <button onclick="startPlay('${role === BOTH ? otherRole() : BOTH}')">${role === BOTH ? '🙋 只演一邊' : '🎭 兩邊都我演'}</button>
       <button class="ghost" onclick="startPlay('${role}')">↻ 走另一條路</button>
       <button class="ghost" onclick="pickScene()">換情境</button>
     </div>
     <div class="src-note">💡 換角色演一次的價值：當對方那一側要<b>聽懂</b>人家在問什麼，比自己開口更接近聽力考試。</div>`;
   try { localStorage.setItem('clb7_roleplay_done', new Date().toLocaleDateString('sv')); } catch(e) {}
+  if (drill && drillLog.length) saveDrillSession();
+}
+
+/* 特訓模式的結算：反射率＋中位起手時間＋哪幾句還在想 */
+function drillSummary() {
+  const n = drillLog.length;
+  if (!n) return '<div class="src-note">這條路上沒有輪到你開口的節點——換個角色試試。</div>';
+  const ok = drillLog.filter(d => d.self === 'ok').length;
+  const reflex = drillLog.filter(d => d.self === 'ok' && d.ms <= REFLEX_MS).length;
+  const med = medianMs(drillLog.map(d => d.ms));
+  const weak = drillLog.filter(d => d.self !== 'ok' || d.ms > REFLEX_MS)
+                       .sort((a, b) => b.ms - a.ms);
+  return `
+    <div style="font-size:.8rem;line-height:1.9">
+      ⚡ 反射（講出來且 3 秒內）<b style="color:#60d090">${reflex}</b> / ${n}
+      　·　講出來 <b>${ok}</b> / ${n}
+      　·　中位起手 <b class="${med <= REFLEX_MS ? 'fast' : 'slow'}" style="color:${med <= REFLEX_MS ? '#60d090' : '#f0b050'}">${(med / 1000).toFixed(1)} 秒</b>
+    </div>
+    ${weak.length ? `<div class="card-title" style="margin-top:14px">還在消耗工作記憶的句子（已進今日錯題本）</div>
+      <div class="heat">${weak.map(d => `<div class="${d.self === 'no' ? 'no' : 'slow'}">
+        <span class="hms">${(d.ms / 1000).toFixed(1)}s ${d.self === 'ok' ? '🐢' : d.self === 'near' ? '🤏' : '❌'}</span>
+        <span class="hfr">${esc(d.fr)}</span><br>
+        <span style="color:#5a6a7a">${esc(d.tip)}</span></div>`).join('')}</div>
+      <div class="src-note">💡 這幾句下次先練——<b>會但要想</b>跟<b>不會</b>要用不同方式處理：想太久的直接同結構連發幾次，不會的先回筆記看一次。</div>`
+      : `<div class="src-note">🎉 這一輪每一句都在 3 秒內講出來了——這條路已經反射化，換個角色或換條路加壓。</div>`}`;
+}
+
+function medianMs(a) { const b = a.slice().sort((x, y) => x - y); const m = b.length >> 1;
+  return b.length % 2 ? b[m] : Math.round((b[m - 1] + b[m]) / 2); }
+
+function saveDrillSession() {
+  try {
+    const key = 'clb7_rp_sessions';
+    const all = JSON.parse(localStorage.getItem(key)) || [];
+    all.push({ date: new Date().toLocaleDateString('zh-TW'), scene: scene.id, role,
+      n: drillLog.length,
+      ok: drillLog.filter(d => d.self === 'ok').length,
+      reflex: drillLog.filter(d => d.self === 'ok' && d.ms <= REFLEX_MS).length,
+      med: medianMs(drillLog.map(d => d.ms)), ts: Date.now() });
+    localStorage.setItem(key, JSON.stringify(all.slice(-100)));
+  } catch(e) {}
 }
 
 /* 發音（沿用全站統一的語音篩選優先序） */

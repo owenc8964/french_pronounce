@@ -549,7 +549,7 @@ body {
   </a>
   <a class="nav-btn" href="roleplay.html">
     <span class="nav-icon">🎭</span>
-    <div><div class="nav-label">情境角色扮演</div><div class="nav-sub">兩個角色都可以演</div></div>
+    <div><div class="nav-label">情境角色扮演</div><div class="nav-sub" id="navRoleplaySub">兩個角色都可以演</div></div>
   </a>
   <a class="nav-btn" href="verb_forms.html">
     <span class="nav-icon">🔀</span>
@@ -1401,6 +1401,17 @@ function render() {
     }).reduce((s,e)=>s+(+e.min||0),0);
     document.getElementById('navSpeakingSub').textContent = weekMins > 0
       ? `本週 ${weekMins} min` : '記錄糾錯';
+    // 🎭 情境特訓（roleplay 的 🔥 特訓模式）：近 7 天的反射率——「會」跟「不用想」是兩件事
+    try {
+      const rp = (JSON.parse(localStorage.getItem('clb7_rp_sessions')) || []).filter(e => {
+        const d = new Date(String(e.date).replace(/\//g, '-')); d.setHours(0, 0, 0, 0);
+        return (now - d) / 86400000 < 7;
+      });
+      const rpN = rp.reduce((a, e) => a + (e.n || 0), 0);
+      const rpR = rp.reduce((a, e) => a + (e.reflex || 0), 0);
+      document.getElementById('navRoleplaySub').textContent = rpN
+        ? `本週反射 ${rpR}/${rpN} 句` : '兩個角色都可以演';
+    } catch (e) {}
     const listenWeekMins = getListeningData().filter(e => {
       const d = new Date(e.date.replace(/\//g,'-')); d.setHours(0,0,0,0);
       return d >= startOfWeek;
