@@ -318,6 +318,7 @@ body {
 </head>
 <body>
 <script src="questions.js"></script>
+<script src="external_time.js"></script>
 <script src="gram_rules.js"></script>
 <script src="codex.js"></script>
 <script src="creed.js"></script>
@@ -647,6 +648,23 @@ function todayStr() {
 
 function getWritingData()   { try { return JSON.parse(localStorage.getItem('clb7_writing'))   || []; } catch { return []; } }
 function getTrackerData()   { try { return JSON.parse(localStorage.getItem('clb7_tracker'))   || []; } catch { return []; } }
+
+/* ── 網頁外的學習時間（2026-08-24 新增）──────────────────────────
+ * Owen：「anki 的時間也要算進去 這些都無法計時」。
+ * 700 小時原本只加 clb7_tracker ＝ 在這個網站裡的時間，
+ * 但他最常用的兩個工具（Anki、Duolingo）都在網站外，等於整批漏算。
+ *   · Anki：external_time.js，來自 revlog.time（每次複習實際花的毫秒），零手動輸入
+ *   · Duolingo：官方週報的「分鐘」，存在 DUO_SEED／clb7_duo
+ * ⚠️ 兩者都不會跟 clb7_tracker 重複——tracker 只記這個網站內的頁面停留時間。 */
+function ankiSec() {
+  try { return (typeof EXTERNAL_TIME !== 'undefined' && EXTERNAL_TIME.anki.totalSec) || 0; }
+  catch { return 0; }
+}
+function duoSec() {
+  try { return getDuoData().reduce((s, d) => s + (Number(d.min) || 0) * 60, 0); }
+  catch { return 0; }
+}
+function externalSec() { return ankiSec() + duoSec(); }
 function getSpeakingData()   { try { return JSON.parse(localStorage.getItem('clb7_speaking'))   || []; } catch { return []; } }
 function getListeningData()  { try { return JSON.parse(localStorage.getItem('clb7_listening'))  || []; } catch { return []; } }
 function getGameData()     { try { return JSON.parse(localStorage.getItem('clb7_game'))      || {xp:0,streak:0,lastDate:''}; } catch { return {xp:0,streak:0,lastDate:''}; } }
@@ -755,7 +773,7 @@ function getTrackerWeek() {
 }
 
 function getTrackerTotal() {
-  return getTrackerData().reduce((s,e) => s + e.sec, 0);
+  return getTrackerData().reduce((s,e) => s + e.sec, 0) + externalSec();
 }
 
 function writingDoneToday() {
@@ -1345,7 +1363,13 @@ function render() {
   const pct = Math.min(100, totalH / GOAL_H * 100);
   document.getElementById('hoursFill').style.width = pct.toFixed(1) + '%';
   document.getElementById('hoursVal').textContent = `${totalH.toFixed(1)} / ${GOAL_H}h`;
-  document.getElementById('hoursSub').textContent = `還需 ${Math.max(0, GOAL_H - totalH).toFixed(1)} 小時`;
+  // 拆給他看時數是哪來的——不然「突然多出幾十小時」會讓人不信任這個數字
+  const inApp = (totalSec - externalSec()) / 3600, aH = ankiSec() / 3600, dH = duoSec() / 3600;
+  document.getElementById('hoursSub').innerHTML =
+    `還需 ${Math.max(0, GOAL_H - totalH).toFixed(1)} 小時`
+    + `<br><span style="font-size:0.9em;opacity:.75">`
+    + `本站 ${inApp.toFixed(1)}h ＋ Anki ${aH.toFixed(1)}h ＋ Duolingo ${dH.toFixed(1)}h`
+    + `</span>`;
 
   // Stats
   document.getElementById('statStreak').textContent = game.streak || 0;
@@ -1550,8 +1574,15 @@ function getDuoData() { try { return JSON.parse(localStorage.getItem('clb7_duo')
 // ── Duolingo 週數據種子（Owen 給截圖 → Claude 更新此處即可）────────
 // 每筆：{week(ISO 週), streak 連勝, xp 經驗, min 分鐘, units 單元}
 // 載入時自動 upsert 進 clb7_duo，不影響 Owen 手動輸入的其他週。
+/* 來源：Duolingo 官方週報截圖，放在 ~/Desktop/Duolinguo/進度/
+ * ⚠️ 這裡的 min 會被算進 700 小時（2026-08-24 起）——那是他真的花掉的學習時間。 */
 const DUO_SEED = [
-  { week: '2026-W27', streak: 73, xp: 5901, min: 288, units: 104 }, // 2026-07-05 週報截圖
+  { week: '2026-W26', streak:  66, xp: 3430, min: 294, units:  74 }, // 2026-06-27 截圖
+  { week: '2026-W27', streak:  73, xp: 5901, min: 288, units: 104 }, // 2026-07-04 截圖
+  { week: '2026-W28', streak:  80, xp: 3155, min: 243, units:  65 }, // 2026-07-11 截圖
+  { week: '2026-W29', streak:  87, xp: 4030, min: 255, units:  71 }, // 2026-07-18 截圖
+  { week: '2026-W31', streak: 101, xp: 4757, min: 262, units:  75 }, // 2026-08-01 截圖
+  { week: '2026-W34', streak: 121, xp: 8883, min: 275, units:  99 }, // 2026-08-22 截圖
 ];
 function seedDuo() {
   let data = getDuoData();
