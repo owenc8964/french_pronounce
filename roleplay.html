@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>情境角色扮演 · CLB7</title>
+<script>window.__loadErrs=[];window.addEventListener('error',e=>window.__loadErrs.push((e.message||'')+' @'+(e.filename||'')+':'+(e.lineno||'')));</script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background:#07080f; color:#ddd8cc; font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh; padding:24px 16px 90px; max-width:680px; margin:0 auto; }
+.header { text-align:center; margin-bottom:18px; }
+.header h1 { font-size:1.2rem; letter-spacing:2px; color:#f0c060; text-shadow:0 0 20px rgba(240,192,96,.35); }
+.header .back { font-size:.72rem; color:#445060; text-decoration:none; display:inline-block; margin-bottom:8px; }
+.header .back:hover { color:#f0c060; }
+.header .sub { font-size:.7rem; color:#445060; margin-top:4px; line-height:1.7; }
+
+.card-box { background:#0d1020; border:1px solid #1a2438; border-radius:12px; padding:16px 18px; margin-bottom:14px; }
+.card-title { font-size:.65rem; color:#445060; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:12px; }
+
+.scene-btn, .role-btn {
+  display:block; width:100%; text-align:left; padding:14px 16px; margin-bottom:8px;
+  border:1px solid #1a2438; border-radius:10px; background:#141928; color:#ddd8cc;
+  font-size:.9rem; font-family:inherit; cursor:pointer; line-height:1.6; }
+.scene-btn:hover, .role-btn:hover { border-color:#f0c060; }
+.scene-btn .s-meta, .role-btn .s-meta { display:block; font-size:.68rem; color:#7a8a9a; margin-top:4px; }
+.scene-btn .s-exam { display:block; font-size:.68rem; color:#f0c060; margin-top:4px; }
+
+/* 對話 */
+.chat { display:flex; flex-direction:column; gap:10px; }
+.bubble { max-width:88%; padding:10px 13px; border-radius:12px; font-size:.92rem; line-height:1.6; }
+.bubble .fr { font-family:Georgia,serif; }
+.bubble .zh { display:block; font-size:.74rem; color:#7a8a9a; margin-top:3px; }
+.bubble .nt { display:block; font-size:.7rem; margin-top:6px; padding-top:6px; border-top:1px dashed rgba(255,255,255,.12); line-height:1.6; }
+.them { align-self:flex-start; background:#141928; border:1px solid #1a2438; }
+.me   { align-self:flex-end;   background:#12241a; border:1px solid #1d4030; }
+.me.bad  { background:#241214; border-color:#4a2028; }
+.me.ok   { background:#241f10; border-color:#4a3a10; }
+.tag { font-size:.62rem; padding:1px 6px; border-radius:4px; margin-left:6px; vertical-align:middle; }
+.tag.good { background:#0f3822; color:#5ed492; }
+.tag.ok   { background:#3c2a08; color:#f0b050; }
+.tag.bad  { background:#3a1418; color:#e07a86; }
+.spk { font-size:.62rem; color:#445060; margin-bottom:3px; }
+.tts { background:none; border:none; cursor:pointer; font-size:.8rem; opacity:.5; padding:0 3px; }
+.tts:hover { opacity:1; }
+
+.tip { font-size:.72rem; color:#f0c060; margin:14px 0 8px; }
+.choices { display:flex; flex-direction:column; gap:8px; }
+.choice { text-align:left; padding:12px 14px; border:1px solid #1a2438; border-radius:10px;
+  background:#141928; color:#ddd8cc; font-size:.9rem; font-family:inherit; cursor:pointer; line-height:1.55; }
+.choice:hover { border-color:#f0c060; background:#1a2030; }
+.choice .cz { display:block; font-size:.72rem; color:#7a8a9a; margin-top:3px; }
+.choice .cfr { font-family:Georgia,serif; }
+
+.chk { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.chk span { font-size:.68rem; padding:4px 9px; border-radius:6px; background:#141928; border:1px solid #1a2438; color:#7a8a9a; }
+.chk span.hit { border-color:#1d4030; color:#60d090; }
+.btn-row { display:flex; gap:8px; margin-top:14px; }
+.btn-row button { flex:1; padding:13px; border:none; border-radius:10px; font-family:inherit;
+  font-size:.85rem; font-weight:700; cursor:pointer; background:linear-gradient(135deg,#1d5035,#2a7048); color:#d0f0d8; }
+.btn-row button.ghost { background:#141928; color:#7a8a9a; border:1px solid #1a2438; }
+.src-note { font-size:.66rem; color:#445060; margin-top:12px; line-height:1.7; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="dashboard.html" class="back">← 回指揮中心</a>
+  <h1>🎭 情境角色扮演</h1>
+  <div class="sub">
+    走進店裡，選你要怎麼講——<b style="color:#f0c060">兩個角色都可以演</b><br>
+    這就是 DELF A2 口說第三部分的格式：抽情境、角色扮演
+  </div>
+</div>
+
+<div id="root"></div>
+
+<script src="scenes.js"></script>
+<script>
+let scene = null, role = null, node = null, log = [], score = { good:0, ok:0, bad:0 }, hitChk = new Set();
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+function pickScene() {
+  $('root').innerHTML = `
+    <div class="card-box">
+      <div class="card-title">選一個情境</div>
+      ${SCENES.map(s => `
+        <button class="scene-btn" onclick="chooseScene('${s.id}')">
+          ${s.icon} <b>${esc(s.zh)}</b>　<span style="font-family:Georgia,serif;color:#60a0d0">${esc(s.fr)}</span>
+          <span class="s-exam">${esc(s.exam)}</span>
+          <span class="s-meta">台詞出自 ${esc(s.src)}　·　${Object.keys(s.nodes).length} 個節點</span>
+        </button>`).join('')}
+    </div>
+    <div class="src-note">
+      ⚠️ 劇本裡每一句法文都逐字出自你的課堂筆記（檢查器 tools/check_scenes.js 會擋下自創句）。<br>
+      標 <span class="tag bad">失禮</span> 的選項是刻意放的誘答——筆記裡明講會扣分的講法。
+    </div>`;
+}
+
+function chooseScene(id) {
+  scene = SCENES.find(s => s.id === id);
+  $('root').innerHTML = `
+    <div class="card-box">
+      <div class="card-title">${scene.icon} ${esc(scene.zh)} — 你要演誰？</div>
+      ${Object.entries(scene.roles).map(([k, label]) => `
+        <button class="role-btn" onclick="startPlay('${k}')">${esc(label)}
+          <span class="s-meta">${k === 'client' ? '你要開口買東西——考試最常抽到的那一邊' : '換位思考：聽懂店員在問什麼，反而更難'}</span>
+        </button>`).join('')}
+      <button class="role-btn" onclick="pickScene()" style="color:#445060">← 換一個情境</button>
+    </div>`;
+}
+
+function startPlay(r) {
+  role = r; node = scene.start; log = []; score = { good:0, ok:0, bad:0 }; hitChk = new Set();
+  $('root').innerHTML = `<div class="card-box"><div class="chat" id="chat"></div><div id="turn"></div></div>`;
+  step();
+}
+
+function bubbleHTML(who, fr, zh, note, tag) {
+  const mine = who === role;
+  const cls = mine ? 'me' + (tag && tag !== 'good' ? ' ' + tag : '') : 'them';
+  const label = who === 'system' ? '' : (scene.roles[who] || who).replace(/^..\s*/, '');
+  return `<div class="bubble ${cls}">
+    ${label ? `<div class="spk">${esc(label)}${mine ? '（你）' : ''}</div>` : ''}
+    <span class="fr">${esc(fr)}</span>
+    ${fr && who !== 'system' ? `<button class="tts" onclick="say(this)" data-fr="${esc(fr)}">🔊</button>` : ''}
+    ${tag ? `<span class="tag ${tag}">${tag === 'good' ? '自然' : tag === 'ok' ? '可以' : '失禮'}</span>` : ''}
+    ${zh ? `<span class="zh">${esc(zh)}</span>` : ''}
+    ${note ? `<span class="nt">${note}</span>` : ''}
+  </div>`;
+}
+
+function step() {
+  const nd = scene.nodes[node];
+  if (!nd) return finish();
+  if (nd.speaker === 'system') return finish();
+
+  if (nd.choices) {
+    if (nd.speaker !== role) {
+      // 這一輪不是玩家的角色 → 自動選最自然的那個，讓劇情往下走
+      const auto = nd.choices.find(c => c.tag === 'good') || nd.choices[0];
+      push(bubbleHTML(nd.speaker, auto.fr, auto.zh, null, null));
+      node = auto.next; return step();
+    }
+    $('turn').innerHTML = `
+      ${nd.tip ? `<div class="tip">💬 ${esc(nd.tip)}</div>` : ''}
+      <div class="choices">
+        ${nd.choices.map((c, i) => `<button class="choice" onclick="choose(${i})">
+          <span class="cfr">${esc(c.fr)}</span><span class="cz">${esc(c.zh)}</span></button>`).join('')}
+      </div>`;
+    return;
+  }
+  push(bubbleHTML(nd.speaker, nd.line, nd.zh, nd.note, null));
+  node = nd.next;
+  setTimeout(step, 260);
+}
+
+function choose(i) {
+  const nd = scene.nodes[node], c = nd.choices[i];
+  score[c.tag] = (score[c.tag] || 0) + 1;
+  push(bubbleHTML(nd.speaker, c.fr, c.zh, c.note, c.tag));
+  $('turn').innerHTML = '';
+  node = c.next;
+  setTimeout(step, 260);
+}
+
+function push(html) {
+  log.push(html);
+  $('chat').innerHTML = log.join('');
+  $('chat').lastElementChild?.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function finish() {
+  const total = score.good + score.ok + score.bad;
+  const done = scene.checklist.filter((_, i) => i < scene.checklist.length); // 走完就算全部經過
+  $('turn').innerHTML = `
+    <div class="tip" style="color:#60d090">✓ 對話走完了</div>
+    <div style="font-size:.8rem;line-height:1.9">
+      自然 <b style="color:#60d090">${score.good}</b> ·
+      可以 <b style="color:#f0b050">${score.ok}</b> ·
+      失禮 <b style="color:#e07a86">${score.bad}</b>　（共 ${total} 次選擇）
+    </div>
+    <div class="card-title" style="margin-top:14px">老師說的固定套路，你走過了嗎</div>
+    <div class="chk">${done.map(x => `<span class="hit">✓ ${esc(x)}</span>`).join('')}</div>
+    <div class="btn-row">
+      <button onclick="startPlay('${role === 'client' ? 'vendeur' : 'client'}')">🔄 換角色再演一次</button>
+      <button class="ghost" onclick="pickScene()">換情境</button>
+    </div>
+    <div class="src-note">💡 換角色演一次的價值：當店員要<b>聽懂</b>對方在問什麼，比自己開口更接近聽力考試。</div>`;
+  try { localStorage.setItem('clb7_roleplay_done', new Date().toLocaleDateString('sv')); } catch(e) {}
+}
+
+/* 發音（沿用全站統一的語音篩選優先序） */
+let frVoice = null;
+function initVoice() {
+  const vs = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith('fr'));
+  frVoice = vs.find(v => /am[eé]lie|thomas/i.test(v.name))
+         || vs.find(v => /premium|enhanced|amélior|plus/i.test(v.name))
+         || vs.find(v => v.localService === false)
+         || vs.find(v => v.lang === 'fr-FR') || vs[0] || null;
+}
+if ('speechSynthesis' in window) { initVoice(); speechSynthesis.onvoiceschanged = initVoice; }
+function say(btn) {
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(btn.dataset.fr);
+  u.lang = 'fr-FR'; u.rate = .85; if (frVoice) u.voice = frVoice;
+  speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+
+pickScene();
+</script>
+<script src="session_timer.js"></script>
+<script src="sync_supabase.js"></script>
+</body>
+</html>
