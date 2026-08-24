@@ -137,6 +137,16 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
   background: #0d1020; color: #445060; font-size: 0.85rem; font-weight: 700;
   cursor: pointer; font-family: inherit; letter-spacing: 0.5px;
 }
+.typing-hint {
+  margin: 10px 0 4px; padding: 10px 12px; font-size: 0.72rem; line-height: 1.8;
+  color: #8892a4; background: #101828; border: 1px solid #1d2942; border-radius: 10px;
+}
+.typing-hint b { color: #f0c060; }
+.typing-hint .th-ex { display: inline-block; margin-right: 12px; white-space: nowrap; }
+.typing-hint code {
+  font-family: ui-monospace, Menlo, monospace; color: #9fd0a0;
+  background: #0a1410; border: 1px solid #1c3324; border-radius: 4px; padding: 0 4px;
+}
 .mode-btn.active { background: #1a2438; color: #f0c060; border-color: #2a3858; }
 .btn-again {
   flex: 1; padding: 13px; border: none; border-radius: 10px;
@@ -174,6 +184,13 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
     </div>
   </div>
   <button class="start-btn" id="startBtn">▶ 開始 60 秒衝刺</button>
+  <div class="typing-hint">
+    ⌨️ <b>不用打重音，也不用打代名詞</b>——比對前會自動去掉。<br>
+    <span class="th-ex">étais → 打 <code>etais</code></span>
+    <span class="th-ex">j'ai été → 打 <code>ai ete</code></span>
+    <span class="th-ex">commençais → 打 <code>commencais</code></span><br>
+    這一關練的是<b>多快講得出來</b>，不是打字。拼寫細節在填表格與抽考練。
+  </div>
   <div class="card" id="recentCard" style="display:none">
     <div class="card-title">最近衝刺</div>
     <div id="recentList" style="font-size:0.78rem;color:#8a94a8;line-height:1.9"></div>
@@ -196,7 +213,7 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
     <div class="prompt-line"><span id="promptPerson"></span> <span class="blank">_____</span></div>
     <input class="answer-input" id="answerInput" type="text"
       autocomplete="off" autocapitalize="off" spellcheck="false"
-      placeholder="輸入變位，按 Enter">
+      placeholder="輸入變位，按 Enter（不用打重音）">
     <div class="feedback-box" id="feedbackBox"></div>
   </div>
 </div>
