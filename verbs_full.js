@@ -307,6 +307,36 @@ function stems(v) {
   ];
 }
 
+/* ── 給反射衝刺用的形式（verb_sprint.html）────────────────────
+ * 跟 conjugate() 的差別只有一個：être 動詞的複合時態要把「陰陽單複都算對」
+ * 展開成 a|b 的多解格式（衝刺是用打字比對的，不能只接受一種）。
+ * ⚠️ 這裡是 verb_sprint 唯一的資料來源——以後要加時態只要改 conjugate()，
+ *    衝刺頁自己就會跟上，不用再手動維護第二份變位表。 */
+const COMPOUND = ['passe-compose', 'plus-que-parfait', 'futur-anterieur',
+                  'conditionnel-passe', 'subjonctif-passe'];
+// être 動詞：每個人稱可以接受的過去分詞寫法
+const AGREE_ALT = [['é'], ['é'], [''], ['s'], ['', 's'], ['s']];
+
+function drillForms(v, tenseId) {
+  const t = conjugate(v).find(x => x.id === tenseId);
+  if (!t) return null;
+  if (v.aux !== 'être' || !COMPOUND.includes(tenseId)) return t.forms.slice();
+  // 重新組：助動詞 ＋ 過去分詞的各種配合寫法
+  const aux = auxForms(v, tenseId === 'passe-compose' ? 'present'
+                        : tenseId === 'plus-que-parfait' ? 'imparfait'
+                        : tenseId === 'futur-anterieur' ? 'futur'
+                        : tenseId === 'conditionnel-passe' ? 'conditionnel' : 'subj');
+  const variants = [
+    [v.pp, v.pp + 'e'],                                   // je
+    [v.pp, v.pp + 'e'],                                   // tu
+    [v.pp],                                               // il
+    [v.pp + 's', v.pp + 'es'],                            // nous
+    [v.pp, v.pp + 'e', v.pp + 's', v.pp + 'es'],          // vous
+    [v.pp + 's', v.pp + 'es'],                            // ils
+  ];
+  return aux.map((a, i) => variants[i].map(pp => a + ' ' + pp).join('|'));
+}
+
 if (typeof module !== 'undefined') {
-  module.exports = { VERBS_FULL, PERSONS, conjugate, nonFinite, stems, withSubj, withSubjQue, display, imparfait, futur, conditionnel, subjonctif, passeSimple, imperatif, participePresent };
+  module.exports = { VERBS_FULL, PERSONS, conjugate, drillForms, nonFinite, stems, withSubj, withSubjQue, display, imparfait, futur, conditionnel, subjonctif, passeSimple, imperatif, participePresent };
 }

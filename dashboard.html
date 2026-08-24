@@ -667,7 +667,35 @@ const SPRINT_VERBS = ['être','avoir','faire','aller','devoir','pouvoir','vouloi
 const SPRINT_TOTAL = SPRINT_VERBS.length * 6;
 function getSprintCells()    { try { return JSON.parse(localStorage.getItem('clb7_sprint_cells')) || {}; } catch { return {}; } }
 function getSprintSessions() { try { return JSON.parse(localStorage.getItem('clb7_sprint_sessions')) || []; } catch { return []; } }
-function sprintDoneToday()   { return getSprintSessions().some(s => s.date === todayStr()); }
+
+/* 2026-08-24：衝刺不再只有 présent。哪些時態可練由 gram_rules 的解鎖狀態決定，
+ * 跟 verb_sprint.html 的 MODES 是同一份判斷——課程教到哪就自己長出來。 */
+const SPRINT_MODES = [
+  { id:'present',   label:'Présent',       suffix:'',      gram:null },
+  { id:'pc',        label:'Passé composé', suffix:'_pc',   gram:'passe' },
+  { id:'imparfait', label:'Imparfait',     suffix:'_imp',  gram:'imparfait' },
+  { id:'futur',     label:'Futur simple',  suffix:'_fut',  gram:'futur' },
+  { id:'subjonctif',label:'Subjonctif',    suffix:'_subj', gram:'subjonctif' },
+];
+function sprintModesAvailable() {
+  return SPRINT_MODES.filter(m => {
+    if (!m.gram) return true;
+    if (typeof GRAM_POINTS === 'undefined') return m.id === 'pc';
+    const p = GRAM_POINTS.find(x => x.id === m.gram);
+    return !!p && p.unlocked !== false;
+  });
+}
+// 每天輪一個時態，才不會永遠只練現在式（Owen 08-24：「題目也好像都沒有更新」）
+function sprintModeToday() {
+  const av = sprintModesAvailable();
+  const day = Math.floor(Date.now() / 86400000);
+  return av[day % av.length];
+}
+function sprintSessionsOf(suffix) {
+  try { return JSON.parse(localStorage.getItem('clb7_sprint_sessions' + suffix)) || []; } catch { return []; }
+}
+// ⚠️ 完成判定要看「所有時態」，否則練了 imparfait 這一步永遠不會變綠
+function sprintDoneToday()   { return sprintModesAvailable().some(m => sprintSessionsOf(m.suffix).some(s => s.date === todayStr())); }
 function sprintReflexCount() {
   // 與 verb_sprint.html 的 cellState 同規則：最近 3 次全對且中位起手 ≤ 2 秒
   const cells = getSprintCells();
@@ -891,6 +919,7 @@ function buildPrescription(topicStats, todaySec) {
   const dlDone = localStorage.getItem('clb7_drill_done') === today;
   const spDone = sprintDoneToday();
   const spReflex = sprintReflexCount();
+  const spMode = sprintModeToday();
   const rvDone = reviewDoneToday();
   const rvDue  = chunkDueCount();
   const stDone = sentenceDoneToday();
@@ -967,13 +996,14 @@ function buildPrescription(topicStats, todaySec) {
       href: 'table_drill.html?guided=1', done: dlDone,
     },
     sprint: {
-      icon: '⚡', action: '動詞反射衝刺 60 秒',
-      why: spDone ? '今天已完成！' : (spReflex >= SPRINT_TOTAL
-        ? '54 格全反射，維持手感'
-        : `還有 ${SPRINT_TOTAL - spReflex} 格未達反射（${spReflex}/${SPRINT_TOTAL}）`),
+      icon: '⚡', action: `動詞反射衝刺 60 秒 · ${spMode.label}`,
+      why: spDone ? '今天已完成！' : (spMode.id === 'present'
+        ? (spReflex >= SPRINT_TOTAL ? '54 格全反射，維持手感'
+                                    : `現在式還有 ${SPRINT_TOTAL - spReflex} 格未達反射（${spReflex}/${SPRINT_TOTAL}）`)
+        : `今天輪到 ${spMode.label}——同樣 9 個動詞，換一個時態`),
       badge: spDone ? 'badge-green' : 'badge-red',
       badgeText: spDone ? '✓ 完成' : '未完成',
-      href: 'verb_sprint.html?guided=1', done: spDone,
+      href: `verb_sprint.html?guided=1&mode=${spMode.id}`, done: spDone,
     },
     review: {
       icon: '📦', action: '複習卡一包（10 張）',

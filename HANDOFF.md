@@ -632,6 +632,35 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **瀏覽器層**（切 TEST ROOM，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入＋故意把 `sous la tente` 填成 en 被判錯；reading a22 故意 2對1錯 → 分數與 ✓✗ 與解說都正確、紀錄欄位齊全；french_notes lesson-21 渲染 11 unit／11 表格全包 compare-table／**161 個 🔊 tts-btn**／導覽列 21 個按鈕含第21課；quiz `?lesson=21` 實際出到 y/en 題目並答對計分；**`getPool()` 放行全部 27 題**（確認沒踩到 07-16 那個「文法點被鎖導致整批題目消失」的坑）；map 顯示第21課、tile 與 codex 3-4-5 都正確。
 - **收尾**：清掉測試寫入的 a22 紀錄與該題 SRS key → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留。
 
+### 08-24：動詞衝刺「題目永遠不更新」的根因與修法——資料改成從 verbs_full.js 生成
+
+Owen：「dashboard 有個每日練習項目是動詞變化的速答……題目也好像都沒有更新，只有幾個動詞且都是現在式。我過去式 perfect/imperfect 都學了……請幫我定期更新，每個月更新到最近進度。」
+
+**先查再修，結果有兩個問題疊在一起**
+1. `verb_sprint.html` 的變位表是**兩份手寫的常數**（`VERBS` présent 一份、`VERBS_PC` passé composé 一份）。所以「不會更新」是**結構決定的**，不是誰忘了更新。
+2. **PC 模式其實 07-26 就做了**，但 **dashboard 的每日連結永遠是 `verb_sprint.html?guided=1`（＝présent）**——他每天照著處方點進去，看到的一定是現在式。所以他以為只有現在式，完全合理。**imparfait 則是真的沒有。**
+
+**修法：拿掉「需要有人記得回來更新」這件事**
+- 資料層改成從 **`verbs_full.js`（08-22 建的 22 動詞 × 13 時態推導引擎）** 生成。新增 `drillForms(v, tenseId)`：跟 `conjugate()` 唯一的差別是 être 動詞的複合時態要展開成 `a|b` 多解（衝刺是打字比對）。實測 aller 的 PC 六格跟原本手寫的那份**逐字相同**。
+- 模式表 `MODES` 綁 **`gram_rules.js` 的解鎖狀態**：`passe`／`imparfait` 已解鎖 → 按鈕出現；`futur`／`subjonctif` 還鎖著 → 不出現。**這就是「定期更新到最近進度」的機制**——以後課程教到未來式，我們照慣例解鎖那個文法點，衝刺頁的按鈕自己就長出來，沒有人需要回來改這支檔。
+- `verb_sprint.html?mode=imparfait` 可以直接指定時態。
+- **dashboard 每天輪一個時態**（Présent → Passé composé → Imparfait → …），處方文字會寫「今天輪到 Imparfait」，連結帶 `&mode=`。
+- ⚠️ **完成判定改成看所有時態的 session key**，否則練了 imparfait 那一步永遠不會變綠。
+
+**⚠️ 動詞維持核心 9 個、順序不動**——熱力圖的格子 key 是 `動詞_人稱`，換順序或加動詞會讓既有反射紀錄對不上。而且教學鐵律本來就是「核心 9 練到反射、其他只練套模式」。要擴充動詞應該另開一個模式，不是塞進這 9 個。
+
+**踩到的坑：`const` 撞名**
+`verbs_full.js` 也宣告了 `PERSONS`，跟衝刺頁自己的 `PERSONS`（顯示 `il / elle` 雙寫）在同一個 global lexical scope 重複宣告 → **整支腳本停掉、頁面全白**。已把頁面那份改名 `PERSONS_UI`。⚠️ **以後在既有頁面引入共用 .js 檔，先 grep 有沒有同名的頂層 const。**
+
+**驗證**（TEST ROOM 隔離）
+- 三個模式按鈕正確出現（futur／subjonctif 因為鎖著所以不出現）、`?mode=imparfait` 進來直接選中、熱力圖 54 格、儲存 key 分別是 `clb7_sprint_cells`／`_pc`／`_imp`。
+- imparfait 六格抽查全對（être → étais…étaient；faire → faisais…faisaient）。
+- 實跑作答：答對計分、寫進 `clb7_sprint_cells_imp`，**présent 的 37 格舊紀錄一格沒被動到**。
+- dashboard：今天輪到 Passé composé、連結 `?guided=1&mode=pc`、未來三天輪 Imparfait → Présent → PC；模擬「只練了 imparfait」→ 完成判定正確變 true。
+- ⚠️ 測試方法本身也踩一個坑：第一次分兩次工具呼叫作答，中間題目**逾時自動揭曉**了，紀錄變成答錯（`f:9999` 就是「沒有按鍵」的標記）。要在同一次執行內作答才測得準。
+
+---
+
 ### 08-23：第26課（A2・比較的第二層・tout vs chaque・外貌與性格・拉封丹）入庫＋九項連動
 
 Owen 貼了 08-23 那堂的完整逐字稿＋8 張課本截圖（`~/Desktop/0823/`）。這一課是**三篇課文一次上完**（非典型模特兒後半、拿破崙的替身、缺點的優點），加上 Unité 4 的全部外貌與性格詞彙、兩個文法點、還有拉封丹寓言的文化段。**份量大約是平常一課的兩倍。**

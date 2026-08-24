@@ -156,15 +156,12 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
 <div class="header">
   <a class="back" href="dashboard.html">← Retour au tableau de bord</a>
   <h1>⚡ SPRINT DE VERBES</h1>
-  <div class="sub">核心 9 動詞 × 6 人稱 — 練到反射，不是練到會</div>
+  <div class="sub">核心 9 動詞 × 6 人稱 × 學過的時態 — 練到反射，不是練到會</div>
 </div>
 
 <!-- ── Start screen ── -->
 <div id="startScreen">
-  <div class="btn-row" id="modeToggle" style="margin-bottom:14px;">
-    <button class="mode-btn active" id="modeBtnPresent" type="button">Présent</button>
-    <button class="mode-btn" id="modeBtnPc" type="button">Passé composé</button>
-  </div>
+  <div class="btn-row" id="modeToggle" style="margin-bottom:14px;"></div>
   <div class="card">
     <div class="card-title">反射熱力圖 — <span id="hmModeLabel">Présent</span></div>
     <div class="hm-summary">已達反射 <b id="hmReflexCount">0</b> / 54 格</div>
@@ -237,39 +234,60 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
   </div>
 </div>
 
+<!-- ⚠️ 這兩支要在下面的主程式之前載入：變位資料與解鎖狀態都從它們來 -->
+<script src="verbs_full.js"></script>
+<script src="gram_rules.js"></script>
 <script>
-// ── 動詞資料（présent）─────────────────────────────────────────
-const PERSONS = ['je', 'tu', 'il / elle', 'nous', 'vous', 'ils / elles'];
-const VERBS = [
-  { inf: 'être',    forms: ['suis','es','est','sommes','êtes','sont'] },
-  { inf: 'avoir',   forms: ['ai','as','a','avons','avez','ont'] },
-  { inf: 'faire',   forms: ['fais','fais','fait','faisons','faites','font'] },
-  { inf: 'aller',   forms: ['vais','vas','va','allons','allez','vont'] },
-  { inf: 'devoir',  forms: ['dois','dois','doit','devons','devez','doivent'] },
-  { inf: 'pouvoir', forms: ['peux','peux','peut','pouvons','pouvez','peuvent'] },
-  { inf: 'vouloir', forms: ['veux','veux','veut','voulons','voulez','veulent'] },
-  { inf: 'venir',   forms: ['viens','viens','vient','venons','venez','viennent'] },
-  { inf: 'prendre', forms: ['prends','prends','prend','prenons','prenez','prennent'] },
+/* ⚠️ 不能叫 PERSONS——verbs_full.js 已經有一個同名的 const，
+ *    同一個 global lexical scope 重複宣告會整支腳本停掉（2026-08-24 踩到）。
+ *    衝刺頁要顯示 il / elle 這種雙寫，跟共用檔的簡寫本來就不同，維持自己一份。 */
+const PERSONS_UI = ['je', 'tu', 'il / elle', 'nous', 'vous', 'ils / elles'];
+/* ── 動詞資料（2026-08-24 改成從 verbs_full.js 生成）────────────────
+ * 原本這裡是兩份手寫的變位表（présent 一份、passé composé 一份），
+ * 所以「題目永遠不會更新」是結構決定的，不是忘了更新。
+ * 現在單一真相來源是 verbs_full.js：加時態＝改那支檔，這頁自己跟上。
+ *
+ * ⚠️ 動詞維持核心 9 個、順序不動——熱力圖的格子 key 是 `動詞_人稱`，
+ *    換順序或加動詞會讓既有的反射紀錄對不上。擴充動詞要另外開一個模式。 */
+const CORE9 = ['être','avoir','faire','aller','devoir','pouvoir','vouloir','venir','prendre'];
+
+/* 每個模式：時態 id、按鈕文字、localStorage 後綴、以及「哪個文法點解鎖了才出現」。
+ * 這就是「定期更新到最近進度」的機制——課程教到哪、gram_rules 解鎖哪個點，
+ * 這裡的按鈕就自己長出來，不需要有人記得回來改。 */
+const MODES = [
+  { id:'present',      tense:'present',        label:'Présent',          suffix:'',      gram:null },
+  { id:'pc',           tense:'passe-compose',  label:'Passé composé',    suffix:'_pc',   gram:'passe' },
+  { id:'imparfait',    tense:'imparfait',      label:'Imparfait',        suffix:'_imp',  gram:'imparfait' },
+  { id:'futur',        tense:'futur-simple',   label:'Futur simple',     suffix:'_fut',  gram:'futur' },
+  { id:'subjonctif',   tense:'subjonctif',     label:'Subjonctif',       suffix:'_subj', gram:'subjonctif' },
 ];
 
-// ── 動詞資料（passé composé，07-26新增）── être動詞用 | 分隔陰陽性皆可（isCorrect兩者都接受，顯示/發音只取第一個）
-const VERBS_PC = [
-  { inf: 'être',    forms: ['ai été','as été','a été','avons été','avez été','ont été'] },
-  { inf: 'avoir',   forms: ['ai eu','as eu','a eu','avons eu','avez eu','ont eu'] },
-  { inf: 'faire',   forms: ['ai fait','as fait','a fait','avons fait','avez fait','ont fait'] },
-  { inf: 'aller',   forms: ['suis allé|suis allée','es allé|es allée','est allé|est allée','sommes allés|sommes allées','êtes allé|êtes allée|êtes allés|êtes allées','sont allés|sont allées'] },
-  { inf: 'devoir',  forms: ['ai dû','as dû','a dû','avons dû','avez dû','ont dû'] },
-  { inf: 'pouvoir', forms: ['ai pu','as pu','a pu','avons pu','avez pu','ont pu'] },
-  { inf: 'vouloir', forms: ['ai voulu','as voulu','a voulu','avons voulu','avez voulu','ont voulu'] },
-  { inf: 'venir',   forms: ['suis venu|suis venue','es venu|es venue','est venu|est venue','sommes venus|sommes venues','êtes venu|êtes venue|êtes venus|êtes venues','sont venus|sont venues'] },
-  { inf: 'prendre', forms: ['ai pris','as pris','a pris','avons pris','avez pris','ont pris'] },
-];
+function modeUnlocked(m) {
+  if (!m.gram) return true;
+  if (typeof GRAM_POINTS === 'undefined') return m.id === 'pc';   // 資料沒載到就退回舊行為
+  const p = GRAM_POINTS.find(x => x.id === m.gram);
+  return !!p && p.unlocked !== false;
+}
+const AVAILABLE = MODES.filter(modeUnlocked);
 
-let mode = 'present';   // 'present' | 'pc'
-function V() { return mode === 'pc' ? VERBS_PC : VERBS; }
+// 依模式生成 [{inf, forms[6]}]，形式來自 verbs_full.js 的推導引擎
+function buildVerbs(tenseId) {
+  return CORE9.map(inf => {
+    const v = VERBS_FULL.find(x => x.inf === inf);
+    return { inf, forms: drillForms(v, tenseId) };
+  });
+}
+const VERB_DATA = {};
+AVAILABLE.forEach(m => { VERB_DATA[m.id] = buildVerbs(m.tense); });
+
+const VERBS = VERB_DATA['present'];
+
+let mode = 'present';
+function M() { return AVAILABLE.find(m => m.id === mode) || AVAILABLE[0]; }
+function V() { return VERB_DATA[M().id]; }
 function primaryForm(s) { return s.split('|')[0]; }
-function cellsStoreKey()   { return mode === 'pc' ? 'clb7_sprint_cells_pc'    : 'clb7_sprint_cells'; }
-function sessionsStoreKey(){ return mode === 'pc' ? 'clb7_sprint_sessions_pc' : 'clb7_sprint_sessions'; }
+function cellsStoreKey()   { return 'clb7_sprint_cells'    + M().suffix; }
+function sessionsStoreKey(){ return 'clb7_sprint_sessions' + M().suffix; }
 const TOTAL_CELLS = VERBS.length * 6;
 const SPRINT_SEC = 60;
 const REFLEX_MS = 2000;   // 起手（第一個按鍵）2 秒內 = 反射
@@ -348,7 +366,7 @@ function renderHeatmap(elId) {
     html += `<tr><td class="verb-name">${v.inf}</td>`;
     for (let pi=0; pi<6; pi++) {
       const st = cellState((cells[cellKey(vi,pi)]||{}).h);
-      html += `<td class="hm-cell hm-${st}" title="${PERSONS[pi]} ${v.inf} → ${primaryForm(v.forms[pi])}"></td>`;
+      html += `<td class="hm-cell hm-${st}" title="${PERSONS_UI[pi]} ${v.inf} → ${primaryForm(v.forms[pi])}"></td>`;
     }
     html += '</tr>';
   });
@@ -385,7 +403,7 @@ function startSprint() {
   document.getElementById('startScreen').classList.add('hidden');
   document.getElementById('doneScreen').classList.add('hidden');
   document.getElementById('sprintScreen').classList.remove('hidden');
-  document.getElementById('phaseTag').textContent = mode === 'pc' ? '衝刺 · PC' : '衝刺';
+  document.getElementById('phaseTag').textContent = mode === 'present' ? '衝刺' : '衝刺 · ' + M().label;
   document.getElementById('phaseTag').classList.remove('review');
   document.getElementById('scoreLive').textContent = '0';
   updateTimer();
@@ -419,7 +437,7 @@ function nextQuestion() {
   const [vi,pi] = cur;
   document.getElementById('promptVerb').textContent = V()[vi].inf;
   document.getElementById('promptVerbTts').onclick = () => ttsSpeak(V()[vi].inf);
-  document.getElementById('promptPerson').textContent = PERSONS[pi];
+  document.getElementById('promptPerson').textContent = PERSONS_UI[pi];
   const inp = document.getElementById('answerInput');
   inp.value = ''; inp.disabled = false;
   inp.classList.remove('flash-ok','flash-bad');
@@ -445,12 +463,12 @@ function recordAttempt(vi, pi, ok, fk) {
   if (!ok) {
     missedVerbs.add(vi);
     const v = V()[vi];
-    const tag = mode === 'pc' ? ' [passé composé]' : '';
+    const tag = mode === 'present' ? '' : ' [' + M().label + ']';
     logWrong({
       src: 'sprint',
-      q: `${PERSONS[pi]} _____ (${v.inf})${tag}`,
-      a: `${PERSONS[pi]} ${primaryForm(v.forms[pi])}`,
-      note: v.inf + '：' + PERSONS.map((p,i) => `${p} ${primaryForm(v.forms[i])}`).join(' · '),
+      q: `${PERSONS_UI[pi]} _____ (${v.inf})${tag}`,
+      a: `${PERSONS_UI[pi]} ${primaryForm(v.forms[pi])}`,
+      note: v.inf + '：' + PERSONS_UI.map((p,i) => `${p} ${primaryForm(v.forms[i])}`).join(' · '),
     });
   }
 }
@@ -498,7 +516,7 @@ function submit() {
     paused = true;
     inp.classList.add('flash-bad'); inp.disabled = true;
     const fb = document.getElementById('feedbackBox');
-    const answerShown = `${PERSONS[pi]} ${primaryForm(V()[vi].forms[pi])}`;
+    const answerShown = `${PERSONS_UI[pi]} ${primaryForm(V()[vi].forms[pi])}`;
     fb.innerHTML = `<div class="fb-wrong">✗ 正確：<b>${answerShown}</b>（${V()[vi].inf}）
       <button type="button" id="wrongTtsBtn" title="聽正確發音"
         style="background:none;border:none;color:#60d090;font-size:1rem;cursor:pointer;vertical-align:middle;margin-left:4px;">🔊</button></div>
@@ -557,7 +575,7 @@ function showDone() {
       const v = V()[vi];
       return `<div class="conj-block">
         <div class="conj-verb">${v.inf}</div>
-        <table class="conj-table">${PERSONS.map((p,i) =>
+        <table class="conj-table">${PERSONS_UI.map((p,i) =>
           `<tr><td class="conj-p">${p}</td><td class="conj-f">${primaryForm(v.forms[i])}</td></tr>`).join('')}</table>
       </div>`;
     }).join('');
@@ -598,11 +616,18 @@ document.getElementById('fbSave').addEventListener('click', () => {
 });
 
 // ── 初始化／模式切換 ──────────────────────────────────────────
+function renderModeButtons() {
+  document.getElementById('modeToggle').innerHTML = AVAILABLE.map(m =>
+    `<button class="mode-btn${m.id === mode ? ' active' : ''}" data-mode="${m.id}" type="button">${m.label}</button>`
+  ).join('');
+  document.querySelectorAll('#modeToggle .mode-btn').forEach(b =>
+    b.addEventListener('click', () => { mode = b.dataset.mode; refreshStartScreen(); }));
+}
+
 function refreshStartScreen() {
+  renderModeButtons();
   renderHeatmap('heatmap');
-  document.getElementById('hmModeLabel').textContent = mode === 'pc' ? 'Passé composé' : 'Présent';
-  document.getElementById('modeBtnPresent').classList.toggle('active', mode !== 'pc');
-  document.getElementById('modeBtnPc').classList.toggle('active', mode === 'pc');
+  document.getElementById('hmModeLabel').textContent = M().label;
   const ses = getSessions();
   const recentCard = document.getElementById('recentCard');
   if (ses.length) {
@@ -614,10 +639,12 @@ function refreshStartScreen() {
     recentCard.style.display = 'none';
   }
 }
-document.getElementById('modeBtnPresent').addEventListener('click', () => { mode = 'present'; refreshStartScreen(); });
-document.getElementById('modeBtnPc').addEventListener('click', () => { mode = 'pc'; refreshStartScreen(); });
+// 從網址帶模式進來：verb_sprint.html?mode=imparfait（dashboard 每日輪替用）
+const _qs = new URLSearchParams(location.search);
+const _qm = _qs.get('mode');
+if (_qm && AVAILABLE.some(m => m.id === _qm)) mode = _qm;
 refreshStartScreen();
-if (new URLSearchParams(location.search).get('guided') === '1') startSprint();
+if (_qs.get('guided') === '1') startSprint();
 
 // ── TTS 發音 ──────────────────────────────────────────────────
 let frVoice = null;
