@@ -17,6 +17,14 @@ const EXTERNAL_TIME = {
           "2026/08/22": 451,
           "2026/08/23": 381
     }
+  },
+  // ⚠️ 保底估計，不是實測：每週 2.5 小時，從 2026-06-25 起算整週（取 floor）
+  cours: {
+    totalSec: 72000,
+    weeks: 8,
+    perWeekH: 2.5,
+    since: '2026-06-25',
+    estimated: true
   }
 };
 if (typeof module !== 'undefined') module.exports = { EXTERNAL_TIME };

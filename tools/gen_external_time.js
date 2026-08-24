@@ -39,6 +39,17 @@ for (const [id, ms] of rows) {
   byDate[key] = (byDate[key] || 0) + Math.round(ms / 1000);
 }
 const totalSec = Math.round(totalMs / 1000);
+
+/* ── 上課時間（2026-08-24 Owen：「上課也要算時間吧XDDD…保底一週2.5小時」）──
+ * 本來想用課堂錄音檔的長度來算（那才精確），但錄音混在他的工作與生活錄音裡，
+ * 不去翻。改用他自己定的保底值：**每週 2.5 小時**，從課程起算日開始數整週。
+ * ⚠️ 這是三項裡唯一「估計」而非「實測」的，所以取 floor（少算不多算），
+ *    dashboard 上也會標明是保底值。 */
+const COURSE_START = '2026-06-25';
+const COURSE_H_PER_WEEK = 2.5;
+const weeksElapsed = Math.floor((Date.now() - new Date(COURSE_START + 'T00:00:00').getTime()) / (7 * 864e5));
+const coursSec = Math.round(weeksElapsed * COURSE_H_PER_WEEK * 3600);
+console.log(`上課：${COURSE_START} 起算 ${weeksElapsed} 整週 × ${COURSE_H_PER_WEEK}h ＝ ${(coursSec/3600).toFixed(1)} 小時（保底估計）`);
 const today = new Date();
 const stamp = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
@@ -56,6 +67,14 @@ const EXTERNAL_TIME = {
     totalSec: ${totalSec},
     reviews: ${rows.length},
     byDate: ${JSON.stringify(byDate, null, 6).replace(/\n/g, '\n    ')}
+  },
+  // ⚠️ 保底估計，不是實測：每週 ${COURSE_H_PER_WEEK} 小時，從 ${COURSE_START} 起算整週（取 floor）
+  cours: {
+    totalSec: ${coursSec},
+    weeks: ${weeksElapsed},
+    perWeekH: ${COURSE_H_PER_WEEK},
+    since: '${COURSE_START}',
+    estimated: true
   }
 };
 if (typeof module !== 'undefined') module.exports = { EXTERNAL_TIME };

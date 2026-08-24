@@ -664,7 +664,11 @@ function duoSec() {
   try { return getDuoData().reduce((s, d) => s + (Number(d.min) || 0) * 60, 0); }
   catch { return 0; }
 }
-function externalSec() { return ankiSec() + duoSec(); }
+function coursSec() {
+  try { return (typeof EXTERNAL_TIME !== 'undefined' && EXTERNAL_TIME.cours.totalSec) || 0; }
+  catch { return 0; }
+}
+function externalSec() { return ankiSec() + duoSec() + coursSec(); }
 function getSpeakingData()   { try { return JSON.parse(localStorage.getItem('clb7_speaking'))   || []; } catch { return []; } }
 function getListeningData()  { try { return JSON.parse(localStorage.getItem('clb7_listening'))  || []; } catch { return []; } }
 function getGameData()     { try { return JSON.parse(localStorage.getItem('clb7_game'))      || {xp:0,streak:0,lastDate:''}; } catch { return {xp:0,streak:0,lastDate:''}; } }
@@ -1364,11 +1368,13 @@ function render() {
   document.getElementById('hoursFill').style.width = pct.toFixed(1) + '%';
   document.getElementById('hoursVal').textContent = `${totalH.toFixed(1)} / ${GOAL_H}h`;
   // 拆給他看時數是哪來的——不然「突然多出幾十小時」會讓人不信任這個數字
-  const inApp = (totalSec - externalSec()) / 3600, aH = ankiSec() / 3600, dH = duoSec() / 3600;
+  const inApp = (totalSec - externalSec()) / 3600;
+  const aH = ankiSec() / 3600, dH = duoSec() / 3600, cH = coursSec() / 3600;
   document.getElementById('hoursSub').innerHTML =
     `還需 ${Math.max(0, GOAL_H - totalH).toFixed(1)} 小時`
     + `<br><span style="font-size:0.9em;opacity:.75">`
     + `本站 ${inApp.toFixed(1)}h ＋ Anki ${aH.toFixed(1)}h ＋ Duolingo ${dH.toFixed(1)}h`
+    + ` ＋ 上課 ${cH.toFixed(1)}h<span style="opacity:.7">（保底 2.5h/週）</span>`
     + `</span>`;
 
   // Stats
