@@ -111,6 +111,9 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `creed.js` | **新增（07-12）**：學習心法14條＋通關理由14條（每條有依據，禁雞湯），dashboard「🧭今日心法」卡每天輪播，Owen自己寫的`clb7_creed_own`優先於內建條目 | ✅ 新建 |
 | `tts_reader.js` | **新增（08-04）**：發音顆粒度三層共用模組（PLAN A-9／S7）——`TtsReader.mount()`（純文字→段落/句/字三層）、`mountList()`（既有「一句一元素」結構只加整段層、不動 DOM）、`speak()`、`stopAll()`。語音篩選沿用全站統一優先序；語速偏好存 `ttsr_rate`（**刻意不用 `clb7_` 前綴，不進 Supabase 同步負載**）。目前掛在 `reading.html` 與 `french_notes.html` 第21課平行閱讀兩處；**其餘 12 個各自實作 TTS 的頁面沒有動**（要重構先問 Owen）| ✅ 新建 |
 | `CODEX_STYLE.md` | **新增（07-12）**：codex.js條目撰寫規範——固定房間佈局（🎧錨句/📖規則+表格+💡記法/🕐使用時機/⚠️例外/🆚易混淆/💬更多例句/🔗相關），任何session擴寫條目前必讀 | ✅ 新建 |
+| `roleplay.html`＋`scenes.js` | **新增（08-24，08-25 擴充）**：🎭 情境角色扮演——DELF 口說第三部分 dialogue simulé 的格式（抽情境、兩個角色都能演）。**8 個場景／352 句台詞逐字出自筆記或 Édito 課本原文**，10 個真分岔（選項通往不同節點）。**預設純法語**（Owen 08-25：「中文輔助太多了」），只有選到 ok/bad 才自動翻中文＋解說；選錯寫進 `clb7_wrong_log`；checklist 只亮這條路真的走到的步驟 | ✅ 擴充（08-25）|
+| `situations.js` | **新增（08-24）**：17 個生活情境索引（掛既有 topic／課次／Answer Card，標明在考試哪裡出現，涵蓋 66/77 topic）。⚠️ **目前沒有任何頁面在讀它**，純資料層，要接哪一頁等 Owen 決定 | ⚠️ 未接線 |
+| `tools/check_scenes.js`＋`tools/extract_textbook.py` | **新增（08-24／08-25）**：劇本檢查器——①每一句法文必須逐字出自 `french_notes.html` 或 `assets/.textbook_cache.txt`（課本快取，由 extract 腳本產生，**gitignore 不進 repo**）②劇本結構（出口／可達性／孤兒節點／角色都要有選擇節點／checklist 對得上）。**寫完場景必跑，兩段全綠才算完成** | ✅ 新建 |
 
 **GitHub Pages 網址：** https://owenc8964.github.io/french_pronounce/dashboard.html
 
@@ -634,29 +637,105 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **瀏覽器層**（切 TEST ROOM，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入＋故意把 `sous la tente` 填成 en 被判錯；reading a22 故意 2對1錯 → 分數與 ✓✗ 與解說都正確、紀錄欄位齊全；french_notes lesson-21 渲染 11 unit／11 表格全包 compare-table／**161 個 🔊 tts-btn**／導覽列 21 個按鈕含第21課；quiz `?lesson=21` 實際出到 y/en 題目並答對計分；**`getPool()` 放行全部 27 題**（確認沒踩到 07-16 那個「文法點被鎖導致整批題目消失」的坑）；map 顯示第21課、tile 與 codex 3-4-5 都正確。
 - **收尾**：清掉測試寫入的 a22 紀錄與該題 SRS key → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留。
 
-### ⏭ 下個 session 的第一件事：決定要做哪些場景（Owen 指定）
+### ⏭ 下個 session 的第一件事：繼續寫場景（Owen 08-25 指定）
 
-Owen 收尾時說：「**下個 session 先想想你可以用我們的材料做哪些場景情境**」。原料已經盤點好，直接進設計就行。
+Owen 的原話：「**明天開機之後 你繼續執行這個任務，把能寫的情境盡可能地寫出來**」。
+目前 **8 個場景**（下方 08-25 記錄），素材通道已經打通，接下來是產線工作，直接寫就好。
 
-**⚠️ 先記住一個判準（這次盤點才發現的）：句子多 ≠ 做得成場景。**
-對話樹要的是**一問一答的成對台詞**，不是單向句子。「講過去的事」有 205 句最多，但那些是敘述句不是對話，做不成場景；「購物」句子沒那麼多，卻有完整的店員↔顧客成對台詞。**排序要看「有沒有兩邊的台詞」，不是看句數。**
+**動手前一定要先做的三件事：**
+1. `python3 tools/extract_textbook.py` —— 課本文字快取在 `assets/.textbook_cache.txt`（gitignore，不進 repo）。**沒有這個檔，檢查器只剩筆記可比對，課本來的句子會全部被判失敗。**
+2. 用 scratchpad 的 probe 腳本先驗句子（做法見 08-25 記錄「怎麼挖課本」），**不要先寫劇本再驗**——順序反了會白寫。
+3. 寫完必跑 `node tools/check_scenes.js`，**兩段都要全綠**（教材出處＋劇本結構）。
 
-| 情境 | 課次句數 | 像台詞的 | 有沒有成對台詞 | 建議 |
+**還沒做、素材已經確認存在的場景**（都在 `assets/.textbook_cache.txt`，附頁碼）：
+
+| 情境 | 課本出處 | 有什麼 |
+|---|---|---|
+| 🛒 市場／超市買菜 | p.50 逐字稿（Sonia↔Arnaud） | 在哪買什麼的完整對話＋chez le boucher／au marché 介係詞對照 |
+| 📱 買 3C 送禮 | p.84 逐字稿（Jules↔爸爸） | 挑禮物、比較顏色款式、ça sert à quoi |
+| 🏋️ 健身房入會 | p.98 附近（Bienvenue ! Vous avez choisi notre salle de sport） | 器材、規則、頻率副詞 |
+| 🏦 銀行開戶 | p.114（Banque du Nord, bonjour !） | 電話問資訊＋justificatif de domicile 這類行政詞彙 |
+| 🏠 鄰居／報修 | p.112 逐字稿（Clément Dupré↔Michel Barbier） | 抽菸糾紛、找水電工、自我介紹給鄰居——**語域練習極好**（陌生鄰居用 vous） |
+| ✈️ 機場遇到朋友聊假期 | p.132 逐字稿（Loïc↔Marina） | 整段 passé composé 講假期，正好是口說第二部分的主場 |
+| 🧵 打電話問課程 | p.177 逐字稿（問 atelier couture） | Je voudrais des informations. Qu'est-ce que vous proposez ? |
+| 🍽 餐廳（第二版） | Cahier p.36 | 另一組點餐對話，可做成餐廳的進階版或第二個分岔 |
+
+**還沒解決、需要 Owen 出手的事**：
+- **A2 課本與 Cahier 不在 `assets/`**（只有 A1 的 `Edito22 A1 Owen.pdf` 與 `Edito Cah22 A1 Owen.pdf`）。他 08-25 說「你應該有A1 A2 課本及Cahier pdf檔」——**A2 的沒有**。他把 A2 的 PDF 丟進 `assets/` 之後，重跑一次 `extract_textbook.py` 就會自動納入，A2 情境（比較級、條件句、DELF A2 口說第三部分的官方題目）才有原文可用。
+- `assets/Online classe 1 (1).pdf` 與 `french class 2.pdf` 是**掃描檔，抽不到任何文字**（extract 腳本會標出來），要用得先 OCR。
+
+---
+
+### 08-25：情境劇本 1→8 個，並打通「課本原文」這條素材通道
+
+這個 session 做完之後，`roleplay.html` 從一個原型變成有 8 個場景的系統。中間 Owen 丟進來三則回饋，每一則都改變了設計，照時間順序記：
+
+#### ① 起手：照 08-24 盤點的順序寫了三個場景
+先做的是自我介紹（entretien）、約朋友出門（rendez-vous）、餐廳點餐（restaurant）。素材來自筆記第17課（老師實測的 DELF 口說題＋Owen 自己的答案）、第19/9課（提議/接受/婉拒三欄＋老師示範的喬時間來回）、第5課（點餐句型）。
+
+**entretien 的誘答是這個場景最值錢的地方**：`e14`／`e16`／`e18` 三個 bad 選項不是我編的，是**第17課糾錯摘要裡他當天真的講錯的三句**——`Je me lever à six heures.`（反身動詞沒變位）、`Je mange un café au lait.`（喝的要用 boire）、`Je vais revenir à 18 heures.`（回家用 rentrer）。這是自動化缺口不是概念缺口，**重講一次規則沒有用，讓他在選項裡再遇到一次才有用**。
+
+#### ② Owen：「你應該有A1 A2 課本及Cahier pdf檔，可以直接利用其中的內容」
+**這句話解決了一個我原本準備繞過的限制。** 筆記是課堂重點整理，**沒有完整對話逐字稿**——服務生、店員、路人、櫃檯的台詞筆記幾乎沒收，所以我原本只能靠「把筆記句子接起來」硬撐對手戲。課本後面的 **transcriptions** 就是整批的真實對話。
+
+於是加了 `tools/extract_textbook.py`（pdfplumber）：
+- 掃 `assets/*.pdf` → 寫成 `assets/.textbook_cache.txt`（**已加進 .gitignore**：商業教材內容，repo 是公開的 GitHub Pages）。
+- ⚠️ **兩欄排版的坑**：Édito 的逐字稿是左右兩欄，整頁抽取會把兩欄的句子交錯，一個句子被切成兩半（「Je voudrais de la blanquette de veau」／「avec du riz.」跑到不同地方）。**解法是每頁抽三次：整頁＋左半＋右半，三份都寫進快取。** 檢查器只做子字串比對，多寫幾份沒有副作用。
+- 兩份 A1 檔抽得到文字（193＋145 頁）；`Online classe 1 (1).pdf`／`french class 2.pdf` **是掃描檔，抽不到字**。
+
+`tools/check_scenes.js` 跟著改：來源從「只有 `french_notes.html`」變成「筆記 ＋ 課本快取」，並做兩邊正規化（課本用彎引號 `’`、筆記用直引號 `'`；`…`→`...`；換行處被拆開的連字號 `messieurs- dames` 補回去；去尾標點時連空白一起去）。報表會標**每一句是從哪個來源找到的**——目前 352 句：筆記 186／課本 166。
+
+**怎麼挖課本（下個 session 照做）**：
+1. `grep -n "Le serveur\|La docteure\|Le vendeur" assets/.textbook_cache.txt` 找角色名，逐字稿都在書末 `transcriptions`。
+2. 找到頁碼後用 pdfplumber 單獨抽那一頁的左右半欄（整頁抽會交錯），對照著讀。
+3. 把想用的句子寫成一行一句的清單，用 scratchpad 的 `probe.js`（跟檢查器同一套正規化）跑一遍，**只留 ✅ 的**。
+4. 再開始寫劇本。
+
+#### ③ Owen：「玩起來學習滿有趣的，如果資料多一點可以考慮開fork讓學習更多元」＋「中文輔助太多了，感覺應該要純法語去做我會學習更快」
+兩件事都照做了，而且都改到底層：
+
+**純法語優先**（`roleplay.html`）：預設 `zhOn=false`。法文句子底下**不掛中文**，選項也只有法文；**只有選到 `ok`／`bad` 時才自動翻出中文與解說**——因為那是回饋不是拐杖。其餘泡泡想看中文要點 💬。標籤也改法文（`naturel`／`correct`／`impoli`），切到「中文輔助」才變回自然／可以／失禮。頂部可隨時切換，**切換會把已經講過的對話整批重畫**（不用重來一次）。偏好存 `rp_zh`，**刻意不用 `clb7_` 前綴**（顯示偏好不需要占 Supabase 同步負載，跟 `ttsr_rate` 同款）。
+
+**真的分岔**（不是換句話說的分岔）：選項的 `next` 指向不同節點。目前 8 個場景共 **10 個分岔點**，例如：
+- `rendez-vous` v4 三條路：答應 → 喬時間／不想去 → 對方負責提替代方案（課本 Perrine 提展覽那段）／有別的事 → 「我可以跟你一起去嗎」那條線。
+- `restaurant` r4：先問今日主菜／直接點燉小牛肉／點牛排（多一步問熟度）。
+- `medecin` m3：感冒線 vs 膝蓋線，就是課本的兩段對話。
+- `hotel` h10：先問價錢再選 vs 直接用比較級講出理由。
+
+**分岔帶出的兩個連帶修正**：
+- `checklist` 改成**只亮你這條路真的走到的步驟**（節點加 `chk` 欄位），沒亮的會附一句「這是你這條路沒走到的，換個選擇會走到不同劇情」。原本的寫法是走完就全部打勾，分岔之後那樣等於說謊。
+- **對方那一側的自動台詞原本永遠挑第一個 `good`** → 分岔點如果落在對方身上，另一條路**永遠走不到**（演問路的人就永遠不會被叫去搭公車）。改成在 `good` 選項裡隨機挑，重玩才會遇到不同劇情。
+
+**順手接上大腦**：選到 `ok`／`bad` 會寫進 `clb7_wrong_log`（`src:'情境扮演'`），**今日錯題本收得到**，睡前掃得到。結算頁也會把這一場選錯的句子列成小複習卡。
+
+#### 這次新增的 8 個場景一覽
+
+| id | 場景 | 節點/分岔 | 台詞出處 | 這個場景在教什麼 |
 |---|---|---|---|---|
-| 🙋 自我介紹與寒暄 | 103 | 44 | ⭐⭐ **有**：第17課整套 DELF 口說考官問句（Comment ça s'écrit ?／Vous habitez où ?／Vous avez des enfants ?） | **下一個做這個**——口說第一部分必考 |
-| 📅 約時間與邀約 | 150 | 42 | ⭐⭐ **有**：第19課老師示範的「兩人喬時間完整來回」＋提議/接受/婉拒三欄 | **強烈推薦**，考試與生活都高頻 |
-| 🍽 餐廳與飲食 | 35 | 19 | ⭐⭐ **有**：第5課點餐整套（Je voudrais／une carafe d'eau／牛排熟度／Bonne dégustation／結帳） | 句數少但**全部是對話**，做得成 |
-| 🏥 看醫生與藥局 | 35 | 19 | ⭐ 部分：第12課身體詞彙＋第13課建議句型；listening.html 有藥局真人音檔可搭 | 可做，但要補問診那一側 |
-| 🛒 購物與商店 | 281 | 50 | ⭐⭐ 有（**已做**：麵包店） | 同一套可換成肉店／起司店／魚店（第4、5課有各店的店員稱謂） |
-| 🚇 問路與交通 | 153 | 25 | ⭐ 部分：命令式＋方位介係詞夠，但缺「問路的人」那一側 | 要先補素材 |
-| 🕰 講過去的事 / 🧍 描述一個人 / 🗣 表達意見 | 200+ | 60–90 | ❌ **沒有成對台詞**（都是敘述句與文法例句） | **不適合做場景**，它們適合的是寫作與口說第二部分 |
+| `boulangerie` | 🥖 麵包店 | 12 / 0 | 筆記1、4、5課 | （08-24 原型）je voudrais vs je veux、店員↔顧客台詞歸屬 |
+| `entretien` | 🎤 口說考試第一部分 | 22 / 3 | 筆記17課 | 考官題池＋**他自己犯過的三個錯當誘答** |
+| `rendez-vous` | 📅 約朋友出門 | 18 / 2 | 課本 Unité 6＋筆記9、19課 | veux vs peux、ça marche vs ça fonctionne、婉拒要給理由 |
+| `restaurant` | 🍽 餐廳點餐 | 17 / 1 | 課本 p.54＋Cahier p.36＋筆記5課 | 不定量冠詞、carafe d'eau、l'addition、牛排熟度 |
+| `vetements` | 👗 買衣服（婚禮） | 19 / 2 | 課本 p.78 | **faire du 40（衣服）vs chausser du 45（鞋）**、顏色形容詞位置 |
+| `chemin` | 🚇 街上問路 | 13 / 1 | 課本 p.66、p.71 | 命令式 vous 形、Excusez-moi 才攔得住人、en bus vs à pied |
+| `hotel` | 🏨 打電話訂房 | 21 / 2 | 課本 p.131 | du…au…、nous sommes 人數、**比較級 moins cher que**、拼名字 |
+| `medecin` | 🏥 看醫生 | 24 / 1 | 課本 p.117 兩段 | avoir mal à + 部位、passer une bonne nuit、命令式醫囑 |
 
-**建議的下一批**（照這個順序）：①自我介紹（考官問答）②約時間與邀約 ③餐廳點餐。三個都做完再回頭看要不要擴。
+**352 句全部逐字有出處**（筆記 186／課本 166）；**只有 3 句是刻意的誘答**（`constructed:true`，檢查器會逐條印出來不讓它們隱形）。
 
-**做的時候記得**：
-- 每個場景兩個角色都要有選擇節點（演對方那側的誘答＝**把這一側的台詞丟給對方說**，考「誰說哪一句」）
-- 誘答優先用筆記明講會扣分的講法（語域錯 ＞ 文法錯）
-- 寫完必跑 `node tools/check_scenes.js`，全綠才算完成
+#### 檢查器現在會擋什麼（08-25 加的結構檢查）
+`tools/check_scenes.js` 除了原本的教材出處，還會檢查：節點有沒有出口（會不會卡死）、`next` 指向的節點存不存在、有沒有從 `start` 走不到的孤兒節點、`speaker` 有沒有在 `roles` 裡、**每個角色是不是都至少有一個選擇節點**（不然演那一邊只能一直按）、`chk` 與 `checklist` 對不對得上、選項有沒有漏 `zh`／`note`。
+**第一次跑就抓到一個真的問題**：`medecin` 的 checklist「結束看診」沒有任何節點會點亮它。
+
+#### 驗證
+- **Node 端**：窮舉所有場景的所有路徑（最多 2 萬條）確認**無循環、無死路**，全部走得到 `end`。
+- **瀏覽器端**（TEST ROOM 全程隔離，開場先 `fetch(cache:'no-store')` 確認 preview 供應的就是 TEST 值）：8 場景 × 2 角色 × 12 次隨機＝**192 場全部走到結束、零 console error**；純法語模式下選錯會自動翻出中文與 `impoli` 標籤、選對維持全法文；`clb7_wrong_log` 寫入格式正確；中文輔助切換會即時重畫已講過的對話；375px 版面正常。
+- **收尾**：清掉測試寫入的 3 個 key → ROOM 改回 `owen-clb7-k9f3a72q` → **立刻 `preview_stop`** → grep 主樹無 `TEST-DO-NOT-USE` 殘留。
+- ⚠️ **驗證方法上的一個坑，記下來免得重踩**：分頁被切到背景時 `setTimeout` 會被節流甚至凍住，用「按一步等一下」的驅動腳本會卡在半路，看起來像 bug 其實不是。**解法是驅動時暫時把 `window.setTimeout` 換成同步執行**，整場對話在一次 `javascript_exec` 內跑完，不依賴分頁在前景。
+
+#### 留下來的兩個小尾巴
+- `situations.js`（17 個生活情境索引，08-24 建的）**目前沒有任何頁面在讀它**，純資料層。要嘛把它接進 `map.html` 當第四個分頁，要嘛接進 `roleplay.html` 當「這個情境還可以練什麼」的側欄——等 Owen 決定。
+- `.claude/worktrees/` 底下有 4 份舊 worktree 的 `sync_supabase.js` **還留著 TEST ROOM 值**（它們被 `.git/info/exclude` 擋著、不影響主樹，grep 殘留時會跳出來嚇人）。要清的話直接刪那些 worktree 目錄。
 
 ---
 
