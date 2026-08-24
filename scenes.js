@@ -29,6 +29,7 @@
 const SCENES = [
 {
   id: 'boulangerie',
+  lvl: 'A1',
   icon: '🥖',
   zh: '麵包店買法棍',
   fr: 'À la boulangerie',
@@ -132,6 +133,7 @@ const SCENES = [
    ═══════════════════════════════════════════════════════════════ */
 {
   id: 'entretien',
+  lvl: 'A1',
   icon: '🎤',
   zh: '口說考試第一部分',
   fr: "L'entretien dirigé",
@@ -310,6 +312,7 @@ const SCENES = [
    ═══════════════════════════════════════════════════════════════ */
 {
   id: 'rendez-vous',
+  lvl: 'A1',
   icon: '📅',
   zh: '約朋友出門',
   fr: 'Proposer une sortie',
@@ -464,6 +467,7 @@ const SCENES = [
    ═══════════════════════════════════════════════════════════════ */
 {
   id: 'restaurant',
+  lvl: 'A1',
   icon: '🍽',
   zh: '餐廳點餐',
   fr: 'Au restaurant',
@@ -616,6 +620,7 @@ const SCENES = [
    ═══════════════════════════════════════════════════════════════ */
 {
   id: 'vetements',
+  lvl: 'A1',
   icon: '👗',
   zh: '買衣服（婚禮）',
   fr: 'Acheter des vêtements',
@@ -766,6 +771,7 @@ const SCENES = [
    ═══════════════════════════════════════════════════════════════ */
 {
   id: 'chemin',
+  lvl: 'A1',
   icon: '🚇',
   zh: '街上問路',
   fr: 'Demander le chemin',
@@ -877,6 +883,7 @@ const SCENES = [
    ═══════════════════════════════════════════════════════════════ */
 {
   id: 'hotel',
+  lvl: 'A1',
   icon: '🏨',
   zh: '打電話訂房',
   fr: 'Réserver une chambre',
@@ -1032,6 +1039,7 @@ const SCENES = [
    ═══════════════════════════════════════════════════════════════ */
 {
   id: 'medecin',
+  lvl: 'A1',
   icon: '🏥',
   zh: '看醫生',
   fr: 'Chez le médecin',
@@ -1198,6 +1206,560 @@ const SCENES = [
       { fr:'Un peu.', zh:'一點點。', tag:'bad', src:'課本 p.117',
         note:'⚠️ 答非所問——醫生在下指令，不是在問症狀', next:'end' },
     ]},
+
+    end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
+  }
+},
+
+/* ═══════════════════════════════════════════════════════════════
+   ⬇⬇ 以下四個是 **A2 課本**（Édito A2）的逐字稿——Owen 現在的真實程度。
+      前面八個大多來自 A1，句子短、資訊少；A2 這批開始出現
+      「請對方推薦」「問這道菜是什麼」「問租金含不含水電」這種**要協商的對話**，
+      也就是 DELF A2 口說第三部分真正的難度。
+   ⚠️ A2 Cahier（`EditoA2 2022 Cahier .pdf`）是掃描檔，抽不到文字，這批只用了 A2 課本。
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 9. 藥局（A2 課本 p.102「Chez la pharmacienne」）
+   跟第 8 個場景「看醫生」是一組：醫生那邊是 A1 的簡單問診，
+   藥師這邊是 A2——你要**自己描述症狀、聽懂建議、還會被推薦偏方**。 */
+{
+  id: 'pharmacie',
+  lvl: 'A2',
+  icon: '💊',
+  zh: '藥局買成藥',
+  fr: 'Chez la pharmacienne',
+  exam: '⭐ A2 口說情境卡高頻；聽力也常考（listening.html 就有藥局真人音檔）',
+  src: '課本 A2 p.102 逐字稿＋筆記第12、13課',
+  roles: { client: '🙋 你是客人', pharmacienne: '💊 你是藥師' },
+  speakers: { client: 'M. Rousseau', pharmacienne: 'La pharmacienne' },
+  roleHints: { client: '法國看醫生要等，小病先進藥局——這場比看醫生更常用', pharmacienne: '藥師要問到足夠資訊才敢給藥：喉嚨、咳嗽、發燒一路問下去' },
+  checklist: ['說出不舒服', '描述症狀', '回答追問', '聽懂建議', '付款告別'],
+  start: 'ph1',
+  nodes: {
+    ph1: { speaker:'pharmacienne', line:'Bonjour monsieur Rousseau. Qu\'est-ce que je peux faire pour vous ?',
+           zh:'Rousseau 先生您好。有什麼我可以幫您的嗎？', src:'課本 A2 p.102',
+           note:'<b>Qu\'est-ce que je peux faire pour vous ?</b> 是服務業的萬用開場，比「您要什麼」客氣得多', next:'ph2' },
+
+    ph2: { speaker:'client', tip:'說出你不舒服', chk:'說出不舒服', choices:[
+      { fr:'Bonjour, voilà je suis un peu patraque en ce moment.', zh:'您好，是這樣的，我最近有點不舒服。', tag:'good', src:'課本 A2 p.102',
+        note:'✅ <b>patraque</b>＝不太舒服（口語，講不出具體病名時最好用）；<b>voilà</b> 在句首＝「是這樣的」，法國人開場的緩衝詞', next:'ph3' },
+      { fr:'Bonjour !', zh:'您好！', tag:'ok', src:'筆記第1課',
+        note:'禮貌有了，但藥師還不知道你哪裡不舒服', next:'ph3' },
+      { fr:'Qu\'est-ce que je peux faire pour vous ?', zh:'有什麼我可以幫您的嗎？', tag:'bad', src:'課本 A2 p.102',
+        note:'⚠️ 那是<b>藥師</b>的台詞', next:'ph3' },
+    ]},
+
+    ph3: { speaker:'pharmacienne', tip:'你是藥師。先問清楚是什麼問題', choices:[
+      { fr:'Qu\'est-ce qui ne va pas ?', zh:'哪裡不舒服？', tag:'good', src:'課本 A2 p.102',
+        note:'✅ 字面是「什麼東西不對勁」——比 Qu\'est-ce que vous avez ? 更關心人', next:'ph4' },
+      { fr:'Je me sens fatigué.', zh:'我覺得很累。', tag:'bad', src:'課本 A2 p.102',
+        note:'⚠️ 客人的答案', next:'ph4' },
+    ]},
+
+    ph4: { speaker:'client', tip:'⭐ 分岔：好好描述症狀，還是直接說你要能緩解的東西？', chk:'描述症狀', choices:[
+      { fr:'Je me sens fatigué. J\'ai le nez bouché, j\'ai mal à la tête.', zh:'我覺得很累。我鼻塞、頭痛。', tag:'good', src:'課本 A2 p.102',
+        note:'✅ 三個症狀一次講完。<b>avoir le nez bouché</b>＝鼻塞（bouché＝被塞住的）；se sentir + 形容詞＝覺得…', next:'ph5' },
+      { fr:'J\'ai rendez-vous après-demain mais j\'aimerais quelque chose qui me soulage un peu.', zh:'我後天有預約，但我想要能稍微緩解的東西。', tag:'ok', src:'課本 A2 p.102',
+        note:'句子很漂亮（<b>j\'aimerais</b>＝條件式的「我想要」，比 je veux 客氣），但你還沒說哪裡不舒服，藥師沒辦法給藥', next:'ph6' },
+    ]},
+
+    ph5: { speaker:'pharmacienne', line:'Oui, vous n\'avez pas très bonne mine. On dirait que vous avez un gros rhume. Vous avez consulté votre médecin ?',
+           zh:'嗯，您氣色不太好。看起來像是重感冒。您看過醫生了嗎？', src:'課本 A2 p.102',
+           note:'<b>avoir bonne mine</b>＝氣色好；<b>On dirait que…</b>＝看起來像是…（超好用的推測句型）', next:'ph6' },
+
+    ph6: { speaker:'client', tip:'講你的處理進度，並說出你要什麼', chk:'說出不舒服', choices:[
+      { fr:'J\'ai rendez-vous après-demain mais j\'aimerais quelque chose qui me soulage un peu.', zh:'我後天有預約，但我想要能稍微緩解的東西。', tag:'good', src:'課本 A2 p.102',
+        note:'✅ 「已經約了醫生＋現在先要緩解」——這正是進藥局的標準理由。<b>soulager</b>＝緩解', next:'ph7' },
+      { fr:'Non. Ça non.', zh:'沒有，那倒是沒有。', tag:'ok', src:'課本 A2 p.102',
+        note:'只回答了「沒看醫生」，沒說你要什麼——藥師會多問一輪', next:'ph7' },
+    ]},
+
+    ph7: { speaker:'pharmacienne', tip:'⭐ 分岔：先問喉嚨，還是先問咳嗽？', choices:[
+      { fr:'Vous avez mal à la gorge aussi ?', zh:'您喉嚨也痛嗎？', tag:'good', src:'課本 A2 p.102',
+        note:'✅ <b>avoir mal à la gorge</b>——à + la 不縮合（只有 à+le→au、à+les→aux）', next:'ph8g' },
+      { fr:'Et vous toussez ?', zh:'那您會咳嗽嗎？', tag:'good', src:'課本 A2 p.102',
+        note:'✅ tousser 的 vous 形是 toussez', next:'ph8t' },
+      { fr:'Oui, quand je mange et quand je bois.', zh:'會，吃東西跟喝東西的時候。', tag:'bad', src:'課本 A2 p.102',
+        note:'⚠️ 客人的答案', next:'ph8g' },
+    ]},
+
+    ph8g: { speaker:'client', tip:'回答喉嚨的問題', chk:'回答追問', choices:[
+      { fr:'Oui, quand je mange et quand je bois.', zh:'會，吃東西跟喝東西的時候。', tag:'good', src:'課本 A2 p.102',
+        note:'✅ 不只答「會」，還講<b>什麼時候</b>會痛——這一句就把 A1 跟 A2 分開了', next:'ph9' },
+      { fr:'Un peu, mais pas beaucoup.', zh:'一點點，但不嚴重。', tag:'bad', src:'課本 A2 p.102',
+        note:'⚠️ 那是回答「會不會咳嗽」的', next:'ph9' },
+    ]},
+
+    ph8t: { speaker:'client', tip:'回答咳嗽的問題', chk:'回答追問', choices:[
+      { fr:'Un peu, mais pas beaucoup.', zh:'一點點，但不嚴重。', tag:'good', src:'課本 A2 p.102',
+        note:'✅ <b>un peu, mais pas beaucoup</b>＝有但不嚴重，法國人很愛這樣修飾', next:'ph9' },
+      { fr:'Oui, quand je mange et quand je bois.', zh:'會，吃東西跟喝東西的時候。', tag:'bad', src:'課本 A2 p.102',
+        note:'⚠️ 那是回答喉嚨痛的', next:'ph9' },
+    ]},
+
+    ph9: { speaker:'pharmacienne', tip:'還有一個一定要問的', choices:[
+      { fr:'Et vous avez de la fièvre ?', zh:'那您有發燒嗎？', tag:'good', src:'課本 A2 p.102',
+        note:'✅ 發燒是「要不要轉診」的判斷點，藥師一定會問。<b>de la</b> fièvre（不定量冠詞）', next:'ph10' },
+      { fr:'Non. Ça non.', zh:'沒有，那倒是沒有。', tag:'bad', src:'課本 A2 p.102',
+        note:'⚠️ 客人的答案', next:'ph10' },
+    ]},
+
+    ph10: { speaker:'client', tip:'回答發燒', chk:'回答追問', choices:[
+      { fr:'Non. Ça non.', zh:'沒有，那倒是沒有。', tag:'good', src:'課本 A2 p.102',
+        note:'✅ <b>Ça non.</b>＝「那倒是沒有」，比只說 non 生動', next:'ph11' },
+      { fr:'Oui, j\'ai 39.', zh:'有，39度。', tag:'ok', src:'課本 A1 p.117',
+        note:'也是正確的答法（A1 課本那段）；但 39 度藥師會叫你直接去看醫生', next:'ph11' },
+    ]},
+
+    ph11: { speaker:'pharmacienne', line:'D\'accord. Avant votre rendez-vous chez le médecin, je vous propose un sirop pour la toux et des gouttes pour le nez à l\'eucalyptus.',
+            zh:'好的。在您看醫生之前，我建議您咳嗽糖漿跟尤加利的鼻滴劑。', src:'課本 A2 p.102',
+            note:'<b>je vous propose…</b>＝我建議您…（藥師/服務業給建議的標準句）；<b>chez le médecin</b>＝在醫生那裡（chez + 人）', next:'ph12' },
+
+    ph12: { speaker:'client', tip:'接受建議', chk:'聽懂建議', choices:[
+      { fr:'Très bien.', zh:'很好。', tag:'good', src:'筆記第5課',
+        note:'✅ 簡短接受', next:'ph13' },
+      { fr:'Merci du conseil.', zh:'謝謝你的建議。', tag:'ok', src:'課本 A2 p.102',
+        note:'這句留到最後她給偏方時再用，效果更好', next:'ph13' },
+    ]},
+
+    ph13: { speaker:'pharmacienne', tip:'法國藥師還會給居家偏方', choices:[
+      { fr:'Vous avez du thym chez vous ?', zh:'您家裡有百里香嗎？', tag:'good', src:'課本 A2 p.102',
+        note:'✅ 這是法國藥局很真實的一幕：先賣藥，再教你用香草。<b>chez vous</b>＝在您家', next:'ph14' },
+      { fr:'Oui, je crois.', zh:'應該有吧。', tag:'bad', src:'課本 A2 p.102',
+        note:'⚠️ 客人的答案', next:'ph14' },
+    ]},
+
+    ph14: { speaker:'client', tip:'回答', chk:'回答追問', choices:[
+      { fr:'Oui, je crois.', zh:'應該有吧。', tag:'good', src:'課本 A2 p.102',
+        note:'✅ <b>je crois</b>＝我想是（不確定時的緩衝），比硬答 oui 誠實', next:'ph15' },
+      { fr:'Non. Ça non.', zh:'沒有，那倒是沒有。', tag:'good', src:'課本 A2 p.102',
+        note:'✅ 沒有就說沒有', next:'ph15' },
+    ]},
+
+    ph15: { speaker:'pharmacienne', line:'Eh bien préparez-vous des infusions de thym avec du miel. Ça vous fera le plus grand bien.',
+            zh:'那就給自己泡百里香加蜂蜜的花草茶。這對您非常有幫助。', src:'課本 A2 p.102',
+            note:'<b>préparez-vous</b>＝反身動詞的命令式（幫自己準備）；<b>Ça vous fera le plus grand bien</b>＝這對您很有好處', next:'ph16' },
+
+    ph16: { speaker:'client', tip:'她給了額外的建議', chk:'聽懂建議', choices:[
+      { fr:'Merci du conseil.', zh:'謝謝你的建議。', tag:'good', src:'課本 A2 p.102',
+        note:'✅ <b>merci de + 名詞</b>＝謝謝某件事。人家多給了東西就要多回一句', next:'ph17' },
+      { fr:'Très bien.', zh:'很好。', tag:'ok', src:'筆記第5課',
+        note:'可以，但她剛給了你不用錢的偏方，值得一句 merci', next:'ph17' },
+    ]},
+
+    ph17: { speaker:'pharmacienne', tip:'結帳', choices:[
+      { fr:'Ça fera 12 euros 50.', zh:'總共12歐50。', tag:'good', src:'課本 A2 p.102',
+        note:'✅ <b>Ça fera…</b>（未來式）是結帳的固定講法，比 ça coûte 更自然', next:'ph18' },
+      { fr:'Voilà.', zh:'給您。', tag:'bad', src:'課本 A2 p.102',
+        note:'⚠️ 那是客人遞錢時說的', next:'ph18' },
+    ]},
+
+    ph18: { speaker:'client', tip:'付錢', chk:'付款告別', choices:[
+      { fr:'Voilà.', zh:'給您。', tag:'good', src:'課本 A2 p.102',
+        note:'✅ 遞東西給人就一個字：<b>Voilà.</b>', next:'ph19' },
+      { fr:'Par carte bancaire.', zh:'刷卡。', tag:'good', src:'筆記第4課',
+        note:'✅ 也可以，講付款方式', next:'ph19' },
+    ]},
+
+    ph19: { speaker:'pharmacienne', line:'Merci, bonne journée.', zh:'謝謝，祝您有美好的一天。', src:'課本 A2 p.102',
+            note:'', next:'ph20' },
+
+    ph20: { speaker:'client', tip:'收尾', chk:'付款告別', choices:[
+      { fr:'Au revoir.', zh:'再見。', tag:'good', src:'課本 A2 p.102',
+        note:'✅ 課本原句', next:'end' },
+      { fr:'Bonne journée !', zh:'祝你有美好的一天！', tag:'good', src:'筆記第1課',
+        note:'✅ 回敬同一句也很自然', next:'end' },
+      { fr:'À demain !', zh:'明天見！', tag:'bad', src:'筆記第1課',
+        note:'⚠️ 你明天又不會再來藥局', next:'end' },
+    ]},
+
+    end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
+  }
+},
+
+/* 10. 加勒比餐廳（A2 課本 p.92「Dans un restaurant antillais」）
+   跟第 4 個場景「餐廳點餐」（A1）是同一個情境的**升級版**：
+   A1 只要說得出「我想要牛排」；A2 要能**問這道菜是什麼、辣不辣、請服務生推薦、選配菜、
+   還要處理「甜點只剩一份」這種突發狀況**。 */
+{
+  id: 'restaurant-a2',
+  lvl: 'A2',
+  icon: '🌴',
+  zh: '餐廳進階（問菜色／請推薦）',
+  fr: 'Dans un restaurant antillais',
+  exam: '⭐⭐ A2 口說第三部分的難度就在這裡：不是點餐，是**跟服務生協商**',
+  src: '課本 A2 p.92 逐字稿',
+  roles: { client: '🙋 你是客人', serveur: '🧑‍🍳 你是服務生' },
+  speakers: { client: 'Le client', serveur: 'Le serveur' },
+  roleHints: { client: '不認識的菜要敢問；問完再決定才不會踩雷', serveur: '服務生要解釋菜色、給建議、還要處理缺貨' },
+  checklist: ['點前菜', '問菜色或請推薦', '選配菜', '評價餐點', '點甜點', '處理突發狀況'],
+  start: 'q1',
+  nodes: {
+    q1: { speaker:'serveur', line:'Vous avez choisi ?', zh:'您們選好了嗎？', src:'課本 A2 p.92',
+          note:'法國服務生來點餐的第一句，幾乎不會變', next:'q2' },
+
+    q2: { speaker:'client', tip:'點前菜。有特殊要求現在講', chk:'點前菜', choices:[
+      { fr:'En entrée, je voudrais des samossas au thon.', zh:'前菜我想要鮪魚咖哩角。', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>En entrée / En plat / En dessert</b>＝「當作前菜／主菜／甜點」，點整套時的分段講法', next:'q3' },
+      { fr:'Et pour moi, une salade tropicale, sans avocat si possible.', zh:'我要熱帶沙拉，可以的話不要酪梨。', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>sans… si possible</b>＝「可以的話不要…」——提要求最不失禮的包裝，過敏或不吃某樣東西都用它', next:'q3' },
+      { fr:'Et après… on ne sait pas encore. Quel est le plat du jour ?', zh:'然後…我們還沒決定。今日主菜是什麼？', tag:'ok', src:'課本 A2 p.92',
+        note:'可以，但你跳過了前菜——服務生會不知道要不要先出東西', next:'q4' },
+    ]},
+
+    q3: { speaker:'serveur', tip:'記下來', choices:[
+      { fr:'C\'est noté.', zh:'記下來了。', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>C\'est noté.</b> 服務業萬用：記下來了／收到', next:'q4' },
+      { fr:'Vous avez choisi ?', zh:'您們選好了嗎？', tag:'ok', src:'課本 A2 p.92',
+        note:'他剛剛才點完前菜，再問一次會讓客人以為你沒聽到', next:'q4' },
+    ]},
+
+    q4: { speaker:'client', tip:'⭐ 分岔：自己問今日主菜，還是直接請服務生推薦？', chk:'問菜色或請推薦', choices:[
+      { fr:'Et après… on ne sait pas encore. Quel est le plat du jour ?', zh:'然後…我們還沒決定。今日主菜是什麼？', tag:'good', src:'課本 A2 p.92',
+        note:'✅ 承認還沒決定不丟臉——<b>on ne sait pas encore</b> 給自己爭取時間', next:'q5a' },
+      { fr:'Qu\'est-ce que vous me conseillez ?', zh:'您推薦我什麼？', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>conseiller</b>＝建議。這一句是 A2 口說的高分句：把球丟給對方，你只要聽懂再回應', next:'q5b' },
+    ]},
+
+    /* ── 問今日主菜 ── */
+    q5a: { speaker:'serveur', line:'C\'est un steak de dorade à la sauce maracuja.', zh:'是鯛魚排佐百香果醬。',
+           src:'課本 A2 p.92', note:'<b>à la sauce…</b>＝佐…醬（菜名的固定結構）', next:'q6a' },
+
+    q6a: { speaker:'client', tip:'聽到沒聽過的東西，你要問還是要賭？', choices:[
+      { fr:'La sauce maracuja, qu\'est-ce que c\'est ? C\'est épicé ?', zh:'百香果醬是什麼？會辣嗎？', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>…, qu\'est-ce que c\'est ?</b> 是把名詞丟在前面再問——口語最順的問法。不懂就問，這是考試在看的「溝通策略」', next:'q7a' },
+      { fr:'Très bien. Je vais prendre ça.', zh:'很好，我就點那個。', tag:'ok', src:'課本 A2 p.92',
+        note:'沒問就點，可能踩到不吃的東西——而且你放掉了一次練「問問題」的機會', next:'q9' },
+    ]},
+
+    q7a: { speaker:'serveur', tip:'解釋這道醬', choices:[
+      { fr:'C\'est une sauce aux fruits de la passion avec du beurre. Ce n\'est pas pimenté, c\'est très doux.', zh:'是百香果加奶油做的醬。不辣，很溫和。', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>épicé</b>（有香料的）vs <b>pimenté</b>（有辣椒的辣）——法文分得比中文細；<b>doux</b>＝溫和不刺激', next:'q8a' },
+      { fr:'Qu\'est-ce que vous me conseillez ?', zh:'您推薦我什麼？', tag:'bad', src:'課本 A2 p.92',
+        note:'⚠️ 客人才會這樣問', next:'q8a' },
+    ]},
+
+    q8a: { speaker:'client', tip:'決定', chk:'問菜色或請推薦', choices:[
+      { fr:'Très bien. Je vais prendre ça.', zh:'很好，我就點那個。', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>Je vais prendre…</b>（近未來）是點餐最常用的動詞，比 je voudrais 更像決定好了', next:'q9' },
+      { fr:'Alors je me laisse tenter par un colombo.', zh:'那我就試試看 colombo 好了。', tag:'ok', src:'課本 A2 p.92',
+        note:'句子很漂亮，但 colombo 是另一道菜——你剛剛問的是鯛魚', next:'q9' },
+    ]},
+
+    /* ── 請服務生推薦 ── */
+    q5b: { speaker:'serveur', tip:'客人請你推薦。給建議要有條件跟理由', choices:[
+      { fr:'Si vous aimez la viande, je vous conseille le colombo. C\'est la spécialité de la maison.', zh:'如果您喜歡肉，我推薦 colombo。這是本店招牌。', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>Si + 現在式, je vous conseille…</b>——第25課的條件句用在真實情境；<b>la spécialité de la maison</b>＝招牌菜', next:'q6b' },
+      { fr:'Qu\'est-ce que vous me conseillez ?', zh:'您推薦我什麼？', tag:'bad', src:'課本 A2 p.92',
+        note:'⚠️ 你是被問的那一方', next:'q6b' },
+    ]},
+
+    q6b: { speaker:'client', tip:'接受推薦', chk:'問菜色或請推薦', choices:[
+      { fr:'Alors je me laisse tenter par un colombo.', zh:'那我就試試看 colombo 好了。', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>se laisser tenter par…</b>＝「被…誘惑到、那就試試看」——超道地，接受推薦時講這句服務生會眼睛一亮', next:'q9' },
+      { fr:'Très bien. Je vais prendre ça.', zh:'很好，我就點那個。', tag:'good', src:'課本 A2 p.92',
+        note:'✅ 直接一點也完全可以', next:'q9' },
+    ]},
+
+    /* ── 合流：配菜 ── */
+    q9: { speaker:'serveur', tip:'主菜定了，還有配菜要選', choices:[
+      { fr:'Comme accompagnement, vous préférez du riz ou de la salade ?', zh:'配菜您要飯還是沙拉？', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>Comme accompagnement</b>＝當作配菜（comme＝作為）；二選一給客人最好答', next:'q10' },
+      { fr:'De la salade, ça ira très bien.', zh:'沙拉就很好了。', tag:'bad', src:'課本 A2 p.92',
+        note:'⚠️ 客人的答案', next:'q10' },
+    ]},
+
+    q10: { speaker:'client', tip:'選配菜', chk:'選配菜', choices:[
+      { fr:'De la salade, ça ira très bien.', zh:'沙拉就很好了。', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>ça ira</b>（aller 的未來式）＝「這樣就可以了」，很輕鬆的接受法', next:'q11' },
+      { fr:'De la salade, ça ira très bien. Et une carafe d\'eau, s\'il vous plaît.', zh:'沙拉就很好了。再一壺水，麻煩您。', tag:'good', src:'課本 A2 p.92＋筆記第5課',
+        note:'✅ 順便把水點掉——法國餐廳的自來水免費，不講就會被送要錢的瓶裝水', next:'q11' },
+    ]},
+
+    q11: { speaker:'serveur', tip:'（吃完了）問客人滿不滿意', choices:[
+      { fr:'Ça vous a plu ?', zh:'您喜歡嗎？', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>plaire</b> 的 passé composé：字面是「這個讓您喜歡了嗎」——法文說「喜歡」常常是東西當主詞', next:'q12' },
+      { fr:'Oui, c\'était très bon !', zh:'很喜歡，很好吃！', tag:'bad', src:'課本 A2 p.92',
+        note:'⚠️ 客人的答案', next:'q12' },
+    ]},
+
+    q12: { speaker:'client', tip:'給評價', chk:'評價餐點', choices:[
+      { fr:'Oui, c\'était très bon !', zh:'很喜歡，很好吃！', tag:'good', src:'課本 A2 p.92',
+        note:'✅ 用 <b>c\'était</b>（imparfait）——飯已經吃完了，講過去的感受。這一格是 A1 跟 A2 的分水嶺', next:'q13' },
+      { fr:'C\'est délicieux !', zh:'太美味了！', tag:'ok', src:'筆記第5課',
+        note:'還在吃的時候講這句最好；吃完了要用 c\'était', next:'q13' },
+    ]},
+
+    q13: { speaker:'serveur', tip:'推甜點', choices:[
+      { fr:'Vous prendrez des desserts ?', zh:'您們要甜點嗎？', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>prendrez</b> 是 futur simple——服務生問「等一下要不要」很自然用未來式', next:'q14' },
+      { fr:'C\'est quoi le tourment d\'amour ?', zh:'tourment d\'amour 是什麼？', tag:'bad', src:'課本 A2 p.92',
+        note:'⚠️ 客人才會問菜名', next:'q14' },
+    ]},
+
+    q14: { speaker:'client', tip:'菜單上有個沒看過的甜點', chk:'點甜點', choices:[
+      { fr:'Oui. C\'est quoi le tourment d\'amour ?', zh:'好。tourment d\'amour 是什麼？', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>C\'est quoi…?</b> 是 Qu\'est-ce que c\'est 的口語版，講話時更常用', next:'q15' },
+      { fr:'De la salade, ça ira très bien.', zh:'沙拉就很好了。', tag:'bad', src:'課本 A2 p.92',
+        note:'⚠️ 那是剛剛選配菜的答案', next:'q15' },
+    ]},
+
+    q15: { speaker:'serveur', line:'C\'est un gâteau à la noix de coco.', zh:'是一種椰子蛋糕。', src:'課本 A2 p.92',
+           note:'<b>à la noix de coco</b>＝椰子口味的（à la + 材料＝口味）', next:'q16' },
+
+    q16: { speaker:'client', tip:'決定要不要', choices:[
+      { fr:'Super, je vais goûter ça.', zh:'太好了，我來嚐嚐看。', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>goûter</b>＝嚐嚐看（跟 manger 不同：goûter 帶著好奇）', next:'q17' },
+      { fr:'Moi aussi.', zh:'我也是。', tag:'good', src:'課本 A2 p.92',
+        note:'✅ 同桌的人跟進就這一句', next:'q17' },
+    ]},
+
+    q17: { speaker:'serveur', tip:'⚠️ 只剩一份了，你要怎麼講', choices:[
+      { fr:'Ah, euh désolé, il ne m\'en reste qu\'un.', zh:'啊，呃抱歉，我只剩一份了。', tag:'good', src:'課本 A2 p.92',
+        note:'✅ 這句擠了三個文法：<b>en</b>（代替 des tourments）、<b>il me reste</b>（我還剩下）、<b>ne… que</b>（只有）。壞消息要先 désolé', next:'q18' },
+      { fr:'C\'est noté.', zh:'記下來了。', tag:'bad', src:'課本 A2 p.92',
+        note:'⚠️ 你明明沒東西可以出，還說記下來，等一下會出事', next:'q19' },
+    ]},
+
+    q18: { speaker:'client', tip:'突發狀況。怎麼化解？', chk:'處理突發狀況', choices:[
+      { fr:'C\'est pas grave, on le partagera.', zh:'沒關係，我們分著吃。', tag:'good', src:'課本 A2 p.92',
+        note:'✅ <b>C\'est pas grave</b>＝沒關係（口語省略 ne）；<b>partagera</b> 是未來式。遇到問題還能提出解法＝口說高分', next:'q19' },
+      { fr:'Ah, euh désolé, il ne m\'en reste qu\'un.', zh:'啊，呃抱歉，我只剩一份了。', tag:'bad', src:'課本 A2 p.92',
+        note:'⚠️ 那是服務生剛講的', next:'q19' },
+    ]},
+
+    q19: { speaker:'serveur', line:'Ça marche. Je vous l\'apporte.', zh:'沒問題。我幫您送過來。', src:'課本 A2 p.92',
+           note:'<b>Ça marche.</b> 這裡是「沒問題／就這麼辦」；<b>Je vous l\'apporte</b> 兩個代名詞連用（vous＝給您、l\'＝那個東西）', next:'end' },
+
+    end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
+  }
+},
+
+/* 11. 看房／合租（A2 課本 p.43「Je suis intéressé par votre annonce」）
+   DELF A2 閱讀最愛出租屋廣告，這一場是「看完廣告打電話」的下一步。
+   問坪數、格局、吵不吵、租金、含不含水電——每一個都是實際會用到的問題。 */
+{
+  id: 'logement',
+  lvl: 'A2',
+  icon: '🏠',
+  zh: '看房子／問租屋',
+  fr: 'Je suis intéressé par votre annonce',
+  exam: '⭐ A2 閱讀最常出租屋廣告；口說也會要你「打電話問一則廣告」',
+  src: '課本 A2 p.43 逐字稿＋筆記第11、23、24課',
+  roles: { locataire: '🙋 你是想租的人', proprietaire: '🔑 你是房東' },
+  speakers: { locataire: 'Thomas', proprietaire: 'La propriétaire' },
+  roleHints: { locataire: '問對問題才不會租到雷——坪數、格局、噪音、租金、含不含', proprietaire: '房東要把物件講清楚，還要把人約來看房' },
+  checklist: ['說來意', '問坪數格局', '問租金', '問含不含', '約看房'],
+  start: 'lo1',
+  nodes: {
+    lo1: { speaker:'locataire', tip:'打電話來問廣告', chk:'說來意', choices:[
+      { fr:'Bonjour, je suis intéressé par votre annonce de coliving à Marseille.', zh:'您好，我對您在馬賽的合租廣告有興趣。', tag:'good', src:'課本 A2 p.43',
+        note:'✅ <b>être intéressé par…</b>＝對…有興趣（介係詞是 par，不是 pour）。一句話講完你是誰、為什麼打來', next:'lo2' },
+      { fr:'Bonjour !', zh:'您好！', tag:'ok', src:'筆記第1課',
+        note:'電話裡只說 Bonjour，對方要多問一輪才知道你要幹嘛', next:'lo2' },
+      { fr:'Vous avez déjà fait du coliving ?', zh:'您做過合租嗎？', tag:'bad', src:'課本 A2 p.43',
+        note:'⚠️ 那是<b>房東</b>問你的', next:'lo2' },
+    ]},
+
+    lo2: { speaker:'proprietaire', tip:'先了解一下對方', choices:[
+      { fr:'Bonjour ! Vous avez déjà fait du coliving ?', zh:'您好！您以前住過合租嗎？', tag:'good', src:'課本 A2 p.43',
+        note:'✅ <b>déjà</b> ＋ passé composé＝「曾經…過嗎」', next:'lo3' },
+      { fr:'Non, mais j\'aime bien l\'idée.', zh:'沒有，但我滿喜歡這個想法。', tag:'bad', src:'課本 A2 p.43',
+        note:'⚠️ 那是來電者的答案', next:'lo3' },
+    ]},
+
+    lo3: { speaker:'locataire', tip:'回答＋開始問物件', chk:'問坪數格局', choices:[
+      { fr:'Non, mais j\'aime bien l\'idée. Je vois sur l\'annonce que la résidence a 18 chambres et studios. C\'est grand ! Quelle est sa superficie ?', zh:'沒有，但我滿喜歡這個想法。我在廣告上看到這棟有18間房跟套房。很大！總面積多少？', tag:'good', src:'課本 A2 p.43',
+        note:'✅ 回答＋<b>引用廣告內容</b>＋提問。<b>Je vois sur l\'annonce que…</b> 是很好用的開場（表示你有做功課）；superficie＝面積', next:'lo4' },
+      { fr:'Comment elle est organisée ?', zh:'它格局怎麼安排？', tag:'ok', src:'課本 A2 p.43',
+        note:'好問題，但你沒回答她剛問的「有沒有住過合租」', next:'lo5' },
+    ]},
+
+    lo4: { speaker:'proprietaire', tip:'回答面積', choices:[
+      { fr:'Elle fait 760 m².', zh:'760平方公尺。', tag:'good', src:'課本 A2 p.43',
+        note:'✅ 講面積用 <b>faire</b>：Elle fait 760 m²（跟講尺寸的 je fais du 40 同一個動詞）', next:'lo5' },
+      { fr:'Quelle est sa superficie ?', zh:'總面積多少？', tag:'bad', src:'課本 A2 p.43',
+        note:'⚠️ 你是回答的那一方', next:'lo5' },
+    ]},
+
+    lo5: { speaker:'locataire', tip:'⭐ 分岔：先問格局，還是直接問租金？', chk:'問坪數格局', choices:[
+      { fr:'Comment elle est organisée ?', zh:'它格局怎麼安排？', tag:'good', src:'課本 A2 p.43',
+        note:'✅ 先搞懂空間怎麼分，才問得出下一個問題（吵不吵）', next:'lo6' },
+      { fr:'D\'accord. Quel est le montant du loyer ?', zh:'好的。租金多少？', tag:'ok', src:'課本 A2 p.43',
+        note:'直接問錢也行，但你會漏掉「這房子長什麼樣」這一整段練習', next:'lo9' },
+    ]},
+
+    lo6: { speaker:'proprietaire', line:'Au rez-de-chaussée, il y a les espaces communs, avec un grand couloir qui sépare le salon qui fait salle à manger et les cuisines.',
+           zh:'一樓是公共空間，有一條大走廊把兼作餐廳的客廳跟廚房隔開。', src:'課本 A2 p.43',
+           note:'<b>le rez-de-chaussée</b>＝一樓（法國的「一樓」是 premier étage＝我們的二樓）；<b>qui</b> 關係代名詞連續用兩次（第23課）', next:'lo7' },
+
+    lo7: { speaker:'locataire', tip:'公共空間在樓下——你會擔心什麼？', choices:[
+      { fr:'Et c\'est pas trop bruyant ?', zh:'那會不會太吵？', tag:'good', src:'課本 A2 p.43',
+        note:'✅ 合租最該問的一題。<b>bruyant</b>＝吵的；口語否定省略 ne（c\'est pas）', next:'lo8' },
+      { fr:'D\'accord. Quel est le montant du loyer ?', zh:'好的。租金多少？', tag:'ok', src:'課本 A2 p.43',
+        note:'跳過噪音問題——這是搬進去以後最容易後悔的一項', next:'lo9' },
+    ]},
+
+    lo8: { speaker:'proprietaire', line:'Non, parce que les chambres sont au premier et au deuxième étages.',
+           zh:'不會，因為房間都在二樓跟三樓。', src:'課本 A2 p.43',
+           note:'<b>parce que</b> 給理由——房東回答「不會吵」一定要附理由才有說服力', next:'lo9' },
+
+    lo9: { speaker:'locataire', tip:'該問錢了', chk:'問租金', choices:[
+      { fr:'D\'accord. Quel est le montant du loyer ?', zh:'好的。租金多少？', tag:'good', src:'課本 A2 p.43',
+        note:'✅ <b>le montant du loyer</b>＝租金金額（montant＝金額，帳單、報價都用它）', next:'lo10' },
+      { fr:'Est-ce que ça inclut les charges ?', zh:'這有含管理費／水電嗎？', tag:'ok', src:'課本 A2 p.43',
+        note:'順序反了——你還不知道租金是多少，就先問含不含', next:'lo11' },
+    ]},
+
+    lo10: { speaker:'proprietaire', tip:'報價', choices:[
+      { fr:'Les chambres sont à 650 euros par mois et les studios à 1090.', zh:'房間一個月650歐，套房1090。', tag:'good', src:'課本 A2 p.43',
+        note:'✅ <b>être à + 價錢</b>＝賣／租多少錢；<b>par mois</b>＝每月', next:'lo11' },
+      { fr:'Quel est le montant du loyer ?', zh:'租金多少？', tag:'bad', src:'課本 A2 p.43',
+        note:'⚠️ 你是房東，是報價的人', next:'lo11' },
+    ]},
+
+    lo11: { speaker:'locataire', tip:'法國租屋一定要問的一句', chk:'問含不含', choices:[
+      { fr:'Est-ce que ça inclut les charges ?', zh:'這有含管理費／水電嗎？', tag:'good', src:'課本 A2 p.43',
+        note:'✅ <b>les charges</b> 在法國租屋＝水電瓦斯管理等雜費。沒問清楚，帳單會多一大筆', next:'lo12' },
+      { fr:'Parfait, quand est-ce que je peux venir visiter ?', zh:'太好了，我什麼時候可以去看房？', tag:'ok', src:'課本 A2 p.43',
+        note:'太快了——還沒問含不含就要去看房，去了才發現超出預算', next:'lo13' },
+    ]},
+
+    lo12: { speaker:'proprietaire', line:'Oui, toutes les charges : l\'eau, l\'électricité, le gaz et le chauffage, mais aussi l\'abonnement à Internet, l\'assurance et le ménage.',
+            zh:'有，全部雜費都含：水、電、瓦斯、暖氣，還有網路、保險跟打掃。', src:'課本 A2 p.43',
+            note:'一整串生活帳單詞彙都在這句：<b>le chauffage</b>（暖氣）、<b>l\'abonnement</b>（訂閱／月租）、<b>l\'assurance</b>（保險）、<b>le ménage</b>（打掃）', next:'lo13' },
+
+    lo13: { speaker:'locataire', tip:'資訊問完了，怎麼收？', chk:'約看房', choices:[
+      { fr:'Parfait, quand est-ce que je peux venir visiter ?', zh:'太好了，我什麼時候可以去看房？', tag:'good', src:'課本 A2 p.43',
+        note:'✅ <b>visiter</b> 看房（visiter 接地方，看戲要用 voir——第19課的區分）。電話的目的就是約到這一步', next:'lo14' },
+      { fr:'C\'est noté. À demain !', zh:'記下來了。明天見！', tag:'bad', src:'課本 A2 p.43',
+        note:'⚠️ 你們還沒約時間，怎麼會明天見', next:'lo14' },
+    ]},
+
+    lo14: { speaker:'proprietaire', tip:'給一個具體時間跟地址', choices:[
+      { fr:'Demain à 14 heures ? La maison est au 26 rue des Roses.', zh:'明天下午兩點？房子在玫瑰街26號。', tag:'good', src:'課本 A2 p.43',
+        note:'✅ 時間＋地址一次給完。地址用 <b>au + 號碼 + 街名</b>', next:'lo15' },
+      { fr:'Parfait, quand est-ce que je peux venir visiter ?', zh:'太好了，我什麼時候可以去看房？', tag:'bad', src:'課本 A2 p.43',
+        note:'⚠️ 你是<b>安排時間</b>的那一方，不是問時間的人', next:'lo15' },
+    ]},
+
+    lo15: { speaker:'locataire', tip:'收尾', chk:'約看房', choices:[
+      { fr:'C\'est noté. À demain !', zh:'記下來了。明天見！', tag:'good', src:'課本 A2 p.43',
+        note:'✅ 這次<b>真的</b>是明天見——À demain 用對地方了', next:'end' },
+      { fr:'Merci. À bientôt !', zh:'謝謝。回頭見！', tag:'ok', src:'課本 A1 Unité 6',
+        note:'不算錯，但你們明天就要見面，講 À demain 更精準', next:'end' },
+    ]},
+
+    end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
+  }
+},
+
+/* 12. 旅行社電話（A2 課本 p.141「Allô, j'écoute !」）
+   跟第 7 個場景「打電話訂房」是一組，但難度高一階：
+   訂房是回答對方的問題；這一場是**你要一路主動問**（住宿、機票含不含、餐食、最佳季節）。 */
+{
+  id: 'agence',
+  lvl: 'A2',
+  icon: '✈️',
+  zh: '打電話問旅行社',
+  fr: 'Le monde en voyages',
+  exam: '⭐ A2 口說「向對方取得資訊」的原型題；TEF 口說 Section A 就是這個形態',
+  src: '課本 A2 p.141 逐字稿',
+  roles: { client: '🙋 你是客人', agent: '📞 你是旅行社' },
+  speakers: { client: 'Joan', agent: 'Florence' },
+  roleHints: { client: '這一場考的是「你會不會問」——問不出資訊就訂不了行程', agent: '旅行社要把行程、住宿、機票、餐食一項一項講清楚' },
+  checklist: ['說來意', '問住宿', '問機票餐食', '問最佳季節', '講日期', '收尾'],
+  start: 'ag1',
+  nodes: {
+    ag1: { speaker:'agent', line:'Le monde en voyages, bonjour ! Florence à votre écoute.',
+           zh:'環球旅遊您好！我是 Florence，為您服務。', src:'課本 A2 p.141',
+           note:'<b>公司名＋bonjour＋名字 à votre écoute</b>——法國公司接電話的完整三段式', next:'ag2' },
+
+    ag2: { speaker:'client', tip:'講清楚你要什麼', chk:'說來意', choices:[
+      { fr:'Bonjour, j\'aimerais faire un voyage au Vietnam avec ma femme et je voudrais avoir des renseignements, s\'il vous plaît.', zh:'您好，我想跟太太去越南旅行，想請教一些資訊。', tag:'good', src:'課本 A2 p.141',
+        note:'✅ <b>j\'aimerais</b>＋<b>je voudrais</b> 兩個條件式連用＝非常客氣；<b>des renseignements</b>＝（複數）資訊、諮詢', next:'ag3' },
+      { fr:'Bonjour !', zh:'您好！', tag:'ok', src:'筆記第1課',
+        note:'電話裡最貴的就是沉默——一次把來意講完', next:'ag3' },
+      { fr:'Florence à votre écoute.', zh:'我是 Florence，為您服務。', tag:'bad', src:'課本 A2 p.141',
+        note:'⚠️ 那是接電話那一方的台詞', next:'ag3' },
+    ]},
+
+    ag3: { speaker:'agent', tip:'接住需求', choices:[
+      { fr:'Oui, bien sûr. Il y a un circuit qui vous intéresse ?', zh:'好的，當然。有哪個行程您有興趣嗎？', tag:'good', src:'課本 A2 p.141',
+        note:'✅ <b>un circuit</b>＝套裝行程；<b>qui vous intéresse</b> 關係子句（第23課的 qui）', next:'ag4' },
+      { fr:'Et les repas sont compris ?', zh:'餐食有含嗎？', tag:'bad', src:'課本 A2 p.141',
+        note:'⚠️ 客人才問這個', next:'ag4' },
+    ]},
+
+    ag4: { speaker:'client', tip:'⭐ 分岔：先問住哪裡，還是先問機票？', chk:'問住宿', choices:[
+      { fr:'Et vous pouvez me donner des précisions sur l\'hébergement ?', zh:'您可以給我住宿方面的細節嗎？', tag:'good', src:'課本 A2 p.141',
+        note:'✅ <b>des précisions sur…</b>＝關於…的細節；<b>l\'hébergement</b>＝住宿（比 hôtel 廣，含民宿）', next:'ag5' },
+      { fr:'Et est-ce que les vols sont inclus dans le prix du voyage ?', zh:'機票有含在旅費裡嗎？', tag:'good', src:'課本 A2 p.141',
+        note:'✅ 先問錢的範圍也很聰明。<b>inclus dans</b>＝包含在…裡面', next:'ag7' },
+    ]},
+
+    ag5: { speaker:'agent', line:'Alors, nous proposons à nos clients de dormir chez l\'habitant.',
+           zh:'我們讓客人住在當地人家裡。', src:'課本 A2 p.141',
+           note:'<b>chez l\'habitant</b>＝住當地民家（chez + 人）——法國旅遊業的固定說法', next:'ag6' },
+
+    ag6: { speaker:'client', tip:'住宿問完了，下一個', chk:'問機票餐食', choices:[
+      { fr:'Super ! Et est-ce que les vols sont inclus dans le prix du voyage ?', zh:'太好了！那機票有含在旅費裡嗎？', tag:'good', src:'課本 A2 p.141',
+        note:'✅ 先給一個反應（Super !）再問下一題，對話才不像審問', next:'ag7' },
+      { fr:'Et les repas sont compris ?', zh:'餐食有含嗎？', tag:'ok', src:'課本 A2 p.141',
+        note:'也可以，只是機票通常是最大一筆，先問比較重要', next:'ag9' },
+    ]},
+
+    ag7: { speaker:'agent', tip:'回答機票', choices:[
+      { fr:'Oui, nous nous occupons de vos billets.', zh:'有的，機票由我們處理。', tag:'good', src:'課本 A2 p.141',
+        note:'✅ <b>s\'occuper de…</b>＝負責處理…（反身動詞，nous nous occupons 兩個 nous 都要）', next:'ag8' },
+      { fr:'Et est-ce que les vols sont inclus dans le prix du voyage ?', zh:'機票有含在旅費裡嗎？', tag:'bad', src:'課本 A2 p.141',
+        note:'⚠️ 你是回答的那一方', next:'ag8' },
+    ]},
+
+    ag8: { speaker:'client', tip:'再確認一項花費', chk:'問機票餐食', choices:[
+      { fr:'Et les repas sont compris ?', zh:'餐食有含嗎？', tag:'good', src:'課本 A2 p.141',
+        note:'✅ <b>compris</b>＝包含（跟訂房那場的 le petit déjeuner est compris 同一個字）', next:'ag9' },
+      { fr:'Très bien. Quelle est la meilleure période pour visiter le Vietnam ?', zh:'很好。什麼時候是去越南最好的季節？', tag:'ok', src:'課本 A2 p.141',
+        note:'好問題，但你還沒問完錢的部分', next:'ag10' },
+    ]},
+
+    ag9: { speaker:'agent', line:'Juste le petit déjeuner. Nous ne proposons pas de pension complète, ni de demi-pension.',
+           zh:'只含早餐。我們沒有全食宿，也沒有半食宿。', src:'課本 A2 p.141',
+           note:'<b>pension complète</b>＝三餐全包／<b>demi-pension</b>＝含早餐＋一餐。<b>ne… pas… ni…</b>＝既不…也不…', next:'ag10' },
+
+    ag10: { speaker:'client', tip:'還有一個很實際的問題', chk:'問最佳季節', choices:[
+      { fr:'Très bien. Quelle est la meilleure période pour visiter le Vietnam ?', zh:'很好。什麼時候是去越南最好的季節？', tag:'good', src:'課本 A2 p.141',
+        note:'✅ <b>la meilleure</b>＝bon 的最高級（不是 la plus bonne）——第25、26課的比較級用在這裡', next:'ag11' },
+      { fr:'C\'est parfait ! On voulait partir du 15 au 26 septembre.', zh:'太好了！我們本來想9月15到26號去。', tag:'ok', src:'課本 A2 p.141',
+        note:'你直接講日期了，但還沒問她哪個季節適合——萬一撞到雨季呢', next:'ag12' },
+    ]},
+
+    ag11: { speaker:'agent', line:'En mars, avril et de septembre à novembre.', zh:'三月、四月，還有九月到十一月。',
+            src:'課本 A2 p.141', note:'<b>en + 月份</b>＝在某月；<b>de… à…</b>＝從…到…', next:'ag12' },
+
+    ag12: { speaker:'client', tip:'講你想去的日期', chk:'講日期', choices:[
+      { fr:'C\'est parfait ! On voulait partir du 15 au 26 septembre.', zh:'太好了！我們本來想9月15到26號去。', tag:'good', src:'課本 A2 p.141',
+        note:'✅ <b>on voulait</b>（imparfait）＝「我們本來是想…」——用未完成式講計畫比較婉轉，留給對方調整空間', next:'ag13' },
+      { fr:'Du 18 au 23 août.', zh:'8月18到23號。', tag:'ok', src:'課本 A1 p.131',
+        note:'日期講法正確，但她剛說最佳季節不含八月——你沒有把聽到的資訊用上', next:'ag13' },
+    ]},
+
+    ag13: { speaker:'agent', tip:'收尾：告訴客人接下來會發生什麼', choices:[
+      { fr:'C\'est noté. Je vous envoie un devis et je vous rappelle dans 48 heures pour finaliser le voyage.', zh:'記下來了。我寄報價單給您，48小時內再打給您敲定行程。', tag:'good', src:'課本 A2 p.141',
+        note:'✅ <b>un devis</b>＝報價單；<b>dans 48 heures</b>＝48小時之內（dans 指未來，跟 il y a 相反——第17課）', next:'ag14' },
+      { fr:'Merci beaucoup !', zh:'非常感謝！', tag:'bad', src:'課本 A2 p.141',
+        note:'⚠️ 道謝的是客人；你還沒告訴他接下來怎麼進行', next:'ag14' },
+    ]},
+
+    ag14: { speaker:'client', tip:'掛電話', chk:'收尾', choices:[
+      { fr:'Parfait ! Merci beaucoup !', zh:'太好了！非常感謝！', tag:'good', src:'課本 A2 p.141',
+        note:'✅ 課本原句收尾', next:'ag15' },
+      { fr:'C\'est noté.', zh:'記下來了。', tag:'ok', src:'課本 A2 p.141',
+        note:'可以，但對方剛答應寄報價單，值得一句謝謝', next:'ag15' },
+    ]},
+
+    ag15: { speaker:'agent', line:'Avec plaisir !', zh:'很樂意為您服務！', src:'課本 A2 p.141',
+            note:'<b>Avec plaisir</b> 在這裡＝「不客氣、樂意之至」，比 de rien 熱情', next:'end' },
 
     end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
   }

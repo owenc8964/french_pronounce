@@ -33,6 +33,10 @@ body { background:#07080f; color:#ddd8cc; font-family:'Segoe UI',system-ui,sans-
 .scene-btn .s-meta, .role-btn .s-meta { display:block; font-size:.68rem; color:#7a8a9a; margin-top:4px; }
 .scene-btn .s-exam { display:block; font-size:.68rem; color:#f0c060; margin-top:4px; }
 .scene-btn .s-fork { color:#60d090; }
+.lvl { font-size:.6rem; padding:2px 7px; border-radius:4px; margin-left:8px; vertical-align:middle;
+  letter-spacing:1px; border:1px solid; }
+.lvl.A1 { color:#5a6a7a; border-color:#26303e; }
+.lvl.A2 { color:#f0c060; border-color:#4a3a10; background:#241f10; }
 
 /* 對話 */
 .chat { display:flex; flex-direction:column; gap:10px; }
@@ -125,6 +129,7 @@ function pickScene() {
           new Set(n.choices.map(c => c.next)).size > 1).length;
         return `<button class="scene-btn" onclick="chooseScene('${s.id}')">
           ${s.icon} <span style="font-family:Georgia,serif;color:#60a0d0">${esc(s.fr)}</span>　<b>${esc(s.zh)}</b>
+          ${s.lvl ? `<span class="lvl ${s.lvl}">${s.lvl}</span>` : ''}
           <span class="s-exam">${esc(s.exam)}</span>
           <span class="s-meta">台詞出自 ${esc(s.src)}　·　${Object.keys(s.nodes).length} 個節點`
           + (forks ? `　·　<span class="s-fork">${forks} 個劇情分岔</span>` : '') + `</span>
