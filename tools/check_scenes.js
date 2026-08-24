@@ -77,3 +77,48 @@ if (bad.length) {
   process.exit(1);
 }
 console.log('✅ 每一句都出自筆記或課本原文');
+
+/* ── 劇本結構檢查（08-25 加：8 個劇本、分岔多了之後，光靠眼睛看不出斷線） ── */
+const struct = [];
+for (const sc of SCENES) {
+  const ids = new Set(Object.keys(sc.nodes));
+  const roles = Object.keys(sc.roles || {});
+  const seen = new Set(), queue = [sc.start];
+  if (!ids.has(sc.start)) struct.push(`[${sc.id}] start「${sc.start}」不存在`);
+  while (queue.length) {
+    const id = queue.shift();
+    if (seen.has(id) || !ids.has(id)) continue;
+    seen.add(id);
+    const nd = sc.nodes[id];
+    const outs = nd.choices ? nd.choices.map(c => c.next) : (nd.next ? [nd.next] : []);
+    if (!outs.length && nd.speaker !== 'system') struct.push(`[${sc.id} ${id}] 沒有出口（會卡死）`);
+    for (const o of outs) {
+      if (!ids.has(o)) struct.push(`[${sc.id} ${id}] next「${o}」不存在`);
+      else queue.push(o);
+    }
+    if (nd.speaker && nd.speaker !== 'system' && !roles.includes(nd.speaker))
+      struct.push(`[${sc.id} ${id}] speaker「${nd.speaker}」不在 roles 裡`);
+    if (nd.chk && !(sc.checklist || []).includes(nd.chk))
+      struct.push(`[${sc.id} ${id}] chk「${nd.chk}」不在 checklist 裡`);
+    (nd.choices || []).forEach((c, i) => {
+      if (!['good', 'ok', 'bad'].includes(c.tag)) struct.push(`[${sc.id} ${id}#${i}] tag 不合法：${c.tag}`);
+      if (!c.zh) struct.push(`[${sc.id} ${id}#${i}] 缺 zh（中文輔助模式會空白）`);
+      if (!c.note) struct.push(`[${sc.id} ${id}#${i}] 缺 note`);
+    });
+  }
+  for (const id of ids) if (!seen.has(id)) struct.push(`[${sc.id} ${id}] 從 start 走不到（孤兒節點）`);
+  for (const r of roles) {
+    if (!Object.values(sc.nodes).some(n => n.speaker === r && n.choices))
+      struct.push(`[${sc.id}] 角色「${r}」全程沒有任何選擇節點，演起來只能一直按`);
+    if (!(sc.speakers || {})[r]) struct.push(`[${sc.id}] roles 有「${r}」但 speakers 沒有對應法文名`);
+  }
+  const covered = new Set(Object.values(sc.nodes).filter(n => n.chk).map(n => n.chk));
+  for (const c of (sc.checklist || [])) if (!covered.has(c)) struct.push(`[${sc.id}] checklist「${c}」沒有任何節點會點亮它`);
+}
+if (struct.length) {
+  console.log(`\n❌ 劇本結構有問題 ${struct.length} 筆：`);
+  struct.forEach(x => console.log('   ' + x));
+  process.exit(1);
+}
+console.log(`✅ 結構檢查通過（節點出口／可達性／角色都有選擇節點／checklist 對得上）`);
+

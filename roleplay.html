@@ -197,8 +197,12 @@ function step() {
 
   if (nd.choices) {
     if (nd.speaker !== role) {
-      // 這一輪不是玩家的角色 → 自動選最自然的那個，讓劇情往下走
-      const auto = nd.choices.find(c => c.tag === 'good') || nd.choices[0];
+      // 這一輪不是玩家的角色 → 自動選一個「自然」的講法，讓劇情往下走。
+      // ⚠️ 要隨機挑，不能永遠挑第一個：分岔點如果落在對方那一側（例如問路的人被叫去搭公車
+      //    還是用走的），固定挑第一個會讓另一條路<b>永遠走不到</b>。
+      const goods = nd.choices.filter(c => c.tag === 'good');
+      const pool = goods.length ? goods : nd.choices;
+      const auto = pool[Math.floor(Math.random() * pool.length)];
       push({ who:nd.speaker, fr:auto.fr, zh:auto.zh, note:null, tag:null });
       node = auto.next; return step();
     }

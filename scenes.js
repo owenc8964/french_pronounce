@@ -607,5 +607,600 @@ const SCENES = [
     end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
   }
 },
+
+/* ═══════════════════════════════════════════════════════════════
+   5. 買衣服（婚禮的服裝）
+   台詞來源：課本 Édito A1 p.78 聽力逐字稿（店員↔一對夫妻）。
+   本場景的核心對照：**faire du 40（衣服尺寸）vs chausser du 45（鞋號）**——
+   同樣是「幾號」，法文用兩個不同動詞，這是課本刻意設計的陷阱。
+   ═══════════════════════════════════════════════════════════════ */
+{
+  id: 'vetements',
+  icon: '👗',
+  zh: '買衣服（婚禮）',
+  fr: 'Acheter des vêtements',
+  exam: '⭐ dialogue simulé 常抽到的購物情境；尺寸、顏色、價錢一次到齊',
+  src: '課本 p.78 聽力逐字稿＋筆記第4、8課',
+  roles: { client: '🙋 你是顧客', vendeur: '🧑‍💼 你是店員' },
+  speakers: { client: 'Le client', vendeur: 'Le vendeur' },
+  roleHints: { client: '要說出場合、款式、尺寸——比買麵包多好幾層', vendeur: '店員要問對問題：款式→顏色→尺寸→加賣' },
+  checklist: ['打招呼＋說來意', '選款式', '講尺寸', '鞋子', '問價錢', '付款告別'],
+  start: 'w1',
+  nodes: {
+    w1: { speaker:'vendeur', line:'Bonjour, messieurs-dames.', zh:'先生女士們，您好。',
+          src:'課本 p.78', note:'一對客人進門，店員用複數稱呼', next:'w2' },
+
+    w2: { speaker:'client', tip:'說明你們來買什麼、為了什麼場合', chk:'打招呼＋說來意', choices:[
+      { fr:'Bonjour, monsieur. Mon mari et moi, nous cherchons des vêtements pour un mariage.', zh:'您好先生。我先生跟我在找參加婚禮的衣服。', tag:'good', src:'課本 p.78',
+        note:'✅ <b>chercher</b>＝在找。一句話講完「誰」＋「找什麼」＋「什麼場合」，店員才推薦得動', next:'w3' },
+      { fr:'Bonjour, monsieur. Notre neveu va se marier début juin.', zh:'您好先生。我們的姪子六月初要結婚。', tag:'ok', src:'課本 p.78',
+        note:'資訊是對的（近未來 va se marier），但你沒說要買什麼——店員還得再問一次', next:'w3' },
+      { fr:'Vous cherchez quelque chose ?', zh:'您在找什麼嗎？', tag:'bad', src:'課本 p.78',
+        note:'⚠️ 這是<b>店員</b>的招呼語', next:'w3' },
+    ]},
+
+    w3: { speaker:'vendeur', tip:'你是店員。婚禮＝正式場合，該推薦什麼？', choices:[
+      { fr:'Des vêtements élégants alors… un costume pour monsieur et pour vous, madame, vous préférez une robe longue ou un pantalon avec une veste ?', zh:'那就是正式服裝囉…先生穿西裝，那女士您比較喜歡長洋裝還是長褲配外套？', tag:'good', src:'課本 p.78',
+        note:'✅ 課本原句。店員的標準動作：<b>先確認場合，再給二選一</b>——給選項比開放式問句好回答', next:'w4' },
+      { fr:'Vous cherchez quelque chose ?', zh:'您在找什麼嗎？', tag:'ok', src:'課本 p.78',
+        note:'客人剛剛已經講了。這句是給一進門還沒開口的客人用的', next:'w4' },
+      { fr:'Moi, je fais du 44.', zh:'我穿44號。', tag:'bad', src:'課本 p.78',
+        note:'⚠️ 客人的台詞', next:'w4' },
+    ]},
+
+    w4: { speaker:'client', tip:'⭐ 分岔：先挑太太的洋裝，還是先挑先生的西裝？', chk:'選款式', choices:[
+      { fr:"Les robes longues, je trouve ça joli et c'est à la mode.", zh:'長洋裝，我覺得好看而且很流行。', tag:'good', src:'課本 p.78',
+        note:'✅ <b>je trouve ça + 形容詞</b>＝我覺得這樣…；<b>à la mode</b>＝流行的', next:'w5a' },
+      { fr:"Au printemps, je n'aime pas porter des vêtements gris. Alors, un costume beige ou bleu, s'il vous plaît.", zh:'春天我不喜歡穿灰色的衣服。那就米色或藍色的西裝，麻煩您。', tag:'good', src:'課本 p.78',
+        note:'✅ 先講理由再講結論——考試最愛聽這種「有理由的選擇」', next:'w5b' },
+      { fr:'Vous préférez quelle couleur ?', zh:'您比較喜歡什麼顏色？', tag:'bad', src:'課本 p.78',
+        note:'⚠️ 店員才是問顏色的人', next:'w5a' },
+    ]},
+
+    /* ── 洋裝線 ── */
+    w5a: { speaker:'vendeur', tip:'款式定了，接下來要問什麼？', choices:[
+      { fr:"D'accord. Vous faites quelle taille ?", zh:'好的。您穿幾號？', tag:'good', src:'課本 p.78',
+        note:'✅ 衣服尺寸用 <b>faire du + 數字</b>', next:'w6a' },
+      { fr:'Et moi, je fais du 40.', zh:'那我穿40號。', tag:'bad', src:'課本 p.78',
+        note:'⚠️ 客人的台詞', next:'w6a' },
+    ]},
+
+    w6a: { speaker:'client', tip:'講尺寸', chk:'講尺寸', choices:[
+      { fr:'Et moi, je fais du 40.', zh:'那我穿40號。', tag:'good', src:'課本 p.78',
+        note:'✅ 衣服：<b>je fais du 40</b>', next:'w9' },
+      { fr:'Je chausse du 45.', zh:'我穿45號鞋。', tag:'bad', src:'課本 p.78',
+        note:'⚠️ <b>chausser</b> 專門講鞋號。衣服要用 faire du——這組是課本故意設計的對照', next:'w9' },
+    ]},
+
+    /* ── 西裝線 ── */
+    w5b: { speaker:'vendeur', tip:'客人要西裝。顏色還沒定', choices:[
+      { fr:'Et vous, monsieur, vous préférez un costume gris, bleu ou beige ?', zh:'那您呢先生，比較喜歡灰色、藍色還是米色的西裝？', tag:'good', src:'課本 p.78',
+        note:'✅ 三選一，客人好答', next:'w6b' },
+      { fr:"Au printemps, je n'aime pas porter des vêtements gris.", zh:'春天我不喜歡穿灰色的衣服。', tag:'bad', src:'課本 p.78',
+        note:'⚠️ 客人的台詞', next:'w6b' },
+    ]},
+
+    w6b: { speaker:'vendeur', tip:'顏色講定了，換問尺寸', choices:[
+      { fr:"D'accord. Vous faites quelle taille ?", zh:'好的。您穿幾號？', tag:'good', src:'課本 p.78',
+        note:'✅ 衣服尺寸用 faire du', next:'w7b' },
+      { fr:'Vous chaussez du combien ?', zh:'您穿幾號鞋？', tag:'ok', src:'課本 p.78',
+        note:'問法沒錯，但現在還在講西裝——<b>chausser 是鞋子專用</b>', next:'w7b' },
+    ]},
+
+    w7b: { speaker:'client', tip:'講尺寸', chk:'講尺寸', choices:[
+      { fr:'Moi, je fais du 44.', zh:'我穿44號。', tag:'good', src:'課本 p.78',
+        note:'✅ 衣服：je fais du 44', next:'w9' },
+      { fr:'Je chausse du 45.', zh:'我穿45號鞋。', tag:'bad', src:'課本 p.78',
+        note:'⚠️ 那是鞋號。衣服用 faire du', next:'w9' },
+    ]},
+
+    /* ── 合流：加賣鞋子 ── */
+    w9: { speaker:'vendeur', tip:'成交前再加賣一樣東西', choices:[
+      { fr:'Très bien. Ah ! Monsieur, nous vendons aussi des chaussures avec les costumes.', zh:'很好。啊！先生，我們西裝也搭配鞋子。', tag:'good', src:'課本 p.78',
+        note:'✅ 課本原句：法國店員的加賣話術', next:'w10' },
+      { fr:'Vous préférez quelle couleur ?', zh:'您比較喜歡什麼顏色？', tag:'ok', src:'課本 p.78',
+        note:'顏色前面已經問過了', next:'w10' },
+    ]},
+
+    w10: { speaker:'client', tip:'要不要順便買鞋？', chk:'鞋子', choices:[
+      { fr:"Parfait ! Des chaussures noires, s'il vous plaît.", zh:'太好了！黑鞋子，麻煩您。', tag:'good', src:'課本 p.78',
+        note:'✅ 顏色形容詞放名詞<b>後面</b>：chaussures noires（第4課規則）', next:'w11' },
+      { fr:'Combien je vous dois ?', zh:'我該付您多少？', tag:'ok', src:'課本 p.60',
+        note:'直接跳到結帳也行，但你放掉了鞋子這一段練習', next:'w13' },
+    ]},
+
+    w11: { speaker:'vendeur', tip:'⚠️ 鞋號跟衣服尺寸不同動詞', choices:[
+      { fr:'Vous chaussez du combien ?', zh:'您穿幾號鞋？', tag:'good', src:'課本 p.78',
+        note:'✅ 鞋子用 <b>chausser</b>（chaussure＝鞋，同一家族）', next:'w12' },
+      { fr:'Vous faites quelle taille ?', zh:'您穿幾號？', tag:'ok', src:'課本 p.78',
+        note:'聽得懂，但講鞋子時法國人一律用 chausser', next:'w12' },
+    ]},
+
+    w12: { speaker:'client', tip:'報鞋號', chk:'鞋子', choices:[
+      { fr:'Je chausse du 45.', zh:'我穿45號鞋。', tag:'good', src:'課本 p.78',
+        note:'✅ 對上了：faire du（衣服）／chausser du（鞋）', next:'w13' },
+      { fr:'Moi, je fais du 44.', zh:'我穿44號。', tag:'bad', src:'課本 p.78',
+        note:'⚠️ 那是衣服尺寸', next:'w13' },
+    ]},
+
+    w13: { speaker:'client', tip:'問總共多少錢', chk:'問價錢', choices:[
+      { fr:'Combien je vous dois ?', zh:'我該付您多少？', tag:'good', src:'課本 p.60',
+        note:'✅ 字面是「我欠您多少」——結帳時最道地的問法', next:'w14' },
+      { fr:'Ça coûte combien ?', zh:'多少錢？', tag:'ok', src:'筆記第4課',
+        note:'也對，只是比較像在問某一件商品的單價', next:'w14' },
+    ]},
+
+    w14: { speaker:'vendeur', tip:'收錢', choices:[
+      { fr:'Vous payez comment ?', zh:'您怎麼付款？', tag:'good', src:'筆記第4課',
+        note:'✅ 跟麵包店同一套流程', next:'w15' },
+      { fr:'Par carte bancaire.', zh:'刷卡。', tag:'bad', src:'筆記第4課',
+        note:'⚠️ 客人的回答', next:'w15' },
+    ]},
+
+    w15: { speaker:'client', tip:'付款＋收尾', chk:'付款告別', choices:[
+      { fr:'Par carte bancaire.', zh:'刷卡。', tag:'good', src:'筆記第4課',
+        note:'✅', next:'w16' },
+      { fr:'En espèces.', zh:'付現金。', tag:'good', src:'筆記第4課',
+        note:'✅', next:'w16' },
+    ]},
+
+    w16: { speaker:'vendeur', line:'Bonne journée !', zh:'祝您有美好的一天！', src:'筆記第1課',
+           note:'', next:'w17' },
+
+    w17: { speaker:'client', tip:'收尾', chk:'付款告別', choices:[
+      { fr:'Au revoir !', zh:'再見！', tag:'good', src:'筆記第1課', note:'✅', next:'end' },
+      { fr:'Bonne journée !', zh:'祝你有美好的一天！', tag:'good', src:'筆記第1課', note:'✅', next:'end' },
+      { fr:'À demain !', zh:'明天見！', tag:'bad', src:'筆記第1課',
+        note:'⚠️ 你又不是明天還要來買一次西裝', next:'end' },
+    ]},
+
+    end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
+  }
+},
+
+/* ═══════════════════════════════════════════════════════════════
+   6. 街上問路（找 les Arènes）
+   台詞來源：課本 Édito A1 p.71 聽力逐字稿（Vanessa & Sébastien 攔路人問路）
+             ＋課本 p.66「Pour demander/indiquer le chemin」句型框。
+   ⭐ 分岔：路人可以叫你走路過去，也可以叫你搭公車——兩條路要問的問題完全不同。
+   ═══════════════════════════════════════════════════════════════ */
+{
+  id: 'chemin',
+  icon: '🚇',
+  zh: '街上問路',
+  fr: 'Demander le chemin',
+  exam: '⭐ 聽力最常見的題型（聽方向指令找地點）；口說情境卡也有問路',
+  src: '課本 p.66、p.71＋筆記第6、11課',
+  roles: { touriste: '🙋 你是問路的人', passant: '🧍 你是被問的路人' },
+  speakers: { touriste: 'Le touriste', passant: 'Le monsieur' },
+  roleHints: { touriste: '攔人要先 Excusez-moi，這是能不能問到路的關鍵', passant: '換你發指令——命令式（impératif）整段都在這裡' },
+  checklist: ['攔住人', '說出要找什麼', '拿到方向', '確認細節', '道謝'],
+  start: 'c1',
+  nodes: {
+    c1: { speaker:'touriste', tip:'先把人攔下來', chk:'攔住人', choices:[
+      { fr:'Excusez-moi, monsieur.', zh:'不好意思，先生。', tag:'good', src:'課本 p.71',
+        note:'✅ 法國人攔路一定先 <b>Excusez-moi</b>／Pardon——直接開口問會被當作沒禮貌', next:'c2' },
+      { fr:'Bonjour !', zh:'您好！', tag:'ok', src:'筆記第1課',
+        note:'不算錯，但陌生人在走路，沒有 excusez-moi 攔不住他', next:'c2' },
+      { fr:'Oui ?', zh:'什麼事？', tag:'bad', src:'課本 p.71',
+        note:'⚠️ 那是<b>被攔下來的人</b>回的話', next:'c2' },
+    ]},
+
+    c2: { speaker:'passant', line:'Oui ?', zh:'什麼事？', src:'課本 p.71',
+          note:'路人停下來了。接下來 10 秒決定你問不問得到', next:'c3' },
+
+    c3: { speaker:'touriste', tip:'說出你要找的地方', chk:'說出要找什麼', choices:[
+      { fr:'On cherche les Arènes.', zh:'我們在找圓形競技場。', tag:'good', src:'課本 p.71',
+        note:'✅ <b>on</b> 在口語就是 nous。chercher 直接接地點，不用介係詞', next:'c4' },
+      { fr:"Où est l'arrêt de bus, s'il vous plaît ?", zh:'請問公車站在哪裡？', tag:'good', src:'課本 p.66',
+        note:'✅ 標準問法。<b>Où est… s\'il vous plaît ?</b> 是問路萬用句', next:'c4' },
+      { fr:"C'est loin d'ici ?", zh:'離這裡遠嗎？', tag:'ok', src:'課本 p.71',
+        note:'你還沒說要找什麼，對方不知道你在問哪裡遠不遠', next:'c4' },
+    ]},
+
+    c4: { speaker:'passant', tip:'⭐ 分岔：叫他走路過去，還是叫他搭公車？', choices:[
+      { fr:"Ce n'est pas loin !", zh:'不遠！', tag:'good', src:'課本 p.71',
+        note:'✅ 走路可到 → 接下來你要給他走路的方向', next:'d1' },
+      { fr:"L'arrêt de bus n'est pas loin.", zh:'公車站不遠。', tag:'good', src:'課本 p.71',
+        note:'✅ 建議搭公車 → 接下來要講站牌位置跟路線', next:'b1' },
+      { fr:'On cherche les Arènes.', zh:'我們在找圓形競技場。', tag:'bad', src:'課本 p.71',
+        note:'⚠️ 那是<b>問路的人</b>說的', next:'d1' },
+    ]},
+
+    /* ── 走路線 ── */
+    d1: { speaker:'touriste', tip:'確認一下距離', choices:[
+      { fr:"C'est loin d'ici ?", zh:'離這裡遠嗎？', tag:'good', src:'課本 p.71',
+        note:'✅ 走之前先確認距離，很自然', next:'d2' },
+      { fr:'Merci, monsieur !', zh:'謝謝先生！', tag:'ok', src:'課本 p.71',
+        note:'太早道謝了——你還沒拿到任何方向', next:'d2' },
+    ]},
+
+    d2: { speaker:'passant', tip:'給方向。命令式（impératif）沒有主詞', chk:'拿到方向', choices:[
+      { fr:'Prenez la première rue à droite et continuez tout droit sur 100 mètres.', zh:'走第一條街右轉，然後直走100公尺。', tag:'good', src:'課本 p.71',
+        note:'✅ 課本原句。<b>Prenez / Continuez</b> 都是命令式 vous 形，直接動詞開頭不放主詞', next:'d3' },
+      { fr:'Continuez tout droit.', zh:'一直直走。', tag:'ok', src:'課本 p.66',
+        note:'正確但太簡略——對方會不知道要走多遠、在哪轉', next:'d3' },
+      { fr:"Où est l'arrêt de bus, s'il vous plaît ?", zh:'請問公車站在哪裡？', tag:'bad', src:'課本 p.66',
+        note:'⚠️ 你是被問的人，不是問人的人', next:'d3' },
+    ]},
+
+    d3: { speaker:'touriste', tip:'收尾', chk:'道謝', choices:[
+      { fr:'Merci, monsieur !', zh:'謝謝先生！', tag:'good', src:'課本 p.71',
+        note:'✅ 拿到路了，道謝收尾', next:'end' },
+      { fr:"C'est quelle ligne ?", zh:'是哪一線？', tag:'bad', src:'課本 p.71',
+        note:'⚠️ 你是用走的，沒有「線」可以問', next:'end' },
+    ]},
+
+    /* ── 公車線 ── */
+    b1: { speaker:'touriste', tip:'決定改搭公車，問站牌在哪', choices:[
+      { fr:"On continue en bus, non ? Où est l'arrêt de bus, s'il vous plaît ?", zh:'我們改搭公車好嗎？請問公車站在哪裡？', tag:'good', src:'課本 p.71＋p.66',
+        note:'✅ 先跟同伴確認再問路人。<b>en bus</b>＝搭公車（交通工具用 en，走路才是 à pied）', next:'b2' },
+      { fr:"Où est l'arrêt de bus, s'il vous plaît ?", zh:'請問公車站在哪裡？', tag:'good', src:'課本 p.66',
+        note:'✅ 直接問也完全可以', next:'b2' },
+    ]},
+
+    b2: { speaker:'passant', tip:'給站牌位置', chk:'拿到方向', choices:[
+      { fr:"Prenez la première rue à droite et continuez tout droit sur 100 mètres. L'arrêt est juste là.", zh:'走第一條街右轉，直走100公尺。站牌就在那裡。', tag:'good', src:'課本 p.71',
+        note:'✅ 課本原句。<b>juste là</b>＝就在那邊', next:'b3' },
+      { fr:'Tournez à droite.', zh:'右轉。', tag:'ok', src:'課本 p.66',
+        note:'對，但太少資訊——問路的人還是會迷路', next:'b3' },
+      { fr:"C'est quelle ligne ?", zh:'是哪一線？', tag:'bad', src:'課本 p.71',
+        note:'⚠️ 問路線的是乘客', next:'b3' },
+    ]},
+
+    b3: { speaker:'touriste', tip:'還缺一個關鍵資訊', chk:'確認細節', choices:[
+      { fr:"C'est quelle ligne ?", zh:'是哪一線？', tag:'good', src:'課本 p.71',
+        note:'✅ 找到站牌還不夠，要知道搭哪一線——這一步最常被漏掉', next:'b4' },
+      { fr:'Merci, monsieur !', zh:'謝謝先生！', tag:'ok', src:'課本 p.71',
+        note:'禮貌，但你還不知道要搭哪一班車', next:'b5' },
+    ]},
+
+    b4: { speaker:'passant', line:"C'est la ligne 1.", zh:'1號線。', src:'課本 p.71',
+          note:'<b>la ligne 1</b>＝1號線', next:'b5' },
+
+    b5: { speaker:'touriste', tip:'收尾', chk:'道謝', choices:[
+      { fr:'Merci, monsieur !', zh:'謝謝先生！', tag:'good', src:'課本 p.71',
+        note:'✅ 對陌生人道謝要帶稱謂（monsieur／madame），比只說 merci 有禮貌', next:'end' },
+      { fr:'Allons acheter des tickets !', zh:'我們去買票吧！', tag:'ok', src:'課本 p.71',
+        note:'這句是對<b>同伴</b>說的（命令式 nous 形），不是對路人。你忘了道謝', next:'end' },
+    ]},
+
+    end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
+  }
+},
+
+/* ═══════════════════════════════════════════════════════════════
+   7. 打電話訂房
+   台詞來源：課本 Édito A1 p.131 聽力逐字稿（Hôtel Atlantique 完整訂房對話）。
+   這一段是課本裡資訊密度最高的對話：日期、人數、房型、比較級、價錢、拼名字全部到齊。
+   ⭐ 分岔：先問價錢再選房，或直接用比較級選便宜的那一種。
+   ═══════════════════════════════════════════════════════════════ */
+{
+  id: 'hotel',
+  icon: '🏨',
+  zh: '打電話訂房',
+  fr: 'Réserver une chambre',
+  exam: '⭐ A2 口說情境卡與聽力常考；寫作 tâche 1 也常要你寫訂房訊息',
+  src: '課本 p.131 聽力逐字稿＋筆記第14、25課',
+  roles: { touriste: '🙋 你是旅客', receptionniste: '🛎 你是櫃檯' },
+  speakers: { touriste: 'Le touriste', receptionniste: 'La réceptionniste' },
+  roleHints: { touriste: '電話裡看不到對方，所有資訊都得靠講清楚', receptionniste: '櫃檯要照順序問：日期→人數→房型→細節' },
+  checklist: ['說來意', '講日期', '講人數', '選房型', '問細節', '報名字拼字'],
+  start: 'h1',
+  nodes: {
+    h1: { speaker:'receptionniste', line:"Hôtel Atlantique, j'écoute !", zh:'大西洋飯店，您好（我在聽）！',
+          src:'課本 p.131', note:'法國飯店接電話的固定開場：<b>店名＋j\'écoute</b>', next:'h2' },
+
+    h2: { speaker:'touriste', tip:'講清楚你要做什麼', chk:'說來意', choices:[
+      { fr:'Bonjour, madame. Je voudrais réserver une chambre dans votre hôtel pour les vacances.', zh:'您好女士。我想在貴飯店訂一間房間度假。', tag:'good', src:'課本 p.131',
+        note:'✅ <b>je voudrais + 原形</b>＝我想要（做某事），電話訂房的標準開場', next:'h3' },
+      { fr:'Bonjour, madame.', zh:'您好女士。', tag:'ok', src:'課本 p.131',
+        note:'禮貌有了，但對方不知道你打來做什麼——電話裡沉默成本很高', next:'h3' },
+      { fr:"Hôtel Atlantique, j'écoute !", zh:'大西洋飯店，您好！', tag:'bad', src:'課本 p.131',
+        note:'⚠️ 那是接電話那一方講的', next:'h3' },
+    ]},
+
+    h3: { speaker:'receptionniste', tip:'第一件要確認的事', choices:[
+      { fr:'Oui, bien sûr ! À quelles dates ?', zh:'好的，當然！哪幾天呢？', tag:'good', src:'課本 p.131',
+        note:'✅ <b>À quelles dates ?</b>＝哪幾號（複數，因為是一段期間）', next:'h4' },
+      { fr:'Du 18 au 23 août.', zh:'8月18日到23日。', tag:'bad', src:'課本 p.131',
+        note:'⚠️ 客人的答案', next:'h4' },
+    ]},
+
+    h4: { speaker:'touriste', tip:'講日期', chk:'講日期', choices:[
+      { fr:'Du 18 au 23 août.', zh:'8月18日到23日。', tag:'good', src:'課本 p.131',
+        note:'✅ 一段期間用 <b>du… au…</b>（從…到…）', next:'h5' },
+      { fr:'Combien elles coûtent ?', zh:'它們多少錢？', tag:'ok', src:'課本 p.131',
+        note:'先問價錢也不是不行，但櫃檯還沒辦法報價——她連你要住哪幾天都不知道', next:'h5' },
+    ]},
+
+    h5: { speaker:'receptionniste', tip:'接著問什麼？', choices:[
+      { fr:"C'est pour combien de personnes ?", zh:'幾個人呢？', tag:'good', src:'課本 p.131',
+        note:'✅ <b>combien de + 名詞</b>＝多少個…', next:'h6' },
+      { fr:'Nous sommes deux adultes, un enfant et un bébé.', zh:'我們是兩個大人、一個小孩跟一個嬰兒。', tag:'bad', src:'課本 p.131',
+        note:'⚠️ 客人的答案', next:'h6' },
+    ]},
+
+    h6: { speaker:'touriste', tip:'講人數', chk:'講人數', choices:[
+      { fr:'Nous sommes deux adultes, un enfant et un bébé.', zh:'我們是兩個大人、一個小孩跟一個嬰兒。', tag:'good', src:'課本 p.131',
+        note:'✅ 人數用 <b>nous sommes + 數字</b>，不是 nous avons', next:'h7' },
+      { fr:'Oui, c\'est parfait.', zh:'好，太完美了。', tag:'ok', src:'課本 p.131',
+        note:'答非所問——這句是用來確認對方提議的', next:'h7' },
+    ]},
+
+    h7: { speaker:'receptionniste', tip:'依人數推薦房型', choices:[
+      { fr:'Vous souhaitez une chambre familiale ?', zh:'您想要家庭房嗎？', tag:'good', src:'課本 p.131',
+        note:'✅ <b>souhaiter</b>＝希望／想要，比 vouloir 正式，服務業常用', next:'h8' },
+      { fr:'Vous voulez une chambre avec vue sur la mer ou une chambre avec vue sur rue ?', zh:'您要海景房還是面街的房間？', tag:'ok', src:'課本 p.131',
+        note:'順序跳掉了——先確定房型（幾張床），再問景觀', next:'h9' },
+    ]},
+
+    h8: { speaker:'touriste', tip:'回應房型建議', chk:'選房型', choices:[
+      { fr:"Oui, c'est parfait.", zh:'好，太完美了。', tag:'good', src:'課本 p.131',
+        note:'✅ 接受對方提議最短的一句', next:'h9' },
+      { fr:'Combien elles coûtent ?', zh:'它們多少錢？', tag:'ok', src:'課本 p.131',
+        note:'可以問，但先答應房型對話比較順', next:'h9' },
+    ]},
+
+    h9: { speaker:'receptionniste', line:'Vous voulez une chambre avec vue sur la mer ou une chambre avec vue sur rue ?',
+          zh:'您要海景房還是面街的房間？', src:'課本 p.131',
+          note:'<b>avec vue sur…</b>＝面向…的景觀', next:'h10' },
+
+    h10: { speaker:'touriste', tip:'⭐ 分岔：先問價錢，還是直接用比較級選？', chk:'選房型', choices:[
+      { fr:'Combien elles coûtent ?', zh:'它們多少錢？', tag:'good', src:'課本 p.131',
+        note:'✅ 先問價錢再決定——<b>elles</b> 指 les chambres（陰性複數）', next:'h11' },
+      { fr:'Je vais prendre une chambre avec vue sur rue, elles sont moins chères que les chambres avec vue sur la mer.', zh:'我要面街的房間，它們比海景房便宜。', tag:'good', src:'課本 p.131',
+        note:'✅ 直接用<b>比較級 moins… que…</b>講出理由——第25課的文法用在真實情境', next:'h13' },
+    ]},
+
+    h11: { speaker:'receptionniste', tip:'報兩種房價', choices:[
+      { fr:'Les chambres avec vue sur la mer sont à 170 euros la nuit, et les chambres avec vue sur rue sont à 140 euros la nuit.', zh:'海景房一晚170歐，面街的房間一晚140歐。', tag:'good', src:'課本 p.131',
+        note:'✅ <b>à + 價錢 + la nuit</b>＝一晚多少錢', next:'h12' },
+      { fr:'Combien elles coûtent ?', zh:'它們多少錢？', tag:'bad', src:'課本 p.131',
+        note:'⚠️ 你是報價的那一方', next:'h12' },
+    ]},
+
+    h12: { speaker:'touriste', tip:'選一種，並說出理由', chk:'選房型', choices:[
+      { fr:'Je vais prendre une chambre avec vue sur rue, elles sont moins chères que les chambres avec vue sur la mer.', zh:'我要面街的房間，它們比海景房便宜。', tag:'good', src:'課本 p.131',
+        note:'✅ <b>moins cher que</b>＝比…便宜。選擇＋理由，考試最愛', next:'h13' },
+      { fr:"Oui, c'est parfait.", zh:'好，太完美了。', tag:'ok', src:'課本 p.131',
+        note:'櫃檯不知道你選了哪一種——兩個價錢她剛講了兩個房型', next:'h13' },
+    ]},
+
+    h13: { speaker:'touriste', tip:'訂房前該問的細節', chk:'問細節', choices:[
+      { fr:'Le petit déjeuner est compris ?', zh:'早餐有含嗎？', tag:'good', src:'課本 p.131',
+        note:'✅ <b>compris</b>＝包含在內。訂房必問的一句', next:'h14' },
+      { fr:'Et il y a un parking privé ?', zh:'有私人停車場嗎？', tag:'good', src:'課本 p.131',
+        note:'✅ 開車去的話這句必問', next:'h15' },
+      { fr:"Je ne connais pas la région, qu'est-ce qu'on peut faire ?", zh:'我不熟這個地區，可以做些什麼？', tag:'ok', src:'課本 p.131',
+        note:'很好的問題，但訂房還沒定案——先把房間確定再聊行程', next:'h16' },
+    ]},
+
+    h14: { speaker:'receptionniste', line:"Non, c'est 7,50 euros par jour et par personne.",
+           zh:'沒有，一人一天7.5歐。', src:'課本 p.131',
+           note:'<b>par jour et par personne</b>＝每人每天', next:'h15' },
+
+    h15: { speaker:'receptionniste', tip:'回答停車問題', choices:[
+      { fr:"Non, mais il y a un parking public à côté de l'hôtel.", zh:'沒有，但飯店旁邊有公共停車場。', tag:'good', src:'課本 p.131',
+        note:'✅ 沒有也要給替代方案——<b>à côté de</b>＝在…旁邊', next:'h16' },
+      { fr:'La mer est à 10 minutes à pied.', zh:'海邊走路10分鐘。', tag:'ok', src:'課本 p.131',
+        note:'資訊很好，但客人問的是停車', next:'h16' },
+    ]},
+
+    h16: { speaker:'touriste', tip:'拍板訂下去', choices:[
+      { fr: "D'accord, alors je réserve une chambre.", zh:'好，那我訂一間房。', tag:'good', src:'課本 p.131',
+        note:'✅ <b>alors</b>＝那麼（做決定的連接詞）', next:'h17' },
+      { fr: "Oui, c'est parfait.", zh:'好，太完美了。', tag:'ok', src:'課本 p.131',
+        note:'櫃檯還在等你說「要訂」——電話裡要講得比面對面更明確', next:'h17' },
+    ]},
+
+    h17: { speaker:'receptionniste', tip:'訂房最後一件事', choices:[
+      { fr: "À quel nom s'il vous plaît ?", zh:'請問訂位大名？', tag:'good', src:'課本 p.131',
+        note:'✅ <b>à quel nom</b>＝用誰的名字訂', next:'h18' },
+      { fr: "D'accord, alors je réserve une chambre.", zh:'好，那我訂一間房。', tag:'bad', src:'課本 p.131',
+        note:'⚠️ 客人的台詞', next:'h18' },
+    ]},
+
+    h18: { speaker:'touriste', tip:'⚠️ 電話裡報名字一定要拼——這就是口說考試第一部分那一題', chk:'報名字拼字', choices:[
+      { fr: "Je m'appelle Owen. Ça s'écrit O-W-E-N.", zh:'我叫 Owen，拼作 O-W-E-N。', tag:'good', src:'筆記第17課',
+        note:'✅ 不用等對方問就主動拼——電話裡對方看不到你，這是唯一保險的做法', next:'h19' },
+      { fr: "Je m'appelle Owen.", zh:'我叫 Owen。', tag:'ok', src:'筆記第17課',
+        note:'對方一定會再問 Comment ça s\'écrit ?，等於多一輪', next:'h19' },
+    ]},
+
+    h19: { speaker:'receptionniste', line:"C'est noté ! Bonne journée, monsieur !", zh:'記下來了！祝您有美好的一天，先生！',
+           src:'課本 p.131', note:'<b>C\'est noté</b>＝記下來了，服務業高頻', next:'h20' },
+
+    h20: { speaker:'touriste', tip:'掛電話', choices:[
+      { fr:'Merci. À bientôt !', zh:'謝謝。回頭見！', tag:'good', src:'課本 Unité 6',
+        note:'✅ 之後會再見面（你要去住），<b>À bientôt</b> 剛好', next:'end' },
+      { fr:'Bonne journée !', zh:'祝你有美好的一天！', tag:'good', src:'筆記第1課',
+        note:'✅ 對方說什麼你就回什麼', next:'end' },
+      { fr:'À demain !', zh:'明天見！', tag:'bad', src:'筆記第1課',
+        note:'⚠️ 你是8月18日才到，不是明天', next:'end' },
+    ]},
+
+    end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
+  }
+},
+
+/* ═══════════════════════════════════════════════════════════════
+   8. 看醫生
+   台詞來源：課本 Édito A1 p.117 的兩段聽力逐字稿（Dialogue 1 感冒／Dialogue 2 膝蓋痛）。
+   ⭐ 分岔就是課本的兩段對話：你要演哪一種病人，決定醫生問你什麼。
+   ⚠️ 這個場景對 Owen 有雙重意義：他是牙醫，「醫療對話」是他本行的法文版本。
+   ═══════════════════════════════════════════════════════════════ */
+{
+  id: 'medecin',
+  icon: '🏥',
+  zh: '看醫生',
+  fr: 'Chez le médecin',
+  exam: '⭐ 口說情境卡與聽力常考；avoir mal à + 身體部位是必考結構',
+  src: '課本 p.117 聽力逐字稿（兩段）＋筆記第12、13課',
+  roles: { patient: '🙋 你是病人', docteure: '🩺 你是醫生' },
+  speakers: { patient: 'Le patient', docteure: 'La docteure' },
+  roleHints: { patient: '講清楚哪裡痛、從什麼時候開始——考試就考這兩件事', docteure: '醫生要一路追問：睡得好嗎、發燒嗎、咳嗽嗎、吃藥了嗎' },
+  checklist: ['打招呼', '說出症狀', '回答追問', '聽懂處方', '結束看診'],
+  start: 'm1',
+  nodes: {
+    m1: { speaker:'patient', tip:'進診間打招呼。法國人會加上職稱', chk:'打招呼', choices:[
+      { fr:'Bonjour docteure.', zh:'醫生您好。', tag:'good', src:'課本 p.117',
+        note:'✅ 法國人跟醫生、老師、律師講話會<b>把職稱當稱謂用</b>。女醫生是 docteure', next:'m2' },
+      { fr:'Bonjour !', zh:'您好！', tag:'ok', src:'筆記第1課',
+        note:'不算錯，但加上 docteure 更得體', next:'m2' },
+      { fr:'Bonjour, monsieur !', zh:'先生您好！', tag:'bad', src:'課本 p.117',
+        note:'⚠️ 對方是女醫生，而且這句是<b>醫生對你</b>說的稱呼', next:'m2' },
+    ]},
+
+    m2: { speaker:'docteure', line:"Bonjour, monsieur ! Qu'est-ce qui vous arrive ?", zh:'先生您好！您怎麼了？',
+          src:'課本 p.117', note:'<b>Qu\'est-ce qui vous arrive ?</b>＝您怎麼了（字面：什麼事情發生在您身上）', next:'m3' },
+
+    m3: { speaker:'patient', tip:'⭐ 分岔：你今天是感冒，還是運動受傷？', chk:'說出症狀', choices:[
+      { fr: "Eh bien… J'ai un rhume, j'ai mal à la gorge et à la tête. Ça a commencé hier.", zh:'嗯…我感冒了，喉嚨痛、頭痛。昨天開始的。', tag:'good', src:'課本 p.117',
+        note:'✅ 三件事一次講完：病名＋部位＋<b>從什麼時候開始</b>。avoir mal à + 部位（à la gorge / à la tête）', next:'r1' },
+      { fr: "J'ai fait un footing il y a deux jours et j'ai eu mal au genou.", zh:'我兩天前去慢跑，然後膝蓋痛。', tag:'good', src:'課本 p.117',
+        note:'✅ 用 passé composé 講經過＋<b>il y a deux jours</b>（兩天前）。mal au genou（陽性→au）', next:'g1' },
+      { fr: "Qu'est-ce qui vous arrive ?", zh:'您怎麼了？', tag:'bad', src:'課本 p.117',
+        note:'⚠️ 醫生的台詞', next:'r1' },
+    ]},
+
+    /* ── 感冒線 ── */
+    r1: { speaker:'docteure', tip:'醫生開始追問', choices:[
+      { fr:'Et vous avez passé une bonne nuit ?', zh:'那您昨晚睡得好嗎？', tag:'good', src:'課本 p.117',
+        note:'✅ <b>passer une bonne nuit</b>＝睡了一個好覺', next:'r2' },
+      { fr:"Ben, j'ai dormi dix heures !", zh:'呃，我睡了十小時！', tag:'bad', src:'課本 p.117',
+        note:'⚠️ 病人的答案', next:'r2' },
+    ]},
+
+    r2: { speaker:'patient', tip:'回答睡得如何', chk:'回答追問', choices:[
+      { fr: "Ben, j'ai dormi dix heures ! J'ai eu de la fièvre cette nuit…", zh:'呃，我睡了十小時！我昨晚發燒了…', tag:'good', src:'課本 p.117',
+        note:'✅ 主動多講一個症狀。<b>avoir de la fièvre</b>＝發燒（不定量冠詞）', next:'r3' },
+      { fr:'Un peu.', zh:'一點點。', tag:'ok', src:'課本 p.117',
+        note:'太短了。看診時資訊給得越少，醫生越難判斷', next:'r3' },
+    ]},
+
+    r3: { speaker:'docteure', tip:'追問發燒', choices:[
+      { fr:'Et vous avez encore de la fièvre ce matin ?', zh:'那您今天早上還有發燒嗎？', tag:'good', src:'課本 p.117',
+        note:'✅ <b>encore</b>＝還（持續中）', next:'r4' },
+      { fr:'Est-ce que vous avez mal aux oreilles ?', zh:'您耳朵會痛嗎？', tag:'good', src:'課本 p.117',
+        note:'✅ 也是課本裡醫生問的。<b>aux oreilles</b>（複數→aux）', next:'r5' },
+    ]},
+
+    r4: { speaker:'patient', tip:'回答體溫', chk:'回答追問', choices:[
+      { fr:"Oui, j'ai 39.", zh:'有，39度。', tag:'good', src:'課本 p.117',
+        note:'✅ 講體溫直接 <b>j\'ai + 數字</b>，不用說 degrés 也聽得懂', next:'r5' },
+      { fr:'Non.', zh:'沒有。', tag:'ok', src:'課本 p.117',
+        note:'如果真的退燒了就這樣答；但你剛說昨晚發燒，醫生會想確認數字', next:'r5' },
+    ]},
+
+    r5: { speaker:'docteure', tip:'再確認一個症狀', choices:[
+      { fr:'Vous toussez ?', zh:'您有咳嗽嗎？', tag:'good', src:'課本 p.117',
+        note:'✅ <b>tousser</b>＝咳嗽（la toux＝咳嗽這個名詞）', next:'r6' },
+      { fr:'Un peu.', zh:'一點點。', tag:'bad', src:'課本 p.117',
+        note:'⚠️ 病人的答案', next:'r6' },
+    ]},
+
+    r6: { speaker:'patient', tip:'回答咳嗽', chk:'回答追問', choices:[
+      { fr:'Un peu.', zh:'一點點。', tag:'good', src:'課本 p.117',
+        note:'✅ 這種一問一答就該短——不是每題都要講長', next:'r7' },
+      { fr:'Non.', zh:'沒有。', tag:'good', src:'課本 p.117',
+        note:'✅ 沒有就說沒有', next:'r7' },
+    ]},
+
+    r7: { speaker:'docteure', tip:'開藥前最後一問', choices:[
+      { fr:'Et vous avez pris des médicaments ?', zh:'那您有吃藥了嗎？', tag:'good', src:'課本 p.117',
+        note:'✅ prendre 的過去分詞是 <b>pris</b>（第17課不規則分詞表）', next:'r8' },
+      { fr:'Vous êtes souvent malade ?', zh:'您常生病嗎？', tag:'ok', src:'課本 p.117',
+        note:'課本後面才問這句——先確認吃過什麼藥比較急', next:'r8' },
+    ]},
+
+    r8: { speaker:'patient', tip:'回答有沒有吃藥', chk:'回答追問', choices:[
+      { fr:'Non.', zh:'沒有。', tag:'good', src:'課本 p.117',
+        note:'✅', next:'r9' },
+      { fr:'Je bois un litre par jour.', zh:'我一天喝一公升。', tag:'bad', src:'課本 p.117',
+        note:'⚠️ 那是回答「喝多少水」的', next:'r9' },
+    ]},
+
+    r9: { speaker:'docteure', line:'Alors, vous allez prendre du paracétamol, du sirop pour la toux et un médicament pour le rhume. Vous buvez beaucoup d\'eau ?',
+          zh:'那您要吃普拿疼、咳嗽糖漿跟一個感冒藥。您水喝得多嗎？', src:'課本 p.117',
+          note:'處方全部用 <b>du / un</b> 不定量冠詞；<b>vous allez prendre</b> 是近未來', next:'r10' },
+
+    r10: { speaker:'patient', tip:'回答喝水量', chk:'聽懂處方', choices:[
+      { fr:'Je bois un litre par jour.', zh:'我一天喝一公升。', tag:'good', src:'課本 p.117',
+        note:'✅ <b>par jour</b>＝每天。boire 的 je 形是 bois（第17課糾正過你的那個動詞）', next:'r11' },
+      { fr:'Un peu.', zh:'一點點。', tag:'ok', src:'課本 p.117',
+        note:'醫生要的是數字，這樣她沒辦法給建議', next:'r11' },
+    ]},
+
+    r11: { speaker:'docteure', tip:'給最後的建議', chk:'結束看診', choices:[
+      { fr:'Buvez 1,5 litre par jour, minimum. C\'est important.', zh:'每天至少喝1.5公升。這很重要。', tag:'good', src:'課本 p.117',
+        note:'✅ <b>Buvez</b> 是命令式——醫生給指令的標準語氣', next:'end' },
+      { fr:'Je bois un litre par jour.', zh:'我一天喝一公升。', tag:'bad', src:'課本 p.117',
+        note:'⚠️ 病人的台詞', next:'end' },
+    ]},
+
+    /* ── 膝蓋線 ── */
+    g1: { speaker:'docteure', tip:'先問現在的狀況', choices:[
+      { fr:'Et vous vous sentez comment aujourd\'hui ?', zh:'那您今天覺得怎麼樣？', tag:'good', src:'課本 p.117',
+        note:'✅ <b>se sentir</b>（反身動詞）＝覺得（身體狀態）', next:'g2' },
+      { fr:'Vous toussez ?', zh:'您有咳嗽嗎？', tag:'ok', src:'課本 p.117',
+        note:'他是膝蓋痛，不是感冒——問診要跟著症狀走', next:'g2' },
+    ]},
+
+    g2: { speaker:'docteure', tip:'講評這個運動', choices:[
+      { fr:'Ah ! La course à pied… Vous avez choisi un sport difficile pour les genoux !', zh:'啊！跑步…您選了一個對膝蓋很吃力的運動！', tag:'good', src:'課本 p.117',
+        note:'✅ <b>la course à pied</b>＝跑步這項運動（faire un footing＝去跑一次）', next:'g3' },
+      { fr:'Vous pesez combien ?', zh:'您體重多少？', tag:'ok', src:'課本 p.117',
+        note:'醫生確實會問，但先回應他講的事再問數據比較自然', next:'g3' },
+    ]},
+
+    g3: { speaker:'docteure', tip:'問身體數據', choices:[
+      { fr:'Vous pesez combien ?', zh:'您體重多少？', tag:'good', src:'課本 p.117',
+        note:'✅ <b>peser</b>＝重…（動詞，不用 avoir）', next:'g4' },
+      { fr:'Je pèse 60 kg.', zh:'我60公斤。', tag:'bad', src:'課本 p.117',
+        note:'⚠️ 病人的答案', next:'g4' },
+    ]},
+
+    g4: { speaker:'patient', tip:'報體重', chk:'回答追問', choices:[
+      { fr:'Je pèse 60 kg.', zh:'我60公斤。', tag:'good', src:'筆記第12課',
+        note:'✅ <b>je pèse</b>（peser 的 e→è 變化，跟 acheter 同一組）', next:'g5' },
+      { fr:'Oui.', zh:'是。', tag:'bad', src:'課本 p.117',
+        note:'⚠️ 這是問數字的問題，不是 oui/non 問句', next:'g5' },
+    ]},
+
+    g5: { speaker:'docteure', tip:'再問一項', choices:[
+      { fr:'Et quelle est votre taille ?', zh:'那您身高多少？', tag:'good', src:'課本 p.117',
+        note:'✅ <b>taille</b> 一詞兩用：買衣服是「尺寸」，看醫生是「身高」', next:'g6' },
+      { fr:"D'accord… Et vous avez de bonnes baskets ?", zh:'好…那您有好的運動鞋嗎？', tag:'good', src:'課本 p.117',
+        note:'✅ 跑步問鞋子很合理。<b>de</b> bonnes baskets——形容詞放前面時 des 要縮成 de（第19課）', next:'g7' },
+    ]},
+
+    g6: { speaker:'docteure', tip:'問裝備', choices:[
+      { fr: "D'accord… Et vous avez de bonnes baskets ?", zh:'好…那您有好的運動鞋嗎？', tag:'good', src:'課本 p.117',
+        note:'✅ 注意 <b>de bonnes</b> 不是 des bonnes', next:'g7' },
+      { fr:'Vous pesez combien ?', zh:'您體重多少？', tag:'bad', src:'課本 p.117',
+        note:'⚠️ 剛剛問過了', next:'g7' },
+    ]},
+
+    g7: { speaker:'patient', tip:'回答', chk:'回答追問', choices:[
+      { fr:'Oui.', zh:'有。', tag:'good', src:'筆記第1課',
+        note:'✅ 是非題就短答', next:'g8' },
+      { fr:'Non.', zh:'沒有。', tag:'good', src:'筆記第1課',
+        note:'✅ 也可以——醫生會叫你去買', next:'g8' },
+    ]},
+
+    g8: { speaker:'docteure', line:'Bon, vous allez passer une radio du genou.', zh:'好，您要去照一下膝蓋的X光。',
+          src:'課本 p.117', chk:'聽懂處方', note:'<b>passer une radio</b>＝去照X光（passer＝接受某項檢查）', next:'g9' },
+
+    g9: { speaker:'patient', tip:'接受醫囑，結束看診', chk:'結束看診', choices:[
+      { fr:"D'accord, docteure.", zh:'好的，醫生。', tag:'good', src:'課本 p.117',
+        note:'✅ 回話帶上職稱，跟開場的 Bonjour docteure 對稱', next:'end' },
+      { fr:'Un peu.', zh:'一點點。', tag:'bad', src:'課本 p.117',
+        note:'⚠️ 答非所問——醫生在下指令，不是在問症狀', next:'end' },
+    ]},
+
+    end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
+  }
+},
 ];
 if (typeof module !== 'undefined') module.exports = { SCENES };
