@@ -13,3 +13,6 @@ transcripts/
 # Anki 匯入檔：卡片內容含 Owen 的個人例句與教練註記，且真正的真相來源是 Anki 收藏檔本身
 # （有 AnkiWeb 同步當備份）。這裡只當工作區，永遠只留本機
 anki/
+
+# 排程任務的報告：含 Owen 的學習數據與個人回答，repo 是公開的，只留本機
+reports/
