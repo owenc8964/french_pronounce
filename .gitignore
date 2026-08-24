@@ -16,3 +16,6 @@ anki/
 
 # 排程任務的報告：含 Owen 的學習數據與個人回答，repo 是公開的，只留本機
 reports/
+
+# 課本 PDF 抽出的純文字快取（tools/extract_textbook.py 產生）：一樣是商業教材內容，只留本機
+assets/.textbook_cache.txt

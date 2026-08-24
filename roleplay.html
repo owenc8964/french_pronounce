@@ -18,6 +18,13 @@ body { background:#07080f; color:#ddd8cc; font-family:'Segoe UI',system-ui,sans-
 .card-box { background:#0d1020; border:1px solid #1a2438; border-radius:12px; padding:16px 18px; margin-bottom:14px; }
 .card-title { font-size:.65rem; color:#445060; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:12px; }
 
+/* 中文輔助開關 */
+.zh-bar { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:14px; }
+.zh-bar button { padding:6px 14px; border-radius:20px; border:1px solid #1a2438; background:#0d1020;
+  color:#7a8a9a; font-family:inherit; font-size:.7rem; cursor:pointer; }
+.zh-bar button.on { border-color:#f0c060; color:#f0c060; }
+.zh-bar .hint { font-size:.62rem; color:#39424f; }
+
 .scene-btn, .role-btn {
   display:block; width:100%; text-align:left; padding:14px 16px; margin-bottom:8px;
   border:1px solid #1a2438; border-radius:10px; background:#141928; color:#ddd8cc;
@@ -25,6 +32,7 @@ body { background:#07080f; color:#ddd8cc; font-family:'Segoe UI',system-ui,sans-
 .scene-btn:hover, .role-btn:hover { border-color:#f0c060; }
 .scene-btn .s-meta, .role-btn .s-meta { display:block; font-size:.68rem; color:#7a8a9a; margin-top:4px; }
 .scene-btn .s-exam { display:block; font-size:.68rem; color:#f0c060; margin-top:4px; }
+.scene-btn .s-fork { color:#60d090; }
 
 /* 對話 */
 .chat { display:flex; flex-direction:column; gap:10px; }
@@ -40,9 +48,9 @@ body { background:#07080f; color:#ddd8cc; font-family:'Segoe UI',system-ui,sans-
 .tag.good { background:#0f3822; color:#5ed492; }
 .tag.ok   { background:#3c2a08; color:#f0b050; }
 .tag.bad  { background:#3a1418; color:#e07a86; }
-.spk { font-size:.62rem; color:#445060; margin-bottom:3px; }
-.tts { background:none; border:none; cursor:pointer; font-size:.8rem; opacity:.5; padding:0 3px; }
-.tts:hover { opacity:1; }
+.spk { font-size:.62rem; color:#445060; margin-bottom:3px; font-family:Georgia,serif; }
+.tts, .peek { background:none; border:none; cursor:pointer; font-size:.8rem; opacity:.45; padding:0 3px; color:inherit; }
+.tts:hover, .peek:hover { opacity:1; }
 
 .tip { font-size:.72rem; color:#f0c060; margin:14px 0 8px; }
 .choices { display:flex; flex-direction:column; gap:8px; }
@@ -51,10 +59,16 @@ body { background:#07080f; color:#ddd8cc; font-family:'Segoe UI',system-ui,sans-
 .choice:hover { border-color:#f0c060; background:#1a2030; }
 .choice .cz { display:block; font-size:.72rem; color:#7a8a9a; margin-top:3px; }
 .choice .cfr { font-family:Georgia,serif; }
+.choice .csay { float:right; opacity:.4; }
 
 .chk { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
-.chk span { font-size:.68rem; padding:4px 9px; border-radius:6px; background:#141928; border:1px solid #1a2438; color:#7a8a9a; }
+.chk span { font-size:.68rem; padding:4px 9px; border-radius:6px; background:#141928; border:1px solid #1a2438; color:#445060; }
 .chk span.hit { border-color:#1d4030; color:#60d090; }
+.recap { margin-top:14px; font-size:.74rem; line-height:1.75; }
+.recap .r-item { padding:8px 10px; border-radius:8px; margin-bottom:6px; background:#141928; border:1px solid #1a2438; }
+.recap .r-item.bad { border-color:#4a2028; }
+.recap .r-fr { font-family:Georgia,serif; color:#ddd8cc; }
+.recap .r-note { display:block; font-size:.7rem; color:#7a8a9a; margin-top:3px; }
 .btn-row { display:flex; gap:8px; margin-top:14px; }
 .btn-row button { flex:1; padding:13px; border:none; border-radius:10px; font-family:inherit;
   font-size:.85rem; font-weight:700; cursor:pointer; background:linear-gradient(135deg,#1d5035,#2a7048); color:#d0f0d8; }
@@ -77,117 +91,187 @@ body { background:#07080f; color:#ddd8cc; font-family:'Segoe UI',system-ui,sans-
 
 <script src="scenes.js"></script>
 <script>
-let scene = null, role = null, node = null, log = [], score = { good:0, ok:0, bad:0 }, hitChk = new Set();
+/* 中文輔助開關（2026-08-25 Owen：「中文輔助太多了，感覺應該要純法語去做我會學習更快」）
+   預設純法語：法文句子底下不掛中文，選錯／選到次佳才自動翻出解說（那是回饋，不是拐杖）。
+   ⚠️ key 刻意不用 clb7_ 前綴——這是顯示偏好，不需要占用 Supabase 同步負載（跟 ttsr_rate 同款） */
+let zhOn = false;
+try { zhOn = localStorage.getItem('rp_zh') === '1'; } catch(e) {}
+function setZh(v) { zhOn = v; try { localStorage.setItem('rp_zh', v ? '1' : '0'); } catch(e) {}
+  if (scene && node) rerender(); else pickScene(); }
+
+let scene = null, role = null, node = null, log = [], score = { good:0, ok:0, bad:0 };
+let hitChk = new Set(), missteps = [];
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const TAG_FR = { good:'naturel', ok:'correct', bad:'impoli' };
+const TAG_ZH = { good:'自然', ok:'可以', bad:'失禮' };
+const otherRole = () => Object.keys(scene.roles).find(k => k !== role);
+
+function zhBar() {
+  return `<div class="zh-bar">
+    <button class="${zhOn ? '' : 'on'}" onclick="setZh(false)">🇫🇷 純法語</button>
+    <button class="${zhOn ? 'on' : ''}" onclick="setZh(true)">中文輔助</button>
+    <span class="hint">${zhOn ? '每句都有中文' : '選錯才翻中文'}</span>
+  </div>`;
+}
 
 function pickScene() {
-  $('root').innerHTML = `
+  scene = null; node = null;
+  $('root').innerHTML = zhBar() + `
     <div class="card-box">
       <div class="card-title">選一個情境</div>
-      ${SCENES.map(s => `
-        <button class="scene-btn" onclick="chooseScene('${s.id}')">
-          ${s.icon} <b>${esc(s.zh)}</b>　<span style="font-family:Georgia,serif;color:#60a0d0">${esc(s.fr)}</span>
+      ${SCENES.map(s => {
+        const forks = Object.values(s.nodes).filter(n => n.choices &&
+          new Set(n.choices.map(c => c.next)).size > 1).length;
+        return `<button class="scene-btn" onclick="chooseScene('${s.id}')">
+          ${s.icon} <span style="font-family:Georgia,serif;color:#60a0d0">${esc(s.fr)}</span>　<b>${esc(s.zh)}</b>
           <span class="s-exam">${esc(s.exam)}</span>
-          <span class="s-meta">台詞出自 ${esc(s.src)}　·　${Object.keys(s.nodes).length} 個節點</span>
-        </button>`).join('')}
+          <span class="s-meta">台詞出自 ${esc(s.src)}　·　${Object.keys(s.nodes).length} 個節點`
+          + (forks ? `　·　<span class="s-fork">${forks} 個劇情分岔</span>` : '') + `</span>
+        </button>`;
+      }).join('')}
     </div>
     <div class="src-note">
-      ⚠️ 劇本裡每一句法文都逐字出自你的課堂筆記（檢查器 tools/check_scenes.js 會擋下自創句）。<br>
-      標 <span class="tag bad">失禮</span> 的選項是刻意放的誘答——筆記裡明講會扣分的講法。
+      ⚠️ 劇本裡每一句法文都逐字出自你的<b>課堂筆記</b>或<b>Édito 課本原文</b>（含課本後面的聽力逐字稿）——
+      檢查器 tools/check_scenes.js 會擋下自創句。<br>
+      標 <span class="tag bad">${zhOn ? TAG_ZH.bad : TAG_FR.bad}</span> 的選項是刻意放的誘答：筆記或課本裡明講會扣分的講法。
     </div>`;
 }
 
 function chooseScene(id) {
   scene = SCENES.find(s => s.id === id);
-  $('root').innerHTML = `
+  $('root').innerHTML = zhBar() + `
     <div class="card-box">
-      <div class="card-title">${scene.icon} ${esc(scene.zh)} — 你要演誰？</div>
+      <div class="card-title" style="text-transform:none;font-size:.8rem;color:#60a0d0;font-family:Georgia,serif">${scene.icon} ${esc(scene.fr)} <span style="color:#445060;font-family:inherit">— 你要演誰？</span></div>
       ${Object.entries(scene.roles).map(([k, label]) => `
         <button class="role-btn" onclick="startPlay('${k}')">${esc(label)}
-          <span class="s-meta">${k === 'client' ? '你要開口買東西——考試最常抽到的那一邊' : '換位思考：聽懂店員在問什麼，反而更難'}</span>
+          <span class="s-meta">${esc((scene.roleHints || {})[k] || '')}</span>
         </button>`).join('')}
       <button class="role-btn" onclick="pickScene()" style="color:#445060">← 換一個情境</button>
     </div>`;
 }
 
 function startPlay(r) {
-  role = r; node = scene.start; log = []; score = { good:0, ok:0, bad:0 }; hitChk = new Set();
-  $('root').innerHTML = `<div class="card-box"><div class="chat" id="chat"></div><div id="turn"></div></div>`;
+  role = r; node = scene.start; log = []; score = { good:0, ok:0, bad:0 };
+  hitChk = new Set(); missteps = [];
+  $('root').innerHTML = zhBar()
+    + `<div class="card-box"><div class="chat" id="chat"></div><div id="turn"></div></div>`;
   step();
 }
 
-function bubbleHTML(who, fr, zh, note, tag) {
-  const mine = who === role;
-  const cls = mine ? 'me' + (tag && tag !== 'good' ? ' ' + tag : '') : 'them';
-  const label = who === 'system' ? '' : (scene.roles[who] || who).replace(/^..\s*/, '');
+/* 切換中文輔助時，把已經講過的泡泡整批重畫（不重跑劇情） */
+function rerender() {
+  $('root').innerHTML = zhBar()
+    + `<div class="card-box"><div class="chat" id="chat"></div><div id="turn"></div></div>`;
+  $('chat').innerHTML = log.map(b => bubbleHTML(b)).join('');
+  if (node === 'end' || !scene.nodes[node]) finish(); else renderTurn();
+}
+
+/* b = {who, fr, zh, note, tag} */
+function bubbleHTML(b) {
+  const mine = b.who === role;
+  const cls = mine ? 'me' + (b.tag && b.tag !== 'good' ? ' ' + b.tag : '') : 'them';
+  const label = b.who === 'system' ? '' : ((scene.speakers || {})[b.who] || b.who);
+  // 純法語模式：中文只在「選錯／次佳」時自動翻出來（那是回饋不是拐杖），其餘藏在 💬 後面
+  const showZh = zhOn || (b.tag && b.tag !== 'good');
+  const tagTxt = b.tag ? (zhOn ? TAG_ZH[b.tag] : TAG_FR[b.tag]) : '';
   return `<div class="bubble ${cls}">
-    ${label ? `<div class="spk">${esc(label)}${mine ? '（你）' : ''}</div>` : ''}
-    <span class="fr">${esc(fr)}</span>
-    ${fr && who !== 'system' ? `<button class="tts" onclick="say(this)" data-fr="${esc(fr)}">🔊</button>` : ''}
-    ${tag ? `<span class="tag ${tag}">${tag === 'good' ? '自然' : tag === 'ok' ? '可以' : '失禮'}</span>` : ''}
-    ${zh ? `<span class="zh">${esc(zh)}</span>` : ''}
-    ${note ? `<span class="nt">${note}</span>` : ''}
+    ${label ? `<div class="spk">${esc(label)}${mine ? ' · vous' : ''}</div>` : ''}
+    <span class="fr">${esc(b.fr)}</span>
+    ${b.fr && b.who !== 'system' ? `<button class="tts" onclick="say(this)" data-fr="${esc(b.fr)}">🔊</button>` : ''}
+    ${(!showZh && (b.zh || b.note)) ? `<button class="peek" onclick="this.parentNode.querySelectorAll('.zh,.nt').forEach(e=>e.style.display='block');this.remove()">💬</button>` : ''}
+    ${tagTxt ? `<span class="tag ${b.tag}">${esc(tagTxt)}</span>` : ''}
+    ${b.zh ? `<span class="zh"${showZh ? '' : ' style="display:none"'}>${esc(b.zh)}</span>` : ''}
+    ${b.note ? `<span class="nt"${showZh ? '' : ' style="display:none"'}>${b.note}</span>` : ''}
   </div>`;
 }
+
+function push(b) { log.push(b); $('chat').innerHTML = log.map(bubbleHTML).join('');
+  $('chat').lastElementChild?.scrollIntoView({ behavior:'smooth', block:'nearest' }); }
 
 function step() {
   const nd = scene.nodes[node];
   if (!nd) return finish();
+  if (nd.chk) hitChk.add(nd.chk);
   if (nd.speaker === 'system') return finish();
 
   if (nd.choices) {
     if (nd.speaker !== role) {
       // 這一輪不是玩家的角色 → 自動選最自然的那個，讓劇情往下走
       const auto = nd.choices.find(c => c.tag === 'good') || nd.choices[0];
-      push(bubbleHTML(nd.speaker, auto.fr, auto.zh, null, null));
+      push({ who:nd.speaker, fr:auto.fr, zh:auto.zh, note:null, tag:null });
       node = auto.next; return step();
     }
-    $('turn').innerHTML = `
-      ${nd.tip ? `<div class="tip">💬 ${esc(nd.tip)}</div>` : ''}
-      <div class="choices">
-        ${nd.choices.map((c, i) => `<button class="choice" onclick="choose(${i})">
-          <span class="cfr">${esc(c.fr)}</span><span class="cz">${esc(c.zh)}</span></button>`).join('')}
-      </div>`;
-    return;
+    return renderTurn();
   }
-  push(bubbleHTML(nd.speaker, nd.line, nd.zh, nd.note, null));
+  push({ who:nd.speaker, fr:nd.line, zh:nd.zh, note:nd.note, tag:null });
   node = nd.next;
   setTimeout(step, 260);
+}
+
+function renderTurn() {
+  const nd = scene.nodes[node];
+  if (!nd || !nd.choices) return;
+  $('turn').innerHTML = `
+    ${nd.tip ? `<div class="tip">💬 ${esc(nd.tip)}</div>` : ''}
+    <div class="choices">
+      ${nd.choices.map((c, i) => `<button class="choice" onclick="choose(${i})">
+        <span class="csay" onclick="event.stopPropagation();say(this)" data-fr="${esc(c.fr)}">🔊</span>
+        <span class="cfr">${esc(c.fr)}</span>
+        ${zhOn ? `<span class="cz">${esc(c.zh)}</span>` : ''}</button>`).join('')}
+    </div>`;
 }
 
 function choose(i) {
   const nd = scene.nodes[node], c = nd.choices[i];
   score[c.tag] = (score[c.tag] || 0) + 1;
-  push(bubbleHTML(nd.speaker, c.fr, c.zh, c.note, c.tag));
+  push({ who:nd.speaker, fr:c.fr, zh:c.zh, note:c.note, tag:c.tag });
+  if (c.tag !== 'good') {
+    missteps.push(c);
+    logWrong({ src:'情境扮演', q:`${scene.zh}｜${nd.tip || scene.fr}`, a:c.fr,
+               note:String(c.note || '').replace(/<[^>]+>/g, ''), title:scene.zh });
+  }
   $('turn').innerHTML = '';
   node = c.next;
   setTimeout(step, 260);
 }
 
-function push(html) {
-  log.push(html);
-  $('chat').innerHTML = log.join('');
-  $('chat').lastElementChild?.scrollIntoView({ behavior:'smooth', block:'nearest' });
+/* 今日錯題本（格式跟 quiz/review/sentence_drill 那幾份複本一致） */
+function logWrong(entry) {
+  try {
+    const log = JSON.parse(localStorage.getItem('clb7_wrong_log')) || [];
+    const d = new Date().toLocaleDateString('zh-TW');
+    const dup = log.find(e => e.d === d && e.src === entry.src && e.q === entry.q && e.a === entry.a);
+    if (dup) { dup.n = (dup.n || 1) + 1; dup.t = Date.now(); }
+    else log.push({ ...entry, d, t: Date.now(), n: 1 });
+    localStorage.setItem('clb7_wrong_log', JSON.stringify(log.slice(-300)));
+  } catch(e) {}
 }
 
 function finish() {
   const total = score.good + score.ok + score.bad;
-  const done = scene.checklist.filter((_, i) => i < scene.checklist.length); // 走完就算全部經過
   $('turn').innerHTML = `
     <div class="tip" style="color:#60d090">✓ 對話走完了</div>
     <div style="font-size:.8rem;line-height:1.9">
-      自然 <b style="color:#60d090">${score.good}</b> ·
-      可以 <b style="color:#f0b050">${score.ok}</b> ·
-      失禮 <b style="color:#e07a86">${score.bad}</b>　（共 ${total} 次選擇）
+      ${zhOn ? TAG_ZH.good : TAG_FR.good} <b style="color:#60d090">${score.good}</b> ·
+      ${zhOn ? TAG_ZH.ok : TAG_FR.ok} <b style="color:#f0b050">${score.ok}</b> ·
+      ${zhOn ? TAG_ZH.bad : TAG_FR.bad} <b style="color:#e07a86">${score.bad}</b>　（共 ${total} 次選擇）
     </div>
-    <div class="card-title" style="margin-top:14px">老師說的固定套路，你走過了嗎</div>
-    <div class="chk">${done.map(x => `<span class="hit">✓ ${esc(x)}</span>`).join('')}</div>
+    <div class="card-title" style="margin-top:14px">這條路走過的固定套路</div>
+    <div class="chk">${scene.checklist.map(x =>
+      `<span class="${hitChk.has(x) ? 'hit' : ''}">${hitChk.has(x) ? '✓' : '·'} ${esc(x)}</span>`).join('')}</div>
+    ${hitChk.size < scene.checklist.length
+      ? `<div class="src-note">⚠️ 沒亮的那幾格是<b>你這條路沒走到的步驟</b>——換個選擇會走到不同劇情。考試抽到這個情境時，五步都要出現。</div>` : ''}
+    ${missteps.length ? `<div class="card-title" style="margin-top:14px">要記住的幾句（已進今日錯題本）</div>
+      <div class="recap">${missteps.map(c => `<div class="r-item ${c.tag}">
+        <span class="r-fr">${esc(c.fr)}</span> <span class="tag ${c.tag}">${zhOn ? TAG_ZH[c.tag] : TAG_FR[c.tag]}</span>
+        <span class="r-note">${c.note}</span></div>`).join('')}</div>` : ''}
     <div class="btn-row">
-      <button onclick="startPlay('${role === 'client' ? 'vendeur' : 'client'}')">🔄 換角色再演一次</button>
+      <button onclick="startPlay('${otherRole()}')">🔄 換角色再演一次</button>
+      <button class="ghost" onclick="startPlay('${role}')">↻ 走另一條路</button>
       <button class="ghost" onclick="pickScene()">換情境</button>
     </div>
-    <div class="src-note">💡 換角色演一次的價值：當店員要<b>聽懂</b>對方在問什麼，比自己開口更接近聽力考試。</div>`;
+    <div class="src-note">💡 換角色演一次的價值：當對方那一側要<b>聽懂</b>人家在問什麼，比自己開口更接近聽力考試。</div>`;
   try { localStorage.setItem('clb7_roleplay_done', new Date().toLocaleDateString('sv')); } catch(e) {}
 }
 
