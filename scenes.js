@@ -1778,5 +1778,315 @@ const SCENES = [
     end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
   }
 },
+
+/* 13. 鄰居／報修（A1 課本 p.112 逐字稿）
+   這一場沒有店員也沒有考官，是**兩個陌生鄰居**——語域練習最好的場景：
+   要糾正對方（抽菸）又不能撕破臉，然後轉頭還要開口求助（找水電工）。 */
+{
+  id: 'voisin',
+  lvl: 'A1',
+  icon: '🏢',
+  zh: '鄰居規勸＋報修',
+  fr: 'Respectez le règlement',
+  exam: '⭐ 口說「處理小衝突」與「請求協助」兩種功能一次練到；A2 寫作也常出投訴/請求訊息',
+  src: '課本 A1 p.112 逐字稿＋筆記第11、24課',
+  roles: { ancien: '🧍 你是老住戶', nouveau: '📦 你是新搬來的' },
+  speakers: { ancien: 'Clément Dupré', nouveau: 'Michel Barbier' },
+  roleHints: { ancien: '要糾正對方又不能失禮——法文靠 Excusez-moi 跟 s\'il vous plaît 化解', nouveau: '被糾正怎麼收、然後怎麼開口求助' },
+  checklist: ['規勸對方', '接受並道歉', '自我介紹', '開口求助', '拿到聯絡人'],
+  start: 'y1',
+  nodes: {
+    y1: { speaker:'ancien', tip:'有人在公共區域抽電子菸。你要開口', chk:'規勸對方', choices:[
+      { fr:"Excusez-moi, monsieur, c'est interdit de fumer dans les parties communes de l'immeuble.", zh:'不好意思先生，大樓公共區域禁止吸菸。', tag:'good', src:'課本 A1 p.112',
+        note:'✅ <b>Excusez-moi</b> 開頭讓糾正變成提醒；<b>il est interdit de + 原形</b>＝禁止做…（第11課的禁止句型）', next:'y2' },
+      { fr:'Je ne fume pas, je vapote.', zh:'我沒抽菸，我抽電子菸。', tag:'bad', src:'課本 A1 p.112',
+        note:'⚠️ 那是<b>被糾正的人</b>講的', next:'y2' },
+    ]},
+
+    y2: { speaker:'nouveau', tip:'你抽的是電子菸，不是菸', choices:[
+      { fr:'Je ne fume pas, je vapote.', zh:'我沒抽菸，我抽電子菸。', tag:'good', src:'課本 A1 p.112',
+        note:'✅ <b>vapoter</b>＝抽電子菸（vapeur 蒸氣來的新字）', next:'y3' },
+      { fr:"D'accord. Désolé.", zh:'好的，抱歉。', tag:'ok', src:'課本 A1 p.112',
+        note:'直接道歉也可以，但你放棄了解釋的機會', next:'y5' },
+    ]},
+
+    y3: { speaker:'ancien', tip:'他在鑽漏洞。堅持但保持禮貌', chk:'規勸對方', choices:[
+      { fr:"Fumer ou vapoter, c'est la même chose. Respectez le règlement, s'il vous plaît.", zh:'抽菸還是抽電子菸，都一樣。請遵守規約。', tag:'good', src:'課本 A1 p.112',
+        note:'✅ <b>原形動詞當主詞</b>（Fumer ou vapoter…）；命令式＋s\'il vous plaît＝堅定但不失禮', next:'y4' },
+      { fr:'Merci pour votre compréhension.', zh:'謝謝您的體諒。', tag:'ok', src:'課本 A1 p.112',
+        note:'這句是對方讓步之後才說的——他還沒答應你就先謝，會顯得心虛', next:'y4' },
+    ]},
+
+    y4: { speaker:'nouveau', tip:'認了', chk:'接受並道歉', choices:[
+      { fr:"D'accord. Désolé.", zh:'好的，抱歉。', tag:'good', src:'課本 A1 p.112',
+        note:'✅ 兩個字結束爭執。法國人吵架也常常這樣收', next:'y5' },
+      { fr:'Je ne fume pas, je vapote.', zh:'我沒抽菸，我抽電子菸。', tag:'bad', src:'課本 A1 p.112',
+        note:'⚠️ 對方已經說「一樣」了，再堅持一次就是找架吵', next:'y5' },
+    ]},
+
+    y5: { speaker:'ancien', tip:'化解之後，順便認識一下', chk:'自我介紹', choices:[
+      { fr:'Merci pour votre compréhension. Vous êtes notre nouveau voisin ?', zh:'謝謝您的體諒。您是我們的新鄰居嗎？', tag:'good', src:'課本 A1 p.112',
+        note:'✅ 先謝再攀談——<b>把衝突轉成認識</b>，這一步是這段對話最漂亮的地方', next:'y6' },
+      { fr:'Oui. Michel Barbier.', zh:'是的，我是 Michel Barbier。', tag:'bad', src:'課本 A1 p.112',
+        note:'⚠️ 那是新鄰居的回答', next:'y6' },
+    ]},
+
+    y6: { speaker:'nouveau', tip:'報上名字', chk:'自我介紹', choices:[
+      { fr:'Oui. Michel Barbier.', zh:'是的，我是 Michel Barbier。', tag:'good', src:'課本 A1 p.112',
+        note:'✅ 法國人自我介紹常常只講名字，不用整句', next:'y7' },
+      { fr:"Enchanté. Moi, c'est Clément Dupré.", zh:'幸會。我是 Clément Dupré。', tag:'bad', src:'課本 A1 p.112',
+        note:'⚠️ 那是對方的名字', next:'y7' },
+    ]},
+
+    y7: { speaker:'ancien', line:"Enchanté. Moi, c'est Clément Dupré.", zh:'幸會。我是 Clément Dupré。',
+          src:'課本 A1 p.112', note:'<b>Moi, c\'est + 名字</b> 是自我介紹最口語的說法（比 je m\'appelle 輕鬆）', next:'y8' },
+
+    y8: { speaker:'nouveau', tip:'⭐ 分岔：先預告你要問事情，還是直接問？', chk:'開口求助', choices:[
+      { fr:'Au fait, je voudrais vous demander quelque chose.', zh:'對了，我想請問您一件事。', tag:'good', src:'課本 A1 p.112',
+        note:'✅ <b>Au fait</b>＝對了（想到就插話）；先預告再問，對方比較不會覺得突然', next:'y9' },
+      { fr:"J'ai une fuite d'eau. Vous avez le numéro de téléphone d'un bon plombier dans le quartier ?", zh:'我家漏水。您有這一區好的水電工的電話嗎？', tag:'ok', src:'課本 A1 p.112',
+        note:'直接問也行，只是剛認識就開口求助，加一句緩衝會更自然', next:'y11' },
+    ]},
+
+    y9: { speaker:'ancien', line:'Oui, quoi ?', zh:'好啊，什麼事？', src:'課本 A1 p.112',
+          note:'<b>Oui, quoi ?</b>＝「什麼事？」——口語到不能再口語', next:'y10' },
+
+    y10: { speaker:'nouveau', tip:'講出你的問題', chk:'開口求助', choices:[
+      { fr:"J'ai une fuite d'eau. Vous avez le numéro de téléphone d'un bon plombier dans le quartier ?", zh:'我家漏水。您有這一區好的水電工的電話嗎？', tag:'good', src:'課本 A1 p.112',
+        note:'✅ <b>une fuite d\'eau</b>＝漏水；<b>un plombier</b>＝水電工。先講問題再提要求，對方才知道你要幹嘛', next:'y11' },
+      { fr:'Oui, quoi ?', zh:'什麼事？', tag:'bad', src:'課本 A1 p.112',
+        note:'⚠️ 那是被問的人講的', next:'y11' },
+    ]},
+
+    y11: { speaker:'ancien', tip:'給他一個人選', chk:'拿到聯絡人', choices:[
+      { fr:'Oui, pour les réparations, vous pouvez appeler monsieur Bernard ! Il les fait très bien.', zh:'有，修東西您可以打給 Bernard 先生！他修得很好。', tag:'good', src:'課本 A1 p.112',
+        note:'✅ <b>les réparations</b>＝維修；<b>Il les fait très bien</b> 的 les 代替 les réparations（COD 代名詞，第15課）', next:'y12' },
+      { fr:"J'ai une fuite d'eau.", zh:'我家漏水。', tag:'bad', src:'課本 A1 p.112',
+        note:'⚠️ 漏水的是對方，不是你', next:'y12' },
+    ]},
+
+    y12: { speaker:'nouveau', tip:'還有第二件事要問嗎？', choices:[
+      { fr:"Merci. Et j'ai aussi un problème avec une porte, elle ne ferme pas bien, vous connaissez un serrurier pour la réparer ?", zh:'謝謝。我還有一扇門有問題，關不太起來，您認識鎖匠可以修嗎？', tag:'good', src:'課本 A1 p.112',
+        note:'✅ 一次問完比分兩次打擾好。<b>un serrurier</b>＝鎖匠；<b>la réparer</b> 的 la 代替 la porte', next:'y13' },
+      { fr:"Merci, c'est gentil.", zh:'謝謝，您人真好。', tag:'ok', src:'課本 A1 p.112',
+        note:'可以收了，但你還有一扇壞掉的門沒解決', next:'end' },
+    ]},
+
+    y13: { speaker:'ancien', tip:'再給一個人選', chk:'拿到聯絡人', choices:[
+      { fr:'Bien sûr ! Monsieur Leroy.', zh:'當然！Leroy 先生。', tag:'good', src:'課本 A1 p.112',
+        note:'✅ 幫得上忙就爽快答應——<b>Bien sûr</b> 是法國人最常用的「當然」', next:'y14' },
+      { fr:"Merci, c'est gentil.", zh:'謝謝，您人真好。', tag:'bad', src:'課本 A1 p.112',
+        note:'⚠️ 道謝的是求助的那一方', next:'y14' },
+    ]},
+
+    y14: { speaker:'nouveau', tip:'收尾', choices:[
+      { fr:"Merci, c'est gentil.", zh:'謝謝，您人真好。', tag:'good', src:'課本 A1 p.112',
+        note:'✅ <b>c\'est gentil</b>＝你人真好，法國人受人幫忙的標準回應', next:'end' },
+      { fr:'Merci pour votre compréhension.', zh:'謝謝您的體諒。', tag:'ok', src:'課本 A1 p.112',
+        note:'那句是用在「請對方讓步」之後，這裡他是<b>幫了你</b>，用 c\'est gentil 才對', next:'end' },
+    ]},
+
+    end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
+  }
+},
+
+/* 14. 銀行問開戶（A1 課本 p.114）
+   很短，但它是**行政法文**的縮影：一問一答、對方報條件、你要追問「還缺什麼」。
+   移民加拿大之後這種對話會天天遇到。 */
+{
+  id: 'banque',
+  lvl: 'A1',
+  icon: '🏦',
+  zh: '銀行問開戶',
+  fr: 'Ouvrir un compte',
+  exam: '⭐ 行政情境（TEF 口說 Section A 的典型：向機構取得資訊）',
+  src: '課本 A1 p.114 逐字稿',
+  roles: { client: '🙋 你是來問的人', employee: '🏦 你是行員' },
+  speakers: { client: "L'homme", employee: "L'employée" },
+  roleHints: { client: '幫朋友問事情——這是很真實的情境，也考「代第三人稱問」', employee: '行員要把條件一項一項講清楚' },
+  checklist: ['說來意', '回答條件', '追問還缺什麼', '道謝'],
+  start: 'k1',
+  nodes: {
+    k1: { speaker:'employee', line:'Banque du Nord, bonjour !', zh:'北方銀行您好！', src:'課本 A1 p.114',
+          note:'機構接電話：<b>單位名＋bonjour</b>', next:'k2' },
+
+    k2: { speaker:'client', tip:'講清楚你要問什麼、幫誰問', chk:'說來意', choices:[
+      { fr:"Bonjour, madame. Je voudrais avoir des informations pour un ami japonais. Il veut ouvrir un compte dans votre banque.", zh:'您好女士。我想幫一位日本朋友問資訊。他想在貴行開戶。', tag:'good', src:'課本 A1 p.114',
+        note:'✅ <b>pour un ami</b>＝幫朋友問；<b>ouvrir un compte</b>＝開戶。第三人稱 il veut，不是 je veux', next:'k3' },
+      { fr:'Bonjour, madame.', zh:'您好女士。', tag:'ok', src:'課本 A1 p.114',
+        note:'電話裡只打招呼，對方只能再問一次「有什麼事嗎」', next:'k3' },
+      { fr:'Banque du Nord, bonjour !', zh:'北方銀行您好！', tag:'bad', src:'課本 A1 p.114',
+        note:'⚠️ 那是行員接電話的台詞', next:'k3' },
+    ]},
+
+    k3: { speaker:'employee', tip:'開戶第一個條件是什麼？先確認', choices:[
+      { fr:'Il habite en France ?', zh:'他住在法國嗎？', tag:'good', src:'課本 A1 p.114',
+        note:'✅ 口語問句：<b>直述句＋問號語調</b>，不用倒裝也不用 est-ce que', next:'k4' },
+      { fr:"Et une pièce d'identité.", zh:'還有身分證件。', tag:'bad', src:'課本 A1 p.114',
+        note:'⚠️ 順序錯了，這是最後才補的條件', next:'k4' },
+    ]},
+
+    k4: { speaker:'client', tip:'回答', chk:'回答條件', choices:[
+      { fr:'Oui.', zh:'是的。', tag:'good', src:'課本 A1 p.114',
+        note:'✅ 是非題就短答，不用整句', next:'k5' },
+      { fr:"C'est tout ?", zh:'這樣就好了嗎？', tag:'bad', src:'課本 A1 p.114',
+        note:'⚠️ 對方在問你問題，先回答再追問', next:'k5' },
+    ]},
+
+    k5: { speaker:'employee', line:"Il doit avoir un justificatif de domicile. Une facture d'électricité ou de téléphone, par exemple.",
+          zh:'他要有居住證明。例如電費單或電話帳單。', src:'課本 A1 p.114',
+          note:'<b>devoir + 原形</b>＝必須；<b>un justificatif de domicile</b>＝居住證明（法國辦任何事都要這個）', next:'k6' },
+
+    k6: { speaker:'client', tip:'只要這樣嗎？', chk:'追問還缺什麼', choices:[
+      { fr:"C'est tout ?", zh:'這樣就好了嗎？', tag:'good', src:'課本 A1 p.114',
+        note:'✅ 兩個字問完「還缺什麼」——辦行政手續一定要問這句，不然白跑一趟', next:'k7' },
+      { fr:'Merci beaucoup !', zh:'非常感謝！', tag:'ok', src:'課本 A1 p.114',
+        note:'你就這樣掛了？行員還有一項沒講', next:'end' },
+    ]},
+
+    k7: { speaker:'employee', tip:'還有一項', choices:[
+      { fr:"Et une pièce d'identité.", zh:'還有身分證件。', tag:'good', src:'課本 A1 p.114',
+        note:'✅ <b>une pièce d\'identité</b>＝身分證件（護照、身分證都算）', next:'k8' },
+      { fr:"C'est tout ?", zh:'這樣就好了嗎？', tag:'bad', src:'課本 A1 p.114',
+        note:'⚠️ 那是客人問的', next:'k8' },
+    ]},
+
+    k8: { speaker:'client', tip:'收尾', chk:'道謝', choices:[
+      { fr:'Merci beaucoup !', zh:'非常感謝！', tag:'good', src:'課本 A1 p.114',
+        note:'✅ 拿到完整答案再道謝', next:'end' },
+      { fr:"Merci, c'est gentil.", zh:'謝謝，您人真好。', tag:'ok', src:'課本 A1 p.112',
+        note:'對機構人員用 c\'est gentil 有點太熟；merci beaucoup 剛好', next:'end' },
+    ]},
+
+    end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
+  }
+},
+
+/* 15. 機場遇到朋友（A1 課本 p.132 逐字稿）
+   ⭐ 這一場整段都是 passé composé——**口說第二部分「講你的假期」的原型**。
+   跟前面所有場景不同：這裡沒有店員也沒有服務，就是兩個人交換經驗，
+   而「交換」正是重點：你講完要把問題丟回去，對話才活得下去。 */
+{
+  id: 'aeroport',
+  lvl: 'A1',
+  icon: '✈️',
+  zh: '機場遇到朋友聊假期',
+  fr: "À l'aéroport",
+  exam: '⭐⭐ 口說第二部分「講一次旅行/經驗」就是這個——整段 passé composé',
+  src: '課本 A1 p.132 逐字稿',
+  roles: { loic: '🙋 你是 Loïc', marina: '🧳 你是剛回國的 Marina' },
+  speakers: { loic: 'Loïc', marina: 'Marina' },
+  roleHints: { loic: '你要一直問下去——問句用完對話就死了', marina: '你要講你做過什麼，而且講完要把問題丟回去' },
+  checklist: ['打招呼', '問對方從哪回來', '講你做了什麼', '把問題丟回去', '道別'],
+  start: 'z1',
+  nodes: {
+    z1: { speaker:'loic', tip:'在機場撞見朋友', chk:'打招呼', choices:[
+      { fr:"Tiens ! Salut Marina ! Qu'est-ce que tu fais à l'aéroport ?", zh:'咦！嗨 Marina！你在機場做什麼？', tag:'good', src:'課本 A1 p.132',
+        note:'✅ <b>Tiens !</b>＝「咦、欸」（意外遇到的驚訝詞），法國人超常用', next:'z2' },
+      { fr:'Je rentre de vacances !', zh:'我度假回來！', tag:'bad', src:'課本 A1 p.132',
+        note:'⚠️ 那是對方的回答', next:'z2' },
+    ]},
+
+    z2: { speaker:'marina', tip:'你剛從國外回來', choices:[
+      { fr:'Je rentre de vacances !', zh:'我度假回來！', tag:'good', src:'課本 A1 p.132',
+        note:'✅ <b>rentrer de + 地方/事件</b>＝從…回來', next:'z3' },
+      { fr:"J'arrive de Nouvelle-Zélande.", zh:'我從紐西蘭來。', tag:'good', src:'課本 A1 p.132',
+        note:'✅ 直接講國家也可以。<b>de + 陰性國家</b>不加冠詞', next:'z3' },
+    ]},
+
+    z3: { speaker:'loic', tip:'繼續問下去', chk:'問對方從哪回來', choices:[
+      { fr:"Tu arrives d'où ?", zh:'你從哪裡來？', tag:'good', src:'課本 A1 p.132',
+        note:'✅ <b>d\'où</b>＝從哪裡（疑問詞放句尾是口語問法）', next:'z4' },
+      { fr:'Génial ! Qu\'est-ce que tu as fait ?', zh:'太棒了！你做了什麼？', tag:'good', src:'課本 A1 p.132',
+        note:'✅ 直接跳到「做了什麼」也很自然——<b>tu as fait</b> 是 passé composé', next:'z5' },
+    ]},
+
+    z4: { speaker:'marina', tip:'講你從哪回來', choices:[
+      { fr:"J'arrive de Nouvelle-Zélande.", zh:'我從紐西蘭來。', tag:'good', src:'課本 A1 p.132',
+        note:'✅ arriver de＝從…抵達', next:'z5' },
+      { fr:'Je reviens du Danemark, de Copenhague.', zh:'我從丹麥、哥本哈根回來。', tag:'ok', src:'課本 A1 p.132',
+        note:'句子沒問題，但那是<b>Loïc</b> 等一下要講的行程', next:'z5' },
+    ]},
+
+    z5: { speaker:'loic', tip:'問她做了什麼', choices:[
+      { fr:"Génial ! Qu'est-ce que tu as fait ?", zh:'太棒了！你做了什麼？', tag:'good', src:'課本 A1 p.132',
+        note:'✅ 這一句打開整段 passé composé——考試問「講講你的假期」就是這句', next:'z6' },
+      { fr:'Tu as aimé ?', zh:'你喜歡嗎？', tag:'ok', src:'課本 A1 p.132',
+        note:'太早了——她還沒講做了什麼，你就先問感想', next:'z7' },
+    ]},
+
+    z6: { speaker:'marina', tip:'⭐ 分岔：細講做了什麼，還是只給感想？', chk:'講你做了什麼', choices:[
+      { fr:"Beaucoup de choses ! J'ai fait de la randonnée. J'ai visité des villes et des musées. J'ai vu des amis.", zh:'很多事！我去健行。我參觀了城市跟博物館。我見了朋友。', tag:'good', src:'課本 A1 p.132',
+        note:'✅ <b>三個 passé composé 連發</b>——考試要的就是這種「一口氣講三件事」。visiter 接地方、voir 接人（第19課的區分）', next:'z7' },
+      { fr:"Oui, j'ai adoré. C'est vraiment un pays génial.", zh:'嗯，我超愛。真的是個很棒的國家。', tag:'ok', src:'課本 A1 p.132',
+        note:'感想很好，但你**沒講做了什麼**——考官會覺得你在閃避 passé composé', next:'z8' },
+    ]},
+
+    z7: { speaker:'loic', tip:'追問細節', choices:[
+      { fr:'Tu as des amis en Nouvelle-Zélande ?', zh:'你在紐西蘭有朋友？', tag:'good', src:'課本 A1 p.132',
+        note:'✅ 抓對方講到的一個點追問——這是讓對話延長最好用的技巧', next:'z8' },
+      { fr:'Tu as aimé ?', zh:'你喜歡嗎？', tag:'good', src:'課本 A1 p.132',
+        note:'✅ 問感想，接下來她會給評價', next:'z8' },
+    ]},
+
+    z8: { speaker:'marina', tip:'給評價', choices:[
+      { fr:"Oui, j'ai adoré. C'est vraiment un pays génial.", zh:'嗯，我超愛。真的是個很棒的國家。', tag:'good', src:'課本 A1 p.132',
+        note:'✅ <b>j\'ai adoré</b>（PC）講當時的感受；<b>c\'est</b>（現在式）講這個國家本來就是這樣', next:'z9' },
+      { fr:'Oui, beaucoup.', zh:'嗯，很多。', tag:'ok', src:'課本 A1 p.132',
+        note:'那是回答「有沒有拍照」的', next:'z9' },
+    ]},
+
+    z9: { speaker:'loic', tip:'再問一個', choices:[
+      { fr:'Tu as pris des photos ?', zh:'你有拍照嗎？', tag:'good', src:'課本 A1 p.132',
+        note:'✅ <b>prendre</b> 的過去分詞是 pris（第17課不規則表）', next:'z10' },
+      { fr:'Je reviens du Danemark, de Copenhague.', zh:'我從丹麥、哥本哈根回來。', tag:'bad', src:'課本 A1 p.132',
+        note:'⚠️ 她還沒問你，太急著講自己了', next:'z10' },
+    ]},
+
+    z10: { speaker:'marina', tip:'⚠️ 回答完，記得把問題丟回去', chk:'把問題丟回去', choices:[
+      { fr:"Oui, beaucoup. Et toi, qu'est-ce que tu fais à l'aéroport ?", zh:'有，很多。那你呢，你在機場做什麼？', tag:'good', src:'課本 A1 p.132',
+        note:'✅ <b>Et toi… ?</b>＝把球丟回去。口說考試最怕你只回答不提問，這一句直接救場', next:'z11' },
+      { fr:'Oui, beaucoup.', zh:'有，很多。', tag:'ok', src:'課本 A1 p.132',
+        note:'答完就停——對方要一直想新問題，對話會越來越乾', next:'z11' },
+    ]},
+
+    z11: { speaker:'loic', tip:'換你講你的行程', choices:[
+      { fr:'Je reviens du Danemark, de Copenhague.', zh:'我從丹麥、哥本哈根回來。', tag:'good', src:'課本 A1 p.132',
+        note:'✅ <b>revenir de + le Danemark → du</b>（陽性國家縮合）；後面補城市名不加冠詞', next:'z12' },
+      { fr:'Je rentre de vacances !', zh:'我度假回來！', tag:'ok', src:'課本 A1 p.132',
+        note:'可以，但她剛講了具體國家，你也講具體一點對話才會接下去', next:'z12' },
+    ]},
+
+    z12: { speaker:'marina', tip:'你沒去過那裡', choices:[
+      { fr:'Je ne connais pas Copenhague.', zh:'我沒去過哥本哈根。', tag:'good', src:'課本 A1 p.132',
+        note:'✅ <b>connaître</b>＝認識/去過（地方用 connaître，不是 savoir）', next:'z13' },
+      { fr:'Tu as aimé ?', zh:'你喜歡嗎？', tag:'ok', src:'課本 A1 p.132',
+        note:'也可以問，但講「我沒去過」會讓對方更想介紹', next:'z13' },
+    ]},
+
+    z13: { speaker:'loic', tip:'推薦一下', choices:[
+      { fr:"C'est très sympa et très animé. Il y a beaucoup de cafés et de restaurants. Tu dois y aller !", zh:'那裡很棒又很熱鬧。有很多咖啡館跟餐廳。你一定要去！', tag:'good', src:'課本 A1 p.132',
+        note:'✅ <b>animé</b>＝熱鬧；<b>Tu dois y aller</b> 的 <b>y</b> 代替「去那個地方」（第21課的 y）', next:'z14' },
+      { fr:'Je ne connais pas Copenhague.', zh:'我沒去過哥本哈根。', tag:'bad', src:'課本 A1 p.132',
+        note:'⚠️ 你才剛從那裡回來', next:'z14' },
+    ]},
+
+    z14: { speaker:'marina', tip:'你很累了，該收了', chk:'道別', choices:[
+      { fr:"Ah oui, mais pas aujourd'hui ! J'ai fait 25 heures d'avion et je suis fatiguée. Je vais rentrer chez moi.", zh:'好啊，但不是今天！我坐了25小時飛機，很累。我要回家了。', tag:'good', src:'課本 A1 p.132',
+        note:'✅ 婉轉收尾：接受提議＋給理由＋說明下一步。⚠️ 課本這個角色是女生所以 <b>fatiguée</b>，男生講要去掉字尾的 e', next:'z15' },
+      { fr:'Je ne connais pas Copenhague.', zh:'我沒去過哥本哈根。', tag:'bad', src:'課本 A1 p.132',
+        note:'⚠️ 剛剛講過了', next:'z15' },
+    ]},
+
+    z15: { speaker:'loic', tip:'道別', chk:'道別', choices:[
+      { fr:'Ok, à la prochaine !', zh:'好，下次見！', tag:'good', src:'課本 A1 p.132',
+        note:'✅ <b>À la prochaine</b>＝下次見（沒有講定時間，比 à demain 安全）', next:'end' },
+      { fr:'À demain !', zh:'明天見！', tag:'bad', src:'筆記第1課',
+        note:'⚠️ 你們又沒約明天', next:'end' },
+    ]},
+
+    end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
+  }
+},
 ];
 if (typeof module !== 'undefined') module.exports = { SCENES };
