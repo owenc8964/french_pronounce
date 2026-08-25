@@ -637,32 +637,45 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **瀏覽器層**（切 TEST ROOM，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入＋故意把 `sous la tente` 填成 en 被判錯；reading a22 故意 2對1錯 → 分數與 ✓✗ 與解說都正確、紀錄欄位齊全；french_notes lesson-21 渲染 11 unit／11 表格全包 compare-table／**161 個 🔊 tts-btn**／導覽列 21 個按鈕含第21課；quiz `?lesson=21` 實際出到 y/en 題目並答對計分；**`getPool()` 放行全部 27 題**（確認沒踩到 07-16 那個「文法點被鎖導致整批題目消失」的坑）；map 顯示第21課、tile 與 codex 3-4-5 都正確。
 - **收尾**：清掉測試寫入的 a22 紀錄與該題 SRS key → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留。
 
-### ⏭ 下個 session 的第一件事：先看 Owen 玩完 15 個場景的回饋
+### ⏭ 下個 session：Owen 要做筆記（他 08-25 收尾時講的）
 
-08-25 這天 Owen 一邊玩一邊丟回饋，工具被他推著改了四輪（見下方 08-25（續））。
-**目前的狀態是「素材夠多、練法夠硬、但還沒累積使用數據」**——他昨天才第一次玩到背誦模式。
-所以下個 session 不要急著加功能，先問他兩件事：①背誦模式實際用起來如何 ②反射率有沒有意義。
+他的原話：「**我進下個 session 要做筆記了**」——也就是丟逐字稿／課本截圖進來，走**每課入庫的九項連動**。
+最近一次完整的範例是 08-23 第26課（往下捲就看得到），照那個流程做。
 
-**動手前照樣要做的三件事**（跟之前一樣，但多了 OCR）：
-1. `python3 tools/extract_textbook.py` → 課本文字快取（A1課本＋A1 Cahier＋A2課本＋DELF A1 考官文件）
-2. `python3 tools/ocr_pdf.py --all` → 掃描檔（DELF A2 全真題、A2 Cahier）OCR 後**附加**到同一份快取
-   ⚠️ extract 會**覆寫**快取，ocr 是**附加**——所以順序不能顛倒，跑完 extract 一定要再跑一次 ocr
-3. 寫完必跑 `node tools/check_scenes.js`，教材出處＋劇本結構兩段都要綠
+**⚠️ 動手前一定要先做的三件事（順序不能顛倒）**
+1. **先開一課現成的筆記看格式**（建議最近一課 `lesson-26`），照著寫，不要憑記憶——
+   這是 CLAUDE.md 的鐵律，Owen 講過「筆記怎麼每次都會變動，做筆記時要有習慣先去看格式跟做法吧」
+2. 表格鐵律兩條：`<table>` 一定包在 `<div class="compare-table">` 裡、法文欄 `<td>` 標 `class="m"`；
+   **法文句子的載體是 `<ul class="phrase-list">` 的 `<li><span class="fr">`**，不可以用 `<p class="fr">`
+3. **寫完必跑 `node tools/check_notes.js`，全綠才算完成**
 
-**還沒做、素材已經確認存在的場景**（`assets/.textbook_cache.txt` 裡都有）：
+**九項連動清單**（每一項都要動，漏一項＝新課內容進不了對應的練習系統）
+1. `french_notes.html` 新增 `lesson-NN`
+2. `questions.js` 加題（新 topic 要同時在 `quiz.html` 與 `dashboard.html` 補 `TOPIC_LABELS`
+   ——⚠️ 兩份風格不同：dashboard 用法文短名、quiz 用中文說明式，照各自的來）
+3. `chunks.js`：跑 `node tools/extract_chunks.js`
+4. `sentences.js`：**人工精選** `S_LNN_1~10`
+5. `table_drill.html` 加表
+6. `gram_rules.js`：新文法點（必含 `why` 欄位）
+7. `codex.js`：⚠️ 既有座標永不重編，只在節末追加
+8. `map.html`：`CURRENT_LESSON` ＋ 新 tile
+9. `reading.html`：新增一篇同級原創短文（同時當該課「平行閱讀」）
 
-| 情境 | 出處 | 有什麼 |
-|---|---|---|
-| 🛒 市場／超市 | A1 p.50 | 在哪買什麼＋chez le boucher／au marché 介係詞對照。DELF A1 官方 SUJET 4 就是「Au marché」 |
-| 📱 買 3C 送禮 | A1 p.84 | 挑禮物、比較顏色款式、ça sert à quoi |
-| 🧵 打電話問課程 | A1 p.177 | Je voudrais des informations. Qu'est-ce que vous proposez ? |
-| ☕ 咖啡館 | DELF A1 官方 SUJET 6（有價目表） | 需要先找咖啡館對話素材，目前只有題目沒有台詞 |
-| 🚉 車站買票 | DELF A1 官方 SUJET 7（有時刻表價目表） | 同上，缺台詞 |
-| 🍽 A2 「On mange où ?」 | A2 p.88 | 討論在哪吃飯 |
-| 💼 A2 工作／CV | A2 p.155、p.158 | 職涯訪談＋寫 CV |
-| 🌍 A2 環境／園藝 | A2 p.169、p.177 | 議題型對話，接近 B1 |
-| ~~📋 DELF A2 全真題~~ | — | ✅ **08-25 已挖**：官方示範 interaction 兩場（運動、買T恤）已做成場景；剩下的是聽力短片段（2-3行）跟 sujets 清單（有題目沒台詞） |
+**這一課還可以順手做的第十件事（08-25 之後新增）**：
+新課如果出現**成對台詞的對話**（課文對話、老師示範的來回），可以直接做成 `scenes.js` 的情境劇本——
+目前 18 場、755 句。做法見下方 08-25 各段；寫完跑 `node tools/check_scenes.js`。
 
+---
+
+### 08-25（續4）：補齊 TOPIC_LABELS（dashboard 28 個、quiz 17 個）
+
+重構 dashboard 時發現 `TOPIC_LABELS` 沒跟上題庫：**77 個 topic，dashboard 只有 53 個名字、
+quiz 只有 64 個**，缺的會直接印出 raw id（`daily-routine-vocab`、`passe-recent`…）。兩份都補齊了。
+
+⚠️ **兩份刻意用不同風格，不要合併**：`dashboard.html` 用**法文短名**（Routine quotidienne、
+Place de l'adjectif）因為那是掃一眼的儀表板；`quiz.html` 用**中文說明式**（日常作息詞彙、
+il faut / devoir（必須））因為那是答完題要看懂自己錯在哪。
+**每次加新 topic 都要同時補這兩份**（已寫進上面的九項連動第 2 項）。
 ---
 
 ### 08-25（續）：Owen 一邊玩一邊改，工具被推了四輪
