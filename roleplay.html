@@ -68,6 +68,9 @@ body { background:#07080f; color:#ddd8cc; font-family:'Segoe UI',system-ui,sans-
   letter-spacing:1px; border:1px solid; }
 .lvl.A1 { color:#5a6a7a; border-color:#26303e; }
 .lvl.A2 { color:#f0c060; border-color:#4a3a10; background:#241f10; }
+.lvlBtn { font-size:.6rem; padding:3px 9px; border-radius:5px; border:1px solid #1a2438;
+  background:#0d1020; color:#5a6a7a; font-family:inherit; cursor:pointer; margin-left:5px; }
+.lvlBtn.on { border-color:#f0c060; color:#f0c060; }
 
 /* 對話 */
 .chat { display:flex; flex-direction:column; gap:10px; }
@@ -174,6 +177,11 @@ const REFLEX_MS = 3000;          // 起手 3 秒內＝不用想（跟 verb_sprin
 let askedAt = 0;                 // 這一題題目出現的時間戳
 let drillLog = [];               // [{node, tip, fr, ms, self:'ok'|'near'|'no'}]
 
+/* 場景多了之後的等級篩選（不改順序，只隱藏——Owen 靠位置記東西，順序一動就找不到了） */
+let lvlFilter = 'all';
+try { lvlFilter = localStorage.getItem('rp_lvl') || 'all'; } catch(e) {}
+function setLvl(v) { lvlFilter = v; try { localStorage.setItem('rp_lvl', v); } catch(e) {} pickScene(); }
+
 let scene = null, role = null, node = null, log = [], score = { good:0, ok:0, bad:0 };
 let hitChk = new Set(), missteps = [];
 const $ = id => document.getElementById(id);
@@ -205,10 +213,16 @@ function zhBar() {
 
 function pickScene() {
   scene = null; node = null;
+  const shown = SCENES.filter(s => lvlFilter === 'all' || s.lvl === lvlFilter);
+  const n2 = SCENES.filter(s => s.lvl === 'A2').length;
   $('root').innerHTML = zhBar() + `
     <div class="card-box">
-      <div class="card-title">選一個情境</div>
-      ${SCENES.map(s => {
+      <div class="card-title">選一個情境
+        <span style="float:right;text-transform:none;letter-spacing:0">
+          <button class="lvlBtn ${lvlFilter === 'all' ? 'on' : ''}" onclick="setLvl('all')">全部 ${SCENES.length}</button>
+          <button class="lvlBtn ${lvlFilter === 'A2' ? 'on' : ''}" onclick="setLvl('A2')">只看 A2 ${n2}</button>
+        </span></div>
+      ${shown.map(s => {
         const forks = Object.values(s.nodes).filter(n => n.choices &&
           new Set(n.choices.map(c => c.next)).size > 1).length;
         return `<button class="scene-btn" onclick="chooseScene('${s.id}')">

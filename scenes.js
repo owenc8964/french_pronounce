@@ -2088,5 +2088,390 @@ const SCENES = [
     end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
   }
 },
+
+/* ═══════════════════════════════════════════════════════════════
+   ⬇⬇ 以下三個來自 **DELF A2 全真題本**（Le DELF A2 100% réussite）與 A2 練習本。
+      這兩本是掃描檔，08-25 用 tools/ocr_pdf.py（macOS 內建 Vision OCR）才讀進來。
+      ⚠️ OCR 一定有錯字，所以這批的每一句都額外用眼睛校過一次法文正確性，
+         不是只靠檢查器過關就算數。
+   ⭐ 16、17 兩場是**官方示範對答**——不是課本的情境對話，是考試書直接寫給考生看的
+      「這一題該怎麼答」，等於把評分標準攤開來。
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 16. 約朋友一起運動（DELF A2 全真題本 p.114-115 的官方示範 interaction）
+   考試形態：Exercice en interaction，考官演你的朋友，**要用 tu**。
+   這一場的重點不是單字，是**連接詞**——官方示範裡塞滿了 car / donc / alors /
+   parce que / grâce à，這正是 A2 拿分的關鍵：句子要串起來，不能一句一句丟。 */
+{
+  id: 'sport',
+  lvl: 'A2',
+  icon: '🎾',
+  zh: '約朋友一起運動',
+  fr: 'Faire du sport avec un ami',
+  exam: '⭐⭐ DELF A2 口說第三部分的**官方示範對答**（真題本 p.114）——考官演你朋友，全程 tu',
+  src: 'DELF A2 真題本 p.114-115（官方示範）',
+  roles: { moi: '🙋 你是提議的人（考生）', ami: '🎽 你是朋友（考官演的）' },
+  speakers: { moi: 'Le candidat', ami: "L'examinateur" },
+  roleHints: { moi: '朋友之間用 tu；重點是把句子用連接詞串起來，不要一句一句丟', ami: '你要有意見、要能拒絕、要提替代方案——考生才有東西可以接' },
+  checklist: ['打招呼', '提議一起運動', '講各自喜歡的運動', '喬時間', '約地點', '分工收尾'],
+  start: 's1',
+  nodes: {
+    s1: { speaker:'moi', tip:'對朋友打招呼。⚠️ 這一題是 tu，不是 vous', chk:'打招呼', choices:[
+      { fr:'Salut ! Comment ça va ?', zh:'嗨！你好嗎？', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ 官方示範的第一句。<b>Salut</b>＋<b>ça va</b>＝朋友之間；考官會照著你選的語域回你', next:'s2' },
+      { fr:'Bonjour !', zh:'您好！', tag:'ok', src:'筆記第1課',
+        note:'不算錯，但題目說對方是「你的朋友」——太正式會被看成沒讀懂角色設定', next:'s2' },
+    ]},
+
+    s2: { speaker:'ami', line:'Ça va très bien et toi ?', zh:'我很好，你呢？', src:'DELF A2 真題本 p.114',
+          note:'<b>et toi ?</b>——把問題丟回來。這一來一回是暖身，不要在這裡卡住', next:'s3' },
+
+    s3: { speaker:'moi', tip:'講出你的提議。⭐ 這一句決定考官接得順不順', chk:'提議一起運動', choices:[
+      { fr:'Dis-moi, je cherche quelqu\'un pour faire du sport avec moi. Est-ce que ça te dirait que nous fassions une activité sportive ensemble ?', zh:'跟你說，我在找人一起運動。你有沒有興趣我們一起做個運動？', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ 官方示範句。<b>Dis-moi</b>＝「跟你說」（開話題的緩衝）；<b>ça te dirait que…</b> 是很高級的提議句型，A2 講得出來就加分', next:'s4' },
+      { fr:'Ça te dit ?', zh:'你有興趣嗎？', tag:'ok', src:'筆記第9課',
+        note:'句子沒錯，但你還沒說「什麼事」——對方只能反問「什麼有興趣？」，等於浪費一輪', next:'s4' },
+    ]},
+
+    s4: { speaker:'ami', tip:'你是朋友。答應，而且要給理由', choices:[
+      { fr:'En effet, c\'est une super idée car j\'ai un peu grossi et je voudrais perdre mes kilos.', zh:'的確，這是個好主意，因為我有點變胖了，想減掉幾公斤。', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ <b>En effet</b>＝的確；<b>car</b>＝因為（比 parce que 書面一點）。答應＋理由，對話才有內容往下接', next:'s5' },
+      { fr:'Avec plaisir !', zh:'很樂意！', tag:'ok', src:'筆記第9課',
+        note:'答應了，但沒有任何資訊——考試對話會很快乾掉', next:'s5' },
+    ]},
+
+    s5: { speaker:'moi', tip:'呼應對方的理由，順便問他喜歡什麼運動', choices:[
+      { fr:'Super, moi j\'ai besoin de faire du sport pour être en meilleure forme. Bon, alors, qu\'est-ce que tu aimes comme sports ?', zh:'太好了，我也需要運動來讓自己狀態更好。那你喜歡什麼運動？', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ <b>avoir besoin de + 原形</b>＝需要做…；<b>pour + 原形</b>＝為了…（目的）。先呼應對方再提問，這是 A2 對話的節奏', next:'s6' },
+      { fr:'Bon, alors, qu\'est-ce que tu aimes comme sports ?', zh:'那你喜歡什麼運動？', tag:'ok', src:'DELF A2 真題本 p.114',
+        note:'問得對，但你跳過了「我也是」——對話變成單向訪問', next:'s6' },
+    ]},
+
+    s6: { speaker:'ami', line:'Alors, j\'aime beaucoup la natation et le tennis. Et toi ?',
+          zh:'嗯，我很喜歡游泳跟網球。你呢？', src:'DELF A2 真題本 p.114',
+          note:'運動用<b>定冠詞</b>：j\'aime <b>la</b> natation（喜歡整件事）；跟 faire <b>de la</b> natation 不同', next:'s7' },
+
+    s7: { speaker:'moi', tip:'找出共同點', chk:'講各自喜歡的運動', choices:[
+      { fr:'Moi aussi, j\'aime le tennis.', zh:'我也是，我喜歡網球。', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ <b>Moi aussi</b>＝我也是（肯定句的附和；否定句要用 moi non plus）', next:'s8' },
+      { fr:'Je ne sais pas.', zh:'我不知道。', tag:'ok', src:'筆記第16課',
+        note:'誠實但幫不上忙——考試要的是「一起找出共識」，這句會把球又踢回去', next:'s8' },
+    ]},
+
+    s8: { speaker:'ami', tip:'確認共同點，並提出可行方案', choices:[
+      { fr:'Ah, tu aimes le tennis aussi ? Bon, c\'est bien, on aime ce sport tous les deux. Donc on pourrait essayer d\'en faire ensemble.', zh:'啊，你也喜歡網球？那太好了，我們兩個都喜歡這個運動。所以我們可以試試看一起打。', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ <b>tous les deux</b>＝兩個人都；<b>on pourrait</b>（條件式）＝我們可以…（提議時比 on peut 婉轉）；<b>en</b> 代替 du tennis', next:'s9' },
+      { fr:'Moi aussi, j\'aime le tennis.', zh:'我也是，我喜歡網球。', tag:'bad', src:'DELF A2 真題本 p.114',
+        note:'⚠️ 那是對方剛講的', next:'s9' },
+    ]},
+
+    s9: { speaker:'ami', line:'On peut jouer gratuitement à l\'université, il y a plusieurs cours en accès libre.',
+          zh:'我們可以在大學免費打，有好幾個球場開放自由使用。', src:'DELF A2 真題本 p.114',
+          note:'<b>gratuitement</b>＝免費地；<b>en accès libre</b>＝開放自由使用。提方案時附上「為什麼可行」', next:'s10' },
+
+    s10: { speaker:'ami', tip:'開始喬時間', choices:[
+      { fr:'Alors quand es-tu disponible ? Quel jour ?', zh:'那你什麼時候有空？哪一天？', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ <b>disponible</b>＝有空的（比 libre 正式一點）。先問哪一天再問幾點，順序清楚', next:'s11' },
+      { fr:'Le mercredi, je suis libre, et toi ?', zh:'我星期三有空，你呢？', tag:'bad', src:'DELF A2 真題本 p.114',
+        note:'⚠️ 那是被問的人回答的', next:'s11' },
+    ]},
+
+    s11: { speaker:'moi', tip:'講你哪天有空', chk:'喬時間', choices:[
+      { fr:'Le mercredi, je suis libre, et toi ?', zh:'我星期三有空，你呢？', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ <b>le mercredi</b>＝每個星期三（定冠詞＋星期＝固定）；講完加 <b>et toi ?</b> 把球丟回去', next:'s12' },
+      { fr:'L\'après-midi quand tu veux.', zh:'下午你什麼時候都可以。', tag:'ok', src:'DELF A2 真題本 p.114',
+        note:'他問的是「哪一天」，你答了時段——順序亂掉，對方還要再問一次', next:'s12' },
+    ]},
+
+    s12: { speaker:'ami', tip:'⭐ 分岔：星期三你不行（要協商），還是直接配合？', choices:[
+      { fr:'Le mercredi ? Non, plutôt le samedi parce que le mercredi j\'ai cours toute la journée.', zh:'星期三？不行，星期六比較好，因為星期三我整天有課。', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ <b>拒絕＋替代方案＋理由</b>三件一組。<b>plutôt</b>＝比較傾向…；這一步才是考試真正在看的「協商」', next:'s13' },
+      { fr:'L\'après-midi quand tu veux.', zh:'下午你什麼時候都可以。', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ 直接配合也可以——這條路比較短，但你就少練到一次「被拒絕之後怎麼接」', next:'s14' },
+    ]},
+
+    s13: { speaker:'moi', tip:'被改期了。接受並推進到幾點', chk:'喬時間', choices:[
+      { fr:'OK, ça me va aussi. Vers quelle heure ?', zh:'好，我也可以。大概幾點？', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ <b>ça me va</b>＝我可以；<b>vers + 時間</b>＝大約幾點。接受之後<b>馬上推進下一個細節</b>，不要停', next:'s14' },
+      { fr:'Le mercredi, je suis libre, et toi ?', zh:'我星期三有空，你呢？', tag:'bad', src:'DELF A2 真題本 p.114',
+        note:'⚠️ 他剛說星期三不行——沒聽懂對方的拒絕是考試最傷的失分', next:'s14' },
+    ]},
+
+    s14: { speaker:'moi', tip:'把時間講死', chk:'喬時間', choices:[
+      { fr:'Vers 14 h ?', zh:'大概兩點？', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ 給一個<b>具體數字</b>讓對方確認——這比「你決定就好」有效率得多', next:'s15' },
+      { fr:'OK, ça me va aussi. Vers quelle heure ?', zh:'好，我也可以。大概幾點？', tag:'ok', src:'DELF A2 真題本 p.114',
+        note:'他已經說「下午你隨意」，再問一次幾點就是把決定推回去', next:'s15' },
+    ]},
+
+    s15: { speaker:'ami', tip:'確認時間並把約定固定下來', choices:[
+      { fr:'Oui c\'est très bien, 14 h. Oui, on se donne rendez-vous tous les samedis pour jouer au tennis ?', zh:'好，兩點很好。那我們每個星期六約打網球？', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ <b>se donner rendez-vous</b>＝互相約時間；<b>tous les samedis</b>＝每個星期六。把單次變成常態，這是加分的收尾', next:'s16' },
+      { fr:'Vers 14 h ?', zh:'大概兩點？', tag:'bad', src:'DELF A2 真題本 p.114',
+        note:'⚠️ 那是對方剛提的時間', next:'s16' },
+    ]},
+
+    s16: { speaker:'moi', tip:'還有一件事沒講定', chk:'約地點', choices:[
+      { fr:'Oui, oui. On se retrouve au gymnase de l\'université ?', zh:'好好。我們在大學體育館碰面？', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ 時間講定了還要講<b>地點</b>——考官會看你有沒有把「所有細節」處理完', next:'s17' },
+      { fr:'Ça marche !', zh:'說定了！', tag:'ok', src:'筆記第19課',
+        note:'太早收了，你們還沒講在哪裡碰面', next:'s18' },
+    ]},
+
+    s17: { speaker:'ami', line:'D\'accord, devant le gymnase, très bien... J\'espère que je vais perdre du poids grâce au tennis.',
+           zh:'好，體育館前面，很好…希望我可以靠打網球瘦下來。', src:'DELF A2 真題本 p.114',
+           note:'<b>grâce à</b>＝多虧了…（正面的「因為」；負面要用 à cause de）；<b>perdre du poids</b>＝減重', next:'s18' },
+
+    s18: { speaker:'moi', tip:'收尾。⚠️ 記得處理裝備這種實際細節', chk:'分工收尾', choices:[
+      { fr:'Oui, tu vas voir, ça va marcher. Mais avant, il faut que j\'aille acheter un peu de matériel car je n\'ai pas de raquette.', zh:'會的，你看著吧，一定行。不過在那之前我得先去買點裝備，因為我沒有球拍。', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ 官方示範收尾。<b>il faut que + 虛擬式</b>（j\'aille）是 B1 的東西，A2 聽得懂就好；重點是<b>主動提出還缺什麼</b>', next:'s19' },
+      { fr:'Oui, tu vas voir, ça va marcher.', zh:'會的，你看著吧，一定行。', tag:'ok', src:'DELF A2 真題本 p.114',
+        note:'可以，但少了「我還缺球拍」這種實際細節——考官給分看的就是這些', next:'s19' },
+    ]},
+
+    s19: { speaker:'ami', tip:'分工並道別', chk:'分工收尾', choices:[
+      { fr:'Ok, c\'est moi qui m\'occupe des balles. À samedi alors !', zh:'好，球我來準備。那就星期六見！', tag:'good', src:'DELF A2 真題本 p.114',
+        note:'✅ <b>c\'est moi qui…</b>＝由我來…（強調句）；<b>s\'occuper de</b>＝負責。約定＋分工＋道別，一句收完', next:'end' },
+      { fr:'À demain !', zh:'明天見！', tag:'bad', src:'筆記第1課',
+        note:'⚠️ 你們約的是星期六', next:'end' },
+    ]},
+
+    end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
+  }
+},
+
+/* 17. 買 T 恤送朋友（DELF A2 全真題本 p.111-112 的官方示範）
+   ⭐ 這一場的誘答**全部是官方寫的**——真題本用選擇題的形式，
+      每一題給三個答案讓考生挑，錯的兩個都是「聽起來像法文但答錯問題」。
+   所以這一場練的不是禮貌，是**有沒有真的聽懂對方在問什麼**：
+   問 taille 你答體重、問顏色你答大小、問預算你答年齡——這才是真實的失分點。 */
+{
+  id: 'tshirt',
+  lvl: 'A2',
+  icon: '👕',
+  zh: '買 T 恤送朋友',
+  fr: 'Achat de vêtements',
+  exam: '⭐⭐ DELF A2 口說第三部分官方示範題（真題本 p.111）——誘答是官方寫的',
+  src: 'DELF A2 真題本 p.111-112（官方示範）',
+  roles: { client: '🙋 你是顧客', vendeur: '🧑‍💼 你是店員' },
+  speakers: { client: 'Le client', vendeur: 'Le vendeur' },
+  roleHints: { client: '每一格的錯誤選項都是官方誘答——考的是你有沒有聽懂問題', vendeur: '店員要一步一步問到足夠資訊：對象→尺寸→顏色→預算' },
+  checklist: ['說出要買什麼', '講對象與尺寸', '選顏色', '講預算', '問價錢', '付款'],
+  start: 't1',
+  nodes: {
+    t1: { speaker:'vendeur', line:'Bonjour, je peux vous aider ?', zh:'您好，需要幫忙嗎？', src:'DELF A2 真題本 p.111',
+          note:'法國店員的標準開場。<b>Je peux vous aider ?</b> 比「您要什麼」客氣', next:'t2' },
+
+    t2: { speaker:'client', tip:'講出你要買什麼、要送誰', chk:'說出要買什麼', choices:[
+      { fr:'Oui, je voudrais acheter un tee-shirt pour un ami.', zh:'是的，我想買一件T恤送朋友。', tag:'good', src:'DELF A2 真題本 p.111',
+        note:'✅ <b>je voudrais + 原形</b>＝我想要（做某事）；<b>pour un ami</b> 直接說明用途，店員好推薦', next:'t3' },
+      { fr:'Oui, je voudrais réserver une chambre double.', zh:'是的，我想訂一間雙人房。', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ <b>官方誘答</b>：句子完全正確，但那是<b>飯店</b>的台詞。考試最常見的失分不是文法，是答錯場合', next:'t3' },
+      { fr:'Oui, je voudrais me rendre à Paris.', zh:'是的，我想去巴黎。', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ <b>官方誘答</b>：se rendre à＝前往（車站買票才用）。在服飾店講這句，店員會愣住', next:'t3' },
+    ]},
+
+    t3: { speaker:'vendeur', tip:'先確認送誰', choices:[
+      { fr:'C\'est pour un homme ou une femme ?', zh:'是要送男生還是女生？', tag:'good', src:'DELF A2 真題本 p.111',
+        note:'✅ 二選一問句，客人最好答', next:'t4' },
+      { fr:'Un homme.', zh:'男生。', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ 那是顧客的答案', next:'t4' },
+    ]},
+
+    t4: { speaker:'client', tip:'回答對象', chk:'講對象與尺寸', choices:[
+      { fr:'Un homme.', zh:'男生。', tag:'good', src:'DELF A2 真題本 p.111',
+        note:'✅ 這種二選一就短答，不用整句', next:'t5' },
+      { fr:'Un petit garçon.', zh:'一個小男孩。', tag:'ok', src:'DELF A2 真題本 p.111',
+        note:'文法對，但你要送的是「朋友」——除非你朋友是小孩，不然店員會拿錯尺寸給你', next:'t5' },
+    ]},
+
+    t5: { speaker:'vendeur', line:'Quelle est sa taille ?', zh:'他的尺寸／身高是多少？', src:'DELF A2 真題本 p.111',
+          note:'⚠️ <b>taille</b> 一詞兩用：買衣服＝尺碼、看醫生＝身高。這一題兩種答法都通，但<b>不能答體重或年份</b>', next:'t6' },
+
+    t6: { speaker:'client', tip:'⚠️ 這一格是全場最容易掉的：他問的是 taille', chk:'講對象與尺寸', choices:[
+      { fr:'Il mesure 1,80 m.', zh:'他身高1米80。', tag:'good', src:'DELF A2 真題本 p.111',
+        note:'✅ <b>mesurer</b>＝身高多少（不用 avoir）。講身高讓店員自己換算尺碼，是很自然的答法', next:'t7' },
+      { fr:'Il pèse 65 kilos.', zh:'他65公斤。', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ <b>官方誘答</b>：peser＝體重。問的是 taille 不是 poids——同一組身體數據，答錯一個就露餡', next:'t7' },
+      { fr:'Il est né en 1986.', zh:'他1986年出生。', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ <b>官方誘答</b>：那是出生年。三個選項都是「關於他的數字」，只有一個回答了問題', next:'t7' },
+    ]},
+
+    t7: { speaker:'vendeur', line:'Je vous propose de prendre une taille M.', zh:'我建議您拿 M 號。',
+          src:'DELF A2 真題本 p.111', note:'<b>proposer de + 原形</b>＝建議做…（店員給建議的標準句）', next:'t8' },
+
+    t8: { speaker:'client', tip:'接受店員的建議', choices:[
+      { fr:'D\'accord. Je vous fais confiance.', zh:'好的，我相信您。', tag:'good', src:'DELF A2 真題本 p.111',
+        note:'✅ <b>faire confiance à qqn</b>＝信任某人。接受專業建議還補一句客氣話，這是拿分的細節', next:'t9' },
+      { fr:'Ok, ce n\'est pas important.', zh:'好，這不重要。', tag:'ok', src:'DELF A2 真題本 p.111',
+        note:'聽起來很敷衍——你要買禮物，卻說尺寸不重要', next:'t9' },
+      { fr:'Non, je ne suis pas d\'accord.', zh:'不，我不同意。', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ <b>官方誘答</b>：拒絕沒有問題，但**沒給理由**的否定在服務場合非常生硬', next:'t9' },
+    ]},
+
+    t9: { speaker:'vendeur', tip:'尺寸定了，問顏色', choices:[
+      { fr:'Quelle couleur préférez-vous ?', zh:'您比較喜歡什麼顏色？', tag:'good', src:'DELF A2 真題本 p.111',
+        note:'✅ <b>préférer</b>＝比較喜歡；quelle 配陰性的 couleur', next:'t10' },
+      { fr:'Je voudrais quelque chose de bleu.', zh:'我想要藍色的。', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ 那是顧客的答案', next:'t10' },
+    ]},
+
+    t10: { speaker:'client', tip:'選顏色', chk:'選顏色', choices:[
+      { fr:'Je voudrais quelque chose de bleu.', zh:'我想要藍色的。', tag:'good', src:'DELF A2 真題本 p.111',
+        note:'✅ <b>quelque chose de + 陽性形容詞</b>＝某個…的東西（de 後面永遠用陽性單數）', next:'t11' },
+      { fr:'Je voudrais quelque chose de petit.', zh:'我想要小的。', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ <b>官方誘答</b>：句型一模一樣，只換一個形容詞——但他問的是顏色不是大小', next:'t11' },
+      { fr:'Je veux deux places pour adulte.', zh:'我要兩張成人票。', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ <b>官方誘答</b>：那是電影院／劇場的台詞，而且 je veux 太生硬', next:'t11' },
+    ]},
+
+    t11: { speaker:'vendeur', tip:'問預算——法國店員真的會問', choices:[
+      { fr:'Et au niveau du prix, quel est votre budget ?', zh:'那價格方面，您的預算是多少？', tag:'good', src:'DELF A2 真題本 p.111',
+        note:'✅ <b>au niveau de…</b>＝在…方面（很好用的轉話題結構）', next:'t12' },
+      { fr:'Environ 30 euros.', zh:'大約30歐。', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ 那是顧客的答案', next:'t12' },
+    ]},
+
+    t12: { speaker:'client', tip:'講預算', chk:'講預算', choices:[
+      { fr:'Environ 30 euros.', zh:'大約30歐。', tag:'good', src:'DELF A2 真題本 p.111',
+        note:'✅ <b>environ</b>＝大約。給一個範圍讓店員好推薦', next:'t13' },
+      { fr:'Environ 23 ans.', zh:'大約23歲。', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ <b>官方誘答</b>：同一個句型換單位。問錢答年齡——聽力沒抓到 prix / budget 就會這樣', next:'t13' },
+      { fr:'Environ 2 kilos.', zh:'大約2公斤。', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ <b>官方誘答</b>：買 T 恤不會用公斤計價', next:'t13' },
+    ]},
+
+    t13: { speaker:'vendeur', line:'Alors, je peux vous proposer ce modèle en M qui existe en bleu.',
+           zh:'那我可以推薦您這個 M 號的款式，有藍色的。', src:'DELF A2 真題本 p.111',
+           note:'<b>ce modèle</b>＝這個款式；<b>qui existe en bleu</b>＝有出藍色（關係代名詞 qui＋existe en + 顏色）', next:'t14' },
+
+    t14: { speaker:'client', tip:'還缺一個資訊沒問到', chk:'問價錢', choices:[
+      { fr:'Quel est son prix ?', zh:'它多少錢？', tag:'good', src:'DELF A2 真題本 p.111',
+        note:'✅ 尺寸跟顏色他都講了，只剩價錢。<b>問價錢是評分表上的一格</b>，不能漏', next:'t15' },
+      { fr:'Quelle est la taille ?', zh:'尺寸是多少？', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ <b>官方誘答</b>：他剛說了 en M——重複問等於沒在聽', next:'t15' },
+      { fr:'Il est de quelle couleur ?', zh:'它是什麼顏色？', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ <b>官方誘答</b>：他剛說了 en bleu', next:'t15' },
+    ]},
+
+    t15: { speaker:'vendeur', tip:'報價並問付款方式', choices:[
+      { fr:'Est-ce que vous voulez un paquet cadeau ? Comment allez-vous payer ?', zh:'您需要禮物包裝嗎？您要怎麼付款？', tag:'good', src:'DELF A2 真題本 p.111',
+        note:'✅ <b>un paquet cadeau</b>＝禮物包裝（送禮一定會被問）；<b>Comment allez-vous payer ?</b> 是近未來的問法', next:'t16' },
+      { fr:'Quel est son prix ?', zh:'它多少錢？', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ 你是報價的那一方', next:'t16' },
+    ]},
+
+    t16: { speaker:'client', tip:'兩個問題一起回答', chk:'付款', choices:[
+      { fr:'Oui, je vais régler en espèces.', zh:'好，我付現金。', tag:'good', src:'DELF A2 真題本 p.111',
+        note:'✅ <b>régler</b>＝結帳付款（比 payer 正式）；一句同時回答「要包裝」＋「怎麼付」', next:'end' },
+      { fr:'Oui, je voudrais un sac.', zh:'好，我想要一個袋子。', tag:'ok', src:'DELF A2 真題本 p.111',
+        note:'回答了包裝，但沒回答付款方式——店員還要再問一次', next:'end' },
+      { fr:'Oui, je vais revenir demain.', zh:'好，我明天再來。', tag:'bad', src:'DELF A2 真題本 p.111',
+        note:'⚠️ <b>官方誘答</b>：你都選好了卻說明天再來，整段交易白做。考試會被判「沒有完成任務」', next:'end' },
+    ]},
+
+    end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
+  }
+},
+
+/* 18. 打電話改訂房（A2 練習本 p.112）
+   跟第 7 場「打電話訂房」（A1）成對：那一場是**訂**，這一場是**改**。
+   改訂單比訂房難——你要先報上原本的訂位，再一項一項講哪裡要改。 */
+{
+  id: 'hotel-modif',
+  lvl: 'A2',
+  icon: '📞',
+  zh: '打電話改訂房',
+  fr: 'Modifier une réservation',
+  exam: '⭐ A2 口說情境卡（處理問題型）；寫作 tâche 1 也常出「寫信改訂單」',
+  src: 'A2 練習本 p.112（OCR）',
+  roles: { client: '🙋 你是客人', receptionniste: '🛎 你是櫃檯' },
+  speakers: { client: 'Le client', receptionniste: 'La réceptionniste' },
+  roleHints: { client: '先報原訂位，再一項一項講要改什麼——順序錯了對方會聽不懂', receptionniste: '櫃檯要一邊改一邊複誦確認' },
+  checklist: ['報上原訂位', '改房型', '改日期', '確認晚數', '講餐食', '收尾'],
+  start: 'x1',
+  nodes: {
+    x1: { speaker:'receptionniste', line:'Hôtel Solis, bonjour !', zh:'Solis 飯店您好！', src:'A2 練習本 p.112',
+          note:'飯店接電話：<b>店名＋bonjour</b>', next:'x2' },
+
+    x2: { speaker:'client', tip:'先讓對方找到你的訂位', chk:'報上原訂位', choices:[
+      { fr:'Bonjour, madame. J\'ai réservé une chambre au nom de Norin.', zh:'您好女士。我用 Norin 的名字訂了一間房。', tag:'good', src:'A2 練習本 p.112',
+        note:'✅ <b>au nom de + 名字</b>＝用…的名字（訂位、掛號都用這個）。先報訂位對方才查得到', next:'x3' },
+      { fr:'Bonjour, madame.', zh:'您好女士。', tag:'ok', src:'課本 A1 p.131',
+        note:'電話裡要一次講完來意，不然對方只能反問', next:'x3' },
+      { fr:'Hôtel Solis, bonjour !', zh:'Solis 飯店您好！', tag:'bad', src:'A2 練習本 p.112',
+        note:'⚠️ 那是接電話的人講的', next:'x3' },
+    ]},
+
+    x3: { speaker:'receptionniste', tip:'查到訂位了，複誦一次', choices:[
+      { fr:'Oui, monsieur Norin. Une chambre simple du 15 au 18 mars.', zh:'是的，Norin 先生。3月15到18日，一間單人房。', tag:'good', src:'A2 練習本 p.112',
+        note:'✅ <b>複誦訂位內容</b>是服務業的必備動作，也讓客人知道要改哪裡。une chambre simple＝單人房', next:'x4' },
+      { fr:'J\'ai réservé une chambre au nom de Norin.', zh:'我用 Norin 的名字訂了一間房。', tag:'bad', src:'A2 練習本 p.112',
+        note:'⚠️ 那是客人的台詞', next:'x4' },
+    ]},
+
+    x4: { speaker:'client', tip:'⭐ 分岔：先改房型，還是先改日期？', chk:'改房型', choices:[
+      { fr:'Voilà... Je souhaite faire un changement parce que je viens avec ma femme.', zh:'是這樣的…我想做個變更，因為我太太會一起來。', tag:'good', src:'A2 練習本 p.112',
+        note:'✅ <b>souhaiter</b>＝希望（比 vouloir 客氣）；<b>faire un changement</b>＝做變更。先講「要改」再講「為什麼」', next:'x5' },
+      { fr:'Et puis, nous arrivons le 16 mars, pas le 15.', zh:'還有，我們是3月16號到，不是15號。', tag:'good', src:'A2 練習本 p.112',
+        note:'✅ 直接改日期也可以——但這條路你就不會練到「改房型」那一段', next:'x7' },
+    ]},
+
+    x5: { speaker:'receptionniste', tip:'客人多一個人，怎麼處理？', choices:[
+      { fr:'D\'accord. Nous avons une chambre double pour vous.', zh:'好的。我們有雙人房可以給您。', tag:'good', src:'A2 練習本 p.112',
+        note:'✅ 直接給解法，不要只說「好」。<b>une chambre double</b>＝雙人房', next:'x6' },
+      { fr:'Je souhaite faire un changement parce que je viens avec ma femme.', zh:'我想做個變更，因為我太太會一起來。', tag:'bad', src:'A2 練習本 p.112',
+        note:'⚠️ 那是客人的台詞', next:'x6' },
+    ]},
+
+    x6: { speaker:'client', tip:'還有一件事要改', chk:'改日期', choices:[
+      { fr:'Et puis, nous arrivons le 16 mars, pas le 15.', zh:'還有，我們是3月16號到，不是15號。', tag:'good', src:'A2 練習本 p.112',
+        note:'✅ <b>Et puis</b>＝還有（接續下一件事）；<b>A, pas B</b> 是最清楚的更正說法', next:'x7' },
+      { fr:'Oui, c\'est ça.', zh:'對，就是這樣。', tag:'ok', src:'A2 練習本 p.112',
+        note:'對方還沒問你確認什麼——這句要留到她複誦之後', next:'x7' },
+    ]},
+
+    x7: { speaker:'receptionniste', tip:'日期改了，晚數也跟著變。確認一下', chk:'確認晚數', choices:[
+      { fr:'Alors, vous passerez 2 nuits chez nous ?', zh:'那您會在我們這裡住2晚？', tag:'good', src:'A2 練習本 p.112',
+        note:'✅ <b>passer + 時間 + chez</b>＝在某處待多久；<b>passerez</b> 是簡單未來式。自己算出晚數再確認＝專業', next:'x8' },
+      { fr:'Oui, c\'est ça.', zh:'對，就是這樣。', tag:'bad', src:'A2 練習本 p.112',
+        note:'⚠️ 那是客人確認用的', next:'x8' },
+    ]},
+
+    x8: { speaker:'client', tip:'確認', chk:'確認晚數', choices:[
+      { fr:'Oui, c\'est ça.', zh:'對，就是這樣。', tag:'good', src:'A2 練習本 p.112',
+        note:'✅ <b>C\'est ça</b>＝就是這樣（確認對方理解正確，超高頻）', next:'x9' },
+      { fr:'Je ne sais pas...', zh:'我不知道…', tag:'ok', src:'筆記第16課',
+        note:'她只是幫你算晚數，這個你自己知道——該回答的時候別含糊', next:'x9' },
+    ]},
+
+    x9: { speaker:'receptionniste', tip:'順便問餐食', choices:[
+      { fr:'C\'est noté, monsieur. Vous prenez les repas à l\'hôtel ? La demi-pension, la pension complète ?', zh:'記下來了，先生。您要在飯店用餐嗎？半食宿還是全食宿？', tag:'good', src:'A2 練習本 p.112',
+        note:'✅ <b>la demi-pension</b>（含早餐＋一餐）／<b>la pension complète</b>（三餐全包）——訂房必考的兩個字', next:'x10' },
+      { fr:'Le petit déjeuner est compris dans le prix de la chambre.', zh:'早餐含在房價裡。', tag:'ok', src:'A2 練習本 p.112',
+        note:'資訊是對的，但你還沒問他要不要在飯店用餐就先講了', next:'x10' },
+    ]},
+
+    x10: { speaker:'client', tip:'你只要早餐', chk:'講餐食', choices:[
+      { fr:'Je ne sais pas... Non, seulement le petit déjeuner.', zh:'我不知道…不用，只要早餐就好。', tag:'good', src:'A2 練習本 p.112',
+        note:'✅ <b>seulement</b>＝只要。先猶豫再決定很真實，考試不用假裝什麼都知道', next:'x11' },
+      { fr:'Le petit déjeuner est compris dans le prix de la chambre.', zh:'早餐含在房價裡。', tag:'bad', src:'A2 練習本 p.112',
+        note:'⚠️ 那是櫃檯要告訴你的資訊', next:'x11' },
+    ]},
+
+    x11: { speaker:'receptionniste', line:'Le petit déjeuner est compris dans le prix de la chambre.',
+           zh:'早餐含在房價裡。', src:'A2 練習本 p.112',
+           note:'<b>compris dans</b>＝包含在…裡（跟訂房那場的 le petit déjeuner est compris 同一個字）', next:'x12' },
+
+    x12: { speaker:'client', tip:'收尾', chk:'收尾', choices:[
+      { fr:'Parfait, merci. À bientôt.', zh:'太好了，謝謝。回頭見。', tag:'good', src:'A2 練習本 p.112',
+        note:'✅ <b>À bientôt</b>＝之後會見到（你就要去住了），用得剛好', next:'end' },
+      { fr:'À demain !', zh:'明天見！', tag:'bad', src:'筆記第1課',
+        note:'⚠️ 你是3月16號才到', next:'end' },
+    ]},
+
+    end: { speaker:'system', line:'—— 對話結束 ——', zh:'', src:'' },
+  }
+},
 ];
 if (typeof module !== 'undefined') module.exports = { SCENES };

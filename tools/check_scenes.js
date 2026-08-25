@@ -37,6 +37,11 @@ if (fs.existsSync(CACHE)) {
 } else {
   console.log(`⚠️ 找不到 ${CACHE}——只用筆記比對。要納入課本原文請先跑：python3 tools/extract_textbook.py\n`);
 }
+// ⚠️ OCR 來源**分開算**：掃描檔（DELF A2 真題、A2 練習本）是機器辨識出來的，
+//    一定有錯字。分開標才知道哪些句子需要額外用眼睛校過一次。
+for (const f of fs.readdirSync('assets').filter(n => n.startsWith('.ocr_') && n.endsWith('.txt'))) {
+  sources.push({ name: 'OCR', text: normSrc(fs.readFileSync('assets/' + f, 'utf8')) });
+}
 
 const norm = s => normSrc(String(s)).trim().replace(/^[«»"']|[«»"']$/g, '');
 // 拆句：句號/驚嘆號/問號後面接空白就切
@@ -66,8 +71,10 @@ for (const sc of SCENES) {
   }
 }
 
+const names = [...new Set(sources.map(s => s.name))];
 console.log(`劇本 ${SCENES.length} 個｜檢查 ${total} 句`
-  + `｜出處：${sources.map(s => `${s.name} ${hits[s.name] || 0}`).join(' / ')}`);
+  + `｜出處：${names.map(n => `${n} ${hits[n] || 0}`).join(' / ')}`);
+if (hits['OCR']) console.log(`   ⚠️ 其中 ${hits['OCR']} 句只在 OCR 出來的掃描檔裡找得到——OCR 有錯字風險，這些句子要用眼睛再校一次`);
 if (constructed.length) {
   console.log(`\n⚠️ 刻意的誘答選項 ${constructed.length} 句（不是教材，永遠附警告顯示）：`);
   constructed.forEach(c => console.log('   ' + c));

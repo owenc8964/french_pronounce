@@ -17,7 +17,7 @@
 用法：
     python3 tools/ocr_pdf.py "assets/le-delf-a2-100-reussite-2e-edition_compress.pdf"
     python3 tools/ocr_pdf.py --all          # 掃 assets/ 裡所有「抽不到文字」的 PDF
-輸出：assets/.ocr_<檔名>.txt，並自動附加到 assets/.textbook_cache.txt
+輸出：assets/.ocr_<檔名>.txt（**不**併進 .textbook_cache.txt，見 done() 的說明）
 """
 import os, sys, glob
 
@@ -101,13 +101,14 @@ def ocr_pdf(path):
     return out_path
 
 
-def append_to_cache(paths):
-    if not paths:
-        return
-    with open(CACHE, "a", encoding="utf-8") as cache:
-        for p in paths:
-            cache.write("\n\n" + open(p, encoding="utf-8").read())
-    print(f"✅ 已附加到 {CACHE}（劇本檢查器現在比對得到這些內容）")
+def done(paths):
+    """⚠️ 刻意**不**把 OCR 內容合併進 .textbook_cache.txt。
+    `tools/check_scenes.js` 會把每個 .ocr_*.txt 當成**獨立來源**載入，
+    這樣報表才分得出哪些句子是 OCR 來的——OCR 一定有錯字，
+    那些句子需要多一層人工校對，混進課本快取就看不出來了。"""
+    if paths:
+        print("✅ " + "、".join(os.path.basename(p) for p in paths)
+              + " 已產生；check_scenes.js 會自動把它們當獨立來源載入（報表會標 OCR）")
 
 
 if __name__ == "__main__":
@@ -121,4 +122,4 @@ if __name__ == "__main__":
         print("需要 OCR 的：" + "、".join(os.path.basename(t) for t in targets))
     else:
         targets = args
-    append_to_cache([ocr_pdf(t) for t in targets])
+    done([ocr_pdf(t) for t in targets])
