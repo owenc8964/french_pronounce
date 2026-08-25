@@ -48,6 +48,7 @@ for (const sc of SCENES) {
   const lines = [];
   for (const [id, nd] of Object.entries(sc.nodes)) {
     if (nd.line && nd.speaker !== 'system') lines.push([id, nd.line]);
+    (nd.alts || []).forEach((a, i) => lines.push([`${id}~alt${i}`, a.fr]));   // 🔀 換句話問的其他問法
     (nd.choices || []).forEach((c, i) => {
       if (c.constructed) { constructed.push(`[${sc.id} ${id}#${i}] ${c.fr}（${c.tag}）`); return; }
       lines.push([`${id}#${i}`, c.fr]);
@@ -100,6 +101,11 @@ for (const sc of SCENES) {
       struct.push(`[${sc.id} ${id}] speaker「${nd.speaker}」不在 roles 裡`);
     if (nd.chk && !(sc.checklist || []).includes(nd.chk))
       struct.push(`[${sc.id} ${id}] chk「${nd.chk}」不在 checklist 裡`);
+    (nd.alts || []).forEach((a, i) => {
+      if (!a.zh) struct.push(`[${sc.id} ${id}~alt${i}] 缺 zh`);
+      if (!a.src) struct.push(`[${sc.id} ${id}~alt${i}] 缺 src`);
+      if (!nd.line) struct.push(`[${sc.id} ${id}] 有 alts 但沒有 line（alts 只用在會自動講出來的台詞）`);
+    });
     (nd.choices || []).forEach((c, i) => {
       if (!['good', 'ok', 'bad'].includes(c.tag)) struct.push(`[${sc.id} ${id}#${i}] tag 不合法：${c.tag}`);
       if (!c.zh) struct.push(`[${sc.id} ${id}#${i}] 缺 zh（中文輔助模式會空白）`);

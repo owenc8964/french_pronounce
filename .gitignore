@@ -19,3 +19,6 @@ reports/
 
 # 課本 PDF 抽出的純文字快取（tools/extract_textbook.py 產生）：一樣是商業教材內容，只留本機
 assets/.textbook_cache.txt
+
+# 掃描檔 OCR 出來的文字（tools/ocr_pdf.py 產生）：一樣是商業教材內容，只留本機
+assets/.ocr_*.txt

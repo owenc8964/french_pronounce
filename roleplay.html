@@ -112,6 +112,27 @@ body { background:#07080f; color:#ddd8cc; font-family:'Segoe UI',system-ui,sans-
   font-size:.85rem; font-weight:700; cursor:pointer; background:linear-gradient(135deg,#1d5035,#2a7048); color:#d0f0d8; }
 .btn-row button.ghost { background:#141928; color:#7a8a9a; border:1px solid #1a2438; }
 .src-note { font-size:.66rem; color:#445060; margin-top:12px; line-height:1.7; }
+
+/* 📚 背台詞（Anki 式） */
+.memo-btn { display:block; width:100%; margin-top:12px; padding:14px; border:1px solid #4a3a10;
+  border-radius:10px; background:#241f10; color:#f0c060; font-family:inherit; font-size:.85rem;
+  font-weight:700; cursor:pointer; line-height:1.6; }
+.memo-btn span { display:block; font-weight:400; font-size:.68rem; color:#7a8a9a; margin-top:4px; }
+.card-face { min-height:130px; display:flex; flex-direction:column; justify-content:center;
+  text-align:center; padding:18px 14px; }
+.card-who { font-size:.64rem; color:#445060; font-family:Georgia,serif; margin-bottom:8px; }
+.card-tip { font-size:.68rem; color:#f0c060; margin-bottom:10px; line-height:1.6; }
+.card-zh { font-size:1.02rem; line-height:1.7; }
+.card-fr { font-family:Georgia,serif; font-size:1.1rem; line-height:1.7; color:#e8e2d4; margin-bottom:6px; }
+.card-note { font-size:.72rem; color:#7a8a9a; line-height:1.7; margin-top:10px;
+  padding-top:10px; border-top:1px dashed rgba(255,255,255,.12); text-align:left; }
+.card-src { font-size:.62rem; color:#39424f; margin-top:8px; }
+.prog { display:flex; align-items:center; gap:8px; font-size:.66rem; color:#445060; margin-bottom:10px; }
+.prog .bar { flex:1; height:4px; background:#141928; border-radius:2px; overflow:hidden; }
+.prog .bar i { display:block; height:100%; background:#2a7048; }
+.flagBtn { display:block; width:100%; margin-top:8px; padding:8px; background:none; border:none;
+  cursor:pointer; font-size:.7rem; color:#7a8a9a; opacity:.55; }
+.flagBtn.on, .flagBtn:hover { opacity:1; }
 </style>
 </head>
 <body>
@@ -218,6 +239,9 @@ function chooseScene(id) {
       <button class="role-btn" onclick="startPlay('${BOTH}')" style="border-color:#4a3a10">🎭 兩邊都我演
         <span class="s-meta">整段一個人跑完，<b style="color:#f0c060">每一句都要切換立場</b>——最接近「整段應對流暢」的練法</span>
       </button>
+      <button class="memo-btn" onclick="startMemo('${scene.id}')">📚 背這一場的台詞（${sceneCards(scene).length} 張）
+        <span>包含<b>所有分岔</b>的句子——不用為了看某一句再演一次。到期的卡片會自動再出現</span>
+      </button>
       <button class="role-btn" onclick="pickScene()" style="color:#445060">← 換一個情境</button>
     </div>`;
 }
@@ -256,8 +280,20 @@ function bubbleHTML(b) {
     ${tagTxt ? `<span class="tag ${b.tag}">${esc(tagTxt)}</span>` : ''}
     ${b.zh ? `<span class="zh"${showZh ? '' : ' style="display:none"'}>${esc(b.zh)}</span>` : ''}
     ${b.note ? `<span class="nt"${showZh ? '' : ' style="display:none"'}>${b.note}</span>` : ''}
-    ${b.src ? `<span class="srcTag">📖 ${esc(b.src)}</span>` : ''}
+    ${b.src ? `<span class="srcTag">📖 ${esc(b.src)}${b.alts > 1 ? `　·　🔀 這句有 ${b.alts} 種問法，每次隨機` : ''}</span>` : ''}
   </div>`;
+}
+
+/* 🔀 換句話問（2026-08-25）：同一個問題，考官不會每次都用同一句。
+   `alts` 裡是**同一個意思的其他問法**（例如 DELF 官方考官文件寫的 Vous vous appelez comment ?
+   跟筆記裡的 Comment vous vous appelez ?）。每次隨機挑一種——
+   這樣你就不能靠「背下一句是什麼」過關，必須真的聽懂問題。 */
+function variantOf(nd) {
+  const alts = nd.alts || [];
+  const pool = [{ fr:nd.line, zh:nd.zh, note:nd.note, src:nd.src }]
+    .concat(alts.map(a => ({ fr:a.fr, zh:a.zh, note:a.note || nd.note, src:a.src })));
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  return { ...pick, alts: pool.length };
 }
 
 function push(b) { log.push(b); $('chat').innerHTML = log.map(bubbleHTML).join('');
@@ -282,7 +318,8 @@ function step() {
     }
     return renderTurn();
   }
-  push({ who:nd.speaker, fr:nd.line, zh:nd.zh, note:nd.note, tag:null, src:nd.src });
+  const v = variantOf(nd);
+  push({ who:nd.speaker, fr:v.fr, zh:v.zh, note:v.note, tag:null, src:v.src, alts:v.alts });
   node = nd.next;
   setTimeout(step, 260);
 }
@@ -428,6 +465,9 @@ function finish() {
       <button class="ghost" onclick="startPlay('${role}')">↻ 走另一條路</button>
       <button class="ghost" onclick="pickScene()">換情境</button>
     </div>
+    <button class="memo-btn" onclick="startMemo('${scene.id}')">📚 接著把這一場的台詞背起來（${sceneCards(scene).length} 張）
+      <span>演一遍是把句子掛在情境上；<b>背一遍才是真正的輸入</b>。卡片含你這次沒走到的分岔</span>
+    </button>
     <div class="src-note">💡 換角色演一次的價值：當對方那一側要<b>聽懂</b>人家在問什麼，比自己開口更接近聽力考試。</div>`;
   try { localStorage.setItem('clb7_roleplay_done', new Date().toLocaleDateString('sv')); } catch(e) {}
   if (drill && drillLog.length) saveDrillSession();
@@ -471,6 +511,153 @@ function saveDrillSession() {
       med: medianMs(drillLog.map(d => d.ms)), ts: Date.now() });
     localStorage.setItem(key, JSON.stringify(all.slice(-100)));
   } catch(e) {}
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   📚 背台詞（2026-08-25 Owen：「純粹玩完不會有太多輸入耶，感覺還是要有個背誦的過程」
+   ＋「有些分岔路沒走 我就自然會沒看到，重走一次有點搞笑」）
+
+   演一遍＝把句子掛在情境上（理解、語感、誰該說哪一句）；
+   背一遍＝真正的輸入。兩件事分開做，順序是**先玩再背**。
+   ⭐ 卡片是把**整個場景的所有台詞**展開，包含你這次沒走到的分岔——
+      這樣就不用為了看某句話再演一次。
+   ⚠️ 卡片不另外維護一份資料，直接從 scenes.js 生成：劇本改了卡片自動跟著改。
+      誘答（ok/bad）不進卡片——那是反面教材，不能拿去背。
+   SRS 跟 review.html／sentence_drill.html 同一套間隔（1/3/7/14/30 天），
+   但用獨立的池子 clb7_rp_srs（id 前綴 RP_，跟其他卡不會撞，可共用 clb7_hard_flags）。
+   ═══════════════════════════════════════════════════════════════ */
+const IVS = [1, 3, 7, 14, 30];
+let memo = null;            // {cards, i, retry:[], shown, stat:{ok,mid,no}}
+
+function sceneCards(sc) {
+  const out = [], seen = new Set();
+  const add = (id, fr, zh, note, src, who, tip) => {
+    const k = fr.trim(); if (!fr || seen.has(k)) return; seen.add(k);
+    out.push({ id, fr, zh, note, src, who, tip });
+  };
+  for (const [nid, nd] of Object.entries(sc.nodes)) {
+    if (nd.speaker === 'system') continue;
+    const who = (sc.speakers || {})[nd.speaker] || nd.speaker;
+    if (nd.line) {
+      add(`RP_${sc.id}_${nid}`, nd.line, nd.zh, nd.note, nd.src, who, '');
+      (nd.alts || []).forEach((a, i) =>
+        add(`RP_${sc.id}_${nid}a${i}`, a.fr, a.zh, a.note || nd.note, a.src, who, '🔀 同一個問題的另一種問法'));
+    }
+    (nd.choices || []).forEach((c, i) => {
+      if (c.tag !== 'good') return;                    // 誘答不進卡片
+      add(`RP_${sc.id}_${nid}_${i}`, c.fr, c.zh, c.note, c.src, who, nd.tip || '');
+    });
+  }
+  return out;
+}
+
+function srsAll() { try { return JSON.parse(localStorage.getItem('clb7_rp_srs')) || {}; } catch(e) { return {}; } }
+function srsSave(o) { try { localStorage.setItem('clb7_rp_srs', JSON.stringify(o)); } catch(e) {} }
+const todayISO = () => new Date().toLocaleDateString('sv');
+
+function startMemo(sid) {
+  const sc = SCENES.find(s => s.id === sid); scene = sc;
+  const srs = srsAll(), t = todayISO();
+  const all = sceneCards(sc);
+  // 到期的先出，其餘照劇情順序補上（一場的量本來就不多，全部過一遍才是重點）
+  const due = all.filter(c => { const r = srs[c.id]; return !r || !r.due || r.due <= t; });
+  const rest = all.filter(c => !due.includes(c));
+  memo = { cards: due.concat(rest), i: 0, retry: [], shown: false,
+           stat: { ok:0, mid:0, no:0 }, failed: new Set(), sid };
+  renderCard();
+}
+
+function renderCard() {
+  if (!memo) return;
+  if (memo.i >= memo.cards.length) {
+    if (memo.retry.length) { memo.cards = memo.retry; memo.retry = []; memo.i = 0; }
+    else return memoDone();
+  }
+  const c = memo.cards[memo.i], n = memo.cards.length;
+  const flagged = (JSON.parse(localStorage.getItem('clb7_hard_flags') || '{}'))[c.id];
+  $('root').innerHTML = zhBar() + `
+    <div class="card-box">
+      <div class="prog"><span>${scene.icon} ${esc(scene.zh)}</span>
+        <span class="bar"><i style="width:${Math.round(memo.i / n * 100)}%"></i></span>
+        <span>${memo.i + 1} / ${n}</span></div>
+      <div class="card-face">
+        <div class="card-who">${esc(c.who)}${flagged ? '　🔴' : ''}</div>
+        ${c.tip ? `<div class="card-tip">💬 ${esc(c.tip)}</div>` : ''}
+        ${memo.shown
+          ? `<div><div class="card-fr">${esc(c.fr)}
+               <button class="tts" onclick="say(this)" data-fr="${esc(c.fr)}">🔊</button></div>
+             <div class="card-zh" style="font-size:.82rem;color:#7a8a9a">${esc(c.zh)}</div>
+             ${c.note ? `<div class="card-note">${c.note}</div>` : ''}
+             ${c.src ? `<div class="card-src">📖 ${esc(c.src)}</div>` : ''}</div>`
+          : `<div class="card-zh">${esc(c.zh)}</div>`}
+      </div>
+      ${memo.shown
+        ? `<div class="self">
+             <button class="y" onclick="grade('ok')">✅ 記得</button>
+             <button class="n" onclick="grade('mid')">🤔 勉強</button>
+             <button class="x" onclick="grade('no')">❌ 不會</button>
+           </div>
+           <button class="flagBtn ${flagged ? 'on' : ''}" onclick="flagCard('${c.id}')">🔴 標記不熟</button>`
+        : `<button class="drill-reveal" onclick="memo.shown=true;renderCard()">先自己講出法文 → 翻開</button>`}
+      <div class="btn-row"><button class="ghost" onclick="pickScene()">離開背誦</button></div>
+    </div>`;
+}
+
+function grade(g) {
+  const c = memo.cards[memo.i];
+  const srs = srsAll(), r = srs[c.id] || { iv: 0, ok: 0, no: 0 };
+  // ⚠️ 今天已經卡住過的卡，就算包尾重試答對也**不准往上跳間隔**——當天的第二次成功
+  //    只證明「剛看過還記得」，不證明記住了。明天再出現一次才算數。
+  const failedToday = memo.failed.has(c.id);
+  const isNew = !srs[c.id];                    // 新卡第一次答對＝明天再出現（1/3/7/14/30 的第一格）
+  if (g === 'ok') { r.iv = (failedToday || isNew) ? 0 : Math.min(r.iv + 1, IVS.length - 1);
+                    r.ok = (r.ok || 0) + 1; }
+  else if (g === 'mid') { r.iv = Math.max((r.iv || 0) - 1, 0); r.no = (r.no || 0) + 1;
+                          memo.failed.add(c.id); memo.retry.push(c); }
+  else { r.iv = 0; r.no = (r.no || 0) + 1; memo.failed.add(c.id); memo.retry.push(c);
+         logWrong({ src:'情境背誦', q:c.zh, a:c.fr,
+                    note:String(c.note || '').replace(/<[^>]+>/g, ''), title:scene.zh }); }
+  const d = new Date(); d.setDate(d.getDate() + IVS[r.iv]);
+  r.due = d.toLocaleDateString('sv'); r.last = todayISO();
+  srs[c.id] = r; srsSave(srs);
+  memo.stat[g]++; memo.i++; memo.shown = false;
+  renderCard();
+}
+
+function flagCard(id) {
+  try {
+    const f = JSON.parse(localStorage.getItem('clb7_hard_flags') || '{}');
+    f[id] = { count: ((f[id] || {}).count || 0) + 1, last: todayISO() };
+    localStorage.setItem('clb7_hard_flags', JSON.stringify(f));
+  } catch(e) {}
+  renderCard();
+}
+
+function memoDone() {
+  const s = memo.stat, tot = s.ok + s.mid + s.no;
+  try {
+    const key = 'clb7_rp_card_sessions';
+    const all = JSON.parse(localStorage.getItem(key)) || [];
+    all.push({ date: new Date().toLocaleDateString('zh-TW'), scene: memo.sid,
+               n: tot, ok: s.ok, ts: Date.now() });
+    localStorage.setItem(key, JSON.stringify(all.slice(-100)));
+  } catch(e) {}
+  const sid = memo.sid; memo = null;
+  $('root').innerHTML = zhBar() + `
+    <div class="card-box">
+      <div class="tip" style="color:#60d090">✓ 這一場的台詞背完了</div>
+      <div style="font-size:.8rem;line-height:1.9">
+        記得 <b style="color:#60d090">${s.ok}</b> ·
+        勉強 <b style="color:#f0b050">${s.mid}</b> ·
+        不會 <b style="color:#e07a86">${s.no}</b>　（共 ${tot} 次）
+      </div>
+      <div class="src-note">到期的卡片明天／3天／7天…會自動再出現（跟複習卡同一套間隔）。
+        標 🔴 的會優先。「不會」的已經進今日錯題本。</div>
+      <div class="btn-row">
+        <button onclick="chooseScene('${sid}')">🎬 回去演一遍</button>
+        <button class="ghost" onclick="pickScene()">換情境</button>
+      </div>
+    </div>`;
 }
 
 /* 發音（沿用全站統一的語音篩選優先序） */

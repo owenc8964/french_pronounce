@@ -146,7 +146,11 @@ const SCENES = [
   start: 'e1',
   nodes: {
     e1: { speaker:'examinateur', line:'Bonjour ! Comment vous vous appelez ?', zh:'您好！您叫什麼名字？',
-          src:'筆記第17課', note:'考官一開口就是這句。課本 p.166 的官方範例也是它', next:'e2' },
+          src:'筆記第17課', note:'考官一開口就是這句。課本 p.166 的官方範例也是它',
+          alts:[{ fr:'Bonjour ! Vous vous appelez comment ?', zh:'您好！您叫什麼名字？',
+                  src:'DELF A1 官方考官文件',
+                  note:'⚠️ 同一個問題的<b>另一種問法</b>——疑問詞丟到句尾是口語的問法，考官兩種都會用' }],
+          next:'e2' },
 
     e2: { speaker:'candidat', tip:'回招呼＋報名字。禮貌用語是給分點', chk:'回招呼＋報名字', choices:[
       { fr:"Bonjour ! Je m'appelle Owen.", zh:'您好！我叫 Owen。', tag:'good', src:'筆記第17課',
@@ -160,6 +164,8 @@ const SCENES = [
     e3: { speaker:'examinateur', tip:'你是考官。他報了名字，下一個標準動作是什麼？', choices:[
       { fr:"Comment ça s'écrit ?", zh:'怎麼拼？', tag:'good', src:'筆記第17課',
         note:'✅ 老師說這句「考試跟日常都超高頻」，Prénom 卡一定會問到', next:'e4' },
+      { fr:"Votre nom, comment ça s'écrit ?", zh:'您的姓怎麼拼？', tag:'good', src:'DELF A1 官方考官文件',
+        note:'✅ 官方考官文件列的問法——<b>先把主題丟出來再問</b>，法文很愛這個結構', next:'e4' },
       { fr:"Je m'appelle Owen.", zh:'我叫 Owen。', tag:'bad', src:'筆記第17課',
         note:'⚠️ 這是<b>考生</b>的台詞。考官是問的那一方', next:'e4' },
       { fr:'Vous habitez où ?', zh:'您住哪裡？', tag:'ok', src:'筆記第17課',
@@ -208,6 +214,8 @@ const SCENES = [
     e9: { speaker:'examinateur', tip:'⭐ 分岔：直接問婚姻狀況，還是用考官的萬用指令句？', choices:[
       { fr:'Vous êtes marié ?', zh:'您結婚了嗎？', tag:'good', src:'筆記第17課',
         note:'✅ 封閉式問句，考生好接', next:'e10' },
+      { fr:'Est-ce que vous avez des enfants ?', zh:'您有小孩嗎？', tag:'good', src:'DELF A1 官方考官文件',
+        note:'✅ 官方文件示範「situation familiale 卡」可以怎麼問。<b>Est-ce que</b> 開頭是最保險的問句結構', next:'e12' },
       { fr:'Parlez-moi de votre famille.', zh:'跟我聊聊您的家庭。', tag:'good', src:'筆記第17課',
         note:'✅ 老師示範過的考官指令句型 <b>Parlez-moi de…</b>——這種開放題才是真正的難點', next:'e12' },
       { fr:'Oui, je suis marié.', zh:'是的，我結婚了。', tag:'bad', src:'筆記第17課',
@@ -224,6 +232,8 @@ const SCENES = [
     e11: { speaker:'examinateur', tip:'順著家庭問下去', choices:[
       { fr:'Vous avez des enfants ?', zh:'您有小孩嗎？', tag:'good', src:'筆記第17課',
         note:'✅ 課本 p.166 官方範例就是拿 situation familiale 卡問這句', next:'e12' },
+      { fr:'Vous avez des enfants ? Quel âge ont-ils ?', zh:'您有小孩嗎？他們幾歲？', tag:'good', src:'DELF A1 官方考官文件',
+        note:'✅ 官方考官文件的連問——<b>考官會一次丟兩題</b>，你要兩題都答到', next:'e12' },
       { fr:"Oui, j'ai un enfant, une fille.", zh:'有，我有一個小孩，一個女兒。', tag:'bad', src:'筆記第17課',
         note:'⚠️ 考生的答案', next:'e12' },
     ]},
@@ -240,6 +250,8 @@ const SCENES = [
     e13: { speaker:'examinateur', tip:'轉到日常作息', choices:[
       { fr:'Vous vous levez à quelle heure ?', zh:'您幾點起床？', tag:'good', src:'筆記第17課',
         note:'✅ 反身動詞現在式——這題在考你 je me lève', next:'e14' },
+      { fr:"Parlez-moi d'une journée habituelle.", zh:'跟我講講您平常的一天。', tag:'good', src:'DELF A1 官方考官文件',
+        note:'✅ <b>開放題</b>比問句難——考官不給結構，你要自己從起床講到晚上', next:'e14' },
       { fr:'Je me lève à six heures.', zh:'我六點起床。', tag:'bad', src:'筆記第17課',
         note:'⚠️ 考生的答案', next:'e14' },
     ]},
@@ -284,6 +296,8 @@ const SCENES = [
         note:'✅', next:'e20' },
       { fr:'Et le week-end ?', zh:'那週末呢？', tag:'good', src:'筆記第17課',
         note:'✅ 考官很愛用這種省略問句往下追', next:'e21' },
+      { fr:'Qu\'est-ce que vous faites le samedi et le dimanche ?', zh:'您週六跟週日做什麼？', tag:'good', src:'DELF A1 官方考官文件',
+        note:'✅ 官方問法的完整版。<b>le samedi</b>＝每個星期六（定冠詞＋星期＝習慣）', next:'e21' },
     ]},
 
     e20: { speaker:'candidat', tip:'晚上你陪女兒', choices:[

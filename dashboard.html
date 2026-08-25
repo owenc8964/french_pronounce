@@ -549,7 +549,7 @@ body {
   </a>
   <a class="nav-btn" href="roleplay.html">
     <span class="nav-icon">🎭</span>
-    <div><div class="nav-label">情境角色扮演</div><div class="nav-sub" id="navRoleplaySub">兩個角色都可以演</div></div>
+    <div><div class="nav-label">情境角色扮演</div><div class="nav-sub" id="navRoleplaySub">演一遍 → 背一遍</div></div>
   </a>
   <a class="nav-btn" href="verb_forms.html">
     <span class="nav-icon">🔀</span>
@@ -1409,8 +1409,15 @@ function render() {
       });
       const rpN = rp.reduce((a, e) => a + (e.n || 0), 0);
       const rpR = rp.reduce((a, e) => a + (e.reflex || 0), 0);
-      document.getElementById('navRoleplaySub').textContent = rpN
-        ? `本週反射 ${rpR}/${rpN} 句` : '兩個角色都可以演';
+      const rpC = (JSON.parse(localStorage.getItem('clb7_rp_card_sessions')) || []).filter(e => {
+        const d = new Date(String(e.date).replace(/\//g, '-')); d.setHours(0, 0, 0, 0);
+        return (now - d) / 86400000 < 7;
+      }).reduce((a, e) => a + (e.n || 0), 0);
+      const bits = [];
+      if (rpN) bits.push(`反射 ${rpR}/${rpN}`);
+      if (rpC) bits.push(`背 ${rpC} 張`);
+      document.getElementById('navRoleplaySub').textContent = bits.length
+        ? '本週 ' + bits.join(' · ') : '演一遍 → 背一遍';
     } catch (e) {}
     const listenWeekMins = getListeningData().filter(e => {
       const d = new Date(e.date.replace(/\//g,'-')); d.setHours(0,0,0,0);
