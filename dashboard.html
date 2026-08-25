@@ -220,6 +220,38 @@ body {
   letter-spacing: 1.5px; margin: 20px 0 10px;
 }
 
+/* ── 版面分層（08-25） ── */
+.layer-bar {
+  font-size: 0.66rem; color: #4a5668; letter-spacing: 2px;
+  margin: 22px 0 10px; padding-bottom: 6px; border-bottom: 1px solid #161c28;
+}
+details.layer { margin: 10px 0; border: 1px solid #161c28; border-radius: 10px; background: #0b0e18; }
+details.layer > summary {
+  list-style: none; cursor: pointer; padding: 13px 16px;
+  font-size: 0.78rem; color: #7a8a9a; display: flex; align-items: center; gap: 8px;
+  white-space: nowrap;
+}
+details.layer > summary::-webkit-details-marker { display: none; }
+details.layer > summary::before { content: '▸'; color: #445060; font-size: 0.8rem; }
+details.layer[open] > summary::before { content: '▾'; color: #f0c060; }
+details.layer[open] > summary { color: #f0c060; border-bottom: 1px solid #161c28; }
+.ly-peek { margin-left: auto; font-size: 0.68rem; color: #445060; text-align: right;
+  line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 55%; padding-left: 10px; }
+details.layer > summary > span:not(.ly-peek) { flex-shrink: 0; }
+.layer-body { padding: 12px 12px 4px; }
+.layer-body .section-title:first-child { margin-top: 4px; }
+
+/* 處方：只有「下一步」完整展開，其餘收成一行（08-25） */
+.rx-item.rx-slim { padding: 9px 14px; margin-bottom: 6px; }
+.rx-item.rx-slim .rx-why { display: none; }
+.rx-item.rx-slim .rx-action { font-size: 0.82rem; font-weight: 500; color: #8d94a4; }
+.rx-item.rx-slim .rx-icon { font-size: 1.05rem; }
+.rx-item.rx-slim.done .rx-action { text-decoration: line-through; }
+.topic-more { width: 100%; margin-top: 8px; padding: 9px; background: #141928;
+  border: 1px solid #1a2438; border-radius: 8px; color: #7a8a9a;
+  font-size: 0.72rem; font-family: inherit; cursor: pointer; }
+
 /* Duolingo */
 .duo-card {
   background: #0d1020; border: 1px solid #1a2438;
@@ -357,32 +389,19 @@ body {
   </div>
 </div>
 
-<!-- 🧭 今日心法（creed.js 輪播＋Owen 自己的清單優先） -->
-<div class="rx-card" id="creedCard" style="padding:12px 16px;">
-  <div class="rx-title" style="display:flex;justify-content:space-between;align-items:center;">
-    <span>🧭 今日心法</span>
-    <span id="creedStage" style="font-size:0.62rem;color:#f0c060;text-transform:none;letter-spacing:0;"></span>
-  </div>
-  <div id="creedList" style="font-size:0.78rem;line-height:1.7;color:#b8bcc8;"></div>
-  <div style="display:flex;gap:6px;margin-top:10px;">
-    <input id="creedInput" placeholder="想到什麼就餵進來（你寫的輪播優先）"
-      style="flex:1;background:#0d1020;border:1px solid #1a2438;border-radius:8px;color:#ddd8cc;font-size:0.74rem;padding:7px 10px;font-family:inherit;outline:none;">
-    <button onclick="creedAdd()" style="background:#1a2438;border:1px solid #2a3858;color:#f0c060;border-radius:8px;padding:0 12px;font-size:0.74rem;cursor:pointer;font-family:inherit;">＋收進清單</button>
-  </div>
-</div>
+<!-- ════════════════════════════════════════════════════════════════
+     版面分層（2026-08-25 重構）：Owen「東西太多了，感覺要有序列式排放比較好讀」
+     實測改版前手機上整頁 10,299px＝12.7 個螢幕，而「快速入口」排在第 10 個螢幕。
+     病灶不是東西多，是**沒有分層、而且順序跟使用頻率相反**：
+     日更（處方/錯題本）、週更（Duolingo/趨勢）、月更（倒數/700h）全部攤平成一條。
+     改法：照**時間顆粒度**排序，週級以下收進 <details>，
+     ⭐ 但摘要行一定要帶關鍵數字（收合≠看不到），不然收起來就等於刪掉。
+     ⚠️ 順序一旦定了就別亂動——Owen 靠位置記東西（memory user_memory_palace_style）。
+     ════════════════════════════════════════════════════════════════ -->
 
+<!-- ── ⚑ 現在：今天要做什麼 ── -->
 <!-- Alerts -->
 <div class="alerts" id="alerts"></div>
-
-<!-- 🕐 法語時區：四個開關常駐（08-10）。感知塊的鏡頭校正表要一直在旁邊，不是看懂就收起來 -->
-<div class="rx-card" id="tzCard" style="display:none;border-color:#3a3048;">
-  <div class="rx-title" style="display:flex;align-items:center;justify-content:space-between;">
-    <span>🕐 法語時區</span>
-    <a href="time_hall.html" style="font-size:0.62rem;color:#60a0d0;text-decoration:none;text-transform:none;letter-spacing:0;">進時間劇院 →</a>
-  </div>
-  <div id="tzSwitches" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;"></div>
-  <div id="tzToday" style="font-size:0.72rem;color:#8a7f68;line-height:1.85;padding-top:9px;border-top:1px solid #1a2438;"></div>
-</div>
 
 <!-- Today's prescription -->
 <div class="rx-card">
@@ -402,110 +421,9 @@ body {
   <div id="wbList"></div>
 </div>
 
-<!-- Stats -->
-<div class="stats-row">
-  <div class="stat-box">
-    <div class="stat-val" id="statStreak">—</div>
-    <div class="stat-label">連續天數 🔥</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-val" id="statWeek">—</div>
-    <div class="stat-label">本週時數</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-val" id="statWriting">—</div>
-    <div class="stat-label">造句週均分</div>
-  </div>
-</div>
-
-<!-- Countdown + milestones -->
-<div class="countdown">
-  <div>
-    <div class="cd-label">距離考試</div>
-    <div class="cd-days" id="cdDays">—</div>
-    <div class="cd-label">天</div>
-  </div>
-  <div class="cd-right">
-    <div class="cd-label">目標</div>
-    <div class="cd-date">2027年6月1日</div>
-    <div class="cd-date" id="cdPace" style="margin-top:4px;font-size:0.72rem;"></div>
-  </div>
-</div>
-
-<div class="milestones" id="milestones"></div>
-
-<!-- CLB 等級判定 -->
-<div class="prog-card">
-  <div class="prog-header">
-    <span class="prog-label">📐 等級判定（Quiz 正確率）</span>
-    <span class="prog-val" id="clbLevelVal">—</span>
-  </div>
-  <div class="prog-track"><div class="prog-fill fill-clb" id="clbFill" style="width:0%"></div></div>
-  <div class="prog-sub" id="clbSub"></div>
-</div>
-
-<!-- 700h progress -->
-<div class="prog-card">
-  <div class="prog-header">
-    <span class="prog-label">700 小時目標</span>
-    <span class="prog-val" id="hoursVal">— / 700h</span>
-  </div>
-  <div class="prog-track"><div class="prog-fill fill-hours" id="hoursFill" style="width:0%"></div></div>
-  <div class="prog-sub" id="hoursSub"></div>
-</div>
-
-<!-- Duolingo -->
-<div class="section-title">Duolingo 週報</div>
-<div class="duo-card">
-  <div class="duo-header">
-    <div class="duo-title">🦜 本週數據</div>
-    <button class="duo-input-btn" id="duoToggle">＋ 輸入本週</button>
-  </div>
-  <div class="duo-grid" id="duoGrid">
-    <div class="duo-stat"><div class="duo-stat-val" id="duoStreak">—</div><div class="duo-stat-label">🔥 連勝</div><div class="duo-trend" id="duoStreakT"></div></div>
-    <div class="duo-stat"><div class="duo-stat-val" id="duoXP">—</div><div class="duo-stat-label">⚡ XP</div><div class="duo-trend" id="duoXPT"></div></div>
-    <div class="duo-stat"><div class="duo-stat-val" id="duoMin">—</div><div class="duo-stat-label">⏱ 分鐘</div><div class="duo-trend" id="duoMinT"></div></div>
-    <div class="duo-stat"><div class="duo-stat-val" id="duoUnits">—</div><div class="duo-stat-label">📚 單元</div><div class="duo-trend" id="duoUnitsT"></div></div>
-  </div>
-  <div class="duo-cumul">
-    累計 XP：<span id="duoCumulXP">—</span>
-    &nbsp;·&nbsp; 累計學習：<span id="duoCumulMin">—</span>
-    &nbsp;·&nbsp; 已記錄 <span id="duoWeeks">0</span> 週
-  </div>
-  <div class="duo-input-panel" id="duoPanel">
-    <div class="duo-week-label" id="duoWeekLabel"></div>
-    <div class="duo-input-row">
-      <div class="duo-field"><label>🔥 連勝天數</label><input type="number" id="inStreak" placeholder="66"></div>
-      <div class="duo-field"><label>⚡ 經驗值</label><input type="number" id="inXP" placeholder="3430"></div>
-      <div class="duo-field"><label>⏱ 分鐘</label><input type="number" id="inMin" placeholder="294"></div>
-      <div class="duo-field"><label>📚 單元</label><input type="number" id="inUnits" placeholder="74"></div>
-    </div>
-    <button class="duo-save-btn" id="duoSave">儲存本週數據</button>
-  </div>
-</div>
-
-<!-- 每日完成率分析（哪一步最常漏掉） -->
-<div class="section-title">📊 每日完成率分析</div>
-<div class="duo-card">
-  <div id="habitSection"><div class="trend-pending">載入中…</div></div>
-</div>
-
-<!-- 週趨勢 -->
-<div class="section-title">週趨勢分析</div>
-<div class="duo-card">
-  <div id="trendSection"><div class="trend-pending">載入中…</div></div>
-</div>
-
-<!-- Four Skills -->
-<div class="section-title">四技能現況</div>
-<div class="skill-grid" id="skillGrid"></div>
-
-<!-- Topic health -->
-<div class="section-title">Topic 健康度（Quiz 正確率）</div>
-<div class="topic-card" id="topicHealth"></div>
-
-<!-- Quick nav -->
-<div class="section-title">快速入口</div>
+<!-- ── 🚪 去哪練（08-25 從第 10 個螢幕搬上來） ── -->
+<div class="layer-bar">🚪 去哪練</div>
+<!-- Quick nav（08-25 從第 10 個螢幕搬到這裡；標題由上面的分層條負責，不再重複） -->
 <div class="nav-grid">
   <a class="nav-btn" href="quiz.html">
     <span class="nav-icon">🃏</span>
@@ -569,6 +487,153 @@ body {
   </a>
 </div>
 
+<!-- ── 🧭 每天讀一句（心法／時區都是常駐，刻意不收合） ── -->
+<div class="layer-bar">🧭 每天看一眼</div>
+<!-- 🧭 今日心法（creed.js 輪播＋Owen 自己的清單優先） -->
+<div class="rx-card" id="creedCard" style="padding:12px 16px;">
+  <div class="rx-title" style="display:flex;justify-content:space-between;align-items:center;">
+    <span>🧭 今日心法</span>
+    <span id="creedStage" style="font-size:0.62rem;color:#f0c060;text-transform:none;letter-spacing:0;"></span>
+  </div>
+  <div id="creedList" style="font-size:0.78rem;line-height:1.7;color:#b8bcc8;"></div>
+  <div style="display:flex;gap:6px;margin-top:10px;">
+    <input id="creedInput" placeholder="想到什麼就餵進來（你寫的輪播優先）"
+      style="flex:1;background:#0d1020;border:1px solid #1a2438;border-radius:8px;color:#ddd8cc;font-size:0.74rem;padding:7px 10px;font-family:inherit;outline:none;">
+    <button onclick="creedAdd()" style="background:#1a2438;border:1px solid #2a3858;color:#f0c060;border-radius:8px;padding:0 12px;font-size:0.74rem;cursor:pointer;font-family:inherit;">＋收進清單</button>
+  </div>
+</div>
+
+<!-- 🕐 法語時區：四個開關常駐（08-10）。感知塊的鏡頭校正表要一直在旁邊，不是看懂就收起來 -->
+<div class="rx-card" id="tzCard" style="display:none;border-color:#3a3048;">
+  <div class="rx-title" style="display:flex;align-items:center;justify-content:space-between;">
+    <span>🕐 法語時區</span>
+    <a href="time_hall.html" style="font-size:0.62rem;color:#60a0d0;text-decoration:none;text-transform:none;letter-spacing:0;">進時間劇院 →</a>
+  </div>
+  <div id="tzSwitches" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;"></div>
+  <div id="tzToday" style="font-size:0.72rem;color:#8a7f68;line-height:1.85;padding-top:9px;border-top:1px solid #1a2438;"></div>
+</div>
+
+<!-- ── 以下是收合層：預設關起來，摘要行帶數字 ── -->
+<details class="layer" id="lyProgress">
+  <summary>📈 進度<span class="ly-peek" id="peekProgress"></span></summary>
+  <div class="layer-body">
+<!-- Stats -->
+<div class="stats-row">
+  <div class="stat-box">
+    <div class="stat-val" id="statStreak">—</div>
+    <div class="stat-label">連續天數 🔥</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val" id="statWeek">—</div>
+    <div class="stat-label">本週時數</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val" id="statWriting">—</div>
+    <div class="stat-label">造句週均分</div>
+  </div>
+</div>
+
+<!-- Countdown + milestones -->
+<div class="countdown">
+  <div>
+    <div class="cd-label">距離考試</div>
+    <div class="cd-days" id="cdDays">—</div>
+    <div class="cd-label">天</div>
+  </div>
+  <div class="cd-right">
+    <div class="cd-label">目標</div>
+    <div class="cd-date">2027年6月1日</div>
+    <div class="cd-date" id="cdPace" style="margin-top:4px;font-size:0.72rem;"></div>
+  </div>
+</div>
+
+<div class="milestones" id="milestones"></div>
+
+<!-- CLB 等級判定 -->
+<div class="prog-card">
+  <div class="prog-header">
+    <span class="prog-label">📐 等級判定（Quiz 正確率）</span>
+    <span class="prog-val" id="clbLevelVal">—</span>
+  </div>
+  <div class="prog-track"><div class="prog-fill fill-clb" id="clbFill" style="width:0%"></div></div>
+  <div class="prog-sub" id="clbSub"></div>
+</div>
+
+<!-- 700h progress -->
+<div class="prog-card">
+  <div class="prog-header">
+    <span class="prog-label">700 小時目標</span>
+    <span class="prog-val" id="hoursVal">— / 700h</span>
+  </div>
+  <div class="prog-track"><div class="prog-fill fill-hours" id="hoursFill" style="width:0%"></div></div>
+  <div class="prog-sub" id="hoursSub"></div>
+</div>
+  </div>
+</details>
+
+<details class="layer" id="lyWeek">
+  <summary>📅 本週回顧<span class="ly-peek" id="peekWeek"></span></summary>
+  <div class="layer-body">
+<!-- Duolingo -->
+<div class="section-title">Duolingo 週報</div>
+<div class="duo-card">
+  <div class="duo-header">
+    <div class="duo-title">🦜 本週數據</div>
+    <button class="duo-input-btn" id="duoToggle">＋ 輸入本週</button>
+  </div>
+  <div class="duo-grid" id="duoGrid">
+    <div class="duo-stat"><div class="duo-stat-val" id="duoStreak">—</div><div class="duo-stat-label">🔥 連勝</div><div class="duo-trend" id="duoStreakT"></div></div>
+    <div class="duo-stat"><div class="duo-stat-val" id="duoXP">—</div><div class="duo-stat-label">⚡ XP</div><div class="duo-trend" id="duoXPT"></div></div>
+    <div class="duo-stat"><div class="duo-stat-val" id="duoMin">—</div><div class="duo-stat-label">⏱ 分鐘</div><div class="duo-trend" id="duoMinT"></div></div>
+    <div class="duo-stat"><div class="duo-stat-val" id="duoUnits">—</div><div class="duo-stat-label">📚 單元</div><div class="duo-trend" id="duoUnitsT"></div></div>
+  </div>
+  <div class="duo-cumul">
+    累計 XP：<span id="duoCumulXP">—</span>
+    &nbsp;·&nbsp; 累計學習：<span id="duoCumulMin">—</span>
+    &nbsp;·&nbsp; 已記錄 <span id="duoWeeks">0</span> 週
+  </div>
+  <div class="duo-input-panel" id="duoPanel">
+    <div class="duo-week-label" id="duoWeekLabel"></div>
+    <div class="duo-input-row">
+      <div class="duo-field"><label>🔥 連勝天數</label><input type="number" id="inStreak" placeholder="66"></div>
+      <div class="duo-field"><label>⚡ 經驗值</label><input type="number" id="inXP" placeholder="3430"></div>
+      <div class="duo-field"><label>⏱ 分鐘</label><input type="number" id="inMin" placeholder="294"></div>
+      <div class="duo-field"><label>📚 單元</label><input type="number" id="inUnits" placeholder="74"></div>
+    </div>
+    <button class="duo-save-btn" id="duoSave">儲存本週數據</button>
+  </div>
+</div>
+
+<!-- 每日完成率分析（哪一步最常漏掉） -->
+<div class="section-title">📊 每日完成率分析</div>
+<div class="duo-card">
+  <div id="habitSection"><div class="trend-pending">載入中…</div></div>
+</div>
+
+<!-- 週趨勢 -->
+<div class="section-title">週趨勢分析</div>
+<div class="duo-card">
+  <div id="trendSection"><div class="trend-pending">載入中…</div></div>
+</div>
+
+<!-- Four Skills -->
+<div class="section-title">四技能現況</div>
+<div class="skill-grid" id="skillGrid"></div>
+  </div>
+</details>
+
+<details class="layer" id="lyDiag">
+  <summary>🔬 診斷：哪裡最弱<span class="ly-peek" id="peekDiag"></span></summary>
+  <div class="layer-body">
+<!-- Topic health -->
+<div class="section-title">Topic 健康度（Quiz 正確率）</div>
+<div class="topic-card" id="topicHealth"></div>
+  </div>
+</details>
+
+<details class="layer" id="lyVoice">
+  <summary>💬 給 Claude 的<span class="ly-peek" id="peekVoice"></span></summary>
+  <div class="layer-body">
 <!-- 心聲總覽 -->
 <div class="section-title" style="margin-top:18px;">心聲總覽</div>
 <div id="voicePanel" style="background:#fff;border-radius:12px;padding:14px 16px;margin-bottom:10px;">
@@ -578,6 +643,9 @@ body {
   </div>
   <div id="voiceList"></div>
 </div>
+  </div>
+</details>
+
 
 <script>
 // ── 常數 ─────────────────────────────────────────────────────
@@ -1264,10 +1332,15 @@ function buildAlerts(topicStats, game) {
   }
 
   // 嚴重弱點 topic
+  // 08-25：原本把 20 幾個 topic 全部列在警報裡，一條就吃掉 600px（第一屏的一半）。
+  // 警報要「一眼看完」，細節在下面的 🔬 診斷層——這裡只報最弱的 3 個＋總數。
   const critical = Object.entries(topicStats)
     .filter(([,s]) => s.attempts >= 5 && s.pct < 60)
-    .map(([t]) => TOPIC_LABELS[t] || t);
-  if (critical.length) alerts.push({ type:'err', msg:`🔴 嚴重弱點：${critical.join('、')}（正確率 < 60%）` });
+    .sort(([,a],[,b]) => a.pct - b.pct)
+    .map(([t, s]) => `${TOPIC_LABELS[t] || t} ${s.pct}%`);
+  if (critical.length) alerts.push({ type:'err',
+    msg:`🔴 嚴重弱點 ${critical.length} 個（<60%）：${critical.slice(0, 3).join('、')}`
+        + (critical.length > 3 ? `　…其餘看下面 🔬 診斷` : '') });
 
   // 🚩 被檢舉待審的題目（07-11文法框架）：提醒下次丟給 Claude 審核修復
   try {
@@ -1552,7 +1625,7 @@ function render() {
   const rx = buildPrescription(topicStats, todaySec);
   const firstUndone = rx.find(i => !i.done);
   document.getElementById('rxList').innerHTML = rx.map(item => `
-    <a class="rx-item ${item.done ? 'done' : ''} ${item === firstUndone ? 'rx-now' : ''}" href="${item.href}">
+    <a class="rx-item ${item.done ? 'done' : ''} ${item === firstUndone ? 'rx-now' : 'rx-slim'}" href="${item.href}">
       <span class="rx-num">${item.done ? '✓' : item.n}</span>
       <span class="rx-icon">${item.icon}</span>
       <div class="rx-body">
@@ -1574,7 +1647,9 @@ function render() {
     return a.pct - b.pct;
   });
 
-  document.getElementById('topicHealth').innerHTML = sorted.map(([topic, s]) => {
+  // 08-25：77 個 topic 全列會佔 3.2 個螢幕——只列最弱 12 個，其餘按鈕展開
+  const TOPIC_HEAD = 12;
+  const rowHTML = ([topic, s]) => {
     const label = TOPIC_LABELS[topic] || topic;
     const pct   = s.pct;
     const fillCls = pct === null ? 'fill-none' : pct < 60 ? 'fill-weak' : pct < 80 ? 'fill-mid' : 'fill-ok';
@@ -1586,7 +1661,35 @@ function render() {
       <span class="topic-pct ${pctCls}">${pctTxt}</span>
       <span class="topic-count">${s.attempts}題</span>
     </div>`;
-  }).join('');
+  };
+  const head = sorted.slice(0, TOPIC_HEAD), tail = sorted.slice(TOPIC_HEAD);
+  document.getElementById('topicHealth').innerHTML =
+    head.map(rowHTML).join('')
+    + (tail.length ? `<div id="topicTail" style="display:none">${tail.map(rowHTML).join('')}</div>
+        <button class="topic-more" onclick="const t=document.getElementById('topicTail');
+          const on=t.style.display==='none'; t.style.display=on?'block':'none';
+          this.textContent=on?'▴ 收起其餘 ${tail.length} 個':'▾ 顯示其餘 ${tail.length} 個 topic';">
+          ▾ 顯示其餘 ${tail.length} 個 topic</button>` : '');
+
+  // ⭐ 收合層的摘要行：收起來也要看得到最關鍵的數字，不然等於刪掉
+  const worst = sorted.filter(([, s]) => s.pct !== null).slice(0, 2)
+    .map(([t, s]) => `${TOPIC_LABELS[t] || t} ${s.pct}%`).join(' · ');
+  setPeek('peekDiag', worst || '還沒有足夠的作答紀錄');
+}
+
+/* ── 版面分層（08-25）：收合狀態記在 localStorage，摘要行帶數字 ──
+   ⚠️ key 不用 clb7_ 前綴——這是顯示偏好，不需要占 Supabase 同步負載 */
+function setPeek(id, txt) { const el = document.getElementById(id); if (el) el.innerHTML = txt; }
+function initLayers() {
+  let open = [];
+  try { open = JSON.parse(localStorage.getItem('dash_open')) || []; } catch (e) {}
+  document.querySelectorAll('details.layer').forEach(d => {
+    if (open.includes(d.id)) d.open = true;
+    d.addEventListener('toggle', () => {
+      const cur = [...document.querySelectorAll('details.layer')].filter(x => x.open).map(x => x.id);
+      try { localStorage.setItem('dash_open', JSON.stringify(cur)); } catch (e) {}
+    });
+  });
 }
 
 // ── Duolingo ─────────────────────────────────────────────────
@@ -1955,6 +2058,24 @@ function dashToast(msg) {
 }
 
 render();
+initLayers();
+fillPeeks();
+
+/* 收合層的摘要行：直接讀已經渲染好的 DOM，不重算一次
+   （peekDiag 在 renderTopicHealth 裡就填好了，這裡補其餘三個） */
+function fillPeeks() {
+  const txt = id => (document.getElementById(id)?.textContent || '').trim();
+  const days = txt('cdDays'), hours = txt('hoursVal');
+  setPeek('peekProgress', [days && days !== '—' ? `距考 ${days} 天` : '', hours && hours !== '— / 700h' ? hours : '']
+    .filter(Boolean).join(' · ') || '尚無資料');
+  const week = txt('statWeek'), duoMin = txt('duoMin');
+  setPeek('peekWeek', [week && week !== '—' ? `本週 ${week}` : '', duoMin && duoMin !== '—' ? `Duo ${duoMin} 分` : '']
+    .filter(Boolean).join(' · ') || '本週還沒有紀錄');
+  const vc = txt('voiceCount');
+  setPeek('peekVoice', vc && vc !== '載入中…' ? vc : '');
+}
+// 心聲是最後才非同步載完的，晚一點再補一次摘要
+setTimeout(fillPeeks, 800);
 
 // 開始今日學習 → 啟動跨頁計時器，並前往第一個未完成步驟
 document.getElementById('startBtn').addEventListener('click', () => {
