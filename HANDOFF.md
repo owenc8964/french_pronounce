@@ -111,9 +111,9 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `creed.js` | **新增（07-12）**：學習心法14條＋通關理由14條（每條有依據，禁雞湯），dashboard「🧭今日心法」卡每天輪播，Owen自己寫的`clb7_creed_own`優先於內建條目 | ✅ 新建 |
 | `tts_reader.js` | **新增（08-04）**：發音顆粒度三層共用模組（PLAN A-9／S7）——`TtsReader.mount()`（純文字→段落/句/字三層）、`mountList()`（既有「一句一元素」結構只加整段層、不動 DOM）、`speak()`、`stopAll()`。語音篩選沿用全站統一優先序；語速偏好存 `ttsr_rate`（**刻意不用 `clb7_` 前綴，不進 Supabase 同步負載**）。目前掛在 `reading.html` 與 `french_notes.html` 第21課平行閱讀兩處；**其餘 12 個各自實作 TTS 的頁面沒有動**（要重構先問 Owen）| ✅ 新建 |
 | `CODEX_STYLE.md` | **新增（07-12）**：codex.js條目撰寫規範——固定房間佈局（🎧錨句/📖規則+表格+💡記法/🕐使用時機/⚠️例外/🆚易混淆/💬更多例句/🔗相關），任何session擴寫條目前必讀 | ✅ 新建 |
-| `roleplay.html`＋`scenes.js` | **新增（08-24，08-25 擴充）**：🎭 情境角色扮演——DELF 口說第三部分 dialogue simulé 的格式（抽情境、兩個角色都能演）。**8 個場景／352 句台詞逐字出自筆記或 Édito 課本原文**，10 個真分岔（選項通往不同節點）。**預設純法語**（Owen 08-25：「中文輔助太多了」），只有選到 ok/bad 才自動翻中文＋解說；選錯寫進 `clb7_wrong_log`；checklist 只亮這條路真的走到的步驟 | ✅ 擴充（08-25）|
+| `roleplay.html`＋`scenes.js` | **新增（08-24，08-25 大擴充）**：🎭 情境角色扮演——**15 個場景／638 句台詞**逐字出自筆記或 Édito 課本原文，標 A1／A2 等級。三種玩法：①**讀懂模式**（看選項挑一個，誘答教你語域）②🔥**特訓模式**（遮選項＋量起手時間＋自評，練產出與反射）③🎭**兩邊都我演**（每句都輪到你，練整段切換立場）；另有 📚**背台詞**（284 張卡，含所有分岔，SRS 1/3/7/14/30，獨立池 `clb7_rp_srs`）。預設純法語，選錯才翻中文；每句標出處；`alts` 支援「同一問題多種問法」 | ✅ 大擴充（08-25）|
 | `situations.js` | **新增（08-24）**：17 個生活情境索引（掛既有 topic／課次／Answer Card，標明在考試哪裡出現，涵蓋 66/77 topic）。⚠️ **目前沒有任何頁面在讀它**，純資料層，要接哪一頁等 Owen 決定 | ⚠️ 未接線 |
-| `tools/check_scenes.js`＋`tools/extract_textbook.py` | **新增（08-24／08-25）**：劇本檢查器——①每一句法文必須逐字出自 `french_notes.html` 或 `assets/.textbook_cache.txt`（課本快取，由 extract 腳本產生，**gitignore 不進 repo**）②劇本結構（出口／可達性／孤兒節點／角色都要有選擇節點／checklist 對得上）。**寫完場景必跑，兩段全綠才算完成** | ✅ 新建 |
+| `tools/check_scenes.js`＋`tools/extract_textbook.py`＋`tools/ocr_pdf.py` | **新增（08-24／08-25）**：劇本檢查器——①每一句法文必須逐字出自 `french_notes.html` 或 `assets/.textbook_cache.txt`（課本快取，由 extract 腳本產生，**gitignore 不進 repo**）②劇本結構（出口／可達性／孤兒節點／角色都要有選擇節點／checklist 對得上）。**寫完場景必跑，兩段全綠才算完成**。`ocr_pdf.py`（08-25）用 macOS 內建 Vision OCR（離線）把掃描檔 PDF（DELF A2 全真題、A2 Cahier）轉成文字附加進同一份快取——⚠️ extract 會覆寫、ocr 是附加，順序不能顛倒 | ✅ 新建 |
 
 **GitHub Pages 網址：** https://owenc8964.github.io/french_pronounce/dashboard.html
 
@@ -637,32 +637,129 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **瀏覽器層**（切 TEST ROOM，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入＋故意把 `sous la tente` 填成 en 被判錯；reading a22 故意 2對1錯 → 分數與 ✓✗ 與解說都正確、紀錄欄位齊全；french_notes lesson-21 渲染 11 unit／11 表格全包 compare-table／**161 個 🔊 tts-btn**／導覽列 21 個按鈕含第21課；quiz `?lesson=21` 實際出到 y/en 題目並答對計分；**`getPool()` 放行全部 27 題**（確認沒踩到 07-16 那個「文法點被鎖導致整批題目消失」的坑）；map 顯示第21課、tile 與 codex 3-4-5 都正確。
 - **收尾**：清掉測試寫入的 a22 紀錄與該題 SRS key → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留。
 
-### ⏭ 下個 session 的第一件事：繼續寫場景（Owen 08-25 指定）
+### ⏭ 下個 session 的第一件事：先看 Owen 玩完 15 個場景的回饋
 
-Owen 的原話：「**明天開機之後 你繼續執行這個任務，把能寫的情境盡可能地寫出來**」。
-目前 **8 個場景**（下方 08-25 記錄），素材通道已經打通，接下來是產線工作，直接寫就好。
+08-25 這天 Owen 一邊玩一邊丟回饋，工具被他推著改了四輪（見下方 08-25（續））。
+**目前的狀態是「素材夠多、練法夠硬、但還沒累積使用數據」**——他昨天才第一次玩到背誦模式。
+所以下個 session 不要急著加功能，先問他兩件事：①背誦模式實際用起來如何 ②反射率有沒有意義。
 
-**動手前一定要先做的三件事：**
-1. `python3 tools/extract_textbook.py` —— 課本文字快取在 `assets/.textbook_cache.txt`（gitignore，不進 repo）。**沒有這個檔，檢查器只剩筆記可比對，課本來的句子會全部被判失敗。**
-2. 用 scratchpad 的 probe 腳本先驗句子（做法見 08-25 記錄「怎麼挖課本」），**不要先寫劇本再驗**——順序反了會白寫。
-3. 寫完必跑 `node tools/check_scenes.js`，**兩段都要全綠**（教材出處＋劇本結構）。
+**動手前照樣要做的三件事**（跟之前一樣，但多了 OCR）：
+1. `python3 tools/extract_textbook.py` → 課本文字快取（A1課本＋A1 Cahier＋A2課本＋DELF A1 考官文件）
+2. `python3 tools/ocr_pdf.py --all` → 掃描檔（DELF A2 全真題、A2 Cahier）OCR 後**附加**到同一份快取
+   ⚠️ extract 會**覆寫**快取，ocr 是**附加**——所以順序不能顛倒，跑完 extract 一定要再跑一次 ocr
+3. 寫完必跑 `node tools/check_scenes.js`，教材出處＋劇本結構兩段都要綠
 
-**還沒做、素材已經確認存在的場景**（都在 `assets/.textbook_cache.txt`，附頁碼）：
+**還沒做、素材已經確認存在的場景**（`assets/.textbook_cache.txt` 裡都有）：
 
-| 情境 | 課本出處 | 有什麼 |
+| 情境 | 出處 | 有什麼 |
 |---|---|---|
-| 🛒 市場／超市買菜 | p.50 逐字稿（Sonia↔Arnaud） | 在哪買什麼的完整對話＋chez le boucher／au marché 介係詞對照 |
-| 📱 買 3C 送禮 | p.84 逐字稿（Jules↔爸爸） | 挑禮物、比較顏色款式、ça sert à quoi |
-| 🏋️ 健身房入會 | p.98 附近（Bienvenue ! Vous avez choisi notre salle de sport） | 器材、規則、頻率副詞 |
-| 🏦 銀行開戶 | p.114（Banque du Nord, bonjour !） | 電話問資訊＋justificatif de domicile 這類行政詞彙 |
-| 🏠 鄰居／報修 | p.112 逐字稿（Clément Dupré↔Michel Barbier） | 抽菸糾紛、找水電工、自我介紹給鄰居——**語域練習極好**（陌生鄰居用 vous） |
-| ✈️ 機場遇到朋友聊假期 | p.132 逐字稿（Loïc↔Marina） | 整段 passé composé 講假期，正好是口說第二部分的主場 |
-| 🧵 打電話問課程 | p.177 逐字稿（問 atelier couture） | Je voudrais des informations. Qu'est-ce que vous proposez ? |
-| 🍽 餐廳（第二版） | Cahier p.36 | 另一組點餐對話，可做成餐廳的進階版或第二個分岔 |
+| 🛒 市場／超市 | A1 p.50 | 在哪買什麼＋chez le boucher／au marché 介係詞對照。DELF A1 官方 SUJET 4 就是「Au marché」 |
+| 📱 買 3C 送禮 | A1 p.84 | 挑禮物、比較顏色款式、ça sert à quoi |
+| 🧵 打電話問課程 | A1 p.177 | Je voudrais des informations. Qu'est-ce que vous proposez ? |
+| ☕ 咖啡館 | DELF A1 官方 SUJET 6（有價目表） | 需要先找咖啡館對話素材，目前只有題目沒有台詞 |
+| 🚉 車站買票 | DELF A1 官方 SUJET 7（有時刻表價目表） | 同上，缺台詞 |
+| 🍽 A2 「On mange où ?」 | A2 p.88 | 討論在哪吃飯 |
+| 💼 A2 工作／CV | A2 p.155、p.158 | 職涯訪談＋寫 CV |
+| 🌍 A2 環境／園藝 | A2 p.169、p.177 | 議題型對話，接近 B1 |
+| 📋 DELF A2 全真題 | `.ocr_le-delf-a2-100-reussite…txt` | **OCR 剛做完還沒挖過**——裡面有整本的口說/聽力題目 |
 
-**還沒解決、需要 Owen 出手的事**：
-- **A2 課本與 Cahier 不在 `assets/`**（只有 A1 的 `Edito22 A1 Owen.pdf` 與 `Edito Cah22 A1 Owen.pdf`）。他 08-25 說「你應該有A1 A2 課本及Cahier pdf檔」——**A2 的沒有**。他把 A2 的 PDF 丟進 `assets/` 之後，重跑一次 `extract_textbook.py` 就會自動納入，A2 情境（比較級、條件句、DELF A2 口說第三部分的官方題目）才有原文可用。
-- `assets/Online classe 1 (1).pdf` 與 `french class 2.pdf` 是**掃描檔，抽不到任何文字**（extract 腳本會標出來），要用得先 OCR。
+---
+
+### 08-25（續）：Owen 一邊玩一邊改，工具被推了四輪
+
+早上交接完之後 Owen 沒有離開，而是**一邊玩一邊丟回饋**，每一則都改變了設計。
+照時間順序記，因為後面的決定都建立在前面那則回饋上。
+
+#### 回饋一：「你應該有A1 A2 課本及Cahier pdf檔」→ 素材通道打通
+他把 **A2 課本、A2 Cahier、DELF A1 官方考官文件、DELF A2 全真題** 全部丟進 `assets/`。
+- `Edito22 A2 Owen 7:21.pdf`（218頁）抽得到文字 → **108 萬字的 A2 原文**進來了
+- `exemple-4-sujet-delf-a1-…-production-orale.pdf`＝**官方考官文件**：
+  第一部分的例題清單、第二部分的字卡、**第三部分 10 個 dialogue simulé 題目＋價目表**
+- ⚠️ `EditoA2 2022 Cahier .pdf` 與 `le-delf-a2-100-reussite…pdf` **是掃描檔，抽不到字**
+  → 加了 `tools/ocr_pdf.py`（macOS 內建 Vision OCR，離線、不上傳）
+  → OCR 出 28 萬字（DELF A2 真題）＋36 萬字（A2 Cahier），附加進快取
+  → 需要 `pip3 install pyobjc-framework-Vision pyobjc-framework-Quartz`（已裝）
+
+#### 回饋二：「中文輔助太多了」「可以考慮開fork」→ 純法語＋真分岔（已記在前一段）
+
+#### 回饋三：「我目標是對這些對答跟可能的問題需要的能力足夠熟練，不只是會依序看懂這樣而已」
+**這句話點破了原本設計的天花板**：看三個選項挑一個＝辨識，而且順序固定，玩第二次會記得。
+跟他確認過作答方式（他選「講出來後自評」，不要打字比對）之後做了 **🔥 特訓模式**：
+- 選項全部遮住，只給中文提示 → 先開口講 → 按「揭曉答案」
+- **量起手時間**（題目出現→按揭曉），3 秒內＝⚡不用想，超過＝🐢還在組裝
+- 三鍵自評；結算報 **反射率＋中位起手秒數＋「還在消耗工作記憶的句子」清單**
+- ⭐ 設計重點：**答對但想 5 秒，跟答不出來，是兩種不同的缺口**，清單分開標
+  （對應教學鐵律的「自動化缺口 vs 概念缺口」——前者要壓縮練習，後者要回筆記）
+- 資料 `clb7_rp_cells`（每節點最近5筆，仿 verb_sprint）、`clb7_rp_sessions`
+
+#### 回饋四：「我希望我可以做到整段應對流暢，可以瞬間切換角色那種」
+→ **🎭 兩邊都我演**：對方那一側不再自動代打，每一句都輪到你，整段一個人跑完。
+配特訓模式＝整段每一句都要自己產出。左右仍照角色分邊，讀起來還是一段對話。
+
+#### 回饋五：「每句旁邊標注一下來源」
+→ 泡泡與參考答案下面顯示「📖 課本 A2 p.102」「📖 筆記第17課」。
+資料本來就有 `src` 欄位，只是之前沒顯示出來。
+
+#### 回饋六（最重要的一則）：「純粹玩完不會有太多輸入耶，感覺還是要有個背誦的過程」
+> 「但像剛剛 有些分岔路沒走 我就自然會沒看到 重走一次有點搞笑」
+> 「感覺可以進去先玩，然後好好背誦 體驗一下，像是anki那種感覺」
+
+**他說得對，而且這一則同時解掉了分岔的副作用。** 做了 **📚 背台詞**：
+- 把**整場的所有台詞展開成卡片**，**包含沒走到的分岔**（不用為了看某句再演一遍）
+- 卡片**不另外維護資料**，直接從 `scenes.js` 生成 → 劇本改了卡片自動跟著改
+- 誘答（ok/bad）**不進卡片**——那是反面教材，不能拿去背
+- 正面＝中文＋誰說的＋情境；先自己講法文再翻開；背面＝法文＋🔊＋解說＋出處
+- SRS 間隔 1/3/7/14/30，獨立池 `clb7_rp_srs`（id 前綴 `RP_`），共用 `clb7_hard_flags`
+- ⚠️ 兩條刻意的規則：**①新卡第一次答對＝明天再出現**（不是 3 天）
+  **②今天卡住過的卡，包尾重試答對也不准往上跳間隔**——當天第二次成功只證明「剛看過還記得」
+- 入口：選角畫面 ＋ 演完的結算頁（**先玩再背**的順序）
+
+#### 另外做的：🔀 換句話問
+`line` 節點可以掛 `alts`＝同一個問題的其他問法，每次隨機挑，泡泡標「這句有 N 種問法」。
+entretien 用 **DELF A1 官方考官文件**補了 6 種變體（`Vous vous appelez comment ?`／
+`Votre nom, comment ça s'écrit ?`／`Est-ce que vous avez des enfants ?`／
+`Vous avez des enfants ? Quel âge ont-ils ?`／`Parlez-moi d'une journée habituelle.`／
+`Qu'est-ce que vous faites le samedi et le dimanche ?`）。
+目的：**不能靠「背下一句是什麼」過關**。
+
+#### 場景 4 → 15（08-25 一天之內）
+| id | lvl | 節點/分岔 | 卡片 | 出處 |
+|---|---|---|---|---|
+| boulangerie | A1 | 12 / 0 | 12 | 筆記1、4、5課 |
+| entretien | A1 | 22 / 3 | 32 | 筆記17課＋DELF 官方考官文件 |
+| rendez-vous | A1 | 18 / 2 | 21 | 課本 A1 Unité 6＋筆記9、19課 |
+| restaurant | A1 | 17 / 1 | 22 | 課本 A1 p.54＋Cahier p.36 |
+| vetements | A1 | 19 / 2 | 19 | 課本 A1 p.78 |
+| chemin | A1 | 13 / 1 | 13 | 課本 A1 p.66、p.71 |
+| hotel | A1 | 21 / 2 | 22 | 課本 A1 p.131 |
+| medecin | A1 | 24 / 1 | 25 | 課本 A1 p.117 |
+| **pharmacie** | **A2** | 22 / 2 | 24 | 課本 A2 p.102 |
+| **restaurant-a2** | **A2** | 22 / 2 | 25 | 課本 A2 p.92 |
+| **logement** | **A2** | 16 / 2 | 15 | 課本 A2 p.43 |
+| **agence** | **A2** | 16 / 2 | 16 | 課本 A2 p.141 |
+| voisin | A1 | 15 / 1 | 14 | 課本 A1 p.112 |
+| banque | A1 | 9 / 0 | 8 | 課本 A1 p.114 |
+| aeroport | A1 | 16 / 1 | 16 | 課本 A1 p.132 |
+
+**合計 638 句逐字有出處**（筆記241／課本397）、**284 張卡片**、誘答仍只有 3 句。
+場景卡上有 **A1（灰）／A2（金）** 等級標籤——他現在是 A2，一眼看得出哪些是他的程度。
+
+#### dashboard
+情境角色扮演那格顯示「本週 反射 N/M · 背 X 張」（讀 `clb7_rp_sessions` 與 `clb7_rp_card_sessions`）。
+
+#### 驗證
+- Node 端窮舉所有路徑：**無循環、無死路**
+- 瀏覽器（TEST ROOM 全程隔離）：**15 場景 × 3 角色（含雙角）× 10 次隨機＝450 場全部走到結束、零 console error**；
+  15 場的背誦卡片各跑一整輪（刻意 2/3 答錯，確認包尾重試會收斂）、SRS 建立 284 張；
+  SRS 階梯實測 1→3 天正確、當天失敗的卡明天到期
+- 收尾：清 key → ROOM 改回正式值 → 立刻 `preview_stop` → grep 主樹無殘留
+
+#### ⚠️ 兩個踩到的坑，記下來
+- **shell 的反引號**：`git commit -m "…"` 的訊息裡寫了反引號包住的變數名，
+  被 zsh 當成命令替換執行掉，commit 訊息裡那幾個字直接消失（已 amend 修回）。
+  **commit 訊息用 `-F 檔案` 或不要在雙引號裡用反引號。**
+- **分頁被切到背景時 setTimeout 會被凍住**，用「按一步等一下」的驅動腳本會卡在半路，
+  看起來像 bug 其實不是。驗證時把 `window.setTimeout` 暫時換成同步執行，整場在一次 exec 內跑完。
 
 ---
 
