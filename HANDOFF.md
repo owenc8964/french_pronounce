@@ -1696,6 +1696,35 @@ Owen 08-03 的需求原話：「如果是整段文章，可以的話發音除了
 
 **還沒做、留給之後的**：其餘 12 個各自實作 TTS 的頁面（review/quiz/table_drill/verb_sprint/…）仍是各自一份程式碼，**要不要收攏到這支模組要先問 Owen**（一次動 12 個檔案風險不低，且那些頁面都是單句層、現況沒壞）。
 
+#### 08-25（續5）：📽 待看清單上線——老師推薦的電影收進 listening.html 影集精讀卡
+
+Owen 丟了新一課的逐字稿後只交代一句：「**請把老師介紹的電影放入待看清單**」（les chiens／les siens 那部）。
+**repo 裡原本沒有任何待看清單**——影集精讀卡只有一個自由輸入框＋從歷史記錄長出來的 datalist，
+老師推薦的片沒地方放，講完就散在逐字稿裡。所以這次是**把清單這個東西做出來**，不是往現成清單補一列。
+
+**做法**（`listening.html` 🎬影集精讀 Shadowing 卡片內，輸入框正上方）：
+- 靜態 `WATCHLIST` 陣列，每部片存 `title / year / match / why / tip`。
+  `why` 寫的是**老師當下為什麼提它**，不是劇情簡介——之後回頭看才知道這部片在學什麼。
+- **「▸ 選這部」按鈕直接把片名填進 `#shEpisode` 並 focus**，接上既有的四遍流程，不另開系統。
+- **「✓ 精讀過」不新增 localStorage key**：拿精讀記錄的 `episode` 字串比對 `match` 推出來。
+  刻意不做 `clb7_watchlist`——多一個 key 就多一份同步風險，而這個狀態本來就能從既有資料算。
+
+**收錄兩部（都是老師這堂課講的）**：
+| 片 | 為什麼收 |
+|---|---|
+| **Bienvenue chez les Ch'tis**（2008） | 老師講 `le mien／le tien／le sien` 時放的片段：ch'ti 口音 s→ch，「parti avec **les siens**」聽起來變成 **les chiens**（狗），主角才會一臉「家具怎麼被狗搬走」。**這是本課文法點的活教材** |
+| **Intouchables**（2011） | 老師同一段順口提到、Owen 說看過 → 標了「劇情已知，可以直接從②整理句型開始」 |
+
+**驗證**（照測試鐵律：先 grep → ROOM 切 TEST → 測 → 清 → 還原 → `preview_stop` → grep 確認無殘留）：
+清單兩列正確渲染；點「▸ 選這部」→ 片名填入輸入框、focus 正確、toast 正確；
+用**真實儲存按鈕**存一筆 Ch'tis ①理解 → 該列即時翻成「✓ 精讀過」、按鈕消失、進度提示正確接到「建議下次②整理句型（同一集）」；
+console 零錯誤；測試那筆已從 `clb7_listening` 清除（保留 7 月既有的 5 筆本機舊資料）。
+
+**⚠️ 順帶記一筆**：這份逐字稿的內容（性格優缺點／pronoms possessifs／**futur simple 完整變位**／
+innovation 詞彙／`le même que`·`autant de` 複習）**還沒入庫**——性格詞與 `le même` 第26課已經有，
+但 **pronoms possessifs（le mien 系列）與 futur simple 是全新文法點**，要走九項連動。
+Owen 這次只叫我做待看清單，所以我只做了這件事；下次做筆記時這課是待辦。
+
 ---
 
 ## 之前 session 做了什麼（2026-07-02 ～ 07-03）

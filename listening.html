@@ -324,6 +324,9 @@ button:active { transform: scale(0.97); }
   <div class="card-title">🎬 影集精讀 Shadowing</div>
   <div class="res-desc" style="margin-bottom:14px;">不要一直追新集數——同一集看5-10次榨乾它。①理解劇情 ②整理10個核心句型（不是單字）③每句跟讀3-5次 ④隔天快速複習昨天整理的句型。</div>
 
+  <div style="font-size:0.7rem;color:#445060;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">📽 待看清單（老師／課堂推薦）</div>
+  <div id="watchlist" style="margin-bottom:6px;"></div>
+
   <label>影集／集數</label>
   <input type="text" id="shEpisode" list="shEpisodeList" placeholder="例：Extra Français S1E1 或 Peppa Pig - Muddy Puddles">
   <datalist id="shEpisodeList"></datalist>
@@ -887,6 +890,43 @@ renderCultureList();
 // 供之後 Claude 整理進句型庫（見 HANDOFF「後續整理」待辦）。
 // ════════════════════════════════════════════════════════════
 function shadowEntries() { return load().filter(e => e.source === '影集Shadowing'); }
+
+// 📽 待看清單：老師課堂推薦的片。「已精讀」不另存 localStorage key——
+// 只要精讀記錄裡的集數名稱含 match 字串就算看過，不新增任何 clb7_* 鍵。
+const WATCHLIST = [
+  { title: "Bienvenue chez les Ch'tis", year: 2008, match: "ch'ti",
+    why: "老師講 <b>le mien／le tien／le sien</b> 那天放的片：北方 ch'ti 口音把 <b>s</b> 唸成 <b>ch</b>，所以「l'ancien directeur est parti avec <b>les siens</b>（前任主管把他自己那些搬走了）」聽起來就變成 <b>les chiens</b>（狗）——主角才會一臉「家具怎麼會被狗搬走」。講法國南北口音差異的代表作。",
+    tip: "口音很重，①理解劇情那遍先開法文字幕抓故事，不要一開始就想聽懂每個字。" },
+  { title: "Intouchables", year: 2011, match: "intouchable",
+    why: "老師同一段順口提到的另一部，跟 Ch'tis 並列法國影史觀影人次最高的幾部之一。Owen 說看過——正好可以直接從②整理句型那遍開始，劇情已經知道，耳朵能全放在語言上。",
+    tip: "" }
+];
+
+function renderWatchlist() {
+  const seen = shadowEntries().map(e => (e.episode || '').toLowerCase());
+  document.getElementById('watchlist').innerHTML = WATCHLIST.map((f, i) => {
+    const done = seen.some(n => n.includes(f.match));
+    return `<div style="border:1px solid #1a2438;border-radius:10px;padding:12px;margin-bottom:8px;background:#0a0d18;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+        <span style="color:#f0c060;font-size:0.9rem;">🎬 ${escHtml(f.title)} <span style="color:#445060;font-size:0.78rem;">（${f.year}）</span></span>
+        ${done ? '<span style="font-size:0.72rem;color:#60d090;white-space:nowrap;">✓ 精讀過</span>'
+               : `<button class="wl-pick" data-i="${i}" style="background:#1a2438;color:#6080a0;padding:5px 12px;font-size:0.76rem;white-space:nowrap;">▸ 選這部</button>`}
+      </div>
+      <div style="font-size:0.78rem;color:#8a94a8;line-height:1.6;margin-top:6px;">${f.why}</div>
+      ${f.tip ? `<div style="font-size:0.76rem;color:#667080;margin-top:5px;">💡 ${f.tip}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+document.getElementById('watchlist').addEventListener('click', (ev) => {
+  const btn = ev.target.closest('.wl-pick');
+  if (!btn) return;
+  const f = WATCHLIST[parseInt(btn.dataset.i, 10)];
+  const ep = document.getElementById('shEpisode');
+  ep.value = f.title;
+  ep.focus();
+  showToast(`已選《${f.title}》——記得填第幾遍`);
+});
 function shadowDoneToday() { return shadowEntries().some(e => e.date === todayStr()); }
 
 function shPassLabel(n) {
@@ -946,11 +986,11 @@ document.getElementById('shSaveBtn').addEventListener('click', () => {
   document.getElementById('shSentences').style.display = 'none';
 
   updateStats(); updateBreakdown(); renderHistory();
-  renderShadowEpisodeList(); renderShadowProgress(); renderShadowHistory();
+  renderShadowEpisodeList(); renderShadowProgress(); renderShadowHistory(); renderWatchlist();
   showToast('✓ 已記錄這次精讀！');
 });
 
-renderShadowEpisodeList(); renderShadowProgress(); renderShadowHistory();
+renderShadowEpisodeList(); renderShadowProgress(); renderShadowHistory(); renderWatchlist();
 
 // guided=1（從dashboard處方點進來）：自動挑一篇今天還沒做的真人語速測驗開始
 if (new URLSearchParams(location.search).get('guided') === '1') {
