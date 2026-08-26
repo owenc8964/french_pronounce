@@ -400,7 +400,7 @@ const GRAM_POINTS = [
     lessons:[27], topics:['pronoms-possessifs'], unlocked:true,
     rule:{
       title:'所有格代名詞 — 名詞被吃掉了，所以後面什麼都不接',
-      why:'英文的 my 跟 mine 是同一件事的兩個形狀：my 後面一定要說出東西（my shoes），mine 後面什麼都不說（it\'s mine）。法文完全一樣——mon／ton／son 是形容詞，後面接名詞；le mien／le tien／le sien 是代名詞，把「所有格＋名詞」整組收掉。因為名詞被收進代名詞裡了，它必須自己帶著那個名詞的性數，所以配合的對象永遠是「東西」不是「人」：一個男生說「我的照片」也是 la sienne，因為 photo 是陰性。定冠詞是這組字的身分證——沒有 le／la／les 就不成立。至於 nôtre／vôtre 頭上那頂帽子，不是文法規則而是拼寫上的區分記號：形容詞 notre 沒有、代名詞 le nôtre 有，口說幾乎聽不出差別，所以這是一條用眼睛的規則。',
+      why:'英文的 my 跟 mine 是同一件事的兩個形狀：my 後面一定要說出東西（my shoes），mine 後面什麼都不說（it\'s mine）。法文完全一樣——mon／ton／son 是形容詞，後面接名詞；le mien／le tien／le sien 是代名詞，把「所有格＋名詞」整組收掉。因為名詞被收進代名詞裡了，它必須自己帶著那個名詞的性數，所以配合的對象永遠是「東西」不是「人」：一個男生說「我的照片」也是 la sienne，因為 photo 是陰性。定冠詞是這組字的身分證——沒有 le／la／les 就不成立。至於 nôtre／vôtre 頭上那頂帽子，它不只是區分記號，還帶著發音：形容詞 notre／votre 的 o 是開口 [ɔ]，代名詞 nôtre／vôtre 的 o 是閉口 [o]（⚠️ 老師課堂說「聽起來一樣」，那是口語把兩個音中和掉的實際現象，不是標準——寫一定要分，考試與正式場合唸也要分）。leur 那一行則完全不變，沒有這個問題。',
       points:[
         '結構：定冠詞 ＋ mien／tien／sien／nôtre／vôtre／leur，後面不接名詞',
         '⚠️⚠️ 配合的是「被代替的名詞」不是擁有者：sa photo → la sienne（不管他是男是女）',
