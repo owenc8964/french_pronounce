@@ -166,7 +166,7 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
 <div class="header">
   <a class="back" href="dashboard.html">← Retour au tableau de bord</a>
   <h1>⚡ SPRINT DE VERBES</h1>
-  <div class="sub">核心 9 動詞 × 6 人稱 × 學過的時態 — 練到反射，不是練到會</div>
+  <div class="sub">核心 11 動詞 × 6 人稱 × 學過的時態 — 練到反射，不是練到會</div>
 </div>
 
 <!-- ── Start screen ── -->
@@ -266,7 +266,10 @@ const PERSONS_UI = ['je', 'tu', 'il / elle', 'nous', 'vous', 'ils / elles'];
  *
  * ⚠️ 動詞維持核心 9 個、順序不動——熱力圖的格子 key 是 `動詞_人稱`，
  *    換順序或加動詞會讓既有的反射紀錄對不上。擴充動詞要另外開一個模式。 */
-const CORE9 = ['être','avoir','faire','aller','devoir','pouvoir','vouloir','venir','prendre'];
+// 2026-08-26：加入 savoir / voir。第27課教到的不規則 futur 詞幹裡，saur-／verr- 原本
+// 完全不會出現在衝刺頁（規則式那半有練、不規則那半沒有）——Owen：「不規則真的比較讓人頭大，
+// 要直接成為反應」。⚠️ 這份清單要跟 dashboard.html 的 SPRINT_VERBS 保持一致。
+const CORE9 = ['être','avoir','faire','aller','devoir','pouvoir','vouloir','venir','prendre','savoir','voir'];
 
 /* 每個模式：時態 id、按鈕文字、localStorage 後綴、以及「哪個文法點解鎖了才出現」。
  * 這就是「定期更新到最近進度」的機制——課程教到哪、gram_rules 解鎖哪個點，

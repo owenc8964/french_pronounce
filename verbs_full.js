@@ -123,6 +123,25 @@ const VERBS_FULL = [
     pres:['connais','connais','connaît','connaissons','connaissez','connaissent'], ps:['conn','u'],
     note:'⚠️ il connaît 的 i 帶帽子（在 t 前面才有）' },
 
+  { inf:'devenir', zh:'變成', grp:'高頻不規則', lvl:'A2', aux:'être', pp:'devenu', fut:'deviendr',
+    pres:['deviens','deviens','devient','devenons','devenez','deviennent'], ps:['dev','in'],
+    note:'跟 venir 完全同型，只是前面加 de-（futur deviendr-、pp devenu、助動詞 être）。第27課：les robots deviendront indispensables' },
+
+  /* ⚠️ 無人稱動詞（imperso:true）：只有 il 這一格是真的存在的。
+   * 資料裡其餘五格一律填 null，推導引擎會把算出來的形式遮成 null，
+   * 頁面顯示「—」——絕對不要讓它印出 je faux／nous pleuvons 這種不存在的形式。 */
+  { inf:'falloir', zh:'必須（無人稱）', grp:'無人稱', lvl:'A2', aux:'avoir', pp:'fallu', fut:'faudr',
+    imperso:true, ppr:null, imper:[],
+    pres:[null,null,'faut',null,null,null], imp:'fall', ps:['fall','u'],
+    subj:[null,null,'faille',null,null,null],
+    note:'⚠️ 只有 il 一格：il faut → il faudra（第27課）／il fallait／il a fallu／qu\'il faille。沒有命令式，也沒有現在分詞' },
+
+  { inf:'pleuvoir', zh:'下雨（無人稱）', grp:'無人稱', lvl:'A2', aux:'avoir', pp:'plu', fut:'pleuvr',
+    imperso:true, ppr:'pleuvant', imper:[],
+    pres:[null,null,'pleut',null,null,null], imp:'pleuv', ps:['pl','u'],
+    subj:[null,null,'pleuve',null,null,null],
+    note:'⚠️ 只有 il 一格：il pleut → il pleuvra（第27課）／il pleuvait／il a plu／qu\'il pleuve。⚠️ pp 是 plu，跟 plaire 的 pp 同形' },
+
   { inf:'attendre', zh:'等（-re 規則動詞的樣本）', grp:'規則樣本', lvl:'A1', aux:'avoir', pp:'attendu', fut:'attendr',
     pres:['attends','attends','attend','attendons','attendez','attendent'], ps:['attend','i'],
     note:'第三組 -re 的規則型：字根 attend- ＋ -s/-s/-∅/-ons/-ez/-ent。同型：descendre, répondre, vendre, entendre' },
@@ -157,6 +176,7 @@ function withSubjQue(i, form) {
 
 // 頁面統一用這個：依時態決定要不要加 que
 function display(tense, i, form) {
+  if (form == null) return '—';                 // 無人稱動詞不存在的人稱
   return tense.pre ? withSubjQue(i, form) : withSubj(i, form);
 }
 
@@ -182,7 +202,10 @@ function passeSimple(v) {
   return conjSimple(stem, END['ps_' + type]);
 }
 
-function participePresent(v) { return stemNous(v) + 'ant'; }
+function participePresent(v) {
+  if (v.imperso) return v.ppr;                  // null ＝ 這個動詞沒有現在分詞（falloir）
+  return stemNous(v) + 'ant';
+}
 
 // 複合時態：助動詞的某個時態 ＋ 過去分詞
 const AUX = {
@@ -267,6 +290,9 @@ function conjugate(v) {
   push({ id:'passe-simple', name:'簡單過去式（只要看得懂）', fr:'passé simple', lvl:'B2', cx:'5-7-1',
     forms: passeSimple(v), how:'書面敘事專用，口說與寫作都不會用到——認得出來就好' });
 
+  // ⚠️ 無人稱動詞：詞幹推導出來的六格裡，只有 il 那一格真的存在，其餘遮成 null
+  if (v.imperso) out.forEach(t => { t.forms = t.forms.map((f, i) => (i === 2 ? f : null)); });
+
   return out;
 }
 
@@ -274,7 +300,7 @@ function nonFinite(v) {
   return [
     { name:'原形',       fr:'infinitif',          form: v.inf },
     { name:'過去分詞',   fr:'participe passé',    form: v.pp + (v.aux === 'être' ? '（要配合主詞：' + v.pp + '／' + v.pp + 'e／' + v.pp + 's／' + v.pp + 'es）' : '') },
-    { name:'現在分詞',   fr:'participe présent',  form: participePresent(v) },
+    { name:'現在分詞',   fr:'participe présent',  form: participePresent(v) || '（這個動詞沒有現在分詞）' },
     { name:'命令式',     fr:'impératif',          form: imperatif(v).length ? imperatif(v).join('！／') + '！' : '（這個動詞沒有命令式）' },
   ];
 }
@@ -291,13 +317,13 @@ function stems(v) {
     { key:'imparfait 詞幹',
       val: (v.imp || stemNous(v)) + '-',
       out: v.imp
-        ? `⚠️ 例外：不是從現在式 nous（${v.pres[3]}）來的，這個要單獨記`
+        ? `⚠️ 例外：不是從現在式 nous（${v.pres[3] || '這個動詞沒有 nous'}）來的，這個要單獨記`
         : `現在式 nous「${v.pres[3]}」去掉 -ons → imparfait、現在分詞、subjonctif 的 nous／vous` },
 
     { key:'subjonctif 詞幹',
       val: v.subj ? '不規則' : stemIls(v) + '-',
       out: v.subj
-        ? `⚠️ 六格要記：que je ${v.subj[0]}／que nous ${v.subj[3]}`
+        ? (v.imperso ? `⚠️ 無人稱：只有 qu'il ${v.subj[2]}` : `⚠️ 六格要記：que je ${v.subj[0]}／que nous ${v.subj[3]}`)
         : `現在式 ils「${v.pres[5]}」去掉 -ent → subjonctif 的 je／tu／il／ils` },
 
     { key:'過去分詞',

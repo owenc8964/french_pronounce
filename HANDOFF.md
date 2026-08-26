@@ -1773,6 +1773,52 @@ Owen 丟了整份逐字稿，交代兩件事：先把老師介紹的電影放進
 **已知的既有小問題（不是這次造成的，沒動）**：`codex.js` 的 topic `imparfait` 同時掛在節 `5-3` 與 `5-9`，
 `codexLocate` 會回傳先找到的那個。要不要收斂等 Owen 決定。
 
+---
+
+### 08-26（續）：Owen 拍板兩條原則，兩條都落地了
+
+> 他的原話：「**逐字稿要對應課本，不要瞎做。當然要符合法文文法，不是只有我們對話或課本說得算。
+> 當然課本可以當 guideline 沒問題，但也是有可能有錯誤。**」
+> 「**規則多，邏輯好可以解決；不規則真的比較讓人頭大。要直接成為反應，在沒有法文環境下就更不容易做到了。**」
+
+#### ① 來源三層優先序 → 寫進 CLAUDE.md 內容鐵律第1條（他同意）
+
+**標準法文正確性 ＞ 課本 ＞ 逐字稿**。逐字稿是語音辨識產物、課本是商業教材，兩者都是**線索不是判準**。
+衝突時以標準法文寫，但**要把課本／老師的說法標出來，不要沉默改掉**——Owen 手上就是那本課本。
+
+**當場抓到並修掉的實例（第27課）**：老師課堂說 `notre` 跟 `le nôtre`「發音完全一樣」，
+第一版筆記就跟著寫成「口說幾乎聽不出來，所以是用眼睛的規則」。
+標準法文其實是 **notre／votre 開口 [ɔ] vs nôtre／vôtre 閉口 [o]**，帽子就是在標這個音；
+老師說的「一樣」是**口語把兩個音中和掉**的真實現象，不是標準。三處一起改：
+筆記的 note-box 與發音警報表、`questions.js` 那題的選項與 aNote、`gram_rules.js` 的 `why`。
+memory 也開了一則 `feedback_source_hierarchy`。
+
+#### ② 不規則要變反射 → 先擴充 verb_sprint（他選的方向）
+
+**查到的缺口**：`verb_sprint.html` 的 `CORE9` 只有 être／avoir／faire／aller／devoir／pouvoir／vouloir／venir／prendre。
+第27課教的不規則 futur 詞幹裡，**savoir（saur-）與 voir（verr-）從來不會出現在衝刺頁**——
+等於「規則式那半有反射練習、不規則那半沒有」，剛好跟他的瓶頸相反。
+
+- `verb_sprint.html` 的 `CORE9` 與 `dashboard.html` 的 `SPRINT_VERBS` **同步加入 savoir／voir**（9→11 個動詞，54→66 格）。
+  ⚠️ **這兩份清單是複本，改一份一定要改另一份**（已各自加註解互指）。頁面副標「核心 9 動詞」也改成 11。
+  cell key 是 `動詞_人稱` 且**每個時態各自一份**（`clb7_sprint_cells_fut`），所以加動詞不會動到既有資料。
+- `verbs_full.js` 補三個動詞（22→25）：**devenir**（跟 venir 同型）＋ **falloir／pleuvoir 兩個無人稱動詞**。
+  無人稱動詞用新欄位 `imperso:true`，`pres`／`subj` 只填 il 那一格、其餘 `null`；
+  推導引擎算完之後把六格遮成只剩 il（`conjugate()` 末尾），`display()` 把 null 印成「—」，
+  `participePresent` 改讀 `ppr`（falloir 沒有現在分詞），`stems()` 的訊息也防了 null。
+  ⚠️ **重點是絕對不能讓頁面印出 je faux／nous pleuvons 這種不存在的形式**——那正是 Owen 這則回饋在防的事。
+  ⚠️ falloir／pleuvoir **不進衝刺頁**（那是六人稱的格子），只進 `verb_forms.html` 當查詢用，分在新的「無人稱」群組。
+
+**驗證**（一樣隔離 ROOM 全程）：`verb_forms.html?v=falloir` 只顯示 il faut／il a fallu／il faudra…其餘「—」、
+現在分詞與命令式都正確顯示「沒有」；pleuvoir 九個時態的 il 形全對（il pleut／il a plu／il pleuvra／qu'il pleuve…）；
+`verb_sprint.html?mode=futur` 動詞清單 11 個、savoir=saurai…／voir=verrai…，**開場第一題就是 savoir · je ___**；
+真實按鍵答對一題計分正確；25 個動詞 × 13 時態的資料層回歸掃描 **0 問題**；console 零錯誤。
+收尾清掉測試寫入（`clb7_sprint_cells_fut`／`clb7_sprint_sessions_fut`，這兩個 key 之前不存在）→ ROOM 還原 → `preview_stop` → grep 無殘留。
+
+⚠️ **這條之後還沒做完的**：真正的「字根速射」壓縮練習（只打不規則字根、跨時態混打）還沒做，
+Owen 選的是「先擴充 verb_sprint」，速射頁留給之後。另外 `dashboard.html` 的 `sprintReflexCount()`
+只讀 `clb7_sprint_cells`（présent 那份），所以儀表板的反射格數不含其他時態——既有行為，沒動。
+
 
 ---
 

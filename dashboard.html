@@ -791,7 +791,7 @@ function readingDoneToday() {
 }
 
 // ── 動詞反射衝刺（verb_sprint.html）──────────────────────────
-const SPRINT_VERBS = ['être','avoir','faire','aller','devoir','pouvoir','vouloir','venir','prendre'];
+const SPRINT_VERBS = ['être','avoir','faire','aller','devoir','pouvoir','vouloir','venir','prendre','savoir','voir'];  // ⚠️ 要跟 verb_sprint.html 的 CORE9 一致（2026-08-26 加入 savoir/voir）
 const SPRINT_TOTAL = SPRINT_VERBS.length * 6;
 function getSprintCells()    { try { return JSON.parse(localStorage.getItem('clb7_sprint_cells')) || {}; } catch { return {}; } }
 function getSprintSessions() { try { return JSON.parse(localStorage.getItem('clb7_sprint_sessions')) || []; } catch { return []; } }
