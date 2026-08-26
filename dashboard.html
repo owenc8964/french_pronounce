@@ -741,6 +741,10 @@ const TOPIC_LABELS = {
   'vocab-vacances':           'Les vacances',
   'vocab-weather-season':     'Météo & saisons',
   'voici-voila':              'Voici / voilà',
+  'pronoms-possessifs':       'Pronoms possessifs',
+  'futur-simple':             'Futur simple',
+  'vocab-innovation':         'Sciences & techniques',
+  'vocab-reseaux':            'Réseaux sociaux',
 };
 
 // ── 資料讀取 ─────────────────────────────────────────────────
@@ -798,7 +802,7 @@ const SPRINT_MODES = [
   { id:'present',   label:'Présent',       suffix:'',      gram:null },
   { id:'pc',        label:'Passé composé', suffix:'_pc',   gram:'passe' },
   { id:'imparfait', label:'Imparfait',     suffix:'_imp',  gram:'imparfait' },
-  { id:'futur',     label:'Futur simple',  suffix:'_fut',  gram:'futur' },
+  { id:'futur',     label:'Futur simple',  suffix:'_fut',  gram:'futur-simple' },  // 27課教到 → 掛 A2 的 futur-simple
   { id:'subjonctif',label:'Subjonctif',    suffix:'_subj', gram:'subjonctif' },
 ];
 function sprintModesAvailable() {

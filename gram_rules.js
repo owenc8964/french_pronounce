@@ -396,6 +396,56 @@ const GRAM_POINTS = [
         { fr:'Tout va bien.', zh:'一切都好。（中性代名詞，不變化）' },
       ]}},
 
+  { id:'pronoms-possessifs', name:'Pronoms possessifs (le mien…)', icon:'🔖', zone:'A2', cat:'pronoms',
+    lessons:[27], topics:['pronoms-possessifs'], unlocked:true,
+    rule:{
+      title:'所有格代名詞 — 名詞被吃掉了，所以後面什麼都不接',
+      why:'英文的 my 跟 mine 是同一件事的兩個形狀：my 後面一定要說出東西（my shoes），mine 後面什麼都不說（it\'s mine）。法文完全一樣——mon／ton／son 是形容詞，後面接名詞；le mien／le tien／le sien 是代名詞，把「所有格＋名詞」整組收掉。因為名詞被收進代名詞裡了，它必須自己帶著那個名詞的性數，所以配合的對象永遠是「東西」不是「人」：一個男生說「我的照片」也是 la sienne，因為 photo 是陰性。定冠詞是這組字的身分證——沒有 le／la／les 就不成立。至於 nôtre／vôtre 頭上那頂帽子，不是文法規則而是拼寫上的區分記號：形容詞 notre 沒有、代名詞 le nôtre 有，口說幾乎聽不出差別，所以這是一條用眼睛的規則。',
+      points:[
+        '結構：定冠詞 ＋ mien／tien／sien／nôtre／vôtre／leur，後面不接名詞',
+        '⚠️⚠️ 配合的是「被代替的名詞」不是擁有者：sa photo → la sienne（不管他是男是女）',
+        'je: le mien / la mienne / les miens / les miennes',
+        'tu: le tien / la tienne / les tiens / les tiennes',
+        'il·elle·on: le sien / la sienne / les siens / les siennes',
+        'nous: le nôtre / la nôtre / les nôtres（陰陽同形）',
+        'vous: le vôtre / la vôtre / les vôtres（陰陽同形）',
+        'ils·elles: le leur / la leur / les leurs（陰陽同形，且不加帽子）',
+        '⚠️ nôtre／vôtre 當代名詞時有 accent circonflexe，形容詞 notre／votre 沒有',
+        '⚠️ 複數整組加 s：les leurs、les nôtres、les vôtres（課文的 pas les leurs＝不是他們的臉）',
+        'à ＋ les nôtres → aux nôtres（跟一般冠詞縮合一樣）',
+      ],
+      examples:[
+        { fr:"C'est ma photo de profil. → C'est la mienne.", zh:'這是我的大頭照。→ 這是我的。（photo 陰性單數）' },
+        { fr:'Ton appareil photo est en panne ? Prends le mien.', zh:'你的相機壞了？拿我的。（appareil 陽性單數）' },
+        { fr:'Ce sont mes chats. → Ce sont les miens.', zh:'這些是我的貓。（chat 陽性複數 → les miens）' },
+        { fr:"C'est votre texte ? Oui, c'est le vôtre.", zh:'這是您的文章嗎？是的，是您的。（帽子別忘了）' },
+        { fr:'Des gens qui ont des intérêts semblables aux nôtres.', zh:'興趣跟我們相近的人。（à ＋ les nôtres）' },
+      ]}},
+
+  { id:'futur-simple', name:'Le futur simple', icon:'🚀', zone:'A2', cat:'verbe-temps',
+    lessons:[27], topics:['futur-simple'], unlocked:true,
+    rule:{
+      title:'簡單未來式 — 原形整個留著，字尾就是 avoir 的現在式',
+      why:'未完成過去式要先想現在式的 nous 再換字尾，中間隔了一步；簡單未來式沒有那一步——直接拿原形當骨架。字尾也不是新東西，就是 avoir 的現在式 ai／as／a／ons／ez／ont 黏在後面（這是歷史真相：拉丁文用「原形＋habere」表達「我有這件事要做」，久了黏成一個字，所以未來式字面上是「我有得做」）。骨架是原形，代表中間那個 r 一定在，這就是辨認未來式最可靠的訊號：écrivais 有 v 是過去、écrirai 有 r 是未來。不規則的部分只有字根，字尾一個都沒變過，所以背的量比看起來少很多。',
+      points:[
+        '規則式：原形 ＋ ai / as / a / ons / ez / ont（＝avoir 的現在式）',
+        '⚠️ -re 動詞去掉最後的 e：prendre → je prendrai',
+        '⚠️⚠️ 骨架是原形不是現在式：écrire → j\'écrirai（⛔ 不是 écriverai；imparfait 才看 nous écrivons）',
+        '不規則只在字根：avoir→aur-、être→ser-、faire→fer-、aller→ir-、voir→verr-、savoir→saur-',
+        '不規則（續）：devoir→devr-、pouvoir→pourr-、vouloir→voudr-、(de)venir→(de)viendr-',
+        '⚠️ 無人稱動詞只有 il 這一格：falloir → il faudra、pleuvoir → il pleuvra',
+        '⚠️⚠️ quand ＋ 未來事件時，法文兩邊都用未來式（中文的「當…時」會讓人誤用現在式）',
+        '用途：預測、計畫、承諾、書面與正式場合；口語講馬上要做的事仍用 aller ＋ 原形',
+        '⚠️ acheter 這類要加 accent：j\'achèterai',
+      ],
+      examples:[
+        { fr:'Demain, je prendrai ma voiture.', zh:'明天我會開我的車。（-re 去掉 e）' },
+        { fr:'Quand nous irons au salon, tu viendras avec nous ?', zh:'我們去展覽時你會來嗎？（兩邊都是未來式）' },
+        { fr:'Il y aura des robots partout, ce sera comme dans les films.', zh:'到處都會是機器人，就像電影裡一樣。' },
+        { fr:'Quand le prof ne pourra pas venir, il donnera ses cours à distance.', zh:'老師不能來的時候，他會遠距上課。' },
+        { fr:'Il faudra apprendre vite.', zh:'到時候得學得快。（falloir 只有 il 這一格）' },
+      ]}},
+
   { id:'conseils', name:'Conseils & obligations', icon:'💡', zone:'A2', cat:'verbe-mode',
     lessons:[11,13], topics:['giving-advice','ilfaut-devoir','interdiction-demande'], unlocked:true,
     rule:{

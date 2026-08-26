@@ -637,10 +637,12 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **瀏覽器層**（切 TEST ROOM，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入＋故意把 `sous la tente` 填成 en 被判錯；reading a22 故意 2對1錯 → 分數與 ✓✗ 與解說都正確、紀錄欄位齊全；french_notes lesson-21 渲染 11 unit／11 表格全包 compare-table／**161 個 🔊 tts-btn**／導覽列 21 個按鈕含第21課；quiz `?lesson=21` 實際出到 y/en 題目並答對計分；**`getPool()` 放行全部 27 題**（確認沒踩到 07-16 那個「文法點被鎖導致整批題目消失」的坑）；map 顯示第21課、tile 與 codex 3-4-5 都正確。
 - **收尾**：清掉測試寫入的 a22 紀錄與該題 SRS key → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留。
 
-### ⏭ 下個 session：Owen 要做筆記（他 08-25 收尾時講的）
+### 📌 每課入庫的九項連動（常駐參考，每次做筆記都照這份走）
 
-他的原話：「**我進下個 session 要做筆記了**」——也就是丟逐字稿／課本截圖進來，走**每課入庫的九項連動**。
-最近一次完整的範例是 08-23 第26課（往下捲就看得到），照那個流程做。
+> 08-26 第27課已照這份做完一輪（記錄見下方 08-26 那段），**最近一次完整範例改看第27課**。
+> ⚠️ 08-26 新發現的**第十一項**：如果新課教到**新時態**，要把 `verb_sprint.html` 的 `MODES`
+> 與 `dashboard.html` 的 `SPRINT_MODES` 裡那一列的 `gram:` 改指到**新開的 A2 文法點**——
+> 它們原本掛在 B1 佔位點（`futur` 那種永遠不解鎖的 id），不改的話動詞衝刺永遠長不出新時態。
 
 **⚠️ 動手前一定要先做的三件事（順序不能顛倒）**
 1. **先開一課現成的筆記看格式**（建議最近一課 `lesson-26`），照著寫，不要憑記憶——
@@ -1724,6 +1726,53 @@ console 零錯誤；測試那筆已從 `clb7_listening` 清除（保留 7 月既
 innovation 詞彙／`le même que`·`autant de` 複習）**還沒入庫**——性格詞與 `le même` 第26課已經有，
 但 **pronoms possessifs（le mien 系列）與 futur simple 是全新文法點**，要走九項連動。
 Owen 這次只叫我做待看清單，所以我只做了這件事；下次做筆記時這課是待辦。
+
+### 08-26：第27課（A2・les pronoms possessifs ＋ le futur simple）完整入庫——九項連動 ＋ 補上第十一項
+
+Owen 丟了整份逐字稿，交代兩件事：先把老師介紹的電影放進待看清單（見上一段），然後「**入庫喔**」。
+
+**這一課的內容座標**：課本 Unité 4 尾巴（性格詞彙完整清單＋動物比喻）＋ **Unité 5「Vers le futur !」整個開頭**。
+兩個主文法都是新的——**所有格代名詞**（le mien／le tien／le sien，課文出處是「大頭照怎麼挑」那篇）
+與 **futur simple**（課文出處是三個小孩想像 2050 年）。詞彙主軸是科技與創新。
+⚠️ 動手前先跑了 `tools/extract_textbook.py` 的快取（`assets/.textbook_cache.txt`），
+**課本 p.63–73 的原文、Fonctionnement 表、Entraînement 題目與答案全部對照過**，不是只靠逐字稿。
+
+**九項連動（全部做完）**
+| # | 檔案 | 這次做了什麼 |
+|---|---|---|
+| 1 | `french_notes.html` | `lesson-27`：**14 個 unit／17 個表格／293 個 🔊**。含性格優缺點完整表、動物比喻（⚠️ **tête de cochon 是魁北克說法、歐洲用 tête de mule**——我們考加拿大，這條特別標了）、兩篇課文逐句、兩個主文法單元（含課本 Entraînement 全部答案）、科技詞彙四張表、講未來的時間標記、老師課堂法語、發音警報、糾錯摘要、平行閱讀 |
+| 2 | `questions.js` | **41 題**（possessifs 11／futur 12／innovation 8／réseaux 4／caractère 6）；`quiz.html` 與 `dashboard.html` 的 `TOPIC_LABELS` 各補 4 個新 topic（照各自風格：中文說明式 vs 法文短名） |
+| 3 | `chunks.js` | `node tools/extract_chunks.js 27 --write` → **118 張卡**（總庫 1717） |
+| 4 | `sentences.js` | 人工精選 `S_L27_1~10` |
+| 5 | `table_drill.html` | 兩個新表：所有格代名詞（10 列）、futur simple（12 列，含兩個只有 il 的無人稱動詞） |
+| 6 | `gram_rules.js` | 兩個新文法點 `pronoms-possessifs`／`futur-simple`，都 `unlocked:true` ＋ 完整 `why` |
+| 7 | `codex.js` | ⚠️ **沒有新增座標也沒有重編**——`1-5-3`（所有格代名詞）與 `5-5-2`（futur simple）本來就在，只是標 B1；這次改成 **A2** 並掛上 `topics`／`gram`，順便把老師強調的點補進 `pts`。改完 quiz 答題區的 📍 定位就會指到 1-5-3／5-5-2 |
+| 8 | `map.html` | `CURRENT_LESSON` 26→**27**；新增 4 個 tile：Pronoms possessifs／Le futur simple／Sciences & techniques／Photo de profil（detail 一律法文長文，照既有慣例） |
+| 9 | `reading.html` | 新增 `a28`《Ma vie à Taipei en 2050》——**我自己寫的同級原創短文**（futur simple 從頭到尾、所有格代名詞出現五次），三題理解測驗；同一篇也放進筆記當「平行閱讀」 |
+
+**第十一項（這次才發現的缺口，已補並寫進上面的常駐清單）**：
+`verb_sprint.html` 的 `MODES` 與 `dashboard.html` 的 `SPRINT_MODES` 裡，Futur simple 那一列的 `gram:` 掛的是
+**B1 佔位點 `futur`**（`unlocked:false`、topics 永遠空）——所以就算課程教到未來式，動詞衝刺也不會長出這個模式。
+兩處都改成 `gram:'futur-simple'`。⚠️ 資料本來就齊：`verbs_full.js` 每個動詞都有 `fut` 詞幹，
+`drillForms(v,'futur-simple')` 對 CORE9 九個動詞都推得出正確六格（serai／aurai／irai／ferai／prendrai…）。
+**沒做第十項（`scenes.js` 情境劇本）**：這一課沒有成對台詞的對話，只有課文與練習題，硬做會變成假場景。
+
+**驗證**（資料層 33 條 ＋ 瀏覽器層，全程隔離 ROOM）
+- **資料層**：`verify_l27.js`（scratchpad）**33 條全過**——含「choose 題正解都在 opts 裡」「第27課題目不會被 `getPool()` 的超前進度濾掉」「codex 座標無重複（沒有重編）」「map 的 gram tile id 對得上 gram_rules 的文法點」。
+- **瀏覽器層**（先 `fetch(cache:'no-store')` 確認 preview 供應的是 TEST ROOM 才開始）：
+  筆記 lesson-27 渲染 14 unit／17 表格全包 compare-table／293 個 🔊／導覽列有第27課；
+  `quiz.html?lesson=27` 池子 41 題全進得來，答對一題（honnête）✓、故意答錯一題 → **錯題本正確收到（topic: vocab-reseaux）**、解說與 📖 複習連結都對；
+  `codexLocate` 對 pronoms-possessifs／futur-simple 正確回 **1-5-3／5-5-2**；
+  table_drill 兩個新表各故意錯一格 → **11 格中 10 對、9 格中 8 對**，錯的正是刻意寫錯的那格（viendra／le sien）；
+  reading a28 兩對一錯 → 紀錄寫成 `{id:'a28', correct:2, total:3}`；
+  `verb_sprint.html?mode=futur` 出現第四個模式且六格形式正確；map 顯示「第 27 課」與四個新 tile；
+  gram_trainer 的 futur-simple 規則卡（含 why）正常渲染；dashboard 零 console error、**沒有印出任何 raw topic id**。
+- **收尾**：清掉測試寫入（兩個 SRS key、錯題本那筆、a28 閱讀紀錄）→ ROOM 改回正式值 → **立刻 `preview_stop`** →
+  grep 確認無 `TEST-DO-NOT-USE` 殘留 → **另外讀了一次正式雲端**：410 個 key、`updated_at` 還停在 08-25，**沒有被這次測試碰到**。
+
+**已知的既有小問題（不是這次造成的，沒動）**：`codex.js` 的 topic `imparfait` 同時掛在節 `5-3` 與 `5-9`，
+`codexLocate` 會回傳先找到的那個。要不要收斂等 Owen 決定。
+
 
 ---
 

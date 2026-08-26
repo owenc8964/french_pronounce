@@ -11151,5 +11151,831 @@ const CHUNKS = [
   "fr": "gagner un temps fou",
   "zh": "逐字翻成 win time 覺得怪",
   "note": "法文說「贏時間」不說「省時間」：gagner du temps"
+ },
+ {
+  "id": "L27_Nous_mentons_vous_mentez",
+  "lesson": 27,
+  "fr": "Nous mentons, vous mentez, ils mentent.",
+  "zh": "我們／你們／他們說謊。",
+  "note": "⭐ 複數才把 t 唸出來。跟 partir／sortir 同一類（-tir 動詞）"
+ },
+ {
+  "id": "L27_À_propos_de_la_photo_de",
+  "lesson": 27,
+  "fr": "À propos de la photo de profil…",
+  "zh": "關於大頭照…",
+  "note": "⭐ à propos de＝關於（＝about）。開場句型，寫作可以直接用"
+ },
+ {
+  "id": "L27__est_si_la_vôtre_est_ada",
+  "lesson": 27,
+  "fr": "…est si la vôtre est adaptée au public visé.",
+  "zh": "…就是你的那張照片適不適合你想給的對象。",
+  "note": "⭐⭐ la vôtre ＝ votre photo de profil（第一個所有格代名詞）。être adapté à＝適合"
+ },
+ {
+  "id": "L27_le_public_visé",
+  "lesson": 27,
+  "fr": "le public visé",
+  "zh": "目標對象、想觸及的人",
+  "note": "⭐ viser＝瞄準（target）→ le public visé＝你瞄準的那群人"
+ },
+ {
+  "id": "L27_Une_photo_réussie_peut_ê",
+  "lesson": 27,
+  "fr": "Une photo réussie peut être originale mais pas trop bizarre.",
+  "zh": "一張成功的照片可以有個性，但不要太怪。",
+  "note": "⭐ réussi(e)＝成功的（動詞 réussir：je réussis, tu réussis）；original＝有個性、特別 ≠ bizarre＝怪"
+ },
+ {
+  "id": "L27_C_est_votre_tête_que_l_e",
+  "lesson": 27,
+  "fr": "C'est votre tête que l'employeur veut voir, pas les leurs.",
+  "zh": "老闆想看的是你的臉，不是他們的。",
+  "note": "⭐⭐ les leurs＝leurs têtes（他們的臉）。⚠️ 老師特別點：是 les leurs 不是 les leur——所有格代名詞跟著被代替的名詞變複數"
+ },
+ {
+  "id": "L27_Il_faut_paraître_sûr_de",
+  "lesson": 27,
+  "fr": "Il faut paraître sûr de soi et professionnel.",
+  "zh": "要看起來有自信、專業。",
+  "note": "⭐⭐ paraître＝顯得、看起來（＝appear）；être sûr de soi＝有自信。⚠️ 泛指用 soi，講自己時換人稱：je suis sûr de moi"
+ },
+ {
+  "id": "L27_Il_a_changé_la_sienne_po",
+  "lesson": 27,
+  "fr": "Il a changé la sienne pour avoir l'air plus sérieux.",
+  "zh": "他把自己那張換掉，好讓自己看起來更正經。",
+  "note": "⭐⭐ la sienne＝sa photo；avoir l'air ＋ 形容詞＝看起來…（跟 paraître 同義）"
+ },
+ {
+  "id": "L27_un_site_de_rencontres",
+  "lesson": 27,
+  "fr": "un site de rencontres",
+  "zh": "交友網站",
+  "note": "⭐ rencontrer＝遇見、認識 → site de rencontres＝dating site"
+ },
+ {
+  "id": "L27_Là_il_s_agit_d_attirer_l",
+  "lesson": 27,
+  "fr": "Là, il s'agit d'attirer la sympathie.",
+  "zh": "在那邊，重點是要讓人有好感。",
+  "note": "⭐⭐ il s'agit de＝重點在於、講的是（無人稱句，只有 il 這個形式）；attirer＝吸引（門上的 tirez＝拉、poussez＝推同一個字根）"
+ },
+ {
+  "id": "L27__de_capter_l_attention_e",
+  "lesson": 27,
+  "fr": "…de capter l'attention et de sortir du lot.",
+  "zh": "…抓住注意力、跳出人群。",
+  "note": "⭐ un lot＝一批、一群 → sortir du lot＝脫穎而出（outstand）"
+ },
+ {
+  "id": "L27_La_photo_permet_d_en_dir",
+  "lesson": 27,
+  "fr": "La photo permet d'en dire plus sur votre personnalité.",
+  "zh": "照片能多透露一些你的個性。",
+  "note": "⭐ permettre de ＋ 原形＝讓…得以…；en dire plus＝多說一點（en 是第21課的代名詞）"
+ },
+ {
+  "id": "L27_N_hésitez_pas_à_vous_met",
+  "lesson": 27,
+  "fr": "N'hésitez pas à vous mettre en scène.",
+  "zh": "別客氣，儘管把自己「演」出來。",
+  "note": "⭐ n'hésitez pas à＝儘管去…（超高頻客氣說法）；se mettre en scène＝把自己放進場景裡（第26課拉封丹那段的 mettre en scène 同一個字）"
+ },
+ {
+  "id": "L27__pour_renseigner_les_aut",
+  "lesson": 27,
+  "fr": "…pour renseigner les autres sur vos passions.",
+  "zh": "…好讓別人知道你熱愛什麼。",
+  "note": "⭐ renseigner＝提供資訊；反過來自己問人是 se renseigner sur（打聽）"
+ },
+ {
+  "id": "L27_Voici_les_miennes",
+  "lesson": 27,
+  "fr": "Voici les miennes !",
+  "zh": "這些是我的！",
+  "note": "⭐⭐ les miennes＝mes photos（陰性複數）。課本用這句直接帶出整張文法表"
+ },
+ {
+  "id": "L27_sa_photo_f_sg_la_sienne",
+  "lesson": 27,
+  "fr": "sa photo (f. sg) → la sienne",
+  "zh": "他的照片 → 他的（那張）",
+  "note": "⭐⭐ ② 跟著「東西」變，不是跟著「人」變。photo 是陰性，所以就算擁有者是男的也用 la sienne"
+ },
+ {
+  "id": "L27_écrire_j_écrirai",
+  "lesson": 27,
+  "fr": "écrire → j'écrirai",
+  "zh": "我會寫",
+  "note": "⚠️⚠️ 上一課 imparfait 要看現在式 nous écriv-ons → j'écrivais；未來式看原形 écrire → j'écrirai。看到 v 是過去、看到 r 是未來"
+ },
+ {
+  "id": "L27_prendre_je_prendrai",
+  "lesson": 27,
+  "fr": "prendre → je prendrai",
+  "zh": "我會拿／我會搭",
+  "note": "-re 動詞去掉最後那個 e，剩下的 r 留著"
+ },
+ {
+  "id": "L27_manger_je_mangerai",
+  "lesson": 27,
+  "fr": "manger → je mangerai",
+  "zh": "我會吃",
+  "note": "⭐ -er 動詞整個原形都不動，直接加字尾"
+ },
+ {
+  "id": "L27_Comment_seront_nos_vies",
+  "lesson": 27,
+  "fr": "Comment seront nos vies en 2050 ?",
+  "zh": "2050 年我們的生活會是什麼樣子？",
+  "note": "⭐⭐ seront＝être 的未來式（ser- ＋ -ont）。標題就是本課文法"
+ },
+ {
+  "id": "L27_Comme_ça_paraît_loin_la",
+  "lesson": 27,
+  "fr": "Comme ça paraît loin, la vie dans trente ans !",
+  "zh": "三十年後的生活，感覺好遙遠！",
+  "note": "⭐ paraître＝顯得（課文A也出現過）；loin＝遠。整句是很好用的口語感嘆"
+ },
+ {
+  "id": "L27__un_qui_fera_apparaître",
+  "lesson": 27,
+  "fr": "…un qui fera apparaître des burgers, des frites, des jouets.",
+  "zh": "…還有一個能變出漢堡、薯條、玩具。",
+  "note": "⭐ faire ＋ 原形＝讓…發生（faire apparaître＝使出現）；un jouet＝玩具"
+ },
+ {
+  "id": "L27_Comme_de_petites_soucoup",
+  "lesson": 27,
+  "fr": "Comme de petites soucoupes volantes.",
+  "zh": "像小型的飛碟。",
+  "note": "⭐ une soucoupe＝碟子 → soucoupe volante＝飛碟（UFO）。⚠️ 形容詞在後面要配合：soucoupes volantes"
+ },
+ {
+  "id": "L27_Elles_sauront_leur_chemi",
+  "lesson": 27,
+  "fr": "Elles sauront leur chemin.",
+  "zh": "它們自己認得路。",
+  "note": "⭐⭐ sauront＝savoir 的未來式（saur- ＋ -ont）；le chemin＝路徑"
+ },
+ {
+  "id": "L27_Nous_n_aurons_pas_besoin",
+  "lesson": 27,
+  "fr": "Nous n'aurons pas besoin d'avoir un volant.",
+  "zh": "我們不需要有方向盤。",
+  "note": "⭐⭐ avoir besoin de 的未來式否定；⚠️ le volant＝方向盤（跟上面的 volant＝會飛的同字不同義，同一篇文章裡兩個都出現）"
+ },
+ {
+  "id": "L27_Le_GPS_pourra_conduire_t",
+  "lesson": 27,
+  "fr": "Le GPS pourra conduire tout seul.",
+  "zh": "GPS 可以自己開。",
+  "note": "⭐ conduire＝開車；tout seul＝完全自己來。⚠️ 開車的人叫 le conducteur；le chauffeur 本義來自 chauffer（加熱）——蒸汽車時代要先把車燒熱才能開"
+ },
+ {
+  "id": "L27_Dans_le_futur_on_mangera",
+  "lesson": 27,
+  "fr": "Dans le futur, on mangera un comprimé, quatre fois par jour.",
+  "zh": "未來我們會一天吃四次藥錠。",
+  "note": "⭐ un comprimé＝藥錠（課本註解：une pilule，像藥一樣的東西）；quatre fois par jour＝一天四次"
+ },
+ {
+  "id": "L27_Mais_on_aura_le_choix",
+  "lesson": 27,
+  "fr": "Mais on aura le choix.",
+  "zh": "但我們可以選。",
+  "note": "⭐ avoir le choix＝有選擇（choisir 的名詞）"
+ },
+ {
+  "id": "L27_Dans_un_avenir_proche_de",
+  "lesson": 27,
+  "fr": "Dans un avenir proche, des robots nous serviront.",
+  "zh": "在不久的將來，機器人會為我們服務。",
+  "note": "⭐ dans un avenir proche＝在不久的將來（寫作超好用）；servir＝服務、上菜"
+ },
+ {
+  "id": "L27_Selon_moi_l_IA_est_révol",
+  "lesson": 27,
+  "fr": "Selon moi, l'IA est révolutionnaire.",
+  "zh": "我認為 AI 是革命性的。",
+  "note": "⭐ selon moi / selon vous＝依我／你看（表達意見的固定開場）"
+ },
+ {
+  "id": "L27_Moi_aussi_je_l_utilise_t",
+  "lesson": 27,
+  "fr": "Moi aussi, je l'utilise tout le temps.",
+  "zh": "我也是，我一直在用。",
+  "note": "🎙 老師自己的回答"
+ },
+ {
+  "id": "L27_Dans_vingt_ans_ma_vie_à",
+  "lesson": 27,
+  "fr": "Dans vingt ans, ma vie à Taipei ne sera pas la même.",
+  "zh": "二十年後，我在台北的生活不會一樣了。",
+  "note": "⭐ sera＝être 未來式；la même＝第26課的文法"
+ },
+ {
+  "id": "L27_Elle_saura_mon_chemin_do",
+  "lesson": 27,
+  "fr": "Elle saura mon chemin, donc je n'aurai pas besoin de volant.",
+  "zh": "它認得我的路，所以我不需要方向盤。",
+  "note": "⭐⭐ 兩個不規則字根：savoir→saur-、avoir→aur-"
+ },
+ {
+  "id": "L27_Le_mien_fera_le_café_et",
+  "lesson": 27,
+  "fr": "Le mien fera le café et rangera mes dossiers.",
+  "zh": "我的那台會煮咖啡、整理我的檔案。",
+  "note": "⭐⭐ le mien＝mon robot（陽性單數）；faire→fer-；ranger＝收好"
+ },
+ {
+  "id": "L27_Elle_dit_toujours_que_le",
+  "lesson": 27,
+  "fr": "Elle dit toujours que le sien travaille plus que le mien.",
+  "zh": "她老說她的那台比我的更會做事。",
+  "note": "⭐ 同一句裡 le sien 跟 le mien 對打，加上第25課的比較級 plus … que"
+ },
+ {
+  "id": "L27_Je_continuerai_à_manger",
+  "lesson": 27,
+  "fr": "Je continuerai à manger les siennes tous les dimanches.",
+  "zh": "我每個星期天都會繼續吃她做的那些。",
+  "note": "⭐⭐ les siennes＝les nouilles de ma mère（陰性複數）；continuer à ＋ 原形"
+ },
+ {
+  "id": "L27_Est_ce_que_leur_futur_se",
+  "lesson": 27,
+  "fr": "Est-ce que leur futur sera meilleur que le nôtre ?",
+  "zh": "他們的未來會比我們的更好嗎？",
+  "note": "⭐⭐ le nôtre（有帽子）＝notre futur；meilleur que＝比較級不規則（第25課）"
+ },
+ {
+  "id": "L27_Je_ne_sais_pas_mais_il_f",
+  "lesson": 27,
+  "fr": "Je ne sais pas, mais il faudra apprendre vite.",
+  "zh": "我不知道，但我們得學得快。",
+  "note": "⭐ il faudra＝falloir 的未來式，只有 il 這一格"
+ },
+ {
+  "id": "L27_Les_machines_elles_appre",
+  "lesson": 27,
+  "fr": "Les machines, elles, apprendront plus vite que nous.",
+  "zh": "機器嘛，它們會學得比我們快。",
+  "note": "⭐ les machines, elles,＝口語的強調結構（重讀代名詞回指主詞）"
+ },
+ {
+  "id": "L27_Est_ce_que_toi_tu_as_cet",
+  "lesson": 27,
+  "fr": "Est-ce que toi, tu as cette qualité ou pas ?",
+  "zh": "你有這個優點嗎？",
+  "note": "🎙 老師逐字問過整張詞彙表的問法——⭐ 把詞彙套進自己身上就是他的教法"
+ },
+ {
+  "id": "L27_Tu_te_souviens",
+  "lesson": 27,
+  "fr": "Tu te souviens ?",
+  "zh": "你記得嗎？",
+  "note": "🎙 帶出舊字時用（第20課學過 se souvenir）"
+ },
+ {
+  "id": "L27_Et_l_opposé_c_est",
+  "lesson": 27,
+  "fr": "Et l'opposé, c'est…",
+  "zh": "那反過來是…",
+  "note": "🎙 l'opposé＝相反的那個。老師成對給字時一直用"
+ },
+ {
+  "id": "L27_On_peut_regarder_les_exe",
+  "lesson": 27,
+  "fr": "On peut regarder les exercices.",
+  "zh": "我們來看練習。",
+  "note": "🎙 進練習題時的固定句"
+ },
+ {
+  "id": "L27_C_est_ça",
+  "lesson": 27,
+  "fr": "C'est ça.",
+  "zh": "對，就是這樣。",
+  "note": "🎙 答對時的回應"
+ },
+ {
+  "id": "L27_Très_bien_on_peut_s_arrê",
+  "lesson": 27,
+  "fr": "Très bien, on peut s'arrêter ici aujourd'hui.",
+  "zh": "很好，今天就到這裡。",
+  "note": "🎙 s'arrêter＝停下來。下課固定句"
+ },
+ {
+  "id": "L27_Je_te_le_recommande",
+  "lesson": 27,
+  "fr": "Je te le recommande.",
+  "zh": "我推薦你看／試。",
+  "note": "🎙 老師推薦電影時說的。recommander＋雙代名詞"
+ },
+ {
+  "id": "L27__elle_peut_tout_faire",
+  "lesson": 27,
+  "fr": "「elle peut tout faire」",
+  "zh": "想說「AI 用途很多」",
+  "note": "⚠️ 老師改成 Elle a beaucoup d'utilisations.——「什麼都能做」在法文聽起來太滿，用「用途很多」比較準"
+ },
+ {
+  "id": "L27__arranger_mon_voyage",
+  "lesson": 27,
+  "fr": "「arranger mon voyage」",
+  "zh": "想說「安排我的旅行」",
+  "note": "⚠️ 老師改兩處：動詞用 préparer，而且用複數 mes voyages → préparer mes voyages"
+ },
+ {
+  "id": "L27_chaleureux",
+  "lesson": 27,
+  "fr": "chaleureux",
+  "zh": "熱情的、待人溫暖",
+  "note": "chaleureuse｜⭐ 來自 la chaleur（熱度）——待人「有溫度」"
+ },
+ {
+  "id": "L27_curieux",
+  "lesson": 27,
+  "fr": "curieux",
+  "zh": "好奇的",
+  "note": "curieuse｜⚠️ 老師強調拼字：字根是 curi-，陽性 -eux／陰性 -euse，沒有 x-e 這種寫法"
+ },
+ {
+  "id": "L27_discret",
+  "lesson": 27,
+  "fr": "discret",
+  "zh": "低調的、不多話",
+  "note": "discrète｜不代表不友善，是「不張揚、不搶話」"
+ },
+ {
+  "id": "L27_doux",
+  "lesson": 27,
+  "fr": "doux",
+  "zh": "溫和的",
+  "note": "douce｜⚠️ 本義是柔軟（un pull doux＝毛很軟的毛衣），用在人身上＝性情溫和"
+ },
+ {
+  "id": "L27_extraverti_e",
+  "lesson": 27,
+  "fr": "extraverti(e)",
+  "zh": "外向的",
+  "note": "extravertie｜⭐ 反義 introverti(e)（內向）——老師特地成對給"
+ },
+ {
+  "id": "L27_fidèle",
+  "lesson": 27,
+  "fr": "fidèle",
+  "zh": "忠誠的、專一的",
+  "note": "fidèle｜⭐ 兩種場合都用：對朋友忠誠、感情上不劈腿。第26課的 le chien est fidèle 就是這個字"
+ },
+ {
+  "id": "L27_honnête",
+  "lesson": 27,
+  "fr": "honnête",
+  "zh": "誠實的",
+  "note": "honnête｜↔ menteur(-se)。⚠️ 開頭 h 不發音，唸 [ɔnɛt]"
+ },
+ {
+  "id": "L27_optimiste",
+  "lesson": 27,
+  "fr": "optimiste",
+  "zh": "樂觀的",
+  "note": "optimiste｜⚠️ 陰陽同形（-iste 結尾都是）。↔ pessimiste"
+ },
+ {
+  "id": "L27_prudent_e",
+  "lesson": 27,
+  "fr": "prudent(e)",
+  "zh": "謹慎的、小心的",
+  "note": "prudente｜＝careful。名詞 la prudence"
+ },
+ {
+  "id": "L27_travailleur",
+  "lesson": 27,
+  "fr": "travailleur",
+  "zh": "勤勞的",
+  "note": "travailleuse｜⚠️ 老師特地唸清楚：tra-vail-leur，不是「Taiwanese」"
+ },
+ {
+  "id": "L27_autoritaire",
+  "lesson": 27,
+  "fr": "autoritaire",
+  "zh": "專斷的、愛下命令",
+  "note": "autoritaire｜⭐ 老師的定義：quelqu'un qui aime donner des ordres"
+ },
+ {
+  "id": "L27_cruel_le",
+  "lesson": 27,
+  "fr": "cruel(le)",
+  "zh": "殘忍的",
+  "note": "cruelle｜⚠️ 陰性雙 l：cruel → cruelle"
+ },
+ {
+  "id": "L27_envieux",
+  "lesson": 27,
+  "fr": "envieux",
+  "zh": "愛嫉妒的",
+  "note": "envieuse｜avoir envie de（想要）同源——「想要別人有的東西」"
+ },
+ {
+  "id": "L27_inquiet",
+  "lesson": 27,
+  "fr": "inquiet",
+  "zh": "焦慮的、老是擔心",
+  "note": "inquiète｜⚠️ 陰性是 inquiète（有 accent grave）"
+ },
+ {
+  "id": "L27_menteur",
+  "lesson": 27,
+  "fr": "menteur",
+  "zh": "愛說謊的",
+  "note": "menteuse｜⭐ 動詞是 mentir（見下方變位）"
+ },
+ {
+  "id": "L27_paresseux",
+  "lesson": 27,
+  "fr": "paresseux",
+  "zh": "懶惰的",
+  "note": "paresseuse｜la paresse＝懶惰"
+ },
+ {
+  "id": "L27_pessimiste",
+  "lesson": 27,
+  "fr": "pessimiste",
+  "zh": "悲觀的",
+  "note": "pessimiste｜↔ optimiste。⚠️ 陰陽同形"
+ },
+ {
+  "id": "L27_peureux",
+  "lesson": 27,
+  "fr": "peureux",
+  "zh": "膽小的",
+  "note": "peureuse｜⭐ la peur（恐懼）→ 老師的定義：quelqu'un qui a peur facilement"
+ },
+ {
+  "id": "L27_prétentieux",
+  "lesson": 27,
+  "fr": "prétentieux",
+  "zh": "自命不凡的",
+  "note": "prétentieuse｜≒ arrogant。老師直接用英文 arrogant 解釋"
+ },
+ {
+  "id": "L27_stupide",
+  "lesson": 27,
+  "fr": "stupide",
+  "zh": "愚蠢的",
+  "note": "stupide｜陰陽同形"
+ },
+ {
+  "id": "L27_superficiel_le",
+  "lesson": 27,
+  "fr": "superficiel(le)",
+  "zh": "膚淺的",
+  "note": "superficielle｜la surface＝表面"
+ },
+ {
+  "id": "L27_têtu_e",
+  "lesson": 27,
+  "fr": "têtu(e)",
+  "zh": "固執的",
+  "note": "têtue｜⭐ la tête（頭）→「頭很硬」。老師自承：Moi, je suis très têtu."
+ },
+ {
+  "id": "L27_avoir_des_yeux_de_lynx",
+  "lesson": 27,
+  "fr": "avoir des yeux de lynx",
+  "zh": "有山貓的眼睛",
+  "note": "⭐ 眼力很好、什麼都看得到。老師的用法：東西你找半天找不到，別人一眼就看到——Tu as des yeux de lynx !"
+ },
+ {
+  "id": "L27_avoir_une_mémoire_d_élép",
+  "lesson": 27,
+  "fr": "avoir une mémoire d'éléphant",
+  "zh": "有大象的記憶",
+  "note": "記性超好、什麼都記得（也可以帶點「連小事都記仇」的意味）"
+ },
+ {
+  "id": "L27_avoir_une_tête_de_cochon",
+  "lesson": 27,
+  "fr": "avoir une tête de cochon",
+  "zh": "有一顆豬頭",
+  "note": "⚠️⚠️ ＝很固執（不是罵人笨）。這是魁北克的說法——老師說加拿大用這個"
+ },
+ {
+  "id": "L27_C_est_ma_photo_de_classe",
+  "lesson": 27,
+  "fr": "C'est ma photo de classe.",
+  "zh": "photo 陰性單數",
+  "note": "C'est la mienne."
+ },
+ {
+  "id": "L27_C_est_sa_personnalité",
+  "lesson": 27,
+  "fr": "C'est sa personnalité.",
+  "zh": "personnalité 陰性單數",
+  "note": "C'est la sienne."
+ },
+ {
+  "id": "L27_C_est_votre_texte_de_pré",
+  "lesson": 27,
+  "fr": "C'est votre texte de présentation.",
+  "zh": "texte 陽性單數 → 帽子別忘了",
+  "note": "C'est le vôtre."
+ },
+ {
+  "id": "L27__parti_avec_les_siens",
+  "lesson": 27,
+  "fr": "…parti avec les siens",
+  "zh": "標準法語",
+  "note": "⭐ 帶走了他自己的那些（＝ses meubles）——本課文法"
+ },
+ {
+  "id": "L27__parti_avec_les_chiens",
+  "lesson": 27,
+  "fr": "…parti avec les chiens",
+  "zh": "ch'ti 口音聽起來的樣子",
+  "note": "帶著狗走了——所以主角滿頭問號"
+ },
+ {
+  "id": "L27_bientôt",
+  "lesson": 27,
+  "fr": "bientôt",
+  "zh": "很快、不久之後",
+  "note": "⭐ 最近的一個，但老師提醒「也沒有那麼快」——不是明天"
+ },
+ {
+  "id": "L27_dans_un_avenir_proche",
+  "lesson": 27,
+  "fr": "dans un avenir proche",
+  "zh": "在不久的將來",
+  "note": "比 bientôt 正式，寫作首選。l'avenir＝未來（＝le futur）"
+ },
+ {
+  "id": "L27_dans_le_futur",
+  "lesson": 27,
+  "fr": "dans le futur",
+  "zh": "在未來",
+  "note": "沒有指定多遠，最中性"
+ },
+ {
+  "id": "L27_Ça_paraît_loin",
+  "lesson": 27,
+  "fr": "Ça paraît loin !",
+  "zh": "感覺好遠！",
+  "note": "⭐ 口語感嘆，課文開頭那句"
+ },
+ {
+  "id": "L27_la_découverte",
+  "lesson": 27,
+  "fr": "la découverte",
+  "zh": "發現",
+  "note": "f｜découvrir＝發現（本來就存在的東西）"
+ },
+ {
+  "id": "L27_l_invention",
+  "lesson": 27,
+  "fr": "l'invention",
+  "zh": "發明",
+  "note": "f｜⚠️ 跟 découverte 分清楚：發明是做出來的，發現是原本就在"
+ },
+ {
+  "id": "L27_inventer",
+  "lesson": 27,
+  "fr": "inventer",
+  "zh": "發明",
+  "note": "v｜l'inventeur / l'inventrice＝發明家"
+ },
+ {
+  "id": "L27_fabriquer",
+  "lesson": 27,
+  "fr": "fabriquer",
+  "zh": "製造",
+  "note": "v｜⭐ 課本題：機器人是 fabriquer 不是 découvrir——因為要做出來"
+ },
+ {
+  "id": "L27_l_innovation",
+  "lesson": 27,
+  "fr": "l'innovation",
+  "zh": "創新",
+  "note": "f｜課本題：Cette machine est une innovation（不是 inventrice——那是「發明家」，指人）"
+ },
+ {
+  "id": "L27_la_nouveauté",
+  "lesson": 27,
+  "fr": "la nouveauté",
+  "zh": "新東西、新功能",
+  "note": "f｜⭐ 老師的例子：la nouveauté de l'iPhone 18, c'est…"
+ },
+ {
+  "id": "L27_l_évolution",
+  "lesson": 27,
+  "fr": "l'évolution",
+  "zh": "演進",
+  "note": "f｜évoluer＝演變"
+ },
+ {
+  "id": "L27_l_énergie_solaire",
+  "lesson": 27,
+  "fr": "l'énergie solaire",
+  "zh": "太陽能",
+  "note": "f｜課本題：L'énergie solaire permet à ce bateau de fonctionner"
+ },
+ {
+  "id": "L27_la_technologie",
+  "lesson": 27,
+  "fr": "la technologie",
+  "zh": "科技",
+  "note": "f｜複數 les technologies＝各種科技"
+ },
+ {
+  "id": "L27_révolutionner",
+  "lesson": 27,
+  "fr": "révolutionner",
+  "zh": "徹底改變",
+  "note": "v｜⭐ 老師的例句：L'IA révolutionne le monde du travail.（AI 徹底改變了職場）"
+ },
+ {
+  "id": "L27_le_monde_du_travail",
+  "lesson": 27,
+  "fr": "le monde du travail",
+  "zh": "職場、工作的世界",
+  "note": "m｜⚠️ le monde de la mode（時尚圈，第26課）同一個結構"
+ },
+ {
+  "id": "L27_l_ingénieur_e",
+  "lesson": 27,
+  "fr": "l'ingénieur(e)",
+  "zh": "工程師",
+  "note": "m / f｜課本題：les ingénieurs de cette start-up"
+ },
+ {
+  "id": "L27_une_start_up",
+  "lesson": 27,
+  "fr": "une start-up",
+  "zh": "新創公司",
+  "note": "f｜⚠️ 英文字但用法文唸：老師特地示範"
+ },
+ {
+  "id": "L27_l_appareil",
+  "lesson": 27,
+  "fr": "l'appareil",
+  "zh": "裝置、機器",
+  "note": "m｜⭐⭐ 泛指「幫你做事的東西」，不必是電子的：un appareil photo＝相機、les appareils de musculation＝健身器材"
+ },
+ {
+  "id": "L27_le_moteur",
+  "lesson": 27,
+  "fr": "le moteur",
+  "zh": "馬達、引擎",
+  "note": "m｜課本題：Cet avion fonctionne avec un moteur électrique"
+ },
+ {
+  "id": "L27_la_navette",
+  "lesson": 27,
+  "fr": "la navette",
+  "zh": "接駁車／太空梭",
+  "note": "f｜課本題：une navette spatiale＝太空梭"
+ },
+ {
+  "id": "L27_le_robot",
+  "lesson": 27,
+  "fr": "le robot",
+  "zh": "機器人",
+  "note": "m｜形容詞 robotisé(e)＝機器人化的"
+ },
+ {
+  "id": "L27_fonctionner_marcher",
+  "lesson": 27,
+  "fr": "fonctionner ＝ marcher",
+  "zh": "運作",
+  "note": "v｜⭐ 課本題：fonctionner 的同義字是 marcher（不是 aller／travailler）。ça ne marche pas＝壞了"
+ },
+ {
+  "id": "L27_réparer",
+  "lesson": 27,
+  "fr": "réparer",
+  "zh": "修理",
+  "note": "v｜課本題：J'ai réparé mon ordinateur, j'espère qu'il va bien fonctionner"
+ },
+ {
+  "id": "L27_indispensable",
+  "lesson": 27,
+  "fr": "indispensable",
+  "zh": "不可或缺的",
+  "note": "Bientôt, les robots deviendront indispensables."
+ },
+ {
+  "id": "L27_autonome",
+  "lesson": 27,
+  "fr": "autonome",
+  "zh": "自動駕駛的、自主的",
+  "note": "Un jour, les voitures seront autonomes."
+ },
+ {
+  "id": "L27_futuriste",
+  "lesson": 27,
+  "fr": "futuriste",
+  "zh": "未來感的",
+  "note": "Les films de science-fiction sont très futuristes."
+ },
+ {
+  "id": "L27_pratique",
+  "lesson": 27,
+  "fr": "pratique",
+  "zh": "方便好用的",
+  "note": "J'ai acheté une imprimante 3D, c'est très pratique."
+ },
+ {
+  "id": "L27_inutile",
+  "lesson": 27,
+  "fr": "inutile",
+  "zh": "沒用的",
+  "note": "Cet appareil ne sert à rien, il est vraiment inutile."
+ },
+ {
+  "id": "L27_robotisé_e",
+  "lesson": 27,
+  "fr": "robotisé(e)",
+  "zh": "機器人化的",
+  "note": "Dans ce restaurant, le service est entièrement robotisé."
+ },
+ {
+  "id": "L27_le_GPS",
+  "lesson": 27,
+  "fr": "le GPS",
+  "zh": "衛星導航",
+  "note": "唸法文字母"
+ },
+ {
+  "id": "L27_l_hologramme",
+  "lesson": 27,
+  "fr": "l'hologramme",
+  "zh": "全像投影",
+  "note": "⭐ 課文用它上遠距課：把人投影成 3D"
+ },
+ {
+  "id": "L27_l_imprimante_3D",
+  "lesson": 27,
+  "fr": "l'imprimante 3D",
+  "zh": "3D 列印機",
+  "note": "imprimer＝列印"
+ },
+ {
+  "id": "L27_l_intelligence_artificie",
+  "lesson": 27,
+  "fr": "l'intelligence artificielle (l'IA)",
+  "zh": "人工智慧",
+  "note": "⚠️⚠️ 法文不說 AI，說 IA——因為法文的形容詞放後面。陰性：une intelligence → l'IA est…"
+ },
+ {
+  "id": "L27_le_logiciel",
+  "lesson": 27,
+  "fr": "le logiciel",
+  "zh": "軟體",
+  "note": "＝software"
+ },
+ {
+  "id": "L27_la_reconnaissance_facial",
+  "lesson": 27,
+  "fr": "la reconnaissance faciale",
+  "zh": "臉部辨識",
+  "note": "⭐ reconnaître（認出）→ la reconnaissance。Face ID 就是這個"
+ },
+ {
+  "id": "L27_la_tablette",
+  "lesson": 27,
+  "fr": "la tablette",
+  "zh": "平板",
+  "note": "une tablette numérique＝數位平板"
+ },
+ {
+  "id": "L27_la_soucoupe_volante",
+  "lesson": 27,
+  "fr": "la soucoupe volante",
+  "zh": "飛碟",
+  "note": "⚠️ 想像類"
+ },
+ {
+  "id": "L27_la_téléportation",
+  "lesson": 27,
+  "fr": "la téléportation",
+  "zh": "瞬間移動",
+  "note": "⚠️ 想像類。動詞 se téléporter"
+ },
+ {
+  "id": "L27_poser",
+  "lesson": 27,
+  "fr": "poser",
+  "zh": "以為是「擺姿勢 pose」",
+  "note": "⚠️ poser une question＝提問。這個字幾乎都跟 question 一起出現"
+ },
+ {
+  "id": "L27_start_up",
+  "lesson": 27,
+  "fr": "start-up",
+  "zh": "用英文唸",
+  "note": "法文裡照法文的節奏唸——老師特地示範了一次"
  }
 ];

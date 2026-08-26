@@ -255,4 +255,16 @@ const SENTENCES = [
   { id: 'S_L26_8', lesson: 26, fr: 'Je fais des compliments à chaque membre de ma famille.', zh: '我對家裡每一個人都會稱讚。', note: '⚠️ 不能說 chaque famille（那是每個家庭）——chaque 是一個一個看' },
   { id: 'S_L26_9', lesson: 26, fr: 'Il ne se sent pas bien dans sa peau.', zh: '他對自己不自在。', note: '⭐ se sentir bien dans sa peau＝自我接納，整塊記' },
   { id: 'S_L26_10', lesson: 26, fr: 'Tu peux compter sur moi.', zh: '你可以信賴我。', note: '🎙 老師給的例句。compter sur qqn＝依靠某人' },
+
+  // 第27課（所有格代名詞 le mien／futur simple／科技詞彙）
+  { id: 'S_L27_1', lesson: 27, fr: 'Ton appareil photo est en panne ? Prends le mien.', zh: '你的相機壞了？拿我的吧。', note: '⭐ le mien＝mon appareil（陽性單數）；être en panne＝壞掉了' },
+  { id: 'S_L27_2', lesson: 27, fr: 'J\'ai préparé ma photo. Et toi, tu as apporté la tienne ?', zh: '我照片準備好了。你呢，你帶了你的嗎？', note: '⚠️ photo 陰性 → la tienne（跟著東西走，不是跟著人走）' },
+  { id: 'S_L27_3', lesson: 27, fr: 'Il a changé la sienne pour avoir l\'air plus sérieux.', zh: '他把自己那張換掉，好讓自己看起來更正經。', note: '⭐ la sienne＝sa photo；avoir l\'air ＋ 形容詞＝看起來…' },
+  { id: 'S_L27_4', lesson: 27, fr: 'C\'est le nôtre, pas le vôtre.', zh: '這是我們的，不是你們的。', note: '⚠️ 代名詞 nôtre／vôtre 要加帽子（形容詞 notre／votre 不加）' },
+  { id: 'S_L27_5', lesson: 27, fr: 'Il faut paraître sûr de soi.', zh: '要看起來有自信。', note: '⭐ paraître＝顯得；être sûr de soi＝有自信（講自己時說 sûr de moi）' },
+  { id: 'S_L27_6', lesson: 27, fr: 'Demain, je prendrai ma voiture pour aller au travail.', zh: '明天我會開我的車去上班。', note: '⭐ futur simple：原形 prendre 去掉 e ＋ -ai' },
+  { id: 'S_L27_7', lesson: 27, fr: 'Quand nous irons au salon, tu viendras avec nous ?', zh: '我們去展覽的時候，你會跟我們一起來嗎？', note: '⭐⭐ quand ＋ 未來事件：兩邊都用未來式。aller→ir-、venir→viendr-' },
+  { id: 'S_L27_8', lesson: 27, fr: 'Un jour, j\'aurai plusieurs robots chez moi. Ils feront toutes les tâches ménagères.', zh: '總有一天我家會有好幾台機器人，它們會做所有家事。', note: '⭐ avoir→aur-、faire→fer-；une tâche ménagère＝家事' },
+  { id: 'S_L27_9', lesson: 27, fr: 'Dans le futur, il y aura des robots partout, ce sera comme dans les films.', zh: '未來到處都會是機器人，就像電影裡一樣。', note: '⭐⭐ il y aura（將會有）＋ ce sera（那將會是），兩塊整組記' },
+  { id: 'S_L27_10', lesson: 27, fr: 'J\'ai réparé mon ordinateur, j\'espère qu\'il va bien fonctionner.', zh: '我修好我的電腦了，希望它能正常運作。', note: '⭐ fonctionner＝marcher（運作）；réparer＝修理' },
 ];
