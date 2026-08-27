@@ -637,6 +637,32 @@ Owen 貼了第21課逐字稿＋5張課本截圖（`~/Desktop/0802/`：Le souveni
 - **瀏覽器層**（切 TEST ROOM，並用 `fetch(cache:'no-store')` 確認 preview 實際供應的就是 TEST 值才開始）：table_drill 新表 8 格正確載入＋故意把 `sous la tente` 填成 en 被判錯；reading a22 故意 2對1錯 → 分數與 ✓✗ 與解說都正確、紀錄欄位齊全；french_notes lesson-21 渲染 11 unit／11 表格全包 compare-table／**161 個 🔊 tts-btn**／導覽列 21 個按鈕含第21課；quiz `?lesson=21` 實際出到 y/en 題目並答對計分；**`getPool()` 放行全部 27 題**（確認沒踩到 07-16 那個「文法點被鎖導致整批題目消失」的坑）；map 顯示第21課、tile 與 codex 3-4-5 都正確。
 - **收尾**：清掉測試寫入的 a22 紀錄與該題 SRS key → ROOM 改回正式值 → **立刻 `preview_stop`** → grep 確認無 `TEST-DO-NOT-USE` 殘留。
 
+### ⏭ 下個 session 先做「dashboard 安靜首頁」（2026-08-27 決定）
+
+Owen 問：「哪步要在下個 session 處理好呢？dashboard 還是語言島」→ **答案是 dashboard**。
+
+**為什麼不是語言島**：語言島的下一步是 **Owen 要用中文寫五格內容**（結論／一件具體的事／
+為什麼／想像的未來／收尾），**內容不能代筆**（memory `feedback_personal_content_authenticity`）。
+球在他手上，排進 session 只會兩邊一起卡。
+⚠️ **但如果他開場就把五格丟過來了，順序倒過來**：先花 20 分鐘把島做出來，剩下時間再做 dashboard。
+
+**dashboard 要做什麼**（他 08-26 明確授權：「我想全權交給你處理這件事情」）：
+1. **第一屏只有一件事**：今日一句（有情緒鉤子的一句，讀完就有收穫）＋ **一個按鈕**＋看得完的量
+2. **其餘全部收進 `<details>`「▾ 看全部」**——⚠️ 順序不要動（memory `user_memory_palace_style`），只加外殼
+3. ⛔ **拿掉所有指責式文案**：`buildAlerts()` 裡的「已有 N 天沒有記錄學習時數」「📝 已有 N 天沒有造句，
+   輸出能力會退步」「🔴 嚴重弱點 N 個」「📉 本週時數落後」全部改成中性事實或直接不顯示。
+   數字留著給 Claude 決定出題用，**不要每天推到他臉上**
+4. **不要秀分母**（1717 張／到期 21 張），只顯示「這一包 5 張」
+5. session timer（`sessBar`）要留在 `<details>` 外面，計時中才看得到
+
+**⚠️ 做之前一定要先讀的兩則 memory**：`feedback_fun_is_the_engine`（為什麼要這樣改）與
+`user_memory_palace_style`（為什麼順序不能亂動）。
+
+**驗證**：照測試鐵律隔離 ROOM；手機 375px 一定要看（他主要在手機上用）；
+確認舊功能全部還在（只是收起來），console 零錯誤。
+
+---
+
 ### 📌 每課入庫的九項連動（常駐參考，每次做筆記都照這份走）
 
 > 08-26 第27課已照這份做完一輪（記錄見下方 08-26 那段），**最近一次完整範例改看第27課**。
