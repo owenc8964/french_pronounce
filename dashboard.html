@@ -19,6 +19,45 @@ body {
   text-shadow: 0 0 24px rgba(240,192,96,0.45); }
 .header .sub { font-size: 0.7rem; color: #334050; letter-spacing: 1px; margin-top: 5px; }
 
+/* ── 今日一句（08-27 安靜首頁）──────────────────────────────
+   Owen：「我想到那個龐大的資訊我就頭痛……沒有真的跟我的情緒共感連上的感覺。」
+   第一屏只有一件事：一句話 ＋ 一個按鈕。其餘全部收進「▾ 看全部」。
+   ⚠️ 這張卡不放進度、不放數字、不放分母——它唯一的工作是讓他讀完覺得有收穫。 */
+.today-card {
+  background: linear-gradient(160deg, #0e1424, #0a0d18);
+  border: 1px solid #1e2a44; border-radius: 16px;
+  padding: 22px 20px 18px; margin-bottom: 18px;
+}
+.today-tag { font-size: 0.62rem; color: #445060; letter-spacing: 2px; margin-bottom: 12px; }
+.today-fr {
+  font-size: 1.22rem; line-height: 1.55; color: #f0e0b0; font-weight: 600;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.today-fr .tl-txt { flex: 1; }
+.tl-say {
+  flex-shrink: 0; background: none; border: none; cursor: pointer;
+  color: #60a0d0; font-size: 1rem; padding: 2px 4px; line-height: 1.4;
+  font-family: inherit; opacity: .75;
+}
+.tl-say:hover { opacity: 1; }
+.today-zh { font-size: 0.86rem; color: #8d94a4; margin-top: 8px; line-height: 1.6; }
+.today-hook {
+  font-size: 0.82rem; color: #b8bcc8; line-height: 1.85;
+  margin-top: 14px; padding-top: 12px; border-top: 1px dashed #1e2a44;
+}
+.today-src { font-size: 0.64rem; color: #334050; margin-top: 10px; text-align: right; }
+
+/* 按鈕底下那一行：今天只看得到「下一步是什麼」，看不到 13 步的全景 */
+.start-sub {
+  font-size: 0.74rem; color: #4a5668; text-align: center;
+  margin: -12px 0 18px; line-height: 1.6;
+}
+
+/* 「▾ 看全部」外殼：舊版面原封不動搬進來，順序一格都沒動
+   （memory user_memory_palace_style：Owen 靠位置記東西） */
+details.allwrap { margin-top: 18px; }
+details.allwrap > .layer-body { padding: 4px 0; }
+
 /* Start button */
 .start-btn {
   display: block; width: 100%; padding: 18px;
@@ -356,6 +395,9 @@ details.layer > summary > span:not(.ly-peek) { flex-shrink: 0; }
 <script src="creed.js"></script>
 <script src="chunks.js"></script>
 <script src="sentences.js"></script>
+<!-- 08-27 安靜首頁：今日一句只放 id＋中文鉤子，法文一律從 SENTENCES 撈（見 daily_line.js 開頭鐵律） -->
+<script src="daily_line.js"></script>
+<script src="tts_reader.js"></script>
 <script src="answer_cards.js"></script>
 <!-- 08-10：🕐法語時區的今日校正卡要讀 HALL；到期數仍從 SRS 算，沒有載入其他題庫檔 -->
 <script src="time_hall.js"></script>
@@ -367,8 +409,20 @@ details.layer > summary > span:not(.ly-peek) { flex-shrink: 0; }
   <div class="sub">今天做什麼，這裡告訴你</div>
 </div>
 
+<!-- ── 今日一句（08-27）：第一屏唯一的內容 ──────────────────────
+     法文與中文都從 sentences.js 撈（來源＝筆記／課本），鉤子在 daily_line.js。 -->
+<div class="today-card" id="todayCard">
+  <div class="today-tag">今日一句</div>
+  <div class="today-fr"><span class="tl-txt" id="tlFr">…</span>
+    <button class="tl-say" id="tlSay" title="唸一次">🔊</button></div>
+  <div class="today-zh" id="tlZh"></div>
+  <div class="today-hook" id="tlHook"></div>
+  <div class="today-src" id="tlSrc"></div>
+</div>
+
 <!-- Start button -->
 <button class="start-btn" id="startBtn">▶ 開始今日學習</button>
+<div class="start-sub" id="startSub"></div>
 
 <!-- Session 計時器（進行中顯示） -->
 <div class="sess-bar" id="sessBar" style="display:none;">
@@ -398,6 +452,16 @@ details.layer > summary > span:not(.ly-peek) { flex-shrink: 0; }
      ⭐ 但摘要行一定要帶關鍵數字（收合≠看不到），不然收起來就等於刪掉。
      ⚠️ 順序一旦定了就別亂動——Owen 靠位置記東西（memory user_memory_palace_style）。
      ════════════════════════════════════════════════════════════════ -->
+
+<!-- ════════════════════════════════════════════════════════════════
+     ▾ 看全部（2026-08-27）：從這裡到 lyVoice 結束，是 08-25 那版的完整版面，
+     **順序一格都沒有動**，只是整包收進一個 <details> 裡。
+     Owen 08-26：「我想到那個龐大的資訊我就頭痛。」→ 資訊沒有刪，只是預設不迎面撲上來。
+     ⚠️ 要加新卡片就照舊往裡面對應的位置放；不要為了「看起來乾淨」把裡面重排。
+     ════════════════════════════════════════════════════════════════ -->
+<details class="layer allwrap" id="lyAll">
+  <summary>看全部<span class="ly-peek" id="peekAll"></span></summary>
+  <div class="layer-body">
 
 <!-- ── ⚑ 現在：今天要做什麼 ── -->
 <!-- Alerts -->
@@ -451,11 +515,11 @@ details.layer > summary > span:not(.ly-peek) { flex-shrink: 0; }
   </a>
   <a class="nav-btn" href="map.html">
     <span class="nav-icon">🗺</span>
-    <div><div class="nav-label">課程地圖</div><div class="nav-sub">第 11 課</div></div>
+    <div><div class="nav-label">課程地圖</div><div class="nav-sub">第 27 課</div></div>
   </a>
   <a class="nav-btn" href="french_notes.html">
     <span class="nav-icon">📖</span>
-    <div><div class="nav-label">筆記</div><div class="nav-sub">第 1–13 課</div></div>
+    <div><div class="nav-label">筆記</div><div class="nav-sub">第 1–27 課</div></div>
   </a>
   <a class="nav-btn" href="table_drill.html">
     <span class="nav-icon">⚡</span>
@@ -483,7 +547,7 @@ details.layer > summary > span:not(.ly-peek) { flex-shrink: 0; }
   </a>
   <a class="nav-btn" href="reading.html">
     <span class="nav-icon">📖</span>
-    <div><div class="nav-label">閱讀理解</div><div class="nav-sub" id="navReadingSub">20 篇短文</div></div>
+    <div><div class="nav-label">閱讀理解</div><div class="nav-sub" id="navReadingSub">純法文短文</div></div>
   </a>
 </div>
 
@@ -646,6 +710,9 @@ details.layer > summary > span:not(.ly-peek) { flex-shrink: 0; }
   </div>
 </details>
 
+  </div>
+</details>
+<!-- ▲▲ 「▾ 看全部」到此結束（08-27） ▲▲ -->
 
 <script>
 // ── 常數 ─────────────────────────────────────────────────────
@@ -971,6 +1038,32 @@ function creedDel(i) {
   localStorage.setItem('clb7_creed_own', JSON.stringify(own));
   renderCreed();
 }
+// ── 今日一句（08-27 安靜首頁）────────────────────────────────
+// 第一屏唯一的內容。法文與中文從 SENTENCES 撈（來源＝筆記／課本），鉤子在 DAILY_LINES。
+// ⚠️ 依日期輪播（跟心法／時區同一個 day index），所以跨裝置同一天看到同一句。
+function renderTodayLine() {
+  const frEl = document.getElementById('tlFr');
+  if (!frEl) return;
+  let line = null, sent = null;
+  try {
+    const day = Math.floor(Date.now() / 86400000);
+    // id 撈不到就往後找下一則（句庫被改動時不會開天窗）
+    for (let k = 0; k < DAILY_LINES.length; k++) {
+      const cand = DAILY_LINES[(day + k) % DAILY_LINES.length];
+      const s = SENTENCES.find(x => x.id === cand.id);
+      if (s) { line = cand; sent = s; break; }
+    }
+  } catch (e) {}
+  if (!sent) { document.getElementById('todayCard').style.display = 'none'; return; }
+  frEl.textContent = sent.fr;
+  document.getElementById('tlZh').textContent   = sent.zh;
+  document.getElementById('tlHook').textContent = line.hook || '';
+  document.getElementById('tlSrc').textContent  = sent.src || `第 ${sent.lesson} 課`;
+  document.getElementById('tlSay').onclick = () => {
+    try { TtsReader.speak(sent.fr); } catch (e) {}
+  };
+}
+
 function renderCreed() {
   const day = Math.floor(Date.now() / 86400000);   // 依日期輪播，跨裝置同日同句
   const own = creedOwn();
@@ -1125,19 +1218,21 @@ function buildPrescription(topicStats, todaySec) {
     },
     sprint: {
       icon: '⚡', action: `動詞反射衝刺 60 秒 · ${spMode.label}`,
+      // 08-27：不報「還有 N 格未達反射」（用缺口定義他），改報已經反射了幾格
       why: spDone ? '今天已完成！' : (spMode.id === 'present'
-        ? (spReflex >= SPRINT_TOTAL ? '54 格全反射，維持手感'
-                                    : `現在式還有 ${SPRINT_TOTAL - spReflex} 格未達反射（${spReflex}/${SPRINT_TOTAL}）`)
-        : `今天輪到 ${spMode.label}——同樣 9 個動詞，換一個時態`),
+        ? (spReflex >= SPRINT_TOTAL ? '全部都已經反射，60 秒維持手感'
+                                    : `已經有 ${spReflex} 格反射了，60 秒再推一輪`)
+        : `今天輪到 ${spMode.label}——同樣的動詞，換一個時態`),
       badge: spDone ? 'badge-green' : 'badge-red',
       badgeText: spDone ? '✓ 完成' : '未完成',
       href: `verb_sprint.html?guided=1&mode=${spMode.id}`, done: spDone,
     },
     review: {
       icon: '📦', action: '複習卡一包（10 張）',
+      // 08-27：不顯示到期張數（分母是壓迫感的來源），只講這一包有多少
       why: rvDone
-        ? (rvDue > 0 ? `做過了！還有 ${rvDue} 張到期，有空再清一包` : '做過了，到期卡已清空！')
-        : (rvDue > 0 ? `${rvDue} 張到期＋新卡，3–5 分鐘` : '新卡等你開，3–5 分鐘'),
+        ? (rvDue > 0 ? '做過了！有空可以再清一包' : '做過了，到期卡已清空！')
+        : '這一包 10 張，3–5 分鐘',
       badge: rvDone ? 'badge-green' : 'badge-red',
       badgeText: rvDone ? '✓ 完成' : '未完成',
       href: 'review.html?guided=1', done: rvDone,
@@ -1146,14 +1241,14 @@ function buildPrescription(topicStats, todaySec) {
       icon: '🗣️', action: '背誦 5 句常用句（中翻法）',
       why: stDone
         ? '今天已完成！'
-        : (stDue > 0 ? `${stDue} 句到期複習＋5 句新句，磨到全部答對` : '5 句新句，中文想→講出法文→翻開核對'),
+        : '這一輪 5 句，中文想→講出法文→翻開核對，磨到全部答對',
       badge: stDone ? 'badge-green' : 'badge-red',
       badgeText: stDone ? '✓ 完成' : '未完成',
       href: 'sentence_drill.html?guided=1', done: stDone,
     },
     answercard: {
       icon: '🗣️', action: 'Answer Card 高頻話題答案卡',
-      why: acDone ? '今天已完成！' : (acDue > 0 ? `${acDue} 張到期複習＋最多3張新卡，看到問題自己先答` : '3張新卡，看到問題先自己回答，翻開核對你自己的話'),
+      why: acDone ? '今天已完成！' : '這一包 3 張，看到問題先自己回答，翻開核對你自己的話',
       badge: acDone ? 'badge-green' : 'badge-red',
       badgeText: acDone ? '✓ 完成' : '未完成',
       href: 'answer_card.html?guided=1', done: acDone,
@@ -1206,7 +1301,7 @@ function buildPrescription(topicStats, todaySec) {
       icon: '🎭', action: '時態浸潤（讀，不做題）',
       why: tzRead ? '今天已讀！' : (evenDay
         ? '時間劇院：十張角色卡輪著讀，讀到有興趣點標題直接進記憶宮殿'
-        : `時態透視鏡：先關著燈把故事讀完，再開燈看時間的形狀（已讀 ${xrayRead}/6 篇）`),
+        : '時態透視鏡：先關著燈把故事讀完，再開燈看時間的形狀'),
       badge: tzRead ? 'badge-green' : 'badge-blue',
       badgeText: tzRead ? '✓ 完成' : '去讀',
       href: evenDay ? 'time_hall.html' : 'tense_xray.html', done: tzRead,
@@ -1215,8 +1310,8 @@ function buildPrescription(topicStats, todaySec) {
     tense_drill: {
       icon: '🔭', action: '時態四個開關',
       why: tzDrill ? '今天已完成！' : (evenDay
-        ? `時態鏡頭：看句子跑一次四個開關${lensDue ? `（${lensDue} 題到期）` : ''}`
-        : `時間劇場：看時間的形狀，直接打出一整句${thDue ? `（${thDue} 場到期）` : ''}`),
+        ? '時態鏡頭：看句子跑一次四個開關'
+        : '時間劇場：看時間的形狀，直接打出一整句'),
       badge: tzDrill ? 'badge-green' : 'badge-red',
       badgeText: tzDrill ? '✓ 完成' : '未完成',
       href: evenDay ? 'tense_lens.html' : 'time_theatre.html', done: tzDrill,
@@ -1330,56 +1425,21 @@ function renderClbLevel(topicStats) {
 }
 
 // ── 警報生成 ─────────────────────────────────────────────────
+// ── 待辦提示（08-27 大改：原本叫「警報」，整段重寫）────────────
+// ⛔ 拿掉所有用缺口定義他的文案：「已有 N 天沒有記錄學習時數」「N 天沒有造句，輸出能力會退步」
+//    「🔴 嚴重弱點 N 個」「📉 本週時數落後」全部刪掉。理由（memory feedback_fun_is_the_engine）：
+//    ① 系統的數據天生不完整——他每天用 Duolingo 聊天、上家教、看影集，那些不會進 localStorage。
+//       dashboard 顯示「N 天沒記錄」時，那是**記錄的空白，不是他的空白**，拿它罵人一定是錯的。
+//    ② 每次打開就被提醒欠了多少，會讓他不想打開；而總量＝時數×效率，他不打開，效率再高也沒用。
+// ✅ 這裡只留「有一件事等你按一下」的中性待辦，沒有就整塊不顯示（不要湊「✅ 目前沒有警報」）。
+//    弱點數字沒有消失，仍然在 🔬 診斷層裡給 Claude 決定出題用。
 function buildAlerts(topicStats, game) {
   const alerts = [];
-  const tracker = getTrackerData();
 
-  // 最後一次練習距今天數
-  if (tracker.length > 0) {
-    const last = new Date(Math.max(...tracker.map(e => e.ts)));
-    const daysSince = Math.floor((Date.now() - last) / 86400000);
-    if (daysSince >= 2) alerts.push({ type:'err', msg:`⚠️ 已有 ${daysSince} 天沒有記錄學習時數` });
-  } else {
-    alerts.push({ type:'warn', msg:`⚡ 還沒有計時記錄，開始用計時器追蹤每次學習吧` });
-  }
-
-  // 造句連續
-  const writing = getWritingData();
-  if (writing.length > 0) {
-    const lastW = new Date(writing[writing.length-1].date.replace(/\//g,'-'));
-    const daysSinceW = Math.floor((Date.now() - lastW) / 86400000);
-    if (daysSinceW >= 3) alerts.push({ type:'warn', msg:`📝 已有 ${daysSinceW} 天沒有造句，輸出能力會退步` });
-  }
-
-  // 聽力 / 口說 超過 3 天沒記錄
-  const listening = getListeningData();
-  if (listening.length > 0) {
-    const lastL = new Date(listening[listening.length-1].date.replace(/\//g,'-'));
-    const daysSinceL = Math.floor((Date.now() - lastL) / 86400000);
-    if (daysSinceL > 3) alerts.push({ type:'warn', msg:`🎧 已有 ${daysSinceL} 天沒有聽力記錄，輸入量不能斷` });
-  }
-  const speaking = getSpeakingData();
-  if (speaking.length > 0) {
-    const lastS = new Date(speaking[speaking.length-1].date.replace(/\//g,'-'));
-    const daysSinceS = Math.floor((Date.now() - lastS) / 86400000);
-    if (daysSinceS > 3) alerts.push({ type:'warn', msg:`🗣 已有 ${daysSinceS} 天沒有口說記錄，開口練習不能停` });
-  }
-
-  // 嚴重弱點 topic
-  // 08-25：原本把 20 幾個 topic 全部列在警報裡，一條就吃掉 600px（第一屏的一半）。
-  // 警報要「一眼看完」，細節在下面的 🔬 診斷層——這裡只報最弱的 3 個＋總數。
-  const critical = Object.entries(topicStats)
-    .filter(([,s]) => s.attempts >= 5 && s.pct < 60)
-    .sort(([,a],[,b]) => a.pct - b.pct)
-    .map(([t, s]) => `${TOPIC_LABELS[t] || t} ${s.pct}%`);
-  if (critical.length) alerts.push({ type:'err',
-    msg:`🔴 嚴重弱點 ${critical.length} 個（<60%）：${critical.slice(0, 3).join('、')}`
-        + (critical.length > 3 ? `　…其餘看下面 🔬 診斷` : '') });
-
-  // 🚩 被檢舉待審的題目（07-11文法框架）：提醒下次丟給 Claude 審核修復
+  // 🚩 被檢舉待審的題目（07-11文法框架）：下次開 Claude session 丟給他審
   try {
     const flagged = JSON.parse(localStorage.getItem('clb7_flagged_qs') || '[]');
-    if (flagged.length) alerts.push({ type:'warn', msg:`🚩 有 ${flagged.length} 題被你檢舉停用中，下次開 Claude session 時請他審核修復` });
+    if (flagged.length) alerts.push({ type:'warn', msg:`🚩 有 ${flagged.length} 題被你檢舉停用中，下次開 Claude session 請他審核修復` });
   } catch(e) {}
 
   // ⭐ Answer Card 已熟練待升級（07-16新增）：提醒下次丟給 Claude 補下一個 CEFR 版本
@@ -1387,17 +1447,6 @@ function buildAlerts(topicStats, game) {
     const upReady = JSON.parse(localStorage.getItem('clb7_ac_upgrade_ready') || '[]');
     if (upReady.length) alerts.push({ type:'ok', msg:`⭐ 有 ${upReady.length} 張 Answer Card 熟練了，下次開 Claude session 請他升級到更豐富的版本` });
   } catch(e) {}
-
-  // 本週時數不足
-  const weekH = getTrackerWeek() / 3600;
-  const today = new Date();
-  const dayOfWeek = today.getDay() || 7;
-  const weekTarget = dayOfWeek * (10/7);
-  if (weekH < weekTarget * 0.6 && weekH > 0)
-    alerts.push({ type:'warn', msg:`📉 本週時數 ${weekH.toFixed(1)}h，進度落後（目標 ${weekTarget.toFixed(1)}h）` });
-
-  if (alerts.length === 0)
-    alerts.push({ type:'ok', msg:`✅ 目前沒有警報，繼續保持！` });
 
   return alerts;
 }
@@ -1432,6 +1481,7 @@ function renderTimeZone() {
 }
 
 function render() {
+  renderTodayLine();  // 📜 今日一句（08-27 安靜首頁：第一屏唯一的內容）
   renderCreed();   // 🧭 今日心法＋階段（07-12）
   renderTimeZone();
   const topicStats  = getTopicStats();
@@ -1535,15 +1585,13 @@ function render() {
     const readDoneArts = new Set(getReadingData().map(r => r.id)).size;
     document.getElementById('navReadingSub').textContent = readingDoneToday()
       ? '今天已完成 ✓' : (readDoneArts ? `已完成 ${readDoneArts} 篇` : '純法文短文');
+    // 08-27：入口的副標一律不秀分母／到期數（分母是壓迫感的來源），只講已達成或這一包多少
     document.getElementById('navSprintSub').textContent = sprintDoneToday()
-      ? '今天已完成 ✓' : `反射 ${sprintReflexCount()}/${SPRINT_TOTAL} 格`;
-    const rvDueN = chunkDueCount();
+      ? '今天已完成 ✓' : `已反射 ${sprintReflexCount()} 格`;
     document.getElementById('navReviewSub').textContent = reviewDoneToday()
-      ? (rvDueN > 0 ? `已做 · 剩 ${rvDueN} 張到期` : '今天已完成 ✓')
-      : (rvDueN > 0 ? `${rvDueN} 張到期` : '一包 3–5 分鐘');
-    const acDueN = answerCardDueCount();
-    document.getElementById('navAnswerCardSub').textContent = acDueN > 0
-      ? `${acDueN} 張到期複習` : '高頻話題答案卡';
+      ? '今天已完成 ✓' : '一包 10 張，3–5 分鐘';
+    document.getElementById('navAnswerCardSub').textContent = answerCardDoneToday()
+      ? '今天已完成 ✓' : '高頻話題答案卡';
   })();
 
   // Four Skills
@@ -1644,12 +1692,13 @@ function render() {
       </a>`).join('');
   })();
 
-  // Alerts
+  // 待辦提示（08-27：沒有待辦就整塊不顯示，不要湊「目前沒有警報」）
   const alertsEl = document.getElementById('alerts');
   const alertData = buildAlerts(topicStats, game);
   alertsEl.innerHTML = alertData.map(a =>
     `<div class="alert ${a.type === 'err' ? '' : a.type === 'warn' ? 'warn' : 'ok'}">${a.msg}</div>`
   ).join('');
+  alertsEl.style.display = alertData.length ? 'block' : 'none';
 
   // Prescription（番号順序 + 「現在做這個」高亮第一個未完成）
   document.getElementById('orderLockChk').checked = isOrderLocked();
@@ -1669,6 +1718,12 @@ function render() {
       <span class="rx-badge ${item.badge}">${item.badgeText}</span>
     </a>
   `).join('');
+
+  // 按鈕底下那一行（08-27）：第一屏只講「下一步是什麼」，看不到 13 步的全景
+  const subEl = document.getElementById('startSub');
+  if (subEl) subEl.textContent = firstUndone
+    ? `接下來：${firstUndone.icon} ${firstUndone.action}`
+    : '今天的處方都走完了 🎉 額外練習一樣會計時';
 
   // Session 計時器 bar 狀態
   renderSessionBar(todaySec);
@@ -2107,6 +2162,8 @@ function fillPeeks() {
     .filter(Boolean).join(' · ') || '本週還沒有紀錄');
   const vc = txt('voiceCount');
   setPeek('peekVoice', vc && vc !== '載入中…' ? vc : '');
+  // 「▾ 看全部」的摘要行只寫裡面有什麼，不寫數字（08-27）
+  setPeek('peekAll', '處方・工具・進度・診斷');
 }
 // 心聲是最後才非同步載完的，晚一點再補一次摘要
 setTimeout(fillPeeks, 800);
@@ -2118,7 +2175,7 @@ document.getElementById('startBtn').addEventListener('click', () => {
   const next = rx.find(item => !item.done);
   render(); // 顯示 session bar
   if (next) { location.href = next.href; }
-  else { dashToast('今日六步已完成 🎉 額外練習也會計時'); }
+  else { dashToast('今天的處方都走完了 🎉 額外練習一樣會計時'); }
 });
 
 // 暫停／繼續
