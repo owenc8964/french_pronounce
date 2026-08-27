@@ -184,6 +184,118 @@ EPI 的核心機制是 **highly patterned input flooding**：
 
 ---
 
+## 八、第二輪研究：從考試回推、排程參數、時數校準
+
+### 1. ⭐ 最重要的修正：TEF 口說不是「講一段獨白」
+
+查了 TEF Canada 口說的實際形式之後，發現**先前的設計方向有偏**：
+
+| | Section A | Section B |
+|---|---|---|
+| 時間 | 說 5 分鐘（**準備 1 分鐘**） | 說 10 分鐘（**準備 1 分鐘**） |
+| 稱謂 | **vous**（正式） | **tu**（非正式） |
+| 任務 | 打電話問廣告細節，**要問出 10–12 個問題** | 根據文件**說服朋友**做某件事 |
+| 對手 | 考官扮演店家／專業人士 | 考官扮演朋友，**會一直提出反對** |
+
+評分面向：**理解與互動／詞彙／句法與文法／語音**。
+拿 CLB 7+ 需要的語言特徵：進階連接詞（cependant、néanmoins、par ailleurs）、**subjonctif**、**多樣的疑問句式**（倒裝、直接問、客氣請求）。
+
+> ⚠️ **所以真正要練的兩個目標任務是「提問」與「應付反駁」，不是「講一段獨白」。**
+> 獨白（4/3/2）是**自動化引擎**，不是目標任務本身。這一條直接修正了先前
+> 「給主題 → 自己講一段 → 攤開 pool 核對」的設計。
+>
+> 另外注意：**考試給的準備時間就是 1 分鐘**——剛好等於研究裡的門檻。
+> 練習時給 1 分鐘，同時滿足「有效」與「transfer-appropriate」兩個條件。
+
+⚠️ 分數門檻各家說法不一（310/450 或 393/450 都有人寫），**以官方 CLB 對照表為準**，別用二手數字。
+
+### 2. 間隔要多長：3 天優於 7 天（就自動化而言）
+
+Suzuki（2017）把 60 名學習者分成 **3.3 天間隔**與 **7 天間隔**兩組，練 L2 構詞的口語產出：
+
+- 兩組的反應時間（速度）都顯著下降
+- 但 **3.3 天組的「restructuring」明顯較強**——也就是真正的自動化（處理方式被換掉），
+  而不只是「同一套流程跑得比較快」
+
+**設計含意：同一個結構／同一個題目，約 3 天後回來一次，比隔一週好。**
+
+### 3. 交錯 vs 集中
+
+- **跨題目**：交錯（interleaving）的長期保留優於集中（blocking）
+- **同一次練習內**：立即重複（immediate aural-oral same task repetition）對流利度有效，
+  而且**不分程度、不分任務類型**
+
+**設計含意：同一題當場連講三次（集中），但不同題目之間交錯排。** 兩者不衝突。
+
+### 4. 時數校準：700 小時的「組成」比「總量」重要
+
+FSI（美國外交學院）把法文列為 Category I：**600–750 課堂小時**達到 S-3/R-3
+（約 CEFR B2–C1），全職約 30 週。
+
+⚠️ 關鍵在於**那些小時的組成**：FSI 的時數是**小班、教師帶領、以互動口說為主**。
+Owen 的 700 小時計畫在總量上對得上，但如果其中口說互動只佔 5%，**口說不會到 B2**。
+
+**設計含意：與其增加總時數，不如改變組成。** 每天 15 分鐘的口說產出，
+一年約 **91 小時**，佔 700 小時的 13%——這個比例是可以排得出來的。
+
+---
+
+## 九、回推出來的方法（兩階段協定）
+
+> 依據：第八節的考試形式 ＋ 第五節的實作參數 ＋ 第二節的八階順序。
+> ⚠️ 這是**方法**，還不是介面設計。介面設計要等第六節那四個問題拍板。
+
+### 階段一（先建 pool）：在支架上開口，不是背熟再開口
+
+**解決的問題**：Owen 說「對 pool 不熟，講不出好東西」。
+**解法不是先背再講，是先在支架上講、支架再慢慢抽掉。**
+
+每天 10 分鐘，三步：
+
+| 步驟 | 做什麼 | 打哪一格 |
+|---|---|---|
+| ① 骨架朗讀 | 看著完整句子唸 2 遍 | Articulator |
+| ② Disappearing text | 同一句，字逐步消失，每輪照樣講出來 | Formulator（支架漸退） |
+| ③ Substitution | 骨架固定，只換一個元素（人稱／時態／內容） | Formulator ＋ 時態切換 |
+
+⚠️ 這一階段**不要求想內容**——內容由骨架給。Conceptualiser 被刻意外包掉，
+工作記憶才有餘裕處理構句。
+
+### 階段二（自動化）：4/3/2，但任務要長得像考試
+
+每天 15 分鐘：
+
+1. **抽一張題目卡**（TEF 形式：A 型「打電話問到底」／B 型「說服他，他會反駁」）
+2. **準備 1 分鐘**（跟考試一樣，不多不少）
+3. **4 → 3 → 2 分鐘各講一次**（同一題，當場重複）
+4. **每一輪只盯一個指標**（trade-off）：
+   - 第 1 輪：**不要停**（流利度）
+   - 第 2 輪：**時態對不對**（準確度）
+   - 第 3 輪：**有沒有用到連接詞／subjonctif**（複雜度）
+5. **自評四維**（各 0–3 分）：語速／停頓次數／自我重複／自我修正
+6. **講完才攤開 pool**，核對「哪些我明明會、卻沒撈出來」——那個落差才是要練的
+7. **同一題約 3 天後再抽一次**（restructuring 的最佳間隔），不同題目之間交錯
+
+### Anki 在這套方法裡的位置
+
+**只裝功能骨架，不裝主題單字。**
+
+- 主題單字 → 交給**窄輸入**（同一批 chunk 在不同文本裡重複），不要用背的
+- 功能骨架（30–50 條萬用句型）→ **中→法產出卡，而且一定要唸出聲**
+- 理由：skill specificity——受納訓練不會轉移到產出；不出聲就練不到 Articulator
+
+### 一句話總結這套方法為什麼「快」
+
+不是因為每天練更久，而是因為**每一分鐘都打在缺的那一格**：
+
+1. 目標任務對準考試（提問／應付反駁），不是泛泛的口說
+2. 支架讓 Conceptualiser 先閉嘴，工作記憶集中在構句
+3. 當場重複＋時間壓縮，逼出整塊產出（不佔工作記憶）
+4. 一輪只盯一個指標，避開注意力的排擠效應
+5. 3 天間隔回訪，打在自動化真正發生的那個窗口
+
+---
+
 ## 七、來源
 
 - MARS EARS 八階：https://gianfrancoconti.com/2022/05/18/the-real-marsears-how-an-epi-sequence-truly-unfolds/
@@ -197,3 +309,9 @@ EPI 的核心機制是 **highly patterned input flooding**：
 - Formulaic sequences 與流利度面向（TESOL Quarterly）：https://onlinelibrary.wiley.com/doi/10.1002/tesq.556
 - Shadowing 系統性回顧（2025）：https://www.tandfonline.com/doi/full/10.1080/29984475.2025.2546827
 - 口說的腦內流程（Levelt／Kormos，Conti 整理）：https://gianfrancoconti.com/2025/04/06/how-the-speaking-process-unfolds-in-the-brain-and-the-five-pillars-of-speaking-instruction/
+- TEF Canada 口說形式與 CLB 7 語言特徵：https://www.prepmyfrench.com/blogs/the-ultimate-tef-canada-speaking-section-guide-2026-formats-strategies-and-clb-7-samples
+- TEF Canada 官方成績說明：https://www.lefrancaisdesaffaires.fr/en/candidate/test-evaluation-francais/tef-canada/results/
+- 間隔 3.3 天 vs 7 天與自動化（Suzuki 2017, SSLA）：https://yuichisuzuki.net/wp-content/uploads/2023/04/Suzuki-2018-SSLA.pdf
+- 交錯 vs 集中（Nakata & Suzuki 2019, MLJ）：https://yuichisuzuki.net/wp-content/uploads/2023/04/Nakata-Suzuki-2019-MLJ.pdf
+- 練習分配的整體框架（Suzuki, Nakata & DeKeyser 2019, MLJ）：https://www.academia.edu/40119025/
+- FSI 語言時數分級：https://www.fsi-language-courses.org/blog/fsi-language-difficulty/
