@@ -98,6 +98,22 @@ const ANSWER_CARDS = [
       { level:'A2', d:'2026-08-27',
         fr:"Je veux partir au Canada avec ma famille. Il y a quatre raisons.\n\nD'abord, l'éducation. À Taïwan, les enfants apprennent tout par cœur : c'est un système très fermé. Je vois souvent les enfants de mes collègues : ils prennent déjà des cours supplémentaires à la maternelle, pour entrer dans une école privée, et plus tard pour avoir un bon dossier à l'université. Je trouve que cette pression est trop forte. Au Canada, l'école est plus ouverte. On encourage les enfants à se poser des questions et à trouver leur propre chemin. C'est pour ça que je veux offrir un autre environnement à ma fille.\n\nEnsuite, le climat. Taïwan est de plus en plus chaud, et avec le réchauffement climatique, ce sera pire. Dans trente ans, des villes comme Vancouver seront probablement plus agréables à vivre.\n\nIl y a aussi les avantages sociaux : de bonnes politiques publiques, un bon système scolaire, et des prix de l'immobilier plus raisonnables qu'ici.\n\nEnfin, la stabilité. Aujourd'hui, il y a beaucoup de tensions politiques et militaires dans le monde. Chaque fois que je vois les nouvelles — les tensions entre la Chine et Taïwan, ou la guerre en Ukraine — j'ai encore plus envie d'une société calme et stable. C'est vraiment à ces moments-là que j'ai envie de partir au Canada.\n\nPour toutes ces raisons, le Canada est pour moi un choix idéal.",
         zh:'我想跟家人一起去加拿大。有四個理由。\n\n首先是教育。在台灣，小孩什麼都用背的，那是一個很封閉的系統。我常看到同事的小孩，幼稚園就已經在補習了，為了考進私立學校，之後為了大學有好的資歷。我覺得這種壓力太大了。在加拿大，學校比較開放，會鼓勵小孩自己提問、找自己的路。所以我想給我女兒另一種環境。\n\n再來是氣候。台灣越來越熱，加上暖化，之後只會更糟。三十年後，像溫哥華這樣的城市大概會比較適合居住。\n\n還有社會福利：不錯的公共政策、好的教育體系，還有比這裡合理的房價。\n\n最後是安定。現在世界上有很多政治和軍事的緊張。每次我看到新聞——兩岸的緊張、或是烏克蘭的戰爭——我就更嚮往一個平靜穩定的社會。就是在那些時候，我特別想去加拿大。\n\n基於這些理由，加拿大對我來說是一個理想的選擇。' }
+    ],
+    // ⭐ 2026-08-27 Owen：「考官可能會有興趣的問題，感覺也是個很好的延伸方向？」——對。
+    // 這批是預測的追問，用途有兩個：①階段6「反駁對抗」的題目來源 ②檢查這座島的覆蓋率。
+    // cover 欄位：'ok'＝現在的島接得住｜'part'＝接得住但要轉一下｜'gap'＝沒材料，要補
+    // from 欄位：可以從哪一張既有的 answer card 調材料過來（⭐ 島與島之間的橋）
+    follow_ups:[
+      { fr:"Vous êtes déjà allé au Canada ?", zh:'你去過加拿大嗎？', cover:'gap', from:'AC7 旅行' },
+      { fr:"Pourquoi Vancouver plutôt que Montréal ou Toronto ?", zh:'為什麼是溫哥華，不是蒙特婁或多倫多？', cover:'part', from:null },
+      { fr:"Votre fille a quel âge ? Elle apprend le français aussi ?", zh:'你女兒幾歲？她也在學法文嗎？', cover:'gap', from:'AC2 家庭' },
+      { fr:"Et votre femme, qu'est-ce qu'elle en pense ?", zh:'那你太太怎麼想？', cover:'gap', from:'AC2 家庭' },
+      { fr:"Vous êtes dentiste : vous pourrez travailler au Canada ?", zh:'你是牙醫，你能在加拿大執業嗎？', cover:'gap', from:'AC3 工作' },
+      { fr:"Mais au Canada, il fait très froid, non ?", zh:'可是加拿大很冷吧？', cover:'part', from:null },
+      { fr:"Taïwan aussi a de bonnes écoles, non ?", zh:'台灣也有好學校啊，不是嗎？', cover:'ok', from:null },
+      { fr:"Qu'est-ce qui vous manquera le plus de Taïwan ?", zh:'你最會想念台灣的什麼？', cover:'gap', from:null },
+      { fr:"L'immigration, c'est long et difficile. Vous êtes prêt ?", zh:'移民很久又很難，你準備好了嗎？', cover:'gap', from:null },
+      { fr:"Si vous ne pouvez pas partir, qu'est-ce que vous ferez ?", zh:'如果你走不成，你會怎麼做？', cover:'gap', from:null }
     ] },
 
   { id:'AC9', topic:'home', title:'住家',
