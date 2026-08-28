@@ -40,10 +40,51 @@ const ANSWER_CARDS = [
   { id:'AC3', topic:'work', title:'工作',
     q_fr:"Que faites-vous dans la vie ? Pourquoi avez-vous choisi ce métier ?",
     q_zh:'你的工作是什麼？為什麼選這份工作？',
+    // ⭐ 2026-08-28 Owen 的中文口述全文（逐字保留，⛔ 不要精簡）。
+    // 用途有二：①這座島升級 B1/B2 時的素材庫——法文版刻意砍掉的東西都在這裡
+    //          ②Owen 自己的話就是這張卡的真相來源（見 memory feedback_personal_content_authenticity）
+    // ⚠️ v2 法文版刻意沒收進去的段落（＝之後升級的第一批材料）：
+    //    ・治療項目清單（假牙／拔智齒／補牙／洗牙／檢查／牙周維護／植牙／美白貼片）
+    //    ・「治療對病人沒幫助我會拒絕，即使病人願意」← 25課 si 句的好素材
+    //    ・「把事情分段、隨時嘉許、給彼此機會」← 他的核心工作哲學，讓步段的材料
+    //    ・「與其這樣，不如一開始就先想好」← B2 讓步／權衡段的材料
+    source_zh:"【為什麼當牙醫】我覺得這就是我想去加拿大的一個原因。我覺得小朋友應該要好好探索自己的理想。我是很幸運地照著讀書，然後盡量考高分去選到這個職業的。等到唸完、真的實際上做的時候，發現這個東西其實對人真的有幫助。但我當初不是因為真的很想幫助人而選擇這個職業，而是看這個職業有前景、有未來，分數到哪裡就決定去選哪裡。\n我覺得這個過程會有一些風險，就是我對這件事可能沒有熱情。我在很多同學身上看到這件事，甚至我的同學他念完牙醫之後直接轉行當攝影師，現在在紐約做得不錯，幫很多名人、雜誌跟明星做拍攝。但也就是走了牙醫這一遭之後，有可能對這件事有不同的認知，或對人生的志向有些不同的想法。與其這樣，不如一開始就先把這件事想好、探索好。\n\n【我的一天】我現在一個禮拜看五天診，一天大概看 8 到 12 小時的門診。這樣排班下來，一天看的病人量大約從 10 個到 20 個都有可能。最常做的治療可能就是假牙、拔智齒、補牙、洗牙、幫病人做檢查、牙周病的維護，還有植牙、美學等等（像是美白、貼片）。我覺得這個工作從頭到尾都在幫助人。如果做的事情對病人來說沒有什麼太大的幫助，其實我很有可能會拒絕病人，即便病人願意配合。\n\n【那個病人】印象最深刻的例子其實有很多。有一個病人很年輕，二十幾歲，滿嘴是牙結石，牙齒很暴。他對於自己的外形其實很沒有自信，很想處理牙齒但又不敢。\n那一次他第一次來的時候，我跟他說：「你隨時都可以停，只要你說你受不了了。我的目標是讓你可以願意接受這個治療，而不是趕快把事情做完卻把你嚇走。」\n他在這樣的過程中，先經歷了洗牙，然後也把矯正完成了。他後來因為這次的經驗，慢慢接受治療，真的可以把洗牙和矯正這件事給完成。雖然他還是很擔心、很憂慮，但至少不再那麼害怕，能夠勇敢地把這件事做完。\n我覺得這才是真正讓病人變好的關鍵。除了我們口頭上知道說「我應該要做洗牙」、「我應該要勇敢接受治療」，但更多時候，是我們在跟病人的這個過程中都有努力退讓，把事情分段、勇敢做完，然後隨時嘉許、隨時給彼此機會，願意讓彼此繼續往下一步前進。這個過程我覺得是很重要的。願意洗牙、願意做矯正這件事，對他的外觀有很大的影響，也讓他的人生變得不一樣。\n\n【到加拿大之後】如果要過去的話，我必須要重新考當地的牙醫執照。我也有去研究需要準備哪些事情，甚至去設計、規劃考試流程。我打算先把語言考試準備好，通過之後就會開始著手準備考試。雖然過程中很艱辛，也需要很有紀律地完成，但為了讓這件事情可以持續下去，不管在臺灣或在加拿大都能做好，我會把這件事情盡全力完成。",
     versions:[
       { level:'A1', d:'2026-07-16',
         fr:"Je suis dentiste. J'aide les gens. Avant le traitement, les patients ont mal aux dents et ils sont inquiets, mais après, ils ont de belles dents et ils sont contents. Je suis content pour eux. J'aime mon travail.",
-        zh:'我是牙醫師。我幫助人。治療前，病人牙齒痛而且擔心，但治療後，他們有漂亮的牙齒而且開心。我為他們感到開心。我喜歡我的工作。' }
+        zh:'我是牙醫師。我幫助人。治療前，病人牙齒痛而且擔心，但治療後，他們有漂亮的牙齒而且開心。我為他們感到開心。我喜歡我的工作。' },
+      // ── 2026-08-28 v2：語言島第二座。40 秒 → 174 字 / 約 80 秒（島的規格 60–120 秒）。
+      // ⚠️ 初稿寫到 280 字被 Owen 退掉：「280字聽起來真的很長」「要抓重點，簡明扼要，
+      //    情緒單字文法都到位，不饒口且加分」。→ 砍掉一半，只留四個「加分」的點：
+      //    ①分數決定的、不是熱情（誠實，考官記得住）②同學轉行去紐約當攝影師（別人沒有的細節）
+      //    ③「你隨時都可以停」那句（情緒）④加拿大要重考執照（考官必問，直接補掉 AC8 的 gap）
+      // ⭐ ②段結尾接回 AC8 的教育論點「小孩該早點探索理想」＝島與島之間的橋。
+      // 用上的結構：ce sont les notes qui décident／c'est aussi pour ça que／Ce que j'aime…, c'est
+      //   （26課 c'est…qui/que 強調句）、si je veux exercer, je devrai（25課 si）、
+      //   devrai／sera／ferai（27課 futur simple）、y arriver（21課 y）、avait（imparfait）
+      // ⚠️ 末段是 Si + présent → futur simple。25課筆記把 si 句的 A2 範圍框在「現在式＋現在式／命令式」，
+      //    註明「結果那半用未來式是 B1 的第一式」。si 那半仍是現在式（合規），結果用 futur 是標準法文的
+      //    第一條件式，而 futur simple 正是 27 課剛學的——刻意往上一步，不是筆誤。
+      // ⚠️ 「我的目標是讓你願意接受治療」原句要 subjonctif（je veux que vous acceptiez，B1），
+      //    這版寫成 c'est de vous donner envie de continuer（不定式），語意微調成「讓你想繼續」。
+      //    → 這句就是升級 B2 時換回 subjonctif 的位置（見 STRATEGY 原則 6）。
+      { level:'A2', d:'2026-08-28',
+        fr:"Je suis dentiste. Je travaille cinq jours par semaine et je vois une quinzaine de patients par jour.\n\nMais honnêtement, je n'ai pas choisi ce métier par passion : à Taïwan, ce sont les notes qui décident. La passion est venue après, quand j'ai commencé à travailler. J'ai même un camarade qui a fait les mêmes études et qui est devenu photographe à New York. Alors je pense que les enfants doivent explorer leurs rêves plus tôt — et c'est aussi pour ça que je veux partir au Canada.\n\nCe que j'aime dans mon métier, c'est donner confiance. Un jour, un jeune patient avait trop peur pour se soigner. Je lui ai dit : « Vous pouvez arrêter quand vous voulez. Le plus important, ce n'est pas de finir vite, c'est de vous donner envie de continuer. » Il a terminé son traitement. Aujourd'hui, son sourire a changé, et sa vie aussi.\n\nEt au Canada, si je veux exercer, je devrai repasser les examens. Ce sera long, mais je ferai tout pour y arriver.",
+        zh:'我是牙醫。我一週看五天診，一天大概看十五個病人。\n\n但老實說，我不是因為熱情才選這一行：在台灣，是分數在決定。熱情是後來、真的開始工作以後才出現的。我甚至有一個同學，跟我念一樣的書，後來去紐約當了攝影師。所以我覺得小孩應該早一點探索自己的理想——這也是我想去加拿大的原因。\n\n我喜歡這份工作的地方，是給人信心。有一次，一個年輕病人怕到不敢治療。我跟他說：「你隨時都可以停。最重要的不是趕快做完，是讓你想繼續。」他把療程做完了。今天他的笑容不一樣了，他的人生也是。\n\n那到加拿大呢？如果我想執業，我就必須重考。過程會很久，但我會盡全力做到。' }
+    ],
+    // 2026-08-28 預測追問。cover：'ok'＝島接得住｜'part'＝要轉一下｜'gap'＝沒材料
+    // ⭐ gap／part 這幾題就是 B2 升級層的施工圖（讓步段＋假設段），見 STRATEGY 原則 6
+    follow_ups:[
+      { fr:"Vous êtes dentiste : vous pourrez travailler au Canada ?", zh:'你是牙醫，你能在加拿大執業嗎？', cover:'ok', from:null },
+      { fr:"Vos patients ont souvent peur du dentiste ?", zh:'你的病人常常怕看牙醫嗎？', cover:'ok', from:null },
+      { fr:"Qu'est-ce que vous faites exactement dans une journée ?", zh:'你一天實際上都在做什麼？', cover:'part', from:null },
+      { fr:"Vous travaillez dans un cabinet privé ou à l'hôpital ?", zh:'你在私人診所還是醫院工作？', cover:'gap', from:null },
+      { fr:"Qu'est-ce que vous aimez le moins dans votre travail ?", zh:'你最不喜歡工作的哪個部分？', cover:'gap', from:null },
+      { fr:"Combien de temps il faut pour avoir la licence canadienne ?", zh:'拿到加拿大執照要多久？', cover:'part', from:null },
+      { fr:"Si vous ne réussissez pas l'examen canadien, qu'est-ce que vous ferez ?", zh:'如果你沒考過加拿大的考試，你會怎麼做？', cover:'gap', from:'AC15 未來計畫' },
+      { fr:"Vous n'avez jamais pensé à changer de métier, comme votre camarade ?", zh:'你沒想過像你同學那樣轉行嗎？', cover:'part', from:null },
+      { fr:"Vous conseilleriez ce métier à votre fille ?", zh:'你會建議你女兒做這一行嗎？', cover:'part', from:'AC2 家庭' },
+      { fr:"Le stress au travail, comment vous le gérez ?", zh:'工作的壓力你怎麼處理？', cover:'gap', from:'AC11 健康' }
     ] },
 
   { id:'AC4', topic:'education', title:'教育／學歷',
@@ -108,7 +149,7 @@ const ANSWER_CARDS = [
       { fr:"Pourquoi Vancouver plutôt que Montréal ou Toronto ?", zh:'為什麼是溫哥華，不是蒙特婁或多倫多？', cover:'part', from:null },
       { fr:"Votre fille a quel âge ? Elle apprend le français aussi ?", zh:'你女兒幾歲？她也在學法文嗎？', cover:'gap', from:'AC2 家庭' },
       { fr:"Et votre femme, qu'est-ce qu'elle en pense ?", zh:'那你太太怎麼想？', cover:'gap', from:'AC2 家庭' },
-      { fr:"Vous êtes dentiste : vous pourrez travailler au Canada ?", zh:'你是牙醫，你能在加拿大執業嗎？', cover:'gap', from:'AC3 工作' },
+      { fr:"Vous êtes dentiste : vous pourrez travailler au Canada ?", zh:'你是牙醫，你能在加拿大執業嗎？', cover:'part', from:'AC3 工作' },  // 08-28 AC3 v2 末段補上了：gap→part
       { fr:"Mais au Canada, il fait très froid, non ?", zh:'可是加拿大很冷吧？', cover:'part', from:null },
       { fr:"Taïwan aussi a de bonnes écoles, non ?", zh:'台灣也有好學校啊，不是嗎？', cover:'ok', from:null },
       { fr:"Qu'est-ce qui vous manquera le plus de Taïwan ?", zh:'你最會想念台灣的什麼？', cover:'gap', from:null },
