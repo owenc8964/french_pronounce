@@ -221,9 +221,12 @@ function initTask() {
   const picker = document.getElementById('lessonPicker');
   picker.style.display = 'block';
   const btns = document.getElementById('lessonBtns');
-  let html = '';
-  for (let i = 1; i <= 16; i++) html += `<a href="#" onclick="showTask(${i});return false;" style="color:#62aef2;margin-right:8px;text-decoration:none;">${i}</a>`;
-  btns.innerHTML = html;
+  // 08-28：原本寫死 1–16，所以第17課之後（整個 A2 範圍）在選課列上點不到。
+  // 改成直接從題庫長出來，之後 writing_tasks.js 補到第幾課就自動出現到第幾課。
+  const lessons = [...new Set(WRITING_TASKS.map(t => t.lesson))].sort((a, b) => a - b);
+  btns.innerHTML = lessons.map(i =>
+    `<a href="#" onclick="showTask(${i});return false;" style="color:#62aef2;margin-right:8px;text-decoration:none;">${i}</a>`
+  ).join('');
 }
 
 function load() {

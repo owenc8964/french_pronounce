@@ -144,8 +144,54 @@ const WRITING_TASKS = [
   { lesson:21, id:'W21b', title:'推薦一個地方（說服型）', task:'寫 80-100 字推薦台灣的一個地方給法國朋友：為什麼值得去、去了會體驗到什麼、給一個實用建議。',
     use:['C\'est un endroit qui …', 'on y trouve / on en revient …', 'Que demander de plus ?', '祈使句給建議'], frame:'⭐ 論證結構：先下結論（值得去） → 兩個理由（d\'abord… ensuite…） → 讓步（C\'est un peu touristique, mais…） → 實用建議（祈使句：Mettez… / Faites…）' },
 
+  // ── 第22課（la météo ＋ la place de l'adjectif）
+  { lesson:22, id:'W22a', title:'從台灣寄一張明信片（tâche 1）', task:'寫 50-70 字的訊息給法國朋友：今天台灣的天氣如何、你因為天氣做了什麼／不能做什麼。⚠️ 天氣一律用 il fait / il y a / il pleut 這種無人稱句起手。',
+    use:['Quel temps fait-il ? 的回答形式（Il fait…）', 'la canicule 或 la fraîcheur（不是只用 chaud / froid）', 'La météo annonce…', '至少一個放在名詞前的短形容詞'],
+    frame:'⭐ 開場問候 → 今天的天氣（Il fait… / Il y a…） → 因此做了什麼（donc / alors） → 預報明天（La météo annonce…） → 收尾（À bientôt !）' },
+  { lesson:22, id:'W22b', title:'一次因為天氣而難忘的假期', task:'寫 80-100 字：一次天氣影響了你行程的旅行。⚠️ 這題是形容詞位置的練習場——每一個名詞都要帶形容詞，並自己判斷放前面還是後面。',
+    use:['短形容詞在前（un bon restaurant / de jolies… / de gros…）', '⚠️ 形容詞放複數名詞前 → des 要縮成 de', '顏色與國籍形容詞放名詞後', 'passé composé ＋ imparfait 並用'],
+    frame:'⭐ 什麼時候去哪裡（passé composé） → 當時的天氣與背景（imparfait） → 發生了什麼（passé composé） → 收尾感受' },
+
+  // ── 第23課（le logement ＋ pronoms relatifs qui / que / où）
+  { lesson:23, id:'W23a', title:'回覆一則租屋廣告（tâche 1）', task:'你在網路上看到一間套房的廣告。寫 50-70 字的訊息給房東：你是誰、想租哪一間、問兩個問題（租金含什麼、可不可以看房）。',
+    use:['Je cherche un studio qui…', 'le loyer / charges comprises', '… mètres carrés', 'Est-ce que…? 兩個問句'],
+    frame:'⭐ 自我介紹一句 → 我要租哪一間（用 qui／que 指出是哪一則廣告） → 問題一（租金） → 問題二（看房時間） → 客氣收尾（Merci d\'avance.）' },
+  { lesson:23, id:'W23b', title:'介紹你現在住的地方', task:'寫 80-100 字介紹你住的房子：哪一間房間你最喜歡、為什麼、跟誰一起住。⚠️ 每一句都要想清楚該用 qui、que 還是 où——這題就是為了逼你選。',
+    use:['qui（子句缺主詞）至少一次', 'que（子句缺受詞）至少一次', 'où（地點）至少一次', 'Je trouve que…'],
+    frame:'⭐ 這是什麼樣的房子（C\'est un appartement qui…） → 我最喜歡的房間（La pièce que je préfère, c\'est…） → 在那裡我做什麼（C\'est là où je…） → 跟誰住 → 收尾評價（Je trouve que…）' },
+
+  // ── 第24課（DELF A2 閱讀實戰 ＋ 考試指令 ＋ 時刻 ＋ 活動廣告）
+  { lesson:24, id:'W24a', title:'約朋友一起報名一個活動（tâche 1）', task:'你看到一則活動廣告（烹飪工作坊、健身房、球隊…任選）。寫 50-70 字的訊息約朋友一起去：活動幾點開始、多少錢、為什麼你想去。',
+    use:['À quelle heure…? 或 Ça commence à…', '時刻的兩套說法（14h／deux heures de l\'après-midi）', 'le moins cher / la moins chère', 'Ça te dit ?'],
+    frame:'⭐ 我發現了什麼（J\'ai trouvé…） → 時間與價格（兩個數字都要寫出來） → 為什麼值得去 → 邀請並問對方（Ça te dit ?）' },
+  { lesson:24, id:'W24b', title:'把老師的解題法寫成給自己的備忘', task:'寫 60-80 字，用命令式寫下你考閱讀時要照做的五個步驟（就是老師課堂上給的那五條）。⚠️ 這篇是「寫給自己看的規則」，所以整篇用 vous 或 tu 的命令式。',
+    use:['命令式（至少四個不同動詞）', 'Lisez d\'abord…', 'Essayez de ＋ 原形', 'Il faut ＋ 原形'],
+    frame:'⭐ 步驟一 → 步驟二 → 步驟三 →（用 d\'abord / ensuite / puis / enfin 串起來） → 最後一句安慰自己（C\'est normal de…）' },
+
+  // ── 第25課（la comparaison ＋ la condition si ＋ 家具與街區）
+  { lesson:25, id:'W25a', title:'兩個住處二選一（比較級的練習場）', task:'寫 80-100 字比較兩個住的地方（例如市區的套房 vs 郊區的公寓）：房間數、租金、生活便利度，最後說你選哪一個。⚠️ 名詞、形容詞、動詞的比較寫法不一樣，三種都要出現。',
+    use:['形容詞比較：plus / moins ＋ 形容詞 ＋ que', '名詞比較：autant de ＋ 名詞 ＋ que', '動詞比較：動詞 ＋ plus / moins que', '⚠️ bien → mieux（動詞）、bon → meilleur（形容詞）'],
+    frame:'⭐ 先擺出兩個選項 → 比房間（名詞比較） → 比價格（形容詞比較） → 比生活（動詞比較，用 on vit mieux…） → 結論（J\'aime mieux… parce que…）' },
+  { lesson:25, id:'W25b', title:'給要搬來台灣的朋友的四個建議（tâche 1）', task:'寫 50-70 字：朋友要搬來你住的城市，給他三到四個實用建議。⚠️ 每個建議都要用一個 si 句包起來（現在式 ＋ 命令式）。',
+    use:['si ＋ 現在式 ＋ 命令式（至少兩次）', '⚠️ s\'il（只在 il 前面縮寫）', '街區形容詞（animé / tranquille / commerçant…）', 'Ça va aller, t\'inquiète.'],
+    frame:'⭐ 開場（Tu vas adorer…） → 建議一（Si tu…, ＋命令式） → 建議二（Si…） → 建議三（S\'il fait…） → 收尾安慰對方' },
+
+  // ── 第26課（le même que／pareil／autant de ＋ tout vs chaque ＋ 外貌與性格）
+  { lesson:26, id:'W26a', title:'描述一個你很熟的人（外貌＋性格）', task:'寫 80-100 字描述一個你很熟的人：長相像家裡的誰、性格有什麼優點跟缺點。⚠️ 講「像」不能只用 comme——名詞用 le même … que，形容詞用 pareil。',
+    use:['le / la / les même(s) ＋ 名詞 ＋ que', 'autant de ＋ 名詞 ＋ que', 'chaque ＋ 單數名詞（永遠不變化）', '至少一個優點與一個缺點（qualité / défaut）'],
+    frame:'⭐ 這個人是誰 → 長相（Il a le même … que…） → 性格優點 → 但也有缺點（mais…） → 收尾用課本那句精神（Chaque qualité peut cacher un défaut.）' },
+  { lesson:26, id:'W26b', title:'我為什麼信任這個人（tout / chaque 的練習場）', task:'寫 60-80 字說明你為什麼信任某個人。⚠️ 這題專攻 tout 跟 chaque 的分工：tout 要跟名詞配合（tout/toute/tous/toutes），chaque 永遠不變化＋單數。',
+    use:['tous les / toutes les ＋ 複數名詞', 'chaque ＋ 單數名詞', 'compter sur quelqu\'un', 'se sentir bien dans sa peau'],
+    frame:'⭐ 這個人是誰 → 他每一次都怎麼做（chaque fois que…） → 我喜歡他的所有哪些面向（tous les aspects…） → 結論（Je peux compter sur lui / elle.）' },
+
+  // ── 第27課（pronoms possessifs ＋ futur simple ＋ 科技）
+  { lesson:27, id:'W27a', title:'借東西給同事的訊息（tâche 1）', task:'同事的電腦（或相機、手機）壞了。寫 50-70 字的訊息：說你的可以借他、什麼時候拿、要注意什麼。⚠️ 一旦講過那個東西，之後就用所有格代名詞，不要一直重複名詞。',
+    use:['le mien / la mienne（至少一次）', 'le tien / la tienne 或 le sien / la sienne', 'être en panne / réparer / fonctionner', '未來式至少一次'],
+    frame:'⭐ 我聽說了（J\'ai appris que ton … est en panne.） → 借你我的（Prends le mien.） → 什麼時候怎麼拿（未來式） → 注意事項 → 收尾' },
+  { lesson:27, id:'W27b', title:'2050 年的一天（未來式全篇）', task:'寫 80-100 字描述 2050 年你普通的一天：早上怎麼移動、工作怎麼做、晚上做什麼。⚠️ 全篇未來式，而且要出現至少三個不規則字根。',
+    use:['未來式不規則字根三個以上（aur- / ser- / fer- / ir- / verr- / saur- / pourr- / voudr- / viendr-）', 'il y aura ＋ ce sera（兩塊整組用）', '所有格代名詞至少一次（le mien / le sien…）', '科技詞彙（robot / hologramme / tablette / autonome…）'],
+    frame:'⭐ 開場定位（En 2050, ma vie ne sera pas la même.） → 早上 → 工作 → 晚上 → 收尾提問或評價（Est-ce que … sera meilleur que le nôtre ?）' },
   // ── 第28課（si 條件句三式 ＋ si vs quand ＋ le pronom on ＋ 電話與網路詞彙）
-  // ⚠️ 22–27 課的題目還沒補（見 HANDOFF 08-28）；先補當前這一課，讓「今日寫作」步驟接得上進度
   { lesson:28, id:'W28a', title:'給朋友的四個建議（DELF A2 tâche 1）', task:'你的朋友說他每天花太多時間在手機上。寫 60-80 字的訊息給他，給三到四個具體建議。⚠️ 仿課本 wikiHow 那篇的寫法：每個建議都用一個 si 句包起來。',
     use:['si ＋ 現在式 ＋ 命令式（至少兩次）', 'si ＋ 現在式 ＋ 未來式（至少一次）', 'essayer de ＋ 原形', '本課科技詞彙（appli / réseaux sociaux / éteindre）'],
     frame:'⭐ 開場點題（Tu passes trop de temps sur ton portable ?） → 建議一（Si tu…, ＋ 命令式） → 建議二（Si tu…, ＋ 命令式） → 預測好處（Si tu fais ça une semaine, tu…＋未來式） → 收尾鼓勵' },
