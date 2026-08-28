@@ -50,17 +50,18 @@ const ANSWER_CARDS = [
       //   mais（讓步雛形）、j'ai l'impression de＋不定式、le plus important, c'est de…（26課 c'est 強調）
       // ⚠️ 「五月開始學」是硬事實：到 2027-06 考試那時剛好滿一年多，考官問起來這是很強的一句。
       { level:'A2', d:'2026-08-28',
-        fr:"Je m'appelle Owen, j'ai 36 ans et je suis dentiste. Je suis quelqu'un d'analytique : j'aime classer les choses, les regarder sous différents angles et faire des liens entre elles. Je suis plutôt rationnel, mais pas au point d'être ingénieur ! Je suis assez réservé, et j'aime réfléchir et lire.\n\nJ'habite à Banqiao, près de Taipei, dans un immeuble. Le quartier est très ouvert et la gare est tout près. Il y a moins de petits restaurants qu'ailleurs et c'est un peu plus cher, mais j'aime vivre ici : les voisins sont gentils et tout est propre.\n\nJ'ai commencé le français en mai, cette année. Je prends des cours, et j'utilise aussi Duolingo et l'IA. J'écoute beaucoup de podcasts et je regarde des films français. Pour moi, apprendre, ce n'est pas seulement passer du temps : le plus important, c'est de se plonger dans la langue et de trouver la bonne méthode.\n\nLe français est une langue très spéciale. Quand je le parle, j'ai l'impression de changer de regard : parfois c'est flou, parfois c'est net — et quand c'est flou, je vois le monde plus largement. Le reste du temps, je fais du sport, je réfléchis, et je m'occupe de ma fille.",
-        zh:'我叫 Owen，36 歲，是牙醫。我是一個分析型的人：我喜歡把事情分類、從不同角度看它們、然後把它們連起來。我算是理性的，但還沒到工程師那種程度！我個性比較木訥，喜歡思考和閱讀。\n\n我住在台北附近的板橋，住大樓。這一區很空曠，車站也很近。這裡的小吃比別的地方少，物價也高一點，但我很喜歡住這裡：鄰居很友善，環境也很乾淨。\n\n我今年五月開始學法文。我有上家教，也用 Duolingo 和 AI。我聽很多 podcast，也看很多法文電影。對我來說，學習不只是花時間：最重要的是讓自己浸泡在這個語言裡，還有找到對的方法。\n\n法文是一個很特別的語言。我講法文的時候，好像會換一種眼光看事情：有時候是模糊的，有時候是清楚的——而模糊的時候，我反而看見更大的世界。其他時間我會運動、思考，還有照顧我女兒。' }
+        fr:"Je m'appelle Owen, j'ai 36 ans et je suis dentiste. Je suis quelqu'un d'analytique : j'aime classer les choses, les regarder sous différents angles et faire des liens entre elles. Je suis plutôt rationnel, mais pas au point d'être ingénieur ! Je suis assez réservé, et j'aime réfléchir et lire.\n\nJ'habite à Banqiao, près de Taipei, dans un immeuble. Le quartier est très ouvert et la gare est tout près. Il y a moins de petits restaurants qu'ailleurs et c'est un peu plus cher, mais j'aime vivre ici : les voisins sont gentils et tout est propre.\n\nJ'ai commencé le français en mai, cette année. Je prends des cours, et j'utilise aussi Duolingo et l'IA. J'écoute le podcast Coffee Break French et je regarde la série Extra French. Pour moi, apprendre, ce n'est pas seulement passer du temps : le plus important, c'est de se plonger dans la langue et de trouver la bonne méthode.\n\nLe français est une langue très spéciale. Quand je le parle, j'ai l'impression de changer de regard : parfois c'est flou, parfois c'est net — et quand c'est flou, je vois le monde plus largement. Le reste du temps, je fais du sport, je réfléchis, et je m'occupe de ma fille.",
+        zh:'我叫 Owen，36 歲，是牙醫。我是一個分析型的人：我喜歡把事情分類、從不同角度看它們、然後把它們連起來。我算是理性的，但還沒到工程師那種程度！我個性比較木訥，喜歡思考和閱讀。\n\n我住在台北附近的板橋，住大樓。這一區很空曠，車站也很近。這裡的小吃比別的地方少，物價也高一點，但我很喜歡住這裡：鄰居很友善，環境也很乾淨。\n\n我今年五月開始學法文。我有上家教，也用 Duolingo 和 AI。我聽 Coffee Break French 這個 podcast，也看 Extra French 這部影集。對我來說，學習不只是花時間：最重要的是讓自己浸泡在這個語言裡，還有找到對的方法。\n\n法文是一個很特別的語言。我講法文的時候，好像會換一種眼光看事情：有時候是模糊的，有時候是清楚的——而模糊的時候，我反而看見更大的世界。其他時間我會運動、思考，還有照顧我女兒。' }
     ],
     // 2026-08-28 預測追問。cover：'ok'＝島接得住｜'part'＝要轉一下｜'gap'＝沒材料
-    // ⚠️⚠️ 這座島的 gap 有兩題**特別危險**：他自己說了「看很多法文電影／聽很多 podcast」，
-    //     考官幾乎一定會追問是哪些。答不出來會直接扣可信度——⭐ 這兩題請 Owen 優先補。
+    // ✅ 08-28 已解除的兩題危險 gap：原本只寫「看很多法文電影／聽很多 podcast」，考官必追問是哪些。
+    //    Owen 當天補了具體名字，且**直接寫進島的正文**（比放在追問裡好：具體名字讓整段更可信）：
+    //    影集 Extra French（repo 其他地方寫作「Extra Français」）／podcast Coffee Break French。
     follow_ups:[
       { fr:"Pourquoi vous apprenez le français ?", zh:'你為什麼學法文？', cover:'ok', from:'AC8 加拿大' },
       { fr:"Vous trouvez le français difficile ?", zh:'你覺得法文難嗎？', cover:'part', from:null },
-      { fr:"Quels films français vous avez vus ?", zh:'你看過哪些法文電影？', cover:'gap', from:null },
-      { fr:"Quels podcasts vous écoutez ?", zh:'你聽哪些 podcast？', cover:'gap', from:null },
+      { fr:"Vous regardez quoi comme séries ou films français ?", zh:'你看哪些法文影集或電影？', cover:'ok', from:null },  // 08-28 Owen 補：Extra French
+      { fr:"Quels podcasts vous écoutez ?", zh:'你聽哪些 podcast？', cover:'ok', from:null },  // 08-28 Owen 補：Coffee Break French
       { fr:"Être analytique, ça vous aide dans votre travail ?", zh:'分析型的個性對你的工作有幫助嗎？', cover:'part', from:'AC3 工作' },
       { fr:"Qu'est-ce que vous lisez en ce moment ?", zh:'你最近在看什麼書？', cover:'gap', from:null },
       { fr:"Vous faites quel sport ?", zh:'你做什麼運動？', cover:'gap', from:'AC11 健康' },
@@ -208,6 +209,10 @@ const ANSWER_CARDS = [
   { id:'AC8', topic:'canada', title:'加拿大／移民動機',
     q_fr:"Pourquoi voulez-vous aller au Canada ? Pourquoi ce pays ?",
     q_zh:'你為什麼想去加拿大？為什麼選這個國家？',
+    // ⭐ 2026-08-28 補上 Owen 的中文口述全文。⚠️ AC8 是 08-27 蓋的，當時 source_zh 的慣例還沒建立，
+    //    所以它一度是唯一沒有中文母本的島（升級 B2 時會少一手材料）。這天回填。
+    //    ⚠️ 逐字保留，⛔ 不要精簡。v2 法文版已經幾乎全收（四個理由＋兩個具體場景都在）。
+    source_zh:"【四個理由】我覺得去加拿大的話，有幾個優點：\n1. 教育環境比較開放、注重自我探索，不像臺灣那麼填鴨，這可以讓女兒有一個相對好的環境生活跟成長。\n2. 氣候比較宜人：在未來地球暖化的狀況下，臺灣會越來越熱，但加拿大（特別是溫哥華等緯度相對低的地方）幾十年後其實是相對適合居住的地方。\n3. 福利很好：有各種很不錯的政策、教育環境，還有相對合理的房價。\n4. 局勢安定穩定：現在全世界的政經和軍事威脅很多，加拿大相對起來安定又穩定。\n所以去加拿大其實是一個蠻理想的選擇。\n\n【具體場景一：新聞】每次看到兩岸或者是烏克蘭、俄羅斯的新聞的時候，我就對於安定的社會跟政治關係更嚮往，所以那時候就會燃起我去加拿大移民的心。\n\n【具體場景二：同事小孩】我也常常看到我的同事的小孩在幼稚園時期就開始補習，為了考進私校，為了在之後長大考大學的時候有個好的證明而努力。我覺得這個環境壓迫太大了，這也會讓我想要營造一個好的教育環境給我女兒。",
     versions:[
       { level:'A1', d:'2026-07-16',
         fr:"Je veux aller au Canada parce que Taïwan, c'est très stressant. Il y a beaucoup de pression. Le Canada a une belle nature. L'éducation est différente — les enfants pensent par eux-mêmes. Je veux ça pour ma fille. Le travail de dentiste au Canada, c'est bien aussi, je pense.",
