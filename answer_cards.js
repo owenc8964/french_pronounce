@@ -88,7 +88,14 @@ const ANSWER_CARDS = [
     versions:[
       { level:'A1', d:'2026-07-16',
         fr:"Je veux aller au Canada parce que Taïwan, c'est très stressant. Il y a beaucoup de pression. Le Canada a une belle nature. L'éducation est différente — les enfants pensent par eux-mêmes. Je veux ça pour ma fille. Le travail de dentiste au Canada, c'est bien aussi, je pense.",
-        zh:'我想去加拿大，因為台灣壓力很大。有很多壓力。加拿大自然很美。教育方式不一樣——孩子可以自己思考。我希望我女兒有這個機會。加拿大的牙醫工作我覺得應該也不錯。' }
+        zh:'我想去加拿大，因為台灣壓力很大。有很多壓力。加拿大自然很美。教育方式不一樣——孩子可以自己思考。我希望我女兒有這個機會。加拿大的牙醫工作我覺得應該也不錯。' },
+      // 2026-08-27 v2：Owen 重新口述的四理由版（語言島第一座）。
+      // 17 秒 → 約 70 秒。刻意用上他剛學的：futur simple（第27課）、se poser une question（第27課）、
+      // toutes ces raisons（第26課 tout）、pire（第25課比較級不規則）、de bonnes（形容詞前置 des→de）。
+      // ⚠️ 還缺一個「具體場景」（哪一個瞬間讓他第一次認真想這件事），補上之後才是完整的島。
+      { level:'A2', d:'2026-08-27',
+        fr:"Je veux partir au Canada avec ma famille. Il y a quatre raisons.\n\nD'abord, l'éducation. À Taïwan, les enfants apprennent tout par cœur : c'est un système très fermé. Au Canada, l'école est plus ouverte. On encourage les enfants à se poser des questions et à trouver leur propre chemin. Je veux ce genre d'environnement pour ma fille.\n\nEnsuite, le climat. Taïwan est de plus en plus chaud, et avec le réchauffement climatique, ce sera pire. Dans trente ans, des villes comme Vancouver seront probablement plus agréables à vivre.\n\nIl y a aussi les avantages sociaux : de bonnes politiques publiques, un bon système scolaire, et des prix de l'immobilier plus raisonnables qu'ici.\n\nEnfin, la stabilité. Aujourd'hui, il y a beaucoup de tensions politiques et militaires dans le monde. Le Canada est un pays calme et stable.\n\nPour toutes ces raisons, le Canada est pour moi un choix idéal.",
+        zh:'我想跟家人一起去加拿大。有四個理由。\n\n首先是教育。在台灣，小孩什麼都用背的，那是一個很封閉的系統。在加拿大，學校比較開放，會鼓勵小孩自己提問、找自己的路。我希望我女兒有這樣的環境。\n\n再來是氣候。台灣越來越熱，加上暖化，之後只會更糟。三十年後，像溫哥華這樣的城市大概會比較適合居住。\n\n還有社會福利：不錯的公共政策、好的教育體系，還有比這裡合理的房價。\n\n最後是安定。現在世界上有很多政治和軍事的緊張。加拿大是一個平靜而穩定的國家。\n\n基於這些理由，加拿大對我來說是一個理想的選擇。' }
     ] },
 
   { id:'AC9', topic:'home', title:'住家',
