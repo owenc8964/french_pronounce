@@ -22,10 +22,51 @@ const ANSWER_CARDS = [
   { id:'AC1', topic:'intro', title:'自我介紹',
     q_fr:"Présentez-vous : comment vous vous appelez, quel âge vous avez, d'où vous venez, et ce que vous faites dans la vie.",
     q_zh:'自我介紹一下：你叫什麼名字、幾歲、來自哪裡、你是做什麼的。',
+    // ⭐ 2026-08-28 Owen 的中文口述全文（逐字保留，⛔ 不要精簡）。慣例同 AC2／AC3。
+    // ⚠️ v2 刻意沒收進去的（＝之後升級 B1/B2 的材料）：
+    //    ・「對事情有自己獨到的切入角度、解方與價值觀」← 抽象化，B2 的料
+    //    ・板橋「棟距大／生活機能／有人專門維護」的細節（中版可加回）
+    //    ・「法文富有感情」「從遠到近」「更細膩的美感」← 這段最美但最抽象，A2 只保住了
+    //      「換一種眼光／模糊時看見更大的世界」；B2 版要把整段還原
+    //    ・「幫小朋友準備上學用品、生活環境與遊樂空間」（細節，→ AC2 也可用）
+    //    ・結尾「陪伴家庭、思索人生、照顧身體」三段式總結 ← B1 版收尾可用
+    source_zh:"【我是什麼樣的人】如果要跟第一次見面的人形容我自己，我覺得我是個分析型的人。我對事情有自己獨到的切入角度、解方與價值觀，會把不同的事情整理出來做連結，也會把同一件事情分門別類、用不同視角去看。有時候我相對比較理性，但我不覺得自己是個工程仔，還沒到那個程度；個性上相對比較木訥，喜歡思考與閱讀。\n\n【住哪裡】我住在新北板橋的特區，離百貨很近。這個地方棟距比較大，相對來說生活機能不算太好，不像其他棟距小的地方有很多商店或小吃，這邊小吃的選擇比較少、物價也相對高一些。但好處是整體很空曠，而且離車站與各種大眾運輸都很近，所以我滿喜歡這裡的。我家住的是大樓，住戶都很友善，環境也非常整潔、有人專門維護。\n\n【為什麼學法文／怎麼學】我今年 5 月開始學法文，除了找家教，也用 Duolingo 和 AI 協助提升法文能力。我聽很多 Podcast、看很多法文電影，讓自己對法文有更多的認知與敏銳度，並且不斷調整學習方法。我覺得學習一門新事物，不單只是花時間，讓自己浸泡在環境中並用對方法才是最重要的。學到現在，我覺得法文非常特別且富有感情；說法文時彷彿會切換視角，從遠到近、聚焦時而模糊時而清楚。模糊的時候能看見更完整的世界觀，相對也有更多細膩的美感。\n\n【沒看診的時候】沒在看診的時候，我通常會花很多時間照顧自己的身體，例如運動，或是留點時間思索人生。現在有了小孩，我也花很多時間整理家裡，幫小朋友準備上學用品、生活環境與遊樂空間，讓他能更快樂地成長。\n陪伴家庭、思索人生、照顧身體與自己，大概就能完整描繪出我目前的生活模式與樣態。",
     versions:[
       { level:'A1', d:'2026-07-16',
         fr:"Je m'appelle Owen. J'ai 36 ans. Je suis taïwanais. J'habite à Xinbei. Je suis dentiste.",
-        zh:'我叫Owen。我36歲。我是台灣人。我住新北市。我是牙醫師。' }
+        zh:'我叫Owen。我36歲。我是台灣人。我住新北市。我是牙醫師。' },
+      // ── 2026-08-28 v2：語言島第四座，也是**樞紐島**（考官從這裡分岔到 AC2／AC3／AC8）。
+      // 10 秒 → 202 字 / 約 93 秒。四段：我是什麼樣的人／住哪／學法文／法文的感覺＋生活。
+      // ⭐ 這座島刻意**不重述工作與家庭**（那是 AC3／AC2 的事），只留「勾子」讓考官追問。
+      // 四個「加分」點：
+      //   ・「我是分析型的人：分類、換角度、把事情連起來」——自我定位，不是職業標籤
+      //   ・「但還沒到工程師那種程度！」——⭐ 幽默，考官會笑，這在口說評分裡是加分的
+      //   ・⭐「學習不只是花時間，最重要的是浸泡＋找到對的方法」——他真正的信念
+      //     （跟他 08-28 說的「把方法弄對比死命苦讀重要」是同一件事）
+      //   ・⭐「講法文時好像會換一種眼光，模糊的時候反而看見更大的世界」
+      //     ——全系統最特別的一句，別人沒有。⚠️ 中文原句更美（「從遠到近／時而模糊時而清楚／
+      //     更細膩的美感」），A2 只能保住骨架，**B2 版要把整段還原**，是升級的第一順位。
+      // 用上的結構：quelqu'un d'analytique（de＋形容詞）、moins de … que（25/26課比較級）、
+      //   mais（讓步雛形）、j'ai l'impression de＋不定式、le plus important, c'est de…（26課 c'est 強調）
+      // ⚠️ 「五月開始學」是硬事實：到 2027-06 考試那時剛好滿一年多，考官問起來這是很強的一句。
+      { level:'A2', d:'2026-08-28',
+        fr:"Je m'appelle Owen, j'ai 36 ans et je suis dentiste. Je suis quelqu'un d'analytique : j'aime classer les choses, les regarder sous différents angles et faire des liens entre elles. Je suis plutôt rationnel, mais pas au point d'être ingénieur ! Je suis assez réservé, et j'aime réfléchir et lire.\n\nJ'habite à Banqiao, près de Taipei, dans un immeuble. Le quartier est très ouvert et la gare est tout près. Il y a moins de petits restaurants qu'ailleurs et c'est un peu plus cher, mais j'aime vivre ici : les voisins sont gentils et tout est propre.\n\nJ'ai commencé le français en mai, cette année. Je prends des cours, et j'utilise aussi Duolingo et l'IA. J'écoute beaucoup de podcasts et je regarde des films français. Pour moi, apprendre, ce n'est pas seulement passer du temps : le plus important, c'est de se plonger dans la langue et de trouver la bonne méthode.\n\nLe français est une langue très spéciale. Quand je le parle, j'ai l'impression de changer de regard : parfois c'est flou, parfois c'est net — et quand c'est flou, je vois le monde plus largement. Le reste du temps, je fais du sport, je réfléchis, et je m'occupe de ma fille.",
+        zh:'我叫 Owen，36 歲，是牙醫。我是一個分析型的人：我喜歡把事情分類、從不同角度看它們、然後把它們連起來。我算是理性的，但還沒到工程師那種程度！我個性比較木訥，喜歡思考和閱讀。\n\n我住在台北附近的板橋，住大樓。這一區很空曠，車站也很近。這裡的小吃比別的地方少，物價也高一點，但我很喜歡住這裡：鄰居很友善，環境也很乾淨。\n\n我今年五月開始學法文。我有上家教，也用 Duolingo 和 AI。我聽很多 podcast，也看很多法文電影。對我來說，學習不只是花時間：最重要的是讓自己浸泡在這個語言裡，還有找到對的方法。\n\n法文是一個很特別的語言。我講法文的時候，好像會換一種眼光看事情：有時候是模糊的，有時候是清楚的——而模糊的時候，我反而看見更大的世界。其他時間我會運動、思考，還有照顧我女兒。' }
+    ],
+    // 2026-08-28 預測追問。cover：'ok'＝島接得住｜'part'＝要轉一下｜'gap'＝沒材料
+    // ⚠️⚠️ 這座島的 gap 有兩題**特別危險**：他自己說了「看很多法文電影／聽很多 podcast」，
+    //     考官幾乎一定會追問是哪些。答不出來會直接扣可信度——⭐ 這兩題請 Owen 優先補。
+    follow_ups:[
+      { fr:"Pourquoi vous apprenez le français ?", zh:'你為什麼學法文？', cover:'ok', from:'AC8 加拿大' },
+      { fr:"Vous trouvez le français difficile ?", zh:'你覺得法文難嗎？', cover:'part', from:null },
+      { fr:"Quels films français vous avez vus ?", zh:'你看過哪些法文電影？', cover:'gap', from:null },
+      { fr:"Quels podcasts vous écoutez ?", zh:'你聽哪些 podcast？', cover:'gap', from:null },
+      { fr:"Être analytique, ça vous aide dans votre travail ?", zh:'分析型的個性對你的工作有幫助嗎？', cover:'part', from:'AC3 工作' },
+      { fr:"Qu'est-ce que vous lisez en ce moment ?", zh:'你最近在看什麼書？', cover:'gap', from:null },
+      { fr:"Vous faites quel sport ?", zh:'你做什麼運動？', cover:'gap', from:'AC11 健康' },
+      { fr:"Vous habitez à Banqiao depuis longtemps ?", zh:'你在板橋住很久了嗎？', cover:'gap', from:'AC9 住家' },
+      { fr:"Vous parlez d'autres langues ?", zh:'你還會其他語言嗎？', cover:'gap', from:null },
+      { fr:"Vous préférez la ville ou la campagne ?", zh:'你比較喜歡城市還是鄉下？', cover:'part', from:'AC9 住家' }
     ] },
 
   { id:'AC2', topic:'family', title:'家庭',
