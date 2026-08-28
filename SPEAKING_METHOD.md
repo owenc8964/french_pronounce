@@ -372,6 +372,60 @@ Phase 0（8 週）合理的產出是 **4–5 座島**，其餘滾進 Phase 1。
 
 ---
 
+## 十一、Owen 自己發現的技巧：唸到順為止（choral repetition）
+
+> 2026-08-27 Owen：「我今天聽 Coffee Break French，**我覺得不錯的一句話，我就暫停下來不斷把他唸到順為止**。
+> 有時候**我腦袋可以理解的文法跟順序，用唸的就是會不太順**，無論是詞的順序或是依序表達出來。
+> 也可能是**舌頭跟不上或亂彈**。這些也是需要訓練的過程，需要快且精準。」
+
+**他自己摸出了一個有名字的技巧，而且他的診斷完全正確。** 記在這裡，因為這是我們自己的發現，不是抄來的。
+
+### 他觀察到的現象＝陳述性／程序性的分裂
+
+「腦袋懂但嘴巴不順」正是 DeKeyser 技能習得理論的核心預測：
+**理解那個語序是陳述性知識，說出那個語序是程序性技能，兩者不會自動轉換。**
+（本檔第五節「skill specificity」是同一件事的另一面。）
+
+而「舌頭跟不上或亂彈」更精確地說是**動作技能**的問題：
+發音在文獻裡被當成 **motor skill**（articulatory approach），
+大腦的 **dorsal stream** 負責把聽到的聲音映射成發音動作的計畫——
+這條路徑跟「懂不懂意思」是分開的，只能靠**實際做出動作**來練。
+
+### 這個技巧的名字與證據
+
+課堂上的版本叫 **choral repetition training**（也就是密集版的 shadowing）。
+研究顯示它能顯著提升**可理解度（comprehensibility）**，而進步幅度跟
+「能不能記住並重現聲音」（audio-motor integration）相關。
+
+### 打哪一格
+
+| Levelt 關卡 | 有沒有打到 |
+|---|---|
+| Conceptualiser | ❌ |
+| Formulator | 🔸 部分（語序被整塊化） |
+| **Articulator** | ✅✅ **主戰場** |
+| Monitor | 🔸 |
+
+⚠️ **所以它不能取代島**：它讓你「講得順」，不會讓你「有話講」。兩個要並存。
+
+### 把它變得更鋒利的五個參數
+
+1. **「順」要有定義**：**連續 3 次無誤、而且不減速**才算過。⛔ 不要用「感覺順了」判斷——那個標準會隨疲勞漂移
+2. **一次只挑 1–2 句**。動作學習要的是**密集重複**，不是覆蓋量。整段一起唸＝每句都只練到一點
+3. **一定要出聲**。默唸完全不碰 Articulator（沒有動作就沒有動作學習）
+4. **先慢後快**：0.75× 聽一次 → 正常速跟 → **再逼自己比正常速快一點**。
+   最後那一步是關鍵：只有超速過，正常速才會有餘裕
+5. **卡住的時候先切開**：唸不順通常卡在**一個特定的音節交界**（例如 `qu'il y ait`、`je ne sais pas`）。
+   把那兩個字單獨唸 5 次，再放回整句——比整句重來 20 次有效
+
+### 這件事跟系統的關係
+
+`answer_card.html` 與 `french_notes.html` 都已經有 🔊 TTS，**所以這個技巧現在就能做，不用等我做工具**。
+之後如果要做，最小的加法是「**這句我要唸到順**」的暫存清單——把當下打到他的那一句丟進去，
+⚠️ 但要嚴格限量（見 memory `feedback_fun_is_the_engine`：稀有才有力量）。
+
+---
+
 ## 七、來源
 
 - MARS EARS 八階：https://gianfrancoconti.com/2022/05/18/the-real-marsears-how-an-epi-sequence-truly-unfolds/
@@ -388,6 +442,8 @@ Phase 0（8 週）合理的產出是 **4–5 座島**，其餘滾進 Phase 1。
 - 流利度指標（articulation rate／MLR／停頓）與 L2 French：https://www.researchgate.net/publication/301296350_Fluency_in_second_language_assessment
 - Power law of practice（重複次數與反應時間）：https://en.wikipedia.org/wiki/Power_law_of_practice
 - 練習曲線何時進入高原（簡單約 4 次、複雜約 10–11 次）：https://link.springer.com/article/10.3758/BF03212979
+- Choral repetition training 與可理解度（TESOL Quarterly 2023）：https://onlinelibrary.wiley.com/doi/full/10.1002/tesq.3120
+- 發音是動作技能（articulatory approach）：https://en.wikipedia.org/wiki/Articulatory_approach_for_teaching_pronunciation
 - TEF Canada 口說形式與 CLB 7 語言特徵：https://www.prepmyfrench.com/blogs/the-ultimate-tef-canada-speaking-section-guide-2026-formats-strategies-and-clb-7-samples
 - TEF Canada 官方成績說明：https://www.lefrancaisdesaffaires.fr/en/candidate/test-evaluation-francais/tef-canada/results/
 - 間隔 3.3 天 vs 7 天與自動化（Suzuki 2017, SSLA）：https://yuichisuzuki.net/wp-content/uploads/2023/04/Suzuki-2018-SSLA.pdf
