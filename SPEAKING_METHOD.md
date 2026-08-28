@@ -296,6 +296,82 @@ Owen 的 700 小時計畫在總量上對得上，但如果其中口說互動只�
 
 ---
 
+## 十、一座島的完整訓練生命週期（以 AC8「為什麼去加拿大」為範例）
+
+> 2026-08-27 Owen：「**我們就拿這個島來做舉例，設計一下後續怎麼訓練……我們來看怎樣是真的很強大的結果。**」
+> 這一節是把前面九節的參數，落到**一座具體的島**上。範例島＝`AC8` v2（149 字 ≈ 68 秒）。
+
+### 設計原則（每一階段只壓一兩格，不要全開）
+
+| 階段 | 天數 | 每天 | 做什麼 | 打 Levelt 哪一格 |
+|---|---|---|---|---|
+| **1 認得** | D1–D2 | 3 分 | 讀 ＋ 聽 TTS，法中對得起來、沒有生字卡住 | 輸入（不算產出） |
+| **2 跟著唸** | D2–D3 | 3 分 | 看著全文**出聲唸 2 遍**，跟 TTS 對節奏 | **Articulator** |
+| **⭐3 支架漸退** | D3–D7 | 5 分 | 四段支架，每段講一次全文（見下） | **Formulator**（Conceptualiser 被支架接手） |
+| **4 自主檢索** | D8 起 | 3 分 | 只看題目就講，**每 3 天一次** | Formulator ＋ Monitor |
+| **5 壓縮** | 島穩之後 | 5 分 | 島版 4/3/2：**90 秒 → 70 秒 → 55 秒** | 全鏈路 ＋ 自動化 |
+| **⭐6 移植** | 最後 | — | 骨架搬到別的題目；接反駁 | **Conceptualiser ＋ 策略能力** |
+
+### 階段 3 的四段支架（這是我們系統最缺的一格）
+
+| 支架 | 螢幕上留什麼 |
+|---|---|
+| ① 全文 | 整段法文 |
+| ② 骨架＋主詞 | `D'abord, l'éducation…／Ensuite, le climat…／Il y a aussi les avantages sociaux…／Enfin, la stabilité…／Pour toutes ces raisons…` |
+| ③ 只剩連接詞 | `D'abord ／ Ensuite ／ Il y a aussi ／ Enfin ／ Pour toutes ces raisons` |
+| ④ 全空 | 只有題目 |
+
+**目標：走到支架 ③ 就能講完整段。** ④ 是驗收，不是練習。
+
+### ⭐ 什麼叫「這座島完成了」——七個可測的門檻
+
+> 這是 Owen 問的「真正強大的結果」。不用感覺判斷，用這七條。
+
+| 指標 | 門檻 | 依據 |
+|---|---|---|
+| 不看稿講完 | **連續 2 次**成功 | 自主檢索階段 |
+| **起手時間** | 題目出現後 **3 秒內**開口 | `verb_sprint` 已有的起手時間概念，搬過來即可 |
+| **停頓** | 全程 **≤ 3 次**，每次 < 2 秒 | 4 維 rubric 的 Hesitations |
+| **語速** | 68 秒的內容能在 **55–70 秒**講完 | 母語法文約 5–7 音節/秒；不必追平，但要**穩定** |
+| **平均語流長度（MLR）** | 每兩次停頓之間至少 **6–8 個音節** | MLR（syllables between pauses ≥0.25s）是預測 L2 流利度最好的變項之一；研究裡「不流利」的學習者 MLR 比母語者低 43%，而留學半年後 MLR 提升 22% |
+| **累積產出次數** | **≥ 10 次**完整說出 | 學習曲線：簡單任務約第 4 次飽和，**複雜任務約第 10–11 次進入高原**（power law of practice，γ≈0.4–0.5） |
+| **⭐ 移植測試** | **骨架搬到另一個題目還能用** | 島的價值在可調度，不在這一段 |
+
+⚠️⚠️ **最後一條是分水嶺**：如果 `D'abord／Ensuite／Il y a aussi／Enfin／Pour toutes ces raisons`
+搬到「為什麼學法文」「為什麼選這份工作」就垮掉，那你只是**背了一段課文**，不是蓋了一座島。
+
+### 移植測試怎麼做（階段 6）
+
+1. **換題目**：用同一組骨架，講「為什麼學法文」——內容全換、架子不動，60 秒
+2. **接反駁**（AI 或家教丟三個）：
+   - « Mais le Canada, c'est très froid, non ? »
+   - « L'immigration, c'est difficile et long. »
+   - « Et ton travail de dentiste ? Tu pourras exercer là-bas ? »
+   → 用島裡的材料回應，不是重新想
+3. 這一步同時就是 **TEF Section B** 的實際任務
+
+### 排程現實：8 座島不能用串的
+
+一座島從認得到移植 **約 3 週**。8 座島如果一座做完再做下一座 ＝ **24 週**，Phase 0 的 8 週根本放不下。
+
+**所以必須交錯並行**（本來交錯的長期保留就優於集中）：
+**同時養 3–4 座島，每天輪一座**，各自在不同階段。
+Phase 0（8 週）合理的產出是 **4–5 座島**，其餘滾進 Phase 1。
+
+### 系統要補的（最小集合，照階段需要才做）
+
+| 要做的 | 對應階段 | 現況 |
+|---|---|---|
+| **支架漸退模式（四段）** | 3 | ❌ 完全沒有——**這是最該做的一個** |
+| **「講出來」模式**：不打字、計時、講完自評 4 維 | 4–5 | ❌ 現在是文字回想 |
+| **起手時間量測** | 完成判定 | 🔸 `verb_sprint` 有現成邏輯可搬 |
+| 島版 4/3/2 計時（90→70→55 秒） | 5 | ❌ |
+| 反駁對抗（3 個反對意見） | 6 | 🔸 `roleplay.html` 的引擎可以改 |
+
+⚠️ **不要一次做完**。階段 3 的支架漸退先做，其他等島真的走到那一步再說。
+
+---
+
 ## 七、來源
 
 - MARS EARS 八階：https://gianfrancoconti.com/2022/05/18/the-real-marsears-how-an-epi-sequence-truly-unfolds/
@@ -309,6 +385,9 @@ Owen 的 700 小時計畫在總量上對得上，但如果其中口說互動只�
 - Formulaic sequences 與流利度面向（TESOL Quarterly）：https://onlinelibrary.wiley.com/doi/10.1002/tesq.556
 - Shadowing 系統性回顧（2025）：https://www.tandfonline.com/doi/full/10.1080/29984475.2025.2546827
 - 口說的腦內流程（Levelt／Kormos，Conti 整理）：https://gianfrancoconti.com/2025/04/06/how-the-speaking-process-unfolds-in-the-brain-and-the-five-pillars-of-speaking-instruction/
+- 流利度指標（articulation rate／MLR／停頓）與 L2 French：https://www.researchgate.net/publication/301296350_Fluency_in_second_language_assessment
+- Power law of practice（重複次數與反應時間）：https://en.wikipedia.org/wiki/Power_law_of_practice
+- 練習曲線何時進入高原（簡單約 4 次、複雜約 10–11 次）：https://link.springer.com/article/10.3758/BF03212979
 - TEF Canada 口說形式與 CLB 7 語言特徵：https://www.prepmyfrench.com/blogs/the-ultimate-tef-canada-speaking-section-guide-2026-formats-strategies-and-clb-7-samples
 - TEF Canada 官方成績說明：https://www.lefrancaisdesaffaires.fr/en/candidate/test-evaluation-francais/tef-canada/results/
 - 間隔 3.3 天 vs 7 天與自動化（Suzuki 2017, SSLA）：https://yuichisuzuki.net/wp-content/uploads/2023/04/Suzuki-2018-SSLA.pdf
