@@ -143,4 +143,13 @@ const WRITING_TASKS = [
     use:['y（至少一次）', 'en（至少一次）', '五感詞彙（l\'odeur / le bruit / la vue）', 'marquer à jamais'], frame:'⭐ 仿課文結構：這是什麼地方 → 我什麼時候去的（J\'y suis allé…） → 那裡有什麼（on y trouve…） → 感官細節（l\'odeur de… / le bruit de…） → 收尾（Ce paysage m\'a marqué à jamais）' },
   { lesson:21, id:'W21b', title:'推薦一個地方（說服型）', task:'寫 80-100 字推薦台灣的一個地方給法國朋友：為什麼值得去、去了會體驗到什麼、給一個實用建議。',
     use:['C\'est un endroit qui …', 'on y trouve / on en revient …', 'Que demander de plus ?', '祈使句給建議'], frame:'⭐ 論證結構：先下結論（值得去） → 兩個理由（d\'abord… ensuite…） → 讓步（C\'est un peu touristique, mais…） → 實用建議（祈使句：Mettez… / Faites…）' },
+
+  // ── 第28課（si 條件句三式 ＋ si vs quand ＋ le pronom on ＋ 電話與網路詞彙）
+  // ⚠️ 22–27 課的題目還沒補（見 HANDOFF 08-28）；先補當前這一課，讓「今日寫作」步驟接得上進度
+  { lesson:28, id:'W28a', title:'給朋友的四個建議（DELF A2 tâche 1）', task:'你的朋友說他每天花太多時間在手機上。寫 60-80 字的訊息給他，給三到四個具體建議。⚠️ 仿課本 wikiHow 那篇的寫法：每個建議都用一個 si 句包起來。',
+    use:['si ＋ 現在式 ＋ 命令式（至少兩次）', 'si ＋ 現在式 ＋ 未來式（至少一次）', 'essayer de ＋ 原形', '本課科技詞彙（appli / réseaux sociaux / éteindre）'],
+    frame:'⭐ 開場點題（Tu passes trop de temps sur ton portable ?） → 建議一（Si tu…, ＋ 命令式） → 建議二（Si tu…, ＋ 命令式） → 預測好處（Si tu fais ça une semaine, tu…＋未來式） → 收尾鼓勵' },
+  { lesson:28, id:'W28b', title:'我的十年後（si 與 quand 並用）', task:'寫 80-100 字：十年後你的生活會是什麼樣子？⚠️ 至少要有一件「一定會發生」的事（用 quand ＋ 未來 ＋ 未來）跟一件「不一定會發生」的事（用 si）——這兩個的對比就是本課的重點。',
+    use:['quand ＋ 未來式 ＋ 未來式（至少一次）', 'si ＋ 現在式 ＋ 未來式（至少一次）', 'on（至少一次，並且說得出它是哪一種意思）', 'J\'espère que ＋ 未來式'],
+    frame:'⭐⭐ 先確定的事（Quand j\'aurai … ans, je …） → 再不確定的事（Si tout se passe bien, je …） → 一句通則（Quand on …, on est …＝les gens） → 收尾期望（J\'espère que …＋未來式）' },
 ];

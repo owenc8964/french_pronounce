@@ -11977,5 +11977,544 @@ const CHUNKS = [
   "fr": "start-up",
   "zh": "用英文唸",
   "note": "法文裡照法文的節奏唸——老師特地示範了一次"
+ },
+ {
+  "id": "L28_Quand_tu_auras_18_ans_je",
+  "lesson": 28,
+  "fr": "Quand tu auras 18 ans, je t'achèterai un ordinateur.",
+  "zh": "你18歲的時候，我會買一台電腦給你。",
+  "note": "⭐⭐ 兩邊都是未來式。⚠️ 中文的「…的時候」很容易讓人寫成現在式，法文這裡不行"
+ },
+ {
+  "id": "L28_Quand_tu_seras_disponibl",
+  "lesson": 28,
+  "fr": "Quand tu seras disponible, on s'appellera en visio ?",
+  "zh": "你有空的時候，我們視訊通話好嗎？",
+  "note": "⭐ quand ＋ 未來 ＋ 未來。disponible＝有空的（＝libre）；en visio＝視訊（就是 FaceTime 那種）"
+ },
+ {
+  "id": "L28_Si_l_ordinateur_tombe_en",
+  "lesson": 28,
+  "fr": "Si l'ordinateur tombe en panne, appelle le réparateur.",
+  "zh": "如果電腦壞了，就打給維修的人。",
+  "note": "⭐ 第二式（現在＋命令）。tomber en panne＝故障（第27課的 être en panne＝壞掉的狀態）；le réparateur＝修理師傅（réparer＝修）"
+ },
+ {
+  "id": "L28_Nous_vous_téléphonerons",
+  "lesson": 28,
+  "fr": "Nous vous téléphonerons quand nous rentrerons à la maison.",
+  "zh": "我們回到家會打給你們。",
+  "note": "⭐ quand ＋ 未來 ＋ 未來"
+ },
+ {
+  "id": "L28_Si_tu_achètes_ce_smartph",
+  "lesson": 28,
+  "fr": "Si tu achètes ce smartphone, tu pourras utiliser le GPS.",
+  "zh": "如果你買這支手機，你就可以用 GPS。",
+  "note": "⭐ 老師的修改：原本寫 tu utiliseras le GPS 也對，但「你可以用」比「你會用」更合語意 → 用 pourras 更自然"
+ },
+ {
+  "id": "L28_Si_vous_sortez_sans_votr",
+  "lesson": 28,
+  "fr": "Si vous sortez sans votre téléphone, prenez une carte.",
+  "zh": "如果你們不帶手機出門，就帶張地圖。",
+  "note": "⭐ 第二式（命令）。une carte 這裡是地圖"
+ },
+ {
+  "id": "L28_Quand_mes_enfants_seront",
+  "lesson": 28,
+  "fr": "Quand mes enfants seront grands, ils habiteront à Paris.",
+  "zh": "等我的小孩長大，他們會住在巴黎。",
+  "note": "⭐ quand ＋ 未來 ＋ 未來"
+ },
+ {
+  "id": "L28_Faites_des_recherches_à",
+  "lesson": 28,
+  "fr": "Faites des recherches à l'avance sur les itinéraires.",
+  "zh": "事先查好路線。",
+  "note": "⭐ à l'avance＝事先；un itinéraire＝路線；faire des recherches＝做查詢（recherche 是查資料，不是「研究」那麼重）"
+ },
+ {
+  "id": "L28_Vos_proches_ne_seront_do",
+  "lesson": 28,
+  "fr": "Vos proches ne seront donc pas énervés.",
+  "zh": "所以你的親友就不會生氣。",
+  "note": "⭐ 副詞 donc 貼著動詞 seront，pas 被推到後面"
+ },
+ {
+  "id": "L28_Donc_vos_proches_ne_sero",
+  "lesson": 28,
+  "fr": "Donc, vos proches ne seront pas énervés.",
+  "zh": "（同義）所以，你的親友不會生氣。",
+  "note": "⭐ 也可以整個丟到句首——這樣就不用擠了。⚠️ 兩種都對，插在中間比較書面、比較法國人"
+ },
+ {
+  "id": "L28_Je_suis_Mbappé_sur_Insta",
+  "lesson": 28,
+  "fr": "Je suis Mbappé sur Instagram.",
+  "zh": "我在 Instagram 上追蹤姆巴佩。",
+  "note": "⭐⭐ 老師寫在白板上的那句。⚠️ 字面也可以讀成「我是姆巴佩」——只有 je／tu 這兩格會撞，其餘全部不一樣（il suit ≠ il est）"
+ },
+ {
+  "id": "L28_Je_te_suis",
+  "lesson": 28,
+  "fr": "Je te suis.",
+  "zh": "我追蹤你。／我跟著你。",
+  "note": "⭐ 社群語境就是 follow。⚠️ 跟 s'abonner à 的差別見下方詞彙表"
+ },
+ {
+  "id": "L28_C_est_vrai_ce_qu_on_raco",
+  "lesson": 28,
+  "fr": "C'est vrai ce qu'on raconte ?",
+  "zh": "大家在傳的是真的嗎？",
+  "note": "⭐ ＝ les gens（也可以是 quelqu'un）。⚠️ raconter＝講述、傳（故事、傳聞）"
+ },
+ {
+  "id": "L28_Est_ce_qu_on_vous_a_déjà",
+  "lesson": 28,
+  "fr": "Est-ce qu'on vous a déjà parlé de la RoboCup ?",
+  "zh": "有人跟你們講過 RoboCup 嗎？",
+  "note": "⭐ ＝ quelqu'un——「有沒有人曾經…」"
+ },
+ {
+  "id": "L28_On_a_gagné_quatre_compét",
+  "lesson": 28,
+  "fr": "On a gagné quatre compétitions.",
+  "zh": "我們贏了四場比賽。",
+  "note": "⭐ ＝ nous（說話者是隊上的人）"
+ },
+ {
+  "id": "L28_On_est_entré_chez_moi_po",
+  "lesson": 28,
+  "fr": "On est entré chez moi pour voler mon ordinateur.",
+  "zh": "有人闖進我家偷走我的電腦。",
+  "note": "⭐ ＝ quelqu'un。⚠️ chez moi 已經標明是「我家」，所以 on 不可能是「我們」"
+ },
+ {
+  "id": "L28_L_année_dernière_on_est",
+  "lesson": 28,
+  "fr": "L'année dernière, on est allés à la RoboCup.",
+  "zh": "去年我們去了 RoboCup。",
+  "note": "⭐⭐ ＝ nous。⚠️ 看得出來的線索是 allés 加了 s——on 當「我們」用時，分詞可以跟著複數配合"
+ },
+ {
+  "id": "L28_Mon_téléphone_n_a_plus_d",
+  "lesson": 28,
+  "fr": "Mon téléphone n'a plus de batterie, il va s'éteindre.",
+  "zh": "我手機沒電了，它要關機了。",
+  "note": "⭐ ne … plus de＝不再有（否定的 de）；s'éteindre＝（自己）熄掉、關機"
+ },
+ {
+  "id": "L28_Je_n_ai_pas_de_photo_de",
+  "lesson": 28,
+  "fr": "Je n'ai pas de photo de toi et moi, on fait un selfie ?",
+  "zh": "我沒有我們兩個的照片，我們拍張自拍？",
+  "note": "⭐ 這個 on ＝ nous（本課主文法②）"
+ },
+ {
+  "id": "L28_Je_t_ai_appelé_trois_foi",
+  "lesson": 28,
+  "fr": "Je t'ai appelé trois fois mais tu n'as pas décroché.",
+  "zh": "我打給你三次但你都沒接。",
+  "note": "⭐ décrocher＝把話筒拿起來＝接電話"
+ },
+ {
+  "id": "L28_Je_ne_suis_pas_joignable",
+  "lesson": 28,
+  "fr": "Je ne suis pas joignable du 7 au 27 août.",
+  "zh": "我8月7日到27日聯絡不上。",
+  "note": "🎙 老師說法國人放假時常這樣講（自動回覆／留言）。⭐ du … au …＝從…到…"
+ },
+ {
+  "id": "L28_Je_te_suis_sur_Instagram",
+  "lesson": 28,
+  "fr": "Je te suis sur Instagram.",
+  "zh": "我在 IG 上追蹤你。",
+  "note": "⭐ suivre 講的是動作：我去按了追蹤"
+ },
+ {
+  "id": "L28_Je_suis_abonné_à_sa_chaî",
+  "lesson": 28,
+  "fr": "Je suis abonné à sa chaîne.",
+  "zh": "我訂閱了他的頻道。",
+  "note": "⭐ être abonné à 講的是狀態：我現在是訂閱者。⚠️ 這個字也用在付費的：Je suis abonné à la salle de sport.（我辦了健身房會員）"
+ },
+ {
+  "id": "L28_Internet_marche_mal_je_n",
+  "lesson": 28,
+  "fr": "Internet marche mal, je n'arrive pas à me connecter.",
+  "zh": "網路很差，我連不上。",
+  "note": "⭐⭐ ne pas arriver à ＋ 原形＝做不到、沒辦法（超高頻）；marcher＝運作（機器）"
+ },
+ {
+  "id": "L28_Cette_application_semble",
+  "lesson": 28,
+  "fr": "Cette application semble géniale, je vais la télécharger.",
+  "zh": "這個 app 看起來超讚，我要下載它。",
+  "note": "⭐ sembler ＋ 形容詞＝看起來…（＝avoir l'air，第27課）"
+ },
+ {
+  "id": "L28_On_l_utilise_pour_trouve",
+  "lesson": 28,
+  "fr": "On l'utilise pour trouver son chemin.",
+  "zh": "我們用它來找路。",
+  "note": "⭐ utiliser qqch pour ＋ 原形"
+ },
+ {
+  "id": "L28_Ça_permet_d_identifier_l",
+  "lesson": 28,
+  "fr": "Ça permet d'identifier le visage des personnes.",
+  "zh": "這能夠辨識人臉。",
+  "note": "⭐ permettre de ＋ 原形＝讓…得以…（第27課出現過）"
+ },
+ {
+  "id": "L28_On_s_en_sert_pour_fabriq",
+  "lesson": 28,
+  "fr": "On s'en sert pour fabriquer de petits objets.",
+  "zh": "我們用它來做小東西。",
+  "note": "⭐⭐ s'en servir＝用它（en 是第21課的代名詞）。⚠️ de petits objets——形容詞在前面，des 縮成 de（第22課）"
+ },
+ {
+  "id": "L28_Il_a_fait_sensation_avec",
+  "lesson": 28,
+  "fr": "Il a fait sensation avec ses messages depuis les étoiles.",
+  "zh": "他從星星那邊發的訊息造成了轟動。",
+  "note": "⭐ faire sensation＝造成轟動（整塊記）；depuis 這裡是「從…（地點）」，不是時間"
+ },
+ {
+  "id": "L28_Il_n_a_pas_déçu_son_mill",
+  "lesson": 28,
+  "fr": "Il n'a pas déçu son million d'abonnés.",
+  "zh": "他沒有讓他的一百萬名追蹤者失望。",
+  "note": "⭐⭐ un abonné＝訂閱者／追蹤者（就是上面詞彙表的 s'abonner）；décevoir→過去分詞 déçu（失望）"
+ },
+ {
+  "id": "L28_avec_déjà_une_vingtaine",
+  "lesson": 28,
+  "fr": "avec déjà une vingtaine de tweets, en français et en anglais",
+  "zh": "已經發了二十來則推特，法文跟英文都有",
+  "note": "⭐ une vingtaine de＝二十來個。同型：une dizaine（十來個）、une centaine（一百來個）"
+ },
+ {
+  "id": "L28_On_rêve_de_battre_l_équi",
+  "lesson": 28,
+  "fr": "On rêve de battre l'équipe humaine championne du monde.",
+  "zh": "我們夢想打敗人類的世界冠軍隊。",
+  "note": "⭐⭐ rêver de ＋ 原形＝夢想做…；battre＝打敗。這個 on ＝ nous"
+ },
+ {
+  "id": "L28_J_espère_que_la_France_g",
+  "lesson": 28,
+  "fr": "J'espère que la France gagnera.",
+  "zh": "我希望法國會贏。",
+  "note": "⭐⭐ espérer que ＋ 未來式——⚠️ 期望的是還沒發生的事，所以後面接未來式，這是本課文法的實際用途"
+ },
+ {
+  "id": "L28_En_2050_on_espère_qu_ils",
+  "lesson": 28,
+  "fr": "En 2050, on espère qu'ils seront très performants.",
+  "zh": "2050年，希望它們會非常強。",
+  "note": "⭐ performant＝性能好的、表現強的（機器、公司都能用）"
+ },
+ {
+  "id": "L28_Demain_je_vais_essayer_d",
+  "lesson": 28,
+  "fr": "Demain, je vais essayer de passer une journée sans portable.",
+  "zh": "明天我要試著過一天不帶手機的日子。",
+  "note": "⭐ essayer de ＋ 原形（課文用過）"
+ },
+ {
+  "id": "L28_On_dit_que_c_est_diffici",
+  "lesson": 28,
+  "fr": "On dit que c'est difficile, mais on ne sait jamais.",
+  "zh": "大家都說很難，但誰知道呢。",
+  "note": "⭐⭐ 第一個 on＝les gens（大家），第二個 on 也是泛指。on ne sait jamais＝很難說（固定說法）"
+ },
+ {
+  "id": "L28_Si_je_me_perds_demain_je",
+  "lesson": 28,
+  "fr": "Si je me perds demain, je demanderai mon chemin à quelqu'un.",
+  "zh": "如果我明天迷路，我會跟人問路。",
+  "note": "⭐⭐ 第三式（現在＋未來）。⚠️ 主詞是 je，所以是 mon chemin"
+ },
+ {
+  "id": "L28_Si_vous_faites_la_même_c",
+  "lesson": 28,
+  "fr": "Si vous faites la même chose, ne prenez pas votre chargeur !",
+  "zh": "如果你們也要這樣做，別帶充電器！",
+  "note": "⭐ 第二式（現在＋命令，而且是否定命令）。un chargeur＝充電器（charger＝充電）"
+ },
+ {
+  "id": "L28_Comme_ça_si_quelqu_un_m",
+  "lesson": 28,
+  "fr": "Comme ça, si quelqu'un m'appelle, je réponds quand même.",
+  "zh": "這樣一來，如果有人打給我，我還是接得到。",
+  "note": "⭐ comme ça＝這樣一來；quand même＝還是、仍然（口語超高頻）"
+ },
+ {
+  "id": "L28_Le_matin_je_ne_me_connec",
+  "lesson": 28,
+  "fr": "Le matin, je ne me connecterai pas aux réseaux sociaux.",
+  "zh": "早上我不會登入社群網站。",
+  "note": "⭐⭐ 反身動詞的未來式＋否定：ne me connecterai pas；se connecter à 要接 à"
+ },
+ {
+  "id": "L28_Si_tout_se_passe_bien_je",
+  "lesson": 28,
+  "fr": "Si tout se passe bien, je recommencerai le mois prochain.",
+  "zh": "如果一切順利，我下個月會再來一次。",
+  "note": "⭐⭐ 第三式。se passer＝（事情）發生、進行；recommencer＝重新開始"
+ },
+ {
+  "id": "L28_Et_si_c_est_trop_dur_on",
+  "lesson": 28,
+  "fr": "Et si c'est trop dur, on verra bien.",
+  "zh": "如果太難的話，再說吧。",
+  "note": "⭐⭐ on verra＝到時候再說（口語固定句，這個 on ＝ nous／泛指都通）"
+ },
+ {
+  "id": "L28_On_en_était_au_futur",
+  "lesson": 28,
+  "fr": "On en était au futur.",
+  "zh": "我們上次講到未來式。",
+  "note": "🎙 開場第一句。⭐ en être à＝進行到…（回到上次進度的固定說法）"
+ },
+ {
+  "id": "L28_On_avait_vu_le_vocabulai",
+  "lesson": 28,
+  "fr": "On avait vu le vocabulaire.",
+  "zh": "我們（那時）已經看過詞彙了。",
+  "note": "🎙 ⚠️ avait vu 是 plus-que-parfait（B1 才正式學），現在只要聽得懂：比過去更早的過去"
+ },
+ {
+  "id": "L28_Ça_veut_dire_quoi_suivre",
+  "lesson": 28,
+  "fr": "Ça veut dire quoi, suivre ?",
+  "zh": "suivre 是什麼意思？",
+  "note": "🎙 老師問生詞的固定問法。⭐ Owen 自己也要主動用這句"
+ },
+ {
+  "id": "L28_Tu_sais_ce_que_c_est",
+  "lesson": 28,
+  "fr": "Tu sais ce que c'est ?",
+  "zh": "你知道那是什麼嗎？",
+  "note": "🎙 ce que＝間接問句裡的「什麼」"
+ },
+ {
+  "id": "L28_Tu_peux_redire_la_phrase",
+  "lesson": 28,
+  "fr": "Tu peux redire la phrase ?",
+  "zh": "你可以再說一次這句嗎？",
+  "note": "🎙 redire＝再說一次（re- ＋ dire）。⭐ 也可以拿來請對方重講"
+ },
+ {
+  "id": "L28_On_va_voir",
+  "lesson": 28,
+  "fr": "On va voir.",
+  "zh": "我們來看看。",
+  "note": "🎙 換到下一題時的固定句"
+ },
+ {
+  "id": "L28_Très_très_bien",
+  "lesson": 28,
+  "fr": "Très très bien.",
+  "zh": "非常好。",
+  "note": "🎙 答對時的回應（老師習慣連講兩個 très）"
+ },
+ {
+  "id": "L28_l_appel",
+  "lesson": 28,
+  "fr": "l'appel",
+  "zh": "一通電話（名詞）",
+  "note": "m.｜⚠️⚠️ 只有一個 l。跟動詞 j'appelle（兩個 l）不同——見下方拼字那一格"
+ },
+ {
+  "id": "L28_le_selfie",
+  "lesson": 28,
+  "fr": "le selfie",
+  "zh": "自拍",
+  "note": "m.｜直接用英文字，法文照收"
+ },
+ {
+  "id": "L28_le_smartphone",
+  "lesson": 28,
+  "fr": "le smartphone",
+  "zh": "智慧型手機",
+  "note": "m.｜也直接用英文字"
+ },
+ {
+  "id": "L28_le_SMS_le_texto",
+  "lesson": 28,
+  "fr": "le SMS = le texto",
+  "zh": "簡訊",
+  "note": "m.｜⚠️ 走電信不走網路——沒有網路時還能用。法文兩個字通用"
+ },
+ {
+  "id": "L28_le_téléphone_fixe",
+  "lesson": 28,
+  "fr": "le téléphone fixe",
+  "zh": "市內電話、家用電話",
+  "note": "m.｜fixe＝固定的（不會動的那支）"
+ },
+ {
+  "id": "L28_le_téléphone_portable_le",
+  "lesson": 28,
+  "fr": "le téléphone portable = le portable",
+  "zh": "手機",
+  "note": "m.｜⭐ 法國人日常就只說 portable。⚠️ portable 也可以指筆電，靠上下文分"
+ },
+ {
+  "id": "L28_contacter_quelqu_un",
+  "lesson": 28,
+  "fr": "contacter quelqu'un",
+  "zh": "聯絡某人",
+  "note": "⭐ 直接接人，不加介系詞（COD）"
+ },
+ {
+  "id": "L28_appeler_quelqu_un",
+  "lesson": 28,
+  "fr": "appeler quelqu'un",
+  "zh": "打電話給某人",
+  "note": "⭐ 也是直接接人（COD）。⛔ 不說 appeler à quelqu'un"
+ },
+ {
+  "id": "L28_téléphoner_à_quelqu_un",
+  "lesson": 28,
+  "fr": "téléphoner à quelqu'un",
+  "zh": "打電話給某人",
+  "note": "⚠️⚠️ 這個要加 à（COI）→ 代名詞用 lui / leur"
+ },
+ {
+  "id": "L28_répondre_au_téléphone",
+  "lesson": 28,
+  "fr": "répondre au téléphone",
+  "zh": "接電話",
+  "note": "⚠️ répondre à（COI）→ Je vais lui répondre"
+ },
+ {
+  "id": "L28_décrocher_raccrocher",
+  "lesson": 28,
+  "fr": "décrocher ≠ raccrocher",
+  "zh": "接起 ≠ 掛斷",
+  "note": "⭐ 字根 crochet＝掛鉤（老式電話掛在鉤子上）：dé-＝拿下來、r(a)-＝掛回去"
+ },
+ {
+  "id": "L28_allumer_éteindre",
+  "lesson": 28,
+  "fr": "allumer ≠ éteindre",
+  "zh": "開機 ≠ 關機",
+  "note": "⚠️⚠️ 這一組只用在電、燈、機器；門窗是 ouvrir / fermer，不能混用"
+ },
+ {
+  "id": "L28_être_joignable",
+  "lesson": 28,
+  "fr": "être joignable",
+  "zh": "聯絡得上",
+  "note": "⭐ 來自 joindre qqn（聯絡到某人）。⚠️ 跟 rejoindre（去跟某人會合）同字根"
+ },
+ {
+  "id": "L28_le_PC_l_ordinateur",
+  "lesson": 28,
+  "fr": "le PC = l'ordinateur",
+  "zh": "電腦",
+  "note": "m.｜⭐ 口語常說 l'ordi（縮寫）"
+ },
+ {
+  "id": "L28_l_écran",
+  "lesson": 28,
+  "fr": "l'écran",
+  "zh": "螢幕",
+  "note": "m.｜⭐ le grand écran＝電影（大銀幕）、le petit écran＝電視。老師特地補的"
+ },
+ {
+  "id": "L28_le_clavier",
+  "lesson": 28,
+  "fr": "le clavier",
+  "zh": "鍵盤",
+  "note": "m.｜字根 la clé（鍵）"
+ },
+ {
+  "id": "L28_la_souris",
+  "lesson": 28,
+  "fr": "la souris",
+  "zh": "滑鼠",
+  "note": "f.｜⚠️⚠️ 跟英文一樣是「老鼠」。而且 Souris ! 也是 sourire（微笑）的命令式——同形不同字"
+ },
+ {
+  "id": "L28_l_imprimante",
+  "lesson": 28,
+  "fr": "l'imprimante",
+  "zh": "印表機",
+  "note": "f.｜動詞是 imprimer（列印）"
+ },
+ {
+  "id": "L28_la_clé_USB",
+  "lesson": 28,
+  "fr": "la clé USB",
+  "zh": "隨身碟",
+  "note": "f.｜⚠️ 台灣人講「USB」，法文是 clé USB（USB 鑰匙）。英文是 flash drive"
+ },
+ {
+  "id": "L28_l_appli_cation",
+  "lesson": 28,
+  "fr": "l'appli(cation)",
+  "zh": "app、應用程式",
+  "note": "f.。⭐ 口語就說 appli"
+ },
+ {
+  "id": "L28_le_site_Internet",
+  "lesson": 28,
+  "fr": "le site Internet",
+  "zh": "網站",
+  "note": ""
+ },
+ {
+  "id": "L28_se_connecter_se_déconnec",
+  "lesson": 28,
+  "fr": "se connecter ≠ se déconnecter",
+  "zh": "登入 ≠ 登出",
+  "note": "⭐ 反身動詞：je me connecte"
+ },
+ {
+  "id": "L28_s_abonner_se_désabonner",
+  "lesson": 28,
+  "fr": "s'abonner ≠ se désabonner",
+  "zh": "訂閱／追蹤 ≠ 取消訂閱",
+  "note": "⭐ 名詞 un abonnement＝訂閱、會員資格（健身房、電信、電子報都用）"
+ },
+ {
+  "id": "L28_en_ligne",
+  "lesson": 28,
+  "fr": "en ligne",
+  "zh": "線上（online）",
+  "note": "⚠️⚠️ 不是「排隊」——排隊是 faire la queue（la queue＝尾巴，人排成一條尾巴）"
+ },
+ {
+  "id": "L28_envoyer_un_courriel",
+  "lesson": 28,
+  "fr": "envoyer un courriel",
+  "zh": "寄一封電子郵件",
+  "note": "⭐ le courriel ＝ courrier électronique（法文自己造的字）；le mail / l'e-mail 也通用"
+ },
+ {
+  "id": "L28_télécharger_un_document",
+  "lesson": 28,
+  "fr": "télécharger un document, une vidéo, une photo",
+  "zh": "下載檔案／影片／照片",
+  "note": "⚠️ un document 這裡是檔案（file）"
+ },
+ {
+  "id": "L28_faire_une_visio_conféren",
+  "lesson": 28,
+  "fr": "faire une visio(conférence)",
+  "zh": "視訊通話／視訊會議",
+  "note": "⭐ 口語 on s'appelle en visio＝我們視訊"
+ },
+ {
+  "id": "L28_réseaux_sociaux",
+  "lesson": 28,
+  "fr": "réseaux sociaux",
+  "zh": "複數兩個字都要變",
+  "note": "⚠️ réseau→réseaux（-eau 加 x，不是 s）、social→sociaux（-al→-aux）。老師拿 cheval→chevaux 做對照"
  }
 ];

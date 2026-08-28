@@ -93,11 +93,11 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `sentences.js` | **新增（07-07）**：常用句庫（目前176句，第1–22課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
 | `listening.html` | 聽力：**真實資源**（RFI + InnerFrench Spotify embed；Podcast Français Facile的A1對話系列連結卡）+ **自出TTS聽力測驗**（8篇，對齊已學課程）+ **07-09/07-10/07-11新增「真人語速測驗」**（LISTENING_BANK的`audioUrl`類型：真實mp3直接播放＋Claude原創TCF/TEF風格選擇題，目前10篇：麵包店/車站/市場/肉店/魚店/藥局/問路/**起司店/咖啡廳/郵局**，逐字稿核對用連結卡連到來源、不存對方文字）+ **07-10新增「文化深掘Podcast」板塊**（見下方07-10記錄，目前CULTURE_BANK是空陣列，等Owen放音檔進來）+ **07-16新增「🎬影集精讀Shadowing」板塊**（記錄集數/第幾遍/第2遍可貼整理的句型，`?shadow=1`從dashboard進來自動捲到這張卡）| ✅ 大改（07-06～07-16）|
 | `french_notes.html` | 第1–19課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音）、**07-11新增選字標記**（選取文字後可標🔴不熟／⭐重點，存`clb7_notes_marks`，重整頁面用文字比對重新套用，懸浮面板有「複製標記給Claude」）、**08-04第21課平行閱讀加「整段連續朗讀」**（只加整段層、刻意不加單字層，原因見08-04記錄） | ✅ 修復（07-07/11）＋整段朗讀（08-04）|
-| `chunks.js` | 複習卡庫：**1599張**，自動從筆記抽取（1–22課，07-07補第15課88張、07-10補第16課80張、07-17補第17課40張含課文慣用語、07-21補第18課35張、07-26補第19課24張、08-02補第20課70張、08-03補第21課63張、08-04補32張老師課堂口語、08-05補第22課66張），**07-11修正2張第14課語意不清的卡** | ✅ |
-| `questions.js` | 共用題庫（**BANK 850題** + AGREE_BANK 247題），第1–22課，**07-11新增53個`zh`欄位**（fill題型無中文語境的補句意）、**07-17新增第17課24題**（passé composé/duree，含10題課文改編句）、**07-21新增第18課16題**（vocab-parcours-vie新topic + negation完整版）、**07-26新增第19課21題**（vocab-loisirs新topic、passé composé/negation/duree/adjective-position/social-invitations總複習）、**08-02新增第20課26題**（imparfait完整變位 + vocab-souvenirs新topic）、**08-03新增第21課27題**（pronoms-y-en＋vocab-sens 兩個新topic）、**08-04新增41題跨課「易混淆詞對」**（新topic paires-confusables，見08-04記錄）、**08-05新增第22課24題**（vocab-meteo新topic＋adjective-position補題） | ✅ |
+| `chunks.js` | 複習卡庫：**1794張**，自動從筆記抽取（1–22課，07-07補第15課88張、07-10補第16課80張、07-17補第17課40張含課文慣用語、07-21補第18課35張、07-26補第19課24張、08-02補第20課70張、08-03補第21課63張、08-04補32張老師課堂口語、08-05補第22課66張），**07-11修正2張第14課語意不清的卡** | ✅ |
+| `questions.js` | 共用題庫（**BANK 1079題** + AGREE_BANK 247題），第1–22課，**07-11新增53個`zh`欄位**（fill題型無中文語境的補句意）、**07-17新增第17課24題**（passé composé/duree，含10題課文改編句）、**07-21新增第18課16題**（vocab-parcours-vie新topic + negation完整版）、**07-26新增第19課21題**（vocab-loisirs新topic、passé composé/negation/duree/adjective-position/social-invitations總複習）、**08-02新增第20課26題**（imparfait完整變位 + vocab-souvenirs新topic）、**08-03新增第21課27題**（pronoms-y-en＋vocab-sens 兩個新topic）、**08-04新增41題跨課「易混淆詞對」**（新topic paires-confusables，見08-04記錄）、**08-05新增第22課24題**（vocab-meteo新topic＋adjective-position補題） | ✅ |
 | `gram_rules.js` | **新增（07-11）**：文法框架單一真相來源——`GRAM_POINTS` 32個文法點（19現役+13未開課佔位）含 topics 對應與規則卡（中文要點+法文例句）、`GRAM_CATS`7大類、`gramStageOf`/`gramSetStage`/`gramFlaggedIds`/`gramFlagQuestion` helpers。map/gram_trainer/quiz/dashboard 四頁共用。**07-21**：`negation`點補lesson 18＋passé composé中的位置規則／personne主詞vs受詞兩條rule points。**07-26**：`negation`/`duree-temps`/`passe`/`adjectifs-accord`四點的`lessons`陣列補19 | ✅ 新建 |
 | `gram_trainer.html` | **新增（07-11）**：文法路徑練習器——階段2半開卷（規則卡固定顯示）/階段3遮規則（答錯自動翻開），只出打字題杜絕選項污染，包尾重試磨到全對，首次作答≥80%升階，每階段可手動跳過；完成寫`clb7_quiz_done`（=步驟②）；階段2不寫SRS（開卷不灌精熟統計）、階段3寫；guided=1自動挑「階段最低+錯誤率最高」的點 | ✅ 新建 |
-| `codex.js` | **新增（07-11晚）**：📚文法資料庫（記憶宮殿）資料層——9大章50節123條，A1→B2全境（08-03新增3-4-5後：A1:29/A2:50/B1:32/B2:12），每條永久座標（如`5-2-2`）＋brief＋說明＋例句＋⚠️例外＋🆚相似對比＋topic對應（37個topic有門牌）。**座標鐵律：一經指定永不重編**（Owen靠位置記憶）。`codexLocate(topic)`給練習頁定位用。**07-21**：7-2-2補「personne當主詞vs受詞位置」pts（座標數不變，122條）。**08-02**：5-3-2／5-3-3 的 lvl B1→A2（實際已教到，座標不動）。**08-03**：新增 `3-4-5`「en＝從那個地方」補上 3-4 節唯一缺口（122→123，3-4-1~4 完全沒動）。⚠️ **數條目要 parse `CODEX→sections→items`，用 grep 會多算交叉引用** | ✅ 新建 |
+| `codex.js` | **新增（07-11晚）**：📚文法資料庫（記憶宮殿）資料層——9大章50節**132條**，A1→B2全境（08-03新增3-4-5後：A1:29/A2:50/B1:32/B2:12），每條永久座標（如`5-2-2`）＋brief＋說明＋例句＋⚠️例外＋🆚相似對比＋topic對應（37個topic有門牌）。**座標鐵律：一經指定永不重編**（Owen靠位置記憶）。`codexLocate(topic)`給練習頁定位用。**07-21**：7-2-2補「personne當主詞vs受詞位置」pts（座標數不變，122條）。**08-02**：5-3-2／5-3-3 的 lvl B1→A2（實際已教到，座標不動）。**08-03**：新增 `3-4-5`「en＝從那個地方」補上 3-4 節唯一缺口（122→123，3-4-1~4 完全沒動）。**08-28**：新增 `6-6-3`「si vs quand」與 `3-1-3`「on 換得掉的三個字」（130→132，既有座標一個都沒動）。⚠️ **數條目要 parse `CODEX→sections→items`，用 grep 會多算交叉引用** | ✅ 新建 |
 | `verb_reference.html` | 動詞參考表，發音邏輯已跟其他頁統一（原本完全沒篩選） | ✅ 修復（07-07）|
 | `verb_forms.html`＋`verbs_full.js` | **新增（08-22）**：動詞變位總覽——22 個動詞（核心9＋高頻不規則10＋規則樣本3）× 13 個時態到 B2。**不是變位表大全，是「詞幹經濟學」**：資料只存四個詞幹（futur 詞幹／現在式 nous／現在式 ils／過去分詞）＋現在式六格＋passé simple 型，其餘 40 幾格由 `conjugate()` 現場推導——頁面用計算證明它在教的規則。每個時態掛 📍 codex 座標（13 個全部驗過有對應元素）、🔊 整組唸六個人稱、等級篩選（考前 A1–B1／全部到 B2／只看 B2）、`?v=prendre` 深連結、列印友善 | ✅ 新建 |
 | `answer_cards.js` | **新增（07-16）**：TEF Canada 高頻話題 Answer Card 資料——15個主題（自我介紹/家庭/工作/教育/興趣/飲食/旅行/加拿大/住家/購物/健康/科技/環保/社交/未來計畫），內容是 Owen 真實回答經 Claude 修成正確法文的 A1 種子版本，`versions[]` 之後會長出 A2/B1/B2 | ✅ 新建 |
@@ -2150,6 +2150,79 @@ desktop 1280px 無橫向捲動；console 零錯誤。
 ⚠️ **之後要動 dashboard 的人注意**：新卡片照舊放進「▾ 看全部」裡對應的位置，
 不要為了「看起來乾淨」把裡面重排，也不要把新東西加到第一屏——
 **第一屏只有一件事，是這次改版的全部重點**。
+
+---
+
+### 08-28：第28課（A2・La condition avec si ＋ Le pronom on ＋ 電話與網路詞彙）完整入庫
+
+Owen 丟進 2026-08-28 的課堂逐字稿＋6 張課本截圖（Édito A2 Unité 5，課本 p.74–80）。
+⚠️ **全部先對過 `assets/.textbook_cache.txt`**：Fonctionnement 表、Entraînement 題目、
+詞彙框逐條核過，逐字稿糊掉的地方（「laissez votre marché」之類的語音辨識錯誤）一律以課本為準。
+
+**這一課教了什麼**
+- **主文法①：la condition avec si 的完整三式**——第25課只給了前兩式（現在＋現在／現在＋命令），
+  這一課補上 **si ＋ 現在式 ＋ 未來式**（要等第27課的未來式學完才有材料）。
+  ⭐ 主軸只有一條：**si 後面永遠是現在式，變的只有右半邊**。
+- **si vs quand**：課本 Remarque 用 `quand ＋ 未來 ＋ 未來` 表達 **une certitude dans le futur**。
+  ⚠️ Owen 當堂問「這兩個中文翻譯有不一樣嗎」——**沒有**，中文都是「當…就…」，
+  **差別在確定性**，這一條寫進筆記、codex 6-6-3 與 gram_rules 的 why。
+- **主文法②：le pronom on 的三種意思**（quelqu'un／les gens／nous），但**變位永遠照 il / elle**。
+- **詞彙**：電話（appel／batterie／SMS／fixe／portable ＋ 瑞士 natel／比利時 gsm／**魁北克 cellulaire**）、
+  打電話的動詞（décrocher≠raccrocher、allumer≠éteindre、être joignable、raccrocher au nez）、
+  資訊（clavier／souris／imprimante／clé USB）、網路（appli／se connecter／se désabonner／en ligne／
+  courriel／télécharger／visio）、科技（GPS／reconnaissance faciale／hologramme／imprimante 3D）。
+- **課文兩篇**：wikiHow 的「怎麼活得不靠手機」（si 句的出處）、太空人 **Thomas Pesquet** 從太空發推特
+  （on 的實戰場，ESA 團隊整段用 on 講自己）。
+
+**九項連動全部做完（＋兩項順手的）**
+1. `french_notes.html` 新增 `lesson-28`：13 個 unit、10 張表、17 個 phrase-list、115 句法文。
+   ⭐ 記憶掛鉤是老師寫在白板上的 **Je suis Mbappé sur Instagram**——`je suis` 同時是 être 跟 suivre。
+2. `questions.js` **＋44 題**（BANK 1035→1079）：condition-si 14／on-vs-nous 7／
+   **新 topic `vocab-technologies` 20**／futur-simple 3。TOPIC_LABELS 兩邊都補
+   （dashboard 用法文短名 `Technologies de la communication`、quiz 用中文說明式）。
+3. `chunks.js`：`node tools/extract_chunks.js 28 --write` → **＋77 張**（1717→1794）。
+4. `sentences.js`：人工精選 `S_L28_1~10`（236 句）。
+5. `table_drill.html` **＋3 表**：si/quand 時態（12 列）、on ＝ 哪個字（8 列）、
+   電話與網路詞彙（21 列）。⚠️ 順手新增了 **`vocab` 這個表格類型**（TYPE_LABEL／篩選鈕／badge CSS 一起補），
+   之前只有 verb/adj/article/prep/gram 五類，中翻法的詞彙表沒有地方放。
+6. `gram_rules.js`：`condition-si` 補 lesson 28 ＋ 4 條新 rule points ＋ 3 個新例句，
+   名稱改成 **La condition (si / quand)**；⚠️ 舊 why 寫「條件那半永遠是現在式，不用未來式（B1 才出現 futur simple）」
+   **是錯的**（那是在講結果那半），已改寫並標明 08-28 補了第三式。
+   **新增文法點 `pronom-on`**（含 why），並把 `on-vs-nous` 這個 topic 從 `pronouns` 移過去
+   ——第28課把它拉成完整的一節，不該再埋在「代名詞三家族」裡。
+7. `codex.js` **122→132 條**：新增 **6-6-3「si vs quand（確定性的分岔）」**與
+   **3-1-3「on 換得掉的三個字」**；6-6-2 補上第三式那一列（座標一個都沒動）。
+8. `map.html`：`CURRENT_LESSON` 27→28，新增三張 tile（Si et quand／Le pronom on／
+   Technologies de la communication），detail 全部用法文寫成長條目。
+9. `reading.html` **a29「Une journée sans portable」**（原創短文＋3 題理解測驗），
+   同一篇也放進筆記當第28課的**平行閱讀**。
+10.（順手）`writing_tasks.js` **＋2 題**（W28a 四個建議 DELF tâche 1／W28b 我的十年後）。
+   ⚠️ **22–27 課的寫作題目還是空的**（這份檔停在第21課），下次可以補。
+11.（本課沒有新時態）`verb_sprint.html` 的 `MODES` 不用動。
+
+**順手修掉的一個舊 bug**：`french_notes.html` 底部的「整段連續朗讀」掛載寫死了 `l21-parallel`，
+所以 **第26、27 課的平行閱讀一直沒有那條朗讀列**。改成掃 `ul.phrase-list[id$="-parallel"]`，
+現在 21／26／27／28 四篇都有，之後新課只要沿用 `lNN-parallel` 命名就自動長出來。
+⚠️ 這裡踩到兩個坑，寫下來免得重踩：
+① `TtsReader.mountList()` 會把 `barEl.className` **整個覆寫成 `ttsr-bar`**，所以外面自己標的 class 會被洗掉；
+② CSS 要寫成 **`details.lesson-group .ttsr-bar`**——模組自己的 `.ttsr-bar` 是後注入的，
+同權重的選擇器會輸給它，淺色覆寫吃不到。
+
+**驗證**（照測試鐵律：先 grep 確認 ROOM → 改 TEST 值 → 測完還原 → `preview_stop` → grep 無殘留）
+- `node tools/check_notes.js` **全綠**（28 課／232 表／257 unit，錯誤 0 提醒 0）
+- 筆記頁：lesson-28 的 13 unit／10 表／115 個 `span.fr`／190 個 🔊 全部長出來；
+  四條整段朗讀列的背景確認是白底、`position: static`（不跟頂部導覽列打架）
+- quiz：第28課按鈕在、44 題全部進 pool、連續作答 8 題（choose／fill 混合）全部正常判分
+- table_drill：`詞彙` 篩選鈕可用、第28課三張表出得來、對答案顯示所有可接受寫法
+- reading：a29 三題全對得到 3/3
+- map：`第 28 課 / 預計 35 課`、三張新 tile 在、`#cx-3-1-3` 與 `#cx-6-6-3` 都渲染得出來
+- gram_trainer：`La condition (si / quand)` 顯示「第 25、28 課 · 9 題」、
+  `Le pronom on (三種意思)` 顯示「第 9、28 課 · 6 題」（只算打字題，數字對得上）
+- dashboard：15 步處方正常、console 零錯誤
+- 收尾清掉試跑寫入的 12 筆第28課題目 SRS ＋ a29 的閱讀紀錄 ＋ 今天的完成標記
+
+⚠️ **這一課沒做的第十件事**：`scenes.js` 的情境劇本——第28課的課文是 wikiHow 的建議清單
+跟一篇報導，**沒有成對台詞的對話**，沒有素材可以做。下一課如果有對話再補。
 
 ---
 

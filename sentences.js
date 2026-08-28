@@ -267,4 +267,16 @@ const SENTENCES = [
   { id: 'S_L27_8', lesson: 27, fr: 'Un jour, j\'aurai plusieurs robots chez moi. Ils feront toutes les tâches ménagères.', zh: '總有一天我家會有好幾台機器人，它們會做所有家事。', note: '⭐ avoir→aur-、faire→fer-；une tâche ménagère＝家事' },
   { id: 'S_L27_9', lesson: 27, fr: 'Dans le futur, il y aura des robots partout, ce sera comme dans les films.', zh: '未來到處都會是機器人，就像電影裡一樣。', note: '⭐⭐ il y aura（將會有）＋ ce sera（那將會是），兩塊整組記' },
   { id: 'S_L27_10', lesson: 27, fr: 'J\'ai réparé mon ordinateur, j\'espère qu\'il va bien fonctionner.', zh: '我修好我的電腦了，希望它能正常運作。', note: '⭐ fonctionner＝marcher（運作）；réparer＝修理' },
+
+  // 第28課（si 條件句三式／si vs quand／le pronom on／電話與網路詞彙）
+  { id: 'S_L28_1', lesson: 28, fr: 'Si quelqu\'un m\'appelle, je réponds.', zh: '如果有人打給我，我就接。', note: '⭐ 第一式：si ＋ 現在式 ＋ 現在式＝陳述常態' },
+  { id: 'S_L28_2', lesson: 28, fr: 'Si vous voulez passer moins de temps sur votre téléphone, lisez un livre !', zh: '如果你想少花點時間在手機上，就去讀本書！', note: '⭐ 第二式：si ＋ 現在式 ＋ 命令式（語氣最強）。lire→lisez' },
+  { id: 'S_L28_3', lesson: 28, fr: 'Si tu passes une semaine sans ordi et sans smartphone, tu perdras l\'habitude.', zh: '如果你一週不用電腦跟手機，你就會戒掉這個習慣。', note: '⭐⭐ 第三式：si ＋ 現在式 ＋ 未來式。⛔ si 後面永遠不用未來式' },
+  { id: 'S_L28_4', lesson: 28, fr: 'Quand tu auras 18 ans, je t\'achèterai un ordinateur.', zh: '你18歲的時候，我會買一台電腦給你。', note: '⭐⭐ quand ＋ 未來 ＋ 未來＝未來一定會發生的事（課本 Remarque）' },
+  { id: 'S_L28_5', lesson: 28, fr: 'Si vous vous perdez, vous pourrez demander votre chemin à quelqu\'un.', zh: '如果你迷路了，你可以跟人問路。', note: '⭐ se perdre＝迷路；demander son chemin à qqn＝問路' },
+  { id: 'S_L28_6', lesson: 28, fr: 'Vos proches ne seront donc pas énervés.', zh: '所以你的親友就不會生氣。', note: '⚠️ 副詞 donc 貼著動詞，pas 被推到後面；vos proches＝親近的人' },
+  { id: 'S_L28_7', lesson: 28, fr: 'Je ne suis pas joignable du 7 au 27 août.', zh: '我8月7日到27日聯絡不上。', note: '🎙 老師說法國人放假常這樣講。être joignable＝聯絡得上' },
+  { id: 'S_L28_8', lesson: 28, fr: 'J\'ai téléphoné à Pierre mais il était très énervé, il m\'a raccroché au nez.', zh: '我打給 Pierre 但他很火，直接把我電話掛掉。', note: '⭐ téléphoner à（COI）；raccrocher au nez＝不客氣地掛人電話' },
+  { id: 'S_L28_9', lesson: 28, fr: 'Internet marche mal, je n\'arrive pas à me connecter.', zh: '網路很差，我連不上。', note: '⭐⭐ ne pas arriver à ＋ 原形＝做不到（超高頻）；marcher＝運作' },
+  { id: 'S_L28_10', lesson: 28, fr: 'Je suis Mbappé sur Instagram.', zh: '我在 Instagram 上追蹤姆巴佩。', note: '⭐⭐ je suis 同時是 être 跟 suivre——老師寫在白板上破題的那句' },
 ];

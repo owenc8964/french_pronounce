@@ -99,7 +99,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'pronouns', name:'Pronoms (toniques · COD · y)', icon:'👤', zone:'A1', cat:'pronoms',
-    lessons:[9,11,12,15], topics:['pronoms-toniques','cod-pronouns','on-vs-nous','pronom-y'], unlocked:true,
+    lessons:[9,11,12,15], topics:['pronoms-toniques','cod-pronouns','pronom-y'], unlocked:true,   // 08-28：on-vs-nous 移到獨立的 pronom-on 點（第28課把它拉成完整的一節）
     rule:{
       title:'代名詞三家族 — 重讀、直接受詞、地點',
       why:'法文的 je/tu/il 被磨到只剩輕輕一個音，虛弱到不能單獨站著、不能被強調（不能只回答 "je"）——所以保留了一套有重音的「加強版」moi/toi/lui/eux 專門扛這些場合。受詞代名詞放動詞前面也是同一件事：它們是黏在動詞上的輕音節，像磁鐵吸在動詞前。on 原本是「人」這個名詞（拉丁 homo），「人們都這樣」講久了就變成口語的「我們」，所以動詞跟 il 同形。',
@@ -353,25 +353,32 @@ const GRAM_POINTS = [
         { fr:'J\'aime mieux ce quartier.', zh:'我更喜歡這一區。（aimer 是動詞，配 mieux 不配 meilleur）' },
       ]}},
 
-  { id:'condition-si', name:'La condition (si + présent)', icon:'🔀', zone:'A2', cat:'base',
-    lessons:[25], topics:['condition-si'], unlocked:true,
+  { id:'condition-si', name:'La condition (si / quand)', icon:'🔀', zone:'A2', cat:'base',
+    lessons:[25,28], topics:['condition-si'], unlocked:true,
     rule:{
-      title:'si 條件句（A2 版）— 條件用現在式，結果只有兩種收法',
-      why:'法文的 si 句真正的難點不在 si 本身，在「兩邊各用什麼時態」。A2 只需要最單純的一組：條件那半永遠是現在式，結果那半看你想做什麼——陳述一個常態就用現在式，要對方去做某件事就用命令式。命令式那一版之所以語氣更強，不是因為多了什麼標記，而是因為命令式本來就沒有主詞、直接把動作丟給對方。至於 s\'il 的縮寫，也不是文法規定，純粹是 si 和 il 都是 i 開頭、兩個 i 連著唸不順——所以只在 il／ils 前面縮，si on、si elle 都不縮。',
+      title:'si 條件句（A2 完整版）— 條件永遠用現在式，結果有三種收法',
+      why:'法文的 si 句真正的難點不在 si 本身，在「兩邊各用什麼時態」。A2 只需要最單純的一組：條件那半永遠是現在式，結果那半看你想做什麼——陳述一個常態就用現在式，要對方去做某件事就用命令式。命令式那一版之所以語氣更強，不是因為多了什麼標記，而是因為命令式本來就沒有主詞、直接把動作丟給對方。至於 s\'il 的縮寫，也不是文法規定，純粹是 si 和 il 都是 i 開頭、兩個 i 連著唸不順——所以只在 il／ils 前面縮，si on、si elle 都不縮。⚠️ 2026-08-28（第28課）補上第三種收法：結果那半可以用**未來式**（si tu passes une semaine sans smartphone, tu perdras l\'habitude）——第27課學完未來式才有材料，所以課本把它排在這裡。同時要跟 **quand ＋ 未來 ＋ 未來** 分開：si 是「不一定會發生」，quand 是「一定會發生」，中文都翻成「當…就…」所以中文幫不上忙，只能靠確定性判斷。',
       points:[
         'si ＋ 現在式 ＋ 現在式：陳述常態 → Si je veux lire, je vais à la bibliothèque',
         'si ＋ 現在式 ＋ 命令式：語氣更強、帶勸告 → Si tu es malade, va à la pharmacie !',
+        'si ＋ 現在式 ＋ 未來式：預測一個還沒發生的結果 → Si tu passes une semaine sans smartphone, tu perdras l\'habitude（第28課新增）',
+        '⚠️⚠️ 不管哪一式，**si 後面永遠是現在式**——⛔ si tu achèteras、si tu voudras 都是錯的',
+        '⭐ quand ＋ 未來式 ＋ 未來式：講未來「一定會發生」的事 → Quand tu auras 18 ans, je t\'achèterai un ordinateur',
+        '⚠️ si vs quand 的判準是**確定性**，不是中文翻譯（兩個都能翻成「當…就…」）',
+        '⚠️ 句子裡有 en général 就是在講習慣 → 回到第一式（現在＋現在），不是預測',
         '⚠️ si → s\' 只在 il / ils 前面：S\'il pleut…',
         '⚠️⚠️ si on、si elle、si tu 都不縮寫（老師說很多法國人自己也寫錯成 si il）',
-        '條件那半永遠是現在式，不用未來式（B1 的第一式才會出現 futur simple）',
         '兩個子句順序可以對調：Tu peux passer chez moi si ça t\'arrange',
-        'B1 之後才會學另外三式（假設、悔恨），見記憶宮殿 6-6-1',
+        'B1 之後才會學另外兩式（假設、悔恨），見記憶宮殿 6-6-1',
       ],
       examples:[
         { fr:'Si je veux lire, je vais à la bibliothèque.', zh:'如果我想看書，我就去圖書館。（現在式＋現在式）' },
         { fr:'Si tu es malade, va à la pharmacie !', zh:'如果你不舒服，就去藥局！（現在式＋命令式，語氣強）' },
         { fr:'S\'il pleut, on peut aller au Centre de la BD.', zh:'如果下雨，我們可以去漫畫中心。（si + il → s\'il）' },
         { fr:'Si on part vivre sur une île déserte…', zh:'如果我們去荒島生活…（⚠️ si on 不縮寫）' },
+        { fr:'Si tu passes une semaine sans ordi et sans smartphone, tu perdras l\'habitude.', zh:'如果你一週不用電腦跟手機，你就會戒掉這個習慣。（現在式＋未來式，第28課）' },
+        { fr:'Quand tu auras 18 ans, je t\'achèterai un ordinateur.', zh:'你18歲的時候，我會買一台電腦給你。（⭐ quand ＋ 未來 ＋ 未來＝確定會發生）' },
+        { fr:'En général, si je dois aller dans un endroit que je ne connais pas, je mets mon GPS.', zh:'一般來說，如果我要去不認識的地方，我就開 GPS。（⚠️ en général＝習慣，回到現在＋現在）' },
       ]}},
 
   { id:'tout-chaque', name:'Tout / chaque (全部 vs 每一個)', icon:'🔢', zone:'A2', cat:'base',
@@ -444,6 +451,28 @@ const GRAM_POINTS = [
         { fr:'Il y aura des robots partout, ce sera comme dans les films.', zh:'到處都會是機器人，就像電影裡一樣。' },
         { fr:'Quand le prof ne pourra pas venir, il donnera ses cours à distance.', zh:'老師不能來的時候，他會遠距上課。' },
         { fr:'Il faudra apprendre vite.', zh:'到時候得學得快。（falloir 只有 il 這一格）' },
+      ]}},
+
+  { id:'pronom-on', name:'Le pronom on (三種意思)', icon:'🙋', zone:'A2', cat:'pronoms',
+    lessons:[9,28], topics:['on-vs-nous'], unlocked:true,
+    rule:{
+      title:'le pronom on — 一個字三種意思，但變位只有一種',
+      why:'on 不是「nous 的口語版」這麼簡單，它其實是法文用來**把主詞模糊掉**的工具。當你不想說（或不知道）動作是誰做的，法文不像英文有 someone／people／we 三個字可選，它就丟一個 on 出來，讓聽的人自己從情境補。所以判斷 on 是哪一種，靠的不是文法而是**句子在講誰的事**：講一個對所有人成立的通則就是 les gens、講一件不知道誰幹的事就是 quelqu\'un、說話者自己在裡面就是 nous。也因為 on 本質上是個「第三人稱的空位」，它的變位永遠跟 il / elle 一樣——這一格不會因為它代表「我們」就變。',
+      points:[
+        'on ＝ quelqu\'un（某人）：不知道也不在乎是誰 → On a volé mon téléphone.',
+        'on ＝ les gens（大家、人們）：對所有人成立的通則 → Dans ce pays, on aime les nouvelles technologies.',
+        'on ＝ nous（我們）：口語幾乎都用 on，nous 太正式 → On va au salon des innovations.',
+        '⚠️⚠️ 不管哪一種意思，**變位永遠照 il / elle**：⛔ on visiteras → ✅ on visitera',
+        '⭐ 書面唯一的線索：on ＝ nous 時，過去分詞／形容詞可以配合成複數 → On est allés à la RoboCup.',
+        '⚠️ 判斷法：把 quelqu\'un／les gens／nous 三個都代進去唸一次，只有一個講得通',
+        '⚠️ 句子裡出現 chez moi、mon téléphone 這種「我的東西」時，on 通常不是 nous',
+      ],
+      examples:[
+        { fr:'On a volé mon téléphone.', zh:'有人偷了我的手機。（＝quelqu\'un）' },
+        { fr:'Dans ce pays, on aime beaucoup les nouvelles technologies.', zh:'在這個國家，大家很喜歡新科技。（＝les gens）' },
+        { fr:'On va au salon des innovations.', zh:'我們要去創新展。（＝nous）' },
+        { fr:'Quand on vit sans téléphone, on est plus libre.', zh:'人不用手機的時候比較自由。（＝les gens，⚠️ 不是 nous）' },
+        { fr:'Quand on ira à Paris, on visitera le musée.', zh:'我們去巴黎的時候會參觀博物館。（⚠️ on 照 il 變位，沒有 -s）' },
       ]}},
 
   { id:'conseils', name:'Conseils & obligations', icon:'💡', zone:'A2', cat:'verbe-mode',

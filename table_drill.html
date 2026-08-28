@@ -83,6 +83,7 @@
     .type-badge.article { background: #2ca85c; }
     .type-badge.prep    { background: #8b2ce5; }
     .type-badge.gram    { background: #c02a5c; }
+    .type-badge.vocab   { background: #0a7a8c; }   /* 08-28 第28課：中翻法的詞彙表 */
 
     .card-title { font-size: 1.05rem; font-weight: 700; }
     .card-zh    { font-size: 0.82rem; color: #999; }
@@ -194,6 +195,7 @@
     <button class="type-btn"        data-type="article" onclick="setType('article')">冠詞</button>
     <button class="type-btn"        data-type="prep"    onclick="setType('prep')">介係詞</button>
     <button class="type-btn"        data-type="gram"    onclick="setType('gram')">文法詞</button>
+    <button class="type-btn"        data-type="vocab"   onclick="setType('vocab')">詞彙</button>
   </div>
 </div>
 
@@ -1063,6 +1065,65 @@ const TABLES = [
       ['Il ...... (falloir) apprendre vite. ⚠️ 只有 il', {a:'faudra', h:true}],
       ['Demain, il ...... (pleuvoir). ⚠️ 只有 il', {a:'pleuvra', h:true}],
     ] },
+
+  { id:'condition-si-quand-drill', title:'si / quand ＋ 時態', zh:'條件句三式＋quand 的未來式（第28課主文法①）', type:'gram', lesson:28,
+    note:'⚠️⚠️ si 後面永遠是現在式，變的只有右半邊（現在／命令／未來）。quand 講未來確定的事 → 兩邊都未來式。有 en général 就是講習慣 → 兩邊現在式',
+    headers:['句子（括號裡是原形）','正確形'],
+    rows:[
+      ["Si quelqu'un m'appelle, je ...... (répondre).", {a:'réponds', h:false}],
+      ['Si vous voulez lire, ...... (lire) un livre ! ⚠️ 命令式 vous', {a:'lisez', h:true}],
+      ['Si tu passes une semaine sans ordi, tu ...... (perdre) l\'habitude.', {a:'perdras', h:true}],
+      ['Si vous achetez cet ordinateur, vous ...... (pouvoir) installer des logiciels.', {a:'pourrez', h:true}],
+      ['Si tu veux écouter de la musique, ...... (télécharger) cette appli. ⚠️ 命令式 tu', {a:'télécharge', h:true}],
+      ['Quand tu ...... (avoir) 18 ans, je t\'achèterai un ordinateur.', {a:'auras', h:true}],
+      ['Quand nous ...... (savoir) utiliser l\'imprimante 3D, nous fabriquerons plein d\'objets.', {a:'saurons', h:true}],
+      ['Quand on ...... (aller) à Paris, on visitera le musée.', {a:'ira', h:true}],
+      ['Quand on ira à Paris, on ...... (visiter) le musée. ⚠️ on 照 il 變位', {a:'visitera', h:true}],
+      ['En général, si je dois sortir, je ...... (mettre) mon GPS. ⚠️ en général＝習慣', {a:'mets', h:true}],
+      ['Si Thomas a son bac, il ...... (faire) des études d\'ingénieur.', {a:'fera', h:true}],
+      ['...... il se perd dans la rue, il pourra demander son chemin. ⚠️ si ＋ il', {a:"S'il|s'il", h:true}],
+    ] },
+
+  { id:'pronom-on-drill', title:'le pronom on ＝ ?', zh:'on 的三種意思：quelqu\'un／les gens／nous（第28課主文法②）', type:'gram', lesson:28,
+    note:'⚠️ 判準：講普遍現象＝les gens／不知道是誰＝quelqu\'un／說話者在裡面＝nous。⚠️⚠️ 不管哪一種，變位永遠照 il / elle',
+    headers:['句子','on ＝'],
+    rows:[
+      ['On a volé mon téléphone.', {a:"quelqu'un", h:false}],
+      ['Dans ce pays, on aime beaucoup les nouvelles technologies.', {a:'les gens', h:true}],
+      ['On va au salon des innovations.', {a:'nous', h:true}],
+      ['On est entré chez moi pour voler mon ordinateur.', {a:"quelqu'un", h:true}],
+      ["L'année dernière, on est allés à la RoboCup. ⚠️ 看 allés 的 s", {a:'nous', h:true}],
+      ['Quand on vit sans téléphone, on est plus libre.', {a:'les gens', h:true}],
+      ['On a gagné quatre compétitions.', {a:'nous', h:true}],
+      ["Est-ce qu'on vous a déjà parlé de la RoboCup ?", {a:"quelqu'un", h:true}],
+    ] },
+
+  { id:'techno-communication-drill', title:'téléphone / informatique / Internet', zh:'電話、電腦與網路詞彙（第28課）', type:'vocab', lesson:28,
+    note:'⚠️ allumer／éteindre 只用在電器（門窗是 ouvrir／fermer）；en ligne＝線上，排隊是 faire la queue',
+    headers:['中文','法文'],
+    rows:[
+      ['一通電話（名詞，⚠️ 一個 l）', {a:"l'appel|appel", h:false}],
+      ['電池（也是爵士鼓）', {a:'la batterie|batterie', h:true}],
+      ['簡訊（兩種說法都可）', {a:'le SMS|SMS|le texto|texto', h:true}],
+      ['市內電話', {a:'le téléphone fixe|téléphone fixe', h:true}],
+      ['接起電話（動詞）', {a:'décrocher', h:true}],
+      ['掛斷電話（動詞）', {a:'raccrocher', h:true}],
+      ['開機／開燈（動詞）', {a:'allumer', h:true}],
+      ['關機／關燈（動詞）', {a:'éteindre', h:true}],
+      ['聯絡得上（形容詞片語）', {a:'être joignable|joignable', h:true}],
+      ['鍵盤', {a:'le clavier|clavier', h:true}],
+      ['滑鼠', {a:'la souris|souris', h:true}],
+      ['印表機', {a:"l'imprimante|imprimante", h:true}],
+      ['隨身碟', {a:'la clé USB|clé USB|une clé USB', h:true}],
+      ['社群網站（複數）', {a:'les réseaux sociaux|réseaux sociaux', h:true}],
+      ['登入（反身動詞）', {a:'se connecter|connecter', h:true}],
+      ['登出（反身動詞）', {a:'se déconnecter|déconnecter', h:true}],
+      ['取消訂閱／退追蹤', {a:'se désabonner|désabonner', h:true}],
+      ['電子郵件（魁北克帶起來那個字）', {a:'le courriel|courriel', h:true}],
+      ['下載', {a:'télécharger', h:true}],
+      ['視訊', {a:'faire une visio|en visio|la visio|visio', h:true}],
+      ['線上（online）', {a:'en ligne', h:true}],
+    ] },
 ];
 
 
@@ -1082,7 +1143,7 @@ let roundWrong = [];      // 這一輪（主輪或複習輪）目前為止答錯
 let reviewPassCount = 0;  // 這次做了幾輪複習（供結束畫面顯示）
 let onSummary  = false;   // 是否已經在結束畫面（這輪已完整結束，切難度/類型不用再問）
 
-const TYPE_LABEL = { verb:'動詞', adj:'形容詞', article:'冠詞', prep:'介係詞', gram:'文法詞' };
+const TYPE_LABEL = { verb:'動詞', adj:'形容詞', article:'冠詞', prep:'介係詞', gram:'文法詞', vocab:'詞彙' };
 
 // ════════════════════════════════════════════════════════════
 // 初始化
