@@ -31,10 +31,51 @@ const ANSWER_CARDS = [
   { id:'AC2', topic:'family', title:'家庭',
     q_fr:'Parlez-moi de votre famille : qui sont les membres, ce qu\'ils font, comment ils sont.',
     q_zh:'跟我說說你的家庭：有哪些人、做什麼、個性怎樣。',
+    // ⭐ 2026-08-28 Owen 的中文口述全文（逐字保留，⛔ 不要精簡）。慣例同 AC3。
+    // ⚠️ v2 法文版刻意沒收進去的段落（＝之後升級 B1/B2 的第一批材料）：
+    //    ・「雙薪家庭」「體操課／感統課」「跟朋友聚餐、帶女兒吃不同餐廳」（細節，中版可加回）
+    //    ・「不侷限於科技、醫療、財經才有市場，各種才能都有發揮空間」← 抽象化，B2 的料
+    //    ・「未來不一定要留在加拿大，去美國也很好」← 讓步／權衡段的料
+    //    ・「台灣工時長、總是要快快快，希望有更充實人生與自我實現」← 對比段的料
+    //    ・v1 有但 v2 沒帶的：父母（台語老師）、姊姊（新竹工程師）→ 追問「你父母怎麼想」是真 gap
+    source_zh:"【家庭成員】我家裡有太太和女兒。女兒現在 1 歲多，剛學會講話和走路，個性蠻冒險犯難的，對有興趣的東西會想辦法拿到並不斷探索，我覺得這是很棒的特質。太太目前也在工作，我們是雙薪家庭，她是做科技產業相關的服務。\n\n【太太怎麼想】太太聽到出國計畫時其實蠻開心的，覺得如果有機會去國外生活、去理想的國家體驗，相對來說是不錯的選項。\n我們覺得在臺灣生活其實算舒適，真的很方便，便利商店也很多，去其他國家可能都沒這麼方便。但臺灣有環境的壓力，房價越來越高，以小孩的生活和成長發展來說，我覺得不是太理想，所以出國發展反而是一個可以考慮的方向。\n\n【週末】我們家的週末生活，週六太太下班後就是家庭時間。禮拜天早上我甚至會跟太太一起去上瑜伽，女兒就在教室裡面玩；老師很開放，女兒也不會隨便打擾其他同學，在過程中玩得很開心、能自由探索。我們也會陪女兒去上體操課或感統課，有機會就跟朋友聚餐、帶女兒去吃不同的餐廳，享受陽光和大自然，這是平常生活比較難得的。\n\n【對女兒的期望】我希望女兒在加拿大可以自我探索、表達自己的想法。她不見得一定要成為工程師、醫生，或是傳統定義上對世界有用的人。希望在加拿大不侷限於科技、醫療或財經才有市場，而是各種才能都有發揮的空間，讓她能找到自己想走的方向。未來求學或發展也不一定要留在加拿大，去美國或其他地方都很好，能找到適合她的方向才是最重要的。\n\n【對我們自己】至於我和太太是否適合加拿大，真的要去了之後才知道。但我們希望可以好好享受這個世界與自然環境，有更多相處的時間。不像在臺灣工時長、各種壓力大，總是要不斷追求快快快，希望我們能有更多充實人生與自我實現的方法。",
     versions:[
       { level:'A1', d:'2026-07-16',
         fr:"Dans ma famille, il y a mon père, ma mère, ma sœur, ma femme et ma fille. Mes parents sont professeurs de taïwanais. Ma sœur est ingénieure à Hsinchu. Je suis marié. Ma femme s'appelle Lauryn et ma fille s'appelle Jolie. Ma vie, c'est ma famille.",
-        zh:'我家有爸爸、媽媽、姊姊、太太、女兒。我爸媽是台語老師。我姊姊在新竹當工程師。我已婚。我太太叫Lauryn，我女兒叫Jolie。我的生活重心是我的家人。' }
+        zh:'我家有爸爸、媽媽、姊姊、太太、女兒。我爸媽是台語老師。我姊姊在新竹當工程師。我已婚。我太太叫Lauryn，我女兒叫Jolie。我的生活重心是我的家人。' },
+      // ── 2026-08-28 v2：語言島第三座。187 字 / 約 86 秒（AC3 是 174/80，同一規格）。
+      // 四段：①太太女兒是誰（Jolie 的個性）②太太對移民的反應＋台灣的張力
+      //       ③週末（瑜伽那個畫面）④對女兒的期望
+      // 四個「加分」點：
+      //   ・Jolie「有興趣的東西會想盡辦法拿到」——1 歲半的具體畫面，考官記得住
+      //   ・「週日全家去瑜伽，她在教室裡玩」——別人沒有的細節
+      //   ・「很舒適、到處便利商店，但房子越來越貴」——⭐ 讓步的雛形，B2 升級的天然接口
+      //     （之後換成 Certes, la vie est confortable… mais / Bien que + subjonctif）
+      //   ・「不一定要當工程師或醫生」——⭐ 第三座橋：接回 AC8／AC3 的「小孩該探索自己的理想」
+      // 用上的結構：vient d'apprendre（venir de＋不定式）、était contente（imparfait）、
+      //   de plus en plus chers（25/26課比較級，AC8 也用過 de plus en plus chaud）、
+      //   Chaque dimanche matin（26課 chaque＋單數）、pourra／verra（27課 futur simple）、
+      //   le plus important, c'est de…（26課 c'est 強調）
+      // ⚠️ 「我希望她能找到自己的路」若寫 j'espère qu'elle trouve 會踩到 subjonctif（B1），
+      //    這版用 le plus important, c'est de trouver son propre chemin（不定式）繞開。
+      //    → 這句是升級 B2 時換成 subjonctif 的位置（見 STRATEGY 原則 6）。
+      { level:'A2', d:'2026-08-28',
+        fr:"Je vis avec ma femme Lauryn et notre fille Jolie. Jolie a un an et demi : elle vient d'apprendre à marcher et à parler. Elle est très aventurière — quand quelque chose l'intéresse, elle fait tout pour l'attraper. Lauryn travaille aussi : elle est dans le secteur de la technologie.\n\nQuand je lui ai parlé du Canada, elle était contente. À Taïwan, la vie est très confortable, il y a des supérettes partout, mais les logements sont de plus en plus chers. Pour élever un enfant, ce n'est pas idéal.\n\nLe week-end, c'est le temps de la famille. Chaque dimanche matin, on fait du yoga tous les deux et Jolie joue dans la salle : le professeur est très ouvert, alors elle explore librement. On profite aussi du soleil et de la nature — à Taïwan, on n'a pas souvent le temps.\n\nAu Canada, j'espère qu'elle pourra s'exprimer et se chercher. Elle n'est pas obligée de devenir ingénieur ou médecin : le plus important, c'est de trouver son propre chemin. Et nous ? On verra une fois là-bas. Mais on espère avoir plus de temps ensemble.",
+        zh:'我跟太太 Lauryn、女兒 Jolie 住在一起。Jolie 一歲半，剛學會走路和講話。她個性很冒險——只要有什麼東西她有興趣，她就會想盡辦法拿到。Lauryn 也在工作，她做科技產業相關的。\n\n我跟她講加拿大的計畫時，她很開心。在台灣生活很舒適，到處都是便利商店，但房子越來越貴。以養小孩來說，這不太理想。\n\n週末是家庭時間。每個禮拜天早上我們兩個去上瑜伽，Jolie 就在教室裡玩：老師很開放，所以她可以自由探索。我們也會享受陽光和大自然——在台灣不常有這個時間。\n\n到了加拿大，我希望她可以表達自己、探索自己。她不一定要當工程師或醫生：最重要的是找到自己的路。那我們呢？要去了才知道。但我們希望能有更多相處的時間。' }
+    ],
+    // 2026-08-28 預測追問。cover：'ok'＝島接得住｜'part'＝要轉一下｜'gap'＝沒材料
+    // ⭐ gap／part 這幾題就是 B2 升級層的施工圖，見 STRATEGY 原則 6
+    follow_ups:[
+      { fr:"Et votre femme, qu'est-ce qu'elle en pense ?", zh:'那你太太怎麼想？', cover:'ok', from:null },
+      { fr:"Votre fille a quel âge ?", zh:'你女兒幾歲？', cover:'ok', from:null },
+      { fr:"À Taïwan, les parents mettent beaucoup de pression sur les enfants ?", zh:'在台灣，父母給小孩很大壓力嗎？', cover:'part', from:'AC8 加拿大' },
+      { fr:"Qu'est-ce qui vous manquera le plus de Taïwan ?", zh:'你最會想念台灣的什麼？', cover:'part', from:null },
+      { fr:"Votre fille apprend le français aussi ?", zh:'你女兒也在學法文嗎？', cover:'gap', from:null },
+      { fr:"Votre femme parle français ?", zh:'你太太會說法文嗎？', cover:'gap', from:null },
+      { fr:"Vos parents, qu'est-ce qu'ils pensent de votre départ ?", zh:'你爸媽對你們要走怎麼想？', cover:'gap', from:null },
+      { fr:"Ce sera difficile pour votre fille de changer de pays ?", zh:'換國家對你女兒會不會很難？', cover:'gap', from:null },
+      { fr:"Si votre femme ne trouve pas de travail au Canada ?", zh:'如果你太太在加拿大找不到工作呢？', cover:'gap', from:'AC3 工作' },
+      { fr:"Comment vous imaginez votre vie de famille au Canada ?", zh:'你怎麼想像你們在加拿大的家庭生活？', cover:'part', from:null }
     ] },
 
   { id:'AC3', topic:'work', title:'工作',
@@ -147,8 +188,8 @@ const ANSWER_CARDS = [
     follow_ups:[
       { fr:"Vous êtes déjà allé au Canada ?", zh:'你去過加拿大嗎？', cover:'gap', from:'AC7 旅行' },
       { fr:"Pourquoi Vancouver plutôt que Montréal ou Toronto ?", zh:'為什麼是溫哥華，不是蒙特婁或多倫多？', cover:'part', from:null },
-      { fr:"Votre fille a quel âge ? Elle apprend le français aussi ?", zh:'你女兒幾歲？她也在學法文嗎？', cover:'gap', from:'AC2 家庭' },
-      { fr:"Et votre femme, qu'est-ce qu'elle en pense ?", zh:'那你太太怎麼想？', cover:'gap', from:'AC2 家庭' },
+      { fr:"Votre fille a quel âge ? Elle apprend le français aussi ?", zh:'你女兒幾歲？她也在學法文嗎？', cover:'part', from:'AC2 家庭' },  // 08-28 AC2 v2 補了年齡與個性；「學法文」仍缺
+      { fr:"Et votre femme, qu'est-ce qu'elle en pense ?", zh:'那你太太怎麼想？', cover:'ok', from:'AC2 家庭' },  // 08-28 AC2 v2 ②段補上了：gap→ok
       { fr:"Vous êtes dentiste : vous pourrez travailler au Canada ?", zh:'你是牙醫，你能在加拿大執業嗎？', cover:'part', from:'AC3 工作' },  // 08-28 AC3 v2 末段補上了：gap→part
       { fr:"Mais au Canada, il fait très froid, non ?", zh:'可是加拿大很冷吧？', cover:'part', from:null },
       { fr:"Taïwan aussi a de bonnes écoles, non ?", zh:'台灣也有好學校啊，不是嗎？', cover:'ok', from:null },
