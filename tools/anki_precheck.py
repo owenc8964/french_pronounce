@@ -10,6 +10,10 @@
   2. ⛔ 檔案裡含 HTML 標籤 —— 匯入沒勾「允許 HTML」時會在卡片正面印出裸露的 <b>。
      慣例是一律用全形括號，見 ANKI_SETUP.md「強調的寫法」。
   3. ⛔ 欄位數不是 24 —— 欄位會整排位移。
+  4. ⚠️ 法文句子在 repo 裡查無出處 —— 提醒而已，不擋。
+     CLAUDE.md 內容鐵律：教材的法文必須出自筆記／課本，Claude 不可以自創。
+     （2026-08-29 產第27/28課那批時，32 張裡有 10 張是我改寫或截短過的，
+       就是這個檢查抓出來的。）
 
 ⚠️ 只讀收藏檔的複本，不會動到 Anki 的任何資料。
 """
@@ -104,6 +108,56 @@ def check(path, db):
         print(f'  ❌ 有 {problems} 個問題，先修再匯')
     return problems
 
+_CORPUS = None
+def corpus():
+    """repo 裡所有『合法法文來源』串成一鍋，用來比對卡片的法文是不是抄來的。
+    ⚠️ transcripts/ 是課堂逐字稿，gitignore 不進 repo——**本機有才吃得到**。
+       所以舊的幾批（從逐字稿挖回鍋字）在別台機器上會查無出處，這是預期內的，
+       因此這一項只是提醒不是錯誤。"""
+    global _CORPUS
+    if _CORPUS is None:
+        root = os.path.join(os.path.dirname(__file__), '..')
+        paths = ['french_notes.html', 'sentences.js', 'chunks.js', 'questions.js',
+                 'scenes.js', 'assets/.textbook_cache.txt']
+        tdir = os.path.join(root, 'transcripts')
+        if os.path.isdir(tdir):
+            paths += [os.path.join('transcripts', f) for f in sorted(os.listdir(tdir))]
+        buf = []
+        for rel in paths:
+            try:
+                buf.append(io.open(os.path.join(root, rel), encoding='utf-8', errors='replace').read())
+            except Exception:
+                pass
+        _CORPUS = _fold('\n'.join(buf))
+    return _CORPUS
+
+def _fold(s):
+    s = s.replace('\u2019', "'").replace('&#x27;', "'").replace("\\'", "'")
+    s = re.sub(r'<[^>]+>', ' ', s)
+    return re.sub(r'[\s\u00a0]+', ' ', s).strip()
+
+def check_sources(path):
+    """⚠️ 提醒：卡片上的法文有沒有出處。Sentence 一律查；
+    句子卡（fr::task::produire）的答案本身就是一句法文，也要查。"""
+    corp = corpus()
+    miss = []
+    for line in io.open(path, encoding='utf-8'):
+        f = line.rstrip('\n').split('\t')
+        if len(f) < 24: continue
+        for col in (1, 13):
+            if col == 13 and 'task::produire' not in f[23]: continue
+            t = _fold(f[col])
+            if t and t not in corp:
+                miss.append((f[0], t[:56])); break
+    if miss:
+        print(f'  ⚠️ 有 {len(miss)} 句法文在 repo 裡查無出處（自創？改寫？截短？）：')
+        for k, t in miss[:6]:
+            print(f'     {k}  {t}')
+        if len(miss) > 6: print(f'     …其餘 {len(miss)-6} 句')
+    else:
+        print('  ✅ 每一句法文都在 repo 裡找得到出處')
+    return miss
+
 def check_ownership(paths):
     """⛔ 一個 ExternalID 只能被一個檔案擁有。
     要修一張舊卡就改「原本那個檔案」裡的那一列，不要另開修復檔——
@@ -130,6 +184,9 @@ if __name__ == '__main__':
     db = load_collection()
     print(f'收藏檔目前 {len(db)} 張 note')
     paths = sys.argv[1:]
-    total = sum(check(p, db) for p in paths)
+    total = 0
+    for p in paths:
+        total += check(p, db)
+        check_sources(p)          # ⚠️ 只提醒，不計入 total
     total += check_ownership(paths)
     sys.exit(1 if total else 0)
