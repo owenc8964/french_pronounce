@@ -22,3 +22,9 @@ assets/.textbook_cache.txt
 
 # 掃描檔 OCR 出來的文字（tools/ocr_pdf.py 產生）：一樣是商業教材內容，只留本機
 assets/.ocr_*.txt
+
+# TCF 備考材料的本地工作區（2026-08-28 新增）：
+# ① 第三方考試材料，而 repo 是公開的 GitHub Pages ② 體積達 GB 等級，遠超 GitHub 限制
+# 只當本地參考來源用（校正考試題型與題目清單），永遠不要 commit
+# 索引見 assets/tcf/INDEX.md（同樣只留本機）
+assets/tcf/
