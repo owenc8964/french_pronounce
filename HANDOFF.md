@@ -691,6 +691,75 @@ Tâche 3 的 8 個主題與題數：`移民文化 28｜教育 24｜科技 23｜�
 
 ---
 
+### ⏭⏭ 2026-08-28 深夜交接：兩個背景 agent 沒跑完（開機後第一件事）
+
+> ⚠️ **背景 agent 不跨越關機**。08-28 深夜派了兩個 agent，如果電腦關過機，
+> **它們的進度沒有保留**（已寫進磁碟的檔案會在，但沒跑完的部分不會自己接續）。
+> Owen：「如果半夜電腦關機，早晨重開後繼續工作。」→ **開機後照下面重新派。**
+
+**開機後先做這件事**：檢查這兩個路徑存不存在、內容完不完整，再決定要不要重派。
+```bash
+ls -la mock.html assets/tcf/exam/ 2>/dev/null
+ls -la assets/tcf/tef/ assets/tcf/TCF_vs_TEF.md 2>/dev/null
+```
+
+#### Agent A — TCF 模擬考頁面（`mock.html` ＋ `assets/tcf/exam/`）
+
+**要做什麼**：把閱讀與聽力真題萃取成乾淨結構，做出獨立的模擬考頁面。
+Owen 的原話：「**我不太想一直看那些亂碼或是一個一個點音檔，我希望你可以讓我好讀好複習，
+好像是一個模擬試題的程式一樣。**」
+
+**已驗證的可行性（不用重新查）**：
+- **閱讀**：`阅读1-36＋2gr.docx` 內嵌 **1518 張圖**（png 1440＋jpeg 77）＝文章正文本身。
+  document.xml 裡圖片引用 1517 個、`Question` 標記 70 個，38 套×39 題≈1482 → **基本上一題一圖**。
+  ⚠️ **對齊一定有偏差**，要把對不齊的標 `aligned:false` 並回報數量，不准假裝完美。
+- **聽力**：版本2 的 **44 個 mp3 檔名全部含 test 編號**（`Compréhension orale test 1 (Member) - 题库.mp3`）
+  → 可自動對齊。共 1.4 GB。題目/選項/**正解**/中文解析從版本2 的 `(Member)` PDF 抽（**有文字層**）。
+- ⚠️ **音檔 1.4 GB 遠超 Artifact 的 16 MB 上限** → **必須做成本機頁面**，跟 `quiz.html`／`reading.html` 同架構。
+
+**⛔ 給 agent 的禁令（照抄）**：不准碰 `sync_supabase.js`；**不准寫任何 `clb7_*` localStorage key**
+（那前綴會同步污染正式雲端，已踩過三次）→ 一律用 `tcfmock_` 前綴；不准改任何既有檔案，只能新增；
+不准 git add／commit；交付前必須自己跑完整流程（選 test→播音檔→作答→交卷→對答案）才能回報。
+
+**⛔ dashboard 整合刻意不給 agent 做** —— 那是動到大腦，要先過「這功能的數據 dashboard 讀得到嗎？
+能影響今日處方嗎？」這關，由 Owen 決定。
+
+#### Agent B — TEF 判讀與 TCF/TEF 比較
+
+**素材**：`/Users/owen/Downloads/TEF CANADA.zip`（341 MB／解壓 0.40 GB）
+✅ **安全掃描已做過**：0 危險副檔名、0 路徑穿越、0 加密、0 符號連結。可安全解壓。
+
+**三個已確認的陷阱（不用重新發現）**：
+1. **`__MACOSX/` 全部忽略** —— 218 個 0 MB 的 `._` 資源分支垃圾
+2. **每個檔案都有 `(1)` 重複版本**，內容相同 → 去重後**實際獨立 PDF 只有約 12 個**（不是 48 個）
+3. 檔名 GBK 編碼，要 `n.encode('cp437').decode('gbk')`
+
+**實際結構**：`TEF Nouvelle Edition`（88MB 教材＋**188 mp3**）／`TEF 改革必考部分例题`（**官方樣題**
+`Exemples-Epreuves-TEF_CE/_CO/_LS`、`Sujets-EE`、`Sujets-EO`）／`TEF 阅读`（`tef-les-102-textes-longs`）／
+`TEF口语`（**Expression-Orale-150-Topics**）／`TEF写作`（⭐ **`Faits divers plus de 100（Section A）`**、
+`Expression Ecrite`、`TEF Section A`、`Ecrite-150-Topics`）
+
+⭐ `Faits divers plus de 100` 特別重要：`STRATEGY` 原則 1 寫過「**⛔ TEF 寫作 Section A 島完全用不上**，
+那題要單獨練壓掉個人語氣」——現在有 100+ 篇可以練了。
+
+**⚠️⚠️ 判讀鐵律（Owen 08-28 明確要求）**：
+> 「**檔案好好判讀，不要隨便抓幾個關鍵字就下結論。**」
+
+⚠️ 這是 Claude 當天犯過的錯：用 pdfplumber 搜 `Sujet`／`Consigne` 找不到，就下結論
+「這包沒有寫作題目」——**錯了，題目一直都在，只是跟閱讀文章一樣是圖片**，是 Owen 自己截圖才發現。
+→ **任何「這份沒有 X」的結論，都必須先排除「X 是圖片」**：抽不到文字就驗是不是掃描檔
+（看 `page.images`／內嵌圖片數），是的話跑 `python3 tools/ocr_pdf.py "<路徑>"`。
+
+**要產出**：`assets/tcf/tef/INDEX_TEF.md`（編號樹，規格照 `assets/tcf/INDEX.md`）／題目萃取／
+給家教的 `.docx`（⚠️ 只放材料裡實際有的，⛔ 不放 Claude 的分析與建議——Owen 明確要求過）／
+⭐ **`assets/tcf/TCF_vs_TEF.md`**（最重要：四技能題型並排、CLB 7 門檻並排、口說寫作形態差異、
+哪個對 Owen 有利＋理由，⚠️ 事實與判斷要分開標）
+
+⚠️ 產 docx 的方法：先寫 HTML 再 `textutil -convert docx -output X.docx X.html`
+（本機**沒有** pandoc／libreoffice／wkhtmltopdf，也沒有任何 HTML→PDF 轉換器）
+
+---
+
 ### 🧭 準備方向（2026-08-28 Owen 拍板）：完全朝 TEF/TCF 走，但**不要過度收斂**
 
 > Owen：「**範文不重要，但口說聽力寫作閱讀的題目跟題型我覺得都適合全部檢視跟參考，
