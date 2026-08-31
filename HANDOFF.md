@@ -691,6 +691,68 @@ Tâche 3 的 8 個主題與題數：`移民文化 28｜教育 24｜科技 23｜�
 
 ---
 
+### ⚠️ 2026-08-28 深夜（續）：agent 產出已驗證——**閱讀可用，聽力正解不可信**
+
+**兩個 agent 都因額度中斷**（`monthly spend limit`／HTTP 429，session 限制 03:10 台北重置），
+但 Agent A 留下的東西比預期多。⭐ **Claude 已做獨立驗證（agent 自己沒驗完就被切斷）**，結果如下。
+
+#### ✅ 已完成且可用
+
+| 產出 | 狀態 |
+|---|---|
+| `mock.html`（31 KB） | ✅ 存在。**禁令全數合規**：不載入 `sync_supabase.js`、無 `clb7_*` 寫入（只在註解提到）、無既有檔案被修改 |
+| `assets/tcf/exam/reading.json` | ✅ **44 套 × 39 題 = 1716 題，可信** |
+| `assets/tcf/exam/listening.json` | ⚠️ 同樣 1716 題，但**正解不可信**，見下 |
+| `assets/tcf/exam/img/`（1780 檔）／`audio/`（45 檔） | ✅ 圖片路徑零缺漏，共 1.8 GB |
+
+**閱讀為什麼可信**——三個獨立訊號交叉對質：
+- `answer` vs `ans_zh` 首字母：**1415 題可比對 → 0 不符**
+- `answer` vs `opt_zh` 標「正确」的那項：**100 題可比對 → 0 不符**
+- `ans_zh` 文字 vs `opts[answer]`：1396 符／19 不符，**那 19 個全是 OCR 變音符號差**
+  （`maître`/`maitre`、`naître`/`naitre`），不是答案錯
+
+每題還帶 `src_zh`（原文中譯）／`q_zh`／`key_zh`（解析）／`opt_zh`（逐選項分析）。
+
+#### ❌ 聽力正解不可信——根因已找到
+
+聽力的 `ans_zh` **1716 題全部空的**、`opt_zh` 無「正确」標記 → **零獨立佐證**。
+回原始 PDF 抽驗後找到根因：
+
+```
+1. Ecoutez les 4 propositions...
+Correct answer        ← 標籤出現在選項「之前」
+A. Proposition a
+B. Proposition b ...
+```
+
+⭐ **`Correct answer` 是網頁截圖上的視覺標籤**，原頁面裡貼在正確選項旁邊，
+**抽成純文字後位置資訊就消失了**。parser 採「badge 後第一個選項」→ 一律得 A。
+佐證：**A 佔 30.5%（524/1716），D 只有 21%（366）**，明顯偏斜。
+
+**修法（下個 session 做）**：用 `pdfplumber` 的**文字座標**——取 `Correct answer` 的 y 座標，
+比對四個選項行的 y 座標，取最接近的那一行。或檢查正確選項是否有不同的底色／字色。
+⛔ **在修好之前，`mock.html` 的聽力模式不能拿來對答案**（閱讀模式可以）。
+
+#### ⭐ 順帶撈到的數字：聽力 CLB 門檻
+
+從 `Compréhension orale test 1 (Member)` PDF 首頁表格：
+`CLB 9 = 523–548｜CLB 8 = 503–522｜**CLB 7 = 458–502 (B2-C1)**｜CLB 6 = 398–457｜CLB 5 = 369–397`
+→ 補上了 `assets/tcf/INDEX.md` 第 6 區的空格（閱讀 CLB 7 = 453–498）。
+
+#### ❌ Agent B（TEF）幾乎沒跑
+
+只留下 `assets/tcf/tef/_analyse/TEF_sujets_ecrit_sectionA.{json,txt}`（4 KB，Section A 的 faits divers）
+與 `assets/tcf/tef/raw/`（204 MB 解壓素材）。
+**`assets/tcf/tef/INDEX_TEF.md` 與 `assets/tcf/TCF_vs_TEF.md` 都不存在** → 要整個重派。
+
+#### ⏭ 下個 session 的順序
+
+1. **修聽力正解**（用文字座標對齊 badge）→ 修好才驗收 `mock.html`
+2. **重派 Agent B 做 TEF**（指令在下一段，完全可用）
+3. ⭐ **AC7 旅行** ← 這才是主線，別又整天在整理材料
+
+---
+
 ### ⏭⏭ 2026-08-28 深夜交接：兩個背景 agent 沒跑完（開機後第一件事）
 
 > ⚠️ **背景 agent 不跨越關機**。08-28 深夜派了兩個 agent，如果電腦關過機，
