@@ -279,4 +279,16 @@ const SENTENCES = [
   { id: 'S_L28_8', lesson: 28, fr: 'J\'ai téléphoné à Pierre mais il était très énervé, il m\'a raccroché au nez.', zh: '我打給 Pierre 但他很火，直接把我電話掛掉。', note: '⭐ téléphoner à（COI）；raccrocher au nez＝不客氣地掛人電話' },
   { id: 'S_L28_9', lesson: 28, fr: 'Internet marche mal, je n\'arrive pas à me connecter.', zh: '網路很差，我連不上。', note: '⭐⭐ ne pas arriver à ＋ 原形＝做不到（超高頻）；marcher＝運作' },
   { id: 'S_L28_10', lesson: 28, fr: 'Je suis Mbappé sur Instagram.', zh: '我在 Instagram 上追蹤姆巴佩。', note: '⭐⭐ je suis 同時是 être 跟 suivre——老師寫在白板上破題的那句' },
+
+  // 第29課（le pronom en 數量版／義務與禁止／食材與食譜動詞）
+  { id: 'S_L29_1', lesson: 29, fr: 'Tu manges de la viande ? — Non, je n\'en mange pas.', zh: '你吃肉嗎？——不，我不吃。', note: '⭐ en 取代 de la viande；否定時夾在 ne 跟動詞之間' },
+  { id: 'S_L29_2', lesson: 29, fr: 'Tu as une grande poêle ? — Oui, j\'en ai une.', zh: '你有大平底鍋嗎？——有，我有一個。', note: '⚠️⚠️ une 要留下來——這裡是「一個」不是冠詞' },
+  { id: 'S_L29_3', lesson: 29, fr: 'Vous consommez beaucoup de fruits et légumes ? — Oui, j\'en consomme beaucoup.', zh: '你們吃很多蔬果嗎？——對，我吃很多。', note: '⭐ 數量副詞 beaucoup 要留在動詞後面' },
+  { id: 'S_L29_4', lesson: 29, fr: 'Je n\'en ai pas mangé.', zh: '我沒吃過。', note: '⭐⭐ passé composé 的順序：n\' ＋ en ＋ 助動詞 ＋ pas ＋ 分詞' },
+  { id: 'S_L29_5', lesson: 29, fr: 'De l\'eau ? Oui, j\'en veux.', zh: '水嗎？好，我要一些。', note: '⚠️ ⛔ 不能只說 je veux——vouloir 後面一定要有東西' },
+  { id: 'S_L29_6', lesson: 29, fr: 'Dans ce restaurant, il faut réserver la table à l\'avance.', zh: '在這家餐廳，必須事先訂位。', note: '⭐ il faut ＋ 原形（不加 de）' },
+  { id: 'S_L29_7', lesson: 29, fr: 'Dans le métro taïwanais, il est interdit de manger et de boire.', zh: '在台灣的捷運裡，禁止飲食。', note: '⚠️⚠️ 兩個原形都要各自帶 de' },
+  { id: 'S_L29_8', lesson: 29, fr: 'Lavez-vous les mains !', zh: '請洗手！', note: '⭐⭐ 反身動詞的肯定命令式：代名詞放動詞後面加連字號' },
+  { id: 'S_L29_9', lesson: 29, fr: 'Versez la pâte sur les fruits.', zh: '把麵糊倒在水果上。', note: '⭐ la pâte＝混好還沒烤的狀態（麵糊或麵團都是）' },
+  { id: 'S_L29_10', lesson: 29, fr: 'Sortez le gâteau du four quand le dessus est doré et laissez refroidir.', zh: '表面金黃時把蛋糕拿出烤箱，讓它放涼。', note: '⭐ doré＝金黃（來自 or＝金）；laisser refroidir＝讓它冷卻' },
 ];

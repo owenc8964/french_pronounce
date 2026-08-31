@@ -198,4 +198,12 @@ const WRITING_TASKS = [
   { lesson:28, id:'W28b', title:'我的十年後（si 與 quand 並用）', task:'寫 80-100 字：十年後你的生活會是什麼樣子？⚠️ 至少要有一件「一定會發生」的事（用 quand ＋ 未來 ＋ 未來）跟一件「不一定會發生」的事（用 si）——這兩個的對比就是本課的重點。',
     use:['quand ＋ 未來式 ＋ 未來式（至少一次）', 'si ＋ 現在式 ＋ 未來式（至少一次）', 'on（至少一次，並且說得出它是哪一種意思）', 'J\'espère que ＋ 未來式'],
     frame:'⭐⭐ 先確定的事（Quand j\'aurai … ans, je …） → 再不確定的事（Si tout se passe bien, je …） → 一句通則（Quand on …, on est …＝les gens） → 收尾期望（J\'espère que …＋未來式）' },
+
+  // ── 第29課（le pronom en 數量版 ＋ 義務與禁止 ＋ 食材與食譜）
+  { lesson:29, id:'W29a', title:'我家的餐桌規矩（義務與禁止）', task:'寫 60-80 字介紹你家吃飯的規矩：三件一定要做的、兩件不可以做的。⚠️ 仿課本 Dupon／Pondu 那一題的寫法，義務跟禁止的說法要換著用，不要一路 il faut 到底。',
+    use:['il faut ＋ 原形（至少一次）', 'il est interdit de／il est défendu de（至少一次）', 'vous ne devez pas ＋ 原形', '一個反身動詞的命令式（Lavez-vous…／Brosse-toi…）'],
+    frame:'⭐ 開場定位（Chez moi, pendant les repas…） → 三件義務（換三種說法） → 兩件禁止 → 收尾一句命令式' },
+  { lesson:29, id:'W29b', title:'寫一份食譜（en ＋ 食譜動詞）', task:'寫 80-100 字，把一道你會做的菜寫成食譜：先列材料（含量詞），再寫五個步驟。⚠️ 材料清單裡至少要用 en 回答兩次（例如「洋蔥嗎？我放一把」），步驟一律用命令式（vous 形）。',
+    use:['en ＋ 量詞或數字（至少兩次）', '量詞（une pincée de／une botte de／un bouquet de…）', '食譜動詞（préchauffer／mélanger／verser／faire cuire／servir）', 'faire cuire（⚠️ 不能只寫 cuire）'],
+    frame:'⭐ 材料（Pour 4 personnes : …） → 自問自答用 en（Des oignons ? J\'en mets une botte.） → 五個步驟（全部命令式） → 收尾（Servez tiède avec…）' },
 ];

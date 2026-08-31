@@ -93,11 +93,11 @@ Owen 曾焦慮「單字背不起來、動詞變化多到記不完」。確立的
 | `sentences.js` | **新增（07-07）**：常用句庫（目前176句，第1–22課），**人工精選**跟chunks.js不同（chunks是自動抽取全部筆記，這裡只放真正常用、值得先背的完整句子）| ✅ 新建 |
 | `listening.html` | 聽力：**真實資源**（RFI + InnerFrench Spotify embed；Podcast Français Facile的A1對話系列連結卡）+ **自出TTS聽力測驗**（8篇，對齊已學課程）+ **07-09/07-10/07-11新增「真人語速測驗」**（LISTENING_BANK的`audioUrl`類型：真實mp3直接播放＋Claude原創TCF/TEF風格選擇題，目前10篇：麵包店/車站/市場/肉店/魚店/藥局/問路/**起司店/咖啡廳/郵局**，逐字稿核對用連結卡連到來源、不存對方文字）+ **07-10新增「文化深掘Podcast」板塊**（見下方07-10記錄，目前CULTURE_BANK是空陣列，等Owen放音檔進來）+ **07-16新增「🎬影集精讀Shadowing」板塊**（記錄集數/第幾遍/第2遍可貼整理的句型，`?shadow=1`從dashboard進來自動捲到這張卡）| ✅ 大改（07-06～07-16）|
 | `french_notes.html` | 第1–19課筆記，懸浮回饋（💬回饋這課）、每課下方研讀→做題快捷列、全站例句欄自動加喇叭、**第13/14課表格漏標class="m"已修復**（14個詞彙表）、**第13/14課排版大修**（見下方07-07記錄：note-box無樣式CSS bug、課文填空改逐句、choisir改verb-card、文化框補發音）、**07-11新增選字標記**（選取文字後可標🔴不熟／⭐重點，存`clb7_notes_marks`，重整頁面用文字比對重新套用，懸浮面板有「複製標記給Claude」）、**08-04第21課平行閱讀加「整段連續朗讀」**（只加整段層、刻意不加單字層，原因見08-04記錄） | ✅ 修復（07-07/11）＋整段朗讀（08-04）|
-| `chunks.js` | 複習卡庫：**1794張**，自動從筆記抽取（1–22課，07-07補第15課88張、07-10補第16課80張、07-17補第17課40張含課文慣用語、07-21補第18課35張、07-26補第19課24張、08-02補第20課70張、08-03補第21課63張、08-04補32張老師課堂口語、08-05補第22課66張），**07-11修正2張第14課語意不清的卡** | ✅ |
-| `questions.js` | 共用題庫（**BANK 1079題** + AGREE_BANK 247題），第1–22課，**07-11新增53個`zh`欄位**（fill題型無中文語境的補句意）、**07-17新增第17課24題**（passé composé/duree，含10題課文改編句）、**07-21新增第18課16題**（vocab-parcours-vie新topic + negation完整版）、**07-26新增第19課21題**（vocab-loisirs新topic、passé composé/negation/duree/adjective-position/social-invitations總複習）、**08-02新增第20課26題**（imparfait完整變位 + vocab-souvenirs新topic）、**08-03新增第21課27題**（pronoms-y-en＋vocab-sens 兩個新topic）、**08-04新增41題跨課「易混淆詞對」**（新topic paires-confusables，見08-04記錄）、**08-05新增第22課24題**（vocab-meteo新topic＋adjective-position補題） | ✅ |
+| `chunks.js` | 複習卡庫：**1881張**，自動從筆記抽取（1–22課，07-07補第15課88張、07-10補第16課80張、07-17補第17課40張含課文慣用語、07-21補第18課35張、07-26補第19課24張、08-02補第20課70張、08-03補第21課63張、08-04補32張老師課堂口語、08-05補第22課66張），**07-11修正2張第14課語意不清的卡** | ✅ |
+| `questions.js` | 共用題庫（**BANK 1117題** + AGREE_BANK 247題），第1–22課，**07-11新增53個`zh`欄位**（fill題型無中文語境的補句意）、**07-17新增第17課24題**（passé composé/duree，含10題課文改編句）、**07-21新增第18課16題**（vocab-parcours-vie新topic + negation完整版）、**07-26新增第19課21題**（vocab-loisirs新topic、passé composé/negation/duree/adjective-position/social-invitations總複習）、**08-02新增第20課26題**（imparfait完整變位 + vocab-souvenirs新topic）、**08-03新增第21課27題**（pronoms-y-en＋vocab-sens 兩個新topic）、**08-04新增41題跨課「易混淆詞對」**（新topic paires-confusables，見08-04記錄）、**08-05新增第22課24題**（vocab-meteo新topic＋adjective-position補題） | ✅ |
 | `gram_rules.js` | **新增（07-11）**：文法框架單一真相來源——`GRAM_POINTS` 32個文法點（19現役+13未開課佔位）含 topics 對應與規則卡（中文要點+法文例句）、`GRAM_CATS`7大類、`gramStageOf`/`gramSetStage`/`gramFlaggedIds`/`gramFlagQuestion` helpers。map/gram_trainer/quiz/dashboard 四頁共用。**07-21**：`negation`點補lesson 18＋passé composé中的位置規則／personne主詞vs受詞兩條rule points。**07-26**：`negation`/`duree-temps`/`passe`/`adjectifs-accord`四點的`lessons`陣列補19 | ✅ 新建 |
 | `gram_trainer.html` | **新增（07-11）**：文法路徑練習器——階段2半開卷（規則卡固定顯示）/階段3遮規則（答錯自動翻開），只出打字題杜絕選項污染，包尾重試磨到全對，首次作答≥80%升階，每階段可手動跳過；完成寫`clb7_quiz_done`（=步驟②）；階段2不寫SRS（開卷不灌精熟統計）、階段3寫；guided=1自動挑「階段最低+錯誤率最高」的點 | ✅ 新建 |
-| `codex.js` | **新增（07-11晚）**：📚文法資料庫（記憶宮殿）資料層——9大章50節**132條**，A1→B2全境（08-03新增3-4-5後：A1:29/A2:50/B1:32/B2:12），每條永久座標（如`5-2-2`）＋brief＋說明＋例句＋⚠️例外＋🆚相似對比＋topic對應（37個topic有門牌）。**座標鐵律：一經指定永不重編**（Owen靠位置記憶）。`codexLocate(topic)`給練習頁定位用。**07-21**：7-2-2補「personne當主詞vs受詞位置」pts（座標數不變，122條）。**08-02**：5-3-2／5-3-3 的 lvl B1→A2（實際已教到，座標不動）。**08-03**：新增 `3-4-5`「en＝從那個地方」補上 3-4 節唯一缺口（122→123，3-4-1~4 完全沒動）。**08-28**：新增 `6-6-3`「si vs quand」與 `3-1-3`「on 換得掉的三個字」（130→132，既有座標一個都沒動）。⚠️ **數條目要 parse `CODEX→sections→items`，用 grep 會多算交叉引用** | ✅ 新建 |
+| `codex.js` | **新增（07-11晚）**：📚文法資料庫（記憶宮殿）資料層——9大章50節**136條**，A1→B2全境（08-03新增3-4-5後：A1:29/A2:50/B1:32/B2:12），每條永久座標（如`5-2-2`）＋brief＋說明＋例句＋⚠️例外＋🆚相似對比＋topic對應（37個topic有門牌）。**座標鐵律：一經指定永不重編**（Owen靠位置記憶）。`codexLocate(topic)`給練習頁定位用。**07-21**：7-2-2補「personne當主詞vs受詞位置」pts（座標數不變，122條）。**08-02**：5-3-2／5-3-3 的 lvl B1→A2（實際已教到，座標不動）。**08-03**：新增 `3-4-5`「en＝從那個地方」補上 3-4 節唯一缺口（122→123，3-4-1~4 完全沒動）。**08-28**：新增 `6-6-3`「si vs quand」與 `3-1-3`「on 換得掉的三個字」（130→132，既有座標一個都沒動）。⚠️ **數條目要 parse `CODEX→sections→items`，用 grep 會多算交叉引用** | ✅ 新建 |
 | `verb_reference.html` | 動詞參考表，發音邏輯已跟其他頁統一（原本完全沒篩選） | ✅ 修復（07-07）|
 | `verb_forms.html`＋`verbs_full.js` | **新增（08-22）**：動詞變位總覽——22 個動詞（核心9＋高頻不規則10＋規則樣本3）× 13 個時態到 B2。**不是變位表大全，是「詞幹經濟學」**：資料只存四個詞幹（futur 詞幹／現在式 nous／現在式 ils／過去分詞）＋現在式六格＋passé simple 型，其餘 40 幾格由 `conjugate()` 現場推導——頁面用計算證明它在教的規則。每個時態掛 📍 codex 座標（13 個全部驗過有對應元素）、🔊 整組唸六個人稱、等級篩選（考前 A1–B1／全部到 B2／只看 B2）、`?v=prendre` 深連結、列印友善 | ✅ 新建 |
 | `answer_cards.js` | **新增（07-16）**：TEF Canada 高頻話題 Answer Card 資料——15個主題（自我介紹/家庭/工作/教育/興趣/飲食/旅行/加拿大/住家/購物/健康/科技/環保/社交/未來計畫），內容是 Owen 真實回答經 Claude 修成正確法文的 A1 種子版本，`versions[]` 之後會長出 A2/B1/B2 | ✅ 新建 |
@@ -2627,6 +2627,60 @@ revlog 也證實：08-23 之後每天固定就開 5 張。
 **⚠️ 另外兩件一直沒動、等 Owen 決定**：
 `MakeListeningCard` 129 張全空（Listening 模板在、但一張卡都沒生成）；
 牌組全部擠在 `FrançaisCours`，`FrançaisMining` 是 0 張。
+
+---
+
+### 08-31：第29課（A2・Le pronom en 數量版 ＋ L'obligation et l'interdiction）完整入庫
+
+Owen 丟進 2026-08-31 的課堂逐字稿＋8 張課本截圖（`~/Desktop/0831/`，Édito A2 **Unité 6「En cuisine」**，p.84–89）。
+⚠️ 全部先對過 `assets/.textbook_cache.txt`（Fonctionnement 表、Entraînement、詞彙框、食譜逐條核過）。
+
+**這一課教了什麼**
+- **主文法①：le pronom en 的「數量」身分**——第21課只給了 `en＝從那個地方`，這課補上四種數量用法：
+  部分冠詞／不定冠詞（**⚠️ 數字要留下來**：`j'en ai une`）／精確數量／數量副詞，
+  ＋位置（**passé composé 貼在助動詞前面**）＋ **en vs le/la** 的分界。
+  ⭐ 老師的一句話口訣：**y 取代 à，en 取代 de**。
+  ⛔ 另外記下一條：**vouloir 後面不能空著**——不能只回「Oui, je veux」。
+- **主文法②：l'obligation et l'interdiction**——四組成對表達，
+  **⚠️⚠️ 只有 il faut 與 vous devez 直接接原形，其餘一律 de ＋ 原形**（兩個動詞就兩個 de）。
+  ＋**反身動詞的肯定命令式代名詞後移、te→toi**（`Lavez-vous les mains !`／`Brosse-toi les dents.`）。
+- **詞彙（本課最大宗）**：蔬菜／乾豆穀類／水果／肉／魚／香料／量詞／烹飪動作**七組**。
+- **課文兩篇**：自己種菜的 témoignage（en 的出處）、**clafoutis aux fruits rouges** 食譜（食譜動詞的出處）。
+
+**九項連動全做完（＋兩項順手的）**
+1. `french_notes.html` `lesson-29`：9 unit／11 表／82 句法文。
+2. `questions.js` **＋38 題**（1079→1117）：pronoms-y-en 11／interdiction-demande 9／**新 topic `vocab-aliments` 18**。
+   TOPIC_LABELS 兩邊都補。
+3. `chunks.js`：`node tools/extract_chunks.js 29 --write` → **＋87 張**（1794→1881）。
+4. `sentences.js`：`S_L29_1~10`（246 句）。
+5. `table_drill.html` **＋3 表**：en 的數量（10 列）、義務↔禁止（8 列）、食材與量詞（25 列，vocab 型）。
+6. `gram_rules.js`：`pronoms-y-en` 補 lesson 29 ＋ 7 條新 rule points ＋ 4 個例句，
+   名稱從 **Pronoms y / en (lieu)** 改成 **Pronoms y / en**（已經不只是地點了）；
+   `conseils` 補 lesson 29 ＋ 6 條義務/禁止的 points。
+7. `codex.js` **132→136 條**：新增 **3-4-6「en 的數量四用法與位置」**與 **6-7-4「義務與禁止的成對表達」**；
+   ⚠️ 順手修兩個既有項的中繼資料（**座標一個都沒動**）：`3-4-3`「en＝部分量」的 lvl **B1→A2**（實際已教到）
+   並補 `gram`；`3-4-5` 補上漏掉的 `gram`——這兩個之前 `codexEntriesForGram('pronoms-y-en')` 撈不到。
+8. `map.html`：`CURRENT_LESSON` 28→29，新增三張 tile（Le pronom en (quantités)／Obligation & interdiction／
+   Les aliments & la cuisine）。
+9. `reading.html` **a30「Le dimanche, je cuisine」**（原創短文＋3 題），同一篇當第29課平行閱讀。
+10.（順手）`writing_tasks.js` **＋2 題**（W29a 餐桌規矩／W29b 寫一份食譜）。
+    ⭐ 22–27 課那個缺口**已經被另一個 session 補掉了**（commit `c00d995`），現在 1–29 課全有題目。
+11. 本課沒有新時態，`verb_sprint` 的 `MODES` 不用動。
+
+**驗證**（照測試鐵律：grep 確認 ROOM → 改 TEST → 測完還原 → `preview_stop` → grep 無殘留）
+- `node tools/check_notes.js` **全綠**（29 課／243 表／266 unit，錯誤 0 提醒 0）
+- 筆記：lesson-29 的 9 unit／11 表／82 個 `span.fr`／177 個 🔊 都在；五條整段朗讀列背景確認是白底
+- quiz：第29課 38 題全進 pool、連續作答 8 題（choose／fill）全部正常判分
+- table_drill：三張表都出得來，`vocab` 型現在有 2 張
+- reading：a30 三題全對得到 3/3
+- map：`第 29 課 / 預計 35 課`、三張新 tile 在、`#cx-3-4-6` 與 `#cx-6-7-4` 都渲染得出來
+- gram_trainer：`Pronoms y / en` 顯示「第 21、29 課 · 15 題」、`Conseils & obligations` 顯示「第 11、13、29 課 · 14 題」
+- console 零錯誤；收尾清掉試跑寫入的 8 筆第29課 SRS ＋ a30 的閱讀紀錄
+
+⚠️ **這一課一樣沒做 `scenes.js`**：課文是證言與食譜，沒有成對台詞的對話。
+
+📌 **給下個 session 的提醒**：這個 repo 同時有別的 session 在動（TCF 模擬考那條線，commit `121b1b2`～`6a3f97a`、
+未追蹤的 `mock.html`）。**動手前先 `git log --oneline -5` 看一下**，不要假設 HEAD 還停在你上次離開的地方。
 
 ---
 

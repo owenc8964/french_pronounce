@@ -12516,5 +12516,614 @@ const CHUNKS = [
   "fr": "réseaux sociaux",
   "zh": "複數兩個字都要變",
   "note": "⚠️ réseau→réseaux（-eau 加 x，不是 s）、social→sociaux（-al→-aux）。老師拿 cheval→chevaux 做對照"
+ },
+ {
+  "id": "L29_J_ai_aussi_une_grande_qu",
+  "lesson": 29,
+  "fr": "J'ai aussi une grande quantité d'herbes aromatiques.",
+  "zh": "我也有很大量的香草。",
+  "note": "⭐ les herbes aromatiques＝香草（herbe＝草、aromatique＝有香氣的）"
+ },
+ {
+  "id": "L29_Je_cuisine_mes_légumes_a",
+  "lesson": 29,
+  "fr": "Je cuisine mes légumes avec les œufs de mon poulailler.",
+  "zh": "我用自家雞舍的蛋來煮我的菜。",
+  "note": "⭐ le poulailler＝雞舍（le poulet＝雞 → 雞住的地方）"
+ },
+ {
+  "id": "L29_Mon_propre_mug",
+  "lesson": 29,
+  "fr": "Mon propre mug.",
+  "zh": "我自己的杯子。",
+  "note": "⭐ 形容詞在前 → 「自己的」"
+ },
+ {
+  "id": "L29_Mon_mug_est_propre",
+  "lesson": 29,
+  "fr": "Mon mug est propre.",
+  "zh": "我的杯子是乾淨的。",
+  "note": "⭐ 形容詞在後 → 「乾淨的」。⚠️ 同一個字、位置決定意思，跟第22課完全同一條規則"
+ },
+ {
+  "id": "L29_J_en_ai_pas",
+  "lesson": 29,
+  "fr": "J'en ai pas.",
+  "zh": "我沒有。（口語）",
+  "note": "⚠️⚠️ 課本 Attention：口語常把 ne 吃掉，變成 j'en ai pas。⭐ 老師強調：ne 才是真正的否定（pas 可以換成 rien／personne／jamais），但講話時反而是 ne 消失"
+ },
+ {
+  "id": "L29_Se_laver_les_mains_Lavez",
+  "lesson": 29,
+  "fr": "Se laver les mains → Lavez-vous les mains !",
+  "zh": "洗手 → 請洗手！",
+  "note": "⭐⭐ 代名詞跑到動詞後面並用連字號接住"
+ },
+ {
+  "id": "L29_Brossez_vous_les_dents_m",
+  "lesson": 29,
+  "fr": "Brossez-vous les dents, matin et soir !",
+  "zh": "早晚刷牙！",
+  "note": "⭐ 老師當堂補的（給客人的提醒）。se brosser les dents＝刷牙"
+ },
+ {
+  "id": "L29_Dans_ce_restaurant_il_fa",
+  "lesson": 29,
+  "fr": "Dans ce restaurant, il faut réserver la table à l'avance.",
+  "zh": "在這家餐廳，必須事先訂位。",
+  "note": "⭐ il faut 直接接原形（⛔ 不加 de）；à l'avance＝事先（第28課的字）"
+ },
+ {
+  "id": "L29_Il_est_défendu_de_boire",
+  "lesson": 29,
+  "fr": "Il est défendu de boire l'eau de ce robinet.",
+  "zh": "禁止喝這個水龍頭的水。",
+  "note": "⭐ le robinet＝水龍頭。⚠️ 老師的語感差別：défendu 比 interdit 軟一點——喝了會生病，但不會有人來抓你"
+ },
+ {
+  "id": "L29_Sinon_vous_pouvez_prendr",
+  "lesson": 29,
+  "fr": "Sinon, vous pouvez prendre une amende.",
+  "zh": "否則你可能會被罰款。",
+  "note": "⭐⭐ sinon＝否則；une amende＝罰款。⚠️ 見下方發音警報：amende（罰款）跟 amande（杏仁）同音"
+ },
+ {
+  "id": "L29_Chez_les_Pondu_il_est_né",
+  "lesson": 29,
+  "fr": "Chez les Pondu, il est nécessaire d'attendre les autres.",
+  "zh": "在 Pondu 家，必須等別人。",
+  "note": "⭐ 反過來就是把否定拿掉"
+ },
+ {
+  "id": "L29_Il_ne_faut_pas_mettre_le",
+  "lesson": 29,
+  "fr": "Il ne faut pas mettre les coudes sur la table.",
+  "zh": "不可以把手肘放在桌上。",
+  "note": "⭐ le coude＝手肘。原文是 il faut mettre…（Dupon 家），反過來加 ne…pas"
+ },
+ {
+  "id": "L29_Vous_ne_pouvez_pas_sorti",
+  "lesson": 29,
+  "fr": "Vous ne pouvez pas sortir de table quand vous voulez.",
+  "zh": "不可以想離席就離席。",
+  "note": "⭐ sortir de table＝離開餐桌（⚠️ 沒有冠詞，是固定說法）"
+ },
+ {
+  "id": "L29_Je_fais_cuire_le_gâteau",
+  "lesson": 29,
+  "fr": "Je fais cuire le gâteau.",
+  "zh": "我把蛋糕烤熟。",
+  "note": "⭐⭐ 煮東西要用 faire cuire（讓它熟）。⛔ 不能說 je cuis le gâteau"
+ },
+ {
+  "id": "L29_20_cl_de_lait",
+  "lesson": 29,
+  "fr": "20 cl de lait",
+  "zh": "200 毫升的牛奶",
+  "note": "⚠️⚠️ 法國用 cl（centilitre），台灣用 ml。換算：cl 後面加一個 0 就是 ml（20 cl＝200 ml）。還有 dl（décilitre）但少用"
+ },
+ {
+  "id": "L29_la_crème_chantilly",
+  "lesson": 29,
+  "fr": "la crème chantilly",
+  "zh": "打發鮮奶油",
+  "note": "⚠️ Owen 問「chantilly 是什麼意思」→ 老師：沒有別的意思，法國人就這樣叫打發鮮奶油（可能來自一個舊品牌名）"
+ },
+ {
+  "id": "L29_Le_dimanche_je_cuisine_p",
+  "lesson": 29,
+  "fr": "Le dimanche, je cuisine pour toute la famille.",
+  "zh": "星期天我為全家人下廚。",
+  "note": "⭐ le dimanche（加定冠詞）＝每個星期天"
+ },
+ {
+  "id": "L29_Des_oignons_J_en_achète",
+  "lesson": 29,
+  "fr": "Des oignons ? J'en achète toujours une botte.",
+  "zh": "洋蔥嗎？我總是買一把。",
+  "note": "⭐⭐ en ＋ 量詞留在後面（une botte）"
+ },
+ {
+  "id": "L29_De_la_farine_Il_m_en_fau",
+  "lesson": 29,
+  "fr": "De la farine ? Il m'en faut 500 grammes.",
+  "zh": "麵粉嗎？我需要500公克。",
+  "note": "⭐⭐ 精確數量：en ＋ 數字留下來。il me faut＝我需要"
+ },
+ {
+  "id": "L29_À_la_maison_il_faut_lave",
+  "lesson": 29,
+  "fr": "À la maison, il faut laver les légumes avant de les couper.",
+  "zh": "在家裡，切菜之前一定要先洗。",
+  "note": "⭐ il faut ＋ 原形（不加 de）；avant de ＋ 原形＝在…之前"
+ },
+ {
+  "id": "L29_Lavez_vous_les_mains_ava",
+  "lesson": 29,
+  "fr": "Lavez-vous les mains avant de commencer !",
+  "zh": "開始之前先洗手！",
+  "note": "⭐⭐ 反身動詞的肯定命令式：代名詞放後面並用連字號"
+ },
+ {
+  "id": "L29_Il_est_interdit_de_touch",
+  "lesson": 29,
+  "fr": "Il est interdit de toucher au four quand il est chaud.",
+  "zh": "烤箱燙的時候禁止碰它。",
+  "note": "⭐ il est interdit de ＋ 原形；toucher à＝碰"
+ },
+ {
+  "id": "L29_Mes_enfants_en_mangent_t",
+  "lesson": 29,
+  "fr": "Mes enfants en mangent toujours deux parts.",
+  "zh": "我的小孩總是吃兩塊。",
+  "note": "⭐⭐ en ＋ 數字：deux parts 留在後面。une part＝一塊（切開的）"
+ },
+ {
+  "id": "L29_Ils_ne_doivent_pas_mange",
+  "lesson": 29,
+  "fr": "Ils ne doivent pas manger avant les autres.",
+  "zh": "他們不可以比別人先吃。",
+  "note": "⭐ 禁止：ne devoir pas ＋ 原形"
+ },
+ {
+  "id": "L29_De_la_crème_chantilly_No",
+  "lesson": 29,
+  "fr": "De la crème chantilly ? Non merci, je n'en veux pas.",
+  "zh": "鮮奶油嗎？不用了，謝謝，我不要。",
+  "note": "⭐⭐ ⛔ 不能只說 je ne veux pas——vouloir 後面要有東西，所以用 en 收住"
+ },
+ {
+  "id": "L29_Mais_le_café_lui_je_le_v",
+  "lesson": 29,
+  "fr": "Mais le café, lui, je le veux bien.",
+  "zh": "但咖啡嘛，我倒是想要。",
+  "note": "⭐⭐ 特定的那一樣東西 → 用 le 不是 en。跟上一句剛好成對比"
+ },
+ {
+  "id": "L29_C_est_la_spécialité_de_l",
+  "lesson": 29,
+  "fr": "C'est la spécialité de la maison.",
+  "zh": "這是本店的招牌菜。",
+  "note": "🇫🇷 課本 Unité 6 的標語。⭐ 老師的用法更廣：去外婆家永遠想吃同一道，因為那是 sa spécialité"
+ },
+ {
+  "id": "L29_Tu_comprends",
+  "lesson": 29,
+  "fr": "Tu comprends ?",
+  "zh": "你懂嗎？",
+  "note": "🎙 講完一個概念後的確認"
+ },
+ {
+  "id": "L29_Je_vous_verse_un_verre_d",
+  "lesson": 29,
+  "fr": "Je vous verse un verre d'eau ?",
+  "zh": "我幫你倒杯水好嗎？",
+  "note": "🎙 老師用來示範 verser 的日常用法——不只用在食譜"
+ },
+ {
+  "id": "L29_Préchauffez_le_four_à_20",
+  "lesson": 29,
+  "fr": "Préchauffez le four à 200°C.",
+  "zh": "把烤箱預熱到200度。",
+  "note": "⭐ pré-（預先）＋ chauffer（加熱）；le four＝烤箱"
+ },
+ {
+  "id": "L29_Lavez_et_séchez_les_frui",
+  "lesson": 29,
+  "fr": "Lavez et séchez les fruits rouges.",
+  "zh": "把紅色莓果洗淨擦乾。",
+  "note": "laver＝洗、sécher＝弄乾（形容詞 sec＝乾的）"
+ },
+ {
+  "id": "L29_Versez_la_pâte_sur_les_f",
+  "lesson": 29,
+  "fr": "Versez la pâte sur les fruits.",
+  "zh": "把麵糊倒在水果上。",
+  "note": "⭐⭐ verser＝倒；la pâte＝麵糊／麵團（見下方）"
+ },
+ {
+  "id": "L29_Coupez_le_beurre_en_peti",
+  "lesson": 29,
+  "fr": "Coupez le beurre en petits morceaux et posez-les dessus.",
+  "zh": "把奶油切成小塊放在上面。",
+  "note": "⭐ couper en morceaux＝切成塊；dessus＝在上面。⚠️ posez-les＝命令式後接代名詞"
+ },
+ {
+  "id": "L29_l_aubergine_f",
+  "lesson": 29,
+  "fr": "l'aubergine (f.)",
+  "zh": "茄子",
+  "note": ""
+ },
+ {
+  "id": "L29_l_avocat_m",
+  "lesson": 29,
+  "fr": "l'avocat (m.)",
+  "zh": "酪梨",
+  "note": "⚠️ 同一個字也是律師——靠上下文分"
+ },
+ {
+  "id": "L29_la_betterave",
+  "lesson": 29,
+  "fr": "la betterave",
+  "zh": "甜菜根",
+  "note": "⚠️ 台灣少見。紫紅色，甜的"
+ },
+ {
+  "id": "L29_la_carotte",
+  "lesson": 29,
+  "fr": "la carotte",
+  "zh": "胡蘿蔔",
+  "note": ""
+ },
+ {
+  "id": "L29_le_céleri",
+  "lesson": 29,
+  "fr": "le céleri",
+  "zh": "芹菜",
+  "note": ""
+ },
+ {
+  "id": "L29_la_courge",
+  "lesson": 29,
+  "fr": "la courge",
+  "zh": "瓜類（總稱）",
+  "note": "⭐ 老師：courge 是一整個家族，la courgette（櫛瓜）只是其中一種"
+ },
+ {
+  "id": "L29_l_endive_f",
+  "lesson": 29,
+  "fr": "l'endive (f.)",
+  "zh": "苦苣",
+  "note": "⚠️⚠️ 老師強調很苦，台灣沒吃過。法國人常在裡面夾東西吃"
+ },
+ {
+  "id": "L29_le_navet",
+  "lesson": 29,
+  "fr": "le navet",
+  "zh": "蕪菁（白蘿蔔那類）",
+  "note": "⚠️ 台灣少見"
+ },
+ {
+  "id": "L29_l_oignon_m",
+  "lesson": 29,
+  "fr": "l'oignon (m.)",
+  "zh": "洋蔥",
+  "note": ""
+ },
+ {
+  "id": "L29_le_poireau",
+  "lesson": 29,
+  "fr": "le poireau",
+  "zh": "韭蔥",
+  "note": "⚠️⚠️ 台灣沒有。長得像超長超粗的蔥"
+ },
+ {
+  "id": "L29_le_radis",
+  "lesson": 29,
+  "fr": "le radis",
+  "zh": "小蘿蔔",
+  "note": "⭐ 台灣叫櫻桃蘿蔔。老師：法國人不煮它，洗一洗沾奶油生吃"
+ },
+ {
+  "id": "L29_la_farine",
+  "lesson": 29,
+  "fr": "la farine",
+  "zh": "麵粉",
+  "note": ""
+ },
+ {
+  "id": "L29_les_lentilles_f",
+  "lesson": 29,
+  "fr": "les lentilles (f.)",
+  "zh": "扁豆",
+  "note": "⚠️ 台灣少見。légume sec＝乾豆類"
+ },
+ {
+  "id": "L29_les_pois_chiches_m",
+  "lesson": 29,
+  "fr": "les pois chiches (m.)",
+  "zh": "鷹嘴豆",
+  "note": "⭐ 中東餐廳的 falafel、鷹嘴豆泥就是它"
+ },
+ {
+  "id": "L29_le_riz",
+  "lesson": 29,
+  "fr": "le riz",
+  "zh": "米、飯",
+  "note": "⭐ 老師：le riz 是 céréale（穀類），跟麵粉同一組"
+ },
+ {
+  "id": "L29_la_semoule",
+  "lesson": 29,
+  "fr": "la semoule",
+  "zh": "粗麥（庫斯庫斯的原料）",
+  "note": "🇫🇷 le couscous＝北非小米飯，UNESCO 非物質文化遺產，也是法國人最愛的菜之一"
+ },
+ {
+  "id": "L29_l_amande_f",
+  "lesson": 29,
+  "fr": "l'amande (f.)",
+  "zh": "杏仁",
+  "note": "⚠️⚠️ 跟 une amende（罰款）同音——見下方發音警報"
+ },
+ {
+  "id": "L29_la_banane",
+  "lesson": 29,
+  "fr": "la banane",
+  "zh": "香蕉",
+  "note": ""
+ },
+ {
+  "id": "L29_la_framboise",
+  "lesson": 29,
+  "fr": "la framboise",
+  "zh": "覆盆子",
+  "note": ""
+ },
+ {
+  "id": "L29_la_groseille",
+  "lesson": 29,
+  "fr": "la groseille",
+  "zh": "紅醋栗",
+  "note": "⚠️ 台灣少見。食譜裡拿來裝飾"
+ },
+ {
+  "id": "L29_le_kiwi",
+  "lesson": 29,
+  "fr": "le kiwi",
+  "zh": "奇異果",
+  "note": ""
+ },
+ {
+  "id": "L29_la_mûre",
+  "lesson": 29,
+  "fr": "la mûre",
+  "zh": "黑莓",
+  "note": "⚠️⚠️ 跟 la myrtille（藍莓）最容易混。老師：這些莓果多半是在森林裡找到的"
+ },
+ {
+  "id": "L29_la_myrtille",
+  "lesson": 29,
+  "fr": "la myrtille",
+  "zh": "藍莓",
+  "note": ""
+ },
+ {
+  "id": "L29_la_poire",
+  "lesson": 29,
+  "fr": "la poire",
+  "zh": "西洋梨",
+  "note": ""
+ },
+ {
+  "id": "L29_la_prune",
+  "lesson": 29,
+  "fr": "la prune",
+  "zh": "李子",
+  "note": ""
+ },
+ {
+  "id": "L29_les_crevettes_f",
+  "lesson": 29,
+  "fr": "les crevettes (f.)",
+  "zh": "蝦",
+  "note": "⭐ les fruits de mer＝海鮮（第22課出現過）"
+ },
+ {
+  "id": "L29_la_cannelle",
+  "lesson": 29,
+  "fr": "la cannelle",
+  "zh": "肉桂",
+  "note": ""
+ },
+ {
+  "id": "L29_la_coriandre",
+  "lesson": 29,
+  "fr": "la coriandre",
+  "zh": "香菜",
+  "note": "⭐ 老師跟 Owen 都不愛。⚠️ 拼字：coriandre"
+ },
+ {
+  "id": "L29_le_cumin",
+  "lesson": 29,
+  "fr": "le cumin",
+  "zh": "孜然",
+  "note": ""
+ },
+ {
+  "id": "L29_le_curcuma",
+  "lesson": 29,
+  "fr": "le curcuma",
+  "zh": "薑黃",
+  "note": ""
+ },
+ {
+  "id": "L29_le_gingembre",
+  "lesson": 29,
+  "fr": "le gingembre",
+  "zh": "薑",
+  "note": ""
+ },
+ {
+  "id": "L29_la_menthe",
+  "lesson": 29,
+  "fr": "la menthe",
+  "zh": "薄荷",
+  "note": ""
+ },
+ {
+  "id": "L29_la_muscade",
+  "lesson": 29,
+  "fr": "la muscade",
+  "zh": "肉豆蔻",
+  "note": ""
+ },
+ {
+  "id": "L29_le_safran",
+  "lesson": 29,
+  "fr": "le safran",
+  "zh": "番紅花",
+  "note": "🇫🇷 最貴的香料。老師提到台北101旁邊有間印度餐廳就叫這個名字"
+ },
+ {
+  "id": "L29_une_barquette_de",
+  "lesson": 29,
+  "fr": "une barquette de",
+  "zh": "一小盒（塑膠盒）",
+  "note": "framboises、fraises（軟的莓果）"
+ },
+ {
+  "id": "L29_une_botte_de",
+  "lesson": 29,
+  "fr": "une botte de",
+  "zh": "一把（綁起來的）",
+  "note": "oignons、carottes、radis"
+ },
+ {
+  "id": "L29_un_bouquet_de",
+  "lesson": 29,
+  "fr": "un bouquet de",
+  "zh": "一束",
+  "note": "menthe、coriandre（香草）"
+ },
+ {
+  "id": "L29_une_boule_de",
+  "lesson": 29,
+  "fr": "une boule de",
+  "zh": "一球",
+  "note": "glace（冰淇淋）"
+ },
+ {
+  "id": "L29_une_feuille_de",
+  "lesson": 29,
+  "fr": "une feuille de",
+  "zh": "一片葉子",
+  "note": "menthe"
+ },
+ {
+  "id": "L29_une_pincée_de",
+  "lesson": 29,
+  "fr": "une pincée de",
+  "zh": "一撮",
+  "note": "sel、poivre"
+ },
+ {
+  "id": "L29_une_tablette_de",
+  "lesson": 29,
+  "fr": "une tablette de",
+  "zh": "一片（板狀）",
+  "note": "chocolat。⭐ 老師：法國人也用 tablette 講腹肌"
+ },
+ {
+  "id": "L29_un_pot_de",
+  "lesson": 29,
+  "fr": "un pot de",
+  "zh": "一罐／一盒",
+  "note": "crème、yaourt"
+ },
+ {
+  "id": "L29_ajouter",
+  "lesson": 29,
+  "fr": "ajouter",
+  "zh": "加",
+  "note": ""
+ },
+ {
+  "id": "L29_couper_en_morceaux",
+  "lesson": 29,
+  "fr": "couper (en morceaux)",
+  "zh": "切（成塊）",
+  "note": ""
+ },
+ {
+  "id": "L29__faire_cuire",
+  "lesson": 29,
+  "fr": "(faire) cuire",
+  "zh": "烹煮",
+  "note": "⚠️⚠️ 一定要 faire cuire，不然煮的是你自己"
+ },
+ {
+  "id": "L29_laver",
+  "lesson": 29,
+  "fr": "laver",
+  "zh": "洗",
+  "note": ""
+ },
+ {
+  "id": "L29_mélanger",
+  "lesson": 29,
+  "fr": "mélanger",
+  "zh": "混合",
+  "note": ""
+ },
+ {
+  "id": "L29_mettre_au_four_enfourner",
+  "lesson": 29,
+  "fr": "mettre au four = enfourner",
+  "zh": "送進烤箱",
+  "note": "⭐ 兩種說法都要認得"
+ },
+ {
+  "id": "L29_préchauffer_le_four",
+  "lesson": 29,
+  "fr": "préchauffer le four",
+  "zh": "預熱烤箱",
+  "note": ""
+ },
+ {
+  "id": "L29_préparer",
+  "lesson": 29,
+  "fr": "préparer",
+  "zh": "準備",
+  "note": ""
+ },
+ {
+  "id": "L29__laisser_refroidir",
+  "lesson": 29,
+  "fr": "(laisser) refroidir",
+  "zh": "（讓它）冷卻",
+  "note": ""
+ },
+ {
+  "id": "L29_servir",
+  "lesson": 29,
+  "fr": "servir",
+  "zh": "上桌、端出",
+  "note": ""
+ },
+ {
+  "id": "L29_sortir_du_four",
+  "lesson": 29,
+  "fr": "sortir du four",
+  "zh": "從烤箱拿出來",
+  "note": ""
+ },
+ {
+  "id": "L29_verser",
+  "lesson": 29,
+  "fr": "verser",
+  "zh": "倒",
+  "note": "⭐ 也用在倒飲料：Je vous verse un verre d'eau ?"
  }
 ];
