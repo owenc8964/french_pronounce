@@ -200,10 +200,59 @@ const ANSWER_CARDS = [
   { id:'AC7', topic:'travel', title:'旅行',
     q_fr:"Quel est le voyage le plus mémorable pour vous ? Avec qui ? Qu'est-ce que vous avez fait ?",
     q_zh:'你去過哪裡印象最深？跟誰去、做了什麼？',
+    // ⭐ 2026-09-01 Owen 的中文口述全文（逐字保留，⛔ 不要精簡）。慣例同 AC2／AC3／AC8。
+    // ⚠️ v2 法文版刻意沒收進去的段落（＝之後升級 B1/B2 的第一批材料）：
+    //    ・「慢活、不追求過多待辦事項，單純感受自己在這個世界上存在的感覺」← 抽象化，B2 的料
+    //    ・「光是跟自然界互動就能得到很多，也會自然地對大自然產生敬畏」← 抽象化＋論證，B2 的料
+    //    ・「冰島是疫情前最後一次長途旅行」← 時間錨點，中版可加回（avant la pandémie）
+    //    ・「爬到非常高的地方」「拍美照」「達成目標很重要」← 細節，中版可加回
+    //    ・「一歲前開車去南部、中南部、宜蘭，在外面住很多天」← 細節，中版可加回
+    //    ・「吃東西受限制」「要找嬰兒車好推的地方」← 細節（換尿布已收進 v2）
+    //    ・「至少現在不會有明確的景點概念」← 讓步的雛形，B2 接口
+    source_zh:"【去過加拿大嗎】我還沒去過加拿大。其實我以前一直沒踏進美洲過，直到 36 歲的聖誕節才去過美國，主要原因也是距離太遠。\n但我很嚮往那樣的行程：慢活、享受跟自然的互動，不追求過多的待辦事項，單純感受自己在這個世界上存在的感覺。\n我想優先去溫哥華，然後再去國家公園。去溫哥華體驗一下大家說的氣候宜人是什麼感覺；國家公園更不用提，這就是我想去加拿大的原因，有太多自然景觀了。光是在跟自然界的互動中我們就能得到很多，也會自然地對大自然產生敬畏。\n\n【冰島】說到冰島，冰島是疫情前最後一次長途旅行，也是我第一次自駕。我印象最深刻的就是各種瀑布，還有爬到非常高的地方。瀑布非常壯觀，而且在沒有任何圍欄阻礙的情況下，能直接跟大自然交流。\n\n【我喜歡怎麼玩】我自己喜歡怎麼玩呢？\n・城市：我會認真好好規劃，因為很多地方都很廣，而且達成目標很重要。\n・自然景觀：我不會排太多行程，會留很多餘裕去跟大自然交流，在那個地方喝杯咖啡、觀察大家怎麼玩、踩踩落葉、拍拍美照。\n\n【有了 Jolie 之後】我女兒出生之後，我帶她去過滿多地方。一歲前都是開車去南部、中南部、宜蘭等等，在外面住很多天。一歲之後帶她去日本北海道，算是相對比較長途的旅行。\n跟她一起出門蠻開心的，但行程跟以前完全不同：她很早睡、很早就得吃晚餐（5 點多就得吃），早上也很早起。以前那種 7、8 點吃飯、逛街逛到 10 點、再去藥妝店買東西的行程完全不會有。吃東西受限制、能吃的比較少，而且隨時隨地都要找地方換尿布，也要找嬰兒車方便推的地方。\n你說她會不會記得？我認為不會，至少現在不會有明確的景點概念。但我覺得這些體驗都刻在身體裡面，感受一定都在。\n這些東西都非常值得。",
     versions:[
       { level:'A1', d:'2026-07-16',
         fr:"Le voyage le plus mémorable, c'est l'Islande et la Grotte Bleue en Italie. La nature est incroyable — je me sens tout petit. En Islande, j'ai voyagé avec un groupe d'amis plus jeunes. Il n'y a pas beaucoup de restaurants, alors on a mangé dans la voiture. Pour la Grotte Bleue, la mer était très agitée. J'ai attendu longtemps sur le bateau. À l'intérieur, c'était incroyable !",
-        zh:'印象最深的旅行是冰島跟義大利的藍洞。大自然太不可思議了——我覺得自己很渺小。冰島是跟一群學弟妹一起去的。餐廳很少，所以我們在車上吃飯。藍洞那次，海浪很大。我在船上等了很久。裡面真的太神奇了！' }
+        zh:'印象最深的旅行是冰島跟義大利的藍洞。大自然太不可思議了——我覺得自己很渺小。冰島是跟一群學弟妹一起去的。餐廳很少，所以我們在車上吃飯。藍洞那次，海浪很大。我在船上等了很久。裡面真的太神奇了！' },
+      // ── 2026-09-01 v2：語言島第五座。192 字 / 約 88 秒（AC3 是 174/80、AC2 是 187/86，同一規格）。
+      // 這座島是為了補掉 AC8 最後一個 gap 而蓋的（「你去過加拿大嗎」）→ 已把 AC8 那題升成 'ok'。
+      // 四段：①沒去過加拿大＋為什麼＋想先去哪 ②冰島的「一個瞬間」 ③城市 vs 自然的玩法對比
+      //       ④有了 Jolie 之後旅行怎麼變
+      // 五個「加分」點：
+      //   ・⭐「三十六歲才第一次踏上美洲」——誠實又具體，考官記得住（不是「我很喜歡旅行」這種誰都能講的）
+      //   ・⭐「巨大的瀑布，沒有任何圍欄，我跟大自然之間什麼都沒有」——別人沒有的畫面，
+      //     而且是往加拿大國家公園的伏筆（同一個嚮往，兩個大陸）
+      //   ・「城市全部排好／大自然幾乎不排」——⭐ 對比結構，B2 讓步段最天然的接口
+      //   ・「晚上十點還在逛街這種事已經沒有了」——具體、帶點幽默，考官會笑
+      //   ・⭐「她會記得嗎？不會。但我相信這些都留在她身體裡。」——情緒，全段最強的收尾
+      // ⛔ 刻意不重述舊島（原則 7）：Vancouver 的氣候「論證」AC8 已經講完（暖化、三十年後），
+      //    這裡只留體感勾子「大家都在說，我想自己感受看看」；Jolie 是誰 AC2 講過，這裡只講「旅行怎麼變」。
+      // 用上的近期結構（刻意）：
+      //   ・si j'y vais un jour, je commencerai…（28課 si＋現在式＋未來式，本課才補上的第三式）
+      //   ・Des cascades, il y en a partout（29課 en 數量版＋前置提示）
+      //   ・partout, il faut trouver un endroit…（29課 obligation：il faut＋不定式）
+      //   ・s'en souviendra（27課 futur simple ＋ 29課 en）
+      //   ・on voyage / on est allés（28課 on ＝ nous，含性數配合）
+      //   ・je me souviens d'un moment précis（21課 se souvenir＋20課 Je me souviens 那課的主題句）
+      //   ・j'étais / il n'y avait（20課 imparfait）、aucune barrière（18課 la négation）
+      //   ・je suis allé pour la première fois（17課 passé composé）
+      { level:'A2', d:'2026-09-01',
+        fr:"Non, je ne suis jamais allé au Canada. Je suis allé en Amérique pour la première fois à trente-six ans, aux États-Unis : c'est simplement trop loin. Si j'y vais un jour, je commencerai par Vancouver — tout le monde parle de son climat, je veux le sentir moi-même — et ensuite les parcs nationaux. C'est vraiment pour ça.\n\nMon plus beau souvenir, c'est l'Islande. Des cascades, il y en a partout, mais je me souviens d'un moment précis : j'étais devant une cascade immense, et il n'y avait aucune barrière. Rien entre la nature et moi. C'était aussi ma première fois au volant.\n\nEn ville, je prépare tout, parce que je veux tout voir. Dans la nature, au contraire, je ne prévois presque rien : je prends un café, je marche dans les feuilles.\n\nDepuis la naissance de ma fille, on voyage autrement. On est allés à Hokkaido : elle dîne à cinq heures et elle dort tôt. Fini les magasins à dix heures du soir. Et partout, il faut trouver un endroit pour la changer. Est-ce qu'elle s'en souviendra ? Non. Mais je crois que tout ça reste dans son corps. Et ça, ça vaut la peine.",
+        zh:'沒有，我還沒去過加拿大。我第一次去美洲是三十六歲，去美國：單純就是太遠了。如果哪天我去，我會先去溫哥華——大家都在說那裡的氣候，我想自己感受看看——然後是國家公園。我想去，真的就是為了這個。\n\n我最難忘的旅行是冰島。瀑布到處都是，但我記得一個很具體的瞬間：我站在一座巨大的瀑布前面，沒有任何圍欄。我跟大自然之間什麼都沒有。那也是我第一次自己開車。\n\n在城市，我會把所有東西都規劃好，因為我想全部看到。在大自然裡剛好相反，我幾乎什麼都不排：喝杯咖啡、踩著落葉走。\n\n女兒出生之後，我們旅行的方式就不一樣了。我們去了北海道：她五點就吃晚餐、很早睡。晚上十點還在逛街這種事已經沒有了。而且到哪裡都要找地方換尿布。她會記得嗎？不會。但我相信這些都留在她身體裡。這一切真的很值得。' }
+    ],
+    // 2026-09-01 預測追問。cover：'ok'＝島接得住｜'part'＝要轉一下｜'gap'＝沒材料
+    // ⭐ gap／part 這幾題就是 B2 升級層的施工圖，見 STRATEGY 原則 6
+    follow_ups:[
+      { fr:"Pourquoi vous n'êtes jamais allé au Canada ?", zh:'你為什麼一直沒去過加拿大？', cover:'ok', from:null },
+      { fr:"Vous préférez la ville ou la nature ?", zh:'你比較喜歡城市還是大自然？', cover:'ok', from:null },
+      { fr:"Voyager avec un bébé, c'est difficile ?", zh:'帶著寶寶旅行很難嗎？', cover:'ok', from:null },
+      { fr:"Vous conduisez à l'étranger ? Vous louez une voiture ?", zh:'你在國外會開車嗎？會租車嗎？', cover:'part', from:null },
+      { fr:"Aux États-Unis, vous êtes allé où exactement ?", zh:'美國你到底去了哪裡？', cover:'part', from:null },
+      { fr:"Vous préférez voyager seul, en couple ou en groupe ?", zh:'你喜歡一個人、兩個人還是一群人去？', cover:'part', from:null },  // v1 有「跟一群學弟妹去冰島」可以調
+      { fr:"Au Canada, vous voyagerez beaucoup ?", zh:'到了加拿大，你會常常旅行嗎？', cover:'part', from:'AC8 加拿大' },
+      { fr:"Quel sera votre prochain voyage ?", zh:'你下一趟旅行會是哪裡？', cover:'gap', from:null },
+      { fr:"Vous avez déjà eu un problème pendant un voyage ?", zh:'你旅行中出過什麼狀況嗎？', cover:'gap', from:null },
+      { fr:"Voyager, ça coûte cher. Est-ce que ça vaut vraiment la peine ?", zh:'旅行很花錢，真的值得嗎？', cover:'gap', from:null }  // ⭐ 讓步段：這題就是這座島的 B2 施工圖
     ] },
 
   { id:'AC8', topic:'canada', title:'加拿大／移民動機',
@@ -232,7 +281,7 @@ const ANSWER_CARDS = [
     // cover 欄位：'ok'＝現在的島接得住｜'part'＝接得住但要轉一下｜'gap'＝沒材料，要補
     // from 欄位：可以從哪一張既有的 answer card 調材料過來（⭐ 島與島之間的橋）
     follow_ups:[
-      { fr:"Vous êtes déjà allé au Canada ?", zh:'你去過加拿大嗎？', cover:'gap', from:'AC7 旅行' },
+      { fr:"Vous êtes déjà allé au Canada ?", zh:'你去過加拿大嗎？', cover:'ok', from:'AC7 旅行' },  // 09-01 AC7 v2 第①段整段就是這題：gap→ok（AC8 四個 gap 全數補完）
       { fr:"Pourquoi Vancouver plutôt que Montréal ou Toronto ?", zh:'為什麼是溫哥華，不是蒙特婁或多倫多？', cover:'part', from:null },
       { fr:"Votre fille a quel âge ? Elle apprend le français aussi ?", zh:'你女兒幾歲？她也在學法文嗎？', cover:'part', from:'AC2 家庭' },  // 08-28 AC2 v2 補了年齡與個性；「學法文」仍缺
       { fr:"Et votre femme, qu'est-ce qu'elle en pense ?", zh:'那你太太怎麼想？', cover:'ok', from:'AC2 家庭' },  // 08-28 AC2 v2 ②段補上了：gap→ok
