@@ -188,6 +188,30 @@ TEF/TCF 的 B2 判準**不是詞彙難度，是論述行為**：
 而島的寫版正是那個裝穩的地方。新文法一出生就有內容可掛，不會變成一張懸空的規則卡。
 這也對得上 `CLAUDE.md` 的教學鐵律：直接進**自動化**練習，跳過「懂了但用不出來」那一段。
 
+#### ⭐ 2026-09-01 更新：升級層的工具箱找到更好的來源
+
+原本原則 5-bis 說「從 180 篇範文抽骨架」。**現在有更好的**：
+第三包材料裡有一本 **《Débattre en FLE》**（Stéphanie Holleville, Ellipses 2021, **B1–C2**, 258 頁），
+副標就是 *Toutes les clés pour argumenter et exprimer son opinion*。
+
+**它的連接詞語域明顯更高**：
+| 這本 | 180 篇範文 |
+|---|---|
+| `par ailleurs 38｜toutefois 26｜or 15｜néanmoins 15｜dès lors 10｜force est de constater` | `également 50｜de plus 46｜ainsi 39｜car 35` |
+→ **範文是 B1–B2 基本款，這本是 B2–C2 高階款。升級層改以本書為主。**
+
+**三個直接可用的框架**（已摘成 `assets/tcf/pack3/_analyse/METHODE_ARGUMENTATION.md`）：
+1. ⭐ **QQOQCP**（Quoi/Qui/Où/Quand/Comment/Pourquoi）—— 解決「腦袋空白」，只寫關鍵詞不寫句子
+2. ⭐⭐ **L'approche thématique 六個面向**（historiques／culturels／juridiques／
+   environnementaux／sociétaux／économiques）
+   —— **跟備考寶典的「六個主題集裝箱」幾乎同一套**，兩個獨立來源收斂 → 框架可信
+3. **L'approche binaire**：Avantages/Inconvénients ＋ Causes/Conséquences
+
+⭐⭐ **最實用的一條**：原書明講 **「Les Français disent rarement « oui » ou « non »」**，
+正式場合要用變體。尤其「**弱化的不同意**」——考官反駁你時，
+`C'est plus complexe que ça` / `Pas exactement` / `Ça dépend` 比 `Non` 高好幾個等級。
+→ 這正是 Tâche 3「被反駁時怎麼接」的直接解答。
+
 #### ⚠️ 兩個出口的升級方向不一樣
 
 | 出口 | 升級方向 |
