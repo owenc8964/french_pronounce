@@ -4,7 +4,10 @@
     {
       "name": "french-app",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "7788"],
+      "runtimeArgs": [
+        "tools/dev_server.py",
+        "7788"
+      ],
       "port": 7788
     }
   ]

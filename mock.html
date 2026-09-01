@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCF Canada · Examen blanc</title>
+<style>
+/* ─────────────────────────────────────────────────────────────
+   風格沿用 reading.html / quiz.html：深藍底、金色標題、
+   #0d1020 卡片、#1a2438 邊框、綠對紅錯。不另發明配色。
+   ⚠️ 本頁完全獨立：不載入 sync_supabase.js，
+      所有 localStorage key 一律 tcfmock_ 前綴，不寫 clb7_*。
+   ───────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #07080f; color: #ddd8cc;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh; padding: 24px 16px 90px;
+  max-width: 680px; margin: 0 auto;
+}
+
+/* Header */
+.header { text-align: center; margin-bottom: 20px; }
+.header h1 { font-size: 1.2rem; letter-spacing: 2px; color: #f0c060;
+  text-shadow: 0 0 20px rgba(240,192,96,0.35); }
+.header .back { font-size: 0.72rem; color: #445060; text-decoration: none;
+  display: inline-block; margin-bottom: 8px; }
+.header .back:hover { color: #f0c060; }
+.header .sub { font-size: 0.68rem; color: #445060; margin-top: 6px; }
+
+/* Generic card */
+.card {
+  background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 12px; padding: 16px 18px; margin-bottom: 16px;
+}
+.card-title { font-size: 0.65rem; color: #445060; text-transform: uppercase;
+  letter-spacing: 1.5px; margin-bottom: 12px; }
+
+/* Skill switch */
+.skill-row { display: flex; gap: 10px; margin-bottom: 12px; }
+.skill-btn {
+  flex: 1; padding: 12px; border-radius: 9px; cursor: pointer;
+  background: #141928; border: 1.5px solid #1a2438; color: #aaa8a0;
+  font-family: inherit; font-size: 0.86rem; transition: all .12s;
+}
+.skill-btn:hover { border-color: #445060; color: #ddd8cc; }
+.skill-btn.on { border-color: #f0c060; color: #f0c060; background: #1a1800; font-weight: 700; }
+
+/* Toggles */
+.toggle-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid #141928;
+}
+.toggle-row:last-child { border-bottom: none; }
+.toggle-row label { flex: 1; font-size: 0.8rem; color: #aaa8a0; cursor: pointer; }
+.toggle-row .hint { display: block; font-size: 0.68rem; color: #445060; margin-top: 3px; line-height: 1.5; }
+.toggle-row input { width: 18px; height: 18px; accent-color: #f0c060; margin-top: 2px; cursor: pointer; }
+
+/* Test grid */
+.test-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 8px; }
+.test-btn {
+  background: #141928; border: 1.5px solid #1a2438; border-radius: 8px;
+  padding: 10px 4px; cursor: pointer; color: #ddd8cc;
+  font-family: inherit; font-size: 0.8rem; transition: all .12s; text-align: center;
+}
+.test-btn:hover { border-color: #445060; transform: translateY(-1px); }
+.test-btn .tb-sub { display: block; font-size: 0.6rem; color: #445060; margin-top: 3px; }
+.test-btn.done { border-color: #1a4a1a; }
+.test-btn.done .tb-sub { color: #60d090; }
+
+/* Sticky exam bar */
+.exam-bar {
+  position: sticky; top: 0; z-index: 20;
+  background: #0d1020; border: 1px solid #1a2438; border-radius: 10px;
+  padding: 10px 14px; margin-bottom: 14px;
+}
+.bar-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.bar-label { font-size: 0.62rem; color: #445060; text-transform: uppercase; letter-spacing: 1px; }
+.bar-val { font-size: 1.15rem; font-weight: 700; color: #60a0d0; font-variant-numeric: tabular-nums; }
+.bar-progress { font-size: 0.82rem; color: #aaa8a0; font-weight: 700; }
+.bar-mode { font-size: 0.62rem; color: #d07060; letter-spacing: 1px; }
+audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
+.audio-note { font-size: 0.66rem; color: #445060; margin-top: 6px; line-height: 1.5; }
+.play-once {
+  width: 100%; margin-top: 10px; padding: 12px;
+  background: linear-gradient(135deg, #1d3550, #2a5a7a); color: #60a0d0;
+  border: none; border-radius: 9px; font-family: inherit;
+  font-size: 0.88rem; font-weight: 700; cursor: pointer;
+}
+.play-once:disabled { opacity: .4; cursor: default; }
+
+/* Question card */
+.q-card { background: #0d1020; border: 1px solid #1a2438; border-radius: 12px;
+  padding: 18px; margin-bottom: 14px; }
+.q-num { font-size: 0.65rem; color: #445060; letter-spacing: 1px; margin-bottom: 8px;
+  display: flex; justify-content: space-between; align-items: center; }
+.flag-btn { background: none; border: none; cursor: pointer; font-size: 1rem;
+  color: #445060; font-family: inherit; padding: 0 4px; }
+.flag-btn.on { color: #f0c060; }
+.doc-img {
+  width: 100%; border-radius: 8px; background: #fff; margin-bottom: 14px;
+  display: block; border: 1px solid #1a2438;
+}
+.q-text { font-size: 0.95rem; font-weight: 600; color: #ddd8cc;
+  margin-bottom: 14px; line-height: 1.55; }
+.options { display: flex; flex-direction: column; gap: 8px; }
+.opt-btn {
+  background: #141928; border: 1.5px solid #1a2438; border-radius: 8px;
+  padding: 11px 14px; font-size: 0.85rem; color: #aaa8a0; font-family: inherit;
+  cursor: pointer; text-align: left; transition: all .12s; line-height: 1.45;
+}
+.opt-btn:hover:not(:disabled) { border-color: #445060; color: #ddd8cc; }
+.opt-btn.selected { border-color: #f0c060; color: #f0c060; background: #1a1800; }
+.opt-btn.correct  { border-color: #60d090; color: #60d090; background: #0a1a0c; }
+.opt-btn.wrong    { border-color: #d07060; color: #d07060; background: #1a0a08; }
+.opt-btn:disabled { cursor: default; }
+.opt-letter { font-weight: 700; margin-right: 8px; opacity: .7; }
+
+/* Nav */
+.nav-row { display: flex; gap: 10px; margin-bottom: 14px; }
+.nav-btn {
+  flex: 1; padding: 13px; background: #141928; color: #ddd8cc;
+  border: 1px solid #1a2438; border-radius: 10px;
+  font-size: 0.85rem; cursor: pointer; font-family: inherit; transition: border-color .15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: #445060; }
+.nav-btn:disabled { opacity: .35; cursor: default; }
+.submit-btn {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, #1d5035, #2a7a50);
+  color: #60d090; border: none; border-radius: 10px;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit;
+  margin-bottom: 14px;
+}
+.submit-btn:hover { opacity: .9; }
+.quit-btn {
+  width: 100%; padding: 11px; background: none; color: #445060;
+  border: 1px solid #1a2438; border-radius: 10px;
+  font-size: 0.78rem; cursor: pointer; font-family: inherit;
+}
+.quit-btn:hover { color: #d07060; border-color: #4a1a18; }
+
+/* Jump grid */
+.jump-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; }
+.jump-cell {
+  aspect-ratio: 1; border-radius: 6px; border: 1px solid #1a2438;
+  background: #141928; color: #445060; font-size: 0.66rem;
+  cursor: pointer; font-family: inherit; display: flex;
+  align-items: center; justify-content: center; padding: 0;
+}
+.jump-cell.answered { color: #ddd8cc; border-color: #445060; }
+.jump-cell.now { border-color: #f0c060; color: #f0c060; }
+.jump-cell.flagged { background: #1a1800; }
+.jump-cell.ok   { border-color: #1a4a1a; color: #60d090; background: #0a1a0c; }
+.jump-cell.bad  { border-color: #4a1a18; color: #d07060; background: #1a0a08; }
+
+/* Result */
+.result-head { text-align: center; padding: 22px 18px; }
+.result-score { font-size: 3rem; font-weight: 700; color: #f0c060; }
+.result-label { font-size: 0.72rem; color: #445060; text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 14px; }
+.result-time { font-size: 0.82rem; color: #60a0d0; margin-bottom: 12px; }
+.result-band { font-size: 0.92rem; color: #ddd8cc; line-height: 1.7; }
+.result-band b { color: #60d090; }
+.caveat { font-size: 0.68rem; color: #445060; line-height: 1.6; margin-top: 12px; }
+
+/* Review */
+.rev-item { border-bottom: 1px solid #141928; padding: 14px 0; }
+.rev-item:last-child { border-bottom: none; }
+.rev-head { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; margin-bottom: 8px; }
+.rev-mark { font-weight: 700; }
+.rev-mark.ok { color: #60d090; }
+.rev-mark.bad { color: #d07060; }
+.rev-q { flex: 1; color: #ddd8cc; font-size: 0.82rem; line-height: 1.45; }
+.rev-line { font-size: 0.78rem; color: #aaa8a0; margin: 3px 0; line-height: 1.5; }
+.rev-line .k { color: #445060; }
+.rev-toggle {
+  background: none; border: 1px solid #1a2438; border-radius: 6px;
+  color: #60a0d0; font-size: 0.7rem; padding: 4px 10px; cursor: pointer;
+  font-family: inherit; margin-top: 6px;
+}
+.rev-detail { display: none; margin-top: 8px; padding: 10px 12px;
+  background: #0a0c16; border-radius: 7px; }
+.rev-detail.show { display: block; }
+.rev-detail h4 { font-size: 0.68rem; color: #f0c060; text-transform: uppercase;
+  letter-spacing: 1px; margin: 10px 0 4px; }
+.rev-detail h4:first-child { margin-top: 0; }
+.rev-detail p { font-size: 0.78rem; color: #aaa8a0; line-height: 1.65; white-space: pre-wrap; }
+.rev-detail img { width: 100%; border-radius: 6px; background: #fff; margin-bottom: 8px; }
+
+/* History */
+.hist-row { display: flex; gap: 10px; align-items: center; padding: 7px 0;
+  border-bottom: 1px solid #141928; font-size: 0.76rem; }
+.hist-row:last-child { border-bottom: none; }
+.h-date { color: #445060; min-width: 74px; }
+.h-name { flex: 1; color: #aaa8a0; }
+.h-score { font-weight: 700; min-width: 46px; text-align: right; }
+.h-score.good { color: #60d090; }
+.h-score.mid  { color: #c09040; }
+.h-score.low  { color: #d07060; }
+
+.panel { display: none; }
+.panel.active { display: block; }
+.msg { font-size: 0.8rem; color: #445060; line-height: 1.6; }
+.err { color: #d07060; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a class="back" href="dashboard.html">← Retour au tableau de bord</a>
+  <h1>🎯 TCF CANADA · EXAMEN BLANC</h1>
+  <div class="sub">閱讀 39 題 · 聽力 39 題 · 真題題庫（2025-10～11）</div>
+</div>
+
+<!-- ══ 選單 ══ -->
+<div class="panel active" id="setupPanel">
+  <div class="card">
+    <div class="card-title">Compétence</div>
+    <div class="skill-row">
+      <button class="skill-btn on" id="skReading" onclick="setSkill('reading')">📖 Compréhension écrite</button>
+      <button class="skill-btn" id="skListening" onclick="setSkill('listening')">🎧 Compréhension orale</button>
+    </div>
+    <div class="toggle-row">
+      <input type="checkbox" id="mockMode">
+      <label for="mockMode">模擬考模式
+        <span class="hint">聽力音檔只播一次、不能倒帶或暫停；作答中不顯示正解。關掉就是練習模式（可重聽、可回頭改）。</span>
+      </label>
+    </div>
+    <div class="toggle-row">
+      <input type="checkbox" id="instantMode">
+      <label for="instantMode">每題作答後立刻看解析
+        <span class="hint">練習模式限定。開了就不是模擬考，是逐題精練。</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" id="testListTitle">Choisir un test</div>
+    <div class="test-grid" id="testGrid"></div>
+    <div class="msg" id="setupMsg" style="margin-top:12px"></div>
+  </div>
+
+  <div class="card" id="flagCard" style="display:none">
+    <div class="card-title">Questions marquées</div>
+    <div id="flagList"></div>
+  </div>
+
+  <div class="card" id="histCard" style="display:none">
+    <div class="card-title">Historique</div>
+    <div id="histRows"></div>
+  </div>
+</div>
+
+<!-- ══ 作答 ══ -->
+<div class="panel" id="examPanel">
+  <div class="exam-bar">
+    <div class="bar-top">
+      <div>
+        <div class="bar-label">Temps</div>
+        <div class="bar-val" id="timerVal">0:00</div>
+      </div>
+      <div style="text-align:center">
+        <div class="bar-label" id="examTitle"></div>
+        <div class="bar-mode" id="modeTag"></div>
+      </div>
+      <div style="text-align:right">
+        <div class="bar-label">Répondu</div>
+        <div class="bar-progress" id="progVal">0 / 39</div>
+      </div>
+    </div>
+    <div id="audioSlot"></div>
+  </div>
+
+  <div class="q-card" id="qCard"></div>
+
+  <div class="nav-row">
+    <button class="nav-btn" id="prevBtn" onclick="go(-1)">← Précédent</button>
+    <button class="nav-btn" id="nextBtn" onclick="go(1)">Suivant →</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Navigation</div>
+    <div class="jump-grid" id="jumpGrid"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitExam()">Terminer et corriger</button>
+  <button class="quit-btn" onclick="quitExam()">放棄這次，回選單</button>
+</div>
+
+<!-- ══ 結果 ══ -->
+<div class="panel" id="resultPanel">
+  <div class="card result-head">
+    <div class="result-score" id="resScore"></div>
+    <div class="result-label">Réponses correctes</div>
+    <div class="result-time" id="resTime"></div>
+    <div class="result-band" id="resBand"></div>
+    <div class="caveat" id="resCaveat"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Navigation</div>
+    <div class="jump-grid" id="resGrid"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Correction détaillée</div>
+    <div id="revList"></div>
+  </div>
+
+  <button class="submit-btn" onclick="backToSetup()">← Retour à la liste</button>
+</div>
+
+<script src="assets/tcf/exam/index.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   TCF Canada 模擬考。資料來自 assets/tcf/exam/（本地，不進 repo）。
+   ⛔ 只寫 tcfmock_* 的 localStorage key。
+   ═══════════════════════════════════════════════════════════════ */
+const LS_FLAGS = 'tcfmock_flags';
+const LS_HIST  = 'tcfmock_history';
+const LS_SET   = 'tcfmock_settings';
+const DATA_DIR = 'assets/tcf/exam/';
+
+/* CLB 對照表（抽自題庫 PDF 首頁） */
+const CLB_TABLE = {
+  reading:   [[549,699,'10+'],[524,548,'9'],[499,523,'8'],[453,498,'7'],[406,452,'6'],[375,405,'5'],[342,374,'4']],
+  listening: [[549,699,'10+'],[523,548,'9'],[503,522,'8'],[458,502,'7'],[398,457,'6'],[369,397,'5'],[331,368,'4']]
+};
+
+let skill = 'reading';
+let cache = {};              // id -> test object
+let cur = null;              // { test, answers[], flags:Set, idx, t0, submitted }
+let timerId = null;
+
+/* ── storage helpers ─────────────────────────────────────────── */
+function lsGet(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } }
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+function getFlags() { return new Set(lsGet(LS_FLAGS, [])); }
+function setFlags(s) { lsSet(LS_FLAGS, [...s]); }
+function getHist() { return lsGet(LS_HIST, []); }
+
+/* ── settings ────────────────────────────────────────────────── */
+function loadSettings() {
+  const s = lsGet(LS_SET, {});
+  document.getElementById('mockMode').checked = !!s.mock;
+  document.getElementById('instantMode').checked = !!s.instant;
+  if (s.skill) setSkill(s.skill);
+}
+function saveSettings() {
+  lsSet(LS_SET, {
+    mock: document.getElementById('mockMode').checked,
+    instant: document.getElementById('instantMode').checked,
+    skill
+  });
+}
+document.getElementById('mockMode').addEventListener('change', saveSettings);
+document.getElementById('instantMode').addEventListener('change', saveSettings);
+
+/* ── panels ──────────────────────────────────────────────────── */
+function show(id) {
+  ['setupPanel', 'examPanel', 'resultPanel'].forEach(p =>
+    document.getElementById(p).classList.toggle('active', p === id));
+  window.scrollTo(0, 0);
+}
+
+/* ── skill / test list ───────────────────────────────────────── */
+function setSkill(s) {
+  skill = s;
+  document.getElementById('skReading').classList.toggle('on', s === 'reading');
+  document.getElementById('skListening').classList.toggle('on', s === 'listening');
+  saveSettings();
+  renderTestGrid();
+}
+
+function renderTestGrid() {
+  const grid = document.getElementById('testGrid');
+  const msg  = document.getElementById('setupMsg');
+  const idx = (window.TCF_INDEX || {})[skill] || [];
+  if (!idx.length) {
+    grid.innerHTML = '';
+    msg.innerHTML = '<span class="err">找不到題庫資料。' +
+      '請確認 assets/tcf/exam/index.js 存在，且這個頁面是用 http 伺服器開的。</span>';
+    return;
+  }
+  const hist = getHist();
+  const best = {};
+  hist.forEach(h => { if (!(h.id in best) || h.correct > best[h.id]) best[h.id] = h.correct; });
+  grid.innerHTML = idx.map(t =>
+    `<button class="test-btn${t.id in best ? ' done' : ''}" onclick="startTest('${t.id}')">` +
+    `${t.label}<span class="tb-sub">${t.id in best ? best[t.id] + '/' + t.n : t.n + ' q'}</span></button>`
+  ).join('');
+  msg.textContent = idx.length + ' 套 · 每套 39 題' +
+    (skill === 'listening' ? ' · 音檔約 30 分鐘' : '');
+  renderFlagCard();
+  renderHist();
+}
+
+/* ── data loading (script tag → works on file:// too) ─────────── */
+window.TCF_LOAD = function (id, data) { cache[id] = data; };
+function loadTest(id, cb) {
+  if (cache[id]) { cb(cache[id]); return; }
+  const s = document.createElement('script');
+  s.src = DATA_DIR + 'data/' + id + '.js';
+  s.onload = () => cache[id] ? cb(cache[id]) : cb(null);
+  s.onerror = () => cb(null);
+  document.head.appendChild(s);
+}
+
+/* ── start ───────────────────────────────────────────────────── */
+function startTest(id) {
+  loadTest(id, t => {
+    if (!t) { alert('讀不到 ' + id + ' 的題目檔。'); return; }
+    cur = { test: t, answers: new Array(t.questions.length).fill(null),
+            idx: 0, t0: Date.now(), submitted: false,
+            mock: document.getElementById('mockMode').checked,
+            instant: document.getElementById('instantMode').checked && !document.getElementById('mockMode').checked };
+    document.getElementById('examTitle').textContent = t.label;
+    document.getElementById('modeTag').textContent = cur.mock ? '模擬考模式' : '';
+    buildAudio(t);
+    renderQ(); renderJump(); startTimer();
+    show('examPanel');
+  });
+}
+
+/* ── audio ───────────────────────────────────────────────────── */
+let audioEl = null, maxPlayed = 0;
+function buildAudio(t) {
+  const slot = document.getElementById('audioSlot');
+  audioEl = null; maxPlayed = 0;
+  if (t.skill !== 'listening' || !t.audio) { slot.innerHTML = ''; return; }
+  const src = DATA_DIR + t.audio;
+  if (cur.mock) {
+    slot.innerHTML =
+      '<button class="play-once" id="playOnce">▶ 開始播放（只播一次，不能倒帶）</button>' +
+      '<audio id="au" preload="metadata" src="' + src + '"></audio>' +
+      '<div class="audio-note">真考的音檔連續播完 39 題，中途不能停。按下去就開始。</div>';
+    audioEl = document.getElementById('au');
+    const btn = document.getElementById('playOnce');
+    btn.onclick = () => { audioEl.play(); btn.disabled = true; btn.textContent = '▶ 播放中…'; };
+    // 只准往前：任何倒帶都拉回已播最遠處
+    on('timeupdate', el => { if (el.currentTime > maxPlayed) maxPlayed = el.currentTime; });
+    // ⚠️ 修正動作本身也會再發一次 seeking。若那次 seek 落不了地（音檔還沒緩衝到、
+    //    或伺服器不支援 Range），就會 seeking→改時間→seeking… 無限迴圈把分頁卡死。
+    //    實測 1.5 秒內發了 85 萬次事件。fixing 閘門把修正壓成每 400ms 最多一次。
+    let fixing = false;
+    on('seeking', el => {
+      if (fixing || el.currentTime >= maxPlayed - 0.6) return;
+      fixing = true;
+      el.currentTime = maxPlayed;
+      setTimeout(() => { fixing = false; }, 400);
+    });
+    on('pause',      el => { if (!el.ended) el.play().catch(() => {}); });
+  } else {
+    slot.innerHTML =
+      '<audio id="au" controls preload="metadata" src="' + src + '"></audio>' +
+      '<div class="audio-note">練習模式：可暫停、可倒帶重聽。想模擬真考就回選單打開「模擬考模式」。</div>';
+    audioEl = document.getElementById('au');
+  }
+  on('error', () => {
+    document.getElementById('audioSlot').innerHTML =
+      '<div class="audio-note err">音檔載入失敗：' + src + '</div>';
+  });
+
+  /* ⭐ 所有音檔事件都要走這個閘：只有「還是現役那一顆 <audio>」的事件算數。
+     不閘的話，上一套題被 stopAudio() 停掉時進入空狀態所發的 error，
+     會在下一套題已經登場之後才飛進來，把新的播放器蓋成「音檔載入失敗」；
+     mock 模式的 pause 監聽器還會在 audioEl 已經是 null 時丟 TypeError。
+     （2026-09-01 首次實跑時踩到：聽力放棄一次→再進下一套，必複現） */
+  function on(evt, fn) {
+    const el = audioEl;
+    el.addEventListener(evt, () => { if (el === audioEl) fn(el); });
+  }
+}
+function stopAudio() {
+  const el = audioEl;
+  audioEl = null;                       // 先退位，接下來這顆發的事件就都不算數了
+  if (el) {
+    try { el.pause(); } catch (e) {}
+    el.removeAttribute('src');          // ≠ src=''（那會去載頁面本身並丟 error）
+    try { el.load(); } catch (e) {}
+  }
+  document.getElementById('audioSlot').innerHTML = '';
+}
+
+/* ── render one question ─────────────────────────────────────── */
+function renderQ() {
+  const t = cur.test, q = t.questions[cur.idx];
+  const flags = getFlags(), fid = t.id + '#' + q.q;
+  const picked = cur.answers[cur.idx];
+  const revealed = cur.instant && picked !== null;
+  const letters = ['A', 'B', 'C', 'D'];
+
+  let html = `<div class="q-num"><span>Question ${q.q} / ${t.questions.length}</span>
+    <button class="flag-btn${flags.has(fid) ? ' on' : ''}" onclick="toggleFlag()"
+      title="標記這題">${flags.has(fid) ? '★' : '☆'}</button></div>`;
+  if (q.img) html += `<img class="doc-img" src="${DATA_DIR}${q.img}" alt="document">`;
+  html += `<div class="q-text">${esc(q.stem)}</div><div class="options">`;
+  q.opts.forEach((o, i) => {
+    let cls = '';
+    if (revealed) {
+      if (letters[i] === q.answer) cls = ' correct';
+      else if (i === picked) cls = ' wrong';
+    } else if (i === picked) cls = ' selected';
+    html += `<button class="opt-btn${cls}" ${revealed ? 'disabled' : ''} onclick="pick(${i})">
+      <span class="opt-letter">${letters[i]}</span>${esc(o)}</button>`;
+  });
+  html += '</div>';
+  if (revealed) html += detailHtml(q, t);
+  document.getElementById('qCard').innerHTML = html;
+
+  document.getElementById('prevBtn').disabled = cur.idx === 0;
+  document.getElementById('nextBtn').disabled = cur.idx === t.questions.length - 1;
+  const done = cur.answers.filter(a => a !== null).length;
+  document.getElementById('progVal').textContent = done + ' / ' + t.questions.length;
+  renderJump();
+}
+
+function pick(i) {
+  if (cur.instant && cur.answers[cur.idx] !== null) return;
+  cur.answers[cur.idx] = i;
+  renderQ();
+}
+function go(d) {
+  const n = cur.test.questions.length;
+  cur.idx = Math.max(0, Math.min(n - 1, cur.idx + d));
+  renderQ(); window.scrollTo(0, 0);
+}
+function jump(i) { cur.idx = i; renderQ(); window.scrollTo(0, 0); }
+function toggleFlag() {
+  const fid = cur.test.id + '#' + cur.test.questions[cur.idx].q;
+  const f = getFlags();
+  f.has(fid) ? f.delete(fid) : f.add(fid);
+  setFlags(f); renderQ();
+}
+
+function renderJump() {
+  const t = cur.test, flags = getFlags();
+  document.getElementById('jumpGrid').innerHTML = t.questions.map((q, i) => {
+    let c = 'jump-cell';
+    if (cur.answers[i] !== null) c += ' answered';
+    if (i === cur.idx) c += ' now';
+    if (flags.has(t.id + '#' + q.q)) c += ' flagged';
+    return `<button class="${c}" onclick="jump(${i})">${q.q}</button>`;
+  }).join('');
+}
+
+/* ── timer ───────────────────────────────────────────────────── */
+function startTimer() {
+  clearInterval(timerId);
+  timerId = setInterval(() => {
+    const s = Math.floor((Date.now() - cur.t0) / 1000);
+    document.getElementById('timerVal').textContent =
+      Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+  }, 500);
+}
+
+/* ── submit ──────────────────────────────────────────────────── */
+function submitExam() {
+  const t = cur.test;
+  const blank = cur.answers.filter(a => a === null).length;
+  if (blank && !confirm('還有 ' + blank + ' 題沒作答，要現在交卷嗎？')) return;
+  clearInterval(timerId);
+  stopAudio();
+  cur.submitted = true;
+  const secs = Math.floor((Date.now() - cur.t0) / 1000);
+  const letters = ['A', 'B', 'C', 'D'];
+  let correct = 0, scorable = 0;
+  t.questions.forEach((q, i) => {
+    if (!q.answer) return;              // 正解抽不到的題不計分
+    scorable++;
+    if (cur.answers[i] !== null && letters[cur.answers[i]] === q.answer) correct++;
+  });
+
+  document.getElementById('resScore').textContent = correct + ' / ' + scorable;
+  document.getElementById('resTime').textContent =
+    '用時 ' + Math.floor(secs / 60) + ' 分 ' + String(secs % 60).padStart(2, '0') + ' 秒' +
+    (blank ? ' · 空白 ' + blank + ' 題' : '');
+
+  const est = Math.round(correct / scorable * 699);
+  const band = (CLB_TABLE[t.skill] || []).find(b => est >= b[0] && est <= b[1]);
+  document.getElementById('resBand').innerHTML =
+    '粗估分數 <b>' + est + '</b> / 699 · 約 CLB <b>' + (band ? band[2] : '4 以下') + '</b>';
+  document.getElementById('resCaveat').textContent =
+    '粗估＝答對率 × 699，TCF 真正的計分不是這樣線性換算，只能當方向參考。' +
+    '而且這批是 2025 年流出的真題，分數會比實考偏高。CLB 7 的門檻：' +
+    (t.skill === 'reading' ? '閱讀 453 分' : '聽力 458 分') + '。';
+
+  document.getElementById('resGrid').innerHTML = t.questions.map((q, i) => {
+    const ok = q.answer && cur.answers[i] !== null && letters[cur.answers[i]] === q.answer;
+    return `<button class="jump-cell ${ok ? 'ok' : 'bad'}" onclick="scrollRev(${i})">${q.q}</button>`;
+  }).join('');
+
+  const flags = getFlags();
+  document.getElementById('revList').innerHTML = t.questions.map((q, i) => {
+    const pickedL = cur.answers[i] === null ? null : letters[cur.answers[i]];
+    const ok = q.answer && pickedL === q.answer;
+    const fid = t.id + '#' + q.q;
+    return `<div class="rev-item" id="rev${i}">
+      <div class="rev-head">
+        <span class="rev-mark ${ok ? 'ok' : 'bad'}">${ok ? '✓' : '✗'}</span>
+        <span class="rev-q">${q.q}. ${esc(q.stem)}</span>
+        <button class="flag-btn${flags.has(fid) ? ' on' : ''}" onclick="revFlag('${fid}',this)">
+          ${flags.has(fid) ? '★' : '☆'}</button>
+      </div>
+      <div class="rev-line"><span class="k">你選：</span>${pickedL ? pickedL + '. ' + esc(q.opts[cur.answers[i]]) : '（空白）'}</div>
+      <div class="rev-line"><span class="k">正解：</span>${q.answer ? q.answer + '. ' + esc(q.opts['ABCD'.indexOf(q.answer)] || '') : '（此題正解未能從原始檔抽出）'}</div>
+      <button class="rev-toggle" onclick="this.nextElementSibling.classList.toggle('show')">解析 ▾</button>
+      ${detailHtml(q, t)}
+    </div>`;
+  }).join('');
+
+  const hist = getHist();
+  hist.push({ ts: Date.now(), id: t.id, label: t.label, skill: t.skill,
+              correct, n: scorable, secs, mock: cur.mock });
+  lsSet(LS_HIST, hist.slice(-200));
+
+  show('resultPanel');
+}
+
+function scrollRev(i) {
+  const el = document.getElementById('rev' + i);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function revFlag(fid, btn) {
+  const f = getFlags();
+  f.has(fid) ? f.delete(fid) : f.add(fid);
+  setFlags(f);
+  btn.textContent = f.has(fid) ? '★' : '☆';
+  btn.classList.toggle('on', f.has(fid));
+}
+
+/* ── explanation block ───────────────────────────────────────── */
+function detailHtml(q, t) {
+  let h = '<div class="rev-detail">';
+  if (t.skill === 'reading') {
+    if (q.img)     h += `<img src="${DATA_DIR}${q.img}" alt="document">`;
+    if (q.src_zh)  h += '<h4>原文翻譯</h4><p>' + esc(q.src_zh) + '</p>';
+    if (q.q_zh)    h += '<h4>題目翻譯</h4><p>' + esc(q.q_zh) + '</p>';
+    if (q.key_zh)  h += '<h4>關鍵點解析</h4><p>' + esc(q.key_zh) + '</p>';
+    if (q.opt_zh)  h += '<h4>選項分析</h4><p>' + esc(q.opt_zh) + '</p>';
+  } else {
+    if (q.script_fr) h += '<h4>Transcription</h4><p>' + esc(q.script_fr) + '</p>';
+    if (q.script_zh) h += '<h4>翻譯與解析</h4><p>' + esc(q.script_zh) + '</p>';
+  }
+  if (h === '<div class="rev-detail">') h += '<p>（這題沒有附解析）</p>';
+  return h + '</div>';
+}
+
+/* ── setup extras ────────────────────────────────────────────── */
+function renderFlagCard() {
+  const f = [...getFlags()];
+  const card = document.getElementById('flagCard');
+  if (!f.length) { card.style.display = 'none'; return; }
+  card.style.display = '';
+  const byTest = {};
+  f.forEach(x => { const [id, q] = x.split('#'); (byTest[id] = byTest[id] || []).push(q); });
+  document.getElementById('flagList').innerHTML = Object.keys(byTest).sort().map(id => {
+    const meta = findMeta(id);
+    return `<div class="hist-row"><span class="h-name">${meta ? meta.label : id}
+      <span style="color:#445060"> · ${meta ? (meta.skill === 'reading' ? '閱讀' : '聽力') : ''}</span></span>
+      <span class="h-score mid">${byTest[id].sort((a, b) => a - b).join(', ')}</span></div>`;
+  }).join('') +
+  '<div class="msg" style="margin-top:10px">★ 標記存在本機（tcfmock_flags），重開這頁還在。</div>';
+}
+function findMeta(id) {
+  for (const s of ['reading', 'listening'])
+    for (const t of ((window.TCF_INDEX || {})[s] || []))
+      if (t.id === id) return { ...t, skill: s };
+  return null;
+}
+function renderHist() {
+  const h = getHist().slice().reverse().slice(0, 12);
+  const card = document.getElementById('histCard');
+  if (!h.length) { card.style.display = 'none'; return; }
+  card.style.display = '';
+  document.getElementById('histRows').innerHTML = h.map(r => {
+    const p = r.correct / r.n;
+    const cls = p >= 0.8 ? 'good' : p >= 0.6 ? 'mid' : 'low';
+    const d = new Date(r.ts);
+    return `<div class="hist-row">
+      <span class="h-date">${d.getMonth() + 1}/${d.getDate()}</span>
+      <span class="h-name">${(r.skill === 'reading' ? '📖 ' : '🎧 ') + r.label}${r.mock ? ' · 模擬' : ''}</span>
+      <span class="h-score ${cls}">${r.correct}/${r.n}</span></div>`;
+  }).join('');
+}
+
+/* ── misc ────────────────────────────────────────────────────── */
+function quitExam() {
+  if (!confirm('放棄這次作答？不會留下紀錄。')) return;
+  clearInterval(timerId); stopAudio(); cur = null; backToSetup();
+}
+function backToSetup() { renderTestGrid(); show('setupPanel'); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/* ── boot ────────────────────────────────────────────────────── */
+loadSettings();
+renderTestGrid();
+</script>
+</body>
+</html>
