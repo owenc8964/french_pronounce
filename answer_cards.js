@@ -164,7 +164,7 @@ const ANSWER_CARDS = [
       { fr:"Vous travaillez dans un cabinet privé ou à l'hôpital ?", zh:'你在私人診所還是醫院工作？', cover:'gap', from:null },
       { fr:"Qu'est-ce que vous aimez le moins dans votre travail ?", zh:'你最不喜歡工作的哪個部分？', cover:'gap', from:null },
       { fr:"Combien de temps il faut pour avoir la licence canadienne ?", zh:'拿到加拿大執照要多久？', cover:'part', from:null },
-      { fr:"Si vous ne réussissez pas l'examen canadien, qu'est-ce que vous ferez ?", zh:'如果你沒考過加拿大的考試，你會怎麼做？', cover:'gap', from:'AC15 未來計畫' },
+      { fr:"Si vous ne réussissez pas l'examen canadien, qu'est-ce que vous ferez ?", zh:'如果你沒考過加拿大的考試，你會怎麼做？', cover:'ok', from:'AC15 未來計畫' },  // 09-01 AC15 v2 第②段直接回答：gap→ok
       { fr:"Vous n'avez jamais pensé à changer de métier, comme votre camarade ?", zh:'你沒想過像你同學那樣轉行嗎？', cover:'part', from:null },
       { fr:"Vous conseilleriez ce métier à votre fille ?", zh:'你會建議你女兒做這一行嗎？', cover:'part', from:'AC2 家庭' },
       { fr:"Le stress au travail, comment vous le gérez ?", zh:'工作的壓力你怎麼處理？', cover:'gap', from:'AC11 健康' }
@@ -289,8 +289,8 @@ const ANSWER_CARDS = [
       { fr:"Mais au Canada, il fait très froid, non ?", zh:'可是加拿大很冷吧？', cover:'part', from:null },
       { fr:"Taïwan aussi a de bonnes écoles, non ?", zh:'台灣也有好學校啊，不是嗎？', cover:'ok', from:null },
       { fr:"Qu'est-ce qui vous manquera le plus de Taïwan ?", zh:'你最會想念台灣的什麼？', cover:'gap', from:null },
-      { fr:"L'immigration, c'est long et difficile. Vous êtes prêt ?", zh:'移民很久又很難，你準備好了嗎？', cover:'gap', from:null },
-      { fr:"Si vous ne pouvez pas partir, qu'est-ce que vous ferez ?", zh:'如果你走不成，你會怎麼做？', cover:'gap', from:null }
+      { fr:"L'immigration, c'est long et difficile. Vous êtes prêt ?", zh:'移民很久又很難，你準備好了嗎？', cover:'part', from:'AC15 未來計畫' },  // 09-01 AC15 第③段的心態接得住，但「準備好了嗎」還要轉一下：gap→part
+      { fr:"Si vous ne pouvez pas partir, qu'est-ce que vous ferez ?", zh:'如果你走不成，你會怎麼做？', cover:'ok', from:'AC15 未來計畫' }  // 09-01 AC15 v2 第③段整段就是這題：gap→ok
     ] },
 
   { id:'AC9', topic:'home', title:'住家',
@@ -350,10 +350,69 @@ const ANSWER_CARDS = [
   { id:'AC15', topic:'future', title:'未來計畫',
     q_fr:"Quels sont vos projets pour les 1 à 3 prochaines années ? Pourquoi ?",
     q_zh:'你未來（1-3年）有什麼計畫？為什麼想做這件事？',
+    // ⭐ 2026-09-01 Owen 的中文口述全文（逐字保留，⛔ 不要精簡）。慣例同 AC2／AC3／AC7／AC8。
+    // ⚠️ 逐字保留的代價：「我可以在 40 歲錢財開始學一個新的語言」——「錢財」是語音轉文字
+    //    把「前才」聽錯了（他 2026 年是 36 歲，AC7 有「三十六歲第一次去美洲」可交叉驗證）。
+    //    ⛔ 原句不改（那是母本），法文版按「四十歲之前」寫。
+    // ⚠️ v2 法文版刻意沒收進去的段落（＝之後升級 B1/B2 的第一批材料）：
+    //    ・「利用 AI、家教等各種資源，不斷調整學習方向和方法」← 具體方法，中版可加回
+    //    ・「這就是緣分」← ⭐ 抽象化＋宿命觀，B2 的料（法文寫得好會很加分。「考試也有考運」已收進 v2）
+    //    ・「我只能針對政策，選擇機率高的方法去嘗試」← ⭐ 權衡兩個立場，B2 讓步段的核心料
+    //    ・「我的生命就是不斷在發現自己的可能性」「其實我可以服務更多人」← 抽象化，B2
+    //    ・「一切都不容易，但一切都需要發生」← 對仗，B2 的料
+    //    ・「瑜伽、管理職的努力後來都放掉，專心當牙醫加讀法文，冥冥之中有次序性」← ⭐ 整段都是 B1/B2 敘事材料
+    //    ・「最重要還是聽聽自己的聲音」← 收尾金句的備選（v2 選了「不想改變就是變老了」，兩句擇一，不要都用）
+    source_zh:"【時間表與考試】我學法文的時間大概是一年，大概是從 2026 年的 5 月開始學。\n考試的話，預計在 2027 年的 4 月和 9 月都會去考。在這過程中，我會不斷調整學習方向和方法，利用 AI、家教等各種資源，讓自己準備得更好。我的目標是一年內要考過，但希望至少兩年內要考到 B2。\n\n【考不過怎麼辦】我一定會非常努力去考，不過很多事情不是我想怎樣就怎樣的，如果考不過，那就是能力不足，把能力補足就可以。當然考試也有考運，但如果語言說不順、聽不懂，那就是需要多練。\n\n【就算考過也可能去不成】也有可能考過之後，最後還是沒有辦法去加拿大，我覺得這就是緣分。因為政策隨時在改變，我只能針對政策，選擇機率高的方法去嘗試。不管最後有沒有去成，我的生活還是繼續過。我目前並沒有急著要舉家搬到加拿大去的想法，心裡想的還是在臺灣繼續過生活，只是做了一些這樣的調整和嘗試。我不希望這對生活有太大的影響，純粹是利用閒暇，或者是在工作、照顧小孩之餘，把握一段時間來努力。\n\n【到了加拿大的第一年】如果到了加拿大的第一年，我打算怎麼過？那時候我應該還是在準備牙醫考試，假日或空閒時間就多往戶外走。適應和調適也很重要，一定要想辦法讓自己融入。\n\n【移民之外，我自己想做什麼】除了移民以外，我自己想做什麼呢？\n我覺得我的生命就是不斷在發現自己的可能性。以前覺得當了牙醫、終老就好，但現在發現，其實我可以服務更多人。我可以在 40 歲錢財開始學一個新的語言、去挑戰新生活。一切都不容易，但一切都需要發生。我覺得當我開始不想改變的時候，應該就是變老了。所以不論是學習瑜伽，還是之前在工作管理職上的努力與發現，後來我把這些東西都放掉，專心當牙醫加上讀法文，我覺得這些安排都很特別，冥冥之中也有些次序性。\n最重要還是聽聽自己的聲音，在這樣的前提下，繼續往前走。",
     versions:[
       { level:'A1', d:'2026-07-16',
         fr:"Dans le futur, je vais voyager avec ma fille dans des pays que je ne connais pas. Avant l'école, je veux montrer le monde à ma fille. J'espère que ça va l'inspirer.",
-        zh:'未來，我要帶女兒去我自己也沒去過的國家旅行。趁上學之前，我想讓女兒看看世界。我希望這可以啟發她。' }
+        zh:'未來，我要帶女兒去我自己也沒去過的國家旅行。趁上學之前，我想讓女兒看看世界。我希望這可以啟發她。' },
+      // ── 2026-09-01 v2：語言島第六座。189 字 / 約 87 秒（同 AC3 174/80、AC2 187/86、AC7 192/88 那條線）。
+      // ⭐ 這座島一次補兩個 gap：AC3「如果你沒考過加拿大的考試，你會怎麼做？」＋
+      //    AC8「如果你走不成，你會怎麼做？」——兩題都升成 'ok'。
+      // 五段：①時間表與考試 ②考不過怎麼辦 ③⭐就算考過也可能去不成（讓步）
+      //       ④到了加拿大的第一年 ⑤移民之外的我自己
+      // 五個「加分」點：
+      //   ・「2027 年四月考一次、九月再一次」——具體時間表，考官一定會追，含糊會被聽出來
+      //   ・「沒考過就是程度不夠，多下功夫再考」——誠實、不悲情、不找藉口
+      //   ・⭐「我並不急著全家搬過去，我的生活在這裡。不管走不走得成，我的生活照樣過」——
+      //     ⭐⭐ 這段是這座島最貴的東西：**天然的讓步**，而且極少考生會這樣講（大部分人講得像非去不可）。
+      //     B2 升級時整段換成 Certes… mais／Bien que＋subjonctif 就成立，不用另外想材料。
+      //   ・「第一年還在準備牙醫考試，週末往戶外走」——具體，而且接回 AC3（重考執照）與 AC7（戶外）
+      //   ・⭐「等到哪天我不想改變了，那天我就老了」——情緒＋抽象，全段最強的收尾
+      // ⛔ 刻意不重述舊島（原則 7）：
+      //   ・AC8 講完「為什麼去加拿大」（四個理由）→ 這裡一個理由都不重講
+      //   ・AC3 講完「加拿大要重考執照」→ 這裡只用一句當第一年的節奏，不展開
+      //   ・AC7 講完戶外與自然 → 這裡只留 j'irai dehors 一個動作，不描寫
+      //   ・v1 的「帶女兒去沒去過的國家」現在跟 AC7 重疊 → v2 不帶，v1 留著當歷史
+      // 用上的近期結構（刻意）：
+      //   ・je passerai／je travaillerai／je recommencerai／je préparerai／j'irai／je serai（27課 futur simple 連發）
+      //   ・Si je ne réussis pas, … je travaillerai（28課 si＋現在式＋未來式）
+      //   ・le jour où je n'aurai plus envie de changer, ce jour-là je serai vieux（28課 quand/le jour où ＋未來式＋未來式）
+      //   ・Il faudra vraiment s'intégrer（29課 obligation il faut，這裡用未來式）
+      //   ・Avant, je pensais que… c'était（20課 imparfait 的「以前都這樣」用法）
+      //   ・Que je parte ou non（⚠️ subjonctif，見下方註記）
+      // ⚠️ 一個要 Owen 知道的翻譯決定：「不管最後有沒有去成」寫成 Que je parte ou non，
+      //    parte 是 subjonctif（B1）。這是法文表達「不管…或…」的固定說法，
+      //    A2 範圍內沒有等價講法（Si je pars ou si je ne pars pas 又長又拗口）。
+      //    ⭐ 它同時就是這座島升級 B2 時第一個要擴寫的位置——整個第③段是讓步段的骨架。
+      { level:'A2', d:'2026-09-01',
+        fr:"J'ai commencé le français en mai 2026. En 2027, je passerai l'examen deux fois : en avril et en septembre. Mon objectif, c'est de réussir en un an — et au maximum en deux ans, d'atteindre le B2.\n\nSi je ne réussis pas, c'est simplement que mon niveau n'est pas encore assez bon : alors je travaillerai plus et je recommencerai. Il y a aussi une part de chance. Mais si je ne comprends pas, il faut pratiquer, c'est tout.\n\nEt même si je réussis, je ne partirai peut-être pas : les politiques changent tout le temps. Je ne suis pas pressé de déménager avec toute ma famille — ma vie est ici, à Taïwan. Je fais tout ça sur mon temps libre, entre le travail et ma fille. Que je parte ou non, ma vie continue.\n\nLa première année au Canada, je préparerai encore l'examen de dentiste, et le week-end j'irai dehors. Il faudra vraiment s'intégrer.\n\nÀ part ça ? Avant, je pensais qu'être dentiste, c'était toute ma vie. Aujourd'hui, avant mes quarante ans, j'apprends une nouvelle langue. Rien n'est facile, mais le jour où je n'aurai plus envie de changer, ce jour-là je serai vieux.",
+        zh:'我 2026 年五月開始學法文。2027 年我會考兩次：四月一次、九月一次。我的目標是一年內考過——最慢兩年內要到 B2。\n\n如果沒考過，那就單純是我的程度還不夠：那我就多下點功夫，再考一次。考試當然也有考運。但如果聽不懂，那就是要練，就這樣。\n\n而且就算考過了，我也可能走不成：政策一直在變。我並不急著全家搬過去——我的生活在這裡，在台灣。這些都是我用空閒時間做的，在工作和帶小孩之間。不管走不走得成，我的生活照樣過。\n\n到加拿大的第一年，我應該還在準備牙醫考試，週末就往戶外走。一定要想辦法融入。\n\n除了這些呢？以前我以為當牙醫就是我的一輩子。現在，四十歲之前，我在學一個新的語言。沒有一件事是容易的，但等到哪天我不想改變了，那天我就老了。' }
+    ],
+    // 2026-09-01 預測追問。cover：'ok'＝島接得住｜'part'＝要轉一下｜'gap'＝沒材料
+    // ⭐ gap／part 這幾題就是 B2 升級層的施工圖，見 STRATEGY 原則 6
+    follow_ups:[
+      { fr:"Vous apprenez le français depuis quand ?", zh:'你學法文多久了？', cover:'ok', from:null },
+      { fr:"Si vous ne réussissez pas l'examen, qu'est-ce que vous ferez ?", zh:'如果考不過，你會怎麼做？', cover:'ok', from:'AC3 工作' },
+      { fr:"Et si vous ne pouvez pas partir au Canada ?", zh:'那如果最後去不成加拿大呢？', cover:'ok', from:'AC8 加拿大' },
+      { fr:"Comment vous apprenez le français ? Avec un professeur ?", zh:'你怎麼學法文的？有老師嗎？', cover:'part', from:null },  // source_zh 有「AI、家教」，v2 砍掉了
+      { fr:"Vous trouvez le temps d'étudier avec votre travail et votre fille ?", zh:'工作又要顧小孩，你怎麼找時間念？', cover:'part', from:'AC2 家庭' },
+      { fr:"Vous n'êtes pas pressé ? Pourquoi faire tout ça alors ?", zh:'你不急？那為什麼還要做這些？', cover:'part', from:'AC8 加拿大' },  // ⭐ 這題會逼出讓步段
+      { fr:"L'examen de dentiste au Canada, c'est difficile ?", zh:'加拿大的牙醫考試很難嗎？', cover:'part', from:'AC3 工作' },
+      { fr:"Qu'est-ce qui est le plus difficile en français pour vous ?", zh:'法文對你來說最難的是什麼？', cover:'gap', from:null },
+      { fr:"Dans dix ans, vous vous voyez où ?", zh:'十年後你覺得自己會在哪？', cover:'gap', from:null },
+      { fr:"Et votre fille, quels sont vos projets pour elle ?", zh:'那你女兒呢？你對她有什麼打算？', cover:'gap', from:'AC2 家庭' }
     ] },
 ];
 
