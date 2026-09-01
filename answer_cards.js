@@ -63,8 +63,8 @@ const ANSWER_CARDS = [
       { fr:"Vous regardez quoi comme séries ou films français ?", zh:'你看哪些法文影集或電影？', cover:'ok', from:null },  // 08-28 Owen 補：Extra French
       { fr:"Quels podcasts vous écoutez ?", zh:'你聽哪些 podcast？', cover:'ok', from:null },  // 08-28 Owen 補：Coffee Break French
       { fr:"Être analytique, ça vous aide dans votre travail ?", zh:'分析型的個性對你的工作有幫助嗎？', cover:'part', from:'AC3 工作' },
-      { fr:"Qu'est-ce que vous lisez en ce moment ?", zh:'你最近在看什麼書？', cover:'gap', from:null },
-      { fr:"Vous faites quel sport ?", zh:'你做什麼運動？', cover:'gap', from:'AC11 健康' },
+      { fr:"Qu'est-ce que vous lisez en ce moment ?", zh:'你最近在看什麼書？', cover:'ok', from:'AC5 興趣嗜好' },  // 09-01 AC5 v2 第①段：gap→ok
+      { fr:"Vous faites quel sport ?", zh:'你做什麼運動？', cover:'ok', from:'AC11 健康' },  // 09-01 AC11 v2 第①段整段：gap→ok
       { fr:"Vous habitez à Banqiao depuis longtemps ?", zh:'你在板橋住很久了嗎？', cover:'gap', from:'AC9 住家' },
       { fr:"Vous parlez d'autres langues ?", zh:'你還會其他語言嗎？', cover:'gap', from:null },
       { fr:"Vous préférez la ville ou la campagne ?", zh:'你比較喜歡城市還是鄉下？', cover:'part', from:'AC9 住家' }
@@ -111,7 +111,7 @@ const ANSWER_CARDS = [
       { fr:"Et votre femme, qu'est-ce qu'elle en pense ?", zh:'那你太太怎麼想？', cover:'ok', from:null },
       { fr:"Votre fille a quel âge ?", zh:'你女兒幾歲？', cover:'ok', from:null },
       { fr:"À Taïwan, les parents mettent beaucoup de pression sur les enfants ?", zh:'在台灣，父母給小孩很大壓力嗎？', cover:'part', from:'AC8 加拿大' },
-      { fr:"Qu'est-ce qui vous manquera le plus de Taïwan ?", zh:'你最會想念台灣的什麼？', cover:'part', from:null },
+      { fr:"Qu'est-ce qui vous manquera le plus de Taïwan ?", zh:'你最會想念台灣的什麼？', cover:'ok', from:'AC5 興趣嗜好' },  // 09-01 AC5 v2 第③段整段：part→ok
       { fr:"Votre fille apprend le français aussi ?", zh:'你女兒也在學法文嗎？', cover:'gap', from:null },
       { fr:"Votre femme parle français ?", zh:'你太太會說法文嗎？', cover:'gap', from:null },
       { fr:"Vos parents, qu'est-ce qu'ils pensent de votre départ ?", zh:'你爸媽對你們要走怎麼想？', cover:'gap', from:null },
@@ -167,7 +167,7 @@ const ANSWER_CARDS = [
       { fr:"Si vous ne réussissez pas l'examen canadien, qu'est-ce que vous ferez ?", zh:'如果你沒考過加拿大的考試，你會怎麼做？', cover:'ok', from:'AC15 未來計畫' },  // 09-01 AC15 v2 第②段直接回答：gap→ok
       { fr:"Vous n'avez jamais pensé à changer de métier, comme votre camarade ?", zh:'你沒想過像你同學那樣轉行嗎？', cover:'part', from:null },
       { fr:"Vous conseilleriez ce métier à votre fille ?", zh:'你會建議你女兒做這一行嗎？', cover:'part', from:'AC2 家庭' },
-      { fr:"Le stress au travail, comment vous le gérez ?", zh:'工作的壓力你怎麼處理？', cover:'gap', from:'AC11 健康' }
+      { fr:"Le stress au travail, comment vous le gérez ?", zh:'工作的壓力你怎麼處理？', cover:'ok', from:'AC11 健康' }  // 09-01 AC11 v2 第③段：gap→ok
     ] },
 
   { id:'AC4', topic:'education', title:'教育／學歷',
@@ -180,12 +180,70 @@ const ANSWER_CARDS = [
     ] },
 
   { id:'AC5', topic:'hobby', title:'興趣嗜好',
-    q_fr:"Qu'est-ce que vous aimez faire pendant votre temps libre ? Pourquoi ?",
-    q_zh:'你平常喜歡做什麼？多久做一次、為什麼喜歡？',
+    q_fr:"Qu'est-ce que vous aimez faire pendant votre temps libre ?",
+    q_zh:'你空閒時間喜歡做什麼？',
+    // ⭐ 2026-09-01 Owen 的中文口述全文（逐字保留，⛔ 不要精簡）。⭐ 第八座島，Phase 0 到齊。
+    // ⚠️ 一個要 Owen 確認的翻譯判斷：口述說「還有看畫冊」——「畫冊」可能是畫集/藝術書，
+    //    也可能是跟 Jolie 一起看的繪本。⛔ 兩者差很多，v2 直接沒有寫這一項（不猜）。
+    //    → 他確認之後再補一句（`des livres d'art` vs `des livres d'images avec ma fille`）。
+    // ⚠️ v2 法文版刻意沒收進去的段落（＝之後升級 B1/B2 的第一批材料）：
+    //    ・「慢慢變強大會是什麼樣子」← v2 收了「期待看她長大變成一個人」那半，這半留著當升級料。
+    //      ⚠️ 跟 AC2「希望她找到自己的路」是同一條線但角度不同（AC2 是期望，這裡是「看著」的驚奇），
+    //      不算重述；升級時兩座島可以互相呼應
+    //    ・「瑜伽、冥想、泡湯」← AC11 已經講了瑜伽與冥想，這裡⛔ 不重複（原則 7）
+    //    ・「信義區那麼小一區就有超多百貨公司」← 細節，中版可加回
+    //    ・⭐「台灣其實真的很不錯，但教育方式是文化精鑄出來的，很難避免亞洲那種競爭填鴨」←
+    //      ⭐⭐ 這是**教科書等級的讓步段**（先讓步再轉折），但 AC8 已經講完教育論點了，
+    //      這裡收進去會重複 → 留給 **AC8 升級 B2 時**用，那才是它的位置
+    //    ・「做治療不一定百分之百痊癒，但過程很開心」← 留給 AC3 升級用
+    //    ・「24 小時便利商店超多」← ⛔ AC2 v2 已經講過 des supérettes partout，這裡刻意換成電商
+    source_zh:"【最近在讀什麼】然後，我最近看了什麼？其實我最近都在讀法文為主，還有看畫冊。我之前最喜歡看的就是一些生命的書，或者是世界觀、關於時間的探索，還有佛法。這些東西都有一些概念與設定。冥想我之前練很多，因為我自己的心思蠻亂的，但這東西有時候真的看太多，反而會落在知識的框架中，沒有真的在當下、在心上。不過我最近也很忙，我就是花時間去閱讀這些東西。\n\n【空下來做什麼】如果我空下來的話，我會想陪伴我的家人、小孩跟太太，希望他們的生命中可以刻滿我的痕跡。我想要陪伴小孩長大，很期待看到一個嬰兒慢慢有自己的思想與想法，慢慢變強大會是什麼樣子。\n我也會想給自己一些留白：去咖啡店坐著、去野外喝茶看看景色，享受自己跟環境的交流，還有瑜伽、冥想、泡湯等等，這些都是我想做的。\n\n【最想念台灣的什麼】我也會想念臺灣的很多東西。第一個就是方便：\n・24 小時便利商店超多，隨時想買什麼都可以。\n・電商非常厲害，現在已經競爭到隔天清晨前就會到貨；如果女兒明天上學需要準備什麼，今天晚上買一早就會有，甚至過年期間連初一都會送貨，真的很驚人。\n・食物方面，便當好吃、選擇又多，而且餐廳都離很近。\n・逛街也很棒，像是信義區那麼小一區就有超多百貨公司，吃東西也很方便，是很棒的商業環境。\n・像臺南也是美食到處都是，風景優美、步調又慢。\n去加拿大算是一個環境、生活方式與教育方式的轉變。臺灣其實真的很不錯，但教育方式畢竟是文化精鑄出來的東西，很難完全避免亞洲那種比較競爭、填鴨、壓力蠻大的環境。\n我也會很懷念在臺灣的家人，他們是我生命中很重要的一環；去加拿大就得重新建立自己的生活圈，那是很不一樣的面向。我也會懷念以前的工作環境，大部分我都適應得很好，同事夥伴和病人都很可愛。雖然做治療不一定百分之百都能痊癒，但整個過程很開心；即便以後去加拿大當牙醫，可能一切都要重新適應。\n\n【最近覺得好玩的事】1. 學法文：這一直都是個很好玩的過程。要在一年內學會一個語言、去考試並達到蠻高的程度，不可能用以往拖很長、學很慢的方式。在這種壓力下，我必須堆疊出新的技巧，去研究和搜尋，是非常有趣的過程。\n2. 看球賽：我很喜歡看各種球賽，看到新的技巧出現，或是有些人會利用規則去創造對球賽的掌握，這些都很有趣。",
     versions:[
       { level:'A1', d:'2026-07-16',
-        fr:"J'aime faire du yoga et de la méditation. Je fais ça une ou deux fois par semaine, pendant une heure. Ça m'aide à prendre soin de mon corps et de mon esprit. J'aime aussi bien organiser ma vie.",
-        zh:'我喜歡做瑜伽跟冥想（頌缽）。我一週做一到兩次，每次一小時。這讓我照顧好我的身心。我也喜歡把生活安排得有條理。' }
+        fr:"J'aime regarder des séries et des films. J'aime aussi la musique. Le week-end, je fais du sport avec ma femme. Et maintenant, j'apprends le français — c'est mon nouveau passe-temps !",
+        zh:'我喜歡看影集和電影。我也喜歡音樂。週末我跟太太一起運動。現在我在學法文——這是我的新嗜好！' },
+      // ── 2026-09-01 v2：⭐ 語言島第八座，**Phase 0 的八座島到齊**。178 字 / 約 82 秒。
+      // ⭐ 補掉 AC1「你最近在看什麼書？」＋ AC8／AC2 的「你最會想念台灣的什麼？」——三題都升成 'ok'。
+      //    ⚠️ 那題原本是 **AC8 唯一剩下的 gap**，補完之後 **AC8 掛零**。
+      // 四段：①最近在讀什麼（＋冥想的自省）②空下來做什麼 ③⭐最想念台灣的什麼 ④最近覺得什麼好玩
+      // 五個「加分」點：
+      //   ・⭐「讀太多之後，人會停在觀念裡，就不是真的在當下了」——**自省**，
+      //     這種話考官幾乎不會從 A2 考生嘴裡聽到，而且是 B2 抽象段最好的接口
+      //   ・⭐「我希望能在他們的生命裡留下很多痕跡」——情緒，全段最強的一句
+      //   ・⭐⭐「晚上下單，早上之前就送到，連過年初一都送」——**別人絕對不會講的細節**。
+      //     ⛔ 這一項不能換成「便利商店很多」：那句 AC2 已經講過，而且是所有人都會講的。
+      //   ・「便當好吃又不貴」「台南東西很好吃、步調又慢」——具體地名＋具體食物
+      //   ・⭐「就是法文啊」——⭐⭐ 當著考官的面說「我現在覺得最好玩的事就是學你的語言」，
+      //     這是這座島最划算的一句話。而且後半「一年內學一個語言，逼我去想別的方法」是真的，不是討好。
+      // ⛔ 刻意不重述舊島（原則 7）：AC11 講了瑜伽與冥想的**做法** → 這裡只講冥想的**自省**；
+      //    AC2 講了便利商店 → 這裡換電商；AC8 講了教育 → 這裡完全不碰（那段留給 AC8 升 B2）；
+      //    AC7 講了旅行 → 這裡的「留白」只留咖啡與戶外喝茶，不展開風景。
+      // 用上的近期結構（刻意）：
+      //   ・je lisais／je méditais（20課 imparfait 的「以前都這樣」）
+      //   ・Ce qui me manquera le plus（26課 ce qui 強調句 ＋ 27課 futur simple）
+      //   ・Ce que je trouve amusant（26課 ce que）
+      //   ・on commande… c'est livré／on mange／on vit（28課 on ＝ les gens）
+      //   ・à force de lire（B1 用法，見下方註記）
+      //   ・ça me plaît beaucoup（19課 plaire，「Il me plaît」那組）
+      // ⚠️ 一個超出 A2 的用法：`à force de` + 不定式（「因為一直…以至於」）。
+      //    A2 沒有等價講法（`Parce qu'on lit trop` 講不出「累積到某個程度」的意思）。
+      //    ⭐ 它就是這句話的重點，換掉就沒有味道了 → 保留，並標成升級層要熟悉的第一批連接詞。
+      { level:'A2', d:'2026-09-01',
+        fr:"En ce moment, je lis surtout en français. Avant, je lisais beaucoup sur le temps, sur le sens de la vie, sur le bouddhisme, et je méditais souvent. Mais à force de lire, on reste dans les idées — et on n'est plus vraiment là.\n\nQuand j'ai du temps libre, je le passe avec ma famille : j'aimerais laisser beaucoup de traces dans leur vie. J'ai hâte de voir ma fille grandir et devenir quelqu'un. Et parfois je m'arrête seul — un café, un thé dehors, en regardant le paysage.\n\nCe qui me manquera le plus à Taïwan ? On commande le soir et c'est livré avant le matin, même le premier jour du Nouvel An. Les bentos sont bons et pas chers. À Tainan, on mange très bien et on vit lentement. Et surtout ma famille — et mes patients.\n\nCe que je trouve amusant en ce moment ? Le français, justement. Apprendre une langue en un an, ça m'oblige à inventer d'autres méthodes. Et regarder du sport : voir quelqu'un utiliser une règle pour prendre le contrôle du jeu, ça me plaît beaucoup.",
+        zh:'我最近主要都在讀法文。以前我讀很多關於時間、關於生命意義、關於佛法的書，也常常冥想。但讀太多之後，人會停在觀念裡——就不是真的在當下了。\n\n有空的時候，我都跟家人在一起：我希望能在他們的生命裡留下很多痕跡。我很期待看著女兒長大、慢慢變成一個人。有時候我也會一個人停下來——一杯咖啡、在戶外喝茶、看看風景。\n\n我最會想念台灣的什麼？晚上下單，早上之前就送到了，連過年初一都送。便當好吃又不貴。在台南，東西很好吃，步調又慢。最重要的還是我的家人——還有我的病人。\n\n最近覺得什麼好玩？就是法文啊。一年內學一個語言，逼我去想別的方法。還有看球賽：看到有人利用規則去掌握整場比賽，我很喜歡。' }
+    ],
+    // 2026-09-01 預測追問。cover：'ok'＝島接得住｜'part'＝要轉一下｜'gap'＝沒材料
+    follow_ups:[
+      { fr:"Qu'est-ce que vous lisez en ce moment ?", zh:'你最近在看什麼書？', cover:'ok', from:'AC1 自我介紹' },
+      { fr:"Qu'est-ce qui vous manquera le plus de Taïwan ?", zh:'你最會想念台灣的什麼？', cover:'ok', from:'AC8 加拿大' },
+      { fr:"Pourquoi vous avez arrêté de méditer ?", zh:'你為什麼不冥想了？', cover:'part', from:'AC11 健康' },  // ⚠️ 陷阱題：他沒有停，是「讀太多」。要能澄清
+      { fr:"Vous regardez quel sport ?", zh:'你看什麼球賽？', cover:'gap', from:null },
+      { fr:"Vous aimez la musique ? Quel genre ?", zh:'你喜歡音樂嗎？哪一種？', cover:'part', from:null },  // v1 有「喜歡音樂」，v2 沒帶
+      { fr:"Vous regardez des séries en français ?", zh:'你看法文影集嗎？', cover:'part', from:'AC1 自我介紹' },
+      { fr:"Au Canada, vous ferez quoi de votre temps libre ?", zh:'到加拿大你空閒時間會做什麼？', cover:'part', from:'AC15 未來計畫' },
+      { fr:"Le bouddhisme, ça vous aide dans la vie ?", zh:'佛法對你的生活有幫助嗎？', cover:'gap', from:null },
+      { fr:"Vous avez le temps pour tout ça, avec un enfant ?", zh:'有小孩還有時間做這些嗎？', cover:'part', from:'AC2 家庭' },
+      { fr:"La vie au Canada sera moins pratique. Ça ne vous fait pas peur ?", zh:'加拿大的生活沒那麼方便，你不怕嗎？', cover:'part', from:'AC8 加拿大' }  // ⭐ 讓步段：這題就是這座島的 B2 施工圖
     ] },
 
   { id:'AC6', topic:'food', title:'飲食',
@@ -288,7 +346,7 @@ const ANSWER_CARDS = [
       { fr:"Vous êtes dentiste : vous pourrez travailler au Canada ?", zh:'你是牙醫，你能在加拿大執業嗎？', cover:'part', from:'AC3 工作' },  // 08-28 AC3 v2 末段補上了：gap→part
       { fr:"Mais au Canada, il fait très froid, non ?", zh:'可是加拿大很冷吧？', cover:'part', from:null },
       { fr:"Taïwan aussi a de bonnes écoles, non ?", zh:'台灣也有好學校啊，不是嗎？', cover:'ok', from:null },
-      { fr:"Qu'est-ce qui vous manquera le plus de Taïwan ?", zh:'你最會想念台灣的什麼？', cover:'gap', from:null },
+      { fr:"Qu'est-ce qui vous manquera le plus de Taïwan ?", zh:'你最會想念台灣的什麼？', cover:'ok', from:'AC5 興趣嗜好' },  // 09-01 AC5 v2 第③段整段：gap→ok（⭐ AC8 最後一個 gap，補完掛零）
       { fr:"L'immigration, c'est long et difficile. Vous êtes prêt ?", zh:'移民很久又很難，你準備好了嗎？', cover:'part', from:'AC15 未來計畫' },  // 09-01 AC15 第③段的心態接得住，但「準備好了嗎」還要轉一下：gap→part
       { fr:"Si vous ne pouvez pas partir, qu'est-ce que vous ferez ?", zh:'如果你走不成，你會怎麼做？', cover:'ok', from:'AC15 未來計畫' }  // 09-01 AC15 v2 第③段整段就是這題：gap→ok
     ] },
@@ -312,12 +370,61 @@ const ANSWER_CARDS = [
     ] },
 
   { id:'AC11', topic:'health', title:'健康',
-    q_fr:"Comment restez-vous en bonne santé ? Vous faites du sport ?",
-    q_zh:'你平常怎麼保持健康？有沒有運動習慣？',
+    q_fr:"Est-ce que vous faites du sport ? Comment vous prenez soin de votre santé ?",
+    q_zh:'你有運動嗎？你怎麼照顧自己的健康？',
+    // ⭐ 2026-09-01 Owen 的中文口述全文（逐字保留，⛔ 不要精簡）。慣例同 AC2／AC3／AC7／AC8／AC15。
+    // ⚠️ v2 法文版刻意沒收進去的段落（＝之後升級 B1/B2 的第一批材料）：
+    //    ・「觀察聯動性去調整身體狀況」「整骨、經絡更順暢」← 細節＋中醫概念，中版可加回（法文不好講，要先查詞）
+    //    ・「找一些成功的案例讓自己穩定，用好的方法把狀況拿回來」← ⭐ 抽象化＋方法論，B2 的料
+    //    ・「拳擊一有雜念就漏洞百出」← v2 收了「有危險」那半，「漏洞百出」這個比喻留著當升級料
+    //    ・⭐「如果心裡活在這世界上，卻沒有跟自己的內心相連結，只是一直在追求目標」← B2 的抽象段，
+    //      而且跟 AC15 的「聽聽自己的聲音」是同一條線——升級時兩座島可以互相呼應
+    //    ・「這個問題到現在還沒有完全解決」← 讓步的雛形，B2 接口
+    source_zh:"【運動】我最近做了不少運動。我的運動習慣在疫情前就開始建立了，一開始是重訓，後來發現我身體的聯動性不是那麼好，就開始做一些功能性訓練、瑜伽，現在還開始游泳。之前有做一些拳擊，拳擊是為了要產生一些爆發力，讓心裡可以不要有太多雜念，因為打拳擊一有雜念就可能有危險，容易漏洞百出。\n很多時候我大概都是靠運動、觀察聯動性，去調整自己身體的狀況。另外就是我會定期去推拿、整骨、按摩，讓自己身體的經絡更順暢。\n\n【工作壓力】工作壓力我怎麼排解？除了工作本身，因為彎腰駝背產生的身體壓力，這些部分我就是靠運動、靠做那些事情。另外，在工作壓力很大的狀況下，我有接觸一段時間的正念、冥想和瑜伽，我覺得也很不錯，可以讓自己有自由的時間：不是說這整段時間在放假，而是在思緒與思緒之中，有機會讓自己停下來、不被別人打斷。這些東西都可以讓我的壓力變小。\n另外就是要找一些成功的案例讓我自己可以比較穩定，或者是用好的方法，讓自己在遇到困難或遇到狀況的時候，可以比較容易把自己的狀況拿回來，或者快速地排解這些問題。\n\n【健康狀況】「你有過什麼健康狀況嗎？」這個問題很尖銳。倒也沒有嚴重到什麼程度，但我的身體從小就不是很好，可能跟我的坐姿不良有關。我的腰、下背、長期都處在一個不是很對的位置，我甚至曾經有一次大腿麻了三個月，一直都沒有好，後來發現其實是身體坐姿有問題，導致神經的壓迫。這個問題到現在還沒有完全解決，當然至少現在沒有麻了，只是身體的姿勢真的差很多。所以我才會那麼重視運動、瑜伽、游泳、拳擊和筋膜的狀況。\n\n【健康是什麼】對我來說，健康到底是什麼？我覺得就是身心合一吧。身體知道自己是什麼、在幹嘛？我有沒有聽牠的聲音？如果心裡雖然活在這個世界上，但沒有跟自己的內心相連結，只是一直在追求目標，而沒有跟自己合一，我覺得這很重要。",
     versions:[
       { level:'A1', d:'2026-07-16',
-        fr:"Je fais du yoga et de la méditation une ou deux fois par semaine. Je mange sain. J'ai un coach sportif une fois par semaine, et je nage une ou deux fois par semaine.",
-        zh:'我一週做一到兩次瑜伽跟冥想。我吃得健康。我一週有一次健身教練課，也游泳一到兩次。' }
+        fr:"Je fais du sport deux ou trois fois par semaine. Je fais du yoga avec ma femme. C'est bon pour le dos, parce que je travaille assis toute la journée. Je dors bien, mais pas assez longtemps.",
+        zh:'我一週運動兩三次。我跟太太一起做瑜伽。這對背很好，因為我整天坐著工作。我睡得好，但睡不夠久。' },
+      // ── 2026-09-01 v2：語言島第七座。180 字 / 約 83 秒。
+      // ⭐ 一座補兩個 gap：AC1「你做什麼運動？」＋ AC3「工作的壓力你怎麼處理？」——兩題都升成 'ok'。
+      // 四段：①運動的演變（重訓→功能性→瑜伽→游泳→拳擊）②為什麼這麼在意（大腿麻三個月）
+      //       ③牙醫的身體負擔＋冥想 ④健康是什麼
+      // 五個「加分」點：
+      //   ・「拳擊台上只要你在想別的事，你就有危險」——別人沒有的細節，而且把運動接到專注上
+      //   ・⭐⭐「大腿麻了三個月，是坐姿造成的神經壓迫」——具體到會被記住，
+      //     而且它是整座島的因果核心：**先有這件事，才有後面所有的運動**。⛔ 不要拿掉。
+      //   ・「現在是沒事了，但我的背還是不正」——誠實，沒有把故事收成勵志結局
+      //   ・⭐「那不是放假：那只是在兩個念頭之間，一個我停下來、沒有人打斷我的時刻」——
+      //     情緒＋抽象，全段最強的一句，而且是 B2 抽象段最好的接口
+      //   ・「身體知道自己在做什麼。真正的問題是：我有沒有在聽它？」——收尾用問句，考官會停一下
+      // ⛔ 刻意不重述舊島（原則 7）：
+      //   ・AC2 講過「每個禮拜天全家去上瑜伽、Jolie 在教室裡玩」→ 這裡的瑜伽只是運動演變裡的一站，
+      //     ⛔ 不重講那個畫面。v1 的「跟太太一起做瑜伽」也因此不帶進 v2。
+      //   ・AC3 講過牙醫的工作內容 → 這裡只取「整天彎著腰」這個身體面向
+      // 用上的近期結構（刻意）：
+      //   ・depuis avant la pandémie／depuis l'enfance（21課 depuis）
+      //   ・j'ai commencé／j'ai compris／j'ai eu／je suis passé（17課 passé composé，含 être 動詞 passer）
+      //   ・mon corps ne travaillait pas／c'était un nerf comprimé（20課 imparfait）
+      //   ・si tu penses à autre chose, tu es en danger（28課 si＋現在式＋現在式，常態）
+      //   ・on est penché toute la journée（28課 on ＝ les gens/nous）
+      //   ・un moment où je m'arrête et où personne ne me coupe（où 關係代名詞）
+      //   ・ce qu'il fait（26課 ce que）
+      { level:'A2', d:'2026-09-01',
+        fr:"Je fais du sport deux ou trois fois par semaine, et ça a commencé avant la pandémie. J'ai commencé par la musculation, puis j'ai compris que mon corps ne travaillait pas ensemble : je suis passé au training fonctionnel, au yoga, et maintenant je nage. J'ai fait de la boxe aussi, pour l'explosivité — et parce que sur le ring, si tu penses à autre chose, tu es en danger.\n\nPourquoi j'y tiens autant ? Depuis l'enfance, je me tiens mal. Une fois, j'ai eu la cuisse engourdie pendant trois mois : c'était un nerf comprimé, à cause de ma position assise. Aujourd'hui ça va, mais mon dos n'est toujours pas droit. C'est pour ça que j'y fais autant attention.\n\nDentiste, on est penché toute la journée. Alors je vais régulièrement chez le masseur, et je médite. Ce ne sont pas des vacances : c'est juste, entre deux pensées, un moment où je m'arrête et où personne ne me coupe.\n\nPour moi, la santé, c'est l'unité du corps et de l'esprit. Le corps sait ce qu'il fait. La vraie question, c'est : est-ce que je l'écoute ?",
+        zh:'我一週運動兩三次，從疫情前就開始了。一開始是重訓，後來發現我身體不是一起在動的：於是轉去做功能性訓練、瑜伽，現在還游泳。我也打過拳擊，為了爆發力——也因為在拳擊台上，只要你在想別的事，你就有危險。\n\n為什麼我這麼在意？我從小坐姿就不好。有一次我的大腿麻了三個月：是神經被壓迫，因為坐姿的關係。現在是沒事了，但我的背還是不正。我就是因為這樣才這麼在意。\n\n當牙醫，整天都是彎著腰。所以我會定期去推拿，也會冥想。那不是放假：那只是在兩個念頭之間，一個我停下來、而且沒有人打斷我的時刻。\n\n對我來說，健康就是身心合一。身體知道自己在做什麼。真正的問題是：我有沒有在聽它？' }
+    ],
+    // 2026-09-01 預測追問。cover：'ok'＝島接得住｜'part'＝要轉一下｜'gap'＝沒材料
+    follow_ups:[
+      { fr:"Vous faites du sport combien de fois par semaine ?", zh:'你一週運動幾次？', cover:'ok', from:null },  // v1 的「兩三次」已接進 v2 第一句
+      { fr:"Le yoga, ça vous a aidé pour le dos ?", zh:'瑜伽對你的背有幫助嗎？', cover:'ok', from:null },
+      { fr:"Comment vous gérez le stress au travail ?", zh:'工作的壓力你怎麼處理？', cover:'ok', from:'AC3 工作' },
+      { fr:"La boxe, ce n'est pas dangereux ?", zh:'拳擊不危險嗎？', cover:'ok', from:null },
+      { fr:"Vous dormez bien ?", zh:'你睡得好嗎？', cover:'part', from:null },  // v1 有「睡得好但不夠久」
+      { fr:"Vous faites attention à ce que vous mangez ?", zh:'你會注意自己吃什麼嗎？', cover:'gap', from:'AC6 飲食' },
+      { fr:"Au Canada, il fait froid : vous pourrez continuer le sport ?", zh:'加拿大很冷，你還能繼續運動嗎？', cover:'gap', from:'AC8 加拿大' },
+      { fr:"La médecine chinoise, vous y croyez ?", zh:'你相信中醫嗎？', cover:'part', from:null },  // source_zh 有推拿整骨經絡，v2 只留 masseur
+      { fr:"Vos patients aussi ont mal au dos ?", zh:'你的病人也會背痛嗎？', cover:'gap', from:'AC3 工作' },
+      { fr:"Être en bonne santé, c'est le plus important dans la vie ?", zh:'健康是人生最重要的事嗎？', cover:'part', from:null }  // ⭐ 讓步段：這題就是這座島的 B2 施工圖
     ] },
 
   { id:'AC12', topic:'tech', title:'科技',
