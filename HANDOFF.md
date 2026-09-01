@@ -1167,6 +1167,44 @@ grep 確認 ＋ `git diff sync_supabase.js` **為零**。（先關 preview 再�
 
 ---
 
+### 📦 2026-09-01：第三包 TCF 材料（LINE 傳來）—— ⭐ 挖到兩本正式教科書
+
+完整索引：`assets/tcf/pack3/INDEX_PACK3.md`。**掃描乾淨**（0 危險副檔名／0 穿越／0 加密／docx 無巨集）。
+28 檔／0.14 GB，**26 個 PDF 有 24 個帶文字層**，按月更新到 2025.11。
+
+**① Tâche 3 題庫可從 167 題 → 293 題**
+`口语第三部分按主题分类题目目录.pdf` 是最乾淨的一份：**128 題／7 主題**
+（家庭教育幸福 30／科技 24／移民 22／政治社會正義 18／職業 13／環境動物自然 13／文化 8）。
+加上 T3 更新檔 45 題，本包不重複 164 題，**其中 126 題不在既有 167 題裡**。
+→ `assets/tcf/pack3/_analyse/T3_all_dedup.json`
+⚠️ **新增的 126 題沒有中文翻譯**（既有 167 題才有）。
+
+**② ⭐⭐ 兩本 Ellipses 出版的正式教科書**（不是合輯）
+- **《Débattre en FLE》**（Stéphanie Holleville, 2021, B1–C2, 258 頁）——
+  **整本在教論述與表達意見**，PARTIE 1 是方法論：`TROUVER DES ARGUMENTS`（含 ⭐ **QQOQCP 法**）／
+  `EXPRIMER L'OPINION`／`EXPRIMER SON ACCORD ET SON DÉSACCORD`
+  ⭐ **全書連接詞頻次比 180 篇範文那批語域更高**：
+  `par ailleurs 38｜en effet 28｜toutefois 26｜or 15｜néanmoins 15｜bien que 14｜certes 10｜dès lors 10`
+  （範文那批是 `également 50｜de plus 46｜ainsi 39｜car 35` — 基本款）
+  → **原則 6 升級層的工具箱應該改以這本為主。**
+- **《FLE Objectif B2 — Vocabulaire thématique》**（Laure Garnier, Ellipses, 143 頁，已 OCR）
+  每節 `L'essentiel`→`Pour mémoire`→`La liste`→⭐`Cap sur le B2`
+
+**③ 這次的方法教訓（做對了的那次）**
+第一版一把抓抽出 1215 條 → 發現**大量是別人寫的口語稿不是題目**。
+⭐ **先開三個代表性檔案看實際版面**，才發現三種結構完全不同（純題目／題目+範文／情境+稿子），
+分開處理後才乾淨。另外文字抽出來會黏在一起（`Qu'enpensez-vous?`），
+**要用 `extract_words` 依座標重建行**才有空格。
+
+**④ ⚠️ 仍未處理**：寫作更新 3 份／`DELF_55热`（226 頁）／`Débattre` 的方法論內文（QQOQCP 操作步驟）／
+新增 126 題的中文翻譯。
+
+**⑤ ⚠️ 更正**：8/31 我說「第一包 zip 被刪了」是**錯的**——
+`/Users/owen/Desktop/TCF Candada` 是解壓後的資料夾，3.5 GB／144 PDF／86 mp3 完整。
+（又是同一個病：`ls` 用 awk 印 `$NF` 把含空格的檔名截斷，看到列表沒有就下結論。）
+
+---
+
 ### ⏭⏭⏭ 2026-08-31 17:00 交接：材料整理告一段落，**下一步回主線蓋島**
 
 > 8/30–8/31 兩天全部投在「把買來的考試材料變成可用的東西」。**這件事做完了。**
