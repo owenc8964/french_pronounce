@@ -606,7 +606,8 @@ details.layer > summary > span:not(.ly-peek) { flex-shrink: 0; }
   </div>
   <div class="cd-right">
     <div class="cd-label">目標</div>
-    <div class="cd-date">2027年6月1日</div>
+    <div class="cd-date">2027年9月19日</div>
+    <div class="cd-date" style="font-size:0.62rem;opacity:.6">場次暫定 · 2027 官方尚未公布</div>
     <div class="cd-date" id="cdPace" style="margin-top:4px;font-size:0.72rem;"></div>
   </div>
 </div>
@@ -716,13 +717,18 @@ details.layer > summary > span:not(.ly-peek) { flex-shrink: 0; }
 
 <script>
 // ── 常數 ─────────────────────────────────────────────────────
-const EXAM_DATE  = new Date('2027-06-01T00:00:00');
+// 2026-09-01：Owen 訂的是「學法文一年」（2026-05 起），但 5、6 月根本沒有場次——
+// TCF Canada 一年 4 場，2026 是 2/8、4/19、9/20、12/20，全部落在該月第三個星期日。
+// 照同一節奏推 2027：4/18 當前哨戰（還不滿一年，去測實力位置），9/19 才是正場。
+// ⚠️ 2027 場次官方尚未公布，這兩個日期是推的，公布後要回來改（法協 02-2364-8833）。
+const EXAM_DATE  = new Date('2027-09-19T00:00:00');
 const GOAL_H     = 700;
 const MILESTONES = [
   { label:'A1 完成', date:'2026-08-31' },
   { label:'A2 完成', date:'2026-11-30' },
   { label:'B1 完成', date:'2027-02-28' },
-  { label:'B2 考試', date:'2027-06-01' },
+  { label:'前哨戰（診斷考）', date:'2027-04-18' },
+  { label:'B2 正場', date:'2027-09-19' },
 ];
 const TOPIC_LABELS = {
   'etre-avoir':               'Être & Avoir',
