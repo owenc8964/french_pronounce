@@ -912,6 +912,62 @@ Owen 的原話：「**我不太想一直看那些亂碼或是一個一個點音�
 
 ---
 
+### 🗓️ 2026-09-01（續）：工具與索引搬進 git ——**材料不進、程式進**
+
+> Owen 問「你檔案都有存起來齁」。查完發現：**存是存在磁碟上，但除了 `HANDOFF.md` 以外，
+> 這幾天做的東西一個都沒進 git**——因為 `.gitignore` 第 30 行 `assets/tcf/` 整包擋掉。
+> 那條規則本身是對的（2.3 GB 商業教材），但它**連我們自己寫的程式和筆記一起誤傷**。
+
+#### ⚠️ 動手前先確認的一件事：**這個 repo 是 PUBLIC 的**
+`https://github.com/owenc8964/french_pronounce` → visibility PUBLIC。
+所以「進 git」等於「之後 push 就公開」。搬之前先驗過要進去的東西**不含任何考題本體**：
+- 四支產生器：`grep -cE "^\s*['\"]?[a-d]\. "` 全部 **0**（題目與選項一律從 JSON 讀，沒有內嵌）
+- 三份索引：最長行 190／157／253 字元，都是我們自己的敘述，沒有整段引用
+- ⭐ **考題本體全在那 13 個 JSON 裡，仍然被 gitignore 擋住**，這條界線很乾淨
+
+#### 🗂 路徑對照表（⚠️ 讀舊的交接段落時要照這張表翻譯）
+
+| 舊位置（gitignore） | 新位置（已進 git） |
+|---|---|
+| `assets/tcf/tef/_analyse/extract_test_blanc.py` | **`tools/tef_extract_test_blanc.py`** |
+| `assets/tcf/tef/_analyse/gen_prof_dossier.py` | **`tools/tef_gen_prof_dossier.py`** |
+| `assets/tcf/tef/_analyse/gen_prof_qcm.py` | **`tools/tef_gen_prof_qcm.py`** |
+| `assets/tcf/_analyse_gen_infos.py` | **`tools/exam_gen_prof_infos.py`** |
+| `assets/tcf/INDEX.md` | **`EXAM_MATERIALS_TCF.md`** |
+| `assets/tcf/tef/INDEX_TEF.md` | **`EXAM_MATERIALS_TEF.md`** |
+| `assets/tcf/TCF_vs_TEF.md` | **`EXAM_TCF_VS_TEF.md`** |
+
+⚠️ **1000 行之前的舊段落還寫著舊路徑**，那些是當時的歷史記錄，**沒有改寫**（不動歷史）。
+遇到就用上表翻譯。
+
+#### ✅ 搬完的驗證（不是搬完就說好了）
+四支產生器**從新位置全部實跑一次**，輸出字元數與搬之前**逐一相同**：
+`Examen_vise_informations.html` 17,226／`TEF_Canada_dossier_complet.html` 269,330／
+`TEF_Canada_epreuves_QCM.html` 70,420；`tef_extract_test_blanc.py` 一樣抽出 120/120 題。
+另外 `git check-ignore` 逐檔確認：**7 個新檔可進 git，4 個材料樣本仍被擋**。
+
+每支產生器都加了防呆：找不到 `assets/tcf/` 的資料時直接報錯並說明
+「程式進 git、資料不進 repo」，不會產出半殘的檔案。
+
+#### 💾 現在的備份界線
+| 東西 | 在哪 | 有版控？ |
+|---|---|---|
+| 四支產生器 ＋ 三份索引/決策文件 | repo | ✅ |
+| 交接檔 | repo | ✅ |
+| 原始 PDF／mp3（2.3 GB）、OCR 文字、題庫 JSON、給老師的 docx | 本機 `assets/tcf/` | ⛔ 刻意不進 |
+
+⭐ **意義：材料整包不見的話，`tools/` ＋ Owen 手上的原始 zip 就能全部重建。**
+之前不行——那時連重建用的程式都在會一起消失的資料夾裡。
+
+⛔ **尚未 push**（repo 是公開的，等 Owen 決定）。
+
+#### ⏭ 下個 session：**AC7 旅行**（Owen 已指定）
+四題口述提示：①你去過加拿大嗎（沒去過也要講：為什麼還沒去、想先去哪）
+②冰島那趟最印象深的「一個瞬間」（不是整趟，是一個畫面）③你旅行喜歡怎麼玩
+④有了 Jolie 之後旅行變得怎樣 → 做法照「繼續蓋島」那段（170–200 字／80–95 秒／`source_zh` 逐字留）
+
+---
+
 ### 🗓️ 2026-09-01：桌面那包 `TEF CANADA.zip` 掃描比對——**跟現有的完全相同，沒有新東西**
 
 > Owen 丟了 `~/Desktop/TEF CANADA.zip` 問「跟之前相同還是相異？先掃描檢視確認過喔」。
