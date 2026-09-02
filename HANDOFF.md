@@ -901,6 +901,79 @@ Owen 的原話：「**我不太想一直看那些亂碼或是一個一個點音�
 
 ---
 
+### ✅ 2026-09-02：第三包材料整理**全部完成**，六個缺口清光 → 校準可以開工了
+
+> 分工：另一個 session 蓋島（八座已到齊），這個 session 專做材料。09-02 交接合流。
+> 完整索引已進 repo：**`EXAM_MATERIALS_PACK3.md`**（材料本身仍在 `assets/tcf/pack3/`，不進 git）。
+
+#### ⭐ 給校準用的最終數字（⚠️ 取代施工圖裡的「293 題」）
+
+**Tâche 3 題庫 = 280 題**（既有 167 ＋ 新增 113，去重後）。
+⚠️ 先前的 293 是**去重前**的數字；跨兩份來源共抓到 **12 組重複**——
+包含 `Tâche 3:` 前綴那批，以及只差一個長音符（`Êtes` vs `Etes`）的，
+**第一次的去重指紋沒有去重音所以漏抓**。
+
+**✅ 中文翻譯已補完**（施工圖裡標的「126 題沒有中文」這條缺口解除）。
+Artifact（法／繁中對照、可搜尋、九主題篩選）：
+`https://claude.ai/code/artifact/9e84cf3c-1225-437c-b7ce-dc0ff3de915c`
+
+| 主題 | 題數 | | 主題 | 題數 |
+|---|---|---|---|---|
+| 移民・文化・旅遊 | 51 | | 環境・動物 | 26 |
+| 教育・家庭 | 46 | | 其他 | 22 |
+| 科技・網路 | 41 | | 人際・自我 | 20 |
+| 工作・職業 | 33 | | 健康・生活 | 14 |
+| 社會・政治 | 27 | | | |
+
+⭐ **這組數字可以直接拿去對施工圖的「疑似缺口」表**——那張表用的是舊的 7 主題分類（128 題版），
+現在有完整的 280 題九主題版，比對會更準。
+
+#### ⭐⭐ 兩本 Ellipses 正式教科書（不是合輯，是這包最大的收穫）
+
+- **《Débattre en FLE》**（Stéphanie Holleville, 2021, **B1–C2**, 258 頁）
+  副標 *Toutes les clés pour argumenter et exprimer son opinion*。方法論已摘成
+  `assets/tcf/pack3/_analyse/METHODE_ARGUMENTATION.md`：**QQOQCP 提問法**／
+  **六個面向**（historiques／culturels／juridiques／environnementaux／sociétaux／économiques）／
+  二元法（Avantages-Inconvénients、Causes-Conséquences）／**oui-non 的替代說法**
+  ⭐⭐ **最實用的一條**：原書明講 *« Les Français disent rarement oui ou non »*，
+  正式場合要用變體。尤其「**弱化的不同意**」——`C'est plus complexe que ça` / `Pas exactement` /
+  `Ça dépend` **比 `Non` 高好幾個等級**。→ 這是 **Tâche 3 被考官反駁時怎麼接**的直接解答。
+  ⭐ 其連接詞語域比 180 篇範文高一階（`par ailleurs 38｜toutefois 26｜or 15｜néanmoins 15｜dès lors 10`
+  vs `également 50｜de plus 46｜ainsi 39｜car 35`）→ `STRATEGY` 原則 6 的工具箱已改指這本。
+- **《FLE Objectif B2 — Vocabulaire thématique》**（Laure Garnier, Ellipses, 143 頁，已 OCR）
+
+#### 其他可用產出（都在 `assets/tcf/pack3/_analyse/`）
+`DELF_55_themes.json`（⭐ **55/55 主題法中對照，零缺漏**，B1/B2）／
+`ecrit_T1_sujets.json`（寫作 Tâche 1 **52 條**法文題目）／
+`T2_situations.json`（Tâche 2 法文情境 20 條＋中文標題 9 條）／
+`debattre_structure.json`／`vocab_b2_toc.json`
+
+#### ⭐ Owen 09-02 要求的兩項驗證（都通過）
+
+1. **「法文要是檔案裡的，不是你生成的」** → 把所有原始 PDF 抽成 **54 萬字語料**逐條比對：
+   **118 條完全逐字符合**；**1 條僅修長音符**（原檔 `Etes-vous`，標準法文 `Êtes-vous`，
+   原文存進 `fr_source` 欄位並註明——依來源鐵律**可以用標準法文，但必須標出來**）；
+   **2 條原本被行末截斷** → 回原檔取完整版，非自行補寫。
+2. **「題目跟範文要分開」** → 0 條含範文結構詞、0 條超過 150 字、0 條沒有問句標記。
+   **⛔ 範文一律留在原檔沒有進題庫。**
+
+#### ⚠️ 這一輪踩到的五個坑（都是版面問題，下次直接照做）
+1. **一把抓抽出 1215 條** → 大量是**別人的口語稿不是題目**。三種檔案結構完全不同，
+   **必須先開檔看版面再寫規則**（08-30 那條教訓的第四次驗證）
+2. 文字抽出來會黏在一起（`Qu'enpensez-vous?`）→ 用 `extract_words` 依座標重建行
+3. **雙欄表格按行讀會錯開一格**（`L'inflation` 配到「通貨膨脹**社交媒體**」）→ 按 x 座標分欄
+4. **每頁欄位起點會位移**（p1 在 x0≈164、p2 在 146）→ **每頁自動偵測標記欄的眾數 x**
+5. **去重指紋要先去重音**，否則 `Êtes`／`Etes` 會被當成兩題
+
+#### 🈶 全部中文已轉繁體（台灣用語）
+用 `opencc` 的 **`s2twp`**（含詞彙轉換：`信息→資訊`／`网络→網路`／`软件→軟體`／`视频→影片`／
+`打印→列印`／`用户→使用者`／`项目→專案`）。
+⚠️ **踩過的坑**：先做整段 NFKC（為了修 `原⽂`/`⼤学` 這類部首相容字）→ **連全形標點都被轉成半形**。
+已還原（規則：前一個字是中文才轉回全形）。
+⛔ **以後只對 U+2E80–U+2FDF 做 NFKC，不要整段做。**
+
+---
+
 ### ⏭⏭⏭ 2026-09-01 深夜交接：**下個 session 的主線 = 拿 TCF 真實題庫校準八座島，並設計應考之道**
 
 > Owen 指定：「另一個 session 正在整理所有 TCF 資料，我想把這些島在下個 session 根據那些資料做校準，
@@ -920,14 +993,18 @@ Owen 的原話：「**我不太想一直看那些亂碼或是一個一個點音�
 | 檔 | 內容 |
 |---|---|
 | `T3_sujets_par_theme.json` | ⭐ **128 題／7 主題**，最乾淨的一份 |
-| `T3_all_dedup.json` | 合併去重後 **Tâche 3 題庫 293 題** |
+| `T3_all_dedup.json` | ⚠️ **舊檔（去重前）**。最終版是 `T3_new_126_bilingue.json` ＋ 既有 167 題 → **合併去重後 280 題**，見 `EXAM_MATERIALS_PACK3.md` 第 7 節 |
 | `T2_situations.json` | Tâche 2 情境（法文 20 條＋只有中文標題 9 條）|
 | `debattre_structure.json` | ⭐ `Débattre en FLE`（Ellipses 2021, B1–C2）方法論結構，含 **QQOQCP** |
 | `METHODE_ARGUMENTATION.md` | 論證方法 |
 | `DELF_55_themes.json`／`vocab_b2_toc.json`／`ecrit_T1_sujets.json` | 主題與詞彙 |
 
-⚠️ **合併後新增的 126 題沒有中文翻譯**（既有那 167 題才有）——校準時若要按主題篩選，
-先確認你讀得懂那批法文題目在問什麼，⛔ 不要靠猜。
+✅ **2026-09-02 更新：中文翻譯已補完，這條缺口解除。**
+新增的 113 題已翻成繁體中文（標 `zh_src:"claude"`，跟材料原附的 167 題分開標示），
+**合併去重後共 280 題**，已發布可搜尋的法／繁中對照 Artifact：
+`https://claude.ai/code/artifact/9e84cf3c-1225-437c-b7ce-dc0ff3de915c`
+⭐ 校準時可直接按九大主題篩選：`移民・文化・旅遊 51｜教育・家庭 46｜科技・網路 41｜工作・職業 33｜
+社會・政治 27｜環境・動物 26｜其他 22｜人際・自我 20｜健康・生活 14`
 
 #### ⭐⭐ 校準前一定要先想清楚的一件事：**島是 Tâche 1 的資產，不是 Tâche 3 的**
 
