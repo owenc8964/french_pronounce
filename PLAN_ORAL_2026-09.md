@@ -305,6 +305,45 @@ Snipd 官方說明的原話是 *「The podcast keeps playing, you keep driving.�
 （只提到若改過耳機手勢設定，可能要改用 skip forward 鍵）。
 → ⛔ **不要再查了，這是裝好按一次就知道的事**，30 秒可驗。
 
+##### ⭐⭐ 「Snipd 會自己翻譯」的根因找到了：**Coffee Break French 的 RSS 自己標成英文**
+
+> Owen：「他很奇怪，對話會自己翻譯，有可能不翻譯保留原語言嗎？但介面維持英文這樣。」
+
+Snipd 官方說明：*「We use the language that's specified by the podcast creator in
+**their RSS feed** to determine which language processing to apply to each episode.」*
+→ **是照節目 feed 宣告的語言，不是照使用者的裝置或介面語言。**
+
+**實測各節目的 `<language>` 標籤（2026-09-02，直接抓 RSS 驗的）：**
+
+| 節目 | RSS `<language>` | 集數 |
+|---|---|---|
+| **Coffee Break French** | ⚠️ **`en`** | 333 |
+| Duolingo French Podcast | ⚠️ `en-us` | 126 |
+| **InnerFrench** | ✅ **`fr`** | 200 |
+| Podcast Français Authentique | ✅ `fr` | 100 |
+| Easy French | ✅ `fr` | 150 |
+| Journal en français facile（RFI）| ✅ `fr` | 24（滾動）|
+
+⭐ **所以不是 Owen 設定錯，也不是 app 壞掉——是 Coffee Break French 自己標成英文節目**
+（技術上也沒錯，它的主持語言確實是英文）。
+⛔ **改不掉**：官方文件明說**沒有 user-facing 的輸出語言設定**，那是 feed metadata 不是使用者設定。
+
+**→ 處理方式（⛔ 不是叫他別聽 Coffee Break French）：**
+| 用途 | 用哪個 |
+|---|---|
+| **家族 B 可理解輸入**（開車、放鬆、⛔ 不設 KPI）| ✅ **Coffee Break French 照聽**——他喜歡，而喜歡就是永動機（memory `feedback_fun_is_the_engine`）|
+| **家族 E 挖法文句子進 S 階梯** | ⭐ **換 `language: fr` 的節目**（InnerFrench 200 集最對路）|
+
+⭐⭐ **而且換節目還有第二個、可能更重要的好處**：
+Coffee Break French 是**用英文教法文**，一集 5–8 分鐘裡**法文密度很低**。
+InnerFrench 是**純法文、專門講給學習者聽**（慢速、清楚）——
+**對「挖一句法文回來練」這件事，法文密度高好幾倍。**
+
+##### 🚗 「沒看到 CarPlay 的選項」
+**CarPlay 不是 app 內的設定**，app 支援就會在連上時自己出現在車機桌面。
+若沒出現，去 **iPhone → 設定 → 一般 → CarPlay → 選你的車 → 自訂**，把 Snipd 加進桌面／往前排。
+⚠️ app 要先在手機上開過至少一次。→ 這同樣是 30 秒可驗的事，⛔ 不用再查文件。
+
 #### ⭐⭐ 沒有 CarPlay 的話，正確答案不是硬做，是**分工本來就寫錯了**
 
 `METHOD_MAP.md:170` 寫的是「E 挖句子｜**從 B 的內容裡挖**」——
