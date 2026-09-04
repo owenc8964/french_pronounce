@@ -10451,7 +10451,7 @@ const CHUNKS = [
   "fr": "Chaque corps est unique.",
   "zh": "每個身體都是獨一無二的。",
   "note": "課文金句"
- },,
+ },
  {
   "id": "L26_Ils_ne_se_sentent_pas_bi",
   "lesson": 26,
