@@ -179,6 +179,42 @@ const T1_STOCK = [
     //   ——兩個都在 A2 詞彙範圍內，⛔ 沒有用更高階的字。
     fr:"J'ai étudié six ans à l'université médicale de Taipei. En première et en deuxième année, les livres étaient très épais et je ne savais pas par où commencer. C'est seulement après mes études que j'ai compris comment j'apprends le mieux : d'abord voir les grandes lignes, puis comprendre l'ensemble.",
     zh:"我在臺北醫學大學念了六年。大一大二的時候，原文書很厚，我不知道從哪裡開始讀。一直到畢業之後，我才慢慢體會到自己怎麼學最好：先抓大方向，再理解整體。" },
+
+  /* ══ 第二層存貨（2026-09-04 補）══
+     ⚠️ Owen 追問「其他的不切一切嗎」→ 把剩下 13 段逐段對「T1 會不會問到」核過一次。
+     ⭐ 結論：⛔ 不為切而切是對的，但先前低估了數量——這五段是真的會被問到的。
+     ⛔ 沒切的仍然不切：AC15 §3（讓步段）、AC8 §5（兩岸/烏克蘭）＝ T3 的料，
+        T1 用不到；AC2 §4、AC7 §3、AC11 §4 太抽象，T1 追不到那麼深。 */
+
+  { hook:'Canada', direct:true, src:'AC7 §1', mots:36, sec:22, level:2,
+    q_fr:"Vous êtes déjà allé au Canada ?", q_zh:'你去過加拿大嗎？',
+    // ⭐⭐ 講了「我想去加拿大」之後，這幾乎一定會被問。先前漏掉是明顯的缺口。
+    fr:"Non, je ne suis jamais allé au Canada. Si j'y vais un jour, je commencerai par Vancouver — tout le monde parle de son climat, je veux le sentir moi-même — et ensuite les parcs nationaux.",
+    zh:"沒有，我還沒去過加拿大。如果哪天我去，我會先去溫哥華——大家都在說那裡的氣候，我想自己感受看看——然後是國家公園。" },
+
+  { hook:'Canada', direct:true, src:'AC8 §3+§4', mots:42, sec:25, level:3,
+    q_fr:"Il y a d'autres raisons ?", q_zh:'還有別的理由嗎？',
+    // ⚠️ AC8 §5（兩岸/烏克蘭）刻意不收：政治議題是 T3 的料，T1 不需要走那麼深
+    fr:"Ensuite, le climat. Taïwan est de plus en plus chaud, et avec le réchauffement climatique, ce sera pire. Il y a aussi les avantages sociaux : de bonnes politiques publiques, un bon système scolaire, et des prix de l'immobilier plus raisonnables qu'ici.",
+    zh:"再來是氣候。台灣越來越熱，加上暖化，之後只會更糟。還有社會福利：不錯的公共政策、好的教育體系，還有比這裡合理的房價。" },
+
+  { hook:'voyage', direct:true, src:'AC7 §4', mots:48, sec:29, level:2,
+    q_fr:"Vous voyagez encore, avec un bébé ?", q_zh:'有小孩之後你們還旅行嗎？',
+    // ⭐ 這一段同時連回 Jolie——兩個勾子共用一段存貨
+    fr:"Depuis la naissance de ma fille, on voyage autrement. On est allés à Hokkaido : elle dîne à cinq heures et elle dort tôt. Fini les magasins à dix heures du soir. Est-ce qu'elle s'en souviendra ? Non. Mais je crois que tout ça reste dans son corps.",
+    zh:"女兒出生之後，我們旅行的方式就不一樣了。我們去了北海道：她五點就吃晚餐、很早睡。晚上十點還在逛街這種事已經沒有了。她會記得嗎？不會。但我相信這些都留在她身體裡。" },
+
+  { hook:'lecture', direct:true, src:'AC5 §1', mots:45, sec:27, level:1,
+    q_fr:"Qu'est-ce que vous aimez lire ?", q_zh:'你喜歡讀什麼？',
+    // ⭐ 最後一句是自省，A2 考生幾乎講不出這種話——但它也最抽象，講崩了就砍掉
+    fr:"En ce moment, je lis surtout en français. Avant, je lisais beaucoup sur le temps, sur le sens de la vie, sur le bouddhisme, et je méditais souvent. Mais à force de lire, on reste dans les idées — et on n'est plus vraiment là.",
+    zh:"我最近主要都在讀法文。以前我讀很多關於時間、關於生命意義、關於佛法的書，也常常冥想。但讀太多之後，人會停在觀念裡——就不是真的在當下了。" },
+
+  { hook:'temps libre', direct:true, src:'AC5 §4', mots:44, sec:26, level:2,
+    q_fr:"Qu'est-ce qui vous amuse en ce moment ?", q_zh:'你最近覺得什麼好玩？',
+    // ⭐ 「就是法文啊」——當著考官的面講這句最划算，而且是真的不是討好
+    fr:"Ce que je trouve amusant en ce moment ? Le français, justement. Apprendre une langue en un an, ça m'oblige à inventer d'autres méthodes. Et regarder du sport : voir quelqu'un utiliser une règle pour prendre le contrôle du jeu, ça me plaît beaucoup.",
+    zh:"最近覺得什麼好玩？就是法文啊。一年內學一個語言，逼我去想別的方法。還有看球賽：看到有人利用規則去掌握整場比賽，我很喜歡。" },
 ];
 
 /* ── 用法 ────────────────────────────────────────────────────
