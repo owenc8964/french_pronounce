@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""產生「官方文件索引」——一頁 A4，跟兩份官方 PDF 一起傳給老師。
+"""產生「官方文件索引」——一頁 A4，跟四份官方檔案一起傳給老師。
 
 ⭐ 設計決定（2026-09-04 與 Owen 討論後）：**不重寫官方內容，只做導航。**
-理由：①官方原文的價值就在於它是原文，轉述一次多一層失真
-      ②CECR 描述子那部分我們沒能親自驗證（coe.int 403），不可以包裝成已驗證
+理由：官方原文的價值就在於它是原文，轉述一次多一層失真。
+
+⭐⭐ 2026-09-04 晚間更新：Owen 自己從 coe.int 下載到 CECR 官方檔（Claude 這邊 403），
+「cependant 是 B1+ 不是 B2」已用官方 Excel 驗證 → 索引第 3 節從「請老師幫忙驗證」
+改成「已驗證的發現」。⚠️ 只剩 FEI 手冊仍是鏡像（該站 443 埠不通）。
 
 跑法（從 repo 根目錄）：
     python3 tools/exam_gen_prof_index_officiels.py
@@ -29,9 +32,9 @@ CSS = ('body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:1
 o = ['<html><head><meta charset="utf-8"><style>%s</style></head><body>' % CSS]
 A = o.append
 
-A("<h1>Documents officiels du TCF — index de lecture</h1>")
-A('<p class="lead">Deux PDF officiels sont joints. Cette page indique seulement <b>quelles pages '
-  'concernent réellement le TCF&nbsp;Canada</b>.</p>')
+A("<h1>Documents officiels — index de lecture</h1>")
+A('<p class="lead">Quatre fichiers officiels sont joints. Cette page indique seulement <b>ce qui '
+  'concerne réellement le TCF&nbsp;Canada</b>, et où le trouver.</p>')
 
 A('<div class="key"><b>Ce document ne demande aucun engagement de votre part.</b> '
   'Il ne contient aucune interprétation de ma part&nbsp;: ce sont les textes officiels qui parlent. '
@@ -40,7 +43,7 @@ A('<div class="key"><b>Ce document ne demande aucun engagement de votre part.</b
   "Le rythme et la progression restent votre domaine.</div>")
 
 # ── 1. les deux fichiers ──
-A("<h2>1. Les deux fichiers joints</h2>")
+A("<h2>1. Les quatre fichiers joints</h2>")
 A('<table>'
   '<tr><th>Fichier</th><th>Ce que c\'est</th><th>Pages</th></tr>'
   '<tr><td><code>Manuel_du_candidat_TCF_VersionE_dec2022.pdf</code></td>'
@@ -50,15 +53,24 @@ A('<table>'
   '<tr><td><code>Manuel_du_candidat_TCF_Canada.pdf</code></td>'
   "<td><b>Version spécifique TCF Canada</b>. Plus courte, mais elle <b>ne contient ni le barème /20 → CECR, "
   "ni la règle de calcul</b>&nbsp;: pour cela, il faut le document ci-dessus.</td><td>31</td></tr>"
+  '<tr><td><code>CEFR Descriptors (2020).xlsx</code></td>'
+  "<td>⭐ <b>Les descripteurs officiels du CECR en tableur</b> (Conseil de l'Europe). "
+  "Onglet «&nbsp;Francais&nbsp;»&nbsp;: <b>1&nbsp;834 descripteurs</b>, avec les colonnes "
+  "<i>Échelle</i> et <i>Niveau</i>. <b>Cherchable directement</b> — bien plus pratique que le PDF.</td>"
+  "<td>—</td></tr>"
+  '<tr><td><code>CEFR Companion volume_fra.pdf</code></td>'
+  "<td><i>CECR — Volume complémentaire</i> (2020), version française. Le texte intégral, "
+  "si le contexte d'un descripteur est nécessaire.</td><td>292</td></tr>"
   '</table>')
 
 A('<div class="warn"><b>Une précision sur la provenance.</b> '
-  "Le site officiel <code>france-education-international.fr</code> est <b>inaccessible depuis ma connexion</b> "
-  "(délai d'attente dépassé), de même que <code>coe.int</code> (erreur 403). "
-  "Les deux PDF joints proviennent donc de <b>miroirs tiers</b>, mais&nbsp;: "
-  "la page de garde porte bien la mention «&nbsp;Version E, décembre 2022 — Bureau des tests&nbsp;», "
-  "et les passages clés ont été <b>recoupés entre deux hébergeurs indépendants</b>. "
-  "<b>Si vous avez accès aux sites officiels, une vérification de votre part serait utile.</b></div>")
+  "Les fichiers du <b>CECR</b> ont été <b>téléchargés directement sur <code>coe.int</code></b> "
+  "(site du Conseil de l'Europe)&nbsp;: provenance officielle, aucune réserve. "
+  "En revanche, <code>france-education-international.fr</code> est <b>injoignable depuis notre connexion</b> "
+  "(le port 443 ne répond pas)&nbsp;; les <b>deux manuels du TCF</b> proviennent donc de <b>miroirs tiers</b>. "
+  "La page de garde porte bien «&nbsp;Version E, décembre 2022 — Bureau des tests&nbsp;» et les passages clés "
+  "ont été <b>recoupés entre deux hébergeurs indépendants</b>, "
+  "mais <b>si vous parvenez à ouvrir le site de France Éducation international, une confirmation serait utile.</b></div>")
 
 # ── 2. les pages qui comptent ──
 A("<h2>2. Les quatre pages à consulter (Manuel Version E)</h2>")
@@ -84,16 +96,23 @@ A('<table>'
 
 A('<div class="box"><b>Le reste du manuel concerne d\'autres déclinaisons du TCF</b> '
   "(TCF IRN, TCF Intégration, TCF tout public, TCF Québec) et n'est pas nécessaire ici.</div>")
+A('<div class="key">⭐ <b>Pour les niveaux du CECR, utilisez le tableur plutôt que le PDF.</b> '
+  "Dans <code>CEFR Descriptors (2020).xlsx</code>, onglet «&nbsp;Francais&nbsp;», il suffit de filtrer "
+  "les colonnes <i>Échelle</i> et <i>Niveau</i>. "
+  "⚠️ <b>Le PDF est piégeux</b>&nbsp;: dans les tableaux, l'étiquette de niveau et le descripteur "
+  "se décalent d'une ligne à l'extraction — on risque de lire un descripteur au mauvais niveau.</div>")
 
 # ── 3. deux questions ──
 A("<h2>3. Deux questions concrètes, si vous avez le temps</h2>")
 A('<div class="key"><ol>'
-  "<li><b>Une vérification.</b> D'après le <i>CECR — Volume complémentaire</i> (Conseil de l'Europe), "
-  "«&nbsp;introduire un contre-argument avec <i>cependant</i>&nbsp;» figure dans les descripteurs du niveau <b>B1</b>, "
-  "tandis que le <b>B2</b> demande de <b>défendre ensuite sa position</b>. "
-  "Autrement dit&nbsp;: <b>la concession seule resterait B1&nbsp;; ce serait le retour à sa position qui ferait le B2.</b> "
-  "⚠️ <b>Je n'ai pas pu consulter le texte officiel moi-même</b> (site inaccessible) — "
-  "<b>cette lecture vous paraît-elle juste&nbsp;?</b> Si oui, c'est un point d'entraînement très concret.</li>"
+  "<li><b>Un point que le tableur rend très net</b> (vérifié le 4 septembre 2026 dans "
+  "<code>CEFR Descriptors (2020).xlsx</code>, onglet Francais)&nbsp;:<br>"
+  "• Échelle <i>Cohérence et cohésion</i>, niveau <b>B1+</b>&nbsp;: "
+  "«&nbsp;<i>Peut introduire un contre argument dans un texte simple discursif (par exemple avec «&nbsp;cependant&nbsp;»).</i>&nbsp;»<br>"
+  "• Échelle <i>Discussion informelle</i>, niveau <b>B2</b>&nbsp;: "
+  "«&nbsp;<i>Peut exprimer et exposer ses opinions dans une discussion et <b>les défendre avec pertinence</b>.</i>&nbsp;»<br>"
+  "<b>→ Introduire un contre-argument reste B1+&nbsp;; c'est le retour pour défendre sa position qui relève du B2.</b> "
+  "Cela donne un objectif d'entraînement très concret. <b>Ce raisonnement vous semble-t-il exploitable en cours&nbsp;?</b></li>"
   "<li><b>Une demande.</b> La <b>tâche&nbsp;2</b> évalue l'<i>interaction</i>&nbsp;: c'est le candidat qui pose les questions, "
   "et il doit <b>rebondir sur les réponses</b> de l'examinateur. "
   "<b>Cela ne peut pas se travailler seul&nbsp;;</b> il faut quelqu'un qui réponde — et qui réponde de façon imprévue. "
