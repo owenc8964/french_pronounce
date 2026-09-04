@@ -166,10 +166,19 @@ const T1_STOCK = [
     fr:"Je veux partir au Canada avec ma famille. D'abord, l'éducation : à Taïwan, les enfants apprennent tout par cœur. Au Canada, l'école est plus ouverte.",
     zh:"我想跟家人一起去加拿大。首先是教育：在台灣，小孩什麼都用背的。在加拿大，學校比較開放。" },
 
-  { hook:'études', direct:true, src:null, mots:null, sec:null, level:1, gap:true,
+  { hook:'études', direct:true, src:'Owen 2026-09-04 口述', mots:49, sec:29, level:1,
     q_fr:"Vous avez fait quelles études ?", q_zh:'你念的是什麼？',
-    fr:null, zh:null,
-    note:"⚠️ 學經歷是官方列的 T1 提問範圍之一，但 AC4 教育／學歷只有 A1 短版（28 mots）。⭐ 這一題要 Owen 講：牙醫系念哪裡、幾年、印象最深的是什麼。⛔ 不代筆。" },
+    // ⭐⭐ 這一段是開場那句信念的【來源故事】：
+    //    開場說「學習不只是花時間，最重要的是找到對的方法」
+    //    → 這裡說「我到畢業之後才找到自己的方法」。兩句扣在一起，考官會聽出來。
+    // Owen 原話：「臺北醫學大學 TMU 讀六年。印象最深的是大一大二看到原文書很厚不知從何讀起，
+    //             一直到畢業之後才慢慢體會到自己適合的學習方法：提綱挈領、全面式的理解」
+    // 用上的結構：imparfait 描述過去狀態（20課）／C'est seulement... que 強調句（26課）／
+    //   comment j'apprends le mieux 間接問句＋最高級（25-26課）
+    // ⚠️ 「提綱挈領」譯為 voir les grandes lignes、「全面式理解」譯為 comprendre l'ensemble
+    //   ——兩個都在 A2 詞彙範圍內，⛔ 沒有用更高階的字。
+    fr:"J'ai étudié six ans à l'université médicale de Taipei. En première et en deuxième année, les livres étaient très épais et je ne savais pas par où commencer. C'est seulement après mes études que j'ai compris comment j'apprends le mieux : d'abord voir les grandes lignes, puis comprendre l'ensemble.",
+    zh:"我在臺北醫學大學念了六年。大一大二的時候，原文書很厚，我不知道從哪裡開始讀。一直到畢業之後，我才慢慢體會到自己怎麼學最好：先抓大方向，再理解整體。" },
 ];
 
 /* ── 用法 ────────────────────────────────────────────────────
