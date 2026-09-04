@@ -28,6 +28,12 @@
 
    ⚠️ T1 的短答判準（依 research §5.4 T1-1）：**每個回答至少兩句，
      第二句要有「為什麼／對我的影響」**——只回答事實會被壓在 B1。
+
+   ⚠️⚠️ 2026-09-04 Owen：「**法文我目前沒有什麼太多口語習慣，因為很不會。**」
+     ⭐ 所以「這句像不像 Owen 講的」這個檢查，**A2 階段他做不到**——
+     他的語氣目前只存在於中文（`source_zh`），**法文版的語氣是 Claude 的選擇**。
+     → 驗收要拆成兩層：**中文意思 Owen 驗｜法文自然度老師驗**。
+     ⛔ 不要叫他判法文語氣。等他的法文長出自己的習慣，這條再改。
    ============================================================ */
 
 const T1_OPENING = {
@@ -61,10 +67,17 @@ const T1_STOCK = [
     zh:"到加拿大，如果我想執業，我就必須重考。過程會很久，但我會盡全力做到。" },
 
   // ── analytique ──────────────────────────────────────────────
-  { hook:'analytique', src:null, mots:null, sec:null, level:1, gap:true,
+  { hook:'analytique', src:'Owen 2026-09-04 口述', mots:42, sec:25, level:1,
     q_fr:"Être analytique, ça vous aide dans votre travail ?", q_zh:'分析型的個性對你的工作有幫助嗎？',
-    fr:null, zh:null,
-    note:"⚠️ 島裡沒有現成材料。AC1 有「我是分析型的」、AC3 有工作內容，但**兩者沒有接起來**。⭐ 這一句要 Owen 自己講：分析型的個性在看診時具體幫到什麼。⛔ 不代筆。" },
+    // ⭐ 這一筆是唯一不出自八座島的——2026-09-04 Owen 現場口述，Claude 只翻成他學過的結構。
+    // Owen 原話：「分析型當然有好處啊！牙科工作的細節及問題需要分析編排後才能找出解方，
+    //             讓病人的問題能被妥善處理」
+    // ⭐ 刻意重用 AC1 開場裡他自己的動詞（classer / faire des liens）→ 跟開場扣在一起
+    // 用上的結構：il faut＋原形（29課）／les classer 代名詞前置／C'est comme ça que（26課 c'est 強調）
+    // ⚠️ 中文原話「被妥善處理」是被動；法文改成主動 je peux bien soigner——被動是 B1+，
+    //    而說版的原則是「簡單但不斷」（STRATEGY 原則 1）。
+    fr:"Oui, beaucoup. Dans mon travail, il y a beaucoup de détails et de problèmes. Il faut d'abord les classer et faire des liens entre eux, et après on peut trouver une solution. C'est comme ça que je peux bien soigner mes patients.",
+    zh:"有，很有幫助。我的工作裡有很多細節和問題。要先把它們分類、然後把它們連起來，之後才找得到解方。就是這樣我才能好好照顧我的病人。" },
 
   // ── Banqiao ─────────────────────────────────────────────────
   { hook:'Banqiao', src:'AC1 §2', mots:42, sec:25, level:1,
@@ -107,7 +120,56 @@ const T1_STOCK = [
     //    它抽象、長、最容易講崩，而開場崩掉最傷。放在追問位，你有時間，風險小得多。
     fr:"Le français est une langue très spéciale. Quand je le parle, j'ai l'impression de changer de regard : parfois c'est flou, parfois c'est net — et quand c'est flou, je vois le monde plus largement.",
     zh:"法文是一個很特別的語言。我講法文的時候，好像會換一種眼光看事情：有時候是模糊的，有時候是清楚的——而模糊的時候，我反而看見更大的世界。",
-    q_fr:"Vous trouvez le français difficile ?", q_zh:'你覺得法文難嗎？' }
+    q_fr:"Vous trouvez le français difficile ?", q_zh:'你覺得法文難嗎？' },
+
+  /* ══ 以下是「考官直接問」的標準題（direct:true）══
+     ⭐ 這一批不靠開場的勾子觸發——官方列的 T1 提問範圍是
+        身分／現況／婚姻家庭／學經歷／喜好／計畫，就算開場沒提到，考官也會問。
+     ⚫ 其中 `une journée typique` 是研究點名的最大缺口：最高頻主題題 ＋ 唯一具名的追問範例。 */
+
+  { hook:'une journée typique', direct:true, src:'AC3 §1 + AC11 §3 + AC2 §3', mots:40, sec:24, level:1,
+    q_fr:"Parlez-moi d'une journée typique.", q_zh:'跟我說說你平常的一天。',
+    // ⚫ 材料本來就散在三座島，這裡只是重組——不是新內容
+    fr:"Je travaille cinq jours par semaine et je vois une quinzaine de patients par jour. Dentiste, on est penché toute la journée. Alors je vais régulièrement chez le masseur, et je médite. Le week-end, c'est le temps de la famille.",
+    zh:"我一週看五天診，一天大概看十五個病人。當牙醫，整天都是彎著腰。所以我會定期去推拿，也會冥想。週末是家庭時間。" },
+
+  { hook:'temps libre', direct:true, src:'AC5 §2', mots:36, sec:22, level:1,
+    q_fr:"Qu'est-ce que vous faites pendant votre temps libre ?", q_zh:'你空閒時間都做什麼？',
+    fr:"Quand j'ai du temps libre, je le passe avec ma famille. J'ai hâte de voir ma fille grandir et devenir quelqu'un. Et parfois je m'arrête seul — un café, un thé dehors, en regardant le paysage.",
+    zh:"有空的時候，我都跟家人在一起。我很期待看著女兒長大、慢慢變成一個人。有時候我也會一個人停下來——一杯咖啡、在戶外喝茶、看看風景。" },
+
+  { hook:'sport', direct:true, src:'AC11 §1', mots:28, sec:17, level:1,
+    q_fr:"Vous faites du sport ?", q_zh:'你有運動嗎？',
+    fr:"Je fais du sport deux ou trois fois par semaine. J'ai commencé par la musculation, puis je suis passé au training fonctionnel, au yoga, et maintenant je nage.",
+    zh:"我一週運動兩三次。一開始是重訓，後來轉去做功能性訓練、瑜伽，現在還游泳。" },
+
+  { hook:'sport', direct:true, src:'AC11 §2', mots:37, sec:22, level:2,
+    q_fr:"Pourquoi c'est important pour vous ?", q_zh:'為什麼這對你很重要？',
+    // ⭐ 這一段是全島最強的：有時間（三個月）、有具體病症、有因果
+    fr:"Depuis l'enfance, je me tiens mal. Une fois, j'ai eu la cuisse engourdie pendant trois mois : c'était un nerf comprimé, à cause de ma position assise. Aujourd'hui ça va, mais mon dos n'est toujours pas droit.",
+    zh:"我從小坐姿就不好。有一次我的大腿麻了三個月：是神經被壓迫，因為坐姿的關係。現在是沒事了，但我的背還是不正。" },
+
+  { hook:'voyage', direct:true, src:'AC7 §2', mots:37, sec:22, level:1,
+    q_fr:"Vous aimez voyager ? Racontez-moi un voyage.", q_zh:'你喜歡旅行嗎？講一次旅行給我聽。',
+    fr:"Mon plus beau souvenir, c'est l'Islande. Je me souviens d'un moment précis : j'étais devant une cascade immense, et il n'y avait aucune barrière. Rien entre la nature et moi. C'était aussi ma première fois au volant.",
+    zh:"我最難忘的旅行是冰島。我記得一個很具體的瞬間：我站在一座巨大的瀑布前面，沒有任何圍欄。我跟大自然之間什麼都沒有。那也是我第一次自己開車。" },
+
+  { hook:'projets', direct:true, src:'AC15 §5', mots:36, sec:22, level:1,
+    q_fr:"Vous avez des projets ?", q_zh:'你有什麼計畫嗎？',
+    // ⭐ 收尾金句：情緒＋抽象，T1 少見的深度
+    fr:"Avant, je pensais qu'être dentiste, c'était toute ma vie. Aujourd'hui, avant mes quarante ans, j'apprends une nouvelle langue. Rien n'est facile, mais le jour où je n'aurai plus envie de changer, ce jour-là je serai vieux.",
+    zh:"以前我以為當牙醫就是我的一輩子。現在，四十歲之前，我在學一個新的語言。沒有一件事是容易的，但等到哪天我不想改變了，那天我就老了。" },
+
+  { hook:'Canada', direct:true, src:'AC8 §1+§2', mots:25, sec:15, level:1,
+    q_fr:"Pourquoi le Canada ?", q_zh:'為什麼是加拿大？',
+    // ⚠️ AC8 是 T3 規格的四段論證（230 mots）。T1 只要最短的一個理由，⛔ 不要在 T1 講完整版
+    fr:"Je veux partir au Canada avec ma famille. D'abord, l'éducation : à Taïwan, les enfants apprennent tout par cœur. Au Canada, l'école est plus ouverte.",
+    zh:"我想跟家人一起去加拿大。首先是教育：在台灣，小孩什麼都用背的。在加拿大，學校比較開放。" },
+
+  { hook:'études', direct:true, src:null, mots:null, sec:null, level:1, gap:true,
+    q_fr:"Vous avez fait quelles études ?", q_zh:'你念的是什麼？',
+    fr:null, zh:null,
+    note:"⚠️ 學經歷是官方列的 T1 提問範圍之一，但 AC4 教育／學歷只有 A1 短版（28 mots）。⭐ 這一題要 Owen 講：牙醫系念哪裡、幾年、印象最深的是什麼。⛔ 不代筆。" },
 ];
 
 /* ── 用法 ────────────────────────────────────────────────────

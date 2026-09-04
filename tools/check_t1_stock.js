@@ -83,6 +83,17 @@ M.T1_STOCK.forEach(s => {
     return;
   }
   checked++;
+  // ⭐ Owen 現場口述的內容不出自島，但那是**最正統的來源**（內容鐵律 2：他本人講、Claude 只修文法）
+  if (/^Owen /.test(s.src || '')) {
+    // ⚠️ 2026-09-04 Owen：「法文我目前沒有什麼太多口語習慣，因為很不會。」
+    //   → ⛔ 不要叫他檢查「這句法文像不像我講的」——A2 階段他做不到這個判斷。
+    //   ⭐ 他能檢查的是【中文意思對不對】；【法文自不自然】要留給老師。
+    console.log(`○ ${s.hook}：來源「${s.src}」——⭐ Owen 口述，不比對島。`);
+    console.log(`   ⚠️ 待驗：中文意思由 Owen 確認｜法文自然度由老師確認（⛔ 別叫 Owen 判法文語氣）`);
+    const w0 = s.fr.split(/\s+/).length, sec0 = Math.round(w0 / 100 * 60);
+    if (w0 !== s.mots || sec0 !== s.sec) { console.log(`! ${s.hook}：字數/秒數標 ${s.mots}/${s.sec}s，實際 ${w0}/${sec0}s`); warns++; }
+    return;
+  }
   const r = traceSentences(s.fr);
   if (r.bad.length) {
     r.bad.forEach(b => {
