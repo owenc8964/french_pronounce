@@ -44,30 +44,32 @@ const T1_OPENING = {
   fr: "Je m'appelle Owen, j'ai 36 ans et je suis dentiste. Je suis quelqu'un d'analytique : j'aime classer les choses et faire des liens entre elles. Je suis plutôt rationnel, mais pas au point d'être ingénieur !\n\nJ'habite à Banqiao, près de Taipei. Je vis avec ma femme Lauryn et notre fille Jolie.\n\nJ'ai commencé le français en mai, cette année. Je prends des cours et j'écoute le podcast Coffee Break French. Pour moi, apprendre, ce n'est pas seulement passer du temps : le plus important, c'est de trouver la bonne méthode.",
   zh: "我叫 Owen，36 歲，是牙醫。我是一個分析型的人：我喜歡把事情分類、然後把它們連起來。我算是理性的，但還沒到工程師那種程度！\n\n我住在台北附近的板橋。我跟太太 Lauryn 和我們的女兒 Jolie 住在一起。\n\n我今年五月開始學法文。我有上課，也聽 Coffee Break French 這個 podcast。對我來說，學習不只是花時間：最重要的是找到對的方法。",
   // ⭐ 開場裡刻意放的勾子（＝你在設定考官會問什麼）
+  // ⭐ L2 支架產出用的提示詞（2026-09-05 Owen 指定：「看著幾個提示詞快速講完，越快越好」）
+  cues: ["Owen · 36 · dentiste", "analytique : classer + liens", "pas ingénieur !", "Banqiao", "Lauryn + Jolie", "mai · cours · Coffee Break", "pas seulement le temps → la bonne méthode"],
   hooks: ['dentiste', 'analytique', 'Banqiao', 'Lauryn', 'Jolie', 'en mai', 'Coffee Break French', 'la bonne méthode']
 };
 
 const T1_STOCK = [
   // ── dentiste ────────────────────────────────────────────────
-  { hook:'dentiste', src:'AC3 §1+§3', mots:58, sec:35, level:1,
+  { hook:'dentiste', src:'AC3 §1+§3', mots:58, sec:35, level:1, cues:["5 jours · 15 patients", "donner confiance", "jeune patient · trop peur", "« arrêter quand vous voulez »", "terminé → sourire a changé"],
     q_fr:"Vous êtes dentiste ? Parlez-moi de votre travail.", q_zh:'你是牙醫？跟我說說你的工作。',
     // ⭐ 事實 → 「我喜歡什麼」→ 一個有人有情境的例子（B2 的 exemples pertinents）
     // ⭐ 刻意保留直接引述：文法比間接引述簡單，而且更有畫面
     fr:"Je suis dentiste. Je travaille cinq jours par semaine et je vois une quinzaine de patients par jour.\n\nCe que j'aime, c'est donner confiance. Un jour, un jeune patient avait trop peur pour se soigner. Je lui ai dit : « Vous pouvez arrêter quand vous voulez. » Il a terminé son traitement. Aujourd'hui, son sourire a changé.",
     zh:"我是牙醫。我一週看五天診，一天大概看十五個病人。\n\n我喜歡的是給人信心。有一次，一個年輕病人怕到不敢治療。我跟他說：「你隨時都可以停。」他把療程做完了。今天，他的笑容不一樣了。" },
 
-  { hook:'dentiste', src:'AC3 §2', mots:71, sec:43, level:2,
+  { hook:'dentiste', src:'AC3 §2', mots:71, sec:43, level:2, cues:["pas par passion · les notes décident", "la passion est venue après", "camarade → photographe à New York", "enfants : explorer plus tôt", "→ Canada"],
     q_fr:"Pourquoi avez-vous choisi ce métier ?", q_zh:'你為什麼選這一行？',
     fr:"Mais honnêtement, je n'ai pas choisi ce métier par passion : à Taïwan, ce sont les notes qui décident. La passion est venue après, quand j'ai commencé à travailler. J'ai même un camarade qui a fait les mêmes études et qui est devenu photographe à New York. Alors je pense que les enfants doivent explorer leurs rêves plus tôt — et c'est aussi pour ça que je veux partir au Canada.",
     zh:"但老實說，我不是因為熱情才選這一行：在台灣，是分數在決定。熱情是後來、真的開始工作以後才出現的。我甚至有一個同學，跟我念一樣的書，後來去紐約當了攝影師。所以我覺得小孩應該早一點探索自己的理想——這也是我想去加拿大的原因。" },
 
-  { hook:'dentiste', src:'AC3 §4', mots:21, sec:13, level:3,
+  { hook:'dentiste', src:'AC3 §4', mots:21, sec:13, level:3, cues:["repasser les examens", "long · je ferai tout"],
     q_fr:"Vous pourrez travailler comme dentiste au Canada ?", q_zh:'你到加拿大能當牙醫嗎？',
     fr:"Au Canada, si je veux exercer, je devrai repasser les examens. Ce sera long, mais je ferai tout pour y arriver.",
     zh:"到加拿大，如果我想執業，我就必須重考。過程會很久，但我會盡全力做到。" },
 
   // ── analytique ──────────────────────────────────────────────
-  { hook:'analytique', src:'Owen 2026-09-04 口述', mots:42, sec:25, level:1,
+  { hook:'analytique', src:'Owen 2026-09-04 口述', mots:42, sec:25, level:1, cues:["beaucoup de détails et de problèmes", "les classer + faire des liens", "trouver une solution", "bien soigner mes patients"],
     q_fr:"Être analytique, ça vous aide dans votre travail ?", q_zh:'分析型的個性對你的工作有幫助嗎？',
     // ⭐ 這一筆是唯一不出自八座島的——2026-09-04 Owen 現場口述，Claude 只翻成他學過的結構。
     // Owen 原話：「分析型當然有好處啊！牙科工作的細節及問題需要分析編排後才能找出解方，
@@ -80,42 +82,42 @@ const T1_STOCK = [
     zh:"有，很有幫助。我的工作裡有很多細節和問題。要先把它們分類、然後把它們連起來，之後才找得到解方。就是這樣我才能好好照顧我的病人。" },
 
   // ── Banqiao ─────────────────────────────────────────────────
-  { hook:'Banqiao', src:'AC1 §2', mots:42, sec:25, level:1,
+  { hook:'Banqiao', src:'AC1 §2', mots:42, sec:25, level:1, cues:["un immeuble", "quartier ouvert · gare tout près", "moins de restaurants · plus cher", "mais : voisins gentils · propre"],
     q_fr:"C'est comment, votre quartier ?", q_zh:'你住的那一區怎麼樣？',
     fr:"J'habite dans un immeuble. Le quartier est très ouvert et la gare est tout près. Il y a moins de petits restaurants qu'ailleurs et c'est un peu plus cher, mais j'aime vivre ici : les voisins sont gentils et tout est propre.",
     zh:"我住大樓。這一區很空曠，車站也很近。這裡的小吃比別的地方少，物價也高一點，但我很喜歡住這裡：鄰居很友善，環境也很乾淨。" },
 
   // ── Lauryn ──────────────────────────────────────────────────
-  { hook:'Lauryn', src:'AC2 §1尾+§2', mots:52, sec:31, level:1,
+  { hook:'Lauryn', src:'AC2 §1尾+§2', mots:52, sec:31, level:1, cues:["technologie", "Canada → contente", "Taïwan confortable · supérettes", "mais logements chers", "pour élever un enfant : pas idéal"],
     q_fr:"Votre femme, elle fait quoi ?", q_zh:'你太太做什麼？',
     fr:"Lauryn travaille aussi : elle est dans le secteur de la technologie.\n\nQuand je lui ai parlé du Canada, elle était contente. À Taïwan, la vie est très confortable, il y a des supérettes partout, mais les logements sont de plus en plus chers. Pour élever un enfant, ce n'est pas idéal.",
     zh:"Lauryn 也在工作，她做科技產業相關的。\n\n我跟她講加拿大的計畫時，她很開心。在台灣生活很舒適，到處都是便利商店，但房子越來越貴。以養小孩來說，這不太理想。" },
 
   // ── Jolie ───────────────────────────────────────────────────
-  { hook:'Jolie', src:'AC2 §1', mots:29, sec:17, level:1,
+  { hook:'Jolie', src:'AC2 §1', mots:29, sec:17, level:1, cues:["un an et demi", "marcher + parler", "très aventurière", "tout pour l'attraper"],
     q_fr:"Elle a quel âge, votre fille ?", q_zh:'你女兒幾歲？',
     fr:"Jolie a un an et demi : elle vient d'apprendre à marcher et à parler. Elle est très aventurière — quand quelque chose l'intéresse, elle fait tout pour l'attraper.",
     zh:"Jolie 一歲半，剛學會走路和講話。她個性很冒險——只要有什麼東西她有興趣，她就會想盡辦法拿到。" },
 
-  { hook:'Jolie', src:'AC2 §3', mots:52, sec:31, level:2,
+  { hook:'Jolie', src:'AC2 §3', mots:52, sec:31, level:2, cues:["week-end = famille", "dimanche matin : yoga", "Jolie joue · professeur ouvert", "soleil + nature"],
     q_fr:"Qu'est-ce que vous faites le week-end avec elle ?", q_zh:'週末你們跟她做什麼？',
     fr:"Le week-end, c'est le temps de la famille. Chaque dimanche matin, on fait du yoga tous les deux et Jolie joue dans la salle : le professeur est très ouvert, alors elle explore librement. On profite aussi du soleil et de la nature — à Taïwan, on n'a pas souvent le temps.",
     zh:"週末是家庭時間。每個禮拜天早上我們兩個去上瑜伽，Jolie 就在教室裡玩：老師很開放，所以她可以自由探索。我們也會享受陽光和大自然——在台灣不常有這個時間。" },
 
   // ── en mai（學法文多久）─────────────────────────────────────
-  { hook:'en mai', src:'AC15 §1', mots:38, sec:23, level:1,
+  { hook:'en mai', src:'AC15 §1', mots:38, sec:23, level:1, cues:["mai 2026", "2027 : deux fois · avril + septembre", "objectif : un an", "max deux ans → B2"],
     q_fr:"Vous apprenez le français depuis quand ?", q_zh:'你學法文多久了？',
     fr:"J'ai commencé le français en mai 2026. En 2027, je passerai l'examen deux fois : en avril et en septembre. Mon objectif, c'est de réussir en un an — et au maximum en deux ans, d'atteindre le B2.",
     zh:"我 2026 年五月開始學法文。2027 年我會考兩次：四月一次、九月一次。我的目標是一年內考過——最慢兩年內要到 B2。" },
 
   // ── Coffee Break French ─────────────────────────────────────
-  { hook:'Coffee Break French', src:'AC1 §3', mots:23, sec:14, level:1,
+  { hook:'Coffee Break French', src:'AC1 §3', mots:23, sec:14, level:1, cues:["des cours", "Duolingo + IA", "podcast Coffee Break French", "série Extra French"],
     q_fr:"Comment vous apprenez le français ?", q_zh:'你怎麼學法文的？',
     fr:"Je prends des cours, et j'utilise aussi Duolingo et l'IA. J'écoute le podcast Coffee Break French et je regarde la série Extra French.",
     zh:"我有上家教，也用 Duolingo 和 AI。我聽 Coffee Break French 這個 podcast，也看 Extra French 這部影集。" },
 
   // ── la bonne méthode ────────────────────────────────────────
-  { hook:'la bonne méthode', src:'AC1 §4', mots:35, sec:21, level:1,
+  { hook:'la bonne méthode', src:'AC1 §4', mots:35, sec:21, level:1, cues:["langue très spéciale", "changer de regard", "parfois flou · parfois net", "flou → monde plus largement"],
     // ⭐⭐ 全系統最特別的一句。刻意從開場砍下來放這裡：
     //    它抽象、長、最容易講崩，而開場崩掉最傷。放在追問位，你有時間，風險小得多。
     fr:"Le français est une langue très spéciale. Quand je le parle, j'ai l'impression de changer de regard : parfois c'est flou, parfois c'est net — et quand c'est flou, je vois le monde plus largement.",
@@ -127,46 +129,46 @@ const T1_STOCK = [
         身分／現況／婚姻家庭／學經歷／喜好／計畫，就算開場沒提到，考官也會問。
      ⚫ 其中 `une journée typique` 是研究點名的最大缺口：最高頻主題題 ＋ 唯一具名的追問範例。 */
 
-  { hook:'une journée typique', direct:true, src:'AC3 §1 + AC11 §3 + AC2 §3', mots:40, sec:24, level:1,
+  { hook:'une journée typique', direct:true, src:'AC3 §1 + AC11 §3 + AC2 §3', mots:40, sec:24, level:1, cues:["5 jours · 15 patients", "penché toute la journée", "masseur + méditer", "week-end = famille"],
     q_fr:"Parlez-moi d'une journée typique.", q_zh:'跟我說說你平常的一天。',
     // ⚫ 材料本來就散在三座島，這裡只是重組——不是新內容
     fr:"Je travaille cinq jours par semaine et je vois une quinzaine de patients par jour. Dentiste, on est penché toute la journée. Alors je vais régulièrement chez le masseur, et je médite. Le week-end, c'est le temps de la famille.",
     zh:"我一週看五天診，一天大概看十五個病人。當牙醫，整天都是彎著腰。所以我會定期去推拿，也會冥想。週末是家庭時間。" },
 
-  { hook:'temps libre', direct:true, src:'AC5 §2', mots:36, sec:22, level:1,
+  { hook:'temps libre', direct:true, src:'AC5 §2', mots:36, sec:22, level:1, cues:["temps libre → famille", "voir ma fille grandir", "parfois seul : café · thé dehors · paysage"],
     q_fr:"Qu'est-ce que vous faites pendant votre temps libre ?", q_zh:'你空閒時間都做什麼？',
     fr:"Quand j'ai du temps libre, je le passe avec ma famille. J'ai hâte de voir ma fille grandir et devenir quelqu'un. Et parfois je m'arrête seul — un café, un thé dehors, en regardant le paysage.",
     zh:"有空的時候，我都跟家人在一起。我很期待看著女兒長大、慢慢變成一個人。有時候我也會一個人停下來——一杯咖啡、在戶外喝茶、看看風景。" },
 
-  { hook:'sport', direct:true, src:'AC11 §1', mots:28, sec:17, level:1,
+  { hook:'sport', direct:true, src:'AC11 §1', mots:28, sec:17, level:1, cues:["2–3 fois par semaine", "musculation → fonctionnel → yoga → nage"],
     q_fr:"Vous faites du sport ?", q_zh:'你有運動嗎？',
     fr:"Je fais du sport deux ou trois fois par semaine. J'ai commencé par la musculation, puis je suis passé au training fonctionnel, au yoga, et maintenant je nage.",
     zh:"我一週運動兩三次。一開始是重訓，後來轉去做功能性訓練、瑜伽，現在還游泳。" },
 
-  { hook:'sport', direct:true, src:'AC11 §2', mots:37, sec:22, level:2,
+  { hook:'sport', direct:true, src:'AC11 §2', mots:37, sec:22, level:2, cues:["depuis l'enfance : me tiens mal", "cuisse engourdie · trois mois", "nerf comprimé · position assise", "ça va, mais dos pas droit"],
     q_fr:"Pourquoi c'est important pour vous ?", q_zh:'為什麼這對你很重要？',
     // ⭐ 這一段是全島最強的：有時間（三個月）、有具體病症、有因果
     fr:"Depuis l'enfance, je me tiens mal. Une fois, j'ai eu la cuisse engourdie pendant trois mois : c'était un nerf comprimé, à cause de ma position assise. Aujourd'hui ça va, mais mon dos n'est toujours pas droit.",
     zh:"我從小坐姿就不好。有一次我的大腿麻了三個月：是神經被壓迫，因為坐姿的關係。現在是沒事了，但我的背還是不正。" },
 
-  { hook:'voyage', direct:true, src:'AC7 §2', mots:37, sec:22, level:1,
+  { hook:'voyage', direct:true, src:'AC7 §2', mots:37, sec:22, level:1, cues:["plus beau = l'Islande", "moment précis : cascade immense", "aucune barrière", "rien entre la nature et moi", "première fois au volant"],
     q_fr:"Vous aimez voyager ? Racontez-moi un voyage.", q_zh:'你喜歡旅行嗎？講一次旅行給我聽。',
     fr:"Mon plus beau souvenir, c'est l'Islande. Je me souviens d'un moment précis : j'étais devant une cascade immense, et il n'y avait aucune barrière. Rien entre la nature et moi. C'était aussi ma première fois au volant.",
     zh:"我最難忘的旅行是冰島。我記得一個很具體的瞬間：我站在一座巨大的瀑布前面，沒有任何圍欄。我跟大自然之間什麼都沒有。那也是我第一次自己開車。" },
 
-  { hook:'projets', direct:true, src:'AC15 §5', mots:36, sec:22, level:1,
+  { hook:'projets', direct:true, src:'AC15 §5', mots:36, sec:22, level:1, cues:["avant : dentiste = toute ma vie", "aujourd'hui, avant 40 ans : nouvelle langue", "rien n'est facile", "plus envie de changer → vieux"],
     q_fr:"Vous avez des projets ?", q_zh:'你有什麼計畫嗎？',
     // ⭐ 收尾金句：情緒＋抽象，T1 少見的深度
     fr:"Avant, je pensais qu'être dentiste, c'était toute ma vie. Aujourd'hui, avant mes quarante ans, j'apprends une nouvelle langue. Rien n'est facile, mais le jour où je n'aurai plus envie de changer, ce jour-là je serai vieux.",
     zh:"以前我以為當牙醫就是我的一輩子。現在，四十歲之前，我在學一個新的語言。沒有一件事是容易的，但等到哪天我不想改變了，那天我就老了。" },
 
-  { hook:'Canada', direct:true, src:'AC8 §1+§2', mots:25, sec:15, level:1,
+  { hook:'Canada', direct:true, src:'AC8 §1+§2', mots:25, sec:15, level:1, cues:["partir avec ma famille", "d'abord l'éducation", "Taïwan : tout par cœur", "Canada : école plus ouverte"],
     q_fr:"Pourquoi le Canada ?", q_zh:'為什麼是加拿大？',
     // ⚠️ AC8 是 T3 規格的四段論證（230 mots）。T1 只要最短的一個理由，⛔ 不要在 T1 講完整版
     fr:"Je veux partir au Canada avec ma famille. D'abord, l'éducation : à Taïwan, les enfants apprennent tout par cœur. Au Canada, l'école est plus ouverte.",
     zh:"我想跟家人一起去加拿大。首先是教育：在台灣，小孩什麼都用背的。在加拿大，學校比較開放。" },
 
-  { hook:'études', direct:true, src:'Owen 2026-09-04 口述', mots:49, sec:29, level:1,
+  { hook:'études', direct:true, src:'Owen 2026-09-04 口述', mots:49, sec:29, level:1, cues:["TMU · six ans", "1re et 2e année : livres épais", "ne savais pas par où commencer", "après mes études : comment j'apprends", "grandes lignes → l'ensemble"],
     q_fr:"Vous avez fait quelles études ?", q_zh:'你念的是什麼？',
     // ⭐⭐ 這一段是開場那句信念的【來源故事】：
     //    開場說「學習不只是花時間，最重要的是找到對的方法」
@@ -186,31 +188,31 @@ const T1_STOCK = [
      ⛔ 沒切的仍然不切：AC15 §3（讓步段）、AC8 §5（兩岸/烏克蘭）＝ T3 的料，
         T1 用不到；AC2 §4、AC7 §3、AC11 §4 太抽象，T1 追不到那麼深。 */
 
-  { hook:'Canada', direct:true, src:'AC7 §1', mots:36, sec:22, level:2,
+  { hook:'Canada', direct:true, src:'AC7 §1', mots:36, sec:22, level:2, cues:["jamais allé", "si j'y vais : Vancouver", "tout le monde parle du climat", "puis les parcs nationaux"],
     q_fr:"Vous êtes déjà allé au Canada ?", q_zh:'你去過加拿大嗎？',
     // ⭐⭐ 講了「我想去加拿大」之後，這幾乎一定會被問。先前漏掉是明顯的缺口。
     fr:"Non, je ne suis jamais allé au Canada. Si j'y vais un jour, je commencerai par Vancouver — tout le monde parle de son climat, je veux le sentir moi-même — et ensuite les parcs nationaux.",
     zh:"沒有，我還沒去過加拿大。如果哪天我去，我會先去溫哥華——大家都在說那裡的氣候，我想自己感受看看——然後是國家公園。" },
 
-  { hook:'Canada', direct:true, src:'AC8 §3+§4', mots:42, sec:25, level:3,
+  { hook:'Canada', direct:true, src:'AC8 §3+§4', mots:42, sec:25, level:3, cues:["le climat · de plus en plus chaud", "réchauffement → pire", "avantages sociaux", "politiques · école · immobilier"],
     q_fr:"Il y a d'autres raisons ?", q_zh:'還有別的理由嗎？',
     // ⚠️ AC8 §5（兩岸/烏克蘭）刻意不收：政治議題是 T3 的料，T1 不需要走那麼深
     fr:"Ensuite, le climat. Taïwan est de plus en plus chaud, et avec le réchauffement climatique, ce sera pire. Il y a aussi les avantages sociaux : de bonnes politiques publiques, un bon système scolaire, et des prix de l'immobilier plus raisonnables qu'ici.",
     zh:"再來是氣候。台灣越來越熱，加上暖化，之後只會更糟。還有社會福利：不錯的公共政策、好的教育體系，還有比這裡合理的房價。" },
 
-  { hook:'voyage', direct:true, src:'AC7 §4', mots:48, sec:29, level:2,
+  { hook:'voyage', direct:true, src:'AC7 §4', mots:48, sec:29, level:2, cues:["depuis ma fille : autrement", "Hokkaido · dîne à 5h · dort tôt", "fini les magasins à 22h", "s'en souviendra ? Non", "reste dans son corps"],
     q_fr:"Vous voyagez encore, avec un bébé ?", q_zh:'有小孩之後你們還旅行嗎？',
     // ⭐ 這一段同時連回 Jolie——兩個勾子共用一段存貨
     fr:"Depuis la naissance de ma fille, on voyage autrement. On est allés à Hokkaido : elle dîne à cinq heures et elle dort tôt. Fini les magasins à dix heures du soir. Est-ce qu'elle s'en souviendra ? Non. Mais je crois que tout ça reste dans son corps.",
     zh:"女兒出生之後，我們旅行的方式就不一樣了。我們去了北海道：她五點就吃晚餐、很早睡。晚上十點還在逛街這種事已經沒有了。她會記得嗎？不會。但我相信這些都留在她身體裡。" },
 
-  { hook:'lecture', direct:true, src:'AC5 §1', mots:45, sec:27, level:1,
+  { hook:'lecture', direct:true, src:'AC5 §1', mots:45, sec:27, level:1, cues:["en ce moment : en français", "avant : le temps · sens de la vie · bouddhisme", "méditais souvent", "mais : reste dans les idées", "plus vraiment là"],
     q_fr:"Qu'est-ce que vous aimez lire ?", q_zh:'你喜歡讀什麼？',
     // ⭐ 最後一句是自省，A2 考生幾乎講不出這種話——但它也最抽象，講崩了就砍掉
     fr:"En ce moment, je lis surtout en français. Avant, je lisais beaucoup sur le temps, sur le sens de la vie, sur le bouddhisme, et je méditais souvent. Mais à force de lire, on reste dans les idées — et on n'est plus vraiment là.",
     zh:"我最近主要都在讀法文。以前我讀很多關於時間、關於生命意義、關於佛法的書，也常常冥想。但讀太多之後，人會停在觀念裡——就不是真的在當下了。" },
 
-  { hook:'temps libre', direct:true, src:'AC5 §4', mots:44, sec:26, level:2,
+  { hook:'temps libre', direct:true, src:'AC5 §4', mots:44, sec:26, level:2, cues:["amusant = le français", "une langue en un an → autres méthodes", "regarder du sport", "une règle → contrôle du jeu"],
     q_fr:"Qu'est-ce qui vous amuse en ce moment ?", q_zh:'你最近覺得什麼好玩？',
     // ⭐ 「就是法文啊」——當著考官的面講這句最划算，而且是真的不是討好
     fr:"Ce que je trouve amusant en ce moment ? Le français, justement. Apprendre une langue en un an, ça m'oblige à inventer d'autres méthodes. Et regarder du sport : voir quelqu'un utiliser une règle pour prendre le contrôle du jeu, ça me plaît beaucoup.",
