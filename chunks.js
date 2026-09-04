@@ -13125,5 +13125,467 @@ const CHUNKS = [
   "fr": "verser",
   "zh": "倒",
   "note": "⭐ 也用在倒飲料：Je vous verse un verre d'eau ?"
+ },
+ {
+  "id": "L30_Vous_ne_devez_pas_être_c",
+  "lesson": 30,
+  "fr": "Vous ne devez pas être cuisinier ou cuisinière de métier.",
+  "zh": "你不可以是職業廚師。",
+  "note": "⭐⭐ de métier＝以…為職業的（＝professionnel，第29課的字）。⚠️ 這是整份規範的第一條：Locmiam 只給業餘的人用"
+ },
+ {
+  "id": "L30_Utilisez_toujours_de_l_e",
+  "lesson": 30,
+  "fr": "Utilisez toujours de l'eau potable.",
+  "zh": "請永遠使用可飲用水。",
+  "note": "⭐ potable＝可飲用的（drinkable）。命令式肯定句"
+ },
+ {
+  "id": "L30_Oui_je_m_engage_à_respec",
+  "lesson": 30,
+  "fr": "Oui, je m'engage à respecter la charte Locmiam.",
+  "zh": "是的，我承諾遵守 Locmiam 規範。",
+  "note": "⭐ 表單最後的勾選句；s'engager à ＋ 原形＝承諾做…"
+ },
+ {
+  "id": "L30_poils",
+  "lesson": 30,
+  "fr": "poils",
+  "zh": "（動物的）毛",
+  "note": "⚠️⚠️ 人的頭髮是 cheveux，但動物的毛（包括貓狗）一律叫 poils，不能說 cheveux de chat。⛔ 這是老師當堂糾正的：poils 也用在人的體毛，但頭髮永遠是 cheveux"
+ },
+ {
+  "id": "L30_horaire_d_ouverture_de_8",
+  "lesson": 30,
+  "fr": "horaire d'ouverture de 8h à 12h",
+  "zh": "營業時間 8點到12點",
+  "note": "⭐ l'horaire＝時間、時刻表（和 l'heure 不同，horaire 講的是一個時段安排）"
+ },
+ {
+  "id": "L30_le_tartare_de_bœuf_d_alg",
+  "lesson": 30,
+  "fr": "le tartare (de bœuf, d'algues, etc.)",
+  "zh": "韃靼（生牛肉、生海藻等）",
+  "note": "⭐⭐ 生食料理，跟法式食物「生食」文化有關；⚠️ 不是台灣說的「塔塔醬」（tartare sauce 是另一種東西，老師確認兩者不同）"
+ },
+ {
+  "id": "L30_la_moutarde_de_Dijon",
+  "lesson": 30,
+  "fr": "la moutarde de Dijon",
+  "zh": "第戎芥末醬",
+  "note": "🇫🇷 老師補充：Dijon 是法國一座以芥末聞名的城市"
+ },
+ {
+  "id": "L30_le_vinaigre",
+  "lesson": 30,
+  "fr": "le vinaigre",
+  "zh": "醋",
+  "note": "⭐ vinaigrette＝油醋醬（vinaigre＝醋 ＋ -ette）。老師示範了一款薯片沾醬：橄欖油＋鹽＋薑＋balsamique（巴薩米克醋）"
+ },
+ {
+  "id": "L30_C_est_plus_cher_en_Franc",
+  "lesson": 30,
+  "fr": "C'est plus cher en France, mais c'est plus healthy.",
+  "zh": "在法國比較貴，但比較健康。",
+  "note": "🎙 老師的個人觀察對照：台灣的麥當勞是全世界最便宜的之一；法國一個人吃麥當勞可能要台幣五、六百元"
+ },
+ {
+  "id": "L30_Le_colombo_c_est_la_spéc",
+  "lesson": 30,
+  "fr": "Le colombo, c'est la spécialité de la maison.",
+  "zh": "colombo 是本店招牌菜。",
+  "note": "⭐ la spécialité de la maison＝本店招牌（也可以說 spécialité du restaurant）。老師的延伸用法：去外婆家永遠想吃同一道菜，因為那是 sa spécialité（她的拿手菜）——不限於餐廳"
+ },
+ {
+  "id": "L30_Ce_chef_n_a_eu_que_de_bo",
+  "lesson": 30,
+  "fr": "Ce chef n'a eu que de bonnes critiques.",
+  "zh": "這位主廚只得到好評。",
+  "note": "課本第3b題答案。⭐ une critique 在法文可以是正面的，不像英文 criticism 偏負面——老師特別點出這個假朋友；n'a eu 是 avoir 的 passé composé"
+ },
+ {
+  "id": "L30_Vous_avez_déjà_fait_un_r",
+  "lesson": 30,
+  "fr": "Vous avez déjà fait un régime ? — Je n'en ai jamais fait.",
+  "zh": "你曾經節食過嗎？——我從來沒節食過。",
+  "note": "⭐ un régime＝節食計畫（不是「政權」，這裡是飲食語境）；ne...jamais＝從來不"
+ },
+ {
+  "id": "L30_gastronomique",
+  "lesson": 30,
+  "fr": "gastronomique",
+  "zh": "美食的、頂級料理的",
+  "note": "⭐⭐ 拆成兩半：gastro-＝胃、腹部相關（跟英文 gastric 同源）＋ -nomique＝知識、規律（跟 loi／connaissance 同源，如同 économique 裡的 -nomique）。老師的講法：「胃的知識」——很懂吃的學問"
+ },
+ {
+  "id": "L30_Près_de_chez_moi_il_y_a",
+  "lesson": 30,
+  "fr": "Près de chez moi, il y a un petit bistrot que j'adore.",
+  "zh": "我家附近有一間我很喜歡的小酒館。",
+  "note": "⭐ près de chez moi＝在我家附近（Locmiam charte 的字）"
+ },
+ {
+  "id": "L30_On_était_là_la_dernière",
+  "lesson": 30,
+  "fr": "On était là la dernière fois.",
+  "zh": "我們上次講到這裡。",
+  "note": "🎙 課堂開場、接續上次進度的固定句"
+ },
+ {
+  "id": "L30_C_est_bon",
+  "lesson": 30,
+  "fr": "C'est bon ?",
+  "zh": "可以嗎？／懂了嗎？",
+  "note": "🎙 確認理解的口頭禪，跟第28、29課記過的 On est bon? 同一組"
+ },
+ {
+  "id": "L30_le_bistrot_la_brasserie",
+  "lesson": 30,
+  "fr": "le bistrot = la brasserie",
+  "zh": "小酒館＝啤酒館餐廳",
+  "note": "⭐ 兩個字互為同義詞"
+ },
+ {
+  "id": "L30_le_fast_food_la_restaura",
+  "lesson": 30,
+  "fr": "le fast-food = la restauration rapide",
+  "zh": "速食",
+  "note": "⭐ 老師補的正式說法：la restauration rapide"
+ },
+ {
+  "id": "L30_le_restaurant_végan",
+  "lesson": 30,
+  "fr": "le restaurant végan",
+  "zh": "全素餐廳",
+  "note": "不含任何動物性成分"
+ },
+ {
+  "id": "L30_le_restaurant_végétarien",
+  "lesson": 30,
+  "fr": "le restaurant végétarien",
+  "zh": "素食餐廳",
+  "note": ""
+ },
+ {
+  "id": "L30_le_traiteur",
+  "lesson": 30,
+  "fr": "le traiteur",
+  "zh": "外燴、私廚",
+  "note": "⭐⭐ 老師解釋：不是在餐廳吃，是婚禮、活動這種在外面（例如城堡）辦桌時請人來做菜，中文最接近「私廚／外燴」"
+ },
+ {
+  "id": "L30_à_emporter_sur_place",
+  "lesson": 30,
+  "fr": "à emporter ≠ sur place",
+  "zh": "外帶 ≠ 內用",
+  "note": "⭐⭐ 打電話訂餐或到店裡都可以用這組回答，對應台灣的「內用外帶」"
+ },
+ {
+  "id": "L30_l_ambiance_f",
+  "lesson": 30,
+  "fr": "l'ambiance (f.)",
+  "zh": "氣氛",
+  "note": ""
+ },
+ {
+  "id": "L30_commander_des_plats",
+  "lesson": 30,
+  "fr": "commander des plats",
+  "zh": "點餐、訂餐",
+  "note": ""
+ },
+ {
+  "id": "L30_fait_maison",
+  "lesson": 30,
+  "fr": "fait maison",
+  "zh": "自家製、手工做的",
+  "note": "Locmiam charte 的核心詞"
+ },
+ {
+  "id": "L30_la_nappe",
+  "lesson": 30,
+  "fr": "la nappe",
+  "zh": "桌布",
+  "note": "老師：bistrot 的招牌是紅白格子桌布（nappe à carreaux）"
+ },
+ {
+  "id": "L30_le_pourboire",
+  "lesson": 30,
+  "fr": "le pourboire",
+  "zh": "小費",
+  "note": ""
+ },
+ {
+  "id": "L30_le_serveur_la_serveuse",
+  "lesson": 30,
+  "fr": "le serveur, la serveuse",
+  "zh": "服務生（男／女）",
+  "note": ""
+ },
+ {
+  "id": "L30_le_service",
+  "lesson": 30,
+  "fr": "le service",
+  "zh": "服務",
+  "note": ""
+ },
+ {
+  "id": "L30_le_tablier",
+  "lesson": 30,
+  "fr": "le tablier",
+  "zh": "圍裙",
+  "note": "回鍋 Locmiam charte 的字"
+ },
+ {
+  "id": "L30_acide",
+  "lesson": 30,
+  "fr": "acide",
+  "zh": "酸",
+  "note": ""
+ },
+ {
+  "id": "L30_amer_amère",
+  "lesson": 30,
+  "fr": "amer, amère",
+  "zh": "苦",
+  "note": "陰陽性字尾不同（-er → -ère）"
+ },
+ {
+  "id": "L30_épicé_e_pimenté_e",
+  "lesson": 30,
+  "fr": "épicé(e) = pimenté(e)",
+  "zh": "辣、辛香",
+  "note": "兩個同義字都要認得"
+ },
+ {
+  "id": "L30_fade",
+  "lesson": 30,
+  "fr": "fade",
+  "zh": "淡而無味",
+  "note": "⭐ 老師：加鹽 (sel) 會讓食物從 fade 變 goûteux——fade 的反義字就是 goûteux，不是 salé"
+ },
+ {
+  "id": "L30_goûteux_goûteuse",
+  "lesson": 30,
+  "fr": "goûteux, goûteuse",
+  "zh": "有味道的、鮮美的",
+  "note": ""
+ },
+ {
+  "id": "L30_gras_grasse",
+  "lesson": 30,
+  "fr": "gras, grasse",
+  "zh": "油、肥（食物）",
+  "note": "⚠️ gros（人胖）跟 gras（食物油）是不同字，發音也不同，容易混——見下方發音警報"
+ },
+ {
+  "id": "L30_déguster",
+  "lesson": 30,
+  "fr": "déguster",
+  "zh": "細細品嚐",
+  "note": "⭐⭐ 帶著享受、專注的心情小口吃／喝，課本定義：manger ou boire de petites quantités。老師：這個字英文沒有剛好對應的詞，最接近 savor"
+ },
+ {
+  "id": "L30_grignoter",
+  "lesson": 30,
+  "fr": "grignoter",
+  "zh": "正餐之間吃零食",
+  "note": "⭐⭐ 課本原文（Au bistrot 課文註1）：manger un peu entre les repas——在早餐跟午餐、午餐跟晚餐之間吃一點"
+ },
+ {
+  "id": "L30_se_régaler",
+  "lesson": 30,
+  "fr": "se régaler",
+  "zh": "大快朵頤、吃得很滿足",
+  "note": "⭐ un régal（名詞：一種享受）也是這課評論裡最常見的稱讚語"
+ },
+ {
+  "id": "L30_gourmand_e",
+  "lesson": 30,
+  "fr": "gourmand(e)",
+  "zh": "貪吃、愛吃（什麼都愛吃）",
+  "note": "Une personne qui aime manger."
+ },
+ {
+  "id": "L30_difficile",
+  "lesson": 30,
+  "fr": "difficile",
+  "zh": "挑食、難搞",
+  "note": "Une personne qui n'aime que très peu d'aliments.（⭐ 這句本身就是本課主文法 ne…que 的例句）"
+ },
+ {
+  "id": "L30_végan_e",
+  "lesson": 30,
+  "fr": "végan(e)",
+  "zh": "純素",
+  "note": "Une personne qui ne mange pas de produits d'origine animale.（⚠️ 老師逐條確認：奶、蛋、起司全部不吃）"
+ },
+ {
+  "id": "L30_allergique_à",
+  "lesson": 30,
+  "fr": "allergique (à…)",
+  "zh": "對…過敏",
+  "note": "Une personne intolérante à certains aliments."
+ },
+ {
+  "id": "L30_gourmet",
+  "lesson": 30,
+  "fr": "gourmet",
+  "zh": "美食家（講究吃）",
+  "note": "Une personne qui aime surtout les plats très fins, la grande cuisine.（⚠️⚠️ 跟 gourmand 不一樣——gourmand 是「愛吃、吃很多」，gourmet 是「懂吃、挑精緻」）"
+ },
+ {
+  "id": "L30_bleu",
+  "lesson": 30,
+  "fr": "bleu",
+  "zh": "極生（幾乎不烤）",
+  "note": "⭐ 老師補充：台灣餐廳習慣問「三分五分七分熟」，法式只分四級，bleu 比三分還生"
+ },
+ {
+  "id": "L30_saignant_e",
+  "lesson": 30,
+  "fr": "saignant(e)",
+  "zh": "三分熟（帶血）",
+  "note": "字根 saigner＝流血"
+ },
+ {
+  "id": "L30_à_point",
+  "lesson": 30,
+  "fr": "à point",
+  "zh": "五分熟",
+  "note": "法式牛排最常見的預設熟度"
+ },
+ {
+  "id": "L30_bien_cuit_e",
+  "lesson": 30,
+  "fr": "bien cuit(e)",
+  "zh": "全熟",
+  "note": ""
+ },
+ {
+  "id": "L30_le_bœuf_bourguignon",
+  "lesson": 30,
+  "fr": "le bœuf bourguignon",
+  "zh": "紅酒燉牛肉",
+  "note": "勃艮第名菜"
+ },
+ {
+  "id": "L30_le_bouillon",
+  "lesson": 30,
+  "fr": "le bouillon",
+  "zh": "高湯",
+  "note": ""
+ },
+ {
+  "id": "L30_la_choucroute",
+  "lesson": 30,
+  "fr": "la choucroute",
+  "zh": "酸菜香腸鍋",
+  "note": "見下方文化補充（阿爾薩斯）"
+ },
+ {
+  "id": "L30_le_clafoutis",
+  "lesson": 30,
+  "fr": "le clafoutis",
+  "zh": "水果烤蛋糕",
+  "note": "第29課已學過完整食譜"
+ },
+ {
+  "id": "L30_le_confit_de_canard",
+  "lesson": 30,
+  "fr": "le confit (de canard)",
+  "zh": "油封（鴨腿）",
+  "note": "第29課學過：用油慢煮再泡在油裡保存"
+ },
+ {
+  "id": "L30_le_couscous",
+  "lesson": 30,
+  "fr": "le couscous",
+  "zh": "庫斯庫斯（北非小米飯）",
+  "note": "第29課提過：UNESCO 非物質文化遺產，法國人最愛的菜之一"
+ },
+ {
+  "id": "L30_les_crêpes_f",
+  "lesson": 30,
+  "fr": "les crêpes (f.)",
+  "zh": "可麗餅",
+  "note": "布列塔尼特產"
+ },
+ {
+  "id": "L30_le_flan",
+  "lesson": 30,
+  "fr": "le flan",
+  "zh": "布丁",
+  "note": ""
+ },
+ {
+  "id": "L30_le_fondant_au_chocolat",
+  "lesson": 30,
+  "fr": "le fondant au chocolat",
+  "zh": "熔岩巧克力蛋糕",
+  "note": ""
+ },
+ {
+  "id": "L30_le_gratin",
+  "lesson": 30,
+  "fr": "le gratin",
+  "zh": "焗烤",
+  "note": "⭐ 老師：只要上面加起司烤過的都算 gratin"
+ },
+ {
+  "id": "L30_le_pâté",
+  "lesson": 30,
+  "fr": "le pâté",
+  "zh": "肉醬、抹醬",
+  "note": "bistrot 招牌前菜之一"
+ },
+ {
+  "id": "L30_les_poireaux_vinaigrette",
+  "lesson": 30,
+  "fr": "les poireaux-vinaigrette",
+  "zh": "油醋韭蔥",
+  "note": "bistrot 經典冷盤，見文法補充「vinaigre／vinaigrette」"
+ },
+ {
+  "id": "L30_le_pot_au_feu",
+  "lesson": 30,
+  "fr": "le pot-au-feu",
+  "zh": "蔬菜燉牛肉湯",
+  "note": "⚠️⚠️ 老師特別澄清：不是台灣的火鍋！湯裡有肉有菜，但吃法是撈出來放到盤子上吃，不是邊煮邊涮"
+ },
+ {
+  "id": "L30_la_purée",
+  "lesson": 30,
+  "fr": "la purée",
+  "zh": "馬鈴薯泥",
+  "note": "常配 poulet rôti"
+ },
+ {
+  "id": "L30_la_ratatouille",
+  "lesson": 30,
+  "fr": "la ratatouille",
+  "zh": "普羅旺斯燉菜",
+  "note": ""
+ },
+ {
+  "id": "L30_les_saucisses_f",
+  "lesson": 30,
+  "fr": "les saucisses (f.)",
+  "zh": "香腸",
+  "note": "阿爾薩斯特產"
+ },
+ {
+  "id": "L30_la_tartiflette",
+  "lesson": 30,
+  "fr": "la tartiflette",
+  "zh": "馬鈴薯培根焗烤",
+  "note": "山區菜，第29課例句出現過（tartiflette 裡的 crème fraîche）"
+ },
+ {
+  "id": "L30_engagement",
+  "lesson": 30,
+  "fr": "engagement",
+  "zh": "以為只有「訂婚」的意思",
+  "note": "⚠️ un engagement 泛指任何「承諾、答應要做的事」（合約、菜單承諾都算），只有搭配婚姻語境時才特指訂婚／結婚承諾，今天 Locmiam charte 用的是廣義那個"
  }
 ];

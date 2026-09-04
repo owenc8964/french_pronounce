@@ -487,7 +487,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'conseils', name:'Conseils & obligations', icon:'💡', zone:'A2', cat:'verbe-mode',
-    lessons:[11,13,29], topics:['giving-advice','ilfaut-devoir','interdiction-demande'], unlocked:true,
+    lessons:[11,13,29,30], topics:['giving-advice','ilfaut-devoir','interdiction-demande'], unlocked:true,
     rule:{
       title:'建議與義務 — il faut / devoir / conseiller',
       why:'兩種義務、兩個來源：il faut 的 il 是假主詞（跟 il pleut 的 il 一樣，沒有人在那裡）——「（世界）需要…」，所以是不針對誰的一般義務；devoir 本義是「欠」（現在還這樣用：il me doit 10 euros 他欠我10歐），你「欠」這個動作＝你個人有義務做——這就是兩者分工的全部邏輯。Défense de / Merci de 是公告體：名詞開頭、不指名道姓，跟中文「禁止吸菸」同一種語氣。',
@@ -502,6 +502,7 @@ const GRAM_POINTS = [
         '⚠️ 語感：interdit 比較硬（真的違規），défendu 比較軟（勸阻、對你不好）',
         '⚠️⚠️ 反身動詞的**肯定**命令式，代名詞放動詞後面加連字號、te 變 toi：Lavez-vous les mains !／Brosse-toi les dents.',
         '⚠️ 否定命令式的代名詞又回到動詞前面：Ne vous lavez pas les mains ici.',
+        '⭐ 2026-09-04（第30課）：課文D「La charte Locmiam」是這整組義務／禁止句型的真實應用——一份 APP 使用規範幾乎全用這套句型寫成',
       ],
       examples:[
         { fr:'Il faut faire du sport tous les jours.', zh:'每天都要運動。（一般義務）' },
@@ -510,6 +511,30 @@ const GRAM_POINTS = [
         { fr:'Dans ce restaurant, il faut réserver la table à l\'avance.', zh:'在這家餐廳必須事先訂位。（il faut 不加 de）' },
         { fr:'Dans le métro taïwanais, il est interdit de manger et de boire.', zh:'台灣捷運裡禁止飲食。（兩個原形各自帶 de）' },
         { fr:'Lavez-vous les mains !', zh:'請洗手！（反身動詞的肯定命令式，代名詞後移）' },
+        { fr:'Il est interdit de vendre vos plats de manière régulière. La vente doit rester occasionnelle.', zh:'禁止定期販售你的菜，銷售必須維持在偶爾的程度。（第30課 charte Locmiam）' },
+      ]}},
+
+  { id:'restriction-ne-que', name:'La restriction : ne...que', icon:'🎯', zone:'A2', cat:'negation',
+    lessons:[30], topics:['restriction-ne-que'], unlocked:true,
+    rule:{
+      title:'ne...que — 限制，不是否定',
+      why:'ne...que 長得像否定句（有 ne），但骨子裡是「只」，跟 pas／jamais／rien 那一組真正的否定完全不同陣營——它限制的是「數量、範圍」，不是「有沒有發生」。可以直接換成 uniquement／juste／seulement，換完句子的邏輯完全不變，這是判斷它是不是這個文法點最快的測試：換得過就是限制，換不過就是別的。也因為它不是真否定，跟 en、pronom 疊用時完全不衝突，反而是口說評論最常見的疊法（je n\'en dis que du bien）。',
+      points:[
+        'ne/n\' 放動詞前面，que/qu\' 放動詞後面：Je ne mets que 4 étoiles sur 5.',
+        '可以換成同義字：uniquement／juste／seulement，意思不變',
+        '⚠️⚠️ pas que ≠ ne...que：pas que＝不只（Elle n\'achète pas que des produits sains.）；ne...que＝只',
+        '⭐ ne...plus que＝現在只剩下…（plus＝不再 ＋ que＝限制）：Il ne mange plus que du poulet.',
+        '⭐⭐ 常跟 pronom en 疊用：en 收掉那個東西，que 限制數量或頻率——Je n\'en bois qu\'une fois par semaine.',
+        '母音開頭用 qu\'：Je ne suis qu\'allergique aux œufs.',
+        '⭐ 餐廳評論最愛用的兩句固定搭配：je ne mets que + 星數／je ne peux en dire que du bien',
+      ],
+      examples:[
+        { fr:'Ce restaurant ne propose que des plats à base de riz.', zh:'這間餐廳只提供以米為主的菜。' },
+        { fr:'Elle ne mange que les légumes de son potager.', zh:'她只吃自己菜園種的菜。' },
+        { fr:'Je ne mets qu\'une étoile, et encore, je suis gentil.', zh:'我只給一顆星，而且已經算客氣了。' },
+        { fr:'Je suis ravi(e) de cette expérience ; je ne peux en dire que du bien.', zh:'我對這次體驗非常滿意；我只能說它的好話。（en＋ne...que 疊用）' },
+        { fr:'Nous n\'allons que dans des restaurants sans étoile.', zh:'我們只去沒有星等的餐廳。' },
+        { fr:'Ce chef n\'a eu que de bonnes critiques.', zh:'這位主廚只得到好評。（critique 在法文可正可負，跟英文假朋友要小心）' },
       ]}},
 
   { id:'duree-temps', name:'La durée (pendant · depuis · il y a)', icon:'⏳', zone:'A2', cat:'base',

@@ -291,4 +291,16 @@ const SENTENCES = [
   { id: 'S_L29_8', lesson: 29, fr: 'Lavez-vous les mains !', zh: '請洗手！', note: '⭐⭐ 反身動詞的肯定命令式：代名詞放動詞後面加連字號' },
   { id: 'S_L29_9', lesson: 29, fr: 'Versez la pâte sur les fruits.', zh: '把麵糊倒在水果上。', note: '⭐ la pâte＝混好還沒烤的狀態（麵糊或麵團都是）' },
   { id: 'S_L29_10', lesson: 29, fr: 'Sortez le gâteau du four quand le dessus est doré et laissez refroidir.', zh: '表面金黃時把蛋糕拿出烤箱，讓它放涼。', note: '⭐ doré＝金黃（來自 or＝金）；laisser refroidir＝讓它冷卻' },
+
+  // 第30課
+  { id: 'S_L30_1', lesson: 30, fr: 'Vous ne devez pas être cuisinier ou cuisinière de métier.', zh: '你不可以是職業廚師。', note: '⭐ de métier＝以…為職業的（＝professionnel）' },
+  { id: 'S_L30_2', lesson: 30, fr: 'Il est interdit de vendre vos plats de manière régulière. La vente doit rester occasionnelle.', zh: '禁止定期販售你的菜，銷售必須維持在偶爾的程度。', note: '⚠️⚠️ régulier（經常性）vs occasionnel（偶爾）' },
+  { id: 'S_L30_3', lesson: 30, fr: 'Attachez-vous les cheveux et lavez-vous souvent les mains.', zh: '把頭髮綁起來、常常洗手。', note: '⭐ 反身動詞肯定命令式回鍋（第29課）' },
+  { id: 'S_L30_4', lesson: 30, fr: 'Ne laissez pas d\'animal entrer dans votre cuisine, c\'est dangereux.', zh: '不要讓動物進入你的廚房，這很危險。', note: '⚠️ 動物的毛是 poils，不是 cheveux' },
+  { id: 'S_L30_5', lesson: 30, fr: 'Respectez vos engagements (plats, quantités, prix, horaires).', zh: '請遵守你的承諾（菜色、數量、價格、時間）。', note: '⭐⭐ un engagement 這裡是「承諾」的廣義用法，不是訂婚' },
+  { id: 'S_L30_6', lesson: 30, fr: 'On y retrouve souvent les mêmes entrées et des plats simples mais goûteux.', zh: '在這裡常常可以看到一樣的前菜、簡單但美味的菜。', note: '課文F Au bistrot 原句' },
+  { id: 'S_L30_7', lesson: 30, fr: 'Je ne mets qu\'une étoile, et encore, je suis gentil.', zh: '我只給一顆星，而且已經算客氣了。', note: '⭐⭐ ne...que 主文法，評論句' },
+  { id: 'S_L30_8', lesson: 30, fr: 'Je suis ravi(e) de cette expérience ; je ne peux en dire que du bien.', zh: '我對這次體驗非常滿意；我只能說它的好話。', note: '⭐⭐ en ＋ ne...que 疊用' },
+  { id: 'S_L30_9', lesson: 30, fr: 'Le service est trop lent. Il faut patienter une demi-heure entre chaque plat. C\'est une honte !', zh: '服務太慢了。每道菜之間要等半小時。太丟臉了！', note: '⭐ 表達不滿意句型' },
+  { id: 'S_L30_10', lesson: 30, fr: 'Qu\'est-ce que vous me conseillez ? — Le colombo, c\'est la spécialité de la maison.', zh: '你們推薦什麼？——colombo 是本店招牌菜。', note: '⭐ 點餐句型：la spécialité de la maison' },
 ];

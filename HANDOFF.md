@@ -3958,9 +3958,9 @@ revlog 也證實：08-23 之後每天固定就開 5 張。
 
 ---
 
-### 09-04：第30課（A2・La restauration・課文D charte Locmiam／Au bistrot／avis restaurant・主文法 La restriction ne...que）——**只做了筆記，九項連動沒做**
+### 09-04：第30課（A2・La restauration・課文D charte Locmiam／Au bistrot／avis restaurant・主文法 La restriction ne...que）——筆記＋九項連動都做完了，**但沒有跑過瀏覽器功能測試**
 
-⚠️ 這條是排程任務 `clb7-post-class`（課後15分鐘整理）自動觸發，Owen 不在場，範圍照該任務定義**只做筆記＋糾錯摘要**，沒有跑第29課那種「九項連動」全套流程。
+⚠️ 這條由排程任務 `clb7-post-class`（課後15分鐘整理）觸發，起初 Owen 不在場、只做了筆記；Owen 後來回來問「不能串嗎？」，於是同一個 session 續做完剩下的連動。
 
 Owen 貼進 2026-09-04 課堂逐字稿＋8 張截圖（`~/Desktop/0904/`，Édito **A2** `Edito22 A2 Owen 7:21.pdf`，Unité 6，p.88–93；⚠️ 跟前幾課用的 A1 那份不是同一本，已用 `assets/.textbook_cache.txt` 逐條核對頁碼與原文）。
 
@@ -3971,17 +3971,30 @@ Owen 貼進 2026-09-04 課堂逐字稿＋8 張截圖（`~/Desktop/0904/`，Édit
 - **課文I「Ça vous a plu?」**（p.92）：餐廳評論句型，滿意／不滿意兩組對照，四則真實評論帶讀。
 - **主文法：la restriction ne...que**（p.93）：⚠️ `pas que`＝不只（跟 `ne...que`＝只，意思相反，要看清楚）。
 
-**只做了這一項**
-1. `french_notes.html` `lesson-30`：11 unit／9 表／約90句法文＋平行閱讀一篇（跟前幾課同款，用本課全套詞彙文法寫的原創短文）。
-   `node tools/check_notes.js` **全綠**（30課／256表／280 unit，錯誤0提醒0）。
+**連動做了幾項（仿第29課清單，scenes.js 除外）**
+1. `french_notes.html` `lesson-30`：11 unit／9 表／約90句法文＋平行閱讀一篇。`node tools/check_notes.js` **全綠**（30課／256表／280 unit，錯誤0提醒0）。
+2. `questions.js` **＋25 題**：新 topic `restriction-ne-que` 10 題、`vocab-restauration` 15 題。`quiz.html`／`dashboard.html` 的 `TOPIC_LABELS` 兩邊都補了。
+3. `chunks.js`：`node tools/extract_chunks.js 30 --write` → **＋66 張**（自動化腳本，去重後）。
+4. `sentences.js`：`S_L30_1~10`。
+5. `table_drill.html` **＋2 表**：`restriction-ne-que-drill`（gram，10列）、`restauration-vocab-drill`（vocab，20列）。
+6. `gram_rules.js`：新增 `restriction-ne-que` 規則卡（cat:'negation'，7條 points＋6例句）；`conseils` 補 `lessons:[11,13,29,30]` 與一條 charte Locmiam 應用例句。
+7. `codex.js` **新增 `7-2-6`「限制句型 ne...que」**（在 `7-2-5` 之後，negation 章節內，7條 points）。⚠️ 沒有回頭幫 `3-4-6`（en 數量）補反向 `vs` 連結，可以之後再補。
+8. `map.html`：`CURRENT_LESSON` 29→30，新增兩張 tile（`restriction-ne-que`／`restauration-vocab`，French detail 仿既有寫法）。
+9. `reading.html` **a31「Un avis sur mon bistrot préféré」**（原創短文＋3題理解測驗，跟筆記頁的平行閱讀同一篇改寫）。
+10.（順手）`writing_tasks.js` **＋2 題**（W30a 餐廳評論／W30b 幫 Locmiam charte 加規範）。
 
-**⛔ 沒做的（下一個有人在場的 session 要補，照第29課的九項連動清單走）**
-`questions.js`（quiz 題庫）／`chunks.js`／`sentences.js`／`table_drill.html`／`gram_rules.js`（ne...que 是新規則，要建）／`codex.js`（新增座標）／`map.html`（`CURRENT_LESSON` 29→30）／`reading.html`（平行閱讀正式收錄＋理解測驗）／`scenes.js`（課文I 的評論對話是有台詞的，這課適合做）。
-⚠️ 沒做這些之前，**quiz.html／table_drill.html 上還看不到第30課的題目**——筆記頁看得到但練習系統還沒串。
+**⛔ 唯一沒做的：`scenes.js`**——理由同第29課：課文I 的評論是獨白不是對話；課文H「Dans un restaurant antillais」是聽力逐字稿，這次的課堂逐字稿沒收錄到（Owen 沒貼那段音檔內容），手上材料不夠寫一齣有台詞、通過 `check_scenes.js` 溯源檢查的分岔劇本。⭐ 但「Pour communiquer au restaurant」那組點餐問答句型形狀很適合，**下次拿到 H 的聽力逐字稿再補**。
 
-**沒做的第二件事**：糾錯記錄沒寫進 `speaking.html`。⚠️ 該頁是即時互動表單（存 localStorage `clb7_speaking`，會 sync 到 Supabase），不是靜態檔案，排程任務跑在背景、沒有瀏覽器互動不該碰正式 Supabase room（見上方測試鐵律）。本課糾錯統計已經寫進筆記頁 lesson-30 的「糾錯摘要」unit：生詞猜不出×6、假朋友×2、文法混淆×2（gras/gros、pas que 方向）。Owen 要記錄的話自己開 `speaking.html` 填一筆即可。
+**⚠️⚠️ 驗證的坑：這次沒有實際在瀏覽器裡跑過**——`preview_start` 被系統擋下來（"Dev servers can't be started from unattended sessions (scheduled-task runs...)"，因為這個 session 底層仍是排程任務身分，即使 Owen 全程在場對話）。改用的替代驗證：
+- `node --check` 對六個純 `.js` 檔（questions/sentences/gram_rules/codex/chunks/writing_tasks）全過
+- 用 Python 抽出 table_drill/map/reading/quiz/dashboard 五個 `.html` 裡的 `<script>` 內容丟給 `node --check`，全過
+- `node tools/check_notes.js` 全綠、`node tools/check_scenes.js` 全綠（未改但確認沒被波及）
+- grep 數量核對：`lesson:30` 在 questions.js 25 筆、sentences.js 10 筆、table_drill.html 2 筆、map.html 2 筆，`codex.js` 的 `7-2-6` 唯一不重複
+⛔ **這些只證明語法正確跟結構完整，沒證明 quiz.html 選得到第30課題目、table_drill 篩選得到新表、a31 分數算得對、map 的新 tile 點得開**。⭐ **下一個能開瀏覽器的 session 第一件事：跑一次完整 preview 驗證（quiz 選第30課→作答→SRS 正常；table_drill 篩 `vocab`／`gram`；reading a31 三題全對；map 新 tile 渲染），照測試鐵律先確認 ROOM 是 TEST 值。**
 
-**驗證**：只跑了 `node tools/check_notes.js`（格式檢查，全綠）。沒有啟動 preview server、沒有跑 quiz/table_drill/reading 的功能測試——因為那些系統這課根本沒改到。
+**沒做的另一件事**：糾錯記錄沒寫進 `speaking.html`（即時表單，存 localStorage 會 sync 到 Supabase，這次沒開瀏覽器也就沒填）。統計已經在筆記頁 lesson-30 的「糾錯摘要」unit 裡：生詞猜不出×6、假朋友×2、文法混淆×2（gras/gros、pas que 方向）。Owen 要記錄的話自己開 `speaking.html` 填一筆即可。
+
+⚠️ **git 提醒**：這個工作目錄同時有另一個 session 在跑（同時間出現 `t1_stock.js`／`tools/check_t1_stock.js` 的未提交改動，commit `a6ed47c`／`0a27783` 也是他們的）。commit 這次的改動時**只 add 上面列的檔案**，沒有動 `t1_stock.js` 那組。
 
 ---
 

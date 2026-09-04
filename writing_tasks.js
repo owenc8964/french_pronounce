@@ -206,4 +206,12 @@ const WRITING_TASKS = [
   { lesson:29, id:'W29b', title:'寫一份食譜（en ＋ 食譜動詞）', task:'寫 80-100 字，把一道你會做的菜寫成食譜：先列材料（含量詞），再寫五個步驟。⚠️ 材料清單裡至少要用 en 回答兩次（例如「洋蔥嗎？我放一把」），步驟一律用命令式（vous 形）。',
     use:['en ＋ 量詞或數字（至少兩次）', '量詞（une pincée de／une botte de／un bouquet de…）', '食譜動詞（préchauffer／mélanger／verser／faire cuire／servir）', 'faire cuire（⚠️ 不能只寫 cuire）'],
     frame:'⭐ 材料（Pour 4 personnes : …） → 自問自答用 en（Des oignons ? J\'en mets une botte.） → 五個步驟（全部命令式） → 收尾（Servez tiède avec…）' },
+
+  // ── 第30課（La restauration ＋ la restriction ne...que ＋ avis de restaurant）
+  { lesson:30, id:'W30a', title:'寫一則餐廳評論（DELF 題型，60-80 字）', task:'選一間你知道的餐廳，寫一則評論表達滿意或不滿意。⚠️ 仿課本課文I的四則評論，描述地點、餐點、印象。這題直接照課本 Production écrite 原題出。',
+    use:['ne...que（至少一次，例如「je ne mets que…」或「je ne peux en dire que du bien」）', '滿意句型（un régal／un coup de cœur／ravi(e)）或不滿意句型（trop lent／une honte／scandaleux）擇一組', '一個味覺或用餐動詞形容詞（goûteux／épicé／se régaler…）'],
+    frame:'⭐ 開場定位（地點＋一句總評） → 具體描述（餐點、服務、氣氛） → 用 ne...que 收一句 → 星等或推薦與否收尾' },
+  { lesson:30, id:'W30b', title:'給 Locmiam 寫一條新規範（義務／禁止＋ne...que）', task:'寫 60-80 字，幫 Locmiam charte 再加兩條新規範：一條義務、一條禁止，並用 ne...que 限制一個範圍（例如營業時段、可販售次數）。',
+    use:['義務句型（il faut／il est indispensable de…，第29課回鍋）', '禁止句型（il est interdit de／il est défendu de…，第29課回鍋）', 'ne...que 限制一個範圍（至少一次）'],
+    frame:'⭐ 開場銜接（Locmiam charte 既有規定之外…） → 一條義務 → 一條禁止 → 用 ne...que 收一句限制範圍' },
 ];
