@@ -18,7 +18,7 @@
 |---|---|
 | **考試** | **2027-04-18 前哨戰／診斷考｜2027-09-19 正場**。⚠️ 2027 場次官方**尚未公布**，日期是照 2026（2/8、4/19、9/20、12/20，全是該月第三個星期日）推的。**法協 02-2364-8833 那通電話還沒打。** |
 | **考哪個** | **TCF Canada**（台北法協有考，NT$8,000 四科）。TEF Canada 台灣**無考場**，要考得飛東京 |
-| **程度** | A2，第 29 課。2026-05 開始學法文 |
+| **程度** | A2，第 30 課（筆記已入庫，quiz/SRS/table_drill 等連動**未做**，見下方 09-04 條目）。2026-05 開始學法文 |
 | **口說語言島** | ⭐ **Phase 0 八座全滿**（AC1/2/3/5/7/8/11/15），每座 169–225 字 / 78–103 秒，中文母本 `source_zh` 都在。`AC8` 的 follow-up gap **掛零** |
 | **考試材料** | 三包全部整理完。**Tâche 3 = 167 議題／245 變體**（xlsx 八分頁）＋ 119 題雙語；⭐ **Tâche 2 = 160 條情境**（不是 20，見 09-02 校準）；兩本 Ellipses 正式教科書 |
 | **系統** | `mock.html` 已驗收（44+44 套模擬考可用）。dashboard／tracker 倒數已對齊新日期 |
@@ -3918,6 +3918,33 @@ revlog 也證實：08-23 之後每天固定就開 5 張。
 **⚠️ 另外兩件一直沒動、等 Owen 決定**：
 `MakeListeningCard` 129 張全空（Listening 模板在、但一張卡都沒生成）；
 牌組全部擠在 `FrançaisCours`，`FrançaisMining` 是 0 張。
+
+---
+
+### 09-04：第30課（A2・La restauration・課文D charte Locmiam／Au bistrot／avis restaurant・主文法 La restriction ne...que）——**只做了筆記，九項連動沒做**
+
+⚠️ 這條是排程任務 `clb7-post-class`（課後15分鐘整理）自動觸發，Owen 不在場，範圍照該任務定義**只做筆記＋糾錯摘要**，沒有跑第29課那種「九項連動」全套流程。
+
+Owen 貼進 2026-09-04 課堂逐字稿＋8 張截圖（`~/Desktop/0904/`，Édito **A2** `Edito22 A2 Owen 7:21.pdf`，Unité 6，p.88–93；⚠️ 跟前幾課用的 A1 那份不是同一本，已用 `assets/.textbook_cache.txt` 逐條核對頁碼與原文）。
+
+**這一課教了什麼**
+- **課文D「La charte Locmiam」**（p.88）：用第29課的義務／禁止句型讀一份共享廚房 APP 的真實規範。
+- **詞彙頁「La restauration」**（p.91）：用餐場所、味覺、用餐動詞（déguster/goûter/grignoter/se régaler 四個字意思都不同）、人物類型（gourmand≠gourmet 要分清楚）、肉的熟度、Les plats 菜名表。
+- **課文F「Au bistrot」**（p.90）：法式小酒館文化＋法國五地區各自的招牌菜。
+- **課文I「Ça vous a plu?」**（p.92）：餐廳評論句型，滿意／不滿意兩組對照，四則真實評論帶讀。
+- **主文法：la restriction ne...que**（p.93）：⚠️ `pas que`＝不只（跟 `ne...que`＝只，意思相反，要看清楚）。
+
+**只做了這一項**
+1. `french_notes.html` `lesson-30`：11 unit／9 表／約90句法文＋平行閱讀一篇（跟前幾課同款，用本課全套詞彙文法寫的原創短文）。
+   `node tools/check_notes.js` **全綠**（30課／256表／280 unit，錯誤0提醒0）。
+
+**⛔ 沒做的（下一個有人在場的 session 要補，照第29課的九項連動清單走）**
+`questions.js`（quiz 題庫）／`chunks.js`／`sentences.js`／`table_drill.html`／`gram_rules.js`（ne...que 是新規則，要建）／`codex.js`（新增座標）／`map.html`（`CURRENT_LESSON` 29→30）／`reading.html`（平行閱讀正式收錄＋理解測驗）／`scenes.js`（課文I 的評論對話是有台詞的，這課適合做）。
+⚠️ 沒做這些之前，**quiz.html／table_drill.html 上還看不到第30課的題目**——筆記頁看得到但練習系統還沒串。
+
+**沒做的第二件事**：糾錯記錄沒寫進 `speaking.html`。⚠️ 該頁是即時互動表單（存 localStorage `clb7_speaking`，會 sync 到 Supabase），不是靜態檔案，排程任務跑在背景、沒有瀏覽器互動不該碰正式 Supabase room（見上方測試鐵律）。本課糾錯統計已經寫進筆記頁 lesson-30 的「糾錯摘要」unit：生詞猜不出×6、假朋友×2、文法混淆×2（gras/gros、pas que 方向）。Owen 要記錄的話自己開 `speaking.html` 填一筆即可。
+
+**驗證**：只跑了 `node tools/check_notes.js`（格式檢查，全綠）。沒有啟動 preview server、沒有跑 quiz/table_drill/reading 的功能測試——因為那些系統這課根本沒改到。
 
 ---
 
