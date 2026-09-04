@@ -9438,9 +9438,9 @@ const CHUNKS = [
  {
   "id": "L23_Je_ne_les_connaissais_pa",
   "lesson": 23,
-  "fr": "Je ne les connaissais pas, mais c'est devenu des amis.",
+  "fr": "Je ne les connaissais pas, mais ils sont devenus des amis.",
   "zh": "我本來不認識他們，但後來變成朋友了。",
-  "note": "🎙devenir＝變成；c'est devenu＝變成了"
+  "note": "🎙devenir 用 être 當助動詞（跟 venir 同家族），分詞跟主詞一致：ils sont devenu<b>s</b>。⚠️ 老師課堂原話是「c'est devenu des amis」——口語裡 c'est 接複數極常見，但那是口語中和，寫出來會被改。依來源優先序（標準法文＞課本＞逐字稿）採標準式。"
  },
  {
   "id": "L23_C_est_le_seul_problème_",
