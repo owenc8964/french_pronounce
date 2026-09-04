@@ -1201,6 +1201,8 @@ let results    = [];   // { title, ok, total }（只記主輪，複習輪不重�
 const ROUND_SIZE = 6;  // 一輪只出 6 個表，避免一次太多（可再開一輪）
 let phase      = 'main'; // 'main' | 'review'：主輪做完，答錯的表格會進複習輪重考，直到全對
 let roundWrong = [];      // 這一輪（主輪或複習輪）目前為止答錯（ok<total）的表格物件
+// 錯誤率 ≤ 這個比例 → 複習輪只要補錯的那幾格；超過 → 整張重填（2026-09-04 Owen 指定 15%）
+const PARTIAL_RETRY_MAX = 0.15;
 let reviewPassCount = 0;  // 這次做了幾輪複習（供結束畫面顯示）
 let onSummary  = false;   // 是否已經在結束畫面（這輪已完整結束，切難度/類型不用再問）
 
@@ -1344,13 +1346,17 @@ function renderCard() {
       if (typeof cell === 'string') {
         tableHTML += `<td class="${ci === 0 ? 'lbl' : ''}">${escH(cell)}</td>`;
       } else if (isBlank(cell, ri)) {
-        tableHTML += `<td><input class="fill-input" type="text"
-          id="inp_${ri}_${ci}"
+        // 部分重考（tbl._only）：只有上一輪答錯的格子留空，其餘直接填好標綠鎖住
+        const cid = `inp_${ri}_${ci}`;
+        const preFilled = Array.isArray(tbl._only) && !tbl._only.includes(cid);
+        tableHTML += `<td><input class="fill-input${preFilled ? ' ok' : ''}" type="text"
+          id="${cid}"
           data-ans="${escH(cell.a)}"
+          ${preFilled ? `value="${escH(String(cell.a).split('|')[0])}" disabled` : ''}
           autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
           onkeydown="handleKey(event)"
           onfocus="onFocus(this)" onblur="onBlur()"></td>`;
-        inputIdx++;
+        if (!preFilled) inputIdx++;
       } else {
         // 多解格（a 用 | 分隔）在「顯示格」只印第一個寫法，不要把 S'il|s'il 這種原始字串露給使用者
         tableHTML += `<td class="shown">${escH(String(cell.a).split('|')[0])}</td>`;
@@ -1363,7 +1369,9 @@ function renderCard() {
   const hasInputs = inputIdx > 0;
 
   const reviewBanner = phase === 'review'
-    ? `<div style="background:#2a1e00;border:1px solid #4a3a10;color:#f0c060;border-radius:8px;padding:8px 12px;font-size:0.78rem;margin-bottom:10px;">🔁 複習輪 — 剛才這張表格答錯了，重新填到全對為止</div>`
+    ? (Array.isArray(tbl._only)
+        ? `<div style="background:#2a1e00;border:1px solid #4a3a10;color:#f0c060;border-radius:8px;padding:8px 12px;font-size:0.78rem;margin-bottom:10px;">🔁 複習輪 — 上一輪錯得不多（${tbl._only.length} 格），<b>只要補這幾格</b>，其他已經幫你填好了</div>`
+        : `<div style="background:#2a1e00;border:1px solid #4a3a10;color:#f0c060;border-radius:8px;padding:8px 12px;font-size:0.78rem;margin-bottom:10px;">🔁 複習輪 — 剛才這張表格錯得比較多，<b>整張重填一次</b></div>`)
     : '';
 
   document.getElementById('cardArea').innerHTML = `
@@ -1387,7 +1395,7 @@ function renderCard() {
 </div>`;
 
   // 聚焦第一個空格
-  const first = document.querySelector('.fill-input');
+  const first = document.querySelector('.fill-input:not([disabled])');
   if (first) first.focus();
 }
 
@@ -1447,11 +1455,14 @@ function checkAll() {
   if (!inputs.length) return;
 
   let ok = 0;
+  const wrongIds = [];
   inputs.forEach(inp => {
     const answers = inp.dataset.ans.split('|').map(norm);
     const userVal = norm(inp.value);
     const correct = answers.includes(userVal);
+    if (inp.disabled) inp.dataset.prefilled = '1';   // 這一輪沒讓他作答的格（部分重考時預先填好的）
     inp.disabled = true;
+    if (!correct) wrongIds.push(inp.id);
     if (correct) {
       inp.classList.add('ok');
       ok++;
@@ -1474,7 +1485,19 @@ function checkAll() {
     results.push({ title: queue[qIdx].title, ok, total });
   }
   // 這格有錯 → 這張表格進這一輪的錯題堆，輪次結束後開複習輪重考直到全對
-  if (bad > 0) roundWrong.push(queue[qIdx]);
+  // 2026-09-04 Owen：「只要錯一個就要全部重寫我覺得有點麻煩，
+  //   可能錯到一個程度再全部重來會比較好，如果只有 15% 以內的錯就只要重寫那個錯的就好」
+  // ⭐ 門檻用「這一輪實際作答的格數」當分母（部分重考時分母只有那幾格，錯了就必然 >15% → 自動整張重來）
+  if (bad > 0) {
+    // ⭐ 分母固定用整張表的格數 total（＝「15% 以內的錯」最直覺的讀法）
+    // ⭐⭐ 已經在部分重考的表格一律維持部分重考：只剩兩格時錯一格＝50%，
+    //     若照比例判就會逼他整張重打——那正是 Owen 抱怨的那件事。
+    const wasPartial = Array.isArray(queue[qIdx]._only);
+    const partial = wasPartial || (bad / total) <= PARTIAL_RETRY_MAX;
+    roundWrong.push(partial
+      ? { ...queue[qIdx], _only: wrongIds }
+      : (() => { const t = { ...queue[qIdx] }; delete t._only; return t; })());
+  }
 
   // UI 更新
   document.getElementById('checkBtn').style.display = 'none';
