@@ -1,0 +1,1686 @@
+{
+ "titre": "TCF Canada 詞彙組織方案 — 先刪減，再組織",
+ "date": "2026-09-04",
+ "base": [
+  "research/data/vocab_B_speaking_writing.json",
+  "research/data/vocab_A_listening_reading.json",
+  "research/2026-09-02_C_聽懂與說得出的落差.md",
+  "ANKI_SETUP.md",
+  "ARCH_2026-08_ANKI.md",
+  "PRACTICE_ORAL.md"
+ ],
+ "chiffres": {
+  "gap_depart": 933,
+  "gap_listes_dans_json": 380,
+  "tokens_des_380": 9188,
+  "garde_total": 97,
+  "garde_prod": 51,
+  "garde_frame": 46,
+  "tokens_gardes": 3314,
+  "pct_des_380": 36.1,
+  "pct_des_933_estime": 27.8,
+  "cartes_total": 40,
+  "cartes_production": 36,
+  "cartes_listening": 4,
+  "premiere_serie": 20
+ },
+ "coupes": [
+  {
+   "n": "刀1",
+   "name": "長尾：第 381–933 名",
+   "removed": 553,
+   "tokens_removed": "約 2,700（估計，JSON 只列出前 380，尾巴以 n≤9、df≥3 推估）",
+   "why": "每個字全語料 ≤9 次、散在 3–7 個檔。背它的邊際報酬低於背一個框架。",
+   "status": "估計值"
+  },
+  {
+   "n": "刀2",
+   "name": "只在 ≤5 個檔出現（綁死單一題目）",
+   "removed": null,
+   "why": "22 個檔裡只有 ≤5 個用到＝這個字是某一題的專用字，不是通用產出零件。降到辨識層。"
+  },
+  {
+   "n": "刀3",
+   "name": "可推導：字根已在 chunks.js／french_notes.html",
+   "removed": 58,
+   "tokens": 1219,
+   "why": "嚴格前綴比對（去衍生後綴後，已知詞必須以該字根開頭）。看到能猜＝辨識層就夠。"
+  },
+  {
+   "n": "刀4",
+   "name": "具體主題名詞（無 -tion/-té/-ment/-ance 等抽象後綴）",
+   "removed": null,
+   "why": "repas／billet／agence／véhicule／papier 這類是內容，內容由 Owen 自己提供（CLAUDE.md 內容鐵律 2）。"
+  },
+  {
+   "n": "刀5",
+   "name": "英法同源透明詞",
+   "removed": 80,
+   "tokens": 1791,
+   "why": "pollution／motivation／flexible／international 這種，看一次就會，做卡是浪費。",
+   "status": "⚠️ 推論，未對 Owen 實測"
+  },
+  {
+   "n": "刀6",
+   "name": "跨檔不足（6–8 個檔）",
+   "removed": null,
+   "why": "通用性不足以進產出層。"
+  },
+  {
+   "n": "刀7",
+   "name": "人工複核",
+   "removed": 6,
+   "why": "規則掃不掉的：environnement／gouvernement／industrie（抽象後綴但其實是主題名詞）、compagnie（一詞兩義）、solitude（同源）、passionner（lemma 假象）。"
+  }
+ ],
+ "arbre": [
+  {
+   "id": "P",
+   "label": "產出層 — 要能講／寫得出來",
+   "cards": 40
+  },
+  {
+   "id": "P1",
+   "label": "論述引擎（口說T3＋寫作T3 共用）",
+   "cards": 16
+  },
+  {
+   "id": "P1.1",
+   "label": "評價框架 il est ___ de + INF",
+   "cards": 1,
+   "card_type": "Production",
+   "content": [
+    "il est essentiel de",
+    "il est important de",
+    "il est nécessaire de",
+    "il est crucial de",
+    "il est fondamental de"
+   ],
+   "slot": "+ 原形動詞",
+   "evidence": "寫作T3 41.5/萬（il est essentiel de），全語料 47 次；il est important de 40 次；il est nécessaire de 9 次",
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §6 連接詞表",
+   "note": "⭐ il est important QUE 全語料 0 次——考生一律用 de + 原形繞過 subjonctif",
+   "in_chunks": false
+  },
+  {
+   "id": "P1.2",
+   "label": "使能框架 permettre de",
+   "cards": 1,
+   "card_type": "Production",
+   "content": [
+    "X permet de + INF",
+    "cela permet de + INF",
+    "ce qui permet de + INF"
+   ],
+   "evidence": "permettre 產出語料第 5 名（271 次，présent 200）；permettre de 32 次、cela permet de 11、ce qui permet de 6",
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §3 高頻動詞表 / §6",
+   "in_chunks": false
+  },
+  {
+   "id": "P1.3",
+   "label": "因果框架 X ___ Y（25 個動詞，5 張壓縮卡）",
+   "cards": 5,
+   "card_type": "Production",
+   "groups": [
+    [
+     "réduire",
+     "diminuer",
+     "limiter",
+     "augmenter",
+     "renforcer"
+    ],
+    [
+     "contribuer à",
+     "favoriser",
+     "encourager",
+     "inciter à",
+     "promouvoir"
+    ],
+    [
+     "nuire à",
+     "lutter contre",
+     "garantir",
+     "préserver",
+     "sensibiliser"
+    ],
+    [
+     "gérer",
+     "résoudre",
+     "acquérir",
+     "fournir",
+     "élargir"
+    ],
+    [
+     "soutenir",
+     "souligner",
+     "concerner",
+     "percevoir",
+     "enrichir"
+    ]
+   ],
+   "evidence": "§4.1 第 3 群「因果／影響動詞」；每組同一句法框架（定式動詞＋抽象名詞受詞）",
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §4.1",
+   "method": "壓縮練習：同結構高頻連發 5 個變化（專案教學鐵律 ✂️自動化缺口）"
+  },
+  {
+   "id": "P1.4",
+   "label": "立場框架（口說版）",
+   "cards": 1,
+   "card_type": "Production",
+   "content": [
+    "personnellement, je pense que",
+    "à mon avis",
+    "selon moi",
+    "je suis (tout à fait) d'accord avec cette affirmation",
+    "je ne suis pas d'accord avec cette affirmation"
+   ],
+   "evidence": "口說T3：je pense que 20.0/萬、personnellement 15.4、à mon avis 6.4；寫作T3 全部 0",
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §5.2",
+   "in_chunks": "部分（chunks.js 有 1 條 Je pense que…，無 à mon avis／selon moi）"
+  },
+  {
+   "id": "P1.5",
+   "label": "立場框架（寫作版，無人稱）",
+   "cards": 1,
+   "card_type": "Production",
+   "content": [
+    "La question de ___ suscite un débat passionné dans notre société.",
+    "Certains estiment que ___, tandis que d'autres soutiennent que ___.",
+    "___ fait l'objet d'un débat"
+   ],
+   "evidence": "寫作T3：la question de 25.4/萬、suscite un débat 24.1、tandis que 40.2、certains pensent/estiment 25.4；口說幾乎 0",
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §5.2 / §6",
+   "in_chunks": false
+  },
+  {
+   "id": "P1.6",
+   "label": "骨架｜口說 T3 五格",
+   "cards": 1,
+   "card_type": "Production",
+   "content": [
+    "① C'est un sujet très discuté dans notre société, sur internet, sur les réseaux sociaux, voire même dans la vie quotidienne.",
+    "② Certains pensent que ___. Cependant, je ne suis pas d'accord avec cette affirmation pour deux raisons.",
+    "③ D'un côté, il s'agit de ___. C'est-à-dire que ___. Par exemple, ___.",
+    "④ D'un autre côté, il y a ___, car ___. Par exemple, ___.",
+    "⑤ En conclusion, ___."
+   ],
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §6.2（語料原文引用）",
+   "note": "⛔ ___ 由 Owen 自己填，Claude 不代填（CLAUDE.md 內容鐵律 2）"
+  },
+  {
+   "id": "P1.7",
+   "label": "骨架｜寫作 T3 五格",
+   "cards": 1,
+   "card_type": "Production",
+   "content": [
+    "① La question de ___ suscite un débat passionné dans notre société.",
+    "② Certains pensent que ___, tandis que d'autres soutiennent que ___.",
+    "③ Dans ce débat, il est essentiel de rappeler que ___.",
+    "④ En effet, ___, ce qui pourrait favoriser ___.",
+    "⑤ En outre, ___ permet de ___."
+   ],
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §6.2（語料原文引用）"
+  },
+  {
+   "id": "P1.8",
+   "label": "連接詞組（3 張：口說 / 寫作 / 共用）",
+   "cards": 3,
+   "card_type": "Production",
+   "groups": {
+    "口說T3": [
+     "par exemple",
+     "mais",
+     "de plus",
+     "grâce à",
+     "cependant",
+     "d'un côté … d'un autre côté",
+     "premièrement / deuxièmement / troisièmement",
+     "en conclusion",
+     "aussi",
+     "donc"
+    ],
+    "寫作T3": [
+     "en effet",
+     "en outre",
+     "ainsi",
+     "de surcroît",
+     "par conséquent",
+     "également",
+     "cependant",
+     "tandis que"
+    ],
+    "共用": [
+     "afin de",
+     "en raison de",
+     "il est important de",
+     "permettre de",
+     "contribuer à",
+     "lutter contre",
+     "nuire à"
+    ]
+   },
+   "evidence": "§6.1「只要 20 個就夠」；語料 100+ 次者僅這些，其餘是長尾",
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §6.1",
+   "in_chunks": "chunks.js 只有 grâce à（1）與偶然出現的 de plus；其餘 0"
+  },
+  {
+   "id": "P1.9",
+   "label": "介系詞固定搭配（2 張）",
+   "cards": 2,
+   "card_type": "Production",
+   "content": [
+    "au sein de",
+    "à travers",
+    "lors de",
+    "quant à",
+    "à cause de",
+    "en raison de",
+    "à long terme",
+    "tenir compte de",
+    "faire partie de",
+    "dans ce cas",
+    "être au courant de",
+    "au cœur de",
+    "élargir ses horizons",
+    "par conséquent",
+    "en somme",
+    "en résumé"
+   ],
+   "evidence": "§4.1 標註的 lemma 假象：sein/travers/lors/quant/conséquent/serre/hâter 等只活在固定搭配裡",
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §4.1"
+  },
+  {
+   "id": "P2",
+   "label": "任務外殼",
+   "cards": 10
+  },
+  {
+   "id": "P2.1",
+   "label": "口說 T2 疑問句 5 模具",
+   "cards": 5,
+   "card_type": "Production",
+   "content": [
+    "Quels sont les ___ ?",
+    "Y a-t-il un(e) ___ ?",
+    "Est-ce que je peux ___ ?",
+    "Combien coûte ___ ?",
+    "À quelle heure ___ ?"
+   ],
+   "evidence": "口說T2 每萬詞：倒裝疑問 286、quel(le)(s) 184、est-ce que 159、y a-t-il 102、combien 42；寫作幾乎 0。T2 佔口說總分 46%",
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §5.3 ＋ PRACTICE_ORAL.md 二",
+   "in_chunks": "chunks.js 有零件無模具：Est-ce que 12 條、Combien 7 條，但 Y a-t-il 0、Quels sont 0、À quelle heure 0"
+  },
+  {
+   "id": "P2.2",
+   "label": "寫作 T1 書信公式（3 張）",
+   "cards": 3,
+   "card_type": "Production",
+   "content": [
+    "J'espère que tu vas bien / vous allez bien",
+    "Je suis ravi(e) de t'annoncer que ___",
+    "J'ai hâte de ___",
+    "n'hésite(z) pas à me contacter si ___",
+    "Tiens-moi au courant !",
+    "Merci d'avance",
+    "À bientôt",
+    "Amicalement / Cordialement"
+   ],
+   "evidence": "寫作T1 每萬詞 25/23/15/13/12/11/4/4；口說全部 0",
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §5.4",
+   "in_chunks": "J'espère que(1)、À bientôt(2)、N'hésitez pas(1) 有；J'ai hâte／ravi／Amicalement 0"
+  },
+  {
+   "id": "P2.3",
+   "label": "寫作 T2 申訴信骨架（2 張）",
+   "cards": 2,
+   "card_type": "Production",
+   "content": [
+    "Objet : ___",
+    "Madame, Monsieur,",
+    "Je souhaite, par la présente, vous informer de mon mécontentement.",
+    "En effet, le ___, j'ai réservé ___.",
+    "Or, dans les faits, ___ ne s'est pas passé comme il était précisé.",
+    "À mes yeux, cela est absolument inacceptable et je considère que ___.",
+    "Dans l'attente de votre réponse"
+   ],
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §6.2",
+   "note": "⚠️ 語料裡沒有 Veuillez agréer… 這種法檢級商業結尾（0 次）；是否扣分＝未查證"
+  },
+  {
+   "id": "P3",
+   "label": "時態壓縮塊（⛔ 不練整套變位）",
+   "cards": 8
+  },
+  {
+   "id": "P3.1",
+   "label": "conditionnel 5 塊（2 張）",
+   "cards": 2,
+   "card_type": "Production",
+   "content": [
+    "je voudrais",
+    "j'aimerais",
+    "on pourrait",
+    "ce serait",
+    "il faudrait"
+   ],
+   "evidence": "conditionnel 前 5 名占該時態 54%：pourrait(71)、aimerais(66)、serait(37)、pourrais(26)、pourrions(25)",
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §1.2",
+   "in_chunks": "Je voudrais 有（2 條）；j'aimerais／on pourrait／ce serait／il faudrait 皆 0"
+  },
+  {
+   "id": "P3.2",
+   "label": "imparfait 4 塊（1 張）",
+   "cards": 1,
+   "card_type": "Production",
+   "content": [
+    "c'était",
+    "il y avait",
+    "ils étaient",
+    "je voulais（禮貌用：je voulais te remercier）"
+   ],
+   "evidence": "imparfait 前 5 名占 65%：était(91)、voulais(42)、étaient(34)、avait(26)、étais(12)",
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §1.2",
+   "in_chunks": "C'était(4)、il y avait(3) 有；je voulais 0"
+  },
+  {
+   "id": "P3.3",
+   "label": "futur 3 塊（1 張，只掛寫作T1）",
+   "cards": 1,
+   "card_type": "Production",
+   "content": [
+    "il y aura",
+    "ce sera",
+    "on pourra"
+   ],
+   "evidence": "futur simple 前幾名 aura(46)、sera(23)、pourra；寫作T1 49‰、口說T3 4‰",
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §1.2"
+  },
+  {
+   "id": "P3.4",
+   "label": "subjonctif 8 塊（3 張）",
+   "cards": 3,
+   "card_type": "Production",
+   "content": [
+    "bien que ce soit",
+    "bien qu'il soit",
+    "pour que je puisse",
+    "pour que nous puissions",
+    "afin que je puisse",
+    "il faut que je fasse",
+    "que ce soit A ou B",
+    "sans qu'il y ait"
+   ],
+   "evidence": "subjonctif 僅占動詞形 0.81%；être+pouvoir=79%；觸發詞只有 bien que(48)／pour que·afin que(34)／que ce soit(18)／il faut que(4)／avant que(4)",
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §2",
+   "note": "⛔ 不做文法單元。il est important que／je ne pense pas que／il est possible que 全語料 0 次"
+  },
+  {
+   "id": "P3.5",
+   "label": "passé composé（1 張，只掛寫作T2）",
+   "cards": 1,
+   "card_type": "Production",
+   "content": [
+    "j'ai réservé",
+    "on m'a informé(e) que",
+    "cela ne s'est pas passé comme prévu",
+    "j'ai dû ___"
+   ],
+   "evidence": "passé composé 只有寫作T2 爆量（244‰），口說T3 僅 32‰、寫作T3 僅 2‰",
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §1.1"
+  },
+  {
+   "id": "P4",
+   "label": "槽位詞（51 個 → 6 張卡）",
+   "cards": 6
+  },
+  {
+   "id": "P4.1",
+   "label": "因果動詞 25 個",
+   "cards": 0,
+   "note": "不另出卡——載體就是 P1.3 的 5 張壓縮卡"
+  },
+  {
+   "id": "P4.2",
+   "label": "抽象名詞 10 個（P1.3 的 Y 槽）",
+   "cards": 3,
+   "card_type": "Listening",
+   "content": [
+    "ambiance",
+    "événement",
+    "opportunité",
+    "productivité",
+    "apprentissage",
+    "gestion",
+    "possibilité",
+    "responsabilité",
+    "créativité",
+    "autonomie"
+   ]
+  },
+  {
+   "id": "P4.3",
+   "label": "描述形容詞 11 個",
+   "cards": 2,
+   "card_type": "Production",
+   "content": [
+    "enrichissant",
+    "passionnant / passionné(e)",
+    "efficace",
+    "régulier",
+    "réel",
+    "actif",
+    "élevé",
+    "riche",
+    "respectueux",
+    "exceptionnel",
+    "complet"
+   ]
+  },
+  {
+   "id": "P4.4",
+   "label": "副詞 6 個",
+   "cards": 1,
+   "card_type": "Listening",
+   "content": [
+    "surtout",
+    "plutôt",
+    "particulièrement",
+    "récemment",
+    "actuellement",
+    "librement"
+   ]
+  },
+  {
+   "id": "R",
+   "label": "辨識層 — 只要認得，⛔ 不出生成卡",
+   "cards": 0
+  },
+  {
+   "id": "R1",
+   "label": "英法同源透明詞 80 個 — 一次掃讀，不做卡",
+   "cards": 0,
+   "words": [
+    "améliorer",
+    "mental",
+    "moderne",
+    "éducation",
+    "spécifique",
+    "relation",
+    "financier",
+    "solitude",
+    "pollution",
+    "exister",
+    "chance",
+    "motivation",
+    "explorer",
+    "supplémentaire",
+    "limiter",
+    "apprécier",
+    "considérer",
+    "protéger",
+    "sentiment",
+    "satisfaction",
+    "attraction",
+    "faciliter",
+    "stimuler",
+    "bénéfique",
+    "varier",
+    "motiver",
+    "mémorable",
+    "durable",
+    "réduction",
+    "causer",
+    "décision",
+    "protection",
+    "pression",
+    "conséquence",
+    "excessif",
+    "influence",
+    "adopter",
+    "noter",
+    "élément",
+    "intégrer",
+    "international",
+    "nécessiter",
+    "augmenter",
+    "accéder",
+    "psychologique",
+    "urgence",
+    "confirmer",
+    "flexible",
+    "collaboration",
+    "promotion",
+    "disposer",
+    "actuel",
+    "bénéficier",
+    "impression",
+    "préserver",
+    "global",
+    "éducatif",
+    "influencer",
+    "tourisme",
+    "expérimenté",
+    "dimension",
+    "affecter",
+    "intégration",
+    "authentique",
+    "concentration",
+    "secteur",
+    "contribution",
+    "concentrer",
+    "vision",
+    "vérifier",
+    "total",
+    "favorable",
+    "attitude",
+    "amélioration",
+    "signifier",
+    "capable",
+    "préoccupation",
+    "dépression",
+    "combiner",
+    "fixer"
+   ],
+   "caveat": "⚠️ 這一刀的前提是「Owen 的英文夠好」。這是推論，未對他實測。請他掃一次，看不懂的搬回產出層。"
+  },
+  {
+   "id": "R2",
+   "label": "可推導詞 58 個（字根已在 chunks.js／french_notes.html）— 一次掃讀",
+   "cards": 0,
+   "words": [
+    "compétence",
+    "culturel",
+    "équilibre",
+    "développement",
+    "spécial",
+    "inviter",
+    "précieux",
+    "économique",
+    "organisation",
+    "présenter",
+    "détendre",
+    "équilibré",
+    "respect",
+    "numérique",
+    "diversité",
+    "changement",
+    "dépendre",
+    "habitant",
+    "équiper",
+    "maintenir",
+    "assurer",
+    "abordable",
+    "pleinement",
+    "préférence",
+    "généralement",
+    "égalité",
+    "émotion",
+    "rechercher",
+    "génération",
+    "indépendance",
+    "réussite",
+    "enseignant",
+    "ouverture",
+    "inclure",
+    "constant",
+    "consommation",
+    "routine",
+    "comparer",
+    "uniquement",
+    "créatif",
+    "réalité",
+    "productif",
+    "dépendance",
+    "engagement",
+    "collectif",
+    "correspondre",
+    "direct",
+    "importer",
+    "victoire",
+    "visiteur",
+    "restauration",
+    "enseigner",
+    "progrès",
+    "enseignement",
+    "identité",
+    "performance",
+    "mobilité",
+    "participation"
+   ]
+  },
+  {
+   "id": "R3",
+   "label": "主題／任務綁定詞 145 個 — 按任務分包，只做 Listening 卡",
+   "cards": 0,
+   "n": 145
+  },
+  {
+   "id": "R4",
+   "label": "長尾 553 個（第 381–933 名）— ⛔ 完全不碰",
+   "cards": 0
+  },
+  {
+   "id": "R5",
+   "label": "聽讀專屬硬缺口 213 個（vocab_A 前 320 名裡 french_notes 也沒有的）— 只做 Listening 卡",
+   "cards": 0,
+   "source": "research/2026-09-03_VOCAB_A_聽讀側.md §4.1"
+  },
+  {
+   "id": "R6",
+   "label": "只要認得的時態：plus-que-parfait／conditionnel passé／futur antérieur／passé simple／subjonctif passé",
+   "cards": 0,
+   "evidence": "五者合計 < 0.3% 動詞形",
+   "source": "research/2026-09-03_VOCAB_B_說寫側.md §1.3"
+  }
+ ],
+ "mots_production": [
+  {
+   "lemma": "réduire",
+   "pos": "VERB",
+   "n": 80,
+   "n_files": 18,
+   "zh": "減少、降低",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "contribuer",
+   "pos": "VERB",
+   "n": 63,
+   "n_files": 18,
+   "zh": "貢獻、有助於（contribuer à）",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "favoriser",
+   "pos": "VERB",
+   "n": 60,
+   "n_files": 14,
+   "zh": "促進、有利於",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "ambiance",
+   "pos": "NOUN",
+   "n": 59,
+   "n_files": 11,
+   "zh": "氣氛",
+   "coord": "P4.2"
+  },
+  {
+   "lemma": "événement",
+   "pos": "NOUN",
+   "n": 58,
+   "n_files": 15,
+   "zh": "活動、事件",
+   "coord": "P4.2"
+  },
+  {
+   "lemma": "opportunité",
+   "pos": "NOUN",
+   "n": 57,
+   "n_files": 13,
+   "zh": "機會",
+   "coord": "P4.2"
+  },
+  {
+   "lemma": "encourager",
+   "pos": "VERB",
+   "n": 54,
+   "n_files": 13,
+   "zh": "鼓勵",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "surtout",
+   "pos": "ADV",
+   "n": 53,
+   "n_files": 17,
+   "zh": "尤其、特別是",
+   "coord": "P4.4"
+  },
+  {
+   "lemma": "enrichissant",
+   "pos": "ADJ",
+   "n": 43,
+   "n_files": 10,
+   "zh": "（經驗）豐富人的、有收穫的",
+   "coord": "P4.3"
+  },
+  {
+   "lemma": "souhaiter",
+   "pos": "VERB",
+   "n": 43,
+   "n_files": 9,
+   "zh": "祝願、希望",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "gérer",
+   "pos": "VERB",
+   "n": 40,
+   "n_files": 11,
+   "zh": "管理、應付",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "plutôt",
+   "pos": "ADV",
+   "n": 39,
+   "n_files": 16,
+   "zh": "寧可、更確切地說",
+   "coord": "P4.4"
+  },
+  {
+   "lemma": "soutenir",
+   "pos": "VERB",
+   "n": 36,
+   "n_files": 13,
+   "zh": "支持、主張",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "productivité",
+   "pos": "NOUN",
+   "n": 36,
+   "n_files": 9,
+   "zh": "生產力",
+   "coord": "P4.2"
+  },
+  {
+   "lemma": "renforcer",
+   "pos": "VERB",
+   "n": 34,
+   "n_files": 11,
+   "zh": "強化",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "apprentissage",
+   "pos": "NOUN",
+   "n": 30,
+   "n_files": 11,
+   "zh": "學習（過程）",
+   "coord": "P4.2"
+  },
+  {
+   "lemma": "garantir",
+   "pos": "VERB",
+   "n": 28,
+   "n_files": 14,
+   "zh": "保證",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "gestion",
+   "pos": "NOUN",
+   "n": 28,
+   "n_files": 12,
+   "zh": "管理",
+   "coord": "P4.2"
+  },
+  {
+   "lemma": "lier",
+   "pos": "VERB",
+   "n": 28,
+   "n_files": 11,
+   "zh": "連結（lié à 與…相關）",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "concerner",
+   "pos": "VERB",
+   "n": 26,
+   "n_files": 12,
+   "zh": "涉及、關於",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "possibilité",
+   "pos": "NOUN",
+   "n": 25,
+   "n_files": 15,
+   "zh": "可能性",
+   "coord": "P4.2"
+  },
+  {
+   "lemma": "garder",
+   "pos": "VERB",
+   "n": 25,
+   "n_files": 10,
+   "zh": "保持、保留",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "responsabilité",
+   "pos": "NOUN",
+   "n": 25,
+   "n_files": 10,
+   "zh": "責任",
+   "coord": "P4.2"
+  },
+  {
+   "lemma": "particulièrement",
+   "pos": "ADV",
+   "n": 24,
+   "n_files": 11,
+   "zh": "特別是",
+   "coord": "P4.4"
+  },
+  {
+   "lemma": "souligner",
+   "pos": "VERB",
+   "n": 24,
+   "n_files": 10,
+   "zh": "強調",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "créativité",
+   "pos": "NOUN",
+   "n": 23,
+   "n_files": 10,
+   "zh": "創造力",
+   "coord": "P4.2"
+  },
+  {
+   "lemma": "enrichir",
+   "pos": "VERB",
+   "n": 23,
+   "n_files": 9,
+   "zh": "豐富",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "efficace",
+   "pos": "ADJ",
+   "n": 22,
+   "n_files": 12,
+   "zh": "有效率的",
+   "coord": "P4.3"
+  },
+  {
+   "lemma": "récemment",
+   "pos": "ADV",
+   "n": 22,
+   "n_files": 10,
+   "zh": "最近",
+   "coord": "P4.4"
+  },
+  {
+   "lemma": "acquérir",
+   "pos": "VERB",
+   "n": 22,
+   "n_files": 10,
+   "zh": "習得、取得",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "fournir",
+   "pos": "VERB",
+   "n": 21,
+   "n_files": 11,
+   "zh": "提供",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "régulier",
+   "pos": "ADJ",
+   "n": 21,
+   "n_files": 11,
+   "zh": "規律的",
+   "coord": "P4.3"
+  },
+  {
+   "lemma": "résoudre",
+   "pos": "VERB",
+   "n": 21,
+   "n_files": 10,
+   "zh": "解決",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "réel",
+   "pos": "ADJ",
+   "n": 21,
+   "n_files": 9,
+   "zh": "真實的",
+   "coord": "P4.3"
+  },
+  {
+   "lemma": "actif",
+   "pos": "ADJ",
+   "n": 20,
+   "n_files": 10,
+   "zh": "活躍的、主動的",
+   "coord": "P4.3"
+  },
+  {
+   "lemma": "élevé",
+   "pos": "ADJ",
+   "n": 20,
+   "n_files": 10,
+   "zh": "（價格、比例）高的",
+   "coord": "P4.3"
+  },
+  {
+   "lemma": "nuire",
+   "pos": "VERB",
+   "n": 20,
+   "n_files": 9,
+   "zh": "損害（nuire à）",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "riche",
+   "pos": "ADJ",
+   "n": 20,
+   "n_files": 9,
+   "zh": "豐富的、富有的",
+   "coord": "P4.3"
+  },
+  {
+   "lemma": "respectueux",
+   "pos": "ADJ",
+   "n": 17,
+   "n_files": 10,
+   "zh": "尊重的",
+   "coord": "P4.3"
+  },
+  {
+   "lemma": "diminuer",
+   "pos": "VERB",
+   "n": 16,
+   "n_files": 9,
+   "zh": "減少",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "posséder",
+   "pos": "VERB",
+   "n": 15,
+   "n_files": 12,
+   "zh": "擁有",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "promouvoir",
+   "pos": "VERB",
+   "n": 15,
+   "n_files": 11,
+   "zh": "推廣",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "percevoir",
+   "pos": "VERB",
+   "n": 15,
+   "n_files": 9,
+   "zh": "察覺、感知",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "manquer",
+   "pos": "VERB",
+   "n": 15,
+   "n_files": 9,
+   "zh": "錯過、缺少",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "actuellement",
+   "pos": "ADV",
+   "n": 14,
+   "n_files": 10,
+   "zh": "目前",
+   "coord": "P4.4"
+  },
+  {
+   "lemma": "sensibiliser",
+   "pos": "VERB",
+   "n": 14,
+   "n_files": 10,
+   "zh": "喚起意識",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "autonomie",
+   "pos": "NOUN",
+   "n": 14,
+   "n_files": 9,
+   "zh": "自主",
+   "coord": "P4.2"
+  },
+  {
+   "lemma": "exceptionnel",
+   "pos": "ADJ",
+   "n": 14,
+   "n_files": 9,
+   "zh": "特別的、例外的",
+   "coord": "P4.3"
+  },
+  {
+   "lemma": "complet",
+   "pos": "ADJ",
+   "n": 11,
+   "n_files": 9,
+   "zh": "完整的、客滿的",
+   "coord": "P4.3"
+  },
+  {
+   "lemma": "élargir",
+   "pos": "VERB",
+   "n": 10,
+   "n_files": 9,
+   "zh": "拓寬",
+   "coord": "P1.3"
+  },
+  {
+   "lemma": "librement",
+   "pos": "ADV",
+   "n": 9,
+   "n_files": 9,
+   "zh": "自由地",
+   "coord": "P4.4"
+  }
+ ],
+ "mots_frame": [
+  {
+   "lemma": "essentiel",
+   "n": 128,
+   "coord": "P1.1",
+   "zh": "必要的、關鍵的（il est essentiel de…）"
+  },
+  {
+   "lemma": "également",
+   "n": 122,
+   "coord": "P1.8",
+   "zh": "也、同樣地（書面版的 aussi）"
+  },
+  {
+   "lemma": "conclusion",
+   "n": 99,
+   "coord": "P1.8",
+   "zh": "結論（en conclusion 總結來說）"
+  },
+  {
+   "lemma": "ainsi",
+   "n": 91,
+   "coord": "P1.8",
+   "zh": "因此、如此（ainsi que 以及）"
+  },
+  {
+   "lemma": "débat",
+   "n": 90,
+   "coord": "P1.5",
+   "zh": "辯論、爭論"
+  },
+  {
+   "lemma": "effet",
+   "n": 88,
+   "coord": "P1.8",
+   "zh": "效果、影響（en effet 事實上）"
+  },
+  {
+   "lemma": "cependant",
+   "n": 81,
+   "coord": "P1.8",
+   "zh": "然而"
+  },
+  {
+   "lemma": "raison",
+   "n": 80,
+   "coord": "P1.9",
+   "zh": "理由（pour deux raisons 基於兩個理由）"
+  },
+  {
+   "lemma": "personnellement",
+   "n": 65,
+   "coord": "P1.4",
+   "zh": "就我個人而言"
+  },
+  {
+   "lemma": "tel",
+   "n": 62,
+   "coord": "P1.9",
+   "zh": "這樣的（un tel…／tel que 例如）"
+  },
+  {
+   "lemma": "sein",
+   "n": 55,
+   "coord": "P1.9",
+   "zh": "內部（au sein de 在…之中）"
+  },
+  {
+   "lemma": "passionner",
+   "n": 50,
+   "coord": "P1.9",
+   "zh": "（passionné 熱衷的／passionnant 精彩的）"
+  },
+  {
+   "lemma": "compte",
+   "n": 46,
+   "coord": "P1.9",
+   "zh": "帳戶；tenir compte de 考慮、se rendre compte 意識到"
+  },
+  {
+   "lemma": "hâter",
+   "n": 45,
+   "coord": "P2.2",
+   "zh": "（j'ai hâte de 迫不及待想…）"
+  },
+  {
+   "lemma": "tandis",
+   "n": 44,
+   "coord": "P1.5",
+   "zh": "tandis que 然而、相反地"
+  },
+  {
+   "lemma": "terme",
+   "n": 42,
+   "coord": "P1.9",
+   "zh": "期限（à long terme 長期）"
+  },
+  {
+   "lemma": "crucial",
+   "n": 41,
+   "coord": "P1.1",
+   "zh": "至關重要的"
+  },
+  {
+   "lemma": "davantage",
+   "n": 40,
+   "coord": "P1.8",
+   "zh": "更多（書面版的 plus）"
+  },
+  {
+   "lemma": "afin",
+   "n": 40,
+   "coord": "P1.9",
+   "zh": "afin de／afin que 為了"
+  },
+  {
+   "lemma": "deuxièmement",
+   "n": 40,
+   "coord": "P1.8",
+   "zh": "第二點"
+  },
+  {
+   "lemma": "courant",
+   "n": 37,
+   "coord": "P2.2",
+   "zh": "au courant 知情的；courant 常見的"
+  },
+  {
+   "lemma": "cas",
+   "n": 34,
+   "coord": "P1.9",
+   "zh": "情況（dans ce cas 這種情況下）"
+  },
+  {
+   "lemma": "cause",
+   "n": 30,
+   "coord": "P1.9",
+   "zh": "原因（à cause de 因為）"
+  },
+  {
+   "lemma": "premièrement",
+   "n": 30,
+   "coord": "P1.8",
+   "zh": "第一點"
+  },
+  {
+   "lemma": "partie",
+   "n": 28,
+   "coord": "P1.9",
+   "zh": "部分（faire partie de 屬於）"
+  },
+  {
+   "lemma": "affirmation",
+   "n": 28,
+   "coord": "P1.6",
+   "zh": "陳述、說法（題目用語）"
+  },
+  {
+   "lemma": "lors",
+   "n": 27,
+   "coord": "P1.9",
+   "zh": "lors de 在…的時候"
+  },
+  {
+   "lemma": "vivement",
+   "n": 25,
+   "coord": "P2.2",
+   "zh": "強烈地（recommander vivement）"
+  },
+  {
+   "lemma": "reste",
+   "n": 22,
+   "coord": "P1.9",
+   "zh": "rester 保持、仍然是"
+  },
+  {
+   "lemma": "attente",
+   "n": 20,
+   "coord": "P2.3",
+   "zh": "等待、期待（dans l'attente de）"
+  },
+  {
+   "lemma": "somme",
+   "n": 19,
+   "coord": "P1.8",
+   "zh": "金額（en somme 總之）"
+  },
+  {
+   "lemma": "notamment",
+   "n": 18,
+   "coord": "P1.8",
+   "zh": "尤其、特別是"
+  },
+  {
+   "lemma": "amicalement",
+   "n": 17,
+   "coord": "P2.2",
+   "zh": "（信末）祝好"
+  },
+  {
+   "lemma": "autour",
+   "n": 16,
+   "coord": "P1.9",
+   "zh": "autour de 在…周圍"
+  },
+  {
+   "lemma": "cœur",
+   "n": 16,
+   "coord": "P1.9",
+   "zh": "心（au cœur de 在…核心）"
+  },
+  {
+   "lemma": "troisièmement",
+   "n": 14,
+   "coord": "P1.8",
+   "zh": "第三點"
+  },
+  {
+   "lemma": "pousse",
+   "n": 13,
+   "coord": "P1.3",
+   "zh": "pousser 推動、促使"
+  },
+  {
+   "lemma": "horizon",
+   "n": 12,
+   "coord": "P1.9",
+   "zh": "視野（élargir ses horizons）"
+  },
+  {
+   "lemma": "quant",
+   "n": 12,
+   "coord": "P1.9",
+   "zh": "quant à 至於"
+  },
+  {
+   "lemma": "fondamental",
+   "n": 11,
+   "coord": "P1.1",
+   "zh": "根本的"
+  },
+  {
+   "lemma": "présente",
+   "n": 11,
+   "coord": "P1.9",
+   "zh": "présenter 呈現"
+  },
+  {
+   "lemma": "travers",
+   "n": 11,
+   "coord": "P1.9",
+   "zh": "à travers 透過"
+  },
+  {
+   "lemma": "impatience",
+   "n": 11,
+   "coord": "P2.2",
+   "zh": "（avec impatience 迫不及待地）"
+  },
+  {
+   "lemma": "résumé",
+   "n": 10,
+   "coord": "P1.8",
+   "zh": "摘要（en résumé）"
+  },
+  {
+   "lemma": "serre",
+   "n": 10,
+   "coord": "R1",
+   "zh": "effet de serre 溫室效應"
+  },
+  {
+   "lemma": "conséquent",
+   "n": 10,
+   "coord": "P1.8",
+   "zh": "par conséquent 因此"
+  }
+ ],
+ "reconnaissance": {
+  "R1_cognats": [
+   "améliorer",
+   "mental",
+   "moderne",
+   "éducation",
+   "spécifique",
+   "relation",
+   "financier",
+   "solitude",
+   "pollution",
+   "exister",
+   "chance",
+   "motivation",
+   "explorer",
+   "supplémentaire",
+   "limiter",
+   "apprécier",
+   "considérer",
+   "protéger",
+   "sentiment",
+   "satisfaction",
+   "attraction",
+   "faciliter",
+   "stimuler",
+   "bénéfique",
+   "varier",
+   "motiver",
+   "mémorable",
+   "durable",
+   "réduction",
+   "causer",
+   "décision",
+   "protection",
+   "pression",
+   "conséquence",
+   "excessif",
+   "influence",
+   "adopter",
+   "noter",
+   "élément",
+   "intégrer",
+   "international",
+   "nécessiter",
+   "augmenter",
+   "accéder",
+   "psychologique",
+   "urgence",
+   "confirmer",
+   "flexible",
+   "collaboration",
+   "promotion",
+   "disposer",
+   "actuel",
+   "bénéficier",
+   "impression",
+   "préserver",
+   "global",
+   "éducatif",
+   "influencer",
+   "tourisme",
+   "expérimenté",
+   "dimension",
+   "affecter",
+   "intégration",
+   "authentique",
+   "concentration",
+   "secteur",
+   "contribution",
+   "concentrer",
+   "vision",
+   "vérifier",
+   "total",
+   "favorable",
+   "attitude",
+   "amélioration",
+   "signifier",
+   "capable",
+   "préoccupation",
+   "dépression",
+   "combiner",
+   "fixer"
+  ],
+  "R2_derivables": [
+   "compétence",
+   "culturel",
+   "équilibre",
+   "développement",
+   "spécial",
+   "inviter",
+   "précieux",
+   "économique",
+   "organisation",
+   "présenter",
+   "détendre",
+   "équilibré",
+   "respect",
+   "numérique",
+   "diversité",
+   "changement",
+   "dépendre",
+   "habitant",
+   "équiper",
+   "maintenir",
+   "assurer",
+   "abordable",
+   "pleinement",
+   "préférence",
+   "généralement",
+   "égalité",
+   "émotion",
+   "rechercher",
+   "génération",
+   "indépendance",
+   "réussite",
+   "enseignant",
+   "ouverture",
+   "inclure",
+   "constant",
+   "consommation",
+   "routine",
+   "comparer",
+   "uniquement",
+   "créatif",
+   "réalité",
+   "productif",
+   "dépendance",
+   "engagement",
+   "collectif",
+   "correspondre",
+   "direct",
+   "importer",
+   "victoire",
+   "visiteur",
+   "restauration",
+   "enseigner",
+   "progrès",
+   "enseignement",
+   "identité",
+   "performance",
+   "mobilité",
+   "participation"
+  ],
+  "R3_thematiques": [
+   "environnement",
+   "élève",
+   "impact",
+   "employé",
+   "esprit",
+   "soutien",
+   "repas",
+   "super",
+   "carrière",
+   "défi",
+   "stress",
+   "susciter",
+   "risque",
+   "séance",
+   "coût",
+   "individu",
+   "objectif",
+   "livraison",
+   "domaine",
+   "règle",
+   "dérouler",
+   "célébrer",
+   "soin",
+   "gouvernement",
+   "environ",
+   "convivial",
+   "manque",
+   "lien",
+   "tellement",
+   "billet",
+   "bonheur",
+   "citoyen",
+   "méthode",
+   "compagnie",
+   "zone",
+   "détail",
+   "source",
+   "planifier",
+   "épanouissement",
+   "limite",
+   "nombre",
+   "système",
+   "effort",
+   "politique",
+   "inconvénient",
+   "efficacité",
+   "genre",
+   "capacité",
+   "contrôle",
+   "trajet",
+   "atteindre",
+   "spacieux",
+   "consacrer",
+   "émotionnel",
+   "lutter",
+   "amitié",
+   "budget",
+   "industrie",
+   "ressource",
+   "agence",
+   "approche",
+   "humeur",
+   "opinion",
+   "papier",
+   "autorité",
+   "atmosphère",
+   "obstacle",
+   "environnemental",
+   "convier",
+   "avancé",
+   "raisonnable",
+   "accompagner",
+   "déguster",
+   "paiement",
+   "renouvelable",
+   "comportement",
+   "critique",
+   "curiosité",
+   "boisson",
+   "surprise",
+   "convenir",
+   "suggestion",
+   "envisager",
+   "estimer",
+   "bénévolat",
+   "confort",
+   "client",
+   "succès",
+   "communauté",
+   "augmentation",
+   "inciter",
+   "accueillant",
+   "déplacement",
+   "véhicule",
+   "joie",
+   "surmonter",
+   "régulièrement",
+   "épanouir",
+   "anxiété",
+   "amusant",
+   "style",
+   "diffuser",
+   "central",
+   "perspective",
+   "ressentir",
+   "résultat",
+   "talent",
+   "durer",
+   "bénévole",
+   "embauche",
+   "classique",
+   "sommeil",
+   "plastique",
+   "commodité",
+   "enthousiaste",
+   "correctement",
+   "établissement",
+   "atout",
+   "gain",
+   "investir",
+   "construire",
+   "accident",
+   "potentiel",
+   "profond",
+   "perte",
+   "paisible",
+   "surveiller",
+   "essai",
+   "fêter",
+   "circulation",
+   "traitement",
+   "dédier",
+   "imprévu",
+   "session",
+   "procédure",
+   "générer",
+   "orientation",
+   "vol",
+   "majeur",
+   "fascinant",
+   "admirer",
+   "isolé",
+   "valoriser",
+   "baser",
+   "réflexion"
+  ]
+ },
+ "premiere_serie_20": [
+  "P1.1",
+  "P1.2",
+  "P1.3a",
+  "P1.3b",
+  "P1.3c",
+  "P1.3d",
+  "P1.3e",
+  "P1.4",
+  "P1.6",
+  "P1.8-oral",
+  "P1.9a",
+  "P2.1a",
+  "P2.1b",
+  "P2.1c",
+  "P2.1d",
+  "P2.1e",
+  "P3.1a",
+  "P3.1b",
+  "P3.4a",
+  "P4.3a"
+ ],
+ "anki": {
+  "deck": "Français::Exam（新子牌組，同一個 FR_Mining Note Type、同兩個模板）",
+  "new_per_day": 1,
+  "note_type": "FR_Mining（24 欄不動）",
+  "id_prefix": "FR_TCF_F_001…（新字首，與 FR_COURS_REC_ 不重疊；匯入前跑 tools/anki_precheck.py）",
+  "file": "anki/anki_tcf_frames_01.tsv（一個 ID 只能有一個檔案擁有它）",
+  "tags": "fr::src::tcf fr::lvl::b1 fr::tcf::p1-1 fr::exam::tcf_oral_t3 …",
+  "preset_warning": "⚠️ 每日上限掛在 preset 上不是牌組上——必須先「複製預設組態」再改，否則會連 Cours 一起改（ANKI_SETUP 步驟 5）"
+ }
+}
