@@ -74,9 +74,18 @@ def check(path, db):
     #   ✅「說你五年前在台北定居下來」    → 只有一句
     OPEN_START = ('解釋', '描述', '談談', '聊聊')          # 本質上就是開放的
     OPEN_MARK = ('一件', '一個例子', '舉一個', '舉例', '任何', '你想到的', '隨便')
+    # ⚠️ 2026-09-05 修正：OPEN_MARK 原本是裸字串比對，⛔ 任何中文句子含到就誤判。
+    #   T1 背誦卡的題幹「就是要翻譯的那句中文」，句子裡出現「沒有一件事是容易的」
+    #   「沒有任何圍欄」都會中——但那是【內容】不是【指令】。
+    #   ⭐ 正確判準：要開放，必須是「對學習者下的指令」。
+    #     ⛔「講你小時候每天早上做的一件事」→ 指令動詞開頭 ＋ 不定標記 → 仍然抓得到
+    #     ✅「沒有一件事是容易的。」        → 不是指令，只是要翻的句子 → 放行
+    INSTRUCT = ('講', '說', '描述', '解釋', '談', '聊', '舉')
     def is_open(q):
         q = q.strip()
-        return q.startswith(OPEN_START) or any(m in q for m in OPEN_MARK)
+        if q.startswith(OPEN_START):
+            return True
+        return q.startswith(INSTRUCT) and any(m in q for m in OPEN_MARK)
     open_prompts = [(i, f[0]) for i, f in rows if len(f) > 12 and is_open(f[12])]
     if open_prompts:
         problems += len(open_prompts)
@@ -117,8 +126,12 @@ def corpus():
     global _CORPUS
     if _CORPUS is None:
         root = os.path.join(os.path.dirname(__file__), '..')
+        # ⚠️ 2026-09-05 補上 answer_cards.js／t1_stock.js：
+        #   八座語言島（Owen 口述 → Claude 修語法）與 T1 存貨都在那兩個檔，
+        #   它們是合法來源（內容鐵律 2），但原本不在鍋裡 → 從島生成的卡會全部誤報「查無出處」。
         paths = ['french_notes.html', 'sentences.js', 'chunks.js', 'questions.js',
-                 'scenes.js', 'assets/.textbook_cache.txt']
+                 'scenes.js', 'answer_cards.js', 't1_stock.js',
+                 'assets/.textbook_cache.txt']
         tdir = os.path.join(root, 'transcripts')
         if os.path.isdir(tdir):
             paths += [os.path.join('transcripts', f) for f in sorted(os.listdir(tdir))]
