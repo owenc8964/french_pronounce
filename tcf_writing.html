@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCF 寫作 — CLB7</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #07080f; color: #ddd8cc;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh; padding: 24px 16px 60px;
+  max-width: 760px; margin: 0 auto;
+}
+h1 { font-size: 1.4rem; letter-spacing: 2px; color: #f0c060;
+     text-shadow: 0 0 20px rgba(240,192,96,0.4); text-align: center; margin-bottom: 4px; }
+.sub { text-align: center; font-size: 0.72rem; color: #445060; margin-bottom: 22px; letter-spacing: 1px; }
+nav { text-align: center; margin-bottom: 18px; }
+nav a { color: #445060; font-size: 0.75rem; text-decoration: none; margin: 0 10px; }
+nav a:hover { color: #f0c060; }
+
+.card { background: #0d1020; border: 1px solid #1a2438; border-radius: 12px;
+        padding: 18px; margin-bottom: 14px; }
+.card-title { font-size: 0.7rem; color: #445060; text-transform: uppercase;
+              letter-spacing: 1px; margin-bottom: 12px; }
+
+/* ── tâche 選擇 ── */
+.tabs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.tab { background: #0d1020; border: 1px solid #1a2438; border-radius: 10px;
+       padding: 12px 8px; text-align: center; cursor: pointer; transition: all .15s; }
+.tab:hover { border-color: #2a3852; }
+.tab.on { border-color: #f0c060; background: #16121f; }
+.tab-n { font-size: 1rem; font-weight: 700; color: #f0c060; }
+.tab-d { font-size: 0.62rem; color: #556270; margin-top: 3px; line-height: 1.4; }
+.tab-w { font-size: 0.62rem; color: #445060; margin-top: 2px; }
+
+/* ── 題目 ── */
+.sujet-head { display: flex; justify-content: space-between; align-items: baseline;
+              gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.sujet-id { font-size: 0.68rem; color: #445060; letter-spacing: 1px; }
+.theme-tag { font-size: 0.62rem; color: #60a0d0; background: #101a2c;
+             border: 1px solid #1a2438; border-radius: 20px; padding: 2px 10px; }
+.consigne { font-size: 1.02rem; line-height: 1.75; color: #e8e2d4; }
+.doc { background: #0a0c18; border: 1px solid #1a2438; border-left: 3px solid #2a3852;
+       border-radius: 8px; padding: 13px 15px; margin-bottom: 10px; }
+.doc-label { font-size: 0.64rem; color: #60a0d0; letter-spacing: 1px; margin-bottom: 6px; }
+.doc-body { font-size: 0.92rem; line-height: 1.7; color: #c8c2b6; }
+.tronque { font-size: 0.66rem; color: #806040; margin-top: 6px; font-style: italic; }
+.intro-box { background: #0a0c18; border: 1px dashed #2a3852; border-radius: 8px;
+             padding: 11px 14px; margin-bottom: 10px; font-size: 0.88rem;
+             line-height: 1.7; color: #9aa4b0; }
+
+/* ── 中文輔助（預設收合） ── */
+.zh-toggle { font-size: 0.7rem; color: #445060; background: none; border: 1px dashed #223046;
+             border-radius: 6px; padding: 5px 12px; cursor: pointer; margin-top: 12px; }
+.zh-toggle:hover { color: #60a0d0; border-color: #2a3852; }
+.zh-box { display: none; margin-top: 10px; padding: 12px 14px; background: #0a0c18;
+          border: 1px solid #1a2438; border-radius: 8px; font-size: 0.85rem;
+          line-height: 1.75; color: #8a94a0; }
+.zh-box.show { display: block; }
+.zh-box .pos { margin-top: 8px; }
+.zh-box .pos b { color: #60a0d0; font-weight: 600; }
+
+/* ── 字數計（自動不及格條款） ── */
+.count-bar { display: flex; align-items: center; gap: 12px; margin: 8px 0 4px; flex-wrap: wrap; }
+.count-n { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.count-range { font-size: 0.72rem; color: #445060; }
+.count-msg { font-size: 0.75rem; }
+.ok   { color: #60d090; }
+.warn { color: #f0c060; }
+.bad  { color: #e06050; }
+.track { height: 6px; background: #141928; border-radius: 3px; position: relative;
+         overflow: hidden; margin-bottom: 12px; }
+.fill { height: 100%; width: 0; transition: width .18s, background .18s; border-radius: 3px; }
+.zone { position: absolute; top: 0; bottom: 0; background: rgba(96,208,144,0.16);
+        border-left: 1px solid rgba(96,208,144,0.5); border-right: 1px solid rgba(96,208,144,0.5); }
+
+.part-label { font-size: 0.7rem; color: #667080; margin-bottom: 6px; letter-spacing: .5px; }
+textarea { width: 100%; background: #141928; border: 1px solid #1a2438; border-radius: 8px;
+           color: #ddd8cc; font-size: 1rem; padding: 12px; resize: vertical;
+           min-height: 120px; font-family: inherit; line-height: 1.7; }
+textarea:focus { outline: none; border-color: #f0c060; }
+textarea::placeholder { color: #334050; }
+
+.fatal { background: #1a0e10; border: 1px solid #4a2028; border-radius: 8px;
+         padding: 11px 14px; margin-bottom: 12px; font-size: 0.78rem;
+         color: #c08078; line-height: 1.7; }
+.fatal b { color: #e06050; }
+
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+button { padding: 10px 18px; border-radius: 8px; border: none; font-size: 0.86rem;
+         cursor: pointer; font-family: inherit; transition: opacity .15s, transform .1s; }
+button:active { transform: scale(0.97); }
+button:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-next { background: #1a2438; color: #60a0d0; }
+.btn-eval { background: #3a2e10; color: #f0c060; }
+.btn-save { background: #1d5035; color: #60d090; }
+.btn-ghost { background: none; border: 1px solid #223046; color: #556270; }
+
+.prompt-box { background: #0a0c18; border: 1px solid #1a2438; border-radius: 8px;
+              padding: 13px; font-size: 0.78rem; color: #667080; line-height: 1.65;
+              white-space: pre-wrap; margin-bottom: 12px; font-family: 'Courier New', monospace;
+              max-height: 200px; overflow-y: auto; }
+.score-preview { font-size: 0.85rem; margin: 8px 0 12px; min-height: 20px; }
+
+.entry { background: #0d1020; border: 1px solid #1a2438; border-radius: 10px;
+         padding: 13px 15px; margin-bottom: 9px; }
+.entry-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+.entry-meta { font-size: 0.72rem; color: #445060; }
+.entry-score { font-size: 1rem; font-weight: 700; }
+.entry-body { font-size: 0.84rem; color: #8a94a0; line-height: 1.65; }
+.empty { text-align: center; color: #334050; font-size: 0.85rem; padding: 28px 0; }
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+         background: #1d5035; color: #60d090; padding: 10px 22px; border-radius: 24px;
+         font-size: 0.82rem; transition: transform .25s ease; pointer-events: none; z-index: 99; }
+.toast.show { transform: translateX(-50%) translateY(0); }
+select { background: #141928; border: 1px solid #1a2438; border-radius: 8px;
+         color: #ddd8cc; font-size: 0.82rem; padding: 7px 10px; font-family: inherit; }
+</style>
+</head>
+<body>
+
+<h1>✍️ TCF ÉCRIT</h1>
+<div class="sub">expression écrite — 60 min ／ 3 tâches</div>
+<nav>
+  <a href="dashboard.html">← 大腦</a>
+  <a href="writing.html">每日造句</a>
+  <a href="mock.html">模擬考</a>
+</nav>
+
+<!-- 自動不及格提醒：永遠在最上面 -->
+<div class="fatal">
+  <b>⛔ 四條會讓整份歸零的（不是扣分，是 A1 non atteint）</b><br>
+  ① 任一題字數不合（<b>少了或多了都算</b>）　② 離題　③ 有題沒寫　④ 字跡無法辨識<br>
+  <span style="color:#806858">⭐ 這四條不需要任何法文能力，只需要不犯——是全考卷最便宜的分數。</span>
+</div>
+
+<div class="tabs" id="tabs"></div>
+
+<div class="card">
+  <div class="sujet-head">
+    <span class="card-title" style="margin:0">Sujet</span>
+    <span class="sujet-id" id="sujetId">—</span>
+  </div>
+  <div id="sujetBody"><div class="empty">載入中…</div></div>
+  <button class="zh-toggle" id="zhBtn">🇹🇼 看中文（看不懂再開）</button>
+  <div class="zh-box" id="zhBox"></div>
+  <div class="btn-row" style="margin-top:14px">
+    <button class="btn-next" id="btnNext">🎲 換一題</button>
+    <select id="themeSel"><option value="">全部主題</option></select>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">Votre réponse</div>
+  <div id="writeArea"></div>
+</div>
+
+<div class="card" id="evalCard">
+  <div class="card-title">批改</div>
+  <div class="btn-row">
+    <button class="btn-eval" id="btnEval">📋 複製批改提示 → 開 Claude</button>
+    <button class="btn-ghost" id="btnPeek">看提示內容</button>
+  </div>
+  <div class="prompt-box" id="promptBox" style="display:none;margin-top:12px"></div>
+  <div id="pasteSection" style="display:none;margin-top:14px">
+    <div class="part-label">把 Claude 的回覆整段貼回來</div>
+    <textarea id="reply" style="min-height:110px" placeholder="貼上批改結果…"></textarea>
+    <div class="score-preview" id="scorePreview"></div>
+    <div class="btn-row"><button class="btn-save" id="btnSave" disabled>💾 記錄</button></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">寫過的</div>
+  <div id="history"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="tcf_writing_sujets.js"></script>
+<script>
+/* ============================================================
+   tcf_writing.html — TCF Canada 寫作三 tâche 練習
+   2026-09-05 建立。
+   ⭐ 設計上的三個刻意選擇：
+   1. 字數計是主角不是配角——它是唯一會讓整份歸零的東西（四條自動不及格之一）
+   2. 中文譯文預設收合（memory feedback_french_only_ui：中文輔助當開關）
+   3. ⛔ 不顯示分母、不顯示「你還剩幾題」——階梯制不要進度壓力
+   ============================================================ */
+
+var SPEC = {
+  T1: { name:'Tâche 1', desc:'給朋友的訊息', min:60,  max:120, mins:'10–15',
+        registre:'tu、口語，可以有 Salut／Bises' },
+  T2: { name:'Tâche 2', desc:'部落格／文章', min:120, max:150, mins:'20–25',
+        registre:'對讀者，敘事＋表態兩層都要有' },
+  T3: { name:'Tâche 3', desc:'兩份對立文件＋表態', min:120, max:180, mins:'20–25',
+        registre:'正式，⛔ 不是書信',
+        parts:[ {key:'p1', label:'1ᵉ partie — 綜述兩份文件的對立', min:40, max:60},
+                {key:'p2', label:'2ᵉ partie — 你的立場與論證', min:80, max:120} ] }
+};
+
+var LS_KEY = 'clb7_tcf_writing';
+var LS_SEEN = 'clb7_tcf_writing_seen';
+var cur = 'T1';
+var sujet = null;
+
+function bank(t) {
+  if (typeof TCF_WRITING_SUJETS === 'undefined') return [];
+  return TCF_WRITING_SUJETS[t.toLowerCase()] || [];
+}
+function load() { try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch(e){ return []; } }
+function save(d) { localStorage.setItem(LS_KEY, JSON.stringify(d)); }
+function seen() { try { return JSON.parse(localStorage.getItem(LS_SEEN) || '[]'); } catch(e){ return []; } }
+function markSeen(id) { var s = seen(); if (s.indexOf(id) < 0) { s.push(id); localStorage.setItem(LS_SEEN, JSON.stringify(s)); } }
+function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toast(m) { var t = document.getElementById('toast'); t.textContent = m; t.classList.add('show');
+                    setTimeout(function(){ t.classList.remove('show'); }, 2200); }
+
+/* ⭐ 官方數字數的方式：兩個空白之間算一個字（DELF/TCF 慣例）。
+   所以 l'ami、c'est-à-dire 都算 1 個字。 */
+function countMots(s) {
+  var t = (s || '').trim();
+  if (!t) return 0;
+  return t.split(/\s+/).filter(Boolean).length;
+}
+
+function renderTabs() {
+  document.getElementById('tabs').innerHTML = ['T1','T2','T3'].map(function(t){
+    var sp = SPEC[t];
+    return '<div class="tab ' + (t === cur ? 'on' : '') + '" data-t="' + t + '">' +
+           '<div class="tab-n">' + sp.name + '</div>' +
+           '<div class="tab-d">' + sp.desc + '</div>' +
+           '<div class="tab-w">' + sp.min + '–' + sp.max + ' mots</div></div>';
+  }).join('');
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(el){
+    el.addEventListener('click', function(){ cur = el.dataset.t; renderTabs(); fillThemes(); pick(); });
+  });
+}
+
+function fillThemes() {
+  var b = bank(cur);
+  var ts = [];
+  b.forEach(function(s){ if (s.theme && ts.indexOf(s.theme) < 0) ts.push(s.theme); });
+  ts.sort();
+  var sel = document.getElementById('themeSel');
+  sel.innerHTML = '<option value="">全部主題</option>' +
+    ts.map(function(t){ return '<option value="' + esc(t) + '">' + esc(t) + '</option>'; }).join('');
+}
+
+function pick() {
+  var b = bank(cur);
+  var want = document.getElementById('themeSel').value;
+  if (want) b = b.filter(function(s){ return s.theme === want; });
+  if (!b.length) { sujet = null; renderSujet(); renderWrite(); return; }
+  // ⭐ 優先出沒寫過的；全寫過就整池隨機（⛔ 不顯示「剩幾題」）
+  var sn = seen();
+  var fresh = b.filter(function(s){ return sn.indexOf(s.id) < 0; });
+  var pool = fresh.length ? fresh : b;
+  sujet = pool[Math.floor(Math.random() * pool.length)];
+  renderSujet(); renderWrite();
+}
+
+function renderSujet() {
+  var el = document.getElementById('sujetBody');
+  var zhBox = document.getElementById('zhBox');
+  zhBox.classList.remove('show');
+  document.getElementById('zhBtn').textContent = '🇹🇼 看中文（看不懂再開）';
+  if (!sujet) {
+    document.getElementById('sujetId').textContent = '—';
+    el.innerHTML = '<div class="empty">這個主題底下還沒有題目</div>';
+    zhBox.innerHTML = ''; return;
+  }
+  document.getElementById('sujetId').innerHTML = esc(sujet.id) +
+    (sujet.theme ? ' <span class="theme-tag">' + esc(sujet.theme) + '</span>' : '');
+
+  if (cur === 'T3') {
+    var h = '';
+    if (sujet.intro) h += '<div class="intro-box">' + esc(sujet.intro) +
+      ((sujet.tronque || []).indexOf('intro') >= 0 ?
+        '<div class="tronque">⚠️ 引導語在此斷句（OCR 截斷）</div>' : '') + '</div>';
+    [['doc1','DOCUMENT 1'], ['doc2','DOCUMENT 2']].forEach(function(p){
+      var cut = (sujet.tronque || []).indexOf(p[0]) >= 0;
+      h += '<div class="doc"><div class="doc-label">' + p[1] + '</div>' +
+           '<div class="doc-body">' + esc(sujet[p[0]]) + '</div>' +
+           (cut ? '<div class="tronque">⚠️ 原始資料在此處斷句（OCR 截斷），不影響判斷立場</div>' : '') +
+           '</div>';
+    });
+    if (sujet.note) h += '<div class="tronque" style="color:#907050;margin-top:2px">' + esc(sujet.note) + '</div>';
+    el.innerHTML = h;
+    zhBox.innerHTML = '<div>' + esc(sujet.zh) + '</div>' +
+      '<div class="pos"><b>DOCUMENT 1：</b>' + esc(sujet.doc1_pos) + '</div>' +
+      '<div class="pos"><b>DOCUMENT 2：</b>' + esc(sujet.doc2_pos) + '</div>';
+  } else {
+    el.innerHTML = '<div class="consigne">' + esc(sujet.fr) + '</div>';
+    zhBox.innerHTML = esc(sujet.zh);
+  }
+}
+
+function renderWrite() {
+  var sp = SPEC[cur];
+  var host = document.getElementById('writeArea');
+  var h = '<div style="font-size:.72rem;color:#556270;margin-bottom:12px;line-height:1.7">' +
+          '語域：' + esc(sp.registre) + '　·　建議用時 ' + sp.mins + ' 分鐘</div>';
+  if (sp.parts) {
+    sp.parts.forEach(function(p){
+      h += '<div class="part-label">' + p.label + '　<span style="color:#445060">(' + p.min + '–' + p.max + ' mots)</span></div>' +
+           '<textarea data-part="' + p.key + '" placeholder="…"></textarea>' +
+           '<div class="count-bar"><span class="count-n" id="n_' + p.key + '">0</span>' +
+           '<span class="count-range">/ ' + p.min + '–' + p.max + '</span>' +
+           '<span class="count-msg" id="m_' + p.key + '"></span></div>' +
+           '<div class="track"><div class="zone" id="z_' + p.key + '"></div>' +
+           '<div class="fill" id="f_' + p.key + '"></div></div>';
+    });
+    h += '<div style="border-top:1px solid #1a2438;margin-top:6px;padding-top:12px">' +
+         '<div class="part-label">合計　<span style="color:#e06050">⛔ 自動不及格判的是這一個</span></div>' +
+         '<div class="count-bar"><span class="count-n" id="n_all">0</span>' +
+         '<span class="count-range">/ ' + sp.min + '–' + sp.max + '</span>' +
+         '<span class="count-msg" id="m_all"></span></div>' +
+         '<div class="track"><div class="zone" id="z_all"></div><div class="fill" id="f_all"></div></div></div>';
+  } else {
+    h += '<textarea data-part="p1" placeholder="…"></textarea>' +
+         '<div class="count-bar"><span class="count-n" id="n_all">0</span>' +
+         '<span class="count-range">/ ' + sp.min + '–' + sp.max + '</span>' +
+         '<span class="count-msg" id="m_all"></span></div>' +
+         '<div class="track"><div class="zone" id="z_all"></div><div class="fill" id="f_all"></div></div>';
+  }
+  host.innerHTML = h;
+  Array.prototype.forEach.call(host.querySelectorAll('textarea'), function(ta){
+    ta.addEventListener('input', recount);
+  });
+  recount();
+  document.getElementById('pasteSection').style.display = 'none';
+  document.getElementById('promptBox').style.display = 'none';
+  document.getElementById('reply').value = '';
+  document.getElementById('scorePreview').textContent = '';
+  document.getElementById('btnSave').disabled = true;
+}
+
+function texts() {
+  var o = {};
+  Array.prototype.forEach.call(document.querySelectorAll('#writeArea textarea'), function(ta){
+    o[ta.dataset.part] = ta.value;
+  });
+  return o;
+}
+
+/* ⭐ 一個計數器的顯示規則：
+   合格區綠、⚠️ 貼邊（距上下限 ≤5 字）黃、出界紅並明說「歸零」。
+   黃色那一段是刻意的——字數是門檻不是刻度，貼著邊過關等於沒有安全邊際。 */
+/* ⚠️ fatal=true 只給「合計」用。
+   ⭐ 官方的自動不及格判的是**合計**字數；T3 兩段的 40–60／80–120 是配比建議，
+     配比失衡扣的是 pragmatique，⛔ 不會歸零。
+     （2026-09-05 實測時發現原本兩者都寫「會歸零」——把不會歸零的講成會歸零，
+      比不講更糟，因為他會為了湊字數犧牲內容。） */
+function paint(key, n, min, max, fatal) {
+  var nEl = document.getElementById('n_' + key);
+  var mEl = document.getElementById('m_' + key);
+  var fEl = document.getElementById('f_' + key);
+  var zEl = document.getElementById('z_' + key);
+  if (!nEl) return;
+  var scale = Math.round(max * 1.35);
+  if (zEl) { zEl.style.left = (min / scale * 100) + '%'; zEl.style.width = ((max - min) / scale * 100) + '%'; }
+  nEl.textContent = n;
+  var cls, msg, col;
+  if (n === 0)          { cls = ''; msg = ''; col = '#334050'; }
+  else if (n < min)     { cls = fatal ? 'bad' : 'warn';
+                          msg = fatal ? ('⛔ 還差 ' + (min - n) + ' 字，交出去會歸零')
+                                      : ('⚠️ 比建議少 ' + (min - n) + ' 字（配比失衡，扣 pragmatique，不會歸零）');
+                          col = fatal ? '#e06050' : '#f0c060'; }
+  else if (n > max)     { cls = fatal ? 'bad' : 'warn';
+                          msg = fatal ? ('⛔ 超出 ' + (n - max) + ' 字，交出去會歸零')
+                                      : ('⚠️ 比建議多 ' + (n - max) + ' 字（配比失衡，扣 pragmatique，不會歸零）');
+                          col = fatal ? '#e06050' : '#f0c060'; }
+  else if (n - min <= 5 || max - n <= 5)
+                        { cls = 'warn';
+                          msg = fatal ? '⚠️ 貼著邊——再刪／再加一句就出界' : '⚠️ 貼著配比的邊';
+                          col = '#f0c060'; }
+  else                  { cls = 'ok';   msg = '✓ 安全區'; col = '#60d090'; }
+  nEl.className = 'count-n ' + cls;
+  mEl.className = 'count-msg ' + cls;
+  mEl.textContent = msg;
+  fEl.style.width = Math.min(100, n / scale * 100) + '%';
+  fEl.style.background = col;
+}
+
+function recount() {
+  var sp = SPEC[cur], t = texts(), total = 0;
+  if (sp.parts) {
+    sp.parts.forEach(function(p){
+      var n = countMots(t[p.key]); total += n; paint(p.key, n, p.min, p.max, false);
+    });
+  } else {
+    total = countMots(t.p1);
+  }
+  paint('all', total, sp.min, sp.max, true);   // ⭐ 只有合計是會歸零的那一個
+  document.getElementById('btnEval').disabled = total === 0;
+}
+
+/* 批改提示：對齊 RUBRICS.md「寫作 · TCF Canada 專用」那一節 */
+function buildPrompt() {
+  var sp = SPEC[cur], t = texts();
+  var body, consigne;
+  if (cur === 'T3') {
+    consigne = 'DOCUMENT 1 : ' + sujet.doc1 + '\n\nDOCUMENT 2 : ' + sujet.doc2;
+    body = '【1ᵉ partie — 綜述】\n' + (t.p1 || '（空白）') +
+           '\n\n【2ᵉ partie — 立場與論證】\n' + (t.p2 || '（空白）');
+  } else {
+    consigne = sujet.fr;
+    body = t.p1 || '（空白）';
+  }
+  var n1 = cur === 'T3' ? countMots(t.p1) : 0;
+  var n2 = cur === 'T3' ? countMots(t.p2) : 0;
+  var total = cur === 'T3' ? n1 + n2 : countMots(t.p1);
+
+  var extra = '';
+  if (cur === 'T1') {
+    extra = '\n⭐ 這題的重點：consigne 括號裡要求列出的資訊一項都不能漏（這是 T1 最常見的失分點）。語域要用 tu、口語。';
+  } else if (cur === 'T2') {
+    extra = '\n⭐ 這題的重點：要有敘事＋表態兩層，只敘事不表態會被壓低。';
+  } else {
+    extra = '\n⭐⭐ 這題的重點：第一段是「用自己的話講兩份文件的對立」不是抄原文；第二段必須有第一人稱表態' +
+            '（Quant à moi, je… ／ Personnellement, je…）。⚠️ 市售範文普遍缺這一句，但官方 consigne 明寫 prend position，缺了會被壓在 12–14。' +
+            '\n⛔ 這題不是書信，不要用 vous 體問候開頭。';
+  }
+
+  return '你是 TCF Canada 的寫作評分者。學生是 Owen，法文程度 A2，目標 CLB7（＝官方 0–20 分裡的 10–11 分）。\n\n' +
+    '【題型】' + sp.name + '（' + sp.desc + '），字數規定 ' + sp.min + '–' + sp.max + ' 字' +
+    (cur === 'T3' ? '（1ᵉ partie 40–60、2ᵉ partie 80–120）' : '') + '\n' +
+    '【題目】\n' + consigne + '\n\n' +
+    '【學生寫的】\n' + body + '\n\n' +
+    '【實際字數】' + (cur === 'T3' ? ('第一段 ' + n1 + '、第二段 ' + n2 + '、合計 ' + total) : total) + ' 字\n' +
+    '（數法：兩個空白之間算一個字，l\'ami 算 1 字）\n' + extra + '\n\n' +
+    '評分依據官方三大面向：linguistique（文法／詞彙／⭐ orthographe 含重音符號，寫作會實扣）、' +
+    'pragmatique（任務完成／連貫／字數配置）、sociolinguistique（語域對不對得上收件人）。\n' +
+    '⛔ 先檢查四條自動不及格：字數不合／離題／漏題（字跡不評）。踩到任何一條，分數直接寫 0 並說明。\n\n' +
+    '回覆格式（不要多說別的）：\n' +
+    '字數：X 字（合格 ／ ⛔ 不合格：低於或高於 N）\n' +
+    '分數：X/20（估計，CLB7 需 10–11）\n' +
+    '三面向：linguistique X／20　pragmatique X／20　sociolinguistique X／20\n' +
+    '最該修的兩個錯：（各附正確寫法）\n' +
+    '做得好的一點：\n' +
+    '重寫示範：（只重寫最差的一句）';
+}
+
+function parseScore(text) {
+  var m = text.match(/分數[：:]\s*(\d+(?:\.\d+)?)\s*\/\s*20/);
+  return m ? parseFloat(m[1]) : null;
+}
+function scoreClass(s) { return s >= 12 ? 'ok' : (s >= 10 ? 'warn' : 'bad'); }
+
+function renderHistory() {
+  var d = load().slice().reverse();
+  var el = document.getElementById('history');
+  if (!d.length) { el.innerHTML = '<div class="empty">還沒寫過 — 挑一題開始吧</div>'; return; }
+  el.innerHTML = d.map(function(e){
+    return '<div class="entry"><div class="entry-header">' +
+      '<span class="entry-meta">' + esc(e.date) + '　' + esc(e.tache) + '　' + esc(e.sujetId) +
+      '　' + e.mots + ' 字' + (e.motsOk ? '' : ' <span class="bad">⛔字數</span>') + '</span>' +
+      '<span class="entry-score ' + scoreClass(e.score) + '">' + e.score + '/20</span></div>' +
+      '<div class="entry-body">' + esc((e.text || '').slice(0, 110)) + '…</div></div>';
+  }).join('');
+}
+
+/* ── 綁定 ── */
+document.getElementById('zhBtn').addEventListener('click', function(){
+  var b = document.getElementById('zhBox');
+  b.classList.toggle('show');
+  this.textContent = b.classList.contains('show') ? '🇫🇷 收起中文' : '🇹🇼 看中文（看不懂再開）';
+});
+document.getElementById('btnNext').addEventListener('click', pick);
+document.getElementById('themeSel').addEventListener('change', pick);
+document.getElementById('btnPeek').addEventListener('click', function(){
+  var b = document.getElementById('promptBox');
+  if (b.style.display === 'none') { b.textContent = buildPrompt(); b.style.display = 'block'; }
+  else b.style.display = 'none';
+});
+document.getElementById('btnEval').addEventListener('click', function(){
+  if (!sujet) return;
+  var txt = buildPrompt();
+  navigator.clipboard.writeText(txt).then(function(){
+    window.open('https://claude.ai', '_blank');
+    document.getElementById('pasteSection').style.display = 'block';
+    toast('✓ 已複製批改提示');
+  }).catch(function(){
+    document.getElementById('promptBox').textContent = txt;
+    document.getElementById('promptBox').style.display = 'block';
+    document.getElementById('pasteSection').style.display = 'block';
+    toast('複製失敗，提示已顯示在下方');
+  });
+});
+document.getElementById('reply').addEventListener('input', function(){
+  var s = parseScore(this.value);
+  var p = document.getElementById('scorePreview');
+  if (s !== null) {
+    p.textContent = '偵測到分數：' + s + '/20';
+    p.className = 'score-preview ' + scoreClass(s);
+    document.getElementById('btnSave').disabled = false;
+  } else {
+    p.textContent = this.value.length > 10 ? '找不到「分數：X/20」格式' : '';
+    p.className = 'score-preview';
+    document.getElementById('btnSave').disabled = true;
+  }
+});
+document.getElementById('btnSave').addEventListener('click', function(){
+  var s = parseScore(document.getElementById('reply').value);
+  if (s === null) { toast('找不到分數'); return; }
+  var sp = SPEC[cur], t = texts();
+  var total = sp.parts ? sp.parts.reduce(function(a,p){ return a + countMots(t[p.key]); }, 0) : countMots(t.p1);
+  var d = load();
+  d.push({ date: new Date().toLocaleDateString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit'}),
+           tache: cur, sujetId: sujet ? sujet.id : null, theme: sujet ? sujet.theme : null,
+           mots: total, motsOk: total >= sp.min && total <= sp.max,
+           text: sp.parts ? (t.p1 + '\n' + t.p2) : t.p1,
+           score: s, reply: document.getElementById('reply').value });
+  save(d);
+  if (sujet) markSeen(sujet.id);
+  renderHistory();
+  toast('✓ 已記錄 ' + s + '/20');
+  if (new URLSearchParams(location.search).get('guided') === '1') {
+    setTimeout(function(){ location.href = 'dashboard.html'; }, 1200);
+  }
+});
+
+/* init */
+(function(){
+  var q = new URLSearchParams(location.search).get('t');
+  if (q && SPEC[q.toUpperCase()]) cur = q.toUpperCase();
+  renderTabs(); fillThemes(); pick(); renderHistory();
+})();
+</script>
+<script src="sync_supabase.js"></script>
+</body>
+</html>
