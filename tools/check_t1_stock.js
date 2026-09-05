@@ -60,6 +60,30 @@ function firstMismatch(text) {
   return best;
 }
 
+/* ── 2026-09-05 新增：解析層（gloss）的檢查 ──────────────────────
+ * ⚠️ 為什麼 gloss 也要機器驗：Owen 是 A2，**他驗不出文法解釋是不是對的**，
+ *   而錯的門牌比沒有門牌更糟（會把他導去完全無關的條目）。
+ *   → 兩件事一定要驗：① blocks 的法文是原文的真實片段 ② 座標真的存在於 codex.js
+ */
+let GLOSS = null;
+try {
+  if (fs.existsSync('t1_gloss.js'))
+    GLOSS = new Function(fs.readFileSync('t1_gloss.js', 'utf8') + '; return T1_GLOSS;')();
+} catch (e) { console.log('! t1_gloss.js 讀取失敗：' + e.message); }
+
+/** codex.js 裡所有真實存在的座標 */
+function codexCoords() {
+  const set = new Set();
+  if (!fs.existsSync('codex.js')) return set;
+  const src = fs.readFileSync('codex.js', 'utf8');
+  /* ⚠️ 只認**真正的條目定義**：n:'x-y-z' 後面要跟著 lvl:。
+     ⛔ 寬鬆比對會把 see:['3-6-2'] / vs:[{n:'7-3-1'}] 這些交叉引用也算進來，
+     結果是「編出來的門牌」也能通過檢查 —— 那比不檢查更危險。 */
+  const re = /\bn:\s*'([0-9]+(?:-[0-9]+){1,2})'\s*,\s*lvl:/g;
+  let m; while ((m = re.exec(src))) set.add(m[1]);
+  return set;
+}
+
 let errors = 0, warns = 0, checked = 0;
 
 console.log('── t1_stock.js 內容溯源檢查 ──\n');
@@ -132,6 +156,71 @@ console.log('');
 if (op + two > 120) { console.log(`! 開場 ${op}s ＋ 兩個第一層追問 ${two}s = ${op + two}s，⚠️ 超過 120 秒`); warns++; }
 else console.log(`✓ 開場 ${op}s ＋ 兩個最長的第一層追問 ${two}s = ${op + two}s（T1 上限 120s）`);
 if (op + worst > 120) console.log(`  （⚠️ 最壞情況：被追到最深的兩段 ${worst}s → ${op + worst}s，⭐ 那時要自己收短，不要講完）`);
+
+/* ── 解析層（gloss）檢查 ────────────────────────────────────── */
+if (GLOSS) {
+  console.log('\n── 解析層 gloss ──');
+  const coords = codexCoords();
+  /* ⚠️ key ＝ hook + '/' + src。⭐ 光靠 src 不唯一（`Owen 2026-09-04 口述` 出現兩次），
+     hook 也不唯一（同一個勾子有多層），合起來才唯一。 */
+  const segs = [{ key: 'opening', fr: M.T1_OPENING.fr }]
+    .concat(M.T1_STOCK.filter(s => !s.gap)
+      .map(s => ({ key: s.hook + '/' + s.src, fr: s.fr, hook: s.hook })));
+
+  let missing = 0, badCoord = 0, badBlock = 0, dirty = 0, pts = 0, blks = 0;
+  const gapPoints = [];
+
+  segs.forEach(seg => {
+    const g = GLOSS[seg.key];
+    if (!g) { console.log(`✗ 沒有解析：${seg.key}`); missing++; errors++; return; }
+
+    /* ① blocks 的法文必須是原文的真實片段 —— 同一個子序列判準，
+          ⛔ 防的是「解析裡出現原文沒有的法文」（那等於偷偷改稿） */
+    (g.blocks || []).forEach(b => {
+      blks++;
+      const inText = norm(seg.fr).indexOf(norm(b.fr)) >= 0;
+      if (!inText) {
+        console.log(`✗ ${seg.key}：blocks 這一塊不在原文裡：「${b.fr}」 —— ⛔ 解析不准出現原文沒有的法文`);
+        badBlock++; errors++;
+      }
+      if (!b.zh) { console.log(`✗ ${seg.key}：「${b.fr}」缺中文`); errors++; }
+    });
+    if (!(g.blocks || []).length) { console.log(`! ${seg.key}：沒有 blocks`); warns++; }
+
+    /* ② 座標必須真的存在 —— ⭐ 錯的門牌比沒門牌更糟 */
+    (g.points || []).forEach(pt => {
+      pts++;
+      if (pt.n == null) { gapPoints.push(`${seg.key}：${pt.fr}`); return; }
+      if (!coords.has(pt.n)) {
+        console.log(`✗ ${seg.key}：座標 📍${pt.n} 在 codex.js 裡不存在（「${pt.fr}」）—— ⛔ 不准編門牌`);
+        badCoord++; errors++;
+      }
+      if ((pt.note || '').length > 45)
+        { console.log(`! ${seg.key}：「${pt.fr}」的 note ${pt.note.length} 字，卡背會擠`); warns++; }
+    });
+    if ((g.points || []).length > 3)
+      { console.log(`! ${seg.key}：${g.points.length} 個文法點 —— ⚠️ 每段最多 3 個，貪多會變成上課`); warns++; }
+
+    /* ③ Anki TSV 硬限制：⛔ 不准有 tab／換行／HTML */
+    JSON.stringify(g).match(/\t|\\n|<[a-zA-Z\/]/g) && (() => {
+      console.log(`✗ ${seg.key}：含 tab／換行／HTML 標籤 —— ⛔ 進 TSV 會壞`);
+      dirty++; errors++;
+    })();
+  });
+
+  if (!missing && !badBlock) console.log(`✓ ${segs.length} 段都有解析，${blks} 塊法文全部對得回原文`);
+  if (!badCoord) console.log(`✓ ${pts} 個文法點的 codex 座標全部真實存在`);
+  if (!dirty) console.log('✓ 無 tab／換行／HTML');
+  console.log(`  平均每段 ${(pts / segs.length).toFixed(1)} 個文法點（⭐ 目標 1–3，⛔ 不要為了完整而解釋他已經會的）`);
+
+  if (gapPoints.length) {
+    console.log(`\n⭐ codex 還沒有門牌的文法點 ${gapPoints.length} 個（n:null）——這是 codex 的缺口清單：`);
+    gapPoints.slice(0, 12).forEach(x => console.log('   ' + x));
+    if (gapPoints.length > 12) console.log(`   …還有 ${gapPoints.length - 12} 個`);
+  }
+} else {
+  console.log('\n（沒有 t1_gloss.js，跳過解析層檢查）');
+}
 
 console.log(`\n檢查 ${checked} 段｜錯誤 ${errors}／提醒 ${warns}`);
 process.exit(errors ? 1 : 0);

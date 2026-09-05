@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T1 讀懂 · CLB7</title>
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:#0b0a10; color:#e6e0d2; font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh; padding:22px 16px 90px; max-width:720px; margin:0 auto; }
+.header { text-align:center; margin-bottom:14px; }
+.header .back { font-size:.72rem; color:#5a5344; text-decoration:none; display:inline-block; margin-bottom:8px; }
+.header h1 { font-size:1.22rem; letter-spacing:3px; color:#e0c060; text-shadow:0 0 22px rgba(224,192,96,.3); }
+.header .sub { font-size:.7rem; color:#6a6250; margin-top:5px; line-height:1.6; }
+
+.howto { background:#12101a; border:1px solid #322a3e; border-left:3px solid #c9a227;
+  border-radius:10px; padding:12px 14px; margin-bottom:14px; font-size:.76rem;
+  color:#9a917c; line-height:1.8; }
+.howto b { color:#e0c060; }
+
+.count { text-align:center; font-size:.72rem; color:#6a6250; margin-bottom:14px; }
+.count b { color:#c9a227; font-size:1.05rem; }
+
+/* 段落選單 */
+.pick { background:#12101a; border:1px solid #322a3e; border-radius:14px; padding:12px; margin-bottom:14px; }
+.pick h3 { font-size:.66rem; color:#5a5344; letter-spacing:1.5px; margin-bottom:10px;
+  display:flex; justify-content:space-between; align-items:center; }
+.pick h3 .tog { color:#7fa8c9; cursor:pointer; letter-spacing:0; font-size:.72rem;
+  border:1px solid #2a3a4a; border-radius:20px; padding:3px 11px; }
+.pick h3 .tog:hover { border-color:#7fa8c9; background:#141c26; }
+.pick.fold #segList { display:none; }
+.nowSeg { font-size:.86rem; color:#e0c060; padding:4px 2px 0; }
+.nowSeg small { color:#6a6250; font-size:.7rem; margin-left:8px; }
+.srow { display:flex; align-items:center; gap:9px; background:#1a1624; border:1px solid #3a3048;
+  border-radius:9px; padding:9px 11px; margin-bottom:6px; cursor:pointer; transition:border-color .15s; }
+.srow:hover { border-color:#c9a227; }
+.srow.on { border-color:#e0c060; background:#221c14; }
+.srow.done { border-color:#2f5a3f; }
+.srow .tick { flex:0 0 auto; width:18px; text-align:center; font-size:.8rem; }
+.srow .nm { flex:1; font-size:.84rem; color:#e8dcc0; line-height:1.5; }
+.srow .nm small { display:block; font-size:.68rem; color:#6a6250; margin-top:2px; }
+.srow .meta { flex:0 0 auto; font-size:.64rem; color:#5a5344; }
+
+/* 文本 */
+.text { background:#12101a; border:1px solid #322a3e; border-radius:14px;
+  padding:20px 18px; margin-bottom:14px; }
+.ask { font-size:.72rem; color:#7a8fa0; margin-bottom:14px; padding-bottom:12px;
+  border-bottom:1px dashed #2a2436; line-height:1.7; }
+.para { font-size:1.06rem; line-height:2.5; font-family:Georgia,serif; color:#efe7d4; margin-bottom:14px; }
+.para:last-child { margin-bottom:0; }
+.bk { border-bottom:1px dotted #4a4258; cursor:pointer; padding:1px 1px 2px;
+  border-radius:3px; transition:background .15s, border-color .15s; }
+.bk:hover { background:#1e1a2a; border-bottom-color:#c9a227; }
+.bk.open { background:#221c14; border-bottom:1px solid #e0c060; }
+.bk.hasPt { border-bottom-style:solid; border-bottom-color:#6a5a30; }
+.gap { color:#efe7d4; }
+
+/* 展開的解析 */
+.rv { display:block; margin:6px 0 10px; padding:11px 13px; background:#171320;
+  border:1px solid #3a3048; border-left:3px solid #e0c060; border-radius:8px;
+  font-family:'Segoe UI',system-ui,sans-serif; font-size:.86rem; line-height:1.8; }
+.rv .zh { display:block; color:#d8d0bc; font-size:.92rem; }
+.rv .pt { display:block; margin-top:9px; padding-top:9px; border-top:1px dashed #3a3048;
+  font-size:.8rem; color:#9a917c; }
+.rv .pt .frag { color:#e0c060; font-family:Georgia,serif; }
+.rv .cx { display:inline-block; margin-top:7px; font-size:.72rem; color:#7fa8c9;
+  text-decoration:none; border:1px solid #2a3a4a; border-radius:20px; padding:2px 10px; }
+.rv .cx:hover { border-color:#7fa8c9; background:#141c26; }
+.rv .nocx { display:inline-block; margin-top:7px; font-size:.7rem; color:#6a6250; }
+
+.whole { margin-top:14px; padding-top:13px; border-top:1px dashed #2a2436; }
+.whole .wbtn { font-size:.74rem; color:#8a8270; background:none; border:1px dashed #3a3048;
+  border-radius:7px; padding:6px 13px; cursor:pointer; font-family:inherit; }
+.whole .wbtn:hover { color:#e0c060; border-color:#c9a227; }
+.whole .wbody { margin-top:11px; }
+
+.bar { display:flex; gap:9px; flex-wrap:wrap; margin-bottom:14px; }
+button { padding:9px 15px; border-radius:8px; border:none; font-size:.8rem;
+  cursor:pointer; font-family:inherit; transition:opacity .15s, transform .1s; }
+button:active { transform:scale(.97); }
+.b-all { background:#1a2438; color:#7fa8c9; }
+.b-done { background:#1d4a33; color:#6fd09a; }
+.b-done.is { background:#2a2436; color:#6a6250; }
+.b-next { background:#3a2e10; color:#e0c060; }
+
+.mirror { background:#12101a; border:1px solid #322a3e; border-radius:14px;
+  padding:14px 16px; font-size:.78rem; color:#9a917c; line-height:1.9; }
+.mirror h3 { font-size:.66rem; color:#5a5344; letter-spacing:1.5px; margin-bottom:9px; }
+.mirror .hot { color:#e0c060; font-family:Georgia,serif; }
+.empty { text-align:center; color:#4a4436; font-size:.82rem; padding:22px 0; }
+.toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
+  background:#1d4a33; color:#6fd09a; padding:10px 22px; border-radius:24px;
+  font-size:.8rem; transition:transform .25s ease; pointer-events:none; z-index:99; }
+.toast.show { transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a class="back" href="dashboard.html">← 大腦</a>
+  <h1>T1 讀懂</h1>
+  <div class="sub">進 Anki 之前的那一步 — 一段只要做一次</div>
+</div>
+
+<div class="howto">
+  <b>怎麼用：</b>先自己讀法文，⛔ 不要急著找中文。<br>
+  讀到哪一塊卡住 → <b>點那一塊</b>，中文跟文法點才出現。<br>
+  ⭐ 你點了哪幾塊就是你真正的卡點，系統會記下來 —— <b>那比事後回想準</b>。<br>
+  整段都通了 → 按「讀懂了」，那一段才該進 Anki 背。
+</div>
+
+<div class="count" id="count"></div>
+
+<div class="pick" id="pick">
+  <h3><span>選一段</span><span class="tog" id="togList">展開清單</span></h3>
+  <div class="nowSeg" id="nowSeg"></div>
+  <div id="segList"></div>
+</div>
+
+<div id="stage"></div>
+
+<div class="mirror" id="mirror"></div>
+
+<div class="toast" id="toast"></div>
+
+<script src="t1_stock.js"></script>
+<script src="t1_gloss.js"></script>
+<script>
+/* ============================================================
+   t1_read.html — T1 25 段的「讀懂」層
+   2026-09-05 建立。
+   ⚠️ 這頁存在的理由（Owen 2026-09-05 回報）：
+     「我看到中文想不出法文後，我先點進去看答案，
+       結果我看到法文也不懂為什麼是長這樣。」
+   ⭐ 診斷：SRS 的前提是「你已經懂了」，它只排「什麼時候再考你」。
+     「第一次搞懂」是另一個動作，而且只需要做一次。
+     把解析塞進 Anki 卡背 = 每次 rep 都夾帶說明書 → 拖慢回想又讀不進去。
+     → 六層框架（L0 有東西可講 → L1 背得起來）中間缺的就是這一層。
+
+   ⭐ 三個刻意的設計：
+   1. 中文預設不出現，點了才給（feedback_french_only_ui：中文當開關不當預設）
+   2. ⭐⭐ 點擊本身就是資料 —— 他點哪幾塊 = 真正的卡點分布，比事後回想準
+   3. ⛔ 不顯示分母（階梯制）。只顯示「讀懂了幾段」往上長
+   ============================================================ */
+
+var LS = 'clb7_t1_read';
+var segs = [], cur = null, showAll = false, listOpen = false;
+
+function load() { try { return JSON.parse(localStorage.getItem(LS) || '{}'); } catch(e){ return {}; } }
+function save(d) { localStorage.setItem(LS, JSON.stringify(d)); }
+function rec(key) { var d = load(); if (!d[key]) d[key] = { done:false, taps:{} }; return d[key]; }
+function esc(s) { return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.classList.add('show');
+                   setTimeout(function(){ t.classList.remove('show'); },2000); }
+
+function buildSegs() {
+  segs = [];
+  if (typeof T1_OPENING !== 'undefined')
+    segs.push({ key:'opening', name:'開場（自我介紹）', fr:T1_OPENING.fr, sec:T1_OPENING.sec, ask:null });
+  if (typeof T1_STOCK !== 'undefined')
+    T1_STOCK.filter(function(s){ return !s.gap; }).forEach(function(s){
+      // ⚠️ key ＝ hook+'/'+src，⭐ 光靠 src 不唯一
+      segs.push({ key:s.hook + '/' + s.src, name:s.hook, fr:s.fr, sec:s.sec,
+                  ask:s.q_fr, askZh:s.q_zh, level:s.level });
+    });
+}
+
+function gloss(key) {
+  return (typeof T1_GLOSS !== 'undefined' && T1_GLOSS[key]) ? T1_GLOSS[key] : null;
+}
+
+function renderList() {
+  var d = load();
+  document.getElementById('segList').innerHTML = segs.map(function(s, i){
+    var r = d[s.key] || {};
+    return '<div class="srow ' + (cur===i?'on ':'') + (r.done?'done':'') + '" data-i="' + i + '">' +
+      '<span class="tick">' + (r.done ? '✓' : '·') + '</span>' +
+      '<span class="nm">' + esc(s.name) +
+        (s.askZh ? '<small>' + esc(s.askZh) + '</small>' : '<small>主動開場</small>') + '</span>' +
+      '<span class="meta">' + (s.sec||'') + 's</span></div>';
+  }).join('');
+  Array.prototype.forEach.call(document.querySelectorAll('.srow'), function(el){
+    el.addEventListener('click', function(){
+      cur = +el.dataset.i; showAll = false; listOpen = false;
+      renderList(); renderStage();
+      window.scrollTo({ top:0, behavior:'smooth' });
+    });
+  });
+  // ⚠️ 25 列清單會把畫面吃光（手機更糟）→ 選了段就收合，只留一行顯示目前在哪一段
+  var pick = document.getElementById('pick');
+  var fold = cur !== null && !listOpen;
+  pick.classList.toggle('fold', fold);
+  document.getElementById('togList').textContent = fold ? '換一段' : '收起清單';
+  document.getElementById('nowSeg').innerHTML = fold
+    ? esc(segs[cur].name) + '<small>' + esc(segs[cur].askZh || '主動開場') + '</small>' : '';
+
+  var done = segs.filter(function(s){ return (d[s.key]||{}).done; }).length;
+  // ⛔ 不顯示分母 —— 只顯示往上長的那個數字
+  document.getElementById('count').innerHTML = done
+    ? '讀懂了 <b>' + done + '</b> 段'
+    : '<span style="color:#4a4436">還沒開始 — 挑一段吧</span>';
+}
+
+/* ⭐ 把原文切成「可點的塊」＋「塊之間的原文」，
+   ⛔ 一個字都不能漏 —— 只顯示 blocks 會讓原文缺字。 */
+function segment(fr, blocks) {
+  var out = [], pos = 0;
+  (blocks||[]).forEach(function(b, bi){
+    var at = fr.indexOf(b.fr, pos);
+    if (at < 0) return;                       // 對不上就跳過（檢查器會抓）
+    if (at > pos) out.push({ t:'gap', s:fr.slice(pos, at) });
+    out.push({ t:'bk', s:b.fr, i:bi });
+    pos = at + b.fr.length;
+  });
+  if (pos < fr.length) out.push({ t:'gap', s:fr.slice(pos) });
+  return out;
+}
+
+/* 哪些文法點屬於這一塊：points[].fr 落在這塊裡面就算 */
+function ptsFor(g, blockText) {
+  return (g && g.points || []).filter(function(p){ return blockText.indexOf(p.fr) >= 0; });
+}
+
+/* ⭐ 有些文法點是**跨整段**的（例如「這段為什麼整段用未來式」：je devrai / ce sera / je ferai），
+   對不到任何單一塊。⚠️ 2026-09-05 實測發現有 12 個這種點，原本會永遠不顯示。
+   → 它們其實是最有價值的一類（回答「為什麼這一段是這個時態」），單獨放在段層級。 */
+function ptsWhole(g) {
+  if (!g) return [];
+  return (g.points || []).filter(function(p){
+    return !(g.blocks || []).some(function(b){ return b.fr.indexOf(p.fr) >= 0; });
+  });
+}
+
+function ptHtml(pt) {
+  return '<span class="pt"><span class="frag">' + esc(pt.fr) + '</span> — ' + esc(pt.note) +
+    (pt.n ? '<br><a class="cx" href="map.html#cx-' + esc(pt.n) + '" target="_blank">📍 ' + esc(pt.n) + ' 去宮殿看</a>'
+          : '<br><span class="nocx">📍 codex 還沒有這一條</span>') + '</span>';
+}
+
+function renderStage() {
+  var host = document.getElementById('stage');
+  if (cur === null) { host.innerHTML = ''; renderMirror(); return; }
+  var s = segs[cur], g = gloss(s.key), r = rec(s.key);
+
+  var head = '';
+  if (s.ask) head = '<div class="ask">（考官問）' + esc(s.ask) +
+                    '<br><span style="color:#5a5344">' + esc(s.askZh||'') + '</span></div>';
+
+  var body;
+  if (!g) {
+    body = '<div class="empty">這一段還沒有解析<br><span style="font-size:.72rem">（跑 tools/gen 之後會出現）</span></div>' +
+           '<div class="para">' + esc(s.fr).replace(/\n\n/g,'</div><div class="para">') + '</div>';
+  } else {
+    var parts = segment(s.fr, g.blocks);
+    var html = '', open = 0;
+    parts.forEach(function(p){
+      if (p.t === 'gap') {
+        html += '<span class="gap">' + esc(p.s).replace(/\n\n/g, '</div><div class="para">') + '</span>';
+      } else {
+        var b = g.blocks[p.i];
+        var pts = ptsFor(g, b.fr);
+        var isOpen = showAll || r.taps['b' + p.i];
+        if (isOpen) open++;
+        html += '<span class="bk ' + (pts.length?'hasPt ':'') + (isOpen?'open':'') +
+                '" data-b="' + p.i + '">' + esc(b.fr) + '</span>';
+        if (isOpen) {
+          html += '<span class="rv"><span class="zh">' + esc(b.zh) + '</span>';
+          pts.forEach(function(pt){ html += ptHtml(pt); });
+          html += '</span>';
+        }
+      }
+    });
+    body = '<div class="para">' + html + '</div>';
+    var wp = ptsWhole(g);
+    if (wp.length) {
+      var wOpen = showAll || r.whole;
+      body += '<div class="whole"><button class="wbtn">' +
+        (wOpen ? '收起' : '這一段整體還有 ' + wp.length + ' 個文法點（時態、句型的整體用法）') +
+        '</button>' + (wOpen ? '<div class="wbody rv">' + wp.map(ptHtml).join('') + '</div>' : '') + '</div>';
+    }
+  }
+
+  host.innerHTML = '<div class="text">' + head + body + '</div>' +
+    '<div class="bar">' +
+      '<button class="b-all">' + (showAll ? '收起全部' : '全部展開') + '</button>' +
+      '<button class="b-done ' + (r.done?'is':'') + '">' + (r.done ? '✓ 已標記讀懂' : '讀懂了') + '</button>' +
+      '<button class="b-next">下一段 →</button>' +
+    '</div>';
+
+  Array.prototype.forEach.call(host.querySelectorAll('.bk'), function(el){
+    el.addEventListener('click', function(){
+      var d = load(), k = 'b' + el.dataset.b;
+      if (!d[s.key]) d[s.key] = { done:false, taps:{} };
+      // ⭐ 點開＝記一次卡點；再點收起但**不扣次數**（卡過就是卡過）
+      if (d[s.key].taps[k]) delete d[s.key].taps[k];
+      else d[s.key].taps[k] = (d[s.key].taps[k]||0) + 1;
+      if (!d[s.key].hits) d[s.key].hits = {};
+      d[s.key].hits[k] = (d[s.key].hits[k]||0) + 1;
+      save(d); renderStage();
+    });
+  });
+  var wb = host.querySelector('.wbtn');
+  if (wb) wb.addEventListener('click', function(){
+    var d = load(); if (!d[s.key]) d[s.key] = { done:false, taps:{} };
+    d[s.key].whole = !d[s.key].whole; save(d); renderStage();
+  });
+  host.querySelector('.b-all').addEventListener('click', function(){ showAll = !showAll; renderStage(); });
+  host.querySelector('.b-done').addEventListener('click', function(){
+    var d = load(); if (!d[s.key]) d[s.key] = { done:false, taps:{} };
+    d[s.key].done = !d[s.key].done; save(d);
+    toast(d[s.key].done ? '✓ 這段可以進 Anki 了' : '取消標記');
+    renderList(); renderStage(); renderMirror();
+  });
+  host.querySelector('.b-next').addEventListener('click', function(){
+    cur = (cur + 1) % segs.length; showAll = false; listOpen = false; renderList(); renderStage();
+    window.scrollTo({ top:0, behavior:'smooth' });
+  });
+  renderMirror();
+}
+
+/* ⭐ 鏡子：你點最多的是哪幾塊 —— ⛔ 不是分數、不是責備，是卡點分布 */
+function renderMirror() {
+  var d = load(), all = [];
+  segs.forEach(function(s){
+    var r = d[s.key]; if (!r || !r.hits) return;
+    var g = gloss(s.key); if (!g) return;
+    Object.keys(r.hits).forEach(function(k){
+      var i = +k.slice(1), b = (g.blocks||[])[i];
+      if (b) all.push({ fr:b.fr, n:r.hits[k], seg:s.name });
+    });
+  });
+  all.sort(function(a,b){ return b.n - a.n; });
+  var el = document.getElementById('mirror');
+  if (!all.length) {
+    el.innerHTML = '<h3>你的卡點</h3><div class="empty">還沒有資料 — 點開幾塊之後這裡會長出來</div>';
+    return;
+  }
+  el.innerHTML = '<h3>你的卡點（點開最多次的）</h3>' +
+    all.slice(0, 8).map(function(x){
+      return '<div><span class="hot">' + esc(x.fr) + '</span>　<span style="color:#5a5344">' +
+             esc(x.seg) + '　' + x.n + ' 次</span></div>';
+    }).join('') +
+    '<div style="margin-top:10px;font-size:.72rem;color:#5a5344">⭐ 同一塊反覆點開＝那個結構還沒進去，' +
+    '⛔ 不是你笨。這份清單就是該優先補的文法點。</div>';
+}
+
+document.getElementById('togList').addEventListener('click', function(){
+  listOpen = !listOpen; renderList();
+});
+
+buildSegs();
+renderList();
+</script>
+<script src="sync_supabase.js"></script>
+</body>
+</html>
