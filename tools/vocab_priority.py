@@ -39,12 +39,15 @@ chunks = json.loads(__import__('subprocess').run(
 
 want = sys.argv[1] if len(sys.argv) > 1 else None
 rows = []
-STOP = set("le la les un une des de du à a et est en que qui ne pas je tu il elle nous vous ils on ce c'est se sa son ses mon ma mes pour dans avec sur au aux y en si mais ou où plus très bien tout tous cette ces d'un d'une l'".split())
+# ⚠️ 2026-09-05 修：原本用手寫黑名單擋功能詞，⛔ 擋不乾淨——
+#   c'est（語料 1813 次）漏掉了，害「這一塊值得背」的判準變成挑到文法黏著劑。
+#   ⭐ 改用原理：依 Zipf，語料自己的前 150 高頻詞必然是功能詞 → 直接整批排掉。
+FUNC = {w for w, _ in FREQ.most_common(150)}
 
 for c in chunks:
     if want and str(c.get('lesson')) != str(want): continue
     for w in re.findall(r"[a-zà-ÿœ'’-]+", (c.get('fr') or '').lower()):
-        if len(w) < 3 or w in STOP: continue
+        if len(w) < 3 or w in FUNC: continue
         rows.append((w, c.get('lesson'), c.get('fr','')[:44]))
 
 seen, out = set(), []
