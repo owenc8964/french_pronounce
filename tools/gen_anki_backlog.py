@@ -56,7 +56,17 @@ out = [fl for _, fl in rows]
 with open('anki/anki_backlog_all.tsv','w',encoding='utf-8') as fh:
     fh.write('\n'.join('\t'.join(fl) for fl in out) + '\n')
 
+# ⚠️ 收尾：刪掉每課的中間檔。
+#   它們跟補課檔【共用同一批 ID】，而 ANKI_SETUP 明訂「一個 ID 只能有一個檔案擁有它」
+#   ——留著以後會被誤匯成重複卡（2026-08-19 就是撞號弄丟 3 張）。
+#   ⭐ 要單看某一課隨時可以重跑 tools/gen_anki_lesson.py <課次>。
+removed = 0
+for L in range(1, 31):
+    p2 = f'anki/anki_l{L}_auto.tsv'
+    if os.path.exists(p2): os.remove(p2); removed += 1
+
 print(f'補課檔：{len(out)} 張 → anki/anki_backlog_all.tsv')
+print(f'  🧹 清掉 {removed} 個每課中間檔（跟補課檔共用 ID，留著會誤匯）')
 for k,v in skipped.most_common(): print(f'  ⛔ 去掉 {v} 張 —— {k}')
 print(f'\n  ⭐ 每天 5 張 → {-(-len(out)//5)} 天（約 {len(out)/5/30:.1f} 個月）')
 by = collections.Counter(fl[7] for fl in out)
