@@ -65,7 +65,13 @@ def next_id():
     i = f'FR_L{LESSON}_{n:03d}'; used.add(i); n += 1
     return i
 
-def clean(t): return (t or '').replace('\t',' ').replace('\n',' ').strip()
+def clean(t):
+    """⛔ TSV 不能有 tab／換行；⛔ 也不能有 HTML 標籤——
+    ANKI_SETUP 明訂「TSV 內容一律不放 HTML」，2026-08-19 就是沒勾「允許 HTML」
+    害 18 張卡正面印出裸露的 <b>。
+    ⚠️ chunks.js 的 note 欄本來就允許 <b>（它是給網頁看的），所以這裡要剝掉。"""
+    t = re.sub(r'<[^>]+>', '', t or '')
+    return t.replace('\t',' ').replace('\n',' ').strip()
 
 rows, skipped = [], collections.Counter()
 scored = []
