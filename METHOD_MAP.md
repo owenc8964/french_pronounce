@@ -1,4 +1,4 @@
-# METHOD_MAP.md — 學習法家族地圖（六個，不是一個）
+# METHOD_MAP.md — 學習法家族地圖（七個，不是一個）
 
 > 2026-08-27 建立。起因：Owen 看完 `SPEAKING_METHOD.md` 回推出來的兩階段協定後說
 > 「**我覺得這算合理，但好像還是沒跳脫我們舊有方法太多。還是很吃背誦跟重複。
@@ -13,7 +13,7 @@
 
 ---
 
-## 六個家族速覽
+## 七個家族速覽
 
 | 家族 | 核心機制 | 見效速度 | 好玩度 | 對 TEF 直接嗎 |
 |---|---|---|---|---|
@@ -23,6 +23,7 @@
 | **D AI 對話夥伴** | 無限次、零評價的互動 | 中 | 中高 | ✅ 直接 |
 | **E 內容驅動／挖句子** | 從你在乎的內容取材 | 中 | **高** | 🔸 間接 |
 | **F 動機工程** | 讓前五個持續下去 | — | — | — |
+| **G 感知解碼訓練** ⭐新 | 修訊號進來的那一層（音位・詞界・弱化形） | 中 | 中 | ✅✅ 極直接（聽力佔四分之一分數） |
 
 ---
 
@@ -157,6 +158,43 @@ Shekhtman 的溝通規則（**每一條都對得上 TEF**）：
 
 ---
 
+## G. 感知解碼訓練（bottom-up decoding／HVPT／LAM）⭐ 2026-09-07 新增
+
+> 2026-W37 聽力研究時發現的第七個家族。完整證據與參數見
+> [`research/RESEARCH_2026-W37_聽力.md`](research/RESEARCH_2026-W37_聽力.md)。
+
+**代表**：John Field（*Listening in the Language Classroom*）、Gianfranco Conti 的 **LAM（Listening-As-Modelling）**、HVPT（高變異語音訓練）研究群
+
+**機制**：**前面六個家族全都預設「耳朵收得到，問題在別處」**——A 練程序化、B 灌輸入量、C 重組策略、D 找對手、E 找素材、F 維持動機。
+解碼派主張的是六個家族都沒處理的一層：**訊號進來的那一層本身就壞了**。音位沒建立、詞界切不開、功能詞與口語縮讀形（`chais pas`、`t'as`、`les_amis`）根本沒進到意識。
+這一層**不會因為「多聽」自己長好**，也**不會因為「策略更好」補起來**——它只能靠針對感知本身的訓練。
+
+**⚠️ 它跟 B 是直接衝突的，衝突要並陳**：
+- CI 派說：理解訊息，系統自己長。
+- 解碼派說：**你的「理解」本來就是靠猜的**——Field 的研究指出弱聽者用語境「代替」沒解碼到的訊息，強聽者才是用語境「擴充」已解碼到的訊息。**猜得越順，錯的表徵越穩固。**
+- 中立的讀法：量沒有錯，但**光有量不會自動長出解碼能力**。
+
+**證據**：
+| 來源 | 數字 |
+|---|---|
+| HVPT 統合分析（79 個研究） | 前後測 **g = 0.92**（k=96）、實驗對照 **g = 0.67**（k=32）；能長期保留、可類化到新刺激 |
+| HVPT → 產出遷移（另一篇統合分析） | 訓練過的項目 **+10.5%**、沒訓練過的 **+4.5%**（⚠️ 遷移到產出小很多） |
+| Kissling (2018, *MLJ*) | 超音段發音教學＋感知練習 → 句子聽寫測出的 bottom-up 處理能力提升 |
+| Conti LAM，20 週 year 8 **法語**班 | 解碼 45.4% → 83.4%，對照組 60.5%（⚠️⚠️ **教師自述的自家方法行動研究，非同儕審查，先當方向不當證據**） |
+| 對照組：策略教學統合分析 | d = 0.69（45 研究）——**策略派也有效**，兩派不是零和 |
+
+**可訓練的微技能清單**（LAM，這部分不需相信效果量也能用）：
+①辨別目標語音位 ②辨認弱化／縮讀形 ③切出詞界 ④處理不同語速 ⑤字母-音對應（GPC）與音韻覺識
+
+- ✅ **法語是這個家族最該用的語言**：liaison 與 enchaînement 直接抹掉詞界，「寫的樣子」與「聽的樣子」落差極大
+- ✅ **可以完全單人做**（逐字聽寫、功能詞挖空、速度階梯），且指標客觀，不吃自評
+- ✅ **它是我們自己那份研究缺的另一半**：`research/2026-09-02_C_聽懂與說得出的落差.md` 的 **C0 群**（關鍵詞拼圖／詞界沒切開／功能詞漏收／熟悉度錯覺）＝這個家族要治的病
+- ⛔ 它**只修接收端**，不會讓人變得有話講（跟 shadowing 一樣不能取代島）
+- ⛔ 逐字聽寫本質上很硬，做久了跟 A 一樣消耗意志力 → **必須嚴格限量並配 F**
+- **它適合的位置：每週 2–3 次、每次 10–15 分鐘的「解碼小關」，接在 B 的素材後面**——用剛聽爽的那段素材做剝皮，不要另開新素材
+
+---
+
 ## 怎麼組合（這才是重點）
 
 六個家族不是選一個，是**配比**。一個可能的配方：
@@ -169,6 +207,7 @@ Shekhtman 的溝通規則（**每一條都對得上 TEF**）：
 | D AI 對手 | 每週 2–3 次 | 晚上 | 語音＋手機，扮 TEF 考官 |
 | E 挖句子 | 隨手 | 從 B 的內容裡挖 | 嚴格限量，只挖打到你的 |
 | F 動機工程 | — | 設計約束 | 每個功能都要通過「這讓他更想打開嗎」 |
+| G 感知解碼 ⭐ | 每週 2–3 次×10–15 分 | 接在 B 的素材後面 | 聽力佔四分之一分數，而這一格目前是 0%（⚠️ 佔比待第一次實驗後再定） |
 
 ⚠️ **注意這個配比跟我們現在的系統剛好相反**：現在幾乎 100% 是 A，而 A 在這張表裡只佔每天 10–15 分鐘。
 
@@ -177,7 +216,9 @@ Shekhtman 的溝通規則（**每一條都對得上 TEF**）：
 ## 還沒查的（下次的方向）
 
 - **私語／自我對話**（private speech）：一個人自言自語練口說的實證
-- **發音優先派**（accent-first / mimicry）：先把聲音練對，其他跟著上來
+- ~~**發音優先派**（accent-first / mimicry）：先把聲音練對，其他跟著上來~~
+  → 2026-W37 部分覆蓋：見 **G 家族**（Kissling 2018 的「教發音改善聽力」就是這條的一個方向）。
+  尚未查的是**反過來**那一半：先練發音是否改善**產出**的整體發展。
 - **任務型教學（TBLT）**：用真實任務帶語言，跟 A 的操練觀不同
 - **睡眠與鞏固**：練完多久睡覺、間隔怎麼配合睡眠週期
 - ⚠️ 每週一的雲端研究例行（`trig_01WwYqQodLQjqbU7d3iwJfwG`）會持續往這些方向補
@@ -197,3 +238,12 @@ Shekhtman 的溝通規則（**每一條都對得上 TEF**）：
 - 外語愉悅感與口說進步（Dewaele 2025, IJAL）：https://onlinelibrary.wiley.com/doi/10.1111/ijal.12607
 - 愉悅／焦慮／無聊對成就的影響（Annual Review of Applied Linguistics）：https://www.cambridge.org/core/journals/annual-review-of-applied-linguistics/article/threebody-problem-the-effects-of-foreign-language-anxiety-enjoyment-and-boredom-on-academic-achievement/40F0D8E676AB3EEDF5B27120D15DC354
 - 理想 L2 自我與動機（Dörnyei）：https://link.springer.com/chapter/10.1007/978-94-6300-615-6_9
+
+### G 家族（2026-09-07 新增）
+- HVPT 統合分析（79 研究，*SSLA*）：https://www.cambridge.org/core/journals/studies-in-second-language-acquisition/article/high-variability-phonetic-training-hvpt-a-metaanalysis-of-l2-perceptual-training-studies/6ABB8C1F32D88D53EA8D05A4565E76F6
+- HVPT 對產出的遷移（*Applied Psycholinguistics*）：https://www.cambridge.org/core/journals/applied-psycholinguistics/article/does-perceptual-high-variability-phonetic-training-improve-l2-speech-production-a-metaanalysis-of-perceptionproduction-connection/E38D8F5CE65DC708137B0E95F97C6BC7
+- Kissling (2018)：發音教學改善 bottom-up 聽力處理（*MLJ*）：https://onlinelibrary.wiley.com/doi/abs/10.1111/modl.12512
+- Conti，LAM 20 週法語班行動研究（⚠️ 非同儕審查）：https://gianfrancoconti.com/2017/05/06/listening-as-modelling-in-action-a-report-on-a-20-week-experiment-with-my-year-8-french-classes/
+- 對立面：聽力策略教學統合分析（d = 0.69）：https://journals.sagepub.com/doi/abs/10.1177/13621688211072981
+- 對立面：Vandergrift & Tafaghodtari (2010)，N=106 法語學習者：https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1467-9922.2009.00559.x
+- ⚠️ 以上皆為**檢索摘要層級**的查證（環境網路白名單擋掉多數學術站），逐條限制見 `research/RESEARCH_2026-W37_聽力.md` 開頭
