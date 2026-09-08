@@ -18,7 +18,7 @@
 |---|---|
 | **考試** | **2027-04-18 前哨戰／診斷考｜2027-09-19 正場**。⚠️ 2027 場次官方**尚未公布**，日期是照 2026（2/8、4/19、9/20、12/20，全是該月第三個星期日）推的。**法協 02-2364-8833 那通電話還沒打。** |
 | **考哪個** | **TCF Canada**（台北法協有考，NT$8,000 四科）。TEF Canada 台灣**無考場**，要考得飛東京 |
-| **程度** | A2，第 30 課（筆記已入庫，quiz/SRS/table_drill 等連動**未做**，見下方 09-04 條目）。2026-05 開始學法文 |
+| **程度** | A2，第 31 課（筆記已入庫；第30課九項連動已做完，**第31課的連動還沒做**，等 Owen 回來確認，見下方 09-07 條目）。2026-05 開始學法文 |
 | **口說語言島** | ⭐ **Phase 0 八座全滿**（AC1/2/3/5/7/8/11/15），每座 169–225 字 / 78–103 秒，中文母本 `source_zh` 都在。`AC8` 的 follow-up gap **掛零** |
 | **考試材料** | 三包全部整理完。**Tâche 3 = 167 議題／245 變體**（xlsx 八分頁）＋ 119 題雙語；⭐ **Tâche 2 = 160 條情境**（不是 20，見 09-02 校準）；兩本 Ellipses 正式教科書 |
 | **系統** | `mock.html` 已驗收（44+44 套模擬考可用）。dashboard／tracker 倒數已對齊新日期 |
@@ -4270,6 +4270,25 @@ revlog 也證實：08-23 之後每天固定就開 5 張。
 **⚠️ 另外兩件一直沒動、等 Owen 決定**：
 `MakeListeningCard` 129 張全空（Listening 模板在、但一張卡都沒生成）；
 牌組全部擠在 `FrançaisCours`，`FrançaisMining` 是 0 張。
+
+---
+
+### 09-07：第31課（A2・接續 La restauration 收尾＋Unité 7「À votre santé！」開課・COD/COI 代名詞主文法・睡眠與身體健康詞彙）——**只做了筆記＋糾錯摘要，其餘連動沒做**
+
+⚠️ 這條由排程任務 `clb7-post-class`（課後15分鐘整理）觸發，**Owen 全程不在場**（非互動排程執行）。任務範圍本來就只有「筆記＋糾錯摘要」兩項，所以**這次刻意沒有**做第30課那種完整九項連動（chunks.js／sentences.js／table_drill／gram_rules.js／quiz題庫／map／reading.html 平行閱讀連結等）——等 Owen 回來確認要不要串，比照09-04第30課的模式（Owen 回來問「不能串嗎？」才續做）。
+
+Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édito **A2** `Edito22 A2 Owen 7:21.pdf`，p.95–102；已用 `assets/.textbook_cache.txt` 逐條核對頁碼與原文，並讀截圖核對表格數字／課本圖片）。
+
+**這一課教了什麼**
+- **收尾 Unité 6**：atelier médiation「Les Français et l'alimentation」（p.95–96）飲食習慣問卷調查資訊圖表，ARCANE Research 2021年10月數據（néo-végétariens／flexitariens 比例、82%在家自煮、社群分享行為）。
+- **開始 Unité 7「À votre santé！」**：課文A「Pour bien dormir」（p.98，睡姿建議＋給建議句型組）、課文C「Le cycle du sommeil」（p.99，睡眠五階段）、課文B「Le bar à sieste」（p.99，簡短帶過）、**主文法 les pronoms COD et COI**（p.100）、詞彙頁「Le corps et la santé」（p.101，身體部位／睡眠／疼痛／感覺良好）、課文D「Les meilleures plantes pour les tisanes」（p.102，六種植物）、課文E「Chez la pharmacienne」（p.102，藥局句型）。
+- ⛔ **p.103「Le superlatif」這次沒有正式上到**——已在筆記開頭標註，下次上到時會回鍋課文D 裡已經出現的最高級例句。
+
+**做了什麼**
+1. `french_notes.html` 新增 `lesson-31`：13 個 unit（含平行閱讀＋糾錯摘要），`node tools/check_notes.js` **全綠**（31課／270表／292 unit，錯誤0提醒0）。
+   - ⚠️ 中途踩到一個檢查器的既有怪癖：`check_notes.js` 的「平行閱讀」檢查是用 `id="(lesson-\d+)"` 切課次區段，**最後一課的區段會一路吃到檔案結尾（含 `<script>` 區塊裡 tts_reader 的程式碼註解，那段註解裡剛好也寫了「平行閱讀」四個字）**，導致沒寫平行閱讀單元的最新一課會被那段註解誤判。**解法就是每課都要有平行閱讀單元**（本來就是既定慣例），補了一篇後全綠——**不是檢查器的 bug，是提醒「每課都要有平行閱讀」這條规矩不能省**。
+   - 平行閱讀 `id="l31-parallel"`：跟既有的 `tts_reader.js` 自動掃描機制（`ul.phrase-list[id$="-parallel"]`）相容，不用額外註冊。
+2. **⛔ 沒做的（等 Owen 回來確認）**：`chunks.js`（自動抽取腳本沒跑）、`sentences.js`（人工精選句子沒補）、`table_drill.html` `TABLES`題庫（沒加新表）、`gram_rules.js`（COD/COI 是本課主文法但 `GRAM_POINTS` 沒更新 unlocked 狀態）、quiz 題庫、`map.html` 新 tile、`reading.html` 平行閱讀連結。**下次 Owen 在場時，比照09-04第30課的流程走完剩下七項。**
 
 ---
 
