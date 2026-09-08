@@ -214,4 +214,12 @@ const WRITING_TASKS = [
   { lesson:30, id:'W30b', title:'給 Locmiam 寫一條新規範（義務／禁止＋ne...que）', task:'寫 60-80 字，幫 Locmiam charte 再加兩條新規範：一條義務、一條禁止，並用 ne...que 限制一個範圍（例如營業時段、可販售次數）。',
     use:['義務句型（il faut／il est indispensable de…，第29課回鍋）', '禁止句型（il est interdit de／il est défendu de…，第29課回鍋）', 'ne...que 限制一個範圍（至少一次）'],
     frame:'⭐ 開場銜接（Locmiam charte 既有規定之外…） → 一條義務 → 一條禁止 → 用 ne...que 收一句限制範圍' },
+
+  // ── 第31課（睡眠建議 ＋ COD/COI ＋ 藥局問診）
+  { lesson:31, id:'W31a', title:'給睡不好的朋友寫建議（60-80字）', task:'一位朋友最近睡不好，寫訊息給他，用課文A的給建議句型組給至少三條具體建議（睡姿、睡前習慣、起床方式擇項發揮）。',
+    use:['至少三種給建議句型（il est conseillé de／je te recommande de／je te déconseille de／il est important de ne pas…）', '至少一個 COD 或 COI 代名詞（例如 Je te conseille de… → 用代名詞回指某個建議）', '身體或睡眠詞彙至少三個（colonne vertébrale／courbature／s\'étirer／sommeil…）'],
+    frame:'⭐ 開場關心（Tu m\'as dit que tu dors mal…） → 三條建議依序給 → 一句正向收尾（tu vas te sentir mieux）' },
+  { lesson:31, id:'W31b', title:'寫一段「跟藥師的對話」摘要（DELF 題型，60-80字）', task:'想像你最近身體不舒服去了藥局，用第一人稱敘述整個過程：藥師問了什麼、你怎麼回答、她推薦了什麼。',
+    use:['課文E 藥師問診句型至少兩句（Qu\'est-ce qui ne va pas？／Vous avez de la fièvre？…）', '症狀詞彙至少兩個（patraque／le nez bouché／les maux de tête／la toux…）', '一個 COI 代名詞（例如 Elle m\'a recommandé…／Je lui ai répondu…）'],
+    frame:'⭐ 開場情境（La semaine dernière, je suis allé(e) à la pharmacie…） → 藥師的問診 → 你的回答 → 她的建議或推薦（一款植物或藥）收尾' },
 ];

@@ -18,7 +18,7 @@
 |---|---|
 | **考試** | **2027-04-18 前哨戰／診斷考｜2027-09-19 正場**。⚠️ 2027 場次官方**尚未公布**，日期是照 2026（2/8、4/19、9/20、12/20，全是該月第三個星期日）推的。**法協 02-2364-8833 那通電話還沒打。** |
 | **考哪個** | **TCF Canada**（台北法協有考，NT$8,000 四科）。TEF Canada 台灣**無考場**，要考得飛東京 |
-| **程度** | A2，第 31 課（筆記已入庫；第30課九項連動已做完，**第31課的連動還沒做**，等 Owen 回來確認，見下方 09-07 條目）。2026-05 開始學法文 |
+| **程度** | A2，第 31 課（筆記＋九項連動已做完，Anki 18張新卡在桌面等匯入，見下方 09-07 條目）。2026-05 開始學法文 |
 | **口說語言島** | ⭐ **Phase 0 八座全滿**（AC1/2/3/5/7/8/11/15），每座 169–225 字 / 78–103 秒，中文母本 `source_zh` 都在。`AC8` 的 follow-up gap **掛零** |
 | **考試材料** | 三包全部整理完。**Tâche 3 = 167 議題／245 變體**（xlsx 八分頁）＋ 119 題雙語；⭐ **Tâche 2 = 160 條情境**（不是 20，見 09-02 校準）；兩本 Ellipses 正式教科書 |
 | **系統** | `mock.html` 已驗收（44+44 套模擬考可用）。dashboard／tracker 倒數已對齊新日期 |
@@ -4273,9 +4273,9 @@ revlog 也證實：08-23 之後每天固定就開 5 張。
 
 ---
 
-### 09-07：第31課（A2・接續 La restauration 收尾＋Unité 7「À votre santé！」開課・COD/COI 代名詞主文法・睡眠與身體健康詞彙）——**只做了筆記＋糾錯摘要，其餘連動沒做**
+### 09-07：第31課（A2・接續 La restauration 收尾＋Unité 7「À votre santé！」開課・COD/COI 代名詞主文法・睡眠與身體健康詞彙）——筆記＋連動全部做完＋Anki 卡已生成
 
-⚠️ 這條由排程任務 `clb7-post-class`（課後15分鐘整理）觸發，**Owen 全程不在場**（非互動排程執行）。任務範圍本來就只有「筆記＋糾錯摘要」兩項，所以**這次刻意沒有**做第30課那種完整九項連動（chunks.js／sentences.js／table_drill／gram_rules.js／quiz題庫／map／reading.html 平行閱讀連結等）——等 Owen 回來確認要不要串，比照09-04第30課的模式（Owen 回來問「不能串嗎？」才續做）。
+⚠️ 這條由排程任務 `clb7-post-class`（課後15分鐘整理）觸發，Owen 全程不在場。**Claude 一開始只做了筆記就停下來問要不要串**，Owen 明確糾正：「你需要串完 這是你的必須任務 甚至要定期更新anki」——連動不是可選項，已存 memory `feedback_connections_mandatory`，同一個 session 續做完剩下所有項目。
 
 Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édito **A2** `Edito22 A2 Owen 7:21.pdf`，p.95–102；已用 `assets/.textbook_cache.txt` 逐條核對頁碼與原文，並讀截圖核對表格數字／課本圖片）。
 
@@ -4284,11 +4284,25 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - **開始 Unité 7「À votre santé！」**：課文A「Pour bien dormir」（p.98，睡姿建議＋給建議句型組）、課文C「Le cycle du sommeil」（p.99，睡眠五階段）、課文B「Le bar à sieste」（p.99，簡短帶過）、**主文法 les pronoms COD et COI**（p.100）、詞彙頁「Le corps et la santé」（p.101，身體部位／睡眠／疼痛／感覺良好）、課文D「Les meilleures plantes pour les tisanes」（p.102，六種植物）、課文E「Chez la pharmacienne」（p.102，藥局句型）。
 - ⛔ **p.103「Le superlatif」這次沒有正式上到**——已在筆記開頭標註，下次上到時會回鍋課文D 裡已經出現的最高級例句。
 
-**做了什麼**
+**做了什麼（九項連動全部做完，一次過）**
 1. `french_notes.html` 新增 `lesson-31`：13 個 unit（含平行閱讀＋糾錯摘要），`node tools/check_notes.js` **全綠**（31課／270表／292 unit，錯誤0提醒0）。
-   - ⚠️ 中途踩到一個檢查器的既有怪癖：`check_notes.js` 的「平行閱讀」檢查是用 `id="(lesson-\d+)"` 切課次區段，**最後一課的區段會一路吃到檔案結尾（含 `<script>` 區塊裡 tts_reader 的程式碼註解，那段註解裡剛好也寫了「平行閱讀」四個字）**，導致沒寫平行閱讀單元的最新一課會被那段註解誤判。**解法就是每課都要有平行閱讀單元**（本來就是既定慣例），補了一篇後全綠——**不是檢查器的 bug，是提醒「每課都要有平行閱讀」這條规矩不能省**。
+   - ⚠️ 中途踩到一個檢查器的既有怪癖：`check_notes.js` 的「平行閱讀」檢查是用 `id="(lesson-\d+)"` 切課次區段，**最後一課的區段會一路吃到檔案結尾（含 `<script>` 區塊裡 tts_reader 的程式碼註解，那段註解裡剛好也寫了「平行閱讀」四個字）**，導致沒寫平行閱讀單元的最新一課會被那段註解誤判。**解法就是每課都要有平行閱讀單元**（本來就是既定慣例），補了一篇後全綠。
    - 平行閱讀 `id="l31-parallel"`：跟既有的 `tts_reader.js` 自動掃描機制（`ul.phrase-list[id$="-parallel"]`）相容，不用額外註冊。
-2. **⛔ 沒做的（等 Owen 回來確認）**：`chunks.js`（自動抽取腳本沒跑）、`sentences.js`（人工精選句子沒補）、`table_drill.html` `TABLES`題庫（沒加新表）、`gram_rules.js`（COD/COI 是本課主文法但 `GRAM_POINTS` 沒更新 unlocked 狀態）、quiz 題庫、`map.html` 新 tile、`reading.html` 平行閱讀連結。**下次 Owen 在場時，比照09-04第30課的流程走完剩下七項。**
+2. `chunks.js`：`node tools/extract_chunks.js 31 --write` → **＋58 張**（去重後，既有庫1903句）。
+3. `sentences.js`：`S_L31_1~12`（人工精選，涵蓋給建議句型、COD/COI例句、manquer陷阱句、藥局句型）。
+4. `table_drill.html` **＋2 表**：`cod-coi-drill`（gram，11列）、`corps-sante-drill`（vocab，19列）。
+5. `gram_rules.js`：擴充既有 `pronouns` 點（原本只有COD，lessons從`[9,11,12,15]`補到`[9,11,12,15,31]`）——新增COI規則、母音/人稱對照、COD+COI疊用順序、`leur`陷阱，補3則COI例句。
+   - ⭐ 順手查了 `codex.js`：**COI（3-3-2）跟雙代名詞疊用順序（3-3-3）早就是完整內容**（B1/B2既有座標，非本次新增），不用動——codex座標永不重編的鐵律下，這課直接複用既有節點即可。
+6. `questions.js` **＋22題**：新 topic `pronoms-cod-coi` 10題、`corps-sante-vocab` 12題。`quiz.html`／`dashboard.html` 的 `TOPIC_LABELS` 兩邊都補了。
+7. `map.html`：`CURRENT_LESSON` 30→31，新增兩張 tile（`pronoms-cod-coi`／`corps-sante-vocab`，French detail 仿既有寫法）。
+8. `reading.html` **a32「Bien dormir, bien récupérer」**（原創短文＋3題理解測驗，跟筆記頁的平行閱讀同一篇）。
+9.（順手）`writing_tasks.js` **＋2題**（W31a 給睡不好的朋友寫建議／W31b 跟藥師對話摘要）。
+
+**⛔ 沒做的：`scenes.js`**——理由同第29、30課：課文E「Chez la pharmacienne」是聽力逐字稿（藥師與 monsieur Rousseau 的對話），這次課堂逐字稿只帶到句型框沒收錄實際聽力對話內容，材料不夠寫分岔劇本。下次拿到那段聽力逐字稿再補。
+
+**Anki**：`python3 tools/gen_anki_lesson.py 31` → 18張產出卡（chunks 58條，25條太短略過、15條認得級略過）。`anki_precheck.py` 驗證：新卡18／撞號0／每句法文都找得到出處，**可以匯入**。已放到 `~/Desktop/anki_l31_auto.tsv`（照慣例，Owen 檢查完自己移回 `anki/`）。
+
+**驗證方式**：`node --check` 過 chunks/sentences/gram_rules/questions/writing_tasks 五個純 `.js`；Python抽取 table_drill/map/quiz/dashboard/reading 五個 `.html` 的 `<script>` 丟 `node --check` 全過；`node tools/check_notes.js` 全綠。⚠️ 跟09-04第30課同樣的限制：這個排程任務身分底層擋掉 `preview_start`，**沒有實際在瀏覽器裡跑過**——下一個能開瀏覽器的 session 應比照第30課驗證清單跑一次（quiz選第31課、table_drill篩新表、reading a32三題、map新tile渲染）。
 
 ---
 

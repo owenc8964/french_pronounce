@@ -98,15 +98,21 @@ const GRAM_POINTS = [
         { fr:'Cet ordinateur est cher.', zh:'這台電腦很貴。（母音前 ce→cet）' },
       ]}},
 
-  { id:'pronouns', name:'Pronoms (toniques · COD · y)', icon:'👤', zone:'A1', cat:'pronoms',
-    lessons:[9,11,12,15], topics:['pronoms-toniques','cod-pronouns','pronom-y'], unlocked:true,   // 08-28：on-vs-nous 移到獨立的 pronom-on 點（第28課把它拉成完整的一節）
+  { id:'pronouns', name:'Pronoms (toniques · COD · COI · y)', icon:'👤', zone:'A1', cat:'pronoms',
+    lessons:[9,11,12,15,31], topics:['pronoms-toniques','cod-pronouns','coi-pronouns','pronom-y'], unlocked:true,   // 08-28：on-vs-nous 移到獨立的 pronom-on 點（第28課把它拉成完整的一節）／09-07（第31課）補上 COI
     rule:{
-      title:'代名詞三家族 — 重讀、直接受詞、地點',
-      why:'法文的 je/tu/il 被磨到只剩輕輕一個音，虛弱到不能單獨站著、不能被強調（不能只回答 "je"）——所以保留了一套有重音的「加強版」moi/toi/lui/eux 專門扛這些場合。受詞代名詞放動詞前面也是同一件事：它們是黏在動詞上的輕音節，像磁鐵吸在動詞前。on 原本是「人」這個名詞（拉丁 homo），「人們都這樣」講久了就變成口語的「我們」，所以動詞跟 il 同形。',
+      title:'代名詞三家族 — 重讀、直接／間接受詞、地點',
+      why:'法文的 je/tu/il 被磨到只剩輕輕一個音，虛弱到不能單獨站著、不能被強調（不能只回答 "je"）——所以保留了一套有重音的「加強版」moi/toi/lui/eux 專門扛這些場合。受詞代名詞放動詞前面也是同一件事：它們是黏在動詞上的輕音節，像磁鐵吸在動詞前。COD／COI 的分工不是隨機的：COD 直接接在動詞後面（je vois qui/quoi），COI 是因為那個動詞本身的文法要求要接 à（je parle à qui），代名詞只是把「à＋人」壓縮掉——保留的是動詞原本的介係詞需求，不是代名詞自己發明的規則。on 原本是「人」這個名詞（拉丁 homo），「人們都這樣」講久了就變成口語的「我們」，所以動詞跟 il 同形。',
       points:[
         '重讀代名詞（強調/介詞後）：moi, toi, lui, elle, nous, vous, eux, elles — chez lui、et toi ?',
         'COD 直接受詞（放動詞前）：me/te/le/la/nous/vous/les — Je le connais',
         'COD 母音前縮寫：me→m\'、te→t\'、le/la→l\' — Le droit m\'intéresse',
+        'COI 間接受詞（動詞本身要求接 à）：me/te/lui/nous/vous/leur — Je lui conseille de partir',
+        'COD 跟 COI 第1、2人稱長得一樣（me/te/nous/vous），只有第三人稱不同：COD le/la/les vs COI lui/leur',
+        '判斷法：這個動詞後面直接接名詞還是要接 à？直接接→COD，要接 à→COI（apporter/conseiller/demander/donner/écrire/expliquer/lire/offrir/prêter/répondre 這批動詞固定要 à quelqu\'un）',
+        '⚠️ COI leur（給他們）永遠不加 s，不要跟所有格 leur/leurs（他們的）搞混——兩套規則字面一樣但功能不同',
+        '⚠️⚠️ 兩個動詞連用時，代名詞貼著「真正支配它」的那個動詞，不是句子最前面的動詞：J\'aime beaucoup la faire（la 貼 faire，因為 la sieste 是 faire 的受詞）',
+        '⭐⭐⭐ COD＋COI 同一句疊用時，順序固定 COD 在前、COI 在後：Tu as acheté l\'oreiller à Marc ? — Je le lui ai acheté.',
         'on = 口語的 nous，動詞跟 il/elle 同形：On habite à Lyon',
         'y 代替地點：J\'y vais（我去那裡）',
       ],
@@ -114,6 +120,9 @@ const GRAM_POINTS = [
         { fr:'Chez eux, on mange bien.', zh:'在他們家吃得很好。（ils→eux）' },
         { fr:'Je ne la connais pas.', zh:'我不認識她。（COD放動詞前）' },
         { fr:"Tu m'aides ?", zh:'你幫我嗎？（me→m\'）' },
+        { fr:'Tu donnes des conseils à Hamid ? — Oui, je lui conseille de dormir sur le côté.', zh:'你給 Hamid 建議嗎？——對，我建議他側睡。（COI：lui＝à Hamid）' },
+        { fr:'Béatrice ne leur téléphone jamais le soir.', zh:'Béatrice 晚上從不打電話給他們。（COI複數 leur 不加s）' },
+        { fr:'Tu as acheté l\'oreiller parfait à Marc ? — Oui, je le lui ai acheté.', zh:'你買了完美的枕頭給 Marc 嗎？——對，我買給他了。（COD＋COI疊用，COD在前）' },
       ]}},
 
   { id:'pronoms-y-en', name:'Pronoms y / en', icon:'📍', zone:'A2', cat:'pronoms',

@@ -303,4 +303,18 @@ const SENTENCES = [
   { id: 'S_L30_8', lesson: 30, fr: 'Je suis ravi(e) de cette expérience ; je ne peux en dire que du bien.', zh: '我對這次體驗非常滿意；我只能說它的好話。', note: '⭐⭐ en ＋ ne...que 疊用' },
   { id: 'S_L30_9', lesson: 30, fr: 'Le service est trop lent. Il faut patienter une demi-heure entre chaque plat. C\'est une honte !', zh: '服務太慢了。每道菜之間要等半小時。太丟臉了！', note: '⭐ 表達不滿意句型' },
   { id: 'S_L30_10', lesson: 30, fr: 'Qu\'est-ce que vous me conseillez ? — Le colombo, c\'est la spécialité de la maison.', zh: '你們推薦什麼？——colombo 是本店招牌菜。', note: '⭐ 點餐句型：la spécialité de la maison' },
+
+  // 第31課
+  { id: 'S_L31_1', lesson: 31, fr: 'Si vous avez mal au dos, il est conseillé de dormir sur le côté.', zh: '如果你背痛，建議側睡。', note: '⭐⭐ 給建議句型：il est conseillé de + 原形' },
+  { id: 'S_L31_2', lesson: 31, fr: 'Il est important de ne pas faire de sport avant de dormir.', zh: '睡前不要運動是重要的。', note: '⚠️⚠️ 兩動詞疊用時，ne pas 放在第二個原形動詞前面' },
+  { id: 'S_L31_3', lesson: 31, fr: 'Je vous recommande de placer un oreiller entre vos jambes.', zh: '我建議您在雙腿間放一個枕頭。', note: '⭐ je vous recommande de + 原形' },
+  { id: 'S_L31_4', lesson: 31, fr: 'Je vous déconseille de dormir sur le ventre, c\'est mauvais pour le dos.', zh: '我不建議您趴睡，這對背不好。', note: '⚠️ déconseiller 本身已帶「不建議」，不用再加 ne...pas' },
+  { id: 'S_L31_5', lesson: 31, fr: 'Tu as acheté l\'oreiller parfait ? — Oui, je l\'ai acheté.', zh: '你買了完美的枕頭嗎？——對，我買了它。', note: '⭐⭐ COD 代名詞：l\' 代替 l\'oreiller parfait（本課主文法）' },
+  { id: 'S_L31_6', lesson: 31, fr: 'Tu donnes des conseils à Hamid ? — Oui, je lui conseille de dormir sur le côté.', zh: '你給 Hamid 建議嗎？——對，我建議他側睡。', note: '⭐⭐ COI 代名詞：lui 代替 à Hamid（本課主文法）' },
+  { id: 'S_L31_7', lesson: 31, fr: 'J\'aime beaucoup faire la sieste. — J\'aime beaucoup la faire.', zh: '我很喜歡午睡。——我很喜歡做這件事。', note: '⚠️⚠️ 代名詞貼著真正支配它的動詞（faire），不是句子最前面的動詞（aime）' },
+  { id: 'S_L31_8', lesson: 31, fr: 'Béatrice ne leur téléphone jamais le soir.', zh: 'Béatrice 晚上從不打電話給他們。', note: '⚠️ COI 複數 leur 不加 s，別跟所有格 leurs 搞混' },
+  { id: 'S_L31_9', lesson: 31, fr: 'Tu me manques.', zh: '我想你。', note: '⚠️⚠️⚠️ manquer 主受詞方向與英文相反：被想念的人是邏輯主詞' },
+  { id: 'S_L31_10', lesson: 31, fr: 'Qu\'est-ce qui ne va pas ? — Je suis un peu patraque, j\'ai le nez bouché.', zh: '怎麼了？——我有點不舒服，鼻塞。', note: '⭐⭐ 課文E 藥局問診句型' },
+  { id: 'S_L31_11', lesson: 31, fr: 'Lorsque ce cycle prend fin, on peut se réveiller ou reprendre un cycle.', zh: '當這個週期結束時，我們可能會醒來或再進入下一個週期。', note: '⭐ 睡眠週期課文收尾句' },
+  { id: 'S_L31_12', lesson: 31, fr: 'C\'est le romarin qui soulage le mieux les migraines.', zh: '迷迭香最能緩解偏頭痛。', note: '⭐ 最高級句型先聽過，第103課文法正式教之前的預習' },
 ];

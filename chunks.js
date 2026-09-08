@@ -13587,5 +13587,411 @@ const CHUNKS = [
   "fr": "engagement",
   "zh": "以為只有「訂婚」的意思",
   "note": "⚠️ un engagement 泛指任何「承諾、答應要做的事」（合約、菜單承諾都算），只有搭配婚姻語境時才特指訂婚／結婚承諾，今天 Locmiam charte 用的是廣義那個"
+ },
+ {
+  "id": "L31_Néo_végétarien_c_est_pas",
+  "lesson": 31,
+  "fr": "Néo-végétarien c'est pas juste végétarien.",
+  "zh": "新素食者不只是單純的素食者。",
+  "note": "🎙 老師口語糾正：végétarien＝合法／正式定義的素食者（完全不吃肉），但圖表統計的 néo-végétarien 是更大的傘概念，包含下面這個字"
+ },
+ {
+  "id": "L31_Plus_on_est_jeune_plus_o",
+  "lesson": 31,
+  "fr": "Plus on est jeune, plus on partage les photos.",
+  "zh": "越年輕，越會分享照片。",
+  "note": "⭐⭐ plus... plus...＝越…越…句型，老師帶著讀圖表趨勢時說的口語總結，可以直接套用在任何「兩個變數同向變化」的情境"
+ },
+ {
+  "id": "L31_Il_est_conseillé_de_ne_p",
+  "lesson": 31,
+  "fr": "Il est conseillé de ne pas manger lourd au dîner.",
+  "zh": "建議晚餐不要吃得太重。",
+  "note": "⭐ 同一個句型再操作一次；léger ≠ lourd＝清淡 ≠ 重（油膩）"
+ },
+ {
+  "id": "L31_Quand_tu_fais_ta_valise",
+  "lesson": 31,
+  "fr": "Quand tu fais ta valise, tu cales certaines choses fragiles.",
+  "zh": "你打包行李箱時，會把一些易碎的東西卡好固定。",
+  "note": "🎙 老師用「打包行李箱」解釋 caler：把東西卡緊、固定住讓它不會晃動。課文裡「le cou sera bien calé」＝脖子會被卡得很穩（枕頭把脖子固定住）"
+ },
+ {
+  "id": "L31_Le_cerveau_est_réceptif",
+  "lesson": 31,
+  "fr": "Le cerveau est réceptif, mais ne comprend plus rien.",
+  "zh": "大腦是有反應的，但已經聽不懂內容了。",
+  "note": "⭐⭐ 淺睡階段特色：如果這時你跟他說話，他可能會醒，但不理解你在說什麼"
+ },
+ {
+  "id": "L31_Bailler_engourdir",
+  "lesson": 31,
+  "fr": "Bailler, engourdir.",
+  "zh": "打哈欠、發麻。",
+  "note": "⭐ engourdi(e)形容詞：例如手臂壓久了沒感覺——「Il est engourdi」（它麻了）"
+ },
+ {
+  "id": "L31_Redescendre_sur_terre",
+  "lesson": 31,
+  "fr": "Redescendre sur terre.",
+  "zh": "回到現實。",
+  "note": "⭐⭐ 課本第6題慣用語：字面「重新降落到地面」，指午睡醒來後從恍神狀態回到現實（＝revenir à la réalité）"
+ },
+ {
+  "id": "L31_Faire_le_vide_dans_sa_tê",
+  "lesson": 31,
+  "fr": "Faire le vide dans sa tête.",
+  "zh": "腦袋放空。",
+  "note": "⭐⭐ 課本第7題慣用語：字面「在腦袋裡製造空無」＝什麼都不想（＝ne penser à rien）"
+ },
+ {
+  "id": "L31_Tu_as_acheté_l_oreiller",
+  "lesson": 31,
+  "fr": "Tu as acheté l'oreiller parfait. — Oui, je l'ai acheté.",
+  "zh": "你買了完美的枕頭。——對，我買了它。",
+  "note": "⭐⭐ COD 範例：l'oreiller parfait 不接 à，直接是動詞 acheter 的受詞 → COD l'"
+ },
+ {
+  "id": "L31_On_ne_la_retrouve_jamais",
+  "lesson": 31,
+  "fr": "On ne la retrouve jamais. → la montre",
+  "zh": "我們永遠找不到（陰性單數的東西）。",
+  "note": "老師範例：手錶。⭐ retrouver＝找回本來就有、會弄丟的東西（跟單純的 trouver 不同，retrouver 帶「原本擁有」的語感）"
+ },
+ {
+  "id": "L31_Manquer_de_sommeil",
+  "lesson": 31,
+  "fr": "Manquer de sommeil.",
+  "zh": "睡眠不足。",
+  "note": "⭐ manquer de + 名詞＝缺乏某樣東西"
+ },
+ {
+  "id": "L31_J_ai_manqué_le_film",
+  "lesson": 31,
+  "fr": "J'ai manqué le film.",
+  "zh": "我錯過了這部電影。",
+  "note": "⭐ manquer + 名詞（無de）＝錯過"
+ },
+ {
+  "id": "L31_C_est_le_romarin_qui_sou",
+  "lesson": 31,
+  "fr": "C'est le romarin qui soulage le mieux les migraines.",
+  "zh": "迷迭香最能緩解偏頭痛。",
+  "note": "⭐ 最高級句型（le mieux），文法第103頁還沒正式教，先聽過"
+ },
+ {
+  "id": "L31_Je_suis_un_peu_patraque",
+  "lesson": 31,
+  "fr": "Je suis un peu patraque en ce moment.",
+  "zh": "我最近有點不舒服／沒精神。",
+  "note": "⭐⭐ patraque＝（口語）不舒服、狀態不好，但不到生病的程度；老師區分：patraque 是身體感覺差（不是因為累），fatigué 純粹是累"
+ },
+ {
+  "id": "L31_J_ai_le_nez_bouché",
+  "lesson": 31,
+  "fr": "J'ai le nez bouché.",
+  "zh": "我鼻塞。",
+  "note": "⭐ bouché(e)＝堵住的，見下方 bouchon 延伸"
+ },
+ {
+  "id": "L31_le_rhume",
+  "lesson": 31,
+  "fr": "le rhume",
+  "zh": "感冒",
+  "note": ""
+ },
+ {
+  "id": "L31_la_toux",
+  "lesson": 31,
+  "fr": "la toux",
+  "zh": "咳嗽",
+  "note": ""
+ },
+ {
+  "id": "L31_les_maux_de_gorge",
+  "lesson": 31,
+  "fr": "les maux de gorge",
+  "zh": "喉嚨痛",
+  "note": ""
+ },
+ {
+  "id": "L31_On_peut_lire_ça_et_après",
+  "lesson": 31,
+  "fr": "On peut lire ça et après on est bon.",
+  "zh": "我們讀一下這個，之後就可以了。",
+  "note": "🎙 收尾一個段落、準備往下走的過渡語"
+ },
+ {
+  "id": "L31_Majoritairement_des_plat",
+  "lesson": 31,
+  "fr": "Majoritairement des plats industriels tout prêts",
+  "zh": "12%（18–24歲拉高到 19%）",
+  "note": "⭐ tout prêt(e)＝現成、已經做好的；老師：年輕人吃更多現成餐點，因為更快、更便宜"
+ },
+ {
+  "id": "L31_Partagent_des_photos_de",
+  "lesson": 31,
+  "fr": "Partagent des photos de plats de restaurant sur les réseaux",
+  "zh": "45%（2018年37%）",
+  "note": "18–24歲拉高到 70%"
+ },
+ {
+  "id": "L31_Partagent_leurs_recettes",
+  "lesson": 31,
+  "fr": "Partagent leurs recettes sur les réseaux",
+  "zh": "22%（2018年18%）",
+  "note": "25–34歲41%／18–24歲40%"
+ },
+ {
+  "id": "L31_Support_de_suivi_de_rece",
+  "lesson": 31,
+  "fr": "Support de suivi de recettes・Smartphone",
+  "zh": "29%（2018年21%）",
+  "note": "18–24歲拉高到 48%"
+ },
+ {
+  "id": "L31_Support_de_suivi_de_rece_2",
+  "lesson": 31,
+  "fr": "Support de suivi de recettes・Livre de recette",
+  "zh": "23%（2018年25%）",
+  "note": ""
+ },
+ {
+  "id": "L31_Support_de_suivi_de_rece_3",
+  "lesson": 31,
+  "fr": "Support de suivi de recettes・Imprimé sur papier",
+  "zh": "20%（2018年24%）",
+  "note": "⭐ 老師：這個常常是「阿嬤手寫、你自己印出來」的那種"
+ },
+ {
+  "id": "L31_Il_est_important_d_être",
+  "lesson": 31,
+  "fr": "Il est important d'être attentif(ve) à…",
+  "zh": "要留意…是重要的",
+  "note": ""
+ },
+ {
+  "id": "L31_l_épaule_f",
+  "lesson": 31,
+  "fr": "l'épaule (f.)",
+  "zh": "肩膀",
+  "note": ""
+ },
+ {
+  "id": "L31_le_cerveau",
+  "lesson": 31,
+  "fr": "le cerveau",
+  "zh": "大腦",
+  "note": ""
+ },
+ {
+  "id": "L31_la_cheville",
+  "lesson": 31,
+  "fr": "la cheville",
+  "zh": "腳踝",
+  "note": ""
+ },
+ {
+  "id": "L31_la_colonne_vertébrale",
+  "lesson": 31,
+  "fr": "la colonne vertébrale",
+  "zh": "脊椎",
+  "note": "回鍋課文A"
+ },
+ {
+  "id": "L31_le_cou",
+  "lesson": 31,
+  "fr": "le cou",
+  "zh": "脖子",
+  "note": "⚠️ 跟 le cœur（心）、la cour（庭院）發音相近，容易混——見下方發音警報"
+ },
+ {
+  "id": "L31_la_cuisse",
+  "lesson": 31,
+  "fr": "la cuisse",
+  "zh": "大腿",
+  "note": "⚠️ 跟 la jambe（整條腿）不同，cuisse 專指大腿那一段"
+ },
+ {
+  "id": "L31_le_poignet",
+  "lesson": 31,
+  "fr": "le poignet",
+  "zh": "手腕",
+  "note": "🎙 課本詞彙表沒列，老師補充；例句「Il a une montre au poignet」（他手腕上戴著一支錶）"
+ },
+ {
+  "id": "L31_le_bâillement",
+  "lesson": 31,
+  "fr": "le bâillement",
+  "zh": "打哈欠（名詞）",
+  "note": "動詞 bâiller"
+ },
+ {
+  "id": "L31_manquer_de_sommeil",
+  "lesson": 31,
+  "fr": "manquer de sommeil",
+  "zh": "睡眠不足",
+  "note": "見下方「manquer」專屬整理"
+ },
+ {
+  "id": "L31_le_repos",
+  "lesson": 31,
+  "fr": "le repos",
+  "zh": "休息（名詞）",
+  "note": "動詞 se reposer"
+ },
+ {
+  "id": "L31_la_respiration",
+  "lesson": 31,
+  "fr": "la respiration",
+  "zh": "呼吸",
+  "note": "動詞 respirer"
+ },
+ {
+  "id": "L31_le_rêve",
+  "lesson": 31,
+  "fr": "le rêve",
+  "zh": "夢",
+  "note": "動詞 rêver"
+ },
+ {
+  "id": "L31_le_réveil",
+  "lesson": 31,
+  "fr": "le réveil",
+  "zh": "起床時刻／鬧鐘",
+  "note": "⭐ 一字兩義：可以指「醒來的那個時間點」，也可以指「鬧鐘」這個物品（老師的例句：Ma fille, c'est mon réveil.＝我女兒就是我的鬧鐘）"
+ },
+ {
+  "id": "L31_le_rythme_cardiaque",
+  "lesson": 31,
+  "fr": "le rythme cardiaque",
+  "zh": "心跳頻率",
+  "note": "回鍋課文C"
+ },
+ {
+  "id": "L31_la_sieste",
+  "lesson": 31,
+  "fr": "la sieste",
+  "zh": "午睡",
+  "note": "回鍋課文B"
+ },
+ {
+  "id": "L31_avoir_mal_à",
+  "lesson": 31,
+  "fr": "avoir mal (à…)",
+  "zh": "（某處）痛",
+  "note": ""
+ },
+ {
+  "id": "L31_la_courbature",
+  "lesson": 31,
+  "fr": "la courbature",
+  "zh": "（運動後）肌肉痠痛",
+  "note": "回鍋課文A"
+ },
+ {
+  "id": "L31_souffrir",
+  "lesson": 31,
+  "fr": "souffrir",
+  "zh": "受苦、疼痛",
+  "note": "跟英文 suffer 同源，好記"
+ },
+ {
+  "id": "L31_soulager",
+  "lesson": 31,
+  "fr": "soulager",
+  "zh": "緩解（疼痛）",
+  "note": "⭐ 回鍋課文D 的字（植物緩解症狀）"
+ },
+ {
+  "id": "L31_la_tension",
+  "lesson": 31,
+  "fr": "la tension",
+  "zh": "緊繃",
+  "note": "回鍋課文A"
+ },
+ {
+  "id": "L31_adopter_de_bonnes_habitu",
+  "lesson": 31,
+  "fr": "adopter de bonnes habitudes",
+  "zh": "養成好習慣",
+  "note": ""
+ },
+ {
+  "id": "L31_relâcher_ses_muscles",
+  "lesson": 31,
+  "fr": "relâcher ses muscles",
+  "zh": "放鬆肌肉",
+  "note": "回鍋課文A"
+ },
+ {
+  "id": "L31_apaisé_e",
+  "lesson": 31,
+  "fr": "apaisé(e)",
+  "zh": "平靜的",
+  "note": "⭐ 老師：apaiser 比較偏「安撫大腦、情緒」，soulager 比較偏「緩解肌肉、身體症狀」"
+ },
+ {
+  "id": "L31_relaxé_e",
+  "lesson": 31,
+  "fr": "relaxé(e)",
+  "zh": "放鬆的",
+  "note": ""
+ },
+ {
+  "id": "L31_être_en_pleine_forme",
+  "lesson": 31,
+  "fr": "être en pleine forme",
+  "zh": "狀態絕佳",
+  "note": "⭐ en forme＝有精神；en pleine forme 的 pleine 加強語氣＝滿滿的精神"
+ },
+ {
+  "id": "L31_reposé_e",
+  "lesson": 31,
+  "fr": "reposé(e)",
+  "zh": "休息夠的",
+  "note": ""
+ },
+ {
+  "id": "L31_masser",
+  "lesson": 31,
+  "fr": "masser",
+  "zh": "按摩",
+  "note": ""
+ },
+ {
+  "id": "L31_se_sentir_léger_légère",
+  "lesson": 31,
+  "fr": "se sentir léger, légère",
+  "zh": "感覺輕盈",
+  "note": "反義 se sentir lourd(e)"
+ },
+ {
+  "id": "L31_récupérer_se_remettre",
+  "lesson": 31,
+  "fr": "récupérer（= se remettre）",
+  "zh": "恢復",
+  "note": "回鍋課文C「étape de récupération」"
+ },
+ {
+  "id": "L31_la_sérénité_être_serein",
+  "lesson": 31,
+  "fr": "la sérénité（être serein(e)）",
+  "zh": "平靜、安詳",
+  "note": "⭐ 跟 apaiser 意思相近"
+ },
+ {
+  "id": "L31_s_étirer",
+  "lesson": 31,
+  "fr": "s'étirer",
+  "zh": "伸展",
+  "note": "回鍋課文A"
+ },
+ {
+  "id": "L31_manquer",
+  "lesson": 31,
+  "fr": "manquer",
+  "zh": "「想念」句型主詞受詞方向想反了",
+  "note": "⚠️⚠️⚠️ 見上方 manquer 專屬整理——Tu me manques＝我想你（不是你想我），法文邏輯是「你讓我感覺缺少」，跟英文 I miss you 主受詞方向相反"
  }
 ];
