@@ -74,6 +74,58 @@ body { background:#0b0a10; color:#e6e0d2; font-family:'Segoe UI',system-ui,sans-
 .whole .wbtn:hover { color:#e0c060; border-color:#c9a227; }
 .whole .wbody { margin-top:11px; }
 
+.modebar { display:flex; gap:8px; margin-bottom:14px; }
+.mbtn { flex:1; background:#12101a; border:1px solid #322a3e; border-radius:10px;
+  padding:10px 8px; text-align:center; cursor:pointer; transition:all .15s; font-size:.82rem; color:#8a8270; }
+.mbtn:hover { border-color:#c9a227; }
+.mbtn.on { border-color:#e0c060; background:#221c14; color:#e0c060; }
+.mbtn small { display:block; font-size:.64rem; color:#5a5344; margin-top:3px; }
+
+/* 填空 */
+.stg { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+.stg .s { font-size:.68rem; padding:5px 10px; border-radius:20px; cursor:pointer;
+  border:1px solid #2a2436; color:#5a5344; background:none; font-family:inherit; }
+.stg .s:hover { border-color:#c9a227; color:#8a8270; }
+.stg .s.on { border-color:#e0c060; color:#e0c060; background:#221c14; }
+.stg .s.done { border-color:#2f5a3f; color:#6fd09a; }
+.stgNote { font-size:.72rem; color:#6a6250; line-height:1.7; margin-bottom:12px;
+  padding-left:10px; border-left:2px solid #322a3e; }
+
+.cz { font-size:1.02rem; line-height:2.7; font-family:Georgia,serif; color:#efe7d4; }
+.cz input { background:#1a1624; border:none; border-bottom:1px solid #6a5a30;
+  color:#e0c060; font-size:.96rem; font-family:Georgia,serif; padding:2px 5px;
+  border-radius:4px 4px 0 0; text-align:center; }
+.cz input:focus { outline:none; border-bottom-color:#e0c060; background:#221c14; }
+.cz input.ok   { color:#6fd09a; border-bottom-color:#2f5a3f; }
+.cz input.warn { color:#e0c060; border-bottom-color:#c9a227; }
+.cz input.bad  { color:#e08070; border-bottom-color:#7a3028; }
+.cz .zhcue { font-size:.72rem; color:#6a6250; font-family:'Segoe UI',system-ui,sans-serif; }
+.cz .blk { display:inline-block; border-bottom:1px dashed #6a5a30; min-width:90px;
+  text-align:center; color:#5a5344; font-size:.76rem;
+  font-family:'Segoe UI',system-ui,sans-serif; }
+
+.acc { display:flex; gap:4px; flex-wrap:wrap; margin:12px 0; }
+.acc button { background:#1a1624; border:1px solid #322a3e; color:#c9b98a;
+  border-radius:6px; padding:5px 9px; font-size:.9rem; cursor:pointer; font-family:Georgia,serif; }
+.acc button:hover { border-color:#c9a227; }
+
+.czArea textarea { width:100%; background:#141220; border:1px solid #322a3e; border-radius:10px;
+  color:#efe7d4; font-size:1rem; padding:12px; min-height:150px; line-height:1.9;
+  font-family:Georgia,serif; resize:vertical; }
+.czArea textarea:focus { outline:none; border-color:#e0c060; }
+.cmp { margin-top:12px; }
+.cmp .row { display:flex; gap:9px; align-items:baseline; padding:7px 0;
+  border-bottom:1px solid #1d1828; font-size:.86rem; }
+.cmp .row:last-child { border-bottom:none; }
+.cmp .mk { flex:0 0 auto; width:18px; text-align:center; }
+.cmp .fr { flex:1; font-family:Georgia,serif; color:#c8c0ac; }
+.cmp .zh { flex:0 0 auto; font-size:.72rem; color:#5a5344; max-width:38%; text-align:right; }
+.cmp .row.hit .fr { color:#6fd09a; }
+.cmp .row.miss .fr { color:#e08070; }
+
+.score { font-size:.86rem; margin:12px 0; color:#8a8270; }
+.score b { font-size:1.2rem; }
+
 .bar { display:flex; gap:9px; flex-wrap:wrap; margin-bottom:14px; }
 button { padding:9px 15px; border-radius:8px; border:none; font-size:.8rem;
   cursor:pointer; font-family:inherit; transition:opacity .15s, transform .1s; }
@@ -106,7 +158,9 @@ button:active { transform:scale(.97); }
   <b>怎麼用：</b>先自己讀法文，⛔ 不要急著找中文。<br>
   讀到哪一塊卡住 → <b>點那一塊</b>，中文跟文法點才出現。<br>
   ⭐ 你點了哪幾塊就是你真正的卡點，系統會記下來 —— <b>那比事後回想準</b>。<br>
-  整段都通了 → 按「讀懂了」，那一段才該進 Anki 背。
+  整段都通了 → 按「讀懂了」，然後換到 <b>✏️ 填空</b>。<br>
+  ⭐ 填空五階：<b>內容詞 → 功能詞 → 整塊 → 只剩提示詞 → 全空</b>，
+  最後一階寫得出來，就是真的背起來了。
 </div>
 
 <div class="count" id="count"></div>
@@ -117,6 +171,7 @@ button:active { transform:scale(.97); }
   <div id="segList"></div>
 </div>
 
+<div class="modebar" id="modebar"></div>
 <div id="stage"></div>
 
 <div class="mirror" id="mirror"></div>
@@ -156,12 +211,13 @@ function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.cl
 function buildSegs() {
   segs = [];
   if (typeof T1_OPENING !== 'undefined')
-    segs.push({ key:'opening', name:'開場（自我介紹）', fr:T1_OPENING.fr, sec:T1_OPENING.sec, ask:null });
+    segs.push({ key:'opening', name:'開場（自我介紹）', fr:T1_OPENING.fr, sec:T1_OPENING.sec,
+                ask:null, cues:T1_OPENING.cues });
   if (typeof T1_STOCK !== 'undefined')
     T1_STOCK.filter(function(s){ return !s.gap; }).forEach(function(s){
       // ⚠️ key ＝ hook+'/'+src，⭐ 光靠 src 不唯一
       segs.push({ key:s.hook + '/' + s.src, name:s.hook, fr:s.fr, sec:s.sec,
-                  ask:s.q_fr, askZh:s.q_zh, level:s.level });
+                  ask:s.q_fr, askZh:s.q_zh, level:s.level, cues:s.cues });
     });
 }
 
@@ -182,7 +238,7 @@ function renderList() {
   Array.prototype.forEach.call(document.querySelectorAll('.srow'), function(el){
     el.addEventListener('click', function(){
       cur = +el.dataset.i; showAll = false; listOpen = false;
-      renderList(); renderStage();
+      renderList(); renderModebar(); renderStage();
       window.scrollTo({ top:0, behavior:'smooth' });
     });
   });
@@ -237,9 +293,279 @@ function ptHtml(pt) {
           : '<br><span class="nocx">📍 codex 還沒有這一條</span>') + '</span>';
 }
 
+/* ════════════════════════════════════════════════════════════
+   填空模式（2026-09-09 Owen 提的，已拍板）
+   ------------------------------------------------------------
+   > 「語言島變口說可能也是類似成翻譯填空慢慢轉換成一整段背誦。
+   >   這樣的循序漸進比較能背得起來，也可以利用填空的框架做訓練。」
+
+   ⭐ 為什麼這個設計是對的（三條，都有依據）：
+   1. 它正好補上他卡住的那一階：六步進程「②翻譯法文 → ③背起來」中間沒有橋，
+      而他自己說「我根本沒有背起來的那段」。填空是連續的橋：挖一個詞 → 挖半句 → 全空＝背誦。
+   2. ⭐⭐ 它是研究裡可靠度最高的回饋型態。2026-09-06 研究結論：
+      自學唯一可靠的機制是「**有答案鍵的二元比對**」——填空天生有答案鍵，
+      對錯是二元的，⛔ 不需要他有判斷力（而自評的實測命中率只有 25%）。
+   3. ⭐⭐⭐ 燃料已經存在：t1_gloss.js 的 blocks 本來是為「讀懂」做的，
+      但它同時就是填空的天然單位——每塊有中文、有法文、而且是**有意義的語塊**
+      （⛔ 不是隨機挖字）。做這個不需要新內容。
+
+   ⭐ 五階，刻意不是「挖的比例從 20% 長到 100%」：
+     1 內容詞   靠中文意思就想得出來 → 最低門檻
+     2 功能詞   ⭐ 冠詞/介系詞/變位——**內容詞你靠中文能猜，功能詞不行**，而扣分的往往是後者
+     3 整塊     用 gloss 的 blocks 當單位
+     4 只剩提示詞  cues（本來就有的支架）
+     5 全空     ＝ 背誦
+   ⚠️ 每階的空格數比照 table_drill 的教訓上限 ~8 格（Owen：一頁五格最剛好，至多十格）。
+   ⭐ 每次重做會重新抽要挖哪幾格 —— 那是刻意的「變異排程」
+     （2026-09-06 研究：同段可以練很多次，但問題不是次數多，是每次做同一件事）。
+   ════════════════════════════════════════════════════════════ */
+
+var mode = 'read';           // 'read' | 'cloze'
+var MAX_BLANKS = 8;
+var STAGES = [
+  { n:1, name:'內容詞',   note:'挖掉名詞、動詞這些「有意思」的字。⭐ 靠中文想得出來，先建立信心。' },
+  { n:2, name:'功能詞',   note:'⭐ 改挖冠詞、介系詞、變位。這些中文提示幫不了你——而扣分的往往正是這些。' },
+  { n:3, name:'整塊',     note:'一次挖掉一整個語塊，只留中文提示。⭐ 這一階開始練「組裝」不是「填字」。' },
+  { n:4, name:'只剩提示詞', note:'只看幾個關鍵詞，把整段寫出來。⭐ 這就是你六步裡的「看提示詞快速講完」。' },
+  { n:5, name:'全空',     note:'什麼都不給，直接寫。⭐ 寫得出來 ＝ 這段真的背起來了。' }
+];
+
+/* 法文的功能詞（封閉集合，⭐ 所以可以硬寫，不需要詞性標註器）。
+   ⚠️ 不在這張表裡的字一律視為內容詞。 */
+var FUNC = new Set(('le la les l un une des du de d au aux ' +
+  'a à en dans sur sous avec pour par chez entre vers depuis pendant avant après sans contre ' +
+  'je j tu il elle on nous vous ils elles me m te t se s lui leur y moi toi eux ' +
+  'qui que qu où dont ce c cet cette ces celui celle ceux ' +
+  'mon ma mes ton ta tes son sa ses notre nos votre vos leurs ' +
+  'et mais ou donc car ni quand si comme lorsque puisque ' +
+  'suis es est sommes êtes sont ai as avons avez ont ' +
+  'étais était étions étiez étaient avais avait avions aviez avaient ' +
+  'serai sera serons serez seront aurai aura aurons aurez auront été eu ' +
+  'ne n pas plus jamais rien personne aucun aucune ' +
+  'très bien aussi tout tous toute toutes même encore déjà toujours peu trop ' +
+  'plusieurs quelques chaque autre autres').split(' '));
+
+function deacc(x){ return String(x).normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+function norm(x){ return deacc(String(x)).toLowerCase().replace(/[^a-z0-9']/g,''); }
+
+/** 是不是功能詞：拆撇號，⭐ 全部都是功能詞才算功能詞（l'ami → ami 是內容詞） */
+function isFunc(tok){
+  var parts = norm(tok).split("'").filter(Boolean);
+  if (!parts.length) return false;
+  return parts.every(function(p){ return FUNC.has(p) || FUNC.has(deacc(p)); });
+}
+
+/** 把法文切成 token（保留原始間隔與標點） */
+function tokenize(fr){
+  var out = [], re = /[A-Za-zÀ-ÿ]+(?:[''][A-Za-zÀ-ÿ]+)*/g, last = 0, m;
+  while ((m = re.exec(fr))) {
+    if (m.index > last) out.push({ t:fr.slice(last, m.index), w:false });
+    out.push({ t:m[0], w:true });
+    last = m.index + m[0].length;
+  }
+  if (last < fr.length) out.push({ t:fr.slice(last), w:false });
+  return out;
+}
+
+function shuffleIdx(a){
+  a = a.slice();
+  for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+
+function czStage(key){
+  var d = load();
+  return (d[key] && d[key].cz) || 1;
+}
+function setCzStage(key, n){
+  var d = load();
+  if (!d[key]) d[key] = { done:false, taps:{} };
+  d[key].cz = n;
+  if (!d[key].czPassed) d[key].czPassed = {};
+  save(d);
+}
+function czPassed(key){ var d = load(); return (d[key] && d[key].czPassed) || {}; }
+function markCzPassed(key, n){
+  var d = load();
+  if (!d[key]) d[key] = { done:false, taps:{} };
+  if (!d[key].czPassed) d[key].czPassed = {};
+  d[key].czPassed[n] = true;
+  save(d);
+}
+
+function renderModebar(){
+  var el = document.getElementById('modebar');
+  if (cur === null) { el.innerHTML = ''; return; }
+  var s = segs[cur], r = rec(s.key), st = czStage(s.key);
+  el.innerHTML =
+    '<div class="mbtn ' + (mode==='read'?'on':'') + '" data-m="read">📖 讀懂' +
+      '<small>' + (r.done ? '✓ 已讀懂' : '先把這段看懂') + '</small></div>' +
+    '<div class="mbtn ' + (mode==='cloze'?'on':'') + '" data-m="cloze">✏️ 填空' +
+      '<small>第 ' + st + ' 階 · ' + STAGES[st-1].name + '</small></div>';
+  Array.prototype.forEach.call(el.querySelectorAll('.mbtn'), function(b){
+    b.addEventListener('click', function(){ mode = b.dataset.m; renderModebar(); renderStage(); });
+  });
+}
+
+var czState = null;   // { kind, items:[...], stage }
+
+function renderCloze(){
+  var host = document.getElementById('stage');
+  var s = segs[cur], g = gloss(s.key);
+  if (!g) { host.innerHTML = '<div class="text"><div class="empty">這一段還沒有解析，填空需要它</div></div>'; return; }
+  var st = czStage(s.key), spec = STAGES[st-1], passed = czPassed(s.key);
+
+  var head = '<div class="stg">' + STAGES.map(function(x){
+    return '<button class="s ' + (x.n===st?'on ':'') + (passed[x.n]?'done':'') +
+           '" data-s="' + x.n + '">' + x.n + ' ' + x.name + '</button>';
+  }).join('') + '</div><div class="stgNote">' + spec.note + '</div>';
+
+  var body = '';
+  czState = { stage:st, items:[] };
+
+  if (st === 1 || st === 2) {
+    // ── 詞層填空：挑「內容詞」或「功能詞」，⭐ 每次重抽（變異排程）
+    var toks = tokenize(s.fr);
+    var cand = [];
+    toks.forEach(function(t, i){
+      if (!t.w) return;
+      var f = isFunc(t.t);
+      if ((st === 1 && !f) || (st === 2 && f)) cand.push(i);
+    });
+    var pick = shuffleIdx(cand).slice(0, MAX_BLANKS).sort(function(a,b){ return a-b; });
+    var bi = 0;
+    body = '<div class="cz">' + toks.map(function(t, i){
+      if (pick.indexOf(i) >= 0) {
+        czState.items.push({ id:'cz'+bi, ans:t.t });
+        var w = Math.max(56, t.t.length * 13);
+        return '<input id="cz' + (bi++) + '" style="width:' + w + 'px" autocomplete="off" ' +
+               'autocorrect="off" autocapitalize="none" spellcheck="false">';
+      }
+      return esc(t.t).replace(/\n\n/g, '<br><br>');
+    }).join('') + '</div>';
+  }
+  else if (st === 3) {
+    // ── 塊層填空：用 gloss 的 blocks 當單位，⭐ 只留中文提示
+    var parts = segment(s.fr, g.blocks);
+    var bIdx = parts.map(function(p, i){ return p.t === 'bk' ? i : -1; }).filter(function(i){ return i >= 0; });
+    var take = shuffleIdx(bIdx).slice(0, Math.max(2, Math.ceil(bIdx.length / 2)))
+                 .sort(function(a,b){ return a-b; });
+    var k = 0;
+    body = '<div class="cz">' + parts.map(function(p, i){
+      if (p.t === 'gap') return esc(p.s).replace(/\n\n/g, '<br><br>');
+      var b = g.blocks[p.i];
+      if (take.indexOf(i) < 0) return esc(b.fr);
+      czState.items.push({ id:'cz'+k, ans:b.fr, zh:b.zh });
+      return '<span class="zhcue">〔' + esc(b.zh) + '〕</span> ' +
+             '<input id="cz' + (k++) + '" style="width:' + Math.max(120, b.fr.length*9) + 'px" ' +
+             'autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">';
+    }).join('') + '</div>';
+  }
+  else {
+    // ── 4：只剩提示詞　5：全空　→ ⭐ 整段寫，用 blocks 逐塊比對（不是自由比對）
+    var cueHtml = '';
+    if (st === 4) {
+      var cues = s.cues || [];
+      cueHtml = cues.length
+        ? '<div class="cz" style="line-height:2.1;font-size:.92rem">' +
+          cues.map(function(c){ return '<span class="blk">' + esc(c) + '</span>'; }).join(' ') + '</div>'
+        : '<div class="stgNote">這一段沒有提示詞，等同第 5 階</div>';
+    }
+    body = cueHtml + '<div class="czArea" style="margin-top:12px">' +
+           '<textarea id="czText" placeholder="把整段寫出來…"></textarea></div>';
+    g.blocks.forEach(function(b, i){ czState.items.push({ id:'blk'+i, ans:b.fr, zh:b.zh }); });
+  }
+
+  var ACC = ['é','è','ê','à','â','ç','ù','û','î','ï','ô','œ'];
+  var accBar = '<div class="acc">' + ACC.map(function(a){
+    return '<button data-a="' + a + '">' + a + '</button>'; }).join('') + '</div>';
+
+  host.innerHTML = '<div class="text">' +
+      (s.ask ? '<div class="ask">（考官問）' + esc(s.ask) + '</div>' : '') +
+      head + body + accBar +
+      '<div class="score" id="czScore"></div>' +
+      '<div class="cmp" id="czCmp"></div>' +
+    '</div>' +
+    '<div class="bar">' +
+      '<button class="b-done" id="czCheck">對答案</button>' +
+      '<button class="b-all" id="czAgain">🔁 換一批再來</button>' +
+      (st < 5 ? '<button class="b-next" id="czUp">下一階 →</button>' : '') +
+    '</div>';
+
+  Array.prototype.forEach.call(host.querySelectorAll('.stg .s'), function(b){
+    b.addEventListener('click', function(){ setCzStage(s.key, +b.dataset.s); renderModebar(); renderStage(); });
+  });
+  Array.prototype.forEach.call(host.querySelectorAll('.acc button'), function(b){
+    b.addEventListener('click', function(){
+      var el = document.activeElement;
+      if (!el || (el.tagName !== 'INPUT' && el.tagName !== 'TEXTAREA')) return;
+      var p = el.selectionStart;
+      el.value = el.value.slice(0,p) + b.dataset.a + el.value.slice(el.selectionEnd);
+      el.selectionStart = el.selectionEnd = p + 1; el.focus();
+    });
+  });
+  document.getElementById('czCheck').addEventListener('click', checkCloze);
+  document.getElementById('czAgain').addEventListener('click', renderStage);
+  var up = document.getElementById('czUp');
+  if (up) up.addEventListener('click', function(){
+    setCzStage(s.key, Math.min(5, st + 1)); renderModebar(); renderStage();
+    window.scrollTo({ top:0, behavior:'smooth' });
+  });
+}
+
+/* ⭐ 對答案：二元比對，⛔ 不需要他判斷。
+   ⚠️ 缺重音算「對，但重音」（黃色）不算錯——這一階練的是想得起來，不是拼字；
+   但也不能靜靜放過，不然會養成習慣（寫作的 orthographe 是實扣的）。 */
+function checkCloze(){
+  if (!czState) return;
+  var s = segs[cur], ok = 0, warn = 0, rows = '';
+
+  if (czState.stage <= 3) {
+    czState.items.forEach(function(it){
+      var el = document.getElementById(it.id);
+      if (!el) return;
+      var v = el.value.trim();
+      var exact = norm(v) === norm(it.ans) && deacc(v).toLowerCase() === deacc(it.ans).toLowerCase()
+                  && v.toLowerCase() === it.ans.toLowerCase();
+      var loose = norm(v) === norm(it.ans);
+      el.className = exact ? 'ok' : (loose ? 'warn' : 'bad');
+      if (exact) ok++;
+      else if (loose) { warn++; el.value = it.ans; }
+      else el.value = v ? v + ' → ' + it.ans : it.ans;
+    });
+    var tot = czState.items.length;
+    document.getElementById('czScore').innerHTML =
+      '<b>' + ok + '</b> / ' + tot + ' 全對' +
+      (warn ? '　<span style="color:#e0c060">' + warn + ' 個只差重音（已幫你補上）</span>' : '');
+    if (ok + warn === tot) {
+      markCzPassed(s.key, czState.stage);
+      toast('✓ 這一階過了');
+      renderModebar();
+    }
+    return;
+  }
+
+  // 第 4／5 階：逐塊比對 ——⭐ 用 blocks 當欄位，⛔ 不是「自己看哪裡不一樣」
+  //   （2026-09-06 研究：自由比對的注意力 71.94% 會跑到詞彙、只有 8.39% 在文法）
+  var typed = norm(document.getElementById('czText').value);
+  czState.items.forEach(function(it){
+    var hit = typed.indexOf(norm(it.ans)) >= 0;
+    if (hit) ok++;
+    rows += '<div class="row ' + (hit ? 'hit' : 'miss') + '">' +
+            '<span class="mk">' + (hit ? '✓' : '✗') + '</span>' +
+            '<span class="fr">' + esc(it.ans) + '</span>' +
+            '<span class="zh">' + esc(it.zh || '') + '</span></div>';
+  });
+  document.getElementById('czScore').innerHTML =
+    '<b>' + ok + '</b> / ' + czState.items.length + ' 塊寫出來了';
+  document.getElementById('czCmp').innerHTML = rows;
+  if (ok === czState.items.length) { markCzPassed(s.key, czState.stage); toast('✓ 這一階過了'); renderModebar(); }
+}
+
 function renderStage() {
   var host = document.getElementById('stage');
-  if (cur === null) { host.innerHTML = ''; renderMirror(); return; }
+  if (cur === null) { host.innerHTML = ''; document.getElementById('modebar').innerHTML=''; renderMirror(); return; }
+  if (mode === 'cloze') { renderCloze(); renderMirror(); return; }
   var s = segs[cur], g = gloss(s.key), r = rec(s.key);
 
   var head = '';
@@ -312,7 +638,8 @@ function renderStage() {
     renderList(); renderStage(); renderMirror();
   });
   host.querySelector('.b-next').addEventListener('click', function(){
-    cur = (cur + 1) % segs.length; showAll = false; listOpen = false; renderList(); renderStage();
+    cur = (cur + 1) % segs.length; showAll = false; listOpen = false;
+    renderList(); renderModebar(); renderStage();
     window.scrollTo({ top:0, behavior:'smooth' });
   });
   renderMirror();
