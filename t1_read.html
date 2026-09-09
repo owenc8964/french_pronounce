@@ -74,6 +74,22 @@ body { background:#0b0a10; color:#e6e0d2; font-family:'Segoe UI',system-ui,sans-
 .whole .wbtn:hover { color:#e0c060; border-color:#c9a227; }
 .whole .wbody { margin-top:11px; }
 
+/* 今天練這幾段 */
+.today { background:#12101a; border:1px solid #322a3e; border-left:3px solid #c9a227;
+  border-radius:12px; padding:14px 16px; margin-bottom:14px; }
+.today h3 { font-size:.7rem; color:#5a5344; letter-spacing:1.5px; margin-bottom:11px;
+  display:flex; justify-content:space-between; align-items:center; }
+.today h3 .hint { color:#4a4436; letter-spacing:0; font-size:.66rem; }
+.trow { display:flex; align-items:center; gap:10px; background:#1a1624; border:1px solid #3a3048;
+  border-radius:9px; padding:9px 12px; margin-bottom:6px; cursor:pointer; transition:border-color .15s; }
+.trow:hover { border-color:#c9a227; }
+.trow .st { flex:0 0 auto; font-size:.62rem; color:#12101a; background:#c9a227;
+  border-radius:5px; padding:2px 7px; font-weight:700; }
+.trow .nm { flex:1; font-size:.84rem; color:#e8dcc0; line-height:1.4; }
+.trow .nm small { display:block; font-size:.66rem; color:#6a6250; margin-top:2px; }
+.trow .ago { flex:0 0 auto; font-size:.66rem; color:#5a5344; }
+.today .none { color:#4a4436; font-size:.8rem; line-height:1.8; }
+
 .modebar { display:flex; gap:8px; margin-bottom:14px; }
 .mbtn { flex:1; background:#12101a; border:1px solid #322a3e; border-radius:10px;
   padding:10px 8px; text-align:center; cursor:pointer; transition:all .15s; font-size:.82rem; color:#8a8270; }
@@ -165,6 +181,8 @@ button:active { transform:scale(.97); }
 
 <div class="count" id="count"></div>
 
+<div class="today" id="today"></div>
+
 <div class="pick" id="pick">
   <h3><span>選一段</span><span class="tog" id="togList">展開清單</span></h3>
   <div class="nowSeg" id="nowSeg"></div>
@@ -204,6 +222,21 @@ var segs = [], cur = null, showAll = false, listOpen = false;
 function load() { try { return JSON.parse(localStorage.getItem(LS) || '{}'); } catch(e){ return {}; } }
 function save(d) { localStorage.setItem(LS, JSON.stringify(d)); }
 function rec(key) { var d = load(); if (!d[key]) d[key] = { done:false, taps:{} }; return d[key]; }
+
+/* ⚠️⚠️ 2026-09-09：所有寫入一律走這裡，⭐ 因為它會蓋上 `last` 時間戳。
+   sync_supabase.js 的合併規則是：
+     out[k] = (b.last || 0) >= (a.last || 0) ? b : a;   // b＝雲端　a＝本地
+   ⛔ **沒有 last 的記錄 → 0 >= 0 恆真 → 永遠取雲端版本，不管本地多新。**
+   建這頁時漏了這個欄位，實測時真的看到本地狀態被舊的雲端資料蓋掉。
+   ⭐ `last` 是全站約定（quiz／review／sentence_drill／gram_trainer／tense_lens／roleplay 都有）。 */
+function edit(key, fn) {
+  var d = load();
+  if (!d[key]) d[key] = { done:false, taps:{} };
+  fn(d[key]);
+  d[key].last = Date.now();
+  save(d);
+  return d[key];
+}
 function esc(s) { return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.classList.add('show');
                    setTimeout(function(){ t.classList.remove('show'); },2000); }
@@ -378,19 +411,89 @@ function czStage(key){
   return (d[key] && d[key].cz) || 1;
 }
 function setCzStage(key, n){
-  var d = load();
-  if (!d[key]) d[key] = { done:false, taps:{} };
-  d[key].cz = n;
-  if (!d[key].czPassed) d[key].czPassed = {};
-  save(d);
+  edit(key, function(r){ r.cz = n; if (!r.czPassed) r.czPassed = {}; });
 }
 function czPassed(key){ var d = load(); return (d[key] && d[key].czPassed) || {}; }
 function markCzPassed(key, n){
+  edit(key, function(r){ if (!r.czPassed) r.czPassed = {}; r.czPassed[n] = true; });
+}
+
+/* ════════════════════════════════════════════════════════════
+   今天練哪幾段（2026-09-09）
+   ⚠️ Owen：「這個背誦填表格對我來說滿有效的，跟 anki 差不多方便，可以成為輸入主力。」
+   ⭐⭐ 但填空缺的正是 Anki 有的那一半：**排程**。
+     Anki 真正的價值不是卡片，是「今天該複習哪幾張」。
+     25 段 × 5 階靠腦袋記是不可能的 → ⛔ 沒有排程，這個工具一個禮拜後就會廢掉。
+
+   ⛔ 刻意不做完整 SRS —— 那是 Anki 的工作，重複做沒有意義。
+   ⭐ 只做一條規則：**階數低的先，同階則最久沒碰的先。**
+
+   ⚠️ 只排「已讀懂」的段 —— 那是他自己確認過的依賴（不懂的字串填了也是背字串）。
+   ⛔ 不顯示分母、不顯示落後（階梯制）；⛔ 措辭不催促（「上次 5 天前」，不是「你 5 天沒練了！」）
+   ════════════════════════════════════════════════════════════ */
+var TODAY_N = 5;   // ⭐ 跟純生成卡的每日上限一致（memory feedback_production_vs_recognition_load）
+
+function agoText(days){
+  if (days >= 999) return '還沒練過';
+  if (days <= 0) return '今天練過';
+  if (days === 1) return '昨天';
+  return days + ' 天前';
+}
+
+function todayList(n){
   var d = load();
-  if (!d[key]) d[key] = { done:false, taps:{} };
-  if (!d[key].czPassed) d[key].czPassed = {};
-  d[key].czPassed[n] = true;
-  save(d);
+  var rows = segs.map(function(s, i){
+    var r = d[s.key] || {};
+    var passed = r.czPassed || {};
+    var last = r.czAt || 0;
+    return {
+      i: i, s: s,
+      st: r.cz || 1,
+      done5: !!passed[5],
+      days: last ? Math.floor((Date.now() - last) / 864e5) : 999,
+      read: !!r.done
+    };
+  });
+  var pool = rows.filter(function(x){ return x.read; })
+                 // ⭐ 已經走完第 5 階的，隔 7 天以上才回來（分散練習，⛔ 不是永遠消失）
+                 .filter(function(x){ return !x.done5 || x.days >= 7; });
+  pool.sort(function(a, b){
+    if (a.st !== b.st) return a.st - b.st;
+    return b.days - a.days;
+  });
+  return { list: pool.slice(0, n), unread: rows.filter(function(x){ return !x.read; }).length };
+}
+
+function renderToday(){
+  var el = document.getElementById('today');
+  var t = todayList(TODAY_N);
+  if (!t.list.length) {
+    el.innerHTML = '<h3><span>今天練這幾段</span></h3>' +
+      '<div class="none">' +
+      (t.unread
+        ? '還沒有讀懂任何一段。⭐ 先挑一段用 <b>📖 讀懂</b> 看過，按「讀懂了」，它就會出現在這裡。'
+        : '都走完了 —— ⭐ 過幾天再回來，那是刻意的（分散練習）。') +
+      '</div>';
+    return;
+  }
+  el.innerHTML =
+    '<h3><span>今天練這幾段</span><span class="hint">階數低的先 · 同階最久沒碰的先</span></h3>' +
+    t.list.map(function(x){
+      return '<div class="trow" data-i="' + x.i + '">' +
+        '<span class="st">' + x.st + ' ' + STAGES[x.st-1].name + '</span>' +
+        '<span class="nm">' + esc(x.s.name) +
+          '<small>' + esc(x.s.askZh || '主動開場') + '</small></span>' +
+        '<span class="ago">' + agoText(x.days) + '</span></div>';
+    }).join('') +
+    (t.unread ? '<div class="none" style="margin-top:9px;font-size:.72rem">⭐ 還有 ' + t.unread +
+       ' 段沒讀懂 —— 讀懂之後才會排進來</div>' : '');
+  Array.prototype.forEach.call(el.querySelectorAll('.trow'), function(r){
+    r.addEventListener('click', function(){
+      cur = +r.dataset.i; mode = 'cloze'; listOpen = false; showAll = false;
+      renderList(); renderModebar(); renderStage();
+      window.scrollTo({ top:0, behavior:'smooth' });
+    });
+  });
 }
 
 function renderModebar(){
@@ -493,7 +596,7 @@ function renderCloze(){
     '</div>';
 
   Array.prototype.forEach.call(host.querySelectorAll('.stg .s'), function(b){
-    b.addEventListener('click', function(){ setCzStage(s.key, +b.dataset.s); renderModebar(); renderStage(); });
+    b.addEventListener('click', function(){ setCzStage(s.key, +b.dataset.s); renderModebar(); renderStage(); renderToday(); });
   });
   Array.prototype.forEach.call(host.querySelectorAll('.acc button'), function(b){
     b.addEventListener('click', function(){
@@ -508,7 +611,7 @@ function renderCloze(){
   document.getElementById('czAgain').addEventListener('click', renderStage);
   var up = document.getElementById('czUp');
   if (up) up.addEventListener('click', function(){
-    setCzStage(s.key, Math.min(5, st + 1)); renderModebar(); renderStage();
+    setCzStage(s.key, Math.min(5, st + 1)); renderModebar(); renderStage(); renderToday();
     window.scrollTo({ top:0, behavior:'smooth' });
   });
 }
@@ -519,6 +622,8 @@ function renderCloze(){
 function checkCloze(){
   if (!czState) return;
   var s = segs[cur], ok = 0, warn = 0, rows = '';
+  // ⭐ 記下「這一段今天碰過了」——排程只靠這個
+  edit(s.key, function(r){ r.czAt = Date.now(); });
 
   if (czState.stage <= 3) {
     czState.items.forEach(function(it){
@@ -540,7 +645,7 @@ function checkCloze(){
     if (ok + warn === tot) {
       markCzPassed(s.key, czState.stage);
       toast('✓ 這一階過了');
-      renderModebar();
+      renderModebar(); renderToday();
     }
     return;
   }
@@ -559,7 +664,7 @@ function checkCloze(){
   document.getElementById('czScore').innerHTML =
     '<b>' + ok + '</b> / ' + czState.items.length + ' 塊寫出來了';
   document.getElementById('czCmp').innerHTML = rows;
-  if (ok === czState.items.length) { markCzPassed(s.key, czState.stage); toast('✓ 這一階過了'); renderModebar(); }
+  if (ok === czState.items.length) { markCzPassed(s.key, czState.stage); toast('✓ 這一階過了'); renderModebar(); renderToday(); }
 }
 
 function renderStage() {
@@ -615,27 +720,26 @@ function renderStage() {
 
   Array.prototype.forEach.call(host.querySelectorAll('.bk'), function(el){
     el.addEventListener('click', function(){
-      var d = load(), k = 'b' + el.dataset.b;
-      if (!d[s.key]) d[s.key] = { done:false, taps:{} };
-      // ⭐ 點開＝記一次卡點；再點收起但**不扣次數**（卡過就是卡過）
-      if (d[s.key].taps[k]) delete d[s.key].taps[k];
-      else d[s.key].taps[k] = (d[s.key].taps[k]||0) + 1;
-      if (!d[s.key].hits) d[s.key].hits = {};
-      d[s.key].hits[k] = (d[s.key].hits[k]||0) + 1;
-      save(d); renderStage();
+      var k = 'b' + el.dataset.b;
+      edit(s.key, function(r){
+        // ⭐ 點開＝記一次卡點；再點收起但**不扣次數**（卡過就是卡過）
+        if (r.taps[k]) delete r.taps[k]; else r.taps[k] = (r.taps[k]||0) + 1;
+        if (!r.hits) r.hits = {};
+        r.hits[k] = (r.hits[k]||0) + 1;
+      });
+      renderStage();
     });
   });
   var wb = host.querySelector('.wbtn');
   if (wb) wb.addEventListener('click', function(){
-    var d = load(); if (!d[s.key]) d[s.key] = { done:false, taps:{} };
-    d[s.key].whole = !d[s.key].whole; save(d); renderStage();
+    edit(s.key, function(r){ r.whole = !r.whole; });
+    renderStage();
   });
   host.querySelector('.b-all').addEventListener('click', function(){ showAll = !showAll; renderStage(); });
   host.querySelector('.b-done').addEventListener('click', function(){
-    var d = load(); if (!d[s.key]) d[s.key] = { done:false, taps:{} };
-    d[s.key].done = !d[s.key].done; save(d);
-    toast(d[s.key].done ? '✓ 這段可以進 Anki 了' : '取消標記');
-    renderList(); renderStage(); renderMirror();
+    var r = edit(s.key, function(r){ r.done = !r.done; });
+    toast(r.done ? '✓ 這段可以進 Anki 了' : '取消標記');
+    renderList(); renderStage(); renderMirror(); renderToday();
   });
   host.querySelector('.b-next').addEventListener('click', function(){
     cur = (cur + 1) % segs.length; showAll = false; listOpen = false;
@@ -677,6 +781,7 @@ document.getElementById('togList').addEventListener('click', function(){
 
 buildSegs();
 renderList();
+renderToday();
 </script>
 <script src="sync_supabase.js"></script>
 </body>
