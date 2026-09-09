@@ -1290,6 +1290,95 @@ const PARTIAL_RETRY_MAX = 0.15;
 let reviewPassCount = 0;  // 這次做了幾輪複習（供結束畫面顯示）
 let onSummary  = false;   // 是否已經在結束畫面（這輪已完整結束，切難度/類型不用再問）
 
+// ════════════════════════════════════════════════════════════
+// 一頁太多格的拆表（2026-09-09 Owen）
+//   「一頁要填的格數可能太多了，如果錯了要重來填得很心累。
+//     某些關聯性低的，比方說課程單字或 conjugaison 大量變化或不規則，
+//     可以一次出五題這樣。我覺得一頁五格最剛好，至多不超過十題。」
+//
+// ⭐⭐ 判準不是「超過幾格就拆」，是**格與格之間有沒有結構關係**：
+//   矩陣型（每列多格，如 4 動詞 × 6 人稱、6 主詞 × 3 性數）
+//     → 這種表的價值就在**對比**（ils ont/sont/vont/font 放一起才看得出差別，note 明講）
+//     → ⛔ 不能亂切，✅ 按「欄」拆：一頁只做一個動詞的六個人稱，
+//        ⭐ 每一欄本身就是一個完整的 paradigm，對比沒有被破壞
+//   清單型（每列一格，如 25 個食材單字）
+//     → ⭐ 這根本不是表格是清單，列與列零關聯 → 隨便切，一頁 5 格
+//
+// ⭐ 型別可以自動判斷（看每列有幾個作答格），⛔ 不用手動標 65 張表。
+// ════════════════════════════════════════════════════════════
+const PAGE_MAX  = 10;   // 硬上限（Owen：至多不超過十題）
+const LIST_PAGE = 5;    // 清單型每頁幾格（Owen：五格最剛好）
+
+/** 依目前難度，判斷這一格會不會是空白（跟 renderCard 裡的 isBlank 同一套規則） */
+function willBlank(cell, rowIdx, midHintRow) {
+  if (typeof cell === 'string') return false;
+  if (diff === 'hard') return true;
+  if (diff === 'easy') return cell.h === true;
+  if (rowIdx === midHintRow && cell.h === false) return false;
+  return true;
+}
+function midHintRowOf(tbl) {
+  let idx = -1;
+  tbl.rows.forEach((row, i) => {
+    if (row.some(c => typeof c === 'object' && c.h === false)) idx = i;
+  });
+  return idx;
+}
+function countBlanks(tbl) {
+  const mh = midHintRowOf(tbl);
+  let n = 0;
+  tbl.rows.forEach((row, ri) => row.forEach(c => { if (willBlank(c, ri, mh)) n++; }));
+  return n;
+}
+
+/** 把一張表拆成數張「一頁不超過 PAGE_MAX 格」的子表；不需要拆就原樣回傳 */
+function splitTable(tbl) {
+  if (countBlanks(tbl) <= PAGE_MAX) return [tbl];
+
+  const r0 = tbl.rows[0] || [];
+  const cellCols = [], labelCols = [];
+  r0.forEach((c, i) => (c && typeof c === 'object' ? cellCols : labelCols).push(i));
+
+  const mk = (headers, rows, suffix, idx) => ({
+    ...tbl,
+    id: tbl.id + '#' + idx,
+    title: tbl.title + suffix,
+    headers, rows,
+    _part: true
+  });
+
+  // ── 矩陣型：按欄拆（保住「一欄＝一個完整 paradigm」）
+  if (cellCols.length > 1) {
+    const perCol = tbl.rows.length;                       // 一欄大約幾格
+    const group  = Math.max(1, Math.floor(PAGE_MAX / Math.max(1, perCol)));
+    const out = [];
+    for (let i = 0; i < cellCols.length; i += group) {
+      const cols = cellCols.slice(i, i + group);
+      const headers = [...labelCols.map(c => tbl.headers[c]), ...cols.map(c => tbl.headers[c])];
+      const rows = tbl.rows.map(r => [...labelCols.map(c => r[c]), ...cols.map(c => r[c])]);
+      // ⭐ 標題直接掛欄名（être / avoir…），比 (1/4) 有意義
+      const suffix = ' — ' + cols.map(c => tbl.headers[c]).join(' · ');
+      out.push(mk(headers, rows, suffix, out.length + 1));
+    }
+    return out;
+  }
+
+  // ── 清單型：按列拆，每頁 LIST_PAGE 格
+  const mh = midHintRowOf(tbl);
+  const out = [];
+  let buf = [], n = 0;
+  tbl.rows.forEach((row, ri) => {
+    const b = row.reduce((a, c) => a + (willBlank(c, ri, mh) ? 1 : 0), 0);
+    if (buf.length && n + b > LIST_PAGE) { out.push(buf); buf = []; n = 0; }
+    buf.push(row); n += b;
+  });
+  if (buf.length) out.push(buf);
+  const total = out.length;
+  return out.map((rows, i) =>
+    mk(tbl.headers, rows, ` (${i + 1}/${total})`, i + 1));
+}
+
+
 const TYPE_LABEL = { verb:'動詞', adj:'形容詞', article:'冠詞', prep:'介係詞', gram:'文法詞', vocab:'詞彙' };
 
 // ════════════════════════════════════════════════════════════
@@ -1326,7 +1415,9 @@ function shuffle(arr) {
 }
 
 function startSession() {
-  const src = typeFilter === 'all' ? TABLES : TABLES.filter(t => t.type === typeFilter);
+  const base = typeFilter === 'all' ? TABLES : TABLES.filter(t => t.type === typeFilter);
+  // ⭐ 先拆再抽 —— 這樣「一輪 6 張」的每一張都已經是 ≤10 格的小頁
+  const src = base.flatMap(splitTable);
   window._roundPool = src.length;
   queue = shuffle(src).slice(0, ROUND_SIZE);
   qIdx = 0; totalOk = 0; totalBad = 0; results = [];
