@@ -74,6 +74,31 @@ body { background:#0b0a10; color:#e6e0d2; font-family:'Segoe UI',system-ui,sans-
 .whole .wbtn:hover { color:#e0c060; border-color:#c9a227; }
 .whole .wbody { margin-top:11px; }
 
+/* 階梯地圖 */
+.ladder { background:#12101a; border:1px solid #322a3e; border-radius:12px;
+  padding:14px 16px; margin-bottom:14px; }
+.ladder h3 { font-size:.7rem; color:#5a5344; letter-spacing:1.5px; margin-bottom:4px;
+  display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
+.ladder h3 .tog { color:#7fa8c9; letter-spacing:0; font-size:.72rem;
+  border:1px solid #2a3a4a; border-radius:20px; padding:3px 11px; }
+.ladder h3 .tog:hover { border-color:#7fa8c9; background:#141c26; }
+.ladder .hd { display:flex; gap:4px; padding-left:150px; margin:10px 0 6px; }
+.ladder .hd span { flex:1; font-size:.6rem; color:#4a4436; text-align:center; letter-spacing:.5px; }
+.lrow { display:flex; align-items:center; gap:4px; margin-bottom:4px; }
+.lrow .nm { flex:0 0 146px; font-size:.74rem; color:#b8ae98; overflow:hidden;
+  text-overflow:ellipsis; white-space:nowrap; }
+.lrow.unread .nm { color:#4a4436; }
+.lrow .c { flex:1; height:22px; border-radius:5px; border:1px solid #2a2436;
+  background:#16121e; cursor:pointer; transition:all .12s; position:relative; }
+.lrow .c:hover { border-color:#c9a227; }
+.lrow .c.pass { background:#1d4a33; border-color:#2f5a3f; }
+.lrow .c.pass::after { content:'✓'; position:absolute; inset:0; display:flex;
+  align-items:center; justify-content:center; font-size:.66rem; color:#6fd09a; }
+.lrow .c.here { border-color:#e0c060; background:#221c14; box-shadow:0 0 0 1px rgba(224,192,96,.35) inset; }
+.lrow.unread .c { opacity:.32; cursor:default; }
+.lrow.unread .c:hover { border-color:#2a2436; }
+.ladder .legend { font-size:.66rem; color:#4a4436; margin-top:10px; line-height:1.8; }
+
 /* 今天練這幾段 */
 .today { background:#12101a; border:1px solid #322a3e; border-left:3px solid #c9a227;
   border-radius:12px; padding:14px 16px; margin-bottom:14px; }
@@ -182,6 +207,7 @@ button:active { transform:scale(.97); }
 <div class="count" id="count"></div>
 
 <div class="today" id="today"></div>
+<div class="ladder" id="ladder"></div>
 
 <div class="pick" id="pick">
   <h3><span>選一段</span><span class="tog" id="togList">展開清單</span></h3>
@@ -496,6 +522,58 @@ function renderToday(){
   });
 }
 
+/* ════════════════════════════════════════════════════════════
+   階梯地圖（2026-09-09 Owen 指定）
+   > 「幫我把那個階梯做出來，讓我邊做看看我每一段的階梯走到哪裡了」
+   ⚠️ 專案規則寫「⛔ 不顯示分母、不顯示落後」——
+   ⭐ 所以這裡做成**地圖**不是進度條：只顯示每段在哪一階，
+     ⛔ 沒有「12/125」、沒有百分比、沒有「你還差幾個」。
+     那是 feedback_awareness_over_drilling 說的「系統第一角色是鏡子」。
+   ⭐ 未讀懂的段淡化並不可點——依賴關係用視覺表達，⛔ 不用文字罵他。
+   ════════════════════════════════════════════════════════════ */
+var ladderOpen = false;
+
+function renderLadder(){
+  var el = document.getElementById('ladder');
+  var d = load();
+  var head = '<h3 id="ladTog"><span>階梯地圖</span>' +
+             '<span class="tog">' + (ladderOpen ? '收起' : '展開') + '</span></h3>';
+  if (!ladderOpen) { el.innerHTML = head; bindLadTog(); return; }
+
+  var rows = segs.map(function(sg, i){
+    var r = d[sg.key] || {}, passed = r.czPassed || {}, st = r.cz || 1, read = !!r.done;
+    var cells = STAGES.map(function(x){
+      var cls = passed[x.n] ? 'pass' : (read && x.n === st ? 'here' : '');
+      return '<div class="c ' + cls + '" data-i="' + i + '" data-s="' + x.n + '" ' +
+             'title="' + esc(sg.name + ' · 第' + x.n + '階 ' + x.name) + '"></div>';
+    }).join('');
+    return '<div class="lrow ' + (read ? '' : 'unread') + '">' +
+           '<span class="nm" title="' + esc(sg.name) + '">' + esc(sg.name) + '</span>' +
+           cells + '</div>';
+  }).join('');
+
+  el.innerHTML = head +
+    '<div class="hd">' + STAGES.map(function(x){ return '<span>' + x.n + ' ' + x.name + '</span>'; }).join('') + '</div>' +
+    rows +
+    '<div class="legend">✓ 過了　·　<span style="color:#e0c060">金框</span>＝現在在這一階　·　' +
+    '<span style="color:#4a4436">淡的＝還沒讀懂，讀懂之後才會亮起來</span><br>' +
+    '⭐ 點任一格可以直接跳過去做。</div>';
+
+  bindLadTog();
+  Array.prototype.forEach.call(el.querySelectorAll('.lrow:not(.unread) .c'), function(c){
+    c.addEventListener('click', function(){
+      cur = +c.dataset.i; mode = 'cloze'; listOpen = false; showAll = false;
+      setCzStage(segs[cur].key, +c.dataset.s);
+      renderList(); renderModebar(); renderStage(); renderToday(); renderLadder();
+      window.scrollTo({ top:0, behavior:'smooth' });
+    });
+  });
+}
+function bindLadTog(){
+  var t = document.getElementById('ladTog');
+  if (t) t.addEventListener('click', function(){ ladderOpen = !ladderOpen; renderLadder(); });
+}
+
 function renderModebar(){
   var el = document.getElementById('modebar');
   if (cur === null) { el.innerHTML = ''; return; }
@@ -596,7 +674,7 @@ function renderCloze(){
     '</div>';
 
   Array.prototype.forEach.call(host.querySelectorAll('.stg .s'), function(b){
-    b.addEventListener('click', function(){ setCzStage(s.key, +b.dataset.s); renderModebar(); renderStage(); renderToday(); });
+    b.addEventListener('click', function(){ setCzStage(s.key, +b.dataset.s); renderModebar(); renderStage(); renderToday(); renderLadder(); });
   });
   Array.prototype.forEach.call(host.querySelectorAll('.acc button'), function(b){
     b.addEventListener('click', function(){
@@ -611,7 +689,7 @@ function renderCloze(){
   document.getElementById('czAgain').addEventListener('click', renderStage);
   var up = document.getElementById('czUp');
   if (up) up.addEventListener('click', function(){
-    setCzStage(s.key, Math.min(5, st + 1)); renderModebar(); renderStage(); renderToday();
+    setCzStage(s.key, Math.min(5, st + 1)); renderModebar(); renderStage(); renderToday(); renderLadder();
     window.scrollTo({ top:0, behavior:'smooth' });
   });
 }
@@ -645,7 +723,7 @@ function checkCloze(){
     if (ok + warn === tot) {
       markCzPassed(s.key, czState.stage);
       toast('✓ 這一階過了');
-      renderModebar(); renderToday();
+      renderModebar(); renderToday(); renderLadder();
     }
     return;
   }
@@ -664,7 +742,7 @@ function checkCloze(){
   document.getElementById('czScore').innerHTML =
     '<b>' + ok + '</b> / ' + czState.items.length + ' 塊寫出來了';
   document.getElementById('czCmp').innerHTML = rows;
-  if (ok === czState.items.length) { markCzPassed(s.key, czState.stage); toast('✓ 這一階過了'); renderModebar(); renderToday(); }
+  if (ok === czState.items.length) { markCzPassed(s.key, czState.stage); toast('✓ 這一階過了'); renderModebar(); renderToday(); renderLadder(); }
 }
 
 function renderStage() {
@@ -739,7 +817,7 @@ function renderStage() {
   host.querySelector('.b-done').addEventListener('click', function(){
     var r = edit(s.key, function(r){ r.done = !r.done; });
     toast(r.done ? '✓ 這段可以進 Anki 了' : '取消標記');
-    renderList(); renderStage(); renderMirror(); renderToday();
+    renderList(); renderStage(); renderMirror(); renderToday(); renderLadder();
   });
   host.querySelector('.b-next').addEventListener('click', function(){
     cur = (cur + 1) % segs.length; showAll = false; listOpen = false;
@@ -782,6 +860,7 @@ document.getElementById('togList').addEventListener('click', function(){
 buildSegs();
 renderList();
 renderToday();
+renderLadder();
 </script>
 <script src="sync_supabase.js"></script>
 </body>
