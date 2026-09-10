@@ -131,6 +131,11 @@ body {
   color: #d0f0d8; border: none; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 0.8rem; }
 #qnoteTag { font-size: 0.68rem; color: #f0c060; margin-bottom: 6px; display: none; line-height: 1.5; }
 #qnoteCount { font-size: 0.68rem; color: #445060; margin-top: 6px; text-align: center; }
+
+/* ⭐ 跳過：中性灰 —— ⛔ 不是紅（失敗）也不是綠（完成）。依 CLAUDE.md 練習頁鐵律 */
+.skip-card-btn { background:#16161c; color:#6a6a78; border:1px solid #2a2a34;
+  border-radius:20px; padding:7px 16px; font-size:.74rem; cursor:pointer; font-family:inherit; }
+.skip-card-btn:hover { color:#9a9aa8; border-color:#3a3a48; }
 </style>
 </head>
 <body>
@@ -214,7 +219,10 @@ body {
     </div>
   </div>
 
-  <div id="revealBox"></div>
+  <div id="skipRow" style="text-align:center;margin:10px 0 4px">
+  <button id="skipCardBtn" class="skip-card-btn" title="這題我已經會了，或今天不想練它">⏭ 這題跳過</button>
+</div>
+<div id="revealBox"></div>
 </div>
 
 <div id="doneView" style="display:none"></div>
@@ -423,6 +431,8 @@ function renderCard() {
     (inRetry ? '複習輪 ' : '') + (idx + 1) + ' / ' + packet.length + (packet[idx].isNew ? '　·　新' : '');
   document.getElementById('pkScore').textContent =
     firstTryTotal ? firstTryOk + '/' + firstTryTotal : '';
+  const sr = document.getElementById('skipRow');
+  if (sr) sr.style.display = '';
   renderFlagBadge(card.id);
 }
 
@@ -467,6 +477,8 @@ function doReveal() {
     '</div>' +
     '<button class="next-btn" id="nextBtn">' + (idx + 1 >= packet.length ? '看結果 →' : '下一題 →') + '</button>';
   document.getElementById('nextBtn').addEventListener('click', nextCard);
+  const sr2 = document.getElementById('skipRow');
+  if (sr2) sr2.style.display = 'none';
 
   // 計分＋SRS 一律只看「首答」——複習輪的目的是當日至少成功一次，
   // 不該把首答錯的題目往上推間隔（設計依據見 HANDOFF「複習卡系統設計依據」）
@@ -508,6 +520,31 @@ function updateSrs(card, ok) {
   if (!srs[card.id] && packet[idx].isNew) bumpNewCount();
   srs[card.id] = rec;
   saveSrs(srs);
+}
+
+/* ⭐ 這題跳過（2026-09-11，依 CLAUDE.md 練習頁鐵律）
+   ⚠️ 原本必須把四個開關全部答完才能揭曉、才能進下一題，答錯的還會進複習輪。
+     ⛔ 所以「我已經會了想跳過」在這頁是做不到的。
+   跳過：⛔ 不計分（不進 firstTryTotal）、⛔ 不進複習輪、⛔ 不動 SRS。
+   ⚠️ 但要記錄——自評準確度只有 r≈.46。 */
+const LENS_SKIP_KEY = 'clb7_lens_known';
+function markLensSkipped(card) {
+  try {
+    const v = JSON.parse(localStorage.getItem(LENS_SKIP_KEY));
+    const o = (v && typeof v === 'object' && !Array.isArray(v)) ? v : {};
+    const prev = o[card.id];
+    o[card.id] = { id: card.id, last: Date.now(), n: (prev && prev.n || 0) + 1,
+                   zh: card.zh, cx: card.cx };
+    const ks = Object.keys(o).sort((a, b) => (o[b].last || 0) - (o[a].last || 0)).slice(0, 300);
+    const keep = {}; ks.forEach(k => keep[k] = o[k]);
+    localStorage.setItem(LENS_SKIP_KEY, JSON.stringify(keep));
+  } catch (e) {}
+}
+function skipThisCard() {
+  if (!packet[idx]) return;
+  markLensSkipped(packet[idx].card);
+  revealed = true;          // 鎖住這題，⛔ 不讓它再被計分
+  nextCard();
 }
 
 function nextCard() {
@@ -565,6 +602,7 @@ document.getElementById('startBtn').addEventListener('click', () => {
   document.getElementById('drillView').style.display = 'block';
   renderCard();
 });
+document.getElementById('skipCardBtn').addEventListener('click', skipThisCard);
 document.getElementById('btnSpeak').addEventListener('click', () => speak(packet[idx].card.fr));
 document.getElementById('btnFlag').addEventListener('click', () => {
   flagCard(packet[idx].card.id); renderFlagBadge(packet[idx].card.id);
