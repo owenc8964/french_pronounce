@@ -92,6 +92,8 @@ body { background:#0b0a10; color:#e6e0d2; font-family:'Segoe UI',system-ui,sans-
   background:#16121e; cursor:pointer; transition:all .12s; position:relative; }
 .lrow .c:hover { border-color:#c9a227; }
 .lrow .c.pass { background:#1d4a33; border-color:#2f5a3f; }
+.lrow .c.pass.skipped { background:#1e1c26; border-color:#3a3448; }
+.lrow .c.pass.skipped::after { content:'⏭'; color:#8a8298; }
 .lrow .c.pass::after { content:'✓'; position:absolute; inset:0; display:flex;
   align-items:center; justify-content:center; font-size:.66rem; color:#6fd09a; }
 .lrow .c.here { border-color:#e0c060; background:#221c14; box-shadow:0 0 0 1px rgba(224,192,96,.35) inset; }
@@ -543,7 +545,8 @@ function renderLadder(){
   var rows = segs.map(function(sg, i){
     var r = d[sg.key] || {}, passed = r.czPassed || {}, st = r.cz || 1, read = !!r.done;
     var cells = STAGES.map(function(x){
-      var cls = passed[x.n] ? 'pass' : (read && x.n === st ? 'here' : '');
+      var skipped = (r.czSkipped || {})[x.n];
+      var cls = passed[x.n] ? (skipped ? 'pass skipped' : 'pass') : (read && x.n === st ? 'here' : '');
       return '<div class="c ' + cls + '" data-i="' + i + '" data-s="' + x.n + '" ' +
              'title="' + esc(sg.name + ' · 第' + x.n + '階 ' + x.name) + '"></div>';
     }).join('');
@@ -555,7 +558,7 @@ function renderLadder(){
   el.innerHTML = head +
     '<div class="hd">' + STAGES.map(function(x){ return '<span>' + x.n + ' ' + x.name + '</span>'; }).join('') + '</div>' +
     rows +
-    '<div class="legend">✓ 過了　·　<span style="color:#e0c060">金框</span>＝現在在這一階　·　' +
+    '<div class="legend">✓ 過了　·　⏭ 跳過的　·　<span style="color:#e0c060">金框</span>＝現在在這一階　·　' +
     '<span style="color:#4a4436">淡的＝還沒讀懂，讀懂之後才會亮起來</span><br>' +
     '⭐ 點任一格可以直接跳過去做。</div>';
 
@@ -670,6 +673,7 @@ function renderCloze(){
     '<div class="bar">' +
       '<button class="b-done" id="czCheck">對答案</button>' +
       '<button class="b-all" id="czAgain">🔁 換一批再來</button>' +
+      '<button class="b-ghost" id="czSkip" title="這一階我已經會了">⏭ 這階跳過</button>' +
       (st < 5 ? '<button class="b-next" id="czUp">下一階 →</button>' : '') +
     '</div>';
 
@@ -686,12 +690,35 @@ function renderCloze(){
     });
   });
   document.getElementById('czCheck').addEventListener('click', checkCloze);
+  var cs = document.getElementById('czSkip');
+  if (cs) cs.addEventListener('click', skipStage);
   document.getElementById('czAgain').addEventListener('click', renderStage);
   var up = document.getElementById('czUp');
   if (up) up.addEventListener('click', function(){
     setCzStage(s.key, Math.min(5, st + 1)); renderModebar(); renderStage(); renderToday(); renderLadder();
     window.scrollTo({ top:0, behavior:'smooth' });
   });
+}
+
+/* ⭐ 這一階跳過（2026-09-11，依 CLAUDE.md 練習頁鐵律）
+   ⚠️ 原本五階必須**全部答對**才會標記通過，⛔ 沒有「我這階已經會了」的出口
+     —— 跟 table_drill 一樣的毛病，而且是我自己做的頁面。
+   跳過：直接標記這一階通過並前進，⛔ 但記進 known 區分「跳過的」與「真的答對的」。
+   ⚠️ 自評準確度只有 r≈.46，所以要留紀錄，⛔ 不是靜靜當成會了。 */
+function skipStage() {
+  var s = segs[cur], st = czStage(s.key);
+  var d = load();
+  if (!d[s.key]) d[s.key] = { done:false, taps:{} };
+  if (!d[s.key].czPassed) d[s.key].czPassed = {};
+  if (!d[s.key].czSkipped) d[s.key].czSkipped = {};
+  d[s.key].czPassed[st] = true;
+  d[s.key].czSkipped[st] = Date.now();   // ⭐ 標明這一階是跳過的，不是答對的
+  d[s.key].czAt = Date.now();
+  save(d);
+  toast('⏭ 這階跳過了');
+  if (st < 5) setCzStage(s.key, st + 1);
+  renderModebar(); renderStage(); renderToday(); renderLadder();
+  window.scrollTo({ top:0, behavior:'smooth' });
 }
 
 /* ⭐ 對答案：二元比對，⛔ 不需要他判斷。
