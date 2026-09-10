@@ -1444,48 +1444,65 @@ function shuffle(arr) {
    ════════════════════════════════════════════════════════════ */
 const WRONG_KEY = 'clb7_drill_wrong';
 
-/* ⚠️⚠️ 防禦式讀取：sync_supabase.js 的 merge() ⛔ 沒有處理陣列——
-   `Object.assign({}, local)` 對陣列會產生 {0:…,1:…} 的物件。
-   ⭐ 所以同步過一次之後，這個 key 可能變成物件而不是陣列。
-   ⛔ 根治要改 sync_supabase.js（那會動到所有裝置的所有資料，要 Owen 點頭），
-   這裡先讓讀取端自己扛住，⚠️ 不然 .filter 會直接爆掉。
-   （同樣的問題也影響 clb7_drill_log、clb7_wrong_log——那些是既有的陣列 key。） */
+/* ⚠️ 資料形狀刻意配合 sync_supabase.js 的既有慣例（2026-09-11 查證後改）：
+   ⭐ merge() 對「物件」的規則是 **逐 key 比 `last` 欄位，新的贏**；
+     對「陣列」則是靠 ts／id+date／week／整串 JSON 去重。
+   ⚠️ 陣列那條對「一格只該有一筆、但日期會更新」的資料不適用
+     —— 兩台裝置各記一次同一格會變成兩筆（不是壞掉，是重複累積，
+        既有的 clb7_wrong_log 就有這個狀況）。
+   ⭐⭐ 所以這裡用 **{ 格子id: {…, last: 時間戳} }** 的物件形狀，
+     同步就天然正確，⛔ 不需要動 sync_supabase.js（那檔影響所有裝置的所有資料）。 */
+function todayKey() {
+  return new Date().toLocaleDateString('sv-SE');   // YYYY-MM-DD，可直接字串比大小
+}
 function loadWrong() {
   try {
     var v = JSON.parse(localStorage.getItem(WRONG_KEY));
-    if (Array.isArray(v)) return v;
-    if (v && typeof v === 'object') return Object.keys(v)
-      .filter(function(k){ return /^\d+$/.test(k); })
-      .sort(function(a,b){ return a - b; })
-      .map(function(k){ return v[k]; })
-      .filter(function(x){ return x && x.id; });
-    return [];
-  } catch (e) { return []; }
+    if (!v || typeof v !== 'object') return {};
+    if (Array.isArray(v)) {            // 舊版陣列格式 → 就地升級
+      var o = {};
+      // ⭐ 補上 last —— 同步的物件分支靠它挑最新的，舊格式沒有這欄
+      v.forEach(function (x) { if (x && x.id) { if (!x.last) x.last = Date.parse(x.d || '') || 1; o[x.id] = x; } });
+      saveWrong(o);
+      return o;
+    }
+    return v;
+  } catch (e) { return {}; }
 }
-function saveWrong(a) {
-  // 只留最近 200 筆，避免無限長
-  try { localStorage.setItem(WRONG_KEY, JSON.stringify(a.slice(-200))); } catch (e) {}
+function saveWrong(o) {
+  try {
+    // 只留最近 200 格（照 last 砍舊的），避免無限長
+    var ks = Object.keys(o);
+    if (ks.length > 200) {
+      ks.sort(function (a, b) { return (o[b].last || 0) - (o[a].last || 0); });
+      var keep = {};
+      ks.slice(0, 200).forEach(function (k) { keep[k] = o[k]; });
+      o = keep;
+    }
+    localStorage.setItem(WRONG_KEY, JSON.stringify(o));
+  } catch (e) {}
 }
-function todayKey() {
-  return new Date().toLocaleDateString('sv-SE');   // YYYY-MM-DD，可直接字串比大小
+function wrongList() {
+  var o = loadWrong();
+  return Object.keys(o).map(function (k) { return o[k]; }).filter(function (x) { return x && x.a; });
 }
 
 /** 記一格錯：⭐ 記「格」不是「表」，⛔ 同一格重複錯只更新日期不重複塞 */
 function recordWrong(tbl, label, hdr, ans) {
-  const a = loadWrong();
+  const o = loadWrong();
   const id = tbl.id + '|' + label + '|' + hdr;
-  const hit = a.find(x => x.id === id);
-  if (hit) { hit.d = todayKey(); hit.n = (hit.n || 1) + 1; }
-  else a.push({ id, d: todayKey(), n: 1, title: tbl.title, label, hdr, a: ans, type: tbl.type });
-  saveWrong(a);
+  const prev = o[id];
+  o[id] = { id, d: todayKey(), last: Date.now(), n: (prev && prev.n || 0) + 1,
+            title: tbl.title, label, hdr, a: ans, type: tbl.type };
+  saveWrong(o);
 }
 /** 答對就從錯字簿移除（⭐ 隔天答對才算，同一天內的重考不移除——那是同輪重考不是保留） */
-function clearWrong(id) { saveWrong(loadWrong().filter(x => x.id !== id)); }
+function clearWrong(id) { const o = loadWrong(); delete o[id]; saveWrong(o); }
 
 /** 到期的錯字＝記錄日期比今天早（⭐ 隔天才回來，不是同一天） */
 function dueWrong() {
   const t = todayKey();
-  return loadWrong().filter(x => x.d < t);
+  return wrongList().filter(x => x.d < t);
 }
 
 /** 把到期錯字打包成「錯字表」——每頁 5 格（清單型，照 Owen 的上限） */
