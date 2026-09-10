@@ -90,6 +90,11 @@ body {
 }
 .flip-btn:hover { filter: brightness(1.3); }
 .grade-row { display: flex; gap: 10px; }
+/* ⭐ 跳過：刻意是中性灰 —— ⛔ 不是紅的（不是失敗）也不是綠的（不是完成）
+   依 CLAUDE.md「練習頁鐵律：跳過必須是合法動作」 */
+.grade-skip { background:#1b1b22 !important; color:#7a7a88 !important;
+  flex:0 0 auto !important; padding-left:14px !important; padding-right:14px !important; }
+.grade-skip:hover { color:#9a9aa8 !important; }
 .grade-btn { flex: 1; padding: 15px; border: none; border-radius: 12px;
   font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; }
 .grade-no  { background: #3a1a16; color: #d07060; border: 1px solid #5a2420; }
@@ -156,6 +161,7 @@ body {
   <div class="grade-row hidden" id="gradeRow">
     <button class="grade-btn grade-no" id="gradeNo">✗ 講錯了（1）</button>
     <button class="grade-btn grade-ok" id="gradeOk">✓ 講對了（2）</button>
+    <button class="grade-btn grade-skip" id="gradeSkip" title="這句我已經會了，或今天不想練它">⏭ 跳過（3）</button>
   </div>
   <div class="key-hint">空白鍵翻開 · 1 講錯了 · 2 講對了</div>
 </div>
@@ -375,6 +381,34 @@ function flip() {
   speak(card.fr);
 }
 
+/* ⭐ 跳過這句（2026-09-11，依 CLAUDE.md 練習頁鐵律）
+   ⚠️ 原本只有「講錯了」會把卡片排到最後重考——磨到當天講對為止。
+     ⛔ 所以真的講不出來的時候，他只能說謊按「講對了」，或無限磨。
+   ⭐ 跳過的語意是「這句我會了，或今天不想練它」：
+     ⛔ 不計分、⛔ 不重排、⛔ 不記錯題本、⛔ 不動 SRS 間隔（既不獎勵也不懲罰）。
+   ⚠️ 但要記錄 —— 自評準確度只有 r≈.46，「我覺得我會了」不能當事實。 */
+const SKIP_KEY = 'clb7_sentence_known';
+function markSkipped(card) {
+  try {
+    const v = JSON.parse(localStorage.getItem(SKIP_KEY));
+    const o = (v && typeof v === 'object' && !Array.isArray(v)) ? v : {};
+    const prev = o[card.id];
+    // ⚠️ 物件形狀 ＋ last：配合 sync_supabase.js 的物件合併慣例
+    o[card.id] = { id: card.id, last: Date.now(), n: (prev && prev.n || 0) + 1,
+                   zh: card.zh, lesson: card.lesson };
+    const ks = Object.keys(o).sort((a, b) => (o[b].last || 0) - (o[a].last || 0)).slice(0, 300);
+    const keep = {}; ks.forEach(k => keep[k] = o[k]);
+    localStorage.setItem(SKIP_KEY, JSON.stringify(keep));
+  } catch (e) {}
+}
+function skipCard() {
+  const card = packet[idx];
+  if (!card) return;
+  markSkipped(card);
+  idx++;
+  renderCard();
+}
+
 function grade(ok) {
   if (!flipped || idx >= packet.length) return;
   const { card, isNew } = packet[idx];
@@ -441,6 +475,7 @@ document.getElementById('againBtn').addEventListener('click', startPacket);
 document.getElementById('flipBtn').addEventListener('click', flip);
 document.getElementById('gradeNo').addEventListener('click', () => grade(false));
 document.getElementById('gradeOk').addEventListener('click', () => grade(true));
+document.getElementById('gradeSkip').addEventListener('click', skipCard);
 document.getElementById('fcSpeak').addEventListener('click', () => speak(packet[idx].card.fr));
 document.getElementById('fcFlagBtn').addEventListener('click', () => {
   if (idx >= packet.length) return;
@@ -453,6 +488,7 @@ document.addEventListener('keydown', e => {
   if (e.key === ' ') { e.preventDefault(); flip(); }
   if (e.key === '1') grade(false);
   if (e.key === '2') grade(true);
+  if (e.key === '3') skipCard();   // ⭐ 跳過
 });
 
 // ── 自動計時：練習時間自動記入 clb7_tracker（type: auto-sentence）──
