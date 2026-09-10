@@ -188,6 +188,9 @@
 .wbox button:hover { opacity:.85; }
 
 /* 逐格跳過（2026-09-11） */
+.skip-card-btn { background:#f4f4f6; color:#889; border:1px solid #dde; border-radius:8px;
+  padding:10px 16px; font-size:.86rem; cursor:pointer; font-family:inherit; }
+.skip-card-btn:hover { color:#5a7; border-color:#7b9; }
 .skip-btn { display:inline-block; margin-left:6px; font-size:.62rem; color:#98a; opacity:.5;
   border:1px solid #ccd; border-radius:20px; padding:2px 7px; cursor:pointer;
   vertical-align:middle; user-select:none; white-space:nowrap; }
@@ -1721,6 +1724,8 @@ function renderCard() {
   <div class="card-actions">
     <button class="check-btn" id="checkBtn" onclick="checkAll()"
       ${!hasInputs ? 'disabled' : ''}>確認答案</button>
+    <button class="skip-card-btn" id="skipCardBtn" onclick="skipCard()"
+      ${!hasInputs ? 'style="display:none"' : ''}>⏭ 這題跳過</button>
     <button class="next-btn" id="nextBtn" onclick="nextCard()">下一題 →</button>
     <span class="card-score-chip" id="chipScore"></span>
   </div>
@@ -1842,6 +1847,24 @@ function unskipCell(cid) {
   inp.focus();
 }
 
+/** ⭐ 一鍵跳過整題（2026-09-11 Owen：「應該要有一個一鍵跳過此題的選項」）
+    逐格按「會了」太慢——這個把這一頁還沒填的格子一次全部標成跳過，然後直接進下一題。
+    ⚠️ 已經填了字的格子**不動**（那是他真的想作答的），只跳過空白的。 */
+function skipCard() {
+  const inputs = [...document.querySelectorAll('.fill-input')].filter(i => !i.disabled);
+  inputs.forEach(inp => { if (!inp.value.trim() && !inp.dataset.skipped) skipCell(inp.id); });
+  const anyAnswered = inputs.some(i => i.value.trim() && !i.dataset.skipped);
+  if (anyAnswered) { checkAll(); return; }   // 有填的就照常對答案，⛔ 不要吃掉他的作答
+  // 全部跳過：不計分、⛔ 不進複習輪，直接下一題
+  document.getElementById('checkBtn').style.display = 'none';
+  document.getElementById('skipCardBtn').style.display = 'none';
+  document.getElementById('nextBtn').style.display = 'inline-block';
+  document.getElementById('chipScore').textContent = '這題跳過了';
+  inputs.forEach(inp => { inp.disabled = true; });
+  if (phase === 'main') results.push({ title: queue[qIdx].title, ok: 0, total: 0, skipped: true });
+  updateProgress();
+}
+
 function checkAll() {
   const inputs = [...document.querySelectorAll('.fill-input')];
   if (!inputs.length) return;
@@ -1914,6 +1937,8 @@ function checkAll() {
 
   // UI 更新
   document.getElementById('checkBtn').style.display = 'none';
+  const skipCardBtn = document.getElementById('skipCardBtn');
+  if (skipCardBtn) skipCardBtn.style.display = 'none';
   const nextBtn = document.getElementById('nextBtn');
   nextBtn.style.display = 'inline-block';
   if (qIdx === queue.length - 1) {
@@ -1954,6 +1979,8 @@ function renderSummary() {
   } catch(e) {}
 
   const rows = results.map(r => {
+    if (r.skipped) return `<div class="sum-row"><span>${escH(r.title)}</span>` +
+      `<span style="color:#99a">跳過</span></div>`;
     const allOk = r.ok === r.total;
     const color = allOk ? '#2ca85c' : r.ok === 0 ? '#e05520' : '#d4a017';
     return `<div class="sum-row">
