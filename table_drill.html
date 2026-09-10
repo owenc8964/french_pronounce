@@ -175,7 +175,18 @@
       background: #fff; color: #444; border: 1.5px solid #ccc;
     }
     .restart-btn.ghost:hover { border-color: #4a90d9; color: #4a90d9; }
-  </style>
+  
+/* 昨天的錯字 */
+#wrongBox { margin-bottom: 14px; }
+.wbox { background:#1a1208; border:1px solid #4a3a10; border-left:3px solid #c9a227;
+  border-radius:12px; padding:13px 15px; display:flex; align-items:center;
+  gap:12px; flex-wrap:wrap; }
+.wbox .t { flex:1; font-size:.84rem; color:#e0c060; line-height:1.6; }
+.wbox .t small { display:block; font-size:.7rem; color:#8a7a50; margin-top:3px; }
+.wbox button { background:#3a2e10; color:#f0c060; border:none; border-radius:8px;
+  padding:9px 16px; font-size:.82rem; cursor:pointer; font-family:inherit; }
+.wbox button:hover { opacity:.85; }
+</style>
 </head>
 <body>
 
@@ -209,6 +220,7 @@
 
 <div class="accent-bar" id="accentBar"></div>
 
+<div id="wrongBox"></div>
 <div id="cardArea"></div>
 
 <script>
@@ -1414,6 +1426,116 @@ function shuffle(arr) {
   return a;
 }
 
+/* ════════════════════════════════════════════════════════════
+   「昨天的錯字」—— 跨天延後複習（2026-09-11，研究 4-5 提案）
+   ⚠️ 現況的洞：答錯的格子**只在同一輪內**重考，⛔ 沒有任何跨 session 的記憶。
+     而且 clb7_drill_log 只存日期，⛔ 不存錯在哪 —— 其他三個頁面早就有 clb7_wrong_log，只有這頁漏接。
+
+   ⭐⭐ 為什麼是這一條優先：本專案查過的**效果量最大的單一操作**就是「延後再測」
+     （Rhodes & Tauber 2011, k=45, g≈0.93；Kim & Webb 2022 分散練習延後後測 g=0.40）。
+   ⭐ 而且它**不依賴任何未驗證的前提** —— 不像「易混淆組要不要並排」那條，
+     前提（ils ont/sont/vont/font 真的會混嗎）目前沒有任何資料支持。
+
+   ⭐⭐⭐ 副作用比功能本身更值錢：**這份紀錄會告訴我們 65 張表裡哪幾格才是真正的破口**，
+     ⛔ 而不是靠註解猜。之後所有「要不要為某個混淆改設計」的爭論，都變成查資料。
+
+   ⛔ 刻意不做完整 SRS（那是 Anki 的工作）：只有一條規則 —— **隔天才回來**。
+   ⛔ 不顯示分母、不顯示落後（階梯制）。
+   ════════════════════════════════════════════════════════════ */
+const WRONG_KEY = 'clb7_drill_wrong';
+
+/* ⚠️⚠️ 防禦式讀取：sync_supabase.js 的 merge() ⛔ 沒有處理陣列——
+   `Object.assign({}, local)` 對陣列會產生 {0:…,1:…} 的物件。
+   ⭐ 所以同步過一次之後，這個 key 可能變成物件而不是陣列。
+   ⛔ 根治要改 sync_supabase.js（那會動到所有裝置的所有資料，要 Owen 點頭），
+   這裡先讓讀取端自己扛住，⚠️ 不然 .filter 會直接爆掉。
+   （同樣的問題也影響 clb7_drill_log、clb7_wrong_log——那些是既有的陣列 key。） */
+function loadWrong() {
+  try {
+    var v = JSON.parse(localStorage.getItem(WRONG_KEY));
+    if (Array.isArray(v)) return v;
+    if (v && typeof v === 'object') return Object.keys(v)
+      .filter(function(k){ return /^\d+$/.test(k); })
+      .sort(function(a,b){ return a - b; })
+      .map(function(k){ return v[k]; })
+      .filter(function(x){ return x && x.id; });
+    return [];
+  } catch (e) { return []; }
+}
+function saveWrong(a) {
+  // 只留最近 200 筆，避免無限長
+  try { localStorage.setItem(WRONG_KEY, JSON.stringify(a.slice(-200))); } catch (e) {}
+}
+function todayKey() {
+  return new Date().toLocaleDateString('sv-SE');   // YYYY-MM-DD，可直接字串比大小
+}
+
+/** 記一格錯：⭐ 記「格」不是「表」，⛔ 同一格重複錯只更新日期不重複塞 */
+function recordWrong(tbl, label, hdr, ans) {
+  const a = loadWrong();
+  const id = tbl.id + '|' + label + '|' + hdr;
+  const hit = a.find(x => x.id === id);
+  if (hit) { hit.d = todayKey(); hit.n = (hit.n || 1) + 1; }
+  else a.push({ id, d: todayKey(), n: 1, title: tbl.title, label, hdr, a: ans, type: tbl.type });
+  saveWrong(a);
+}
+/** 答對就從錯字簿移除（⭐ 隔天答對才算，同一天內的重考不移除——那是同輪重考不是保留） */
+function clearWrong(id) { saveWrong(loadWrong().filter(x => x.id !== id)); }
+
+/** 到期的錯字＝記錄日期比今天早（⭐ 隔天才回來，不是同一天） */
+function dueWrong() {
+  const t = todayKey();
+  return loadWrong().filter(x => x.d < t);
+}
+
+/** 把到期錯字打包成「錯字表」——每頁 5 格（清單型，照 Owen 的上限） */
+function wrongTables() {
+  const due = dueWrong();
+  const out = [];
+  for (let i = 0; i < due.length; i += LIST_PAGE) {
+    const grp = due.slice(i, i + LIST_PAGE);
+    out.push({
+      id: '__wrong__' + i,
+      title: '昨天的錯字',
+      zh: '之前錯過的格子，隔天再考一次',
+      type: 'vocab',
+      lesson: 0,
+      note: '⭐ 這些是你之前答錯的格子。答對就從錯字簿移除；⛔ 再錯就留到下次。',
+      headers: ['出處', '提示', '答案'],
+      rows: grp.map(x => [x.title + (x.hdr ? ' · ' + x.hdr : ''), x.label,
+                          { a: x.a, h: true, _wid: x.id }]),
+      _wrong: true
+    });
+  }
+  return out;
+}
+
+function renderWrongBox(){
+  const el = document.getElementById('wrongBox');
+  if (!el) return;
+  const due = dueWrong();
+  if (!due.length) { el.innerHTML = ''; return; }
+  // ⛔ 只顯示「有幾格要補」（那是待辦不是分母），不顯示比例、不顯示落後
+  el.innerHTML =
+    '<div class="wbox"><div class="t">📌 昨天的錯字：' + due.length + ' 格' +
+    '<small>之前答錯、隔了一天的格子。⭐ 答對就從錯字簿移除</small></div>' +
+    '<button id="wrongGo">補這幾格 →</button></div>';
+  document.getElementById('wrongGo').addEventListener('click', startWrongSession);
+}
+
+/** 錯字輪：⭐ 跟一般輪共用整套渲染／對答案／複習輪邏輯，只是 queue 換成錯字表 */
+function startWrongSession(){
+  const w = wrongTables();
+  if (!w.length) { renderWrongBox(); return; }
+  window._roundPool = w.length;
+  queue = w;
+  qIdx = 0; totalOk = 0; totalBad = 0; results = [];
+  phase = 'main'; roundWrong = []; reviewPassCount = 0; onSummary = false;
+  document.getElementById('wrongBox').innerHTML = '';
+  updateProgress();
+  renderCard();
+}
+
 function startSession() {
   const base = typeFilter === 'all' ? TABLES : TABLES.filter(t => t.type === typeFilter);
   // ⭐ 先拆再抽 —— 這樣「一輪 6 張」的每一張都已經是 ≤10 格的小頁
@@ -1424,6 +1546,13 @@ function startSession() {
   phase = 'main'; roundWrong = []; reviewPassCount = 0; onSummary = false;
   updateProgress();
   renderCard();
+  renderWrongBox();
+  /* ⚠️ 雲端同步是非同步的：init 跑完時 localStorage 還沒有雲端資料，
+     ⛔ 所以第一次 renderWrongBox() 在真實裝置上一定看不到錯字（本機實測抓到）。
+     ⭐ 同步沒有提供完成回呼（window.ClbSync 只有 pull/push），所以用兩個補救：
+     拉下來之後重畫一次 ＋ 回到分頁時重畫。 */
+  setTimeout(renderWrongBox, 2500);
+  window.addEventListener('focus', renderWrongBox);
 }
 
 // 這一輪是否已經有進度（答過至少一個表，或正在複習輪）——用來決定切換難度/類型前要不要先問
@@ -1638,6 +1767,20 @@ function checkAll() {
     if (inp.disabled) inp.dataset.prefilled = '1';   // 這一輪沒讓他作答的格（部分重考時預先填好的）
     inp.disabled = true;
     if (!correct) wrongIds.push(inp.id);
+    // ⭐ 跨天錯字簿：記「格」不是「表」
+    (function(){
+      const t = queue[qIdx], ri = +inp.id.split('_')[1], ci = +inp.id.split('_')[2];
+      const row = (t.rows || [])[ri] || [];
+      const label = typeof row[0] === 'string' ? row[0] : '';
+      const hdr = (t.headers || [])[ci] || '';
+      const cell = row[ci];
+      if (t._wrong) {
+        // 這是「昨天的錯字」輪：⭐ 答對才移除，⛔ 答錯就留著
+        if (correct && cell && cell._wid) clearWrong(cell._wid);
+      } else if (!correct && !inp.dataset.prefilled) {
+        recordWrong(t, label, hdr, inp.dataset.ans);
+      }
+    })();
     if (correct) {
       inp.classList.add('ok');
       ok++;
