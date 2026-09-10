@@ -145,6 +145,12 @@ details.allwrap > .layer-body { padding: 4px 0; }
   white-space: nowrap; flex-shrink: 0;
 }
 .badge-red    { background: #2a0a08; color: #d07060; border: 1px solid #4a1a18; }
+/* 今天跳過：⛔ 刻意不是紅的，也不是綠的 —— 跳過不是失敗，也不是完成 */
+.badge-skip   { background: #16161c; color: #6a6a78; border: 1px solid #2a2a34; }
+.rx-item.skipped { opacity: .5; }
+.rx-skip { flex:0 0 auto; font-size:.6rem; color:#445060; border:1px solid #223046;
+  border-radius:20px; padding:3px 9px; cursor:pointer; margin-left:6px; white-space:nowrap; }
+.rx-skip:hover { color:#7fa8c9; border-color:#2a3a4a; }
 .badge-yellow { background: #221800; color: #c09040; border: 1px solid #4a3a10; }
 .badge-green  { background: #0a1a0c; color: #60d090; border: 1px solid #1a4a1a; }
 .badge-blue   { background: #0a1428; color: #60a0d0; border: 1px solid #1a3a5a; }
@@ -1726,16 +1732,52 @@ function render() {
     ? '順序已鎖定，天天固定'
     : '中間各步每天自動輪替順序，避免練到麻木';
   const rx = buildPrescription(topicStats, todaySec);
-  const firstUndone = rx.find(i => !i.done);
+  /* ══════════════════════════════════════════════════════════
+     今天跳過（2026-09-11）
+     ⚠️ Owen：「很多問題我其實想跳過的，我已經覺得會了，可以了，
+       但我沒有填完我就無法完成，那我乾脆不完成了」
+       —— 而且他澄清過：卡住的不是同一題重複，是**其他今日練習的題目**。
+     ⭐⭐⭐ 也就是說：一步卡住 → 那步標不了完成 → 整個今日處方完成不了 → 整套放棄。
+       **一步毒到整天。**
+     ⚠️ 而這正好違反專案自己的兩條鐵律：
+       ⛔「不要為了完整讓他做已經反射化的題目」（教學鐵律）
+       ⛔「系統不可以罵他、不要秀分母」（feedback_fun_is_the_engine）
+     ⭐ 所以跳過必須是**合法動作**：不算失敗、不擋住後面、措辭中性。
+     ⚠️ 儲存形狀配合 sync_supabase.js 的物件慣例（逐 key 比 last），
+       ⛔ 不要用陣列 —— 兩台裝置跳過不同步驟會互相蓋掉。
+     ══════════════════════════════════════════════════════════ */
+  const SKIP_KEY = 'clb7_rx_skip';
+  function loadSkip() {
+    try { const v = JSON.parse(localStorage.getItem(SKIP_KEY)); return (v && typeof v === 'object' && !Array.isArray(v)) ? v : {}; }
+    catch (e) { return {}; }
+  }
+  function skipId(key) { return todayStr() + '|' + key; }
+  function isSkipped(key) { return !!loadSkip()[skipId(key)]; }
+  window.rxSkip = function (key, ev) {
+    if (ev) { ev.preventDefault(); ev.stopPropagation(); }
+    const o = loadSkip();
+    const id = skipId(key);
+    if (o[id]) delete o[id]; else o[id] = { last: Date.now() };
+    // 只留最近 60 筆
+    const ks = Object.keys(o).sort((a, b) => (o[b].last || 0) - (o[a].last || 0)).slice(0, 60);
+    const keep = {}; ks.forEach(k => keep[k] = o[k]);
+    try { localStorage.setItem(SKIP_KEY, JSON.stringify(keep)); } catch (e) {}
+    render();
+  };
+  rx.forEach(i => { i.skipped = !i.done && isSkipped(i.key); });
+
+  // ⭐ firstUndone 會跨過「今天跳過」的步驟 —— 這就是解掉「一步毒到整天」的那一行
+  const firstUndone = rx.find(i => !i.done && !i.skipped);
   document.getElementById('rxList').innerHTML = rx.map(item => `
-    <a class="rx-item ${item.done ? 'done' : ''} ${item === firstUndone ? 'rx-now' : 'rx-slim'}" href="${item.href}">
-      <span class="rx-num">${item.done ? '✓' : item.n}</span>
+    <a class="rx-item ${item.done ? 'done' : ''} ${item.skipped ? 'skipped' : ''} ${item === firstUndone ? 'rx-now' : 'rx-slim'}" href="${item.href}">
+      <span class="rx-num">${item.done ? '✓' : (item.skipped ? '–' : item.n)}</span>
       <span class="rx-icon">${item.icon}</span>
       <div class="rx-body">
         <div class="rx-action">${item === firstUndone ? '👉 ' : ''}${item.action}</div>
-        <div class="rx-why">${item.why}</div>
+        <div class="rx-why">${item.skipped ? '今天跳過了 — 點右邊可以放回來' : item.why}</div>
       </div>
-      <span class="rx-badge ${item.badge}">${item.badgeText}</span>
+      <span class="rx-badge ${item.skipped ? 'badge-skip' : item.badge}">${item.skipped ? '今天跳過' : item.badgeText}</span>
+      ${item.done ? '' : `<span class="rx-skip" onclick="rxSkip('${item.key}', event)">${item.skipped ? '放回來' : '今天跳過'}</span>`}
     </a>
   `).join('');
 
@@ -1743,7 +1785,9 @@ function render() {
   const subEl = document.getElementById('startSub');
   if (subEl) subEl.textContent = firstUndone
     ? `接下來：${firstUndone.icon} ${firstUndone.action}`
-    : '今天的處方都走完了 🎉 額外練習一樣會計時';
+    : (rx.some(i => i.skipped)
+        ? '今天要做的都處理完了 🎉 跳過的明天會回來'
+        : '今天的處方都走完了 🎉 額外練習一樣會計時');
 
   // Session 計時器 bar 狀態
   renderSessionBar(todaySec);

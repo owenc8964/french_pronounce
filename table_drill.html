@@ -186,6 +186,14 @@
 .wbox button { background:#3a2e10; color:#f0c060; border:none; border-radius:8px;
   padding:9px 16px; font-size:.82rem; cursor:pointer; font-family:inherit; }
 .wbox button:hover { opacity:.85; }
+
+/* 逐格跳過（2026-09-11） */
+.skip-btn { display:inline-block; margin-left:6px; font-size:.62rem; color:#98a; opacity:.5;
+  border:1px solid #ccd; border-radius:20px; padding:2px 7px; cursor:pointer;
+  vertical-align:middle; user-select:none; white-space:nowrap; }
+.skip-btn:hover { opacity:1; color:#5a7; border-color:#7b9; }
+.fill-input.skipped { background:#f2f2f4; color:#aab; border-style:dashed; }
+.skip-note { font-size:.62rem; color:#9aa; margin-left:6px; }
 </style>
 </head>
 <body>
@@ -1670,13 +1678,16 @@ function renderCard() {
         // 部分重考（tbl._only）：只有上一輪答錯的格子留空，其餘直接填好標綠鎖住
         const cid = `inp_${ri}_${ci}`;
         const preFilled = Array.isArray(tbl._only) && !tbl._only.includes(cid);
-        tableHTML += `<td><input class="fill-input${preFilled ? ' ok' : ''}" type="text"
+        const wasSkipped = Array.isArray(tbl._skip) && tbl._skip.includes(cid);
+        tableHTML += `<td><input class="fill-input${preFilled ? ' ok' : ''}${wasSkipped ? ' skipped' : ''}" type="text"
+          ${wasSkipped ? 'data-skipped="1" placeholder="（跳過）"' : ''}
           id="${cid}"
           data-ans="${escH(cell.a)}"
           ${preFilled ? `value="${escH(String(cell.a).split('|')[0])}" disabled` : ''}
           autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
           onkeydown="handleKey(event)"
-          onfocus="onFocus(this)" onblur="onBlur()"></td>`;
+          onfocus="onFocus(this)" onblur="onBlur()">${preFilled ? '' :
+          `<span class="skip-btn" onclick="${wasSkipped ? `unskipCell('${cid}')` : `skipCell('${cid}')`}" title="這格我已經會了，這一輪不算">${wasSkipped ? '放回來' : '會了'}</span>`}</td>`;
         if (!preFilled) inputIdx++;
       } else {
         // 多解格（a 用 | 分隔）在「顯示格」只印第一個寫法，不要把 S'il|s'il 這種原始字串露給使用者
@@ -1771,19 +1782,86 @@ function norm(s) {
     .replace(/\s+/g, ' ');
 }
 
+/* ════════════════════════════════════════════════════════════
+   逐格跳過（2026-09-11）
+   ⚠️ Owen：「**每一頁中，有些題目我不想填了想跳過，但沒辦法**」
+     現況：空白或答錯 → 進複習輪 → ⛔ 重考直到全對，沒有任何出口。
+   ⚠️ 而專案教學鐵律明寫：⛔ **不要為了「完整」讓他做已經反射化的題目**
+     ——「重講一次規則只是浪費，且讓他覺得自己很笨」。
+     ⭐ 是系統在違反自己的規則。
+
+   ⭐ 跳過的語意是「**這格我已經會了**」，所以：
+     不計分、⛔ 不進複習輪、不記進錯字簿，並記到 clb7_drill_known。
+   ⚠️ 但**不永久移除** —— 自我評估的準確度很低
+     （2026-09-06 研究：自評 vs 真實 r≈.46；口說只有 .18–.55），
+     ⛔ 所以「我覺得我會了」不能當成事實。這裡只記次數，之後再決定要不要降低出現頻率。
+   ════════════════════════════════════════════════════════════ */
+const KNOWN_KEY = 'clb7_drill_known';
+function loadKnown() {
+  try { const v = JSON.parse(localStorage.getItem(KNOWN_KEY));
+        return (v && typeof v === 'object' && !Array.isArray(v)) ? v : {}; }
+  catch (e) { return {}; }
+}
+function markKnown(tbl, label, hdr) {
+  const o = loadKnown();
+  const id = tbl.id + '|' + label + '|' + hdr;
+  const prev = o[id];
+  // ⚠️ 形狀配合 sync 的物件慣例（逐 key 比 last）
+  o[id] = { id, last: Date.now(), n: (prev && prev.n || 0) + 1, title: tbl.title, label, hdr };
+  const ks = Object.keys(o).sort((a, b) => (o[b].last || 0) - (o[a].last || 0)).slice(0, 300);
+  const keep = {}; ks.forEach(k => keep[k] = o[k]);
+  try { localStorage.setItem(KNOWN_KEY, JSON.stringify(keep)); } catch (e) {}
+}
+
+function skipCell(cid) {
+  const inp = document.getElementById(cid);
+  if (!inp || inp.disabled) return;
+  inp.dataset.skipped = '1';
+  inp.value = '';
+  // ⭐ 記在表格物件上：整張重來時跳過的格要保持跳過，⛔ 不然他又被擋住
+  const tq = queue[qIdx];
+  if (tq) { tq._skip = tq._skip || []; if (tq._skip.indexOf(cid) < 0) tq._skip.push(cid); }
+  inp.classList.add('skipped');
+  inp.placeholder = '（跳過）';
+  const t = queue[qIdx], ri = +cid.split('_')[1], ci = +cid.split('_')[2];
+  const row = (t.rows || [])[ri] || [];
+  markKnown(t, typeof row[0] === 'string' ? row[0] : '', (t.headers || [])[ci] || '');
+  const btn = inp.parentNode.querySelector('.skip-btn');
+  if (btn) { btn.textContent = '放回來'; btn.setAttribute('onclick', `unskipCell('${cid}')`); }
+}
+function unskipCell(cid) {
+  const inp = document.getElementById(cid);
+  if (!inp) return;
+  delete inp.dataset.skipped;
+  const tq = queue[qIdx];
+  if (tq && tq._skip) tq._skip = tq._skip.filter(x => x !== cid);
+  inp.classList.remove('skipped');
+  inp.placeholder = '';
+  const btn = inp.parentNode.querySelector('.skip-btn');
+  if (btn) { btn.textContent = '會了'; btn.setAttribute('onclick', `skipCell('${cid}')`); }
+  inp.focus();
+}
+
 function checkAll() {
   const inputs = [...document.querySelectorAll('.fill-input')];
   if (!inputs.length) return;
 
-  let ok = 0;
+  let ok = 0, skipped = 0;
   const wrongIds = [];
   inputs.forEach(inp => {
+    if (inp.dataset.skipped) {           // ⭐ 跳過的格：完全不參與計分與複習輪
+      skipped++;
+      inp.disabled = true;
+      const b = inp.parentNode.querySelector('.skip-btn');
+      if (b) b.outerHTML = '<span class="skip-note">跳過</span>';
+      return;
+    }
     const answers = inp.dataset.ans.split('|').map(norm);
     const userVal = norm(inp.value);
     const correct = answers.includes(userVal);
     if (inp.disabled) inp.dataset.prefilled = '1';   // 這一輪沒讓他作答的格（部分重考時預先填好的）
     inp.disabled = true;
-    if (!correct) wrongIds.push(inp.id);
+    if (!correct) wrongIds.push(inp.id);   // ⚠️ 跳過的格在上面已 return，不會走到這裡
     // ⭐ 跨天錯字簿：記「格」不是「表」
     (function(){
       const t = queue[qIdx], ri = +inp.id.split('_')[1], ci = +inp.id.split('_')[2];
@@ -1810,7 +1888,7 @@ function checkAll() {
     }
   });
 
-  const total = inputs.length;
+  const total = inputs.length - skipped;   // ⭐ 分母扣掉跳過的
   const bad   = total - ok;
 
   // 只有主輪計入總分/結果列表；複習輪只是拿來重考，不重複計分
@@ -1842,9 +1920,9 @@ function checkAll() {
     nextBtn.textContent = (roundWrong.length > 0) ? '🔁 複習答錯的 →' : '查看結果 →';
   }
 
-  const pct = Math.round(ok / total * 100);
+  const pct = total ? Math.round(ok / total * 100) : 100;
   document.getElementById('chipScore').textContent =
-    `${ok} / ${total} ✓ （${pct}%）`;
+    `${ok} / ${total} ✓ （${pct}%）` + (skipped ? `　·　跳過 ${skipped}` : '');
 
   document.getElementById('accentBar').classList.remove('visible');
   updateProgress();
