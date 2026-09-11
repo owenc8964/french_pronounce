@@ -821,7 +821,7 @@ const CODEX = [
       {fr:"Rien n'est pire que l'attente.", zh:'沒有什麼比等待更糟。'},
     ],
     see:['2-3-1','9-5-2'] },
-  { n:'2-3-3', lvl:'B1', name:'最高級', fr:'le superlatif',
+  { n:'2-3-3', lvl:'A2', name:'最高級', fr:'le superlatif',
     brief:'比較級前面加定冠詞',
     ex:[{fr:"C'est la plus belle plage de France.", zh:'這是法國最美的海灘。'},
         {fr:'Il est le plus jeune de la famille.', zh:'他是家裡最年輕的。'}],

@@ -4469,7 +4469,7 @@ Owen 貼進 2026-09-11 課堂逐字稿＋7 張截圖（`~/Desktop/0911/`，Édit
 3. `sentences.js`：`S_L32_1~12`（最高級、lequel、急救、COI+en）。
 4. `table_drill.html` **＋3 表**：`superlatif-drill`（14列）、`interrogatifs-drill`（11列）、`urgences-drill`（23列）。
 5. `gram_rules.js`：擴充既有兩點——`comparaison`（lessons 補 32、topics 補 `superlatif`、why 補最高級＝比較級＋定冠詞、6 條 points）、`questions`（lessons 補 32、topics 補 `pronoms-interrogatifs`、why 補 lequel＝le＋quel）。
-6. `codex.js`：**新增 7-1-5「lequel 疑問代名詞」**（7-1 節末追加，既有座標沒動）；2-3-3 最高級只補兩條 exc（le mieux 不變、un des meilleurs）。⚠️ 2-3-3 的 `lvl` 仍是 B1，課本在 A2 教——沒改，要不要改問 Owen。
+6. `codex.js`：**新增 7-1-5「lequel 疑問代名詞」**（7-1 節末追加，既有座標沒動）；2-3-3 最高級只補兩條 exc（le mieux 不變、un des meilleurs）。2-3-3 的 `lvl` B1 → **A2**（課本在 A2 教，Owen 09-11 同意改；`lvl` 只影響 map 文法總覽的等級標籤與篩選）。⚠️ 2-3-4「名詞與動詞的比較」同樣標 B1，但第25課（A2）就教了——還沒改，下次問 Owen。
 7. `questions.js` **＋33 題**：`superlatif` 12、`pronoms-interrogatifs` 8、`medecine-urgences-vocab` 13；`quiz.html`／`dashboard.html` 的 `TOPIC_LABELS` 兩邊都補了。
 8. `map.html`：`CURRENT_LESSON` 31→32，新增三張 tile（`superlatif`／`pronoms-interrogatifs`／`medecine-urgences-vocab`）。
 9. `reading.html` **a33「Une semaine agitée」**（跟平行閱讀同一篇＋3 題）。
