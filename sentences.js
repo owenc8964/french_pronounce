@@ -317,4 +317,18 @@ const SENTENCES = [
   { id: 'S_L31_10', lesson: 31, fr: 'Qu\'est-ce qui ne va pas ? — Je suis un peu patraque, j\'ai le nez bouché.', zh: '怎麼了？——我有點不舒服，鼻塞。', note: '⭐⭐ 課文E 藥局問診句型' },
   { id: 'S_L31_11', lesson: 31, fr: 'Lorsque ce cycle prend fin, on peut se réveiller ou reprendre un cycle.', zh: '當這個週期結束時，我們可能會醒來或再進入下一個週期。', note: '⭐ 睡眠週期課文收尾句' },
   { id: 'S_L31_12', lesson: 31, fr: 'C\'est le romarin qui soulage le mieux les migraines.', zh: '迷迭香最能緩解偏頭痛。', note: '⭐ 最高級句型先聽過，第103課文法正式教之前的預習' },
+
+  // 第32課
+  { id: 'S_L32_1', lesson: 32, fr: 'Ce sont les meilleures plantes pour les tisanes.', zh: '這些是泡花草茶最好的植物。', note: '⭐⭐ bon → le/la/les meilleur(e)(s)，四個形跟名詞配合' },
+  { id: 'S_L32_2', lesson: 32, fr: 'C\'est ce sirop pour la toux qui fonctionne le mieux.', zh: '是這款咳嗽糖漿效果最好。', note: '⭐⭐ bien → le mieux（修飾動詞，永遠不變）' },
+  { id: 'S_L32_3', lesson: 32, fr: 'C\'est l\'infirmière la plus sympathique de l\'hôpital.', zh: '她是醫院裡最親切的護理師。', note: '⭐ le/la/les + plus + 形容詞 + de + 範圍' },
+  { id: 'S_L32_4', lesson: 32, fr: 'Un bon lit, ce n\'est pas le plus important pour bien dormir.', zh: '好床不是睡好覺最重要的事。', note: '一般形容詞 → plus（老師的判斷流程第一步）' },
+  { id: 'S_L32_5', lesson: 32, fr: 'C\'est dans mon canapé que je dors le mieux.', zh: '我在沙發上睡得最好。', note: '⭐ dormir 是動詞 → le mieux' },
+  { id: 'S_L32_6', lesson: 32, fr: 'La natation est le meilleur sport pour le dos.', zh: '游泳是對背最好的運動。', note: '⭐ bon 放名詞前 → le meilleur sport' },
+  { id: 'S_L32_7', lesson: 32, fr: 'Voici trois numéros d\'urgence, lequel composez-vous ?', zh: '這裡有三個緊急電話，您撥哪一個？', note: '⭐⭐ lequel ＝ le ＋ quel，單獨站、代替前面提過的名詞' },
+  { id: 'S_L32_8', lesson: 32, fr: 'Tu as vu ces tisanes ? Laquelle choisis-tu ?', zh: '你看到這些花草茶了嗎？你選哪一種？', note: '⭐ laquelle 跟 tisane 配合（陰性單數）' },
+  { id: 'S_L32_9', lesson: 32, fr: 'Il y a eu un accident de la circulation devant chez moi. J\'ai tout de suite appelé le 112.', zh: '我家門口發生了一場車禍。我馬上打了 112。', note: '⭐ accident de la circulation ＋ tout de suite' },
+  { id: 'S_L32_10', lesson: 32, fr: 'Faites la sieste, cela va vous faire le plus grand bien.', zh: '睡個午覺吧，對您大有好處。', note: '⭐ 慣用語 faire le plus grand bien' },
+  { id: 'S_L32_11', lesson: 32, fr: 'Je dois prendre un traitement au printemps pour calmer mon allergie.', zh: '我春天得吃藥來緩解過敏。', note: '⭐ prendre un traitement ＋ calmer une douleur／une allergie' },
+  { id: 'S_L32_12', lesson: 32, fr: 'Tu parleras à ton médecin de ce problème ? — Non, je ne lui en parlerai pas.', zh: '你會跟醫生說這個問題嗎？——不，我不會跟他說。', note: '⭐⭐ lui（à ton médecin）＋ en（de ce problème），順序 lui 在 en 前' },
 ];

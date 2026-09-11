@@ -1470,6 +1470,43 @@ const BANK = [
   { lesson:31, topic:'corps-sante-vocab', type:'choose', q:'哪一種植物是清單裡「最不知名」但對付失眠與焦慮的絕佳偏方？', hint:'課文D', a:'le millepertuis（聖約翰草）', aNote:'⭐ 課文D原句：la plante la moins connue de cette liste', opts:['le millepertuis（聖約翰草）','le thym（百里香）','la lavande（薰衣草）','l\'eucalyptus（尤加利）'] },
   { lesson:31, topic:'corps-sante-vocab', type:'choose', q:'法國藥局跟台灣藥局最大的差別是什麼？（老師的文化補充）', hint:'誰在裡面工作、藥怎麼給', a:'法國藥局只有藥師工作、藥是整盒給，不像台灣有店員、藥一顆一顆算', aNote:'🎙 老師的文化補充', opts:['法國藥局只有藥師工作、藥是整盒給，不像台灣有店員、藥一顆一顆算','兩國藥局完全一樣','法國藥局比較便宜','台灣藥局才有藥師'] },
   { lesson:31, topic:'corps-sante-vocab', type:'choose', q:'les bouchons 跟 la bouteille 有什麼關係？', hint:'字根聯想', a:'同字根——瓶口被瓶塞（bouchon）堵住，塞車就像瓶子被塞住一樣動不了', aNote:'⭐⭐ embouteillage 也是同一組字根', opts:['同字根——瓶口被瓶塞（bouchon）堵住，塞車就像瓶子被塞住一樣動不了','完全沒有關係，純粹同音','bouchon 是酒瓶專用的詞','bouteille 是塞車的意思'] },
+
+  // ── 第32課：最高級 ／ 疑問代名詞 lequel ／ 醫療與急救詞彙
+  { lesson:32, topic:'superlatif', type:'fill', q:'Un bon lit, ce n\'est pas le _____ important pour bien dormir.', hint:'important 是一般形容詞', a:'plus', aNote:'⭐ 一般形容詞 → plus；只有 bon／bien 才換 meilleur／mieux' },
+  { lesson:32, topic:'superlatif', type:'fill', q:'Après le déjeuner, c\'est le _____ moment pour faire la sieste.', hint:'un bon moment 的最高級', a:'meilleur', aNote:'bon → le meilleur，修飾名詞 moment，放名詞前' },
+  { lesson:32, topic:'superlatif', type:'fill', q:'C\'est dans mon canapé que je dors le _____.', hint:'dormir 是動詞', a:'mieux', aNote:'je dors bien → je dors le mieux（修飾動詞 → 副詞 mieux）' },
+  { lesson:32, topic:'superlatif', type:'fill', q:'Tu dors sur le ventre ? Ce n\'est pas la _____ des positions.', hint:'position 是陰性', a:'meilleure', aNote:'la meilleure des ＋ 複數名詞 ＝ …之中最好的' },
+  { lesson:32, topic:'superlatif', type:'choose', q:'「最好的藥方」怎麼說？', hint:'bon 的最高級', a:'le meilleur remède', aNote:'⛔ le plus bon（老師：聽得懂但就是錯）；⛔ le plus meilleur（meilleur 已經含 plus）', opts:['le meilleur remède','le plus bon remède','le plus meilleur remède','le remède le mieux'] },
+  { lesson:32, topic:'superlatif', type:'choose', q:'le mieux 有幾種寫法？', hint:'mieux 是什麼詞類', a:'只有一種：le mieux（副詞，永遠不變）', aNote:'⚠️ 老師：meilleur 有四種寫法，mieux 只有一種。⛔ la mieux', opts:['只有一種：le mieux（副詞，永遠不變）','四種：le／la／les mieux／mieuxes','兩種：le mieux／la mieux','跟名詞配合，看情況'] },
+  { lesson:32, topic:'superlatif', type:'choose', q:'C\'est le médecin le _____ célèbre.', hint:'célèbre 是 bon／bien 嗎？', a:'plus', aNote:'⚠️ Owen 當堂想用 mieux → 老師：célèbre 是一般形容詞，直接 le plus', opts:['plus','mieux','meilleur','bien'] },
+  { lesson:32, topic:'superlatif', type:'choose', q:'「C\'est un des meilleurs documentaires sur le corps humain.」是什麼意思？', hint:'un des ＋ 複數', a:'這是關於人體最好的紀錄片之一', aNote:'⚠️ un meilleur documentaire ＝ 一部「更好的」紀錄片（比較級）；要「最」一定要有 le', opts:['這是關於人體最好的紀錄片之一','這是一部比較好的人體紀錄片','這是唯一一部人體紀錄片','這部人體紀錄片最不好看'] },
+  { lesson:32, topic:'superlatif', type:'choose', q:'「Le conseil le plus utile」的 plus 怎麼唸？', hint:'後面的字母音開頭', a:'[plyz]（連音）', aNote:'⭐ 母音前連音 [plyz]；子音前 [ply]（le plus compétent）；句尾當「最多」[plys]；ne…plus [ply]', opts:['[plyz]（連音）','[plys]','[ply]','plus 的 s 永遠不唸'] },
+  { lesson:32, topic:'superlatif', type:'trans', q:'這是最便宜的糖漿。', hint:'劣等最高級', a:'C\'est le sirop le moins cher.', aNote:'cher 放名詞後 → 冠詞出現兩次：le sirop le moins cher' },
+  { lesson:32, topic:'superlatif', type:'trans', q:'這些是最好用的滴劑。', hint:'gouttes 是複數', a:'Ce sont les gouttes les plus faciles à utiliser.', aNote:'⚠️ 老師口語說 C\'est les gouttes…；寫作要用 ce sont' },
+  { lesson:32, topic:'superlatif', type:'trans', q:'這是關於藥用植物最無聊（最不有趣）的書。', hint:'intéressant 配合誰？', a:'C\'est le livre sur les plantes médicinales le moins intéressant.', aNote:'⚠️ intéressant 配 livre（陽性），不是離它最近的 plantes' },
+
+  { lesson:32, topic:'pronoms-interrogatifs', type:'fill', q:'_____ conseils peux-tu me donner pour ne pas tomber malade ?', hint:'後面有名詞', a:'Quels', aNote:'後面接名詞 → 形容詞 quel；un conseil 陽性 → quels' },
+  { lesson:32, topic:'pronoms-interrogatifs', type:'fill', q:'Un de tes enfants est malade ? _____ ?', hint:'代替 un enfant', a:'Lequel', aNote:'單獨站、代替前面的名詞 → 代名詞 lequel' },
+  { lesson:32, topic:'pronoms-interrogatifs', type:'fill', q:'Il y a beaucoup de traitements différents. _____ sont les moins chers ?', hint:'traitements 陽性複數', a:'Lesquels', aNote:'後面接動詞 sont、沒有名詞 → 代名詞 lesquels' },
+  { lesson:32, topic:'pronoms-interrogatifs', type:'fill', q:'D\'après toi, _____ études médicales sont intéressantes ?', hint:'後面有名詞 études', a:'quelles', aNote:'études 陰性複數 → quelles；médicales 也要配合' },
+  { lesson:32, topic:'pronoms-interrogatifs', type:'fill', q:'Tu as vu ces tisanes ? _____ choisis-tu ?', hint:'選一種或選好幾種', a:'Laquelle|Lesquelles', aNote:'🎙 老師：laquelle（選一種）和 lesquelles（選好幾種）都可以' },
+  { lesson:32, topic:'pronoms-interrogatifs', type:'choose', q:'quel 跟 lequel 的差別是？', hint:'後面有沒有名詞', a:'quel 後面一定接名詞；lequel 單獨用，代替前面提過的名詞', aNote:'Tu préfères quel café ? → Lequel tu préfères ?（老師：法國人不喜歡重複）', opts:['quel 後面一定接名詞；lequel 單獨用，代替前面提過的名詞','兩個完全一樣，可以互換','lequel 比較口語，quel 比較正式','quel 只問人，lequel 只問東西'] },
+  { lesson:32, topic:'pronoms-interrogatifs', type:'choose', q:'15、17、18 三個號碼，要叫警察：Tu appelles lequel ?', hint:'Police-secours', a:'le 17', aNote:'17 police／18 pompiers／15 SAMU', opts:['le 17','le 15','le 18','le 114'] },
+  { lesson:32, topic:'pronoms-interrogatifs', type:'choose', q:'d\'après toi 是什麼意思？', hint:'不是 après toi', a:'依你看（＝à ton avis）', aNote:'⚠️ après toi ＝ 在你之後', opts:['依你看（＝à ton avis）','在你之後','跟著你走','因為你'] },
+
+  { lesson:32, topic:'medecine-urgences-vocab', type:'fill', q:'Si vous toussez, prenez ce _____.', hint:'喝的藥', a:'sirop', aNote:'le sirop＝藥水、糖漿' },
+  { lesson:32, topic:'medecine-urgences-vocab', type:'fill', q:'Pour me soigner, je n\'utilise que des _____ naturels.', hint:'偏方、藥方', a:'remèdes', aNote:'⭐ 回鍋第30課 ne...que' },
+  { lesson:32, topic:'medecine-urgences-vocab', type:'fill', q:'Faites la sieste, cela va vous faire le plus grand _____.', hint:'慣用語', a:'bien', aNote:'faire le plus grand bien＝對人大有好處' },
+  { lesson:32, topic:'medecine-urgences-vocab', type:'fill', q:'Prenez ces vitamines, elles vont vous donner du _____.', hint:'活力', a:'tonus', aNote:'donner du tonus＝給人活力' },
+  { lesson:32, topic:'medecine-urgences-vocab', type:'fill', q:'Il y avait plusieurs _____ mais cela ne semblait pas très grave.（傷者）', hint:'性別不確定時怎麼配合？', a:'blessés', aNote:'⚠️ 有男有女或不知道性別 → 陽性複數 blessés' },
+  { lesson:32, topic:'medecine-urgences-vocab', type:'fill', q:'Les _____ sont arrivés vite sur le lieu de l\'accident.（消防員）', hint:'18', a:'pompiers', aNote:'le pompier／la pompière（-ier → -ière）' },
+  { lesson:32, topic:'medecine-urgences-vocab', type:'choose', q:'法國的 15 是？', hint:'緊急醫療', a:'le SAMU（緊急醫療救護）', aNote:'17 police／18 pompiers／15 SAMU／114 聽障者／112 全歐盟', opts:['le SAMU（緊急醫療救護）','la police','les pompiers','l\'appel d\'urgence européen'] },
+  { lesson:32, topic:'medecine-urgences-vocab', type:'choose', q:'malentendant(e) 是？', hint:'mal ＋ entendre', a:'聽得到但聽不清楚的人', aNote:'老師區分：sourd 完全聽不到；malentendant 聽不清楚', opts:['聽得到但聽不清楚的人','完全聽不到的人','看不見的人','常常誤會別人的人'] },
+  { lesson:32, topic:'medecine-urgences-vocab', type:'choose', q:'「Au secours !」是什麼意思？', hint:'緊急時大喊', a:'救命！', aNote:'les secours（複數）＝救援人員與單位', opts:['救命！','小心！','快一點！','謝謝！'] },
+  { lesson:32, topic:'medecine-urgences-vocab', type:'choose', q:'Trouvez l\'intrus : rhume – fièvre – accident – toux', hint:'哪個不是症狀', a:'accident', aNote:'其他三個都是感冒症狀', opts:['accident','rhume','fièvre','toux'] },
+  { lesson:32, topic:'medecine-urgences-vocab', type:'choose', q:'老師說 prendre la température 除了「量體溫」，還有什麼意思？', hint:'簡報開場', a:'探探現場的氣氛（例如先開個玩笑看大家反應）', aNote:'🎙 老師的例子：開玩笑沒人笑，就知道不要再開了', opts:['探探現場的氣氛（例如先開個玩笑看大家反應）','發燒','查天氣預報','去看醫生'] },
+  { lesson:32, topic:'medecine-urgences-vocab', type:'choose', q:'Je vais être patraque demain au travail. 的 patraque 可以換成？', hint:'老師說兩個可以互換', a:'ne pas me sentir très bien', aNote:'🎙 老師：être patraque ＝ ne pas se sentir très bien，沒生病但覺得虛虛的', opts:['ne pas me sentir très bien','être en pleine forme','être blessé','être en retard'] },
+  { lesson:32, topic:'medecine-urgences-vocab', type:'trans', q:'我手臂受傷了。', hint:'se blesser à', a:'Je me suis blessé au bras.|Je me suis blessée au bras.', aNote:'se blesser à ＋ 身體部位（老師的例句）' },
 ];
 // ── ID 函數 ──
 function qId(q) {

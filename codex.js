@@ -842,7 +842,9 @@ const CODEX = [
       {r:'介紹景點、排名第一的事物', fr:"C'est le plus haut sommet d'Europe.", zh:'這是歐洲最高峰。'},
       {r:'不規則最高級沿用 meilleur/pire 的不規則形', fr:"C'est le meilleur restaurant du quartier.", zh:'這是這一區最好的餐廳。'},
     ],
-    exc:['最高級的不規則形跟比較級一致：le meilleur（不是le plus bon）、le pire（不是le plus mauvais，但plus mauvais也可接受）'],
+    exc:['最高級的不規則形跟比較級一致：le meilleur（不是le plus bon）、le pire（不是le plus mauvais，但plus mauvais也可接受）',
+         'bien 的最高級 le mieux 是副詞，永遠寫 le mieux（⛔ la mieux）——meilleur 有四個形，mieux 只有一個（第32課）',
+         'un des meilleurs＝最好的之一；un meilleur＝一個更好的（比較級），要「最」一定要有定冠詞（第32課）'],
     more:[
       {fr:'Quelle est la ville la plus visitée du pays ?', zh:'這個國家最多人參觀的城市是哪一個？'},
       {fr:"C'est le moins cher de tous les hôtels.", zh:'這是所有旅館裡最便宜的。'},
@@ -2973,6 +2975,29 @@ const CODEX_PART2 = [
       {fr:"Qu'est-ce qui est arrivé hier soir ?", zh:'昨晚發生了什麼事？'},
     ],
     see:['3-5-1','3-5-2'] },
+  { n:'7-1-5', lvl:'A2', name:'lequel 疑問代名詞', fr:'lequel / laquelle / lesquels / lesquelles',
+    brief:'「哪一個」單獨站：quel 黏上冠詞變代名詞',
+    ex:[{fr:"Voici trois numéros d'urgence, lequel composez-vous ?", zh:'這裡有三個緊急電話，您撥哪一個？'},
+        {fr:'Tu as vu ces tisanes ? Laquelle choisis-tu ?', zh:'你看到這些花草茶了嗎？你選哪一種？'}],
+    pts:[
+      {r:'le＋quel 黏成一個字，不能拆開寫；在「前面已經提過的一群人或東西」裡問選哪一個',
+       fr:'Un de tes enfants est malade ? Lequel ?', zh:'你有一個孩子生病了？哪一個？'},
+      {r:'跟它代替的名詞配合性數，四個形',
+       fr:'Parmi les actions suivantes, lesquelles sont utiles ?', zh:'下列行動中，哪些有用？（actions 陰複）'},
+      {r:'quel 後面一定接名詞；名詞已經說過、不想重複，就改用 lequel（法國人不喜歡重複）',
+       fr:'Tu préfères quel café ? → Lequel tu préfères ?', zh:'你比較喜歡哪種咖啡？→ 你比較喜歡哪一個？'},
+    ],
+    grid:{head:['','陽性','陰性'],
+          rows:[['單數','lequel','laquelle'],
+                ['複數','lesquels','lesquelles']]},
+    usage:[
+      {r:'在幾個選項之間做選擇（號碼、商品、療程）', fr:'Il y a beaucoup de traitements différents. Lesquels sont les moins chers ?', zh:'有很多不同的療程，哪些最便宜？'},
+    ],
+    exc:['口語常說 Lequel tu préfères ?（不倒裝）；寫作用 Lequel préfères-tu ?','同一組字也當關係代名詞用（介詞＋lequel：la raison pour laquelle），見 3-5-5'],
+    more:[
+      {fr:"Tes malades vont-ils mieux ? Lesquels peuvent sortir de l'hôpital ?", zh:'你的病人好一點了嗎？哪幾位可以出院？'},
+    ],
+    gram:'questions', see:['7-1-3','3-5-5'] },
  ]},
 
  { n:'7-2', name:'否定', fr:'La négation', topics:['negation'], items:[

@@ -13993,5 +13993,775 @@ const CHUNKS = [
   "fr": "manquer",
   "zh": "「想念」句型主詞受詞方向想反了",
   "note": "⚠️⚠️⚠️ 見上方 manquer 專屬整理——Tu me manques＝我想你（不是你想我），法文邏輯是「你讓我感覺缺少」，跟英文 I miss you 主受詞方向相反"
+ },
+ {
+  "id": "L32_Bien_c_est_un_adverbe_et",
+  "lesson": 32,
+  "fr": "Bien, c'est un adverbe et bon, c'est un adjectif.",
+  "zh": "bien 是副詞，bon 是形容詞。",
+  "note": "🎙 老師開場就講這句。le meilleur 取代 bon，le mieux 取代 bien"
+ },
+ {
+  "id": "L32_Ça_fonctionne_bien_ça_fo",
+  "lesson": 32,
+  "fr": "Ça fonctionne bien, ça fonctionne le mieux.",
+  "zh": "它效果很好，它效果最好。",
+  "note": "🎙 老師示範：先把原句的 bien 找出來，最高級就是把 bien 換成 le mieux"
+ },
+ {
+  "id": "L32_C_est_le_plus_sympathiqu",
+  "lesson": 32,
+  "fr": "C'est le plus sympathique de la classe.",
+  "zh": "他是班上最親切的。",
+  "note": "⭐ 老師：可以只說 Lui, c'est le plus sympathique（在所有人裡面），也可以用 de 把範圍講出來：de la classe、du bureau"
+ },
+ {
+  "id": "L32_C_est_le_sirop_pour_la_t",
+  "lesson": 32,
+  "fr": "C'est le sirop pour la toux le moins bon.",
+  "zh": "這是最不好的咳嗽糖漿。",
+  "note": "🎙 老師：bon 比較是講味道，bien 比較是講效果。所以一款糖漿可以「最難喝（le moins bon），但效果很好（il fonctionne très bien）」＝難喝但有用的好藥；le moins bien 才是效果不好"
+ },
+ {
+  "id": "L32_C_est_le_moins_mauvais_d",
+  "lesson": 32,
+  "fr": "C'est le moins mauvais des desserts.",
+  "zh": "這是這些甜點裡最不難吃的。",
+  "note": "🎙 老師：五道甜點你都不喜歡，但覺得有一道還可以——不能說 le meilleur（那表示真的很好吃），要說 le moins mauvais（最不壞的）。L'essentiel 的範例 la position de sommeil la moins mauvaise 是同一個邏輯"
+ },
+ {
+  "id": "L32_Un_bon_lit_ce_n_est_pas",
+  "lesson": 32,
+  "fr": "Un bon lit, ce n'est pas le plus important pour bien dormir.",
+  "zh": "好床不是睡好覺最重要的事。",
+  "note": "important 是一般形容詞 → plus。🎙 老師接著問：Le plus important, c'est quoi ? 答案是第31課學的睡姿（la position）"
+ },
+ {
+  "id": "L32_C_est_dans_mon_canapé_qu",
+  "lesson": 32,
+  "fr": "C'est dans mon canapé que je dors le mieux.",
+  "zh": "我在沙發上睡得最好。",
+  "note": "je dors bien → je dors le mieux（修飾動詞 dormir）。🎙 老師順勢問：Tu dors mieux dans ton canapé ou dans ton lit ?"
+ },
+ {
+  "id": "L32_Le_yoga_c_est_le_meilleu",
+  "lesson": 32,
+  "fr": "Le yoga, c'est le meilleur pour les abdos.",
+  "zh": "瑜伽對腹肌最好。",
+  "note": "🎙 課堂對話。⭐ les abdos（m.）＝腹肌，abdominaux 的口語縮寫（Owen 截圖手寫）；老師也提到 le ventre（肚子，第31課）"
+ },
+ {
+  "id": "L32_Les_boxeurs_ils_ont_un_t",
+  "lesson": 32,
+  "fr": "Les boxeurs, ils ont un très gros cou.",
+  "zh": "拳擊手的脖子都很粗。",
+  "note": "🎙 老師解釋為什麼拳擊對脖子最好"
+ },
+ {
+  "id": "L32_Les_tennismen_ont_de_trè",
+  "lesson": 32,
+  "fr": "Les tennismen ont de très gros bras en général.",
+  "zh": "網球選手的手臂通常都很粗。",
+  "note": "🎙 老師口語說的是 Les tennismans ont des très gros bras。依標準法文：tennisman 的複數是英文式的 tennismen；複數形容詞放在名詞前時，寫作用 de 不用 des（de très gros bras），口語兩個都聽得到"
+ },
+ {
+  "id": "L32_le_tonus",
+  "lesson": 32,
+  "fr": "le tonus",
+  "zh": "活力；（肌肉）結實有力",
+  "note": "🎙 老師：tonus 本來是「活力、能量」（詞彙頁 donner du tonus），講肌肉時是指很有力但不是很大塊的肌肉。回鍋第26課的 sec（精瘦結實）"
+ },
+ {
+  "id": "L32_Au_secours",
+  "lesson": 32,
+  "fr": "Au secours !",
+  "zh": "救命！",
+  "note": "⭐ 求救時大喊的固定說法。les secours（複數）＝緊急救援的人員與單位（Owen 截圖手寫）"
+ },
+ {
+  "id": "L32_les_sapeurs_pompiers",
+  "lesson": 32,
+  "fr": "les sapeurs-pompiers",
+  "zh": "消防員（正式全稱）",
+  "note": "⭐ pompier＝消防員（pompe 是抽水幫浦）；sapeur 來自 saper（挖牆腳、破壞地基），原本是軍隊裡的工兵——所以是軍事傳統的名稱"
+ },
+ {
+  "id": "L32_Ils_se_trouvent_au_trois",
+  "lesson": 32,
+  "fr": "Ils se trouvent au troisième rang européen.",
+  "zh": "他們在歐洲排第三名。",
+  "note": "⭐ le rang＝名次、排名（rank）；au premier rang＝排第一"
+ },
+ {
+  "id": "L32_Trois_morts_vingt_blessé",
+  "lesson": 32,
+  "fr": "Trois morts, vingt blessés.",
+  "zh": "三死二十傷。",
+  "note": "🎙 老師：新聞標題最常這樣寫"
+ },
+ {
+  "id": "L32_Je_me_suis_blessé_au_bra",
+  "lesson": 32,
+  "fr": "Je me suis blessé au bras.",
+  "zh": "我手臂受傷了。",
+  "note": "⭐ se blesser à ＋ 身體部位。女生寫 blessée"
+ },
+ {
+  "id": "L32_Je_dois_me_calmer",
+  "lesson": 32,
+  "fr": "Je dois me calmer.",
+  "zh": "我得冷靜下來。",
+  "note": "🎙 老師：se calmer（反身）＝人生氣或激動時讓自己冷靜。Owen 一開始以為 calmer 是「chill」，老師分開講"
+ },
+ {
+  "id": "L32_Pour_me_soigner_je_n_uti",
+  "lesson": 32,
+  "fr": "Pour me soigner, je n'utilise que des remèdes naturels.",
+  "zh": "我生病只用天然療法。",
+  "note": "練習2b。⭐ 回鍋第30課 ne...que（只）"
+ },
+ {
+  "id": "L32_Faites_la_sieste_cela_va",
+  "lesson": 32,
+  "fr": "Faites la sieste, cela va vous faire le plus grand bien.",
+  "zh": "睡個午覺吧，對您大有好處。",
+  "note": "練習3b。⭐ cela＝ça 的書面寫法"
+ },
+ {
+  "id": "L32_Prenez_ces_vitamines_ell",
+  "lesson": 32,
+  "fr": "Prenez ces vitamines, elles vont vous donner du tonus.",
+  "zh": "吃這些維他命，會讓您有活力。",
+  "note": "練習3c。🎙 老師問 Est-ce que tu prends des vitamines ? 見下方老師的課堂法語"
+ },
+ {
+  "id": "L32_Des_policiers_sont_venus",
+  "lesson": 32,
+  "fr": "Des policiers sont venus pour faciliter la circulation.",
+  "zh": "幾位警察來疏導交通。",
+  "note": "🎙 Owen 問台灣的義交算不算警察 → 見下方 bénévole vs volontaire"
+ },
+ {
+  "id": "L32_Elle_tousse_elle_a_de_la",
+  "lesson": 32,
+  "fr": "Elle tousse, elle a de la fièvre : c'est un gros rhume.",
+  "zh": "她咳嗽、發燒：是重感冒。",
+  "note": "🎙 老師看圖說的（Owen 補了 une grippe 也可以）"
+ },
+ {
+  "id": "L32_Prendre_le_traitement_ré",
+  "lesson": 32,
+  "fr": "Prendre le traitement régulièrement.",
+  "zh": "按時吃藥。",
+  "note": "🎙 Owen 問「按時吃藥」怎麼說，老師給的。régulièrement＝規律地"
+ },
+ {
+  "id": "L32_Toutes_les_quatre_heures",
+  "lesson": 32,
+  "fr": "Toutes les quatre heures environ.",
+  "zh": "大約每四小時一次。",
+  "note": "⭐ toutes les ＋ 時間＝每隔多久（toutes 配合陰性複數 heures）"
+ },
+ {
+  "id": "L32_C_est_ce_gamin_qui_va_me",
+  "lesson": 32,
+  "fr": "C'est ce gamin qui va me soigner ?",
+  "zh": "是這個小鬼要幫我看病？",
+  "note": "⭐ c'est ... qui 強調句（codex 7-4）"
+ },
+ {
+  "id": "L32_Que_puis_je_pour_vous",
+  "lesson": 32,
+  "fr": "Que puis-je pour vous ?",
+  "zh": "我能為您做什麼？",
+  "note": "⭐ 正式的倒裝問句；pouvoir 的 je 倒裝固定寫 puis-je"
+ },
+ {
+  "id": "L32_Je_me_sens_déjà_mieux_do",
+  "lesson": 32,
+  "fr": "Je me sens déjà mieux, docteur.",
+  "zh": "我已經覺得好多了，醫生。",
+  "note": "⭐ mieux（bien 的比較級，修飾 se sentir）——病人什麼治療都還沒做就「好多了」，這就是安慰劑效應的笑點"
+ },
+ {
+  "id": "L32_Tu_préfères_quel_café",
+  "lesson": 32,
+  "fr": "Tu préfères quel café ?",
+  "zh": "你比較喜歡哪一種咖啡？",
+  "note": "🎙 老師：quel 後面一定要接名詞（這裡要說出 café）。quel 是形容詞，自己站不住（codex 7-1-3）"
+ },
+ {
+  "id": "L32_Lequel_tu_préfères",
+  "lesson": 32,
+  "fr": "Lequel tu préfères ?",
+  "zh": "你比較喜歡哪一個？",
+  "note": "🎙 老師：我已經跟你說過是什麼東西（咖啡），就不用再說 café，直接用 lequel。⚠️ 老師這句是口語語序；寫作用倒裝 Lequel préfères-tu ?"
+ },
+ {
+  "id": "L32_Voici_trois_numéros_d_ur",
+  "lesson": 32,
+  "fr": "Voici trois numéros d'urgence, lequel composez-vous ?",
+  "zh": "這裡有三個緊急電話，您撥哪一個？",
+  "note": "課本暖身b。composer un numéro＝撥號。🎙 老師的例子：15、17、18，要叫警察，tu appelles lequel ? → le 17（Owen 截圖手寫 15 17 18）"
+ },
+ {
+  "id": "L32_Quels_conseils_peux_tu_m",
+  "lesson": 32,
+  "fr": "Quels conseils peux-tu me donner pour ne pas tomber malade ?",
+  "zh": "你可以給我什麼建議，讓我不要生病？",
+  "note": "後面有名詞 → 形容詞 quel；🎙 老師提醒 un conseil 是陽性 → quels。tomber malade＝生病"
+ },
+ {
+  "id": "L32_Tu_as_vu_ces_tisanes_Laq",
+  "lesson": 32,
+  "fr": "Tu as vu ces tisanes ? Laquelle choisis-tu ?",
+  "zh": "你看到這些花草茶了嗎？你選哪一種？",
+  "note": "🎙 老師：laquelle（選一種）和 lesquelles（選好幾種）都可以"
+ },
+ {
+  "id": "L32_Un_de_tes_enfants_est_ma",
+  "lesson": 32,
+  "fr": "Un de tes enfants est malade ? Lequel ?",
+  "zh": "你有一個孩子生病了？哪一個？",
+  "note": "⭐ un de ＋ 複數名詞＝其中一個"
+ },
+ {
+  "id": "L32_D_après_toi_quelles_étud",
+  "lesson": 32,
+  "fr": "D'après toi, quelles études médicales sont intéressantes ?",
+  "zh": "依你看，哪些醫學科系比較有意思？",
+  "note": "études 陰性複數 → quelles，médicales 也要配合（Owen 截圖手寫 médical(e)(s)）。⭐ d'après toi＝依你看（＝à ton avis），⚠️ ≠ après toi（在你之後）"
+ },
+ {
+  "id": "L32_Tu_emportes_ton_réveil_O",
+  "lesson": 32,
+  "fr": "Tu emportes ton réveil ? — Oui, je l'emporte.",
+  "zh": "你帶你的鬧鐘嗎？——對，我帶走。",
+  "note": "⭐ 這裡的 réveil＝鬧鐘（第31課：一字兩義）。emporter＝帶走"
+ },
+ {
+  "id": "L32_Non_je_ne_leur_en_donne",
+  "lesson": 32,
+  "fr": "Non, je ne leur en donne pas.",
+  "zh": "不，我不給他們。",
+  "note": "🎙 老師：只用 leur 已經很好，但加上 en 會更好——考試時能用 en 取代一長串，評分者會欣賞。法國人喜歡短句：寫很多短句比寫一個長句好，更清楚（老師說自己以前也愛寫長句，現在改寫短句）"
+ },
+ {
+  "id": "L32_C_est_la_position_de_som",
+  "lesson": 32,
+  "fr": "C'est la position de sommeil la moins mauvaise.",
+  "zh": "這是最不糟的睡姿。",
+  "note": "課本範例。🎙 老師：不是最好，只是「最不壞」——見上方 le moins mauvais des desserts"
+ },
+ {
+  "id": "L32_C_est_le_sirop_le_moins",
+  "lesson": 32,
+  "fr": "C'est le sirop le moins cher.",
+  "zh": "這是最便宜的糖漿。",
+  "note": "🎙 老師：le moins cher ＝ the cheapest"
+ },
+ {
+  "id": "L32_Ils_sont_les_meilleurs_d",
+  "lesson": 32,
+  "fr": "Ils sont les meilleurs du marché.",
+  "zh": "它們是市面上最好的。",
+  "note": "🎙 老師補充：le marché 在這裡不是菜市場，是「市面上所有買得到的」——du marché＝在所有現有產品裡"
+ },
+ {
+  "id": "L32_De_plus_en_plus_d_enfant",
+  "lesson": 32,
+  "fr": "De plus en plus d'enfants souffrent d'asthme.",
+  "zh": "越來越多小孩有氣喘。",
+  "note": "⭐ de plus en plus de ＋ 名詞＝越來越多的…；souffrir de＝患有、受…之苦"
+ },
+ {
+  "id": "L32_Tu_as_pris_ta_températur",
+  "lesson": 32,
+  "fr": "Tu as pris ta température ? Tu as de la fièvre ?",
+  "zh": "你量體溫了嗎？你有發燒嗎？",
+  "note": "⭐ prendre la température 兩個意思：① 量體溫 ② 🎙 老師：探探現場氣氛——例如上台簡報先開個玩笑，沒人笑就知道不要再開玩笑了（prendre la température de la salle）"
+ },
+ {
+  "id": "L32_Les_pompiers_sont_arrivé",
+  "lesson": 32,
+  "fr": "Les pompiers sont arrivés vite sur le lieu de l'accident.",
+  "zh": "消防員很快就抵達事故現場。",
+  "note": "⭐ le lieu de l'accident＝事故現場"
+ },
+ {
+  "id": "L32_Je_lui_ai_demandé_Laquel",
+  "lesson": 32,
+  "fr": "Je lui ai demandé : « Laquelle est la plus efficace ? »",
+  "zh": "我問他：「哪一種最有效？」",
+  "note": "⭐⭐ laquelle＝une des deux tisanes（陰性單數）＋ la plus efficace"
+ },
+ {
+  "id": "L32_On_va_voir_ici",
+  "lesson": 32,
+  "fr": "On va voir ici.",
+  "zh": "我們來看這裡。",
+  "note": "🎙 帶進下一段的固定開場（第31課也有 On va voir.）"
+ },
+ {
+  "id": "L32_Voyons_ça",
+  "lesson": 32,
+  "fr": "Voyons ça.",
+  "zh": "我們來看看。",
+  "note": "🎙 voir 的命令式 nous 形（我們來…），跟 On va voir 同義"
+ },
+ {
+  "id": "L32_On_peut_passer_pour_main",
+  "lesson": 32,
+  "fr": "On peut passer pour maintenant.",
+  "zh": "我們先跳過這個。",
+  "note": "🎙 暫時略過某段內容"
+ },
+ {
+  "id": "L32_On_a_vu_la_dernière_fois",
+  "lesson": 32,
+  "fr": "On a vu la dernière fois.",
+  "zh": "我們上次看過了。",
+  "note": "🎙 提醒這是回鍋內容（這次是睡姿 la position）"
+ },
+ {
+  "id": "L32_Pas_mal_pas_mal",
+  "lesson": 32,
+  "fr": "Pas mal, pas mal.",
+  "zh": "不錯，不錯。",
+  "note": "🎙 答對時的稱讚"
+ },
+ {
+  "id": "L32_Je_ne_sais_pas_si_c_est",
+  "lesson": 32,
+  "fr": "Je ne sais pas si c'est le meilleur ou le pire.",
+  "zh": "我不知道這是最好還是最糟的。",
+  "note": "🎙 老師討論跑步對膝蓋好不好時說的——本課最高級的兩頭一次到齊"
+ },
+ {
+  "id": "L32_Est_ce_que_tu_prends_des",
+  "lesson": 32,
+  "fr": "Est-ce que tu prends des vitamines ?",
+  "zh": "你有在吃維他命嗎？",
+  "note": "🎙 Owen：Oui, des vitamines C."
+ },
+ {
+  "id": "L32_C_est_tout",
+  "lesson": 32,
+  "fr": "C'est tout.",
+  "zh": "就這樣。",
+  "note": "🎙 一段講完的收尾"
+ },
+ {
+  "id": "L32_C_est_le_meilleur_remède",
+  "lesson": 32,
+  "fr": "C'est le meilleur remède.",
+  "zh": "這是最好的藥方。",
+  "note": "❓ 當堂問「le plus meilleur 可以嗎？」⭐ 當堂就問清楚了：meilleur 本身＝plus bon，不能再加 plus。概念缺口，已補上"
+ },
+ {
+  "id": "L32_un_nombre",
+  "lesson": 32,
+  "fr": "un nombre",
+  "zh": "一個數量值",
+  "note": "⚠️ 標準法文：345 當作「數量」時是 un nombre（由三個 chiffres 組成）"
+ },
+ {
+  "id": "L32_un_numéro",
+  "lesson": 32,
+  "fr": "un numéro",
+  "zh": "編號（電話、房號、門牌）",
+  "note": "🎙 老師說「很多 chiffres 組起來就是 un numéro，例如 345」——這是在講當編號用的情況（電話號碼、房號）。考試要分清楚：講數量用 nombre，講編號用 numéro"
+ },
+ {
+  "id": "L32_l_allergie_f",
+  "lesson": 32,
+  "fr": "l'allergie (f.)",
+  "zh": "過敏",
+  "note": ""
+ },
+ {
+  "id": "L32_l_anxiété_f",
+  "lesson": 32,
+  "fr": "l'anxiété (f.)",
+  "zh": "焦慮",
+  "note": "回鍋第31課 millepertuis"
+ },
+ {
+  "id": "L32_l_asthme_m",
+  "lesson": 32,
+  "fr": "l'asthme (m.)",
+  "zh": "氣喘",
+  "note": "⚠️ th 不發音"
+ },
+ {
+  "id": "L32_l_indigestion_f",
+  "lesson": 32,
+  "fr": "l'indigestion (f.)",
+  "zh": "消化不良",
+  "note": "🎙 老師：digérer 有困難的時候"
+ },
+ {
+  "id": "L32_l_infection_f",
+  "lesson": 32,
+  "fr": "l'infection (f.)",
+  "zh": "感染",
+  "note": ""
+ },
+ {
+  "id": "L32_l_insomnie_f",
+  "lesson": 32,
+  "fr": "l'insomnie (f.)",
+  "zh": "失眠",
+  "note": ""
+ },
+ {
+  "id": "L32_le_mal_de_gorge",
+  "lesson": 32,
+  "fr": "le mal de gorge",
+  "zh": "喉嚨痛",
+  "note": "複數 les maux de gorge（第31課）"
+ },
+ {
+  "id": "L32_la_migraine",
+  "lesson": 32,
+  "fr": "la migraine",
+  "zh": "偏頭痛",
+  "note": ""
+ },
+ {
+  "id": "L32_le_nez_bouché",
+  "lesson": 32,
+  "fr": "le nez bouché",
+  "zh": "鼻塞",
+  "note": "回鍋第31課"
+ },
+ {
+  "id": "L32_le_stress",
+  "lesson": 32,
+  "fr": "le stress",
+  "zh": "壓力",
+  "note": ""
+ },
+ {
+  "id": "L32_l_antibiotique_m",
+  "lesson": 32,
+  "fr": "l'antibiotique (m.)",
+  "zh": "抗生素",
+  "note": ""
+ },
+ {
+  "id": "L32_l_antiseptique_m",
+  "lesson": 32,
+  "fr": "l'antiseptique (m.)",
+  "zh": "消毒劑",
+  "note": "回鍋第31課 lavande"
+ },
+ {
+  "id": "L32_calmer_une_douleur",
+  "lesson": 32,
+  "fr": "calmer (une douleur)",
+  "zh": "緩解（疼痛）",
+  "note": "⚠️ 見下方 calmer vs se calmer"
+ },
+ {
+  "id": "L32_les_gouttes_f",
+  "lesson": 32,
+  "fr": "les gouttes (f.)",
+  "zh": "滴劑（眼藥水、滴鼻劑…）",
+  "note": "🎙 des gouttes pour les yeux／pour le nez／pour les oreilles；une goutte d'eau＝一滴水"
+ },
+ {
+  "id": "L32_le_remède",
+  "lesson": 32,
+  "fr": "le remède",
+  "zh": "藥方、偏方",
+  "note": "回鍋第31課：un remède de grand-mère"
+ },
+ {
+  "id": "L32_le_traitement",
+  "lesson": 32,
+  "fr": "le traitement",
+  "zh": "療程、治療",
+  "note": "🎙 老師：醫生開三個月的療程給你，每天都要吃 → prendre son traitement"
+ },
+ {
+  "id": "L32_donner_du_tonus",
+  "lesson": 32,
+  "fr": "donner du tonus",
+  "zh": "給人活力",
+  "note": "回鍋第31課：le romarin donne du tonus"
+ },
+ {
+  "id": "L32_être_patraque",
+  "lesson": 32,
+  "fr": "être patraque",
+  "zh": "（口語）身體不太舒服、沒精神",
+  "note": "回鍋第31課。🎙 老師：沒有生病，但覺得虛虛的；英文 under the weather。＝ ne pas se sentir très bien"
+ },
+ {
+  "id": "L32_faire_le_plus_grand_bien",
+  "lesson": 32,
+  "fr": "faire le plus grand bien",
+  "zh": "對人大有好處",
+  "note": "⭐ 裡面就藏著本課的最高級 le plus grand"
+ },
+ {
+  "id": "L32_l_accident_m",
+  "lesson": 32,
+  "fr": "l'accident (m.)",
+  "zh": "事故",
+  "note": "🎙 un accident de voiture／un accident de travail"
+ },
+ {
+  "id": "L32_l_ambulance_f",
+  "lesson": 32,
+  "fr": "l'ambulance (f.)",
+  "zh": "救護車",
+  "note": ""
+ },
+ {
+  "id": "L32_l_ambulancier_l_ambulanc",
+  "lesson": 32,
+  "fr": "l'ambulancier, l'ambulancière",
+  "zh": "救護車人員",
+  "note": "🎙 老師：救護車上的那個人"
+ },
+ {
+  "id": "L32_l_appel_m",
+  "lesson": 32,
+  "fr": "l'appel (m.)",
+  "zh": "電話、呼叫",
+  "note": "⭐ un appel d'urgence＝緊急電話（Owen 截圖手寫）"
+ },
+ {
+  "id": "L32_le_numéro_d_urgence",
+  "lesson": 32,
+  "fr": "le numéro d'urgence",
+  "zh": "緊急電話號碼",
+  "note": ""
+ },
+ {
+  "id": "L32_le_policier_la_policière",
+  "lesson": 32,
+  "fr": "le policier, la policière",
+  "zh": "警察",
+  "note": ""
+ },
+ {
+  "id": "L32_le_pompier_la_pompière",
+  "lesson": 32,
+  "fr": "le pompier, la pompière",
+  "zh": "消防員",
+  "note": "⭐ -ier → -ière，跟 boulanger → boulangère 同一種變法"
+ },
+ {
+  "id": "L32_le_SAMU",
+  "lesson": 32,
+  "fr": "le SAMU",
+  "zh": "緊急醫療救護",
+  "note": "🎙 老師：有點像急診"
+ },
+ {
+  "id": "L32_la_victime",
+  "lesson": 32,
+  "fr": "la victime",
+  "zh": "受害者",
+  "note": "🎙 老師：手機被偷，你就是 la victime。⚠️ 不管男女永遠是陰性（la victime）。可以同時是 blessé 又是 victime"
+ },
+ {
+  "id": "L32_la_circulation",
+  "lesson": 32,
+  "fr": "la circulation",
+  "zh": "交通",
+  "note": "🎙 老師：un accident de la circulation 包含所有道路上的事故（汽車、卡車、機車）"
+ },
+ {
+  "id": "L32_bénévole",
+  "lesson": 32,
+  "fr": "bénévole",
+  "zh": "義工（完全無給）",
+  "note": "🎙 老師：bénévole 沒有錢"
+ },
+ {
+  "id": "L32_volontaire",
+  "lesson": 32,
+  "fr": "volontaire",
+  "zh": "志願的（可能有少量津貼）",
+  "note": "🎙 老師：法國的消防員大多是 pompiers volontaires——有自己的本業，另外兼差當消防員，有一點點錢。也有全職的"
+ },
+ {
+  "id": "L32_à_temps_plein",
+  "lesson": 32,
+  "fr": "à temps plein",
+  "zh": "全職",
+  "note": "Owen 截圖手寫"
+ },
+ {
+  "id": "L32_à_temps_partiel",
+  "lesson": 32,
+  "fr": "à temps partiel",
+  "zh": "兼職",
+  "note": "⚠️ 逐字稿把老師的話記成「full time 叫 temps partiel」——標準法文 temps partiel 是兼職，全職是 temps plein"
+ },
+ {
+  "id": "L32_à_mi_temps",
+  "lesson": 32,
+  "fr": "à mi-temps",
+  "zh": "半職（一半工時）",
+  "note": "Owen 截圖手寫"
+ },
+ {
+  "id": "L32_la_guérison",
+  "lesson": 32,
+  "fr": "la guérison",
+  "zh": "痊癒",
+  "note": "🎙 老師：healing。動詞 guérir"
+ },
+ {
+  "id": "L32_un_gamin_une_gamine",
+  "lesson": 32,
+  "fr": "un gamin, une gamine",
+  "zh": "（口語）小鬼、小孩",
+  "note": "🎙 老師：病人覺得醫生看起來太年輕才這樣叫他"
+ },
+ {
+  "id": "L32_des_lunettes_à_monture_n",
+  "lesson": 32,
+  "fr": "des lunettes à monture noire",
+  "zh": "黑框眼鏡",
+  "note": "la monture＝鏡框"
+ },
+ {
+  "id": "L32_une_barbe_naissante",
+  "lesson": 32,
+  "fr": "une barbe naissante",
+  "zh": "剛冒出來的鬍子",
+  "note": "🎙 老師：naissant 來自 naître（出生）＝鬍子剛「出生」，一點點就好，太長反而難看"
+ },
+ {
+  "id": "L32_une_voix_Uncle_Ben_s",
+  "lesson": 32,
+  "fr": "une voix « Uncle Ben's »",
+  "zh": "低沉渾厚的聲音",
+  "note": "🎙 老師：Uncle Ben's 是米的品牌，包裝上的老先生給人聲音很沉穩的印象——不要小孩的聲音，要成熟的聲音。la voix＝聲音"
+ },
+ {
+  "id": "L32_une_chemise_de_grand_pèr",
+  "lesson": 32,
+  "fr": "une chemise de grand-père",
+  "zh": "阿公襯衫",
+  "note": ""
+ },
+ {
+  "id": "L32_le_stétho_scope",
+  "lesson": 32,
+  "fr": "le stétho(scope)",
+  "zh": "聽診器",
+  "note": "même parfois le stétho dans la poche＝有時連聽診器都插在口袋"
+ },
+ {
+  "id": "L32_être_un_peu_renard",
+  "lesson": 32,
+  "fr": "être un peu renard",
+  "zh": "有點狡猾、機靈",
+  "note": "課本註2：être malin。🎙 老師：renard（狐狸）給人聰明狡猾的形象"
+ },
+ {
+  "id": "L32_douter_de",
+  "lesson": 32,
+  "fr": "douter de",
+  "zh": "懷疑",
+  "note": "doutant encore de ma technique＝對自己的技術還沒信心"
+ },
+ {
+  "id": "L32_placéboliser",
+  "lesson": 32,
+  "fr": "placéboliser",
+  "zh": "「安慰劑化」（作者自創的字）",
+  "note": "作者在字上加了引號，就是在玩文字遊戲：用 placebo 自己造了一個動詞"
+ },
+ {
+  "id": "L32_l_allure_f",
+  "lesson": 32,
+  "fr": "l'allure (f.)",
+  "zh": "外表、樣子",
+  "note": "課本題7答案：a. Apparence"
+ },
+ {
+  "id": "L32_un_e_interne",
+  "lesson": 32,
+  "fr": "un(e) interne",
+  "zh": "實習醫生",
+  "note": "課本註3：醫學系最後階段的學生"
+ },
+ {
+  "id": "L32_le_coude",
+  "lesson": 32,
+  "fr": "le coude",
+  "zh": "手肘",
+  "note": ""
+ },
+ {
+  "id": "L32_l_avant_bras_m",
+  "lesson": 32,
+  "fr": "l'avant-bras (m.)",
+  "zh": "前臂",
+  "note": "avant（前）＋ bras（手臂）"
+ },
+ {
+  "id": "L32_la_hanche",
+  "lesson": 32,
+  "fr": "la hanche",
+  "zh": "臀部兩側、髖部",
+  "note": "hips"
+ },
+ {
+  "id": "L32_l_orteil_m",
+  "lesson": 32,
+  "fr": "l'orteil (m.)",
+  "zh": "腳趾",
+  "note": "Owen 截圖手寫 orteils"
+ },
+ {
+  "id": "L32_la_langue",
+  "lesson": 32,
+  "fr": "la langue",
+  "zh": "舌頭",
+  "note": "🎙 老師：跟「語言」同一個字"
+ },
+ {
+  "id": "L32_le_foie",
+  "lesson": 32,
+  "fr": "le foie",
+  "zh": "肝",
+  "note": "（身體內部）"
+ },
+ {
+  "id": "L32_l_estomac_m",
+  "lesson": 32,
+  "fr": "l'estomac (m.)",
+  "zh": "胃",
+  "note": "（身體內部）⚠️ 結尾 c 不發音"
+ },
+ {
+  "id": "L32_meilleur",
+  "lesson": 32,
+  "fr": "meilleur",
+  "zh": "-eill- 怎麼唸",
+  "note": "🎙 老師：已經有一個 e，後面 ill 唸 [j] → [mɛ.jœʁ]（像「妹－耶」）。同類：famille [fa.mij]、fille [fij]"
+ },
+ {
+  "id": "L32_mille_ville",
+  "lesson": 32,
+  "fr": "mille, ville",
+  "zh": "為什麼這兩個唸 [l]",
+  "note": "⚠️⚠️ 老師：沒辦法從拼字看出來，只能記。mille [mil]、ville [vil]、tranquille [tʁɑ̃.kil] 是例外，ll 唸 [l]。老師：西班牙文 villa 會唸成 [bija]，法文 ville 反而唸 [vil]"
+ },
+ {
+  "id": "L32_le_fils",
+  "lesson": 32,
+  "fr": "le fils",
+  "zh": "l 和 s 唸不唸",
+  "note": "⚠️ 老師：l 不唸，s 反而要唸 → [fis]。法文大部分結尾 s 不唸，fils 是例外。老師：法文不是看了就會唸的語言，要聽"
  }
 ];

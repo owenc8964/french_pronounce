@@ -21,7 +21,7 @@
 |---|---|
 | **考試** | **2027-04-18 前哨戰／診斷考｜2027-09-19 正場**。⚠️ 2027 場次官方**尚未公布**，日期是照 2026（2/8、4/19、9/20、12/20，全是該月第三個星期日）推的。**法協 02-2364-8833 那通電話還沒打。** |
 | **考哪個** | **TCF Canada**（台北法協有考，NT$8,000 四科）。TEF Canada 台灣**無考場**，要考得飛東京 |
-| **程度** | A2，第 31 課（筆記＋九項連動已做完，Anki 18張新卡在桌面等匯入，見下方 09-07 條目）。2026-05 開始學法文 |
+| **程度** | A2，第 32 課（2026-09-11：筆記＋九項連動已做完，Anki 27 張新卡在桌面等匯入，見下方 09-11 條目）。2026-05 開始學法文 |
 | **口說語言島** | ⭐ **Phase 0 八座全滿**（AC1/2/3/5/7/8/11/15），每座 169–225 字 / 78–103 秒，中文母本 `source_zh` 都在。`AC8` 的 follow-up gap **掛零** |
 | **考試材料** | 三包全部整理完。**Tâche 3 = 167 議題／245 變體**（xlsx 八分頁）＋ 119 題雙語；⭐ **Tâche 2 = 160 條情境**（不是 20，見 09-02 校準）；兩本 Ellipses 正式教科書 |
 | **系統** | `mock.html` 已驗收（44+44 套模擬考可用）。dashboard／tracker 倒數已對齊新日期 |
@@ -4446,6 +4446,47 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 **Anki**：`python3 tools/gen_anki_lesson.py 31` → 18張產出卡（chunks 58條，25條太短略過、15條認得級略過）。`anki_precheck.py` 驗證：新卡18／撞號0／每句法文都找得到出處，**可以匯入**。已放到 `~/Desktop/anki_l31_auto.tsv`（照慣例，Owen 檢查完自己移回 `anki/`）。
 
 **驗證方式**：`node --check` 過 chunks/sentences/gram_rules/questions/writing_tasks 五個純 `.js`；Python抽取 table_drill/map/quiz/dashboard/reading 五個 `.html` 的 `<script>` 丟 `node --check` 全過；`node tools/check_notes.js` 全綠。⚠️ 跟09-04第30課同樣的限制：這個排程任務身分底層擋掉 `preview_start`，**沒有實際在瀏覽器裡跑過**——下一個能開瀏覽器的 session 應比照第30課驗證清單跑一次（quiz選第31課、table_drill篩新表、reading a32三題、map新tile渲染）。
+
+---
+
+### 09-11：第32課（A2・Unité 7 續・Le superlatif 主文法・醫療與急救詞彙・緊急電話・漫畫 L'effet placebo・疑問代名詞 lequel・L'essentiel）——筆記＋九項連動＋Anki
+
+Owen 貼進 2026-09-11 課堂逐字稿＋7 張截圖（`~/Desktop/0911/`，Édito A2 p.103–108）。已用 `assets/.textbook_cache.txt` 逐頁對過 Fonctionnement 表與 Entraînement 題目；答案以課本＋Owen 截圖手寫＋逐字稿三方對照。
+
+**這一課教了什麼**
+- **主文法 Le superlatif**（p.103）：le/la/les + plus/moins + 形容詞 (+ de + 範圍)；bon → le meilleur（四個形）、bien → le mieux（永遠不變）；老師補 le pire。第31課課文D 先聽過的句子這次回鍋當例句。
+- **Culture**（p.104）：法國緊急電話 17／18／15／114／112；「Oh, le cliché !」法國人抗生素用量歐洲第三。
+- **詞彙頁 La médecine et les urgences**（p.105）：病痛／治療／慣用語（donner du tonus、être patraque、faire le plus grand bien）／緊急狀況。
+- **課文H 漫畫**（p.106）：〈L'effet placebo du soignant〉。
+- **文法 Les pronoms interrogatifs**（p.107）：lequel/laquelle/lesquels/lesquelles vs quel + 名詞。
+- **L'essentiel**（p.108）：COD/COI、最高級、身體部位、醫療詞彙總複習。
+- ⛔ 沒上到：課文G（魁北克救護車）、課文I（留尼旺影片）、課文J（急救測驗）、Phonie-graphie 沒逐題做。
+
+**做了什麼（九項連動全部做完）**
+1. `french_notes.html` 新增 `lesson-32`：12 個 unit（含平行閱讀 `l32-parallel`＋老師課堂法語＋發音警報＋糾錯摘要），`check_notes.js` **全綠**（32課／286表／304 unit）。
+2. `chunks.js`：`extract_chunks.js 32 --write` → **＋110 張**。
+   - ⚠️ **踩到的坑（下次照做）**：糾錯摘要的 li 如果把「錯誤描述」放在 `zh` 欄（第31課的寫法），抽取器會把它當中文翻譯做成卡——第一版 Anki 真的出了一張「C'est le meilleur remède.｜問『le plus meilleur 可以嗎？』」。**修法：糾錯 li 的 zh 一律寫正確翻譯，錯誤描述放 note 開頭（❌／❓）**。修完後 `git checkout -- chunks.js` 還原再重抽（開工前 chunks.js 是乾淨的，才可以這樣做）。
+3. `sentences.js`：`S_L32_1~12`（最高級、lequel、急救、COI+en）。
+4. `table_drill.html` **＋3 表**：`superlatif-drill`（14列）、`interrogatifs-drill`（11列）、`urgences-drill`（23列）。
+5. `gram_rules.js`：擴充既有兩點——`comparaison`（lessons 補 32、topics 補 `superlatif`、why 補最高級＝比較級＋定冠詞、6 條 points）、`questions`（lessons 補 32、topics 補 `pronoms-interrogatifs`、why 補 lequel＝le＋quel）。
+6. `codex.js`：**新增 7-1-5「lequel 疑問代名詞」**（7-1 節末追加，既有座標沒動）；2-3-3 最高級只補兩條 exc（le mieux 不變、un des meilleurs）。⚠️ 2-3-3 的 `lvl` 仍是 B1，課本在 A2 教——沒改，要不要改問 Owen。
+7. `questions.js` **＋33 題**：`superlatif` 12、`pronoms-interrogatifs` 8、`medecine-urgences-vocab` 13；`quiz.html`／`dashboard.html` 的 `TOPIC_LABELS` 兩邊都補了。
+8. `map.html`：`CURRENT_LESSON` 31→32，新增三張 tile（`superlatif`／`pronoms-interrogatifs`／`medecine-urgences-vocab`）。
+9. `reading.html` **a33「Une semaine agitée」**（跟平行閱讀同一篇＋3 題）。
+10.（順手）`writing_tasks.js` **＋2 題**：W32a 看圖描述病人（課本 p.105 Production écrite 6）、W32b 想不想在急救單位工作（p.104 Production écrite 4）。
+
+**⛔ 沒做的：`scenes.js`**——這課沒有成對台詞的對話（漫畫只有三句）。
+
+**Anki**：`gen_anki_lesson.py 32` → **27 張**產出卡（110 條 chunks，45 條太短、38 條認得級略過）；`anki_precheck.py`：新卡27／撞號0／每句都有出處，**可以匯入**。已複製到 `~/Desktop/anki_l32_auto.tsv`。
+
+**內容上的來源衝突（照來源三層優先序，都在筆記裡標出來了）**
+- 老師說「345 是 un numéro」→ 標準法文：數量是 nombre、編號才是 numéro。
+- 逐字稿把 full time 記成 temps partiel → 標準：temps plein 全職／temps partiel 兼職／mi-temps 半職。
+- 老師口語 `C'est les gouttes les plus faciles…`、`Les tennismans ont des très gros bras` → 寫作用 ce sont／tennismen／de très gros。
+- 課本 L'essentiel 2c 是複數 `Tisanes / efficaces` → Ce sont les tisanes les plus efficaces（老師課堂上用單數帶過）。
+
+**驗證方式**：`node --check` 過 6 個純 `.js`；抽出 table_drill/map/quiz/dashboard/reading 的 `<script>` 丟 `node --check` 全過；`check_notes.js` 全綠；瀏覽器（ROOM 先換成 TEST）實際載入：筆記頁第32課 12 unit／122 句／245 個發音鍵、console 無錯；table_drill 三張新表都載入；map 顯示「第 32 課」＋三張 tile；quiz 三個 TOPIC_LABELS 有值；reading 出現 a33。
+- ⚠️ 順手發現的既有問題（沒動）：`table_drill.html` 的 `TABLES` 陣列在 `condition-si-drill` 後面有一個空洞（連續兩個逗號），HEAD 版本就有；目前執行不會出錯，但任何 `TABLES.find(t => t.id…)` 沒先 `filter(Boolean)` 的程式會炸。
 
 ---
 

@@ -160,18 +160,23 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'questions', name:'Questions simples', icon:'❓', zone:'A1', cat:'base',
-    lessons:[1,2], topics:['question-words'], unlocked:true,
+    lessons:[1,2,32], topics:['question-words','pronoms-interrogatifs'], unlocked:true,   // 09-11（第32課）補上疑問代名詞 lequel 家族
     rule:{
-      title:'問句三招＋疑問詞 quel 要配合',
-      why:'三種問法其實是三個歷史地層：倒裝（Viens-tu ?）最老、最書面；est-ce que 字面是「是不是說…」，是後來發明的萬用問句支架——插上去之後後面維持正常語序，什麼都不用動；語調上揚是日常口語。考試寫作用倒裝加分，口說用 est-ce que 和語調就夠。quel 是形容詞，所以照形容詞的天性跟名詞配合。',
+      title:'問句三招＋quel 要配合＋lequel 代替名詞',
+      why:'三種問法其實是三個歷史地層：倒裝（Viens-tu ?）最老、最書面；est-ce que 字面是「是不是說…」，是後來發明的萬用問句支架——插上去之後後面維持正常語序，什麼都不用動；語調上揚是日常口語。考試寫作用倒裝加分，口說用 est-ce que 和語調就夠。quel 是形容詞，所以照形容詞的天性跟名詞配合。⭐ 2026-09-11（第32課）：lequel 就是 le（那個）＋ quel（哪）黏成一個字——quel 是形容詞，要靠名詞才站得住；名詞前面已經講過、不想重複時，就在 quel 前面黏一個定冠詞，讓它自己變成代名詞站起來。所以它跟代替的名詞配合性數，四個形就是 le／la／les ＋ quel 的四個形。',
       points:[
         '三種問法：①語調上揚 Tu viens ? ②Est-ce que tu viens ? ③倒裝 Viens-tu ?',
         '疑問詞：qui（誰）que/quoi（什麼）où（哪裡）quand（何時）comment（如何）combien（多少）pourquoi（為何）',
         'quel 像形容詞要配合：quel âge（陽單）/ quelle ville（陰單）/ quels artistes（陽複）/ quelles langues（陰複）',
+        '⭐ 第32課 lequel／laquelle／lesquels／lesquelles：在前面已經提過的一群人或東西裡問「哪一個／哪些」，單獨使用、跟代替的名詞配合',
+        '⚠️ 判斷：後面有名詞 → quel（Quels conseils peux-tu me donner ?）；後面沒有名詞、直接接動詞 → lequel（Lesquels sont les moins chers ?）',
+        '口語 Lequel tu préfères ?（不倒裝）；寫作 Lequel préfères-tu ?',
       ],
       examples:[
         { fr:'Tu habites dans quelle ville ?', zh:'你住在哪個城市？（ville陰性→quelle）' },
         { fr:'Quelles langues tu parles ?', zh:'你說哪些語言？（複數陰性）' },
+        { fr:'Voici trois numéros d\'urgence, lequel composez-vous ?', zh:'這裡有三個緊急電話，您撥哪一個？（第32課）' },
+        { fr:'Tu as vu ces tisanes ? Laquelle choisis-tu ?', zh:'你看到這些花草茶了嗎？你選哪一種？（tisane 陰單 → laquelle）' },
       ]}},
 
   { id:'prepositions', name:'Prépositions (lieu · pays · transport)', icon:'📍', zone:'A1', cat:'base',
@@ -350,10 +355,10 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'comparaison', name:'La comparaison', icon:'⚖️', zone:'A2', cat:'adjectifs',
-    lessons:[14,25,26], topics:['comparaison'], unlocked:true,
+    lessons:[14,25,26,32], topics:['comparaison','superlatif'], unlocked:true,   // 09-11（第32課）補上最高級
     rule:{
       title:'比較級 — 先問「我在比什麼詞類」，詞類決定寫法',
-      why:'三個等級（moins／aussi・autant／plus）是固定的，真正決定寫法的是你在比什麼詞類。副詞和形容詞是「性質」，比較詞把它夾在中間；動詞是「動作」，沒辦法被夾住，所以比較詞只能跟在後面；名詞是「數量」，而法文講不確定的數量一律要 de——所以 plus de／moins de／autant de 的那個 de 不是新規則，是 beaucoup de 那條規則在比較句裡的同一張臉。同等級的 aussi 與 autant 也是同一個道理：aussi 修飾性質（形容詞副詞），autant 衡量分量（動作與數量），中文都翻成「一樣」，法文分得很清楚。',
+      why:'三個等級（moins／aussi・autant／plus）是固定的，真正決定寫法的是你在比什麼詞類。副詞和形容詞是「性質」，比較詞把它夾在中間；動詞是「動作」，沒辦法被夾住，所以比較詞只能跟在後面；名詞是「數量」，而法文講不確定的數量一律要 de——所以 plus de／moins de／autant de 的那個 de 不是新規則，是 beaucoup de 那條規則在比較句裡的同一張臉。同等級的 aussi 與 autant 也是同一個道理：aussi 修飾性質（形容詞副詞），autant 衡量分量（動作與數量），中文都翻成「一樣」，法文分得很清楚。⭐ 2026-09-11（第32課）最高級不是新系統：把比較級前面加上定冠詞 le／la／les，意思就從「比較」變成「在一個範圍裡排第一」——定冠詞就是那個「唯一的、第一名」的標記。所以 un meilleur documentaire 只能是「一部更好的」（比較級），要「最」一定要有 le；要「之一」就說 un des meilleurs。',
       points:[
         '副詞／形容詞：比較詞夾中間 → moins loin que、aussi grande que、plus grande que',
         '動詞：動詞先出現，比較詞跟在後面 → Les jeunes déménagent moins que les personnes âgées',
@@ -365,12 +370,20 @@ const GRAM_POINTS = [
         '⚠️ j\'aime bien ＜ j\'aime ＜ j\'aime beaucoup——加 bien 反而變弱',
         'moins bien ＝ pire（比較不好就是比較糟）；古語 pis 只留在 Tant pis !（算了）',
         '比較對象是代名詞時用重讀形：que moi / que lui / qu\'eux',
+        '⭐ 第32課 最高級：le／la／les ＋ plus／moins ＋ 形容詞（＋ de ＋ 範圍）→ C\'est l\'infirmière la plus sympathique de l\'hôpital',
+        '⭐ 形容詞本來放名詞後 → 冠詞出現兩次（la tisane la plus efficace）；本來放名詞前 → 一次（le meilleur remède）',
+        '⚠️⚠️ bon → le／la／les meilleur(e)(s)（四個形）；bien → le mieux（副詞，永遠不變，⛔ la mieux）；另有 le pire（最糟）',
+        '⭐ 老師的判斷流程：一般形容詞 → plus；遇到 bon → meilleur；遇到 bien（修飾動詞）→ mieux。⛔ le plus bon、⛔ le plus meilleur',
+        '⚠️ un des meilleurs ＝ 最好的之一；un meilleur X ＝ 一個「更好的」X（比較級）',
+        '⭐ le moins mauvais ＝「最不壞的」——不夠好到可以說 le meilleur 時用（C\'est la position de sommeil la moins mauvaise）',
       ],
       examples:[
         { fr:'La chambre de Tom est moins grande que la chambre d\'Anna.', zh:'Tom 的房間比 Anna 的小。（形容詞夾中間）' },
         { fr:'Il y a autant de chambres que dans notre maison.', zh:'房間數跟我們家一樣多。（名詞要 de，同等用 autant）' },
         { fr:'On vit bien en ville, mais on vit mieux à la campagne.', zh:'城市過得不錯，鄉下更好。（bien → mieux）' },
         { fr:'J\'aime mieux ce quartier.', zh:'我更喜歡這一區。（aimer 是動詞，配 mieux 不配 meilleur）' },
+        { fr:'C\'est le meilleur bar à sieste de la ville.', zh:'這是全城最好的午睡吧。（第32課：meilleur 修飾名詞）' },
+        { fr:'C\'est ce sirop pour la toux qui fonctionne le mieux.', zh:'是這款咳嗽糖漿效果最好。（第32課：le mieux 修飾動詞）' },
       ]}},
 
   { id:'condition-si', name:'La condition (si / quand)', icon:'🔀', zone:'A2', cat:'base',

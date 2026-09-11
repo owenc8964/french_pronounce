@@ -222,4 +222,12 @@ const WRITING_TASKS = [
   { lesson:31, id:'W31b', title:'寫一段「跟藥師的對話」摘要（DELF 題型，60-80字）', task:'想像你最近身體不舒服去了藥局，用第一人稱敘述整個過程：藥師問了什麼、你怎麼回答、她推薦了什麼。',
     use:['課文E 藥師問診句型至少兩句（Qu\'est-ce qui ne va pas？／Vous avez de la fièvre？…）', '症狀詞彙至少兩個（patraque／le nez bouché／les maux de tête／la toux…）', '一個 COI 代名詞（例如 Elle m\'a recommandé…／Je lui ai répondu…）'],
     frame:'⭐ 開場情境（La semaine dernière, je suis allé(e) à la pharmacie…） → 藥師的問診 → 你的回答 → 她的建議或推薦（一款植物或藥）收尾' },
+
+  // ── 第32課（最高級 ＋ 醫療與急救詞彙 ＋ lequel）
+  { lesson:32, id:'W32a', title:'看圖描述病人並給建議（課本 p.105 Production écrite 6，60-80字）', task:'課本插圖裡的人不太舒服（戴毛帽、圍巾、拿衛生紙、夾著溫度計）。描述他的症狀，再給他至少三個讓狀況好轉的建議。',
+    use:['症狀詞彙至少三個（la toux／la fièvre／le nez bouché／le mal de gorge／un rhume／la grippe…）', '治療詞彙至少兩個（consulter un médecin／prendre un traitement／un sirop／des gouttes／un remède…）', '至少一個最高級（le meilleur remède／c\'est le repos qui … le mieux／la tisane la plus efficace…）'],
+    frame:'⭐ 一句總結他的狀態（Il est patraque…） → 症狀逐一描述 → 三條建議（il faut／je vous conseille de／si …, …）→ 一句收尾（ça va vous faire le plus grand bien）' },
+  { lesson:32, id:'W32b', title:'你想在急救單位工作嗎？（課本 p.104 Production écrite 4，60-80字）', task:'Aimeriez-vous travailler dans un service d\'urgence (comme pompier(ère), ambulancier(ère)…) ? 表態，並說明理由。',
+    use:['表態句型（À mon avis…／Je pense que…／Pour moi…）', '緊急狀況詞彙至少三個（les blessés／une ambulance／les secours／le SAMU／un accident de la circulation…）', '至少一個最高級（le métier le plus utile／le plus difficile…）'],
+    frame:'⭐ 開頭直接表態（Oui／Non, je n\'aimerais pas…） → 理由一（配一個具體情境）→ 理由二 → 一句收尾重申立場' },
 ];
