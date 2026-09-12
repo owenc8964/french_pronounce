@@ -207,6 +207,16 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 .cell small{font-size:.5rem; color:var(--dim); margin-top:2px; text-align:center; line-height:1.1}
 .cell.empty{background:repeating-linear-gradient(45deg,#0d1016,#0d1016 5px,#0f1219 5px,#0f1219 10px);
             border:1px dashed var(--line); color:var(--faint); font-size:.8rem}
+.aff{margin-top:5px; font-size:.6rem; letter-spacing:.12em}
+.aff .pip{color:#3f4659; margin-right:1px}
+.aff .pip.on{color:var(--red); text-shadow:0 0 7px rgba(216,87,79,.6)}
+.aff .afftxt{color:var(--gold); margin-left:6px; font-size:.58rem; letter-spacing:.1em}
+.npcrow{display:flex; align-items:center; gap:11px; padding:10px 12px; margin-bottom:8px;
+  border-radius:12px; background:linear-gradient(180deg,var(--panel2),var(--panel)); border:1px solid var(--line)}
+.npcrow img{width:32px; height:32px}
+.npcname{flex:1; font-size:.84rem; font-weight:600}
+.npcname small{display:block; font-family:'Cormorant Garamond',Georgia,serif; font-style:italic;
+  font-size:.8rem; color:var(--faint); font-weight:400}
 .toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(18px); opacity:0;
        background:linear-gradient(180deg,#1d2434,#151a26); border:1px solid var(--line2);
        padding:10px 18px; border-radius:11px; font-size:.8rem; transition:.28s; pointer-events:none; z-index:50}
@@ -311,11 +321,68 @@ function bossLine(lesson){
 }
 var FOE_NAMES=['迷路的小妖','走廊的看守','石縫裡的東西','發抖的小鬼','舊書堆的守衛'];
 
+/* ════════════════════════════════════════════════════════════════
+   街坊（關係養成，2026-09-12）
+   ⚠️ Owen：「至少我想養一隻很厲害的東東，或是養成某段關係」
+   ⭐ NPC 直接用 situations.js 的生活情境當身分（藥師、店員、房東…），
+     他們講的法文一律取自 sentences.js 的該課句子 —— ⛔ Claude 不自創法文（教材鐵律）。
+   ⭐ 熟悉度會改變稱呼：陌生用 vous，熟了改用 tu —— 那是真實的法文文化差異。
+   ⛔ 久沒見不懲罰他本人，只是 NPC 會說「好久不見」
+     （見 memory feedback_stakes_on_character_not_person）。
+   ════════════════════════════════════════════════════════════════ */
+var NPC_SPRITES=['0085','0086','0087','0099','0100','0084'].map(function(n){return T+n+'.png';});
+/* ⚠️ 這裡只是角色的名字與身分（遊戲用），⛔ 不是教材——他們講的法文一律取自 sentences.js。
+   ⭐ Baptiste 沿用第 32 課漫畫〈L'effet placebo du soignant〉裡那位急診實習醫生。 */
+var NPC_WHO={
+  'se-presenter':{n:'Camille',  r:'剛搬來的鄰居', s:0},
+  'famille':     {n:'Mme Bonnet',r:'樓下的太太',  s:3},
+  'decrire-qqn': {n:'Lucas',    r:'咖啡館的常客', s:2},
+  'logement':    {n:'M. Rivet', r:'房東',        s:5},
+  'courses':     {n:'Sophie',   r:'市場的攤販',   s:3},
+  'restaurant':  {n:'Étienne',  r:'餐廳老闆',     s:4},
+  'se-deplacer': {n:'Karim',    r:'公車司機',     s:2},
+  'sante':       {n:'Baptiste', r:'急診實習醫生', s:5},
+  'rendez-vous': {n:'Léa',      r:'語言交換夥伴', s:3},
+  'travail':     {n:'Mme Fabre',r:'面試官',       s:1},
+  'etudes':      {n:'Hugo',     r:'大學同學',     s:2},
+  'meteo':       {n:'Papy Jean',r:'公園裡的老先生',s:5},
+  'vacances':    {n:'Chloé',    r:'旅行社櫃台',   s:3},
+  'loisirs':     {n:'Théo',     r:'球場上的朋友', s:4},
+  'passe':       {n:'Mamie Odette',r:'愛講往事的阿嬤',s:3},
+  'opinion':     {n:'Julien',   r:'嘴很利的同事', s:2},
+  'canada':      {n:'Marie-Ève',r:'魁北克來的移民官',s:0},
+};
+function whoOf(sit){ return NPC_WHO[sit.id] || {n:sit.zh, r:sit.zh, s:0}; }
+var AFF_LV=[
+  {at:0,  name:'陌生',   note:'他對你點了個頭'},
+  {at:3,  name:'認得你', note:'他記得你來過'},
+  {at:8,  name:'熟了',   note:'他改口用 tu 稱呼你了'},
+  {at:15, name:'朋友',   note:'他願意跟你聊自己的事'},
+];
+function affLv(a){ var r=AFF_LV[0]; AFF_LV.forEach(function(x){ if((a||0)>=x.at) r=x; }); return r; }
+function npcPool(){
+  if (typeof SITUATIONS==='undefined') return [];
+  return SITUATIONS.filter(function(x){
+    var hasQ = BANK.some(function(q){ return q.type==='choose' && q.opts && (x.topics||[]).indexOf(q.topic)>=0; });
+    var hasS = (typeof SENTENCES!=='undefined') && SENTENCES.some(function(s){ return (x.lessons||[]).indexOf(s.lesson)>=0; });
+    return hasQ && hasS;
+  });
+}
+function npcLine(sit, aff){
+  var pool=(typeof SENTENCES!=='undefined'?SENTENCES:[]).filter(function(s){ return (sit.lessons||[]).indexOf(s.lesson)>=0; });
+  if(!pool.length) return null;
+  var want = (aff>=8) ? /\btu\b|\bte\b|\bton\b|\bta\b/i : /\bvous\b|\bvotre\b/i;
+  var pref = pool.filter(function(s){ return want.test(s.fr); });
+  var use = pref.length ? pref : pool;
+  return use[Math.floor(rnd()*use.length)];
+}
+
 var TYPES={ foe:{ic:SP.sword,nm:'小怪'}, elite:{ic:SP.skull,nm:'精英'},
-            chest:{ic:SP.chest,nm:'寶箱'}, shop:{ic:SP.potion,nm:'商人'}, boss:{ic:SP.crown,nm:'守護者'} };
+            chest:{ic:SP.chest,nm:'寶箱'}, shop:{ic:SP.potion,nm:'商人'},
+            npc:{ic:NPC_SPRITES[0],nm:'街坊'}, boss:{ic:SP.crown,nm:'守護者'} };
 function buildMap(){
-  return { floors:[ shuffle(['foe','chest','foe']).slice(0,3),
-                    shuffle(['foe','shop','elite']).slice(0,3), ['boss'] ],
+  return { floors:[ shuffle(['foe','chest','npc']).slice(0,3),
+                    shuffle(['foe','shop','npc','elite']).slice(0,3), ['boss'] ],
            pool: questionsFor(recentLessons(4)) };
 }
 function lootCard(state, prefer){
@@ -353,7 +420,8 @@ function renderHud(){
 function renderMap(){
   var r=S.run, v=document.getElementById('view'), dead=r.hp<=0, done=r.cleared['2-0'];
   var html='<div class="title"><div class="en">Le Donjon du Jour</div><h1>今 日 地 城</h1><div class="rule"></div></div>' +
-    '<div class="sub">' + (dead ? '你撤退了。戰利品、經驗值都留著，明天是新的地城。'
+    '<div class="sub">' + (dead ? ('你倒下了'+(r.lostCoin?'，身上的 '+r.lostCoin+' 枚金幣散落在地城裡':'')+
+        '。戰利品、經驗值與街坊關係都留著。')
       : done ? '守護者已經倒下。今天的地城通關了。'
       : '選一條路走下去。<b>答對就是攻擊</b>，答錯會被反擊——倒下沒有任何損失。') + '</div>';
   MAP.floors.forEach(function(nodes,fi){
@@ -372,7 +440,7 @@ function renderMap(){
   if((r.loot||[]).length){
     html+='<div class="sec"><h2>今天的戰利品</h2>'+r.loot.map(cardHtml).join('')+'</div>';
   }
-  html+=dexHtml()+'<div class="credit">美術與音效：Kenney（CC0 公共領域）<br>字體：Cinzel · Cormorant Garamond（SIL OFL）</div>';
+  html+=npcHtml()+dexHtml()+'<div class="credit">美術與音效：Kenney（CC0 公共領域）<br>字體：Cinzel · Cormorant Garamond（SIL OFL）</div>';
   v.innerHTML=html;
   Array.prototype.forEach.call(v.querySelectorAll('.node.can'),function(n){
     n.addEventListener('click',function(){ sfx('click_001'); enter(n.dataset.k,n.dataset.t); });
@@ -381,6 +449,18 @@ function renderMap(){
 function cardHtml(c){
   return '<div class="card"><div class="fr">'+esc(c.fr)+'<button onclick="say(this.parentNode.textContent)">🔊</button></div>'+
          '<div class="zh">'+esc(c.zh)+'</div></div>';
+}
+function npcHtml(){
+  var n=S.npc||{}, ids=Object.keys(n);
+  if(!ids.length) return '';
+  ids.sort(function(a,b){ return (n[b].aff||0)-(n[a].aff||0); });
+  return '<div class="sec"><h2>街坊</h2>'+ids.map(function(id){
+    var r=n[id];
+    return '<div class="npcrow">'+img(r.sprite||NPC_SPRITES[0])+
+      '<div class="npcname">'+esc(r.name||id)+'　<span style="color:var(--faint);font-size:.72rem;font-weight:400">'+esc(r.role||'')+'</span>'+
+      '<small>'+esc(r.fr||'')+'</small></div>'+
+      '<div class="aff">'+affPips(r.aff||0)+'</div></div>';
+  }).join('')+'</div>';
 }
 function dexHtml(){
   var dex=S.dex||{}, cells=Object.keys(dex).map(function(id){
@@ -414,6 +494,7 @@ function enter(key,type){
       '</div><button class="next" onclick="advance()">離開</button></div>';
     return;
   }
+  if(type==='npc'){ return meetNpc(key); }
   var isBoss=type==='boss', qs;
   if(isBoss) qs=BOSS.qs; else qs=shuffle(MAP.pool).slice(0, type==='elite'?3:2);
   if(!qs.length){ r.cleared[key]=1; save(S); advance(); return; }
@@ -432,6 +513,111 @@ function buy(what){
   else if(what==='heal'&&r.coin>=6){ r.coin-=6; r.hp=Math.min(maxHpOf(lv),r.hp+1); sfx('glass_002'); toast('回復一顆心'); }
   save(S); renderHud(); enter(null,'shopRefresh');
 }
+
+/* ── 街坊遭遇 ───────────────────────────────────────────── */
+var N=null;
+function meetNpc(key){
+  var pool=npcPool();
+  if(!pool.length){ S.run.cleared[key]=1; save(S); return advance(); }
+  S.npc=S.npc||{};
+  var sorted=pool.slice().sort(function(a,b){
+    var aa=(S.npc[a.id]||{}).aff||0, bb=(S.npc[b.id]||{}).aff||0;
+    if(aa===0&&bb>0) return 1; if(bb===0&&aa>0) return -1;
+    return aa-bb;
+  });
+  var sit=sorted[Math.floor(rnd()*Math.min(3,sorted.length))];
+  var rec=S.npc[sit.id]||{aff:0,met:0,last:0};
+  var days = rec.last ? Math.floor((Date.now()-rec.last)/864e5) : -1;
+  var who=whoOf(sit);
+  N={ key:key, sit:sit, rec:rec, who:who, sprite:NPC_SPRITES[who.s % NPC_SPRITES.length],
+      qs:shuffle(BANK.filter(function(q){ return q.type==='choose'&&q.opts&&(sit.topics||[]).indexOf(q.topic)>=0; })).slice(0,2),
+      i:0, gained:0, line:npcLine(sit,rec.aff||0) };
+  sfx('switch_002');
+  var lv=affLv(rec.aff||0);
+  var hello = rec.met ? (days>=3 ? '「Ça fait longtemps！」'+esc(who.n)+'看起來很高興你又來了。'
+                                 : esc(who.n)+'認出你了。'+lv.note+'。')
+                      : esc(who.r)+' '+esc(who.n)+' 站在那裡。他還不認識你。';
+  document.getElementById('view').innerHTML =
+    '<div class="scene" style="--wall:url('+SP.wall+'); --floor:url('+SP.ground+')">'+
+      '<div class="foename"><div class="n">'+esc(who.n)+'　<span style="color:var(--dim);font-size:.72rem;font-weight:400">'+esc(who.r)+'</span></div>'+
+        '<div class="t">'+esc(sit.fr)+'</div>'+
+        '<div class="aff">'+affPips(rec.aff||0)+'</div></div>'+
+      '<div class="foe">'+img(N.sprite)+'</div>'+
+      '<div class="hero">'+img(SP.hero)+'</div>'+
+    '</div>'+
+    '<div class="box"><div class="talk" id="talk"></div><div id="panel"></div></div>';
+  type(hello, npcCmds);
+}
+function affPips(a){
+  var lv=affLv(a), idx=AFF_LV.indexOf(lv), out='';
+  for(var i=0;i<AFF_LV.length-1;i++) out+='<span class="pip'+(i<idx?' on':'')+'">♥</span>';
+  return out+'<span class="afftxt">'+lv.name+'</span>';
+}
+function npcCmds(){
+  var panel=document.getElementById('panel'); if(!panel) return;
+  panel.innerHTML='<div class="cmds">'+
+    '<button class="cmd" onclick="npcTalk()">'+img(SP.card)+'<span>聊兩句<small>答對就更熟一點</small></span></button>'+
+    (N.line?'<button class="cmd" onclick="npcListen()">'+img(SP.wand)+'<span>聽他說<small>他會用法文說一句</small></span></button>':'')+
+    '<button class="cmd" onclick="npcLeave()">'+img(SP.shield)+'<span>道別<small>回到地圖</small></span></button>'+
+  '</div>';
+}
+function npcListen(){
+  sfx('click_001');
+  document.getElementById('panel').innerHTML='<div class="talk"><span class="fr">« '+esc(N.line.fr)+' »</span>'+
+    '<div class="zh">'+esc(N.line.zh)+'</div></div>'+
+    '<div class="fb">'+((N.rec.aff||0)>=8 ? '他用 <b>tu</b> 跟你講話了——法文裡這是關係變近的訊號。'
+                                          : '他用 <b>vous</b> 跟你講話——還在客氣的距離。')+'</div>'+
+    '<button class="next" onclick="npcCmds()">回到對話</button>';
+  say(N.line.fr);
+}
+function npcTalk(){
+  sfx('click_001');
+  var q=N.qs[N.i];
+  if(!q){ return npcDone(); }
+  document.getElementById('panel').innerHTML='<div class="q">'+esc(q.q)+
+      (q.hint?'<span class="hint">提示：'+esc(q.hint)+'</span>':'')+'</div>'+
+    '<div class="opts" id="opts">'+shuffle(q.opts).map(function(o){
+      return '<button class="opt" data-o="'+esc(o)+'">'+esc(o)+'</button>'; }).join('')+'</div>';
+  Array.prototype.forEach.call(document.querySelectorAll('#opts .opt'),function(b){
+    b.addEventListener('click',function(){ npcResolve(b,q); });
+  });
+}
+function npcResolve(btn,q){
+  var ok=btn.dataset.o===q.a;
+  Array.prototype.forEach.call(document.querySelectorAll('#opts .opt'),function(x){
+    x.disabled=true; if(x.dataset.o===q.a) x.classList.add('ok'); else if(x===btn) x.classList.add('no');
+  });
+  if(ok){ N.gained+=2; S.xp=(S.xp||0)+4; sfx('confirmation_001'); }
+  else { S.xp=(S.xp||0)+1; sfx('error_004'); }   /* 聊天答錯不扣血：這裡是社交不是戰鬥 */
+  save(S); renderHud();
+  document.getElementById('panel').innerHTML='<div class="fb">'+
+    (ok?'<b style="color:var(--green)">他聽懂了，點點頭</b>':'<b style="color:var(--red)">他愣了一下</b>　正解：<b>'+esc(q.a)+'</b>')+
+    (q.aNote?'<br>'+q.aNote:'')+'</div>'+
+    '<button class="next" onclick="npcNext()">'+(N.i>=N.qs.length-1?'結束對話':'再聊一句')+'</button>';
+}
+function npcNext(){ sfx('click_001'); N.i++; if(N.i>=N.qs.length) npcDone(); else npcTalk(); }
+function npcDone(){
+  var rec=S.npc[N.sit.id]||{aff:0,met:0};
+  var before=affLv(rec.aff||0), idxB=AFF_LV.indexOf(before);
+  rec.aff=(rec.aff||0)+N.gained; rec.met=(rec.met||0)+1; rec.last=Date.now();
+  rec.name=N.who.n; rec.role=N.who.r; rec.fr=N.sit.fr; rec.sprite=N.sprite;
+  S.npc[N.sit.id]=rec; S.run.cleared[N.key]=1;
+  var after=affLv(rec.aff), idxA=AFF_LV.indexOf(after), up=idxA>idxB, gift=null;
+  if(up){ sfx('maximize_001');
+    if(idxA>=2){ gift=lootCard(S,(N.sit.lessons||[])[0]);
+      if(gift){ S.run.loot.push(gift); (S.cards=S.cards||{})[gift.key]={last:Date.now()}; } }
+    else { S.run.potion=(S.run.potion||0)+1; }
+  }
+  save(S); renderHud();
+  document.getElementById('view').innerHTML=
+    '<div class="loot"><h3>'+(up?'RELATION APPROFONDIE':'À BIENTÔT')+'</h3>'+
+    '<div class="fb" style="text-align:center">'+esc(N.who.n)+'　<span class="aff">'+affPips(rec.aff)+'</span></div>'+
+    (up?'<div class="fb" style="text-align:center;color:var(--gold2)">★ 關係進展到「'+after.name+'」——'+after.note+'</div>':'')+
+    (gift?'<div style="margin-top:10px">'+cardHtml(gift)+'<div class="fb">他送了你一句話</div></div>'
+         :(up?'<div class="fb" style="text-align:center">他塞給你一瓶藥水</div>':''))+
+    '<button class="next" onclick="advance()">繼續前進</button></div>';
+}
+function npcLeave(){ sfx('click_001'); S.run.cleared[N.key]=1; save(S); advance(); }
 
 /* ── 戰鬥畫面（場景 ＋ 對白 ＋ 指令）───────────────────────── */
 function sceneHtml(){
@@ -542,7 +728,13 @@ function resolve(btn,q){
       '<button class="next" id="nx">'+(S.run.hp<=0?'你倒下了…':(B.hp<=0?'牠倒下了':'繼續'))+'</button>';
     document.getElementById('nx').addEventListener('click', function(){
       sfx('click_001');
-      if(S.run.hp<=0){ save(S); renderMap(); return; }
+      if(S.run.hp<=0){
+        /* ⭐ 角色該有風險（Owen 09-12：沒有懲罰很不人性），
+           ⛔ 但只沒收「角色的錢」——戰利品卡／經驗值／圖鑑／關係一律保留，
+           那是他的學習成果，不能罰（memory feedback_stakes_on_character_not_person）。 */
+        S.run.lostCoin=S.run.coin; S.run.coin=0;
+        save(S); renderHud(); renderMap(); return;
+      }
       if(B.hp<=0) return win();
       B.i++; type(esc(B.name)+' 還站著。', showCmds);
     });
