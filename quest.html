@@ -427,12 +427,15 @@ function renderMap(){
   MAP.floors.forEach(function(nodes,fi){
     html+='<div class="floor">第 '+(fi+1)+' 層'+(fi===2?' · 守護者':'')+'</div><div class="row">';
     nodes.forEach(function(t,ni){
-      var key=fi+'-'+ni, cleared=!!r.cleared[key], can=(fi===r.floor)&&!dead&&!cleared;
+      var key=fi+'-'+ni, cleared=!!r.cleared[key], fled=!!(r.fled||{})[key];
+      var can=(fi===r.floor)&&!dead&&!cleared;
       var cls=cleared?'done':(can?'can':(fi<r.floor?'done':'locked'));
       var isBoss=t==='boss';
       html+='<div class="node '+cls+'" data-k="'+key+'" data-t="'+t+'">'+
               img(isBoss?BOSS.sprite:TYPES[t].ic)+
-              '<div class="nm">'+(isBoss?esc(BOSS.name):TYPES[t].nm)+'</div></div>';
+              '<div class="nm">'+(isBoss?esc(BOSS.name):TYPES[t].nm)+
+              (fled&&!cleared?'<br><span style="color:var(--faint);font-size:.62rem">還站在那裡</span>':'')+
+              '</div></div>';
     });
     html+='</div>';
   });
@@ -484,6 +487,7 @@ function enter(key,type){
   }
   if(type==='shop'){
     r.cleared[key]=1; save(S); renderHud(); sfx('switch_002');
+    S.shopKey = key;
     document.getElementById('view').innerHTML='<div class="loot"><h3>MARCHAND</h3>'+
       '<div class="fb">「要買點什麼嗎？」</div>'+
       '<div class="cmds" style="margin-top:12px">'+
@@ -511,7 +515,11 @@ function buy(what){
   var r=S.run, lv=lvOf(S.xp);
   if(what==='potion'&&r.coin>=10){ r.coin-=10; r.potion=(r.potion||0)+1; sfx('confirmation_001'); toast('買了一瓶藥水'); }
   else if(what==='heal'&&r.coin>=6){ r.coin-=6; r.hp=Math.min(maxHpOf(lv),r.hp+1); sfx('glass_002'); toast('回復一顆心'); }
-  save(S); renderHud(); enter(null,'shopRefresh');
+  save(S); renderHud();
+  /* ⚠️ BUG 修正：原本這裡呼叫 enter(null,'shopRefresh')，
+     那個 type 不在任何分支裡 → 直接掉進一場 key=null 的戰鬥（Owen 的紀錄裡就有一個 null 節點）。
+     ⭐ 改成重畫商人畫面就好。 */
+  enter(S.shopKey, 'shop');
 }
 
 /* ── 街坊遭遇 ───────────────────────────────────────────── */
@@ -673,7 +681,15 @@ function usePotion(){
   r.potion--; r.hp=Math.min(maxHpOf(lv),r.hp+1); save(S); renderHud(); sfx('glass_002');
   type('你喝下藥水，恢復了一顆心。', showCmds);
 }
-function flee(){ sfx('back_001'); sfx('click_001'); S.run.cleared[B.key]=1; save(S); advance(); }
+/* ⚠️ BUG 修正（2026-09-12，Owen 實測踩到）：撤退**不算通關**。
+   原本這裡直接標 cleared，導致關主格子打勾、地圖顯示「守護者已倒下」，
+   但圖鑑是空的、經驗值也沒進——⛔ 逃走就是逃走，那一格要留在原地。 */
+function flee(){
+  sfx('click_001');
+  S.run.fled = S.run.fled || {}; S.run.fled[B.key] = 1;
+  save(S); renderMap(); window.scrollTo({top:0,behavior:'smooth'});
+  toast('你退開了，牠還站在那裡');
+}
 
 function attack(){
   sfx('click_001');
