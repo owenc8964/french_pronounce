@@ -40,13 +40,13 @@ for (const [id, ms] of rows) {
 }
 const totalSec = Math.round(totalMs / 1000);
 
-/* ── 上課時間（2026-08-24 Owen：「上課也要算時間吧XDDD…保底一週2.5小時」）──
+/* ── 上課時間（2026-08-24 Owen：「上課也要算時間吧XDDD…保底一週2.5小時」→ 09-12 更正為表定 3 小時）──
  * 本來想用課堂錄音檔的長度來算（那才精確），但錄音混在他的工作與生活錄音裡，
  * 不去翻。改用他自己定的保底值：**每週 2.5 小時**，從課程起算日開始數整週。
  * ⚠️ 這是三項裡唯一「估計」而非「實測」的，所以取 floor（少算不多算），
  *    dashboard 上也會標明是保底值。 */
 const COURSE_START = '2026-06-25';
-const COURSE_H_PER_WEEK = 2.5;
+const COURSE_H_PER_WEEK = 3;     // 2026-09-12 Owen：「我每週表定 3 小時家教」——不是保底估計，是表定值
 const weeksElapsed = Math.floor((Date.now() - new Date(COURSE_START + 'T00:00:00').getTime()) / (7 * 864e5));
 const coursSec = Math.round(weeksElapsed * COURSE_H_PER_WEEK * 3600);
 console.log(`上課：${COURSE_START} 起算 ${weeksElapsed} 整週 × ${COURSE_H_PER_WEEK}h ＝ ${(coursSec/3600).toFixed(1)} 小時（保底估計）`);

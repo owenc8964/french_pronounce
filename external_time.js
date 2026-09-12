@@ -33,11 +33,11 @@ const EXTERNAL_TIME = {
           "2026/09/10": 717
     }
   },
-  // ⚠️ 保底估計，不是實測：每週 2.5 小時，從 2026-06-25 起算整週（取 floor）
+  // ⚠️ 保底估計，不是實測：每週 3 小時，從 2026-06-25 起算整週（取 floor）
   cours: {
-    totalSec: 99000,
+    totalSec: 118800,
     weeks: 11,
-    perWeekH: 2.5,
+    perWeekH: 3,
     since: '2026-06-25',
     estimated: true
   }
