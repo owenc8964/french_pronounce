@@ -74,6 +74,12 @@ body { background:#0b0a10; color:#e6e0d2; font-family:'Segoe UI',system-ui,sans-
 .whole .wbtn:hover { color:#e0c060; border-color:#c9a227; }
 .whole .wbody { margin-top:11px; }
 
+/* 🔊 發音鍵（2026-09-12：這頁原本完全沒有發音） */
+.say { background:none; border:1px solid #2a2418; color:#c0a060; border-radius:6px;
+       cursor:pointer; font-size:.78rem; padding:1px 7px; margin-left:6px; line-height:1.6; }
+.say:hover { background:#1c1810; color:#e0c060; }
+.say.big { font-size:.8rem; padding:3px 10px; margin:0 0 0 8px; }
+.rv .say { margin-left:4px; }
 /* 階梯地圖 */
 .ladder { background:#12101a; border:1px solid #322a3e; border-radius:12px;
   padding:14px 16px; margin-bottom:14px; }
@@ -224,6 +230,7 @@ button:active { transform:scale(.97); }
 
 <div class="toast" id="toast"></div>
 
+<script src="tts_reader.js"></script>
 <script src="t1_stock.js"></script>
 <script src="t1_gloss.js"></script>
 <script>
@@ -687,6 +694,7 @@ function renderCloze(){
       '<div class="cmp" id="czCmp"></div>' +
     '</div>' +
     '<div class="bar">' +
+      '<button class="say big" data-say-seg="1">🔊 聽正確版</button>' +
       '<button class="b-done" id="czCheck">對答案</button>' +
       '<button class="b-all" id="czAgain">🔁 換一批再來</button>' +
       '<button class="b-ghost" id="czSkip" title="這一階我已經會了">⏭ 這階跳過</button>' +
@@ -782,6 +790,7 @@ function checkCloze(){
     rows += '<div class="row ' + (hit ? 'hit' : 'miss') + '">' +
             '<span class="mk">' + (hit ? '✓' : '✗') + '</span>' +
             '<span class="fr">' + esc(it.ans) + '</span>' +
+            '<button class="say" data-say-it="' + czState.items.indexOf(it) + '">🔊</button>' +
             '<span class="zh">' + esc(it.zh || '') + '</span></div>';
   });
   document.getElementById('czScore').innerHTML =
@@ -796,8 +805,9 @@ function renderStage() {
   if (mode === 'cloze') { renderCloze(); renderMirror(); return; }
   var s = segs[cur], g = gloss(s.key), r = rec(s.key);
 
-  var head = '';
-  if (s.ask) head = '<div class="ask">（考官問）' + esc(s.ask) +
+  var head = '<div style="margin-bottom:8px"><button class="say big" data-say-seg="1">🔊 整段</button>' +
+             '<span style="color:#5a5344;font-size:.72rem;margin-left:8px">點任何一塊右邊的 🔊 只聽那一塊</span></div>';
+  if (s.ask) head += '<div class="ask">（考官問）' + esc(s.ask) +
                     '<br><span style="color:#5a5344">' + esc(s.askZh||'') + '</span></div>';
 
   var body;
@@ -818,7 +828,7 @@ function renderStage() {
         html += '<span class="bk ' + (pts.length?'hasPt ':'') + (isOpen?'open':'') +
                 '" data-b="' + p.i + '">' + esc(b.fr) + '</span>';
         if (isOpen) {
-          html += '<span class="rv"><span class="zh">' + esc(b.zh) + '</span>';
+          html += '<span class="rv"><button class="say" data-say-b="' + p.i + '">🔊</button><span class="zh">' + esc(b.zh) + '</span>';
           pts.forEach(function(pt){ html += ptHtml(pt); });
           html += '</span>';
         }
@@ -897,6 +907,29 @@ function renderMirror() {
     '<div style="margin-top:10px;font-size:.72rem;color:#5a5344">⭐ 同一塊反覆點開＝那個結構還沒進去，' +
     '⛔ 不是你笨。這份清單就是該優先補的文法點。</div>';
 }
+
+/* 🔊 發音（2026-09-12，Owen：「T1 沒有發音耶」）
+   ⚠️ 用事件委派掛在 document 上：這頁每按一次都會重繪 innerHTML，
+     逐顆綁 listener 一重繪就失效。
+   ⭐ 三種顆粒度：整段／單塊／對答案那一列——依他 07-14 對 Answer Card 的回饋
+     「每次都唸全文，很難重複聽到我要聽的那句」。 */
+document.addEventListener('click', function(ev){
+  var b = ev.target.closest && ev.target.closest('.say');
+  if (!b) return;
+  ev.stopPropagation();                       // ⛔ 不要順便觸發「點開這一塊」
+  var sg = (cur !== null) ? segs[cur] : null, txt = null;
+  if (!sg) return;
+  if (b.dataset.saySeg) txt = sg.fr;
+  else if (b.dataset.sayB != null) {
+    var g = gloss(sg.key);
+    txt = (g && g.blocks[+b.dataset.sayB]) ? g.blocks[+b.dataset.sayB].fr : null;
+  } else if (b.dataset.sayIt != null && czState && czState.items[+b.dataset.sayIt]) {
+    txt = czState.items[+b.dataset.sayIt].ans;
+  }
+  if (!txt) return;
+  if (window.TtsReader && TtsReader.supported) TtsReader.speak(txt);
+  else toast('這個瀏覽器不支援朗讀');
+});
 
 document.getElementById('togList').addEventListener('click', function(){
   listOpen = !listOpen; renderList();
