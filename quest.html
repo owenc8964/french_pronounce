@@ -207,6 +207,24 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 .cell small{font-size:.5rem; color:var(--dim); margin-top:2px; text-align:center; line-height:1.1}
 .cell.empty{background:repeating-linear-gradient(45deg,#0d1016,#0d1016 5px,#0f1219 5px,#0f1219 10px);
             border:1px dashed var(--line); color:var(--faint); font-size:.8rem}
+.ans{width:100%; padding:13px 15px; border-radius:12px; font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:1.18rem; color:var(--gold2); background:rgba(0,0,0,.3); border:1px solid var(--line2); outline:none}
+.ans:focus{border-color:var(--gold); box-shadow:0 0 18px rgba(217,180,94,.12)}
+.accbar{margin-top:9px; display:flex; flex-wrap:wrap; gap:6px}
+.accbar button{padding:6px 11px; border-radius:9px; cursor:pointer; font-size:1rem;
+  background:linear-gradient(180deg,#1a2130,#131824); border:1px solid var(--line); color:var(--gold2)}
+.accbar button:active{transform:scale(.94)}
+.built{min-height:52px; padding:11px 12px; border-radius:12px; border:1px dashed var(--line2);
+  background:rgba(0,0,0,.25); margin-bottom:11px; line-height:2.3}
+.built .ph{color:var(--faint); font-size:.8rem}
+.bank{line-height:2.4}
+.tok{display:inline-block; margin:0 6px 7px 0; padding:7px 13px; border-radius:10px; cursor:pointer;
+  font-family:'Cormorant Garamond',Georgia,serif; font-size:1.06rem; color:var(--ink);
+  background:linear-gradient(180deg,#1a2130,#131824); border:1px solid var(--line2); transition:.13s}
+.tok:hover{border-color:var(--gold); transform:translateY(-1px)}
+.tok:active{transform:scale(.95)}
+.tok.on{border-color:rgba(217,180,94,.6); color:var(--gold2)}
+.tok.spent{opacity:.22; pointer-events:none}
 .aff{margin-top:5px; font-size:.6rem; letter-spacing:.12em}
 .aff .pip{color:#3f4659; margin-right:1px}
 .aff .pip.on{color:var(--red); text-shadow:0 0 7px rgba(216,87,79,.6)}
@@ -299,6 +317,46 @@ function recentLessons(n){
 function questionsFor(ls){
   return BANK.filter(function(q){ return q.type==='choose' && q.opts && q.opts.length>=3 && ls.indexOf(q.lesson)>=0; });
 }
+/* ════════════════════════════════════════════════════════════════
+   招式（2026-09-12）
+   ⚠️ Owen：「沒有人會擔心好玩的遊戲沒人玩，主要是不好玩，或玩起來很挫折壓力很大」
+   ⭐ 所以招式的設計重點不是「更難」，是**難得有選擇、卡住有出口**：
+     · 傷害高的招式＝產出型題目（填空、中翻法）——考試分數就在那裡
+     · ⛔ 一律不打字：答案拆成詞塊用點的（手機上打 é è ç 會讓人想砸手機）
+     · 重音不計較（少 é 算對，只提醒）
+     · 隨時可以「改用普通攻擊」降級，⛔ 不扣血不羞辱
+   題庫現況：choose 549／fill 413／trans 185／gender 51 —— 原本只用了 choose。
+   ════════════════════════════════════════════════════════════════ */
+var MOVES={
+  hit:  {id:'hit',  name:'普通攻擊', dmg:1,   type:'choose', sec:'12 秒', why:'選項裡挑一個'},
+  heavy:{id:'heavy',name:'重擊',    dmg:1.5, type:'gender', sec:'20 秒', why:'陰陽性，錯一個字母就不算'},
+  blast:{id:'blast',name:'大招',    dmg:2,   type:'fill',   sec:'30 秒', why:'把空格打出來'},
+  chant:{id:'chant',name:'詠唱',    dmg:3,   type:'trans',  sec:'60 秒', why:'中翻法，整句自己打'},
+};
+function movePool(ls, t){
+  return BANK.filter(function(q){
+    if(q.type!==t || ls.indexOf(q.lesson)<0) return false;
+    if(t==='choose'||t==='gender') return q.opts && q.opts.length>=2;
+    return typeof q.a==='string' && q.a.length>1 && q.a.indexOf('|')<0;   /* 多解答的先不用 */
+  });
+}
+/* 拆詞塊：答案照空白切，再混進同一課別句的干擾詞 */
+function tokensFor(ans, ls){
+  var real=ans.replace(/\s+/g,' ').trim().split(' ');
+  var bag=[];
+  BANK.forEach(function(q){
+    if(ls.indexOf(q.lesson)<0 || typeof q.a!=='string') return;
+    q.a.split(/\s+/).forEach(function(w){ if(w.length>1 && real.indexOf(w)<0) bag.push(w); });
+  });
+  var extra=[]; var want=Math.min(4, Math.max(2, Math.round(real.length*0.5)));
+  for(var i=0;i<want && bag.length;i++){
+    var j=Math.floor(Math.random()*bag.length);
+    if(extra.indexOf(bag[j])<0) extra.push(bag[j]);
+  }
+  return { real:real, all:shuffle(real.concat(extra)) };
+}
+function deacc(x){ return String(x).normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+function normAns(x){ return deacc(String(x)).toLowerCase().replace(/[.,!?;:«»"']/g,'').replace(/\s+/g,' ').trim(); }
 function identityOf(topic, lesson){
   var sit = (typeof SITUATIONS!=='undefined') ? SITUATIONS.filter(function(x){ return (x.topics||[]).indexOf(topic)>=0; })[0] : null;
   if (sit) return { name:sit.zh, fr:sit.fr };
@@ -653,15 +711,33 @@ function type(html, done){
 }
 function showCmds(){
   var r=S.run, panel=document.getElementById('panel'); if(!panel) return;
-  var lineBtn = B.line ? '<button class="cmd" onclick="listen()">'+img(SP.wand)+
-      '<span>聽牠說<small>牠會用法文說一句</small></span></button>' : '';
-  panel.innerHTML='<div class="cmds">'+
-    '<button class="cmd" onclick="attack()">'+img(SP.sword)+'<span>攻擊<small>答對就是傷害</small></span></button>'+
+  var ls=recentLessons(4);
+  var btns=['hit','heavy','blast','chant'].map(function(k){
+    var m=MOVES[k], n=movePool(ls,m.type).length;
+    if(!n) return '';
+    return '<button class="cmd" onclick="useMove(\''+k+'\')">'+img(k==='chant'?SP.wand:(k==='blast'?SP.potion:SP.sword))+
+      '<span>'+m.name+' <span style="color:var(--gold);font-size:.72rem">×'+m.dmg+'</span>'+
+      '<small>'+m.why+'　'+m.sec+'</small></span></button>';
+  }).join('');
+  panel.innerHTML='<div class="cmds">'+btns+'</div>'+
+   '<div class="cmds" style="margin-top:9px">'+
     '<button class="cmd" onclick="usePotion()" '+((r.potion||0)<1?'disabled':'')+'>'+img(SP.potion)+
-      '<span>喝藥水<small>剩 '+(r.potion||0)+' 瓶 · 回一顆心</small></span></button>'+
-    (lineBtn||'<button class="cmd" onclick="defend()">'+img(SP.shield)+'<span>觀察<small>看牠的弱點</small></span></button>')+
+      '<span>喝藥水<small>剩 '+(r.potion||0)+' 瓶</small></span></button>'+
+    (B.line?'<button class="cmd" onclick="listen()">'+img(SP.card)+'<span>聽牠說<small>法文台詞</small></span></button>'
+           :'<button class="cmd" onclick="defend()">'+img(SP.shield)+'<span>觀察<small>看弱點</small></span></button>')+
     '<button class="cmd" onclick="flee()">'+img(SP.skull)+'<span>撤退<small>回地圖，不損失</small></span></button>'+
   '</div>';
+}
+/* 選了招式 → 抽那個題型的題目（⛔ 不重複抽剛做過的） */
+function useMove(k){
+  sfx('click_001');
+  var m=MOVES[k], ls=recentLessons(4);
+  var pool=movePool(ls,m.type).filter(function(q){ return (B.used||[]).indexOf(q.q)<0; });
+  if(!pool.length) pool=movePool(ls,m.type);
+  var q=pool[Math.floor(Math.random()*pool.length)];
+  B.used=(B.used||[]).concat([q.q]); B.move=m;
+  if(m.type==='choose'||m.type==='gender') return askChoice(q,m);
+  return askType(q,m);
 }
 function listen(){
   sfx('click_001');
@@ -691,9 +767,9 @@ function flee(){
   toast('你退開了，牠還站在那裡');
 }
 
-function attack(){
-  sfx('click_001');
-  var q=B.qs[B.i % B.qs.length];
+function attack(){ return useMove('hit'); }
+function askChoice(q,m){
+  B.curQ=q; B.curM=m;
   document.getElementById('panel').innerHTML='<div class="q">'+esc(q.q)+
       (q.hint?'<span class="hint">提示：'+esc(q.hint)+'</span>':'')+'</div>'+
     '<div class="opts" id="opts">'+shuffle(q.opts).map(function(o){
@@ -702,60 +778,119 @@ function attack(){
     btn.addEventListener('click',function(){ resolve(btn,q); });
   });
 }
+
+/* ── 大招／詠唱：自己打出來 ─────────────────────────────────
+   ⚠️ 2026-09-12 Owen：「打字 ok 不用像 duolinguo 那樣選字 不夠扎實」
+     → ⛔ 拿掉點詞塊，改成真的打。但把三個防挫折機制做滿：
+       ① 重音不計較（少 é 算對，只提醒正確寫法）
+       ② 答錯可以再試一次，第二次答對給**安慰獎**（半傷害，⛔ 不扣血）
+       ③ 連續答對有補償（傷害加成、金幣加成、連 5 回一顆心）
+       ④ 隨時可以「改用普通攻擊」降級，⛔ 不扣血不羞辱
+   ──────────────────────────────────────────────────────────── */
+var ACCENTS=['é','è','ê','à','â','ç','ù','û','î','ï','ô','œ'];
+function askType(q,m){
+  B.curQ=q; B.curM=m; B.retrying=false;
+  var panel=document.getElementById('panel');
+  panel.innerHTML='<div class="q">'+esc(q.q)+
+      (q.hint?'<span class="hint">提示：'+esc(q.hint)+'</span>':'')+'</div>'+
+    '<input class="ans" id="ansBox" autocomplete="off" autocorrect="off" autocapitalize="none" '+
+      'spellcheck="false" placeholder="'+(m.type==='trans'?'把整句打出來…':'打出答案…')+'">'+
+    '<div class="accbar">'+ACCENTS.map(function(a){
+      return '<button onclick="ins(\''+a+'\')">'+a+'</button>'; }).join('')+'</div>'+
+    '<div id="retry"></div>'+
+    '<div class="cmds" style="margin-top:12px">'+
+      '<button class="cmd" onclick="typeCheck()">'+img(SP.sword)+'<span>出招<small>'+m.name+' ×'+m.dmg+'</small></span></button>'+
+      '<button class="cmd" onclick="buildDown()">'+img(SP.shield)+'<span>改用普通攻擊<small>卡住沒關係，不扣血</small></span></button>'+
+    '</div>';
+  var box=document.getElementById('ansBox');
+  box.focus();
+  box.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); typeCheck(); } });
+}
+function ins(a){
+  var box=document.getElementById('ansBox'); if(!box) return;
+  var st=box.selectionStart||box.value.length, en=box.selectionEnd||st;
+  box.value=box.value.slice(0,st)+a+box.value.slice(en);
+  box.selectionStart=box.selectionEnd=st+1; box.focus();
+}
+function buildDown(){ toast('改用普通攻擊'); useMove('hit'); }   /* ⭐ 卡住的出口 */
+function typeCheck(){
+  var q=B.curQ, m=B.curM, box=document.getElementById('ansBox');
+  var mine=(box?box.value:'').trim();
+  if(!mine){ toast('先打點東西再出招'); return; }
+  var exact = mine.replace(/\s+/g,' ')===String(q.a).replace(/\s+/g,' ').trim();
+  var loose = normAns(mine)===normAns(q.a);      /* 重音／標點／大小寫不計較 */
+  if(loose) return resolveMove(true, exact, q, m, B.retrying);
+  if(!B.retrying){                                /* ⭐ 第一次錯：再給一次，⛔ 這次不扣血 */
+    B.retrying=true; sfx('bong_001');
+    var a=String(q.a), peek=a.slice(0, Math.max(1, Math.ceil(a.length*0.25)));
+    document.getElementById('retry').innerHTML=
+      '<div class="fb" style="color:var(--gold)">還沒中——再試一次（這次不扣血）。開頭是：<b>'+esc(peek)+'…</b></div>';
+    if(box){ box.focus(); box.select(); }
+    return;
+  }
+  resolveMove(false, false, q, m, true);
+}
+
+/* 傷害數字（⚠️ 2026-09-12：改寫招式時被我連帶刪掉，console 會噴 floatDmg is not defined） */
 function floatDmg(txt, mine){
   var scene=document.querySelector('.scene'); if(!scene) return;
   var d=document.createElement('div'); d.className='dmg'+(mine?' you':''); d.textContent=txt;
   scene.appendChild(d); setTimeout(function(){ d.remove(); },950);
 }
-function resolve(btn,q){
-  var ok=btn.dataset.o===q.a, hero=document.getElementById('hero'), foe=document.getElementById('foe');
-  Array.prototype.forEach.call(document.querySelectorAll('#opts .opt'),function(x){
-    x.disabled=true; if(x.dataset.o===q.a) x.classList.add('ok'); else if(x===btn) x.classList.add('no');
-  });
-  if(ok){
+
+/* 招式結算：loose＝答對（重音不計較）；exact＝完全一樣；retried＝第二次才對（安慰獎） */
+function resolveMove(loose, exact, q, m, retried){
+  var hero=document.getElementById('hero'), foe=document.getElementById('foe');
+  if(loose){
     B.combo++;
-    var dmg=1+(B.combo>=3?1:0);
+    /* ⭐ 安慰獎：第二次才答對 → 半傷害，但⛔ 不扣血、連擊不歸零、經驗照給
+       ⭐ 連擊補償：3 連以上傷害 +1；5 連回一顆心（Owen 09-12 指定） */
+    var base = retried ? m.dmg*0.5 : m.dmg;
+    var dmg=Math.round((base + (B.combo>=3?1:0))*10)/10;
+    if(B.combo===5){
+      var lvNow=lvOf(S.xp);
+      if(S.run.hp<maxHpOf(lvNow)){ S.run.hp++; toast('5 連擊——喘了一口氣，回復一顆心'); sfx('glass_002'); }
+      else { S.run.coin+=10; toast('5 連擊——撿到 10 枚金幣'); }
+    }
     hero.classList.add('act'); setTimeout(function(){hero.classList.remove('act');},420);
     setTimeout(function(){
       foe.classList.add('hit'); sfx('confirmation_001'); floatDmg('-'+dmg);
-      if(dmg>1){ var f=document.createElement('div'); f.className='flash'; document.body.appendChild(f);
-                 setTimeout(function(){f.remove();},320); }
+      if(m.dmg>=2){ var f=document.createElement('div'); f.className='flash'; document.body.appendChild(f);
+                    setTimeout(function(){f.remove();},320); }
       B.hp=Math.max(0,B.hp-dmg);
       var bar=document.getElementById('fbar'); if(bar) bar.style.width=Math.round(B.hp/B.maxHp*100)+'%';
       setTimeout(function(){ foe.classList.remove('hit'); },340);
     },180);
-    S.run.coin+=2; S.xp=(S.xp||0)+6;
+    S.run.coin+=Math.round(m.dmg*2)+Math.max(0,B.combo-1);   /* 連越多，金幣越多 */
+    S.xp=(S.xp||0)+Math.round(m.dmg*6);
   } else {
     B.combo=0;
     setTimeout(function(){
-      foe.classList.add('hit'); setTimeout(function(){foe.classList.remove('hit');},200);
       hero.classList.add('ouch'); sfx('error_004'); floatDmg('-1',true);
       setTimeout(function(){hero.classList.remove('ouch');},360);
     },160);
-    S.run.hp=Math.max(0,S.run.hp-1); S.xp=(S.xp||0)+2;   // ⭐ 答錯也給一點經驗（有練到就有長）
+    S.run.hp=Math.max(0,S.run.hp-1); S.xp=(S.xp||0)+2;
   }
   save(S); renderHud();
   var panel=document.getElementById('panel');
   setTimeout(function(){
     panel.innerHTML='<div class="fb">'+
-      (ok?'<b style="color:var(--green)">命中！</b>'+(B.combo>1?'　連擊 ×'+B.combo:'')
-         :'<b style="color:var(--red)">失手，被反擊了</b>　正解：<b>'+esc(q.a)+'</b>')+
-      (q.aNote?'<br>'+q.aNote:'')+'</div>'+     /* ⚠️ aNote 本來就含 <b> 標籤（題庫慣例），不能 esc */
+      (loose ? '<b style="color:var(--green)">'+esc(m.name)+(retried?' 命中（第二次）':' 命中！')+'</b>'+
+               (B.combo>1?'　連擊 ×'+B.combo:'')+
+               (retried?'<br><span style="color:var(--gold)">想起來了就算數——半個傷害，沒有扣血</span>':'')+
+               (exact?'':'<br><span style="color:var(--gold)">⚠️ 重音沒對上，正確寫法：<b>'+esc(q.a)+'</b></span>')
+             : '<b style="color:var(--red)">沒組對，被反擊了</b><br>正解：<b>'+esc(q.a)+'</b>')+
+      (q.aNote?'<br>'+q.aNote:'')+'</div>'+
       '<button class="next" id="nx">'+(S.run.hp<=0?'你倒下了…':(B.hp<=0?'牠倒下了':'繼續'))+'</button>';
-    document.getElementById('nx').addEventListener('click', function(){
+    document.getElementById('nx').addEventListener('click',function(){
       sfx('click_001');
-      if(S.run.hp<=0){
-        /* ⭐ 角色該有風險（Owen 09-12：沒有懲罰很不人性），
-           ⛔ 但只沒收「角色的錢」——戰利品卡／經驗值／圖鑑／關係一律保留，
-           那是他的學習成果，不能罰（memory feedback_stakes_on_character_not_person）。 */
-        S.run.lostCoin=S.run.coin; S.run.coin=0;
-        save(S); renderHud(); renderMap(); return;
-      }
+      if(S.run.hp<=0){ S.run.lostCoin=S.run.coin; S.run.coin=0; save(S); renderHud(); renderMap(); return; }
       if(B.hp<=0) return win();
-      B.i++; type(esc(B.name)+' 還站著。', showCmds);
+      type(esc(B.name)+' 還站著。', showCmds);
     });
   }, 700);
 }
+
 function win(){
   var r=S.run, foe=document.getElementById('foe');
   if(foe) foe.classList.add('die');
