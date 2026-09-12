@@ -446,6 +446,22 @@ function markCzPassed(key, n){
   edit(key, function(r){ if (!r.czPassed) r.czPassed = {}; r.czPassed[n] = true; });
 }
 
+/* ⭐ 記一筆「今天練了一階」（2026-09-12，Owen：「T1 的那個應該要跟 dashboard 整合在一起」）
+   ⚠️ dashboard 的今日處方只認得 *_sessions 這種形狀（review／sentence／answercard 都是），
+     原本 T1 只寫 czAt 在每一段裡面，dashboard 讀不到 → 這個工具在今日流程裡等於不存在。
+   ⛔ 不要改寫既有筆的 ts：sync_supabase.js 的陣列合併是用 ts 去重，改 ts 會在兩台裝置上長出兩筆。 */
+var SESS_LS = 'clb7_t1_sessions';
+function markT1Session(segKey, stage, skipped){
+  var arr; try { arr = JSON.parse(localStorage.getItem(SESS_LS)) || []; } catch(e) { arr = []; }
+  if (!Array.isArray(arr)) arr = [];
+  var n = new Date();
+  var date = n.getFullYear() + '/' + ('0'+(n.getMonth()+1)).slice(-2) + '/' + ('0'+n.getDate()).slice(-2);
+  arr.push({ date:date, ts:Date.now(), seg:segKey, stage:stage, skipped:!!skipped });
+  if (arr.length > 400) arr = arr.slice(-400);   // 只留最近 400 筆
+  try { localStorage.setItem(SESS_LS, JSON.stringify(arr)); } catch(e) {}
+  if (window.ClbSync) ClbSync.push();
+}
+
 /* ════════════════════════════════════════════════════════════
    今天練哪幾段（2026-09-09）
    ⚠️ Owen：「這個背誦填表格對我來說滿有效的，跟 anki 差不多方便，可以成為輸入主力。」
@@ -715,6 +731,7 @@ function skipStage() {
   d[s.key].czSkipped[st] = Date.now();   // ⭐ 標明這一階是跳過的，不是答對的
   d[s.key].czAt = Date.now();
   save(d);
+  markT1Session(s.key, st, true);   // ⭐ 跳過也算今天有練（⛔ 跳過不是失敗，見 CLAUDE.md 練習頁鐵律）
   toast('⏭ 這階跳過了');
   if (st < 5) setCzStage(s.key, st + 1);
   renderModebar(); renderStage(); renderToday(); renderLadder();
@@ -749,6 +766,7 @@ function checkCloze(){
       (warn ? '　<span style="color:#e0c060">' + warn + ' 個只差重音（已幫你補上）</span>' : '');
     if (ok + warn === tot) {
       markCzPassed(s.key, czState.stage);
+      markT1Session(s.key, czState.stage, false);
       toast('✓ 這一階過了');
       renderModebar(); renderToday(); renderLadder();
     }
@@ -769,7 +787,7 @@ function checkCloze(){
   document.getElementById('czScore').innerHTML =
     '<b>' + ok + '</b> / ' + czState.items.length + ' 塊寫出來了';
   document.getElementById('czCmp').innerHTML = rows;
-  if (ok === czState.items.length) { markCzPassed(s.key, czState.stage); toast('✓ 這一階過了'); renderModebar(); renderToday(); renderLadder(); }
+  if (ok === czState.items.length) { markCzPassed(s.key, czState.stage); markT1Session(s.key, czState.stage, false); toast('✓ 這一階過了'); renderModebar(); renderToday(); renderLadder(); }
 }
 
 function renderStage() {
@@ -888,6 +906,16 @@ buildSegs();
 renderList();
 renderToday();
 renderLadder();
+
+/* ?guided=1：從 dashboard 今日處方點進來，直接落在今天該練的第一段（比照 review.html 的 startPacket）
+   ⛔ 不自動開始作答，只是跳到定位——他還是可以換一段或改看解析。 */
+if (new URLSearchParams(location.search).get('guided') === '1') {
+  var g1 = todayList(TODAY_N);
+  if (g1.list.length) {
+    cur = g1.list[0].i; mode = 'cloze'; listOpen = false; showAll = false;
+    renderList(); renderModebar(); renderStage();
+  }
+}
 </script>
 <script src="sync_supabase.js"></script>
 </body>

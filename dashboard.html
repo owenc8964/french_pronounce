@@ -517,7 +517,7 @@ details.layer > summary > span:not(.ly-peek) { flex-shrink: 0; }
   </a>
   <a class="nav-btn" href="t1_read.html">
     <span class="nav-icon">📖</span>
-    <div><div class="nav-label">T1 讀懂</div><div class="nav-sub">背之前先搞懂那一段</div></div>
+    <div><div class="nav-label">T1 讀懂＋填空</div><div class="nav-sub" id="navT1Sub">背之前先搞懂那一段</div></div>
   </a>
   <a class="nav-btn" href="tcf_writing.html">
     <span class="nav-icon">📝</span>
@@ -1033,7 +1033,7 @@ function rotateArray(arr, shift) {
   return arr.slice(s).concat(arr.slice(0, s));
 }
 function getMiddleOrder() {
-  const MIDDLE = ['study', 'lesson_quiz', 'drill', 'sprint', 'review', 'sentence', 'answercard', 'listen', 'shadowing', 'tense_read', 'tense_drill'];
+  const MIDDLE = ['study', 'lesson_quiz', 'drill', 'sprint', 'review', 'sentence', 't1', 'answercard', 'listen', 'shadowing', 'tense_read', 'tense_drill'];   // 09-12：t1 排在 sentence 後面（都是產出型，一起輪替）
   if (isOrderLocked()) return MIDDLE;
   const dayIndex = Math.floor(Date.now() / 86400000); // 每天遞增 1，順序跟著換
   return rotateArray(MIDDLE, dayIndex);
@@ -1181,6 +1181,8 @@ function buildPrescription(topicStats, todaySec) {
   const wDone = writingDoneToday();
   const rDone = readingDoneToday();
   const rAll  = getReadingData();
+  const t1Done = t1DoneToday();
+  const t1s    = t1Next();
 
   // 時態感知塊（08-10）：浸潤與驗收各一步，兩支工具每天交替，避免同一支練到麻木
   const tzRead   = hallDoneToday() || xrayDoneToday();
@@ -1325,6 +1327,18 @@ function buildPrescription(topicStats, todaySec) {
       badgeText: rDone ? '✓ 完成' : '未完成',
       href: 'reading.html?guided=1', done: rDone,
     },
+    t1: {
+      icon: '🎤', action: 'T1 填空一段（口說存貨）',
+      why: t1Done ? '今天已完成！' : (t1s.next
+        ? `${t1s.next.name} — 第 ${t1s.next.st} 階「${T1_STAGE_NAMES[t1s.next.st - 1]}」` +
+          (t1s.next.days >= 999 ? '（還沒練過）' : t1s.next.days <= 0 ? '（今天碰過了）' : `（上次 ${t1s.next.days} 天前）`)
+        : (t1s.readCount
+            ? '這幾段都走完了 — 過幾天再回來，那是刻意的（分散練習）'
+            : '先挑一段用「📖 讀懂」看過、按「讀懂了」，它就會排進來')),
+      badge: t1Done ? 'badge-green' : 'badge-blue',
+      badgeText: t1Done ? '✓ 完成' : (t1s.next ? '開始' : '去挑一段'),
+      href: 't1_read.html?guided=1', done: t1Done,
+    },
     // 🎭 浸潤：讀，不做題。Owen 08-10：「題目是驗收，學習不是只有題目。」
     tense_read: {
       icon: '🎭', action: '時態浸潤（讀，不做題）',
@@ -1387,6 +1401,29 @@ function sentenceDueCount() {
   const now = new Date(); now.setHours(0,0,0,0);
   const isGrad = r => r && (r.days||[]).length >= 3 && r.iv >= 3;
   return SENTENCES.filter(c => srs[c.id] && srs[c.id].due <= now.getTime() && !isGrad(srs[c.id])).length;
+}
+
+// ── T1 填空（t1_read.html，09-12 併進今日處方）────────────────
+/* ⚠️ 刻意不載入 t1_stock.js：段落名就藏在 key 裡（key ＝ hook + '/' + src），
+ *   分母也不顯示（階梯制鐵律），所以 dashboard 只讀 localStorage 就夠——
+ *   跟下面時態四工具「只讀 SRS 不載題庫」是同一個原則。 */
+const T1_STAGE_NAMES = ['內容詞', '功能詞', '整塊', '只剩提示詞', '全空'];
+function getT1Sessions() { try { return JSON.parse(localStorage.getItem('clb7_t1_sessions')) || []; } catch { return []; } }
+function t1DoneToday()   { return getT1Sessions().some(s => s.date === todayStr()); }
+function getT1Read()     { try { return JSON.parse(localStorage.getItem('clb7_t1_read')) || {}; } catch { return {}; } }
+/* 今天該練哪一段：階數低的先，同階最久沒碰的先——⭐ 跟 t1_read.html 的 todayList 同一條規則。
+   ⚠️ 只排「已讀懂」的段（他自己確認過的依賴）；走完第 5 階的隔 7 天才回來（分散練習）。 */
+function t1Next() {
+  const d = getT1Read();
+  const read = Object.entries(d).filter(([, r]) => r && r.done);
+  const rows = read.map(([k, r]) => ({
+    name: k.split('/')[0],
+    st: r.cz || 1,
+    days: r.czAt ? Math.floor((Date.now() - r.czAt) / 864e5) : 999,
+    done5: !!((r.czPassed || {})[5]),
+  })).filter(x => !x.done5 || x.days >= 7)
+     .sort((a, b) => (a.st !== b.st ? a.st - b.st : b.days - a.days));
+  return { next: rows[0] || null, ready: rows.length, readCount: read.length };
 }
 
 // ── 時態感知塊四工具（08-10）─────────────────────────────────
@@ -1621,6 +1658,15 @@ function render() {
       ? '今天已完成 ✓' : '一包 10 張，3–5 分鐘';
     document.getElementById('navAnswerCardSub').textContent = answerCardDoneToday()
       ? '今天已完成 ✓' : '高頻話題答案卡';
+    // 09-12：T1 也照同一條（不秀分母，只講已達成或下一段是哪一段）
+    (() => {
+      const el = document.getElementById('navT1Sub');
+      if (!el) return;
+      const s = t1Next();
+      el.textContent = t1DoneToday() ? '今天已完成 ✓'
+        : (s.next ? `${s.next.name} · 第 ${s.next.st} 階`
+                  : (s.readCount ? '都走完了，過幾天回來' : '先挑一段讀懂'));
+    })();
   })();
 
   // Four Skills
