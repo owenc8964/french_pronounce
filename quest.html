@@ -354,7 +354,27 @@ var MOVES={
   heavy:{id:'heavy',name:'重擊',    dmg:1.5, type:'gender', sec:'20 秒', why:'陰陽性，錯一個字母就不算'},
   blast:{id:'blast',name:'大招',    dmg:2,   type:'fill',   sec:'30 秒', why:'把空格打出來'},
   chant:{id:'chant',name:'詠唱',    dmg:3,   type:'trans',  sec:'60 秒', why:'中翻法，整句自己打'},
+  ear:  {id:'ear',  name:'看破',    dmg:1.5, type:'listen', sec:'20 秒', why:'只聽，不看字'},
 };
+/* ⭐ 聽辨題是**現場合成**的：從 sentences.js 抽一句唸出來，選項是別句的中文。
+   → 句庫增加，聽辨題自動增加（⛔ 不需要另建題庫）。
+   ⚠️ Owen 的聽力是全系統最弱的一塊（日誌 57 天沒紀錄、研究也指出 TTS 永遠 0.78×
+      等於沒練真實語速）——這裡至少讓「聽」進入每天的迴圈。 */
+function listenQuestion(lessons){
+  var pool=(typeof SENTENCES!=='undefined'?SENTENCES:[]).filter(function(x){
+    return (!lessons||!lessons.length||lessons.indexOf(x.lesson)>=0) && x.fr && x.zh && x.fr.length>10; });
+  if(pool.length<4) pool=(typeof SENTENCES!=='undefined'?SENTENCES:[]).filter(function(x){ return x.fr&&x.zh&&x.fr.length>10; });
+  if(pool.length<4) return null;
+  var right=pool[Math.floor(Math.random()*pool.length)];
+  var others=pool.filter(function(x){ return x.id!==right.id; });
+  var opts=[right.zh];
+  while(opts.length<4 && others.length){
+    var o=others.splice(Math.floor(Math.random()*others.length),1)[0];
+    if(opts.indexOf(o.zh)<0) opts.push(o.zh);
+  }
+  return { type:'listen', q:'（只有聲音）聽牠說了什麼？', a:right.zh, opts:opts,
+           fr:right.fr, aNote:'原句：<b>'+right.fr+'</b>', lesson:right.lesson };
+}
 function movePool(ls, t){
   return BANK.filter(function(q){
     if(q.type!==t || ls.indexOf(q.lesson)<0) return false;
@@ -528,13 +548,81 @@ function renderChapter(){
     el.addEventListener('click',function(){ sfx('click_001'); storyEnter(+el.dataset.i); });
   });
 }
+/* ════════════════════════════════════════════════════════════════
+   副本（2026-09-12）：⭐ **每一課自動變成一個副本**
+   ⚠️ Owen：「之後資料跟上課也會越來越多，要想方法讓這遊戲可以隨著資料庫增加而更豐富」
+   → 主線是手寫的（12 章，走完就沒了），⛔ 那是唯一不會自動成長的部分。
+   ⭐ 副本完全從資料長出來：`questions.js` 有題目的課次自動出現，
+     第 33 課一入庫，隔天副本就多一個 —— ⛔ 不需要改任何程式。
+   ════════════════════════════════════════════════════════════════ */
+function lessonRaids(){
+  var by={};
+  BANK.forEach(function(q){
+    if(!q.lesson) return;
+    by[q.lesson]=by[q.lesson]||{n:0,choose:0,topics:{}};
+    by[q.lesson].n++; if(q.type==='choose'&&q.opts) by[q.lesson].choose++;
+    by[q.lesson].topics[q.topic]=1;
+  });
+  return Object.keys(by).map(Number).filter(function(l){ return by[l].choose>=3; })
+    .sort(function(a,b){ return b-a; })
+    .map(function(l){
+      var tp=Object.keys(by[l].topics);
+      /* ⚠️ 配對要計分，⛔ 不能「有一個 topic 重疊就算」——
+         第 29 課（食材）本來被歸成「看醫生與身體」，因為兩邊都沾到一個共用 topic。 */
+      var sit=null, best=0;
+      if(typeof SITUATIONS!=='undefined') SITUATIONS.forEach(function(x){
+        var sc=((x.lessons||[]).indexOf(l)>=0 ? 10 : 0)
+             + tp.filter(function(t){ return (x.topics||[]).indexOf(t)>=0; }).length;
+        if(sc>best){ best=sc; sit=x; }
+      });
+      if(best<2) sit=null;                       /* 沾一個 topic 不算數 */
+      return { lesson:l, topics:tp, n:by[l].n, choose:by[l].choose,
+               name: sit? sit.zh : ('第 '+l+' 課'), fr: sit? sit.fr : '' };
+    });
+}
+function renderRaids(){
+  var raids=lessonRaids(), rec=S.raid||{}, v=document.getElementById('view');
+  var html=modeTabs()+
+    '<div class="title"><div class="en">Les Donjons du Cours</div><h1>課 程 副 本</h1><div class="rule"></div></div>'+
+    '<div class="sub">每一課都是一個副本。<b>新的一課入庫，這裡就自動多一個</b>——想重打哪一課都可以。</div>';
+  raids.forEach(function(r){
+    var w=(rec[r.lesson]||{}).wins||0;
+    html+='<div class="snode can raid" data-l="'+r.lesson+'">'+
+      '<div class="sicon">'+img(w?SP.crown:SP.sword)+'</div>'+
+      '<div class="sbody"><div class="stype">第 '+r.lesson+' 課'+(w?'　· 打過 '+w+' 次':'')+'</div>'+
+      '<div class="stext">'+esc(r.name)+(r.fr?'　<span style="color:var(--faint);font-size:.78rem">'+esc(r.fr)+'</span>':'')+'</div></div></div>';
+  });
+  html+='<div class="credit">美術與音效：Kenney（CC0）　·　字體：Cinzel · Cormorant Garamond（SIL OFL）</div>';
+  v.innerHTML=html;
+  Array.prototype.forEach.call(v.querySelectorAll('.raid'),function(el){
+    el.addEventListener('click',function(){ sfx('click_001'); raidEnter(+el.dataset.l); });
+  });
+}
+function raidEnter(lesson){
+  var raids=lessonRaids(), r=raids.filter(function(x){ return x.lesson===lesson; })[0];
+  if(!r) return;
+  var pool=BANK.filter(function(q){ return q.lesson===lesson && q.type==='choose' && q.opts; });
+  S.raidCur={lesson:lesson};
+  B={ key:'raid', raid:true, lesson:lesson, lessons:[lesson], isBoss:true, topic:r.topics[0],
+      qs:shuffle(pool).slice(0,4), i:0, combo:0, maxHp:4, hp:4,
+      sprite:pick(BOSSES), name:r.name+' 的守衛', title:'第 '+lesson+' 課副本'+(r.fr?' · '+r.fr:''),
+      line:bossLine(lesson) };
+  sfx('bong_001');
+  renderBattle('第 '+lesson+' 課的守衛擋在路口。牠只用那一課的東西打你。');
+}
+
 function modeTabs(){
   var m=S.mode||'story';
   return '<div class="tabs">'+
     '<button class="tab'+(m==='story'?' on':'')+'" onclick="setMode(\'story\')">主線</button>'+
-    '<button class="tab'+(m==='dungeon'?' on':'')+'" onclick="setMode(\'dungeon\')">今日地城</button></div>';
+    '<button class="tab'+(m==='dungeon'?' on':'')+'" onclick="setMode(\'dungeon\')">今日地城</button>'+
+    '<button class="tab'+(m==='raid'?' on':'')+'" onclick="setMode(\'raid\')">副本</button></div>';
 }
-function setMode(m){ sfx('switch_002'); S.mode=m; save(S); m==='story'?renderChapter():renderMap(); window.scrollTo({top:0,behavior:'smooth'}); }
+function setMode(m){
+  sfx('switch_002'); S.mode=m; save(S);
+  if(m==='story') renderChapter(); else if(m==='raid') renderRaids(); else renderMap();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
 /* 進入主線節點：對話→街坊流程；考驗→強制產出型招式；關主／遭遇→戰鬥 */
 function storyEnter(i){
@@ -852,10 +940,11 @@ function showCmds(){
   if(B.forceMove && !B.forcedShown){    /* 考驗節點：開場就推薦最重的招（⛔ 但不強制，降級鍵還在） */
     B.forcedShown=1;
   }
-  var btns=['hit','heavy','blast','chant'].map(function(k){
-    var m=MOVES[k], n=movePool(ls,m.type).length;
+  var btns=['hit','heavy','blast','chant','ear'].map(function(k){
+    var m=MOVES[k];
+    var n=(m.type==='listen') ? ((typeof SENTENCES!=='undefined'&&SENTENCES.length>=4)?1:0) : movePool(ls,m.type).length;
     if(!n) return '';
-    return '<button class="cmd" onclick="useMove(\''+k+'\')">'+img(k==='chant'?SP.wand:(k==='blast'?SP.potion:SP.sword))+
+    return '<button class="cmd" onclick="useMove(\''+k+'\')">'+img(k==='chant'?SP.wand:(k==='blast'?SP.potion:(k==='ear'?SP.card:SP.sword)))+
       '<span>'+m.name+' <span style="color:var(--gold);font-size:.72rem">×'+m.dmg+'</span>'+
       '<small>'+m.why+'　'+m.sec+'</small></span></button>';
   }).join('');
@@ -873,6 +962,11 @@ function showCmds(){
 function useMove(k){
   sfx('click_001');
   var m=MOVES[k], ls=recentLessons(4);
+  if(m.type==='listen'){
+    var lq=listenQuestion(B&&B.lessons?B.lessons:ls);
+    if(!lq){ toast('句庫還不夠出聽辨題'); return; }
+    B.move=m; return askListen(lq,m);
+  }
   /* ⚠️ 主線節點有指定 topic 時要先用它的題 ——
      否則第 1 章（自我介紹）會跑出第 29 課的量詞題，劇情跟練習就脫節了（09-12 實測踩到）。
      ⭐ 該 topic 沒有這種題型時才退回最近四課，⛔ 不要因此讓玩家卡住。 */
@@ -943,6 +1037,22 @@ function resolveChoice(btn,q,m){
   });
   resolveMove(ok, ok, q, m||MOVES.hit, false);
 }
+
+/* ── 看破（聽辨）：只給聲音，選中文 ─────────────────────────── */
+function askListen(q,m){
+  B.curQ=q; B.curM=m;
+  document.getElementById('panel').innerHTML=
+    '<div class="q">聽牠說了什麼？<span class="hint">只有聲音——想再聽幾次都可以，不扣任何東西</span></div>'+
+    '<div class="cmds" style="margin-bottom:11px"><button class="cmd" onclick="replay()">'+img(SP.wand)+
+      '<span>再聽一次<small>不限次數</small></span></button></div>'+
+    '<div class="opts" id="opts">'+shuffle(q.opts).map(function(o){
+      return '<button class="opt" data-o="'+esc(o)+'">'+esc(o)+'</button>'; }).join('')+'</div>';
+  Array.prototype.forEach.call(document.querySelectorAll('#opts .opt'),function(btn){
+    btn.addEventListener('click',function(){ resolveChoice(btn,q,m); });
+  });
+  setTimeout(function(){ say(q.fr); }, 350);
+}
+function replay(){ if(B.curQ&&B.curQ.fr) say(B.curQ.fr); }
 
 /* ── 大招／詠唱：自己打出來 ─────────────────────────────────
    ⚠️ 2026-09-12 Owen：「打字 ok 不用像 duolinguo 那樣選字 不夠扎實」
@@ -1066,10 +1176,14 @@ function win(){
   var storyCh = B.story ? curChapter() : null;
   var cards=[]; for(var i=0;i<(B.isBoss?2:1);i++){
     /* ⚠️ 主線關主要掉「那一章」的句子，⛔ 不是今日地城關主那一課的（09-12 實測踩到） */
-    var c=lootCard(S, B.story ? ((storyCh&&storyCh.lessons||[])[0]||null) : (B.isBoss?BOSS.lesson:null));
+    var c=lootCard(S, B.raid ? B.lesson : (B.story ? ((storyCh&&storyCh.lessons||[])[0]||null) : (B.isBoss?BOSS.lesson:null)));
     if(c){ cards.push(c); r.loot.push(c); (S.cards=S.cards||{})[c.key]={last:Date.now()}; }
   }
-  if(B.isBoss){
+  if(B.raid){                                    /* 副本戰績（⛔ 不進守護者圖鑑，那是主線與今日關主的位置） */
+    S.raid=S.raid||{}; var rr=S.raid[B.lesson]||{wins:0};
+    rr.wins++; rr.last=Date.now(); S.raid[B.lesson]=rr;
+  }
+  if(B.isBoss && !B.raid){
     S.dex=S.dex||{};
     /* ⭐ 主線關主用「章」的身分進圖鑑，⛔ 不要混進今日地城的關主 */
     var dexId = B.story ? ('ch'+(storyCh?storyCh.ch:'?')) : BOSS.id;
@@ -1094,6 +1208,9 @@ function win(){
   }, 620);
 }
 function advance(){
+  if(S.raidCur){                                  /* 副本：打完回副本清單 */
+    S.raidCur=null; save(S); renderRaids(); window.scrollTo({top:0,behavior:'smooth'}); return;
+  }
   if(S.storyCur) return storyAdvance();          /* 主線模式：回主線推進 */
   var r=S.run;
   if(r.floor<MAP.floors.length-1) r.floor++;
