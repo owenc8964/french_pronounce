@@ -207,6 +207,27 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 .cell small{font-size:.5rem; color:var(--dim); margin-top:2px; text-align:center; line-height:1.1}
 .cell.empty{background:repeating-linear-gradient(45deg,#0d1016,#0d1016 5px,#0f1219 5px,#0f1219 10px);
             border:1px dashed var(--line); color:var(--faint); font-size:.8rem}
+.tabs{display:flex; gap:8px; margin:14px 0 4px}
+.tab{flex:1; padding:10px; border-radius:11px; cursor:pointer; font-family:inherit; font-size:.84rem;
+  font-weight:600; color:var(--dim); background:linear-gradient(180deg,#141926,#10141e); border:1px solid var(--line)}
+.tab.on{color:var(--gold2); border-color:rgba(217,180,94,.5); box-shadow:0 0 18px rgba(217,180,94,.1)}
+.conflict{color:var(--dim); font-size:.82rem; line-height:1.95; padding:13px 15px; margin-bottom:18px;
+  border-left:2px solid rgba(217,180,94,.4); background:linear-gradient(90deg,rgba(217,180,94,.05),transparent)}
+.conflict b{color:var(--gold2)}
+.snode{display:flex; gap:12px; align-items:flex-start; padding:13px 14px; margin-bottom:10px; border-radius:13px;
+  background:linear-gradient(180deg,var(--panel2),var(--panel)); border:1px solid var(--line); transition:.18s}
+.snode.can{border-color:rgba(217,180,94,.55); cursor:pointer; animation:breathe 2.6s ease-in-out infinite}
+.snode.can:active{transform:scale(.985)}
+.snode.done{opacity:.4}
+.snode .sicon img{width:30px; height:30px}
+.stype{font-family:'Cinzel',serif; font-size:.62rem; color:var(--gold); letter-spacing:.2em; margin-bottom:5px}
+.stext{font-size:.85rem; line-height:1.85; color:var(--ink)}
+.snode.done .stext{color:var(--faint)}
+.clearbox{margin-top:20px; padding:15px 16px; border-radius:14px; border:1px solid rgba(217,180,94,.28);
+  background:linear-gradient(180deg,rgba(217,180,94,.06),transparent)}
+.cl-h{font-family:'Cinzel',serif; font-size:.64rem; color:var(--gold); letter-spacing:.22em; margin-bottom:7px}
+.cl-t{font-size:.86rem; line-height:1.9}
+.cl-x{margin-top:9px; font-size:.73rem; color:var(--faint); line-height:1.7}
 .ans{width:100%; padding:13px 15px; border-radius:12px; font-family:'Cormorant Garamond',Georgia,serif;
   font-size:1.18rem; color:var(--gold2); background:rgba(0,0,0,.3); border:1px solid var(--line2); outline:none}
 .ans:focus{border-color:var(--gold); box-shadow:0 0 18px rgba(217,180,94,.12)}
@@ -263,6 +284,7 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 <script src="chunks.js"></script>
 <script src="gram_rules.js"></script>
 <script src="situations.js"></script>
+<script src="story.js"></script>
 <script>
 /* ── 素材（Kenney Tiny Dungeon／Interface Sounds，CC0）────────── */
 var T = 'assets/game/tiles/tile_';
@@ -457,14 +479,126 @@ function lootCard(state, prefer){
   return { key:(c.id.indexOf('S_')===0?'S:':'C:')+c.id, fr:c.fr, zh:c.zh };
 }
 
-/* ── 流程 ───────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════
+   主線「移民者的第一年」（2026-09-12 接線）
+   ⚠️ Owen：「我是真的在破關，而不是我只是用 RPG 形式做練習」
+   ⭐ 所以主線是**線性推進**（一章一章），支線（今日地城）自由——這是他選的組合。
+   ⛔ 跳過必須合法：每個節點都有「這段跳過」，跳過**照樣前進**，只記錄不擋路
+     （CLAUDE.md 練習頁鐵律）。
+   資料在 story.js（54 個節點、法文台詞一律引用 sentences.js 的 id）。
+   ════════════════════════════════════════════════════════════════ */
 var S=null, MAP=null, BOSS=null, B=null;
+function hasStory(){ return typeof STORY!=='undefined' && STORY.length; }
+function curChapter(){
+  if(!hasStory()) return null;
+  var st=S.story||{ch:1,node:0,done:{}};
+  return STORY.filter(function(c){ return c.ch===st.ch; })[0] || STORY[0];
+}
+function sentenceById(id){
+  if(typeof SENTENCES==='undefined') return null;
+  return SENTENCES.filter(function(x){ return x.id===id; })[0] || null;
+}
+function chapterIcon(t){ return t==='boss'?SP.crown : t==='trial'?SP.wand : t==='fight'?SP.sword : SP.card; }
+function chapterTypeName(t){ return t==='boss'?'關主' : t==='trial'?'考驗' : t==='fight'?'遭遇' : '對話'; }
+
+function renderChapter(){
+  var ch=curChapter(), st=S.story, v=document.getElementById('view');
+  if(!ch){ S.mode='dungeon'; return renderMap(); }
+  var doneNodes=(st.done[ch.id]||{});
+  var html=modeTabs()+
+    '<div class="title"><div class="en">Chapitre '+ch.ch+' · '+esc(ch.titleFr)+'</div>'+
+      '<h1>'+esc(ch.title)+'</h1><div class="rule"></div></div>'+
+    '<div class="sub">'+esc(ch.logline)+'</div>'+
+    '<div class="conflict">'+ch.conflict.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')+'</div>';
+  html+='<div class="floor">關卡</div>';
+  ch.nodes.forEach(function(n,i){
+    var done=!!doneNodes[i], skipped=doneNodes[i]==='skip';
+    var can=(i===st.node)&&!done;
+    html+='<div class="snode '+(done?'done ':'')+(can?'can ':'')+'" data-i="'+i+'">'+
+      '<div class="sicon">'+img(chapterIcon(n.type))+'</div>'+
+      '<div class="sbody"><div class="stype">'+chapterTypeName(n.type)+
+        (done?(skipped?'　· 跳過了':'　· 走過了'):'')+'</div>'+
+        '<div class="stext">'+esc(n.text)+'</div></div></div>';
+  });
+  html+='<div class="clearbox"><div class="cl-h">這一章要做到的</div><div class="cl-t">'+esc(ch.clear.desc)+'</div>'+
+        '<div class="cl-x">考試用在哪：'+esc(ch.exam)+'</div></div>';
+  html+='<div class="credit">美術與音效：Kenney（CC0）　·　字體：Cinzel · Cormorant Garamond（SIL OFL）</div>';
+  v.innerHTML=html;
+  Array.prototype.forEach.call(v.querySelectorAll('.snode.can'),function(el){
+    el.addEventListener('click',function(){ sfx('click_001'); storyEnter(+el.dataset.i); });
+  });
+}
+function modeTabs(){
+  var m=S.mode||'story';
+  return '<div class="tabs">'+
+    '<button class="tab'+(m==='story'?' on':'')+'" onclick="setMode(\'story\')">主線</button>'+
+    '<button class="tab'+(m==='dungeon'?' on':'')+'" onclick="setMode(\'dungeon\')">今日地城</button></div>';
+}
+function setMode(m){ sfx('switch_002'); S.mode=m; save(S); m==='story'?renderChapter():renderMap(); window.scrollTo({top:0,behavior:'smooth'}); }
+
+/* 進入主線節點：對話→街坊流程；考驗→強制產出型招式；關主／遭遇→戰鬥 */
+function storyEnter(i){
+  var ch=curChapter(), n=ch.nodes[i];
+  S.storyCur={ch:ch.id, i:i};
+  var line=n.npcLine?sentenceById(n.npcLine):null;
+  if(n.type==='talk'){
+    var sit=(typeof SITUATIONS!=='undefined')?SITUATIONS.filter(function(x){return x.id===(n.sit||ch.sit);})[0]:null;
+    if(!sit) return storyAdvance();
+    return meetNpc('story', sit, line, n.text);
+  }
+  var isBoss=n.type==='boss';
+  var who=(typeof SITUATIONS!=='undefined')?SITUATIONS.filter(function(x){return x.id===(n.sit||ch.sit);})[0]:null;
+  var pool=BANK.filter(function(q){ return q.topic===n.topic; });
+  B={ key:'story', story:true, storyNode:i, isBoss:isBoss, type:n.type,
+      qs:shuffle(pool.filter(function(q){return q.type==='choose'&&q.opts;})).slice(0,4),
+      i:0, combo:0, maxHp:isBoss?4:(n.type==='trial'?2:3), hp:isBoss?4:(n.type==='trial'?2:3),
+      sprite:isBoss?pick(BOSSES):pick(MONSTERS),
+      name:isBoss?('關主 · '+ch.title):(n.type==='trial'?'考驗':'遭遇'),
+      title:'第 '+ch.ch+' 章'+(who?' · '+who.fr:''),
+      line:line, topic:n.topic, forceMove:(n.type==='trial'?'chant':null) };
+  sfx(isBoss?'bong_001':'switch_002');
+  renderBattle(n.text.replace(/〔(.+?)〕/g,'<b>$1</b>'));
+}
+/* 這一節跳過（⭐ 鐵律：跳過照樣前進，只記錄） */
+function storySkip(){
+  var c=S.storyCur; if(!c) return;
+  S.story.done[c.ch]=S.story.done[c.ch]||{}; S.story.done[c.ch][c.i]='skip';
+  S.story.skipped=(S.story.skipped||0)+1;
+  save(S); toast('這段跳過了'); storyAdvance(true);
+}
+function storyAdvance(skipped){
+  var c=S.storyCur, ch=curChapter(); if(!ch) return;
+  if(c){ S.story.done[ch.id]=S.story.done[ch.id]||{};
+         if(!S.story.done[ch.id][c.i]) S.story.done[ch.id][c.i]=skipped?'skip':true; }
+  if(S.story.node<=(c?c.i:0)) S.story.node=(c?c.i:0)+1;
+  S.storyCur=null;
+  if(S.story.node>=ch.nodes.length) return chapterClear(ch);
+  save(S); renderChapter(); window.scrollTo({top:0,behavior:'smooth'});
+}
+function chapterClear(ch){
+  var next=STORY.filter(function(c){ return c.ch===ch.ch+1; })[0];
+  S.story.cleared=S.story.cleared||{}; S.story.cleared[ch.id]={last:Date.now()};
+  if(next){ S.story.ch=next.ch; S.story.node=0; }
+  S.run.coin+=30; S.xp=(S.xp||0)+60;
+  save(S); renderHud(); sfx('maximize_001');
+  document.getElementById('view').innerHTML=
+    '<div class="loot"><h3>CHAPITRE '+ch.ch+' TERMINÉ</h3>'+
+    '<div class="fb" style="text-align:center;font-size:1.05rem;color:var(--gold2)">'+esc(ch.title)+'</div>'+
+    '<div class="fb" style="text-align:center;margin-top:10px">'+esc(ch.clear.desc)+'</div>'+
+    '<div class="fb" style="text-align:center;margin-top:10px">獲得：'+esc(ch.reward.item||'')+'　經驗 +60　金幣 +30</div>'+
+    (next?'<div class="fb" style="text-align:center;color:var(--gold)">★ 第 '+next.ch+' 章「'+esc(next.title)+'」開啟了</div>'
+         :'<div class="fb" style="text-align:center;color:var(--gold)">★ 主線走完了——一年過去了</div>')+
+    '<button class="next" onclick="setMode(\'story\')">繼續</button></div>';
+}
 function freshRun(lv){ return { date:todayStr(), hp:maxHpOf(lv), coin:0, potion:1, floor:0, loot:[], cleared:{} }; }
 function init(){
   var d=load(); d.xp=d.xp||0;
   if(!d.run || d.run.date!==todayStr()) d.run=freshRun(lvOf(d.xp));
+  d.story=d.story||{ch:1,node:0,done:{},cleared:{}};
+  d.mode=d.mode||(hasStory()?'story':'dungeon');
   S=d; save(S); MAP=buildMap(); BOSS=bossOfToday();
-  renderHud(); renderMap();
+  renderHud();
+  (S.mode==='story'&&hasStory())?renderChapter():renderMap();
 }
 function renderHud(){
   var r=S.run, lv=lvOf(S.xp), mx=maxHpOf(lv), x=xpInLv(S.xp);
@@ -477,7 +611,7 @@ function renderHud(){
 }
 function renderMap(){
   var r=S.run, v=document.getElementById('view'), dead=r.hp<=0, done=r.cleared['2-0'];
-  var html='<div class="title"><div class="en">Le Donjon du Jour</div><h1>今 日 地 城</h1><div class="rule"></div></div>' +
+  var html=modeTabs()+'<div class="title"><div class="en">Le Donjon du Jour</div><h1>今 日 地 城</h1><div class="rule"></div></div>' +
     '<div class="sub">' + (dead ? ('你倒下了'+(r.lostCoin?'，身上的 '+r.lostCoin+' 枚金幣散落在地城裡':'')+
         '。戰利品、經驗值與街坊關係都留著。')
       : done ? '守護者已經倒下。今天的地城通關了。'
@@ -565,7 +699,7 @@ function enter(key,type){
       sprite:isBoss?BOSS.sprite:pick(MONSTERS),
       name:isBoss?BOSS.name:pick(FOE_NAMES),
       title:isBoss?BOSS.title:(type==='elite'?'精英':''),
-      line:isBoss?bossLine(BOSS.lesson):null, phase:'intro' };
+      line:isBoss?bossLine(BOSS.lesson):null, topic:(isBoss?BOSS.topic:null), phase:'intro' };
   sfx(isBoss?'bong_001':'switch_002');
   renderBattle('<b>'+esc(B.name)+'</b> 擋住了去路！');
 }
@@ -582,25 +716,26 @@ function buy(what){
 
 /* ── 街坊遭遇 ───────────────────────────────────────────── */
 var N=null;
-function meetNpc(key){
+function meetNpc(key, sitForced, lineForced, textForced){
   var pool=npcPool();
-  if(!pool.length){ S.run.cleared[key]=1; save(S); return advance(); }
+  if(!pool.length && !sitForced){ S.run.cleared[key]=1; save(S); return advance(); }
   S.npc=S.npc||{};
   var sorted=pool.slice().sort(function(a,b){
     var aa=(S.npc[a.id]||{}).aff||0, bb=(S.npc[b.id]||{}).aff||0;
     if(aa===0&&bb>0) return 1; if(bb===0&&aa>0) return -1;
     return aa-bb;
   });
-  var sit=sorted[Math.floor(rnd()*Math.min(3,sorted.length))];
+  var sit=sitForced || sorted[Math.floor(rnd()*Math.min(3,sorted.length))];
   var rec=S.npc[sit.id]||{aff:0,met:0,last:0};
   var days = rec.last ? Math.floor((Date.now()-rec.last)/864e5) : -1;
   var who=whoOf(sit);
   N={ key:key, sit:sit, rec:rec, who:who, sprite:NPC_SPRITES[who.s % NPC_SPRITES.length],
       qs:shuffle(BANK.filter(function(q){ return q.type==='choose'&&q.opts&&(sit.topics||[]).indexOf(q.topic)>=0; })).slice(0,2),
-      i:0, gained:0, line:npcLine(sit,rec.aff||0) };
+      i:0, gained:0, line:lineForced||npcLine(sit,rec.aff||0), story:(key==='story') };
   sfx('switch_002');
   var lv=affLv(rec.aff||0);
-  var hello = rec.met ? (days>=3 ? '「Ça fait longtemps！」'+esc(who.n)+'看起來很高興你又來了。'
+  var hello = textForced ? esc(textForced)
+            : rec.met ? (days>=3 ? '「Ça fait longtemps！」'+esc(who.n)+'看起來很高興你又來了。'
                                  : esc(who.n)+'認出你了。'+lv.note+'。')
                       : esc(who.r)+' '+esc(who.n)+' 站在那裡。他還不認識你。';
   document.getElementById('view').innerHTML =
@@ -624,7 +759,8 @@ function npcCmds(){
   panel.innerHTML='<div class="cmds">'+
     '<button class="cmd" onclick="npcTalk()">'+img(SP.card)+'<span>聊兩句<small>答對就更熟一點</small></span></button>'+
     (N.line?'<button class="cmd" onclick="npcListen()">'+img(SP.wand)+'<span>聽他說<small>他會用法文說一句</small></span></button>':'')+
-    '<button class="cmd" onclick="npcLeave()">'+img(SP.shield)+'<span>道別<small>回到地圖</small></span></button>'+
+    '<button class="cmd" onclick="npcLeave()">'+img(SP.shield)+'<span>道別<small>'+(N.story?'回主線':'回到地圖')+'</small></span></button>'+
+    (N.story?'<button class="cmd" onclick="storySkip()">'+img(SP.skull)+'<span>這段跳過<small>不擋你，照樣前進</small></span></button>':'')+
   '</div>';
 }
 function npcListen(){
@@ -696,6 +832,7 @@ function sceneHtml(){
   '</div>';
 }
 function renderBattle(text){
+  if(B.forceMove && !B.forced){ B.forced=1; }
   document.getElementById('view').innerHTML = sceneHtml()+'<div class="box"><div class="talk" id="talk"></div><div id="panel"></div></div>';
   type(text, showCmds);
 }
@@ -712,6 +849,9 @@ function type(html, done){
 function showCmds(){
   var r=S.run, panel=document.getElementById('panel'); if(!panel) return;
   var ls=recentLessons(4);
+  if(B.forceMove && !B.forcedShown){    /* 考驗節點：開場就推薦最重的招（⛔ 但不強制，降級鍵還在） */
+    B.forcedShown=1;
+  }
   var btns=['hit','heavy','blast','chant'].map(function(k){
     var m=MOVES[k], n=movePool(ls,m.type).length;
     if(!n) return '';
@@ -725,15 +865,28 @@ function showCmds(){
       '<span>喝藥水<small>剩 '+(r.potion||0)+' 瓶</small></span></button>'+
     (B.line?'<button class="cmd" onclick="listen()">'+img(SP.card)+'<span>聽牠說<small>法文台詞</small></span></button>'
            :'<button class="cmd" onclick="defend()">'+img(SP.shield)+'<span>觀察<small>看弱點</small></span></button>')+
-    '<button class="cmd" onclick="flee()">'+img(SP.skull)+'<span>撤退<small>回地圖，不損失</small></span></button>'+
+    (B.story?'<button class="cmd" onclick="storySkip()">'+img(SP.skull)+'<span>這段跳過<small>不擋你，照樣前進</small></span></button>'
+            :'<button class="cmd" onclick="flee()">'+img(SP.skull)+'<span>撤退<small>回地圖，不損失</small></span></button>')+
   '</div>';
 }
 /* 選了招式 → 抽那個題型的題目（⛔ 不重複抽剛做過的） */
 function useMove(k){
   sfx('click_001');
   var m=MOVES[k], ls=recentLessons(4);
-  var pool=movePool(ls,m.type).filter(function(q){ return (B.used||[]).indexOf(q.q)<0; });
+  /* ⚠️ 主線節點有指定 topic 時要先用它的題 ——
+     否則第 1 章（自我介紹）會跑出第 29 課的量詞題，劇情跟練習就脫節了（09-12 實測踩到）。
+     ⭐ 該 topic 沒有這種題型時才退回最近四課，⛔ 不要因此讓玩家卡住。 */
+  var pool=[];
+  if(B && B.topic){
+    pool=BANK.filter(function(q){
+      if(q.topic!==B.topic || q.type!==m.type) return false;
+      if(m.type==='choose'||m.type==='gender') return q.opts && q.opts.length>=2;
+      return typeof q.a==='string' && q.a.length>1 && q.a.indexOf('|')<0;
+    });
+  }
   if(!pool.length) pool=movePool(ls,m.type);
+  var fresh=pool.filter(function(q){ return (B.used||[]).indexOf(q.q)<0; });
+  if(fresh.length) pool=fresh;
   var q=pool[Math.floor(Math.random()*pool.length)];
   B.used=(B.used||[]).concat([q.q]); B.move=m;
   if(m.type==='choose'||m.type==='gender') return askChoice(q,m);
@@ -775,8 +928,20 @@ function askChoice(q,m){
     '<div class="opts" id="opts">'+shuffle(q.opts).map(function(o){
         return '<button class="opt" data-o="'+esc(o)+'">'+esc(o)+'</button>'; }).join('')+'</div>';
   Array.prototype.forEach.call(document.querySelectorAll('#opts .opt'),function(btn){
-    btn.addEventListener('click',function(){ resolve(btn,q); });
+    btn.addEventListener('click',function(){ resolveChoice(btn,q,m); });
   });
+}
+/* ⚠️ 2026-09-12：改寫招式時，舊的 resolve() 被我連同點詞塊那一段刪掉了，
+   造成**選擇題點了完全沒反應**（實測抓到：怪物血量不動、按鈕也不 disable）。
+   ⭐ 現在統一走 resolveMove()，選擇題就是傷害 ×1 的普通攻擊。 */
+function resolveChoice(btn,q,m){
+  var ok=btn.dataset.o===q.a;
+  Array.prototype.forEach.call(document.querySelectorAll('#opts .opt'),function(x){
+    x.disabled=true;
+    if(x.dataset.o===q.a) x.classList.add('ok');
+    else if(x===btn) x.classList.add('no');
+  });
+  resolveMove(ok, ok, q, m||MOVES.hit, false);
 }
 
 /* ── 大招／詠唱：自己打出來 ─────────────────────────────────
@@ -898,12 +1063,22 @@ function win(){
   r.cleared[B.key]=1; r.coin+=B.isBoss?20:5;
   S.xp=(S.xp||0)+(B.isBoss?40:12);
   var before=lvOf(S.xp-(B.isBoss?40:12)), after=lvOf(S.xp), levelled=after>before;
+  var storyCh = B.story ? curChapter() : null;
   var cards=[]; for(var i=0;i<(B.isBoss?2:1);i++){
-    var c=lootCard(S,B.isBoss?BOSS.lesson:null);
+    /* ⚠️ 主線關主要掉「那一章」的句子，⛔ 不是今日地城關主那一課的（09-12 實測踩到） */
+    var c=lootCard(S, B.story ? ((storyCh&&storyCh.lessons||[])[0]||null) : (B.isBoss?BOSS.lesson:null));
     if(c){ cards.push(c); r.loot.push(c); (S.cards=S.cards||{})[c.key]={last:Date.now()}; }
   }
-  if(B.isBoss){ S.dex=S.dex||{}; var e=S.dex[BOSS.id]||{wins:0};
-    e.wins++; e.last=Date.now(); e.sprite=BOSS.sprite; e.name=BOSS.name; S.dex[BOSS.id]=e; }
+  if(B.isBoss){
+    S.dex=S.dex||{};
+    /* ⭐ 主線關主用「章」的身分進圖鑑，⛔ 不要混進今日地城的關主 */
+    var dexId = B.story ? ('ch'+(storyCh?storyCh.ch:'?')) : BOSS.id;
+    var e=S.dex[dexId]||{wins:0};
+    e.wins++; e.last=Date.now();
+    e.sprite = B.story ? B.sprite : BOSS.sprite;
+    e.name   = B.story ? ('第'+(storyCh?storyCh.ch:'?')+'章 '+(storyCh?storyCh.title:'')) : BOSS.name;
+    S.dex[dexId]=e;
+  }
   if(levelled){ r.hp=maxHpOf(after); }
   save(S); renderHud();
   setTimeout(function(){
@@ -912,13 +1087,14 @@ function win(){
         '<h3>'+(B.isBoss?'LE GARDIEN EST TOMBÉ':'VICTOIRE')+'</h3>'+
         (levelled?'<div class="fb" style="text-align:center;color:var(--gold2)">★ 升到 Lv '+after+'！體力上限提高了</div>':'')+
         '<div class="fb" style="text-align:center">經驗 +'+(B.isBoss?40:12)+'　金幣 +'+(B.isBoss?20:5)+'</div>'+
-        (B.isBoss?'<div class="fb" style="text-align:center">「'+esc(BOSS.name)+'」已收進圖鑑</div>':'')+
+        (B.isBoss?'<div class="fb" style="text-align:center">「'+esc(B.story?((storyCh?storyCh.title:'')+' 的關主'):BOSS.name)+'」已收進圖鑑</div>':'')+
         '<div style="margin-top:12px">'+cards.map(cardHtml).join('')+'</div>'+
         '<button class="next" onclick="advance()">'+(B.isBoss?'回營地':'繼續前進')+'</button>'+
       '</div></div>';
   }, 620);
 }
 function advance(){
+  if(S.storyCur) return storyAdvance();          /* 主線模式：回主線推進 */
   var r=S.run;
   if(r.floor<MAP.floors.length-1) r.floor++;
   save(S); renderMap(); window.scrollTo({top:0,behavior:'smooth'});
