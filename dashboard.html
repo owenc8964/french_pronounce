@@ -495,6 +495,10 @@ details.layer > summary > span:not(.ly-peek) { flex-shrink: 0; }
 <div class="layer-bar">🚪 去哪練</div>
 <!-- Quick nav（08-25 從第 10 個螢幕搬到這裡；標題由上面的分層條負責，不再重複） -->
 <div class="nav-grid">
+  <a class="nav-btn" href="quest.html">
+    <span class="nav-icon">🗡️</span>
+    <div><div class="nav-label">今日地城</div><div class="nav-sub" id="navQuestSub">關主在第三層等你</div></div>
+  </a>
   <a class="nav-btn" href="quiz.html">
     <span class="nav-icon">🃏</span>
     <div><div class="nav-label">Quiz</div><div class="nav-sub">SRS 題庫練習</div></div>
@@ -1658,6 +1662,20 @@ function render() {
       ? '今天已完成 ✓' : '一包 10 張，3–5 分鐘';
     document.getElementById('navAnswerCardSub').textContent = answerCardDoneToday()
       ? '今天已完成 ✓' : '高頻話題答案卡';
+    // 09-12：今日地城（quest.html）——⛔ 一樣不秀分母
+    (() => {
+      const el = document.getElementById('navQuestSub');
+      if (!el) return;
+      let q = {};
+      try { q = JSON.parse(localStorage.getItem('clb7_quest')) || {}; } catch (e) {}
+      const run = q.run || {};
+      const fresh = run.date !== todayStr();
+      if (fresh)              el.textContent = '今天的地城已經生成';
+      else if (run.hp <= 0)   el.textContent = '今天撤退了 — 明天新地城';
+      else if (run.cleared && run.cleared['2-0']) el.textContent = '關主已倒下 👑';
+      else                    el.textContent = `第 ${(run.floor || 0) + 1} 層` +
+                                (run.loot && run.loot.length ? ` · 撿到 ${run.loot.length} 張` : '');
+    })();
     // 09-12：T1 也照同一條（不秀分母，只講已達成或下一段是哪一段）
     (() => {
       const el = document.getElementById('navT1Sub');

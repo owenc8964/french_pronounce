@@ -56,8 +56,9 @@ const SITUATIONS = [
 
   { id:'sante', icon:'🏥', zh:'看醫生與身體', fr:'Chez le médecin',
     exam:'口說情境卡與聽力（藥局對話）；建議句型 il faut / devoir 的主場',
-    topics:['body-health','ilfaut-devoir','giving-advice','interdiction-demande'],
-    lessons:[12,13], ac:'AC11' },
+    topics:['body-health','ilfaut-devoir','giving-advice','interdiction-demande',
+            'corps-sante-vocab','medecine-urgences-vocab'],   // 09-12：第31、32 課的身體／醫療急救詞彙
+    lessons:[12,13,31,32], ac:'AC11' },
 
   { id:'rendez-vous', icon:'📅', zh:'約時間與邀約', fr:'Proposer un rendez-vous',
     exam:'⭐ 口說協商情境＋寫作 tâche 1（回覆邀約的訊息）都考這個',
