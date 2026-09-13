@@ -851,7 +851,7 @@ const CODEX = [
       {fr:'Ce sont les meilleurs souvenirs de mon voyage.', zh:'這些是我旅行中最好的回憶。'},
     ],
     see:['2-3-1','2-3-2'] },
-  { n:'2-3-4', lvl:'B1', name:'名詞與動詞的比較', fr:'plus de … que / verbe + plus que',
+  { n:'2-3-4', lvl:'A2', name:'名詞與動詞的比較', fr:'plus de … que / verbe + plus que',
     brief:'比數量用 plus de，比動作用動詞+plus',
     ex:[{fr:"J'ai plus de livres que toi.", zh:'我書比你多。（數量）'},
         {fr:'Il travaille plus que moi.', zh:'他工作得比我多。（動作）'}],
