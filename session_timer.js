@@ -19,6 +19,14 @@
   var SKEY = 'clb7_session';
   var TKEY = 'clb7_tracker';
   var MAX_STRETCH_MS = 3 * 3600 * 1000; // 單次不間斷最多算 3 小時，防忘記結算整夜暴衝
+  var IDLE_MS = 3 * 60 * 1000;          // 3 分鐘沒操作視為閒置（下方閒置偵測也用這個）
+  /* ⚠️ 2026-09-13 修復：雲端查到 10 筆「剛好 180 分鐘」的紀錄（共 30h，佔網站內計時 77%）。
+     根因：下方「閒置自動暫停」的 setInterval 只在分頁開著且在前景時才跑——
+       關掉分頁／手機鎖屏之後偵測就停了，session 卻還留在 running；
+       下次開任何頁面，elapsedSec() 看到經過好幾小時，直接把 3 小時上限整筆記進去。
+     ⭐ 修法：把「最後一次操作的時間」(lastAct) 存進 session（跨分頁共用），
+       結算時如果距離最後操作已經超過閒置門檻，**最多只算到最後操作那一刻**。
+       MAX_STRETCH_MS 保留當最後防線。 */
 
   function load() { try { return JSON.parse(localStorage.getItem(SKEY)) || null; } catch (e) { return null; } }
   function save(s) { try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {} }
@@ -33,8 +41,8 @@
     start: function () {
       // 防呆：session 已經在跑（例如另一個分頁/視窗已經開始了）就不要洗掉已累計的時間
       var s = load();
-      if (s && s.active) { if (!s.running) { s.startedAt = now(); s.running = true; save(s); } return; }
-      save({ active: true, running: true, startedAt: now(), accSec: 0 });
+      if (s && s.active) { if (!s.running) { s.startedAt = now(); s.lastAct = now(); s.running = true; save(s); } return; }
+      save({ active: true, running: true, startedAt: now(), lastAct: now(), accSec: 0 });
     },
 
     // 目前 session 累計秒數（含正在跑的那段）；同時做防暴衝夾限
@@ -42,6 +50,14 @@
       var s = load();
       if (!s || !s.active) return 0;
       if (s.running) {
+        var lastAct = Math.max(s.startedAt, s.lastAct || s.startedAt);
+        if (now() - lastAct > IDLE_MS) {
+          // 距離最後一次操作已經超過閒置門檻（分頁關了／手機鎖屏）→ 只算到最後操作那一刻
+          s.accSec += (lastAct - s.startedAt) / 1000;
+          s.running = false;
+          save(s);
+          return Math.floor(s.accSec);
+        }
         var stretch = now() - s.startedAt;
         if (stretch > MAX_STRETCH_MS) {
           // 超過單段上限：把上限那段收進 accSec 並自動暫停
@@ -67,6 +83,7 @@
       var s = load();
       if (!s || s.running) return;
       s.startedAt = now();
+      s.lastAct = now();
       s.running = true;
       save(s);
     },
@@ -110,10 +127,18 @@
   // 最多跑到 3 小時上限才停（Owen 真的遇到「計時跑了三小時但完全沒操作」）。
   // 現在改成：超過 IDLE_LIMIT_MS 沒有任何操作，自動暫停，且用「最後操作時間」
   // 當停止點，正確排除閒置那段，不會把發呆/沒碰的時間也算進去。
-  var IDLE_LIMIT_MS = 3 * 60 * 1000; // 3 分鐘沒操作視為閒置
+  var IDLE_LIMIT_MS = IDLE_MS;
   var lastActivity = now();
+  var lastPersist = 0;
   ['keydown', 'pointerdown', 'touchstart', 'scroll', 'click', 'mousemove'].forEach(function (ev) {
-    document.addEventListener(ev, function () { lastActivity = now(); }, { passive: true });
+    document.addEventListener(ev, function () {
+      lastActivity = now();
+      // ⭐ 每 15 秒最多寫一次 lastAct 進 session（mousemove 太頻繁，不能每次都寫 localStorage）
+      if (lastActivity - lastPersist < 15000) return;
+      lastPersist = lastActivity;
+      var s = load();
+      if (s && s.running) { s.lastAct = lastActivity; save(s); }
+    }, { passive: true });
   });
   // ⚠️ 2026-07-11 修復：閒置偵測只能認自己這個分頁的操作。如果 Owen 開了第二個分頁
   // （例如另一頁練習頁忘記關），那個背景分頁的 lastActivity 早就過期，它的閒置計時器

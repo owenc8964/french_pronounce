@@ -19,11 +19,34 @@
     var d = {};
     for (var i = 0; i < localStorage.length; i++) {
       var k = localStorage.key(i);
-      if (k && k.indexOf('clb7_') === 0 && k !== 'clb7_session') d[k] = localStorage.getItem(k);
+      if (k && k.indexOf('clb7_') === 0 && k !== 'clb7_session') {
+        var raw = localStorage.getItem(k);
+        if (TOMB[k]) { var o = sp(raw); if (Array.isArray(o)) raw = JSON.stringify(scrub(k, o)); }   /* 送上雲端前濾掉 */
+        d[k] = raw;
+      }
     }
     return d;
   }
   function sp(s) { try { return JSON.parse(s); } catch (e) { return s; } }
+
+  /* ── 刪除名單（tombstone，2026-09-13）──────────────────────────
+     ⚠️ 為什麼不能直接刪雲端：陣列合併是「各裝置取聯集」，
+       只要任何一台裝置的 localStorage 還留著那筆，下次同步就會被加回去。
+     ⭐ 所以要刪的紀錄登記在這裡：讀進來、存本地、送上雲端三個關口都濾掉，
+       每台裝置下次開頁就自動清乾淨。
+     登記內容：clb7_tracker 裡 10 筆「剛好 180 分鐘」的紀錄——
+       session_timer.js 關分頁／手機鎖屏後閒置偵測沒在跑，
+       下次開頁直接把 3 小時上限整筆記進去（共 30h，佔網站內計時 77%）。
+       Owen 09-13：「全刪」。根因已在 session_timer.js 同日修掉。 */
+  var TOMB = {
+    clb7_tracker: [1783351876339, 1783409815595, 1783740270609, 1784041627314, 1784267710435,
+                   1784709941922, 1785386865893, 1786328851922, 1787757994275, 1789197823511]
+  };
+  function scrub(k, v) {
+    var t = TOMB[k];
+    if (!t || !Array.isArray(v)) return v;
+    return v.filter(function (e) { return !(e && e.ts != null && t.indexOf(e.ts) >= 0); });
+  }
 
   function merge(local, inc) {
     if (Array.isArray(local) && Array.isArray(inc)) {
@@ -61,9 +84,9 @@
   function apply(rm) {
     if (!rm) return;
     Object.keys(rm).forEach(function (k) {
-      var inc = sp(rm[k]), ls = localStorage.getItem(k);
-      if (ls == null) { _si.call(localStorage, k, rm[k]); return; }
-      var o = merge(sp(ls), inc);
+      var inc = scrub(k, sp(rm[k])), ls = localStorage.getItem(k);   /* 從雲端讀進來時濾掉 */
+      if (ls == null) { _si.call(localStorage, k, typeof inc === 'string' ? inc : JSON.stringify(inc)); return; }
+      var o = scrub(k, merge(sp(ls), inc));
       _si.call(localStorage, k, typeof o === 'string' ? o : JSON.stringify(o));
     });
   }
@@ -94,6 +117,14 @@
   };
 
   window.ClbSync = { pull: pull, push: push };
+
+  // 開頁先把本地已登記刪除的紀錄清掉；有清到就排程上傳，讓雲端也跟著乾淨
+  Object.keys(TOMB).forEach(function (k) {
+    var raw = localStorage.getItem(k); if (raw == null) return;
+    var o = sp(raw); if (!Array.isArray(o)) return;
+    var c = scrub(k, o);
+    if (c.length !== o.length) { _si.call(localStorage, k, JSON.stringify(c)); sched(); }
+  });
 
   pull();                                                   // 開頁先拉遠端合併
   window.addEventListener('pagehide', push);
