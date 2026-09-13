@@ -398,3 +398,56 @@ ch1 落地
 > 2026-09-12 建立。驗收（`node --check` ＋ 一次性檢查腳本）：
 > sit / topic / npcLine / npc key 四項對照既有素材，不存在者皆為 0；
 > 12/12 章為劇情型破關條件；11 位 NPC 跨章重複出場。
+
+---
+
+## ⚠️ 節點題量健檢（2026-09-13）
+
+> 起因：戰鬥招式會**優先抽節點自己的 `topic`**，抽不到才退回「最近四課」。
+> 所以一個節點的 topic 題量不夠 → 題目重複；完全沒有產出題 → 大招／詠唱會跑去抽別課，**劇情與練習脫節**
+> （09-12 實測就踩過：第 1 章自我介紹跑出第 29 課量詞題）。
+> 檢查腳本：`/tmp/check_story_nodes.js`（⛔ 不留在 repo）。⛔ 本節只回報，不補題（教材鐵律）。
+
+**總覽：54 個節點｜choose 題 < 4 的：19 個｜完全沒有 fill／trans 的：4 個**
+
+### A. ⚠️⚠️ 最嚴重：考驗節點沒有產出題（考驗會預設推薦詠唱）
+
+| 節點 | 類型 | topic | choose | fill | trans |
+|---|---|---|---|---|---|
+| ch2-3 | **trial** | vocab-annonces | 11 | **0** | **0** |
+| ch12-4 | **trial** | strategie-lecture | 10 | **0** | **0** |
+| ch4-4 | **boss** | vocab-places-city | **2** | **0** | **0** |
+| ch9-3 | talk | reservation-hotel | 3 | 0 | 0 |
+
+→ ch2-3、ch12-4 的「考驗」本意是逼產出，但該 topic 一題產出題都沒有，大招／詠唱會抽到別課。
+→ **ch4-4 是最弱的一隻關主**：4 滴血，但只有 2 題選擇題、沒有產出題——同兩題會一直重複。
+
+### B. choose 題 < 4（普通攻擊會重複出題）
+
+| 節點 | 類型 | topic | choose | fill | trans |
+|---|---|---|---|---|---|
+| ch1-1 | talk | vocab-parcours-vie | 2 | 2 | 2 |
+| ch1-2 | talk | greetings-politeness | 2 | 0 | 3 |
+| ch1-4 | boss | etre-avoir | 2 | 2 | 3 |
+| ch5-2 | talk | vocab-weather-season | 1 | 5 | 1 |
+| ch6-4 | trial | giving-advice | 3 | 0 | 2 |
+| ch8-1 | talk | likes-hobbies-sports | 2 | 1 | 2 |
+| ch8-3 | talk | vocab-loisirs | 2 | 2 | 1 |
+| ch8-4 | boss | likes-hobbies-sports | 2 | 1 | 2 |
+| ch9-2 | talk | family-possessives | 1 | 4 | 1 |
+| ch10-1 | talk | universite-vocab | 1 | 0 | 2 |
+| ch10-2 | talk | metier-travail-vocab | 1 | 0 | 2 |
+| ch11-1 | talk | cest-il-est | 2 | 2 | 1 |
+| ch11-5 | boss | cest-il-est | 2 | 2 | 1 |
+| ch12-1 | talk | vocab-parcours-vie | 2 | 2 | 2 |
+| ch12-2 | talk | etre-avoir | 2 | 2 | 3 |
+| ch12-3 | talk | giving-advice | 3 | 0 | 2 |
+| ch12-5 | boss | greetings-politeness | 2 | 0 | 3 |
+
+（ch4-4、ch9-3 已列在 A）
+
+### 怎麼解（⛔ 待 Owen 決定，不自己動手）
+1. **補題**：這些 topic 的題要從對應課次的筆記／課本出（`questions.js` 人工補）——最正確但最慢。
+2. **程式層**：節點 topic 題量 < 4 時，改退回「**同課次**」而不是「最近四課」——劇情不脫節，但仍會出現同課別 topic 的題。
+3. **資料層**：把 ch2-3、ch12-4 的 type 從 `trial` 改成 `talk`／`fight`（它們本來就是讀懂型的 topic，不是產出型）。
+⭐ 建議先做 2（馬上止血、不違反教材鐵律），再視玩起來的重複感決定要不要 1。
