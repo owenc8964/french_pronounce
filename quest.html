@@ -207,8 +207,21 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 .cell small{font-size:.5rem; color:var(--dim); margin-top:2px; text-align:center; line-height:1.1}
 .cell.empty{background:repeating-linear-gradient(45deg,#0d1016,#0d1016 5px,#0f1219 5px,#0f1219 10px);
             border:1px dashed var(--line); color:var(--faint); font-size:.8rem}
-.tabs{display:flex; gap:8px; margin:14px 0 4px}
-.tab{flex:1; padding:10px; border-radius:11px; cursor:pointer; font-family:inherit; font-size:.84rem;
+.tabs{display:flex; gap:6px; margin:14px 0 4px}
+.tcard{display:flex; align-items:center; gap:13px; padding:15px 14px; margin-bottom:11px; border-radius:15px;
+  background:linear-gradient(180deg,var(--panel2),var(--panel)); border:1px solid var(--line); box-shadow:var(--shadow)}
+.tcard.did{border-color:rgba(92,196,139,.45)}
+.tleft img{width:40px; height:40px}
+.tmid{flex:1; min-width:0}
+.ten{font-family:'Cinzel',serif; font-size:.6rem; color:var(--gold); letter-spacing:.24em}
+.tname{font-size:1rem; font-weight:700; margin-top:2px}
+.tval{font-family:'Cinzel',serif; color:var(--gold2); font-size:1.15rem}
+.twhat{font-size:.76rem; color:var(--dim); margin-top:3px}
+.teff{font-size:.74rem; color:var(--green); margin-top:4px}
+.tgo{flex:none; padding:10px 14px; border-radius:11px; text-decoration:none; font-size:.8rem; font-weight:700;
+  color:#1a1406; background:linear-gradient(180deg,var(--gold2),var(--gold) 60%,#b3913f); border:1px solid rgba(243,220,154,.5)}
+.tcard.did .tgo{color:var(--gold2); background:none; border-color:rgba(217,180,94,.4)}
+.tab{flex:1; padding:10px 4px; border-radius:11px; cursor:pointer; font-family:inherit; font-size:.84rem;
   font-weight:600; color:var(--dim); background:linear-gradient(180deg,#141926,#10141e); border:1px solid var(--line)}
 .tab.on{color:var(--gold2); border-color:rgba(217,180,94,.5); box-shadow:0 0 18px rgba(217,180,94,.1)}
 .conflict{color:var(--dim); font-size:.82rem; line-height:1.95; padding:13px 15px; margin-bottom:18px;
@@ -329,7 +342,7 @@ function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floo
 /* 等級：經驗值跨日累積 —— ⭐ 打完會變強，⛔ 不是每天回到原點 */
 function lvOf(xp){ return Math.floor(Math.sqrt((xp||0)/45)) + 1; }
 function xpInLv(xp){ var lv=lvOf(xp), base=(lv-1)*(lv-1)*45, next=lv*lv*45; return {cur:(xp||0)-base, need:next-base}; }
-function maxHpOf(lv){ return 3 + Math.floor((lv-1)/2); }
+function maxHpOf(lv){ return 3 + Math.floor((lv-1)/2) + (typeof trainBonus==='function' ? trainBonus().hp : 0); }   /* 智力加體力上限 */
 
 /* ── 敵人與關主 ─────────────────────────────────────────── */
 function recentLessons(n){
@@ -344,7 +357,7 @@ function questionsFor(ls){
    ⚠️ Owen：「沒有人會擔心好玩的遊戲沒人玩，主要是不好玩，或玩起來很挫折壓力很大」
    ⭐ 所以招式的設計重點不是「更難」，是**難得有選擇、卡住有出口**：
      · 傷害高的招式＝產出型題目（填空、中翻法）——考試分數就在那裡
-     · ⛔ 一律不打字：答案拆成詞塊用點的（手機上打 é è ç 會讓人想砸手機）
+     · 大招／詠唱要自己打字（09-12 Owen：「不用像 duolinguo 那樣選字，不夠扎實」），附重音符號列
      · 重音不計較（少 é 算對，只提醒）
      · 隨時可以「改用普通攻擊」降級，⛔ 不扣血不羞辱
    題庫現況：choose 549／fill 413／trans 185／gender 51 —— 原本只用了 choose。
@@ -611,16 +624,85 @@ function raidEnter(lesson){
   renderBattle('第 '+lesson+' 課的守衛擋在路口。牠只用那一課的東西打你。');
 }
 
+/* ════════════════════════════════════════════════════════════════
+   訓練場（晨課，2026-09-13）
+   ⚠️ Owen 喜歡《一拳超人》：每天做無聊的基礎功，然後變得很強。
+   ⭐ 三項屬性直接讀**既有工具的練習紀錄**（不另外記一份，⛔ 不會兩邊對不起來）：
+     力量 ＝ 動詞反射衝刺（clb7_sprint_sessions*）
+     敏捷 ＝ 熱身快問快答（clb7_warmup_log／clb7_warmup_done）
+     智力 ＝ 複習卡（clb7_review_sessions）
+   屬性值＝練過的「天數」，⭐ 而且真的會讓角色變強（不是裝飾數字）：
+     力量每 5 天 → 所有招式傷害 +0.1（最多 +1）
+     敏捷每 7 天 → 每天開局多 1 瓶藥水（最多 +2）
+     智力每 10 天 → 體力上限 +1（最多 +2）
+   ⛔ 不顯示分母、⛔ 不寫「你今天還沒練」、⛔ 不顯示「再 N 天升級」（那也是分母）。
+   ════════════════════════════════════════════════════════════════ */
+var TRAIN=[
+  {k:'str', name:'力量', en:'FORCE',    sprite:SP.sword,  what:'動詞反射衝刺', href:'verb_sprint.html?guided=1'},
+  {k:'agi', name:'敏捷', en:'AGILITÉ',  sprite:SP.shield, what:'熱身快問快答', href:'quiz.html?mode=warmup&guided=1'},
+  {k:'int', name:'智力', en:'INTELLECT',sprite:SP.wand,   what:'複習卡一包',   href:'review.html?guided=1'},
+];
+function lsJSON(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }
+function trainDates(k){
+  var d={};
+  if(k==='str'){
+    for(var i=0;i<localStorage.length;i++){
+      var key=localStorage.key(i);
+      if(key && key.indexOf('clb7_sprint_sessions')===0)
+        (lsJSON(key)||[]).forEach(function(x){ if(x&&x.date) d[x.date]=1; });
+    }
+  } else if(k==='agi'){
+    (lsJSON('clb7_warmup_log')||[]).forEach(function(x){ if(x) d[x]=1; });
+    var w=localStorage.getItem('clb7_warmup_done'); if(w) d[w]=1;
+  } else if(k==='int'){
+    (lsJSON('clb7_review_sessions')||[]).forEach(function(x){ if(x&&x.date) d[x.date]=1; });
+  }
+  return d;
+}
+function trainStat(k){ var d=trainDates(k); return { days:Object.keys(d).length, today:!!d[todayStr()] }; }
+function trainBonus(){
+  return {
+    dmg:    Math.min(1, Math.floor(trainStat('str').days/5)*0.1),
+    potion: Math.min(2, Math.floor(trainStat('agi').days/7)),
+    hp:     Math.min(2, Math.floor(trainStat('int').days/10)),
+  };
+}
+function renderTrain(){
+  var b=trainBonus(), v=document.getElementById('view');
+  S.train=S.train||{};
+  var html=modeTabs()+
+    '<div class="title"><div class="en">Le Terrain d\'Entraînement</div><h1>訓 練 場</h1><div class="rule"></div></div>'+
+    '<div class="sub">沒有捷徑。<b>每天做一點無聊的基礎功</b>，角色就會一點一點變強。<br>練過的每一天都會算進去，斷掉幾天也不會被扣回去。</div>';
+  TRAIN.forEach(function(t){
+    var st=trainStat(t.k);
+    S.train[t.k]={ n:st.days, last:Date.now() };     /* 配合 sync_supabase.js 的物件合併慣例 */
+    var eff = t.k==='str' ? (b.dmg ? '所有招式傷害 +'+(Math.round(b.dmg*10)/10) : '還看不出效果——但已經在長了')
+            : t.k==='agi' ? (b.potion ? '每天開局多 '+b.potion+' 瓶藥水' : '還看不出效果——但已經在長了')
+            :               (b.hp ? '體力上限 +'+b.hp : '還看不出效果——但已經在長了');
+    html+='<div class="tcard'+(st.today?' did':'')+'">'+
+      '<div class="tleft">'+img(t.sprite)+'</div>'+
+      '<div class="tmid"><div class="ten">'+t.en+'</div>'+
+        '<div class="tname">'+t.name+'　<span class="tval">'+st.days+'</span></div>'+
+        '<div class="twhat">'+t.what+'</div>'+
+        '<div class="teff">'+eff+'</div></div>'+
+      '<a class="tgo" href="'+t.href+'" onclick="sfx(\'click_001\')">'+(st.today?'再練一輪':'去練')+'</a>'+
+    '</div>';
+  });
+  html+='<div class="credit">美術與音效：Kenney（CC0）　·　字體：Cinzel · Cormorant Garamond（SIL OFL）</div>';
+  save(S); v.innerHTML=html;
+}
+
 function modeTabs(){
   var m=S.mode||'story';
   return '<div class="tabs">'+
     '<button class="tab'+(m==='story'?' on':'')+'" onclick="setMode(\'story\')">主線</button>'+
     '<button class="tab'+(m==='dungeon'?' on':'')+'" onclick="setMode(\'dungeon\')">今日地城</button>'+
-    '<button class="tab'+(m==='raid'?' on':'')+'" onclick="setMode(\'raid\')">副本</button></div>';
+    '<button class="tab'+(m==='raid'?' on':'')+'" onclick="setMode(\'raid\')">副本</button>'+
+    '<button class="tab'+(m==='train'?' on':'')+'" onclick="setMode(\'train\')">訓練場</button></div>';
 }
 function setMode(m){
   sfx('switch_002'); S.mode=m; save(S);
-  if(m==='story') renderChapter(); else if(m==='raid') renderRaids(); else renderMap();
+  if(m==='story') renderChapter(); else if(m==='raid') renderRaids(); else if(m==='train') renderTrain(); else renderMap();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -678,7 +760,7 @@ function chapterClear(ch){
          :'<div class="fb" style="text-align:center;color:var(--gold)">★ 主線走完了——一年過去了</div>')+
     '<button class="next" onclick="setMode(\'story\')">繼續</button></div>';
 }
-function freshRun(lv){ return { date:todayStr(), hp:maxHpOf(lv), coin:0, potion:1, floor:0, loot:[], cleared:{} }; }
+function freshRun(lv){ return { date:todayStr(), hp:maxHpOf(lv), coin:0, potion:1+trainBonus().potion, floor:0, loot:[], cleared:{} }; }   /* 敏捷加開局藥水 */
 function init(){
   var d=load(); d.xp=d.xp||0;
   if(!d.run || d.run.date!==todayStr()) d.run=freshRun(lvOf(d.xp));
@@ -686,7 +768,10 @@ function init(){
   d.mode=d.mode||(hasStory()?'story':'dungeon');
   S=d; save(S); MAP=buildMap(); BOSS=bossOfToday();
   renderHud();
-  (S.mode==='story'&&hasStory())?renderChapter():renderMap();
+  if(S.mode==='story'&&hasStory()) renderChapter();
+  else if(S.mode==='raid') renderRaids();
+  else if(S.mode==='train') renderTrain();
+  else renderMap();
 }
 function renderHud(){
   var r=S.run, lv=lvOf(S.xp), mx=maxHpOf(lv), x=xpInLv(S.xp);
@@ -978,6 +1063,18 @@ function useMove(k){
       return typeof q.a==='string' && q.a.length>1 && q.a.indexOf('|')<0;
     });
   }
+  /* ⭐ 2026-09-13 止血（STORY.md「節點題量健檢」：54 節點中 19 個 choose<4、4 個沒有產出題）
+     節點 topic 題量不夠時，**先補同一課的題**（topic 出現過的課次＋本章課次），
+     ⛔ 不直接跳去最近四課——那樣第 4 章關主會抽到第 32 課的題，劇情又脫節。 */
+  var need=(m.type==='choose'||m.type==='gender') ? 4 : 1;
+  if(B && B.topic && pool.length<need){
+    var tl={};
+    BANK.forEach(function(q){ if(q.topic===B.topic && q.lesson) tl[q.lesson]=1; });
+    (B.lessons||[]).forEach(function(l){ tl[l]=1; });
+    if(B.story){ var cc=curChapter(); ((cc&&cc.lessons)||[]).forEach(function(l){ tl[l]=1; }); }
+    var same=movePool(Object.keys(tl).map(Number), m.type);
+    pool=pool.concat(same.filter(function(q){ return pool.indexOf(q)<0; }));
+  }
   if(!pool.length) pool=movePool(ls,m.type);
   var fresh=pool.filter(function(q){ return (B.used||[]).indexOf(q.q)<0; });
   if(fresh.length) pool=fresh;
@@ -1121,7 +1218,7 @@ function resolveMove(loose, exact, q, m, retried){
     /* ⭐ 安慰獎：第二次才答對 → 半傷害，但⛔ 不扣血、連擊不歸零、經驗照給
        ⭐ 連擊補償：3 連以上傷害 +1；5 連回一顆心（Owen 09-12 指定） */
     var base = retried ? m.dmg*0.5 : m.dmg;
-    var dmg=Math.round((base + (B.combo>=3?1:0))*10)/10;
+    var dmg=Math.round((base + (B.combo>=3?1:0) + trainBonus().dmg)*10)/10;   /* 力量加傷害 */
     if(B.combo===5){
       var lvNow=lvOf(S.xp);
       if(S.run.hp<maxHpOf(lvNow)){ S.run.hp++; toast('5 連擊——喘了一口氣，回復一顆心'); sfx('glass_002'); }
