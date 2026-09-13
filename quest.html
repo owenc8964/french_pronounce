@@ -638,9 +638,9 @@ function raidEnter(lesson){
    ⛔ 不顯示分母、⛔ 不寫「你今天還沒練」、⛔ 不顯示「再 N 天升級」（那也是分母）。
    ════════════════════════════════════════════════════════════════ */
 var TRAIN=[
-  {k:'str', name:'力量', en:'FORCE',    sprite:SP.sword,  what:'動詞反射衝刺', href:'verb_sprint.html?guided=1'},
-  {k:'agi', name:'敏捷', en:'AGILITÉ',  sprite:SP.shield, what:'熱身快問快答', href:'quiz.html?mode=warmup&guided=1'},
-  {k:'int', name:'智力', en:'INTELLECT',sprite:SP.wand,   what:'複習卡一包',   href:'review.html?guided=1'},
+  {k:'str', name:'力量', en:'FORCE',    sprite:SP.sword,  what:'動詞反射衝刺', href:'verb_sprint.html?guided=1&from=quest&tab=train'},
+  {k:'agi', name:'敏捷', en:'AGILITÉ',  sprite:SP.shield, what:'熱身快問快答', href:'quiz.html?mode=warmup&guided=1&from=quest&tab=train'},
+  {k:'int', name:'智力', en:'INTELLECT',sprite:SP.wand,   what:'複習卡一包',   href:'review.html?guided=1&from=quest&tab=train'},
 ];
 function lsJSON(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }
 function trainDates(k){
@@ -762,10 +762,17 @@ function chapterClear(ch){
 }
 function freshRun(lv){ return { date:todayStr(), hp:maxHpOf(lv), coin:0, potion:1+trainBonus().potion, floor:0, loot:[], cleared:{} }; }   /* 敏捷加開局藥水 */
 function init(){
+  try { sessionStorage.removeItem('clb7_return'); } catch(e){}   /* 回到遊戲就清掉「從遊戲來」的記號（見 return_to.js） */
   var d=load(); d.xp=d.xp||0;
   if(!d.run || d.run.date!==todayStr()) d.run=freshRun(lvOf(d.xp));
   d.story=d.story||{ch:1,node:0,done:{},cleared:{}};
   d.mode=d.mode||(hasStory()?'story':'dungeon');
+  /* ⭐ 網址指定分頁優先（從練習頁回來時帶 ?tab=train，見 return_to.js）——
+     ⛔ 不能只靠 clb7_quest.mode，換頁同步時會被雲端較舊的值蓋掉 */
+  try {
+    var tabQ = new URLSearchParams(location.search).get('tab');
+    if (tabQ && ['story','dungeon','raid','train'].indexOf(tabQ) >= 0) d.mode = tabQ;
+  } catch(e){}
   S=d; save(S); MAP=buildMap(); BOSS=bossOfToday();
   renderHud();
   if(S.mode==='story'&&hasStory()) renderChapter();
