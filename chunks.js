@@ -14744,27 +14744,6 @@ const CHUNKS = [
   "note": "（身體內部）⚠️ 結尾 c 不發音"
  },
  {
-  "id": "L32_meilleur",
-  "lesson": 32,
-  "fr": "meilleur",
-  "zh": "-eill- 怎麼唸",
-  "note": "🎙 老師：已經有一個 e，後面 ill 唸 [j] → [mɛ.jœʁ]（像「妹－耶」）。同類：famille [fa.mij]、fille [fij]"
- },
- {
-  "id": "L32_mille_ville",
-  "lesson": 32,
-  "fr": "mille, ville",
-  "zh": "為什麼這兩個唸 [l]",
-  "note": "⚠️⚠️ 老師：沒辦法從拼字看出來，只能記。mille [mil]、ville [vil]、tranquille [tʁɑ̃.kil] 是例外，ll 唸 [l]。老師：西班牙文 villa 會唸成 [bija]，法文 ville 反而唸 [vil]"
- },
- {
-  "id": "L32_le_fils",
-  "lesson": 32,
-  "fr": "le fils",
-  "zh": "l 和 s 唸不唸",
-  "note": "⚠️ 老師：l 不唸，s 反而要唸 → [fis]。法文大部分結尾 s 不唸，fils 是例外。老師：法文不是看了就會唸的語言，要聽"
- },
- {
   "id": "L33_C_est_passionnant",
   "lesson": 33,
   "fr": "C'est passionnant !",
