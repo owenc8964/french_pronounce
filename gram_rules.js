@@ -598,7 +598,30 @@ const GRAM_POINTS = [
         { fr:'À quelle heure commence l\'atelier de cuisine ?', zh:'烹飪工作坊幾點開始？' },
       ]}},
 
-  // ═══ B1（已教的部分） ══════════════════════════════════════
+  { id:'cause-consequence', name:'La cause et la conséquence', icon:'➡️', zone:'A2', cat:'discours',
+    lessons:[33], topics:['cause-consequence'], unlocked:true,   // 09-14（第33課）主文法
+    rule:{
+      title:'因果連接詞 — 先分方向（原因往前指／結果往後推），再看後面接什麼、在哪裡用',
+      why:'原因和結果是同一條因果線的兩端，連接詞只是決定你站在哪一端講話：站在結果這邊回頭指原因，用 parce que／car／grâce à／à cause de；站在原因這邊往下推結果，用 donc／alors／c\'est pourquoi。方向定了之後剩下兩個岔路，都不是新規則：① 後面接名詞還是句子——grâce à、à cause de 本身是介系詞，介系詞只能接名詞，所以 à／de 碰到 le／les 照樣縮成 au、aux、du、des；要接一整個句子就得換 parce que（que 就是專門帶子句的）。② 口說還是書面——car、donc、c\'est pourquoi、c\'est pour cela que 偏書面，alors、c\'est pour ça que 偏口說；c\'est pour ça que 跟 c\'est pour cela que 其實是同一句，ça 就是 cela 在嘴裡被磨短的樣子。car 不能單獨回答 Pourquoi ? 也是結構決定的：car 是對等連接詞，任務是把兩個句子並排接起來，前面沒有句子就沒東西可接；parce que 帶的是從屬子句，可以自己站出來當答案。grâce à 裡的 grâce 是「恩典、感謝」，本身就帶謝意，所以只接好事。',
+      points:[
+        '原因＋句子：parce que（口說書面都可以）／car（主要書面）→ Des journalistes utilisent Twitch parce que／car c\'est interactif',
+        '原因＋名詞：grâce à（正面）／à cause de（負面）→ grâce aux réseaux sociaux、à cause du mauvais temps、à cause d\'Internet',
+        '結果：donc（主要書面，可放句首或動詞後面）／alors（主要口說）',
+        '結果：c\'est pourquoi／c\'est pour cela que（書面）／c\'est pour ça que（口說）；que 碰母音 → c\'est pour cela qu\'ils',
+        '⚠️ 回答 Pourquoi ? 只能用 Parce que…，⛔ 不能用 Car…',
+        '⚠️ 方向別搞反：後半句回答「為什麼」→ parce que／car；回答「所以怎樣」→ donc／alors（第33課當堂用 donc 帶原因被糾正）',
+        '⭐ 口訣 Mais où est donc Ornicar ?＝七個對等連接詞 mais／ou／et／donc／or／ni／car',
+        '⭐ ni … ni 要配 ne：Ce n\'est ni bon ni mauvais（口語常省 ne）',
+      ],
+      examples:[
+        { fr:'Grâce à Twitch, les médias classiques essaient de toucher un public plus jeune et plus connecté.', zh:'多虧了 Twitch，傳統媒體試著接觸更年輕、更常上網的觀眾。（正面原因＋名詞）' },
+        { fr:'À cause d\'Internet, la presse papier a des difficultés.', zh:'因為網路，紙本報紙經營困難。（負面原因＋名詞）' },
+        { fr:'Les articles sont trop longs, c\'est pourquoi je ne lis que les titres.', zh:'文章太長，所以我只看標題。（書面結果）' },
+        { fr:'J\'adore l\'actualité et la BD, alors je me suis abonné à La Revue Dessinée.', zh:'我超愛時事和漫畫，所以訂了《La Revue Dessinée》。（口說結果）' },
+        { fr:'Le succès de Twitch n\'a donc rien d\'étonnant.', zh:'所以 Twitch 會成功一點也不奇怪。（donc 放動詞後）' },
+      ]}},
+
+  // ═══ B1（已教的部分）══════════════════════════════════════
   { id:'relatifs', name:'Pronoms relatifs (qui · que · où)', icon:'🔗', zone:'B1', cat:'pronoms',
     lessons:[16,23], topics:['qui-que'], unlocked:true,
     rule:{

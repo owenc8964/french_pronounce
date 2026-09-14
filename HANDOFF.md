@@ -21,7 +21,7 @@
 |---|---|
 | **考試** | **2027-04-18 前哨戰／診斷考｜2027-09-19 正場**。⚠️ 2027 場次官方**尚未公布**，日期是照 2026（2/8、4/19、9/20、12/20，全是該月第三個星期日）推的。**法協 02-2364-8833 那通電話還沒打。** |
 | **考哪個** | **TCF Canada**（台北法協有考，NT$8,000 四科）。TEF Canada 台灣**無考場**，要考得飛東京 |
-| **程度** | A2，第 32 課（筆記＋九項連動完成；Anki 第31、32課共 45 張**已匯入並驗收**，收藏檔 711 張）。2026-05 開始學法文 |
+| **程度** | A2，第 33 課（筆記＋九項連動完成；Anki 第33課 **42 張已產出、待匯入**（`~/Desktop/anki_l33_auto.tsv`），收藏檔 711 張）。2026-05 開始學法文 |
 | **口說語言島** | ⭐ **Phase 0 八座全滿**（AC1/2/3/5/7/8/11/15），每座 169–225 字 / 78–103 秒，中文母本 `source_zh` 都在。`AC8` 的 follow-up gap **掛零** |
 | **考試材料** | 三包全部整理完。**Tâche 3 = 167 議題／245 變體**（xlsx 八分頁）＋ 119 題雙語；⭐ **Tâche 2 = 160 條情境**（不是 20，見 09-02 校準）；兩本 Ellipses 正式教科書 |
 | **系統** | `mock.html` 已驗收（44+44 套模擬考可用）。dashboard／tracker 倒數已對齊新日期 |
@@ -4596,6 +4596,51 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 4. 主線第 2 章之後的**題量健檢**（哪些節點的 topic 題目不夠）
 5. ⛔ **素材缺口（`STORY.md` 已列）**：第 12 章「為什麼是加拿大」**全庫沒有語料**，依內容鐵律必須 Owen 自己先講（指向 `answer_cards.js` 的 AC8），⛔ Claude 不可代筆
 6. 他要的目標是**一天 40 分鐘**留在系統裡：招式已經把產出型題目（fill 413＋trans 185）接進來，還差訓練場與試煉之塔
+
+---
+
+### 09-14：第33課（A2・Unité 8 Dans les médias・La cause et la conséquence 主文法・媒體詞彙・La Revue Dessinée・Twitch・表達偏好與興趣）——筆記＋九項連動＋Anki
+
+Owen 貼進 2026-09-14 課堂逐字稿＋6 張截圖（`~/Desktop/0914/`，Édito A2 p.111–116）。已用 `assets/.textbook_cache.txt` 對過 p.112–116 課本原文、p.114 Fonctionnement 表與 Entraînement，以及課本音檔逐字稿（課文B 的 Alix／Floriane／Abel、p.115 練習3）。
+
+**這一課教了什麼**
+- **開場＋課文A**（p.111–112）：la nouvelle／l'info／l'actualité；La Revue Dessinée（季刊、訂閱、enquêtes、critique et engagée）；quotidien／hebdomadaire／mensuel／trimestriel。
+- **課文B**（p.113）：年輕人看新聞的圖表；être au courant／être au jus；表達偏好 j'aime mieux、préférer A à B、c'est mieux que。⛔ 音檔沒放。
+- **課文C**（p.113）：Le succès de Twitch（en direct／rediffusion、tchat、chaîne vs compte、revue de presse、le public actuel 假朋友、n'avoir rien de）；老師介紹 Samuel Étienne、HugoDécrypte。
+- **主文法 La cause et la conséquence**（p.114）：parce que／car／grâce à／à cause de ↔ donc／alors／c'est pourquoi／c'est pour cela（ça）que；老師補口訣 Mais où est donc Ornicar ? 與 ni…ni。
+- **詞彙頁 L'info, la presse, la télé**（p.115）＋練習1、2、4、Production orale 5；法國總統選舉兩輪制、F1 與 Netflix 的閒聊。
+- **p.116** 只講了 Pour exprimer son intérêt 句型框（ça m'intéresse、s'intéresser à、curieux de）。
+- ⛔ 沒上到：p.113 課文B 音檔、p.114 Production orale 4、p.115 練習3 與 Production écrite 6、p.116 課文D。
+
+**做了什麼（九項連動全部做完）**
+1. `french_notes.html` 新增 `lesson-33`：12 個 unit（含平行閱讀 `l33-parallel`＋老師課堂法語＋發音警報＋糾錯摘要），`check_notes.js` **全綠**（33課／304表／316 unit）。
+2. `chunks.js`：`extract_chunks.js 33 --write` → **＋143 張**。
+3. `sentences.js`：`S_L33_1~12`（因果連接詞、表達偏好、Owen 自己的兩句回答）。
+4. `table_drill.html` **＋2 表**：`cause-consequence-drill`（15列）、`medias-drill`（30列）。
+5. `gram_rules.js`：**新增 A2 點 `cause-consequence`**（cat `discours`，含 why：方向→接名詞或句子→口說或書面；car 為什麼不能單獨回答 Pourquoi）。B2 佔位點 `connecteurs` 沒動。
+6. `codex.js`：**新增 8-4-4「原因與結果」**（8-4 節末追加，既有座標沒動，`gram:'cause-consequence'`）。
+7. `questions.js` **＋38 題**：`cause-consequence` 15、`medias-vocab` 15、`preference-interet` 8；`quiz.html`／`dashboard.html` 的 `TOPIC_LABELS` 兩邊都補了。
+8. `map.html`：`CURRENT_LESSON` 32→33，新增三張 tile（`cause-consequence`／`medias-vocab`／`preference-interet`）。
+9. `reading.html` **a34「Le journal de la classe」**（跟平行閱讀同一篇＋3 題）。
+10.（順手）`writing_tasks.js` **＋2 題**：W33a 為什麼不再用某種媒體（p.114 Production écrite 5，50-60 字）、W33b 介紹你想開的 Twitch 頻道（p.113 Production écrite 6）。
+
+**⛔ 沒做的**：`scenes.js`（課堂沒放對話音檔，沒有成對台詞）；動詞衝刺不用檢查（沒有新時態）。
+
+**Anki**：`gen_anki_lesson.py 33` → **42 張**產出卡（66 條太短、35 條認得級略過）；`anki_precheck.py`：新卡42／撞號0／每句都有出處，**可以匯入**。已複製到 `~/Desktop/anki_l33_auto.tsv`。⚠️ 還沒匯入。
+
+**內容上的來源衝突（照來源三層優先序，都在筆記裡標出來了）**
+- `engagée`：課本題6 答案是 a. exprimer son opinion, prendre parti；老師課堂解釋成「真的去挖資訊」→ 照課本記、標出老師說法。
+- 課本 `la diffusion en direct / en streaming` 並列；老師說 streaming 不一定是直播 → 標準：兩者重疊但不相等。
+- 老師口語 `C'est ni bon ni mauvais`、`Il est ni beau ni moche` → 標準要有 ne（Owen 截圖 `il est ni mechant ni gentil` 也漏 ne 與 é）。
+- 老師口語 `tu préfères regarder en ligne que acheter` → `plutôt que de ＋ 原形`；`les jeunes ont été intéressés par la F1` → `se sont intéressés à`；`Qu'est-ce que tu penses ?` → `Qu'est-ce que tu en penses ?`；`Oh, n'a rien de spécial`（省主詞）→ `Il n'a rien de spécial`。
+
+**⚠️ 教學鐵律：判準不明的兩條，下次上課／練習先問 Owen**
+- `C'est plus 便宜` → moins cher；截圖 `beaucoup du temps` → beaucoup de。⭐ 先問一句「這個規則你講得出來嗎？」講得出來＝自動化缺口，直接連發練習，⛔ 不重講規則。
+- `donc` 帶原因、`le plus pour moi` 判定為**概念缺口**（今天第一次學這組）。
+
+**⚠️ 踩到的坑（下次照做）**：發音警報表如果第一欄是 `td.m`（目標詞），`extract_chunks.js` 會把第二欄「結尾 c 唸不唸」這種**問題描述**當中文背面出卡。修法：欄位順序改成 `問題｜目標詞(td.m)｜釐清`——第一欄不是 td.m 就不會被抽，喇叭照樣有。
+
+**驗證方式**：`check_notes.js` 全綠；vm 載入 questions／sentences／gram_rules／codex／writing_tasks 檢查 id 唯一（codex 138 項零重號、choose 題答案都在選項裡、12 句 sentences 逐句比對確認出自 lesson-33 筆記）；抽出 6 個 html 的 inline `<script>` 丟 `node --check` 全過；瀏覽器（ROOM 先換成 TEST，測完改回＋preview_stop）：筆記頁第33課 12 unit／95 句／244 個發音鍵／平行閱讀整段連讀列、console 無錯；table_drill 兩張新表載入；map 顯示「第 33 課」＋三張 tile；quiz 三個 TOPIC_LABELS 有值、`?lesson=33&guided=1` 出題正常；reading 出現 a34。
 
 ---
 

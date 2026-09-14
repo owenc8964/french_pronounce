@@ -230,4 +230,12 @@ const WRITING_TASKS = [
   { lesson:32, id:'W32b', title:'你想在急救單位工作嗎？（課本 p.104 Production écrite 4，60-80字）', task:'Aimeriez-vous travailler dans un service d\'urgence (comme pompier(ère), ambulancier(ère)…) ? 表態，並說明理由。',
     use:['表態句型（À mon avis…／Je pense que…／Pour moi…）', '緊急狀況詞彙至少三個（les blessés／une ambulance／les secours／le SAMU／un accident de la circulation…）', '至少一個最高級（le métier le plus utile／le plus difficile…）'],
     frame:'⭐ 開頭直接表態（Oui／Non, je n\'aimerais pas…） → 理由一（配一個具體情境）→ 理由二 → 一句收尾重申立場' },
+
+  // ── 第33課（原因與結果 ＋ 媒體詞彙 ＋ 表達偏好與興趣）
+  { lesson:33, id:'W33a', title:'你為什麼不再用某種媒體？（課本 p.114 Production écrite 5，DELF 題型，50-60字）', task:'Sur un forum, expliquez pourquoi vous n\'utilisez plus certains supports ou médias. 在論壇上說明你為什麼不再用某些媒體或管道（電視、紙本報紙、社群…）。',
+    use:['書面的原因連接詞至少兩個（parce que／car）', '書面的結果連接詞至少一個（c\'est pourquoi／c\'est pour cela que）', '媒體詞彙至少三個（la télévision／le JT／la presse papier／les réseaux sociaux／s\'informer／les titres…）'],
+    frame:'⭐ 直接說不再用什麼（Je ne regarde plus… depuis…） → 原因一（parce que）→ 原因二（car）→ 結果：現在改用什麼（C\'est pour cela que maintenant, je préfère…）' },
+  { lesson:33, id:'W33b', title:'介紹你想開的 Twitch 頻道或節目（課本 p.113 Production écrite 6，60-80字）', task:'Vous voulez créer une chaîne ou une émission sur Twitch. 寫一段介紹：節目講什麼主題、多久播一次、為什麼觀眾會喜歡。',
+    use:['媒體詞彙至少三個（une chaîne／une émission／en direct／le tchat／une revue de presse／les abonnés／une rubrique…）', '至少一個 grâce à ＋ 名詞', '至少一個表達興趣的句型（Ça m\'intéresse／Ça me passionne／C\'est passionnant）'],
+    frame:'⭐ 一句說你要開什麼（Je veux créer une chaîne Twitch sur…） → 主題與頻率（chaque semaine／tous les jours）→ 為什麼（parce que ça me passionne）→ 觀眾能得到什麼（Grâce à mon émission, …）' },
 ];

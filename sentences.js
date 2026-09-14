@@ -331,4 +331,18 @@ const SENTENCES = [
   { id: 'S_L32_10', lesson: 32, fr: 'Faites la sieste, cela va vous faire le plus grand bien.', zh: '睡個午覺吧，對您大有好處。', note: '⭐ 慣用語 faire le plus grand bien' },
   { id: 'S_L32_11', lesson: 32, fr: 'Je dois prendre un traitement au printemps pour calmer mon allergie.', zh: '我春天得吃藥來緩解過敏。', note: '⭐ prendre un traitement ＋ calmer une douleur／une allergie' },
   { id: 'S_L32_12', lesson: 32, fr: 'Tu parleras à ton médecin de ce problème ? — Non, je ne lui en parlerai pas.', zh: '你會跟醫生說這個問題嗎？——不，我不會跟他說。', note: '⭐⭐ lui（à ton médecin）＋ en（de ce problème），順序 lui 在 en 前' },
+
+  // 第33課
+  { id: 'S_L33_1', lesson: 33, fr: 'Beaucoup de personnes préfèrent la presse en ligne, c\'est pourquoi elles n\'achètent plus le journal.', zh: '很多人比較喜歡網路新聞，所以她們不再買報紙了。', note: '⭐⭐ c\'est pourquoi（書面，帶出結果）' },
+  { id: 'S_L33_2', lesson: 33, fr: 'Grâce à Twitch, les médias classiques essaient de toucher un public plus jeune et plus connecté.', zh: '多虧了 Twitch，傳統媒體試著接觸更年輕、更常上網的觀眾。', note: '⭐⭐ grâce à ＋ 名詞（正面原因）' },
+  { id: 'S_L33_3', lesson: 33, fr: 'À cause d\'Internet, la presse papier a des difficultés.', zh: '因為網路，紙本報紙經營困難。', note: '⭐⭐ à cause de ＋ 名詞（負面原因）' },
+  { id: 'S_L33_4', lesson: 33, fr: 'Je suis toujours informée grâce aux réseaux sociaux.', zh: '我靠社群網路隨時掌握新聞。', note: '⭐ grâce à ＋ les → grâce aux' },
+  { id: 'S_L33_5', lesson: 33, fr: 'Tu reçois les nouvelles sur ton téléphone, alors tu n\'as pas besoin de les chercher.', zh: '新聞自己送到你手機上，所以你不用去找。', note: '⭐ alors（口說的「所以」）＋ recevoir' },
+  { id: 'S_L33_6', lesson: 33, fr: 'Les articles sont trop longs, c\'est pourquoi je ne lis que les titres.', zh: '文章太長，所以我只看標題。', note: '⭐ c\'est pourquoi ＋ 回鍋第30課 ne...que' },
+  { id: 'S_L33_7', lesson: 33, fr: 'J\'aime mieux lire la presse en ligne.', zh: '我比較喜歡看網路新聞。', note: '⭐ j\'aime mieux ＝ je préfère' },
+  { id: 'S_L33_8', lesson: 33, fr: 'Je préfère les réseaux sociaux aux médias traditionnels.', zh: '比起傳統媒體，我比較喜歡社群網路。', note: '⭐⭐ préférer A à B（à ＋ les → aux）' },
+  { id: 'S_L33_9', lesson: 33, fr: 'Ah oui, je suis déjà au courant, je lui ai téléphoné hier.', zh: '對啊，我已經知道了，我昨天打給她了。', note: '⭐ être au courant（老師的情境句）' },
+  { id: 'S_L33_10', lesson: 33, fr: 'Le sport m\'intéresse le plus car j\'adore le baseball et le basket.', zh: '我最有興趣的是體育，因為我超愛棒球和籃球。', note: '⭐ Owen 自己的回答（老師修過）：ça m\'intéresse le plus ＋ car' },
+  { id: 'S_L33_11', lesson: 33, fr: 'Je ne regarde plus la télévision depuis dix ans parce que ça prend beaucoup de temps.', zh: '我十年沒看電視了，因為很花時間。', note: '⭐ Owen 自己的句子（老師修過）：ne...plus ＋ depuis ＋ parce que' },
+  { id: 'S_L33_12', lesson: 33, fr: 'Le succès de Twitch n\'a donc rien d\'étonnant.', zh: '所以 Twitch 會成功一點也不奇怪。', note: '⭐ n\'avoir rien de ＋ 形容詞；donc 放動詞後（書面）' },
 ];

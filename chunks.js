@@ -14763,5 +14763,1006 @@ const CHUNKS = [
   "fr": "le fils",
   "zh": "l 和 s 唸不唸",
   "note": "⚠️ 老師：l 不唸，s 反而要唸 → [fis]。法文大部分結尾 s 不唸，fils 是例外。老師：法文不是看了就會唸的語言，要聽"
+ },
+ {
+  "id": "L33_C_est_passionnant",
+  "lesson": 33,
+  "fr": "C'est passionnant !",
+  "zh": "太精彩了！",
+  "note": "Unité 8 目標句。🎙 老師：la passion＝熱情、最喜歡做的事；passionnant＝非常有意思（比 intéressant 更強）"
+ },
+ {
+  "id": "L33_Tous_les_trois_mois_en_l",
+  "lesson": 33,
+  "fr": "Tous les trois mois, en librairie ou sur abonnement.",
+  "zh": "每三個月出一本，可以在書店買或訂閱。",
+  "note": "課本網頁上的圖示文字。🎙 老師：訂閱就是每三個月寄到家、錢自動扣，不用每次付"
+ },
+ {
+  "id": "L33_Elle_propose_une_informa",
+  "lesson": 33,
+  "fr": "Elle propose une information critique et engagée.",
+  "zh": "它提供有批判性、有立場的資訊。",
+  "note": "課本原句。⚠️⚠️ 課本題6 的答案是 a. exprimer son opinion, prendre parti（表達意見、選邊站）。🎙 老師課堂上解釋成「會真的去把資訊挖出來」——那比較接近 mener des enquêtes。標準法文 engagé＝對議題有立場、投入其中，照課本答案記"
+ },
+ {
+  "id": "L33_Toi_tu_utilises_quoi_pou",
+  "lesson": 33,
+  "fr": "Toi, tu utilises quoi pour t'informer ?",
+  "zh": "你用什麼看新聞？",
+  "note": "🎙 老師問。s'informer＝獲取資訊（反身）。Owen：smartphone"
+ },
+ {
+  "id": "L33_Tu_ne_regardes_jamais_l",
+  "lesson": 33,
+  "fr": "Tu ne regardes jamais l'actualité à la télé ?",
+  "zh": "你從來不看電視新聞嗎？",
+  "note": "🎙 Owen：只看運動 → 老師：那就不算看時事"
+ },
+ {
+  "id": "L33_Ah_oui_je_suis_déjà_au_c",
+  "lesson": 33,
+  "fr": "Ah oui, je suis déjà au courant, je lui ai téléphoné hier.",
+  "zh": "對啊，我已經知道了，我昨天打給她了。",
+  "note": "🎙 老師的情境：我告訴你「我朋友剛生小孩」，你回「我已經知道了」。回鍋第31課 COI lui"
+ },
+ {
+  "id": "L33_J_aime_mieux_lire_la_pre",
+  "lesson": 33,
+  "fr": "J'aime mieux lire la presse en ligne.",
+  "zh": "我比較喜歡看網路新聞。",
+  "note": "🎙 老師：j'aime bien、j'aime beaucoup 學過了，j'aime mieux ＝ je préfère。⭐ 回鍋第25、32課：aimer 是動詞 → 配 mieux，不配 meilleur"
+ },
+ {
+  "id": "L33_Je_préfère_les_réseaux_s",
+  "lesson": 33,
+  "fr": "Je préfère les réseaux sociaux aux médias traditionnels.",
+  "zh": "比起傳統媒體，我比較喜歡社群網路。",
+  "note": "⭐⭐ préférer A à B：à ＋ les → aux。🎙 老師：médias traditionnels＝電視、報紙、廣播"
+ },
+ {
+  "id": "L33_C_est_mieux_que_les_médi",
+  "lesson": 33,
+  "fr": "C'est mieux que les médias traditionnels.",
+  "zh": "比傳統媒體好。",
+  "note": "課本框框 C'est mieux (que…)，🎙 老師示範接上的完整句"
+ },
+ {
+  "id": "L33_Tu_préfères_lire_en_lign",
+  "lesson": 33,
+  "fr": "Tu préfères lire en ligne plutôt que d'acheter le journal.",
+  "zh": "你比較喜歡在網路上看，而不是買報紙。",
+  "note": "🎙 老師口語說 tu préfères regarder en ligne que acheter le journal。⚠️ 標準法文比較兩個動作要用 plutôt que de ＋ 原形"
+ },
+ {
+  "id": "L33_Très_peu_de_monde_achète",
+  "lesson": 33,
+  "fr": "Très peu de monde achète les journaux.",
+  "zh": "很少人買報紙。",
+  "note": "🎙 老師（Owen 截圖手寫）。⭐ le monde 在這裡＝人（跟 tout le monde 一樣），所以動詞用單數 achète"
+ },
+ {
+  "id": "L33_Le_succès_de_Twitch_n_a",
+  "lesson": 33,
+  "fr": "Le succès de Twitch n'a donc rien d'étonnant.",
+  "zh": "所以 Twitch 會成功一點也不奇怪。",
+  "note": "⭐⭐ n'avoir rien de ＋ 形容詞＝一點也不…；donc 放在句子中間（見主文法）"
+ },
+ {
+  "id": "L33_Tout_le_monde_peut_créer",
+  "lesson": 33,
+  "fr": "Tout le monde peut créer sa chaîne.",
+  "zh": "每個人都可以開自己的頻道。",
+  "note": "課本原句。🎙 老師：chaîne 是「看節目」的地方——une chaîne télé（Chaîne 1、Chaîne 2）、une chaîne Twitch、une chaîne YouTube"
+ },
+ {
+  "id": "L33_un_compte_Instagram",
+  "lesson": 33,
+  "fr": "un compte Instagram",
+  "zh": "一個 Instagram 帳號",
+  "note": "🎙 老師：⛔ 不說 chaîne Instagram，要說 un compte（帳號）。英文一樣分 channel／account"
+ },
+ {
+  "id": "L33_Comment_est_le_gâteau_Il",
+  "lesson": 33,
+  "fr": "Comment est le gâteau ? — Il n'a rien de spécial.",
+  "zh": "蛋糕怎麼樣？——沒什麼特別的。",
+  "note": "🎙 老師的例子：還不錯，但沒什麼特別。⚠️ 老師口語說 Oh, n'a rien de spécial（省掉主詞），寫的時候要有 il。後面的形容詞固定用陽性單數：rien d'étonnant、rien de spécial"
+ },
+ {
+  "id": "L33_Tu_apprends_le_français",
+  "lesson": 33,
+  "fr": "Tu apprends le français grâce à moi.",
+  "zh": "你是靠我才學法文的。",
+  "note": "🎙 老師開玩笑的例句。grâce à＝thanks to（正面）；à cause de＝because of（偏負面）。後面接人要用重讀代名詞 moi"
+ },
+ {
+  "id": "L33_Pourquoi_Parce_qu_ils_so",
+  "lesson": 33,
+  "fr": "Pourquoi ? — Parce qu'ils sont trop longs.",
+  "zh": "為什麼？——因為它們太長了。",
+  "note": "課本音檔 Floriane 講為什麼只看標題。⚠️ car 只能夾在兩個句子中間，⛔ 不能用 Car… 單獨回答問題（codex 8-4-1）。🎙 老師：car 是寫作用的，說話說 parce que，就跟 alors 一樣分口說書面"
+ },
+ {
+  "id": "L33_Donc_le_succès_de_Twitch",
+  "lesson": 33,
+  "fr": "Donc, le succès de Twitch n'a rien d'étonnant.",
+  "zh": "所以，Twitch 會成功一點也不奇怪。",
+  "note": "🎙 老師：donc 可以放句首……（跟課文原句比較）"
+ },
+ {
+  "id": "L33_Alors",
+  "lesson": 33,
+  "fr": "Alors ?",
+  "zh": "所以呢？（後來怎樣？）",
+  "note": "🎙 老師：打電話給你，雙方都知道在聊哪件事，一開口就說 Alors ?＝結果怎麼樣了？（alors 在口說非常高頻）"
+ },
+ {
+  "id": "L33_Mais_où_est_donc_Ornicar",
+  "lesson": 33,
+  "fr": "Mais où est donc Ornicar ?",
+  "zh": "可是 Ornicar 到底在哪裡？",
+  "note": "⭐⭐ 法國學生背七個對等連接詞的口訣：mais／ou／et／donc／or／ni／car（Ornicar 是一個名字）。🎙 老師：B2 口說考試能把這幾個放進句子裡，會很加分"
+ },
+ {
+  "id": "L33_Ce_n_est_ni_bon_ni_mauva",
+  "lesson": 33,
+  "fr": "Ce n'est ni bon ni mauvais.",
+  "zh": "不好吃也不難吃。",
+  "note": "🎙 老師：「你喜歡這個蛋糕嗎？」用兩個相反詞說「兩邊都不是」。⚠️ 老師口語說 C'est ni bon ni mauvais；標準法文要有 ne：Ce n'est ni … ni …"
+ },
+ {
+  "id": "L33_Il_n_est_ni_beau_ni_moch",
+  "lesson": 33,
+  "fr": "Il n'est ni beau ni moche.",
+  "zh": "他不帥也不醜。",
+  "note": "🎙 老師的例子（口語省掉 ne）。moche＝（口語）醜"
+ },
+ {
+  "id": "L33_Il_n_est_ni_méchant_ni_g",
+  "lesson": 33,
+  "fr": "Il n'est ni méchant ni gentil.",
+  "zh": "他不壞也不親切。",
+  "note": "🎙 老師的例子。⚠️ Owen 截圖手寫 il est ni mechant ni gentil——少了 ne，méchant 也少了重音 é"
+ },
+ {
+  "id": "L33_Il_adore_ce_magazine_don",
+  "lesson": 33,
+  "fr": "Il adore ce magazine, donc il est abonné.",
+  "zh": "他超愛這本雜誌，所以有訂閱。",
+  "note": "練習3c。⭐ être abonné(e) à＝有訂閱（subscribed）"
+ },
+ {
+  "id": "L33_Je_suis_sur_toutes_les_p",
+  "lesson": 33,
+  "fr": "Je suis sur toutes les plateformes.",
+  "zh": "我在所有平台上都有（帳號）。",
+  "note": "🎙 老師：YouTuber 常這樣說——YouTube、Twitch、Instagram 都有"
+ },
+ {
+  "id": "L33_Tu_es_abonné_à_quelle_pl",
+  "lesson": 33,
+  "fr": "Tu es abonné à quelle plateforme ?",
+  "zh": "你訂了哪個平台？",
+  "note": "🎙 老師問。回鍋第32課 quel ＋ 名詞。Owen 答 Spotify、YouTube、Duolingo"
+ },
+ {
+  "id": "L33_Je_suis_l_actualité",
+  "lesson": 33,
+  "fr": "Je suis l'actualité.",
+  "zh": "我有在關注時事。",
+  "note": "🎙 老師提醒上次講過：je suis 同時是 être（我是）和 suivre（我跟隨）的變位，只能看上下文判斷"
+ },
+ {
+  "id": "L33_Ils_chantent_en_direct_d",
+  "lesson": 33,
+  "fr": "Ils chantent en direct dans cette émission ?",
+  "zh": "他們在這個節目裡現場唱歌嗎？",
+  "note": "練習2c。🎙 老師：一個有人唱歌的節目，你想知道是不是直播"
+ },
+ {
+  "id": "L33_Grâce_à_Netflix_les_jeun",
+  "lesson": 33,
+  "fr": "Grâce à Netflix, les jeunes se sont intéressés à la F1.",
+  "zh": "多虧了 Netflix，年輕人開始對 F1 有興趣。",
+  "note": "🎙 老師：以前 F1 只有老人看（老師的爺爺每天午睡前看 F1），Netflix 把年輕人拉進來——「他們做的正是我們今天講的：用數位平台接觸年輕觀眾」。⚠️ 老師口語說 les jeunes ont été intéressés par la F1；更自然是 s'intéresser à（反身，助動詞 être）"
+ },
+ {
+  "id": "L33_Ça_m_intéresse",
+  "lesson": 33,
+  "fr": "Ça m'intéresse !",
+  "zh": "我有興趣！",
+  "note": "⭐ 東西當主詞、人當受詞（me／nous）——跟英文 It interests me 同結構。Ça nous intéresse !＝我們有興趣"
+ },
+ {
+  "id": "L33_Je_m_intéresse_à_leur_vi",
+  "lesson": 33,
+  "fr": "Je m'intéresse à leur vie !",
+  "zh": "我對他們的生活很感興趣！",
+  "note": "⭐ 換成人當主詞就要用反身 s'intéresser à。🎙 老師用追星舉例：想知道明星生活的一切"
+ },
+ {
+  "id": "L33_J_ai_envie_de_savoir_par",
+  "lesson": 33,
+  "fr": "J'ai envie de savoir parler français.",
+  "zh": "我很想學會說法文。",
+  "note": "🎙 Owen 試著用這個框框造句，把 curieux 和 envie 混在一起 → 老師：envie 要搭 j'ai envie de（想要）。curieux de savoir 是「好奇想知道某件事」（逐字稿這段很糊，照老師最後說出口的句子記）"
+ },
+ {
+  "id": "L33_Donc_là_on_a_un_petit_gr",
+  "lesson": 33,
+  "fr": "Donc là, on a un petit graphique.",
+  "zh": "所以這裡有一張小圖表。",
+  "note": "🎙 帶進圖表。老師說的是 un petit graphe（口語）；課本用 graphique"
+ },
+ {
+  "id": "L33_Qu_est_ce_que_tu_en_pens",
+  "lesson": 33,
+  "fr": "Qu'est-ce que tu en penses ?",
+  "zh": "你覺得呢？",
+  "note": "🎙 老師口語說 Qu'est-ce que tu penses ?；問「對這件事的看法」標準要加 en（penser de quelque chose，回鍋第32課 en）"
+ },
+ {
+  "id": "L33_BD_tu_connais",
+  "lesson": 33,
+  "fr": "BD, tu connais ?",
+  "zh": "BD，你知道嗎？",
+  "note": "🎙 確認學生認不認識一個字"
+ },
+ {
+  "id": "L33_Avant_il_était_connu_à_l",
+  "lesson": 33,
+  "fr": "Avant, il était connu à la télé pour être présentateur.",
+  "zh": "他以前是以電視主持人出名的。",
+  "note": "🎙 imparfait 描述過去的狀態。être connu pour ＋ 原形＝因為…而出名"
+ },
+ {
+  "id": "L33_Maintenant_il_a_ouvert_s",
+  "lesson": 33,
+  "fr": "Maintenant, il a ouvert sa chaîne Twitch.",
+  "zh": "現在他開了自己的 Twitch 頻道。",
+  "note": "🎙 ouvrir → ouvert（不規則過去分詞）"
+ },
+ {
+  "id": "L33_Moi_j_ai_tout_regardé_po",
+  "lesson": 33,
+  "fr": "Moi, j'ai tout regardé, pour voir de quoi ils parlent.",
+  "zh": "我全部都看了，想看看他們在講什麼。",
+  "note": "🎙 講總統候選人訪談。parler de quoi → de quoi ils parlent"
+ },
+ {
+  "id": "L33_Tu_n_as_pas_besoin_de_li",
+  "lesson": 33,
+  "fr": "Tu n'as pas besoin de lire tout l'article.",
+  "zh": "你不用把整篇文章讀完。",
+  "note": "🎙 講只看標題。avoir besoin de ＋ 原形（逐字稿記成 tu n'es pas besoin，是辨識錯）"
+ },
+ {
+  "id": "L33_Il_y_en_a_beaucoup",
+  "lesson": 33,
+  "fr": "Il y en a beaucoup.",
+  "zh": "有很多。",
+  "note": "🎙 Owen 列了一堆訂閱時老師說的。⭐ en＝des abonnements"
+ },
+ {
+  "id": "L33_Je_vais_regarder",
+  "lesson": 33,
+  "fr": "Je vais regarder.",
+  "zh": "我會去看看。",
+  "note": "🎙 聽 Owen 推薦 Hami Video 之後說的"
+ },
+ {
+  "id": "L33_le_mauvais_temps",
+  "lesson": 33,
+  "fr": "le mauvais temps",
+  "zh": "壞天氣",
+  "note": "❓ 以為 le temps 只有「時間」。生詞：le temps 一字兩義——時間／天氣（Quel temps fait-il ?＝天氣怎樣？）"
+ },
+ {
+  "id": "L33_la_nouvelle",
+  "lesson": 33,
+  "fr": "la nouvelle",
+  "zh": "一則新聞、消息",
+  "note": "🎙 老師：nouveau／nouvelle 是形容詞「新的」，但名詞 la nouvelle＝a news"
+ },
+ {
+  "id": "L33_les_nouvelles_f",
+  "lesson": 33,
+  "fr": "les nouvelles (f.)",
+  "zh": "新聞（統稱）",
+  "note": "regarder les nouvelles（詞彙頁）"
+ },
+ {
+  "id": "L33_l_information_f_l_info",
+  "lesson": 33,
+  "fr": "l'information (f.), l'info",
+  "zh": "資訊、新聞",
+  "note": "🎙 口語縮寫 l'info；les infos＝新聞"
+ },
+ {
+  "id": "L33_l_actualité_f_l_actu",
+  "lesson": 33,
+  "fr": "l'actualité (f.), l'actu",
+  "zh": "時事（所有新聞的整體）",
+  "note": "🎙 老師：la nouvelle 是一則，l'actualité 是全部。⚠️ 假朋友：不是英文的 actually"
+ },
+ {
+  "id": "L33_quotidien_quotidienne",
+  "lesson": 33,
+  "fr": "quotidien, quotidienne",
+  "zh": "每天的；日報",
+  "note": "🎙 老師先問你記不記得這個字。une revue de presse quotidienne（課文C）"
+ },
+ {
+  "id": "L33_hebdomadaire",
+  "lesson": 33,
+  "fr": "hebdomadaire",
+  "zh": "每週的；週刊",
+  "note": ""
+ },
+ {
+  "id": "L33_mensuel_mensuelle",
+  "lesson": 33,
+  "fr": "mensuel, mensuelle",
+  "zh": "每月的；月刊",
+  "note": "🎙 老師：revue 常常是一個月一本"
+ },
+ {
+  "id": "L33_trimestriel_trimestriell",
+  "lesson": 33,
+  "fr": "trimestriel, trimestrielle",
+  "zh": "每三個月的；季刊",
+  "note": "Owen 截圖手寫 trimestrielle。來自 le trimestre＝三個月（一季）"
+ },
+ {
+  "id": "L33_la_bande_dessinée_la_BD",
+  "lesson": 33,
+  "fr": "la bande dessinée, la BD",
+  "zh": "漫畫",
+  "note": "🎙 dessiner＝畫"
+ },
+ {
+  "id": "L33_la_revue",
+  "lesson": 33,
+  "fr": "la revue",
+  "zh": "雜誌、期刊",
+  "note": "＝ le magazine（詞彙頁）"
+ },
+ {
+  "id": "L33_en_librairie",
+  "lesson": 33,
+  "fr": "en librairie",
+  "zh": "在書店",
+  "note": "⚠️ la librairie＝書店，不是圖書館（la bibliothèque）"
+ },
+ {
+  "id": "L33_sur_abonnement",
+  "lesson": 33,
+  "fr": "sur abonnement",
+  "zh": "用訂閱的方式",
+  "note": "見下方 abonnement"
+ },
+ {
+  "id": "L33_l_enquête_f",
+  "lesson": 33,
+  "fr": "l'enquête (f.)",
+  "zh": "調查（報導）",
+  "note": "🎙 investigation"
+ },
+ {
+  "id": "L33_le_reportage",
+  "lesson": 33,
+  "fr": "le reportage",
+  "zh": "報導",
+  "note": ""
+ },
+ {
+  "id": "L33_réalisé_en_équipe",
+  "lesson": 33,
+  "fr": "réalisé en équipe",
+  "zh": "團隊製作的",
+  "note": "🎙 en équipe＝en groupe；une équipe de foot＝足球隊"
+ },
+ {
+  "id": "L33_le_dessinateur_la_dessin",
+  "lesson": 33,
+  "fr": "le dessinateur, la dessinatrice",
+  "zh": "插畫家、漫畫家",
+  "note": "dessiner → dessinateur"
+ },
+ {
+  "id": "L33_critique",
+  "lesson": 33,
+  "fr": "critique",
+  "zh": "批判性的",
+  "note": ""
+ },
+ {
+  "id": "L33_engagé_engagée",
+  "lesson": 33,
+  "fr": "engagé, engagée",
+  "zh": "有立場的、表態的",
+  "note": "⚠️ 見下方課本答案"
+ },
+ {
+  "id": "L33_mener_une_enquête",
+  "lesson": 33,
+  "fr": "mener une enquête",
+  "zh": "進行調查",
+  "note": "🎙 老師：mener＝帶領（to lead）；un meneur＝領頭的人（Owen 截圖手寫 meneur）"
+ },
+ {
+  "id": "L33_un_autre_regard_sur",
+  "lesson": 33,
+  "fr": "un autre regard sur",
+  "zh": "看…的另一個角度",
+  "note": "🎙 le regard＝目光、觀點（Owen：「角度」）"
+ },
+ {
+  "id": "L33_la_diversité_des_points",
+  "lesson": 33,
+  "fr": "la diversité des points de vue",
+  "zh": "觀點的多元",
+  "note": ""
+ },
+ {
+  "id": "L33_la_forme",
+  "lesson": 33,
+  "fr": "la forme",
+  "zh": "形式",
+  "note": "🎙 老師：不同形式＝音檔、畫圖……這本雜誌用漫畫講新聞，就是一種跟一般媒體不一樣的形式"
+ },
+ {
+  "id": "L33_sans_oublier",
+  "lesson": 33,
+  "fr": "sans oublier",
+  "zh": "還有、也不忘了",
+  "note": "🎙 without forgetting"
+ },
+ {
+  "id": "L33_l_utopie_f",
+  "lesson": 33,
+  "fr": "l'utopie (f.)",
+  "zh": "烏托邦、理想世界",
+  "note": "🎙 老師：只是一個夢。動畫《動物方城市》的法文片名 Zootopie＝zoo＋utopie（動物的理想生活）"
+ },
+ {
+  "id": "L33_le_support",
+  "lesson": 33,
+  "fr": "le support",
+  "zh": "載體、媒介",
+  "note": "圖表標題的 supports consultés"
+ },
+ {
+  "id": "L33_consulter",
+  "lesson": 33,
+  "fr": "consulter",
+  "zh": "查看、翻閱",
+  "note": "⭐ 回鍋第32課 consulter un médecin（看醫生）——同一個字，對象不同"
+ },
+ {
+  "id": "L33_tous_les_jours_ou_presqu",
+  "lesson": 33,
+  "fr": "tous les jours ou presque",
+  "zh": "幾乎每天",
+  "note": "🎙 老師：＝ presque tous les jours"
+ },
+ {
+  "id": "L33_le_téléviseur",
+  "lesson": 33,
+  "fr": "le téléviseur",
+  "zh": "電視機",
+  "note": "61 %"
+ },
+ {
+  "id": "L33_l_ordinateur_m",
+  "lesson": 33,
+  "fr": "l'ordinateur (m.)",
+  "zh": "電腦",
+  "note": "51 %"
+ },
+ {
+  "id": "L33_la_tablette_tactile",
+  "lesson": 33,
+  "fr": "la tablette tactile",
+  "zh": "平板電腦",
+  "note": "19 %"
+ },
+ {
+  "id": "L33_la_plupart_des_jeunes",
+  "lesson": 33,
+  "fr": "la plupart des jeunes",
+  "zh": "大部分的年輕人",
+  "note": "⭐ la plupart des ＋ 複數名詞，動詞用複數"
+ },
+ {
+  "id": "L33_être_au_courant_de",
+  "lesson": 33,
+  "fr": "être au courant (de)",
+  "zh": "知道（某事）、掌握消息",
+  "note": "課本：＝ savoir, être informé(e)"
+ },
+ {
+  "id": "L33_être_au_jus",
+  "lesson": 33,
+  "fr": "être au jus",
+  "zh": "（很口語）知道、掌握消息",
+  "note": "🎙 老師補充，意思一樣，比 au courant 更隨便（le jus＝果汁；Owen 截圖手寫）"
+ },
+ {
+  "id": "L33_le_courant",
+  "lesson": 33,
+  "fr": "le courant",
+  "zh": "電流",
+  "note": "🎙 老師：Je n'ai pas de courant.＝沒電了。老師也不知道為什麼「在電流裡」會變成「知道消息」"
+ },
+ {
+  "id": "L33_la_presse",
+  "lesson": 33,
+  "fr": "la presse",
+  "zh": "報刊、新聞界",
+  "note": "🎙 老師：加拿大有一家媒體就叫 La Presse"
+ },
+ {
+  "id": "L33_un_journal_des_journaux",
+  "lesson": 33,
+  "fr": "un journal, des journaux",
+  "zh": "報紙",
+  "note": "⚠️ -al → -aux（un animal / des animaux 同一種變法）"
+ },
+ {
+  "id": "L33_le_domaine",
+  "lesson": 33,
+  "fr": "le domaine",
+  "zh": "領域",
+  "note": "🎙 field：dans le domaine du journalisme"
+ },
+ {
+  "id": "L33_numérique",
+  "lesson": 33,
+  "fr": "numérique",
+  "zh": "數位的",
+  "note": "🎙 老師：跟電腦、手機有關、不是紙本的，都叫 numérique（digital）"
+ },
+ {
+  "id": "L33_la_tendance",
+  "lesson": 33,
+  "fr": "la tendance",
+  "zh": "潮流、趨勢",
+  "note": ""
+ },
+ {
+  "id": "L33_la_plateforme_de_diffusi",
+  "lesson": 33,
+  "fr": "la plateforme de diffusion",
+  "zh": "播放平台",
+  "note": "la diffusion＝播送"
+ },
+ {
+  "id": "L33_en_direct",
+  "lesson": 33,
+  "fr": "en direct",
+  "zh": "現場直播",
+  "note": "🎙 live。看 Elta TV 的球賽，有時是直播"
+ },
+ {
+  "id": "L33_la_rediffusion",
+  "lesson": 33,
+  "fr": "la rediffusion",
+  "zh": "重播",
+  "note": "🎙 老師：不是 en direct 的就是 rediffusion（Owen 截圖手寫）"
+ },
+ {
+  "id": "L33_au_début",
+  "lesson": 33,
+  "fr": "au début",
+  "zh": "一開始",
+  "note": ""
+ },
+ {
+  "id": "L33_les_joueurs_de_jeux_vidé",
+  "lesson": 33,
+  "fr": "les joueurs de jeux vidéo",
+  "zh": "電玩玩家",
+  "note": "課文括號寫 gamers——⚠️ 法文照借英文，但 s 不唸"
+ },
+ {
+  "id": "L33_commenter",
+  "lesson": 33,
+  "fr": "commenter",
+  "zh": "評論、講解",
+  "note": "🎙 老師：一邊玩一邊跟看直播的人講話"
+ },
+ {
+  "id": "L33_la_partie",
+  "lesson": 33,
+  "fr": "la partie",
+  "zh": "（遊戲的）一局",
+  "note": "leurs parties＝他們打的每一局"
+ },
+ {
+  "id": "L33_à_travers",
+  "lesson": 33,
+  "fr": "à travers",
+  "zh": "透過",
+  "note": "🎙 through"
+ },
+ {
+  "id": "L33_le_tchat",
+  "lesson": 33,
+  "fr": "le tchat",
+  "zh": "聊天室",
+  "note": "⚠️ 見發音警報：chat 在法文是「貓」"
+ },
+ {
+  "id": "L33_les_médias_classiques",
+  "lesson": 33,
+  "fr": "les médias classiques",
+  "zh": "傳統媒體",
+  "note": "🎙 老師：classique 跟 traditionnel 一樣"
+ },
+ {
+  "id": "L33_toucher_un_public",
+  "lesson": 33,
+  "fr": "toucher un public",
+  "zh": "接觸到（某群）觀眾",
+  "note": "toucher＝觸及"
+ },
+ {
+  "id": "L33_connecté_connectée",
+  "lesson": 33,
+  "fr": "connecté, connectée",
+  "zh": "常上網的",
+  "note": "🎙 plus connecté＝更 online"
+ },
+ {
+  "id": "L33_proposer_une_émission",
+  "lesson": 33,
+  "fr": "proposer une émission",
+  "zh": "推出一個節目",
+  "note": "chacun＝各自"
+ },
+ {
+  "id": "L33_indépendant_indépendante",
+  "lesson": 33,
+  "fr": "indépendant, indépendante",
+  "zh": "獨立的",
+  "note": "un journaliste indépendant"
+ },
+ {
+  "id": "L33_la_revue_de_presse",
+  "lesson": 33,
+  "fr": "la revue de presse",
+  "zh": "新聞整理、新聞摘要",
+  "note": "課本註1：Résumés d'articles et points de vue publiés dans la presse。🎙 老師：大約十分鐘，把正在發生的事全部講一遍"
+ },
+ {
+  "id": "L33_interactif_interactive",
+  "lesson": 33,
+  "fr": "interactif, interactive",
+  "zh": "互動的",
+  "note": "🎙 你可以直接 interagir（互動）"
+ },
+ {
+  "id": "L33_séduire",
+  "lesson": 33,
+  "fr": "séduire",
+  "zh": "吸引、讓人喜歡",
+  "note": "🎙 老師：年輕人喜歡傳訊息、直接影響主播講什麼"
+ },
+ {
+  "id": "L33_actuel_actuelle",
+  "lesson": 33,
+  "fr": "actuel, actuelle",
+  "zh": "現在的、當前的",
+  "note": "⚠️⚠️ 假朋友：le public actuel＝現在的觀眾，不是 actual。actuellement＝目前（currently）"
+ },
+ {
+  "id": "L33_étonnant_étonnante",
+  "lesson": 33,
+  "fr": "étonnant, étonnante",
+  "zh": "令人驚訝的",
+  "note": "étonner＝使驚訝"
+ },
+ {
+  "id": "L33_ou",
+  "lesson": 33,
+  "fr": "ou",
+  "zh": "或",
+  "note": "⚠️ 口訣裡寫成 où（哪裡），真正的連接詞是沒有重音的 ou（或）——🎙 老師特別強調不是同一個"
+ },
+ {
+  "id": "L33_et",
+  "lesson": 33,
+  "fr": "et",
+  "zh": "和",
+  "note": "口訣裡寫成 est（是），代表的是 et"
+ },
+ {
+  "id": "L33_donc",
+  "lesson": 33,
+  "fr": "donc",
+  "zh": "所以",
+  "note": ""
+ },
+ {
+  "id": "L33_or",
+  "lesson": 33,
+  "fr": "or",
+  "zh": "然而、可是",
+  "note": "書面，用來帶出轉折。🎙 老師：很快就會學到。⚠️ 不是英文的 or"
+ },
+ {
+  "id": "L33_ni",
+  "lesson": 33,
+  "fr": "ni",
+  "zh": "既不…也不",
+  "note": "見下方"
+ },
+ {
+  "id": "L33_car",
+  "lesson": 33,
+  "fr": "car",
+  "zh": "因為（書面）",
+  "note": ""
+ },
+ {
+  "id": "L33_la_diffusion_en_direct_e",
+  "lesson": 33,
+  "fr": "la diffusion en direct, en streaming",
+  "zh": "直播、串流播放",
+  "note": "⚠️ 課本用斜線並列。🎙 老師：streaming 不一定是直播。標準法文 streaming＝串流，可以是直播也可以是隨選——兩個重疊但不相等"
+ },
+ {
+  "id": "L33_le_documentaire",
+  "lesson": 33,
+  "fr": "le documentaire",
+  "zh": "紀錄片",
+  "note": ""
+ },
+ {
+  "id": "L33_l_enquête_f_le_reportage",
+  "lesson": 33,
+  "fr": "l'enquête (f.), le reportage",
+  "zh": "調查、報導",
+  "note": "課本畫等號。🎙 老師：兩個都對；細分的話 enquête 是挖資料的過程，reportage 常常是調查做完的成品"
+ },
+ {
+  "id": "L33_le_journalisme_numérique",
+  "lesson": 33,
+  "fr": "le journalisme numérique",
+  "zh": "數位新聞",
+  "note": ""
+ },
+ {
+  "id": "L33_les_médias",
+  "lesson": 33,
+  "fr": "les médias",
+  "zh": "媒體",
+  "note": ""
+ },
+ {
+  "id": "L33_la_plateforme",
+  "lesson": 33,
+  "fr": "la plateforme",
+  "zh": "平台",
+  "note": "🎙 YouTube、Netflix、社群網站都是 plateformes"
+ },
+ {
+  "id": "L33_le_point_de_vue_les_poin",
+  "lesson": 33,
+  "fr": "le point de vue, les points de vue",
+  "zh": "觀點",
+  "note": "🎙 point of view（POV）"
+ },
+ {
+  "id": "L33_publier_un_article",
+  "lesson": 33,
+  "fr": "publier un article",
+  "zh": "發表一篇文章",
+  "note": "🎙 publier une vidéo 也可以"
+ },
+ {
+  "id": "L33_l_abonnement_m",
+  "lesson": 33,
+  "fr": "l'abonnement (m.)",
+  "zh": "訂閱",
+  "note": "un abonnement à"
+ },
+ {
+  "id": "L33_regarder_les_nouvelles_l",
+  "lesson": 33,
+  "fr": "regarder les nouvelles, les informations",
+  "zh": "看新聞",
+  "note": "🎙 老師：口語最常說 regarder les infos"
+ },
+ {
+  "id": "L33_s_abonner_à",
+  "lesson": 33,
+  "fr": "s'abonner à",
+  "zh": "訂閱（某媒體、平台）",
+  "note": "過去式 je me suis abonné(e)"
+ },
+ {
+  "id": "L33_suivre_l_actualité",
+  "lesson": 33,
+  "fr": "suivre l'actualité",
+  "zh": "關注時事",
+  "note": "⚠️ 見下方 je suis"
+ },
+ {
+  "id": "L33_l_article_m",
+  "lesson": 33,
+  "fr": "l'article (m.)",
+  "zh": "文章",
+  "note": ""
+ },
+ {
+  "id": "L33_le_journal",
+  "lesson": 33,
+  "fr": "le journal",
+  "zh": "報紙",
+  "note": "複數 les journaux"
+ },
+ {
+  "id": "L33_le_magazine_la_revue",
+  "lesson": 33,
+  "fr": "le magazine, la revue",
+  "zh": "雜誌",
+  "note": "⚠️ 假朋友：le magasin＝商店（Owen 截圖手寫 magasin）；le magazine＝雜誌"
+ },
+ {
+  "id": "L33_le_numéro",
+  "lesson": 33,
+  "fr": "le numéro",
+  "zh": "（雜誌的）一期、期號",
+  "note": "🎙 老師：這本是第 32 期 → le numéro 32。回鍋第32課 chiffre／nombre／numéro"
+ },
+ {
+  "id": "L33_la_presse_en_ligne",
+  "lesson": 33,
+  "fr": "la presse en ligne",
+  "zh": "網路新聞",
+  "note": "≠ la presse papier"
+ },
+ {
+  "id": "L33_la_presse_papier",
+  "lesson": 33,
+  "fr": "la presse papier",
+  "zh": "紙本報刊",
+  "note": ""
+ },
+ {
+  "id": "L33_le_titre",
+  "lesson": 33,
+  "fr": "le titre",
+  "zh": "標題",
+  "note": "🎙 老師：看體育網站只掃標題，點進去才是 l'article（前一天剛好有 US Open）"
+ },
+ {
+  "id": "L33_le_direct",
+  "lesson": 33,
+  "fr": "le direct",
+  "zh": "直播",
+  "note": "en direct"
+ },
+ {
+  "id": "L33_l_émission_f",
+  "lesson": 33,
+  "fr": "l'émission (f.)",
+  "zh": "節目",
+  "note": "⚠️ 陰性"
+ },
+ {
+  "id": "L33_le_journal_télévisé_le_J",
+  "lesson": 33,
+  "fr": "le journal télévisé, le JT",
+  "zh": "電視新聞",
+  "note": "🎙 老師：法國的 JT de 20 h 在 TF1 和 France 2，兩台同一個時間播；這兩台不是新聞台，晚上八點才播新聞，也有整天播新聞的台"
+ },
+ {
+  "id": "L33_le_téléviseur_la_télévis",
+  "lesson": 33,
+  "fr": "le téléviseur, la télévision, la télé",
+  "zh": "電視機、電視",
+  "note": ""
+ },
+ {
+  "id": "L33_l_actualité_internationa",
+  "lesson": 33,
+  "fr": "l'actualité internationale, nationale, régionale",
+  "zh": "國際／國內／地方新聞",
+  "note": ""
+ },
+ {
+  "id": "L33_la_culture",
+  "lesson": 33,
+  "fr": "la culture",
+  "zh": "文化",
+  "note": ""
+ },
+ {
+  "id": "L33_l_écologie_f",
+  "lesson": 33,
+  "fr": "l'écologie (f.)",
+  "zh": "生態、環保",
+  "note": ""
+ },
+ {
+  "id": "L33_l_économie_f",
+  "lesson": 33,
+  "fr": "l'économie (f.)",
+  "zh": "經濟",
+  "note": ""
+ },
+ {
+  "id": "L33_la_politique",
+  "lesson": 33,
+  "fr": "la politique",
+  "zh": "政治",
+  "note": ""
+ },
+ {
+  "id": "L33_la_société",
+  "lesson": 33,
+  "fr": "la société",
+  "zh": "社會",
+  "note": ""
+ },
+ {
+  "id": "L33_le_contrôle_parental",
+  "lesson": 33,
+  "fr": "le contrôle parental",
+  "zh": "家長監護設定",
+  "note": "🎙 老師：手機上限制孩子能用哪些網站、app、多少時間"
+ },
+ {
+  "id": "L33_le_premier_tour",
+  "lesson": 33,
+  "fr": "le premier tour",
+  "zh": "第一輪（投票）",
+  "note": "🎙 老師：法國總統選舉一定有兩輪"
+ },
+ {
+  "id": "L33_les_élections_présidenti",
+  "lesson": 33,
+  "fr": "les élections présidentielles",
+  "zh": "總統選舉",
+  "note": ""
+ },
+ {
+  "id": "L33_l_essence_f",
+  "lesson": 33,
+  "fr": "l'essence (f.)",
+  "zh": "汽油",
+  "note": "🎙 le prix de l'essence＝油價。老師：法國現在油價漲很多，台灣很便宜"
+ },
+ {
+  "id": "L33_augmenter",
+  "lesson": 33,
+  "fr": "augmenter",
+  "zh": "上漲、增加",
+  "note": ""
+ },
+ {
+  "id": "L33_remporter",
+  "lesson": 33,
+  "fr": "remporter",
+  "zh": "贏得（獎盃、比賽）",
+  "note": "🎙 老師：emporter＝帶走（外帶 à emporter）；remporter＝把獎盃帶回來＝贏"
+ },
+ {
+  "id": "L33_la_finale",
+  "lesson": 33,
+  "fr": "la finale",
+  "zh": "決賽",
+  "note": ""
+ },
+ {
+  "id": "L33_la_ligue",
+  "lesson": 33,
+  "fr": "la ligue",
+  "zh": "聯賽",
+  "note": ""
  }
 ];
