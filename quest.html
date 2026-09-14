@@ -514,9 +514,11 @@ function npcLine(sit, aff){
   return use[Math.floor(rnd()*use.length)];
 }
 
-var TYPES={ foe:{ic:SP.sword,nm:'小怪'}, elite:{ic:SP.skull,nm:'精英'},
-            chest:{ic:SP.chest,nm:'寶箱'}, shop:{ic:SP.potion,nm:'商人'},
-            npc:{ic:NPC_SPRITES[0],nm:'街坊'}, boss:{ic:SP.crown,nm:'守護者'} };
+/* B2 選路後果（2026-09-15）：同一層的節點＝三條路只能選一條（打完一個就進下一層，其他兩個不會再回頭）
+   ⭐ tag 是給玩家「選路前看得出差異」的提示（renderMap 只在 can 狀態顯示），實際數值差異在 win() 裡 */
+var TYPES={ foe:{ic:SP.sword,nm:'小怪',tag:'一般戰鬥'}, elite:{ic:SP.skull,nm:'精英',tag:'較硬・雙倍戰利品'},
+            chest:{ic:SP.chest,nm:'寶箱',tag:'穩拿補給・無戰鬥'}, shop:{ic:SP.potion,nm:'商人',tag:'花錢回血'},
+            npc:{ic:NPC_SPRITES[0],nm:'街坊',tag:'零風險・練交情'}, boss:{ic:SP.crown,nm:'守護者'} };
 function buildMap(){
   return { floors:[ shuffle(['foe','chest','npc']).slice(0,3),
                     shuffle(['foe','shop','npc','elite']).slice(0,3), ['boss'] ],
@@ -1290,6 +1292,7 @@ function renderMap(){
               img(isBoss?BOSS.sprite:TYPES[t].ic)+
               '<div class="nm">'+(isBoss?esc(BOSS.name):TYPES[t].nm)+
               (fled&&!cleared?'<br><span style="color:var(--faint);font-size:.62rem">還站在那裡</span>':'')+
+              (can&&!isBoss&&TYPES[t].tag?'<br><span style="color:var(--gold);font-size:.6rem;opacity:.85">'+TYPES[t].tag+'</span>':'')+
               '</div></div>';
     });
     html+='</div>';
@@ -1797,11 +1800,14 @@ function win(){
   if(foe) foe.classList.add('die');
   sfx('maximize_001');
   if(!B.tower) r.cleared[B.key]=1;   /* 塔的勝利不寫進今日地城的格子 */
-  r.coin+=B.isBoss?20:5;
-  S.xp=(S.xp||0)+(B.isBoss?40:12);
-  var before=lvOf(S.xp-(B.isBoss?40:12)), after=lvOf(S.xp), levelled=after>before;
+  /* B2 選路後果：精英比小怪硬（movePool 的 maxHp 3 vs 2），獎勵也要跟著高——
+     不然「精英路線」單純是風險沒有報酬 */
+  var isElite=B.type==='elite', gainCoin=B.isBoss?20:(isElite?9:5), gainXp=B.isBoss?40:(isElite?20:12);
+  r.coin+=gainCoin;
+  S.xp=(S.xp||0)+gainXp;
+  var before=lvOf(S.xp-gainXp), after=lvOf(S.xp), levelled=after>before;
   var storyCh = B.story ? curChapter() : null;
-  var cards=[]; for(var i=0;i<(B.isBoss?2:1);i++){
+  var cards=[]; for(var i=0;i<(B.isBoss?2:(isElite?2:1));i++){
     /* ⚠️ 主線關主要掉「那一章」的句子，⛔ 不是今日地城關主那一課的（09-12 實測踩到） */
     var c=lootCard(S, B.raid ? B.lesson : (B.story ? ((storyCh&&storyCh.lessons||[])[0]||null) : (B.isBoss?BOSS.lesson:null)));
     if(c){ cards.push(c); r.loot.push(c); (S.cards=S.cards||{})[c.key]={last:Date.now()}; }
@@ -1827,7 +1833,7 @@ function win(){
       '<div class="box"><div class="loot" style="margin:0;border:none;box-shadow:none;background:none">'+
         '<h3>'+(B.isBoss?'LE GARDIEN EST TOMBÉ':'VICTOIRE')+'</h3>'+
         (levelled?'<div class="fb" style="text-align:center;color:var(--gold2)">★ 升到 Lv '+after+'！體力上限提高了</div>':'')+
-        '<div class="fb" style="text-align:center">經驗 +'+(B.isBoss?40:12)+'　金幣 +'+(B.isBoss?20:5)+'</div>'+
+        '<div class="fb" style="text-align:center">經驗 +'+gainXp+'　金幣 +'+gainCoin+'</div>'+
         (B.isBoss&&!B.tower?'<div class="fb" style="text-align:center">「'+esc(B.story?((storyCh?storyCh.title:'')+' 的關主'):BOSS.name)+'」已收進圖鑑</div>':'')+
         '<div style="margin-top:12px">'+cards.map(cardHtml).join('')+'</div>'+
         '<button class="next" onclick="advance()">'+(B.tower?(B.isBoss?'登頂':'往上走'):(B.isBoss?'回營地':'繼續前進'))+'</button>'+
