@@ -4595,10 +4595,13 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - 06:09 那班卡在 `python3 -c "from PIL…"`（畫怪物圖），卡到 14:07 被手動停掉，零產出
 - 加了唯讀指令 allowlist 後手動重跑，14:15 又卡在 `cd "…" && git check-ignore …`——**模型習慣在每個指令前加 `cd` 前綴**，allowlist 永遠補不完
 - ⭐ **根治**：`.claude/hooks/routine_permission.py`（PermissionRequest hook，掛在專案 `.claude/settings.json`）
-  **只在排程 session 生效**（transcript 開頭含 `<scheduled-task`）：上網 WebSearch／WebFetch 放行；**其他沒授權的指令直接拒絕、不跳視窗**，
+  **只在排程 session 生效**（transcript **第一則使用者訊息以** `<scheduled-task` 開頭）：上網 WebSearch／WebFetch 放行；**其他沒授權的指令直接拒絕、不跳視窗**，
   拒絕訊息要它改用已授權方法，非用不可就跳過並寫進 `GAME_ROADMAP.md` 第五節「需要 Owen 開放授權：…」。
   互動 session 完全不受影響（照常跳授權確認）。Owen 09-14：「遇到沒授權的指令就直接拒絕…最好遇到狀況要主動提出需要我開放什麼權限」。
 - 已 pipe-test 四種情況（排程 Bash→拒、排程 WebFetch→放行、互動 session→不干涉、壞輸入→不報錯）。
+- ⚠️⚠️ **09-14 晚修掉一個誤判**：原本判斷是「前 41 行**任何地方**出現 `<scheduled-task`」——互動 session 讀了 HANDOFF（這一段就寫著這個字串）
+  就被當成排程，**AskUserQuestion 被默默拒絕**。改成只看第一則使用者訊息的開頭；重測：6 種情況全過，
+  現有 138 份 transcript 分成排程 102／互動 36，無誤判。⭐ 教訓：**判斷身分的字串不能用「出現在哪裡都算」，文件本身會提到它。**
   ⚠️ **還沒在真的排程裡看到它觸發**——下一個 session 第一件事：看 `clb7-game-dawn` 下一次跑的結果（`list_task_runs`＋清晨日誌＋第五節有沒有授權請求）。
 - 專案 allow 另加了 `node --check`／`git show`／`diff`／`wc`／`head`／`tail`／`sed -n`／`mkdir -p drafts`。
 - 排程 prompt 已改：明講不要加 `cd` 前綴、改檔只用 Edit／Write、被拒絕時怎麼做、最終回報要列出被拒絕的指令。
@@ -4606,8 +4609,19 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 **試煉之塔（B1）改雙版本**（Owen 09-14 拍板）：
 - 發現：模擬考素材 `assets/tcf/` 被 `.gitignore` 排除（考試原題只留本機），`mock.html` 在正式站和手機上本來就是空的
 - ⭐ **手機版＝所有筆記內容**（`questions.js`＋`sentences.js`）；**電腦版＝考試原題**（`assets/tcf/exam/`）；偵測 `window.TCF_INDEX` 載入成功與否決定版本，⛔ 失敗不報錯直接退回手機版
-- ⏸ **09-14 Owen 追問「試煉之塔要密碼？考試題目需要金鑰才能使用，不然就是一般題目」**——Claude 的建議見下一段對話；
-  藍圖 B1 已改成「⏸ Owen 確認金鑰方案」，**排程會先跳過 B1**。新 session 先問 Owen 要不要採用加密金鑰方案再動手
+- ⏸ **09-14 Owen 追問「試煉之塔要密碼？考試題目需要金鑰才能使用，不然就是一般題目」**→ 09-14 晚 Owen 回「金鑰方案可以」。
+  ⚠️ **但上一個 session 的建議「先只加密文字題」前提是錯的**（沒核對資料就講了）：
+  - **閱讀 1716 題每題的法文原文都是圖片**，資料欄位只有 `stem/opts/src_zh/q_zh/key_zh…`，**沒有法文原文字** → 只加密文字＝沒文章可讀
+  - 圖片 PNG 396MB → WebP q60 約 **90MB**（一張約 50KB，最密的一張實看可讀）；聽力音檔 **1.4GB** 不可能上 GitHub
+  - ⭐ **Owen 定：手機先不放聽力**（聽力考試題只在電腦用本機音檔）
+  - 閱讀圖片要不要上傳，Owen：「不太確定，研究一下可能的後果跟最好的方式」→ 研究報告在 **`reports/2026-09-14_考試題上網方案研究.md`**（只留本機，gitignored）。重點：
+    ① 容量不是問題 ② ⚠️ **放主 repo 刪不乾淨**：清歷史要 force push main（違反鐵律），GitHub 客服不清非機敏資料，公開 repo **預設進 Archive Program**
+    ③ ⚠️ **TCF 考生手冊（FEI 2024-04 Version I，p.38）寫明濫用或複製題本／音檔有刑事民事處分**；DMCA 若成立最壞可能終止帳號＝主站一起沒
+    ④ 公開放密文可被離線暴力破解 → 金鑰要隨機 ≥6 個 EFF 詞，PBKDF2-SHA256 600k 次
+    ⑤ **Supabase Storage private bucket＋Auth**：免費（1GB／單檔 50MB／egress 5GB/月）、沒登入讀不到、dashboard 一鍵刪；⚠️ policy 必須限定他本人 user id（clb7_sync 是 RLS 全開，不能照抄）
+    ⑥ 次選：**獨立公開 repo（名稱中性）＋推送前退出 Archive Program＋加密**，刪 repo 即乾淨（沒 fork 的前提）
+  - **Claude 建議 ⑤**。⏸ **等 Owen 選存放處再做考試版**；手機版（筆記內容）不受影響可先做
+  - ⚠️ 若選 ⑤：Auth 使用者密碼、service_role key 由 **Owen 自己**在 Supabase dashboard／本機 `.env` 設（Claude 不經手密碼；`.env` 永不 commit），上傳腳本讀 `.env`
 
 **其他 09-14 已完成並推上站**：動詞衝刺不再砍斷打字＋記打完秒數（`verb_sprint.html`）、練習頁回得去遊戲訓練場（`return_to.js`）、清晨排程配額加大（最多 6 項、實作 2 項）。
 ⏸ 仍待 Owen：iPhone 上用 Safari 還是 Chrome 開遊戲（決定吶喊招式值不值得做）。

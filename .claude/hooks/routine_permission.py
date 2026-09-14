@@ -7,7 +7,9 @@
 Owen 09-14：「routine session 可以開放他上網查資料，遇到沒授權的指令就直接拒絕、
   不跳視窗等人按，被拒絕後它會自己改用別的方法；最好遇到狀況要主動提出需要我開放什麼權限。」
 
-判斷方式：transcript 開頭的使用者訊息含 <scheduled-task → 是排程 session。
+判斷方式：transcript 第一則使用者訊息「以」<scheduled-task 開頭 → 是排程 session。
+  ⚠️ 09-14 修：原本是「前 41 行任何地方出現 <scheduled-task」，互動 session 讀了 HANDOFF
+  （裡面寫著這個字串）就被誤判成排程，AskUserQuestion 被默默拒絕。只看第一則使用者訊息才準。
   · WebSearch／WebFetch → 放行
   · 其他任何會跳授權確認的工具 → 直接拒絕，訊息要求它改用別的方法，
     並把「需要什麼授權」寫進 GAME_ROADMAP.md 第五節
@@ -17,9 +19,15 @@ import json, sys
 def is_routine(path):
     try:
         with open(path, encoding='utf-8') as f:
-            for i, line in enumerate(f):
-                if i > 40: break
-                if '<scheduled-task' in line: return True
+            for line in f:
+                try: m = json.loads(line)
+                except Exception: continue
+                if m.get('type') != 'user': continue
+                c = m.get('message', {}).get('content')
+                if isinstance(c, list):
+                    c = next((b.get('text', '') for b in c if b.get('type') == 'text'), None)
+                if c is None: continue
+                return c.lstrip().startswith('<scheduled-task')
     except Exception:
         pass
     return False
