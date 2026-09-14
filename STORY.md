@@ -451,3 +451,63 @@ ch1 落地
 2. **程式層**：節點 topic 題量 < 4 時，改退回「**同課次**」而不是「最近四課」——劇情不脫節，但仍會出現同課別 topic 的題。
 3. **資料層**：把 ch2-3、ch12-4 的 type 從 `trial` 改成 `talk`／`fight`（它們本來就是讀懂型的 topic，不是產出型）。
 ⭐ 建議先做 2（馬上止血、不違反教材鐵律），再視玩起來的重複感決定要不要 1。
+
+## NPC 台詞池盤點（2026-09-15，`GAME_ROADMAP.md` D3）
+
+> 街坊系統（`quest.html`）用 `sit.lessons` 從 `sentences.js` 抓句子當台詞池，
+> 用 `npcLine()` 的 `/\btu\b|\bte\b|\bton\b|\bta\b/i` 對 `/\bvous\b|\bvotre\b/i` 兩組 regex
+> 依熟悉度（`aff`）偏好挑 tu／vous 句——熟了（`aff≥8`）優先挑 tu 句、陌生時優先挑 vous 句。
+> ⚠️ 這裡手動逐句核對 17 個情境的 `lessons` 對到的句子（找不到自動化指令能跑，排程手動盤點）。
+
+### 總表（依總句數排序，越少越吃緊）
+
+| NPC（身分） | 情境 id | 課次 | 總句數 | tu 句 | vous 句 | 備註 |
+|---|---|---|---|---|---|---|
+| Étienne（餐廳老闆） | restaurant | 13 | 8 | 0 | 2 | ⚠️ 無 tu 句——熟了以後也只能繼續用 vous 句 |
+| Hugo（大學同學） | etudes | 15 | 10 | 2 | 0 | ⚠️ 無 vous 句——剛認識時的「客氣」感缺席 |
+| Marie-Ève（移民官） | canada | 18 | 10 | 0 | 0 | ⛔⛔ **完全沒有 tu／vous 句**，熟悉度永遠不會改變她講話的樣子 |
+| Mme Fabre（面試官） | travail | 16, 18 | 20 | 0 | 0 | ⛔⛔ 同上，**完全沒有 tu／vous 句** |
+| Camille（鄰居） | se-presenter | 1, 2 | 13 | 4 | 1 | 堪用，tu 句夠多 |
+| Mme Bonnet（樓下太太） | famille | 2, 3 | 13 | 4 | 0 | ⚠️ 無 vous 句 |
+| Papy Jean（公園老先生） | meteo | 7, 8, 22 | 25 | 1 | 0 | ⚠️ 句數看似夠，但只有 1 句 tu、0 句 vous——熟悉度幾乎不影響台詞 |
+| Chloé（旅行社櫃台） | vacances | 13, 14 | 18 | 0 | 2 | ⚠️ 無 tu 句 |
+| Léa（語言交換夥伴） | rendez-vous | 1, 6, 9, 19 | 26 | 1 | 1 | 剛好各一句，堪用但薄 |
+| Lucas（咖啡館常客） | decrire-qqn | 10, 25, 26 | 22 | 3 | 0 | ⚠️ 無 vous 句 |
+| Julien（嘴利的同事） | opinion | 25, 26 | 20 | 2 | 0 | ⚠️ 無 vous 句 |
+| Karim（公車司機） | se-deplacer | 4, 6, 7, 11 | 22 | 3 | 2 | 堪用 |
+| Théo（球場朋友） | loisirs | 9, 10, 13, 19 | 24 | 2 | 2 | 堪用 |
+| M. Rivet（房東） | logement | 11, 23, 24, 25 | 36 | 4 | 2 | 堪用 |
+| Sophie（市場攤販） | courses | 4, 5, 6, 7, 8 | 31 | 2 | 2 | 堪用 |
+| Baptiste（急診醫生） | sante | 12, 13, 31, 32 | 40 | 5 | 9 | ⭐ 最厚的一位，兩邊都夠 |
+| Mamie Odette（愛講往事的阿嬤） | passe | 11, 15, 17, 20, 21 | 46 | 5 | 1 | 句數最多，但 vous 句偏薄 |
+
+### 發現一：兩位完全沒有register句（canada、travail）
+
+**Marie-Ève（移民官）跟 Mme Fabre（面試官）**——恰好是兩位在主線敘事上最重要的正式場合角色——
+`sentences.js` 對應課次（第 18 課、第 16/18 課）裡**一句 tu 也沒有、一句 vous 也沒有**。
+`npcLine()` 的 fallback 設計是「偏好的子集是空的就退回整個池子」，所以不會壞（`pref.length` 為 0 時 `use=pool`），
+⛔ 但實際效果是：**這兩位永遠不會因為熟悉度而換口氣**，`AFF_LV` 的「他改口用 tu 稱呼你了」那句提示文字
+在他們身上永遠不會兌現。
+
+### 發現二：規則式命令句（Vous 型祈使句）被 regex 漏掉
+
+第 6 課（`se-deplacer`）整課都是 `Prenez le métro !`／`Montez dans le bus !` 這種**祈使句對 vous 說話**
+（法文命令式對 vous 說話時動詞本身就變位，不需要再寫出「vous」這個字），
+但 `npcLine()` 的 vous regex 只認字面上出現 `vous`／`votre`，**完全抓不到這種句子**——
+它們在系統眼中等於「沒有register標記」的句子，跟 tu／vous 判斷無關。
+⚠️ 這不是 bug（不會讓遊戲壞掉），但代表**現有 tu／vous 統計比實際的「正式程度」還要低估**——
+真實可用的 vous 語感比這份盤點的數字更多，只是 regex 抓不到，這份盤點的 vous 欄是**下界不是精確值**。
+
+### 發現三：省略音（t'）同理被漏掉
+
+`Ça va aller, t'inquiète.`（第 25 課）、`Je peux t'envoyer ce livre`（第 24 課）這類 `t'` 開頭的口語省略，
+語感上是 tu 句，但 regex 只認完整字 `te`，同樣漏掉。跟發現二一樣：**tu 欄也是下界，不是精確值**。
+
+### 建議（⛔ 待 Owen 決定，不自己動手）
+1. **優先**：canada（Marie-Ève）與 travail（Mme Fabre）——這兩位在主線分別是第 12 章（移民官）與第 10 章
+   （面試官）的關鍵 NPC，建議從對應課次的筆記／課本裡補幾句明確帶 vous 的句子進 `sentences.js`
+   （⛔ 教材鐵律：不可自創，要出自已學內容）。
+2. **次要**：restaurant／etudes／famille／vacances／meteo／decrire-qqn／opinion 各缺一邊，
+   影響較小（至少有一邊能正常運作），可以之後補課時順手掛上。
+3. **不建議動**：regex 本身抓不到祈使句／省略音是**已知限制不是錯誤**——真的要修會牽動
+   `npcLine()` 的比對邏輯，⚠️ 風險是誤判其他句子的 register，建議維持現狀，這份盤點記錄下來就好。
