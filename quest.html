@@ -274,6 +274,14 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
        padding:10px 18px; border-radius:11px; font-size:.8rem; transition:.28s; pointer-events:none; z-index:50}
 .toast.on{opacity:1; transform:translateX(-50%) translateY(0)}
 .credit{margin-top:30px; text-align:center; color:#39425a; font-size:.62rem; letter-spacing:.06em; line-height:1.8}
+.eximg{margin:2px 0 12px; border-radius:11px; overflow:hidden; background:#f4f1ea; min-height:90px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center}
+.eximg img{width:100%; display:block; cursor:zoom-in}
+.eximg .fb{color:#6b6457; padding:0 12px}
+.exhint{font-size:.62rem; color:#6b6457; padding:3px 0 5px}
+.exzoom{position:fixed; inset:0; z-index:70; background:rgba(5,7,12,.94); overflow:auto; -webkit-overflow-scrolling:touch; cursor:zoom-out}
+.exzoom img{display:block; width:max(100vw,820px); max-width:none}
+.exin{margin-top:9px; font-family:inherit; font-size:1rem}
 </style>
 </head>
 <body>
@@ -368,6 +376,7 @@ var MOVES={
   blast:{id:'blast',name:'大招',    dmg:2,   type:'fill',   sec:'30 秒', why:'把空格打出來'},
   chant:{id:'chant',name:'詠唱',    dmg:3,   type:'trans',  sec:'60 秒', why:'中翻法，整句自己打'},
   ear:  {id:'ear',  name:'看破',    dmg:1.5, type:'listen', sec:'20 秒', why:'只聽，不看字'},
+  read: {id:'read', name:'解讀',    dmg:1,   type:'exam',   sec:'不限時', why:'讀懂文件，選出答案'},   /* 只在考試之塔 */
 };
 /* ⭐ 聽辨題是**現場合成**的：從 sentences.js 抽一句唸出來，選項是別句的中文。
    → 句庫增加，聽辨題自動增加（⛔ 不需要另建題庫）。
@@ -760,11 +769,13 @@ function renderTower(){
         '<br><span style="color:var(--dim);font-size:.76rem">'+esc(mv)+'</span></div></div></div>';
   }
   if(dead) html+='<button class="next" onclick="retreat(\'tower\')">回營地整裝</button>';
+  html+='<div class="sec"><h2>考試之塔 · TCF 閱讀</h2><div id="examBox">'+examHtml()+'</div></div>';
   html+='<div class="credit">美術與音效：Kenney（CC0）　·　字體：Cinzel · Cormorant Garamond（SIL OFL）</div>';
   v.innerHTML=html;
   Array.prototype.forEach.call(v.querySelectorAll('.snode.can[data-f]'),function(el){
     el.addEventListener('click',function(){ sfx('click_001'); towerEnter(+el.dataset.f); });
   });
+  examBind(v);
 }
 function towerEnter(i){
   var t=towerState(), f=TOWER[i];
@@ -780,6 +791,7 @@ function towerEnter(i){
   renderBattle(esc(f.text));
 }
 function towerAdvance(skipped){
+  if(S.towerCur && S.towerCur.exam) return examAdvance(skipped);   /* 考試之塔另外記進度 */
   var t=towerState(), c=S.towerCur; S.towerCur=null;
   var i=c?c.floor:t.floor;
   t.marks[i]=skipped?'skip':'win';
@@ -796,7 +808,7 @@ function towerLeave(){
 /* 這題跳過：不算對也不算錯（⛔ 不扣血、不斷連擊），換同一招式的下一題 */
 function towerQSkip(){
   var q=B&&B.curQ, m=B&&B.curM; if(!q||!m) return;
-  towerMarkKnown(q.fr||q.q);
+  towerMarkKnown(q.key||q.fr||q.q);
   sfx('click_001'); toast('這題先放著');
   useMove(m.id);
 }
@@ -814,6 +826,206 @@ function towerClear(){
     '<div class="fb" style="text-align:center;font-size:1.05rem;color:var(--gold2)">登頂了</div>'+
     '<div class="fb" style="text-align:center;margin-top:10px">經驗 +80　金幣 +40</div>'+
     '<div class="fb" style="text-align:center;color:var(--gold)">★ 塔的樓層重新開放了——想再爬，隨時可以</div>'+
+    '<button class="next" onclick="setMode(\'tower\')">回到塔下</button></div>';
+}
+
+/* ════════════════════════════════════════════════════════════════
+   考試之塔（B1 考試版，2026-09-14）
+   ⭐ Owen 09-14 選：TCF 閱讀原題放 Supabase 私人空間（bucket TCF），登入才讀得到，⛔ 題目不進 repo。
+     上傳工具：tools/upload_exam_supabase.py（讀本機 .env 的 secret key）。
+   ⭐ 一套 39 題照題號切六層（4／6／9／10／6／4，越後面越難），爬完六層＝做完一整套。
+   ⛔ 考試題錯了只是沒打中、不扣血——A2 去打後段的題目會一路倒下，那是壓力不是遊戲。
+   ⛔ 登入資訊存在 tcfvault_session（⚠️ 刻意不用 clb7_ 開頭：sync_supabase.js 會把 clb7_* 整包傳上同步表）。
+   作答紀錄 clb7_exam_answers（題號→對錯）；跳過的題⛔不記對錯，只進 clb7_tower_known。
+   中文解析只在答錯時出現（memory feedback_french_only_ui）。
+   ════════════════════════════════════════════════════════════════ */
+var VAULT={ url:'https://hgkqyrglftljxaieberm.supabase.co', key:'sb_publishable_lPnh46F2Z2wj6qVs5nn56g_RwRpUO8_',
+            bucket:'TCF', ls:'tcfvault_session' };
+var EXAM_SEG=[4,6,9,10,6,4];
+var EXAM_INDEX=null, EXAM_ERR=null, EXAM_LOADING=false, EXAM_LOGIN=false, EXAM_DATA={}, EXAM_IMG={};
+function vaultSession(){ try{ return JSON.parse(localStorage.getItem(VAULT.ls)); }catch(e){ return null; } }
+function vaultStore(s){ try{ if(s) localStorage.setItem(VAULT.ls, JSON.stringify(s)); else localStorage.removeItem(VAULT.ls); }catch(e){} }
+function vaultAuth(grant, body){
+  return fetch(VAULT.url+'/auth/v1/token?grant_type='+grant, { method:'POST',
+      headers:{ apikey:VAULT.key, 'Content-Type':'application/json' }, body:JSON.stringify(body) })
+    .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){
+      if(!r.ok){ var e=new Error(j.error_description||j.msg||j.message||('HTTP '+r.status)); e.status=r.status; throw e; }
+      var s={ access_token:j.access_token, refresh_token:j.refresh_token,
+              expires_at:Date.now()+(j.expires_in||3600)*1000, email:(j.user&&j.user.email)||'' };
+      vaultStore(s); return s;
+    }); });
+}
+function vaultToken(){
+  var s=vaultSession();
+  if(!s){ var e0=new Error('尚未登入'); e0.status=401; return Promise.reject(e0); }
+  if(Date.now() < (s.expires_at||0)-60000) return Promise.resolve(s.access_token);
+  return vaultAuth('refresh_token',{ refresh_token:s.refresh_token }).then(function(n){ return n.access_token; })
+    .catch(function(e){ if(e.status===400||e.status===401) vaultStore(null); throw e; });   /* ⛔ 沒網路不算登出 */
+}
+function vaultGet(path, asBlob){
+  return vaultToken().then(function(tok){
+    return fetch(VAULT.url+'/storage/v1/object/authenticated/'+VAULT.bucket+'/'+path,
+                 { headers:{ apikey:VAULT.key, Authorization:'Bearer '+tok } });
+  }).then(function(r){
+    if(!r.ok){ var e=new Error('HTTP '+r.status); e.status=r.status; throw e; }
+    return asBlob ? r.blob() : r.json();
+  });
+}
+function examState(){
+  S.exam=S.exam||{ test:null, floor:0, marks:{}, climbs:{}, last:0 };
+  S.exam.marks=S.exam.marks||{}; S.exam.climbs=S.exam.climbs||{};
+  return S.exam;
+}
+function examRange(i){ var s=0; for(var k=0;k<i;k++) s+=EXAM_SEG[k]; return { from:s+1, to:s+EXAM_SEG[i] }; }
+function examRecord(key, ok){
+  var a; try{ a=JSON.parse(localStorage.getItem('clb7_exam_answers'))||{}; }catch(e){ a={}; }
+  a[key]={ ok:!!ok, last:Date.now() };
+  try{ localStorage.setItem('clb7_exam_answers', JSON.stringify(a)); }catch(e){}
+}
+function examLabel(id){ var t=(EXAM_INDEX||[]).filter(function(x){ return x.id===id; })[0]; return t ? t.label : id; }
+function examLoad(){
+  if(EXAM_LOADING) return; EXAM_LOADING=true; EXAM_ERR=null;
+  vaultGet('reading/index.json').then(function(ix){ EXAM_INDEX=ix; })
+    .catch(function(e){ EXAM_ERR=e; })
+    .then(function(){ EXAM_LOADING=false; if(S.mode==='tower' && !S.towerCur && document.getElementById('examBox')) renderTower(); });
+}
+function examHtml(){
+  var sess=vaultSession(), t=examState(), dead=S.run.hp<=0;
+  if(!sess){
+    if(EXAM_LOGIN) return '<div class="loot" style="margin-top:0"><h3>DÉVERROUILLER</h3>'+
+      '<div class="fb" style="margin-top:0">用你在 Supabase 建的帳號登入。登入一次，這台裝置就會記住。</div>'+
+      '<input class="ans exin" id="vEmail" type="email" autocomplete="username" autocapitalize="none" placeholder="信箱">'+
+      '<input class="ans exin" id="vPass" type="password" autocomplete="current-password" placeholder="密碼">'+
+      '<div class="fb" id="vMsg"></div>'+
+      '<button class="next" onclick="examLogin()">解鎖</button>'+
+      '<div class="cmds"><button class="cmd" onclick="EXAM_LOGIN=false; renderTower()">'+img(SP.shield)+'<span>先不要<small>筆記版的塔照常玩</small></span></button></div></div>';
+    return '<div class="fb" style="margin-top:0">TCF Canada 閱讀原題，放在你的私人空間，<b>登入才讀得到</b>。一套 39 題切成六層，越上面越難。</div>'+
+      '<div class="cmds"><button class="cmd" onclick="EXAM_LOGIN=true; renderTower()">'+img(SP.chest)+'<span>解鎖考試題<small>需要登入一次</small></span></button></div>';
+  }
+  if(EXAM_ERR){
+    var st=EXAM_ERR.status;
+    return '<div class="fb" style="margin-top:0">讀不到題目'+(st?'（HTTP '+st+'）':'（可能是沒有網路）')+'。</div>'+
+      '<div class="cmds"><button class="cmd" onclick="EXAM_ERR=null; renderTower()">'+img(SP.wand)+'<span>再試一次<small>重新向私人空間拿</small></span></button>'+
+      '<button class="cmd" onclick="examLogout()">'+img(SP.shield)+'<span>登出<small>換帳號或重新登入</small></span></button></div>';
+  }
+  if(!EXAM_INDEX){ examLoad(); return '<div class="fb" style="margin-top:0">正在打開卷宗…</div>'; }
+  var html='';
+  if(!t.test){
+    html+='<div class="fb" style="margin-top:0">挑一套。<b>爬完六層＝做完一整套</b>，中途離開下次從同一層繼續。</div>';
+    EXAM_INDEX.forEach(function(x){
+      var c=t.climbs[x.id];
+      html+='<div class="snode can" data-t="'+esc(x.id)+'"><div class="sicon">'+img(c?SP.crown:SP.card)+'</div>'+
+        '<div class="sbody"><div class="stype">'+esc(x.label)+(c?'　· 爬完過 '+c.n+' 次':'')+'</div></div></div>';
+    });
+  } else {
+    html+='<div class="fb" style="margin-top:0">正在爬：<b>'+esc(examLabel(t.test))+'</b>。考試題錯了只是沒打中，不會扣血。</div>';
+    for(var i=EXAM_SEG.length-1;i>=0;i--){
+      var r=examRange(i), mk=t.marks[i], done=i<t.floor, can=(i===t.floor)&&!dead, top=i===EXAM_SEG.length-1;
+      html+='<div class="snode '+(done?'done ':'')+(can?'can ':'')+'" data-e="'+i+'">'+
+        '<div class="sicon">'+img(top?SP.crown:(done?SP.chest:SP.skull))+'</div>'+
+        '<div class="sbody"><div class="stype">'+(top?'SOMMET':'ÉTAGE '+(i+1))+(done?(mk==='skip'?'　· 跳過了':'　· 走過了'):'')+'</div>'+
+        '<div class="stext">第 '+r.from+'–'+r.to+' 題</div></div></div>';
+    }
+    html+='<div class="cmds"><button class="cmd" onclick="examQuit()">'+img(SP.card)+'<span>換一套<small>這一套從第一層重來</small></span></button>'+
+      '<button class="cmd" onclick="examLogout()">'+img(SP.shield)+'<span>登出<small>'+esc(sess.email||'')+'</small></span></button></div>';
+  }
+  return html;
+}
+function examBind(v){
+  Array.prototype.forEach.call(v.querySelectorAll('.snode.can[data-t]'),function(el){
+    el.addEventListener('click',function(){
+      sfx('click_001'); var t=examState(); t.test=el.dataset.t; t.floor=0; t.marks={}; t.last=Date.now(); save(S); renderTower();
+    });
+  });
+  Array.prototype.forEach.call(v.querySelectorAll('.snode.can[data-e]'),function(el){
+    el.addEventListener('click',function(){ sfx('click_001'); examEnter(+el.dataset.e); });
+  });
+  var pass=document.getElementById('vPass');
+  if(pass) pass.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); examLogin(); } });
+}
+function examLogin(){
+  var em=(document.getElementById('vEmail')||{}).value||'', pw=(document.getElementById('vPass')||{}).value||'';
+  var msg=document.getElementById('vMsg');
+  if(!em||!pw){ if(msg) msg.textContent='信箱和密碼都要填'; return; }
+  if(msg) msg.textContent='登入中…';
+  vaultAuth('password',{ email:em.trim(), password:pw }).then(function(){
+    EXAM_LOGIN=false; EXAM_ERR=null; EXAM_INDEX=null; sfx('maximize_001'); toast('解鎖了'); renderTower();
+  }).catch(function(e){
+    if(msg) msg.textContent = e.status===400 ? '信箱或密碼不對' : ('登入失敗：'+e.message);
+  });
+}
+function examLogout(){ vaultStore(null); EXAM_INDEX=null; EXAM_ERR=null; EXAM_DATA={}; sfx('click_001'); renderTower(); toast('已登出，考試進度還留著'); }
+function examQuit(){ var t=examState(); t.test=null; t.floor=0; t.marks={}; t.last=Date.now(); save(S); sfx('click_001'); renderTower(); }
+function examEnter(i){
+  var t=examState(); if(!t.test) return;
+  var id=t.test;
+  S.towerCur={ floor:i, exam:true };
+  document.getElementById('view').innerHTML='<div class="loot"><h3>OUVERTURE</h3><div class="fb" style="text-align:center">正在打開卷宗…</div></div>';
+  (EXAM_DATA[id] ? Promise.resolve(EXAM_DATA[id]) : vaultGet('reading/data/'+id+'.json')).then(function(d){
+    EXAM_DATA[id]=d;
+    if(!S.towerCur||!S.towerCur.exam) return;             /* 等待時已經離開 */
+    var r=examRange(i), top=i===EXAM_SEG.length-1;
+    var qs=d.questions.filter(function(x){ return x.q>=r.from && x.q<=r.to; }).map(function(x){
+      return { key:id+'#'+x.q, num:x.q, img:x.img, q:x.stem, opts:x.opts, a:x.opts['ABCD'.indexOf(x.answer)],
+               aNote:(x.key_zh?esc(x.key_zh).replace(/\n/g,''):''), zhOnlyWrong:true };
+    });
+    B={ key:'tower', tower:true, exam:true, floor:i, isBoss:top, lessons:[], topic:null,
+        qs:qs, i:0, combo:0, maxHp:qs.length, hp:qs.length,
+        sprite:top?pick(BOSSES):pick(MONSTERS), name:'第 '+r.from+'–'+r.to+' 題的守衛',
+        title:(d.label||id)+' · '+(top?'Sommet':'Étage '+(i+1)),
+        line:towerLine(), towerMove:'read' };
+    save(S); sfx(top?'bong_001':'switch_002');
+    renderBattle('卷宗攤開了。讀懂它，選出答案。');
+  }).catch(function(e){ S.towerCur=null; EXAM_ERR=e; save(S); renderTower(); });
+}
+function examImg(path){
+  if(EXAM_IMG[path]) return Promise.resolve(EXAM_IMG[path]);
+  return vaultGet('reading/'+path, true).then(function(b){ return (EXAM_IMG[path]=URL.createObjectURL(b)); });
+}
+function askExam(q,m){
+  B.curQ=q; B.curM=m;
+  document.getElementById('panel').innerHTML=
+    '<div class="eximg" id="eximg"><div class="fb" style="margin:0">圖片載入中…</div></div>'+
+    '<div class="q"><span class="hint" style="margin:0 0 4px">Question '+q.num+'</span>'+esc(q.q)+'</div>'+
+    '<div class="opts" id="opts">'+q.opts.map(function(o,k){
+      return '<button class="opt" data-o="'+esc(o)+'">'+'ABCD'.charAt(k)+'.　'+esc(o)+'</button>'; }).join('')+'</div>'+
+    '<div class="cmds" style="margin-top:11px">'+qSkipBtn()+
+      '<button class="cmd" onclick="towerSkip()">'+img(SP.skull)+'<span>這層跳過<small>不擋你，照樣往上</small></span></button>'+
+      '<button class="cmd" onclick="towerLeave()">'+img(SP.shield)+'<span>離開塔<small>下次從這一層繼續</small></span></button></div>';
+  Array.prototype.forEach.call(document.querySelectorAll('#opts .opt'),function(btn){
+    btn.addEventListener('click',function(){ resolveChoice(btn,q,m); });
+  });
+  examImg(q.img).then(function(u){
+    var box=document.getElementById('eximg'); if(!box||B.curQ!==q) return;
+    box.innerHTML='<img src="'+u+'" alt="" onclick="examZoom(this.src)"><div class="exhint">點圖放大</div>';
+  }).catch(function(e){
+    var box=document.getElementById('eximg');
+    if(box&&B.curQ===q) box.innerHTML='<div class="fb" style="margin:0">圖片讀不到（'+esc(e.message)+'）——這題可以先跳過</div>';
+  });
+}
+function examZoom(u){
+  var z=document.createElement('div'); z.className='exzoom'; z.innerHTML='<img src="'+u+'" alt="">';
+  z.addEventListener('click',function(){ z.remove(); }); document.body.appendChild(z);
+}
+function examAdvance(skipped){
+  var t=examState(), c=S.towerCur; S.towerCur=null;
+  var i=c?c.floor:t.floor;
+  t.marks[i]=skipped?'skip':'win';
+  if(t.floor<=i) t.floor=i+1;
+  t.last=Date.now();
+  if(t.floor>=EXAM_SEG.length) return examClear();
+  save(S); renderTower(); window.scrollTo({top:0,behavior:'smooth'});
+}
+function examClear(){
+  var t=examState(), id=t.test, c=t.climbs[id]||{n:0};
+  c.n++; c.last=Date.now(); t.climbs[id]=c;
+  t.test=null; t.floor=0; t.marks={}; t.last=Date.now();
+  S.run.coin+=40; S.xp=(S.xp||0)+80;
+  save(S); renderHud(); sfx('maximize_001');
+  document.getElementById('view').innerHTML=
+    '<div class="loot"><h3>LE SOMMET</h3>'+
+    '<div class="fb" style="text-align:center;font-size:1.05rem;color:var(--gold2)">'+esc(examLabel(id))+' 爬完了</div>'+
+    '<div class="fb" style="text-align:center;margin-top:10px">經驗 +80　金幣 +40</div>'+
     '<button class="next" onclick="setMode(\'tower\')">回到塔下</button></div>';
 }
 
@@ -1162,7 +1374,7 @@ function showCmds(){
   }
   var btns=((B.tower&&B.towerMove)?[B.towerMove]:['hit','heavy','blast','chant','ear']).map(function(k){   /* 塔的每一層只收一種招式 */
     var m=MOVES[k];
-    var n=(m.type==='listen') ? ((typeof SENTENCES!=='undefined'&&SENTENCES.length>=4)?1:0) : movePool(ls,m.type).length;
+    var n=(m.type==='exam') ? 1 : (m.type==='listen') ? ((typeof SENTENCES!=='undefined'&&SENTENCES.length>=4)?1:0) : movePool(ls,m.type).length;
     if(!n) return '';
     return '<button class="cmd" onclick="useMove(\''+k+'\')">'+img(k==='chant'?SP.wand:(k==='blast'?SP.potion:(k==='ear'?SP.card:SP.sword)))+
       '<span>'+m.name+' <span style="color:var(--gold);font-size:.72rem">×'+m.dmg+'</span>'+
@@ -1184,6 +1396,10 @@ function showCmds(){
 function useMove(k){
   sfx('click_001');
   var m=MOVES[k], ls=(B&&B.tower)?allLessons():recentLessons(4);
+  if(m.type==='exam'){                                      /* 考試之塔：照題號一題一題來 */
+    B.move=m; if(B.i>=B.qs.length) return win();
+    var eq=B.qs[B.i]; B.i++; return askExam(eq,m);
+  }
   if(m.type==='listen'){
     var lq=listenQuestion(B&&B.lessons?B.lessons:ls);
     if(!lq){ toast('句庫還不夠出聽辨題'); return; }
@@ -1356,13 +1572,14 @@ function floatDmg(txt, mine){
 
 /* 招式結算：loose＝答對（重音不計較）；exact＝完全一樣；retried＝第二次才對（安慰獎） */
 function resolveMove(loose, exact, q, m, retried){
+  if(B && B.exam && q.key) examRecord(q.key, loose);
   var hero=document.getElementById('hero'), foe=document.getElementById('foe');
   if(loose){
     B.combo++;
     /* ⭐ 安慰獎：第二次才答對 → 半傷害，但⛔ 不扣血、連擊不歸零、經驗照給
        ⭐ 連擊補償：3 連以上傷害 +1；5 連回一顆心（Owen 09-12 指定） */
     var base = retried ? m.dmg*0.5 : m.dmg;
-    var dmg=Math.round((base + (B.combo>=3?1:0) + trainBonus().dmg)*10)/10;   /* 力量加傷害 */
+    var dmg=B.exam ? 1 : Math.round((base + (B.combo>=3?1:0) + trainBonus().dmg)*10)/10;   /* 考試題一題一格，⛔ 不能提早打倒害後面的題沒做 */   /* 力量加傷害 */
     if(B.combo===5){
       var lvNow=lvOf(S.xp);
       if(S.run.hp<maxHpOf(lvNow)){ S.run.hp++; toast('5 連擊——喘了一口氣，回復一顆心'); sfx('glass_002'); }
@@ -1382,10 +1599,11 @@ function resolveMove(loose, exact, q, m, retried){
   } else {
     B.combo=0;
     setTimeout(function(){
-      hero.classList.add('ouch'); sfx('error_004'); floatDmg('-1',true);
+      hero.classList.add('ouch'); sfx('error_004'); if(!B.exam) floatDmg('-1',true);
       setTimeout(function(){hero.classList.remove('ouch');},360);
     },160);
-    S.run.hp=Math.max(0,S.run.hp-1); S.xp=(S.xp||0)+2;
+    if(!B.exam) S.run.hp=Math.max(0,S.run.hp-1);   /* 考試題：錯了只是沒打中，⛔ 不扣血 */
+    S.xp=(S.xp||0)+2;
   }
   save(S); renderHud();
   var panel=document.getElementById('panel');
@@ -1395,14 +1613,15 @@ function resolveMove(loose, exact, q, m, retried){
                (B.combo>1?'　連擊 ×'+B.combo:'')+
                (retried?'<br><span style="color:var(--gold)">想起來了就算數——半個傷害，沒有扣血</span>':'')+
                (exact?'':'<br><span style="color:var(--gold)">⚠️ 重音沒對上，正確寫法：<b>'+esc(q.a)+'</b></span>')
-             : '<b style="color:var(--red)">沒組對，被反擊了</b><br>正解：<b>'+esc(shownAns(q))+'</b>')+
-      (q.aNote?'<br>'+q.aNote:'')+'</div>'+
-      '<button class="next" id="nx">'+(S.run.hp<=0?'你倒下了…':(B.hp<=0?'牠倒下了':'繼續'))+'</button>';
+             : '<b style="color:var(--red)">'+(B.exam?'沒打中':'沒組對，被反擊了')+'</b><br>正解：<b>'+esc(shownAns(q))+'</b>')+
+      (q.aNote&&(!q.zhOnlyWrong||!loose)?'<br>'+q.aNote:'')+'</div>'+
+      '<button class="next" id="nx">'+(S.run.hp<=0?'你倒下了…':(B.exam?(B.i>=B.qs.length?'這一層做完了':'下一題'):(B.hp<=0?'牠倒下了':'繼續')))+'</button>';
     document.getElementById('nx').addEventListener('click',function(){
       sfx('click_001');
       if(S.run.hp<=0){ S.run.lostCoin=S.run.coin; S.run.coin=0;
         if(B.tower){ S.towerCur=null; save(S); renderHud(); renderTower(); return; }   /* 塔：回塔下，樓層不掉 */
         save(S); renderHud(); renderMap(); return; }
+      if(B.exam) return (B.i>=B.qs.length) ? win() : useMove('read');
       if(B.hp<=0) return win();
       type(esc(B.name)+' 還站著。', showCmds);
     });

@@ -4642,6 +4642,28 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 3. ⚠️ secret key（`sb_secret_…`）要放 **`apikey` header**，不是 `Authorization: Bearer`（官方：不是 JWT）；secret key 會繞過 RLS，只能用在本機上傳腳本
 4. 上傳腳本：PNG→WebP q60（最密一張實看可讀，約 50KB）＋題目 JSON；塔加「解鎖考試題」登入框，登入後向 private bucket 拿圖
 
+**✅ 09-14 深夜：考試之塔（閱讀）接好了**
+- Owen 已建：Auth 使用者（UID `ba97fb61-b97f-41c7-a8e5-49c388660b9c`，不是機密）、私人 bucket **`TCF`**、本機 `.env` 的 `SUPABASE_SECRET_KEY`
+- **上傳工具 `tools/upload_exam_supabase.py`**：44 套 JSON＋index＋**1713 張 WebP** 全部上傳，0 失敗；
+  已傳且沒變的檔會跳過（`assets/tcf/exam/.uploaded.json`，WebP 快取 `assets/tcf/exam/webp/`，都在 gitignore 內）。
+  結尾自動檢查：公開網址 HTTP 400、只帶公開 key HTTP 400（⛔ 沒登入讀不到）、本機 secret key 200
+- **bucket 內結構**：`reading/index.json`、`reading/data/<id>.json`、`reading/img/<名>.webp`
+- **前端（`quest.html` 試煉之塔分頁下方「考試之塔 · TCF 閱讀」）**：
+  - 登入：Supabase Auth password grant，session 存 **`tcfvault_session`**（⚠️ 刻意不用 `clb7_` 開頭，否則同步會把 token 傳上同步表）；過期自動 refresh，⛔ 沒網路不算登出
+  - 挑一套 → 39 題照題號切六層（4／6／9／10／6／4），爬完六層＝做完一整套；圖片用 token 抓成 blob、點圖放大
+  - ⛔ 考試題錯了**不扣血**（A2 打後段題會一路倒下）、一題一格傷害不提早打倒；中文解析**只在答錯時**出現
+  - 作答紀錄 `clb7_exam_answers`（`ce_1#12`→對錯）；這題跳過⛔不記對錯、進 `clb7_tower_known`；這層跳過／離開塔同筆記版
+- **瀏覽器實測**（ROOM 切 TEST；⚠️ 登入與空間回應用**模擬 fetch**——Claude 不經手 Owen 的密碼，所以真的登入讀取要 Owen 在手機上驗）：
+  錯誤密碼提示、登入後 token 沒進任何 `clb7_*`、選套、第一層答錯（不扣血、有中文）／答對（無中文）／跳題、放大圖、
+  這層跳過、離開塔、跳完登頂→「爬完過 1 次」、token 過期自動 refresh、讀取被擋顯示 HTTP 400＋再試一次、登出後進度保留、筆記版塔不受影響；console 零錯誤
+- ⏸ **還差 Owen 一步：讀取權限（RLS policy）**——沒有它，登入後會顯示「讀不到題目（HTTP 400）」。在 Supabase **SQL Editor** 貼：
+  ```sql
+  create policy "Owen reads TCF" on storage.objects for select to authenticated
+  using ( bucket_id = 'TCF' and (select auth.uid()) = 'ba97fb61-b97f-41c7-a8e5-49c388660b9c'::uuid );
+  ```
+  （⚠️ 不能用官方範例的 `owner_id`：secret key 上傳的檔沒有 owner）
+- 聽力考試題照 Owen 決定：手機不放
+
 **其他 09-14 已完成並推上站**：動詞衝刺不再砍斷打字＋記打完秒數（`verb_sprint.html`）、練習頁回得去遊戲訓練場（`return_to.js`）、清晨排程配額加大（最多 6 項、實作 2 項）。
 ⏸ 仍待 Owen：iPhone 上用 Safari 還是 Chrome 開遊戲（決定吶喊招式值不值得做）。
 
