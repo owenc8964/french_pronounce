@@ -32,7 +32,15 @@
       "mcp__Claude_Preview__preview_screenshot",
       "mcp__Claude_Preview__preview_console_logs",
       "mcp__Claude_Preview__preview_snapshot",
-      "mcp__Claude_Preview__preview_list"
+      "mcp__Claude_Preview__preview_list",
+      "Bash(node --check *)",
+      "Bash(git show *)",
+      "Bash(diff *)",
+      "Bash(wc *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(sed -n *)",
+      "Bash(mkdir -p drafts*)"
     ],
     "deny": [
       "Bash(git push --force *)"
