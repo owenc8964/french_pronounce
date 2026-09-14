@@ -4656,7 +4656,8 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - **瀏覽器實測**（ROOM 切 TEST；⚠️ 登入與空間回應用**模擬 fetch**——Claude 不經手 Owen 的密碼，所以真的登入讀取要 Owen 在手機上驗）：
   錯誤密碼提示、登入後 token 沒進任何 `clb7_*`、選套、第一層答錯（不扣血、有中文）／答對（無中文）／跳題、放大圖、
   這層跳過、離開塔、跳完登頂→「爬完過 1 次」、token 過期自動 refresh、讀取被擋顯示 HTTP 400＋再試一次、登出後進度保留、筆記版塔不受影響；console 零錯誤
-- ⏸ **還差 Owen 一步：讀取權限（RLS policy）**——沒有它，登入後會顯示「讀不到題目（HTTP 400）」。在 Supabase **SQL Editor** 貼：
+- ✅ **09-14 深夜 Owen 驗收**：SQL 已貼、手機登入成功、考試題圖片讀得到、可以玩（「可以玩喔！！GJ」）——**整條路真機通過**
+- 讀取權限（RLS policy，已套用；沒有它登入後會顯示「讀不到題目（HTTP 400）」）。Supabase **SQL Editor** 貼的是：
   ```sql
   create policy "Owen reads TCF" on storage.objects for select to authenticated
   using ( bucket_id = 'TCF' and (select auth.uid()) = 'ba97fb61-b97f-41c7-a8e5-49c388660b9c'::uuid );
