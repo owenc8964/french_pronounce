@@ -1299,13 +1299,51 @@ function renderMap(){
   });
   if(dead) html+='<button class="next" onclick="retreat()">收拾戰利品，回營地</button>';
   if((r.loot||[]).length){
-    html+='<div class="sec"><h2>今天的戰利品</h2>'+r.loot.map(cardHtml).join('')+'</div>';
+    var toExport=r.loot.filter(function(c){ return !((r.lootExported||{})[c.key]); }).length;
+    html+='<div class="sec"><h2>今天的戰利品</h2>'+
+      (toExport?'<button class="cmd" onclick="exportLootAnki()" style="margin-bottom:10px">'+img(SP.card)+
+        '<span>匯出成 Anki 卡<small>存到桌面的 TSV，之後用 Anki 匯入複習</small></span></button>':'')+
+      r.loot.map(cardHtml).join('')+'</div>';
   }
   html+=npcHtml()+dexHtml()+'<div class="credit">美術與音效：Kenney（CC0 公共領域）<br>字體：Cinzel · Cormorant Garamond（SIL OFL）</div>';
   v.innerHTML=html;
   Array.prototype.forEach.call(v.querySelectorAll('.node.can'),function(n){
     n.addEventListener('click',function(){ sfx('click_001'); enter(n.dataset.k,n.dataset.t); });
   });
+}
+/* B3 戰利品一鍵進 Anki（2026-09-15，依 research/2026-09-15_遊戲到長期記憶的交接.md）
+   ⭐ 只匯出今天撿到、還沒匯出過的（r.lootExported 記錄），⛔ 不整包歷史收藏重匯——會撞號
+   ⚠️ 每日上限 5 張（memory feedback_production_vs_recognition_load）
+   ⭐ 欄位對齊 tools/gen_anki_lesson.py 的 24 欄格式，⛔ 匯入前務必跑 tools/anki_precheck.py（撞號檢查） */
+function cleanTsv(t){ return String(t==null?'':t).replace(/<[^>]+>/g,'').replace(/[\t\n]/g,' ').trim(); }
+function exportLootAnki(){
+  var r=S.run, pool=(r.loot||[]).filter(function(c){ return !((r.lootExported||{})[c.key]); });
+  if(!pool.length){ toast('今天的戰利品都匯出過了'); return; }
+  var batch=pool.slice(0,5);
+  var rows=batch.map(function(c){
+    var isS=c.key.charAt(0)==='S', srcId=c.key.slice(2);
+    var src=isS?(typeof SENTENCES!=='undefined'?SENTENCES:[]):(typeof CHUNKS!=='undefined'?CHUNKS:[]);
+    var obj=src.filter(function(x){ return x.id===srcId; })[0]||{};
+    var f=new Array(24).fill('');
+    f[0]='FR_QUEST_'+srcId;                          /* ID */
+    f[1]=cleanTsv(c.fr); f[2]=cleanTsv(c.zh);         /* Sentence／Translation */
+    f[7]='第'+(obj.lesson||'?')+'課 · 今日地城戰利品';  /* Source */
+    f[9]='quest 戰利品';                              /* KeyChunk */
+    f[12]=cleanTsv(c.zh); f[13]=cleanTsv(c.fr);       /* ProductionPrompt／ProductionAnswer */
+    f[15]=cleanTsv(obj.note||'');                     /* UsageNotes */
+    f[19]='A2'; f[20]='y'; f[22]='approved';          /* Level／只出 Production／approved */
+    f[23]='fr::src::quest fr::lesson::l'+(obj.lesson||'0')+' fr::task::phrase fr::tier::production';
+    return f.join('\t');
+  });
+  var blob=new Blob([rows.join('\n')+'\n'], {type:'text/tab-separated-values'});
+  var url=URL.createObjectURL(blob), a=document.createElement('a');
+  a.href=url; a.download='anki_quest_loot_'+todayStr().replace(/\//g,'-')+'.tsv'; document.body.appendChild(a);
+  a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+  r.lootExported=r.lootExported||{};
+  batch.forEach(function(c){ r.lootExported[c.key]=1; });
+  save(S);
+  toast('匯出了 '+batch.length+' 張到桌面——匯入前先跑 anki_precheck.py'+(pool.length>5?'（還有 '+(pool.length-5)+' 張留到下次）':''));
+  renderMap();
 }
 function cardHtml(c){
   return '<div class="card"><div class="fr">'+esc(c.fr)+'<button onclick="say(this.parentNode.textContent)">🔊</button></div>'+
