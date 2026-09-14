@@ -1,0 +1,83 @@
+{
+  "_說明": "D2 候選檔（GAME_ROADMAP.md 第三節）。⚠️ 低信心：16px 縮圖辨識，建議 Owen 開 assets/game/tiles/ 對應檔名實看一次再入庫。⛔ 未改 quest.html。",
+  "_圖塊來源": "assets/game/tiles/tile_XXXX.png（Kenney Tiny Dungeon，CC0）；沿用 quest.html 現有 MONSTERS(9)＋BOSSES 獨有的 2 張(0084/0087)，共 11 張已被手動挑出的角色類圖塊",
+  "_topic 沒列到的": "落在對應 category 的怪就好；若真的想要每個 topic 各自一張，132 張圖塊裡目前只確認 11 張是「怪物/角色」外觀，其餘多數是道具或場景（牆、地板、寶箱、武器等），要擴充怪物池需要 Owen 先看過整批圖塊圈出更多候選",
+  "categories": [
+    {
+      "id": "nature-loisirs",
+      "tile": "tile_0108.png",
+      "視覺": "綠色系、紅眼，縮圖判斷像苔癬怪／小型野生生物",
+      "topics": ["vocab-nature","vocab-meteo","vocab-weather-season","vocab-vacances","preposition-country","likes-hobbies-sports","vocab-loisirs","vocab-sport-activities","vocab-sport-gym","couleurs"]
+    },
+    {
+      "id": "corps-sante",
+      "tile": "tile_0109.png",
+      "視覺": "米黃／橘色條紋，縮圖判斷像纏繃帶的木乃伊系",
+      "topics": ["body-health","corps-sante-vocab","medecine-urgences-vocab","vocab-sens","physical-description","vocab-apparence"]
+    },
+    {
+      "id": "negation-regles",
+      "tile": "tile_0110.png",
+      "視覺": "暗紅／白色系，縮圖判斷像小惡魔／禁忌系角色",
+      "topics": ["negation","prohibition-request","interdiction-demande","ilfaut-devoir","restriction-ne-que","giving-advice"]
+    },
+    {
+      "id": "verbes-temps",
+      "tile": "tile_0111.png",
+      "視覺": "紅色變體，與 0110 同色系但造型不同，當成「文法骨架」系列",
+      "topics": ["etre-avoir","er-verbs","ir-re-verbs","irregular-verbs-3rd-group","reflexive-verbs","passe-compose","imparfait","futur-proche","futur-simple","passe-recent","imperative-mood","condition-si"]
+    },
+    {
+      "id": "nombres-temps",
+      "tile": "tile_0112.png",
+      "視覺": "橘黃系，縮圖判斷像南瓜怪；⚠️ 也可能是史萊姆，縮圖解析度不夠分辨",
+      "topics": ["numbers-basic","heure","numbers-dates-heure","duree","frequency-adverbs"]
+    },
+    {
+      "id": "tech-medias",
+      "tile": "tile_0120.png",
+      "視覺": "橘紅火焰紋，縮圖判斷像火焰系生物",
+      "topics": ["vocab-innovation","vocab-reseaux","vocab-technologies","vocab-tech-objects","medias-vocab"]
+    },
+    {
+      "id": "pronoms",
+      "tile": "tile_0121.png",
+      "視覺": "深藍偏黑、紅眼，縮圖判斷像暗影／幽靈系——呼應代名詞「看不見的指涉」",
+      "topics": ["pronoms-toniques","cod-pronouns","pronom-y","pronoms-y-en","pronoms-cod-coi","pronoms-possessifs","pronoms-interrogatifs","qui-que","on-vs-nous","voici-voila","demonstrative-adj"]
+    },
+    {
+      "id": "lieux-logement",
+      "tile": "tile_0122.png",
+      "視覺": "藍紅系，縮圖判斷像持盾守衛／騎士系",
+      "topics": ["vocab-places-city","preposition-place-transport","prepositions-lieu2","vocab-quartier","reservation-hotel","vocab-logement","vocab-housing","vocab-meubles","household-chores"]
+    },
+    {
+      "id": "identite-quotidien",
+      "tile": "tile_0123.png",
+      "視覺": "棕色系，縮圖判斷像土系／熊型生物",
+      "topics": ["greetings-politeness","family-possessives","possessives","articles","question-words","daily-routine-vocab","social-invitations","metier-travail-vocab","universite-vocab","vocab-parcours-vie"]
+    },
+    {
+      "id": "descriptifs-comparaison",
+      "tile": "tile_0084.png",
+      "視覺": "紫色系、兜帽，縮圖判斷像法師／女巫系（BOSSES 專用，未用於一般 MONSTERS）",
+      "備註": "形容詞、比較、連接詞這類「修飾／連結」文法用「會變形」的法師角色呼應",
+      "topics": ["adjective-agreement","adjective-position","cest-il-est","character-adjectives","comparaison","superlatif","intensite","tout-chaque","vocab-caractere","paires-confusables","connectors-pour-parceque","cause-consequence","preference-interet"]
+    },
+    {
+      "id": "alimentation-shopping-strategie",
+      "tile": "tile_0087.png",
+      "視覺": "米白／骷髏面具系（BOSSES 專用，未用於一般 MONSTERS）",
+      "topics": ["vocab-alimentation","vocab-aliments","vocab-shopping","vocab-clothing-size","vocab-souvenirs","strategie-lecture","vocab-consignes","vocab-annonces"]
+    }
+  ],
+  "boss_加強版": {
+    "說明": "現有 BOSSES = ['0084','0087','0110','0121']，剛好對應上面四個類別的『大魔王版』——該類別 topic 快照 <50% 或連錯多次時，可以直接沿用同一張圖但放大/加特效當 boss，不用另外找圖",
+    "對照": {
+      "0110": "negation-regles 類別的 boss",
+      "0121": "pronoms 類別的 boss",
+      "0084": "descriptifs-comparaison 類別的 boss（本來就是 boss 專用）",
+      "0087": "alimentation-shopping-strategie 類別的 boss（本來就是 boss 專用）"
+    }
+  }
+}
