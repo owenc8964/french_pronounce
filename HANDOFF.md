@@ -4622,6 +4622,25 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
     ⑥ 次選：**獨立公開 repo（名稱中性）＋推送前退出 Archive Program＋加密**，刪 repo 即乾淨（沒 fork 的前提）
   - **Claude 建議 ⑤**。⏸ **等 Owen 選存放處再做考試版**；手機版（筆記內容）不受影響可先做
   - ⚠️ 若選 ⑤：Auth 使用者密碼、service_role key 由 **Owen 自己**在 Supabase dashboard／本機 `.env` 設（Claude 不經手密碼；`.env` 永不 commit），上傳腳本讀 `.env`
+  - ⭐ **09-14 晚 Owen 選 ⑤**（「我好像有 supabase」→ 就是同步用的同一個專案，不用新帳號）。順序：先做手機版 → Owen 建帳號與空間 → 接考試版
+
+**✅ 09-14 晚：試煉之塔手機版做完**（`quest.html` 第五個分頁「試煉之塔」，網址 `?tab=tower`）
+- 六層：選擇（普通攻擊）→ 陰陽性（重擊）→ 聽辨（看破）→ 填空（大招）→ 中翻法（詠唱）→ 塔頂（全部招式）；題目＝**所有課次**
+- 三層出口：這題跳過（記 `clb7_tower_known`，物件＋last，之後**降低出現頻率不刪**）／這層跳過（照樣往上，列表灰字「跳過了」）／離開塔（樓層留著）
+- 倒下回塔下、**樓層不掉**；登頂 +80 經驗 +40 金幣、塔重置可再爬（`clb7_quest.tower = {floor, climbs, marks, last}`）；塔的勝利⛔不寫進今日地城格子、⛔不進圖鑑
+- ⚠️⚠️ **順手修掉兩個既有 bug（整個遊戲都受影響）**：
+  ① **重擊從來沒出現過**：陰陽性 51 題全是打字題（沒有 opts），`movePool` 卻要求 opts → 改成打字出題
+  ② **14 題選擇題永遠判錯**：正解寫成 `le premier|premier` 這種多解，原本整串比對 → 新增 `isAns()`／`shownAns()`（地城、副本、街坊、塔都用）
+- 瀏覽器實測（ROOM 切 TEST、測完清掉 TEST 房間與本機測試 key、改回正式值後立刻 preview_stop）：
+  六層全打、這題跳過（選擇＋打字）、這層跳過、改用普通攻擊、倒下→回營地樓層仍在、離開塔再進、登頂重置、
+  **回歸**：塔打完去今日地城打一隻怪→地圖正常前進、`run.cleared` 沒被塔污染；375px 手機寬度五個分頁不擠、無橫向捲動；console 零錯誤
+- `.gitignore` 加了 `.env`／`.env.*`（考試版上傳腳本要讀 secret key）
+
+**⏭ 考試版接線待辦**（Owen 建好之後）：
+1. Owen：Authentication → Users → Add user（自己的信箱密碼，勾 Auto Confirm）；Storage → New bucket（私人）；Settings → API Keys 的 secret key 貼進本機 `.env`；把自己的 **User UID** 告訴 Claude（UID 不是機密）
+2. ⚠️ **policy 不能用官方範例的 `owner_id`**：用 secret key 上傳的檔案沒有 owner → 要寫 `bucket_id='…' and (select auth.uid()) = '<Owen UID>'::uuid`
+3. ⚠️ secret key（`sb_secret_…`）要放 **`apikey` header**，不是 `Authorization: Bearer`（官方：不是 JWT）；secret key 會繞過 RLS，只能用在本機上傳腳本
+4. 上傳腳本：PNG→WebP q60（最密一張實看可讀，約 50KB）＋題目 JSON；塔加「解鎖考試題」登入框，登入後向 private bucket 拿圖
 
 **其他 09-14 已完成並推上站**：動詞衝刺不再砍斷打字＋記打完秒數（`verb_sprint.html`）、練習頁回得去遊戲訓練場（`return_to.js`）、清晨排程配額加大（最多 6 項、實作 2 項）。
 ⏸ 仍待 Owen：iPhone 上用 Safari 還是 Chrome 開遊戲（決定吶喊招式值不值得做）。

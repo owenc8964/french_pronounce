@@ -391,7 +391,8 @@ function listenQuestion(lessons){
 function movePool(ls, t){
   return BANK.filter(function(q){
     if(q.type!==t || ls.indexOf(q.lesson)<0) return false;
-    if(t==='choose'||t==='gender') return q.opts && q.opts.length>=2;
+    if(t==='choose') return q.opts && q.opts.length>=2;
+    if(t==='gender' && q.opts && q.opts.length>=2) return true;   /* ⚠️ 09-14 修：陰陽性 51 題全是打字題（沒有 opts），原本這裡要 opts → 重擊在整個遊戲裡從沒出現過 */
     return typeof q.a==='string' && q.a.length>1 && q.a.indexOf('|')<0;   /* 多解答的先不用 */
   });
 }
@@ -410,6 +411,11 @@ function tokensFor(ans, ls){
   }
   return { real:real, all:shuffle(real.concat(extra)) };
 }
+/* ⚠️ 09-14 修：題庫有 14 題選擇題的正解是「A|B」多解（如 le premier|premier），
+   原本拿整串跟選項比 → 這 14 題在地城、副本、街坊、塔裡**永遠判錯**。 */
+function isAns(q,o){ return String(q.a).split('|').indexOf(o)>=0; }
+function shownAns(q){ var alts=String(q.a).split('|'), hit=(q.opts||[]).filter(function(o){ return alts.indexOf(o)>=0; });
+  return hit.length ? hit.join(' / ') : alts[0]; }
 function deacc(x){ return String(x).normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
 function normAns(x){ return deacc(String(x)).toLowerCase().replace(/[.,!?;:«»"']/g,'').replace(/\s+/g,' ').trim(); }
 function identityOf(topic, lesson){
@@ -692,17 +698,137 @@ function renderTrain(){
   save(S); v.innerHTML=html;
 }
 
+/* ════════════════════════════════════════════════════════════════
+   試煉之塔（B1，2026-09-14）
+   ⭐ Owen 09-14 拍板雙版本：這裡是**手機版＝所有筆記內容**（questions.js＋sentences.js，全部課次）。
+     考試原題版之後接 Supabase 私人空間（登入才讀得到），⛔ 題目不進 repo。
+   ⭐ 一層一種招式：選擇 → 陰陽性 → 聽辨 → 填空 → 中翻法，塔頂所有招式都能用。
+     往上爬＝從「認得」走到「自己產出」，考試分數在上面幾層。
+   ⛔ 跳過三層出口（CLAUDE.md 練習頁鐵律）：
+     這題跳過（記進 clb7_tower_known，降低出現頻率但⛔不刪）／這層跳過（照樣往上）／離開塔（進度留著）
+   ⛔ 後果放角色身上：倒下只是回營地整裝，**已經爬到的樓層不會掉**。
+   ════════════════════════════════════════════════════════════════ */
+var TOWER=[
+  {move:'hit',   name:'選擇之間', fr:'La Salle des Choix',    hp:3,   text:'守衛只認得選項。挑對的那一個。'},
+  {move:'heavy', name:'陰陽之間', fr:'La Salle des Genres',   hp:4.5, text:'這一層的東西都分陰陽。錯一個字母就不算。'},
+  {move:'ear',   name:'回音之間', fr:'La Salle des Échos',    hp:4.5, text:'這裡很暗，只聽得到聲音。'},
+  {move:'blast', name:'缺字之間', fr:'La Salle des Lacunes',  hp:6,   text:'牆上的句子缺了字，要你自己補上。'},
+  {move:'chant', name:'言語之間', fr:'La Salle de la Parole', hp:9,   text:'守衛只聽得懂法文。整句說出來。'},
+  {move:null,    name:'塔頂',     fr:'Le Sommet',             hp:10,  text:'塔頂的守衛什麼都會。所有招式都能用。', top:true},
+];
+var TOWER_KNOWN='clb7_tower_known';
+function allLessons(){ var ls={}; BANK.forEach(function(q){ if(q.lesson) ls[q.lesson]=1; }); return Object.keys(ls).map(Number); }
+function towerState(){
+  S.tower=S.tower||{floor:0, climbs:0, marks:{}, last:0};
+  S.tower.marks=S.tower.marks||{};
+  return S.tower;
+}
+function towerKnown(){ try{ return JSON.parse(localStorage.getItem(TOWER_KNOWN))||{}; }catch(e){ return {}; } }
+/* 物件形狀＋last，配合 sync_supabase.js 的物件合併慣例 */
+function towerMarkKnown(key){
+  if(!key) return;
+  var k=towerKnown(), r=k[key]||{n:0};
+  r.n++; r.last=Date.now(); k[key]=r;
+  try{ localStorage.setItem(TOWER_KNOWN, JSON.stringify(k)); }catch(e){}
+}
+/* 這一層有沒有題可以出（題庫不夠的層直接往上，⛔ 不擋路） */
+function towerFloorOk(i){
+  var f=TOWER[i]; if(f.top) return true;
+  var m=MOVES[f.move];
+  if(m.type==='listen') return typeof SENTENCES!=='undefined' && SENTENCES.length>=4;
+  return movePool(allLessons(), m.type).length>0;
+}
+function towerLine(){
+  var p=(typeof SENTENCES!=='undefined'?SENTENCES:[]).filter(function(s){ return s.fr&&s.zh; });
+  return p.length ? p[Math.floor(Math.random()*p.length)] : null;
+}
+function renderTower(){
+  var t=towerState(), v=document.getElementById('view'), dead=S.run.hp<=0;
+  var html=modeTabs()+
+    '<div class="title"><div class="en">La Tour des Épreuves</div><h1>試 煉 之 塔</h1><div class="rule"></div></div>'+
+    '<div class="sub">一層一種招式，<b>越往上越要自己把法文產出來</b>。題目來自所有課次的筆記。<br>'+
+    (dead ? '你倒下了。回營地整裝一下再上來——<b>爬到的樓層都還在</b>。'
+          : (t.climbs ? '已經登頂 '+t.climbs+' 次。塔永遠可以再爬一遍。' : '爬到一半離開也沒關係，下次從同一層繼續。'))+'</div>';
+  for(var i=TOWER.length-1;i>=0;i--){            /* 塔頂畫在最上面 */
+    var f=TOWER[i], mk=t.marks[i], done=i<t.floor, can=(i===t.floor)&&!dead;
+    var mv=f.top ? '所有招式都能用' : (MOVES[f.move].name+'　·　'+MOVES[f.move].why);
+    html+='<div class="snode '+(done?'done ':'')+(can?'can ':'')+'" data-f="'+i+'">'+
+      '<div class="sicon">'+img(f.top?SP.crown:(done?SP.chest:SP.sword))+'</div>'+
+      '<div class="sbody"><div class="stype">'+(f.top?'SOMMET':'ÉTAGE '+(i+1))+
+        (done?(mk==='skip'?'　· 跳過了':'　· 走過了'):'')+'</div>'+
+        '<div class="stext">'+esc(f.name)+'　<span style="color:var(--faint);font-size:.78rem">'+esc(f.fr)+'</span>'+
+        '<br><span style="color:var(--dim);font-size:.76rem">'+esc(mv)+'</span></div></div></div>';
+  }
+  if(dead) html+='<button class="next" onclick="retreat(\'tower\')">回營地整裝</button>';
+  html+='<div class="credit">美術與音效：Kenney（CC0）　·　字體：Cinzel · Cormorant Garamond（SIL OFL）</div>';
+  v.innerHTML=html;
+  Array.prototype.forEach.call(v.querySelectorAll('.snode.can[data-f]'),function(el){
+    el.addEventListener('click',function(){ sfx('click_001'); towerEnter(+el.dataset.f); });
+  });
+}
+function towerEnter(i){
+  var t=towerState(), f=TOWER[i];
+  S.towerCur={floor:i};
+  if(!towerFloorOk(i)){ toast('這一層還沒有題目，直接往上'); return towerAdvance(true); }
+  B={ key:'tower', tower:true, floor:i, isBoss:!!f.top, lessons:allLessons(), topic:null,
+      qs:[], i:0, combo:0, maxHp:f.hp, hp:f.hp,
+      sprite:f.top?pick(BOSSES):pick(MONSTERS),
+      name:f.top?'塔頂的守衛':(f.name+'的守衛'),
+      title:(f.top?'Sommet':'Étage '+(i+1))+' · '+f.fr,
+      line:towerLine(), towerMove:f.top?null:f.move };
+  save(S); sfx(f.top?'bong_001':'switch_002');
+  renderBattle(esc(f.text));
+}
+function towerAdvance(skipped){
+  var t=towerState(), c=S.towerCur; S.towerCur=null;
+  var i=c?c.floor:t.floor;
+  t.marks[i]=skipped?'skip':'win';
+  if(t.floor<=i) t.floor=i+1;
+  t.last=Date.now();
+  if(t.floor>=TOWER.length) return towerClear();
+  save(S); renderTower(); window.scrollTo({top:0,behavior:'smooth'});
+}
+function towerSkip(){ sfx('click_001'); toast('這層跳過了，往上走'); towerAdvance(true); }
+function towerLeave(){
+  sfx('click_001'); S.towerCur=null; save(S); renderTower();
+  window.scrollTo({top:0,behavior:'smooth'}); toast('先離開塔，下次從這一層繼續');
+}
+/* 這題跳過：不算對也不算錯（⛔ 不扣血、不斷連擊），換同一招式的下一題 */
+function towerQSkip(){
+  var q=B&&B.curQ, m=B&&B.curM; if(!q||!m) return;
+  towerMarkKnown(q.fr||q.q);
+  sfx('click_001'); toast('這題先放著');
+  useMove(m.id);
+}
+function qSkipBtn(){
+  return (B&&B.tower) ? '<button class="cmd" onclick="towerQSkip()">'+img(SP.card)+'<span>這題跳過<small>不算對也不算錯</small></span></button>' : '';
+}
+function qSkipRow(){ return (B&&B.tower) ? '<div class="cmds" style="margin-top:11px">'+qSkipBtn()+'</div>' : ''; }
+function towerClear(){
+  var t=towerState();
+  t.climbs=(t.climbs||0)+1; t.floor=0; t.marks={}; t.last=Date.now();
+  S.run.coin+=40; S.xp=(S.xp||0)+80;
+  save(S); renderHud(); sfx('maximize_001');
+  document.getElementById('view').innerHTML=
+    '<div class="loot"><h3>LE SOMMET</h3>'+
+    '<div class="fb" style="text-align:center;font-size:1.05rem;color:var(--gold2)">登頂了</div>'+
+    '<div class="fb" style="text-align:center;margin-top:10px">經驗 +80　金幣 +40</div>'+
+    '<div class="fb" style="text-align:center;color:var(--gold)">★ 塔的樓層重新開放了——想再爬，隨時可以</div>'+
+    '<button class="next" onclick="setMode(\'tower\')">回到塔下</button></div>';
+}
+
 function modeTabs(){
   var m=S.mode||'story';
   return '<div class="tabs">'+
     '<button class="tab'+(m==='story'?' on':'')+'" onclick="setMode(\'story\')">主線</button>'+
     '<button class="tab'+(m==='dungeon'?' on':'')+'" onclick="setMode(\'dungeon\')">今日地城</button>'+
     '<button class="tab'+(m==='raid'?' on':'')+'" onclick="setMode(\'raid\')">副本</button>'+
-    '<button class="tab'+(m==='train'?' on':'')+'" onclick="setMode(\'train\')">訓練場</button></div>';
+    '<button class="tab'+(m==='train'?' on':'')+'" onclick="setMode(\'train\')">訓練場</button>'+
+    '<button class="tab'+(m==='tower'?' on':'')+'" onclick="setMode(\'tower\')">試煉之塔</button></div>';
 }
 function setMode(m){
-  sfx('switch_002'); S.mode=m; save(S);
-  if(m==='story') renderChapter(); else if(m==='raid') renderRaids(); else if(m==='train') renderTrain(); else renderMap();
+  sfx('switch_002'); S.mode=m; S.towerCur=null; save(S);
+  if(m==='story') renderChapter(); else if(m==='raid') renderRaids(); else if(m==='train') renderTrain(); else if(m==='tower') renderTower(); else renderMap();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -771,13 +897,15 @@ function init(){
      ⛔ 不能只靠 clb7_quest.mode，換頁同步時會被雲端較舊的值蓋掉 */
   try {
     var tabQ = new URLSearchParams(location.search).get('tab');
-    if (tabQ && ['story','dungeon','raid','train'].indexOf(tabQ) >= 0) d.mode = tabQ;
+    if (tabQ && ['story','dungeon','raid','train','tower'].indexOf(tabQ) >= 0) d.mode = tabQ;
   } catch(e){}
+  d.towerCur=null;   /* 塔裡打到一半重新整理：回塔下，⛔ 不然之後地城的勝利會誤觸塔的推進 */
   S=d; save(S); MAP=buildMap(); BOSS=bossOfToday();
   renderHud();
   if(S.mode==='story'&&hasStory()) renderChapter();
   else if(S.mode==='raid') renderRaids();
   else if(S.mode==='train') renderTrain();
+  else if(S.mode==='tower') renderTower();
   else renderMap();
 }
 function renderHud(){
@@ -965,15 +1093,15 @@ function npcTalk(){
   });
 }
 function npcResolve(btn,q){
-  var ok=btn.dataset.o===q.a;
+  var ok=isAns(q,btn.dataset.o);
   Array.prototype.forEach.call(document.querySelectorAll('#opts .opt'),function(x){
-    x.disabled=true; if(x.dataset.o===q.a) x.classList.add('ok'); else if(x===btn) x.classList.add('no');
+    x.disabled=true; if(isAns(q,x.dataset.o)) x.classList.add('ok'); else if(x===btn) x.classList.add('no');
   });
   if(ok){ N.gained+=2; S.xp=(S.xp||0)+4; sfx('confirmation_001'); }
   else { S.xp=(S.xp||0)+1; sfx('error_004'); }   /* 聊天答錯不扣血：這裡是社交不是戰鬥 */
   save(S); renderHud();
   document.getElementById('panel').innerHTML='<div class="fb">'+
-    (ok?'<b style="color:var(--green)">他聽懂了，點點頭</b>':'<b style="color:var(--red)">他愣了一下</b>　正解：<b>'+esc(q.a)+'</b>')+
+    (ok?'<b style="color:var(--green)">他聽懂了，點點頭</b>':'<b style="color:var(--red)">他愣了一下</b>　正解：<b>'+esc(shownAns(q))+'</b>')+
     (q.aNote?'<br>'+q.aNote:'')+'</div>'+
     '<button class="next" onclick="npcNext()">'+(N.i>=N.qs.length-1?'結束對話':'再聊一句')+'</button>';
 }
@@ -1028,11 +1156,11 @@ function type(html, done){
 }
 function showCmds(){
   var r=S.run, panel=document.getElementById('panel'); if(!panel) return;
-  var ls=recentLessons(4);
+  var ls=(B&&B.tower)?allLessons():recentLessons(4);
   if(B.forceMove && !B.forcedShown){    /* 考驗節點：開場就推薦最重的招（⛔ 但不強制，降級鍵還在） */
     B.forcedShown=1;
   }
-  var btns=['hit','heavy','blast','chant','ear'].map(function(k){
+  var btns=((B.tower&&B.towerMove)?[B.towerMove]:['hit','heavy','blast','chant','ear']).map(function(k){   /* 塔的每一層只收一種招式 */
     var m=MOVES[k];
     var n=(m.type==='listen') ? ((typeof SENTENCES!=='undefined'&&SENTENCES.length>=4)?1:0) : movePool(ls,m.type).length;
     if(!n) return '';
@@ -1047,13 +1175,15 @@ function showCmds(){
     (B.line?'<button class="cmd" onclick="listen()">'+img(SP.card)+'<span>聽牠說<small>法文台詞</small></span></button>'
            :'<button class="cmd" onclick="defend()">'+img(SP.shield)+'<span>觀察<small>看弱點</small></span></button>')+
     (B.story?'<button class="cmd" onclick="storySkip()">'+img(SP.skull)+'<span>這段跳過<small>不擋你，照樣前進</small></span></button>'
+     :B.tower?'<button class="cmd" onclick="towerSkip()">'+img(SP.skull)+'<span>這層跳過<small>不擋你，照樣往上</small></span></button>'+
+              '<button class="cmd" onclick="towerLeave()">'+img(SP.shield)+'<span>離開塔<small>下次從這一層繼續</small></span></button>'
             :'<button class="cmd" onclick="flee()">'+img(SP.skull)+'<span>撤退<small>回地圖，不損失</small></span></button>')+
   '</div>';
 }
 /* 選了招式 → 抽那個題型的題目（⛔ 不重複抽剛做過的） */
 function useMove(k){
   sfx('click_001');
-  var m=MOVES[k], ls=recentLessons(4);
+  var m=MOVES[k], ls=(B&&B.tower)?allLessons():recentLessons(4);
   if(m.type==='listen'){
     var lq=listenQuestion(B&&B.lessons?B.lessons:ls);
     if(!lq){ toast('句庫還不夠出聽辨題'); return; }
@@ -1066,7 +1196,8 @@ function useMove(k){
   if(B && B.topic){
     pool=BANK.filter(function(q){
       if(q.topic!==B.topic || q.type!==m.type) return false;
-      if(m.type==='choose'||m.type==='gender') return q.opts && q.opts.length>=2;
+      if(m.type==='choose') return q.opts && q.opts.length>=2;
+      if(m.type==='gender' && q.opts && q.opts.length>=2) return true;
       return typeof q.a==='string' && q.a.length>1 && q.a.indexOf('|')<0;
     });
   }
@@ -1085,9 +1216,14 @@ function useMove(k){
   if(!pool.length) pool=movePool(ls,m.type);
   var fresh=pool.filter(function(q){ return (B.used||[]).indexOf(q.q)<0; });
   if(fresh.length) pool=fresh;
+  if(B && B.tower){   /* 塔：跳過過的題降低出現頻率，⛔ 不刪（自評不準，r≈.46） */
+    var kn=towerKnown();
+    var less=pool.filter(function(q){ var r=kn[q.q]; return !r || Math.random()<1/(1+2*r.n); });
+    if(less.length) pool=less;
+  }
   var q=pool[Math.floor(Math.random()*pool.length)];
   B.used=(B.used||[]).concat([q.q]); B.move=m;
-  if(m.type==='choose'||m.type==='gender') return askChoice(q,m);
+  if(m.type==='choose'||(m.type==='gender'&&q.opts&&q.opts.length>=2)) return askChoice(q,m);   /* 陰陽性沒有選項 → 打字 */
   return askType(q,m);
 }
 function listen(){
@@ -1124,7 +1260,7 @@ function askChoice(q,m){
   document.getElementById('panel').innerHTML='<div class="q">'+esc(q.q)+
       (q.hint?'<span class="hint">提示：'+esc(q.hint)+'</span>':'')+'</div>'+
     '<div class="opts" id="opts">'+shuffle(q.opts).map(function(o){
-        return '<button class="opt" data-o="'+esc(o)+'">'+esc(o)+'</button>'; }).join('')+'</div>';
+        return '<button class="opt" data-o="'+esc(o)+'">'+esc(o)+'</button>'; }).join('')+'</div>'+qSkipRow();
   Array.prototype.forEach.call(document.querySelectorAll('#opts .opt'),function(btn){
     btn.addEventListener('click',function(){ resolveChoice(btn,q,m); });
   });
@@ -1133,10 +1269,10 @@ function askChoice(q,m){
    造成**選擇題點了完全沒反應**（實測抓到：怪物血量不動、按鈕也不 disable）。
    ⭐ 現在統一走 resolveMove()，選擇題就是傷害 ×1 的普通攻擊。 */
 function resolveChoice(btn,q,m){
-  var ok=btn.dataset.o===q.a;
+  var ok=isAns(q,btn.dataset.o);
   Array.prototype.forEach.call(document.querySelectorAll('#opts .opt'),function(x){
     x.disabled=true;
-    if(x.dataset.o===q.a) x.classList.add('ok');
+    if(isAns(q,x.dataset.o)) x.classList.add('ok');
     else if(x===btn) x.classList.add('no');
   });
   resolveMove(ok, ok, q, m||MOVES.hit, false);
@@ -1150,7 +1286,7 @@ function askListen(q,m){
     '<div class="cmds" style="margin-bottom:11px"><button class="cmd" onclick="replay()">'+img(SP.wand)+
       '<span>再聽一次<small>不限次數</small></span></button></div>'+
     '<div class="opts" id="opts">'+shuffle(q.opts).map(function(o){
-      return '<button class="opt" data-o="'+esc(o)+'">'+esc(o)+'</button>'; }).join('')+'</div>';
+      return '<button class="opt" data-o="'+esc(o)+'">'+esc(o)+'</button>'; }).join('')+'</div>'+qSkipRow();
   Array.prototype.forEach.call(document.querySelectorAll('#opts .opt'),function(btn){
     btn.addEventListener('click',function(){ resolveChoice(btn,q,m); });
   });
@@ -1180,6 +1316,7 @@ function askType(q,m){
     '<div class="cmds" style="margin-top:12px">'+
       '<button class="cmd" onclick="typeCheck()">'+img(SP.sword)+'<span>出招<small>'+m.name+' ×'+m.dmg+'</small></span></button>'+
       '<button class="cmd" onclick="buildDown()">'+img(SP.shield)+'<span>改用普通攻擊<small>卡住沒關係，不扣血</small></span></button>'+
+      qSkipBtn()+
     '</div>';
   var box=document.getElementById('ansBox');
   box.focus();
@@ -1258,12 +1395,14 @@ function resolveMove(loose, exact, q, m, retried){
                (B.combo>1?'　連擊 ×'+B.combo:'')+
                (retried?'<br><span style="color:var(--gold)">想起來了就算數——半個傷害，沒有扣血</span>':'')+
                (exact?'':'<br><span style="color:var(--gold)">⚠️ 重音沒對上，正確寫法：<b>'+esc(q.a)+'</b></span>')
-             : '<b style="color:var(--red)">沒組對，被反擊了</b><br>正解：<b>'+esc(q.a)+'</b>')+
+             : '<b style="color:var(--red)">沒組對，被反擊了</b><br>正解：<b>'+esc(shownAns(q))+'</b>')+
       (q.aNote?'<br>'+q.aNote:'')+'</div>'+
       '<button class="next" id="nx">'+(S.run.hp<=0?'你倒下了…':(B.hp<=0?'牠倒下了':'繼續'))+'</button>';
     document.getElementById('nx').addEventListener('click',function(){
       sfx('click_001');
-      if(S.run.hp<=0){ S.run.lostCoin=S.run.coin; S.run.coin=0; save(S); renderHud(); renderMap(); return; }
+      if(S.run.hp<=0){ S.run.lostCoin=S.run.coin; S.run.coin=0;
+        if(B.tower){ S.towerCur=null; save(S); renderHud(); renderTower(); return; }   /* 塔：回塔下，樓層不掉 */
+        save(S); renderHud(); renderMap(); return; }
       if(B.hp<=0) return win();
       type(esc(B.name)+' 還站著。', showCmds);
     });
@@ -1274,7 +1413,8 @@ function win(){
   var r=S.run, foe=document.getElementById('foe');
   if(foe) foe.classList.add('die');
   sfx('maximize_001');
-  r.cleared[B.key]=1; r.coin+=B.isBoss?20:5;
+  if(!B.tower) r.cleared[B.key]=1;   /* 塔的勝利不寫進今日地城的格子 */
+  r.coin+=B.isBoss?20:5;
   S.xp=(S.xp||0)+(B.isBoss?40:12);
   var before=lvOf(S.xp-(B.isBoss?40:12)), after=lvOf(S.xp), levelled=after>before;
   var storyCh = B.story ? curChapter() : null;
@@ -1287,7 +1427,7 @@ function win(){
     S.raid=S.raid||{}; var rr=S.raid[B.lesson]||{wins:0};
     rr.wins++; rr.last=Date.now(); S.raid[B.lesson]=rr;
   }
-  if(B.isBoss && !B.raid){
+  if(B.isBoss && !B.raid && !B.tower){
     S.dex=S.dex||{};
     /* ⭐ 主線關主用「章」的身分進圖鑑，⛔ 不要混進今日地城的關主 */
     var dexId = B.story ? ('ch'+(storyCh?storyCh.ch:'?')) : BOSS.id;
@@ -1305,13 +1445,14 @@ function win(){
         '<h3>'+(B.isBoss?'LE GARDIEN EST TOMBÉ':'VICTOIRE')+'</h3>'+
         (levelled?'<div class="fb" style="text-align:center;color:var(--gold2)">★ 升到 Lv '+after+'！體力上限提高了</div>':'')+
         '<div class="fb" style="text-align:center">經驗 +'+(B.isBoss?40:12)+'　金幣 +'+(B.isBoss?20:5)+'</div>'+
-        (B.isBoss?'<div class="fb" style="text-align:center">「'+esc(B.story?((storyCh?storyCh.title:'')+' 的關主'):BOSS.name)+'」已收進圖鑑</div>':'')+
+        (B.isBoss&&!B.tower?'<div class="fb" style="text-align:center">「'+esc(B.story?((storyCh?storyCh.title:'')+' 的關主'):BOSS.name)+'」已收進圖鑑</div>':'')+
         '<div style="margin-top:12px">'+cards.map(cardHtml).join('')+'</div>'+
-        '<button class="next" onclick="advance()">'+(B.isBoss?'回營地':'繼續前進')+'</button>'+
+        '<button class="next" onclick="advance()">'+(B.tower?(B.isBoss?'登頂':'往上走'):(B.isBoss?'回營地':'繼續前進'))+'</button>'+
       '</div></div>';
   }, 620);
 }
 function advance(){
+  if(S.towerCur) return towerAdvance(false);     /* 塔：打完往上一層 */
   if(S.raidCur){                                  /* 副本：打完回副本清單 */
     S.raidCur=null; save(S); renderRaids(); window.scrollTo({top:0,behavior:'smooth'}); return;
   }
@@ -1320,9 +1461,9 @@ function advance(){
   if(r.floor<MAP.floors.length-1) r.floor++;
   save(S); renderMap(); window.scrollTo({top:0,behavior:'smooth'});
 }
-function retreat(){
+function retreat(to){
   var d=load(); d.run=freshRun(lvOf(d.xp||0)); save(d); S=d; MAP=buildMap();
-  sfx('confirmation_001'); renderHud(); renderMap(); toast('整裝完畢，再來一次');
+  sfx('confirmation_001'); renderHud(); if(to==='tower') renderTower(); else renderMap(); toast('整裝完畢，再來一次');
 }
 init();
 </script>
