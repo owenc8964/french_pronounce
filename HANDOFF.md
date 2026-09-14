@@ -4589,6 +4589,29 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 
 **Duolingo 週報**：Owen 設定沒改，但**買家庭方案後就沒收到**。查不到官方說明，時間點吻合。建議他查網頁版 duolingo.com 設定→通知、確認帳號綁的 email、問客服；否則截 App 個人頁。
 
+#### 三之七、09-14 下午：清晨排程兩次卡死的根治＋試煉之塔改雙版本（⭐ 新 session 從這裡接）
+
+**排程卡死的真正原因**（兩次都是同一件事）：排程用了**沒預先授權的指令**，停在授權確認視窗等人按，Owen 在睡覺。
+- 06:09 那班卡在 `python3 -c "from PIL…"`（畫怪物圖），卡到 14:07 被手動停掉，零產出
+- 加了唯讀指令 allowlist 後手動重跑，14:15 又卡在 `cd "…" && git check-ignore …`——**模型習慣在每個指令前加 `cd` 前綴**，allowlist 永遠補不完
+- ⭐ **根治**：`.claude/hooks/routine_permission.py`（PermissionRequest hook，掛在專案 `.claude/settings.json`）
+  **只在排程 session 生效**（transcript 開頭含 `<scheduled-task`）：上網 WebSearch／WebFetch 放行；**其他沒授權的指令直接拒絕、不跳視窗**，
+  拒絕訊息要它改用已授權方法，非用不可就跳過並寫進 `GAME_ROADMAP.md` 第五節「需要 Owen 開放授權：…」。
+  互動 session 完全不受影響（照常跳授權確認）。Owen 09-14：「遇到沒授權的指令就直接拒絕…最好遇到狀況要主動提出需要我開放什麼權限」。
+- 已 pipe-test 四種情況（排程 Bash→拒、排程 WebFetch→放行、互動 session→不干涉、壞輸入→不報錯）。
+  ⚠️ **還沒在真的排程裡看到它觸發**——下一個 session 第一件事：看 `clb7-game-dawn` 下一次跑的結果（`list_task_runs`＋清晨日誌＋第五節有沒有授權請求）。
+- 專案 allow 另加了 `node --check`／`git show`／`diff`／`wc`／`head`／`tail`／`sed -n`／`mkdir -p drafts`。
+- 排程 prompt 已改：明講不要加 `cd` 前綴、改檔只用 Edit／Write、被拒絕時怎麼做、最終回報要列出被拒絕的指令。
+
+**試煉之塔（B1）改雙版本**（Owen 09-14 拍板）：
+- 發現：模擬考素材 `assets/tcf/` 被 `.gitignore` 排除（考試原題只留本機），`mock.html` 在正式站和手機上本來就是空的
+- ⭐ **手機版＝所有筆記內容**（`questions.js`＋`sentences.js`）；**電腦版＝考試原題**（`assets/tcf/exam/`）；偵測 `window.TCF_INDEX` 載入成功與否決定版本，⛔ 失敗不報錯直接退回手機版
+- ⏸ **09-14 Owen 追問「試煉之塔要密碼？考試題目需要金鑰才能使用，不然就是一般題目」**——Claude 的建議見下一段對話；
+  藍圖 B1 已改成「⏸ Owen 確認金鑰方案」，**排程會先跳過 B1**。新 session 先問 Owen 要不要採用加密金鑰方案再動手
+
+**其他 09-14 已完成並推上站**：動詞衝刺不再砍斷打字＋記打完秒數（`verb_sprint.html`）、練習頁回得去遊戲訓練場（`return_to.js`）、清晨排程配額加大（最多 6 項、實作 2 項）。
+⏸ 仍待 Owen：iPhone 上用 Safari 還是 Chrome 開遊戲（決定吶喊招式值不值得做）。
+
 #### 四、⏭ 下一步（Owen 睡前指定：「剩下你自己排程 明早開機後繼續執行」；排程已改 06:00）
 1. **訓練場（晨課）**：把 `verb_sprint` 與複習卡包成角色屬性成長（一拳超人式基礎功）
 2. **聽辨招式**（聽 TTS 選答）與**吶喊招式**（Web Speech API 法文辨識）——⚠️ 後者技術風險最高，要先做可行性測試

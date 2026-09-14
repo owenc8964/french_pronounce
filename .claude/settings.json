@@ -45,5 +45,18 @@
     "deny": [
       "Bash(git push --force *)"
     ]
+  },
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/routine_permission.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
   }
 }
