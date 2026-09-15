@@ -519,7 +519,61 @@ function npcLine(sit, aff){
 var TYPES={ foe:{ic:SP.sword,nm:'小怪',tag:'一般戰鬥'}, elite:{ic:SP.skull,nm:'精英',tag:'較硬・雙倍戰利品'},
             chest:{ic:SP.chest,nm:'寶箱',tag:'穩拿補給・無戰鬥'}, shop:{ic:SP.potion,nm:'商人',tag:'花錢回血'},
             npc:{ic:NPC_SPRITES[0],nm:'街坊',tag:'零風險・練交情'}, boss:{ic:SP.crown,nm:'守護者'} };
+/* B6 動態難度（2026-09-16，依 research/2026-09-16_動態難度調整.md 的公式與門檻）
+   ⭐ 只在「進地城前」評估一次（buildMap 是每次開新地城的入口），戰鬥中途不變
+     ——Sepulveda et al. 2020：難度變化要挑玩家沒感知的時間點做
+   ⭐ 遲滯不對稱：連續 3 次 Performance>1.2 才升階；1 次 Performance<0.8 就降階
+     ——保護不被連續卡關擊垮，比「一路往上加壓」更安全
+   ⛔ 不顯示任何難度數字/階級給 Owen（畫面只呈現怪物本身）
+   tier 0＝現有預設值（不動舊玩家體感），只在表現明顯超標時才往上調 */
+var DDA_TIER=[ {foe:2,elite:3,boss:4}, {foe:3,elite:4,boss:5}, {foe:4,elite:5,boss:6} ];
+function ddaTrack(ok){
+  if(!S) return;
+  S.dda = S.dda || {tier:0, upStreak:0, hist:[]};
+  S.dda.hist.push(ok?1:0);
+  if(S.dda.hist.length>10) S.dda.hist.shift();
+  save(S);
+}
+function ddaEvaluate(){
+  if(!S) return;
+  S.dda = S.dda || {tier:0, upStreak:0, hist:[]};
+  var h=S.dda.hist;
+  if(h.length<5) return;   /* 資料不足：維持現有階級，不用少量樣本亂調 */
+  var acc=h.reduce(function(a,b){ return a+b; },0)/h.length;
+  var perf=acc/0.75;   /* 0.75＝dashboard 既有的 CLB 達標門檻 */
+  if(perf>1.2){
+    S.dda.upStreak=(S.dda.upStreak||0)+1;
+    if(S.dda.upStreak>=3 && S.dda.tier<DDA_TIER.length-1){ S.dda.tier++; S.dda.upStreak=0; }
+  } else if(perf<0.8){
+    S.dda.upStreak=0;
+    if(S.dda.tier>0) S.dda.tier--;
+  } else {
+    S.dda.upStreak=0;
+  }
+  save(S);
+}
+function ddaHp(type){
+  var tier=(S && S.dda && S.dda.tier)||0, t=DDA_TIER[tier];
+  return type==='boss'?t.boss:(type==='elite'?t.elite:t.foe);
+}
+/* 低階多辨識型（choose/gender）、高階多產出型（fill/trans）；缺其中一種就不硬湊，退回原本隨機 */
+function pickWeightedQs(pool, n, tier){
+  var w=[[0.7,0.3],[0.5,0.5],[0.3,0.7]][tier]||[0.5,0.5];
+  var recog=shuffle(pool.filter(function(q){ return q.type==='choose'||q.type==='gender'; }));
+  var prod=shuffle(pool.filter(function(q){ return q.type==='fill'||q.type==='trans'; }));
+  if(!recog.length || !prod.length) return shuffle(pool).slice(0,n);
+  var out=[];
+  for(var i=0;i<n;i++){
+    var useRecog = rnd() < w[0];
+    var src = useRecog ? recog : prod;
+    if(!src.length) src = useRecog ? prod : recog;
+    if(!src.length) break;
+    out.push(src.shift());
+  }
+  return out;
+}
 function buildMap(){
+  ddaEvaluate();
   return { floors:[ shuffle(['foe','chest','npc']).slice(0,3),
                     shuffle(['foe','shop','npc','elite']).slice(0,3), ['boss'] ],
            pool: questionsFor(recentLessons(4)) };
@@ -1395,11 +1449,11 @@ function enter(key,type){
     return;
   }
   if(type==='npc'){ return meetNpc(key); }
-  var isBoss=type==='boss', qs;
-  if(isBoss) qs=BOSS.qs; else qs=shuffle(MAP.pool).slice(0, type==='elite'?3:2);
+  var isBoss=type==='boss', qs, ddaT=(S.dda&&S.dda.tier)||0;
+  if(isBoss) qs=BOSS.qs; else qs=pickWeightedQs(MAP.pool, type==='elite'?3:2, ddaT);
   if(!qs.length){ r.cleared[key]=1; save(S); advance(); return; }
   B={ key:key, type:type, isBoss:isBoss, qs:qs, i:0, combo:0,
-      maxHp:isBoss?4:(type==='elite'?3:2), hp:isBoss?4:(type==='elite'?3:2),
+      maxHp:ddaHp(isBoss?'boss':type), hp:ddaHp(isBoss?'boss':type),
       sprite:isBoss?BOSS.sprite:pick(MONSTERS),
       name:isBoss?BOSS.name:pick(FOE_NAMES),
       title:isBoss?BOSS.title:(type==='elite'?'精英':''),
@@ -1778,6 +1832,7 @@ function resolveMove(loose, exact, q, m, retried){
   if(B && B.exam && q.key) examRecord(q.key, loose);
   if(B && B.tt) return towerResolve(loose, exact, q, m, retried);
   if(B && !B.exam && q && q.topic) gameRecord(q, loose && !retried);
+  if(B && !B.exam && !B.tower && q && q.topic) ddaTrack(loose && !retried);   /* B6：塔已有自己的連擊節奏（B8）不混進來；地城/副本/主線戰鬥都算進「近期整體表現」，只拿來調地城怪物 */
   var hero=document.getElementById('hero'), foe=document.getElementById('foe');
   if(loose){
     B.combo++;
