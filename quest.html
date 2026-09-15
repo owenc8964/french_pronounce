@@ -385,6 +385,7 @@ var MOVES={
   blast:{id:'blast',name:'大招',    dmg:2,   type:'fill',   sec:'30 秒', why:'把空格打出來'},
   chant:{id:'chant',name:'詠唱',    dmg:3,   type:'trans',  sec:'60 秒', why:'中翻法，整句自己打'},
   ear:  {id:'ear',  name:'看破',    dmg:1.5, type:'listen', sec:'20 秒', why:'只聽，不看字'},
+  shout:{id:'shout',name:'吶喊',    dmg:2.5, type:'speak',  sec:'不限時', why:'照著唸出整句，麥克風判定'},   /* B4，見下方大段說明 */
   read: {id:'read', name:'解讀',    dmg:1,   type:'exam',   sec:'不限時', why:'讀懂文件，選出答案'},   /* 只在考試之塔 */
 };
 /* ⭐ 聽辨題是**現場合成**的：從 sentences.js 抽一句唸出來，選項是別句的中文。
@@ -405,6 +406,21 @@ function listenQuestion(lessons){
   }
   return { type:'listen', q:'（只有聲音）聽牠說了什麼？', a:right.zh, opts:opts,
            fr:right.fr, aNote:'原句：<b>'+right.fr+'</b>', lesson:right.lesson };
+}
+/* ════════════════════════════════════════════════════════════════
+   吶喊招式（B4，2026-09-16，依 research/2026-09-13_語音辨識可行性.md）
+   ⭐ Web Speech API 拼圖破碎（iOS 上非 Safari 完全不支援）＋WER 20-25%，
+     ⛔ 所以只當「加分招式」：feature-detect 不到就不出現按鈕、不報錯；
+     只要有辨識結果（哪怕分數低）就算出招（威力打折），⛔ 真正的「沒扣血、可以換招式」
+     只留給完全沒聽到／逾時／API 出錯——句子本身照鐵律只能取自 sentences.js。
+   ════════════════════════════════════════════════════════════════ */
+function speechSupported(){ return !!(window.SpeechRecognition||window.webkitSpeechRecognition); }
+function shoutSentence(lessons){
+  var pool=(typeof SENTENCES!=='undefined'?SENTENCES:[]).filter(function(x){
+    return (!lessons||!lessons.length||lessons.indexOf(x.lesson)>=0) && x.fr && x.fr.length>4 && x.fr.length<70; });
+  if(!pool.length) pool=(typeof SENTENCES!=='undefined'?SENTENCES:[]).filter(function(x){ return x.fr && x.fr.length>4 && x.fr.length<70; });
+  if(!pool.length) return null;
+  return pool[Math.floor(rnd()*pool.length)];
 }
 function movePool(ls, t){
   return BANK.filter(function(q){
@@ -1610,11 +1626,13 @@ function showCmds(){
   if(B.forceMove && !B.forcedShown){    /* 考驗節點：開場就推薦最重的招（⛔ 但不強制，降級鍵還在） */
     B.forcedShown=1;
   }
-  var btns=(B.tt?B.towerMoves:((B.tower&&B.towerMove)?[B.towerMove]:['hit','heavy','blast','chant','ear'])).map(function(k){   /* 塔：只列這個結構有的招式 */
+  var btns=(B.tt?B.towerMoves:((B.tower&&B.towerMove)?[B.towerMove]:['hit','heavy','blast','chant','ear','shout'])).map(function(k){   /* 塔：只列這個結構有的招式；shout 不進塔，只在地城/副本/主線 */
     var m=MOVES[k];
-    var n=(m.type==='exam') ? 1 : (m.type==='listen') ? ((typeof SENTENCES!=='undefined'&&SENTENCES.length>=4)?1:0) : movePool(ls,m.type).length;
+    var n=(m.type==='exam') ? 1 : (m.type==='listen') ? ((typeof SENTENCES!=='undefined'&&SENTENCES.length>=4)?1:0)
+        : (m.type==='speak') ? ((speechSupported()&&typeof SENTENCES!=='undefined'&&SENTENCES.length>=1)?1:0)   /* B4：不支援就不出現，⛔ 不報錯 */
+        : movePool(ls,m.type).length;
     if(!n) return '';
-    return '<button class="cmd" onclick="useMove(\''+k+'\')">'+img(k==='chant'?SP.wand:(k==='blast'?SP.potion:(k==='ear'?SP.card:SP.sword)))+
+    return '<button class="cmd" onclick="useMove(\''+k+'\')">'+img(k==='chant'?SP.wand:(k==='blast'?SP.potion:(k==='ear'||k==='shout'?SP.card:SP.sword)))+
       '<span>'+m.name+' <span style="color:var(--gold);font-size:.72rem">×'+m.dmg+'</span>'+
       '<small>'+m.why+'　'+m.sec+'</small></span></button>';
   }).join('');
@@ -1660,6 +1678,11 @@ function useMove(k){
     var lq=listenQuestion(B&&B.lessons?B.lessons:ls);
     if(!lq){ toast('句庫還不夠出聽辨題'); return; }
     B.move=m; return askListen(lq,m);
+  }
+  if(m.type==='speak'){
+    var sq=shoutSentence(B&&B.lessons?B.lessons:ls);
+    if(!sq){ toast('句庫還不夠出這招'); return; }
+    B.move=m; return askShout(sq,m);
   }
   /* ⚠️ 主線節點有指定 topic 時要先用它的題 ——
      否則第 1 章（自我介紹）會跑出第 29 課的量詞題，劇情跟練習就脫節了（09-12 實測踩到）。
@@ -1765,6 +1788,62 @@ function askListen(q,m){
   setTimeout(function(){ say(q.fr); }, 350);
 }
 function replay(){ if(B.curQ&&B.curQ.fr) say(B.curQ.fr); }
+
+/* ── 吶喊：唸出整句，麥克風判定（寬鬆比對，不逐字）───────────── */
+function askShout(q,m){
+  B.curQ=q; B.curM=m;
+  document.getElementById('panel').innerHTML=
+    '<div class="q"><span class="consigne">Répétez à voix haute :</span></div>'+
+    '<div class="q" style="margin-top:6px">'+esc(q.fr)+'</div>'+
+    '<div class="cmds" style="margin-top:12px">'+
+      '<button class="cmd" id="shoutBtn" onclick="startShout()">'+img(SP.wand)+
+        '<span>按下開始唸<small>唸完自動判定，不要求逐字</small></span></button>'+
+      '<button class="cmd" onclick="buildDown()">'+img(SP.shield)+
+        '<span>改用普通攻擊<small>麥克風不方便也沒關係</small></span></button>'+
+    '</div><div id="shoutFb" style="min-height:20px;color:var(--dim);font-size:.8rem;margin-top:8px"></div>';
+}
+var SHOUT_REC=null;
+function startShout(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR) return;
+  var btn=document.getElementById('shoutBtn'), fb=document.getElementById('shoutFb');
+  if(btn) btn.disabled=true;
+  if(fb) fb.textContent='聽你說…';
+  try{
+    SHOUT_REC=new SR();
+    SHOUT_REC.lang='fr-FR'; SHOUT_REC.interimResults=false; SHOUT_REC.maxAlternatives=3;
+    SHOUT_REC.onresult=function(e){
+      var alts=[], r=e.results&&e.results[0];
+      if(r) for(var i=0;i<r.length;i++) alts.push(r[i].transcript);
+      resolveShout(alts);
+    };
+    SHOUT_REC.onerror=function(){ resolveShout([]); };
+    SHOUT_REC.onnomatch=function(){ resolveShout([]); };
+    SHOUT_REC.onend=function(){ var b=document.getElementById('shoutBtn'); if(b) b.disabled=false; };
+    SHOUT_REC.start();
+  }catch(e){ resolveShout([]); }
+}
+/* 關鍵詞命中率，忽略重音/大小寫/標點——WER 20-25% 不能逐字比對 */
+function shoutScore(said, target){
+  var a=normAns(said), b=normAns(target);
+  if(!a || !b) return 0;
+  if(a===b) return 1;
+  var aw=a.split(' '), bw=b.split(' ').filter(function(w){ return w.length>1; }), hit=0;
+  bw.forEach(function(w){ if(aw.indexOf(w)>=0) hit++; });
+  return bw.length ? hit/bw.length : 0;
+}
+function resolveShout(alts){
+  var fb=document.getElementById('shoutFb'), btn=document.getElementById('shoutBtn');
+  if(!alts.length){   /* 完全沒聽到／逾時／API 出錯：不算出招，不扣任何東西 */
+    if(fb) fb.innerHTML='沒聽清楚——<a href="javascript:void(0)" onclick="startShout()">再唸一次</a>　或　<a href="javascript:void(0)" onclick="buildDown()">改用普通攻擊</a>';
+    if(btn) btn.disabled=false;
+    return;
+  }
+  var target=B.curQ.fr, best=0;
+  alts.forEach(function(s){ var sc=shoutScore(s,target); if(sc>best) best=sc; });
+  var full=best>=0.6;   /* 有收到辨識結果就算出招，分數只影響是完整命中還是半傷害安慰獎 */
+  resolveMove(true, full, {q:target, a:target, aNote:''}, B.curM, !full);   /* aNote 留空：exact=false 時 resolveMove 本身就會秀出正確寫法，不重複 */
+}
 
 /* ── 大招／詠唱：自己打出來 ─────────────────────────────────
    ⚠️ 2026-09-12 Owen：「打字 ok 不用像 duolinguo 那樣選字 不夠扎實」
