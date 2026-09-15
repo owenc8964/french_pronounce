@@ -40,7 +40,8 @@
       "Bash(head *)",
       "Bash(tail *)",
       "Bash(sed -n *)",
-      "Bash(mkdir -p drafts*)"
+      "Bash(mkdir -p drafts*)",
+      "Bash(node tools/*)"
     ],
     "deny": [
       "Bash(git push --force *)"
