@@ -452,6 +452,27 @@ ch1 落地
 3. **資料層**：把 ch2-3、ch12-4 的 type 從 `trial` 改成 `talk`／`fight`（它們本來就是讀懂型的 topic，不是產出型）。
 ⭐ 建議先做 2（馬上止血、不違反教材鐵律），再視玩起來的重複感決定要不要 1。
 
+### ⚠️ 09-16 重新核對：上面的數字已經過期（題庫長大了，別再用 09-13 的表）
+
+> `GAME_ROADMAP.md` D1 排程重新跑健檢（腳本：`tools/tmp_story_node_health.js`，未入 repo 正式工具）。
+> 從 09-13 到現在題庫從第 24 課長到第 34 課，兩個節點已經自己長出產出題了：
+> **ch2-3（vocab-annonces）現在有 1 題 fill**、**ch9-3（reservation-hotel）現在有 3 題 trans**——
+> 兩者都已經脫離「完全沒有 fill/trans」名單。
+
+**現在真正「完全沒有 fill/trans」的只剩 2 個**（choose 分別是 2、10，都停在原數字沒變）：
+
+| 節點 | 類型 | topic | choose | fill | trans |
+|---|---|---|---|---|---|
+| ch4-4 | **boss** | vocab-places-city | 2 | **0** | **0** |
+| ch12-4 | **trial** | strategie-lecture | 10 | **0** | **0** |
+
+**choose<4 但已有產出題的節點：18 個**（09-13 的表少算了新加入的 ch9-3）：
+ch1-1／ch1-2／ch1-4／ch5-2／ch6-4／ch8-1／ch8-3／ch8-4／ch9-2／**ch9-3（新）**／ch10-1／ch10-2／ch11-1／ch11-5／ch12-1／ch12-2／ch12-3／ch12-5。
+其中 **choose=1 最急**：ch5-2（vocab-weather-season）、ch9-2（family-possessives）、ch10-1（universite-vocab）、ch10-2（metier-travail-vocab）。
+
+→ D1 這次只做了 ch4-4／ch12-4 的候選題（`drafts/story_questions.js`，13 題，⏸ 等 Owen 核對），
+choose<4 的 18 個節點留給下一次 D 項，優先做 choose=1 的四個。
+
 ## NPC 台詞池盤點（2026-09-15，`GAME_ROADMAP.md` D3）
 
 > 街坊系統（`quest.html`）用 `sit.lessons` 從 `sentences.js` 抓句子當台詞池，
