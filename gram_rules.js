@@ -99,7 +99,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'pronouns', name:'Pronoms (toniques · COD · COI · y)', icon:'👤', zone:'A1', cat:'pronoms',
-    lessons:[9,11,12,15,31], topics:['pronoms-toniques','cod-pronouns','coi-pronouns','pronom-y'], unlocked:true,   // 08-28：on-vs-nous 移到獨立的 pronom-on 點（第28課把它拉成完整的一節）／09-07（第31課）補上 COI
+    lessons:[9,11,12,15,31,34], topics:['pronoms-toniques','cod-pronouns','coi-pronouns','pronom-y','place-pronoms-cod-coi'], unlocked:true,   // 08-28：on-vs-nous 移到獨立的 pronom-on 點（第28課把它拉成完整的一節）／09-07（第31課）補上 COI
     rule:{
       title:'代名詞三家族 — 重讀、直接／間接受詞、地點',
       why:'法文的 je/tu/il 被磨到只剩輕輕一個音，虛弱到不能單獨站著、不能被強調（不能只回答 "je"）——所以保留了一套有重音的「加強版」moi/toi/lui/eux 專門扛這些場合。受詞代名詞放動詞前面也是同一件事：它們是黏在動詞上的輕音節，像磁鐵吸在動詞前。COD／COI 的分工不是隨機的：COD 直接接在動詞後面（je vois qui/quoi），COI 是因為那個動詞本身的文法要求要接 à（je parle à qui），代名詞只是把「à＋人」壓縮掉——保留的是動詞原本的介係詞需求，不是代名詞自己發明的規則。on 原本是「人」這個名詞（拉丁 homo），「人們都這樣」講久了就變成口語的「我們」，所以動詞跟 il 同形。',
@@ -113,6 +113,9 @@ const GRAM_POINTS = [
         '⚠️ COI leur（給他們）永遠不加 s，不要跟所有格 leur/leurs（他們的）搞混——兩套規則字面一樣但功能不同',
         '⚠️⚠️ 兩個動詞連用時，代名詞貼著「真正支配它」的那個動詞，不是句子最前面的動詞：J\'aime beaucoup la faire（la 貼 faire，因為 la sieste 是 faire 的受詞）',
         '⭐⭐⭐ COD＋COI 同一句疊用時，順序固定 COD 在前、COI 在後：Tu as acheté l\'oreiller à Marc ? — Je le lui ai acheté.',
+        '⭐ 位置（第34課）：簡單時態放動詞前（Vous la connaissez）；複合時態放助動詞前（Je les ai aimés）；futur proche 與兩個動詞連用放原形前（Je vais le regarder）',
+        '⚠️ 否定 ne…pas 夾住變位動詞，代名詞位置不動：Je ne l\'ai pas vu／Je ne vais pas le regarder',
+        '⚠️ COD 放在 avoir 前面，過去分詞要配合 COD：Les premières scènes, je les ai trouvées nulles（COI 不配合：le film leur a plu）',
         'on = 口語的 nous，動詞跟 il/elle 同形：On habite à Lyon',
         'y 代替地點：J\'y vais（我去那裡）',
       ],
@@ -621,6 +624,30 @@ const GRAM_POINTS = [
         { fr:'Le succès de Twitch n\'a donc rien d\'étonnant.', zh:'所以 Twitch 會成功一點也不奇怪。（donc 放動詞後）' },
       ]}},
 
+  { id:'subjonctif', name:'Subjonctif présent', icon:'🌀', zone:'A2', cat:'verbe-mode',
+    lessons:[34], topics:['subjonctif-present'], unlocked:true,   // 09-15（第34課 Édito A2 p.117）從 B1 佔位點搬來解鎖；verb_sprint／dashboard 的 gram:'subjonctif' 本來就指這個 id
+    rule:{
+      title:'虛擬式現在 — 不是在報告事實，是把動作放進「必須／評價」的框框',
+      why:'直陳式在說「這件事是真的」；虛擬式在說「我對這件事的要求或看法」——Il faut que tu regardes 不是說你正在看，而是把「你看」這件事放進必要的框框。所以開關在主句：il faut que、il est important que 表達必要，c\'est bien que、c\'est normal que（il est／c\'est ＋ 形容詞或 bien ＋ que）表達評價。形也沒有新東西，全部借你會的：je／tu／il／ils 拿現在式 ils 的字根（ils informent → inform-）加 e／es／e／ent，nous／vous 直接跟 imparfait 一樣。所以 -er 動詞的 je／tu／il／ils 聽起來跟現在式一模一樣，真正會露出馬腳的只有三種：nous／vous 多出來的 i（que nous mangions）、字根本來就跟 je 形不同的動詞（ils finissent → que je finisse），以及少數真的不規則的 être／avoir／aller／faire。',
+      points:[
+        '觸發（必要）：il faut que、il ne faut pas que、il est important que、il est indispensable que',
+        '觸發（評價）：c\'est bien que、c\'est normal que、c\'est très bien que',
+        'je／tu／il／ils：現在式 ils 的字根 ＋ e／es／e／ent（ils informent → que j\'informe）',
+        'nous／vous：跟 imparfait 一樣（que nous informions、que vous informiez）',
+        '⭐ -er 動詞 je／tu／il／ils 跟現在式同形；-ir 等字根跟著 ils：ils finissent → que je finisse、ils dorment → que je dorme',
+        '⚠️⚠️ que nous mangions，⛔ 不是 mangeons（🎙 老師：很多法國人口語也講錯）',
+        '不規則：être → sois／soit／soyons／soient；avoir → aie／ait／ayons／aient；aller → aille／allions；faire → fasse／fassions',
+        '⚠️ aie／aies／ait／aient 全部唸 [ɛ]，跟 j\'ai 同音，只能看拼字',
+        'il faut ＋ 原形＝泛指；il faut que ＋ 虛擬式＝指定某人',
+      ],
+      examples:[
+        { fr:'Il faut que tu fasses attention sur les réseaux sociaux.', zh:'你在社群網路上要小心。（faire → fasses）' },
+        { fr:'Il est important qu\'ils s\'adaptent aux différents publics.', zh:'它們要適應不同的受眾，這很重要。' },
+        { fr:'C\'est très bien que les personnes âgées soient plus connectées.', zh:'老年人更常上網，這很好。（評價 → soient）' },
+        { fr:'Il ne faut pas que vous postiez de photos de vos enfants.', zh:'你們不可以貼小孩的照片。（vous 形＝imparfait）' },
+        { fr:'Aujourd\'hui, il faut absolument que j\'aille voir l\'immigration.', zh:'今天我一定得去一趟移民局。（aller → aille）' },
+      ]}},
+
   // ═══ B1（已教的部分）══════════════════════════════════════
   { id:'relatifs', name:'Pronoms relatifs (qui · que · où)', icon:'🔗', zone:'B1', cat:'pronoms',
     lessons:[16,23], topics:['qui-que'], unlocked:true,
@@ -650,7 +677,6 @@ const GRAM_POINTS = [
   //    pour/parce que 第2/7/16課都教過，不該被鎖。教到 B1 論述時再把新 topic 掛回來。
   { id:'opinions',     name:'Opinions & débats',        icon:'💬', zone:'B1', cat:'discours',    lessons:[], topics:[], unlocked:false },
   { id:'futur',        name:'Futur & conditionnel',     icon:'🌟', zone:'B1', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
-  { id:'subjonctif',   name:'Subjonctif présent',       icon:'🌀', zone:'B1', cat:'verbe-mode',  lessons:[], topics:[], unlocked:false },
   { id:'discours',     name:'Discours indirect',        icon:'💭', zone:'B1', cat:'discours',    lessons:[], topics:[], unlocked:false },
   { id:'pluperfect',   name:'Plus-que-parfait',         icon:'⏪', zone:'B2', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
   { id:'cond-passe',   name:'Conditionnel passé',       icon:'😔', zone:'B2', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },

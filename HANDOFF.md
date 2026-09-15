@@ -21,7 +21,7 @@
 |---|---|
 | **考試** | **2027-04-18 前哨戰／診斷考｜2027-09-19 正場**。⚠️ 2027 場次官方**尚未公布**，日期是照 2026（2/8、4/19、9/20、12/20，全是該月第三個星期日）推的。**法協 02-2364-8833 那通電話還沒打。** |
 | **考哪個** | **TCF Canada**（台北法協有考，NT$8,000 四科）。TEF Canada 台灣**無考場**，要考得飛東京 |
-| **程度** | A2，第 33 課（筆記＋九項連動完成；Anki 第33課 **42 張已產出、待匯入**（`~/Desktop/anki_l33_auto.tsv`），收藏檔 711 張）。2026-05 開始學法文 |
+| **程度** | A2，第 34 課（筆記＋九項連動完成；Anki 第33課 42 張、第34課 **44 張**已產出、待匯入（`~/Desktop/anki_l33_auto.tsv`、`~/Desktop/anki_l34_auto.tsv`），收藏檔 711 張）。2026-05 開始學法文 |
 | **口說語言島** | ⭐ **Phase 0 八座全滿**（AC1/2/3/5/7/8/11/15），每座 169–225 字 / 78–103 秒，中文母本 `source_zh` 都在。`AC8` 的 follow-up gap **掛零** |
 | **考試材料** | 三包全部整理完。**Tâche 3 = 167 議題／245 變體**（xlsx 八分頁）＋ 119 題雙語；⭐ **Tâche 2 = 160 條情境**（不是 20，見 09-02 校準）；兩本 Ellipses 正式教科書 |
 | **系統** | `mock.html` 已驗收（44+44 套模擬考可用）。dashboard／tracker 倒數已對齊新日期 |
@@ -4700,6 +4700,17 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
   ① **內容重複**：句庫 292 句有 30%、chunks 2254 句有 27% **已經以別的 ID 在 Anki 裡**（例：`FR_QUEST_S_L1_3` ＝ 既有 `FR_L1_001`）。
      測試匯出的 7 張裡 **4 張是重複卡**——`anki_precheck.py` 只比 ID，抓不到「同一句不同 ID」。建議：precheck 加「同一句法文已在收藏檔」檢查並自動略過
   ② **手機下載**：Owen 用 iPhone Safari 玩，TSV 會存到「檔案」App 而不是桌面，還要傳到 Mac 才能匯入 Anki——流程摩擦大，按鈕文案「存到桌面」在手機上也不對
+  - ✅ **09-15 晚 ① 已修（Owen：「先修重複卡就好」）**：`tools/anki_precheck.py` 新增「同一句法文已在收藏檔（ID 不同）」檢查——
+    比對 Sentence 欄（去 HTML／標點／大小寫，重音保留），找到就算 ⛔ 並**自動另存 `<檔名>_去重.tsv`**，Owen 匯入去重版即可。
+    驗證：戰利品測試檔 7 張 → 抓到 4 張重複、去重版 3 張 ✅；第33課待匯入檔 42 張無誤報；第34課 44 張無重複。② 手機下載仍待決
+
+**✅ 09-15 晚：第34課入庫**（Owen 貼逐字稿＋`~/Desktop/0915/` 6 張課本截圖：Édito A2 Unité 8 p.116–121）
+- `french_notes.html` lesson-34（10 unit）：課文E Sciences et réseaux sociaux／主文法 **Le subjonctif（nécessité, opinion）**／p.117 練習答案／詞彙頁 Les médias audios et les réseaux sociaux／課文H 電影《Eiffel》影評＋Pour faire une critique＋plaire／課文I＋主文法 **La place des pronoms COD et COI**／平行閱讀 Mon grand-père sur Instagram／課堂法語／發音警報／糾錯摘要。`check_notes.js` 錯誤 0／提醒 0
+- ⚠️ **來源標記**：老師說《Eiffel》是英文片 → 查證是**法語發音的法國片**（Martin Bourboulon 2021，筆記已標）；老師口說 un nouveau étudiant／que j'ai（該 aie）／tu ne postes pas des photos 都照標準法文寫並標出；「il faut que 比命令委婉」標為老師語感，標準差別是泛指 vs 指定對象
+- **九項連動**：questions.js **+50 題**（新 topic `subjonctif-present` 16／`medias-audio-reseaux` 15／`critique-film` 9／`place-pronoms-cod-coi` 10）＋quiz／dashboard TOPIC_LABELS＋`node tools/gen_topic_labels.js` 重產 topic_labels.js（101 個）｜chunks.js **+99**（逐張看過背面）｜sentences.js S_L34_1~12｜table_drill +3 表（subjonctif-drill、medias-audio-drill、place-pronoms-drill）｜
+  **gram_rules：B1 佔位點 `subjonctif` 搬到 A2 解鎖**（lessons [34]、完整 rule）——`verb_sprint`／`dashboard` 的 `gram:'subjonctif'` 本來就指這個 id，**不用改 MODES**（第11項檢查：瀏覽器確認動詞衝刺已出現 Subjonctif 按鈕 ✅）；`pronouns` 點加第34課與位置規則｜codex 6-3-1／6-3-2 掛 topics＋gram（座標不動）｜map CURRENT_LESSON→34、subjonctif 格改 A2 解鎖＋3 格新 tile｜reading **a35**｜writing_tasks W34a（p.119 論壇題）／W34b（影評）
+- Anki：`gen_anki_lesson.py 34` → 44 張（`~/Desktop/anki_l34_auto.tsv`），precheck（含新的重複檢查）✅
+- 瀏覽器驗（ROOM TEST，測完清 TEST 房間）：verb_sprint Subjonctif 鈕、quiz?lesson=34 載入 50 題與標籤、table_drill 3 表、map 4 格解鎖＋chip 第34課、reading a35、筆記 lesson-34 10 unit／226 喇叭／平行閱讀連讀條／專項 Quiz 鈕；console 零錯誤
 
 **其他 09-14 已完成並推上站**：動詞衝刺不再砍斷打字＋記打完秒數（`verb_sprint.html`）、練習頁回得去遊戲訓練場（`return_to.js`）、清晨排程配額加大（最多 6 項、實作 2 項）。
 ⏸ 仍待 Owen：iPhone 上用 Safari 還是 Chrome 開遊戲（決定吶喊招式值不值得做）。

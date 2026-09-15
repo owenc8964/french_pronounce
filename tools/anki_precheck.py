@@ -45,6 +45,11 @@ def load_collection():
 def norm(s):
     return re.sub(r'\s+', ' ', s).strip()
 
+def sent_key(s):
+    """比對「是不是同一句法文」用：去掉 HTML、標點、大小寫與多餘空白（重音保留，é 和 e 是不同的字）"""
+    s = html.unescape(re.sub(r'<[^>]+>', '', s)).replace('’', "'")
+    return re.sub(r'[\s.!?,;:«»"\'… ]+', ' ', s).strip().lower()
+
 def check(path, db):
     print('\n══════ ' + path)
     rows = []
@@ -110,6 +115,31 @@ def check(path, db):
     for key, old, newv in clash:
         problems += 1
         print(f'     {key}\n        收藏檔現在是：{old[:56]}\n        這個檔想寫入：{newv[:56]}')
+
+    # ⛔ 同一句法文已經在收藏檔、只是 ID 不同（2026-09-15 加）
+    #   遊戲戰利品匯出的 ID 是 FR_QUEST_…，同一句在收藏檔裡可能早就是 FR_L1_001——
+    #   上面只比 ID 抓不到，測試匯出 7 張有 4 張是這種。匯進去就是重複卡。
+    #   ⭐ 找到就自動另存一份「_去重.tsv」，Owen 匯入那一份就好，不用自己刪列。
+    have = {}
+    for k, f in db.items():
+        if len(f) > 1 and f[1].strip():
+            have.setdefault(sent_key(f[1]), k)
+    dup_lines = {i for i, f in rows if f[0] not in db and len(f) > 1 and sent_key(f[1]) in have}
+    if dup_lines:
+        problems += len(dup_lines)
+        print(f'  ⛔ 同一句法文已經在收藏檔（ID 不同，匯進去會變重複卡）：{len(dup_lines)} 張')
+        for i, f in rows:
+            if i in dup_lines:
+                print(f'     {f[0]} ＝ 收藏檔的 {have[sent_key(f[1])]}　{f[1][:40]}')
+        keep = [f for i, f in rows if i not in dup_lines]
+        if keep:
+            out = re.sub(r'\.tsv$', '', path) + '_去重.tsv'
+            with io.open(out, 'w', encoding='utf-8') as fh:
+                fh.write(''.join('\t'.join(f) + '\n' for f in keep))
+            print(f'  ➜ 已另存去重版（拿掉 {len(dup_lines)} 張、剩 {len(keep)} 張）：{out}')
+            print('     ⭐ 請匯入這個去重版，匯入前再對它跑一次本檢查')
+        else:
+            print('  ➜ 整個檔案的句子都已經在收藏檔裡了，不用匯入')
 
     if problems == 0:
         print('  ✅ 可以匯入')

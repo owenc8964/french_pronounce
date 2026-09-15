@@ -345,4 +345,17 @@ const SENTENCES = [
   { id: 'S_L33_10', lesson: 33, fr: 'Le sport m\'intéresse le plus car j\'adore le baseball et le basket.', zh: '我最有興趣的是體育，因為我超愛棒球和籃球。', note: '⭐ Owen 自己的回答（老師修過）：ça m\'intéresse le plus ＋ car' },
   { id: 'S_L33_11', lesson: 33, fr: 'Je ne regarde plus la télévision depuis dix ans parce que ça prend beaucoup de temps.', zh: '我十年沒看電視了，因為很花時間。', note: '⭐ Owen 自己的句子（老師修過）：ne...plus ＋ depuis ＋ parce que' },
   { id: 'S_L33_12', lesson: 33, fr: 'Le succès de Twitch n\'a donc rien d\'étonnant.', zh: '所以 Twitch 會成功一點也不奇怪。', note: '⭐ n\'avoir rien de ＋ 形容詞；donc 放動詞後（書面）' },
+  // 第34課
+  { id: 'S_L34_1', lesson: 34, fr: 'Il faut que tu fasses attention sur les réseaux sociaux.', zh: '你在社群網路上要小心。', note: '⭐⭐ il faut que ＋ 虛擬式；faire → fasses（不規則）' },
+  { id: 'S_L34_2', lesson: 34, fr: 'Il est important qu\'ils s\'adaptent aux différents publics.', zh: '它們要適應不同的受眾，這很重要。', note: '⭐ il est important que ＋ 虛擬式' },
+  { id: 'S_L34_3', lesson: 34, fr: 'C\'est bien qu\'elle te montre comment ça marche.', zh: '她教你怎麼用，很好。', note: '⭐ c\'est bien que（評價）＋ 虛擬式' },
+  { id: 'S_L34_4', lesson: 34, fr: 'Aujourd\'hui, il faut absolument que j\'aille voir l\'immigration.', zh: '今天我一定得去一趟移民局。', note: '⭐⭐ aller → que j\'aille（不規則）' },
+  { id: 'S_L34_5', lesson: 34, fr: 'Il est important que j\'aie le diplôme pour aller au Canada.', zh: '要去加拿大，拿到文憑很重要。', note: '⭐ avoir → que j\'aie（跟 j\'ai 同音）' },
+  { id: 'S_L34_6', lesson: 34, fr: 'Je ne veux pas être connecté tout le temps.', zh: '我不想一直掛在網上。', note: '詞彙頁 être connecté(e)' },
+  { id: 'S_L34_7', lesson: 34, fr: 'Parfois, j\'éteins mon smartphone tout le week-end.', zh: '有時候我整個週末都把手機關機。', note: 'éteindre → j\'éteins' },
+  { id: 'S_L34_8', lesson: 34, fr: 'Ce film est une bonne surprise, je le conseille à tous les fans de Romain Duris.', zh: '這部電影是個驚喜，我推薦給所有 Romain Duris 的粉絲。', note: '正面影評 ＋ COD le 放動詞前' },
+  { id: 'S_L34_9', lesson: 34, fr: 'Ce film m\'a beaucoup plu.', zh: '這部電影我很喜歡。', note: '⭐⭐ plaire → plu；主詞是電影' },
+  { id: 'S_L34_10', lesson: 34, fr: 'Les premières scènes, je les ai trouvées nulles.', zh: '開頭那幾場，我覺得很爛。', note: '⭐ COD 放助動詞前；過去分詞配合 les' },
+  { id: 'S_L34_11', lesson: 34, fr: 'Je leur ai conseillé de regarder cette série.', zh: '我建議他們看這部影集。', note: '⭐ COI leur 放助動詞前' },
+  { id: 'S_L34_12', lesson: 34, fr: 'Mon passe-temps, c\'est de jouer au tennis.', zh: '我的休閒嗜好是打網球。', note: '🎙 老師。un passe-temps ≠ 很花時間' },
 ];

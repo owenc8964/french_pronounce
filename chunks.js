@@ -15743,5 +15743,698 @@ const CHUNKS = [
   "fr": "la ligue",
   "zh": "聯賽",
   "note": ""
+ },
+ {
+  "id": "L34_Il_est_important_qu_ils",
+  "lesson": 34,
+  "fr": "Il est important qu'ils s'adaptent aux différents publics.",
+  "zh": "它們要適應不同的受眾，這很重要。",
+  "note": "⭐⭐ 本課主文法：il est important que ＋ 虛擬式"
+ },
+ {
+  "id": "L34_Il_faut_que_tu_regardes",
+  "lesson": 34,
+  "fr": "Il faut que tu regardes cette vidéo !",
+  "zh": "你一定要看這支影片！",
+  "note": "課本例句。🎙 老師：-er 動詞 je／tu／il／ils 跟現在式一模一樣（e／es／e／ent），會變的主要是不規則動詞"
+ },
+ {
+  "id": "L34_Il_faut_que_nous_mangion",
+  "lesson": 34,
+  "fr": "Il faut que nous mangions vite.",
+  "zh": "我們得快點吃。",
+  "note": "🎙 老師的例句。⚠️⚠️ 不是 mangeons——nous／vous 借 imparfait，聽得出多一個 i 音。老師：很多法國人口語也會講成 il faut que nous mangeons"
+ },
+ {
+  "id": "L34_que_je_finisse",
+  "lesson": 34,
+  "fr": "que je finisse",
+  "zh": "（虛擬式）我完成",
+  "note": "🎙 老師：-ir 動詞跟現在式不一樣——現在式 je finis，但字根要看 ils finissent → finiss- ＋ e"
+ },
+ {
+  "id": "L34_que_je_dorme",
+  "lesson": 34,
+  "fr": "que je dorme",
+  "zh": "（虛擬式）我睡",
+  "note": "🎙 老師：ils dorment → dorm- ＋ e（現在式是 je dors）"
+ },
+ {
+  "id": "L34_Il_faut_que_tu_fasses_à",
+  "lesson": 34,
+  "fr": "Il faut que tu fasses à manger.",
+  "zh": "你得去做飯。",
+  "note": "指定「你」去做。🎙 老師的語感：il faut que 比直接命令聽起來舒服，主管會這樣講——想要你做但不想下命令。⚠️ 標準文法書的差別是泛指 vs 指定對象；「比較委婉」是老師的語感，跟 Tu dois… 比才成立，本身還是很明確的要求"
+ },
+ {
+  "id": "L34_Il_est_important_que_j_a",
+  "lesson": 34,
+  "fr": "Il est important que j'aie le diplôme pour aller au Canada.",
+  "zh": "要去加拿大，拿到文憑很重要。",
+  "note": "🎙 老師口說成 que j'ai——⚠️ 寫的時候是虛擬式 aie（唸起來一樣）"
+ },
+ {
+  "id": "L34_Il_faut_que_tu_demandes",
+  "lesson": 34,
+  "fr": "Il faut que tu demandes à ta petite-fille comment ça marche.",
+  "zh": "你得問問你孫女那個怎麼用。",
+  "note": "練習3a ✅ Owen 截圖寫 demandes。🎙 petite-fille＝孫女；comment ça marche＝怎麼運作、怎麼用"
+ },
+ {
+  "id": "L34_Il_faut_qu_il_passe_moin",
+  "lesson": 34,
+  "fr": "Il faut qu'il passe moins de temps sur Internet.",
+  "zh": "他得少花一點時間在網路上。",
+  "note": "練習4b。🎙 老師口說 il faut que il passe——⚠️ 寫要縮成 qu'il"
+ },
+ {
+  "id": "L34_C_est_grâce_à_elle_qu_on",
+  "lesson": 34,
+  "fr": "C'est grâce à elle qu'on reconnaît une personne à la radio.",
+  "zh": "在廣播裡，我們就是靠它認出一個人的。",
+  "note": "練習1c（答案 la voix）。🎙 Owen 看不懂這句：c'est grâce à elle que…＝「就是多虧了它（elle＝la voix），我們才…」——回鍋第33課 grâce à ＋ 強調句 c'est…que。老師：聽廣播看不到人，只能靠聲音分辨"
+ },
+ {
+  "id": "L34_Le_rôle_de_Gustave_Eiffe",
+  "lesson": 34,
+  "fr": "Le rôle de Gustave Eiffel lui va très bien !",
+  "zh": "Gustave Eiffel 這個角色很適合他！",
+  "note": "課本 Seb_32。⭐ aller bien à qn＝很適合某人（衣服、角色），lui＝à Romain Duris"
+ },
+ {
+  "id": "L34_C_est_très_bien_filmé",
+  "lesson": 34,
+  "fr": "C'est très bien filmé !",
+  "zh": "拍得非常好！",
+  "note": "正面。🎙 老師：看的人覺得畫面很美"
+ },
+ {
+  "id": "L34_Je_trouve_ce_film_intére",
+  "lesson": 34,
+  "fr": "Je trouve ce film intéressant.",
+  "zh": "我覺得這部片很有意思。",
+  "note": "正面。🎙 Owen 問是不是邊看邊說的——老師：現在式是講「我覺得」；剛看完通常說 J'ai trouvé ce film…"
+ },
+ {
+  "id": "L34_Ça_me_plaît",
+  "lesson": 34,
+  "fr": "Ça me plaît.",
+  "zh": "我喜歡。",
+  "note": "🎙 老師：plaire＝讓人喜歡（to please）。ça＝那個東西，me＝我——順序跟中文相反。s'il vous plaît 就是這個字"
+ },
+ {
+  "id": "L34_Ça_m_a_plu",
+  "lesson": 34,
+  "fr": "Ça m'a plu.",
+  "zh": "我很喜歡（那時候）。",
+  "note": "🎙 過去分詞 plu（passé composé）。Owen 問「這也是看完才會講的吧」——對，看完電影最常這樣說"
+ },
+ {
+  "id": "L34_Ce_film_t_a_plu",
+  "lesson": 34,
+  "fr": "Ce film t'a plu ?",
+  "zh": "你喜歡這部電影嗎？",
+  "note": "🎙 老師：換成 te，就是「你」喜歡"
+ },
+ {
+  "id": "L34_Tu_me_plais",
+  "lesson": 34,
+  "fr": "Tu me plais.",
+  "zh": "我覺得你很有魅力。",
+  "note": "🎙 老師：plaire 用在人身上偏外表的吸引（我喜歡你的樣子）。⚠️ Je me plais＝我喜歡我自己"
+ },
+ {
+  "id": "L34_Je_t_aime_bien",
+  "lesson": 34,
+  "fr": "Je t'aime bien.",
+  "zh": "我滿喜歡你的（朋友式的）。",
+  "note": "🎙 老師：對人差很多——Je t'aime＝我愛你，很強烈；加了 bien 反而變輕"
+ },
+ {
+  "id": "L34_Je_vais_le_regarder",
+  "lesson": 34,
+  "fr": "Je vais le regarder.",
+  "zh": "我會去看它。",
+  "note": "🎙 老師：最重要的是看 vais（going to）——後面還有原形，代名詞就貼原形。回鍋第31課：代名詞貼著「真正支配它」的動詞"
+ },
+ {
+  "id": "L34_Tu_peux_lui_dire",
+  "lesson": 34,
+  "fr": "Tu peux lui dire.",
+  "zh": "你可以跟他說。",
+  "note": "🎙 老師：pouvoir ＋ 原形跟 futur proche 同一個道理，lui 貼 dire"
+ },
+ {
+  "id": "L34_Les_journaux_elle_préfèr",
+  "lesson": 34,
+  "fr": "Les journaux, elle préfère les lire en ligne.",
+  "zh": "報紙她比較喜歡在網路上看。",
+  "note": "練習2c。🎙 老師：lire quoi → COD les，兩個動詞 → 貼 lire"
+ },
+ {
+  "id": "L34_Cette_chaîne_ne_va_pas_l",
+  "lesson": 34,
+  "fr": "Cette chaîne ne va pas la diffuser.",
+  "zh": "這個頻道不會播它。",
+  "note": "練習3b（notre série préférée）。🎙 老師：⛔ 不是 ne la va pas diffuser，也不是 ne va la pas diffuser"
+ },
+ {
+  "id": "L34_C_est_moi_qui_lui_ai_mon",
+  "lesson": 34,
+  "fr": "C'est moi qui lui ai montré comment ouvrir un compte.",
+  "zh": "是我教他怎麼開帳號的。",
+  "note": "⭐ lui 放在助動詞 ai 前（montrer qch à qn）"
+ },
+ {
+  "id": "L34_Ses_amis_le_suivent_et_l",
+  "lesson": 34,
+  "fr": "Ses amis le suivent et lui écrivent de petits messages.",
+  "zh": "他的朋友追蹤他，還寫小訊息給他。",
+  "note": "⭐ le（suivre qn，COD）／lui（écrire à qn，COI）"
+ },
+ {
+  "id": "L34_Mais_il_faut_qu_il_fasse",
+  "lesson": 34,
+  "fr": "Mais il faut qu'il fasse attention aux fausses nouvelles.",
+  "zh": "但他得小心假新聞。",
+  "note": "⭐⭐ il faut que ＋ fasse；faire attention à ＋ les → aux"
+ },
+ {
+  "id": "L34_Aujourd_hui_je_devais_av",
+  "lesson": 34,
+  "fr": "Aujourd'hui, je devais avoir un nouvel étudiant.",
+  "zh": "今天我本來應該有一個新學生的。",
+  "note": "🎙 上課前閒聊。⭐ je devais＝本來應該（devoir 的 imparfait，老師：I should have）。⚠️ 老師口說 un nouveau étudiant——標準法文母音開頭的陽性名詞前要用 nouvel"
+ },
+ {
+  "id": "L34_On_va_regarder_ça_en_pre",
+  "lesson": 34,
+  "fr": "On va regarder ça en premier.",
+  "zh": "我們先看這個。",
+  "note": "🎙 en premier＝先"
+ },
+ {
+  "id": "L34_Alors_on_peut_lire_les_p",
+  "lesson": 34,
+  "fr": "Alors, on peut lire les phrases.",
+  "zh": "那我們來讀句子。",
+  "note": "🎙 帶進課本練習"
+ },
+ {
+  "id": "L34_C_est_un_site_très_utile",
+  "lesson": 34,
+  "fr": "C'est un site très utile.",
+  "zh": "這是一個很好用的網站。",
+  "note": "🎙 秀動詞變位網站時說的"
+ },
+ {
+  "id": "L34_Moi_j_écoute_beaucoup_la",
+  "lesson": 34,
+  "fr": "Moi, j'écoute beaucoup la radio, parce que j'aime le foot.",
+  "zh": "我很常聽廣播，因為我喜歡足球。",
+  "note": "🎙 老師講自己"
+ },
+ {
+  "id": "L34_Toi_tu_ne_postes_pas_de",
+  "lesson": 34,
+  "fr": "Toi, tu ne postes pas de photos de tes enfants ?",
+  "zh": "你不貼你小孩的照片嗎？",
+  "note": "🎙 老師口說 des photos——⚠️ 否定句標準要 de photos"
+ },
+ {
+  "id": "L34_Est_ce_que_toi_tu_commen",
+  "lesson": 34,
+  "fr": "Est-ce que toi, tu commentes beaucoup ?",
+  "zh": "你會常常留言嗎？",
+  "note": "🎙 詞彙頁 commenter"
+ },
+ {
+  "id": "L34_Je_suis_en_train_de_mang",
+  "lesson": 34,
+  "fr": "Je suis en train de manger.",
+  "zh": "我正在吃飯。",
+  "note": "🎙 解釋 en train de 時的例句"
+ },
+ {
+  "id": "L34_Mon_passe_temps_c_est_de",
+  "lesson": 34,
+  "fr": "Mon passe-temps, c'est de jouer au tennis.",
+  "zh": "我的休閒嗜好是打網球。",
+  "note": "🎙 解釋 passe-temps。⭐ c'est de ＋ 原形"
+ },
+ {
+  "id": "L34_un_passe_temps",
+  "lesson": 34,
+  "fr": "un passe-temps",
+  "zh": "消遣、休閒嗜好",
+  "note": "⚠️ 🎙 Owen 當堂以為是「很花時間」。老師：是拿來打發時間的事，Mon passe-temps, c'est de jouer au tennis."
+ },
+ {
+  "id": "L34_un_dispositif",
+  "lesson": 34,
+  "fr": "un dispositif",
+  "zh": "裝置、機制、手段",
+  "note": "🎙 老師：像之前看過的 moyen，「溝通的方式」"
+ },
+ {
+  "id": "L34_lutter_contre",
+  "lesson": 34,
+  "fr": "lutter contre",
+  "zh": "對抗",
+  "note": "標題 Lutter contre les « infox »"
+ },
+ {
+  "id": "L34_les_infox_f",
+  "lesson": 34,
+  "fr": "les infox (f.)",
+  "zh": "假新聞",
+  "note": "🎙 老師：info ＋ intox（intoxication，灌輸錯誤訊息）＝ les fausses nouvelles，英文 fake news。Owen 截圖手寫 intox/info"
+ },
+ {
+  "id": "L34_passer_par",
+  "lesson": 34,
+  "fr": "passer par",
+  "zh": "透過、經由",
+  "note": "passer par les réseaux sociaux"
+ },
+ {
+  "id": "L34_faire_barrage_à",
+  "lesson": 34,
+  "fr": "faire barrage à",
+  "zh": "阻擋",
+  "note": "課本註1：arrêter, contrer, s'opposer à"
+ },
+ {
+  "id": "L34_les_codes_m",
+  "lesson": 34,
+  "fr": "les codes (m.)",
+  "zh": "（某群人的）習慣、語言",
+  "note": "🎙 老師：年輕人現在喜歡看短影片——那就是他們的 code，要用他們喜歡看、喜歡用的方式"
+ },
+ {
+  "id": "L34_les_outils_m",
+  "lesson": 34,
+  "fr": "les outils (m.)",
+  "zh": "工具",
+  "note": "🎙 tools。詞彙頁 un outil de communication"
+ },
+ {
+  "id": "L34_sensibiliser",
+  "lesson": 34,
+  "fr": "sensibiliser",
+  "zh": "讓…意識到",
+  "note": "詞彙頁 sensibiliser un public"
+ },
+ {
+  "id": "L34_se_méfier_de",
+  "lesson": 34,
+  "fr": "se méfier (de)",
+  "zh": "提防、不輕易相信",
+  "note": "課本註2：faire attention, ne pas faire confiance"
+ },
+ {
+  "id": "L34_véritable",
+  "lesson": 34,
+  "fr": "véritable",
+  "zh": "真正的",
+  "note": "un véritable intérêt"
+ },
+ {
+  "id": "L34_le_congrès",
+  "lesson": 34,
+  "fr": "le congrès",
+  "zh": "（學術）研討會",
+  "note": "課本註3：rencontres scientifiques, colloques"
+ },
+ {
+  "id": "L34_faciliter",
+  "lesson": 34,
+  "fr": "faciliter",
+  "zh": "讓…變容易",
+  "note": "🎙 老師：原本要開大會，現在可以先在網路上貼很多小資訊"
+ },
+ {
+  "id": "L34_à_distance",
+  "lesson": 34,
+  "fr": "à distance",
+  "zh": "遠端",
+  "note": "compléter une présentation à distance"
+ },
+ {
+  "id": "L34_en_train_de_se_faire",
+  "lesson": 34,
+  "fr": "en train de se faire",
+  "zh": "正在進行中",
+  "note": "🎙 老師：en train de＝正在做，Je suis en train de manger.；「科學正在被做出來的樣子」，不是做完的成果"
+ },
+ {
+  "id": "L34_les_travaux_m",
+  "lesson": 34,
+  "fr": "les travaux (m.)",
+  "zh": "研究成果、工作",
+  "note": "un travail → des travaux"
+ },
+ {
+  "id": "L34_puissant_puissante",
+  "lesson": 34,
+  "fr": "puissant, puissante",
+  "zh": "強大的",
+  "note": "🎙 powerful"
+ },
+ {
+  "id": "L34_s_adapter_à",
+  "lesson": 34,
+  "fr": "s'adapter à",
+  "zh": "適應",
+  "note": "主文法暖身句"
+ },
+ {
+  "id": "L34_accompagner",
+  "lesson": 34,
+  "fr": "accompagner",
+  "zh": "陪伴、帶著",
+  "note": "🎙 老師：to be with someone；這裡是受眾可能不會用，要帶著他們、教他們怎麼用"
+ },
+ {
+  "id": "L34_un_esprit_critique",
+  "lesson": 34,
+  "fr": "un esprit critique",
+  "zh": "批判精神",
+  "note": "🎙 critical mind：能分辨資訊是真是假"
+ },
+ {
+  "id": "L34_l_auditeur_l_auditrice",
+  "lesson": 34,
+  "fr": "l'auditeur, l'auditrice",
+  "zh": "聽眾",
+  "note": "🎙 老師：audition＝聽；auditeur 是在旁邊聽、不參與的人——聽廣播的人都是 auditeurs。⚠️ Owen 問是不是「試鏡」的 audition：同字根，但這裡只是「聽的人」"
+ },
+ {
+  "id": "L34_les_contenus_sonores_m",
+  "lesson": 34,
+  "fr": "les contenus sonores (m.)",
+  "zh": "有聲內容",
+  "note": "🎙 老師：sonore＝有聲音的，不重要（Owen 截圖劃掉）"
+ },
+ {
+  "id": "L34_l_écoute_f",
+  "lesson": 34,
+  "fr": "l'écoute (f.)",
+  "zh": "收聽（名詞）",
+  "note": "🎙 écouter 是動詞，l'écoute 是名詞"
+ },
+ {
+  "id": "L34_écouter_des_podcasts",
+  "lesson": 34,
+  "fr": "écouter des podcasts",
+  "zh": "聽 podcast",
+  "note": ""
+ },
+ {
+  "id": "L34_l_émission_de_radio_f",
+  "lesson": 34,
+  "fr": "l'émission de radio (f.)",
+  "zh": "廣播節目",
+  "note": "回鍋第33課 une émission"
+ },
+ {
+  "id": "L34_l_épisode_m",
+  "lesson": 34,
+  "fr": "l'épisode (m.)",
+  "zh": "（一）集",
+  "note": "🎙 跟英文一樣；la saison＝季，épisode 1, saison 3"
+ },
+ {
+  "id": "L34_le_programme_de_radio",
+  "lesson": 34,
+  "fr": "le programme de radio",
+  "zh": "廣播節目表",
+  "note": "🎙 老師：programme 是「幾點播什麼」的表"
+ },
+ {
+  "id": "L34_la_voix",
+  "lesson": 34,
+  "fr": "la voix",
+  "zh": "聲音、嗓音",
+  "note": "🎙 老師：就是一個人講話的聲音，ma voix、ta voix"
+ },
+ {
+  "id": "L34_être_connecté_e",
+  "lesson": 34,
+  "fr": "être connecté(e)",
+  "zh": "在線上、掛在網上",
+  "note": "🎙 online"
+ },
+ {
+  "id": "L34_être_en_contact_avec",
+  "lesson": 34,
+  "fr": "être en contact (avec)",
+  "zh": "跟…保持聯絡",
+  "note": "🎙 to be in contact with someone"
+ },
+ {
+  "id": "L34_être_sur_un_réseau_socia",
+  "lesson": 34,
+  "fr": "être sur un réseau social",
+  "zh": "在某個社群網路上",
+  "note": ""
+ },
+ {
+  "id": "L34_les_fausses_nouvelles_le",
+  "lesson": 34,
+  "fr": "les fausses nouvelles, les infox",
+  "zh": "假新聞",
+  "note": "見課文E"
+ },
+ {
+  "id": "L34_ouvrir_un_compte_sur",
+  "lesson": 34,
+  "fr": "ouvrir un compte sur",
+  "zh": "在…開帳號",
+  "note": "🎙 compte＝account（回鍋第33課 chaîne vs compte）"
+ },
+ {
+  "id": "L34_s_inscrire_sur_un_réseau",
+  "lesson": 34,
+  "fr": "s'inscrire sur un réseau social",
+  "zh": "註冊社群網路",
+  "note": "🎙 register／subscribe"
+ },
+ {
+  "id": "L34_fermer_son_compte_sur",
+  "lesson": 34,
+  "fr": "fermer son compte sur",
+  "zh": "關掉帳號",
+  "note": "≠ ouvrir un compte"
+ },
+ {
+  "id": "L34_quitter_un_réseau_social",
+  "lesson": 34,
+  "fr": "quitter un réseau social",
+  "zh": "離開某個社群網路",
+  "note": "≠ s'inscrire"
+ },
+ {
+  "id": "L34_poster_des_photos",
+  "lesson": 34,
+  "fr": "poster des photos",
+  "zh": "貼照片",
+  "note": ""
+ },
+ {
+  "id": "L34_regarder_une_vidéo",
+  "lesson": 34,
+  "fr": "regarder une vidéo",
+  "zh": "看影片",
+  "note": ""
+ },
+ {
+  "id": "L34_suivre_quelqu_un_sur_un",
+  "lesson": 34,
+  "fr": "suivre quelqu'un sur un réseau",
+  "zh": "在網路上追蹤某人",
+  "note": "🎙 老師：Je suis Mbappé.＝我追蹤 Mbappé（suivre 的 je suis，跟 être 同形）"
+ },
+ {
+  "id": "L34_diffuser_une_information",
+  "lesson": 34,
+  "fr": "diffuser une information",
+  "zh": "散播資訊",
+  "note": "🎙 diffuser＝to spread（上一課學過 la diffusion）"
+ },
+ {
+  "id": "L34_un_outil_un_moyen_de_com",
+  "lesson": 34,
+  "fr": "un outil, un moyen de communication",
+  "zh": "溝通的工具、方式",
+  "note": "🎙 a tool, a way"
+ },
+ {
+  "id": "L34_sensibiliser_un_public",
+  "lesson": 34,
+  "fr": "sensibiliser un public",
+  "zh": "讓大眾意識到（某個問題）",
+  "note": "sensibiliser qn à qch"
+ },
+ {
+  "id": "L34_transmettre_des_connaiss",
+  "lesson": 34,
+  "fr": "transmettre des connaissances",
+  "zh": "傳遞知識",
+  "note": "🎙 老師：transmettre＝把資訊、知識分享出去"
+ },
+ {
+  "id": "L34_la_radio_en_direct_ou_en",
+  "lesson": 34,
+  "fr": "la radio (en direct ou en podcast)",
+  "zh": "廣播（直播或 podcast）",
+  "note": "91 %"
+ },
+ {
+  "id": "L34_la_musique_personnelle",
+  "lesson": 34,
+  "fr": "la musique personnelle",
+  "zh": "自己的音樂",
+  "note": "58 %"
+ },
+ {
+  "id": "L34_la_musique_en_vidéo",
+  "lesson": 34,
+  "fr": "la musique en vidéo",
+  "zh": "影片裡的音樂",
+  "note": "46 %"
+ },
+ {
+  "id": "L34_la_musique_en_streaming",
+  "lesson": 34,
+  "fr": "la musique en streaming",
+  "zh": "串流音樂",
+  "note": "41 %"
+ },
+ {
+  "id": "L34_les_podcasts_natifs",
+  "lesson": 34,
+  "fr": "les podcasts natifs",
+  "zh": "原生 podcast",
+  "note": "10 %。🎙 老師：natif＝只做成 podcast、沒在廣播播過的；另一種是先在廣播播、再放上網"
+ },
+ {
+  "id": "L34_les_livres_audios",
+  "lesson": 34,
+  "fr": "les livres audios",
+  "zh": "有聲書",
+  "note": "4 %"
+ },
+ {
+  "id": "L34_un_support",
+  "lesson": 34,
+  "fr": "un support",
+  "zh": "載體、平台",
+  "note": "🎙 老師：une plateforme；廣播、podcast、書都是 supports"
+ },
+ {
+  "id": "L34_la_structure_métallique",
+  "lesson": 34,
+  "fr": "la structure métallique",
+  "zh": "金屬結構",
+  "note": "🎙 老師：他很會用金屬蓋東西，艾菲爾鐵塔的交叉設計也是"
+ },
+ {
+  "id": "L34_un_amour_de_jeunesse",
+  "lesson": 34,
+  "fr": "un amour de jeunesse",
+  "zh": "年輕時的戀人",
+  "note": "🎙 la jeunesse＝青春（youth）"
+ },
+ {
+  "id": "L34_l_exposition_universelle",
+  "lesson": 34,
+  "fr": "l'exposition universelle (f.)",
+  "zh": "萬國博覽會",
+  "note": "🎙 很多國家集中在一起展示自己能做什麼，現在還有（Owen：萬博）"
+ },
+ {
+  "id": "L34_à_l_époque",
+  "lesson": 34,
+  "fr": "à l'époque",
+  "zh": "在當時",
+  "note": "🎙 老師：l'époque 單說是「那個時代」；à l'époque＝在那時候（我小時候那時…）"
+ },
+ {
+  "id": "L34_le_projet",
+  "lesson": 34,
+  "fr": "le projet",
+  "zh": "計畫、構想",
+  "note": "le projet de la tour Eiffel est né"
+ },
+ {
+  "id": "L34_se_concrétiser",
+  "lesson": 34,
+  "fr": "se concrétiser",
+  "zh": "實現、成形",
+  "note": "🎙 老師：從構想到完成（finaliser）"
+ },
+ {
+  "id": "L34_le_scénario",
+  "lesson": 34,
+  "fr": "le scénario",
+  "zh": "劇本、情節",
+  "note": "le scénario est mauvais"
+ },
+ {
+  "id": "L34_prendre_trop_de_place",
+  "lesson": 34,
+  "fr": "prendre trop de place",
+  "zh": "佔太多份量",
+  "note": "🎙 老師：原本是空間（書佔太多位置），也能用在電影、生活：J'ai arrêté de travailler parce que ça prenait trop de place dans ma vie."
+ },
+ {
+  "id": "L34_pas_du_tout",
+  "lesson": 34,
+  "fr": "pas du tout",
+  "zh": "一點也不",
+  "note": "Je n'ai pas du tout aimé."
+ },
+ {
+  "id": "L34_ennuyeux_ennuyeuse",
+  "lesson": 34,
+  "fr": "ennuyeux, ennuyeuse",
+  "zh": "無聊的",
+  "note": "見發音警報"
+ },
+ {
+  "id": "L34_un_film_grand_public",
+  "lesson": 34,
+  "fr": "un film grand public",
+  "zh": "大眾電影",
+  "note": "老少咸宜、給一般觀眾看的"
+ },
+ {
+  "id": "L34_pour_une_fois",
+  "lesson": 34,
+  "fr": "pour une fois",
+  "zh": "難得一次",
+  "note": "🎙 老師：電影主角很少是工程師"
+ },
+ {
+  "id": "L34_un_écrivain",
+  "lesson": 34,
+  "fr": "un écrivain",
+  "zh": "作家",
+  "note": "🎙 writer"
+ },
+ {
+  "id": "L34_un_ingénieur",
+  "lesson": 34,
+  "fr": "un ingénieur",
+  "zh": "工程師",
+  "note": ""
+ },
+ {
+  "id": "L34_nul_nulle",
+  "lesson": 34,
+  "fr": "nul, nulle",
+  "zh": "很爛的、零分的",
+  "note": "🎙 老師：un match nul＝平手（沒有贏家）"
  }
 ];

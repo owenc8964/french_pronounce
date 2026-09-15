@@ -96,5 +96,9 @@ var TOPIC_LABELS_FR = {
  "medecine-urgences-vocab": "La médecine et les urgences",
  "cause-consequence": "Cause et conséquence",
  "medias-vocab": "L'info, la presse, la télé",
- "preference-interet": "Préférence et intérêt"
+ "preference-interet": "Préférence et intérêt",
+ "subjonctif-present": "Subjonctif présent",
+ "medias-audio-reseaux": "Médias audios et réseaux sociaux",
+ "critique-film": "Faire une critique",
+ "place-pronoms-cod-coi": "Place des pronoms COD/COI"
 };

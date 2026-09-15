@@ -238,4 +238,11 @@ const WRITING_TASKS = [
   { lesson:33, id:'W33b', title:'介紹你想開的 Twitch 頻道或節目（課本 p.113 Production écrite 6，60-80字）', task:'Vous voulez créer une chaîne ou une émission sur Twitch. 寫一段介紹：節目講什麼主題、多久播一次、為什麼觀眾會喜歡。',
     use:['媒體詞彙至少三個（une chaîne／une émission／en direct／le tchat／une revue de presse／les abonnés／une rubrique…）', '至少一個 grâce à ＋ 名詞', '至少一個表達興趣的句型（Ça m\'intéresse／Ça me passionne／C\'est passionnant）'],
     frame:'⭐ 一句說你要開什麼（Je veux créer une chaîne Twitch sur…） → 主題與頻率（chaque semaine／tous les jours）→ 為什麼（parce que ça me passionne）→ 觀眾能得到什麼（Grâce à mon émission, …）' },
+  // ── 第34課（subjonctif ＋ 廣播與社群詞彙 ＋ 影評 ＋ COD/COI 位置）
+  { lesson:34, id:'W34a', title:'社群網路適合傳播嚴肅或複雜的資訊嗎？（課本 p.119 Production écrite 6，論壇回覆，60-80字）', task:'Sur un forum, vous répondez à la question : les réseaux sociaux sont-ils utiles pour diffuser des informations sérieuses ou complexes ? 在論壇上回答：社群網路適合拿來傳播嚴肅或複雜的資訊嗎？',
+    use:['虛擬式至少兩次（il faut que／il est important que／c\'est bien que）', '本課詞彙至少三個（diffuser une information／les infox／les internautes／sensibiliser／se méfier／un outil de communication）', '第33課因果連接詞至少一個（grâce à／c\'est pourquoi／donc）'],
+    frame:'⭐ 先表態（Oui, mais… / À mon avis…）→ 好處：grâce aux réseaux sociaux… → 風險：les infox → 條件：Il faut que les internautes se méfient… / Il est important que les scientifiques…' },
+  { lesson:34, id:'W34b', title:'寫一則你最近看的電影或影集的評論（課文H 網友影評格式，50-70字）', task:'Écrivez une critique d\'un film ou d\'une série que vous avez vu(e) récemment, comme sur le forum cinémaFORUM. 寫一則電影或影集評論，像課文H 的網友那樣。',
+    use:['正面與負面評論句型各至少一個（Ce film m\'a beaucoup plu／C\'est très bien filmé／Le scénario est mauvais／Je l\'ai trouvé nul…）', '代名詞 COD／COI 至少兩次，而且放對位置（Je le conseille à…／Je l\'ai trouvé…／il leur a plu）', '至少一個 pour une fois 或 pas du tout'],
+    frame:'⭐ 片名＋一句總評（Ce film est une bonne surprise）→ 喜歡的地方 → 不喜歡的地方 → 推薦給誰（Je le conseille à…）' },
 ];
