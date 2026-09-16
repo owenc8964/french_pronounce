@@ -1319,6 +1319,7 @@ function init(){
   var d=load(); d.xp=d.xp||0;
   if(!d.run || d.run.date!==todayStr()) d.run=freshRun(lvOf(d.xp));
   d.story=d.story||{ch:1,node:0,done:{},cleared:{}};
+  d.pet=d.pet||{sprite:pick(MONSTERS),name:'小夥伴',lastInteractAt:Date.now(),lastLine:null};
   d.mode=d.mode||(hasStory()?'story':'dungeon');
   /* ⭐ 網址指定分頁優先（從練習頁回來時帶 ?tab=train，見 return_to.js）——
      ⛔ 不能只靠 clb7_quest.mode，換頁同步時會被雲端較舊的值蓋掉 */
@@ -1375,7 +1376,7 @@ function renderMap(){
         '<span>匯出成 Anki 卡<small>存到桌面的 TSV，之後用 Anki 匯入複習</small></span></button>':'')+
       r.loot.map(cardHtml).join('')+'</div>';
   }
-  html+=npcHtml()+dexHtml()+'<div class="credit">美術與音效：Kenney（CC0 公共領域）<br>字體：Cinzel · Cormorant Garamond（SIL OFL）</div>';
+  html+=petHtml()+npcHtml()+dexHtml()+'<div class="credit">美術與音效：Kenney（CC0 公共領域）<br>字體：Cinzel · Cormorant Garamond（SIL OFL）</div>';
   v.innerHTML=html;
   Array.prototype.forEach.call(v.querySelectorAll('.node.can'),function(n){
     n.addEventListener('click',function(){ sfx('click_001'); enter(n.dataset.k,n.dataset.t); });
@@ -1438,6 +1439,43 @@ function dexHtml(){
   return '<div class="sec"><h2>守護者圖鑑</h2><div class="dex">'+cells.join('')+'</div></div>';
 }
 function say(t){ if(window.TtsReader&&TtsReader.supported) TtsReader.speak(String(t).replace(/🔊/g,'').trim()); }
+/* B5 夥伴原型（2026-09-17，依 research/2026-09-15_養成機制.md 設計約束）
+   ⭐ 只會講 S.cards 裡已收藏的句子——牠的「成長」＝ Owen 教過牠的話，不另造數值
+   ⛔ 不會死、不推播；生疏狀態由 lastInteractAt 即時算，互動（摸摸牠／聽牠說話）就立刻恢復——
+      恢復是「玩家的動作」不是「時間到自動歸零」（suffer but recover，見研究文件五之5） */
+function petMood(p){
+  var days=Math.floor((Date.now()-(p.lastInteractAt||Date.now()))/86400000);
+  return days<=1?'精神很好，蹦蹦跳跳':days<=3?'牠有點想你了':'牠窩著不太想動，看到你才抬起頭';
+}
+function petHtml(){
+  var p=S.pet; if(!p) return '';
+  var known=Object.keys(S.cards||{});
+  var lineHtml=p.lastLine
+    ?'<div class="fb" style="margin-top:6px">「'+esc(p.lastLine.fr)+'」<br><span style="color:var(--dim);font-size:.72rem">'+esc(p.lastLine.zh)+'</span></div>'
+    :'<div class="fb" style="margin-top:6px;color:var(--faint)">還沒聽牠說過話</div>';
+  return '<div class="sec"><h2>夥伴</h2><div class="npcrow">'+img(p.sprite)+
+    '<div class="npcname">'+esc(p.name||'小夥伴')+'<small>'+esc(petMood(p))+'</small></div></div>'+
+    lineHtml+
+    '<div class="cmds" style="margin-top:8px">'+
+      '<button class="cmd" onclick="petPat()">'+img(SP.card)+'<span>摸摸牠<small>牠開心了一下</small></span></button>'+
+      (known.length?'<button class="cmd" onclick="petSpeak()">'+img(SP.wand)+'<span>聽牠說一句<small>從你教過的話裡挑一句</small></span></button>':'')+
+    '</div></div>';
+}
+function petPat(){
+  var p=S.pet; if(!p) return;
+  p.lastInteractAt=Date.now(); save(S); sfx('click_001'); toast('牠蹭了蹭你');
+  renderMap();
+}
+function petSpeak(){
+  var p=S.pet, keys=Object.keys(S.cards||{}); if(!p||!keys.length) return;
+  var key=keys[Math.floor(Math.random()*keys.length)];
+  var isS=key.charAt(0)==='S', id=key.slice(2);
+  var src=isS?(typeof SENTENCES!=='undefined'?SENTENCES:[]):(typeof CHUNKS!=='undefined'?CHUNKS:[]);
+  var obj=src.filter(function(x){ return x.id===id; })[0];
+  if(!obj) return;
+  p.lastLine={fr:obj.fr,zh:obj.zh}; p.lastInteractAt=Date.now(); save(S); sfx('confirmation_001');
+  renderMap();
+}
 
 /* ── 非戰鬥節點 ─────────────────────────────────────────── */
 function enter(key,type){
