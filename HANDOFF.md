@@ -4713,6 +4713,22 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - Anki：`gen_anki_lesson.py 34` → 44 張（`~/Desktop/anki_l34_auto.tsv`），precheck（含新的重複檢查）✅
 - 瀏覽器驗（ROOM TEST，測完清 TEST 房間）：verb_sprint Subjonctif 鈕、quiz?lesson=34 載入 50 題與標籤、table_drill 3 表、map 4 格解鎖＋chip 第34課、reading a35、筆記 lesson-34 10 unit／226 喇叭／平行閱讀連讀條／專項 Quiz 鈕；console 零錯誤
 
+#### 三之八、09-18：法語影視片單研究（⭐ 下一個 session 從這裡接）
+
+**本次做的**：Owen 要「廣泛聆聽閱讀」的素材 → 派研究 agent 逐片查台灣區 Netflix 與 YouTube，產出
+[`research/2026-09-18_法語影視輸入片單.md`](research/2026-09-18_法語影視輸入片單.md)（已登記 INDEX、已 push）。
+- ⭐ **Netflix 有沒有法文字幕 ≒ 是不是 Netflix 自製**：授權法國片（墜惡真相／美好拾光公司／85年的夏天／巴黎拜金女）台灣區**只有中文字幕**；例外是《神之山嶺》
+- ⭐ **YouTube 正式法文字幕極少**：ARTE／Brut／Lumni／C'est pas sorcier／Karambolage 抽查全是自動字幕。可用的是 france.tv slash 的 **SKAM FRANCE**（2–4 分 clip，含中文字幕）、Golden Moustache《Ça déménage》（3 分×5）、Les Parasites 短片、Le Visiteur du Futur S3 部分集、魁北克的 J'ai Québec en tête
+- ⭐ **短素材只有 YouTube 有**（Netflix 法語影集最短一集 24 分）
+- ⚠️ 上架狀況與字幕語言會變，報告以 09-18 為準；**Claude 這邊的瀏覽器被擋，沒有做第二次獨立抽驗**（研究是讀每支影片的 captionTracks 判定 asr／uploader）
+
+**⏭ 下一個 session 優先處理（依序）**
+1. ⚠️⚠️ **清晨排程卡在「待瀏覽器驗證」門檻**：`GAME_ROADMAP.md` 累積 **B6 動態難度（09-16）／B4 吶喊招式（09-16，需真機 Safari 麥克風）／B5 夥伴原型（09-17）** 三項未驗，規則規定達 3 項就不准再開新的 B 實作——**要開瀏覽器驗完這三項並 push，排程才會恢復做實作**
+2. ⚠️ **藍圖佇列的「⬜ 待做」歸零**（R13／R14 是排程自補的）：互動 session 要補新項目，否則排程只會一直自補研究
+3. ⏸ 等 Owen：玩一輪 B8 自適應塔的回饋（決定 B7 遊戲入口）／第 12 章「為什麼是加拿大」語料／B3 戰利品匯出的手機下載流程要不要改
+4. Anki：第33課 42 張、第34課 44 張都在桌面待匯入（每天 5 張）
+
+
 **其他 09-14 已完成並推上站**：動詞衝刺不再砍斷打字＋記打完秒數（`verb_sprint.html`）、練習頁回得去遊戲訓練場（`return_to.js`）、清晨排程配額加大（最多 6 項、實作 2 項）。
 ⏸ 仍待 Owen：iPhone 上用 Safari 還是 Chrome 開遊戲（決定吶喊招式值不值得做）。
 
