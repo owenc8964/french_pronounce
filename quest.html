@@ -285,6 +285,15 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
   60%{transform:translateY(0) scale(.96)}
   100%{transform:translateY(0) scale(1)}
 }
+/* 螢火蟲夜（放空小遊戲）：⭐ 配色刻意跟金色 RPG 畫面不同（be away），⛔ 沒有分數、沒有計時數字 */
+#chill{position:fixed; inset:0; z-index:80; background:#0a1024; touch-action:none; user-select:none; -webkit-user-select:none}
+#chill canvas{display:block; width:100%; height:100%}
+.chillx{position:absolute; top:calc(12px + env(safe-area-inset-top)); right:14px; padding:8px 16px; border-radius:20px;
+        border:1px solid rgba(190,210,255,.25); background:rgba(20,28,60,.55); color:#c9d6ff; font-size:.8rem; cursor:pointer}
+.chillmsg{position:absolute; left:0; right:0; top:22%; text-align:center; color:#dfe8ff; font-size:.95rem;
+          letter-spacing:.12em; opacity:.85; pointer-events:none; text-shadow:0 0 12px rgba(150,180,255,.5); transition:opacity 1.2s}
+.chillinv{display:block; width:100%; margin-top:10px; padding:10px; border-radius:12px; cursor:pointer; background:none;
+          border:1px dashed var(--line2); color:var(--dim); font-size:.78rem}
 .toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(18px); opacity:0;
        background:linear-gradient(180deg,#1d2434,#151a26); border:1px solid var(--line2);
        padding:10px 18px; border-radius:11px; font-size:.8rem; transition:.28s; pointer-events:none; z-index:50}
@@ -1478,6 +1487,7 @@ function petHtml(){
     '<div class="cmds" style="margin-top:8px">'+
       '<button class="cmd" onclick="petPat()">'+img(SP.card)+'<span>摸摸牠<small>牠開心了一下</small></span></button>'+
       (known.length?'<button class="cmd" onclick="petSpeak()">'+img(SP.wand)+'<span>聽牠說一句<small>從你教過的話裡挑一句</small></span></button>':'')+
+      '<button class="cmd" onclick="chillOpen(true)">'+img(SP.card)+'<span>陪牠看螢火蟲<small>放空一分鐘，沒有題目也沒有分數</small></span></button>'+
     '</div></div>';
 }
 function petPat(){
@@ -1494,6 +1504,87 @@ function petSpeak(){
   if(!obj) return;
   p.lastLine={fr:obj.fr,zh:obj.zh}; p.lastInteractAt=Date.now(); p.excited=true; save(S); sfx('confirmation_001');
   renderMap();
+}
+/* 螢火蟲夜（放空小遊戲，2026-09-19；依 research/2026-09-17_休息型遊戲恢復效果.md 與 2026-09-17_自控式休息vs排定式休息.md）
+   ⭐ 功能是「恢復」不是訓練：⛔ 不放法文題、⛔ 不計分排名、⛔ 不寫進任何進度（只讓夥伴開心一下）
+   ⭐ 只在玩家自己按才出現（夥伴區按鈕／打贏關主後的小邀請），⛔ 不彈窗打斷；約 75 秒自然結束、隨時可按「回去」 */
+var CHILL=null;
+function chillOpen(fromPet){
+  if(CHILL) return;
+  var p=S.pet||{}, ov=document.createElement('div');
+  ov.id='chill';
+  ov.innerHTML='<canvas></canvas><button class="chillx" onclick="chillClose()">回去</button><div class="chillmsg">輕輕點一點螢火蟲</div>';
+  document.body.appendChild(ov);
+  var cv=ov.querySelector('canvas'), cx=cv.getContext('2d'), msg=ov.querySelector('.chillmsg');
+  var W=0,H=0,dpr=Math.min(window.devicePixelRatio||1,2);
+  function fit(){ W=window.innerWidth; H=window.innerHeight; cv.width=W*dpr; cv.height=H*dpr; cx.setTransform(dpr,0,0,dpr,0,0); }
+  fit();
+  var petImg=new Image(); petImg.src=p.sprite||'';
+  var DUR=75000, t0=performance.now(), flies=[], sparks=[], ripples=[], caught=0, petHop=0, ended=false, msgOff=false;
+  function newFly(anywhere){
+    return { x:Math.random()*W, y:anywhere?Math.random()*H*.7:H*.7*Math.random(), ph:Math.random()*6.28,
+             sp:.12+Math.random()*.2, dir:Math.random()*6.28, r:3+Math.random()*2.5, got:0 };
+  }
+  for(var i=0;i<12;i++) flies.push(newFly(true));
+  function onDown(e){
+    var rc=cv.getBoundingClientRect(), x=e.clientX-rc.left, y=e.clientY-rc.top, best=null, bd=44;
+    flies.forEach(function(f){ if(f.got) return; var d=Math.hypot(f.x-x,f.y-y); if(d<bd){ bd=d; best=f; } });
+    ripples.push({x:x,y:y,t:0});
+    if(best){ best.got=1; caught++; petHop=1; sfx('click_001');
+      for(var k=0;k<8;k++) sparks.push({x:best.x,y:best.y,vx:(Math.random()-.5)*2.2,vy:-Math.random()*2-.4,a:1}); }
+    if(!msgOff){ msgOff=true; msg.style.opacity=0; }
+  }
+  cv.addEventListener('pointerdown',onDown);
+  window.addEventListener('resize',fit);
+  function frame(now){
+    var el=now-t0, k=Math.min(el/DUR,1);
+    /* 天空：深藍慢慢變成一點點黎明的紫，暗示「夜深了」而不是倒數 */
+    var g=cx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'rgb('+Math.round(10+k*28)+','+Math.round(16+k*10)+','+Math.round(36+k*30)+')');
+    g.addColorStop(1,'rgb('+Math.round(18+k*30)+','+Math.round(30+k*8)+','+Math.round(58+k*22)+')');
+    cx.fillStyle=g; cx.fillRect(0,0,W,H);
+    /* 遠處的星星（固定位置，緩慢閃） */
+    for(var s=0;s<28;s++){ var sx=(s*97%100)/100*W, sy=(s*53%60)/100*H, a=.25+.25*Math.sin(el/900+s);
+      cx.fillStyle='rgba(220,230,255,'+a.toFixed(2)+')'; cx.fillRect(sx,sy,2,2); }
+    /* 地面 */
+    cx.fillStyle='#0d1a20'; cx.fillRect(0,H*.86,W,H*.14);
+    /* 螢火蟲：慢慢飄，⭐ 抓走一隻，過幾秒會有新的飄進來（時間快結束前不再補） */
+    flies.forEach(function(f,i){
+      if(f.got){ f.got+=.03; if(f.got>1.6){ if(k<.8){ flies[i]=newFly(false); } else { f.dead=1; } } }
+      else { f.dir+=(Math.random()-.5)*.08; f.x+=Math.cos(f.dir)*f.sp*1.6; f.y+=Math.sin(f.dir)*f.sp*1.6+Math.sin(el/1200+f.ph)*.15;
+             if(f.x<10||f.x>W-10) f.dir=Math.PI-f.dir; if(f.y<10||f.y>H*.78) f.dir=-f.dir;
+             f.x=Math.max(6,Math.min(W-6,f.x)); f.y=Math.max(6,Math.min(H*.78,f.y)); }
+      if(f.dead) return;
+      var fade=k>.9?Math.max(0,(1-k)/.1):1;
+      var glow=(.55+.45*Math.sin(el/500+f.ph))*(f.got?Math.max(0,1.6-f.got):1)*fade, rad=f.r*(f.got?1+f.got*3:1)*5;
+      var rg=cx.createRadialGradient(f.x,f.y,0,f.x,f.y,rad);
+      rg.addColorStop(0,'rgba(255,245,160,'+(glow).toFixed(2)+')'); rg.addColorStop(.35,'rgba(200,255,140,'+(glow*.4).toFixed(2)+')'); rg.addColorStop(1,'rgba(200,255,140,0)');
+      cx.fillStyle=rg; cx.beginPath(); cx.arc(f.x,f.y,rad,0,6.28); cx.fill();
+    });
+    sparks=sparks.filter(function(s){ return s.a>0; });
+    sparks.forEach(function(s){ s.x+=s.vx; s.y+=s.vy; s.vy+=.04; s.a-=.02;
+      cx.fillStyle='rgba(255,240,150,'+Math.max(0,s.a).toFixed(2)+')'; cx.fillRect(s.x,s.y,2,2); });
+    ripples=ripples.filter(function(r){ return r.t<1; });
+    ripples.forEach(function(r){ r.t+=.03; cx.strokeStyle='rgba(200,220,255,'+((1-r.t)*.35).toFixed(2)+')';
+      cx.beginPath(); cx.arc(r.x,r.y,r.t*26,0,6.28); cx.stroke(); });
+    /* 夥伴：坐在地上，每抓到一隻就開心跳一下 */
+    var ps=Math.min(72,W*.2), hy=petHop>0?Math.sin(petHop*Math.PI)*22:0; if(petHop>0) petHop=Math.max(0,petHop-.05);
+    if(petImg.complete&&petImg.naturalWidth){ cx.imageSmoothingEnabled=false; cx.drawImage(petImg,W/2-ps/2,H*.86-ps+8-hy,ps,ps); }
+    if(k>=1&&!ended){ ended=true; msg.textContent='夜深了，牠睏了'; msg.style.opacity=.9;
+      ov.querySelector('.chillx').textContent='回去'; }
+    if(!CHILL) return;
+    CHILL.raf=requestAnimationFrame(frame);
+  }
+  CHILL={ ov:ov, fromPet:!!fromPet, caught:function(){ return caught; }, resize:fit, down:onDown, cv:cv, raf:requestAnimationFrame(frame) };
+}
+function chillClose(){
+  if(!CHILL) return;
+  var c=CHILL; CHILL=null;
+  cancelAnimationFrame(c.raf); window.removeEventListener('resize',c.resize);
+  c.ov.remove();
+  var p=S.pet;
+  if(p){ p.lastInteractAt=Date.now(); p.excited=true; save(S); }
+  if(c.fromPet){ toast('牠玩得很開心'); renderMap(); }
 }
 
 /* ── 非戰鬥節點 ─────────────────────────────────────────── */
@@ -2066,6 +2157,7 @@ function win(){
         (B.isBoss&&!B.tower?'<div class="fb" style="text-align:center">「'+esc(B.story?((storyCh?storyCh.title:'')+' 的關主'):BOSS.name)+'」已收進圖鑑</div>':'')+
         '<div style="margin-top:12px">'+cards.map(cardHtml).join('')+'</div>'+
         '<button class="next" onclick="advance()">'+(B.tower?(B.isBoss?'登頂':'往上走'):(B.isBoss?'回營地':'繼續前進'))+'</button>'+
+        (B.isBoss&&S.pet?'<button class="chillinv" onclick="chillOpen()">打完一場了——想的話，陪牠看一分鐘螢火蟲</button>':'')+
       '</div></div>';
   }, 620);
 }
