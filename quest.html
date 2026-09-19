@@ -294,6 +294,40 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
           letter-spacing:.12em; opacity:.85; pointer-events:none; text-shadow:0 0 12px rgba(150,180,255,.5); transition:opacity 1.2s}
 .chillinv{display:block; width:100%; margin-top:10px; padding:10px; border-radius:12px; cursor:pointer; background:none;
           border:1px dashed var(--line2); color:var(--dim); font-size:.78rem}
+.chillmsg small{display:block; margin-top:6px; font-size:.76rem; letter-spacing:.06em; opacity:.8}
+/* 夥伴自由走動（2026-09-20 Owen：「我希望寵物是在頁面裡自由移動 不是只卡在他格子裡」）
+   ⭐ 整頁 fixed 浮層；戰鬥／答題畫面時 .ghost＝點擊穿透，⛔ 不擋答題按鈕 */
+#petfree{position:fixed; left:0; top:0; width:46px; height:46px; z-index:40; cursor:pointer; touch-action:manipulation; will-change:transform}
+#petfree.ghost{pointer-events:none}
+#petfree .pf-in{width:100%; height:100%; transform-origin:50% 100%}
+#petfree img{width:100%; height:100%; display:block}
+#petfree.l img{transform:scaleX(-1)}
+#petfree.walk .pf-in{animation:pfWalk .34s ease-in-out infinite}
+#petfree.rest .pf-in{animation:pfBreath 2.8s ease-in-out infinite}
+#petfree.joy .pf-in{animation:petJump .6s ease-out 2}
+@keyframes pfWalk{0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-6px) rotate(3deg)}}
+@keyframes pfBreath{0%,100%{transform:scale(1,1)} 50%{transform:scale(1.05,.94)}}
+#petfree .pf-say{position:absolute; bottom:calc(100% + 4px); left:50%; transform:translateX(-50%); width:max-content; max-width:230px;
+  padding:7px 11px; border-radius:11px; background:var(--panel2); border:1px solid var(--line2); color:var(--ink);
+  font-size:.76rem; line-height:1.55; text-align:center; pointer-events:none; opacity:0; transition:opacity .25s}
+#petfree .pf-say.on{opacity:1}
+#petfree .pf-say small{display:block; color:var(--dim); font-size:.68rem}
+/* 長按解析（2026-09-20 Owen：「我希望頁面上的題目 我長按字可以做解析」） */
+#view .q, #view .talk, #view .fb, #view .opt, #view .card{-webkit-touch-callout:none; -webkit-user-select:none; user-select:none}
+#lpsheet{position:fixed; inset:0; z-index:70; display:none; background:rgba(4,6,12,.55)}
+#lpsheet.on{display:block}
+#lpsheet .lpbox{position:absolute; left:0; right:0; bottom:0; max-width:600px; margin:0 auto; max-height:74vh; overflow:auto;
+  padding:16px 16px calc(20px + env(safe-area-inset-bottom)); background:linear-gradient(180deg,var(--panel2),var(--panel));
+  border:1px solid var(--line2); border-bottom:none; border-radius:18px 18px 0 0; box-shadow:var(--shadow)}
+#lpsheet .lph{display:flex; align-items:center; gap:10px; margin-bottom:10px}
+#lpsheet .lpw{flex:1; font-size:1.15rem; color:var(--gold2); word-break:break-word}
+#lpsheet button{font-family:inherit; cursor:pointer; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:10px; padding:6px 11px; font-size:.8rem}
+#lpsheet h4{margin:14px 0 6px; font-size:.7rem; letter-spacing:.14em; color:var(--faint); font-weight:600}
+#lpsheet .lpex{padding:8px 10px; margin-bottom:6px; border-radius:10px; background:rgba(255,255,255,.03); border:1px solid var(--line); font-size:.86rem; line-height:1.6}
+#lpsheet .lpex .zh{display:block; color:var(--dim); font-size:.76rem}
+#lpsheet .lpex b{color:var(--gold2)}
+#lpsheet .lpnote{font-size:.8rem; line-height:1.7; color:var(--dim)}
+#lpsheet .lpcopy{margin-top:14px; width:100%; padding:11px; border-color:var(--gold); color:var(--gold2)}
 .toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(18px); opacity:0;
        background:linear-gradient(180deg,#1d2434,#151a26); border:1px solid var(--line2);
        padding:10px 18px; border-radius:11px; font-size:.8rem; transition:.28s; pointer-events:none; z-index:50}
@@ -1360,6 +1394,7 @@ function init(){
   else if(S.mode==='train') renderTrain();
   else if(S.mode==='tower') renderTower();
   else renderMap();
+  petFreeStart();   /* 夥伴在整個頁面裡自由走動（2026-09-20） */
 }
 function renderHud(){
   var r=S.run, lv=lvOf(S.xp), mx=maxHpOf(lv), x=xpInLv(S.xp);
@@ -1478,11 +1513,11 @@ function petHtml(){
   var lineHtml=p.lastLine
     ?'<div class="fb" style="margin-top:6px">「'+esc(p.lastLine.fr)+'」<br><span style="color:var(--dim);font-size:.72rem">'+esc(p.lastLine.zh)+'</span></div>'
     :'<div class="fb" style="margin-top:6px;color:var(--faint)">還沒聽牠說過話</div>';
-  var box='<div class="petbox'+(p.excited?' excited':'')+'">'+img(p.sprite)+'</div>';
-  p.excited=false;   /* 一次性動畫：秀完這一輪就關掉，下次待機動畫繼續跑 */
-  return '<div class="sec"><h2>夥伴</h2><div class="npcrow">'+box+
+  p.excited=false;
+  /* ⭐ 2026-09-20：牠現在在整個頁面裡自由走動（petFreeStart），這張卡只留名字、心情與按鈕，⛔ 不再把牠關在格子裡 */
+  return '<div class="sec"><h2>夥伴</h2><div class="npcrow">'+
     '<div class="npcname">'+esc(p.name||'小夥伴')+'<small>'+esc(petMood(p))+'</small></div></div>'+
-    '<div class="fb" style="color:var(--faint);font-size:.72rem;margin-top:-2px">牠會記住你收藏過的句子，越常來看牠越黏你</div>'+
+    '<div class="fb" style="color:var(--faint);font-size:.72rem;margin-top:-2px">牠在頁面裡到處走——點牠一下，牠會說一句你教過的話。越常來看牠越黏你</div>'+
     lineHtml+
     '<div class="cmds" style="margin-top:8px">'+
       '<button class="cmd" onclick="petPat()">'+img(SP.card)+'<span>摸摸牠<small>牠開心了一下</small></span></button>'+
@@ -1493,16 +1528,22 @@ function petHtml(){
 function petPat(){
   var p=S.pet; if(!p) return;
   p.lastInteractAt=Date.now(); p.excited=true; save(S); sfx('click_001'); toast('牠蹭了蹭你');
+  petFreeJoy();
   renderMap();
 }
-function petSpeak(){
-  var p=S.pet, keys=Object.keys(S.cards||{}); if(!p||!keys.length) return;
+/* 從已收藏的句子裡隨機挑一句（沒有收藏就回 null）——⭐ 牠只會講你教過的話 */
+function petPickLine(){
+  var keys=Object.keys(S.cards||{}); if(!keys.length) return null;
   var key=keys[Math.floor(Math.random()*keys.length)];
   var isS=key.charAt(0)==='S', id=key.slice(2);
   var src=isS?(typeof SENTENCES!=='undefined'?SENTENCES:[]):(typeof CHUNKS!=='undefined'?CHUNKS:[]);
-  var obj=src.filter(function(x){ return x.id===id; })[0];
-  if(!obj) return;
+  return src.filter(function(x){ return x.id===id; })[0] || null;
+}
+function petSpeak(){
+  var p=S.pet; if(!p) return;
+  var obj=petPickLine(); if(!obj) return;
   p.lastLine={fr:obj.fr,zh:obj.zh}; p.lastInteractAt=Date.now(); p.excited=true; save(S); sfx('confirmation_001');
+  petFreeJoy(); petFreeSay(esc(obj.fr)+'<small>'+esc(obj.zh)+'</small>'); say(obj.fr);
   renderMap();
 }
 /* 螢火蟲夜（放空小遊戲，2026-09-19；依 research/2026-09-17_休息型遊戲恢復效果.md 與 2026-09-17_自控式休息vs排定式休息.md）
@@ -1513,7 +1554,7 @@ function chillOpen(fromPet){
   if(CHILL) return;
   var p=S.pet||{}, ov=document.createElement('div');
   ov.id='chill';
-  ov.innerHTML='<canvas></canvas><button class="chillx" onclick="chillClose()">回去</button><div class="chillmsg">輕輕點一點螢火蟲</div>';
+  ov.innerHTML='<canvas></canvas><button class="chillx" onclick="chillClose()">回去</button><div class="chillmsg">點一下畫面<small>螢火蟲會飄向你的手指，亮起來就變成天上的小星星</small></div>';
   document.body.appendChild(ov);
   var cv=ov.querySelector('canvas'), cx=cv.getContext('2d'), msg=ov.querySelector('.chillmsg');
   var W=0,H=0,dpr=Math.min(window.devicePixelRatio||1,2);
@@ -1521,18 +1562,33 @@ function chillOpen(fromPet){
   fit();
   var petImg=new Image(); petImg.src=p.sprite||'';
   var DUR=75000, t0=performance.now(), flies=[], sparks=[], ripples=[], caught=0, petHop=0, ended=false, msgOff=false;
+  /* ⭐ 2026-09-20 Owen：「小遊戲畫面很漂亮 但我看不懂在幹嘛 按了完全沒有反應」
+     原因：光點太小（發光半徑 15–27px）、判定只有 44px、沒點中時只有一圈幾乎看不見的漣漪＝**沒點中就零回饋**。
+     修法：① 點哪裡都有回應——附近的螢火蟲會飄向手指，靠近就亮起來 ② 光點放大變亮、判定放寬到 76px
+           ③ 抓到的變成天上留下的小星星（看得到成果，⛔ 不算分數）④ 夥伴會走向你點的位置 ⑤ 說明寫清楚 */
+  var lure=null, stars=[], missN=0, petX=W/2, petTx=W/2;
+  function psz(){ return Math.min(96,W*.26); }
   function newFly(anywhere){
     return { x:Math.random()*W, y:anywhere?Math.random()*H*.7:H*.7*Math.random(), ph:Math.random()*6.28,
-             sp:.12+Math.random()*.2, dir:Math.random()*6.28, r:3+Math.random()*2.5, got:0 };
+             sp:.12+Math.random()*.2, dir:Math.random()*6.28, r:5+Math.random()*3, got:0 };
   }
   for(var i=0;i<12;i++) flies.push(newFly(true));
+  function catchFly(f){
+    if(f.got) return;
+    f.got=1; caught++; petHop=1; sfx('confirmation_001');
+    for(var k=0;k<10;k++) sparks.push({x:f.x,y:f.y,vx:(Math.random()-.5)*2.6,vy:-Math.random()*2.2-.4,a:1});
+    if(stars.length<48) stars.push({x:f.x,y:Math.min(f.y,H*.58),ph:Math.random()*6.28});
+    if(!msgOff){ msgOff=true; msg.style.opacity=0; }
+  }
   function onDown(e){
-    var rc=cv.getBoundingClientRect(), x=e.clientX-rc.left, y=e.clientY-rc.top, best=null, bd=44;
+    var rc=cv.getBoundingClientRect(), x=e.clientX-rc.left, y=e.clientY-rc.top, best=null, bd=76;
     flies.forEach(function(f){ if(f.got) return; var d=Math.hypot(f.x-x,f.y-y); if(d<bd){ bd=d; best=f; } });
     ripples.push({x:x,y:y,t:0});
-    if(best){ best.got=1; caught++; petHop=1; sfx('click_001');
-      for(var k=0;k<8;k++) sparks.push({x:best.x,y:best.y,vx:(Math.random()-.5)*2.2,vy:-Math.random()*2-.4,a:1}); }
-    if(!msgOff){ msgOff=true; msg.style.opacity=0; }
+    lure={x:x,y:y,t:1,n:3};
+    petTx=Math.max(psz()/2,Math.min(W-psz()/2,x));
+    if(best) catchFly(best);
+    else { sfx('click_001'); missN++;
+      if(!caught && missN>=2 && !msgOff) msg.innerHTML='看，牠們在飄過來——碰到光點就會亮<small>不用急，也沒有分數</small>'; }
   }
   cv.addEventListener('pointerdown',onDown);
   window.addEventListener('resize',fit);
@@ -1548,10 +1604,17 @@ function chillOpen(fromPet){
       cx.fillStyle='rgba(220,230,255,'+a.toFixed(2)+')'; cx.fillRect(sx,sy,2,2); }
     /* 地面 */
     cx.fillStyle='#0d1a20'; cx.fillRect(0,H*.86,W,H*.14);
+    /* 抓到的螢火蟲變成天上的小星星（留下來，看得到「剛剛有做到」；⛔ 不是分數） */
+    stars.forEach(function(s){ var a=.55+.45*Math.sin(el/700+s.ph); cx.fillStyle='rgba(255,240,150,'+a.toFixed(2)+')';
+      cx.fillRect(s.x-1.5,s.y-1.5,3,3); cx.fillRect(s.x-.5,s.y-5,1,10); cx.fillRect(s.x-5,s.y-.5,10,1); });
+    if(lure){ lure.t-=.012; if(lure.t<=0) lure=null; }
     /* 螢火蟲：慢慢飄，⭐ 抓走一隻，過幾秒會有新的飄進來（時間快結束前不再補） */
     flies.forEach(function(f,i){
       if(f.got){ f.got+=.03; if(f.got>1.6){ if(k<.8){ flies[i]=newFly(false); } else { f.dead=1; } } }
-      else { f.dir+=(Math.random()-.5)*.08; f.x+=Math.cos(f.dir)*f.sp*1.6; f.y+=Math.sin(f.dir)*f.sp*1.6+Math.sin(el/1200+f.ph)*.15;
+      else { if(lure){ var lx=lure.x-f.x, ly=lure.y-f.y, ld=Math.hypot(lx,ly);   /* 點哪裡都有回應：附近的會飄向手指，靠近就亮 */
+               if(ld<28){ if(lure.n>0){ lure.n--; catchFly(f); } }   /* 一次點擊最多讓 3 隻亮起來，其餘只是聚過來，⛔ 不要一下全收光 */
+               else if(ld<320){ f.x+=lx/ld*3.2; f.y+=ly/ld*3.2; } }
+             f.dir+=(Math.random()-.5)*.08; f.x+=Math.cos(f.dir)*f.sp*1.6; f.y+=Math.sin(f.dir)*f.sp*1.6+Math.sin(el/1200+f.ph)*.15;
              if(f.x<10||f.x>W-10) f.dir=Math.PI-f.dir; if(f.y<10||f.y>H*.78) f.dir=-f.dir;
              f.x=Math.max(6,Math.min(W-6,f.x)); f.y=Math.max(6,Math.min(H*.78,f.y)); }
       if(f.dead) return;
@@ -1560,16 +1623,18 @@ function chillOpen(fromPet){
       var rg=cx.createRadialGradient(f.x,f.y,0,f.x,f.y,rad);
       rg.addColorStop(0,'rgba(255,245,160,'+(glow).toFixed(2)+')'); rg.addColorStop(.35,'rgba(200,255,140,'+(glow*.4).toFixed(2)+')'); rg.addColorStop(1,'rgba(200,255,140,0)');
       cx.fillStyle=rg; cx.beginPath(); cx.arc(f.x,f.y,rad,0,6.28); cx.fill();
+      if(!f.got){ cx.fillStyle='rgba(255,252,215,'+Math.min(1,glow+.25).toFixed(2)+')'; cx.beginPath(); cx.arc(f.x,f.y,f.r*.5,0,6.28); cx.fill(); }   /* 亮亮的核心，一眼看得到「這是可以碰的」 */
     });
     sparks=sparks.filter(function(s){ return s.a>0; });
     sparks.forEach(function(s){ s.x+=s.vx; s.y+=s.vy; s.vy+=.04; s.a-=.02;
       cx.fillStyle='rgba(255,240,150,'+Math.max(0,s.a).toFixed(2)+')'; cx.fillRect(s.x,s.y,2,2); });
     ripples=ripples.filter(function(r){ return r.t<1; });
-    ripples.forEach(function(r){ r.t+=.03; cx.strokeStyle='rgba(200,220,255,'+((1-r.t)*.35).toFixed(2)+')';
-      cx.beginPath(); cx.arc(r.x,r.y,r.t*26,0,6.28); cx.stroke(); });
-    /* 夥伴：坐在地上，每抓到一隻就開心跳一下 */
-    var ps=Math.min(72,W*.2), hy=petHop>0?Math.sin(petHop*Math.PI)*22:0; if(petHop>0) petHop=Math.max(0,petHop-.05);
-    if(petImg.complete&&petImg.naturalWidth){ cx.imageSmoothingEnabled=false; cx.drawImage(petImg,W/2-ps/2,H*.86-ps+8-hy,ps,ps); }
+    ripples.forEach(function(r){ r.t+=.03; cx.strokeStyle='rgba(215,230,255,'+((1-r.t)*.75).toFixed(2)+')'; cx.lineWidth=2;
+      cx.beginPath(); cx.arc(r.x,r.y,r.t*64,0,6.28); cx.stroke(); });
+    /* 夥伴：走向你點的位置，每抓到一隻就開心跳一下 */
+    var ps=psz(), hy=petHop>0?Math.sin(petHop*Math.PI)*24:0; if(petHop>0) petHop=Math.max(0,petHop-.05);
+    petX+=(petTx-petX)*.05;
+    if(petImg.complete&&petImg.naturalWidth){ cx.imageSmoothingEnabled=false; cx.drawImage(petImg,petX-ps/2,H*.86-ps+8-hy,ps,ps); }
     if(k>=1&&!ended){ ended=true; msg.textContent='夜深了，牠睏了'; msg.style.opacity=.9;
       ov.querySelector('.chillx').textContent='回去'; }
     if(!CHILL) return;
@@ -1586,6 +1651,198 @@ function chillClose(){
   if(p){ p.lastInteractAt=Date.now(); p.excited=true; save(S); }
   if(c.fromPet){ toast('牠玩得很開心'); renderMap(); }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   夥伴自由走動（2026-09-20 Owen：「我希望寵物是在頁面裡自由移動 不是只卡在他格子裡」）
+   ⭐ 一個 fixed 浮層在整個頁面裡自己走來走去、停下來喘口氣；點牠一下 → 開心跳＋說一句你教過的話（petPickLine，⛔ 沒有收藏就只冒愛心）
+   ⭐ 生疏程度沿用 petMood 的天數：久沒來走得慢、常常窩著（不死、不推播）
+   ⭐ 答題／戰鬥畫面（有 #panel）時 .ghost＝點擊穿透，⛔ 不擋按鈕；減少動態偏好時不亂跑
+   ════════════════════════════════════════════════════════════════ */
+var PF=null;
+function petFreeBounds(){ var W=window.innerWidth, H=window.innerHeight; return {x0:6, x1:Math.max(10,W-46-6), y0:56, y1:Math.max(70,H-46-10)}; }
+function petFreeStart(){
+  if(PF||!S||!S.pet||!document.body) return;
+  var el=document.createElement('div'); el.id='petfree'; el.className='rest';
+  el.innerHTML='<div class="pf-in"><img src="'+esc(S.pet.sprite)+'" alt=""></div><div class="pf-say"></div>';
+  document.body.appendChild(el);
+  var b=petFreeBounds(), now=performance.now();
+  PF={ el:el, say:el.querySelector('.pf-say'), x:b.x0+Math.random()*(b.x1-b.x0), y:b.y1-Math.random()*70,
+       tx:0, ty:0, mode:'rest', until:now+900, last:now, sayT:0, joyT:0, raf:0 };
+  el.addEventListener('click',petFreeTap);
+  PF.raf=requestAnimationFrame(petFreeTick);
+}
+function petFreeTick(now){
+  if(!PF) return;
+  var dt=Math.min(.05,(now-PF.last)/1000); PF.last=now;
+  var el=PF.el, b=petFreeBounds(), days=Math.floor((Date.now()-((S.pet&&S.pet.lastInteractAt)||Date.now()))/86400000);
+  var lazy=days>3, spd=lazy?16:(days>1?30:44);
+  var still=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(PF.mode==='walk'){
+    var dx=PF.tx-PF.x, dy=PF.ty-PF.y, d=Math.hypot(dx,dy);
+    if(d<3){ PF.mode='rest'; PF.until=now+(lazy?4000+Math.random()*5000:1500+Math.random()*3500); }
+    else { var st=Math.min(d,spd*dt); PF.x+=dx/d*st; PF.y+=dy/d*st; if(Math.abs(dx)>4) el.classList.toggle('l',dx<0); }
+  } else if(now>=PF.until && !still && !document.getElementById('chill')){
+    if(lazy){ PF.tx=PF.x+(Math.random()-.5)*90; PF.ty=PF.y+(Math.random()-.5)*50; }
+    else { PF.tx=b.x0+Math.random()*(b.x1-b.x0); PF.ty=b.y0+Math.random()*(b.y1-b.y0); }
+    PF.tx=Math.max(b.x0,Math.min(b.x1,PF.tx)); PF.ty=Math.max(b.y0,Math.min(b.y1,PF.ty)); PF.mode='walk';
+  }
+  PF.x=Math.max(b.x0,Math.min(b.x1,PF.x)); PF.y=Math.max(b.y0,Math.min(b.y1,PF.y));
+  el.style.transform='translate('+PF.x.toFixed(1)+'px,'+PF.y.toFixed(1)+'px)';
+  el.classList.toggle('walk',PF.mode==='walk'); el.classList.toggle('rest',PF.mode!=='walk');
+  el.classList.toggle('ghost',!!document.getElementById('panel'));
+  PF.raf=requestAnimationFrame(petFreeTick);
+}
+function petFreeJoy(){
+  if(!PF) return;
+  PF.el.classList.add('joy'); clearTimeout(PF.joyT); PF.joyT=setTimeout(function(){ PF.el.classList.remove('joy'); },1300);
+  PF.mode='rest'; PF.until=performance.now()+2600;   /* 停下來陪你一下 */
+}
+function petFreeSay(html){
+  if(!PF) return;
+  var s=PF.say; s.style.marginLeft='0'; s.innerHTML=html; s.classList.add('on');
+  var r=s.getBoundingClientRect(), W=window.innerWidth;   /* 貼著螢幕邊時把泡泡推回畫面內 */
+  if(r.left<6) s.style.marginLeft=(6-r.left)+'px'; else if(r.right>W-6) s.style.marginLeft=((W-6)-r.right)+'px';
+  clearTimeout(PF.sayT); PF.sayT=setTimeout(function(){ s.classList.remove('on'); },4600);
+}
+function petFreeTap(e){
+  if(e) e.stopPropagation();
+  var p=S.pet; if(!p||!PF) return;
+  p.lastInteractAt=Date.now();
+  var obj=petPickLine();
+  if(obj){ p.lastLine={fr:obj.fr,zh:obj.zh}; petFreeSay(esc(obj.fr)+'<small>'+esc(obj.zh)+'</small>'); say(obj.fr); sfx('confirmation_001'); }
+  else { petFreeSay('♥'); sfx('click_001'); }
+  save(S); petFreeJoy();
+}
+
+/* ════════════════════════════════════════════════════════════════
+   長按解析（2026-09-20 Owen：「我希望頁面上的題目 我長按字可以做解析」）
+   ⭐ 長按題目／台詞／選項／戰利品卡上的字 → 底部彈出解析：這個字在你學過的句子裡怎麼用（sentences.js／chunks.js）、
+     整句怎麼念、這題考哪個文法點（gram_rules.js）；⛔ 內容全部取自既有資料，不現場編法文
+   ⭐ 想要更完整 → 一鍵複製成給 Claude 的問法（跟 writing.html 一樣的做法，不用金鑰、不花錢）
+   ⛔ 不洩漏答案：只給題目本來就有的 hint，不給 a／aNote
+   ⚠️ 長按放開後那一下 click 會被吞掉（不然長按選項會順便作答）
+   ════════════════════════════════════════════════════════════════ */
+var LP_SEL='.q, .talk, .fb, .opt, .card';
+var LP_LET='A-Za-zÀ-ÖØ-öø-ÿŒœ';
+var LP={t:0, x:0, y:0, fired:0, cur:null}, LP_IDX=null, LP_FULL=null;
+function lpTextOf(el){
+  var c=el.cloneNode(true);
+  Array.prototype.forEach.call(c.querySelectorAll('.consigne, details, button, small, .cursor'),function(n){ n.remove(); });
+  return c.textContent.replace(/\s+/g,' ').trim();
+}
+function lpWordAt(x,y,el){
+  var node=null, off=0;
+  try{
+    if(document.caretRangeFromPoint){ var r=document.caretRangeFromPoint(x,y); if(r){ node=r.startContainer; off=r.startOffset; } }
+    else if(document.caretPositionFromPoint){ var p=document.caretPositionFromPoint(x,y); if(p){ node=p.offsetNode; off=p.offset; } }
+  }catch(e){}
+  if(!node||node.nodeType!==3||!el.contains(node)) return '';
+  var s=node.nodeValue, ok=new RegExp('['+LP_LET+'\\-]'), a=off, b=off;
+  while(a>0&&ok.test(s.charAt(a-1))) a--;
+  while(b<s.length&&ok.test(s.charAt(b))) b++;
+  return s.slice(a,b).replace(/^-+|-+$/g,'');
+}
+function lpTokens(fr){
+  return String(fr).split(new RegExp('[^'+LP_LET+'\\-]+')).map(function(t){ return deacc(t.replace(/^-+|-+$/g,'')).toLowerCase(); }).filter(Boolean);
+}
+function lpIndex(){
+  if(LP_IDX) return LP_IDX;
+  LP_IDX={}; LP_FULL={};
+  function add(o,src){
+    if(!o||!o.fr||!o.zh) return;
+    var seen={}, nf=normAns(o.fr); if(!LP_FULL[nf]) LP_FULL[nf]=o;
+    lpTokens(o.fr).forEach(function(t){ if(seen[t]) return; seen[t]=1; (LP_IDX[t]=LP_IDX[t]||[]).push({fr:o.fr,zh:o.zh,note:o.note||'',s:src}); });
+  }
+  (typeof SENTENCES!=='undefined'?SENTENCES:[]).forEach(function(o){ add(o,0); });
+  (typeof CHUNKS!=='undefined'?CHUNKS:[]).forEach(function(o){ add(o,1); });
+  return LP_IDX;
+}
+function lpFind(word){
+  var arr=lpIndex()[deacc(word).toLowerCase()]||[], seen={}, out=[];
+  arr.slice().sort(function(a,b){ return (a.s-b.s)||(a.fr.length-b.fr.length); }).forEach(function(o){
+    if(seen[o.fr]) return; seen[o.fr]=1; out.push(o); });
+  return { total:out.length, list:out.slice(0,4) };
+}
+function lpMark(fr,word){
+  var re=new RegExp('(^|[^'+LP_LET+'])('+word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')(?![' +LP_LET+'])','i');
+  return esc(fr).replace(re,function(m,a,b){ return a+'<b>'+b+'</b>'; });   /* esc 不動字母，安全 */
+}
+function lpOpen(word,ctx,el){
+  var french=/[A-Za-zÀ-ÿ]{2}/.test(ctx) && !/[一-鿿]/.test(ctx.replace(/[（(].*?[）)]/g,''));
+  var ex=word?lpFind(word):{total:0,list:[]}, q=null, hint='', gram=null;
+  var inQ=el.closest('.q'), pq=(typeof B!=='undefined'&&B&&B.curQ)?B.curQ:null;
+  if(inQ&&pq&&normAns(stemOf(pq))===normAns(ctx)){ q=pq; hint=pq.hint||''; }
+  if(q&&q.topic&&typeof GRAM_POINTS!=='undefined'){
+    gram=GRAM_POINTS.filter(function(g){ return (g.topics||[]).indexOf(q.topic)>=0; })[0]||null; }
+  lpIndex();
+  var whole=french?(LP_FULL[normAns(ctx)]||null):null;
+  LP.cur={word:word,ctx:ctx,ex:ex.list,whole:whole,q:q,hint:hint,gram:gram,french:french};
+  var h='<div class="lpbox"><div class="lph"><b class="lpw">'+esc(word||ctx)+'</b>'+
+    (word?'<button onclick="lpSay(0)">🔊 這個字</button>':'')+
+    '<button onclick="lpClose()">✕</button></div>';
+  if(word){
+    h+='<h4>你學過的句子裡怎麼用</h4>';
+    if(ex.list.length) ex.list.forEach(function(o,i){
+      h+='<div class="lpex" onclick="lpSay('+(i+1)+')"><span>'+lpMark(o.fr,word)+' 🔊</span><span class="zh">'+esc(o.zh)+'</span></div>'; });
+    else h+='<div class="lpnote">你的句庫裡還沒有出現過「'+esc(word)+'」——按最下面的按鈕，讓 Claude 幫你拆。</div>';
+    if(ex.total>ex.list.length) h+='<div class="lpnote">（還有 '+(ex.total-ex.list.length)+' 句也用到）</div>';
+  } else if(!french) h+='<div class="lpnote">這裡是中文——長按<b>法文的字</b>，會看到它在你學過的句子裡怎麼用。</div>';
+  if(french&&ctx){
+    h+='<h4>整句</h4><div class="lpex" '+(ctx.indexOf('_')<0?'onclick="lpSay(-1)"':'')+'><span>'+esc(ctx)+(ctx.indexOf('_')<0?' 🔊':'')+'</span>'+
+       (whole?'<span class="zh">'+esc(whole.zh)+(whole.note?'　'+esc(whole.note):'')+'</span>':'')+'</div>';
+  }
+  if(hint) h+='<h4>這題的提示</h4><div class="lpnote">'+esc(hint)+'</div>';
+  if(gram){ var ru=gram.rule||{}; h+='<h4>這題考的文法點</h4><div class="lpnote"><b style="color:var(--gold2)">'+esc(gram.name||'')+'</b>'+
+    (ru.title?'　'+esc(ru.title):'')+(typeof ru.why==='string'&&ru.why?'<br>'+esc(ru.why):'')+'</div>'; }
+  h+='<button class="lpcopy" id="lpcopy" onclick="lpCopy()">📋 複製成給 Claude 的問法（貼過去就有完整解析）</button></div>';
+  var sh=document.getElementById('lpsheet');
+  if(!sh){ sh=document.createElement('div'); sh.id='lpsheet';
+    sh.addEventListener('click',function(e){ if(e.target===sh) lpClose(); }); document.body.appendChild(sh); }
+  sh.innerHTML=h; sh.classList.add('on'); sfx('click_001');
+}
+function lpClose(){ var sh=document.getElementById('lpsheet'); if(sh) sh.classList.remove('on'); }
+function lpSay(i){
+  var c=LP.cur; if(!c) return;
+  if(i===0) say(c.word); else if(i===-1) say(c.ctx); else if(c.ex[i-1]) say(c.ex[i-1].fr);
+}
+function lpCopy(){
+  var c=LP.cur; if(!c) return;
+  var t='我在學法文（A2，目標 TCF Canada B2，母語中文）。請用繁體中文幫我解析'+
+    (c.word?'這個字「'+c.word+'」，':'')+'它出現在這裡：\n「'+c.ctx+'」\n\n'+
+    '請告訴我：① 整句的意思 ② 這個字的詞性、（若是動詞）原形與這裡的變位與人稱、（若是名詞／形容詞）陰陽性單複數 '+
+    '③ 這句用到的文法點，以及「為什麼是這個形式」 ④ 容易跟哪個字搞混。'+
+    (c.hint?'\n（題目附的提示：'+c.hint+'）':'')+'\n先不要直接給我這題的答案，除非我問。';
+  var btn=document.getElementById('lpcopy');
+  function done(ok){ if(btn) btn.textContent=ok?'✓ 已複製——去貼給 Claude 就好':'複製失敗，請手動選取：'+t.slice(0,40)+'…'; }
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function(){ done(true); },function(){ lpCopyOld(t,done); });
+    else lpCopyOld(t,done);
+  }catch(e){ lpCopyOld(t,done); }
+}
+function lpCopyOld(t,done){
+  var ta=document.createElement('textarea'); ta.value=t; ta.style.cssText='position:fixed;left:-999px;top:0'; document.body.appendChild(ta);
+  ta.select(); var ok=false; try{ ok=document.execCommand('copy'); }catch(e){} ta.remove(); done(ok);
+}
+(function(){
+  function stop(){ clearTimeout(LP.t); LP.t=0; }
+  document.addEventListener('pointerdown',function(e){
+    LP.fired=0; stop();   /* 任何新的按下都先重置，不然長按後沒有 click 時會誤吞下一次點擊 */
+    if(e.pointerType==='mouse'&&e.button!==0) return;
+    var view=document.getElementById('view'), el=e.target.closest?e.target.closest(LP_SEL):null;
+    if(!el||!view||!view.contains(el)) return;
+    LP.x=e.clientX; LP.y=e.clientY;
+    LP.t=setTimeout(function(){
+      LP.t=0; LP.fired=1;
+      lpOpen(lpWordAt(LP.x,LP.y,el), lpTextOf(el), el);
+    },520);
+  },{passive:true});
+  document.addEventListener('pointermove',function(e){ if(LP.t&&Math.hypot(e.clientX-LP.x,e.clientY-LP.y)>12) stop(); },{passive:true});
+  ['pointerup','pointercancel'].forEach(function(n){ document.addEventListener(n,stop,{passive:true}); });
+  document.addEventListener('click',function(e){ if(LP.fired){ LP.fired=0; e.stopPropagation(); e.preventDefault(); } },true);
+  document.addEventListener('contextmenu',function(e){
+    var view=document.getElementById('view'), el=e.target.closest?e.target.closest(LP_SEL):null;
+    if(el&&view&&view.contains(el)) e.preventDefault(); });
+})();
 
 /* ── 非戰鬥節點 ─────────────────────────────────────────── */
 function enter(key,type){
