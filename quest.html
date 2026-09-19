@@ -297,7 +297,10 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 .chillmsg small{display:block; margin-top:6px; font-size:.76rem; letter-spacing:.06em; opacity:.8}
 /* 夥伴自由走動（2026-09-20 Owen：「我希望寵物是在頁面裡自由移動 不是只卡在他格子裡」）
    ⭐ 整頁 fixed 浮層；戰鬥／答題畫面時 .ghost＝點擊穿透，⛔ 不擋答題按鈕 */
-#petfree{position:fixed; left:0; top:0; width:46px; height:46px; z-index:40; cursor:pointer; touch-action:manipulation; will-change:transform}
+#petfree{position:fixed; left:0; top:0; width:56px; height:56px; z-index:40; cursor:pointer; touch-action:manipulation; will-change:transform}
+#petfree::after{content:''; position:absolute; inset:-16px}   /* ⭐ 2026-09-20 Owen：「不夠可按」→ 看不見的加大點擊範圍（實際圖 56px、可點 88px） */
+#petfree::before{content:''; position:absolute; left:50%; bottom:1px; width:38px; height:11px; margin-left:-19px; border-radius:50%;
+  background:radial-gradient(ellipse,rgba(217,180,94,.4),rgba(217,180,94,0) 70%); pointer-events:none}   /* 腳下的一圈微光：告訴你「牠是可以點的」 */
 #petfree.ghost{pointer-events:none}
 #petfree .pf-in{width:100%; height:100%; transform-origin:50% 100%}
 #petfree img{width:100%; height:100%; display:block}
@@ -1659,7 +1662,7 @@ function chillClose(){
    ⭐ 答題／戰鬥畫面（有 #panel）時 .ghost＝點擊穿透，⛔ 不擋按鈕；減少動態偏好時不亂跑
    ════════════════════════════════════════════════════════════════ */
 var PF=null;
-function petFreeBounds(){ var W=window.innerWidth, H=window.innerHeight; return {x0:6, x1:Math.max(10,W-46-6), y0:56, y1:Math.max(70,H-46-10)}; }
+function petFreeBounds(){ var W=window.innerWidth, H=window.innerHeight; return {x0:6, x1:Math.max(10,W-56-6), y0:56, y1:Math.max(70,H-56-10)}; }
 function petFreeStart(){
   if(PF||!S||!S.pet||!document.body) return;
   var el=document.createElement('div'); el.id='petfree'; el.className='rest';
@@ -1669,20 +1672,22 @@ function petFreeStart(){
   PF={ el:el, say:el.querySelector('.pf-say'), x:b.x0+Math.random()*(b.x1-b.x0), y:b.y1-Math.random()*70,
        tx:0, ty:0, mode:'rest', until:now+900, last:now, sayT:0, joyT:0, raf:0 };
   el.addEventListener('click',petFreeTap);
+  /* ⭐ 手指一碰到牠就停住（不然會在你要點的那一下跑掉）；2026-09-20 Owen：「移動太快了！而且不夠可按」 */
+  el.addEventListener('pointerdown',function(){ if(PF){ PF.mode='rest'; PF.until=performance.now()+3000; } });
   PF.raf=requestAnimationFrame(petFreeTick);
 }
 function petFreeTick(now){
   if(!PF) return;
   var dt=Math.min(.05,(now-PF.last)/1000); PF.last=now;
   var el=PF.el, b=petFreeBounds(), days=Math.floor((Date.now()-((S.pet&&S.pet.lastInteractAt)||Date.now()))/86400000);
-  var lazy=days>3, spd=lazy?16:(days>1?30:44);
+  var lazy=days>3, spd=lazy?7:(days>1?12:17);   /* px/秒：慢慢晃，好讓你點得到（原 16/30/44 太快） */
   var still=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(PF.mode==='walk'){
     var dx=PF.tx-PF.x, dy=PF.ty-PF.y, d=Math.hypot(dx,dy);
-    if(d<3){ PF.mode='rest'; PF.until=now+(lazy?4000+Math.random()*5000:1500+Math.random()*3500); }
+    if(d<3){ PF.mode='rest'; PF.until=now+(lazy?6000+Math.random()*6000:3500+Math.random()*4500); }
     else { var st=Math.min(d,spd*dt); PF.x+=dx/d*st; PF.y+=dy/d*st; if(Math.abs(dx)>4) el.classList.toggle('l',dx<0); }
   } else if(now>=PF.until && !still && !document.getElementById('chill')){
-    if(lazy){ PF.tx=PF.x+(Math.random()-.5)*90; PF.ty=PF.y+(Math.random()-.5)*50; }
+    if(lazy||Math.random()<.65){ PF.tx=PF.x+(Math.random()-.5)*200; PF.ty=PF.y+(Math.random()-.5)*130; }   /* 多半只是附近晃幾步 */
     else { PF.tx=b.x0+Math.random()*(b.x1-b.x0); PF.ty=b.y0+Math.random()*(b.y1-b.y0); }
     PF.tx=Math.max(b.x0,Math.min(b.x1,PF.tx)); PF.ty=Math.max(b.y0,Math.min(b.y1,PF.ty)); PF.mode='walk';
   }
