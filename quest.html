@@ -1051,7 +1051,7 @@ function towerResolve(loose, exact, q, m, retried){
       if(foe){ foe.classList.add('hit'); setTimeout(function(){ foe.classList.remove('hit'); },340); }
       sfx('confirmation_001'); floatDmg('-1');
     },180);
-    S.run.coin+=Math.round(m.dmg*2)+Math.max(0,B.streak-1);
+    S.gold=(S.gold||0)+Math.round(m.dmg*2)+Math.max(0,B.streak-1);
     S.xp=(S.xp||0)+Math.round(m.dmg*6);
   } else if(loose){
     sfx('click_001'); S.xp=(S.xp||0)+3;
@@ -1172,7 +1172,7 @@ function towerRetreatFloor(){ sfx('switch_002'); toast('牠退回塔裡了，下
 function towerClear(){
   var t=towerState();
   t.climbs=(t.climbs||0)+1; t.floor=0; t.marks={}; t.plan=null; t.last=Date.now();   /* 下一次重新挑最卡的結構 */
-  S.run.coin+=40; S.gold=(S.gold||0)+40; S.xp=(S.xp||0)+80;
+  S.gold=(S.gold||0)+40; S.xp=(S.xp||0)+80;
   save(S); renderHud(); sfx('maximize_001');
   document.getElementById('view').innerHTML=
     '<div class="loot"><h3>LE SOMMET</h3>'+
@@ -1373,7 +1373,7 @@ function examClear(){
   var t=examState(), id=t.test, c=t.climbs[id]||{n:0};
   c.n++; c.last=Date.now(); t.climbs[id]=c;
   t.test=null; t.floor=0; t.marks={}; t.last=Date.now();
-  S.run.coin+=40; S.xp=(S.xp||0)+80;
+  S.gold=(S.gold||0)+40; S.xp=(S.xp||0)+80;
   save(S); renderHud(); sfx('maximize_001');
   document.getElementById('view').innerHTML=
     '<div class="loot"><h3>LE SOMMET</h3>'+
@@ -1387,7 +1387,7 @@ function examClear(){
    ⭐ 每天一組 5 題 TCF Canada 閱讀原題（跟考試之塔同一個私人空間 bucket TCF，登入才讀得到，⛔ 題目不進 repo）
    ⭐ 難度坡：題號約 7–29 由淺到深（A2→B2），每天平移一點；⭐ 優先挑「還沒答對過」的，⭐ 3 天前答錯的會回來（老朋友）
    ⭐ 每題答完立刻看對錯；答錯才出中文解析（memory feedback_french_only_ui）；⭐ 每題可跳過、整組可「今天跳過」，⛔ 不顯示分母、不寫「你今天還沒讀」
-   ⭐ 讀完拿獎勵幣＋經驗；作答寫進 clb7_exam_answers（跟考試之塔同一份，儀表板讀得到）
+   ⭐ 讀完拿金幣＋經驗；作答寫進 clb7_exam_answers（跟考試之塔同一份，儀表板讀得到）
    ⭐ 題目文字可長按解析（長按解析對 #view 內所有 .q／.opt／.fb 都有效）
    ════════════════════════════════════════════════════════════════ */
 var RD=null;
@@ -1484,7 +1484,7 @@ function readFinish(){
   if(reward){ S.gold=(S.gold||0)+(first?15:6); S.xp=(S.xp||0)+(first?30:10); }
   save(S); renderHud(); sfx('maximize_001');
   readMsg('<h3>LECTURE TERMINÉE</h3><div class="fb" style="text-align:center;font-size:1.02rem;color:var(--gold2)">'+(r.done?'今天這組讀完了':'這組全部跳過了，沒關係')+'</div>'+
-    (r.done?'<div class="fb" style="text-align:center">答對 '+r.ok+' 題'+(reward?'　獎勵幣 +'+(first?15:6)+'　經驗 +'+(first?30:10):'')+'</div>':'')+
+    (r.done?'<div class="fb" style="text-align:center">答對 '+r.ok+' 題'+(reward?'　金幣 +'+(first?15:6)+'　經驗 +'+(first?30:10):'')+'</div>':'')+
     '<div class="cmds" style="margin-top:12px"><button class="cmd" onclick="setMode(S.mode||\'story\')"><span>回營地</span></button><button class="cmd" onclick="readStart()"><span>再讀一組<small>想多讀就讀</small></span></button></div>');
 }
 
@@ -1548,7 +1548,7 @@ function chapterClear(ch){
   var next=STORY.filter(function(c){ return c.ch===ch.ch+1; })[0];
   S.story.cleared=S.story.cleared||{}; S.story.cleared[ch.id]={last:Date.now()};
   if(next){ S.story.ch=next.ch; S.story.node=0; }
-  S.run.coin+=30; S.gold=(S.gold||0)+30; S.xp=(S.xp||0)+60;
+  S.gold=(S.gold||0)+30; S.xp=(S.xp||0)+60;
   save(S); renderHud(); sfx('maximize_001');
   document.getElementById('view').innerHTML=
     '<div class="loot"><h3>CHAPITRE '+ch.ch+' TERMINÉ</h3>'+
@@ -1568,6 +1568,7 @@ function init(){
   d.pet=d.pet||{sprite:pick(MONSTERS),name:'小夥伴',lastInteractAt:Date.now(),lastLine:null};
   d.pet.kind=d.pet.kind||'dog'; d.pet.color=d.pet.color||'brown'; d.pet.worn=d.pet.worn||{};   /* 2026-09-20：小狗／小熊造型與衣服 */
   d.gold=d.gold||0; d.wardrobe=d.wardrobe||{};
+  if(d.run&&d.run.coin){ d.gold+=d.run.coin; d.run.coin=0; }   /* 舊的「今日金幣」併進唯一的錢包，一次性（2026-09-20） */
   d.mode=d.mode||(hasStory()?'story':'dungeon');
   /* ⭐ 網址指定分頁優先（從練習頁回來時帶 ?tab=train，見 return_to.js）——
      ⛔ 不能只靠 clb7_quest.mode，換頁同步時會被雲端較舊的值蓋掉 */
@@ -1591,15 +1592,14 @@ function renderHud(){
   document.getElementById('lv').textContent='Lv '+lv;
   var h=''; for(var i=0;i<mx;i++) h+='<span class="'+(i<r.hp?'':'dead')+'" style="color:var(--red)">'+V.heart+'</span>';
   document.getElementById('hp').innerHTML=h;
-  document.getElementById('coin').innerHTML=V.coin+'<span>'+r.coin+'</span>';
+  document.getElementById('coin').innerHTML=V.coin+'<span>'+(S.gold||0)+'</span>';   /* 金幣只有一個錢包：累積、不隔天歸零、倒下不掉（2026-09-20 Owen：「我怎感覺我越玩錢越少」） */
   document.getElementById('lootN').innerHTML=V.card+'<span>'+(r.loot||[]).length+'</span>';
   document.getElementById('xpbar').style.width=Math.round(x.cur/x.need*100)+'%';
 }
 function renderMap(){
   var r=S.run, v=document.getElementById('view'), dead=r.hp<=0, done=r.cleared['2-0'];
   var html=modeTabs()+'<div class="title"><div class="en">Le Donjon du Jour</div><h1>今 日 地 城</h1><div class="rule"></div></div>' +
-    '<div class="sub">' + (dead ? ('你倒下了'+(r.lostCoin?'，身上的 '+r.lostCoin+' 枚金幣散落在地城裡':'')+
-        '。戰利品、經驗值與街坊關係都留著。')
+    '<div class="sub">' + (dead ? ('你倒下了。金幣、戰利品、經驗值與街坊關係都留著。')
       : done ? '守護者已經倒下。今天的地城通關了。'
       : '選一條路走下去。<b>答對就是攻擊</b>，答錯會被反擊——倒下沒有任何損失。') + '</div>';
   MAP.floors.forEach(function(nodes,fi){
@@ -1712,7 +1712,7 @@ function petHtml(){
     '<div class="cmds" style="margin-top:8px">'+
       '<button class="cmd" onclick="petPat()">'+img(SP.card)+'<span>摸摸牠<small>牠開心了一下</small></span></button>'+
       (known.length?'<button class="cmd" onclick="petSpeak()">'+img(SP.wand)+'<span>聽牠說一句<small>從你教過的話裡挑一句</small></span></button>':'')+
-      '<button class="cmd" onclick="setMode(\'pet\')">'+img(SP.chest)+'<span>幫牠換裝<small>衣櫃・商店・獎勵幣 '+(S.gold||0)+'</small></span></button>'+
+      '<button class="cmd" onclick="setMode(\'pet\')">'+img(SP.chest)+'<span>幫牠換裝<small>衣櫃・商店・金幣 '+(S.gold||0)+'</small></span></button>'+
       '<button class="cmd" onclick="miniMenu()">'+img(SP.card)+'<span>陪牠玩小遊戲<small>釣魚・打磚塊・合成，沒有法文也沒有分數</small></span></button>'+
     '</div></div>';
 }
@@ -2088,10 +2088,10 @@ function lpCopyOld(t,done){
 })();
 
 /* ════════════════════════════════════════════════════════════════
-   夥伴：小狗／小熊、掉寶衣服、衣櫃換裝、獎勵幣商店（2026-09-20 Owen：「寵物可以隨著打怪收集服裝（掉寶）帽子衣服飾品，然後我可以幫她換；
-   可以是狗狗／熊類的寵物嗎？…遊戲累積的獎勵幣可以幫她幹嘛幹嘛」）
+   夥伴：小狗／小熊、掉寶衣服、衣櫃換裝、金幣商店（2026-09-20 Owen：「寵物可以隨著打怪收集服裝（掉寶）帽子衣服飾品，然後我可以幫她換；
+   可以是狗狗／熊類的寵物嗎？…遊戲累積的金幣可以幫她幹嘛幹嘛」）
    ⭐ 造型全部是自己用程式畫的 16×16 像素圖（左半邊鏡射成右半邊，保證對稱），⛔ 不引用任何外部素材；衣服是疊在上面的小圖層，所以任何搭配都能疊
-   ⭐ 獎勵幣 S.gold＝打贏戰鬥／通關累積、⛔ 不會因為倒下而歸零（跟每日的 run.coin 分開）；只能花在牠身上：衣服、點心、毛色
+   ⭐ 金幣 S.gold＝打贏戰鬥／通關累積、⛔ 不會因為倒下而歸零（跟每日的 run.coin 分開）；只能花在牠身上：衣服、點心、毛色
    ⭐ 後果放角色身上：久沒來只會窩著，⛔ 不會掉衣服、不會退化
    ════════════════════════════════════════════════════════════════ */
 var PET_ART={
@@ -2161,11 +2161,11 @@ function petWear(id){
 }
 function petBuy(id){
   var it=petItem(id); if(!it||!it.price||(S.wardrobe||{})[id]) return;
-  if((S.gold||0)<it.price){ toast('獎勵幣還不夠——多打幾場就有了'); return; }
+  if((S.gold||0)<it.price){ toast('金幣還不夠——多打幾場就有了'); return; }
   S.gold-=it.price; petGive(it); save(S); sfx('drop_002'); toast('買了「'+it.name+'」，收進衣櫃'); renderPetTab();
 }
 function petFeed(){
-  var p=S.pet; if((S.gold||0)<10){ toast('點心要 10 枚獎勵幣'); return; }
+  var p=S.pet; if((S.gold||0)<10){ toast('點心要 10 枚金幣'); return; }
   S.gold-=10; p.fed=(p.fed||0)+1; p.lastInteractAt=Date.now(); save(S); sfx('confirmation_001');
   petFreeJoy(); petFreeSay(['好好吃！','汪！再一個～','（吃得好開心）','嗯嗯～'][p.fed%4]); renderPetTab();
 }
@@ -2173,7 +2173,7 @@ function petKind(k){ var p=S.pet; if(p.kind===k) return; p.kind=k; p.color='brow
 function petColor(c){
   var p=S.pet; p.colors=p.colors||{brown:1}; var key=(p.kind||'dog')+':'+c;
   if(!p.colors[key]&&c!=='brown'){
-    if((S.gold||0)<60){ toast('新毛色要 60 枚獎勵幣'); return; }
+    if((S.gold||0)<60){ toast('新毛色要 60 枚金幣'); return; }
     S.gold-=60; p.colors[key]=1; toast('換了新毛色');
   }
   p.color=c; save(S); sfx('switch_002'); petRefresh(); renderPetTab();
@@ -2183,6 +2183,7 @@ function petRename(){
   n=n.trim().slice(0,10); if(!n) return; p.name=n; save(S); renderPetTab();
 }
 function renderPetTab(){
+  renderHud();   /* 花了金幣要馬上反映在上面的錢包 */
   var p=S.pet, own=S.wardrobe||{}, gold=S.gold||0, kind=p.kind||'dog', worn=p.worn||{};
   p.colors=p.colors||{brown:1};
   var sw=Object.keys(PET_COLORS[kind]).map(function(c){
@@ -2204,8 +2205,8 @@ function renderPetTab(){
         '<button class="cmd" onclick="petFeed()"><span>餵點心<small>10 幣</small></span></button>'+
         (Object.keys(S.cards||{}).length?'<button class="cmd" onclick="petSpeak()"><span>聽牠說一句<small>你教過的話</small></span></button>':'')+'</div>'+
       '<div class="fb" style="margin-top:8px">毛色　<span class="sws">'+sw+'</span></div>'+
-      '<div class="fb" style="color:var(--faint);font-size:.72rem">獎勵幣＝打贏戰鬥、通關累積，不會因為倒下歸零；只能花在牠身上。衣服也會從怪物身上掉出來（關主一定掉）。</div></div>'+
-    '<div class="sec"><h2>衣櫃</h2>'+(mine.length?'<div class="itms">'+mine.map(function(x){ return cell(x,'own'); }).join('')+'</div>':'<div class="fb">還沒有衣服——打怪會掉，或到下面用獎勵幣買。</div>')+'</div>'+
+      '<div class="fb" style="color:var(--faint);font-size:.72rem">金幣只有一個錢包：打贏、答對、通關都會累積，不會隔天歸零、倒下也不會掉；可以買藥水，也可以花在牠身上。衣服也會從怪物身上掉出來（關主一定掉）。</div></div>'+
+    '<div class="sec"><h2>衣櫃</h2>'+(mine.length?'<div class="itms">'+mine.map(function(x){ return cell(x,'own'); }).join('')+'</div>':'<div class="fb">還沒有衣服——打怪會掉，或到下面用金幣買。</div>')+'</div>'+
     '<div class="sec"><h2>商店</h2>'+(shop.length?'<div class="itms">'+shop.map(function(x){ return cell(x,'shop'); }).join('')+'</div>':'<div class="fb">全部收齊了。</div>')+'</div>'+
     petGamesHtml();
 }
@@ -2221,7 +2222,7 @@ function petGamesHtml(){
 /* ════════════════════════════════════════════════════════════════
    小遊戲（2026-09-20 Owen：「不然三種遊戲都做好了」——螢火蟲太無聊，改成釣魚／打磚塊／合成三個真的遊戲）
    ⭐ 功能是「恢復」不是訓練（research/2026-09-17_休息型遊戲恢復效果.md）：⛔ 沒有法文、⛔ 沒有排名／分數／失敗懲罰、
-     1–2 分鐘自然結束、隨時「回去」、玩完只讓夥伴開心（⛔ 不寫進任何學習進度、不給獎勵幣——不然會變成「玩很多、練很少」）
+     1–2 分鐘自然結束、隨時「回去」、玩完只讓夥伴開心（⛔ 不寫進任何學習進度、不給金幣——不然會變成「玩很多、練很少」）
    ⭐ 入口都是玩家自己按（夥伴分頁／夥伴卡／打贏關主後的小邀請），⛔ 不彈窗
    ════════════════════════════════════════════════════════════════ */
 var MINI=null;
@@ -2780,7 +2781,7 @@ function tbFinish(){
 function enter(key,type){
   var r=S.run;
   if(type==='chest'){
-    var c=lootCard(S); r.cleared[key]=1; r.coin+=5;
+    var c=lootCard(S); r.cleared[key]=1; S.gold=(S.gold||0)+5;
     if(c){ r.loot.push(c); (S.cards=S.cards||{})[c.key]={last:Date.now()}; }
     save(S); renderHud(); sfx('drop_002');
     document.getElementById('view').innerHTML='<div class="loot"><h3>COFFRE</h3>'+
@@ -2794,9 +2795,9 @@ function enter(key,type){
     document.getElementById('view').innerHTML='<div class="loot"><h3>MARCHAND</h3>'+
       '<div class="fb">「要買點什麼嗎？」</div>'+
       '<div class="cmds" style="margin-top:12px">'+
-        '<button class="cmd" onclick="buy(\'potion\')" '+(r.coin<10?'disabled':'')+'>'+img(SP.potion)+
+        '<button class="cmd" onclick="buy(\'potion\')" '+((S.gold||0)<10?'disabled':'')+'>'+img(SP.potion)+
           '<span>買藥水<small>10 金幣 · 回一顆心</small></span></button>'+
-        '<button class="cmd" onclick="buy(\'heal\')" '+(r.coin<6?'disabled':'')+'><span style="color:var(--red);width:22px">'+V.heart+'</span>'
+        '<button class="cmd" onclick="buy(\'heal\')" '+((S.gold||0)<6?'disabled':'')+'><span style="color:var(--red);width:22px">'+V.heart+'</span>'
           '<span>就地休息<small>6 金幣 · 立刻回一顆心</small></span></button>'+
       '</div><button class="next" onclick="advance()">離開</button></div>';
     return;
@@ -2816,8 +2817,8 @@ function enter(key,type){
 }
 function buy(what){
   var r=S.run, lv=lvOf(S.xp);
-  if(what==='potion'&&r.coin>=10){ r.coin-=10; r.potion=(r.potion||0)+1; sfx('confirmation_001'); toast('買了一瓶藥水'); }
-  else if(what==='heal'&&r.coin>=6){ r.coin-=6; r.hp=Math.min(maxHpOf(lv),r.hp+1); sfx('glass_002'); toast('回復一顆心'); }
+  if(what==='potion'&&(S.gold||0)>=10){ S.gold-=10; r.potion=(r.potion||0)+1; sfx('confirmation_001'); toast('買了一瓶藥水'); }
+  else if(what==='heal'&&(S.gold||0)>=6){ S.gold-=6; r.hp=Math.min(maxHpOf(lv),r.hp+1); sfx('glass_002'); toast('回復一顆心'); }
   save(S); renderHud();
   /* ⚠️ BUG 修正：原本這裡呼叫 enter(null,'shopRefresh')，
      那個 type 不在任何分支裡 → 直接掉進一場 key=null 的戰鬥（Owen 的紀錄裡就有一個 null 節點）。
@@ -3278,7 +3279,7 @@ function resolveMove(loose, exact, q, m, retried){
     if(B.combo===5){
       var lvNow=lvOf(S.xp);
       if(S.run.hp<maxHpOf(lvNow)){ S.run.hp++; toast('5 連擊——喘了一口氣，回復一顆心'); sfx('glass_002'); }
-      else { S.run.coin+=10; toast('5 連擊——撿到 10 枚金幣'); }
+      else { S.gold=(S.gold||0)+10; toast('5 連擊——撿到 10 枚金幣'); }
     }
     hero.classList.add('act'); setTimeout(function(){hero.classList.remove('act');},420);
     setTimeout(function(){
@@ -3289,7 +3290,7 @@ function resolveMove(loose, exact, q, m, retried){
       var bar=document.getElementById('fbar'); if(bar) bar.style.width=Math.round(B.hp/B.maxHp*100)+'%';
       setTimeout(function(){ foe.classList.remove('hit'); },340);
     },180);
-    S.run.coin+=Math.round(m.dmg*2)+Math.max(0,B.combo-1);   /* 連越多，金幣越多 */
+    S.gold=(S.gold||0)+Math.round(m.dmg*2)+Math.max(0,B.combo-1);   /* 連越多，金幣越多 */
     S.xp=(S.xp||0)+Math.round(m.dmg*6);
   } else {
     B.combo=0;
@@ -3315,7 +3316,7 @@ function resolveMove(loose, exact, q, m, retried){
       '<button class="next" id="nx">'+(S.run.hp<=0?'你倒下了…':(B.exam?(B.i>=B.qs.length?'這一層做完了':'下一題'):(B.hp<=0?'牠倒下了':'繼續')))+'</button>';
     document.getElementById('nx').addEventListener('click',function(){
       sfx('click_001');
-      if(S.run.hp<=0){ S.run.lostCoin=S.run.coin; S.run.coin=0;
+      if(S.run.hp<=0){   /* 2026-09-20：倒下不再掉金幣（Owen：「我怎感覺我越玩錢越少」）*/
         if(B.tower){ S.towerCur=null; save(S); renderHud(); renderTower(); return; }   /* 塔：回塔下，樓層不掉 */
         save(S); renderHud(); renderMap(); return; }
       if(B.exam) return (B.i>=B.qs.length) ? win() : useMove('read');
@@ -3333,8 +3334,7 @@ function win(){
   /* B2 選路後果：精英比小怪硬（movePool 的 maxHp 3 vs 2），獎勵也要跟著高——
      不然「精英路線」單純是風險沒有報酬 */
   var isElite=B.type==='elite', gainCoin=B.isBoss?20:(isElite?9:5), gainXp=B.isBoss?40:(isElite?20:12);
-  r.coin+=gainCoin;
-  S.gold=(S.gold||0)+gainCoin;                                          /* 獎勵幣：累積、不會因為倒下歸零，只能花在夥伴身上 */
+  S.gold=(S.gold||0)+gainCoin;                                          /* 金幣只有一個錢包（S.gold）：累積、不隔天歸零、倒下不掉；買藥水、買夥伴的衣服都用它 */
   var drop=rollDrop(B.isBoss?'boss':(isElite?'elite':'norm')); if(drop) petGive(drop);   /* 夥伴的衣服：怪物身上掉 */
   S.xp=(S.xp||0)+gainXp;
   var before=lvOf(S.xp-gainXp), after=lvOf(S.xp), levelled=after>before;
