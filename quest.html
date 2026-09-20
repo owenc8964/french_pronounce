@@ -294,6 +294,26 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
           letter-spacing:.12em; opacity:.85; pointer-events:none; text-shadow:0 0 12px rgba(150,180,255,.5); transition:opacity 1.2s}
 .chillinv{display:block; width:100%; margin-top:10px; padding:10px; border-radius:12px; cursor:pointer; background:none;
           border:1px dashed var(--line2); color:var(--dim); font-size:.78rem}
+/* 拼句（普通攻擊＝Duolingo 式詞塊排列，2026-09-20 Owen 採納）與填表 */
+.bslot{min-height:54px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:10px 0 6px; padding:8px;
+       border:1px dashed var(--line2); border-radius:12px; background:rgba(255,255,255,.02)}
+.bph{color:var(--faint); font-size:.78rem}
+.bbank{display:flex; flex-wrap:wrap; gap:8px; margin:12px 0}
+.tile{font-family:inherit; padding:9px 13px; border-radius:10px; border:1px solid var(--line2); background:var(--panel2);
+      color:var(--ink); font-size:.94rem; cursor:pointer; box-shadow:0 2px 0 rgba(0,0,0,.35)}
+.tile.on{border-color:var(--gold); color:var(--gold2)}
+.tile.gone{visibility:hidden}
+.tile.good{border-color:var(--green); color:var(--green)}
+.redotag{display:inline-block; margin-right:8px; padding:0 7px; font-size:.64rem; letter-spacing:.06em; color:var(--gold); border:1px solid var(--gold); border-radius:8px}
+.tbl{width:100%; border-collapse:collapse; margin:10px 0; font-size:.9rem}
+.tbl th{font-size:.68rem; letter-spacing:.1em; color:var(--faint); font-weight:600; text-align:left; padding:4px 6px}
+.tbl td{padding:5px 6px; border-top:1px solid var(--line)}
+.tbl td.lbl{color:var(--dim); width:34%}
+.tbl td.shown{color:var(--gold2)}
+.tbl input{width:100%; font-family:inherit; font-size:.92rem; padding:8px 9px; border-radius:9px; color:var(--ink); background:#0c1018; border:1px solid var(--line2)}
+.tbl input.ok{border-color:var(--green); color:var(--green)}
+.tbl input.skip{border-style:dashed; color:var(--faint)}
+.tbl .kn{display:block; margin-top:3px; font-size:.64rem; color:var(--faint); cursor:pointer}
 .chillmsg small{display:block; margin-top:6px; font-size:.76rem; letter-spacing:.06em; opacity:.8}
 /* 夥伴自由走動（2026-09-20 Owen：「我希望寵物是在頁面裡自由移動 不是只卡在他格子裡」）
    ⭐ 整頁 fixed 浮層；戰鬥／答題畫面時 .ghost＝點擊穿透，⛔ 不擋答題按鈕 */
@@ -377,6 +397,7 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 <script src="situations.js"></script>
 <script src="story.js"></script>
 <script src="topic_labels.js"></script>
+<script src="verbs_full.js"></script>
 <script>
 /* ── 素材（Kenney Tiny Dungeon／Interface Sounds，CC0）────────── */
 var T = 'assets/game/tiles/tile_';
@@ -442,9 +463,10 @@ function questionsFor(ls){
    題庫現況：choose 549／fill 413／trans 185／gender 51 —— 原本只用了 choose。
    ════════════════════════════════════════════════════════════════ */
 var MOVES={
-  hit:  {id:'hit',  name:'普通攻擊', dmg:1,   type:'choose', sec:'12 秒', why:'選項裡挑一個'},
+  hit:  {id:'hit',  name:'普通攻擊', dmg:1,   type:'choose', sec:'不限時', why:'把詞塊排成句子（有陷阱）'},   /* 2026-09-20：Duolingo 式拼句；沒有中翻法題可用時才退回選擇題 */
   heavy:{id:'heavy',name:'重擊',    dmg:1.5, type:'gender', sec:'20 秒', why:'陰陽性，錯一個字母就不算'},
   blast:{id:'blast',name:'大招',    dmg:2,   type:'fill',   sec:'30 秒', why:'把空格打出來'},
+  table:{id:'table',name:'填表',    dmg:2.5, type:'table',  sec:'不限時', why:'動詞變位表：現在・過去・未來・條件'},   /* 2026-09-20 Owen：填表格那個遊戲搬進來；資料取自 verbs_full.js */
   chant:{id:'chant',name:'詠唱',    dmg:3,   type:'trans',  sec:'60 秒', why:'中翻法，整句自己打'},
   ear:  {id:'ear',  name:'看破',    dmg:1.5, type:'listen', sec:'20 秒', why:'只聽，不看字'},
   shout:{id:'shout',name:'吶喊',    dmg:2.5, type:'speak',  sec:'不限時', why:'照著唸出整句，麥克風判定'},   /* B4，見下方大段說明 */
@@ -942,7 +964,8 @@ function weightedPick(arr, w){
 }
 /* 題目說明走法文（用語取自課本 Édito 的 consigne）；中文提示收進開關（memory feedback_french_only_ui） */
 var CONSIGNE={ choose:'Choisissez la bonne réponse.', fill:'Complétez.', gender:'Au féminin :' };
-function consigne(q){ var c=CONSIGNE[q.type]; return c ? '<span class="consigne">'+c+'</span>' : ''; }
+function consigne(q){ var c=CONSIGNE[q.type];
+  return ((typeof B!=='undefined'&&B&&B.isRedo&&B.curQ===q)?'<span class="redotag">再練一次・不扣血</span>':'')+(c ? '<span class="consigne">'+c+'</span>' : ''); }
 function stemOf(q){
   if(q.type==='gender'){ var mm=String(q.q).match(/^(.*?)\s*→\s*女性形？?\s*$/); if(mm) return mm[1]; }
   return q.q;
@@ -1085,6 +1108,8 @@ function qSkipBtn(){   /* 考試之塔：放在出題畫面的按鈕列裡 */
   return (B&&B.exam) ? '<button class="cmd" onclick="towerQSkip()">'+img(SP.card)+'<span>這題跳過<small>不算對也不算錯</small></span></button>' : '';
 }
 function qSkipRow(){   /* 筆記版的塔：出題畫面底下一排小出口（⛔ 不擠掉作答區） */
+  if(B&&!B.tower&&!B.exam&&!B.tt){   /* 2026-09-20：一般戰鬥的每一題也都能跳過（跳過＝不算對也不算錯、不扣血，⛔ 也不再回來練） */
+    return '<div class="exits"><button onclick="battleQSkip()">這題先跳過</button></div>'; }
   if(!(B&&B.tower&&!B.exam)) return '';
   return '<div class="exits">'+
     '<button onclick="towerQSkip()">這題跳過</button>'+
@@ -1849,6 +1874,271 @@ function lpCopyOld(t,done){
     if(el&&view&&view.contains(el)) e.preventDefault(); });
 })();
 
+/* ════════════════════════════════════════════════════════════════
+   ⭐ 練到會（2026-09-20 Owen：「沒答對要練到會！」）
+   · 答錯的題排進 B.redo；之後選到同一種招式、且隔了兩題以上，就把它換個排列再問一次
+   · 「再練一次」不扣血（練習不是戰鬥）；牠倒下之前（redoGate）把還沒練會的清完
+   · ⭐ 每一題都能「這題先跳過」＝不算對也不算錯、從清單拿掉（跳過必須是合法動作）
+   ════════════════════════════════════════════════════════════════ */
+function redoAdd(q,m){
+  if(!B||!q||!q.q) return; B.redo=B.redo||[];
+  var ex=B.redo.filter(function(r){ return r.q.q===q.q; })[0];
+  if(ex){ B.redo.splice(B.redo.indexOf(ex),1); ex.due=(B.turn||0)+1; B.redo.push(ex); }   /* 又錯了：排到隊尾 */
+  else B.redo.push({q:q,m:m,due:(B.turn||0)+1});
+}
+function redoDrop(q){ if(!B||!B.redo||!q) return; B.redo=B.redo.filter(function(r){ return r.q.q!==q.q; }); }
+function redoDue(type){
+  if(!B||!B.redo||!B.redo.length) return null;
+  return B.redo.filter(function(x){ return (x.due||0)<=(B.turn||0) && x.m.type===type; })[0]||null;
+}
+function askByType(q,m){
+  if(q._tiles) return askBuild(q,m);
+  if(q.type==='choose'||(q.type==='gender'&&q.opts&&q.opts.length>=2)) return askChoice(q,m);
+  return askType(q,m);
+}
+function redoGate(){
+  if(B&&B.redo&&B.redo.length){
+    var r=B.redo[0]; B.isRedo=true; B.move=r.m;
+    document.getElementById('panel').innerHTML='<div class="fb">牠快倒下了——剛剛沒練會的還有 <b>'+B.redo.length+'</b> 題，練完就結束。<br><span style="color:var(--dim)">不扣血；想跳過的題也可以跳。</span></div><button class="next" id="rgo">來</button>';
+    document.getElementById('rgo').addEventListener('click',function(){ sfx('click_001'); askByType(r.q,r.m); });
+    return;
+  }
+  win();
+}
+function battleQSkip(){
+  var q=B&&B.curQ; sfx('click_001'); if(q) redoDrop(q);
+  toast('這題先跳過，不算對也不算錯');
+  if(B&&B.hp<=0) return redoGate();
+  B.isRedo=false; showCmds();
+}
+
+/* ════════════════════════════════════════════════════════════════
+   拼句：普通攻擊＝Duolingo 式詞塊排列（2026-09-20 Owen：「把一句拆成很多詞彙，我重新排列成對的組成；甚至可以放幾個陷阱」）
+   ⭐ 句子只取自題庫的中翻法題（questions.js）與句庫（sentences.js），⛔ 不自創法文
+   ⭐ 陷阱＝容易搞混的同族字（suis/es/est、le/la/les、a/à…），不是亂數字；第一個詞塊一律小寫，⛔ 不讓「大寫的那塊」洩漏開頭
+   ⭐ 第一次排錯：對的前綴幫你留著、從錯的地方重排（不扣血）；第二次還錯才反擊，然後進「練到會」清單
+   ════════════════════════════════════════════════════════════════ */
+var CONFUSE=[['suis','es','est','sommes','êtes','sont'],['ai','as','a','avons','avez','ont'],['a','à'],['le','la','les','un','une','des'],
+  ['du','des','au','aux'],['mon','ma','mes','ton','ta','tes','son','sa','ses'],['ce','cette','ces'],['il','elle','ils','elles'],
+  ['je','tu','nous','vous'],['à','au','aux','en','dans'],['et','est'],['ou','où'],['va','vas','vais','vont','allons','allez'],
+  ['fait','fais','faites','font','faisons'],['peux','peut','peuvent','pouvons','pouvez'],['veux','veut','veulent','voulons','voulez'],
+  ['pas','plus','jamais','rien'],['que','qui','quoi'],['de','du','des'],['pour','par','avec','sans'],
+  ['moi','toi','lui','eux'],['me','te','se'],['ici','là'],['bon','bonne','bons','bonnes'],['petit','petite','petits','petites'],
+  ['grand','grande','grands','grandes'],['nouveau','nouvelle','nouveaux'],['premier','première']];
+function tileTok(a){
+  return String(a).replace(/[’‘]/g,"'").split(/\s+/).map(function(t){ return t.replace(/^[«"“(]+|[.,!?;:»"”)]+$/g,''); })
+    .filter(function(t){ return t && /[A-Za-zÀ-ÿ0-9]/.test(t); });
+}
+function tileKey(t){ return String(t).toLowerCase(); }
+function tileTraps(real,ls){
+  var have={}, pool=[], out=[]; real.forEach(function(t){ have[tileKey(t)]=1; });
+  real.forEach(function(t){ var k=tileKey(t);
+    CONFUSE.forEach(function(g){ if(g.indexOf(k)>=0) g.forEach(function(s){ if(!have[s]&&pool.indexOf(s)<0) pool.push(s); }); }); });
+  var want=real.length>=7?3:2;
+  shuffle(pool).slice(0,want).forEach(function(s){ out.push(s); });
+  if(out.length<want){   /* 同族字不夠：從同課別題的答案裡補（真的學過的字） */
+    var bag=[];
+    BANK.forEach(function(q){ if(!q||typeof q.a!=='string'||ls.indexOf(q.lesson)<0) return;
+      tileTok(q.a.split('|')[0]).forEach(function(w){ var k=tileKey(w); if(w.length>1&&!have[k]&&out.indexOf(k)<0&&bag.indexOf(k)<0) bag.push(k); }); });
+    shuffle(bag).slice(0,want-out.length).forEach(function(w){ out.push(w); });
+  }
+  return out;
+}
+function tileQuestion(ls){
+  function okN(a){ var n=tileTok(String(a).split('|')[0]).length; return n>=3&&n<=10; }
+  var cand=BANK.filter(function(q){
+    if(q.type!=='trans'||typeof q.a!=='string'||!q.q||!okN(q.a)) return false;
+    return (B&&B.topic) ? q.topic===B.topic : ls.indexOf(q.lesson)>=0; });
+  if(!cand.length&&B&&B.topic){   /* 節點題不夠：補同一課的（跟 useMove 的止血同一個想法） */
+    var tl={}; BANK.forEach(function(q){ if(q.topic===B.topic&&q.lesson) tl[q.lesson]=1; });
+    cand=BANK.filter(function(q){ return q.type==='trans'&&typeof q.a==='string'&&q.q&&tl[q.lesson]&&okN(q.a); }); }
+  var fromSent=false;
+  if(!cand.length){   /* 再不行：句庫的完整句＋中文 */
+    fromSent=true;
+    cand=(typeof SENTENCES!=='undefined'?SENTENCES:[]).filter(function(x){ return x.zh&&x.fr&&okN(x.fr)&&(!ls.length||ls.indexOf(x.lesson)>=0); }); }
+  if(!cand.length) return null;
+  var key=function(x){ return fromSent?x.zh:x.q; };
+  var fresh=cand.filter(function(x){ return ((B&&B.used)||[]).indexOf(key(x))<0; }); if(fresh.length) cand=fresh;
+  var src=cand[Math.floor(Math.random()*cand.length)], q;
+  if(fromSent) q={ type:'trans', q:src.zh, a:src.fr, lesson:src.lesson, hint:'', aNote:'' };
+  else { q={}; Object.keys(src).forEach(function(k){ q[k]=src[k]; }); }
+  var alts=String(q.a).split('|'), real=tileTok(alts[0]);
+  var traps=tileTraps(real, ls.length?ls:[q.lesson]);
+  q._tiles=real.map(function(t,i){ return i===0 ? t.charAt(0).toLowerCase()+t.slice(1) : t; }).concat(traps);
+  q._alts=alts.map(function(a){ return tileTok(a).map(tileKey); });
+  return q;
+}
+function askBuild(q,m){
+  B.curQ=q; B.curM=m;
+  B.bd={ put:[], tries:0, msg:'', order:shuffle(q._tiles.map(function(_,i){ return i; })) };
+  buildRender();
+}
+function buildRender(){
+  var q=B.curQ, bd=B.bd, on={}; bd.put.forEach(function(i){ on[i]=1; });
+  var slot=bd.put.map(function(i){ return '<button class="tile on" onclick="buildTap('+i+')">'+esc(q._tiles[i])+'</button>'; }).join('');
+  var bank=bd.order.map(function(i){ return '<button class="tile'+(on[i]?' gone':'')+'" '+(on[i]?'tabindex="-1" ':'')+'onclick="buildTap('+i+')">'+esc(q._tiles[i])+'</button>'; }).join('');
+  document.getElementById('panel').innerHTML=
+    '<div class="q">'+consigne(q)+'<span class="consigne">Traduisez en français.</span>'+esc(q.q)+hintHtml(q)+'</div>'+
+    '<div class="bslot">'+(slot||'<span class="bph">點下面的詞塊，照順序排成句子（有幾塊是陷阱）</span>')+'</div>'+
+    '<div class="bbank">'+bank+'</div>'+
+    (bd.msg?'<div class="fb" style="color:var(--gold);margin-top:0">'+bd.msg+'</div>':'')+
+    '<div class="cmds" style="margin-top:10px"><button class="cmd" onclick="buildCheck()">'+img(SP.sword)+'<span>出招<small>'+esc(B.curM.name)+' ×'+B.curM.dmg+'</small></span></button>'+
+      '<button class="cmd" onclick="buildClear()">'+img(SP.shield)+'<span>清掉重排<small>不扣任何東西</small></span></button></div>'+qSkipRow();
+}
+function buildTap(i){
+  var bd=B&&B.bd; if(!bd) return; sfx('click_001');
+  var at=bd.put.indexOf(i); if(at>=0) bd.put.splice(at,1); else bd.put.push(i);
+  bd.msg=''; buildRender();
+}
+function buildClear(){ if(!B||!B.bd) return; sfx('click_001'); B.bd.put=[]; B.bd.msg=''; buildRender(); }
+function buildCheck(){
+  var q=B.curQ, bd=B.bd; if(!bd.put.length){ toast('先點幾個詞塊'); return; }
+  var seq=bd.put.map(function(i){ return tileKey(q._tiles[i]); });
+  var ok=q._alts.some(function(a){ return a.length===seq.length && a.every(function(w,j){ return w===seq[j]; }); });
+  var full=String(q.a).split('|')[0];
+  if(ok){ say(full); return resolveMove(true, true, q, B.curM, bd.tries>0); }
+  if(bd.tries===0){
+    bd.tries=1; sfx('bong_001');
+    var ref=q._alts[0], k=0; while(k<seq.length&&k<ref.length&&seq[k]===ref[k]) k++;
+    bd.put=bd.put.slice(0,k);     /* 對的前綴留著，從第一個錯的地方重排 */
+    bd.msg=(k>0?'前 '+k+' 個詞塊是對的，幫你留著。':'')+'從下一個開始重排（這次不扣血）——小心陷阱詞。';
+    return buildRender();
+  }
+  say(full); resolveMove(false,false,q,B.curM,true);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   填表：動詞時態（2026-09-20 Owen：「表格是我覺得可以把那些動詞時態的題目都拿出來練一下（現在 過去 未來 條件…）」）
+   ⭐ 資料直接取自 verbs_full.js 的 conjugate()／drillForms()（跟 verb_sprint.html 同一份，⛔ 不另存第二份變位表）
+   ⭐ 一張表 6 個人稱、空 4 格（其餘顯示當線索）；每格「這格會了」、整張「這張跳過」——三層出口都在
+   ⭐ 練到會：第一輪錯的格，第二輪給開頭字母、第三輪給完整答案，直到答對或跳過；⭐ 傷害只看「第一次」的對錯
+   ⭐ 答錯的格寫進 clb7_drill_wrong（跟 table_drill 同一本錯字簿），會了的記進 clb7_drill_known，儀表板讀得到
+   ════════════════════════════════════════════════════════════════ */
+var TT_TENSES=['present','passe-compose','imparfait','futur-simple','conditionnel','subjonctif'];
+var TT_W={'present':1,'passe-compose':2,'imparfait':2,'futur-simple':2,'conditionnel':2,'subjonctif':1};
+var TB_ACT=null;
+function tbNorm(s){ return String(s).replace(/[’‘]/g,"'").trim().toLowerCase().replace(/\s+/g,' '); }
+function tbLog(wrong,v,tn,who,ans){
+  var K=wrong?'clb7_drill_wrong':'clb7_drill_known', o=null;
+  try{ o=JSON.parse(localStorage.getItem(K)); }catch(e){}
+  if(!o) o={}; if(Array.isArray(o)) return;   /* 舊版陣列格式交給 table_drill 自己升級，這裡不動 */
+  var id='vt-'+v.inf+'-'+tn.id+'|'+who+'|'+tn.name, prev=o[id], title=v.inf+' · '+tn.name;
+  o[id]= wrong ? {id:id,d:new Date().toLocaleDateString('sv-SE'),last:Date.now(),n:(prev&&prev.n||0)+1,title:title,label:who,hdr:tn.name,a:ans,type:'verb'}
+               : {id:id,last:Date.now(),n:(prev&&prev.n||0)+1,title:title,label:who,hdr:tn.name};
+  var cap=wrong?200:300, ks=Object.keys(o);
+  if(ks.length>cap){ ks.sort(function(a,b){ return (o[b].last||0)-(o[a].last||0); }); var keep={}; ks.slice(0,cap).forEach(function(k){ keep[k]=o[k]; }); o=keep; }
+  try{ localStorage.setItem(K,JSON.stringify(o)); }catch(e){}
+}
+function tenseTable(){
+  if(typeof VERBS_FULL==='undefined'||typeof drillForms!=='function') return null;
+  var vs=VERBS_FULL.filter(function(v){ return !v.imperso&&(v.lvl==='A1'||v.lvl==='A2'); });
+  var last=B&&B.lastTb, v=null, id=null, tn=null, forms=null, tot=0;
+  TT_TENSES.forEach(function(t){ tot+=TT_W[t]; });
+  for(var tries=0; tries<14&&!forms; tries++){
+    v=vs[Math.floor(Math.random()*vs.length)];
+    var r=Math.random()*tot; id=TT_TENSES[0];
+    for(var i=0;i<TT_TENSES.length;i++){ r-=TT_W[TT_TENSES[i]]; if(r<=0){ id=TT_TENSES[i]; break; } }
+    if((v.inf+'|'+id)===last) continue;
+    tn=conjugate(v).filter(function(x){ return x.id===id; })[0];
+    forms=tn?drillForms(v,id):null;
+    if(!forms||forms.filter(Boolean).length<5) forms=null;
+  }
+  if(!forms) return null;
+  B.lastTb=v.inf+'|'+id;
+  var idx=[0,1,2,3,4,5].filter(function(i){ return forms[i]; });
+  var blanks=shuffle(idx).slice(0,4);
+  var rows=idx.map(function(i){
+    var who=tn.pre ? ((i===2||i===5)?"qu'":'que ')+PERSONS[i] : PERSONS[i];
+    var alts=String(forms[i]).split('|');
+    if(i===0&&!tn.pre&&alts.length===1&&vowelStart(alts[0])) alts.push("j'"+alts[0]);   /* j'ai／ai 都收 */
+    return { who:who, alts:alts, blank:blanks.indexOf(i)>=0, st:'todo', tries:0, val:'' };
+  });
+  return { v:v, tn:tn, rows:rows };
+}
+function askTable(m){
+  var t=tenseTable(); if(!t){ toast('這招現在沒有表可出'); return showCmds(); }
+  B.curQ={type:'table',q:'table',noRedo:true}; B.curM=m; B.isRedo=false;
+  B.tb={ v:t.v, tn:t.tn, rows:t.rows, round:1, f1tot:0, f1ok:0, msg:'' };
+  tbRender();
+}
+function tbStash(){
+  (B.tb.rows||[]).forEach(function(r,i){ var el=document.getElementById('tb'+i); if(el&&r.st==='todo') r.val=el.value; });
+}
+function tbRender(){
+  var tb=B.tb, v=tb.v, tn=tb.tn, h='';
+  tb.rows.forEach(function(r,i){
+    var cell;
+    if(!r.blank) cell='<td class="shown">'+esc(r.alts[0])+'</td>';
+    else if(r.st==='ok') cell='<td><input class="ok" value="'+esc(r.alts[0])+'" disabled></td>';
+    else if(r.st==='skip') cell='<td><input class="skip" placeholder="（這格會了）" disabled></td>';
+    else {
+      var ph=r.tries>=2 ? r.alts[0] : (r.tries===1 ? r.alts[0].slice(0,Math.min(2,r.alts[0].length))+'…' : '');
+      cell='<td><input id="tb'+i+'" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" placeholder="'+esc(ph)+'" value="'+esc(r.val||'')+'" '+
+           'onfocus="TB_ACT=this" onkeydown="if(event.key===\'Enter\'){event.preventDefault();tbCheck();}">'+
+           '<span class="kn" onclick="tbKnow('+i+')">這格會了</span></td>';
+    }
+    h+='<tr><td class="lbl">'+esc(r.who)+'</td>'+cell+'</tr>';
+  });
+  document.getElementById('panel').innerHTML=
+    '<div class="q"><span class="consigne">Complétez le tableau.</span><b>'+esc(v.inf)+'</b>　'+esc(v.zh)+'<br>'+
+      '<span style="color:var(--gold)">'+esc(tn.name)+'</span>　<span style="color:var(--faint)">'+esc(tn.fr)+'</span>'+
+      '<details class="hintd"><summary>提示</summary>'+esc(tn.how)+'</details></div>'+
+    '<table class="tbl"><thead><tr><th>人稱</th><th>變位</th></tr></thead><tbody>'+h+'</tbody></table>'+
+    (tb.msg?'<div class="fb" style="color:var(--gold);margin-top:0">'+tb.msg+'</div>':'')+
+    '<div class="accbar">'+ACCENTS.map(function(a){ return '<button onmousedown="event.preventDefault()" onclick="tbIns(\''+a+'\')">'+a+'</button>'; }).join('')+'</div>'+
+    '<div class="cmds" style="margin-top:10px">'+
+      '<button class="cmd" onclick="tbCheck()">'+img(SP.sword)+'<span>出招<small>填表 ×'+B.curM.dmg+'</small></span></button>'+
+      '<button class="cmd" onclick="tbSkip()">'+img(SP.skull)+'<span>這張跳過<small>不算對也不算錯</small></span></button>'+
+      '<button class="cmd" onclick="buildDown()">'+img(SP.shield)+'<span>改用普通攻擊<small>不扣血</small></span></button></div>';
+  var first=document.querySelector('.tbl input:not([disabled])'); if(first) first.focus();
+}
+function tbIns(a){
+  var box=TB_ACT; if(!box||box.disabled) return;
+  var st=box.selectionStart==null?box.value.length:box.selectionStart, en=box.selectionEnd==null?st:box.selectionEnd;
+  box.value=box.value.slice(0,st)+a+box.value.slice(en); box.selectionStart=box.selectionEnd=st+1; box.focus();
+}
+function tbKnow(i){
+  tbStash(); var tb=B.tb, r=tb.rows[i]; if(!r) return;
+  r.st='skip'; tbLog(false,tb.v,tb.tn,r.who,r.alts[0]); sfx('click_001');
+  if(!tb.rows.some(function(x){ return x.blank&&x.st==='todo'; })) return tbCheck(true);
+  tbRender();
+}
+function tbSkip(){
+  tbStash(); var tb=B.tb, any=false;
+  tb.rows.forEach(function(r){ if(r.blank&&r.st==='todo'&&r.val.trim()) any=true; });
+  tb.rows.forEach(function(r){ if(r.blank&&r.st==='todo'&&!r.val.trim()){ r.st='skip'; tbLog(false,tb.v,tb.tn,r.who,r.alts[0]); } });
+  sfx('click_001');
+  if(any) return tbCheck();      /* 有填的照常對答案，⛔ 不吃掉他的作答 */
+  tbFinish();
+}
+function tbCheck(noRead){
+  var tb=B.tb, bad=0;
+  if(!noRead) tbStash();
+  tb.rows.forEach(function(r){
+    if(!r.blank||r.st!=='todo') return;
+    var good=r.val.trim() && r.alts.map(tbNorm).indexOf(tbNorm(r.val))>=0;
+    if(!r.seen){ r.seen=1; tb.f1tot++; if(good) tb.f1ok++; }
+    if(good) r.st='ok';
+    else { bad++; r.tries=(r.tries||0)+1; r.val=''; if(r.tries===1) tbLog(true,tb.v,tb.tn,r.who,r.alts[0]); }
+  });
+  if(!bad) return tbFinish();
+  sfx('bong_001'); tb.round++;
+  tb.msg='還有 <b>'+bad+'</b> 格沒練會——這次給你提示（開頭字母，再錯就給完整答案）。練到會為止，也可以按「這格會了」。';
+  tbRender();
+}
+function tbFinish(){
+  var tb=B.tb, tot=tb.f1tot, okc=tb.f1ok;
+  var pq={ type:'table', q:'table', noRedo:true,
+           a:tb.rows.map(function(r){ return r.alts[0]; }).join(' · '),
+           aNote:'<b>'+esc(tb.v.inf)+' · '+esc(tb.tn.name)+'</b>：'+esc(tb.tn.how)+(tb.v.note?'<br>'+esc(tb.v.note):'') };
+  B.curQ=pq;
+  if(!tot){ toast('這張全跳過了——不算對也不算錯'); return showCmds(); }
+  var m=B.curM, ratio=okc/tot;
+  if(ratio>=1) return resolveMove(true,true,pq,m,false);
+  if(ratio>=.5) return resolveMove(true,true,pq,m,true);      /* 第一次對一半以上：半傷害，不扣血（後面練到會了） */
+  resolveMove(false,false,pq,m,true);
+}
+
 /* ── 非戰鬥節點 ─────────────────────────────────────────── */
 function enter(key,type){
   var r=S.run;
@@ -2036,13 +2326,13 @@ function showCmds(){
   if(B.forceMove && !B.forcedShown){    /* 考驗節點：開場就推薦最重的招（⛔ 但不強制，降級鍵還在） */
     B.forcedShown=1;
   }
-  var btns=(B.tt?B.towerMoves:((B.tower&&B.towerMove)?[B.towerMove]:['hit','heavy','blast','chant','ear','shout'])).map(function(k){   /* 塔：只列這個結構有的招式；shout 不進塔，只在地城/副本/主線 */
+  var btns=(B.tt?B.towerMoves:((B.tower&&B.towerMove)?[B.towerMove]:['hit','heavy','blast','table','chant','ear','shout'])).map(function(k){   /* 塔：只列這個結構有的招式；shout 不進塔，只在地城/副本/主線 */
     var m=MOVES[k];
-    var n=(m.type==='exam') ? 1 : (m.type==='listen') ? ((typeof SENTENCES!=='undefined'&&SENTENCES.length>=4)?1:0)
+    var n=(m.type==='exam') ? 1 : (m.type==='table') ? ((typeof VERBS_FULL!=='undefined'&&typeof drillForms==='function')?1:0) : (m.type==='listen') ? ((typeof SENTENCES!=='undefined'&&SENTENCES.length>=4)?1:0)
         : (m.type==='speak') ? ((speechSupported()&&typeof SENTENCES!=='undefined'&&SENTENCES.length>=1)?1:0)   /* B4：不支援就不出現，⛔ 不報錯 */
         : movePool(ls,m.type).length;
     if(!n) return '';
-    return '<button class="cmd" onclick="useMove(\''+k+'\')">'+img(k==='chant'?SP.wand:(k==='blast'?SP.potion:(k==='ear'||k==='shout'?SP.card:SP.sword)))+
+    return '<button class="cmd" onclick="useMove(\''+k+'\')">'+img(k==='chant'?SP.wand:(k==='blast'?SP.potion:(k==='table'?SP.chest:(k==='ear'||k==='shout'?SP.card:SP.sword))))+
       '<span>'+m.name+' <span style="color:var(--gold);font-size:.72rem">×'+m.dmg+'</span>'+
       '<small>'+m.why+'　'+m.sec+'</small></span></button>';
   }).join('');
@@ -2083,6 +2373,14 @@ function useMove(k){
     B.used=(B.used||[]).concat([tq.q]); B.move=m;
     if(m.type==='choose'||(m.type==='gender'&&tq.opts&&tq.opts.length>=2)) return askChoice(tq,m);
     return askType(tq,m);
+  }
+  B.isRedo=false;
+  if(m.type==='table'){ B.move=m; return askTable(m); }
+  var rd=redoDue(m.type);                                   /* 「沒答對要練到會」：之前錯的題，隔一兩題就換個排列再來一次 */
+  if(rd){ B.isRedo=true; B.move=rd.m; return askByType(rd.q, rd.m); }
+  if(m.type==='choose'){                                    /* 普通攻擊＝Duolingo 式拼句；沒有中翻法題可用才退回選擇題 */
+    var bq=tileQuestion(B&&B.lessons?B.lessons:ls);
+    if(bq){ B.used=(B.used||[]).concat([bq.q]); B.move=m; return askBuild(bq,m); }
   }
   if(m.type==='listen'){
     var lq=listenQuestion(B&&B.lessons?B.lessons:ls);
@@ -2320,6 +2618,10 @@ function floatDmg(txt, mine){
 function resolveMove(loose, exact, q, m, retried){
   if(B && B.exam && q.key) examRecord(q.key, loose);
   if(B && B.tt) return towerResolve(loose, exact, q, m, retried);
+  if(B && !B.exam && !B.tower){                             /* 練到會：答對就從待練清單拿掉，答錯排進待練清單（表格自己有循環，不重複排） */
+    B.turn=(B.turn||0)+1;
+    if(loose) redoDrop(q); else if(!q.noRedo) redoAdd(q,m);
+  }
   if(B && !B.exam && q && q.topic) gameRecord(q, loose && !retried);
   if(B && !B.exam && !B.tower && q && q.topic) ddaTrack(loose && !retried);   /* B6：塔已有自己的連擊節奏（B8）不混進來；地城/副本/主線戰鬥都算進「近期整體表現」，只拿來調地城怪物 */
   var hero=document.getElementById('hero'), foe=document.getElementById('foe');
@@ -2348,10 +2650,11 @@ function resolveMove(loose, exact, q, m, retried){
   } else {
     B.combo=0;
     setTimeout(function(){
-      hero.classList.add('ouch'); sfx('error_004'); if(!B.exam) floatDmg('-1',true);
-      setTimeout(function(){hero.classList.remove('ouch');},360);
+      if(!B.isRedo){ hero.classList.add('ouch'); sfx('error_004'); if(!B.exam) floatDmg('-1',true);
+        setTimeout(function(){hero.classList.remove('ouch');},360); }
+      else sfx('bong_001');
     },160);
-    if(!B.exam) S.run.hp=Math.max(0,S.run.hp-1);   /* 考試題：錯了只是沒打中，⛔ 不扣血 */
+    if(!B.exam && !B.isRedo) S.run.hp=Math.max(0,S.run.hp-1);   /* 考試題：錯了只是沒打中，⛔ 不扣血；「再練一次」的題也不扣血（練習不是戰鬥） */
     S.xp=(S.xp||0)+2;
   }
   save(S); renderHud();
@@ -2362,7 +2665,8 @@ function resolveMove(loose, exact, q, m, retried){
                (B.combo>1?'　連擊 ×'+B.combo:'')+
                (retried?'<br><span style="color:var(--gold)">想起來了就算數——半個傷害，沒有扣血</span>':'')+
                (exact?'':'<br><span style="color:var(--gold)">⚠️ 重音沒對上，正確寫法：<b>'+esc(shownAns(q))+'</b></span>')
-             : '<b style="color:var(--red)">'+(B.exam?'沒打中':'沒組對，被反擊了')+'</b><br>正解：<b>'+esc(shownAns(q))+'</b>')+
+             : '<b style="color:var(--red)">'+(B.exam?'沒打中':(B.isRedo?'還沒練會（不扣血）':'沒組對，被反擊了'))+'</b><br>正解：<b>'+esc(shownAns(q))+'</b>'+
+               ((!B.exam&&!q.noRedo)?'<br><span style="color:var(--gold)">記下了——待會換個排列再來一次，練到會為止（想跳過也行）</span>':''))+
       (q.aNote&&(!q.zhOnlyWrong||!loose)?'<br>'+q.aNote:'')+'</div>'+
       '<button class="next" id="nx">'+(S.run.hp<=0?'你倒下了…':(B.exam?(B.i>=B.qs.length?'這一層做完了':'下一題'):(B.hp<=0?'牠倒下了':'繼續')))+'</button>';
     document.getElementById('nx').addEventListener('click',function(){
@@ -2371,7 +2675,7 @@ function resolveMove(loose, exact, q, m, retried){
         if(B.tower){ S.towerCur=null; save(S); renderHud(); renderTower(); return; }   /* 塔：回塔下，樓層不掉 */
         save(S); renderHud(); renderMap(); return; }
       if(B.exam) return (B.i>=B.qs.length) ? win() : useMove('read');
-      if(B.hp<=0) return win();
+      if(B.hp<=0) return redoGate();                /* 牠倒下之前，先把沒練會的題練完（可跳過） */
       type(esc(B.name)+' 還站著。', showCmds);
     });
   }, 700);
