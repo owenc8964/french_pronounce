@@ -314,6 +314,20 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 .tbl input.ok{border-color:var(--green); color:var(--green)}
 .tbl input.skip{border-style:dashed; color:var(--faint)}
 .tbl .kn{display:block; margin-top:3px; font-size:.64rem; color:var(--faint); cursor:pointer}
+/* 夥伴分頁：換裝與商店 */
+.pethero{display:flex; justify-content:center; padding:16px; border-radius:14px; border:1px solid var(--line);
+  background:radial-gradient(circle at 50% 75%,rgba(217,180,94,.14),transparent 70%),var(--panel)}
+.pethero img{width:128px; height:128px; image-rendering:pixelated}
+.sws{display:inline-flex; gap:9px; vertical-align:middle}
+.sw{width:32px; height:32px; border-radius:50%; border:2px solid var(--line2); cursor:pointer; color:#fff; font-size:.56rem; padding:0; text-shadow:0 1px 2px #000}
+.sw.on{border-color:var(--gold); box-shadow:0 0 0 3px rgba(217,180,94,.3)}
+.itms{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.itm{display:flex; flex-direction:column; align-items:center; gap:4px; padding:10px 4px; border-radius:12px; background:var(--panel);
+  border:1px solid var(--line); color:var(--ink); cursor:pointer; font-family:inherit; font-size:.78rem}
+.itm img{width:46px; height:46px; image-rendering:pixelated; background:rgba(255,255,255,.05); border-radius:9px}
+.itm small{color:var(--faint); font-size:.64rem}
+.itm.on{border-color:var(--gold)}
+.itm.dim{opacity:.5}
 .chillmsg small{display:block; margin-top:6px; font-size:.76rem; letter-spacing:.06em; opacity:.8}
 /* 夥伴自由走動（2026-09-20 Owen：「我希望寵物是在頁面裡自由移動 不是只卡在他格子裡」）
    ⭐ 整頁 fixed 浮層；戰鬥／答題畫面時 .ghost＝點擊穿透，⛔ 不擋答題按鈕 */
@@ -1121,7 +1135,7 @@ function towerRetreatFloor(){ sfx('switch_002'); toast('牠退回塔裡了，下
 function towerClear(){
   var t=towerState();
   t.climbs=(t.climbs||0)+1; t.floor=0; t.marks={}; t.plan=null; t.last=Date.now();   /* 下一次重新挑最卡的結構 */
-  S.run.coin+=40; S.xp=(S.xp||0)+80;
+  S.run.coin+=40; S.gold=(S.gold||0)+40; S.xp=(S.xp||0)+80;
   save(S); renderHud(); sfx('maximize_001');
   document.getElementById('view').innerHTML=
     '<div class="loot"><h3>LE SOMMET</h3>'+
@@ -1338,11 +1352,12 @@ function modeTabs(){
     '<button class="tab'+(m==='dungeon'?' on':'')+'" onclick="setMode(\'dungeon\')">今日地城</button>'+
     '<button class="tab'+(m==='raid'?' on':'')+'" onclick="setMode(\'raid\')">副本</button>'+
     '<button class="tab'+(m==='train'?' on':'')+'" onclick="setMode(\'train\')">訓練場</button>'+
-    '<button class="tab'+(m==='tower'?' on':'')+'" onclick="setMode(\'tower\')">試煉之塔</button></div>';
+    '<button class="tab'+(m==='tower'?' on':'')+'" onclick="setMode(\'tower\')">試煉之塔</button>'+
+    '<button class="tab'+(m==='pet'?' on':'')+'" onclick="setMode(\'pet\')">夥伴</button></div>';
 }
 function setMode(m){
   sfx('switch_002'); S.mode=m; S.towerCur=null; save(S);
-  if(m==='story') renderChapter(); else if(m==='raid') renderRaids(); else if(m==='train') renderTrain(); else if(m==='tower') renderTower(); else renderMap();
+  if(m==='story') renderChapter(); else if(m==='raid') renderRaids(); else if(m==='train') renderTrain(); else if(m==='tower') renderTower(); else if(m==='pet') renderPetTab(); else renderMap();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -1389,7 +1404,7 @@ function chapterClear(ch){
   var next=STORY.filter(function(c){ return c.ch===ch.ch+1; })[0];
   S.story.cleared=S.story.cleared||{}; S.story.cleared[ch.id]={last:Date.now()};
   if(next){ S.story.ch=next.ch; S.story.node=0; }
-  S.run.coin+=30; S.xp=(S.xp||0)+60;
+  S.run.coin+=30; S.gold=(S.gold||0)+30; S.xp=(S.xp||0)+60;
   save(S); renderHud(); sfx('maximize_001');
   document.getElementById('view').innerHTML=
     '<div class="loot"><h3>CHAPITRE '+ch.ch+' TERMINÉ</h3>'+
@@ -1407,12 +1422,14 @@ function init(){
   if(!d.run || d.run.date!==todayStr()) d.run=freshRun(lvOf(d.xp));
   d.story=d.story||{ch:1,node:0,done:{},cleared:{}};
   d.pet=d.pet||{sprite:pick(MONSTERS),name:'小夥伴',lastInteractAt:Date.now(),lastLine:null};
+  d.pet.kind=d.pet.kind||'dog'; d.pet.color=d.pet.color||'brown'; d.pet.worn=d.pet.worn||{};   /* 2026-09-20：小狗／小熊造型與衣服 */
+  d.gold=d.gold||0; d.wardrobe=d.wardrobe||{};
   d.mode=d.mode||(hasStory()?'story':'dungeon');
   /* ⭐ 網址指定分頁優先（從練習頁回來時帶 ?tab=train，見 return_to.js）——
      ⛔ 不能只靠 clb7_quest.mode，換頁同步時會被雲端較舊的值蓋掉 */
   try {
     var tabQ = new URLSearchParams(location.search).get('tab');
-    if (tabQ && ['story','dungeon','raid','train','tower'].indexOf(tabQ) >= 0) d.mode = tabQ;
+    if (tabQ && ['story','dungeon','raid','train','tower','pet'].indexOf(tabQ) >= 0) d.mode = tabQ;
   } catch(e){}
   d.towerCur=null;   /* 塔裡打到一半重新整理：回塔下，⛔ 不然之後地城的勝利會誤觸塔的推進 */
   S=d; save(S); MAP=buildMap(); BOSS=bossOfToday();
@@ -1421,6 +1438,7 @@ function init(){
   else if(S.mode==='raid') renderRaids();
   else if(S.mode==='train') renderTrain();
   else if(S.mode==='tower') renderTower();
+  else if(S.mode==='pet') renderPetTab();
   else renderMap();
   petFreeStart();   /* 夥伴在整個頁面裡自由走動（2026-09-20） */
 }
@@ -1550,6 +1568,7 @@ function petHtml(){
     '<div class="cmds" style="margin-top:8px">'+
       '<button class="cmd" onclick="petPat()">'+img(SP.card)+'<span>摸摸牠<small>牠開心了一下</small></span></button>'+
       (known.length?'<button class="cmd" onclick="petSpeak()">'+img(SP.wand)+'<span>聽牠說一句<small>從你教過的話裡挑一句</small></span></button>':'')+
+      '<button class="cmd" onclick="setMode(\'pet\')">'+img(SP.chest)+'<span>幫牠換裝<small>衣櫃・商店・獎勵幣 '+(S.gold||0)+'</small></span></button>'+
       '<button class="cmd" onclick="chillOpen(true)">'+img(SP.card)+'<span>陪牠看螢火蟲<small>放空一分鐘，沒有題目也沒有分數</small></span></button>'+
     '</div></div>';
 }
@@ -1588,7 +1607,7 @@ function chillOpen(fromPet){
   var W=0,H=0,dpr=Math.min(window.devicePixelRatio||1,2);
   function fit(){ W=window.innerWidth; H=window.innerHeight; cv.width=W*dpr; cv.height=H*dpr; cx.setTransform(dpr,0,0,dpr,0,0); }
   fit();
-  var petImg=new Image(); petImg.src=p.sprite||'';
+  var petImg=new Image(); petImg.src=petSprite(p);
   var DUR=75000, t0=performance.now(), flies=[], sparks=[], ripples=[], caught=0, petHop=0, ended=false, msgOff=false;
   /* ⭐ 2026-09-20 Owen：「小遊戲畫面很漂亮 但我看不懂在幹嘛 按了完全沒有反應」
      原因：光點太小（發光半徑 15–27px）、判定只有 44px、沒點中時只有一圈幾乎看不見的漣漪＝**沒點中就零回饋**。
@@ -1691,7 +1710,7 @@ function petFreeBounds(){ var W=window.innerWidth, H=window.innerHeight; return 
 function petFreeStart(){
   if(PF||!S||!S.pet||!document.body) return;
   var el=document.createElement('div'); el.id='petfree'; el.className='rest';
-  el.innerHTML='<div class="pf-in"><img src="'+esc(S.pet.sprite)+'" alt=""></div><div class="pf-say"></div>';
+  el.innerHTML='<div class="pf-in"><img src="'+petSprite(S.pet)+'" alt=""></div><div class="pf-say"></div>';
   document.body.appendChild(el);
   var b=petFreeBounds(), now=performance.now();
   PF={ el:el, say:el.querySelector('.pf-say'), x:b.x0+Math.random()*(b.x1-b.x0), y:b.y1-Math.random()*70,
@@ -1873,6 +1892,130 @@ function lpCopyOld(t,done){
     var view=document.getElementById('view'), el=e.target.closest?e.target.closest(LP_SEL):null;
     if(el&&view&&view.contains(el)) e.preventDefault(); });
 })();
+
+/* ════════════════════════════════════════════════════════════════
+   夥伴：小狗／小熊、掉寶衣服、衣櫃換裝、獎勵幣商店（2026-09-20 Owen：「寵物可以隨著打怪收集服裝（掉寶）帽子衣服飾品，然後我可以幫她換；
+   可以是狗狗／熊類的寵物嗎？…遊戲累積的獎勵幣可以幫她幹嘛幹嘛」）
+   ⭐ 造型全部是自己用程式畫的 16×16 像素圖（左半邊鏡射成右半邊，保證對稱），⛔ 不引用任何外部素材；衣服是疊在上面的小圖層，所以任何搭配都能疊
+   ⭐ 獎勵幣 S.gold＝打贏戰鬥／通關累積、⛔ 不會因為倒下而歸零（跟每日的 run.coin 分開）；只能花在牠身上：衣服、點心、毛色
+   ⭐ 後果放角色身上：久沒來只會窩著，⛔ 不會掉衣服、不會退化
+   ════════════════════════════════════════════════════════════════ */
+var PET_ART={
+  dog:['........','....oooo','...obbbb','..oddbbb','..oddbeb','..oddbbb','..oddccc','..obbccn','...obccp','....oooo','...obbbb','...obccc','...obccc','...obbbb','...obbbo','....ooo.'],
+  bear:['..oooo..','.obddbo.','.obbbboo','..obbbbb','..obbbeb','..obbbbb','..obbccc','..obbccn','...obccp','....oooo','...obbbb','...obccc','...obccc','...obbbb','...obbbo','....ooo.']
+};
+var PET_COLORS={
+  dog:{brown:{n:'棕',b:'#c98a4b',d:'#8a5a2b',c:'#f3dcb0'}, cream:{n:'奶油',b:'#efd9a8',d:'#c9a96a',c:'#fff5dc'}, gray:{n:'灰',b:'#9aa3ad',d:'#6b7480',c:'#e3e8ee'}, black:{n:'黑',b:'#4a4a52',d:'#2c2c33',c:'#8a8a94'}},
+  bear:{brown:{n:'棕',b:'#a8703c',d:'#7a4a24',c:'#e6c9a0'}, honey:{n:'蜜',b:'#e2b04a',d:'#b8842a',c:'#fbe7b0'}, black:{n:'黑',b:'#3f3f46',d:'#26262b',c:'#8a8a92'}, white:{n:'白',b:'#f2f2f2',d:'#cfcfd6',c:'#ffffff'}}
+};
+/* 衣服：r＝[x,y,w,h,色] 的小方塊（16×16 座標）；layer:'back' 畫在身體後面。price:0＝只能掉寶不能買（皇冠） */
+var PET_ITEMS=[
+  {id:'cap',   slot:'head',name:'紅色小帽',  price:30, w:3, r:[[4,0,8,2,'#d8574f'],[3,2,10,1,'#a8302b'],[7,0,2,1,'#f3dc9a']]},
+  {id:'beanie',slot:'head',name:'毛線帽',    price:40, w:3, r:[[4,1,8,2,'#4a7fd0'],[3,3,10,1,'#3a63a6'],[4,2,8,1,'#8fb4ee'],[7,0,2,1,'#ffffff']]},
+  {id:'bow',   slot:'head',name:'蝴蝶結',    price:50, w:3, r:[[9,1,2,2,'#ff6fa1'],[12,1,2,2,'#ff6fa1'],[11,1,1,2,'#c94477']]},
+  {id:'chef',  slot:'head',name:'廚師帽',    price:70, w:2, r:[[5,0,6,2,'#ffffff'],[4,1,8,1,'#ffffff'],[4,2,8,1,'#dcdcdc']]},
+  {id:'flower',slot:'head',name:'花冠',      price:80, w:2, r:[[4,1,8,1,'#5cc48b'],[5,1,1,1,'#ff8fb1'],[8,1,1,1,'#ffd76a'],[10,1,1,1,'#ff8fb1']]},
+  {id:'wizard',slot:'head',name:'巫師帽',    price:120,w:1, r:[[6,0,4,1,'#5b3fa8'],[5,1,6,1,'#5b3fa8'],[3,2,10,1,'#3f2a78'],[7,0,1,1,'#f3dc9a']]},
+  {id:'crown', slot:'head',name:'金皇冠',    price:0,  w:1, r:[[4,1,8,2,'#f3c73a'],[4,0,1,1,'#f3c73a'],[7,0,2,1,'#f3c73a'],[11,0,1,1,'#f3c73a'],[7,1,2,1,'#d8574f']]},
+  {id:'glasses',slot:'face',name:'圓框眼鏡',  price:60, w:2, r:[[5,3,3,1,'#f3dc9a'],[5,5,3,1,'#f3dc9a'],[5,3,1,3,'#f3dc9a'],[7,3,1,3,'#f3dc9a'],[8,3,3,1,'#f3dc9a'],[8,5,3,1,'#f3dc9a'],[8,3,1,3,'#f3dc9a'],[10,3,1,3,'#f3dc9a']]},   /* 金框：深色框在深毛上會糊成一塊 */
+  {id:'shades',slot:'face',name:'墨鏡',      price:90, w:2, r:[[5,3,3,2,'#1d1d24'],[8,3,3,2,'#1d1d24'],[7,3,2,1,'#1d1d24']]},
+  {id:'bell',  slot:'neck',name:'小鈴鐺',    price:30, w:3, r:[[6,9,4,1,'#d8574f'],[7,10,2,2,'#f3c73a']]},
+  {id:'scarf', slot:'neck',name:'紅圍巾',    price:40, w:3, r:[[3,9,10,2,'#d8574f'],[9,11,2,3,'#d8574f'],[9,13,2,1,'#a8302b'],[5,9,1,2,'#f3dc9a'],[8,9,1,2,'#f3dc9a']]},
+  {id:'bowtie',slot:'neck',name:'領結',      price:50, w:2, r:[[5,10,2,2,'#4a7fd0'],[9,10,2,2,'#4a7fd0'],[7,10,2,2,'#2b4a86']]},
+  {id:'medal', slot:'neck',name:'金牌',      price:150,w:1, r:[[6,9,4,1,'#3b7fd0'],[7,10,2,2,'#f3c73a']]},
+  {id:'pack',  slot:'back',name:'小背包',    price:60, w:2, layer:'back', r:[[11,10,4,5,'#4a9a6a'],[12,11,2,1,'#2f6b47']]},
+  {id:'cape',  slot:'back',name:'披風',      price:100,w:2, layer:'back', r:[[2,9,12,6,'#c93b3b'],[1,10,1,5,'#a82f2f'],[14,10,1,5,'#a82f2f']]},
+  {id:'wings', slot:'back',name:'小翅膀',    price:180,w:1, layer:'back', r:[[0,9,3,4,'#eaf2ff'],[13,9,3,4,'#eaf2ff'],[1,10,1,2,'#c9d8f2'],[14,10,1,2,'#c9d8f2']]}
+];
+var PET_SLOTS={head:'頭',face:'臉',neck:'脖子',back:'背後'};
+var PET_CACHE={};
+function petItem(id){ return PET_ITEMS.filter(function(x){ return x.id===id; })[0]||null; }
+function petPal(p){ var k=p.kind||'dog', c=p.color||'brown'; return (PET_COLORS[k]||PET_COLORS.dog)[c]||(PET_COLORS[k]||PET_COLORS.dog).brown; }
+function petSprite(p){
+  p=p||{}; var kind=p.kind||'dog', worn=p.worn||{};
+  var key=kind+'|'+(p.color||'brown')+'|'+['head','face','neck','back'].map(function(s){ return worn[s]||''; }).join(',');
+  if(PET_CACHE[key]) return PET_CACHE[key];
+  var cv=document.createElement('canvas'); cv.width=16; cv.height=16; var cx=cv.getContext('2d'), pal=petPal(p);
+  var col={o:'#2a1c14',b:pal.b,d:pal.d,c:pal.c,e:'#1b1b1b',n:'#222',p:'#e88a9a'};
+  function rects(it){ it.r.forEach(function(q){ cx.fillStyle=q[4]; cx.fillRect(q[0],q[1],q[2],q[3]); }); }
+  ['head','face','neck','back'].forEach(function(s){ var it=worn[s]&&petItem(worn[s]); if(it&&it.layer==='back') rects(it); });
+  (PET_ART[kind]||PET_ART.dog).forEach(function(row,y){
+    for(var x=0;x<8;x++){ var ch=row.charAt(x); if(ch==='.') continue; cx.fillStyle=col[ch]; cx.fillRect(x,y,1,1); cx.fillRect(15-x,y,1,1); } });
+  ['neck','face','head'].forEach(function(s){ var it=worn[s]&&petItem(worn[s]); if(it&&it.layer!=='back') rects(it); });
+  return (PET_CACHE[key]=cv.toDataURL());
+}
+function petItemIcon(it){
+  var k='icon|'+it.id; if(PET_CACHE[k]) return PET_CACHE[k];
+  var cv=document.createElement('canvas'); cv.width=16; cv.height=16; var cx=cv.getContext('2d');
+  it.r.forEach(function(q){ cx.fillStyle=q[4]; cx.fillRect(q[0],q[1],q[2],q[3]); });
+  return (PET_CACHE[k]=cv.toDataURL());
+}
+function petRefresh(){ if(PF&&S.pet){ var im=PF.el.querySelector('img'); if(im) im.src=petSprite(S.pet); } }
+/* 掉寶：小怪 12%、精英 30%、關主 100%；只掉還沒有的、且不是只能買的；便宜的比較常掉 */
+function rollDrop(kind){
+  var ch=kind==='boss'?1:(kind==='elite'?.3:.12); if(Math.random()>=ch) return null;
+  var own=S.wardrobe||{}, pool=PET_ITEMS.filter(function(x){ return !own[x.id]; }); if(!pool.length) return null;
+  var tot=pool.reduce(function(a,x){ return a+x.w; },0), r=Math.random()*tot;
+  for(var i=0;i<pool.length;i++){ r-=pool[i].w; if(r<=0) return pool[i]; }
+  return pool[pool.length-1];
+}
+function petGive(it){ S.wardrobe=S.wardrobe||{}; S.wardrobe[it.id]={n:1,last:Date.now()}; }
+function petWear(id){
+  var it=petItem(id); if(!it||!(S.wardrobe||{})[id]) return; var p=S.pet; p.worn=p.worn||{};
+  if(p.worn[it.slot]===id) delete p.worn[it.slot]; else p.worn[it.slot]=id;
+  sfx('switch_002'); save(S); petRefresh(); petFreeJoy(); renderPetTab();
+}
+function petBuy(id){
+  var it=petItem(id); if(!it||!it.price||(S.wardrobe||{})[id]) return;
+  if((S.gold||0)<it.price){ toast('獎勵幣還不夠——多打幾場就有了'); return; }
+  S.gold-=it.price; petGive(it); save(S); sfx('drop_002'); toast('買了「'+it.name+'」，收進衣櫃'); renderPetTab();
+}
+function petFeed(){
+  var p=S.pet; if((S.gold||0)<10){ toast('點心要 10 枚獎勵幣'); return; }
+  S.gold-=10; p.fed=(p.fed||0)+1; p.lastInteractAt=Date.now(); save(S); sfx('confirmation_001');
+  petFreeJoy(); petFreeSay(['好好吃！','汪！再一個～','（吃得好開心）','嗯嗯～'][p.fed%4]); renderPetTab();
+}
+function petKind(k){ var p=S.pet; if(p.kind===k) return; p.kind=k; p.color='brown'; save(S); sfx('switch_002'); petRefresh(); renderPetTab(); }
+function petColor(c){
+  var p=S.pet; p.colors=p.colors||{brown:1}; var key=(p.kind||'dog')+':'+c;
+  if(!p.colors[key]&&c!=='brown'){
+    if((S.gold||0)<60){ toast('新毛色要 60 枚獎勵幣'); return; }
+    S.gold-=60; p.colors[key]=1; toast('換了新毛色');
+  }
+  p.color=c; save(S); sfx('switch_002'); petRefresh(); renderPetTab();
+}
+function petRename(){
+  var p=S.pet, n=window.prompt('幫牠取個名字', p.name||'小夥伴'); if(n===null) return;
+  n=n.trim().slice(0,10); if(!n) return; p.name=n; save(S); renderPetTab();
+}
+function renderPetTab(){
+  var p=S.pet, own=S.wardrobe||{}, gold=S.gold||0, kind=p.kind||'dog', worn=p.worn||{};
+  p.colors=p.colors||{brown:1};
+  var sw=Object.keys(PET_COLORS[kind]).map(function(c){
+    var has=c==='brown'||p.colors[kind+':'+c], on=(p.color||'brown')===c;
+    return '<button class="sw'+(on?' on':'')+'" style="background:'+PET_COLORS[kind][c].b+'" onclick="petColor(\''+c+'\')" title="'+PET_COLORS[kind][c].n+'">'+(has?'':'<small>60</small>')+'</button>'; }).join('');
+  var mine=PET_ITEMS.filter(function(x){ return own[x.id]; }), shop=PET_ITEMS.filter(function(x){ return !own[x.id]; });
+  function cell(it,mode){
+    var isOn=worn[it.slot]===it.id, can=gold>=it.price;
+    return '<button class="itm'+(isOn?' on':'')+((mode==='shop'&&!can&&it.price)?' dim':'')+'" onclick="'+(mode==='own'?'petWear':'petBuy')+'(\''+it.id+'\')">'+
+      '<img src="'+petItemIcon(it)+'" alt=""><span>'+esc(it.name)+'</span><small>'+
+      (mode==='own'?(isOn?'穿著中':PET_SLOTS[it.slot]):(it.price?it.price+' 幣':'打關主才會掉'))+'</small></button>'; }
+  document.getElementById('view').innerHTML=modeTabs()+
+    '<div class="sec"><h2>夥伴</h2><div class="pethero"><img id="petbig" src="'+petSprite(p)+'" alt=""></div>'+
+      '<div class="npcrow" style="margin-top:8px"><div class="npcname" onclick="petRename()" style="cursor:pointer">'+esc(p.name||'小夥伴')+' ✎<small>'+esc(petMood(p))+'</small></div>'+
+        '<div class="stat coin" style="display:flex;gap:4px;align-items:center">'+V.coin+'<span>'+gold+'</span></div></div>'+
+      '<div class="cmds" style="margin-top:6px">'+
+        '<button class="cmd" onclick="petKind(\'dog\')"'+(kind==='dog'?' style="border-color:var(--gold)"':'')+'><span>小狗</span></button>'+
+        '<button class="cmd" onclick="petKind(\'bear\')"'+(kind==='bear'?' style="border-color:var(--gold)"':'')+'><span>小熊</span></button>'+
+        '<button class="cmd" onclick="petFeed()"><span>餵點心<small>10 幣</small></span></button>'+
+        (Object.keys(S.cards||{}).length?'<button class="cmd" onclick="petSpeak()"><span>聽牠說一句<small>你教過的話</small></span></button>':'')+'</div>'+
+      '<div class="fb" style="margin-top:8px">毛色　<span class="sws">'+sw+'</span></div>'+
+      '<div class="fb" style="color:var(--faint);font-size:.72rem">獎勵幣＝打贏戰鬥、通關累積，不會因為倒下歸零；只能花在牠身上。衣服也會從怪物身上掉出來（關主一定掉）。</div></div>'+
+    '<div class="sec"><h2>衣櫃</h2>'+(mine.length?'<div class="itms">'+mine.map(function(x){ return cell(x,'own'); }).join('')+'</div>':'<div class="fb">還沒有衣服——打怪會掉，或到下面用獎勵幣買。</div>')+'</div>'+
+    '<div class="sec"><h2>商店</h2>'+(shop.length?'<div class="itms">'+shop.map(function(x){ return cell(x,'shop'); }).join('')+'</div>':'<div class="fb">全部收齊了。</div>')+'</div>'+
+    petGamesHtml();
+}
+function petGamesHtml(){ return ''; }
 
 /* ════════════════════════════════════════════════════════════════
    ⭐ 練到會（2026-09-20 Owen：「沒答對要練到會！」）
@@ -2690,6 +2833,8 @@ function win(){
      不然「精英路線」單純是風險沒有報酬 */
   var isElite=B.type==='elite', gainCoin=B.isBoss?20:(isElite?9:5), gainXp=B.isBoss?40:(isElite?20:12);
   r.coin+=gainCoin;
+  S.gold=(S.gold||0)+gainCoin;                                          /* 獎勵幣：累積、不會因為倒下歸零，只能花在夥伴身上 */
+  var drop=rollDrop(B.isBoss?'boss':(isElite?'elite':'norm')); if(drop) petGive(drop);   /* 夥伴的衣服：怪物身上掉 */
   S.xp=(S.xp||0)+gainXp;
   var before=lvOf(S.xp-gainXp), after=lvOf(S.xp), levelled=after>before;
   var storyCh = B.story ? curChapter() : null;
@@ -2720,6 +2865,7 @@ function win(){
         '<h3>'+(B.isBoss?'LE GARDIEN EST TOMBÉ':'VICTOIRE')+'</h3>'+
         (levelled?'<div class="fb" style="text-align:center;color:var(--gold2)">★ 升到 Lv '+after+'！體力上限提高了</div>':'')+
         '<div class="fb" style="text-align:center">經驗 +'+gainXp+'　金幣 +'+gainCoin+'</div>'+
+        (drop?'<div class="fb" style="text-align:center;color:var(--gold2)"><img src="'+petItemIcon(drop)+'" alt="" style="width:34px;height:34px;vertical-align:middle;image-rendering:pixelated;margin-right:6px">掉寶：<b>'+esc(drop.name)+'</b>——到「夥伴」分頁幫牠穿上</div>':'')+
         (B.isBoss&&!B.tower?'<div class="fb" style="text-align:center">「'+esc(B.story?((storyCh?storyCh.title:'')+' 的關主'):BOSS.name)+'」已收進圖鑑</div>':'')+
         '<div style="margin-top:12px">'+cards.map(cardHtml).join('')+'</div>'+
         '<button class="next" onclick="advance()">'+(B.tower?(B.isBoss?'登頂':'往上走'):(B.isBoss?'回營地':'繼續前進'))+'</button>'+
