@@ -489,7 +489,7 @@ function questionsFor(ls){
    題庫現況：choose 549／fill 413／trans 185／gender 51 —— 原本只用了 choose。
    ════════════════════════════════════════════════════════════════ */
 var MOVES={
-  hit:  {id:'hit',  name:'普通攻擊', dmg:1,   type:'choose', sec:'不限時', why:'把詞塊排成句子（有陷阱）'},   /* 2026-09-20：Duolingo 式拼句；沒有中翻法題可用時才退回選擇題 */
+  hit:  {id:'hit',  name:'普通攻擊', dmg:1,   type:'choose', sec:'不限時', why:'拼句（有陷阱）或選擇題'},   /* 2026-09-20：Duolingo 式拼句（題源：中翻法題＋句庫＋筆記例句）與選擇題混合 */
   heavy:{id:'heavy',name:'重擊',    dmg:1.5, type:'gender', sec:'20 秒', why:'陰陽性，錯一個字母就不算'},
   blast:{id:'blast',name:'大招',    dmg:2,   type:'fill',   sec:'30 秒', why:'把空格打出來'},
   table:{id:'table',name:'填表',    dmg:2.5, type:'table',  sec:'不限時', why:'動詞變位表：現在・過去・未來・條件'},   /* 2026-09-20 Owen：填表格那個遊戲搬進來；資料取自 verbs_full.js */
@@ -2296,21 +2296,26 @@ function tileTraps(real,ls){
 }
 function tileQuestion(ls){
   function okN(a){ var n=tileTok(String(a).split('|')[0]).length; return n>=3&&n<=10; }
-  var cand=BANK.filter(function(q){
+  /* 三個題源（2026-09-20 Owen：「拼句也可以出上課講到的例句」）：
+     ① 題庫中翻法題（有 topic，會記進錯題本）② 句庫 sentences.js ③ 筆記例句 chunks.js（french_notes.html 每課的 phrase-list 抽出來的整句）
+     ⭐ 只收「像一句話」的：≥3 個詞、沒有「A / B」並列、沒有省略號與括號說明 */
+  function sentLike(x){ return x&&x.fr&&x.zh&&okN(x.fr)&&!/\s\/\s|…|\.\.\.|→|[（(]/.test(x.fr); }
+  var inLs=function(x){ return !ls.length||ls.indexOf(x.lesson)>=0; };
+  var A=BANK.filter(function(q){
     if(q.type!=='trans'||typeof q.a!=='string'||!q.q||!okN(q.a)) return false;
     return (B&&B.topic) ? q.topic===B.topic : ls.indexOf(q.lesson)>=0; });
-  if(!cand.length&&B&&B.topic){   /* 節點題不夠：補同一課的（跟 useMove 的止血同一個想法） */
+  if(!A.length&&B&&B.topic){   /* 節點題不夠：補同一課的（跟 useMove 的止血同一個想法） */
     var tl={}; BANK.forEach(function(q){ if(q.topic===B.topic&&q.lesson) tl[q.lesson]=1; });
-    cand=BANK.filter(function(q){ return q.type==='trans'&&typeof q.a==='string'&&q.q&&tl[q.lesson]&&okN(q.a); }); }
-  var fromSent=false;
-  if(!cand.length){   /* 再不行：句庫的完整句＋中文 */
-    fromSent=true;
-    cand=(typeof SENTENCES!=='undefined'?SENTENCES:[]).filter(function(x){ return x.zh&&x.fr&&okN(x.fr)&&(!ls.length||ls.indexOf(x.lesson)>=0); }); }
-  if(!cand.length) return null;
-  var key=function(x){ return fromSent?x.zh:x.q; };
+    A=BANK.filter(function(q){ return q.type==='trans'&&typeof q.a==='string'&&q.q&&tl[q.lesson]&&okN(q.a); }); }
+  var Sn=(typeof SENTENCES!=='undefined'?SENTENCES:[]).filter(function(x){ return sentLike(x)&&inLs(x); });
+  var Ch=(typeof CHUNKS!=='undefined'?CHUNKS:[]).filter(function(x){ return sentLike(x)&&inLs(x); });
+  var srcs=[{k:'A',arr:A,w:(B&&B.topic)?.5:.34},{k:'S',arr:Sn,w:.3},{k:'C',arr:Ch,w:.4}].filter(function(s){ return s.arr.length; });
+  if(!srcs.length) return null;
+  var pickS=weightedPick(srcs,srcs.map(function(s){ return s.w; })), fromBank=pickS.k==='A', cand=pickS.arr;
+  var key=function(x){ return fromBank?x.q:x.zh; };
   var fresh=cand.filter(function(x){ return ((B&&B.used)||[]).indexOf(key(x))<0; }); if(fresh.length) cand=fresh;
   var src=cand[Math.floor(Math.random()*cand.length)], q;
-  if(fromSent) q={ type:'trans', q:src.zh, a:src.fr, lesson:src.lesson, hint:'', aNote:'' };
+  if(!fromBank) q={ type:'trans', q:src.zh, a:src.fr, lesson:src.lesson, hint:'', aNote:'', srcId:src.id };
   else { q={}; Object.keys(src).forEach(function(k){ q[k]=src[k]; }); }
   var alts=String(q.a).split('|'), real=tileTok(alts[0]);
   var traps=tileTraps(real, ls.length?ls:[q.lesson]);
@@ -2728,7 +2733,7 @@ function useMove(k){
   if(m.type==='table'){ B.move=m; return askTable(m); }
   var rd=redoDue(m.type);                                   /* 「沒答對要練到會」：之前錯的題，隔一兩題就換個排列再來一次 */
   if(rd){ B.isRedo=true; B.move=rd.m; return askByType(rd.q, rd.m); }
-  if(m.type==='choose'){                                    /* 普通攻擊＝Duolingo 式拼句；沒有中翻法題可用才退回選擇題 */
+  if(m.type==='choose' && Math.random()<.55){               /* 普通攻擊＝拼句（約 55%）與選擇題混合——有效的題型都留著（2026-09-20 Owen） */
     var bq=tileQuestion(B&&B.lessons?B.lessons:ls);
     if(bq){ B.used=(B.used||[]).concat([bq.q]); B.move=m; return askBuild(bq,m); }
   }
@@ -2774,7 +2779,8 @@ function useMove(k){
     var less=pool.filter(function(q){ var r=kn[q.q]; return !r || Math.random()<1/(1+2*r.n); });
     if(less.length) pool=less;
   }
-  var q=pool[Math.floor(Math.random()*pool.length)];
+  /* 優化：錯過的題多出、已經穩的（連對 3 次以上且沒錯過）少出——跟塔同一個權重，⛔ 不刪任何題 */
+  var q=weightedPick(pool, pool.map(function(x){ var s=srsOf(x), wt=((s.c||0)>=3&&!s.w)?0.2:1; if(s.w) wt+=Math.min(2,s.w*0.5); return wt; }));
   B.used=(B.used||[]).concat([q.q]); B.move=m;
   if(m.type==='choose'||(m.type==='gender'&&q.opts&&q.opts.length>=2)) return askChoice(q,m);   /* 陰陽性沒有選項 → 打字 */
   return askType(q,m);
