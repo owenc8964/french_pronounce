@@ -4738,6 +4738,7 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - ✅ **夥伴：按住可拖著走**（不擋東西）；點一下隨機反應（轉圈／跳舞／蹦蹦跳＋愛心、叫聲、偶爾說你教過的句子）；自己會玩：睡覺（💤）、追玩具（🎾／🍯）、轉圈、跳舞；久沒來只會睡、慢慢晃。
 - ✅ **「吶喊」從戰鬥選單拿掉**（Owen：「沒屁用，我用 duolingo 比較準確」）；程式還在但不再出現，之後不要再提。
 - ⏳ **閱讀／聽力測驗進遊戲（P2／P3，Owen：「滿重要的，閱讀後的答題也很重要，先前付的考題都有」）**：資料現況——`assets/tcf/exam/` 有閱讀 `reading.json`（每套 39 題、44 套左右，圖片 WebP 86MB 已在 Supabase 私人空間）與聽力 `listening.json`＋44 個 mp3（**1.4GB**，手機放不下，B1 當時決定手機不放聽力）。考試之塔（`askExam`）已能玩閱讀。待決：聽力音檔轉低位元率單聲道能不能壓到 ~150–250MB 放進 Supabase 私人空間；閱讀怎麼「進日常」（每天固定 1 篇 vs 掛在戰鬥）。
+- 🎧 **聽力音檔壓縮試聽已備好，⏸ 等 Owen 有空聽**：`~/Desktop/audio_compress_test/`（`tools/tmp_compress_audio.js test` 產生，未 commit）。三套（test1／test29 最小／test42 最大）× 三種單聲道 AAC：A 48kbps（44 套共約 480MB）／B 32kbps（約 340MB）／C 24kbps（約 250MB），另附原檔前 60 秒對照。Owen 要選「聽起來跟原檔沒差的最低檔」。⚠️ **另一個大問題**：每個 mp3 是整套 35 分鐘（39 題），`listening.json` **沒有每題的時間點**（`aligned:true` 但無 start/end）→ 遊戲要一題一題玩，得先用靜音偵測＋逐字稿 `script_fr` 對齊切成 39 段，這是聽力進遊戲最花工的一步。Owen 回音質之後再決定要不要走。
 - ⚠️ 驗證方法備忘：Edit `quest.html` 會讓 Claude Code 桌面窗格**自動用 file:// 開真的 quest.html（會載入 sync_supabase.js）**——每次都要 `tabs_close` 關掉，測試一律用 `tools/tmp_quest_nosync.js make lite <後綴>` 產的暫存頁（同一個網址窗格不會重載，所以每次換後綴；用完 `... clean`）。今天有 4 次來不及攔到就被自動開了幾秒（新的 file:// 來源、localStorage 是空的，同步會先拉雲端再合併，雲端值優先，理論上不會蓋掉你的資料，但**請 Owen 手機打開確認進度／夥伴／街坊都還在**）。
 
 #### 三之九、09-19：清晨排程補 R15/R16 ＋ Owen 拍板「小遊戲與寵物盡量開發」
