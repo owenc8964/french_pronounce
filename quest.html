@@ -301,9 +301,13 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 .bbank{display:flex; flex-wrap:wrap; gap:8px; margin:12px 0}
 .tile{font-family:inherit; padding:9px 13px; border-radius:10px; border:1px solid var(--line2); background:var(--panel2);
       color:var(--ink); font-size:.94rem; cursor:pointer; box-shadow:0 2px 0 rgba(0,0,0,.35)}
+.tile{touch-action:none; -webkit-user-select:none; user-select:none}
+.tile.dragghost{box-shadow:0 10px 18px rgba(0,0,0,.55); transform-origin:50% 100%; opacity:.95}
+.dropmark{display:inline-block; width:4px; height:36px; border-radius:2px; background:var(--gold); box-shadow:0 0 8px var(--gold)}
 .tile.on{border-color:var(--gold); color:var(--gold2)}
 .tile.gone{visibility:hidden}
 .tile.good{border-color:var(--green); color:var(--green)}
+.oldtag{display:inline-block; margin-right:8px; padding:0 7px; font-size:.64rem; letter-spacing:.06em; color:var(--blue); border:1px solid var(--blue); border-radius:8px}
 .redotag{display:inline-block; margin-right:8px; padding:0 7px; font-size:.64rem; letter-spacing:.06em; color:var(--gold); border:1px solid var(--gold); border-radius:8px}
 .tbl{width:100%; border-collapse:collapse; margin:10px 0; font-size:.9rem}
 .tbl th{font-size:.68rem; letter-spacing:.1em; color:var(--faint); font-weight:600; text-align:left; padding:4px 6px}
@@ -343,7 +347,7 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 .chillmsg small{display:block; margin-top:6px; font-size:.76rem; letter-spacing:.06em; opacity:.8}
 /* 夥伴自由走動（2026-09-20 Owen：「我希望寵物是在頁面裡自由移動 不是只卡在他格子裡」）
    ⭐ 整頁 fixed 浮層；戰鬥／答題畫面時 .ghost＝點擊穿透，⛔ 不擋答題按鈕 */
-#petfree{position:fixed; left:0; top:0; width:56px; height:56px; z-index:40; cursor:pointer; touch-action:manipulation; will-change:transform}
+#petfree{position:fixed; left:0; top:0; width:56px; height:56px; z-index:40; cursor:grab; touch-action:none; will-change:transform}
 #petfree::after{content:''; position:absolute; inset:-16px}   /* ⭐ 2026-09-20 Owen：「不夠可按」→ 看不見的加大點擊範圍（實際圖 56px、可點 88px） */
 #petfree::before{content:''; position:absolute; left:50%; bottom:1px; width:38px; height:11px; margin-left:-19px; border-radius:50%;
   background:radial-gradient(ellipse,rgba(217,180,94,.4),rgba(217,180,94,0) 70%); pointer-events:none}   /* 腳下的一圈微光：告訴你「牠是可以點的」 */
@@ -353,6 +357,20 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 #petfree.l img{transform:scaleX(-1)}
 #petfree.walk .pf-in{animation:pfWalk .34s ease-in-out infinite}
 #petfree.rest .pf-in{animation:pfBreath 2.8s ease-in-out infinite}
+/* 2026-09-20 Owen：「他幾乎不會有變化…摸摸他會有反應或是他自己會玩起來」「按著他拖曳時他可以跟著移動」 */
+#petfree.sleep .pf-in{animation:pfSleep 3s ease-in-out infinite}
+#petfree.spin .pf-in{animation:pfSpin .7s ease-in-out 2}
+#petfree.dance .pf-in, #petfree.play .pf-in{animation:pfDance .3s ease-in-out infinite}
+#petfree.held{cursor:grabbing}
+#petfree.held .pf-in{animation:none; transform:rotate(-10deg) scale(1.2); filter:drop-shadow(0 10px 6px rgba(0,0,0,.4))}
+#petfree.held::before{opacity:0}
+@keyframes pfSleep{0%,100%{transform:translateY(7px) scale(1.08,.8) rotate(-5deg)} 50%{transform:translateY(7px) scale(1.1,.76) rotate(-5deg)}}
+@keyframes pfSpin{to{transform:rotate(360deg)}}
+@keyframes pfDance{0%,100%{transform:translateY(0) rotate(-8deg)} 50%{transform:translateY(-10px) rotate(8deg)}}
+.pfx{position:absolute; left:50%; top:0; font-size:16px; pointer-events:none; animation:pfFloat 1.3s ease-out forwards}
+@keyframes pfFloat{0%{opacity:0; transform:translate(var(--dx,0),0) scale(.6)} 15%{opacity:1} 100%{opacity:0; transform:translate(var(--dx,0),-50px) scale(1.1)}}
+.pftoy{position:fixed; left:0; top:0; font-size:24px; z-index:39; pointer-events:none; animation:pfToy .45s ease-in-out infinite alternate}
+@keyframes pfToy{to{margin-top:-9px}}
 #petfree.joy .pf-in{animation:petJump .6s ease-out 2}
 @keyframes pfWalk{0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-6px) rotate(3deg)}}
 @keyframes pfBreath{0%,100%{transform:scale(1,1)} 50%{transform:scale(1.05,.94)}}
@@ -991,7 +1009,8 @@ function weightedPick(arr, w){
 /* 題目說明走法文（用語取自課本 Édito 的 consigne）；中文提示收進開關（memory feedback_french_only_ui） */
 var CONSIGNE={ choose:'Choisissez la bonne réponse.', fill:'Complétez.', gender:'Au féminin :' };
 function consigne(q){ var c=CONSIGNE[q.type];
-  return ((typeof B!=='undefined'&&B&&B.isRedo&&B.curQ===q)?'<span class="redotag">再練一次・不扣血</span>':'')+(c ? '<span class="consigne">'+c+'</span>' : ''); }
+  return ((typeof B!=='undefined'&&B&&B.isRedo&&B.curQ===q)?'<span class="redotag">再練一次・不扣血</span>':'')+
+         (q&&q._old?'<span class="oldtag">🕰 老朋友回來了・第 '+q._old+' 課</span>':'')+(c ? '<span class="consigne">'+c+'</span>' : ''); }
 function stemOf(q){
   if(q.type==='gender'){ var mm=String(q.q).match(/^(.*?)\s*→\s*女性形？?\s*$/); if(mm) return mm[1]; }
   return q.q;
@@ -1727,30 +1746,76 @@ function petFreeStart(){
   document.body.appendChild(el);
   var b=petFreeBounds(), now=performance.now();
   PF={ el:el, say:el.querySelector('.pf-say'), x:b.x0+Math.random()*(b.x1-b.x0), y:b.y1-Math.random()*70,
-       tx:0, ty:0, mode:'rest', until:now+900, last:now, sayT:0, joyT:0, raf:0 };
-  el.addEventListener('click',petFreeTap);
-  /* ⭐ 手指一碰到牠就停住（不然會在你要點的那一下跑掉）；2026-09-20 Owen：「移動太快了！而且不夠可按」 */
-  el.addEventListener('pointerdown',function(){ if(PF){ PF.mode='rest'; PF.until=performance.now()+3000; } });
+       tx:0, ty:0, mode:'rest', until:now+900, last:now, sayT:0, joyT:0, raf:0, drag:null, toy:null, toyGo:0, fxAt:0 };
+  /* ⭐ 按住可以拖著走（點一下＝摸摸牠、拖＝搬到別的地方，不擋東西）；手指一碰到牠就先停住 */
+  el.addEventListener('pointerdown',petFreeDown);
   PF.raf=requestAnimationFrame(petFreeTick);
 }
+function petFreeDown(e){
+  if(!PF||(e.button>0)) return; e.preventDefault();
+  PF.drag={ sx:e.clientX, sy:e.clientY, moved:false };
+  PF.mode='rest'; PF.until=performance.now()+3000; PF.el.classList.remove('sleep','spin','dance','play');
+  window.addEventListener('pointermove',petFreeMove); window.addEventListener('pointerup',petFreeUp); window.addEventListener('pointercancel',petFreeUp);
+}
+function petFreeMove(e){
+  var d=PF&&PF.drag; if(!d) return;
+  if(!d.moved&&Math.hypot(e.clientX-d.sx,e.clientY-d.sy)>7){ d.moved=true; PF.mode='held'; petToyEnd(); petFreeFx('✨',1); sfx('click_001'); }
+  if(d.moved){ PF.x=e.clientX-28; PF.y=e.clientY-66; }   /* 讓牠出現在手指上方，不被手指蓋住 */
+}
+function petFreeUp(){
+  window.removeEventListener('pointermove',petFreeMove); window.removeEventListener('pointerup',petFreeUp); window.removeEventListener('pointercancel',petFreeUp);
+  var d=PF&&PF.drag; if(!d) return; PF.drag=null;
+  if(d.moved){ PF.mode='rest'; PF.until=performance.now()+3500; petFreeFx('♪',2); PF.el.classList.add('joy'); clearTimeout(PF.joyT); PF.joyT=setTimeout(function(){ PF.el.classList.remove('joy'); },700); }
+  else petFreeTap();
+}
+function petFreeFx(emoji,n){
+  if(!PF) return;
+  for(var i=0;i<(n||1);i++){ (function(i){ setTimeout(function(){ if(!PF) return;
+    var s=document.createElement('span'); s.className='pfx'; s.textContent=emoji; s.style.setProperty('--dx',(Math.random()*36-18)+'px'); s.style.left=(30+Math.random()*30)+'%';
+    PF.el.appendChild(s); setTimeout(function(){ s.remove(); },1350); },i*140); })(i); }
+}
+function petToyStart(){
+  if(!PF||PF.toy) return; var b=petFreeBounds(), kind=(S.pet&&S.pet.kind)||'dog';
+  var t=document.createElement('span'); t.className='pftoy'; t.textContent=kind==='bear'?'🍯':'🎾'; document.body.appendChild(t);
+  var x=Math.max(b.x0,Math.min(b.x1,PF.x+(Math.random()-.5)*300)), y=Math.max(b.y0,Math.min(b.y1,PF.y+(Math.random()-.5)*200));
+  t.style.transform='translate('+x+'px,'+y+'px)'; PF.toy={el:t,x:x,y:y}; PF.tx=x; PF.ty=y; PF.mode='walk'; PF.toyGo=1;
+}
+function petToyEnd(){ if(PF&&PF.toy){ PF.toy.el.remove(); PF.toy=null; PF.toyGo=0; } }
 function petFreeTick(now){
   if(!PF) return;
   var dt=Math.min(.05,(now-PF.last)/1000); PF.last=now;
   var el=PF.el, b=petFreeBounds(), days=Math.floor((Date.now()-((S.pet&&S.pet.lastInteractAt)||Date.now()))/86400000);
   var lazy=days>3, spd=lazy?7:(days>1?12:17);   /* px/秒：慢慢晃，好讓你點得到（原 16/30/44 太快） */
   var still=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var busy=!!document.getElementById('chill')||!!document.getElementById('mini');
   if(PF.mode==='walk'){
     var dx=PF.tx-PF.x, dy=PF.ty-PF.y, d=Math.hypot(dx,dy);
-    if(d<3){ PF.mode='rest'; PF.until=now+(lazy?6000+Math.random()*6000:3500+Math.random()*4500); }
-    else { var st=Math.min(d,spd*dt); PF.x+=dx/d*st; PF.y+=dy/d*st; if(Math.abs(dx)>4) el.classList.toggle('l',dx<0); }
-  } else if(now>=PF.until && !still && !document.getElementById('chill')){
-    if(lazy||Math.random()<.65){ PF.tx=PF.x+(Math.random()-.5)*200; PF.ty=PF.y+(Math.random()-.5)*130; }   /* 多半只是附近晃幾步 */
-    else { PF.tx=b.x0+Math.random()*(b.x1-b.x0); PF.ty=b.y0+Math.random()*(b.y1-b.y0); }
-    PF.tx=Math.max(b.x0,Math.min(b.x1,PF.tx)); PF.ty=Math.max(b.y0,Math.min(b.y1,PF.ty)); PF.mode='walk';
+    if(d<3){
+      if(PF.toyGo&&PF.toy){ PF.toyGo=0; PF.mode='play'; PF.until=now+3200; petFreeFx('⭐',3); }   /* 走到玩具旁邊：玩起來 */
+      else { PF.mode='rest'; PF.until=now+(lazy?6000+Math.random()*6000:3500+Math.random()*4500); }
+    }
+    else { var st=Math.min(d,(PF.toyGo?spd*1.7:spd)*dt); PF.x+=dx/d*st; PF.y+=dy/d*st; if(Math.abs(dx)>4) el.classList.toggle('l',dx<0); }
+  } else if(PF.mode==='held'){
+    /* 被拖著：位置由 petFreeMove 決定 */
+  } else if(PF.mode==='sleep'||PF.mode==='spin'||PF.mode==='dance'||PF.mode==='play'){
+    if(PF.mode==='sleep'&&now>PF.fxAt){ petFreeFx('💤',1); PF.fxAt=now+1800; }
+    if(PF.mode==='play'&&PF.toy&&now>PF.fxAt){ petFreeFx('♪',1); PF.fxAt=now+700; }
+    if(now>=PF.until){ if(PF.mode==='play') petToyEnd(); PF.mode='rest'; PF.until=now+(lazy?5000:2500+Math.random()*3000); }
+  } else if(now>=PF.until && !still && !busy && !PF.drag){
+    /* 自己找事情做（2026-09-20 Owen：「他幾乎不會有變化…他自己會玩起來」）：晃、睡、追玩具、轉圈、跳舞 */
+    var rr=Math.random();
+    if(lazy){ if(rr<.5){ PF.mode='sleep'; PF.until=now+8000+Math.random()*5000; PF.fxAt=now+800; } else { PF.tx=PF.x+(Math.random()-.5)*90; PF.ty=PF.y+(Math.random()-.5)*50; PF.mode='walk'; } }
+    else if(rr<.42){ if(Math.random()<.65){ PF.tx=PF.x+(Math.random()-.5)*200; PF.ty=PF.y+(Math.random()-.5)*130; }   /* 多半只是附近晃幾步 */
+                     else { PF.tx=b.x0+Math.random()*(b.x1-b.x0); PF.ty=b.y0+Math.random()*(b.y1-b.y0); } PF.mode='walk'; }
+    else if(rr<.56){ PF.mode='sleep'; PF.until=now+6000+Math.random()*4000; PF.fxAt=now+800; }
+    else if(rr<.74){ petToyStart(); }
+    else if(rr<.86){ PF.mode='spin'; PF.until=now+1500; }
+    else { PF.mode='dance'; PF.until=now+2200; petFreeFx('♪',2); }
+    PF.tx=Math.max(b.x0,Math.min(b.x1,PF.tx)); PF.ty=Math.max(b.y0,Math.min(b.y1,PF.ty));
   }
   PF.x=Math.max(b.x0,Math.min(b.x1,PF.x)); PF.y=Math.max(b.y0,Math.min(b.y1,PF.y));
   el.style.transform='translate('+PF.x.toFixed(1)+'px,'+PF.y.toFixed(1)+'px)';
-  el.classList.toggle('walk',PF.mode==='walk'); el.classList.toggle('rest',PF.mode!=='walk');
+  ['walk','rest','sleep','play','spin','held','dance'].forEach(function(c){ el.classList.toggle(c,c===PF.mode); });
   el.classList.toggle('ghost',!!document.getElementById('panel'));
   PF.raf=requestAnimationFrame(petFreeTick);
 }
@@ -1769,11 +1834,14 @@ function petFreeSay(html){
 function petFreeTap(e){
   if(e) e.stopPropagation();
   var p=S.pet; if(!p||!PF) return;
-  p.lastInteractAt=Date.now();
-  var obj=petPickLine();
-  if(obj){ p.lastLine={fr:obj.fr,zh:obj.zh}; petFreeSay(esc(obj.fr)+'<small>'+esc(obj.zh)+'</small>'); say(obj.fr); sfx('confirmation_001'); }
-  else { petFreeSay('♥'); sfx('click_001'); }
-  save(S); petFreeJoy();
+  p.lastInteractAt=Date.now(); petToyEnd();
+  var obj=petPickLine(), r=Math.random(), cries=(p.kind==='bear')?['嗷～','呼嚕嚕～','（蹭蹭）','嗯嗯～']:['汪！','汪汪！','嗚汪～','（搖尾巴）'];
+  var cry=cries[Math.floor(Math.random()*cries.length)];
+  if(obj&&r<.3){ p.lastLine={fr:obj.fr,zh:obj.zh}; petFreeSay(esc(obj.fr)+'<small>'+esc(obj.zh)+'</small>'); say(obj.fr); sfx('confirmation_001'); petFreeFx('❤️',2); petFreeJoy(); }
+  else if(r<.55){ petFreeSay(cry); sfx('confirmation_001'); petFreeFx('❤️',3); PF.mode='spin'; PF.until=performance.now()+1500; }       /* 開心轉圈 */
+  else if(r<.8){ petFreeSay(cry); sfx('click_001'); petFreeFx('♪',3); PF.mode='dance'; PF.until=performance.now()+2200; }                /* 跳舞 */
+  else { petFreeSay(cry); sfx('confirmation_001'); petFreeFx('❤️',5); petFreeJoy(); }                                                     /* 蹦蹦跳＋一堆愛心 */
+  save(S);
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -2255,6 +2323,40 @@ function redoGate(){
   }
   win();
 }
+/* ════════════════════════════════════════════════════════════════
+   ⭐ P1「老朋友」到期池（2026-09-20，AUDIT_2026-09-20_遊戲覆蓋盤點.md 缺口 1、5；Owen：「P1 可以先做啊！」「完整的複習於無形」）
+   · 以前：今日地城只抽最新 4 課（1286 題裡 89% 永遠不會出現），舊課要手動點副本
+   · 現在：戰鬥抽題約 35%（主線 20%）改從**全部課次**挑「該回來的」——錯過又沒站穩的（一天內回來）、連對次數少的（間隔 0.5／1／3／7／14／30 天）、
+     筆記卡則優先 `clb7_chunk_srs` 到期的；從沒在遊戲出現過的舊題也有一點點機會（＝覆蓋舊課）
+   · 出場帶「🕰 老朋友回來了・第 N 課」標記；⭐ 每題答對錯都記 last（bank 題走 gameRecord；筆記／句庫走 clb7_game_seen，物件＋last＝同步安全）
+   · ⛔ 副本（指定一課）、塔、考試不加；⛔ 不刪任何題，只調權重
+   ════════════════════════════════════════════════════════════════ */
+function seenAll(){ return lsObj('clb7_game_seen',{}); }
+function seenRec(key,ok){
+  var o=seenAll(), r=o[key]||{w:0,c:0};
+  if(ok) r.c=(r.c||0)+1; else r.w=(r.w||0)+1; r.last=Date.now(); o[key]=r;
+  var ks=Object.keys(o); if(ks.length>800){ ks.sort(function(a,b){ return (o[b].last||0)-(o[a].last||0); }); var keep={}; ks.slice(0,800).forEach(function(k){ keep[k]=o[k]; }); o=keep; }
+  try{ localStorage.setItem('clb7_game_seen',JSON.stringify(o)); }catch(e){}
+}
+function dueScore(rec){
+  rec=rec||{};
+  if(!rec.last) return .08;                        /* 從沒在遊戲裡出現過：給一點機會（舊課覆蓋），到期的優先 */
+  var days=(Date.now()-rec.last)/864e5, c=rec.c||0, iv=[.5,1,3,7,14,30][Math.min(c,5)];
+  if(rec.w&&c<2) iv=Math.min(iv,1);                /* 錯過又沒站穩：一天內就該回來 */
+  var over=days/iv; return over>=1 ? Math.min(4,over) : 0;
+}
+function oldRatio(){ return (!B||B.raid||B.tower||B.exam)?0:(B.story?.2:.35); }
+function oldQuestion(type,cur){
+  var pool=BANK.filter(function(q){
+    if(cur.indexOf(q.lesson)>=0||q.type!==type) return false;
+    if(type==='choose') return q.opts&&q.opts.length>=2;
+    if(type==='gender'&&q.opts&&q.opts.length>=2) return true;
+    return typeof q.a==='string'&&q.a.length>1; });
+  var fresh=pool.filter(function(q){ return ((B&&B.used)||[]).indexOf(q.q)<0; }); if(fresh.length) pool=fresh;
+  if(!pool.length) return null;
+  var q0=weightedPick(pool,pool.map(function(q){ return dueScore(srsOf(q)); })), q={};
+  Object.keys(q0).forEach(function(k){ q[k]=q0[k]; }); q._old=q0.lesson; return q;
+}
 function battleQSkip(){
   var q=B&&B.curQ; sfx('click_001'); if(q) redoDrop(q);
   toast('這題先跳過，不算對也不算錯');
@@ -2294,21 +2396,26 @@ function tileTraps(real,ls){
   }
   return out;
 }
-function tileQuestion(ls){
+function tileQuestion(ls,old){   /* old＝P1「老朋友」：改從「不在 ls 裡」的舊課挑，筆記卡優先 clb7_chunk_srs 到期的 */
   function okN(a){ var n=tileTok(String(a).split('|')[0]).length; return n>=3&&n<=10; }
   /* 三個題源（2026-09-20 Owen：「拼句也可以出上課講到的例句」）：
      ① 題庫中翻法題（有 topic，會記進錯題本）② 句庫 sentences.js ③ 筆記例句 chunks.js（french_notes.html 每課的 phrase-list 抽出來的整句）
      ⭐ 只收「像一句話」的：≥3 個詞、沒有「A / B」並列、沒有省略號與括號說明 */
   function sentLike(x){ return x&&x.fr&&x.zh&&okN(x.fr)&&!/\s\/\s|…|\.\.\.|→|[（(]/.test(x.fr); }
-  var inLs=function(x){ return !ls.length||ls.indexOf(x.lesson)>=0; };
+  var inLs=function(x){ return old ? ls.indexOf(x.lesson)<0 : (!ls.length||ls.indexOf(x.lesson)>=0); };
   var A=BANK.filter(function(q){
     if(q.type!=='trans'||typeof q.a!=='string'||!q.q||!okN(q.a)) return false;
+    if(old) return ls.indexOf(q.lesson)<0;
     return (B&&B.topic) ? q.topic===B.topic : ls.indexOf(q.lesson)>=0; });
-  if(!A.length&&B&&B.topic){   /* 節點題不夠：補同一課的（跟 useMove 的止血同一個想法） */
+  if(!old&&!A.length&&B&&B.topic){   /* 節點題不夠：補同一課的（跟 useMove 的止血同一個想法） */
     var tl={}; BANK.forEach(function(q){ if(q.topic===B.topic&&q.lesson) tl[q.lesson]=1; });
     A=BANK.filter(function(q){ return q.type==='trans'&&typeof q.a==='string'&&q.q&&tl[q.lesson]&&okN(q.a); }); }
   var Sn=(typeof SENTENCES!=='undefined'?SENTENCES:[]).filter(function(x){ return sentLike(x)&&inLs(x); });
   var Ch=(typeof CHUNKS!=='undefined'?CHUNKS:[]).filter(function(x){ return sentLike(x)&&inLs(x); });
+  if(old){   /* 老朋友：筆記卡優先挑複習系統「今天到期」的 */
+    var srsC=lsObj('clb7_chunk_srs',{}), ds=new Date(); ds.setHours(0,0,0,0);
+    var dueC=Ch.filter(function(x){ var r=srsC[x.id]; return r&&r.due<=ds.getTime(); });
+    if(dueC.length>=3&&Math.random()<.6) Ch=dueC; }
   var srcs=[{k:'A',arr:A,w:(B&&B.topic)?.5:.34},{k:'S',arr:Sn,w:.3},{k:'C',arr:Ch,w:.4}].filter(function(s){ return s.arr.length; });
   if(!srcs.length) return null;
   var pickS=weightedPick(srcs,srcs.map(function(s){ return s.w; })), fromBank=pickS.k==='A', cand=pickS.arr;
@@ -2321,17 +2428,59 @@ function tileQuestion(ls){
   var traps=tileTraps(real, ls.length?ls:[q.lesson]);
   q._tiles=real.map(function(t,i){ return i===0 ? t.charAt(0).toLowerCase()+t.slice(1) : t; }).concat(traps);
   q._alts=alts.map(function(a){ return tileTok(a).map(tileKey); });
+  if(old) q._old=q.lesson;
   return q;
 }
+/* 拖曳排序（2026-09-20 Owen：「我可以直接拖曳字的順序會比較易於操作，現在按錯就得一個一個放回去」）
+   ⭐ 點一下＝放進去／拿出來；⭐ 按住拖動＝把詞塊放到答案列的任何位置（重新排序）、或從底下直接拖進指定位置、或拖出答案列放回去 */
+var TD=null;
+function tileIns(x,y,skipI){
+  var sl=document.querySelector('.bslot'); if(!sl) return -1; var r=sl.getBoundingClientRect();
+  if(x<r.left-14||x>r.right+14||y<r.top-18||y>r.bottom+18) return -1;
+  var els=[].slice.call(sl.querySelectorAll('.tile[data-i]')).filter(function(el){ return +el.dataset.i!==skipI; }), idx=els.length;
+  for(var k=0;k<els.length;k++){ var b=els[k].getBoundingClientRect(); if(y<b.top-2||(y<=b.bottom+2&&x<b.left+b.width/2)){ idx=k; break; } }
+  return idx;
+}
+function tileDown(e){
+  var t=e.target.closest?e.target.closest('.tile[data-i]'):null; if(!t||!B||!B.bd||t.classList.contains('gone')||e.button>0) return;
+  e.preventDefault();
+  TD={ i:+t.dataset.i, from:t.dataset.f, sx:e.clientX, sy:e.clientY, moved:false, el:t, g:null };
+  window.addEventListener('pointermove',tileMove); window.addEventListener('pointerup',tileUp); window.addEventListener('pointercancel',tileUp);
+}
+function tileMove(e){
+  if(!TD) return;
+  if(!TD.moved&&Math.hypot(e.clientX-TD.sx,e.clientY-TD.sy)>8){
+    TD.moved=true; var g=TD.el.cloneNode(true); g.className='tile on dragghost'; g.removeAttribute('data-i');
+    g.style.cssText='position:fixed;left:0;top:0;z-index:95;pointer-events:none;margin:0'; document.body.appendChild(g); TD.g=g; TD.el.style.opacity='.25'; }
+  if(!TD.moved) return;
+  TD.g.style.transform='translate('+Math.round(e.clientX-TD.g.offsetWidth/2)+'px,'+Math.round(e.clientY-TD.g.offsetHeight-16)+'px)';
+  var skip=TD.from==='s'?TD.i:-9, idx=tileIns(e.clientX,e.clientY,skip), sl=document.querySelector('.bslot'), old=document.getElementById('dropmark'); if(old) old.remove();
+  if(idx>=0&&sl){ var mk=document.createElement('span'); mk.id='dropmark'; mk.className='dropmark';
+    var els=[].slice.call(sl.querySelectorAll('.tile[data-i]')).filter(function(el){ return +el.dataset.i!==skip; });
+    var ph=sl.querySelector('.bph'); if(ph) ph.remove();
+    if(els[idx]) sl.insertBefore(mk,els[idx]); else sl.appendChild(mk); }
+}
+function tileUp(e){
+  window.removeEventListener('pointermove',tileMove); window.removeEventListener('pointerup',tileUp); window.removeEventListener('pointercancel',tileUp);
+  var d=TD; TD=null; if(!d) return;
+  var mk=document.getElementById('dropmark'); if(mk) mk.remove(); if(d.g) d.g.remove();
+  if(e.type==='pointercancel'){ buildRender(); return; }
+  if(!d.moved) return buildTap(d.i);                       /* 點一下：放進去／拿出來 */
+  var bd=B.bd, idx=tileIns(e.clientX,e.clientY,d.from==='s'?d.i:-9), at=bd.put.indexOf(d.i);
+  if(idx<0){ if(at>=0) bd.put.splice(at,1); }              /* 拖到答案列外面：放回去 */
+  else { if(at>=0) bd.put.splice(at,1); bd.put.splice(Math.min(idx,bd.put.length),0,d.i); }
+  bd.msg=''; sfx('click_001'); buildRender();
+}
 function askBuild(q,m){
+  document.getElementById('panel').onpointerdown=tileDown;
   B.curQ=q; B.curM=m;
   B.bd={ put:[], tries:0, msg:'', order:shuffle(q._tiles.map(function(_,i){ return i; })) };
   buildRender();
 }
 function buildRender(){
   var q=B.curQ, bd=B.bd, on={}; bd.put.forEach(function(i){ on[i]=1; });
-  var slot=bd.put.map(function(i){ return '<button class="tile on" onclick="buildTap('+i+')">'+esc(q._tiles[i])+'</button>'; }).join('');
-  var bank=bd.order.map(function(i){ return '<button class="tile'+(on[i]?' gone':'')+'" '+(on[i]?'tabindex="-1" ':'')+'onclick="buildTap('+i+')">'+esc(q._tiles[i])+'</button>'; }).join('');
+  var slot=bd.put.map(function(i){ return '<button class="tile on" data-i="'+i+'" data-f="s">'+esc(q._tiles[i])+'</button>'; }).join('');
+  var bank=bd.order.map(function(i){ return '<button class="tile'+(on[i]?' gone':'')+'" '+(on[i]?'tabindex="-1" ':'')+'data-i="'+i+'" data-f="b">'+esc(q._tiles[i])+'</button>'; }).join('');
   document.getElementById('panel').innerHTML=
     '<div class="q">'+consigne(q)+'<span class="consigne">Traduisez en français.</span>'+esc(q.q)+hintHtml(q)+'</div>'+
     '<div class="bslot">'+(slot||'<span class="bph">點下面的詞塊，照順序排成句子（有幾塊是陷阱）</span>')+'</div>'+
@@ -2384,16 +2533,35 @@ function tbLog(wrong,v,tn,who,ans){
   if(ks.length>cap){ ks.sort(function(a,b){ return (o[b].last||0)-(o[a].last||0); }); var keep={}; ks.slice(0,cap).forEach(function(k){ keep[k]=o[k]; }); o=keep; }
   try{ localStorage.setItem(K,JSON.stringify(o)); }catch(e){}
 }
+function tbClearWrong(v,tn,who){
+  try{
+    var o=JSON.parse(localStorage.getItem('clb7_drill_wrong')); if(!o||Array.isArray(o)) return;
+    var id='vt-'+v.inf+'-'+tn.id+'|'+who+'|'+tn.name, e=o[id];
+    if(e&&e.d<new Date().toLocaleDateString('sv-SE')){ delete o[id]; localStorage.setItem('clb7_drill_wrong',JSON.stringify(o)); }
+  }catch(err){}
+}
 function tenseTable(){
   if(typeof VERBS_FULL==='undefined'||typeof drillForms!=='function') return null;
   var vs=VERBS_FULL.filter(function(v){ return !v.imperso&&(v.lvl==='A1'||v.lvl==='A2'); });
   var last=B&&B.lastTb, v=null, id=null, tn=null, forms=null, tot=0;
   TT_TENSES.forEach(function(t){ tot+=TT_W[t]; });
+  /* P1 老朋友：50% 直接挑「昨天以前錯過的變位格」（clb7_drill_wrong 裡 vt- 開頭、日期早於今天的）所屬的那張表 */
+  var fv=null, ft=null;
+  try{
+    var wo=JSON.parse(localStorage.getItem('clb7_drill_wrong')), td=new Date().toLocaleDateString('sv-SE'), dueK=[];
+    if(wo&&!Array.isArray(wo)) Object.keys(wo).forEach(function(k){ if(/^vt-/.test(k)&&wo[k]&&wo[k].d<td) dueK.push(k); });
+    if(dueK.length&&Math.random()<.5){
+      var mm=dueK[Math.floor(Math.random()*dueK.length)].match(/^vt-(.+?)-(present|passe-compose|imparfait|futur-simple|conditionnel|subjonctif)\|/);
+      if(mm){ fv=vs.filter(function(x){ return x.inf===mm[1]; })[0]||null; ft=mm[2]; } }
+  }catch(e){}
   for(var tries=0; tries<14&&!forms; tries++){
-    v=vs[Math.floor(Math.random()*vs.length)];
-    var r=Math.random()*tot; id=TT_TENSES[0];
-    for(var i=0;i<TT_TENSES.length;i++){ r-=TT_W[TT_TENSES[i]]; if(r<=0){ id=TT_TENSES[i]; break; } }
-    if((v.inf+'|'+id)===last) continue;
+    if(tries===0&&fv){ v=fv; id=ft; }
+    else {
+      v=vs[Math.floor(Math.random()*vs.length)];
+      var r=Math.random()*tot; id=TT_TENSES[0];
+      for(var i=0;i<TT_TENSES.length;i++){ r-=TT_W[TT_TENSES[i]]; if(r<=0){ id=TT_TENSES[i]; break; } }
+      if((v.inf+'|'+id)===last) continue;
+    }
     tn=conjugate(v).filter(function(x){ return x.id===id; })[0];
     forms=tn?drillForms(v,id):null;
     if(!forms||forms.filter(Boolean).length<5) forms=null;
@@ -2473,6 +2641,7 @@ function tbCheck(noRead){
     if(!r.blank||r.st!=='todo') return;
     var good=r.val.trim() && r.alts.map(tbNorm).indexOf(tbNorm(r.val))>=0;
     if(!r.seen){ r.seen=1; tb.f1tot++; if(good) tb.f1ok++; }
+    if(good&&!r.tries) tbClearWrong(tb.v,tb.tn,r.who);     /* 隔天以後第一次就答對＝從錯字簿移除（跟 table_drill 同一套規則） */
     if(good) r.st='ok';
     else { bad++; r.tries=(r.tries||0)+1; r.val=''; if(r.tries===1) tbLog(true,tb.v,tb.tn,r.who,r.alts[0]); }
   });
@@ -2681,7 +2850,7 @@ function showCmds(){
   if(B.forceMove && !B.forcedShown){    /* 考驗節點：開場就推薦最重的招（⛔ 但不強制，降級鍵還在） */
     B.forcedShown=1;
   }
-  var btns=(B.tt?B.towerMoves:((B.tower&&B.towerMove)?[B.towerMove]:['hit','heavy','blast','table','chant','ear','shout'])).map(function(k){   /* 塔：只列這個結構有的招式；shout 不進塔，只在地城/副本/主線 */
+  var btns=(B.tt?B.towerMoves:((B.tower&&B.towerMove)?[B.towerMove]:['hit','heavy','blast','table','chant','ear'])).map(function(k){   /* 塔：只列這個結構有的招式；shout 不進塔，只在地城/副本/主線 */
     var m=MOVES[k];
     var n=(m.type==='exam') ? 1 : (m.type==='table') ? ((typeof VERBS_FULL!=='undefined'&&typeof drillForms==='function')?1:0) : (m.type==='listen') ? ((typeof SENTENCES!=='undefined'&&SENTENCES.length>=4)?1:0)
         : (m.type==='speak') ? ((speechSupported()&&typeof SENTENCES!=='undefined'&&SENTENCES.length>=1)?1:0)   /* B4：不支援就不出現，⛔ 不報錯 */
@@ -2733,9 +2902,14 @@ function useMove(k){
   if(m.type==='table'){ B.move=m; return askTable(m); }
   var rd=redoDue(m.type);                                   /* 「沒答對要練到會」：之前錯的題，隔一兩題就換個排列再來一次 */
   if(rd){ B.isRedo=true; B.move=rd.m; return askByType(rd.q, rd.m); }
+  var cur=(B&&B.lessons)?B.lessons:ls, wantOld=Math.random()<oldRatio();   /* P1 老朋友：這一題要不要從「不在目前課次」的舊內容挑到期的 */
   if(m.type==='choose' && Math.random()<.55){               /* 普通攻擊＝拼句（約 55%）與選擇題混合——有效的題型都留著（2026-09-20 Owen） */
-    var bq=tileQuestion(B&&B.lessons?B.lessons:ls);
+    var bq=tileQuestion(cur,wantOld);
     if(bq){ B.used=(B.used||[]).concat([bq.q]); B.move=m; return askBuild(bq,m); }
+  }
+  if(wantOld && (m.type==='choose'||m.type==='fill'||m.type==='trans'||m.type==='gender')){
+    var oq=oldQuestion(m.type,cur);
+    if(oq){ B.used=(B.used||[]).concat([oq.q]); B.move=m; return askByType(oq,m); }
   }
   if(m.type==='listen'){
     var lq=listenQuestion(B&&B.lessons?B.lessons:ls);
@@ -2976,6 +3150,7 @@ function resolveMove(loose, exact, q, m, retried){
   if(B && B.tt) return towerResolve(loose, exact, q, m, retried);
   if(B && !B.exam && !B.tower){                             /* 練到會：答對就從待練清單拿掉，答錯排進待練清單（表格自己有循環，不重複排） */
     B.turn=(B.turn||0)+1;
+    if(q&&q.srcId) seenRec(q.srcId, loose&&!retried);   /* 筆記／句庫來源的拼句也記 last，老朋友才知道它多久沒出現 */
     if(loose) redoDrop(q); else if(!q.noRedo) redoAdd(q,m);
   }
   if(B && !B.exam && q && q.topic) gameRecord(q, loose && !retried);
