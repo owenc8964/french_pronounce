@@ -318,6 +318,12 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 .tbl input.ok{border-color:var(--green); color:var(--green)}
 .tbl input.skip{border-style:dashed; color:var(--faint)}
 .tbl .kn{display:block; margin-top:3px; font-size:.64rem; color:var(--faint); cursor:pointer}
+/* 今日閱讀 */
+.dread{margin:12px 0 4px; padding:12px 14px; border-radius:14px; background:linear-gradient(180deg,var(--panel2),var(--panel)); border:1px solid var(--line2)}
+.dread .dr1{font-family:'Cormorant Garamond',Georgia,serif; font-size:1.05rem; font-weight:600; color:var(--gold2)}
+.dread .dr2{font-size:.8rem; color:var(--dim); margin-top:3px; line-height:1.6}
+.rdtop{display:flex; justify-content:space-between; align-items:center; margin:12px 0 8px; font-size:.84rem}
+.rdtop button{font-family:inherit; cursor:pointer; color:var(--dim); background:none; border:1px solid var(--line); border-radius:10px; padding:5px 11px; font-size:.74rem}
 /* 小遊戲（釣魚／打磚塊／合成） */
 #mini{position:fixed; inset:0; z-index:80; background:#0a1024; touch-action:none; user-select:none; -webkit-user-select:none}
 #mini canvas{display:block; width:100%; height:100%}
@@ -1376,6 +1382,112 @@ function examClear(){
     '<button class="next" onclick="setMode(\'tower\')">回到塔下</button></div>';
 }
 
+/* ════════════════════════════════════════════════════════════════
+   今日閱讀（P2，2026-09-20 Owen：「閱讀先做每天固定一篇」「閱讀後的答題也很重要（先前付的考題都有）」）
+   ⭐ 每天一組 5 題 TCF Canada 閱讀原題（跟考試之塔同一個私人空間 bucket TCF，登入才讀得到，⛔ 題目不進 repo）
+   ⭐ 難度坡：題號約 7–29 由淺到深（A2→B2），每天平移一點；⭐ 優先挑「還沒答對過」的，⭐ 3 天前答錯的會回來（老朋友）
+   ⭐ 每題答完立刻看對錯；答錯才出中文解析（memory feedback_french_only_ui）；⭐ 每題可跳過、整組可「今天跳過」，⛔ 不顯示分母、不寫「你今天還沒讀」
+   ⭐ 讀完拿獎勵幣＋經驗；作答寫進 clb7_exam_answers（跟考試之塔同一份，儀表板讀得到）
+   ⭐ 題目文字可長按解析（長按解析對 #view 內所有 .q／.opt／.fb 都有效）
+   ════════════════════════════════════════════════════════════════ */
+var RD=null;
+function readToday(){ S.dailyRead=S.dailyRead||{}; return S.dailyRead; }
+function readDayNum(){ var d=new Date(); d.setHours(0,0,0,0); return Math.floor(d.getTime()/864e5); }
+function readDoneToday(){ var d=readToday(); return d.date===todayStr()&&d.done; }
+function dailyReadHtml(){
+  var d=readToday(), done=readDoneToday();
+  return '<div class="dread"><div class="dr1">📖 今日閱讀</div>'+
+    (done ? '<div class="dr2">'+(d.skipped?'今天先跳過了，沒關係。':'今天讀完了'+(d.ok?'，答對 '+d.ok+' 題':'')+'。')+'　想再讀一組也可以。</div>'
+          : '<div class="dr2">每天一組 5 題 TCF 閱讀，從 A2 慢慢爬到 B2。</div>')+
+    '<div class="cmds" style="margin-top:8px"><button class="cmd" onclick="readStart()"><span>'+(done?'再讀一組':'開始今天這組')+'<small>約 5–8 分鐘</small></span></button>'+
+    (done?'':'<button class="cmd" onclick="readSkipToday()"><span>今天跳過<small>不擋後面</small></span></button>')+'</div></div>';
+}
+function readSkipToday(){ var d=readToday(); d.date=todayStr(); d.done=true; d.skipped=true; d.ok=0; save(S); sfx('click_001'); toast('今天先跳過'); setMode(S.mode||'story'); }
+function readMsg(html){ document.getElementById('view').innerHTML='<div class="loot" style="margin-top:14px">'+html+'</div>'; }
+function readLogin(msg){
+  readMsg('<h3>DÉVERROUILLER</h3><div class="fb" style="margin-top:0">今日閱讀用的是你私人空間裡的 TCF 閱讀原題，登入一次，這台裝置就會記住（跟考試之塔同一個帳號）。</div>'+
+    '<input class="ans exin" id="vEmail" type="email" autocomplete="username" autocapitalize="none" placeholder="信箱">'+
+    '<input class="ans exin" id="vPass" type="password" autocomplete="current-password" placeholder="密碼">'+
+    '<div class="fb" id="vMsg">'+esc(msg||'')+'</div><button class="next" onclick="readDoLogin()">解鎖</button>'+
+    '<div class="cmds"><button class="cmd" onclick="readQuit()"><span>先不要<small>回去</small></span></button></div>');
+  var p=document.getElementById('vPass'); if(p) p.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); readDoLogin(); } });
+}
+function readDoLogin(){
+  var em=(document.getElementById('vEmail')||{}).value||'', pw=(document.getElementById('vPass')||{}).value||'', msg=document.getElementById('vMsg');
+  if(!em||!pw){ if(msg) msg.textContent='信箱和密碼都要填'; return; }
+  if(msg) msg.textContent='登入中…';
+  vaultAuth('password',{ email:em.trim(), password:pw }).then(function(){ sfx('maximize_001'); readStart(); })
+    .catch(function(e){ if(msg) msg.textContent=(e.status===400?'信箱或密碼不對':('登入失敗：'+e.message)); });
+}
+function readQuit(){ RD=null; sfx('click_001'); setMode(S.mode||'story'); }
+function readStart(){
+  sfx('click_001');
+  if(!vaultSession()) return readLogin();
+  readMsg('<h3>OUVERTURE</h3><div class="fb" style="text-align:center">正在打開今天的卷宗…</div>');
+  var d=readToday(), n0=(d.date===todayStr()?(d.n||0):0), day=readDayNum()+n0*7;   /* 今天讀完幾組，就往後翻 7 套，⛔ 不重複同一組 */
+  (EXAM_INDEX?Promise.resolve(EXAM_INDEX):vaultGet('reading/index.json').then(function(ix){ return (EXAM_INDEX=ix); })).then(function(ix){
+    var ids=ix.map(function(x){ return x.id; }), id=ids[((day%ids.length)+ids.length)%ids.length];
+    return (EXAM_DATA[id]?Promise.resolve(EXAM_DATA[id]):vaultGet('reading/data/'+id+'.json').then(function(dd){ return (EXAM_DATA[id]=dd); })).then(function(dd){
+      var ans=lsObj('clb7_exam_answers',{}), qs=dd.questions||[], shift=day%3, chosen=[];
+      [7,12,17,22,27].forEach(function(t0){
+        var t=t0+shift, cand=qs.filter(function(x){ return chosen.indexOf(x)<0; }).sort(function(a,b){
+          var ka=id+'#'+a.q, kb=id+'#'+b.q, oa=(ans[ka]&&ans[ka].ok)?1:0, ob=(ans[kb]&&ans[kb].ok)?1:0;
+          return (oa-ob)*100 + (Math.abs(a.q-t)-Math.abs(b.q-t)); });      /* 沒答對過的優先，其次最接近目標題號 */
+        if(cand[0]) chosen.push(cand[0]); });
+      RD={ id:id, label:dd.label||id, qs:chosen.map(function(x){ return { key:id+'#'+x.q, num:x.q, img:x.img, stem:x.stem, opts:x.opts, ans:'ABCD'.indexOf(x.answer), zh:x.key_zh||'', tid:id }; }),
+           i:0, ok:0, done:0 };
+      /* 老朋友：3 天前以前答錯的那題（來自別套）換掉最後一題 */
+      var due=Object.keys(ans).filter(function(k){ return ans[k]&&ans[k].ok===false&&(Date.now()-(ans[k].last||0))>3*864e5&&k.split('#')[0]!==id; });
+      if(!due.length) return;
+      var dk=due[Math.floor(Math.random()*due.length)], dTid=dk.split('#')[0], dNum=+dk.split('#')[1];
+      return (EXAM_DATA[dTid]?Promise.resolve(EXAM_DATA[dTid]):vaultGet('reading/data/'+dTid+'.json').then(function(x){ return (EXAM_DATA[dTid]=x); })).then(function(x){
+        var f=(x.questions||[]).filter(function(y){ return y.q===dNum; })[0];
+        if(f&&RD) RD.qs[RD.qs.length-1]={ key:dk, num:f.q, img:f.img, stem:f.stem, opts:f.opts, ans:'ABCD'.indexOf(f.answer), zh:f.key_zh||'', tid:dTid, old:1 };
+      }).catch(function(){});
+    });
+  }).then(function(){ if(RD) readQ(); })
+    .catch(function(e){ readMsg('<h3>PAS DE CONNEXION</h3><div class="fb" style="margin-top:0">讀不到題目'+(e&&e.status?'（HTTP '+e.status+'）':'（可能是沒有網路）')+'。</div>'+
+      '<div class="cmds"><button class="cmd" onclick="readStart()"><span>再試一次</span></button><button class="cmd" onclick="readQuit()"><span>回去</span></button></div>'); });
+}
+function readQ(){
+  var q=RD.qs[RD.i]; if(!q) return readFinish();
+  var dots=RD.qs.map(function(_,k){ return k<RD.i?'●':(k===RD.i?'◉':'○'); }).join(' ');
+  document.getElementById('view').innerHTML=
+    '<div class="rdtop"><span>📖 今日閱讀　<span style="color:var(--gold);letter-spacing:.15em">'+dots+'</span></span><button onclick="readQuit()">先離開</button></div>'+
+    '<div class="eximg" id="eximg"><div class="fb" style="margin:0">圖片載入中…</div></div>'+
+    '<div class="q">'+(q.old?'<span class="oldtag">🕰 老朋友回來了</span>':'')+'<span class="hint" style="margin:0 0 4px">Question '+q.num+'</span>'+esc(q.stem)+'</div>'+
+    '<div class="opts" id="ropts">'+q.opts.map(function(o,k){ return '<button class="opt" onclick="readPick('+k+')">'+'ABCD'.charAt(k)+'.　'+esc(o)+'</button>'; }).join('')+'</div>'+
+    '<div id="rfb"></div>'+
+    '<div class="exits" id="rskip"><button onclick="readSkipQ()">這題先跳過</button></div>';
+  window.scrollTo({top:0});
+  examImg(q.img).then(function(u){ var box=document.getElementById('eximg'); if(box&&RD&&RD.qs[RD.i]===q) box.innerHTML='<img src="'+u+'" alt="" onclick="examZoom(this.src)"><div class="exhint">點圖放大</div>'; })
+    .catch(function(e){ var box=document.getElementById('eximg'); if(box) box.innerHTML='<div class="fb" style="margin:0">圖片讀不到（'+esc(e.message)+'）——這題可以先跳過</div>'; });
+}
+function readPick(k){
+  var q=RD&&RD.qs[RD.i]; if(!q||q.answered) return; q.answered=1;
+  var ok=(k===q.ans); RD.done++; if(ok) RD.ok++;
+  examRecord(q.key, ok); if(ok){ S.xp=(S.xp||0)+3; } save(S);
+  Array.prototype.forEach.call(document.querySelectorAll('#ropts .opt'),function(b,j){ b.disabled=true; if(j===q.ans) b.classList.add('ok'); else if(j===k) b.classList.add('no'); });
+  sfx(ok?'confirmation_001':'bong_001');
+  var last=RD.i>=RD.qs.length-1;
+  document.getElementById('rfb').innerHTML='<div class="fb">'+(ok?'<b style="color:var(--green)">對了</b>':'<b style="color:var(--red)">這題沒中</b>　正解：<b>'+'ABCD'.charAt(q.ans)+'.　'+esc(q.opts[q.ans])+'</b>')+
+    (!ok&&q.zh?'<br>'+esc(q.zh).replace(/\n/g,'<br>'):'')+'</div><button class="next" onclick="readNext()">'+(last?'讀完了':'下一題')+'</button>';
+  var sk=document.getElementById('rskip'); if(sk) sk.style.display='none';
+}
+function readSkipQ(){ var q=RD&&RD.qs[RD.i]; if(!q) return; sfx('click_001'); readNext(); }
+function readNext(){ sfx('click_001'); RD.i++; readQ(); }
+function readFinish(){
+  var d=readToday(), r=RD; RD=null;
+  if(d.date!==todayStr()) d.n=0;
+  var first=!(d.n>0), reward=(r.done>0);
+  d.date=todayStr(); d.done=true; d.skipped=false; d.ok=r.ok; d.n=(d.n||0)+1;
+  if(reward){ S.gold=(S.gold||0)+(first?15:6); S.xp=(S.xp||0)+(first?30:10); }
+  save(S); renderHud(); sfx('maximize_001');
+  readMsg('<h3>LECTURE TERMINÉE</h3><div class="fb" style="text-align:center;font-size:1.02rem;color:var(--gold2)">'+(r.done?'今天這組讀完了':'這組全部跳過了，沒關係')+'</div>'+
+    (r.done?'<div class="fb" style="text-align:center">答對 '+r.ok+' 題'+(reward?'　獎勵幣 +'+(first?15:6)+'　經驗 +'+(first?30:10):'')+'</div>':'')+
+    '<div class="cmds" style="margin-top:12px"><button class="cmd" onclick="setMode(S.mode||\'story\')"><span>回營地</span></button><button class="cmd" onclick="readStart()"><span>再讀一組<small>想多讀就讀</small></span></button></div>');
+}
+
 function modeTabs(){
   var m=S.mode||'story';
   return '<div class="tabs">'+
@@ -1384,7 +1496,8 @@ function modeTabs(){
     '<button class="tab'+(m==='raid'?' on':'')+'" onclick="setMode(\'raid\')">副本</button>'+
     '<button class="tab'+(m==='train'?' on':'')+'" onclick="setMode(\'train\')">訓練場</button>'+
     '<button class="tab'+(m==='tower'?' on':'')+'" onclick="setMode(\'tower\')">試煉之塔</button>'+
-    '<button class="tab'+(m==='pet'?' on':'')+'" onclick="setMode(\'pet\')">夥伴</button></div>';
+    '<button class="tab'+(m==='pet'?' on':'')+'" onclick="setMode(\'pet\')">夥伴</button></div>'+
+    ((m==='story'||m==='dungeon')?dailyReadHtml():'');   /* 今日閱讀：每天固定一組，放在主線／今日地城最上面 */
 }
 function setMode(m){
   sfx('switch_002'); S.mode=m; S.towerCur=null; save(S);
