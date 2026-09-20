@@ -314,6 +314,18 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 .tbl input.ok{border-color:var(--green); color:var(--green)}
 .tbl input.skip{border-style:dashed; color:var(--faint)}
 .tbl .kn{display:block; margin-top:3px; font-size:.64rem; color:var(--faint); cursor:pointer}
+/* 小遊戲（釣魚／打磚塊／合成） */
+#mini{position:fixed; inset:0; z-index:80; background:#0a1024; touch-action:none; user-select:none; -webkit-user-select:none}
+#mini canvas{display:block; width:100%; height:100%}
+#minimenu{position:fixed; inset:0; z-index:75; background:rgba(4,6,12,.62); display:flex; align-items:center; justify-content:center; padding:18px}
+.mm{width:100%; max-width:380px; padding:18px; border-radius:16px; background:linear-gradient(180deg,var(--panel2),var(--panel)); border:1px solid var(--line2); box-shadow:var(--shadow)}
+.mm h3{margin:0 0 12px; text-align:center; font-family:'Cormorant Garamond',Georgia,serif; font-weight:600; color:var(--gold2)}
+.miniend{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:18px; background:rgba(4,6,12,.55)}
+.mgrid{position:absolute; left:50%; top:52%; transform:translate(-50%,-50%); width:min(92vw,360px); aspect-ratio:1; display:grid;
+  grid-template-columns:repeat(4,1fr); gap:8px; padding:8px; border-radius:16px; background:#1b2340; border:1px solid #33406b}
+.mc{border-radius:12px; background:#27305a; display:flex; align-items:center; justify-content:center; font-size:clamp(1.6rem,9vw,2.4rem)}
+.mc.l1{background:#2f5a48} .mc.l2{background:#5a5a2f} .mc.l3{background:#5a3f2f} .mc.l4{background:#5a2f2f} .mc.l5{background:#5a2f52}
+.mc.l6{background:#2f4f5a} .mc.l7{background:#5a522f} .mc.l8{background:#3f2f5a} .mc.l9{background:#6a5a1f}
 /* 夥伴分頁：換裝與商店 */
 .pethero{display:flex; justify-content:center; padding:16px; border-radius:14px; border:1px solid var(--line);
   background:radial-gradient(circle at 50% 75%,rgba(217,180,94,.14),transparent 70%),var(--panel)}
@@ -1569,7 +1581,7 @@ function petHtml(){
       '<button class="cmd" onclick="petPat()">'+img(SP.card)+'<span>摸摸牠<small>牠開心了一下</small></span></button>'+
       (known.length?'<button class="cmd" onclick="petSpeak()">'+img(SP.wand)+'<span>聽牠說一句<small>從你教過的話裡挑一句</small></span></button>':'')+
       '<button class="cmd" onclick="setMode(\'pet\')">'+img(SP.chest)+'<span>幫牠換裝<small>衣櫃・商店・獎勵幣 '+(S.gold||0)+'</small></span></button>'+
-      '<button class="cmd" onclick="chillOpen(true)">'+img(SP.card)+'<span>陪牠看螢火蟲<small>放空一分鐘，沒有題目也沒有分數</small></span></button>'+
+      '<button class="cmd" onclick="miniMenu()">'+img(SP.card)+'<span>陪牠玩小遊戲<small>釣魚・打磚塊・合成，沒有法文也沒有分數</small></span></button>'+
     '</div></div>';
 }
 function petPat(){
@@ -1598,7 +1610,8 @@ function petSpeak(){
    ⭐ 只在玩家自己按才出現（夥伴區按鈕／打贏關主後的小邀請），⛔ 不彈窗打斷；約 75 秒自然結束、隨時可按「回去」 */
 var CHILL=null;
 function chillOpen(fromPet){
-  if(CHILL) return;
+  if(CHILL||MINI) return;
+  var mm0=document.getElementById('minimenu'); if(mm0) mm0.remove();
   var p=S.pet||{}, ov=document.createElement('div');
   ov.id='chill';
   ov.innerHTML='<canvas></canvas><button class="chillx" onclick="chillClose()">回去</button><div class="chillmsg">點一下畫面<small>螢火蟲會飄向你的手指，亮起來就變成天上的小星星</small></div>';
@@ -2015,7 +2028,201 @@ function renderPetTab(){
     '<div class="sec"><h2>商店</h2>'+(shop.length?'<div class="itms">'+shop.map(function(x){ return cell(x,'shop'); }).join('')+'</div>':'<div class="fb">全部收齊了。</div>')+'</div>'+
     petGamesHtml();
 }
-function petGamesHtml(){ return ''; }
+function petGamesHtml(){
+  return '<div class="sec"><h2>小遊戲</h2><div class="cmds">'+
+    '<button class="cmd" onclick="miniOpen(\'fish\')"><span>🎣 釣魚<small>慢慢等，收集圖鑑</small></span></button>'+
+    '<button class="cmd" onclick="miniOpen(\'brick\')"><span>🧱 打磚塊<small>手指滑動，牠當擋板</small></span></button>'+
+    '<button class="cmd" onclick="miniOpen(\'merge\')"><span>✨ 合成<small>滑動，把一樣的合起來</small></span></button>'+
+    '<button class="cmd" onclick="chillOpen(true)"><span>🌙 發呆<small>看螢火蟲一分鐘</small></span></button></div>'+
+    '<div class="fb" style="color:var(--faint);font-size:.72rem">放鬆用的：沒有法文、沒有排名、不算進度，隨時按「回去」。玩完牠會很開心。</div></div>';
+}
+
+/* ════════════════════════════════════════════════════════════════
+   小遊戲（2026-09-20 Owen：「不然三種遊戲都做好了」——螢火蟲太無聊，改成釣魚／打磚塊／合成三個真的遊戲）
+   ⭐ 功能是「恢復」不是訓練（research/2026-09-17_休息型遊戲恢復效果.md）：⛔ 沒有法文、⛔ 沒有排名／分數／失敗懲罰、
+     1–2 分鐘自然結束、隨時「回去」、玩完只讓夥伴開心（⛔ 不寫進任何學習進度、不給獎勵幣——不然會變成「玩很多、練很少」）
+   ⭐ 入口都是玩家自己按（夥伴分頁／夥伴卡／打贏關主後的小邀請），⛔ 不彈窗
+   ════════════════════════════════════════════════════════════════ */
+var MINI=null;
+var FISH=[
+  {id:'sar',n:'小沙丁魚',c:'#9ec8e8',s:.8,w:10},{id:'gold',n:'金魚',c:'#f0a030',s:.9,w:8},{id:'trout',n:'鱒魚',c:'#7fbf8f',s:1.1,w:7},
+  {id:'puff',n:'河豚',c:'#e8d070',s:1,w:4,round:1},{id:'oct',n:'小章魚',c:'#c86aa0',s:1,w:3,round:1},{id:'star',n:'海星',c:'#f07a7a',s:.9,w:3,star:1},
+  {id:'lamp',n:'燈籠魚',c:'#5a7ad0',s:1.1,w:2},{id:'whale',n:'鯨寶寶',c:'#6aa0d8',s:1.5,w:1},{id:'aureus',n:'黃金魚',c:'#ffd23a',s:1.2,w:1},
+  {id:'boot',n:'一隻舊靴子',c:'#7a5a3a',s:1,w:3,junk:1},{id:'can',n:'空罐頭',c:'#a0a8b0',s:.9,w:2,junk:1}
+];
+function drawFish(cx,x,y,s,f,flip){
+  cx.save(); cx.translate(x,y); cx.scale((flip?-1:1)*s*f.s,s*f.s);
+  cx.fillStyle=f.c;
+  if(f.junk){ cx.fillRect(-14,-16,12,22); cx.fillRect(-14,2,26,8); cx.fillStyle='rgba(0,0,0,.25)'; cx.fillRect(-14,8,26,2); }
+  else if(f.star){ cx.beginPath(); for(var i=0;i<10;i++){ var r=i%2?7:16, a=i*Math.PI/5-Math.PI/2; cx.lineTo(Math.cos(a)*r,Math.sin(a)*r); } cx.closePath(); cx.fill(); }
+  else { cx.beginPath(); cx.ellipse(0,0,f.round?15:18,f.round?13:9,0,0,6.28); cx.fill();
+    cx.beginPath(); cx.moveTo(f.round?13:16,0); cx.lineTo(f.round?24:28,-9); cx.lineTo(f.round?24:28,9); cx.closePath(); cx.fill();
+    cx.fillStyle='#fff'; cx.beginPath(); cx.arc(-8,-2,3,0,6.28); cx.fill(); cx.fillStyle='#111'; cx.beginPath(); cx.arc(-8.5,-2,1.5,0,6.28); cx.fill(); }
+  cx.restore();
+}
+function miniMenu(){
+  if(MINI||CHILL||document.getElementById('minimenu')) return; sfx('click_001');
+  var ov=document.createElement('div'); ov.id='minimenu';
+  ov.innerHTML='<div class="mm"><h3>想陪牠玩哪個？</h3><div class="cmds">'+
+    '<button class="cmd" onclick="miniOpen(\'fish\')"><span>🎣 釣魚<small>慢慢等，收集圖鑑</small></span></button>'+
+    '<button class="cmd" onclick="miniOpen(\'brick\')"><span>🧱 打磚塊<small>手指滑動，牠當擋板</small></span></button>'+
+    '<button class="cmd" onclick="miniOpen(\'merge\')"><span>✨ 合成<small>滑動，把一樣的合起來</small></span></button>'+
+    '<button class="cmd" onclick="chillOpen(true)"><span>🌙 發呆<small>看螢火蟲一分鐘</small></span></button></div>'+
+    '<button class="next" onclick="miniClose()" style="margin-top:12px">先不玩</button>'+
+    '<div class="fb" style="text-align:center;font-size:.72rem;color:var(--faint)">放鬆用的：沒有法文、沒有排名，隨時可以回去。</div></div>';
+  ov.addEventListener('click',function(e){ if(e.target===ov) miniClose(); });
+  document.body.appendChild(ov);
+}
+function miniClose(joy){
+  var mm=document.getElementById('minimenu'); if(mm) mm.remove();
+  if(!MINI) return;
+  var m=MINI; MINI=null; cancelAnimationFrame(m.raf); clearInterval(m.tick);
+  (m.off||[]).forEach(function(f){ try{ f(); }catch(e){} });
+  m.ov.remove();
+  if(joy&&S.pet){ S.pet.lastInteractAt=Date.now(); save(S); petFreeJoy(); toast('牠玩得很開心'); }
+  if(S.mode==='pet') renderPetTab();
+}
+function miniOpen(kind){
+  var mm=document.getElementById('minimenu'); if(mm) mm.remove();
+  if(kind==='fly'){ return chillOpen(true); }
+  if(MINI||CHILL) return; sfx('click_001');
+  var ov=document.createElement('div'); ov.id='mini';
+  ov.innerHTML='<canvas></canvas><button class="chillx" onclick="miniClose(true)">回去</button><div class="chillmsg"></div><div class="miniend" style="display:none"></div>';
+  document.body.appendChild(ov);
+  var cv=ov.querySelector('canvas'), dpr=Math.min(window.devicePixelRatio||1,2);
+  MINI={ ov:ov, cv:cv, cx:cv.getContext('2d'), msg:ov.querySelector('.chillmsg'), end:ov.querySelector('.miniend'), off:[], raf:0, t0:performance.now(), W:0, H:0, kind:kind };
+  function fit(){ MINI.W=window.innerWidth; MINI.H=window.innerHeight; cv.width=MINI.W*dpr; cv.height=MINI.H*dpr; MINI.cx.setTransform(dpr,0,0,dpr,0,0); }
+  fit(); window.addEventListener('resize',fit); MINI.off.push(function(){ window.removeEventListener('resize',fit); });
+  MINI.pet=new Image(); MINI.pet.src=petSprite(S.pet);
+  MINI.say=function(t,sub){ MINI.msg.style.opacity=1; MINI.msg.innerHTML=t+(sub?'<small>'+sub+'</small>':''); };
+  MINI.finish=function(t,sub){   /* 自然結束：再一局／回去，⛔ 不顯示分數 */
+    MINI.done=true; MINI.end.style.display='block';
+    MINI.end.innerHTML='<div class="mm"><h3>'+t+'</h3>'+(sub?'<div class="fb" style="text-align:center">'+sub+'</div>':'')+
+      '<div class="cmds" style="margin-top:12px"><button class="cmd" onclick="miniOpen(\''+kind+'\')"><span>再一局</span></button><button class="cmd" onclick="miniClose(true)"><span>回去</span></button></div></div>'; };
+  var down=function(fn){ cv.addEventListener('pointerdown',fn); MINI.off.push(function(){ cv.removeEventListener('pointerdown',fn); }); };
+  MINI.onDown=down;
+  if(kind==='fish') miniFish(MINI); else if(kind==='brick') miniBrick(MINI); else if(kind==='merge') miniMerge(MINI);
+}
+/* ── 釣魚：點一下拋竿，等牠上鉤，魚咬的時候再點一下（放過就跑掉，沒有任何損失）───────── */
+function miniFish(M){
+  var cx=M.cx, ph='idle', wait=0, biteAt=0, bob={x:0,y:0}, hook=null, shown=null, shownT=0, caught=0, DUR=90000, album=(S.fish=S.fish||{});
+  M.say('點一下畫面——把釣線甩出去','等魚咬鉤的時候再點一下');
+  M.onDown(function(){
+    if(M.done) return; var now=performance.now();
+    if(ph==='idle'){ ph='wait'; bob.x=M.W*(.42+Math.random()*.45); bob.y=M.H*(.62+Math.random()*.2); wait=now+1600+Math.random()*3200; sfx('click_001'); M.say('等牠上鉤…'); }
+    else if(ph==='wait'){ ph='idle'; sfx('bong_001'); M.say('太早了，魚被嚇跑了','再點一下重新甩竿'); }
+    else if(ph==='bite'){
+      var tot=FISH.reduce(function(a,f){ return a+f.w; },0), r=Math.random()*tot, pick=FISH[0];
+      for(var i=0;i<FISH.length;i++){ r-=FISH[i].w; if(r<=0){ pick=FISH[i]; break; } }
+      var isNew=!album[pick.id]; var a=album[pick.id]||{n:0}; a.n++; a.last=Date.now(); album[pick.id]=a; save(S);
+      shown={f:pick,isNew:isNew}; shownT=now+2200; ph='show'; caught++; sfx(isNew?'drop_002':'confirmation_001');
+      M.say(pick.junk?('釣到'+pick.n+'…'):('釣到了！'+pick.n), isNew?'★ 新的圖鑑！':'');
+    }
+  });
+  function frame(now){
+    if(!MINI||MINI!==M) return;
+    var W=M.W,H=M.H, el=now-M.t0, wy=H*.5;
+    var g=cx.createLinearGradient(0,0,0,wy); g.addColorStop(0,'#7ec0ee'); g.addColorStop(1,'#cfeaf7'); cx.fillStyle=g; cx.fillRect(0,0,W,wy);
+    var w=cx.createLinearGradient(0,wy,0,H); w.addColorStop(0,'#3d8fc4'); w.addColorStop(1,'#1d4f7c'); cx.fillStyle=w; cx.fillRect(0,wy,W,H-wy);
+    cx.strokeStyle='rgba(255,255,255,.35)'; cx.lineWidth=2;
+    for(var i=0;i<6;i++){ var yy=wy+20+i*((H-wy-30)/6), off=Math.sin(el/900+i)*14; cx.beginPath(); cx.moveTo(30+off,yy); cx.quadraticCurveTo(W*.25+off,yy-6,W*.5+off,yy); cx.quadraticCurveTo(W*.75+off,yy+6,W-30+off,yy); cx.stroke(); }
+    cx.fillStyle='#8a5a34'; cx.fillRect(0,wy-6,W*.34,16); cx.fillStyle='#6e4626'; cx.fillRect(0,wy+8,W*.34,4);   /* 碼頭 */
+    var ps=Math.min(96,W*.24), px=W*.06, py=wy-ps+2;
+    if(ph==='wait'&&now>=wait){ ph='bite'; biteAt=now; M.say('現在！','快點一下'); sfx('glass_002'); }
+    if(ph==='bite'&&now-biteAt>1300){ ph='idle'; M.say('魚跑掉了','沒關係，再點一下甩竿'); }
+    if(ph==='show'&&now>shownT){ ph='idle'; shown=null; M.say('再點一下，繼續釣',''); }
+    var rx=px+ps*.85, ry=py+ps*.35;   /* 釣竿頭 */
+    if(ph==='wait'||ph==='bite'){
+      var bx=bob.x, by=bob.y+(ph==='bite'?Math.abs(Math.sin(el/90))*10:Math.sin(el/500)*2);
+      cx.strokeStyle='rgba(255,255,255,.8)'; cx.lineWidth=1.5; cx.beginPath(); cx.moveTo(rx,ry); cx.quadraticCurveTo((rx+bx)/2,ry-40,bx,by); cx.stroke();
+      cx.fillStyle='#e04a3a'; cx.beginPath(); cx.arc(bx,by,7,0,6.28); cx.fill(); cx.fillStyle='#fff'; cx.fillRect(bx-7,by-1,14,2.5);
+      if(ph==='bite'){ cx.fillStyle='#fff'; cx.font='bold 26px sans-serif'; cx.textAlign='center'; cx.fillText('!',bx,by-20); }
+    }
+    cx.strokeStyle='#5a3a1e'; cx.lineWidth=3; cx.beginPath(); cx.moveTo(px+ps*.5,py+ps*.7); cx.lineTo(rx,ry); cx.stroke();   /* 釣竿 */
+    if(M.pet.complete&&M.pet.naturalWidth){ cx.imageSmoothingEnabled=false; cx.drawImage(M.pet,px,py,ps,ps); }
+    if(ph==='show'&&shown){ var t=(shownT-now)/2200, k=Math.min(1,(1-t)*5);
+      cx.fillStyle='rgba(10,20,40,'+(.55*Math.min(1,t*4)).toFixed(2)+')'; cx.fillRect(0,0,W,H);
+      drawFish(cx,W/2,H*.4-(1-k)*30,3.2*k+.4,shown.f,false); }
+    if(el>DUR&&!M.done&&ph==='idle'){ M.finish('收竿了','今天釣到 '+caught+' 條　圖鑑 '+Object.keys(album).length+' / '+FISH.length); }
+    M.raf=requestAnimationFrame(frame);
+  }
+  M.raf=requestAnimationFrame(frame);
+}
+/* ── 打磚塊：手指左右滑動，夥伴站在擋板上；球掉下去只是重新發球，沒有失敗 ─────────── */
+function miniBrick(M){
+  var cx=M.cx, W=M.W, H=M.H, cols=7, bw=(W-28)/cols, bh=22, bricks=[], pal=['#e0584f','#ee9a3c','#f0d24a','#5cc48b','#4a9fd8'], DUR=110000;
+  for(var r=0;r<5;r++) for(var c=0;c<cols;c++) bricks.push({x:14+c*bw,y:90+r*(bh+5),w:bw-4,h:bh,c:pal[r],a:1});
+  var pw=Math.min(110,W*.3), px=W/2, py=H-84, ball={x:px,y:py-8,vx:0,vy:0,r:7,on:1}, sparks=[], SP0=Math.max(300,H*.5), left=bricks.length, lastT=performance.now();
+  M.say('手指左右滑動，讓牠接住球','點一下發球　沒有分數，慢慢玩');
+  function mv(e){ var rc=M.cv.getBoundingClientRect(); px=Math.max(pw/2,Math.min(rc.width-pw/2,e.clientX-rc.left)); }
+  M.onDown(function(e){ mv(e); if(M.done) return; if(ball.on){ ball.on=0; var a=-Math.PI/2+(Math.random()-.5)*.6; ball.vx=Math.cos(a)*SP0; ball.vy=Math.sin(a)*SP0; sfx('click_001'); M.msg.style.opacity=0; } });
+  M.cv.addEventListener('pointermove',mv); M.off.push(function(){ M.cv.removeEventListener('pointermove',mv); });
+  function frame(now){
+    if(!MINI||MINI!==M) return;
+    var dt=Math.min(.033,(now-lastT)/1000); lastT=now;
+    var g=cx.createLinearGradient(0,0,0,H); g.addColorStop(0,'#1b1740'); g.addColorStop(1,'#2d1f5a'); cx.fillStyle=g; cx.fillRect(0,0,W,H);
+    if(!M.done){
+      if(ball.on){ ball.x=px; ball.y=py-ball.r-2; }
+      else {
+        ball.x+=ball.vx*dt; ball.y+=ball.vy*dt;
+        if(ball.x<ball.r){ ball.x=ball.r; ball.vx=Math.abs(ball.vx); } if(ball.x>W-ball.r){ ball.x=W-ball.r; ball.vx=-Math.abs(ball.vx); }
+        if(ball.y<ball.r){ ball.y=ball.r; ball.vy=Math.abs(ball.vy); }
+        if(ball.vy>0&&ball.y+ball.r>=py&&ball.y+ball.r<=py+16&&ball.x>=px-pw/2-4&&ball.x<=px+pw/2+4){
+          var off=(ball.x-px)/(pw/2), a=-Math.PI/2+off*1.0; ball.vx=Math.cos(a)*SP0*1.05; ball.vy=Math.sin(a)*SP0*1.05; sfx('click_001'); }
+        for(var i=0;i<bricks.length;i++){ var b=bricks[i]; if(!b.a) continue;
+          if(ball.x+ball.r>b.x&&ball.x-ball.r<b.x+b.w&&ball.y+ball.r>b.y&&ball.y-ball.r<b.y+b.h){
+            b.a=0; left--; if(ball.x>b.x&&ball.x<b.x+b.w) ball.vy=-ball.vy; else ball.vx=-ball.vx; sfx('confirmation_001');
+            for(var k=0;k<8;k++) sparks.push({x:b.x+b.w/2,y:b.y+b.h/2,vx:(Math.random()-.5)*160,vy:(Math.random()-.5)*160,a:1,c:b.c}); break; } }
+        if(ball.y>H+20){ ball.on=1; M.say('沒關係，再發一次','點一下發球'); }
+      }
+      if(!left) M.finish('全部打光了！','牠開心地轉了一圈');
+      else if(now-M.t0>DUR) M.finish('時間到，牠玩累了','');
+    }
+    bricks.forEach(function(b){ if(!b.a) return; cx.fillStyle=b.c; cx.fillRect(b.x,b.y,b.w,b.h); cx.fillStyle='rgba(255,255,255,.25)'; cx.fillRect(b.x,b.y,b.w,4); });
+    sparks=sparks.filter(function(s){ return s.a>0; }); sparks.forEach(function(s){ s.x+=s.vx*dt; s.y+=s.vy*dt; s.a-=dt*2.2; cx.fillStyle=s.c; cx.globalAlpha=Math.max(0,s.a); cx.fillRect(s.x,s.y,4,4); cx.globalAlpha=1; });
+    cx.fillStyle='#e8ecff'; cx.beginPath(); cx.arc(ball.x,ball.y,ball.r,0,6.28); cx.fill();
+    cx.fillStyle='#6a7cff'; cx.fillRect(px-pw/2,py,pw,10);
+    var ps=Math.min(64,W*.16); if(M.pet.complete&&M.pet.naturalWidth){ cx.imageSmoothingEnabled=false; cx.drawImage(M.pet,px-ps/2,py-ps+4,ps,ps); }
+    M.raf=requestAnimationFrame(frame);
+  }
+  M.raf=requestAnimationFrame(frame);
+}
+/* ── 合成：滑動，一樣的兩個合成下一級；棋盤滿了就重新來一盤（沒有失敗畫面）；合出 👑 或玩滿 3 分鐘就自然結束 ─────── */
+function miniMerge(M){
+  M.cv.style.display='none';
+  var LV=['','🌱','🌼','🍄','🍎','🍰','🐟','⭐','🌈','👑'], N=4, g=[], done=false, t0=performance.now();
+  function empty(){ g=[]; for(var i=0;i<N;i++){ g.push([0,0,0,0]); } add(); add(); }
+  function add(){ var e=[]; for(var y=0;y<N;y++) for(var x=0;x<N;x++) if(!g[y][x]) e.push([y,x]); if(!e.length) return; var c=e[Math.floor(Math.random()*e.length)]; g[c[0]][c[1]]=Math.random()<.85?1:2; return c; }
+  function slide(row){ var a=row.filter(Boolean), out=[], merged=[]; for(var i=0;i<a.length;i++){ if(a[i]===a[i+1]&&a[i]<9){ out.push(a[i]+1); merged.push(out.length-1); i++; } else out.push(a[i]); } while(out.length<N) out.push(0); return {row:out,m:merged}; }
+  function move(d){
+    if(done) return; var before=JSON.stringify(g), got=false;
+    for(var i=0;i<N;i++){
+      var line=[]; for(var j=0;j<N;j++) line.push(d==='L'?g[i][j]:d==='R'?g[i][N-1-j]:d==='U'?g[j][i]:g[N-1-j][i]);
+      var r=slide(line); if(r.m.length) got=true;
+      for(var j2=0;j2<N;j2++){ var v=r.row[j2]; if(d==='L') g[i][j2]=v; else if(d==='R') g[i][N-1-j2]=v; else if(d==='U') g[j2][i]=v; else g[N-1-j2][i]=v; }
+    }
+    if(JSON.stringify(g)===before) return; add(); sfx(got?'confirmation_001':'click_001'); render();
+    var top=0; g.forEach(function(r){ r.forEach(function(v){ if(v>top) top=v; }); });
+    if(top>=9){ done=true; setTimeout(function(){ M.finish('👑 合成成功！','牠戴上了皇冠（開心）'); },500); return; }
+    var can=false; for(var y=0;y<N&&!can;y++) for(var x=0;x<N;x++){ if(!g[y][x]||(x<N-1&&g[y][x]===g[y][x+1])||(y<N-1&&g[y][x]===g[y+1][x])){ can=true; break; } }
+    if(!can){ M.say('滿了——牠伸了個懶腰','點一下，重新開一盤'); board.onclick=function(){ board.onclick=null; empty(); render(); M.msg.style.opacity=0; }; }
+  }
+  var board=document.createElement('div'); board.className='mgrid'; M.ov.appendChild(board);
+  function render(){
+    var top=0; g.forEach(function(r){ r.forEach(function(v){ if(v>top) top=v; }); });
+    board.innerHTML=g.map(function(r){ return r.map(function(v){ return '<div class="mc'+(v?' l'+v:'')+'">'+(v?LV[v]:'')+'</div>'; }).join(''); }).join('');
+    M.msgTop=top;
+  }
+  M.say('滑動畫面','把兩個一樣的合成下一級——合出 👑 就完成'); empty(); render();
+  var sx=0, sy=0;
+  function dn(e){ sx=e.clientX; sy=e.clientY; }
+  function up(e){ var dx=e.clientX-sx, dy=e.clientY-sy; if(Math.max(Math.abs(dx),Math.abs(dy))<24) return; M.msg.style.opacity=0;
+    move(Math.abs(dx)>Math.abs(dy)?(dx>0?'R':'L'):(dy>0?'D':'U')); }
+  function key(e){ var m={ArrowLeft:'L',ArrowRight:'R',ArrowUp:'U',ArrowDown:'D'}[e.key]; if(m){ e.preventDefault(); move(m); } }
+  M.ov.addEventListener('pointerdown',dn); M.ov.addEventListener('pointerup',up); window.addEventListener('keydown',key);
+  M.off.push(function(){ M.ov.removeEventListener('pointerdown',dn); M.ov.removeEventListener('pointerup',up); window.removeEventListener('keydown',key); });
+  M.tick=setInterval(function(){ if(!MINI||MINI!==M) return; if(!done&&performance.now()-t0>180000){ done=true; M.finish('玩夠了，休息一下','回去繼續練法文吧'); } },2000);
+}
 
 /* ════════════════════════════════════════════════════════════════
    ⭐ 練到會（2026-09-20 Owen：「沒答對要練到會！」）
@@ -2869,7 +3076,7 @@ function win(){
         (B.isBoss&&!B.tower?'<div class="fb" style="text-align:center">「'+esc(B.story?((storyCh?storyCh.title:'')+' 的關主'):BOSS.name)+'」已收進圖鑑</div>':'')+
         '<div style="margin-top:12px">'+cards.map(cardHtml).join('')+'</div>'+
         '<button class="next" onclick="advance()">'+(B.tower?(B.isBoss?'登頂':'往上走'):(B.isBoss?'回營地':'繼續前進'))+'</button>'+
-        (B.isBoss&&S.pet?'<button class="chillinv" onclick="chillOpen()">打完一場了——想的話，陪牠看一分鐘螢火蟲</button>':'')+
+        (B.isBoss&&S.pet?'<button class="chillinv" onclick="miniMenu()">打完一場了——想的話，陪牠玩一下小遊戲</button>':'')+
       '</div></div>';
   }, 620);
 }
