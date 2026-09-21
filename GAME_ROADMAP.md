@@ -155,6 +155,9 @@
 - [ ] ⚠️ **09-21 佇列快見底，請互動 session 補新項目**：第三節「⬜ 待做」只剩 B10／B11（🧪 待驗證遠超 3 項，B 項被擋），D1 ⏸；P1／P2 已由互動 session 做完（`5b7a909`）；09-21 互動 session 已把 P4 拆成 D4／D5／D6 放進佇列（D 類不受 🧪 門檻擋），排程明天起接手；P3 等 Owen 選音質、P6 寫作關主由互動 session 先做。⭐ 09-21 兩份新研究直接餵給 P3／P6，若 Owen 要開工可照它們的設計約束寫佇列項：
   ① **P3 聽力解碼**（[R19](research/2026-09-21_挖空聽寫對解碼的效果與法文判分.md)）：判分拆「聽到了／寫對了」兩層、法文同音靜音詞尾一律接受且只給中性提示；判分門檻用真實輸入校準（同時記原始輸入與判定）。⚠️ 仍卡 R8 提到的「Audio Lingua 片段要 Owen 篩選、Claude 聽寫挖空」與「音檔怎麼上手機」
   ② **P6 口說關主**（[R20](research/2026-09-21_口說練習的間隔與單次劑量.md)）：最小單位＝規劃＋同題 3 輪、不切碎；不需 SRS 式到期排程，跟著遊戲段落出現即可；成效看停頓
+- [ ] **09-21 需要 Owen 開放授權**（排程 session 被 hook 拒絕的指令，各有繞路，沒有卡住）：
+  ① 需要 Owen 開放授權：`mcp__scheduled-tasks__list_scheduled_tasks {}`｜用途：查 `clb7-game-dawn` 是否啟用、下次執行時間（拒絕後改用「今天有跑」與 git log 的每日 commit 當旁證；要確認明天會不會跑，請在 Claude 桌面 app 的排程頁直接看 enabled／nextRunAt）
+  ② 需要 Owen 開放授權：`ls /Users/owen/.claude/scheduled-tasks/`、`grep -rl "clb7-game-dawn" /Users/owen/.claude`｜用途：找排程設定檔（同上，非必要，已跳過）
 - [ ] **09-15 清晨排程的權限摩擦**（都有找到繞路，沒有卡住，但記錄下來給 Owen 參考）：
   ① 允許清單裡的指令**只要接了 `;`／`&&`／`|`／`>` 或其他指令，整串就被當成沒授權**（例如 `node --check x.js; echo done` 會被拒絕，純 `node --check x.js` 才過）——單一指令一定要單獨下，不能鏈接
   ② `node -e "..."` 沒有預先授權（只有 `node --check`），想跑一段 JS 驗證邏輯時做不到，這次繞路用 Read／Write 加 `node --check` 代替
