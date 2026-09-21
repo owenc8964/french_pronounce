@@ -32,7 +32,18 @@
     var vs = speechSynthesis.getVoices().filter(function (v) {
       return v.lang && v.lang.toLowerCase().indexOf('fr') === 0;
     });
-    frVoice = vs.filter(function (v) { return /am[eé]lie|thomas/i.test(v.name); })[0]
+    // ⭐ 2026-09-21：中文介面的 iPhone 會把聲音叫「Amélie（高音質）／（增強音質）」，原本只認英文 premium/enhanced 會分不出新舊兩個 Amélie
+    //   排序：高音質 ＞ 增強音質 ＞ 一般；同等級再偏好 Amélie/Thomas
+    var named = function (v) { return /am[eé]lie|thomas/i.test(v.name); };
+    var tier = function (v) {
+      if (/premium|高音質|高品質|優質/i.test(v.name)) return 2;
+      if (/enhanced|增強|進階|amélior|plus/i.test(v.name)) return 1;
+      return 0;
+    };
+    var ranked = vs.slice().sort(function (a, b) {
+      return (tier(b) - tier(a)) || ((named(b) ? 1 : 0) - (named(a) ? 1 : 0));
+    });
+    frVoice = (ranked[0] && (tier(ranked[0]) > 0 || named(ranked[0])) ? ranked[0] : null)
            || vs.filter(function (v) { return /premium|enhanced|amélior|plus/i.test(v.name); })[0]
            || vs.filter(function (v) { return v.localService === false; })[0]
            || vs.filter(function (v) { return v.lang === 'fr-FR'; })[0]
@@ -66,6 +77,7 @@
   // ── 單次朗讀 ────────────────────────────────────────────────
   var token = 0;              // 每次 cancel 就 +1，用來作廢舊的 onend callback
   function newUtterance(text, rate) {
+    pickVoice();   // ⭐ 每次重挑：頁面開著時才下載的新聲音、或載入太慢沒趕上的聲音都能接上（不用重開頁面）
     var u = new SpeechSynthesisUtterance(cleanForSpeech(text));
     u.lang = 'fr-FR';
     u.rate = rate || loadRate();

@@ -1709,6 +1709,9 @@ function petHtml(){
     '<div class="npcname">'+esc(p.name||'小夥伴')+'<small>'+esc(petMood(p))+'</small></div></div>'+
     '<div class="fb" style="color:var(--faint);font-size:.72rem;margin-top:-2px">牠在頁面裡到處走——點牠一下，牠會說一句你教過的話。越常來看牠越黏你</div>'+
     lineHtml+
+    /* ⭐ 2026-09-21 Owen 下載了 Amélie 高音質：顯示目前實際用哪個聲音（挑聲音邏輯在 tts_reader.js，高音質＞增強音質＞一般） */
+    '<div class="fb" style="color:var(--faint);font-size:.72rem;margin-top:4px">🔊 牠的聲音：'+
+      (function(){ var vo=(window.TtsReader&&TtsReader.voice)?TtsReader.voice():null; return vo?esc(vo.name)+'（'+esc(vo.lang)+'）':'這台裝置找不到法文聲音'; })()+'</div>'+
     '<div class="cmds" style="margin-top:8px">'+
       '<button class="cmd" onclick="petPat()">'+img(SP.card)+'<span>摸摸牠<small>牠開心了一下</small></span></button>'+
       (known.length?'<button class="cmd" onclick="petSpeak()">'+img(SP.wand)+'<span>聽牠說一句<small>從你教過的話裡挑一句</small></span></button>':'')+
@@ -1950,7 +1953,9 @@ function petFreeTap(e){
   p.lastInteractAt=Date.now(); petToyEnd();
   var obj=petPickLine(), r=Math.random(), cries=(p.kind==='bear')?['嗷～','呼嚕嚕～','（蹭蹭）','嗯嗯～']:['汪！','汪汪！','嗚汪～','（搖尾巴）'];
   var cry=cries[Math.floor(Math.random()*cries.length)];
-  if(obj&&r<.3){ p.lastLine={fr:obj.fr,zh:obj.zh}; petFreeSay(esc(obj.fr)+'<small>'+esc(obj.zh)+'</small>'); say(obj.fr); sfx('confirmation_001'); petFreeFx('❤️',2); petFreeJoy(); }
+  /* ⭐ 2026-09-21 Owen：「我現在摸寵物怎麼不會講話了」——原本只有 30% 會說句子。改成約一半會說，且**這下沒說、下一下就保證說**（p.quiet 計數，不會連兩下都沒句子） */
+  var talk=!!obj&&(r<.5||(p.quiet||0)>=1); p.quiet=talk?0:(p.quiet||0)+1; r=Math.random();
+  if(talk){ p.lastLine={fr:obj.fr,zh:obj.zh}; petFreeSay(esc(obj.fr)+'<small>'+esc(obj.zh)+'</small>'); say(obj.fr); sfx('confirmation_001'); petFreeFx('❤️',2); petFreeJoy(); }
   else if(r<.55){ petFreeSay(cry); sfx('confirmation_001'); petFreeFx('❤️',3); PF.mode='spin'; PF.until=performance.now()+1500; }       /* 開心轉圈 */
   else if(r<.8){ petFreeSay(cry); sfx('click_001'); petFreeFx('♪',3); PF.mode='dance'; PF.until=performance.now()+2200; }                /* 跳舞 */
   else { petFreeSay(cry); sfx('confirmation_001'); petFreeFx('❤️',5); petFreeJoy(); }                                                     /* 蹦蹦跳＋一堆愛心 */
