@@ -33,3 +33,12 @@ assets/.ocr_*.txt
 # 只當本地參考來源用（校正考試題型與題目清單），永遠不要 commit
 # 索引見 assets/tcf/INDEX.md（同樣只留本機）
 assets/tcf/
+
+# 用 Mac `say`（系統聲音）產生的音檔（2026-09-21）：
+# macOS 授權第 2 節 F 項只准「個人、非商業」，錄製／發布／轉散布在「公開分享」情境不允許，
+# 而這個 repo 是公開的 GitHub Pages → 這類音檔永遠只留本機（或私人空間），⛔ 不 commit
+# 詳見 research/2026-09-21_預錄語音音檔的授權.md
+audio/seg/
+audio/sent/
+audio/t1_*.m4a
+audio/樣本_*.m4a
