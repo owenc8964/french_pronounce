@@ -1726,9 +1726,12 @@ function petSizeReset(){
 }
 /* 目前實際用哪個法文聲音（挑聲音邏輯在 tts_reader.js）——地城頁的夥伴卡與「夥伴」分頁都顯示（09-21 Owen 只看到分頁、沒看到這行） */
 function petVoiceLine(){
-  var vo=(window.TtsReader&&TtsReader.voice)?TtsReader.voice():null;
-  return '<div class="fb" style="color:var(--faint);font-size:.72rem;margin-top:4px">🔊 牠的聲音：'+
-    (vo?esc(vo.name)+'（'+esc(vo.lang)+'）':'這台裝置找不到法文聲音')+'</div>';
+  var T=window.TtsReader, vo=(T&&T.voice)?T.voice():null, all=(T&&T.voices)?T.voices():[];
+  /* 名字｜語言｜內部代號（iOS 的代號通常會標出 compact／enhanced／premium）｜本機或雲端 */
+  function one(v){ return esc(v.name)+'｜'+esc(v.lang)+'｜'+esc(v.voiceURI||'（無代號）')+'｜'+(v.localService?'本機':'雲端'); }
+  return '<div class="fb" style="color:var(--faint);font-size:.72rem;margin-top:4px">🔊 牠的聲音：'+(vo?one(vo):'這台裝置找不到法文聲音')+'</div>'+
+    (all.length?'<details style="color:var(--faint);font-size:.68rem;margin-top:2px"><summary>這台裝置給網頁的法文聲音（'+all.length+' 個）</summary>'+
+      all.map(function(v){ return '<div style="margin:2px 0;word-break:break-all">'+((vo&&v.voiceURI===vo.voiceURI&&v.name===vo.name)?'▶ ':'　')+one(v)+'</div>'; }).join('')+'</details>':'');
 }
 function petPat(){
   var p=S.pet; if(!p) return;

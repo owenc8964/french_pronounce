@@ -35,9 +35,11 @@
     // ⭐ 2026-09-21：中文介面的 iPhone 會把聲音叫「Amélie（高音質）／（增強音質）」，原本只認英文 premium/enhanced 會分不出新舊兩個 Amélie
     //   排序：高音質 ＞ 增強音質 ＞ 一般；同等級再偏好 Amélie/Thomas
     var named = function (v) { return /am[eé]lie|thomas/i.test(v.name); };
+    // 2026-09-21 Owen 的 iPhone 上兩個聲音都只叫「Amélie」→ 同時看 voiceURI（iOS 內部代號通常含 compact／enhanced／premium）
     var tier = function (v) {
-      if (/premium|高音質|高品質|優質/i.test(v.name)) return 2;
-      if (/enhanced|增強|進階|amélior|plus/i.test(v.name)) return 1;
+      var s = (v.name || '') + ' ' + (v.voiceURI || '');
+      if (/premium|高音質|高品質|優質/i.test(s)) return 2;
+      if (/enhanced|增強|進階|amélior|plus/i.test(s)) return 1;
       return 0;
     };
     var ranked = vs.slice().sort(function (a, b) {
@@ -483,6 +485,13 @@
     mount: mount,
     mountList: mountList,
     stopAll: stopAll,
-    voice: function () { return frVoice; }
+    voice: function () { return frVoice; },
+    // 診斷用：這台裝置給網頁的所有法文聲音（quest.html 的「夥伴」頁列出來）
+    voices: function () {
+      if (!SUPPORTED) return [];
+      return speechSynthesis.getVoices().filter(function (v) {
+        return v.lang && v.lang.toLowerCase().indexOf('fr') === 0;
+      });
+    }
   };
 })();
