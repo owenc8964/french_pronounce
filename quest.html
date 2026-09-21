@@ -1710,8 +1710,7 @@ function petHtml(){
     '<div class="fb" style="color:var(--faint);font-size:.72rem;margin-top:-2px">牠在頁面裡到處走——點牠一下，牠會說一句你教過的話。兩根手指在牠身上捏合可以放大縮小。越常來看牠越黏你</div>'+
     lineHtml+
     /* ⭐ 2026-09-21 Owen 下載了 Amélie 高音質：顯示目前實際用哪個聲音（挑聲音邏輯在 tts_reader.js，高音質＞增強音質＞一般） */
-    '<div class="fb" style="color:var(--faint);font-size:.72rem;margin-top:4px">🔊 牠的聲音：'+
-      (function(){ var vo=(window.TtsReader&&TtsReader.voice)?TtsReader.voice():null; return vo?esc(vo.name)+'（'+esc(vo.lang)+'）':'這台裝置找不到法文聲音'; })()+'</div>'+
+    petVoiceLine()+
     '<div class="cmds" style="margin-top:8px">'+
       '<button class="cmd" onclick="petPat()">'+img(SP.card)+'<span>摸摸牠<small>牠開心了一下</small></span></button>'+
       (known.length?'<button class="cmd" onclick="petSpeak()">'+img(SP.wand)+'<span>聽牠說一句<small>從你教過的話裡挑一句</small></span></button>':'')+
@@ -1722,7 +1721,14 @@ function petHtml(){
 }
 function petSizeReset(){
   var p=S.pet; if(!p) return;
-  p.size=PF_DEF; pfApplySize(); save(S); toast('牠變回原本的大小'); renderMap();
+  p.size=PF_DEF; pfApplySize(); save(S); toast('牠變回原本的大小');
+  if(S.mode==='pet') renderPetTab(); else renderMap();
+}
+/* 目前實際用哪個法文聲音（挑聲音邏輯在 tts_reader.js）——地城頁的夥伴卡與「夥伴」分頁都顯示（09-21 Owen 只看到分頁、沒看到這行） */
+function petVoiceLine(){
+  var vo=(window.TtsReader&&TtsReader.voice)?TtsReader.voice():null;
+  return '<div class="fb" style="color:var(--faint);font-size:.72rem;margin-top:4px">🔊 牠的聲音：'+
+    (vo?esc(vo.name)+'（'+esc(vo.lang)+'）':'這台裝置找不到法文聲音')+'</div>';
 }
 function petPat(){
   var p=S.pet; if(!p) return;
@@ -2259,7 +2265,10 @@ function renderPetTab(){
         '<button class="cmd" onclick="petKind(\'dog\')"'+(kind==='dog'?' style="border-color:var(--gold)"':'')+'><span>小狗</span></button>'+
         '<button class="cmd" onclick="petKind(\'bear\')"'+(kind==='bear'?' style="border-color:var(--gold)"':'')+'><span>小熊</span></button>'+
         '<button class="cmd" onclick="petFeed()"><span>餵點心<small>10 幣</small></span></button>'+
-        (Object.keys(S.cards||{}).length?'<button class="cmd" onclick="petSpeak()"><span>聽牠說一句<small>你教過的話</small></span></button>':'')+'</div>'+
+        (Object.keys(S.cards||{}).length?'<button class="cmd" onclick="petSpeak()"><span>聽牠說一句<small>你教過的話</small></span></button>':'')+
+        (p.size&&p.size!==PF_DEF?'<button class="cmd" onclick="petSizeReset()"><span>還原大小<small>回到預設的大小</small></span></button>':'')+'</div>'+
+      petVoiceLine()+
+      '<div class="fb" style="color:var(--faint);font-size:.72rem">兩根手指在牠身上捏合可以放大縮小。</div>'+
       '<div class="fb" style="margin-top:8px">毛色　<span class="sws">'+sw+'</span></div>'+
       '<div class="fb" style="color:var(--faint);font-size:.72rem">金幣只有一個錢包：打贏、答對、通關都會累積，不會隔天歸零、倒下也不會掉；可以買藥水，也可以花在牠身上。衣服也會從怪物身上掉出來（關主一定掉）。</div></div>'+
     '<div class="sec"><h2>衣櫃</h2>'+(mine.length?'<div class="itms">'+mine.map(function(x){ return cell(x,'own'); }).join('')+'</div>':'<div class="fb">還沒有衣服——打怪會掉，或到下面用金幣買。</div>')+'</div>'+

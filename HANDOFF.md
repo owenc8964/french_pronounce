@@ -4725,6 +4725,7 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
   ① `quest.html` `petFreeTap`：原本點寵物只有 30% 說句子 → 改約 50%，且 `p.quiet` 計數保證**不會連兩下都沒句子**（函式清單 283→283，只改邏輯）
   ② `tts_reader.js` `pickVoice`：原本只認英文 premium/enhanced，繁中 iPhone 的「Amélie（高音質）／（增強音質）」分不出新舊兩個 → 加 `tier()` 排序（高音質＞增強音質＞一般，同級偏好 Amélie/Thomas，名稱含「高音質／高品質／優質／增強／進階」）；`newUtterance` 每次重挑聲音（頁面開著時才下載的新聲音、載入太慢沒趕上的聲音都能接上）；⚠️ 如果 iOS 給網頁的名字兩種都叫「Amélie」就分不出，夥伴卡新增一行「🔊 牠的聲音：<名字>（<語言>）」讓 Owen 看實際用哪個
   ✅ **寵物兩指捏合縮放（Owen 選手指捏合）**：`quest.html` 新增 `pfMax／pfSize／pfApplySize／petFreeDown2／petPinchStart／petFreeEnd／petSizeReset`（函式 283→290，純新增），改 `petFreeBounds`（改用實際大小，原寫死 56）／`petFreeDown／Move／Up`（多指追蹤 `PF.ptrs`）。極限：最小 36px、最大 min(160, 螢幕短邊×40%)、預設 56；大小存 `S.pet.size`（放開才存）；下緣不動往上長；第二根手指可落在牠旁邊；捏合不會觸發「點一下」也不會誤拖；夥伴卡多「還原大小」鈕（只在改過大小時出現）＋提示文字。影子 CSS 改成比例。測試：在無同步的 `data:` 頁面用模擬 PointerEvent 驗過——放大夾在最大、捏小夾在 36、中間比例正確（40px→60px 間距＝56→84）、放開存一次、雙指全放開不觸發點擊、單指點一下與拖曳仍正常。⚠️ **沒驗到**：真機雙指手感、iOS 上頁面會不會跟著縮放（已掛 `touchmove`／`gesturestart` preventDefault 但沒在 iOS 驗）、第二根手指落在其他按鈕上時的行為
+  ✅ **Owen 回報「看不到音質的欄位，但拉大縮小 OK」（捏合真機驗過 OK）**：原因是聲音那行只加在「今日地城」頁的夥伴卡（`petHtml`），Owen 看的是「夥伴」分頁（`renderPetTab`）。→ 抽成 `petVoiceLine()`（函式 290→291），兩處都顯示；「夥伴」分頁另加捏合提示與「還原大小」鈕。`petSizeReset` 改成依 `S.mode` 重繪對的頁面。
   ⚠️ 還沒處理：語速（`ttsr_rate` 全站共用、預設 0.75、筆記頁按速度鈕會連動遊戲；提案 quest 自有語速預設 0.85＋夥伴頁選項，⏸ Owen 說等試完高音質再說）；寵物 ♥ 記錄喜歡句子（提案 `S.pet.fav`，Owen 未回）
 - 下一步（互動 session）：寫作關主（R6，「生成 prompt 貼給 Claude」，資料 `writing_tasks.js`）；P6 口說關主套用 R20 約束
 
