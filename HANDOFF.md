@@ -4736,6 +4736,12 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
     ② `tools/upload_voice_supabase.py`：仿 `tools/upload_exam_supabase.py`（金鑰讀 `.env` 的 `SUPABASE_SECRET_KEY`、bucket `TCF`、`x-upsert`、manifest 跳過沒變的檔），路徑 `voice/<id>.m4a`＋`voice/index.json`；⭐ 最後一樣做「公開網址／只帶公開 key 必須被擋」檢查
     ③ `quest.html` 端：`say(t)`（第 1691 行附近）改成先找私人音檔、找不到或沒登入就退回 `TtsReader.speak`（⛔ 不報錯）。讀私人空間用現成的 `vaultGet(path,true)`（回 Blob，第 1220 行附近；登入沿用考試之塔的 `examLogin`／`vaultStore`），索引 `voice/index.json` 載一次後用「法文原句（trim）」對應檔案（因為 `say()` 只收到文字沒有 id）；Blob 用 `URL.createObjectURL` 快取（像 `EXAM_IMG`）。⚠️ **iOS Safari 的 `audio.play()` 在 await 之後會被擋**：用**單一共用的 `Audio` 元素**，在第一次使用者點擊時先解鎖（播一小段靜音），之後換 `src` 再 `play()`；播放時先 `TtsReader.stopAll()`、TTS 開始時先停音檔。語速：音檔用正常語速錄，遊戲用 `playbackRate`（存本機、預設約 0.9、⏸ 語速 UI 等 Owen 試完再說）
   - **前置**：Owen 要確認 Mac 上有沒有法文高音質聲音（系統設定→輔助使用→語音內容→系統語音→管理聲音；iPhone 下載的不會出現在 Mac）。先 `--only 5` 試聽，確認真的比手機那個自然才跑全部 304 句
+  - ✅ **09-22 腳本已寫好但 ⚠️ 完全沒跑過**（那個 session 被排程 hook 擋住 `say`／`node`／終端機工具，Owen 說的「新 session」其實沒開成——用排程開頭的對話接著問會一直是「無人值守」）：
+    ① [`tools/gen_voice_audio.py`](tools/gen_voice_audio.py)：`--list` 列 Mac 法文聲音（Premium＞Enhanced＞一般）、`--dry-run` 只算容量、`--only 5` 抽樣試聽、`--sources sentences,listening,chunks`。⭐ 跟昨晚草案不同：**不用 node**（regex／JSON 直接解析資料檔）、檔名＝清理後文字 sha1 前 12 碼（ASCII，Supabase 路徑安全、同句自動去重）、`index.json`＝`{清理後文字: key}`（網站查表用）、`.manifest.json`＝本機設定雜湊（文字／聲音／語速沒變就跳過）。**網站端 `voiceKey()` 必須跟腳本 `voice_key()` 逐字相同**，JS 版寫在腳本開頭註解。
+    ② [`tools/upload_voice_supabase.py`](tools/upload_voice_supabase.py)：仿 `upload_exam_supabase.py`，bucket `TCF` 路徑 `voice/`；音檔先傳、index 最後傳（有失敗就不傳 index）；最後驗「公開網址／只帶公開 key 要被擋」。
+    ③ `.gitignore` 加 `audio/voice/`。
+    ⏸ **還沒做**：`quest.html` 播放端（`say()` 先查 index、找到就用共用 `Audio` 元素播，找不到退回 `TtsReader.speak`）——要在能開瀏覽器測的 session 做；容量估算＝句庫＋聽力短文約 5 MB、加複習卡約 38–50 MB（估的，沒實算；`--dry-run` 會給精確數字）。
+    ⏸ **等 Owen 在自己終端機跑**：`python3 tools/gen_voice_audio.py --list`（確認有沒有 Amélie／Thomas 的 Premium／Enhanced）、`--dry-run`、`--only 5` 試聽。腳本第一次跑可能有小 bug，貼錯誤回來即可。
   - ⚠️ **`a80aa62`（`.gitignore` 防呆＋授權筆記）還沒 push**：在那之前 `audio/t1_*.m4a` 等 `say` 音檔仍有被 `git add .` 帶上公開站的風險
   ⚠️ 還沒處理：語速（`ttsr_rate` 全站共用、預設 0.75、筆記頁按速度鈕會連動遊戲；提案 quest 自有語速預設 0.85＋夥伴頁選項，⏸ Owen 說等試完高音質再說）；寵物 ♥ 記錄喜歡句子（提案 `S.pet.fav`，Owen 未回）
 - 下一步（互動 session）：寫作關主（R6，「生成 prompt 貼給 Claude」，資料 `writing_tasks.js`）；P6 口說關主套用 R20 約束

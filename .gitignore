@@ -40,5 +40,6 @@ assets/tcf/
 # 詳見 research/2026-09-21_預錄語音音檔的授權.md
 audio/seg/
 audio/sent/
+audio/voice/
 audio/t1_*.m4a
 audio/樣本_*.m4a
