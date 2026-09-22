@@ -4773,6 +4773,28 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
   - 📁 `audio/voice/`（已在 .gitignore）現有 **5 個試聽檔＋ `index.json`（只有 5 條）**與 `audio/voice/ab/` 的 5 個 A/B 對照檔。要換音源時 `gen_voice_audio.py` 會自己重錄（`.manifest.json` 記設定雜湊，聲音一換就全部重來）。
   - ✅ **09-22 已 push（`dabc00f..2a2d1db`）**，含 `a80aa62` 的 `.gitignore` 防呆 → `audio/t1_*.m4a` 等 `say` 音檔不再有被 `git add .` 帶上公開站的風險。播放端上線後在沒有 index 的情況下會全部安靜退回現有 TTS，線上行為跟之前一樣。
 
+#### 三之十二、09-22：第35課筆記（Édito A2 Unité 9 Consommer responsable）＋六項連動
+
+- **來源**：Owen 丟了 `~/Desktop/0922/` 9 張課本截圖＋整堂逐字稿。截圖就是課本頁，等於一手來源；頁碼用 `assets/.textbook_cache.txt` 核對過 → **p.125–132**（扉頁／Instagram 願望清單／論壇／conditionnel／詞彙頁／Le fait maison／gérondif／Oh le cliché）。
+- ✅ **筆記四件套寫完**（`french_notes.html` `lesson-35`，`node tools/check_notes.js` **0 錯 0 提醒**）。
+- ⭐⭐ **老師對 conditionnel 的定位（考試策略，跟一般教法不同，已寫進筆記）**：「**看得懂就好，不用會講**」——「考試的時候你就是要了解是什麼意思，不要去講它」。真正要產出的只有 **je voudrais／tu pourrais・on pourrait／j'aimerais**，其餘當閱讀字辨識。⛔ **不要在練習頁要求他把整張不規則表都產出**（他當堂反應「太可怕了吧」就是看到整張表）。
+- ⚠️ **對答案抓到 Owen 填錯一格**：conditionnel 的 Fonctionnement 表「proposer quelque chose（提議）」填成 a，**正確是 c**（Ça te dirait d'en discuter ?）。其餘 24 格手寫答案（Entraînement 3／4、La consommation 1／2）**逐條核對全對**。已做成 quiz 題盯這個點。
+- ⚠️⚠️ **筆記格式踩到的坑（同一類這個專案已踩兩次，這次一次清掉）**：
+  ① **7 格純中文被標成 `class="m"`** → 發音鍵會唸中文；
+  ② **6 個表的第三欄是「規則描述」不是翻譯，而第一欄是 `td.m`** → `extract_chunks.js` 會抽出「正面法文、背面規則描述」的壞卡。
+  → ⭐ **解法（沿用發音警報表的前例）：第一欄不標 `m`（抽取器只收第一欄是 m 的，就不會被抽），法文欄標 `m`（發音鍵照樣有）**。`tout+時間`、`fait／à faire` 兩個對比表改成**中文欄在最前面**，免得卡片背面混到兩個詞的意思。
+  → 抽取結果 **122 張，描述句卡 0、中文過長卡 0**。
+- ✅ **六項連動全做完**（詳見 commit `dc24c41`、`73872c9`）：
+  ① chunks 122 張 ② questions.js **46 題**（`conditionnel-present` 18／`gerondif` 13／`vocab-consommation` 15）＋ **TOPIC_LABELS 三處**（dashboard 法文／quiz 中文／`topic_labels.js` 重產）③ table_drill **3 張表**（實測一輪 8 格全對）④ sentences.js **12 句**（人工精選，總數 304→316）⑤ map.html `CURRENT_LESSON` 34→35 ＋ 兩塊 A2 地塊 ⑥ 自動試跑後 commit。
+- ✅ **文法點解鎖**：`conditionnel` 新開 A2 點、`gerondif` 從 B2 佔位點**就地解鎖**（⛔ **不要改 id**，`map.html` 的地塊靠同一個 id 連著）。B1 的 `futur` 佔位點已加註：兩半都在 A2 各自解鎖了，⛔ 新時態不要再掛那裡。
+- ✅ **⚠️ 踩過坑的那條檢查這次有做**（第27課 futur simple 按鈕沒出現）：`verb_sprint.html`／`dashboard.html` 的 MODES 補上 conditionnel，**開隔離複本實測**——按鈕出現、出題正常、`viendrions`／`auriez` 判對、亂打判錯並顯示正解。
+- 🐛 **順手修掉兩個既有 bug**：
+  ① `verb_sprint.html` 答錯時顯示「**je irais**」——代名詞直接空白串接，沒處理法文省音，而且這串會丟給 `ttsSpeak()`，**連唸出來的發音都是錯的**。加 `withPron()`，4 處共用（j'irais／j'aurais／j'étais／j'habite；je voudrais、tu irais 不省）。⛔ 題幹的「je _____」刻意不省，省了會洩漏答案是母音開頭。
+  ② `table_drill.html` 的 `TABLES` **有一個空洞**（第1030行 `},,` 多一個逗號）：length 77 但只有 76 個元素，隨機抽題抽到 index 51 就拿到 `undefined`。已修，現在 76/76。
+- 🐛 **也修了 `tools/check_notes.js` 的邊界 bug**：最後一課的 `seg` 一路切到檔尾，把頁尾 script 註解裡的「平行閱讀」算成該課內容而誤報；**每加一課誤報就轉移到新的最後一課**。改成切到該課自己配對的 `</details>`（⚠️ 計數起點是 **1**，因為 seg 從 `id="lesson-N"` 起算已經在 details 裡面）。
+- **測試安全**：全程用「移除 `sync_supabase.js` ＋ 記憶體版 localStorage」的隔離複本（`tmp_*_test.html`，測完已刪），⛔ 沒碰雲端；`ROOM` 全程沒動過，仍是 `owen-clb7-k9f3a72q`。
+- ⏸ **下一步建議**：Owen 實際跑一輪第35課的 quiz／填表回報；conditionnel 照老師的定位**只練那三個產出型**，其餘用辨識題。
+
 #### 三之十一、09-22：Anki 每日上限下修 ＋ 根因診斷（⚠️ 根因不是量，是配比）
 
 - **Owen 回報**：「anki 的難度比我想像中高，當累積到一定的量的時候很難記得，也壓力很大」「我先下修到**一天最多 60 題複習、6 題新題目**」「至少讓我願意繼續、不會堆得到處都是是最重要的」「由於你內部還會有例句我其實還會去背誦那個…**大概 30 張我就頭很痛了**」
