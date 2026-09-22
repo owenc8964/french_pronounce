@@ -424,7 +424,7 @@ header {
 <script src="tense_lens.js"></script>
 <script src="time_hall.js"></script>
 <script>
-const CURRENT_LESSON = 34;
+const CURRENT_LESSON = 35;
 const TOTAL_LESSONS  = 35;
 
 const TILES = [
@@ -733,11 +733,14 @@ const TILES = [
 
   { id:'futur',        zone:'B1', icon:'🌟', name:'Futur & conditionnel', gram:true, cat:'verbe-temps',
     hint:'Je parlerai · Je voudrais', unlocked:false,
-    detail:'Futur simple: radical (infinitif pour la plupart) + -ai/-as/-a/-ons/-ez/-ont. Irréguliers: être (ser-), avoir (aur-), aller (ir-), faire (fer-), venir (viendr-), pouvoir (pourr-). Conditionnel présent: politesse, hypothèses (si + imparfait + cond.).' },
+    detail:'Futur simple: radical (infinitif pour la plupart) + -ai/-as/-a/-ons/-ez/-ont. Irréguliers: être (ser-), avoir (aur-), aller (ir-), faire (fer-), venir (viendr-), pouvoir (pourr-). Conditionnel présent: politesse, hypothèses (si + imparfait + cond.). ⚠️ Les deux moitiés sont déjà débloquées en A2 : futur-simple (leçon 27) et conditionnel (leçon 35) ; il ne reste ici que si + imparfait + conditionnel.' },
 
   { id:'subjonctif',   zone:'A2', icon:'🌀', name:'Subjonctif présent', gram:true, cat:'verbe-mode',
     hint:'Il faut que tu fasses · C\'est bien que', unlocked:true, lesson:34,
     detail:"Le subjonctif présent (leçon 34, unité 8) — on ne raconte pas un fait : on met l'action dans un cadre de nécessité ou de jugement. NÉCESSITÉ : il faut que, il ne faut pas que, il est important que, il est indispensable que (Il faut que tu regardes cette vidéo !). OPINION, JUGEMENT : c'est bien que, c'est normal que (C'est bien qu'elle te montre comment ça marche). FORMATION : pour je, tu, il et ils, on prend le radical de ils au présent (ils informent → que j'informe) et on ajoute -e, -es, -e, -ent ; pour nous et vous, c'est comme à l'imparfait (que nous informions, que vous informiez). Les verbes en -er ont donc la même forme qu'au présent, sauf nous et vous. IRRÉGULIERS : être (que je sois, qu'ils soient), avoir (que j'aie, que vous ayez), aller (que j'aille, que nous allions), faire (que tu fasses). ⚠️ Que nous mangions, pas mangeons." },
+  { id:'conditionnel', zone:'A2', icon:'🎀', name:'Conditionnel présent', gram:true, cat:'verbe-mode',
+    hint:'Je voudrais · Tu pourrais · J\'aimerais', unlocked:true, lesson:35,
+    detail:"Le conditionnel présent (leçon 35, unité 9) — on ne raconte pas un fait : on adoucit. Je veux un café → Je voudrais un café : même sens, politesse très différente. QUATRE EMPLOIS : demande polie (Tu pourrais me donner plus d'informations s'il te plaît ?), souhait (J'aimerais arrêter d'acheter du matériel de sport), conseil (Tu devrais refaire tes photos !), proposition (Ça te dirait d'en discuter ? / On pourrait louer des kayaks !). FORMATION : rien de neuf, tout est emprunté — le radical est celui du FUTUR SIMPLE (l'infinitif, donc le r est toujours là) et les terminaisons sont celles de l'IMPARFAIT : -ais, -ais, -ait, -ions, -iez, -aient. Pour les infinitifs en -re, on supprime le e : prendre → je prendrais. ⚠️ Une seule lettre le sépare de ses voisins : nous aimerions (conditionnel, avec i) contre nous aimerons (futur) ; elle aimerait (conditionnel, avec r) contre elle aimait (imparfait). IRRÉGULIERS : les mêmes radicaux qu'au futur — avoir → aur-, être → ser-, faire → fer-, aller → ir-, voir → verr-, savoir → saur-, devoir → devr-, pouvoir → pourr-, vouloir → voudr-, venir → viendr-, il faut → il faudrait. ⭐ La prof est claire : à ce niveau il suffit de le RECONNAÎTRE ; les seules formes à produire soi-même sont je voudrais, tu pourrais / on pourrait et j'aimerais." },
 
   { id:'relatifs',     zone:'B1', icon:'🔗', name:'Pronoms relatifs', gram:true, cat:'pronoms',
     hint:'qui · que · où · (dont)', unlocked:true, lesson:23,
@@ -776,9 +779,9 @@ const TILES = [
     hint:'La lettre a été écrite par Marie', unlocked:false,
     detail:'Voix passive: sujet + être (temps voulu) + participe passé (accordé) + par + agent. Le gâteau a été mangé par les enfants. Se faire + infinitif: il s\'est fait renvoyer. Passive dans les textes formels, journalistiques, scientifiques.' },
 
-  { id:'gerondif',     zone:'B2', icon:'🌊', name:'Gérondif & part. présent', gram:true, cat:'verbe-mode',
-    hint:'En mangeant · Tout en parlant', unlocked:false,
-    detail:'Gérondif (en + -ant): simultanéité, manière, condition. Il écoute de la musique en travaillant. Participe présent: adjectif verbal. Une femme souriante. Différence gérondif / participe présent. Emplois stylistiques dans les textes avancés.' },
+  { id:'gerondif',     zone:'A2', icon:'🌊', name:'Le gérondif', gram:true, cat:'verbe-mode',
+    hint:'En écoutant · En cuisinant soi-même', unlocked:true, lesson:35,
+    detail:"Le gérondif (leçon 35, unité 9) — en + base du verbe + -ant, pour coller deux actions dans une seule phrase. Le français ne permet pas d'enchaîner deux verbes conjugués : il faut rétrograder le second en complément, et c'est exactement le rôle du gérondif. DEUX EMPLOIS : deux actions simultanées (Il travaille en chantant ; Elles cuisinent en écoutant de la musique) et la manière de faire quelque chose, qui répond à la question « comment ? » (Elle est venue à l'atelier en courant ; Il a vendu son vélo en mettant une annonce). FORMATION : on prend le radical du verbe conjugué avec NOUS au présent et on ajoute -ant — nous regardons → en regardant, nous faisons → en faisant, nous buvons → en buvant. C'est la même façon de prendre le radical qu'à l'imparfait, donc rien de neuf à mémoriser. IRRÉGULIERS, seulement trois : être → en étant, avoir → en ayant, savoir → en sachant. Les pronoms compléments se placent ENTRE en et le verbe : Je fais du jardinage en lui parlant. ⚠️ Le sujet du gérondif doit être le même que celui de la principale. ⚠️ La prof le précise : étant, ayant et sachant sont en réalité peu employés — il suffit de les reconnaître. ⚠️ Homophone : faisant (faire) / un faisan (l'oiseau)." },
 
   { id:'pron-avances', zone:'B2', icon:'🔗', name:'Pronoms avancés', gram:true, cat:'pronoms',
     hint:'y · en · ordre double · lequel', unlocked:false,

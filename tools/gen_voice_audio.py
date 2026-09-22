@@ -92,7 +92,7 @@ def load_listening():
             for i, m in enumerate(re.finditer(r'\bscript:\s*"((?:[^"\\]|\\.)*)"', s), 1)]
 
 
-SOURCES = {'sentences': (load_sentences, 304),   # 第二欄＝預期條數（對不上就警告，不中止）
+SOURCES = {'sentences': (load_sentences, 316),   # 第二欄＝預期條數（對不上就警告，不中止）⚠️ 每次補新課的句子要更新（09-22 第35課補 12 句：304→316）
            'listening': (load_listening, 8),
            'chunks': (load_chunks, 2353)}
 

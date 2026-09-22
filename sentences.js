@@ -358,4 +358,18 @@ const SENTENCES = [
   { id: 'S_L34_10', lesson: 34, fr: 'Les premières scènes, je les ai trouvées nulles.', zh: '開頭那幾場，我覺得很爛。', note: '⭐ COD 放助動詞前；過去分詞配合 les' },
   { id: 'S_L34_11', lesson: 34, fr: 'Je leur ai conseillé de regarder cette série.', zh: '我建議他們看這部影集。', note: '⭐ COI leur 放助動詞前' },
   { id: 'S_L34_12', lesson: 34, fr: 'Mon passe-temps, c\'est de jouer au tennis.', zh: '我的休閒嗜好是打網球。', note: '🎙 老師。un passe-temps ≠ 很花時間' },
+
+  // 第35課（Unité 9 Consommer responsable）— ⛔ 人工精選：真的常用、值得先背的整句
+  { id: 'S_L35_1', lesson: 35, fr: 'Je voudrais un café.', zh: '我想要一杯咖啡。', note: '⭐⭐ 老師指定最該整塊背的條件式；比 Je veux 客氣很多' },
+  { id: 'S_L35_2', lesson: 35, fr: "Tu pourrais me donner plus d'informations s'il te plaît ?", zh: '你可以給我多一點資訊嗎？', note: '⭐ 條件式的禮貌請求' },
+  { id: 'S_L35_3', lesson: 35, fr: "J'ai envie d'essayer ce défi.", zh: '我想試試這個挑戰。', note: '⭐ avoir envie de ＋ 原形' },
+  { id: 'S_L35_4', lesson: 35, fr: "Ça te dirait d'en discuter ?", zh: '你想聊聊這件事嗎？', note: '⭐ 條件式的提議。en＝de ça' },
+  { id: 'S_L35_5', lesson: 35, fr: 'On pourrait louer des kayaks !', zh: '我們可以租獨木舟啊！', note: '⭐ On pourrait…＝提議，不只是「可以嗎」' },
+  { id: 'S_L35_6', lesson: 35, fr: 'Tu devrais refaire tes photos !', zh: '你應該重拍照片！', note: '⭐ 條件式的建議，比 Il faut 軟' },
+  { id: 'S_L35_7', lesson: 35, fr: 'Je te conseille de les prendre vers midi.', zh: '我建議你中午前後拍。', note: '⭐ conseiller à qn de ＋ 原形' },
+  { id: 'S_L35_8', lesson: 35, fr: 'Est-ce que vous auriez des conseils à me donner ?', zh: '您有什麼建議可以給我嗎？', note: '🎙 老師：正式一點說 Auriez-vous des conseils à me donner ?' },
+  { id: 'S_L35_9', lesson: 35, fr: "C'est un bon moyen d'économiser.", zh: '這是省錢的好方法。', note: 'un bon moyen de ＋ 原形' },
+  { id: 'S_L35_10', lesson: 35, fr: "Le prix n'est pas fixe, tu peux le négocier.", zh: '價格不是固定的，你可以議價。', note: '二手交易高頻句' },
+  { id: 'S_L35_11', lesson: 35, fr: 'On mange mieux en cuisinant soi-même.', zh: '自己下廚吃得比較好。', note: '⭐ gérondif 表方式（回答 comment ?）' },
+  { id: 'S_L35_12', lesson: 35, fr: 'Il travaille en chantant.', zh: '他一邊唱歌一邊工作。', note: '⭐ gérondif 表同時' },
 ];

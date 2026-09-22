@@ -263,6 +263,12 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
  *    同一個 global lexical scope 重複宣告會整支腳本停掉（2026-08-24 踩到）。
  *    衝刺頁要顯示 il / elle 這種雙寫，跟共用檔的簡寫本來就不同，維持自己一份。 */
 const PERSONS_UI = ['je', 'tu', 'il / elle', 'nous', 'vous', 'ils / elles'];
+// ⚠️ je 在母音／啞音 h 前一定要省音：「je irais」是壞法文，要寫 j'irais。
+//    答錯時這串會直接丟給 ttsSpeak()，不省音連唸出來的發音都是錯的。
+//    （09-22 解鎖 conditionnel 時抓到：aller→irais、avoir→aurais 都是母音開頭，很常撞到）
+//    ⛔ 只有 je 需要，tu／il／nous／vous／ils 都不省音。
+const withPron = (pi, form) =>
+  (pi === 0 && /^[aeiouâàéèêëîïôöûüùh]/i.test(form)) ? "j'" + form : PERSONS_UI[pi] + ' ' + form;
 /* ── 動詞資料（2026-08-24 改成從 verbs_full.js 生成）────────────────
  * 原本這裡是兩份手寫的變位表（présent 一份、passé composé 一份），
  * 所以「題目永遠不會更新」是結構決定的，不是忘了更新。
@@ -284,6 +290,7 @@ const MODES = [
   { id:'imparfait',    tense:'imparfait',      label:'Imparfait',        suffix:'_imp',  gram:'imparfait' },
   { id:'futur',        tense:'futur-simple',   label:'Futur simple',     suffix:'_fut',  gram:'futur-simple' },  // 27課教到 → 掛 A2 的 futur-simple（舊值 'futur' 是 B1 佔位點，永遠不會解鎖）
   { id:'subjonctif',   tense:'subjonctif',     label:'Subjonctif',       suffix:'_subj', gram:'subjonctif' },
+  { id:'conditionnel', tense:'conditionnel',   label:'Conditionnel',     suffix:'_cond', gram:'conditionnel' },  // 35課教到 → 掛 A2 的 conditionnel（gram_rules.js 09-22 新開）
 ];
 
 function modeUnlocked(m) {
@@ -398,7 +405,7 @@ function renderHeatmap(elId) {
     html += `<tr><td class="verb-name">${v.inf}</td>`;
     for (let pi=0; pi<6; pi++) {
       const st = cellState((cells[cellKey(vi,pi)]||{}).h);
-      html += `<td class="hm-cell hm-${st}" title="${PERSONS_UI[pi]} ${v.inf} → ${primaryForm(v.forms[pi])}"></td>`;
+      html += `<td class="hm-cell hm-${st}" title="${withPron(pi, primaryForm(v.forms[pi]))}（${v.inf}）"></td>`;
     }
     html += '</tr>';
   });
@@ -512,8 +519,8 @@ function recordAttempt(vi, pi, ok, fk, dur) {
     logWrong({
       src: 'sprint',
       q: `${PERSONS_UI[pi]} _____ (${v.inf})${tag}`,
-      a: `${PERSONS_UI[pi]} ${primaryForm(v.forms[pi])}`,
-      note: v.inf + '：' + PERSONS_UI.map((p,i) => `${p} ${primaryForm(v.forms[i])}`).join(' · '),
+      a: withPron(pi, primaryForm(v.forms[pi])),
+      note: v.inf + '：' + PERSONS_UI.map((p,i) => withPron(i, primaryForm(v.forms[i]))).join(' · '),
     });
   }
 }
@@ -570,7 +577,7 @@ function submit() {
     paused = true;
     inp.classList.add('flash-bad'); inp.disabled = true;
     const fb = document.getElementById('feedbackBox');
-    const answerShown = `${PERSONS_UI[pi]} ${primaryForm(V()[vi].forms[pi])}`;
+    const answerShown = withPron(pi, primaryForm(V()[vi].forms[pi]));
     fb.innerHTML = `<div class="fb-wrong">✗ 正確：<b>${answerShown}</b>（${V()[vi].inf}）
       <button type="button" id="wrongTtsBtn" title="聽正確發音"
         style="background:none;border:none;color:#60d090;font-size:1rem;cursor:pointer;vertical-align:middle;margin-left:4px;">🔊</button></div>

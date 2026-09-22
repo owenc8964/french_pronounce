@@ -98,6 +98,9 @@ var TOPIC_LABELS_FR = {
  "medias-vocab": "L'info, la presse, la télé",
  "preference-interet": "Préférence et intérêt",
  "subjonctif-present": "Subjonctif présent",
+ "conditionnel-present": "Conditionnel présent",
+ "gerondif": "Le gérondif",
+ "vocab-consommation": "La consommation",
  "medias-audio-reseaux": "Médias audios et réseaux sociaux",
  "critique-film": "Faire une critique",
  "place-pronoms-cod-coi": "Place des pronoms COD/COI"

@@ -648,6 +648,30 @@ const GRAM_POINTS = [
         { fr:'Aujourd\'hui, il faut absolument que j\'aille voir l\'immigration.', zh:'今天我一定得去一趟移民局。（aller → aille）' },
       ]}},
 
+  { id:'conditionnel', name:'Conditionnel présent', icon:'🎀', zone:'A2', cat:'verbe-mode',
+    lessons:[35], topics:['conditionnel-present'], unlocked:true,   // 09-22（第35課 Édito A2 p.128）；B1 的 'futur' 佔位點 name 寫「Futur & conditionnel」，兩半現在都在 A2 各自解鎖了
+    rule:{
+      title:'條件式現在 — 把同一句話從「我要」調成「我想，是不是可以」',
+      why:'未來式講的是「時間上的之後」；條件式講的是「現實上隔一層」——動作沒有真的發生，只是想要、建議、提議，所以說出口就不會像命令。它的零件全部是借來的，一個新東西都沒有：詞幹跟未來式一模一樣（整個原形，那個 r 一定在），字尾跟未完成過去一模一樣（-ais／-ais／-ait／-ions／-iez／-aient）。所以可以直接記成「未來式的 r ＋ 過去的字尾」＝本來會發生、但現在只是想想。也因為這樣，它最容易跟左右兩邊搞混：跟未來式只差一個 i（aimerions／aimerons），跟未完成過去只差一個 r（aimerait／aimait）。',
+      points:[
+        '形成：原形（-re 去掉 e）＋ -ais / -ais / -ait / -ions / -iez / -aient',
+        '四個用途：① 禮貌請求 ② 表達願望 ③ 給建議 ④ 提議',
+        '⚠️ 跟 futur 差一個 i：nous aimerions（條件式，有 i）vs nous aimerons（未來式，沒有 i）',
+        '⚠️ 跟 imparfait 差一個 r：elle aimait（以前喜歡，沒有 r）vs elle aimerait（會想要，有 r）',
+        '不規則詞幹跟 futur simple 完全一樣：avoir→aur-、être→ser-、faire→fer-、aller→ir-、voir→verr-、savoir→saur-',
+        '不規則（續）：pouvoir→pourr-、vouloir→voudr-、devoir→devr-、venir→viendr-、il faut→il faudrait',
+        '⭐⭐ 🎙 老師的考試定位：這個時態「看得懂就好，不用會講」——真正要產出的只有三個：je voudrais、tu pourrais／on pourrait、j\'aimerais',
+        '⭐ On pourrait… 不只是「可以嗎」，更常是提議「我們可以…啊」',
+      ],
+      examples:[
+        { fr:'Je voudrais un café.', zh:'我想要一杯咖啡。（禮貌請求）' },
+        { fr:'Tu pourrais me donner plus d\'informations s\'il te plaît ?', zh:'你可以給我多一點資訊嗎？（禮貌請求）' },
+        { fr:'J\'aimerais arrêter d\'acheter du matériel de sport.', zh:'我想不要再買運動器材了。（願望）' },
+        { fr:'Tu devrais refaire tes photos !', zh:'你應該重拍照片！（建議）' },
+        { fr:'Ça te dirait d\'en discuter ?', zh:'你想聊聊這件事嗎？（提議）' },
+        { fr:'On pourrait louer des kayaks !', zh:'我們可以租獨木舟啊！（提議）' },
+      ]}},
+
   // ═══ B1（已教的部分）══════════════════════════════════════
   { id:'relatifs', name:'Pronoms relatifs (qui · que · où)', icon:'🔗', zone:'B1', cat:'pronoms',
     lessons:[16,23], topics:['qui-que'], unlocked:true,
@@ -676,7 +700,7 @@ const GRAM_POINTS = [
   //    導致 quiz.html 的 getPool() 把第7課 pour/parce que/mais 那 5 題整批當成「超前進度」排除。
   //    pour/parce que 第2/7/16課都教過，不該被鎖。教到 B1 論述時再把新 topic 掛回來。
   { id:'opinions',     name:'Opinions & débats',        icon:'💬', zone:'B1', cat:'discours',    lessons:[], topics:[], unlocked:false },
-  { id:'futur',        name:'Futur & conditionnel',     icon:'🌟', zone:'B1', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
+  { id:'futur',        name:'Futur & conditionnel',     icon:'🌟', zone:'B1', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },   // ⚠️ 佔位點：兩半都已在 A2 各自解鎖（futur-simple 第27課、conditionnel 第35課）→ ⛔ 新的時態不要再掛這裡
   { id:'discours',     name:'Discours indirect',        icon:'💭', zone:'B1', cat:'discours',    lessons:[], topics:[], unlocked:false },
   { id:'pluperfect',   name:'Plus-que-parfait',         icon:'⏪', zone:'B2', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
   { id:'cond-passe',   name:'Conditionnel passé',       icon:'😔', zone:'B2', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
@@ -684,7 +708,30 @@ const GRAM_POINTS = [
   { id:'passe-simple', name:'Passé simple',             icon:'📜', zone:'B2', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
   { id:'concordance',  name:'Concordance des temps',    icon:'🔄', zone:'B2', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
   { id:'passive',      name:'Voix passive',             icon:'🔃', zone:'B2', cat:'verbe-mode',  lessons:[], topics:[], unlocked:false },
-  { id:'gerondif',     name:'Gérondif & part. présent', icon:'🌊', zone:'B2', cat:'verbe-mode',  lessons:[], topics:[], unlocked:false },
+  { id:'gerondif', name:'Le gérondif', icon:'🌊', zone:'A2', cat:'verbe-mode',
+    lessons:[35], topics:['gerondif'], unlocked:true,   // 09-22（第35課 Édito A2 p.131）從 B2 佔位點就地解鎖；map.html 的 gerondif 地塊靠同一個 id 連著，⛔ 不要改 id
+    rule:{
+      title:'副動詞 — en ＋ 動詞-ant，把兩件事黏成一句',
+      why:'中文可以把兩個動作直接串起來（「他一邊工作一邊唱歌」），法文不行——⛔ Il travaille chante 是壞句。要讓第二個動作降級成「附帶說明」，就得換成一個不標人稱的形式，那就是 gérondif。它只回答兩種問題：「同時在做什麼」和「怎麼做到的」。零件一樣是借的：詞幹取 nous 現在式去掉 -ons（跟 imparfait 取詞幹的方式一模一樣），字尾固定 -ant，前面加 en。⭐ 所以第35課兩個文法點是同一個結構——都在借別的時態的零件，不是新系統：conditionnel ＝未來式詞幹＋未完成過去字尾，gérondif ＝ nous 現在式詞幹＋-ant。',
+      points:[
+        '形成：en ＋（nous 現在式去掉 -ons）＋ -ant：nous regardons → en regardant',
+        '用途①：兩個動作同時發生 — Il travaille en chantant.',
+        '用途②：做某事的方式，回答「comment ?」 — Elle est venue en courant.',
+        '不規則只有三個：être → en étant、avoir → en ayant、savoir → en sachant',
+        '代名詞夾在 en 和動詞中間：Je fais du jardinage en lui parlant.',
+        '⚠️ 取詞幹要先過 nous：boire → nous buvons → en buvant（⛔ 不是 boirant）',
+        '⚠️⚠️ 主詞必須跟主句同一個人（課本沒提，但這是 gérondif 的硬規則）',
+        '⚠️ 🎙 老師的但書：étant／ayant／sachant 實際上很少用，認得就好，⛔ 別硬塞進作文',
+        '⚠️ 同音陷阱：faisant（做）vs faisan（雉雞，沒有 t）',
+      ],
+      examples:[
+        { fr:'Elles cuisinent en écoutant de la musique.', zh:'她們一邊聽音樂一邊做菜。（同時）' },
+        { fr:'Elles tricotent en regardant la télévision.', zh:'她們一邊看電視一邊織毛線。（同時）' },
+        { fr:'On mange mieux en cuisinant soi-même.', zh:'自己下廚吃得比較好。（方式）' },
+        { fr:'Il a vendu son vélo en mettant une annonce sur Leboncoin.', zh:'他靠貼廣告把腳踏車賣掉了。（方式）' },
+        { fr:'Je regarde des blogs créatifs en buvant un café.', zh:'我一邊喝咖啡一邊看手作部落格。（boire → nous buvons → buvant）' },
+        { fr:'Je fais du jardinage en lui parlant.', zh:'我一邊跟他講話一邊做園藝。（代名詞夾在中間）' },
+      ]}},
   { id:'pron-avances', name:'Pronoms avancés (y·en·doubles)', icon:'🔗', zone:'B2', cat:'pronoms', lessons:[], topics:[], unlocked:false },
   { id:'connecteurs',  name:'Connecteurs avancés',      icon:'🧵', zone:'B2', cat:'discours',    lessons:[], topics:[], unlocked:false },
 ];

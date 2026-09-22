@@ -1027,7 +1027,7 @@ const TABLES = [
       ["Si vous avez un problème, ......-moi.（打給我，命令式 vous）",       {a:'appelez',   h:true }],
       ["...... fait froid, on met le chauffage.（如果天氣冷）",             {a:"S'il|s'il", h:true }],
     ]
-  },,
+  },
   { id:'comparaison-egalite', title:'aussi / le même / autant', zh:'相同與等量：詞類決定用哪個字（第26課主文法）', type:'gram', lesson:26,
     note:'⚠️ 形容詞副詞用 aussi；動詞名詞用 autant；名詞講「相似」換成 le／la／les même(s) ＋ que。名詞講數量別忘了 de',
     headers:['句子','填入'],
@@ -1475,6 +1475,53 @@ const TABLES = [
       ['Je les ai aimés.（否定句）', {a:'Je ne les ai pas aimés.|Je ne les ai pas aimés', h:true}],
       ['Les premières scènes, je les ai … (trouver) nulles.', {a:'trouvées', h:true}],
     ] },
+
+  // ── 第35課（Unité 9 Consommer responsable）────────────────
+  { id:'conditionnel-drill', title:'Le conditionnel présent', zh:'條件式現在：原形 ＋ imparfait 的字尾（第35課主文法①）', type:'gram', lesson:35,
+    note:'詞幹跟未來式一樣（原形，r 一定在），字尾跟 imparfait 一樣。⚠️ 跟 futur 差一個 i（aimerions／aimerons），跟 imparfait 差一個 r（aimerait／aimait）',
+    headers:['句子','填入條件式'],
+    rows:[
+      ["Nous ...... (pouvoir) participer à ce défi.",              {a:'pourrions',      h:false}],
+      ["Vous ...... (devoir) négocier le prix.",                   {a:'devriez',        h:true }],
+      ["Nous ...... (aimer) essayer.",                             {a:'aimerions',      h:true }],
+      ["Elles ...... (souhaiter) emprunter des livres.",           {a:'souhaiteraient', h:true }],
+      ["Ça te ...... (dire) de faire des achats avec moi ?",       {a:'dirait',         h:true }],
+      ["Je ...... (vouloir) une baguette, s'il vous plaît !",      {a:'voudrais',       h:true }],
+      ["On ...... (pouvoir) louer des kayaks !",                   {a:'pourrait',       h:true }],
+      ["Tu ...... (devoir) regarder ce forum.",                    {a:'devrais',        h:true }],
+      ["Vous ...... (avoir) des idées, s'il vous plaît ?",         {a:'auriez',         h:true }],
+    ]
+  },
+
+  { id:'gerondif-drill', title:'Le gérondif', zh:'副動詞：en ＋（nous 現在式去 -ons）＋ -ant（第35課主文法②）', type:'gram', lesson:35,
+    note:'兩種用途：同時／方式（回答 comment ?）。⚠️ 詞幹要先過 nous：boire → nous buvons → en buvant。代名詞夾在 en 和動詞中間',
+    headers:['句子','填入 gérondif'],
+    rows:[
+      ["Elles cuisinent ...... (écouter) de la musique.",          {a:'en écoutant',    h:false}],
+      ["Elles tricotent ...... (regarder) la télévision.",         {a:'en regardant',   h:true }],
+      ["Il a vendu son vélo ...... (mettre) une annonce.",         {a:'en mettant',     h:true }],
+      ["On mange mieux ...... (cuisiner) soi-même.",               {a:'en cuisinant',   h:true }],
+      ["Je regarde des blogs créatifs ...... (boire) un café.",    {a:'en buvant',      h:true }],
+      ["Nous avons trouvé du tissu ...... (aller) à la mercerie.", {a:'en allant',      h:true }],
+      ["Il travaille ...... (chanter).",                           {a:'en chantant',    h:true }],
+      ["Je fais du jardinage ...... (lui parler).",                {a:'en lui parlant', h:true }],
+    ]
+  },
+
+  { id:'consommation-drill', title:'La consommation', zh:'消費動詞：課本 p.129 練習1（第35課）', type:'vocab', lesson:35,
+    note:'économiser 存錢／négocier 議價／louer 租／jeter 丟／donner 送／emprunter 借入／payer 付／partager 共享',
+    headers:['句子','填入動詞'],
+    rows:[
+      ["Nous dépensons trop d'argent. Nous devons ...... pour partir en voyage.", {a:'économiser', h:false}],
+      ["Le prix n'est pas fixe, tu peux le ...... .",                              {a:'négocier',   h:true }],
+      ["On pourrait ...... une voiture ce week-end !",                             {a:'louer',      h:true }],
+      ["Tu ne vas pas ...... ces chaussures !",                                    {a:'jeter',      h:true }],
+      ["Tu pourrais les ...... à quelqu'un.",                                      {a:'donner',     h:true }],
+      ["Excusez-moi, est-ce que je pourrais ...... votre stylo ?",                 {a:'emprunter',  h:true }],
+      ["Comment voulez-vous ...... ? Par carte bancaire ?",                        {a:'payer',      h:true }],
+      ["Vous devriez ...... vos livres avec votre famille.",                       {a:'partager',   h:true }],
+    ]
+  },
 ];
 
 
