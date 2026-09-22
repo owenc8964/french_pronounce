@@ -4742,6 +4742,35 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
     ③ `.gitignore` 加 `audio/voice/`。
     ⏸ **還沒做**：`quest.html` 播放端（`say()` 先查 index、找到就用共用 `Audio` 元素播，找不到退回 `TtsReader.speak`）——要在能開瀏覽器測的 session 做；容量估算＝句庫＋聽力短文約 5 MB、加複習卡約 38–50 MB（估的，沒實算；`--dry-run` 會給精確數字）。
     ⏸ **等 Owen 在自己終端機跑**：`python3 tools/gen_voice_audio.py --list`（確認有沒有 Amélie／Thomas 的 Premium／Enhanced）、`--dry-run`、`--only 5` 試聽。腳本第一次跑可能有小 bug，貼錯誤回來即可。
+  - ❌ **09-22 實跑結果：路線 A（Mac `say`）被 Owen 否決，⛔ 沒錄全量、⛔ 沒上傳**。腳本與播放端都跑通了，卡在音質本身。
+    - ✅ **環境確認**：`say`／`python3`／`ffmpeg` 都能跑（這個 session 沒被排程 hook 擋）。Mac 上**有 `Amélie (Premium)` fr_CA**（還有 Amélie/Thomas 的 Enhanced）。
+    - ✅ **腳本第一次實跑抓到並修掉一個 bug**：`sentences.js` 的 `fr` 有**兩種寫法**——單引號（句中 `'` 寫成 `\'`）與**雙引號**（句中 `'` 直接寫），原 regex 只吃單引號，**漏掉 17 句**（L16、L17、L18、Extra E1）。`load_sentences()` 改成兩種都吃，304 條全到。
+    - ✅ **`--dry-run` 精確數字（取代先前估的）**：第一批（句庫 304＋聽力短文 8，去重）**311 條／20 分鐘／5.1 MB**；全部含 chunks **2467 條／93 分鐘／25.5 MB**。⭐ 比原估的 50 MB 少一半，**容量從來不是問題**。
+    - ❌ **Owen 試聽後的診斷（⭐ 關鍵，別再重試同一條路）**：
+      ① **32k 跟最高音質「沒有差別」** → ⛔ 壓縮不是問題，32k 參數是對的，⛔ 不要再花時間調位元率；
+      ② **法國腔（Thomas Enhanced, fr_FR）「語調也很奇怪」** → ⛔ 不是腔調問題；
+      ③ ⭐ **真正的問題是「語調平、沒有句子的起伏跟語氣」（prosody）**。
+      → **macOS 全系列聲音共用同一套語調引擎**（Premium／Enhanced／一般只差音色取樣）→ ⛔ **換 Mac 上任何聲音都沒用，這條路死了**。
+    - ⛔ **路線 B（Piper `fr_FR-siwis-medium`）建議直接刪掉**：medium 級開源模型的 prosody 只會比 Amélie Premium 更平，授權上游（lessac）還沒查完 → 幾乎確定白做。
+    - ✅ **查過「現成真人音檔」能不能頂替**：`assets/tcf/exam/audio/` 的 44 套是**整套 35 分鐘考題錄音、沒有逐題時間點**，內容也不是句庫的句子 → ⛔ 對不上，不能當句庫發音。專案內沒有課本 CD 音檔。
+    - ⏸ **剩下的實質路線只有雲端神經語音**，但 ⚠️ **不是每家都能解 prosody**：Google WaveNet（原 HANDOFF 路線 C 的預設）語調水準跟 Apple 差不多，⛔ 換過去很可能重蹈覆轍。真正有代差的是 **OpenAI `gpt-4o-mini-tts`／ElevenLabs**。成本：全站 57,583 字元，OpenAI TTS 約 **US$1 以內**；ElevenLabs 要 Creator 方案（100k chars／月，約 US$22）。⛔ 開帳號／綁付款／拿金鑰 Claude 不能代辦。
+      ⭐ **下一步建議（零成本、先驗證再投入）**：⛔ 不要先開帳號。先讓 Owen 用**免登入的線上試聽**（或他手上已付費的工具）聽一段 ElevenLabs／OpenAI 的**法文**，確認 prosody 真的跨過他的門檻，再決定要不要開帳號。連那個都嫌平 → 整條預錄路線應該放棄，改走真人音檔。
+      ⚠️ 相關 memory `feedback_tts_quality`（「別自己搭 TTS pipeline」）：那條的脈絡是**多人對話 podcast**；這裡是單句發音、pipeline 也已經寫好（只要換合成後端），性質不同，但要 Owen 拍板。
+    - ⭐ **還沒問出答案的鋒利問題**：這些音檔的**用途**是哪一種？(a)「確認這個字怎麼唸」的發音參考 → 語調不重要，現有 Mac 音檔其實就夠；(b) 聽力輸入／跟讀模仿語流 → 語調是核心，⛔ TTS 可能全都不合格，要真人。**用途不同，該走的路完全不同。**
+  - ⭐ **09-22 Owen 對「音檔用途」的回答：三個用途都要，但分不同場合** → ⛔ 不要找一個音源打天下，要**分流**。盤點：全站法文發音點只有 5 個頁面（`dashboard`／`t1_read`／`reading`／`french_notes`／`quest`）＋`quest.html` 裡 13 處 `say()`（⚠️ 小遊戲的 `M.say()` 是別的東西，不是法文朗讀）。三個用途的現況：
+    ① **聽力輸入（真實語流）**：✅ 本來就不該用 TTS，TCF 44 套真人考題音檔已在手上（壓縮試聽檔在 `~/Desktop/audio_compress_test/`，⏸ Owen 還沒聽）。跟預錄句庫是兩件事。
+    ② **發音參考（確認怎麼唸）**：門檻最低，OpenAI 不到 US$1 可錄完 2467 條，Mac `say` 其實也堪用。
+    ③ ⚠️ **跟讀模仿（練語調語流）**：⭐ **三個裡只有這個真的卡住**，而且卡在「某個 TTS 能不能過 Owen 的語調門檻」這個**還沒驗證的前提**上。
+    → ⛔ **在驗證那個前提之前不要做分流設計**（memory `feedback_verify_premise_first`）。⏸ **等 Owen 零成本試聽 ElevenLabs／OpenAI 的法文**（或用他已付費的 ChatGPT 朗讀判斷）：過關→再算分流細節與成本；不過關→預錄只剩真人錄音，2467 句不可能，應整條放棄、把力氣移到 TCF 真人音檔。
+  - ✅ **`quest.html` 播放端做完了，⭐ 而且是「來源中立」的——換任何來源產的音檔都能直接接上，不用重寫**（函式 292→301，純新增、比對過沒誤刪）：
+    `say()` 先用 `voiceKey(t)` 查 `VOICE.idx`（`voice/index.json`），查到就播私人空間音檔，**沒登入／沒錄過／下載失敗／播不出來一律安靜退回 `TtsReader`（⛔ 不報錯）**。新增 `voiceKey／voiceRate／voiceEl／voiceUnlock／voiceBoot／voiceUrl／voiceStop／voicePlay／sayTts`，`init()` 後多一行 `voiceBoot()`。
+    iOS 對策：**單一共用 `Audio` 元素**，`pointerdown`／`touchstart` 第一次觸發時播 0.01 秒靜音解鎖；查不到音檔時**同步**退回 TTS（⛔ 不經 Promise，不然 iOS 的 user gesture 會過期）。語速用 `playbackRate`，存本機 **`voice_rate`**（⚠️ 刻意不用 `clb7_` 開頭，那個前綴會被 `sync_supabase.js` 整包同步上雲）。⛔ 沒改 `tts_reader.js`，所以 `?v=` 不用動。
+    **驗證（http://localhost:7788 開 `tmp_quest_nosync` 產的頁，⛔ 不含 `sync_supabase.js`、localStorage 是記憶體版 → 完全沒碰雲端 ROOM，ROOM 全程沒動過）**：
+    ⭐ **JS `voiceKey()` vs Python `voice_key()` 對 2665 條（含 chunks）比對 → 0 條不一致**（這是整套的命脈，改任一邊都要重跑這個比對）；
+    真的用滑鼠點按鈕 → **一次點擊同時完成解鎖＋播完整首音檔**（0.459 秒播到底），完全沒動用 TTS；
+    彎撇號 `’`／`🔊`／`(m)`／`A / B` 正規化後查得到；同句第二次命中 Blob 快取不重抓；播到一半改唸沒錄過的句子 → 音檔先停再走 TTS；沒登入 → 完全不打雲端；下載失敗／播放失敗 → 退回 TTS 不報錯；主控台零錯誤。
+    ⏸ **沒驗到**：真機 iOS Safari 的解鎖行為（只在桌面 Chromium 驗過）、真的接 Supabase 私人空間（測試用本機檔代替 `vaultGet`，⛔ 沒碰 Owen 的帳號）。
+  - 📁 `audio/voice/`（已在 .gitignore）現有 **5 個試聽檔＋ `index.json`（只有 5 條）**與 `audio/voice/ab/` 的 5 個 A/B 對照檔。要換音源時 `gen_voice_audio.py` 會自己重錄（`.manifest.json` 記設定雜湊，聲音一換就全部重來）。
   - ⚠️ **`a80aa62`（`.gitignore` 防呆＋授權筆記）還沒 push**：在那之前 `audio/t1_*.m4a` 等 `say` 音檔仍有被 `git add .` 帶上公開站的風險
   ⚠️ 還沒處理：語速（`ttsr_rate` 全站共用、預設 0.75、筆記頁按速度鈕會連動遊戲；提案 quest 自有語速預設 0.85＋夥伴頁選項，⏸ Owen 說等試完高音質再說）；寵物 ♥ 記錄喜歡句子（提案 `S.pet.fav`，Owen 未回）
 - 下一步（互動 session）：寫作關主（R6，「生成 prompt 貼給 Claude」，資料 `writing_tasks.js`）；P6 口說關主套用 R20 約束

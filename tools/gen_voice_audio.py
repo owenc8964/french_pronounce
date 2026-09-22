@@ -72,9 +72,12 @@ def read(name):
 
 # ── 資料來源 ───────────────────────────────────────────────────
 def load_sentences():
+    # ⚠️ fr 有兩種寫法：單引號（句中 ' 用 \\' 跳脫）與雙引號（句中 ' 直接寫）
     s = read('sentences.js')
-    return [(m.group(1), unesc(m.group(2)), 'sentences')
-            for m in re.finditer(r"\{\s*id:\s*'([^']+)'[^{}]*?\bfr:\s*'((?:[^'\\]|\\.)*)'", s)]
+    pat = (r"\{\s*id:\s*'([^']+)'[^{}]*?\bfr:\s*"
+           r"(?:'((?:[^'\\]|\\.)*)'|\"((?:[^\"\\]|\\.)*)\")")
+    return [(m.group(1), unesc(m.group(2) if m.group(2) is not None else m.group(3)), 'sentences')
+            for m in re.finditer(pat, s)]
 
 
 def load_chunks():

@@ -1688,7 +1688,62 @@ function dexHtml(){
   for(var i=cells.length;i<8;i++) cells.push('<div class="cell empty">?</div>');
   return '<div class="sec"><h2>守護者圖鑑</h2><div class="dex">'+cells.join('')+'</div></div>';
 }
-function say(t){ if(window.TtsReader&&TtsReader.supported) TtsReader.speak(String(t).replace(/🔊/g,'').trim()); }
+/* ════════════ 預錄法文音檔（2026-09-22）════════════════════════════
+   為什麼有這段：iOS 只給網頁 `Amélie super-compact`（最低音質；Owen 09-21 回報「跟以前一樣不自然」，
+   Apple 論壇證實網頁拿不到另外下載的高音質聲音）→ 改用 Mac 的 Amélie (Premium) 預先錄好
+   （tools/gen_voice_audio.py），放 Owen 自己的 Supabase 私人空間 voice/，登入才聽得到。
+   ⛔ 授權：macOS 系統聲音只准個人、非商業 → 音檔⛔永不進公開 repo（audio/voice/ 已在 .gitignore）。
+   ⛔ 沒登入／索引還沒載／這句沒錄過／播不出來 → 安靜退回 TtsReader（⛔ 不報錯、不擋流程）。
+   ⚠️ voiceKey() 必須跟 tools/gen_voice_audio.py 的 voice_key() 逐字相同，改一邊就要改另一邊。
+   ⚠️ iOS Safari 會擋掉 await 之後的 play() → 用**單一共用 <audio>**，第一次點畫面時先播靜音解鎖。
+   語速：音檔用正常語速錄，這裡用 playbackRate 放慢（存本機 voice_rate，⛔ 不用 clb7_ 開頭，
+   那個前綴會被 sync_supabase.js 整包同步上雲）。 */
+var VOICE={ idx:null, tried:false, url:{}, el:null, unlocked:false,
+            blank:'data:audio/wav;base64,UklGRsQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' };
+function voiceKey(t){ return String(t)
+  .replace(/[\u{1F300}-\u{1FAFF}☀-➿️]/gu,'').replace(/<[^>]*>/g,'')
+  .replace(/[‘’]/g,"'").replace(/ \/ /g,', ')
+  .replace(/\s*\([mf]\.?p?l?\.?\)/gi,'').replace(/[«»"“”]/g,'')
+  .replace(/\s+/g,' ').trim().normalize('NFC'); }
+function voiceRate(){ var r=NaN; try{ r=parseFloat(localStorage.getItem('voice_rate')); }catch(e){}
+  return (r>=0.5&&r<=1.5)?r:0.9; }
+function voiceEl(){ if(!VOICE.el){ VOICE.el=new Audio(); VOICE.el.preload='auto'; } return VOICE.el; }
+function voiceUnlock(){                       /* 第一次使用者互動：播 0.01 秒靜音，把共用元素「解鎖」*/
+  if(VOICE.unlocked) return; VOICE.unlocked=true;
+  try{ var a=voiceEl(); a.src=VOICE.blank; var p=a.play(); if(p&&p.catch) p.catch(function(){}); }catch(e){}
+}
+document.addEventListener('pointerdown', voiceUnlock, true);
+document.addEventListener('touchstart', voiceUnlock, true);
+function voiceBoot(){                         /* 已登入才載索引；沒登入就全程走 TTS */
+  if(VOICE.idx||VOICE.tried) return;
+  if(!vaultSession()) return;                 /* ⛔ 還沒登入先不標記 tried，登入後第一次朗讀就會補載 */
+  VOICE.tried=true;
+  vaultGet('voice/index.json').then(function(j){ if(j&&j.items) VOICE.idx=j.items; })
+    .catch(function(){ VOICE.tried=false; });  /* 失敗（沒網路）下次再試，⛔ 不報錯 */
+}
+function voiceUrl(k){                         /* Blob 快取，仿 EXAM_IMG */
+  if(VOICE.url[k]) return Promise.resolve(VOICE.url[k]);
+  return vaultGet('voice/'+k+'.m4a', true).then(function(b){ return (VOICE.url[k]=URL.createObjectURL(b)); });
+}
+function voiceStop(){ if(VOICE.el){ try{ VOICE.el.pause(); }catch(e){} } }
+function voicePlay(k){                        /* 回傳 Promise<有沒有播成功>，⛔ 不 throw */
+  return voiceUrl(k).then(function(u){
+    if(window.TtsReader&&TtsReader.supported) TtsReader.stopAll();   /* 音檔與 TTS 不重疊 */
+    var a=voiceEl();
+    try{ a.pause(); }catch(e){}
+    a.src=u; a.playbackRate=voiceRate();
+    var p=a.play();
+    return (p&&p.then) ? p.then(function(){ return true; }, function(){ return false; }) : true;
+  }, function(){ return false; });
+}
+function sayTts(s){ voiceStop(); if(window.TtsReader&&TtsReader.supported) TtsReader.speak(s); }
+function say(t){
+  var s=String(t).replace(/🔊/g,'').trim(); if(!s) return;
+  voiceBoot();
+  var k=VOICE.idx&&VOICE.idx[voiceKey(s)];
+  if(!k) return sayTts(s);                    /* ⚠️ 同步退回：不經 Promise，iOS 的 user gesture 才不會過期 */
+  voicePlay(k).then(function(done){ if(!done) sayTts(s); });
+}
 /* B5 夥伴原型（2026-09-17，依 research/2026-09-15_養成機制.md 設計約束）
    ⭐ 只會講 S.cards 裡已收藏的句子——牠的「成長」＝ Owen 教過牠的話，不另造數值
    ⛔ 不會死、不推播；生疏狀態由 lastInteractAt 即時算，互動（摸摸牠／聽牠說話）就立刻恢復——
@@ -3457,6 +3512,7 @@ function retreat(to){
   sfx('confirmation_001'); renderHud(); if(to==='tower') renderTower(); else renderMap(); toast('整裝完畢，再來一次');
 }
 init();
+voiceBoot();          /* 已登入就先把音檔索引載起來，第一句就能用高音質 */
 </script>
 <script src="sync_supabase.js"></script>
 </body>
