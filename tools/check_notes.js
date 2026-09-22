@@ -31,11 +31,24 @@ const fail = m => problems.push(m);
 const warn = m => warns.push(m);
 
 // 切出每一課
+// ⚠️ 2026-09-22：最後一課原本一路切到檔尾，把頁尾的 <script> 也算成那一課的內容
+//    → 那裡的註解有「平行閱讀」四個字，就會誤報「最後一課的平行閱讀沒有用 phrase-list」。
+//    每加一課這個誤報就轉移到新的最後一課。改成切到該課自己配對的 </details>。
+const cutAtOwnEnd = seg => {
+  let depth = 1;                                // ⚠️ seg 從 id="lesson-N" 起算＝已經在 <details 裡面，起點是 1 不是 0
+  const re = /<details\b|<\/details>/g;
+  let m;
+  while ((m = re.exec(seg))) {
+    depth += m[0] === '</details>' ? -1 : 1;
+    if (depth === 0) return seg.slice(0, m.index + m[0].length);
+  }
+  return seg;                                   // 沒配對到就維持原樣
+};
 const ids = [...body.matchAll(/id="(lesson-\d+)"/g)];
 const lessons = ids.map((m, i) => ({
   id: m[1],
   num: +m[1].replace('lesson-', ''),
-  seg: body.slice(m.index, i + 1 < ids.length ? ids[i + 1].index : body.length),
+  seg: cutAtOwnEnd(body.slice(m.index, i + 1 < ids.length ? ids[i + 1].index : body.length)),
 }));
 
 const CHECKS = [

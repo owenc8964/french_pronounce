@@ -16436,5 +16436,859 @@ const CHUNKS = [
   "fr": "nul, nulle",
   "zh": "很爛的、零分的",
   "note": "🎙 老師：un match nul＝平手（沒有贏家）"
+ },
+ {
+  "id": "L35_Je_voudrais_emprunter_pl",
+  "lesson": 35,
+  "fr": "Je voudrais emprunter plus de livres à la bibliothèque.",
+  "zh": "我想去圖書館借更多書。",
+  "note": "課本原句。⭐ 本課主文法 conditionnel（je voudrais＝委婉的「我想要」）"
+ },
+ {
+  "id": "L35_J_aimerais_arrêter_d_ach",
+  "lesson": 35,
+  "fr": "J'aimerais arrêter d'acheter du matériel de sport.",
+  "zh": "我想（希望能）不要再買運動器材了。",
+  "note": "課本原句。⭐ arrêter de ＋ 原形"
+ },
+ {
+  "id": "L35_J_espère_que_je_vais_app",
+  "lesson": 35,
+  "fr": "J'espère que je vais apprendre à résister !",
+  "zh": "希望我能學會忍住！",
+  "note": "課本原句。⭐ apprendre à ＋ 原形"
+ },
+ {
+  "id": "L35_J_ai_envie_d_essayer_ce",
+  "lesson": 35,
+  "fr": "J'ai envie d'essayer ce défi.",
+  "zh": "我想試試這個挑戰。",
+  "note": "留言（Renato）。⭐ avoir envie de ＋ 原形＝想要"
+ },
+ {
+  "id": "L35_Tu_pourrais_me_donner_pl",
+  "lesson": 35,
+  "fr": "Tu pourrais me donner plus d'informations s'il te plaît ?",
+  "zh": "你可以給我多一點資訊嗎？",
+  "note": "留言（Renato）。⭐⭐ 課本指定：這句是 conditionnel 的「禮貌請求」"
+ },
+ {
+  "id": "L35_Tu_as_pensé_à_la_locatio",
+  "lesson": 35,
+  "fr": "Tu as pensé à la location ?",
+  "zh": "你想過用租的嗎？",
+  "note": "留言（Jo）。⭐ penser à qch"
+ },
+ {
+  "id": "L35_C_est_un_bon_moyen_d_éco",
+  "lesson": 35,
+  "fr": "C'est un bon moyen d'économiser.",
+  "zh": "這是省錢的好方法。",
+  "note": "留言（Jo）。⭐ un bon moyen de ＋ 原形"
+ },
+ {
+  "id": "L35_Ça_te_dirait_d_en_discut",
+  "lesson": 35,
+  "fr": "Ça te dirait d'en discuter ?",
+  "zh": "你想聊聊這件事嗎？",
+  "note": "留言（Sam）。⭐⭐ 課本指定：這句是 conditionnel 的「提議」。en＝de ça"
+ },
+ {
+  "id": "L35_Est_ce_que_vous_auriez_d",
+  "lesson": 35,
+  "fr": "Est-ce que vous auriez des conseils à me donner ?",
+  "zh": "您們有沒有什麼建議可以給我？",
+  "note": "課本原句。⭐⭐ 🎙 老師：正式一點會寫成 Auriez-vous des conseils à me donner ?（倒裝，不用 est-ce que），她覺得比較好聽；est-ce que 是口語，也可以用"
+ },
+ {
+  "id": "L35_C_est_mieux_de_porter_le",
+  "lesson": 35,
+  "fr": "C'est mieux de porter les vêtements pour les photographier.",
+  "zh": "把衣服穿在身上拍比較好。",
+  "note": "課本原句。⭐ 建議句型②"
+ },
+ {
+  "id": "L35_Tu_devrais_les_refaire",
+  "lesson": 35,
+  "fr": "Tu devrais les refaire !",
+  "zh": "你應該重拍！",
+  "note": "課本原句。⭐⭐ 課本指定：這句是 conditionnel 的「建議」"
+ },
+ {
+  "id": "L35_Je_te_conseille_de_les_p",
+  "lesson": 35,
+  "fr": "Je te conseille de les prendre vers midi.",
+  "zh": "我建議你中午前後拍。",
+  "note": "課本原句。⭐ 建議句型④"
+ },
+ {
+  "id": "L35_Tu_pourrais_lire_ce_livr",
+  "lesson": 35,
+  "fr": "Tu pourrais lire ce livre.",
+  "zh": "你可以讀讀這本書。",
+  "note": "課本原句。⭐ 建議句型⑤（conditionnel）"
+ },
+ {
+  "id": "L35_Je_voudrais_un_café",
+  "lesson": 35,
+  "fr": "Je voudrais un café.",
+  "zh": "我想要一杯咖啡。",
+  "note": "課本 Remarques。⭐⭐ 老師：最該整塊背起來的一句"
+ },
+ {
+  "id": "L35_On_pourrait_aller_au_cin",
+  "lesson": 35,
+  "fr": "On pourrait aller au cinéma ce week-end !",
+  "zh": "我們這週末可以去看電影啊！",
+  "note": "課本 Remarques。⭐ pouvoir 的 conditionnel 也能提議，不只是「可以嗎」"
+ },
+ {
+  "id": "L35_Tu_devrais_dépenser_moin",
+  "lesson": 35,
+  "fr": "Tu devrais dépenser moins d'argent.",
+  "zh": "你應該少花點錢。",
+  "note": "課本 Production orale 例句（回以建議）。⭐ 這組「願望→建議」就是 p.128 練習5 的模型"
+ },
+ {
+  "id": "L35_Tu_devrais_te_coucher_pl",
+  "lesson": 35,
+  "fr": "Tu devrais te coucher plus tôt.",
+  "zh": "你應該早點睡。",
+  "note": "🎙 老師回他的建議。se coucher＝上床睡覺"
+ },
+ {
+  "id": "L35_On_pourrait_louer_une_vo",
+  "lesson": 35,
+  "fr": "On pourrait louer une voiture ce week-end !",
+  "zh": "我們這週末可以租一台車！",
+  "note": "Entraînement 1c ✅ 答對（⭐ 又是 on pourrait 的提議）"
+ },
+ {
+  "id": "L35_Vends_vélo_d_occasion_ac",
+  "lesson": 35,
+  "fr": "Vends vélo d'occasion, acheté neuf il y a six mois.",
+  "zh": "出售二手腳踏車，六個月前買的新車。",
+  "note": "Entraînement 2 ✅ 答對。⭐ 廣告體：動詞直接開頭、不寫主詞"
+ },
+ {
+  "id": "L35_Une_utilisatrice_va_plus",
+  "lesson": 35,
+  "fr": "Une utilisatrice va plusieurs fois sur un site Internet.",
+  "zh": "使用者會一再造訪同一個網站。",
+  "note": "Entraînement 4。🎙 老師：像「我是 Netflix 的 utilisateur」＝我常用它"
+ },
+ {
+  "id": "L35_Elles_cuisinent_en_écout",
+  "lesson": 35,
+  "fr": "Elles cuisinent en écoutant de la musique.",
+  "zh": "她們一邊聽音樂一邊做菜。",
+  "note": "課本原句。⭐⭐ 本課主文法 gérondif 的課本暖身句 a"
+ },
+ {
+  "id": "L35_Je_fais_du_jardinage_en",
+  "lesson": 35,
+  "fr": "Je fais du jardinage en lui parlant.",
+  "zh": "我一邊跟他講話一邊做園藝。",
+  "note": "課本 Remarques。⭐ 代名詞夾在 en 和動詞中間"
+ },
+ {
+  "id": "L35_Je_regarde_des_blogs_cré",
+  "lesson": 35,
+  "fr": "Je regarde des blogs créatifs en buvant un café.",
+  "zh": "我一邊喝咖啡一邊看手作部落格。",
+  "note": "Entraînement 3e ✅ 答對。⭐ boire → nous buvons → en buvant"
+ },
+ {
+  "id": "L35_Elle_achète_des_vêtement",
+  "lesson": 35,
+  "fr": "Elle achète des vêtements toutes les semaines.",
+  "zh": "她每個禮拜都買衣服。",
+  "note": "🎙 老師的例子（她朋友每週去 Zara，買了卻不穿又丟掉）"
+ },
+ {
+  "id": "L35_J_ai_beaucoup_de_travail",
+  "lesson": 35,
+  "fr": "J'ai beaucoup de travail toute la semaine.",
+  "zh": "我整個星期都很多工作。",
+  "note": "🎙 老師的對照例句"
+ },
+ {
+  "id": "L35_C_est_fait",
+  "lesson": 35,
+  "fr": "C'est fait.",
+  "zh": "做好了。",
+  "note": "🎙 老師：可以直接這樣回答「那件事做了嗎？」"
+ },
+ {
+  "id": "L35_C_est_à_faire",
+  "lesson": 35,
+  "fr": "C'est à faire.",
+  "zh": "還沒做，要做。",
+  "note": "🎙 老師：à ＋ 原形＝待辦"
+ },
+ {
+  "id": "L35_Toi_tu_sors_les_poubelle",
+  "lesson": 35,
+  "fr": "Toi, tu sors les poubelles.",
+  "zh": "你負責倒垃圾。",
+  "note": "⭐ sortir les poubelles＝倒垃圾（也可以說 jeter les poubelles）"
+ },
+ {
+  "id": "L35_Tu_fais_quoi_Je_bouquine",
+  "lesson": 35,
+  "fr": "Tu fais quoi ? — Je bouquine.",
+  "zh": "你在幹嘛？——我在看書。",
+  "note": "⭐ 口語。bouquiner 來自英文 book"
+ },
+ {
+  "id": "L35_Consommer_ce_n_est_pas_s",
+  "lesson": 35,
+  "fr": "Consommer, ce n'est pas seulement manger.",
+  "zh": "消費不只是「吃」。",
+  "note": "❓ 當堂以為 consommer＝eating。🎙 老師：吃的、用的、買的都算，連 consommer l'air 都說得通"
+ },
+ {
+  "id": "L35_un_mouchoir_en_tissu",
+  "lesson": 35,
+  "fr": "un mouchoir en tissu",
+  "zh": "布做的手帕",
+  "note": "⚠️ 假朋友：tissu＝布料 fabric，⛔ 不是英文的 tissue（面紙）"
+ },
+ {
+  "id": "L35_C_est_un_défi_écologique",
+  "lesson": 35,
+  "fr": "C'est un défi écologique, économique et stimulant !",
+  "zh": "這是個對環境好、對荷包好、又很有意思的挑戰！",
+  "note": "❓ 當堂不確定 stimulant。🎙 老師：這裡就是「有趣、會讓你動腦」（stimuler le cerveau），不是中文的「刺激」"
+ },
+ {
+  "id": "L35_Auriez_vous_des_conseils",
+  "lesson": 35,
+  "fr": "Auriez-vous des conseils à me donner ?",
+  "zh": "您有什麼建議可以給我嗎？",
+  "note": "🎉 亮點：Owen 主動問「沒有 est-ce que 也可以嗎？」——語感正確。🎙 老師確認可以，而且倒裝這樣更正式也更好聽，est-ce que 是口語"
+ },
+ {
+  "id": "L35_un_emprunt_immobilier",
+  "lesson": 35,
+  "fr": "un emprunt immobilier",
+  "zh": "房屋貸款",
+  "note": "🎉 亮點：聽懂老師的字源解釋並接上——immobilier ← immobile（不能移動的）→ 房地產"
+ },
+ {
+  "id": "L35_consommer",
+  "lesson": 35,
+  "fr": "consommer",
+  "zh": "消費、消耗",
+  "note": "⚠️ 🎙 Owen 當堂以為是「吃」。老師：consommer c'est pas que « eating »——吃的、用的、買的都算，連空氣都可以說 consommer l'air"
+ },
+ {
+  "id": "L35_un_souhait",
+  "lesson": 35,
+  "fr": "un souhait",
+  "zh": "願望",
+  "note": "動詞是 souhaiter。🎙 老師另一個高頻用法：Je te souhaite un joyeux anniversaire.（祝你生日快樂）"
+ },
+ {
+  "id": "L35_un_défi",
+  "lesson": 35,
+  "fr": "un défi",
+  "zh": "挑戰",
+  "note": "le défi « Rien de neuf »"
+ },
+ {
+  "id": "L35_neuf_neuve",
+  "lesson": 35,
+  "fr": "neuf, neuve",
+  "zh": "全新的",
+  "note": "⭐ 回鍋：Quoi de neuf ?＝有什麼新鮮事（第1課寒暄）→ Rien de neuf＝沒什麼新的。⚠️ 跟數字 neuf（9）同形"
+ },
+ {
+  "id": "L35_une_occasion",
+  "lesson": 35,
+  "fr": "une occasion",
+  "zh": "① 二手品 ② 機會",
+  "note": "⚠️ 一詞兩義。🎙 老師：une occasion 也可以是 an opportunity → 後面 p.127 的書名 Je saute sur l'occasion（我抓住機會）"
+ },
+ {
+  "id": "L35_emprunter",
+  "lesson": 35,
+  "fr": "emprunter",
+  "zh": "借（借進來）",
+  "note": "emprunter un livre à la bibliothèque。🎙 老師延伸：跟銀行借錢買房＝faire un emprunt immobilier（immobilier＝不動產，因為房子 immobile 不能移動）"
+ },
+ {
+  "id": "L35_relire",
+  "lesson": 35,
+  "fr": "relire",
+  "zh": "重讀、再讀一次",
+  "note": "re-＋lire。課本：je ne les relis pas（我不會再讀第二次）"
+ },
+ {
+  "id": "L35_une_étagère",
+  "lesson": 35,
+  "fr": "une étagère",
+  "zh": "層架、書架",
+  "note": "ils restent sur une étagère（書就一直擺在架上）"
+ },
+ {
+  "id": "L35_le_matériel_de_sport",
+  "lesson": 35,
+  "fr": "le matériel de sport",
+  "zh": "運動器材",
+  "note": "🎙 老師的例子：想打網球就買球拍，結果後來沒在打"
+ },
+ {
+  "id": "L35_dépenser",
+  "lesson": 35,
+  "fr": "dépenser",
+  "zh": "花（錢）",
+  "note": "🎙 spend。je dépense trop d'argent pour mes loisirs"
+ },
+ {
+  "id": "L35_les_loisirs_m",
+  "lesson": 35,
+  "fr": "les loisirs (m.)",
+  "zh": "休閒、興趣",
+  "note": "回鍋。後面 p.129 有 les loisirs créatifs（手作類休閒）"
+ },
+ {
+  "id": "L35_être_attiré_e_par",
+  "lesson": 35,
+  "fr": "être attiré(e) par",
+  "zh": "被…吸引",
+  "note": "je suis toujours attirée par les soldes"
+ },
+ {
+  "id": "L35_les_soldes_m",
+  "lesson": 35,
+  "fr": "les soldes (m.)",
+  "zh": "折扣季、特價品",
+  "note": "法國一年兩次的官方打折期"
+ },
+ {
+  "id": "L35_en_promotion",
+  "lesson": 35,
+  "fr": "en promotion",
+  "zh": "特價中",
+  "note": "🎙 老師：en promotion 的東西還是 neuf，只是比較便宜——跟 d'occasion 不一樣"
+ },
+ {
+  "id": "L35_résister",
+  "lesson": 35,
+  "fr": "résister",
+  "zh": "抵抗、忍住",
+  "note": "J'espère que je vais apprendre à résister !"
+ },
+ {
+  "id": "L35_réduire",
+  "lesson": 35,
+  "fr": "réduire",
+  "zh": "減少",
+  "note": "réduire au maximum ses achats"
+ },
+ {
+  "id": "L35_au_maximum",
+  "lesson": 35,
+  "fr": "au maximum",
+  "zh": "盡最大可能",
+  "note": "⚠️ 🎙 Owen 問「為什麼不是說完全不買？」老師：réduire au maximum ＝盡量減少，還是可以買一點，不是 zéro"
+ },
+ {
+  "id": "L35_concerner",
+  "lesson": 35,
+  "fr": "concerner",
+  "zh": "涉及、跟…有關",
+  "note": "Ça ne concerne pas l'alimentation.（不包含食品）"
+ },
+ {
+  "id": "L35_une_alternative_à",
+  "lesson": 35,
+  "fr": "une alternative (à)",
+  "zh": "替代方案",
+  "note": "des alternatives au neuf（新品以外的選擇）"
+ },
+ {
+  "id": "L35_un_don",
+  "lesson": 35,
+  "fr": "un don",
+  "zh": "捐贈",
+  "note": "🎙 來自 donner。faire un don＝捐款（常用於慈善 pour une association / une charité）"
+ },
+ {
+  "id": "L35_le_partage",
+  "lesson": 35,
+  "fr": "le partage",
+  "zh": "分享、共享",
+  "note": "動詞 partager。⚠️ 🎙 Owen 當堂問「分享也是丟掉的意思嗎？」老師：不是，partager 是兩個人一起用（例如一起買、你用完他用）"
+ },
+ {
+  "id": "L35_stimulant_stimulante",
+  "lesson": 35,
+  "fr": "stimulant, stimulante",
+  "zh": "有意思的、能激發人的",
+  "note": "🎙 老師：這裡不是「刺激」，就是「很有趣、會讓你動腦」——stimuler le cerveau（刺激大腦）"
+ },
+ {
+  "id": "L35_une_tente",
+  "lesson": 35,
+  "fr": "une tente",
+  "zh": "帳篷",
+  "note": "露營用。vélos, tentes, kayaks"
+ },
+ {
+  "id": "L35_gratuit_gratuite",
+  "lesson": 35,
+  "fr": "gratuit, gratuite",
+  "zh": "免費的",
+  "note": "un produit acheté = un produit gratuit（買一送一）"
+ },
+ {
+  "id": "L35_bouquiner",
+  "lesson": 35,
+  "fr": "bouquiner",
+  "zh": "看書（口語）",
+  "note": "🎙 老師：來自英文 book，改成法文的樣子。Tu fais quoi ? — Je bouquine.（留言者的帳號就叫 Pat_bouquine）"
+ },
+ {
+  "id": "L35_sans_succès",
+  "lesson": 35,
+  "fr": "sans succès",
+  "zh": "沒有成功、徒勞",
+  "note": "J'essaie de vendre... mais sans succès"
+ },
+ {
+  "id": "L35_préciser",
+  "lesson": 35,
+  "fr": "préciser",
+  "zh": "說清楚、註明",
+  "note": "Il faut préciser la marque."
+ },
+ {
+  "id": "L35_la_taille",
+  "lesson": 35,
+  "fr": "la taille",
+  "zh": "尺寸",
+  "note": "回鍋（原本是「身高」）。taille adulte＝成人尺寸"
+ },
+ {
+  "id": "L35_des_trucs_m",
+  "lesson": 35,
+  "fr": "des trucs (m.)",
+  "zh": "訣竅、小撇步（口語）",
+  "note": "il y a quelques trucs pour..."
+ },
+ {
+  "id": "L35_mettre_en_valeur",
+  "lesson": 35,
+  "fr": "mettre en valeur",
+  "zh": "突顯、讓它看起來更好",
+  "note": "🎙 老師：to make it stand out。也可以說 je me mets en valeur（把自己打扮得更好看）"
+ },
+ {
+  "id": "L35_photographier",
+  "lesson": 35,
+  "fr": "photographier",
+  "zh": "拍照",
+  "note": "c'est mieux de porter les vêtements pour les photographier"
+ },
+ {
+  "id": "L35_génial_géniale",
+  "lesson": 35,
+  "fr": "génial, géniale",
+  "zh": "很棒的",
+  "note": "mes photos ne sont pas géniales＝我的照片不怎麼樣（委婉的「很爛」）"
+ },
+ {
+  "id": "L35_refaire",
+  "lesson": 35,
+  "fr": "refaire",
+  "zh": "重做",
+  "note": "re-＋faire。Tu devrais les refaire !"
+ },
+ {
+  "id": "L35_la_lumière",
+  "lesson": 35,
+  "fr": "la lumière",
+  "zh": "光線",
+  "note": "pour avoir une belle lumière"
+ },
+ {
+  "id": "L35_vers_midi",
+  "lesson": 35,
+  "fr": "vers midi",
+  "zh": "中午前後",
+  "note": "vers＝大約（時間）"
+ },
+ {
+  "id": "L35_sauter_sur_l_occasion",
+  "lesson": 35,
+  "fr": "sauter sur l'occasion",
+  "zh": "抓住機會",
+  "note": "🎙 老師：sauter＝跳，「跳上這個機會」＝grab the opportunity。書名 Je saute sur l'occasion"
+ },
+ {
+  "id": "L35_négocier",
+  "lesson": 35,
+  "fr": "négocier",
+  "zh": "議價、談判",
+  "note": "詞彙頁也有。Le prix n'est pas fixe, tu peux le négocier."
+ },
+ {
+  "id": "L35_un_article",
+  "lesson": 35,
+  "fr": "un article",
+  "zh": "① 商品 ② 文章",
+  "note": "pour le même article（同一件商品）"
+ },
+ {
+  "id": "L35_un_acheteur_une_acheteus",
+  "lesson": 35,
+  "fr": "un acheteur, une acheteuse",
+  "zh": "買家",
+  "note": "les acheteurs paieront toujours le minimum"
+ },
+ {
+  "id": "L35_modifier",
+  "lesson": 35,
+  "fr": "modifier",
+  "zh": "修改",
+  "note": "J'ai modifié mon annonce."
+ },
+ {
+  "id": "L35_acheter",
+  "lesson": 35,
+  "fr": "acheter",
+  "zh": "買",
+  "note": "回鍋"
+ },
+ {
+  "id": "L35_l_argent_m",
+  "lesson": 35,
+  "fr": "l'argent (m.)",
+  "zh": "錢",
+  "note": "⚠️ 也是「銀」"
+ },
+ {
+  "id": "L35_donner",
+  "lesson": 35,
+  "fr": "donner",
+  "zh": "給、送出",
+  "note": "→ un don（捐贈）"
+ },
+ {
+  "id": "L35_économiser",
+  "lesson": 35,
+  "fr": "économiser",
+  "zh": "存錢、省錢",
+  "note": "Nous devons économiser pour partir en voyage."
+ },
+ {
+  "id": "L35_jeter",
+  "lesson": 35,
+  "fr": "jeter",
+  "zh": "丟掉",
+  "note": "🎙 老師：jeter＝throw，arrêter de jeter＝不要再亂丟。jeter／sortir les poubelles＝倒垃圾"
+ },
+ {
+  "id": "L35_louer",
+  "lesson": 35,
+  "fr": "louer",
+  "zh": "租（借或出租都用它）",
+  "note": "→ la location。⚠️ 假朋友，⛔ 不是「地點」"
+ },
+ {
+  "id": "L35_partager",
+  "lesson": 35,
+  "fr": "partager",
+  "zh": "分享、共用",
+  "note": "⚠️ 不是「丟掉」（Owen 當堂問過）"
+ },
+ {
+  "id": "L35_payer",
+  "lesson": 35,
+  "fr": "payer",
+  "zh": "付錢",
+  "note": "payer par carte bancaire／en espèces"
+ },
+ {
+  "id": "L35_vendre",
+  "lesson": 35,
+  "fr": "vendre",
+  "zh": "賣",
+  "note": "→ un vendeur"
+ },
+ {
+  "id": "L35_cher_chère",
+  "lesson": 35,
+  "fr": "cher, chère",
+  "zh": "貴的",
+  "note": "回鍋（也是「親愛的」）"
+ },
+ {
+  "id": "L35_la_couleur",
+  "lesson": 35,
+  "fr": "la couleur",
+  "zh": "顏色",
+  "note": "couleur noire"
+ },
+ {
+  "id": "L35_neuf_d_occasion",
+  "lesson": 35,
+  "fr": "neuf ≠ d'occasion",
+  "zh": "全新 ≠ 二手",
+  "note": "⭐ 本課核心對比"
+ },
+ {
+  "id": "L35_l_acheteur",
+  "lesson": 35,
+  "fr": "l'acheteur",
+  "zh": "買家（-eur → -euse）",
+  "note": "l'acheteuse"
+ },
+ {
+  "id": "L35_l_alimentation_f",
+  "lesson": 35,
+  "fr": "l'alimentation (f.)",
+  "zh": "食品",
+  "note": "⚠️ 「Rien de neuf」挑戰不包含它"
+ },
+ {
+  "id": "L35_l_électroménager_m",
+  "lesson": 35,
+  "fr": "l'électroménager (m.)",
+  "zh": "家電",
+  "note": "🎙 老師：家裡所有用電的東西（洗衣機、冰箱）——偏清潔與烹飪"
+ },
+ {
+  "id": "L35_le_meuble",
+  "lesson": 35,
+  "fr": "le meuble",
+  "zh": "家具",
+  "note": "椅子、桌子"
+ },
+ {
+  "id": "L35_le_multimédia",
+  "lesson": 35,
+  "fr": "le multimédia",
+  "zh": "3C、影音",
+  "note": "🎙 老師：電視、電腦這種偏娛樂的，跟 électroménager 分開"
+ },
+ {
+  "id": "L35_le_produit_de_beauté",
+  "lesson": 35,
+  "fr": "le produit de beauté",
+  "zh": "美妝品",
+  "note": "⚠️ 挑戰也不包含它"
+ },
+ {
+  "id": "L35_le_vêtement",
+  "lesson": 35,
+  "fr": "le vêtement",
+  "zh": "衣服",
+  "note": ""
+ },
+ {
+  "id": "L35_une_souris",
+  "lesson": 35,
+  "fr": "une souris",
+  "zh": "滑鼠",
+  "note": "本義是「老鼠」，跟英文一樣的比喻"
+ },
+ {
+  "id": "L35_un_clavier",
+  "lesson": 35,
+  "fr": "un clavier",
+  "zh": "鍵盤",
+  "note": ""
+ },
+ {
+  "id": "L35_un_écran",
+  "lesson": 35,
+  "fr": "un écran",
+  "zh": "螢幕",
+  "note": "回鍋"
+ },
+ {
+  "id": "L35_une_tour",
+  "lesson": 35,
+  "fr": "une tour",
+  "zh": "主機（直立式）",
+  "note": "🎙 老師：就像「塔」一樣"
+ },
+ {
+  "id": "L35_le_fait_maison",
+  "lesson": 35,
+  "fr": "le fait maison",
+  "zh": "自己動手做",
+  "note": "⭐ 🎙 老師＝英文 DIY。Owen 在課本上就寫了 DIY"
+ },
+ {
+  "id": "L35_une_tendance",
+  "lesson": 35,
+  "fr": "une tendance",
+  "zh": "趨勢、流行",
+  "note": "標題 c'est tendance＝這很流行"
+ },
+ {
+  "id": "L35_les_activités_créatives",
+  "lesson": 35,
+  "fr": "les activités créatives",
+  "zh": "手作／創作活動",
+  "note": "也說 les loisirs créatifs"
+ },
+ {
+  "id": "L35_le_jardinage",
+  "lesson": 35,
+  "fr": "le jardinage",
+  "zh": "園藝",
+  "note": "← jardin"
+ },
+ {
+  "id": "L35_le_bricolage",
+  "lesson": 35,
+  "fr": "le bricolage",
+  "zh": "修修補補、DIY 木工",
+  "note": "🎙 老師：家裡修東西、做東西那種；動詞 bricoler"
+ },
+ {
+  "id": "L35_la_décoration_d_intérieu",
+  "lesson": 35,
+  "fr": "la décoration d'intérieur",
+  "zh": "室內裝潢",
+  "note": ""
+ },
+ {
+  "id": "L35_la_mécanique",
+  "lesson": 35,
+  "fr": "la mécanique",
+  "zh": "機械（修車）",
+  "note": "faire de la mécanique"
+ },
+ {
+  "id": "L35_par_plaisir",
+  "lesson": 35,
+  "fr": "par plaisir",
+  "zh": "出於興趣、因為喜歡",
+  "note": "⚠️ 🎙 Owen 問「為什麼用 par？」老師：par ＋ 原因（par plaisir＝因為快樂而做），跟 par semaine（每週）的 par 不同用法"
+ },
+ {
+  "id": "L35_tricoter",
+  "lesson": 35,
+  "fr": "tricoter",
+  "zh": "織毛線",
+  "note": "名詞 le tricot。⚠️ 跟 la couture（縫紉）不同"
+ },
+ {
+  "id": "L35_se_détendre",
+  "lesson": 35,
+  "fr": "se détendre",
+  "zh": "放鬆",
+  "note": "elles se détendent"
+ },
+ {
+  "id": "L35_cassé_cassée",
+  "lesson": 35,
+  "fr": "cassé, cassée",
+  "zh": "壞掉的",
+  "note": "← casser"
+ },
+ {
+  "id": "L35_la_planète",
+  "lesson": 35,
+  "fr": "la planète",
+  "zh": "地球",
+  "note": "meilleure pour la planète"
+ },
+ {
+  "id": "L35_s_échanger",
+  "lesson": 35,
+  "fr": "s'échanger",
+  "zh": "互相交換",
+  "note": "s'échanger des idées"
+ },
+ {
+  "id": "L35_un_tutoriel",
+  "lesson": 35,
+  "fr": "un tutoriel",
+  "zh": "教學（影片／文章）",
+  "note": "🎙 老師：跟 tutor 同源＝帶著你學的人"
+ },
+ {
+  "id": "L35_une_mercerie",
+  "lesson": 35,
+  "fr": "une mercerie",
+  "zh": "手工藝材料店",
+  "note": "🎙 老師：店是 mercerie、人是 mercier——跟 boulangerie／boulanger 同一個規律。可以買材料自己修，也可以請老闆幫你改（衣服太大改小）"
+ },
+ {
+  "id": "L35_la_couture",
+  "lesson": 35,
+  "fr": "la couture",
+  "zh": "縫紉",
+  "note": "faire de la couture"
+ },
+ {
+  "id": "L35_un_atelier",
+  "lesson": 35,
+  "fr": "un atelier",
+  "zh": "工作坊、工作室",
+  "note": "🎙 老師：付錢去學做某樣東西的課；也指「做東西的工作間」"
+ },
+ {
+  "id": "L35_un_mouchoir",
+  "lesson": 35,
+  "fr": "un mouchoir",
+  "zh": "手帕",
+  "note": "🎙 ← moucher（擤鼻涕）"
+ },
+ {
+  "id": "L35_en_tissu",
+  "lesson": 35,
+  "fr": "en tissu",
+  "zh": "布做的",
+  "note": "⚠️⚠️ tissu＝布料 fabric，⛔ 不是英文的 tissue（面紙）。en ＋ 材質＝用…做的"
+ },
+ {
+  "id": "L35_une_écharpe_en_laine",
+  "lesson": 35,
+  "fr": "une écharpe en laine",
+  "zh": "羊毛圍巾",
+  "note": "laine＝羊毛"
+ },
+ {
+  "id": "L35_un_kit",
+  "lesson": 35,
+  "fr": "un kit",
+  "zh": "材料包",
+  "note": "vendre des kits pour fabriquer ses repas"
+ },
+ {
+  "id": "L35_les_produits_ménagers",
+  "lesson": 35,
+  "fr": "les produits ménagers",
+  "zh": "家用清潔用品",
+  "note": "← ménage（家務）"
+ },
+ {
+  "id": "L35_être",
+  "lesson": 35,
+  "fr": "être",
+  "zh": "⚠️ 不規則",
+  "note": "en étant"
+ },
+ {
+  "id": "L35_avoir",
+  "lesson": 35,
+  "fr": "avoir",
+  "zh": "⚠️ 不規則",
+  "note": "en ayant"
+ },
+ {
+  "id": "L35_savoir",
+  "lesson": 35,
+  "fr": "savoir",
+  "zh": "⚠️ 不規則",
+  "note": "en sachant"
  }
 ];
