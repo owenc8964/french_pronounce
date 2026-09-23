@@ -43,3 +43,5 @@ audio/sent/
 audio/voice/
 audio/t1_*.m4a
 audio/樣本_*.m4a
+# ⛔ TCF 聽力切段：買來的考題音檔，永不進公開 repo（⚠️ .gitignore 的 # 只在行首才是註解，⛔ 不要寫行尾註解）
+audio/listen_seg/

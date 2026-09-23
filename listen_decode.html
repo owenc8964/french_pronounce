@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>聽力解碼 · CLB7</title>
+<script>window.__loadErrs=[];window.addEventListener('error',e=>window.__loadErrs.push((e.message||'')+' @'+(e.filename||'')+':'+(e.lineno||'')));</script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #07080f; color: #ddd8cc; font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh; padding: 22px 16px 90px; max-width: 1100px; margin: 0 auto;
+  font-size: clamp(16px, 1.15vw + 13px, 21px); }
+a { color: #60a0d0; }
+.header { text-align: center; margin-bottom: 16px; }
+.header .back { font-size: 0.72em; color: #445060; text-decoration: none; }
+.header h1 { font-size: 1.25em; letter-spacing: 2px; color: #60c0a0; margin-top: 6px; }
+.header .sub { font-size: 0.78em; color: #5a6878; margin-top: 6px; line-height: 1.7; }
+.box { background: #0d1020; border: 1px solid #1a2438; border-radius: 12px;
+  padding: 16px; margin-bottom: 14px; }
+.box-t { font-size: 0.72em; color: #445060; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+button { font-family: inherit; cursor: pointer; }
+.btn { background: #141928; color: #9aa8b8; border: 1px solid #1a2438; border-radius: 10px;
+  padding: 11px 15px; font-size: 0.9em; }
+.btn:hover { border-color: #60a0d0; color: #cfe4f5; }
+.btn.go { background: #0f2018; border-color: #2a5a40; color: #60c0a0; font-size: 1em; padding: 13px 22px; }
+.btn.warn { color: #7a8a9a; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.play-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 6px; }
+.big-play { background: #0f2018; border: 1px solid #2a5a40; color: #60c0a0; border-radius: 12px;
+  padding: 16px 26px; font-size: 1.05em; }
+.spd { font-size: 0.8em; color: #5a6878; }
+.spd b { color: #60c0a0; }
+.script { line-height: 2.5; font-size: 1.02em; font-family: Georgia, serif; margin: 14px 0; }
+.script .plain { color: #b8c4d0; }
+.gap { display: inline-block; }
+.gap input { width: 5.2em; background: #0a0e18; border: none; border-bottom: 2px solid #3a4a5a;
+  color: #f0c060; font-size: 0.92em; font-family: inherit; text-align: center; padding: 2px 4px; }
+.gap input:focus { outline: none; border-bottom-color: #60c0a0; }
+.gap.ok input { color: #60c0a0; border-bottom-color: #2a5a40; }
+.gap.bad input { color: #e07070; border-bottom-color: #7a3030; }
+.gap .sol { font-size: 0.82em; color: #60c0a0; margin-left: 3px; }
+.gap-x { background: none; border: none; color: #3a4a5a; font-size: 0.7em; padding: 0 2px;
+  vertical-align: super; line-height: 1; }
+.gap-x:hover { color: #7a8a9a; }
+.gap.skip input { color: #5a6878; border-bottom-style: dashed; }
+.ask { font-size: 0.86em; color: #7a8a9a; background: #0a0e18; border-left: 2px solid #2a3a4a;
+  padding: 8px 12px; border-radius: 0 6px 6px 0; margin-top: 10px; }
+.zh { font-size: 0.86em; color: #7a8a9a; line-height: 1.8; margin-top: 10px;
+  background: #0a0e18; border-radius: 8px; padding: 10px 12px; }
+.res { font-size: 0.9em; margin-top: 12px; line-height: 1.8; }
+.res b { color: #60c0a0; }
+.miss { font-size: 0.84em; color: #7a8a9a; margin-top: 8px; line-height: 1.8; }
+.login { display: grid; gap: 8px; max-width: 320px; }
+.login input { background: #0a0e18; border: 1px solid #1a2438; border-radius: 8px;
+  color: #ddd8cc; padding: 10px; font-size: 0.9em; font-family: inherit; }
+.err { color: #e07070; font-size: 0.85em; margin-top: 8px; }
+.hint { font-size: 0.8em; color: #445060; line-height: 1.7; margin-top: 10px; }
+.prog { font-size: 0.8em; color: #5a6878; }
+@media (min-width: 760px) { .script { font-size: 1.06em; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="dashboard.html" class="back">← 回指揮中心</a>
+  <h1>👂 聽力解碼</h1>
+  <div class="sub">
+    練的不是「聽懂意思」，是<b style="color:#60c0a0">把被連音吃掉的字補回來</b><br>
+    <span style="font-size:.92em">法文的 liaison 會直接抹掉詞界——<i>les amis</i> 聽起來是 lezami、<i>je ne sais pas</i> 是 chais pas</span>
+  </div>
+</div>
+
+<div id="app"></div>
+
+<div class="box">
+  <div class="box-t">怎麼用</div>
+  <div class="hint">
+    ⭐ 先聽一次，能填多少填多少；填不出來就<b>放慢到 0.75x 再聽</b>。<br>
+    ⭐ <b>慢速填得出來、原速填不出來 → 音你認得，問題在處理速度</b>；慢速也填不出來 → 那個音還沒建立。兩種的練法不一樣，所以這頁會分開記。<br>
+    ⚠️ 這個練習很硬，研究自己的建議是<b>每週 2–3 次、每次 10–15 分鐘就好</b>——做多了跟刷題一樣耗意志力。⛔ 它只修「聽得到」，不會讓你變得有話講。<br>
+    ⛔ 任何一格都可以按「這格算了」，整題也可以跳過——跳過不算錯、不進複習。
+  </div>
+</div>
+
+<script src="tts_reader.js?v=20260921b"></script>
+<script src="session_timer.js"></script>
+<script src="sync_supabase.js"></script>
+<script>
+/* ════════════ 聽力解碼（2026-09-23）════════════════════════════════
+   依據 METHOD_MAP.md 的 G 家族（感知解碼／bottom-up decoding）：
+   前面六個家族都假設「耳朵收得到，問題在別處」；解碼派說訊號進來那一層就壞了。
+   Field 的研究：弱聽者用上下文「代替」沒解碼到的訊息，強聽者才是用它「擴充」
+   ——⚠️ 猜得越順，錯的表徵越穩固。
+
+   ⛔ 音檔版權：TCF 考題是 Owen 買的教材，永不進公開 repo，只放他自己的
+      Supabase 私人空間（登入才聽得到），跟 reading 的圖片同一套做法。
+   ⚠️ 44 套裡只有 4 套能靠靜音自動切準（r≥0.87、段數剛好 39）；
+      其餘 40 套段數對不上，⛔ 不要假設全部都能切（09-23 全掃驗過）。 */
+
+var VAULT = { url:'https://hgkqyrglftljxaieberm.supabase.co',
+              key:'sb_publishable_lPnh46F2Z2wj6qVs5nn56g_RwRpUO8_',
+              bucket:'TCF', ls:'tcfvault_session' };   /* ⚠️ 刻意不用 clb7_ 開頭：那會被 sync 整包傳上雲 */
+var LS_STAT = 'clb7_listen_decode';                    /* 這個要同步（物件＋last，配合 sync 的合併慣例）*/
+
+function vaultSession(){ try{ return JSON.parse(localStorage.getItem(VAULT.ls)); }catch(e){ return null; } }
+function vaultStore(s){ try{ if(s) localStorage.setItem(VAULT.ls, JSON.stringify(s)); else localStorage.removeItem(VAULT.ls); }catch(e){} }
+function vaultAuth(grant, body){
+  return fetch(VAULT.url+'/auth/v1/token?grant_type='+grant, { method:'POST',
+      headers:{ apikey:VAULT.key, 'Content-Type':'application/json' }, body:JSON.stringify(body) })
+    .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){
+      if(!r.ok){ var e=new Error(j.error_description||j.msg||j.message||('HTTP '+r.status)); e.status=r.status; throw e; }
+      var s={ access_token:j.access_token, refresh_token:j.refresh_token,
+              expires_at:Date.now()+(j.expires_in||3600)*1000, email:(j.user&&j.user.email)||'' };
+      vaultStore(s); return s; }); });
+}
+function vaultToken(){
+  var s=vaultSession();
+  if(!s){ var e=new Error('尚未登入'); e.status=401; return Promise.reject(e); }
+  if(Date.now() < (s.expires_at||0)-60000) return Promise.resolve(s.access_token);
+  return vaultAuth('refresh_token',{ refresh_token:s.refresh_token }).then(function(n){ return n.access_token; })
+    .catch(function(e){ if(e.status===400||e.status===401) vaultStore(null); throw e; });
+}
+function vaultGet(path, asBlob){
+  return vaultToken().then(function(tok){
+    return fetch(VAULT.url+'/storage/v1/object/authenticated/'+VAULT.bucket+'/'+path,
+                 { headers:{ apikey:VAULT.key, Authorization:'Bearer '+tok } });
+  }).then(function(r){
+    if(!r.ok){ var e=new Error('HTTP '+r.status); e.status=r.status; throw e; }
+    return asBlob ? r.blob() : r.json();
+  });
+}
+
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+  .replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
+<script src="listen_decode.js?v=20260923a"></script>
+</body>
+</html>
