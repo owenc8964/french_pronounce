@@ -4796,6 +4796,10 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
   - **我推錯的兩處已修**：imparfait／futur simple 原本標「🔥要練熟」→ 各只佔 1.9%／1.8% 且只需要 `était/avait/voulais`、`aura/sera/pourra` → 降成「🟡 只要幾個形」；conditionnel 原本標「👀看得懂就好」→ 語料 2.6% 確實要產出，但內容跟第35課老師說的完全一致 → 改成「🟠 特定任務要」。
   - tier 從兩層擴成五層（core／task／half／chunks／recognize）；chip 與卡片**直接顯示佔比與「實際只需要這幾個形」**，並標出資料來源與**誤判率 5–7%**（⛔ 別當精確數字用）。「只看要練熟的」改成**「考試真的要用的（5 個）」**。
   - ⭐ memory 新增 [[reference_corpus_what_to_produce]]（索引已更新）：任何「要練到什麼程度」的分級，**先 grep `research/` 有沒有算過**。
+  - ⚠️⚠️ **再一次修正（Owen 追問「你確定閱讀聽力的 imparfait／futur simple 這麼少？」——他是對的）**：我先前只掛**產出側**數字，會讓人以為聽讀也不用管。聽讀側（TCF 聽力口語 183,525 詞，佔限定形）：présent **69.9%**／passé composé **10.0%**／**imparfait 4.9%**（＝產出側的 2.6 倍，第三名）／conditionnel 2.5%／futur proche 2.4%／futur simple 2.3%／subjonctif 1.5%。
+    ⭐ **兩件事同時成立**：imparfait 在聽力確實是第三名，但它仍只有 4.9%——因為 **présent 一個就吃掉 70%**（閱讀題幹 78%）。研究對前三名的判讀跟我原本寫的相反：「**這不是『認得就好』的清單，這是『必須自動化』的清單**」。
+    → `TENSE_META` 加 `rec`／`recNote`，卡片與 chip 改成**兩軸並列**（🗣 自己要講／要寫　👂 聽到／讀到要懂）。⛔ **以後引用這些百分比一定要講清楚是哪一側。**
+    ⭐ 順帶進頁面的實用細節：`conditionnel passé` 高度集中在 `aurais pu／aurait dû`（固定塊不是時態）；`futur antérieur` 15 個 token 裡 `aura fallu` 佔 9 個；`subjonctif passé` 對話裡 5 個但**選項裡 15 個**（答題才遇到）；`passé simple` 閱讀題幹 **0 個**、真實書面散文也只 0.71%，跟直覺相反。
 - ⏸ **沒做／下一步**：複合時態（plus-que-parfait 等）還沒有 verb_sprint 模式；Owen 說的「**自訂勾選哪些單字的哪些變化**」目前只做到「一個動詞 × 多個時態」，**還沒做「多個動詞一起考」**——要做的話得讓 verb_sprint 接 `?verbs=` 白名單。
 
 #### 三之十二、09-22：第35課筆記（Édito A2 Unité 9 Consommer responsable）＋六項連動
