@@ -84,6 +84,20 @@ body {
 .t-head { cursor: pointer; }
 .t-card.fold .t-how, .t-card.fold .forms { display: none; }
 .fold-mark { color: #445060; font-size: 0.8em; margin-left: 6px; }
+/* ⭐ 熱度標色 */
+.t-card.heat-hot  { border-color: #7a4020; box-shadow: inset 3px 0 0 #e06030; }
+.t-card.heat-warm { border-color: #5a4a18; box-shadow: inset 3px 0 0 #d09030; }
+.t-card.heat-cool { border-color: #2a3a4a; box-shadow: inset 3px 0 0 #4a80a0; }
+.t-card.heat-zero { opacity: .5; }
+.t-card.heat-zero .forms { opacity: .65; }
+.heat-tag { font-size: 0.78em; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.heat-tag.hot  { background: #2a1408; color: #f09060; border: 1px solid #7a4020; }
+.heat-tag.warm { background: #201a08; color: #e0b060; border: 1px solid #5a4a18; }
+.heat-tag.cool { background: #0c1420; color: #70a8c8; border: 1px solid #2a3a4a; }
+.heat-tag.zero { background: #0d1020; color: #445060; border: 1px solid #1a2438; }
+.v-btn.vhot  { border-color: #7a4020; color: #f09060; }
+.v-btn.vwarm { border-color: #5a4a18; color: #e0b060; }
+.v-btn.vzero { opacity: .45; }
 .t-use { font-size: 0.82em; color: #9ad060; background: #0f1508; border-left: 2px solid #2a3a1a;
   padding: 8px 10px; border-radius: 0 6px 6px 0; margin: 6px 0 8px; line-height: 1.65; }
 .use-row { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
@@ -179,6 +193,7 @@ body {
     <button class="lvl-btn on" data-scope="learned">⭐ 已經學過的</button>
     <button class="lvl-btn" data-scope="core">🔥 考試真的要用的（5 個）</button>
     <button class="lvl-btn" data-scope="all">全部到 B2</button>
+    <button class="lvl-btn" data-scope="used">🎯 這個動詞真的會用的</button>
     <button class="lvl-btn" data-scope="todo">⬜ 還沒上到的</button>
   </div>
   <div class="chips" id="tenseChips"></div>
@@ -211,6 +226,7 @@ body {
 </div>
 
 <script src="verbs_full.js"></script>
+<script src="verb_freq.js"></script>
 <script src="session_timer.js"></script>
 <script src="sync_supabase.js"></script>
 <script>
@@ -261,6 +277,20 @@ const TENSE_META = {
   'passe-simple':      { learned:false, tier:'recognize', pct:'≈0',    rec:'0.10%',
                          recNote:'⭐ 跟「書面法文要會 passé simple」的直覺相反：閱讀題幹 0 個，真實書面散文也只有 0.71%' },
 };
+/* ⭐ 語料熱度：同一個介面，不同動詞會長得不一樣 ──────────────────────
+   freqOf(inf).t[tenseId] ＝這個動詞在這個時態的實際出現次數（產出側語料）。
+   ⚠️ 0 次 ≠ 不重要，見 verb_freq.js 開頭的警告。 */
+const freqOf = inf => (typeof VERB_FREQ !== 'undefined' && VERB_FREQ[inf]) || { say:0, hear:0, t:{}, nf:{} };
+/* 熱度分級：用「佔這個動詞總次數的比例」而不是絕對值，
+   不然 être(2018 次) 跟 finir(11 次) 沒得比 */
+function heatOf(inf, tenseId) {
+  const f = freqOf(inf), n = f.t[tenseId] || 0;
+  if (!n) return { lv:'zero', n:0 };
+  const share = n / Math.max(1, f.say);
+  return { lv: share >= 0.30 ? 'hot' : share >= 0.08 ? 'warm' : 'cool', n };
+}
+const HEAT_LABEL = { hot:'🔴 這個動詞最常用這個時態', warm:'🟠 常用', cool:'🟡 偶爾', zero:'⬜ 語料裡沒出現過' };
+
 const metaOf = id => TENSE_META[id] || { learned:false, tier:'normal' };
 
 /* 選了哪些時態；⛔ key 刻意不用 clb7_ 開頭——那個前綴會被 sync_supabase.js 整包同步上雲 */
@@ -270,6 +300,8 @@ const SCOPES = {
   core:    id => ['core','task','half'].includes(metaOf(id).tier),   // ⭐ 語料上真的要「產出得出來」的 5 個
   all:     () => true,
   todo:    id => !metaOf(id).learned,
+  /* ⭐ 依「目前這個動詞」的語料實況篩——prendre 只剩 4 張、pouvoir 也 4 張，但各自不同 */
+  used:    id => (freqOf(current).t[id] || 0) > 0,
 };
 let picked = null;            // Set of tense id；null＝還沒選過，用預設
 let folded = new Set();
@@ -311,7 +343,10 @@ function renderPicker() {
   document.getElementById('picker').innerHTML = groups.map(g => `
     <div class="grp-label">${esc(g.name)}</div>
     <div class="v-row">${g.items.map(v =>
-      `<button class="v-btn${v.inf === current ? ' on' : ''}" onclick="pick('${v.inf}')">${esc(v.inf)}</button>`
+      (() => { const f = freqOf(v.inf), tot = f.say + f.hear;
+        const c = tot >= 1500 ? ' vhot' : tot >= 300 ? ' vwarm' : tot === 0 ? ' vzero' : '';
+        return `<button class="v-btn${v.inf === current ? ' on' : ''}${c}" onclick="pick('${v.inf}')"
+          title="口說寫作 ${f.say} 次　聽力閱讀 ${f.hear} 次">${esc(v.inf)}</button>`; })()
     ).join('')}</div>`).join('');
 }
 
@@ -387,8 +422,9 @@ function renderTenses(v) {
   const list = all.filter(t => picked.has(t.id));
   document.getElementById('tenses').innerHTML = list.map((t, ti) => {
     const m = metaOf(t.id), isFold = folded.has(t.id);
+    const h = heatOf(v.inf, t.id);
     return `
-    <div class="t-card${isFold ? ' fold' : ''}">
+    <div class="t-card heat-${h.lv}${isFold ? ' fold' : ''}">
       <div class="t-head" onclick="toggleFold('${t.id}')">
         <span class="t-name">${esc(t.name)}</span>
         <span class="t-fr">${esc(t.fr)}</span>
@@ -397,6 +433,7 @@ function renderTenses(v) {
         ${m.learned ? '' : '<span class="t-lvl">⬜ 還沒上</span>'}
         <button class="tts-btn" onclick="event.stopPropagation();ttsTense(${ti})" title="唸一遍六個人稱">🔊</button>
         <a class="t-cx" href="map.html#cx-${t.cx}" onclick="event.stopPropagation()">📍 ${t.cx}</a>
+        <span class="heat-tag ${h.lv}">${h.n ? `${esc(v.inf)} 用過 ${h.n} 次` : `${esc(v.inf)} 沒用過`}</span>
         <span class="fold-mark">${isFold ? '▸ 展開' : '▾ 收起'}</span>
       </div>
       ${(m.pct || m.rec || m.only) ? `<div class="t-use">
@@ -404,6 +441,9 @@ function renderTenses(v) {
           <b>${m.pct ? esc(m.pct) : '—'}</b>${m.only ? `<span class="use-n">${esc(m.only)}</span>` : ''}</div>
         <div class="use-row"><span class="use-k">👂 聽到／讀到要懂</span>
           <b>${m.rec ? esc(m.rec) : '—'}</b>${m.recNote ? `<span class="use-n">${esc(m.recNote)}</span>` : ''}</div>
+        <div class="use-row"><span class="use-k">🎯 ${esc(v.inf)} 在這一格</span>
+          <b>${h.n ? h.n + ' 次' : '0 次'}</b><span class="use-n">${HEAT_LABEL[h.lv]}${
+          h.lv === 'zero' ? '　⚠️ 0 次＝這個考試題型裡沒出現，⛔ 不是「這個字不重要」' : ''}</span></div>
       </div>` : ''}
       <div class="t-how">${esc(t.how)}</div>
       <div class="forms">${t.forms.map((f, i) =>

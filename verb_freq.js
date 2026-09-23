@@ -1,0 +1,16 @@
+/* verb_freq.js — 自動產生，⛔ 勿手改
+   來源：research/data/vocab_B_speaking_writing.json（產出側）
+        research/data/vocab_A_listening_reading.json 的 top_verbs（聽讀側）
+
+   say  ＝這個動詞在「口說答稿＋寫作範文」語料的總次數（96,805 詞）
+   hear ＝在「聽力＋閱讀」語料的總次數（TCF 聽力 script、閱讀題幹、TEF 長文）
+   t    ＝各時態次數　nf ＝非限定形（原形／分詞等）
+   ⚠️ t／nf 只有產出側有——聽讀側研究只做了整體時態分佈，⛔ 沒做「動詞×時態」交叉。
+   ⚠️ hear 的 0 要小心讀：聽讀側只公布 top_verbs 前 160 名，
+      所以 hear:0 是「不在前 160 名」，⛔ 不等於語料裡一次都沒有。
+
+   ⚠️⚠️ 0 次的正確讀法是「這個考試題型裡沒出現」，⛔ 不是「這個字不重要」：
+      TCF 口說 T2/T3 是議論題材（環保／教育／科技），所以 boire／pleuvoir 才會是 0。
+   ⚠️ 產出側語料是中國考生／補習班的稿，有明顯錯誤；只回答「考生實際用到什麼」，
+      ⛔ 不回答「該怎麼寫才對」（見 memory feedback_source_hierarchy）。 */
+const VERB_FREQ = {"être": {"say": 2018,"hear": 7625,"t": {"present": 1522,"imparfait": 120,"passe-compose": 69},"nf": {"infinitif": 141}},"avoir": {"say": 1000,"hear": 2697,"t": {"present": 669,"futur-simple": 65,"passe-compose": 38},"nf": {"infinitif": 156}},"faire": {"say": 295,"hear": 1851,"t": {"present": 69,"passe-compose": 13},"nf": {"infinitif": 172,"pp": 19}},"aller": {"say": 148,"hear": 682,"t": {"present": 105},"nf": {"infinitif": 24,"imperatif": 10,"ppr": 5}},"pouvoir": {"say": 1013,"hear": 1341,"t": {"present": 738,"conditionnel": 155,"futur-simple": 49,"subjonctif": 40},"nf": {}},"devoir": {"say": 193,"hear": 520,"t": {"present": 146,"conditionnel": 33,"futur-simple": 7,"passe-compose": 5},"nf": {}},"vouloir": {"say": 112,"hear": 631,"t": {"present": 51,"imparfait": 42,"conditionnel": 6},"nf": {"imperatif": 6}},"venir": {"say": 59,"hear": 308,"t": {"present": 8,"imparfait": 4},"nf": {"infinitif": 32,"pp": 4}},"prendre": {"say": 126,"hear": 383,"t": {"present": 19,"passe-compose": 11},"nf": {"infinitif": 80,"pp": 6}},"savoir": {"say": 97,"hear": 342,"t": {"present": 28,"subjonctif": 5},"nf": {"infinitif": 59,"ppr": 2}},"voir": {"say": 80,"hear": 378,"t": {"present": 23,"passe-compose": 6},"nf": {"infinitif": 46,"ger": 3}},"dire": {"say": 76,"hear": 542,"t": {"conditionnel": 15,"present": 14},"nf": {"infinitif": 38,"pp": 4}},"mettre": {"say": 44,"hear": 264,"t": {"passe-compose": 7,"present": 6},"nf": {"infinitif": 25,"ger": 2}},"partir": {"say": 66,"hear": 288,"t": {"present": 6,"futur-proche": 3},"nf": {"infinitif": 50,"ppr": 3}},"sortir": {"say": 19,"hear": 101,"t": {"present": 3,"passe-compose": 1,"imparfait": 1},"nf": {"infinitif": 14}},"écrire": {"say": 42,"hear": 137,"t": {"present": 28},"nf": {"infinitif": 6,"imperatif": 5,"pp": 2}},"lire": {"say": 25,"hear": 78,"t": {"passe-compose": 6,"present": 1},"nf": {"infinitif": 12,"inf_passe": 5}},"boire": {"say": 0,"hear": 0,"t": {},"nf": {}},"connaître": {"say": 51,"hear": 169,"t": {"present": 6,"passe-compose": 2},"nf": {"infinitif": 26,"pp": 14}},"devenir": {"say": 95,"hear": 180,"t": {"present": 36,"passe-compose": 20,"subjonctif": 2},"nf": {"infinitif": 36}},"falloir": {"say": 94,"hear": 434,"t": {"present": 90,"imparfait": 3,"conditionnel": 1},"nf": {}},"pleuvoir": {"say": 0,"hear": 0,"t": {},"nf": {}},"attendre": {"say": 33,"hear": 153,"t": {"present": 17,"imparfait": 3,"futur-simple": 1},"nf": {"infinitif": 11}},"parler": {"say": 50,"hear": 252,"t": {"present": 14,"futur-proche": 1},"nf": {"infinitif": 29,"ger": 2}},"finir": {"say": 11,"hear": 77,"t": {"passe-compose": 3,"futur-simple": 1},"nf": {"infinitif": 5,"inf_passe": 1}}};

@@ -257,6 +257,7 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
 
 <!-- ⚠️ 這兩支要在下面的主程式之前載入：變位資料與解鎖狀態都從它們來 -->
 <script src="verbs_full.js"></script>
+<script src="verb_freq.js"></script>
 <script src="gram_rules.js"></script>
 <script>
 /* ⚠️ 不能叫 PERSONS——verbs_full.js 已經有一個同名的 const，
@@ -382,12 +383,25 @@ function isCorrect(input, vi, pi) {
 // ── 加權取樣 ──────────────────────────────────────────────────
 const WEIGHT = { weak: 4, new: 3, slow: 2, reflex: 1 };
 let lastCell = null;
+/* ⭐ 2026-09-23 語料權重：高頻的動詞×時態多出，語料裡沒出現的少出。
+   來源 verb_freq.js（TCF 口說答稿＋寫作範文）。
+   ⛔ 沒出現的設 0.5 不設 0——那批語料是議論題材（環保／教育／科技），
+      boire 沒出現不代表考試不會考，只代表那個題型不談喝東西。 */
+function corpusMul(inf, tenseId) {
+  if (typeof VERB_FREQ === 'undefined' || !tenseId) return 1;
+  const f = VERB_FREQ[inf];
+  if (!f) return 1;
+  const n = (f.t && f.t[tenseId]) || 0;
+  return n >= 100 ? 3 : n >= 20 ? 2 : n > 0 ? 1.5 : 0.5;
+}
+
 function pickCell(cells) {
   const pool = [];
+  const tenseId = (M() || {}).tense;
   V().forEach((v,vi) => { for (let pi=0; pi<6; pi++) {
     const key = cellKey(vi,pi);
     if (key === lastCell) continue;               // 不連續出同一格
-    const w = WEIGHT[cellState((cells[key]||{}).h)];
+    const w = Math.max(1, Math.round(WEIGHT[cellState((cells[key]||{}).h)] * corpusMul(v.inf, tenseId)));
     for (let i=0; i<w; i++) pool.push([vi,pi]);
   }});
   const [vi,pi] = pool[Math.floor(Math.random()*pool.length)];
