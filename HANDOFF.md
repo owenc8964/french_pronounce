@@ -4786,6 +4786,16 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - ✅ **跳回來（Owen 指定）**：出口帶 `&back=vf&v=<動詞>`；`verb_sprint.html` 與 `table_drill.html` 收到就把返回連結換成「← 回變位總覽」並指回 `verb_forms.html?v=<動詞>`。勾選的時態存在 verb_forms 的 localStorage，所以回去**原樣還在**。
 - **`TENSE_META` 的依據**：`learned` 來自 gram_rules 的 unlocked 狀態；`tier` 分 🔥要練熟（présent／passé composé／imparfait／futur simple）與 👀看得懂就好。⚠️ **conditionnel 標 `recognize` 是第35課老師親口說的，⛔ 不要改成 produce**。
 - **驗證（iPad 768×1024 隔離複本，⛔ 不含 `sync_supabase.js`、localStorage 記憶體版，ROOM 全程沒動）**：零主控台錯誤；預設 8 張卡＝已學的；「只看要練熟的」→ 4 張；「還沒上到的」→ 5 張；摺疊有效；偏好存本機且無 `clb7_` 前綴；7 個出口連結網址全對；`verb_sprint?mode=conditionnel&back=vf&v=prendre` → `mode` 變數確實是 conditionnel、熱力圖標題「CONDITIONNEL」、返回連結變「← 回變位總覽」；`table_drill?type=verb&back=vf` → `typeFilter='verb'`、第一題是動詞表、返回連結出現。
+- ⚠️⚠️ **同日稍後修正（Owen：「老師說會考的其實很少，口說寫作要用出來的更少，你應該可以去查查上課的逐字稿」）**：
+  逐字稿**沒存進 repo**（`transcripts/` 是空的，他都是直接貼在對話裡），但查到**專案早在 09-03 就用語料算過同一件事**，而我做 `TENSE_META` 時沒用它們、自己推了一套 → 已改成用研究數據。⛔ **以後要決定「練到什麼程度」先讀這兩份**：
+  `research/2026-09-03_VOCAB_B_說寫側.md`（TCF Canada 口說答稿＋寫作範文 22 檔、96,805 詞、15,308 個動詞形）／`research/2026-09-03_VOCAB_A_聽讀側.md`。
+  - **產出側**：présent **41.9%** ＋原形 **35.3%** ＝ **77.2%**；加 passé composé 4.8%、conditionnel 2.6%、imparfait 1.9%、futur simple 1.8% ＝ 88.3%。
+    ⛔ **不需要會產出**：plus-que-parfait 0.07%／futur antérieur 0.09%／conditionnel passé 0.04%／passé simple ≈0。
+    **subjonctif 只有 0.8%、79% 集中在 `soit`＋`puisse`** → 背 8 個固定塊就好，⛔ 不用當文法單元學。
+  - **聽讀側**：présent＋passé composé＋imparfait **吃掉 85%**。
+  - **我推錯的兩處已修**：imparfait／futur simple 原本標「🔥要練熟」→ 各只佔 1.9%／1.8% 且只需要 `était/avait/voulais`、`aura/sera/pourra` → 降成「🟡 只要幾個形」；conditionnel 原本標「👀看得懂就好」→ 語料 2.6% 確實要產出，但內容跟第35課老師說的完全一致 → 改成「🟠 特定任務要」。
+  - tier 從兩層擴成五層（core／task／half／chunks／recognize）；chip 與卡片**直接顯示佔比與「實際只需要這幾個形」**，並標出資料來源與**誤判率 5–7%**（⛔ 別當精確數字用）。「只看要練熟的」改成**「考試真的要用的（5 個）」**。
+  - ⭐ memory 新增 [[reference_corpus_what_to_produce]]（索引已更新）：任何「要練到什麼程度」的分級，**先 grep `research/` 有沒有算過**。
 - ⏸ **沒做／下一步**：複合時態（plus-que-parfait 等）還沒有 verb_sprint 模式；Owen 說的「**自訂勾選哪些單字的哪些變化**」目前只做到「一個動詞 × 多個時態」，**還沒做「多個動詞一起考」**——要做的話得讓 verb_sprint 接 `?verbs=` 白名單。
 
 #### 三之十二、09-22：第35課筆記（Édito A2 Unité 9 Consommer responsable）＋六項連動
