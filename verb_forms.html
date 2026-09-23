@@ -85,7 +85,11 @@ body {
 .t-card.fold .t-how, .t-card.fold .forms { display: none; }
 .fold-mark { color: #445060; font-size: 0.8em; margin-left: 6px; }
 .t-use { font-size: 0.82em; color: #9ad060; background: #0f1508; border-left: 2px solid #2a3a1a;
-  padding: 7px 10px; border-radius: 0 6px 6px 0; margin: 6px 0 8px; line-height: 1.6; }
+  padding: 8px 10px; border-radius: 0 6px 6px 0; margin: 6px 0 8px; line-height: 1.65; }
+.use-row { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
+.use-row + .use-row { margin-top: 5px; padding-top: 5px; border-top: 1px solid #1a2a10; }
+.use-k { color: #5a7a40; min-width: 8.5em; }
+.use-n { color: #7a8a9a; flex: 1 1 100%; }
 .t-card.fold .t-use { display: none; }
 /* 複合時態公式卡 */
 .cpd { background: #0d1020; border: 1px solid #2a3a1a; border-radius: 12px; padding: 16px 16px 12px; margin-bottom: 14px; }
@@ -179,8 +183,10 @@ body {
   </div>
   <div class="chips" id="tenseChips"></div>
   <div class="scope-hint">點上面的按鈕換一組，或直接點下面的標籤自己加減。你的選擇會記在這台裝置上。<br>
-    ⭐ 標籤上的百分比＝這個時態在 <b>TCF Canada 口說答稿＋寫作範文</b>（96,805 詞）裡佔全部動詞形的比例，
-    出自 <a href="research/2026-09-03_VOCAB_B_說寫側.md" style="color:#9ad060">說寫側語料研究</a>。
+    ⭐ 標籤上兩個數字要分開看：<b>🗣＝自己要講／要寫時的用量</b>（TCF 口說答稿＋寫作範文 96,805 詞）、
+    <b>👂＝聽到／讀到時的出現率</b>（TCF 聽力口語 183,525 詞）。
+    <b style="color:#9ad060">兩邊差很多</b>——例如 imparfait 產出只要三個形，但聽力裡是第三名，研究說前三名「必須自動化」。
+    出自 <a href="research/2026-09-03_VOCAB_B_說寫側.md" style="color:#9ad060">說寫側</a>與<a href="research/2026-09-03_VOCAB_A_聽讀側.md" style="color:#9ad060">聽讀側</a>兩份語料研究。
     ⚠️ 誤判率約 5–7%，⛔ 別當精確數字用。</div>
 </div>
 
@@ -223,22 +229,37 @@ let current = 'prendre';
       完全一致——只有 je voudrais／j'aimerais／on pourrait／ce serait 那幾塊。
    ⚠️ 誤判率約 5–7%（研究自己標的），⛔ 別把百分比當精確數字用。 */
 const TENSE_META = {
-  // tier：core＝沒有就不能開口／task＝特定任務才要／half＝只要幾個固定形／
-  //        chunks＝背固定塊就好／recognize＝只要讀得懂
-  // pct＝在 TCF Canada 口說＋寫作語料裡佔全部動詞形的比例；only＝實際只需要這幾個形
-  'present':           { learned:true,  tier:'core',      pct:'41.9%' },
-  'passe-compose':     { learned:true,  tier:'task',      pct:'4.8%',  only:'寫作申訴信與講自己的經驗時才爆量' },
-  'conditionnel':      { learned:true,  tier:'task',      pct:'2.6%',  only:"幾乎只是禮貌用語：je voudrais／j'aimerais／on pourrait／ce serait" },
-  'imparfait':         { learned:true,  tier:'half',      pct:'1.9%',  only:'實際只需要 était／avait／voulais' },
-  'futur-simple':      { learned:true,  tier:'half',      pct:'1.8%',  only:'實際只需要 aura／sera／pourra；口說 T3 幾乎用不到' },
-  'subjonctif':        { learned:true,  tier:'chunks',    pct:'0.8%',  only:'79% 集中在 soit 和 puisse；背 8 個固定塊就好，⛔ 不用當文法單元學' },
-  'futur-proche':      { learned:true,  tier:'normal',    only:'aller 現在式 ＋ 原形——已經算在 présent＋原形 那 77.2% 裡' },
-  'passe-recent':      { learned:true,  tier:'normal',    only:'venir de ＋ 原形' },
-  'plus-que-parfait':  { learned:false, tier:'recognize', pct:'0.07%' },
-  'futur-anterieur':   { learned:false, tier:'recognize', pct:'0.09%' },
-  'conditionnel-passe':{ learned:false, tier:'recognize', pct:'0.04%' },
-  'subjonctif-passe':  { learned:false, tier:'recognize' },
-  'passe-simple':      { learned:false, tier:'recognize', pct:'≈0（全語料只有 2 個，且疑似誤判）' },
+  // tier＝「產出側」要練到什麼程度：core／task／half／chunks／recognize
+  // pct  ＝產出側（口說答稿＋寫作範文）佔全部動詞形的比例
+  // rec  ＝聽讀側（TCF 聽力口語）佔限定形的比例；recNote＝辨識側要注意的事
+  // ⚠️ 兩側差很多的時態（imparfait 最明顯）一定要兩個都顯示，
+  //    只給產出側的數字會讓人以為「聽到也不用管」——09-23 Owen 就是抓到這點。
+  'present':           { learned:true,  tier:'core',      pct:'41.9%', rec:'69.9%', recNote:'聽讀第一名，閱讀題幹甚至 78%' },
+  'passe-compose':     { learned:true,  tier:'task',      pct:'4.8%',  rec:'10.0%', recNote:'聽讀第二名',
+                         only:'產出只在寫作申訴信與講自己經驗時爆量' },
+  'imparfait':         { learned:true,  tier:'half',      pct:'1.9%',  rec:'4.9%',
+                         recNote:'⭐ 聽讀第三名，是產出側的 2.6 倍——研究說前三名「必須自動化」，不是認得就好',
+                         only:'產出只需要 était／avait／voulais' },
+  'conditionnel':      { learned:true,  tier:'task',      pct:'2.6%',  rec:'2.5%',
+                         only:"產出幾乎只是禮貌用語：je voudrais／j'aimerais／on pourrait／ce serait" },
+  'futur-simple':      { learned:true,  tier:'half',      pct:'1.8%',  rec:'2.3%', recNote:'書面散文裡 3.5%，比口語高',
+                         only:'產出只需要 aura／sera／pourra' },
+  'futur-proche':      { learned:true,  tier:'normal',    rec:'2.4%',
+                         only:'aller 現在式 ＋ 原形——產出已算在 présent＋原形那 77.2% 裡' },
+  'subjonctif':        { learned:true,  tier:'chunks',    pct:'0.8%',  rec:'1.5%',
+                         recNote:'⭐ 大量出現在「選項」裡而不是對話裡（Que + subjonctif），讀不懂就選不出答案',
+                         only:'產出 79% 集中在 soit 和 puisse；背 8 個固定塊就好，⛔ 不用當文法單元學' },
+  'passe-recent':      { learned:true,  tier:'normal',    rec:'0.26%', only:'venir de ＋ 原形，一個公式' },
+  'plus-que-parfait':  { learned:false, tier:'recognize', pct:'0.07%', rec:'0.53%',
+                         recNote:'幾乎只出現在敘事回顧；看得懂 avait／était ＋ 過去分詞就夠' },
+  'conditionnel-passe':{ learned:false, tier:'recognize', pct:'0.04%', rec:'0.46%',
+                         recNote:'⭐ 高度集中在 aurais pu／aurait dû／aurais dû——是一小組固定塊，不是一個時態' },
+  'futur-anterieur':   { learned:false, tier:'recognize', pct:'0.09%', rec:'0.07%',
+                         recNote:'15 個 token 裡 aura fallu 就佔 9 個——基本上是一個片語不是一個時態' },
+  'subjonctif-passe':  { learned:false, tier:'recognize', rec:'0.02%',
+                         recNote:'⚠️ 對話裡 5 個，但「選項」裡有 15 個（Que … ait ＋ 過去分詞）——答題才會遇到' },
+  'passe-simple':      { learned:false, tier:'recognize', pct:'≈0',    rec:'0.10%',
+                         recNote:'⭐ 跟「書面法文要會 passé simple」的直覺相反：閱讀題幹 0 個，真實書面散文也只有 0.71%' },
 };
 const metaOf = id => TENSE_META[id] || { learned:false, tier:'normal' };
 
@@ -321,7 +342,7 @@ function renderChips(all) {
     return `<button class="chip${on ? ' on' : ''}${on && HOT(m.tier) ? ' produce' : ''}"
       onclick="toggleTense('${t.id}')">${esc(t.name)}${m.learned ? '' : ' <span class="tag">⬜ 還沒上</span>'}${
       m.tier !== 'normal' ? ` <span class="tag">${TIER_TAG[m.tier]}</span>` : ''}${
-      m.pct ? ` <span class="tag">${esc(m.pct)}</span>` : ''}</button>`;
+      (m.pct || m.rec) ? ` <span class="tag">🗣${m.pct || '—'} 👂${m.rec || '—'}</span>` : ''}</button>`;
   }).join('');
 }
 
@@ -378,8 +399,12 @@ function renderTenses(v) {
         <a class="t-cx" href="map.html#cx-${t.cx}" onclick="event.stopPropagation()">📍 ${t.cx}</a>
         <span class="fold-mark">${isFold ? '▸ 展開' : '▾ 收起'}</span>
       </div>
-      ${(m.pct || m.only) ? `<div class="t-use">📊 ${m.pct ? `口說＋寫作實際用量 <b>${esc(m.pct)}</b>` : '語料研究沒單獨統計'}${
-        m.only ? `　·　${esc(m.only)}` : ''}</div>` : ''}
+      ${(m.pct || m.rec || m.only) ? `<div class="t-use">
+        <div class="use-row"><span class="use-k">🗣 自己要講／要寫</span>
+          <b>${m.pct ? esc(m.pct) : '—'}</b>${m.only ? `<span class="use-n">${esc(m.only)}</span>` : ''}</div>
+        <div class="use-row"><span class="use-k">👂 聽到／讀到要懂</span>
+          <b>${m.rec ? esc(m.rec) : '—'}</b>${m.recNote ? `<span class="use-n">${esc(m.recNote)}</span>` : ''}</div>
+      </div>` : ''}
       <div class="t-how">${esc(t.how)}</div>
       <div class="forms">${t.forms.map((f, i) =>
         `<div class="f">${esc(display(t, i, f))}</div>`).join('')}</div>
