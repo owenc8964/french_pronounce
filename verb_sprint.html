@@ -164,7 +164,7 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
 <body>
 
 <div class="header">
-  <a class="back" href="dashboard.html">← Retour au tableau de bord</a>
+  <a class="back" id="backLink" href="dashboard.html">← Retour au tableau de bord</a>
   <h1>⚡ SPRINT DE VERBES</h1>
   <div class="sub">核心 11 動詞 × 6 人稱 × 學過的時態 — 練到反射，不是練到會</div>
 </div>
@@ -711,6 +711,15 @@ function refreshStartScreen() {
 const _qs = new URLSearchParams(location.search);
 const _qm = _qs.get('mode');
 if (_qm && AVAILABLE.some(m => m.id === _qm)) mode = _qm;
+/* ⭐ 2026-09-23：從動詞變位總覽帶著範圍跳過來的，要能原路跳回去（Owen 指定）
+   verb_forms.html?v=<動詞> ——勾選的時態存在那邊的 localStorage，所以回去就還在 */
+(function () {
+  if (_qs.get('back') !== 'vf') return;
+  const v = _qs.get('v'), a = document.getElementById('backLink');
+  if (!a) return;
+  a.href = 'verb_forms.html' + (v ? '?v=' + encodeURIComponent(v) : '');
+  a.textContent = '← 回變位總覽';
+})();
 refreshStartScreen();
 if (_qs.get('guided') === '1') startSprint();
 

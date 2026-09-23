@@ -4773,6 +4773,21 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
   - 📁 `audio/voice/`（已在 .gitignore）現有 **5 個試聽檔＋ `index.json`（只有 5 條）**與 `audio/voice/ab/` 的 5 個 A/B 對照檔。要換音源時 `gen_voice_audio.py` 會自己重錄（`.manifest.json` 記設定雜湊，聲音一換就全部重來）。
   - ✅ **09-22 已 push（`dabc00f..2a2d1db`）**，含 `a80aa62` 的 `.gitignore` 防呆 → `audio/t1_*.m4a` 等 `say` 音檔不再有被 `git add .` 帶上公開站的風險。播放端上線後在沒有 index 的情況下會全部安靜退回現有 TTS，線上行為跟之前一樣。
 
+#### 三之十三、09-23：動詞變位總覽大改（iPad 可讀性＋勾選＋摺疊＋考試出口）
+
+- **Owen 的需求**：時態全部並列、變化規則一目瞭然、可以樞紐展開收合、**可以只看老師說要熟練的那幾個**、「我知道網頁有那些表但字變得好小」、背完可以**直接考**（填表格／快問快答）、**而且要能跳回來**。
+- ⭐ **先驗前提（他問「是不是接近學完 B2 會考的時態了」）**：查 `gram_rules.js` 與 `verbs_full.js` —— 已學 8 個（présent／passé composé／imparfait／futur proche／passé récent／futur simple／subjonctif／conditionnel＋impératif／gérondif），還沒學 5 個（plus-que-parfait／futur antérieur／conditionnel passé／subjonctif passé／passé simple）＋ concordance／voix passive。
+- ⭐⭐ **最有價值的發現**：`verbs_full.js` 的 5 個複合時態**全部走同一個 `compose(v, X)`**，只差助動詞用哪一檔 → **Owen 那 4 個「還沒學」的時態其實零件都有了**（他已會 passé composé，也已會 imparfait／futur／conditionnel／subjonctif 的助動詞變位），一個新規則都不用背。→ 已做成頁面上的**「⭐ 這 5 個時態是同一招」公式卡**，標出哪些 ✅ 學過、哪些 ⬜ 還沒上。
+- ⚠️ **釐清**：Owen 說的「時態故事頁面」其實是兩支不同的東西——`time_hall.html`（時間劇院，講**什麼時候用**）vs **`verb_forms.html`（動詞變位總覽，講怎麼變）**。他要的是後者，而後者**本來就做了一半**（動詞分組選擇器、四個詞幹卡、每時態一張卡附規則、發音、codex 座標）。→ ⛔ 沒有另開新頁，直接增強它。
+- ⭐ **「字變得好小」的真正原因（不是字級）**：`body { max-width: 680px }` —— iPad 直式 810／橫式 1080，內容卻只用 680，兩側大量留白。→ 放寬到 **1100px**、`font-size: clamp(16px, 1.15vw+13px, 21px)`、詞幹卡與時態卡在 ≥760px 改**兩欄**、≥1040px 詞幹卡四欄。⚠️ **六個人稱在 760–1040 維持 2 欄**——排 3 欄會把 `nous prenons` 折行（iPad 實測抓到）。
+- ✅ **做完的四件事**（`verb_forms.html`，函式 10→18 純新增、比對過沒誤刪）：
+  ① **時態勾選**：13 個 chip 可單點加減，四顆快速範圍鈕（⭐已學過／🔥只看要練熟的／全部到 B2／⬜還沒上到的）；② **摺疊**：點卡片標題收合；③ **公式卡**（見上）；④ **考試出口**：依勾選產生「⚡ 快問快答：<時態>」（→ `verb_sprint.html?mode=…`）與「📝 填表格：動詞變位」（→ `table_drill.html?type=verb`），⛔ 沒有對應衝刺模式的（近未來／剛剛過去／複合時態）**誠實標出來**而不是假裝有。
+  - 偏好存本機 `vf_tenses`／`vf_folded`（⚠️ **刻意不用 `clb7_` 開頭**，那個前綴會被 `sync_supabase.js` 整包同步上雲）。
+- ✅ **跳回來（Owen 指定）**：出口帶 `&back=vf&v=<動詞>`；`verb_sprint.html` 與 `table_drill.html` 收到就把返回連結換成「← 回變位總覽」並指回 `verb_forms.html?v=<動詞>`。勾選的時態存在 verb_forms 的 localStorage，所以回去**原樣還在**。
+- **`TENSE_META` 的依據**：`learned` 來自 gram_rules 的 unlocked 狀態；`tier` 分 🔥要練熟（présent／passé composé／imparfait／futur simple）與 👀看得懂就好。⚠️ **conditionnel 標 `recognize` 是第35課老師親口說的，⛔ 不要改成 produce**。
+- **驗證（iPad 768×1024 隔離複本，⛔ 不含 `sync_supabase.js`、localStorage 記憶體版，ROOM 全程沒動）**：零主控台錯誤；預設 8 張卡＝已學的；「只看要練熟的」→ 4 張；「還沒上到的」→ 5 張；摺疊有效；偏好存本機且無 `clb7_` 前綴；7 個出口連結網址全對；`verb_sprint?mode=conditionnel&back=vf&v=prendre` → `mode` 變數確實是 conditionnel、熱力圖標題「CONDITIONNEL」、返回連結變「← 回變位總覽」；`table_drill?type=verb&back=vf` → `typeFilter='verb'`、第一題是動詞表、返回連結出現。
+- ⏸ **沒做／下一步**：複合時態（plus-que-parfait 等）還沒有 verb_sprint 模式；Owen 說的「**自訂勾選哪些單字的哪些變化**」目前只做到「一個動詞 × 多個時態」，**還沒做「多個動詞一起考」**——要做的話得讓 verb_sprint 接 `?verbs=` 白名單。
+
 #### 三之十二、09-22：第35課筆記（Édito A2 Unité 9 Consommer responsable）＋六項連動
 
 - **來源**：Owen 丟了 `~/Desktop/0922/` 9 張課本截圖＋整堂逐字稿。截圖就是課本頁，等於一手來源；頁碼用 `assets/.textbook_cache.txt` 核對過 → **p.125–132**（扉頁／Instagram 願望清單／論壇／conditionnel／詞彙頁／Le fait maison／gérondif／Oh le cliché）。

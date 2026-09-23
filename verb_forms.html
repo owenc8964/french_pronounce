@@ -11,7 +11,10 @@ body {
   background: #07080f; color: #ddd8cc;
   font-family: 'Segoe UI', system-ui, sans-serif;
   min-height: 100vh; padding: 24px 16px 80px;
-  max-width: 680px; margin: 0 auto;
+  /* ⭐ 2026-09-23：原本鎖 680px，iPad（直 810／橫 1080）兩側大量留白，
+     字看起來就小。放寬到 1100 並讓字級跟著視窗長大。 */
+  max-width: 1100px; margin: 0 auto;
+  font-size: clamp(16px, 1.15vw + 13px, 21px);
 }
 .header { text-align: center; margin-bottom: 18px; }
 .header h1 { font-size: 1.2rem; letter-spacing: 2px; color: #f0c060;
@@ -29,7 +32,7 @@ body {
 /* 動詞選單 */
 .grp-label { font-size: 0.62rem; color: #445060; margin: 10px 0 6px; letter-spacing: 1px; }
 .v-row { display: flex; flex-wrap: wrap; gap: 6px; }
-.v-btn { padding: 7px 11px; border: 1px solid #1a2438; border-radius: 8px;
+.v-btn { font-size: 0.95em; padding: 7px 11px; border: 1px solid #1a2438; border-radius: 8px;
   background: #141928; color: #9aa8b8; font-size: 0.8rem; cursor: pointer;
   font-family: inherit; }
 .v-btn:hover { border-color: #445060; color: #ddd8cc; }
@@ -37,21 +40,60 @@ body {
 
 /* 四個詞幹 */
 .stems { display: grid; grid-template-columns: 1fr; gap: 8px; }
+/* ⭐ iPad 以上才展開成多欄——手機維持單欄，⛔ 不要在窄螢幕擠成小字 */
+@media (min-width: 760px) {
+  .stems { grid-template-columns: repeat(2, 1fr); }
+  /* ⚠️ 時態卡兩欄之後每欄只剩約 370px，六個人稱就維持 2 欄——
+     排 3 欄會把 nous prenons 這種長的折行（09-23 iPad 實測抓到）。 */
+  #tenses { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; align-items: start; }
+  #tenses > .t-card { margin-bottom: 0; }
+}
+@media (min-width: 1040px) {
+  .stems { grid-template-columns: repeat(4, 1fr); }
+  .forms { grid-template-columns: repeat(3, 1fr); }
+}
 .stem { background: #141928; border: 1px solid #1a2438; border-left: 3px solid #60a0d0;
   border-radius: 8px; padding: 10px 12px; }
 .stem .k { font-size: 0.64rem; color: #445060; }
-.stem .v { font-size: 1.1rem; color: #60a0d0; font-weight: 700; margin: 2px 0 4px;
+.stem .v { font-size: 1.35em; color: #60a0d0; font-weight: 700; margin: 2px 0 4px;
   font-family: Georgia, serif; }
-.stem .o { font-size: 0.68rem; color: #7a8a9a; line-height: 1.6; }
+.stem .o { font-size: 0.84em; color: #7a8a9a; line-height: 1.6; }
 .stem.warn { border-left-color: #f0c060; }
 .stem.warn .o { color: #f0c060; }
 
-.big-note { font-size: 0.72rem; color: #7a8a9a; line-height: 1.75; margin-top: 12px;
+.big-note { font-size: 0.86em; color: #7a8a9a; line-height: 1.75; margin-top: 12px;
   padding-top: 12px; border-top: 1px dashed #1a2438; }
 .big-note b { color: #f0c060; }
 
 /* 等級篩選 */
-.lvl-row { display: flex; gap: 8px; margin-bottom: 14px; }
+.lvl-row { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { padding: 7px 11px; border: 1px solid #1a2438; border-radius: 999px; background: #0d1020;
+  color: #5a6878; font-size: 0.82em; cursor: pointer; font-family: inherit; line-height: 1.3; }
+.chip.on { border-color: #60a0d0; color: #cfe4f5; background: #0f1a2a; }
+.chip.on.produce { border-color: #f0c060; color: #f0c060; background: #1c1a10; }
+.chip .tag { font-size: 0.78em; opacity: .75; margin-left: 4px; }
+.drill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.drill-btn { padding: 11px 14px; border: 1px solid #2a3a1a; border-radius: 10px; background: #0f1508;
+  color: #9ad060; font-size: 0.92em; cursor: pointer; font-family: inherit; text-decoration: none;
+  display: inline-block; }
+.drill-btn:hover { border-color: #9ad060; }
+.drill-btn.off { border-color: #1a2438; color: #445060; background: #0d1020; cursor: default; }
+.scope-hint { font-size: 0.8em; color: #445060; margin-top: 10px; line-height: 1.6; }
+/* 摺疊：整張卡的標題可點 */
+.t-head { cursor: pointer; }
+.t-card.fold .t-how, .t-card.fold .forms { display: none; }
+.fold-mark { color: #445060; font-size: 0.8em; margin-left: 6px; }
+/* 複合時態公式卡 */
+.cpd { background: #0d1020; border: 1px solid #2a3a1a; border-radius: 12px; padding: 16px 16px 12px; margin-bottom: 14px; }
+.cpd h3 { font-size: 1.02em; color: #9ad060; margin-bottom: 4px; }
+.cpd .lead { font-size: 0.86em; color: #7a8a9a; line-height: 1.7; margin-bottom: 12px; }
+.cpd table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+.cpd td, .cpd th { padding: 7px 6px; border-bottom: 1px solid #16203a; text-align: left; vertical-align: top; }
+.cpd th { font-size: 0.8em; color: #445060; font-weight: 400; }
+.cpd .ex { font-family: Georgia, serif; color: #ddd8cc; }
+.cpd .got { color: #9ad060; font-size: 0.85em; white-space: nowrap; }
+.cpd .new { color: #6a7888; font-size: 0.85em; white-space: nowrap; }
 .lvl-btn { flex: 1; padding: 10px 6px; border: 1px solid #1a2438; border-radius: 10px;
   background: #141928; color: #7a8a9a; font-size: 0.72rem; cursor: pointer; font-family: inherit; }
 .lvl-btn.on { border-color: #f0c060; color: #f0c060; background: #1c1a10; }
@@ -60,7 +102,7 @@ body {
 .t-card { background: #0d1020; border: 1px solid #1a2438; border-radius: 12px;
   padding: 14px 16px; margin-bottom: 10px; }
 .t-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
-.t-name { font-size: 0.95rem; color: #ddd8cc; font-weight: 700; }
+.t-name { font-size: 1.08em; color: #ddd8cc; font-weight: 700; }
 .t-fr { font-size: 0.75rem; color: #60a0d0; font-family: Georgia, serif; font-style: italic; }
 .t-lvl { font-size: 0.6rem; padding: 2px 7px; border-radius: 5px; border: 1px solid #1a2438;
   color: #445060; }
@@ -69,13 +111,13 @@ body {
 .t-lvl.b2 { color: #c080d0; border-color: #38204a; }
 .t-cx { font-size: 0.62rem; color: #445060; text-decoration: none; margin-left: auto; }
 .t-cx:hover { color: #f0c060; }
-.t-how { font-size: 0.68rem; color: #7a8a9a; line-height: 1.65; margin: 6px 0 10px;
+.t-how { font-size: 0.82em; color: #7a8a9a; line-height: 1.65; margin: 6px 0 10px;
   padding-left: 10px; border-left: 2px solid #1a2438; }
 .t-how b { color: #ddd8cc; }
 .forms { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 10px; }
-.f { font-size: 0.84rem; color: #ddd8cc; font-family: Georgia, serif;
+.f { font-size: 1.02em; color: #ddd8cc; font-family: Georgia, serif;
   padding: 3px 0; border-bottom: 1px dotted #141928; }
-.f .p { color: #445060; font-size: 0.72rem; }
+.f .p { color: #445060; font-size: 0.8em; }
 .tts-btn { background: none; border: none; cursor: pointer; font-size: 0.8rem; padding: 0 4px;
   opacity: 0.5; }
 .tts-btn:hover { opacity: 1; }
@@ -124,13 +166,26 @@ body {
   <div class="big-note" id="verbNote"></div>
 </div>
 
-<div class="lvl-row">
-  <button class="lvl-btn on" data-lvl="exam">考前重點（A1–B1）</button>
-  <button class="lvl-btn" data-lvl="all">全部到 B2</button>
-  <button class="lvl-btn" data-lvl="b2">只看 B2</button>
+<div class="card-box" id="scopeBox">
+  <div class="card-title">② 要看哪些時態</div>
+  <div class="lvl-row">
+    <button class="lvl-btn on" data-scope="learned">⭐ 已經學過的</button>
+    <button class="lvl-btn" data-scope="core">🔥 只看要練熟的</button>
+    <button class="lvl-btn" data-scope="all">全部到 B2</button>
+    <button class="lvl-btn" data-scope="todo">⬜ 還沒上到的</button>
+  </div>
+  <div class="chips" id="tenseChips"></div>
+  <div class="scope-hint">點上面的按鈕換一組，或直接點下面的標籤自己加減。你的選擇會記在這台裝置上。</div>
 </div>
 
+<div id="compound"></div>
 <div id="tenses"></div>
+
+<div class="card-box" id="drillBox">
+  <div class="card-title">③ 背完了？直接考這個範圍</div>
+  <div id="drillBtns"></div>
+  <div class="scope-hint">考完按頁面左上角的「← 回變位總覽」就會跳回這裡，動詞和你勾的時態都留著。</div>
+</div>
 
 <div class="card-box">
   <div class="card-title">非限定形式</div>
@@ -148,13 +203,62 @@ body {
 <script src="sync_supabase.js"></script>
 <script>
 let current = 'prendre';
-let lvlMode = 'exam';
 
-const LVL_SETS = {
-  exam: ['A1', 'A2', 'B1'],
-  all:  ['A1', 'A2', 'B1', 'B2'],
-  b2:   ['B2'],
+/* ⭐ 2026-09-23 每個時態的「學到哪了」與「要練到什麼程度」──────────────
+   learned 的依據＝ gram_rules.js 的 unlocked 狀態（09-22 盤點：已解鎖 8 個）。
+   tier：produce＝要能自己產出／recognize＝老師明說「看得懂就好」。
+   ⚠️ conditionnel 標 recognize 是第35課老師親口說的（⛔ 不要改成 produce，
+      她圈的真正要產出的只有 je voudrais／tu pourrais・on pourrait／j'aimerais）。 */
+const TENSE_META = {
+  'present':           { learned:true,  tier:'produce'   },
+  'passe-compose':     { learned:true,  tier:'produce'   },
+  'imparfait':         { learned:true,  tier:'produce'   },
+  'futur-simple':      { learned:true,  tier:'produce'   },
+  'futur-proche':      { learned:true,  tier:'normal'    },
+  'passe-recent':      { learned:true,  tier:'normal'    },
+  'subjonctif':        { learned:true,  tier:'normal'    },
+  'conditionnel':      { learned:true,  tier:'recognize' },
+  'plus-que-parfait':  { learned:false, tier:'normal'    },
+  'futur-anterieur':   { learned:false, tier:'normal'    },
+  'conditionnel-passe':{ learned:false, tier:'normal'    },
+  'subjonctif-passe':  { learned:false, tier:'normal'    },
+  'passe-simple':      { learned:false, tier:'recognize' },
 };
+const metaOf = id => TENSE_META[id] || { learned:false, tier:'normal' };
+
+/* 選了哪些時態；⛔ key 刻意不用 clb7_ 開頭——那個前綴會被 sync_supabase.js 整包同步上雲 */
+const SCOPE_LS = 'vf_tenses', FOLD_LS = 'vf_folded';
+const SCOPES = {
+  learned: id => metaOf(id).learned,
+  core:    id => metaOf(id).tier === 'produce',
+  all:     () => true,
+  todo:    id => !metaOf(id).learned,
+};
+let picked = null;            // Set of tense id；null＝還沒選過，用預設
+let folded = new Set();
+
+function loadPrefs() {
+  try { const a = JSON.parse(localStorage.getItem(SCOPE_LS)); if (Array.isArray(a) && a.length) picked = new Set(a); } catch (e) {}
+  try { const f = JSON.parse(localStorage.getItem(FOLD_LS)); if (Array.isArray(f)) folded = new Set(f); } catch (e) {}
+}
+function savePrefs() {
+  try { localStorage.setItem(SCOPE_LS, JSON.stringify([...picked])); } catch (e) {}
+  try { localStorage.setItem(FOLD_LS, JSON.stringify([...folded])); } catch (e) {}
+}
+function allTenseIds() { return conjugate(VERBS_FULL.find(x => x.inf === current)).map(t => t.id); }
+function setScope(name) {
+  picked = new Set(allTenseIds().filter(SCOPES[name] || SCOPES.learned));
+  savePrefs(); render();
+}
+function toggleTense(id) {
+  if (!picked) picked = new Set(allTenseIds().filter(SCOPES.learned));
+  picked.has(id) ? picked.delete(id) : picked.add(id);
+  savePrefs(); render();
+}
+function toggleFold(id) {
+  folded.has(id) ? folded.delete(id) : folded.add(id);
+  savePrefs(); renderTenses(VERBS_FULL.find(x => x.inf === current));
+}
 
 function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -189,23 +293,100 @@ function renderStems(v) {
     (v.note ? `<br>${esc(v.note)}` : '');
 }
 
+const TIER_TAG = { produce:'🔥 要練熟', recognize:'👀 看得懂就好', normal:'' };
+
+function renderChips(all) {
+  document.getElementById('tenseChips').innerHTML = all.map(t => {
+    const m = metaOf(t.id), on = picked.has(t.id);
+    return `<button class="chip${on ? ' on' : ''}${on && m.tier === 'produce' ? ' produce' : ''}"
+      onclick="toggleTense('${t.id}')">${esc(t.name)}${m.learned ? '' : ' <span class="tag">⬜ 還沒上</span>'}${
+      m.tier !== 'normal' ? ` <span class="tag">${TIER_TAG[m.tier]}</span>` : ''}</button>`;
+  }).join('');
+}
+
+/* ⭐ 5 個複合時態是同一招：助動詞換一檔 ＋ 過去分詞。
+   Owen 已經會 passé composé，也已經會 imparfait／futur／conditionnel／subjonctif 的助動詞，
+   所以那 4 個「還沒上到」的其實零件都有了——這張卡就是要讓他看見這件事。 */
+const CPD = [
+  { id:'passe-compose',      aux:'現在式' },
+  { id:'plus-que-parfait',   aux:'imparfait' },
+  { id:'futur-anterieur',    aux:'futur simple' },
+  { id:'conditionnel-passe', aux:'conditionnel' },
+  { id:'subjonctif-passe',   aux:'subjonctif' },
+];
+function renderCompound(v, all) {
+  const byId = {}; all.forEach(t => byId[t.id] = t);
+  const rows = CPD.filter(c => byId[c.id]);
+  if (rows.length < 2) { document.getElementById('compound').innerHTML = ''; return; }
+  document.getElementById('compound').innerHTML = `
+    <div class="cpd">
+      <h3>⭐ 這 5 個時態是同一招</h3>
+      <div class="lead">全部都是 <b>助動詞 ${esc(v.aux)} 換一個時態 ＋ 過去分詞 ${esc(v.pp)}</b>。
+        你已經會 passé composé，也已經會下面每一個助動詞的變位——所以標「還沒上到」的那幾個，
+        <b style="color:#9ad060">零件你其實都有了，沒有新規則要背</b>。</div>
+      <table>
+        <tr><th>時態</th><th>助動詞用哪一檔</th><th>je 的樣子</th><th></th></tr>
+        ${rows.map(c => {
+          const t = byId[c.id], m = metaOf(c.id);
+          return `<tr><td>${esc(t.name)}<br><span style="font-size:.82em;color:#445060">${esc(t.fr)}</span></td>
+            <td>${esc(c.aux)}</td>
+            <td class="ex">${esc(display(t, 0, t.forms[0]))}</td>
+            <td class="${m.learned ? 'got' : 'new'}">${m.learned ? '✅ 學過' : '⬜ 還沒上'}</td></tr>`;
+        }).join('')}
+      </table>
+    </div>`;
+}
+
 function renderTenses(v) {
-  const want = LVL_SETS[lvlMode];
-  const list = conjugate(v).filter(t => want.includes(t.lvl));
-  document.getElementById('tenses').innerHTML = list.map((t, ti) => `
-    <div class="t-card">
-      <div class="t-head">
+  const all = conjugate(v);
+  if (!picked) picked = new Set(all.map(t => t.id).filter(SCOPES.learned));
+  renderChips(all);
+  renderCompound(v, all);
+  const list = all.filter(t => picked.has(t.id));
+  document.getElementById('tenses').innerHTML = list.map((t, ti) => {
+    const m = metaOf(t.id), isFold = folded.has(t.id);
+    return `
+    <div class="t-card${isFold ? ' fold' : ''}">
+      <div class="t-head" onclick="toggleFold('${t.id}')">
         <span class="t-name">${esc(t.name)}</span>
         <span class="t-fr">${esc(t.fr)}</span>
         <span class="t-lvl ${t.lvl.toLowerCase()}">${t.lvl}</span>
-        <button class="tts-btn" onclick="ttsTense(${ti})" title="唸一遍六個人稱">🔊</button>
-        <a class="t-cx" href="map.html#cx-${t.cx}">📍 ${t.cx}</a>
+        ${m.tier !== 'normal' ? `<span class="t-lvl">${TIER_TAG[m.tier]}</span>` : ''}
+        ${m.learned ? '' : '<span class="t-lvl">⬜ 還沒上</span>'}
+        <button class="tts-btn" onclick="event.stopPropagation();ttsTense(${ti})" title="唸一遍六個人稱">🔊</button>
+        <a class="t-cx" href="map.html#cx-${t.cx}" onclick="event.stopPropagation()">📍 ${t.cx}</a>
+        <span class="fold-mark">${isFold ? '▸ 展開' : '▾ 收起'}</span>
       </div>
       <div class="t-how">${esc(t.how)}</div>
       <div class="forms">${t.forms.map((f, i) =>
         `<div class="f">${esc(display(t, i, f))}</div>`).join('')}</div>
-    </div>`).join('') || '<div class="card-box" style="color:#445060;font-size:0.8rem">這個等級沒有時態</div>';
+    </div>`;
+  }).join('') || '<div class="card-box" style="color:#445060">一個時態都沒選——點上面的標籤加回來。</div>';
   window._shown = list;
+}
+
+/* verb_forms 的時態 id → verb_sprint 的 mode id（⚠️ 兩邊命名本來就不同）
+   ⛔ 沒列到的（futur proche／passé récent／四個複合時態）verb_sprint 沒有那個模式 */
+const SPRINT_MODE = {
+  'present':'present', 'passe-compose':'pc', 'imparfait':'imparfait',
+  'futur-simple':'futur', 'subjonctif':'subjonctif', 'conditionnel':'conditionnel',
+};
+function renderDrill(v) {
+  const picks = [...picked];
+  const can = picks.filter(id => SPRINT_MODE[id]);
+  const names = {}; conjugate(v).forEach(t => names[t.id] = t.name);
+  let h = '<div class="drill-row">';
+  if (can.length) {
+    h += can.map(id =>
+      `<a class="drill-btn" href="verb_sprint.html?mode=${SPRINT_MODE[id]}&back=vf&v=${encodeURIComponent(v.inf)}"
+         >⚡ 快問快答：${esc(names[id] || id)}</a>`).join('');
+  }
+  h += `<a class="drill-btn" href="table_drill.html?type=verb&back=vf&v=${encodeURIComponent(v.inf)}">📝 填表格：動詞變位</a>`;
+  h += '</div>';
+  const no = picks.filter(id => !SPRINT_MODE[id]);
+  if (no.length) h += `<div class="scope-hint">⚠️ 這幾個還沒有快問快答模式：${
+    no.map(id => esc(names[id] || id)).join('、')}——複合時態的衝刺還沒做，先用填表格。</div>`;
+  document.getElementById('drillBtns').innerHTML = h;
 }
 
 function renderNonFinite(v) {
@@ -219,14 +400,14 @@ function render() {
   renderPicker();
   renderStems(v);
   renderTenses(v);
+  renderDrill(v);
   renderNonFinite(v);
 }
 
 document.querySelectorAll('.lvl-btn').forEach(b => b.onclick = () => {
   document.querySelectorAll('.lvl-btn').forEach(x => x.classList.remove('on'));
   b.classList.add('on');
-  lvlMode = b.dataset.lvl;
-  renderTenses(VERBS_FULL.find(x => x.inf === current));
+  setScope(b.dataset.scope);
 });
 
 /* ── 發音（沿用全站統一的語音篩選優先序）── */
@@ -258,6 +439,7 @@ function ttsTense(ti) {
 }
 
 // 從別頁帶動詞過來：verb_forms.html?v=prendre
+loadPrefs();
 const qv = new URLSearchParams(location.search).get('v');
 if (qv && VERBS_FULL.some(x => x.inf === qv)) current = qv;
 render();

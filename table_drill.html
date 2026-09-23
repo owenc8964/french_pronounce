@@ -202,7 +202,7 @@
 <body>
 
 <h1>表格填空 · CLB7</h1>
-<p class="meta">← <a href="french_notes.html">筆記</a> &nbsp;·&nbsp; <a href="quiz.html">單題快速測驗</a></p>
+<p class="meta"><span id="backSlot"></span>← <a href="french_notes.html">筆記</a> &nbsp;·&nbsp; <a href="quiz.html">單題快速測驗</a></p>
 
 <div class="controls">
   <div class="btn-row">
@@ -1530,6 +1530,20 @@ const TABLES = [
 // ════════════════════════════════════════════════════════════
 let diff       = 'easy';  // 'easy' | 'mid' | 'hard'
 let typeFilter = 'all';
+/* ⭐ 2026-09-23：從動詞變位總覽帶範圍跳過來（?type=verb&back=vf&v=…），要能原路跳回去 */
+(function () {
+  const q = new URLSearchParams(location.search);
+  const t = q.get('type');
+  if (t && ['verb','adj','article','prep','gram','vocab'].includes(t)) typeFilter = t;
+  if (q.get('back') !== 'vf') return;
+  const v = q.get('v');
+  document.addEventListener('DOMContentLoaded', function () {
+    const slot = document.getElementById('backSlot');
+    if (!slot) return;
+    slot.innerHTML = '<a href="verb_forms.html' + (v ? '?v=' + encodeURIComponent(v) : '') +
+      '">← 回變位總覽</a> &nbsp;·&nbsp; ';
+  });
+})();
 let queue      = [];
 let qIdx       = 0;
 let totalOk    = 0, totalBad = 0;
