@@ -123,3 +123,22 @@
 1. **topic 都用既有的**（已 grep 核對）：第 36 課只有 `vocab-travail-manuel`／`vocab-voyage-sur-mesure` 兩個詞彙 topic，互助／共乘那幾題（accorderie 段）就掛 `vocab-travail-manuel`；第 35 課手作段（atelier、écharpe）掛 `vocab-consommation`。要不要替 accorderie／fait maison 另開 topic 由 Owen 決定。
 2. `les soldes` 那題問法比較彆扭（複數名詞問單數冠詞），不喜歡可以直接刪。
 3. 零之2 的 10 題舊題要不要順手修（B 類，不在這次範圍）。
+
+---
+
+## 三、同日研究 R25 回頭修正這批候選（[research/2026-09-25_法文名詞性別怎麼學.md](../research/2026-09-25_法文名詞性別怎麼學.md)）
+
+R25 的結論（Dewaele 2015：`l'` 開頭名詞對 A2–B1 特別難；Arnon & Ramscar 2012：冠詞要跟名詞一起學）讓第二節有 **5 題格式不對**：
+「_____ herbe → 底層是 le 還是 la？」這種題要他在一個**真實法文不會出現的位置**（la herbe）選冠詞，練到的是後設知識，不是整塊產出。
+
+| 題 | 問題 | 建議 |
+|---|---|---|
+| herbe | `une herbe` 意思會變（一種草本植物），`la herbe` 不存在 | ⏸ 找筆記裡有配合的句子改配合題；找不到就**刪** |
+| entraide | 不可數，沒有自然的 une | 同上 |
+| argent | 不可數（de l'argent） | 同上 |
+| alimentation | 不可數 | 同上 |
+| électroménager | 不可數 | 同上 |
+
+- ✅ 保留：用 un／une 當出口的母音開頭字（outil、orage、occasion、atelier、écharpe）與 `L'essence est très _____`（老師原句的配合題）——這就是 R25 建議的格式。
+- ⚠️ 陰陽比例：目前答案陽 12／陰 8。R25 來源 3：學習者預設猜陽性，陽性答案太多時「一律答 le」也能過。刪掉上面 5 題後會變陽 10／陰 5（更偏陽），下一批（第 29、32 課）優先補陰性字。
+- ✅ aNote 裡的字尾提示（-ment、-age、-tion）都在 Lyster 2006 預測率 ≥95% 的名單內，保留；-age 那題已附 plage／page／image 例外。
