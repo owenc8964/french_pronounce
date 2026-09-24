@@ -101,6 +101,9 @@ var TOPIC_LABELS_FR = {
  "conditionnel-present": "Conditionnel présent",
  "gerondif": "Le gérondif",
  "vocab-consommation": "La consommation",
+ "pc-imparfait-recit": "PC / imparfait (récit)",
+ "vocab-travail-manuel": "Le travail manuel",
+ "vocab-voyage-sur-mesure": "Voyage sur-mesure",
  "medias-audio-reseaux": "Médias audios et réseaux sociaux",
  "critique-film": "Faire une critique",
  "place-pronoms-cod-coi": "Place des pronoms COD/COI"

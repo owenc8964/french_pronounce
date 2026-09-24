@@ -424,8 +424,8 @@ header {
 <script src="tense_lens.js"></script>
 <script src="time_hall.js"></script>
 <script>
-const CURRENT_LESSON = 35;
-const TOTAL_LESSONS  = 35;
+const CURRENT_LESSON = 36;
+const TOTAL_LESSONS  = 36;
 
 const TILES = [
   // ── A1 ──────────────────────────────────────────────────────────
@@ -552,7 +552,7 @@ const TILES = [
 
   { id:'imparfait',    zone:'A2', icon:'🌊', name:"L'imparfait", gram:true, cat:'verbe-temps',
     hint:"Je me souviens · C'était · Il faisait", unlocked:true, lesson:20,
-    detail:'Pour descriptions et habitudes au passé (pas des actions ponctuelles). Formation: radical nous présent + -ais/-ais/-ait/-ions/-iez/-aient (être est irrégulier: j\'étais). L15: verbes impersonnels (il faisait, il y avait, c\'était). L20: conjugaison complète aux six personnes — le radical vient du nous présent, jamais de l\'infinitif (finir→nous finissons→je finissais; écrire→nous écrivons→j\'écrivais). Pièges d\'orthographe: -ger garde le e devant a (je mangeais / nous mangions), -cer prend ç (je déplaçais), radicaux en -i donnent deux i (nous étudiions). Contraste avec passé composé: description/habitude (imparfait) vs. action terminée (passé composé) — les deux coexistent dans un même récit.' },
+    detail:'Pour descriptions et habitudes au passé (pas des actions ponctuelles). Formation: radical nous présent + -ais/-ais/-ait/-ions/-iez/-aient (être est irrégulier: j\'étais). L15: verbes impersonnels (il faisait, il y avait, c\'était). L20: conjugaison complète aux six personnes — le radical vient du nous présent, jamais de l\'infinitif (finir→nous finissons→je finissais; écrire→nous écrivons→j\'écrivais). Pièges d\'orthographe: -ger garde le e devant a (je mangeais / nous mangions), -cer prend ç (je déplaçais), radicaux en -i donnent deux i (nous étudiions). Contraste avec passé composé: description/habitude (imparfait) vs. action terminée (passé composé) — les deux coexistent dans un même récit. L36 (unité 10) : dans le récit, l\'imparfait décrit la situation (une action qui dure), le passé composé introduit une nouvelle action, un changement — souvent après soudain, tout à coup, quand : Il était en route vers le Mexique quand il a eu l\'idée… ⭐ Pour l\'examen : savoir QUAND passer de l\'un à l\'autre.' },
 
   { id:'futur-proche', zone:'A2', icon:'🔮', name:'Futur proche', gram:true, cat:'verbe-temps',
     hint:'Je vais partir · Tu vas finir', unlocked:true, lesson:8,
@@ -657,6 +657,14 @@ const TILES = [
   { id:'pronoms-interrogatifs', zone:'A2', icon:'👉', name:'Les pronoms interrogatifs', gram:true, cat:'base',
     hint:'Lequel ? Laquelle ? Lesquels ?', unlocked:true, lesson:32,
     detail:"Les pronoms interrogatifs (leçon 32, unité 7) — lequel = le + quel, écrit en un seul mot. On l'utilise pour demander « lequel de ces éléments ? » quand les personnes ou les choses ont déjà été mentionnées : il indique un choix entre plusieurs éléments et il s'accorde en genre et en nombre avec le nom qu'il remplace. TABLEAU : lequel (masculin singulier), laquelle (féminin singulier), lesquels (masculin pluriel), lesquelles (féminin pluriel). Voici trois numéros d'urgence, lequel composez-vous ? Parmi les actions suivantes, lesquelles sont utiles ? Tes malades vont-ils mieux ? Lesquels peuvent sortir de l'hôpital ? ⚠️⚠️ QUEL OU LEQUEL : quel, quelle, quels, quelles sont des adjectifs, ils ont toujours besoin d'un nom (Tu préfères quel café ? Quelles gouttes pour le nez tu prends ?). Si le nom a déjà été dit, on ne le répète pas — les Français n'aiment pas répéter — et on passe à lequel (Lequel tu préfères ? à l'oral, Lequel préfères-tu ? à l'écrit). ⭐ D'après toi = à ton avis (≠ après toi)." },
+
+  { id:'travail-manuel-vocab', zone:'A2', icon:'🔨', name:'Le travail manuel', unlocked:true, lesson:36,
+    hint:'Monter un meuble · En panne · Verser une caution',
+    detail:"Le travail manuel (leçon 36, unité 9) — quatre groupes. LES TRAVAUX MANUELS : l'atelier, la couture (coudre : je couds, il coud, nous cousons — ⚠️ la prof a dit « nous coudrons », c'est le futur), créer, la cuisine, la décoration, la mécanique, monter un meuble (⚠️ = assembler, comme chez Ikea ; fabriquer = tout faire soi-même), le tricot (une pelote de laine), le tutoriel. LES MATIÈRES : en + matière, sans article — en bois, en carton, en coton, en cuir (⚠️ = cuire à l'oral), en fer (= faire à l'oral), en jean, en laine, en papier, en plastique, en tissu, en verre (un verre en verre ; verre / vert / ver / vers). LA RÉPARATION : abîmé (ça marche encore), cassé (vraiment cassé), en panne (l'appareil s'arrête tout seul — la prof le préfère pour un frigo), la panne, la pièce (aussi une pièce d'un euro), changer une pièce, poncer (⚠️ ≠ penser), réparer, le technicien. L'ÉQUIPEMENT : l'échelle, l'outil, la ponceuse, la scie (= ci = si à l'oral), la tondeuse à gazon / à cheveux, le rasoir. LES BRICOTHÈQUES : avoir l'embarras du choix (= beaucoup de choix), verser une caution (⚠️ = un dépôt, pas « attention »). L'ACCORDERIE (mot québécois) : échanger des services entre habitants — l'entraide, la solidarité, le repassage, le déménagement, avoir la main verte, le covoiturage, s'améliorer. LE TROC : Amenez un objet, partez avec un autre !" },
+
+  { id:'voyage-sur-mesure', zone:'A2', icon:'🧳', name:'Voyage sur-mesure', unlocked:true, lesson:36,
+    hint:'Envies d\'ailleurs ? · On part par là ! · Les incontournables',
+    detail:"Voyage sur-mesure (leçon 36, unité 10) — ailleurs (somewhere else), par là / par ici (quelque part par là, sans savoir exactement ; ici = exactement ici), sur mesure (fait pour vous, comme un vêtement sur mesure), un circuit (on revient au point de départ), un séjour, un devis (détails et prix d'un voyage), la capitale (Hanoï — ⚠️ pas Hô Chi Minh-Ville), une croisière inoubliable, une rizière, les locaux (les gens qui habitent là), les incontournables (ce qu'on ne peut pas contourner : à Taipei, la tour 101), un(e) Welcome Host francophone, découvrir une ville sous l'angle du quotidien, non plus comme un touriste mais comme un habitant. POUR STRUCTURER SON PROPOS : D'abord… Après… Ensuite… Enfin… EN AVION : décoller (le décollage), atterrir (l'atterrissage)." },
 
   { id:'medecine-urgences-vocab', zone:'A2', icon:'🚑', name:'La médecine et les urgences', unlocked:true, lesson:32,
     hint:'Au secours ! · Le SAMU · Être patraque',

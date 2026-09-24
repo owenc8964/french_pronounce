@@ -288,7 +288,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'imparfait', name:"L'imparfait", icon:'🌊', zone:'A2', cat:'verbe-temps',
-    lessons:[15,20], topics:['imparfait'], unlocked:true,
+    lessons:[15,20,36], topics:['imparfait','pc-imparfait-recit'], unlocked:true,   // 09-24 第36課（Édito A2 p.142）：passé composé／imparfait 在故事裡怎麼切換
     rule:{
       title:'未完成過去式 — 描述過去的狀態與習慣（完整六人稱）',
       why:'法文的兩個過去式不是「兩套要背的規則」，是攝影機的兩顆鏡頭：imparfait 是廣角鏡拍背景（當時天氣如何、場景長怎樣——名字本身就是拉丁文「未完成」，事情攤在那裡沒有起訖），passé composé 是特寫鏡頭拍事件（然後發生了什麼）。問自己「這句是佈景還是劇情」，鏡頭就選對了。至於變位為什麼要繞去 nous 形——因為 nous 形保留了動詞真正的字根（finissons 的 -iss-、écrivons 的 v），原形反而是被磨掉的版本；而字根一律避開 r 音，是為了不跟未來式（-rai/-ras）撞聲音。',
@@ -302,8 +302,12 @@ const GRAM_POINTS = [
         '用途分工：背景/狀態/過去習慣用 imparfait，「發生了一次的事」用 passé composé，同一段話兩者常並存',
         '時間副詞是路標：souvent／toujours／chaque jour／de temps en temps／à cette époque／quand j\'étais petit → imparfait',
         '🔊 je/tu/il/ils 四個字尾同音（/ɛ/），聽力靠主詞分辨不是靠字尾',
+        '⭐ 第36課：講故事時，imparfait 描述情境（持續中）、passé composé 帶出新動作（一次、轉變）。soudain／tout à coup／quand 後面通常是 passé composé',
+        '⭐ 🎙 最常見的句型：先 imparfait 搭場景，再 passé composé 帶出突然發生的事——Il était en route quand il a eu l\'idée…',
+        '🎙 老師的考試提醒：整段都用 imparfait 也講得通，但寫作／口說描述過去時一定要會切換（DELF 策略頁：描述用 imparfait、敘事用 passé composé）',
       ],
       examples:[
+        { fr:"Elle marchait en montagne quand elle a entendu un animal.", zh:'她在山裡走著，突然聽到動物的聲音。（場景＋事件）' },
         { fr:"Hier, il faisait mauvais.", zh:'昨天天氣不好。（描述→imparfait）' },
         { fr:"Quand j'étais petit, je partais en vacances avec mes parents.", zh:'我小時候會跟父母去度假。（過去習慣）' },
         { fr:"Je mangeais beaucoup, mais j'ai grossi.", zh:'我以前吃很多，但我變胖了。（習慣 imparfait ＋ 單次事件 PC）' },
@@ -649,7 +653,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'conditionnel', name:'Conditionnel présent', icon:'🎀', zone:'A2', cat:'verbe-mode',
-    lessons:[35], topics:['conditionnel-present'], unlocked:true,   // 09-22（第35課 Édito A2 p.128）；B1 的 'futur' 佔位點 name 寫「Futur & conditionnel」，兩半現在都在 A2 各自解鎖了
+    lessons:[35,36], topics:['conditionnel-present'], unlocked:true,   // 09-22（第35課 Édito A2 p.128）；B1 的 'futur' 佔位點 name 寫「Futur & conditionnel」，兩半現在都在 A2 各自解鎖了
     rule:{
       title:'條件式現在 — 把同一句話從「我要」調成「我想，是不是可以」',
       why:'未來式講的是「時間上的之後」；條件式講的是「現實上隔一層」——動作沒有真的發生，只是想要、建議、提議，所以說出口就不會像命令。它的零件全部是借來的，一個新東西都沒有：詞幹跟未來式一模一樣（整個原形，那個 r 一定在），字尾跟未完成過去一模一樣（-ais／-ais／-ait／-ions／-iez／-aient）。所以可以直接記成「未來式的 r ＋ 過去的字尾」＝本來會發生、但現在只是想想。也因為這樣，它最容易跟左右兩邊搞混：跟未來式只差一個 i（aimerions／aimerons），跟未完成過去只差一個 r（aimerait／aimait）。',
@@ -662,6 +666,9 @@ const GRAM_POINTS = [
         '不規則（續）：pouvoir→pourr-、vouloir→voudr-、devoir→devr-、venir→viendr-、il faut→il faudrait',
         '⭐⭐ 🎙 老師的考試定位：這個時態「看得懂就好，不用會講」——真正要產出的只有三個：je voudrais、tu pourrais／on pourrait、j\'aimerais',
         '⭐ On pourrait… 不只是「可以嗎」，更常是提議「我們可以…啊」',
+        '第36課第五個用途：想像不是真的事、做假設——Dans un monde sans argent, il n\'y aurait pas de banques.',
+        '🎙 跟未來式的分法：Nous n\'achèterons pas…＝宣布決定；Nous n\'achèterions pas…＝在想像',
+        '⚠️ 搭 si 的標準用法：si＋imparfait → conditionnel（Si j\'avais…, j\'aurais…）；si＋présent → futur 是另一組（第25課），⛔ 不能交叉',
       ],
       examples:[
         { fr:'Je voudrais un café.', zh:'我想要一杯咖啡。（禮貌請求）' },

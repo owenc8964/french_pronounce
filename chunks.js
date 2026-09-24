@@ -17290,5 +17290,803 @@ const CHUNKS = [
   "fr": "savoir",
   "zh": "⚠️ 不規則",
   "note": "en sachant"
+ },
+ {
+  "id": "L36_Pourriez_vous_m_explique",
+  "lesson": 36,
+  "fr": "Pourriez-vous m'expliquer comment faire ?",
+  "zh": "您能告訴我要怎麼做嗎？",
+  "note": "⭐ 課本「demander un service」框。倒裝＋conditionnel＝寫信最正式的請求"
+ },
+ {
+  "id": "L36_J_ai_besoin_d_aide_en_al",
+  "lesson": 36,
+  "fr": "J'ai besoin d'aide en allemand.",
+  "zh": "我需要德文方面的幫忙。",
+  "note": "⭐ 課本「demander un service」框"
+ },
+ {
+  "id": "L36_Je_cherche_donc_quelqu_u",
+  "lesson": 36,
+  "fr": "Je cherche donc quelqu'un avec qui pratiquer cette langue.",
+  "zh": "所以我在找人跟我練這個語言。",
+  "note": "⭐ 課本「demander un service」框。avec qui＋原形"
+ },
+ {
+  "id": "L36_Je_souhaiterais_échanger",
+  "lesson": 36,
+  "fr": "Je souhaiterais échanger des services.",
+  "zh": "我想交換服務。",
+  "note": "⭐ 課本「proposer un service」框"
+ },
+ {
+  "id": "L36_J_attends_votre_réponse",
+  "lesson": 36,
+  "fr": "J'attends votre réponse avec impatience.",
+  "zh": "期待您的回覆。",
+  "note": "⭐ 課本原句。🎙 老師：email 永遠要很客氣"
+ },
+ {
+  "id": "L36_On_échangerait_nos_vêtem",
+  "lesson": 36,
+  "fr": "On échangerait nos vêtements.",
+  "zh": "我們會交換衣服。",
+  "note": "課本練習2b。🎙 老師：字尾想成 imparfait"
+ },
+ {
+  "id": "L36_Vous_devriez_essayer_le",
+  "lesson": 36,
+  "fr": "Vous devriez essayer le troc, c'est très bien !",
+  "zh": "你們應該試試以物易物，很不錯！",
+  "note": "課本練習1a。devoir → devr-。🎙 老師：給人建議時很好用"
+ },
+ {
+  "id": "L36_On_pourrait_proposer_nos",
+  "lesson": 36,
+  "fr": "On pourrait proposer nos services dans une accorderie !",
+  "zh": "我們可以去 accorderie 提供服務啊！",
+  "note": "課本練習1c。⭐ 產出型三個之一：on pourrait＝提議"
+ },
+ {
+  "id": "L36_Tu_m_aiderais_à_réparer",
+  "lesson": 36,
+  "fr": "Tu m'aiderais à réparer ma voiture, s'il te plaît ?",
+  "zh": "你可以幫我修車嗎？",
+  "note": "課本練習1e。⭐ 🎙 老師：tu m'aideras（futur）聽起來像在逼對方；tu m'aiderais 比較客氣，對方比較會答應"
+ },
+ {
+  "id": "L36_Elle_a_décoré_sa_maison",
+  "lesson": 36,
+  "fr": "Elle a décoré sa maison en chantant.",
+  "zh": "她一邊唱歌一邊佈置家裡。",
+  "note": "課本練習2a（自由作答），🎙 老師示範"
+ },
+ {
+  "id": "L36_Il_a_amélioré_son_frança",
+  "lesson": 36,
+  "fr": "Il a amélioré son français en regardant Netflix.",
+  "zh": "他靠看 Netflix 讓法文進步。",
+  "note": "課本練習2b，🎙 老師示範（方式）"
+ },
+ {
+  "id": "L36_Nous_avons_appris_à_coud",
+  "lesson": 36,
+  "fr": "Nous avons appris à coudre en prenant un cours.",
+  "zh": "我們是去上課學會縫紉的。",
+  "note": "課本練習2c，🎙 老師示範"
+ },
+ {
+  "id": "L36_Vous_pouvez_gagner_de_l",
+  "lesson": 36,
+  "fr": "Vous pouvez gagner de l'argent en travaillant.",
+  "zh": "你們可以靠工作賺錢。",
+  "note": "課本練習2d，🎙 老師示範。gagner de l'argent＝賺錢"
+ },
+ {
+  "id": "L36_Gagner_de_l_argent_en_do",
+  "lesson": 36,
+  "fr": "Gagner de l'argent en dormant.",
+  "zh": "睡覺也能賺錢。",
+  "note": "🎙 老師：YouTube 上很多人這樣講（買我的 ETF，睡覺就能賺錢）——聽到這句通常是詐騙"
+ },
+ {
+  "id": "L36_J_ai_réparé_mon_frigo_en",
+  "lesson": 36,
+  "fr": "J'ai réparé mon frigo en regardant des tutoriels.",
+  "zh": "我看教學影片把冰箱修好了。",
+  "note": "課本練習2e，🎙 老師示範（她說也可以用 en voyant，但 regarder 比較自然）"
+ },
+ {
+  "id": "L36_Je_donne",
+  "lesson": 36,
+  "fr": "Je donne…",
+  "zh": "免費送出…",
+  "note": "⭐ 課本「Pour écrire une annonce」框"
+ },
+ {
+  "id": "L36_Je_cherche",
+  "lesson": 36,
+  "fr": "Je cherche…",
+  "zh": "徵求…",
+  "note": "⭐ 同上"
+ },
+ {
+  "id": "L36_J_aimerais_avoir_des_inf",
+  "lesson": 36,
+  "fr": "J'aimerais avoir des informations sur…",
+  "zh": "我想了解一下…",
+  "note": "⭐ 課本「Pour demander des renseignements」框"
+ },
+ {
+  "id": "L36_De_quelle_couleur_elle_e",
+  "lesson": 36,
+  "fr": "De quelle couleur elle est ?",
+  "zh": "它是什麼顏色？",
+  "note": "⭐ 同上"
+ },
+ {
+  "id": "L36_Elle_est_lourde_ou_légèr",
+  "lesson": 36,
+  "fr": "Elle est lourde ou légère ?",
+  "zh": "它重還是輕？",
+  "note": "⭐ 同上。⚠️ Owen 當堂不認得 lourd／léger"
+ },
+ {
+  "id": "L36_En_quelle_matière_il_est",
+  "lesson": 36,
+  "fr": "En quelle matière il est ?",
+  "zh": "它是什麼材質？",
+  "note": "⭐ 同上。🎙 老師指著瓶子：Elle est en verre."
+ },
+ {
+  "id": "L36_Tu_pourrais_m_aider_à_s",
+  "lesson": 36,
+  "fr": "Tu pourrais m'aider à…, s'il te plaît ?",
+  "zh": "你可以幫我…嗎？",
+  "note": "⭐ 同上"
+ },
+ {
+  "id": "L36_Ça_te_dirait_de",
+  "lesson": 36,
+  "fr": "Ça te dirait de… ?",
+  "zh": "你想不想…？",
+  "note": "⭐ 同上（第35課錯過的那一格：提議）"
+ },
+ {
+  "id": "L36_Quand_est_ce_que_tu_es_l",
+  "lesson": 36,
+  "fr": "Quand est-ce que tu es libre ?",
+  "zh": "你什麼時候有空？",
+  "note": "⭐ 同上"
+ },
+ {
+  "id": "L36_Vous_pourrez_d_abord_déc",
+  "lesson": 36,
+  "fr": "Vous pourrez d'abord découvrir la capitale, Hanoï.",
+  "zh": "您可以先認識首都河內。",
+  "note": "課本原句。⭐ d'abord＝首先"
+ },
+ {
+  "id": "L36_D_abord_Après_Ensuite_En",
+  "lesson": 36,
+  "fr": "D'abord… Après… Ensuite… Enfin…",
+  "zh": "首先…然後…接著…最後…",
+  "note": "⭐ 課本「Pour structurer son propos」框——寫行程信、講經驗都用這組"
+ },
+ {
+  "id": "L36_Elle_marchait_en_montagn",
+  "lesson": 36,
+  "fr": "Elle marchait en montagne quand elle a entendu un animal.",
+  "zh": "她在山裡走著，突然聽到一隻動物的聲音。",
+  "note": "課本練習3b。🎙 老師：這題沒寫 soudain，但意思就是突然"
+ },
+ {
+  "id": "L36_L_avion_décolle_à_8_heur",
+  "lesson": 36,
+  "fr": "L'avion décolle à 8 heures ?",
+  "zh": "飛機八點起飛？",
+  "note": "⭐ décoller／atterrir"
+ },
+ {
+  "id": "L36_Tu_te_rappelles_la_laine",
+  "lesson": 36,
+  "fr": "Tu te rappelles la laine ?",
+  "zh": "你記得 laine 嗎？",
+  "note": "⭐ se rappeler＝記得（上一課學過）"
+ },
+ {
+  "id": "L36_Mon_père_était_menuisier",
+  "lesson": 36,
+  "fr": "Mon père était menuisier, donc je l'aidais à poncer.",
+  "zh": "我爸是木匠，所以我以前會幫他磨木頭。",
+  "note": "⭐ 本課主文法的活例子：過去的身分與習慣 → imparfait"
+ },
+ {
+  "id": "L36_Ah_je_te_rejoins",
+  "lesson": 36,
+  "fr": "Ah, je te rejoins.",
+  "zh": "啊，我去找你。",
+  "note": "⭐ 約見面超常用：對方說在哪裡，你就回這句"
+ },
+ {
+  "id": "L36_On_est_bons_pour_aujourd",
+  "lesson": 36,
+  "fr": "On est bons pour aujourd'hui ?",
+  "zh": "今天這樣可以嗎？",
+  "note": "⭐ 老師收尾的固定問法"
+ },
+ {
+  "id": "L36_Nous_n_achèterions_pas_d",
+  "lesson": 36,
+  "fr": "Nous n'achèterions pas de choses inutiles.",
+  "zh": "我們不會買沒用的東西。",
+  "note": "❓ 當堂問 -ons 還是 -ions。⭐ 想像的事→條件式 -ions；-ons（achèterons）是未來式，意思變成「宣布我們不會再買」"
+ },
+ {
+  "id": "L36_le_travail_manuel",
+  "lesson": 36,
+  "fr": "le travail manuel",
+  "zh": "手作、動手做的工作",
+  "note": "複數 les travaux manuels"
+ },
+ {
+  "id": "L36_monter_un_meuble",
+  "lesson": 36,
+  "fr": "monter un meuble",
+  "zh": "組裝家具",
+  "note": "⚠️ 🎙 Owen 以為是「把家具搬上去」。老師：這裡的 monter＝組起來（像 IKEA）；fabriquer 才是從零開始、自己裁木頭做出來"
+ },
+ {
+  "id": "L36_un_meuble",
+  "lesson": 36,
+  "fr": "un meuble",
+  "zh": "一件家具",
+  "note": "🎙 furniture"
+ },
+ {
+  "id": "L36_coudre",
+  "lesson": 36,
+  "fr": "coudre",
+  "zh": "縫",
+  "note": "名詞 la couture。⚠️ 不規則變位見下面的說明框"
+ },
+ {
+  "id": "L36_créer",
+  "lesson": 36,
+  "fr": "créer",
+  "zh": "創作",
+  "note": ""
+ },
+ {
+  "id": "L36_un_cadre",
+  "lesson": 36,
+  "fr": "un cadre",
+  "zh": "相框、畫框",
+  "note": "🎙 老師：框本身才是 cadre，不是裡面的照片；裡面可以放照片或畫"
+ },
+ {
+  "id": "L36_une_pelote_de_laine",
+  "lesson": 36,
+  "fr": "une pelote de laine",
+  "zh": "一球毛線",
+  "note": "🎙 老師看圖說的（所以 a 題是 le tricot）"
+ },
+ {
+  "id": "L36_avoir_l_embarras_du_choi",
+  "lesson": 36,
+  "fr": "avoir l'embarras du choix",
+  "zh": "選擇多到挑不完",
+  "note": "課本註＝beaucoup de choix。🎙 embarras 本來是「尷尬」，但這個片語是好事"
+ },
+ {
+  "id": "L36_verser_une_caution",
+  "lesson": 36,
+  "fr": "verser une caution",
+  "zh": "付押金",
+  "note": "課本註＝une garantie。⚠️⚠️ 假朋友：不是英文的 caution（小心）。🎙 租房子先付兩個月，還東西時拿回來"
+ },
+ {
+  "id": "L36_en_bois",
+  "lesson": 36,
+  "fr": "en bois",
+  "zh": "木頭做的",
+  "note": "第35課回鍋（le bois≠je bois）"
+ },
+ {
+  "id": "L36_en_carton",
+  "lesson": 36,
+  "fr": "en carton",
+  "zh": "紙板做的",
+  "note": ""
+ },
+ {
+  "id": "L36_en_coton",
+  "lesson": 36,
+  "fr": "en coton",
+  "zh": "棉做的",
+  "note": "🎙 跟英文 cotton 一樣"
+ },
+ {
+  "id": "L36_en_cuir",
+  "lesson": 36,
+  "fr": "en cuir",
+  "zh": "皮革做的",
+  "note": "🎙 leather（皮）。⚠️ 跟 cuire（煮）同音"
+ },
+ {
+  "id": "L36_en_fer",
+  "lesson": 36,
+  "fr": "en fer",
+  "zh": "鐵做的",
+  "note": "🎙 英文 ferric 同源。⚠️ 跟 faire 同音"
+ },
+ {
+  "id": "L36_en_jean",
+  "lesson": 36,
+  "fr": "en jean",
+  "zh": "牛仔布做的",
+  "note": "un sac en jean"
+ },
+ {
+  "id": "L36_en_papier",
+  "lesson": 36,
+  "fr": "en papier",
+  "zh": "紙做的",
+  "note": "🎙 un origami en papier"
+ },
+ {
+  "id": "L36_en_plastique",
+  "lesson": 36,
+  "fr": "en plastique",
+  "zh": "塑膠做的",
+  "note": ""
+ },
+ {
+  "id": "L36_en_verre",
+  "lesson": 36,
+  "fr": "en verre",
+  "zh": "玻璃做的",
+  "note": "🎙 un verre en verre＝玻璃杯（兩個 verre 同一個字）"
+ },
+ {
+  "id": "L36_une_matière",
+  "lesson": 36,
+  "fr": "une matière",
+  "zh": "材質",
+  "note": "⚠️ 🎙 Owen 在 p.137 卡住。En quelle matière il est ?＝它是什麼做的？"
+ },
+ {
+  "id": "L36_abîmé_abîmée",
+  "lesson": 36,
+  "fr": "abîmé, abîmée",
+  "zh": "有損傷的、舊了",
+  "note": "🎙 老師：刮到、摔到，還能用，只是不像新的"
+ },
+ {
+  "id": "L36_en_panne",
+  "lesson": 36,
+  "fr": "en panne",
+  "zh": "故障、不動了",
+  "note": "⭐ 🎙 老師：電器自己停掉用 en panne（Mon frigo est en panne.）"
+ },
+ {
+  "id": "L36_la_panne",
+  "lesson": 36,
+  "fr": "la panne",
+  "zh": "故障的地方",
+  "note": "🎙 je n'ai pas trouvé la panne＝找不到是哪裡壞"
+ },
+ {
+  "id": "L36_une_pièce",
+  "lesson": 36,
+  "fr": "une pièce",
+  "zh": "零件",
+  "note": "⚠️ 一詞多義：零件（changer une pièce）／硬幣（une pièce d'un euro）／房間（第9課）"
+ },
+ {
+  "id": "L36_changer_une_pièce",
+  "lesson": 36,
+  "fr": "changer une pièce",
+  "zh": "換零件",
+  "note": "🎙 修車最常用；手機換電池也是"
+ },
+ {
+  "id": "L36_poncer",
+  "lesson": 36,
+  "fr": "poncer",
+  "zh": "用砂紙磨",
+  "note": "🎙 老師的爸爸是木匠，她小時候幫忙磨木頭賺零用錢。⚠️ 跟 penser 只差一個鼻音"
+ },
+ {
+  "id": "L36_un_technicien_une_techni",
+  "lesson": 36,
+  "fr": "un technicien, une technicienne",
+  "zh": "技術人員、師傅",
+  "note": "🎙 修電、修水都叫 technicien"
+ },
+ {
+  "id": "L36_une_réparation",
+  "lesson": 36,
+  "fr": "une réparation",
+  "zh": "修理（名詞）",
+  "note": "← réparer"
+ },
+ {
+  "id": "L36_un_outil",
+  "lesson": 36,
+  "fr": "un outil",
+  "zh": "工具",
+  "note": "🎙 tools。plein d'outils"
+ },
+ {
+  "id": "L36_une_échelle",
+  "lesson": 36,
+  "fr": "une échelle",
+  "zh": "梯子",
+  "note": "peindre le haut d'un mur"
+ },
+ {
+  "id": "L36_une_scie",
+  "lesson": 36,
+  "fr": "une scie",
+  "zh": "鋸子",
+  "note": "couper du bois。⚠️ 跟 si／ci 同音"
+ },
+ {
+  "id": "L36_une_ponceuse",
+  "lesson": 36,
+  "fr": "une ponceuse",
+  "zh": "砂磨機",
+  "note": "← poncer（-euse＝做這件事的機器）"
+ },
+ {
+  "id": "L36_une_tondeuse_à_gazon",
+  "lesson": 36,
+  "fr": "une tondeuse à gazon",
+  "zh": "割草機",
+  "note": "couper l'herbe du jardin"
+ },
+ {
+  "id": "L36_une_tondeuse_à_cheveux",
+  "lesson": 36,
+  "fr": "une tondeuse à cheveux",
+  "zh": "電動理髮器",
+  "note": "🎙 同一個字：貼著東西一路剪過去。也有 tondeuse à barbe"
+ },
+ {
+  "id": "L36_un_rasoir",
+  "lesson": 36,
+  "fr": "un rasoir",
+  "zh": "刮鬍刀",
+  "note": "🎙 像英文 razor"
+ },
+ {
+  "id": "L36_l_herbe_f",
+  "lesson": 36,
+  "fr": "l'herbe (f.)",
+  "zh": "草",
+  "note": "le gazon＝草坪"
+ },
+ {
+  "id": "L36_une_accorderie",
+  "lesson": 36,
+  "fr": "une accorderie",
+  "zh": "鄰里服務交換社",
+  "note": "魁北克用語。成員叫 un accordeur, une accordeuse"
+ },
+ {
+  "id": "L36_échanger_des_services",
+  "lesson": 36,
+  "fr": "échanger des services",
+  "zh": "交換服務",
+  "note": "échanger et coopérer"
+ },
+ {
+  "id": "L36_l_entraide_f",
+  "lesson": 36,
+  "fr": "l'entraide (f.)",
+  "zh": "互助",
+  "note": "🎙 entre＋aide＝互相幫忙"
+ },
+ {
+  "id": "L36_la_solidarité",
+  "lesson": 36,
+  "fr": "la solidarité",
+  "zh": "團結、互相扶持",
+  "note": "🎙 能信任、幫忙鄰居"
+ },
+ {
+  "id": "L36_le_repassage",
+  "lesson": 36,
+  "fr": "le repassage",
+  "zh": "燙衣服",
+  "note": "動詞 repasser。🎙 老師在法國會燙，在台灣不燙"
+ },
+ {
+  "id": "L36_le_déménagement",
+  "lesson": 36,
+  "fr": "le déménagement",
+  "zh": "搬家",
+  "note": "動詞 déménager"
+ },
+ {
+  "id": "L36_la_garde_d_enfants",
+  "lesson": 36,
+  "fr": "la garde d'enfants",
+  "zh": "顧小孩",
+  "note": "garder les enfants de quelqu'un"
+ },
+ {
+  "id": "L36_rejoindre",
+  "lesson": 36,
+  "fr": "rejoindre",
+  "zh": "加入、去跟…會合",
+  "note": "🎙 Je suis au métro de Banqiao. — Ah, je te rejoins !"
+ },
+ {
+  "id": "L36_le_fonctionnement",
+  "lesson": 36,
+  "fr": "le fonctionnement",
+  "zh": "運作方式",
+  "note": "🎙 the way it works ← fonctionner"
+ },
+ {
+  "id": "L36_avoir_la_main_verte",
+  "lesson": 36,
+  "fr": "avoir la main verte",
+  "zh": "很會種植物",
+  "note": "🎙 綠手指。中文說「手指」，法文說「手」"
+ },
+ {
+  "id": "L36_améliorer",
+  "lesson": 36,
+  "fr": "améliorer",
+  "zh": "改進（某樣東西）",
+  "note": "🎙 Apple a amélioré le téléphone."
+ },
+ {
+  "id": "L36_s_améliorer",
+  "lesson": 36,
+  "fr": "s'améliorer",
+  "zh": "（自己）進步",
+  "note": "🎙 Je m'améliore vite en français."
+ },
+ {
+  "id": "L36_Bien_cordialement",
+  "lesson": 36,
+  "fr": "Bien cordialement",
+  "zh": "（信尾）敬祝，順頌",
+  "note": "🎙 老師：法國跟不熟的人寫信一律 Cordialement；加 Bien 稍微親切一點。⚠️ 不是 sincèrement"
+ },
+ {
+  "id": "L36_le_troc",
+  "lesson": 36,
+  "fr": "le troc",
+  "zh": "以物易物",
+  "note": "🎙 帶想換的東西去，別人跟你開條件：「你的電腦換我的手機」"
+ },
+ {
+  "id": "L36_faire_du_troc",
+  "lesson": 36,
+  "fr": "faire du troc",
+  "zh": "以物換物",
+  "note": "🎙 老師：有錢以前大家都這樣；發明錢就是為了不用直接換"
+ },
+ {
+  "id": "L36_amener",
+  "lesson": 36,
+  "fr": "amener",
+  "zh": "帶（人或物）來",
+  "note": "🎙 bring。規則 -er 動詞：Amenez un objet !"
+ },
+ {
+  "id": "L36_un_consommateur_responsa",
+  "lesson": 36,
+  "fr": "un consommateur responsable",
+  "zh": "負責任的消費者",
+  "note": "🎙 不亂買東西的人"
+ },
+ {
+  "id": "L36_se_porter_bien",
+  "lesson": 36,
+  "fr": "se porter bien",
+  "zh": "狀況良好",
+  "note": "🎙 porter＝帶；se porter＝自己的狀態。Je me porte bien.＝Je me sens bien."
+ },
+ {
+  "id": "L36_une_vêtothèque",
+  "lesson": 36,
+  "fr": "une vêtothèque",
+  "zh": "衣服出借處",
+  "note": "🎙 跟 bibliothèque 同一個 -thèque：可以借東西的地方"
+ },
+ {
+  "id": "L36_ailleurs",
+  "lesson": 36,
+  "fr": "ailleurs",
+  "zh": "別的地方",
+  "note": "🎙 somewhere else。Envies d'ailleurs？＝想去別處嗎"
+ },
+ {
+  "id": "L36_par_là",
+  "lesson": 36,
+  "fr": "par là",
+  "zh": "那一帶、往那邊",
+  "note": "⭐ 🎙 là＝就在那；par là／par ici＝大概在那附近（不確定確切位置）"
+ },
+ {
+  "id": "L36_sur_mesure",
+  "lesson": 36,
+  "fr": "sur mesure",
+  "zh": "量身訂做的",
+  "note": "🎙 un vêtement sur mesure＝照你身材做的衣服；un voyage sur mesure＝客製行程"
+ },
+ {
+  "id": "L36_un_circuit",
+  "lesson": 36,
+  "fr": "un circuit",
+  "zh": "環狀行程",
+  "note": "🎙 從一個地方出發，最後回到同一個地方"
+ },
+ {
+  "id": "L36_un_devis",
+  "lesson": 36,
+  "fr": "un devis",
+  "zh": "報價單",
+  "note": "課本練習6：給行程細節和價格（不是付款確認）"
+ },
+ {
+  "id": "L36_la_capitale",
+  "lesson": 36,
+  "fr": "la capitale",
+  "zh": "首都",
+  "note": "découvrir la capitale, Hanoï"
+ },
+ {
+  "id": "L36_une_croisière",
+  "lesson": 36,
+  "fr": "une croisière",
+  "zh": "遊船行程",
+  "note": "🎙 cruise"
+ },
+ {
+  "id": "L36_une_rizière",
+  "lesson": 36,
+  "fr": "une rizière",
+  "zh": "稻田",
+  "note": "← le riz。🎙 老師：台灣東部很多"
+ },
+ {
+  "id": "L36_les_locaux_m",
+  "lesson": 36,
+  "fr": "les locaux (m.)",
+  "zh": "當地人",
+  "note": "單數 un local。🎙 住在那裡的人"
+ },
+ {
+  "id": "L36_les_incontournables_m",
+  "lesson": 36,
+  "fr": "les incontournables (m.)",
+  "zh": "必去景點",
+  "note": "🎙 contourner＝繞過 → 繞不過的。台北就是 101、中正紀念堂"
+ },
+ {
+  "id": "L36_francophone",
+  "lesson": 36,
+  "fr": "francophone",
+  "zh": "講法語的",
+  "note": ""
+ },
+ {
+  "id": "L36_sous_l_angle_du_quotidie",
+  "lesson": 36,
+  "fr": "sous l'angle du quotidien",
+  "zh": "從日常生活的角度",
+  "note": "🎙 l'angle＝角度；le quotidien＝日常"
+ },
+ {
+  "id": "L36_autrement",
+  "lesson": 36,
+  "fr": "autrement",
+  "zh": "用不同的方式",
+  "note": "découvrir une ville autrement"
+ },
+ {
+  "id": "L36_décoller",
+  "lesson": 36,
+  "fr": "décoller",
+  "zh": "起飛",
+  "note": "🎙 開場閒聊。名詞 le décollage"
+ },
+ {
+  "id": "L36_atterrir",
+  "lesson": 36,
+  "fr": "atterrir",
+  "zh": "降落",
+  "note": "🎙 名詞 l'atterrissage"
+ },
+ {
+  "id": "L36_un_récit",
+  "lesson": 36,
+  "fr": "un récit",
+  "zh": "敘述、故事",
+  "note": "dans un récit au passé"
+ },
+ {
+  "id": "L36_trouver_le_temps_long",
+  "lesson": 36,
+  "fr": "trouver le temps long",
+  "zh": "覺得很無聊",
+  "note": "🎙 覺得時間太長、沒事做"
+ },
+ {
+  "id": "L36_profiter_de_l_occasion",
+  "lesson": 36,
+  "fr": "profiter de l'occasion",
+  "zh": "趁這個機會",
+  "note": "🎙 利用這件事去做別的事"
+ },
+ {
+  "id": "L36_soudain",
+  "lesson": 36,
+  "fr": "soudain",
+  "zh": "突然",
+  "note": "⭐ passé composé 的路標"
+ },
+ {
+  "id": "L36_tout_à_coup",
+  "lesson": 36,
+  "fr": "tout à coup",
+  "zh": "突然間",
+  "note": "🎙 all of a sudden，跟 soudain 差不多"
+ },
+ {
+  "id": "L36_éclater",
+  "lesson": 36,
+  "fr": "éclater",
+  "zh": "爆開、突然爆發",
+  "note": "🎙 本來是「啪一聲破掉」；un orage éclate＝雷雨突然下來"
+ },
+ {
+  "id": "L36_un_orage",
+  "lesson": 36,
+  "fr": "un orage",
+  "zh": "雷雨",
+  "note": "🎙 台灣很常見"
+ },
+ {
+  "id": "L36_se_mettre_à_l_abri",
+  "lesson": 36,
+  "fr": "se mettre à l'abri",
+  "zh": "躲起來、找地方避",
+  "note": "l'abri＝遮蔽處"
+ },
+ {
+  "id": "L36_apercevoir",
+  "lesson": 36,
+  "fr": "apercevoir",
+  "zh": "遠遠看到、瞥見",
+  "note": "🎙 to perceive from far away，看得不太清楚。過去分詞 aperçu"
+ },
+ {
+  "id": "L36_perdre_l_équilibre",
+  "lesson": 36,
+  "fr": "perdre l'équilibre",
+  "zh": "失去平衡",
+  "note": "🎙 lose your balance → 然後就跌倒"
+ },
+ {
+  "id": "L36_se_blesser_au_genou",
+  "lesson": 36,
+  "fr": "se blesser au genou",
+  "zh": "傷到膝蓋",
+  "note": ""
+ },
+ {
+  "id": "L36_une_randonnée",
+  "lesson": 36,
+  "fr": "une randonnée",
+  "zh": "健行",
+  "note": "回鍋"
  }
 ];

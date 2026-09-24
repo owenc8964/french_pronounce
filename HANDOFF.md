@@ -21,7 +21,7 @@
 |---|---|
 | **考試** | **2027-04-18 前哨戰／診斷考｜2027-09-19 正場**。⚠️ 2027 場次官方**尚未公布**，日期是照 2026（2/8、4/19、9/20、12/20，全是該月第三個星期日）推的。**法協 02-2364-8833 那通電話還沒打。** |
 | **考哪個** | **TCF Canada**（台北法協有考，NT$8,000 四科）。TEF Canada 台灣**無考場**，要考得飛東京 |
-| **程度** | A2，第 34 課（筆記＋九項連動完成；Anki 第33課 42 張、第34課 **44 張**已產出、待匯入（`~/Desktop/anki_l33_auto.tsv`、`~/Desktop/anki_l34_auto.tsv`），收藏檔 711 張）。2026-05 開始學法文 |
+| **程度** | A2，**第 36 課**（09-24 筆記＋連動完成，見「三之十八」）。第 34 課（筆記＋九項連動完成；Anki 第33課 42 張、第34課 **44 張**已產出、待匯入（`~/Desktop/anki_l33_auto.tsv`、`~/Desktop/anki_l34_auto.tsv`），收藏檔 711 張）。2026-05 開始學法文 |
 | **口說語言島** | ⭐ **Phase 0 八座全滿**（AC1/2/3/5/7/8/11/15），每座 169–225 字 / 78–103 秒，中文母本 `source_zh` 都在。`AC8` 的 follow-up gap **掛零** |
 | **考試材料** | 三包全部整理完。**Tâche 3 = 167 議題／245 變體**（xlsx 八分頁）＋ 119 題雙語；⭐ **Tâche 2 = 160 條情境**（不是 20，見 09-02 校準）；兩本 Ellipses 正式教科書 |
 | **系統** | `mock.html` 已驗收（44+44 套模擬考可用）。dashboard／tracker 倒數已對齊新日期 |
@@ -4861,6 +4861,20 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
     → `TENSE_META` 加 `rec`／`recNote`，卡片與 chip 改成**兩軸並列**（🗣 自己要講／要寫　👂 聽到／讀到要懂）。⛔ **以後引用這些百分比一定要講清楚是哪一側。**
     ⭐ 順帶進頁面的實用細節：`conditionnel passé` 高度集中在 `aurais pu／aurait dû`（固定塊不是時態）；`futur antérieur` 15 個 token 裡 `aura fallu` 佔 9 個；`subjonctif passé` 對話裡 5 個但**選項裡 15 個**（答題才遇到）；`passé simple` 閱讀題幹 **0 個**、真實書面散文也只 0.71%，跟直覺相反。
 - ⏸ **沒做／下一步**：複合時態（plus-que-parfait 等）還沒有 verb_sprint 模式；Owen 說的「**自訂勾選哪些單字的哪些變化**」目前只做到「一個動詞 × 多個時態」，**還沒做「多個動詞一起考」**——要做的話得讓 verb_sprint 接 `?verbs=` 白名單。
+
+#### 三之十八、09-24：第36課筆記（Unité 9 收尾＋Unité 10 Envies d'ailleurs）＋連動
+
+- **來源**：Owen 貼整堂逐字稿（沒有截圖）。頁碼用 `assets/.textbook_cache.txt` 逐頁對過 → **p.132–142**（bricothèque 兩個字／詞彙頁 Le travail manuel／accorderie／troc＋conditionnel (2)／p.136 Entraînement／p.137 Atelier 表達框／Unité 10 扉頁／越南 Voyage sur-mesure／**主文法 passé composé vs imparfait dans le récit**）。⛔ 沒上到：p.141 Go-Van 讀本（老師說**下次讀**）、各頁聽力、p.138 DELF。
+- ✅ **筆記四件套**（`lesson-36`，`check_notes.js` **0 錯 0 提醒**）。糾錯摘要的 zh 一律是正確句翻譯；發音表照「問題｜目標詞｜釐清」順序。
+- ⚠️ **照來源優先序標出來的三處（沒有沉默改掉）**：
+  ① 老師唸 coudre 變位「nous coudrons, vous coudrez」——那是**未來式**，標準是 `nous cousons／vous cousez`；
+  ② 逐字稿 si 句聽起來像「si j'ai…, j'aurai」，筆記寫標準 `si＋imparfait → conditionnel`，並註明 `si＋présent → futur` 是第25課另一組、⛔ 不能交叉；
+  ③ 老師說 bánh mì 來自 baguette——字源有爭議，標成軼聞。另外課本練習3答案是 `cassé`，老師說冰箱她會用 `en panne`，兩個都寫出來。
+- ✅ **Anki 上限 60/6**：Owen 回報**已經改好了**（09-22 那段的設定已生效）。
+- ✅ **連動**：chunks.js **+114 張**（逐張看過背面，描述句卡 0）｜questions.js **+55 題**（新 topic `pc-imparfait-recit` 17／`vocab-travail-manuel` 16／`vocab-voyage-sur-mesure` 7；另 `conditionnel-present` 12、`gerondif` 3）＋ TOPIC_LABELS 三處（dashboard 法文／quiz 中文／`topic_labels.js` 重產 107 個）｜sentences.js `S_L36_1~12`（316→328）｜table_drill **+3 表**（`pc-imparfait-recit-drill`、`conditionnel-hypothese-drill`、`travail-manuel-drill`，TABLES 79 個無空洞）｜gram_rules：`imparfait` 加 lesson 36＋topic `pc-imparfait-recit`＋récit 切換規則；`conditionnel` 加 lesson 36＋假設用途＋si 搭配｜map.html `CURRENT_LESSON` 35→36＋兩塊 A2 地塊（`travail-manuel-vocab`、`voyage-sur-mesure`），imparfait 地塊補 L36 說明。⛔ codex.js／reading.html 這次沒動（跟第35課一樣）。
+- ✅ **自動試跑**（隔離複本：拿掉 `sync_supabase.js`＋記憶體版 localStorage，測完已刪）：筆記頁 lesson-36 10 個 unit 正常；quiz 第36課篩選 55 題、答對判對、答錯顯示正解＋「複習：第36課」；table_drill 新表 答對6／答錯1 顯示正解／⏭ 跳過2格 → 顯示 `6/7`（分母扣掉跳過 ✅）；map／dashboard／sentence_drill 無錯誤。`ROOM` 全程沒動。
+  ⚠️ 小插曲：我第一次做隔離複本時用「刪掉含 sync_supabase.js 的整行」，把 table_drill 裡一行 `/*` 註解也刪了 → 複本語法錯。**真檔沒事**（逐個 inline script 用 `vm.Script` 驗過）。⭐ 下次做複本**只刪 `<script src="sync_supabase.js">` 標籤**。
+- ⏸ **下一步建議**：下一堂會讀 p.141 Go-Van 讀本（課本 p.142 的 récit 例句就出自它）；passé composé／imparfait 當堂**沒有卡**，卡的是 conditionnel 的產出（-ions／devr-／pourr-），跟老師「認得就好」的定位一致 → 練習照舊只要求三個產出型。
 
 #### 三之十二、09-22：第35課筆記（Édito A2 Unité 9 Consommer responsable）＋六項連動
 
