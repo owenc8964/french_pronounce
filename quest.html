@@ -448,6 +448,7 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 <script src="story.js"></script>
 <script src="topic_labels.js"></script>
 <script src="verbs_full.js"></script>
+<script src="verb_freq.js"></script>
 <script>
 /* ── 素材（Kenney Tiny Dungeon／Interface Sounds，CC0）────────── */
 var T = 'assets/game/tiles/tile_';
@@ -2757,6 +2758,32 @@ function buildCheck(){
    ════════════════════════════════════════════════════════════════ */
 var TT_TENSES=['present','passe-compose','imparfait','futur-simple','conditionnel','subjonctif'];
 var TT_W={'present':1,'passe-compose':2,'imparfait':2,'futur-simple':2,'conditionnel':2,'subjonctif':1};
+/* ⭐ 2026-09-24 語料權重：高頻的動詞×時態多出，語料裡沒出現的少出。
+   來源 verb_freq.js（TCF 口說答稿＋寫作範文的「動詞×時態」交叉次數）。
+   ⚠️ 權重掛在**動詞**不是時態——présent 的難點不在時態，在 être／avoir／aller
+      這些不規則字根（memory project_irregulars_are_the_bottleneck）。
+      時態的 TT_W 維持原樣（那是「練弱的」邏輯，跟頻率是兩回事）。
+   ⛔ 沒出現的給 0.5 不給 0：那批語料是議論題材（環保／教育／科技），
+      boire 沒出現只代表那個題型不談喝東西，⛔ 不代表考試不會考。 */
+function tbVerbW(inf, tenseId){
+  if(typeof VERB_FREQ==='undefined'||!tenseId) return 1;
+  var f=VERB_FREQ[inf]; if(!f) return 1;
+  var n=(f.t&&f.t[tenseId])||0;
+  return n>=100?3:n>=20?2:n>0?1.5:0.5;
+}
+/* 依語料權重抽一個動詞（⛔ 原本是 vs[random()*vs.length] 均勻亂挑）*/
+function tbPickVerb(vs, tenseId, avoid){
+  var pool=[], tot=0, i;
+  for(i=0;i<vs.length;i++){
+    if(avoid&&(vs[i].inf+'|'+tenseId)===avoid) continue;
+    var w=tbVerbW(vs[i].inf, tenseId);
+    pool.push({v:vs[i], w:w}); tot+=w;
+  }
+  if(!pool.length) return vs[Math.floor(Math.random()*vs.length)];
+  var r=Math.random()*tot;
+  for(i=0;i<pool.length;i++){ r-=pool[i].w; if(r<=0) return pool[i].v; }
+  return pool[pool.length-1].v;
+}
 var TB_ACT=null;
 function tbNorm(s){ return String(s).replace(/[’‘]/g,"'").trim().toLowerCase().replace(/\s+/g,' '); }
 function tbLog(wrong,v,tn,who,ans){
@@ -2794,9 +2821,10 @@ function tenseTable(){
   for(var tries=0; tries<14&&!forms; tries++){
     if(tries===0&&fv){ v=fv; id=ft; }
     else {
-      v=vs[Math.floor(Math.random()*vs.length)];
+      /* ⭐ 先挑時態（TT_W＝練弱的），再依「這個時態」的語料頻率挑動詞 */
       var r=Math.random()*tot; id=TT_TENSES[0];
       for(var i=0;i<TT_TENSES.length;i++){ r-=TT_W[TT_TENSES[i]]; if(r<=0){ id=TT_TENSES[i]; break; } }
+      v=tbPickVerb(vs, id, last);
       if((v.inf+'|'+id)===last) continue;
     }
     tn=conjugate(v).filter(function(x){ return x.id===id; })[0];
