@@ -303,6 +303,12 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
       color:var(--ink); font-size:.94rem; cursor:pointer; box-shadow:0 2px 0 rgba(0,0,0,.35)}
 .tile{touch-action:none; -webkit-user-select:none; user-select:none}
 .tile.dragghost{box-shadow:0 10px 18px rgba(0,0,0,.55); transform-origin:50% 100%; opacity:.95}
+/* ⭐ 2026-09-24：排錯的詞塊先變紅停一下，再飛回下面的詞塊區（Owen：「錯的那格要變紅色然後跑到下面的 pool」）*/
+.tile.bad{border-color:#c04040!important; color:#ff9a9a!important; background:#2a1010!important;
+  animation:tileBad .5s ease}
+@keyframes tileBad{0%{transform:translateY(0)}35%{transform:translateY(-4px) rotate(-3deg)}
+  70%{transform:translateY(2px) rotate(2deg)}100%{transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){ .tile.bad{animation:none} }
 .dropmark{display:inline-block; width:4px; height:36px; border-radius:2px; background:var(--gold); box-shadow:0 0 8px var(--gold)}
 .tile.on{border-color:var(--gold); color:var(--gold2)}
 .tile.gone{visibility:hidden}
@@ -358,6 +364,11 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 #petfree::before{content:''; position:absolute; left:50%; bottom:1px; width:68%; height:20%; margin-left:-34%; border-radius:50%;   /* 2026-09-21 改成比例（原 38×11px＝56px 的 68%／20%），寵物放大縮小時影子跟著變 */
   background:radial-gradient(ellipse,rgba(217,180,94,.4),rgba(217,180,94,0) 70%); pointer-events:none}   /* 腳下的一圈微光：告訴你「牠是可以點的」 */
 #petfree.ghost{pointer-events:none}
+/* ⭐ 2026-09-24 Owen：「我在作答時，寵物好像不能移動」——牠其實有在走，是你摸不到牠。
+   ghost 讓整個浮層穿透（⛔ 不擋答題按鈕），連帶把寵物也變成摸不到的。
+   → 答題時只放行**寵物本體那 56px**，⛔ 不放行 ::after 的加大點擊範圍，
+     不然牠周圍 16px 還是會吃掉答題按鈕的點擊。 */
+#petfree.ghost .pf-in{pointer-events:auto; cursor:grab}
 #petfree .pf-in{width:100%; height:100%; transform-origin:50% 100%}
 #petfree img{width:100%; height:100%; display:block}
 #petfree.l img{transform:scaleX(-1)}
@@ -1931,7 +1942,25 @@ var PF_MIN=36, PF_DEF=56;
 function pfMax(){ return Math.max(PF_MIN+10, Math.min(160, Math.floor(Math.min(window.innerWidth,window.innerHeight)*.4))); }
 function pfSize(){ var s=(S&&S.pet&&S.pet.size)||PF_DEF; return Math.max(PF_MIN,Math.min(pfMax(),s)); }
 function pfApplySize(){ if(!PF) return; var z=pfSize(); PF.el.style.width=z+'px'; PF.el.style.height=z+'px'; }
-function petFreeBounds(){ var W=window.innerWidth, H=window.innerHeight, z=pfSize(); return {x0:6, x1:Math.max(10,W-z-6), y0:56, y1:Math.max(70,H-z-10)}; }
+function petFreeBounds(){
+  var W=window.innerWidth, H=window.innerHeight, z=pfSize();
+  var b={x0:6, x1:Math.max(10,W-z-6), y0:56, y1:Math.max(70,H-z-10)};
+  /* ⭐ 2026-09-24 Owen：「答題時他會直接遮到題目，得設計成把它拉開才是對的」
+     → 有答題面板時就把活動範圍壓到面板下緣以下，牠自己就不會走上去；
+       petFreeTick 每幀都會把座標夾回範圍內，所以本來站在題目上的也會被推下來。
+     ⚠️ 面板很長（手機）時下面沒空間 → 退而求其次貼畫面最底那條，
+        ⛔ 不要把範圍壓成負的，那會讓牠卡在角落動不了。 */
+  var p=document.getElementById('panel');
+  if(p && p.getBoundingClientRect){
+    var r=p.getBoundingClientRect();
+    if(r.height>0){
+      var want=r.bottom+8, floor=Math.max(b.y0, H-z-10);
+      b.y0 = (want <= b.y1-24) ? Math.max(b.y0, want) : floor;
+      if(b.y1 < b.y0) b.y1 = b.y0;
+    }
+  }
+  return b;
+}
 function petFreeStart(){
   if(PF||!S||!S.pet||!document.body) return;
   var el=document.createElement('div'); el.id='petfree'; el.className='rest';
@@ -2215,13 +2244,21 @@ function lpCopyOld(t,done){
    ⭐ 金幣 S.gold＝打贏戰鬥／通關累積、⛔ 不會因為倒下而歸零（跟每日的 run.coin 分開）；只能花在牠身上：衣服、點心、毛色
    ⭐ 後果放角色身上：久沒來只會窩著，⛔ 不會掉衣服、不會退化
    ════════════════════════════════════════════════════════════════ */
+/* 每行 8 個字元＝左半邊，畫的時候鏡像到 15-x（所以中線在 7｜8 之間）。
+   o=輪廓 b=主色 d=深色 c=淺色（臉／肚子）e=眼睛 n=鼻子 p=嘴／腮紅
+   ⭐ 2026-09-24 Owen：「上次說的兔子跟貓咪，好像還沒做好」→ 補上。
+      四種的差別做在耳朵：狗垂耳、熊圓耳、貓尖耳、兔長耳。 */
 var PET_ART={
   dog:['........','....oooo','...obbbb','..oddbbb','..oddbeb','..oddbbb','..oddccc','..obbccn','...obccp','....oooo','...obbbb','...obccc','...obccc','...obbbb','...obbbo','....ooo.'],
-  bear:['..oooo..','.obddbo.','.obbbboo','..obbbbb','..obbbeb','..obbbbb','..obbccc','..obbccn','...obccp','....oooo','...obbbb','...obccc','...obccc','...obbbb','...obbbo','....ooo.']
+  bear:['..oooo..','.obddbo.','.obbbboo','..obbbbb','..obbbeb','..obbbbb','..obbccc','..obbccn','...obccp','....oooo','...obbbb','...obccc','...obccc','...obbbb','...obbbo','....ooo.'],
+  cat:['..o.....','..oo....','..odo...','..obbbb.','..obbebb','..obbbbb','..obbccc','..obbccn','...obccp','....oooo','...obbbb','...obccc','...obccc','...obbbb','...obbbo','....ooo.'],
+  rabbit:['..obo...','..obo...','..obdo..','..obbo..','...obbbb','...obebb','...obbbb','...obccn','...obccp','....oooo','...obbbb','...obccc','...obccc','...obbbb','...obbbo','....ooo.']
 };
 var PET_COLORS={
   dog:{brown:{n:'棕',b:'#c98a4b',d:'#8a5a2b',c:'#f3dcb0'}, cream:{n:'奶油',b:'#efd9a8',d:'#c9a96a',c:'#fff5dc'}, gray:{n:'灰',b:'#9aa3ad',d:'#6b7480',c:'#e3e8ee'}, black:{n:'黑',b:'#4a4a52',d:'#2c2c33',c:'#8a8a94'}},
-  bear:{brown:{n:'棕',b:'#a8703c',d:'#7a4a24',c:'#e6c9a0'}, honey:{n:'蜜',b:'#e2b04a',d:'#b8842a',c:'#fbe7b0'}, black:{n:'黑',b:'#3f3f46',d:'#26262b',c:'#8a8a92'}, white:{n:'白',b:'#f2f2f2',d:'#cfcfd6',c:'#ffffff'}}
+  bear:{brown:{n:'棕',b:'#a8703c',d:'#7a4a24',c:'#e6c9a0'}, honey:{n:'蜜',b:'#e2b04a',d:'#b8842a',c:'#fbe7b0'}, black:{n:'黑',b:'#3f3f46',d:'#26262b',c:'#8a8a92'}, white:{n:'白',b:'#f2f2f2',d:'#cfcfd6',c:'#ffffff'}},
+  cat:{orange:{n:'橘',b:'#e8944a',d:'#b96a28',c:'#fbe0bc'}, gray:{n:'灰',b:'#98a0aa',d:'#69707a',c:'#e6eaee'}, black:{n:'黑',b:'#44444c',d:'#28282e',c:'#8e8e98'}, white:{n:'白',b:'#f4f4f4',d:'#d2d2d8',c:'#ffffff'}},
+  rabbit:{white:{n:'白',b:'#f6f6f6',d:'#d6d6dc',c:'#ffffff'}, brown:{n:'棕',b:'#b98a5e',d:'#8c6340',c:'#ecd9c0'}, gray:{n:'灰',b:'#a6acb4',d:'#767c84',c:'#e9edf1'}, black:{n:'黑',b:'#42424a',d:'#26262c',c:'#8c8c96'}}
 };
 /* 衣服：r＝[x,y,w,h,色] 的小方塊（16×16 座標）；layer:'back' 畫在身體後面。price:0＝只能掉寶不能買（皇冠） */
 var PET_ITEMS=[
@@ -2323,6 +2360,8 @@ function renderPetTab(){
       '<div class="cmds" style="margin-top:6px">'+
         '<button class="cmd" onclick="petKind(\'dog\')"'+(kind==='dog'?' style="border-color:var(--gold)"':'')+'><span>小狗</span></button>'+
         '<button class="cmd" onclick="petKind(\'bear\')"'+(kind==='bear'?' style="border-color:var(--gold)"':'')+'><span>小熊</span></button>'+
+        '<button class="cmd" onclick="petKind(\'cat\')"'+(kind==='cat'?' style="border-color:var(--gold)"':'')+'><span>貓咪</span></button>'+
+        '<button class="cmd" onclick="petKind(\'rabbit\')"'+(kind==='rabbit'?' style="border-color:var(--gold)"':'')+'><span>兔子</span></button>'+
         '<button class="cmd" onclick="petFeed()"><span>餵點心<small>10 幣</small></span></button>'+
         (Object.keys(S.cards||{}).length?'<button class="cmd" onclick="petSpeak()"><span>聽牠說一句<small>你教過的話</small></span></button>':'')+
         (p.size&&p.size!==PF_DEF?'<button class="cmd" onclick="petSizeReset()"><span>還原大小<small>回到預設的大小</small></span></button>':'')+'</div>'+
@@ -2717,7 +2756,8 @@ function askBuild(q,m){
 }
 function buildRender(){
   var q=B.curQ, bd=B.bd, on={}; bd.put.forEach(function(i){ on[i]=1; });
-  var slot=bd.put.map(function(i){ return '<button class="tile on" data-i="'+i+'" data-f="s">'+esc(q._tiles[i])+'</button>'; }).join('');
+  var badAt={}; (bd.badAt||[]).forEach(function(x){ badAt[x]=1; });
+  var slot=bd.put.map(function(i,x){ return '<button class="tile on'+(badAt[x]?' bad':'')+'" data-i="'+i+'" data-f="s">'+esc(q._tiles[i])+'</button>'; }).join('');
   var bank=bd.order.map(function(i){ return '<button class="tile'+(on[i]?' gone':'')+'" '+(on[i]?'tabindex="-1" ':'')+'data-i="'+i+'" data-f="b">'+esc(q._tiles[i])+'</button>'; }).join('');
   document.getElementById('panel').innerHTML=
     '<div class="q">'+consigne(q)+'<span class="consigne">Traduisez en français.</span>'+esc(q.q)+hintHtml(q)+'</div>'+
@@ -2727,6 +2767,24 @@ function buildRender(){
     '<div class="cmds" style="margin-top:10px"><button class="cmd" onclick="buildCheck()">'+img(SP.sword)+'<span>出招<small>'+esc(B.curM.name)+' ×'+B.curM.dmg+'</small></span></button>'+
       '<button class="cmd" onclick="buildClear()">'+img(SP.shield)+'<span>清掉重排<small>不扣任何東西</small></span></button></div>'+qSkipRow();
 }
+/* ⭐ 2026-09-24 Owen：「可以保留排列順序正確的，而非一定要從開頭保留」
+   原本只留「開頭連續對的」——第一塊放錯就整排清空，很挫折。
+   改成取「跟正解相對順序一致的最長子序列」(LCS)：位置沒對但順序對的都留著，
+   只有真的打亂順序的那幾塊退回下面的詞塊區。
+   例：正解 A B C D，你排成 C A B D → 留 A B D，只有 C 退回去。 */
+function lcsKeep(seq, ref){
+  var n=seq.length, m=ref.length, dp=[], i, j;
+  for(i=0;i<=n;i++){ var row=[]; for(j=0;j<=m;j++) row.push(0); dp.push(row); }
+  for(i=1;i<=n;i++) for(j=1;j<=m;j++)
+    dp[i][j] = (seq[i-1]===ref[j-1]) ? dp[i-1][j-1]+1 : Math.max(dp[i-1][j], dp[i][j-1]);
+  var keep=[], ii=n, jj=m;
+  while(ii>0&&jj>0){
+    if(seq[ii-1]===ref[jj-1]){ keep.push(ii-1); ii--; jj--; }
+    else if(dp[ii-1][jj]>=dp[ii][jj-1]) ii--; else jj--;
+  }
+  return keep.reverse();      /* bd.put 裡「要留下來」的位置 */
+}
+
 function buildTap(i){
   var bd=B&&B.bd; if(!bd) return; sfx('click_001');
   var at=bd.put.indexOf(i); if(at>=0) bd.put.splice(at,1); else bd.put.push(i);
@@ -2741,10 +2799,27 @@ function buildCheck(){
   if(ok){ say(full); return resolveMove(true, true, q, B.curM, bd.tries>0); }
   if(bd.tries===0){
     bd.tries=1; sfx('bong_001');
-    var ref=q._alts[0], k=0; while(k<seq.length&&k<ref.length&&seq[k]===ref[k]) k++;
-    bd.put=bd.put.slice(0,k);     /* 對的前綴留著，從第一個錯的地方重排 */
-    bd.msg=(k>0?'前 '+k+' 個詞塊是對的，幫你留著。':'')+'從下一個開始重排（這次不扣血）——小心陷阱詞。';
-    return buildRender();
+    /* ⭐ 對每個正解都算一次，取保留最多的那個（有些題有多種說法）*/
+    var best=null;
+    q._alts.forEach(function(a){ var k=lcsKeep(seq,a); if(!best||k.length>best.length) best=k; });
+    best=best||[];
+    var keepSet={}; best.forEach(function(x){ keepSet[x]=1; });
+    var badAt=[]; bd.put.forEach(function(_,x){ if(!keepSet[x]) badAt.push(x); });
+    var kept=best.length, dropped=bd.put.length-kept;
+    if(!dropped){   /* 順序全對但數量不對（少排或多排）→ 不用拿掉任何一塊 */
+      bd.msg='順序是對的，但句子還沒排完整——再看看下面還有哪塊要用（這次不扣血）。';
+      return buildRender();
+    }
+    bd.badAt=badAt; buildRender();          /* 先讓錯的那幾塊變紅 */
+    setTimeout(function(){
+      if(!B||!B.bd||B.bd!==bd) return;      /* 這中間跳過／換題就不要再動 */
+      bd.put=bd.put.filter(function(_,x){ return keepSet[x]; });
+      bd.badAt=null;
+      bd.msg=(kept>0 ? '順序對的 '+kept+' 塊幫你留著，' : '')+
+             '把變紅的 '+dropped+' 塊放回去重排（這次不扣血）——小心陷阱詞。';
+      buildRender();
+    }, 620);
+    return;
   }
   say(full); resolveMove(false,false,q,B.curM,true);
 }
