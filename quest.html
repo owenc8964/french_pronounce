@@ -2277,8 +2277,22 @@ var PET_ITEMS=[
   {id:'medal', slot:'neck',name:'金牌',      price:150,w:1, r:[[6,9,4,1,'#3b7fd0'],[7,10,2,2,'#f3c73a']]},
   {id:'pack',  slot:'back',name:'小背包',    price:60, w:2, layer:'back', r:[[11,10,4,5,'#4a9a6a'],[12,11,2,1,'#2f6b47']]},
   {id:'cape',  slot:'back',name:'披風',      price:100,w:2, layer:'back', r:[[2,9,12,6,'#c93b3b'],[1,10,1,5,'#a82f2f'],[14,10,1,5,'#a82f2f']]},
-  {id:'wings', slot:'back',name:'小翅膀',    price:180,w:1, layer:'back', r:[[0,9,3,4,'#eaf2ff'],[13,9,3,4,'#eaf2ff'],[1,10,1,2,'#c9d8f2'],[14,10,1,2,'#c9d8f2']]}
+  {id:'wings', slot:'back',name:'小翅膀',    price:180,w:1, layer:'back', r:[[0,9,3,4,'#eaf2ff'],[13,9,3,4,'#eaf2ff'],[1,10,1,2,'#c9d8f2'],[14,10,1,2,'#c9d8f2']]},
+  /* ⭐ 2026-09-24 Owen：「每隻寵物應該要有獨特的服裝可以買」
+     only＝只有那一種寵物看得到／買得到／掉得到。換寵物就換一組可收集的，
+     ⛔ 已經買的不會消失——衣櫃照樣列出來，只是標成別種專屬、穿不了。 */
+  {id:'bone',  slot:'neck',name:'骨頭項圈',  price:70, w:2, only:'dog',
+   r:[[6,9,4,1,'#8a5a2b'],[7,10,2,2,'#f2f2ea'],[6,10,1,1,'#f2f2ea'],[9,10,1,1,'#f2f2ea']]},
+  {id:'honey', slot:'back',name:'蜂蜜罐',    price:80, w:2, only:'bear', layer:'back',
+   r:[[11,10,4,5,'#e2b04a'],[12,11,2,1,'#b8842a'],[11,9,4,1,'#8a5a2b']]},
+  {id:'fish',  slot:'neck',name:'小魚項鍊',  price:70, w:2, only:'cat',
+   r:[[6,9,4,1,'#3b7fd0'],[7,10,3,2,'#7ec8e3'],[10,10,1,2,'#5aa8c8']]},
+  {id:'carrot',slot:'back',name:'胡蘿蔔背包',price:80, w:2, only:'rabbit', layer:'back',
+   r:[[11,10,3,4,'#e8823c'],[12,14,1,1,'#c96820'],[11,9,3,1,'#5cc48b']]}
 ];
+/* 這件是不是現在這隻能用的 */
+function itemOk(it, kind){ return !it.only || it.only===(kind||(S.pet&&S.pet.kind)||'dog'); }
+var KIND_NAME={dog:'小狗',bear:'小熊',cat:'貓咪',rabbit:'兔子'};
 var PET_SLOTS={head:'頭',face:'臉',neck:'脖子',back:'背後'};
 var PET_CACHE={};
 function petItem(id){ return PET_ITEMS.filter(function(x){ return x.id===id; })[0]||null; }
@@ -2306,13 +2320,15 @@ function petRefresh(){ if(PF&&S.pet){ var im=PF.el.querySelector('img'); if(im) 
 /* 掉寶：小怪 12%、精英 30%、關主 100%；只掉還沒有的、且不是只能買的；便宜的比較常掉 */
 function rollDrop(kind){
   var ch=kind==='boss'?1:(kind==='elite'?.3:.12); if(Math.random()>=ch) return null;
-  var own=S.wardrobe||{}, pool=PET_ITEMS.filter(function(x){ return !own[x.id]; }); if(!pool.length) return null;
+  var own=S.wardrobe||{}, pool=PET_ITEMS.filter(function(x){ return !own[x.id]&&itemOk(x); }); if(!pool.length) return null;   /* ⛔ 不掉別種寵物的專屬，掉了也穿不了 */
   var tot=pool.reduce(function(a,x){ return a+x.w; },0), r=Math.random()*tot;
   for(var i=0;i<pool.length;i++){ r-=pool[i].w; if(r<=0) return pool[i]; }
   return pool[pool.length-1];
 }
 function petGive(it){ S.wardrobe=S.wardrobe||{}; S.wardrobe[it.id]={n:1,last:Date.now()}; }
 function petWear(id){
+  var _it=petItem(id);
+  if(_it&&!itemOk(_it)){ toast((KIND_NAME[_it.only]||_it.only)+'專屬，換成牠才穿得上'); return; }
   var it=petItem(id); if(!it||!(S.wardrobe||{})[id]) return; var p=S.pet; p.worn=p.worn||{};
   if(p.worn[it.slot]===id) delete p.worn[it.slot]; else p.worn[it.slot]=id;
   sfx('switch_002'); save(S); petRefresh(); petFreeJoy(); renderPetTab();
@@ -2347,12 +2363,14 @@ function renderPetTab(){
   var sw=Object.keys(PET_COLORS[kind]).map(function(c){
     var has=c==='brown'||p.colors[kind+':'+c], on=(p.color||'brown')===c;
     return '<button class="sw'+(on?' on':'')+'" style="background:'+PET_COLORS[kind][c].b+'" onclick="petColor(\''+c+'\')" title="'+PET_COLORS[kind][c].n+'">'+(has?'':'<small>60</small>')+'</button>'; }).join('');
-  var mine=PET_ITEMS.filter(function(x){ return own[x.id]; }), shop=PET_ITEMS.filter(function(x){ return !own[x.id]; });
+  var mine=PET_ITEMS.filter(function(x){ return own[x.id]; }), shop=PET_ITEMS.filter(function(x){ return !own[x.id]&&itemOk(x,kind); });
   function cell(it,mode){
-    var isOn=worn[it.slot]===it.id, can=gold>=it.price;
-    return '<button class="itm'+(isOn?' on':'')+((mode==='shop'&&!can&&it.price)?' dim':'')+'" onclick="'+(mode==='own'?'petWear':'petBuy')+'(\''+it.id+'\')">'+
+    var isOn=worn[it.slot]===it.id, can=gold>=it.price, ok=itemOk(it,kind);
+    /* ⛔ 別種寵物的專屬：衣櫃照樣看得到（買過的不會不見），只是穿不了 */
+    return '<button class="itm'+(isOn?' on':'')+((!ok||(mode==='shop'&&!can&&it.price))?' dim':'')+'" onclick="'+
+      (!ok?'toast(\''+esc(KIND_NAME[it.only]||it.only)+'專屬，換成牠才穿得上\')':(mode==='own'?'petWear':'petBuy')+'(\''+it.id+'\')')+'">'+
       '<img src="'+petItemIcon(it)+'" alt=""><span>'+esc(it.name)+'</span><small>'+
-      (mode==='own'?(isOn?'穿著中':PET_SLOTS[it.slot]):(it.price?it.price+' 幣':'打關主才會掉'))+'</small></button>'; }
+      (!ok?(KIND_NAME[it.only]||it.only)+'專屬':(mode==='own'?(isOn?'穿著中':PET_SLOTS[it.slot]):(it.price?it.price+' 幣':'打關主才會掉')))+'</small></button>'; }
   document.getElementById('view').innerHTML=modeTabs()+
     '<div class="sec"><h2>夥伴</h2><div class="pethero"><img id="petbig" src="'+petSprite(p)+'" alt=""></div>'+
       '<div class="npcrow" style="margin-top:8px"><div class="npcname" onclick="petRename()" style="cursor:pointer">'+esc(p.name||'小夥伴')+' ✎<small>'+esc(petMood(p))+'</small></div>'+
