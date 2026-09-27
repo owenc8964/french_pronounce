@@ -1,14 +1,14 @@
 /* external_time.js — 網頁外的學習時間（自動產生，不要手改）
- * 由 tools/gen_external_time.js 產生 · 最後更新 2026-09-20
+ * 由 tools/gen_external_time.js 產生 · 最後更新 2026-09-27
  * 為什麼要有這支：dashboard 的 700 小時原本只算 clb7_tracker（網站內的時間），
  * Anki 與 Duolingo 這兩個他最常用的完全沒被計入。Anki 的時間來自 revlog.time，
  * 是他每一次複習實際花的毫秒數——不需要任何手動輸入。
  * Duolingo 的分鐘數在 dashboard 的 DUO_SEED（來源是每週的官方週報截圖）。 */
 const EXTERNAL_TIME = {
-  updated: '2026-09-20',
+  updated: '2026-09-27',
   anki: {
-    totalSec: 15370,
-    reviews: 517,
+    totalSec: 20955,
+    reviews: 709,
     byDate: {
           "2026/08/17": 957,
           "2026/08/18": 1042,
@@ -30,13 +30,19 @@ const EXTERNAL_TIME = {
           "2026/09/05": 1562,
           "2026/09/06": 622,
           "2026/09/08": 384,
-          "2026/09/10": 717
+          "2026/09/10": 717,
+          "2026/09/11": 391,
+          "2026/09/13": 367,
+          "2026/09/14": 977,
+          "2026/09/22": 2294,
+          "2026/09/24": 894,
+          "2026/09/26": 662
     }
   },
   // ⚠️ 保底估計，不是實測：每週 3 小時，從 2026-06-25 起算整週（取 floor）
   cours: {
-    totalSec: 129600,
-    weeks: 12,
+    totalSec: 140400,
+    weeks: 13,
     perWeekH: 3,
     since: '2026-06-25',
     estimated: true
