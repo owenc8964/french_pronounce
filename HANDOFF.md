@@ -21,7 +21,7 @@
 |---|---|
 | **考試** | **2027-04-18 前哨戰／診斷考｜2027-09-19 正場**。⚠️ 2027 場次官方**尚未公布**，日期是照 2026（2/8、4/19、9/20、12/20，全是該月第三個星期日）推的。**法協 02-2364-8833 那通電話還沒打。** |
 | **考哪個** | **TCF Canada**（台北法協有考，NT$8,000 四科）。TEF Canada 台灣**無考場**，要考得飛東京 |
-| **程度** | A2，**第 36 課**（09-24 筆記＋連動完成，見「三之十八」）。第 34 課（筆記＋九項連動完成；Anki 第33課 42 張、第34課 **44 張**已產出、待匯入（`~/Desktop/anki_l33_auto.tsv`、`~/Desktop/anki_l34_auto.tsv`），收藏檔 711 張）。2026-05 開始學法文 |
+| **程度** | A2，**第 37 課**（09-29 筆記＋連動完成，見「三之十九」；第36課見「三之十八」）。第 34 課（筆記＋九項連動完成；Anki 第33課 42 張、第34課 **44 張**已產出、待匯入（`~/Desktop/anki_l33_auto.tsv`、`~/Desktop/anki_l34_auto.tsv`），收藏檔 711 張）。2026-05 開始學法文 |
 | **口說語言島** | ⭐ **Phase 0 八座全滿**（AC1/2/3/5/7/8/11/15），每座 169–225 字 / 78–103 秒，中文母本 `source_zh` 都在。`AC8` 的 follow-up gap **掛零** |
 | **考試材料** | 三包全部整理完。**Tâche 3 = 167 議題／245 變體**（xlsx 八分頁）＋ 119 題雙語；⭐ **Tâche 2 = 160 條情境**（不是 20，見 09-02 校準）；兩本 Ellipses 正式教科書 |
 | **系統** | `mock.html` 已驗收（44+44 套模擬考可用）。dashboard／tracker 倒數已對齊新日期 |
@@ -4862,6 +4862,18 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
     → `TENSE_META` 加 `rec`／`recNote`，卡片與 chip 改成**兩軸並列**（🗣 自己要講／要寫　👂 聽到／讀到要懂）。⛔ **以後引用這些百分比一定要講清楚是哪一側。**
     ⭐ 順帶進頁面的實用細節：`conditionnel passé` 高度集中在 `aurais pu／aurait dû`（固定塊不是時態）；`futur antérieur` 15 個 token 裡 `aura fallu` 佔 9 個；`subjonctif passé` 對話裡 5 個但**選項裡 15 個**（答題才遇到）；`passé simple` 閱讀題幹 **0 個**、真實書面散文也只 0.71%，跟直覺相反。
 - ⏸ **沒做／下一步**：複合時態（plus-que-parfait 等）還沒有 verb_sprint 模式；Owen 說的「**自訂勾選哪些單字的哪些變化**」目前只做到「一個動詞 × 多個時態」，**還沒做「多個動詞一起考」**——要做的話得讓 verb_sprint 接 `?verbs=` 白名單。
+
+#### 三之十九、09-29：第37課筆記（Unité 10：Le voyage／bus amphibie／accord du participe passé／Le tourisme）＋連動
+
+- **來源**：`~/Desktop/0929/` 5 張課本截圖（含 Owen 手寫答案）＋整堂逐字稿。頁碼對 `assets/.textbook_cache.txt` → **p.143–147**。⛔ 沒上到：p.144 影片題、p.146 G 聽力、p.141 Go-Van（上一課說要讀，這堂沒讀）。🎙 **下一堂預告 `celui-ci`（指示代名詞）**。
+- ✅ **筆記四件套**（`lesson-37`，`check_notes.js` 0 錯 0 提醒）。
+- ⚠️ **照來源優先序標出來的兩處**：
+  ① **課本 p.145 練習3c** `Je ne l'ai pas encore visité_, mais … cette capitale est magique`——當堂結論「不加」，**標準法文要加 e（visitée）**：l'＝cette capitale 在前。筆記、quiz、糾錯摘要都寫 visitée 並註明。
+  ② 老師說 demi-pension＝「午餐或晚餐其中一餐」，標準定義是**早餐＋一餐正餐**，兩個都寫出來。
+- **手寫答案對過**：p.145 練習2 七題全對、練習4 a–d 全對（peinte／prises／mise／comprises）；p.143 練習4 配對全對。練習3f Owen 在 la guide 下面標了 S——配合對象是 des spécialités，已寫進糾錯。
+- ⭐ **教學判斷**：accord 的規則他講得出來，卡在「看哪個字配合」→ 依 CLAUDE.md 分類是**自動化缺口**，table_drill `accord-pp-drill` 就是給他壓縮練習用的，⛔ 不要再重講規則。
+- ✅ **連動**：chunks.js **+94**（背面逐張看過）｜questions.js **+39**（新 topic `accord-participe-passe` 20／`vocab-voyage-tourisme` 19）＋ TOPIC_LABELS 三處（topic_labels.js 109 個）｜sentences.js `S_L37_1~12`（→340）｜table_drill **+3 表**（`accord-pp-drill`、`voyage-hotel-drill`、`tourisme-sites-drill`，TABLES 82 無空洞）｜gram_rules `passe` 加 lesson 37＋topic＋三條規則＋兩個例句｜map.html `CURRENT_LESSON` 37＋地塊 `tourisme-vocab`，passé composé 地塊補 L37 說明。
+- ✅ **自動試跑**（隔離複本，這次只刪 `<script src=sync_supabase.js>` 標籤，⭐ 上次的坑沒再踩）：筆記頁 8 unit；quiz 第37課 39 題、答錯顯示正解＋「複習：第37課」、答對判對；table_drill 答對6／答錯1／跳過2 → `6/7`；map／dashboard／sentence_drill 無錯誤。`ROOM` 沒動。
 
 #### 三之十八、09-24：第36課筆記（Unité 9 收尾＋Unité 10 Envies d'ailleurs）＋連動
 

@@ -18088,5 +18088,663 @@ const CHUNKS = [
   "fr": "une randonnée",
   "zh": "健行",
   "note": "回鍋"
+ },
+ {
+  "id": "L37_Qu_est_ce_que_tu_penses",
+  "lesson": 37,
+  "fr": "Qu'est-ce que tu penses de la Tunisie ou du Maroc ?",
+  "zh": "你覺得突尼西亞或摩洛哥怎麼樣？",
+  "note": "課本練習2f。⭐ penser de＝對…的看法（de＋la／du）"
+ },
+ {
+  "id": "L37_J_ai_un_vol_dans_5_heure",
+  "lesson": 37,
+  "fr": "J'ai un vol dans 5 heures.",
+  "zh": "我五小時後有一班飛機。",
+  "note": "🎙 老師的例子"
+ },
+ {
+  "id": "L37_Il_vous_reste_une_chambr",
+  "lesson": 37,
+  "fr": "Il vous reste une chambre simple ?",
+  "zh": "你們還有單人房嗎？",
+  "note": "課本練習4-5（← c. Je voyage seul.）⭐ 🎙 il reste＝還剩；vous＝對方（飯店）。只說 Il reste une chambre simple ? 也可以"
+ },
+ {
+  "id": "L37_Tu_as_de_l_eau_plate_Non",
+  "lesson": 37,
+  "fr": "Tu as de l'eau plate ? — Non, je n'ai que de l'eau gazeuse.",
+  "zh": "你有無氣泡的水嗎？——沒有，我只有氣泡水。",
+  "note": "🎙 老師示範 ne…que 的例子。⭐ eau plate＝不含氣泡的水"
+ },
+ {
+  "id": "L37_C_est_une_visite_de_Pari",
+  "lesson": 37,
+  "fr": "C'est une visite de Paris que nous avons adorée !",
+  "zh": "這是一趟我們超愛的巴黎導覽！",
+  "note": "課本原句。⭐⭐ 本課主文法：adorée 的 e 來自前面的 une visite"
+ },
+ {
+  "id": "L37_Merci_à_la_guide_pour_ce",
+  "lesson": 37,
+  "fr": "Merci à la guide pour cette visite originale et ludique !",
+  "zh": "謝謝導遊帶來這趟特別又好玩的導覽！",
+  "note": "課本原句。⭐ la guide＝女導遊"
+ },
+ {
+  "id": "L37_Les_anecdotes_que_la_gui",
+  "lesson": 37,
+  "fr": "Les anecdotes que la guide a racontées étaient très drôles !",
+  "zh": "導遊講的趣聞很好笑！",
+  "note": "課本原句。⭐ racontées（que＝les anecdotes）"
+ },
+ {
+  "id": "L37_Mais_quelle_déception_Ce",
+  "lesson": 37,
+  "fr": "Mais quelle déception ! Cette visite ne m'a pas plu.",
+  "zh": "但太失望了！我不喜歡這趟導覽。",
+  "note": "課本原句。⭐ plu＝plaire 的過去分詞（ça me plaît → ça m'a plu）"
+ },
+ {
+  "id": "L37_Et_puis_j_ai_eu_froid_c",
+  "lesson": 37,
+  "fr": "Et puis j'ai eu froid, c'était horrible !",
+  "zh": "而且我很冷，太可怕了！",
+  "note": "課本原句。⭐ avoir froid → j'ai eu froid"
+ },
+ {
+  "id": "L37_Eva_est_allée_à_Paris_po",
+  "lesson": 37,
+  "fr": "Eva est allée à Paris pour finir son tour de France.",
+  "zh": "Eva 去巴黎結束她的法國之旅。",
+  "note": "⭐ 課本 Fonctionnement：être → 配合主詞"
+ },
+ {
+  "id": "L37_La_visite_on_l_a_faite_e",
+  "lesson": 37,
+  "fr": "La visite, on l'a faite en bus amphibie !",
+  "zh": "這趟參觀，我們是坐水陸巴士去的！",
+  "note": "⭐ 課本 Fonctionnement：l'＝la visite 在前"
+ },
+ {
+  "id": "L37_Ces_fleurs_nous_les_avon",
+  "lesson": 37,
+  "fr": "Ces fleurs, nous les avons offertes à nos hôtes.",
+  "zh": "這些花我們送給了接待我們的主人。",
+  "note": "⭐ 課本 Remarque（offertes 聽得出 t）。🎙 hôte＝接待你住家裡的人（host）"
+ },
+ {
+  "id": "L37_Regarde_la_jolie_photo_q",
+  "lesson": 37,
+  "fr": "Regarde la jolie photo que j'ai prise !",
+  "zh": "看我拍的這張漂亮照片！",
+  "note": "⭐ 課本 Remarque（prise 聽得出 s 音）"
+ },
+ {
+  "id": "L37_Ces_îles_nous_les_avons",
+  "lesson": 37,
+  "fr": "Ces îles, nous les avons découvertes avec des locaux.",
+  "zh": "這些島，我們是跟當地人一起去發現的。",
+  "note": "課本練習2e。🎙 老師：這個聽得出來（découvertes）"
+ },
+ {
+  "id": "L37_Les_explications_Nous_le",
+  "lesson": 37,
+  "fr": "Les explications ? Nous les avons eues grâce à la guide !",
+  "zh": "那些解說？我們是靠導遊才聽懂的！",
+  "note": "課本練習3b。🎙 老師：不同句子也可以——問「on a eu quoi ?」→ les explications"
+ },
+ {
+  "id": "L37_On_a_pris_les_brochures",
+  "lesson": 37,
+  "fr": "On a pris les brochures ? — Non, on ne les a pas prises.",
+  "zh": "我們拿傳單了嗎？——沒有，我們沒拿。",
+  "note": "課本練習4b。⭐ 🎙 老師：les 永遠在 a 前面，ne…pas 包住「les a」"
+ },
+ {
+  "id": "L37_On_verra_après",
+  "lesson": 37,
+  "fr": "On verra après.",
+  "zh": "等一下再看。",
+  "note": "⭐ voir 的未來式，老師很常用"
+ },
+ {
+  "id": "L37_Si_tu_passes_dans_le_coi",
+  "lesson": 37,
+  "fr": "Si tu passes dans le coin, viens boire un café.",
+  "zh": "你經過這一帶的話，來喝杯咖啡吧。",
+  "note": "⭐ 🎙 朋友從台南上來台北就可以這樣說"
+ },
+ {
+  "id": "L37_Ça_vaut_le_coup",
+  "lesson": 37,
+  "fr": "Ça vaut le coup ?",
+  "zh": "值得嗎？",
+  "note": "⭐ valoir le coup"
+ },
+ {
+  "id": "L37_Je_te_remercie",
+  "lesson": 37,
+  "fr": "Je te remercie.",
+  "zh": "謝謝你。",
+  "note": "🎙 remercier＝感謝某人，比 merci 正式一點"
+ },
+ {
+  "id": "L37_C_est_bon_pour_aujourd_h",
+  "lesson": 37,
+  "fr": "C'est bon pour aujourd'hui.",
+  "zh": "今天就到這裡。",
+  "note": "⭐ 老師收尾"
+ },
+ {
+  "id": "L37_Ce_sont_des_spécialités",
+  "lesson": 37,
+  "fr": "Ce sont des spécialités que la guide nous a conseillées.",
+  "zh": "這些是導遊推薦給我們的特產。",
+  "note": "❓ 當堂卡在要配合 la guide 還是 des spécialités。⭐ 問「conseillé quoi ?」→ des spécialités（que 代的就是它）。la guide 是主詞，avoir 不看主詞"
+ },
+ {
+  "id": "L37_C_est_une_ville_qu_il_a",
+  "lesson": 37,
+  "fr": "C'est une ville qu'il a adorée.",
+  "zh": "這是一座他很愛的城市。",
+  "note": "❓ 當堂想用主詞 il 決定要不要加。🎙 老師：être 看主詞（Elle est tombée），avoir 看 COD"
+ },
+ {
+  "id": "L37_l_hébergement_m",
+  "lesson": 37,
+  "fr": "l'hébergement (m.)",
+  "zh": "住宿",
+  "note": "課本標題"
+ },
+ {
+  "id": "L37_chez_l_habitant",
+  "lesson": 37,
+  "fr": "chez l'habitant",
+  "zh": "住當地人家裡",
+  "note": "🎙 Airbnb 也算。老師提法國節目 J'irai dormir chez vous：主持人環遊世界、從不花錢，一直住在當地人家"
+ },
+ {
+  "id": "L37_être_logé_e",
+  "lesson": 37,
+  "fr": "être logé(e)",
+  "zh": "被安排住在…",
+  "note": "Je vais être logé chez l'habitant."
+ },
+ {
+  "id": "L37_passer_la_nuit_chez_quel",
+  "lesson": 37,
+  "fr": "passer la nuit (chez quelqu'un)",
+  "zh": "（在某人家）過夜",
+  "note": "🎙 spend the night"
+ },
+ {
+  "id": "L37_le_départ_l_arrivée",
+  "lesson": 37,
+  "fr": "le départ ≠ l'arrivée",
+  "zh": "出發 ≠ 抵達",
+  "note": "🎙 常看到：Départ de Taipei, arrivée à New York"
+ },
+ {
+  "id": "L37_la_destination",
+  "lesson": 37,
+  "fr": "la destination",
+  "zh": "目的地",
+  "note": ""
+ },
+ {
+  "id": "L37_la_direction",
+  "lesson": 37,
+  "fr": "la direction",
+  "zh": "方向",
+  "note": ""
+ },
+ {
+  "id": "L37_faire_le_tour_du_monde",
+  "lesson": 37,
+  "fr": "faire le tour du monde",
+  "zh": "環遊世界",
+  "note": "也有 faire le tour de France"
+ },
+ {
+  "id": "L37_le_Tour_de_France",
+  "lesson": 37,
+  "fr": "le Tour de France",
+  "zh": "環法自行車賽",
+  "note": "🎙 老師超愛看（Owen：沒看過）"
+ },
+ {
+  "id": "L37_l_aéroport_m",
+  "lesson": 37,
+  "fr": "l'aéroport (m.)",
+  "zh": "機場",
+  "note": "C'est le lieu où les gens prennent l'avion."
+ },
+ {
+  "id": "L37_les_bagages_m",
+  "lesson": 37,
+  "fr": "les bagages (m.)",
+  "zh": "行李",
+  "note": "Ce sont mes sacs, mes valises."
+ },
+ {
+  "id": "L37_le_billet",
+  "lesson": 37,
+  "fr": "le billet",
+  "zh": "票",
+  "note": "課本：C'est mon titre de transport."
+ },
+ {
+  "id": "L37_un_titre_de_transport",
+  "lesson": 37,
+  "fr": "un titre de transport",
+  "zh": "乘車票證",
+  "note": "⚠️ 🎙 Owen 以為 titre 是 title。老師：車票、悠遊卡、巴黎的 pass Navigo、日本的 Suica 都叫 titre de transport"
+ },
+ {
+  "id": "L37_la_compagnie_aérienne",
+  "lesson": 37,
+  "fr": "la compagnie aérienne",
+  "zh": "航空公司",
+  "note": "🎙 aérien＝在空中的；compagnie＝公司"
+ },
+ {
+  "id": "L37_le_vol",
+  "lesson": 37,
+  "fr": "le vol",
+  "zh": "班機、航程",
+  "note": "🎙 J'ai un vol dans 5 heures."
+ },
+ {
+  "id": "L37_un_vol_direct",
+  "lesson": 37,
+  "fr": "un vol direct",
+  "zh": "直飛",
+  "note": "🎙 ＝sans escale"
+ },
+ {
+  "id": "L37_une_escale",
+  "lesson": 37,
+  "fr": "une escale",
+  "zh": "中途停靠、轉機",
+  "note": "🎙 layover"
+ },
+ {
+  "id": "L37_se_poser_au_sol",
+  "lesson": 37,
+  "fr": "se poser au sol",
+  "zh": "降落（著地）",
+  "note": "課本練習3d ＝ atterrir"
+ },
+ {
+  "id": "L37_quitter_le_sol",
+  "lesson": 37,
+  "fr": "quitter le sol",
+  "zh": "離地",
+  "note": "課本練習3e ＝ décoller"
+ },
+ {
+  "id": "L37_la_chambre_double",
+  "lesson": 37,
+  "fr": "la chambre double",
+  "zh": "雙人房",
+  "note": ""
+ },
+ {
+  "id": "L37_la_chambre_simple",
+  "lesson": 37,
+  "fr": "la chambre simple",
+  "zh": "單人房",
+  "note": ""
+ },
+ {
+  "id": "L37_compris_comprise",
+  "lesson": 37,
+  "fr": "compris, comprise",
+  "zh": "包含在內",
+  "note": "＝inclus。🎙 Le petit déjeuner est compris ?"
+ },
+ {
+  "id": "L37_inclus_incluse",
+  "lesson": 37,
+  "fr": "inclus, incluse",
+  "zh": "包含在內",
+  "note": "🎙 included"
+ },
+ {
+  "id": "L37_la_demi_pension",
+  "lesson": 37,
+  "fr": "la demi-pension",
+  "zh": "半膳（含一餐正餐）",
+  "note": "⚠️ 見下面說明框"
+ },
+ {
+  "id": "L37_la_pension_complète",
+  "lesson": 37,
+  "fr": "la pension complète",
+  "zh": "全膳",
+  "note": "早餐、午餐、晚餐都有"
+ },
+ {
+  "id": "L37_un_repas_sur_deux",
+  "lesson": 37,
+  "fr": "un repas sur deux",
+  "zh": "兩餐中的一餐",
+  "note": "🎙 un sur deux＝二分之一"
+ },
+ {
+  "id": "L37_amphibie",
+  "lesson": 37,
+  "fr": "amphibie",
+  "zh": "水陸兩用的",
+  "note": "🎙 amphibian（兩棲動物）同一個字"
+ },
+ {
+  "id": "L37_rouler",
+  "lesson": 37,
+  "fr": "rouler",
+  "zh": "（車）行駛",
+  "note": "🎙 車可以在路上 rouler"
+ },
+ {
+  "id": "L37_flotter",
+  "lesson": 37,
+  "fr": "flotter",
+  "zh": "浮在水上",
+  "note": "課本練習4：rester au-dessus de l'eau"
+ },
+ {
+  "id": "L37_passer_dans_le_coin",
+  "lesson": 37,
+  "fr": "passer dans le coin",
+  "zh": "經過這一帶",
+  "note": "⭐ 🎙 Si tu passes dans le coin, viens boire un café."
+ },
+ {
+  "id": "L37_un_avis",
+  "lesson": 37,
+  "fr": "un avis",
+  "zh": "評論",
+  "note": "🎙 英文 review。回鍋：à mon avis＝我認為"
+ },
+ {
+  "id": "L37_le_patrimoine",
+  "lesson": 37,
+  "fr": "le patrimoine",
+  "zh": "文化遺產",
+  "note": "🎙 一座城市歷史上重要的地方"
+ },
+ {
+  "id": "L37_ludique",
+  "lesson": 37,
+  "fr": "ludique",
+  "zh": "好玩又學得到東西的",
+  "note": "🎙 在學習、同時很好玩"
+ },
+ {
+  "id": "L37_une_excursion",
+  "lesson": 37,
+  "fr": "une excursion",
+  "zh": "短途遊覽",
+  "note": "Quelle excursion !"
+ },
+ {
+  "id": "L37_une_anecdote",
+  "lesson": 37,
+  "fr": "une anecdote",
+  "zh": "趣聞、小故事",
+  "note": "🎙 不一定是老故事：今天你講了好笑的事，我也可以說 j'ai une anecdote avec Owen"
+ },
+ {
+  "id": "L37_drôle",
+  "lesson": 37,
+  "fr": "drôle",
+  "zh": "好笑的",
+  "note": ""
+ },
+ {
+  "id": "L37_un_audioguide",
+  "lesson": 37,
+  "fr": "un audioguide",
+  "zh": "語音導覽",
+  "note": ""
+ },
+ {
+  "id": "L37_pour_ce_que_c_est",
+  "lesson": 37,
+  "fr": "pour ce que c'est",
+  "zh": "以它的內容來說",
+  "note": "🎙 c'est cher pour ce que c'est＝不值這個價"
+ },
+ {
+  "id": "L37_les_ruines_romaines_f",
+  "lesson": 37,
+  "fr": "les ruines romaines (f.)",
+  "zh": "羅馬遺跡",
+  "note": "🎙 ruine＝毀掉後還剩下的部分；羅馬帝國留下的"
+ },
+ {
+  "id": "L37_le_Quartier_latin",
+  "lesson": 37,
+  "fr": "le Quartier latin",
+  "zh": "拉丁區",
+  "note": "巴黎的一區"
+ },
+ {
+  "id": "L37_à_éviter",
+  "lesson": 37,
+  "fr": "à éviter",
+  "zh": "避開、別去",
+  "note": "🎙 éviter＝to avoid。à＋原形＝「該…的」（第35課 à faire 同一個結構）"
+ },
+ {
+  "id": "L37_une_brochure",
+  "lesson": 37,
+  "fr": "une brochure",
+  "zh": "小冊子、傳單",
+  "note": "🎙 flyer"
+ },
+ {
+  "id": "L37_l_office_de_tourisme_m",
+  "lesson": 37,
+  "fr": "l'office de tourisme (m.)",
+  "zh": "遊客中心",
+  "note": ""
+ },
+ {
+  "id": "L37_une_déception",
+  "lesson": 37,
+  "fr": "une déception",
+  "zh": "失望",
+  "note": "⚠️⚠️ 假朋友：不是英文的 deception（欺騙）。Quelle déception !＝太失望了"
+ },
+ {
+  "id": "L37_sans_intérêt",
+  "lesson": 37,
+  "fr": "sans intérêt",
+  "zh": "沒意思的",
+  "note": ""
+ },
+ {
+  "id": "L37_profiter_de",
+  "lesson": 37,
+  "fr": "profiter de",
+  "zh": "好好享受、利用",
+  "note": "je n'ai pas pu profiter des monuments"
+ },
+ {
+  "id": "L37_valoir_le_coup",
+  "lesson": 37,
+  "fr": "valoir le coup",
+  "zh": "值得",
+  "note": "🎙 老師另外教的：ça vaut le coup ?＝值得嗎？"
+ },
+ {
+  "id": "L37_avoir_envie_de_nature",
+  "lesson": 37,
+  "fr": "avoir envie de nature",
+  "zh": "想親近大自然",
+  "note": "🎙 老師：我週末就 envie de nature"
+ },
+ {
+  "id": "L37_les_grands_espaces_m",
+  "lesson": 37,
+  "fr": "les grands espaces (m.)",
+  "zh": "遼闊的地方",
+  "note": "🎙 在山上可以看很遠"
+ },
+ {
+  "id": "L37_être_sensible_à",
+  "lesson": 37,
+  "fr": "être sensible à",
+  "zh": "對…很在意",
+  "note": "⚠️ 假朋友：sensible＝敏感、在意，不是英文的 sensible（明智）"
+ },
+ {
+  "id": "L37_le_tourisme_local",
+  "lesson": 37,
+  "fr": "le tourisme local",
+  "zh": "在地旅遊",
+  "note": ""
+ },
+ {
+  "id": "L37_parmi",
+  "lesson": 37,
+  "fr": "parmi",
+  "zh": "在…之中",
+  "note": "上一課回鍋"
+ },
+ {
+  "id": "L37_un_adepte_de",
+  "lesson": 37,
+  "fr": "un adepte de",
+  "zh": "…的愛好者",
+  "note": ""
+ },
+ {
+  "id": "L37_le_slow_tourisme",
+  "lesson": 37,
+  "fr": "le slow tourisme",
+  "zh": "慢旅行",
+  "note": "＝le tourisme lent"
+ },
+ {
+  "id": "L37_sur_place",
+  "lesson": 37,
+  "fr": "sur place",
+  "zh": "在當地",
+  "note": "vivre des expériences culturelles sur place"
+ },
+ {
+  "id": "L37_authentique",
+  "lesson": 37,
+  "fr": "authentique",
+  "zh": "道地的",
+  "note": "🎙 更真實的"
+ },
+ {
+  "id": "L37_la_brochure_touristique",
+  "lesson": 37,
+  "fr": "la brochure touristique",
+  "zh": "觀光手冊",
+  "note": ""
+ },
+ {
+  "id": "L37_le_bus_touristique",
+  "lesson": 37,
+  "fr": "le bus touristique",
+  "zh": "觀光巴士",
+  "note": "練習1b：繞城市一圈、經過主要古蹟的車"
+ },
+ {
+  "id": "L37_le_guide_la_guide",
+  "lesson": 37,
+  "fr": "le guide, la guide",
+  "zh": "導遊",
+  "note": "練習1a：給觀光客、博物館參觀者解說的人"
+ },
+ {
+  "id": "L37_l_histoire_f",
+  "lesson": 37,
+  "fr": "l'histoire (f.)",
+  "zh": "歷史",
+  "note": "練習1c：le récit des événements du passé"
+ },
+ {
+  "id": "L37_les_informations_pratiqu",
+  "lesson": 37,
+  "fr": "les informations pratiques (f.)",
+  "zh": "實用資訊",
+  "note": ""
+ },
+ {
+  "id": "L37_la_visite_guidée",
+  "lesson": 37,
+  "fr": "la visite guidée",
+  "zh": "導覽",
+  "note": "🎙 老師每天去散步的地方導覽團很多"
+ },
+ {
+  "id": "L37_la_cascade",
+  "lesson": 37,
+  "fr": "la cascade",
+  "zh": "瀑布",
+  "note": "🎙 天然的，多在山裡"
+ },
+ {
+  "id": "L37_la_falaise",
+  "lesson": 37,
+  "fr": "la falaise",
+  "zh": "懸崖、海崖",
+  "note": "🎙 山直直往下到海邊那種。課本：les falaises d'Étretat（諾曼第）"
+ },
+ {
+  "id": "L37_la_grotte",
+  "lesson": 37,
+  "fr": "la grotte",
+  "zh": "洞穴",
+  "note": "🎙 les grottes de Lascaux：裡面有史前人畫的壁畫，離老師家不遠"
+ },
+ {
+  "id": "L37_les_ruines_f",
+  "lesson": 37,
+  "fr": "les ruines (f.)",
+  "zh": "遺跡、廢墟",
+  "note": "ruines romaines"
+ },
+ {
+  "id": "L37_le_volcan",
+  "lesson": 37,
+  "fr": "le volcan",
+  "zh": "火山",
+  "note": "🎙 les volcans d'Auvergne（法國中部）——Volvic 礦泉水就是那裡來的"
+ },
+ {
+  "id": "L37_sombre",
+  "lesson": 37,
+  "fr": "sombre",
+  "zh": "陰暗的",
+  "note": "🎙 裡面有 ombre（影子）→ 全部都在暗處"
+ },
+ {
+  "id": "L37_le_tourisme_de_proximité",
+  "lesson": 37,
+  "fr": "le tourisme de proximité",
+  "zh": "近距離旅遊",
+  "note": "＝le tourisme local。🎙 就在你家附近"
+ },
+ {
+  "id": "L37_le_tourisme_lent",
+  "lesson": 37,
+  "fr": "le tourisme lent",
+  "zh": "慢旅行",
+  "note": "＝le slow tourisme"
+ },
+ {
+  "id": "L37_le_tourisme_durable",
+  "lesson": 37,
+  "fr": "le tourisme durable",
+  "zh": "永續旅遊",
+  "note": "＝le tourisme responsable。🎙 比較環保"
  }
 ];

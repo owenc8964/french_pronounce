@@ -104,6 +104,8 @@ var TOPIC_LABELS_FR = {
  "pc-imparfait-recit": "PC / imparfait (récit)",
  "vocab-travail-manuel": "Le travail manuel",
  "vocab-voyage-sur-mesure": "Voyage sur-mesure",
+ "accord-participe-passe": "Accord du participe passé",
+ "vocab-voyage-tourisme": "Le voyage et le tourisme",
  "medias-audio-reseaux": "Médias audios et réseaux sociaux",
  "critique-film": "Faire une critique",
  "place-pronoms-cod-coi": "Place des pronoms COD/COI"

@@ -424,8 +424,8 @@ header {
 <script src="tense_lens.js"></script>
 <script src="time_hall.js"></script>
 <script>
-const CURRENT_LESSON = 36;
-const TOTAL_LESSONS  = 36;
+const CURRENT_LESSON = 37;
+const TOTAL_LESSONS  = 37;
 
 const TILES = [
   // ── A1 ──────────────────────────────────────────────────────────
@@ -548,7 +548,7 @@ const TILES = [
 
   { id:'passe',        zone:'A2', icon:'⏮️', name:'Passé composé', gram:true, cat:'verbe-temps',
     hint:"J'ai mangé · Je suis allé(e)", unlocked:true, lesson:11,
-    detail:'Pour les actions terminées. Auxiliaire avoir + participe passé: j\'ai mangé, tu as fini, il a vendu. Auxiliaire être: 14 verbes (aller, venir, partir, arriver, naître, mourir, monter, descendre, rester, tomber…) + accord du participe.' },
+    detail:'Pour les actions terminées. Auxiliaire avoir + participe passé: j\'ai mangé, tu as fini, il a vendu. Auxiliaire être: 14 verbes (aller, venir, partir, arriver, naître, mourir, monter, descendre, rester, tomber…) + accord du participe. L37 : avec AVOIR, le participe passé s\'accorde avec le COD seulement s\'il est placé AVANT le verbe (la, les, que) : C\'est une visite que nous avons adorée. Les informations, on les a eues. COD après = pas d\'accord : Il a adoré cette ville. ⚠️ Avec avoir, on ne regarde jamais le sujet. On l\'entend seulement pour les participes en -t / -s : découverte, prise, mise, faite, écrite.' },
 
   { id:'imparfait',    zone:'A2', icon:'🌊', name:"L'imparfait", gram:true, cat:'verbe-temps',
     hint:"Je me souviens · C'était · Il faisait", unlocked:true, lesson:20,
@@ -657,6 +657,10 @@ const TILES = [
   { id:'pronoms-interrogatifs', zone:'A2', icon:'👉', name:'Les pronoms interrogatifs', gram:true, cat:'base',
     hint:'Lequel ? Laquelle ? Lesquels ?', unlocked:true, lesson:32,
     detail:"Les pronoms interrogatifs (leçon 32, unité 7) — lequel = le + quel, écrit en un seul mot. On l'utilise pour demander « lequel de ces éléments ? » quand les personnes ou les choses ont déjà été mentionnées : il indique un choix entre plusieurs éléments et il s'accorde en genre et en nombre avec le nom qu'il remplace. TABLEAU : lequel (masculin singulier), laquelle (féminin singulier), lesquels (masculin pluriel), lesquelles (féminin pluriel). Voici trois numéros d'urgence, lequel composez-vous ? Parmi les actions suivantes, lesquelles sont utiles ? Tes malades vont-ils mieux ? Lesquels peuvent sortir de l'hôpital ? ⚠️⚠️ QUEL OU LEQUEL : quel, quelle, quels, quelles sont des adjectifs, ils ont toujours besoin d'un nom (Tu préfères quel café ? Quelles gouttes pour le nez tu prends ?). Si le nom a déjà été dit, on ne le répète pas — les Français n'aiment pas répéter — et on passe à lequel (Lequel tu préfères ? à l'oral, Lequel préfères-tu ? à l'écrit). ⭐ D'après toi = à ton avis (≠ après toi)." },
+
+  { id:'tourisme-vocab', zone:'A2', icon:'🏞', name:'Le voyage et le tourisme', unlocked:true, lesson:37,
+    hint:"Chez l'habitant · Sans escale · Quelle déception !",
+    detail:"Le voyage et le tourisme (leçon 37, unité 10). L'HÉBERGEMENT : l'auberge de jeunesse, le camping, chez l'habitant (la série J'irai dormir chez vous), l'hôtel, passer la nuit. LE SÉJOUR : le circuit, la croisière, le départ ≠ l'arrivée, la destination, faire le tour du monde, l'itinéraire. L'AVION : l'aéroport, atterrir (se poser au sol) ≠ décoller (quitter le sol), les bagages, le billet = le titre de transport (⚠️ pas « title » : un pass Navigo, un pass Suica), la compagnie aérienne, le vol direct = sans escale. LES PRESTATIONS : chambre double / simple, compris = inclus, la demi-pension (petit déjeuner + un repas), la pension complète ; Il vous reste une chambre simple ? On ne mange que le matin (ne…que = seulement). LA VISITE : l'audioguide, la brochure, le bus touristique (le bus amphibie roule et flotte — coin-coin, le canard), l'excursion, le/la guide, l'office de tourisme, la visite guidée, le patrimoine, ludique, une anecdote. AVIS : C'est original et ludique / Ça change ! / Quelle déception ! (⚠️ = disappointment) / Ça ne m'a pas plu / C'est cher pour ce que c'est. LES SITES : la cascade (naturelle) ≠ la fontaine, la falaise (Étretat), la grotte (Lascaux, sombre), le pont, les ruines romaines, le volcan (Auvergne). LES TYPES : tourisme local / de proximité, lent (slow tourisme), durable / responsable." },
 
   { id:'travail-manuel-vocab', zone:'A2', icon:'🔨', name:'Le travail manuel', unlocked:true, lesson:36,
     hint:'Monter un meuble · En panne · Verser une caution',

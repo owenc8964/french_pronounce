@@ -269,7 +269,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'passe', name:'Passé composé & passé récent', icon:'⏮️', zone:'A2', cat:'verbe-temps',
-    lessons:[10,11,14,17,19], topics:['passe-compose','passe-recent'], unlocked:true,
+    lessons:[10,11,14,17,19,37], topics:['passe-compose','passe-recent','accord-participe-passe'], unlocked:true,   // 09-29 第37課（Édito A2 p.145）：avoir＋COD 在前的配合
     rule:{
       title:'複合過去式 — 助動詞（avoir/être）+ 過去分詞',
       why:'J\'ai mangé 字面是「我擁有 被吃完的東西」——用「有＋完成品」表達過去，這樣就不用為過去式背一整套新變位（又是口語的偷懶智慧，英文 have eaten 同款）。être 家族的動詞（去/來/出生/死…）不是「做了什麼」而是「主詞自己變成了什麼狀態、移到了哪裡」——所以分詞像形容詞一樣描述主詞，也因此要跟主詞配合（elle est sortie 加 e，跟 elle est grande 同一個道理）。venir de + 原形是 aller + 原形的鏡像：「從做完某事走過來」＝剛剛做完。',
@@ -280,8 +280,13 @@ const GRAM_POINTS = [
         '過去分詞：-er→é（mangé）、-ir→i（fini）、-re→u（vendu）',
         '否定包助動詞：On n\'a pas trouvé de lit',
         '剛剛做完 = venir de + 原形：Je viens de finir（我剛結束）',
+        '⭐ 第37課：用 avoir 時，COD 放在動詞「前面」（le／la／les、que）才配合 COD：C\'est une visite que nous avons adorée／Les informations, on les a eues',
+        '⚠️ COD 在後面就不配合：Il a adoré cette ville。🎙 判斷法：對分詞問 quoi ?／qui ?，看答案在前還是在後——⛔ avoir 句不看主詞',
+        '🔊 只有 -t／-s 結尾的分詞聽得出配合：découverte、prise、mise、faite、écrite、offerte、peinte',
       ],
       examples:[
+        { fr:'C\'est une ville qu\'il a adorée.', zh:'這是一座他很愛的城市。（que＝une ville 在前 → +e）' },
+        { fr:'On a pris les brochures ? — Non, on ne les a pas prises.', zh:'（les＝les brochures 在前 → +es，s 唸出來）' },
         { fr:'Vous avez trouvé des meubles ?', zh:'你們找到家具了嗎？' },
         { fr:'Elle est sortie.', zh:'她出去了。（être＋陰性配合+e）' },
         { fr:'Je viens de finir.', zh:'我剛剛結束。（passé récent）' },
