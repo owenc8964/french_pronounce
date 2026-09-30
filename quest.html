@@ -370,6 +370,13 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
      不然牠周圍 16px 還是會吃掉答題按鈕的點擊。 */
 #petfree.ghost .pf-in{pointer-events:auto; cursor:grab}
 #petfree .pf-in{width:100%; height:100%; transform-origin:50% 100%}
+/* 🌱 成長標記（2026-10-01）：頭上小圖示＋越大越亮的光；⛔ 不改大小（大小是 Owen 自己捏的） */
+#petfree .pf-crest{position:absolute; left:50%; top:-14px; transform:translateX(-50%); font-size:14px; line-height:1; pointer-events:none}
+#petfree.g2 img{filter:drop-shadow(0 0 2px rgba(255,220,120,.55))}
+#petfree.g3 img{filter:drop-shadow(0 0 4px rgba(255,220,120,.75))}
+#petfree.g4 img{filter:drop-shadow(0 0 6px rgba(255,210,90,.95))}
+.growbar{height:6px; border-radius:3px; background:rgba(255,255,255,.08); margin:6px 0 4px; overflow:hidden}
+.growbar i{display:block; height:100%; background:var(--gold)}
 #petfree img{width:100%; height:100%; display:block}
 #petfree.l img{transform:scaleX(-1)}
 #petfree.walk .pf-in{animation:pfWalk .34s ease-in-out infinite}
@@ -1053,6 +1060,7 @@ function gameRecord(q, ok){
 /* 塔的結算：連擊制（見上方區塊說明） */
 function towerResolve(loose, exact, q, m, retried){
   gameRecord(q, loose && !retried);
+  growRec(q, loose && !retried);   /* 🌱 寵物成長只認站穩 */
   var hero=document.getElementById('hero'), foe=document.getElementById('foe');
   var counts = m.type!=='choose' || B.towerMoves[0]==='hit', clean = loose && !retried;
   B.asked++;
@@ -1969,7 +1977,7 @@ function petFreeStart(){
   var b=petFreeBounds(), now=performance.now();
   PF={ el:el, say:el.querySelector('.pf-say'), x:b.x0+Math.random()*(b.x1-b.x0), y:b.y1-Math.random()*70,
        tx:0, ty:0, mode:'rest', until:now+900, last:now, sayT:0, joyT:0, raf:0, drag:null, toy:null, toyGo:0, fxAt:0, ptrs:{}, pinch:null };
-  pfApplySize();
+  pfApplySize(); petFreeCrest();
   /* ⭐ 按住可以拖著走（點一下＝摸摸牠、拖＝搬到別的地方，不擋東西）；手指一碰到牠就先停住 */
   el.addEventListener('pointerdown',petFreeDown);
   PF.raf=requestAnimationFrame(petFreeTick);
@@ -2387,6 +2395,7 @@ function renderPetTab(){
       '<div class="fb" style="color:var(--faint);font-size:.72rem">兩根手指在牠身上捏合可以放大縮小。</div>'+
       '<div class="fb" style="margin-top:8px">毛色　<span class="sws">'+sw+'</span></div>'+
       '<div class="fb" style="color:var(--faint);font-size:.72rem">金幣只有一個錢包：打贏、答對、通關都會累積，不會隔天歸零、倒下也不會掉；可以買藥水，也可以花在牠身上。衣服也會從怪物身上掉出來（關主一定掉）。</div></div>'+
+    growHtml()+
     '<div class="sec"><h2>衣櫃</h2>'+(mine.length?'<div class="itms">'+mine.map(function(x){ return cell(x,'own'); }).join('')+'</div>':'<div class="fb">還沒有衣服——打怪會掉，或到下面用金幣買。</div>')+'</div>'+
     '<div class="sec"><h2>商店</h2>'+(shop.length?'<div class="itms">'+shop.map(function(x){ return cell(x,'shop'); }).join('')+'</div>':'<div class="fb">全部收齊了。</div>')+'</div>'+
     petGamesHtml();
@@ -2632,6 +2641,74 @@ function seenRec(key,ok){
   if(ok) r.c=(r.c||0)+1; else r.w=(r.w||0)+1; r.last=Date.now(); o[key]=r;
   var ks=Object.keys(o); if(ks.length>800){ ks.sort(function(a,b){ return (o[b].last||0)-(o[a].last||0); }); var keep={}; ks.slice(0,800).forEach(function(k){ keep[k]=o[k]; }); o=keep; }
   try{ localStorage.setItem('clb7_game_seen',JSON.stringify(o)); }catch(e){}
+}
+/* ════════════════════════════════════════════════════════════════
+   🌱 寵物成長只認「站穩」（2026-10-01 Owen：「做第一個，寵物成長綁精熟」；依據 research/2026-10-01_八角框架對照遊戲.md）
+   · 站穩＝同一題「某天答對 → 隔天以後又一次就答對」，中間沒有答錯（答錯就從頭算）
+   · ⛔ 不算：答錯、第二次才對、「再練一次」的題（剛看過答案）、考試題、跳過、開箱、摸牠、小遊戲
+   · ⭐ XP／金幣照舊給（不懲罰他）；這條線是另外一面「鏡子」——只有真的記住了才會動
+   · ⭐ 已經站穩的不會被收回（成長不倒退，後果不放在學習成果上）；牠也⛔ 不進 dashboard
+   · 存 clb7_pet_grow：每題一個物件＋last（配合 sync_supabase.js 的 per-key 物件合併）
+   ════════════════════════════════════════════════════════════════ */
+var GROW_KEY='clb7_pet_grow';
+var GROW_STAGES=[
+  {n:0,   name:'幼年', icon:'🌱'},
+  {n:10,  name:'少年', icon:'🌿'},
+  {n:30,  name:'青年', icon:'🌳'},
+  {n:60,  name:'成年', icon:'⭐'},
+  {n:100, name:'傳說', icon:'👑'}];
+function growAll(){ var o=lsObj(GROW_KEY,{}); return (o&&typeof o==='object'&&!Array.isArray(o))?o:{}; }
+function growKey(q){ return q.srcId ? 's:'+q.srcId : (typeof qId==='function' ? 'q:'+qId(q) : null); }
+function growStood(){ var o=growAll(); return Object.keys(o).filter(function(k){ return o[k]&&o[k].s; }).map(function(k){ return o[k]; }); }
+function growStage(n){ var i=0; GROW_STAGES.forEach(function(g,j){ if(n>=g.n) i=j; }); return i; }
+function growRec(q, ok){
+  if(!q||!q.q) return;
+  if(typeof B!=='undefined'&&B&&(B.exam||(B.isRedo&&B.curQ===q))) return;
+  var k=growKey(q); if(!k) return;
+  var o=growAll(), r=o[k]||{}, t=todayStr(), before=growStood().length;
+  if(r.s){ r.last=Date.now(); o[k]=r; }                       /* 已經站穩：不再變動（⛔ 答錯也不收回） */
+  else if(!ok){ r.d=''; r.last=Date.now(); o[k]=r; }          /* 答錯：從頭算 */
+  else if(!r.d){ r.d=t; r.last=Date.now(); o[k]=r; }           /* 第一次答對：記下這天 */
+  else if(r.d<t){                                              /* 隔天以後又一次就答對 → 站穩 */
+    r.s=1; r.at=Date.now(); r.last=r.at;
+    r.q=String(stemOf(q)).slice(0,80); r.a=String(shownAns(q)).slice(0,80); o[k]=r;
+  } else return;                                               /* 同一天再答對：什麼都不變 */
+  try{ localStorage.setItem(GROW_KEY, JSON.stringify(o)); }catch(e){}
+  if(r.s&&r.at===r.last) growCelebrate(before, before+1);
+}
+function growCelebrate(a,b){
+  var s0=growStage(a), s1=growStage(b);
+  if(s1>s0){
+    var g=GROW_STAGES[s1];
+    toast(g.icon+' '+((S.pet&&S.pet.name)||'牠')+' 長大了——'+g.name+'！');
+    petFreeCrest(); petFreeJoy();
+  } else {
+    toast('🌱 又站穩一題——'+((S.pet&&S.pet.name)||'牠')+'也記住了');
+    petFreeJoy();
+  }
+}
+/* 牠身上的成長標記（頭上的小圖示＋越大越亮的光） */
+function petFreeCrest(){
+  if(!PF) return;
+  var st=growStage(growStood().length), c=PF.el.querySelector('.pf-crest');
+  for(var i=0;i<GROW_STAGES.length;i++) PF.el.classList.remove('g'+i);
+  PF.el.classList.add('g'+st);
+  if(!c){ c=document.createElement('div'); c.className='pf-crest'; PF.el.appendChild(c); }
+  c.textContent=st>0?GROW_STAGES[st].icon:'';
+}
+/* 夥伴分頁的成長區：現在幾歲、這一段走到哪、最近一起站穩的 */
+function growHtml(){
+  var list=growStood(), n=list.length, st=growStage(n), g=GROW_STAGES[st], nx=GROW_STAGES[st+1];
+  var bar=nx?Math.round((n-g.n)/(nx.n-g.n)*100):100;
+  var recent=list.slice().sort(function(a,b){ return (b.at||0)-(a.at||0); }).slice(0,3);
+  return '<div class="sec"><h2>成長</h2>'+
+    '<div class="npcrow"><div class="npcname">'+g.icon+' '+g.name+'<small>'+(nx?'下一段：'+nx.icon+' '+nx.name:'已經長到最大了')+'</small></div></div>'+
+    (nx?'<div class="growbar"><i style="width:'+bar+'%"></i></div>':'')+
+    '<div class="fb" style="color:var(--faint);font-size:.72rem">牠只會因為你「真的記住了」才長大：一題某天答對、隔天以後又一次就答對，才算站穩。答錯、再練一次、跳過都不會讓牠變小。</div>'+
+    (recent.length?'<div class="fb" style="margin-top:6px">最近一起站穩的：'+recent.map(function(r){
+      return '<div style="margin-top:4px"><span style="color:var(--dim)">'+esc(r.q||'')+'</span> → <b>'+esc(r.a||'')+'</b></div>'; }).join('')+'</div>'
+      :'<div class="fb" style="margin-top:6px;color:var(--faint)">還沒有站穩的題——今天答對的，明天以後再遇到又答對，就算一題。</div>')+
+    '</div>';
 }
 function dueScore(rec){
   rec=rec||{};
@@ -3512,6 +3589,7 @@ function resolveMove(loose, exact, q, m, retried){
     if(loose) redoDrop(q); else if(!q.noRedo) redoAdd(q,m);
   }
   if(B && !B.exam && q && q.topic) gameRecord(q, loose && !retried);
+  if(B && !B.exam && q) growRec(q, loose && !retried);   /* 🌱 寵物成長只認站穩（「再練一次」的題在 growRec 裡擋掉） */
   if(B && !B.exam && !B.tower && q && q.topic) ddaTrack(loose && !retried);   /* B6：塔已有自己的連擊節奏（B8）不混進來；地城/副本/主線戰鬥都算進「近期整體表現」，只拿來調地城怪物 */
   var hero=document.getElementById('hero'), foe=document.getElementById('foe');
   if(loose){
