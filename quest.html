@@ -371,13 +371,11 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 #petfree.ghost .pf-in{pointer-events:auto; cursor:grab}
 #petfree .pf-in{width:100%; height:100%; transform-origin:50% 100%}
 /* 🌱 成長標記（2026-10-01）：頭上小圖示＋越大越亮的光；⛔ 不改大小（大小是 Owen 自己捏的） */
-#petfree .pf-crest{position:absolute; left:50%; top:-14px; transform:translateX(-50%); font-size:14px; line-height:1; pointer-events:none}
-#petfree.g2 img{filter:drop-shadow(0 0 2px rgba(255,220,120,.55))}
-#petfree.g3 img{filter:drop-shadow(0 0 4px rgba(255,220,120,.75))}
-#petfree.g4 img{filter:drop-shadow(0 0 6px rgba(255,210,90,.95))}
+#petfree .pf-in{display:flex; align-items:flex-end; justify-content:center}   /* 小時候的樣子比較小：貼著地面置中 */
+#petfree.g4 img{filter:drop-shadow(0 0 5px rgba(255,210,90,.9))}   /* 只有傳說會發光 */
 .growbar{height:6px; border-radius:3px; background:rgba(255,255,255,.08); margin:6px 0 4px; overflow:hidden}
 .growbar i{display:block; height:100%; background:var(--gold)}
-#petfree img{width:100%; height:100%; display:block}
+#petfree img{width:100%; height:100%; display:block; flex:none}
 #petfree.l img{transform:scaleX(-1)}
 #petfree.walk .pf-in{animation:pfWalk .34s ease-in-out infinite}
 #petfree.rest .pf-in{animation:pfBreath 2.8s ease-in-out infinite}
@@ -1977,7 +1975,7 @@ function petFreeStart(){
   var b=petFreeBounds(), now=performance.now();
   PF={ el:el, say:el.querySelector('.pf-say'), x:b.x0+Math.random()*(b.x1-b.x0), y:b.y1-Math.random()*70,
        tx:0, ty:0, mode:'rest', until:now+900, last:now, sayT:0, joyT:0, raf:0, drag:null, toy:null, toyGo:0, fxAt:0, ptrs:{}, pinch:null };
-  pfApplySize(); petFreeCrest();
+  pfApplySize(); petFreeForm();
   /* ⭐ 按住可以拖著走（點一下＝摸摸牠、拖＝搬到別的地方，不擋東西）；手指一碰到牠就先停住 */
   el.addEventListener('pointerdown',petFreeDown);
   PF.raf=requestAnimationFrame(petFreeTick);
@@ -2304,10 +2302,69 @@ var KIND_NAME={dog:'小狗',bear:'小熊',cat:'貓咪',rabbit:'兔子'};
 var PET_SLOTS={head:'頭',face:'臉',neck:'脖子',back:'背後'};
 var PET_CACHE={};
 function petItem(id){ return PET_ITEMS.filter(function(x){ return x.id===id; })[0]||null; }
-function petPal(p){ var k=p.kind||'dog', c=p.color||'brown'; return (PET_COLORS[k]||PET_COLORS.dog)[c]||(PET_COLORS[k]||PET_COLORS.dog).brown; }
-function petSprite(p){
+function petPal(p){ var k=p.kind||'dog', c=p.color||'brown', t=PET_COLORS[k]||PET_COLORS.dog; return t[c]||t.brown||t[Object.keys(t)[0]]; }   /* ⚠️ 貓咪沒有「棕」：退回那一種的第一個毛色（2026-10-01 修：換成貓咪會整個畫不出來） */
+/* ════════════════════════════════════════════════════════════════
+   🌱 成長的外型（2026-10-01 Owen：「我覺得長大外型也要變耶！頭上有圖示感覺很怪，
+      但我私心希望我有時候可以叫出他小時候來陪我」）
+   · 五個階段各有自己的樣子，都從同一張 PET_ART 長出來（⛔ 不另畫四種×五段），衣服座標不用動：
+     🌱幼年：水汪汪的大眼睛＋腮紅，身體小一號（在牠的框裡縮小，⛔ 不動 Owen 捏的大小）
+     🌿少年：原本的樣子　🌳青年：長出尾巴、腳掌變深　⭐成年：眉毛＋胸前的毛　👑傳說：額頭金色印記＋微光
+   · 解鎖過的樣子都能叫出來陪你（S.pet.form）；長大那一刻自動換成新樣子，想要小時候再去夥伴頁換回來
+   ════════════════════════════════════════════════════════════════ */
+var FORM_SCALE=[.72,.84,.92,1,1];
+function petFormNow(){
+  var cur=growStage(growStood().length), f=S.pet&&S.pet.form;
+  return (typeof f==='number'&&f>=0&&f<=cur)?f:cur;
+}
+function petFormArt(cx, kind, st, col){
+  var art=PET_ART[kind]||PET_ART.dog, ex=-1, ey=-1;
+  art.forEach(function(row,y){ var i=row.indexOf('e'); if(i>=0&&ex<0){ ex=i; ey=y; } });
+  function px(x,y,c){ cx.fillStyle=c; cx.fillRect(x,y,1,1); }
+  function pm(x,y,c){ px(x,y,c); px(15-x,y,c); }          /* 左右對稱 */
+  if(st===0 && ex>=0){                                     /* 幼年：大眼睛（兩格高）＋亮點＋腮紅 */
+    pm(ex,ey+1,col.e); pm(ex,ey,'#ffffff'); pm(ex-1,ey+2,col.p);
+  }
+  if(st>=2){                                               /* 青年起：尾巴（只在右邊）＋深色腳掌 */
+    px(13,12,col.d); px(13,11,col.b); px(14,11,col.b); px(14,10,col.b); px(15,9,col.d); px(14,9,col.d);
+    pm(4,14,col.d); pm(5,14,col.d);
+  }
+  if(st>=3 && ex>=0){                                      /* 成年：眉毛＋胸前的毛＋兩側花紋 */
+    pm(ex,ey-1,col.d); pm(ex-1,ey-1,col.d);                 /* 粗一點的眉毛 */
+    pm(6,10,col.c); pm(7,10,col.c); pm(5,10,col.c);         /* 胸前一大撮毛 */
+    pm(4,11,col.d); pm(4,12,col.d); pm(4,13,col.d);         /* 身體兩側的深色花紋 */
+  }
+  if(st>=4){                                               /* 傳說：額頭金色印記 */
+    pm(7,2,'#f3c73a'); pm(7,3,'#f3dc9a');
+  }
+}
+/* 把現在的樣子套到頁面上走動的那隻（大小比例＋傳說的光） */
+function petFreeForm(){
+  if(!PF) return;
+  var st=petFormNow(), im=PF.el.querySelector('img'), old=PF.el.querySelector('.pf-crest');
+  if(old) old.remove();
+  for(var i=0;i<GROW_STAGES.length;i++) PF.el.classList.remove('g'+i);
+  PF.el.classList.add('g'+st);
+  if(im){ im.src=petSprite(S.pet); im.style.width=im.style.height=(FORM_SCALE[st]*100)+'%'; }
+}
+function petForm(i){
+  var p=S.pet, cur=growStage(growStood().length); if(!p||i>cur) return;
+  p.form=(i===cur)?null:i; save(S); sfx('switch_002');
+  petFreeForm(); petFreeJoy();
+  toast(i===cur?'現在的樣子陪你':GROW_STAGES[i].icon+' '+GROW_STAGES[i].name+'的牠來陪你了');
+  renderPetTab();
+}
+function petFormsHtml(){
+  var p=S.pet, cur=growStage(growStood().length), on=petFormNow();
+  return '<div class="fb" style="margin-top:8px">陪你的樣子</div><div class="itms">'+
+    GROW_STAGES.map(function(g,i){
+      if(i>cur) return '<button class="itm dim" onclick="toast(\'再站穩 '+(g.n-growStood().length)+' 題就看得到\')"><span style="font-size:1.4rem;line-height:44px">？</span><span>'+g.name+'</span><small>還沒長到</small></button>';
+      return '<button class="itm'+(i===on?' on':'')+'" onclick="petForm('+i+')"><img src="'+petSprite(p,i)+'" alt="" style="width:'+(FORM_SCALE[i]*44)+'px;height:'+(FORM_SCALE[i]*44)+'px;margin-top:'+((1-FORM_SCALE[i])*44)+'px;image-rendering:pixelated"><span>'+g.icon+' '+g.name+'</span><small>'+(i===on?'陪著你':(i===cur?'現在的樣子':'小時候'))+'</small></button>';
+    }).join('')+'</div>';
+}
+function petSprite(p, st){
   p=p||{}; var kind=p.kind||'dog', worn=p.worn||{};
-  var key=kind+'|'+(p.color||'brown')+'|'+['head','face','neck','back'].map(function(s){ return worn[s]||''; }).join(',');
+  if(st==null) st=(p===S.pet)?petFormNow():1;   /* 沒指定＝現在陪你的那個樣子 */
+  var key=kind+'|'+(p.color||'brown')+'|'+st+'|'+['head','face','neck','back'].map(function(s){ return worn[s]||''; }).join(',');
   if(PET_CACHE[key]) return PET_CACHE[key];
   var cv=document.createElement('canvas'); cv.width=16; cv.height=16; var cx=cv.getContext('2d'), pal=petPal(p);
   var col={o:'#2a1c14',b:pal.b,d:pal.d,c:pal.c,e:'#1b1b1b',n:'#222',p:'#e88a9a'};
@@ -2315,6 +2372,7 @@ function petSprite(p){
   ['head','face','neck','back'].forEach(function(s){ var it=worn[s]&&petItem(worn[s]); if(it&&it.layer==='back') rects(it); });
   (PET_ART[kind]||PET_ART.dog).forEach(function(row,y){
     for(var x=0;x<8;x++){ var ch=row.charAt(x); if(ch==='.') continue; cx.fillStyle=col[ch]; cx.fillRect(x,y,1,1); cx.fillRect(15-x,y,1,1); } });
+  petFormArt(cx, kind, st, col);
   ['neck','face','head'].forEach(function(s){ var it=worn[s]&&petItem(worn[s]); if(it&&it.layer!=='back') rects(it); });
   return (PET_CACHE[key]=cv.toDataURL());
 }
@@ -2324,7 +2382,7 @@ function petItemIcon(it){
   it.r.forEach(function(q){ cx.fillStyle=q[4]; cx.fillRect(q[0],q[1],q[2],q[3]); });
   return (PET_CACHE[k]=cv.toDataURL());
 }
-function petRefresh(){ if(PF&&S.pet){ var im=PF.el.querySelector('img'); if(im) im.src=petSprite(S.pet); } }
+function petRefresh(){ if(PF&&S.pet){ var im=PF.el.querySelector('img'); if(im) im.src=petSprite(S.pet); petFreeForm(); } }
 /* 掉寶：小怪 12%、精英 30%、關主 100%；只掉還沒有的、且不是只能買的；便宜的比較常掉 */
 function rollDrop(kind){
   var ch=kind==='boss'?1:(kind==='elite'?.3:.12); if(Math.random()>=ch) return null;
@@ -2351,10 +2409,10 @@ function petFeed(){
   S.gold-=10; p.fed=(p.fed||0)+1; p.lastInteractAt=Date.now(); save(S); sfx('confirmation_001');
   petFreeJoy(); petFreeSay(['好好吃！','汪！再一個～','（吃得好開心）','嗯嗯～'][p.fed%4]); renderPetTab();
 }
-function petKind(k){ var p=S.pet; if(p.kind===k) return; p.kind=k; p.color='brown'; save(S); sfx('switch_002'); petRefresh(); renderPetTab(); }
+function petKind(k){ var p=S.pet; if(p.kind===k) return; p.kind=k; p.color=Object.keys(PET_COLORS[k]||{brown:1})[0]; save(S); sfx('switch_002'); petRefresh(); renderPetTab(); }
 function petColor(c){
   var p=S.pet; p.colors=p.colors||{brown:1}; var key=(p.kind||'dog')+':'+c;
-  if(!p.colors[key]&&c!=='brown'){
+  if(!p.colors[key]&&c!==Object.keys(PET_COLORS[p.kind||'dog']||{brown:1})[0]){   /* 每一種的第一個毛色免費（貓咪沒有棕） */
     if((S.gold||0)<60){ toast('新毛色要 60 枚金幣'); return; }
     S.gold-=60; p.colors[key]=1; toast('換了新毛色');
   }
@@ -2369,7 +2427,7 @@ function renderPetTab(){
   var p=S.pet, own=S.wardrobe||{}, gold=S.gold||0, kind=p.kind||'dog', worn=p.worn||{};
   p.colors=p.colors||{brown:1};
   var sw=Object.keys(PET_COLORS[kind]).map(function(c){
-    var has=c==='brown'||p.colors[kind+':'+c], on=(p.color||'brown')===c;
+    var first=Object.keys(PET_COLORS[kind])[0], has=c===first||p.colors[kind+':'+c], on=(PET_COLORS[kind][p.color]?p.color:first)===c;
     return '<button class="sw'+(on?' on':'')+'" style="background:'+PET_COLORS[kind][c].b+'" onclick="petColor(\''+c+'\')" title="'+PET_COLORS[kind][c].n+'">'+(has?'':'<small>60</small>')+'</button>'; }).join('');
   var mine=PET_ITEMS.filter(function(x){ return own[x.id]; }), shop=PET_ITEMS.filter(function(x){ return !own[x.id]&&itemOk(x,kind); });
   function cell(it,mode){
@@ -2380,7 +2438,7 @@ function renderPetTab(){
       '<img src="'+petItemIcon(it)+'" alt=""><span>'+esc(it.name)+'</span><small>'+
       (!ok?(KIND_NAME[it.only]||it.only)+'專屬':(mode==='own'?(isOn?'穿著中':PET_SLOTS[it.slot]):(it.price?it.price+' 幣':'打關主才會掉')))+'</small></button>'; }
   document.getElementById('view').innerHTML=modeTabs()+
-    '<div class="sec"><h2>夥伴</h2><div class="pethero"><img id="petbig" src="'+petSprite(p)+'" alt=""></div>'+
+    '<div class="sec"><h2>夥伴</h2><div class="pethero"><img id="petbig" src="'+petSprite(p)+'" alt="" style="transform:scale('+FORM_SCALE[petFormNow()]+');transform-origin:50% 100%"></div>'+
       '<div class="npcrow" style="margin-top:8px"><div class="npcname" onclick="petRename()" style="cursor:pointer">'+esc(p.name||'小夥伴')+' ✎<small>'+esc(petMood(p))+'</small></div>'+
         '<div class="stat coin" style="display:flex;gap:4px;align-items:center">'+V.coin+'<span>'+gold+'</span></div></div>'+
       '<div class="cmds" style="margin-top:6px">'+
@@ -2680,21 +2738,13 @@ function growCelebrate(a,b){
   var s0=growStage(a), s1=growStage(b);
   if(s1>s0){
     var g=GROW_STAGES[s1];
-    toast(g.icon+' '+((S.pet&&S.pet.name)||'牠')+' 長大了——'+g.name+'！');
-    petFreeCrest(); petFreeJoy();
+    toast(g.icon+' '+((S.pet&&S.pet.name)||'牠')+' 長大了——'+g.name+'！換了個樣子');
+    if(S.pet){ S.pet.form=null; save(S); }   /* 長大那一刻換成新樣子（想要小時候再去夥伴頁換） */
+    petFreeForm(); petFreeJoy();
   } else {
     toast('🌱 又站穩一題——'+((S.pet&&S.pet.name)||'牠')+'也記住了');
     petFreeJoy();
   }
-}
-/* 牠身上的成長標記（頭上的小圖示＋越大越亮的光） */
-function petFreeCrest(){
-  if(!PF) return;
-  var st=growStage(growStood().length), c=PF.el.querySelector('.pf-crest');
-  for(var i=0;i<GROW_STAGES.length;i++) PF.el.classList.remove('g'+i);
-  PF.el.classList.add('g'+st);
-  if(!c){ c=document.createElement('div'); c.className='pf-crest'; PF.el.appendChild(c); }
-  c.textContent=st>0?GROW_STAGES[st].icon:'';
 }
 /* 夥伴分頁的成長區：現在幾歲、這一段走到哪、最近一起站穩的 */
 function growHtml(){
@@ -2704,6 +2754,7 @@ function growHtml(){
   return '<div class="sec"><h2>成長</h2>'+
     '<div class="npcrow"><div class="npcname">'+g.icon+' '+g.name+'<small>'+(nx?'下一段：'+nx.icon+' '+nx.name:'已經長到最大了')+'</small></div></div>'+
     (nx?'<div class="growbar"><i style="width:'+bar+'%"></i></div>':'')+
+    petFormsHtml()+
     '<div class="fb" style="color:var(--faint);font-size:.72rem">牠只會因為你「真的記住了」才長大：一題某天答對、隔天以後又一次就答對，才算站穩。答錯、再練一次、跳過都不會讓牠變小。</div>'+
     (recent.length?'<div class="fb" style="margin-top:6px">最近一起站穩的：'+recent.map(function(r){
       return '<div style="margin-top:4px"><span style="color:var(--dim)">'+esc(r.q||'')+'</span> → <b>'+esc(r.a||'')+'</b></div>'; }).join('')+'</div>'
