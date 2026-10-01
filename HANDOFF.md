@@ -4865,6 +4865,22 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
     ⭐ 順帶進頁面的實用細節：`conditionnel passé` 高度集中在 `aurais pu／aurait dû`（固定塊不是時態）；`futur antérieur` 15 個 token 裡 `aura fallu` 佔 9 個；`subjonctif passé` 對話裡 5 個但**選項裡 15 個**（答題才遇到）；`passé simple` 閱讀題幹 **0 個**、真實書面散文也只 0.71%，跟直覺相反。
 - ⏸ **沒做／下一步**：複合時態（plus-que-parfait 等）還沒有 verb_sprint 模式；Owen 說的「**自訂勾選哪些單字的哪些變化**」目前只做到「一個動詞 × 多個時態」，**還沒做「多個動詞一起考」**——要做的話得讓 verb_sprint 接 `?verbs=` 白名單。
 
+#### 三之二十三、10-01：變位總覽第二輪——改成「規則版」＋一張圖（⭐ 下一個 session 先讀）
+
+- **Owen 對爬升圖的回饋（最重要的設計判準，⛔ 不要再犯）**：
+  「你是從**一個字開始做推演**，但不可能只這樣一個字一個字記。應該要有個 **general 的變換方式**：present 的 er 結尾是 e-es-e…、ir 是…、re 是…；imparfait 怎麼變形；vient de／va + verb 是什麼意思、怎麼轉換；未來式又是怎樣」
+  「爬升圖**算是我要的概念**，但**看完只想放棄**。你這個東西**太表格了，很難讀**，要設計成**一目瞭然**的方法」
+  → ⭐ **先講規則（不分動詞），動詞只是例子**；⭐ **視覺 > 文字與表格**。
+- ✅ **新版面由上到下**：📌 要看哪些時態（照三條線分組）→ 🗺 **一張圖看懂**（三個來源：原形／現在式／過去分詞，各自箭頭到它長出的時態，每格一個 parler 的彩色例子，點了跳到規則卡）→ **規則卡**（照學的順序：présent → passé composé → imparfait → futur proche → passé récent → futur simple → conditionnel → subjonctif → 進階複合（四個共一張）→ passé simple）→ 📖 **查一個動詞的完整變化**（原本的單一動詞卡＋動詞選擇，預設收起）→ 直接考 → 資料來源。
+- ⭐ **規則卡的固定格式**：一句「什麼時候用」→ 公式（白＝詞幹、金＝要換的那塊）→ 六個字尾 chip（灰＝不發音）→ 三個例子 → 「⚠️ 要另外背的」預設收起（點動詞會打開下面的查詢並切到那個動詞）。
+  - présent：-er／-ir／-re 三家並排（parler／finir／attendre），-e／-es／-e／-ent 標灰「不發音、四個唸起來一樣」；常用不規則 19 個收起。
+  - passé composé：avoir 現在式（j'ai…，⚠️ 用 `withSubj` 省音，不能套「-字尾」格式）＋過去分詞三規則（-é／-i／-u）；être 動詞一句話；不規則過去分詞 17 個從資料算。
+  - imparfait：nous 去 -ons ＋ 字尾，例外只有 être（ét-）。futur simple：原形（-re 去 e）＋ avoir 現在式字尾；不規則詞幹 11 個從資料算（`v.fut !== regFut(v)`）。conditionnel：未來詞幹＋imparfait 字尾。subjonctif：ils 去 -ent ＋ 字尾，nous／vous＝imparfait；不規則 7 個。futur proche：aller＋原形；passé récent：venir de＋原形（母音前 d'）。
+  - ⭐ 例子的法文一律從 `verbs_full.js` 算，⛔ 不手打變位。
+- 🗑 拿掉：爬升圖樓層卡（`node/staticNode/floorHtml/renderMap`）；單一動詞卡上的樓層標籤。`FLOOR/ORDER/TWIN/derive` 留著（單一動詞卡還在用）。新增 `LANE/sx/endChips/auxChips/exRow/irrList/irrItem/REG_PP/ruleBody/RULE_WHEN/renderOverview/renderRules/goRule/openVerb`。
+- ✅ 試跑（隔離複本，ROOM 沒動）：iPad 768／手機 375（無橫向捲動、三條線改成上下排）；8 張規則卡都正確；五個「要另外背的」清單內容逐一核對；從清單點 boire → 打開查詢並切到 boire；無錯誤。
+- ⏸ **等 Owen 看**：這版有沒有「一目瞭然」；規則卡要不要再更短；一張圖要不要做成可以換例子動詞（現在固定 parler）。
+
 #### 三之二十二、10-01：變位總覽改版——🧗 爬升圖（Owen：「目前這個呈現還跟我想要的差很多」）
 
 - **Owen 看完 09-23 版的五點回饋**：①「要看哪個時態」應該擺最上面、可以收合展開 ② 太密了，看得好累 ③ 中文名旁要寫法文原名（未完成過去式 imparfait），其他也一樣 ④ 底下註解超亂看不懂 ⑤ ⭐⭐「法文動詞的變化是有規則，且用從不同的時態去做開展的，**這要有一個很完整的脈絡，我需要脈絡讓我攀爬**」。

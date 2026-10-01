@@ -256,6 +256,76 @@ body { line-height: 1.7; }
 .usage .cx a { color: #5a6878; }
 /* 時態卡改成一欄：兩欄在 iPad 上太擠（Owen：太密了）；六格在寬螢幕排三欄 */
 @media (min-width: 760px) { #tenses { display: block; } .forms { grid-template-columns: repeat(3, 1fr); } }
+
+/* ════ 2026-10-01 第二輪：規則版（一目瞭然） ════ */
+.st { color: #e8e2d4; }
+.en { color: #f0c060; font-weight: 700; }
+.en.mute, .endc.mute { color: #6a6450; font-weight: 400; }
+.cg-n { width: 3.6em; }
+/* 🗺 一張圖 */
+.lane { display: flex; gap: 12px; align-items: stretch; padding: 12px 0; border-top: 1px dashed #1a2438; }
+.lane:first-child { border-top: none; padding-top: 2px; }
+.src { flex: none; width: 7.2em; display: flex; flex-direction: column; justify-content: center; align-items: center;
+  background: #1c1a10; border: 1px solid #5a4a18; border-radius: 14px; padding: 10px 6px; position: relative; }
+.src::after { content: '➜'; position: absolute; right: -15px; top: 50%; transform: translateY(-50%); color: #5a4a18; font-size: 1em; }
+.src-k { font-size: 0.75em; color: #c8a868; }
+.src-v { font-family: Georgia, serif; font-size: 1.05em; margin-top: 2px; }
+.kids { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; padding-left: 6px; }
+.ov-t { text-align: left; font: inherit; color: inherit; background: #111628; border: 1px solid #1f2a40; border-radius: 12px;
+  padding: 9px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 3px; }
+.ov-t:hover { border-color: #f0c060; }
+.ov-t.dim { opacity: .5; }
+.ov-n { font-size: 0.78em; }
+.ov-ex { font-family: Georgia, serif; font-size: 0.98em; }
+.ov-key { font-size: 0.78em; color: #6a7888; margin-top: 10px; text-align: center; }
+@media (max-width: 560px) {
+  .lane { flex-direction: column; }
+  .src { width: auto; flex-direction: row; gap: 10px; }
+  .src::after { content: '↓'; right: auto; left: 50%; top: auto; bottom: -16px; transform: translateX(-50%); }
+  .kids { padding-left: 0; padding-top: 6px; grid-template-columns: 1fr; }
+}
+/* 規則卡 */
+.rule { background: #0d1020; border: 1px solid #1a2438; border-radius: 16px; padding: 18px 20px 16px; margin-bottom: 16px; }
+.rule.flash { border-color: #f0c060; }
+.r-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.r-lane { font-size: 0.7em; color: #c8a868; border: 1px solid #5a4a18; border-radius: 6px; padding: 1px 8px; }
+.r-name { font-size: 1.15em; }
+.r-when { color: #9aa8b8; font-size: 0.9em; margin: 6px 0 14px; }
+.formula { font-size: 1.02em; padding: 12px 14px; background: #111628; border-radius: 12px; line-height: 1.9; }
+.formula b { color: #f0e2b8; }
+.blk { display: inline-block; padding: 1px 10px; border-radius: 6px; margin: 0 4px; font-size: 0.9em; }
+.blk.st { background: #1e2436; }
+.blk.en { background: #2a2210; }
+.minus { color: #d07a5a; font-size: 0.9em; margin: 0 4px; }
+.ends { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.endc { font-family: Georgia, serif; font-size: 1.02em; color: #f0c060; font-weight: 700; background: #16140c;
+  border: 1px solid #3a3218; border-radius: 10px; padding: 5px 12px; }
+.tail2 { align-self: center; color: #6a7888; font-size: 0.85em; }
+.endc i.tail { margin: 0 0 0 4px; font-size: 0.7em; color: #6a7888; }
+.endc i { font-style: normal; font-family: 'Segoe UI', system-ui, sans-serif; color: #6a7888; font-weight: 400;
+  font-size: 0.72em; margin-right: 6px; }
+.fams { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 12px 0; }
+.fam { background: #111628; border-radius: 12px; padding: 10px 14px; }
+.fam-h { font-size: 0.8em; color: #9aa8b8; margin-bottom: 6px; }
+.fam-h b { color: #f0e2b8; }
+.fl { font-family: Georgia, serif; font-size: 1.02em; line-height: 1.9; }
+.fl i { font-style: normal; display: inline-block; width: 3.2em; color: #5a6878; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 0.75em; }
+.exs { display: flex; flex-direction: column; gap: 6px; margin: 10px 0; }
+.exr { font-family: Georgia, serif; font-size: 1.05em; }
+.exl { color: #9aa8b8; }
+.arr { color: #5a4a18; margin: 0 10px; }
+.tip { font-size: 0.85em; color: #8a98a8; margin-top: 10px; line-height: 1.8; }
+.tip b { color: #e8e2d4; font-weight: 400; }
+.irr { margin-top: 12px; font-size: 0.86em; }
+.irr summary { cursor: pointer; color: #c8a868; }
+.irr-in { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 8px; }
+.irri { font-family: Georgia, serif; color: #9aa8b8; cursor: pointer; }
+.irri b { color: #e8e2d4; }
+.irri:hover b { color: #f0c060; }
+.twins { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; margin-top: 12px; }
+.tw { background: #111628; border-radius: 10px; padding: 8px 12px; display: flex; flex-direction: column; }
+.tw-n { font-size: 0.8em; }
+.tw-f { font-family: Georgia, serif; color: #f0e2b8; }
 </style>
 </head>
 <body>
@@ -263,8 +333,8 @@ body { line-height: 1.7; }
 <div class="header">
   <a href="dashboard.html" class="back">← 回指揮中心</a>
   <h1>動詞變位總覽</h1>
-  <div class="sub">法文的時態不是 13 套各自背——是從<b>三樣要背的東西</b>一層一層長出來的。<br>
-    照下面的爬升圖，從 1F 爬到 4F。</div>
+  <div class="sub">法文的時態不是 13 套各自背——全部從<b>原形、現在式、過去分詞</b>這三個地方長出來。<br>
+    先看下面那張圖，再一張一張看規則。</div>
 </div>
 
 <details class="panel" id="pScope" open>
@@ -280,17 +350,20 @@ body { line-height: 1.7; }
   </div>
 </details>
 
-<details class="panel" id="pVerb" open>
-  <summary>選動詞 <span class="sum-n" id="verbSum"></span></summary>
-  <div class="panel-in"><div id="picker"></div></div>
-</details>
-
 <details class="panel" id="pMap" open>
-  <summary>🧗 爬升圖：每個時態從哪裡長出來 <span class="sum-n" id="mapSum"></span></summary>
-  <div class="panel-in" id="climb"></div>
+  <summary>🗺 一張圖看懂：所有時態都從這三個地方長出來</summary>
+  <div class="panel-in" id="overview"></div>
 </details>
 
-<div id="tenses"></div>
+<div id="rules"></div>
+
+<details class="panel" id="pVerb">
+  <summary>📖 查一個動詞的完整變化 <span class="sum-n" id="verbSum"></span></summary>
+  <div class="panel-in">
+    <div id="picker"></div>
+    <div id="tenses" style="margin-top:16px"></div>
+  </div>
+</details>
 
 <div class="card-box" id="drillBox">
   <div class="card-title">背完了？直接考</div>
@@ -442,6 +515,8 @@ function renderPicker() {
 function pick(inf) { current = inf; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
 /* ════════════════════════════════════════════════════════════════
+   ⚠️ 2026-10-01 第二輪：爬升圖的「樓層卡片」已拿掉（Owen：看完只想放棄、太表格），概念改成下面的 🗺 一張圖＋規則卡。
+      FLOOR／ORDER／TWIN 還留著：ORDER 決定勾選與單一動詞卡的順序，TWIN 給進階複合時態用。
    🧗 爬升圖（2026-10-01 Owen：「法文動詞的變化是有規則，且用從不同的時態去做開展的，
       這要有一個很完整的脈絡，我需要脈絡讓我攀爬」）
    樓層＝這個時態的零件從哪裡來：
@@ -482,7 +557,7 @@ function derive(v, id, T) {
   switch (id) {
     case 'present':
       return v.imperso ? `只有一格：${FX(f(2))}`
-        : `要背的六格。其中 ${FX('nous ' + v.pres[3])} 和 ${FX('ils ' + v.pres[5])} 是 2F 的兩個入口`;
+        : `要背的六格。其中 ${FX('nous ' + v.pres[3])} 和 ${FX('ils ' + v.pres[5])} 分別是未完成過去式和虛擬式的入口`;
     case 'imparfait':
       if (v.imperso) return `→ ${FX(f(2))}`;
       return v.imp
@@ -512,73 +587,201 @@ function derive(v, id, T) {
   return esc(t.how);
 }
 
-function node(v, T, id) {
-  const t = T[id]; if (!t) return '';
-  return `<button class="node${metaOf(id).learned ? '' : ' todo'}" onclick="goTense('${id}')">
-    <div class="n-name">${tName(t)} ${badge(id)}</div>
-    <div class="n-eq">${derive(v, id, T)}</div></button>`;
+/* ════════════════════════════════════════════════════════════════
+   🗺 規則版（2026-10-01 Owen 第二輪：「你是從一個字開始做推演，但不可能只這樣一個字一個字記。
+      應該要有個 general 的變換方式：present 的 er 結尾是 e-es-e…、ir 是…、re 是…；imparfait 怎麼變形；
+      vient de／va + verb 是什麼意思、怎麼轉換；未來式又是怎樣」
+      「爬升圖算是我要的概念，但看完只想放棄。太表格了，要設計成一目瞭然的方法」）
+   原則：
+   · 先講「規則」（不分動詞），動詞只是例子；單一動詞的完整變化收到最下面「📖 查一個動詞」
+   · 每個時態＝一句什麼時候用 ＋ 一條彩色公式（詞幹白、字尾金）＋ 六個字尾 ＋ 三個例子；要另外背的收起來
+   · 例子的形式一律由 verbs_full.js 算出來（⛔ 不手打法文變位，打錯就是教錯）
+   · 三條線：原形線／現在式線／過去分詞線——就是爬升圖的概念，只是畫成圖
+   ════════════════════════════════════════════════════════════════ */
+const LANE = {
+  'present':'現在式線', 'imparfait':'現在式線', 'subjonctif':'現在式線',
+  'futur-simple':'原形線', 'conditionnel':'原形線', 'futur-proche':'原形線', 'passe-recent':'原形線',
+  'passe-compose':'過去分詞線', 'plus-que-parfait':'過去分詞線', 'futur-anterieur':'過去分詞線',
+  'conditionnel-passe':'過去分詞線', 'subjonctif-passe':'過去分詞線',
+  'passe-simple':'只要看得懂',
+};
+const VF = inf => VERBS_FULL.find(x => x.inf === inf);
+/* 詞幹白、字尾金：「parl」「ais」 */
+function sx(stem, end, silent) {
+  return `<span class="st">${esc(stem)}</span><span class="en${silent ? ' mute' : ''}">${esc(end)}</span>`;
 }
-function staticNode(zh, fr, body) {
-  return `<div class="node static"><div class="n-name"><span class="zh">${esc(zh)}</span> <span class="frn">${esc(fr)}</span></div>
-    <div class="n-eq">${body}</div></div>`;
+function endChips(ends, silentIdx, pre) {
+  return `<div class="ends">${ends.map((e, i) =>
+    `<span class="endc${(silentIdx || []).includes(i) ? ' mute' : ''}"><i>${pre ? pre[i] : PERSONS[i]}</i>${esc(e === '' ? '—' : '-' + e)}</span>`).join('')}</div>`;
 }
-function floorHtml(n, inner, foot) {
-  return `<div class="floor"><div class="fl-h"><span class="fl-n">${n}</span>${esc(FLOOR_NAME[n])}</div>
-    <div class="nodes">${inner}</div>${foot ? `<div class="fl-foot">${foot}</div>` : ''}</div>`;
+/* 助動詞那一塊：j'ai、tu as…（⛔ 不能套 -字尾 的格式，j'ai 要省音） */
+function auxChips(v, tail) {
+  return `<div class="ends">${v.pres.map((f, i) => `<span class="endc">${esc(withSubj(i, f))}</span>`).join('')}<span class="tail2">${esc(tail)}</span></div>`;
+}
+function exRow(left, right) { return `<div class="exr"><span class="exl">${left}</span><span class="arr">→</span><span class="exo">${right}</span></div>`; }
+function irrList(title, items) {
+  return items.length ? `<details class="irr"><summary>⚠️ ${esc(title)}（${items.length} 個）</summary><div class="irr-in">${items.join('')}</div></details>` : '';
+}
+function irrItem(inf, shown) { return `<span class="irri" onclick="openVerb('${inf}')"><b>${esc(inf)}</b> ${shown}</span>`; }
+const REG_PP = v => /er$/.test(v.inf) ? v.inf.slice(0, -2) + 'é' : /ir$/.test(v.inf) ? v.inf.slice(0, -2) + 'i' : /re$/.test(v.inf) ? v.inf.slice(0, -2) + 'u' : null;
+
+/* 每個時態的規則卡內容 */
+function ruleBody(id) {
+  const parler = VF('parler'), finir = VF('finir'), prendre = VF('prendre'), attendre = VF('attendre');
+  switch (id) {
+  case 'present': {
+    const col = (title, v, stem, ends, silent) => `<div class="fam"><div class="fam-h">${title}</div>
+      ${v.pres.map((f, i) => `<div class="fl"><i>${PERSONS[i]}</i>${sx(stem, f.slice(stem.length), silent.includes(i))}</div>`).join('')}</div>`;
+    return `<div class="formula"><span class="blk st">詞幹</span>＋<span class="blk en">字尾</span>　看原形結尾分三家：</div>
+      <div class="fams">
+        ${col('<b>-er</b> 家（大部分動詞）　<span class="frn">parler</span>', parler, 'parl', ['e','es','e','ons','ez','ent'], [0,1,2,5])}
+        ${col('<b>-ir</b> 家（像 finir）　<span class="frn">finir</span>', finir, 'fin', [], [])}
+        ${col('<b>-re</b> 家（像 attendre）　<span class="frn">attendre</span>', attendre, 'attend', [], [])}
+      </div>
+      <div class="tip">🔇 灰色的字尾<b>不發音</b>：je parle、tu parles、il parle、ils parlent 四個唸起來一模一樣。聽的時候靠主詞分。</div>
+      ${irrList('最常用的動詞反而不照規則，要整組背', ['être','avoir','aller','faire','pouvoir','vouloir','devoir','venir','prendre','savoir','voir','dire','mettre','partir','sortir','écrire','lire','boire','connaître']
+        .map(inf => irrItem(inf, VF(inf).pres.slice(0, 1).concat(VF(inf).pres[3]).map(esc).join('…'))))}`;
+  }
+  case 'imparfait': {
+    const ex = v => exRow(`nous ${sx(stemNous(v), 'ons')}`, `je ${sx(stemNous(v), 'ais')}`);
+    return `<div class="formula">現在式 <b>nous</b> 那一格　<span class="minus">去掉 -ons</span>　＋　字尾</div>
+      ${endChips(END.imparfait, [0,1,2,5])}
+      <div class="exs">${ex(parler)}${ex(finir)}${ex(prendre)}</div>
+      <div class="tip">🔇 -ais／-ais／-ait／-aient 四個<b>唸起來一樣</b>。</div>
+      ${irrList('例外只有一個', [irrItem('être', "j'<b class='en'>ét</b>ais（不是從 nous sommes 來）")])}`;
+  }
+  case 'futur-simple': {
+    const irr = VERBS_FULL.filter(v => !v.imperso && v.fut !== regFut(v));
+    return `<div class="formula"><b>原形</b>（-re 結尾的去掉 e）　＋　字尾</div>
+      ${endChips(END.futur)}
+      <div class="tip">💡 字尾就是 <b>avoir 的現在式</b>：ai、as、a、(av)ons、(av)ez、ont。</div>
+      <div class="exs">${exRow('parler', 'je ' + sx('parler', 'ai'))}${exRow('finir', 'je ' + sx('finir', 'ai'))}${exRow('prendre', 'je ' + sx('prendr', 'ai'))}</div>
+      ${irrList('詞幹不是原形的，要背（全部都以 r 結尾）', irr.map(v => irrItem(v.inf, `→ <b>${esc(v.fut)}</b>-`)))}`;
+  }
+  case 'conditionnel':
+    return `<div class="formula"><b>未來式的詞幹</b>　＋　<b>未完成過去式的字尾</b></div>
+      ${endChips(END.conditionnel, [0,1,2,5])}
+      <div class="exs">${exRow('parler', 'je ' + sx('parler', 'ais'))}${exRow('vouloir', 'je ' + sx('voudr', 'ais'))}${exRow('pouvoir', 'on ' + sx('pourr', 'ait'))}</div>
+      <div class="tip">💡 會了未來式就等於會了條件式——詞幹一樣，只是換字尾。最常用的就是 <b>je voudrais／j'aimerais／on pourrait</b>。</div>`;
+  case 'subjonctif': {
+    const ex = v => exRow(`ils ${sx(stemIls(v), 'ent')}`, `que je ${sx(stemIls(v), 'e')}`);
+    const irr = ['être','avoir','aller','faire','pouvoir','savoir','vouloir'];
+    return `<div class="formula">現在式 <b>ils</b> 那一格　<span class="minus">去掉 -ent</span>　＋　字尾</div>
+      ${endChips(END.subj, [0,1,2,5], ['que je','que tu',"qu'il",'que nous','que vous',"qu'ils"])}
+      <div class="exs">${ex(parler)}${ex(finir)}${ex(prendre)}</div>
+      <div class="tip">💡 nous／vous 跟未完成過去式長得一樣（que nous prenions）。</div>
+      ${irrList('不照規則、要背的', irr.map(inf => irrItem(inf, esc(display({ pre:true }, 0, subjonctif(VF(inf))[0])))))}`;
+  }
+  case 'futur-proche':
+    return `<div class="formula"><b>aller</b> 的現在式　＋　<b>原形</b>（原形不用變）</div>
+      ${auxChips(VF('aller'), ' ＋ 原形')}
+      <div class="exs">${exRow('parler', `je <b class="en">vais</b> parler`)}${exRow('partir', `nous <b class="en">allons</b> partir`)}</div>`;
+  case 'passe-recent':
+    return `<div class="formula"><b>venir</b> 的現在式　＋　<b>de</b>　＋　<b>原形</b></div>
+      ${auxChips(VF('venir'), ' de ＋ 原形')}
+      <div class="exs">${exRow('finir', `je <b class="en">viens de</b> finir`)}${exRow('arriver', `il <b class="en">vient d'</b>arriver`)}</div>
+      <div class="tip">母音開頭的原形，de 縮成 <b>d'</b>。</div>`;
+  case 'passe-compose': {
+    const irr = VERBS_FULL.filter(v => !v.imperso && REG_PP(v) !== v.pp);
+    return `<div class="formula"><b>avoir</b> 的現在式　＋　<b>過去分詞</b></div>
+      ${auxChips(VF('avoir'), ' ＋ 過去分詞')}
+      <div class="fams">
+        <div class="fam"><div class="fam-h">過去分詞怎麼來</div>
+          <div class="fl"><i>-er</i>${sx('parl', 'é')}</div>
+          <div class="fl"><i>-ir</i>${sx('fin', 'i')}</div>
+          <div class="fl"><i>-re</i>${sx('attend', 'u')}</div></div>
+      </div>
+      <div class="exs">${exRow('parler', `j'<b class="en">ai</b> parlé`)}${exRow('finir', `nous <b class="en">avons</b> fini`)}</div>
+      <div class="tip">⚠️ 移動、狀態的動詞（aller、venir、partir、arriver、rester、tomber…）和所有反身動詞用 <b>être</b>，要跟主詞配合：<b>elle est allée</b>。</div>
+      ${irrList('過去分詞不照規則的，要背', irr.map(v => irrItem(v.inf, `→ <b>${esc(v.pp)}</b>`)))}`;
+  }
+  case 'plus-que-parfait': case 'futur-anterieur': case 'conditionnel-passe': case 'subjonctif-passe':
+    return `<div class="formula">跟複合過去式一樣，只是把<b>助動詞</b>換成別的時態</div>
+      <div class="twins">${TWIN.map(([a, b]) => { const t = conjugate(parler).find(x => x.id === b);
+        return `<div class="tw"><span class="tw-n">${tName(t)}</span><span class="tw-f">${esc(display(t, 0, t.forms[0]))}</span></div>`; }).join('')}</div>`;
+  case 'passe-simple':
+    return `<div class="formula">書面故事（小說、歷史）才會出現，<b>看得懂就好</b></div>
+      <div class="exs">${exRow('parler', 'il ' + sx('parl', 'a'))}${exRow('faire', 'il ' + sx('f', 'it'))}${exRow('être', 'il ' + sx('f', 'ut'))}</div>`;
+  }
+  return '';
+}
+const RULE_WHEN = {
+  'present':'現在、習慣、一直都是這樣的事', 'imparfait':'過去的背景、以前的習慣、「當時正在…」',
+  'futur-simple':'將來會發生的事（比較正式）', 'conditionnel':'「會想要…」「如果…就會」，客氣地請求',
+  'subjonctif':'接在 il faut que／je veux que／pour que 這類後面', 'futur-proche':'「等一下要…、快要…」，口語最常用的未來',
+  'passe-recent':'「剛剛才…」', 'passe-compose':'過去發生了一次、做完了的事',
+  'plus-que-parfait':'比另一件過去的事更早', 'futur-anterieur':'將來某個時間點之前已經完成',
+  'conditionnel-passe':'「早知道就…」「本來會…」', 'subjonctif-passe':'que 後面、已經完成的事',
+  'passe-simple':'書面敘事',
+};
+
+/* 🗺 一張圖：三條線，每個時態一個彩色例子（parler），點了跳到規則卡 */
+function renderOverview() {
+  const p = VF('parler');
+  const box = (id, ex) => { const t = conjugate(p).find(x => x.id === id);
+    return `<button class="ov-t${picked.has(id) ? '' : ' dim'}" onclick="goRule('${id}')">
+      <span class="ov-n">${tName(t)}</span><span class="ov-ex">${ex}</span></button>`; };
+  document.getElementById('overview').innerHTML = `
+    <div class="lane">
+      <div class="src"><span class="src-k">原形</span><span class="src-v">${sx('parler', '')}</span></div>
+      <div class="kids">
+        ${box('futur-simple', 'je ' + sx('parler', 'ai'))}
+        ${box('conditionnel', 'je ' + sx('parler', 'ais'))}
+        ${box('futur-proche', `je <b class="en">vais</b> parler`)}
+        ${box('passe-recent', `je <b class="en">viens de</b> parler`)}
+      </div></div>
+    <div class="lane">
+      <div class="src"><span class="src-k">現在式</span><span class="src-v">je ${sx('parl', 'e')}</span></div>
+      <div class="kids">
+        ${box('imparfait', `nous ${sx('parl', 'ons')} → je ${sx('parl', 'ais')}`)}
+        ${box('subjonctif', `ils ${sx('parl', 'ent')} → que je ${sx('parl', 'e')}`)}
+      </div></div>
+    <div class="lane">
+      <div class="src"><span class="src-k">過去分詞</span><span class="src-v">${sx('parl', 'é')}</span></div>
+      <div class="kids">
+        ${box('passe-compose', `j'<b class="en">ai</b> parlé`)}
+        ${box('plus-que-parfait', `j'<b class="en">avais</b> parlé`)}
+      </div></div>
+    <div class="ov-key"><span class="st">白色</span>＝詞幹　<span class="en">金色</span>＝要換的那一塊　點任何一格看規則</div>`;
 }
 
-function renderMap(v, all) {
-  const T = {}; all.forEach(t => T[t.id] = t);
-  const ppr = participePresent(v), imp = imperatif(v);
-  const pres = T.present;
-  /* 1F：現在式六格（nous／ils 標出來）＋過去分詞＋未來詞幹 */
-  const presForms = pres.forms.map((f, i) => {
-    const s = esc(display(pres, i, f));
-    return `<span${(i === 3 || i === 5) && !v.imperso ? ' class="hl"' : ''}>${s}</span>`;
-  }).join('');
-  const f1 =
-    `<button class="node" onclick="goTense('present')">
-       <div class="n-name">${tName(pres)} ${badge('present')}</div>
-       <div class="n-eq big pgrid">${presForms}</div></button>` +
-    staticNode('過去分詞', 'participe passé',
-      `${FX(v.pp)}　助動詞 ${FX(v.aux)}${v.aux === 'être' ? '（要配合主詞）' : ''}<br><span class="to">→ 給 4F 用</span>`) +
-    staticNode('未來詞幹', 'radical du futur',
-      (v.fut === regFut(v) ? `${FX(v.fut + '-')}（就是原形${/re$/.test(v.inf) ? '去掉 e' : ''}）` : `${FX(v.fut + '-')} ⚠️ 不規則，要背`) +
-      `<br><span class="to">→ 給 3F 用</span>`);
-  /* 2F */
-  const f2 = node(v, T, 'imparfait') + node(v, T, 'subjonctif') +
-    staticNode('現在分詞', 'participe présent',
-      ppr ? (v.ppr ? `⚠️ 不規則：${FX(ppr)}` : `nous 詞幹 ${FX(stemNous(v) + '-')} ＋ -ant → ${FX(ppr)}`) +
-            `<br>副動詞 gérondif：${FX('en ' + ppr)}` : '（這個動詞沒有現在分詞）') +
-    staticNode('命令式', 'impératif',
-      imp.length ? `現在式拿掉主詞 → ${FX(imp.join(' !　') + ' !')}` : '（這個動詞沒有命令式）') +
-    node(v, T, 'futur-proche') + node(v, T, 'passe-recent');
-  /* 3F */
-  const f3 = node(v, T, 'futur-simple') + node(v, T, 'conditionnel');
-  /* 4F：雙胞胎表 */
-  const ix = v.imperso ? 2 : 0;
-  const f4 = `<table class="twin">
-      <tr><th>助動詞 ${esc(v.aux)} 用哪一個</th><th>→ 長出哪一個複合時態</th><th>${esc(v.inf)}</th></tr>
-      ${TWIN.filter(([a, b]) => T[a] && T[b]).map(([a, b]) => `
-        <tr onclick="goTense('${b}')">
-          <td>${tName(T[a])}<div class="aux">${esc(withSubj(ix, auxForms(v, a === 'futur-simple' ? 'futur' : a === 'subjonctif' ? 'subj' : a)[ix]))}</div></td>
-          <td>${tName(T[b])} ${badge(b)}</td>
-          <td class="ex">${esc(display(T[b], ix, T[b].forms[ix]))}</td></tr>`).join('')}
-    </table>`;
-  document.getElementById('climb').innerHTML =
-    floorHtml('1F', f1) +
-    floorHtml('2F', f2) +
-    floorHtml('3F', f3) +
-    `<div class="floor"><div class="fl-h"><span class="fl-n">4F</span>${esc(FLOOR_NAME['4F'])}：每個簡單時態都有一個「複合雙胞胎」</div>${f4}
-      <div class="fl-foot">左邊那一欄你在 2F、3F 都學過了——所以右邊標「還沒上」的，<b>零件你其實都有了，沒有新規則要背</b>。</div></div>` +
-    floorHtml('旁支', node(v, T, 'passe-simple'));
-  document.getElementById('mapSum').textContent = '';
+function renderRules() {
+  const T = {}; conjugate(VF('parler')).forEach(t => T[t.id] = t);
+  /* 四個進階複合時態共用一張卡 */
+  /* 規則卡照「學的順序」排，不照三條線——先會現在式、複合過去式，再往外長 */
+  const RULE_ORDER = ['present','passe-compose','imparfait','futur-proche','passe-recent','futur-simple','conditionnel',
+                      'subjonctif','plus-que-parfait','futur-anterieur','conditionnel-passe','subjonctif-passe','passe-simple'];
+  const ids = RULE_ORDER.filter(id => picked.has(id));
+  const seenTwin = ids.filter(id => ['plus-que-parfait','futur-anterieur','conditionnel-passe','subjonctif-passe'].includes(id));
+  const list = ids.filter(id => !seenTwin.includes(id) || id === seenTwin[0]);
+  document.getElementById('rules').innerHTML = list.map(id => {
+    const twin = seenTwin.includes(id);
+    return `<div class="rule" id="rc-${id}">
+      <div class="r-head"><span class="r-lane">${esc(LANE[id])}</span>
+        <span class="r-name">${twin ? '<span class="zh">進階複合時態</span> <span class="frn">temps composés</span>' : tName(T[id])}</span>
+        ${twin ? '' : badge(id)}</div>
+      <div class="r-when">${esc(twin ? '過去完成、未來完成、早知道就…' : RULE_WHEN[id])}</div>
+      ${ruleBody(id)}
+    </div>`;
+  }).join('') || '<div class="card-box" style="color:#5a6878">一個時態都沒選——到最上面「📌 要看哪些時態」點幾個加回來。</div>';
+}
+
+function goRule(id) {
+  if (!picked) picked = new Set(allTenseIds().filter(SCOPES.learned));
+  if (!picked.has(id)) { picked.add(id); savePrefs(); render(); }
+  const el = document.getElementById('rc-' + id) || document.querySelector('[id^="rc-"]');
+  if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1200); }
+}
+/* 從「要另外背的」點進去：打開下面的「查一個動詞」並切到那個動詞 */
+function openVerb(inf) {
+  current = inf; document.getElementById('pVerb').open = true; render();
+  document.getElementById('pVerb').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 /* 點爬升圖上的時態 → 加進「要看的」並捲到那張卡 */
 function goTense(id) {
   if (!picked) picked = new Set(allTenseIds().filter(SCOPES.learned));
-  picked.add(id); folded.delete(id); savePrefs(); render();
+  picked.add(id); folded.delete(id); savePrefs(); document.getElementById('pVerb').open = true; render();
   const el = document.getElementById('tc-' + id);
   if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1200); }
 }
@@ -591,9 +794,9 @@ const TIER_TAG = {
 /* 📌 要看哪些時態：照樓層分組，讓勾選本身也是那張圖 */
 function renderChips(all) {
   const T = {}; all.forEach(t => T[t.id] = t);
-  document.getElementById('tenseChips').innerHTML = ['1F', '2F', '3F', '4F', '旁支'].map(g => {
-    const ids = ORDER.filter(id => FLOOR[id] === g && T[id]);
-    return `<div class="chip-g"><span class="cg-n">${g}</span><div class="cg-list">${ids.map(id =>
+  document.getElementById('tenseChips').innerHTML = ['現在式線', '原形線', '過去分詞線', '只要看得懂'].map(g => {
+    const ids = ORDER.filter(id => LANE[id] === g && T[id]);
+    return `<div class="chip-g"><span class="cg-n">${g.replace('線', '')}</span><div class="cg-list">${ids.map(id =>
       `<button class="chip${picked.has(id) ? ' on' : ''}" onclick="toggleTense('${id}')">${tName(T[id])}${
         metaOf(id).learned ? '' : ' <span class="tag">⬜</span>'}</button>`).join('')}</div></div>`;
   }).join('');
@@ -614,7 +817,8 @@ function renderTenses(v) {
   const all = conjugate(v);
   if (!picked) picked = new Set(all.map(t => t.id).filter(SCOPES.learned));
   renderChips(all);
-  renderMap(v, all);
+  renderOverview();
+  renderRules();
   const T = {}; all.forEach(t => T[t.id] = t);
   const list = ORDER.filter(id => T[id] && picked.has(id)).map(id => T[id]);
   window._shown = list;
@@ -623,7 +827,7 @@ function renderTenses(v) {
     return `
     <div class="t-card${isFold ? ' fold' : ''}" id="tc-${t.id}">
       <div class="t-head" onclick="toggleFold('${t.id}')">
-        <span class="t-floor">${FLOOR[t.id]}</span>
+
         <span class="t-name">${tName(t)}</span>
         <span class="fold-mark">${isFold ? '▸' : '▾'}</span>
       </div>
