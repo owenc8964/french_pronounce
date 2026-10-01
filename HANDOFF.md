@@ -4865,6 +4865,17 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
     ⭐ 順帶進頁面的實用細節：`conditionnel passé` 高度集中在 `aurais pu／aurait dû`（固定塊不是時態）；`futur antérieur` 15 個 token 裡 `aura fallu` 佔 9 個；`subjonctif passé` 對話裡 5 個但**選項裡 15 個**（答題才遇到）；`passé simple` 閱讀題幹 **0 個**、真實書面散文也只 0.71%，跟直覺相反。
 - ⏸ **沒做／下一步**：複合時態（plus-que-parfait 等）還沒有 verb_sprint 模式；Owen 說的「**自訂勾選哪些單字的哪些變化**」目前只做到「一個動詞 × 多個時態」，**還沒做「多個動詞一起考」**——要做的話得讓 verb_sprint 接 `?verbs=` 白名單。
 
+#### 三之二十五、10-01：變位總覽第四輪——命令式、不規則總表、變化表
+
+- **Owen**：①「要看哪些時態」字體小一點，只是導航 ②「我記得還有一種特殊時態，放字首，類似命令句」→ **命令式** ③「不規則那樣寫就夠了嗎？感覺漏了很多，不如重新排版成更好記及完整的方式」④「查動詞變化太大欄了，應該像直排 je tu il/elle nous vous ils/elles，橫軸是時態，直接做成表格，特殊變化要做標記」。
+- ✅ ① 📌 導航整塊縮小（chip 0.72em、按鈕 0.66rem）。
+- ✅ ② **命令式加進這一頁**（`allConj()` 包一層，⛔ **沒改 `verbs_full.js` 的 `conjugate()`**——quest.html 也在用）：導航、一張圖（現在式線）、規則卡（第二張，緊接現在式）、變化表都有。規則：現在式 tu／nous／vous 拿掉主詞；-er 和 aller 的 tu 去 s；否定 ne…pas 包住；代名詞放後面加連字號（例句全部取自第6課 codex 6-1-1：N'achetez pas de tickets ! ／Aide-moi ! ／Ne m'aide pas.）。不規則 4 個（être／avoir／vouloir／savoir）＋ pouvoir 沒有命令式。
+- ✅ ③ **⚠️ 不規則動詞總表**（新面板 `pIrr`）：20 個常用不規則動詞**依家族分 6 組，每組一句記憶鉤**——四巨頭（être avoir aller faire）／情態動詞（pouvoir vouloir devoir savoir，未來 pourr-／voudr-／devr-／saur-）／venir 家族／靴子型（prendre boire voir：nous／vous 換詞幹）／單數掉尾巴（partir sortir）／nous 冒出子音（dire mettre écrire lire connaître）。
+  欄位：現在式（je · nous · ils）｜未來詞幹｜過去分詞（＋être 標籤）｜虛擬式｜命令式，**橘底＝那一格不照規則、灰＝照規則推得出來**。下面兩張「照結尾分組」：未來詞幹（-rr／-dr／-vr／-ur／其他）、過去分詞（-u／-is／-it／其他）。各規則卡原本的不規則清單改成一行連結跳到總表。
+- ✅ ④ **📖 變化表**（取代一張一張的時態卡）：直排 je／tu／il·elle／nous／vous／ils·elles、橫排＝導航勾選的時態，第一欄固定、可橫向捲；**橘底標不照規則的格子**（滑上去看原因：詞幹變了／不是 -ez／ils 詞幹變了／詞幹 ser-／要背）；欄名下標「用 être」「過去分詞 pris」；點欄名唸整欄。表下列出這個動詞要注意的事。「考試裡用多少」移到規則卡底下。
+- 🐛 測試抓到並修掉：falloir／pleuvoir（無人稱，nous 是 null）在變化表會當掉；命令式不規則清單 pouvoir 算兩次。
+- ✅ 試跑（隔離複本，ROOM 沒動）：25 個動詞 × 全部時態的變化表無錯誤；être 的 33 個標記逐一看過原因正確；iPad 上總表不用橫捲、手機無整頁橫捲；無 console 錯誤。新增函式：`regImper/allConj/cellMark/colNote/cellText/renderVerbTable/ttsCol/irrCell/renderIrrTable/goIrr`（純新增）。
+
 #### 三之二十四、10-01：一張圖可以換動詞（Owen：「其他的動詞不一起做嗎？只做 parler 夠嗎」）
 
 - ✅ `verb_forms.html` 🗺 一張圖上方加動詞切換：「照規則」（parler／finir／attendre）＋「常用、會出軌」（其餘 20 個，⛔ 無人稱不列）。選擇存 `vf_ov_verb`。

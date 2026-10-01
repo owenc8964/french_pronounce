@@ -342,6 +342,56 @@ body { line-height: 1.7; }
 .chosen b { color: #f0e2b8; }
 .chosen .ov-irr, .chosen .ov-note { display: block; }
 .ov-note { font-size: 0.72em; color: #7fa8c8; }
+
+/* ════ 10-01 第四輪 ════ */
+/* 📌 時態勾選：縮小（Owen：主要只是拿來導航） */
+#pScope > summary { font-size: 0.85em; padding: 10px 16px; }
+#pScope .panel-in { padding: 0 16px 12px; }
+#pScope .lvl-row { gap: 6px; margin-bottom: 8px; }
+#pScope .lvl-btn { padding: 6px 4px; font-size: 0.66rem; }
+#pScope .chip-g { padding: 4px 0; gap: 8px; }
+#pScope .cg-n { font-size: 0.66em; padding-top: 5px; width: 4.2em; }
+#pScope .cg-list { gap: 5px; }
+#pScope .chip { padding: 3px 9px; font-size: 0.72em; }
+.irr-link { margin-top: 12px; font-size: 0.85em; color: #c8a868; cursor: pointer; }
+.irr-link:hover { color: #f0c060; }
+/* 📖 變化表 */
+.vt-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid #1a2438; border-radius: 12px; }
+.vt, .irt { border-collapse: collapse; font-size: 0.9em; min-width: 100%; }
+.vt th, .vt td, .irt th, .irt td { padding: 8px 12px; border-bottom: 1px solid #16203a; text-align: left; white-space: nowrap; }
+.vt thead th { vertical-align: bottom; background: #111628; cursor: pointer; font-weight: 400; }
+.vt thead th .zh { display: block; font-size: 0.85em; }
+.vt thead th .frn { display: block; font-size: 0.78em; }
+.vt thead th .que, .vt thead th .cn { display: block; font-size: 0.7em; color: #c8a868; }
+.vt th.pers { position: sticky; left: 0; background: #111628; color: #7a8a9a; font-weight: 400; font-size: 0.82em; z-index: 1; }
+.vt td { font-family: Georgia, serif; color: #e8e2d4; }
+.vt td.na { color: #34405a; }
+td.mk { background: #2a1c0c; color: #f0c060 !important; box-shadow: inset 2px 0 0 #d08a40; }
+.mkdot { display: inline-block; width: 0.9em; height: 0.9em; background: #2a1c0c; border: 1px solid #d08a40; border-radius: 3px; vertical-align: -1px; margin: 0 4px 0 2px; }
+.vt-key { font-size: 0.78em; color: #6a7888; margin-top: 8px; }
+.vt-notes { margin-top: 8px; font-size: 0.85em; color: #9aa8b8; line-height: 1.9; }
+/* ⚠️ 不規則總表 */
+.irt thead th { background: #111628; font-weight: 400; font-size: 0.8em; color: #7a8a9a; }
+.irt tbody tr:not(.ig) { cursor: pointer; }
+.irt tbody tr:not(.ig):hover td, .irt tbody tr:not(.ig):hover th { background: #111628; }
+.irt tr.ig td { background: #0f1322; color: #c8a868; font-size: 0.85em; white-space: normal; padding-top: 12px; }
+.irt tr.ig td b { color: #f0c060; }
+.irt tr.ig td span { color: #8a98a8; }
+.irt th.iv { font-family: Georgia, serif; color: #f0e2b8; font-weight: 700; }
+.irt th.iv small { display: block; font-family: 'Segoe UI', system-ui, sans-serif; font-weight: 400; font-size: 0.75em; color: #6a7888; }
+.irt td { font-family: Georgia, serif; line-height: 1.6; }
+.irt td.okc { color: #4a5668; }
+.irt td.pres { color: #e8e2d4; white-space: normal; min-width: 9em; }
+.irt thead th small { display: block; font-size: 0.85em; color: #4a5668; }
+.irt th, .irt td { padding: 6px 8px; }
+.irt { font-size: 0.82em; }
+.irt .aux { display: inline-block; margin-left: 6px; font-size: 0.7em; color: #7fa8c8; border: 1px solid #2a3a50; border-radius: 4px; padding: 0 4px; font-family: 'Segoe UI', system-ui, sans-serif; }
+.gks { margin-top: 14px; }
+.gk-h { font-size: 0.82em; color: #9aa8b8; margin-bottom: 6px; }
+.gk { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; padding: 6px 0; border-top: 1px solid #141c2e; font-size: 0.88em; }
+.gk b { color: #f0c060; width: 3.2em; font-family: Georgia, serif; }
+.gk span { font-family: Georgia, serif; color: #9aa8b8; }
+.gk i { font-style: normal; color: #f0e2b8; }
 </style>
 </head>
 <body>
@@ -373,8 +423,13 @@ body { line-height: 1.7; }
 
 <div id="rules"></div>
 
-<details class="panel" id="pVerb">
-  <summary>📖 查一個動詞的完整變化 <span class="sum-n" id="verbSum"></span></summary>
+<details class="panel" id="pIrr">
+  <summary>⚠️ 不規則動詞總表 <span class="sum-n">20 個常用動詞，要背的全部在這</span></summary>
+  <div class="panel-in" id="irrBox"></div>
+</details>
+
+<details class="panel" id="pVerb" open>
+  <summary>📖 查一個動詞：變化表 <span class="sum-n" id="verbSum"></span></summary>
   <div class="panel-in">
     <div id="picker"></div>
     <div id="tenses" style="margin-top:16px"></div>
@@ -428,6 +483,7 @@ const TENSE_META = {
   // rec  ＝聽讀側（TCF 聽力口語）佔限定形的比例；recNote＝辨識側要注意的事
   // ⚠️ 兩側差很多的時態（imparfait 最明顯）一定要兩個都顯示，
   //    只給產出側的數字會讓人以為「聽到也不用管」——09-23 Owen 就是抓到這點。
+  'imperatif':         { learned:true,  tier:'normal' },
   'present':           { learned:true,  tier:'core',      pct:'41.9%', rec:'69.9%', recNote:'聽讀第一名，閱讀題幹甚至 78%' },
   'passe-compose':     { learned:true,  tier:'task',      pct:'4.8%',  rec:'10.0%', recNote:'聽讀第二名',
                          only:'產出只在寫作申訴信與講自己經驗時爆量' },
@@ -492,7 +548,7 @@ function savePrefs() {
   try { localStorage.setItem(SCOPE_LS, JSON.stringify([...picked])); } catch (e) {}
   try { localStorage.setItem(FOLD_LS, JSON.stringify([...folded])); } catch (e) {}
 }
-function allTenseIds() { return conjugate(VERBS_FULL.find(x => x.inf === current)).map(t => t.id); }
+function allTenseIds() { return allConj(VERBS_FULL.find(x => x.inf === current)).map(t => t.id); }
 function setScope(name) {
   picked = new Set(allTenseIds().filter(SCOPES[name] || SCOPES.learned));
   savePrefs(); render();
@@ -543,7 +599,7 @@ function pick(inf) { current = inf; render(); window.scrollTo({ top: 0, behavior
    ⛔ 樓層標 1F／2F，不用 x-y-z 數字——codex.js 已經有 5-3-1 那種永久座標，不要撞在一起
    ════════════════════════════════════════════════════════════════ */
 const FLOOR = {
-  'present':'1F',
+  'present':'1F', 'imperatif':'2F',
   'imparfait':'2F', 'subjonctif':'2F', 'futur-proche':'2F', 'passe-recent':'2F',
   'futur-simple':'3F', 'conditionnel':'3F',
   'passe-compose':'4F', 'plus-que-parfait':'4F', 'futur-anterieur':'4F', 'conditionnel-passe':'4F', 'subjonctif-passe':'4F',
@@ -615,7 +671,7 @@ function derive(v, id, T) {
    · 三條線：原形線／現在式線／過去分詞線——就是爬升圖的概念，只是畫成圖
    ════════════════════════════════════════════════════════════════ */
 const LANE = {
-  'present':'現在式線', 'imparfait':'現在式線', 'subjonctif':'現在式線',
+  'present':'現在式線', 'imperatif':'現在式線', 'imparfait':'現在式線', 'subjonctif':'現在式線',
   'futur-simple':'原形線', 'conditionnel':'原形線', 'futur-proche':'原形線', 'passe-recent':'原形線',
   'passe-compose':'過去分詞線', 'plus-que-parfait':'過去分詞線', 'futur-anterieur':'過去分詞線',
   'conditionnel-passe':'過去分詞線', 'subjonctif-passe':'過去分詞線',
@@ -636,7 +692,8 @@ function auxChips(v, tail) {
 }
 function exRow(left, right) { return `<div class="exr"><span class="exl">${left}</span><span class="arr">→</span><span class="exo">${right}</span></div>`; }
 function irrList(title, items) {
-  return items.length ? `<details class="irr"><summary>⚠️ ${esc(title)}（${items.length} 個）</summary><div class="irr-in">${items.join('')}</div></details>` : '';
+  /* 10-01 第四輪：清單統一收進「不規則動詞總表」，這裡只留一個連結 */
+  return items.length ? `<div class="irr-link" onclick="goIrr()">⚠️ ${esc(title)}（${items.length} 個）→ 看下面的「不規則動詞總表」</div>` : '';
 }
 function irrItem(inf, shown) { return `<span class="irri" onclick="openVerb('${inf}')"><b>${esc(inf)}</b> ${shown}</span>`; }
 const REG_PP = v => /er$/.test(v.inf) ? v.inf.slice(0, -2) + 'é' : /ir$/.test(v.inf) ? v.inf.slice(0, -2) + 'i' : /re$/.test(v.inf) ? v.inf.slice(0, -2) + 'u' : null;
@@ -688,6 +745,14 @@ function ruleBody(id) {
       <div class="tip">💡 nous／vous 跟未完成過去式長得一樣（que nous prenions）。</div>
       ${irrList('不照規則、要背的', irr.map(inf => irrItem(inf, esc(display({ pre:true }, 0, subjonctif(VF(inf))[0])))))}`;
   }
+  case 'imperatif': {
+    const irr = VERBS_FULL.filter(v => !v.imperso && v.imper && v.imper.length && JSON.stringify(v.imper) !== JSON.stringify(regImper(v)));
+    return `<div class="formula">現在式的 <b>tu／nous／vous</b> 那三格　<span class="minus">拿掉主詞</span>　動詞放最前面</div>
+      <div class="exs">${exRow('tu prends', FX('Prends !'))}${exRow('nous prenons', FX('Prenons !'))}${exRow('vous prenez', FX('Prenez !'))}</div>
+      <div class="tip">⚠️ <b>-er 動詞（和 aller）的 tu 要去掉 s</b>：tu parles → <b>Parle !</b>、tu vas → <b>Va !</b>；其他動詞保留 s：<b>Finis !</b></div>
+      <div class="tip">否定：ne…pas 包住動詞——<b>N'achetez pas de tickets !</b><br>代名詞放動詞後面、用連字號：<b>Aide-moi !</b>（否定時回到前面：<b>Ne m'aide pas.</b>）</div>
+      ${irrList('命令式不照規則的', irr.map(v => irrItem(v.inf, esc(v.imper.join('、')))).concat(irrItem('pouvoir', '（沒有命令式）')))}`;
+  }
   case 'futur-proche':
     return `<div class="formula"><b>aller</b> 的現在式　＋　<b>原形</b>（原形不用變）</div>
       ${auxChips(VF('aller'), ' ＋ 原形')}
@@ -722,7 +787,7 @@ function ruleBody(id) {
   return '';
 }
 const RULE_WHEN = {
-  'present':'現在、習慣、一直都是這樣的事', 'imparfait':'過去的背景、以前的習慣、「當時正在…」',
+  'present':'現在、習慣、一直都是這樣的事', 'imperatif':'叫人做事、提議「我們來…」——動詞放最前面，沒有主詞', 'imparfait':'過去的背景、以前的習慣、「當時正在…」',
   'futur-simple':'將來會發生的事（比較正式）', 'conditionnel':'「會想要…」「如果…就會」，客氣地請求',
   'subjonctif':'接在 il faut que／je veux que／pour que 這類後面', 'futur-proche':'「等一下要…、快要…」，口語最常用的未來',
   'passe-recent':'「剛剛才…」', 'passe-compose':'過去發生了一次、做完了的事',
@@ -748,7 +813,7 @@ function regSubj(v) {
 }
 /* 每個時態：{ html, irr（不照規則的原因，沒有就是照規則）} */
 function ovItems(v) {
-  const T = {}; conjugate(v).forEach(t => T[t.id] = t);
+  const T = {}; allConj(v).forEach(t => T[t.id] = t);
   const de = vowelStart(v.inf) ? "d'" : 'de ';
   const futIrr = v.fut !== regFut(v) ? `詞幹不是原形，是 ${v.fut}-` : '';
   const auxHtml = id => { const f = T[id].forms[0], sp = f.indexOf(' ');
@@ -770,12 +835,16 @@ function ovItems(v) {
       ? { html: esc(withSubjQue(0, v.subj[0])), irr: '不照規則，要背' }
       : { html: `ils ${sx(stemIls(v), 'ent')} → ${withPron(stemIls(v) + 'e', sx(stemIls(v), 'e'), true)}` },
     /* 用 être 不是出軌，是另一條規則 → note（中性），⛔ 不算進 ⚠️ */
+    imperatif: (() => { const im = imperatif(v);
+      if (!im.length) return { html: '（沒有命令式）', irr: '沒有命令式' };
+      const bad = v.imper && JSON.stringify(v.imper) !== JSON.stringify(regImper(v));
+      return { html: `<b class="en">${esc(im[0].charAt(0).toUpperCase() + im[0].slice(1))} !</b>`, irr: bad ? '命令式要背' : '' }; })(),
     'passe-compose':    { html: auxHtml('passe-compose'), note: v.aux === 'être' ? '這個動詞用 être，要配合主詞' : '' },
     'plus-que-parfait': { html: auxHtml('plus-que-parfait'), note: v.aux === 'être' ? '用 être' : '' },
   };
 }
 function renderOverview() {
-  const v = VF(ovVerb), O = ovItems(v), T = {}; conjugate(v).forEach(t => T[t.id] = t);
+  const v = VF(ovVerb), O = ovItems(v), T = {}; allConj(v).forEach(t => T[t.id] = t);
   const box = id => `<button class="ov-t${picked.has(id) ? '' : ' dim'}${O[id].irr ? ' irrb' : ''}" onclick="goRule('${id}')">
       <span class="ov-n">${tName(T[id])}</span><span class="ov-ex">${O[id].html}</span>
       ${O[id].irr ? `<span class="ov-irr">⚠️ ${esc(O[id].irr)}</span>` : ''}${O[id].note ? `<span class="ov-note">ℹ️ ${esc(O[id].note)}</span>` : ''}</button>`;
@@ -797,7 +866,7 @@ function renderOverview() {
     <div class="lane">${src('原形', O.src_inf)}
       <div class="kids">${box('futur-simple')}${box('conditionnel')}${box('futur-proche')}${box('passe-recent')}</div></div>
     <div class="lane">${src('現在式', O.src_pres)}
-      <div class="kids">${box('imparfait')}${box('subjonctif')}</div></div>
+      <div class="kids">${box('imperatif')}${box('imparfait')}${box('subjonctif')}</div></div>
     <div class="lane">${src('過去分詞', O.src_pp)}
       <div class="kids">${box('passe-compose')}${box('plus-que-parfait')}</div></div>
     <div class="ov-key"><span class="st">白色</span>＝詞幹　<span class="en">金色</span>＝要換的那一塊　點任何一格看規則</div>`;
@@ -812,11 +881,149 @@ function chosenRow(id) {
   return `<div class="chosen">👉 你選的 <b>${esc(v.inf)}</b>：<span class="ov-ex">${o.html}</span>${o.irr ? `<span class="ov-irr">⚠️ ${esc(o.irr)}</span>` : ''}${o.note ? `<span class="ov-note">ℹ️ ${esc(o.note)}</span>` : ''}</div>`;
 }
 
+/* ════════════════════════════════════════════════════════════════
+   2026-10-01 第四輪（Owen：「我記得還有一種特殊時態，放字首，類似命令句」→ 命令式；
+   「不規則那樣寫就夠了嗎？感覺漏了很多，不如重新排版成更好記及完整的方式」→ 不規則動詞總表；
+   「查動詞變化應該像直排 je tu il… 橫軸是時態，直接做成表格，特殊需要注意的變化要做標記」→ 變化表）
+   ════════════════════════════════════════════════════════════════ */
+/* 命令式只在這一頁加進時態清單——⛔ 不改 verbs_full.js 的 conjugate()：quest.html 也在用它 */
+function regImper(v) {
+  let tu = v.pres[1];
+  if (/er$/.test(v.inf) || v.inf === 'aller') tu = tu.replace(/es$/, 'e').replace(/as$/, 'a');
+  return [tu, v.pres[3], v.pres[4]];
+}
+function allConj(v) {
+  const out = conjugate(v), imp = imperatif(v);
+  const t = { id:'imperatif', name:'命令式', fr:'impératif', lvl:'A1', cx:'6-1-1', imper:true,
+    forms: imp.length ? [null, imp[0], null, imp[1], imp[2], null] : [null, null, null, null, null, null],
+    how:'現在式的 tu／nous／vous 拿掉主詞' };
+  out.splice(1, 0, t);
+  return out;
+}
+const PERSON_LABEL = ['je', 'tu', 'il / elle', 'nous', 'vous', 'ils / elles'];
+
+/* ── 📋 變化表：直排人稱、橫排時態 ── */
+const BIG4 = ['être', 'avoir', 'aller', 'faire'];
+function cellMark(v, t, i) {
+  const f = t.forms[i]; if (f == null || v.imperso) return '';   /* 無人稱（falloir／pleuvoir）只有 il 一格，沒有 nous 可以比 */
+  const regular = v.grp === '規則樣本';
+  switch (t.id) {
+    case 'present':
+      if (regular) return '';
+      if (BIG4.includes(v.inf) && !/ons$/.test(v.pres[3])) return '要背';
+      if (!f.startsWith(stemNous(v))) return '詞幹變了';
+      if (i === 5 && stemIls(v) !== stemNous(v)) return 'ils 詞幹變了';
+      if (i === 4 && !/ez$/.test(f)) return '不是 -ez';
+      if (i === 5 && !/ent$/.test(f)) return '不是 -ent';
+      return '';
+    case 'imparfait':    return v.imp ? `詞幹 ${v.imp}-` : '';
+    case 'futur-simple': case 'conditionnel': return v.fut !== regFut(v) ? `詞幹 ${v.fut}-` : '';
+    case 'subjonctif':   return v.subj && v.subj[i] !== regSubj(v)[i] ? '要背' : '';
+    case 'imperatif': {
+      const r = regImper(v), k = [null, 0, null, 1, 2, null][i];
+      return v.imper && v.imper.length && v.imper[k] !== r[k] ? '要背' : '';
+    }
+  }
+  return '';
+}
+function colNote(v, t) {
+  if (t.id === 'passe-compose' || TWIN.some(x => x[1] === t.id)) {
+    const n = [];
+    if (v.aux === 'être') n.push('ℹ️ 用 être');
+    if (REG_PP(v) !== v.pp && !v.imperso) n.push(`⚠️ 過去分詞 ${v.pp}`);
+    return n.join('　');
+  }
+  if (t.id === 'imperatif' && !imperatif(v).length) return '沒有命令式';
+  return '';
+}
+function cellText(t, i, f) {
+  if (f == null) return '—';
+  if (t.imper) return f + ' !';
+  return i === 0 && vowelStart(f) ? "j'" + f : f;
+}
+function renderVerbTable(v) {
+  const all = allConj(v), T = {}; all.forEach(t => T[t.id] = t);
+  const cols = ORDER.filter(id => T[id] && picked.has(id)).map(id => T[id]);
+  window._cols = cols;
+  if (!cols.length) { document.getElementById('tenses').innerHTML = '<div class="scope-hint">一個時態都沒選——到最上面「📌 要看哪些時態」點幾個加回來。</div>'; return; }
+  const head = cols.map((t, ci) => { const n = colNote(v, t);
+    return `<th onclick="ttsCol(${ci})" title="點一下唸這一欄"><span class="zh">${esc(t.name.replace(/（.*）/, ''))}</span><span class="frn">${esc(t.fr)}</span>${
+      t.pre ? '<span class="que">que…</span>' : ''}${n ? `<span class="cn">${esc(n)}</span>` : ''}</th>`; }).join('');
+  const rows = PERSON_LABEL.map((p, i) => `<tr><th class="pers">${p}</th>${cols.map(t => {
+    const m = cellMark(v, t, i);
+    return `<td class="${m ? 'mk' : ''}${t.forms[i] == null ? ' na' : ''}"${m ? ` title="${esc(m)}"` : ''}>${esc(cellText(t, i, t.forms[i]))}</td>`; }).join('')}</tr>`).join('');
+  const O = ovItems(v.imperso ? VF('parler') : v);
+  const notes = v.imperso ? ['無人稱動詞：只有 il 這一格'] :
+    [...new Set(Object.values(O).filter(o => o.irr).map(o => '⚠️ ' + o.irr).concat(Object.values(O).filter(o => o.note).map(o => 'ℹ️ ' + o.note)))];
+  document.getElementById('tenses').innerHTML = `
+    <div class="vt-wrap"><table class="vt"><thead><tr><th class="pers"></th>${head}</tr></thead><tbody>${rows}</tbody></table></div>
+    <div class="vt-key"><span class="mkdot"></span>橘底＝不照規則，要特別記（點格子看原因）　點時態名稱可以聽整欄</div>
+    ${notes.length ? `<div class="vt-notes">${notes.map(n => `<div>${esc(n)}</div>`).join('')}</div>` : ''}`;
+}
+function ttsCol(ci) {
+  if (!('speechSynthesis' in window)) return;
+  const t = window._cols[ci];
+  const lines = t.forms.map((f, i) => f == null ? null : (t.imper ? f : display(t, i, f))).filter(Boolean);
+  speechSynthesis.cancel();
+  let i = 0;
+  (function next() {
+    if (i >= lines.length) return;
+    const u = new SpeechSynthesisUtterance(lines[i++]);
+    u.lang = 'fr-FR'; u.rate = 0.8; if (frVoice) u.voice = frVoice;
+    u.onend = next; speechSynthesis.speak(u);
+  })();
+}
+
+/* ── ⚠️ 不規則動詞總表：依「家族」分組，每組一句記憶鉤；每格標出到底哪一塊不照規則 ── */
+const IRR_GROUPS = [
+  { name:'四巨頭', hook:'最常用的四個，幾乎每一格都要背', verbs:['être','avoir','aller','faire'] },
+  { name:'情態動詞', hook:'「能、想、必須、知道」——未來詞幹縮成 pourr-／voudr-／devr-／saur-', verbs:['pouvoir','vouloir','devoir','savoir'] },
+  { name:'venir 家族', hook:'單數和 ils 冒出 i：je viens・nous venons・ils viennent；未來 viendr-；助動詞 être', verbs:['venir','devenir'] },
+  { name:'靴子型', hook:'nous／vous 換另一個詞幹：je prends・nous prenons、je bois・nous buvons、je vois・nous voyons', verbs:['prendre','boire','voir'] },
+  { name:'單數掉尾巴', hook:'單數把子音拿掉：je pars・nous partons、je sors・nous sortons；助動詞 être', verbs:['partir','sortir'] },
+  { name:'nous 冒出子音', hook:'nous 那格多一個子音：disons、mettons、écrivons、lisons、connaissons；過去分詞要背', verbs:['dire','mettre','écrire','lire','connaître'] },
+];
+function irrCell(val, bad, extra) { return `<td class="${bad ? 'mk' : 'okc'}">${val}${extra || ''}</td>`; }
+function renderIrrTable() {
+  const rows = IRR_GROUPS.map(g => `
+    <tr class="ig"><td colspan="6"><b>${esc(g.name)}</b>　<span>${esc(g.hook)}</span></td></tr>
+    ${g.verbs.map(inf => { const v = VF(inf), imp = imperatif(v), ri = regImper(v);
+      const subjBad = v.subj && JSON.stringify(v.subj) !== JSON.stringify(regSubj(v));
+      const impBad = !imp.length || (v.imper && JSON.stringify(v.imper) !== JSON.stringify(ri));
+      return `<tr onclick="openVerb('${inf}')">
+        <th class="iv">${esc(inf)}<small>${esc(v.zh)}</small></th>
+        <td class="pres">${esc(v.pres[0])} · ${esc(v.pres[3])} · ${esc(v.pres[5])}</td>
+        ${irrCell(esc(v.fut) + '-', v.fut !== regFut(v))}
+        ${irrCell(esc(v.pp), REG_PP(v) !== v.pp, v.aux === 'être' ? '<span class="aux">être</span>' : '')}
+        ${irrCell(esc(withSubjQue(0, subjonctif(v)[0])), subjBad)}
+        ${irrCell(imp.length ? esc(imp[0]) + ' !' : '（沒有）', impBad)}
+      </tr>`; }).join('')}`).join('');
+  /* 依結尾分組：比一個一個背好記 */
+  const irrFut = VERBS_FULL.filter(v => !v.imperso && v.fut !== regFut(v));
+  const futG = [['-rr', /rr$/], ['-dr', /dr$/], ['-vr', /vr$/], ['-ur', /ur$/], ['其他', /./]];
+  const used = new Set();
+  const futHtml = futG.map(([k, re]) => { const vs = irrFut.filter(v => !used.has(v.inf) && re.test(v.fut)); vs.forEach(v => used.add(v.inf));
+    return vs.length ? `<div class="gk"><b>${k}</b>${vs.map(v => `<span>${esc(v.inf)} → <i>${esc(v.fut)}-</i></span>`).join('')}</div>` : ''; }).join('');
+  const irrPP = VERBS_FULL.filter(v => !v.imperso && REG_PP(v) !== v.pp);
+  const ppG = [['-u', /[uû]$/], ['-is', /is$/], ['-it', /it$/], ['其他', /./]], usedP = new Set();
+  const ppHtml = ppG.map(([k, re]) => { const vs = irrPP.filter(v => !usedP.has(v.inf) && re.test(v.pp)); vs.forEach(v => usedP.add(v.inf));
+    return vs.length ? `<div class="gk"><b>${k}</b>${vs.map(v => `<span>${esc(v.inf)} → <i>${esc(v.pp)}</i></span>`).join('')}</div>` : ''; }).join('');
+  document.getElementById('irrBox').innerHTML = `
+    <div class="scope-hint" style="margin-top:0">一列＝一個動詞要背的全部。現在式一定要背；後面幾欄 <span class="mkdot"></span>橘底＝不照規則，灰色＝照規則推得出來。點一列看完整變化表。</div>
+    <div class="vt-wrap"><table class="irt">
+      <thead><tr><th></th><th>現在式<small>je · nous · ils</small></th><th>未來詞幹</th><th>過去分詞</th><th>虛擬式</th><th>命令式</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>
+    <div class="scope-hint">未完成過去式：這 20 個全部照規則（nous 去 -ons），只有 <b>être → j'étais</b> 例外。</div>
+    <div class="gks"><div class="gk-h">未來詞幹：全部以 r 結尾，照尾巴分組</div>${futHtml}</div>
+    <div class="gks"><div class="gk-h">過去分詞：照結尾分組</div>${ppHtml}</div>`;
+}
+function goIrr() { const p = document.getElementById('pIrr'); p.open = true; p.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+
 function renderRules() {
-  const T = {}; conjugate(VF('parler')).forEach(t => T[t.id] = t);
+  const T = {}; allConj(VF('parler')).forEach(t => T[t.id] = t);
   /* 四個進階複合時態共用一張卡 */
   /* 規則卡照「學的順序」排，不照三條線——先會現在式、複合過去式，再往外長 */
-  const RULE_ORDER = ['present','passe-compose','imparfait','futur-proche','passe-recent','futur-simple','conditionnel',
+  const RULE_ORDER = ['present','imperatif','passe-compose','imparfait','futur-proche','passe-recent','futur-simple','conditionnel',
                       'subjonctif','plus-que-parfait','futur-anterieur','conditionnel-passe','subjonctif-passe','passe-simple'];
   const ids = RULE_ORDER.filter(id => picked.has(id));
   const seenTwin = ids.filter(id => ['plus-que-parfait','futur-anterieur','conditionnel-passe','subjonctif-passe'].includes(id));
@@ -830,6 +1037,7 @@ function renderRules() {
       <div class="r-when">${esc(twin ? '過去完成、未來完成、早知道就…' : RULE_WHEN[id])}</div>
       ${ruleBody(id)}
       ${twin ? '' : chosenRow(id)}
+      ${twin ? '' : usageHtml(VF(ovVerb), T[id])}
     </div>`;
   }).join('') || '<div class="card-box" style="color:#5a6878">一個時態都沒選——到最上面「📌 要看哪些時態」點幾個加回來。</div>';
 }
@@ -882,32 +1090,12 @@ function usageHtml(v, t) {
 }
 
 function renderTenses(v) {
-  const all = conjugate(v);
+  const all = allConj(v);
   if (!picked) picked = new Set(all.map(t => t.id).filter(SCOPES.learned));
   renderChips(all);
   renderOverview();
   renderRules();
-  const T = {}; all.forEach(t => T[t.id] = t);
-  const list = ORDER.filter(id => T[id] && picked.has(id)).map(id => T[id]);
-  window._shown = list;
-  document.getElementById('tenses').innerHTML = list.map((t, ti) => {
-    const m = metaOf(t.id), isFold = folded.has(t.id);
-    return `
-    <div class="t-card${isFold ? ' fold' : ''}" id="tc-${t.id}">
-      <div class="t-head" onclick="toggleFold('${t.id}')">
-
-        <span class="t-name">${tName(t)}</span>
-        <span class="fold-mark">${isFold ? '▸' : '▾'}</span>
-      </div>
-      <div class="t-body">
-        <div class="t-tags">${badge(t.id)}${m.tier !== 'normal' ? `<span class="tier">${TIER_TAG[m.tier]}</span>` : ''}
-          <button class="tts-btn" onclick="ttsTense(${ti})">🔊 唸一遍</button></div>
-        <div class="t-how"><span class="lbl">怎麼來的</span>${derive(v, t.id, T)}</div>
-        <div class="forms">${t.forms.map((f, i) => `<div class="f">${esc(display(t, i, f))}</div>`).join('')}</div>
-        ${usageHtml(v, t)}
-      </div>
-    </div>`;
-  }).join('') || '<div class="card-box" style="color:#5a6878">一個時態都沒選——到最上面「📌 要看哪些時態」點幾個加回來。</div>';
+  renderVerbTable(v);   /* 10-01 第四輪：單一動詞改成「直排人稱 × 橫排時態」的表，取代一張一張的時態卡 */
 }
 
 /* verb_forms 的時態 id → verb_sprint 的 mode id（⚠️ 兩邊命名本來就不同）
@@ -942,7 +1130,7 @@ function drillVerbsHtml() {
 function renderDrill(v) {
   const picks = [...picked];
   const can = picks.filter(id => SPRINT_MODE[id]);
-  const names = {}; conjugate(v).forEach(t => names[t.id] = t.name);
+  const names = {}; allConj(v).forEach(t => names[t.id] = t.name);
   const list = drillList(), vq = list.length ? `&verbs=${encodeURIComponent(list.join(','))}` : '';
   let h = drillVerbsHtml() + '<div class="drill-row">';
   if (can.length) {
@@ -964,6 +1152,7 @@ function render() {
   document.getElementById('verbSum').innerHTML = `現在：<b>${esc(v.inf)}</b>（${esc(v.zh)}）`;
   renderTenses(v);
   renderDrill(v);
+  if (!document.getElementById('irrBox').innerHTML) renderIrrTable();
 }
 
 document.querySelectorAll('.lvl-btn').forEach(b => b.onclick = () => {
