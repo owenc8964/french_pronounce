@@ -174,7 +174,8 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
   <div class="btn-row" id="modeToggle" style="margin-bottom:14px;"></div>
   <div class="card">
     <div class="card-title">反射熱力圖 — <span id="hmModeLabel">Présent</span></div>
-    <div class="hm-summary">已達反射 <b id="hmReflexCount">0</b> / 54 格</div>
+    <div class="hm-summary">已達反射 <b id="hmReflexCount">0</b> / <span id="hmTotal">66</span> 格</div>
+    <div class="hm-summary" id="customNote" style="display:none"></div>
     <div id="heatmap"></div>
     <div class="hm-legend">
       <span><i class="hm-reflex"></i>反射（連 3 對且 &lt; 2 秒起手）</span>
@@ -302,9 +303,19 @@ function modeUnlocked(m) {
 }
 const AVAILABLE = MODES.filter(modeUnlocked);
 
+/* ⭐ 2026-10-01 自選動詞（Owen：「自訂勾選哪些單字的哪些變化」）：從變位總覽帶 ?verbs=être,aller,prendre 進來，
+   這一輪只考這幾個；可以是 verbs_full.js 裡任何一個（不限核心 11 個），⛔ 無人稱動詞（falloir／pleuvoir）不收——只有 il 一格。
+   ⭐ 熟練紀錄跟平常共用同一份（格子 key 是「動詞_人稱」），所以自選練到的 être 也算進核心的熱力圖。 */
+const CUSTOM = (() => {
+  const raw = new URLSearchParams(location.search).get('verbs');
+  if (!raw) return null;
+  const ok = raw.split(',').map(x => x.trim()).filter((x, i, a) => x && a.indexOf(x) === i)
+    .filter(inf => { const v = VERBS_FULL.find(y => y.inf === inf); return v && !v.imperso; });
+  return ok.length ? ok : null;
+})();
 // 依模式生成 [{inf, forms[6]}]，形式來自 verbs_full.js 的推導引擎
 function buildVerbs(tenseId) {
-  return CORE9.map(inf => {
+  return (CUSTOM || CORE9).map(inf => {
     const v = VERBS_FULL.find(x => x.inf === inf);
     return { inf, forms: drillForms(v, tenseId) };
   });
@@ -364,6 +375,14 @@ function reflexCount(cells) {
   let n = 0;
   V().forEach((v,vi) => { for (let pi=0; pi<6; pi++) {
     if (cellState((cells[cellKey(vi,pi)]||{}).h) === 'reflex') n++;
+  }});
+  return n;
+}
+/* 存進紀錄的永遠是「核心 11 個」的反射格數——自選的輪次也一樣，dashboard 的趨勢才比得起來 */
+function coreReflexCount(cells) {
+  let n = 0;
+  CORE9.forEach(inf => { for (let pi=0; pi<6; pi++) {
+    if (cellState((cells[inf + '_' + pi]||{}).h) === 'reflex') n++;
   }});
   return n;
 }
@@ -641,7 +660,7 @@ function showDone() {
   document.getElementById('doneRT').textContent = avgFk != null ? (avgFk/1000).toFixed(1)+'s' : '—';
   document.getElementById('doneDur').textContent = avgDur != null ? (avgDur/1000).toFixed(1)+'s' : '—';
   document.getElementById('doneBest').textContent = bestDur != null ? '最快一題 ' + (bestDur/1000).toFixed(1) + ' 秒' : '';
-  document.getElementById('doneReflex').textContent = `${reflexNow}/54`;
+  document.getElementById('doneReflex').textContent = `${reflexNow}/${TOTAL_CELLS}`;
   const diff = reflexNow - reflexBefore;
   document.getElementById('improvedLine').textContent =
     diff > 0 ? `🎉 本輪新增 ${diff} 格反射！` : (diff < 0 ? `📉 掉了 ${-diff} 格反射，再衝一輪拿回來` : '');
@@ -664,10 +683,10 @@ function showDone() {
 
   renderHeatmap('heatmapDone');
 
-  saveSession({
+  saveSession(Object.assign({
     date: todayStr(), att: sprintAttempts, cor: sprintCorrect,
-    avgFk: avgFk, avgDur: avgDur, reflex: reflexNow, sec: SPRINT_SEC,
-  });
+    avgFk: avgFk, avgDur: avgDur, reflex: CUSTOM ? coreReflexCount(getCells()) : reflexNow, sec: SPRINT_SEC,
+  }, CUSTOM ? { verbs: CUSTOM } : {}));
   document.getElementById('fbText').value = '';
 }
 
@@ -710,12 +729,19 @@ function refreshStartScreen() {
   renderModeButtons();
   renderHeatmap('heatmap');
   document.getElementById('hmModeLabel').textContent = M().label;
+  document.getElementById('hmTotal').textContent = TOTAL_CELLS;
+  if (CUSTOM) {
+    const cn = document.getElementById('customNote'), q = new URLSearchParams(location.search);
+    q.delete('verbs');
+    cn.style.display = '';
+    cn.innerHTML = `🎯 這一輪只考你挑的 ${CUSTOM.length} 個：<b>${CUSTOM.join('、')}</b>　<a href="verb_sprint.html${q.toString() ? '?' + q : ''}" style="color:#7fa8d8">改回核心 11 個</a>`;
+  }
   const ses = getSessions();
   const recentCard = document.getElementById('recentCard');
   if (ses.length) {
     recentCard.style.display = '';
     document.getElementById('recentList').innerHTML = ses.slice(-5).reverse().map(s =>
-      `${s.date} — ${s.cor} 題 · 正確率 ${s.att?Math.round(s.cor/s.att*100):0}% · 起手 ${s.avgFk?(s.avgFk/1000).toFixed(1)+'s':'—'} · 打完 ${s.avgDur?(s.avgDur/1000).toFixed(1)+'s':'—'} · 反射 ${s.reflex}/54`
+      `${s.date} — ${s.verbs ? '自選 ' + s.verbs.length + ' 個動詞 · ' : ''}${s.cor} 題 · 正確率 ${s.att?Math.round(s.cor/s.att*100):0}% · 起手 ${s.avgFk?(s.avgFk/1000).toFixed(1)+'s':'—'} · 打完 ${s.avgDur?(s.avgDur/1000).toFixed(1)+'s':'—'} · 核心反射 ${s.reflex}/66`
     ).join('<br>');
   } else {
     recentCard.style.display = 'none';

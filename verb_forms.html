@@ -459,15 +459,39 @@ const SPRINT_MODE = {
   'present':'present', 'passe-compose':'pc', 'imparfait':'imparfait',
   'futur-simple':'futur', 'subjonctif':'subjonctif', 'conditionnel':'conditionnel',
 };
+/* ⭐ 2026-10-01 一起考的動詞（Owen：「自訂勾選哪些單字的哪些變化」——之前只做到一個動詞 × 多個時態）
+   沒挑任何一個＝核心 11 個（跟以前一樣，網址不帶 verbs）。存本機 vf_drill_verbs（⚠️ 刻意不用 clb7_ 開頭，那會被整包同步上雲）
+   ⛔ 無人稱動詞（falloir／pleuvoir）不列——快問快答是六人稱的格子 */
+const DRILL_LS = 'vf_drill_verbs';
+let drillVerbs = new Set((() => { try { return JSON.parse(localStorage.getItem(DRILL_LS)) || []; } catch { return []; } })());
+function saveDrill() { try { localStorage.setItem(DRILL_LS, JSON.stringify([...drillVerbs])); } catch {} }
+function drillList() { return VERBS_FULL.map(x => x.inf).filter(inf => drillVerbs.has(inf)); }   /* 空＝核心 11 個 */
+function toggleDrillVerb(inf) { drillVerbs.has(inf) ? drillVerbs.delete(inf) : drillVerbs.add(inf); saveDrill(); render(); }
+function drillPreset(name) {
+  if (name === 'clear') drillVerbs = new Set();
+  else if (name === 'hot') drillVerbs = new Set(VERBS_FULL.filter(x => !x.imperso && (freqOf(x.inf).say + freqOf(x.inf).hear) >= 1500).map(x => x.inf));
+  saveDrill(); render();
+}
+function drillVerbsHtml() {
+  const list = drillList();
+  return `<div class="scope-hint" style="margin-top:0">一起考的動詞（點一下加入／拿掉）：</div>
+    <div class="v-row">${VERBS_FULL.filter(x => !x.imperso).map(x =>
+      `<button class="v-btn${drillVerbs.has(x.inf) ? ' on' : ''}" onclick="toggleDrillVerb('${x.inf}')">${esc(x.inf)}</button>`).join('')}</div>
+    <div class="drill-row" style="margin-top:6px">
+      <button class="v-btn" onclick="drillPreset('hot')">🔴 最常用的那幾個</button>
+      <button class="v-btn" onclick="drillPreset('clear')">清空（回到核心 11 個）</button></div>
+    <div class="scope-hint">這一輪會考：<b>${list.length ? list.map(esc).join('、') : '核心 11 個動詞'}</b>${list.length ? '' : '（沒挑＝跟以前一樣）'}</div>`;
+}
 function renderDrill(v) {
   const picks = [...picked];
   const can = picks.filter(id => SPRINT_MODE[id]);
   const names = {}; conjugate(v).forEach(t => names[t.id] = t.name);
-  let h = '<div class="drill-row">';
+  const list = drillList(), vq = list.length ? `&verbs=${encodeURIComponent(list.join(','))}` : '';
+  let h = drillVerbsHtml() + '<div class="drill-row">';
   if (can.length) {
     h += can.map(id =>
-      `<a class="drill-btn" href="verb_sprint.html?mode=${SPRINT_MODE[id]}&back=vf&v=${encodeURIComponent(v.inf)}"
-         >⚡ 快問快答：${esc(names[id] || id)}</a>`).join('');
+      `<a class="drill-btn" href="verb_sprint.html?mode=${SPRINT_MODE[id]}&back=vf&v=${encodeURIComponent(v.inf)}${vq}"
+         >⚡ 快問快答：${esc(names[id] || id)}${list.length ? `（${list.length} 個動詞）` : ''}</a>`).join('');
   }
   h += `<a class="drill-btn" href="table_drill.html?type=verb&back=vf&v=${encodeURIComponent(v.inf)}">📝 填表格：動詞變位</a>`;
   h += '</div>';
