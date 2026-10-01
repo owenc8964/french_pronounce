@@ -163,6 +163,99 @@ body {
   .t-name, .f, .stem .v, .nf .v { color: #000; }
   .t-how, .stem .o, .stem .k, .f .p { color: #444; }
 }
+
+/* ════ 2026-10-01 改版（Owen：「太密了，我看得好累」「要看哪個時態應該擺在最上面，可以縮合展開」）
+   原則：留白加大、一張卡只放一個標籤列、考試數字收進「考試裡用多少」、中文名＋法文原名並列 ════ */
+body { line-height: 1.7; }
+.header .sub { font-size: 0.82rem; color: #7a8a9a; line-height: 1.9; }
+.header .sub b { color: #f0c060; }
+.panel { background: #0d1020; border: 1px solid #1a2438; border-radius: 14px; margin-bottom: 16px; }
+.panel > summary { list-style: none; cursor: pointer; padding: 14px 18px; font-size: 0.95em; color: #ddd8cc;
+  font-weight: 700; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.panel > summary::-webkit-details-marker { display: none; }
+.panel > summary::after { content: '▾ 收起'; margin-left: auto; font-size: 0.75em; color: #445060; font-weight: 400; }
+.panel:not([open]) > summary::after { content: '▸ 展開'; }
+.sum-n { font-size: 0.8em; color: #7a8a9a; font-weight: 400; }
+.sum-n b { color: #f0c060; }
+.panel-in { padding: 0 18px 18px; }
+.note-panel > summary { font-size: 0.82em; color: #7a8a9a; font-weight: 400; }
+.notes p { font-size: 0.85em; color: #8a98a8; line-height: 1.9; margin-bottom: 6px; }
+.notes a { color: #9ad060; }
+
+.zh { font-weight: 700; }
+.frn { font-family: Georgia, serif; font-style: italic; color: #7fb0d8; font-weight: 400; }
+.fx { font-family: Georgia, serif; color: #f0e2b8; font-weight: 700; }
+.ok { font-size: 0.72em; color: #7ac090; white-space: nowrap; }
+.no { font-size: 0.72em; color: #6a7888; white-space: nowrap; }
+
+/* 📌 時態勾選：照樓層分組 */
+.chip-g { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-top: 1px solid #141c2e; }
+.chip-g:first-child { border-top: none; }
+.cg-n { flex: none; width: 2.6em; font-size: 0.75em; color: #f0c060; font-weight: 700; padding-top: 9px; }
+.cg-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { padding: 8px 13px; font-size: 0.85em; color: #6a7888; }
+.chip.on { border-color: #f0c060; color: #f0e2b8; background: #1c1a10; }
+.chip .zh { font-weight: 400; }
+.lvl-row { margin-bottom: 14px; }
+
+/* 🧗 爬升圖 */
+.floor { padding: 14px 0 6px; border-top: 1px dashed #1a2438; }
+.floor:first-child { border-top: none; padding-top: 4px; }
+.fl-h { font-size: 0.85em; color: #9aa8b8; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+.fl-n { display: inline-block; min-width: 2.6em; text-align: center; padding: 2px 8px; border-radius: 6px;
+  background: #1c1a10; border: 1px solid #5a4a18; color: #f0c060; font-weight: 700; font-size: 0.9em; }
+.nodes { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 760px) { .nodes { grid-template-columns: repeat(2, 1fr); } }
+.node { text-align: left; font-family: inherit; font-size: inherit; color: inherit; background: #111628; border: 1px solid #1f2a40;
+  border-radius: 12px; padding: 12px 14px; cursor: pointer; line-height: 1.75;
+  display: flex; flex-direction: column; justify-content: flex-start; }
+.node:hover { border-color: #f0c060; }
+.node.static { cursor: default; background: #0f1322; }
+.node.static:hover { border-color: #1f2a40; }
+.node.todo { opacity: .78; }
+.n-name { font-size: 0.92em; margin-bottom: 4px; }
+.n-eq { font-size: 0.86em; color: #9aa8b8; }
+.n-eq.big { font-family: Georgia, serif; font-size: 0.95em; color: #ddd8cc; }
+.n-eq .hl { color: #f0c060; font-weight: 700; }
+.pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 14px; }
+.pgrid span { white-space: nowrap; }
+.to { font-size: 0.85em; color: #5a7a40; }
+.fl-foot { font-size: 0.82em; color: #7a8a9a; margin-top: 10px; line-height: 1.8; }
+.fl-foot b { color: #9ad060; font-weight: 400; }
+.twin { width: 100%; border-collapse: collapse; font-size: 0.88em; }
+.twin th { text-align: left; font-weight: 400; font-size: 0.82em; color: #5a6878; padding: 6px 8px; }
+.twin td { padding: 10px 8px; border-top: 1px solid #16203a; vertical-align: top; }
+.twin tr:not(:first-child) { cursor: pointer; }
+.twin tr:not(:first-child):hover td { background: #111628; }
+.twin .aux { font-family: Georgia, serif; color: #8a98a8; font-size: 0.9em; margin-top: 2px; }
+.twin .ex { font-family: Georgia, serif; color: #f0e2b8; }
+
+/* 時態卡：一個標籤列、一行「怎麼來的」、六格 */
+.t-card { padding: 16px 18px; margin-bottom: 14px; border-radius: 14px; }
+.t-card.flash { border-color: #f0c060; }
+.t-head { align-items: center; gap: 10px; margin-bottom: 0; }
+.t-floor { font-size: 0.7em; color: #f0c060; border: 1px solid #5a4a18; border-radius: 6px; padding: 1px 7px; }
+.t-name { font-size: 1.05em; }
+.t-name .frn { font-size: 0.92em; margin-left: 4px; }
+.fold-mark { margin-left: auto; font-size: 0.9em; }
+.t-card.fold .t-body { display: none; }
+.t-tags { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin: 10px 0 6px; font-size: 0.95em; }
+.t-tags .ok, .t-tags .no, .tier { font-size: 0.78em; }
+.tier { color: #c8a868; }
+.tts-btn { opacity: .75; font-size: 0.78em; color: #9aa8b8; margin-left: auto; padding: 4px 8px;
+  border: 1px solid #1a2438; border-radius: 8px; }
+.t-how { margin: 8px 0 12px; padding: 10px 12px; border-left: 3px solid #2a3a1a; background: #0f1508;
+  border-radius: 0 8px 8px 0; color: #9aa8b8; line-height: 1.8; }
+.t-how .lbl { display: block; font-size: 0.75em; color: #5a7a40; margin-bottom: 2px; }
+.forms { gap: 8px 14px; }
+.f { padding: 5px 0; }
+.usage { margin-top: 12px; font-size: 0.82em; color: #8a98a8; }
+.usage summary { cursor: pointer; color: #5a6878; }
+.usage p { margin-top: 6px; line-height: 1.8; }
+.usage b { color: #c0c8d0; font-weight: 400; }
+.usage .cx a { color: #5a6878; }
+/* 時態卡改成一欄：兩欄在 iPad 上太擠（Owen：太密了）；六格在寬螢幕排三欄 */
+@media (min-width: 760px) { #tenses { display: block; } .forms { grid-template-columns: repeat(3, 1fr); } }
 </style>
 </head>
 <body>
@@ -170,54 +263,50 @@ body {
 <div class="header">
   <a href="dashboard.html" class="back">← 回指揮中心</a>
   <h1>動詞變位總覽</h1>
-  <div class="sub">
-    一個動詞到 B2 有 13 個時態、將近 80 格——<b style="color:#f0c060">但要記的只有四個詞幹</b><br>
-    其他全部是這四個加上你已經會的字尾
+  <div class="sub">法文的時態不是 13 套各自背——是從<b>三樣要背的東西</b>一層一層長出來的。<br>
+    照下面的爬升圖，從 1F 爬到 4F。</div>
+</div>
+
+<details class="panel" id="pScope" open>
+  <summary>📌 要看哪些時態 <span class="sum-n">已選 <b id="scopeCount">0</b> 個</span></summary>
+  <div class="panel-in">
+    <div class="lvl-row">
+      <button class="lvl-btn on" data-scope="learned">✅ 學過的</button>
+      <button class="lvl-btn" data-scope="core">🔥 考試要用的</button>
+      <button class="lvl-btn" data-scope="all">全部（到 B2）</button>
+      <button class="lvl-btn" data-scope="todo">⬜ 還沒上的</button>
+    </div>
+    <div id="tenseChips"></div>
   </div>
-</div>
+</details>
 
-<div class="card-box">
-  <div class="card-title">選一個動詞</div>
-  <div id="picker"></div>
-</div>
+<details class="panel" id="pVerb" open>
+  <summary>選動詞 <span class="sum-n" id="verbSum"></span></summary>
+  <div class="panel-in"><div id="picker"></div></div>
+</details>
 
-<div class="card-box">
-  <div class="card-title">① 這個動詞你只要記這四樣 <span id="stemVerb" style="color:#f0c060"></span></div>
-  <div class="stems" id="stems"></div>
-  <div class="big-note" id="verbNote"></div>
-</div>
+<details class="panel" id="pMap" open>
+  <summary>🧗 爬升圖：每個時態從哪裡長出來 <span class="sum-n" id="mapSum"></span></summary>
+  <div class="panel-in" id="climb"></div>
+</details>
 
-<div class="card-box" id="scopeBox">
-  <div class="card-title">② 要看哪些時態</div>
-  <div class="lvl-row">
-    <button class="lvl-btn on" data-scope="learned">⭐ 已經學過的</button>
-    <button class="lvl-btn" data-scope="core">🔥 考試真的要用的（5 個）</button>
-    <button class="lvl-btn" data-scope="all">全部到 B2</button>
-    <button class="lvl-btn" data-scope="used">🎯 這個動詞真的會用的</button>
-    <button class="lvl-btn" data-scope="todo">⬜ 還沒上到的</button>
-  </div>
-  <div class="chips" id="tenseChips"></div>
-  <div class="scope-hint">點上面的按鈕換一組，或直接點下面的標籤自己加減。你的選擇會記在這台裝置上。<br>
-    ⭐ 標籤上兩個數字要分開看：<b>🗣＝自己要講／要寫時的用量</b>（TCF 口說答稿＋寫作範文 96,805 詞）、
-    <b>👂＝聽到／讀到時的出現率</b>（TCF 聽力口語 183,525 詞）。
-    <b style="color:#9ad060">兩邊差很多</b>——例如 imparfait 產出只要三個形，但聽力裡是第三名，研究說前三名「必須自動化」。
-    出自 <a href="research/2026-09-03_VOCAB_B_說寫側.md" style="color:#9ad060">說寫側</a>與<a href="research/2026-09-03_VOCAB_A_聽讀側.md" style="color:#9ad060">聽讀側</a>兩份語料研究。
-    ⚠️ 誤判率約 5–7%，⛔ 別當精確數字用。</div>
-</div>
-
-<div id="compound"></div>
 <div id="tenses"></div>
 
 <div class="card-box" id="drillBox">
-  <div class="card-title">③ 背完了？直接考這個範圍</div>
+  <div class="card-title">背完了？直接考</div>
   <div id="drillBtns"></div>
-  <div class="scope-hint">考完按頁面左上角的「← 回變位總覽」就會跳回這裡，動詞和你勾的時態都留著。</div>
+  <div class="scope-hint">考完按左上角「← 回變位總覽」就會回到這裡，你選的動詞和時態都還在。</div>
 </div>
 
-<div class="card-box">
-  <div class="card-title">非限定形式</div>
-  <div class="nf" id="nonfinite"></div>
-</div>
+<details class="panel note-panel" id="pNote">
+  <summary>這頁的資料從哪來</summary>
+  <div class="panel-in notes">
+    <p>・<b>樓層</b>是照「這個時態的零件從哪裡來」排的，所以跟課本教的順序不一樣。</p>
+    <p>・<b>考試裡用多少</b>（每張卡最下面）來自兩份語料研究：「自己講／寫」＝TCF 口說答稿＋寫作範文；「聽到／讀到」＝TCF 聽力。大概抓就好，有 5–7% 的誤差。
+      <a href="research/2026-09-03_VOCAB_B_說寫側.md">說寫側</a>・<a href="research/2026-09-03_VOCAB_A_聽讀側.md">聽讀側</a></p>
+    <p>・<b>⬜ 還沒上</b>＝課還沒教到，不是不重要。</p>
+  </div>
+</details>
 
 <div class="links">
   <a href="tense_lens.html"><b>🔭 時態鏡頭</b>不知道該用哪個時態的時候</a>
@@ -352,105 +441,201 @@ function renderPicker() {
 
 function pick(inf) { current = inf; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-function renderStems(v) {
-  document.getElementById('stemVerb').textContent = v.inf;
-  document.getElementById('stems').innerHTML = stems(v).map(s => `
-    <div class="stem${/⚠️/.test(s.out) ? ' warn' : ''}">
-      <div class="k">${esc(s.key)}</div>
-      <div class="v">${esc(s.val)}</div>
-      <div class="o">${esc(s.out)}</div>
-    </div>`).join('');
-  document.getElementById('verbNote').innerHTML =
-    `<b>${esc(v.inf)}</b>（${esc(v.zh)}）　助動詞：<b>${esc(v.aux)}</b>` +
-    (v.note ? `<br>${esc(v.note)}` : '');
+/* ════════════════════════════════════════════════════════════════
+   🧗 爬升圖（2026-10-01 Owen：「法文動詞的變化是有規則，且用從不同的時態去做開展的，
+      這要有一個很完整的脈絡，我需要脈絡讓我攀爬」）
+   樓層＝這個時態的零件從哪裡來：
+     1F 要背的三樣（現在式六格、過去分詞、未來詞幹）
+     2F 從現在式長出來（nous → imparfait／現在分詞；ils → subjonctif；拿掉主詞 → 命令式；借 aller／venir）
+     3F 從原形長出來（未來詞幹 → futur simple；同一詞幹＋imparfait 字尾 → conditionnel）
+     4F 過去分詞＋助動詞：每個簡單時態都有一個複合雙胞胎
+   ⛔ 樓層標 1F／2F，不用 x-y-z 數字——codex.js 已經有 5-3-1 那種永久座標，不要撞在一起
+   ════════════════════════════════════════════════════════════════ */
+const FLOOR = {
+  'present':'1F',
+  'imparfait':'2F', 'subjonctif':'2F', 'futur-proche':'2F', 'passe-recent':'2F',
+  'futur-simple':'3F', 'conditionnel':'3F',
+  'passe-compose':'4F', 'plus-que-parfait':'4F', 'futur-anterieur':'4F', 'conditionnel-passe':'4F', 'subjonctif-passe':'4F',
+  'passe-simple':'旁支',
+};
+const ORDER = Object.keys(FLOOR);
+const FLOOR_NAME = { '1F':'地基：只有這三樣要背', '2F':'從現在式長出來', '3F':'從原形長出來',
+                     '4F':'過去分詞＋助動詞', '旁支':'只要看得懂' };
+/* 4F：助動詞用哪一個簡單時態 → 哪一個複合時態 */
+const TWIN = [
+  ['present', 'passe-compose'], ['imparfait', 'plus-que-parfait'], ['futur-simple', 'futur-anterieur'],
+  ['conditionnel', 'conditionnel-passe'], ['subjonctif', 'subjonctif-passe'],
+];
+/* 中文名＋法文原名一起出現（Owen：「未完成過去式（他的法文原名 imparfait）要寫上去，其他也是一樣」） */
+function tName(t) {
+  return `<span class="zh">${esc(t.name.replace(/（.*）/, ''))}</span> <span class="frn">${esc(t.fr)}</span>`;
+}
+const FX = s => `<b class="fx">${esc(s)}</b>`;           // 法文的那一塊
+function regFut(v) { return /re$/.test(v.inf) ? v.inf.slice(0, -1) : v.inf; }
+function badge(id) {
+  return metaOf(id).learned ? '<span class="ok">✅ 學過</span>' : '<span class="no">⬜ 還沒上</span>';
+}
+
+/* 「怎麼來的」——每一步都用這個動詞真的形式寫出來 */
+function derive(v, id, T) {
+  const t = T[id], ix = v.imperso ? 2 : 0, f = i => display(t, i, t.forms[i]);
+  switch (id) {
+    case 'present':
+      return v.imperso ? `只有一格：${FX(f(2))}`
+        : `要背的六格。其中 ${FX('nous ' + v.pres[3])} 和 ${FX('ils ' + v.pres[5])} 是 2F 的兩個入口`;
+    case 'imparfait':
+      if (v.imperso) return `→ ${FX(f(2))}`;
+      return v.imp
+        ? `⚠️ 例外：詞幹是 ${FX(v.imp + '-')}（不是從 nous ${esc(v.pres[3])} 來）＋ -ais → ${FX(f(0))}`
+        : `nous ${FX(v.pres[3])} 去掉 -ons → ${FX(stemNous(v) + '-')} ＋ -ais → ${FX(f(0))}`;
+    case 'subjonctif':
+      if (v.imperso) return `→ ${FX(f(2))}`;
+      return v.subj
+        ? `⚠️ 不規則，要背：${FX(f(0))}、${FX(f(3))}`
+        : `ils ${FX(v.pres[5])} 去掉 -ent → ${FX(stemIls(v) + '-')} ＋ -e → ${FX(f(0))}；nous／vous 直接借未完成過去式：${FX(f(3))}`;
+    case 'futur-proche':  return `aller 的現在式 ＋ 原形 → ${FX(f(ix))}`;
+    case 'passe-recent':  return `venir 的現在式 ＋ de ＋ 原形 → ${FX(f(ix))}`;
+    case 'futur-simple':
+      return (v.fut === regFut(v)
+        ? `原形 ${FX(v.inf)}${/re$/.test(v.inf) ? ' 去掉 e' : ''} 就是詞幹`
+        : `⚠️ 詞幹不規則，要背：${FX(v.fut + '-')}`) + ` ＋ -ai → ${FX(f(ix))}`;
+    case 'conditionnel':
+      return `跟簡單未來式同一個詞幹 ${FX(v.fut + '-')} ＋ 未完成過去式的字尾 -ais → ${FX(f(ix))}`;
+    case 'passe-simple':  return `書面敘事才有，認得出來就好 → ${FX(f(2))}`;
+  }
+  const tw = TWIN.find(x => x[1] === id);
+  if (tw) {
+    const base = T[tw[0]];
+    return `助動詞 ${esc(v.aux)} 的${esc(base.name.replace(/（.*）/, ''))} ＋ 過去分詞 ${FX(v.pp)} → ${FX(f(ix))}` +
+      (v.aux === 'être' ? '（要跟主詞配合）' : '');
+  }
+  return esc(t.how);
+}
+
+function node(v, T, id) {
+  const t = T[id]; if (!t) return '';
+  return `<button class="node${metaOf(id).learned ? '' : ' todo'}" onclick="goTense('${id}')">
+    <div class="n-name">${tName(t)} ${badge(id)}</div>
+    <div class="n-eq">${derive(v, id, T)}</div></button>`;
+}
+function staticNode(zh, fr, body) {
+  return `<div class="node static"><div class="n-name"><span class="zh">${esc(zh)}</span> <span class="frn">${esc(fr)}</span></div>
+    <div class="n-eq">${body}</div></div>`;
+}
+function floorHtml(n, inner, foot) {
+  return `<div class="floor"><div class="fl-h"><span class="fl-n">${n}</span>${esc(FLOOR_NAME[n])}</div>
+    <div class="nodes">${inner}</div>${foot ? `<div class="fl-foot">${foot}</div>` : ''}</div>`;
+}
+
+function renderMap(v, all) {
+  const T = {}; all.forEach(t => T[t.id] = t);
+  const ppr = participePresent(v), imp = imperatif(v);
+  const pres = T.present;
+  /* 1F：現在式六格（nous／ils 標出來）＋過去分詞＋未來詞幹 */
+  const presForms = pres.forms.map((f, i) => {
+    const s = esc(display(pres, i, f));
+    return `<span${(i === 3 || i === 5) && !v.imperso ? ' class="hl"' : ''}>${s}</span>`;
+  }).join('');
+  const f1 =
+    `<button class="node" onclick="goTense('present')">
+       <div class="n-name">${tName(pres)} ${badge('present')}</div>
+       <div class="n-eq big pgrid">${presForms}</div></button>` +
+    staticNode('過去分詞', 'participe passé',
+      `${FX(v.pp)}　助動詞 ${FX(v.aux)}${v.aux === 'être' ? '（要配合主詞）' : ''}<br><span class="to">→ 給 4F 用</span>`) +
+    staticNode('未來詞幹', 'radical du futur',
+      (v.fut === regFut(v) ? `${FX(v.fut + '-')}（就是原形${/re$/.test(v.inf) ? '去掉 e' : ''}）` : `${FX(v.fut + '-')} ⚠️ 不規則，要背`) +
+      `<br><span class="to">→ 給 3F 用</span>`);
+  /* 2F */
+  const f2 = node(v, T, 'imparfait') + node(v, T, 'subjonctif') +
+    staticNode('現在分詞', 'participe présent',
+      ppr ? (v.ppr ? `⚠️ 不規則：${FX(ppr)}` : `nous 詞幹 ${FX(stemNous(v) + '-')} ＋ -ant → ${FX(ppr)}`) +
+            `<br>副動詞 gérondif：${FX('en ' + ppr)}` : '（這個動詞沒有現在分詞）') +
+    staticNode('命令式', 'impératif',
+      imp.length ? `現在式拿掉主詞 → ${FX(imp.join(' !　') + ' !')}` : '（這個動詞沒有命令式）') +
+    node(v, T, 'futur-proche') + node(v, T, 'passe-recent');
+  /* 3F */
+  const f3 = node(v, T, 'futur-simple') + node(v, T, 'conditionnel');
+  /* 4F：雙胞胎表 */
+  const ix = v.imperso ? 2 : 0;
+  const f4 = `<table class="twin">
+      <tr><th>助動詞 ${esc(v.aux)} 用哪一個</th><th>→ 長出哪一個複合時態</th><th>${esc(v.inf)}</th></tr>
+      ${TWIN.filter(([a, b]) => T[a] && T[b]).map(([a, b]) => `
+        <tr onclick="goTense('${b}')">
+          <td>${tName(T[a])}<div class="aux">${esc(withSubj(ix, auxForms(v, a === 'futur-simple' ? 'futur' : a === 'subjonctif' ? 'subj' : a)[ix]))}</div></td>
+          <td>${tName(T[b])} ${badge(b)}</td>
+          <td class="ex">${esc(display(T[b], ix, T[b].forms[ix]))}</td></tr>`).join('')}
+    </table>`;
+  document.getElementById('climb').innerHTML =
+    floorHtml('1F', f1) +
+    floorHtml('2F', f2) +
+    floorHtml('3F', f3) +
+    `<div class="floor"><div class="fl-h"><span class="fl-n">4F</span>${esc(FLOOR_NAME['4F'])}：每個簡單時態都有一個「複合雙胞胎」</div>${f4}
+      <div class="fl-foot">左邊那一欄你在 2F、3F 都學過了——所以右邊標「還沒上」的，<b>零件你其實都有了，沒有新規則要背</b>。</div></div>` +
+    floorHtml('旁支', node(v, T, 'passe-simple'));
+  document.getElementById('mapSum').textContent = '';
+}
+
+/* 點爬升圖上的時態 → 加進「要看的」並捲到那張卡 */
+function goTense(id) {
+  if (!picked) picked = new Set(allTenseIds().filter(SCOPES.learned));
+  picked.add(id); folded.delete(id); savePrefs(); render();
+  const el = document.getElementById('tc-' + id);
+  if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1200); }
 }
 
 const TIER_TAG = {
   core:'🔴 非會不可', task:'🟠 特定任務要', half:'🟡 只要幾個形',
-  chunks:'🧩 背固定塊', recognize:'👀 讀得懂就好', normal:'',
+  chunks:'🧩 背固定塊', recognize:'👀 看得懂就好', normal:'',
 };
-const HOT = t => t === 'core' || t === 'task' || t === 'half';
 
+/* 📌 要看哪些時態：照樓層分組，讓勾選本身也是那張圖 */
 function renderChips(all) {
-  document.getElementById('tenseChips').innerHTML = all.map(t => {
-    const m = metaOf(t.id), on = picked.has(t.id);
-    return `<button class="chip${on ? ' on' : ''}${on && HOT(m.tier) ? ' produce' : ''}"
-      onclick="toggleTense('${t.id}')">${esc(t.name)}${m.learned ? '' : ' <span class="tag">⬜ 還沒上</span>'}${
-      m.tier !== 'normal' ? ` <span class="tag">${TIER_TAG[m.tier]}</span>` : ''}${
-      (m.pct || m.rec) ? ` <span class="tag">🗣${m.pct || '—'} 👂${m.rec || '—'}</span>` : ''}</button>`;
+  const T = {}; all.forEach(t => T[t.id] = t);
+  document.getElementById('tenseChips').innerHTML = ['1F', '2F', '3F', '4F', '旁支'].map(g => {
+    const ids = ORDER.filter(id => FLOOR[id] === g && T[id]);
+    return `<div class="chip-g"><span class="cg-n">${g}</span><div class="cg-list">${ids.map(id =>
+      `<button class="chip${picked.has(id) ? ' on' : ''}" onclick="toggleTense('${id}')">${tName(T[id])}${
+        metaOf(id).learned ? '' : ' <span class="tag">⬜</span>'}</button>`).join('')}</div></div>`;
   }).join('');
+  document.getElementById('scopeCount').textContent = picked.size;
 }
 
-/* ⭐ 5 個複合時態是同一招：助動詞換一檔 ＋ 過去分詞。
-   Owen 已經會 passé composé，也已經會 imparfait／futur／conditionnel／subjonctif 的助動詞，
-   所以那 4 個「還沒上到」的其實零件都有了——這張卡就是要讓他看見這件事。 */
-const CPD = [
-  { id:'passe-compose',      aux:'現在式' },
-  { id:'plus-que-parfait',   aux:'imparfait' },
-  { id:'futur-anterieur',    aux:'futur simple' },
-  { id:'conditionnel-passe', aux:'conditionnel' },
-  { id:'subjonctif-passe',   aux:'subjonctif' },
-];
-function renderCompound(v, all) {
-  const byId = {}; all.forEach(t => byId[t.id] = t);
-  const rows = CPD.filter(c => byId[c.id]);
-  if (rows.length < 2) { document.getElementById('compound').innerHTML = ''; return; }
-  document.getElementById('compound').innerHTML = `
-    <div class="cpd">
-      <h3>⭐ 這 5 個時態是同一招</h3>
-      <div class="lead">全部都是 <b>助動詞 ${esc(v.aux)} 換一個時態 ＋ 過去分詞 ${esc(v.pp)}</b>。
-        你已經會 passé composé，也已經會下面每一個助動詞的變位——所以標「還沒上到」的那幾個，
-        <b style="color:#9ad060">零件你其實都有了，沒有新規則要背</b>。</div>
-      <table>
-        <tr><th>時態</th><th>助動詞用哪一檔</th><th>je 的樣子</th><th></th></tr>
-        ${rows.map(c => {
-          const t = byId[c.id], m = metaOf(c.id);
-          return `<tr><td>${esc(t.name)}<br><span style="font-size:.82em;color:#445060">${esc(t.fr)}</span></td>
-            <td>${esc(c.aux)}</td>
-            <td class="ex">${esc(display(t, 0, t.forms[0]))}</td>
-            <td class="${m.learned ? 'got' : 'new'}">${m.learned ? '✅ 學過' : '⬜ 還沒上'}</td></tr>`;
-        }).join('')}
-      </table>
-    </div>`;
+/* 每張卡最下面、預設收起來：考試裡用多少（⛔ 不再塞進卡片標題） */
+function usageHtml(v, t) {
+  const m = metaOf(t.id), h = heatOf(v.inf, t.id), rows = [];
+  rows.push(`<p><b>自己講／寫</b>：${m.pct ? '佔所有動詞形的 ' + esc(m.pct) : '—'}${m.only ? '。' + esc(m.only) : ''}</p>`);
+  rows.push(`<p><b>聽到／讀到</b>：${m.rec ? '佔 ' + esc(m.rec) : '—'}${m.recNote ? '。' + esc(m.recNote) : ''}</p>`);
+  rows.push(`<p><b>${esc(v.inf)}</b> 在考試語料裡用這個時態：${h.n ? h.n + ' 次' : '沒出現過（不代表不重要，只是那批題目沒談到）'}</p>`);
+  rows.push(`<p class="cx"><a href="map.html#cx-${t.cx}">📍 codex 座標 ${t.cx}</a></p>`);
+  return `<details class="usage"><summary>考試裡用多少</summary>${rows.join('')}</details>`;
 }
 
 function renderTenses(v) {
   const all = conjugate(v);
   if (!picked) picked = new Set(all.map(t => t.id).filter(SCOPES.learned));
   renderChips(all);
-  renderCompound(v, all);
-  const list = all.filter(t => picked.has(t.id));
+  renderMap(v, all);
+  const T = {}; all.forEach(t => T[t.id] = t);
+  const list = ORDER.filter(id => T[id] && picked.has(id)).map(id => T[id]);
+  window._shown = list;
   document.getElementById('tenses').innerHTML = list.map((t, ti) => {
     const m = metaOf(t.id), isFold = folded.has(t.id);
-    const h = heatOf(v.inf, t.id);
     return `
-    <div class="t-card heat-${h.lv}${isFold ? ' fold' : ''}">
+    <div class="t-card${isFold ? ' fold' : ''}" id="tc-${t.id}">
       <div class="t-head" onclick="toggleFold('${t.id}')">
-        <span class="t-name">${esc(t.name)}</span>
-        <span class="t-fr">${esc(t.fr)}</span>
-        <span class="t-lvl ${t.lvl.toLowerCase()}">${t.lvl}</span>
-        ${m.tier !== 'normal' ? `<span class="t-lvl">${TIER_TAG[m.tier]}</span>` : ''}
-        ${m.learned ? '' : '<span class="t-lvl">⬜ 還沒上</span>'}
-        <button class="tts-btn" onclick="event.stopPropagation();ttsTense(${ti})" title="唸一遍六個人稱">🔊</button>
-        <a class="t-cx" href="map.html#cx-${t.cx}" onclick="event.stopPropagation()">📍 ${t.cx}</a>
-        <span class="heat-tag ${h.lv}">${h.n ? `${esc(v.inf)} 用過 ${h.n} 次` : `${esc(v.inf)} 沒用過`}</span>
-        <span class="fold-mark">${isFold ? '▸ 展開' : '▾ 收起'}</span>
+        <span class="t-floor">${FLOOR[t.id]}</span>
+        <span class="t-name">${tName(t)}</span>
+        <span class="fold-mark">${isFold ? '▸' : '▾'}</span>
       </div>
-      ${(m.pct || m.rec || m.only) ? `<div class="t-use">
-        <div class="use-row"><span class="use-k">🗣 自己要講／要寫</span>
-          <b>${m.pct ? esc(m.pct) : '—'}</b>${m.only ? `<span class="use-n">${esc(m.only)}</span>` : ''}</div>
-        <div class="use-row"><span class="use-k">👂 聽到／讀到要懂</span>
-          <b>${m.rec ? esc(m.rec) : '—'}</b>${m.recNote ? `<span class="use-n">${esc(m.recNote)}</span>` : ''}</div>
-        <div class="use-row"><span class="use-k">🎯 ${esc(v.inf)} 在這一格</span>
-          <b>${h.n ? h.n + ' 次' : '0 次'}</b><span class="use-n">${HEAT_LABEL[h.lv]}${
-          h.lv === 'zero' ? '　⚠️ 0 次＝這個考試題型裡沒出現，⛔ 不是「這個字不重要」' : ''}</span></div>
-      </div>` : ''}
-      <div class="t-how">${esc(t.how)}</div>
-      <div class="forms">${t.forms.map((f, i) =>
-        `<div class="f">${esc(display(t, i, f))}</div>`).join('')}</div>
+      <div class="t-body">
+        <div class="t-tags">${badge(t.id)}${m.tier !== 'normal' ? `<span class="tier">${TIER_TAG[m.tier]}</span>` : ''}
+          <button class="tts-btn" onclick="ttsTense(${ti})">🔊 唸一遍</button></div>
+        <div class="t-how"><span class="lbl">怎麼來的</span>${derive(v, t.id, T)}</div>
+        <div class="forms">${t.forms.map((f, i) => `<div class="f">${esc(display(t, i, f))}</div>`).join('')}</div>
+        ${usageHtml(v, t)}
+      </div>
     </div>`;
-  }).join('') || '<div class="card-box" style="color:#445060">一個時態都沒選——點上面的標籤加回來。</div>';
-  window._shown = list;
+  }).join('') || '<div class="card-box" style="color:#5a6878">一個時態都沒選——到最上面「📌 要看哪些時態」點幾個加回來。</div>';
 }
 
 /* verb_forms 的時態 id → verb_sprint 的 mode id（⚠️ 兩邊命名本來就不同）
@@ -501,19 +686,12 @@ function renderDrill(v) {
   document.getElementById('drillBtns').innerHTML = h;
 }
 
-function renderNonFinite(v) {
-  document.getElementById('nonfinite').innerHTML = nonFinite(v).map(n => `
-    <div class="k">${esc(n.name)}<br><span style="font-size:0.62rem">${esc(n.fr)}</span></div>
-    <div class="v">${esc(n.form)}</div>`).join('');
-}
-
 function render() {
   const v = VERBS_FULL.find(x => x.inf === current);
   renderPicker();
-  renderStems(v);
+  document.getElementById('verbSum').innerHTML = `現在：<b>${esc(v.inf)}</b>（${esc(v.zh)}）`;
   renderTenses(v);
   renderDrill(v);
-  renderNonFinite(v);
 }
 
 document.querySelectorAll('.lvl-btn').forEach(b => b.onclick = () => {
@@ -521,6 +699,16 @@ document.querySelectorAll('.lvl-btn').forEach(b => b.onclick = () => {
   b.classList.add('on');
   setScope(b.dataset.scope);
 });
+
+/* 收合狀態記在這台裝置（⚠️ 不用 clb7_ 開頭，不上雲） */
+const OPEN_LS = 'vf_open';
+(function () {
+  let st = {}; try { st = JSON.parse(localStorage.getItem(OPEN_LS)) || {}; } catch (e) {}
+  document.querySelectorAll('details.panel').forEach(d => {
+    if (d.id in st) d.open = !!st[d.id];
+    d.addEventListener('toggle', () => { st[d.id] = d.open ? 1 : 0; try { localStorage.setItem(OPEN_LS, JSON.stringify(st)); } catch (e) {} });
+  });
+})();
 
 /* ── 發音（沿用全站統一的語音篩選優先序）── */
 let frVoice = null;

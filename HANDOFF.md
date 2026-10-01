@@ -4865,6 +4865,24 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
     ⭐ 順帶進頁面的實用細節：`conditionnel passé` 高度集中在 `aurais pu／aurait dû`（固定塊不是時態）；`futur antérieur` 15 個 token 裡 `aura fallu` 佔 9 個；`subjonctif passé` 對話裡 5 個但**選項裡 15 個**（答題才遇到）；`passé simple` 閱讀題幹 **0 個**、真實書面散文也只 0.71%，跟直覺相反。
 - ⏸ **沒做／下一步**：複合時態（plus-que-parfait 等）還沒有 verb_sprint 模式；Owen 說的「**自訂勾選哪些單字的哪些變化**」目前只做到「一個動詞 × 多個時態」，**還沒做「多個動詞一起考」**——要做的話得讓 verb_sprint 接 `?verbs=` 白名單。
 
+#### 三之二十二、10-01：變位總覽改版——🧗 爬升圖（Owen：「目前這個呈現還跟我想要的差很多」）
+
+- **Owen 看完 09-23 版的五點回饋**：①「要看哪個時態」應該擺最上面、可以收合展開 ② 太密了，看得好累 ③ 中文名旁要寫法文原名（未完成過去式 imparfait），其他也一樣 ④ 底下註解超亂看不懂 ⑤ ⭐⭐「法文動詞的變化是有規則，且用從不同的時態去做開展的，**這要有一個很完整的脈絡，我需要脈絡讓我攀爬**」。
+- ✅ **新版面（`verb_forms.html`）由上到下**：
+  ① **📌 要看哪些時態**（`<details>` 可收合，**chips 照樓層分組**，每個都是「中文 法文」）→ ② **選動詞**（可收合）→ ③ ⭐ **🧗 爬升圖**（可收合）→ ④ 時態卡 → ⑤ 直接考 → ⑥「這頁的資料從哪來」（預設收起，三句白話）。收合狀態記在 `vf_open`（⛔ 不是 `clb7_`）。
+- ⭐⭐ **爬升圖＝依「零件從哪裡來」分樓層**，每一步都用**這個動詞的真實形式**寫出來（`derive()`）：
+  **1F 地基：只有這三樣要背**（現在式六格、nous／ils 標金色＝2F 的兩個入口｜過去分詞＋助動詞｜未來詞幹，規則的寫「就是原形」、不規則標⚠️）
+  **2F 從現在式長出來**（nous 去 -ons → imparfait｜ils 去 -ent → subjonctif，nous／vous 借 imparfait｜nous 詞幹＋-ant → 現在分詞／gérondif｜拿掉主詞 → 命令式｜借 aller／venir → 近未來、剛剛過去）
+  **3F 從原形長出來**（未來詞幹 → futur simple｜同詞幹＋imparfait 字尾 → conditionnel）
+  **4F 過去分詞＋助動詞：每個簡單時態都有一個「複合雙胞胎」**（表格：助動詞用 présent／imparfait／futur／conditionnel／subjonctif → passé composé／plus-que-parfait／futur antérieur／conditionnel passé／subjonctif passé，附 j'ai／j'avais… 與完整形）
+  **旁支**：passé simple 只要看得懂。點任一時態 → 自動加進「要看的」並捲到那張卡。
+  ⛔ 樓層用 **1F／2F**，不用 x-y-z——codex.js 的 5-3-1 是永久座標，不要撞。
+- ✅ **時態卡變乾淨**：標題只剩樓層＋中文＋法文；一個標籤列（✅學過／⬜還沒上＋一個程度標籤＋🔊）；「怎麼來的」一行；六格（寬螢幕三欄、卡片改**單欄**）；🗣👂百分比、這個動詞的次數、codex 座標全收進預設關閉的「考試裡用多少」。⛔ 熱度色條、標題上的一排標籤都拿掉了。
+- 🗑 **拿掉（併進爬升圖）**：四個詞幹卡（`renderStems`）、複合時態公式卡（`renderCompound`）、非限定形式卡（`renderNonFinite`）；範圍鈕拿掉「這個動詞真的會用的」（SCOPES.used 還在，沒有按鈕）。
+- 🐛 **順手修 `verbs_full.js` 的資料錯誤**：現在分詞直接套 nous 詞幹，**正式站一直印出 être → sommesant、avoir → avant、savoir → savant**。加 `ppr` 欄位：étant／ayant／sachant（`participePresent` 先看 `ppr`）。
+- ✅ 試跑（隔離複本、記憶體 localStorage，ROOM 沒動）：iPad 768／手機 375 都看過，手機無橫向捲動；25 個動詞逐一切換，爬升圖與卡片**沒有任何 undefined／null**；être 的例外（ét-、étant、sois、ser-）都正確標⚠️；點 4F 的 plus-que-parfait → 加入並捲到卡片；收合狀態有記住；無 console 錯誤。
+- ⏸ **等 Owen 看過再調**：這是第一版的「脈絡」——他說的是「需要脈絡讓我攀爬」，⭐ 要問他：樓層這個比喻對不對、要不要「我已經爬到哪」的進度感（例如學過的樓層亮起來）、是不是要再少一點字。
+
 #### 三之二十一、10-01：變位總覽「多個動詞一起考」（09-23 留下的待辦）
 
 - **Owen**：「上次說要做的那個會考的（看得懂聽得懂跟需要會寫）時態變化的綜合表格網頁，後來處理得如何？」→ 回報：`verb_forms.html` 09-23 就上線（兩軸、五層分級、篩選、出口）；剩 ①多個動詞一起考 ②複合時態沒衝刺模式。他說「繼續處理這個」→ 做 ①。

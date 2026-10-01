@@ -38,12 +38,12 @@ const END = {
  */
 const VERBS_FULL = [
   { inf:'être', zh:'是', grp:'核心', lvl:'A1', aux:'avoir', pp:'été', fut:'ser',
-    pres:['suis','es','est','sommes','êtes','sont'], imp:'ét', ps:['f','u'],
+    pres:['suis','es','est','sommes','êtes','sont'], imp:'ét', ppr:'étant', ps:['f','u'],
     subj:['sois','sois','soit','soyons','soyez','soient'], imper:['sois','soyons','soyez'],
     note:'唯一 imparfait 詞幹不從 nous 來的動詞（ét-，不是 somm-）' },
 
   { inf:'avoir', zh:'有', grp:'核心', lvl:'A1', aux:'avoir', pp:'eu', fut:'aur',
-    pres:['ai','as','a','avons','avez','ont'], ps:['e','u'],
+    pres:['ai','as','a','avons','avez','ont'], ppr:'ayant', ps:['e','u'],
     subj:['aie','aies','ait','ayons','ayez','aient'], imper:['aie','ayons','ayez'],
     note:'pp 是 eu，唸起來只有一個 [y] 音，e 不發音' },
 
@@ -81,7 +81,7 @@ const VERBS_FULL = [
     note:'nous prenons 只有一個 n、ils prennent 兩個 n——subjonctif 也跟著分成兩組' },
 
   { inf:'savoir', zh:'知道／會（技能）', grp:'高頻不規則', lvl:'A2', aux:'avoir', pp:'su', fut:'saur',
-    pres:['sais','sais','sait','savons','savez','savent'], ps:['s','u'],
+    pres:['sais','sais','sait','savons','savez','savent'], ppr:'sachant', ps:['s','u'],
     subj:['sache','saches','sache','sachions','sachiez','sachent'], imper:['sache','sachons','sachez'],
     note:'savoir ＝ 學會的技能／知道事實；connaître ＝ 認識人事物（📍 codex 有對比）' },
 
@@ -204,6 +204,9 @@ function passeSimple(v) {
 
 function participePresent(v) {
   if (v.imperso) return v.ppr;                  // null ＝ 這個動詞沒有現在分詞（falloir）
+  /* ⚠️ 2026-10-01 修：只有三個不規則——être → étant、avoir → ayant、savoir → sachant
+     （之前直接套 nous 詞幹，頁面上印出 sommesant／avant／savant）。gram_rules 的 gérondif 也是這三個 */
+  if (v.ppr) return v.ppr;
   return stemNous(v) + 'ant';
 }
 
