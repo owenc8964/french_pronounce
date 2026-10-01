@@ -4865,6 +4865,14 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
     ⭐ 順帶進頁面的實用細節：`conditionnel passé` 高度集中在 `aurais pu／aurait dû`（固定塊不是時態）；`futur antérieur` 15 個 token 裡 `aura fallu` 佔 9 個；`subjonctif passé` 對話裡 5 個但**選項裡 15 個**（答題才遇到）；`passé simple` 閱讀題幹 **0 個**、真實書面散文也只 0.71%，跟直覺相反。
 - ⏸ **沒做／下一步**：複合時態（plus-que-parfait 等）還沒有 verb_sprint 模式；Owen 說的「**自訂勾選哪些單字的哪些變化**」目前只做到「一個動詞 × 多個時態」，**還沒做「多個動詞一起考」**——要做的話得讓 verb_sprint 接 `?verbs=` 白名單。
 
+#### 三之二十四、10-01：一張圖可以換動詞（Owen：「其他的動詞不一起做嗎？只做 parler 夠嗎」）
+
+- ✅ `verb_forms.html` 🗺 一張圖上方加動詞切換：「照規則」（parler／finir／attendre）＋「常用、會出軌」（其餘 20 個，⛔ 無人稱不列）。選擇存 `vf_ov_verb`。
+- ⭐ 同一條路線換成別的動詞重畫，**不照規則的那一步標 ⚠️ 並寫原因**（詞幹不是原形是 ir-／現在式本身要背／過去分詞要背／詞幹是 ét-／不照規則要背）；用 être 的不算出軌，標中性 ℹ️。頂端一句總結「有 N 個地方不照規則」（未來式與條件式共用詞幹只算一次）。
+- ⭐⭐ **最有教學價值的一句**（自動判斷）：如果只有「來源」（現在式／過去分詞）要背、後面的時態全部照規則 → 顯示「💡 只要背好它的現在式和過去分詞，其他時態全部照規則長出來」。prendre、boire、écrire、dire、lire、mettre、connaître、partir（只有現在式）都是這種；être／aller／avoir／faire／pouvoir／vouloir／savoir 才會在後面出軌。
+- ✅ 每張規則卡最下面多一行「👉 你選的 X：…」（選 parler 時不顯示，避免重複）。
+- ✅ 試跑：22 個動詞逐一切換，每格形式都人工核對過正確、無 undefined；iPad／手機無橫向捲動；無錯誤。新增函式：`setOvVerb/withPron/regSubj/ovItems/chosenRow`（純新增）。
+
 #### 三之二十三、10-01：變位總覽第二輪——改成「規則版」＋一張圖（⭐ 下一個 session 先讀）
 
 - **Owen 對爬升圖的回饋（最重要的設計判準，⛔ 不要再犯）**：
