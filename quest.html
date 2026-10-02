@@ -438,6 +438,35 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 .exits{display:flex; flex-wrap:wrap; justify-content:center; gap:7px; margin-top:13px}
 .exits button{background:none; border:1px solid var(--line); color:var(--faint); border-radius:9px; padding:6px 11px;
   font-size:.74rem; font-family:inherit; cursor:pointer}
+
+/* 🎯 un 還是 une？（10-02） */
+#gdr{position:fixed; inset:0; z-index:80; background:radial-gradient(ellipse at 50% 30%,#18213e,#0a1024 70%); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; user-select:none; -webkit-user-select:none}
+.gd-top{position:absolute; top:calc(14px + env(safe-area-inset-top)); left:16px; display:flex; align-items:center; gap:10px; color:var(--gold2)}
+.gd-pet{width:40px; height:40px; image-rendering:pixelated}
+.gd-pet.hop{animation:gdHop .5s ease-out}
+@keyframes gdHop{0%,100%{transform:translateY(0)} 40%{transform:translateY(-14px)}}
+.gd-card{width:100%; max-width:420px; min-height:240px; border-radius:20px; background:linear-gradient(180deg,var(--panel2),var(--panel)); border:2px solid var(--line2);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; padding:22px 18px; text-align:center; transition:border-color .15s, background .15s}
+.gd-card.good{border-color:#5fbf7f; background:linear-gradient(180deg,#16301f,#0f2016)}
+.gd-card.bad{border-color:#d07050; background:linear-gradient(180deg,#331a14,#22110c)}
+.gd-pic{font-size:3.6rem; line-height:1.2; min-height:0}
+.gd-word{font-size:2rem; margin-top:6px; color:#f3ecd8}
+.gd-word.fr{font-family:Georgia,serif; font-style:italic}
+.gd-kind{font-size:.75rem; color:var(--faint); margin-top:4px; min-height:1em}
+.gd-res{font-family:Georgia,serif; font-size:1.5rem; color:var(--gold2); margin-top:10px; min-height:1.4em}
+.gd-hint{font-size:.85rem; color:#e9b49a; margin-top:6px; line-height:1.6; max-width:340px}
+.gd-card.good .gd-hint{color:#9fd8b0}
+.gd-btns{display:flex; gap:14px; margin-top:20px; width:100%; max-width:420px}
+.gd-b{flex:1; padding:18px 0; border-radius:16px; font-family:Georgia,serif; font-size:1.6rem; cursor:pointer; border:2px solid var(--line2); color:#f3ecd8; background:var(--panel)}
+.gd-b.m{border-color:#4a7fd0} .gd-b.f{border-color:#c95f8a}
+.gd-b:active{transform:scale(.97)}
+.gd-sub{margin-top:14px; min-height:44px}
+.gd-skip,.gd-next{padding:10px 18px; border-radius:20px; border:1px solid var(--line2); background:transparent; color:var(--dim); font:inherit; cursor:pointer}
+.gd-next{color:var(--gold2); border-color:var(--gold)}
+.gd-end{position:absolute; inset:0; background:rgba(4,6,12,.7); align-items:center; justify-content:center; padding:18px}
+.gd-wl{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px}
+.gd-w{padding:6px 10px; border-radius:10px; border:1px solid var(--line2); background:var(--panel); color:#f3ecd8; font-family:Georgia,serif; cursor:pointer; display:flex; flex-direction:column; align-items:flex-start}
+.gd-w small{font-family:inherit; color:var(--faint); font-size:.7rem}
 </style>
 </head>
 <body>
@@ -2459,7 +2488,10 @@ function renderPetTab(){
     petGamesHtml();
 }
 function petGamesHtml(){
-  return '<div class="sec"><h2>小遊戲</h2><div class="cmds">'+
+  return '<div class="sec"><h2>練習小遊戲</h2><div class="cmds">'+
+    '<button class="cmd" onclick="genderOpen()"><span>🎯 un 還是 une？<small>看到東西，猜陰陽性</small></span></button></div>'+
+    '<div class="fb" style="color:var(--faint);font-size:.72rem">練習型：字都是你筆記裡的。隔天以後又答對的字，會算進牠的成長。</div></div>'+
+    '<div class="sec"><h2>小遊戲</h2><div class="cmds">'+
     '<button class="cmd" onclick="miniOpen(\'fish\')"><span>🎣 釣魚<small>慢慢等，收集圖鑑</small></span></button>'+
     '<button class="cmd" onclick="miniOpen(\'brick\')"><span>🧱 打磚塊<small>手指滑動，牠當擋板</small></span></button>'+
     '<button class="cmd" onclick="miniOpen(\'merge\')"><span>✨ 合成<small>滑動，把一樣的合起來</small></span></button>'+
@@ -2490,10 +2522,155 @@ function drawFish(cx,x,y,s,f,flip){
     cx.fillStyle='#fff'; cx.beginPath(); cx.arc(-8,-2,3,0,6.28); cx.fill(); cx.fillStyle='#111'; cx.beginPath(); cx.arc(-8.5,-2,1.5,0,6.28); cx.fill(); }
   cx.restore();
 }
+/* ════════════════════════════════════════════════════════════════
+   🎯 un 還是 une？（2026-10-02 Owen：「看到這個詞或這個東西，猜出他是陰陽性，我覺得這很重要」
+      →「兩種輪流，放遊戲裡當小遊戲，圖跟沒圖穿插」）
+   依據 research/2026-09-25_法文名詞性別怎麼學.md 與 2026-09-26_性別錯誤在TCF評分裡的份量.md：
+   · ⭐ 學習者預設猜陽性 → 每題先 50/50 決定這題是陽還是陰，再從那一邊挑字（⛔ 不讓「一律按 un」過關）
+   · ⭐ 冠詞＋名詞整塊記 → 答完一律唸出、顯示「un chien」整塊
+   · ⭐ l' 開頭的字 A2 最難（l' 聽不出陰陽）→ 出現機率 ×1.5，答錯時提醒
+   · 字尾規則只當答錯後的一句提示，⛔ 只用預測率 ≥95% 的幾條（-tion／-té／-ée／-ment／-age…）；⛔ 不說「-e 結尾＝陰性」（研究明確否定）
+   · 性別錯誤＝偶發失誤：一句指出就繼續，⛔ 不扣任何東西；跳過合法、不算對也不算錯
+   · 字全部取自筆記（chunks.js 的「un／une／le／la＋名詞」與「l'… (m.)／(f.)」），⛔ 不自己編字
+   · 紀錄 clb7_gender_seen（每個字一個物件＋last，配合 sync 的 per-key 合併）；隔天以後又答對＝站穩，牠會長大
+   ════════════════════════════════════════════════════════════════ */
+var GG=null, GENDER_POOL=null;
+/* 只有具體、一看就懂的東西才配圖（圖跟沒圖穿插：有圖的字也只有一半機會出圖） */
+var GENDER_EMOJI={chien:'🐕',chat:'🐈',cheval:'🐎',lapin:'🐇',poisson:'🐟',poule:'🐔',vache:'🐄',canard:'🦆',renard:'🦊',loup:'🐺',lion:'🦁',rat:'🐀',
+  grenouille:'🐸',fourmi:'🐜',mouette:'🕊️',maison:'🏠',appartement:'🏢',école:'🏫',église:'⛪',hôpital:'🏥',banque:'🏦',gare:'🚉',musée:'🏛️',
+  pont:'🌉',mer:'🌊',plage:'🏖️',montagne:'⛰️',forêt:'🌲',fleur:'🌸',plante:'🪴',soleil:'☀️',étoile:'⭐',feu:'🔥',lac:'🏞️',
+  café:'☕',glace:'🍨',assiette:'🍽️',huile:'🫗',beurre:'🧈',confiture:'🍯',banane:'🍌',carotte:'🥕',oignon:'🧅',riz:'🍚',kiwi:'🥝',
+  poire:'🍐',avocat:'🥑',aubergine:'🍆',farine:'🌾',saumon:'🍣',bœuf:'🥩',gingembre:'🫚',quiche:'🥧',
+  guitare:'🎸',piano:'🎹',violon:'🎻',tambour:'🥁',batterie:'🥁',lit:'🛏️',chaise:'🪑',canapé:'🛋️',frigo:'🧊',ascenseur:'🛗',
+  escalier:'🪜',valise:'🧳',tente:'⛺',van:'🚐',parasol:'⛱️',igloo:'🧊',robot:'🤖',ordinateur:'💻',smartphone:'📱',clavier:'⌨️',
+  souris:'🖱️',tablette:'📱',selfie:'🤳',moteur:'⚙️',ambulance:'🚑',bras:'💪',pied:'🦶',main:'✋',nez:'👃',bouche:'👄',oreille:'👂',
+  tête:'🗣️',dos:'🔙',cerveau:'🧠',langue:'👅',sourire:'😊',visage:'🙂',rêve:'💭',réveil:'⏰',douche:'🚿',tennis:'🎾',rugby:'🏉',
+  yoga:'🧘',judo:'🥋',natation:'🏊',vélodrome:'🚴',chalet:'🛖',village:'🏘️',fontaine:'⛲',dentiste:'🦷',pharmacie:'💊',grippe:'🤧',
+  fièvre:'🤒',toux:'😷',sable:'🏝️',port:'⚓',dune:'🏜️',rideau:'🪟',coussin:'🛋️',couette:'🛌',nappe:'🧺',tablier:'👨‍🍳',
+  sommet:'🏔️',tonnerre:'⚡',canicule:'🥵',printemps:'🌱',paysage:'🏞️',jardin:'🌳',garage:'🚗',chauffeur:'🧑‍✈️',diplôme:'🎓',
+  téléviseur:'📺',salaire:'💶',contrat:'📝',parfum:'🌸',cheminée:'🏠',menthe:'🌿',fraîcheur:'🌬️',chaleur:'🌡️',courrier:'✉️'};
+function genderPool(){
+  if(GENDER_POOL) return GENDER_POOL;
+  var W='[a-zàâçéèêëîïôûùüÿœæ-]+', re1=new RegExp('^(un|une|le|la)\\s+('+W+')$'), re2=new RegExp("^l['’]("+W+")\\s*\\((m|f)\\.\\)$");
+  var map={}, bad={};
+  (typeof CHUNKS!=='undefined'?CHUNKS:[]).forEach(function(c){
+    var s=String(c.fr||'').trim(), m=s.match(re1), n, g, el=false;
+    if(m){ n=m[2]; g=/^(une|la)$/.test(m[1])?'f':'m'; }
+    else if((m=s.match(re2))){ n=m[1]; g=m[2]; el=true; }
+    if(!n) return;
+    /* ⚠️ 中文意思裡常常直接寫著答案：「運動（陽性）」「吉他（f.）」——括號後面一律砍掉 */
+    var zh=String(c.zh||'').split(/[（(]/)[0].replace(/陽性|陰性/g,'').trim();
+    if(map[n]&&map[n].g!==g) bad[n]=1;
+    if(!map[n]&&zh) map[n]={n:n, g:g, zh:zh, el:el};
+  });
+  GENDER_POOL=Object.keys(map).filter(function(k){ return !bad[k]; }).map(function(k){ return map[k]; });
+  return GENDER_POOL;
+}
+function genderSeen(){ return lsObj('clb7_gender_seen',{}); }
+/* 答錯後的一句提示：只用可靠的字尾規則；規則講不到的就老實說「只能整塊記」 */
+var GENDER_RULES=[[/(tion|sion|xion)$/,'f','-tion／-sion 幾乎都是陰性'],[/té$/,'f','-té 幾乎都是陰性'],[/ée$/,'f','-ée 幾乎都是陰性'],
+  [/ment$/,'m','-ment 幾乎都是陽性'],[/age$/,'m','-age 幾乎都是陽性'],[/ure$/,'f','-ure 多半是陰性'],[/ette$/,'f','-ette 多半是陰性'],[/euse$/,'f','-euse 多半是陰性']];
+function genderHint(it){
+  var whole=(it.g==='f'?'une ':'un ')+it.n;
+  for(var i=0;i<GENDER_RULES.length;i++){ var r=GENDER_RULES[i];
+    if(r[0].test(it.n)) return r[1]===it.g ? '💡 '+r[2] : '⚠️ 例外：'+r[2]+'，但它是'+(it.g==='f'?'陰性':'陽性')+'——要單獨記 '+whole; }
+  if(it.el) return "⚠️ l' 開頭的字聽不出陰陽，要連 un／une 一起記："+whole;
+  if(!/e$/.test(it.n) && it.g==='m') return '💡 不是 -e 結尾的名詞，多半是陽性';
+  return '這個字尾猜不到，只能整塊記：'+whole;
+}
+function genderPick(){
+  var pool=genderPool(), seen=genderSeen(), want=Math.random()<.5?'m':'f';
+  var side=pool.filter(function(it){ return it.g===want && GG.recent.indexOf(it.n)<0; });
+  if(!side.length) side=pool.filter(function(it){ return GG.recent.indexOf(it.n)<0; });
+  var w=side.map(function(it){ var r=seen[it.n]||{}, x=r.last?1:1.4;
+    if(r.lw) x=4; else if((r.w||0)>(r.c||0)) x=3; else if((r.c||0)>=3 && (r.fast||0)>=2) x=.35;
+    return x*(it.el?1.5:1); });
+  var tot=w.reduce(function(a,b){ return a+b; },0), t=Math.random()*tot;
+  for(var i=0;i<side.length;i++){ t-=w[i]; if(t<=0) return side[i]; }
+  return side[side.length-1];
+}
+function genderOpen(){
+  var mm=document.getElementById('minimenu'); if(mm) mm.remove();
+  if(GG||MINI||CHILL) return;
+  if(genderPool().length<10){ toast('筆記裡標了陰陽性的名詞還不夠多'); return; }
+  sfx('click_001');
+  var ov=document.createElement('div'); ov.id='gdr';
+  ov.innerHTML='<button class="chillx" onclick="genderClose()">回去</button>'+
+    '<div class="gd-top"><span class="gd-ok">✓ <b>0</b></span><img class="gd-pet" src="'+petSprite(S.pet)+'" alt=""></div>'+
+    '<div class="gd-card"><div class="gd-pic"></div><div class="gd-word"></div><div class="gd-kind"></div><div class="gd-res"></div><div class="gd-hint"></div></div>'+
+    '<div class="gd-btns"><button class="gd-b m" onclick="genderAns(\'m\')">un</button><button class="gd-b f" onclick="genderAns(\'f\')">une</button></div>'+
+    '<div class="gd-sub"><button class="gd-skip" onclick="genderSkip()">⏭ 跳過這個</button><button class="gd-next" onclick="genderNext()" style="display:none">下一個 →</button></div>'+
+    '<div class="gd-end" style="display:none"></div>';
+  document.body.appendChild(ov);
+  GG={ ov:ov, n:0, ok:0, fast:0, ms:[], wrong:[], gold:0, recent:[], cur:null, t0:0, lock:false, max:20 };
+  genderNext();
+}
+function genderNext(){
+  if(!GG) return;
+  if(GG.n>=GG.max) return genderEnd();
+  var it=genderPick(), ov=GG.ov; GG.cur=it; GG.n++; GG.lock=false;
+  GG.recent.push(it.n); if(GG.recent.length>8) GG.recent.shift();
+  /* 兩種輪流：單數題看中文、雙數題看法文；有圖的字一半機會出圖 */
+  var showZh=(GG.n%2===1), pic=GENDER_EMOJI[it.n] && Math.random()<.5 ? GENDER_EMOJI[it.n] : '';
+  ov.querySelector('.gd-pic').textContent=pic;
+  ov.querySelector('.gd-word').textContent=showZh?it.zh:it.n;
+  ov.querySelector('.gd-word').className='gd-word'+(showZh?' zh':' fr');
+  ov.querySelector('.gd-kind').textContent=showZh?'想一下法文怎麼說，再選':'';
+  ov.querySelector('.gd-res').textContent=''; ov.querySelector('.gd-hint').textContent='';
+  ov.querySelector('.gd-card').className='gd-card';
+  ov.querySelector('.gd-btns').style.visibility='visible';
+  ov.querySelector('.gd-skip').style.display=''; ov.querySelector('.gd-next').style.display='none';
+  GG.t0=performance.now();
+}
+function genderAns(g){
+  if(!GG||GG.lock||!GG.cur) return; GG.lock=true;
+  var it=GG.cur, ok=(g===it.g), ms=performance.now()-GG.t0, whole=(it.g==='f'?'une ':'un ')+it.n, ov=GG.ov;
+  /* 紀錄：每個字一個物件＋last；lw＝上一次答錯（下次更常出） */
+  var o=genderSeen(), r=o[it.n]||{c:0,w:0};
+  if(ok){ r.c=(r.c||0)+1; r.lw=0; if(ms<2000) r.fast=(r.fast||0)+1; } else { r.w=(r.w||0)+1; r.lw=1; }
+  r.last=Date.now(); o[it.n]=r; try{ localStorage.setItem('clb7_gender_seen',JSON.stringify(o)); }catch(e){}
+  if(typeof growRec==='function') growRec({ q:'un／une '+it.n, a:whole, srcId:'g:'+it.n }, ok);   /* 🌱 隔天以後又答對＝站穩 */
+  ov.querySelector('.gd-res').textContent=whole+(ok?'':'');
+  say(whole);
+  if(ok){
+    GG.ok++; GG.ms.push(ms); if(ms<2000) GG.fast++; GG.gold++;
+    ov.querySelector('.gd-card').className='gd-card good'; sfx('confirmation_001');
+    ov.querySelector('.gd-ok b').textContent=GG.ok;
+    ov.querySelector('.gd-pet').classList.remove('hop'); void ov.querySelector('.gd-pet').offsetWidth; ov.querySelector('.gd-pet').classList.add('hop');
+    setTimeout(function(){ if(GG&&GG.cur===it) genderNext(); }, 900);
+  } else {
+    GG.wrong.push(it);
+    ov.querySelector('.gd-card').className='gd-card bad'; sfx('error_004');
+    ov.querySelector('.gd-hint').textContent=genderHint(it);
+    ov.querySelector('.gd-btns').style.visibility='hidden';
+    ov.querySelector('.gd-skip').style.display='none'; ov.querySelector('.gd-next').style.display='';
+  }
+}
+function genderSkip(){ if(!GG||GG.lock) return; sfx('click_001'); GG.n--; GG.max--; genderNext(); }   /* 跳過＝這一題不算，⛔ 不記對錯 */
+function genderEnd(){
+  var ov=GG.ov, avg=GG.ms.length?(GG.ms.reduce(function(a,b){ return a+b; },0)/GG.ms.length/1000).toFixed(1):'—';
+  S.gold=(S.gold||0)+GG.gold; if(S.pet) S.pet.lastInteractAt=Date.now(); save(S);
+  var e=ov.querySelector('.gd-end'); e.style.display='flex';
+  e.innerHTML='<div class="mm"><h3>✓ '+GG.ok+'　·　平均 '+avg+' 秒</h3>'+
+    (GG.fast?'<div class="fb" style="text-align:center">其中 '+GG.fast+' 個不到 2 秒——已經是直覺了</div>':'')+
+    (GG.wrong.length?'<div class="fb" style="margin-top:10px">再看一眼這幾個：</div><div class="gd-wl">'+GG.wrong.map(function(it){
+      var w=(it.g==='f'?'une ':'un ')+it.n; return '<button class="gd-w" onclick="say(\''+w.replace(/'/g,"\\'")+'\')">🔊 '+esc(w)+'<small>'+esc(it.zh)+'</small></button>'; }).join('')+'</div>':'')+
+    '<div class="fb" style="text-align:center;margin-top:8px">撿到 '+GG.gold+' 枚金幣</div>'+
+    '<div class="cmds" style="margin-top:12px"><button class="cmd" onclick="genderClose();genderOpen()"><span>再一局</span></button><button class="cmd" onclick="genderClose()"><span>回去</span></button></div></div>';
+}
+function genderClose(){
+  if(!GG) return;
+  if(GG.n>0 && GG.ov.querySelector('.gd-end').style.display==='none'){ S.gold=(S.gold||0)+GG.gold; save(S); }   /* 中途回去：已經拿到的金幣照給 */
+  GG.ov.remove(); GG=null;
+  if(S.pet){ petFreeJoy(); }
+  if(S.mode==='pet') renderPetTab(); else renderHud();
+}
+
 function miniMenu(){
   if(MINI||CHILL||document.getElementById('minimenu')) return; sfx('click_001');
   var ov=document.createElement('div'); ov.id='minimenu';
   ov.innerHTML='<div class="mm"><h3>想陪牠玩哪個？</h3><div class="cmds">'+
+    '<button class="cmd" onclick="genderOpen()"><span>🎯 un 還是 une？<small>練習：猜陰陽性</small></span></button>'+
     '<button class="cmd" onclick="miniOpen(\'fish\')"><span>🎣 釣魚<small>慢慢等，收集圖鑑</small></span></button>'+
     '<button class="cmd" onclick="miniOpen(\'brick\')"><span>🧱 打磚塊<small>手指滑動，牠當擋板</small></span></button>'+
     '<button class="cmd" onclick="miniOpen(\'merge\')"><span>✨ 合成<small>滑動，把一樣的合起來</small></span></button>'+
