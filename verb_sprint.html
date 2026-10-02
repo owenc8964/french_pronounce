@@ -184,8 +184,8 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
       <span><i class="hm-new"></i>未測</span>
     </div>
   </div>
-  <button class="start-btn" id="startBtn">▶ 開始 60 秒衝刺</button>
-  <div class="typing-hint" style="margin-top:8px">⏱ 正在打字不會被打斷——時間到了也會讓你打完這一題。記錄的是<b>打完花幾秒</b>，越快越好。</div>
+  <button class="start-btn" id="startBtn">▶ 開始一輪（8 題）</button>
+  <div class="typing-hint" style="margin-top:8px">⏱ 不倒數、不限時。系統只在後台默默記你<b>想了多久才起手</b>——那才是「反射了沒」。</div>
   <div class="typing-hint">
     ⌨️ <b>不用打重音，也不用打代名詞</b>——比對前會自動去掉。<br>
     <span class="th-ex">étais → 打 <code>etais</code></span>
@@ -226,7 +226,7 @@ textarea.fb-input:focus { outline: none; border-color: #f0c060; }
   <div class="card">
     <div class="done-score">
       <div class="done-big" id="doneScore">—</div>
-      <div class="done-label">60 秒答對題數</div>
+      <div class="done-label">這一輪答對</div>
     </div>
     <div class="done-stats">
       <div class="ds-box"><div class="ds-val" id="doneAcc">—</div><div class="ds-label">正確率</div></div>
@@ -332,7 +332,10 @@ function primaryForm(s) { return s.split('|')[0]; }
 function cellsStoreKey()   { return 'clb7_sprint_cells'    + M().suffix; }
 function sessionsStoreKey(){ return 'clb7_sprint_sessions' + M().suffix; }
 const TOTAL_CELLS = VERBS.length * 6;
-const SPRINT_SEC = 60;
+/* ⭐ 2026-10-02 改（Owen 同意研究合成的建議）：60 秒倒數 → 一輪 8 題、不計時。
+   依據 research/2026-10-02_限時練習與反射化.md：倒數沒有證據能讓人變反射，時間壓力反而傷自動化、慢的人受害最大；
+   有效成分是「重複同一結構」。起手時間照樣記（反射判定不變），只是不再拿時間逼他。 */
+const ROUND_N = 8;
 const REFLEX_MS = 2000;   // 起手（第一個按鍵）2 秒內 = 反射
 const HIST_MAX = 5;       // 每格保留最近 5 次
 /* ⚠️ 2026-09-14 改（Owen：「時間到就會跳掉算錯…可以調整成計算我輸入的秒數 越快越好，
@@ -450,11 +453,9 @@ function renderHeatmap(elId) {
 
 // ── State ─────────────────────────────────────────────────────
 let phase = 'idle';        // idle | sprint | review | done
-let timeLeft = SPRINT_SEC;
-let timerInt = null;
+let qLeft = ROUND_N;        // 這一輪還剩幾題（衝刺輪）
 let questionTimer = null;  // 完全沒打字太久 → 輕提示（⛔ 不自動交卷）
 let durList = [];          // 答對題的「打完秒數」（ms）
-let overtime = false;      // 60 秒到了但正在打字 → 讓他打完這一題
 let paused = false;
 let cur = null;            // [vi, pi]
 let promptTs = 0;          // 出題時間
@@ -469,9 +470,9 @@ let reflexBefore = 0;
 // ── 流程 ─────────────────────────────────────────────────────
 function startSprint() {
   phase = 'sprint';
-  timeLeft = SPRINT_SEC; paused = false;
+  qLeft = ROUND_N; paused = false;
   sprintCorrect = 0; sprintAttempts = 0;
-  fkList = []; durList = []; overtime = false; wrongCells = []; lastCell = null;
+  fkList = []; durList = []; wrongCells = []; lastCell = null;
   { const ls = document.getElementById('lastSec'); if (ls) ls.textContent = ''; }
   missedVerbs = new Set();
   reflexBefore = reflexCount(getCells());
@@ -482,29 +483,13 @@ function startSprint() {
   document.getElementById('phaseTag').classList.remove('review');
   document.getElementById('scoreLive').textContent = '0';
   updateTimer();
-  timerInt = setInterval(() => {
-    if (paused) return;
-    timeLeft--;
-    updateTimer();
-    if (timeLeft <= 0) {
-      clearInterval(timerInt);
-      const inp = document.getElementById('answerInput');
-      if (firstKeyTs && inp && !inp.disabled) {           // ⭐ 正在打字 → 讓他打完這一題再結束
-        overtime = true;
-        document.getElementById('timerVal').textContent = '打完這題';
-        return;
-      }
-      endSprint();
-    }
-  }, 1000);
   nextQuestion();
 }
 
 function updateTimer() {
-  const m = Math.floor(timeLeft/60), s = timeLeft%60;
   const el = document.getElementById('timerVal');
-  el.textContent = `${m}:${String(s).padStart(2,'0')}`;
-  el.classList.toggle('urgent', timeLeft <= 10 && phase === 'sprint');
+  el.textContent = phase === 'sprint' ? `還有 ${qLeft} 題` : '—';
+  el.classList.remove('urgent');
 }
 
 function nextQuestion() {
@@ -586,7 +571,7 @@ function submit() {
   }
 
   if (phase === 'sprint') {
-    sprintAttempts++;
+    sprintAttempts++; qLeft--; updateTimer();
     if (ok) { sprintCorrect++; fkList.push(fk); }
     else if (!wrongCells.some(([a,b]) => a===vi && b===pi)) wrongCells.push([vi,pi]);
     document.getElementById('scoreLive').textContent = sprintCorrect;
@@ -602,11 +587,11 @@ function submit() {
   if (ok) {
     inp.classList.add('flash-ok'); inp.disabled = true;
     setTimeout(() => {
-      if (phase === 'sprint' && timeLeft <= 0) { if (overtime) { overtime = false; endSprint(); } return; }
+      if (phase === 'sprint' && qLeft <= 0) { endSprint(); return; }
       nextQuestion();
     }, 180);
   } else {
-    // 答錯：暫停計時，顯示正解，手動繼續（消化時間）
+    // 答錯：顯示正解，手動繼續（消化時間）
     paused = true;
     inp.classList.add('flash-bad'); inp.disabled = true;
     const fb = document.getElementById('feedbackBox');
@@ -624,7 +609,7 @@ function submit() {
 
 function resumeAfterWrong() {
   paused = false;
-  if (phase === 'sprint' && timeLeft <= 0) { overtime = false; endSprint(); return; }
+  if (phase === 'sprint' && qLeft <= 0) { endSprint(); return; }
   nextQuestion();
 }
 
@@ -685,7 +670,7 @@ function showDone() {
 
   saveSession(Object.assign({
     date: todayStr(), att: sprintAttempts, cor: sprintCorrect,
-    avgFk: avgFk, avgDur: avgDur, reflex: CUSTOM ? coreReflexCount(getCells()) : reflexNow, sec: SPRINT_SEC,
+    avgFk: avgFk, avgDur: avgDur, reflex: CUSTOM ? coreReflexCount(getCells()) : reflexNow, n: ROUND_N,
   }, CUSTOM ? { verbs: CUSTOM } : {}));
   document.getElementById('fbText').value = '';
 }
