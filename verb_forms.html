@@ -380,7 +380,7 @@ td.mk { background: #2a1c0c; color: #f0c060 !important; box-shadow: inset 2px 0 
 .irt th.iv { font-family: Georgia, serif; color: #f0e2b8; font-weight: 700; }
 .irt th.iv small { display: block; font-family: 'Segoe UI', system-ui, sans-serif; font-weight: 400; font-size: 0.75em; color: #6a7888; }
 .irt td { font-family: Georgia, serif; line-height: 1.6; }
-.irt td.okc { color: #4a5668; }
+.irt td.okc { color: #7f9fc0; }   /* 10-02：淡藍＝照規則、不用另外背（灰色只留給「不發音」） */
 .irt td.pres { color: #e8e2d4; white-space: normal; min-width: 9em; }
 .irt thead th small { display: block; font-size: 0.85em; color: #4a5668; }
 .irt th, .irt td { padding: 6px 8px; }
@@ -453,10 +453,9 @@ td.mk { background: #2a1c0c; color: #f0c060 !important; box-shadow: inset 2px 0 
   .rt td.exc, .rt th.exh { display: none; }
   .ex-in { display: block; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #3a3018; font-family: Georgia, serif; color: #c8c0b0; line-height: 1.6; }
 }
-.vt td.rare { color: #56607a; }
-.vt td.rare.mk { color: #8a6a40 !important; background: #1a130a; }
-.vt thead th.rare .zh, .vt thead th.rare .frn { color: #56607a; }
-.vt thead th .rv { display: block; font-size: 0.68em; color: #56607a; border: 1px solid #2a3448; border-radius: 4px; padding: 0 4px; margin-bottom: 2px; width: max-content; }
+/* 10-02：「很少用」＝整欄變淡＋欄名上「少用」標籤（灰色只留給「不發音」） */
+.vt td.rare, .vt thead th.rare > span:not(.rv) { opacity: .38; }
+.vt thead th .rv { display: block; font-size: 0.68em; color: #9aa8b8; border: 1px solid #3a4458; border-radius: 4px; padding: 0 5px; margin-bottom: 3px; width: max-content; }
 .rt td.e .cx { display: block; margin-top: 3px; font-size: 0.9em; font-weight: 400; color: #e8e2d4; white-space: nowrap; }
 .rt td.e .cx .en { font-weight: 700; }
 .rt td.e .cx .xt { color: #b8b0a0; }
@@ -482,7 +481,7 @@ td.mk { background: #2a1c0c; color: #f0c060 !important; box-shadow: inset 2px 0 
 .rt td.how b.fam-l { min-width: 2.2em; }
 .sx { display: grid; grid-template-columns: auto auto; gap: 1px 10px; white-space: nowrap; }
 .sx span { color: #e8e2d4; }
-.sx .sx-ok, .im3 .sx-ok { color: #5a6678; }
+.sx .sx-ok, .im3 .sx-ok { color: #7f9fc0; }
 .sx .sx-bad, .im3 .sx-bad, td .sx-bad { color: #f0a060; }
 .sx .sx-na { color: #34405a; }
 .im3 { display: flex; flex-direction: column; white-space: nowrap; }
@@ -501,6 +500,7 @@ td.mk { background: #2a1c0c; color: #f0c060 !important; box-shadow: inset 2px 0 
 #pScope .step-h { font-size: 0.85em; padding: 10px 14px; }
 .pop-x { margin-left: auto; background: none; border: 1px solid #22406a; color: #8ab8e0; border-radius: 8px; padding: 2px 10px; cursor: pointer; font-family: inherit; }
 @media print { #scopeFab, #pScope { display: none !important; } }
+.rv-inline { font-size: 0.85em; color: #9aa8b8; border: 1px solid #3a4458; border-radius: 4px; padding: 0 5px; margin-right: 4px; }
 .rt-key { font-size: 0.78em; color: #8a8270; margin-top: 8px; }
 </style>
 </head>
@@ -564,7 +564,8 @@ td.mk { background: #2a1c0c; color: #f0c060 !important; box-shadow: inset 2px 0 
     <p>・<b>第 1 步</b>的「🔥 考試要用的」是照兩份語料研究挑的（TCF 口說答稿＋寫作範文／TCF 聽力）。</p>
     <p>・研究原文：<a href="research/2026-09-03_VOCAB_B_說寫側.md">說寫側</a>・<a href="research/2026-09-03_VOCAB_A_聽讀側.md">聽讀側</a>　・第 2 步的例句全部出自上課筆記。</p>
     <p>・<b>⬜ 還沒上</b>＝課還沒教到，不是不重要。</p>
-    <p>・<b>第 5 步的灰字</b>只有一條規則：<b>還沒上過</b>，而且這個時態在考試裡<b>自己講／寫、聽到／讀到都不到 1%</b>。學過的一律不灰；也不會因為「某個動詞很少用某個時態」就灰。</p>
+    <p>・<b>顏色</b>：灰色只代表「不發音」（第 2 步的字尾）；淡藍＝照規則、不用另外背（第 4 步）；整欄變淡＋「少用」＝很少用（第 5 步）。</p>
+    <p>・<b>第 5 步的「少用」</b>只有一條規則：<b>還沒上過</b>，而且這個時態在考試裡<b>自己講／寫、聽到／讀到都不到 1%</b>。學過的一律不標；也不會因為「某個動詞很少用某個時態」就標。</p>
   </div>
 </details>
 
@@ -974,7 +975,7 @@ function renderVerbTable(v) {
   if (!cols.length) { document.getElementById('tenses').innerHTML = '<div class="scope-hint">一個時態都沒選——點右上角藍色「時態」圓圈加幾個回來。</div>'; return; }
   const head = cols.map((t, ci) => { const n = colNote(v, t);
     const rr = rareFor(v, t.id);
-    return `<th class="${rr ? 'rare' : ''}" onclick="ttsCol(${ci})" title="點一下唸這一欄">${rr === 'verb' ? '<span class="rv">這個字很少用</span>' : ''}<span class="zh">${esc(t.name.replace(/（.*）/, ''))}</span><span class="frn">${esc(t.fr)}</span>${
+    return `<th class="${rr ? 'rare' : ''}" onclick="ttsCol(${ci})" title="點一下唸這一欄">${rr ? '<span class="rv">少用</span>' : ''}<span class="zh">${esc(t.name.replace(/（.*）/, ''))}</span><span class="frn">${esc(t.fr)}</span>${
       t.pre ? '<span class="que">que…</span>' : ''}${n ? `<span class="cn">${esc(n)}</span>` : ''}</th>`; }).join('');
   const rows = PERSON_LABEL.map((p, i) => `<tr><th class="pers">${p}</th>${cols.map(t => {
     const m = cellMark(v, t, i);
@@ -984,7 +985,7 @@ function renderVerbTable(v) {
     [...new Set(Object.values(O).filter(o => o.irr).map(o => '⚠️ ' + o.irr).concat(Object.values(O).filter(o => o.note).map(o => 'ℹ️ ' + o.note)))];
   document.getElementById('tenses').innerHTML = `
     <div class="vt-wrap"><table class="vt"><thead><tr><th class="pers"></th>${head}</tr></thead><tbody>${rows}</tbody></table></div>
-    <div class="vt-key"><span class="mkdot"></span>橘底＝不照規則，要特別記（點格子看原因）　<span style="color:#56607a">灰字</span>＝還沒上、考試裡也很少用的時態（說寫、聽讀都不到 1%）　點時態名稱可以聽整欄</div>
+    <div class="vt-key"><span class="mkdot"></span>橘底＝不照規則，要特別記（點格子看原因）　<span class="rv-inline">少用</span>整欄變淡＝還沒上、考試裡也很少用的時態（說寫、聽讀都不到 1%）　點時態名稱可以聽整欄</div>
     ${notes.length ? `<div class="vt-notes">${notes.map(n => `<div>${esc(n)}</div>`).join('')}</div>` : ''}`;
 }
 function ttsCol(ci) {
@@ -1046,7 +1047,7 @@ function renderIrrTable() {
   const ppHtml = ppG.map(([k, re]) => { const vs = irrPP.filter(v => !usedP.has(v.inf) && re.test(v.pp)); vs.forEach(v => usedP.add(v.inf));
     return vs.length ? `<div class="gk"><b>${k}</b>${vs.map(v => `<span>${esc(v.inf)} → <i>${esc(v.pp)}</i></span>`).join('')}</div>` : ''; }).join('');
   document.getElementById('irrBox').innerHTML = `
-    <div class="scope-hint" style="margin-top:0">一列＝一個動詞要背的全部。現在式一定要背；其他欄 <span style="color:#f0a060">橘字</span>／<span class="mkdot"></span>橘底＝不照規則，灰色＝照規則推得出來。點一列看完整變化表。</div>
+    <div class="scope-hint" style="margin-top:0">一列＝一個動詞要背的全部。現在式一定要背；其他欄 <span style="color:#f0a060">橘字</span>／<span class="mkdot"></span>橘底＝不照規則，<span style="color:#7f9fc0">淡藍</span>＝照規則推得出來、不用另外背。點一列看完整變化表。</div>
     <div class="vt-wrap"><table class="irt">
       <thead><tr><th></th><th>現在式<small>左 je／tu／il　右 nous／vous／ils</small></th><th>命令式<small>tu／nous／vous</small></th><th>虛擬式<small>que …（排法同左）</small></th><th>未來詞幹</th><th>過去分詞</th></tr></thead>
       <tbody>${rows}</tbody></table></div>
