@@ -456,6 +456,7 @@ td.mk { background: #2a1c0c; color: #f0c060 !important; box-shadow: inset 2px 0 
 .vt td.rare { color: #56607a; }
 .vt td.rare.mk { color: #8a6a40 !important; background: #1a130a; }
 .vt thead th.rare .zh, .vt thead th.rare .frn { color: #56607a; }
+.vt thead th .rv { display: block; font-size: 0.68em; color: #56607a; border: 1px solid #2a3448; border-radius: 4px; padding: 0 4px; margin-bottom: 2px; width: max-content; }
 .rt td.e .cx { display: block; margin-top: 3px; font-size: 0.9em; font-weight: 400; color: #e8e2d4; white-space: nowrap; }
 .rt td.e .cx .en { font-weight: 700; }
 .rt td.e .cx .xt { color: #b8b0a0; }
@@ -487,6 +488,19 @@ td.mk { background: #2a1c0c; color: #f0c060 !important; box-shadow: inset 2px 0 
 .im3 { display: flex; flex-direction: column; white-space: nowrap; }
 .irt td { vertical-align: middle; }
 .irt th.iv { position: sticky; left: 0; background: #1a0f0c; z-index: 1; }
+#scopeFab { position: fixed; top: 52px; right: 12px; z-index: 60; width: 58px; height: 58px; border-radius: 50%;
+  border: 2px solid #6aa8e0; background: #0b1322; color: #cfe4f5; cursor: pointer; font-family: inherit;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1;
+  box-shadow: 0 4px 14px rgba(0,0,0,.5); }
+#scopeFab .fab-k { font-size: 0.62rem; color: #8ab8e0; }
+#scopeFab b { font-size: 1.05rem; color: #fff; }
+#scopeFab.on { background: #22406a; }
+#pScope { position: fixed; top: 118px; right: 12px; z-index: 59; width: min(560px, calc(100vw - 24px));
+  max-height: calc(100vh - 140px); overflow-y: auto; margin: 0; box-shadow: 0 10px 30px rgba(0,0,0,.6); }
+#pScope[hidden] { display: none; }
+#pScope .step-h { font-size: 0.85em; padding: 10px 14px; }
+.pop-x { margin-left: auto; background: none; border: 1px solid #22406a; color: #8ab8e0; border-radius: 8px; padding: 2px 10px; cursor: pointer; font-family: inherit; }
+@media print { #scopeFab, #pScope { display: none !important; } }
 .rt-key { font-size: 0.78em; color: #8a8270; margin-top: 8px; }
 </style>
 </head>
@@ -495,11 +509,13 @@ td.mk { background: #2a1c0c; color: #f0c060 !important; box-shadow: inset 2px 0 
 <div class="header">
   <a href="dashboard.html" class="back">← 回指揮中心</a>
   <h1>動詞變位總覽</h1>
-  <div class="sub"><b>①</b> 選要看的時態 → <b>②</b> 看變法表 → 其他是查詢和練習。</div>
+  <div class="sub"><b>①</b> 右上角藍色圓圈選要看的時態（隨時可以點）→ <b>②</b> 看變法表 → 其他是查詢和練習。</div>
 </div>
 
-<details class="panel step s1" id="pScope" open>
-  <summary><span class="stepn">1</span>要看哪些時態 <span class="sum-n">已選 <b id="scopeCount">0</b> 個</span></summary>
+<!-- 10-02 Owen：「要看哪些時態」改成跟著頁面的右上角小圓圈，當頁原地調整，不用滑回最上面 -->
+<button id="scopeFab" onclick="toggleScopePop(event)" title="要看哪些時態"><span class="fab-k">時態</span><b id="scopeCount">0</b></button>
+<div class="panel step s1" id="pScope" hidden>
+  <div class="step-h"><span class="stepn">1</span>要看哪些時態 <button class="pop-x" onclick="toggleScopePop(event)">✕</button></div>
   <div class="panel-in">
     <div class="lvl-row">
       <button class="lvl-btn on" data-scope="learned">✅ 學過的</button>
@@ -509,7 +525,7 @@ td.mk { background: #2a1c0c; color: #f0c060 !important; box-shadow: inset 2px 0 
     </div>
     <div id="tenseChips"></div>
   </div>
-</details>
+</div>
 
 <details class="panel step s2" id="pRules" open>
   <summary><span class="stepn">2</span>變法：規則＋例子</summary>
@@ -652,6 +668,15 @@ function setScope(name) {
   picked = new Set(allTenseIds().filter(SCOPES[name] || SCOPES.learned));
   savePrefs(); render();
 }
+function toggleScopePop(e) {
+  if (e) e.stopPropagation();
+  const p = document.getElementById('pScope'); p.hidden = !p.hidden;
+  document.getElementById('scopeFab').classList.toggle('on', !p.hidden);
+}
+document.addEventListener('click', e => {
+  const p = document.getElementById('pScope');
+  if (!p.hidden && !p.contains(e.target) && e.target.id !== 'scopeFab' && document.body.contains(e.target)) toggleScopePop();
+});
 function toggleTense(id) {
   if (!picked) picked = new Set(allTenseIds().filter(SCOPES.learned));
   picked.has(id) ? picked.delete(id) : picked.add(id);
@@ -683,7 +708,8 @@ function renderPicker() {
     ).join('')}</div>`).join('');
 }
 
-function pick(inf) { current = inf; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+/* 10-02 Owen：「換一個動詞就一定跳到最上面」→ 原地換，不捲動 */
+function pick(inf) { current = inf; render(); }
 
 /* ════════════════════════════════════════════════════════════════
    ⚠️ 2026-10-01 第二輪：爬升圖的「樓層卡片」已拿掉（Owen：看完只想放棄、太表格），概念改成下面的 🗺 一張圖＋規則卡。
@@ -928,23 +954,36 @@ function isRare(id) {
   const vals = [n(m.pct), n(m.rec)].filter(x => x != null);
   return vals.length > 0 && Math.max(...vals) < 1;
 }
+/* 10-02 Owen：「有很多單字某些時態出現率很低，那些不用變灰嗎？」
+   → 再加一層「這個動詞」：考生自己講／寫的語料裡，這個字用這個時態 0 次 → 灰。
+   ⚠️ 只看有逐動詞資料的時態（verb_freq.js 的 t／nf.imperatif）；這個字總次數 < 30 不判（boire 0 次是題材，不是不重要）；
+   ⚠️ 只有產出側有逐動詞資料，聽力不一定少——圖例要講清楚。學過的「剛剛過去」沒有資料，不灰。 */
+const PER_VERB_T = ['present','imparfait','passe-compose','futur-simple','conditionnel','subjonctif','futur-proche','imperatif'];
+function rareFor(v, id) {
+  if (isRare(id)) return 'tense';
+  const f = freqOf(v.inf);
+  if (!PER_VERB_T.includes(id) || f.say < 30) return '';
+  const n = id === 'imperatif' ? (f.nf.imperatif || 0) : (f.t[id] || 0);
+  return n ? '' : 'verb';
+}
 function renderVerbTable(v) {
   const all = allConj(v), T = {}; all.forEach(t => T[t.id] = t);
   const cols = ORDER.filter(id => T[id] && picked.has(id)).map(id => T[id]);
   window._cols = cols;
-  if (!cols.length) { document.getElementById('tenses').innerHTML = '<div class="scope-hint">一個時態都沒選——到最上面「📌 要看哪些時態」點幾個加回來。</div>'; return; }
+  if (!cols.length) { document.getElementById('tenses').innerHTML = '<div class="scope-hint">一個時態都沒選——點右上角藍色「時態」圓圈加幾個回來。</div>'; return; }
   const head = cols.map((t, ci) => { const n = colNote(v, t);
-    return `<th class="${isRare(t.id) ? 'rare' : ''}" onclick="ttsCol(${ci})" title="點一下唸這一欄"><span class="zh">${esc(t.name.replace(/（.*）/, ''))}</span><span class="frn">${esc(t.fr)}</span>${
+    const rr = rareFor(v, t.id);
+    return `<th class="${rr ? 'rare' : ''}" onclick="ttsCol(${ci})" title="點一下唸這一欄">${rr === 'verb' ? '<span class="rv">這個字很少用</span>' : ''}<span class="zh">${esc(t.name.replace(/（.*）/, ''))}</span><span class="frn">${esc(t.fr)}</span>${
       t.pre ? '<span class="que">que…</span>' : ''}${n ? `<span class="cn">${esc(n)}</span>` : ''}</th>`; }).join('');
   const rows = PERSON_LABEL.map((p, i) => `<tr><th class="pers">${p}</th>${cols.map(t => {
     const m = cellMark(v, t, i);
-    return `<td class="${m ? 'mk' : ''}${t.forms[i] == null ? ' na' : ''}${isRare(t.id) ? ' rare' : ''}"${m ? ` title="${esc(m)}"` : ''}>${esc(cellText(t, i, t.forms[i]))}</td>`; }).join('')}</tr>`).join('');
+    return `<td class="${m ? 'mk' : ''}${t.forms[i] == null ? ' na' : ''}${rareFor(v, t.id) ? ' rare' : ''}"${m ? ` title="${esc(m)}"` : ''}>${esc(cellText(t, i, t.forms[i]))}</td>`; }).join('')}</tr>`).join('');
   const O = ovItems(v.imperso ? VF('parler') : v);
   const notes = v.imperso ? ['無人稱動詞：只有 il 這一格'] :
     [...new Set(Object.values(O).filter(o => o.irr).map(o => '⚠️ ' + o.irr).concat(Object.values(O).filter(o => o.note).map(o => 'ℹ️ ' + o.note)))];
   document.getElementById('tenses').innerHTML = `
     <div class="vt-wrap"><table class="vt"><thead><tr><th class="pers"></th>${head}</tr></thead><tbody>${rows}</tbody></table></div>
-    <div class="vt-key"><span class="mkdot"></span>橘底＝不照規則，要特別記（點格子看原因）　<span style="color:#56607a">灰字</span>＝考試裡很少用（說寫、聽讀都不到 1%）　點時態名稱可以聽整欄</div>
+    <div class="vt-key"><span class="mkdot"></span>橘底＝不照規則，要特別記（點格子看原因）　<span style="color:#56607a">灰字</span>＝考試裡很少用：還沒上的冷門時態，或標「這個字很少用」＝考生自己講／寫時這個動詞沒用過這個時態（聽力不一定）　點時態名稱可以聽整欄</div>
     ${notes.length ? `<div class="vt-notes">${notes.map(n => `<div>${esc(n)}</div>`).join('')}</div>` : ''}`;
 }
 function ttsCol(ci) {
@@ -1125,7 +1164,7 @@ function renderRules() {
   const RULE_ORDER = ['present','imperatif','passe-compose','imparfait','futur-proche','passe-recent','futur-simple','conditionnel',
                       'subjonctif','plus-que-parfait','futur-anterieur','conditionnel-passe','subjonctif-passe','passe-simple'];
   const ids = RULE_ORDER.filter(id => picked.has(id));
-  if (!ids.length) { document.getElementById('rules').innerHTML = '<div style="color:#8a8270">一個時態都沒選——到第 1 步點幾個加回來。</div>'; return; }
+  if (!ids.length) { document.getElementById('rules').innerHTML = '<div style="color:#8a8270">一個時態都沒選——點右上角藍色「時態」圓圈加幾個回來。</div>'; return; }
   const body = ids.map(id => {
     const rows = ruleRows(id), n = rows.length;
     let h = rows.map((r, k) => `<tr${k ? '' : ` id="rr-${id}" class="grp-first"`}>
