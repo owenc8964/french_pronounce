@@ -501,6 +501,41 @@ td.mk { background: #2a1c0c; color: #f0c060 !important; box-shadow: inset 2px 0 
 .pop-x { margin-left: auto; background: none; border: 1px solid #22406a; color: #8ab8e0; border-radius: 8px; padding: 2px 10px; cursor: pointer; font-family: inherit; }
 @media print { #scopeFab, #pScope { display: none !important; } }
 .rv-inline { font-size: 0.85em; color: #9aa8b8; border: 1px solid #3a4458; border-radius: 4px; padding: 0 5px; margin-right: 4px; }
+.vf-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+.vf-b { font: inherit; font-size: 0.85em; padding: 7px 12px; border-radius: 10px; border: 1px solid #403068; background: #120f1c; color: #c8b8f0; cursor: pointer; }
+.vf-b.on { background: #2a2050; border-color: #a890e0; color: #fff; }
+.vf-hint { font-size: 0.78em; color: #8a7aa8; }
+.vf-s { font: inherit; font-size: 0.8em; padding: 5px 10px; border-radius: 8px; border: 1px solid #2a3448; background: none; color: #9aa8b8; cursor: pointer; }
+.vt td.vf-q { cursor: pointer; color: #5a5080; text-align: center; background: #16122a; }
+.vt td.vf-q:hover { background: #221a40; }
+.vt td.vf-in { background: #221a40; min-width: 9em; }
+.vt td.vf-in input { width: 100%; font: inherit; font-family: Georgia, serif; padding: 4px 6px; border-radius: 6px; border: 1px solid #a890e0; background: #0d0a18; color: #fff; }
+.vf-acts { display: flex; gap: 4px; margin-top: 4px; }
+.vf-acts button { font: inherit; font-size: 0.68em; padding: 2px 6px; border-radius: 6px; border: 1px solid #403068; background: #120f1c; color: #c8b8f0; cursor: pointer; white-space: nowrap; }
+.vt td.vf-done { color: #e8e2d4; }
+.vt td.vf-w { box-shadow: inset 0 -2px 0 #8a8270; }
+sup.vfm { font-size: 0.6em; margin-left: 3px; }
+.vfq { color: #8a8270; font-weight: 700; font-family: 'Segoe UI', system-ui, sans-serif; }
+.vf-foot { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.vf-fb { flex: 1 1 100%; font-size: 0.88em; color: #c8c0b0; background: #16122a; border-left: 3px solid #a890e0; padding: 6px 10px; border-radius: 0 8px 8px 0; }
+.vf-fb b { color: #fff; font-family: Georgia, serif; }
+.vq { background: #16122a; border: 1px solid #403068; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; }
+.vq-h { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; margin-bottom: 8px; }
+.vq-v { font-family: Georgia, serif; font-size: 1.2em; color: #fff; font-weight: 700; }
+.vq-p { font-size: 0.8em; color: #a890e0; }
+.vq-row { display: flex; gap: 8px; align-items: center; }
+.vq-pron { font-family: Georgia, serif; font-size: 1.1em; color: #c8b8f0; white-space: nowrap; }
+.vq-row input { flex: 1; font: inherit; font-family: Georgia, serif; font-size: 1.1em; padding: 8px 10px; border-radius: 10px; border: 1px solid #a890e0; background: #0d0a18; color: #fff; min-width: 0; }
+.vq-acts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.vq-ok { margin-top: 8px; color: #e8e2d4; font-family: Georgia, serif; }
+.vq-no { margin-top: 8px; color: #c8c0b0; }
+.vq-no b { color: #fff; font-family: Georgia, serif; }
+.vq-why { font-size: 0.85em; color: #a898c8; margin-top: 4px; }
+.vq-sum { font-size: 1em; color: #e8e2d4; }
+.vq-sum2 { font-size: 0.85em; color: #a898c8; margin: 6px 0; }
+.vq-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.vq-list .ic { background: #1c1730; border-color: #403068; color: #e8e2d4; }
+.vq-list small { color: #8a7aa8; font-family: 'Segoe UI', system-ui, sans-serif; }
 .rt-key { font-size: 0.78em; color: #8a8270; margin-top: 8px; }
 </style>
 </head>
@@ -546,6 +581,7 @@ td.mk { background: #2a1c0c; color: #f0c060 !important; box-shadow: inset 2px 0 
   <summary><span class="stepn">5</span>查一個動詞：變化表 <span class="sum-n" id="verbSum"></span></summary>
   <div class="panel-in">
     <div id="picker"></div>
+    <div id="vfQuiz" style="margin-top:16px"></div>
     <div id="tenses" style="margin-top:16px"></div>
   </div>
 </details>
@@ -703,10 +739,8 @@ function renderPicker() {
   document.getElementById('picker').innerHTML = groups.map(g => `
     <div class="grp-label">${esc(g.name)}</div>
     <div class="v-row">${g.items.map(v =>
-      (() => { const f = freqOf(v.inf), tot = f.say + f.hear;
-        const c = tot >= 1500 ? ' vhot' : tot >= 300 ? ' vwarm' : tot === 0 ? ' vzero' : '';
-        return `<button class="v-btn${v.inf === current ? ' on' : ''}${c}" onclick="pick('${v.inf}')"
-          title="口說寫作 ${f.say} 次　聽力閱讀 ${f.hear} 次">${esc(v.inf)}</button>`; })()
+      /* 10-02：拿掉按鈕的頻率顏色——橘色在這頁是「不照規則」、變淡是「少用」，boire 0 次是考題主題造成的（顏色分工） */
+      `<button class="v-btn${v.inf === current ? ' on' : ''}" onclick="pick('${v.inf}')">${esc(v.inf)}</button>`
     ).join('')}</div>`).join('');
 }
 
@@ -968,6 +1002,187 @@ function isRare(id) {
    複合過去式就被灰掉——Owen：「怎麼可能」。加上語料是議論文（T2/T3 談環保教育），敘事時態本來就少。
    → 逐動詞資料只能說「這個字最常用哪幾個時態」，⛔ 不能拿來判斷哪個時態不重要。只保留時態層級的灰字。 */
 function rareFor(v, id) { return isRare(id) ? 'tense' : ''; }
+/* ════════════════════════════════════════════════════════════════
+   10-02「讓這頁會考你」（研究合成：research/2026-10-02_SYNTHESIS_變位總覽變成練習工具.md）
+   看表一次 → 🙈 蓋住一格一格叫出（打字或「我有答案了」）→ 🎯 隨機 8 題（跨時態、加權、要想的連發）
+   後台記「起手時間」（只算答對）→ 每格狀態 ⚡秒出／🤔要想／❓沒叫出來 → 畫回變化表當鏡子
+   ⛔ 不顯示秒數、不倒數、不秀分母；跳過合法、不計分；「我會了」不刪格（只降頻）
+   紀錄 clb7_vf_cells：每格一個物件＋last（sync 逐 key 合併）。遊戲會讀它（站穩＝隔天以後又秒出）。
+   ════════════════════════════════════════════════════════════════ */
+const VF_KEY = 'clb7_vf_cells';
+let vfMode = 'view';                 /* view｜cover */
+const vfOpen = {};                   /* cover 模式：這一輪已作答／已翻開的格子 → 結果 */
+let vfFb = '';                       /* 最近一格的回饋（正解＋為什麼） */
+function vfAll() { try { const o = JSON.parse(localStorage.getItem(VF_KEY)); return o && typeof o === 'object' && !Array.isArray(o) ? o : {}; } catch (e) { return {}; } }
+function vfSave(o) { try { localStorage.setItem(VF_KEY, JSON.stringify(o)); } catch (e) {} }
+const vfK = (inf, tid, i) => `${inf}|${tid}|${i}`;
+const vfToday = () => new Date().toLocaleDateString('sv-SE');
+function vfHasAny(inf) { const o = vfAll(); return Object.keys(o).some(k => k.startsWith(inf + '|') && o[k].st); }
+/* 個人基準（⚪ 約定，非證據）：答對的起手時間裡偏快的那一段（第 25 百分位）；樣本 < 8 先用 1800ms */
+function vfBase() {
+  const o = vfAll(), xs = [];
+  Object.values(o).forEach(r => (r.rt || []).forEach(x => xs.push(x)));
+  if (xs.length < 8) return 1800;
+  xs.sort((a, b) => a - b); return xs[Math.floor(xs.length * 0.25)];
+}
+/* 記一次作答。res：'ok'｜'accent'（只差重音）｜'wrong'｜'peek'（我有答案了，沒打字）｜'skip' */
+function vfRecord(inf, tid, i, res, rt) {
+  const o = vfAll(), k = vfK(inf, tid, i), r = o[k] || {}, now = Date.now();
+  if (res === 'skip') { r.sk = (r.sk || 0) + 1; r.last = now; o[k] = r; vfSave(o); return r; }   /* 跳過：記次數，⛔ 不計分、不改狀態 */
+  if (res === 'peek') { r.pk = (r.pk || 0) + 1; r.last = now; o[k] = r; vfSave(o); return r; }
+  if (res === 'wrong') { r.w = (r.w || 0) + 1; r.st = 'm'; r.d = ''; }
+  else {
+    r.c = (r.c || 0) + 1;
+    const ok = rt != null && rt >= 300 && rt <= 15000;       /* <300ms 當誤觸、>15 秒當分心：不進速度統計（⚪ 約定） */
+    if (ok && res === 'ok') r.rt = (r.rt || []).concat(rt).slice(-5);
+    const fast = res === 'ok' && ok && rt <= vfBase() * 1.5;
+    r.st = fast ? 'r' : 't';
+    if (fast) { const t = vfToday(); if (!r.d) r.d = t; else if (r.d < t && !r.s) { r.s = 1; r.at = now; } }   /* 隔天以後又秒出＝站穩 */
+  }
+  r.last = now; o[k] = r; vfSave(o); return r;
+}
+const VF_ICON = { r: '⚡', t: '🤔', m: '<span class="vfq">?</span>' };   /* 沒叫出來用灰色問號，⛔ 不用紅色 ❓（系統不罵人） */
+function vfMark(inf, tid, i) { const r = vfAll()[vfK(inf, tid, i)]; return r && r.st ? `<sup class="vfm">${VF_ICON[r.st]}</sup>` : ''; }
+/* 比對：小寫、去驚嘆號、可省略主詞、allé(e)(s) 的括號可有可無；只差重音另外算 */
+const vfNorm = x => String(x).toLowerCase().replace(/[’`]/g, "'").replace(/[!?]/g, '').replace(/\s+/g, ' ').trim();
+const vfBare = x => x.normalize('NFD').replace(/[̀-ͯ]/g, '');
+function vfCheck(typed, form, pron) {
+  let a = vfNorm(typed); const p = vfNorm(pron || '');
+  /* 主詞可打可不打：que je／je／j' 都剝掉 */
+  for (const pre of [p, p.replace(/^qu(e |')/, '')]) if (pre && a.startsWith(pre)) { a = a.slice(pre.length).trim(); break; }
+  const re = s => new RegExp('^' + vfNorm(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\\\(e\\\)/g, 'e?').replace(/\\\(s\\\)/g, 's?') + '$');
+  if (re(form).test(a)) return 'ok';
+  if (new RegExp(vfBare(re(form).source)).test(vfBare(a))) return 'accent';
+  return 'wrong';
+}
+/* 錯了講為什麼：不照規則的理由（cellMark）或這個時態的公式 */
+function vfWhy(v, t, i) {
+  const m = cellMark(v, t, i); if (m) return '這格不照規則：' + m;
+  const rows = ruleRows(t.id); if (!rows.length) return '';
+  const r = t.id === 'present' ? rows.find(x => v.inf.endsWith(x.sub.slice(1))) || rows[0] : rows[0];
+  return '規則：' + String(r.how).replace(/<[^>]+>/g, '');
+}
+function vfPron(t, i, f) { if (t.imper) return ''; const full = display(t, i, f); return full.slice(0, full.length - f.length); }
+function vfBar() {
+  return `<div class="vf-bar">
+    <button class="vf-b${vfMode === 'view' ? ' on' : ''}" onclick="vfSetMode('view')">📖 看表</button>
+    <button class="vf-b${vfMode === 'cover' ? ' on' : ''}" onclick="vfSetMode('cover')">🙈 蓋住，一格一格叫出來</button>
+    <button class="vf-b" onclick="vfStart()">🎯 隨機 8 題</button>
+    <span class="vf-hint">${vfMode === 'cover' ? '點一格 → 打出來（或按「我有答案了」再翻）' : '先看懂一次，再蓋住'}</span></div>`;
+}
+function vfSetMode(m) { vfMode = m; if (m === 'cover') { Object.keys(vfOpen).forEach(k => delete vfOpen[k]); vfFb = ''; } render(); }
+function vfCoverCell(v, t, i, m) {
+  const k = vfK(v.inf, t.id, i), done = vfOpen[k], f = t.forms[i];
+  if (done) return `<td class="vf-done ${done === 'wrong' ? 'vf-w' : ''}">${esc(cellText(t, i, f))}<sup class="vfm">${done === 'skip' ? '⏭' : done === 'peek' ? '👁' : VF_ICON[(vfAll()[k] || {}).st] || ''}</sup></td>`;
+  if (vfOpen._cur === k) return `<td class="vf-in"><input id="vfIn" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${esc(vfPron(t, i, f).trim() || '…')}"
+      onkeydown="vfKey(event,'${v.inf}','${t.id}',${i})" oninput="vfFirst()">
+    <div class="vf-acts"><button onclick="vfSubmit('${v.inf}','${t.id}',${i})">✓</button><button onclick="vfReveal('${v.inf}','${t.id}',${i},'peek')">我有答案了</button><button onclick="vfReveal('${v.inf}','${t.id}',${i},'skip')">⏭</button></div></td>`;
+  return `<td class="vf-q" onclick="vfAsk('${k}')">${vfMark(v.inf, t.id, i) || '？'}</td>`;
+}
+let vfT0 = 0, vfT1 = 0;
+function vfAsk(k, keepFb) { vfOpen._cur = k; if (!keepFb) vfFb = ''; renderVerbTable(VF(current)); const el = document.getElementById('vfIn'); if (el) { el.focus(); vfT0 = performance.now(); vfT1 = 0; } }
+function vfFirst() { if (!vfT1) vfT1 = performance.now(); }
+function vfKey(e, inf, tid, i) { if (e.key === 'Enter') { e.preventDefault(); vfSubmit(inf, tid, i); } }
+function vfTense(inf, tid) { return allConj(VF(inf)).find(t => t.id === tid); }
+function vfSubmit(inf, tid, i) {
+  const el = document.getElementById('vfIn'); if (!el || !el.value.trim()) return;
+  const v = VF(inf), t = vfTense(inf, tid), f = t.forms[i], res = vfCheck(el.value, f, vfPron(t, i, f));
+  const rt = vfT1 ? Math.round(vfT1 - vfT0) : null;
+  vfRecord(inf, tid, i, res, rt);
+  const k = vfK(inf, tid, i); vfOpen[k] = res; delete vfOpen._cur;
+  vfFb = res === 'ok' ? '' : res === 'accent' ? `差在重音：<b>${esc(cellText(t, i, f))}</b>` :
+    `是 <b>${esc(cellText(t, i, f))}</b>（你打的：${esc(el.value)}）　${esc(vfWhy(v, t, i))}`;
+  renderVerbTable(v); vfNext(v);
+}
+function vfReveal(inf, tid, i, how) {
+  vfRecord(inf, tid, i, how); const k = vfK(inf, tid, i); vfOpen[k] = how; delete vfOpen._cur; vfFb = '';
+  const v = VF(inf); renderVerbTable(v); vfNext(v);
+}
+/* 答完自動跳下一個還沒翻的格子（同一欄往下） */
+function vfNext(v) {
+  const cols = window._cols || [], keys = [];
+  cols.forEach(t => t.forms.forEach((f, i) => { if (f != null) keys.push(vfK(v.inf, t.id, i)); }));
+  const nx = keys.find(k => !vfOpen[k]); if (nx) vfAsk(nx, true); else renderVerbTable(v);
+}
+function vfCoverFoot() {
+  return `<div class="vf-foot">${vfFb ? `<div class="vf-fb">${vfFb}</div>` : ''}
+    <button class="vf-s" onclick="vfSkipRest()">⏭ 這張剩下的跳過</button>
+    <button class="vf-s" onclick="vfSetMode('cover')">↺ 重新蓋住</button></div>`;
+}
+/* 整張跳過：只跳還沒作答的格子（⚠️ 已經答過的不動） */
+function vfSkipRest() {
+  const v = VF(current); (window._cols || []).forEach(t => t.forms.forEach((f, i) => {
+    const k = vfK(v.inf, t.id, i); if (f != null && !vfOpen[k]) { vfOpen[k] = 'skip'; vfRecord(v.inf, t.id, i, 'skip'); } }));
+  delete vfOpen._cur; renderVerbTable(v);
+}
+
+/* 🎯 隨機 8 題：已勾的時態 × 這個動詞＋常用不規則，依狀態加權；🤔 之後同一時態連發 2 題（壓縮練習） */
+const VF_W = { m: 4, t: 3, u: 2, r: 0.3 };
+let VQ = null;
+function vfPool() {
+  const verbs = [current].concat(['être','avoir','aller','faire','pouvoir','vouloir','devoir','prendre','venir','savoir'].filter(x => x !== current));
+  const o = vfAll(), out = [];
+  verbs.forEach(inf => { const v = VF(inf); if (!v || v.imperso) return;
+    allConj(v).filter(t => picked.has(t.id)).forEach(t => t.forms.forEach((f, i) => { if (f == null) return;
+      const r = o[vfK(inf, t.id, i)] || {};
+      let w = VF_W[r.st || 'u'] * (inf === current ? 2 : 1);
+      if (r.s) w *= 0.5; if (r.sk) w *= Math.pow(0.6, Math.min(r.sk, 4));     /* 站穩、跳過過的：降頻，⛔ 不刪 */
+      out.push({ inf, tid: t.id, i, w }); })); });
+  return out;
+}
+function vfPick(pool, same) {
+  let p = pool.filter(x => !VQ.used.has(vfK(x.inf, x.tid, x.i)));
+  if (same) { const q = p.filter(x => x.tid === same && x.w >= 1); if (q.length) p = q; }
+  const tot = p.reduce((a, x) => a + x.w, 0); let r = Math.random() * tot;
+  for (const x of p) { if ((r -= x.w) <= 0) return x; } return p[0];
+}
+function vfStart() {
+  if (!picked.size) return;
+  VQ = { n: 0, max: 8, used: new Set(), log: [], same: null, left: 0 }; vfMode = 'view'; render(); vfAskQ();
+  document.getElementById('vfQuiz').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function vfAskQ() {
+  const box = document.getElementById('vfQuiz'); if (!box || !VQ) return;
+  if (VQ.n >= VQ.max) return vfEnd();
+  const q = vfPick(vfPool(), VQ.left > 0 ? VQ.same : null); if (!q) return vfEnd();
+  if (VQ.left > 0) VQ.left--;
+  VQ.cur = q; VQ.used.add(vfK(q.inf, q.tid, q.i));
+  const t = vfTense(q.inf, q.tid), f = t.forms[q.i], pron = vfPron(t, q.i, f);
+  box.innerHTML = `<div class="vq">
+    <div class="vq-h"><span class="vq-v">${esc(q.inf)}</span><span class="vq-t">${tName(t)}</span>${t.imper ? `<span class="vq-p">${['', 'tu', '', 'nous', 'vous'][q.i]} 那一格</span>` : ''}</div>
+    <div class="vq-row"><span class="vq-pron">${esc(pron)}</span><input id="vqIn" autocomplete="off" autocapitalize="off" spellcheck="false" onkeydown="if(event.key==='Enter'){event.preventDefault();vfAnsQ();}" oninput="vfFirst()"></div>
+    <div class="vq-acts"><button class="vf-b on" onclick="vfAnsQ()">✓ 送出</button><button class="vf-s" onclick="vfSkipQ()">⏭ 這題跳過</button><button class="vf-s" onclick="vfEnd()">今天先到這</button></div>
+    <div id="vqFb"></div></div>`;
+  const el = document.getElementById('vqIn'); el.focus(); vfT0 = performance.now(); vfT1 = 0;
+}
+function vfAnsQ() {
+  const el = document.getElementById('vqIn'); if (!el || !el.value.trim() || !VQ.cur) return;
+  const q = VQ.cur, v = VF(q.inf), t = vfTense(q.inf, q.tid), f = t.forms[q.i];
+  const res = vfCheck(el.value, f, vfPron(t, q.i, f)), rt = vfT1 ? Math.round(vfT1 - vfT0) : null;
+  const r = vfRecord(q.inf, q.tid, q.i, res, rt); VQ.cur = null; VQ.n++;
+  VQ.log.push({ q, st: r.st, res });
+  if (r.st === 't') { VQ.same = q.tid; VQ.left = 2; }        /* 🤔 要想 → 同一時態再連兩題 */
+  const ans = t.imper ? cellText(t, q.i, f) : display(t, q.i, f);
+  const fb = document.getElementById('vqFb');
+  fb.innerHTML = res === 'ok' ? `<div class="vq-ok">${VF_ICON[r.st]} ${esc(ans)}</div>`
+    : `<div class="vq-no">${res === 'accent' ? '差在重音' : '是'}：<b>${esc(ans)}</b>${res === 'wrong' ? `<div class="vq-why">${esc(vfWhy(v, t, q.i))}</div>` : ''}</div>`;
+  el.disabled = true; ttsSay(display(t, q.i, f));
+  setTimeout(() => { if (VQ) vfAskQ(); }, res === 'ok' ? 900 : 2600);
+  renderVerbTable(VF(current));
+}
+function vfSkipQ() { if (!VQ || !VQ.cur) return; const q = VQ.cur; vfRecord(q.inf, q.tid, q.i, 'skip'); VQ.cur = null; vfAskQ(); }   /* 跳過不算題數 */
+function vfEnd() {
+  const box = document.getElementById('vfQuiz'); if (!box || !VQ) return;
+  const fast = VQ.log.filter(x => x.st === 'r').length;
+  const slow = VQ.log.filter(x => x.st !== 'r');
+  box.innerHTML = VQ.log.length ? `<div class="vq">
+    <div class="vq-sum">${fast ? `⚡ ${fast} 格秒出` : ''}</div>
+    ${slow.length ? `<div class="vq-sum2">這幾格再看一眼（點了會唸）：</div><div class="vq-list">${slow.map(x => { const t = vfTense(x.q.inf, x.q.tid), f = t.forms[x.q.i], s = display(t, x.q.i, f);
+      return `<span class="ic" onclick="ttsSay('${esc(s).replace(/'/g, "\\'")}')">${VF_ICON[x.st] || ''} ${esc(s)} <small>${esc(t.name.replace(/（.*）/, ''))}</small></span>`; }).join('')}</div>` : ''}
+    <div class="vq-acts"><button class="vf-b on" onclick="vfStart()">🎯 再 8 題</button><button class="vf-s" onclick="VQ=null;document.getElementById('vfQuiz').innerHTML=''">收起</button></div></div>` : '';
+  if (!VQ.log.length) VQ = null;
+}
+
 function renderVerbTable(v) {
   const all = allConj(v), T = {}; all.forEach(t => T[t.id] = t);
   const cols = ORDER.filter(id => T[id] && picked.has(id)).map(id => T[id]);
@@ -979,13 +1194,15 @@ function renderVerbTable(v) {
       t.pre ? '<span class="que">que…</span>' : ''}${n ? `<span class="cn">${esc(n)}</span>` : ''}</th>`; }).join('');
   const rows = PERSON_LABEL.map((p, i) => `<tr><th class="pers">${p}</th>${cols.map(t => {
     const m = cellMark(v, t, i);
-    return `<td class="${m ? 'mk' : ''}${t.forms[i] == null ? ' na' : ''}${rareFor(v, t.id) ? ' rare' : ''}"${m ? ` title="${esc(m)}"` : ''}>${esc(cellText(t, i, t.forms[i]))}</td>`; }).join('')}</tr>`).join('');
+    if (t.forms[i] != null && vfMode === 'cover') return vfCoverCell(v, t, i, m);
+    return `<td class="${m ? 'mk' : ''}${t.forms[i] == null ? ' na' : ''}${rareFor(v, t.id) ? ' rare' : ''}"${m ? ` title="${esc(m)}"` : ''}>${esc(cellText(t, i, t.forms[i]))}${t.forms[i] == null ? '' : vfMark(v.inf, t.id, i)}</td>`; }).join('')}</tr>`).join('');
   const O = ovItems(v.imperso ? VF('parler') : v);
   const notes = v.imperso ? ['無人稱動詞：只有 il 這一格'] :
     [...new Set(Object.values(O).filter(o => o.irr).map(o => '⚠️ ' + o.irr).concat(Object.values(O).filter(o => o.note).map(o => 'ℹ️ ' + o.note)))];
-  document.getElementById('tenses').innerHTML = `
+  document.getElementById('tenses').innerHTML = vfBar() + `
     <div class="vt-wrap"><table class="vt"><thead><tr><th class="pers"></th>${head}</tr></thead><tbody>${rows}</tbody></table></div>
-    <div class="vt-key"><span class="mkdot"></span>橘底＝不照規則，要特別記（點格子看原因）　<span class="rv-inline">少用</span>整欄變淡＝還沒上、考試裡也很少用的時態（說寫、聽讀都不到 1%）　點時態名稱可以聽整欄</div>
+    ${vfMode === 'cover' ? vfCoverFoot() : ''}
+    <div class="vt-key">${vfMode === 'view' && vfHasAny(v.inf) ? '⚡ 秒出　🤔 還要想　<span class="vfq">?</span> 上次沒叫出來（你練過的格子才會有）　' : ''}<span class="mkdot"></span>橘底＝不照規則，要特別記（點格子看原因）　<span class="rv-inline">少用</span>整欄變淡＝還沒上、考試裡也很少用的時態（說寫、聽讀都不到 1%）　點時態名稱可以聽整欄</div>
     ${notes.length ? `<div class="vt-notes">${notes.map(n => `<div>${esc(n)}</div>`).join('')}</div>` : ''}`;
 }
 function ttsCol(ci) {
