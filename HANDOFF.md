@@ -4865,6 +4865,14 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
     ⭐ 順帶進頁面的實用細節：`conditionnel passé` 高度集中在 `aurais pu／aurait dû`（固定塊不是時態）；`futur antérieur` 15 個 token 裡 `aura fallu` 佔 9 個；`subjonctif passé` 對話裡 5 個但**選項裡 15 個**（答題才遇到）；`passé simple` 閱讀題幹 **0 個**、真實書面散文也只 0.71%，跟直覺相反。
 - ⏸ **沒做／下一步**：複合時態（plus-que-parfait 等）還沒有 verb_sprint 模式；Owen 說的「**自訂勾選哪些單字的哪些變化**」目前只做到「一個動詞 × 多個時態」，**還沒做「多個動詞一起考」**——要做的話得讓 verb_sprint 接 `?verbs=` 白名單。
 
+#### 三之二十八、10-02：⚔️ 戰鬥新招「陰陽連擊」
+
+- **Owen**：「這個遊戲可以直接加入一般，比如說普攻，連續五題對四題就算過關，只對三題扣一半血，低於就沒過」→ 問過確認：**做成一招連擊**（不是一隻怪一關）、**原本的重擊保留**。
+- ✅ `quest.html`：`MOVES.genus`（陰陽連擊，×2，排在普通攻擊後面），地城／副本／主線／訓練場戰鬥都有，⛔ 不進塔。一招＝連續 5 題 un／une（字庫、權重、紀錄全跟小遊戲共用 `genderPool/genderPick/clb7_gender_seen`，答完也 `growRec`）。
+  **對 4–5 題 → 全額傷害**（會累積連擊）；**對 3 題 → 半傷害、不被反擊**；**2 題以下 → 打空、被反擊掉 1 顆心**（後果在角色身上）。⏭ 跳過＝換一題補上、不算對錯。上方 5 個圓點追蹤進度；答錯停 1.7 秒顯示正解＋字尾提示。
+- 新增函式：`askGenus/genusNext/genusAns/genusSkip/genusResolve`（純新增）。
+- ✅ 試跑（隔離複本，ROOM 沒動）：三種結果都驗過——對 1 題：打空、心 2→1；對 4 題：怪 10→8；對 3 題：怪 8→7、心不變；跳過不算進 5 題；手機版面正常、無錯誤。⚠️ 我的測試腳本第一次寫錯（拿 1 跟 true 比），答題順序亂了，但三個分支剛好都跑到，結果都對。
+
 #### 三之二十七、10-02：第38課筆記（Unité 10 收尾＋Unité 11 De jolis parcours）＋連動
 
 - **來源**：`~/Desktop/1002/` 9 張截圖（含 Owen 手寫）＋整堂逐字稿；頁碼對快取 → **p.148–157**（H 旅遊 App／pronoms démonstratifs／L'essentiel／Atelier Guadeloupe／Unité 11 扉頁＋A formation／B Lettre à ce prof／mise en relief／Les études）。⛔ 沒上到：p.154 聽力題、p.155、p.156 練習4、p.157 練習2–4（老師：下次）。🎙 老師下次要帶小書來讀。

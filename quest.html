@@ -467,6 +467,21 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 .gd-wl{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px}
 .gd-w{padding:6px 10px; border-radius:10px; border:1px solid var(--line2); background:var(--panel); color:#f3ecd8; font-family:Georgia,serif; cursor:pointer; display:flex; flex-direction:column; align-items:flex-start}
 .gd-w small{font-family:inherit; color:var(--faint); font-size:.7rem}
+
+/* ⚔️ 陰陽連擊（戰鬥面板裡的小卡） */
+.gn-dots{display:flex; gap:8px; justify-content:center; margin-bottom:10px}
+.gn-dots span{width:14px; height:14px; border-radius:50%; border:2px solid var(--line2)}
+.gn-dots span.now{border-color:var(--gold)}
+.gn-dots span.ok{background:#5fbf7f; border-color:#5fbf7f}
+.gn-dots span.no{background:#d07050; border-color:#d07050}
+.gn-card{border-radius:16px; border:2px solid var(--line2); background:var(--panel); padding:14px 12px; text-align:center; min-height:150px; display:flex; flex-direction:column; justify-content:center}
+.gn-card.good{border-color:#5fbf7f; background:#14261b}
+.gn-card.bad{border-color:#d07050; background:#2a1610}
+.gn-card .gd-pic{font-size:2.6rem}
+.gn-card .gd-word{font-size:1.6rem}
+#panel .gd-btns{margin-top:12px; max-width:none}
+#panel .gd-b{padding:14px 0; font-size:1.4rem}
+#panel .gd-sub{margin-top:8px; min-height:0; text-align:center}
 </style>
 </head>
 <body>
@@ -561,6 +576,7 @@ function questionsFor(ls){
 var MOVES={
   hit:  {id:'hit',  name:'普通攻擊', dmg:1,   type:'choose', sec:'不限時', why:'拼句（有陷阱）或選擇題'},   /* 2026-09-20：Duolingo 式拼句（題源：中翻法題＋句庫＋筆記例句）與選擇題混合 */
   heavy:{id:'heavy',name:'重擊',    dmg:1.5, type:'gender', sec:'20 秒', why:'陰陽性，錯一個字母就不算'},
+  genus:{id:'genus',name:'陰陽連擊', dmg:2,   type:'genre5', sec:'5 題', why:'un 還是 une？對 4 題全中、3 題半傷'},   /* 10-02 Owen 指定，見 askGenus */
   blast:{id:'blast',name:'大招',    dmg:2,   type:'fill',   sec:'30 秒', why:'把空格打出來'},
   table:{id:'table',name:'填表',    dmg:2.5, type:'table',  sec:'不限時', why:'動詞變位表：現在・過去・未來・條件'},   /* 2026-09-20 Owen：填表格那個遊戲搬進來；資料取自 verbs_full.js */
   chant:{id:'chant',name:'詠唱',    dmg:3,   type:'trans',  sec:'60 秒', why:'中翻法，整句自己打'},
@@ -3513,10 +3529,11 @@ function showCmds(){
   if(B.forceMove && !B.forcedShown){    /* 考驗節點：開場就推薦最重的招（⛔ 但不強制，降級鍵還在） */
     B.forcedShown=1;
   }
-  var btns=(B.tt?B.towerMoves:((B.tower&&B.towerMove)?[B.towerMove]:['hit','heavy','blast','table','chant','ear'])).map(function(k){   /* 塔：只列這個結構有的招式；shout 不進塔，只在地城/副本/主線 */
+  var btns=(B.tt?B.towerMoves:((B.tower&&B.towerMove)?[B.towerMove]:['hit','genus','heavy','blast','table','chant','ear'])).map(function(k){   /* 塔：只列這個結構有的招式；shout 不進塔，只在地城/副本/主線 */
     var m=MOVES[k];
     var n=(m.type==='exam') ? 1 : (m.type==='table') ? ((typeof VERBS_FULL!=='undefined'&&typeof drillForms==='function')?1:0) : (m.type==='listen') ? ((typeof SENTENCES!=='undefined'&&SENTENCES.length>=4)?1:0)
         : (m.type==='speak') ? ((speechSupported()&&typeof SENTENCES!=='undefined'&&SENTENCES.length>=1)?1:0)   /* B4：不支援就不出現，⛔ 不報錯 */
+        : (m.type==='genre5') ? (genderPool().length>=10?1:0)
         : movePool(ls,m.type).length;
     if(!n) return '';
     return '<button class="cmd" onclick="useMove(\''+k+'\')">'+img(k==='chant'?SP.wand:(k==='blast'?SP.potion:(k==='table'?SP.chest:(k==='ear'||k==='shout'?SP.card:SP.sword))))+
@@ -3563,6 +3580,7 @@ function useMove(k){
   }
   B.isRedo=false;
   if(m.type==='table'){ B.move=m; return askTable(m); }
+  if(m.type==='genre5'){ return askGenus(m); }
   var rd=redoDue(m.type);                                   /* 「沒答對要練到會」：之前錯的題，隔一兩題就換個排列再來一次 */
   if(rd){ B.isRedo=true; B.move=rd.m; return askByType(rd.q, rd.m); }
   var cur=(B&&B.lessons)?B.lessons:ls, wantOld=Math.random()<oldRatio();   /* P1 老朋友：這一題要不要從「不在目前課次」的舊內容挑到期的 */
@@ -3801,6 +3819,91 @@ function typeCheck(){
 }
 
 /* 傷害數字（⚠️ 2026-09-12：改寫招式時被我連帶刪掉，console 會噴 floatDmg is not defined） */
+/* ════════════════════════════════════════════════════════════════
+   ⚔️ 陰陽連擊（2026-10-02 Owen：「這個遊戲可以直接加入一般，比如說普攻，連續五題對四題就算過關，
+      只對三題扣一半血，低於就沒過」→ 確認是「一招連擊」、原本的重擊保留）
+   · 一招＝連續 5 題 un／une（字庫、出題權重、紀錄全部跟小遊戲共用：genderPool／genderPick／clb7_gender_seen）
+   · 對 4–5 題 → 全額傷害；對 3 題 → 半傷害、不被反擊；2 題以下 → 打空、被反擊掉 1 顆心（後果在角色身上）
+   · ⏭ 跳過＝換一題補上，不算對也不算錯（跳過鐵律）；每題答完也會 growRec（站穩的字讓寵物長大）
+   · ⛔ 不進塔（塔有自己的結構題）
+   ════════════════════════════════════════════════════════════════ */
+function askGenus(m){
+  B.move=m; B.curQ=null;
+  B.gn={ m:m, i:0, ok:0, marks:[], recent:[], cur:null, t0:0, lock:false };
+  genusNext();
+}
+function genusNext(){
+  var G=B&&B.gn; if(!G) return;
+  if(G.i>=5) return genusResolve();
+  var keep=GG; GG={ recent:G.recent };                 /* genderPick 用 GG.recent 避免重複——借用一下 */
+  var it=genderPick(); GG=keep;
+  G.cur=it; G.lock=false; G.recent.push(it.n); if(G.recent.length>8) G.recent.shift();
+  var showZh=(G.i%2===0), pic=GENDER_EMOJI[it.n] && Math.random()<.5 ? GENDER_EMOJI[it.n] : '';
+  document.getElementById('panel').innerHTML=
+    '<div class="gn-dots">'+[0,1,2,3,4].map(function(k){ var x=G.marks[k]; return '<span class="'+(x===1?'ok':x===0?'no':(k===G.i?'now':''))+'"></span>'; }).join('')+'</div>'+
+    '<div class="gn-card"><div class="gd-pic">'+pic+'</div><div class="gd-word'+(showZh?' zh':' fr')+'">'+esc(showZh?it.zh:it.n)+'</div>'+
+    (showZh?'<div class="gd-kind">想一下法文怎麼說，再選</div>':'')+'<div class="gd-res"></div><div class="gd-hint"></div></div>'+
+    '<div class="gd-btns"><button class="gd-b m" onclick="genusAns(\'m\')">un</button><button class="gd-b f" onclick="genusAns(\'f\')">une</button></div>'+
+    '<div class="gd-sub"><button class="gd-skip" onclick="genusSkip()">⏭ 這題跳過</button></div>';
+  G.t0=performance.now();
+}
+function genusAns(g){
+  var G=B&&B.gn; if(!G||G.lock||!G.cur) return; G.lock=true;
+  var it=G.cur, ok=(g===it.g), ms=performance.now()-G.t0, whole=(it.g==='f'?'une ':'un ')+it.n;
+  var o=genderSeen(), r=o[it.n]||{c:0,w:0};
+  if(ok){ r.c=(r.c||0)+1; r.lw=0; if(ms<2000) r.fast=(r.fast||0)+1; } else { r.w=(r.w||0)+1; r.lw=1; }
+  r.last=Date.now(); o[it.n]=r; try{ localStorage.setItem('clb7_gender_seen',JSON.stringify(o)); }catch(e){}
+  if(typeof growRec==='function') growRec({ q:'un／une '+it.n, a:whole, srcId:'g:'+it.n }, ok);
+  G.marks[G.i]=ok?1:0; if(ok) G.ok++; G.i++;
+  var card=document.querySelector('.gn-card');
+  card.classList.add(ok?'good':'bad');
+  card.querySelector('.gd-res').textContent=whole;
+  if(!ok) card.querySelector('.gd-hint').textContent=genderHint(it);
+  document.querySelector('.gd-btns').style.visibility='hidden';
+  document.querySelector('.gd-sub').style.visibility='hidden';
+  say(whole); sfx(ok?'confirmation_001':'error_004');
+  setTimeout(genusNext, ok?650:1700);
+}
+function genusSkip(){ var G=B&&B.gn; if(!G||G.lock) return; sfx('click_001'); genusNext(); }   /* 換一題補上，不算對也不算錯 */
+function genusResolve(){
+  var G=B.gn, m=G.m, n=G.ok; B.gn=null;
+  var hero=document.getElementById('hero'), foe=document.getElementById('foe');
+  var dots='<div class="gn-dots">'+G.marks.map(function(x){ return '<span class="'+(x?'ok':'no')+'"></span>'; }).join('')+'</div>';
+  var msg;
+  if(n>=3){
+    var full=(n>=4); B.combo=full?B.combo+1:B.combo;
+    var dmg=Math.round(((full?m.dmg:m.dmg*0.5) + (full&&B.combo>=3?1:0) + trainBonus().dmg)*10)/10;
+    hero.classList.add('act'); setTimeout(function(){ hero.classList.remove('act'); },420);
+    setTimeout(function(){
+      foe.classList.add('hit'); sfx('confirmation_001'); floatDmg('-'+dmg);
+      B.hp=Math.max(0,B.hp-dmg);
+      var bar=document.getElementById('fbar'); if(bar) bar.style.width=Math.round(B.hp/B.maxHp*100)+'%';
+      setTimeout(function(){ foe.classList.remove('hit'); },340);
+    },180);
+    S.gold=(S.gold||0)+(full?4:2); S.xp=(S.xp||0)+(full?12:6);
+    msg=full ? '<b style="color:var(--green)">'+esc(m.name)+' 全中！</b>'+(B.combo>1?'　連擊 ×'+B.combo:'')
+             : '<b style="color:var(--gold)">'+esc(m.name)+' 擦到一半</b><br><span style="color:var(--gold)">對 3 題——半個傷害，沒有被反擊</span>';
+  } else {
+    B.combo=0;
+    setTimeout(function(){ hero.classList.add('ouch'); sfx('error_004'); floatDmg('-1',true);
+      setTimeout(function(){ hero.classList.remove('ouch'); },360); },160);
+    S.run.hp=Math.max(0,S.run.hp-1); S.xp=(S.xp||0)+2;
+    msg='<b style="color:var(--red)">打空了，被反擊</b><br><span style="color:var(--dim)">這幾個字會更常回來</span>';
+  }
+  save(S); renderHud();
+  setTimeout(function(){
+    var panel=document.getElementById('panel');
+    panel.innerHTML=dots+'<div class="fb">'+msg+'</div>'+
+      '<button class="next" id="nx">'+(S.run.hp<=0?'你倒下了…':(B.hp<=0?'牠倒下了':'繼續'))+'</button>';
+    document.getElementById('nx').addEventListener('click',function(){
+      sfx('click_001');
+      if(S.run.hp<=0){ save(S); renderHud(); renderMap(); return; }
+      if(B.hp<=0) return redoGate();
+      type(esc(B.name)+' 還站著。', showCmds);
+    });
+  },700);
+}
+
 function floatDmg(txt, mine){
   var scene=document.querySelector('.scene'); if(!scene) return;
   var d=document.createElement('div'); d.className='dmg'+(mine?' you':''); d.textContent=txt;
