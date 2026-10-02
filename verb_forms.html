@@ -448,10 +448,23 @@ td.mk { background: #2a1c0c; color: #f0c060 !important; box-shadow: inset 2px 0 
   .rt .ir { min-width: 7em; }
 }
 .ex-in { display: none; }
-/* iPad 直放以下：例子收進「怎麼變」那格，表格才不用橫捲 */
-@media (max-width: 900px) {
+/* iPad 以下：例子收進「怎麼變」那格，表格才不用橫捲（每格下方加了例子之後，1024 也放不下） */
+@media (max-width: 1080px) {
   .rt td.exc, .rt th.exh { display: none; }
   .ex-in { display: block; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #3a3018; font-family: Georgia, serif; color: #c8c0b0; line-height: 1.6; }
+}
+.vt td.rare { color: #56607a; }
+.vt td.rare.mk { color: #8a6a40 !important; background: #1a130a; }
+.vt thead th.rare .zh, .vt thead th.rare .frn { color: #56607a; }
+.rt td.e .cx { display: block; margin-top: 3px; font-size: 0.9em; font-weight: 400; color: #e8e2d4; white-space: nowrap; }
+.rt td.e .cx .en { font-weight: 700; }
+.rt td.e .cx .xt { color: #b8b0a0; }
+.rt td.how .vb { display: block; margin-top: 3px; font-size: 0.78em; color: #8a8270; font-family: Georgia, serif; }
+@media (max-width: 900px) {
+  .rt th, .rt td { padding: 6px 3px; }
+  .rt th.tn { min-width: 5.4em; }
+  .rt td.how { min-width: 7em; }
+  .rt td.e .cx { font-size: 0.82em; }
 }
 .rt-key { font-size: 0.78em; color: #8a8270; margin-top: 8px; }
 </style>
@@ -886,23 +899,30 @@ function cellText(t, i, f) {
   if (t.imper) return f + ' !';
   return i === 0 && vowelStart(f) ? "j'" + f : f;
 }
+/* 10-02（Owen：「查動詞那個，不常見不常用的用灰字」）
+   判準＝語料：自己講／寫（pct）和聽到／讀到（rec）都不到 1% → 灰。⛔ 不憑感覺；沒有語料數字的（命令式）不灰。 */
+function isRare(id) {
+  const m = metaOf(id), n = x => x == null ? null : (x === '≈0' ? 0 : parseFloat(x));
+  const vals = [n(m.pct), n(m.rec)].filter(x => x != null);
+  return vals.length > 0 && Math.max(...vals) < 1;
+}
 function renderVerbTable(v) {
   const all = allConj(v), T = {}; all.forEach(t => T[t.id] = t);
   const cols = ORDER.filter(id => T[id] && picked.has(id)).map(id => T[id]);
   window._cols = cols;
   if (!cols.length) { document.getElementById('tenses').innerHTML = '<div class="scope-hint">一個時態都沒選——到最上面「📌 要看哪些時態」點幾個加回來。</div>'; return; }
   const head = cols.map((t, ci) => { const n = colNote(v, t);
-    return `<th onclick="ttsCol(${ci})" title="點一下唸這一欄"><span class="zh">${esc(t.name.replace(/（.*）/, ''))}</span><span class="frn">${esc(t.fr)}</span>${
+    return `<th class="${isRare(t.id) ? 'rare' : ''}" onclick="ttsCol(${ci})" title="點一下唸這一欄"><span class="zh">${esc(t.name.replace(/（.*）/, ''))}</span><span class="frn">${esc(t.fr)}</span>${
       t.pre ? '<span class="que">que…</span>' : ''}${n ? `<span class="cn">${esc(n)}</span>` : ''}</th>`; }).join('');
   const rows = PERSON_LABEL.map((p, i) => `<tr><th class="pers">${p}</th>${cols.map(t => {
     const m = cellMark(v, t, i);
-    return `<td class="${m ? 'mk' : ''}${t.forms[i] == null ? ' na' : ''}"${m ? ` title="${esc(m)}"` : ''}>${esc(cellText(t, i, t.forms[i]))}</td>`; }).join('')}</tr>`).join('');
+    return `<td class="${m ? 'mk' : ''}${t.forms[i] == null ? ' na' : ''}${isRare(t.id) ? ' rare' : ''}"${m ? ` title="${esc(m)}"` : ''}>${esc(cellText(t, i, t.forms[i]))}</td>`; }).join('')}</tr>`).join('');
   const O = ovItems(v.imperso ? VF('parler') : v);
   const notes = v.imperso ? ['無人稱動詞：只有 il 這一格'] :
     [...new Set(Object.values(O).filter(o => o.irr).map(o => '⚠️ ' + o.irr).concat(Object.values(O).filter(o => o.note).map(o => 'ℹ️ ' + o.note)))];
   document.getElementById('tenses').innerHTML = `
     <div class="vt-wrap"><table class="vt"><thead><tr><th class="pers"></th>${head}</tr></thead><tbody>${rows}</tbody></table></div>
-    <div class="vt-key"><span class="mkdot"></span>橘底＝不照規則，要特別記（點格子看原因）　點時態名稱可以聽整欄</div>
+    <div class="vt-key"><span class="mkdot"></span>橘底＝不照規則，要特別記（點格子看原因）　<span style="color:#56607a">灰字</span>＝考試裡很少用（說寫、聽讀都不到 1%）　點時態名稱可以聽整欄</div>
     ${notes.length ? `<div class="vt-notes">${notes.map(n => `<div>${esc(n)}</div>`).join('')}</div>` : ''}`;
 }
 function ttsCol(ci) {
@@ -990,49 +1010,55 @@ function ttsSay(text) {
   speechSynthesis.speak(u);
 }
 function ruleRows(id) {
-  const P = VF('parler'), F = VF('finir'), A = VF('attendre'), PR = VF('prendre');
+  /* 10-02 第六輪（Owen：「變法跟規則很難跟實際應用連在一起，舉例可以在每格下方」）
+     → 每一格字尾下面直接放「例子動詞」套進去的完整字：parl|ons。例子欄只留別的動詞與要背的。 */
+  const P = VF('parler');
   const T = inf => { const o = {}; allConj(VF(inf)).forEach(t => o[t.id] = t); return o; };
   const en = (ends, mute) => ends.map((e, i) => ({ t: e === '' ? '—' : '-' + e, cls: (mute || []).includes(i) ? 'mute' : '' }));
   const aux = forms => forms.map(f => ({ t: f, cls: 'aux' }));
+  /* 每格下方的例子：詞幹白、字尾金（不發音的灰） */
+  const xs = (stem, ends, mute) => ends.map((e, i) => sx(stem, e, (mute || []).includes(i)));
+  const xa = (forms, tail) => forms.map(() => `<span class="xt">＋ ${esc(tail)}</span>`);   /* 上面已經是 ai／as…，下面只補後半 */
   const ex = list => list.map(x => esc(x)).join('<br>');
   const IRR = (txt, n) => `<a onclick="goIrr()">${esc(txt)}${n ? `（${n} 個）` : ''} →</a>`;
   const nFut = VERBS_FULL.filter(v => !v.imperso && v.fut !== regFut(v)).length;
   const nPP = VERBS_FULL.filter(v => !v.imperso && REG_PP(v) !== v.pp).length;
   const pf = (v, tid, i) => display(T(v.inf)[tid], i, T(v.inf)[tid].forms[i]);
+  const M4 = [0,1,2,5];
   switch (id) {
   case 'present': return [
-    { sub:'-er', how:'去掉 -er ＋', cells: en(['e','es','e','ons','ez','ent'], [0,1,2,5]), ex: ex(['je parle', 'nous parlons']),
+    { sub:'-er', how:'去掉 -er ＋', vb:'parler', cells: en(['e','es','e','ons','ez','ent'], M4), xs: xs('parl', ['e','es','e','ons','ez','ent'], M4),
       ir: IRR('常用動詞多半要整組背') },
-    { sub:'-ir', how:'去掉 -ir ＋', cells: en(['is','is','it','issons','issez','issent']), ex: ex(['je finis', 'nous finissons']) },
-    { sub:'-re', how:'去掉 -re ＋', cells: en(['s','s','','ons','ez','ent']), ex: ex(["j'attends", 'il attend']) } ];
+    { sub:'-ir', how:'去掉 -ir ＋', vb:'finir', cells: en(['is','is','it','issons','issez','issent']), xs: xs('fin', ['is','is','it','issons','issez','issent']) },
+    { sub:'-re', how:'去掉 -re ＋', vb:'attendre', cells: en(['s','s','','ons','ez','ent']), xs: xs('attend', ['s','s','','ons','ez','ent']) } ];
   case 'imperatif': return [
-    { how:'現在式的 <b>tu／nous／vous</b>，拿掉主詞', cells: [{t:'',cls:'na'}, {t:'Parle !',cls:'aux'}, {t:'',cls:'na'}, {t:'Parlons !',cls:'aux'}, {t:'Parlez !',cls:'aux'}, {t:'',cls:'na'}],
+    { how:'現在式的 <b>tu／nous／vous</b>，拿掉主詞', vb:'parler', cells: [{t:'',cls:'na'}, {t:'Parle !',cls:'aux'}, {t:'',cls:'na'}, {t:'Parlons !',cls:'aux'}, {t:'Parlez !',cls:'aux'}, {t:'',cls:'na'}],
       ex: ex(['Prends !', 'Finis !']), ir: '-er 的 tu 去 s：<b>Parle !</b><br>' + IRR('要背的') } ];
   case 'passe-compose': return [
-    { how:'<b>avoir</b> 現在式 ＋ 過去分詞<br><span style="font-size:.85em">過去分詞 <b>-er→é</b> <b>-ir→i</b> <b>-re→u</b></span>', cells: aux(VF('avoir').pres),
-      ex: ex(["j'ai parlé", 'nous avons fini', 'elle est allée']), ir: '移動類、反身動詞用 <b>être</b><br>' + IRR('過去分詞要背', nPP) } ];
+    { how:'<b>avoir</b> 現在式 ＋ 過去分詞<br><span style="font-size:.85em">過去分詞 <b>-er→é</b> <b>-ir→i</b> <b>-re→u</b></span>', vb:'parler', cells: aux(VF('avoir').pres),
+      xs: xa(VF('avoir').pres, 'parlé'), ex: ex(['nous avons fini', 'elle est allée']), ir: '移動類、反身動詞用 <b>être</b><br>' + IRR('過去分詞要背', nPP) } ];
   case 'imparfait': return [
-    { how:'現在式 <b>nous</b> 去掉 <b>-ons</b> ＋', cells: en(END.imparfait, [0,1,2,5]), ex: ex(['je parlais', 'nous finissions', 'je prenais']),
+    { how:'現在式 <b>nous</b> 去掉 <b>-ons</b> ＋', vb:'parler', cells: en(END.imparfait, M4), xs: xs('parl', END.imparfait, M4), ex: ex(['nous finissions', 'je prenais']),
       ir: '只有 être：<b>j\'étais</b>' } ];
   case 'futur-proche': return [
-    { how:'<b>aller</b> 現在式 ＋ 原形', cells: aux(VF('aller').pres), ex: ex(['je vais parler', 'nous allons partir']) } ];
+    { how:'<b>aller</b> 現在式 ＋ 原形', vb:'parler', cells: aux(VF('aller').pres), xs: xa(VF('aller').pres, 'parler'), ex: ex(['nous allons partir']) } ];
   case 'passe-recent': return [
-    { how:'<b>venir</b> 現在式 ＋ <b>de</b> ＋ 原形', cells: aux(VF('venir').pres), ex: ex(['je viens de finir', "il vient d'arriver"]), ir: '母音前 de → <b>d\'</b>' } ];
+    { how:'<b>venir</b> 現在式 ＋ <b>de</b> ＋ 原形', vb:'finir', cells: aux(VF('venir').pres), xs: xa(VF('venir').pres, 'de finir'), ex: ex(["il vient d'arriver"]), ir: '母音前 de → <b>d\'</b>' } ];
   case 'futur-simple': return [
-    { how:'<b>原形</b>（-re 去掉 e）＋', cells: en(END.futur), ex: ex(['je parlerai', 'je prendrai']), ir: IRR('詞幹要背', nFut) } ];
+    { how:'<b>原形</b>（-re 去掉 e）＋', vb:'parler', cells: en(END.futur), xs: xs('parler', END.futur), ex: ex(['je prendrai']), ir: IRR('詞幹要背', nFut) } ];
   case 'conditionnel': return [
-    { how:'<b>未來式的詞幹</b> ＋ 未完成過去式的字尾', cells: en(END.conditionnel, [0,1,2,5]), ex: ex(['je parlerais', 'je voudrais', 'on pourrait']),
+    { how:'<b>未來式的詞幹</b> ＋ 未完成過去式的字尾', vb:'parler', cells: en(END.conditionnel, M4), xs: xs('parler', END.conditionnel, M4), ex: ex(['je voudrais', 'on pourrait']),
       ir: '詞幹跟未來式一樣<br>' + IRR('要背的', nFut) } ];
   case 'subjonctif': return [
-    { how:'現在式 <b>ils</b> 去掉 <b>-ent</b> ＋<br><span style="font-size:.85em">nous／vous ＝ 未完成過去式</span>', cells: en(END.subj, [0,1,2,5]),
-      ex: ex(['que je parle', 'que je prenne', 'que nous prenions']), ir: IRR('要背的', 7) } ];
-  case 'plus-que-parfait': return [{ how:'<b>avoir</b> <b>未完成過去式</b> ＋ 過去分詞', cells: aux(imparfait(VF('avoir'))), ex: ex([pf(P, 'plus-que-parfait', 0), pf(VF('aller'), 'plus-que-parfait', 0)]) }];
-  case 'futur-anterieur': return [{ how:'<b>avoir</b> <b>未來式</b> ＋ 過去分詞', cells: aux(futur(VF('avoir'))), ex: ex([pf(P, 'futur-anterieur', 0)]) }];
-  case 'conditionnel-passe': return [{ how:'<b>avoir</b> <b>條件式</b> ＋ 過去分詞', cells: aux(conditionnel(VF('avoir'))), ex: ex(["j'aurais pu", 'il aurait dû']) }];
-  case 'subjonctif-passe': return [{ how:'<b>avoir</b> <b>虛擬式</b> ＋ 過去分詞', cells: aux(subjonctif(VF('avoir'))), ex: ex([pf(P, 'subjonctif-passe', 0)]) }];
+    { how:'現在式 <b>ils</b> 去掉 <b>-ent</b> ＋<br><span style="font-size:.85em">nous／vous ＝ 未完成過去式</span>', vb:'parler', cells: en(END.subj, M4), xs: xs('parl', END.subj, M4),
+      ex: ex(['que je prenne', 'que nous prenions']), ir: IRR('要背的', 7) } ];
+  case 'plus-que-parfait': { const f = imparfait(VF('avoir')); return [{ how:'<b>avoir</b> <b>未完成過去式</b> ＋ 過去分詞', vb:'parler', cells: aux(f), xs: xa(f, 'parlé'), ex: ex([pf(VF('aller'), 'plus-que-parfait', 0)]) }]; }
+  case 'futur-anterieur': { const f = futur(VF('avoir')); return [{ how:'<b>avoir</b> <b>未來式</b> ＋ 過去分詞', vb:'parler', cells: aux(f), xs: xa(f, 'parlé') }]; }
+  case 'conditionnel-passe': { const f = conditionnel(VF('avoir')); return [{ how:'<b>avoir</b> <b>條件式</b> ＋ 過去分詞', vb:'parler', cells: aux(f), xs: xa(f, 'parlé'), ex: ex(["j'aurais pu", 'il aurait dû']) }]; }
+  case 'subjonctif-passe': { const f = subjonctif(VF('avoir')); return [{ how:'<b>avoir</b> <b>虛擬式</b> ＋ 過去分詞', vb:'parler', cells: aux(f), xs: xa(f, 'parlé') }]; }
   case 'passe-simple': return [
     { how:'書面才有，<b>看得懂就好</b>', cells: [{t:'',cls:'na'},{t:'',cls:'na'},{t:'-a／-it／-ut',cls:''},{t:'',cls:'na'},{t:'',cls:'na'},{t:'-èrent／-irent',cls:''}],
-      ex: ex(['il parla', 'il fit', 'il fut']) } ];
+      xs: [null, null, sx('parl', 'a') + '<br>' + sx('f', 'it') + '<br>' + sx('f', 'ut'), null, null, sx('parl', 'èrent')] } ];
   }
   return [];
 }
@@ -1047,17 +1073,17 @@ function renderRules() {
     const rows = ruleRows(id), n = rows.length;
     let h = rows.map((r, k) => `<tr${k ? '' : ` id="rr-${id}" class="grp-first"`}>
       ${k ? '' : `<th class="tn" rowspan="${n}">${tName(T[id])}</th>`}
-      <td class="how">${r.sub ? `<b class="fam-l">${r.sub}</b> ` : ''}${r.how}<div class="ex-in">${r.ex}${r.ir ? `<div class="ir">${r.ir}</div>` : ''}</div></td>
-      ${r.cells.map(c => `<td class="e ${c.cls}">${esc(c.t)}</td>`).join('')}
-      <td class="ex exc">${r.ex}${r.ir ? `<div class="ir">${r.ir}</div>` : ''}</td></tr>`).join('');
+      <td class="how">${r.sub ? `<b class="fam-l">${r.sub}</b> ` : ''}${r.how}${r.vb ? `<span class="vb">例 ${esc(r.vb)}</span>` : ''}${r.ex || r.ir ? `<div class="ex-in">${r.ex || ''}${r.ir ? `<div class="ir">${r.ir}</div>` : ''}</div>` : ''}</td>
+      ${r.cells.map((c, i) => `<td class="e ${c.cls}">${esc(c.t)}${r.xs && r.xs[i] ? `<span class="cx">${r.xs[i]}</span>` : ''}</td>`).join('')}
+      <td class="ex exc">${r.ex || ''}${r.ir ? `<div class="ir">${r.ir}</div>` : ''}</td></tr>`).join('');
     if (RULE_USES[id]) h += `<tr class="usetr"><td colspan="9" class="usec"><div class="uses">${RULE_USES[id].map(([k, fr, zh]) =>
       `<div class="uitem" onclick="ttsSay(this.querySelector('.uf').textContent)"><span class="uk">${esc(k)}</span><span class="uf">${fr}</span><span class="uz">${esc(zh)}</span></div>`).join('')}</div></td></tr>`;
     return h;
   }).join('');
   document.getElementById('rules').innerHTML = `<div class="rt-wrap"><table class="rt">
-    <thead><tr><th class="tn">時態</th><th>怎麼變</th>${['je','tu','il / elle','nous','vous','ils / elles'].map(p => `<th class="pc">${p}</th>`).join('')}<th class="exh">例子／要背的</th></tr></thead>
+    <thead><tr><th class="tn">時態</th><th>怎麼變</th>${['je','tu','il / elle','nous','vous','ils / elles'].map(p => `<th class="pc">${p}</th>`).join('')}<th class="exh">其他例子／要背的</th></tr></thead>
     <tbody>${body}</tbody></table></div>
-    <div class="rt-key"><span style="color:#f0c060;font-weight:700">金色</span>＝要加的字尾　<span style="color:#6a6450">灰色</span>＝不發音（四個唸起來一樣）　白色＝直接用這個字　條件式、虛擬式下面的例句點了會唸</div>`;
+    <div class="rt-key">每格下面＝例子動詞套進去的樣子　<span style="color:#f0c060;font-weight:700">金色</span>＝要加的字尾　<span style="color:#6a6450">灰色</span>＝不發音（四個唸起來一樣）　白色＝直接用這個字　條件式、虛擬式下面的例句點了會唸</div>`;
 }
 
 function goRule(id) {
