@@ -16,7 +16,7 @@
 
 | 環節 | 依據 | 強度 |
 |---|---|---|
-| 先看懂一次再蓋住 | Latimier 2019（後測 d=.74 vs 前測 .35）；Pan 2019（學習依序、練習隨機） | 中 |
+| 先看懂一次再蓋住 | Latimier 2019（⭐ 10-02 讀全文：N=285 法語母語成人、科學散文選擇題、有回饋、隔 7 天；考過的題 後測 d=.74 vs 前測 .35；全部題 後測 .62、前測 .22 不顯著；沒考過的題 前測 −.01）；Pan 2019（學習依序、練習隨機） | 中 |
 | 每一格都要被叫出 | 預測試統合分析：只對被問到的那題有效，沒問的 g≈0 | 中強 |
 | 練習要隨機、跨天多次 | Pan 2019（跨週才有交錯優勢）；Nakata & Suzuki 2019（學過但會混的 L2 文法 → 交錯有利）；Yang 2021（≥3 次提取 g .64） | 中強 |
 | 產出（打字）不是選擇 | R30 Erlam 2003（法文產出組勝）；Yang 2021 題型相符 | 中強 |
@@ -40,14 +40,14 @@
 3. `verb_sprint` 的 60 秒倒數要不要改成「一輪 8 題、不計時」。
 4. 打字快 ≠ 講得快：口說側的驗證交給既有 4/3/2／自我錄音，dashboard 分開看。
 
-## 五、請 Owen 幫抓（四篇共 25 篇，這裡只列最值得的 5 篇）
+## 五、請 Owen 幫抓（10-02 已取得 2／5；仍缺 1、2、5）（四篇共 25 篇，這裡只列最值得的 5 篇）
 
 | 優先 | 論文 | 為什麼 | 連結 |
 |---|---|---|---|
 | 1 | McManus & Marsden 2018（法語學習者 N=53，自動化訊號） | 最貼近 Owen 的對象 | https://www.cambridge.org/core/journals/applied-psycholinguistics （標題：Signatures of automaticity during practice…） |
 | 2 | Pan 等 2019, *JARMAC*（西文變位：系統＋隨機交錯） | 「依序學、隨機練」的直接依據 | https://www.sciencedirect.com/science/article/abs/pii/S2211368119301329 |
-| 3 | Meunier & Marslen-Wilson 2004（法文規則 vs 不規則變位） | 法文本身的關鍵研究 | http://www.ddl.cnrs.fr/fulltext/Meunier/Meunier_2004.pdf |
-| 4 | Latimier, Riegert & Peyre 2019, *npj Sci. Learn.*（開放取用） | 先考 vs 後考的數字 | DOI 10.1038/s41539-019-0053-1 |
+| 3 ✅ 10-02 已取得、已讀全文（結論不變） | Meunier & Marslen-Wilson 2004（法文規則 vs 不規則變位） | 法文本身的關鍵研究 | http://www.ddl.cnrs.fr/fulltext/Meunier/Meunier_2004.pdf |
+| 4 ✅ 10-02 已取得、已讀全文（結論不變，強度仍中） | Latimier et al. 2019, *npj Sci. Learn.*（開放取用） | 先考 vs 後考的數字 | DOI 10.1038/s41539-019-0053-1 |
 | 5 | St. Hilaire et al. 2024, *PB&R*（預測試統合分析） | 有沒有「規則型材料」的調節變項 | DOI 10.3758/s13423-023-02353-8 |
 
 其餘 20 篇見各篇第六節。
