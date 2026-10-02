@@ -21,7 +21,7 @@
 |---|---|
 | **考試** | **2027-04-18 前哨戰／診斷考｜2027-09-19 正場**。⚠️ 2027 場次官方**尚未公布**，日期是照 2026（2/8、4/19、9/20、12/20，全是該月第三個星期日）推的。**法協 02-2364-8833 那通電話還沒打。** |
 | **考哪個** | **TCF Canada**（台北法協有考，NT$8,000 四科）。TEF Canada 台灣**無考場**，要考得飛東京 |
-| **程度** | A2，**第 37 課**（10-01 另做：寵物成長只認站穩，見「三之二十」）（09-29 筆記＋連動完成，見「三之十九」；第36課見「三之十八」）。第 34 課（筆記＋九項連動完成；Anki 第33課 42 張、第34課 **44 張**已產出、待匯入（`~/Desktop/anki_l33_auto.tsv`、`~/Desktop/anki_l34_auto.tsv`），收藏檔 711 張）。2026-05 開始學法文 |
+| **程度** | A2，**第 38 課**（10-02 筆記＋連動完成，見「三之二十七」）。第 37 課（10-01 另做：寵物成長只認站穩，見「三之二十」）（09-29 筆記＋連動完成，見「三之十九」；第36課見「三之十八」）。第 34 課（筆記＋九項連動完成；Anki 第33課 42 張、第34課 **44 張**已產出、待匯入（`~/Desktop/anki_l33_auto.tsv`、`~/Desktop/anki_l34_auto.tsv`），收藏檔 711 張）。2026-05 開始學法文 |
 | **口說語言島** | ⭐ **Phase 0 八座全滿**（AC1/2/3/5/7/8/11/15），每座 169–225 字 / 78–103 秒，中文母本 `source_zh` 都在。`AC8` 的 follow-up gap **掛零** |
 | **考試材料** | 三包全部整理完。**Tâche 3 = 167 議題／245 變體**（xlsx 八分頁）＋ 119 題雙語；⭐ **Tâche 2 = 160 條情境**（不是 20，見 09-02 校準）；兩本 Ellipses 正式教科書 |
 | **系統** | `mock.html` 已驗收（44+44 套模擬考可用）。dashboard／tracker 倒數已對齊新日期 |
@@ -4864,6 +4864,19 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
     → `TENSE_META` 加 `rec`／`recNote`，卡片與 chip 改成**兩軸並列**（🗣 自己要講／要寫　👂 聽到／讀到要懂）。⛔ **以後引用這些百分比一定要講清楚是哪一側。**
     ⭐ 順帶進頁面的實用細節：`conditionnel passé` 高度集中在 `aurais pu／aurait dû`（固定塊不是時態）；`futur antérieur` 15 個 token 裡 `aura fallu` 佔 9 個；`subjonctif passé` 對話裡 5 個但**選項裡 15 個**（答題才遇到）；`passé simple` 閱讀題幹 **0 個**、真實書面散文也只 0.71%，跟直覺相反。
 - ⏸ **沒做／下一步**：複合時態（plus-que-parfait 等）還沒有 verb_sprint 模式；Owen 說的「**自訂勾選哪些單字的哪些變化**」目前只做到「一個動詞 × 多個時態」，**還沒做「多個動詞一起考」**——要做的話得讓 verb_sprint 接 `?verbs=` 白名單。
+
+#### 三之二十七、10-02：第38課筆記（Unité 10 收尾＋Unité 11 De jolis parcours）＋連動
+
+- **來源**：`~/Desktop/1002/` 9 張截圖（含 Owen 手寫）＋整堂逐字稿；頁碼對快取 → **p.148–157**（H 旅遊 App／pronoms démonstratifs／L'essentiel／Atelier Guadeloupe／Unité 11 扉頁＋A formation／B Lettre à ce prof／mise en relief／Les études）。⛔ 沒上到：p.154 聽力題、p.155、p.156 練習4、p.157 練習2–4（老師：下次）。🎙 老師下次要帶小書來讀。
+- ✅ 筆記四件套（`lesson-38`，check_notes 0／0）。
+- ⚠️ **標出來的三處**：
+  ① **課本 p.156 錯誤**：mise en relief 表「complément＋que」欄的重讀代名詞例句印成 *C'est vous qui m'avez fait découvrir le théâtre*（qui 句），老師當堂也說放錯——筆記、gram_rules、地圖都標了，正確樣子看同格 *Ce sont eux que j'ai guidés*。
+  ② **Owen 手寫 p.150 1b 寫 habitait**：*pendant 10 ans*（已搬走、結束的時段）標準是 passé composé，que＝la région → **qu'on a habitée**。逐字稿這段聽不清老師結論，照標準文法寫並註明。⚠️ 我第一版筆記把這格當「亮點」還加了一句錯誤的註解，寫完自查才改掉。
+  ③ 練習 2c 手寫「celui／ceux」→ 兩格都是 **ceux**（les billets）。
+- ⭐ 亮點：p.149 練習2 六題全對；p.150 l'a quitt**ée** 的配合自己寫對（第37課用出來了）；mise en relief 練習3 全對。
+- ✏️ Owen 自己的句子（只修語法）：*Ce qui me plaît dans mon métier, c'est le temps libre, travailler dans un bureau et gagner pas mal d'argent.*（拿掉 de、加 et）——已進 sentences.js，可以當 T1 存貨。
+- ✅ 連動：chunks **+78**｜questions **+41**（新 topic `pronoms-demonstratifs` 14／`mise-en-relief` 12／`vocab-etudes` 14＋passe-compose 1）＋ TOPIC_LABELS 三處（112 個）｜sentences `S_L38_1~12`（→352）｜table_drill +2（`demonstratifs-drill`、`mise-en-relief-drill`，84 個無空洞）｜gram_rules **新增兩個 A2 點** `pronoms-demonstratifs`、`mise-en-relief`（gram_trainer 開得起來）｜map `CURRENT_LESSON` 38＋3 塊（兩個文法＋`etudes-vocab`）。⭐ 新名詞（la licence、le master、un galet…）**自動進 un/une 小遊戲**。
+- ✅ 試跑（隔離複本，ROOM 沒動）：筆記 10 unit；quiz 41 題答對判對；table_drill 答對5／錯1／跳過2 → 5/6；gram_trainer 兩個新點、map、sentence_drill 無錯誤。
 
 #### 三之二十六、10-02：🎯 小遊戲「un 還是 une？」（名詞陰陽性）
 

@@ -106,6 +106,9 @@ var TOPIC_LABELS_FR = {
  "vocab-voyage-sur-mesure": "Voyage sur-mesure",
  "accord-participe-passe": "Accord du participe passé",
  "vocab-voyage-tourisme": "Le voyage et le tourisme",
+ "pronoms-demonstratifs": "Pronoms démonstratifs",
+ "mise-en-relief": "La mise en relief",
+ "vocab-etudes": "Les études",
  "medias-audio-reseaux": "Médias audios et réseaux sociaux",
  "critique-film": "Faire une critique",
  "place-pronoms-cod-coi": "Place des pronoms COD/COI"

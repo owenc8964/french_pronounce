@@ -720,6 +720,42 @@ const GRAM_POINTS = [
   { id:'passe-simple', name:'Passé simple',             icon:'📜', zone:'B2', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
   { id:'concordance',  name:'Concordance des temps',    icon:'🔄', zone:'B2', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
   { id:'passive',      name:'Voix passive',             icon:'🔃', zone:'B2', cat:'verbe-mode',  lessons:[], topics:[], unlocked:false },
+  { id:'pronoms-demonstratifs', name:'Pronoms démonstratifs', icon:'👉', zone:'A2', cat:'pronoms',
+    lessons:[38], topics:['pronoms-demonstratifs'], unlocked:true,   // 10-02 第38課（Édito A2 p.149）
+    rule:{
+      title:'指示代名詞 — 把名詞拿掉，用 celui／celle／ceux／celles 代替',
+      why:'ce／cette／ces 是「這個」後面一定要接名詞；celui 這一組是「這個」把名詞吞進去自己站——所以它一定要知道吞掉的是哪個名詞，陰陽單複跟著那個名詞走。這也是為什麼法文的陰陽性那麼重要：聽到 celle 你就知道對方在講的是陰性的那個東西。',
+      points:[
+        '四個形：celui（陽單）／celle（陰單）／ceux（陽複）／celles（陰複）',
+        '三種接法：＋-ci／-là（這個／那個）、＋qui／que（…的那個）、＋de（某某的那個：celles de ma sœur）',
+        '🎙 -ci 是主要的、先講的；-là 用來對比——⛔ 不會先講 celui-là 再講 celui-ci',
+        '🎙 後面接 qui／que 就不加 -ci／-là：celle qui est au coin de la rue',
+        '泛指「…的人」用 ceux qui：Ceux qui aiment le tourisme local…',
+        '⚠️ ceux（那些）≠ eux（他們）；ceci／cela／ça 不分陰陽、不代替特定名詞',
+      ],
+      examples:[
+        { fr:'Tu préfères celui-ci ou celui-là ?', zh:'你比較喜歡這個還是那個？' },
+        { fr:'Mes photos sont moins belles que celles de ma sœur.', zh:'我的照片沒有我姊姊的好看。（une photo → celles）' },
+        { fr:"J'ai visité beaucoup de pays, mais celui que j'ai préféré, c'est le Sénégal.", zh:'我去過很多國家，但最喜歡的是塞內加爾。' },
+      ]}},
+  { id:'mise-en-relief', name:'La mise en relief', icon:'🔦', zone:'A2', cat:'discours',
+    lessons:[38], topics:['mise-en-relief'], unlocked:true,   // 10-02 第38課（Édito A2 p.156）
+    rule:{
+      title:'強調句 — C\'est／Ce sont ＋ 要強調的那一塊 ＋ qui／que',
+      why:'法文的字序很固定，沒辦法像中文一樣靠把字往前移來強調；所以用 c\'est… qui／que 把要強調的那一塊「框出來」放到最前面。qui／que 的選法跟關係代名詞完全一樣：被框起來的那一塊在後半句是主語用 qui、是受詞用 que。',
+      points:[
+        '強調主語：C\'est／Ce sont ＋ 名詞／重讀代名詞 ＋ qui ＋ 動詞（C\'est la prof qui a changé ma vie）',
+        '強調受詞：C\'est／Ce sont ＋ 名詞／重讀代名詞 ＋ que ＋ 另一個主語（C\'est une expérience que je ne regrette pas）',
+        '⚠️ 陷阱：Ce sont les matières qui l\'intéressent——l\' 是受詞，主語還是 les matières → qui',
+        'ce qui／ce que 可以放句首：Ce qui est le plus difficile, c\'est l\'organisation du travail',
+        '口語常一律用 c\'est（C\'est elles qui…）；🎙 寫的時候用 ce sont',
+        '⚠️ 課本 p.156 表格 que 欄的重讀代名詞例句印成了 qui 的句子，是課本的錯',
+      ],
+      examples:[
+        { fr:"C'est vous qui m'avez fait découvrir le théâtre !", zh:'是您讓我發現了戲劇！（主語 → qui）' },
+        { fr:"Ce sont des matières que j'ai toujours aimées.", zh:'這些是我一直很喜歡的科目。（受詞 → que＋配合）' },
+        { fr:"Ce que ce prof m'a donné, c'est l'amour des livres.", zh:'這位老師給我的，是對書的熱愛。' },
+      ]}},
   { id:'gerondif', name:'Le gérondif', icon:'🌊', zone:'A2', cat:'verbe-mode',
     lessons:[35], topics:['gerondif'], unlocked:true,   // 09-22（第35課 Édito A2 p.131）從 B2 佔位點就地解鎖；map.html 的 gerondif 地塊靠同一個 id 連著，⛔ 不要改 id
     rule:{

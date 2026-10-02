@@ -18746,5 +18746,551 @@ const CHUNKS = [
   "fr": "le tourisme durable",
   "zh": "永續旅遊",
   "note": "＝le tourisme responsable。🎙 比較環保"
+ },
+ {
+  "id": "L38_Ceux_qui_ne_font_pas_ass",
+  "lesson": 38,
+  "fr": "Ceux qui ne font pas assez attention au soleil.",
+  "zh": "給不夠注意太陽的人。",
+  "note": "課本原句。⭐ ceux qui＝「…的那些人」（本課主文法）"
+ },
+ {
+  "id": "L38_À_quoi_ça_sert",
+  "lesson": 38,
+  "fr": "À quoi ça sert ?",
+  "zh": "這是用來做什麼的？",
+  "note": "⭐ 課本每個 App 的固定問法"
+ },
+ {
+  "id": "L38_À_trouver_des_plages_sur",
+  "lesson": 38,
+  "fr": "À trouver des plages surveillées.",
+  "zh": "用來找有救生員的海灘。",
+  "note": "課本原句。⭐ 回答 À quoi ça sert ? 用 À＋原形"
+ },
+ {
+  "id": "L38_Oui_celle_qui_est_au_coi",
+  "lesson": 38,
+  "fr": "Oui, celle qui est au coin de la rue me semble sympa.",
+  "zh": "對，街角那間我覺得不錯。",
+  "note": "課本暖身 d。🎙 au coin de la rue＝街角"
+ },
+ {
+  "id": "L38_Celui_ci_est_joli_mais_c",
+  "lesson": 38,
+  "fr": "Celui-ci est joli mais celui-là est encore plus beau !",
+  "zh": "這個很好看，但那個更漂亮！",
+  "note": "⭐ 課本 Remarques：-ci／-là 拿來對比"
+ },
+ {
+  "id": "L38_Tu_préfères_celui_ci_ou",
+  "lesson": 38,
+  "fr": "Tu préfères celui-ci ou celui-là ?",
+  "zh": "你比較喜歡這個還是那個？",
+  "note": "🎙 老師：太太在挑衣服時就會這樣問你"
+ },
+ {
+  "id": "L38_C_est_pas_moi_c_est_eux",
+  "lesson": 38,
+  "fr": "C'est pas moi, c'est eux.",
+  "zh": "不是我，是他們。",
+  "note": "🎙 老師用來對比 eux（不是指示代名詞）"
+ },
+ {
+  "id": "L38_On_a_rencontré_des_gens",
+  "lesson": 38,
+  "fr": "On a rencontré des gens très accueillants.",
+  "zh": "我們遇到了很熱情好客的人。",
+  "note": "課本練習1c。🎙 accueillant＝welcoming；飯店、公司的接待處叫 l'accueil"
+ },
+ {
+  "id": "L38_J_ai_passé_mon_bac_scien",
+  "lesson": 38,
+  "fr": "J'ai passé mon bac scientifique.",
+  "zh": "我考了理組的高中會考。",
+  "note": "⭐ 課本「Pour parler de sa formation」框"
+ },
+ {
+  "id": "L38_Je_me_suis_inscrit_en_mé",
+  "lesson": 38,
+  "fr": "Je me suis inscrit en médecine dentaire.",
+  "zh": "我念的是牙醫系。",
+  "note": "⭐ 課本框，Owen 自己填的"
+ },
+ {
+  "id": "L38_J_ai_raté_ma_première_an",
+  "lesson": 38,
+  "fr": "J'ai raté ma première année d'informatique.",
+  "zh": "我資訊系大一沒過。",
+  "note": "⭐ 課本框"
+ },
+ {
+  "id": "L38_J_ai_fait_une_année_de_c",
+  "lesson": 38,
+  "fr": "J'ai fait une année de césure.",
+  "zh": "我休學了一年。",
+  "note": "⭐ 課本框"
+ },
+ {
+  "id": "L38_J_ai_réussi_mes_examens",
+  "lesson": 38,
+  "fr": "J'ai réussi mes examens.",
+  "zh": "我考試都過了。",
+  "note": "⭐ 課本框"
+ },
+ {
+  "id": "L38_Je_suis_étudiant_en_méde",
+  "lesson": 38,
+  "fr": "Je suis étudiant en médecine dentaire.",
+  "zh": "我是牙醫系的學生。",
+  "note": "⭐ 課本框，Owen 自己填的"
+ },
+ {
+  "id": "L38_J_ai_passé_mon_bac_mais",
+  "lesson": 38,
+  "fr": "J'ai passé mon bac, mais je l'ai raté.",
+  "zh": "我考了會考，但沒過。",
+  "note": "🎙 老師用來分清楚 passer 和 réussir"
+ },
+ {
+  "id": "L38_J_ai_réussi_mon_permis_l",
+  "lesson": 38,
+  "fr": "J'ai réussi mon permis la deuxième fois.",
+  "zh": "我第二次才考到駕照。",
+  "note": "🎙 老師自己的經驗"
+ },
+ {
+  "id": "L38_J_ai_eu_mon_permis_dès_l",
+  "lesson": 38,
+  "fr": "J'ai eu mon permis dès la première fois.",
+  "zh": "我第一次就考到駕照了。",
+  "note": "🎙 dès 只配 la première fois；第二次以後不用 dès"
+ },
+ {
+  "id": "L38_C_est_ce_qui_nous_plaît",
+  "lesson": 38,
+  "fr": "C'est ce qui nous plaît beaucoup dans ce métier.",
+  "zh": "這就是我們很喜歡這份工作的地方。",
+  "note": "課本扉頁。⭐ 本課主文法2 的 c'est ce qui"
+ },
+ {
+  "id": "L38_C_est_vous_qui_m_avez_fa",
+  "lesson": 38,
+  "fr": "C'est vous qui m'avez fait découvrir le théâtre !",
+  "zh": "是您讓我發現了戲劇！",
+  "note": "課本原句。⭐ 本課主文法2：C'est vous qui…"
+ },
+ {
+  "id": "L38_Je_vous_remercie_pour_to",
+  "lesson": 38,
+  "fr": "Je vous remercie pour tout ce que vous m'avez apporté.",
+  "zh": "謝謝您給我的一切。",
+  "note": "⭐ 課本原句。寫感謝信直接用"
+ },
+ {
+  "id": "L38_Chère_Madame_Lévy_je_ne",
+  "lesson": 38,
+  "fr": "Chère Madame Lévy, je ne vous oublierai jamais.",
+  "zh": "親愛的 Lévy 老師，我永遠不會忘記您。",
+  "note": "課本原句。⭐ Chère（陰性）／Cher（陽性）"
+ },
+ {
+  "id": "L38_Ce_sont_des_matières_que",
+  "lesson": 38,
+  "fr": "Ce sont des matières que j'ai toujours aimées.",
+  "zh": "這些是我一直很喜歡的科目。",
+  "note": "課本暖身 a。⭐ que＋aimées（第37課：que＝des matières 在前要配合）"
+ },
+ {
+  "id": "L38_Ce_sont_eux_qui_m_ont_pe",
+  "lesson": 38,
+  "fr": "Ce sont eux qui m'ont permis d'avancer.",
+  "zh": "是他們讓我能往前走。",
+  "note": "課本暖身 f。🎙 permis＝permettre 的過去分詞"
+ },
+ {
+  "id": "L38_C_est_elles_qui_ont_eu_l",
+  "lesson": 38,
+  "fr": "C'est elles qui ont eu les meilleures notes.",
+  "zh": "是她們拿到最好的成績。",
+  "note": "⭐ 課本 Remarques：口語用 c'est"
+ },
+ {
+  "id": "L38_Ce_qu_il_faut_faire_c_es",
+  "lesson": 38,
+  "fr": "Ce qu'il faut faire, c'est un CV original.",
+  "zh": "要做的是一份有特色的履歷。",
+  "note": "課本練習3c。🎙 original＝特別的、少見的，不是英文的「原版」"
+ },
+ {
+  "id": "L38_Je_m_invite_à_ton_annive",
+  "lesson": 38,
+  "fr": "Je m'invite à ton anniversaire.",
+  "zh": "我自己跑去你的生日會。",
+  "note": "⭐ s'inviter"
+ },
+ {
+  "id": "L38_Vos_papiers",
+  "lesson": 38,
+  "fr": "Vos papiers !",
+  "zh": "證件拿出來！",
+  "note": "🎙 法國警察的固定說法"
+ },
+ {
+  "id": "L38_Qu_est_ce_qui_te_plaît_b",
+  "lesson": 38,
+  "fr": "Qu'est-ce qui te plaît beaucoup dans ton métier ?",
+  "zh": "你很喜歡你工作的哪一點？",
+  "note": "⭐ 回答用 Ce qui me plaît dans mon métier, c'est…"
+ },
+ {
+  "id": "L38_Je_vais_commencer_dès_lu",
+  "lesson": 38,
+  "fr": "Je vais commencer dès lundi.",
+  "zh": "我從星期一就開始。",
+  "note": "⭐ dès"
+ },
+ {
+  "id": "L38_s_inviter",
+  "lesson": 38,
+  "fr": "s'inviter",
+  "zh": "自己找上門、擠進來",
+  "note": "🎙 Je m'invite à ton anniversaire."
+ },
+ {
+  "id": "L38_nombreux_nombreuse",
+  "lesson": 38,
+  "fr": "nombreux, nombreuse",
+  "zh": "很多的",
+  "note": "🎙 ← nombre（數字）；英文 numerous"
+ },
+ {
+  "id": "L38_la_protection_solaire",
+  "lesson": 38,
+  "fr": "la protection solaire",
+  "zh": "防曬",
+  "note": "contre le soleil"
+ },
+ {
+  "id": "L38_l_indice_UV_m",
+  "lesson": 38,
+  "fr": "l'indice UV (m.)",
+  "zh": "紫外線指數",
+  "note": ""
+ },
+ {
+  "id": "L38_un_critère",
+  "lesson": 38,
+  "fr": "un critère",
+  "zh": "條件、標準",
+  "note": "des critères précis"
+ },
+ {
+  "id": "L38_un_galet",
+  "lesson": 38,
+  "fr": "un galet",
+  "zh": "（海邊）圓石頭",
+  "note": "🎙 磨圓的那種；尖的叫 un caillou。台灣花蓮、宜蘭的海灘就是 galets"
+ },
+ {
+  "id": "L38_un_caillou",
+  "lesson": 38,
+  "fr": "un caillou",
+  "zh": "小石頭",
+  "note": "🎙 rock，邊比較尖"
+ },
+ {
+  "id": "L38_surveillé_surveillée",
+  "lesson": 38,
+  "fr": "surveillé, surveillée",
+  "zh": "有人看守的",
+  "note": "une plage surveillée＝有救生員的海灘"
+ },
+ {
+  "id": "L38_veiller_sur",
+  "lesson": 38,
+  "fr": "veiller sur",
+  "zh": "照看、守護",
+  "note": "🎙 Tu veilles sur ta fille."
+ },
+ {
+  "id": "L38_un_maître_nageur",
+  "lesson": 38,
+  "fr": "un maître nageur",
+  "zh": "救生員",
+  "note": "🎙 maître＝老師、師傅；nageur＝游泳的人"
+ },
+ {
+  "id": "L38_autorisé_autorisée",
+  "lesson": 38,
+  "fr": "autorisé, autorisée",
+  "zh": "允許的",
+  "note": "les chiens sont autorisés"
+ },
+ {
+  "id": "L38_interdit_interdite",
+  "lesson": 38,
+  "fr": "interdit, interdite",
+  "zh": "禁止的",
+  "note": "🎙 有人比較喜歡禁狗的海灘，因為比較乾淨"
+ },
+ {
+  "id": "L38_les_papiers_m",
+  "lesson": 38,
+  "fr": "les papiers (m.)",
+  "zh": "證件",
+  "note": "🎙 法國警察會說 Vos papiers !＝出示證件"
+ },
+ {
+  "id": "L38_un_parcours",
+  "lesson": 38,
+  "fr": "un parcours",
+  "zh": "經歷、路線",
+  "note": "mon parcours scolaire／professionnel"
+ },
+ {
+  "id": "L38_le_bac",
+  "lesson": 38,
+  "fr": "le bac",
+  "zh": "高中畢業會考",
+  "note": "＝le baccalauréat"
+ },
+ {
+  "id": "L38_passer_un_examen",
+  "lesson": 38,
+  "fr": "passer un examen",
+  "zh": "參加考試",
+  "note": "⚠️⚠️ 🎙 passer ≠ 考過，只是去考。J'ai passé mon bac, mais je l'ai raté."
+ },
+ {
+  "id": "L38_réussir_un_examen",
+  "lesson": 38,
+  "fr": "réussir un examen",
+  "zh": "考過",
+  "note": ""
+ },
+ {
+  "id": "L38_rater_un_examen",
+  "lesson": 38,
+  "fr": "rater un examen",
+  "zh": "考砸、沒過",
+  "note": "🎙 fail"
+ },
+ {
+  "id": "L38_s_inscrire_en",
+  "lesson": 38,
+  "fr": "s'inscrire en",
+  "zh": "註冊、報名（某科系）",
+  "note": "Je me suis inscrit en médecine dentaire."
+ },
+ {
+  "id": "L38_une_année_de_césure",
+  "lesson": 38,
+  "fr": "une année de césure",
+  "zh": "休學年、空檔年",
+  "note": "🎙 gap year"
+ },
+ {
+  "id": "L38_le_permis_de_conduire",
+  "lesson": 38,
+  "fr": "le permis de conduire",
+  "zh": "駕照",
+  "note": "🎙 permis 也是 permettre 的過去分詞：允許你開車的那張紙"
+ },
+ {
+  "id": "L38_dès",
+  "lesson": 38,
+  "fr": "dès",
+  "zh": "從…起就",
+  "note": "🎙 dès lundi（從星期一就開始）、dès le début、dès la première fois（第一次就…）"
+ },
+ {
+  "id": "L38_intégrer",
+  "lesson": 38,
+  "fr": "intégrer",
+  "zh": "進入（某學校、團體）",
+  "note": "intégrer le collège"
+ },
+ {
+  "id": "L38_une_révélation",
+  "lesson": 38,
+  "fr": "une révélation",
+  "zh": "啟發、讓人大開眼界的事",
+  "note": ""
+ },
+ {
+  "id": "L38_motivant_motivante",
+  "lesson": 38,
+  "fr": "motivant, motivante",
+  "zh": "激勵人的",
+  "note": ""
+ },
+ {
+  "id": "L38_captivant_captivante",
+  "lesson": 38,
+  "fr": "captivant, captivante",
+  "zh": "吸引人的",
+  "note": ""
+ },
+ {
+  "id": "L38_bienveillant_bienveillan",
+  "lesson": 38,
+  "fr": "bienveillant, bienveillante",
+  "zh": "善意的、為人著想的",
+  "note": "🎙 bien＝好；鼓勵你、希望你好的人"
+ },
+ {
+  "id": "L38_malveillant_malveillante",
+  "lesson": 38,
+  "fr": "malveillant, malveillante",
+  "zh": "惡意的",
+  "note": "🎙 mal＝壞；希望你失敗的人"
+ },
+ {
+  "id": "L38_la_rigueur",
+  "lesson": 38,
+  "fr": "la rigueur",
+  "zh": "嚴謹、嚴格",
+  "note": ""
+ },
+ {
+  "id": "L38_sévère",
+  "lesson": 38,
+  "fr": "sévère",
+  "zh": "嚴厲的",
+  "note": "une façon trop sévère de me noter"
+ },
+ {
+  "id": "L38_une_appréciation",
+  "lesson": 38,
+  "fr": "une appréciation",
+  "zh": "（老師的）評語",
+  "note": ""
+ },
+ {
+  "id": "L38_une_piste_de_lecture",
+  "lesson": 38,
+  "fr": "une piste de lecture",
+  "zh": "閱讀方向、推薦書單",
+  "note": ""
+ },
+ {
+  "id": "L38_le_dévouement",
+  "lesson": 38,
+  "fr": "le dévouement",
+  "zh": "奉獻、全心投入",
+  "note": ""
+ },
+ {
+  "id": "L38_un_une_élève",
+  "lesson": 38,
+  "fr": "un, une élève",
+  "zh": "學生（幼稚園到高中）",
+  "note": "🎙 大學才叫 étudiant"
+ },
+ {
+  "id": "L38_un_étudiant_une_étudiant",
+  "lesson": 38,
+  "fr": "un étudiant, une étudiante",
+  "zh": "大學生",
+  "note": "être étudiant en informatique"
+ },
+ {
+  "id": "L38_un_enseignant_une_enseig",
+  "lesson": 38,
+  "fr": "un enseignant, une enseignante",
+  "zh": "老師",
+  "note": "＝un professeur；🎙 最常說 le prof"
+ },
+ {
+  "id": "L38_enseigner",
+  "lesson": 38,
+  "fr": "enseigner",
+  "zh": "教",
+  "note": "🎙 to teach"
+ },
+ {
+  "id": "L38_la_salle_de_classe",
+  "lesson": 38,
+  "fr": "la salle de classe",
+  "zh": "教室",
+  "note": "être en classe＝在上課"
+ },
+ {
+  "id": "L38_avoir_bac_4",
+  "lesson": 38,
+  "fr": "avoir bac +4",
+  "zh": "大學念了四年",
+  "note": "🎙 bac 之後念幾年就加幾；醫生到 +10"
+ },
+ {
+  "id": "L38_arrêter_ses_études",
+  "lesson": 38,
+  "fr": "arrêter ses études",
+  "zh": "不念了、輟學",
+  "note": "≠ commencer ses études"
+ },
+ {
+  "id": "L38_être_en_première_année",
+  "lesson": 38,
+  "fr": "être en première année",
+  "zh": "大一",
+  "note": "première année de master＝碩一"
+ },
+ {
+  "id": "L38_la_fac_de_droit",
+  "lesson": 38,
+  "fr": "la fac de droit",
+  "zh": "法學院",
+  "note": "🎙 la fac＝大學（口語）"
+ },
+ {
+  "id": "L38_la_formation_en_alternan",
+  "lesson": 38,
+  "fr": "la formation en alternance",
+  "zh": "建教合作、邊工作邊念",
+  "note": "🎙 公司幫你付學費，碩士畢業時已經有兩年經驗"
+ },
+ {
+  "id": "L38_avoir_une_bonne_note",
+  "lesson": 38,
+  "fr": "avoir une bonne note",
+  "zh": "拿到好成績",
+  "note": "≠ une mauvaise note"
+ },
+ {
+  "id": "L38_noter",
+  "lesson": 38,
+  "fr": "noter",
+  "zh": "打分數",
+  "note": "＝mettre une note"
+ },
+ {
+  "id": "L38_la_mention",
+  "lesson": 38,
+  "fr": "la mention",
+  "zh": "（成績）等第",
+  "note": "assez bien ≥12／bien ≥14／très bien ≥16（滿分 20）"
+ },
+ {
+  "id": "L38_redoubler",
+  "lesson": 38,
+  "fr": "redoubler",
+  "zh": "留級、重讀一年",
+  "note": "redoubler une classe／une année"
+ },
+ {
+  "id": "L38_la_licence",
+  "lesson": 38,
+  "fr": "la licence",
+  "zh": "學士（國立，bac +3）",
+  "note": "un bachelor 是私立的，也算 +3"
+ },
+ {
+  "id": "L38_le_master",
+  "lesson": 38,
+  "fr": "le master",
+  "zh": "碩士（bac +5）",
+  "note": "M1＝bac +4、M2＝bac +5"
  }
 ];
