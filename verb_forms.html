@@ -1037,9 +1037,18 @@ function vfRecord(inf, tid, i, res, rt) {
     if (ok && res === 'ok') r.rt = (r.rt || []).concat(rt).slice(-5);
     const fast = res === 'ok' && ok && rt <= vfBase() * 1.5;
     r.st = fast ? 'r' : 't';
-    if (fast) { const t = vfToday(); if (!r.d) r.d = t; else if (r.d < t && !r.s) { r.s = 1; r.at = now; } }   /* 隔天以後又秒出＝站穩 */
+    if (fast) { const t = vfToday(); if (!r.d) r.d = t; else if (r.d < t && !r.s) { r.s = 1; r.at = now; vfGrow(inf, tid, i, now); } }   /* 隔天以後又秒出＝站穩 */
   }
   r.last = now; o[k] = r; vfSave(o); return r;
+}
+/* 🌱 站穩的格子也讓遊戲裡的夥伴長大（10-02 Owen：「加入遊戲！」）——寫進 clb7_pet_grow，格式跟 quest.html 的 growRec 一樣 */
+function vfGrow(inf, tid, i, now) {
+  try {
+    const t = vfTense(inf, tid), f = t.forms[i], g = JSON.parse(localStorage.getItem('clb7_pet_grow')) || {}, k = 's:vf:' + vfK(inf, tid, i);
+    if (g[k] && g[k].s) return;
+    g[k] = { s: 1, d: vfToday(), at: now, last: now, q: `${inf} · ${t.name.replace(/（.*）/, '')}`, a: t.imper ? cellText(t, i, f) : display(t, i, f) };
+    localStorage.setItem('clb7_pet_grow', JSON.stringify(g));
+  } catch (e) {}
 }
 const VF_ICON = { r: '⚡', t: '🤔', m: '<span class="vfq">?</span>' };   /* 沒叫出來用灰色問號，⛔ 不用紅色 ❓（系統不罵人） */
 function vfMark(inf, tid, i) { const r = vfAll()[vfK(inf, tid, i)]; return r && r.st ? `<sup class="vfm">${VF_ICON[r.st]}</sup>` : ''; }

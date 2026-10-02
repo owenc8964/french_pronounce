@@ -3211,6 +3211,17 @@ function tbLog(wrong,v,tn,who,ans){
   if(ks.length>cap){ ks.sort(function(a,b){ return (o[b].last||0)-(o[a].last||0); }); var keep={}; ks.slice(0,cap).forEach(function(k){ keep[k]=o[k]; }); o=keep; }
   try{ localStorage.setItem(K,JSON.stringify(o)); }catch(e){}
 }
+/* 第一次作答寫回變位總覽的格子狀態（clb7_vf_cells）：遊戲裡沒有計速 → 答對只把 ? 升成 🤔，⛔ 不改 ⚡；答錯＝? */
+function vfGameRec(inf, tid, pi, ok){
+  if(pi==null||pi<0) return;
+  try{
+    var o=JSON.parse(localStorage.getItem('clb7_vf_cells')); if(!o||typeof o!=='object'||Array.isArray(o)) o={};
+    var k=inf+'|'+tid+'|'+pi, r=o[k]||{};
+    if(ok){ r.c=(r.c||0)+1; if(r.st!=='r') r.st='t'; }
+    else { r.w=(r.w||0)+1; r.st='m'; r.d=''; }
+    r.last=Date.now(); o[k]=r; localStorage.setItem('clb7_vf_cells', JSON.stringify(o));
+  }catch(e){}
+}
 function tbClearWrong(v,tn,who){
   try{
     var o=JSON.parse(localStorage.getItem('clb7_drill_wrong')); if(!o||Array.isArray(o)) return;
@@ -3232,6 +3243,17 @@ function tenseTable(){
       var mm=dueK[Math.floor(Math.random()*dueK.length)].match(/^vt-(.+?)-(present|passe-compose|imparfait|futur-simple|conditionnel|subjonctif)\|/);
       if(mm){ fv=vs.filter(function(x){ return x.inf===mm[1]; })[0]||null; ft=mm[2]; } }
   }catch(e){}
+  /* P0（10-02 Owen：「加入遊戲！」）：40% 挑變位總覽裡「🤔 要想／? 沒叫出來」的格子所在的那張表，並保證那格被挖空
+     資料 clb7_vf_cells（verb_forms.html 寫的；key 動詞|時態|人稱） */
+  var vfPi=-1;
+  try{
+    var vc=JSON.parse(localStorage.getItem('clb7_vf_cells')), weak=[];
+    if(vc&&typeof vc==='object') Object.keys(vc).forEach(function(k){
+      var e=vc[k], p=k.split('|');
+      if(e&&(e.st==='t'||e.st==='m')&&TT_TENSES.indexOf(p[1])>=0&&vs.some(function(x){ return x.inf===p[0]; })) weak.push(p); });
+    if(weak.length&&Math.random()<.4){ var wp=weak[Math.floor(Math.random()*weak.length)];
+      fv=vs.filter(function(x){ return x.inf===wp[0]; })[0]; ft=wp[1]; vfPi=+wp[2]; }
+  }catch(e){}
   for(var tries=0; tries<14&&!forms; tries++){
     if(tries===0&&fv){ v=fv; id=ft; }
     else {
@@ -3249,11 +3271,12 @@ function tenseTable(){
   B.lastTb=v.inf+'|'+id;
   var idx=[0,1,2,3,4,5].filter(function(i){ return forms[i]; });
   var blanks=shuffle(idx).slice(0,4);
+  if(vfPi>=0&&v===fv&&id===ft&&forms[vfPi]&&blanks.indexOf(vfPi)<0) blanks[0]=vfPi;   /* 要想的那格一定挖空 */
   var rows=idx.map(function(i){
     var who=tn.pre ? ((i===2||i===5)?"qu'":'que ')+PERSONS[i] : PERSONS[i];
     var alts=String(forms[i]).split('|');
     if(i===0&&!tn.pre&&alts.length===1&&vowelStart(alts[0])) alts.push("j'"+alts[0]);   /* j'ai／ai 都收 */
-    return { who:who, alts:alts, blank:blanks.indexOf(i)>=0, st:'todo', tries:0, val:'' };
+    return { who:who, alts:alts, blank:blanks.indexOf(i)>=0, st:'todo', tries:0, val:'', pi:i };
   });
   return { v:v, tn:tn, rows:rows };
 }
@@ -3319,7 +3342,7 @@ function tbCheck(noRead){
   tb.rows.forEach(function(r){
     if(!r.blank||r.st!=='todo') return;
     var good=r.val.trim() && r.alts.map(tbNorm).indexOf(tbNorm(r.val))>=0;
-    if(!r.seen){ r.seen=1; tb.f1tot++; if(good) tb.f1ok++; }
+    if(!r.seen){ r.seen=1; tb.f1tot++; if(good) tb.f1ok++; vfGameRec(tb.v.inf, tb.tn.id, r.pi, good); }
     if(good&&!r.tries) tbClearWrong(tb.v,tb.tn,r.who);     /* 隔天以後第一次就答對＝從錯字簿移除（跟 table_drill 同一套規則） */
     if(good) r.st='ok';
     else { bad++; r.tries=(r.tries||0)+1; r.val=''; if(r.tries===1) tbLog(true,tb.v,tb.tn,r.who,r.alts[0]); }
