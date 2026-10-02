@@ -83,7 +83,7 @@
 
 ## 交付鐵律
 - **自動試跑**：功能完成後 Claude 自己跑完整 happy path＋邊緣情況（資料空白、今天已完成、guided=1），全過才回報；不讓 Owen 當白老鼠。流程見 `HANDOFF.md` 開頭
-- **新功能先過大腦檢查**：這功能的數據 dashboard 讀得到嗎？能影響「今日處方」嗎？兩個都不能 → 先跟 Owen 確認做它的意義
+- **新功能先過大腦檢查**：這功能的資料**能進遊戲嗎**（決定遊戲出什麼題、或讓夥伴成長）？不能 → 先跟 Owen 確認做它的意義（2026-10-02 Owen：「今日處方我已經沒再用了，加入遊戲！」；範例：變位總覽 `clb7_vf_cells` → 遊戲填表優先挑「要想」的格子、站穩的格子讓夥伴長大）
 - 正式站是 GitHub Pages：https://owenc8964.github.io/french_pronounce/dashboard.html （push 才會生效；push 節奏照全域規則）
 
 > 2026-07-17 建立（依 Claude Code 用量報告分析 + HANDOFF/memory 既有規則整理）。改本檔前先問 Owen。
