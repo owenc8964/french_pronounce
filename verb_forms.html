@@ -954,18 +954,11 @@ function isRare(id) {
   const vals = [n(m.pct), n(m.rec)].filter(x => x != null);
   return vals.length > 0 && Math.max(...vals) < 1;
 }
-/* 10-02 Owen：「有很多單字某些時態出現率很低，那些不用變灰嗎？」
-   → 再加一層「這個動詞」：考生自己講／寫的語料裡，這個字用這個時態 0 次 → 灰。
-   ⚠️ 只看有逐動詞資料的時態（verb_freq.js 的 t／nf.imperatif）；這個字總次數 < 30 不判（boire 0 次是題材，不是不重要）；
-   ⚠️ 只有產出側有逐動詞資料，聽力不一定少——圖例要講清楚。學過的「剛剛過去」沒有資料，不灰。 */
-const PER_VERB_T = ['present','imparfait','passe-compose','futur-simple','conditionnel','subjonctif','futur-proche','imperatif'];
-function rareFor(v, id) {
-  if (isRare(id)) return 'tense';
-  const f = freqOf(v.inf);
-  if (!PER_VERB_T.includes(id) || f.say < 30) return '';
-  const n = id === 'imperatif' ? (f.nf.imperatif || 0) : (f.t[id] || 0);
-  return n ? '' : 'verb';
-}
+/* ⛔ 10-02 撤回「逐動詞灰字」：verb_freq.js 的 t 只存每個動詞的「前 4 名時態」（研究檔 top_tenses），
+   沒進前 4 名 ≠ 0 次。aller 的前 4 名被 présent／infinitif／impératif／participe présent 佔滿，
+   複合過去式就被灰掉——Owen：「怎麼可能」。加上語料是議論文（T2/T3 談環保教育），敘事時態本來就少。
+   → 逐動詞資料只能說「這個字最常用哪幾個時態」，⛔ 不能拿來判斷哪個時態不重要。只保留時態層級的灰字。 */
+function rareFor(v, id) { return isRare(id) ? 'tense' : ''; }
 function renderVerbTable(v) {
   const all = allConj(v), T = {}; all.forEach(t => T[t.id] = t);
   const cols = ORDER.filter(id => T[id] && picked.has(id)).map(id => T[id]);
@@ -983,7 +976,7 @@ function renderVerbTable(v) {
     [...new Set(Object.values(O).filter(o => o.irr).map(o => '⚠️ ' + o.irr).concat(Object.values(O).filter(o => o.note).map(o => 'ℹ️ ' + o.note)))];
   document.getElementById('tenses').innerHTML = `
     <div class="vt-wrap"><table class="vt"><thead><tr><th class="pers"></th>${head}</tr></thead><tbody>${rows}</tbody></table></div>
-    <div class="vt-key"><span class="mkdot"></span>橘底＝不照規則，要特別記（點格子看原因）　<span style="color:#56607a">灰字</span>＝考試裡很少用：還沒上的冷門時態，或標「這個字很少用」＝考生自己講／寫時這個動詞沒用過這個時態（聽力不一定）　點時態名稱可以聽整欄</div>
+    <div class="vt-key"><span class="mkdot"></span>橘底＝不照規則，要特別記（點格子看原因）　<span style="color:#56607a">灰字</span>＝還沒上、考試裡也很少用的時態（說寫、聽讀都不到 1%）　點時態名稱可以聽整欄</div>
     ${notes.length ? `<div class="vt-notes">${notes.map(n => `<div>${esc(n)}</div>`).join('')}</div>` : ''}`;
 }
 function ttsCol(ci) {
