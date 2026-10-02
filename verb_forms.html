@@ -903,6 +903,7 @@ function cellText(t, i, f) {
    判準＝語料：自己講／寫（pct）和聽到／讀到（rec）都不到 1% → 灰。⛔ 不憑感覺；沒有語料數字的（命令式）不灰。 */
 function isRare(id) {
   const m = metaOf(id), n = x => x == null ? null : (x === '≈0' ? 0 : parseFloat(x));
+  if (m.learned) return false;   /* 10-02 Owen：剛剛過去保持正常顏色——學過的不灰 */
   const vals = [n(m.pct), n(m.rec)].filter(x => x != null);
   return vals.length > 0 && Math.max(...vals) < 1;
 }
