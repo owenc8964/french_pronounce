@@ -466,6 +466,19 @@ td.mk { background: #2a1c0c; color: #f0c060 !important; box-shadow: inset 2px 0 
   .rt td.how { min-width: 7em; }
   .rt td.e .cx { font-size: 0.82em; }
 }
+.rt tr.irrtr td { background: #1a120c; padding: 10px 12px; border-left: 3px solid #e08a60; }
+.ib-h { font-size: 0.82em; color: #e0a080; margin: 4px 0 6px; }
+.ib-big { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+.ib-row { display: flex; flex-wrap: wrap; gap: 2px 12px; font-family: Georgia, serif; cursor: pointer; padding: 3px 6px; border-radius: 6px; }
+.ib-row:hover { background: #2a1c10; }
+.ib-row b { color: #f0c060; min-width: 3.6em; }
+.ib-row span { color: #e8e2d4; }
+.ib-chips { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+.ic { font-family: Georgia, serif; font-size: 0.92em; color: #c8c0b0; background: #241810; border: 1px solid #4a3020; border-radius: 8px; padding: 2px 9px; cursor: pointer; }
+.ib-plain .ic { cursor: default; }
+.ic b { color: #f0e2b8; font-weight: 700; }
+.ic b.en { color: #f0c060; }
+.rt td.how b.fam-l { min-width: 2.2em; }
 .rt-key { font-size: 0.78em; color: #8a8270; margin-top: 8px; }
 </style>
 </head>
@@ -1021,7 +1034,8 @@ function ruleRows(id) {
   const xs = (stem, ends, mute) => ends.map((e, i) => sx(stem, e, (mute || []).includes(i)));
   const xa = (forms, tail) => forms.map(() => `<span class="xt">＋ ${esc(tail)}</span>`);   /* 上面已經是 ai／as…，下面只補後半 */
   const ex = list => list.map(x => esc(x)).join('<br>');
-  const IRR = (txt, n) => `<a onclick="goIrr()">${esc(txt)}${n ? `（${n} 個）` : ''} →</a>`;
+  /* 10-02 Owen：點了會滾到總表、一大堆、看了壓力很大 → 改成就地展開「只跟這條規則有關的那幾個」 */
+  const IRR = (txt, n, key) => `<a onclick="toggleIrr('${key}')">${esc(txt)}${n ? `（${n} 個）` : ''} ▾</a>`;
   const nFut = VERBS_FULL.filter(v => !v.imperso && v.fut !== regFut(v)).length;
   const nPP = VERBS_FULL.filter(v => !v.imperso && REG_PP(v) !== v.pp).length;
   const pf = (v, tid, i) => display(T(v.inf)[tid], i, T(v.inf)[tid].forms[i]);
@@ -1029,15 +1043,21 @@ function ruleRows(id) {
   switch (id) {
   case 'present': return [
     { sub:'-er', how:'去掉 -er ＋', vb:'parler', cells: en(['e','es','e','ons','ez','ent'], M4), xs: xs('parl', ['e','es','e','ons','ez','ent'], M4),
-      ir: IRR('常用動詞多半要整組背') },
+      ir: IRR('常用動詞要整組背', 0, 'pres') },
     { sub:'-ir', how:'去掉 -ir ＋', vb:'finir', cells: en(['is','is','it','issons','issez','issent']), xs: xs('fin', ['is','is','it','issons','issez','issent']) },
     { sub:'-re', how:'去掉 -re ＋', vb:'attendre', cells: en(['s','s','','ons','ez','ent']), xs: xs('attend', ['s','s','','ons','ez','ent']) } ];
   case 'imperatif': return [
     { how:'現在式的 <b>tu／nous／vous</b>，拿掉主詞', vb:'parler', cells: [{t:'',cls:'na'}, {t:'Parle !',cls:'aux'}, {t:'',cls:'na'}, {t:'Parlons !',cls:'aux'}, {t:'Parlez !',cls:'aux'}, {t:'',cls:'na'}],
-      ex: ex(['Prends !', 'Finis !']), ir: '-er 的 tu 去 s：<b>Parle !</b><br>' + IRR('要背的') } ];
-  case 'passe-compose': return [
-    { how:'<b>avoir</b> 現在式 ＋ 過去分詞<br><span style="font-size:.85em">過去分詞 <b>-er→é</b> <b>-ir→i</b> <b>-re→u</b></span>', vb:'parler', cells: aux(VF('avoir').pres),
-      xs: xa(VF('avoir').pres, 'parlé'), ex: ex(['nous avons fini', 'elle est allée']), ir: '移動類、反身動詞用 <b>être</b><br>' + IRR('過去分詞要背', nPP) } ];
+      ex: ex(['Prends !', 'Finis !']), ir: '-er 的 tu 去 s：<b>Parle !</b><br>' + IRR('要背的', 0, 'imper') } ];
+  case 'passe-compose': {
+    /* 10-02 Owen：「看不出來 être 類需要 +e／s 的那種樣子」→ 拆成 avoir／être 兩列，être 列每格下面把配合的 e／s 標金色 */
+    const ag = (a, b) => `<span class="xt">＋ allé</span>${a ? `<span class="en">${a}</span>` : ''}${b ? `<span class="xt"> / allé</span><span class="en">${b}</span>` : ''}`;
+    return [
+    { sub:'avoir', how:'現在式 ＋ 過去分詞<br><span style="font-size:.85em">過去分詞 <b>-er→é</b> <b>-ir→i</b> <b>-re→u</b></span>', vb:'parler', cells: aux(VF('avoir').pres),
+      xs: xa(VF('avoir').pres, 'parlé'), ex: ex(['nous avons fini']), ir: '大部分動詞用這個<br>' + IRR('過去分詞要背', nPP, 'pp') },
+    { sub:'être', how:'現在式 ＋ 過去分詞<br><span style="font-size:.85em"><b>過去分詞跟主詞配合</b>：陰性 <b class="en">+e</b>、複數 <b class="en">+s</b></span>', vb:'aller',
+      cells: aux(VF('être').pres), xs: [ag('(e)'), ag('(e)'), `<span class="xt">＋ allé</span><br><span class="xt">elle ＋ allé</span><span class="en">e</span>`, ag('(e)s'), ag('(e)(s)'), `<span class="xt">＋ allé</span><span class="en">s</span><br><span class="xt">elles ＋ allé</span><span class="en">es</span>`],
+      ex: ex(['elle est allée', 'nous sommes partis']), ir: IRR('哪些動詞用 être', 0, 'etre') } ]; }
   case 'imparfait': return [
     { how:'現在式 <b>nous</b> 去掉 <b>-ons</b> ＋', vb:'parler', cells: en(END.imparfait, M4), xs: xs('parl', END.imparfait, M4), ex: ex(['nous finissions', 'je prenais']),
       ir: '只有 être：<b>j\'étais</b>' } ];
@@ -1046,13 +1066,13 @@ function ruleRows(id) {
   case 'passe-recent': return [
     { how:'<b>venir</b> 現在式 ＋ <b>de</b> ＋ 原形', vb:'finir', cells: aux(VF('venir').pres), xs: xa(VF('venir').pres, 'de finir'), ex: ex(["il vient d'arriver"]), ir: '母音前 de → <b>d\'</b>' } ];
   case 'futur-simple': return [
-    { how:'<b>原形</b>（-re 去掉 e）＋', vb:'parler', cells: en(END.futur), xs: xs('parler', END.futur), ex: ex(['je prendrai']), ir: IRR('詞幹要背', nFut) } ];
+    { how:'<b>原形</b>（-re 去掉 e）＋', vb:'parler', cells: en(END.futur), xs: xs('parler', END.futur), ex: ex(['je prendrai']), ir: IRR('詞幹要背', nFut, 'fut') } ];
   case 'conditionnel': return [
     { how:'<b>未來式的詞幹</b> ＋ 未完成過去式的字尾', vb:'parler', cells: en(END.conditionnel, M4), xs: xs('parler', END.conditionnel, M4), ex: ex(['je voudrais', 'on pourrait']),
-      ir: '詞幹跟未來式一樣<br>' + IRR('要背的', nFut) } ];
+      ir: '詞幹跟未來式一樣<br>' + IRR('要背的', nFut, 'cond') } ];
   case 'subjonctif': return [
     { how:'現在式 <b>ils</b> 去掉 <b>-ent</b> ＋<br><span style="font-size:.85em">nous／vous ＝ 未完成過去式</span>', vb:'parler', cells: en(END.subj, M4), xs: xs('parl', END.subj, M4),
-      ex: ex(['que je prenne', 'que nous prenions']), ir: IRR('要背的', 7) } ];
+      ex: ex(['que je prenne', 'que nous prenions']), ir: IRR('要背的', 7, 'subj') } ];
   case 'plus-que-parfait': { const f = imparfait(VF('avoir')); return [{ how:'<b>avoir</b> <b>未完成過去式</b> ＋ 過去分詞', vb:'parler', cells: aux(f), xs: xa(f, 'parlé'), ex: ex([pf(VF('aller'), 'plus-que-parfait', 0)]) }]; }
   case 'futur-anterieur': { const f = futur(VF('avoir')); return [{ how:'<b>avoir</b> <b>未來式</b> ＋ 過去分詞', vb:'parler', cells: aux(f), xs: xa(f, 'parlé') }]; }
   case 'conditionnel-passe': { const f = conditionnel(VF('avoir')); return [{ how:'<b>avoir</b> <b>條件式</b> ＋ 過去分詞', vb:'parler', cells: aux(f), xs: xa(f, 'parlé'), ex: ex(["j'aurais pu", 'il aurait dû']) }]; }
@@ -1063,6 +1083,24 @@ function ruleRows(id) {
   }
   return [];
 }
+/* 就地展開的小清單：只放跟這條規則有關的，點動詞 → 第 5 步查整張表 */
+const irrChip = (inf, html) => `<span class="ic" onclick="openVerb('${inf}')"><b>${esc(inf)}</b> ${html}</span>`;
+const IRR_BOX = {
+  pres: () => `<div class="ib-h">先背這 4 個（最常用、完全不規則）：</div>
+    <div class="ib-big">${['être','avoir','aller','faire'].map(inf => `<div class="ib-row" onclick="openVerb('${inf}')"><b>${inf}</b>${
+      VF(inf).pres.map((f, i) => `<span>${esc(withSubj(i, f))}</span>`).join('')}</div>`).join('')}</div>
+    <div class="ib-h">其他常用的（點了看整張）：</div><div class="ib-chips">${['pouvoir','vouloir','devoir','savoir','venir','prendre','voir','dire','mettre','partir','sortir','écrire','lire','boire','connaître']
+      .map(inf => irrChip(inf, `${esc(withSubj(0, VF(inf).pres[0]))}…`)).join('')}</div>`,
+  imper: () => `<div class="ib-chips">${VERBS_FULL.filter(v => !v.imperso && v.imper && v.imper.length && JSON.stringify(v.imper) !== JSON.stringify(regImper(v)))
+      .map(v => irrChip(v.inf, esc(v.imper.map(x => x.charAt(0).toUpperCase() + x.slice(1) + ' !').join(' ')))).join('')}${irrChip('pouvoir', '（沒有命令式）')}</div>`,
+  pp: () => `<div class="ib-chips">${VERBS_FULL.filter(v => !v.imperso && REG_PP(v) !== v.pp).map(v => irrChip(v.inf, `→ <b class="en">${esc(v.pp)}</b>`)).join('')}</div>`,
+  etre: () => `<div class="ib-h">移動、變化的動詞：</div><div class="ib-chips ib-plain">${['aller','venir','arriver','partir','entrer','sortir','monter','descendre','rester','tomber','naître','mourir','devenir','rentrer','retourner']
+      .map(x => `<span class="ic">${x}</span>`).join('')}</div><div class="ib-h">＋ 所有反身動詞（se lever、s'habiller…）</div>`,
+  fut: () => `<div class="ib-chips">${VERBS_FULL.filter(v => !v.imperso && v.fut !== regFut(v)).map(v => irrChip(v.inf, `→ <b class="en">${esc(v.fut)}</b>-`)).join('')}</div>`,
+  subj: () => `<div class="ib-chips">${['être','avoir','aller','faire','pouvoir','savoir','vouloir'].map(inf => irrChip(inf, esc(display({ pre:true }, 0, subjonctif(VF(inf))[0])))).join('')}</div>`,
+};
+IRR_BOX.cond = IRR_BOX.fut;   /* 條件式跟未來式共用同一組詞幹 */
+function toggleIrr(key) { const el = document.getElementById('irr-' + key); if (el) el.hidden = !el.hidden; }
 function renderRules() {
   const T = {}; allConj(VF('parler')).forEach(t => T[t.id] = t);
   /* 照「學的順序」排 */
@@ -1077,6 +1115,7 @@ function renderRules() {
       <td class="how">${r.sub ? `<b class="fam-l">${r.sub}</b> ` : ''}${r.how}${r.vb ? `<span class="vb">例 ${esc(r.vb)}</span>` : ''}${r.ex || r.ir ? `<div class="ex-in">${r.ex || ''}${r.ir ? `<div class="ir">${r.ir}</div>` : ''}</div>` : ''}</td>
       ${r.cells.map((c, i) => `<td class="e ${c.cls}">${esc(c.t)}${r.xs && r.xs[i] ? `<span class="cx">${r.xs[i]}</span>` : ''}</td>`).join('')}
       <td class="ex exc">${r.ex || ''}${r.ir ? `<div class="ir">${r.ir}</div>` : ''}</td></tr>`).join('');
+    rows.forEach(r => { const k = (r.ir || '').match(/toggleIrr\('(\w+)'\)/); if (k) h += `<tr class="irrtr" id="irr-${k[1]}" hidden><td colspan="9">${IRR_BOX[k[1]]()}</td></tr>`; });
     if (RULE_USES[id]) h += `<tr class="usetr"><td colspan="9" class="usec"><div class="uses">${RULE_USES[id].map(([k, fr, zh]) =>
       `<div class="uitem" onclick="ttsSay(this.querySelector('.uf').textContent)"><span class="uk">${esc(k)}</span><span class="uf">${fr}</span><span class="uz">${esc(zh)}</span></div>`).join('')}</div></td></tr>`;
     return h;
