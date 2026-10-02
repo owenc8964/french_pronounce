@@ -479,6 +479,14 @@ td.mk { background: #2a1c0c; color: #f0c060 !important; box-shadow: inset 2px 0 
 .ic b { color: #f0e2b8; font-weight: 700; }
 .ic b.en { color: #f0c060; }
 .rt td.how b.fam-l { min-width: 2.2em; }
+.sx { display: grid; grid-template-columns: auto auto; gap: 1px 10px; white-space: nowrap; }
+.sx span { color: #e8e2d4; }
+.sx .sx-ok, .im3 .sx-ok { color: #5a6678; }
+.sx .sx-bad, .im3 .sx-bad, td .sx-bad { color: #f0a060; }
+.sx .sx-na { color: #34405a; }
+.im3 { display: flex; flex-direction: column; white-space: nowrap; }
+.irt td { vertical-align: middle; }
+.irt th.iv { position: sticky; left: 0; background: #1a0f0c; z-index: 1; }
 .rt-key { font-size: 0.78em; color: #8a8270; margin-top: 8px; }
 </style>
 </head>
@@ -963,19 +971,29 @@ const IRR_GROUPS = [
   { name:'nous 冒出子音', hook:'nous 那格多一個子音：disons、mettons、écrivons、lisons、connaissons；過去分詞要背', verbs:['dire','mettre','écrire','lire','connaître'] },
 ];
 function irrCell(val, bad, extra) { return `<td class="${bad ? 'mk' : 'okc'}">${val}${extra || ''}</td>`; }
+/* 10-02 Owen：「為什麼只有 je／nous／ils？命令式只有一個字嗎？簡化過了頭會記錯」
+   → 六格全列，照課本慣用排法：左欄 je／tu／il、右欄 nous／vous／ils。命令式三格全列。
+     不照規則的那一格才標橘，照規則的仍然列出來（灰），⛔ 不省略。 */
+function six(forms, bad) {
+  const cell = i => forms[i] == null ? '<span class="sx-na">—</span>'
+    : `<span class="${bad && bad[i] ? 'sx-bad' : (bad ? 'sx-ok' : '')}">${esc(withSubj(i, forms[i]))}</span>`;
+  return `<div class="sx">${[0, 3, 1, 4, 2, 5].map(cell).join('')}</div>`;
+}
 function renderIrrTable() {
   const rows = IRR_GROUPS.map(g => `
     <tr class="ig"><td colspan="6"><b>${esc(g.name)}</b>　<span>${esc(g.hook)}</span></td></tr>
     ${g.verbs.map(inf => { const v = VF(inf), imp = imperatif(v), ri = regImper(v);
-      const subjBad = v.subj && JSON.stringify(v.subj) !== JSON.stringify(regSubj(v));
-      const impBad = !imp.length || (v.imper && JSON.stringify(v.imper) !== JSON.stringify(ri));
+      const sj = subjonctif(v), rs = regSubj(v);
+      const impHtml = imp.length
+        ? `<div class="im3">${imp.map((f, k) => `<span class="${f !== ri[k] ? 'sx-bad' : 'sx-ok'}">${esc(f.charAt(0).toUpperCase() + f.slice(1))} !</span>`).join('')}</div>`
+        : '<span class="sx-bad">（沒有）</span>';
       return `<tr onclick="openVerb('${inf}')">
         <th class="iv">${esc(inf)}<small>${esc(v.zh)}</small></th>
-        <td class="pres">${esc(v.pres[0])} · ${esc(v.pres[3])} · ${esc(v.pres[5])}</td>
+        <td class="pres">${six(v.pres)}</td>
+        <td>${impHtml}</td>
+        <td>${six(sj, sj.map((f, i) => f !== rs[i]))}</td>
         ${irrCell(esc(v.fut) + '-', v.fut !== regFut(v))}
         ${irrCell(esc(v.pp), REG_PP(v) !== v.pp, v.aux === 'être' ? '<span class="aux">être</span>' : '')}
-        ${irrCell(esc(withSubjQue(0, subjonctif(v)[0])), subjBad)}
-        ${irrCell(imp.length ? esc(imp[0]) + ' !' : '（沒有）', impBad)}
       </tr>`; }).join('')}`).join('');
   /* 依結尾分組：比一個一個背好記 */
   const irrFut = VERBS_FULL.filter(v => !v.imperso && v.fut !== regFut(v));
@@ -988,9 +1006,9 @@ function renderIrrTable() {
   const ppHtml = ppG.map(([k, re]) => { const vs = irrPP.filter(v => !usedP.has(v.inf) && re.test(v.pp)); vs.forEach(v => usedP.add(v.inf));
     return vs.length ? `<div class="gk"><b>${k}</b>${vs.map(v => `<span>${esc(v.inf)} → <i>${esc(v.pp)}</i></span>`).join('')}</div>` : ''; }).join('');
   document.getElementById('irrBox').innerHTML = `
-    <div class="scope-hint" style="margin-top:0">一列＝一個動詞要背的全部。現在式一定要背；後面幾欄 <span class="mkdot"></span>橘底＝不照規則，灰色＝照規則推得出來。點一列看完整變化表。</div>
+    <div class="scope-hint" style="margin-top:0">一列＝一個動詞要背的全部。現在式一定要背；其他欄 <span style="color:#f0a060">橘字</span>／<span class="mkdot"></span>橘底＝不照規則，灰色＝照規則推得出來。點一列看完整變化表。</div>
     <div class="vt-wrap"><table class="irt">
-      <thead><tr><th></th><th>現在式<small>je · nous · ils</small></th><th>未來詞幹</th><th>過去分詞</th><th>虛擬式</th><th>命令式</th></tr></thead>
+      <thead><tr><th></th><th>現在式<small>左 je／tu／il　右 nous／vous／ils</small></th><th>命令式<small>tu／nous／vous</small></th><th>虛擬式<small>que …（排法同左）</small></th><th>未來詞幹</th><th>過去分詞</th></tr></thead>
       <tbody>${rows}</tbody></table></div>
     <div class="scope-hint">未完成過去式：這 20 個全部照規則（nous 去 -ons），只有 <b>être → j'étais</b> 例外。</div>
     <div class="gks"><div class="gk-h">未來詞幹：全部以 r 結尾，照尾巴分組</div>${futHtml}</div>
