@@ -482,6 +482,14 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 #panel .gd-btns{margin-top:12px; max-width:none}
 #panel .gd-b{padding:14px 0; font-size:1.4rem}
 #panel .gd-sub{margin-top:8px; min-height:0; text-align:center}
+.gn-dots.g3 small{display:block;text-align:center;color:var(--dim);font-size:.75em;margin-top:2px}
+.rulebox{margin-top:8px;text-align:left;font-size:.86em;border-left:2px solid var(--gold);padding:4px 10px;background:rgba(240,192,96,.06);border-radius:0 8px 8px 0}
+.rulebox summary{cursor:pointer;color:var(--gold)}
+.rulebox ul{margin:6px 0 4px 18px;padding:0}
+.rulebox li{margin:3px 0;line-height:1.6}
+.rb-ex{margin-top:4px;font-family:Georgia,serif}
+.rb-ex span{display:block;font-family:inherit;color:var(--dim);font-size:.9em}
+.rb-src{color:var(--dim);font-size:.8em;margin-top:2px}
 </style>
 </head>
 <body>
@@ -577,6 +585,7 @@ var MOVES={
   hit:  {id:'hit',  name:'普通攻擊', dmg:1,   type:'choose', sec:'不限時', why:'拼句（有陷阱）或選擇題'},   /* 2026-09-20：Duolingo 式拼句（題源：中翻法題＋句庫＋筆記例句）與選擇題混合 */
   heavy:{id:'heavy',name:'重擊',    dmg:1.5, type:'gender', sec:'20 秒', why:'陰陽性，錯一個字母就不算'},
   genus:{id:'genus',name:'陰陽連擊', dmg:2,   type:'genre5', sec:'5 題', why:'un 還是 une？對 4 題全中、3 題半傷'},   /* 10-02 Owen 指定，見 askGenus */
+  gram3:{id:'gram3',name:'文法三連', dmg:2.5, type:'gram3',  sec:'3 題', why:'同一個文法連 3 題：全對全傷、對 2 題半傷'},   /* 10-03 Owen：「一次連續練三題，才是真的熟練，不是矇的」，見 askGram3 */
   blast:{id:'blast',name:'大招',    dmg:2,   type:'fill',   sec:'30 秒', why:'把空格打出來'},
   table:{id:'table',name:'填表',    dmg:2.5, type:'table',  sec:'不限時', why:'動詞變位表：現在・過去・未來・條件'},   /* 2026-09-20 Owen：填表格那個遊戲搬進來；資料取自 verbs_full.js */
   chant:{id:'chant',name:'詠唱',    dmg:3,   type:'trans',  sec:'60 秒', why:'中翻法，整句自己打'},
@@ -1134,7 +1143,7 @@ function towerResolve(loose, exact, q, m, retried){
        : loose ? '<b style="color:var(--gold)">想起來了</b>——這一下不算，連擊還在'
        : '<b style="color:var(--red)">沒打中，牠恢復了</b><br>正解：<b>'+esc(shownAns(q))+'</b>')+
       (loose&&!exact ? '<br><span style="color:var(--gold)">⚠️ 重音沒對上，正確寫法：<b>'+esc(shownAns(q))+'</b></span>' : '')+
-      (!clean&&q.aNote ? '<br>'+q.aNote : '')+'</div>'+
+      (!clean&&q.aNote ? '<br>'+q.aNote : '')+ruleBoxHtml(q, !loose)+'</div>'+
       '<button class="next" id="nx">'+(done?'牠倒下了':(out?'牠退回塔裡了':'下一題'))+'</button>';
     document.getElementById('nx').addEventListener('click',function(){
       sfx('click_001');
@@ -2975,6 +2984,7 @@ function oldQuestion(type,cur){
 }
 function battleQSkip(){
   var q=B&&B.curQ; sfx('click_001'); if(q) redoDrop(q);
+  if(B&&B.g3) return gram3Skip();   /* 文法三連：換一題同主題的補上，不算對也不算錯 */
   toast('這題先跳過，不算對也不算錯');
   if(B&&B.hp<=0) return redoGate();
   B.isRedo=false; showCmds();
@@ -3494,7 +3504,7 @@ function npcResolve(btn,q){
   save(S); renderHud();
   document.getElementById('panel').innerHTML='<div class="fb">'+
     (ok?'<b style="color:var(--green)">他聽懂了，點點頭</b>':'<b style="color:var(--red)">他愣了一下</b>　正解：<b>'+esc(shownAns(q))+'</b>')+
-    (q.aNote?'<br>'+q.aNote:'')+'</div>'+
+    (q.aNote?'<br>'+q.aNote:'')+ruleBoxHtml(q, !ok)+'</div>'+
     '<button class="next" onclick="npcNext()">'+(N.i>=N.qs.length-1?'結束對話':'再聊一句')+'</button>';
 }
 function npcNext(){ sfx('click_001'); N.i++; if(N.i>=N.qs.length) npcDone(); else npcTalk(); }
@@ -3552,7 +3562,7 @@ function showCmds(){
   if(B.forceMove && !B.forcedShown){    /* 考驗節點：開場就推薦最重的招（⛔ 但不強制，降級鍵還在） */
     B.forcedShown=1;
   }
-  var btns=(B.tt?B.towerMoves:((B.tower&&B.towerMove)?[B.towerMove]:['hit','genus','heavy','blast','table','chant','ear'])).map(function(k){   /* 塔：只列這個結構有的招式；shout 不進塔，只在地城/副本/主線 */
+  var btns=(B.tt?B.towerMoves:((B.tower&&B.towerMove)?[B.towerMove]:['hit','genus','gram3','heavy','blast','table','chant','ear'])).map(function(k){   /* 塔：只列這個結構有的招式；shout 不進塔，只在地城/副本/主線 */
     var m=MOVES[k];
     var n=(m.type==='exam') ? 1 : (m.type==='table') ? ((typeof VERBS_FULL!=='undefined'&&typeof drillForms==='function')?1:0) : (m.type==='listen') ? ((typeof SENTENCES!=='undefined'&&SENTENCES.length>=4)?1:0)
         : (m.type==='speak') ? ((speechSupported()&&typeof SENTENCES!=='undefined'&&SENTENCES.length>=1)?1:0)   /* B4：不支援就不出現，⛔ 不報錯 */
@@ -3604,11 +3614,14 @@ function useMove(k){
   B.isRedo=false;
   if(m.type==='table'){ B.move=m; return askTable(m); }
   if(m.type==='genre5'){ return askGenus(m); }
+  if(m.type==='gram3'){ return askGram3(m); }
   /* 10-03 Owen：「普攻沒有玩到陰陽的測驗耶」→ 普攻有 30% 化身陰陽連擊（5 題 un／une）。
      ⭐ 選單會被選最簡單的那個（memory feedback_menu_defaults_to_easiest）——混進普攻，⛔ 不靠他自己去點。
      ⛔ 塔、考試、強制招式（考驗）不觸發 */
-  if(k==='hit' && !B.tower && !B.exam && !B.forceMove && typeof genderPool==='function' && genderPool().length && Math.random()<.3){
-    toast('普攻化身「陰陽連擊」——連續 5 題 un／une'); return askGenus(MOVES.genus);
+  if(k==='hit' && !B.tower && !B.exam && !B.forceMove){
+    var hr=Math.random();
+    if(hr<.25 && typeof genderPool==='function' && genderPool().length){ toast('普攻化身「陰陽連擊」——連續 5 題 un／une'); return askGenus(MOVES.genus); }
+    if(hr<.5 && gram3Set()){ toast('普攻化身「文法三連」——同一個文法連 3 題'); return askGram3(MOVES.gram3); }   /* 10-03：普攻 25% 陰陽、25% 文法三連 */
   }
   var rd=redoDue(m.type);                                   /* 「沒答對要練到會」：之前錯的題，隔一兩題就換個排列再來一次 */
   if(rd){ B.isRedo=true; B.move=rd.m; return askByType(rd.q, rd.m); }
@@ -3856,6 +3869,108 @@ function typeCheck(){
    · ⏭ 跳過＝換一題補上，不算對也不算錯（跳過鐵律）；每題答完也會 growRec（站穩的字讓寵物長大）
    · ⛔ 不進塔（塔有自己的結構題）
    ════════════════════════════════════════════════════════════════ */
+/* 倒下之後去哪：塔→塔下（樓層不掉）；⭐ 主線→回主線章節（10-03 修：原本一律畫今日地城地圖，主線打輸就「跑到今日地城」）；其他→地城 */
+function defeatGo(){
+  save(S); renderHud();
+  if(B&&B.tower){ S.towerCur=null; save(S); return renderTower(); }
+  if(B&&B.story){
+    S.storyCur=null; S.run.hp=maxHpOf(lvOf(S.xp||0)); save(S); renderHud();   /* 主線不卡關：回營地休息、體力回滿（後果在角色身上，不在他身上） */
+    toast('倒下了——在營地休息一晚，體力回滿，再去一次'); return renderChapter();
+  }
+  renderMap();
+}
+/* ════════════════════════════════════════════════════════════════
+   📐 文法三連（2026-10-03 Owen：「我覺得可以一次連續練三題，這樣才是真的有複習到熟練到相關的文法，不是矇得猜得或是脈絡性很低」）
+   · 一招＝同一個文法主題（gram_rules.js 有規則卡的 topic）連續 3 題；題型照題庫原樣（選擇／填空／中翻法）
+   · 3 題全對 → 全額傷害；2 題 → 半傷害、不被反擊；1 題以下 → 打空、被反擊 1 顆心（後果在角色身上）
+   · 第二次才答對不算全對（那是看了提示）；每題答錯照樣顯示「📐 課本怎麼說」、照樣排進「待會再練」
+   · 範圍：這場的課次（主線節點有指定文法就用它）；那個主題不夠 3 題就擴到全部課次的同主題
+   · ⛔ 不進塔、考試
+   ════════════════════════════════════════════════════════════════ */
+function gramTopics(){ var o={}; (typeof GRAM_POINTS!=='undefined'?GRAM_POINTS:[]).forEach(function(p){ if(p.unlocked!==false) (p.topics||[]).forEach(function(t){ o[t]=1; }); }); return o; }
+function g3Usable(q){ return (q.type==='choose'&&q.opts&&q.opts.length>=2) || ((q.type==='fill'||q.type==='trans')&&typeof q.a==='string'&&q.a.length>1); }
+function gram3Set(){
+  var gt=gramTopics(), ls=(B&&B.lessons)?B.lessons:recentLessons(6);
+  var pool=BANK.filter(function(q){ return gt[q.topic] && g3Usable(q) && ls.indexOf(q.lesson)>=0; });
+  if(B&&B.topic&&gt[B.topic]){ var only=BANK.filter(function(q){ return q.topic===B.topic && g3Usable(q); }); if(only.length>=3) pool=only; }
+  if(!pool.length) return null;
+  var first=pickWeightedQs(pool,1,(S.dda&&S.dda.tier)||0)[0]||pool[0];
+  var same=pool.filter(function(q){ return q.topic===first.topic && q!==first; });
+  if(same.length<2) same=BANK.filter(function(q){ return q.topic===first.topic && q!==first && g3Usable(q); });
+  if(same.length<2) return null;
+  return [first].concat(shuffle(same).slice(0,2));
+}
+function askGram3(m){
+  var qs=gram3Set(); if(!qs){ toast('這裡湊不到同一個文法的 3 題，換一招吧'); return showCmds(); }
+  B.g3={ m:m, qs:qs, i:0, ok:0, marks:[] };
+  gram3Ask();
+}
+function gram3Ask(){
+  var G=B.g3, q=G.qs[G.i];
+  B.move=G.m; B.isRedo=false; B.retrying=false;
+  askByType(q, Object.assign({}, G.m, { type:q.type }));   /* 題型照題庫原樣；名稱與傷害顯示用文法三連 */
+  var p=document.getElementById('panel');
+  if(p) p.insertAdjacentHTML('afterbegin','<div class="gn-dots g3">'+G.qs.map(function(_,k){ var x=G.marks[k]; return '<span class="'+(x===1?'ok':x===0?'no':(k===G.i?'now':''))+'"></span>'; }).join('')+
+    '<small>'+esc(topicName(q.topic))+'</small></div>');
+}
+function gram3Step(loose, exact, q, retried){
+  var G=B.g3, good=loose&&!retried;
+  G.marks[G.i]=good?1:0; if(good) G.ok++; G.i++;
+  sfx(good?'confirmation_001':'error_004');
+  var panel=document.getElementById('panel');
+  panel.innerHTML='<div class="gn-dots g3">'+G.qs.map(function(_,k){ var x=G.marks[k]; return '<span class="'+(x===1?'ok':x===0?'no':'')+'"></span>'; }).join('')+'</div>'+
+    '<div class="fb">'+(good?'<b style="color:var(--green)">對！</b>'+(exact?'':'<br><span style="color:var(--gold)">⚠️ 重音沒對上，正確寫法：<b>'+esc(shownAns(q))+'</b></span>')
+      : (loose?'<b style="color:var(--gold)">想起來了（第二次）——這題不算全對</b>':'<b style="color:var(--red)">沒對上</b>')+'<br>正解：<b>'+esc(shownAns(q))+'</b>')+
+    (q.aNote&&(!q.zhOnlyWrong||!good)?'<br>'+q.aNote:'')+ruleBoxHtml(q, !good)+'</div>'+
+    '<button class="next" id="nx">'+(G.i>=G.qs.length?'結算':'下一題（'+(G.i+1)+'／'+G.qs.length+'）')+'</button>';
+  document.getElementById('nx').addEventListener('click',function(){ sfx('click_001'); if(G.i>=G.qs.length) gram3Resolve(); else gram3Ask(); });
+}
+function gram3Skip(){
+  var G=B.g3, cur=G.qs[G.i];
+  var rep=BANK.filter(function(q){ return q.topic===cur.topic && g3Usable(q) && G.qs.indexOf(q)<0 && (G.skipped||[]).indexOf(q)<0; });
+  (G.skipped=G.skipped||[]).push(cur);
+  toast('這題先跳過，不算對也不算錯');
+  if(rep.length){ G.qs[G.i]=shuffle(rep)[0]; return gram3Ask(); }
+  G.qs.splice(G.i,1);                                   /* 這個主題沒題了：少一題，門檻跟著降 */
+  if(G.i>=G.qs.length) return G.qs.length ? gram3Resolve() : (B.g3=null, showCmds());
+  gram3Ask();
+}
+function gram3Resolve(){
+  var G=B.g3, m=G.m, n=G.ok, tot=G.qs.length; B.g3=null;   /* tot：跳過又沒題可補時會少於 3 */
+  var hero=document.getElementById('hero'), foe=document.getElementById('foe'), msg;
+  if(n>=Math.max(1,tot-1)){
+    var full=(n>=tot); B.combo=full?B.combo+1:B.combo;
+    var dmg=Math.round(((full?m.dmg:m.dmg*0.5) + (full&&B.combo>=3?1:0) + trainBonus().dmg)*10)/10;
+    hero.classList.add('act'); setTimeout(function(){ hero.classList.remove('act'); },420);
+    setTimeout(function(){
+      foe.classList.add('hit'); sfx('confirmation_001'); floatDmg('-'+dmg);
+      B.hp=Math.max(0,B.hp-dmg);
+      var bar=document.getElementById('fbar'); if(bar) bar.style.width=Math.round(B.hp/B.maxHp*100)+'%';
+      setTimeout(function(){ foe.classList.remove('hit'); },340);
+    },180);
+    S.gold=(S.gold||0)+(full?5:2); S.xp=(S.xp||0)+(full?15:7);
+    msg=full ? '<b style="color:var(--green)">'+esc(m.name)+' 三題全中！</b>'+(B.combo>1?'　連擊 ×'+B.combo:'')
+             : '<b style="color:var(--gold)">'+esc(m.name)+' 擦到一半</b><br><span style="color:var(--gold)">差一題——半個傷害，沒有被反擊</span>';
+  } else {
+    B.combo=0;
+    setTimeout(function(){ hero.classList.add('ouch'); sfx('error_004'); floatDmg('-1',true);
+      setTimeout(function(){ hero.classList.remove('ouch'); },360); },160);
+    S.run.hp=Math.max(0,S.run.hp-1); S.xp=(S.xp||0)+2;
+    msg='<b style="color:var(--red)">打空了，被反擊</b><br><span style="color:var(--dim)">這個文法待會會再回來</span>';
+  }
+  save(S); renderHud();
+  setTimeout(function(){
+    var panel=document.getElementById('panel');
+    panel.innerHTML='<div class="gn-dots g3">'+G.marks.map(function(x){ return '<span class="'+(x?'ok':'no')+'"></span>'; }).join('')+'</div><div class="fb">'+msg+'</div>'+
+      '<button class="next" id="nx">'+(S.run.hp<=0?'你倒下了…':(B.hp<=0?'牠倒下了':'繼續'))+'</button>';
+    document.getElementById('nx').addEventListener('click',function(){
+      sfx('click_001');
+      if(S.run.hp<=0) return defeatGo();
+      if(B.hp<=0) return redoGate();
+      type(esc(B.name)+' 還站著。', showCmds);
+    });
+  },700);
+}
 function askGenus(m){
   B.move=m; B.curQ=null;
   B.gn={ m:m, i:0, ok:0, marks:[], recent:[], cur:null, t0:0, lock:false };
@@ -3926,7 +4041,7 @@ function genusResolve(){
       '<button class="next" id="nx">'+(S.run.hp<=0?'你倒下了…':(B.hp<=0?'牠倒下了':'繼續'))+'</button>';
     document.getElementById('nx').addEventListener('click',function(){
       sfx('click_001');
-      if(S.run.hp<=0){ save(S); renderHud(); renderMap(); return; }
+      if(S.run.hp<=0) return defeatGo();
       if(B.hp<=0) return redoGate();
       type(esc(B.name)+' 還站著。', showCmds);
     });
@@ -3940,6 +4055,21 @@ function floatDmg(txt, mine){
 }
 
 /* 招式結算：loose＝答對（重音不計較）；exact＝完全一樣；retried＝第二次才對（安慰獎） */
+/* 📐 答錯時的「課本怎麼說」（10-03 Owen：「肯定有不熟或不會的，你再拿課本的文法教學來做解釋（可翻成中文）」）
+   ⭐ 內容取自 gram_rules.js 的規則卡（我們自己的中文改寫，⛔ 不逐字翻譯課本——Owen 10-03 選 A）
+   ⭐ 依 research/2026-09-30_可選看的回饋會不會被點開.md：預設收起；同一個主題這場錯第 2 次起自動展開；⛔ 不強迫閱讀
+   ⛔ 答對不顯示（不打斷節奏） */
+var RB_WRONG={};
+function ruleBoxHtml(q, wrong){
+  if(!wrong||!q||!q.topic||typeof GRAM_POINTS==='undefined') return '';
+  var g=GRAM_POINTS.filter(function(p){ return (p.topics||[]).indexOf(q.topic)>=0 && p.rule; })[0]; if(!g) return '';
+  var k=(B&&B.key||'')+'|'+q.topic; RB_WRONG[k]=(RB_WRONG[k]||0)+1;
+  var r=g.rule, ex=(r.examples||[])[0];
+  return '<details class="rulebox"'+(RB_WRONG[k]>=2?' open':'')+'><summary>📐 課本怎麼說：'+esc(r.title)+'</summary>'+
+    '<ul>'+(r.points||[]).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('')+'</ul>'+
+    (ex?'<div class="rb-ex">'+esc(ex.fr)+'<span>'+esc(ex.zh)+'</span></div>':'')+
+    (g.lessons&&g.lessons.length?'<div class="rb-src">第 '+g.lessons.join('、')+' 課</div>':'')+'</details>';
+}
 function resolveMove(loose, exact, q, m, retried){
   if(B && B.exam && q.key) examRecord(q.key, loose);
   if(B && B.tt) return towerResolve(loose, exact, q, m, retried);
@@ -3951,6 +4081,7 @@ function resolveMove(loose, exact, q, m, retried){
   if(B && !B.exam && q && q.topic) gameRecord(q, loose && !retried);
   if(B && !B.exam && q) growRec(q, loose && !retried);   /* 🌱 寵物成長只認站穩（「再練一次」的題在 growRec 裡擋掉） */
   if(B && !B.exam && !B.tower && q && q.topic) ddaTrack(loose && !retried);   /* B6：塔已有自己的連擊節奏（B8）不混進來；地城/副本/主線戰鬥都算進「近期整體表現」，只拿來調地城怪物 */
+  if(B && B.g3 && !B.exam && !B.tower) return gram3Step(loose, exact, q, retried);   /* 文法三連：三題打完才結算傷害 */
   var hero=document.getElementById('hero'), foe=document.getElementById('foe');
   if(loose){
     B.combo++;
@@ -3994,13 +4125,11 @@ function resolveMove(loose, exact, q, m, retried){
                (exact?'':'<br><span style="color:var(--gold)">⚠️ 重音沒對上，正確寫法：<b>'+esc(shownAns(q))+'</b></span>')
              : '<b style="color:var(--red)">'+(B.exam?'沒打中':(B.isRedo?'還沒練會（不扣血）':'沒組對，被反擊了'))+'</b><br>正解：<b>'+esc(shownAns(q))+'</b>'+
                ((!B.exam&&!q.noRedo)?'<br><span style="color:var(--gold)">記下了——待會換個排列再來一次，練到會為止（想跳過也行）</span>':''))+
-      (q.aNote&&(!q.zhOnlyWrong||!loose)?'<br>'+q.aNote:'')+'</div>'+
+      (q.aNote&&(!q.zhOnlyWrong||!loose)?'<br>'+q.aNote:'')+ruleBoxHtml(q, !loose)+'</div>'+
       '<button class="next" id="nx">'+(S.run.hp<=0?'你倒下了…':(B.exam?(B.i>=B.qs.length?'這一層做完了':'下一題'):(B.hp<=0?'牠倒下了':'繼續')))+'</button>';
     document.getElementById('nx').addEventListener('click',function(){
       sfx('click_001');
-      if(S.run.hp<=0){   /* 2026-09-20：倒下不再掉金幣（Owen：「我怎感覺我越玩錢越少」）*/
-        if(B.tower){ S.towerCur=null; save(S); renderHud(); renderTower(); return; }   /* 塔：回塔下，樓層不掉 */
-        save(S); renderHud(); renderMap(); return; }
+      if(S.run.hp<=0) return defeatGo();   /* 2026-09-20：倒下不再掉金幣（Owen：「我怎感覺我越玩錢越少」）*/
       if(B.exam) return (B.i>=B.qs.length) ? win() : useMove('read');
       if(B.hp<=0) return redoGate();                /* 牠倒下之前，先把沒練會的題練完（可跳過） */
       type(esc(B.name)+' 還站著。', showCmds);
