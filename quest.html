@@ -839,6 +839,11 @@ function renderChapter(){
   var ch=curChapter(), st=S.story, v=document.getElementById('view');
   if(!ch){ S.mode='dungeon'; return renderMap(); }
   var doneNodes=(st.done[ch.id]||{});
+  /* 10-04 修（Owen：「主線點進去都沒有題目可玩，只有四格」）：可以點的只有「目前那格且還沒走過」。
+     舊的同步問題可能留下「目前那格已經標走過」的存檔 → 四格全部點不了。這裡自動校正到第一個還沒走過的格子；全走過就過章。 */
+  var firstOpen=-1; for(var fi=0; fi<ch.nodes.length; fi++){ if(!doneNodes[fi]){ firstOpen=fi; break; } }
+  if(firstOpen<0){ S.storyCur=null; return chapterClear(ch); }
+  if(st.node!==firstOpen && (doneNodes[st.node] || st.node>=ch.nodes.length)){ st.node=firstOpen; save(S); }
   var html=modeTabs()+
     '<div class="title"><div class="en">Chapitre '+ch.ch+' · '+esc(ch.titleFr)+'</div>'+
       '<h1>'+esc(ch.title)+'</h1><div class="rule"></div></div>'+
@@ -3567,6 +3572,7 @@ function showCmds(){
     var n=(m.type==='exam') ? 1 : (m.type==='table') ? ((typeof VERBS_FULL!=='undefined'&&typeof drillForms==='function')?1:0) : (m.type==='listen') ? ((typeof SENTENCES!=='undefined'&&SENTENCES.length>=4)?1:0)
         : (m.type==='speak') ? ((speechSupported()&&typeof SENTENCES!=='undefined'&&SENTENCES.length>=1)?1:0)   /* B4：不支援就不出現，⛔ 不報錯 */
         : (m.type==='genre5') ? (genderPool().length>=10?1:0)
+        : (m.type==='gram3') ? (gram3Set()?1:0)   /* 10-03 漏了這行：選單把文法三連藏起來了（Owen：「我沒玩到文法耶」） */
         : movePool(ls,m.type).length;
     if(!n) return '';
     return '<button class="cmd" onclick="useMove(\''+k+'\')">'+img(k==='chant'?SP.wand:(k==='blast'?SP.potion:(k==='table'?SP.chest:(k==='ear'||k==='shout'?SP.card:SP.sword))))+
