@@ -539,7 +539,7 @@ function sfx(n){ try { var a=SFX[n]; if(!a) return; a.currentTime=0; a.play().ca
 /* ── 狀態 ───────────────────────────────────────────────── */
 var LS='clb7_quest';
 function load(){ try{ return JSON.parse(localStorage.getItem(LS))||{}; }catch(e){ return {}; } }
-function save(d){ try{ localStorage.setItem(LS, JSON.stringify(d)); }catch(e){} }
+function save(d){ try{ d._t=Date.now(); localStorage.setItem(LS, JSON.stringify(d)); }catch(e){} }   /* _t：同步合併時判斷哪份比較新（sync_supabase.js，10-03） */
 function todayStr(){ return new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'}); }
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.classList.add('on');
@@ -3604,6 +3604,12 @@ function useMove(k){
   B.isRedo=false;
   if(m.type==='table'){ B.move=m; return askTable(m); }
   if(m.type==='genre5'){ return askGenus(m); }
+  /* 10-03 Owen：「普攻沒有玩到陰陽的測驗耶」→ 普攻有 30% 化身陰陽連擊（5 題 un／une）。
+     ⭐ 選單會被選最簡單的那個（memory feedback_menu_defaults_to_easiest）——混進普攻，⛔ 不靠他自己去點。
+     ⛔ 塔、考試、強制招式（考驗）不觸發 */
+  if(k==='hit' && !B.tower && !B.exam && !B.forceMove && typeof genderPool==='function' && genderPool().length && Math.random()<.3){
+    toast('普攻化身「陰陽連擊」——連續 5 題 un／une'); return askGenus(MOVES.genus);
+  }
   var rd=redoDue(m.type);                                   /* 「沒答對要練到會」：之前錯的題，隔一兩題就換個排列再來一次 */
   if(rd){ B.isRedo=true; B.move=rd.m; return askByType(rd.q, rd.m); }
   var cur=(B&&B.lessons)?B.lessons:ls, wantOld=Math.random()<oldRatio();   /* P1 老朋友：這一題要不要從「不在目前課次」的舊內容挑到期的 */

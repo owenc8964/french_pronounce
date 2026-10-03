@@ -48,6 +48,24 @@
     return v.filter(function (e) { return !(e && e.ts != null && t.indexOf(e.ts) >= 0); });
   }
 
+  /* 主線進度：章取大；同一章節點取大；done／cleared 聯集（每節點 true 優先於 'skip'） */
+  function mergeStory(a, b) {
+    var o = Object.assign({}, a, b);
+    var ca = a.ch || 1, cb = b.ch || 1;
+    o.ch = Math.max(ca, cb);
+    o.node = ca === cb ? Math.max(a.node || 0, b.node || 0) : (ca > cb ? (a.node || 0) : (b.node || 0));
+    o.done = {};
+    [a.done || {}, b.done || {}].forEach(function (d) {
+      Object.keys(d).forEach(function (chId) {
+        var t = o.done[chId] = o.done[chId] || {};
+        Object.keys(d[chId] || {}).forEach(function (i) { if (t[i] !== true) t[i] = d[chId][i]; });
+      });
+    });
+    o.cleared = Object.assign({}, a.cleared || {}, b.cleared || {});
+    o.skipped = Math.max(a.skipped || 0, b.skipped || 0);
+    return o;
+  }
+
   function merge(local, inc) {
     if (Array.isArray(local) && Array.isArray(inc)) {
       var seen = {}, out = [];
@@ -62,11 +80,19 @@
     }
     if (local && inc && typeof local === 'object' && typeof inc === 'object') {
       if ('xp' in local || 'streak' in local) {
-        return Object.assign({}, local, inc, {
+        /* ⭐ 2026-10-03 修（Owen：「主線打贏的那關沒有過、又跳到今日地城」）：
+           原本一律「雲端蓋本機」——打完還沒上傳完就換頁／iPad 重新載入，拉回來的舊雲端把主線進度與分頁蓋掉。
+           現在：兩邊有存檔時間 _t（quest.html 的 save() 會寫）就以「比較新的那份」為底；
+           主線進度只會往前（章、節點取大、完成紀錄聯集），⛔ 永遠不倒退。 */
+        var newer = (local._t || 0) > (inc._t || 0) ? local : inc;
+        var older = newer === local ? inc : local;
+        var out0 = Object.assign({}, older, newer, {
           xp: Math.max(local.xp || 0, inc.xp || 0),
           streak: Math.max(local.streak || 0, inc.streak || 0),
           lastDate: (String(inc.lastDate || '') > String(local.lastDate || '')) ? inc.lastDate : local.lastDate
         });
+        if (local.story && inc.story) out0.story = mergeStory(local.story, inc.story);
+        return out0;
       }
       var out = Object.assign({}, local);
       Object.keys(inc).forEach(function (k) {
