@@ -1957,6 +1957,10 @@ const BANK = [
   { lesson:38, topic:'pronoms-demonstratifs', type:'trans', q:'這兩個行程都很有意思。這個比較長，但那個比較有文化。', hint:'un circuit', a:'Ces deux circuits sont intéressants. Celui-ci est plus long, mais celui-là est plus culturel.', aNote:'課本練習2c' },
   { lesson:38, topic:'pronoms-demonstratifs', type:'fill', q:'Tu utilises beaucoup d\'applications ? — Non, seulement _____ que je trouve indispensables !', hint:'課本 p.150：une application', a:'celles', aNote:'陰性複數' },
   { lesson:38, topic:'pronoms-demonstratifs', type:'fill', q:'Tu vois le bateau de Karine ? — Oui, c\'est _____ qui est blanc et bleu.', hint:'課本 p.150：le bateau', a:'celui', aNote:'' },
+  // ── 10-05 補課本練習（research/AUDIT_2026-10-03）：p.149 練習2f、p.150 練習2b／2e、p.156 練習4a–c。⚠️ 課本沒公布答案，照標準法文 ──
+  { lesson:38, topic:'pronoms-demonstratifs', type:'fill', q:'Je télécharge quelle application ? _____ ou _____ ?', zh:'我要下載哪個 app？這個還是那個？', hint:'課本 p.149 練習2f：une application ＝ 陰性單數；-ci 先、-là 後', a:'Celle-ci / celle-là|Celle-ci, celle-là', aNote:'application 陰性單數 → celle；-ci（這個、近的）先講，再用 -là 對比' },
+  { lesson:38, topic:'pronoms-demonstratifs', type:'fill', q:'Tu préfères quelle excursion ? — _____ qui nous amène au sommet de la montagne.', zh:'你比較喜歡哪個行程？——那個帶我們上山頂的。', hint:'課本 p.150 練習2b：une excursion ＝ 陰性單數', a:'Celle', aNote:'excursion 陰性單數 → celle；後面接 qui 帶出的修飾子句，不加 -ci／-là' },
+  { lesson:38, topic:'pronoms-demonstratifs', type:'fill', q:'Tu veux acheter quelle carte postale ? _____ ou _____ ?', zh:'你想買哪張明信片？這張還是那張？', hint:'課本 p.150 練習2e：une carte postale ＝ 陰性單數', a:'Celle-ci / celle-là|Celle-ci, celle-là', aNote:'carte postale 陰性單數 → celle-ci ou celle-là（-ci 先、-là 後）' },
 
   { lesson:38, topic:'mise-en-relief', type:'choose', q:'C\'est… qui 還是 C\'est… que，看什麼決定？', hint:'課本 p.156', a:'被強調的那一塊在後半句是主語 → qui；是受詞 → que', aNote:'qui 後面直接接動詞；que 後面先出現另一個主語', opts:['被強調的那一塊在後半句是主語 → qui；是受詞 → que','人用 qui，東西用 que','單數用 qui，複數用 que','過去式用 que'] },
   { lesson:38, topic:'mise-en-relief', type:'choose', q:'C\'est l\'université _____ a les meilleurs résultats.', hint:'課本練習2a', a:'qui', aNote:'後面直接接動詞 a → qui', opts:['qui','que','qu\''] },
@@ -1970,6 +1974,9 @@ const BANK = [
   { lesson:38, topic:'mise-en-relief', type:'trans', q:'是您讓我發現了戲劇！', hint:'C\'est vous qui…', a:'C\'est vous qui m\'avez fait découvrir le théâtre !', aNote:'課文B 原句' },
   { lesson:38, topic:'mise-en-relief', type:'trans', q:'這些是我一直很喜歡的科目。', hint:'Ce sont… que…（注意配合）', a:'Ce sont des matières que j\'ai toujours aimées.', aNote:'que＝des matières 在前 → aimées' },
   { lesson:38, topic:'mise-en-relief', type:'trans', q:'最難的是工作的安排。（用 Ce qui 開頭）', hint:'課本 Remarques', a:'Ce qui est le plus difficile, c\'est l\'organisation du travail.', aNote:'也可以說 C\'est l\'organisation du travail qui est le plus difficile.' },
+  { lesson:38, topic:'mise-en-relief', type:'fill', q:'Vous réussissez tous les examens. → C\'est _____ qui réussissez tous les examens.', zh:'是你們通過了所有考試。', hint:'課本 p.156 練習4a：用重讀代名詞強調主詞', a:'vous', aNote:'強調主詞：C\'est ＋ 重讀代名詞 ＋ qui；⚠️ qui 後面的動詞仍照主詞變位（réussissez）' },
+  { lesson:38, topic:'mise-en-relief', type:'fill', q:'Mes voisins ont étudié à l\'étranger. → _____ qui ont étudié à l\'étranger.', zh:'是我的鄰居們出國讀過書。', hint:'課本 p.156 練習4b：mes voisins → 重讀代名詞（陽性複數）', a:'Ce sont eux|C\'est eux', aNote:'mes voisins → eux；書寫標準是 Ce sont eux qui…，口語常說 C\'est eux qui…（課本 Remarques）' },
+  { lesson:38, topic:'mise-en-relief', type:'fill', q:'Nous étudions le droit. → C\'est _____ qui étudions le droit.', zh:'是我們在讀法律。', hint:'課本 p.156 練習4c：用重讀代名詞強調主詞', a:'nous', aNote:'C\'est nous qui étudions（動詞跟著 nous 變位，不是 étudient）' },
 
   { lesson:38, topic:'vocab-etudes', type:'choose', q:'J\'ai passé mon bac. 意思是？', hint:'⚠️ passer ≠ pass', a:'我考了會考（不一定考過）', aNote:'考過＝réussir；沒過＝rater', opts:['我考了會考（不一定考過）','我考過了會考','我跳過了會考','我忘了會考'] },
   { lesson:38, topic:'vocab-etudes', type:'choose', q:'une année de césure 是？', hint:'課本 p.154', a:'休學年、空檔年（gap year）', aNote:'', opts:['休學年、空檔年（gap year）','畢業那一年','重讀的那一年','大一'] },
