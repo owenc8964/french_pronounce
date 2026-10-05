@@ -4903,6 +4903,14 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - 🐛 順手發現：`tools/tmp_quest_nosync.js make` 產的暫存頁**自己回報 `sync tag present? true`**——那支工具已經不可靠，這次改用自己的隔離複本（只刪 `<script src=sync_supabase.js>`），⚠️ 以後測 quest.html 別用它。
 - ✅ 試跑（隔離複本，ROOM 沒動）：手機 375 版面；一局 20 題（含 1 跳過、4 錯）→ 結算正確、金幣 +15、紀錄 18 字；無錯誤。
 
+#### 三之四十三、10-05：課本題補 A2／A1 只補弱項／文法三連改成一頁三題
+
+- **Owen 決定**：「先補 A2，A1 只補我還會錯的」；A1 每主題最多 10 題（可）；「題目是一頁直接三題如何？」→ 做。
+- ✅ **第21課樣本**（commit c547fe9）：p.33 練習5–7、p.38 練習2 共 17 題（y／en 13→30）。格式：課本原句、`hint:'課本 p.XX 練習N'`、aNote 一句原因、課本沒答案的照標準法文並標註；練習4（多重配對）無唯一答案不收。
+- ⏳ **A2 其餘課**：背景 agent 在 worktree 照樣本補（每課一個 commit、只改 questions.js、回報最沒把握清單）→ ⚠️ 收貨要：跑 BANK 檢查、抽查最沒把握的題＋隨機 2–3 題，再合併。
+- 🔍 **A1 弱項分析**（Owen 雲端唯讀：343 題對錯紀錄＋錯題本 300 筆）：還常錯的文法 = -ir/-re 動詞（7 對 18 錯）、passé composé、形容詞配合、地點/國家/交通介系詞、命令式、冠詞、反身動詞、所有格、durée、疑問詞、passé récent、比較級。être/avoir、-er、否定、c'est/il est 幾乎不錯 → 不補。⏸ A1 等 A2 合併後再做（避免同時改 questions.js），每主題 ≤10 題、Édito Entraînement 優先、再 Cahier A1（有 Corrigés）。
+- ✅ **文法三連改成一頁三題**（`gram3Page/gram3Sel/gram3Skip/gram3Submit`）：三題同時顯示，選擇題點選＝選取可改、填空/中翻打字、共用重音列；每題可單獨「這題跳過」換同主題；沒填完不能交（toast 提示）；交卷後逐題顯示對錯＋aNote＋錯的有規則框；每題照 resolveMove 那套記錄（redo、gameRecord、growRec、ddaTrack）；⛔ 沒有第二次機會。挑題時避開「一題答案寫在另一題題目裡」。舊的一題一題流程（gram3Ask/gram3Step 與 resolveMove 攔截）已移除。
+
 #### 三之四十二、10-05：第39課筆記（Unité 11：Premier contact professionnel／Le discours rapporté／Le monde du travail）＋連動
 
 - **來源**：`~/Desktop/1005/` 6 張截圖（含 Owen 手寫）＋整堂逐字稿；頁碼對快取 → **Édito A2 p.158–163**（E 職場第一次聯絡／主文法 discours rapporté au présent／Oh le cliché／詞彙頁 Le monde du travail／p.162「談職涯計畫」框／p.163 測驗）。⛔ 沒上到：p.158 D podcast、p.159 練習2（答案照標準法文寫進筆記與題庫，已標）與 4–5、p.160 F／G、p.161 練習4–5、p.162 H 影片、**p.163 下半主文法「Le pronom COI y」（下次）**。

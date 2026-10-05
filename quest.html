@@ -483,6 +483,14 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 #panel .gd-b{padding:14px 0; font-size:1.4rem}
 #panel .gd-sub{margin-top:8px; min-height:0; text-align:center}
 .gn-dots.g3 small{display:block;text-align:center;color:var(--dim);font-size:.75em;margin-top:2px}
+.g3-head{margin:2px 0 8px;font-size:.95em}.g3-head small{display:block;color:var(--dim);font-size:.78em}
+.g3q{border-top:1px dashed var(--line);padding-top:8px;margin-top:8px}.g3q:first-of-type{border-top:none}
+.g3n{display:inline-block;min-width:1.4em;color:var(--gold);font-weight:700}
+.g3o{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.g3o .opt{width:auto;flex:0 1 auto;margin:0;padding:6px 12px;font-size:.92em}
+.g3q .exits{margin-top:4px}
+.g3o .opt.sel{border-color:var(--gold);background:rgba(240,192,96,.12)}
+.g3in{width:100%;font:inherit;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--ink);margin-top:4px}
+.g3r{border-left:3px solid var(--line);padding:4px 10px;margin:8px 0}.g3r.ok{border-left-color:var(--green)}.g3r.no{border-left-color:var(--red)}
 .rulebox{margin-top:8px;text-align:left;font-size:.86em;border-left:2px solid var(--gold);padding:4px 10px;background:rgba(240,192,96,.06);border-radius:0 8px 8px 0}
 .rulebox summary{cursor:pointer;color:var(--gold)}
 .rulebox ul{margin:6px 0 4px 18px;padding:0}
@@ -2989,7 +2997,6 @@ function oldQuestion(type,cur){
 }
 function battleQSkip(){
   var q=B&&B.curQ; sfx('click_001'); if(q) redoDrop(q);
-  if(B&&B.g3) return gram3Skip();   /* 文法三連：換一題同主題的補上，不算對也不算錯 */
   toast('這題先跳過，不算對也不算錯');
   if(B&&B.hp<=0) return redoGate();
   B.isRedo=false; showCmds();
@@ -3904,42 +3911,74 @@ function gram3Set(){
   var same=pool.filter(function(q){ return q.topic===first.topic && q!==first; });
   if(same.length<2) same=BANK.filter(function(q){ return q.topic===first.topic && q!==first && g3Usable(q); });
   if(same.length<2) return null;
-  return [first].concat(shuffle(same).slice(0,2));
+  /* 10-05 三題同一頁：避開「一題的答案就寫在另一題的題目裡」的組合 */
+  var leaks=function(a,b){ return String(a.a).split('|').some(function(x){ x=normAns(x); return x.length>=3 && normAns(stemOf(b)).indexOf(x)>=0; }); };
+  var pick=[first]; shuffle(same).forEach(function(q){ if(pick.length<3 && pick.every(function(p){ return !leaks(p,q)&&!leaks(q,p); })) pick.push(q); });
+  if(pick.length<3) pick=[first].concat(shuffle(same).slice(0,2));
+  return pick;
 }
 function askGram3(m){
   var qs=gram3Set(); if(!qs){ toast('這裡湊不到同一個文法的 3 題，換一招吧'); return showCmds(); }
-  B.g3={ m:m, qs:qs, i:0, ok:0, marks:[] };
-  gram3Ask();
+  B.g3={ m:m, qs:qs, i:0, ok:0, marks:[], sel:{}, val:{} };
+  B.move=m; B.curQ=null; B.isRedo=false;
+  gram3Page();
 }
-function gram3Ask(){
-  var G=B.g3, q=G.qs[G.i];
-  B.move=G.m; B.isRedo=false; B.retrying=false;
-  askByType(q, Object.assign({}, G.m, { type:q.type }));   /* 題型照題庫原樣；名稱與傷害顯示用文法三連 */
-  var p=document.getElementById('panel');
-  if(p) p.insertAdjacentHTML('afterbegin','<div class="gn-dots g3">'+G.qs.map(function(_,k){ var x=G.marks[k]; return '<span class="'+(x===1?'ok':x===0?'no':(k===G.i?'now':''))+'"></span>'; }).join('')+
-    '<small>'+esc(topicName(q.topic))+'</small></div>');
+/* 10-05 Owen：「題目是一頁直接三題如何？」→ 三題同一頁、一起交卷（每題對錯一次定，⛔ 沒有第二次機會）
+   選擇題點選項＝選取（可改）；填空／中翻法打字；每題可以單獨「這題跳過」換一題同主題的 */
+function gram3Page(){
+  var G=B.g3, h='<div class="g3-head"><b>'+esc(G.m.name)+'</b>　'+esc(topicName(G.qs[0].topic))+'<small>三題一起交，全對全傷、錯一題半傷</small></div>';
+  G.qs.forEach(function(q,i){
+    var body;
+    if(q.type==='choose'){
+      body='<div class="opts g3o">'+(G.ord&&G.ord[i]||(G.ord=G.ord||{}, G.ord[i]=shuffle(q.opts))).map(function(o){
+        return '<button class="opt'+(G.sel[i]===o?' sel':'')+'" onclick="gram3Sel('+i+',this)" data-o="'+esc(o)+'">'+esc(o)+'</button>'; }).join('')+'</div>';
+    } else {
+      body='<input class="g3in" id="g3i'+i+'" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" placeholder="'+(q.type==='trans'?'把整句打出來…':'打出答案…')+'" value="'+esc(G.val[i]||'')+'" onfocus="TB_ACT=this" oninput="B.g3.val['+i+']=this.value">';
+    }
+    h+='<div class="g3q"><div class="q"><span class="g3n">'+(i+1)+'</span>'+consigne(q)+esc(stemOf(q))+hintHtml(q)+'</div>'+body+
+       '<div class="exits"><button onclick="gram3Skip('+i+')">這題跳過</button></div></div>';
+  });
+  h+='<div class="accbar">'+ACCENTS.map(function(a){ return '<button onmousedown="event.preventDefault()" onclick="tbIns(\''+a+'\')">'+a+'</button>'; }).join('')+'</div>'+
+     '<div class="cmds" style="margin-top:10px"><button class="cmd" onclick="gram3Submit()">'+img(SP.sword)+'<span>出招<small>'+esc(G.m.name)+' ×'+G.m.dmg+'</small></span></button>'+
+     '<button class="cmd" onclick="B.g3=null;showCmds()">'+img(SP.shield)+'<span>換一招<small>這三題先不做</small></span></button></div>';
+  document.getElementById('panel').innerHTML=h;
 }
-function gram3Step(loose, exact, q, retried){
-  var G=B.g3, good=loose&&!retried;
-  G.marks[G.i]=good?1:0; if(good) G.ok++; G.i++;
-  sfx(good?'confirmation_001':'error_004');
-  var panel=document.getElementById('panel');
-  panel.innerHTML='<div class="gn-dots g3">'+G.qs.map(function(_,k){ var x=G.marks[k]; return '<span class="'+(x===1?'ok':x===0?'no':'')+'"></span>'; }).join('')+'</div>'+
-    '<div class="fb">'+(good?'<b style="color:var(--green)">對！</b>'+(exact?'':'<br><span style="color:var(--gold)">⚠️ 重音沒對上，正確寫法：<b>'+esc(shownAns(q))+'</b></span>')
-      : (loose?'<b style="color:var(--gold)">想起來了（第二次）——這題不算全對</b>':'<b style="color:var(--red)">沒對上</b>')+'<br>正解：<b>'+esc(shownAns(q))+'</b>')+
-    (q.aNote&&(!q.zhOnlyWrong||!good)?'<br>'+q.aNote:'')+ruleBoxHtml(q, !good)+'</div>'+
-    '<button class="next" id="nx">'+(G.i>=G.qs.length?'結算':'下一題（'+(G.i+1)+'／'+G.qs.length+'）')+'</button>';
-  document.getElementById('nx').addEventListener('click',function(){ sfx('click_001'); if(G.i>=G.qs.length) gram3Resolve(); else gram3Ask(); });
-}
-function gram3Skip(){
-  var G=B.g3, cur=G.qs[G.i];
+function gram3Sel(i,btn){ var G=B.g3; G.sel[i]=btn.dataset.o; Array.prototype.forEach.call(btn.parentNode.children,function(x){ x.classList.toggle('sel',x===btn); }); sfx('click_001'); }
+function gram3Skip(i){
+  var G=B.g3, cur=G.qs[i];
   var rep=BANK.filter(function(q){ return q.topic===cur.topic && g3Usable(q) && G.qs.indexOf(q)<0 && (G.skipped||[]).indexOf(q)<0; });
-  (G.skipped=G.skipped||[]).push(cur);
+  (G.skipped=G.skipped||[]).push(cur); redoDrop(cur);
   toast('這題先跳過，不算對也不算錯');
-  if(rep.length){ G.qs[G.i]=shuffle(rep)[0]; return gram3Ask(); }
-  G.qs.splice(G.i,1);                                   /* 這個主題沒題了：少一題，門檻跟著降 */
-  if(G.i>=G.qs.length) return G.qs.length ? gram3Resolve() : (B.g3=null, showCmds());
-  gram3Ask();
+  delete G.sel[i]; delete G.val[i]; if(G.ord) delete G.ord[i];
+  if(rep.length) G.qs[i]=shuffle(rep)[0];
+  else { G.qs.splice(i,1); var s2={}, v2={}, o2={}; G.qs.forEach(function(_,k){ var src=k<i?k:k+1; if(G.sel[src]!=null) s2[k]=G.sel[src]; if(G.val[src]!=null) v2[k]=G.val[src]; if(G.ord&&G.ord[src]) o2[k]=G.ord[src]; }); G.sel=s2; G.val=v2; G.ord=o2;
+         if(!G.qs.length){ B.g3=null; return showCmds(); } }
+  gram3Page();
+}
+function gram3Submit(){
+  var G=B.g3, blank=G.qs.some(function(q,i){ return q.type==='choose' ? G.sel[i]==null : !String(G.val[i]||'').trim(); });
+  if(blank){ toast('還有沒作答的——不會的可以按「這題跳過」'); return; }
+  var res='';
+  G.qs.forEach(function(q,i){
+    var mine=q.type==='choose'?G.sel[i]:String(G.val[i]).trim(), alts=String(q.a).split('|');
+    var loose=q.type==='choose'?isAns(q,mine):alts.some(function(a){ return normAns(mine)===normAns(a); });
+    var exact=q.type==='choose'?loose:alts.some(function(a){ return mine.replace(/\s+/g,' ')===a.replace(/\s+/g,' ').trim(); });
+    G.marks[i]=loose?1:0; if(loose) G.ok++;
+    /* 跟 resolveMove 同一套紀錄：待練清單、題目紀錄、寵物站穩、難度追蹤 */
+    B.curQ=q; B.turn=(B.turn||0)+1;
+    if(q.srcId) seenRec(q.srcId, loose);
+    if(loose) redoDrop(q); else if(!q.noRedo) redoAdd(q,G.m);
+    if(q.topic) gameRecord(q, loose);
+    growRec(q, loose);
+    if(q.topic) ddaTrack(loose);
+    res+='<div class="g3r '+(loose?'ok':'no')+'"><div class="q"><span class="g3n">'+(i+1)+'</span>'+esc(stemOf(q))+'</div>'+
+      (loose?'<b style="color:var(--green)">對</b>'+(exact?'':'<span style="color:var(--gold)">　⚠️ 重音：<b>'+esc(shownAns(q))+'</b></span>')
+            :'<b style="color:var(--red)">沒對上</b>　你寫：'+esc(mine)+'<br>正解：<b>'+esc(shownAns(q))+'</b>')+
+      (q.aNote&&(!q.zhOnlyWrong||!loose)?'<div class="fb" style="margin:4px 0 0">'+q.aNote+'</div>':'')+ruleBoxHtml(q,!loose)+'</div>';
+  });
+  G.i=G.qs.length; sfx(G.ok===G.qs.length?'confirmation_001':'bong_001');
+  document.getElementById('panel').innerHTML=res+'<button class="next" id="nx">結算</button>';
+  document.getElementById('nx').addEventListener('click',function(){ sfx('click_001'); gram3Resolve(); });
 }
 function gram3Resolve(){
   var G=B.g3, m=G.m, n=G.ok, tot=G.qs.length; B.g3=null;   /* tot：跳過又沒題可補時會少於 3 */
@@ -4087,7 +4126,6 @@ function resolveMove(loose, exact, q, m, retried){
   if(B && !B.exam && q && q.topic) gameRecord(q, loose && !retried);
   if(B && !B.exam && q) growRec(q, loose && !retried);   /* 🌱 寵物成長只認站穩（「再練一次」的題在 growRec 裡擋掉） */
   if(B && !B.exam && !B.tower && q && q.topic) ddaTrack(loose && !retried);   /* B6：塔已有自己的連擊節奏（B8）不混進來；地城/副本/主線戰鬥都算進「近期整體表現」，只拿來調地城怪物 */
-  if(B && B.g3 && !B.exam && !B.tower) return gram3Step(loose, exact, q, retried);   /* 文法三連：三題打完才結算傷害 */
   var hero=document.getElementById('hero'), foe=document.getElementById('foe');
   if(loose){
     B.combo++;
