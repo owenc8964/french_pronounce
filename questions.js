@@ -1628,6 +1628,12 @@ const BANK = [
   { lesson:32, topic:'superlatif', type:'trans', q:'這是最便宜的糖漿。', hint:'劣等最高級', a:'C\'est le sirop le moins cher.', aNote:'cher 放名詞後 → 冠詞出現兩次：le sirop le moins cher' },
   { lesson:32, topic:'superlatif', type:'trans', q:'這些是最好用的滴劑。', hint:'gouttes 是複數', a:'Ce sont les gouttes les plus faciles à utiliser.', aNote:'⚠️ 老師口語說 C\'est les gouttes…；寫作要用 ce sont' },
   { lesson:32, topic:'superlatif', type:'trans', q:'這是關於藥用植物最無聊（最不有趣）的書。', hint:'intéressant 配合誰？', a:'C\'est le livre sur les plantes médicinales le moins intéressant.', aNote:'⚠️ intéressant 配 livre（陽性），不是離它最近的 plantes' },
+  // ── 10-05 補課本練習（research/AUDIT_2026-10-03）：p.103 練習3c／4d／4e、p.107 練習3d、p.108 練習2a／2c。⚠️ 課本沒公布答案，照標準法文 ──
+  { lesson:32, topic:'superlatif', type:'fill', q:'Les tisanes ne coûtent pas cher. C\'est le remède le _____ économique.', zh:'花草茶不貴。它是最經濟的藥方。', hint:'課本 p.103 練習3c：économique 是一般形容詞', a:'plus', aNote:'économique 不是 bon／bien → le plus économique' },
+  { lesson:32, topic:'superlatif', type:'fill', q:'Ce sirop est bien. (-) → C\'est le sirop le _____.', zh:'這個糖漿還不錯。→ 這是最不好的糖漿。', hint:'課本 p.103 練習4d：劣等最高級＋bien', a:'moins bien', aNote:'劣等（-）最高級 ＝ le moins ＋ 形容詞／副詞：le moins bien（⚠️ 沒有 le moins meilleur）。bien 當「不錯的」形容詞，不變化' },
+  { lesson:32, topic:'superlatif', type:'fill', q:'Ce lit est cher. (+) → C\'est le lit le _____.', zh:'這張床很貴。→ 這是最貴的床。', hint:'課本 p.103 練習4e：優等（+）', a:'plus cher', aNote:'cher 放在名詞後 → 冠詞要出現兩次：le lit le plus cher' },
+  { lesson:32, topic:'superlatif', type:'fill', q:'Conseil / intéressant (-) → C\'est le conseil _____.', zh:'這是最沒意思的建議。', hint:'課本 p.108 練習2a：劣等最高級，intéressant 放名詞後', a:'le moins intéressant', aNote:'intéressant 放名詞後 → le conseil le moins intéressant（冠詞重複）' },
+  { lesson:32, topic:'superlatif', type:'fill', q:'Tisanes / efficaces (+) → Ce sont les tisanes _____.', zh:'這些是最有效的花草茶。', hint:'課本 p.108 練習2c：優等最高級，複數陰性', a:'les plus efficaces', aNote:'tisanes 陰性複數 → les tisanes les plus efficaces（冠詞 les 重複、efficaces 加 s）' },
 
   { lesson:32, topic:'pronoms-interrogatifs', type:'fill', q:'_____ conseils peux-tu me donner pour ne pas tomber malade ?', hint:'後面有名詞', a:'Quels', aNote:'後面接名詞 → 形容詞 quel；un conseil 陽性 → quels' },
   { lesson:32, topic:'pronoms-interrogatifs', type:'fill', q:'Un de tes enfants est malade ? _____ ?', hint:'代替 un enfant', a:'Lequel', aNote:'單獨站、代替前面的名詞 → 代名詞 lequel' },
@@ -1637,6 +1643,7 @@ const BANK = [
   { lesson:32, topic:'pronoms-interrogatifs', type:'choose', q:'quel 跟 lequel 的差別是？', hint:'後面有沒有名詞', a:'quel 後面一定接名詞；lequel 單獨用，代替前面提過的名詞', aNote:'Tu préfères quel café ? → Lequel tu préfères ?（老師：法國人不喜歡重複）', opts:['quel 後面一定接名詞；lequel 單獨用，代替前面提過的名詞','兩個完全一樣，可以互換','lequel 比較口語，quel 比較正式','quel 只問人，lequel 只問東西'] },
   { lesson:32, topic:'pronoms-interrogatifs', type:'choose', q:'15、17、18 三個號碼，要叫警察：Tu appelles lequel ?', hint:'Police-secours', a:'le 17', aNote:'17 police／18 pompiers／15 SAMU', opts:['le 17','le 15','le 18','le 114'] },
   { lesson:32, topic:'pronoms-interrogatifs', type:'choose', q:'d\'après toi 是什麼意思？', hint:'不是 après toi', a:'依你看（＝à ton avis）', aNote:'⚠️ après toi ＝ 在你之後', opts:['依你看（＝à ton avis）','在你之後','跟著你走','因為你'] },
+  { lesson:32, topic:'pronoms-interrogatifs', type:'fill', q:'À _____ heure tu rentres ?', zh:'你幾點回家？', hint:'課本 p.107 練習3d：heure 是陰性單數，後面有名詞', a:'quelle', aNote:'後面直接接名詞 heure → 形容詞 quel；heure 陰性單數 → quelle' },
 
   { lesson:32, topic:'medecine-urgences-vocab', type:'fill', q:'Si vous toussez, prenez ce _____.', hint:'喝的藥', a:'sirop', aNote:'le sirop＝藥水、糖漿' },
   { lesson:32, topic:'medecine-urgences-vocab', type:'fill', q:'Pour me soigner, je n\'utilise que des _____ naturels.', hint:'偏方、藥方', a:'remèdes', aNote:'⭐ 回鍋第30課 ne...que' },
