@@ -481,6 +481,17 @@ const BANK = [
   // ── une journée vs un jour ──
   { lesson:9, topic:'daily-routine-vocab', type:'choose', q:'「祝你有美好的一天」要說？', hint:'journée', a:'Bonne journée !', aNote:'bonjour 只是「嗨」；bonne journée 才是祝福語', opts:['Bonjour !','Bonne journée !','Bon jour !','Bonne nuit !'] },
   { lesson:9, topic:'adjective-agreement', type:'choose', q:'journée 跟 jour 的差別？', hint:'醒著 vs 24小時', a:'journée = 白天醒著的時間；jour = 24小時的一天', aNote:'journée 強調「過的這段時光」', opts:['journée = 白天醒著的時間；jour = 24小時的一天','兩個完全一樣','jour 才有陰陽性','journée 專指晚上'] },
+  // ── 10-05 補 A1 弱項課本練習（research/AUDIT_2026-10-03＋Owen 作答紀錄）：主題 形容詞配合（陰陽性／單複數）。Édito p.75 練習3a–d、p.78 練習1a／1b（無公布答案，標準法文）；Cahier A1 p.62 Bilan 練習1b–e（Corrigés）。課本 p.78 練習1是「一對陽性→陰性或複數」，我把第一個詞留在題幹、只挖第二個 ──
+  { lesson:7, topic:'adjective-agreement', type:'fill', q:'C\'est une robe _____. (court)', zh:'這是一件短洋裝。', hint:'課本 p.75 練習3a', a:'courte', aNote:'陰性單數：court → courte（加 e）' },
+  { lesson:7, topic:'adjective-agreement', type:'fill', q:'Il porte des chemises _____. (bleu)', zh:'他穿藍色襯衫。', hint:'課本 p.75 練習3b', a:'bleues', aNote:'chemises 是陰性複數：bleu → bleues（加 e 再加 s）' },
+  { lesson:7, topic:'adjective-agreement', type:'fill', q:'Elle adore la ceinture _____. (rouge)', zh:'她超愛那條紅色腰帶。', hint:'課本 p.75 練習3c', a:'rouge', aNote:'rouge 本來就是 e 結尾，陰性單數不變' },
+  { lesson:7, topic:'adjective-agreement', type:'fill', q:'Elle a des jupes _____. (long)', zh:'她有幾條長裙。', hint:'課本 p.75 練習3d', a:'longues', aNote:'jupes 是陰性複數：long → longue（陰性要加 -ue）→ longues' },
+  { lesson:7, topic:'adjective-agreement', type:'fill', q:'Une robe simple. Des vêtements _____. (simple)', zh:'一件簡單的洋裝。一些簡單的衣服。', hint:'課本 p.78 練習1a', a:'simples', aNote:'vêtements 是陽性複數：simple 本來就是 e 結尾，只要加 s → simples' },
+  { lesson:7, topic:'adjective-agreement', type:'fill', q:'Un costume élégant. Une robe _____. (élégant)', zh:'一套優雅的西裝。一件優雅的洋裝。', hint:'課本 p.78 練習1b', a:'élégante', aNote:'陰性單數：élégant → élégante' },
+  { lesson:7, topic:'adjective-agreement', type:'fill', q:'Un manteau chaud. Des robes _____. (chaud)', zh:'一件暖和的大衣。一些暖和的洋裝。', hint:'Cahier A1 p.62 練習1b', a:'chaudes', aNote:'Cahier Corrigés：des robes chaudes（陰性複數）' },
+  { lesson:7, topic:'adjective-agreement', type:'fill', q:'Un pantalon gris. Une ceinture _____. (gris)', zh:'一件灰色長褲。一條灰色腰帶。', hint:'Cahier A1 p.62 練習1c', a:'grise', aNote:'Cahier Corrigés：une ceinture grise（gris → grise）' },
+  { lesson:7, topic:'adjective-agreement', type:'fill', q:'Un gilet vert. Des vestes _____. (vert)', zh:'一件綠色背心。一些綠色外套。', hint:'Cahier A1 p.62 練習1d', a:'vertes', aNote:'Cahier Corrigés：des vestes vertes' },
+  { lesson:7, topic:'adjective-agreement', type:'fill', q:'Un costume blanc. Une tenue _____. (blanc)', zh:'一套白色西裝。一身白色裝扮。', hint:'Cahier A1 p.62 練習1e', a:'blanche', aNote:'Cahier Corrigés：une tenue blanche（blanc 的陰性是不規則的 blanche，不是 *blance）' },
 
   // ── 反身動詞現在式 + 否定句 ──
   { lesson:9, topic:'reflexive-verbs', type:'fill',   q:'s\'habiller 變位：tu _____', hint:'母音開頭縮寫', a:"t'habilles", aNote:'te + habilles → 母音前縮寫成 t\'habilles' },
