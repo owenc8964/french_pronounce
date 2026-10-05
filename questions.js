@@ -368,6 +368,17 @@ const BANK = [
   // ── 動詞三組（課堂）──
   { lesson:7, topic:'ir-re-verbs', type:'choose', q:'finir 屬於第幾組動詞？',          hint:'-IR', a:'第二組', aNote:'第二組 = -IR 結尾（finir / choisir / partir）；nous → finissons（加 -iss-）', opts:['第一組','第二組','第三組'] },
   { lesson:7, topic:'ir-re-verbs', type:'choose', q:'vendre 屬於第幾組動詞？',         hint:'-RE 結尾', a:'第三組', aNote:'第三組 = 不規則（-RE/-OIR/avoir/être⋯）；需個別記', opts:['第一組','第二組','第三組'] },
+  // ── 10-05 補 A1 弱項課本練習（research/AUDIT_2026-10-03＋Owen 作答紀錄）：主題 -ir／-re 動詞。Édito p.54 練習3a–d（無公布答案，標準法文）、p.96 練習3a–d、p.98 練習2e、Cahier A1 p.74 練習4b（Corrigés） ──
+  { lesson:5, topic:'ir-re-verbs', type:'fill', q:'Tu ne _____ pas ton dessert ? (finir)', zh:'你不把甜點吃完嗎？', hint:'課本 p.54 練習3a', a:'finis', aNote:'finir：tu → finis（-ir 第二組，je/tu 都是 -is）' },
+  { lesson:5, topic:'ir-re-verbs', type:'fill', q:'Je _____ le menu à 16 €. (choisir)', zh:'我選 16 歐元的套餐。', hint:'課本 p.54 練習3b', a:'choisis', aNote:'choisir：je → choisis' },
+  { lesson:5, topic:'ir-re-verbs', type:'fill', q:'Vous _____ quel plat ? (choisir)', zh:'您選哪一道菜？', hint:'課本 p.54 練習3c', a:'choisissez', aNote:'choisir：vous → choisissez（加 -iss-）' },
+  { lesson:5, topic:'ir-re-verbs', type:'fill', q:'Il _____ son jus d\'orange et il arrive ! (finir)', zh:'他喝完柳橙汁就過來！', hint:'課本 p.54 練習3d', a:'finit', aNote:'finir：il → finit' },
+  { lesson:10, topic:'ir-re-verbs', type:'fill', q:'Je _____ au Maroc. (partir)', zh:'我要去摩洛哥。', hint:'課本 p.96 練習3a', a:'pars', aNote:'partir：je → pars（je/tu 都是 -s，il 是 -t）' },
+  { lesson:10, topic:'ir-re-verbs', type:'fill', q:'Nous _____ ce soir. (sortir)', zh:'我們今晚出門。', hint:'課本 p.96 練習3b', a:'sortons', aNote:'sortir：nous → sortons（複數照字根 sort- 加 -ons，沒有 -iss-）' },
+  { lesson:10, topic:'ir-re-verbs', type:'fill', q:'Tu _____ ? (dormir)', zh:'你在睡覺嗎？', hint:'課本 p.96 練習3c', a:'dors', aNote:'dormir：tu → dors' },
+  { lesson:10, topic:'ir-re-verbs', type:'fill', q:'Elles _____ avec des amis. (sortir)', zh:'她們跟朋友出去。', hint:'課本 p.96 練習3d', a:'sortent', aNote:'sortir：elles → sortent（-ent 不發音）' },
+  { lesson:10, topic:'ir-re-verbs', type:'choose', q:'Anne et sa sœur _____ en week-end.', zh:'安跟她姊妹週末要出發去玩。', hint:'課本 p.98 練習2e', a:'partent', aNote:'主詞是複數（Anne et sa sœur = elles）→ partent', opts:['part','pars','partent'] },
+  { lesson:10, topic:'ir-re-verbs', type:'choose', q:'Tu _____ de l\'exposition ? Tu n\'as pas aimé ?', zh:'你要離開展覽了嗎？你不喜歡嗎？', hint:'Cahier A1 p.74 練習4b', a:'pars', aNote:'tu → pars（Cahier Corrigés）', opts:['partez','pars','part'] },
   { lesson:7, topic:'irregular-verbs-3rd-group', type:'choose', q:'aller 屬於第幾組動詞？',          hint:'字尾像第一組但…', a:'第三組（不規則）', aNote:'aller 雖以 -ER 結尾，卻是不規則動詞（第三組）：vais/vas/va/allons/allez/vont', opts:['第一組','第二組','第三組（不規則）'] },
   { lesson:7, topic:'pouvoir-vouloir', type:'choose', q:'pouvoir 屬於第幾組？',            hint:'-OIR', a:'第三組', aNote:'pouvoir / vouloir / savoir → -OIR 結尾，都是第三組不規則', opts:['第一組','第二組','第三組'] },
 
