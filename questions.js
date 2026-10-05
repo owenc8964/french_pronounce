@@ -1724,6 +1724,11 @@ const BANK = [
   { lesson:34, topic:'subjonctif-present', type:'trans', q:'他得少花一點時間在網路上。（用 il faut que）', hint:"que ＋ il → qu'il", a:"Il faut qu'il passe moins de temps sur Internet.", aNote:'課本 Entraînement 4b' },
   { lesson:34, topic:'subjonctif-present', type:'trans', q:'你們不可以貼你們小孩的照片。（用 il ne faut pas que）', hint:'vous 形＝imparfait；否定 de', a:"Il ne faut pas que vous postiez de photos de vos enfants.", aNote:'課本 Entraînement 4c' },
   { lesson:34, topic:'subjonctif-present', type:'trans', q:'她們不可以透露個人資訊。（用 il ne faut pas que）', hint:"否定 → d'informations", a:"Il ne faut pas qu'elles donnent d'informations personnelles.", aNote:'課本 Entraînement 4d' },
+  // ── 10-05 補課本練習（research/AUDIT_2026-10-03）：p.122 練習2a–d。⚠️ 課本沒公布答案，照標準法文 ──
+  { lesson:34, topic:'subjonctif-present', type:'fill', q:'Il est important que tu _____ (s\'informer).', zh:'你要主動去了解資訊，這很重要。', hint:'課本 p.122 練習2a：反身動詞＋tu', a:'t\'informes', aNote:'-er 動詞：字根 informe- ＋ -es；反身代名詞 te 遇母音縮成 t\'：que tu t\'informes' },
+  { lesson:34, topic:'subjonctif-present', type:'fill', q:'Il faut que nous _____ (publier) cet article.', zh:'我們必須發表這篇文章。', hint:'課本 p.122 練習2b：nous 形＝imparfait 形，⚠️ publier 的雙 i', a:'publiions', aNote:'nous 的虛擬式跟 imparfait 一樣：publi- ＋ -ions → publiions（字根的 i ＋ 字尾 -ions 的 i）' },
+  { lesson:34, topic:'subjonctif-present', type:'fill', q:'C\'est bien que vous _____ (écouter) des podcasts.', zh:'你們會聽 podcast，這很好。', hint:'課本 p.122 練習2c：vous 形＝imparfait 形', a:'écoutiez', aNote:'vous 的虛擬式跟 imparfait 一樣：écout- ＋ -iez' },
+  { lesson:34, topic:'subjonctif-present', type:'fill', q:'C\'est génial qu\'ils _____ (avoir) tous ces moyens de communication !', zh:'他們有這麼多溝通工具，真棒！', hint:'課本 p.122 練習2d：avoir 不規則', a:'aient', aNote:'avoir 的虛擬式 ils → aient（aie, aies, ait, ayons, ayez, aient）' },
 
   { lesson:34, topic:'medias-audio-reseaux', type:'fill', q:"C'est une personne qui écoute la radio : l'_____.", hint:'聽眾', a:'auditeur|auditrice', aNote:'p.119 練習1a。🎙 audition＝聽；auditeur＝聽的人' },
   { lesson:34, topic:'medias-audio-reseaux', type:'fill', q:"C'est une partie d'une série, d'émissions ou de podcasts : l'_____.", hint:'一集', a:'épisode', aNote:'p.119 練習1b。épisode 1, saison 3' },
