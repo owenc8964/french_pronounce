@@ -13,7 +13,7 @@
 ## 🧭 現在站在哪裡（2026-09-01 深夜更新，⭐ 新 session 先讀這一塊，再往下）
 
 > 🆕 **2026-10-02 session 結束時的狀態（新 session 先看這段，再往下）**：
-> - 課程進度：**第 38 課**（Unité 11 開頭）筆記＋連動已完成、已推。下次上課老師會讀「小書」，並繼續 p.157 Les études 練習。
+> - 課程進度：**第 39 課**（10-05，Unité 11：間接引語／工作世界，p.158–163）筆記＋連動已完成、已推（見「三之四十二」）。下次：p.163 主文法「代名詞 COI y」。
 > - 這兩天的工作紀錄在「三之十八」～「三之二十八」（搜尋「三之二」）：第36–38課、八角框架研究、寵物成長只認站穩＋五種外型、**變位總覽改了四輪**（規則版＋一張圖＋命令式＋不規則總表＋變化表）、**un/une 小遊戲**與戰鬥招式**陰陽連擊**。
 > - ⏸ **等 Owen 回饋的**：寵物成長門檻（10/30/60/100）與進度條感受、**變位總覽第五、六輪（分步驟分色＋變法表＋每格例子＋冷門時態灰字，見「三之二十九」～「三之三十五」；⭐ 研究後開工：T1 ✅ 本頁練習，T2 遊戲 ✅、T3 verb_sprint ✅，見「三之三十六」～「三之三十八」）**、un/une 遊戲與陰陽連擊實玩手感。
 > - ⚠️ `tools/tmp_quest_nosync.js` 產的暫存頁會殘留 sync 標籤，⛔ 別用；測 quest.html 用「只刪 `<script src=sync_supabase.js>`＋記憶體 localStorage」的隔離複本。
@@ -4902,6 +4902,16 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - 紀錄 `clb7_gender_seen`（每字一物件＋last）：上次錯的 ×4、錯多於對 ×3、連對 3 次且 2 次 <2 秒的 ×0.35。答對也呼叫 `growRec`（key `g:<字>`）→ 隔天以後又答對＝站穩，寵物會長大。每答對 1 枚金幣，中途回去也照給。結算：✓ 數、平均秒數、<2 秒的個數、「再看一眼這幾個」（可點聽）。⛔ 不顯示分母。
 - 🐛 順手發現：`tools/tmp_quest_nosync.js make` 產的暫存頁**自己回報 `sync tag present? true`**——那支工具已經不可靠，這次改用自己的隔離複本（只刪 `<script src=sync_supabase.js>`），⚠️ 以後測 quest.html 別用它。
 - ✅ 試跑（隔離複本，ROOM 沒動）：手機 375 版面；一局 20 題（含 1 跳過、4 錯）→ 結算正確、金幣 +15、紀錄 18 字；無錯誤。
+
+#### 三之四十二、10-05：第39課筆記（Unité 11：Premier contact professionnel／Le discours rapporté／Le monde du travail）＋連動
+
+- **來源**：`~/Desktop/1005/` 6 張截圖（含 Owen 手寫）＋整堂逐字稿；頁碼對快取 → **Édito A2 p.158–163**（E 職場第一次聯絡／主文法 discours rapporté au présent／Oh le cliché／詞彙頁 Le monde du travail／p.162「談職涯計畫」框／p.163 測驗）。⛔ 沒上到：p.158 D podcast、p.159 練習2（答案照標準法文寫進筆記與題庫，已標）與 4–5、p.160 F／G、p.161 練習4–5、p.162 H 影片、**p.163 下半主文法「Le pronom COI y」（下次）**。
+- ✅ 筆記四件套（`lesson-39`，9 unit，check_notes 0／0）。⚠️ **自查抓到 4 句是我自己造的法文**（糾錯摘要裡「我要去工作面試」之類）→ 全部換成課本原句／老師原話。
+- ⚠️ **標出來的**：① p.161 練習2 第四格：老師說 l'employeur、Owen 寫 employeuse，但後面接 **elle** → 要陰性字，最自然是 **l'entreprise**（已在筆記、題庫、糾錯標明）。② p.159 練習3 a／c 的 1、4 兩個都通（老師也說），照課本配 a→4、c→1。③ 老師說 aimer savoir 實際用 **aimerait**。④ 老師對 informatique（軟體）／numérique（硬體）的區分她自己說不確定，已標。
+- 🎯 **考試策略（老師主動講）**：正式訊息用倒裝（Acceptez-vous de… ?／Pouvez-vous… ?）＋間接問句（Je voudrais savoir…／Je me demande…），A2 的東西放在 B2 寫作也加分——已寫進筆記課文E unit 與 gram_rules points。
+- ✅ 連動：chunks **+72**｜questions **+41**（新 topic `discours-rapporte` 19／`message-formel` 6／`vocab-monde-travail` 16）＋ TOPIC_LABELS 三處｜sentences `S_L39_1~12`（→364）｜table_drill +1 `discours-rapporte-drill`（85 個）｜gram_rules **新 A2 點** `discours-rapporte`（topics 含 message-formel → 遊戲「文法三連」與「📐 課本怎麼說」自動吃到）｜map `CURRENT_LESSON` 39＋2 塊（`discours-rapporte`、`travail-vocab`）；⚠️ `TOTAL_LESSONS` 38 被超過 → 改 **44（估計值）**，課表確定再改。
+- ✅ 試跑（隔離複本、無 sync，ROOM 沒動）：筆記第39課 9 unit；quiz 41 題載入、標籤在；table_drill 新表 8 列；gram_trainer `?point=discours-rapporte` 規則卡顯示；map 第 39 課＋新地塊；遊戲選單有文法三連、近 6 課抽得到 discours-rapporte 三連；無錯誤。
+- ⏸ 上一則（10-03）問 Owen 的「課本題先補 A2、A1 只補還會錯的」**他還沒回**——下次要再問。
 
 #### 三之四十一、10-04：「沒玩到文法」「主線點進去沒題目、只有四格」
 

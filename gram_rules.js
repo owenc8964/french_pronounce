@@ -756,6 +756,26 @@ const GRAM_POINTS = [
         { fr:"Ce sont des matières que j'ai toujours aimées.", zh:'這些是我一直很喜歡的科目。（受詞 → que＋配合）' },
         { fr:"Ce que ce prof m'a donné, c'est l'amour des livres.", zh:'這位老師給我的，是對書的熱愛。' },
       ]}},
+  { id:'discours-rapporte', name:'Le discours rapporté', icon:'🗨️', zone:'A2', cat:'discours',
+    lessons:[39], topics:['discours-rapporte','message-formel'], unlocked:true,   // 10-05 第39課（Édito A2 p.159）
+    rule:{
+      title:'間接引語 — 轉述別人說的話（que）和問的問題（si／ce que／ce qui／疑問詞）',
+      why:'直接引語是把原話放進引號；間接引語是把那句話「收進」自己的句子裡，變成一個從屬子句。所以它需要一個接口：陳述句的接口是 que（跟所有 dire que、penser que 一樣）；問句本身就帶著接口（où、pourquoi、comment 直接照搬），只有三個用 est-ce que 組出來的問句要換成能當接口的形式：est-ce que → si、qu\'est-ce que → ce que、qu\'est-ce qui → ce qui。que／qui 的選法跟關係代名詞、強調句一模一樣。',
+      points:[
+        '轉述陳述句：dire, répondre, affirmer, ajouter, annoncer, déclarer, expliquer, répéter ＋ que',
+        '轉述問題：demander, se demander, vouloir savoir, aimer savoir ＋ 疑問詞（où, qui, quand, comment, pourquoi, quel…）',
+        'est-ce que（或沒有疑問詞的問句）→ si；⭐ 這裡的 si＝是否，不是「如果」',
+        'qu\'est-ce que → ce que（後面接主詞）；qu\'est-ce qui → ce qui（後面接動詞）',
+        '⚠️ 代名詞要跟著換：« pour nous » → pour eux；« vous intéresse » → m\'intéresse',
+        '⚠️ 「說」的動詞不能接 si／疑問詞；「問」的動詞不能接 que',
+        '🎙 最常用的是 Je me demande si…／J\'aimerais savoir si…／Je voudrais savoir ce que…（aimer savoir 用條件式）',
+        '🎙 正式訊息用倒裝更客氣：Acceptez-vous de… ?／Pouvez-vous… ?（accepter 要 de，pouvoir 不用）',
+      ],
+      examples:[
+        { fr:"Elle se demande si le CV est utile.", zh:'她在想履歷有沒有用。（est-ce que → si）' },
+        { fr:"Elle me demande pourquoi ce poste m'intéresse.", zh:'她問我為什麼對這個職位有興趣。' },
+        { fr:"Ils disent que c'est plus facile pour eux d'avoir un CV d'une page.", zh:'他們說一頁的履歷對他們來說比較容易。' },
+      ]}},
   { id:'gerondif', name:'Le gérondif', icon:'🌊', zone:'A2', cat:'verbe-mode',
     lessons:[35], topics:['gerondif'], unlocked:true,   // 09-22（第35課 Édito A2 p.131）從 B2 佔位點就地解鎖；map.html 的 gerondif 地塊靠同一個 id 連著，⛔ 不要改 id
     rule:{

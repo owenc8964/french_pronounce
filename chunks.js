@@ -19292,5 +19292,509 @@ const CHUNKS = [
   "fr": "le master",
   "zh": "碩士（bac +5）",
   "note": "M1＝bac +4、M2＝bac +5"
+ },
+ {
+  "id": "L39_Acceptez_vous_de_m_ajout",
+  "lesson": 39,
+  "fr": "Acceptez-vous de m'ajouter à vos contacts ?",
+  "zh": "您願意把我加為聯絡人嗎？",
+  "note": "課本範本①。⭐ accepter de＋原形"
+ },
+ {
+  "id": "L39_Pouvez_vous_m_accepter_d",
+  "lesson": 39,
+  "fr": "Pouvez-vous m'accepter dans votre réseau ?",
+  "zh": "您可以接受我加入您的人脈嗎？",
+  "note": "課本範本②。⭐ pouvoir＋原形，不加 de"
+ },
+ {
+  "id": "L39_Elle_se_demande_si_le_CV",
+  "lesson": 39,
+  "fr": "Elle se demande si le CV est utile.",
+  "zh": "她在想履歷有沒有用。",
+  "note": "課本原句。⭐ si＝是否"
+ },
+ {
+  "id": "L39_Je_me_demande_si_c_est_b",
+  "lesson": 39,
+  "fr": "Je me demande si c'est bien de boire du café.",
+  "zh": "我在想喝咖啡好不好。",
+  "note": "🎙 老師的例子：Est-ce que c'est bien de boire du café ? → Je me demande si…"
+ },
+ {
+  "id": "L39_J_explique_ce_qui_m_inté",
+  "lesson": 39,
+  "fr": "J'explique ce qui m'intéresse dans ce poste.",
+  "zh": "我說明這個職位哪裡吸引我。",
+  "note": "課本練習3。🎙 老師：這句很好用"
+ },
+ {
+  "id": "L39_J_aime_beaucoup_l_ambian",
+  "lesson": 39,
+  "fr": "J'aime beaucoup l'ambiance de ta maison.",
+  "zh": "我很喜歡你家的氣氛。",
+  "note": "🎙 ambiance 的用法"
+ },
+ {
+  "id": "L39_Après_deux_ans_de_format",
+  "lesson": 39,
+  "fr": "Après deux ans de formation, je vais devenir pâtissier.",
+  "zh": "受訓兩年之後，我要當甜點師傅。",
+  "note": "課本框＋🎙 老師的例子"
+ },
+ {
+  "id": "L39_Moi_aussi_j_ai_besoin_de",
+  "lesson": 39,
+  "fr": "Moi aussi, j'ai besoin de changement, c'est certain.",
+  "zh": "我也需要改變，這是肯定的。",
+  "note": "課本測驗。⭐ c'est certain＝表達「很明顯」（p.163 框）"
+ },
+ {
+  "id": "L39_Ça_fait_longtemps_que_je",
+  "lesson": 39,
+  "fr": "Ça fait longtemps que je n'ai pas fait de CV en français.",
+  "zh": "我很久沒有寫法文履歷了。",
+  "note": "⭐ ça fait longtemps que＋ne…pas"
+ },
+ {
+  "id": "L39_Désolée_pour_le_petit_re",
+  "lesson": 39,
+  "fr": "Désolée pour le petit retard aujourd'hui.",
+  "zh": "今天晚了一點，抱歉。",
+  "note": "⭐ 道歉的固定說法"
+ },
+ {
+  "id": "L39_Elle_aimerait_savoir",
+  "lesson": 39,
+  "fr": "Elle aimerait savoir…",
+  "zh": "她想知道…",
+  "note": "🎙 老師：aimer savoir 實際上用條件式 aimerait，⛔ 不說 elle aime savoir"
+ },
+ {
+  "id": "L39_Vous_y_pensez_vraiment_F",
+  "lesson": 39,
+  "fr": "Vous y pensez vraiment ? Faites le point.",
+  "zh": "你真的這麼想嗎？先盤點一下自己。",
+  "note": "❓ 不認得 faire le point → 看看自己現在在哪裡（🎙 faire le point sur les finances）；＝faire un bilan"
+ },
+ {
+  "id": "L39_Je_me_demande_comment",
+  "lesson": 39,
+  "fr": "Je me demande comment…",
+  "zh": "我在想該怎麼…",
+  "note": "間接地問（本課主文法）"
+ },
+ {
+  "id": "L39_Merci_d_avance",
+  "lesson": 39,
+  "fr": "Merci d'avance.",
+  "zh": "先謝謝您了。",
+  "note": "結尾"
+ },
+ {
+  "id": "L39_Merci_pour_votre_réponse",
+  "lesson": 39,
+  "fr": "Merci pour votre réponse.",
+  "zh": "謝謝您的回覆。",
+  "note": "回覆別人之後"
+ },
+ {
+  "id": "L39_un_réseau_professionnel",
+  "lesson": 39,
+  "fr": "un réseau professionnel",
+  "zh": "職場人脈網站",
+  "note": "🎙 例：LinkedIn"
+ },
+ {
+  "id": "L39_neutre",
+  "lesson": 39,
+  "fr": "neutre",
+  "zh": "中性的、素的",
+  "note": "🎙 照片沒有背景，只有你的臉"
+ },
+ {
+  "id": "L39_un_employeur_une_employe",
+  "lesson": 39,
+  "fr": "un employeur, une employeuse",
+  "zh": "雇主",
+  "note": ""
+ },
+ {
+  "id": "L39_ajouter_à_ses_contacts",
+  "lesson": 39,
+  "fr": "ajouter à ses contacts",
+  "zh": "加為聯絡人",
+  "note": ""
+ },
+ {
+  "id": "L39_être_bien_placé_bien_pla",
+  "lesson": 39,
+  "fr": "être bien placé, bien placée",
+  "zh": "排名很前面、位置好",
+  "note": "🎙 in a good place"
+ },
+ {
+  "id": "L39_le_classement_mondial",
+  "lesson": 39,
+  "fr": "le classement mondial",
+  "zh": "世界排名",
+  "note": ""
+ },
+ {
+  "id": "L39_un_jour_férié",
+  "lesson": 39,
+  "fr": "un jour férié",
+  "zh": "國定假日",
+  "note": "🎙 你不能選的假"
+ },
+ {
+  "id": "L39_les_jours_de_repos_m",
+  "lesson": 39,
+  "fr": "les jours de repos (m.)",
+  "zh": "休息日",
+  "note": "repos＝休息"
+ },
+ {
+  "id": "L39_un_salarié_une_salariée",
+  "lesson": 39,
+  "fr": "un salarié, une salariée",
+  "zh": "受薪員工",
+  "note": "＝un employé"
+ },
+ {
+  "id": "L39_en_principe",
+  "lesson": 39,
+  "fr": "en principe",
+  "zh": "原則上",
+  "note": ""
+ },
+ {
+  "id": "L39_la_beauté",
+  "lesson": 39,
+  "fr": "la beauté",
+  "zh": "美容業",
+  "note": "🎙 化妝品牌、整形…"
+ },
+ {
+  "id": "L39_le_bien_être",
+  "lesson": 39,
+  "fr": "le bien-être",
+  "zh": "身心健康產業",
+  "note": "🎙 運動、瑜伽都算"
+ },
+ {
+  "id": "L39_la_communication",
+  "lesson": 39,
+  "fr": "la communication",
+  "zh": "公關、溝通",
+  "note": "🎙 PR"
+ },
+ {
+  "id": "L39_l_informatique_f",
+  "lesson": 39,
+  "fr": "l'informatique (f.)",
+  "zh": "資訊業",
+  "note": "🎙 跟電腦有關的一切"
+ },
+ {
+  "id": "L39_le_management",
+  "lesson": 39,
+  "fr": "le management",
+  "zh": "管理",
+  "note": "🎙 管人"
+ },
+ {
+  "id": "L39_le_marketing",
+  "lesson": 39,
+  "fr": "le marketing",
+  "zh": "行銷",
+  "note": ""
+ },
+ {
+  "id": "L39_le_nettoyage",
+  "lesson": 39,
+  "fr": "le nettoyage",
+  "zh": "清潔業",
+  "note": ""
+ },
+ {
+  "id": "L39_le_numérique",
+  "lesson": 39,
+  "fr": "le numérique",
+  "zh": "數位產業",
+  "note": "跟 informatique 很像"
+ },
+ {
+  "id": "L39_la_restauration",
+  "lesson": 39,
+  "fr": "la restauration",
+  "zh": "餐飲業",
+  "note": ""
+ },
+ {
+  "id": "L39_le_secteur_médical",
+  "lesson": 39,
+  "fr": "le secteur médical",
+  "zh": "醫療業",
+  "note": "🎙 Owen 的行業"
+ },
+ {
+  "id": "L39_l_agent_d_entretien_l_ag",
+  "lesson": 39,
+  "fr": "l'agent d'entretien, l'agente d'entretien",
+  "zh": "清潔人員",
+  "note": "🎙 比 nettoyage 好聽的說法"
+ },
+ {
+  "id": "L39_le_chef_d_entreprise_la",
+  "lesson": 39,
+  "fr": "le chef d'entreprise, la cheffe d'entreprise",
+  "zh": "企業主、老闆",
+  "note": "＝l'entrepreneur(e)＝🎙 le patron"
+ },
+ {
+  "id": "L39_le_coiffeur_la_coiffeuse",
+  "lesson": 39,
+  "fr": "le coiffeur, la coiffeuse",
+  "zh": "美髮師",
+  "note": ""
+ },
+ {
+  "id": "L39_l_esthéticien_l_esthétic",
+  "lesson": 39,
+  "fr": "l'esthéticien, l'esthéticienne",
+  "zh": "美容師",
+  "note": "🎙 做臉、除毛、修眉"
+ },
+ {
+  "id": "L39_le_formateur_la_formatri",
+  "lesson": 39,
+  "fr": "le formateur, la formatrice",
+  "zh": "培訓講師",
+  "note": "🎙 做一整套課程讓人買的人"
+ },
+ {
+  "id": "L39_l_ingénieur_l_ingénieure",
+  "lesson": 39,
+  "fr": "l'ingénieur, l'ingénieure",
+  "zh": "工程師",
+  "note": ""
+ },
+ {
+  "id": "L39_le_manucure_la_manucure",
+  "lesson": 39,
+  "fr": "le manucure, la manucure",
+  "zh": "美甲師",
+  "note": ""
+ },
+ {
+  "id": "L39_le_masseur_la_masseuse",
+  "lesson": 39,
+  "fr": "le masseur, la masseuse",
+  "zh": "按摩師",
+  "note": ""
+ },
+ {
+  "id": "L39_le_secrétaire_la_secréta",
+  "lesson": 39,
+  "fr": "le secrétaire, la secrétaire",
+  "zh": "秘書",
+  "note": ""
+ },
+ {
+  "id": "L39_le_tatoueur_la_tatoueuse",
+  "lesson": 39,
+  "fr": "le tatoueur, la tatoueuse",
+  "zh": "刺青師",
+  "note": "🎙 un tatouage＝刺青"
+ },
+ {
+  "id": "L39_le_boulanger_la_boulangè",
+  "lesson": 39,
+  "fr": "le boulanger, la boulangère",
+  "zh": "麵包師傅",
+  "note": "🎙 法國很多店是 boulangerie-pâtisserie 一起"
+ },
+ {
+  "id": "L39_le_pâtissier_la_pâtissiè",
+  "lesson": 39,
+  "fr": "le pâtissier, la pâtissière",
+  "zh": "甜點師傅",
+  "note": "🎙 做蛋糕的；同一家店裡可能各有一個人"
+ },
+ {
+  "id": "L39_l_ambiance_de_travail_f",
+  "lesson": 39,
+  "fr": "l'ambiance de travail (f.)",
+  "zh": "工作氣氛",
+  "note": "🎙 同事友不友善；J'aime beaucoup l'ambiance de ta maison."
+ },
+ {
+  "id": "L39_le_coworking",
+  "lesson": 39,
+  "fr": "le coworking",
+  "zh": "共同工作空間",
+  "note": "同一個地方、不同公司"
+ },
+ {
+  "id": "L39_l_emploi_m",
+  "lesson": 39,
+  "fr": "l'emploi (m.)",
+  "zh": "工作、職位",
+  "note": "＝le job (fam.)＝le poste＝le travail"
+ },
+ {
+  "id": "L39_l_employé_l_employée",
+  "lesson": 39,
+  "fr": "l'employé, l'employée",
+  "zh": "員工",
+  "note": "＝le/la salarié(e)"
+ },
+ {
+  "id": "L39_l_entreprise_f",
+  "lesson": 39,
+  "fr": "l'entreprise (f.)",
+  "zh": "公司",
+  "note": "＝la société"
+ },
+ {
+  "id": "L39_les_horaires_m",
+  "lesson": 39,
+  "fr": "les horaires (m.)",
+  "zh": "上班時間",
+  "note": ""
+ },
+ {
+  "id": "L39_le_local",
+  "lesson": 39,
+  "fr": "le local",
+  "zh": "工作場地",
+  "note": "🎙 可以租一個 local"
+ },
+ {
+  "id": "L39_le_matériel",
+  "lesson": 39,
+  "fr": "le matériel",
+  "zh": "工作器材",
+  "note": "🎙 老師的是電腦和書"
+ },
+ {
+  "id": "L39_le_tarif",
+  "lesson": 39,
+  "fr": "le tarif",
+  "zh": "（服務的）價格",
+  "note": "⛔ 不是薪水"
+ },
+ {
+  "id": "L39_le_travail_à_distance",
+  "lesson": 39,
+  "fr": "le travail à distance",
+  "zh": "遠端工作",
+  "note": "≠ en présentiel（到場）"
+ },
+ {
+  "id": "L39_le_travail_en_équipe",
+  "lesson": 39,
+  "fr": "le travail en équipe",
+  "zh": "團隊合作",
+  "note": "＝collaboratif"
+ },
+ {
+  "id": "L39_le_travailleur_indépenda",
+  "lesson": 39,
+  "fr": "le travailleur indépendant, la travailleuse indépendante",
+  "zh": "自由工作者",
+  "note": ""
+ },
+ {
+  "id": "L39_les_activités_extra_prof",
+  "lesson": 39,
+  "fr": "les activités extra-professionnelles (f.)",
+  "zh": "工作以外的活動",
+  "note": "＝les centres d'intérêt (m.)"
+ },
+ {
+  "id": "L39_les_centres_d_intérêt_m",
+  "lesson": 39,
+  "fr": "les centres d'intérêt (m.)",
+  "zh": "興趣（履歷欄位）",
+  "note": ""
+ },
+ {
+  "id": "L39_l_annonce_f",
+  "lesson": 39,
+  "fr": "l'annonce (f.)",
+  "zh": "公告、徵才廣告",
+  "note": "＝l'offre d'emploi (f.)"
+ },
+ {
+  "id": "L39_l_offre_d_emploi_f",
+  "lesson": 39,
+  "fr": "l'offre d'emploi (f.)",
+  "zh": "職缺",
+  "note": "🎙 像 104 上的"
+ },
+ {
+  "id": "L39_le_candidat_la_candidate",
+  "lesson": 39,
+  "fr": "le candidat, la candidate",
+  "zh": "應徵者",
+  "note": ""
+ },
+ {
+  "id": "L39_la_compétence",
+  "lesson": 39,
+  "fr": "la compétence",
+  "zh": "能力、技能",
+  "note": "🎙 履歷寫語言和會用的軟體"
+ },
+ {
+  "id": "L39_le_curriculum_vitae",
+  "lesson": 39,
+  "fr": "le curriculum vitae",
+  "zh": "履歷",
+  "note": "＝le CV"
+ },
+ {
+  "id": "L39_l_entretien_d_embauche_m",
+  "lesson": 39,
+  "fr": "l'entretien d'embauche (m.)",
+  "zh": "工作面試",
+  "note": "🎙 entretien＝談話"
+ },
+ {
+  "id": "L39_l_expérience_professionn",
+  "lesson": 39,
+  "fr": "l'expérience professionnelle (f.)",
+  "zh": "工作經歷",
+  "note": ""
+ },
+ {
+  "id": "L39_le_parcours",
+  "lesson": 39,
+  "fr": "le parcours",
+  "zh": "經歷、歷程",
+  "note": "第38課回鍋"
+ },
+ {
+  "id": "L39_la_recherche_d_emploi",
+  "lesson": 39,
+  "fr": "la recherche d'emploi",
+  "zh": "求職",
+  "note": ""
+ },
+ {
+  "id": "L39_le_recrutement",
+  "lesson": 39,
+  "fr": "le recrutement",
+  "zh": "招募",
+  "note": "recruter；🎙 RH 的工作"
+ },
+ {
+  "id": "L39_actualiser_son_CV",
+  "lesson": 39,
+  "fr": "actualiser son CV",
+  "zh": "更新履歷",
+  "note": "🎙 actualiser＝refresh；調整是 ajuster"
  }
 ];

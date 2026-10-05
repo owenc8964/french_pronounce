@@ -424,8 +424,8 @@ header {
 <script src="tense_lens.js"></script>
 <script src="time_hall.js"></script>
 <script>
-const CURRENT_LESSON = 38;
-const TOTAL_LESSONS  = 38;
+const CURRENT_LESSON = 39;
+const TOTAL_LESSONS  = 44;   /* 10-05 第39課超過原本的 38 → 估到 Édito A2 結束（第11單元從第38課開始，剩第11、12單元約每單元 3 課）；⚠️ 估計值，課表確定再改 */
 
 const TILES = [
   // ── A1 ──────────────────────────────────────────────────────────
@@ -664,6 +664,13 @@ const TILES = [
   { id:'mise-en-relief', zone:'A2', icon:'🔦', name:'La mise en relief', gram:true, cat:'discours',
     hint:"C'est vous qui… · Ce que j'ai préféré, c'est…", unlocked:true, lesson:38,
     detail:"La mise en relief (leçon 38, unité 11). Pour insister sur un sujet : C'est / Ce sont + nom ou pronom tonique + qui + verbe (C'est la prof qui a changé ma vie ; C'est vous qui m'avez fait découvrir le théâtre). Sur un complément : + que + sujet + verbe (C'est une expérience que je ne regrette pas ; Ce sont eux que j'ai guidés). Avec ce : C'est ce qui me plaît ici / C'est ce que j'ai préféré au lycée. En début de phrase : Ce qui est le plus difficile, c'est l'organisation du travail. ⚠️ Piège : Ce sont les matières qui l'intéressent (l' est complément, le sujet est « les matières »). À l'oral on dit souvent c'est + pluriel ; à l'écrit, ce sont. ⚠️ Le tableau du manuel (p.156) répète par erreur l'exemple avec qui dans la colonne que." },
+
+  { id:'discours-rapporte', zone:'A2', icon:'🗨️', name:'Le discours rapporté', gram:true, cat:'discours',
+    hint:"Je me demande si… · Elle me demande pourquoi…", unlocked:true, lesson:39,
+    detail:"Le discours rapporté au présent (leçon 39, unité 11). Pour rapporter une phrase déclarative : dire, répondre, affirmer, ajouter, annoncer, déclarer, expliquer, répéter + que (Ils disent que c'est plus facile pour eux d'avoir un CV d'une page). Pour rapporter une question : demander, se demander, vouloir savoir, aimer savoir + mot interrogatif (Elle me demande pourquoi ce poste m'intéresse). Est-ce que → si (Elle se demande si le CV est utile) ; qu'est-ce que → ce que ; qu'est-ce qui → ce qui. ⚠️ Changer les pronoms (nous → eux, vous → me). ⚠️ affirmer / expliquer + que, jamais si ; demander + si, jamais que. Les plus utiles : Je me demande si… / J'aimerais savoir si… / Je voudrais savoir ce que… Message formel : Acceptez-vous de m'ajouter à vos contacts ? Pouvez-vous m'accepter dans votre réseau ?" },
+  { id:'travail-vocab', zone:'A2', icon:'💼', name:'Le monde du travail', unlocked:true, lesson:39,
+    hint:"Actualisez votre CV · un entretien d'embauche",
+    detail:"Le monde du travail (leçon 39, unité 11). Les secteurs : la beauté, le bien-être, la communication, la formation, l'informatique, le management, le marketing, le nettoyage, le numérique, la restauration, le sport. Les professions : l'agent(e) d'entretien, le/la chef(fe) d'entreprise = l'entrepreneur(e), le coiffeur / la coiffeuse, l'esthéticien(ne), le formateur / la formatrice, l'ingénieur(e), le/la manucure, le masseur / la masseuse, le/la secrétaire, le tatoueur / la tatoueuse. Le travail : l'ambiance de travail, le coworking, l'emploi = le poste, l'employé(e) = le/la salarié(e), l'entreprise = la société, les horaires, le local, le matériel, le tarif, le travail à distance ≠ en présentiel, le travail en équipe, le travailleur indépendant. Le CV : les activités extra-professionnelles = les centres d'intérêt, l'annonce = l'offre d'emploi, le/la candidat(e), la compétence, l'entretien d'embauche, l'expérience, le parcours, la recherche d'emploi, le recrutement, actualiser son CV. Projets : mettre un terme à sa carrière, se former, faire le point / un bilan. Oh le cliché : 25 jours de vacances + 11 jours fériés = 36 jours de repos." },
 
   { id:'etudes-vocab', zone:'A2', icon:'🎓', name:'Les études', unlocked:true, lesson:38,
     hint:"J'ai passé mon bac · Une année de césure",
