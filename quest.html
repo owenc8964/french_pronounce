@@ -3901,7 +3901,15 @@ function defeatGo(){
    · ⛔ 不進塔、考試
    ════════════════════════════════════════════════════════════════ */
 function gramTopics(){ var o={}; (typeof GRAM_POINTS!=='undefined'?GRAM_POINTS:[]).forEach(function(p){ if(p.unlocked!==false) (p.topics||[]).forEach(function(t){ o[t]=1; }); }); return o; }
-function g3Usable(q){ return (q.type==='choose'&&q.opts&&q.opts.length>=2) || ((q.type==='fill'||q.type==='trans')&&typeof q.a==='string'&&q.a.length>1); }
+/* 10-05 Owen：「題型最好單純一點，直接課本練習題那樣就好……整句話的那種會影響專注」
+   → 只收「一句法文、挖一個空」的選擇／填空題；⛔ 不收中翻法整句、⛔ 不收中文概念題（題目沒有空格的） */
+function g3Usable(q){
+  if(!(q.type==='choose'||q.type==='fill')) return false;
+  if(!/_{3,}|…{2,}|\.{4,}/.test(q.q)) return false;                 /* 要有空格 */
+  if(/[\u4e00-\u9fff]/.test(String(q.q).replace(/（[^）]*）/g,''))) return false;   /* 題幹是中文的（括號裡的中文提示不算）＝概念題 */
+  if(q.type==='choose') return !!(q.opts&&q.opts.length>=2);
+  return typeof q.a==='string' && q.a.length>=1;
+}
 function gram3Set(){
   var gt=gramTopics(), ls=(B&&B.lessons)?B.lessons:recentLessons(6);
   var pool=BANK.filter(function(q){ return gt[q.topic] && g3Usable(q) && ls.indexOf(q.lesson)>=0; });
