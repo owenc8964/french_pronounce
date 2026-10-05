@@ -631,6 +631,17 @@ const BANK = [
   { lesson:10, topic:'passe-recent', type:'trans',  q:'他們剛買票。', hint:'venir de + acheter', a:'Ils viennent d\'acheter des places.', aNote:'venir ils形 = viennent；des places = 票（電影票/音樂廳票）', askClaude:true },
   { lesson:10, topic:'passe-recent', type:'trans',  q:'我剛發現一部新影集。', hint:'venir de + découvrir', a:'Je viens de découvrir une nouvelle série.', aNote:'découvrir 不規則動詞；série = 影集（séries Netflix…）', askClaude:true },
   { lesson:10, topic:'passe-recent', type:'choose', q:'「Vous venez de finir ?」是問什麼？', hint:'時態', a:'你們剛結束了嗎？', aNote:'passé récent 疑問句，用語調（句末升調）或 est-ce que 就可以表達問句', opts:['你們剛結束了嗎？','你們要去結束嗎？','你們正在結束嗎？','你們結束過了嗎？'] },
+  // ── 10-05 補 A1 弱項課本練習（research/AUDIT_2026-10-03＋Owen 作答紀錄）：主題 passé récent（venir de）。Édito p.95 練習3a／3d（無公布答案，標準法文）；Cahier A1 p.70 練習1a／1d／1e／3c／3d、p.74 Bilan 練習3a／3d／3e（Corrigés）。課本「現在式改 passé récent」的題，我把改完的動詞部分整塊留成空格 ──
+  { lesson:10, topic:'passe-recent', type:'fill', q:'Je _____ John au supermarché. (rencontrer)', zh:'我剛剛在超市遇到約翰。', hint:'課本 p.95 練習3a', a:'viens de rencontrer', aNote:'passé récent：venir（je → viens）＋ de ＋ 原形' },
+  { lesson:10, topic:'passe-recent', type:'fill', q:'Qu\'est-ce que tu _____ ? (dire)', zh:'你剛剛說了什麼？', hint:'課本 p.95 練習3d', a:'viens de dire', aNote:'tu → viens；de ＋ 原形 dire' },
+  { lesson:10, topic:'passe-recent', type:'fill', q:'Tu _____ de finir de travailler.', zh:'你剛剛下班。', hint:'Cahier A1 p.70 練習1a', a:'viens', aNote:'Cahier Corrigés：tu → viens（venir：je viens / tu viens / il vient）' },
+  { lesson:10, topic:'passe-recent', type:'fill', q:'Vous _____ de regarder le film.', zh:'你們剛看完電影。', hint:'Cahier A1 p.70 練習1d', a:'venez', aNote:'Cahier Corrigés：vous → venez' },
+  { lesson:10, topic:'passe-recent', type:'fill', q:'Ils _____ de terminer le ménage.', zh:'他們剛做完家事。', hint:'Cahier A1 p.70 練習1e', a:'viennent', aNote:'Cahier Corrigés：ils → viennent（⚠️ 不是 *venent）' },
+  { lesson:10, topic:'passe-recent', type:'fill', q:'Nous faisons un jogging. → Nous _____ un jogging.', zh:'我們慢跑。→ 我們剛慢跑完。', hint:'Cahier A1 p.70 練習3c', a:'venons de faire', aNote:'Cahier Corrigés：Nous venons de faire un jogging（faire 原形不變）' },
+  { lesson:10, topic:'passe-recent', type:'fill', q:'Tu écoutes l\'émission ? → Tu _____ l\'émission ?', zh:'你在聽這個節目嗎？→ 你剛聽完這個節目嗎？', hint:'Cahier A1 p.70 練習3d', a:'viens d\'écouter|viens d’écouter', aNote:'Cahier Corrigés：Tu viens d\'écouter l\'émission ?（de ＋ 母音開頭 → d\'）' },
+  { lesson:10, topic:'passe-recent', type:'fill', q:'Je vois une exposition. → Je _____ une exposition.', zh:'我在看展覽。→ 我剛看完一個展覽。', hint:'Cahier A1 p.74 Bilan 練習3a', a:'viens de voir', aNote:'Cahier Corrigés：Je viens de voir une exposition' },
+  { lesson:10, topic:'passe-recent', type:'fill', q:'Michel part du cinéma. → Michel _____ du cinéma.', zh:'米歇爾要離開電影院。→ 米歇爾剛離開電影院。', hint:'Cahier A1 p.74 Bilan 練習3d', a:'vient de partir', aNote:'Cahier Corrigés：Michel vient de partir du cinéma' },
+  { lesson:10, topic:'passe-recent', type:'fill', q:'Ils sortent du cours de dessin. → Ils _____ du cours de dessin.', zh:'他們正要離開畫畫課。→ 他們剛下畫畫課。', hint:'Cahier A1 p.74 Bilan 練習3e', a:'viennent de sortir', aNote:'Cahier Corrigés：Ils viennent de sortir du cours de dessin' },
 
   // ══════════════════ 第10課：外貌描述 ══════════════════
   { lesson:10, topic:'physical-description', type:'choose', q:'頭髮是紅色要用哪個詞？', hint:'不是 rouge！', a:'roux / rousse', aNote:'頭髮紅色 = roux（陽）/ rousse（陰）；rouge 是一般紅色（口紅、蘋果），不用在頭髮上', opts:['roux / rousse','rouge / rouge','rouge / rosse','roux / rouge'] },
