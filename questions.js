@@ -201,6 +201,17 @@ const BANK = [
   { lesson:2, topic:'possessives', type:'fill', q:'Elles ont des amis. Ce sont _____ amis.',            hint:'their + 複數',a:'leurs',  aNote:'ils/elles → leurs（複數）；單數用 leur' },
   { lesson:2, topic:'on-vs-nous', type:'fill', q:'On a un appartement. C\'est _____ appartement.',     hint:'our + 單數', a:'notre',  aNote:'nous/on → notre（單數）；複數用 nos' },
   { lesson:2, topic:'family-possessives', type:'choose', q:'leur / leurs：「Ce sont _____ enfants.」填哪個？',  hint:'enfants 複數', a:'leurs', aNote:'leur（單數）vs leurs（複數）跟名詞的單複數走', opts:['leur','leurs'] },
+  // ── 10-05 補 A1 弱項課本練習（research/AUDIT_2026-10-03＋Owen 作答紀錄）：主題 所有格形容詞。Édito p.39 練習3a–d（無公布答案，標準法文）；Cahier A1 p.22 練習4a／4c／4e、p.26 Bilan 練習3b／3d／3e（Corrigés）。Cahier p.22 練習4 課本是「把『à 我／à 你』改成所有格」，我留所有格當空格 ──
+  { lesson:3, topic:'family-possessives', type:'fill', q:'J\'ai un oncle. _____ oncle a 48 ans.', zh:'我有一個叔叔。我叔叔四十八歲。', hint:'課本 p.39 練習3a', a:'Mon', aNote:'je 的所有格：陽性單數 → mon oncle' },
+  { lesson:3, topic:'family-possessives', type:'fill', q:'J\'ai des cousins. _____ cousins habitent à Toulouse.', zh:'我有幾個堂表兄弟。我的堂表兄弟住在土魯斯。', hint:'課本 p.39 練習3b', a:'Mes', aNote:'je 的所有格：複數 → mes（不分陰陽）' },
+  { lesson:3, topic:'family-possessives', type:'fill', q:'Elle a deux frères. _____ frères sont sympas.', zh:'她有兩個兄弟。她的兄弟們人很好。', hint:'課本 p.39 練習3c', a:'Ses', aNote:'elle 的所有格：複數 → ses（son/sa/ses 同時代表 il 與 elle）' },
+  { lesson:3, topic:'family-possessives', type:'fill', q:'Nous avons une fille. _____ fille déteste le sport.', zh:'我們有一個女兒。我們的女兒討厭運動。', hint:'課本 p.39 練習3d', a:'Notre', aNote:'nous 的所有格：單數 → notre（不分陰陽）' },
+  { lesson:3, topic:'family-possessives', type:'fill', q:'Comment s\'appelle ta fille ? — _____ fille s\'appelle Dita.', zh:'你女兒叫什麼名字？——我女兒叫迪塔。', hint:'Cahier A1 p.26 Bilan 練習3b', a:'Ma', aNote:'Cahier Corrigés：Ma（回答的人是「我」→ ma fille）' },
+  { lesson:3, topic:'family-possessives', type:'fill', q:'Le fils de Marie et Antoine est à l\'université ? — Oui, _____ fils est à l\'université.', zh:'瑪麗和安托萬的兒子在念大學嗎？——對，他們的兒子在念大學。', hint:'Cahier A1 p.26 Bilan 練習3d', a:'leur', aNote:'Cahier Corrigés：leur（兩個人共有、東西單數 → leur）' },
+  { lesson:3, topic:'family-possessives', type:'fill', q:'Les amis de Matyas et Jacob sont sympas ? — Oui, _____ amis sont très sympas !', zh:'馬提亞斯和雅各的朋友人很好嗎？——對，他們的朋友人很好！', hint:'Cahier A1 p.26 Bilan 練習3e', a:'leurs', aNote:'Cahier Corrigés：leurs（兩個人共有、東西複數 → leurs）' },
+  { lesson:3, topic:'family-possessives', type:'fill', q:'Le piano est à toi ? C\'est _____ piano ?', zh:'這架鋼琴是你的嗎？是你的鋼琴嗎？', hint:'Cahier A1 p.22 練習4a', a:'ton', aNote:'Cahier Corrigés：ton（toi → ton；piano 陽性單數）' },
+  { lesson:3, topic:'family-possessives', type:'fill', q:'C\'est la famille de Nicolas. C\'est _____ famille.', zh:'這是尼古拉的家人。是他的家人。', hint:'Cahier A1 p.22 練習4c', a:'sa', aNote:'Cahier Corrigés：sa（famille 陰性單數；il 的所有格看後面的名詞，不看主人）' },
+  { lesson:3, topic:'family-possessives', type:'fill', q:'Les instruments de musique sont à moi. Ce sont _____ instruments de musique.', zh:'這些樂器是我的。是我的樂器。', hint:'Cahier A1 p.22 練習4e', a:'mes', aNote:'Cahier Corrigés：mes（複數 → mes）' },
 
   // ── 作業本補充：Unité 2 — 職業陰陽 ──
   { lesson:2, topic:'adjective-agreement', type:'gender', q:'professeur → 女性形？', hint:'加 e', a:'professeure', aNote:'professeur → professeure（直接加 e，不是 euse）' },
