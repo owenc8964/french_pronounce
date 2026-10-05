@@ -441,6 +441,17 @@ const BANK = [
   // ── 尺碼 ──
   { lesson:8, topic:'question-words', type:'fill',   q:'你穿幾號鞋？Tu _____ combien ?', hint:'chausser', a:'chausses', aNote:'chausser = 穿鞋尺碼專用動詞；衣服尺碼用 faire' },
   { lesson:8, topic:'question-words', type:'choose', q:'問衣服尺碼用哪個動詞？', hint:'faire vs chausser', a:'faire', aNote:'Tu fais quelle taille ?（衣服）vs Tu chausses combien ?（鞋子）', opts:['faire','chausser','porter','mettre'] },
+  // ── 10-05 補 A1 弱項課本練習（research/AUDIT_2026-10-03＋Owen 作答紀錄）：主題 疑問詞（疑問形容詞 quel／quelle／quels／quelles 的配合）。Édito p.26 練習2a／2c／2d、p.28 練習2a／2c／2d（無公布答案，標準法文；p.28 練習2 課本是「選名詞」，我把 quel 的形式留在題幹、讓玩家選配得上的名詞）；Cahier A1 p.8 練習1c／1d／1f、練習2d（Corrigés）。課本 p.28 練習2b 的 Quel est ＋ 名詞 題型和 2c 同概念，不重複 ──
+  { lesson:2, topic:'question-words', type:'choose', q:'Tu as _____ âge ?', zh:'你幾歲？', hint:'課本 p.26 練習2a', a:'quel', aNote:'âge 是陽性單數 → quel', opts:['quel','quelle'] },
+  { lesson:2, topic:'question-words', type:'choose', q:'Tu aimes _____ musique ?', zh:'你喜歡哪種音樂？', hint:'課本 p.26 練習2c', a:'quelle', aNote:'musique 是陰性單數 → quelle', opts:['quel','quelle'] },
+  { lesson:2, topic:'question-words', type:'choose', q:'Tu pratiques _____ loisirs ?', zh:'你做哪些休閒活動？', hint:'課本 p.26 練習2d', a:'quels', aNote:'loisirs 是陽性複數 → quels', opts:['quel','quels'] },
+  { lesson:2, topic:'question-words', type:'choose', q:'Tu aimes quelles _____ ?', zh:'你喜歡哪幾種音樂？', hint:'課本 p.28 練習2a', a:'musiques', aNote:'quelles 是陰性複數 → 後面要接複數陰性名詞（musiques；langue 是單數）', opts:['langue','musiques'] },
+  { lesson:2, topic:'question-words', type:'choose', q:'Quelle est _____ de naissance de Malika ?', zh:'瑪麗卡的出生日期是哪天？', hint:'課本 p.28 練習2c', a:'la date', aNote:'quelle 是陰性 → la date（陰性）；le lieu 是陽性，要配 quel', opts:['la date','le lieu'] },
+  { lesson:2, topic:'question-words', type:'choose', q:'Il aime quels _____ ?', zh:'他喜歡哪些休閒活動？', hint:'課本 p.28 練習2d', a:'loisirs', aNote:'quels 是陽性複數 → loisirs（sport 是單數，要配 quel）', opts:['loisirs','sport'] },
+  { lesson:2, topic:'question-words', type:'fill', q:'_____ est la date de naissance de Louane ?', zh:'路安的出生日期是哪天？', hint:'Cahier A1 p.8 練習1c', a:'Quelle', aNote:'Cahier Corrigés：date 是陰性單數 → Quelle' },
+  { lesson:2, topic:'question-words', type:'fill', q:'_____ sont les nationalités dans la classe ?', zh:'班上有哪些國籍？', hint:'Cahier A1 p.8 練習1d', a:'Quelles', aNote:'Cahier Corrigés：nationalités 是陰性複數 → Quelles' },
+  { lesson:2, topic:'question-words', type:'fill', q:'Tu habites dans _____ pays ?', zh:'你住在哪個國家？', hint:'Cahier A1 p.8 練習1f', a:'quel', aNote:'Cahier Corrigés：pays 是陽性（單複數同形）→ quel；後面 habites 是單數動詞所以是單數' },
+  { lesson:2, topic:'question-words', type:'choose', q:'Quel est le _____ de Bilal ?', zh:'比拉的號碼是多少？', hint:'Cahier A1 p.8 練習2d', a:'numéro', aNote:'Cahier Corrigés：Quel est le numéro de Bilal ?（quel ＋ le → 陽性單數名詞）', opts:['numéro','adresse','langues','ville'] },
 
   // ── 天氣 ──
   { lesson:8, topic:'vocab-weather-season', type:'fill',   q:'天氣很冷：Il _____ froid.', hint:'faire', a:'fait', aNote:'il fait + 形容詞/度數：天氣描述固定用 faire' },
