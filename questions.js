@@ -515,6 +515,17 @@ const BANK = [
   { lesson:9, topic:'reflexive-verbs', type:'choose', q:'「上床躺下」（還沒睡著）法文是？', hint:'進入床的動作', a:'se coucher', aNote:'se coucher = 躺下進入床；不一定馬上睡著', opts:['se coucher','se lever','dormir','s\'endormir'] },
   { lesson:9, topic:'reflexive-verbs', type:'choose', q:'「入睡」（從醒著到睡著的那一刻）法文是？', hint:'瞬間動作', a:"s'endormir", aNote:"s'endormir = 入睡的瞬間；dormir = 睡著的狀態", opts:["s'endormir",'se coucher','se lever','se réveiller'] },
   { lesson:9, topic:'reflexive-verbs', type:'trans',  q:'我22點上床，但3點才睡著。', hint:'se coucher / s\'endormir', a:"Je me couche à 22h, mais je m'endors à 3h.", aNote:"se coucher（上床）≠ s'endormir（睡著）— 中間在失眠", askClaude:true },
+  // ── 10-05 補 A1 弱項課本練習（research/AUDIT_2026-10-03＋Owen 作答紀錄）：主題 反身動詞。Édito p.89 練習3a–d、p.92 練習1a–d（無公布答案，標準法文）；Cahier A1 p.67 練習4a／4e（Corrigés，課本是「改成否定」）。 ──
+  { lesson:9, topic:'reflexive-verbs', type:'choose', q:'Je _____ douche le soir.', zh:'我晚上洗澡。', hint:'課本 p.89 練習3a', a:'me', aNote:'je → me（je me douche）', opts:['me','se'] },
+  { lesson:9, topic:'reflexive-verbs', type:'choose', q:'Nous _____ levons à 7 h.', zh:'我們七點起床。', hint:'課本 p.89 練習3b', a:'nous', aNote:'nous → nous（nous nous levons）', opts:['nous','vous'] },
+  { lesson:9, topic:'reflexive-verbs', type:'choose', q:'Tu _____ habilles pour la fête.', zh:'你為了派對換衣服。', hint:'課本 p.89 練習3c', a:'t\'', aNote:'tu → te，後面是 h（不發音的 h）開頭的 habilles → 縮寫成 t\'habilles', opts:['te','t\''] },
+  { lesson:9, topic:'reflexive-verbs', type:'choose', q:'Vous _____ rasez.', zh:'您刮鬍子。', hint:'課本 p.89 練習3d', a:'vous', aNote:'vous → vous（vous vous rasez）', opts:['se','vous'] },
+  { lesson:9, topic:'reflexive-verbs', type:'fill', q:'Les enfants _____ à quelle heure ? (se coucher)', zh:'孩子們幾點上床睡覺？', hint:'課本 p.92 練習1a', a:'se couchent', aNote:'ils/elles → se ＋ couchent（-ent 不發音）' },
+  { lesson:9, topic:'reflexive-verbs', type:'fill', q:'Vous _____ le matin ou le soir ? (se doucher)', zh:'你們早上還是晚上洗澡？', hint:'課本 p.92 練習1b', a:'vous douchez', aNote:'vous → vous ＋ douchez' },
+  { lesson:9, topic:'reflexive-verbs', type:'fill', q:'Je _____ et j\'arrive ! (s\'habiller)', zh:'我換好衣服就到！', hint:'課本 p.92 練習1c', a:'m\'habille|m’habille', aNote:'je → me，後面母音／不發音 h → 縮寫 m\'habille' },
+  { lesson:9, topic:'reflexive-verbs', type:'fill', q:'Nous _____ pour le travail. (se préparer)', zh:'我們準備上班。', hint:'課本 p.92 練習1d', a:'nous préparons', aNote:'nous → nous ＋ préparons' },
+  { lesson:9, topic:'reflexive-verbs', type:'fill', q:'Mon frère _____ le soir. (se laver, ne…pas)', zh:'我哥哥晚上不洗澡。', hint:'Cahier A1 p.67 練習4a', a:'ne se lave pas', aNote:'Cahier Corrigés：否定時 ne 放在反身代名詞前、pas 放在動詞後：ne se lave pas' },
+  { lesson:9, topic:'reflexive-verbs', type:'fill', q:'Tu _____ le matin ? (se raser, ne…pas)', zh:'你早上不刮鬍子嗎？', hint:'Cahier A1 p.67 練習4e', a:'ne te rases pas', aNote:'Cahier Corrigés：Tu ne te rases pas（ne ＋ te ＋ 動詞 ＋ pas）' },
   { lesson:9, topic:'daily-routine-vocab', type:'fill',   q:'失眠：faire des _____', hint:'insomnie', a:'insomnies', aNote:'faire des insomnies = 失眠' },
 
   // ── 一天作息閱讀詞彙 ──
