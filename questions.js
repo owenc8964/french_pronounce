@@ -812,6 +812,17 @@ const BANK = [
   { lesson:6, topic:'imperative-mood', type:'choose', q:'avoir 的命令式 tu 形是？', hint:'完全不規則', a:'Aie', aNote:'avoir 命令式：Aie（tu）/ Ayons / Ayez（vous）——完全不規則', opts:['Aie','As','Ayé','Avez'] },
   { lesson:6, topic:'imperative-mood', type:'trans', q:'不要緊張！（對 tu）', hint:'ne…pas + stresser', a:'Ne te stresse pas !', aNote:'se stresser = 緊張（反身動詞）；命令式否定：Ne + te + stresse + pas', askClaude:true },
   { lesson:6, topic:'imperative-mood', type:'choose', q:'「Venez ici !」是命令誰？', hint:'ici = 這裡', a:'vous（多人或正式一人）', aNote:'Venez = venir 的 vous 命令式；tu 形是 Viens；nous 形是 Venons', opts:['vous（多人或正式一人）','tu（單數非正式）','nous（包含說話者）','on（非正式我們）'] },
+  // ── 10-05 補 A1 弱項課本練習（research/AUDIT_2026-10-03＋Owen 作答紀錄）：主題 命令式。Édito p.67 練習2a–d（無公布答案，標準法文）；Cahier A1 p.46 練習3a／3c／3e、p.50 Bilan 練習3a／3d／3e（Corrigés）。課本是「把句子改成命令式」，我把改完的整句留一個空（動詞那一塊） ──
+  { lesson:6, topic:'imperative-mood', type:'fill', q:'Vous continuez à pied. → _____ à pied !', zh:'你們走路繼續走。→ 請走路繼續走！', hint:'課本 p.67 練習2a', a:'Continuez', aNote:'vous 的命令式＝現在式去掉主詞 vous：Continuez !' },
+  { lesson:6, topic:'imperative-mood', type:'fill', q:'Tu regardes le plan de la ville. → _____ le plan de la ville !', zh:'你看城市地圖。→ 看一下城市地圖！', hint:'課本 p.67 練習2b', a:'Regarde', aNote:'-er 動詞 tu 命令式要去掉結尾的 -s：tu regardes → Regarde !' },
+  { lesson:6, topic:'imperative-mood', type:'fill', q:'Nous achetons une carte de transport. → _____ une carte de transport !', zh:'我們買一張交通卡。→ 我們來買一張交通卡吧！', hint:'課本 p.67 練習2c', a:'Achetons', aNote:'nous 的命令式＝「我們一起…吧」：nous achetons → Achetons !' },
+  { lesson:6, topic:'imperative-mood', type:'fill', q:'Tu es sympa. → _____ sympa !', zh:'你很親切。→ 要親切一點！', hint:'課本 p.67 練習2d', a:'Sois', aNote:'être 的命令式是不規則的：sois / soyons / soyez（不是 *es）' },
+  { lesson:6, topic:'imperative-mood', type:'fill', q:'Tu fais attention dans la rue, s\'il te plaît. → _____ attention dans la rue, s\'il te plaît !', zh:'你在街上要小心。→ 在街上請小心！', hint:'Cahier A1 p.46 練習3a', a:'Fais', aNote:'Cahier Corrigés：Fais attention…（faire 的 tu 命令式 ＝ 現在式去主詞，不用去 -s，因為不是 -er 動詞）' },
+  { lesson:6, topic:'imperative-mood', type:'fill', q:'Vous allez à pied à la gare. → _____ à pied à la gare !', zh:'你們走路去車站。→ 走路去車站吧！', hint:'Cahier A1 p.46 練習3c', a:'Allez', aNote:'Cahier Corrigés：Allez à pied à la gare（vous allez → Allez）' },
+  { lesson:6, topic:'imperative-mood', type:'fill', q:'Nous regardons le plan sur le téléphone. → _____ le plan sur le téléphone !', zh:'我們用手機看地圖。→ 我們用手機看地圖吧！', hint:'Cahier A1 p.46 練習3e', a:'Regardons', aNote:'Cahier Corrigés：Regardons le plan sur le téléphone' },
+  { lesson:6, topic:'imperative-mood', type:'fill', q:'Tu vas à l\'école à pied. → _____ à l\'école à pied !', zh:'你走路去學校。→ 走路去學校！', hint:'Cahier A1 p.50 練習3a', a:'Va', aNote:'Cahier Corrigés：Va à l\'école à pied.（aller 的 tu 命令式去掉 -s → Va）' },
+  { lesson:6, topic:'imperative-mood', type:'fill', q:'Tu as du courage. → _____ du courage !', zh:'你有勇氣。→ 拿出勇氣來！', hint:'Cahier A1 p.50 練習3d', a:'Aie', aNote:'Cahier Corrigés：Aie du courage.（avoir 的命令式不規則：aie / ayons / ayez）' },
+  { lesson:6, topic:'imperative-mood', type:'fill', q:'Tu ne regardes pas sur internet. → _____ sur internet !', zh:'你不看網路。→ 不要看網路！', hint:'Cahier A1 p.50 練習3e', a:'Ne regarde pas', aNote:'Cahier Corrigés：Ne regarde pas…（否定命令式：ne ＋ 動詞 ＋ pas 把動詞包住，tu 去掉 -s）' },
 
   // giving-advice 補充（給建議）
   { lesson:13, topic:'giving-advice', type:'fill', q:'Je te _____ de faire du sport. (conseiller)', zh:'我建議你做運動。', hint:'conseiller → je te conseille', a:'Je te conseille de faire du sport.|conseille', aNote:'conseiller + de + infinitif：我建議你做運動' },
