@@ -2004,6 +2004,17 @@ const BANK = [
   { lesson:38, topic:'vocab-etudes', type:'trans', q:'我考了會考，但沒過。', hint:'passer／rater', a:'J\'ai passé mon bac, mais je l\'ai raté.', aNote:'🎙 老師用來分清 passer 和 réussir' },
   { lesson:38, topic:'vocab-etudes', type:'trans', q:'我喜歡我工作的地方是：有空閒時間、在辦公室工作、賺不少錢。', hint:'Ce qui me plaît dans mon métier, c\'est…', a:'Ce qui me plaît dans mon métier, c\'est le temps libre, travailler dans un bureau et gagner pas mal d\'argent.', aNote:'Owen 自己的回答（只修語法）' },
   { lesson:38, topic:'passe-compose', type:'fill', q:'C\'est une très belle région qu\'on _____ (habiter) pendant 10 ans.', hint:'課本 p.150：pendant＋已結束的時間；que 在前', a:'a habitée', aNote:'⚠️ 當堂寫成 habitait。pendant 10 ans（已經搬走）→ passé composé；que＝la région → habitée' },
+  // ── 10-05 補 A1 弱項課本練習（research/AUDIT_2026-10-03＋Owen 作答紀錄）：主題 passé composé。Édito p.103 練習3（第11課）、p.117 練習2（第12課）、p.140 練習1（第14課）、Cahier A1 p.86 練習1d（Corrigés）。Édito 沒公布答案，標準法文 ──
+  { lesson:11, topic:'passe-compose', type:'fill', q:'Tu _____ ? (déménager)', zh:'你搬家了嗎？', hint:'課本 p.103 練習3a', a:'as déménagé', aNote:'passé composé：avoir（tu → as）＋ 過去分詞 déménagé（-er → -é）' },
+  { lesson:11, topic:'passe-compose', type:'fill', q:'Hier, j\'_____ une armoire. (acheter)', zh:'昨天我買了一個衣櫃。', hint:'課本 p.103 練習3b', a:'ai acheté', aNote:'j\'ai ＋ acheté；hier 是過去的時間標記' },
+  { lesson:11, topic:'passe-compose', type:'fill', q:'Nous _____ cette maison. (ne pas visiter)', zh:'我們沒有參觀這間房子。', hint:'課本 p.103 練習3d', a:'n\'avons pas visité|n’avons pas visité', aNote:'否定：ne ＋ avons ＋ pas ＋ visité（ne…pas 包住助動詞，母音前 n\'）' },
+  { lesson:11, topic:'passe-compose', type:'fill', q:'Tu _____ combien d\'appartements ? (visiter)', zh:'你參觀了幾間公寓？', hint:'Cahier A1 p.86 練習1d', a:'as visité', aNote:'Cahier Corrigés：tu as visité' },
+  { lesson:12, topic:'passe-compose', type:'fill', q:'Ils _____ malades dans l\'avion. (être)', zh:'他們在飛機上不舒服。', hint:'課本 p.117 練習2a', a:'ont été', aNote:'ils → ont；être 的過去分詞是 été（⚠️ être 自己的複合過去式也用 avoir）' },
+  { lesson:12, topic:'passe-compose', type:'fill', q:'Tu _____ de la fièvre ? (avoir)', zh:'你發燒了嗎？', hint:'課本 p.117 練習2b', a:'as eu', aNote:'avoir 的過去分詞是 eu（發音 [y]）；tu as eu' },
+  { lesson:12, topic:'passe-compose', type:'fill', q:'Nous _____ des exercices. (faire)', zh:'我們做了運動。', hint:'課本 p.117 練習2c', a:'avons fait', aNote:'faire 的過去分詞 fait；nous avons fait' },
+  { lesson:14, topic:'passe-compose', type:'choose', q:'Tu _____ parti à la Martinique.', zh:'你去了馬丁尼克島。', hint:'課本 p.140 練習1a', a:'es', aNote:'partir 是用 être 的移動動詞：tu es parti(e)', opts:['as','es'] },
+  { lesson:14, topic:'passe-compose', type:'choose', q:'Nous _____ fait du surf.', zh:'我們去衝浪了。', hint:'課本 p.140 練習1b', a:'avons', aNote:'faire 用 avoir（不是移動動詞）→ nous avons fait', opts:['avons','sommes'] },
+  { lesson:14, topic:'passe-compose', type:'choose', q:'Je _____ sorti tous les soirs !', zh:'我每天晚上都出門！', hint:'課本 p.140 練習1d', a:'suis', aNote:'sortir 用 être → je suis sorti(e)', opts:['ai','suis'] },
   // ── 第39課（Édito A2 p.158–163）：Le discours rapporté au présent／Le monde du travail／正式訊息 ──
   { lesson:39, topic:'discours-rapporte', type:'choose', q:'轉述一句「陳述句」，dire／affirmer／expliquer 後面接什麼？', hint:'課本 p.159 Fonctionnement', a:'que', aNote:'陳述句 → 動詞 ＋ que：Ils disent que c\'est plus facile pour eux…', opts:['que','si','ce que','疑問詞'] },
   { lesson:39, topic:'discours-rapporte', type:'choose', q:'« Est-ce que le CV est utile ? » → Elle se demande _____ le CV est utile.', hint:'est-ce que 要改形', a:'si', aNote:'est-ce que（或沒有疑問詞的問句）→ si；⭐ 這裡的 si＝是否，不是「如果」', opts:['si','que','ce que','est-ce que'] },
