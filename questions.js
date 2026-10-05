@@ -1564,6 +1564,8 @@ const BANK = [
   { lesson:30, topic:'restriction-ne-que', type:'trans', q:'我們只去沒有星等的餐廳。', hint:'aller dans', a:'Nous n\'allons que dans des restaurants sans étoile.', aNote:'課本第3c題答案' },
   { lesson:30, topic:'restriction-ne-que', type:'choose', q:'「Des gâteaux… il ne m\'en reste qu\'un.」同時用了哪兩個文法點？', hint:'第29課＋今天', a:'pronom en（＝des gâteaux）＋ ne...que（限制數量）', aNote:'⭐⭐ en 收掉 des gâteaux，que 限制只剩「un」，兩個疊在同一句', opts:['pronom en（＝des gâteaux）＋ ne...que（限制數量）','只有 ne...que','只有 pronom en','命令式＋虛擬式'] },
   { lesson:30, topic:'restriction-ne-que', type:'trans', q:'你每天喝汽水嗎？——不，我一週只喝一次。', hint:'en＋ne...que 疊用', a:'Vous buvez des sodas tous les jours ? — Non, je n\'en bois qu\'une fois par semaine.', aNote:'⭐⭐ en（收掉 des sodas）＋ ne...que（限制頻率）一起用' },
+  // ── 10-05 補課本練習（research/AUDIT_2026-10-03）：p.93 練習2c。⚠️ 課本沒公布答案，照標準法文 ──
+  { lesson:30, topic:'restriction-ne-que', type:'fill', q:'Je fais toujours mes courses au marché.（改成 ne…que）→ Je ne fais mes courses _____ au marché.', zh:'我只在市場買菜。', hint:'課本 p.93 練習2c：toujours → ne…que', a:'qu\'', aNote:'ne…que 夾住動詞，que 放在要限制的詞前面；que ＋ au → qu\'au（au 是 à＋le，以母音 a 開頭所以縮寫）' },
 
   { lesson:30, topic:'vocab-restauration', type:'choose', q:'le bistrot 還有哪個同義字？', hint:'課本 Les lieux', a:'la brasserie', aNote:'⭐ 課文F：<b>café-bar-restaurant</b> 也是同一種店', opts:['la brasserie','le traiteur','la cantine','le buffet'] },
   { lesson:30, topic:'vocab-restauration', type:'choose', q:'「Il y a de bons plats cuisinés à emporter.」這句評論在講哪種場所？', hint:'外帶熟食', a:'le traiteur', aNote:'⭐⭐ <b>le traiteur</b>＝外燴／私廚，不是餐廳（婚禮、活動這種在外面辦桌會請 traiteur）', opts:['le traiteur','le fast-food','le restaurant étoilé','le bistrot'] },
