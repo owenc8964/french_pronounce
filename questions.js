@@ -558,6 +558,12 @@ const BANK = [
   { lesson:0, topic:'preposition-place-transport', type:'fill', q:'On va _____ piscine. (常漏掉 à)', hint:'aller + à la', a:'à la', aNote:'Duolingo常見錯誤：On va la piscine（×，漏掉à）→ On va à la piscine（✓）' },
   { lesson:0, topic:'preposition-place-transport', type:'trans', q:'我們去游泳池。', hint:'aller + à la piscine', a:'On va à la piscine.', aNote:'「去某地」結構永遠是 aller + à/au/à la/chez + 地點，à 不能省略', askClaude:true },
   { lesson:0, topic:'preposition-place-transport', type:'choose', q:'「去某地」aller 後面一定要接什麼？', hint:'à 不能省略', a:'à / au / à la / chez + 地點', aNote:'Duolingo常見錯誤就是漏掉這個 à；aller 後面不能直接接地點名詞', opts:['à / au / à la / chez + 地點','直接接地點，不用介詞','de + 地點','en + 地點（所有地點都用en）'] },
+  // ── 10-05 補 A1 弱項課本練習（research/AUDIT_2026-10-03＋Owen 作答紀錄）：主題 地點介系詞（à la／au／à l'／aux／chez）。Édito p.48 練習4b／4c／4e（無公布答案，標準法文；4a 題庫已有、4d 與已有的 caisses automatiques 題太像不收）、Cahier A1 p.32 練習3a／3d（Corrigés） ──
+  { lesson:4, topic:'preposition-place-transport', type:'fill', q:'Les Français aiment aller _____ boulangerie pour acheter le pain.', zh:'法國人喜歡去麵包店買麵包。', hint:'課本 p.48 練習4b', a:'à la', aNote:'店（地點）＋ 陰性單數 → à la boulangerie' },
+  { lesson:4, topic:'preposition-place-transport', type:'fill', q:'Tu vas _____ marché pour acheter les produits frais ?', zh:'你要去市場買新鮮食材嗎？', hint:'課本 p.48 練習4c', a:'au', aNote:'à + le = au marché' },
+  { lesson:4, topic:'preposition-place-transport', type:'fill', q:'Je vais _____ épicerie demain.', zh:'我明天要去雜貨店。', hint:'課本 p.48 練習4e', a:'à l\'|à l’', aNote:'épicerie 母音開頭 → à l\'épicerie' },
+  { lesson:4, topic:'preposition-place-transport', type:'choose', q:'Pour le fromage, je vais _____ fromagère.', zh:'要買起司，我去找起司店老闆娘。', hint:'Cahier A1 p.32 練習3a', a:'chez la', aNote:'Cahier Corrigés：fromagère 是「人」（女起司商）→ chez la；店本身才用 à la fromagerie', opts:['à la','chez la'] },
+  { lesson:4, topic:'preposition-place-transport', type:'choose', q:'Il y a beaucoup de monde _____ épicier.', zh:'雜貨店老闆那裡人很多。', hint:'Cahier A1 p.32 練習3d', a:'chez l\'|chez l’', aNote:'Cahier Corrigés：épicier 是「人」→ chez l\'；店是 épicerie 才用 à l\'', opts:['à l\'','chez l\''] },
 
   // ── 誤區4：ce / cet / cette / ces（陽性母音開頭常忘記用 cet）──
   { lesson:0, topic:'demonstrative-adj', type:'fill', q:'_____ animal (常見錯寫成 le animal)', hint:'母音開頭陽性', a:'cet', aNote:"Duolingo常見錯誤：le animal（×）→ l'animal 或 cet animal（✓），陽性母音開頭名詞要連音" },
@@ -673,6 +679,12 @@ const BANK = [
   { lesson:11, topic:'prepositions-lieu2', type:'choose', q:'「de + les」縮寫成？', hint:'縮寫規則', a:'des', aNote:'de + le = du；de + les = des；de + la 和 de + l\' 不縮寫', opts:['des','les','aux','du'] },
   { lesson:11, topic:'prepositions-lieu2', type:'trans',  q:'花瓶在電視旁邊。', hint:'à côté de', a:'Le vase est à côté de la télé.|Le vase est à côté de la télévision.', aNote:'à côté de + la télé（陰性，不縮寫）', askClaude:true },
   { lesson:11, topic:'prepositions-lieu2', type:'trans',  q:'把地毯放在桌子下面。', hint:'mettre / sous', a:'Je place le tapis sous la table.|Mets le tapis sous la table.', aNote:'sous = 在…下面；place/mets = 放', askClaude:true },
+  // ── 10-05 補 A1 弱項課本練習（research/AUDIT_2026-10-03＋Owen 作答紀錄）：主題 地點介系詞（第二組）。Édito p.104 練習2b／2d（無公布答案，標準法文）；Cahier A1 p.86 Bilan 練習2c／2d／2e（課本是「重組句子」，答案句出自 Corrigés，我只把介系詞留成空格，位置關係由中文翻譯決定）。p.106 練習2 要看圖才能答，不收 ──
+  { lesson:11, topic:'prepositions-lieu2', type:'fill', q:'On met la lampe à gauche ou _____ du meuble ?', zh:'燈要放在櫃子左邊，還是右邊？', hint:'課本 p.104 練習2b', a:'à droite', aNote:'à gauche ou à droite（左邊還是右邊）；後面接 de ＋ du meuble' },
+  { lesson:11, topic:'prepositions-lieu2', type:'fill', q:'On place le tableau _____ les deux fenêtres ?', zh:'畫要掛在兩扇窗戶中間嗎？', hint:'課本 p.104 練習2d', a:'entre', aNote:'entre ＋ 兩個東西（les deux fenêtres）＝在…之間' },
+  { lesson:11, topic:'prepositions-lieu2', type:'fill', q:'Mon chat aime dormir _____ le fauteuil.', zh:'我的貓喜歡睡在扶手椅下面。', hint:'Cahier A1 p.86 練習2c', a:'sous', aNote:'Cahier Corrigés：Mon chat aime dormir sous le fauteuil（sous＝在下面；sur＝在上面）' },
+  { lesson:11, topic:'prepositions-lieu2', type:'fill', q:'Tu as oublié tes clés _____ la table.', zh:'你把鑰匙忘在桌子上了。', hint:'Cahier A1 p.86 練習2d', a:'sur', aNote:'Cahier Corrigés：Tu as oublié tes clés sur la table（sur＝在上面）' },
+  { lesson:11, topic:'prepositions-lieu2', type:'fill', q:'La machine à laver est _____ du frigo.', zh:'洗衣機在冰箱的右邊。', hint:'Cahier A1 p.86 練習2e', a:'à droite', aNote:'Cahier Corrigés：La machine à laver est à droite du frigo；à droite de ＋ le frigo → du frigo' },
 
   // ── Les pronoms COD ──────────────────────────────────────────
   { lesson:11, topic:'cod-pronouns', type:'choose', q:'「Je connais Sophie.」用 COD 代替 Sophie：', hint:'Sophie 是陰性', a:'Je la connais.', aNote:'Sophie（陰性單數）→ la；COD 放在動詞前', opts:['Je la connais.','Je le connais.','Je lui connais.','Je les connais.'] },
@@ -835,6 +847,12 @@ const BANK = [
   { lesson:14, topic:'preposition-country', type:'choose', q:'Saïda et Franck reviennent ___ Maroc.', hint:'Maroc 陽性', a:'du', aNote:'le Maroc 陽性 → du', opts:['du','de','des',"d'"] },
   { lesson:14, topic:'preposition-country', type:'choose', q:'Michel vient ___ Pays-Bas.', hint:'Pays-Bas 複數', a:'des', aNote:'les Pays-Bas（荷蘭，複數）→ des', opts:['des','du','de',"d'"] },
   { lesson:14, topic:'preposition-country', type:'trans', q:'她從希臘來。', hint:'la Grèce 陰性', a:'Elle vient de Grèce.|Elle arrive de Grèce.', aNote:'陰性國家 la 拿掉 → de Grèce', askClaude:true },
+  // ── 10-05 補 A1 弱項課本練習（research/AUDIT_2026-10-03＋Owen 作答紀錄）：主題 國家介系詞（à／au／en／aux、de／du／des）。Édito p.28 練習1a／1b／1d、p.134 練習2a／2d。⚠️ 課本沒公布答案，照標準法文 ──
+  { lesson:2, topic:'preposition-country', type:'choose', q:'Samia est née _____ Algérie.', zh:'莎米亞在阿爾及利亞出生。', hint:'課本 p.28 練習1a', a:'en', aNote:'l\'Algérie 是陰性國名（母音開頭的國名也用 en）→ en Algérie', opts:['à','en'] },
+  { lesson:2, topic:'preposition-country', type:'choose', q:'Mike habite _____ États-Unis.', zh:'麥克住在美國。', hint:'課本 p.28 練習1b', a:'aux', aNote:'les États-Unis 是複數國名 → aux', opts:['au','aux'] },
+  { lesson:2, topic:'preposition-country', type:'choose', q:'Bruna habite _____ Cambodge.', zh:'布魯娜住在柬埔寨。', hint:'課本 p.28 練習1d', a:'au', aNote:'le Cambodge 是陽性國名（輔音開頭）→ au；à 是給城市用的', opts:['à','au'] },
+  { lesson:14, topic:'preposition-country', type:'fill', q:'Nous revenons _____ Japon.', zh:'我們從日本回來。', hint:'課本 p.134 練習2a', a:'du', aNote:'le Japon 陽性國名 → 從那裡來用 du（de + le）' },
+  { lesson:14, topic:'preposition-country', type:'fill', q:'Tu arrives _____ Seychelles ?', zh:'你從塞席爾來嗎？', hint:'課本 p.134 練習2d', a:'des', aNote:'les Seychelles 是複數國名 → des（de + les）' },
 
   // ═══ 第14課：passé composé avec être（性數配合）═══
   { lesson:14, topic:'passe-compose', type:'fill', q:'Elle est _____ (arriver) à la plage.', hint:'être 助動詞＋陰性配合', a:'arrivée', aNote:'être 當助動詞 → 分詞跟主詞配合：elle → arrivée（+e）' },
