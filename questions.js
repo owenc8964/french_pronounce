@@ -548,6 +548,17 @@ const BANK = [
   { lesson:0, topic:'articles', type:'fill',   q:"J'écoute _____ jazz. (du/le/la)", hint:'音樂類用部分冠詞', a:'du', aNote:'Duolingo常見錯誤：音樂類（du jazz/du rock）用部分冠詞 du，不是 le/la' },
   { lesson:0, topic:'articles', type:'trans',  q:'我喝牛奶。', hint:'不可數液體', a:'Je bois du lait.', aNote:'lait（不可數液體）→ du lait（部分冠詞）；Duolingo錯題常漏掉或選錯冠詞', askClaude:true },
   { lesson:0, topic:'articles', type:'choose', q:'聽音樂類型（爵士、搖滾⋯）的冠詞通常用哪個？', hint:'部分冠詞', a:'du（部分冠詞）', aNote:'écouter du jazz / du rock / de la musique classique，音樂類大多用部分冠詞', opts:['du（部分冠詞）','le（定冠詞）','un（不定冠詞）','沒有冠詞'] },
+  // ── 10-05 補 A1 弱項課本練習（research/AUDIT_2026-10-03＋Owen 作答紀錄）：主題 冠詞（定冠詞／不定冠詞／部分冠詞）。Édito p.20 練習3a／3c、p.33 練習3a／3d／3e、p.53 練習3a（無公布答案，標準法文）；Cahier A1 p.38 Bilan 練習3a／3b／3d／3e（Corrigés）。p.20 練習3c 課本有兩個空，只挖第二個 ──
+  { lesson:2, topic:'articles', type:'fill', q:'J\'aime _____ café.', zh:'我喜歡咖啡。', hint:'課本 p.20 練習3a', a:'le', aNote:'愛好／喜歡的東西用定冠詞：le café（陽性單數）' },
+  { lesson:2, topic:'articles', type:'fill', q:'Toi, tu aimes les langues, moi, j\'aime _____ histoire.', zh:'你喜歡語言，我喜歡歷史。', hint:'課本 p.20 練習3c', a:'l\'|l’', aNote:'histoire 母音開頭 → l\'histoire（le/la 都縮成 l\'）' },
+  { lesson:3, topic:'articles', type:'choose', q:'J\'habite _____ quartier calme.', zh:'我住在一個安靜的社區。', hint:'課本 p.33 練習3a', a:'un', aNote:'第一次提到、不特定 → 不定冠詞 un', opts:['un','le'] },
+  { lesson:3, topic:'articles', type:'choose', q:'Ce sont _____ instruments de Julie.', zh:'這些是茱莉的樂器。', hint:'課本 p.33 練習3d', a:'les', aNote:'de Julie 已經說明是誰的（特定）→ 定冠詞 les', opts:['des','les'] },
+  { lesson:3, topic:'articles', type:'choose', q:'Nous habitons _____ quartier de Belleville.', zh:'我們住在美麗城社區。', hint:'課本 p.33 練習3e', a:'le', aNote:'quartier de Belleville 是特定的那一區 → 定冠詞 le', opts:['un','le'] },
+  { lesson:5, topic:'articles', type:'fill', q:'J\'aime manger _____ pâtes.', zh:'我愛吃義大利麵。', hint:'課本 p.53 練習3a', a:'des', aNote:'pâtes 常用複數、不指定數量 → des' },
+  { lesson:5, topic:'articles', type:'fill', q:'On mange _____ poisson aujourd\'hui ?', zh:'我們今天吃魚嗎？', hint:'Cahier A1 p.38 練習3a', a:'du', aNote:'Cahier Corrigés：du（poisson 陽性、不指定數量 → de + le = du）' },
+  { lesson:5, topic:'articles', type:'fill', q:'Je voudrais _____ eau, s\'il vous plaît.', zh:'請給我水。', hint:'Cahier A1 p.38 練習3b', a:'de l\'|de l’', aNote:'Cahier Corrigés：de l\'（eau 母音開頭，不管陰陽性都用 de l\'）' },
+  { lesson:5, topic:'articles', type:'fill', q:'Il y a _____ salade pour le dîner.', zh:'晚餐有沙拉。', hint:'Cahier A1 p.38 練習3d', a:'de la', aNote:'Cahier Corrigés：de la（salade 陰性、不指定數量）' },
+  { lesson:5, topic:'articles', type:'fill', q:'Vous mangez beaucoup _____ légumes !', zh:'你們吃很多蔬菜！', hint:'Cahier A1 p.38 練習3e', a:'de', aNote:'Cahier Corrigés：de（beaucoup de ＋ 名詞，後面不再加冠詞）' },
 
   // ── 誤區2：動詞變位（tu es / je viens / elle veut 易混淆）──
   { lesson:0, topic:'etre-avoir', type:'fill',   q:'Tu _____ content ? (être，常見錯寫成 tu est)', hint:'être tu形', a:'es', aNote:"Duolingo常見錯誤：tu est（×）→ tu es（✓），être 的 tu 形沒有 t" },
