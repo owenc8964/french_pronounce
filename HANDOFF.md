@@ -15,7 +15,7 @@
 > 🆕 **2026-10-05 session 結束時的狀態（新 session 先看這段，再往下）**：
 > - 課程進度：**第 39 課**（Unité 11：間接引語／工作世界，p.158–163）筆記＋連動完成、已推。下次：p.163 主文法「代名詞 COI y」。
 > - 這輪工作紀錄在「三之二十九」～「三之四十五」（搜尋「三之四」）：變位總覽改版＋練習化（蓋住／隨機 8 題／記速／鏡子）、四篇研究、遊戲修 bug（同步蓋回主線、主線倒下、四格卡死）、文法三連、課本題補齊（A2 本冊 158＋A1 弱項 139）、第 39 課。
-> - ⏳ **背景 agent 還在跑：Cahier A2 練習本補題**（OCR 已有 `assets/.ocr_EditoA2_2022_Cahier_.txt`，答案以 Corrigés 為準）。分支 `worktree-agent-ac85aa9d9d664ab9b`（若 session 結束時還沒合併）→ 新 session：`git log main..<分支>` 看 commit、跑 BANK 檢查（choose 缺答案 0）、抽查它回報的「最沒把握」與隨機 3 題、確認題型都是「一句法文挖一個空」，再 merge＋刪 worktree。
+> - ✅ **Cahier A2 練習本補題已合併**（+328 題，第 17–39 課，答案全出自 Corrigés；題庫 2136 題、choose 缺答案 0）。⚠️ 其中 **186 題的 aNote 只有「Corrigés：答案」、沒講為什麼** → 三連答錯時只會顯示正解、沒有一行原因；下次可派 agent 補一行「為什麼」（照 `feedback_gram3_textbook_style`）。刻意不收：第19課 p.10 3f（Corrigés 寫 il y a，標準是 pendant）等 OCR 糊掉的題。
 > - ⏸ **等 Owen 回饋**：① `castle.html` 無限城樣本 7 層（超自然懸疑、文法就是線索）好不好玩、哪層最有「看穿」感 → 再接進遊戲並擴大 ② 主線改成解謎（同一個核心）還沒動，等樣本回饋 ③ 「看得見自己變強」的鏡子（做了多少、站穩多少、對應考試的把握度）還沒設計。
 > - ⚠️ 遊戲方向的新判準在 memory `project_grammar_as_clue_castle`、`feedback_gram3_textbook_style`。
 
