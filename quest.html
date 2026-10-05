@@ -490,6 +490,7 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 .g3q .exits{margin-top:4px}
 .g3o .opt.sel{border-color:var(--gold);background:rgba(240,192,96,.12)}
 .g3in{width:100%;font:inherit;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--ink);margin-top:4px}
+.g3why{color:var(--dim);font-size:.85em;margin-top:2px}
 .g3r{border-left:3px solid var(--line);padding:4px 10px;margin:8px 0}.g3r.ok{border-left-color:var(--green)}.g3r.no{border-left-color:var(--red)}
 .rulebox{margin-top:8px;text-align:left;font-size:.86em;border-left:2px solid var(--gold);padding:4px 10px;background:rgba(240,192,96,.06);border-radius:0 8px 8px 0}
 .rulebox summary{cursor:pointer;color:var(--gold)}
@@ -3915,7 +3916,15 @@ function gram3Set(){
   var pool=BANK.filter(function(q){ return gt[q.topic] && g3Usable(q) && ls.indexOf(q.lesson)>=0; });
   if(B&&B.topic&&gt[B.topic]){ var only=BANK.filter(function(q){ return q.topic===B.topic && g3Usable(q); }); if(only.length>=3) pool=only; }
   if(!pool.length) return null;
-  var first=pickWeightedQs(pool,1,(S.dda&&S.dda.tier)||0)[0]||pool[0];
+  /* 10-05 Owen：「這三連應該是考同一個文法」→ ⭐ 優先從「同一個課本練習」挑三題（hint 裡的「p.XX 練習N」相同），湊不到才退回同主題 */
+  var exKey=function(q){ var m=String(q.hint||'').match(/(課本|Cahier A[12])\s*p\.?\s*(\d+)\s*練習\s*(\d+)/); return m ? m[1]+m[2]+'-'+m[3] : null; };
+  var first=null, sameEx=[];
+  for(var tr=0; tr<6 && !sameEx.length; tr++){
+    first=pickWeightedQs(pool,1,(S.dda&&S.dda.tier)||0)[0]||pool[0];
+    var k=exKey(first);
+    if(k){ var sib=BANK.filter(function(q){ return q!==first && q.topic===first.topic && g3Usable(q) && exKey(q)===k; }); if(sib.length>=2) sameEx=sib; }
+  }
+  if(sameEx.length) return [first].concat(shuffle(sameEx).slice(0,2));
   var same=pool.filter(function(q){ return q.topic===first.topic && q!==first; });
   if(same.length<2) same=BANK.filter(function(q){ return q.topic===first.topic && q!==first && g3Usable(q); });
   if(same.length<2) return null;
@@ -3951,6 +3960,14 @@ function gram3Page(){
      '<button class="cmd" onclick="B.g3=null;showCmds()">'+img(SP.shield)+'<span>換一招<small>這三題先不做</small></span></button></div>';
   document.getElementById('panel').innerHTML=h;
 }
+/* 10-05 Owen：「三連的詳解好長，看起來很痛苦，不少內容跟該題無關」→ 只留一行：正解只顯示挖空那一格、說明只取 aNote 第一句；⛔ 不放整張規則卡 */
+function g3Short(q){ if(q.type==='choose') return shownAns(q); var alts=String(q.a).split('|'); return alts.slice().sort(function(a,b){ return a.length-b.length; })[0]; }
+function g3Note(q){
+  /* 拆成句子，跳過課堂紀錄（當堂…、Owen…、老師…、課本原句…），取第一句真的在講「為什麼」的 */
+  var parts=String(q.aNote||'').replace(/<br\s*\/?>/gi,'。').replace(/<[^>]+>/g,'').split(/[。；]/).map(function(x){ return x.replace(/^[⭐⚠️🎙🎉✅❌❓\s（(]+/,'').trim(); }).filter(Boolean);
+  var t=parts.filter(function(x){ return !/^(當堂|Owen|老師|課本原句|課本練習|練習\d|手寫|課文)/.test(x); })[0]||'';
+  return t ? '<div class="g3why">'+esc(t.length>60?t.slice(0,58)+'…':t)+'</div>' : '';
+}
 function gram3Sel(i,btn){ var G=B.g3; G.sel[i]=btn.dataset.o; Array.prototype.forEach.call(btn.parentNode.children,function(x){ x.classList.toggle('sel',x===btn); }); sfx('click_001'); }
 function gram3Skip(i){
   var G=B.g3, cur=G.qs[i];
@@ -3980,9 +3997,8 @@ function gram3Submit(){
     growRec(q, loose);
     if(q.topic) ddaTrack(loose);
     res+='<div class="g3r '+(loose?'ok':'no')+'"><div class="q"><span class="g3n">'+(i+1)+'</span>'+esc(stemOf(q))+'</div>'+
-      (loose?'<b style="color:var(--green)">對</b>'+(exact?'':'<span style="color:var(--gold)">　⚠️ 重音：<b>'+esc(shownAns(q))+'</b></span>')
-            :'<b style="color:var(--red)">沒對上</b>　你寫：'+esc(mine)+'<br>正解：<b>'+esc(shownAns(q))+'</b>')+
-      (q.aNote&&(!q.zhOnlyWrong||!loose)?'<div class="fb" style="margin:4px 0 0">'+q.aNote+'</div>':'')+ruleBoxHtml(q,!loose)+'</div>';
+      (loose?'<b style="color:var(--green)">對</b>'+(exact?'':'<span style="color:var(--gold)">　⚠️ 重音：<b>'+esc(g3Short(q))+'</b></span>')
+            :'<b style="color:var(--red)">沒對上</b>　你寫：'+esc(mine)+'　正解：<b>'+esc(g3Short(q))+'</b>'+g3Note(q))+'</div>';
   });
   G.i=G.qs.length; sfx(G.ok===G.qs.length?'confirmation_001':'bong_001');
   document.getElementById('panel').innerHTML=res+'<button class="next" id="nx">結算</button>';
