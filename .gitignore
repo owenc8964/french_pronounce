@@ -45,3 +45,7 @@ audio/t1_*.m4a
 audio/樣本_*.m4a
 # ⛔ TCF 聽力切段：買來的考題音檔，永不進公開 repo（⚠️ .gitignore 的 # 只在行首才是註解，⛔ 不要寫行尾註解）
 audio/listen_seg/
+
+# Cahier A2 的 OCR 文字（10-05）：商業教材全文，跟 .textbook_cache.txt 一樣只留本機
+assets/.cahier_a2_ocr.txt
+assets/.ocr_tmp/
