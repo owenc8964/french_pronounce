@@ -1787,6 +1787,9 @@ const BANK = [
   { lesson:35, topic:'conditionnel-present', type:'trans', q:'你可以給我多一點資訊嗎？', hint:'pouvoir 的條件式', a:"Tu pourrais me donner plus d'informations s'il te plaît ?|Tu pourrais me donner plus d'informations ?", aNote:'課本原句（禮貌請求）' },
   { lesson:35, topic:'conditionnel-present', type:'trans', q:'你應該重拍照片！', hint:'devoir 的條件式', a:'Tu devrais refaire tes photos !|Tu devrais refaire les photos !', aNote:'課本原句（給建議）' },
   { lesson:35, topic:'conditionnel-present', type:'trans', q:'我想多睡一點。', hint:'aimer 的條件式', a:"J'aimerais dormir plus.", aNote:'🎉 09-22 Owen 當堂自己造的句（⚠️ 一開始說 beaucoup，老師改成 plus＝比現在多）' },
+  // ── 10-05 補課本練習（research/AUDIT_2026-10-03）：p.128 練習3c／3d、p.131 練習2d／2e／3a／3d。⚠️ 課本沒公布答案，照標準法文 ──
+  { lesson:35, topic:'conditionnel-present', type:'choose', q:'Qu\'est-ce que tu _____ faire ?', zh:'你會想做什麼？', hint:'課本 p.128 練習3c：委婉問願望', a:'souhaiterais', aNote:'條件式 ＝ 原形 ＋ imparfait 字尾（-ais）；souhaiteras 是未來式（只差 i）', opts:['souhaiteras','souhaiterais'] },
+  { lesson:35, topic:'conditionnel-present', type:'choose', q:'Ils _____ lire ce livre !', zh:'他們可以（也許）讀讀這本書！', hint:'課本 p.128 練習3d：pouvoir 用來「提議」', a:'pourraient', aNote:'pouvoir 條件式字根 pourr- ＋ -aient（提議）；pouvaient 是 imparfait（以前能…），語意不對', opts:['pouvaient','pourraient'] },
 
   { lesson:35, topic:'gerondif', type:'choose', q:'gérondif 的詞幹要從哪裡取？', hint:'跟 imparfait 同一招', a:'nous 的現在式去掉 -ons', aNote:'nous regardons → en regardant；nous buvons → en buvant', opts:['nous 的現在式去掉 -ons','原形動詞','je 的現在式','過去分詞'] },
   { lesson:35, topic:'gerondif', type:'choose', q:'être 的 gérondif 是？', hint:'三個不規則之一', a:'en étant', aNote:'三個不規則：être→en étant、avoir→en ayant、savoir→en sachant。⚠️ 🎙 老師：這三個實際上很少用，認得就好', opts:['en étant','en êtant','en essant','en étrant'] },
@@ -1801,6 +1804,10 @@ const BANK = [
   { lesson:35, topic:'gerondif', type:'fill', q:'Nous avons trouvé du tissu _____ (aller) à la mercerie.', hint:'nous allons → ?', a:'en allant', aNote:'課本 Entraînement 3c' },
   { lesson:35, topic:'gerondif', type:'trans', q:'他一邊唱歌一邊工作。', hint:'chanter 的 gérondif', a:'Il travaille en chantant.', aNote:'課本 Emploi 例句' },
   { lesson:35, topic:'gerondif', type:'trans', q:'他們靠上網貼廣告把沙發賣掉了。', hint:'mettre une annonce en ligne', a:'Ils ont vendu leur canapé en mettant une annonce en ligne.', aNote:'課本 Entraînement 3b' },
+  { lesson:35, topic:'gerondif', type:'fill', q:'Nous bricolons _____ nos chansons préférées.（chanter）', zh:'我們一邊唱喜歡的歌一邊動手做。', hint:'課本 p.131 練習2d：nous chantons → ?', a:'en chantant', aNote:'gérondif ＝ en ＋ nous 形去 -ons 加 -ant：chantant' },
+  { lesson:35, topic:'gerondif', type:'fill', q:'Vous avez fait des économies _____ vos produits de beauté.（fabriquer）', zh:'你們靠自己做美妝產品省了錢。', hint:'課本 p.131 練習2e：方式（怎麼做到的）', a:'en fabriquant', aNote:'方式用 gérondif：fabriquons → en fabriquant（⚠️ qu 後面保持 qu，不變成 c）' },
+  { lesson:35, topic:'gerondif', type:'fill', q:'On fait de la couture. On écoute la radio. → On fait de la couture _____ la radio.', zh:'我們一邊做縫紉一邊聽廣播。', hint:'課本 p.131 練習3a：同時進行', a:'en écoutant', aNote:'同時 → en ＋ -ant：nous écoutons → en écoutant' },
+  { lesson:35, topic:'gerondif', type:'fill', q:'Elle a réparé sa voiture. Elle a fait de la mécanique. → Elle a réparé sa voiture _____ de la mécanique.', zh:'她靠自己做機械修理，修好了車。', hint:'課本 p.131 練習3d：⚠️ faire 的 -ant 形', a:'en faisant', aNote:'faire：nous faisons → faisant（[fəzɑ̃]）→ en faisant。⚠️ 不是 *en fesant，也不是 *en faisent' },
 
   { lesson:35, topic:'vocab-consommation', type:'fill', q:"Nous dépensons trop d'argent. Nous devons _____ pour partir en voyage.", hint:'存錢', a:'économiser', aNote:'課本 p.129 練習1a ✅ 09-22 答對' },
   { lesson:35, topic:'vocab-consommation', type:'fill', q:"Le prix n'est pas fixe, tu peux le _____.", hint:'議價', a:'négocier', aNote:'課本 p.129 練習1b ✅ 09-22 答對' },
