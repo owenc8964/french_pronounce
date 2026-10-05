@@ -974,6 +974,12 @@ const BANK = [
   { lesson:18, topic:'negation', type:'trans', q:'她從沒做過攀岩。', hint:'ne...jamais + PC', a:"Elle n'a jamais fait de l'escalade.", aNote:'jamais夾在助動詞a和分詞fait中間', askClaude:true },
   { lesson:18, topic:'negation', type:'choose', q:'否定詞 "plus"（不再）跟肯定詞 "plus"（更多）唸法差在哪？', hint:'發音警報：s 的有無', a:'否定s不發音，肯定s要發音', aNote:'ne...plus的s是靜音的；plus de、moins/plus比較級的plus要發s音——同拼字兩種意思兩種發音', opts:['否定s不發音，肯定s要發音','否定s要發音，肯定s不發音','兩者都發音','兩者都不發音'] },
   { lesson:18, topic:'negation', type:'trans', q:'他們沒有邀請任何人來婚禮。', hint:'personne當COD', a:"Ils n'ont invité personne à leur mariage.", aNote:'invité tout le monde → invité personne，personne放分詞後', askClaude:true },
+  // ── 10-05 補課本練習（research/AUDIT_2026-10-03）：p.19 練習4a–d、練習5b。⚠️ 課本沒公布答案，照標準法文 ──
+  { lesson:18, topic:'negation', type:'fill', q:'– Tu veux encore faire du vélo ? – Non, je ne veux _____ faire de vélo.', zh:'「你還想騎腳踏車嗎？」「不，我不想再騎了。」', hint:'課本 p.19 練習4a：encore ↔ ?', a:'plus', aNote:'encore（還）的否定＝ne…plus（不再）；後面 du vélo → de vélo' },
+  { lesson:18, topic:'negation', type:'fill', q:'– Vous faites quelque chose ce week-end ? – Non, nous ne faisons _____.', zh:'「這個週末你們有事要做嗎？」「沒有，我們什麼都不做。」', hint:'課本 p.19 練習4b：quelque chose ↔ ?', a:'rien', aNote:'quelque chose 的否定＝ne…rien' },
+  { lesson:18, topic:'negation', type:'fill', q:'– Il y a quelqu\'un dans la salle de cinéma ? – Non, il n\'y a _____.', zh:'「電影廳裡有人嗎？」「沒有，沒有半個人。」', hint:'課本 p.19 練習4c：quelqu\'un ↔ ?', a:'personne', aNote:'quelqu\'un 的否定＝ne…personne；personne 當 COD 放在動詞之後' },
+  { lesson:18, topic:'negation', type:'fill', q:'– Tes enfants vont parfois à la piscine ? – Non, ils ne vont _____ à la piscine.', zh:'「你的孩子們有時候會去游泳池嗎？」「不，他們從來不去。」', hint:'課本 p.19 練習4d：parfois ↔ ?', a:'jamais', aNote:'parfois／souvent／toujours 的否定＝ne…jamais' },
+  { lesson:18, topic:'negation', type:'fill', q:'Nous avons fait quelque chose hier soir. → Nous n\'avons _____ fait hier soir.', zh:'我們昨晚做了點什麼。→ 我們昨晚什麼都沒做。', hint:'課本 p.19 練習5b：passé composé 否定', a:'rien', aNote:'ne…rien 夾住助動詞：n\'avons rien fait（rien 在助動詞與分詞之間）' },
 
   // ── 第19課：Les loisirs詞彙＋indicateurs de temps複習＋passé composé/négation總複習 ──
   { lesson:19, topic:'vocab-loisirs', type:'choose', q:'「一項水上站立划槳運動」怎麼說？', hint:'不要只講一半', a:'le stand-up paddle', aNote:'le paddle單獨講是球拍運動，水上活動一定要講全stand-up paddle', opts:['le stand-up paddle','le paddle','le canoë','la randonnée'] },
