@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>無限城 · 樣本</title>
+<!--
+  castle.html — 無限城（推理塔）樣本，2026-10-05
+  Owen：「解謎遊戲不錯」「用超自然懸疑，先做幾題樣本」
+  ⭐ 核心：文法就是線索——陰陽配合、過去分詞配合、y／en、imparfait／passé composé、celui／celle 會洩密，
+     從文法推回被藏起來的事實。爽感來自「看穿」，⛔ 不是倒數、⛔ 不是特效。
+  ⭐ 法文證詞是原創的「閱讀理解」短文（CLAUDE.md 已核准的例外：理解測驗的短文可原創，詞彙句型對齊已學課次）——Owen 10-05 同意援用。
+  ⚠️ 樣本：不存任何紀錄、不接同步、不接遊戲。玩過、Owen 說好玩，才接進 quest.html。
+-->
+<style>
+:root { --bg:#07060c; --panel:#120f1a; --line:#2a2238; --ink:#e7e1f2; --dim:#8b80a3; --gold:#e8c46a; --red:#d8574f; --green:#6cc79a; --fog:#6f5f99; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:radial-gradient(ellipse at top, #1a1430 0%, var(--bg) 60%); color:var(--ink); font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh; padding:22px 16px 60px; max-width:720px; margin:0 auto; font-size:clamp(16px, 1vw + 13px, 19px); line-height:1.75; }
+.top { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+.top a { color:var(--dim); text-decoration:none; font-size:.8em; }
+.floor { font-family:Georgia,serif; color:var(--gold); letter-spacing:3px; font-size:.85em; }
+.candles { letter-spacing:4px; }
+.candles .out { opacity:.2; filter:grayscale(1); }
+.card { background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px 18px 16px; box-shadow:0 0 40px rgba(111,95,153,.15); }
+.scene { color:#c9bfe0; margin-bottom:12px; }
+.clue { font-family:Georgia,serif; font-size:1.08em; background:#0c0a14; border-left:3px solid var(--fog); padding:10px 14px; border-radius:0 10px 10px 0; margin:8px 0; }
+.clue .who { display:block; font-family:'Segoe UI',system-ui,sans-serif; font-size:.72em; color:var(--dim); margin-bottom:2px; }
+.clue mark { background:none; color:var(--gold); font-weight:700; border-bottom:2px solid var(--gold); }
+.gloss { font-size:.78em; color:var(--dim); margin:4px 0 10px; }
+.ask { margin:14px 0 10px; font-weight:700; }
+.opts { display:flex; flex-direction:column; gap:8px; }
+.opt { font:inherit; text-align:left; padding:10px 14px; border-radius:12px; border:1px solid var(--line); background:#17122a; color:var(--ink); cursor:pointer; }
+.opt:hover { border-color:var(--fog); }
+.opt.ok { border-color:var(--green); background:#10221a; }
+.opt.no { border-color:var(--red); background:#2a1414; }
+.opt:disabled { cursor:default; }
+.reveal { margin-top:14px; padding-top:12px; border-top:1px dashed var(--line); }
+.reveal .tag { color:var(--gold); font-weight:700; }
+.reveal .why { color:#cfc6e4; margin-top:4px; }
+.next { margin-top:14px; width:100%; font:inherit; font-weight:700; padding:12px; border-radius:12px; border:1px solid var(--gold); background:#2a2110; color:var(--gold); cursor:pointer; }
+.end { text-align:center; padding:30px 10px; }
+.end h2 { font-family:Georgia,serif; color:var(--gold); letter-spacing:2px; margin-bottom:10px; }
+.case { font-size:.75em; color:var(--fog); letter-spacing:2px; margin-bottom:6px; }
+</style>
+</head>
+<body>
+<div class="top">
+  <a href="quest.html">← 回遊戲</a>
+  <span class="floor" id="floor"></span>
+  <span class="candles" id="candles"></span>
+</div>
+<div class="card" id="card"></div>
+
+<script>
+/* 每一層：scene（中文旁白，短）、clues（法文證詞，可原創）、gloss（生字）、ask、opts、a、mark（要亮起來的文法線索）、why（一句話：線索在哪）
+   ⛔ 旁白不講課；講課的只有最後揭曉那一句 why */
+const FLOORS = [
+  { scene:'你醒來的時候，城裡只剩一根蠟燭。牆上用指甲刻著一行字。',
+    clues:[{ who:'牆上的字', fr:'Je suis restée ici cent ans.', mark:'restée' }],
+    gloss:'rester 待著・cent ans 一百年',
+    ask:'刻字的鬼，生前是男的還是女的？',
+    opts:['男的','女的','看不出來'], a:'女的',
+    why:'être 當助動詞，過去分詞要跟主詞配合：rest<b>ée</b> 多了一個 e＝說話的人是女的。' },
+  { scene:'走廊兩邊掛著兩幅畫：一個老先生、一個老太太。黑暗裡有聲音說話。',
+    clues:[{ who:'黑暗裡的聲音', fr:'Je suis la plus vieille du château.', mark:'la plus vieille' }],
+    gloss:'vieux／vieille 老的・le château 城堡',
+    ask:'說話的是哪一幅畫？',
+    opts:['老先生','老太太'], a:'老太太',
+    why:'最高級跟著名詞的陰陽：<b>la</b> plus <b>vieille</b>（陽性會是 le plus vieux）。' },
+  { scene:'桌上有一把刀、一根蠟燭。燭台空了。角落傳來一句話。',
+    clues:[{ who:'角落', fr:"Je l'ai prise. Je ne la rends pas.", mark:'prise' }],
+    gloss:'prendre 拿（過去分詞 pris）・rendre 還',
+    ask:'牠拿走的是什麼？',
+    opts:['le couteau（刀）','la bougie（蠟燭）'], a:'la bougie（蠟燭）',
+    why:'avoir 當助動詞，受詞代名詞放在前面時，過去分詞要配合它：l\'ai pri<b>se</b>＋後面的 <b>la</b> → 陰性的東西＝la bougie。' },
+  { scene:'地窖的門每天午夜會打開。門口的幽靈跟你錯身而過。',
+    clues:[{ who:'門口的幽靈', fr:"J'en reviens chaque nuit, à minuit.", mark:'en' }],
+    gloss:'revenir 回來・chaque nuit 每天晚上',
+    ask:'午夜的時候，牠是……',
+    opts:['要進地窖','剛從地窖出來'], a:'剛從地窖出來',
+    why:'<b>en</b> 代替「de＋地點」＝從那裡；如果是要去那裡，會說 <b>j\'y</b> vais。' },
+  { scene:'塔頂的房間空著。管家的日記攤在地上。',
+    clues:[{ who:'管家的日記', fr:'Chaque soir, elle chantait dans la tour. Un soir, elle a disparu.', mark:'a disparu' }],
+    gloss:'chanter 唱歌・la tour 塔・disparaître 消失（過去分詞 disparu）',
+    ask:'哪一件事只發生過一次？',
+    opts:['她在塔裡唱歌','她消失了'], a:'她消失了',
+    why:'imparfait（chant<b>ait</b>）＝以前的習慣；passé composé（<b>a disparu</b>）＝那一次發生、結束的事。' },
+  { scene:'前面有一扇門、一道往下的樓梯。蠟燭快熄了，地上有一張紙條。',
+    clues:[{ who:'紙條', fr:'Il y a une porte et un escalier. Ne prends pas celui-là.', mark:'celui-là' }],
+    gloss:'une porte 門・un escalier 樓梯',
+    ask:'紙條叫你不要走哪一個？',
+    opts:['la porte（門）',"l'escalier（樓梯）"], a:"l'escalier（樓梯）",
+    why:'指示代名詞跟著它代替的名詞變：<b>celui</b>＝陽性單數＝un escalier（門是陰性，會說 celle-là）。' },
+  { case:'🕯 第一個案件', scene:'三個房客說自己整晚都在。其中一個不是本人——是借了別人臉的東西。牠說話的時候，露了餡。',
+    clues:[
+      { who:'Paul（先生）', fr:'Je suis sortie de ma chambre à minuit.', mark:'sortie' },
+      { who:'Marie（小姐）', fr:"Je suis allée à la bibliothèque. J'y suis restée toute la nuit.", mark:'' },
+      { who:'Louise（太太）', fr:"Moi, je dormais. Je n'ai rien entendu.", mark:'' },
+    ],
+    gloss:'sortir 出去・la bibliothèque 圖書館・toute la nuit 一整晚・entendre 聽到',
+    ask:'哪一個不是本人？',
+    opts:['Paul','Marie','Louise'], a:'Paul',
+    why:'Paul 是男的，卻說 je suis sorti<b>e</b>——那個 e 是女生才會加的。借了他的臉的，是個女的。' },
+];
+
+let i = 0, candles = 3, done = false;
+const $ = id => document.getElementById(id);
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+function markUp(fr, m){ return m ? esc(fr).replace(esc(m), '<mark>'+esc(m)+'</mark>') : esc(fr); }
+function hud(){ $('floor').textContent = i < FLOORS.length ? (i+1)+' F' : ''; $('candles').innerHTML = [0,1,2].map(k => '<span class="'+(k<candles?'':'out')+'">🕯</span>').join(''); }
+function render(){
+  hud(); done = false;
+  if (i >= FLOORS.length) {
+    $('card').innerHTML = '<div class="end"><h2>樣本到這裡</h2><div class="scene">往上還有路——但這是樣本，先停在這裡。<br>好不好玩、哪一層最有「看穿了」的感覺，跟 Claude 說。</div><button class="next" onclick="i=0;candles=3;render()">從 1F 再爬一次</button></div>';
+    return;
+  }
+  const f = FLOORS[i];
+  $('card').innerHTML = (f.case ? '<div class="case">'+f.case+'</div>' : '') +
+    '<div class="scene">'+esc(f.scene)+'</div>' +
+    f.clues.map(c => '<div class="clue" data-m="'+esc(c.mark)+'"><span class="who">'+esc(c.who)+'</span>'+esc(c.fr)+'</div>').join('') +
+    '<div class="gloss">'+esc(f.gloss)+'</div>' +
+    '<div class="ask">'+esc(f.ask)+'</div>' +
+    '<div class="opts">'+f.opts.map(o => '<button class="opt" onclick="pick(this)">'+esc(o)+'</button>').join('')+'</div>' +
+    '<div id="rv"></div>';
+}
+function pick(btn){
+  if (done) return; done = true;
+  const f = FLOORS[i], ok = btn.textContent === f.a;
+  document.querySelectorAll('.opt').forEach(b => { b.disabled = true; if (b.textContent === f.a) b.classList.add('ok'); else if (b === btn) b.classList.add('no'); });
+  /* 揭曉：線索亮起來 */
+  document.querySelectorAll('.clue').forEach((el, k) => { const c = f.clues[k]; el.innerHTML = '<span class="who">'+esc(c.who)+'</span>'+markUp(c.fr, c.mark); });
+  if (!ok) candles = Math.max(0, candles - 1);
+  hud();
+  $('rv').innerHTML = '<div class="reveal"><span class="tag">'+(ok ? '看穿了。' : '蠟燭熄了一根。')+'</span><div class="why">'+f.why+'</div></div>' +
+    (candles > 0 ? '<button class="next" onclick="i++;render()">'+(i+1 < FLOORS.length ? '往上走' : '……')+'</button>'
+                 : '<button class="next" onclick="i=0;candles=3;render()">黑暗吞掉了你——回到 1F</button>');
+}
+render();
+</script>
+</body>
+</html>
