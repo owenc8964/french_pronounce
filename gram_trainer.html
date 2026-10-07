@@ -70,6 +70,12 @@
     border-radius:4px; padding:6px 10px; margin-bottom:10px; line-height:1.5;
   }
   .q-hint { font-size:0.75rem; color:#999; margin-bottom:10px; }
+    /* 10-07 Owen：中文改成點開才看（練習介面維持全法文，中文當開關） */
+    .q-zh-d { margin-bottom: 10px; }
+    .q-zh-d summary { display: inline-block; cursor: pointer; list-style: none; font-size: 0.75rem; color: #888; border: 1.5px dashed #ddd; border-radius: 8px; padding: 3px 11px; }
+    .q-zh-d summary::-webkit-details-marker { display: none; }
+    .q-zh-d[open] summary { margin-bottom: 6px; }
+    .q-zh-d .q-zh { margin-bottom: 0; }
   .input-row { display:flex; gap:8px; }
   .answer-input {
     flex:1; padding:12px 14px; font-size:0.95rem; border:2px solid #ddd; border-radius:10px;
@@ -330,7 +336,7 @@ function renderQuestion() {
         ${isRetry ? '<span class="retry-badge">🔁 重考（剛剛答錯的）</span>' : ''}
       </div>
       <div class="question">${q.q}</div>
-      ${q.zh ? `<div class="q-zh">🈶 ${q.zh}</div>` : ''}
+      ${q.zh ? `<details class="q-zh-d"><summary>🈶 看中文</summary><div class="q-zh">${q.zh}</div></details>` : ''}
       ${q.hint ? `<div class="q-hint">💡 ${q.hint}</div>` : ''}
       <div class="input-row">
         <input class="answer-input" id="ansInput" type="text"
