@@ -15035,6 +15035,19 @@ document.querySelectorAll('.compare-table table').forEach(table => {
 <!-- 研讀計時 pill（session 進行中顯示） -->
 <script src="session_timer.js"></script>
 <script src="sync_supabase.js"></script>
+<script src="return_to.js"></script>
+<script>
+/* 10-07：遊戲副本「去複習筆記」連到 #lesson-N → 打開那一課並捲過去（舊課預設是收起來的） */
+(function(){
+  var m=(location.hash||'').match(/^#lesson-(\d+)$/); if(!m) return;
+  function go(){ var d=document.getElementById('lesson-'+m[1]); if(!d) return; d.open=true;
+    var nav=document.getElementById('lessonNav'), off=0;   /* 上方固定的課次列會擋住課名 → 扣掉它的高度 */
+    if(nav && /sticky|fixed/.test(getComputedStyle(nav).position)) off=nav.getBoundingClientRect().height;
+    window.scrollTo(0, d.getBoundingClientRect().top+window.scrollY-off-8); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',go); else go();
+  window.addEventListener('load',function(){ setTimeout(go,50); });
+})();
+</script>
 
 <!-- 每課插入「▶ 做這課專項 Quiz」按鈕，研讀完直接串到該課題目 -->
 <script>

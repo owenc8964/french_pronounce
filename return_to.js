@@ -39,6 +39,7 @@
     var h = a.getAttribute('href') || '';
     return h === 'dashboard.html' || h.indexOf('dashboard.html?') === 0 || h.indexOf('dashboard.html#') === 0;
   }
+  var BACK = ({ train:'回訓練場', raid:'回副本', story:'回主線', dungeon:'回地城', tower:'回試煉之塔', pet:'回夥伴' })[tab] || '回遊戲';   /* 10-07：副本也會連出來（去複習筆記） */
   function relabel(root) {
     var links = (root.querySelectorAll ? root.querySelectorAll('a') : []);
     Array.prototype.forEach.call(links, function (a) {
@@ -46,8 +47,8 @@
       a.dataset.retq = '1';
       a.setAttribute('href', TARGET);
       var t = a.textContent;
-      if (/Retour au tableau de bord/.test(t)) a.textContent = '← 回訓練場';
-      else if (/指揮中心|今日/.test(t)) a.textContent = t.replace(/回?指揮中心|回今日[^\s，。]*/, '回訓練場');
+      if (/Retour au tableau de bord/.test(t)) a.textContent = '← ' + BACK;
+      else if (/指揮中心|今日/.test(t)) a.textContent = t.replace(/回?指揮中心|回今日[^\s，。]*/, BACK);
     });
   }
   // 點擊一律攔下來導回遊戲（連 relabel 還沒掃到的動態連結也吃得到）

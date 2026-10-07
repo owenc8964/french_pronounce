@@ -232,6 +232,9 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 .snode.can{border-color:rgba(217,180,94,.55); cursor:pointer; animation:breathe 2.6s ease-in-out infinite}
 .snode.can:active{transform:scale(.985)}
 .snode.done{opacity:.4}
+.snode .sbody{flex:1; min-width:0}
+.raidnote{align-self:center; flex:none; font-size:.72rem; color:var(--dim); text-decoration:none; padding:6px 10px; border:1px solid var(--line); border-radius:9px; white-space:nowrap}
+.raidnote:active{color:var(--gold2)}
 .snode .sicon img{width:30px; height:30px}
 .stype{font-family:'Cinzel',serif; font-size:.62rem; color:var(--gold); letter-spacing:.2em; margin-bottom:5px}
 .stext{font-size:.85rem; line-height:1.85; color:var(--ink)}
@@ -866,7 +869,7 @@ function renderChapter(){
       '<div class="sicon">'+img(chapterIcon(n.type))+'</div>'+
       '<div class="sbody"><div class="stype">'+chapterTypeName(n.type)+
         (done?(skipped?'　· 跳過了':'　· 走過了'):'')+'</div>'+
-        '<div class="stext">'+esc(n.text)+'</div></div></div>';
+        '<div class="stext">'+esc(n.text).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')+'</div></div></div>';
   });
   html+='<div class="clearbox"><div class="cl-h">這一章要做到的</div><div class="cl-t">'+esc(ch.clear.desc)+'</div>'+
         '<div class="cl-x">考試用在哪：'+esc(ch.exam)+'</div></div>';
@@ -918,7 +921,8 @@ function renderRaids(){
     html+='<div class="snode can raid" data-l="'+r.lesson+'">'+
       '<div class="sicon">'+img(w?SP.crown:SP.sword)+'</div>'+
       '<div class="sbody"><div class="stype">第 '+r.lesson+' 課'+(w?'　· 打過 '+w+' 次':'')+'</div>'+
-      '<div class="stext">'+esc(r.name)+(r.fr?'　<span style="color:var(--faint);font-size:.78rem">'+esc(r.fr)+'</span>':'')+'</div></div></div>';
+      '<div class="stext">'+esc(r.name)+(r.fr?'　<span style="color:var(--faint);font-size:.78rem">'+esc(r.fr)+'</span>':'')+'</div></div>'+
+      '<a class="raidnote" href="french_notes.html?from=quest&tab=raid#lesson-'+r.lesson+'" onclick="event.stopPropagation()">去複習筆記</a></div>';   /* 10-07 Owen：副本後面加「去複習筆記」 */
   });
   html+='<div class="credit">美術與音效：Kenney（CC0）　·　字體：Cinzel · Cormorant Garamond（SIL OFL）</div>';
   v.innerHTML=html;
@@ -1599,7 +1603,7 @@ function storyEnter(i){
   if(n.type==='talk'){
     var sit=(typeof SITUATIONS!=='undefined')?SITUATIONS.filter(function(x){return x.id===(n.sit||ch.sit);})[0]:null;
     if(!sit) return storyAdvance();
-    return meetNpc('story', sit, line, n.text);
+    return meetNpc('story', sit, line, n.text, n.topic);
   }
   var isBoss=n.type==='boss';
   var who=(typeof SITUATIONS!=='undefined')?SITUATIONS.filter(function(x){return x.id===(n.sit||ch.sit);})[0]:null;
@@ -1612,7 +1616,7 @@ function storyEnter(i){
       title:'第 '+ch.ch+' 章'+(who?' · '+who.fr:''),
       line:line, topic:n.topic, forceMove:(n.type==='trial'?'chant':null) };
   sfx(isBoss?'bong_001':'switch_002');
-  renderBattle(n.text.replace(/〔(.+?)〕/g,'<b>$1</b>'));
+  renderBattle(n.text.replace(/〔(.+?)〕/g,'<b>$1</b>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>'));
 }
 /* 這一節跳過（⭐ 鐵律：跳過照樣前進，只記錄） */
 function storySkip(){
@@ -3439,7 +3443,7 @@ function buy(what){
 
 /* ── 街坊遭遇 ───────────────────────────────────────────── */
 var N=null;
-function meetNpc(key, sitForced, lineForced, textForced){
+function meetNpc(key, sitForced, lineForced, textForced, topicForced){
   var pool=npcPool();
   if(!pool.length && !sitForced){ S.run.cleared[key]=1; save(S); return advance(); }
   S.npc=S.npc||{};
@@ -3453,11 +3457,11 @@ function meetNpc(key, sitForced, lineForced, textForced){
   var days = rec.last ? Math.floor((Date.now()-rec.last)/864e5) : -1;
   var who=whoOf(sit);
   N={ key:key, sit:sit, rec:rec, who:who, sprite:NPC_SPRITES[who.s % NPC_SPRITES.length],
-      qs:shuffle(BANK.filter(function(q){ return q.type==='choose'&&q.opts&&(sit.topics||[]).indexOf(q.topic)>=0; })).slice(0,2),
+      qs:npcQs(sit, topicForced),
       i:0, gained:0, line:lineForced||npcLine(sit,rec.aff||0), story:(key==='story') };
   sfx('switch_002');
   var lv=affLv(rec.aff||0);
-  var hello = textForced ? esc(textForced)
+  var hello = textForced ? esc(textForced).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
             : rec.met ? (days>=3 ? '「Ça fait longtemps！」'+esc(who.n)+'看起來很高興你又來了。'
                                  : esc(who.n)+'認出你了。'+lv.note+'。')
                       : esc(who.r)+' '+esc(who.n)+' 站在那裡。他還不認識你。';
@@ -3472,6 +3476,16 @@ function meetNpc(key, sitForced, lineForced, textForced){
     '<div class="box"><div class="talk" id="talk"></div><div id="panel"></div></div>';
   type(hello, npcCmds);
 }
+/* 10-07 修（Owen：「主線進去沒得選題目，只有四格聊天的選項」）：
+   主線的對話格原本從整個情境的 topics 亂抽 2 題（急診那格抽到「帶狗來」），跟這一格講的事對不上。
+   ⭐ 主線：先出這一格指定的 topic，不夠再用情境的其他 topic 補到 3 題；地城街坊維持原樣 2 題。 */
+function npcQs(sit, topic){
+  var ok=function(q){ return q.type==='choose'&&q.opts; };
+  if(!topic) return shuffle(BANK.filter(function(q){ return ok(q)&&(sit.topics||[]).indexOf(q.topic)>=0; })).slice(0,2);
+  var own=shuffle(BANK.filter(function(q){ return ok(q)&&q.topic===topic; })).slice(0,3);
+  if(own.length<3) own=own.concat(shuffle(BANK.filter(function(q){ return ok(q)&&q.topic!==topic&&(sit.topics||[]).indexOf(q.topic)>=0; })).slice(0,3-own.length));
+  return own;
+}
 function affPips(a){
   var lv=affLv(a), idx=AFF_LV.indexOf(lv), out='';
   for(var i=0;i<AFF_LV.length-1;i++) out+='<span class="pip'+(i<idx?' on':'')+'">♥</span>';
@@ -3479,6 +3493,14 @@ function affPips(a){
 }
 function npcCmds(){
   var panel=document.getElementById('panel'); if(!panel) return;
+  if(N.story){   /* 主線：題目就在「回應他」，⛔ 不放「道別」（它會直接把這格算成走過，跟跳過重複又看不出差別） */
+    panel.innerHTML='<div class="cmds">'+
+      '<button class="cmd" onclick="npcTalk()">'+img(SP.sword)+'<span>回應他<small>'+(N.qs.length?N.qs.length+' 題，答完這格就過了':'沒有題目，直接過')+'</small></span></button>'+
+      (N.line?'<button class="cmd" onclick="npcListen()">'+img(SP.wand)+'<span>先聽他說<small>他會用法文說一句</small></span></button>':'')+
+      '<button class="cmd" onclick="storySkip()">'+img(SP.skull)+'<span>這段跳過<small>不擋你，照樣前進</small></span></button>'+
+    '</div>';
+    return;
+  }
   panel.innerHTML='<div class="cmds">'+
     '<button class="cmd" onclick="npcTalk()">'+img(SP.card)+'<span>聊兩句<small>答對就更熟一點</small></span></button>'+
     (N.line?'<button class="cmd" onclick="npcListen()">'+img(SP.wand)+'<span>聽他說<small>他會用法文說一句</small></span></button>':'')+
