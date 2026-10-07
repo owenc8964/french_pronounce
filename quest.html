@@ -3966,6 +3966,7 @@ function g3Note(q){
   /* 拆成句子，跳過課堂紀錄（當堂…、Owen…、老師…、課本原句…），取第一句真的在講「為什麼」的 */
   var parts=String(q.aNote||'').replace(/<br\s*\/?>/gi,'。').replace(/<[^>]+>/g,'').split(/[。；]/).map(function(x){ return x.replace(/^[⭐⚠️🎙🎉✅❌❓\s（(]+/,'').trim(); }).filter(Boolean);
   var t=parts.filter(function(x){ return !/^(當堂|Owen|老師|課本原句|課本練習|練習\d|手寫|課文|Corrigés|Cahier)/.test(x); })[0]||'';
+  if(!/[（(]/.test(t)) t=t.replace(/[）)]+$/,'');   /* 括號裡的「；」被切開時，尾巴會剩半個括號 */
   return t ? '<div class="g3why">'+esc(t.length>60?t.slice(0,58)+'…':t)+'</div>' : '';
 }
 function gram3Sel(i,btn){ var G=B.g3; G.sel[i]=btn.dataset.o; Array.prototype.forEach.call(btn.parentNode.children,function(x){ x.classList.toggle('sel',x===btn); }); sfx('click_001'); }
