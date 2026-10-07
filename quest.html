@@ -494,6 +494,14 @@ img{image-rendering:pixelated; image-rendering:crisp-edges}
 .g3o .opt.sel{border-color:var(--gold);background:rgba(240,192,96,.12)}
 .g3in{width:100%;font:inherit;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--ink);margin-top:4px}
 .g3why{color:var(--dim);font-size:.85em;margin-top:2px}
+.g3hl{color:var(--gold2)}
+.g3zh{color:var(--dim);font-size:.84em;margin:-2px 0 4px}
+.g3aim{margin:0 0 6px;font-size:.84em}
+.g3aim summary{display:inline-block;cursor:pointer;list-style:none;padding:3px 11px;border:1px solid rgba(217,180,94,.45);border-radius:9px;color:var(--gold)}
+.g3aim summary::-webkit-details-marker{display:none}
+.g3aim[open] summary{margin-bottom:6px}
+.g3aim-t{line-height:1.7}
+.g3aim-ex{margin-top:4px;color:var(--dim)}
 .g3r{border-left:3px solid var(--line);padding:4px 10px;margin:8px 0}.g3r.ok{border-left-color:var(--green)}.g3r.no{border-left-color:var(--red)}
 .rulebox{margin-top:8px;text-align:left;font-size:.86em;border-left:2px solid var(--gold);padding:4px 10px;background:rgba(240,192,96,.06);border-radius:0 8px 8px 0}
 .rulebox summary{cursor:pointer;color:var(--gold)}
@@ -3964,8 +3972,101 @@ function askGram3(m){
 }
 /* 10-05 Owen：「題目是一頁直接三題如何？」→ 三題同一頁、一起交卷（每題對錯一次定，⛔ 沒有第二次機會）
    選擇題點選項＝選取（可改）；填空／中翻法打字；每題可以單獨「這題跳過」換一題同主題的 */
+/* 10-07 Owen：「文法三連進去我連在考什麼都看不懂……想一下怎樣可以讓我進入狀況」
+   → 補回課本練習本來就有的兩樣東西：題目說明（🎯 你要判斷什麼）＋ Exemple（一句示範）。
+   Owen：「一開始先用樞紐關起來，不會我就點開來看，讓我可以選」→ 收在 <details>，預設關。
+   ⛔ ex 只能用 gram_rules.js 裡現成的例句（真實教材來源鐵律）；hl＝要標亮的那一塊。zh＝中文名（名稱一律中＋法） */
+var G3_AIM={
+  'etre-avoir':{zh:'être／avoir 變位', aim:'看意思：「是」用 être、「有」（含年齡）用 avoir，再照主詞變位', ex:"J'ai 25 ans.", hl:'ai'},
+  'cest-il-est':{zh:"c'est 還是 il est", aim:"後面接「冠詞＋名詞」用 c'est；只接形容詞或職業用 il／elle est", ex:"Rouen ? C'est une ville française.", hl:"C'est"},
+  'er-verbs':{zh:'-er 動詞現在式', aim:'去掉 -er，照主詞接 e／es／e／ons／ez／ent', ex:'Nous mangeons au restaurant.', hl:'mangeons'},
+  'articles':{zh:'冠詞', aim:'先看名詞陰陽單複，再看是特定的（le／la）、一個（un／une）、還是一些不計數的（du／de la）', ex:'Je mange du poisson.', hl:'du'},
+  'possessives':{zh:'所有格', aim:'先看「誰的」選家族（我 mon／你 ton／他她 son／我們 notre…），再看後面名詞的陰陽單複', ex:"C'est mon amie Sophia.", hl:'mon'},
+  'family-possessives':{zh:'所有格', aim:'先看「誰的」選家族（我 mon／你 ton／他她 son／他們 leur…），再看後面名詞的陰陽單複', ex:'Sa femme est fleuriste.', hl:'Sa'},
+  'demonstrative-adj':{zh:'指示形容詞', aim:'看後面的名詞：陽性 ce（母音前 cet）、陰性 cette、複數 ces', ex:'Cet ordinateur est cher.', hl:'Cet'},
+  'pronoms-toniques':{zh:'重讀代名詞', aim:'介系詞（chez、avec、pour…）後面的人用 moi／toi／lui／elle／nous／vous／eux／elles', ex:'Chez eux, on mange bien.', hl:'eux'},
+  'cod-pronouns':{zh:'直接受詞代名詞', aim:'動詞後面直接接的人或東西（沒有 à）→ le／la／les，放在動詞前', ex:'Je ne la connais pas.', hl:'la'},
+  'coi-pronouns':{zh:'間接受詞代名詞', aim:'動詞 ＋ à ＋ 人 → lui／leur，放在動詞前', ex:'Béatrice ne leur téléphone jamais le soir.', hl:'leur'},
+  'pronom-y':{zh:'代名詞 y', aim:'取代「à／在 ＋ 地點」→ y，放在動詞前', ex:'Le climat est agréable sur cette île ? — Oui, il y est très agréable.', hl:'y'},
+  'place-pronoms-cod-coi':{zh:'受詞代名詞的位置', aim:'先分直接（le／la／les）還是 à ＋ 人（lui／leur），再放到變位動詞（或助動詞）前面', ex:"Tu as acheté l'oreiller parfait à Marc ? — Oui, je le lui ai acheté.", hl:'le lui'},
+  'pronoms-y-en':{zh:'代名詞 y／en', aim:'取代「à／在 ＋ 地點」用 y；取代「de ＋ 東西／地點」或數量用 en；都放在動詞前', ex:"Tu reviens de la plage ? — Oui, j'en reviens à l'instant.", hl:'en'},
+  'question-words':{zh:'疑問詞', aim:'quel 跟著後面的名詞變（quel／quelle／quels／quelles）；問人 qui、問東西 que／quoi', ex:'Quelles langues tu parles ?', hl:'Quelles'},
+  'pronoms-interrogatifs':{zh:'疑問代名詞', aim:'名詞被吃掉時用 lequel，照被取代的名詞變 laquelle／lesquels／lesquelles', ex:'Tu as vu ces tisanes ? Laquelle choisis-tu ?', hl:'Laquelle'},
+  'preposition-country':{zh:'國家介係詞', aim:'陰性國家 en、陽性 au、複數 aux、城市 à', ex:'Je vais en France.', hl:'en'},
+  'preposition-place-transport':{zh:'地點與交通介係詞', aim:'去地點用 à（à ＋ le ＝ au）；去某人那裡用 chez；交通工具用 en／à', ex:'Pour le poisson, je vais chez le poissonnier.', hl:'chez'},
+  'prepositions-lieu2':{zh:'方位介係詞', aim:'看位置：sur 上、sous 下、devant 前、derrière 後、à côté de 旁邊（de ＋ le ＝ du）'},
+  'reflexive-verbs':{zh:'反身動詞', aim:'反身代名詞跟著主詞（je me、tu te、il se、nous nous、vous vous）；否定時 ne 放在代名詞前', ex:'Je ne me réveille pas à 7h.', hl:'me'},
+  'ir-re-verbs':{zh:'-ir／-re 動詞', aim:'先認出是哪一組（finir 型、partir 型、prendre 型…），再套那一組的字尾', ex:'Nous choisissons le menu.', hl:'choisissons'},
+  'irregular-verbs-3rd-group':{zh:'不規則動詞', aim:'faire、aller、venir 這類要整塊記，照主詞選對的形', ex:'Vous faites la cuisine ce soir ?', hl:'faites'},
+  'pouvoir-vouloir':{zh:'pouvoir／vouloir', aim:'pouvoir（能）、vouloir（想）照主詞變位，後面接原形', ex:'Elle veut partir.', hl:'veut'},
+  'imperative-mood':{zh:'命令式', aim:'現在式去掉主詞（只有 tu／nous／vous），-er 動詞的 tu 去掉 -s', ex:'Montez dans le bus !', hl:'Montez'},
+  'passe-compose':{zh:'複合過去式', aim:'avoir 或 être（移動類、反身動詞用 être）＋ 過去分詞；用 être 時分詞要配合主詞', ex:'Elle est sortie.', hl:'est sortie'},
+  'passe-recent':{zh:'剛剛過去', aim:'「剛剛」＝ venir 現在式 ＋ de ＋ 原形', ex:'Je viens de finir.', hl:'viens de'},
+  'accord-participe-passe':{zh:'過去分詞配合', aim:'avoir 的過去分詞平常不變；受詞（que、la、les）跑到前面時才跟著它變', ex:"C'est une ville qu'il a adorée.", hl:'adorée'},
+  'imparfait':{zh:'未完成過去式', aim:'字根＝現在式 nous 形去掉 -ons，再接 -ais／-ais／-ait／-ions／-iez／-aient', ex:'Chaque semaine, nous étudiions ensemble.', hl:'étudiions'},
+  'pc-imparfait-recit':{zh:'過去敘事', aim:'背景、狀態、習慣用 imparfait；突然發生、一次完成的事用 passé composé', ex:'Elle marchait en montagne quand elle a entendu un animal.', hl:'a entendu'},
+  'negation':{zh:'否定', aim:'ne … pas 換掉尾巴就換意思：jamais 從不、plus 不再、rien 什麼都不、personne 沒有人', ex:'Je ne connais personne à Paris.', hl:'personne'},
+  'frequency-adverbs':{zh:'頻率副詞', aim:'看多常：toujours 總是、souvent 常常、parfois 有時、rarement 很少、jamais 從不', ex:'On ne va jamais au musée le mardi.', hl:'jamais'},
+  'intensite':{zh:'程度副詞', aim:'看程度：trop 太、très 很、assez 夠、peu 很少', ex:'Il travaille trop.', hl:'trop'},
+  'adjective-agreement':{zh:'形容詞配合', aim:'形容詞跟著名詞變：陰性加 -e、複數加 -s（有些陰性不規則）', ex:'Elle porte des jupes courtes.', hl:'courtes'},
+  'adjective-position':{zh:'形容詞位置', aim:'短又常用的（grand、petit、bon、beau、nouveau）放名詞前，其他放後面；複數形容詞在前時 des 變 de', ex:'De beaux objets.', hl:'beaux'},
+  'comparaison':{zh:'比較級', aim:'形容詞用 plus／moins／aussi … que；名詞用 plus de／autant de … que；bon 變 meilleur', ex:"La chambre de Tom est moins grande que la chambre d'Anna.", hl:'moins'},
+  'superlatif':{zh:'最高級', aim:'le／la／les ＋ plus／moins ＋ 形容詞，冠詞跟著名詞的陰陽單複', ex:"C'est le meilleur bar à sieste de la ville.", hl:'le meilleur'},
+  'condition-si':{zh:'si 條件句', aim:'si 後面用現在式；結果那半句可以用現在式、未來式或命令式', ex:'Si tu es malade, va à la pharmacie !', hl:'va'},
+  'tout-chaque':{zh:'tout／chaque', aim:'tout 跟著後面的名詞變（tout／toute／tous／toutes ＋ 冠詞）；chaque ＋ 單數名詞、不加冠詞', ex:"J'aime tous les aspects de sa personnalité.", hl:'tous'},
+  'pronoms-possessifs':{zh:'所有格代名詞', aim:'先看「誰的」選 mien／tien／sien…，再跟著被取代的名詞加 le／la／les', ex:"C'est ma photo de profil. → C'est la mienne.", hl:'la mienne'},
+  'futur-simple':{zh:'簡單未來式', aim:'原形（-re 去 e）＋ -ai／-as／-a／-ons／-ez／-ont；不規則字根要記（pourr-、ir-、viendr-）', ex:'Demain, je prendrai ma voiture.', hl:'prendrai'},
+  'on-vs-nous':{zh:'on 的三種意思', aim:'on 可以是我們／大家／某個人，但動詞永遠用第三人稱單數', ex:'On a volé mon téléphone.', hl:'On'},
+  'giving-advice':{zh:'給建議', aim:'建議句型後面接 de ＋ 原形（je te conseille de…）', ex:'Je te conseille de faire du sport.', hl:'conseille de'},
+  'ilfaut-devoir':{zh:'il faut／devoir', aim:'il faut ＋ 原形（泛指）；devoir 照主詞變位 ＋ 原形', ex:'Il faut faire du sport tous les jours.', hl:'Il faut'},
+  'interdiction-demande':{zh:'禁止與義務', aim:'先看是「必須」還是「禁止」，再選句型：il faut／devoir，或 il est interdit de／il ne faut pas', ex:'Dans le métro taïwanais, il est interdit de manger et de boire.', hl:'il est interdit de'},
+  'restriction-ne-que':{zh:'ne … que（只）', aim:'ne … que＝只（不是否定）；que 放在被限制的那個東西前面', ex:'Ce restaurant ne propose que des plats à base de riz.', hl:'que'},
+  'duree':{zh:'時間長度', aim:'先問「事情結束了沒」：還在持續 depuis、已結束的一段 pendant、多久以前 il y a', ex:"J'habite ici depuis deux ans.", hl:'depuis'},
+  'numbers-dates-heure':{zh:'報時', aim:'官方說法用 24 小時直接報分鐘；口語用 et quart／et demie／moins le quart', ex:'Il est deux heures moins le quart.', hl:'moins le quart'},
+  'cause-consequence':{zh:'因果連接詞', aim:'先分方向（原因還是結果），再看後面接名詞（grâce à／à cause de）還是句子（parce que／car／donc）', ex:"À cause d'Internet, la presse papier a des difficultés.", hl:'À cause'},
+  'subjonctif-present':{zh:'虛擬式', aim:"que 前面是「必須／評價」（il faut que、c'est bien que）→ que 後面的動詞用虛擬式", ex:'Il faut que tu fasses attention sur les réseaux sociaux.', hl:'fasses'},
+  'conditionnel-present':{zh:'條件式', aim:'想要、建議、禮貌、假設 → 未來式字根（有 r）＋ imparfait 字尾', ex:'Tu devrais refaire tes photos !', hl:'devrais'},
+  'qui-que':{zh:'關係代名詞', aim:'看後面的子句缺什麼：缺主詞 qui、缺受詞 que、缺地點 où', ex:'Voici la chambre où je dors.', hl:'où'},
+  'pronoms-demonstratifs':{zh:'指示代名詞', aim:'名詞拿掉，照它的陰陽單複用 celui／celle／ceux／celles', ex:'Mes photos sont moins belles que celles de ma sœur.', hl:'celles'},
+  'mise-en-relief':{zh:'強調句', aim:"C'est ＋ 要強調的部分 ＋ qui（它是主詞）或 que（它是受詞或其他）", ex:"C'est vous qui m'avez fait découvrir le théâtre !", hl:'qui'},
+  'discours-rapporte':{zh:'間接引語', aim:"轉述陳述句用 que；是非問句用 si；qu'est-ce que 變 ce que；疑問詞照留", ex:'Elle se demande si le CV est utile.', hl:'si'},
+  'message-formel':{zh:'正式訊息', aim:'正式場合用倒裝問句（Pouvez-vous… ?）或間接問句（Je voudrais savoir si…）'},
+  'gerondif':{zh:'副動詞', aim:'en ＋ nous 形去 -ons 加 -ant，表示同時發生或用什麼方式', ex:'Elles cuisinent en écoutant de la musique.', hl:'en écoutant'}
+};
+/* 標亮例句裡的那一塊：⛔ 只認整個字（en 不能亮到 reviens 裡面那個 en） */
+function g3Hl(fr, hl){
+  var t=esc(fr); if(!hl) return t;
+  var h=esc(hl), L='A-Za-zÀ-ÿœŒ', re=new RegExp('(^|[^'+L+'])('+h.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')(?=[^'+L+']|$)');
+  return t.replace(re,'$1<b class="g3hl">$2</b>');
+}
+function g3AimHtml(tp){
+  var a=G3_AIM[tp]; if(!a) return '';
+  return '<details class="g3aim"'+(B.g3.aimOpen?' open':'')+' ontoggle="if(B&&B.g3) B.g3.aimOpen=this.open"><summary>🎯 這三題在練什麼</summary>'+
+    '<div class="g3aim-t">'+esc(a.aim)+'</div>'+
+    (a.ex?'<div class="g3aim-ex"><i>Exemple :</i> '+g3Hl(a.ex,a.hl)+'</div>':'')+'</details>';
+}
+/* 提示＝中文意思（Owen 10-07）＋ 原本 hint 裡真的有內容的部分；⛔ 頁碼出處不顯示（470 題的提示原本只有頁碼） */
+function g3HintClean(h){ return String(h||'').replace(/(課本|Cahier( A[12])?( Corrigés)?|Édito( A[12])?)\s*p\.?\s*\d+[^：:]*[：:]?\s*/g,'').trim(); }
+function g3Hint(q){
+  var cue=g3HintClean(q.hint), zh=q.zh||'';
+  if(!zh && !cue) return '';
+  return '<details class="hintd"><summary>提示</summary>'+(zh?'<div>'+esc(zh)+'</div>':'')+(cue?'<div style="margin-top:3px">'+esc(cue)+'</div>':'')+'</details>';
+}
+/* 交卷後「整句」：把正解填回空格（標亮），變形題只留箭頭後面那句、拿掉 (動詞) 括號提示 —— Owen：「玩完給我整句翻譯，讓我快速看懂」 */
+function g3Filled(q){
+  var t=String(stemOf(q)); if(t.indexOf('→')>=0) t=t.split('→').pop();
+  t=t.replace(/^\s*(Au |À l'|Le contraire|Question directe)[^:]*:\s*/,'').trim();
+  var parts=t.split(/_{3,}|…{2,}|\.{4,}/);
+  if(parts.length<2) return esc(t);
+  var ans=g3Short(q), many=String(ans).split(/\s*[,，/／]\s*/);   /* 兩個空格的題，答案寫成「aura, sera」→ 一格一個 */
+  if(many.length!==parts.length-1) many=null;
+  return parts.map(function(x){ return esc(x.replace(/\s*(\([^)]*\)|（[^）]*）)/g,'')); })
+    .reduce(function(acc,x,k){ return acc+'<b class="g3hl">'+esc(many?many[k-1]:ans)+'</b>'+x; })
+    .replace(/(['’])<\/b>\s+/g,'$1</b>');   /* qu' il → qu'il */
+}
 function gram3Page(){
-  var G=B.g3, h='<div class="g3-head"><b>'+esc(G.m.name)+'</b>　'+esc(topicName(G.qs[0].topic))+'<small>三題一起交，全對全傷、錯一題半傷</small></div>';
+  var G=B.g3, tp=G.qs[0].topic, az=(G3_AIM[tp]||{}).zh;
+  var h='<div class="g3-head"><b>'+esc(G.m.name)+'</b>　'+(az?esc(az)+' ':'')+'<span style="color:var(--dim)">'+esc(topicName(tp))+'</span><small>三題一起交，全對全傷、錯一題半傷</small></div>'+g3AimHtml(tp);
   G.qs.forEach(function(q,i){
     var body;
     if(q.type==='choose'){
@@ -3974,7 +4075,7 @@ function gram3Page(){
     } else {
       body='<input class="g3in" id="g3i'+i+'" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" placeholder="'+(q.type==='trans'?'把整句打出來…':'打出答案…')+'" value="'+esc(G.val[i]||'')+'" onfocus="TB_ACT=this" oninput="B.g3.val['+i+']=this.value">';
     }
-    h+='<div class="g3q"><div class="q"><span class="g3n">'+(i+1)+'</span>'+consigne(q)+esc(stemOf(q))+hintHtml(q)+'</div>'+body+
+    h+='<div class="g3q"><div class="q"><span class="g3n">'+(i+1)+'</span>'+consigne(q)+esc(stemOf(q))+g3Hint(q)+'</div>'+body+
        '<div class="exits"><button onclick="gram3Skip('+i+')">這題跳過</button></div></div>';
   });
   h+='<div class="accbar">'+ACCENTS.map(function(a){ return '<button onmousedown="event.preventDefault()" onclick="tbIns(\''+a+'\')">'+a+'</button>'; }).join('')+'</div>'+
@@ -4019,7 +4120,8 @@ function gram3Submit(){
     if(q.topic) gameRecord(q, loose);
     growRec(q, loose);
     if(q.topic) ddaTrack(loose);
-    res+='<div class="g3r '+(loose?'ok':'no')+'"><div class="q"><span class="g3n">'+(i+1)+'</span>'+esc(stemOf(q))+'</div>'+
+    res+='<div class="g3r '+(loose?'ok':'no')+'"><div class="q"><span class="g3n">'+(i+1)+'</span>'+g3Filled(q)+'</div>'+
+      (q.zh?'<div class="g3zh">'+esc(q.zh)+'</div>':'')+
       (loose?'<b style="color:var(--green)">對</b>'+(exact?'':'<span style="color:var(--gold)">　⚠️ 重音：<b>'+esc(g3Short(q))+'</b></span>')
             :'<b style="color:var(--red)">沒對上</b>　你寫：'+esc(mine)+'　正解：<b>'+esc(g3Short(q))+'</b>'+g3Note(q))+'</div>';
   });
