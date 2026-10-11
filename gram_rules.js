@@ -99,7 +99,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'pronouns', name:'Pronoms (toniques · COD · COI · y)', icon:'👤', zone:'A1', cat:'pronoms',
-    lessons:[9,11,12,15,31,34], topics:['pronoms-toniques','cod-pronouns','coi-pronouns','pronom-y','place-pronoms-cod-coi'], unlocked:true,   // 08-28：on-vs-nous 移到獨立的 pronom-on 點（第28課把它拉成完整的一節）／09-07（第31課）補上 COI
+    lessons:[9,11,12,15,31,34,40], topics:['pronoms-toniques','cod-pronouns','coi-pronouns','pronom-y','place-pronoms-cod-coi'], unlocked:true,   // 10-11（第40課）補 COI 的 y／08-28：on-vs-nous 移到獨立的 pronom-on 點（第28課把它拉成完整的一節）／09-07（第31課）補上 COI
     rule:{
       title:'代名詞三家族 — 重讀、直接／間接受詞、地點',
       why:'法文的 je/tu/il 被磨到只剩輕輕一個音，虛弱到不能單獨站著、不能被強調（不能只回答 "je"）——所以保留了一套有重音的「加強版」moi/toi/lui/eux 專門扛這些場合。受詞代名詞放動詞前面也是同一件事：它們是黏在動詞上的輕音節，像磁鐵吸在動詞前。COD／COI 的分工不是隨機的：COD 直接接在動詞後面（je vois qui/quoi），COI 是因為那個動詞本身的文法要求要接 à（je parle à qui），代名詞只是把「à＋人」壓縮掉——保留的是動詞原本的介係詞需求，不是代名詞自己發明的規則。on 原本是「人」這個名詞（拉丁 homo），「人們都這樣」講久了就變成口語的「我們」，所以動詞跟 il 同形。',
@@ -118,6 +118,9 @@ const GRAM_POINTS = [
         '⚠️ COD 放在 avoir 前面，過去分詞要配合 COD：Les premières scènes, je les ai trouvées nulles（COI 不配合：le film leur a plu）',
         'on = 口語的 nous，動詞跟 il/elle 同形：On habite à Lyon',
         'y 代替地點：J\'y vais（我去那裡）',
+        '⭐ y 也代替「à ＋ 東西／想法」（COI，第40課 p.163）：Je réponds à ce message → J\'y réponds；Il pense à ses vacances → Il y pense',
+        '⭐⭐ 人看動詞：répondre／parler／téléphoner／donner à ＋ 人 → lui／leur（Je leur réponds）；penser／réfléchir／faire attention à、反身動詞 s\'intéresser à ＋ 人 → à ＋ 重讀代名詞（Il pense à lui）。⚠️ 課本說「人一律 à ＋ 重讀代名詞」講得太絕對',
+        'y 跟反身代名詞一起：反身代名詞在前、y 在後（Je ne m\'y intéresse pas）；肯定命令式放後面（Pensez-y !）',
       ],
       examples:[
         { fr:'Chez eux, on mange bien.', zh:'在他們家吃得很好。（ils→eux）' },
@@ -126,6 +129,8 @@ const GRAM_POINTS = [
         { fr:'Tu donnes des conseils à Hamid ? — Oui, je lui conseille de dormir sur le côté.', zh:'你給 Hamid 建議嗎？——對，我建議他側睡。（COI：lui＝à Hamid）' },
         { fr:'Béatrice ne leur téléphone jamais le soir.', zh:'Béatrice 晚上從不打電話給他們。（COI複數 leur 不加s）' },
         { fr:'Tu as acheté l\'oreiller parfait à Marc ? — Oui, je le lui ai acheté.', zh:'你買了完美的枕頭給 Marc 嗎？——對，我買給他了。（COD＋COI疊用，COD在前）' },
+        { fr:'Il pense à ses vacances. Il y pense.', zh:'他在想他的假期。他在想這件事。（à ＋ 東西 → y）' },
+        { fr:'Il pense à son collègue. Il pense à lui.', zh:'他在想他的同事。（penser à ＋ 人 → à lui）' },
       ]}},
 
   { id:'pronoms-y-en', name:'Pronoms y / en', icon:'📍', zone:'A2', cat:'pronoms',
@@ -237,7 +242,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'imperatif', name:"L'impératif", icon:'📣', zone:'A2', cat:'verbe-mode',
-    lessons:[6], topics:['imperative-mood'], unlocked:true,
+    lessons:[6,40], topics:['imperative-mood','imperatif-pronoms'], unlocked:true,   // 10-11（第40課 p.170）加「命令式＋代名詞」
     rule:{
       title:'命令式 — 去掉主詞直接說',
       why:'命令的對象就站在你面前，主詞是廢話——所以全世界的命令式都砍主詞，法文也一樣。-ER 動詞 tu 形要去掉 s（Mange !）看起來像例外，其實是命令式保留了更古老的形狀：拉丁文命令式本來就沒有 s，是後來直述句的 tu manges 自己長出 s，命令式沒跟上而已——老的才是本尊。',
@@ -246,10 +251,17 @@ const GRAM_POINTS = [
         '-ER 動詞 tu 形去掉 s：Tu manges → Mange !（其他組保留 s：Finis !）',
         '否定命令：N\'achetez pas de tickets !（ne...pas 照包）',
         '常見招牌/廣播用語：Venez nombreux !（歡迎大家來）',
+        '⭐ 代名詞（第40課 p.170）肯定命令式放動詞後、加連字號：Multiplions-les !',
+        '肯定命令式裡 me／te 換成 moi／toi：Mobilise-toi !',
+        '-er 動詞 tu 形 ＋ en／y 要把 -s 加回來，好唸（連音 [z]）：Fabriques-en toi-même.／Penses-y.',
+        '否定命令式代名詞放動詞前，什麼都不變：Ne leur faites pas peur.／N\'en achète pas.',
       ],
       examples:[
         { fr:'Montez dans le bus !', zh:'上公車！（vous形去主詞）' },
         { fr:"N'achetez pas de tickets !", zh:'不要買票！（否定命令）' },
+        { fr:'Ce sont les petits gestes qui comptent. Multiplions-les !', zh:'重要的是小小的舉動，我們多做一些吧！（肯定 → 放後面）' },
+        { fr:'Laissez les animaux où ils sont et ne leur faites pas peur.', zh:'讓動物待在原地，不要嚇牠們。（否定 → 放前面）' },
+        { fr:'Fabriques-en toi-même.', zh:'自己做一些。（tu ＋ en → 加回 -s）' },
       ]}},
 
   { id:'futur-proche', name:'Futur proche', icon:'🔮', zone:'A2', cat:'verbe-temps',

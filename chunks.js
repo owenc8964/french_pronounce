@@ -19796,5 +19796,383 @@ const CHUNKS = [
   "fr": "actualiser son CV",
   "zh": "更新履歷",
   "note": "🎙 actualiser＝refresh；調整是 ajuster"
+ },
+ {
+  "id": "L40_Je_ne_m_y_intéresse_pas",
+  "lesson": 40,
+  "fr": "Je ne m'y intéresse pas.",
+  "zh": "我對這個沒興趣。",
+  "note": "課本原句。⭐ 反身代名詞 m' 在前、y 在後"
+ },
+ {
+  "id": "L40_Il_demande_à_son_amie_si",
+  "lesson": 40,
+  "fr": "Il demande à son amie si elle veut changer de métier.",
+  "zh": "他問他的朋友想不想換工作。",
+  "note": "課本練習2a：Est-ce que tu veux… → si elle veut…（🎙 son amie 是女的 → elle）"
+ },
+ {
+  "id": "L40_Karima_a_12_ans_Elle_est",
+  "lesson": 40,
+  "fr": "Karima a 12 ans. Elle est au collège.",
+  "zh": "卡莉瑪十二歲，在念國中。",
+  "note": "課本練習3a。⭐ collège＝國中"
+ },
+ {
+  "id": "L40_avoir_soif_de_connaissan",
+  "lesson": 40,
+  "fr": "avoir soif de connaissances",
+  "zh": "求知若渴",
+  "note": "🎙 老師說的。avoir soif de ＋ 名詞＝渴望…"
+ },
+ {
+  "id": "L40_Cela_nous_fait_peur",
+  "lesson": 40,
+  "fr": "Cela nous fait peur.",
+  "zh": "這讓我們害怕。",
+  "note": "課本原句。⭐ 表達害怕"
+ },
+ {
+  "id": "L40_Nous_sommes_inquiets",
+  "lesson": 40,
+  "fr": "Nous sommes inquiets.",
+  "zh": "我們很擔心。",
+  "note": "課本原句。⭐ 表達擔心"
+ },
+ {
+  "id": "L40_Nous_avons_peur_pour_not",
+  "lesson": 40,
+  "fr": "Nous avons peur pour notre faune et notre flore.",
+  "zh": "我們為我們的動物和植物擔心。",
+  "note": "課本原句。avoir peur pour＝替…擔心；🎙 老師：nous avons peur pour nos enfants 也很常說"
+ },
+ {
+  "id": "L40_Le_Groupement_Astre_a_dé",
+  "lesson": 40,
+  "fr": "Le Groupement Astre a décidé d'agir à son échelle.",
+  "zh": "Astre 團體決定在自己能做到的範圍行動。",
+  "note": "課本原句。🎙 沒辦法解決整個問題，但能在自己的規模上幫一點"
+ },
+ {
+  "id": "L40_Ce_sont_les_petits_geste",
+  "lesson": 40,
+  "fr": "Ce sont les petits gestes qui comptent.",
+  "zh": "重要的是那些小小的舉動。",
+  "note": "課本原句。⭐ ce sont … qui＝強調句（第38課）"
+ },
+ {
+  "id": "L40_Chacun_peut_aider_à_prés",
+  "lesson": 40,
+  "fr": "Chacun peut aider à préserver la biodiversité.",
+  "zh": "每個人都可以幫忙保護生物多樣性。",
+  "note": "課本原句。⭐ 表達能力"
+ },
+ {
+  "id": "L40_Fabriques_en_toi_même",
+  "lesson": 40,
+  "fr": "Fabriques-en toi-même.",
+  "zh": "自己做一些。",
+  "note": "課本原句。⭐ tu 形 ＋ en → 加 -s，連音唸 [z]"
+ },
+ {
+  "id": "L40_Respecte_les_Ne_leur_don",
+  "lesson": 40,
+  "fr": "Respecte-les ! Ne leur donne pas à manger !",
+  "zh": "尊重牠們！不要餵牠們！",
+  "note": "課本練習5a。⭐ 動物是「對誰」→ leur，⛔ 不用 y"
+ },
+ {
+  "id": "L40_J_ai_la_trentaine",
+  "lesson": 40,
+  "fr": "J'ai la trentaine.",
+  "zh": "我三十幾歲。",
+  "note": "🎙 老師的例子"
+ },
+ {
+  "id": "L40_Moi_aussi_j_y_pense_depu",
+  "lesson": 40,
+  "fr": "Moi aussi, j'y pense depuis toujours.",
+  "zh": "我也是，我一直都想做這件事。",
+  "note": "🎙 她的例子：有人說想去跳傘（sauter en parachute）時這樣回"
+ },
+ {
+  "id": "L40_C_est_très_important_il",
+  "lesson": 40,
+  "fr": "C'est très important, il faut en acheter. Achetez-en !",
+  "zh": "這很重要，一定要買。去買吧！",
+  "note": "🎙 示範 vous 的命令式 ＋ en"
+ },
+ {
+  "id": "L40_Laisse_moi",
+  "lesson": 40,
+  "fr": "Laisse-moi.",
+  "zh": "別管我。",
+  "note": "🎙 laisser ＋ 命令式 ＋ moi"
+ },
+ {
+  "id": "L40_Ne_la_laisse_pas_sans_su",
+  "lesson": 40,
+  "fr": "Ne la laisse pas sans surveillance.",
+  "zh": "別讓她沒人看著。",
+  "note": "🎙 她順口舉的例子（sans surveillance＝沒人照看）"
+ },
+ {
+  "id": "L40_l_Irak",
+  "lesson": 40,
+  "fr": "l'Irak",
+  "zh": "伊拉克（陽性）",
+  "note": "🎉 亮點：很快答出來，老師說很多法國人都不知道"
+ },
+ {
+  "id": "L40_les_déchets",
+  "lesson": 40,
+  "fr": "les déchets",
+  "zh": "垃圾、廢棄物",
+  "note": "m.pl.｜🎙 地上的垃圾；垃圾桶是 la poubelle"
+ },
+ {
+  "id": "L40_la_poubelle",
+  "lesson": 40,
+  "fr": "la poubelle",
+  "zh": "垃圾桶",
+  "note": "f.｜"
+ },
+ {
+  "id": "L40_quotidiennement",
+  "lesson": 40,
+  "fr": "quotidiennement",
+  "zh": "每天",
+  "note": "adv.｜quotidien 每天的"
+ },
+ {
+  "id": "L40_constater",
+  "lesson": 40,
+  "fr": "constater",
+  "zh": "注意到、確認",
+  "note": "v.｜🎙 to notice"
+ },
+ {
+  "id": "L40_un_espace_protégé",
+  "lesson": 40,
+  "fr": "un espace protégé",
+  "zh": "保護區",
+  "note": "m.｜protégé＝受保護的"
+ },
+ {
+  "id": "L40_polluer",
+  "lesson": 40,
+  "fr": "polluer",
+  "zh": "污染",
+  "note": "v.｜la pollution plastique 塑膠污染"
+ },
+ {
+  "id": "L40_même",
+  "lesson": 40,
+  "fr": "même",
+  "zh": "甚至",
+  "note": "adv.｜On les retrouve même dans les déserts."
+ },
+ {
+  "id": "L40_une_centaine",
+  "lesson": 40,
+  "fr": "une centaine",
+  "zh": "一百左右",
+  "note": "f.｜🎙 des centaines de milliers＝幾十萬"
+ },
+ {
+  "id": "L40_la_faune",
+  "lesson": 40,
+  "fr": "la faune",
+  "zh": "（一個地區的）動物",
+  "note": "f.｜🎙 所有動物的總稱"
+ },
+ {
+  "id": "L40_la_flore",
+  "lesson": 40,
+  "fr": "la flore",
+  "zh": "（一個地區的）植物",
+  "note": "f.｜🎙 所有植物的總稱"
+ },
+ {
+  "id": "L40_l_avenir",
+  "lesson": 40,
+  "fr": "l'avenir",
+  "zh": "未來",
+  "note": "m.｜🎙 à venir＝將要來的；也可以說 le futur"
+ },
+ {
+  "id": "L40_se_mobiliser",
+  "lesson": 40,
+  "fr": "se mobiliser",
+  "zh": "動起來、一起行動",
+  "note": "v.｜"
+ },
+ {
+  "id": "L40_à_son_échelle",
+  "lesson": 40,
+  "fr": "à son échelle",
+  "zh": "在自己能做到的範圍",
+  "note": "loc.｜🎙 une échelle＝梯子，也是「規模」"
+ },
+ {
+  "id": "L40_un_geste",
+  "lesson": 40,
+  "fr": "un geste",
+  "zh": "動作、舉動",
+  "note": "m.｜les petits gestes 小小的舉動"
+ },
+ {
+  "id": "L40_multiplier",
+  "lesson": 40,
+  "fr": "multiplier",
+  "zh": "增加、倍增",
+  "note": "v.｜"
+ },
+ {
+  "id": "L40_sans_doute",
+  "lesson": 40,
+  "fr": "sans doute",
+  "zh": "大概、想必",
+  "note": "loc.｜🎙 字面是「沒有懷疑」"
+ },
+ {
+  "id": "L40_consister_à",
+  "lesson": 40,
+  "fr": "consister à",
+  "zh": "就是（做某事）",
+  "note": "v.｜Cela consiste à nettoyer…"
+ },
+ {
+  "id": "L40_individuellement",
+  "lesson": 40,
+  "fr": "individuellement",
+  "zh": "個人地",
+  "note": "adv.｜↔ collectivement 集體地"
+ },
+ {
+  "id": "L40_un_jury",
+  "lesson": 40,
+  "fr": "un jury",
+  "zh": "評審團",
+  "note": "m.｜la délibération du jury 評審討論"
+ },
+ {
+  "id": "L40_une_étape",
+  "lesson": 40,
+  "fr": "une étape",
+  "zh": "步驟、階段",
+  "note": "f.｜🎙 環法自行車賽每天一個 étape；⚠️ 不是 un étage（樓層）"
+ },
+ {
+  "id": "L40_la_biodiversité",
+  "lesson": 40,
+  "fr": "la biodiversité",
+  "zh": "生物多樣性",
+  "note": "f.｜"
+ },
+ {
+  "id": "L40_respirer",
+  "lesson": 40,
+  "fr": "respirer",
+  "zh": "呼吸",
+  "note": "v.｜"
+ },
+ {
+  "id": "L40_réguler",
+  "lesson": 40,
+  "fr": "réguler",
+  "zh": "調節",
+  "note": "v.｜🎙 ＝contrôler"
+ },
+ {
+  "id": "L40_la_disparition",
+  "lesson": 40,
+  "fr": "la disparition",
+  "zh": "消失",
+  "note": "f.｜disparaître 消失"
+ },
+ {
+  "id": "L40_une_espèce",
+  "lesson": 40,
+  "fr": "une espèce",
+  "zh": "物種",
+  "note": "f.｜"
+ },
+ {
+  "id": "L40_la_destruction",
+  "lesson": 40,
+  "fr": "la destruction",
+  "zh": "破壞",
+  "note": "f.｜"
+ },
+ {
+  "id": "L40_le_milieu_naturel",
+  "lesson": 40,
+  "fr": "le milieu naturel",
+  "zh": "自然棲地",
+  "note": "m.｜🎙 動物原本住的地方"
+ },
+ {
+  "id": "L40_la_surexploitation",
+  "lesson": 40,
+  "fr": "la surexploitation",
+  "zh": "過度開發",
+  "note": "f.｜sur-＝過度"
+ },
+ {
+  "id": "L40_les_ressources",
+  "lesson": 40,
+  "fr": "les ressources",
+  "zh": "資源",
+  "note": "f.pl.｜"
+ },
+ {
+  "id": "L40_le_changement_climatique",
+  "lesson": 40,
+  "fr": "le changement climatique",
+  "zh": "氣候變遷",
+  "note": "m.｜"
+ },
+ {
+  "id": "L40_préserver",
+  "lesson": 40,
+  "fr": "préserver",
+  "zh": "保護、保存",
+  "note": "v.｜"
+ },
+ {
+  "id": "L40_un_appareil_cassé",
+  "lesson": 40,
+  "fr": "un appareil cassé",
+  "zh": "壞掉的電器",
+  "note": "m.｜"
+ },
+ {
+  "id": "L40_trier",
+  "lesson": 40,
+  "fr": "trier",
+  "zh": "（垃圾）分類",
+  "note": "v.｜🎙 faire le tri 做分類"
+ },
+ {
+  "id": "L40_laisser",
+  "lesson": 40,
+  "fr": "laisser",
+  "zh": "讓、留下",
+  "note": "v.｜🎙 Laisse-moi.＝別管我"
+ },
+ {
+  "id": "L40_gaspiller",
+  "lesson": 40,
+  "fr": "gaspiller",
+  "zh": "浪費",
+  "note": "v.｜le gaspillage 浪費"
+ },
+ {
+  "id": "L40_se_dégrader",
+  "lesson": 40,
+  "fr": "se dégrader",
+  "zh": "變糟、惡化",
+  "note": "v.｜"
  }
 ];

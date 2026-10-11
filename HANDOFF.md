@@ -13,7 +13,7 @@
 ## 🧭 現在站在哪裡（2026-09-01 深夜更新，⭐ 新 session 先讀這一塊，再往下）
 
 > 🆕 **2026-10-05 session 結束時的狀態（新 session 先看這段，再往下）**：
-> - 課程進度：**第 39 課**（Unité 11：間接引語／工作世界，p.158–163）筆記＋連動完成、已推。下次：p.163 主文法「代名詞 COI y」。
+> - 課程進度：**第 40 課**（p.163 COI y＋Unité 12 Soif de nature 到 p.170 命令式＋代名詞）筆記＋連動完成（見「三之五十」）。下次：Unité 12 剩下的部分。
 > - 這輪工作紀錄在「三之二十九」～「三之四十五」（搜尋「三之四」）：變位總覽改版＋練習化（蓋住／隨機 8 題／記速／鏡子）、四篇研究、遊戲修 bug（同步蓋回主線、主線倒下、四格卡死）、文法三連、課本題補齊（A2 本冊 158＋A1 弱項 139）、第 39 課。
 > - ✅ **Cahier A2 練習本補題已合併**（+328 題，第 17–39 課，答案全出自 Corrigés；題庫 2136 題、choose 缺答案 0）。✅ **10-07 補完「答錯沒一行原因」**：見「三之四十六」。刻意不收：第19課 p.10 3f（Corrigés 寫 il y a，標準是 pendant）等 OCR 糊掉的題。
 > - ⏸ **10-08 主線改版規格在 `STORY_DESIGN.md`（三之四十九），等 Owen 決定題材／原創例外／舊主線去留。**
@@ -4906,6 +4906,16 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - 紀錄 `clb7_gender_seen`（每字一物件＋last）：上次錯的 ×4、錯多於對 ×3、連對 3 次且 2 次 <2 秒的 ×0.35。答對也呼叫 `growRec`（key `g:<字>`）→ 隔天以後又答對＝站穩，寵物會長大。每答對 1 枚金幣，中途回去也照給。結算：✓ 數、平均秒數、<2 秒的個數、「再看一眼這幾個」（可點聽）。⛔ 不顯示分母。
 - 🐛 順手發現：`tools/tmp_quest_nosync.js make` 產的暫存頁**自己回報 `sync tag present? true`**——那支工具已經不可靠，這次改用自己的隔離複本（只刪 `<script src=sync_supabase.js>`），⚠️ 以後測 quest.html 別用它。
 - ✅ 試跑（隔離複本，ROOM 沒動）：手機 375 版面；一局 20 題（含 1 跳過、4 錯）→ 結算正確、金幣 +15、紀錄 18 字；無錯誤。
+
+#### 三之五十、10-11：第40課筆記（p.163 Le pronom COI y／p.164 總複習／Unité 12 Soif de nature：Trashtag、biodiversité、L'impératif et les pronoms）＋連動
+
+- **來源**：Owen 貼的整堂逐字稿；頁碼對快取 → **Édito A2 p.163（下半）、164、167–170**。⛔ 沒上到：p.164 練習1（mise en relief，電子檔看不到底線）／練習4／Phonie-graphie、p.165 Atelier、p.169 B 聽力、p.169 練習5、p.170 練習6。Trashtag 海報的步驟文字電子檔看不到，筆記只依當堂內容寫、已標明。
+- ✅ 筆記四件套＋文化＋「要問老師的事」（`lesson-40`，11 unit，check_notes 0／0）。⚠️ 自查拿掉 2 句我自己造的法文（Je m'intéresse à elle、L'Irak est masculin）。
+- ⚠️ **標出來的**：① 課本 p.163 Attention「人一律 à ＋ 重讀代名詞」講得太絕對——répondre／parler／téléphoner／donner à ＋ 人 → lui／leur（練習2b 答案就是 Je leur réponds），penser／réfléchir／faire attention à、反身動詞才用 à lui；老師當堂說要回去查 → 寫進「要問老師」。② p.170 練習4b 當堂寫 Ne les laisse pas，標準是 **N'en laisse pas**（pas de déchets）。③ 練習5b 當堂說 fabriquez-en，括號原文 les produits ménagers → Fabrique-les toi-même（兩個都說得通，已標）。④ 老師說 les causes sont connues 是複合過去式 → 配合對、但其實是現在式被動／狀態，已標。
+- ✅ 連動：chunks **+54**｜questions **+49**（`pronom-y` 11、新 topic `imperatif-pronoms` 18、`discours-rapporte` 4、`vocab-etudes` 4、新 topic `vocab-environnement` 12；全部有 zh、choose 正解都在選項）＋ TOPIC_LABELS 三處（117 個）｜sentences `S_L40_1~12`（→376）｜table_drill +2（`pronom-coi-y-drill`、`imperatif-pronoms-drill`，87 個）｜gram_rules：`pronouns` 加第40課＋COI y 三條＋2 例句；`imperatif` 加 topic `imperatif-pronoms`＋4 條＋3 例句｜quest.html `G3_AIM` 加 `imperatif-pronoms`、改 `pronom-y` 判斷句｜map `CURRENT_LESSON` 40＋3 塊（`pronom-coi-y`、`imperatif-pronoms`、`environnement-vocab`）。
+- ✅ 試跑（無同步複本）：筆記第40課 11 unit／77 句／發音鍵在；quiz `?lesson=40` 出題、中文收合；gram_trainer `?point=imperatif` 規則卡含新例句；map 顯示第 40 課＋3 塊；table_drill 兩張新表；遊戲副本第 40 課可進、三連出「命令式＋代名詞」且 🎯 收合區有內容；全程無主控台錯誤。
+- 🎙 老師：這本書快上完、下次還用這本；之後可能開始用 B1 的書，她會先看 B1 考試狀況。
+- ⏭ 下次：Unité 12 剩下的部分（p.169 B 聽力、p.171 以後）。
 
 #### 三之四十九、10-08：主線改版的結構規格（不含劇情）
 

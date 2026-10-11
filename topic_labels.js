@@ -109,6 +109,8 @@ var TOPIC_LABELS_FR = {
  "pronoms-demonstratifs": "Pronoms démonstratifs",
  "mise-en-relief": "La mise en relief",
  "discours-rapporte": "Le discours rapporté",
+ "imperatif-pronoms": "Impératif et pronoms",
+ "vocab-environnement": "L'environnement",
  "message-formel": "Le message formel",
  "vocab-monde-travail": "Le monde du travail",
  "vocab-etudes": "Les études",
