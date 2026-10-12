@@ -3644,6 +3644,7 @@ function showCmds(){
     if(!n) return '';
     return '<button class="cmd" onclick="useMove(\''+k+'\')">'+img(k==='chant'?SP.wand:(k==='blast'?SP.potion:(k==='table'?SP.chest:(k==='ear'||k==='shout'?SP.card:SP.sword))))+
       '<span>'+m.name+' <span style="color:var(--gold);font-size:.72rem">×'+m.dmg+'</span>'+
+      ((prodWanted()&&(k==='blast'||k==='chant'))?' <span style="color:var(--gold2);font-size:.66rem;border:1px solid var(--line2);border-radius:6px;padding:0 4px">推薦</span>':'')+   /* B10：這場還沒寫過一題時標出產出招 */
       '<small>'+m.why+'　'+m.sec+'</small></span></button>';
   }).join('');
   panel.innerHTML='<div class="cmds">'+btns+'</div>'+
@@ -3688,6 +3689,15 @@ function useMove(k){
   if(m.type==='table'){ B.move=m; return askTable(m); }
   if(m.type==='genre5'){ return askGenus(m); }
   if(m.type==='gram3'){ return askGram3(m); }
+  /* B10（2026-10-13 排程）：精英／關主／副本／主線戰鬥，保證這場至少做 1 題「自己寫出來」的題。
+     依據 research/2026-09-26（R28：題型與考試相符才是關鍵）＋ 2026-09-27（R29：拼句偏辨識，⛔ 不算產出）。
+     ⭐ 結構不是文案（memory feedback_menu_defaults_to_easiest）：這場第一次按普攻、還沒做過產出題 → 普攻化身大招或詠唱。
+     ⛔ 一場只化身一次：「改用普通攻擊」照樣有效、不會再被化身；⏭ 跳過照常可用。 */
+  if(k==='hit' && prodWanted()){
+    B.prodMorph=1;
+    var pk=prodMorphMove(ls);
+    if(pk){ toast('普攻化身「'+MOVES[pk].name+'」——這場打一題自己寫出來的'); return useMove(pk); }
+  }
   /* 10-03 Owen：「普攻沒有玩到陰陽的測驗耶」→ 普攻有 30% 化身陰陽連擊（5 題 un／une）。
      ⭐ 選單會被選最簡單的那個（memory feedback_menu_defaults_to_easiest）——混進普攻，⛔ 不靠他自己去點。
      ⛔ 塔、考試、強制招式（考驗）不觸發 */
@@ -3914,6 +3924,24 @@ function ins(a){
   box.selectionStart=box.selectionEnd=st+1; box.focus();
 }
 function buildDown(){ toast('改用普通攻擊'); useMove('hit'); }   /* ⭐ 卡住的出口 */
+/* B10：這場還欠不欠一題產出（塔、考試、考驗節點自己有規則，不管） */
+function prodWanted(){
+  return !!(B && !B.tower && !B.exam && !B.forceMove && !B.prodDone && !B.prodMorph &&
+            (B.isBoss || B.type==='elite' || B.story));
+}
+function isProdMove(m,q){
+  return !!m && (m.type==='fill' || m.type==='trans' || m.type==='table' ||
+                 (m.type==='gender' && !(q && q.opts && q.opts.length>=2)));
+}
+/* 化身成哪一招：大招（填空）／詠唱（中翻法）有題的隨機挑一個；主線節點先看它的 topic 有沒有這型 */
+function prodMorphMove(ls){
+  var ok=['blast','chant'].filter(function(k){
+    var t=MOVES[k].type;
+    if(B && B.topic && BANK.some(function(q){ return q.topic===B.topic && q.type===t && typeof q.a==='string' && q.a.length>1; })) return true;
+    return movePool((B&&B.lessons)?B.lessons:ls, t).length>0;
+  });
+  return ok.length ? ok[Math.floor(Math.random()*ok.length)] : null;
+}
 function typeCheck(){
   var q=B.curQ, m=B.curM, box=document.getElementById('ansBox');
   var mine=(box?box.value:'').trim();
@@ -4297,6 +4325,7 @@ function ruleBoxHtml(q, wrong){
 function resolveMove(loose, exact, q, m, retried){
   if(B && B.exam && q.key) examRecord(q.key, loose);
   if(B && B.tt) return towerResolve(loose, exact, q, m, retried);
+  if(B && isProdMove(m,q)) B.prodDone=1;                    /* B10：做過產出題（對錯都算），這場不再化身 */
   if(B && !B.exam && !B.tower){                             /* 練到會：答對就從待練清單拿掉，答錯排進待練清單（表格自己有循環，不重複排） */
     B.turn=(B.turn||0)+1;
     if(q&&q.srcId) seenRec(q.srcId, loose&&!retried);   /* 筆記／句庫來源的拼句也記 last，老朋友才知道它多久沒出現 */
