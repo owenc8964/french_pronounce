@@ -2558,10 +2558,15 @@ function renderPetTab(){
     '<div class="sec"><h2>商店</h2>'+(shop.length?'<div class="itms">'+shop.map(function(x){ return cell(x,'shop'); }).join('')+'</div>':'<div class="fb">全部收齊了。</div>')+'</div>'+
     petGamesHtml();
 }
+var STORY_BOOKS=[ {href:'y_en_story.html', name:'📖 y 與 en 的故事', sub:'兩個指路人，八章'} ];
 function petGamesHtml(){
   return '<div class="sec"><h2>練習小遊戲</h2><div class="cmds">'+
     '<button class="cmd" onclick="genderOpen()"><span>🎯 un 還是 une？<small>看到東西，猜陰陽性</small></span></button></div>'+
     '<div class="fb" style="color:var(--faint);font-size:.72rem">練習型：字都是你筆記裡的。隔天以後又答對的字，會算進牠的成長。</div></div>'+
+    /* 10-12 Owen：「放在夥伴分頁也加一個入口」→ 故事書（只用讀的頁面）。之後新故事加進 STORY_BOOKS 就好 */
+    '<div class="sec"><h2>故事書</h2><div class="cmds">'+STORY_BOOKS.map(function(b){
+      return '<button class="cmd" onclick="location.href=\''+b.href+'?from=quest&tab=pet\'"><span>'+b.name+'<small>'+b.sub+'</small></span></button>'; }).join('')+'</div>'+
+    '<div class="fb" style="color:var(--faint);font-size:.72rem">只用讀的，不用作答。角色是比喻，每章最後那行「📐 文法本身」才是規則。</div></div>'+
     '<div class="sec"><h2>小遊戲</h2><div class="cmds">'+
     '<button class="cmd" onclick="miniOpen(\'fish\')"><span>🎣 釣魚<small>慢慢等，收集圖鑑</small></span></button>'+
     '<button class="cmd" onclick="miniOpen(\'brick\')"><span>🧱 打磚塊<small>手指滑動，牠當擋板</small></span></button>'+
