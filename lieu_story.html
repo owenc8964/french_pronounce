@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- 加到主畫面（PWA，2026-10-12） -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/app/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CLB7">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<script src="pwa.js" defer></script>
+<title>地點介系詞家族 · CLB7</title>
+<!--
+  lieu_story.html — 地點介系詞家族：à／au／aux／en／chez／dans／sur…（2026-10-12）
+  Owen 選了故事 ① 和 ③。依據：雲端錯題本 國家介系詞 7＋地點交通 8＋方位 5＝20 筆。
+  ⭐ 版型與翻頁共用 story_reader.css／story_reader.js；每章分開寫 real／meta（memory feedback_story_label_fact_vs_metaphor）。
+  ⛔ 例句一律取自 chunks.js／sentences.js／gram_rules.js／questions.js（含 Cahier）已有的句子。
+  📚 查證（2026-10-12）：
+    ✅ au＝à＋le（古法文 al）、aux＝à＋les：強制縮合。
+    ✅ chez ← 古法文 chiés／chiese「房子」← 拉丁文 casa（Etymonline、Oxford、Wiktionary 一致）。
+    ✅ 國家規則：陰性或母音開頭 → en（en France、en Iran）；陽性子音開頭 → au；複數 → aux；-e 結尾多為陰性，
+       例外 le Mexique、le Cambodge、le Mozambique、le Zimbabwe（魁北克語言辦公室 OQLF 等）。
+    ⛔ 「為什麼陰性國家用 en」查不到可靠的歷史說法 → 頁面明寫不知道，不編理由。
+    ⚠️ 「進得去的交通工具用 en、騎在上面的用 à」是常見的經驗法則，口語也常聽到 en vélo → 標成比喻／經驗法則。
+  讀到哪：lieu_story_pos。
+-->
+<link rel="stylesheet" href="story_reader.css">
+<style>
+.pp{ color:var(--y); font-weight:700; }
+</style>
+</head>
+<body>
+<div class="top"><a href="dashboard.html">← 回指揮中心</a><span style="color:var(--faint)">讀的，不用作答</span></div>
+<h1>地點介系詞家族</h1>
+<div class="sub">去哪裡、在哪裡、從哪裡來——先看「地點是什麼」，再選介系詞<br><span style="font-size:.9em">⚠️ 「家族」「成員」都是比喻；每章最後的「📐 文法本身」才是規則</span></div>
+<div class="chips" id="chips"></div>
+<div class="card" id="card"></div>
+<div class="nav"><button id="prev">← 上一章</button><button id="next" class="primary">下一章 →</button></div>
+<div class="src">
+  語源：chez ← 拉丁文 <i>casa</i>（房子）；au 是 à ＋ le 黏在一起（古法文寫 al）。為什麼陰性國家用 en，這次查不到可靠的說法，所以頁面不編理由。<br>
+  例句全部取自你的筆記、課本與 Cahier（第 2、6、7、9、11、12、14、16、19、21、23、37 課等）。
+</div>
+
+<script src="tts_reader.js"></script>
+<script src="story_reader.js"></script>
+<script>
+var CH = [
+{ ch:'序章', t:'一群帶路的人',
+  soul:'它們全都在說「在哪裡、去哪裡」——而且它們帶出來的地點，全部可以換成 y。',
+  body:
+  '<p>法文講地點，不能只說「法國」「醫生」「桌子」，前面一定要先放一個帶路的字：à、au、en、chez、dans、sur……</p>'+
+  '<p>選哪一個，<b>看的是後面那個地點是什麼東西</b>：</p>'+
+  '<div class="key">城市、一般場所 → <span class="pp">à</span>（遇到 le、les 會黏成 au、aux）<br>'+
+  '國家 → 看陰陽性：<span class="pp">en</span>／<span class="pp">au</span>／<span class="pp">aux</span><br>'+
+  '人 → <span class="pp">chez</span><br>'+
+  '講清楚在哪個位置 → <span class="pp">dans、sur、sous、à côté de…</span><br>'+
+  '交通工具 → <span class="pp">en</span> 或 <span class="pp">à</span></div>'+
+  '<p>還有一件事：這些字帶出來的地點，講第二次時都可以換成 <b>y</b>（J\'y vais）；從某地<b>出來</b>的時候，則換成 <b>de</b>（Je viens de…）。</p>',
+  real:'法文的地點前面要有介系詞，選哪一個由後面的地點種類決定；這些地點講第二次可換成 y（第 21 課）。',
+  meta:'「帶路的人」是比喻。' },
+
+{ ch:'第一章', t:'à：最常用的「在、到」',
+  soul:'<span class="pp">à</span> 遇到 le 和 les 會黏在一起，變成 au、aux——這不是可以選的，是一定要黏。',
+  body:
+  '<p>城市和大部分的場所，用 <span class="pp">à</span>。但 à 很黏：</p>'+
+  '<div class="key">à ＋ le → <b>au</b>　　à ＋ les → <b>aux</b>　　à ＋ la、à ＋ l\' → 不黏，照寫</div><ul class="ex">'+
+  ex('Eva est allée <b>à</b> Paris pour finir son tour de France.','Eva 去巴黎結束她的法國之旅。','第 37 課：城市 → à')+
+  ex('On va <b>au</b> cinéma ce soir ?','我們今晚要去看電影嗎？','第 9 課：à ＋ le cinéma → au')+
+  ex('Pour aller <b>au</b> travail, je prends ma voiture.','去上班我開車。','第 7 課')+
+  ex('Nous mangeons <b>au</b> restaurant.','我們在餐廳吃飯。','規則卡')+
+  ex('On ne va jamais <b>au</b> musée le mardi.','我們星期二從不去博物館。','規則卡')+
+  ex('Je vais <b>à la</b> plage, je me baigne dans les Calanques et je bronze !','我去海灘，在 Calanques 峽灣戲水、曬太陽！','第 15 課：à la 不黏')+
+  '</ul><div class="key"><strong>揣摩</strong>：說「去看電影」時，嘴巴先想到 à le cinéma——在說出口前，把 à le 黏成 <b>au</b>。<br>同一套黏法也發生在 de：de ＋ le → <b>du</b>、de ＋ les → <b>des</b>。</div>',
+  real:'城市與一般場所用 à；à＋le→au、à＋les→aux 是強制縮合（古法文寫 al），à la／à l\' 不縮。de＋le→du、de＋les→des 同理。',
+  meta:'「很黏」是比喻。' },
+
+{ ch:'第二章', t:'國家：看陰陽性',
+  soul:'國家是陰性的用 <span class="pp">en</span>，陽性的用 <span class="pp">au</span>，複數的用 <span class="pp">aux</span>。',
+  body:
+  '<p>國家前面的介系詞，完全看國家的<b>陰陽性與單複數</b>：</p><ul class="ex">'+
+  ex('<b>en</b> France / <b>en</b> Italie / <b>en</b> Chine','在／去法國、義大利、中國','第 2 課：陰性 → en')+
+  ex('<b>au</b> Canada / <b>au</b> Mexique / <b>au</b> Brésil','在／去加拿大、墨西哥、巴西','第 2 課：陽性 → au')+
+  ex('<b>aux</b> États-Unis / <b>aux</b> Pays-Bas','在／去美國、荷蘭','第 2 課：複數 → aux')+
+  ex('Il est important que j\'aie le diplôme pour aller <b>au</b> Canada.','要去加拿大，拿到文憑很重要。','第 34 課')+
+  '</ul><p><b>怎麼知道陰陽性？</b> 結尾是 -e 的國家幾乎都是陰性；例外是 le Mexique、le Cambodge、le Mozambique、le Zimbabwe（這就是上課老師說的「四個國家」）。</p>'+
+  '<p><b>母音開頭的陽性國家</b>也用 en，不用 au——就像你上課很快答出來的 l\'Irak，要說 en Irak。</p>'+
+  '<p><b>從某國來</b>的時候換成 de：陰性國家只留 de（de la 縮掉），陽性變 du，複數變 des。</p><ul class="ex">'+
+  ex('Je viens <b>de</b> France.','我來自法國。','第 14 課：陰性 → de（不說 de la France）')+
+  ex('Je reviens <b>du</b> Danemark.','我從丹麥回來。','Cahier：陽性 → du')+
+  ex('Nathan vient <b>des</b> États-Unis.','納森來自美國。','Cahier：複數 → des')+
+  ex('Yvonne vient <b>d\'</b>Irlande.','伊馮來自愛爾蘭。','Cahier')+
+  ex('Je viens <b>de</b> Taïwan.','我來自台灣。','第 14 課')+
+  '</ul><div class="key"><strong>揣摩</strong>：國家要連陰陽性一起記，例如「la France」「le Canada」，介系詞就自己跑出來了。<br>⚠️ 為什麼陰性國家要用 en，這次查不到可靠的歷史說法，所以這裡不編故事——直接記規則。</div>',
+  real:'陰性國家或母音開頭的國家用 en；陽性子音開頭用 au；複數用 aux（第 2 課）。從某國來：de／du／des。-e 結尾多為陰性，例外 le Mexique、le Cambodge、le Mozambique、le Zimbabwe。',
+  meta:'這一章沒有比喻；「為什麼是 en」沒有可靠解釋，就不說。' },
+
+{ ch:'第三章', t:'chez：後面接的是人',
+  soul:'<span class="pp">chez</span> 本來的意思是「房子」——所以 chez moi 就是「在我的房子」。',
+  body:
+  '<p><span class="pp">chez</span> 的祖先是拉丁文 <i>casa</i>，意思是<b>房子</b>（西班牙文到現在還說 casa）。古法文寫成 chiés，用久了就變成「在某人的家」——所以 <b>chez 後面接的是人</b>，不是地方。</p><ul class="ex">'+
+  ex('On se retrouve <b>chez moi</b> à 19h ?','我們 19 點在我家碰面好嗎？','第 19 課')+
+  ex('<b>Chez eux</b>, on mange bien.','在他們家吃得很好。','規則卡：chez ＋ 重讀代名詞')+
+  ex('Je suis allé <b>chez le médecin</b>.','我去看醫生了。','第 12 課：醫生的診所')+
+  ex('Pour le poisson, je vais <b>chez le poissonnier</b>.','買魚我去魚販那裡。','規則卡：店老闆 → chez')+
+  ex('<b>chez l\'habitant</b>','住當地人家裡','第 37 課')+
+  '</ul><p>同一家店，講<b>人</b>用 chez，講<b>店</b>用 à：chez le boucher（肉販那裡）＝ à la boucherie（肉店）。</p>'+
+  '<div class="key"><strong>揣摩</strong>：後面是人（moi、le médecin、le poissonnier）→ chez；後面是地方（la boucherie、le cinéma）→ à。</div>',
+  real:'chez ＋ 人（或代表店家的人：le médecin、le poissonnier）；地方本身用 à。chez 來自拉丁文 casa（房子），有可靠字源。',
+  meta:'這一章幾乎沒有比喻，語源是真的。' },
+
+{ ch:'第四章', t:'dans、sur…：講清楚在哪個位置',
+  soul:'à 只說「在那裡」；要說「在裡面、在上面、在旁邊」，就換更精確的成員。',
+  body:
+  '<p>à 很籠統。想說得更精確，就用位置介系詞：<b>dans</b>（在裡面）、<b>sur</b>（在上面）、<b>sous</b>（在下面）、<b>devant／derrière</b>（前／後）、<b>à côté de</b>（旁邊）。</p><ul class="ex">'+
+  ex('Montez <b>dans</b> le bus.','上公車。','第 6 課：dans＝進到裡面')+
+  ex('J\'habite <b>dans</b> une maison qui est grande.','我住在一間很大的房子。','第 23 課')+
+  ex('Tu as oublié tes clés <b>sur</b> la table.','你把鑰匙忘在桌上了。','Cahier')+
+  ex('Le climat est agréable <b>sur</b> cette île ? — Oui, il y est très agréable.','這座島氣候好嗎？——那裡很好。','規則卡：島 → sur')+
+  ex('La machine à laver est <b>à droite du</b> frigo.','洗衣機在冰箱右邊。','Cahier：à droite de ＋ le → du')+
+  '</ul><div class="key"><strong>揣摩</strong>：<b>dans 後面要有冠詞</b>（dans le bus、dans une maison），<b>en 通常沒有</b>（en France、en bus）。<br>結尾有 de 的（à côté de、à droite de），遇到 le 一樣要黏：→ <b>du</b>。</div>',
+  real:'位置介系詞：dans、sur、sous、devant、derrière、à côté de、à droite de…；dans 後面接冠詞，en 通常不接；de＋le→du。',
+  meta:'「更精確的成員」是比喻。' },
+
+{ ch:'第五章', t:'交通：en bus，à pied',
+  soul:'搭交通工具多半用 <span class="pp">en</span>；用腳走用 <span class="pp">à</span>。',
+  body:
+  '<ul class="ex">'+
+  ex('Je vais à l\'école <b>en</b> bus.','我搭公車上學。','規則卡')+
+  ex('La visite, on l\'a faite <b>en</b> bus amphibie !','這趟參觀，我們是坐水陸巴士去的！','第 37 課')+
+  ex('Vous allez <b>à</b> pied à la gare.','你們走路去車站。','Cahier')+
+  '</ul><div class="key"><strong>揣摩</strong>：常聽到的記法是「<b>坐得進去的</b>（bus、voiture、train、avion）用 en；<b>騎在上面、用腳的</b>（pied、vélo）用 à」。</div>',
+  real:'en ＋ 交通工具（en bus、en voiture、en train、en avion）；à pied。',
+  meta:'「坐得進去用 en、騎在上面用 à」是經驗法則，不是文法規定——口語也常聽到 en vélo。' },
+
+{ ch:'第六章', t:'跟 y、en 的交會',
+  soul:'這一家族帶出的地點，講第二次都變成 y——連 en France 也一樣。',
+  body:
+  '<p>不管前面是 à、au、en、dans、sur 還是 chez，<b>講第二次</b>的時候，整塊「介系詞 ＋ 地點」都可以換成一個 <b>y</b>：</p><ul class="ex">'+
+  ex('Tu vas bientôt <b>en France</b> ? — Oui, j\'<b>y</b> vais la semaine prochaine.','你快要去法國了嗎？——對，我下禮拜去。','第 40 課：介系詞 en France → 代名詞 y')+
+  ex('Le climat est agréable <b>sur cette île</b> ? — Oui, il <b>y</b> est très agréable.','這座島氣候好嗎？——那裡很好。','規則卡')+
+  ex('Tu reviens <b>de la plage</b> ? — Oui, j\'<b>en</b> reviens à l\'instant.','你從海邊回來嗎？——對，我剛從那裡回來。','規則卡：從那裡 → en')+
+  '</ul><div class="key"><strong>揣摩</strong>：注意第一句——問句裡的 <b>en</b> France 是介系詞（y 與 en 故事第六章那個「冒名的雙胞胎」），回答時整塊被代名詞 <b>y</b> 換掉了。<br>📖 想看兩兄弟的故事：<a href="y_en_story.html">y 與 en 的故事</a>。</div>',
+  real:'「介系詞＋地點」可換成 y；「de＋地點」可換成 en（第 21、40 課）。',
+  meta:'「家族」「雙胞胎」是比喻。' },
+
+{ ch:'終章', t:'一張判斷流程',
+  soul:'先問「後面是什麼」，答案就出來了。',
+  body:
+  '<ol class="flow">'+
+  '<li><b>後面是人嗎？</b>（moi、le médecin）→ <span class="pp">chez</span></li>'+
+  '<li><b>是國家嗎？</b>陰性或母音開頭 → <span class="pp">en</span>；陽性 → <span class="pp">au</span>；複數 → <span class="pp">aux</span><br>從那裡來 → de／du／des</li>'+
+  '<li><b>是城市或一般場所？</b>→ <span class="pp">à</span>（à le → au、à les → aux）</li>'+
+  '<li><b>要講清楚位置？</b>→ dans、sur、sous、à côté de…（de le → du）</li>'+
+  '<li><b>是交通工具？</b>→ en bus、en voiture；à pied</li>'+
+  '</ol>'+
+  '<div class="related">📖 相關故事：<a href="y_en_story.html">y 與 en 的故事</a>・<a href="etre_story.html">être 之家</a>（aller、arriver、partir 的複合過去式為什麼用 être？）</div>',
+  real:'這五個問題就是上面各章規則的整理。', meta:'' }
+];
+storyStart(CH,'lieu_story_pos');
+</script>
+<script src="return_to.js"></script>
+</body>
+</html>

@@ -24,53 +24,7 @@
      介系詞 en < 拉丁文 in 是一般說法。
   讀到哪存在 yen_story_pos（⛔ 刻意不用 clb7_ 開頭：只是這台裝置的方便，不需要同步）。
 -->
-<style>
-:root{ --bg:#090b10; --panel:#11151f; --panel2:#171d2b; --line:#252c3d; --ink:#e6e1d6; --dim:#8b93a6; --faint:#5d6578;
-  --gold:#d9b45e; --gold2:#f3dc9a; --y:#6fb6e8; --en:#e8946f; --green:#6cc79a; }
-*{ box-sizing:border-box; margin:0; padding:0; }
-body{ background:radial-gradient(ellipse at top,#171d2b 0%,var(--bg) 60%); color:var(--ink);
-  font-family:'Segoe UI',system-ui,-apple-system,sans-serif; min-height:100vh;
-  padding:20px 16px 90px; max-width:720px; margin:0 auto; font-size:clamp(16px,1vw + 13px,18px); line-height:1.8; }
-a{ color:var(--dim); }
-.top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-size:.78em; }
-.top a{ text-decoration:none; }
-.top a:hover{ color:var(--gold2); }
-h1{ text-align:center; color:var(--gold); font-size:1.25em; letter-spacing:2px; }
-.sub{ text-align:center; color:var(--dim); font-size:.78em; margin:4px 0 14px; }
-.chips{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-bottom:14px; }
-.chips button{ font:inherit; font-size:.72em; padding:4px 10px; border-radius:999px; border:1px solid var(--line);
-  background:var(--panel); color:var(--dim); cursor:pointer; }
-.chips button.on{ border-color:var(--gold); color:var(--gold2); }
-.card{ background:linear-gradient(180deg,var(--panel2),var(--panel)); border:1px solid var(--line); border-radius:16px; padding:18px 18px 16px; }
-.ch{ font-size:.7em; letter-spacing:.2em; color:var(--gold); }
-.card h2{ font-size:1.12em; margin:4px 0 6px; }
-.soul{ border-left:3px solid var(--gold); padding:6px 12px; margin:10px 0 12px; color:var(--gold2);
-  background:rgba(217,180,94,.06); border-radius:0 10px 10px 0; }
-.card p{ margin:8px 0; }
-.y{ color:var(--y); font-weight:700; } .en{ color:var(--en); font-weight:700; }
-.ex{ list-style:none; margin:10px 0; }
-.ex li{ background:#0c0f17; border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin:7px 0; }
-.ex .fr{ font-family:Georgia,'Times New Roman',serif; font-size:1.05em; cursor:pointer; display:block; }
-.ex .fr::before{ content:'🔊 '; font-size:.75em; opacity:.6; }
-.ex .zh{ color:var(--dim); font-size:.82em; display:block; }
-.ex .note{ color:var(--faint); font-size:.76em; display:block; }
-.ex b{ color:var(--gold2); }
-.key{ margin-top:12px; padding:10px 12px; border:1px dashed rgba(217,180,94,.45); border-radius:10px; font-size:.9em; }
-.key strong{ color:var(--gold); }
-.flow{ list-style:none; counter-reset:f; margin:8px 0; }
-.flow li{ counter-increment:f; position:relative; padding:6px 0 6px 34px; }
-.flow li::before{ content:counter(f); position:absolute; left:0; top:6px; width:24px; height:24px; border-radius:50%;
-  background:var(--gold); color:#11151f; font-weight:700; font-size:.8em; display:flex; align-items:center; justify-content:center; }
-.nav{ display:flex; gap:10px; margin-top:14px; }
-.nav button{ flex:1; font:inherit; padding:12px; border-radius:12px; border:1px solid var(--line); background:var(--panel);
-  color:var(--ink); cursor:pointer; }
-.nav button.primary{ border-color:var(--gold); color:var(--gold2); background:#211b0f; }
-.nav button:disabled{ opacity:.35; cursor:default; }
-.truth{ margin-top:12px; padding:10px 12px; border-radius:10px; background:#0c0f17; border:1px solid var(--line); font-size:.82em; color:var(--dim); }
-.truth div+div{ margin-top:6px; }
-.truth b{ color:var(--ink); }
-.src{ margin-top:22px; font-size:.7em; color:var(--faint); line-height:1.7; }
-</style>
+<link rel="stylesheet" href="story_reader.css">
 </head>
 <body>
 <div class="top"><a href="dashboard.html">← 回指揮中心</a><span style="color:var(--faint)">讀的，不用作答</span></div>
@@ -85,9 +39,9 @@ h1{ text-align:center; color:var(--gold); font-size:1.25em; letter-spacing:2px; 
 </div>
 
 <script src="tts_reader.js"></script>
+<script src="story_reader.js"></script>
 <script>
 /* 每一章：t 標題、ch 章號、soul 一句靈魂、body HTML（中文短段落＋例句 li.fr 點了會唸） */
-function ex(fr, zh, note){ return '<li><span class="fr">'+fr+'</span><span class="zh">'+zh+'</span>'+(note?'<span class="note">'+note+'</span>':'')+'</li>'; }
 var CH = [
 { ch:'序章', t:'兩個指路人',
   soul:'它們生下來只有一個工作：指地點。<span class="y">y</span> 指「在那裡、到那裡」，<span class="en">en</span> 指「從那裡」。',
@@ -217,32 +171,12 @@ var CH = [
   '<li><b>放哪裡？</b><br>變位動詞（或助動詞）前面；兩個都有時 <span class="y">y</span> 在 <span class="en">en</span> 前。<br>只有肯定命令式放後面加連字號，tu 形加回 -s。</li>'+
   '<li><b>這個 en 是不是雙胞胎？</b><br>後面接名詞或 -ant → 是介系詞，不是它。<br>il y a、je n\'en peux plus → 口頭禪，整塊背。</li>'+
   '</ol>'+
-  '<div class="key">回到序章那一句：<span class="y">y</span> 住在「在、到」那一邊，<span class="en">en</span> 住在「de、份量」那一邊。<br>每次卡住，就問「它替的那一塊，原本前面是什麼？」</div>',
+  '<div class="key">回到序章那一句：<span class="y">y</span> 住在「在、到」那一邊，<span class="en">en</span> 住在「de、份量」那一邊。<br>每次卡住，就問「它替的那一塊，原本前面是什麼？」</div>'+
+  '<div class="related">📖 相關故事：<a href="lieu_story.html">地點介系詞家族</a>（y 替的那些地點，前面都是誰？）・<a href="etre_story.html">être 之家</a>（Il en est parti 為什麼用 être？）</div>',
   real:'這三個問題就是上面各章文法規則的整理。', meta:'' }
 ];
 
-var POS_KEY='yen_story_pos', cur=0;
-try{ var p=parseInt(localStorage.getItem(POS_KEY),10); if(p>=0&&p<CH.length) cur=p; }catch(e){}
-var q=new URLSearchParams(location.search).get('ch'); if(q!==null&&!isNaN(+q)&&+q>=0&&+q<CH.length) cur=+q;
-
-function render(){
-  var c=CH[cur];
-  document.getElementById('card').innerHTML='<div class="ch">'+c.ch+'</div><h2>'+c.t+'</h2><div class="soul">'+c.soul+'</div>'+c.body+
-    ((c.real||c.meta)?'<div class="truth">'+(c.real?'<div><b>📐 文法本身（有所本）</b>　'+c.real+'</div>':'')+(c.meta?'<div><b>🎭 只是比喻</b>　'+c.meta+'</div>':'')+'</div>':'');
-  document.getElementById('chips').innerHTML=CH.map(function(x,i){ return '<button class="'+(i===cur?'on':'')+'" data-i="'+i+'">'+x.ch+'</button>'; }).join('');
-  document.getElementById('prev').disabled=(cur===0);
-  var nx=document.getElementById('next'); nx.disabled=(cur===CH.length-1); nx.textContent=(cur===CH.length-1)?'讀完了':'下一章 →';
-  try{ localStorage.setItem(POS_KEY,String(cur)); }catch(e){}
-}
-function go(i){ if(i<0||i>=CH.length) return; cur=i; render(); window.scrollTo({top:0,behavior:'smooth'}); }
-document.getElementById('prev').addEventListener('click',function(){ go(cur-1); });
-document.getElementById('next').addEventListener('click',function(){ go(cur+1); });
-document.getElementById('chips').addEventListener('click',function(e){ var b=e.target.closest('button'); if(b) go(+b.dataset.i); });
-document.getElementById('card').addEventListener('click',function(e){
-  var f=e.target.closest('.fr'); if(!f) return;
-  var t=f.textContent; if(window.TtsReader&&TtsReader.speak) TtsReader.speak(t);
-});
-render();
+storyStart(CH,'yen_story_pos');
 </script>
 <script src="return_to.js"></script>
 </body>

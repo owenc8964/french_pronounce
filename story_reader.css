@@ -1,0 +1,48 @@
+/* story_reader.css — 故事書共用版型（2026-10-12，從 y_en_story.html 抽出；y_en／être 之家／地點介系詞共用） */
+:root{ --bg:#090b10; --panel:#11151f; --panel2:#171d2b; --line:#252c3d; --ink:#e6e1d6; --dim:#8b93a6; --faint:#5d6578;
+  --gold:#d9b45e; --gold2:#f3dc9a; --y:#6fb6e8; --en:#e8946f; --green:#6cc79a; }
+*{ box-sizing:border-box; margin:0; padding:0; }
+body{ background:radial-gradient(ellipse at top,#171d2b 0%,var(--bg) 60%); color:var(--ink);
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif; min-height:100vh;
+  padding:20px 16px 90px; max-width:720px; margin:0 auto; font-size:clamp(16px,1vw + 13px,18px); line-height:1.8; }
+a{ color:var(--dim); }
+.top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-size:.78em; }
+.top a{ text-decoration:none; }
+.top a:hover{ color:var(--gold2); }
+h1{ text-align:center; color:var(--gold); font-size:1.25em; letter-spacing:2px; }
+.sub{ text-align:center; color:var(--dim); font-size:.78em; margin:4px 0 14px; }
+.chips{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-bottom:14px; }
+.chips button{ font:inherit; font-size:.72em; padding:4px 10px; border-radius:999px; border:1px solid var(--line);
+  background:var(--panel); color:var(--dim); cursor:pointer; }
+.chips button.on{ border-color:var(--gold); color:var(--gold2); }
+.card{ background:linear-gradient(180deg,var(--panel2),var(--panel)); border:1px solid var(--line); border-radius:16px; padding:18px 18px 16px; }
+.ch{ font-size:.7em; letter-spacing:.2em; color:var(--gold); }
+.card h2{ font-size:1.12em; margin:4px 0 6px; }
+.soul{ border-left:3px solid var(--gold); padding:6px 12px; margin:10px 0 12px; color:var(--gold2);
+  background:rgba(217,180,94,.06); border-radius:0 10px 10px 0; }
+.card p{ margin:8px 0; }
+.y{ color:var(--y); font-weight:700; } .en{ color:var(--en); font-weight:700; }
+.ex{ list-style:none; margin:10px 0; }
+.ex li{ background:#0c0f17; border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin:7px 0; }
+.ex .fr{ font-family:Georgia,'Times New Roman',serif; font-size:1.05em; cursor:pointer; display:block; }
+.ex .fr::before{ content:'🔊 '; font-size:.75em; opacity:.6; }
+.ex .zh{ color:var(--dim); font-size:.82em; display:block; }
+.ex .note{ color:var(--faint); font-size:.76em; display:block; }
+.ex b{ color:var(--gold2); }
+.key{ margin-top:12px; padding:10px 12px; border:1px dashed rgba(217,180,94,.45); border-radius:10px; font-size:.9em; }
+.key strong{ color:var(--gold); }
+.flow{ list-style:none; counter-reset:f; margin:8px 0; }
+.flow li{ counter-increment:f; position:relative; padding:6px 0 6px 34px; }
+.flow li::before{ content:counter(f); position:absolute; left:0; top:6px; width:24px; height:24px; border-radius:50%;
+  background:var(--gold); color:#11151f; font-weight:700; font-size:.8em; display:flex; align-items:center; justify-content:center; }
+.nav{ display:flex; gap:10px; margin-top:14px; }
+.nav button{ flex:1; font:inherit; padding:12px; border-radius:12px; border:1px solid var(--line); background:var(--panel);
+  color:var(--ink); cursor:pointer; }
+.nav button.primary{ border-color:var(--gold); color:var(--gold2); background:#211b0f; }
+.nav button:disabled{ opacity:.35; cursor:default; }
+.truth{ margin-top:12px; padding:10px 12px; border-radius:10px; background:#0c0f17; border:1px solid var(--line); font-size:.82em; color:var(--dim); }
+.truth div+div{ margin-top:6px; }
+.truth b{ color:var(--ink); }
+.src{ margin-top:22px; font-size:.7em; color:var(--faint); line-height:1.7; }
+.related{ margin-top:12px; font-size:.85em; }
+.related a{ color:var(--gold2); }

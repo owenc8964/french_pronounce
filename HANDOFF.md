@@ -4908,6 +4908,16 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - 🐛 順手發現：`tools/tmp_quest_nosync.js make` 產的暫存頁**自己回報 `sync tag present? true`**——那支工具已經不可靠，這次改用自己的隔離複本（只刪 `<script src=sync_supabase.js>`），⚠️ 以後測 quest.html 別用它。
 - ✅ 試跑（隔離複本，ROOM 沒動）：手機 375 版面；一局 20 題（含 1 跳過、4 錯）→ 結算正確、金幣 +15、紀錄 18 字；無錯誤。
 
+#### 三之五十六、10-12：故事書第二、三本——「être 之家」「地點介系詞家族」＋共用版型
+
+- **Owen**：問「你目前覺得哪些東西也適合作故事」→ 我用雲端錯題本（326 筆、唯讀）挑四個：① être 之家（複合過去式 13＋反身 11＋過去分詞配合 5）② 時間的四個字（durée 12）③ 地點介系詞家族（國家 7＋地點交通 8＋方位 5）④ 所有格跟著東西走。⛔ 命令式（規則短，練到自動就好）、時態（時間劇院已有）、主題詞彙不做故事。**Owen：「1 3」「1又有en」**（解讀：做 ①③，並跟 y／en 連起來）。
+- ✅ 共用：`story_reader.css`、`story_reader.js`（`ex()`、`storyStart(CH, posKey)`、每章 `real`／`meta` 自動渲染「📐 文法本身／🎭 只是比喻」）；`y_en_story.html` 改用共用檔（內容不變）、終章加相關故事連結。
+- ✅ `etre_story.html`（8 章）：序章 兩種「做完了」（⭐ 拉丁文 habeo epistulam scriptam「我有一封寫好的信」→ j'ai écrit，有可靠來源）→ avoir 家（預設值）→ être 家住戶（兩兩成對清單＋接受詞時改 avoir）→ être 配合主詞 → 反身動詞一律 être（後面另有直接受詞不配合）→ avoir 受詞在前才配合（⭐ 拉丁文分詞原本跟受詞配合的遺跡）→ 跟 y／en 交會（en est parti；分詞不跟 en 配合）→ 判斷流程。⚠️ 「esse 在拉丁文就跟這類動詞搭」沒找到直接來源 → 不寫成事實。
+- ✅ `lieu_story.html`（8 章）：à（au／aux 強制縮合，古法文 al）→ 國家看陰陽性（en／au／aux，-e 例外四國＝老師說的四個，母音開頭陽性用 en＝en Irak，從某國來 de／du／des）→ chez ＋ 人（⭐ ← casa 房子，有可靠字源）→ dans／sur／à droite du → 交通 en bus／à pied（「坐得進去用 en」標成經驗法則）→ 跟 y／en 交會（en France → y）→ 判斷流程。⛔ 為什麼陰性國家用 en 查不到可靠歷史 → 頁面明寫不知道。
+- ✅ 例句核對腳本：三本故事全部法文句都對得到 chunks／sentences／gram_rules／questions（含 Cahier 填空還原）；唯一比對不到的 Yvonne vient d'Irlande 是比對時多一個空格，出處確認在 Cahier。
+- ✅ 夥伴分頁故事書 `STORY_BOOKS` 三本；試跑：三本每章渲染＋📐／🎭 框都在、手機 375 無橫向捲動、主控台無新錯誤、連結帶 from=quest&tab=pet。
+- ⏭ 還沒做的候選：② 時間的四個字（depuis／pendant／il y a／en；pendant 原義「懸著」要先查證）④ 所有格跟著東西走（歷史薄、比喻會多）。
+
 #### 三之五十五、10-12：y 與 en 的擬人化故事（`y_en_story.html`）
 
 - **Owen**：「y／en 我覺得你這個可以再來做擬人化故事了，讓我從故事了解這兩個的產生背景及他們到底是怎樣被製造出來及運用的，太多種方式了需要揣摩」

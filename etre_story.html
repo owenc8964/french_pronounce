@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- 加到主畫面（PWA，2026-10-12） -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/app/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CLB7">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<script src="pwa.js" defer></script>
+<title>être 之家 · CLB7</title>
+<!--
+  etre_story.html — être 之家：複合過去式、反身動詞、過去分詞配合（2026-10-12）
+  Owen 選了故事 ① 和 ③（「1 3」「1又有en」）。依據：雲端錯題本 passé composé 13＋反身動詞 11＋過去分詞配合 5＝29 筆，最多的一塊。
+  ⭐ 版型與翻頁共用 story_reader.css／story_reader.js。
+  ⭐ 每章分開寫 real（📐 文法本身，有所本）與 meta（🎭 只是比喻）——memory feedback_story_label_fact_vs_metaphor。
+  ⛔ 例句一律取自 chunks.js／sentences.js／gram_rules.js／questions.js 已有的句子。
+  📚 歷史查證（2026-10-12）：
+    ✅ 複合過去式 ← 拉丁文 habere ＋ 名詞 ＋ 過去分詞（habeo epistulam scriptam「我有一封寫好的信」），分詞原本跟著受詞配合，
+       後來配合慢慢消失（Wikipedia Latin periphrases；isidore.science 文章；De Gruyter JOLL 2015）。
+    ✅ 用 être 的動詞是「主詞自己經歷移動／變化」的那一組（語言學叫非受格動詞 unaccusative）；但法文用 être 的只是其中一小部分，最後還是要背清單。
+    ⚠️ esse（être）在拉丁文就跟這類動詞搭配，這是一般說法，這次沒找到直接來源 → 頁面不寫成事實。
+  讀到哪：etre_story_pos。
+-->
+<link rel="stylesheet" href="story_reader.css">
+<style>
+.et{ color:var(--y); font-weight:700; } .av{ color:var(--en); font-weight:700; }
+</style>
+</head>
+<body>
+<div class="top"><a href="dashboard.html">← 回指揮中心</a><span style="color:var(--faint)">讀的，不用作答</span></div>
+<h1>être 之家</h1>
+<div class="sub">複合過去式要用 avoir 還是 être？分詞什麼時候要變？<br><span style="font-size:.9em">⚠️ 「兩個家」「住戶」都是比喻；每章最後的「📐 文法本身」才是規則</span></div>
+<div class="chips" id="chips"></div>
+<div class="card" id="card"></div>
+<div class="nav"><button id="prev">← 上一章</button><button id="next" class="primary">下一章 →</button></div>
+<div class="src">
+  歷史：複合過去式來自拉丁文「habere（有）＋ 名詞 ＋ 過去分詞」，例如 <i>habeo epistulam scriptam</i>「我有一封寫好的信」；分詞原本跟著受詞配合，後來慢慢消失。<br>
+  例句全部取自你的筆記、課本與 Cahier（第 11、12、14–18、21、23、28、29、32–34、36、37 課）。
+</div>
+
+<script src="tts_reader.js"></script>
+<script src="story_reader.js"></script>
+<script>
+var CH = [
+{ ch:'序章', t:'兩種「做完了」',
+  soul:'<span class="av">avoir</span> 家說「我手上有一件做完的事」；<span class="et">être</span> 家說「我變成了某個樣子」。',
+  body:
+  '<p>法文的複合過去式（passé composé）是兩塊拼起來的：<b>助動詞</b>（avoir 或 être 的現在式）＋ <b>過去分詞</b>。</p>'+
+  '<p>它的祖先在拉丁文裡。古羅馬人會說 <i>habeo epistulam scriptam</i>——字面是「<b>我有</b>一封<b>寫好的</b>信」。「寫好的」本來是一個形容詞，用來描述那封信。講了幾百年，「我有一封寫好的信」就變成了「我寫了一封信」：<b>j\'ai écrit une lettre</b>。</p>'+
+  '<p>所以 <span class="av">avoir</span> 的複合過去式，骨子裡的意思是「<b>我手上有一個做完的成果</b>」。</p>'+
+  '<p>另一些動詞不是「做出一個成果」，而是「<b>主詞自己變了</b>」——走到別的地方、出生、變成另一個樣子。這些動詞用的不是「有」，是「<b>是</b>」：<span class="et">être</span>。英文古時候也這樣說，聖經裡的「He is risen」就是「他是已經復活了的」。</p>'+
+  '<div class="key"><strong>揣摩</strong>：先問「這個動作是在<b>做一件事</b>，還是<b>主詞自己移動或改變</b>？」——前者 <span class="av">avoir</span>，後者 <span class="et">être</span>。</div>',
+  real:'複合過去式＝助動詞（avoir／être）現在式＋過去分詞；它來自拉丁文「habere（有）＋名詞＋過去分詞」，這有可靠的歷史來源。',
+  meta:'「兩個家」是比喻；「做一件事 vs 主詞自己改變」是幫你判斷的經驗法則，最後還是要背 être 那一組清單（第二章）。' },
+
+{ ch:'第一章', t:'avoir 家：大多數動詞住這裡',
+  soul:'沒特別說的，都住 <span class="av">avoir</span> 家。',
+  body:
+  '<p>法文絕大多數動詞的複合過去式都用 <span class="av">avoir</span>，包括所有後面直接接受詞的動詞（吃什麼、做什麼、開什麼）。</p><ul class="ex">'+
+  ex('J\'<b>ai ouvert</b> mon magasin il y a deux ans.','我兩年前開了我的店。','第 17 課')+
+  ex('J\'<b>ai fait</b> ma première compétition il y a onze ans.','我十一年前參加了第一場比賽。','第 19 課')+
+  ex('Tu <b>as lu</b> le roman ? — Non, je ne l\'<b>ai</b> pas <b>lu</b>.','你讀了那本小說嗎？——沒有，我沒讀。','第 17 課：否定時 ne…pas 包住助動詞')+
+  '</ul><div class="key"><strong>揣摩</strong>：不確定的時候，先猜 <span class="av">avoir</span>——它是預設值，<span class="et">être</span> 那邊只是一小群。</div>',
+  real:'大多數動詞（包括所有及物動詞）用 avoir；否定時 ne…pas 包住助動詞。',
+  meta:'「預設值」是記憶方法，不是文法術語。' },
+
+{ ch:'第二章', t:'être 家的住戶：移動與變化',
+  soul:'這些動詞講的不是「做了一件事」，是「主詞自己換了位置或狀態」。',
+  body:
+  '<p><span class="et">être</span> 家的住戶不多，大多兩兩成對：</p>'+
+  '<div class="key">aller ↔ venir（revenir、devenir）　arriver ↔ partir　entrer ↔ sortir（rentrer）<br>monter ↔ descendre　naître ↔ mourir　tomber　rester　retourner　passer</div><ul class="ex">'+
+  ex('Elle <b>est arrivée</b> à la plage.','她到海灘了。','第 14 課')+
+  ex('Je <b>suis née</b> en Algérie et je <b>suis arrivée</b> en France à deux ans.','我在阿爾及利亞出生，兩歲時到法國。','第 16 課')+
+  ex('Ma fille <b>est née</b> il y a un an.','我女兒一年前出生。','第 17 課')+
+  ex('Je ne les connaissais pas, mais ils <b>sont devenus</b> des amis.','我本來不認識他們，但後來變成朋友了。','第 23 課')+
+  ex('Les pompiers <b>sont arrivés</b> vite sur le lieu de l\'accident.','消防員很快就抵達事故現場。','第 32 課')+
+  ex('Je <b>suis tombée</b> amoureuse de la France.','我（女）愛上了法國。','第 17 課')+
+  '</ul><p>⚠️ <b>例外</b>：monter、descendre、sortir、passer 如果後面接了<b>受詞</b>（把箱子搬上去、把垃圾拿出去），就改住 <span class="av">avoir</span> 家——因為這時候是在「做一件事」，不是主詞自己移動。這個之後會學到，先知道就好。</p>',
+  real:'上面這組動詞用 être。語言學上它們屬於「主詞自己經歷移動或變化」的動詞（叫非受格動詞），但法文只有這一小組用 être，所以清單還是要背。monter／descendre／sortir／passer 接直接受詞時改用 avoir。',
+  meta:'「住戶」「兩兩成對」是幫你記清單的排法。' },
+
+{ ch:'第三章', t:'être 家的規矩：分詞跟主詞穿同一套衣服',
+  soul:'在 <span class="et">être</span> 家，分詞就像形容詞——主詞是女的就加 e，是複數就加 s。',
+  body:
+  '<p>Elle <b>est</b> petite（她是小的）——形容詞跟著主詞變。<span class="et">être</span> 家的過去分詞也一樣：<b>Elle est partie</b>（她是已經離開了的），分詞跟著主詞加 e、加 s。</p><ul class="ex">'+
+  ex('Il est sorti. / Elle est sorti<b>e</b>.','他出去了／她出去了','第 14 課')+
+  ex('Ils sont sorti<b>s</b>. / Elles sont sorti<b>es</b>.','他們／她們出去了','第 14 課')+
+  ex('Elles sont parti<b>es</b> où cet été ?','她們今年夏天去了哪？','第 14 課')+
+  ex('Eva est allé<b>e</b> à Paris pour finir son tour de France.','Eva 去巴黎結束她的法國之旅。','第 37 課')+
+  ex('L\'année dernière, on est allé<b>s</b> à la RoboCup.','去年我們去了 RoboCup。','第 28 課：on＝我們，分詞常跟著實際的人數配合')+
+  '</ul><div class="key"><strong>揣摩</strong>：看到 <span class="et">être</span>，就問「主詞是誰？幾個人？男的女的？」——分詞跟著它穿衣服。<br>聽的時候大多聽不出來（sorti／sortie 唸起來一樣），<b>寫的時候</b>才會被扣分。</div>',
+  real:'用 être 的複合過去式，過去分詞跟主詞配合陰陽性、單複數（第 14 課）。',
+  meta:'「穿同一套衣服」是比喻；「分詞像形容詞」是幫你理解的類比，兩者配合的規則確實一樣。' },
+
+{ ch:'第四章', t:'反身動詞也搬進 être 家',
+  soul:'動作做在自己身上的動詞（se ＋ 動詞），全部住 <span class="et">être</span> 家。',
+  body:
+  '<p>反身動詞（s\'installer、se marier、s\'intéresser…）的複合過去式<b>一律用 <span class="et">être</span></b>，分詞通常也跟著主詞配合。</p><ul class="ex">'+
+  ex('Ils <b>se sont mariés</b> il y a deux ans.','他們兩年前結婚了。','第 17 課')+
+  ex('Je <b>me suis installée</b> à Lyon.','我（女）在里昂安頓下來了。','第 17 課')+
+  ex('Elle <b>s\'est installée</b> à Lyon l\'année dernière.','她去年在里昂定居下來。','第 18 課')+
+  ex('Grâce à Netflix, les jeunes <b>se sont intéressés</b> à la F1.','多虧了 Netflix，年輕人開始對 F1 有興趣。','第 33 課')+
+  ex('Je <b>me suis blessé</b> au genou, mais ce n\'était pas grave.','我傷到膝蓋，但不嚴重。','第 36 課')+
+  '</ul><p>⚠️ <b>進階例外</b>：反身動詞後面如果還有一個直接受詞（例如「她洗了<b>手</b>」），分詞就不配合了。之後會學到，先知道有這回事就好。</p>'+
+  '<div class="key"><strong>揣摩</strong>：看到 se／me／te 這種反身代名詞，助動詞直接選 <span class="et">être</span>，不用再查清單。</div>',
+  real:'所有反身動詞的複合過去式用 être，過去分詞通常跟主詞配合（第 17、18 課）；後面另有直接受詞時不配合。',
+  meta:'「搬進」是比喻。' },
+
+{ ch:'第五章', t:'avoir 家的祖傳規矩：受詞先出場才配合',
+  soul:'在 <span class="av">avoir</span> 家，分詞平常不變；只有受詞<b>搶先出場</b>時，才跟著它換衣服。',
+  body:
+  '<p>還記得序章那封「寫好的信」嗎？在拉丁文裡，「寫好的」是描述那封信的形容詞，所以<b>跟著信變陰陽單複</b>。</p>'+
+  '<p>後來句子越講越順，這個配合慢慢消失了——現在受詞放在後面時，分詞就不變（j\'ai ouvert mon magasin）。<b>只有受詞跑到動詞前面</b>（que、la、les 這些代名詞）的時候，配合還留著：</p><ul class="ex">'+
+  ex('Tu as vu Sophie ? — Non, je ne l\'ai pas vu<b>e</b>.','你有看到 Sophie 嗎？——沒，我沒看到她。','第 11 課：l\'＝Sophie（陰性）在前 → vue')+
+  ex('Regarde la jolie photo que j\'ai pri<b>se</b> !','看我拍的這張漂亮照片！','第 37 課：que＝la photo 在前 → prise')+
+  ex('C\'est une ville qu\'il a adoré<b>e</b>.','這是一座他很愛的城市。','規則卡：que＝une ville')+
+  ex('Les premières scènes, je les ai trouvé<b>es</b> nulles.','開頭那幾場，我覺得很爛。','第 34 課：les＝les scènes（陰性複數）')+
+  ex('Ces fleurs, nous les avons offert<b>es</b> à nos hôtes.','這些花我們送給了接待我們的主人。','第 37 課')+
+  '</ul><div class="key"><strong>揣摩</strong>：用 <span class="av">avoir</span> 時問：「<b>受詞已經在動詞前面出現了嗎？</b>」沒有 → 分詞不變；有 → 跟著它變。<br>⚠️ 只看<b>直接受詞</b>：lui、leur（對誰）不會讓分詞變。</div>',
+  real:'avoir 的過去分詞平常不變；直接受詞（que、la、les…）放在前面時，分詞跟它配合（第 37 課）。這個配合來自拉丁文分詞原本跟受詞配合，後來大部分消失，有可靠的歷史來源。間接受詞 lui／leur 不配合。',
+  meta:'「祖傳」「搶先出場」是比喻；「後來只留在受詞在前的時候」是把幾百年的演變簡化成一句話。' },
+
+{ ch:'第六章', t:'跟 y、en 的交會',
+  soul:'y 和 en 一樣貼在助動詞前面——而 en 有一個特權：分詞不跟它配合。',
+  body:
+  '<p>代名詞 <b>y</b>、<b>en</b> 碰到複合過去式，都站在<b>助動詞前面</b>，不管助動詞是 <span class="av">avoir</span> 還是 <span class="et">être</span>：</p><ul class="ex">'+
+  ex('Il <b>en est parti</b> à six heures.','他六點從那裡離開。','第 21 課：partir 住 être 家，en＝du chalet')+
+  ex('Non, on <b>n\'y a pas dormi</b>.','不，我們沒有在那裡睡。','第 21 課：dormir 住 avoir 家，y＝sous la tente')+
+  ex('Je <b>n\'en ai pas mangé</b>.','我沒吃過。','第 29 課')+
+  '</ul><div class="key"><strong>揣摩</strong>：en 雖然也在動詞前面，但它<b>不算</b>第五章說的「搶先出場的直接受詞」——所以 j\'en ai mangé 的分詞不變。<br>📖 想複習 y 和 en，讀 <a href="y_en_story.html">y 與 en 的故事</a>。</div>',
+  real:'y、en 放在助動詞前；過去分詞不跟 en 配合（第 21、29 課）。',
+  meta:'「特權」是比喻。' },
+
+{ ch:'終章', t:'一張判斷流程',
+  soul:'選助動詞問兩個問題，配合再問一個。',
+  body:
+  '<ol class="flow">'+
+  '<li><b>是反身動詞嗎？</b>（se、me、te…）→ <span class="et">être</span></li>'+
+  '<li><b>是 être 家那一組嗎？</b>（aller、venir、arriver、partir、entrer、sortir、monter、descendre、naître、mourir、tomber、rester、retourner、passer、devenir、revenir、rentrer）→ <span class="et">être</span>（後面接受詞時例外，用 avoir）<br>其他 → <span class="av">avoir</span></li>'+
+  '<li><b>分詞要不要變？</b><br><span class="et">être</span> → 跟<b>主詞</b>變<br><span class="av">avoir</span> → 直接受詞在前面才跟<b>它</b>變（en、lui、leur 不算）</li>'+
+  '</ol>'+
+  '<div class="related">📖 相關故事：<a href="y_en_story.html">y 與 en 的故事</a>・<a href="lieu_story.html">地點介系詞家族</a>（être 家住戶最常去的地方，前面要放什麼？）</div>',
+  real:'這三個問題就是上面各章規則的整理。', meta:'' }
+];
+storyStart(CH,'etre_story_pos');
+</script>
+<script src="return_to.js"></script>
+</body>
+</html>
