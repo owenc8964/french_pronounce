@@ -4907,6 +4907,14 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - 🐛 順手發現：`tools/tmp_quest_nosync.js make` 產的暫存頁**自己回報 `sync tag present? true`**——那支工具已經不可靠，這次改用自己的隔離複本（只刪 `<script src=sync_supabase.js>`），⚠️ 以後測 quest.html 別用它。
 - ✅ 試跑（隔離複本，ROOM 沒動）：手機 375 版面；一局 20 題（含 1 跳過、4 錯）→ 結算正確、金幣 +15、紀錄 18 字；無錯誤。
 
+#### 三之五十二、10-12：加到主畫面（PWA）——iPad 為主、iPhone 偶爾
+
+- **Owen**：問「遊戲做成 app 會很麻煩嗎？」→ 我比較三種（加到主畫面／包成 iOS app 要 7 天重簽或年費 99 美金／原生重寫），建議先做加到主畫面 → **Owen：「好，先做加到主畫面那種，主力會是 iPad，iPhone 也會用但偶而」**。
+- ✅ 新檔：`manifest.webmanifest`（名稱「CLB7 法語遊戲」、`start_url: quest.html`、standalone）、`sw.js`（⭐ network-first：先拿網路最新、沒網路才用存檔；⛔ 不碰 Supabase 等外部請求、⛔ 不存音檔影片與分段請求；改這支要把 `CACHE` 版本號加一）、`pwa.js`（註冊 sw；⭐ 主畫面模式沒有瀏覽器上一頁 → 只在主畫面模式且有上一頁時，左下角放一顆「←」）、`assets/app/icon-*.png`（遊戲主角 tile_0096 放大＋深色底＋金線；180／192／512／maskable 512／1024 原圖）。
+- ✅ 30 個已追蹤的 html 頁面都在 viewport meta 後面加了 8 行（manifest、apple-touch-icon、apple-mobile-web-app-*、pwa.js）。⚠️ 新頁面也要加這 8 行（複製任一頁的「加到主畫面（PWA，2026-10-12）」那段）。
+- ✅ 試跑（本機、無同步複本）：manifest 解析正確、圖示 200、sw 啟用並存檔；**關掉伺服器（模擬斷網）重新整理，遊戲照樣打開**；模擬主畫面模式＋iPad 768×1024，左下「←」出現、畫面正常。測完已解除本機的 sw 並清空存檔。
+- ⚠️ 要告訴 Owen 的：主畫面 app 的本機儲存跟 Safari 分開 → 第一次打開本機是空的，進度會從雲端同步拉回；**今日閱讀／考試之塔的登入要再登一次**（`tcfvault_session` 不同步）。要從 `quest.html` 加到主畫面。
+
 #### 三之五十一、10-12：問老師的不進筆記／參考遊戲《蔣出來》／研究「高手怎麼學會的」
 
 - **Owen**：「要問老師的不要放上筆記喔！」→ 第40課的「要問老師的事」unit 已拿掉（commit 4e872a6）。給老師的訊息只在對話裡給（這次：COI 為什麼 lui réponds 可以、lui pense 不行；＋提醒老師把借她的便當盒帶來）。
