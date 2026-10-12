@@ -66,13 +66,16 @@ h1{ text-align:center; color:var(--gold); font-size:1.25em; letter-spacing:2px; 
   color:var(--ink); cursor:pointer; }
 .nav button.primary{ border-color:var(--gold); color:var(--gold2); background:#211b0f; }
 .nav button:disabled{ opacity:.35; cursor:default; }
+.truth{ margin-top:12px; padding:10px 12px; border-radius:10px; background:#0c0f17; border:1px solid var(--line); font-size:.82em; color:var(--dim); }
+.truth div+div{ margin-top:6px; }
+.truth b{ color:var(--ink); }
 .src{ margin-top:22px; font-size:.7em; color:var(--faint); line-height:1.7; }
 </style>
 </head>
 <body>
 <div class="top"><a href="dashboard.html">← 回指揮中心</a><span style="color:var(--faint)">讀的，不用作答</span></div>
 <h1>y 與 en 的故事</h1>
-<div class="sub">用法看起來很多種，其實只有兩個本業</div>
+<div class="sub">用法看起來很多種，其實只有兩個本業<br><span style="font-size:.9em">⚠️ 故事裡的角色、雇用、保鑣都是比喻；每章最後的「📐 文法本身」才是規則</span></div>
 <div class="chips" id="chips"></div>
 <div class="card" id="card"></div>
 <div class="nav"><button id="prev">← 上一章</button><button id="next" class="primary">下一章 →</button></div>
@@ -93,8 +96,10 @@ var CH = [
   '<p>「從那裡」叫 <i>inde</i>。法國人講了幾百年，講到後來只剩一口氣：<i>inde</i> → <span class="en">en</span>。</p>'+
   '<p>「在那裡」的來歷有兩種說法：多數說是 <i>ibi</i>，一路被磨成 <i>i</i>，最後寫成 <span class="y">y</span>；法蘭西學院的字典說它跟 <i>hic</i>（這裡）有關。不管是哪個祖先，<b>它們都是指地點的字</b>。</p>'+
   '<p>記住這一點，後面所有的用法都是從這裡長出來的：</p>'+
-  '<div class="key"><span class="y">y</span> 面向「<b>過去、在裡面</b>」——那個方向用的介系詞是 <b>à</b>（à Paris、au parc）。<br>'+
-  '<span class="en">en</span> 面向「<b>出來、離開</b>」——那個方向用的介系詞是 <b>de</b>（de Paris、du parc）。</div>' },
+  '<div class="key"><span class="y">y</span> 面向「<b>在、到</b>」——帶出這種地點的介系詞很多：<b>à</b>、en、dans、sur、sous、chez……，最常見的是 à。<br>'+
+  '<span class="en">en</span> 面向「<b>從…出來</b>」——帶出這種地點的介系詞是 <b>de</b>。</div>',
+  real:'y、en 都是「代替一個已經講過的補語」的代名詞（課本叫 pronom）。en 的祖先是 inde 有可靠來源；y 的祖先說法不一。',
+  meta:'「指路人」「住在哪一邊」是畫面，幫你記方向用的。' },
 
 { ch:'第一章', t:'本業：指地點',
   soul:'<span class="y">y</span> 往裡走，<span class="en">en</span> 往外走。',
@@ -103,12 +108,16 @@ var CH = [
   '<p><span class="y">y</span> 替的是「到那裡／在那裡」：</p><ul class="ex">'+
   ex('J\'y vais souvent.','我常去那裡。','第 21 課')+
   ex('J\'y suis encore.','我還在那裡。','第 21 課')+
-  ex('Non, on n\'y a pas dormi.','不，我們沒有在那裡睡。','第 21 課')+
+  ex('Non, on n\'y a pas dormi.','不，我們沒有在那裡睡。','第 21 課：sous la tente → y')+
+  ex('Le climat est agréable sur cette île ? — Oui, il <b>y</b> est très agréable.','這座島氣候好嗎？——那裡很好。','規則卡例句：sur cette île → y')+
+  ex('Je n\'<b>y</b> étais pas heureuse.','我在那裡過得不快樂。','Cahier 第 21 課：dans cette école → y')+
   ex('Tu vas bientôt en France ? — Oui, j\'y vais la semaine prochaine.','你快要去法國了嗎？——對，我下禮拜去。','第 40 課（老師的例子）')+
   '</ul><p><span class="en">en</span> 替的是「從那裡」：</p><ul class="ex">'+
   ex('Tu reviens de la plage ? — Oui, j\'<b>en</b> reviens à l\'instant.','你從海邊回來嗎？——對，我剛從那裡回來。','第 21 課：de la plage → en')+
   ex('Il est parti du chalet ? — Il <b>en</b> est parti à 6 h.','他離開小木屋了嗎？——他六點從那裡離開的。','第 21 課：du chalet → en')+
-  '</ul><div class="key"><strong>揣摩</strong>：去 → <span class="y">y</span>；回來、離開 → <span class="en">en</span>。<br>j\'<span class="y">y</span> vais（去那裡）／j\'<span class="en">en</span> reviens（從那裡回來）——同一個地方，方向相反，換一個字。</div>' },
+  '</ul><div class="key"><strong>揣摩</strong>：去、在 → <span class="y">y</span>；從那裡回來、離開 → <span class="en">en</span>。<br>j\'<span class="y">y</span> vais（去那裡）／j\'<span class="en">en</span> reviens（從那裡回來）——同一個地方，方向相反，換一個字。</div>',
+  real:'y 代替 à／en／dans／sur／sous／chez… ＋ 地點；en 代替 de ＋ 地點（第 21 課課本）。',
+  meta:'「往裡走、往外走」是記方向的口訣。' },
 
 { ch:'第二章', t:'轉職：被 à 家族和 de 家族雇用',
   soul:'<span class="y">y</span> 吃掉「à ＋ 東西」，<span class="en">en</span> 吃掉「de ＋ 東西」。',
@@ -119,32 +128,39 @@ var CH = [
   ex('Il pense à ses vacances. Il <b>y</b> pense.','他在想他的假期。他在想這件事。','第 40 課：penser à ＋ 東西 → y')+
   ex('J\'<b>y</b> ai bien réfléchi.','這件事我想清楚了。','第 40 課：réfléchir à ＋ 東西 → y')+
   ex('Moi aussi, j\'<b>y</b> pense depuis toujours.','我也是，我一直都想做這件事。','第 40 課（老師說的）')+
-  '</ul><div class="key"><strong>揣摩</strong>：看到 <span class="y">y</span> 不在講地點的時候，問自己「這個動詞原本後面是不是接 <b>à</b>？」——是，就對了。</div>' },
+  '</ul><div class="key"><strong>揣摩</strong>：看到 <span class="y">y</span> 不在講地點的時候，問自己「這個動詞原本後面是不是接 <b>à</b>？」——是，就對了。</div>',
+  real:'y 代替「動詞 ＋ à ＋ 東西／想法」（第 40 課課本 p.163）；en 代替「動詞 ＋ de ＋ 東西」。',
+  meta:'「被家族雇用、當替身」是比喻；歷史上並沒有一個「轉職」的時間點。' },
 
 { ch:'第三章', t:'en 的第二份工作：份量',
-  soul:'du、de la、des 裡面都藏著一個 de——所以全歸 <span class="en">en</span> 管。',
+  soul:'「一些」「幾個」「多少」——講份量的名詞，都歸 <span class="en">en</span> 管。',
   body:
   '<p>這是 <span class="en">en</span> 用法最多、也最讓人頭痛的一塊。但其實它還是同一個本業。</p>'+
-  '<p>「一些水」是 <b>de l\'</b>eau、「一些麵粉」是 <b>de la</b> farine、「一些洋蔥」是 <b>des</b> oignons。這些冠詞拆開來，<b>裡面都有 de</b>——「從一整堆裡面<b>取出</b>一些」。所以 de 家族的替身 <span class="en">en</span> 理所當然接手。</p><ul class="ex">'+
+  '<p>「一些水」是 <b>de l\'</b>eau、「一些麵粉」是 <b>de la</b> farine、「一些洋蔥」是 <b>des</b> oignons。這些冠詞拆開來，<b>裡面都有 de</b>——「從一整堆裡面<b>取出</b>一些」。所以 de 家族的替身 <span class="en">en</span> 很自然地接手。</p>'+
+  '<p>⚠️ 但不只有 de：前面是 <b>un／une、數字、beaucoup de</b> 這類「講多少」的名詞，也一樣換成 <span class="en">en</span>（例如下面的 une grande poêle，裡面沒有 de）。</p><ul class="ex">'+
   ex('De l\'eau ? Oui, j\'<b>en</b> veux.','水嗎？好，我要一些。','第 29 課')+
   ex('De la farine ? Il m\'<b>en</b> faut 500 grammes.','麵粉嗎？我需要 500 公克。','第 29 課：數量留在後面')+
   ex('Des oignons ? J\'<b>en</b> achète toujours une botte.','洋蔥嗎？我總是買一把。','第 29 課')+
   ex('Tu manges de la viande ? — Non, je n\'<b>en</b> mange pas.','你吃肉嗎？——不，我不吃。','第 29 課')+
   ex('Tu as une grande poêle ? — Oui, j\'<b>en</b> ai une.','你有大平底鍋嗎？——有，我有一個。','第 29 課：⭐ 數字 une 要留下來')+
   ex('Vous consommez beaucoup de fruits et légumes ? — Oui, j\'<b>en</b> consomme beaucoup.','你們吃很多蔬果嗎？——對，我吃很多。','第 29 課：beaucoup de → en ＋ beaucoup')+
-  '</ul><div class="key"><strong>揣摩</strong>：<span class="en">en</span> 只吃掉「東西」，<b>吃不掉份量</b>。une、500 grammes、beaucoup、une botte 都要留在後面——它們是在說「取出多少」。</div>' },
+  '</ul><div class="key"><strong>揣摩</strong>：<span class="en">en</span> 只吃掉「東西」，<b>吃不掉份量</b>。une、500 grammes、beaucoup、une botte 都要留在後面——它們是在說「取出多少」。</div>',
+  real:'en 代替「部分冠詞（du／de la／des）＋ 名詞」，以及「數字、un／une、份量詞 ＋ 名詞」，數量要留在後面（第 29 課）。du ＝ de ＋ le 是文法事實。',
+  meta:'「從一整堆裡取出」是幫你理解的畫面。' },
 
 { ch:'第四章', t:'不碰人的規矩',
   soul:'人有自己的保鑣，輪不到 <span class="y">y</span> 和 <span class="en">en</span>。',
   body:
-  '<p>兩兄弟是指地點出身的，所以<b>替「人」的工作，大多交給別人</b>：</p>'+
+  '<p>兩兄弟是指地點出身的，所以<b>替「人」的工作，大多交給別人</b>（⚠️ 例外：人如果是以份量出現，例如「我有兩個兄弟 → 我有兩個」，還是用 <span class="en">en</span>）：</p>'+
   '<p>・「對誰說話、回覆誰」這種動詞（répondre、parler、téléphoner、donner…）→ 人用 <b>lui／leur</b>，一樣放動詞前。<br>'+
   '・「心裡想著誰」這種動詞（penser、réfléchir、faire attention…）和反身動詞（s\'intéresser…）→ 人用 <b>à ＋ 重讀代名詞</b>（à lui、à eux）。</p><ul class="ex">'+
   ex('Je <b>leur</b> réponds.','我回覆他們。','第 40 課：répondre à mes clients → leur')+
   ex('Il pense à son collègue. Il pense <b>à lui</b>.','他在想他的同事。','第 40 課：penser à ＋ 人 → à lui')+
   ex('Je pense <b>à eux</b>.','我在想他們。','第 40 課：penser à mes collègues')+
   ex('Laissez les animaux où ils sont et ne <b>leur</b> faites pas peur.','讓動物待在原地，不要嚇牠們。','第 40 課：動物也算「對誰」→ leur')+
-  '</ul><div class="key"><strong>揣摩</strong>：先問「被取代的是<b>人</b>還是<b>東西</b>？」——東西交給兩兄弟；人交給保鑣。<br>⚠️ 「為什麼 répondre 用 lui、penser 卻要 à lui」課本講得太絕對，這題你已經準備去問老師了。</div>' },
+  '</ul><div class="key"><strong>揣摩</strong>：先問「被取代的是<b>人</b>還是<b>東西</b>？」——東西交給兩兄弟；人交給保鑣。<br>⚠️ 「為什麼 répondre 用 lui、penser 卻要 à lui」課本講得太絕對，這題你已經準備去問老師了。</div>',
+  real:'à ＋ 人：répondre／parler／téléphoner／donner 用 lui／leur；penser／réfléchir／faire attention 與反身動詞用 à ＋ 重讀代名詞。份量出現的人可以用 en。',
+  meta:'「保鑣」是比喻；「對誰說話 vs 心裡想著誰」只是幫你分組的經驗法則，真正要看的是個別動詞。' },
 
 { ch:'第五章', t:'站位：永遠貼在動詞前面',
   soul:'它們很黏動詞，只有「叫人做事」的時候會跑到後面，還要用連字號牽著手。',
@@ -159,7 +175,9 @@ var CH = [
   ex('Les produits chimiques sont dangereux, n\'<b>en</b> achète pas.','化學產品很危險，不要買。','第 40 課：否定命令式 → 回到前面，不加 -s')+
   '</ul><p>兩兄弟同時出場時，<b><span class="y">y</span> 走前面、<span class="en">en</span> 走後面</b>：</p><ul class="ex">'+
   ex('Il <b>y en</b> a beaucoup.','有很多。','第 33 課：il y a ＋ en')+
-  '</ul>' },
+  '</ul>',
+  real:'代名詞放在變位動詞（複合時態放助動詞）前；肯定命令式放後加連字號；-er 動詞 tu 形 ＋ en／y 加 -s（第 40 課 p.170）；y 在 en 前。',
+  meta:'「很黏動詞」「牽手」「黏膠」是畫面；加 -s 的理由「好唸」是課本自己的說法。' },
 
 { ch:'第六章', t:'冒名的雙胞胎：介系詞 en',
   soul:'同一個拼法，是另一個家族的人——後面接名詞的那個 en，不是它。',
@@ -172,7 +190,9 @@ var CH = [
   '</ul><div class="key"><strong>揣摩：一秒分辨</strong><br>'+
   '・en <b>後面接名詞</b>（France、bus、bois）→ 雙胞胎（介系詞）。<br>'+
   '・en <b>後面接 -ant</b>（écoutant）→ 雙胞胎（副動詞）。<br>'+
-  '・en <b>站在動詞前面</b>，而且句子裡少了一塊「de ＋ 某某」→ 才是我們的 <span class="en">en</span>。</div>' },
+  '・en <b>站在動詞前面</b>，而且句子裡少了一塊「de ＋ 某某」或份量 → 才是我們的 <span class="en">en</span>。</div>',
+  real:'介系詞 en（en France、en bus、en bois）和副動詞的 en（en écoutant）跟代名詞 en 是不同的詞；介系詞 en 來自拉丁文 in 是一般說法。',
+  meta:'「冒名的雙胞胎」是比喻。' },
 
 { ch:'第七章', t:'退休後的口頭禪',
   soul:'有些說法用了幾百年，原本的意思已經磨掉了——不用分析，整塊背。',
@@ -185,17 +205,20 @@ var CH = [
   ex('Il n\'<b>y</b> a plus de pain.','麵包沒了。','第 18 課')+
   '</ul><p><b>Je n\'en peux plus</b>：這個 <span class="en">en</span> 原本指「從這件事上」，現在整句就是「我受不了了」。</p><ul class="ex">'+
   ex('Je n\'<b>en</b> peux plus !','我再也受不了了！','句庫')+
-  '</ul><div class="key"><strong>揣摩</strong>：口頭禪不要拆。聽到 il y a 就是「有」或「之前」，不要去找「那裡」在哪裡。</div>' },
+  '</ul><div class="key"><strong>揣摩</strong>：口頭禪不要拆。聽到 il y a 就是「有」或「之前」，不要去找「那裡」在哪裡。</div>',
+  real:'il y a（有／…之前）、je n\'en peux plus（受不了）是固定說法；il ＋ y ＋ a 的字面組成是事實。',
+  meta:'「退休」是比喻；je n\'en peux plus 裡的 en 原本指什麼，是我的解讀，當成整塊背就好。' },
 
 { ch:'終章', t:'一張判斷流程',
   soul:'看起來很多種，其實只問三個問題。',
   body:
   '<ol class="flow">'+
-  '<li><b>句子裡被拿掉的是什麼？</b><br>「à／在 ＋ 地點」或「à ＋ 東西」→ <span class="y">y</span><br>「de ＋ 地點」「de ＋ 東西」或份量（du、de la、des）→ <span class="en">en</span>（數量留在後面）<br>是<b>人</b> → lui／leur，或 à lui</li>'+
+  '<li><b>句子裡被拿掉的是什麼？</b><br>「在／到 ＋ 地點」（à、en、dans、sur、chez…）或「à ＋ 東西」→ <span class="y">y</span><br>「de ＋ 地點」「de ＋ 東西」或份量（du、de la、des、un／une、數字、beaucoup de）→ <span class="en">en</span>（數量留在後面）<br>是<b>人</b> → lui／leur，或 à lui（份量出現的人除外）</li>'+
   '<li><b>放哪裡？</b><br>變位動詞（或助動詞）前面；兩個都有時 <span class="y">y</span> 在 <span class="en">en</span> 前。<br>只有肯定命令式放後面加連字號，tu 形加回 -s。</li>'+
   '<li><b>這個 en 是不是雙胞胎？</b><br>後面接名詞或 -ant → 是介系詞，不是它。<br>il y a、je n\'en peux plus → 口頭禪，整塊背。</li>'+
   '</ol>'+
-  '<div class="key">回到序章那一句：<span class="y">y</span> 住在 <b>à</b> 那一邊，<span class="en">en</span> 住在 <b>de</b> 那一邊。<br>每次卡住，就問「它替的那一塊，原本前面是 à 還是 de？」</div>' }
+  '<div class="key">回到序章那一句：<span class="y">y</span> 住在「在、到」那一邊，<span class="en">en</span> 住在「de、份量」那一邊。<br>每次卡住，就問「它替的那一塊，原本前面是什麼？」</div>',
+  real:'這三個問題就是上面各章文法規則的整理。', meta:'' }
 ];
 
 var POS_KEY='yen_story_pos', cur=0;
@@ -204,7 +227,8 @@ var q=new URLSearchParams(location.search).get('ch'); if(q!==null&&!isNaN(+q)&&+
 
 function render(){
   var c=CH[cur];
-  document.getElementById('card').innerHTML='<div class="ch">'+c.ch+'</div><h2>'+c.t+'</h2><div class="soul">'+c.soul+'</div>'+c.body;
+  document.getElementById('card').innerHTML='<div class="ch">'+c.ch+'</div><h2>'+c.t+'</h2><div class="soul">'+c.soul+'</div>'+c.body+
+    ((c.real||c.meta)?'<div class="truth">'+(c.real?'<div><b>📐 文法本身（有所本）</b>　'+c.real+'</div>':'')+(c.meta?'<div><b>🎭 只是比喻</b>　'+c.meta+'</div>':'')+'</div>':'');
   document.getElementById('chips').innerHTML=CH.map(function(x,i){ return '<button class="'+(i===cur?'on':'')+'" data-i="'+i+'">'+x.ch+'</button>'; }).join('');
   document.getElementById('prev').disabled=(cur===0);
   var nx=document.getElementById('next'); nx.disabled=(cur===CH.length-1); nx.textContent=(cur===CH.length-1)?'讀完了':'下一章 →';
