@@ -4912,7 +4912,7 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - **Owen**：「要問老師的不要放上筆記喔！」→ 第40課的「要問老師的事」unit 已拿掉（commit 4e872a6）。給老師的訊息只在對話裡給（這次：COI 為什麼 lui réponds 可以、lui pense 不行；＋提醒老師把借她的便當盒帶來）。
 - **Owen**：「https://whoismygrandpa.win/game 我覺得這遊戲比較像是我要說的感覺。RPG 真的要有在走路，不是只有網頁對話。」→ 看過玩法（沒開局：開局要送公開排行榜暱稱），骨架記進 `STORY_DESIGN.md`「參考遊戲」一節＋memory `project_rpg_needs_walking`。⏸ 待 Owen 決定：先做劇情機制還是先做走路地圖。
 - **Owen**：「Elon Musk 可以在很忙的情況把東西學得又快又好，究竟是為什麼？我能做哪些事？」→ `research/2026-10-12_高手怎麼學會的.md`（已登記 INDEX）。結論：Musk 的說法多是軼事（語意樹＝先樹幹後樹葉；自學火箭的故事主要來自 Jim Cantrell 一人）；研究支持的七件事＝先抓骨架、練像考試的動作、考自己不重讀（Dunlosky 最高評價）、只練弱點（Macnamara：效果量因領域差很多）、自我解釋 g=.55、回饋對事不對人（Kluger & DeNisi：>1/3 讓表現變差）、固定觸發 d=.65＋分散練習。建議先做的三件：一個固定觸發、每週一次直接做考試任務、新文法先找樹枝。
-- ⚠️ 週研究 W42 抓到的 bug 還沒修：今日閱讀的跳過（`readSkipQ`）沒記 known，跳過的題會以最高優先權一直回來。
+- ✅ **修好週研究 W42 抓到的 bug**（Owen：「修那個跳過的 bug」）：今日閱讀「這題先跳過」原本只換題、沒記錄，而挑題是「沒答對過的優先」⇒ 跳過的題一直被第一個挑回來。現在 `readSkipQ()` 會 `towerMarkKnown(q.key)`（跟考試之塔共用 `clb7_tower_known`，⛔ 不記對錯）；挑題改用 `readRank()`：0 沒做過／答錯過 → 1 跳過超過 14 天 → 2 答對過 → 3 最近 14 天內跳過（⛔ 不刪題）；「老朋友」換題也排除 14 天內跳過的。試跑（無同步複本、假題庫、其餘真程式）：同一組目標題號下，舊行為第一題挑回跳過的 #8，修好後改挑 #7；跳過超過 14 天回到一般順序；跳過不寫進 `clb7_exam_answers`。
 
 #### 三之五十、10-11：第40課筆記（p.163 Le pronom COI y／p.164 總複習／Unité 12 Soif de nature：Trashtag、biodiversité、L'impératif et les pronoms）＋連動
 

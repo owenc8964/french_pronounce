@@ -1526,16 +1526,15 @@ function readStart(){
   (EXAM_INDEX?Promise.resolve(EXAM_INDEX):vaultGet('reading/index.json').then(function(ix){ return (EXAM_INDEX=ix); })).then(function(ix){
     var ids=ix.map(function(x){ return x.id; }), id=ids[((day%ids.length)+ids.length)%ids.length];
     return (EXAM_DATA[id]?Promise.resolve(EXAM_DATA[id]):vaultGet('reading/data/'+id+'.json').then(function(dd){ return (EXAM_DATA[id]=dd); })).then(function(dd){
-      var ans=lsObj('clb7_exam_answers',{}), qs=dd.questions||[], shift=day%3, chosen=[];
+      var ans=lsObj('clb7_exam_answers',{}), known=towerKnown(), qs=dd.questions||[], shift=day%3, chosen=[];
       [7,12,17,22,27].forEach(function(t0){
         var t=t0+shift, cand=qs.filter(function(x){ return chosen.indexOf(x)<0; }).sort(function(a,b){
-          var ka=id+'#'+a.q, kb=id+'#'+b.q, oa=(ans[ka]&&ans[ka].ok)?1:0, ob=(ans[kb]&&ans[kb].ok)?1:0;
-          return (oa-ob)*100 + (Math.abs(a.q-t)-Math.abs(b.q-t)); });      /* 沒答對過的優先，其次最接近目標題號 */
+          return (readRank(ans,known,id+'#'+a.q)-readRank(ans,known,id+'#'+b.q))*100 + (Math.abs(a.q-t)-Math.abs(b.q-t)); });      /* 見 readRank，其次最接近目標題號 */
         if(cand[0]) chosen.push(cand[0]); });
       RD={ id:id, label:dd.label||id, qs:chosen.map(function(x){ return { key:id+'#'+x.q, num:x.q, img:x.img, stem:x.stem, opts:x.opts, ans:'ABCD'.indexOf(x.answer), zh:x.key_zh||'', tid:id }; }),
            i:0, ok:0, done:0 };
       /* 老朋友：3 天前以前答錯的那題（來自別套）換掉最後一題 */
-      var due=Object.keys(ans).filter(function(k){ return ans[k]&&ans[k].ok===false&&(Date.now()-(ans[k].last||0))>3*864e5&&k.split('#')[0]!==id; });
+      var due=Object.keys(ans).filter(function(k){ return ans[k]&&ans[k].ok===false&&(Date.now()-(ans[k].last||0))>3*864e5&&k.split('#')[0]!==id&&!readSkippedRecently(known,k); });
       if(!due.length) return;
       var dk=due[Math.floor(Math.random()*due.length)], dTid=dk.split('#')[0], dNum=+dk.split('#')[1];
       return (EXAM_DATA[dTid]?Promise.resolve(EXAM_DATA[dTid]):vaultGet('reading/data/'+dTid+'.json').then(function(x){ return (EXAM_DATA[dTid]=x); })).then(function(x){
@@ -1572,8 +1571,21 @@ function readPick(k){
     (!ok&&q.zh?'<br>'+esc(q.zh).replace(/\n/g,'<br>'):'')+'</div><button class="next" onclick="readNext()">'+(last?'讀完了':'下一題')+'</button>';
   var sk=document.getElementById('rskip'); if(sk) sk.style.display='none';
 }
-function readSkipQ(){ var q=RD&&RD.qs[RD.i]; if(!q) return; sfx('click_001'); readNext(); }
+/* 10-12 修（每週研究 W42 抓到）：原本跳過只換下一題、什麼都沒記，而挑題是「沒答對過的優先」
+   ⇒ 跳過的題會以最高優先權一直回來（違反練習頁鐵律：跳過要合法、要降低出現頻率）。
+   現在：記進 clb7_tower_known（跟考試之塔共用同一把 key＝同一題），⛔ 不記對錯；挑題時見 readRank()。 */
+function readSkipQ(){ var q=RD&&RD.qs[RD.i]; if(!q) return; towerMarkKnown(q.key); sfx('click_001'); readNext(); }
 function readNext(){ sfx('click_001'); RD.i++; readQ(); }
+/* 挑題順序（數字越小越先出）：0 沒做過／答錯過 → 1 很久以前跳過的 → 2 答對過 → 3 最近 14 天內跳過的。
+   ⛔ 跳過的題不刪（自評不可靠，research/2026-09-06_SOLO_SYNTHESIS），只是 14 天內排到最後；過了 14 天回到一般順序 */
+var READ_SKIP_DAYS=14;
+function readSkippedRecently(known,k){ var r=known&&known[k]; return !!(r&&r.last&&(Date.now()-r.last)<READ_SKIP_DAYS*864e5); }
+function readRank(ans,known,k){
+  if(readSkippedRecently(known,k)) return 3;
+  if(ans[k]&&ans[k].ok) return 2;
+  if(known&&known[k]) return 1;
+  return 0;
+}
 function readFinish(){
   var d=readToday(), r=RD; RD=null;
   if(d.date!==todayStr()) d.n=0;
