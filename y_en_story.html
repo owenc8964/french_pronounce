@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- 加到主畫面（PWA，2026-10-12） -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/app/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CLB7">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<script src="pwa.js" defer></script>
+<title>y 與 en 的故事 · CLB7</title>
+<!--
+  y_en_story.html — y 與 en 的擬人化故事（2026-10-12）
+  Owen：「y／en 我覺得你這個可以再來做擬人化故事了，讓我從故事了解這兩個的產生背景，
+        及他們到底是怎樣被製造出來及運用的，太多種方式了需要揣摩」
+  ⭐ 路線照 time_hall.html（時間劇院）：沒有題目、沒有計分，只有讀；一章一張卡，記得讀到哪。
+  ⭐ 主旨：用法看起來很多種，其實只有兩個本業（y 指 à 那一邊、en 指 de 那一邊），
+     其他都是「轉職」「規矩」「冒名的雙胞胎」「退休後的口頭禪」。
+  ⛔ 法文例句一律取自筆記／課本／句庫（chunks.js、sentences.js、gram_rules.js 已有的句子），⛔ 不自創。
+  ⚠️ 語源：en < 拉丁文 inde（各家一致）；y 多數說 < ibi，法蘭西學院字典說與 hic 有關 → 頁面照實寫「說法不一」。
+     介系詞 en < 拉丁文 in 是一般說法。
+  讀到哪存在 yen_story_pos（⛔ 刻意不用 clb7_ 開頭：只是這台裝置的方便，不需要同步）。
+-->
+<style>
+:root{ --bg:#090b10; --panel:#11151f; --panel2:#171d2b; --line:#252c3d; --ink:#e6e1d6; --dim:#8b93a6; --faint:#5d6578;
+  --gold:#d9b45e; --gold2:#f3dc9a; --y:#6fb6e8; --en:#e8946f; --green:#6cc79a; }
+*{ box-sizing:border-box; margin:0; padding:0; }
+body{ background:radial-gradient(ellipse at top,#171d2b 0%,var(--bg) 60%); color:var(--ink);
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif; min-height:100vh;
+  padding:20px 16px 90px; max-width:720px; margin:0 auto; font-size:clamp(16px,1vw + 13px,18px); line-height:1.8; }
+a{ color:var(--dim); }
+.top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-size:.78em; }
+.top a{ text-decoration:none; }
+.top a:hover{ color:var(--gold2); }
+h1{ text-align:center; color:var(--gold); font-size:1.25em; letter-spacing:2px; }
+.sub{ text-align:center; color:var(--dim); font-size:.78em; margin:4px 0 14px; }
+.chips{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-bottom:14px; }
+.chips button{ font:inherit; font-size:.72em; padding:4px 10px; border-radius:999px; border:1px solid var(--line);
+  background:var(--panel); color:var(--dim); cursor:pointer; }
+.chips button.on{ border-color:var(--gold); color:var(--gold2); }
+.card{ background:linear-gradient(180deg,var(--panel2),var(--panel)); border:1px solid var(--line); border-radius:16px; padding:18px 18px 16px; }
+.ch{ font-size:.7em; letter-spacing:.2em; color:var(--gold); }
+.card h2{ font-size:1.12em; margin:4px 0 6px; }
+.soul{ border-left:3px solid var(--gold); padding:6px 12px; margin:10px 0 12px; color:var(--gold2);
+  background:rgba(217,180,94,.06); border-radius:0 10px 10px 0; }
+.card p{ margin:8px 0; }
+.y{ color:var(--y); font-weight:700; } .en{ color:var(--en); font-weight:700; }
+.ex{ list-style:none; margin:10px 0; }
+.ex li{ background:#0c0f17; border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin:7px 0; }
+.ex .fr{ font-family:Georgia,'Times New Roman',serif; font-size:1.05em; cursor:pointer; display:block; }
+.ex .fr::before{ content:'🔊 '; font-size:.75em; opacity:.6; }
+.ex .zh{ color:var(--dim); font-size:.82em; display:block; }
+.ex .note{ color:var(--faint); font-size:.76em; display:block; }
+.ex b{ color:var(--gold2); }
+.key{ margin-top:12px; padding:10px 12px; border:1px dashed rgba(217,180,94,.45); border-radius:10px; font-size:.9em; }
+.key strong{ color:var(--gold); }
+.flow{ list-style:none; counter-reset:f; margin:8px 0; }
+.flow li{ counter-increment:f; position:relative; padding:6px 0 6px 34px; }
+.flow li::before{ content:counter(f); position:absolute; left:0; top:6px; width:24px; height:24px; border-radius:50%;
+  background:var(--gold); color:#11151f; font-weight:700; font-size:.8em; display:flex; align-items:center; justify-content:center; }
+.nav{ display:flex; gap:10px; margin-top:14px; }
+.nav button{ flex:1; font:inherit; padding:12px; border-radius:12px; border:1px solid var(--line); background:var(--panel);
+  color:var(--ink); cursor:pointer; }
+.nav button.primary{ border-color:var(--gold); color:var(--gold2); background:#211b0f; }
+.nav button:disabled{ opacity:.35; cursor:default; }
+.src{ margin-top:22px; font-size:.7em; color:var(--faint); line-height:1.7; }
+</style>
+</head>
+<body>
+<div class="top"><a href="dashboard.html">← 回指揮中心</a><span style="color:var(--faint)">讀的，不用作答</span></div>
+<h1>y 與 en 的故事</h1>
+<div class="sub">用法看起來很多種，其實只有兩個本業</div>
+<div class="chips" id="chips"></div>
+<div class="card" id="card"></div>
+<div class="nav"><button id="prev">← 上一章</button><button id="next" class="primary">下一章 →</button></div>
+<div class="src">
+  語源：en ← 拉丁文 <i>inde</i>（從那裡），各家一致；y 多數說 ← <i>ibi</i>（在那裡），法蘭西學院字典則說與 <i>hic</i>（這裡）有關，說法不一。介系詞 en ← 拉丁文 <i>in</i>（在…裡面）是一般說法。<br>
+  例句全部取自你的筆記與課本（第 5、8、11、14–19、21、29、30、33、35、40 課）。
+</div>
+
+<script src="tts_reader.js"></script>
+<script>
+/* 每一章：t 標題、ch 章號、soul 一句靈魂、body HTML（中文短段落＋例句 li.fr 點了會唸） */
+function ex(fr, zh, note){ return '<li><span class="fr">'+fr+'</span><span class="zh">'+zh+'</span>'+(note?'<span class="note">'+note+'</span>':'')+'</li>'; }
+var CH = [
+{ ch:'序章', t:'兩個指路人',
+  soul:'它們生下來只有一個工作：指地點。<span class="y">y</span> 指「在那裡、到那裡」，<span class="en">en</span> 指「從那裡」。',
+  body:
+  '<p>很久很久以前，拉丁文裡有兩個小小的副詞，專門幫人指路。一個說「<b>在那裡</b>」，一個說「<b>從那裡</b>」。</p>'+
+  '<p>「從那裡」叫 <i>inde</i>。法國人講了幾百年，講到後來只剩一口氣：<i>inde</i> → <span class="en">en</span>。</p>'+
+  '<p>「在那裡」的來歷有兩種說法：多數說是 <i>ibi</i>，一路被磨成 <i>i</i>，最後寫成 <span class="y">y</span>；法蘭西學院的字典說它跟 <i>hic</i>（這裡）有關。不管是哪個祖先，<b>它們都是指地點的字</b>。</p>'+
+  '<p>記住這一點，後面所有的用法都是從這裡長出來的：</p>'+
+  '<div class="key"><span class="y">y</span> 面向「<b>過去、在裡面</b>」——那個方向用的介系詞是 <b>à</b>（à Paris、au parc）。<br>'+
+  '<span class="en">en</span> 面向「<b>出來、離開</b>」——那個方向用的介系詞是 <b>de</b>（de Paris、du parc）。</div>' },
+
+{ ch:'第一章', t:'本業：指地點',
+  soul:'<span class="y">y</span> 往裡走，<span class="en">en</span> 往外走。',
+  body:
+  '<p>兩兄弟最早的工作，就是替一個<b>已經講過的地方</b>佔位子，免得同一個地名一直重複。</p>'+
+  '<p><span class="y">y</span> 替的是「到那裡／在那裡」：</p><ul class="ex">'+
+  ex('J\'y vais souvent.','我常去那裡。','第 21 課')+
+  ex('J\'y suis encore.','我還在那裡。','第 21 課')+
+  ex('Non, on n\'y a pas dormi.','不，我們沒有在那裡睡。','第 21 課')+
+  ex('Tu vas bientôt en France ? — Oui, j\'y vais la semaine prochaine.','你快要去法國了嗎？——對，我下禮拜去。','第 40 課（老師的例子）')+
+  '</ul><p><span class="en">en</span> 替的是「從那裡」：</p><ul class="ex">'+
+  ex('Tu reviens de la plage ? — Oui, j\'<b>en</b> reviens à l\'instant.','你從海邊回來嗎？——對，我剛從那裡回來。','第 21 課：de la plage → en')+
+  ex('Il est parti du chalet ? — Il <b>en</b> est parti à 6 h.','他離開小木屋了嗎？——他六點從那裡離開的。','第 21 課：du chalet → en')+
+  '</ul><div class="key"><strong>揣摩</strong>：去 → <span class="y">y</span>；回來、離開 → <span class="en">en</span>。<br>j\'<span class="y">y</span> vais（去那裡）／j\'<span class="en">en</span> reviens（從那裡回來）——同一個地方，方向相反，換一個字。</div>' },
+
+{ ch:'第二章', t:'轉職：被 à 家族和 de 家族雇用',
+  soul:'<span class="y">y</span> 吃掉「à ＋ 東西」，<span class="en">en</span> 吃掉「de ＋ 東西」。',
+  body:
+  '<p>後來法文長出很多「一定要帶介系詞」的動詞：<b>répondre à</b>、<b>penser à</b>、<b>réfléchir à</b>……這是 <b>à 家族</b>；<b>avoir besoin de</b>、<b>parler de</b>……這是 <b>de 家族</b>。</p>'+
+  '<p>句子裡一直重複「à ce message」「à ses vacances」很累。兩兄弟本來就分別住在 à 和 de 的方向，於是被各自的家族雇去當<b>替身</b>：<b>不只替地點，也替東西、替想法</b>。</p><ul class="ex">'+
+  ex('Vous recevez un message très urgent. Vous <b>y</b> répondez tout de suite.','您收到一則很急的訊息，您馬上回覆它。','第 40 課：répondre à ce message → y')+
+  ex('Il pense à ses vacances. Il <b>y</b> pense.','他在想他的假期。他在想這件事。','第 40 課：penser à ＋ 東西 → y')+
+  ex('J\'<b>y</b> ai bien réfléchi.','這件事我想清楚了。','第 40 課：réfléchir à ＋ 東西 → y')+
+  ex('Moi aussi, j\'<b>y</b> pense depuis toujours.','我也是，我一直都想做這件事。','第 40 課（老師說的）')+
+  '</ul><div class="key"><strong>揣摩</strong>：看到 <span class="y">y</span> 不在講地點的時候，問自己「這個動詞原本後面是不是接 <b>à</b>？」——是，就對了。</div>' },
+
+{ ch:'第三章', t:'en 的第二份工作：份量',
+  soul:'du、de la、des 裡面都藏著一個 de——所以全歸 <span class="en">en</span> 管。',
+  body:
+  '<p>這是 <span class="en">en</span> 用法最多、也最讓人頭痛的一塊。但其實它還是同一個本業。</p>'+
+  '<p>「一些水」是 <b>de l\'</b>eau、「一些麵粉」是 <b>de la</b> farine、「一些洋蔥」是 <b>des</b> oignons。這些冠詞拆開來，<b>裡面都有 de</b>——「從一整堆裡面<b>取出</b>一些」。所以 de 家族的替身 <span class="en">en</span> 理所當然接手。</p><ul class="ex">'+
+  ex('De l\'eau ? Oui, j\'<b>en</b> veux.','水嗎？好，我要一些。','第 29 課')+
+  ex('De la farine ? Il m\'<b>en</b> faut 500 grammes.','麵粉嗎？我需要 500 公克。','第 29 課：數量留在後面')+
+  ex('Des oignons ? J\'<b>en</b> achète toujours une botte.','洋蔥嗎？我總是買一把。','第 29 課')+
+  ex('Tu manges de la viande ? — Non, je n\'<b>en</b> mange pas.','你吃肉嗎？——不，我不吃。','第 29 課')+
+  ex('Tu as une grande poêle ? — Oui, j\'<b>en</b> ai une.','你有大平底鍋嗎？——有，我有一個。','第 29 課：⭐ 數字 une 要留下來')+
+  ex('Vous consommez beaucoup de fruits et légumes ? — Oui, j\'<b>en</b> consomme beaucoup.','你們吃很多蔬果嗎？——對，我吃很多。','第 29 課：beaucoup de → en ＋ beaucoup')+
+  '</ul><div class="key"><strong>揣摩</strong>：<span class="en">en</span> 只吃掉「東西」，<b>吃不掉份量</b>。une、500 grammes、beaucoup、une botte 都要留在後面——它們是在說「取出多少」。</div>' },
+
+{ ch:'第四章', t:'不碰人的規矩',
+  soul:'人有自己的保鑣，輪不到 <span class="y">y</span> 和 <span class="en">en</span>。',
+  body:
+  '<p>兩兄弟是指地點出身的，所以<b>替「人」的工作，大多交給別人</b>：</p>'+
+  '<p>・「對誰說話、回覆誰」這種動詞（répondre、parler、téléphoner、donner…）→ 人用 <b>lui／leur</b>，一樣放動詞前。<br>'+
+  '・「心裡想著誰」這種動詞（penser、réfléchir、faire attention…）和反身動詞（s\'intéresser…）→ 人用 <b>à ＋ 重讀代名詞</b>（à lui、à eux）。</p><ul class="ex">'+
+  ex('Je <b>leur</b> réponds.','我回覆他們。','第 40 課：répondre à mes clients → leur')+
+  ex('Il pense à son collègue. Il pense <b>à lui</b>.','他在想他的同事。','第 40 課：penser à ＋ 人 → à lui')+
+  ex('Je pense <b>à eux</b>.','我在想他們。','第 40 課：penser à mes collègues')+
+  ex('Laissez les animaux où ils sont et ne <b>leur</b> faites pas peur.','讓動物待在原地，不要嚇牠們。','第 40 課：動物也算「對誰」→ leur')+
+  '</ul><div class="key"><strong>揣摩</strong>：先問「被取代的是<b>人</b>還是<b>東西</b>？」——東西交給兩兄弟；人交給保鑣。<br>⚠️ 「為什麼 répondre 用 lui、penser 卻要 à lui」課本講得太絕對，這題你已經準備去問老師了。</div>' },
+
+{ ch:'第五章', t:'站位：永遠貼在動詞前面',
+  soul:'它們很黏動詞，只有「叫人做事」的時候會跑到後面，還要用連字號牽著手。',
+  body:
+  '<p>不管句子多長、有沒有否定，<span class="y">y</span> 和 <span class="en">en</span> 都<b>貼在變位動詞前面</b>；複合過去式就貼在助動詞前面。</p><ul class="ex">'+
+  ex('Je n\'<b>en</b> ai pas mangé.','我沒吃過。','第 29 課：en 貼在助動詞 ai 前，ne…pas 包住它們')+
+  ex('Je ne m\'<b>y</b> intéresse pas.','我對這個沒興趣。','第 40 課：反身代名詞 m\' 先、y 後')+
+  '</ul><p>唯一的例外：<b>肯定命令式</b>。這時候它們站到動詞<b>後面</b>，用連字號牽手；而 -er 動詞的 tu 形會把 <b>-s 加回來</b>，當黏膠讓兩個字唸得順（連音 [z]）。</p><ul class="ex">'+
+  ex('Pensez-<b>y</b> !','想想看吧！','第 40 課')+
+  ex('La nature est fragile, pense<b>s-y</b>.','大自然很脆弱，想一想吧。','第 40 課：tu 形加回 -s')+
+  ex('Fabrique<b>s-en</b> toi-même.','自己做一些。','第 40 課：唸成 fabrique-z-en')+
+  ex('Les produits chimiques sont dangereux, n\'<b>en</b> achète pas.','化學產品很危險，不要買。','第 40 課：否定命令式 → 回到前面，不加 -s')+
+  '</ul><p>兩兄弟同時出場時，<b><span class="y">y</span> 走前面、<span class="en">en</span> 走後面</b>：</p><ul class="ex">'+
+  ex('Il <b>y en</b> a beaucoup.','有很多。','第 33 課：il y a ＋ en')+
+  '</ul>' },
+
+{ ch:'第六章', t:'冒名的雙胞胎：介系詞 en',
+  soul:'同一個拼法，是另一個家族的人——後面接名詞的那個 en，不是它。',
+  body:
+  '<p>法文裡還有一個 <b>en</b>，長得一模一樣，但祖先不同：它來自拉丁文 <i>in</i>（在…裡面），是<b>介系詞</b>，不是代名詞。它不替任何東西佔位子，後面一定接東西：</p><ul class="ex">'+
+  ex('Je vais <b>en</b> France.','我去法國。','介系詞：en ＋ 國家')+
+  ex('Je vais à l\'école <b>en</b> bus.','我搭公車去學校。','介系詞：en ＋ 交通工具')+
+  ex('<b>en</b> bois','木頭做的','第 36 課：en ＋ 材料')+
+  ex('Elles cuisinent <b>en</b> écoutant de la musique.','她們一邊做菜一邊聽音樂。','副動詞：en ＋ -ant')+
+  '</ul><div class="key"><strong>揣摩：一秒分辨</strong><br>'+
+  '・en <b>後面接名詞</b>（France、bus、bois）→ 雙胞胎（介系詞）。<br>'+
+  '・en <b>後面接 -ant</b>（écoutant）→ 雙胞胎（副動詞）。<br>'+
+  '・en <b>站在動詞前面</b>，而且句子裡少了一塊「de ＋ 某某」→ 才是我們的 <span class="en">en</span>。</div>' },
+
+{ ch:'第七章', t:'退休後的口頭禪',
+  soul:'有些說法用了幾百年，原本的意思已經磨掉了——不用分析，整塊背。',
+  body:
+  '<p>兩兄弟年紀大了，有幾句話講到變成口頭禪。字面上還找得到它們，但已經聽不出「地點」的意思了。</p>'+
+  '<p><b>il y a</b>：字面是「它在那裡有」，現在就是「<b>有</b>」，放在時間前面又變成「<b>…之前</b>」。</p><ul class="ex">'+
+  ex('Il <b>y</b> a du vent.','有風。','第 8 課')+
+  ex('Près de chez moi, il <b>y</b> a un petit bistrot que j\'adore.','我家附近有一間我很喜歡的小酒館。','第 30 課')+
+  ex('Ils ont déménagé il <b>y</b> a dix jours.','他們十天前搬家了。','第 11 課：il y a ＋ 時間 ＝ …之前')+
+  ex('Il n\'<b>y</b> a plus de pain.','麵包沒了。','第 18 課')+
+  '</ul><p><b>Je n\'en peux plus</b>：這個 <span class="en">en</span> 原本指「從這件事上」，現在整句就是「我受不了了」。</p><ul class="ex">'+
+  ex('Je n\'<b>en</b> peux plus !','我再也受不了了！','句庫')+
+  '</ul><div class="key"><strong>揣摩</strong>：口頭禪不要拆。聽到 il y a 就是「有」或「之前」，不要去找「那裡」在哪裡。</div>' },
+
+{ ch:'終章', t:'一張判斷流程',
+  soul:'看起來很多種，其實只問三個問題。',
+  body:
+  '<ol class="flow">'+
+  '<li><b>句子裡被拿掉的是什麼？</b><br>「à／在 ＋ 地點」或「à ＋ 東西」→ <span class="y">y</span><br>「de ＋ 地點」「de ＋ 東西」或份量（du、de la、des）→ <span class="en">en</span>（數量留在後面）<br>是<b>人</b> → lui／leur，或 à lui</li>'+
+  '<li><b>放哪裡？</b><br>變位動詞（或助動詞）前面；兩個都有時 <span class="y">y</span> 在 <span class="en">en</span> 前。<br>只有肯定命令式放後面加連字號，tu 形加回 -s。</li>'+
+  '<li><b>這個 en 是不是雙胞胎？</b><br>後面接名詞或 -ant → 是介系詞，不是它。<br>il y a、je n\'en peux plus → 口頭禪，整塊背。</li>'+
+  '</ol>'+
+  '<div class="key">回到序章那一句：<span class="y">y</span> 住在 <b>à</b> 那一邊，<span class="en">en</span> 住在 <b>de</b> 那一邊。<br>每次卡住，就問「它替的那一塊，原本前面是 à 還是 de？」</div>' }
+];
+
+var POS_KEY='yen_story_pos', cur=0;
+try{ var p=parseInt(localStorage.getItem(POS_KEY),10); if(p>=0&&p<CH.length) cur=p; }catch(e){}
+var q=new URLSearchParams(location.search).get('ch'); if(q!==null&&!isNaN(+q)&&+q>=0&&+q<CH.length) cur=+q;
+
+function render(){
+  var c=CH[cur];
+  document.getElementById('card').innerHTML='<div class="ch">'+c.ch+'</div><h2>'+c.t+'</h2><div class="soul">'+c.soul+'</div>'+c.body;
+  document.getElementById('chips').innerHTML=CH.map(function(x,i){ return '<button class="'+(i===cur?'on':'')+'" data-i="'+i+'">'+x.ch+'</button>'; }).join('');
+  document.getElementById('prev').disabled=(cur===0);
+  var nx=document.getElementById('next'); nx.disabled=(cur===CH.length-1); nx.textContent=(cur===CH.length-1)?'讀完了':'下一章 →';
+  try{ localStorage.setItem(POS_KEY,String(cur)); }catch(e){}
+}
+function go(i){ if(i<0||i>=CH.length) return; cur=i; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+document.getElementById('prev').addEventListener('click',function(){ go(cur-1); });
+document.getElementById('next').addEventListener('click',function(){ go(cur+1); });
+document.getElementById('chips').addEventListener('click',function(e){ var b=e.target.closest('button'); if(b) go(+b.dataset.i); });
+document.getElementById('card').addEventListener('click',function(e){
+  var f=e.target.closest('.fr'); if(!f) return;
+  var t=f.textContent; if(window.TtsReader&&TtsReader.speak) TtsReader.speak(t);
+});
+render();
+</script>
+<script src="return_to.js"></script>
+</body>
+</html>
