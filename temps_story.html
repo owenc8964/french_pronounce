@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- 加到主畫面（PWA，2026-10-12） -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/app/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CLB7">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<script src="pwa.js" defer></script>
+<title>時間的家族 · CLB7</title>
+<!--
+  temps_story.html — 時間的家族：pendant／depuis／ça fait…que／il y a／en／dans（2026-10-12）
+  Owen：「2 3 才對」「2 才有 en」→ 故事 ② 時間（durée 錯題 12 筆），而且要有「en ＋ 時間」。
+  ⭐ 版型與翻頁共用 story_reader.css／story_reader.js；每章分開寫 real／meta（memory feedback_story_label_fact_vs_metaphor）。
+  ⛔ 例句一律取自 chunks.js／sentences.js／gram_rules.js／questions.js（含 Cahier）已有的句子。
+  📚 查證（2026-10-12）：
+    ✅ pendant ← 動詞 pendre「懸掛」的現在分詞；13 世紀「ce pendant」，15 世紀才有現在的「在…期間」；
+       le débat pendant（懸著的辯論）放到名詞前被當成介系詞 → pendant le débat（法蘭西學院字典第 9 版）。
+    ✅ depuis ＝ de ＋ puis（Wiktionary；葡萄牙文 depois「之後」同源）。⚠️ puis 的拉丁祖先這次沒查證 → 不寫。
+    ⚠️ il y a ＋ 時間「…之前」：il＋y＋a 的字面組成是事實，「怎麼變成之前」是解讀 → 標成比喻。
+  讀到哪：temps_story_pos。
+-->
+<link rel="stylesheet" href="story_reader.css">
+<style>
+.tw{ color:var(--y); font-weight:700; }
+.line{ font-family:ui-monospace,Menlo,monospace; font-size:.8em; background:#0c0f17; border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin:10px 0; white-space:pre; overflow-x:auto; color:var(--dim); line-height:1.7; }
+</style>
+</head>
+<body>
+<div class="top"><a href="dashboard.html">← 回指揮中心</a><span style="color:var(--faint)">讀的，不用作答</span></div>
+<h1>時間的家族</h1>
+<div class="sub">pendant、depuis、il y a、en、dans——只要問「結束了沒」「從哪裡看」<br><span style="font-size:.9em">⚠️ 「懸著」「括號」都是比喻；每章最後的「📐 文法本身」才是規則</span></div>
+<div class="chips" id="chips"></div>
+<div class="card" id="card"></div>
+<div class="nav"><button id="prev">← 上一章</button><button id="next" class="primary">下一章 →</button></div>
+<div class="src">
+  語源：pendant ← 動詞 pendre（懸掛）的現在分詞，15 世紀才有「在…期間」的意思（法蘭西學院字典）；depuis ＝ de ＋ puis（「從那之後」）。<br>
+  例句全部取自你的筆記、課本與 Cahier（第 16–19、21、33、39、40 課等）。
+</div>
+
+<script src="tts_reader.js"></script>
+<script src="story_reader.js"></script>
+<script>
+var CH = [
+{ ch:'序章', t:'時間只問兩件事',
+  soul:'這段時間<b>結束了沒</b>？你站在<b>哪個時間點</b>看？——問完這兩題，就知道叫誰出場。',
+  body:
+  '<p>中文說「我在台灣住了五年」，聽不出來現在還住不住。法文不行：它一定要你先回答「<b>結束了沒</b>」，再決定用哪個字。</p>'+
+  '<div class="line">         過去                     現在                    未來\n'+
+  '  ──────────●────────────────────★────────────────────────→\n'+
+  '   il y a ↑ 往回量的一個點          dans → 從現在往後數\n'+
+  '  [── pendant ──]  一段關起來的時間\n'+
+  '        [─────── depuis ──────────★  左邊在過去，右邊連著現在\n'+
+  '  en：做完一件事，總共花了多長</div>'+
+  '<p>這一家有五個成員（外加一個 depuis 的分身 ça fait…que），後面一章一個。</p>',
+  real:'法文表達時間長度，要先分清楚「已結束的一段」「到現在還在繼續」「過去的一個時間點」「從現在往後」「做完花多久」，各用不同的字（第 16、19 課）。',
+  meta:'時間軸是幫你看的圖。' },
+
+{ ch:'第一章', t:'pendant：懸著的一段時間',
+  soul:'<span class="tw">pendant</span> 是一段<b>頭尾都關起來</b>的時間——像一對括號。',
+  body:
+  '<p><span class="tw">pendant</span> 本來是動詞 pendre（懸掛）變來的，意思是「<b>懸著的、還沒落地的</b>」。古法文說 le débat pendant，是「懸而未決的那場辯論」；後來把它放到名詞前面，pendant le débat 就變成「<b>在辯論懸著的那段期間</b>」。</p>'+
+  '<p>所以 <span class="tw">pendant</span> 指的是<b>一段有頭有尾的時間</b>。最常用來講<b>已經結束</b>的事：</p><ul class="ex">'+
+  ex('J\'ai vécu à Taïwan <b>pendant</b> cinq ans.','我在台灣住過五年（已結束）。','第 17 課')+
+  ex('Hier, nous avons fait du canoë <b>pendant</b> quatre heures.','昨天我們划了四個小時的獨木舟。','Cahier 第 19 課')+
+  ex('Pierre a étudié le droit <b>pendant</b> deux ans, mais maintenant il étudie le commerce.','皮耶念了兩年法律，但現在他念商科。','Cahier 第 16 課')+
+  ex('Qu\'est-ce que tu as fait <b>pendant</b> l\'été ?','你夏天做了什麼？','第 26 課：pendant ＋ 一段時期')+
+  '</ul><div class="key"><strong>揣摩</strong>：<span class="tw">pendant</span> 後面接的是「<b>多長</b>」（五年、四小時）或「<b>哪一段</b>」（夏天）。動詞常用複合過去式——因為那段時間已經關起來了。</div>',
+  real:'pendant ＋ 時長或一段時期＝在那段（有頭有尾的）期間；講已結束的事最常見（第 17、19 課）。pendant 來自 pendre 的現在分詞，15 世紀才有「在…期間」的意思（有可靠字源）。',
+  meta:'「懸著」「括號」是幫你記的畫面；「常用複合過去式」是傾向，不是規定。' },
+
+{ ch:'第二章', t:'depuis：一頭還連著現在',
+  soul:'<span class="tw">depuis</span> 就是「de ＋ puis」——<b>從那之後</b>，一直到現在。',
+  body:
+  '<p><span class="tw">depuis</span> 拆開來是 de（從）＋ puis（然後、之後）：「<b>從那之後</b>」。它的括號<b>左邊在過去，右邊還開著，連到現在</b>。</p>'+
+  '<p>⭐ 所以法文用 <span class="tw">depuis</span> 的時候，動詞要用<b>現在式</b>——因為事情現在還在發生。</p><ul class="ex">'+
+  ex('Je vis à Taïwan <b>depuis</b> cinq ans.','我住在台灣五年了（還住著）。','第 17 課')+
+  ex('Je suis dentiste <b>depuis</b> douze ans.','我當牙醫師已經 12 年了。','第 16 課')+
+  ex('Je cherche du travail <b>depuis</b> deux mois.','我找工作已經兩個月了。','第 18 課')+
+  ex('Les places sont en vente <b>depuis</b> hier.','票從昨天開始賣（現在還在賣）。','第 19 課：depuis ＋ 起點')+
+  ex('Il ne fait plus de sport <b>depuis</b> son accident.','他自從那次意外後就不再運動了。','第 18 課：depuis ＋ 事件')+
+  '</ul><p>把第一章和這一章放在一起看——同樣是「五年」，差一個字，意思完全不同：</p><ul class="ex">'+
+  ex('J\'ai vécu à Taïwan <b>pendant</b> cinq ans.','我在台灣住過五年（現在不住了）。','第 17 課')+
+  ex('Je vis à Taïwan <b>depuis</b> cinq ans.','我住在台灣五年了（現在還住）。','第 17 課')+
+  '</ul><div class="key"><strong>揣摩</strong>：中文的「已經…了」常常就是 <span class="tw">depuis</span>。看到 depuis，先檢查動詞是不是<b>現在式</b>。</div>',
+  real:'depuis ＋ 時長或起點＝從那時到現在還在繼續，動詞用現在式（第 16–18 課）。depuis ＝ de ＋ puis（有可靠字源）。',
+  meta:'「右邊開著的括號」是比喻。' },
+
+{ ch:'第三章', t:'ça fait…que：depuis 的分身',
+  soul:'想把「多久」放在句子最前面強調時，<span class="tw">depuis</span> 就換成 <span class="tw">ça fait … que</span>。',
+  body:
+  '<p>意思跟 <span class="tw">depuis</span> 一樣——到現在還在繼續——只是把時間長度搬到句首：</p><ul class="ex">'+
+  ex('<b>Ça fait</b> longtemps <b>que</b> je n\'ai pas fait de CV en français.','我很久沒有寫法文履歷了。','第 39 課（老師說的）')+
+  '</ul><div class="key"><strong>揣摩</strong>：這句的意思是「從很久以前到現在，一直沒寫」——還連著現在，所以跟 depuis 是同一家。<br>（這個說法目前你的筆記裡只有這一句，聽到時認得就好。）</div>',
+  real:'ça fait ＋ 時長 ＋ que ＋ 句子＝depuis 的另一種說法，強調時間長度（第 39 課）。',
+  meta:'「分身」是比喻。' },
+
+{ ch:'第四章', t:'il y a：往回量的一個點',
+  soul:'<span class="tw">il y a</span> ＋ 時間＝站在現在，往回量，<b>指到過去的某一個點</b>。',
+  body:
+  '<p>你在《y 與 en 的故事》第七章見過它：il y a 就是「有」。放在時間前面，「<b>有十天了</b>」就變成「<b>十天前</b>」。</p>'+
+  '<p>它指的是<b>一個點</b>，不是一段時間——所以動詞通常是<b>複合過去式</b>，講那個時間點發生的一件事。</p><ul class="ex">'+
+  ex('Ils ont déménagé <b>il y a</b> dix jours.','他們十天前搬家了。','規則卡、第 11 課')+
+  ex('Je suis arrivée en France <b>il y a</b> deux ans.','我兩年前到法國。','第 16 課')+
+  ex('Ma fille est née <b>il y a</b> un an.','我女兒一年前出生。','第 17 課')+
+  ex('J\'ai ouvert mon magasin <b>il y a</b> deux ans.','我兩年前開了我的店。','第 17 課')+
+  '</ul><p>跟 <span class="tw">depuis</span> 對照——一個是「那時候發生了一件事」，一個是「從那時候到現在一直這樣」：</p><ul class="ex">'+
+  ex('Je suis arrivée en France <b>il y a</b> deux ans.','我兩年前到法國（到達這件事發生在那個點）。','第 16 課')+
+  ex('J\'habite ici <b>depuis</b> deux ans.','我住在這裡兩年了（到現在還住著）。','規則卡')+
+  '</ul><div class="key"><strong>揣摩</strong>：中文的「…之前」→ <span class="tw">il y a</span>；中文的「…了（還在）」→ <span class="tw">depuis</span>。</div>',
+  real:'il y a ＋ 時長＝…之前，指過去的一個時間點，動詞多用複合過去式（第 11、16、17 課）。il ＋ y ＋ a 的字面組成是事實。',
+  meta:'「有十天了 → 十天前」是幫你理解的解讀，不是查到的歷史；「往回量」是畫面。' },
+
+{ ch:'第五章', t:'en：做完一件事，花了多長',
+  soul:'<span class="tw">en</span> ＋ 時間＝<b>用多少時間完成</b>。',
+  body:
+  '<p>這個 <span class="tw">en</span> 是介系詞——就是《y 與 en 的故事》第六章那個「冒名的雙胞胎」，也是《地點介系詞家族》裡 en France 的那個 en。它在時間這一家的工作是：<b>把一件事從開始到完成，總共用了多長</b>。</p><ul class="ex">'+
+  ex('Nina voudrait faire une licence de physique <b>en</b> trois ans.','妮娜想花三年念完物理學士。','Cahier 第 40 課')+
+  ex('…puis un master <b>en</b> deux ans et un doctorat.','……再花兩年念完碩士，然後念博士。','Cahier 第 40 課')+
+  '</ul><div class="key"><strong>揣摩</strong>：<span class="tw">en</span> 問的是「<b>花多久做完？</b>」；<span class="tw">pendant</span> 問的是「<b>做了多久？</b>」（不在乎有沒有做完）。<br>⚠️ 這個用法在你的筆記裡目前只有這兩句（第 40 課），聽到時認得就好。</div>',
+  real:'en ＋ 時長＝完成一件事所用的時間（第 40 課）；這個 en 是介系詞，不是代名詞 en。',
+  meta:'「雙胞胎」是比喻；「花多久做完 vs 做了多久」是幫你分辨的經驗法則。' },
+
+{ ch:'第六章', t:'dans：從現在往後數',
+  soul:'<span class="tw">dans</span> ＋ 時間＝站在現在，<b>往未來數</b>多久之後。',
+  body:
+  '<p><span class="tw">dans</span> 在《地點介系詞家族》裡是「在裡面」。放到時間上，它是「<b>從現在往後數，過了這麼久之後</b>」——講的是還沒發生的事。</p><ul class="ex">'+
+  ex('<b>dans</b> un an','一年後（還沒發生）','第 17 課')+
+  ex('Elle s\'installe à Québec <b>dans</b> une semaine.','她一個禮拜後要搬去魁北克市。','Cahier 第 21 課')+
+  ex('L\'avion repart de Bordeaux <b>dans</b> une heure.','飛機一小時後從波爾多起飛。','Cahier 第 21 課')+
+  '</ul><div class="key"><strong>揣摩：最容易搞混的一對</strong><br><span class="tw">dans</span> un an＝一年<b>後</b>（未來的一個點）<br><span class="tw">en</span> deux ans＝<b>花</b>兩年（做完一件事的長度）<br><span class="tw">il y a</span> deux ans＝兩年<b>前</b>（過去的一個點）</div>',
+  real:'dans ＋ 時長＝從現在起多久之後，講未來（第 17、21 課）。',
+  meta:'「往未來數」是畫面。' },
+
+{ ch:'第七章', t:'兩個小跟班：longtemps、toujours',
+  soul:'不想說確切多久的時候，派副詞上場。',
+  body:
+  '<ul class="ex">'+
+  ex('Ça dure <b>longtemps</b> ?','這要花很久嗎？','Cahier 第 16 課：longtemps＝很久')+
+  ex('On étudie <b>longtemps</b> pour avoir un doctorat.','為了拿到博士學位，要念很久。','Cahier 第 16 課')+
+  ex('Je suis <b>toujours</b> à la bibliothèque. Je n\'ai pas fini mes recherches.','我還在圖書館，研究還沒做完。','Cahier 第 16 課：toujours＝還在')+
+  '</ul><div class="key"><strong>揣摩</strong>：<b>toujours</b> 在這裡不是「總是」，是「<b>還</b>」——事情還沒結束，跟 depuis 同一國。</div>',
+  real:'longtemps＝很久；toujours 除了「總是」，也可以是「還（仍然）」（第 16 課）。副詞直接放動詞後。',
+  meta:'「小跟班」是比喻。' },
+
+{ ch:'終章', t:'一張判斷流程',
+  soul:'問三個問題，就知道叫誰。',
+  body:
+  '<ol class="flow">'+
+  '<li><b>講的是未來嗎？</b>→「多久之後」用 <span class="tw">dans</span></li>'+
+  '<li><b>講的是過去的一個時間點嗎？</b>→「多久之前」用 <span class="tw">il y a</span>（動詞多用複合過去式）</li>'+
+  '<li><b>講的是一段長度嗎？</b>再問：<br>到現在<b>還在繼續</b> → <span class="tw">depuis</span>（或 ça fait…que），動詞用<b>現在式</b><br><b>已經結束</b>的一段 → <span class="tw">pendant</span><br><b>做完一件事花多久</b> → <span class="tw">en</span></li>'+
+  '</ol>'+
+  '<div class="related">📖 相關故事：<a href="y_en_story.html">y 與 en 的故事</a>（il y a 的 y、雙胞胎 en）・<a href="lieu_story.html">地點介系詞家族</a>（dans、en 的另一份工作）</div>',
+  real:'這三個問題就是上面各章規則的整理。', meta:'' }
+];
+storyStart(CH,'temps_story_pos');
+</script>
+<script src="return_to.js"></script>
+</body>
+</html>
