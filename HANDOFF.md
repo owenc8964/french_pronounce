@@ -4907,6 +4907,13 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - 🐛 順手發現：`tools/tmp_quest_nosync.js make` 產的暫存頁**自己回報 `sync tag present? true`**——那支工具已經不可靠，這次改用自己的隔離複本（只刪 `<script src=sync_supabase.js>`），⚠️ 以後測 quest.html 別用它。
 - ✅ 試跑（隔離複本，ROOM 沒動）：手機 375 版面；一局 20 題（含 1 跳過、4 錯）→ 結算正確、金幣 +15、紀錄 18 字；無錯誤。
 
+#### 三之五十一、10-12：問老師的不進筆記／參考遊戲《蔣出來》／研究「高手怎麼學會的」
+
+- **Owen**：「要問老師的不要放上筆記喔！」→ 第40課的「要問老師的事」unit 已拿掉（commit 4e872a6）。給老師的訊息只在對話裡給（這次：COI 為什麼 lui réponds 可以、lui pense 不行；＋提醒老師把借她的便當盒帶來）。
+- **Owen**：「https://whoismygrandpa.win/game 我覺得這遊戲比較像是我要說的感覺。RPG 真的要有在走路，不是只有網頁對話。」→ 看過玩法（沒開局：開局要送公開排行榜暱稱），骨架記進 `STORY_DESIGN.md`「參考遊戲」一節＋memory `project_rpg_needs_walking`。⏸ 待 Owen 決定：先做劇情機制還是先做走路地圖。
+- **Owen**：「Elon Musk 可以在很忙的情況把東西學得又快又好，究竟是為什麼？我能做哪些事？」→ `research/2026-10-12_高手怎麼學會的.md`（已登記 INDEX）。結論：Musk 的說法多是軼事（語意樹＝先樹幹後樹葉；自學火箭的故事主要來自 Jim Cantrell 一人）；研究支持的七件事＝先抓骨架、練像考試的動作、考自己不重讀（Dunlosky 最高評價）、只練弱點（Macnamara：效果量因領域差很多）、自我解釋 g=.55、回饋對事不對人（Kluger & DeNisi：>1/3 讓表現變差）、固定觸發 d=.65＋分散練習。建議先做的三件：一個固定觸發、每週一次直接做考試任務、新文法先找樹枝。
+- ⚠️ 週研究 W42 抓到的 bug 還沒修：今日閱讀的跳過（`readSkipQ`）沒記 known，跳過的題會以最高優先權一直回來。
+
 #### 三之五十、10-11：第40課筆記（p.163 Le pronom COI y／p.164 總複習／Unité 12 Soif de nature：Trashtag、biodiversité、L'impératif et les pronoms）＋連動
 
 - **來源**：Owen 貼的整堂逐字稿；頁碼對快取 → **Édito A2 p.163（下半）、164、167–170**。⛔ 沒上到：p.164 練習1（mise en relief，電子檔看不到底線）／練習4／Phonie-graphie、p.165 Atelier、p.169 B 聽力、p.169 練習5、p.170 練習6。Trashtag 海報的步驟文字電子檔看不到，筆記只依當堂內容寫、已標明。
