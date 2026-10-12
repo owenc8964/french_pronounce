@@ -3033,9 +3033,32 @@ function oldQuestion(type,cur){
     if(type==='gender'&&q.opts&&q.opts.length>=2) return true;
     return typeof q.a==='string'&&q.a.length>1; });
   var fresh=pool.filter(function(q){ return ((B&&B.used)||[]).indexOf(q.q)<0; }); if(fresh.length) pool=fresh;
+  if(type==='fill') pool=fillClean(pool);   /* B11：老朋友的填空也不抽沒頭沒尾的練習卡 */
   if(!pool.length) return null;
   var q0=weightedPick(pool,pool.map(function(q){ return dueScore(srsOf(q)); })), q={};
   Object.keys(q0).forEach(function(k){ q[k]=q0[k]; }); q._old=q0.lesson; return q;
+}
+/* ════════════════════════════════════════════════════════════════
+   B11 填空題品質分流（2026-10-13 排程；09-18 Owen：「填空沒頭沒尾」）
+   盤點工具 tools/tmp_fill_quality.js（同一套規則，改一邊要改另一邊）：982 題 fill
+     2 ＝ 有空格＋知道意思（zh 欄或題幹裡有中文）882 題
+     1 ＝ 有句子但沒中文（J'aime _____ musique. (定冠詞)）／整句改寫題 75 題
+     0 ＝ 練習卡（「vouloir 變位：ils _____」）或概念問答（「trouver → 過去分詞是？」）25 題
+   ⭐ 地城／副本／主線／老朋友：有 1 以上就不抽 0；塔照舊全收（⛔ 不刪題，只是不在劇情戰鬥裡出）
+   ════════════════════════════════════════════════════════════════ */
+function fillTier(q){
+  var stem=String(q.q||''), zhCtx=!!(q.zh && String(q.zh).trim()) || /[一-鿿]/.test(stem.replace(/（[^）]*）|\([^)]*\)/g,''));
+  var n=stem.replace(/（[^）]*）|\([^)]*\)/g,' ').replace(/_{2,}|…+|\.{3,}/g,' ').replace(/[^\sA-Za-zÀ-ÿœŒæÆ'’-]/g,' ')
+            .split(/\s+/).filter(function(w){ return /[A-Za-zÀ-ÿ]{2,}/.test(w); }).length;
+  if(!/_{2,}|…{2,}|\.{4,}/.test(stem)) return n>=3 ? 1 : 0;
+  if(/變位\s*[：:]/.test(stem) && n<3) return 0;
+  if(zhCtx && n>=1) return 2;
+  if(n>=2) return 1;
+  return 0;
+}
+function fillClean(pool){
+  var ok=pool.filter(function(q){ return fillTier(q)>0; });
+  return ok.length ? ok : pool;   /* 整個池子都是練習卡時照舊給，⛔ 不讓招式變成沒題 */
 }
 function battleQSkip(){
   var q=B&&B.curQ; sfx('click_001'); if(q) redoDrop(q);
@@ -3759,6 +3782,7 @@ function useMove(k){
     var less=pool.filter(function(q){ var r=kn[q.q]; return !r || Math.random()<1/(1+2*r.n); });
     if(less.length) pool=less;
   }
+  if(m.type==='fill' && !(B && B.tower)) pool=fillClean(pool);   /* B11：地城／副本／主線的大招不抽沒頭沒尾的練習卡（塔照舊全收） */
   /* 優化：錯過的題多出、已經穩的（連對 3 次以上且沒錯過）少出——跟塔同一個權重，⛔ 不刪任何題 */
   var q=weightedPick(pool, pool.map(function(x){ var s=srsOf(x), wt=((s.c||0)>=3&&!s.w)?0.2:1; if(s.w) wt+=Math.min(2,s.w*0.5); return wt; }));
   B.used=(B.used||[]).concat([q.q]); B.move=m;
