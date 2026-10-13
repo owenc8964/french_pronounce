@@ -20174,5 +20174,488 @@ const CHUNKS = [
   "fr": "se dégrader",
   "zh": "變糟、惡化",
   "note": "v.｜"
+ },
+ {
+  "id": "L41_C_est_du_gaspillage",
+  "lesson": 41,
+  "fr": "C'est du gaspillage !",
+  "zh": "這是浪費！",
+  "note": "🎙 老師的例子：食物沒吃完"
+ },
+ {
+  "id": "L41_un_produit_polluant",
+  "lesson": 41,
+  "fr": "un produit polluant",
+  "zh": "會造成污染的產品",
+  "note": "課本手寫補充"
+ },
+ {
+  "id": "L41_sauver_la_planète",
+  "lesson": 41,
+  "fr": "sauver la planète",
+  "zh": "拯救地球",
+  "note": "課本詞彙表"
+ },
+ {
+  "id": "L41_Pour_que_tu_sois_en_form",
+  "lesson": 41,
+  "fr": "Pour que tu sois en forme, je te conseille de faire du yoga.",
+  "zh": "為了讓你保持健康，我建議你做瑜伽。",
+  "note": "🎙 老師：給建議很常用 pour que"
+ },
+ {
+  "id": "L41_Pour_qu_il_comprenne_pou",
+  "lesson": 41,
+  "fr": "Pour qu'il comprenne, pour que nous comprenions.",
+  "zh": "為了讓他懂、為了讓我們懂。",
+  "note": "🎙 老師示範：nous 形才不一樣"
+ },
+ {
+  "id": "L41_Je_suis_matinal",
+  "lesson": 41,
+  "fr": "Je suis matinal.",
+  "zh": "我是早起的人。",
+  "note": "🎙 老師的例子（女生說 matinale）"
+ },
+ {
+  "id": "L41_Si_tu_en_veux_tu_peux_en",
+  "lesson": 41,
+  "fr": "Si tu en veux, tu peux en prendre.",
+  "zh": "你想要的話，可以拿一些。",
+  "note": "🎙 請你吃 financiers 時說的。⭐ en 放在 prendre 前（拿的是蛋糕），⛔ 不是 en peux prendre"
+ },
+ {
+  "id": "L41_Ne_m_embête_pas",
+  "lesson": 41,
+  "fr": "Ne m'embête pas.",
+  "zh": "別煩我。",
+  "note": "🎙 embêter＝打擾、煩"
+ },
+ {
+  "id": "L41_Plus_maintenant_mais_ava",
+  "lesson": 41,
+  "fr": "Plus maintenant, mais avant, elle en avait.",
+  "zh": "現在沒有了，但以前她有。",
+  "note": "🎙 幫你改句子：plus maintenant＝現在不再"
+ },
+ {
+  "id": "L41_On_dit_souvent_réviser_p",
+  "lesson": 41,
+  "fr": "On dit souvent « réviser pour un examen ».",
+  "zh": "我們常說「為考試準備」。",
+  "note": "🎙 réviser＝主動讀書準備，不只是看一遍"
+ },
+ {
+  "id": "L41_l_archipel",
+  "lesson": 41,
+  "fr": "l'archipel",
+  "zh": "群島",
+  "note": "m.｜🎙 例如沖繩"
+ },
+ {
+  "id": "L41_le_désert",
+  "lesson": 41,
+  "fr": "le désert",
+  "zh": "沙漠",
+  "note": "m.｜"
+ },
+ {
+  "id": "L41_la_forêt_tropicale",
+  "lesson": 41,
+  "fr": "la forêt tropicale",
+  "zh": "熱帶森林",
+  "note": "f.｜🎙 台灣的森林"
+ },
+ {
+  "id": "L41_le_lagon",
+  "lesson": 41,
+  "fr": "le lagon",
+  "zh": "潟湖",
+  "note": "m.｜"
+ },
+ {
+  "id": "L41_la_nature",
+  "lesson": 41,
+  "fr": "la nature",
+  "zh": "大自然",
+  "note": "f.｜"
+ },
+ {
+  "id": "L41_l_océan",
+  "lesson": 41,
+  "fr": "l'océan",
+  "zh": "海洋",
+  "note": "m.｜"
+ },
+ {
+  "id": "L41_le_parc_naturel",
+  "lesson": 41,
+  "fr": "le parc naturel",
+  "zh": "自然公園、保護區",
+  "note": "m.｜🎙 受保護的"
+ },
+ {
+  "id": "L41_la_planète_Terre",
+  "lesson": 41,
+  "fr": "la planète Terre",
+  "zh": "地球",
+  "note": "f.｜la Terre（大寫）＝地球"
+ },
+ {
+  "id": "L41_le_site_naturel",
+  "lesson": 41,
+  "fr": "le site naturel",
+  "zh": "自然景點",
+  "note": "m.｜"
+ },
+ {
+  "id": "L41_l_écologie",
+  "lesson": 41,
+  "fr": "l'écologie",
+  "zh": "生態學、環保",
+  "note": "f.｜"
+ },
+ {
+  "id": "L41_l_espèce_protégée",
+  "lesson": 41,
+  "fr": "l'espèce protégée",
+  "zh": "保育物種",
+  "note": "f.｜"
+ },
+ {
+  "id": "L41_protéger",
+  "lesson": 41,
+  "fr": "protéger",
+  "zh": "保護",
+  "note": "v.｜🎙 問題發生前"
+ },
+ {
+  "id": "L41_sauver",
+  "lesson": 41,
+  "fr": "sauver",
+  "zh": "拯救",
+  "note": "v.｜🎙 已經有問題了；sauver la planète"
+ },
+ {
+  "id": "L41_recycler",
+  "lesson": 41,
+  "fr": "recycler",
+  "zh": "回收",
+  "note": "v.｜le recyclage 回收（名詞）"
+ },
+ {
+  "id": "L41_valoriser",
+  "lesson": 41,
+  "fr": "valoriser",
+  "zh": "推廣、讓人看見價值",
+  "note": "v.｜valoriser la biodiversité"
+ },
+ {
+  "id": "L41_le_gaspillage",
+  "lesson": 41,
+  "fr": "le gaspillage",
+  "zh": "浪費",
+  "note": "m.｜🎙 C'est du gaspillage !"
+ },
+ {
+  "id": "L41_les_pesticides",
+  "lesson": 41,
+  "fr": "les pesticides",
+  "zh": "農藥",
+  "note": "m.pl.｜"
+ },
+ {
+  "id": "L41_le_plastique",
+  "lesson": 41,
+  "fr": "le plastique",
+  "zh": "塑膠",
+  "note": "m.｜"
+ },
+ {
+  "id": "L41_polluant_e",
+  "lesson": 41,
+  "fr": "polluant(e)",
+  "zh": "造成污染的",
+  "note": "adj.｜un produit polluant"
+ },
+ {
+  "id": "L41_disparaître",
+  "lesson": 41,
+  "fr": "disparaître",
+  "zh": "消失",
+  "note": "v.｜"
+ },
+ {
+  "id": "L41_être_en_danger",
+  "lesson": 41,
+  "fr": "être en danger",
+  "zh": "處於危險中",
+  "note": "v.｜"
+ },
+ {
+  "id": "L41_le_comportement",
+  "lesson": 41,
+  "fr": "le comportement",
+  "zh": "行為",
+  "note": "m.｜"
+ },
+ {
+  "id": "L41_surprenant_e",
+  "lesson": 41,
+  "fr": "surprenant(e)",
+  "zh": "令人驚訝的",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L41_l_instinct",
+  "lesson": 41,
+  "fr": "l'instinct",
+  "zh": "本能",
+  "note": "m.｜🎙 結尾 ct 不唸"
+ },
+ {
+  "id": "L41_le_robinet",
+  "lesson": 41,
+  "fr": "le robinet",
+  "zh": "水龍頭",
+  "note": "m.｜"
+ },
+ {
+  "id": "L41_l_ancêtre",
+  "lesson": 41,
+  "fr": "l'ancêtre",
+  "zh": "祖先",
+  "note": "m.｜"
+ },
+ {
+  "id": "L41_le_félin",
+  "lesson": 41,
+  "fr": "le félin",
+  "zh": "貓科動物",
+  "note": "m.｜🎙 老虎、貓都是"
+ },
+ {
+  "id": "L41_stagnant_e",
+  "lesson": 41,
+  "fr": "stagnant(e)",
+  "zh": "不流動的（水）",
+  "note": "adj.｜課本註：qui ne circule pas"
+ },
+ {
+  "id": "L41_s_empoisonner",
+  "lesson": 41,
+  "fr": "s'empoisonner",
+  "zh": "中毒",
+  "note": "v.｜le poison 毒"
+ },
+ {
+  "id": "L41_la_proie",
+  "lesson": 41,
+  "fr": "la proie",
+  "zh": "獵物",
+  "note": "f.｜🎙 貓是獵人，牠殺的是 proie"
+ },
+ {
+  "id": "L41_la_gamelle",
+  "lesson": 41,
+  "fr": "la gamelle",
+  "zh": "（動物的）食物碗",
+  "note": "f.｜🎙 裝水的是 le bol d'eau"
+ },
+ {
+  "id": "L41_éloigner",
+  "lesson": 41,
+  "fr": "éloigner",
+  "zh": "拉開距離",
+  "note": "v.｜loin 遠"
+ },
+ {
+  "id": "L41_le_poulailler",
+  "lesson": 41,
+  "fr": "le poulailler",
+  "zh": "雞舍",
+  "note": "m.｜"
+ },
+ {
+  "id": "L41_le_coq",
+  "lesson": 41,
+  "fr": "le coq",
+  "zh": "公雞",
+  "note": "m.｜"
+ },
+ {
+  "id": "L41_le_camarade",
+  "lesson": 41,
+  "fr": "le camarade",
+  "zh": "同伴",
+  "note": "m.｜🎙 跟你在一起的人"
+ },
+ {
+  "id": "L41_matinal_e",
+  "lesson": 41,
+  "fr": "matinal(e)",
+  "zh": "早上的",
+  "note": "adj.｜🎙 Je suis matinal＝我是早起的人"
+ },
+ {
+  "id": "L41_en_fonction_de",
+  "lesson": 41,
+  "fr": "en fonction de",
+  "zh": "依照、看…而定",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L41_en_cas_de",
+  "lesson": 41,
+  "fr": "en cas de",
+  "zh": "在…的情況下",
+  "note": "loc.｜en cas d'urgence 緊急時"
+ },
+ {
+  "id": "L41_la_terre_ferme",
+  "lesson": 41,
+  "fr": "la terre ferme",
+  "zh": "陸地",
+  "note": "f.｜🎙 ferme＝硬的、穩的"
+ },
+ {
+  "id": "L41_reprendre_son_souffle",
+  "lesson": 41,
+  "fr": "reprendre son souffle",
+  "zh": "換口氣",
+  "note": "v.｜課本註：sa respiration"
+ },
+ {
+  "id": "L41_en_pleine_sieste",
+  "lesson": 41,
+  "fr": "en pleine sieste",
+  "zh": "正在午睡中",
+  "note": "loc.｜🎙 睡得正熟"
+ },
+ {
+  "id": "L41_le_rongeur",
+  "lesson": 41,
+  "fr": "le rongeur",
+  "zh": "囓齒動物",
+  "note": "m.｜🎙 老鼠那一類"
+ },
+ {
+  "id": "L41_détester",
+  "lesson": 41,
+  "fr": "détester",
+  "zh": "討厭",
+  "note": "v.｜détesté et chassé 被討厭被獵捕"
+ },
+ {
+  "id": "L41_l_abeille",
+  "lesson": 41,
+  "fr": "l'abeille",
+  "zh": "蜜蜂",
+  "note": "f.｜la ruche 蜂窩"
+ },
+ {
+  "id": "L41_menacé_e",
+  "lesson": 41,
+  "fr": "menacé(e)",
+  "zh": "瀕危的、受威脅的",
+  "note": "adj.｜une espèce menacée"
+ },
+ {
+  "id": "L41_la_menace",
+  "lesson": 41,
+  "fr": "la menace",
+  "zh": "威脅",
+  "note": "f.｜🎙 menacer 威脅：Je te menace."
+ },
+ {
+  "id": "L41_l_Outre_mer",
+  "lesson": 41,
+  "fr": "l'Outre-mer",
+  "zh": "法國海外領地",
+  "note": "m.｜outre＝越過，mer＝海"
+ },
+ {
+  "id": "L41_préservé_e",
+  "lesson": 41,
+  "fr": "préservé(e)",
+  "zh": "受保護的",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L41_le_reptile",
+  "lesson": 41,
+  "fr": "le reptile",
+  "zh": "爬蟲類",
+  "note": "m.｜🎙 變色龍、鱷魚、烏龜、蛇"
+ },
+ {
+  "id": "L41_le_caméléon",
+  "lesson": 41,
+  "fr": "le caméléon",
+  "zh": "變色龍",
+  "note": "m.｜"
+ },
+ {
+  "id": "L41_la_tortue",
+  "lesson": 41,
+  "fr": "la tortue",
+  "zh": "烏龜",
+  "note": "f.｜"
+ },
+ {
+  "id": "L41_le_serpent",
+  "lesson": 41,
+  "fr": "le serpent",
+  "zh": "蛇",
+  "note": "m.｜"
+ },
+ {
+  "id": "L41_le_bout_du_doigt",
+  "lesson": 41,
+  "fr": "le bout du doigt",
+  "zh": "指尖",
+  "note": "m.｜le doigt 手指"
+ },
+ {
+  "id": "L41_la_déforestation",
+  "lesson": 41,
+  "fr": "la déforestation",
+  "zh": "森林砍伐",
+  "note": "f.｜"
+ },
+ {
+  "id": "L41_s_engager_à",
+  "lesson": 41,
+  "fr": "s'engager à",
+  "zh": "承諾（做某事）",
+  "note": "v.｜"
+ },
+ {
+  "id": "L41_se_mettre_d_accord",
+  "lesson": 41,
+  "fr": "se mettre d'accord",
+  "zh": "達成共識",
+  "note": "v.｜"
+ },
+ {
+  "id": "L41_la_pêche",
+  "lesson": 41,
+  "fr": "la pêche",
+  "zh": "捕魚",
+  "note": "f.｜"
+ },
+ {
+  "id": "L41_le_renouvellement",
+  "lesson": 41,
+  "fr": "le renouvellement",
+  "zh": "更新、恢復",
+  "note": "m.｜le renouvellement des poissons"
+ },
+ {
+  "id": "L41_approuver",
+  "lesson": 41,
+  "fr": "approuver",
+  "zh": "贊成",
+  "note": "v.｜"
  }
 ];

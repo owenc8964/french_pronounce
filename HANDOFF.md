@@ -13,7 +13,7 @@
 ## 🧭 現在站在哪裡（2026-09-01 深夜更新，⭐ 新 session 先讀這一塊，再往下）
 
 > 🆕 **2026-10-05 session 結束時的狀態（新 session 先看這段，再往下）**：
-> - 課程進度：**第 40 課**（p.163 COI y＋Unité 12 Soif de nature 到 p.170 命令式＋代名詞）筆記＋連動完成（見「三之五十」）。下次：Unité 12 剩下的部分。
+> - 課程進度：**第 41 課**（p.171–174 環境詞彙、動物行為、目的 pour／pour que、瀕危物種）筆記＋連動完成（見「三之五十八」）。下次：Unité 12 剩下的部分。
 > - 這輪工作紀錄在「三之二十九」～「三之四十五」（搜尋「三之四」）：變位總覽改版＋練習化（蓋住／隨機 8 題／記速／鏡子）、四篇研究、遊戲修 bug（同步蓋回主線、主線倒下、四格卡死）、文法三連、課本題補齊（A2 本冊 158＋A1 弱項 139）、第 39 課。
 > - ✅ **Cahier A2 練習本補題已合併**（+328 題，第 17–39 課，答案全出自 Corrigés；題庫 2136 題、choose 缺答案 0）。✅ **10-07 補完「答錯沒一行原因」**：見「三之四十六」。刻意不收：第19課 p.10 3f（Corrigés 寫 il y a，標準是 pendant）等 OCR 糊掉的題。
 > - ⏸ **10-08 主線改版規格在 `STORY_DESIGN.md`（三之四十九），等 Owen 決定題材／原創例外／舊主線去留。**
@@ -4907,6 +4907,17 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - 紀錄 `clb7_gender_seen`（每字一物件＋last）：上次錯的 ×4、錯多於對 ×3、連對 3 次且 2 次 <2 秒的 ×0.35。答對也呼叫 `growRec`（key `g:<字>`）→ 隔天以後又答對＝站穩，寵物會長大。每答對 1 枚金幣，中途回去也照給。結算：✓ 數、平均秒數、<2 秒的個數、「再看一眼這幾個」（可點聽）。⛔ 不顯示分母。
 - 🐛 順手發現：`tools/tmp_quest_nosync.js make` 產的暫存頁**自己回報 `sync tag present? true`**——那支工具已經不可靠，這次改用自己的隔離複本（只刪 `<script src=sync_supabase.js>`），⚠️ 以後測 quest.html 別用它。
 - ✅ 試跑（隔離複本，ROOM 沒動）：手機 375 版面；一局 20 題（含 1 跳過、4 錯）→ 結算正確、金幣 +15、紀錄 18 字；無錯誤。
+
+#### 三之五十八、10-13：第41課筆記（p.171 環境詞彙／p.172 動物的奇怪行為／p.173 L'expression du but／回頭複習 p.117 虛擬式／p.174 瀕危與保育物種／Oh le cliché 寵物）＋連動
+
+- **來源**：`~/Desktop/1013/` 5 張截圖（含 Owen 手寫）＋整堂逐字稿；對課本快取 p.172、173。⛔ 沒上到：p.171 練習 1–4、p.172 D 影片、p.173 練習 7、p.174 F 地圖細節與 G 練習 5。
+- ✅ 筆記（`lesson-41`，10 unit，check_notes 0／0）。⚠️ 自查拿掉 1 句我改寫的法文（Oh le cliché 標題改回原文）；題庫 6 題自己改寫的題幹換成課本／老師原句、刪 1 題。
+- ⚠️ **標出來的**：① 老師說 connu「應該是副詞」→ 是過去分詞當形容詞 ② 老師不確定寒帶說法講了 frigide → 標準是 zone polaire ③ 練習 6b sensibilisation sur les animaux → 標準更常說 sensibiliser (le public) à。Owen 手寫答案 p.173 練習 4／5／6、p.117 練習 3 全對。
+- ✅ 連動：chunks **+69**｜questions **+32**（新 topic `expression-but` 17、新 topic `vocab-animaux` 9、`vocab-environnement` +6）＋ TOPIC_LABELS 三處（119 個）｜sentences `S_L41_1~12`（→388）｜table_drill +1 `expression-but-drill`（88 個）｜gram_rules **新 A2 點 `expression-but`**（4 例句）＋ subjonctif 補 pour que 一條｜quest.html `G3_AIM` 加 `expression-but`｜map `CURRENT_LESSON` 41＋2 塊（`expression-but`、`animaux-vocab`）。
+- ✅ **新工具 `tools/check_g3.js [課次]`**：三連 topic 都有 G3_AIM、Exemple 必須是 gram_rules 現成例句、三連題都有 zh、交卷整句有填回答案；給課次會印出那課的交卷整句。⭐ 之後每課連動都要跑。
+- ✅ 試跑（無同步複本）：筆記第41課 10 unit／60 句；quiz `?lesson=41`；gram_trainer `?point=expression-but` 規則卡；map 第 41 課＋2 塊；table_drill 新表 8 列；遊戲副本第 41 課可進、三連出「目的」、🎯 判斷句＋Exemple 正確；無主控台錯誤。
+- 🎯 **老師下課提醒**：新學生 DELF B2 但 TCF 聽力只有 B1，因為不習慣加拿大口音 → 要花功夫練。🔍 查官方：TCF Canada 聽力 39 題／35 分鐘，**官方沒公布口音比例**；FEI 正與魁北克（MIFI、UQAM）做以魁北克用語為主的 **TCF Québec**，聽力預計 2026 年底（⚠️ 不是 Owen 要考的 TCF Canada）。已寫進筆記考試策略 unit。⏭ 建議：先聽官方範例題判斷口音比例；聽力輸入加一點加拿大法語；下一輪聽力週研究可專查加拿大口音的特徵與練法。
+- 🎙 老師下次會寄一本 A1「對話裡的文法」（有音檔），口語寫法，可自己讀。
 
 #### 三之五十七、10-12：故事書第四本「時間的家族」＋範圍標示
 

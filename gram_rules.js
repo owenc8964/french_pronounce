@@ -660,6 +660,7 @@ const GRAM_POINTS = [
         '不規則：être → sois／soit／soyons／soient；avoir → aie／ait／ayons／aient；aller → aille／allions；faire → fasse／fassions',
         '⚠️ aie／aies／ait／aient 全部唸 [ɛ]，跟 j\'ai 同音，只能看拼字',
         'il faut ＋ 原形＝泛指；il faut que ＋ 虛擬式＝指定某人',
+        '⭐ 第41課：pour que（為了讓…）後面也接虛擬式——Pour que votre chat se sente bien… ；savoir → que ses camarades sachent',
       ],
       examples:[
         { fr:'Il faut que tu fasses attention sur les réseaux sociaux.', zh:'你在社群網路上要小心。（faire → fasses）' },
@@ -788,6 +789,26 @@ const GRAM_POINTS = [
         { fr:"Elle me demande pourquoi ce poste m'intéresse.", zh:'她問我為什麼對這個職位有興趣。' },
         { fr:"Ils disent que c'est plus facile pour eux d'avoir un CV d'une page.", zh:'他們說一頁的履歷對他們來說比較容易。' },
       ]}},
+  { id:'expression-but', name:"L'expression du but", icon:'🎯', zone:'A2', cat:'discours',
+    lessons:[41], topics:['expression-but'], unlocked:true,   // 10-13（第41課 Édito A2 p.173）
+    rule:{
+      title:'目的 — pour ＋ 原形，pour que ＋ 虛擬式：看主詞換了沒',
+      why:'「為了…」在法文有兩種接法，分界線只有一條：後半句的動作是誰做的。如果還是前半句那個人（公雞叫，是為了公雞自己去通知），就不需要再說一次主詞，直接 pour ＋ 原形。如果換了一個人（母雞叫，是為了讓同伴知道），就要用 pour que 把新的主詞帶出來；而 que 後面的事是「希望發生、還沒發生」的，所以用虛擬式。否定時，pour ne pas 兩個字一起放在原形前面；pour que 則是虛擬式照一般方式否定。',
+      points:[
+        '同一個主詞 → pour ＋ 原形：Le coq chante pour informer en cas d\'urgence',
+        '主詞不同 → pour que ＋ 虛擬式：La poule crie pour que ses camarades sachent qu\'il y a un danger',
+        '否定：pour ne pas ＋ 原形（ne pas 一起放前面）；pour que ＋ ne … pas ＋ 虛擬式',
+        'pour que 遇母音開頭的主詞 → pour qu\'il、pour qu\'elle',
+        '🎙 給建議很常用：Pour que tu sois en forme, je te conseille de faire du yoga',
+        '比較正式的說法：dans le but de ＋ 原形',
+      ],
+      examples:[
+        { fr:"Le coq chante pour informer en cas d'urgence.", zh:'公雞叫是為了在緊急時通知大家。（同一個主詞 → pour）' },
+        { fr:"La poule crie pour que ses camarades sachent qu'il y a un danger.", zh:'母雞叫是為了讓同伴知道有危險。（主詞不同 → pour que ＋ 虛擬式）' },
+        { fr:"Ils ne buvaient pas d'eau stagnante pour ne pas s'empoisonner.", zh:'牠們不喝不流動的水，以免中毒。（否定 → pour ne pas）' },
+        { fr:'Il faut protéger la biodiversité pour que les espèces animales ne disparaissent pas.', zh:'必須保護生物多樣性，物種才不會消失。（pour que 的否定）' },
+      ]}},
+
   { id:'gerondif', name:'Le gérondif', icon:'🌊', zone:'A2', cat:'verbe-mode',
     lessons:[35], topics:['gerondif'], unlocked:true,   // 09-22（第35課 Édito A2 p.131）從 B2 佔位點就地解鎖；map.html 的 gerondif 地塊靠同一個 id 連著，⛔ 不要改 id
     rule:{

@@ -111,6 +111,8 @@ var TOPIC_LABELS_FR = {
  "discours-rapporte": "Le discours rapporté",
  "imperatif-pronoms": "Impératif et pronoms",
  "vocab-environnement": "L'environnement",
+ "expression-but": "L'expression du but",
+ "vocab-animaux": "Les animaux",
  "message-formel": "Le message formel",
  "vocab-monde-travail": "Le monde du travail",
  "vocab-etudes": "Les études",
