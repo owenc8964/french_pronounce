@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>小鎮採集 · 樣本</title>
+<!--
+  town.html — 走動型採集樣本，2026-10-14
+  依據：research/2026-10-14_走動型學習遊戲怎麼設計.md（第五節「第二版」）
+  Owen：「蔣出來好玩是因為邊走有好玩的情節」「只有 un／une 學習的內容很有限」「可以，開工做樣本」
+       「能讓他在一個段落後告訴我錯的狀況跟原因，然後給我直接的建議跟說法嗎？」
+  ⭐ 核心循環：出門採集（礦坑＝動詞／樹叢＝名詞片語＋陰陽性／老鼠＝代名詞）→ 背包滿或天黑 → 回城
+     → 這一趟的回顧（錯在哪、為什麼、建議、正確說法）→ 交貨攤（打字填空＝產出）→ 升級。
+  ⭐ 答對＝貨品品質：答錯照樣收進背包，只是變成瑕疵品（後果在角色的錢包，不在他身上）。
+  ⭐ 回顧照 CLAUDE.md 教學鐵律分三類：⚡手滑（一句帶過）／✂️自動化缺口（直接連發，不重講規則）／🧠概念缺口（才給規則卡）；
+     判準不明時問「這個規則你講得出來嗎？」
+  ⛔ 不顯示分母、不說「你錯了 N 題」；跳過不計分、不進回顧。
+  ⚠️ 老鼠的「Le rat l'a pris / prise !」是模板句（無限城原創例外，Owen 10-14 同意；過去分詞配合，第 37 課）。其餘題目全出自 questions.js。
+  ⚠️ 樣本：紀錄只存在本機 town_sample_v1（不接同步、不寫 clb7_*）；只「讀」clb7_gram_stage／clb7_gender_seen 來判斷是哪一類錯。
+-->
+<script src="chunks.js"></script>
+<script src="questions.js"></script>
+<script src="gram_rules.js"></script>
+<script src="topic_labels.js"></script>
+<script src="tts_reader.js"></script>
+<style>
+:root { --bg:#14201a; --panel:#1c2a22; --line:#2f4438; --ink:#eef3ea; --dim:#9db1a2; --gold:#f0c95a; --red:#e07a6a; --green:#79d39a; --gray:#8a948d; --blue:#7fb4e6; }
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+body { background:var(--bg); color:var(--ink); font-family:'Segoe UI',system-ui,sans-serif; font-size:16px; line-height:1.6;
+  max-width:520px; margin:0 auto; padding:8px 12px 24px; user-select:none; -webkit-user-select:none; }
+.hud { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:6px; font-size:.92em; }
+.hud .chip { background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:2px 10px; }
+.hud .sp { flex:1; }
+.hud { flex-wrap:nowrap; gap:5px; font-size:.85em; }
+.hud .chip { padding:2px 8px; white-space:nowrap; }
+.hud button { padding:4px 8px; white-space:nowrap; }
+.hud button, .btn { background:#2b3d32; color:var(--ink); border:1px solid var(--line); border-radius:10px; padding:5px 10px; font-size:.9em; cursor:pointer; }
+.btn.main { background:#3c6b4c; border-color:#5a9a6e; }
+.btn.ghost { background:none; color:var(--dim); }
+.timebar { height:6px; background:#0c140f; border-radius:3px; overflow:hidden; margin-bottom:8px; }
+.timebar i { display:block; height:100%; background:linear-gradient(90deg,#f6b24a,#f0e07a); transition:width .2s; }
+.quest { font-size:.85em; color:var(--dim); margin-bottom:6px; }
+.quest b { color:var(--gold); }
+#map { position:relative; margin:0 auto; border-radius:12px; overflow:hidden; touch-action:manipulation; }
+.tile { position:absolute; display:flex; align-items:center; justify-content:center; }
+.g-grass { background:#2e5a3a; } .g-grass.alt { background:#2b5536; }
+.g-forest { background:#244a30; } .g-mine { background:#5a4a3a; } .g-field { background:#6b6a35; } .g-field.alt{ background:#666531; }
+.g-town { background:#6b5f52; } .g-path { background:#7d7058; } .g-house { background:#6b5f52; } .g-deep { background:#3f342a; } .g-deepf{ background:#1c3a26; }
+.ent { position:absolute; display:flex; align-items:center; justify-content:center; transition:left .14s linear, top .14s linear; pointer-events:none; }
+.ent.node { transition:none; }
+.ent.done { opacity:.35; filter:grayscale(.8); }
+.ent .star { position:absolute; top:-2px; right:-1px; font-size:.42em; color:var(--gold); }
+.zone { position:absolute; font-size:.62em; color:rgba(255,255,255,.75); background:rgba(0,0,0,.35); padding:0 6px; border-radius:6px; pointer-events:none; }
+#night { position:absolute; inset:0; background:rgba(5,10,40,.0); pointer-events:none; transition:background 1s; }
+.float { position:absolute; font-weight:700; pointer-events:none; animation:up 1s ease-out forwards; text-shadow:0 1px 2px #000; }
+@keyframes up { from{ opacity:1; transform:translateY(0); } to{ opacity:0; transform:translateY(-28px); } }
+.toast { text-align:center; color:var(--dim); font-size:.85em; min-height:1.5em; margin-top:6px; }
+
+/* 遭遇面板：地圖留在上面看得到（⛔ 不蓋滿整個畫面） */
+.sheet { position:fixed; left:0; right:0; bottom:0; max-width:520px; margin:0 auto; background:var(--panel); border-top:2px solid var(--line);
+  border-radius:16px 16px 0 0; padding:12px 16px 16px; max-height:62vh; overflow-y:auto; box-shadow:0 -8px 30px rgba(0,0,0,.5); display:none; z-index:10; }
+.sheet.on { display:block; }
+.sheet.full { max-height:92vh; }
+.sheet h3 { font-size:.95em; color:var(--gold); margin-bottom:6px; display:flex; justify-content:space-between; gap:8px; }
+.sheet h3 small { color:var(--dim); font-weight:400; }
+.qtext { font-size:1.08em; margin:6px 0 10px; }
+.qtext .fr { font-family:Georgia,serif; }
+.hint { font-size:.8em; color:var(--dim); margin-top:-6px; margin-bottom:8px; }
+.opts { display:flex; flex-direction:column; gap:7px; }
+.opts.row { flex-direction:row; }
+.opts.row button { flex:1; font-size:1.25em; padding:14px 0; }
+.opts button { background:#24362b; color:var(--ink); border:1px solid var(--line); border-radius:12px; padding:10px 12px; font-size:1em; text-align:left; cursor:pointer; font-family:Georgia,serif; }
+.opts button.ok { background:#2d5a3c; border-color:var(--green); }
+.opts button.no { background:#4a2c28; border-color:var(--red); }
+.fb { margin-top:10px; font-size:.92em; }
+.fb .say { font-family:Georgia,serif; color:var(--gold); }
+.row2 { display:flex; gap:8px; margin-top:12px; justify-content:space-between; align-items:center; }
+input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px; border:1px solid var(--line); background:#0f1813; color:var(--ink); font-family:Georgia,serif; user-select:text; -webkit-user-select:text; }
+.spk { background:none; border:none; cursor:pointer; font-size:1em; padding:0 4px; }
+
+/* 回顧 */
+.rv-top { font-size:.9em; color:var(--dim); margin-bottom:10px; }
+.rv-grp { border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:10px; background:#18241d; }
+.rv-grp .t { font-weight:700; }
+.rv-grp .t small { color:var(--dim); font-weight:400; }
+.tag { display:inline-block; font-size:.75em; border-radius:6px; padding:0 6px; margin-left:4px; background:#2f3a33; color:#cfd8d1; }
+.advice { margin:6px 0; font-size:.92em; }
+.item { border-top:1px dashed var(--line); padding-top:6px; margin-top:6px; font-size:.9em; }
+.item .say { font-family:Georgia,serif; color:var(--gold); font-size:1.05em; }
+.item .why { color:var(--dim); }
+.item .mine { color:var(--gray); }
+.rule { background:#101a14; border-radius:10px; padding:8px 10px; margin-top:6px; font-size:.88em; }
+.rule ul { padding-left:18px; }
+.order { border:1px solid var(--line); border-radius:12px; padding:8px 10px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.order .need { font-size:.9em; }
+.bagrow { display:flex; flex-wrap:wrap; gap:4px; margin:6px 0 10px; }
+.bagrow span { background:#24362b; border-radius:8px; padding:1px 7px; font-size:.85em; }
+.bagrow span.bad { background:#3a3a2c; color:var(--gray); }
+.shop { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+.muted { color:var(--dim); font-size:.85em; }
+</style>
+</head>
+<body>
+
+<div class="hud">
+  <span class="chip" id="hDay">第 1 天</span>
+  <span class="chip" id="hGold">💰 0</span>
+  <span class="chip" id="hBag">🎒 0/8</span>
+  <span class="sp"></span>
+  <button id="bHome" title="自動走回小鎮">🏠回城</button>
+  <button id="bRest" title="今天就到這裡（不擋任何東西）">🌙收工</button>
+</div>
+<div class="timebar"><i id="tb"></i></div>
+<div class="quest" id="quest"></div>
+<div id="map"><div id="night"></div></div>
+<div class="toast" id="toast">點地圖走過去。碰到 🪨 🌳 會自動開始，🐀 會偷背包裡的東西。</div>
+
+<div class="sheet" id="sheet"></div>
+
+<script>
+'use strict';
+/* ============================================================
+   資料：題目池（全部出自 questions.js；依「處理什麼資訊」分家，跟研究檔第五節同一張表）
+   ============================================================ */
+var FAM = {
+  verb: /passe|imparfait|conditionnel|futur|subjonctif|reflexive|verbs|etre-avoir|imperative|accord-participe|pouvoir|gerondif|condition-si|discours|ilfaut|recit/,
+  pron: /pronom|qui-que|on-vs-nous|cod/,
+  noun: /article|adjective|demonstrative-adj|possessives|tout-chaque|comparaison|superlatif|cest-il|mise-en-relief|intensite/
+};
+function famOf(topic){ for(var k in FAM) if(FAM[k].test(topic)) return k; return null; }
+var POOL = { verb:{choose:[],fill:[]}, pron:{choose:[],fill:[]}, noun:{choose:[],fill:[]} };
+BANK.forEach(function(q, i){
+  q._i = i;
+  var f = famOf(q.topic); if(!f) return;
+  /* 路上只出「法文句子」題：有空格，或選項本身是法文；⛔ 選項是中文的規則概念題不出（memory feedback_gram3_textbook_style） */
+  var zh=function(x){ return /[\u4e00-\u9fff]/.test(x); };
+  if(q.type==='choose' && q.opts && q.opts.length>=2 && (/_{2,}/.test(q.q) || !q.opts.some(zh))) POOL[f].choose.push(q);
+  if(q.type==='fill') POOL[f].fill.push(q);
+});
+
+/* 陰陽性字庫：跟 quest.html 的 genderPool 同一個抽法（chunks.js「un／une／le／la＋單字名詞」與「l'… (m.)／(f.)」） */
+var EMO={chien:'🐕',chat:'🐈',cheval:'🐎',lapin:'🐇',poisson:'🐟',poule:'🐔',vache:'🐄',canard:'🦆',renard:'🦊',loup:'🐺',lion:'🦁',rat:'🐀',
+  pomme:'🍎',fraise:'🍓',banane:'🍌',orange:'🍊',citron:'🍋',tomate:'🍅',carotte:'🥕',pain:'🍞',fromage:'🧀',gâteau:'🍰',croissant:'🥐',
+  livre:'📖',stylo:'🖊️',clé:'🔑',lampe:'💡',chaise:'🪑',table:'🪑',lit:'🛏️',porte:'🚪',fenêtre:'🪟',maison:'🏠',voiture:'🚗',vélo:'🚲',
+  train:'🚆',avion:'✈️',bateau:'⛵',montre:'⌚',lunettes:'👓',chapeau:'🎩',robe:'👗',chemise:'👔',jupe:'👗',sac:'👜',valise:'🧳',
+  fleur:'🌸',arbre:'🌳',soleil:'☀️',lune:'🌙',étoile:'⭐',montagne:'⛰️',mer:'🌊',plage:'🏖️',neige:'❄️',pluie:'🌧️',guitare:'🎸',
+  piano:'🎹',ballon:'⚽',téléphone:'📞',ordinateur:'💻',bouteille:'🍾',tasse:'☕',verre:'🥛',assiette:'🍽️',couteau:'🔪',fourchette:'🍴',
+  cuillère:'🥄',bougie:'🕯️',lettre:'✉️',carte:'🗺️',photo:'📷',parapluie:'☂️',tente:'⛺',dentiste:'🦷',pharmacie:'💊',jardin:'🌳'};
+var GENDER = (function(){
+  var W='[a-zàâçéèêëîïôûùüÿœæ-]+', re1=new RegExp('^(un|une|le|la)\\s+('+W+')$'), re2=new RegExp("^l['’]("+W+")\\s*\\((m|f)\\.\\)$");
+  var map={}, bad={};
+  (typeof CHUNKS!=='undefined'?CHUNKS:[]).forEach(function(c){
+    var s=String(c.fr||'').trim(), m=s.match(re1), n, g, el=false;
+    if(m){ n=m[2]; g=/^(une|la)$/.test(m[1])?'f':'m'; }
+    else if((m=s.match(re2))){ n=m[1]; g=m[2]; el=true; }
+    if(!n) return;
+    var zh=String(c.zh||'').split(/[（(]/)[0].replace(/陽性|陰性/g,'').trim();
+    if(map[n]&&map[n].g!==g) bad[n]=1;
+    if(!map[n]&&zh) map[n]={n:n, g:g, zh:zh, el:el};
+  });
+  return Object.keys(map).filter(function(k){ return !bad[k]; }).map(function(k){ return map[k]; });
+})();
+var GENDER_RULES=[[/(tion|sion|xion)$/,'f','-tion／-sion 幾乎都是陰性'],[/té$/,'f','-té 幾乎都是陰性'],[/ée$/,'f','-ée 幾乎都是陰性'],
+  [/ment$/,'m','-ment 幾乎都是陽性'],[/age$/,'m','-age 幾乎都是陽性'],[/ure$/,'f','-ure 多半是陰性'],[/ette$/,'f','-ette 多半是陰性'],[/euse$/,'f','-euse 多半是陰性']];
+function whole(it){ return (it.g==='f'?'une ':'un ')+it.n; }
+function genderWhy(it){
+  for(var i=0;i<GENDER_RULES.length;i++){ var r=GENDER_RULES[i];
+    if(r[0].test(it.n)) return r[1]===it.g ? r[2] : '例外：'+r[2]+'，但它是'+(it.g==='f'?'陰性':'陽性')+'，要單獨記'; }
+  if(it.el) return "l' 開頭聽不出陰陽，要連 un／une 一起記";
+  if(!/e$/.test(it.n) && it.g==='m') return '不是 -e 結尾的名詞，多半是陽性';
+  return '字尾猜不到，只能整塊記';
+}
+
+/* ============================================================
+   存檔：只在本機（樣本），⛔ 不寫 clb7_*
+   ============================================================ */
+var KEY='town_sample_v1';
+var S = (function(){ try{ return JSON.parse(localStorage.getItem(KEY))||null; }catch(e){ return null; } })() || {
+  day:1, gold:0, bagCap:8, lamp:0, pick:0, topic:{}, gword:{}, canSay:{}, qlast:{}
+};
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function readLS(k){ try{ return JSON.parse(localStorage.getItem(k)||'{}')||{}; }catch(e){ return {}; } }
+
+/* ============================================================
+   地圖
+   ============================================================ */
+var W=9, H=13, T=40;
+/* 地形：f=森林 F=深林(★) m=礦坑 M=深礦(★) d=麥田 p=路 t=小鎮 h=房子 */
+var TER = [
+  'FFFFpMMMM',
+  'FFFFpMMMM',
+  'ffffpmmmm',
+  'ffffpmmmm',
+  'ffffpmmmm',
+  'ddddpdddd',
+  'ddddpdddd',
+  'ddddpdddd',
+  'ddddpdddd',
+  'tttttttth',
+  'hhtttttth',
+  'httttttth',
+  'hhhtttthh'
+];
+var STALL={x:4,y:10}, GATE={x:4,y:9};
+var NODE_DEF = [
+  /* 樹叢（名詞片語＋陰陽性） */
+  {k:'bush',x:3,y:0},{k:'bush',x:1,y:1},{k:'bush',x:1,y:3},{k:'bush',x:3,y:2},{k:'bush',x:0,y:4},{k:'bush',x:2,y:4},
+  /* 礦石（動詞） */
+  {k:'rock',x:8,y:0},{k:'rock',x:6,y:1},{k:'rock',x:5,y:3},{k:'rock',x:7,y:2},{k:'rock',x:8,y:4},{k:'rock',x:6,y:4}
+];
+var nodes=[], rats=[], hero={x:4,y:11}, bag=[], log=[], tripOut=false, busy=false, walking=null, time=0, night=false;
+function dayLen(){ return 110 + S.lamp*40; }
+function isStar(n){ return n.y<=1; }
+function walkable(x,y){
+  if(x<0||y<0||x>=W||y>=H) return false;
+  if(TER[y][x]==='h') return false;
+  return !nodes.some(function(n){ return n.x===x&&n.y===y; });
+}
+function inTown(p){ return p.y>=9; }
+
+var mapEl=document.getElementById('map'), tiles=[], heroEl, sheet=document.getElementById('sheet');
+function layout(){
+  T=Math.floor(Math.min(46,(Math.min(window.innerWidth,520)-24)/W));
+  mapEl.style.width=(T*W)+'px'; mapEl.style.height=(T*H)+'px';
+  mapEl.querySelectorAll('.tile,.ent,.zone').forEach(function(e){ e.remove(); });
+  for(var y=0;y<H;y++) for(var x=0;x<W;x++){
+    var c=TER[y][x], d=document.createElement('div'), cls={f:'g-forest',F:'g-deepf',m:'g-mine',M:'g-deep',d:'g-field',p:'g-path',t:'g-town',h:'g-house'}[c];
+    d.className='tile '+cls+(((x+y)%2)?' alt':'');
+    pos(d,x,y); d.dataset.x=x; d.dataset.y=y;
+    if(c==='h') d.textContent=['🏠','🏡','🏘️'][(x*7+y)%3], d.style.fontSize=(T*.62)+'px';
+    if(x===STALL.x&&y===STALL.y) d.textContent='🏪', d.style.fontSize=(T*.7)+'px';
+    mapEl.insertBefore(d, document.getElementById('night'));
+  }
+  zone('🌳 森林・名詞',0,0); zone('⛏ 礦坑・動詞',5,0); zone('🌾 麥田・老鼠出沒',0,5); zone('🏘️ 小鎮',0,9);
+  nodes.forEach(drawNode); rats.forEach(drawRat);
+  heroEl=ent('🧑‍🌾'); heroEl.style.zIndex=5; place(heroEl,hero.x,hero.y);
+}
+function pos(el,x,y){ el.style.left=(x*T)+'px'; el.style.top=(y*T)+'px'; el.style.width=T+'px'; el.style.height=T+'px'; }
+function ent(txt){ var e=document.createElement('div'); e.className='ent'; e.textContent=txt; e.style.fontSize=(T*.7)+'px'; mapEl.insertBefore(e, document.getElementById('night')); return e; }
+function place(el,x,y){ pos(el,x,y); }
+function zone(t,x,y){ var z=document.createElement('div'); z.className='zone'; z.textContent=t; z.style.left=(x*T+3)+'px'; z.style.top=(y*T+2)+'px'; mapEl.appendChild(z); }
+function drawNode(n){
+  if(n.el) n.el.remove();
+  n.el=ent(n.done ? (n.k==='bush'?'🌿':'🪨') : (n.k==='bush'?'🌳':'🪨'));
+  n.el.classList.add('node'); if(n.done) n.el.classList.add('done');
+  if(isStar(n)&&!n.done){ var s=document.createElement('span'); s.className='star'; s.textContent='★'; n.el.appendChild(s); }
+  place(n.el,n.x,n.y);
+}
+function drawRat(r){ if(r.el) r.el.remove(); r.el=ent('🐀'); r.el.style.zIndex=4; place(r.el,r.x,r.y); }
+function floatTxt(x,y,txt,color){
+  var f=document.createElement('div'); f.className='float'; f.textContent=txt; f.style.color=color||'#fff';
+  f.style.left=(x*T)+'px'; f.style.top=(y*T-6)+'px'; f.style.fontSize=(T*.38)+'px'; mapEl.appendChild(f);
+  setTimeout(function(){ f.remove(); },1000);
+}
+
+/* 尋路（BFS），目標是節點時走到它旁邊 */
+function path(to, adjacent){
+  var key=function(p){ return p.x+','+p.y; }, prev={}, q=[{x:hero.x,y:hero.y}], seen={}; seen[key(hero)]=1;
+  var goal=function(p){ return adjacent ? Math.abs(p.x-to.x)+Math.abs(p.y-to.y)===1 : (p.x===to.x&&p.y===to.y); };
+  if(goal(hero)) return [];
+  while(q.length){
+    var c=q.shift();
+    var nb=[[1,0],[-1,0],[0,1],[0,-1]];
+    for(var i=0;i<4;i++){
+      var n={x:c.x+nb[i][0], y:c.y+nb[i][1]};
+      if(seen[key(n)]||!walkable(n.x,n.y)) continue;
+      seen[key(n)]=1; prev[key(n)]=c;
+      if(goal(n)){ var out=[n], p=c; while(p&&!(p.x===hero.x&&p.y===hero.y)){ out.unshift(p); p=prev[key(p)]; } return out; }
+      q.push(n);
+    }
+  }
+  return null;
+}
+function walkTo(to, adjacent, then){
+  if(busy) return;
+  var p=path(to, adjacent); if(!p){ toast('走不過去'); return; }
+  walking={steps:p, then:then};
+  stepWalk();
+}
+function stepWalk(){
+  if(!walking||busy) return;
+  if(!walking.steps.length){ var t=walking.then; walking=null; if(t) t(); return; }
+  var s=walking.steps.shift(); hero.x=s.x; hero.y=s.y; place(heroEl,hero.x,hero.y);
+  if(!inTown(hero)){ tripOut=true; tick(); }
+  else if(tripOut && hero.y>=9){ tripOut=false; if(log.length){ walking=null; review(); return; } toast('回到小鎮了'); }
+  if(checkRat()) { walking=null; return; }
+  setTimeout(stepWalk, 140);
+}
+
+/* 時間：只有在外面走路時才會過（Dredge：看選單、答題不扣時間） */
+function tick(){
+  time=Math.max(0,time-1);
+  if(time===0 && !night){ night=true; document.getElementById('night').style.background='rgba(5,10,40,.45)'; toast('🌙 天黑了，老鼠變多變快——回城吧'); spawnRat(); spawnRat(); }
+  hud();
+}
+
+/* ============================================================
+   老鼠（代名詞）：靠近就偷背包裡一樣東西；答對才追得回來
+   ============================================================ */
+function spawnRat(){
+  for(var tries=0;tries<30;tries++){
+    var x=Math.floor(Math.random()*W), y=5+Math.floor(Math.random()*4);
+    if(walkable(x,y) && !(x===hero.x&&y===hero.y)){ var r={x:x,y:y,calm:0}; rats.push(r); drawRat(r); return; }
+  }
+}
+function moveRats(){
+  if(!busy) rats.forEach(function(r){
+    if(r.calm>0){ r.calm--; return; }
+    var dirs=[[1,0],[-1,0],[0,1],[0,-1]], d;
+    var chase = !inTown(hero) && bag.length && Math.random()<(night?.7:.2);
+    if(chase){ d=[Math.sign(hero.x-r.x), 0]; if(!d[0]||Math.random()<.5) d=[0, Math.sign(hero.y-r.y)]; }
+    else d=dirs[Math.floor(Math.random()*4)];
+    var nx=r.x+d[0], ny=r.y+d[1];
+    if(walkable(nx,ny) && ny>=2 && ny<=8){ r.x=nx; r.y=ny; place(r.el,r.x,r.y); }
+  });
+  checkRat();
+  setTimeout(moveRats, night?380:650);
+}
+function checkRat(){
+  if(busy||!bag.length||inTown(hero)) return false;
+  var r=rats.filter(function(r){ return r.calm<=0 && Math.abs(r.x-hero.x)+Math.abs(r.y-hero.y)<=0; })[0];
+  if(!r) return false;
+  ratSteal(r); return true;
+}
+
+/* ============================================================
+   遭遇面板
+   ============================================================ */
+function openSheet(html, full){ sheet.innerHTML=html; sheet.className='sheet on'+(full?' full':''); busy=true; }
+function closeSheet(){ sheet.className='sheet'; sheet.innerHTML=''; busy=false; }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function deacc(x){ return String(x).normalize('NFD').replace(/[̀-ͯ]/g,''); }
+function normAns(x){ return deacc(String(x)).toLowerCase().replace(/[’]/g,"'").replace(/[.,!?;:«»"]/g,'').replace(/\s+/g,' ').trim(); }
+function speak(t){ try{ if(window.TtsReader&&TtsReader.supported) TtsReader.speak(t); }catch(e){} }
+function spk(t){ return '<button class="spk" data-say="'+esc(t)+'">🔊</button>'; }
+sheet.addEventListener('click', function(e){ var b=e.target.closest('[data-say]'); if(b){ e.stopPropagation(); speak(b.dataset.say); } });
+
+function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+/* 出題：「腦袋」決定——這一陣子錯過的主題加權，太近出過的題目先避開；★ 區偏後面的課 */
+function pickQ(list, star){
+  var now=Date.now(), best=null, bw=-1;
+  shuffle(list).slice(0,60).forEach(function(q){
+    var w=1, st=S.topic[q.topic];
+    if(st && st.w>st.r) w*=1.8;
+    if(st && st.lastWrong && now-st.lastWrong<3*86400000) w*=1.5;
+    var inTrip=log.filter(function(l){ return l.item&&l.item.topic===q.topic; }).length;
+    if(inTrip>=2) w*=.25;                         /* 路上要有變化；同一結構的密集練習交給回顧的連發 */
+    if(S.qlast[q._i] && now-S.qlast[q._i]<6*3600000) w*=.05;
+    if(star) w*= q.lesson>=25 ? 2.5 : .5;
+    w*=Math.random()+.3;
+    if(w>bw){ bw=w; best=q; }
+  });
+  return best;
+}
+function pickGender(){
+  var gs=readLS('clb7_gender_seen'), now=Date.now();
+  var want=Math.random()<.5?'m':'f', c=GENDER.filter(function(it){ return it.g===want; });
+  var best=null,bw=-1;
+  shuffle(c).slice(0,40).forEach(function(it){
+    var w=1, r=gs[it.n]||{}, mine=S.gword[it.n]||{};
+    if((r.w||0)>(r.r||0) || (mine.w||0)>(mine.r||0)) w*=3;
+    if(EMO[it.n]) w*=1.5;
+    if(mine.last && now-mine.last<3600000) w*=.05;
+    w*=Math.random()+.3; if(w>bw){ bw=w; best=it; }
+  });
+  return best;
+}
+/* 正確說法：有空格就把答案填回去，唸整句 */
+function sayOf(q, ans){
+  var s=String(q.q);
+  if(!/_{2,}/.test(s)) return ans;
+  var seg=s.split('→').filter(function(x){ return /_{2,}/.test(x); })[0]||s;   /* 只取有空格的那一段 */
+  var qm=seg.match(/「([^」]*_{2,}[^」]*)」/); if(qm) seg=qm[1];                       /* 中文題幹裡「…」包著的法文 */
+  seg=seg.replace(/（[^）]*）/g,'').replace(/\([^)]*[\u4e00-\u9fff][^)]*\)/g,'');      /* 全形括號一律是提示；半形的有中文才是 */
+  seg=seg.replace(/「[^」]*」/g,function(m){ return /_{2,}/.test(m)?m:''; });           /* 去掉前面的中文翻譯「…」 */                       /* 去掉中文提示括號 */
+  var c=Math.max(seg.lastIndexOf(':',seg.indexOf('_')), seg.lastIndexOf('：',seg.indexOf('_'))); if(c>=0 && c<seg.indexOf('_')) seg=seg.slice(c+1);   /* 去掉「Le contraire :」這種標籤 */
+  return seg.replace(/_{2,}(\s*\([^)]*\))?/, ans).replace(/\s+/g,' ').trim();
+}
+/* 選項裡常夾著中文標註或解釋（「mets（現在式）——en général 表示這是習慣」）→ 顯示與唸的時候剝掉，⛔ 不然等於洩漏答案 */
+function clean(o){ return String(o).replace(/\s*[—–]{1,2}.*$/,'').replace(/[（(][^）)]*[\u4e00-\u9fff][^）)]*[）)]/g,'').trim(); }
+function note(s){ return esc(s).replace(/&lt;(\/?)b&gt;/g,'<$1b>'); }
+function frOnly(s){ return /[一-鿿]/.test(s) ? '' : s; }
+
+/* 共用：一題選擇題。cb(ok, ms, chosen) */
+function askChoose(head, q, cb){
+  var t0=Date.now(), alts=String(q.a).split('|');
+  var opts=shuffle(q.opts);
+  var html='<h3>'+head+'</h3><div class="qtext">'+esc(q.q)+'</div>'+(q.hint?'<div class="hint">💡 '+esc(q.hint)+'</div>':'')+
+    '<div class="opts">'+opts.map(function(o,i){ return '<button data-i="'+i+'">'+esc(clean(o)||o)+'</button>'; }).join('')+'</div>'+
+    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><span id="slot"></span></div>';
+  openSheet(html);
+  var done=false;
+  sheet.querySelectorAll('.opts button').forEach(function(b){ b.onclick=function(){
+    if(done) return; done=true;
+    var o=opts[+b.dataset.i], ok=alts.indexOf(o)>=0 || alts.map(normAns).indexOf(normAns(o))>=0, ms=Date.now()-t0;
+    var right=opts.filter(function(x){ return alts.indexOf(x)>=0; })[0]||opts.filter(function(x){ return alts.map(normAns).indexOf(normAns(x))>=0; })[0]||alts[0];
+    sheet.querySelectorAll('.opts button').forEach(function(x){ if(opts[+x.dataset.i]===right) x.classList.add('ok'); });
+    if(!ok) b.classList.add('no');
+    var said=frOnly(sayOf(q,clean(right)));
+    var fb=document.getElementById('fb');
+    if(ok){ fb.innerHTML='✓ '+(ms<6000?'<b style="color:var(--gold)">會心一擊</b> ':'')+(said?'<span class="say">'+esc(said)+'</span> '+spk(said):''); if(said) speak(said); setTimeout(function(){ cb(true,ms,o,right); }, said?1100:500); }
+    else{
+      fb.innerHTML=(said?'<div>👉 <span class="say">'+esc(said)+'</span> '+spk(said)+'</div>':'<div>👉 '+esc(right)+'</div>')+'<div class="muted">'+note(q.aNote||'')+'</div>';
+      if(said) speak(said);
+      document.getElementById('slot').outerHTML='<button class="btn main" id="go">繼續</button>';
+      document.getElementById('go').onclick=function(){ cb(false,ms,o,right); };
+    }
+    document.getElementById('skip').style.visibility='hidden';
+  }; });
+  document.getElementById('skip').onclick=function(){ if(done) return; done=true; cb(null); };
+}
+function askGender(head, it, cb){
+  var t0=Date.now(), pic=EMO[it.n]||'';
+  var html='<h3>'+head+'</h3><div class="qtext" style="text-align:center"><span style="font-size:2em">'+(pic||'📦')+'</span><br>'+
+    '<span class="fr" style="font-size:1.3em">… '+esc(it.n)+'</span><div class="muted">'+esc(it.zh)+'</div></div>'+
+    '<div class="opts row"><button data-g="m">un</button><button data-g="f">une</button></div><div class="fb" id="fb"></div>'+
+    '<div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><span id="slot"></span></div>';
+  openSheet(html);
+  var done=false;
+  sheet.querySelectorAll('.opts button').forEach(function(b){ b.onclick=function(){
+    if(done) return; done=true;
+    var ok=b.dataset.g===it.g, ms=Date.now()-t0;
+    b.classList.add(ok?'ok':'no'); if(!ok) sheet.querySelector('[data-g="'+it.g+'"]').classList.add('ok');
+    var fb=document.getElementById('fb'); speak(whole(it));
+    if(ok){ fb.innerHTML='✓ '+(ms<2000?'<b style="color:var(--gold)">會心一擊</b> ':'')+'<span class="say">'+whole(it)+'</span>'; setTimeout(function(){ cb(true,ms); },700); }
+    else{ fb.innerHTML='👉 <span class="say">'+whole(it)+'</span> '+spk(whole(it))+'<div class="muted">'+esc(genderWhy(it))+'</div>';
+      document.getElementById('slot').outerHTML='<button class="btn main" id="go">繼續</button>';
+      document.getElementById('go').onclick=function(){ cb(false,ms); }; }
+    document.getElementById('skip').style.visibility='hidden';
+  }; });
+  document.getElementById('skip').onclick=function(){ if(done) return; done=true; cb(null); };
+}
+
+/* 記錄：⛔ 跳過（null）不記 */
+function rec(kind, item, ok, ms, extra){
+  if(ok===null) return;
+  if(kind==='g'){ var g=S.gword[item.n]||{r:0,w:0}; g[ok?'r':'w']++; g.last=Date.now(); S.gword[item.n]=g; }
+  else { var t=S.topic[item.topic]||{r:0,w:0}; t[ok?'r':'w']++; if(!ok) t.lastWrong=Date.now(); S.topic[item.topic]=t; S.qlast[item._i]=Date.now(); }
+  if(extra&&extra.where==='連發') return save();   /* 連發是處方本身，不再回到回顧裡 */
+  log.push({kind:kind, item:item, ok:ok, ms:ms, chosen:extra&&extra.chosen, right:extra&&extra.right, where:extra&&extra.where});
+  save();
+}
+
+/* ⛏ 礦石：兩敲＝兩題動詞；兩題都對＝完整礦，其中一題錯＝瑕疵礦；兩題都快＝雙倍 */
+function mineRock(n){
+  var hits=[], star=isStar(n), i=0;
+  function next(){
+    if(i>=2) return finish();
+    var q=pickQ(POOL.verb.choose, star);
+    askChoose('⛏ 礦坑'+(star?' ★':'')+' <small>第 '+(i+1)+' 敲</small>', q, function(ok,ms,ch,right){
+      rec('q', q, ok, ms, {chosen:ch,right:right,where:'⛏ 礦坑'}); hits.push(ok===null?'skip':ok?(ms<(6000+S.pick*2500)?'crit':'ok'):'no');
+      if(ok) floatTxt(n.x,n.y,'⛏',  '#ffd');
+      i++; next();
+    });
+  }
+  function finish(){
+    closeSheet();
+    var answered=hits.filter(function(h){ return h!=='skip'; });
+    n.done=true; drawNode(n);
+    if(!answered.length){ toast('繞過了這塊礦石'); return; }
+    var good=answered.every(function(h){ return h!=='no'; }), crit=hits.every(function(h){ return h==='crit'; });
+    var cnt=(crit?2:1)*(star?2:1);
+    for(var c=0;c<cnt;c++) addBag({k:'ore', name:'礦石', em:'⛏', good:good});
+    floatTxt(n.x,n.y,'+'+cnt+(good?' ⛏':' 瑕'), good?'#ffd76a':'#bbb');
+  }
+  next();
+}
+/* 🌳 樹叢：翻出兩樣東西要叫出名字（un／une）＋一題名詞片語（答對樹洞裡多撿到 🪙） */
+function shakeBush(n){
+  var star=isStar(n), i=0, seq=['g','q','g'];
+  function next(){
+    if(i>=seq.length){ closeSheet(); n.done=true; drawNode(n); return; }
+    if(seq[i]==='g'){
+      var it=pickGender();
+      askGender('🌳 樹叢'+(star?' ★':'')+' <small>翻出一樣東西</small>', it, function(ok,ms){
+        rec('g', it, ok, ms, {where:'🌳 樹叢'});
+        if(ok!==null){ var c=(star?2:1); for(var k=0;k<c;k++) addBag({k:'obj', name:whole(it), n:it.n, g:it.g, em:EMO[it.n]||'📦', good:ok}); floatTxt(n.x,n.y,(EMO[it.n]||'📦')+(ok?'':' 瑕'), ok?'#fff':'#bbb'); }
+        i++; next();
+      });
+    } else {
+      var q=pickQ(POOL.noun.choose, star);
+      askChoose('🌳 樹叢'+(star?' ★':'')+' <small>樹洞深處</small>', q, function(ok,ms,ch,right){
+        rec('q', q, ok, ms, {chosen:ch,right:right,where:'🌳 樹叢'});
+        if(ok){ var g=star?6:3; S.gold+=g; floatTxt(n.x,n.y,'+'+g+'🪙','#ffd76a'); hud(); save(); }
+        i++; next();
+      });
+    }
+  }
+  next();
+}
+function addBag(it){
+  if(bag.length>=S.bagCap){ toast('🎒 背包滿了——回城交貨吧'); return false; }
+  bag.push(it); hud(); if(bag.length>=S.bagCap) toast('🎒 背包滿了——回城交貨吧'); return true;
+}
+
+/* 🐀 偷東西：背包裡有陰陽兩種「東西」時，用過去分詞配合認出被偷的是哪個（模板句）；否則出一題代名詞 */
+function ratSteal(r){
+  walking=null;
+  var idx=Math.floor(Math.random()*bag.length), it=bag[idx];
+  var objs=bag.filter(function(b){ return b.k==='obj'; });
+  var other = it.k==='obj' ? objs.filter(function(b){ return b.g!==it.g; })[0] : null;
+  bag.splice(idx,1); hud();
+  function after(ok){
+    closeSheet();
+    r.calm=10; var far={x:r.x<4?8:0, y:5+Math.floor(Math.random()*4)}; if(walkable(far.x,far.y)){ r.x=far.x; r.y=far.y; place(r.el,r.x,r.y); }
+    if(ok){ bag.push(it); floatTxt(hero.x,hero.y,'追回 '+it.em,'#9f9'); }
+    else floatTxt(hero.x,hero.y,'被叼走 '+it.em,'#f99');
+    hud();
+  }
+  if(other && Math.random()<.65){
+    var said='Le rat l\'a '+(it.g==='f'?'prise':'pris')+' !', t0=Date.now();
+    var choices=shuffle([it, other]);
+    openSheet('<h3>🐀 老鼠叼走了一樣東西！ <small>過去分詞配合</small></h3><div class="qtext">路人大喊：<span class="fr">« '+said+' »</span> '+spk(said)+
+      '</div><div class="hint">💡 被叼走的是哪一個？（看 pris／prise）</div><div class="opts">'+
+      choices.map(function(c,i){ return '<button data-i="'+i+'">'+c.em+' '+esc(c.name)+'</button>'; }).join('')+'</div><div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 讓牠跑</button><span id="slot"></span></div>');
+    speak(said);
+    var done=false;
+    sheet.querySelectorAll('.opts button').forEach(function(b){ b.onclick=function(){
+      if(done) return; done=true;
+      var c=choices[+b.dataset.i], ok=c===it, ms=Date.now()-t0;
+      var pseudo={topic:'accord-participe-passe', _i:'rat-'+it.g, q:'« '+said+' » 被叼走的是哪一個？', aNote:'COD（l\'）放在 avoir 前面，過去分詞要跟它配合：陰性 → prise，陽性 → pris。', a:it.name, say:said+' → '+it.name};
+      rec('q', pseudo, ok, ms, {chosen:c.name, right:it.name, where:'🐀 老鼠'});
+      b.classList.add(ok?'ok':'no');
+      var fb=document.getElementById('fb');
+      if(ok){ fb.innerHTML='✓ '+(it.g==='f'?'prise 有 -e → 陰性的 ':'pris 沒有 -e → 陽性的 ')+esc(it.name)+'，追回來了'; setTimeout(function(){ after(true); },1200); }
+      else { fb.innerHTML='👉 是 <span class="say">'+esc(it.name)+'</span>——'+(it.g==='f'?'prise 多了 -e，指陰性的東西':'pris 沒有 -e，指陽性的東西')+'<div class="muted">l\' 放在 avoir 前面，過去分詞就跟它配合。</div>';
+        document.getElementById('slot').outerHTML='<button class="btn main" id="go">繼續</button>'; document.getElementById('go').onclick=function(){ after(false); }; }
+      document.getElementById('skip').style.visibility='hidden';
+    }; });
+    document.getElementById('skip').onclick=function(){ if(done) return; done=true; after(false); };
+  } else {
+    var q=pickQ(POOL.pron.choose, false);
+    askChoose('🐀 老鼠叼走了 '+it.em+' '+esc(it.name)+'！ <small>答對才放手</small>', q, function(ok,ms,ch,right){
+      rec('q', q, ok, ms, {chosen:ch,right:right,where:'🐀 老鼠'}); after(!!ok);
+    });
+  }
+}
+
+/* ============================================================
+   回城：先回顧（錯在哪、為什麼、建議、正確說法），再交貨
+   ============================================================ */
+function topicLabel(t){
+  var p=(typeof gramPointOfTopic==='function')?gramPointOfTopic(t):null;
+  var fr=(typeof TOPIC_LABELS_FR!=='undefined'&&TOPIC_LABELS_FR[t])||t;
+  return {fr:fr, zh:p&&p.rule?p.rule.title.split(/[—－-]/)[0].trim():'', point:p};
+}
+/* 分類（CLAUDE.md 教學鐵律）：
+   ⚡ 手滑：這個主題平常都對（≥80%，至少 5 次），這一趟只錯一次
+   ✂️ 自動化缺口：規則講得出來（文法點階段 ≥3「遮規則」，或他自己說講得出來）但還是錯
+   🧠 概念缺口：他說講不出來
+   ❓ 不明：問他一句「這個規則你講得出來嗎？」 */
+function classify(topic, nWrongNow){
+  var t=S.topic[topic]||{r:0,w:0}, tot=t.r+t.w;
+  var prevR=t.r, prevTot=tot-nWrongNow; /* 扣掉這一趟的錯來看「平常」 */
+  if(nWrongNow===1 && prevTot>=5 && prevR/prevTot>=.8) return 'slip';
+  var cs=S.canSay[topic];
+  if(cs && Date.now()-cs.d<14*86400000) return cs.v?'auto':'concept';
+  var p=topicLabel(topic).point;
+  if(p && typeof gramStageOf==='function' && gramStageOf(p.id)>=3) return 'auto';
+  return 'ask';
+}
+function classifyG(it, nWrongNow){
+  var gs=readLS('clb7_gender_seen')[it.n]||{}, mine=S.gword[it.n]||{r:0,w:0};
+  var r=(gs.r||0)+mine.r, tot=r+(gs.w||0)+mine.w-nWrongNow;
+  if(nWrongNow===1 && tot>=4 && r/tot>=.8) return 'slip';
+  return 'auto';
+}
+var TAG={slip:'⚡ 手滑', auto:'✂️ 要練到不用想', concept:'🧠 規則還沒到位', ask:'❓'};
+function review(){
+  var trip=log; log=[];
+  var ok=trip.filter(function(l){ return l.ok; }), wrong=trip.filter(function(l){ return l.ok===false; });
+  var fast=ok.filter(function(l){ return l.ms; }).sort(function(a,b){ return a.ms-b.ms; })[0];
+  var h='<h3>🏘️ 這一趟的回顧 <small>帶回 🎒 '+bag.length+' 件</small></h3>';
+  h+='<div class="rv-top">'+(fast?'最快的一下 '+(fast.ms/1000).toFixed(1)+' 秒。':'')+(wrong.length?'下面這幾個再看一眼——每組最上面那行就是建議。':'這一趟全部是完整品 ✨')+'</div>';
+  /* 依主題分組；陰陽性另成一組 */
+  var groups={}, order=[];
+  wrong.forEach(function(l){ var k=l.kind==='g'?'__gender':l.item.topic; if(!groups[k]){ groups[k]=[]; order.push(k); } groups[k].push(l); });
+  order.sort(function(a,b){ return groups[b].length-groups[a].length; });
+  order.forEach(function(k){
+    var g=groups[k];
+    if(k==='__gender'){
+      var cls=g.length===1?classifyG(g[0].item,1):'auto';
+      h+='<div class="rv-grp"><div class="t">陰陽性 <small>Genre des noms</small><span class="tag">'+TAG[cls]+'</span></div>';
+      h+='<div class="advice">'+(cls==='slip'?'平常這個字都對，這次手滑。看一眼就好。':
+        '👉 不要分析字尾，<b>整塊說出來</b>：連冠詞一起唸三遍，讓 un／une 跟著字一起出來。'+(g.length>=2?' <button class="btn main" data-drill="__gender">連發 6 個</button>':''))+'</div>';
+      g.forEach(function(l){ var w=whole(l.item); h+='<div class="item"><span class="say">'+(EMO[l.item.n]||'')+' '+w+'</span> '+spk(w)+' <span class="muted">（'+esc(l.item.zh)+'）</span><div class="why">'+esc(genderWhy(l.item))+'</div></div>'; });
+      h+='</div>'; return;
+    }
+    var lab=topicLabel(k), cls=classify(k,g.length);
+    h+='<div class="rv-grp" data-topic="'+k+'"><div class="t">'+(lab.zh?esc(lab.zh)+' ':'')+'<small>'+esc(lab.fr)+'</small><span class="tag">'+(cls==='ask'?'':TAG[cls])+'</span></div>';
+    h+='<div class="advice" data-adv="'+k+'">'+adviceHtml(k,cls,g.length)+'</div>';
+    g.forEach(function(l){
+      var q=l.item, said=q.say||frOnly(sayOf(q,clean(l.right||String(q.a).split('|')[0])));
+      h+='<div class="item">'+(said?'<span class="say">'+esc(said)+'</span> '+spk(said):'<span class="say">'+esc(l.right)+'</span>')+
+        '<div class="mine">'+esc(l.where||'')+'｜題目：'+esc(q.q)+'<br>你選的：'+esc(clean(l.chosen||'')||l.chosen||'')+'</div>'+
+        (q.aNote?'<div class="why">為什麼：'+note(q.aNote)+'</div>':'')+'</div>';
+    });
+    h+='</div>';
+  });
+  h+='<div class="row2"><span class="muted">跳過的不算、也不會出現在這裡。</span><button class="btn main" id="rvgo">去交貨攤 🏪</button></div>';
+  openSheet(h, true);
+  bindReview();
+}
+function adviceHtml(k,cls,n){
+  if(cls==='slip') return '平常這個都對，這次手滑。看一眼正確說法就好，不用再練。';
+  if(cls==='auto') return '👉 規則你已經會了，缺的是「不用想就出來」。<b>不重講規則</b>，直接同一個結構連發幾題，把它練成一整塊。 <button class="btn main" data-drill="'+k+'">連發 6 題</button>';
+  if(cls==='concept'){
+    var p=topicLabel(k).point, r=p&&p.rule;
+    return '👉 先把規則弄清楚，再練。'+(r?'<div class="rule"><b>'+esc(r.title)+'</b><ul>'+(r.points||[]).slice(0,4).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('')+'</ul>'+
+      (r.examples||[]).slice(0,2).map(function(e){ return '<div><span class="say" style="font-family:Georgia,serif">'+esc(e.fr)+'</span> '+spk(e.fr)+' <span class="muted">'+esc(e.zh)+'</span></div>'; }).join('')+'</div>':'<div class="muted">（這一類沒有規則卡，看下面每一題的「為什麼」）</div>')+
+      ' <div style="margin-top:6px"><button class="btn" data-drill="'+k+'">看懂了，連發 6 題</button></div>';
+  }
+  return '這個規則你講得出來嗎？ <button class="btn" data-say-rule="1" data-k="'+k+'">講得出來</button> <button class="btn" data-say-rule="0" data-k="'+k+'">講不出來</button>';
+}
+function bindReview(){
+  sheet.querySelectorAll('[data-say-rule]').forEach(function(b){ b.onclick=function(){
+    var k=b.dataset.k, v=b.dataset.sayRule==='1'; S.canSay[k]={v:v,d:Date.now()}; save();
+    var cls=v?'auto':'concept', box=sheet.querySelector('[data-adv="'+k+'"]');
+    box.innerHTML=adviceHtml(k,cls,1); sheet.querySelector('[data-topic="'+k+'"] .tag').textContent=TAG[cls]; bindReview();
+  }; });
+  sheet.querySelectorAll('[data-drill]').forEach(function(b){ b.onclick=function(){ drill(b.dataset.drill); }; });
+  var go=document.getElementById('rvgo'); if(go) go.onclick=function(){ closeSheet(); walkTo(STALL,false,openStall); };
+}
+/* 連發：同一個結構 6 題，快、不講課（自動化缺口的處方）；每題對 +1 🪙，可以隨時停 */
+function drill(k){
+  var n=0, got=0, isG=k==='__gender';
+  var list=isG?null:BANK.filter(function(q){ return q.topic===k && q.type==='choose' && q.opts; });
+  function next(){
+    if(n>=6 || (!isG&&!list.length)){ S.gold+=got; save(); hud();
+      openSheet('<h3>連發結束 <small>+'+got+' 🪙</small></h3><div class="muted">練到這裡就好。</div><div class="row2"><span></span><button class="btn main" id="dgo">去交貨攤 🏪</button></div>');
+      document.getElementById('dgo').onclick=function(){ closeSheet(); walkTo(STALL,false,openStall); }; return; }
+    n++;
+    var stopBtn=function(){ var s=document.createElement('button'); s.className='btn ghost'; s.textContent='■ 停'; s.onclick=function(){ n=99; next(); }; var k=document.getElementById('skip'); if(k) k.after(s); };
+    if(isG){ var it=pickGender(); askGender('連發 '+n+'／6 <small>整塊說出來</small>', it, function(ok,ms){ rec('g',it,ok,ms,{where:'連發'}); if(ok) got++; next(); }); }
+    else { var q=pickQ(list,false); askChoose('連發 '+n+'／6 <small>'+esc(topicLabel(k).fr)+'</small>', q, function(ok,ms,ch,right){ rec('q',q,ok,ms,{chosen:ch,right:right,where:'連發'}); if(ok) got++; next(); }); }
+    stopBtn();
+  }
+  next();
+}
+
+/* ============================================================
+   🏪 交貨攤：訂單要混合材料；交貨要打字填空（產出），答對價錢翻倍
+   ============================================================ */
+var NPCS=['Madame Roy','Monsieur Gagnon','Julie','le boulanger','la pharmacienne','Marc'];
+var orders=[];
+function newOrder(){
+  var ore=1+Math.floor(Math.random()*2), obj=1+Math.floor(Math.random()*2);
+  if(Math.random()<.3){ ore=Math.random()<.5?3:0; obj=ore?0:3; }
+  return {who:NPCS[Math.floor(Math.random()*NPCS.length)], ore:ore, obj:obj};
+}
+function fillOrders(){ while(orders.length<3) orders.push(newOrder()); }
+function count(k){ return bag.filter(function(b){ return b.k===k; }).length; }
+function openStall(){
+  fillOrders();
+  var h='<h3>🏪 交貨攤 <small>💰 '+S.gold+'</small></h3>';
+  h+='<div class="muted">背包：</div><div class="bagrow">'+(bag.length?bag.map(function(b){ return '<span class="'+(b.good?'':'bad')+'">'+b.em+' '+esc(b.k==='obj'?b.name:'礦石')+(b.good?'':' 瑕')+'</span>'; }).join(''):'<span>空的</span>')+'</div>';
+  orders.forEach(function(o,i){
+    var can=count('ore')>=o.ore && count('obj')>=o.obj;
+    h+='<div class="order"><div><b>'+esc(o.who)+'</b><div class="need">要 '+(o.ore?'⛏×'+o.ore+' ':'')+(o.obj?'📦×'+o.obj:'')+'</div></div>'+
+      '<button class="btn '+(can?'main':'')+'" data-o="'+i+'" '+(can?'':'disabled style="opacity:.4"')+'>交貨</button></div>';
+  });
+  h+='<div class="muted">完整品一件 5 🪙、瑕疵品 2 🪙；交貨時寫對一句，整單翻倍。</div>';
+  h+='<div class="shop">'+
+    '<button class="btn" data-buy="bag">🎒 背包 +3（'+costBag()+'🪙）</button>'+
+    '<button class="btn" data-buy="lamp">🏮 提燈：白天 +40（'+costLamp()+'🪙）</button>'+
+    '<button class="btn" data-buy="pick">⛏ 好十字鎬：會心一擊更容易（'+costPick()+'🪙）</button></div>';
+  h+='<div class="row2"><button class="btn ghost" id="dump">剩下的便宜賣掉（1 🪙／件）</button><button class="btn main" id="out">出門 →</button></div>';
+  openSheet(h, true);
+  sheet.querySelectorAll('[data-o]').forEach(function(b){ b.onclick=function(){ deliver(+b.dataset.o); }; });
+  sheet.querySelectorAll('[data-buy]').forEach(function(b){ b.onclick=function(){ buy(b.dataset.buy); }; });
+  document.getElementById('dump').onclick=function(){ S.gold+=bag.length; bag=[]; save(); hud(); openStall(); };
+  document.getElementById('out').onclick=function(){ closeSheet(); if(time<=0){ toast('天黑了，今天先收工吧（🌙）'); } else walkTo({x:4,y:7},false); };
+}
+function costBag(){ return 30+S.bagCap*3; } function costLamp(){ return 40+S.lamp*30; } function costPick(){ return 35+S.pick*30; }
+function buy(k){
+  var c={bag:costBag,lamp:costLamp,pick:costPick}[k]();
+  if(S.gold<c){ toast('還差 '+(c-S.gold)+' 🪙'); return; }
+  S.gold-=c; if(k==='bag') S.bagCap+=3; if(k==='lamp'){ S.lamp++; time+=40; } if(k==='pick') S.pick++;
+  save(); hud(); openStall();
+}
+function deliver(i){
+  var o=orders[i], use=[];
+  ['ore','obj'].forEach(function(k){
+    var need=o[k], cand=bag.filter(function(b){ return b.k===k; }).sort(function(a,b){ return (b.good?1:0)-(a.good?1:0); });
+    use=use.concat(cand.slice(0,need));
+  });
+  var base=use.reduce(function(s,b){ return s+(b.good?5:2); },0);
+  /* 產出：打字填空。題目從這一單材料的那一家出（礦＝動詞、東西＝名詞片語） */
+  var fam = o.ore>=o.obj ? 'verb' : 'noun';
+  var q=pickQ(POOL[fam].fill.filter(function(x){ return x.q.length<160; }), false);
+  var t0=Date.now();
+  openSheet('<h3>✍️ '+esc(o.who)+' 要你寫下來 <small>寫對整單翻倍</small></h3>'+(q.zh?'<div class="muted">'+esc(q.zh)+'</div>':'')+
+    '<div class="qtext fr">'+esc(q.q)+'</div>'+(q.hint?'<div class="hint">💡 '+esc(q.hint)+'</div>':'')+
+    '<input class="fill" id="fin" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="打空格裡的字（或整句）">'+
+    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 不寫，照原價</button><button class="btn main" id="sub">交出去</button></div>', true);
+  var inp=document.getElementById('fin'); setTimeout(function(){ inp.focus(); },50);
+  function pay(mult){
+    use.forEach(function(b){ bag.splice(bag.indexOf(b),1); });
+    var got=base*mult; S.gold+=got; orders.splice(i,1); fillOrders(); save(); hud();
+    return got;
+  }
+  document.getElementById('skip').onclick=function(){ var g=pay(1); toast('交貨 +'+g+' 🪙'); openStall(); };
+  function submit(){
+    var v=inp.value.trim(); if(!v) return;
+    var alts=String(q.a).split('|'), ok=false, accentOnly=false;
+    alts.forEach(function(a){ if(v.toLowerCase().replace(/[’]/g,"'").replace(/[.!?]$/,'')===a.toLowerCase().replace(/[’]/g,"'").replace(/[.!?]$/,'')) ok=true; else if(normAns(v)===normAns(a)) accentOnly=true; });
+    if(accentOnly&&!ok) ok=true;
+    var ms=Date.now()-t0, right=alts.slice().sort(function(a,b){ return a.length-b.length; })[0];
+    var full=alts.slice().sort(function(a,b){ return b.length-a.length; })[0], said=/\s/.test(full)&&!/[一-鿿]/.test(full)?full:frOnly(sayOf(q,right));
+    rec('q', q, ok, ms, {chosen:v, right:right, where:'✍️ 交貨'});
+    /* 交貨寫錯的那句會留在 log，出現在下一趟的回顧 */
+    var g=pay(ok?2:1), fb=document.getElementById('fb');
+    fb.innerHTML=(ok?'✓ '+(accentOnly?'意思對了（注意重音：<span class="say">'+esc(right)+'</span>）':'寫對了')+'，整單翻倍 +'+g+' 🪙':'照原價 +'+g+' 🪙')+
+      (said?'<div>👉 <span class="say">'+esc(said)+'</span> '+spk(said)+'</div>':'')+(!ok&&q.aNote?'<div class="muted">為什麼：'+note(q.aNote)+'</div>':'');
+    if(said) speak(said);
+    document.querySelector('.row2').innerHTML='<span></span><button class="btn main" id="back">回攤位</button>';
+    document.getElementById('back').onclick=openStall;
+  }
+  document.getElementById('sub').onclick=submit;
+  inp.addEventListener('keydown',function(e){ if(e.key==='Enter') submit(); });
+}
+
+/* ============================================================
+   一天：天亮 → 節點重生；收工隨時可以按，⛔ 不擋任何東西
+   ============================================================ */
+function newDay(first){
+  if(!first){ S.day++; save(); }
+  time=dayLen(); night=false; document.getElementById('night').style.background='rgba(5,10,40,0)';
+  nodes=NODE_DEF.map(function(d){ return {k:d.k,x:d.x,y:d.y,done:false}; });
+  rats.forEach(function(r){ r.el&&r.el.remove(); }); rats=[]; spawnRat(); spawnRat();
+  hero={x:4,y:11}; tripOut=false; walking=null;
+  layout(); hud();
+}
+function rest(){
+  if(busy) return;
+  var leftover=bag.length;
+  openSheet('<h3>🌙 第 '+S.day+' 天收工</h3><div class="muted">'+(leftover?'背包裡的 '+leftover+' 件明天還在。':'')+'明天樹叢跟礦石會重新長出來，交貨攤也有新訂單。</div><div class="row2"><span></span><button class="btn main" id="nd">睡覺 → 第 '+(S.day+1)+' 天</button></div>');
+  document.getElementById('nd').onclick=function(){ closeSheet(); if(log.length) log=[]; newDay(false); };
+}
+function hud(){
+  document.getElementById('hDay').textContent='第 '+S.day+' 天';
+  document.getElementById('hGold').textContent='💰 '+S.gold;
+  document.getElementById('hBag').textContent='🎒 '+bag.length+'/'+S.bagCap;
+  document.getElementById('tb').style.width=(100*time/dayLen())+'%';
+  var o=orders[0]; document.getElementById('quest').innerHTML= bag.length>=S.bagCap ? '🎒 背包滿了 → <b>回城</b>交貨' :
+    (night ? '🌙 天黑了 → 回城，或按 🌙 收工' : '今天的路：⛏ 礦坑敲礦（動詞）、🌳 樹叢翻東西（名詞），裝滿就回 🏪');
+}
+function toast(t){ document.getElementById('toast').textContent=t; }
+
+/* 點地圖 */
+mapEl.addEventListener('click', function(e){
+  if(busy) return;
+  var r=mapEl.getBoundingClientRect(), x=Math.floor((e.clientX-r.left)/T), y=Math.floor((e.clientY-r.top)/T);
+  var n=nodes.filter(function(n){ return n.x===x&&n.y===y; })[0];
+  if(n){
+    if(n.done){ toast('這裡今天採過了'); return; }
+    if(bag.length>=S.bagCap){ toast('🎒 背包滿了——回城交貨吧'); return; }
+    walkTo(n,true,function(){ n.k==='rock'?mineRock(n):shakeBush(n); }); return;
+  }
+  if(x===STALL.x&&y===STALL.y){ walkTo(STALL,false,function(){ if(log.length) review(); else openStall(); }); return; }
+  if(walkable(x,y)) walkTo({x:x,y:y},false);
+});
+document.getElementById('bHome').onclick=function(){ if(!busy) walkTo(STALL,false,function(){ if(log.length) review(); else openStall(); }); };
+document.getElementById('bRest').onclick=rest;
+window.addEventListener('resize', layout);
+
+newDay(true);
+moveRats();
+</script>
+</body>
+</html>
