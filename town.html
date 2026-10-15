@@ -21,6 +21,7 @@
 -->
 <script src="chunks.js"></script>
 <script src="questions.js"></script>
+<script src="tools/town_field_extra.js"></script>
 <script src="gram_rules.js"></script>
 <script src="topic_labels.js"></script>
 <script src="tts_reader.js"></script>
@@ -129,6 +130,13 @@ BANK.forEach(function(q, i){
   if(q.type==='fill') POOL[f].fill.push(q);
 });
 
+/* ⭐ 10-15 擴充：fill 填空題轉成路上用的選擇題（tools/town_field_extra.js；題幹與正解原樣，只新增保證錯的干擾項，驗證腳本 tools/check_town_field_extra.js）
+   ⛔ cue:true 的 24 題先不用（干擾項本身合文法，要靠題幹線索才判錯） */
+(typeof FIELD_EXTRA!=='undefined'?FIELD_EXTRA:[]).forEach(function(x){
+  if(x.cue || !POOL[x.fam] || !BANK[x.src]) return;
+  var b=BANK[x.src];
+  POOL[x.fam].choose.push({lesson:b.lesson, topic:x.topic, type:'choose', q:x.q, a:x.a, opts:x.opts, aNote:x.aNote, hint:x.hint||'', zh:x.zh||'', _i:x.src});
+});
 /* 陰陽性字庫：跟 quest.html 的 genderPool 同一個抽法（chunks.js「un／une／le／la＋單字名詞」與「l'… (m.)／(f.)」） */
 var EMO={chien:'🐕',chat:'🐈',cheval:'🐎',lapin:'🐇',poisson:'🐟',poule:'🐔',vache:'🐄',canard:'🦆',renard:'🦊',loup:'🐺',lion:'🦁',rat:'🐀',
   pomme:'🍎',fraise:'🍓',banane:'🍌',orange:'🍊',citron:'🍋',tomate:'🍅',carotte:'🥕',pain:'🍞',fromage:'🧀',gâteau:'🍰',croissant:'🥐',
