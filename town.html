@@ -22,6 +22,8 @@
 <script src="chunks.js"></script>
 <script src="questions.js"></script>
 <script src="tools/town_field_extra.js"></script>
+<script src="scenes.js"></script>
+<script src="tools/town_emoji.js"></script>
 <script src="gram_rules.js"></script>
 <script src="topic_labels.js"></script>
 <script src="tts_reader.js"></script>
@@ -90,6 +92,20 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .clue { font-family:Georgia,serif; font-size:1.1em; background:#0c120e; border-left:3px solid var(--gold); padding:8px 12px; border-radius:0 10px 10px 0; margin:8px 0; }
 .stars { color:var(--gold); letter-spacing:2px; }
 .stars .off { color:#4a5a4f; }
+.hud button { padding:4px 7px; font-size:.76em; } .hud .chip { font-size:.76em; padding:2px 7px; }
+.dexgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); gap:6px; margin:6px 0 12px; }
+.dexcell { background:#16211b; border:1px solid var(--line); border-radius:10px; min-height:66px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:.72em; text-align:center; padding:3px 2px; cursor:pointer; position:relative; line-height:1.25; }
+.dexcell .em { font-size:1.9em; line-height:1.1; }
+.dexcell.no { background:#0d130f; color:#3c4a40; cursor:default; }
+.dexcell.no .em { filter:brightness(0); opacity:.5; }
+.dexcell.r1 { border-color:#6aa0d8; } .dexcell.r2 { border-color:#c99af0; }
+.dexcell.shiny { box-shadow:0 0 0 2px #f0c95a inset, 0 0 10px rgba(240,201,90,.5); }
+.dexcell .evo { position:absolute; top:1px; right:3px; font-size:.95em; }
+.dexhead { font-size:.82em; color:var(--dim); margin-top:8px; }
+.catch { text-align:center; padding:6px 0; }
+.catch .big { font-size:4em; line-height:1.1; animation:pop .45s ease-out; }
+@keyframes pop { 0%{ transform:scale(.3) rotate(-20deg); opacity:0; } 70%{ transform:scale(1.15); } 100%{ transform:none; opacity:1; } }
+.tag-new { display:inline-block; background:#f0c95a; color:#1a1a1a; border-radius:6px; padding:0 6px; font-weight:700; font-size:.8em; margin-left:4px; }
 </style>
 </head>
 <body>
@@ -100,6 +116,7 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
     <span class="chip" id="hGold">💰 0</span>
     <span class="chip" id="hBag">🎒 0/8</span>
     <span class="sp"></span>
+    <button id="bDex">📖圖鑑</button>
     <button id="bHome">🏠回城</button>
     <button id="bRest">🌙收工</button>
   </div>
@@ -145,6 +162,8 @@ var EMO={chien:'🐕',chat:'🐈',cheval:'🐎',lapin:'🐇',poisson:'🐟',poul
   fleur:'🌸',arbre:'🌳',soleil:'☀️',lune:'🌙',étoile:'⭐',montagne:'⛰️',mer:'🌊',plage:'🏖️',neige:'❄️',pluie:'🌧️',guitare:'🎸',
   piano:'🎹',ballon:'⚽',téléphone:'📞',ordinateur:'💻',bouteille:'🍾',tasse:'☕',verre:'🥛',assiette:'🍽️',couteau:'🔪',fourchette:'🍴',
   cuillère:'🥄',bougie:'🕯️',lettre:'✉️',carte:'🗺️',photo:'📷',parapluie:'☂️',tente:'⛺',dentiste:'🦷',pharmacie:'💊',jardin:'🌳'};
+/* 圖鑑圖案：town 自己的 EMO 優先，再補 quest 的與 tools/town_emoji.js 的（10-16：原本 503 個字只有 26 個有圖案） */
+[typeof DEX_EMOJI_QUEST!=='undefined'?DEX_EMOJI_QUEST:{}, typeof DEX_EMOJI!=='undefined'?DEX_EMOJI:{}].forEach(function(m){ for(var k in m) if(!EMO[k]) EMO[k]=m[k]; });
 var GENDER = (function(){
   var W='[a-zàâçéèêëîïôûùüÿœæ-]+', re1=new RegExp('^(un|une|le|la)\\s+('+W+')$'), re2=new RegExp("^l['’]("+W+")\\s*\\((m|f)\\.\\)$");
   var map={}, bad={};
@@ -155,7 +174,7 @@ var GENDER = (function(){
     if(!n) return;
     var zh=String(c.zh||'').split(/[（(]/)[0].replace(/陽性|陰性/g,'').trim();
     if(map[n]&&map[n].g!==g) bad[n]=1;
-    if(!map[n]&&zh) map[n]={n:n, g:g, zh:zh, el:el};
+    if(!map[n]&&zh) map[n]={n:n, g:g, zh:zh, el:el, lesson:c.lesson||0};
   });
   return Object.keys(map).filter(function(k){ return !bad[k]; }).map(function(k){ return map[k]; });
 })();
@@ -217,13 +236,14 @@ var LOTS={
   forge: {x:14,y:24, name:'⚒ 鐵匠鋪', roof:'gray', door:[15,27], fam:'verb', famName:'動詞', cost:{ore:3}},
   post:  {x:14,y:31, name:'📮 郵局',   roof:'red',  door:[15,34], fam:'pron', famName:'代名詞', cost:{fish:3, obj:2, gold:30}},
   bakery:{x:22,y:31, name:'🍞 麵包店', roof:'red',  door:[23,34], fam:'noun', famName:'名詞片語＋陰陽性', cost:{obj:4, fish:2, gold:40}},
-  home:  {x:25,y:28, name:'🏡 你的家', roof:'gray', door:[26,31]}
+  home:  {x:25,y:28, name:'🏡 你的家', roof:'gray', door:[26,31]},
+  cottage:{x:8,y:23, name:'🏡 森林邊的小屋', roof:'red', door:[9,26], resident:'clement'}
 };
 var BRIDGE={x:19, y:8, cost:{ore:4, obj:3}, door:[19.9,10.3]};
 var PLAZA={x:20.5, y:29.5};
 var NODE_DEF=[
   /* 🌳 樹叢（森林）：名詞片語＋陰陽性 */
-  [3,12],[7,13],[10,15],[2,17],[6,19],[10,21],[3,23],[8,25],[11,28],[4,29],[8,31],[2,32]
+  [3,12],[7,13],[10,15],[2,17],[6,19],[10,21],[3,23],[5,27],[11,28],[4,29],[8,31],[2,32]
 ].map(function(p){ return {k:'bush',x:p[0],y:p[1]}; }).concat([
   /* 🪨 礦石（礦坑）：動詞 */
   [30,12],[34,13],[37,15],[31,17],[35,19],[29,21],[33,23],[37,25],[30,27],[34,29],[37,31],[31,32]
@@ -246,6 +266,7 @@ function buildWorld(){
       else if(r==='mine'){ g=['d',[48,48,49,50,51][Math.floor(v*5)]]; }
       else if(r==='town'){ g=['t',v<.88?25:(v<.95?39:40)]; }
       else if(r==='field'){ g=['t',v<.5?1:(v<.95?0:2)]; }
+      else if(r==='forest') g=['t',v<.65?1:(v<.95?0:2)];
       else g=['t',v<.8?0:(v<.93?1:2)];
       if(x===0||x===W-1||y===0||y===H-1){ d=['t',[4,16,28][Math.floor(v*3)]]; s=true; }
       else if(r==='forest' && rnd()<.2){ d=['t',[4,16,28,3][Math.floor(rnd()*4)]]; s=true; }
@@ -275,6 +296,7 @@ function buildWorld(){
 function applyBuildings(){
   for(var k in LOTS){ var L=LOTS[k];
     for(var dy=0;dy<3;dy++) for(var dx=0;dx<3;dx++){ solid[L.y+dy][L.x+dx]=!!S.built[k]; deco[L.y+dy][L.x+dx]=null; }
+    var dX=L.door[0], dY=L.door[1]; deco[dY][dX]=null; solid[dY][dX]=false;   /* 門口一定走得到 */
   }
   for(var x=19;x<=20;x++) for(var y=8;y<=9;y++) solid[y][x]=!S.built.bridge;
 }
@@ -469,7 +491,7 @@ function markStand(key, fam){
 function standCount(fam){ var n=0; for(var k in S.stand) if(S.standFam[k]===fam && S.stand[k].length>=2) n++; return n; }
 function rec(kind, item, ok, ms, extra){
   if(ok===null) return;
-  if(kind==='g'){ var g=S.gword[item.n]||{r:0,w:0}; g[ok?'r':'w']++; g.last=Date.now(); S.gword[item.n]=g; if(ok) markStand('g:'+item.n,'noun'); }
+  if(kind==='g'){ var g=S.gword[item.n]||{r:0,w:0}; g[ok?'r':'w']++; g.last=Date.now(); S.gword[item.n]=g; if(ok){ markStand('g:'+item.n,'noun'); lastCatch=dexCatch(item, ms); } else lastCatch=null; }
   else if(kind==='c'){ var c=S.gword['c:'+item.id]||{r:0,w:0}; c[ok?'r':'w']++; S.gword['c:'+item.id]=c; if(ok) markStand('c:'+item.id,'listen'); }
   else { var t=S.topic[item.topic]||{r:0,w:0}; t[ok?'r':'w']++; if(!ok) t.lastWrong=Date.now(); S.topic[item.topic]=t; S.qlast[item._i]=Date.now();
     if(ok && typeof item._i==='number'){ var f=famOf(item.topic); if(f) markStand('q:'+item._i, f); } }
@@ -515,7 +537,7 @@ function shakeBush(n){
     if(seq[i]==='g'){
       var it=pickGender();
       askGender('🌳 樹叢'+(star?' ★':'')+' <small>翻出一樣東西・叫出它</small>', it, function(ok,ms){
-        rec('g', it, ok, ms, {where:'🌳 樹叢'});
+        rec('g', it, ok, ms, {where:'🌳 樹叢'}); if(ok && lastCatch && lastCatch.isNew) floatTxt(n.x+.5,n.y-.5,'🆕 圖鑑','#f0c95a');
         if(ok!==null){ var c=(star?2:1); for(var k=0;k<c;k++) addBag({k:'obj', name:whole(it), n:it.n, g:it.g, em:EMO[it.n]||'📦', good:ok}); floatTxt(n.x+.5,n.y,(EMO[it.n]||'📦')+(ok?'':' 瑕'), ok?'#fff':'#bbb'); }
         i++; next();
       });
@@ -686,6 +708,8 @@ function guide(cost, doorPt){
 }
 function questInfo(){
   var b=S.built, g, full=bag.length>=S.bagCap;
+  if(!b.cottage) return {t:'走進 🌳 森林的草叢收集東西進 <b>📖 圖鑑</b>——再收 '+Math.max(1,DEX_MILESTONE-dexCount())+' 種，就會有人回到鎮上', to: region(Math.floor(hero.x),Math.floor(hero.y))==='forest' ? null : {x:8.5,y:19.5}};
+  if(!relOf('clement').met){ var cv0=villagers[0]; return {t:'🏡 森林邊的小屋亮燈了——去跟 <b>Clément</b> 打招呼', to:cv0?{x:cv0.x,y:cv0.y}:door('cottage')}; }
   function step(txt, cost, doorPt){
     g=guide(cost, doorPt);
     if(full && !g.ready) return {t:'🎒 背包滿了 → 回 <b>🏪 交貨攤</b>交貨或賣掉幾件', to:door('stall')};
@@ -730,6 +754,12 @@ function openLot(k){
   var L=LOTS[k];
   if(k==='stall') return openStall();
   if(k==='home') return rest();
+  if(k==='cottage'){
+    if(!S.built.cottage){ var left=Math.max(0,DEX_MILESTONE-dexCount());
+      openSheet('<h3>🏡 森林邊的小屋</h3><div class="story">門鎖著，窗台上積了灰。以前住在這裡的人，好像還會回來。</div><div class="muted">物品圖鑑再收 '+left+' 種，就會有人回來住。</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+      document.getElementById('ok').onclick=closeSheet; return; }
+    var v=villagers.filter(function(x){ return x.rid==='clement'; })[0]; if(v) return villager(v);
+  }
   if(!S.built[k]) return buildPanel(L.name, L.cost, L.fam, function(){ S.built[k]=1; applyBuildings(); spawnNpcs(); if(k==='post') setTimeout(readLetter,400); });
   if(k==='post'){ if(!S.letter) return readLetter(); if(Object.keys(S.clues).length>=3 && !S.solved) return solveChapter(); }
   var o=starsOf(k);
@@ -872,7 +902,7 @@ function newDay(first){
     if(night){ spawnRat(); spawnRat(); }
   } else if(!first){ orders=[]; }
   hero.x=PLAZA.x; hero.y=PLAZA.y; wasInTown=true; log=[];
-  spawnNpcs(); hud();
+  spawnNpcs(); spawnVillagers(); hud();
 }
 function rest(){
   if(busy) return;
@@ -894,6 +924,7 @@ function hud(){
    回城：先回顧（錯在哪、為什麼、建議、正確說法），再交貨
    ============================================================ */
 function topicLabel(t){
+  if(/^scene:/.test(t)){ var sc=(typeof SCENE_BY_ID!=='undefined')&&SCENE_BY_ID[t.slice(6)]; return {fr:sc?sc.fr:'Dialogue', zh:'情境對話'+(sc?'・'+sc.zh:''), point:null}; }
   var p=(typeof gramPointOfTopic==='function')?gramPointOfTopic(t):null;
   var fr=(typeof TOPIC_LABELS_FR!=='undefined'&&TOPIC_LABELS_FR[t])||t;
   return {fr:fr, zh:p&&p.rule?p.rule.title.split(/[—－-]/)[0].trim():'', point:p};
@@ -919,7 +950,7 @@ function classifyG(it, nWrongNow){
   if(nWrongNow===1 && tot>=4 && r/tot>=.8) return 'slip';
   return 'auto';
 }
-var TAG={slip:'⚡ 手滑', auto:'✂️ 要練到不用想', concept:'🧠 規則還沒到位', ask:'❓'};
+var TAG={scene:'💬 情境', slip:'⚡ 手滑', auto:'✂️ 要練到不用想', concept:'🧠 規則還沒到位', ask:'❓'};
 var lastTrip=null;
 function review(again){
   var trip=again||log; if(!again) log=[]; lastTrip=trip;
@@ -953,7 +984,7 @@ function review(again){
       g.forEach(function(l){ h+='<div class="item"><span class="say">'+esc(l.item.fr)+'</span> '+spk(l.item.fr)+' <span class="muted">'+esc(l.item.zh)+'</span><div class="mine">你選的：'+esc(l.chosen||'')+'</div></div>'; });
       h+='</div>'; return;
     }
-    var lab=topicLabel(k), cls=classify(k,g.length);
+    var lab=topicLabel(k), cls=/^scene:/.test(k)?'scene':classify(k,g.length);
     h+='<div class="rv-grp" data-topic="'+k+'"><div class="t">'+(lab.zh?esc(lab.zh)+' ':'')+'<small>'+esc(lab.fr)+'</small><span class="tag">'+(cls==='ask'?'':TAG[cls])+'</span></div>';
     h+='<div class="advice" data-adv="'+k+'">'+adviceHtml(k,cls,g.length)+'</div>';
     g.forEach(function(l){
@@ -970,6 +1001,7 @@ function review(again){
   bindReview();
 }
 function adviceHtml(k,cls,n){
+  if(cls==='scene') return '👉 這是一句要整句說出口的話：點 🔊 聽一次、跟著唸一次，下次遇到他就說得出來。';
   if(cls==='slip') return '平常這個都對，這次手滑。看一眼正確說法就好，不用再練。';
   if(cls==='auto') return '👉 規則你已經會了，缺的是「不用想就出來」。<b>不重講規則</b>，直接同一個結構連發幾題，把它練成一整塊。 <button class="btn main" data-drill="'+k+'">連發 6 題</button>';
   if(cls==='concept'){
@@ -1007,6 +1039,251 @@ function drill(k){
 }
 
 
+/* ---------- A3. 居民（路人）—— 每位居民＝scenes.js 裡「對方」那個角色 ----------
+   role：你（Owen，剛搬來的人）在這個劇本扮演哪個角色；另一個角色就是居民
+   ⭐ 居民名字沿用劇本裡的名字（台詞裡會叫到，例：Moi, c'est Clément Dupré.），⛔ 不改台詞      */
+var PLAYER_ROLE={
+  boulangerie:'client', restaurant:'client', 'restaurant-a2':'client', vetements:'client', tshirt:'client',
+  chemin:'touriste', hotel:'touriste', 'hotel-modif':'client', medecin:'patient', pharmacie:'client',
+  logement:'locataire', agence:'client', voisin:'nouveau', banque:'client', aeroport:'loic',
+  'rendez-vous':'perrine', sport:'moi', entretien:'candidat'
+};
+var RESIDENTS=[  /* 10-16 樣本：先接 Clément（其餘居民等圖鑑擴充後再開） */
+  /* 第一批（先做這 6 位）。lot＝住哪棟（蓋好之後白天會站在門口）；sit＝situations.js 的情境（插話題從這裡抽） */
+  {id:'clement',  name:'Clément Dupré',      spr:['d',99],  lot:'home',   scenes:['voisin'],                        sit:['logement','se-presenter'], first:1},
+  {id:'boulanger',name:'La boulangère',      spr:['d',85],  lot:'bakery', scenes:['boulangerie'],                   sit:['courses'],                 first:1},
+  {id:'proprio',  name:'La propriétaire',    spr:['d',100], lot:'home',   scenes:['logement'],                      sit:['logement']},
+  {id:'thomas',   name:'Thomas',             spr:['d',98],  lot:null,     scenes:['rendez-vous','sport'],           sit:['rendez-vous','loisirs']},
+  {id:'pharma',   name:'La pharmacienne',    spr:['d',100], lot:null,     scenes:['pharmacie'],                     sit:['sante']},
+  {id:'docteure', name:'La docteure',        spr:['d',99],  lot:null,     scenes:['medecin'],                       sit:['sante']},
+  /* 第二批（v2）：Marina（aeroport）、Le serveur（restaurant／restaurant-a2）、Le vendeur（vetements／tshirt）、
+     Le monsieur（chemin，只問路不交朋友）、鎮長（entretien，第一天登記用）。
+     ⚠️ hotel／hotel-modif／banque／agence 台詞裡報的是外地的店名（Hôtel Atlantique、Hôtel Solis、Banque du Nord、
+        Le monde en voyages）→ 不是鎮上的居民，建議做成「📮 郵局的公用電話」：打電話出去，⛔ 不算路人、不算關係值 */
+];
+/* 對方叫你的名字跟你不是同一個人（劇本裡你叫 M. Rousseau／monsieur Norin／Michel Barbier）：
+   ① 居民說的話裡有這些名字 → 照樣顯示（那是他說的話，⛔ 不改）但標「（劇本裡的名字）」
+   ② 「你」要說出別人的名字（Oui. Michel Barbier.）→ 這一格不出題，居民直接接下一句        */
+var NOT_ME=/Michel Barbier|Norin|Rousseau|Joan|Loïc|Perrine/;
+var REL_STAGE=[ {at:0,ic:'',   zh:'陌生'}, {at:1,ic:'🌱',zh:'認識'}, {at:6,ic:'🌿',zh:'熟客'},
+                {at:14,ic:'🌳',zh:'信任'}, {at:24,ic:'🌸',zh:'朋友'} ];
+var REL_GAIN={good:2, ok:1, bad:0, sceneDone:3};   /* ⛔ 沒有負數：關係只會停，不會退 */
+
+/* ============================================================
+   B. 🔀 岔路：crossroad(n)
+   ============================================================ */
+/* （岔路的程式在 tools/town_encounters_draft.js，這一版還沒接） */
+var SCENE_BY_ID={}; (typeof SCENES!=='undefined'?SCENES:[]).forEach(function(s){ SCENE_BY_ID[s.id]=s; });
+
+/* 存檔：S.rel[居民id] = { pts, met, sc:目前劇本, at:目前節點, done:{劇本:次數}, path:{劇本:{節點:1}}, last, mood:{d:日期, v:'warm'|'meh'} }
+         S.vknown[劇本:節點] = { n:次數, last }   ← 「↷ 這句我會」的紀錄（物件形狀＋last，配合 sync 的物件合併慣例） */
+function relOf(id){ S.rel=S.rel||{}; S.vknown=S.vknown||{}; return S.rel[id]||(S.rel[id]={pts:0, met:0, sc:null, at:null, done:{}, path:{}, last:0, mood:null}); }
+function stageOf(pts){ var s=0; REL_STAGE.forEach(function(r,i){ if(pts>=r.at) s=i; }); return s; }
+function residentById(id){ return RESIDENTS.filter(function(r){ return r.id===id; })[0]; }
+
+/* 一個劇本裡「你」要開口的格子；good 有 1 個以上、而且有一個不是 good 的選項才算「有對錯」 */
+function playerNodes(scene){
+  var role=PLAYER_ROLE[scene.id], out=[];
+  Object.keys(scene.nodes).forEach(function(id){ var n=scene.nodes[id];
+    if(n.speaker!==role || !n.choices) return;
+    var goods=n.choices.filter(function(c){ return c.tag==='good' && !c.constructed; });
+    var graded=n.choices.some(function(c){ return c.tag!=='good'; });
+    var clash=goods.some(function(c){ return NOT_ME.test(c.fr); });
+    out.push({id:id, graded:graded, free:!graded && goods.length>=2, clash:clash});
+  });
+  return out;
+}
+/* 選下一個劇本：先把還沒走完的走完；都走過 → 回到走過的劇本，⭐ 從「還沒走過的分岔」那一格開始（feedback_play_then_memorize） */
+function nextScene(R, st){
+  for(var i=0;i<R.scenes.length;i++){ if(!st.done[R.scenes[i]]) return {sc:R.scenes[i], at:SCENE_BY_ID[R.scenes[i]].start}; }
+  var sc=R.scenes[Math.floor(Math.random()*R.scenes.length)], S0=SCENE_BY_ID[sc], seenP=st.path[sc]||{};
+  var unseen=Object.keys(S0.nodes).filter(function(k){ return !seenP[k] && S0.nodes[k].speaker===PLAYER_ROLE[sc]; });
+  return {sc:sc, at:unseen.length ? findEntryBefore(S0, unseen[0]) : S0.start};
+}
+/* 從某個沒走過的格子往回找一個「居民先說話」的入口，讓這段對話有頭 */
+function findEntryBefore(scene, target){
+  var parent={}; Object.keys(scene.nodes).forEach(function(k){ var n=scene.nodes[k];
+    (n.choices||[{next:n.next}]).forEach(function(c){ if(c.next && !parent[c.next]) parent[c.next]=k; }); });
+  var p=parent[target]; return p || target;
+}
+
+function villager(v){
+  var R=residentById(v.rid), st=relOf(R.id), today0=today();
+  if(!st.sc || !SCENE_BY_ID[st.sc] || !st.at || st.at==='end'){ var nx=nextScene(R, st); st.sc=nx.sc; st.at=nx.at; }
+  var scene=SCENE_BY_ID[st.sc], role=PLAYER_ROLE[scene.id];
+  var MAX=2, asked=0, gained=0, anyBad=false, chat=[];
+  var firstMeet=!st.met; st.met=1; if(firstMeet) st.pts=Math.max(st.pts,1);
+  function head(){ var s=stageOf(st.pts); return '🧑 '+esc(R.name)+' '+(REL_STAGE[s].ic||'')+' <small>'+esc(scene.icon||'')+' '+esc(scene.fr||'')+'</small>'; }
+  function bubble(who, fr){ chat.push('<div class="item"><b>'+esc(who)+'</b>：<span class="say">'+esc(fr)+'</span> '+spk(fr)+'</div>'); }
+  function goodOf(n){ var g=n.choices.filter(function(c){ return c.tag==='good' && !c.constructed; }); return g[Math.floor(Math.random()*g.length)]||n.choices[0]; }
+  function mark(id){ (st.path[st.sc]=st.path[st.sc]||{})[id]=1; }
+
+  function step(){
+    var n=scene.nodes[st.at];
+    if(!n || n.speaker==='system' || st.at==='end') return sceneEnd();
+    if(n.speaker!==role){                                   /* 居民說話：固定台詞，或居民那一方的 good 選項 */
+      var c=n.line?{fr:n.line,next:n.next}:goodOf(n);
+      bubble(R.name, c.fr); mark(st.at); st.at=c.next; return step();
+    }
+    if(n.line){ bubble('你', n.line); mark(st.at); st.at=n.next; return step(); }
+    if(asked>=MAX) return pause();
+    var goods=n.choices.filter(function(c){ return c.tag==='good' && !c.constructed; });
+    if(goods.some(function(c){ return NOT_ME.test(c.fr); })){ var g0=goods[0]; bubble('你', g0.fr); mark(st.at); st.at=g0.next; return step(); }
+    return ask(n);
+  }
+  function ask(n){
+    var t0=Date.now(), done=false, opts=shuffle(n.choices.filter(function(c){ return !(c.constructed && c.tag==='good'); }));
+    var last=chat.slice(-3).join('');
+    openSheet('<h3>'+head()+'</h3>'+last+
+      (n.tip?'<details class="hint"><summary>💡 情境</summary>'+esc(n.tip)+'</details>':'')+   /* 預設收起來（feedback_orientation_collapsed_by_choice） */
+      '<div class="opts">'+opts.map(function(c,i){ return '<button data-i="'+i+'">'+esc(c.fr)+'</button>'; }).join('')+'</div>'+
+      '<div class="fb" id="fb"></div><div class="row2"><span><button class="btn ghost" id="known">↷ 這句我會</button> <button class="btn ghost" id="bye">👋 點頭走過</button></span><span id="slot"></span></div>', true);
+    sheet.querySelectorAll('.opts button').forEach(function(b){ b.onclick=function(){
+      if(done) return; done=true;
+      var c=opts[+b.dataset.i], ms=Date.now()-t0, graded=n.choices.some(function(x){ return x.tag!=='good'; });
+      var good=c.tag==='good', best=good?c:goodOf(n);
+      asked++; mark(st.at);
+      /* 紀錄：沿用 town.html 的 rec（topic 用 'scene:<id>'，回顧那裡才分得出是哪個劇本） */
+      if(graded) rec('q', {topic:'scene:'+scene.id, _i:'v:'+scene.id+':'+st.at, q:(chat.length?chat[chat.length-1].replace(/<[^>]+>/g,''):'')+'　→ 你要回什麼？',
+                           a:best.fr, aNote:c.tag==='good'?(best.note||''):(c.note||''), say:best.fr, lesson:0},
+                     c.tag!=='bad', ms, {chosen:c.fr, right:best.fr, where:'🧑 '+R.name});
+      var gain=REL_GAIN[c.tag]||0; st.pts+=gain; gained+=gain; if(c.tag==='bad') anyBad=true;
+      bubble('你', c.fr); speak(c.fr);
+      sheet.querySelectorAll('.opts button').forEach(function(x){ var o=opts[+x.dataset.i]; if(o.tag==='good') x.classList.add('ok'); });
+      if(c.tag==='bad') b.classList.add('no');
+      var fb=document.getElementById('fb');
+      /* 反應在居民身上：good＝笑、ok＝照樣接話但有一點怪、bad＝愣一下（⛔ 不罵他、不扣關係） */
+      fb.innerHTML = c.tag==='good' ? '😊 <span class="muted">'+esc(c.zh||'')+'</span>'
+        : c.tag==='ok' ? '🙂 '+esc(R.name)+' 照樣接話了。<div class="muted">'+note(c.note||'')+'</div><div>更自然：<span class="say">'+esc(best.fr)+'</span> '+spk(best.fr)+'</div>'
+        : '😕 '+esc(R.name)+' 愣了一下。<div class="muted">'+note(c.note||'')+'</div><div>👉 <span class="say">'+esc(best.fr)+'</span> '+spk(best.fr)+'</div>';
+      document.getElementById('known').parentNode.style.visibility='hidden';
+      document.getElementById('slot').outerHTML='<button class="btn main" id="go">繼續</button>';
+      document.getElementById('go').onclick=function(){ st.at=c.next; save(); step(); };
+      if(c.tag==='good') setTimeout(function(){ var g=document.getElementById('go'); if(g) g.click(); }, 900);
+    }; });
+    /* ⭐ 跳過第一層：這一句我會 → 居民自己把話接下去（照 good 那條走），⛔ 不計分、不進回顧，記次數只拿來降低出現頻率 */
+    document.getElementById('known').onclick=function(){ if(done) return; done=true;
+      var k=scene.id+':'+st.at, o=S.vknown[k]||{n:0}; o.n++; o.last=Date.now(); S.vknown[k]=o;
+      var g=goodOf(n); bubble('你', g.fr); mark(st.at); st.at=g.next; asked++; save(); step(); };
+    /* ⭐ 跳過第二層：點頭走過 → 這段對話停在這裡，下次遇到從這裡接，⛔ 關係不變 */
+    document.getElementById('bye').onclick=function(){ if(done) return; done=true; save(); closeSheet(); v.calm=25; v.wave=1.2; };
+  }
+  function pause(){                                          /* 一次遭遇最多回 2 句：劇本沒走完也先停，下次接著 */
+    finishEncounter(false);
+  }
+  function sceneEnd(){
+    st.done[st.sc]=(st.done[st.sc]||0)+1; st.pts+=REL_GAIN.sceneDone; gained+=REL_GAIN.sceneDone;
+    st.sc=null; st.at=null; finishEncounter(true);
+  }
+  function finishEncounter(full){
+    var before=stageOf(st.pts-gained), after=stageOf(st.pts);
+    st.last=Date.now(); st.mood={d:today0, v:anyBad?'meh':'warm'}; save();
+    var gift='';
+    /* 禮物用金幣，⛔ 不塞進背包（背包的 obj 有陰陽性，老鼠題會拿它出題） */
+    if(!anyBad && gained>0){ var g=2+stageOf(st.pts); S.gold+=g; hud(); gift='<div>🎁 '+esc(R.name)+' 請你喝了杯咖啡，還塞給你 '+g+' 🪙。</div>'; }
+    var up = after>before ? '<div class="story">'+esc(R.name)+' 現在跟你是「'+REL_STAGE[after].zh+'」'+REL_STAGE[after].ic+(after===2?'——之後會到 🏪 交貨攤下訂單。':after===3?'——他好像有話想跟你說。':'')+'</div>' : '';
+    openSheet('<h3>'+head()+'</h3>'+chat.slice(-4).join('')+gift+up+
+      '<div class="muted">'+(full?'這段對話說完了。':'他還有話沒說完，下次遇到會接著聊。')+'</div>'+
+      '<div class="row2"><span></span><button class="btn main" id="ok">再見</button></div>');
+    document.getElementById('ok').onclick=function(){ closeSheet(); v.calm=25; v.wave=1.2; };
+  }
+  step();
+}
+
+
+/* ============================================================
+   📖 物品圖鑑（10-16 Owen：拉力＝「看自己的地方變熱鬧」＋「把圖鑑收集完」；選動森型＝字就是那個東西）
+   ⭐ 收服＝叫對 un／une；✨ 閃光＝2 秒內；🌟 進化＝同一樣東西在不同的兩天都收服（＝站穩）
+   ⭐ 圖鑑收到 DEX_MILESTONE 種 → 以前的居民回到鎮上（鎮變熱鬧）。⛔ 不顯示「N／481」分母，缺的格子用剪影
+   ============================================================ */
+var DEX_MILESTONE=10, lastCatch=null, villagers=[], grassDist=0, lastWild=-99;
+var RAR=['普通','少見','稀有'];
+function rarity(it){ var l=it.lesson||0; return l>=29?2:(l>=13?1:0); }
+function dexCount(){ return Object.keys(S.dex||{}).length; }
+function dexCatch(it, ms){
+  S.dex=S.dex||{}; var d=S.dex[it.n], t=today(), r={isNew:!d, shiny:false, evo:false};
+  if(!d) d=S.dex[it.n]={t:Date.now(), days:[], shiny:0, evo:0};
+  if(d.days.indexOf(t)<0){ d.days.push(t); if(d.days.length>3) d.days=d.days.slice(-3); }
+  if(ms && ms<2000 && !d.shiny){ d.shiny=1; r.shiny=true; }
+  if(!d.evo && d.days.length>=2){ d.evo=1; r.evo=true; }
+  if(!S.built.cottage && dexCount()>=DEX_MILESTONE) S.moveIn=1;
+  return r;
+}
+/* 出哪一隻：還沒收的 ×3（填圖鑑）、收過但今天還沒收（要進化）×2.2、已進化 ×0.35、錯過的 ×2；稀有的比較少出 */
+function pickWild(){
+  var gs=readLS('clb7_gender_seen'), now=Date.now(), best=null, bw=-1, t=today();
+  shuffle(GENDER).slice(0,80).forEach(function(it){
+    var d=(S.dex||{})[it.n], w= !d ? 3 : d.evo ? .35 : (d.days.indexOf(t)<0 ? 2.2 : .5);
+    var mine=S.gword[it.n]||{}, r=gs[it.n]||{};
+    if((mine.w||0)>(mine.r||0) || (r.w||0)>(r.c||r.r||0)) w*=2;
+    w*=[1,.7,.45][rarity(it)];
+    if(EMO[it.n]) w*=1.3;
+    if(S.qlast['w:'+it.n] && now-S.qlast['w:'+it.n]<10*60000) w*=.1;
+    w*=Math.random()+.3; if(w>bw){ bw=w; best=it; }
+  });
+  return best;
+}
+function wildEncounter(){
+  var it=pickWild(), em=EMO[it.n]||'📦', rr=rarity(it);
+  askGender('🌳 野生的 '+em+' 出現了！ <small>'+RAR[rr]+'・叫對 un／une 就收服</small>', it, function(ok,ms){
+    S.qlast['w:'+it.n]=Date.now();
+    if(ok===null){ closeSheet(); toast('牠鑽回草叢裡了'); return; }
+    rec('g', it, ok, ms, {where:'🌳 草叢'});
+    if(!ok){
+      openSheet('<div class="catch"><div class="big" style="opacity:.35">'+em+'</div><div class="story">牠一溜煙跑回草叢了……</div><div class="muted">下次還會遇到牠。</div></div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+      document.getElementById('ok').onclick=closeSheet; return;
+    }
+    var c=lastCatch||{}, d=S.dex[it.n];
+    if(bag.length<S.bagCap) bag.push({k:'obj', name:whole(it), n:it.n, g:it.g, em:em, good:true});
+    hud(); save();
+    var tags=(c.isNew?'<span class="tag-new">🆕 圖鑑新登錄</span>':'')+(c.shiny?'<span class="tag-new">✨ 閃光</span>':'')+(c.evo?'<span class="tag-new">🌟 進化：熟了</span>':'');
+    var line=c.evo?'昨天收過的，今天又一眼認出來——這個字你站穩了。':c.isNew?'圖鑑第 '+dexCount()+' 種。':(d&&!d.evo?'明天再收一次，牠就會進化。':'');
+    openSheet('<div class="catch"><div class="big"'+(d&&d.shiny?' style="filter:drop-shadow(0 0 10px #f0c95a)"':'')+'>'+em+'</div><div style="font-size:1.2em" class="fr">收服了！ <span class="say">'+esc(whole(it))+'</span> '+spk(whole(it))+'</div><div>'+tags+'</div><div class="muted">'+esc(it.zh)+(line?'　'+line:'')+'</div></div><div class="row2"><button class="btn ghost" id="dex">📖 看圖鑑</button><button class="btn main" id="ok">好</button></div>');
+    document.getElementById('ok').onclick=closeSheet; document.getElementById('dex').onclick=openDex;
+  });
+}
+function openDex(){
+  var groups=[[],[],[]], caught=0, sh=0, ev=0;
+  GENDER.forEach(function(it){ groups[rarity(it)].push(it); var d=(S.dex||{})[it.n]; if(d){ caught++; if(d.shiny) sh++; if(d.evo) ev++; } });
+  var h='<h3>📖 物品圖鑑 <small>已收 '+caught+' 種'+(sh?'・✨ '+sh:'')+(ev?'・🌟 '+ev:'')+'</small></h3>';
+  h+='<div class="muted">'+(!S.built.cottage?'再收 '+Math.max(0,DEX_MILESTONE-caught)+' 種，就會有人回到鎮上。':'鎮上的人慢慢回來了。之後還會有人回來。')+'　✨ 2 秒內收服＝閃光　🌟 隔天又收服＝進化</div>';
+  groups.forEach(function(g,ri){
+    g.sort(function(a,b){ return (a.lesson||0)-(b.lesson||0); });
+    h+='<div class="dexhead">'+['⚪','🔵','🟣'][ri]+' '+RAR[ri]+'</div><div class="dexgrid">';
+    g.forEach(function(it){ var d=(S.dex||{})[it.n], em=EMO[it.n]||'📦';
+      if(!d) h+='<div class="dexcell no r'+ri+'"><div class="em">'+em+'</div><div>？？？</div></div>';
+      else h+='<div class="dexcell r'+ri+(d.shiny?' shiny':'')+'" data-w="'+esc(whole(it))+'" data-zh="'+esc(it.zh)+'">'+(d.evo?'<span class="evo">🌟</span>':'')+'<div class="em">'+em+'</div><div class="fr">'+esc(whole(it))+'</div></div>';
+    });
+    h+='</div>';
+  });
+  h+='<div class="row2"><span></span><button class="btn main" id="ok">關閉</button></div>';
+  openSheet(h, true);
+  sheet.querySelectorAll('.dexcell[data-w]').forEach(function(c){ c.onclick=function(){ speak(c.dataset.w); toast(c.dataset.w+'＝'+c.dataset.zh); }; });
+  document.getElementById('ok').onclick=closeSheet;
+}
+/* 居民回來（圖鑑里程碑） */
+function spawnVillagers(){
+  villagers=[];
+  if(S.built.cottage) villagers.push({rid:'clement', s:['d',99], x:9.5, y:27.3, hx:9.5, hy:27.3, tx:9.5, ty:27.3, calm:1, face:1});
+}
+function moveIn(){
+  S.moveIn=0; S.built.cottage=1; applyBuildings(); spawnVillagers(); save(); hud();
+  fade(function(){
+    openSheet('<div class="catch"><div class="big">🏡</div><div class="story">森林邊那間空了好久的小屋，今天亮燈了。<br>以前住在這裡的老鄰居 <b>Clément</b> 回來了——聽說鎮上又有人在了。</div><div class="muted">圖鑑收得越多，回來的人越多。</div></div><div class="row2"><span></span><button class="btn main" id="ok">去打招呼</button></div>');
+    document.getElementById('ok').onclick=closeSheet;
+  });
+}
+function updateVillagers(dt){
+  for(var i=0;i<villagers.length;i++){ var v=villagers[i];
+    if(v.calm>0) v.calm-=dt;
+    if(Math.hypot(v.tx-v.x,v.ty-v.y)<.1 || Math.random()<dt*.15){ v.tx=v.hx+(Math.random()*3-1.5); v.ty=v.hy+(Math.random()*1.4-.4); if(blocked(v.tx,v.ty)){ v.tx=v.hx; v.ty=v.hy; } }
+    var dx=v.tx-v.x, dy=v.ty-v.y, L=Math.hypot(dx,dy);
+    if(L>.05){ var nx=v.x+dx/L*.8*dt, ny=v.y+dy/L*.8*dt; if(!blocked(nx,ny)){ v.x=nx; v.y=ny; } if(Math.abs(dx)>.05) v.face=dx<0?-1:1; }
+    if(v.calm<=0 && !pending && Math.hypot(v.x-hero.x, v.y-hero.y)<.75){ v.calm=3; pending={t:.25, x:v.x, y:v.y-.5, fn:(function(v){ return function(){ villager(v); }; })(v)}; return true; }
+  }
+  return false;
+}
+
 /* ============================================================
    主迴圈：移動、碰撞、觸發、老鼠、鏡頭、繪製
    ============================================================ */
@@ -1032,11 +1309,16 @@ function update(dt){
     if(!blocked(hero.x,ny)) hero.y=ny; else nudge('x', hero.vy*dt);
     if(Math.abs(hero.vx)>.3) hero.face=hero.vx<0?-1:1;
     hero.bob+=dt*12*hero.moving;
-    hero.dust-=dt; if(hero.moving>.6 && hero.dust<=0){ hero.dust=.25; dusts.push({x:hero.x-hero.vx*.03, y:hero.y+.35, t:0}); }
+    var inGrass=region(Math.floor(hero.x),Math.floor(hero.y))==='forest';
+    hero.dust-=dt; if(hero.moving>.6 && hero.dust<=0){ hero.dust=.25; dusts.push({x:hero.x-hero.vx*.03, y:hero.y+.35, t:0, g:inGrass}); }
+    /* 🌳 草叢：走著走著隨機跳出來（寶可夢手感） */
+    if(inGrass && !pending){ grassDist+=spd*dt; if(grassDist>1.4){ grassDist=0; if(Math.random()<.28 && clock-lastWild>3){ lastWild=clock; pending={t:.35, x:hero.x, y:hero.y, fn:wildEncounter}; } } }
     if(!inTown(hero)){ time-=dt*hero.moving; if(time<=0 && !night){ time=0; night=true; toast('🌙 天黑了，老鼠變多變快——回城吧'); spawnRat(); spawnRat(); } }
     reveal();
     if(Math.random()<dt) { save(); hud(); }
   }
+  if(S.moveIn && !S.built.cottage && !pending){ moveIn(); return; }
+  if(updateVillagers(dt)) return;
   /* 進城 → 有東西就回顧 */
   var it=inTown(hero);
   if(it && !wasInTown){ wasInTown=true; if(log.some(function(l){ return l.ok===false; }) || log.length>=6){ joy=null; keys={}; review(); return; } }
@@ -1110,11 +1392,16 @@ function draw(dt){
   nodes.forEach(function(n){ list.push({y:n.y+1, f:drawNode(n,ox,oy,ts)}); });
   if(S.letter) CLUES.forEach(function(c){ if(!S.clues[c.id]) list.push({y:c.y+1, f:drawClue(c,ox,oy,ts)}); });
   npcs.forEach(function(p){ list.push({y:p.y, f:drawSprite(p.s,p.x,p.y,ox,oy,ts,1,Math.sin(clock*2+p.x)*.03)}); });
+  villagers.forEach(function(v){ list.push({y:v.y, f:function(){ drawSprite(v.s,v.x,v.y,ox,oy,ts,v.face,Math.abs(Math.sin(clock*6))*.04)();
+    var R=residentById(v.rid), st=relOf(v.rid), lab=(st.met?R.name:'？')+' '+(REL_STAGE[stageOf(st.pts)].ic||'');
+    cx.font='bold '+Math.round(ts*.24)+'px system-ui'; cx.textAlign='center'; var tw=cx.measureText(lab).width+ts*.15;
+    cx.fillStyle='rgba(0,0,0,.55)'; cx.fillRect(ox+v.x*ts-tw/2, oy+(v.y-1.05)*ts, tw, ts*.32); cx.fillStyle='#fff'; cx.fillText(lab, ox+v.x*ts, oy+(v.y-.82)*ts);
+    if(!st.met){ cx.font=Math.round(ts*.4)+'px system-ui'; cx.fillText('💬', ox+v.x*ts+ts*.45, oy+(v.y-.6)*ts+Math.sin(clock*4)*ts*.05); } }}); });
   rats.forEach(function(r){ list.push({y:r.y, f:drawSprite(SPR.rat,r.x,r.y,ox,oy,ts,r.face,Math.abs(Math.sin(clock*14))*.06)}); });
   list.push({y:hero.y, f:function(){
     var b=hero.moving>.05?Math.abs(Math.sin(hero.bob))*.12:Math.sin(clock*2)*.02;
     cx.fillStyle='rgba(0,0,0,.25)'; cx.beginPath(); cx.ellipse(ox+hero.x*ts, oy+hero.y*ts+ts*.38, ts*.28, ts*.1, 0, 0, 7); cx.fill();
-    dusts.forEach(function(d){ cx.fillStyle='rgba(230,210,170,'+(.5*(1-d.t/.45))+')'; cx.beginPath(); cx.arc(ox+d.x*ts, oy+d.y*ts-d.t*ts*.3, ts*(.06+d.t*.12), 0, 7); cx.fill(); });
+    dusts.forEach(function(d){ cx.fillStyle=(d.g?'rgba(120,200,110,':'rgba(230,210,170,')+(.5*(1-d.t/.45))+')'; cx.beginPath(); cx.arc(ox+d.x*ts, oy+d.y*ts-d.t*ts*.3, ts*(.06+d.t*.12), 0, 7); cx.fill(); });
     if(hero.flash>0 && Math.floor(clock*20)%2) return;
     var sq=hero.squash>0?hero.squash/.12:0, im=img.apply(null,SPR.hero);
     if(im.complete){ cx.save(); cx.translate(Math.round(ox+hero.x*ts), Math.round(oy+(hero.y-b)*ts)); cx.scale((hero.face||1)*(1+.1*sq), 1-.1*sq); cx.drawImage(im,-ts/2,-ts*.62,ts,ts); cx.restore(); }
@@ -1168,7 +1455,7 @@ function drawLot(k,ox,oy,ts){ return function(){
     [[0,2,'t',92],[2,2,'t',92],[1,1,'t',44],[0,1,'t',47]].forEach(function(p){ var im=img(p[2],p[3]); if(im.complete) cx.drawImage(im,Math.floor(px+p[0]*ts),Math.floor(py+p[1]*ts),s,s); });
     var sg=img('t',83); if(sg.complete) cx.drawImage(sg,Math.floor(px+ts),Math.floor(py+2*ts),s,s);
   }
-  cx.font='bold '+Math.round(ts*.26)+'px system-ui'; cx.textAlign='center'; var label=(S.built[k]?'':'重建 ')+L.name;
+  cx.font='bold '+Math.round(ts*.26)+'px system-ui'; cx.textAlign='center'; var label=k==='cottage'?(S.built[k]?'🏡 Clément 的小屋':'🏚 空著的小屋'):(S.built[k]?'':'重建 ')+L.name;
   var tw=cx.measureText(label).width+ts*.2; cx.fillStyle='rgba(0,0,0,.55)'; cx.fillRect(px+ts*1.5-tw/2, py+ts*3.05, tw, ts*.36);
   cx.fillStyle='#fff'; cx.fillText(label, px+ts*1.5, py+ts*3.32);
 }; }
@@ -1192,6 +1479,7 @@ function loop(t){
 document.getElementById('bHome').onclick=function(){ if(busy) return; if(inTown(hero)){ toast('已經在小鎮裡了'); return; }
   fade(function(){ hero.x=PLAZA.x; hero.y=PLAZA.y; cam.x=hero.x; cam.y=hero.y; time=Math.max(0,time-5); }); };
 document.getElementById('bRest').onclick=rest;
+document.getElementById('bDex').onclick=function(){ if(!busy) openDex(); };
 
 /* 開場 */
 resize(); buildWorld(); initSeen(); newDay(true); reveal(); cam.x=hero.x; cam.y=hero.y;
@@ -1199,7 +1487,7 @@ Object.keys(SPR).forEach(function(k){ img.apply(null,SPR[k]); });
 requestAnimationFrame(loop);
 setTimeout(function(){ document.getElementById('toast').style.opacity=0; },4000);
 if(!S.intro){ S.intro=1; save();
-  openSheet('<h3>🏘️ Val-Brume</h3><div class="story">你剛搬到魁北克一個沒落的小鎮。房子都塌了，鐘樓的鐘也停了很久——沒人說得出為什麼。</div>'+
+  openSheet('<h3>🏘️ Val-Brume</h3><div class="story">你剛搬到魁北克一個沒落的小鎮 Val-Brume，人幾乎都走光了。<br>鎮外的森林裡藏著各種東西——把它們一樣一樣收進 📖 圖鑑，鎮上的人就會慢慢回來。</div>'+
     '<div class="muted">按住畫面任何地方拖曳就能走（電腦用方向鍵）。走到 🌳 ⛏ 旁邊會自動開始；跟著上方的 🎯 和金色箭頭走。</div><div class="row2"><span></span><button class="btn main" id="ok">出發</button></div>');
   document.getElementById('ok').onclick=function(){ unlockTts(); closeSheet(); }; }
 
