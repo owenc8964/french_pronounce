@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unité 12 預習單</title>
+<style>
+  :root {
+    --bg: #15171c;
+    --card: #1f232b;
+    --card2: #262b35;
+    --text: #e6e8ec;
+    --muted: #9aa3b2;
+    --fr: #ffffff;
+    --accent: #7cc4ff;
+    --gold: #f2c86b;
+    --warn: #ff9f7a;
+    --line: #333a46;
+    --gray-badge: #4a5160;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Helvetica Neue", sans-serif;
+    font-size: 16px; line-height: 1.65;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 1.35rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: .9rem; margin-bottom: 18px; }
+  section {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; margin: 0 0 16px;
+  }
+  h2 { font-size: 1.1rem; margin: 0 0 8px; color: var(--accent); }
+  h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--gold); }
+  p { margin: 6px 0; }
+  b { color: var(--fr); }
+  .time { float: right; font-size: .78rem; color: var(--muted); font-weight: normal; }
+  .rule {
+    background: var(--card2); border-left: 4px solid var(--accent);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .trap {
+    background: rgba(255,159,122,.08); border-left: 4px solid var(--warn);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .flag {
+    background: rgba(242,200,107,.08); border-left: 4px solid var(--gold);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: .92rem;
+  }
+  .map { list-style: none; padding: 0; margin: 0; }
+  .map li { padding: 7px 0; border-bottom: 1px solid var(--line); }
+  .map li:last-child { border-bottom: none; }
+  .pg { display: inline-block; min-width: 54px; color: var(--accent); font-weight: 600; }
+  .tag { display: inline-block; font-size: .72rem; padding: 1px 7px; border-radius: 10px;
+         background: var(--gray-badge); color: var(--text); margin-left: 4px; vertical-align: 1px; }
+  .tag.new { background: #2f5d8a; }
+  /* 法文句子載體：沿用 french_notes.html 的結構，之後可直接搬 */
+  .phrase-list { list-style: none; padding: 0; margin: 6px 0; }
+  .phrase-list li {
+    display: flex; flex-wrap: wrap; gap: 2px 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--line);
+  }
+  .phrase-list li:last-child { border-bottom: none; }
+  .fr { font-weight: 600; color: var(--fr); width: 100%; }
+  .zh { color: var(--muted); font-size: .9rem; }
+  .phrase-list li > span.note { color: #7d8696; font-size: .8rem; }
+  .fr em { font-style: normal; color: var(--gold); }
+  .vocab { list-style: none; padding: 0; margin: 4px 0 8px;
+           display: grid; grid-template-columns: 1fr; gap: 0; }
+  .vocab li { padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: .95rem; }
+  .vocab li:last-child { border-bottom: none; }
+  .vocab .w { color: var(--fr); font-weight: 600; }
+  .g { display: inline-block; font-size: .72rem; color: var(--muted); border: 1px solid var(--line);
+       border-radius: 4px; padding: 0 5px; margin: 0 4px; }
+  details { background: var(--card2); border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
+  summary { cursor: pointer; font-weight: 600; color: var(--text); }
+  details[open] summary { margin-bottom: 6px; }
+  .ex { margin: 8px 0; padding-left: 2px; }
+  .ex .q { color: var(--fr); }
+  .hint { color: var(--muted); font-size: .92rem; }
+  .likely { color: var(--gold); font-size: .8rem; }
+  ol.ask { padding-left: 20px; margin: 6px 0; }
+  ol.ask li { margin: 8px 0; }
+  .small { font-size: .85rem; color: var(--muted); }
+  @media (min-width: 640px) {
+    .vocab { grid-template-columns: 1fr 1fr; column-gap: 18px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Unité 12 Soif de nature・預習單</h1>
+<div class="sub">下一堂課預計範圍：Édito A2 p.175–180（第 12 單元最後一段）｜大約 12 分鐘｜全部法文句子都是課本原句</div>
+
+<!-- ============ 0. 地圖 ============ -->
+<section>
+  <h2>🗺 剩下的頁面 <span class="time">1 分鐘</span></h2>
+  <ul class="map">
+    <li><span class="pg">p.175</span>詞彙頁：Les animaux 動物（家裡的、花園裡的、野生的、鳥類）＋動物俗語</li>
+    <li><span class="pg">p.176</span>H 聽力：象牙海岸的植樹活動｜I 閱讀：Initiatives pour la forêt 為森林做的行動 ＋「如何抗議」</li>
+    <li><span class="pg">p.177</span>J 聽力：Jardinons ensemble ! 一起種菜 ＋「說自己會做什麼」｜<b>主文法：La forme passive 被動式</b><span class="tag new">新</span></li>
+    <li><span class="pg">p.178</span>Entraînez-vous 總複習：發音 Le e muet [ə]<span class="tag new">新</span>、命令式＋代名詞（第40課複習）、被動式、詞彙</li>
+    <li><span class="pg">p.179</span>Atelier médiation：替「文學與生態」影展挑作品、上台介紹</li>
+    <li><span class="pg">p.180</span>三篇文學節錄（George Sand 的詩、Alexis Jenni 談恐龍、Ben Lecomte 游泳穿越塑膠垃圾帶）</li>
+  </ul>
+  <p class="small">p.181 起是 DELF A2 模擬考（épreuve blanche），不屬於第 12 單元；老師會不會接著做，未查證。</p>
+</section>
+
+<!-- ============ 1. 被動式 ============ -->
+<section>
+  <h2>📐 唯一的新文法：La forme passive 被動式（p.177） <span class="time">4 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>同一件事，換一個東西當主角。主動句的主角是「誰做的」；被動句把「<b>被做的那個東西</b>」搬到主詞的位置，焦點就落在結果上——做的人可以用 <b>par</b> 補上，也可以乾脆不講。<br>
+    <b>怎麼組：</b><b>être ＋ 過去分詞</b>（過去分詞跟主詞配陰陽單複數）。時態全部由 <b>être</b> 負責：est（現在）／a été（過去）／sera（未來）。
+  </div>
+
+  <h3>課本例句</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Un botaniste développe la méthode. → La méthode <em>est développée</em> par un botaniste.</span><span class="zh">一位植物學家發展出這個方法 → 這個方法是由一位植物學家發展的。</span><span class="note">p.177 Fonctionnement：同一件事，主動 vs 被動</span></li>
+    <li><span class="fr">Le site <em>a été créé</em> par Chantal Perdigau.</span><span class="zh">這個網站是 Chantal Perdigau 創立的。</span><span class="note">p.177 Échauffement：過去（a été ＋ 過去分詞）</span></li>
+  </ul>
+
+  <details>
+    <summary>想多看一點：同一個 être 換時態、還有不寫 par 的例子</summary>
+    <ul class="phrase-list">
+      <li><span class="fr">Mon jardin <em>est cultivé</em> par une personne compétente.</span><span class="zh">我的菜園現在由一個很能幹的人在種。</span><span class="note">p.177 現在</span></li>
+      <li><span class="fr">Mon jardin <em>a été cultivé</em> par une personne compétente.</span><span class="zh">我的菜園（之前）由一個很能幹的人種過。</span><span class="note">p.177 過去</span></li>
+      <li><span class="fr">Mon jardin <em>sera cultivé</em> par une personne compétente.</span><span class="zh">我的菜園將由一個很能幹的人來種。</span><span class="note">p.177 未來</span></li>
+      <li><span class="fr">Aujourd'hui, en France, les arbres <em>sont</em> encore <em>considérés</em> comme des objets.</span><span class="zh">今天在法國，樹木仍被當成物品。</span><span class="note">p.176 I：沒有 par——誰這樣看不重要</span></li>
+      <li><span class="fr">La forêt <em>est créée</em> plus rapidement.</span><span class="zh">森林被造得更快。</span><span class="note">p.176 I：沒有 par；créée 三個 e（配陰性）</span></li>
+    </ul>
+  </details>
+
+  <div class="trap">
+    ⚠️ <b>常見陷阱：「est ＋ 過去分詞」不一定是過去式。</b><br>
+    你很熟 <b>il est allé</b> 這種 être 當助動詞的複合過去式，所以看到 <b>Mon jardin est cultivé</b> 很容易讀成「被種過了」。但它是<b>現在式被動</b>（現在由某人在種）。要表達過去，被動要多一個 <b>été</b>：<b>a été cultivé</b>。<br>
+    判斷法：動詞本身（cultiver、créer、développer）平常是用 avoir 的 → 看到 être 就是被動，時態看 être 自己。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b>課本寫被動「可以強調結果和<i>行動者</i>（les acteurs）」。一般文法書的說法是：被動把焦點放在<b>承受動作的那一方</b>，而行動者常常可以省略——課本自己 p.176 的 <b>La forêt est créée plus rapidement</b> 就沒寫是誰。不算錯，但「強調行動者」這半句容易誤會成被動是為了凸顯做的人。
+  </div>
+</section>
+
+<!-- ============ 2. e muet ============ -->
+<section>
+  <h2>👂 發音：Le e muet [ə] 會消失的 e（p.178） <span class="time">2 分鐘</span></h2>
+  <div class="rule">
+    <b>它在處理什麼：</b>法文說快的時候，很多沒有重音符號的 <b>e</b> 會整個吞掉，好讓音節更緊湊。要不要唸，看<b>它旁邊有幾個子音</b>：前後子音少就吞掉，吞掉會造成三個子音擠在一起就留著。<br>
+    課本規則（練習 3）：<b>不唸</b>＝字尾、夾在兩個子音之間；<b>要唸</b>＝字首、在三個子音的組合裡。
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">Tu ne gaspilleras pas les ressources naturelles.</span><span class="zh">你不可以浪費自然資源。</span><span class="note">p.178 練習4「公民十誡」第2條</span></li>
+    <li><span class="fr">Tu te déplaceras à pied ou à vélo.</span><span class="zh">你要走路或騎腳踏車移動。</span><span class="note">p.178 練習4 第8條</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>陷阱：拼字上看到 e 就唸。</b>gaspilleras、déplaceras 中間那個 e 在一般語速幾乎聽不到；聽力考試裡你會聽到「縮短版」，要能對回拼字。這十條全是 <b>futur simple</b>（第27課），正好順便練 r 音當未來的標誌。
+  </div>
+  <div class="flag">
+    🔎 <b>課本簡化：</b>「字首要唸」比較精確的說法是「<b>一句話（一個節奏群）開頭</b>的那個 e 傾向保留」；同一個字放在句子中間時常被吞掉。另外 e muet 是「傾向」不是鐵律——說得慢、朗讀詩、法國南部口音都會唸出更多 e。
+  </div>
+</section>
+
+<!-- ============ 3. 功能句 ============ -->
+<section>
+  <h2>💬 上課會用到的說法 <span class="time">2 分鐘</span></h2>
+
+  <h3>Pour protester 抗議（p.176）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">L'association n'est pas d'accord avec cela.</span><span class="zh">這個協會不同意這件事。</span><span class="note">p.176</span></li>
+    <li><span class="fr">Ils protestent contre la destruction des arbres.</span><span class="zh">他們抗議砍伐樹木。</span><span class="note">p.176：protester <b>contre</b> ＋ 名詞</span></li>
+    <li><span class="fr">Ils disent non à la violence.</span><span class="zh">他們對暴力說不。</span><span class="note">p.176</span></li>
+  </ul>
+
+  <h3>Pour dire ce qu'on sait faire 說自己會做什麼（p.177）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Elle est bonne en informatique.</span><span class="zh">她電腦很強。</span><span class="note">p.177：être bon(ne) <b>en</b> ＋ 領域</span></li>
+    <li><span class="fr">Il connaît très bien les plantes.</span><span class="zh">他非常懂植物。</span><span class="note">p.177：connaître ＋ 名詞</span></li>
+    <li><span class="fr">Il sait travailler dans un jardin.</span><span class="zh">他會在菜園裡做事。</span><span class="note">p.177：savoir ＋ 原形</span></li>
+  </ul>
+
+  <h3>Pour faire un choix 做決定（p.179）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Nous nous sommes mis(es) d'accord.</span><span class="zh">我們達成共識了。</span><span class="note">p.179（第41課學過 se mettre d'accord）</span></li>
+    <li><span class="fr">Un grand oui pour ce roman !</span><span class="zh">這本小說我們大力贊成！</span><span class="note">p.179</span></li>
+    <li><span class="fr">Ce roman, c'est non !</span><span class="zh">這本小說，不要！</span><span class="note">p.179</span></li>
+    <li><span class="fr">Ce texte me fait rire, réfléchir, rêver...</span><span class="zh">這篇文章讓我笑、讓我思考、讓我做夢……</span><span class="note">p.179 說自己對文章的感覺</span></li>
+    <li><span class="fr">Il a été écrit par… en…</span><span class="zh">它是某某在某年寫的。</span><span class="note">p.179 介紹作品——又是被動式</span></li>
+  </ul>
+</section>
+
+<!-- ============ 4. 詞彙 ============ -->
+<section>
+  <h2>🧺 新詞彙（只列你筆記裡還沒有的） <span class="time">2 分鐘</span></h2>
+  <p class="small">chat、chien、cheval、lapin、vache、mouton、chèvre、canard、dauphin、poule、coq、abeille、serpent、tortue、caméléon、rat、tigre、hippopotame 你都學過了，不再列。</p>
+
+  <h3>新動物（p.175）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'araignée</span><span class="g">f.</span>蜘蛛</li>
+    <li><span class="w">l'escargot</span><span class="g">m.</span>蝸牛</li>
+    <li><span class="w">la libellule</span><span class="g">f.</span>蜻蜓</li>
+    <li><span class="w">la panthère</span><span class="g">f.</span>豹</li>
+    <li><span class="w">le singe</span><span class="g">m.</span>猴子</li>
+    <li><span class="w">l'aigle</span><span class="g">m.</span>老鷹</li>
+    <li><span class="w">le canari</span><span class="g">m.</span>金絲雀</li>
+    <li><span class="w">la chouette</span><span class="g">f.</span>貓頭鷹</li>
+    <li><span class="w">le mammifère</span><span class="g">m.</span>哺乳類（les mammifères sauvages 野生哺乳類）</li>
+    <li><span class="w">le cheval</span><span class="g">m.</span>馬（⚠️ 複數 les chevaux）</li>
+  </ul>
+
+  <h3>動物身上的東西（p.175 練習1 謎語）</h3>
+  <ul class="vocab">
+    <li><span class="w">la laine</span><span class="g">f.</span>羊毛</li>
+    <li><span class="w">la patte</span><span class="g">f.</span>（動物的）腳</li>
+    <li><span class="w">l'aile</span><span class="g">f.</span>翅膀</li>
+    <li><span class="w">la plume</span><span class="g">f.</span>羽毛</li>
+    <li><span class="w">le miel</span><span class="g">m.</span>蜂蜜</li>
+    <li><span class="w">la vue</span><span class="g">f.</span>視力（une bonne vue）</li>
+  </ul>
+
+  <h3>森林與種樹（p.176 H／I）</h3>
+  <ul class="vocab">
+    <li><span class="w">la reforestation</span><span class="g">f.</span>重新造林（聽力裡也說 le reboisement）</li>
+    <li><span class="w">le reboisement</span><span class="g">m.</span>植樹造林</li>
+    <li><span class="w">la levée de fonds</span><span class="g">f.</span>募款</li>
+    <li><span class="w">l'essence</span><span class="g">f.</span>⚠️ 這裡是「樹種」，不是汽油（des essences de chez nous）</li>
+    <li><span class="w">le plant</span><span class="g">m.</span>樹苗（≠ la plante 植物）</li>
+    <li><span class="w">la saison pluvieuse</span><span class="g">f.</span>雨季</li>
+    <li><span class="w">l'être vivant</span><span class="g">m.</span>生物</li>
+    <li><span class="w">faire pousser</span><span class="g">v.</span>種出來、讓…長大</li>
+    <li><span class="w">se mobiliser</span><span class="g">v.</span>動員起來</li>
+    <li><span class="w">la destruction</span><span class="g">f.</span>破壞</li>
+  </ul>
+
+  <h3>一起種菜（p.177 J）</h3>
+  <ul class="vocab">
+    <li><span class="w">le co-jardinage</span><span class="g">m.</span>共享菜園</li>
+    <li><span class="w">jardiner</span><span class="g">v.</span>種花種菜</li>
+    <li><span class="w">cultiver</span><span class="g">v.</span>耕種</li>
+    <li><span class="w">le potager</span><span class="g">m.</span>菜園</li>
+    <li><span class="w">le propriétaire</span><span class="g">m.</span>屋主、地主</li>
+    <li><span class="w">la récolte</span><span class="g">f.</span>收成</li>
+    <li><span class="w">compétent(e)</span><span class="g">adj.</span>能幹的、有能力的</li>
+    <li><span class="w">disponible</span><span class="g">adj.</span>有空的</li>
+    <li><span class="w">passer une annonce</span><span class="g">v.</span>刊登廣告</li>
+  </ul>
+
+  <h3>三句動物俗語（p.175 練習4）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Se coucher avec les poules.</span><span class="zh">跟母雞一起睡（字面）</span><span class="note">p.175 練習4a——意思先自己猜</span></li>
+    <li><span class="fr">Poser un lapin.</span><span class="zh">放一隻兔子（字面）</span><span class="note">p.175 練習4b</span></li>
+    <li><span class="fr">Avancer comme une tortue.</span><span class="zh">像烏龜一樣前進（字面）</span><span class="note">p.175 練習4c</span></li>
+  </ul>
+</section>
+
+<!-- ============ 5. 練習題 ============ -->
+<section>
+  <h2>✏️ 最可能上課做的題目：先想想看 <span class="time">2 分鐘</span></h2>
+  <p class="small">只給方向，不給答案。哪幾題會做是依第40、41課的節奏推測（未查證）。</p>
+
+  <div class="ex">
+    <div class="q">p.177 Entraînement 2：下面是主動還是被動？ <span class="likely">★★★ 文法頁一定做</span></div>
+    <div class="hint">先想想看：每句先找 être（或 a été、sera），再看它後面接的是<b>過去分詞</b>還是<b>名詞</b>。b 題 <i>La campagne de reforestation sera un succès.</i> 特別看清楚 sera 後面是什麼。</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.178 Grammaire 2：把句子改成被動 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：四步驟——① 原句的受詞搬到前面當主詞 ② 看原句是什麼時態，把 être 變成同一時態 ③ 過去分詞跟<b>新主詞</b>配 ④ 原主詞放到 par 後面。d 題 <i>La pollution menace la biodiversité.</i>：新主詞 la biodiversité 是陰性。e 題 <i>Un biologiste a découvert une nouvelle espèce de caméléon.</i>：découvert 的陰性怎麼拼？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.177 Échauffement 1：粗體動詞的主詞是誰？真正做動作的是誰？ <span class="likely">★★</span></div>
+    <div class="hint">先想想看：b 題 <i>J'ai été contactée par Alexandre.</i>——說話的 Nadia 是女生，為什麼 contactée 有 e？明明前面是 ai。</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.175 練習1 動物謎語、練習4 俗語配對 <span class="likely">★★ 詞彙頁通常會做</span></div>
+    <div class="hint">先想想看：「牠會掉毛（laine）」「八隻腳沒翅膀」「晚上活動的鳥」——答案都在上面的新動物表裡。俗語 b 題 poser un lapin：選項裡哪個跟「約會」有關？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.176 I 閱讀 2–4、p.177 J 聽力 4–6 <span class="likely">★★</span></div>
+    <div class="hint">先想想看：I 第2題問 A.R.B.R.E.S 的目標——文章自己問了一句 <i>Quel est son but ?</i>，答案就在後面。J 第4題問 Chantal 會什麼——直接對照上面「說自己會做什麼」那三句。</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.178 Phonie-graphie 1、3：哪些 e 要唸？ <span class="likely">★ 有時間才做</span></div>
+    <div class="hint">先想想看：<i>Notre Terre</i>——如果吞掉 notre 的 e，t、r、t 三個子音會擠在一起，那它該不該唸？</div>
+  </div>
+</section>
+
+<!-- ============ 6. 問老師 ============ -->
+<section>
+  <h2>🙋 上課可以問老師的 3 個問題</h2>
+  <ol class="ask">
+    <li>法國人平常講話真的會用被動式嗎？還是比較常用 <b>on</b>（On a créé le site）？寫作和口說哪邊比較常見？</li>
+    <li>被動式的「做的人」一定用 <b>par</b> 嗎？有沒有用 <b>de</b> 的情況？（標準法文裡 aimer、respecter 這類表達感情或狀態的動詞常用 de，想聽老師舉例。）</li>
+    <li>p.178 公民十誡那種句子（Tu te déplaceras à pied），一般語速下 te 和 déplaceras 裡的 e 是不是都吞掉了？TCF 聽力會不會也是這種速度？</li>
+  </ol>
+</section>
+
+<p class="small">來源：Édito A2 課本 p.175–180、p.210 聽力逐字稿（課本附錄）。p.176 第5行 PDF 抽字掉了 ffi 連字（顯示為 « Le texte arme »），推定原文為 <b>affirme</b>，未對照紙本查證。p.180 作者姓氏在 PDF 被截掉，全名取自課本目錄（George Sand、Alexis Jenni、Ben Lecomte）。</p>
+
+</main>
+</body>
+</html>
