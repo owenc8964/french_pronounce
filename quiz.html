@@ -580,6 +580,7 @@ const SESSION_SIZE = 20;
 const TYPE_LABEL = { fill:'動詞填空', trans:'翻譯', gender:'陰陽性', choose:'判斷' };
 const TYPE_CLASS  = { fill:'type-fill', trans:'type-trans', gender:'type-gender', choose:'type-choose' };
 
+/* 選項顯示也用這支洗牌（2026-10-15 題庫稽核：九成題目正解寫在第一個，不洗牌等於送分） */
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -753,7 +754,7 @@ function renderCard() {
       <div class="hint" id="hintBox" style="display:none">提示：${q.hint}</div>` : ''}
       ${q.opts ? `
       <div class="drill-opts" id="bankOpts">
-        ${q.opts.map((opt,i) => `
+        ${shuffle(q.opts).map((opt,i) => `
           <button class="drill-opt bank-opt" id="bopt${i}"
             data-opt="${opt.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}"
             onclick="pickBankOpt(this, this.dataset.opt)">${opt}</button>`).join('')}
@@ -1211,7 +1212,7 @@ function renderDrill() {
       ${reviewBanner}${badge}
       <div class="drill-q" style="white-space:pre-line">${q.q}</div>
       <div class="drill-opts" id="drillOpts">
-        ${q.opts.map((opt,i) => `
+        ${shuffle(q.opts).map((opt,i) => `
           <button class="drill-opt" id="dopt${i}" data-opt="${opt.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}"
             onclick="pickOpt(this, this.dataset.opt)">${opt}</button>`).join('')}
       </div>
