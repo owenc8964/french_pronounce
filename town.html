@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Val-Brume · 小鎮重建（樣本）</title>
 <!--
@@ -39,7 +39,7 @@ body { color:var(--ink); font-family:'Segoe UI',system-ui,sans-serif; font-size:
 .sun i { display:block; height:100%; background:linear-gradient(90deg,#f6b24a,#f0e07a); }
 .quest { background:rgba(10,16,12,.72); border:1px solid rgba(240,201,90,.35); border-radius:10px; padding:4px 10px; font-size:.84em; display:inline-block; max-width:100%; }
 .quest b { color:var(--gold); }
-.toast { position:fixed; left:50%; bottom:calc(env(safe-area-inset-bottom) + 18px); transform:translateX(-50%); background:rgba(10,16,12,.8); border-radius:10px; padding:4px 12px; font-size:.85em; z-index:5; pointer-events:none; transition:opacity .4s; max-width:90vw; text-align:center; }
+.toast { position:fixed; left:50%; top:calc(env(safe-area-inset-top) + 104px); transform:translateX(-50%); background:rgba(10,16,12,.86); border-radius:10px; padding:4px 12px; font-size:.85em; z-index:12; pointer-events:none; transition:opacity .4s; max-width:90vw; text-align:center; }
 #fade { position:fixed; inset:0; background:#000; opacity:0; pointer-events:none; transition:opacity .35s; z-index:8; }
 
 .btn { background:#2b3d32; color:var(--ink); border:1px solid var(--line); border-radius:10px; padding:5px 10px; font-size:.9em; cursor:pointer; }
@@ -170,7 +170,10 @@ function freshState(){ return { day:1, gold:0, bagCap:8, lamp:0, pick:0, trap:0,
   clues:{}, letter:0, solved:0, topic:{}, gword:{}, canSay:{}, qlast:{}, stand:{}, standFam:{}, seen:'' }; }
 var S = (function(){ try{ return JSON.parse(localStorage.getItem(KEY))||null; }catch(e){ return null; } })() || freshState();
 (function(){ var f=freshState(); for(var k in f) if(S[k]===undefined) S[k]=f[k]; })();
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function save(){ try{
+  /* ⭐ 這一天的進行狀態也存：重新整理／切 app 回來，背包、訂單、剩餘白天、採過的點都還在（審查 #2） */
+  if(typeof nodes!=='undefined' && nodes && nodes.length) S.run={day:S.day, bag:bag, orders:(typeof orders!=='undefined'?orders:[]), time:time, night:night, done:nodes.map(function(n){ return n.done?1:0; })};
+  localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 function readLS(k){ try{ return JSON.parse(localStorage.getItem(k)||'{}')||{}; }catch(e){ return {}; } }
 var sheet=document.getElementById('sheet');
 
@@ -203,12 +206,12 @@ var ground=[], deco=[], solid=[];
 var LOTS={
   /* 中間 x=19–20 是通往橋的路，房子分在兩旁 */
   stall: {x:22,y:24, name:'🏪 交貨攤', roof:'red',  door:[23,27]},
-  forge: {x:14,y:24, name:'⚒ 鐵匠鋪', roof:'gray', door:[15,27], fam:'verb', famName:'動詞', cost:{ore:3, gold:30}},
-  post:  {x:14,y:31, name:'📮 郵局',   roof:'red',  door:[15,34], fam:'pron', famName:'代名詞', cost:{fish:3, obj:2, gold:40}},
-  bakery:{x:22,y:31, name:'🍞 麵包店', roof:'red',  door:[23,34], fam:'noun', famName:'名詞片語＋陰陽性', cost:{obj:4, fish:2, gold:50}},
+  forge: {x:14,y:24, name:'⚒ 鐵匠鋪', roof:'gray', door:[15,27], fam:'verb', famName:'動詞', cost:{ore:3}},
+  post:  {x:14,y:31, name:'📮 郵局',   roof:'red',  door:[15,34], fam:'pron', famName:'代名詞', cost:{fish:3, obj:2, gold:30}},
+  bakery:{x:22,y:31, name:'🍞 麵包店', roof:'red',  door:[23,34], fam:'noun', famName:'名詞片語＋陰陽性', cost:{obj:4, fish:2, gold:40}},
   home:  {x:25,y:28, name:'🏡 你的家', roof:'gray', door:[26,31]}
 };
-var BRIDGE={x:19, y:8, cost:{ore:4, obj:4}, door:[19.9,10.3]};
+var BRIDGE={x:19, y:8, cost:{ore:4, obj:3}, door:[19.9,10.3]};
 var PLAZA={x:20.5, y:29.5};
 var NODE_DEF=[
   /* 🌳 樹叢（森林）：名詞片語＋陰陽性 */
@@ -281,13 +284,22 @@ function reachable(tx,ty){
 /* ============================================================
    狀態
    ============================================================ */
-var hero={x:PLAZA.x, y:PLAZA.y, face:1, moving:0, bob:0, flash:0};
+var hero={x:PLAZA.x, y:PLAZA.y, vx:0, vy:0, lx:0, ly:0, face:1, moving:0, bob:0, flash:0, squash:0, dust:0};
+var dusts=[], pending=null;
 var nodes=[], rats=[], npcs=[], floats=[], bag=[], log=[], busy=false, time=0, night=false, wasInTown=true, lastDoor=null;
 var joy=null, keys={}, cam={x:PLAZA.x, y:PLAZA.y}, SC=3, TS=48, cv=document.getElementById('cv'), cx=cv.getContext('2d'), DPR=1;
 var seen=null;
 function dayLen(){ return 150 + S.lamp*40 + (S.built.bakery?30:0); }
 function inTown(p){ return region(Math.floor(p.x),Math.floor(p.y))==='town'; }
 function isSolidAt(x,y){ var X=Math.floor(x), Y=Math.floor(y); if(X<0||Y<0||X>=W||Y>=H) return true; return solid[Y][X]; }
+/* 轉角修正：一軸被擋時，垂直方向偏 ≤0.3 格就有空位 → 自動滑過去（手機沒辦法微調） */
+function nudge(axis, d){
+  for(var off=.08; off<=.3; off+=.08) for(var sgn=-1; sgn<=1; sgn+=2){
+    var o=off*sgn;
+    if(axis==='y' && !blocked(hero.x+d, hero.y+o)){ hero.y+=Math.sign(o)*Math.min(Math.abs(o), 3*Math.abs(d)+.01); return; }
+    if(axis==='x' && !blocked(hero.x+o, hero.y+d)){ hero.x+=Math.sign(o)*Math.min(Math.abs(o), 3*Math.abs(d)+.01); return; }
+  }
+}
 function blocked(x,y){ var r=.28; return isSolidAt(x-r,y-r)||isSolidAt(x+r,y-r)||isSolidAt(x-r,y+r)||isSolidAt(x+r,y+r); }
 
 function resize(){
@@ -311,16 +323,21 @@ function reveal(){
 /* ============================================================
    操作：按住畫面任何地方＝搖桿；方向鍵／WASD
    ============================================================ */
-cv.addEventListener('pointerdown', function(e){ if(busy) return; try{ cv.setPointerCapture(e.pointerId); }catch(err){} joy={id:e.pointerId, ox:e.clientX, oy:e.clientY, x:e.clientX, y:e.clientY}; });
+var lastClose=0, ttsUnlocked=false;
+cv.addEventListener('pointerdown', function(e){ if(busy || performance.now()-lastClose<250) return; try{ cv.setPointerCapture(e.pointerId); }catch(err){} joy={id:e.pointerId, ox:e.clientX, oy:e.clientY, x:e.clientX, y:e.clientY}; });
 cv.addEventListener('pointermove', function(e){ if(joy&&joy.id===e.pointerId){ joy.x=e.clientX; joy.y=e.clientY; } });
-function endJoy(e){ if(joy&&joy.id===e.pointerId) joy=null; }
+function endJoy(e){ if(joy&&joy.id===e.pointerId) joy=null; unlockTts(); }
+/* iOS：朗讀要在手勢裡先唸過一次才解鎖（觸控時算手勢的是放手那一下）（審查 #14、手感研究 9） */
+function unlockTts(){ if(ttsUnlocked) return; ttsUnlocked=true; try{ var u=new SpeechSynthesisUtterance(' '); u.volume=0; speechSynthesis.speak(u); }catch(err){} }
 cv.addEventListener('pointerup', endJoy); cv.addEventListener('pointercancel', endJoy);
 window.addEventListener('keydown', function(e){ if(busy) return; keys[e.key.toLowerCase()]=1; if(/^arrow/.test(e.key.toLowerCase())) e.preventDefault(); });
 window.addEventListener('keyup', function(e){ keys[e.key.toLowerCase()]=0; });
 function inputVec(){
   var vx=0, vy=0;
   if(keys.arrowleft||keys.a) vx-=1; if(keys.arrowright||keys.d) vx+=1; if(keys.arrowup||keys.w) vy-=1; if(keys.arrowdown||keys.s) vy+=1;
-  if(joy){ var dx=joy.x-joy.ox, dy=joy.y-joy.oy, L=Math.hypot(dx,dy); if(L>8){ var m=Math.min(1,L/55); vx=dx/L*m; vy=dy/L*m; } }
+  if(joy){ var R=40, D=10, dx=joy.x-joy.ox, dy=joy.y-joy.oy, L=Math.hypot(dx,dy);
+    if(L>R){ joy.ox+=dx/L*(L-R); joy.oy+=dy/L*(L-R); dx=joy.x-joy.ox; dy=joy.y-joy.oy; L=R; }   /* 底座跟著手指走：掉頭不用先把手指拉回來 */
+    if(L>D){ var m=Math.pow(Math.min(1,(L-D)/(R-D)),.7); vx=dx/L*m; vy=dy/L*m; } }
   var l=Math.hypot(vx,vy); if(l>1){ vx/=l; vy/=l; }
   return [vx,vy];
 }
@@ -328,7 +345,7 @@ function inputVec(){
    遭遇面板
    ============================================================ */
 function openSheet(html, full){ sheet.innerHTML=html; sheet.className='sheet on'+(full?' full':''); busy=true; }
-function closeSheet(){ sheet.className='sheet'; sheet.innerHTML=''; busy=false; }
+function closeSheet(){ sheet.className='sheet'; sheet.innerHTML=''; busy=false; lastClose=performance.now(); joy=null; }
 function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 function deacc(x){ return String(x).normalize('NFD').replace(/[̀-ͯ]/g,''); }
 function normAns(x){ return deacc(String(x)).toLowerCase().replace(/[’]/g,"'").replace(/[.,!?;:«»"]/g,'').replace(/\s+/g,' ').trim(); }
@@ -359,7 +376,7 @@ function pickGender(){
   var best=null,bw=-1;
   shuffle(c).slice(0,40).forEach(function(it){
     var w=1, r=gs[it.n]||{}, mine=S.gword[it.n]||{};
-    if((r.w||0)>(r.r||0) || (mine.w||0)>(mine.r||0)) w*=3;
+    if((r.w||0)>(r.c||r.r||0) || (mine.w||0)>(mine.r||0)) w*=3;
     if(EMO[it.n]) w*=1.5;
     if(mine.last && now-mine.last<3600000) w*=.05;
     w*=Math.random()+.3; if(w>bw){ bw=w; best=it; }
@@ -375,7 +392,7 @@ function sayOf(q, ans){
   seg=seg.replace(/（[^）]*）/g,'').replace(/\([^)]*[\u4e00-\u9fff][^)]*\)/g,'');      /* 全形括號一律是提示；半形的有中文才是 */
   seg=seg.replace(/「[^」]*」/g,function(m){ return /_{2,}/.test(m)?m:''; });           /* 去掉前面的中文翻譯「…」 */                       /* 去掉中文提示括號 */
   var c=Math.max(seg.lastIndexOf(':',seg.indexOf('_')), seg.lastIndexOf('：',seg.indexOf('_'))); if(c>=0 && c<seg.indexOf('_')) seg=seg.slice(c+1);   /* 去掉「Le contraire :」這種標籤 */
-  return seg.replace(/_{2,}(\s*\([^)]*\))?/, ans).replace(/\s+/g,' ').trim();
+  return seg.replace(/_{2,}(\s*\([^)]*\))?/, ans).replace(/\s*\([^)]*\)\s*$/,'').replace(/\s+/g,' ').trim();
 }
 /* 選項裡常夾著中文標註或解釋（「mets（現在式）——en général 表示這是習慣」）→ 顯示與唸的時候剝掉，⛔ 不然等於洩漏答案 */
 function clean(o){ return String(o).replace(/\s*[—–]{1,2}.*$/,'').replace(/[（(][^）)]*[\u4e00-\u9fff][^）)]*[）)]/g,'').trim(); }
@@ -447,7 +464,7 @@ function rec(kind, item, ok, ms, extra){
   if(kind==='g'){ var g=S.gword[item.n]||{r:0,w:0}; g[ok?'r':'w']++; g.last=Date.now(); S.gword[item.n]=g; if(ok) markStand('g:'+item.n,'noun'); }
   else if(kind==='c'){ var c=S.gword['c:'+item.id]||{r:0,w:0}; c[ok?'r':'w']++; S.gword['c:'+item.id]=c; if(ok) markStand('c:'+item.id,'listen'); }
   else { var t=S.topic[item.topic]||{r:0,w:0}; t[ok?'r':'w']++; if(!ok) t.lastWrong=Date.now(); S.topic[item.topic]=t; S.qlast[item._i]=Date.now();
-    if(ok){ var f=famOf(item.topic); if(f) markStand('q:'+item._i, f); } }
+    if(ok && typeof item._i==='number'){ var f=famOf(item.topic); if(f) markStand('q:'+item._i, f); } }
   if(extra&&extra.where==='連發') return save();   /* 連發是處方本身，不再回到回顧裡 */
   log.push({kind:kind, item:item, ok:ok, ms:ms, chosen:extra&&extra.chosen, right:extra&&extra.right, where:extra&&extra.where});
   save();
@@ -516,7 +533,7 @@ function pickListen(){
   return best;
 }
 function askListen(head, c, cb){
-  var t0=Date.now(), others=shuffle(LISTEN.filter(function(x){ return x.zh!==c.zh && Math.abs((x.lesson||0)-(c.lesson||0))<=6; })).slice(0,2);
+  var t0=Date.now(), others=shuffle(LISTEN.filter(function(x){ return x.zh!==c.zh && normAns(x.fr)!==normAns(c.fr) && Math.abs((x.lesson||0)-(c.lesson||0))<=6; })).slice(0,2);
   var opts=shuffle([c].concat(others));
   openSheet('<h3>'+head+'</h3><div class="qtext" style="text-align:center"><button class="btn main" id="play" style="font-size:1.1em">🔊 再聽一次</button><div class="hint" style="margin-top:6px">浮標動了——聽到的是什麼意思？</div></div>'+
     '<div class="opts">'+opts.map(function(o,i){ return '<button data-i="'+i+'" style="font-family:inherit">'+esc(o.zh)+'</button>'; }).join('')+'</div>'+
@@ -557,7 +574,8 @@ function ratSteal(r){
   bag.splice(idx,1); hud(); hero.flash=.5;
   function after(ok){
     closeSheet(); r.calm=7; r.flee=1.4;
-    if(ok){ bag.push(it); floatTxt(hero.x,hero.y-.6,'追回 '+it.em,'#9f9'); }
+    if(ok==='skip'){ it.good=false; bag.push(it); floatTxt(hero.x,hero.y-.6,'牠嚇跑了，'+it.em+' 掉地上（瑕）','#ddd'); }
+    else if(ok){ bag.push(it); floatTxt(hero.x,hero.y-.6,'追回 '+it.em,'#9f9'); }
     else floatTxt(hero.x,hero.y-.6,'被叼走 '+it.em,'#f99');
     hud();
   }
@@ -581,11 +599,11 @@ function ratSteal(r){
         document.getElementById('slot').outerHTML='<button class="btn main" id="go">繼續</button>'; document.getElementById('go').onclick=function(){ after(false); }; }
       document.getElementById('skip').style.visibility='hidden';
     }; });
-    document.getElementById('skip').onclick=function(){ if(done) return; done=true; after(false); };
+    document.getElementById('skip').onclick=function(){ if(done) return; done=true; after('skip'); };
   } else {
     var q=pickQ(POOL.pron.choose, false);
     askChoose('🐀 老鼠叼走了 '+it.em+' '+esc(it.name)+'！ <small>答對才放手・代名詞</small>', q, function(ok,ms,ch,right){
-      rec('q', q, ok, ms, {chosen:ch,right:right,where:'🐀 老鼠'}); after(!!ok);
+      rec('q', q, ok, ms, {chosen:ch,right:right,where:'🐀 老鼠'}); after(ok===null?'skip':!!ok);
     });
   }
 }
@@ -649,23 +667,41 @@ function solveChapter(){
 /* ============================================================
    目標鏈（畫面上方＋金色箭頭）。⭐ 每一步都可以不照順序玩；箭頭只是帶路
    ============================================================ */
+function canAnyOrder(){ fillOrders(); return orders.some(function(o){ return count('ore')>=o.ore && count('obj')>=o.obj && count('fish')>=o.fish; }); }
+/* 缺什麼就帶去哪：缺材料 → 對應的點；缺錢 → 交貨攤（交貨賺 🪙）；都夠 → 門口 */
+function guide(cost, doorPt){
+  if(count('ore')<(cost.ore||0)) return {to:nearestNode(['rock']), need:'⛏'};
+  if(count('obj')<(cost.obj||0)) return {to:nearestNode(['bush']), need:'📦'};
+  if(count('fish')<(cost.fish||0)) return {to:nearestNode(['fish']), need:'🐟'};
+  if(S.gold<(cost.gold||0)) return {to:door('stall'), need:'🪙', money:true};
+  return {to:doorPt, ready:true};
+}
 function questInfo(){
-  var b=S.built;
-  if(!S.firstDeal) return {t:'去 🌳 森林或 ⛏ 礦坑採 4 件東西，回 <b>🏪 交貨攤</b>交第一單', to: bag.length>=4?door('stall'):nearestNode(['bush','rock'])};
-  if(!b.forge) return {t:'重建 <b>⚒ 鐵匠鋪</b>（⛏×3＋30🪙）', to: count('ore')>=3&&S.gold>=30?door('forge'):nearestNode(['rock'])};
-  if(!b.bridge) return {t:'修好北邊的 <b>橋</b>（⛏×4 📦×4），過河', to: count('ore')>=4&&count('obj')>=4?{x:BRIDGE.door[0],y:BRIDGE.door[1]}:nearestNode(count('ore')<4?['rock']:['bush'])};
-  if(!b.post) return {t:'到河邊釣魚，重建 <b>📮 郵局</b>（🐟×3 📦×2＋40🪙）', to: count('fish')>=3&&count('obj')>=2&&S.gold>=40?door('post'):nearestNode(count('fish')<3?['fish']:['bush'])};
+  var b=S.built, g, full=bag.length>=S.bagCap;
+  function step(txt, cost, doorPt){
+    g=guide(cost, doorPt);
+    if(full && !g.ready) return {t:'🎒 背包滿了 → 回 <b>🏪 交貨攤</b>交貨或賣掉幾件', to:door('stall')};
+    return {t:txt+(g.ready?'　✅ 材料夠了':(g.money?'　（還差 🪙：去交貨賺）':'')), to:g.to};
+  }
+  if(!S.firstDeal){
+    if(bag.length && canAnyOrder()) return {t:'回 <b>🏪 交貨攤</b>交第一單', to:door('stall')};
+    if(full) return {t:'🎒 背包滿了 → 回 <b>🏪 交貨攤</b>', to:door('stall')};
+    return {t:'去 ⛏ 礦坑或 🌳 森林採 2 件以上，回 <b>🏪 交貨攤</b>交第一單', to:nearestNode(count('ore')>=count('obj')?['bush','rock']:['rock','bush'])};
+  }
+  if(!b.forge) return step('重建 <b>⚒ 鐵匠鋪</b>（⛏×3）', LOTS.forge.cost, door('forge'));
+  if(!b.bridge) return step('修好北邊的 <b>橋</b>（⛏×4 📦×3），過河', BRIDGE.cost, {x:BRIDGE.door[0],y:BRIDGE.door[1]});
+  if(!b.post) return step('到河邊釣魚，重建 <b>📮 郵局</b>（🐟×3 📦×2＋30🪙）', LOTS.post.cost, door('post'));
   if(!S.letter) return {t:'郵局蓋好了——進去看看', to:door('post')};
   if(Object.keys(S.clues).length<3) return {t:'找三張 <b>📜 紙條</b>（'+Object.keys(S.clues).length+'／3）', to:nearestClue()};
   if(!S.solved) return {t:'回 <b>📮 郵局</b>把三張紙條拼起來', to:door('post')};
-  if(!b.bakery) return {t:'第一章完。重建 <b>🍞 麵包店</b>（📦×4 🐟×2＋50🪙），白天變長', to:door('bakery')};
+  if(!b.bakery) return step('第一章完。重建 <b>🍞 麵包店</b>（📦×4 🐟×2＋40🪙），白天變長', LOTS.bakery.cost, door('bakery'));
   return {t:'小鎮在長大：房子上的 ⭐ 只在你「隔天又答對」時才會亮', to:null};
 }
 function door(k){ var d=LOTS[k].door; return {x:d[0]+.5, y:d[1]+.5}; }
 function nearestNode(kinds){
   var best=null, bd=1e9;
   nodes.forEach(function(n){ if(n.done||kinds.indexOf(n.k)<0) return; if(n.k==='fish'&&!S.built.bridge) return;
-    var d=Math.hypot(n.x+.5-hero.x, n.y+.5-hero.y); if(d<bd){ bd=d; best={x:n.x+.5,y:n.y+.5}; } });
+    var d=Math.hypot(n.x+.5-hero.x, n.y+.5-hero.y)+kinds.indexOf(n.k)*6; if(d<bd){ bd=d; best={x:n.x+.5,y:n.y+.5}; } });
   return best;
 }
 function nearestClue(){
@@ -690,7 +726,7 @@ function openLot(k){
   if(k==='post'){ if(!S.letter) return readLetter(); if(Object.keys(S.clues).length>=3 && !S.solved) return solveChapter(); }
   var o=starsOf(k);
   var h='<h3>'+L.name+' '+starHtml(k)+'</h3><div class="muted">這棟房子對應「'+L.famName+'」。⭐ 只在同一題「隔天又答對」時才會長：現在站穩 '+o.n+' 個（5／15／30 各一顆星）。</div>';
-  if(k==='forge') h+='<div class="shop"><button class="btn" data-buy="pick">⛏ 好十字鎬：會心一擊更容易（'+costPick()+'🪙）</button><button class="btn" data-buy="trap">🪤 捕鼠夾：老鼠比較不敢靠近（'+costTrap()+'🪙）</button></div>';
+  if(k==='forge') h+='<div class="shop">'+buyBtn('pick','⛏ 好十字鎬：會心一擊更容易',costPick())+buyBtn('trap','🪤 捕鼠夾：老鼠比較不敢靠近',costTrap())+'</div>';
   if(k==='bakery') h+='<div class="muted" style="margin-top:6px">🍞 麵包店開了：每天的白天多 30 秒。</div>';
   if(k==='post') h+='<div class="muted" style="margin-top:6px">'+(S.solved?'第一章完。第二章待續。':'還差 '+(3-Object.keys(S.clues).length)+' 張紙條。')+'</div>';
   h+='<div class="row2"><span></span><button class="btn main" id="ok">離開</button></div>';
@@ -718,14 +754,19 @@ function writeOne(head, q, cb){
   var t0=Date.now();
   openSheet('<h3>'+head+'</h3>'+(q.zh?'<div class="muted">'+esc(q.zh)+'</div>':'')+
     '<div class="qtext fr">'+esc(q.q)+'</div>'+(q.hint?'<div class="hint">💡 '+esc(q.hint)+'</div>':'')+
-    '<input class="fill" id="fin" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="打空格裡的字（或整句）">'+
+    '<input class="fill" id="fin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="打空格裡的字（或整句）">'+
     '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 不寫</button><button class="btn main" id="sub">交出去</button></div>', true);
   var inp=document.getElementById('fin'); setTimeout(function(){ inp.focus(); },50);
   document.getElementById('skip').onclick=function(){ cb(null); };
+  var sent=false;
   function submit(){
-    var v=inp.value.trim(); if(!v) return;
+    var v=inp.value.trim(); if(!v || sent) return; sent=true; inp.disabled=true;
     var alts=String(q.a).split('|'), ok=false, accentOnly=false;
-    alts.forEach(function(a){ if(v.toLowerCase().replace(/[’]/g,"'").replace(/[.!?]$/,'')===a.toLowerCase().replace(/[’]/g,"'").replace(/[.!?]$/,'')) ok=true; else if(normAns(v)===normAns(a)) accentOnly=true; });
+    var low=function(x){ return String(x).toLowerCase().replace(/[’]/g,"'").replace(/\s+/g,' ').replace(/[.!?]\s*$/,'').trim(); };
+    alts.forEach(function(a){
+      var whole=sayOf(q,a);   /* 把空格填回去的整句也接受 */
+      [a, whole].forEach(function(t){ if(low(v)===low(t)) ok=true; else if(normAns(v)===normAns(t)) accentOnly=true; });
+    });
     if(accentOnly&&!ok) ok=true;
     var ms=Date.now()-t0, right=alts.slice().sort(function(a,b){ return a.length-b.length; })[0];
     var full=alts.slice().sort(function(a,b){ return b.length-a.length; })[0], said=/\s/.test(full)&&!/[一-鿿]/.test(full)?full:frOnly(sayOf(q,right));
@@ -748,34 +789,40 @@ var NPCS=['Madame Roy','Monsieur Gagnon','Julie','le boulanger','la pharmacienne
 var orders=[];
 function newOrder(){
   var o={who:NPCS[Math.floor(Math.random()*NPCS.length)], ore:0, obj:0, fish:0};
-  var kinds=S.built.bridge?['ore','obj','fish']:['ore','obj'];
-  kinds=shuffle(kinds).slice(0,2); o[kinds[0]]=1+Math.floor(Math.random()*2); if(kinds[1]) o[kinds[1]]=1+Math.floor(Math.random()*2);
+  var kinds=shuffle(S.built.bridge?['ore','obj','fish']:['ore','obj']);
+  if(Math.random()<.5) o[kinds[0]]=2+Math.floor(Math.random()*2);
+  else { o[kinds[0]]=1+Math.floor(Math.random()*2); o[kinds[1]]=1+Math.floor(Math.random()*2); }
   return o;
 }
-function fillOrders(){ while(orders.length<3) orders.push(newOrder()); }
+function fillOrders(){
+  if(!S.firstDeal && !orders.length){ orders.push({who:'Madame Roy', ore:2, obj:0, fish:0}); orders.push({who:'Julie', ore:0, obj:2, fish:0}); }
+  while(orders.length<3) orders.push(newOrder());
+}
 function openStall(){
   fillOrders();
   var h='<h3>🏪 交貨攤 <small>💰 '+S.gold+'</small></h3>';
-  h+='<div class="muted">背包：</div><div class="bagrow">'+(bag.length?bag.map(function(b){ return '<span class="'+(b.good?'':'bad')+'">'+b.em+' '+esc(b.k==='obj'?b.name:b.name)+(b.good?'':' 瑕')+'</span>'; }).join(''):'<span>空的</span>')+'</div>';
+  h+='<div class="muted">背包（點一件＝賣掉那一件，1 🪙）：</div><div class="bagrow">'+(bag.length?bag.map(function(b,i){ return '<span data-sell="'+i+'" style="cursor:pointer" class="'+(b.good?'':'bad')+'">'+b.em+' '+esc(b.name)+(b.good?'':' 瑕')+'</span>'; }).join(''):'<span>空的</span>')+'</div>';
   orders.forEach(function(o,i){
     var can=count('ore')>=o.ore && count('obj')>=o.obj && count('fish')>=o.fish;
     h+='<div class="order"><div><b>'+esc(o.who)+'</b><div class="need">要 '+(o.ore?'⛏×'+o.ore+' ':'')+(o.obj?'📦×'+o.obj+' ':'')+(o.fish?'🐟×'+o.fish:'')+'</div></div>'+
       '<button class="btn '+(can?'main':'')+'" data-o="'+i+'" '+(can?'':'disabled style="opacity:.4"')+'>交貨</button></div>';
   });
   h+='<div class="muted">完整品一件 5 🪙、瑕疵品 2 🪙；交貨時寫對一句，整單翻倍。⚠️ 蓋房子的材料要留著。</div>';
-  h+='<div class="shop"><button class="btn" data-buy="bag">🎒 背包 +3（'+costBag()+'🪙）</button><button class="btn" data-buy="lamp">🏮 提燈：白天 +40 秒（'+costLamp()+'🪙）</button></div>';
-  h+='<div class="row2"><button class="btn ghost" id="dump">剩下的便宜賣掉（1 🪙／件）</button><button class="btn main" id="out">出門 →</button></div>';
+  h+='<div class="shop">'+buyBtn('bag','🎒 背包 +3',costBag())+buyBtn('lamp','🏮 提燈：白天 +40 秒',costLamp())+'</div>';
+  h+='<div class="row2"><button class="btn ghost" id="dump">整包便宜賣掉…</button><button class="btn main" id="out">出門 →</button></div>';
   openSheet(h, true);
   sheet.querySelectorAll('[data-o]').forEach(function(b){ b.onclick=function(){ deliver(+b.dataset.o); }; });
   sheet.querySelectorAll('[data-buy]').forEach(function(b){ b.onclick=function(){ buy(b.dataset.buy, openStall); }; });
-  document.getElementById('dump').onclick=function(){ S.gold+=bag.length; bag=[]; save(); hud(); openStall(); };
+  sheet.querySelectorAll('[data-sell]').forEach(function(b){ b.onclick=function(){ bag.splice(+b.dataset.sell,1); S.gold+=1; save(); hud(); openStall(); }; });
+  document.getElementById('dump').onclick=function(){ if(!bag.length) return; if(!confirm('把背包 '+bag.length+' 件全部用 1 🪙 賣掉？（蓋房子的材料也會一起賣掉）')) return; S.gold+=bag.length; bag=[]; save(); hud(); openStall(); };
   document.getElementById('out').onclick=function(){ closeSheet(); if(time<=0) toast('天黑了，今天先收工吧（🌙）'); };
 }
+function buyBtn(k,label,c){ var can=S.gold>=c; return '<button class="btn" data-buy="'+k+'" '+(can?'':'disabled style="opacity:.45"')+'>'+label+'（'+c+'🪙'+(can?'':'・還差 '+(c-S.gold))+'）</button>'; }
 function costBag(){ return 30+S.bagCap*3; } function costLamp(){ return 40+S.lamp*30; } function costPick(){ return 35+S.pick*30; } function costTrap(){ return 40+S.trap*40; }
 function buy(k, back){
   var c={bag:costBag,lamp:costLamp,pick:costPick,trap:costTrap}[k]();
   if(S.gold<c){ toast('還差 '+(c-S.gold)+' 🪙'); return; }
-  S.gold-=c; if(k==='bag') S.bagCap+=3; if(k==='lamp'){ S.lamp++; time+=40; } if(k==='pick') S.pick++; if(k==='trap') S.trap++;
+  S.gold-=c; if(k==='bag') S.bagCap+=3; if(k==='lamp'){ S.lamp++; time+=40; if(time>0) night=false; } if(k==='pick') S.pick++; if(k==='trap') S.trap++;
   save(); hud(); back();
 }
 function deliver(i){
@@ -811,6 +858,11 @@ function newDay(first){
   time=dayLen(); night=false;
   nodes=NODE_DEF.map(function(d){ return {k:d.k,x:d.x,y:d.y,done:false}; });
   rats=[]; spawnRat(); spawnRat(); spawnRat();
+  if(first && S.run && S.run.day===S.day){
+    bag=S.run.bag||[]; orders=S.run.orders||[]; time=typeof S.run.time==='number'?S.run.time:time; night=!!S.run.night;
+    (S.run.done||[]).forEach(function(d,i){ if(nodes[i]) nodes[i].done=!!d; });
+    if(night){ spawnRat(); spawnRat(); }
+  } else if(!first){ orders=[]; }
   hero.x=PLAZA.x; hero.y=PLAZA.y; wasInTown=true; log=[];
   spawnNpcs(); hud();
 }
@@ -828,7 +880,7 @@ function hud(){
   document.getElementById('hBag').textContent='🎒 '+bag.length+'/'+S.bagCap;
   document.getElementById('tb').style.width=Math.max(0,100*time/dayLen())+'%';
   var qi=questInfo();
-  document.getElementById('quest').innerHTML= night ? '🌙 天黑了，老鼠變多變快——回城，或去 🏡 睡覺' : (bag.length>=S.bagCap ? '🎒 背包滿了 → 回城' : '🎯 '+qi.t);
+  document.getElementById('quest').innerHTML= night ? '🌙 天黑了，老鼠變多變快——回城，或去 🏡 睡覺' : '🎯 '+qi.t;
 }
 /* ============================================================
    回城：先回顧（錯在哪、為什麼、建議、正確說法），再交貨
@@ -855,17 +907,24 @@ function classify(topic, nWrongNow){
 }
 function classifyG(it, nWrongNow){
   var gs=readLS('clb7_gender_seen')[it.n]||{}, mine=S.gword[it.n]||{r:0,w:0};
-  var r=(gs.r||0)+mine.r, tot=r+(gs.w||0)+mine.w-nWrongNow;
+  var r=(gs.c||gs.r||0)+mine.r, tot=r+(gs.w||0)+mine.w-nWrongNow;
   if(nWrongNow===1 && tot>=4 && r/tot>=.8) return 'slip';
   return 'auto';
 }
 var TAG={slip:'⚡ 手滑', auto:'✂️ 要練到不用想', concept:'🧠 規則還沒到位', ask:'❓'};
-function review(){
-  var trip=log; log=[];
+var lastTrip=null;
+function review(again){
+  var trip=again||log; if(!again) log=[]; lastTrip=trip;
   var ok=trip.filter(function(l){ return l.ok; }), wrong=trip.filter(function(l){ return l.ok===false; });
   var fast=ok.filter(function(l){ return l.ms; }).sort(function(a,b){ return a.ms-b.ms; })[0];
-  var h='<h3>🏘️ 這一趟的回顧 <small>帶回 🎒 '+bag.length+' 件</small></h3>';
+  /* 結算：這趟帶回什麼（⛔ 不秀分母、不說錯幾題） */
+  var loot={ore:0,obj:0,fish:0,bad:0}; bag.forEach(function(b){ loot[b.k]=(loot[b.k]||0)+1; if(!b.good) loot.bad++; });
+  var h='<h3>🏘️ 這一趟 <small>💰 '+S.gold+'</small></h3>';
+  h+='<div class="bagrow">'+(loot.ore?'<span>⛏ ×'+loot.ore+'</span>':'')+(loot.obj?'<span>📦 ×'+loot.obj+'</span>':'')+(loot.fish?'<span>🐟 ×'+loot.fish+'</span>':'')+(loot.bad?'<span class="bad">其中瑕疵 '+loot.bad+'</span>':'')+(bag.length?'':'<span>背包是空的</span>')+'</div>';
   h+='<div class="rv-top">'+(fast?'最快的一下 '+(fast.ms/1000).toFixed(1)+' 秒。':'')+(wrong.length?'下面這幾個再看一眼——每組最上面那行就是建議。':'這一趟全部是完整品 ✨')+'</div>';
+  /* 答對但慢：沒把握的對，回饋最有用（Butler 2008）。最多 3 句，灰字 */
+  var slow=ok.filter(function(l){ return l.kind==='q' && l.ms>6000 && l.item && l.item.q && !l.item.say; }).slice(0,3);
+  if(slow.length) h+='<div class="rv-grp"><div class="t">答對了，但想了一下 <small>再看一眼就好</small></div>'+slow.map(function(l){ var q=l.item, said=frOnly(sayOf(q,clean(l.right||String(q.a).split('|')[0]))); return '<div class="item">'+(said?'<span class="say">'+esc(said)+'</span> '+spk(said):esc(l.right||''))+' <span class="muted">'+(l.ms/1000).toFixed(0)+' 秒</span></div>'; }).join('')+'</div>';
   /* 依主題分組；陰陽性另成一組 */
   var groups={}, order=[];
   wrong.forEach(function(l){ var k=l.kind==='g'?'__gender':l.kind==='c'?'__listen':l.item.topic; if(!groups[k]){ groups[k]=[]; order.push(k); } groups[k].push(l); });
@@ -890,7 +949,8 @@ function review(){
     h+='<div class="rv-grp" data-topic="'+k+'"><div class="t">'+(lab.zh?esc(lab.zh)+' ':'')+'<small>'+esc(lab.fr)+'</small><span class="tag">'+(cls==='ask'?'':TAG[cls])+'</span></div>';
     h+='<div class="advice" data-adv="'+k+'">'+adviceHtml(k,cls,g.length)+'</div>';
     g.forEach(function(l){
-      var q=l.item, said=q.say||frOnly(sayOf(q,clean(l.right||String(q.a).split('|')[0])));
+      var q=l.item, longest=String(q.a).split('|').sort(function(a,b){ return b.length-a.length; })[0];
+      var said=q.say||(q.type==='fill'&&/\s/.test(longest)&&!/[\u4e00-\u9fff]/.test(longest)?longest:frOnly(sayOf(q,clean(l.right||String(q.a).split('|')[0]))));
       h+='<div class="item">'+(said?'<span class="say">'+esc(said)+'</span> '+spk(said):'<span class="say">'+esc(l.right)+'</span>')+
         '<div class="mine">'+esc(l.where||'')+'｜題目：'+esc(q.q)+'<br>你選的：'+esc(clean(l.chosen||'')||l.chosen||'')+'</div>'+
         (q.aNote?'<div class="why">為什麼：'+note(q.aNote)+'</div>':'')+'</div>';
@@ -924,11 +984,11 @@ function bindReview(){
 /* 連發：同一個結構 6 題，快、不講課（自動化缺口的處方）；每題對 +1 🪙，可以隨時停 */
 function drill(k){
   var n=0, got=0, isG=k==='__gender';
-  var list=isG?null:BANK.filter(function(q){ return q.topic===k && q.type==='choose' && q.opts; });
+  var list=isG?null:BANK.filter(function(q){ return q.topic===k && q.type==='choose' && q.opts && (/_{2,}/.test(q.q) || !q.opts.some(function(o){ return /[\u4e00-\u9fff]/.test(o); })); }), ended=false;
   function next(){
-    if(n>=6 || (!isG&&!list.length)){ S.gold+=got; save(); hud();
-      openSheet('<h3>連發結束 <small>+'+got+' 🪙</small></h3><div class="muted">練到這裡就好。</div><div class="row2"><span></span><button class="btn main" id="dgo">好</button></div>');
-      document.getElementById('dgo').onclick=function(){ closeSheet(); }; return; }
+    if(n>=6 || (!isG&&!list.length)){ if(ended) return; ended=true; S.gold+=got; save(); hud();
+      openSheet('<h3>連發結束 <small>+'+got+' 🪙</small></h3><div class="muted">練到這裡就好。</div><div class="row2"><span></span><button class="btn main" id="dgo">回到回顧</button></div>');
+      document.getElementById('dgo').onclick=function(){ if(lastTrip) review(lastTrip); else closeSheet(); }; return; }
     n++;
     var stopBtn=function(){ var s=document.createElement('button'); s.className='btn ghost'; s.textContent='■ 停'; s.onclick=function(){ n=99; next(); }; var k=document.getElementById('skip'); if(k) k.after(s); };
     if(isG){ var it=pickGender(); askGender('連發 '+n+'／6 <small>整塊說出來</small>', it, function(ok,ms){ rec('g',it,ok,ms,{where:'連發'}); if(ok) got++; next(); }); }
@@ -948,21 +1008,30 @@ function update(dt){
   floats.forEach(function(f){ f.t+=dt; }); floats=floats.filter(function(f){ return f.t<1.2; });
   if(hero.flash>0) hero.flash-=dt;
   if(busy){ hero.moving=0; return; }
-  var v=inputVec(), sp=4.3;
-  hero.moving=Math.hypot(v[0],v[1]);
-  if(hero.moving>0.05){
-    var nx=hero.x+v[0]*sp*dt, ny=hero.y+v[1]*sp*dt;
-    if(!blocked(nx,hero.y)) hero.x=nx;
-    if(!blocked(hero.x,ny)) hero.y=ny;
-    if(Math.abs(v[0])>.1) hero.face=v[0]<0?-1:1;
+  var v=pending?[0,0]:inputVec(), sp=4.3, inMag=Math.hypot(v[0],v[1]);
+  var a=1-Math.exp(-dt/(inMag>.05?.08:.06));
+  var wasMoving=hero.moving>.3;
+  hero.vx+=(v[0]*sp-hero.vx)*a; hero.vy+=(v[1]*sp-hero.vy)*a;
+  var spd=Math.hypot(hero.vx,hero.vy); hero.moving=Math.min(1,spd/sp);
+  if(wasMoving && hero.moving<.15) hero.squash=.12;
+  if(hero.squash>0) hero.squash-=dt;
+  dusts.forEach(function(d){ d.t+=dt; }); dusts=dusts.filter(function(d){ return d.t<.45; });
+  /* 遇到東西：先冒「！」、0.25 秒減速，再開面板（手感研究 8） */
+  if(pending){ pending.t-=dt; if(pending.t<=0){ var f=pending.fn; pending=null; joy=null; keys={}; hero.vx=hero.vy=0; f(); return; } }
+  if(spd>0.05){
+    var nx=hero.x+hero.vx*dt, ny=hero.y+hero.vy*dt;
+    if(!blocked(nx,hero.y)) hero.x=nx; else nudge('y', hero.vx*dt);
+    if(!blocked(hero.x,ny)) hero.y=ny; else nudge('x', hero.vy*dt);
+    if(Math.abs(hero.vx)>.3) hero.face=hero.vx<0?-1:1;
     hero.bob+=dt*12*hero.moving;
+    hero.dust-=dt; if(hero.moving>.6 && hero.dust<=0){ hero.dust=.25; dusts.push({x:hero.x-hero.vx*.03, y:hero.y+.35, t:0}); }
     if(!inTown(hero)){ time-=dt*hero.moving; if(time<=0 && !night){ time=0; night=true; toast('🌙 天黑了，老鼠變多變快——回城吧'); spawnRat(); spawnRat(); } }
     reveal();
     if(Math.random()<dt) { save(); hud(); }
   }
   /* 進城 → 有東西就回顧 */
   var it=inTown(hero);
-  if(it && !wasInTown){ wasInTown=true; if(log.length){ joy=null; keys={}; review(); return; } }
+  if(it && !wasInTown){ wasInTown=true; if(log.some(function(l){ return l.ok===false; }) || log.length>=6){ joy=null; keys={}; review(); return; } }
   if(!it) wasInTown=false;
   /* 碰到節點 */
   for(var i=0;i<nodes.length;i++){ var n=nodes[i]; if(n.done) continue;
@@ -970,14 +1039,14 @@ function update(dt){
     if(Math.hypot(n.x+.5-hero.x, n.y+.5-hero.y)<R){
       if(n.k==='fish' && hero.y>8) continue;
       if(bag.length>=S.bagCap){ if(!n.warn){ toast('🎒 背包滿了——回城交貨吧'); n.warn=1; } continue; }
-      n.warn=0; hero.moving=0; joy=null; keys={};
-      if(n.k==='rock') mineRock(n); else if(n.k==='bush') shakeBush(n); else fishSpot(n);
+      n.warn=0; if(pending) return;
+      pending={t:.25, x:n.x+.5, y:n.y, fn:(function(n){ return function(){ if(n.k==='rock') mineRock(n); else if(n.k==='bush') shakeBush(n); else fishSpot(n); }; })(n)};
       return;
     }
   }
   /* 紙條（郵局蓋好、信讀過才出現） */
   if(S.letter) for(var c=0;c<CLUES.length;c++){ var C=CLUES[c]; if(S.clues[C.id]) continue; if(C.cool>0){ C.cool-=dt; continue; }
-    if(Math.hypot(C.x+.5-hero.x, C.y+.5-hero.y)<.8){ joy=null; keys={}; readClue(C); return; } }
+    if(Math.hypot(C.x+.5-hero.x, C.y+.5-hero.y)<.8){ if(!pending) pending={t:.25, x:C.x+.5, y:C.y, fn:(function(C){ return function(){ readClue(C); }; })(C)}; return; } }
   /* 門口 */
   /* 門口：⭐ 要「往上推」（往門的方向走）才會進門，路過不會跳出來 */
   var at=null, push=v[1]<-.35;
@@ -1008,10 +1077,11 @@ function update(dt){
     if(r.calm<=0 && bag.length && !inTown(hero) && Math.hypot(hero.x-r.x,hero.y-r.y)<.55){ joy=null; keys={}; ratSteal(r); return; } }
 }
 
-function draw(){
+function draw(dt){
   var w=cv.width, h=cv.height, ts=TS*DPR;
-  cam.x+=(hero.x-cam.x)*.12; cam.y+=(hero.y-cam.y)*.12;
-  var ox=w/2-cam.x*ts, oy=h/2-cam.y*ts;
+  var la=1-Math.exp(-3*dt); hero.lx+=(hero.vx*.3-hero.lx)*la; hero.ly+=(hero.vy*.3-hero.ly)*la;
+  var k=1-Math.exp(-8*dt); cam.x+=(hero.x+hero.lx-cam.x)*k; cam.y+=(hero.y+hero.ly-cam.y)*k;
+  var ox=Math.round(w/2-cam.x*ts), oy=Math.round(h/2-cam.y*ts);
   cx.imageSmoothingEnabled=false;
   cx.fillStyle='#0b0f0c'; cx.fillRect(0,0,w,h);
   var x0=Math.max(0,Math.floor(-ox/ts)), y0=Math.max(0,Math.floor(-oy/ts)), x1=Math.min(W-1,Math.ceil((w-ox)/ts)), y1=Math.min(H-1,Math.ceil((h-oy)/ts));
@@ -1036,8 +1106,11 @@ function draw(){
   list.push({y:hero.y, f:function(){
     var b=hero.moving>.05?Math.abs(Math.sin(hero.bob))*.12:Math.sin(clock*2)*.02;
     cx.fillStyle='rgba(0,0,0,.25)'; cx.beginPath(); cx.ellipse(ox+hero.x*ts, oy+hero.y*ts+ts*.38, ts*.28, ts*.1, 0, 0, 7); cx.fill();
+    dusts.forEach(function(d){ cx.fillStyle='rgba(230,210,170,'+(.5*(1-d.t/.45))+')'; cx.beginPath(); cx.arc(ox+d.x*ts, oy+d.y*ts-d.t*ts*.3, ts*(.06+d.t*.12), 0, 7); cx.fill(); });
     if(hero.flash>0 && Math.floor(clock*20)%2) return;
-    drawSprite(SPR.hero,hero.x,hero.y,ox,oy,ts,hero.face,b)();
+    var sq=hero.squash>0?hero.squash/.12:0, im=img.apply(null,SPR.hero);
+    if(im.complete){ cx.save(); cx.translate(Math.round(ox+hero.x*ts), Math.round(oy+(hero.y-b)*ts)); cx.scale((hero.face||1)*(1+.1*sq), 1-.1*sq); cx.drawImage(im,-ts/2,-ts*.62,ts,ts); cx.restore(); }
+    if(pending){ cx.font='bold '+Math.round(ts*.45)+'px system-ui'; cx.textAlign='center'; cx.fillStyle='#000'; cx.fillText('！',ox+hero.x*ts+DPR,oy+(hero.y-.75)*ts+DPR); cx.fillStyle='#f0c95a'; cx.fillText('！',ox+hero.x*ts,oy+(hero.y-.75)*ts); }
   }});
   list.sort(function(a,b){ return a.y-b.y; }).forEach(function(o){ o.f(); });
   /* 浮字 */
@@ -1051,8 +1124,8 @@ function draw(){
   /* 金色箭頭 */
   var qi=questInfo(); if(qi.to && !busy) drawArrow(qi.to,ox,oy,ts,w,h);
   /* 搖桿 */
-  if(joy){ cx.strokeStyle='rgba(255,255,255,.35)'; cx.lineWidth=3*DPR; cx.beginPath(); cx.arc(joy.ox*DPR,joy.oy*DPR,55*DPR,0,7); cx.stroke();
-    var dx=joy.x-joy.ox, dy=joy.y-joy.oy, L=Math.hypot(dx,dy), m=Math.min(L,55)/(L||1);
+  if(joy){ cx.strokeStyle='rgba(255,255,255,.35)'; cx.lineWidth=3*DPR; cx.beginPath(); cx.arc(joy.ox*DPR,joy.oy*DPR,40*DPR,0,7); cx.stroke();
+    var dx=joy.x-joy.ox, dy=joy.y-joy.oy, L=Math.hypot(dx,dy), m=Math.min(L,40)/(L||1);
     cx.fillStyle='rgba(255,255,255,.4)'; cx.beginPath(); cx.arc((joy.ox+dx*m)*DPR,(joy.oy+dy*m)*DPR,22*DPR,0,7); cx.fill(); }
 }
 function drawTile(d,x,y,ox,oy,ts){ return function(){ var im=img(d[0],d[1]); if(im.complete) cx.drawImage(im,Math.floor(ox+x*ts),Math.floor(oy+y*ts),Math.ceil(ts),Math.ceil(ts)); }; }
@@ -1103,7 +1176,7 @@ function drawArrow(to,ox,oy,ts,w,h){
 }
 function loop(t){
   var dt=Math.min(.05,(t-lastT)/1000); lastT=t;
-  update(dt); draw();
+  update(dt); draw(dt);
   requestAnimationFrame(loop);
 }
 
@@ -1116,10 +1189,11 @@ document.getElementById('bRest').onclick=rest;
 resize(); buildWorld(); initSeen(); newDay(true); reveal(); cam.x=hero.x; cam.y=hero.y;
 Object.keys(SPR).forEach(function(k){ img.apply(null,SPR[k]); });
 requestAnimationFrame(loop);
+setTimeout(function(){ document.getElementById('toast').style.opacity=0; },4000);
 if(!S.intro){ S.intro=1; save();
   openSheet('<h3>🏘️ Val-Brume</h3><div class="story">你剛搬到魁北克一個沒落的小鎮。房子都塌了，鐘樓的鐘也停了很久——沒人說得出為什麼。</div>'+
     '<div class="muted">按住畫面任何地方拖曳就能走（電腦用方向鍵）。走到 🌳 ⛏ 旁邊會自動開始；跟著上方的 🎯 和金色箭頭走。</div><div class="row2"><span></span><button class="btn main" id="ok">出發</button></div>');
-  document.getElementById('ok').onclick=closeSheet; }
+  document.getElementById('ok').onclick=function(){ unlockTts(); closeSheet(); }; }
 
 </script>
 </body>
