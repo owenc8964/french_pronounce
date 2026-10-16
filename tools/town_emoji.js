@@ -4,6 +4,9 @@
  * 抽象名詞配「意思最接近」的圖案；⚠️ 只是圖案，不是翻譯，中文意思一律看 chunks.js。
  */
 var DEX_EMOJI = {
+  ville:'🏙️',quartier:'🏘️',rue:'🛣️',marché:'🧺',supermarché:'🛒',chemin:'🥾',journée:'🌤️',séjour:'🛋️',bureau:'🗄️',
+  rhume:'🤧',logement:'🏠',camping:'🏕️',champ:'🌾',rivière:'🏞️',pièce:'🚪',annonce:'📢',randonnée:'🥾',numéro:'🔢',
+  support:'💿',tendance:'📈',article:'📰',meuble:'🪑',parcours:'🧭',
   sport:'⚽',cinéma:'🎬',musique:'🎵',université:'🎓',mariage:'💍',entrée:'🥗',addition:'🧾','steak-frites':'🥩',
   boulangerie:'🥖',boucherie:'🥩',poissonnerie:'🐟',fromagerie:'🧀',pâtisserie:'🧁','centre-ville':'🏙️',banlieue:'🏘️',
   avenue:'🛣️',boulevard:'🌳',carrefour:'🚦',quai:'⚓',place:'⛲',fleuve:'🏞️',mairie:'🏛️',commissariat:'🚓',

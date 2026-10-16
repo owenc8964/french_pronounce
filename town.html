@@ -31,7 +31,8 @@
 :root { --bg:#10170f; --panel:#1c2a22; --line:#2f4438; --ink:#eef3ea; --dim:#9db1a2; --gold:#f0c95a; --red:#e07a6a; --green:#79d39a; --gray:#8a948d; --blue:#7fb4e6; }
 * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
 html, body { height:100%; overflow:hidden; background:var(--bg); }
-body { color:var(--ink); font-family:'Segoe UI',system-ui,sans-serif; font-size:16px; line-height:1.6; user-select:none; -webkit-user-select:none; overscroll-behavior:none; }
+@font-face { font-family:'Cubic11'; src:url('assets/game/fonts/Cubic_11.woff2') format('woff2'); font-display:swap; }   /* 俐方體11號（OFL），像素中文字 */
+body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; -webkit-font-smoothing:none; font-size:16px; line-height:1.6; user-select:none; -webkit-user-select:none; overscroll-behavior:none; }
 #cv { position:fixed; inset:0; width:100vw; height:100dvh; display:block; touch-action:none; image-rendering:pixelated; }
 .hud { position:fixed; top:0; left:0; right:0; padding:calc(env(safe-area-inset-top) + 8px) 10px 0; pointer-events:none; z-index:5; }
 .hrow { display:flex; gap:6px; align-items:center; }
@@ -56,18 +57,19 @@ body { color:var(--ink); font-family:'Segoe UI',system-ui,sans-serif; font-size:
 .sheet h3 { font-size:.95em; color:var(--gold); margin-bottom:6px; display:flex; justify-content:space-between; gap:8px; }
 .sheet h3 small { color:var(--dim); font-weight:400; }
 .qtext { font-size:1.08em; margin:6px 0 10px; }
-.qtext .fr, .fr { font-family:Georgia,serif; }
+.qtext .fr, .fr { font-family:Cubic11,Georgia,serif; }
+.pix { image-rendering:pixelated; image-rendering:crisp-edges; vertical-align:middle; }
 .hint { font-size:.8em; color:var(--dim); margin-top:-6px; margin-bottom:8px; }
 .opts { display:flex; flex-direction:column; gap:7px; }
 .opts.row { flex-direction:row; }
 .opts.row button { flex:1; font-size:1.25em; padding:14px 0; text-align:center; }
-.opts button { background:#24362b; color:var(--ink); border:1px solid var(--line); border-radius:12px; padding:10px 12px; font-size:1em; text-align:left; cursor:pointer; font-family:Georgia,serif; }
+.opts button { background:#24362b; color:var(--ink); border:1px solid var(--line); border-radius:12px; padding:10px 12px; font-size:1em; text-align:left; cursor:pointer; font-family:Cubic11,Georgia,serif; }
 .opts button.ok { background:#2d5a3c; border-color:var(--green); }
 .opts button.no { background:#4a2c28; border-color:var(--red); }
 .fb { margin-top:10px; font-size:.92em; }
-.fb .say { font-family:Georgia,serif; color:var(--gold); }
+.fb .say { font-family:Cubic11,Georgia,serif; color:var(--gold); }
 .row2 { display:flex; gap:8px; margin-top:12px; justify-content:space-between; align-items:center; }
-input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px; border:1px solid var(--line); background:#0f1813; color:var(--ink); font-family:Georgia,serif; user-select:text; -webkit-user-select:text; }
+input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px; border:1px solid var(--line); background:#0f1813; color:var(--ink); font-family:Cubic11,Georgia,serif; user-select:text; -webkit-user-select:text; }
 .spk { background:none; border:none; cursor:pointer; font-size:1em; padding:0 4px; }
 .rv-top { font-size:.9em; color:var(--dim); margin-bottom:10px; }
 .rv-grp { border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:10px; background:#18241d; }
@@ -76,7 +78,7 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .tag { display:inline-block; font-size:.75em; border-radius:6px; padding:0 6px; margin-left:4px; background:#2f3a33; color:#cfd8d1; }
 .advice { margin:6px 0; font-size:.92em; }
 .item { border-top:1px dashed var(--line); padding-top:6px; margin-top:6px; font-size:.9em; }
-.item .say { font-family:Georgia,serif; color:var(--gold); font-size:1.05em; }
+.item .say { font-family:Cubic11,Georgia,serif; color:var(--gold); font-size:1.05em; }
 .item .why { color:var(--dim); }
 .item .mine { color:var(--gray); }
 .rule { background:#101a14; border-radius:10px; padding:8px 10px; margin-top:6px; font-size:.88em; }
@@ -89,7 +91,7 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .shop { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
 .muted { color:var(--dim); font-size:.85em; }
 .story { color:#d9cfb6; margin:4px 0 10px; }
-.clue { font-family:Georgia,serif; font-size:1.1em; background:#0c120e; border-left:3px solid var(--gold); padding:8px 12px; border-radius:0 10px 10px 0; margin:8px 0; }
+.clue { font-family:Cubic11,Georgia,serif; font-size:1.1em; background:#0c120e; border-left:3px solid var(--gold); padding:8px 12px; border-radius:0 10px 10px 0; margin:8px 0; }
 .stars { color:var(--gold); letter-spacing:2px; }
 .stars .off { color:#4a5a4f; }
 .hud button { padding:4px 7px; font-size:.76em; } .hud .chip { font-size:.76em; padding:2px 7px; }
@@ -164,6 +166,31 @@ var EMO={chien:'🐕',chat:'🐈',cheval:'🐎',lapin:'🐇',poisson:'🐟',poul
   cuillère:'🥄',bougie:'🕯️',lettre:'✉️',carte:'🗺️',photo:'📷',parapluie:'☂️',tente:'⛺',dentiste:'🦷',pharmacie:'💊',jardin:'🌳'};
 /* 圖鑑圖案：town 自己的 EMO 優先，再補 quest 的與 tools/town_emoji.js 的（10-16：原本 503 個字只有 26 個有圖案） */
 [typeof DEX_EMOJI_QUEST!=='undefined'?DEX_EMOJI_QUEST:{}, typeof DEX_EMOJI!=='undefined'?DEX_EMOJI:{}].forEach(function(m){ for(var k in m) if(!EMO[k]) EMO[k]=m[k]; });
+/* ⭐ emoji → 紅白機風像素圖（10-16 Owen：要寶可夢／紅白機的感覺；現成像素圖庫涵蓋不到這 503 個字）
+   做法：大畫布畫 emoji → 縮到 20×20 → 顏色吸附到 PICO-8 擴充 32 色 → 加 1px 深色外框 → 用 image-rendering:pixelated 放大
+   ⚠️ 在玩家自己的裝置上即時畫（iPhone 是 Apple 的 emoji），結果會快取，不下載任何圖 */
+var PAL=[[0,0,0],[29,43,83],[126,37,83],[0,135,81],[171,82,54],[95,87,79],[194,195,199],[255,241,232],[255,0,77],[255,163,0],[255,236,39],[0,228,54],[41,173,255],[131,118,156],[255,119,168],[255,204,170],
+  [41,24,20],[17,29,53],[66,33,54],[18,83,89],[116,47,41],[73,51,59],[162,136,121],[243,239,125],[190,18,80],[255,108,36],[168,231,46],[0,181,67],[6,90,181],[117,70,101],[255,110,89],[255,157,129]];
+var PIXC={}, PIXN=20;   /* 格數：16 太糊（房子會像臉），20 比較認得出來 */
+function pixURL(em){
+  if(PIXC[em]) return PIXC[em];
+  try{
+    var B=document.createElement('canvas'); B.width=B.height=64; var b=B.getContext('2d');
+    b.textAlign='center'; b.textBaseline='middle'; b.font='54px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif'; b.fillText(em,32,36);
+    var N=PIXN, C=document.createElement('canvas'); C.width=C.height=N; var c=C.getContext('2d'); c.imageSmoothingEnabled=true; c.drawImage(B,1,1,N-2,N-2);
+    var d=c.getImageData(0,0,N,N), p=d.data, op=new Array(N*N);
+    for(var i=0;i<N*N;i++){ var a=p[i*4+3]; op[i]=a>=110;
+      if(op[i]){ var r=p[i*4]*255/a, g=p[i*4+1]*255/a, bl=p[i*4+2]*255/a, best=0, bd=1e9;
+        for(var k=0;k<PAL.length;k++){ var dr=r-PAL[k][0], dg=g-PAL[k][1], db=bl-PAL[k][2], dd=dr*dr*.3+dg*dg*.59+db*db*.11; if(dd<bd){ bd=dd; best=k; } }
+        p[i*4]=PAL[best][0]; p[i*4+1]=PAL[best][1]; p[i*4+2]=PAL[best][2]; p[i*4+3]=255; } }
+    for(var j=0;j<N*N;j++){ if(op[j]) continue; var x=j%N, y=(j/N)|0;
+      var nb=(x>0&&op[j-1])||(x<N-1&&op[j+1])||(y>0&&op[j-N])||(y<N-1&&op[j+N]);
+      if(nb){ p[j*4]=24; p[j*4+1]=20; p[j*4+2]=37; p[j*4+3]=255; } else p[j*4+3]=0; }
+    c.putImageData(d,0,0); PIXC[em]=C.toDataURL();
+  }catch(e){ PIXC[em]=''; }
+  return PIXC[em];
+}
+function pix(em, size, extra){ var u=pixURL(em||'📦'); return u ? '<img class="pix" src="'+u+'" width="'+size+'" height="'+size+'" alt="" '+(extra||'')+'>' : '<span style="font-size:'+size*.8+'px">'+(em||'📦')+'</span>'; }
 var GENDER = (function(){
   var W='[a-zàâçéèêëîïôûùüÿœæ-]+', re1=new RegExp('^(un|une|le|la)\\s+('+W+')$'), re2=new RegExp("^l['’]("+W+")\\s*\\((m|f)\\.\\)$");
   var map={}, bad={};
@@ -459,7 +486,7 @@ function askChoose(head, q, cb){
 }
 function askGender(head, it, cb){
   var t0=Date.now(), pic=EMO[it.n]||'';
-  var html='<h3>'+head+'</h3><div class="qtext" style="text-align:center"><span style="font-size:2em">'+(pic||'📦')+'</span><br>'+
+  var html='<h3>'+head+'</h3><div class="qtext" style="text-align:center">'+pix(pic||'📦',64)+'<br>'+
     '<span class="fr" style="font-size:1.3em">… '+esc(it.n)+'</span><div class="muted">'+esc(it.zh)+'</div></div>'+
     '<div class="opts row"><button data-g="m">un</button><button data-g="f">une</button></div><div class="fb" id="fb"></div>'+
     '<div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><span id="slot"></span></div>';
@@ -839,7 +866,7 @@ function fillOrders(){
 function openStall(){
   fillOrders();
   var h='<h3>🏪 交貨攤 <small>💰 '+S.gold+'</small></h3>';
-  h+='<div class="muted">背包（點一件＝賣掉那一件，1 🪙）：</div><div class="bagrow">'+(bag.length?bag.map(function(b,i){ return '<span data-sell="'+i+'" style="cursor:pointer" class="'+(b.good?'':'bad')+'">'+b.em+' '+esc(b.name)+(b.good?'':' 瑕')+'</span>'; }).join(''):'<span>空的</span>')+'</div>';
+  h+='<div class="muted">背包（點一件＝賣掉那一件，1 🪙）：</div><div class="bagrow">'+(bag.length?bag.map(function(b,i){ return '<span data-sell="'+i+'" style="cursor:pointer" class="'+(b.good?'':'bad')+'">'+pix(b.em,18)+' '+esc(b.name)+(b.good?'':' 瑕')+'</span>'; }).join(''):'<span>空的</span>')+'</div>';
   orders.forEach(function(o,i){
     var can=count('ore')>=o.ore && count('obj')>=o.obj && count('fish')>=o.fish;
     h+='<div class="order"><div><b>'+esc(o.who)+'</b><div class="need">要 '+(o.ore?'⛏×'+o.ore+' ':'')+(o.obj?'📦×'+o.obj+' ':'')+(o.fish?'🐟×'+o.fish:'')+'</div></div>'+
@@ -1007,7 +1034,7 @@ function adviceHtml(k,cls,n){
   if(cls==='concept'){
     var p=topicLabel(k).point, r=p&&p.rule;
     return '👉 先把規則弄清楚，再練。'+(r?'<div class="rule"><b>'+esc(r.title)+'</b><ul>'+(r.points||[]).slice(0,4).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('')+'</ul>'+
-      (r.examples||[]).slice(0,2).map(function(e){ return '<div><span class="say" style="font-family:Georgia,serif">'+esc(e.fr)+'</span> '+spk(e.fr)+' <span class="muted">'+esc(e.zh)+'</span></div>'; }).join('')+'</div>':'<div class="muted">（這一類沒有規則卡，看下面每一題的「為什麼」）</div>')+
+      (r.examples||[]).slice(0,2).map(function(e){ return '<div><span class="say" style="font-family:Cubic11,Georgia,serif">'+esc(e.fr)+'</span> '+spk(e.fr)+' <span class="muted">'+esc(e.zh)+'</span></div>'; }).join('')+'</div>':'<div class="muted">（這一類沒有規則卡，看下面每一題的「為什麼」）</div>')+
       ' <div style="margin-top:6px"><button class="btn" data-drill="'+k+'">看懂了，連發 6 題</button></div>';
   }
   return '這個規則你講得出來嗎？ <button class="btn" data-say-rule="1" data-k="'+k+'">講得出來</button> <button class="btn" data-say-rule="0" data-k="'+k+'">講不出來</button>';
@@ -1230,7 +1257,7 @@ function wildEncounter(){
     if(ok===null){ closeSheet(); toast('牠鑽回草叢裡了'); return; }
     rec('g', it, ok, ms, {where:'🌳 草叢'});
     if(!ok){
-      openSheet('<div class="catch"><div class="big" style="opacity:.35">'+em+'</div><div class="story">牠一溜煙跑回草叢了……</div><div class="muted">下次還會遇到牠。</div></div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+      openSheet('<div class="catch"><div class="big" style="opacity:.35">'+pix(em,96)+'</div><div class="story">牠一溜煙跑回草叢了……</div><div class="muted">下次還會遇到牠。</div></div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
       document.getElementById('ok').onclick=closeSheet; return;
     }
     var c=lastCatch||{}, d=S.dex[it.n];
@@ -1238,7 +1265,7 @@ function wildEncounter(){
     hud(); save();
     var tags=(c.isNew?'<span class="tag-new">🆕 圖鑑新登錄</span>':'')+(c.shiny?'<span class="tag-new">✨ 閃光</span>':'')+(c.evo?'<span class="tag-new">🌟 進化：熟了</span>':'');
     var line=c.evo?'昨天收過的，今天又一眼認出來——這個字你站穩了。':c.isNew?'圖鑑第 '+dexCount()+' 種。':(d&&!d.evo?'明天再收一次，牠就會進化。':'');
-    openSheet('<div class="catch"><div class="big"'+(d&&d.shiny?' style="filter:drop-shadow(0 0 10px #f0c95a)"':'')+'>'+em+'</div><div style="font-size:1.2em" class="fr">收服了！ <span class="say">'+esc(whole(it))+'</span> '+spk(whole(it))+'</div><div>'+tags+'</div><div class="muted">'+esc(it.zh)+(line?'　'+line:'')+'</div></div><div class="row2"><button class="btn ghost" id="dex">📖 看圖鑑</button><button class="btn main" id="ok">好</button></div>');
+    openSheet('<div class="catch"><div class="big"'+(d&&d.shiny?' style="filter:drop-shadow(0 0 10px #f0c95a)"':'')+'>'+pix(em,96)+'</div><div style="font-size:1.2em" class="fr">收服了！ <span class="say">'+esc(whole(it))+'</span> '+spk(whole(it))+'</div><div>'+tags+'</div><div class="muted">'+esc(it.zh)+(line?'　'+line:'')+'</div></div><div class="row2"><button class="btn ghost" id="dex">📖 看圖鑑</button><button class="btn main" id="ok">好</button></div>');
     document.getElementById('ok').onclick=closeSheet; document.getElementById('dex').onclick=openDex;
   });
 }
@@ -1251,8 +1278,8 @@ function openDex(){
     g.sort(function(a,b){ return (a.lesson||0)-(b.lesson||0); });
     h+='<div class="dexhead">'+['⚪','🔵','🟣'][ri]+' '+RAR[ri]+'</div><div class="dexgrid">';
     g.forEach(function(it){ var d=(S.dex||{})[it.n], em=EMO[it.n]||'📦';
-      if(!d) h+='<div class="dexcell no r'+ri+'"><div class="em">'+em+'</div><div>？？？</div></div>';
-      else h+='<div class="dexcell r'+ri+(d.shiny?' shiny':'')+'" data-w="'+esc(whole(it))+'" data-zh="'+esc(it.zh)+'">'+(d.evo?'<span class="evo">🌟</span>':'')+'<div class="em">'+em+'</div><div class="fr">'+esc(whole(it))+'</div></div>';
+      if(!d) h+='<div class="dexcell no r'+ri+'"><div class="em">'+pix(em,40)+'</div><div>？？？</div></div>';
+      else h+='<div class="dexcell r'+ri+(d.shiny?' shiny':'')+'" data-w="'+esc(whole(it))+'" data-zh="'+esc(it.zh)+'">'+(d.evo?'<span class="evo">🌟</span>':'')+'<div class="em">'+pix(em,40)+'</div><div class="fr">'+esc(whole(it))+'</div></div>';
     });
     h+='</div>';
   });
