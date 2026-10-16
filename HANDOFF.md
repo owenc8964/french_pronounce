@@ -14,7 +14,7 @@
 
 > 🆕 **2026-10-05 session 結束時的狀態（新 session 先看這段，再往下）**：
 > - ⭐⭐ **10-15 遊戲**：`town.html` v2 完成（連續移動＋重建小鎮＋第一章懸疑），見「三之六十一」；10-15 晚依審查與手感研究修正，見「三之六十二」；10-16 路上題庫擴到 869 題＋9 個 agent 的成果與待決定事項見「三之六十三」；⏸ 等 Owen 試玩，⛔ 回饋前不動 quest.html。前因：10-14 研究與 v1 在「三之六十」。
-> - 課程進度：**第 41 課**（p.171–174 環境詞彙、動物行為、目的 pour／pour que、瀕危物種）筆記＋連動完成（見「三之五十八」）。下次：Unité 12 剩下的部分。
+> - 課程進度：**第 42 課**（p.175 動物詞彙與俗語、p.177 被動式、p.178 命令式＋代名詞、DELF A2 模擬閱讀 24／25）筆記＋連動完成（見「三之六十五」）。⭐ **老師宣布 Édito A2 上完**；下次：先練 A2 口說，或直接進 B1 課本（逐字稿糊，看起來是先練口說再進 B1）。
 > - 這輪工作紀錄在「三之二十九」～「三之四十五」（搜尋「三之四」）：變位總覽改版＋練習化（蓋住／隨機 8 題／記速／鏡子）、四篇研究、遊戲修 bug（同步蓋回主線、主線倒下、四格卡死）、文法三連、課本題補齊（A2 本冊 158＋A1 弱項 139）、第 39 課。
 > - ✅ **Cahier A2 練習本補題已合併**（+328 題，第 17–39 課，答案全出自 Corrigés；題庫 2136 題、choose 缺答案 0）。✅ **10-07 補完「答錯沒一行原因」**：見「三之四十六」。刻意不收：第19課 p.10 3f（Corrigés 寫 il y a，標準是 pendant）等 OCR 糊掉的題。
 > - ⏸ **10-08 主線改版規格在 `STORY_DESIGN.md`（三之四十九），等 Owen 決定題材／原創例外／舊主線去留。**
@@ -4910,6 +4910,17 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - 紀錄 `clb7_gender_seen`（每字一物件＋last）：上次錯的 ×4、錯多於對 ×3、連對 3 次且 2 次 <2 秒的 ×0.35。答對也呼叫 `growRec`（key `g:<字>`）→ 隔天以後又答對＝站穩，寵物會長大。每答對 1 枚金幣，中途回去也照給。結算：✓ 數、平均秒數、<2 秒的個數、「再看一眼這幾個」（可點聽）。⛔ 不顯示分母。
 - 🐛 順手發現：`tools/tmp_quest_nosync.js make` 產的暫存頁**自己回報 `sync tag present? true`**——那支工具已經不可靠，這次改用自己的隔離複本（只刪 `<script src=sync_supabase.js>`），⚠️ 以後測 quest.html 別用它。
 - ✅ 試跑（隔離複本，ROOM 沒動）：手機 375 版面；一局 20 題（含 1 跳過、4 錯）→ 結算正確、金幣 +15、紀錄 18 字；無錯誤。
+
+#### 三之六十五、10-16：第42課筆記（p.175 Les animaux／p.177 La forme passive／p.178 命令式＋代名詞／p.185–188 DELF A2 模擬閱讀）＋連動
+
+- **來源**：`~/Desktop/1016/` 7 張截圖（含 Owen 手寫）＋整堂逐字稿；對課本快取 p.175、177、178、185–188。⚠️ 派工單寫的「p.181 起模擬考」實際上閱讀是 **p.185–188**（p.181–184 是聽力，沒上）。⛔ 沒上到：p.175 練習5、p.176 H、p.177 J 聽力題、p.178 練習 2–4 與 Phonie-graphie、p.179–180 Atelier、模擬考聽力。
+- ⭐ **老師宣布 A2 課本上完**；模擬考閱讀 **24／25**（Exercice 1–3 小計 17／18，扣分在哪題截圖看不出來）。接下來：先練 A2 口說讓他更有信心，或直接進 B1 課本（逐字稿最後一段糊）。
+- ✅ 筆記（`lesson-42`，10 unit：詞彙／動物俗語／被動式／p.178 命令式／模擬考／考試策略／文化／老師課堂法語／發音警報／糾錯摘要；check_notes 0／0）。主動⇄被動對照表把「注意」欄放第一欄，避免抽卡器把說明當背面。
+- ⚠️ **標出來的衝突**：① p.178 練習1a 逐字稿記成老師說 pense-y → 標準 **penses-y**（課本 p.170 練習3c、A1 p.160 也寫 Penses-y）；分不出是老師口誤還是辨識漏掉 [z] ② 老師一開始說 chouette 母、hibou 公（隨即 Ah non）→ 標準：不同的貓頭鷹，hibou 有耳羽 ③ 逐字稿把 canari 講成像「小鴨」→ canari＝金絲雀、小鴨 caneton ④ 練習3d 逐字稿像「蜜蜂 4 腳 2 翅」→ 昆蟲 6 腳、蜜蜂 4 翅 ⑤ 練習2c 老師句 Une annonce sur ce site a été publiée par nous → 文法對，但 par nous 通常省略 ⑥ 老師只說 partir 不能被動 → 補完整規則：只有能接直接受詞的動詞才有被動。
+- ✅ 連動：chunks **+66**（預覽確認沒有背面是錯誤描述的卡）｜questions **+58**（新 topic `forme-passive` 19、`vocab-animaux` +23、`strategie-lecture` +9、`imperatif-pronoms` +6、`passe-compose` +1；choose 正解都在選項、無撞 id）＋ TOPIC_LABELS 三處（120 個）｜sentences `S_L42_1~13`（→401）｜table_drill +2（`imperatif-pronoms-p178`、`forme-passive-drill`，90 個）｜gram_rules：**`passive` 從 B2 佔位點就地解鎖為 A2**（照 gerondif，⛔ 不改 id，4 例句全出自課本）＋ `imperatif` lessons 加 42｜quest.html `G3_AIM` 加 `forme-passive`（check_g3 ✓ 1026 題）｜map `CURRENT_LESSON` 42、`TOTAL_LESSONS` 44→42（A2 上完）、`passive` 地塊解鎖＋新地塊 `animaux-p175`。
+- ⚠️ p.178 練習2（被動轉換）課堂沒做、課本沒附答案 → 題庫 5 題與填表 4 列的答案是照規則轉的，hint 已標「課堂沒做」。
+- 🎯 **考試策略**（老師帶解 DELF A2 閱讀）：先看題目／先看標題、配對題人比文件多有人配不到、一題只讀相關段、生字跟題目無關就跳過、不確定就猜、選項借文章字設陷阱（jouer la carte du local ≠ 打牌、suivre les instructions ≠ 下載、un chiffre moins important＝數字小、animation＝活動表演、5e édition → 不是第一次）、courriel ≠ courrier。已寫進筆記 🎯 unit＋題庫 `strategie-lecture`（第24課那組的實戰版）。考試策略沒有獨立的固定檔案，慣例就是「該課筆記的 🎯 unit＋`strategie-lecture` topic」。
+- ✅ 驗證（只用 node，⛔ 沒開瀏覽器）：check_notes 0／0、check_g3 全過、audit_questions 第42課無問題、TABLES／TILES／TOPIC_LABELS／GRAM_POINTS 都能解析。⏭ 下次有開瀏覽器的 session 可補看：筆記第42課渲染、quiz `?lesson=42`、gram_trainer `?point=passive`。
 
 #### 三之六十四、10-16：Owen 試玩小鎮後——「有遊戲感，但不知道為何而玩」→ 主軸改提案（⏸ 等 Owen 確認）
 
