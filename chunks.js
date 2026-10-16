@@ -20657,5 +20657,467 @@ const CHUNKS = [
   "fr": "approuver",
   "zh": "贊成",
   "note": "v.｜"
+ },
+ {
+  "id": "L42_Le_canard_il_a_des_plume",
+  "lesson": 42,
+  "fr": "Le canard, il a des plumes.",
+  "zh": "鴨子有羽毛。",
+  "note": "🎙 老師。其他動物是 des poils"
+ },
+ {
+  "id": "L42_Le_lait_de_vache",
+  "lesson": 42,
+  "fr": "Le lait de vache.",
+  "zh": "牛奶。",
+  "note": "🎙 但吃的是 le bœuf，不是 la vache"
+ },
+ {
+  "id": "L42_Se_coucher_avec_les_poul",
+  "lesson": 42,
+  "fr": "Se coucher avec les poules.",
+  "zh": "很早就睡（跟雞一起睡）。",
+  "note": "課本練習4a → 1. Dormir tôt。🎙 因為雞很早就睡"
+ },
+ {
+  "id": "L42_La_voiture_elle_avance_c",
+  "lesson": 42,
+  "fr": "La voiture, elle avance comme une tortue.",
+  "zh": "車子慢得像烏龜。",
+  "note": "🎙 老師：開車的時候可以這樣說"
+ },
+ {
+  "id": "L42_Être_un_pigeon_ça_veut_d",
+  "lesson": 42,
+  "fr": "Être un pigeon, ça veut dire se faire arnaquer facilement.",
+  "zh": "「當鴿子」的意思是很容易被騙。",
+  "note": "🎙 老師。⚠️ 中文的「放鴿子」跟法文的 pigeon 無關"
+ },
+ {
+  "id": "L42_C_est_chouette",
+  "lesson": 42,
+  "fr": "C'est chouette !",
+  "zh": "好棒！",
+  "note": "🎙 想說某件事很好、很不錯"
+ },
+ {
+  "id": "L42_Une_boisson_a_été_acheté",
+  "lesson": 42,
+  "fr": "Une boisson a été achetée par Owen.",
+  "zh": "Owen 買了一杯飲料。（飲料被 Owen 買了）",
+  "note": "🎙 老師的例子：une boisson 陰性 → achetée"
+ },
+ {
+  "id": "L42_Ma_fille_est_partie_avec",
+  "lesson": 42,
+  "fr": "Ma fille est partie avec ma femme.",
+  "zh": "我女兒跟我太太一起出門了。",
+  "note": "🎙 你造的句子、老師寫下來的：⚠️ 這是複合過去式，不是被動；partir 不能變被動"
+ },
+ {
+  "id": "L42_En_France_on_adore_le_fr",
+  "lesson": 42,
+  "fr": "En France, on adore le fromage de chèvre.",
+  "zh": "在法國，大家超愛羊奶起司。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L42_Le_chien_c_est_le_meille",
+  "lesson": 42,
+  "fr": "Le chien, c'est le meilleur ami de l'homme.",
+  "zh": "狗是人類最好的朋友。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L42_On_va_prendre_la_questio",
+  "lesson": 42,
+  "fr": "On va prendre la question d'abord.",
+  "zh": "我們先看題目。",
+  "note": "⭐ 解題第一步"
+ },
+ {
+  "id": "L42_le_cheval_les_chevaux",
+  "lesson": 42,
+  "fr": "le cheval, les chevaux",
+  "zh": "馬",
+  "note": "m.｜-al → -aux"
+ },
+ {
+  "id": "L42_la_chèvre",
+  "lesson": 42,
+  "fr": "la chèvre",
+  "zh": "山羊",
+  "note": "f.｜🎙 le fromage de chèvre"
+ },
+ {
+  "id": "L42_le_poney",
+  "lesson": 42,
+  "fr": "le poney",
+  "zh": "小型馬",
+  "note": "m.｜🎙 課本圖"
+ },
+ {
+  "id": "L42_l_âne",
+  "lesson": 42,
+  "fr": "l'âne",
+  "zh": "驢子",
+  "note": "m.｜🎙 donkey"
+ },
+ {
+  "id": "L42_le_hamster",
+  "lesson": 42,
+  "fr": "le hamster",
+  "zh": "倉鼠",
+  "note": "m.｜🎙 囓齒動物"
+ },
+ {
+  "id": "L42_l_araignée",
+  "lesson": 42,
+  "fr": "l'araignée",
+  "zh": "蜘蛛",
+  "note": "f.｜八隻腳"
+ },
+ {
+  "id": "L42_le_cafard",
+  "lesson": 42,
+  "fr": "le cafard",
+  "zh": "蟑螂",
+  "note": "m.｜你手寫補的"
+ },
+ {
+  "id": "L42_l_escargot",
+  "lesson": 42,
+  "fr": "l'escargot",
+  "zh": "蝸牛",
+  "note": "m.｜沒有腳"
+ },
+ {
+  "id": "L42_la_libellule",
+  "lesson": 42,
+  "fr": "la libellule",
+  "zh": "蜻蜓",
+  "note": "f.｜🎙 dragonfly"
+ },
+ {
+  "id": "L42_le_dauphin",
+  "lesson": 42,
+  "fr": "le dauphin",
+  "zh": "海豚",
+  "note": "m.｜"
+ },
+ {
+  "id": "L42_l_hippopotame",
+  "lesson": 42,
+  "fr": "l'hippopotame",
+  "zh": "河馬",
+  "note": "m.｜水裡陸上都能活"
+ },
+ {
+  "id": "L42_la_panthère",
+  "lesson": 42,
+  "fr": "la panthère",
+  "zh": "豹",
+  "note": "f.｜🎙 la Panthère rose 粉紅豹"
+ },
+ {
+  "id": "L42_le_singe",
+  "lesson": 42,
+  "fr": "le singe",
+  "zh": "猴子",
+  "note": "m.｜🎙 高雄有很多"
+ },
+ {
+  "id": "L42_le_tigre",
+  "lesson": 42,
+  "fr": "le tigre",
+  "zh": "老虎",
+  "note": "m.｜"
+ },
+ {
+  "id": "L42_le_mammifère",
+  "lesson": 42,
+  "fr": "le mammifère",
+  "zh": "哺乳類",
+  "note": "m.｜🎙 人也是"
+ },
+ {
+  "id": "L42_l_aigle",
+  "lesson": 42,
+  "fr": "l'aigle",
+  "zh": "老鷹",
+  "note": "m.｜une vue d'aigle 好眼力"
+ },
+ {
+  "id": "L42_le_canari",
+  "lesson": 42,
+  "fr": "le canari",
+  "zh": "金絲雀",
+  "note": "m.｜≠ canard"
+ },
+ {
+  "id": "L42_la_chouette",
+  "lesson": 42,
+  "fr": "la chouette",
+  "zh": "貓頭鷹",
+  "note": "f.｜🎙 C'est chouette ! 很棒"
+ },
+ {
+  "id": "L42_le_hibou",
+  "lesson": 42,
+  "fr": "le hibou",
+  "zh": "（有耳羽的）貓頭鷹",
+  "note": "m.｜⚠️ 不是公的 chouette"
+ },
+ {
+  "id": "L42_l_oie",
+  "lesson": 42,
+  "fr": "l'oie",
+  "zh": "鵝",
+  "note": "f.｜🎙 法國湖裡很多"
+ },
+ {
+  "id": "L42_le_cygne",
+  "lesson": 42,
+  "fr": "le cygne",
+  "zh": "天鵝",
+  "note": "m.｜跟 le signe 同音"
+ },
+ {
+  "id": "L42_le_pigeon",
+  "lesson": 42,
+  "fr": "le pigeon",
+  "zh": "鴿子",
+  "note": "m.｜🎙 être un pigeon 好騙的人"
+ },
+ {
+  "id": "L42_la_patte",
+  "lesson": 42,
+  "fr": "la patte",
+  "zh": "（動物的）腳",
+  "note": "f.｜huit pattes 八隻腳"
+ },
+ {
+  "id": "L42_l_aile",
+  "lesson": 42,
+  "fr": "l'aile",
+  "zh": "翅膀",
+  "note": "f.｜🎙 wings"
+ },
+ {
+  "id": "L42_la_plume",
+  "lesson": 42,
+  "fr": "la plume",
+  "zh": "羽毛",
+  "note": "f.｜鳥類"
+ },
+ {
+  "id": "L42_le_poil",
+  "lesson": 42,
+  "fr": "le poil",
+  "zh": "（動物的）毛",
+  "note": "m.｜🎙 其他動物"
+ },
+ {
+  "id": "L42_la_laine",
+  "lesson": 42,
+  "fr": "la laine",
+  "zh": "羊毛",
+  "note": "f.｜Il perd sa laine."
+ },
+ {
+  "id": "L42_la_basse_cour",
+  "lesson": 42,
+  "fr": "la basse-cour",
+  "zh": "養家禽的院子",
+  "note": "f.｜⚠️ 拼 cour 不是 court"
+ },
+ {
+  "id": "L42_le_terrarium",
+  "lesson": 42,
+  "fr": "le terrarium",
+  "zh": "（沒有水的）飼養箱",
+  "note": "m.｜🎙 aquarium 有水"
+ },
+ {
+  "id": "L42_le_chiot",
+  "lesson": 42,
+  "fr": "le chiot",
+  "zh": "小狗",
+  "note": "m.｜le chien 的小孩"
+ },
+ {
+  "id": "L42_le_chaton",
+  "lesson": 42,
+  "fr": "le chaton",
+  "zh": "小貓",
+  "note": "m.｜le chat 的小孩"
+ },
+ {
+  "id": "L42_se_coucher_avec_les_poul",
+  "lesson": 42,
+  "fr": "se coucher avec les poules",
+  "zh": "很早睡",
+  "note": "loc.｜課本：dormir tôt"
+ },
+ {
+  "id": "L42_poser_un_lapin",
+  "lesson": 42,
+  "fr": "poser un lapin",
+  "zh": "放鴿子",
+  "note": "loc.｜課本：ne pas aller à un rendez-vous"
+ },
+ {
+  "id": "L42_avancer_comme_une_tortue",
+  "lesson": 42,
+  "fr": "avancer comme une tortue",
+  "zh": "慢吞吞",
+  "note": "loc.｜課本：être très lent(e)"
+ },
+ {
+  "id": "L42_être_un_pigeon",
+  "lesson": 42,
+  "fr": "être un pigeon",
+  "zh": "當冤大頭",
+  "note": "loc.｜🎙 se faire arnaquer facilement"
+ },
+ {
+  "id": "L42_avoir_une_vue_d_aigle",
+  "lesson": 42,
+  "fr": "avoir une vue d'aigle",
+  "zh": "眼力很好",
+  "note": "loc.｜🎙 也說 un œil de lynx"
+ },
+ {
+  "id": "L42_c_est_chouette",
+  "lesson": 42,
+  "fr": "c'est chouette",
+  "zh": "很棒、很讚",
+  "note": "loc.｜🎙 口語"
+ },
+ {
+  "id": "L42_un_panier_de_crabes",
+  "lesson": 42,
+  "fr": "un panier de crabes",
+  "zh": "一群互鬥的人",
+  "note": "loc.｜🎙 各為自己的利益"
+ },
+ {
+  "id": "L42_raffiné_e",
+  "lesson": 42,
+  "fr": "raffiné(e)",
+  "zh": "精緻的",
+  "note": "adj.｜des plats raffinés"
+ },
+ {
+  "id": "L42_les_crustacés",
+  "lesson": 42,
+  "fr": "les crustacés",
+  "zh": "甲殼類海鮮",
+  "note": "m.pl.｜🎙 蝦、蟹，有殼的"
+ },
+ {
+  "id": "L42_les_fruits_de_mer",
+  "lesson": 42,
+  "fr": "les fruits de mer",
+  "zh": "海鮮",
+  "note": "m.pl.｜🎙 不一定有殼"
+ },
+ {
+  "id": "L42_les_produits_de_la_mer",
+  "lesson": 42,
+  "fr": "les produits de la mer",
+  "zh": "海產",
+  "note": "m.pl.｜"
+ },
+ {
+  "id": "L42_les_gamins",
+  "lesson": 42,
+  "fr": "les gamins",
+  "zh": "小孩（口語）",
+  "note": "m.pl.｜🎙 les enfants 的俗稱"
+ },
+ {
+  "id": "L42_le_potager",
+  "lesson": 42,
+  "fr": "le potager",
+  "zh": "菜園",
+  "note": "m.｜🎙 種菜的花園"
+ },
+ {
+  "id": "L42_l_obscurité",
+  "lesson": 42,
+  "fr": "l'obscurité",
+  "zh": "黑暗",
+  "note": "f.｜🎙 obscur＝暗"
+ },
+ {
+  "id": "L42_insolite",
+  "lesson": 42,
+  "fr": "insolite",
+  "zh": "不尋常的、新奇的",
+  "note": "adj.｜des expériences insolites"
+ },
+ {
+  "id": "L42_le_courriel",
+  "lesson": 42,
+  "fr": "le courriel",
+  "zh": "電子郵件",
+  "note": "m.｜🎙 ≠ le courrier 信"
+ },
+ {
+  "id": "L42_l_expéditeur",
+  "lesson": 42,
+  "fr": "l'expéditeur",
+  "zh": "寄件人",
+  "note": "m.｜"
+ },
+ {
+  "id": "L42_le_collier",
+  "lesson": 42,
+  "fr": "le collier",
+  "zh": "項鍊",
+  "note": "m.｜"
+ },
+ {
+  "id": "L42_les_réseaux_sociaux",
+  "lesson": 42,
+  "fr": "les réseaux sociaux",
+  "zh": "社群網路",
+  "note": "m.pl.｜"
+ },
+ {
+  "id": "L42_enregistrer",
+  "lesson": 42,
+  "fr": "enregistrer",
+  "zh": "錄（影音）",
+  "note": "v.｜enregistrer une vidéo"
+ },
+ {
+  "id": "L42_l_inscription",
+  "lesson": 42,
+  "fr": "l'inscription",
+  "zh": "註冊、報名",
+  "note": "f.｜finaliser son inscription"
+ },
+ {
+  "id": "L42_l_exposant",
+  "lesson": 42,
+  "fr": "l'exposant",
+  "zh": "參展攤商",
+  "note": "m.｜🎙 賣東西的人"
+ },
+ {
+  "id": "L42_le_chiffre",
+  "lesson": 42,
+  "fr": "le chiffre",
+  "zh": "數字",
+  "note": "m.｜un chiffre important＝數字大"
+ },
+ {
+  "id": "L42_l_animation",
+  "lesson": 42,
+  "fr": "l'animation",
+  "zh": "活動、表演",
+  "note": "f.｜⚠️ 不是卡通"
  }
 ];
