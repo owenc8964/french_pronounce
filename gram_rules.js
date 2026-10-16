@@ -242,7 +242,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'imperatif', name:"L'impératif", icon:'📣', zone:'A2', cat:'verbe-mode',
-    lessons:[6,40], topics:['imperative-mood','imperatif-pronoms'], unlocked:true,   // 10-11（第40課 p.170）加「命令式＋代名詞」
+    lessons:[6,40,42], topics:['imperative-mood','imperatif-pronoms'], unlocked:true,   // 10-11（第40課 p.170）加「命令式＋代名詞」
     rule:{
       title:'命令式 — 去掉主詞直接說',
       why:'命令的對象就站在你面前，主詞是廢話——所以全世界的命令式都砍主詞，法文也一樣。-ER 動詞 tu 形要去掉 s（Mange !）看起來像例外，其實是命令式保留了更古老的形狀：拉丁文命令式本來就沒有 s，是後來直述句的 tu manges 自己長出 s，命令式沒跟上而已——老的才是本尊。',
@@ -732,7 +732,26 @@ const GRAM_POINTS = [
   { id:'subj-passe',   name:'Subjonctif passé',         icon:'🌀', zone:'B2', cat:'verbe-mode',  lessons:[], topics:[], unlocked:false },
   { id:'passe-simple', name:'Passé simple',             icon:'📜', zone:'B2', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
   { id:'concordance',  name:'Concordance des temps',    icon:'🔄', zone:'B2', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
-  { id:'passive',      name:'Voix passive',             icon:'🔃', zone:'B2', cat:'verbe-mode',  lessons:[], topics:[], unlocked:false },
+  { id:'passive', name:'La forme passive', icon:'🔃', zone:'A2', cat:'verbe-mode',
+    lessons:[42], topics:['forme-passive'], unlocked:true,   // 10-16（第42課 Édito A2 p.177）從 B2 佔位點就地解鎖（照 gerondif 的做法）；map.html 的 passive 地塊靠同一個 id 連著，⛔ 不要改 id
+    rule:{
+      title:'被動式 — être ＋ 過去分詞（＋ par 做的人）：時態全看 être',
+      why:'主動句和被動句講的是同一件事，只是鏡頭對準的東西不一樣：主動句的主角是「做事的人」（Un botaniste développe la méthode），被動句把「被做的東西」拉到主詞的位置（La méthode est développée par un botaniste），用來強調結果、或根本不想提是誰做的。換的方法很機械：原本的受詞變主詞，原本的動詞一律變成過去分詞，原本是什麼時態就交給 être 去扛。因為主詞換了，過去分詞就像形容詞一樣要跟新主詞配合陰陽單複。',
+      points:[
+        '結構：主詞 ＋ être（變位）＋ 過去分詞 ＋ par ＋ 做的人',
+        '⭐ 時態全看 être：présent est cultivé／passé composé a été cultivé／futur sera cultivé；過去分詞本身不變時態',
+        '🎙 passé composé 換成被動：中間加 été（a créé → a été créé）',
+        '過去分詞跟主詞配合：La méthode est développée；Les micro-forêts ont été inventées；J\'ai été contactée（Nadia）',
+        '換回主動：par 後面那個人變主詞，助動詞／動詞跟著新主詞變（ont été inventées par Akira → Akira a inventé）',
+        '⚠️ être ＋ 名詞不是被動：La campagne sera un succès 是主動句',
+        '⚠️ 只有能直接接受詞的動詞才能變被動；partir 不行（Ma fille est partie 是複合過去式）',
+      ],
+      examples:[
+        { fr:'La méthode est développée par un botaniste.', zh:'這個方法是一位植物學家發展出來的。（présent；la méthode → développée）' },
+        { fr:'Le site a été créé par Chantal Perdigau.', zh:'這個網站是 Chantal Perdigau 創立的。（passé composé → a été）' },
+        { fr:'Mon jardin sera cultivé par une personne compétente.', zh:'我的花園將由一位能幹的人照顧耕種。（futur → sera）' },
+        { fr:'Les micro-forêts ont été inventées par Akira Miyawaki.', zh:'微型森林是宮脇昭發明的。（陰性複數 → inventées）' },
+      ]}},
   { id:'pronoms-demonstratifs', name:'Pronoms démonstratifs', icon:'👉', zone:'A2', cat:'pronoms',
     lessons:[38], topics:['pronoms-demonstratifs'], unlocked:true,   // 10-02 第38課（Édito A2 p.149）
     rule:{

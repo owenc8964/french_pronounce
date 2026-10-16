@@ -113,6 +113,7 @@ var TOPIC_LABELS_FR = {
  "vocab-environnement": "L'environnement",
  "expression-but": "L'expression du but",
  "vocab-animaux": "Les animaux",
+ "forme-passive": "La forme passive",
  "message-formel": "Le message formel",
  "vocab-monde-travail": "Le monde du travail",
  "vocab-etudes": "Les études",

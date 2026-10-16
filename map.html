@@ -432,8 +432,8 @@ header {
 <script src="tense_lens.js"></script>
 <script src="time_hall.js"></script>
 <script>
-const CURRENT_LESSON = 41;
-const TOTAL_LESSONS  = 44;   /* 10-05 第39課超過原本的 38 → 估到 Édito A2 結束（第11單元從第38課開始，剩第11、12單元約每單元 3 課）；⚠️ 估計值，課表確定再改 */
+const CURRENT_LESSON = 42;
+const TOTAL_LESSONS  = 42;   /* 10-16 第42課老師宣布 Édito A2 上完（原估 44）；接下來進 B1 課本時再改成 B1 的估計 */
 
 const TILES = [
   // ── A1 ──────────────────────────────────────────────────────────
@@ -697,6 +697,10 @@ const TILES = [
     hint:"Une espèce menacée · le milieu naturel",
     detail:"Les animaux et la géographie (leçon 41, unité 12). Les milieux naturels : l'archipel, le désert, la forêt tropicale, l'île, le lagon, le milieu naturel (≠ le zoo), le parc naturel (protégé), la planète Terre, la rivière (le fleuve est plus grand), le site naturel. Agir : préserver, protéger (avant le problème) ≠ sauver (le problème existe déjà), recycler, trier, valoriser. La pollution : le gaspillage, les pesticides, le plastique, polluant(e), disparaître, être en danger. Les animaux : le comportement, l'instinct, le félin, la proie, le rongeur, le reptile (caméléon, tortue, serpent), le poulailler, la poule, le coq, l'abeille, la ruche, la fourmi, la gamelle. Une espèce menacée / préservée, la menace, la déforestation, s'engager à, se mettre d'accord, approuver. Oh le cliché : les Français fous de leurs animaux de compagnie (75 millions d'animaux pour 66,73 millions d'habitants en 2020)." },
 
+  { id:'animaux-p175', zone:'A2', icon:'🐔', name:'Les animaux et les expressions imagées', unlocked:true, lesson:42,
+    hint:"Poser un lapin · Se coucher avec les poules",
+    detail:"Les animaux (leçon 42, unité 12, p.175). Les animaux domestiques / de compagnie : le chat (le chaton), le cheval / les chevaux, la chèvre, le chien (le chiot), le lapin, le mouton, le poisson, la vache (le veau ; le lait de vache, mais on mange du bœuf). Les animaux du jardin : l'abeille, l'araignée, le cafard, le caméléon, l'escargot, la libellule, le serpent, la tortue. Les mammifères sauvages : le dauphin, l'hippopotame, la panthère, le rat, le singe, le tigre. Les oiseaux : l'aigle, le canard, le canari, la chouette, le coq, la poule, l'oie, le cygne, le pigeon. La plume (oiseaux) ≠ le poil ; la patte, l'aile ; la basse-cour, le poulailler, le terrarium ≠ l'aquarium. Devinettes : Il perd sa laine (le mouton) ; Elle a huit pattes mais pas d'ailes (l'araignée) ; C'est un oiseau qui vit la nuit (la chouette) ; Elle fait du miel (l'abeille). Expressions imagées : se coucher avec les poules (dormir tôt), poser un lapin (ne pas aller à un rendez-vous), avancer comme une tortue (être très lent), être un pigeon (se faire arnaquer facilement), c'est chouette, un panier de crabes." },
+
   { id:'etudes-vocab', zone:'A2', icon:'🎓', name:'Les études', unlocked:true, lesson:38,
     hint:"J'ai passé mon bac · Une année de césure",
     detail:"Les études (leçon 38, unité 11). Le système scolaire : école maternelle (petite, moyenne, grande section), école élémentaire (CP, CE1, CE2, CM1, CM2), collège (sixième → troisième, on compte à l'envers), lycée (seconde, première, terminale), puis le bac et l'université. Un(e) élève (jusqu'au lycée) ≠ un(e) étudiant(e) (université). Parler de sa formation : J'ai passé mon bac scientifique (⚠️ passer = se présenter à l'examen, pas le réussir), je me suis inscrit(e) en…, j'ai raté ma première année, j'ai fait une année de césure, j'ai réussi mes examens, je suis étudiant(e) en…, dès la première fois. L'évaluation : une bonne / mauvaise note, noter, la mention assez bien (12) / bien (14) / très bien (16), redoubler. Les diplômes : le bac, une licence ou un bachelor (bac +3), un master (bac +4 / +5). La formation en alternance : on étudie et on travaille en même temps." },
@@ -830,9 +834,9 @@ const TILES = [
     hint:'Discours direct vs indirect avancé', unlocked:false,
     detail:'Harmonisation des temps dans les phrases complexes et le discours indirect. Présent → imparfait, futur → conditionnel, passé composé → plus-que-parfait. Il pensait que tu viendrais. Elle croyait qu\'il avait déjà terminé.' },
 
-  { id:'passive',      zone:'B2', icon:'🔃', name:'Voix passive', gram:true, cat:'verbe-mode',
-    hint:'La lettre a été écrite par Marie', unlocked:false,
-    detail:'Voix passive: sujet + être (temps voulu) + participe passé (accordé) + par + agent. Le gâteau a été mangé par les enfants. Se faire + infinitif: il s\'est fait renvoyer. Passive dans les textes formels, journalistiques, scientifiques.' },
+  { id:'passive',      zone:'A2', icon:'🔃', name:'La forme passive', gram:true, cat:'verbe-mode',
+    hint:'Le site a été créé par Chantal Perdigau', unlocked:true, lesson:42,
+    detail:"La forme passive (leçon 42, unité 12, p.177). EMPLOI : elle permet d'insister sur le résultat et les acteurs d'une action ; elle présente la même action que la forme active mais d'un point de vue différent. Forme active : Un botaniste développe la méthode. Forme passive : La méthode est développée par un botaniste. FORMATION : auxiliaire être + participe passé du verbe ; le participe passé s'accorde en genre et en nombre avec le sujet (J'ai été contactée par Alexandre ; Les micro-forêts ont été inventées par Akira Miyawaki). LES TEMPS : on conjugue l'auxiliaire être — présent : Mon jardin est cultivé par une personne compétente ; passé composé : Mon jardin a été cultivé… ; futur : Mon jardin sera cultivé… ATTENTION : La campagne de reforestation sera un succès = forme active (être + nom). Partir n'a pas de forme passive : Ma fille est partie avec ma femme = passé composé." },
 
   { id:'gerondif',     zone:'A2', icon:'🌊', name:'Le gérondif', gram:true, cat:'verbe-mode',
     hint:'En écoutant · En cuisinant soi-même', unlocked:true, lesson:35,
