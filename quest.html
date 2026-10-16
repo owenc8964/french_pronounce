@@ -2643,7 +2643,9 @@ function genderPool(){
     if(map[n]&&map[n].g!==g) bad[n]=1;
     if(!map[n]&&zh) map[n]={n:n, g:g, zh:zh, el:el};
   });
-  GENDER_POOL=Object.keys(map).filter(function(k){ return !bad[k]; }).map(function(k){ return map[k]; });
+  /* 男女同形（un／une 都對，⛔ 不能拿來考陰陽性）：une dentiste＝女牙醫（2026-10-16 town.html 試跑抓到） */
+  var EPICENE={dentiste:1, camarade:1, artiste:1, touriste:1, journaliste:1, élève:1, collègue:1, enfant:1, secrétaire:1, pianiste:1, guitariste:1, photographe:1, ministre:1, libraire:1, partenaire:1, responsable:1, adulte:1, malade:1};
+  GENDER_POOL=Object.keys(map).filter(function(k){ return !bad[k] && !EPICENE[k]; }).map(function(k){ return map[k]; });
   return GENDER_POOL;
 }
 function genderSeen(){ return lsObj('clb7_gender_seen',{}); }

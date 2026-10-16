@@ -203,7 +203,9 @@ var GENDER = (function(){
     if(map[n]&&map[n].g!==g) bad[n]=1;
     if(!map[n]&&zh) map[n]={n:n, g:g, zh:zh, el:el, lesson:c.lesson||0};
   });
-  return Object.keys(map).filter(function(k){ return !bad[k]; }).map(function(k){ return map[k]; });
+  /* 男女同形（un／une 都對，⛔ 不能拿來考陰陽性）：une dentiste＝女牙醫、un/une camarade（10-16 試跑抓到） */
+  var EPICENE={dentiste:1, camarade:1, artiste:1, touriste:1, journaliste:1, élève:1, collègue:1, enfant:1, secrétaire:1, pianiste:1, guitariste:1, photographe:1, ministre:1, libraire:1, partenaire:1, responsable:1, adulte:1, malade:1};
+  return Object.keys(map).filter(function(k){ return !bad[k] && !EPICENE[k]; }).map(function(k){ return map[k]; });
 })();
 var GENDER_RULES=[[/(tion|sion|xion)$/,'f','-tion／-sion 幾乎都是陰性'],[/té$/,'f','-té 幾乎都是陰性'],[/ée$/,'f','-ée 幾乎都是陰性'],
   [/ment$/,'m','-ment 幾乎都是陽性'],[/age$/,'m','-age 幾乎都是陽性'],[/ure$/,'f','-ure 多半是陰性'],[/ette$/,'f','-ette 多半是陰性'],[/euse$/,'f','-euse 多半是陰性']];
@@ -929,7 +931,7 @@ function newDay(first){
     if(night){ spawnRat(); spawnRat(); }
   } else if(!first){ orders=[]; }
   hero.x=PLAZA.x; hero.y=PLAZA.y; wasInTown=true; log=[];
-  spawnNpcs(); spawnVillagers(); hud();
+  wild=null; spawnNpcs(); spawnVillagers(); hud();
 }
 function rest(){
   if(busy) return;
@@ -1311,6 +1313,91 @@ function updateVillagers(dt){
   return false;
 }
 
+
+/* ============================================================
+   ❓ 方塊收服（10-16 Owen：「瑪利歐明確是因為操作那個刺激感」「先做方塊這招給我試玩」）
+   野生的東西跳出來 → 旁邊冒出兩個 ❓方塊（un／une）→ 跑過去撞對的那個。⛔ 不開面板、不放倒數，牠只是會跑掉
+   撞對：方塊彈起、噴金幣、收服進圖鑑；撞錯：方塊碎掉、牠溜走，這時才給正確答案＋中文（feedback_french_only_ui）
+   ⭐ 不理牠＝走開，牠自己跑掉，⛔ 不記錯（跳過合法）
+   ============================================================ */
+var wild=null, PIXIMG={};
+function pixImg(em){ if(!PIXIMG[em]){ var im=new Image(); im.src=pixURL(em); PIXIMG[em]=im; } return PIXIMG[em]; }
+function freeSpot(x,y){ return x>1 && y>1 && x<W-1 && y<H-1 && !blocked(x,y) && region(Math.floor(x),Math.floor(y))!=='river'; }
+function startWild(){
+  var it=pickWild(), em=EMO[it.n]||'📦', f=hero.face||1;
+  var cands=[[hero.x-1.9,hero.y-1.5],[hero.x+1.9,hero.y-1.5],[hero.x-1.9,hero.y+1.5],[hero.x+1.9,hero.y+1.5],[hero.x-2.4,hero.y],[hero.x+2.4,hero.y],[hero.x,hero.y-2.4],[hero.x,hero.y+2.4]].filter(function(p){ return freeSpot(p[0],p[1]); });
+  var two=null;
+  for(var i=0;i<cands.length && !two;i++) for(var j=i+1;j<cands.length;j++) if(Math.hypot(cands[i][0]-cands[j][0],cands[i][1]-cands[j][1])>=2.4){ two=[cands[i],cands[j]]; break; }
+  /* 牠放在離兩個方塊都夠遠的地方，名字牌才不會蓋住方塊上的字 */
+  var cpos=two && [[hero.x,hero.y-2.7],[hero.x+f*2.8,hero.y+.8],[hero.x-f*2.8,hero.y+.8],[hero.x,hero.y+2.6],[hero.x+f*3,hero.y-2.2],[hero.x-f*3,hero.y-2.2]].filter(function(p){
+    return freeSpot(p[0],p[1]) && two.every(function(b){ return Math.hypot(p[0]-b[0],p[1]-b[1])>=1.8; }); })[0];
+  var gs=shuffle(['m','f']);
+  wild={it:it, em:em, x:cpos[0], y:cpos[1], t:0, phase:'idle', end:0,
+        blocks:[{x:two[0][0],y:two[0][1],g:gs[0],st:'',a:0},{x:two[1][0],y:two[1][1],g:gs[1],st:'',a:0}]};
+  rats.forEach(function(r){ r.calm=Math.max(r.calm,6); });
+  pixImg(em);
+}
+function updateWild(dt){
+  if(!wild) return false;
+  var w=wild; w.t+=dt; w.blocks.forEach(function(b){ if(b.a>0) b.a-=dt; });
+  if(w.phase==='done'){ w.end-=dt; if(w.end<=0) wild=null; return false; }
+  /* 牠：先愣一下，然後慢慢往遠離你的方向跑 */
+  if(w.t>1){
+    var dx=w.x-hero.x, dy=w.y-hero.y, L=Math.hypot(dx,dy)||1, sp=w.phase==='dash'?5:1.25;
+    var nx=w.x+dx/L*sp*dt+Math.sin(w.t*5)*.01, ny=w.y+dy/L*sp*dt;
+    if(freeSpot(nx,w.y)) w.x=nx; if(freeSpot(w.x,ny)) w.y=ny;
+    if(L>7.5 || w.t>9){ if(w.phase!=='dash') floatTxt(hero.x,hero.y-.8,'牠跑回草叢了','#ddd'); w.phase='done'; w.end=.4; return false; }
+  }
+  if(w.phase==='dash') return false;
+  /* 撞方塊 */
+  for(var i=0;i<w.blocks.length;i++){ var b=w.blocks[i];
+    if(!b.st && Math.hypot(hero.x-b.x, hero.y-b.y)<.6){
+      var ok=b.g===w.it.g, ms=Math.max(0,w.t*1000-600);
+      rec('g', w.it, ok, ms, {where:'🌳 草叢'});
+      S.qlast['w:'+w.it.n]=Date.now();
+      var said=whole(w.it); speak(said);
+      if(ok){
+        b.st='hit'; b.a=.35; S.gold+=1; floatTxt(b.x,b.y-.9,'🪙+1','#ffd76a');
+        if(bag.length<S.bagCap) bag.push({k:'obj', name:said, n:w.it.n, g:w.it.g, em:w.em, good:true});
+        var c=lastCatch||{}, tag=(c.isNew?'🆕 圖鑑新登錄 ':'')+(c.shiny?'✨閃光 ':'')+(c.evo?'🌟進化 ':'');
+        floatTxt(w.x,w.y-1,'收服！ '+said,'#fff');
+        toast((tag||'收服了 ')+said+(c.isNew?'（第 '+dexCount()+' 種）':''));
+        w.phase='done'; w.end=.9; w.caught=1;
+      } else {
+        b.st='broken'; b.a=.5; w.blocks.forEach(function(o){ if(o!==b) o.st='reveal'; });
+        floatTxt(hero.x,hero.y-.9,'👉 '+said,'#ffd76a');
+        toast('牠溜走了——是 '+said+'（'+w.it.zh+'）。'+genderWhy(w.it));
+        w.phase='dash'; w.t=Math.max(w.t,1);
+      }
+      hud(); save(); return true;
+    }
+  }
+  return false;
+}
+function drawWild(list,ox,oy,ts){
+  if(!wild) return; var w=wild;
+  w.blocks.forEach(function(b){ list.push({y:b.y+.4, f:function(){
+    var px=ox+b.x*ts, py=oy+b.y*ts-(b.st==='hit'&&b.a>0?Math.sin(b.a/.35*Math.PI)*ts*.25:0), s=ts*.92;
+    if(b.st==='broken'){ var k=1-Math.max(0,b.a)/.5; cx.globalAlpha=Math.max(0,1-k); cx.fillStyle='#b8752a';
+      for(var q=0;q<4;q++){ var ax=(q%2?1:-1)*k*ts*.6, ay=(q<2?-1:1)*k*ts*.4+k*k*ts; cx.fillRect(px+ax-s*.18, py+ay-s*.18, s*.36, s*.36); } cx.globalAlpha=1; return; }
+    var used=b.st==='hit';
+    cx.fillStyle='#2a1a08'; cx.fillRect(px-s/2-DPR*2, py-s/2-DPR*2, s+DPR*4, s+DPR*4);
+    cx.fillStyle=used?'#8a5a2a':(b.st==='reveal'?'#d9b25a':'#f2b230'); cx.fillRect(px-s/2, py-s/2, s, s);
+    cx.fillStyle='rgba(255,255,255,.35)'; cx.fillRect(px-s/2, py-s/2, s, s*.12);
+    cx.fillStyle='#2a1a08'; [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(c){ cx.fillRect(px+c[0]*s*.36-DPR, py+c[1]*s*.36-DPR, DPR*3, DPR*3); });
+    cx.textAlign='center'; cx.textBaseline='middle'; cx.font=Math.round(ts*.36)+'px Cubic11, system-ui'; cx.fillStyle=used?'#f0e0c0':'#3a2208';
+    cx.fillText(b.g==='f'?'une':'un', px, py+DPR); cx.textBaseline='alphabetic';
+  }}); });
+  if(w.phase==='done' && w.caught) return;
+  list.push({y:w.y, f:function(){
+    var im=pixImg(w.em), hop=Math.abs(Math.sin(w.t*(w.t>1?9:3)))*ts*.15, px=ox+w.x*ts, py=oy+w.y*ts-hop;
+    if(im.complete) cx.drawImage(im, px-ts*.45, py-ts*.7, ts*.9, ts*.9);
+    var lab='… '+w.it.n; cx.font=Math.round(ts*.3)+'px Cubic11, system-ui'; cx.textAlign='center';
+    var tw=cx.measureText(lab).width+ts*.2; cx.fillStyle='rgba(0,0,0,.65)'; cx.fillRect(px-tw/2, py-ts*1.12, tw, ts*.38);
+    cx.fillStyle='#fff'; cx.fillText(lab, px, py-ts*.84);
+  }});
+}
+
 /* ============================================================
    主迴圈：移動、碰撞、觸發、老鼠、鏡頭、繪製
    ============================================================ */
@@ -1329,7 +1416,7 @@ function update(dt){
   if(hero.squash>0) hero.squash-=dt;
   dusts.forEach(function(d){ d.t+=dt; }); dusts=dusts.filter(function(d){ return d.t<.45; });
   /* 遇到東西：先冒「！」、0.25 秒減速，再開面板（手感研究 8） */
-  if(pending){ pending.t-=dt; if(pending.t<=0){ var f=pending.fn; pending=null; joy=null; keys={}; hero.vx=hero.vy=0; f(); return; } }
+  if(pending){ pending.t-=dt; if(pending.t<=0){ var f=pending.fn, keep=pending.keep; pending=null; if(!keep){ joy=null; keys={}; hero.vx=hero.vy=0; } f(); return; } }
   if(spd>0.05){
     var nx=hero.x+hero.vx*dt, ny=hero.y+hero.vy*dt;
     if(!blocked(nx,hero.y)) hero.x=nx; else nudge('y', hero.vx*dt);
@@ -1339,7 +1426,7 @@ function update(dt){
     var inGrass=region(Math.floor(hero.x),Math.floor(hero.y))==='forest';
     hero.dust-=dt; if(hero.moving>.6 && hero.dust<=0){ hero.dust=.25; dusts.push({x:hero.x-hero.vx*.03, y:hero.y+.35, t:0, g:inGrass}); }
     /* 🌳 草叢：走著走著隨機跳出來（寶可夢手感） */
-    if(inGrass && !pending){ grassDist+=spd*dt; if(grassDist>1.4){ grassDist=0; if(Math.random()<.28 && clock-lastWild>3){ lastWild=clock; pending={t:.35, x:hero.x, y:hero.y, fn:wildEncounter}; } } }
+    if(inGrass && !pending){ grassDist+=spd*dt; if(grassDist>1.4){ grassDist=0; if(!wild && Math.random()<.28 && clock-lastWild>3){ lastWild=clock; pending={t:.3, x:hero.x, y:hero.y, fn:startWild, keep:1}; } } }
     if(!inTown(hero)){ time-=dt*hero.moving; if(time<=0 && !night){ time=0; night=true; toast('🌙 天黑了，老鼠變多變快——回城吧'); spawnRat(); spawnRat(); } }
     reveal();
     if(Math.random()<dt) { save(); hud(); }
@@ -1350,8 +1437,9 @@ function update(dt){
   var it=inTown(hero);
   if(it && !wasInTown){ wasInTown=true; if(log.some(function(l){ return l.ok===false; }) || log.length>=6){ joy=null; keys={}; review(); return; } }
   if(!it) wasInTown=false;
+  if(updateWild(dt)) return;
   /* 碰到節點 */
-  for(var i=0;i<nodes.length;i++){ var n=nodes[i]; if(n.done) continue;
+  for(var i=0;i<nodes.length && !wild;i++){ var n=nodes[i]; if(n.done) continue;
     var R=n.k==='fish'?1.15:.85;
     if(Math.hypot(n.x+.5-hero.x, n.y+.5-hero.y)<R){
       if(n.k==='fish' && hero.y>8) continue;
@@ -1391,7 +1479,7 @@ function update(dt){
     if(Math.abs(dx)>.05) r.face=dx<0?-1:1;
   });
   for(var j=0;j<rats.length;j++){ var r=rats[j];
-    if(r.calm<=0 && bag.length && !inTown(hero) && Math.hypot(hero.x-r.x,hero.y-r.y)<.55){ joy=null; keys={}; ratSteal(r); return; } }
+    if(!wild && r.calm<=0 && bag.length && !inTown(hero) && Math.hypot(hero.x-r.x,hero.y-r.y)<.55){ joy=null; keys={}; ratSteal(r); return; } }
 }
 
 function draw(dt){
@@ -1425,6 +1513,7 @@ function draw(dt){
     cx.fillStyle='rgba(0,0,0,.55)'; cx.fillRect(ox+v.x*ts-tw/2, oy+(v.y-1.05)*ts, tw, ts*.32); cx.fillStyle='#fff'; cx.fillText(lab, ox+v.x*ts, oy+(v.y-.82)*ts);
     if(!st.met){ cx.font=Math.round(ts*.4)+'px system-ui'; cx.fillText('💬', ox+v.x*ts+ts*.45, oy+(v.y-.6)*ts+Math.sin(clock*4)*ts*.05); } }}); });
   rats.forEach(function(r){ list.push({y:r.y, f:drawSprite(SPR.rat,r.x,r.y,ox,oy,ts,r.face,Math.abs(Math.sin(clock*14))*.06)}); });
+  drawWild(list,ox,oy,ts);
   list.push({y:hero.y, f:function(){
     var b=hero.moving>.05?Math.abs(Math.sin(hero.bob))*.12:Math.sin(clock*2)*.02;
     cx.fillStyle='rgba(0,0,0,.25)'; cx.beginPath(); cx.ellipse(ox+hero.x*ts, oy+hero.y*ts+ts*.38, ts*.28, ts*.1, 0, 0, 7); cx.fill();
