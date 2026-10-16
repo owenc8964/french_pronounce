@@ -16,6 +16,14 @@
 
 ## 佇列（由上往下拿；平行時一次拿最上面幾項，互不碰同一個檔案）
 
+> ⭐⭐ **2026-10-16 Owen 指定，最優先**：「你在最後幾天要把 token 用完這件事情，你可以把 Elon Musk 等等超強學習者做個詳細研究跟分析，還有適合我的應用」。
+> 共同要求（Q0a–Q0d 都要守）：① ⛔ 先讀既有專題 `research/2026-10-12_高手怎麼學會的.md`、`research/2026-10-12_專題_學習力與輸入輸出.md`、`research/2026-10-12_專題_第三輪_三派之爭與不會很多時怎麼輸出.md`，不重查已查過的，接著它們的待查清單往下 ② 每個說法分「📐 有研究或一手資料證據」「🗣 本人自述／傳記」「⚠️ 網路流傳、查不到出處」三級，⛔ 名人神話不能當成方法依據 ③ 按 `METHOD_MAP.md` 的家族分類，⛔ 不要只查一個學派 ④ 每份最後一節「對 Owen 的意思」：他是台灣牙醫、A2（第 41 課）、目標 2027-09-19 TCF Canada B2、每週家教 3 小時＋Duolingo＋Anki＋town.html 遊戲（10-16 他說「玩 town 練習的速度快很多」）；⛔ 不要建議 shadowing 當主力（`research/` 已排除）、⛔ 不要把系統改成補習班（memory `project_exam_direction_no_overconverge`）。
+
+- [ ] **Q0a 超強學習者 A：第一原理與「理解型」學習者**——Elon Musk（「語意樹」、讀書量、跨領域自學火箭的實際紀錄）、Richard Feynman（費曼技巧的真實出處與誤傳）、Benjamin Franklin（拆解重寫文章的寫作自學法）、Charlie Munger（思維模型）。產出 `research/2026-xx-xx_超強學習者A_第一原理型.md`。
+- [ ] **Q0b 超強學習者 B：語言高手**——Kató Lomb（16 語、讀小說入門）、Luca Lampariello（雙向翻譯）、Steve Kaufmann（大量輸入、LingQ）、Benny Lewis（第一天就開口）、Alexander Argüelles（⚠️ shadowing 只列事實不推薦）、Matthew Youlden、Olly Richards（故事法）；比較他們「A2→B2」那一段實際怎麼過的、每天花多少時間。產出 `research/2026-xx-xx_超強學習者B_語言高手.md`。
+- [ ] **Q0c 超強學習者 C：超學習與刻意練習（含反方證據）**——Scott Young（MIT 挑戰、一年四語言、《超學習》九原則）、Josh Waitzkin（《學習之道》）、Anders Ericsson（刻意練習）＋反方：Macnamara 等 2014／2016 統合分析（刻意練習只解釋一部分差異）、Hambrick 等。產出 `research/2026-xx-xx_超強學習者C_超學習與刻意練習.md`。
+- [ ] **Q0d 合成：適合 Owen 的應用**（⚠️ 等 Q0a–c 都完成才做）：讀三份＋既有專題，找出跨學派重複出現、而且有證據的做法，對照 Owen 現有系統（HANDOFF 開頭、`FRENCH_OS.md`、town.html），寫「他已經在做的／該加的／不適合他的」三欄，每條附證據等級與一個具體的下週可試做法。產出 `research/2026-xx-xx_超強學習者_給Owen的應用.md`，並在 HANDOFF 開頭加一行指標。
+
 - [ ] **Q1 第二～四章劇本逐句複核**：讀 `STORY_BIBLE.md` 與 `tools/story_ch2_4_draft.js`（10-15 agent 草稿），每句法文對 `french_notes.html` 查課次、查標準法文正確性，產出 `research/2026-xx-xx_劇本法文複核.md`（✓／✗＋改法）。⛔ 不直接改草稿。
 - [ ] **Q2 題庫高信心錯題 → 修正提案**：讀 `research/2026-10-15_題庫品質稽核.md` 的高信心清單，每條對課本快取 `assets/.textbook_cache.txt` 再驗一次，寫成可直接套用的 patch 草稿 `drafts/questions_fix_proposal.md`（題目 index、原文、改成什麼、依據）。
 - [x] **Q3 town.html 修正清單合併**（10-15 主 session 已直接修進 town.html，見 HANDOFF 三之六十二；剩下的低嚴重度項目列在那裡）：把 `research/2026-10-15_town_審查.md` 與 `research/2026-10-15_手感與回饋時機.md` 的建議合併成一張去重、依嚴重度排序的實作清單 `drafts/town_fix_plan.md`（每條附行號與改法）。⛔ 不改 town.html。
