@@ -280,6 +280,8 @@ var NODE_DEF=[
   /* 🎣 釣點（河的北岸，過了橋才釣得到）：聽一句、選意思 */
   [4,8],[9,8],[14,8],[26,8],[31,8],[36,8]
 ].map(function(p){ return {k:'fish',x:p[0],y:p[1]}; }));
+/* ⚔️ 挑戰點：走到這裡跳進「守園」（植物大戰殭屍，tower.html 嵌入）。10-16 Owen：「兩個遊戲整合在一塊，去到哪就跳進挑戰」 */
+var CHALLENGES=[ {id:'garden', x:16, y:18, name:'菜園', em:'🌻', goal:3} ];
 var CLUES=[
   {id:'c1', x:7,  y:3,  topic:'accord-participe-passe'},
   {id:'c2', x:25, y:14, topic:'pronoms-y-en'},
@@ -309,7 +311,7 @@ function buildWorld(){
   /* 小路：鎮 → 橋 */
   for(var yy=10;yy<=23;yy++) for(var xx=19;xx<=20;xx++){ ground[yy][xx]=['t',25]; deco[yy][xx]=null; solid[yy][xx]=false; }
   /* 節點與線索的格子一定空出來，旁邊也是 */
-  NODE_DEF.concat(CLUES).forEach(function(n){ for(var dy=-1;dy<=1;dy++) for(var dx=-1;dx<=1;dx++){ var X=n.x+dx, Y=n.y+dy;
+  NODE_DEF.concat(CLUES).concat(CHALLENGES).forEach(function(n){ for(var dy=-1;dy<=1;dy++) for(var dx=-1;dx<=1;dx++){ var X=n.x+dx, Y=n.y+dy;
     if(X>0&&Y>0&&X<W-1&&Y<H-1&&region(X,Y)!=='river'){ deco[Y][X]=null; solid[Y][X]=false; } } });
   applyBuildings();
   /* 走得到嗎？走不到就把擋路的樹清掉（從節點往小鎮方向） */
@@ -1398,6 +1400,53 @@ function drawWild(list,ox,oy,ts){
   }});
 }
 
+
+/* ============================================================
+   ⚔️ 挑戰：守園（嵌入 tower.html）
+   ============================================================ */
+var pvzFrame=null;
+function challengePanel(ch){
+  var st=(S.chal||{})[ch.id]||{}, todayWon=st.lastWin===today();
+  openSheet('<h3>'+ch.em+' '+ch.name+'告急！</h3><div class="story">史萊姆和蝙蝠要來偷菜了。答題賺陽光、在菜園種防禦，守住 '+ch.goal+' 波就過關。</div>'+
+    '<div class="muted">獎勵：打倒一隻 2 🪙'+(todayWon?'':'，今天第一次守住再加 30 🪙')+'。'+(st.wins?'已經守住過 '+st.wins+' 次。':'')+'</div>'+
+    '<div class="row2"><button class="btn ghost" id="later">晚點再來</button><button class="btn main" id="go">⚔️ 守園</button></div>');
+  document.getElementById('later').onclick=function(){ closeSheet(); ch.cool=4; };
+  document.getElementById('go').onclick=function(){ closeSheet(); startPvz(ch); };
+}
+function startPvz(ch){
+  busy=true; joy=null; keys={};
+  pvzFrame=document.createElement('iframe');
+  pvzFrame.src='tower.html?embed=1&goal='+ch.goal+'&place='+encodeURIComponent(ch.name);
+  pvzFrame.style.cssText='position:fixed;inset:0;width:100%;height:100%;border:0;z-index:30;background:#10170f';
+  pvzFrame.dataset.ch=ch.id;
+  document.body.appendChild(pvzFrame);
+}
+window.addEventListener('message', function(e){
+  var d=e.data; if(!d || d.type!=='pvz-done' || !pvzFrame) return;
+  var id=pvzFrame.dataset.ch, ch=CHALLENGES.filter(function(c){ return c.id===id; })[0];
+  pvzFrame.remove(); pvzFrame=null; busy=false; lastClose=performance.now();
+  S.chal=S.chal||{}; var st=S.chal[id]||{wins:0, plays:0}; st.plays++;
+  var gold=(d.kills||0)*2, first=false;
+  if(d.win){ st.wins++; if(st.lastWin!==today()){ first=true; gold+=30; } st.lastWin=today(); }
+  S.chal[id]=st; S.gold+=gold; save(); hud();
+  if(ch) ch.cool=6;
+  openSheet('<div class="catch"><div class="big">'+pix(d.win?'🌻':'🥀',96)+'</div><div class="story">'+(d.win?(ch?ch.name:'菜園')+'守住了！菜都還在。':'這次沒守住……菜被啃掉了一些，明天再來。')+'</div>'+
+    '<div class="bagrow"><span>打倒 '+(d.kills||0)+' 隻</span><span>守了 '+(d.waves||0)+' 波</span><span>+'+gold+' 🪙'+(first?'（含今天第一次守住 +30）':'')+'</span></div>'+
+    (d.wrong&&d.wrong.length?'<div class="muted">這次卡住的句子：</div>'+d.wrong.slice(0,6).map(function(w){ return '<div class="item"><span class="say">'+esc(w)+'</span></div>'; }).join(''):'')+
+    '</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+  document.getElementById('ok').onclick=closeSheet;
+});
+function drawChallenges(list,ox,oy,ts){
+  CHALLENGES.forEach(function(ch){ list.push({y:ch.y+1, f:function(){
+    var px=ox+ch.x*ts, py=oy+ch.y*ts, im=pixImg(ch.em);
+    cx.fillStyle='#7a5a32'; cx.fillRect(px+ts*.05, py+ts*.55, ts*.9, ts*.38);
+    if(im.complete){ cx.drawImage(im, px+ts*.05, py+ts*.05, ts*.9, ts*.9); }
+    var b=Math.sin(clock*4)*ts*.06; cx.font=Math.round(ts*.38)+'px system-ui'; cx.textAlign='center'; cx.fillText('⚔️', px+ts*.5, py-ts*.05+b);
+    cx.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; var lab=ch.name; var tw=cx.measureText(lab).width+ts*.2;
+    cx.fillStyle='rgba(0,0,0,.55)'; cx.fillRect(px+ts*.5-tw/2, py+ts*1.02, tw, ts*.34); cx.fillStyle='#fff'; cx.fillText(lab, px+ts*.5, py+ts*1.27);
+  }}); });
+}
+
 /* ============================================================
    主迴圈：移動、碰撞、觸發、老鼠、鏡頭、繪製
    ============================================================ */
@@ -1438,6 +1487,8 @@ function update(dt){
   if(it && !wasInTown){ wasInTown=true; if(log.some(function(l){ return l.ok===false; }) || log.length>=6){ joy=null; keys={}; review(); return; } }
   if(!it) wasInTown=false;
   if(updateWild(dt)) return;
+  for(var ci=0;ci<CHALLENGES.length && !wild;ci++){ var CH=CHALLENGES[ci]; if(CH.cool>0){ CH.cool-=dt; continue; }
+    if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ challengePanel(CH); }; })(CH)}; break; } }
   /* 碰到節點 */
   for(var i=0;i<nodes.length && !wild;i++){ var n=nodes[i]; if(n.done) continue;
     var R=n.k==='fish'?1.15:.85;
@@ -1514,6 +1565,7 @@ function draw(dt){
     if(!st.met){ cx.font=Math.round(ts*.4)+'px system-ui'; cx.fillText('💬', ox+v.x*ts+ts*.45, oy+(v.y-.6)*ts+Math.sin(clock*4)*ts*.05); } }}); });
   rats.forEach(function(r){ list.push({y:r.y, f:drawSprite(SPR.rat,r.x,r.y,ox,oy,ts,r.face,Math.abs(Math.sin(clock*14))*.06)}); });
   drawWild(list,ox,oy,ts);
+  drawChallenges(list,ox,oy,ts);
   list.push({y:hero.y, f:function(){
     var b=hero.moving>.05?Math.abs(Math.sin(hero.bob))*.12:Math.sin(clock*2)*.02;
     cx.fillStyle='rgba(0,0,0,.25)'; cx.beginPath(); cx.ellipse(ox+hero.x*ts, oy+hero.y*ts+ts*.38, ts*.28, ts*.1, 0, 0, 7); cx.fill();
