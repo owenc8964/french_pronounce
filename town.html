@@ -46,6 +46,7 @@ body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; 
 .hud button.streak { position:relative; overflow:hidden; border-radius:999px; }
 .hud button.streak i { position:absolute; left:0; bottom:0; height:3px; background:#f0a13a; }
 .hud button.streak.done { border-color:#f0c95a; color:#f0c95a; }
+.quest { pointer-events:auto; cursor:pointer; } .qd { letter-spacing:1px; color:var(--gold); } small.up { color:#f0c95a; }
 .goalrow { display:flex; gap:6px; flex-wrap:wrap; margin:8px 0; }
 .goalrow button.on { border-color:var(--gold); color:var(--gold); }
 .pbar { height:10px; background:#0c120e; border-radius:6px; overflow:hidden; margin:6px 0; } .pbar i { display:block; height:100%; background:linear-gradient(90deg,#f6b24a,#f0e07a); }
@@ -472,7 +473,7 @@ function recallMark(kind, item, ok){
     if(!r || r.done){ var n=0; for(var k in R) if(R[k].add>=sod(now)) n++; if(n>=RECALL_DAY_CAP) return; r={step:0, add:now}; }
     r.step=0; r.due=sod(now)+RECALL_GAP[0]*86400000; r.last=now; delete r.done;
   } else if(r && !r.done && r.due<=now){
-    r.step++; r.last=now; masteryBonus(3, '回收');
+    r.step++; r.last=now; masteryBonus(3, '回收'); questBump('recall');
     if(r.step>=RECALL_GAP.length){ r.done=now; } else r.due=sod(now)+RECALL_GAP[r.step]*86400000;
   } else return;
   R[key]=r; try{ localStorage.setItem('clb7_game_recall', JSON.stringify(R)); }catch(e){}
@@ -482,13 +483,13 @@ function recallDue(list, keyOf){
   return list.filter(function(x){ var r=R[keyOf(x)]; return r && !r.done && r.due<=now; });
 }
 function recallServe(due){
-  if(!due.length || Math.random()>.6) return null;
+  if(!due.length || Math.random()>(activeQuest('recall')?.9:.6)) return null;
   toast('🔁 前幾天卡住的那題回來了');
   return due[Math.floor(Math.random()*due.length)];
 }
 function pickQ(list, star){
   var rq=recallServe(recallDue(list, qRef)); if(rq) return rq;
-  var now=Date.now(), best=null, bw=-1;
+  var now=Date.now(), best=null, bw=-1, qt=activeQuest('topic');
   shuffle(list).slice(0,60).forEach(function(q){
     var w=1, st=S.topic[q.topic];
     if(st && st.w>st.r) w*=1.8;
@@ -496,6 +497,7 @@ function pickQ(list, star){
     var inTrip=log.filter(function(l){ return l.item&&l.item.topic===q.topic; }).length;
     if(inTrip>=2) w*=.25;                         /* 路上要有變化；同一結構的密集練習交給回顧的連發 */
     if(S.qlast[q._i] && now-S.qlast[q._i]<6*3600000) w*=.05;
+    if(qt && q.topic===qt.key) w*=4;                 /* 📋 今日委託的題型 */
     if(star) w*= q.lesson>=25 ? 2.5 : .5;
     w*=Math.random()+.3;
     if(w>bw){ bw=w; best=q; }
@@ -536,7 +538,7 @@ function frOnly(s){ return /[一-鿿]/.test(s) ? '' : s; }
 function qRef(q){ return q._fx ? 'fx:'+q._i : (typeof q._i==='number' ? 'q:'+q._i : String(q._i||'')); }
 function repSlot(ctx){ return window.GameLog ? '<div>'+GameLog.repBtn(ctx)+'</div>' : ''; }
 /* 共用：一題選擇題。cb(ok, ms, chosen) */
-function askChoose(head, q, cb){
+function askChoose0(head, q, cb){
   var t0=Date.now(), alts=String(q.a).split('|'), rc={kind:'選擇', ref:qRef(q), q:q.q, a:q.a};
   var opts=shuffle(q.opts);
   var html='<h3>'+head+'</h3><div class="qtext">'+esc(q.q)+'</div>'+(q.hint?'<div class="hint">💡 '+esc(q.hint)+'</div>':'')+
@@ -563,6 +565,177 @@ function askChoose(head, q, cb){
   }; });
   document.getElementById('skip').onclick=function(){ if(done) return; done=true; cb(null); };
 }
+/* ============================================================
+   ⬆️ 題目升格（10-17，Owen 同意「我擔心的第 2 點」：路上大多只練到認得，考試要寫得出來）
+   同一題自己升格：⓪ 四選一 → ① 自己打空格 → ② 看中文＋句型提示寫整句（⛔ 不能只給中文：答案會不只一種）
+   ⭐ 在目前這一階「不同的兩天」都答對就升一階；升格後答錯退回上一階；整句只差一個字＝原地
+   ⭐ 只有「有空格、正解是法文」的題能升到①；②還要有中文翻譯、整句 ≤14 個字
+   ⭐ 同一個底題（BANK 第幾題）共用一個階，不管是原題還是路上擴充版
+   ============================================================ */
+function fmtKey(q){ return typeof q._i==='number' ? 'q:'+q._i : null; }
+function fmtRight(q){ var alts=String(q.a).split('|'); return (q.opts||[]).filter(function(o){ return alts.indexOf(o)>=0; })[0] || (q.opts||[]).filter(function(o){ return alts.map(normAns).indexOf(normAns(o))>=0; })[0] || null; }
+function fmtZh(q){ var z=q.zh || (typeof q._i==='number' && BANK[q._i] && BANK[q._i].zh) || ''; return /[一-鿿]/.test(z) ? z : ''; }
+function fmtCan(q, lv){
+  if(lv<=0) return true;
+  if(!fmtKey(q) || !q.opts || !/_{2,}/.test(q.q)) return false;
+  var r=fmtRight(q); if(!r || /[一-鿿]/.test(r)) return false;
+  if(lv===1) return true;
+  var full=frOnly(sayOf(q, clean(r))); return !!(fmtZh(q) && full && full.split(/\s+/).length<=14);
+}
+function fmtSt(q){ var k=fmtKey(q); if(!k) return null; S.fmt=S.fmt||{}; return S.fmt[k]||(S.fmt[k]={lv:0, days:[]}); }
+function fmtLevel(q){ var st=fmtSt(q); if(!st) return 0; var lv=st.lv; while(lv>0 && !fmtCan(q,lv)) lv--; return lv; }
+function fmtMark(q, res, lvUsed){
+  var st=fmtSt(q); if(!st || res===null || res==='close') return;
+  if(res===true){
+    if(lvUsed<st.lv) return;                                   /* 用低一階的格式答對，不算升格的天數 */
+    var t=today(); if(st.days.indexOf(t)<0) st.days.push(t);
+    if(st.days.length>=2 && st.lv<2 && fmtCan(q, st.lv+1)){ st.lv++; st.days=[];
+      toast(st.lv===1?'⬆️ 這題升格了——下次要自己打出來':'⬆️ 再升格——下次只看中文寫整句'); masteryBonus(2,'升格'); questBump('upgrade'); }
+  } else if(lvUsed>0){ st.lv=lvUsed-1; st.days=[]; }
+  save();
+}
+function askChoose(head, q, cb){
+  var lv=fmtLevel(q);
+  if(lv===0) return askChoose0(head, q, function(ok,ms,ch,right){ fmtMark(q, ok, 0); cb(ok,ms,ch,right); });
+  if(lv===1) return askTyped(head+' <small class="up">✍️ 升格</small>', q, function(ok,ms,ch,right){ fmtMark(q, ok, 1); cb(ok,ms,ch,right); });
+  return askWhole(head+' <small class="up">✍️✍️ 整句</small>', q, function(res,ms,ch,right){ fmtMark(q, res, 2); cb(res===true, ms, ch, right); });
+}
+/* ① 自己打空格（cb 跟 askChoose 一樣：ok, ms, 打的字, 正解） */
+function askTyped(head, q, cb){
+  var t0=Date.now(), right=clean(fmtRight(q)), alts=String(q.a).split('|').concat([right]), rc={kind:'升格①', ref:qRef(q), q:q.q, a:q.a};
+  openSheet('<h3>'+head+'</h3><div class="qtext fr">'+esc(q.q)+'</div>'+(q.hint?'<div class="hint">💡 '+esc(q.hint)+'</div>':'')+
+    '<input class="fill" id="tin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="打出空格裡的字">'+
+    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><button class="btn main" id="tsub">交出去</button></div>'+repSlot(rc), true);
+  var inp=document.getElementById('tin'), sent=false; setTimeout(function(){ inp.focus(); },50);
+  document.getElementById('skip').onclick=function(){ if(sent) return; sent=true; cb(null); };
+  function sub(){ var v=inp.value.trim(); if(!v||sent) return; sent=true; inp.disabled=true; rc.pick=v;
+    var ms=Date.now()-t0, low=function(x){ return String(x).toLowerCase().replace(/[’]/g,"'").replace(/\s+/g,' ').replace(/[.!?]\s*$/,'').trim(); }, ok=false, acc=false;
+    alts.forEach(function(a){ [a, sayOf(q,a)].forEach(function(x){ if(low(v)===low(x)) ok=true; else if(normAns(v)===normAns(x)) acc=true; }); });
+    if(acc&&!ok) ok=true;
+    var said=frOnly(sayOf(q,right)); if(said) speak(said);
+    document.getElementById('fb').innerHTML=(ok?'✓ '+(acc?'對了（注意重音：<span class="say">'+esc(right)+'</span>）':(ms<6000?'<b style="color:var(--gold)">會心一擊</b>':'寫對了')):'差一點')+
+      (said?'<div>👉 <span class="say">'+esc(said)+'</span> '+spk(said)+'</div>':'')+(!ok&&q.aNote?'<div class="muted">'+note(q.aNote)+'</div>':'');
+    if(ok && !acc) setTimeout(function(){ cb(true,ms,v,right); }, 1000);
+    else { document.querySelector('.row2').innerHTML='<span></span><button class="btn main" id="go">繼續</button>'; document.getElementById('go').onclick=function(){ cb(ok,ms,v,right); }; }
+  }
+  document.getElementById('tsub').onclick=sub;
+  inp.addEventListener('keydown',function(e){ if(e.key==='Enter') sub(); });
+}
+/* ② 只看中文寫整句（cb：true／false／'close'＝只差一個字） */
+function askWhole(head, q, cb){
+  var t0=Date.now(), right=clean(fmtRight(q)), zhs=fmtZh(q), rc={kind:'升格②', ref:qRef(q), q:q.q, a:q.a};
+  var fulls=String(q.a).split('|').concat([right]).map(function(a){ return frOnly(sayOf(q, clean(a))); }).filter(function(x, i, arr){ return x && arr.indexOf(x)===i && x.split(/\s+/).length>1; });
+  if(!fulls.length) fulls=[frOnly(sayOf(q,right))];
+  /* ⚠️ 只看中文寫整句＝答案不只一種（時態、句型都能換）→ 會冤枉人。所以給一行提示把句型鎖住：
+     實詞照順序露出來、功能詞變「＿」、要考的那塊挖空並附原題的提示（例如 (être)） */
+  var mk=frOnly(sayOf(q, '\u0001'+right+'\u0002')), a1=mk.indexOf('\u0001'), a2=mk.indexOf('\u0002');
+  var hintM=String(q.q).match(/_{2,}\s*(\([^)]*\)|（[^）]*）)/), hint=hintM?hintM[1]:'';
+  var cueW=function(t){ return wparts(t).map(function(p){ return p.w ? (FUNC_W[wkey(p.t)] ? '＿' : esc(p.t)) : esc(p.t); }).join(''); };
+  var cue = (a1>=0&&a2>a1) ? cueW(mk.slice(0,a1))+'<b>［＿＿'+(hint?' '+esc(hint):'')+'］</b>'+cueW(mk.slice(a2+1)) : '';
+  openSheet('<h3>'+head+'</h3><div class="qtext">'+esc(zhs)+'</div>'+(cue?'<div class="qtext fr" style="opacity:.85">'+cue+'</div>':'')+(q.hint?'<div class="hint">💡 '+esc(q.hint)+'</div>':'')+
+    '<textarea class="fill" id="win" rows="2" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="用法文把整句寫出來"></textarea>'+
+    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><button class="btn main" id="wsub">交出去</button></div>'+repSlot(rc), true);
+  var ta=document.getElementById('win'), sent=false; setTimeout(function(){ ta.focus(); },50);
+  document.getElementById('skip').onclick=function(){ if(sent) return; sent=true; cb(null); };
+  document.getElementById('wsub').onclick=function(){ var v=ta.value.trim(); if(!v||sent) return; sent=true; ta.disabled=true; rc.pick=v;
+    var ms=Date.now()-t0, best=null;
+    fulls.forEach(function(f){
+      var parts=wparts(f), words=parts.filter(function(p){ return p.w; });
+      var A=(v.match(WRE)||[]).map(wkey), B=words.map(function(p){ return wkey(p.t); });
+      var A2=(v.match(WRE)||[]).map(function(w){ return w.toLowerCase().replace(/’/g,"'"); }).join(' '), B2=words.map(function(p){ return p.t.toLowerCase().replace(/’/g,"'"); }).join(' ');
+      var keep=lcsKeep(B,A), miss=Math.max(B.length,A.length)-keep.length, mk={}; keep.forEach(function(i){ mk[i]=1; });
+      var wi=-1, diff=parts.map(function(p){ if(!p.w) return esc(p.t); wi++; return mk[wi]?esc(p.t):'<u style="color:var(--gold)">'+esc(p.t)+'</u>'; }).join('');
+      var res=A2===B2?'ok':(miss===0?'accent':(miss<=1?'close':'no'));
+      var rank={ok:0,accent:1,close:2,no:3}[res];
+      if(!best || rank<best.rank || (rank===best.rank && miss<best.miss)) best={res:res, rank:rank, miss:miss, f:f, diff:diff};
+    });
+    speak(best.f);
+    var msg={ok:'✓ 整句寫對了', accent:'✓ 對了（注意重音）', close:'差一點——只差一個字，這次先不升也不退', no:'再看一次'}[best.res];
+    document.getElementById('fb').innerHTML='<div>'+msg+'</div><div>👉 <span class="say">'+(best.res==='ok'?esc(best.f):best.diff)+'</span> '+spk(best.f)+'</div>'+(best.res==='no'&&q.aNote?'<div class="muted">'+note(q.aNote)+'</div>':'');
+    var out=best.res==='ok'||best.res==='accent' ? true : best.res==='close' ? 'close' : false;
+    document.querySelector('.row2').innerHTML='<span></span><button class="btn main" id="go">繼續</button>';
+    document.getElementById('go').onclick=function(){ cb(out, ms, v, right); };
+  };
+}
+
+/* ============================================================
+   📋 今日委託（10-17 Owen：「每日會需要根據我比較需要訓練的題型或種類，或是缺乏練習時間的區域，優先引導我去完成那些訓練。這樣就不會有偏重的問題」）
+   ⭐ 每天依紀錄自動挑 3 個（⛔ 不讓他自己選——memory feedback_menu_defaults_to_easiest）：
+     ① 最近錯得多的題型 ② 好幾天沒去的地方 ③ 回收裡到期的題／快升格的題
+   ⭐ 上方任務列直接顯示第一個沒做完的委託＋金色箭頭；點任務列看全部；沒做完隔天換新的，⛔ 不罵人
+   ⭐ 進度用圓點，⛔ 不寫 N／M
+   ============================================================ */
+var QPLACE={
+  cafe:  {name:'☕ 咖啡館', re:/^島/,             need:3, verb:'練', unit:'句', pt:function(){ return chalPt('cafe'); }},
+  mill:  {name:'🌬️ 風車',  re:/拼句/,             need:3, verb:'排', unit:'句', pt:function(){ return chalPt('mill'); }},
+  notice:{name:'📋 告示牌', re:/抓錯字/,           need:5, verb:'抓', unit:'句', pt:function(){ return chalPt('notice'); }},
+  garden:{name:'🌻 菜園',  re:/^守園/,            need:8, verb:'答', unit:'題', pt:function(){ return chalPt('garden'); }},
+  mine:  {name:'⛏ 礦坑',   re:/礦坑/,             need:4, verb:'答', unit:'題', pt:function(){ return nearestNode(['rock']); }},
+  forest:{name:'🌳 森林',   re:/樹叢|草叢|陰陽性/,   need:4, verb:'答', unit:'題', pt:function(){ return nearestNode(['bush']); }},
+  river: {name:'🎣 河邊',   re:/聽力/,             need:3, verb:'答', unit:'題', pt:function(){ return nearestNode(['fish']); }, ok:function(){ return S.built.bridge; }}
+};
+function chalPt(id){ var c=CHALLENGES.filter(function(x){ return x.id===id; })[0]; return c?{x:c.x+.5, y:c.y+.5}:null; }
+function placeOf(kind){ for(var p in QPLACE) if(QPLACE[p].re.test(kind||'')) return p; return null; }
+function dots(n, need){ var h=''; for(var i=0;i<need;i++) h+=i<n?'●':'○'; return h; }
+function makeQuests(){
+  if(S.quests && S.quests.d===today()) return;
+  var list=[], now=Date.now(), used={};
+  /* ① 錯得多的題型：至少答過 3 次、錯的比例 ≥30%、一週內錯過 */
+  var tops=Object.keys(S.topic||{}).map(function(t){ var s=S.topic[t]; return {t:t, n:s.r+s.w, rate:s.w/Math.max(1,s.r+s.w), lw:s.lastWrong||0}; })
+    .filter(function(x){ return x.n>=3 && x.rate>=.3 && now-x.lw<7*86400000 && famOf(x.t); })
+    .sort(function(a,b){ return b.rate-a.rate || b.lw-a.lw; });
+  if(tops.length){ var t=tops[0].t, lb=topicLabel(t), place=famOf(t)==='verb'?'mine':'forest';
+    list.push({type:'topic', key:t, need:4, prog:0, place:place, label:'答對 4 題「'+(lb.zh||lb.fr)+'」', why:'最近這類錯得比較多'}); used[place]=1; }
+  /* ② 好幾天沒去的地方 */
+  var lp=S.lastPlace||{};
+  var stale=Object.keys(QPLACE).filter(function(p){ return !used[p] && (!QPLACE[p].ok || QPLACE[p].ok()); })
+    .map(function(p){ return {p:p, age:now-(lp[p]||0)}; }).sort(function(a,b){ return b.age-a.age; });
+  var s0=stale.shift(); if(s0){ var P=QPLACE[s0.p];
+    list.push({type:'place', key:s0.p, need:P.need, prog:0, place:s0.p, label:'去 '+P.name+' '+P.verb+' '+P.need+' '+P.unit, why:lp[s0.p]?'好幾天沒去了':'還沒去過'}); used[s0.p]=1; }
+  /* ③ 回收到期 → 否則快升格 → 否則再一個沒去的地方 */
+  var R=recallAll(), due=0; for(var k in R) if(!R[k].done && R[k].due<=now) due++;
+  var near=0; for(var f in (S.fmt||{})) if(S.fmt[f].days && S.fmt[f].days.length===1 && S.fmt[f].lv<2) near++;
+  if(due>=2) list.push({type:'recall', key:'recall', need:Math.min(3,due), prog:0, place:null, label:'前幾天卡住的題，答對 '+Math.min(3,due)+' 題', why:'回收裡有題目到期了'});
+  else if(near>=2) list.push({type:'upgrade', key:'upgrade', need:2, prog:0, place:null, label:'讓 2 題升格', why:'有幾題再答對一次就升格'});
+  else { var s1=stale.filter(function(x){ return !used[x.p]; })[0]; if(s1){ var P1=QPLACE[s1.p]; list.push({type:'place', key:s1.p, need:P1.need, prog:0, place:s1.p, label:'去 '+P1.name+' '+P1.verb+' '+P1.need+' '+P1.unit, why:'換個地方練'}); } }
+  S.quests={d:today(), list:list, allDone:false}; save();
+  if(list.length) toast('📋 今天的委託貼出來了——點上方的任務列看');
+}
+function activeQuest(type){ var Q=S.quests; if(!Q||Q.d!==today()) return null; return Q.list.filter(function(q){ return q.type===type && q.prog<q.need; })[0]||null; }
+function questBump(type, key){
+  var Q=S.quests; if(!Q||Q.d!==today()) return;
+  Q.list.forEach(function(q){ if(q.prog>=q.need || q.type!==type || (key!=null && q.key!==key)) return;
+    q.prog++; if(q.prog>=q.need){ S.gold+=15; toast('📋 委託完成：'+q.label.replace(/<[^>]+>/g,'')+'　+15🪙'); if(window.GameLog) GameLog.event('quest_'+q.type); } });
+  if(!Q.allDone && Q.list.length && Q.list.every(function(q){ return q.prog>=q.need; })){ Q.allDone=true; S.gold+=30; setTimeout(function(){ toast('🎉 今天的委託全部完成！+30🪙'); }, 1800); }
+  save(); try{ hud(); }catch(e){}
+}
+/* 所有作答都經過 GameLog.answer（含嵌入的守園）→ 在這裡記「去過哪」與委託進度 */
+if(window.GameLog){ var _glAnswer=GameLog.answer; GameLog.answer=function(ok, m){ _glAnswer(ok, m); m=m||{};
+  var p=placeOf(m.kind); if(p){ S.lastPlace=S.lastPlace||{}; S.lastPlace[p]=Date.now(); }
+  if(ok===null) return;
+  if(p) questBump('place', p);
+  if(ok===true && m.topic) questBump('topic', m.topic);
+}; }
+/* 委託的題型：礦坑／樹叢有一半機率改出那一類（代名詞平常只有老鼠會出，不能等老鼠） */
+function questPool(list){
+  var q=activeQuest('topic'); if(!q || Math.random()>.5) return list;
+  var all=POOL.verb.choose.concat(POOL.noun.choose, POOL.pron.choose).filter(function(x){ return x.topic===q.key; });
+  return all.length ? all : list;
+}
+function questBarInfo(){
+  var Q=S.quests; if(!Q||Q.d!==today()||!Q.list.length) return null;
+  var q=Q.list.filter(function(x){ return x.prog<x.need; })[0]; if(!q) return null;
+  var to=null; if(q.place){ var pt=QPLACE[q.place].pt(); if(pt && Math.hypot(pt.x-hero.x, pt.y-hero.y)>2) to=pt; }
+  return {t:'📋 '+q.label+'　<span class="qd">'+dots(q.prog,q.need)+'</span>', to:to};
+}
+function openQuests(){
+  var Q=S.quests||{list:[]};
+  openSheet('<h3>📋 今日委託</h3><div class="muted">依你最近的紀錄挑的。做完一個 +15🪙，三個都完成再 +30🪙。沒做完明天會換新的。</div>'+
+    Q.list.map(function(q){ var done=q.prog>=q.need; return '<div class="item" style="margin-top:8px'+(done?';opacity:.6':'')+'"><b>'+(done?'✓ ':'')+q.label+'</b><div class="muted">'+esc(q.why||'')+'　<span class="qd">'+dots(q.prog,q.need)+'</span></div></div>'; }).join('')+
+    '<div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+  document.getElementById('ok').onclick=closeSheet;
+}
+
 function askGender(head, it, cb){
   var t0=Date.now(), pic=EMO[it.n]||'', rc={kind:'陰陽性', ref:'g:'+it.n, q:it.n+'（'+it.zh+'）', a:whole(it)};
   var html='<h3>'+head+'</h3><div class="qtext" style="text-align:center">'+pix(pic||'📦',64)+'<br>'+
@@ -626,7 +799,7 @@ function mineRock(n){
   var hits=[], star=isStar(n), i=0;
   function next(){
     if(i>=2) return finish();
-    var q=pickQ(POOL.verb.choose, star);
+    var q=pickQ(questPool(POOL.verb.choose), star);
     askChoose('⛏ 礦坑'+(star?' ★':'')+' <small>第 '+(i+1)+' 敲・動詞</small>', q, function(ok,ms,ch,right){
       rec('q', q, ok, ms, {chosen:ch,right:right,where:'⛏ 礦坑'}); hits.push(ok===null?'skip':ok?(ms<(6000+S.pick*2500)?'crit':'ok'):'no');
       i++; next();
@@ -656,7 +829,7 @@ function shakeBush(n){
         i++; next();
       });
     } else {
-      var q=pickQ(POOL.noun.choose, star);
+      var q=pickQ(questPool(POOL.noun.choose), star);
       askChoose('🌳 樹叢'+(star?' ★':'')+' <small>樹洞深處・名詞片語</small>', q, function(ok,ms,ch,right){
         rec('q', q, ok, ms, {chosen:ch,right:right,where:'🌳 樹叢'});
         if(ok){ var g=star?6:3; S.gold+=g; floatTxt(n.x+.5,n.y,'+'+g+'🪙','#ffd76a'); hud(); save(); }
@@ -822,6 +995,7 @@ function guide(cost, doorPt){
   return {to:doorPt, ready:true};
 }
 function questInfo(){
+  var qb=questBarInfo(); if(qb) return qb;
   var b=S.built, g, full=bag.length>=S.bagCap;
   if(!b.cottage) return {t:'走進 🌳 森林的草叢收集東西進 <b>📖 圖鑑</b>——再收 '+Math.max(1,DEX_MILESTONE-dexCount())+' 種，就會有人回到鎮上', to: region(Math.floor(hero.x),Math.floor(hero.y))==='forest' ? null : {x:8.5,y:19.5}};
   if(!relOf('clement').met){ var cv0=villagers[0]; return {t:'🏡 森林邊的小屋亮燈了——去跟 <b>Clément</b> 打招呼', to:cv0?{x:cv0.x,y:cv0.y}:door('cottage')}; }
@@ -1047,15 +1221,16 @@ function openStreak(){
   sheet.querySelectorAll('[data-goal]').forEach(function(b){ b.onclick=function(){ GameLog.setGoal(+b.dataset.goal); paintStreak(); openStreak(); }; });
   document.getElementById('ok').onclick=closeSheet;
 }
+document.getElementById('quest').onclick=function(){ if(!busy && S.quests && S.quests.list && S.quests.list.length) openQuests(); };
 document.getElementById('hDay').onclick=function(){ if(!busy && window.GameLog) openStreak(); };
-setInterval(paintStreak, 5000);
+setInterval(function(){ paintStreak(); if(!busy) makeQuests(); }, 5000);
 function hud(){
   paintStreak();
   document.getElementById('hGold').textContent='💰 '+S.gold;
   document.getElementById('hBag').textContent='🎒 '+bag.length+'/'+S.bagCap;
   document.getElementById('tb').style.width=Math.max(0,100*time/dayLen())+'%';
   var qi=questInfo();
-  document.getElementById('quest').innerHTML= night ? '🌙 天黑了，老鼠變多變快——回城，或去 🏡 睡覺' : '🎯 '+qi.t;
+  document.getElementById('quest').innerHTML= night ? '🌙 天黑了，老鼠變多變快——回城，或去 🏡 睡覺' : (/^📋/.test(qi.t)?'':'🎯 ')+qi.t;
 }
 /* ============================================================
    回城：先回顧（錯在哪、為什麼、建議、正確說法），再交貨
@@ -2214,7 +2389,7 @@ document.getElementById('bDex').onclick=function(){ if(!busy) openDex(); };
 
 /* 開場 */
 if(window.GameLog) GameLog.start('town');
-resize(); buildWorld(); initSeen(); newDay(true); reveal(); cam.x=hero.x; cam.y=hero.y;
+resize(); buildWorld(); initSeen(); newDay(true); makeQuests(); reveal(); cam.x=hero.x; cam.y=hero.y;
 Object.keys(SPR).forEach(function(k){ img.apply(null,SPR[k]); });
 requestAnimationFrame(loop);
 setTimeout(function(){ document.getElementById('toast').style.opacity=0; },4000);
