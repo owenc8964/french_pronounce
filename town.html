@@ -46,7 +46,7 @@ body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; 
 .hud button.streak { position:relative; overflow:hidden; border-radius:999px; }
 .hud button.streak i { position:absolute; left:0; bottom:0; height:3px; background:#f0a13a; }
 .hud button.streak.done { border-color:#f0c95a; color:#f0c95a; }
-.quest { pointer-events:auto; cursor:pointer; } .qd { letter-spacing:1px; color:var(--gold); } small.up { color:#f0c95a; }
+.quest { pointer-events:auto; cursor:pointer; } .qd { letter-spacing:1px; color:var(--gold); } small.up { color:#f0c95a; } small.pend { color:#9db1a2; }
 .goalrow { display:flex; gap:6px; flex-wrap:wrap; margin:8px 0; }
 .goalrow button.on { border-color:var(--gold); color:var(--gold); }
 .pbar { height:10px; background:#0c120e; border-radius:6px; overflow:hidden; margin:6px 0; } .pbar i { display:block; height:100%; background:linear-gradient(90deg,#f6b24a,#f0e07a); }
@@ -489,6 +489,9 @@ function recallServe(due){
 }
 function pickQ(list, star){
   var rq=recallServe(recallDue(list, qRef)); if(rq) return rq;
+  /* ⏳ 差一天就升格的題：從整個池子找（下面的抽樣只看 60 題，會漏掉），35% 機率直接出 */
+  if(S.fmt && Math.random()<.35){ var pend=list.filter(function(q){ return typeof q._i==='number' && fmtPending(S.fmt['q:'+q._i]) && !(S.qlast[q._i] && Date.now()-S.qlast[q._i]<6*3600000); });
+    if(pend.length) return pend[Math.floor(Math.random()*pend.length)]; }
   var now=Date.now(), best=null, bw=-1, qt=activeQuest('topic');
   shuffle(list).slice(0,60).forEach(function(q){
     var w=1, st=S.topic[q.topic];
@@ -498,6 +501,7 @@ function pickQ(list, star){
     if(inTrip>=2) w*=.25;                         /* 路上要有變化；同一結構的密集練習交給回顧的連發 */
     if(S.qlast[q._i] && now-S.qlast[q._i]<6*3600000) w*=.05;
     if(qt && q.topic===qt.key) w*=4;                 /* 📋 今日委託的題型 */
+    var fs=S.fmt && typeof q._i==='number' && S.fmt['q:'+q._i]; if(fmtPending(fs)) w*=3;   /* ⏳ 差一天就升格的題優先出（10-18：不然同一題要兩週才遇得到） */
     if(star) w*= q.lesson>=25 ? 2.5 : .5;
     w*=Math.random()+.3;
     if(w>bw){ bw=w; best=q; }
@@ -584,21 +588,37 @@ function fmtCan(q, lv){
 }
 function fmtSt(q){ var k=fmtKey(q); if(!k) return null; S.fmt=S.fmt||{}; return S.fmt[k]||(S.fmt[k]={lv:0, days:[]}); }
 function fmtLevel(q){ var st=fmtSt(q); if(!st) return 0; var lv=st.lv; while(lv>0 && !fmtCan(q,lv)) lv--; return lv; }
-function fmtMark(q, res, lvUsed){
+/* ⚡ 快速通道（10-18）：在四選一那階，兩個不同的日子都「又快又對」（<5 秒）＝本來就會 → 直接升兩級（研究 2026-10-17_反應時間當精熟訊號：隔開的幾次都快又對才算，一次快不算） */
+var FMT_FAST_MS=5000;
+function fmtMark(q, res, lvUsed, ms){
   var st=fmtSt(q); if(!st || res===null || res==='close') return;
   if(res===true){
     if(lvUsed<st.lv) return;                                   /* 用低一階的格式答對，不算升格的天數 */
-    var t=today(); if(st.days.indexOf(t)<0) st.days.push(t);
-    if(st.days.length>=2 && st.lv<2 && fmtCan(q, st.lv+1)){ st.lv++; st.days=[];
-      toast(st.lv===1?'⬆️ 這題升格了——下次要自己打出來':'⬆️ 再升格——下次只看中文寫整句'); masteryBonus(2,'升格'); questBump('upgrade'); }
-  } else if(lvUsed>0){ st.lv=lvUsed-1; st.days=[]; }
+    var t=today(), fast=st.lv===0 && typeof ms==='number' && ms<FMT_FAST_MS;
+    if(st.days.indexOf(t)<0){ st.days.push(t); st.f=(st.f||0)+(fast?1:0); }
+    if(st.days.length>=2 && st.lv<2 && fmtCan(q, st.lv+1)){
+      var jump = st.lv===0 && st.f>=2 && fmtCan(q,2) ? 2 : 1;
+      st.lv+=jump; st.days=[]; st.f=0; st.up=(st.up||0)+1;
+      toast(jump===2?'⚡ 快速通道：這題你本來就會——直接升兩級，下次寫整句':(st.lv===1?'⬆️ 這題升格了——下次要自己打出來':'⬆️ 再升格——下次看中文寫整句'));
+      masteryBonus(jump===2?4:2,'升格'); questBump('upgrade'); if(window.GameLog) GameLog.event('fmt_up'+st.lv);
+    }
+  } else if(lvUsed>0){ st.lv=lvUsed-1; st.days=[]; st.f=0; if(window.GameLog) GameLog.event('fmt_down'); }
+  else { st.f=0; }
   save();
+}
+/* 🏷 升格標記（10-18 Owen：「有升格的題目你可以在其上做標記，例如升格兩級」） */
+function fmtPending(st){ return st && st.days && st.days.length===1 && st.days[0]!==today(); }
+function fmtTag(q, lv){
+  var st=fmtKey(q) && S.fmt && S.fmt[fmtKey(q)];
+  var tag = lv===1 ? ' <small class="up">⬆️ 升格 1 級・自己打</small>' : lv===2 ? ' <small class="up">⬆️⬆️ 升格 2 級・寫整句</small>' : '';
+  if(lv<2 && fmtPending(st) && fmtCan(q, lv+1)) tag+=' <small class="pend">⏳ 這次對就升格</small>';
+  return tag;
 }
 function askChoose(head, q, cb){
   var lv=fmtLevel(q);
-  if(lv===0) return askChoose0(head, q, function(ok,ms,ch,right){ fmtMark(q, ok, 0); cb(ok,ms,ch,right); });
-  if(lv===1) return askTyped(head+' <small class="up">✍️ 升格</small>', q, function(ok,ms,ch,right){ fmtMark(q, ok, 1); cb(ok,ms,ch,right); });
-  return askWhole(head+' <small class="up">✍️✍️ 整句</small>', q, function(res,ms,ch,right){ fmtMark(q, res, 2); cb(res===true, ms, ch, right); });
+  if(lv===0) return askChoose0(head+fmtTag(q,0), q, function(ok,ms,ch,right){ fmtMark(q, ok, 0, ms); cb(ok,ms,ch,right); });
+  if(lv===1) return askTyped(head+fmtTag(q,1), q, function(ok,ms,ch,right){ fmtMark(q, ok, 1, ms); cb(ok,ms,ch,right); });
+  return askWhole(head+fmtTag(q,2), q, function(res,ms,ch,right){ fmtMark(q, res, 2, ms); cb(res===true, ms, ch, right); });
 }
 /* ① 自己打空格（cb 跟 askChoose 一樣：ok, ms, 打的字, 正解） */
 function askTyped(head, q, cb){
