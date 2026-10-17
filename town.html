@@ -23,10 +23,14 @@
 <script src="questions.js"></script>
 <script src="tools/town_field_extra.js"></script>
 <script src="scenes.js"></script>
+<script src="sentences.js"></script>
+<script src="reading_articles.js"></script>
 <script src="tools/town_emoji.js"></script>
 <script src="gram_rules.js"></script>
 <script src="topic_labels.js"></script>
 <script src="tts_reader.js"></script>
+<script src="sync_supabase.js"></script>
+<script src="game_log.js"></script>
 <style>
 :root { --bg:#10170f; --panel:#1c2a22; --line:#2f4438; --ink:#eef3ea; --dim:#9db1a2; --gold:#f0c95a; --red:#e07a6a; --green:#79d39a; --gray:#8a948d; --blue:#7fb4e6; }
 * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
@@ -66,6 +70,11 @@ body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; 
 .opts button { background:#24362b; color:var(--ink); border:1px solid var(--line); border-radius:12px; padding:10px 12px; font-size:1em; text-align:left; cursor:pointer; font-family:Cubic11,Georgia,serif; }
 .opts button.ok { background:#2d5a3c; border-color:var(--green); }
 .opts button.no { background:#4a2c28; border-color:var(--red); }
+.bslot { min-height:52px; display:flex; flex-wrap:wrap; gap:6px; padding:8px; border-bottom:2px dashed var(--line); margin:8px 0; align-content:flex-start; }
+.bbank { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0; }
+.tile { background:#24362b; color:var(--ink); border:1px solid var(--line); border-radius:9px; padding:6px 10px; font-size:1em; font-family:Cubic11,Georgia,serif; cursor:pointer; }
+.tile.gone { visibility:hidden; } .tile.bad { background:#4a2c28; border-color:var(--red); }
+.bph { color:var(--dim); font-size:.85em; }
 .fb { margin-top:10px; font-size:.92em; }
 .fb .say { font-family:Cubic11,Georgia,serif; color:var(--gold); }
 .row2 { display:flex; gap:8px; margin-top:12px; justify-content:space-between; align-items:center; }
@@ -95,6 +104,7 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .stars { color:var(--gold); letter-spacing:2px; }
 .stars .off { color:#4a5a4f; }
 .hud button { padding:4px 7px; font-size:.76em; } .hud .chip { font-size:.76em; padding:2px 7px; }
+  .hrow { gap:4px; } .hud button { padding:4px 5px; } .hud .chip { padding:2px 5px; } #bMute { padding:4px 4px; }
 .dexgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); gap:6px; margin:6px 0 12px; }
 .dexcell { background:#16211b; border:1px solid var(--line); border-radius:10px; min-height:66px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:.72em; text-align:center; padding:3px 2px; cursor:pointer; position:relative; line-height:1.25; }
 .dexcell .em { font-size:1.9em; line-height:1.1; }
@@ -118,6 +128,7 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
     <span class="chip" id="hGold">💰 0</span>
     <span class="chip" id="hBag">🎒 0/8</span>
     <span class="sp"></span>
+    <button id="bMute" aria-label="靜音">🔊</button>
     <button id="bDex">📖圖鑑</button>
     <button id="bHome">🏠回城</button>
     <button id="bRest">🌙收工</button>
@@ -154,7 +165,7 @@ BANK.forEach(function(q, i){
 (typeof FIELD_EXTRA!=='undefined'?FIELD_EXTRA:[]).forEach(function(x){
   if(x.cue || !POOL[x.fam] || !BANK[x.src]) return;
   var b=BANK[x.src];
-  POOL[x.fam].choose.push({lesson:b.lesson, topic:x.topic, type:'choose', q:x.q, a:x.a, opts:x.opts, aNote:x.aNote, hint:x.hint||'', zh:x.zh||'', _i:x.src});
+  POOL[x.fam].choose.push({lesson:b.lesson, topic:x.topic, type:'choose', q:x.q, a:x.a, opts:x.opts, aNote:x.aNote, hint:x.hint||'', zh:x.zh||'', _i:x.src, _fx:1});
 });
 /* 陰陽性字庫：跟 quest.html 的 genderPool 同一個抽法（chunks.js「un／une／le／la＋單字名詞」與「l'… (m.)／(f.)」） */
 var EMO={chien:'🐕',chat:'🐈',cheval:'🐎',lapin:'🐇',poisson:'🐟',poule:'🐔',vache:'🐄',canard:'🦆',renard:'🦊',loup:'🐺',lion:'🦁',rat:'🐀',
@@ -281,7 +292,9 @@ var NODE_DEF=[
   [4,8],[9,8],[14,8],[26,8],[31,8],[36,8]
 ].map(function(p){ return {k:'fish',x:p[0],y:p[1]}; }));
 /* ⚔️ 挑戰點：走到這裡跳進「守園」（植物大戰殭屍，tower.html 嵌入）。10-16 Owen：「兩個遊戲整合在一塊，去到哪就跳進挑戰」 */
-var CHALLENGES=[ {id:'garden', x:16, y:18, name:'菜園', em:'🌻', goal:3} ];
+var CHALLENGES=[ {id:'garden', x:16, y:18, name:'菜園', em:'🌻', goal:3},
+  /* 🧩 10-17 Owen 建議 d：quest.html 的拼句搬進來。⚠️ 研究 R29：拼句偏辨識、不算產出 → 輕量題型，⛔ 不取代打字 */
+  {id:'mill', x:24, y:15, name:'風車', em:'🌬️', kind:'tiles', n:3} ];
 var CLUES=[
   {id:'c1', x:7,  y:3,  topic:'accord-participe-passe'},
   {id:'c2', x:25, y:14, topic:'pronoms-y-en'},
@@ -410,7 +423,12 @@ function closeSheet(){ sheet.className='sheet'; sheet.innerHTML=''; busy=false; 
 function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 function deacc(x){ return String(x).normalize('NFD').replace(/[̀-ͯ]/g,''); }
 function normAns(x){ return deacc(String(x)).toLowerCase().replace(/[’]/g,"'").replace(/[.,!?;:«»"]/g,'').replace(/\s+/g,' ').trim(); }
-function speak(t){ try{ if(window.TtsReader&&TtsReader.supported) TtsReader.speak(t); }catch(e){} }
+/* 靜音鍵（Owen 10-17：不吵到別人）：存本機 town_mute，所有朗讀都走 speak() */
+var MUTED=false; try{ MUTED=localStorage.getItem('town_mute')==='1'; }catch(e){}
+function paintMute(){ var b=document.getElementById('bMute'); if(b){ b.textContent=MUTED?'🔇':'🔊'; b.setAttribute('aria-label', MUTED?'開啟聲音':'靜音'); } }
+document.getElementById('bMute').addEventListener('click', function(){ MUTED=!MUTED; try{ localStorage.setItem('town_mute', MUTED?'1':'0'); }catch(e){} if(MUTED){ try{ speechSynthesis.cancel(); }catch(e){} } paintMute(); });
+paintMute();
+function speak(t){ if(MUTED) return; try{ if(window.TtsReader&&TtsReader.supported) TtsReader.speak(t); }catch(e){} }
 function spk(t){ return '<button class="spk" data-say="'+esc(t)+'">🔊</button>'; }
 sheet.addEventListener('click', function(e){ var b=e.target.closest('[data-say]'); if(b){ e.stopPropagation(); speak(b.dataset.say); } });
 
@@ -460,18 +478,21 @@ function clean(o){ return String(o).replace(/\s*[—–]{1,2}.*$/,'').replace(/[
 function note(s){ return esc(s).replace(/&lt;(\/?)b&gt;/g,'<$1b>'); }
 function frOnly(s){ return /[一-鿿]/.test(s) ? '' : s; }
 
+/* 🚩 題目回報（game_log.js）：ref 記題目來源——q:BANK 第幾題（_fx＝路上擴充版）、c:chunks id、g:陰陽性字 */
+function qRef(q){ return q._fx ? 'fx:'+q._i : (typeof q._i==='number' ? 'q:'+q._i : String(q._i||'')); }
+function repSlot(ctx){ return window.GameLog ? '<div>'+GameLog.repBtn(ctx)+'</div>' : ''; }
 /* 共用：一題選擇題。cb(ok, ms, chosen) */
 function askChoose(head, q, cb){
-  var t0=Date.now(), alts=String(q.a).split('|');
+  var t0=Date.now(), alts=String(q.a).split('|'), rc={kind:'選擇', ref:qRef(q), q:q.q, a:q.a};
   var opts=shuffle(q.opts);
   var html='<h3>'+head+'</h3><div class="qtext">'+esc(q.q)+'</div>'+(q.hint?'<div class="hint">💡 '+esc(q.hint)+'</div>':'')+
     '<div class="opts">'+opts.map(function(o,i){ return '<button data-i="'+i+'">'+esc(clean(o)||o)+'</button>'; }).join('')+'</div>'+
-    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><span id="slot"></span></div>';
+    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><span id="slot"></span></div>'+repSlot(rc);
   openSheet(html);
   var done=false;
   sheet.querySelectorAll('.opts button').forEach(function(b){ b.onclick=function(){
     if(done) return; done=true;
-    var o=opts[+b.dataset.i], ok=alts.indexOf(o)>=0 || alts.map(normAns).indexOf(normAns(o))>=0, ms=Date.now()-t0;
+    var o=opts[+b.dataset.i], ok=alts.indexOf(o)>=0 || alts.map(normAns).indexOf(normAns(o))>=0, ms=Date.now()-t0; rc.pick=clean(o)||o;
     var right=opts.filter(function(x){ return alts.indexOf(x)>=0; })[0]||opts.filter(function(x){ return alts.map(normAns).indexOf(normAns(x))>=0; })[0]||alts[0];
     sheet.querySelectorAll('.opts button').forEach(function(x){ if(opts[+x.dataset.i]===right) x.classList.add('ok'); });
     if(!ok) b.classList.add('no');
@@ -489,15 +510,15 @@ function askChoose(head, q, cb){
   document.getElementById('skip').onclick=function(){ if(done) return; done=true; cb(null); };
 }
 function askGender(head, it, cb){
-  var t0=Date.now(), pic=EMO[it.n]||'';
+  var t0=Date.now(), pic=EMO[it.n]||'', rc={kind:'陰陽性', ref:'g:'+it.n, q:it.n+'（'+it.zh+'）', a:whole(it)};
   var html='<h3>'+head+'</h3><div class="qtext" style="text-align:center">'+pix(pic||'📦',64)+'<br>'+
     '<span class="fr" style="font-size:1.3em">… '+esc(it.n)+'</span><div class="muted">'+esc(it.zh)+'</div></div>'+
     '<div class="opts row"><button data-g="m">un</button><button data-g="f">une</button></div><div class="fb" id="fb"></div>'+
-    '<div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><span id="slot"></span></div>';
+    '<div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><span id="slot"></span></div>'+repSlot(rc);
   openSheet(html);
   var done=false;
   sheet.querySelectorAll('.opts button').forEach(function(b){ b.onclick=function(){
-    if(done) return; done=true;
+    if(done) return; done=true; rc.pick=b.dataset.g==='f'?'une':'un';
     var ok=b.dataset.g===it.g, ms=Date.now()-t0;
     b.classList.add(ok?'ok':'no'); if(!ok) sheet.querySelector('[data-g="'+it.g+'"]').classList.add('ok');
     var fb=document.getElementById('fb'); speak(whole(it));
@@ -521,6 +542,9 @@ function markStand(key, fam){
 }
 function standCount(fam){ var n=0; for(var k in S.stand) if(S.standFam[k]===fam && S.stand[k].length>=2) n++; return n; }
 function rec(kind, item, ok, ms, extra){
+  if(window.GameLog) GameLog.answer(ok, kind==='g' ? {kind:'陰陽性', topic:'gender', q:item.n, a:whole(item), pick:ok?'':'(錯)'}
+                                 : kind==='c' ? {kind:'聽力', topic:'listen', q:item.fr, a:item.zh, pick:extra&&extra.chosen}
+                                 : {kind:(extra&&extra.where)||'題目', topic:item.topic, q:item.q, a:item.a, pick:extra&&extra.chosen});
   if(ok===null) return;
   if(kind==='g'){ var g=S.gword[item.n]||{r:0,w:0}; g[ok?'r':'w']++; g.last=Date.now(); S.gword[item.n]=g; if(ok){ markStand('g:'+item.n,'noun'); lastCatch=dexCatch(item, ms); } else lastCatch=null; }
   else if(kind==='c'){ var c=S.gword['c:'+item.id]||{r:0,w:0}; c[ok?'r':'w']++; S.gword['c:'+item.id]=c; if(ok) markStand('c:'+item.id,'listen'); }
@@ -595,15 +619,15 @@ function pickListen(){
 }
 function askListen(head, c, cb){
   var t0=Date.now(), others=shuffle(LISTEN.filter(function(x){ return x.zh!==c.zh && normAns(x.fr)!==normAns(c.fr) && Math.abs((x.lesson||0)-(c.lesson||0))<=6; })).slice(0,2);
-  var opts=shuffle([c].concat(others));
+  var opts=shuffle([c].concat(others)), rc={kind:'聽力', ref:'c:'+c.id, q:c.fr, a:c.zh};
   openSheet('<h3>'+head+'</h3><div class="qtext" style="text-align:center"><button class="btn main" id="play" style="font-size:1.1em">🔊 再聽一次</button><div class="hint" style="margin-top:6px">浮標動了——聽到的是什麼意思？</div></div>'+
     '<div class="opts">'+opts.map(function(o,i){ return '<button data-i="'+i+'" style="font-family:inherit">'+esc(o.zh)+'</button>'; }).join('')+'</div>'+
-    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><span id="slot"></span></div>');
+    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><span id="slot"></span></div>'+repSlot(rc));
   speak(c.fr); document.getElementById('play').onclick=function(){ speak(c.fr); };
   var done=false;
   sheet.querySelectorAll('.opts button').forEach(function(b){ b.onclick=function(){
     if(done) return; done=true;
-    var o=opts[+b.dataset.i], ok=o===c, ms=Date.now()-t0;
+    var o=opts[+b.dataset.i], ok=o===c, ms=Date.now()-t0; rc.pick=o.zh;
     S.qlast['c:'+c.id]=Date.now();
     sheet.querySelectorAll('.opts button').forEach(function(x){ if(opts[+x.dataset.i]===c) x.classList.add('ok'); }); if(!ok) b.classList.add('no');
     var fb=document.getElementById('fb'); fb.innerHTML=(ok?'✓ ':'👉 ')+'<span class="say">'+esc(c.fr)+'</span> '+spk(c.fr)+' <span class="muted">'+esc(c.zh)+'</span>';
@@ -820,16 +844,16 @@ function buildPanel(name, cost, fam, done){
 }
 /* 打字填空（產出）。cb(ok)；不寫＝cb(null) */
 function writeOne(head, q, cb){
-  var t0=Date.now();
+  var t0=Date.now(), rc={kind:'打字', ref:qRef(q), q:q.q, a:q.a};
   openSheet('<h3>'+head+'</h3>'+(q.zh?'<div class="muted">'+esc(q.zh)+'</div>':'')+
     '<div class="qtext fr">'+esc(q.q)+'</div>'+(q.hint?'<div class="hint">💡 '+esc(q.hint)+'</div>':'')+
     '<input class="fill" id="fin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="打空格裡的字（或整句）">'+
-    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 不寫</button><button class="btn main" id="sub">交出去</button></div>', true);
+    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 不寫</button><button class="btn main" id="sub">交出去</button></div>'+repSlot(rc), true);
   var inp=document.getElementById('fin'); setTimeout(function(){ inp.focus(); },50);
   document.getElementById('skip').onclick=function(){ cb(null); };
   var sent=false;
   function submit(){
-    var v=inp.value.trim(); if(!v || sent) return; sent=true; inp.disabled=true;
+    var v=inp.value.trim(); if(!v || sent) return; sent=true; inp.disabled=true; rc.pick=v;
     var alts=String(q.a).split('|'), ok=false, accentOnly=false;
     var low=function(x){ return String(x).toLowerCase().replace(/[’]/g,"'").replace(/\s+/g,' ').replace(/[.!?]\s*$/,'').trim(); };
     alts.forEach(function(a){
@@ -1436,12 +1460,207 @@ window.addEventListener('message', function(e){
     '</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
   document.getElementById('ok').onclick=closeSheet;
 });
+/* ============================================================
+   🧩 風車：被風吹散的信＝拼句（Duolingo 式詞塊排列，程式取自 quest.html 的 tileTok／tileTraps／lcsKeep）
+   ⭐ 句子只取自題庫中翻法題（questions.js type:'trans'）、句庫 sentences.js、筆記句 chunks.js，⛔ 不自創法文
+   ⭐ 陷阱＝容易搞混的同族字；第一塊一律小寫（⛔ 不讓大寫洩漏開頭）
+   ⭐ 第一次排錯：順序對的幫你留著（LCS）、錯的變紅退回，不算錯；第二次還錯才給答案、記錯
+   三層出口：↷ 這句跳過（不記錯）／■ 先到這（整封信）／晚點再來（今天不做，不擋任何東西）
+   ============================================================ */
+var CONFUSE=[['suis','es','est','sommes','êtes','sont'],['ai','as','a','avons','avez','ont'],['a','à'],['le','la','les','un','une','des'],
+  ['du','des','au','aux'],['mon','ma','mes','ton','ta','tes','son','sa','ses'],['ce','cette','ces'],['il','elle','ils','elles'],
+  ['je','tu','nous','vous'],['à','au','aux','en','dans'],['et','est'],['ou','où'],['va','vas','vais','vont','allons','allez'],
+  ['fait','fais','faites','font','faisons'],['peux','peut','peuvent','pouvons','pouvez'],['veux','veut','veulent','voulons','voulez'],
+  ['pas','plus','jamais','rien'],['que','qui','quoi'],['de','du','des'],['pour','par','avec','sans'],
+  ['moi','toi','lui','eux'],['me','te','se'],['ici','là'],['bon','bonne','bons','bonnes'],['petit','petite','petits','petites'],
+  ['grand','grande','grands','grandes'],['nouveau','nouvelle','nouveaux'],['premier','première']];
+function tileTok(a){
+  return String(a).replace(/[’‘]/g,"'").split(/\s+/).map(function(t){ return t.replace(/^[«"“(]+|[.,!?;:»"”)]+$/g,''); })
+    .filter(function(t){ return t && /[A-Za-zÀ-ÿ0-9]/.test(t); });
+}
+function tileKey(t){ return String(t).toLowerCase(); }
+function tileTraps(real, lesson){
+  var have={}, pool=[], out=[]; real.forEach(function(t){ have[tileKey(t)]=1; });
+  real.forEach(function(t){ var k=tileKey(t); CONFUSE.forEach(function(g){ if(g.indexOf(k)>=0) g.forEach(function(x){ if(!have[x]&&pool.indexOf(x)<0) pool.push(x); }); }); });
+  var want=real.length>=7?3:2;
+  shuffle(pool).slice(0,want).forEach(function(x){ out.push(x); });
+  if(out.length<want){   /* 同族字不夠：從同一課別題的答案裡補（真的學過的字） */
+    var bag=[];
+    BANK.forEach(function(q){ if(!q||typeof q.a!=='string'||q.lesson!==lesson) return;
+      tileTok(q.a.split('|')[0]).forEach(function(w){ var k=tileKey(w); if(w.length>1&&!have[k]&&out.indexOf(k)<0&&bag.indexOf(k)<0) bag.push(k); }); });
+    shuffle(bag).slice(0,want-out.length).forEach(function(w){ out.push(w); });
+  }
+  return out;
+}
+function lcsKeep(seq, ref){
+  var n=seq.length, m=ref.length, dp=[], i, j;
+  for(i=0;i<=n;i++){ var row=[]; for(j=0;j<=m;j++) row.push(0); dp.push(row); }
+  for(i=1;i<=n;i++) for(j=1;j<=m;j++) dp[i][j]=(seq[i-1]===ref[j-1])?dp[i-1][j-1]+1:Math.max(dp[i-1][j],dp[i][j-1]);
+  var keep=[], ii=n, jj=m;
+  while(ii>0&&jj>0){ if(seq[ii-1]===ref[jj-1]){ keep.push(ii-1); ii--; jj--; } else if(dp[ii-1][jj]>=dp[ii][jj-1]) ii--; else jj--; }
+  return keep.reverse();
+}
+var TILE_SRC=null;
+function tileSources(){
+  if(TILE_SRC) return TILE_SRC;
+  function okN(a){ var n=tileTok(String(a).split('|')[0]).length; return n>=3&&n<=10; }
+  function sentLike(x){ return x&&x.fr&&x.zh&&okN(x.fr)&&!/\s\/\s|…|\.\.\.|→|[（(]/.test(x.fr); }
+  TILE_SRC={
+    A: BANK.filter(function(q){ return q.type==='trans'&&typeof q.a==='string'&&q.q&&okN(q.a); }),
+    S: (typeof SENTENCES!=='undefined'?SENTENCES:[]).filter(sentLike),
+    C: (typeof CHUNKS!=='undefined'?CHUNKS:[]).filter(sentLike)
+  };
+  return TILE_SRC;
+}
+function tileQuestion(){
+  var T=tileSources(), r=Math.random(), k=r<.34?'A':(r<.64?'S':'C');
+  if(!T[k].length) k=T.A.length?'A':(T.S.length?'S':'C');
+  var arr=T[k], seenT=S.tseen=S.tseen||{}, now=Date.now(), src=null;
+  for(var tries=0;tries<12;tries++){ var c=arr[Math.floor(Math.random()*arr.length)], id=k==='A'?'q:'+c._i:k+':'+c.id;
+    if(!seenT[id]||now-seenT[id]>36*3600000){ src=c; break; } src=c; }
+  var q = k==='A' ? {zh:src.q, a:src.a, lesson:src.lesson, topic:src.topic, aNote:src.aNote||'', id:'q:'+src._i, bank:src}
+                  : {zh:src.zh, a:src.fr, lesson:src.lesson, topic:'tiles', aNote:src.note||'', id:k+':'+src.id};
+  var alts=String(q.a).split('|'), real=tileTok(alts[0]);
+  q.full=alts[0];
+  q.tiles=real.map(function(t,i){ return i===0 ? t.charAt(0).toLowerCase()+t.slice(1) : t; }).concat(tileTraps(real, q.lesson));
+  q.alts=alts.map(function(a){ return tileTok(a).map(tileKey); });
+  return q;
+}
+function tilesPanel(ch){
+  var st=(S.chal||{})[ch.id]||{}, first=st.lastWin!==today();
+  openSheet('<h3>'+ch.em+' '+ch.name+' <small>被風吹散的信</small></h3><div class="story">一陣風把磨坊主人的信吹散了，字一塊一塊卡在風車上。照中文把它們排回原來的句子——有幾塊是混進來的。</div>'+
+    '<div class="muted">一封信 '+ch.n+' 句。排對一句 3 🪙'+(first?'，今天第一次寄出再加 15 🪙':'')+'。</div>'+
+    '<div class="row2"><button class="btn ghost" id="later">晚點再來</button><button class="btn main" id="go">🧩 撿起來</button></div>');
+  document.getElementById('later').onclick=function(){ closeSheet(); ch.cool=5; };
+  document.getElementById('go').onclick=function(){ tilesRun(ch); };
+}
+function tilesRun(ch){
+  var n=0, got=0, gold=0, skipped=0, q=null, bd=null, t0=0, rc=null, ended=false;
+  function finish(){
+    if(ended) return; ended=true;
+    S.chal=S.chal||{}; var st=S.chal[ch.id]||{wins:0, plays:0}; st.plays++;
+    var bonus=0; if(got>0 && st.lastWin!==today()){ bonus=15; st.lastWin=today(); st.wins++; }
+    S.chal[ch.id]=st; S.gold+=gold+bonus; save(); hud(); ch.cool=6;
+    openSheet('<div class="catch"><div class="big">'+pix('✉️',80)+'</div><div class="story">'+(got?'信拼回來了，寄給磨坊主人。':'今天先放著，風車會等你。')+'</div>'+
+      (gold+bonus?'<div class="bagrow"><span>+'+(gold+bonus)+' 🪙'+(bonus?'（含今天第一次 +15）':'')+'</span></div>':'')+
+      '</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+    document.getElementById('ok').onclick=closeSheet;
+  }
+  function next(){
+    if(n>=ch.n) return finish();
+    n++; q=tileQuestion(); t0=Date.now();
+    bd={put:[], tries:0, msg:'', badAt:null, order:shuffle(q.tiles.map(function(_,i){ return i; }))};
+    rc={kind:'拼句', ref:q.id, q:q.zh, a:q.a};
+    render();
+  }
+  function render(){
+    var on={}, bad={}; bd.put.forEach(function(i){ on[i]=1; }); (bd.badAt||[]).forEach(function(x){ bad[x]=1; });
+    var slot=bd.put.map(function(i,x){ return '<button class="tile'+(bad[x]?' bad':'')+'" data-i="'+i+'">'+esc(q.tiles[i])+'</button>'; }).join('');
+    var bank=bd.order.map(function(i){ return '<button class="tile'+(on[i]?' gone':'')+'" data-i="'+i+'">'+esc(q.tiles[i])+'</button>'; }).join('');
+    openSheet('<h3>🧩 第 '+n+'／'+ch.n+' 句</h3><div class="qtext">'+esc(q.zh)+'</div>'+
+      '<div class="bslot" id="bslot">'+(slot||'<span class="bph">點下面的詞塊，照順序排成句子（有幾塊是混進來的）</span>')+'</div>'+
+      '<div class="bbank" id="bbank">'+bank+'</div><div class="fb" id="fb">'+(bd.msg?'<span style="color:var(--gold)">'+bd.msg+'</span>':'')+'</div>'+
+      '<div class="row2"><button class="btn ghost" id="tskip">↷ 這句跳過</button><button class="btn ghost" id="tstop">■ 先到這</button><button class="btn" id="tclr">清掉</button><button class="btn main" id="tok">確定</button></div>'+repSlot(rc), true);
+    sheet.querySelectorAll('#bslot .tile').forEach(function(b){ b.onclick=function(){ var i=+b.dataset.i; bd.put.splice(bd.put.indexOf(i),1); bd.msg=''; bd.badAt=null; render(); }; });
+    sheet.querySelectorAll('#bbank .tile').forEach(function(b){ b.onclick=function(){ var i=+b.dataset.i; if(bd.put.indexOf(i)<0){ bd.put.push(i); bd.msg=''; bd.badAt=null; render(); } }; });
+    document.getElementById('tclr').onclick=function(){ bd.put=[]; bd.msg=''; bd.badAt=null; render(); };
+    document.getElementById('tskip').onclick=function(){ skipped++; if(window.GameLog) GameLog.answer(null); next(); };
+    document.getElementById('tstop').onclick=finish;
+    document.getElementById('tok').onclick=check;
+  }
+  function result(ok){
+    var ms=Date.now()-t0; (S.tseen=S.tseen||{})[q.id]=Date.now();
+    if(q.bank) rec('q', q.bank, ok, ms, {chosen:bd.put.map(function(i){ return q.tiles[i]; }).join(' '), right:q.full, where:'🧩 拼句'});
+    else if(window.GameLog) GameLog.answer(ok, {kind:'🧩 拼句', topic:'tiles', q:q.zh, a:q.full, pick:bd.put.map(function(i){ return q.tiles[i]; }).join(' ')});
+    if(ok){ got++; gold+=3; }
+    speak(q.full);
+    var fb=document.getElementById('fb');
+    fb.innerHTML=(ok?'✓ ':'👉 ')+'<span class="say">'+esc(q.full)+'</span> '+spk(q.full)+(!ok&&q.aNote?'<div class="muted">'+note(q.aNote)+'</div>':'');
+    sheet.querySelectorAll('.tile').forEach(function(b){ b.onclick=null; });
+    document.querySelector('.row2').innerHTML='<span></span><button class="btn main" id="tnext">'+(n>=ch.n?'寄出去':'下一句')+'</button>';
+    document.getElementById('tnext').onclick=next;
+  }
+  function check(){
+    if(!bd.put.length){ toast('先點幾個詞塊'); return; }
+    rc.pick=bd.put.map(function(i){ return q.tiles[i]; }).join(' ');
+    var seq=bd.put.map(function(i){ return tileKey(q.tiles[i]); });
+    var ok=q.alts.some(function(a){ return a.length===seq.length && a.every(function(w,j){ return w===seq[j]; }); });
+    if(ok) return result(true);
+    if(bd.tries===0){
+      bd.tries=1;
+      var best=null; q.alts.forEach(function(a){ var k=lcsKeep(seq,a); if(!best||k.length>best.length) best=k; }); best=best||[];
+      var keep={}; best.forEach(function(x){ keep[x]=1; });
+      var badAt=[]; bd.put.forEach(function(_,x){ if(!keep[x]) badAt.push(x); });
+      if(!badAt.length){ bd.msg='順序是對的，但還沒排完整——看看下面還有哪塊要用（這次不算錯）。'; return render(); }
+      bd.badAt=badAt; render();
+      var mine=bd;
+      setTimeout(function(){ if(bd!==mine) return;
+        bd.put=bd.put.filter(function(_,x){ return keep[x]; }); bd.badAt=null;
+        bd.msg=(best.length?'順序對的 '+best.length+' 塊幫你留著，':'')+'變紅的 '+badAt.length+' 塊退回去了，再排一次（這次不算錯）。'; render(); }, 650);
+      return;
+    }
+    result(false);
+  }
+  next();
+}
+/* ============================================================
+   📰 鎮報＝閱讀理解（10-17 Owen 建議 e：「閱讀測驗也拿來練，但不要太頻繁」）
+   ⭐ 頻率：回城時才出，⛔ 隔天才會再出（今天或昨天出過就不出）→ 大約兩天一篇
+   題源：reading_articles.js（跟 reading.html 同一份；理解測驗短文是已核准的原創例外）
+   ⭐ 沒在 reading.html 讀過的優先；讀完記進 clb7_reading（跟閱讀頁同一本，儀表板算得到），跳過的題不算分母
+   ============================================================ */
+function dayStr(d){ return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+function maybeNews(){
+  if(typeof ARTICLES==='undefined' || !ARTICLES.length || busy) return false;
+  var t=new Date(), y=new Date(t.getTime()-86400000);
+  if(S.newsDay===dayStr(t) || S.newsDay===dayStr(y)) return false;
+  if(!S.built.stall) return false;
+  joy=null; keys={}; S.newsDay=dayStr(t); save();
+  openSheet('<h3>📰 Val-Brume 鎮報 <small>送來了</small></h3><div class="story">郵差在攤子上放了今天的鎮報。要不要花兩分鐘讀一篇？</div>'+
+    '<div class="muted">一篇短文＋幾題，答對一題 2 🪙。</div>'+
+    '<div class="row2"><button class="btn ghost" id="nlater">今天不讀</button><button class="btn main" id="ngo">📰 讀一讀</button></div>');
+  document.getElementById('nlater').onclick=closeSheet;
+  document.getElementById('ngo').onclick=readNews;
+  return true;
+}
+function readNews(){
+  var done={}; (function(){ try{ (JSON.parse(localStorage.getItem('clb7_reading'))||[]).forEach(function(r){ done[r.id]=1; }); }catch(e){} })();
+  var fresh=ARTICLES.filter(function(a){ return !done[a.id]; }), a=(fresh.length?fresh:ARTICLES)[Math.floor(Math.random()*(fresh.length||ARTICLES.length))];
+  var t0=Date.now(), res={}, nOk=0, nSkip=0, nQ=a.questions.length;
+  openSheet('<h3>📰 '+esc(a.title)+' <small>'+esc(a.level||'')+'</small></h3>'+
+    '<div class="clue fr" style="white-space:pre-wrap;line-height:1.7">'+esc(a.text)+'</div><div style="text-align:right">'+spk(a.text)+'</div>'+
+    a.questions.map(function(q,qi){ return '<div class="qtext" style="margin-top:12px">'+(qi+1)+'. '+esc(q.q)+'</div>'+
+      '<div class="opts" data-q="'+qi+'">'+q.opts.map(function(o,oi){ return '<button data-o="'+oi+'">'+esc(o)+'</button>'; }).join('')+'</div>'+
+      '<div class="fb" id="nfb'+qi+'"></div><div><button class="btn ghost" data-nskip="'+qi+'">↷ 這題跳過</button></div>'+
+      (window.GameLog?'<div>'+GameLog.repBtn({kind:'閱讀', ref:'read:'+a.id+':'+qi, q:a.title+' — '+q.q, a:q.opts[q.ans]})+'</div>':''); }).join('')+
+    '<div class="row2"><span></span><button class="btn main" id="ndone">讀完了</button></div>', true);
+  sheet.querySelectorAll('.opts[data-q] button').forEach(function(b){ b.onclick=function(){
+    var qi=+b.parentNode.dataset.q, q=a.questions[qi]; if(res[qi]!=null) return;
+    var ok=+b.dataset.o===q.ans; res[qi]=ok; if(ok) nOk++;
+    b.parentNode.querySelectorAll('button').forEach(function(x){ if(+x.dataset.o===q.ans) x.classList.add('ok'); }); if(!ok) b.classList.add('no');
+    document.getElementById('nfb'+qi).innerHTML=(ok?'✓ ':'👉 ')+'<span class="muted">'+esc(q.expl||'')+'</span>';
+    var sk=sheet.querySelector('[data-nskip="'+qi+'"]'); if(sk) sk.style.visibility='hidden';
+    if(window.GameLog) GameLog.answer(ok, {kind:'📰 閱讀', topic:'reading', q:a.title+' — '+q.q, a:q.opts[q.ans], pick:q.opts[+b.dataset.o]});
+  }; });
+  sheet.querySelectorAll('[data-nskip]').forEach(function(b){ b.onclick=function(){ var qi=+b.dataset.nskip; if(res[qi]!=null) return; res[qi]='skip'; nSkip++;
+    b.parentNode.innerHTML='<span class="muted">（跳過）</span>'; if(window.GameLog) GameLog.answer(null); }; });
+  document.getElementById('ndone').onclick=function(){
+    var answered=Object.keys(res).filter(function(k){ return res[k]!=='skip'; }).length;
+    if(answered){ try{ var recs=JSON.parse(localStorage.getItem('clb7_reading'))||[];
+      recs.push({id:a.id, title:a.title, date:dayStr(new Date()), correct:nOk, total:answered, sec:Math.round((Date.now()-t0)/1000), src:'town'});
+      localStorage.setItem('clb7_reading', JSON.stringify(recs)); }catch(e){} }
+    var gold=nOk*2; S.gold+=gold; save(); hud();
+    openSheet('<div class="catch"><div class="big">'+pix('📰',80)+'</div><div class="story">鎮報看完了。</div>'+(gold?'<div class="bagrow"><span>+'+gold+' 🪙</span></div>':'')+
+      '</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+    document.getElementById('ok').onclick=closeSheet;
+  };
+}
 function drawChallenges(list,ox,oy,ts){
   CHALLENGES.forEach(function(ch){ list.push({y:ch.y+1, f:function(){
     var px=ox+ch.x*ts, py=oy+ch.y*ts, im=pixImg(ch.em);
     cx.fillStyle='#7a5a32'; cx.fillRect(px+ts*.05, py+ts*.55, ts*.9, ts*.38);
     if(im.complete){ cx.drawImage(im, px+ts*.05, py+ts*.05, ts*.9, ts*.9); }
-    var b=Math.sin(clock*4)*ts*.06; cx.font=Math.round(ts*.38)+'px system-ui'; cx.textAlign='center'; cx.fillText('⚔️', px+ts*.5, py-ts*.05+b);
+    var b=Math.sin(clock*4)*ts*.06; cx.font=Math.round(ts*.38)+'px system-ui'; cx.textAlign='center'; cx.fillText(ch.kind==='tiles'?'🧩':'⚔️', px+ts*.5, py-ts*.05+b);
     cx.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; var lab=ch.name; var tw=cx.measureText(lab).width+ts*.2;
     cx.fillStyle='rgba(0,0,0,.55)'; cx.fillRect(px+ts*.5-tw/2, py+ts*1.02, tw, ts*.34); cx.fillStyle='#fff'; cx.fillText(lab, px+ts*.5, py+ts*1.27);
   }}); });
@@ -1484,11 +1703,11 @@ function update(dt){
   if(updateVillagers(dt)) return;
   /* 進城 → 有東西就回顧 */
   var it=inTown(hero);
-  if(it && !wasInTown){ wasInTown=true; if(log.some(function(l){ return l.ok===false; }) || log.length>=6){ joy=null; keys={}; review(); return; } }
+  if(it && !wasInTown){ wasInTown=true; if(log.some(function(l){ return l.ok===false; }) || log.length>=6){ joy=null; keys={}; review(); return; } if(maybeNews()) return; }
   if(!it) wasInTown=false;
   if(updateWild(dt)) return;
   for(var ci=0;ci<CHALLENGES.length && !wild;ci++){ var CH=CHALLENGES[ci]; if(CH.cool>0){ CH.cool-=dt; continue; }
-    if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ challengePanel(CH); }; })(CH)}; break; } }
+    if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ if(CH.kind==='tiles') tilesPanel(CH); else challengePanel(CH); }; })(CH)}; break; } }
   /* 碰到節點 */
   for(var i=0;i<nodes.length && !wild;i++){ var n=nodes[i]; if(n.done) continue;
     var R=n.k==='fish'?1.15:.85;
@@ -1650,6 +1869,7 @@ document.getElementById('bRest').onclick=rest;
 document.getElementById('bDex').onclick=function(){ if(!busy) openDex(); };
 
 /* 開場 */
+if(window.GameLog) GameLog.start('town');
 resize(); buildWorld(); initSeen(); newDay(true); reveal(); cam.x=hero.x; cam.y=hero.y;
 Object.keys(SPR).forEach(function(k){ img.apply(null,SPR[k]); });
 requestAnimationFrame(loop);

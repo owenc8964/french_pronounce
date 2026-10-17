@@ -15,11 +15,13 @@
   ⭐ 後果在家（掉心），⛔ 不在他身上；⏭ 跳過不記錯；答錯才出中文（feedback_french_only_ui）
   ⛔ 不自創法文：打字題＝questions.js fill（動詞家族、單一空格、純法文）；四選一＝questions.js 法文挖空選擇題
      ＋ chunks.js 筆記句挖掉名詞（錯誤選項＝課次差 8 課以上的同性別名詞；⛔ 排除 aimer／adorer／détester／préférer／voudrais 這類換什麼都通的句子）
-  ⚠️ 樣本：紀錄只存本機 pvz_v1（不接同步、不寫 clb7_*）。v1（打字守塔）在 git 歷史 dd4070b
+  ⚠️ 遊戲進度只存本機 pvz_v1；⭐ 10-17 起作答與時間記進 clb7_game_time、回報記進 clb7_game_reports（game_log.js，有同步）。v1（打字守塔）在 git 歷史 dd4070b
   素材：Kenney Tiny Dungeon（CC0）、俐方體11號（OFL）；植物＝emoji 即時轉像素圖
 -->
 <script src="questions.js"></script>
 <script src="chunks.js"></script>
+<script src="sync_supabase.js"></script>
+<script src="game_log.js"></script>
 <style>
 @font-face { font-family:'Cubic11'; src:url('assets/game/fonts/Cubic_11.woff2') format('woff2'); font-display:swap; }
 :root { --bg:#10170f; --panel:#1c2a22; --line:#2f4438; --ink:#eef3ea; --dim:#9db1a2; --gold:#f0c95a; --red:#e07a6a; --green:#79d39a; }
@@ -159,7 +161,15 @@ function pick(list, lastTopic, irrBoost){
     w*=Math.random()+.3; if(w>bw){ bw=w; best=c; } }
   return best;
 }
-function rec(c, ok){ var r=S.rec[c.k]||{r:0,w:0,last:0}; r[ok?'r':'w']++; r.last=Date.now(); S.rec[c.k]=r; save(); }
+function rec(c, ok){ var r=S.rec[c.k]||{r:0,w:0,last:0}; r[ok?'r':'w']++; r.last=Date.now(); S.rec[c.k]=r; save();
+  if(GL) GL.answer(ok, {kind:c.kind==='type'?'守園打字':'守園四選一', topic:c.topic, q:c.q, a:c.kind==='type'?c.show:c.right, pick:G&&G.q?G.q.pick:'', src:'tower'}); }
+/* 紀錄層（game_log.js）：嵌在小鎮裡就記進小鎮那一筆（⛔ 同一段時間不算兩次），單獨開才自己開一筆 */
+var GL=null;
+try{ GL=(new URLSearchParams(location.search).get('embed')==='1' && parent!==window && parent.GameLog) ? parent.GameLog : (window.GameLog||null); }catch(e){ GL=window.GameLog||null; }
+if(GL && GL===window.GameLog) GL.start('tower');
+else if(GL){ ['pointerdown','keydown'].forEach(function(ev){ window.addEventListener(ev, function(){ GL.ping(); }, {passive:true, capture:true}); }); }
+/* 🚩 回報：c.k＝t＋BANK 第幾題（打字）／c＋BANK 第幾題（四選一）／n＋chunks id（筆記句挖名詞） */
+function repHtml(c){ return window.GameLog ? '<div>'+GameLog.repBtn({src:'tower', kind:c.kind, ref:c.k, q:c.q, a:c.kind==='type'?c.alts.join('|'):c.right, pick:G&&G.q?G.q.pick:''})+'</div>' : ''; }
 
 /* ============================================================
    像素圖（同 town.html：emoji → 20×20、PICO-8 32 色、外框）
@@ -310,7 +320,7 @@ function renderQ(){
     var ae=document.activeElement; if(ae && ae.blur) ae.blur();
     box.querySelectorAll('.opts button').forEach(function(b){ b.addEventListener('pointerdown', function(e){ e.preventDefault(); answerChoose(opts[+b.dataset.i], b); }); });
   }
-  document.getElementById('sk').addEventListener('pointerdown', function(e){ e.preventDefault(); if(G.q.done) return; G.q.done=true;
+  document.getElementById('sk').addEventListener('pointerdown', function(e){ e.preventDefault(); if(G.q.done) return; G.q.done=true; if(GL) GL.answer(null);
     document.getElementById('fb').innerHTML='<span class="why">跳過（不算錯）</span>'; setTimeout(nextQ, 350); });
 }
 function reward(base, bonus, fast){
@@ -324,21 +334,21 @@ function miss(c){ G.combo=0; rec(c,false); G.waveMiss.push(c); wrongAll.push(say
 function wrongFb(c, ans){
   var fb=document.getElementById('fb');
   fb.innerHTML='✗ <span class="ans">'+esc(sayOf(c.q,ans))+'</span>'+(c.zh?'　<span class="why">'+esc(c.zh)+'</span>':'')+(c.note?'<div class="why">'+note(c.note)+'</div>':'')+
-    '<div style="text-align:right;margin-top:4px"><button class="skipbtn" id="nx" style="color:var(--gold)">下一題 →</button></div>';
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-top:4px">'+repHtml(c)+'<button class="skipbtn" id="nx" style="color:var(--gold)">下一題 →</button></div>';
   document.getElementById('nx').addEventListener('pointerdown', function(e){ e.preventDefault(); nextQ(); });
 }
 function answerType(v){
   var q=G.q; if(q.done || !v.trim()) return; var c=q.c, secs=clock-q.t0, fb=document.getElementById('fb');
   var n=norm(v), res='no';
   c.alts.forEach(function(a){ [a, sayOf(c.q,a)].forEach(function(t){ if(norm(t)===n) res='ok'; else if(res!=='ok' && deacc(norm(t))===deacc(n)) res='accent'; }); });
-  q.done=true; var inp=document.getElementById('inp'); if(inp) inp.disabled=true;
+  q.done=true; q.pick=v.trim(); var inp=document.getElementById('inp'); if(inp) inp.disabled=true;
   if(res!=='no'){ rec(c,true); reward(50,25,res==='ok'&&secs<4);
     fb.innerHTML=(res==='accent'?'✓ 對了——注意重音：<span class="ans">'+esc(c.show)+'</span>':'✓ <span class="ans">'+esc(sayOf(c.q,c.show))+'</span>');
     setTimeout(nextQ, 650);
   } else { miss(c); wrongFb(c, c.show); }
 }
 function answerChoose(o, btn){
-  var q=G.q; if(q.done) return; q.done=true; var c=q.c, secs=clock-q.t0, fb=document.getElementById('fb'), ok=o===c.right;
+  var q=G.q; if(q.done) return; q.done=true; q.pick=o; var c=q.c, secs=clock-q.t0, fb=document.getElementById('fb'), ok=o===c.right;
   document.querySelectorAll('.opts button').forEach(function(b){ if(b.textContent===c.right) b.classList.add('ok'); });
   if(ok){ rec(c,true); reward(25,10,secs<3); fb.innerHTML='✓ <span class="ans">'+esc(sayOf(c.q,c.right))+'</span>'; setTimeout(nextQ, 650); }
   else { btn.classList.add('no'); miss(c); wrongFb(c, c.right); }
