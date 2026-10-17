@@ -13,7 +13,11 @@
 
    clb7_game_time 每筆＝一次遊玩：
      { ts:開始時間, src:'town'|'tower', d:'YYYY-MM-DD', sec:有效秒數, n:作答數, ok:答對, skip:跳過,
-       top:{ topic:[對,錯] }, kind:{ 題型:[對,錯] }, miss:[ {q,a,pick,topic,kind} ]（最多 30 筆）, end:最後更新 }
+       top:{ topic:[對,錯] }, kind:{ 題型:[對,錯] }, miss:[ {q,a,pick,topic,kind} ]（最多 30 筆）, end:最後更新,
+       ⭐ 10-17 補（Owen：「依必要性跟成效增加紀錄」）：
+       it:{ ref:[對,錯,最後一次毫秒] }（最多 300 題）→ 跨次分析「同一題隔開幾次都答對且夠快」＝站穩（研究 2026-10-17_反應時間當精熟訊號）
+       sk:[ {kind,ref} ]（跳過的是哪一題，最多 40）→ 跳過集中在哪
+       ev:{ 事件:次數 }（news_offer／news_read／news_decline）→ 鎮報被拒絕的頻率 }
    clb7_game_reports 每筆＝一次回報：
      { ts, d, src, kind, ref, q, a, pick, why }
    ============================================================ */
@@ -28,7 +32,7 @@
   var cur = null, lastAct = 0, lastTick = 0, dirty = false;
 
   function start(src) {
-    cur = { ts: Date.now(), src: src, d: day(), sec: 0, n: 0, ok: 0, skip: 0, top: {}, kind: {}, miss: [], end: Date.now() };
+    cur = { ts: Date.now(), src: src, d: day(), sec: 0, n: 0, ok: 0, skip: 0, top: {}, kind: {}, miss: [], it: {}, sk: [], ev: {}, end: Date.now() };
     lastAct = lastTick = Date.now();
   }
   function ping() { lastAct = Date.now(); }
@@ -42,7 +46,9 @@
   /* ok：true 答對／false 答錯／null 跳過。m：{ topic, kind, q, a, pick, src } */
   function answer(ok, m) {
     if (!cur) return; m = m || {}; ping();
-    if (ok === null) { cur.skip++; dirty = true; return; }
+    if (ok === null) { cur.skip++; if (cur.sk.length < 40) cur.sk.push({ kind: m.kind || '?', ref: m.ref == null ? '' : String(m.ref) }); dirty = true; return; }
+    if (m.ref != null && m.ref !== '') { var r = String(m.ref), e = cur.it[r];
+      if (e || Object.keys(cur.it).length < 300) { e = cur.it[r] = e || [0, 0, 0]; e[ok ? 0 : 1]++; e[2] = m.ms ? Math.round(m.ms) : 0; } }
     cur.n++; if (ok) cur.ok++;
     var t = m.topic || '?', k = m.kind || '?';
     (cur.top[t] = cur.top[t] || [0, 0])[ok ? 0 : 1]++;
@@ -50,6 +56,7 @@
     if (!ok && cur.miss.length < 30) cur.miss.push({ q: String(m.q || '').slice(0, 160), a: String(m.a || '').slice(0, 80), pick: String(m.pick == null ? '' : m.pick).slice(0, 80), topic: t, kind: k, src: m.src || cur.src });
     dirty = true;
   }
+  function event(name) { if (!cur) return; cur.ev[name] = (cur.ev[name] || 0) + 1; dirty = true; }
   function flush() {
     if (!cur) return; tick();
     if (cur.sec < 20 && !cur.n) return;   /* 開了就走、沒玩 → 不記 */
@@ -106,5 +113,5 @@
   window.addEventListener('pagehide', flush);
   document.addEventListener('visibilitychange', function () { if (document.hidden) flush(); else { lastTick = Date.now(); ping(); } });
 
-  window.GameLog = { start: start, ping: ping, answer: answer, flush: flush, repBtn: repBtn, report: report, esc: esc };
+  window.GameLog = { start: start, ping: ping, answer: answer, event: event, flush: flush, repBtn: repBtn, report: report, esc: esc };
 })();

@@ -162,7 +162,7 @@ function pick(list, lastTopic, irrBoost){
   return best;
 }
 function rec(c, ok){ var r=S.rec[c.k]||{r:0,w:0,last:0}; r[ok?'r':'w']++; r.last=Date.now(); S.rec[c.k]=r; save();
-  if(GL) GL.answer(ok, {kind:c.kind==='type'?'守園打字':'守園四選一', topic:c.topic, q:c.q, a:c.kind==='type'?c.show:c.right, pick:G&&G.q?G.q.pick:'', src:'tower'}); }
+  if(GL) GL.answer(ok, {kind:c.kind==='type'?'守園打字':'守園四選一', topic:c.topic, q:c.q, a:c.kind==='type'?c.show:c.right, pick:G&&G.q?G.q.pick:'', src:'tower', ref:c.k, ms:G&&G.q?Math.round((clock-G.q.t0)*1000):0}); }
 /* 紀錄層（game_log.js）：嵌在小鎮裡就記進小鎮那一筆（⛔ 同一段時間不算兩次），單獨開才自己開一筆 */
 var GL=null;
 try{ GL=(new URLSearchParams(location.search).get('embed')==='1' && parent!==window && parent.GameLog) ? parent.GameLog : (window.GameLog||null); }catch(e){ GL=window.GameLog||null; }
@@ -320,7 +320,7 @@ function renderQ(){
     var ae=document.activeElement; if(ae && ae.blur) ae.blur();
     box.querySelectorAll('.opts button').forEach(function(b){ b.addEventListener('pointerdown', function(e){ e.preventDefault(); answerChoose(opts[+b.dataset.i], b); }); });
   }
-  document.getElementById('sk').addEventListener('pointerdown', function(e){ e.preventDefault(); if(G.q.done) return; G.q.done=true; if(GL) GL.answer(null);
+  document.getElementById('sk').addEventListener('pointerdown', function(e){ e.preventDefault(); if(G.q.done) return; G.q.done=true; if(GL) GL.answer(null, {kind:G.q.c.kind==='type'?'守園打字':'守園四選一', ref:G.q.c.k});
     document.getElementById('fb').innerHTML='<span class="why">跳過（不算錯）</span>'; setTimeout(nextQ, 350); });
 }
 function reward(base, bonus, fast){

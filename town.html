@@ -542,9 +542,9 @@ function markStand(key, fam){
 }
 function standCount(fam){ var n=0; for(var k in S.stand) if(S.standFam[k]===fam && S.stand[k].length>=2) n++; return n; }
 function rec(kind, item, ok, ms, extra){
-  if(window.GameLog) GameLog.answer(ok, kind==='g' ? {kind:'陰陽性', topic:'gender', q:item.n, a:whole(item), pick:ok?'':'(錯)'}
-                                 : kind==='c' ? {kind:'聽力', topic:'listen', q:item.fr, a:item.zh, pick:extra&&extra.chosen}
-                                 : {kind:(extra&&extra.where)||'題目', topic:item.topic, q:item.q, a:item.a, pick:extra&&extra.chosen});
+  if(window.GameLog) GameLog.answer(ok, kind==='g' ? {kind:'陰陽性', topic:'gender', q:item.n, a:whole(item), pick:ok?'':'(錯)', ref:'g:'+item.n, ms:ms}
+                                 : kind==='c' ? {kind:'聽力', topic:'listen', q:item.fr, a:item.zh, pick:extra&&extra.chosen, ref:'c:'+item.id, ms:ms}
+                                 : {kind:(extra&&extra.where)||'題目', topic:item.topic, q:item.q, a:item.a, pick:extra&&extra.chosen, ref:qRef(item), ms:ms});
   if(ok===null) return;
   if(kind==='g'){ var g=S.gword[item.n]||{r:0,w:0}; g[ok?'r':'w']++; g.last=Date.now(); S.gword[item.n]=g; if(ok){ markStand('g:'+item.n,'noun'); lastCatch=dexCatch(item, ms); } else lastCatch=null; }
   else if(kind==='c'){ var c=S.gword['c:'+item.id]||{r:0,w:0}; c[ok?'r':'w']++; S.gword['c:'+item.id]=c; if(ok) markStand('c:'+item.id,'listen'); }
@@ -1564,14 +1564,14 @@ function tilesRun(ch){
     sheet.querySelectorAll('#bslot .tile').forEach(function(b){ b.onclick=function(){ var i=+b.dataset.i; bd.put.splice(bd.put.indexOf(i),1); bd.msg=''; bd.badAt=null; render(); }; });
     sheet.querySelectorAll('#bbank .tile').forEach(function(b){ b.onclick=function(){ var i=+b.dataset.i; if(bd.put.indexOf(i)<0){ bd.put.push(i); bd.msg=''; bd.badAt=null; render(); } }; });
     document.getElementById('tclr').onclick=function(){ bd.put=[]; bd.msg=''; bd.badAt=null; render(); };
-    document.getElementById('tskip').onclick=function(){ skipped++; if(window.GameLog) GameLog.answer(null); next(); };
+    document.getElementById('tskip').onclick=function(){ skipped++; if(window.GameLog) GameLog.answer(null, {kind:'🧩 拼句', ref:q.id}); next(); };
     document.getElementById('tstop').onclick=finish;
     document.getElementById('tok').onclick=check;
   }
   function result(ok){
     var ms=Date.now()-t0; (S.tseen=S.tseen||{})[q.id]=Date.now();
     if(q.bank) rec('q', q.bank, ok, ms, {chosen:bd.put.map(function(i){ return q.tiles[i]; }).join(' '), right:q.full, where:'🧩 拼句'});
-    else if(window.GameLog) GameLog.answer(ok, {kind:'🧩 拼句', topic:'tiles', q:q.zh, a:q.full, pick:bd.put.map(function(i){ return q.tiles[i]; }).join(' ')});
+    else if(window.GameLog) GameLog.answer(ok, {kind:'🧩 拼句', topic:'tiles', ref:q.id, ms:ms, q:q.zh, a:q.full, pick:bd.put.map(function(i){ return q.tiles[i]; }).join(' ')});
     if(ok){ got++; gold+=3; }
     speak(q.full);
     var fb=document.getElementById('fb');
@@ -1615,12 +1615,12 @@ function maybeNews(){
   var t=new Date(), y=new Date(t.getTime()-86400000);
   if(S.newsDay===dayStr(t) || S.newsDay===dayStr(y)) return false;
   if(!S.built.stall) return false;
-  joy=null; keys={}; S.newsDay=dayStr(t); save();
+  joy=null; keys={}; S.newsDay=dayStr(t); save(); if(window.GameLog) GameLog.event('news_offer');
   openSheet('<h3>📰 Val-Brume 鎮報 <small>送來了</small></h3><div class="story">郵差在攤子上放了今天的鎮報。要不要花兩分鐘讀一篇？</div>'+
     '<div class="muted">一篇短文＋幾題，答對一題 2 🪙。</div>'+
     '<div class="row2"><button class="btn ghost" id="nlater">今天不讀</button><button class="btn main" id="ngo">📰 讀一讀</button></div>');
-  document.getElementById('nlater').onclick=closeSheet;
-  document.getElementById('ngo').onclick=readNews;
+  document.getElementById('nlater').onclick=function(){ if(window.GameLog) GameLog.event('news_decline'); closeSheet(); };
+  document.getElementById('ngo').onclick=function(){ if(window.GameLog) GameLog.event('news_read'); readNews(); };
   return true;
 }
 function readNews(){
@@ -1640,10 +1640,10 @@ function readNews(){
     b.parentNode.querySelectorAll('button').forEach(function(x){ if(+x.dataset.o===q.ans) x.classList.add('ok'); }); if(!ok) b.classList.add('no');
     document.getElementById('nfb'+qi).innerHTML=(ok?'✓ ':'👉 ')+'<span class="muted">'+esc(q.expl||'')+'</span>';
     var sk=sheet.querySelector('[data-nskip="'+qi+'"]'); if(sk) sk.style.visibility='hidden';
-    if(window.GameLog) GameLog.answer(ok, {kind:'📰 閱讀', topic:'reading', q:a.title+' — '+q.q, a:q.opts[q.ans], pick:q.opts[+b.dataset.o]});
+    if(window.GameLog) GameLog.answer(ok, {kind:'📰 閱讀', topic:'reading', ref:'read:'+a.id+':'+qi, q:a.title+' — '+q.q, a:q.opts[q.ans], pick:q.opts[+b.dataset.o]});
   }; });
   sheet.querySelectorAll('[data-nskip]').forEach(function(b){ b.onclick=function(){ var qi=+b.dataset.nskip; if(res[qi]!=null) return; res[qi]='skip'; nSkip++;
-    b.parentNode.innerHTML='<span class="muted">（跳過）</span>'; if(window.GameLog) GameLog.answer(null); }; });
+    b.parentNode.innerHTML='<span class="muted">（跳過）</span>'; if(window.GameLog) GameLog.answer(null, {kind:'📰 閱讀', ref:'read:'+a.id+':'+qi}); }; });
   document.getElementById('ndone').onclick=function(){
     var answered=Object.keys(res).filter(function(k){ return res[k]!=='skip'; }).length;
     if(answered){ try{ var recs=JSON.parse(localStorage.getItem('clb7_reading'))||[];
