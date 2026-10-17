@@ -43,6 +43,12 @@ body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; 
 .hrow { display:flex; gap:6px; align-items:center; }
 .chip { background:rgba(10,16,12,.72); border:1px solid rgba(255,255,255,.12); border-radius:999px; padding:2px 9px; font-size:.82em; white-space:nowrap; }
 .hrow .sp { flex:1; }
+.hud button.streak { position:relative; overflow:hidden; border-radius:999px; }
+.hud button.streak i { position:absolute; left:0; bottom:0; height:3px; background:#f0a13a; }
+.hud button.streak.done { border-color:#f0c95a; color:#f0c95a; }
+.goalrow { display:flex; gap:6px; flex-wrap:wrap; margin:8px 0; }
+.goalrow button.on { border-color:var(--gold); color:var(--gold); }
+.pbar { height:10px; background:#0c120e; border-radius:6px; overflow:hidden; margin:6px 0; } .pbar i { display:block; height:100%; background:linear-gradient(90deg,#f6b24a,#f0e07a); }
 .hud button { pointer-events:auto; background:rgba(10,16,12,.78); color:var(--ink); border:1px solid rgba(255,255,255,.18); border-radius:10px; padding:4px 9px; font-size:.82em; white-space:nowrap; }
 .sun { height:5px; background:rgba(0,0,0,.45); border-radius:3px; overflow:hidden; margin:6px 0 5px; }
 .sun i { display:block; height:100%; background:linear-gradient(90deg,#f6b24a,#f0e07a); }
@@ -133,7 +139,7 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 <canvas id="cv"></canvas>
 <div class="hud">
   <div class="hrow">
-    <span class="chip" id="hDay">第 1 天</span>
+    <button id="hDay" class="streak" aria-label="今天的目標與連勝">🔥 0</button>
     <span class="chip" id="hGold">💰 0</span>
     <span class="chip" id="hBag">🎒 0/8</span>
     <span class="sp"></span>
@@ -447,7 +453,41 @@ sheet.addEventListener('click', function(e){ var b=e.target.closest('[data-say]'
 
 function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
 /* 出題：「腦袋」決定——這一陣子錯過的主題加權，太近出過的題目先避開；★ 區偏後面的課 */
+/* ============================================================
+   🔁 回收（10-17）：答錯的題自動排進 clb7_game_recall，隔天 → 3 天 → 7 天後混在路上的遭遇裡回來
+   ⭐ Owen：「一直走就一直答題＝關鍵」→ ⛔ 不做「收進複習」的按鈕或選單，回收就是遭遇的一種
+   ⭐ 證據：遊戲＋配套練習（The Sims 研究）、跨天間隔＋作答提取＋回饋（Kim & Webb 2022，延遲 g=0.80；擴展 vs 等距沒差）
+   ⭐ 每天最多新收 15 題（memory feedback_production_vs_recognition_load）；回來答對就往下一階，答錯回到隔天；三次都對＝畢業（⛔ 不刪，留紀錄）
+   物件形狀 { key:{ step, due, add, last, done? } }，配合同步的物件合併（取 last 較新）
+   ============================================================ */
+var RECALL_GAP=[1,3,7], RECALL_DAY_CAP=15;
+function recallAll(){ try{ return JSON.parse(localStorage.getItem('clb7_game_recall'))||{}; }catch(e){ return {}; } }
+function sod(t){ var d=new Date(t); d.setHours(0,0,0,0); return d.getTime(); }
+function recallKey(kind, item){ return kind==='g' ? 'g:'+item.n : kind==='c' ? 'c:'+item.id : qRef(item); }
+function recallMark(kind, item, ok){
+  if(ok===null || !item) return;
+  var key=recallKey(kind,item); if(!key || /^(clue-|v:)/.test(key)) return;
+  var R=recallAll(), r=R[key], now=Date.now();
+  if(ok===false){
+    if(!r || r.done){ var n=0; for(var k in R) if(R[k].add>=sod(now)) n++; if(n>=RECALL_DAY_CAP) return; r={step:0, add:now}; }
+    r.step=0; r.due=sod(now)+RECALL_GAP[0]*86400000; r.last=now; delete r.done;
+  } else if(r && !r.done && r.due<=now){
+    r.step++; r.last=now; masteryBonus(3, '回收');
+    if(r.step>=RECALL_GAP.length){ r.done=now; } else r.due=sod(now)+RECALL_GAP[r.step]*86400000;
+  } else return;
+  R[key]=r; try{ localStorage.setItem('clb7_game_recall', JSON.stringify(R)); }catch(e){}
+}
+function recallDue(list, keyOf){
+  var R=recallAll(), now=Date.now();
+  return list.filter(function(x){ var r=R[keyOf(x)]; return r && !r.done && r.due<=now; });
+}
+function recallServe(due){
+  if(!due.length || Math.random()>.6) return null;
+  toast('🔁 前幾天卡住的那題回來了');
+  return due[Math.floor(Math.random()*due.length)];
+}
 function pickQ(list, star){
+  var rq=recallServe(recallDue(list, qRef)); if(rq) return rq;
   var now=Date.now(), best=null, bw=-1;
   shuffle(list).slice(0,60).forEach(function(q){
     var w=1, st=S.topic[q.topic];
@@ -463,6 +503,7 @@ function pickQ(list, star){
   return best;
 }
 function pickGender(){
+  var rg=recallServe(recallDue(GENDER, function(it){ return 'g:'+it.n; })); if(rg) return rg;
   var gs=readLS('clb7_gender_seen'), now=Date.now();
   var want=Math.random()<.5?'m':'f', c=GENDER.filter(function(it){ return it.g===want; });
   var best=null,bw=-1;
@@ -549,16 +590,21 @@ function askGender(head, it, cb){
 /* 記錄：⛔ 跳過（null）不記。⭐ 站穩＝同一題／同一個字在「不同的兩天」都答對（真實日期，不是遊戲天數） */
 function today(){ var d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
 function markStand(key, fam){
-  var a=S.stand[key]||[], t=today();
+  var a=S.stand[key]||[], t=today(), was=a.length>=2;
   if(a.indexOf(t)<0){ a.push(t); if(a.length>3) a=a.slice(-3); }
   S.stand[key]=a; S.standFam[key]=fam;
+  if(!was && a.length>=2) masteryBonus(5, '站穩');
 }
+/* 🪙 金幣綁精熟（10-17，Duolingo 2024 的教訓：獎勵綁參與會讓人刷簡單題）：
+   第一次站穩 +5、前幾天卡住的題回收答對 +3；已經很熟的題不另外給 → 錢主要來自「還在要想」的東西 */
+function masteryBonus(n, why){ S.gold+=n; floatTxt(hero.x, hero.y-.8, why+' +'+n+'🪙', '#f0c95a'); try{ hud(); }catch(e){} }
 function standCount(fam){ var n=0; for(var k in S.stand) if(S.standFam[k]===fam && S.stand[k].length>=2) n++; return n; }
 function rec(kind, item, ok, ms, extra){
   if(window.GameLog) GameLog.answer(ok, kind==='g' ? {kind:'陰陽性', topic:'gender', q:item.n, a:whole(item), pick:ok?'':'(錯)', ref:'g:'+item.n, ms:ms}
                                  : kind==='c' ? {kind:'聽力', topic:'listen', q:item.fr, a:item.zh, pick:extra&&extra.chosen, ref:'c:'+item.id, ms:ms}
                                  : {kind:(extra&&extra.where)||'題目', topic:item.topic, q:item.q, a:item.a, pick:extra&&extra.chosen, ref:qRef(item), ms:ms});
   if(ok===null) return;
+  recallMark(kind, item, ok);
   if(kind==='g'){ var g=S.gword[item.n]||{r:0,w:0}; g[ok?'r':'w']++; g.last=Date.now(); S.gword[item.n]=g; if(ok){ markStand('g:'+item.n,'noun'); lastCatch=dexCatch(item, ms); } else lastCatch=null; }
   else if(kind==='c'){ var c=S.gword['c:'+item.id]||{r:0,w:0}; c[ok?'r':'w']++; S.gword['c:'+item.id]=c; if(ok) markStand('c:'+item.id,'listen'); }
   else { var t=S.topic[item.topic]||{r:0,w:0}; t[ok?'r':'w']++; if(!ok) t.lastWrong=Date.now(); S.topic[item.topic]=t; S.qlast[item._i]=Date.now();
@@ -626,6 +672,7 @@ var LISTEN=(typeof CHUNKS!=='undefined'?CHUNKS:[]).filter(function(c){
   return f && z && f.length<=34 && !/[\/…()（）=]/.test(f) && !/[一-鿿]/.test(f) && !/[…～~／]|\.\.\./.test(z) && z.length<=16 && f.split(' ').length>=2;
 });
 function pickListen(){
+  var rl=recallServe(recallDue(LISTEN, function(c){ return 'c:'+c.id; })); if(rl) return rl;
   var best=null, bw=-1;
   shuffle(LISTEN).slice(0,50).forEach(function(c){ var r=S.gword['c:'+c.id]||{r:0,w:0}, w=(r.w>r.r?3:1)*(Math.random()+.3); if(S.qlast['c:'+c.id]&&Date.now()-S.qlast['c:'+c.id]<6*3600000) w*=.05; if(w>bw){ bw=w; best=c; } });
   return best;
@@ -980,8 +1027,30 @@ function rest(){
   document.getElementById('nd').onclick=function(){ closeSheet(); fade(function(){ newDay(false); }); };
 }
 function fade(mid){ var f=document.getElementById('fade'); f.style.opacity=1; setTimeout(function(){ mid(); f.style.opacity=0; },380); }
+/* 🔥 每日目標＋連勝（game_log.js 算；10-17 Owen：「讓我想要持續使用才是最重要的」） */
+var goalToastDay=null;
+function paintStreak(){
+  var b=document.getElementById('hDay'); if(!window.GameLog){ b.textContent='第 '+S.day+' 天'; return; }
+  var k=GameLog.streak(), p=Math.min(1,k.today/k.need);
+  b.innerHTML='🔥 '+k.days+'<i style="width:'+Math.round(p*100)+'%"></i>'; b.classList.toggle('done', k.done);
+  if(k.done && goalToastDay!==today()){ goalToastDay=today(); try{ if(sessionStorage.getItem('town_goal_toast')===today()) return; sessionStorage.setItem('town_goal_toast',today()); }catch(e){}
+    if(k.today < k.need+40) toast('🔥 今天的目標達成！連續 '+k.days+' 天'); }
+}
+function openStreak(){
+  var k=GameLog.streak(), g=GameLog.goalMin(), m=Math.floor(k.today/60);
+  openSheet('<h3>🔥 每天的目標</h3><div class="story">'+(k.done?'今天的 '+g+' 分鐘已經達成了，接下來都是多賺的。':'今天玩了 '+m+' 分鐘，再 '+Math.max(1,g-m)+' 分鐘就達成。')+'</div>'+
+    '<div class="pbar"><i style="width:'+Math.round(Math.min(1,k.today/k.need)*100)+'%"></i></div>'+
+    '<div class="bagrow"><span>🔥 連續 '+k.days+' 天</span><span>小鎮第 '+S.day+' 天</span></div>'+
+    '<div class="muted">只算真的在玩的時間（畫面開著、90 秒內有操作）。一週內漏一天不會斷，會自動用掉休息卡。</div>'+
+    '<div class="muted" style="margin-top:8px">每天的目標：</div><div class="goalrow">'+[10,15,20,30,45].map(function(x){ return '<button class="btn'+(x===g?' on':'')+'" data-goal="'+x+'">'+x+' 分</button>'; }).join('')+'</div>'+
+    '<div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+  sheet.querySelectorAll('[data-goal]').forEach(function(b){ b.onclick=function(){ GameLog.setGoal(+b.dataset.goal); paintStreak(); openStreak(); }; });
+  document.getElementById('ok').onclick=closeSheet;
+}
+document.getElementById('hDay').onclick=function(){ if(!busy && window.GameLog) openStreak(); };
+setInterval(paintStreak, 5000);
 function hud(){
-  document.getElementById('hDay').textContent='第 '+S.day+' 天';
+  paintStreak();
   document.getElementById('hGold').textContent='💰 '+S.gold;
   document.getElementById('hBag').textContent='🎒 '+bag.length+'/'+S.bagCap;
   document.getElementById('tb').style.width=Math.max(0,100*time/dayLen())+'%';
@@ -1279,6 +1348,7 @@ function dexCatch(it, ms){
 }
 /* 出哪一隻：還沒收的 ×3（填圖鑑）、收過但今天還沒收（要進化）×2.2、已進化 ×0.35、錯過的 ×2；稀有的比較少出 */
 function pickWild(){
+  var rw=recallServe(recallDue(GENDER, function(it){ return 'g:'+it.n; })); if(rw) return rw;
   var gs=readLS('clb7_gender_seen'), now=Date.now(), best=null, bw=-1, t=today();
   shuffle(GENDER).slice(0,80).forEach(function(it){
     var d=(S.dex||{})[it.n], w= !d ? 3 : d.evo ? .35 : (d.days.indexOf(t)<0 ? 2.2 : .5);

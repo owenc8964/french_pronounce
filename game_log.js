@@ -68,6 +68,30 @@
     wr('clb7_game_time', a.slice(-400)); dirty = false;
   }
 
+  /* ---------- 🔥 每日目標＋連勝（10-17 Owen：「連勝 ok！每天至少要玩多久或連續玩幾天都可以用」） ----------
+     每天的有效秒數＝clb7_game_time 當天各筆加總（含還沒存的這一筆）；跨裝置靠同步合併。
+     目標分鐘存 clb7_game_goal（物件 {min, last}，配合同步的物件合併慣例）。
+     ⭐ 連勝：一天達標就算；⭐ 7 天內可以漏 1 天不斷（自動用掉「休息卡」，⛔ 不罵人） */
+  function daySecs() {
+    var m = {}; rd('clb7_game_time').forEach(function (e) { if (e && e.d && !(cur && e.ts === cur.ts)) m[e.d] = (m[e.d] || 0) + (Number(e.sec) || 0); });
+    if (cur) m[cur.d] = (m[cur.d] || 0) + cur.sec;
+    return m;
+  }
+  function goalMin() { try { var g = JSON.parse(localStorage.getItem('clb7_game_goal')); return (g && g.min) || 15; } catch (e) { return 15; } }
+  function setGoal(min) { try { localStorage.setItem('clb7_game_goal', JSON.stringify({ min: min, last: Date.now() })); } catch (e) {} }
+  function dstr(t) { var d = new Date(t); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function streak() {
+    var m = daySecs(), need = goalMin() * 60, n = 0, freezeAt = -99, t = Date.now(), today = dstr(t), todayDone = (m[today] || 0) >= need;
+    for (var i = 0; i < 400; i++) {
+      var d = dstr(t - i * 86400000), ok = (m[d] || 0) >= need;
+      if (ok) { n++; continue; }
+      if (i === 0) continue;                                  /* 今天還沒達標：不算斷 */
+      if (i - freezeAt > 7 && n > 0) { freezeAt = i; continue; }   /* 休息卡：7 天內漏 1 天 */
+      break;
+    }
+    return { days: n, today: m[today] || 0, need: need, done: todayDone };
+  }
+
   /* ---------- 🚩 題目回報 ---------- */
   var CTX = {}, seq = 0;
   /* ctx：{ src, kind, ref, q, a, pick }。回傳一顆按鈕的 HTML，放進作答後的回饋區 */
@@ -113,5 +137,5 @@
   window.addEventListener('pagehide', flush);
   document.addEventListener('visibilitychange', function () { if (document.hidden) flush(); else { lastTick = Date.now(); ping(); } });
 
-  window.GameLog = { start: start, ping: ping, answer: answer, event: event, flush: flush, repBtn: repBtn, report: report, esc: esc };
+  window.GameLog = { start: start, ping: ping, answer: answer, event: event, streak: streak, goalMin: goalMin, setGoal: setGoal, flush: flush, repBtn: repBtn, report: report, esc: esc };
 })();

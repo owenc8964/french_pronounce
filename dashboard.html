@@ -908,7 +908,18 @@ function coursSec() {
   try { return (typeof EXTERNAL_TIME !== 'undefined' && EXTERNAL_TIME.cours.totalSec) || 0; }
   catch { return 0; }
 }
-function externalSec() { return ankiSec() + duoSec() + coursSec(); }
+/* 🎮 遊戲時間（2026-10-17 補）：小鎮 town.html＋守園 tower.html 的有效秒數，記在 clb7_game_time（game_log.js，只算畫面看得到＋90 秒內有操作）。
+   這兩頁沒有載入 session_timer.js，原本整批沒算進 700 小時。
+   ⚠️ 可能的重疊：dashboard 的計時 session 開著時跑去玩小鎮——session_timer 的閒置偵測最多多算 3 分鐘，可接受。 */
+function gameSec() {
+  try { return (JSON.parse(localStorage.getItem('clb7_game_time')) || []).reduce((s, e) => s + (Number(e && e.sec) || 0), 0); }
+  catch { return 0; }
+}
+function gameSecSince(t0) {
+  try { return (JSON.parse(localStorage.getItem('clb7_game_time')) || []).filter(e => e && e.ts >= t0).reduce((s, e) => s + (Number(e.sec) || 0), 0); }
+  catch { return 0; }
+}
+function externalSec() { return ankiSec() + duoSec() + coursSec() + gameSec(); }
 function getSpeakingData()   { try { return JSON.parse(localStorage.getItem('clb7_speaking'))   || []; } catch { return []; } }
 function getListeningData()  { try { return JSON.parse(localStorage.getItem('clb7_listening'))  || []; } catch { return []; } }
 function getGameData()     { try { return JSON.parse(localStorage.getItem('clb7_game'))      || {xp:0,streak:0,lastDate:''}; } catch { return {xp:0,streak:0,lastDate:''}; } }
@@ -1014,7 +1025,7 @@ function getTrackerWeek() {
   const data = getTrackerData();
   const now = new Date();
   const weekStart = new Date(now); weekStart.setDate(now.getDate() - now.getDay()); weekStart.setHours(0,0,0,0);
-  return data.filter(e => new Date(e.ts) >= weekStart).reduce((s,e) => s + e.sec, 0);
+  return data.filter(e => new Date(e.ts) >= weekStart).reduce((s,e) => s + e.sec, 0) + gameSecSince(weekStart.getTime());
 }
 
 function getTrackerTotal() {
@@ -1635,11 +1646,11 @@ function render() {
   document.getElementById('hoursVal').textContent = `${totalH.toFixed(1)} / ${GOAL_H}h`;
   // 拆給他看時數是哪來的——不然「突然多出幾十小時」會讓人不信任這個數字
   const inApp = (totalSec - externalSec()) / 3600;
-  const aH = ankiSec() / 3600, dH = duoSec() / 3600, cH = coursSec() / 3600;
+  const aH = ankiSec() / 3600, dH = duoSec() / 3600, cH = coursSec() / 3600, gH = gameSec() / 3600;
   document.getElementById('hoursSub').innerHTML =
     `還需 ${Math.max(0, GOAL_H - totalH).toFixed(1)} 小時`
     + `<br><span style="font-size:0.9em;opacity:.75">`
-    + `本站 ${inApp.toFixed(1)}h ＋ Anki ${aH.toFixed(1)}h ＋ Duolingo ${dH.toFixed(1)}h`
+    + `本站 ${inApp.toFixed(1)}h ＋ 小鎮遊戲 ${gH.toFixed(1)}h ＋ Anki ${aH.toFixed(1)}h ＋ Duolingo ${dH.toFixed(1)}h`
     + ` ＋ 上課 ${cH.toFixed(1)}h<span style="opacity:.7">（保底 2.5h/週）</span>`
     + `</span>`;
 
