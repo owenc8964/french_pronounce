@@ -212,6 +212,8 @@ var ZOMB={
   tank: {spr:['d',110], hp:18, sp:.16, name:'盔甲蟹'}
 };
 var ROWS=4, COLS=8, cv=document.getElementById('cv'), cx=cv.getContext('2d'), DPR=1, CW=0, CH=0, CELL=40, OX=0;
+/* ⚠️ 10-18：壞掉的圖（載入失敗）complete 也是 true，drawImage 會丟例外讓迴圈停掉 → 跳過不畫 */
+(function(){ var _di=cx.drawImage; cx.drawImage=function(im){ if(im && im.tagName==='IMG' && !(im.naturalWidth>0)) return; return _di.apply(cx, arguments); }; })();
 function resize(){
   DPR=Math.min(window.devicePixelRatio||1,2);
   CW=cv.parentElement.clientWidth-16; CELL=Math.floor(Math.min(CW/(COLS+1), (window.innerHeight*.36)/ROWS));

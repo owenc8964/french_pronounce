@@ -131,6 +131,10 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .dexcell.r1 { border-color:#6aa0d8; } .dexcell.r2 { border-color:#c99af0; }
 .dexcell.shiny { box-shadow:0 0 0 2px #f0c95a inset, 0 0 10px rgba(240,201,90,.5); }
 .dexcell .evo { position:absolute; top:1px; right:3px; font-size:.95em; }
+.gm { color:#7fb2ff; } .gf { color:#ff8a9a; }
+.opts button.bm { border-color:#3c5a85; } .opts button.bf { border-color:#85404d; }
+.grule { color:#d9cfb6; font-size:.85em; margin-top:4px; }
+.dexcell.pending { opacity:.45; } .dexcell.fading { filter:grayscale(.85); opacity:.7; }
 .dexhead { font-size:.82em; color:var(--dim); margin-top:8px; }
 .catch { text-align:center; padding:6px 0; }
 .catch .big { font-size:4em; line-height:1.1; animation:pop .45s ease-out; }
@@ -384,6 +388,8 @@ var hero={x:PLAZA.x, y:PLAZA.y, vx:0, vy:0, lx:0, ly:0, face:1, moving:0, bob:0,
 var dusts=[], pending=null;
 var nodes=[], rats=[], npcs=[], floats=[], bag=[], log=[], busy=false, time=0, night=false, wasInTown=true, lastDoor=null;
 var joy=null, keys={}, cam={x:PLAZA.x, y:PLAZA.y}, SC=3, TS=48, cv=document.getElementById('cv'), cx=cv.getContext('2d'), DPR=1;
+/* ⚠️ 10-18 修：圖片載入失敗時 img.complete 也是 true，drawImage 一張壞圖會丟例外 → 整個畫面迴圈停掉（手機網路不穩時遊戲卡死）。壞圖一律跳過不畫 */
+(function(){ var _di=cx.drawImage; cx.drawImage=function(im){ if(im && im.tagName==='IMG' && !(im.naturalWidth>0)) return; return _di.apply(cx, arguments); }; })();
 var seen=null;
 function dayLen(){ return 150 + S.lamp*40 + (S.built.bakery?30:0); }
 function inTown(p){ return region(Math.floor(p.x),Math.floor(p.y))==='town'; }
@@ -759,11 +765,12 @@ function openQuests(){
   document.getElementById('ok').onclick=closeSheet;
 }
 
+function gcol(it, txt){ return '<span class="g'+(it.g==='f'?'f':'m')+'">'+esc(txt||whole(it))+'</span>'; }
 function askGender(head, it, cb){
   var t0=Date.now(), pic=EMO[it.n]||'', rc={kind:'陰陽性', ref:'g:'+it.n, q:it.n+'（'+it.zh+'）', a:whole(it)};
   var html='<h3>'+head+'</h3><div class="qtext" style="text-align:center">'+pix(pic||'📦',64)+'<br>'+
     '<span class="fr" style="font-size:1.3em">… '+esc(it.n)+'</span><div class="muted">'+esc(it.zh)+'</div></div>'+
-    '<div class="opts row"><button data-g="m">un</button><button data-g="f">une</button></div><div class="fb" id="fb"></div>'+
+    '<div class="opts row"><button data-g="m" class="bm">un</button><button data-g="f" class="bf">une</button></div><div class="fb" id="fb"></div>'+
     '<div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><span id="slot"></span></div>'+repSlot(rc);
   openSheet(html);
   var done=false;
@@ -771,14 +778,42 @@ function askGender(head, it, cb){
     if(done) return; done=true; rc.pick=b.dataset.g==='f'?'une':'un';
     var ok=b.dataset.g===it.g, ms=Date.now()-t0;
     b.classList.add(ok?'ok':'no'); if(!ok) sheet.querySelector('[data-g="'+it.g+'"]').classList.add('ok');
-    var fb=document.getElementById('fb'); speak(whole(it));
-    if(ok){ fb.innerHTML='✓ '+(ms<2000?'<b style="color:var(--gold)">會心一擊</b> ':'')+'<span class="say">'+whole(it)+'</span>'; setTimeout(function(){ cb(true,ms); },700); }
-    else{ fb.innerHTML='👉 <span class="say">'+whole(it)+'</span> '+spk(whole(it))+'<div class="muted">'+esc(genderWhy(it))+'</div>';
-      document.getElementById('slot').outerHTML='<button class="btn main" id="go">繼續</button>';
-      document.getElementById('go').onclick=function(){ cb(false,ms); }; }
-    document.getElementById('skip').style.visibility='hidden';
+    setTimeout(function(){ genderAfter(it, ok, ms, cb); }, ok?250:450);
   }; });
   document.getElementById('skip').onclick=function(){ if(done) return; done=true; cb(null); };
+}
+/* ============================================================
+   🎯 猜完之後（10-18 Owen：「選 un／une 是矇的為主，可能對了但根本亂猜，輸入不夠確實」
+     「還是要猜，猜完自評很確定／需要重練」）
+   ⭐ 答對 → 自評：💯 很確定（才算數）／🔁 需要重練（＝不算收服，排進回收）
+   ⭐ 答錯或需要重練 → 打一次整塊（une pomme）才繼續——自己產出一次才是輸入（可以跳過）
+   ⭐ 顯示：陽性藍、陰性紅＋字尾規則（例外會標「例外」）
+   cb(算數的對錯, ms, {guess:有沒有猜中, unsure})
+   ============================================================ */
+function genderAfter(it, ok, ms, cb){
+  var w=whole(it); speak(w);
+  var head='<div class="catch"><div class="big">'+pix(EMO[it.n]||'📦',72)+'</div><div class="fr" style="font-size:1.3em">'+(ok?'✓ ':'👉 ')+gcol(it)+' '+spk(w)+'</div>'+
+    '<div class="muted">'+esc(it.zh)+'</div><div class="grule">'+esc(genderWhy(it))+'</div></div>';
+  if(ok){
+    openSheet(head+'<div class="muted" style="text-align:center;margin-top:6px">剛剛那一下，你是……</div>'+
+      '<div class="row2"><button class="btn" id="gre">🔁 需要重練</button><button class="btn main" id="gsure">💯 很確定</button></div>');
+    document.getElementById('gsure').onclick=function(){ cb(true, ms, {guess:true}); };
+    document.getElementById('gre').onclick=function(){ genderType(it, head, function(){ cb(false, ms, {guess:true, unsure:true}); }); };
+  } else genderType(it, head, function(){ cb(false, ms, {guess:false}); });
+}
+function genderType(it, head, done){
+  var w=whole(it);
+  openSheet(head+'<input class="fill" id="gtin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="打一次：'+esc(w)+'">'+
+    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="gskip">先不打</button><button class="btn main" id="gok">好</button></div>');
+  var inp=document.getElementById('gtin'), fin=false; setTimeout(function(){ inp.focus(); },50);
+  function sub(){ if(fin) return; var v=inp.value.trim().toLowerCase().replace(/’/g,"'").replace(/\s+/g,' ');
+    if(!v) return;
+    if(v===w.toLowerCase() || normAns(v)===normAns(w)){ fin=true; inp.disabled=true;
+      document.getElementById('fb').innerHTML='✓ '+gcol(it)+(v===w.toLowerCase()?'':'（注意重音）'); speak(w); setTimeout(done, 650); }
+    else { document.getElementById('fb').innerHTML='再看一次：'+gcol(it); inp.select(); } }
+  document.getElementById('gok').onclick=sub;
+  inp.addEventListener('keydown',function(e){ if(e.key==='Enter') sub(); });
+  document.getElementById('gskip').onclick=function(){ if(fin) return; fin=true; done(); };
 }
 
 /* 記錄：⛔ 跳過（null）不記 */
@@ -801,7 +836,7 @@ function rec(kind, item, ok, ms, extra){
                                  : {kind:(extra&&extra.where)||'題目', topic:item.topic, q:item.q, a:item.a, pick:extra&&extra.chosen, ref:qRef(item), ms:ms});
   if(ok===null) return;
   recallMark(kind, item, ok);
-  if(kind==='g'){ var g=S.gword[item.n]||{r:0,w:0}; g[ok?'r':'w']++; g.last=Date.now(); S.gword[item.n]=g; if(ok){ markStand('g:'+item.n,'noun'); lastCatch=dexCatch(item, ms); } else lastCatch=null; }
+  if(kind==='g'){ var g=S.gword[item.n]||{r:0,w:0}; g[ok?'r':'w']++; g.last=Date.now(); S.gword[item.n]=g; if(ok){ markStand('g:'+item.n,'noun'); lastCatch=dexCatch(item, ms); } else { lastCatch=null; dexMiss(item); } }
   else if(kind==='c'){ var c=S.gword['c:'+item.id]||{r:0,w:0}; c[ok?'r':'w']++; S.gword['c:'+item.id]=c; if(ok) markStand('c:'+item.id,'listen'); }
   else { var t=S.topic[item.topic]||{r:0,w:0}; t[ok?'r':'w']++; if(!ok) t.lastWrong=Date.now(); S.topic[item.topic]=t; S.qlast[item._i]=Date.now();
     if(ok && typeof item._i==='number'){ var f=famOf(item.topic); if(f) markStand('q:'+item._i, f); } }
@@ -1622,21 +1657,42 @@ var DEX_MILESTONE=10, lastCatch=null, villagers=[], grassDist=0, lastWild=-99;
 var RAR=['普通','少見','稀有'];
 function rarity(it){ var l=it.lesson||0; return l>=29?2:(l>=13?1:0); }
 function dexCount(){ return Object.keys(S.dex||{}).length; }
+/* ============================================================
+   📖 圖鑑收服規則（10-18 Owen：「2 3 沒問題，甚至過一段時間需要重新收服」）
+   ⏳ 確定過一次（半透明）→ 收服＝兩個不同天都「答對＋很確定」→ 過 7 天褪色 🔁 要重新收服
+   → 重新收服後間隔拉長 21 天、60 天（每次 +★）；收服過的答錯／需要重練＝馬上要重新收服
+   d = { t, days[], conf, due, lv, shiny, last }   ⚠️ 舊存檔：evo＝已收服、沒 evo＝確定過一次
+   ============================================================ */
+var DEX_GAP=[7,21,60];
+function dexState(d){
+  if(!d) return 'none';
+  if(d.conf==null){ d.conf=d.evo?1:0; if(d.conf){ d.lv=0; d.due=Date.now()+DEX_GAP[0]*86400000; } }
+  if(!d.conf) return 'pending';
+  return Date.now()>=d.due ? 'fading' : 'caught';
+}
 function dexCatch(it, ms){
-  S.dex=S.dex||{}; var d=S.dex[it.n], t=today(), r={isNew:!d, shiny:false, evo:false};
-  if(!d) d=S.dex[it.n]={t:Date.now(), days:[], shiny:0, evo:0};
-  if(d.days.indexOf(t)<0){ d.days.push(t); if(d.days.length>3) d.days=d.days.slice(-3); }
-  if(ms && ms<2000 && !d.shiny){ d.shiny=1; r.shiny=true; }
-  if(!d.evo && d.days.length>=2){ d.evo=1; r.evo=true; }
+  S.dex=S.dex||{}; var d=S.dex[it.n], t=today(), st=dexState(d), r={isNew:!d, shiny:false, evo:false, recap:false, pend:false};
+  if(!d) d=S.dex[it.n]={t:Date.now(), days:[], conf:0, lv:0, shiny:0};
+  d.last=Date.now();
+  if(ms!=null && ms<2000 && !d.shiny){ d.shiny=1; r.shiny=true; }
+  if(st==='none' || st==='pending'){
+    if(d.days.indexOf(t)<0){ d.days.push(t); if(d.days.length>3) d.days=d.days.slice(-3); }
+    if(d.days.length>=2){ d.conf=1; d.evo=1; d.lv=0; d.due=Date.now()+DEX_GAP[0]*86400000; r.evo=true; }
+    else r.pend=true;
+  } else if(st==='fading'){
+    d.lv=Math.min((d.lv||0)+1, DEX_GAP.length-1); d.due=Date.now()+DEX_GAP[d.lv]*86400000; r.recap=true; masteryBonus(3,'重新收服');
+  }
   if(!S.built.cottage && dexCount()>=DEX_MILESTONE) S.moveIn=1;
   return r;
 }
+function dexMiss(it){ var d=(S.dex||{})[it.n]; if(!d) return; var st=dexState(d); if(st==='caught'){ d.due=Date.now(); d.last=Date.now(); } }
+function catchLine(c){ return c.evo?'🌟 收服了！兩天都確定——這個字站穩了。':c.recap?'🔁 重新收服！下次要隔更久才會褪色。':c.pend?'⏳ 先記下了——改天再確定一次才算收服。':''; }
 /* 出哪一隻：還沒收的 ×3（填圖鑑）、收過但今天還沒收（要進化）×2.2、已進化 ×0.35、錯過的 ×2；稀有的比較少出 */
 function pickWild(){
   var rw=recallServe(recallDue(GENDER, function(it){ return 'g:'+it.n; })); if(rw) return rw;
   var gs=readLS('clb7_gender_seen'), now=Date.now(), best=null, bw=-1, t=today();
   shuffle(GENDER).slice(0,80).forEach(function(it){
-    var d=(S.dex||{})[it.n], w= !d ? 3 : d.evo ? .35 : (d.days.indexOf(t)<0 ? 2.2 : .5);
+    var d=(S.dex||{})[it.n], ds=dexState(d), w= ds==='none' ? 3 : ds==='fading' ? 2.5 : ds==='caught' ? .3 : (d.days.indexOf(t)<0 ? 2.5 : .4);
     var mine=S.gword[it.n]||{}, r=gs[it.n]||{};
     if((mine.w||0)>(mine.r||0) || (r.w||0)>(r.c||r.r||0)) w*=2;
     w*=[1,.7,.45][rarity(it)];
@@ -1648,34 +1704,34 @@ function pickWild(){
 }
 function wildEncounter(){
   var it=pickWild(), em=EMO[it.n]||'📦', rr=rarity(it);
-  askGender('🌳 野生的 '+em+' 出現了！ <small>'+RAR[rr]+'・叫對 un／une 就收服</small>', it, function(ok,ms){
+  askGender('🌳 野生的 '+em+' 出現了！ <small>'+RAR[rr]+'・叫對 un／une 就收服</small>', it, function(ok,ms,info){
     S.qlast['w:'+it.n]=Date.now();
     if(ok===null){ closeSheet(); toast('牠鑽回草叢裡了'); return; }
     rec('g', it, ok, ms, {where:'🌳 草叢'});
-    if(!ok){
-      openSheet('<div class="catch"><div class="big" style="opacity:.35">'+pix(em,96)+'</div><div class="story">牠一溜煙跑回草叢了……</div><div class="muted">下次還會遇到牠。</div></div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
-      document.getElementById('ok').onclick=closeSheet; return;
-    }
+    if(!ok){ closeSheet(); toast(info&&info.unsure?'這次先不算收服——牠還會再出現':'牠跑回草叢了，下次還會遇到'); return; }
     var c=lastCatch||{}, d=S.dex[it.n];
     if(bag.length<S.bagCap) bag.push({k:'obj', name:whole(it), n:it.n, g:it.g, em:em, good:true});
     hud(); save();
-    var tags=(c.isNew?'<span class="tag-new">🆕 圖鑑新登錄</span>':'')+(c.shiny?'<span class="tag-new">✨ 閃光</span>':'')+(c.evo?'<span class="tag-new">🌟 進化：熟了</span>':'');
-    var line=c.evo?'昨天收過的，今天又一眼認出來——這個字你站穩了。':c.isNew?'圖鑑第 '+dexCount()+' 種。':(d&&!d.evo?'明天再收一次，牠就會進化。':'');
-    openSheet('<div class="catch"><div class="big"'+(d&&d.shiny?' style="filter:drop-shadow(0 0 10px #f0c95a)"':'')+'>'+pix(em,96)+'</div><div style="font-size:1.2em" class="fr">收服了！ <span class="say">'+esc(whole(it))+'</span> '+spk(whole(it))+'</div><div>'+tags+'</div><div class="muted">'+esc(it.zh)+(line?'　'+line:'')+'</div></div><div class="row2"><button class="btn ghost" id="dex">📖 看圖鑑</button><button class="btn main" id="ok">好</button></div>');
+    var tags=(c.isNew?'<span class="tag-new">🆕 圖鑑新登錄</span>':'')+(c.shiny?'<span class="tag-new">✨ 閃光</span>':'');
+    var line=catchLine(c);
+    openSheet('<div class="catch"><div class="big"'+(d&&d.shiny?' style="filter:drop-shadow(0 0 10px #f0c95a)"':'')+'>'+pix(em,96)+'</div><div style="font-size:1.2em" class="fr">'+gcol(it)+' '+spk(whole(it))+'</div><div>'+tags+'</div><div class="muted">'+esc(it.zh)+(line?'　'+line:'')+'</div></div><div class="row2"><button class="btn ghost" id="dex">📖 看圖鑑</button><button class="btn main" id="ok">好</button></div>');
     document.getElementById('ok').onclick=closeSheet; document.getElementById('dex').onclick=openDex;
   });
 }
 function openDex(){
   var groups=[[],[],[]], caught=0, sh=0, ev=0;
-  GENDER.forEach(function(it){ groups[rarity(it)].push(it); var d=(S.dex||{})[it.n]; if(d){ caught++; if(d.shiny) sh++; if(d.evo) ev++; } });
-  var h='<h3>📖 物品圖鑑 <small>已收 '+caught+' 種'+(sh?'・✨ '+sh:'')+(ev?'・🌟 '+ev:'')+'</small></h3>';
-  h+='<div class="muted">'+(!S.built.cottage?'再收 '+Math.max(0,DEX_MILESTONE-caught)+' 種，就會有人回到鎮上。':'鎮上的人慢慢回來了。之後還會有人回來。')+'　✨ 2 秒內收服＝閃光　🌟 隔天又收服＝進化</div>';
+  var fade=0, pend=0;
+  GENDER.forEach(function(it){ groups[rarity(it)].push(it); var d=(S.dex||{})[it.n], ds=dexState(d); if(ds==='caught'||ds==='fading'){ caught++; if(d.shiny) sh++; } if(ds==='fading') fade++; if(ds==='pending') pend++; });
+  var h='<h3>📖 物品圖鑑 <small>已收服 '+caught+' 種'+(sh?'・✨ '+sh:'')+'</small></h3>';
+  h+='<div class="muted">'+(!S.built.cottage?'再收 '+Math.max(0,DEX_MILESTONE-dexCount())+' 種，就會有人回到鎮上。':'鎮上的人慢慢回來了。')+'　<span class="gm">藍＝un</span>　<span class="gf">紅＝une</span><br>⏳ 確定過一次（改天再確定就收服）　🔁 褪色了，要重新收服'+(fade?'（現在有 '+fade+' 個）':'')+'　★ 重新收服的次數</div>';
   groups.forEach(function(g,ri){
     g.sort(function(a,b){ return (a.lesson||0)-(b.lesson||0); });
     h+='<div class="dexhead">'+['⚪','🔵','🟣'][ri]+' '+RAR[ri]+'</div><div class="dexgrid">';
-    g.forEach(function(it){ var d=(S.dex||{})[it.n], em=EMO[it.n]||'📦';
-      if(!d) h+='<div class="dexcell no r'+ri+'"><div class="em">'+pix(em,40)+'</div><div>？？？</div></div>';
-      else h+='<div class="dexcell r'+ri+(d.shiny?' shiny':'')+'" data-w="'+esc(whole(it))+'" data-zh="'+esc(it.zh)+'">'+(d.evo?'<span class="evo">🌟</span>':'')+'<div class="em">'+pix(em,40)+'</div><div class="fr">'+esc(whole(it))+'</div></div>';
+    g.forEach(function(it){ var d=(S.dex||{})[it.n], em=EMO[it.n]||'📦', ds=dexState(d);
+      if(ds==='none') h+='<div class="dexcell no r'+ri+'"><div class="em">'+pix(em,40)+'</div><div>？？？</div></div>';
+      else h+='<div class="dexcell r'+ri+' '+ds+(d.shiny&&ds!=='pending'?' shiny':'')+'" data-w="'+esc(whole(it))+'" data-zh="'+esc(it.zh)+'">'+
+        (ds==='pending'?'<span class="evo">⏳</span>':ds==='fading'?'<span class="evo">🔁</span>':(d.lv?'<span class="evo">'+new Array(d.lv+1).join('★')+'</span>':''))+
+        '<div class="em">'+pix(em,40)+'</div><div class="fr">'+gcol(it)+'</div></div>';
     });
     h+='</div>';
   });
@@ -1747,24 +1803,19 @@ function updateWild(dt){
   /* 撞方塊 */
   for(var i=0;i<w.blocks.length;i++){ var b=w.blocks[i];
     if(!b.st && Math.hypot(hero.x-b.x, hero.y-b.y)<.6){
-      var ok=b.g===w.it.g, ms=Math.max(0,w.t*1000-600);
-      rec('g', w.it, ok, ms, {where:'🌳 草叢'});
-      S.qlast['w:'+w.it.n]=Date.now();
-      var said=whole(w.it); speak(said);
-      if(ok){
-        b.st='hit'; b.a=.35; S.gold+=1; floatTxt(b.x,b.y-.9,'🪙+1','#ffd76a');
-        if(bag.length<S.bagCap) bag.push({k:'obj', name:said, n:w.it.n, g:w.it.g, em:w.em, good:true});
-        var c=lastCatch||{}, tag=(c.isNew?'🆕 圖鑑新登錄 ':'')+(c.shiny?'✨閃光 ':'')+(c.evo?'🌟進化 ':'');
-        floatTxt(w.x,w.y-1,'收服！ '+said,'#fff');
-        toast((tag||'收服了 ')+said+(c.isNew?'（第 '+dexCount()+' 種）':''));
-        w.phase='done'; w.end=.9; w.caught=1;
-      } else {
-        b.st='broken'; b.a=.5; w.blocks.forEach(function(o){ if(o!==b) o.st='reveal'; });
-        floatTxt(hero.x,hero.y-.9,'👉 '+said,'#ffd76a');
-        toast('牠溜走了——是 '+said+'（'+w.it.zh+'）。'+genderWhy(w.it));
-        w.phase='dash'; w.t=Math.max(w.t,1);
-      }
-      hud(); save(); return true;
+      var ok=b.g===w.it.g, ms=Math.max(0,w.t*1000-600), it=w.it, em=w.em, said=whole(it);
+      S.qlast['w:'+it.n]=Date.now();
+      if(ok){ b.st='hit'; b.a=.35; w.phase='done'; w.end=.9; w.caught=1; floatTxt(w.x,w.y-1,said,'#fff'); }
+      else { b.st='broken'; b.a=.5; w.blocks.forEach(function(o){ if(o!==b) o.st='reveal'; }); w.phase='dash'; w.t=Math.max(w.t,1); }
+      /* ⭐ 撞完先讓方塊彈一下，再進「猜完之後」：答對要自評、錯了要打一次整塊 */
+      joy=null; keys={};   /* ⚠️ 不設 busy：讓方塊彈起來的動畫跑完 */
+      setTimeout(function(){ genderAfter(it, ok, ms, function(fin, ms2, info){
+        rec('g', it, fin, ms, {where:'🌳 草叢'});
+        if(fin){ S.gold+=1; if(bag.length<S.bagCap) bag.push({k:'obj', name:said, n:it.n, g:it.g, em:em, good:true});
+          var c=lastCatch||{}; toast((c.isNew?'🆕 圖鑑新登錄 ':'')+(c.shiny?'✨閃光 ':'')+(catchLine(c)||said)); }
+        else toast(info&&info.unsure?'這次先不算收服——牠還會再出現':'牠溜走了，下次還會遇到');
+        closeSheet(); hud(); save(); }); }, ok?380:520);
+      return true;
     }
   }
   return false;
