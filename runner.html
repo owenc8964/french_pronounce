@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>文法跑酷 · CLB7</title>
+<!--
+  🚪 文法跑酷（2026-10-18 Owen：「瑪利歐是因為跑來跑去、需要在對的時機點跳、走路線、機關、隱藏關卡才有趣」→「做吧！」）
+  ⭐ 法文就是路線本身：自動往前跑，前方一組組門寫著選項，邊跑邊轉進對的門（拿掉法文，這個動作就不成立）
+  ⭐ 時機與路線：門越來越近要及早換道；跑道上有金幣，要在「撿金幣」和「早點換到對的道」之間取捨
+  ⭐ 機關：走錯門＝絆一下、減速，上方顯示正解（⛔ 不扣命、不中斷）；連對會加速
+  ⭐ 題源（⛔ 不自創法文）：
+     ① 動詞變位：verbs_full.js 的 drillForms（核心 11 個動詞、只出 gram_rules 已解鎖的時態），錯誤門＝同時態其他人稱的形（拼法不同才用）
+     ② 選擇題：questions.js 法文挖空、選項全法文、只有一個正解、選項 ≤2 個字
+     ③ un／une：chunks.js「un／une＋名詞」（排除男女同形字）
+  ⭐ 嵌在小鎮裡：town.html 用 iframe 開 runner.html?embed=1，結束 postMessage {type:'runner-done'}
+-->
+<script src="questions.js"></script>
+<script src="chunks.js"></script>
+<script src="verbs_full.js"></script>
+<script src="gram_rules.js"></script>
+<script src="tts_reader.js"></script>
+<script src="sync_supabase.js"></script>
+<script src="game_log.js"></script>
+<style>
+@font-face { font-family:'Cubic11'; src:url('assets/game/fonts/Cubic_11.woff2') format('woff2'); font-display:swap; }
+:root { --ink:#eef3ea; --dim:#9db1a2; --gold:#f0c95a; }
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html, body { height:100%; background:#1b2a1d; overflow:hidden; }
+body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; font-size:16px; line-height:1.45; user-select:none; -webkit-user-select:none; }
+#cv { position:fixed; inset:0; width:100vw; height:100dvh; display:block; touch-action:none; }
+.top { position:fixed; top:0; left:0; right:0; padding:calc(env(safe-area-inset-top) + 8px) 12px 10px; background:linear-gradient(#10190fee,#10190f00); pointer-events:none; z-index:2; text-align:center; }
+.q { font-size:1.25em; } .q b { color:var(--gold); }
+.sub { font-size:.8em; color:var(--dim); min-height:1.2em; }
+.fb { font-size:.95em; color:var(--gold); min-height:1.4em; }
+.bot { position:fixed; left:0; right:0; bottom:0; padding:8px 12px calc(env(safe-area-inset-bottom) + 10px); display:flex; justify-content:space-between; z-index:2; pointer-events:none; }
+.btn { pointer-events:auto; background:rgba(10,16,12,.8); color:var(--ink); border:1px solid rgba(255,255,255,.2); border-radius:10px; padding:6px 12px; font-family:inherit; font-size:.85em; }
+.btn.main { background:#3c6b4c; border-color:#5a9a6e; }
+.chip { background:rgba(10,16,12,.75); border-radius:999px; padding:3px 10px; font-size:.85em; }
+.sheet { position:fixed; inset:0; background:rgba(5,12,8,.78); display:none; align-items:center; justify-content:center; z-index:5; padding:16px; }
+.sheet.on { display:flex; }
+.box { background:#16251a; border:1px solid #2c4535; border-radius:14px; padding:16px; max-width:420px; width:100%; max-height:86vh; overflow:auto; }
+.box h2 { color:var(--gold); font-size:1.15em; margin-bottom:8px; }
+.box .muted { color:var(--dim); font-size:.86em; margin-top:6px; }
+.box .row { display:flex; gap:8px; justify-content:flex-end; margin-top:12px; }
+.say { color:var(--gold); }
+.stat { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; } .stat span { background:#0d1a10; border-radius:8px; padding:2px 8px; font-size:.85em; }
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<div class="top"><div class="sub" id="sub"></div><div class="q fr" id="q"></div><div class="fb fr" id="fb"></div></div>
+<div class="bot"><span class="chip" id="hud"></span><button class="btn" id="bend">■ 停</button></div>
+<div class="sheet" id="sheet"><div class="box" id="box"></div></div>
+<script>
+'use strict';
+var QS=new URLSearchParams(location.search), EMBED=QS.get('embed')==='1', N_GATES=+QS.get('n')||12;
+var GL=null; try{ GL=(EMBED && parent!==window && parent.GameLog) ? parent.GameLog : (window.GameLog||null); }catch(e){ GL=window.GameLog||null; }
+if(GL && GL===window.GameLog) GL.start('runner'); else if(GL){ ['pointerdown','keydown'].forEach(function(ev){ window.addEventListener(ev, function(){ GL.ping(); }, {passive:true, capture:true}); }); }
+var MUTED=false; try{ MUTED=localStorage.getItem('town_mute')==='1'; }catch(e){}
+function speak(t){ if(MUTED) return; try{ if(window.TtsReader&&TtsReader.supported) TtsReader.speak(t); }catch(e){} }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function zh(s){ return /[一-鿿]/.test(s); }
+function norm(s){ return String(s).toLowerCase().replace(/[’]/g,"'").replace(/\s+/g,' ').trim(); }
+
+/* ---------- 題源 ---------- */
+var CONJ_VERBS=['être','avoir','faire','aller','devoir','pouvoir','vouloir','venir','prendre','savoir','voir'];
+var CONJ_MODES=[ {tense:'present', label:'présent', gram:null}, {tense:'passe-compose', label:'passé composé', gram:'passe'}, {tense:'imparfait', label:'imparfait', gram:'imparfait'},
+  {tense:'futur-simple', label:'futur simple', gram:'futur-simple'}, {tense:'conditionnel', label:'conditionnel', gram:'conditionnel'}, {tense:'subjonctif', label:'subjonctif', gram:'subjonctif'} ];
+var PERS=['je','tu','il / elle','nous','vous','ils / elles'];
+var MODES=CONJ_MODES.filter(function(m){ if(!m.gram) return true; if(typeof GRAM_POINTS==='undefined') return m.tense==='passe-compose'; var p=GRAM_POINTS.filter(function(x){ return x.id===m.gram; })[0]; return !!p && p.unlocked!==false; });
+function conjQ(){
+  if(typeof VERBS_FULL==='undefined' || typeof drillForms!=='function') return null;
+  var m=MODES[Math.floor(Math.random()*MODES.length)], inf=CONJ_VERBS[Math.floor(Math.random()*CONJ_VERBS.length)];
+  var v=VERBS_FULL.filter(function(x){ return x.inf===inf; })[0]; if(!v) return null; var f=drillForms(v, m.tense); if(!f) return null;
+  var pi=Math.floor(Math.random()*6), right=String(f[pi]).split('|')[0], seen={}; seen[norm(right)]=1;
+  String(f[pi]).split('|').forEach(function(a){ seen[norm(a)]=1; });
+  var wrong=shuffle([0,1,2,3,4,5].filter(function(x){ return x!==pi; })).map(function(x){ return String(f[x]).split('|')[0]; }).filter(function(w){ if(seen[norm(w)]) return false; seen[norm(w)]=1; return true; }).slice(0,2);
+  if(!wrong.length) return null;
+  return {kind:'conj', q:'<b>'+esc(PERS[pi])+'</b> · '+esc(inf)+' · '+esc(m.label), sub:'動詞變位', right:right, opts:shuffle([right].concat(wrong)), say:(pi===0&&/^[aeiouhéè]/i.test(right)?"j'":['je','tu','il','nous','vous','ils'][pi]+' ')+right, ref:'v:'+m.tense+':'+inf+'_'+pi, topic:'conj-'+m.tense};
+}
+var CHOOSE=(function(){ var out=[]; (typeof BANK!=='undefined'?BANK:[]).forEach(function(q,i){
+  if(q.type!=='choose'||!q.opts||q.opts.length<2||!/_{2,}/.test(q.q)||q.opts.some(zh)) return;
+  var stem=String(q.q).replace(/^「/,'').replace(/」.*$/,''); if(zh(stem) || (stem.match(/_{2,}/g)||[]).length!==1 || stem.length>70) return;
+  var alts=String(q.a).split('|'), right=q.opts.filter(function(o){ return alts.indexOf(o)>=0; }); if(right.length!==1) return;
+  if(q.opts.some(function(o){ return o.split(/\s+/).length>2 || o.length>14; })) return;
+  out.push({stem:stem, right:right[0], wrong:q.opts.filter(function(o){ return o!==right[0] && norm(o)!==norm(right[0]); }), i:i, topic:q.topic, note:q.aNote||''});
+}); return out; })();
+function chooseQ(){ if(!CHOOSE.length) return null; var c=CHOOSE[Math.floor(Math.random()*CHOOSE.length)]; if(!c.wrong.length) return null;
+  return {kind:'choose', q:esc(c.stem).replace(/_{2,}/,'<b>＿＿</b>'), sub:'選對的那個', right:c.right, opts:shuffle([c.right].concat(shuffle(c.wrong).slice(0,2))), say:c.stem.replace(/_{2,}/,c.right).replace(/\s*\([^)]*\)/g,''), ref:'q:'+c.i, topic:c.topic, note:c.note}; }
+var NOUNS=(function(){ var map={}, bad={}, EPI={dentiste:1,camarade:1,artiste:1,touriste:1,journaliste:1,'élève':1,'collègue':1,enfant:1,'secrétaire':1};
+  (typeof CHUNKS!=='undefined'?CHUNKS:[]).forEach(function(c){ var m=String(c.fr||'').trim().match(/^(un|une)\s+([a-zàâçéèêëîïôûùüÿœæ-]+)$/i); if(!m) return; var n=m[2].toLowerCase(), g=m[1].toLowerCase()==='une'?'f':'m';
+    if(map[n]&&map[n].g!==g) bad[n]=1; if(!map[n]) map[n]={n:n,g:g,zh:String(c.zh||'').split(/[（(]/)[0]}; });
+  return Object.keys(map).filter(function(k){ return !bad[k] && !EPI[k] && k.length>=3; }).map(function(k){ return map[k]; }); })();
+function genderQ(){ if(!NOUNS.length) return null; var it=NOUNS[Math.floor(Math.random()*NOUNS.length)], right=it.g==='f'?'une':'un';
+  return {kind:'gender', q:'… <b>'+esc(it.n)+'</b>', sub:'un 還是 une？', right:right, opts:shuffle(['un','une']), say:right+' '+it.n, ref:'g:'+it.n, topic:'gender', note:it.zh}; }
+function nextQ(){ for(var k=0;k<6;k++){ var r=Math.random(), q= r<.4 ? conjQ() : r<.8 ? chooseQ() : genderQ(); if(q) return q; } return genderQ(); }
+
+/* ---------- 遊戲狀態 ---------- */
+var cv=document.getElementById('cv'), cx=cv.getContext('2d'), W=0, H=0, DPR=1;
+(function(){ var _di=cx.drawImage; cx.drawImage=function(im){ if(im && im.tagName==='IMG' && !(im.naturalWidth>0)) return; return _di.apply(cx, arguments); }; })();
+var heroImg=new Image(); heroImg.src='assets/game/tiles/tile_0088.png';
+function resize(){ DPR=Math.min(2,window.devicePixelRatio||1); W=innerWidth; H=innerHeight; cv.width=W*DPR; cv.height=H*DPR; cx.setTransform(DPR,0,0,DPR,0,0); }
+window.addEventListener('resize', resize); resize();
+var G=null, t=0;
+function laneX(l){ var lw=Math.min(W/3, 150); return W/2+(l-1)*lw; }
+function newRun(){
+  G={dist:0, speed:150, lane:1, lx:laneX(1), gates:[], coins:[], n:0, ok:0, combo:0, best:0, gold:0, stumble:0, wrong:[], over:false, flash:null, cur:null};
+  spawnGate(H*.9); for(var i=0;i<14;i++) spawnCoin(H*.25+i*60);
+}
+function spawnGate(ahead){
+  if(G.n+G.gates.length>=N_GATES) return;
+  var q=nextQ(), n=q.opts.length, lanes = n===2 ? shuffle([[0,1],[1,2],[0,2]])[0] : [0,1,2];
+  var g={y:G.dist+ahead, q:q, lanes:lanes, done:false}; G.gates.push(g);
+  if(!G.cur) showQ(g);
+}
+function spawnCoin(ahead){ G.coins.push({y:G.dist+ahead, lane:Math.floor(Math.random()*3), got:false}); }
+function showQ(g){ G.cur=g; document.getElementById('sub').textContent=g.q.sub+'　（第 '+(G.n+1)+'／'+N_GATES+' 道門）'; document.getElementById('q').innerHTML=g.q.q; }
+function hud(){ document.getElementById('hud').textContent='🪙 '+G.gold+(G.combo>=2?'　🔥 連對 '+G.combo:''); }
+function passGate(g){
+  g.done=true; var idx=g.lanes.indexOf(G.lane), pick=idx>=0?g.q.opts[idx]:null, ok=pick===g.q.right;
+  G.n++;
+  if(GL) GL.answer(ok, {kind:'🚪 跑酷', topic:g.q.topic, ref:g.q.ref, q:document.getElementById('q').textContent, a:g.q.right, pick:pick||'（沒進門）'});
+  var fb=document.getElementById('fb');
+  if(ok){ G.ok++; G.combo++; G.best=Math.max(G.best,G.combo); G.gold+=2+(G.combo>=3?1:0); G.speed=Math.min(260, G.speed*1.05); fb.innerHTML='✓ '+esc(g.q.say); G.flash={c:'rgba(121,211,154,.25)', t:.3}; }
+  else { G.combo=0; G.stumble=1.2; G.speed=Math.max(130, G.speed*.9); fb.innerHTML='👉 '+esc(g.q.say)+(g.q.note?'　<span style="color:#9db1a2">'+esc(g.q.note)+'</span>':''); G.wrong.push(g.q.say); G.flash={c:'rgba(224,122,106,.3)', t:.4}; }
+  speak(g.q.say); hud();
+  G.cur=null; var nx=G.gates.filter(function(x){ return !x.done; })[0];
+  if(nx) showQ(nx);
+  if(G.n>=N_GATES) setTimeout(finish, 700);
+  else spawnGate(H*.82);   /* 門與門約 4–5 秒：Owen「一直有題」 */
+}
+function finish(){
+  if(G.over) return; G.over=true;
+  openBox('<h2>🚪 跑完了</h2><div class="stat"><span>過了 '+G.ok+' 道對的門</span><span>最高連對 '+G.best+'</span><span>+'+G.gold+' 🪙</span></div>'+
+    (G.wrong.length?'<div class="muted">走錯的這幾道：</div>'+G.wrong.map(function(w){ return '<div class="say fr">'+esc(w)+'</div>'; }).join(''):'<div class="muted">全部走對 ✨</div>')+
+    '<div class="row">'+(EMBED?'<button class="btn main" id="home">回小鎮</button>':'<button class="btn main" id="again">再跑一次</button>')+'</div>');
+  if(EMBED) document.getElementById('home').onclick=back; else document.getElementById('again').onclick=function(){ closeBox(); document.getElementById('fb').textContent=''; newRun(); hud(); };
+}
+function back(){ var msg={type:'runner-done', ok:G?G.ok:0, total:G?G.n:0, gold:G?G.gold:0, best:G?G.best:0, wrong:G?G.wrong.slice(0,10):[]}; if(EMBED && parent!==window) parent.postMessage(msg,'*'); else location.href='town.html'; }
+function openBox(h){ document.getElementById('box').innerHTML=h; document.getElementById('sheet').className='sheet on'; }
+function closeBox(){ document.getElementById('sheet').className='sheet'; }
+
+/* ---------- 操作：左右滑／點左右半邊／方向鍵 ---------- */
+var sx=null;
+cv.addEventListener('pointerdown', function(e){ sx=e.clientX; });
+cv.addEventListener('pointerup', function(e){ if(!G||G.over||sx==null) return; var dx=e.clientX-sx; sx=null;
+  if(Math.abs(dx)>24) move(dx>0?1:-1); else move(e.clientX<W/2?-1:1); });
+window.addEventListener('keydown', function(e){ if(!G||G.over) return; if(e.key==='ArrowLeft'||e.key==='a'){ move(-1); e.preventDefault(); } if(e.key==='ArrowRight'||e.key==='d'){ move(1); e.preventDefault(); } });
+function move(d){ G.lane=Math.max(0,Math.min(2,G.lane+d)); }
+document.getElementById('bend').onclick=function(){ if(G && !G.over){ if(!EMBED || G.n===0 || confirm('現在停下來，這趟就到這裡。要回小鎮嗎？')) finish(); } };
+
+/* ---------- 迴圈 ---------- */
+var last=performance.now();
+var HERO_Y=function(){ return H*.74; };
+function loop(now){
+  var dt=Math.min(.05,(now-last)/1000); last=now; t+=dt;
+  if(G && !G.over && document.getElementById('sheet').className.indexOf('on')<0){
+    var sp=G.speed*(G.stumble>0?.45:1); if(G.stumble>0) G.stumble-=dt;
+    G.dist+=sp*dt; G.lx+=(laneX(G.lane)-G.lx)*Math.min(1,dt*14);
+    G.gates.forEach(function(g){ if(!g.done && g.y<=G.dist) passGate(g); });
+    G.coins.forEach(function(c){ if(!c.got && Math.abs(c.y-G.dist)<14 && c.lane===G.lane){ c.got=true; G.gold++; hud(); } });
+    G.coins=G.coins.filter(function(c){ return c.y>G.dist-200; }); G.gates=G.gates.filter(function(g){ return !g.done || g.y>G.dist-200; });
+    if(Math.random()<dt*1.2) spawnCoin(H*.9+Math.random()*200);
+    if(G.flash){ G.flash.t-=dt; if(G.flash.t<=0) G.flash=null; }
+  }
+  draw(); requestAnimationFrame(loop);
+}
+function sy(y){ return HERO_Y()-(y-G.dist); }
+function draw(){
+  cx.fillStyle='#2f4a2a'; cx.fillRect(0,0,W,H);
+  var lw=Math.min(W/3,150), x0=W/2-lw*1.5;
+  cx.fillStyle='#8a7350'; cx.fillRect(x0,0,lw*3,H);
+  if(G){ var off=(G.dist%60); cx.fillStyle='rgba(0,0,0,.12)'; for(var y=-60;y<H+60;y+=60){ cx.fillRect(x0+lw-1, y+off, 2, 30); cx.fillRect(x0+lw*2-1, y+off, 2, 30); } }
+  cx.fillStyle='#5b4a33'; cx.fillRect(x0-4,0,4,H); cx.fillRect(x0+lw*3,0,4,H);
+  if(!G) return;
+  G.coins.forEach(function(c){ if(c.got) return; var y=sy(c.y); if(y<-20||y>H+20) return; cx.fillStyle='#f0c95a'; cx.beginPath(); cx.arc(laneX(c.lane), y, 7, 0, Math.PI*2); cx.fill(); cx.fillStyle='#b8902a'; cx.fillRect(laneX(c.lane)-1, y-4, 2, 8); });
+  G.gates.forEach(function(g){ var y=sy(g.y); if(y<-60||y>H+60) return;
+    g.lanes.forEach(function(l, i){ var x=laneX(l), w=lw*.86, h=40;
+      cx.fillStyle=g.done?'rgba(60,60,60,.4)':'#3d2b1a'; cx.fillRect(x-w/2, y-h, w, h);
+      cx.fillStyle=g.done?'rgba(120,120,120,.5)':'#e8d6a8'; cx.fillRect(x-w/2+4, y-h+4, w-8, h-8);
+      cx.fillStyle='#1d1408'; var txt=g.q.opts[i]; cx.font=Math.round(Math.min(18, (w-12)/Math.max(3,txt.length)*1.7))+'px Cubic11, system-ui'; cx.textAlign='center'; cx.textBaseline='middle'; cx.fillText(txt, x, y-h/2); });
+    if(!g.done){ [0,1,2].filter(function(l){ return g.lanes.indexOf(l)<0; }).forEach(function(l){ cx.fillStyle='#3a5a30'; cx.fillRect(laneX(l)-lw*.43, y-40, lw*.86, 40); }); }
+  });
+  var hy=HERO_Y(), bob=Math.abs(Math.sin(t*12))*4*(G.stumble>0?.3:1), sz=40;
+  cx.imageSmoothingEnabled=false; cx.save(); if(G.stumble>0){ cx.translate(G.lx, hy); cx.rotate(Math.sin(t*20)*.2); cx.translate(-G.lx, -hy); }
+  cx.drawImage(heroImg, G.lx-sz/2, hy-sz-bob, sz, sz); cx.restore();
+  if(G.flash){ cx.fillStyle=G.flash.c; cx.fillRect(0,0,W,H); }
+}
+
+/* ---------- 開場 ---------- */
+requestAnimationFrame(loop);
+openBox('<h2>🚪 文法跑酷</h2><div>一路往前跑，前方的門上寫著選項，<b>轉進對的那道門</b>。</div>'+
+  '<div class="muted">・左右滑（或點畫面左半／右半、方向鍵）換跑道<br>・題目在上方：動詞變位、選對的字、un／une<br>・走錯門會絆一下、減速；連對會越跑越快<br>・路上的金幣順手撿</div>'+
+  '<div class="row"><button class="btn main" id="start">開跑</button></div>');
+document.getElementById('start').onclick=function(){ closeBox(); newRun(); hud(); };
+</script>
+</body>
+</html>

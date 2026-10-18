@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>石頭過河 · CLB7</title>
+<!--
+  🪨 石頭過河（2026-10-18 Owen：「瑪利歐是因為跑來跑去、需要在對的時機點跳、走路線、機關、隱藏關卡才有趣」→ 這兩個玩法「做吧！」）
+  ⭐ 法文就是路線本身：照中文的意思，按語序踩寫著字的石頭過河（拿掉法文，這個動作就不成立）
+  ⭐ 路線：只能跳正前方或斜前方（左右各一格），要先看好後面幾排的字在哪；正確路線保證走得通
+  ⭐ 時機：站上去的石頭會搖晃下沉（⛔ 沒有倒數條，看石頭本身）；句子越後面沉得越快
+  ⭐ 機關：錯的字一踩就沉 → 掉回岸邊重來；同一句錯兩次，下一排正確的石頭會微微發光
+  ⭐ 隱藏：有時某一排旁邊有一顆 ✨ 寶石石頭（側跳過去拿金幣），沉得特別快，拿完要趕快回正路
+  ⭐ 題源同小鎮風車的拼句：questions.js 中翻法題、sentences.js、chunks.js（3–7 個字的句子），⛔ 不自創法文
+  ⭐ 陷阱字＝容易搞混的同族字（suis／es／est…），第一個字一律小寫（⛔ 不讓大寫洩漏開頭）
+  ⭐ 嵌在小鎮裡：town.html 用 iframe 開 river.html?embed=1，結束 postMessage {type:'river-done'} 回小鎮
+  三層出口：↷ 這句跳過／■ 上岸（整趟）／小鎮那邊的「晚點再來」
+-->
+<script src="questions.js"></script>
+<script src="chunks.js"></script>
+<script src="sentences.js"></script>
+<script src="tts_reader.js"></script>
+<script src="sync_supabase.js"></script>
+<script src="game_log.js"></script>
+<style>
+@font-face { font-family:'Cubic11'; src:url('assets/game/fonts/Cubic_11.woff2') format('woff2'); font-display:swap; }
+:root { --ink:#eef3ea; --dim:#9db1a2; --gold:#f0c95a; --red:#e07a6a; --green:#79d39a; }
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html, body { height:100%; background:#0d2433; overflow:hidden; }
+body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; font-size:16px; line-height:1.45; user-select:none; -webkit-user-select:none; }
+#cv { position:fixed; inset:0; width:100vw; height:100dvh; display:block; touch-action:none; }
+.top { position:fixed; top:0; left:0; right:0; padding:calc(env(safe-area-inset-top) + 8px) 12px 8px; background:linear-gradient(#0d2433ee,#0d243300); pointer-events:none; z-index:2; }
+.zh { font-size:1.05em; }
+.built { font-size:1.15em; color:var(--gold); min-height:1.5em; margin-top:2px; }
+.meta { font-size:.78em; color:var(--dim); }
+.bot { position:fixed; left:0; right:0; bottom:0; padding:8px 12px calc(env(safe-area-inset-bottom) + 10px); display:flex; gap:8px; justify-content:space-between; z-index:2; }
+.btn { background:rgba(10,16,12,.8); color:var(--ink); border:1px solid rgba(255,255,255,.2); border-radius:10px; padding:6px 12px; font-family:inherit; font-size:.85em; }
+.btn.main { background:#3c6b4c; border-color:#5a9a6e; }
+.sheet { position:fixed; inset:0; background:rgba(5,12,18,.78); display:none; align-items:center; justify-content:center; z-index:5; padding:16px; }
+.sheet.on { display:flex; }
+.box { background:#16262f; border:1px solid #2c4552; border-radius:14px; padding:16px; max-width:420px; width:100%; max-height:86vh; overflow:auto; }
+.box h2 { color:var(--gold); font-size:1.15em; margin-bottom:8px; }
+.box .muted { color:var(--dim); font-size:.86em; margin-top:6px; }
+.box .row { display:flex; gap:8px; justify-content:flex-end; margin-top:12px; }
+.say { color:var(--gold); }
+.stat { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; } .stat span { background:#0d1a20; border-radius:8px; padding:2px 8px; font-size:.85em; }
+.toast { position:fixed; left:50%; top:30%; transform:translateX(-50%); background:rgba(0,0,0,.75); padding:6px 14px; border-radius:10px; font-size:.9em; opacity:0; transition:opacity .25s; z-index:4; pointer-events:none; text-align:center; max-width:90vw; }
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<div class="top"><div class="meta" id="meta"></div><div class="zh" id="zh"></div><div class="built fr" id="built"></div></div>
+<div class="bot"><button class="btn" id="bskip">↷ 這句跳過</button><button class="btn" id="bend">■ 上岸</button></div>
+<div class="toast" id="toast"></div>
+<div class="sheet" id="sheet"><div class="box" id="box"></div></div>
+<script>
+'use strict';
+var QS=new URLSearchParams(location.search), EMBED=QS.get('embed')==='1', N_SENT=+QS.get('n')||3;
+var GL=null; try{ GL=(EMBED && parent!==window && parent.GameLog) ? parent.GameLog : (window.GameLog||null); }catch(e){ GL=window.GameLog||null; }
+if(GL && GL===window.GameLog) GL.start('river'); else if(GL){ ['pointerdown','keydown'].forEach(function(ev){ window.addEventListener(ev, function(){ GL.ping(); }, {passive:true, capture:true}); }); }
+var MUTED=false; try{ MUTED=localStorage.getItem('town_mute')==='1'; }catch(e){}
+function speak(t){ if(MUTED) return; try{ if(window.TtsReader&&TtsReader.supported) TtsReader.speak(t); }catch(e){} }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function toast(t){ var e=document.getElementById('toast'); e.textContent=t; e.style.opacity=1; clearTimeout(toast.h); toast.h=setTimeout(function(){ e.style.opacity=0; },1600); }
+
+/* ---------- 題源（同 town.html 風車拼句） ---------- */
+var CONFUSE=[['suis','es','est','sommes','êtes','sont'],['ai','as','a','avons','avez','ont'],['a','à'],['le','la','les','un','une','des'],
+  ['du','des','au','aux'],['mon','ma','mes','ton','ta','tes','son','sa','ses'],['ce','cette','ces'],['il','elle','ils','elles'],
+  ['je','tu','nous','vous'],['à','au','aux','en','dans'],['et','est'],['ou','où'],['va','vas','vais','vont','allons','allez'],
+  ['fait','fais','faites','font','faisons'],['peux','peut','peuvent','pouvons','pouvez'],['veux','veut','veulent','voulons','voulez'],
+  ['pas','plus','jamais','rien'],['que','qui','quoi'],['de','du','des'],['pour','par','avec','sans'],
+  ['moi','toi','lui','eux'],['me','te','se'],['ici','là'],['bon','bonne','bons','bonnes'],['petit','petite','petits','petites'],
+  ['grand','grande','grands','grandes'],['nouveau','nouvelle','nouveaux'],['premier','première']];
+function tileTok(a){ return String(a).replace(/[’‘]/g,"'").split(/\s+/).map(function(t){ return t.replace(/^[«"“(]+|[.,!?;:»"”)]+$/g,''); }).filter(function(t){ return t && /[A-Za-zÀ-ÿ0-9]/.test(t); }); }
+function key(t){ return String(t).toLowerCase(); }
+var SRC=(function(){
+  function okN(a){ var n=tileTok(String(a).split('|')[0]).length; return n>=3&&n<=7; }
+  function like(x){ return x&&x.fr&&x.zh&&okN(x.fr)&&!/\s\/\s|…|\.\.\.|→|[（(]/.test(x.fr); }
+  var A=(typeof BANK!=='undefined'?BANK:[]).map(function(q,i){ return {q:q,i:i}; }).filter(function(o){ return o.q.type==='trans'&&typeof o.q.a==='string'&&o.q.q&&okN(o.q.a); })
+    .map(function(o){ return {zh:o.q.q, a:o.q.a, lesson:o.q.lesson, topic:o.q.topic, id:'q:'+o.i}; });
+  var Sn=(typeof SENTENCES!=='undefined'?SENTENCES:[]).filter(like).map(function(x){ return {zh:x.zh, a:x.fr, lesson:x.lesson, topic:'tiles', id:'S:'+x.id}; });
+  var Ch=(typeof CHUNKS!=='undefined'?CHUNKS:[]).filter(like).map(function(x){ return {zh:x.zh, a:x.fr, lesson:x.lesson, topic:'tiles', id:'C:'+x.id}; });
+  return {A:A, S:Sn, C:Ch};
+})();
+var BANKWORDS=(function(){ var b={}; (typeof BANK!=='undefined'?BANK:[]).forEach(function(q){ if(typeof q.a!=='string') return; tileTok(q.a.split('|')[0]).forEach(function(w){ if(w.length>1) (b[q.lesson]=b[q.lesson]||{})[key(w)]=1; }); }); return b; })();
+
+/* 一句 → 一段河：每排 3 顆石頭（1 對 2 錯），正確路線相鄰兩排的 lane 差 ≤1 */
+function makeLevel(si){
+  var r=Math.random(), k=r<.34?'A':(r<.64?'S':'C'); if(!SRC[k].length) k=SRC.A.length?'A':'S';
+  var src=SRC[k][Math.floor(Math.random()*SRC[k].length)];
+  var alts=String(src.a).split('|'), words=tileTok(alts[0]); words=words.map(function(t,i){ return i===0 ? t.charAt(0).toLowerCase()+t.slice(1) : t; });
+  var altToks=alts.map(function(a){ return tileTok(a).map(key); });
+  var rows=[], lane=Math.floor(Math.random()*3);
+  words.forEach(function(w,i){
+    if(i>0){ var opts=[lane-1,lane,lane+1].filter(function(x){ return x>=0&&x<=2; }); lane=opts[Math.floor(Math.random()*opts.length)]; }
+    var bad={}; bad[key(w)]=1; altToks.forEach(function(t){ if(t[i]) bad[t[i]]=1; });   /* 別的正確說法在這個位置的字也不能當陷阱 */
+    var pool=[];
+    CONFUSE.forEach(function(g){ if(g.indexOf(key(w))>=0) g.forEach(function(x){ if(!bad[x] && pool.indexOf(x)<0) pool.push(x); }); });
+    shuffle(words).forEach(function(x){ if(!bad[key(x)] && pool.indexOf(key(x))<0) pool.push(key(x)); });
+    var bw=Object.keys(BANKWORDS[src.lesson]||{}); shuffle(bw).slice(0,10).forEach(function(x){ if(!bad[x] && pool.indexOf(x)<0) pool.push(x); });
+    var d=pool.slice(0,2), cells=[null,null,null]; cells[lane]={w:w, ok:true};
+    var others=[0,1,2].filter(function(x){ return x!==lane; }); others.forEach(function(x,j){ cells[x]={w:d[j]||'…', ok:false}; });
+    rows.push({cells:cells, lane:lane});
+  });
+  /* ✨ 寶石石頭：放在某一排正確石頭在邊上的那一側 */
+  var tr=null; if(Math.random()<.6){ var cand=rows.map(function(rw,i){ return (rw.lane!==1 && i<rows.length-1) ? i : -1; }).filter(function(i){ return i>=0; });
+    if(cand.length){ var ti=cand[Math.floor(Math.random()*cand.length)]; tr={row:ti, side:rows[ti].lane===0?-1:3, got:false}; } }
+  return {src:src, words:words, rows:rows, tr:tr, sink:Math.max(2.4, 4.2-.6*si)};
+}
+
+/* ---------- 狀態 ---------- */
+var cv=document.getElementById('cv'), cx=cv.getContext('2d'), W=0, H=0, DPR=1;
+(function(){ var _di=cx.drawImage; cx.drawImage=function(im){ if(im && im.tagName==='IMG' && !(im.naturalWidth>0)) return; return _di.apply(cx, arguments); }; })();
+var heroImg=new Image(); heroImg.src='assets/game/tiles/tile_0088.png';
+var L=null, si=0, hero=null, timers={}, mistakes=0, sinks=0, t=0, run={ok:0, total:0, coins:0, treasure:0, wrong:[]}, over=false, hop=null, splash=null, t0=0;
+function resize(){ DPR=Math.min(2,window.devicePixelRatio||1); W=innerWidth; H=innerHeight; cv.width=W*DPR; cv.height=H*DPR; cx.setTransform(DPR,0,0,DPR,0,0); }
+window.addEventListener('resize', resize); resize();
+function newSentence(){
+  L=makeLevel(si); hero={row:-1, lane:1, x:0, y:0}; timers={}; mistakes=0; sinks=0; t0=Date.now();
+  document.getElementById('meta').textContent='第 '+(si+1)+'／'+N_SENT+' 段河　照中文的意思，按順序踩字過河';
+  document.getElementById('zh').textContent=L.src.zh; paintBuilt();
+}
+function paintBuilt(){ var n=Math.max(0,hero.row+1); if(hero.row>=L.words.length) n=L.words.length; document.getElementById('built').textContent=L.words.slice(0,n).join(' '); }
+/* 版面：下岸在底部、上岸在頂部，每排一列 */
+function geo(){ var top=H*.24, bot=H-80, rows=L.words.length, gap=(bot-top)/(rows+1), lw=Math.min(W*.235,130); return {top:top, bot:bot, gap:gap, lw:lw, cx0:W/2-lw*1.08}; }
+function stonePos(row, lane){ var g=geo(); var y=g.bot-(row+1)*g.gap; if(row<0) y=g.bot; if(row>=L.words.length) y=g.top-g.gap*.2; var x=g.cx0+lane*g.lw*1.08; return {x:x, y:y, w:g.lw, h:Math.min(44,g.gap*.62)}; }
+function canHop(r, ln){
+  if(hop||splash||over) return false;
+  if(ln===-1||ln===3) return L.tr && !L.tr.got && r===hero.row && L.tr.row===r && L.tr.side===ln && Math.abs(L.rows[r].lane-ln)===1 && hero.lane===L.rows[r].lane;
+  if(hero.lane===-1||hero.lane===3) return r===hero.row && ln===L.rows[r].lane;   /* 從寶石跳回原排 */
+  if(r!==hero.row+1) return false;
+  if(r===L.words.length) return true;           /* 跳上對岸 */
+  if(hero.row<0) return true;                   /* 岸邊很寬，哪一顆都跳得到 */
+  return Math.abs(ln-hero.lane)<=1;
+}
+function hopTo(r, ln){
+  if(!canHop(r,ln)) return;
+  var a=stonePos(hero.row, hero.lane===-1?L.rows[hero.row].lane:hero.lane===3?L.rows[hero.row].lane:hero.lane), b;
+  if(ln===-1||ln===3){ var base=stonePos(r, L.rows[r].lane), g=geo(); b={x:base.x+(ln===-1?-1:1)*g.lw*.8, y:base.y}; if(hero.lane===-1||hero.lane===3) a={x:a.x+(hero.lane===-1?-1:1)*g.lw*.8, y:a.y}; }
+  else { b=stonePos(r, ln); if(hero.lane===-1||hero.lane===3){ var g2=geo(); a={x:a.x+(hero.lane===-1?-1:1)*g2.lw*.8, y:a.y}; } }
+  hop={from:a, to:b, t:0, r:r, ln:ln};
+}
+function land(r, ln){
+  hero.row=r; hero.lane=ln;
+  if(r>=L.words.length) return sentenceDone(false);
+  if(ln===-1||ln===3){ L.tr.got=true; run.coins+=5; run.treasure++; toast('✨ 寶石！+5🪙　快跳回正路'); timers[r+':'+ln]=timers[r+':'+ln]||0; return; }
+  var c=L.rows[r].cells[ln];
+  if(!c.ok){ mistakes++; toast('« '+c.w+' » 不對——石頭沉下去了'); timers[r+':'+ln]=L.sink; return; }
+  if(timers[r+':'+ln]==null) timers[r+':'+ln]=0;
+  paintBuilt();
+}
+function fall(why){ splash={t:0, x:hero.x, y:hero.y, why:why}; }
+function respawn(){ hero.row=-1; hero.lane=1; timers={}; if(L.tr) L.tr.got=L.tr.got; paintBuilt(); }
+function sentenceDone(skipped){
+  var full=L.words.join(' ').replace(/^./,function(c){ return c.toUpperCase(); }), ok=!skipped && mistakes===0;
+  if(!skipped){ run.total++; if(ok) run.ok++; else run.wrong.push(full); run.coins+=ok?3:1; speak(full); }
+  if(GL) GL.answer(skipped?null:ok, {kind:'🪨 過河', topic:L.src.topic, ref:L.src.id, ms:Date.now()-t0, q:L.src.zh, a:full, pick:skipped?'':(mistakes?mistakes+' 次踩錯':'')});
+  si++;
+  if(skipped){ if(si>=N_SENT) return finish(); return newSentence(); }
+  openBox('<h2>'+(ok?'✓ 一次就過河了':'過河了')+'</h2><div class="say fr" style="font-size:1.15em">'+esc(full)+'</div><div class="muted">'+esc(L.src.zh)+'</div>'+
+    (mistakes?'<div class="muted">這句踩錯 '+mistakes+' 次（之後還會再出現）</div>':'')+
+    '<div class="row"><button class="btn main" id="nx">'+(si>=N_SENT?'上岸':'下一段河 →')+'</button></div>');
+  document.getElementById('nx').onclick=function(){ closeBox(); if(si>=N_SENT) finish(); else newSentence(); };
+}
+function finish(){
+  over=true;
+  openBox('<h2>🪨 過河結束</h2><div class="stat"><span>過了 '+run.total+' 段</span>'+(run.treasure?'<span>✨ 寶石 '+run.treasure+'</span>':'')+'<span>+'+run.coins+' 🪙</span></div>'+
+    (run.wrong.length?'<div class="muted">這幾句再看一眼：</div>'+run.wrong.map(function(w){ return '<div class="say fr">'+esc(w)+'</div>'; }).join(''):'')+
+    '<div class="row">'+(EMBED?'<button class="btn main" id="home">回小鎮</button>':'<button class="btn main" id="again">再過一次</button>')+'</div>');
+  if(EMBED) document.getElementById('home').onclick=function(){ back(); };
+  else document.getElementById('again').onclick=function(){ closeBox(); si=0; run={ok:0,total:0,coins:0,treasure:0,wrong:[]}; over=false; newSentence(); };
+}
+function back(){ var msg={type:'river-done', ok:run.ok, total:run.total, coins:run.coins, treasure:run.treasure, wrong:run.wrong.slice(0,10)}; if(EMBED && parent!==window) parent.postMessage(msg,'*'); else location.href='town.html'; }
+function openBox(h){ document.getElementById('box').innerHTML=h; document.getElementById('sheet').className='sheet on'; }
+function closeBox(){ document.getElementById('sheet').className='sheet'; }
+
+/* ---------- 操作：點石頭／方向鍵（↑ 正前方、← → 斜前方、A D 側跳寶石） ---------- */
+cv.addEventListener('pointerdown', function(e){
+  if(!L||over) return; var x=e.clientX, y=e.clientY;
+  var tries=[]; for(var ln=-1; ln<=3; ln++) tries.push([hero.row, ln], [hero.row+1, ln]);
+  for(var i=0;i<tries.length;i++){ var r=tries[i][0], l=tries[i][1]; if(r<0) continue;
+    var p; if(l===-1||l===3){ if(!L.tr||L.tr.row!==r) continue; var base=stonePos(r,L.rows[r].lane), g=geo(); p={x:base.x+(l===-1?-1:1)*g.lw*.8, y:base.y, w:g.lw*.55, h:base.h}; }
+    else if(r>=L.words.length){ p={x:W/2, y:stonePos(r,1).y, w:W, h:60}; }
+    else p=stonePos(r,l);
+    if(Math.abs(x-p.x)<p.w/2 && Math.abs(y-p.y)<p.h/2+8 && canHop(r,l)){ hopTo(r,l); return; }
+  }
+});
+window.addEventListener('keydown', function(e){
+  if(!L||over||document.getElementById('sheet').className.indexOf('on')>=0) return;
+  var k=e.key, r=hero.row+1, base=(hero.lane===-1||hero.lane===3)?null:hero.lane;
+  if(k==='ArrowUp'||k===' ') { if(base==null) hopTo(hero.row, L.rows[hero.row].lane); else hopTo(r, r>=L.words.length?1:(hero.row<0?1:base)); }
+  else if(k==='ArrowLeft'){ if(base!=null) hopTo(r, hero.row<0?0:base-1); }
+  else if(k==='ArrowRight'){ if(base!=null) hopTo(r, hero.row<0?2:base+1); }
+  else if(k==='a'||k==='A') hopTo(hero.row,-1); else if(k==='d'||k==='D') hopTo(hero.row,3);
+  if(/^Arrow/.test(k)) e.preventDefault();
+});
+document.getElementById('bskip').onclick=function(){ if(!over && !hop && !splash) sentenceDone(true); };
+document.getElementById('bend').onclick=function(){ if(over) return; if(EMBED){ if(run.total===0 || confirm('現在上岸，這趟就到這裡。要回小鎮嗎？')) { finish(); } } else finish(); };
+
+/* ---------- 迴圈 ---------- */
+var last=performance.now();
+function loop(now){
+  var dt=Math.min(.05,(now-last)/1000); last=now; t+=dt;
+  if(L && !over && document.getElementById('sheet').className.indexOf('on')<0){
+    if(hop){ hop.t+=dt/.2; if(hop.t>=1){ var r=hop.r, ln=hop.ln; hop=null; land(r,ln); } }
+    else if(splash){ splash.t+=dt; if(splash.t>.7){ splash=null; respawn(); } }
+    else {
+      for(var k in timers){ var lim = /:(-1|3)$/.test(k) ? 1.6 : L.sink; timers[k]+=dt;
+        var pr=k.split(':'), rr=+pr[0], ll=+pr[1];
+        if(timers[k]>=lim && hero.row===rr && hero.lane===ll){ if(L.rows[rr] && (ll===-1||ll===3||L.rows[rr].cells[ll].ok)){ sinks++; toast('石頭沉了——掉回岸邊'); } fall(); break; } }
+    }
+  }
+  draw(); requestAnimationFrame(loop);
+}
+function rr(x,y,w,h,r){ cx.beginPath(); cx.moveTo(x+r,y); cx.arcTo(x+w,y,x+w,y+h,r); cx.arcTo(x+w,y+h,x,y+h,r); cx.arcTo(x,y+h,x,y,r); cx.arcTo(x,y,x+w,y,r); cx.closePath(); }
+function draw(){
+  cx.fillStyle='#0f3a52'; cx.fillRect(0,0,W,H);
+  cx.strokeStyle='rgba(160,210,235,.12)'; cx.lineWidth=2; for(var i=0;i<14;i++){ var y=(i*H/12+t*18)%H; cx.beginPath(); for(var x=0;x<=W;x+=16) cx.lineTo(x, y+Math.sin((x/40)+t*2+i)*3); cx.stroke(); }
+  if(!L) return;
+  var g=geo();
+  cx.fillStyle='#6b8f3a'; cx.fillRect(0, g.bot-14, W, H-g.bot+14); cx.fillStyle='#4f6e2a'; cx.fillRect(0, g.bot-14, W, 4);
+  var tb=stonePos(L.words.length,1).y; cx.fillStyle='#6b8f3a'; cx.fillRect(0, 0, W, tb+16); cx.fillStyle='#4f6e2a'; cx.fillRect(0, tb+12, W, 4);
+  var hint=mistakes>=2;
+  L.rows.forEach(function(rw, r){ rw.cells.forEach(function(c, ln){
+    var p=stonePos(r,ln), tm=timers[r+':'+ln], sunk=tm!=null && tm>=L.sink, k=tm!=null?Math.min(1,tm/L.sink):0;
+    if(sunk && !(hero.row===r&&hero.lane===ln)) return;
+    var shake=k>.45?Math.sin(t*40)*k*3:0, reach=canHop(r,ln);
+    cx.globalAlpha=1-k*.55;
+    cx.fillStyle=reach?'#8d98a3':'#6f7a84'; rr(p.x-p.w/2+shake, p.y-p.h/2, p.w, p.h, 12); cx.fill();
+    if(hint && c.ok && r===hero.row+1){ cx.strokeStyle='rgba(240,201,90,'+(.35+.25*Math.sin(t*5))+')'; cx.lineWidth=3; cx.stroke(); }
+    else if(reach){ cx.strokeStyle='rgba(255,255,255,.55)'; cx.lineWidth=2; cx.stroke(); }
+    cx.fillStyle='#14202a'; cx.font=Math.round(Math.min(18, p.w/Math.max(4,c.w.length)*1.5))+'px Cubic11, system-ui'; cx.textAlign='center'; cx.textBaseline='middle';
+    cx.fillText(c.w, p.x+shake, p.y+1); cx.globalAlpha=1;
+  }); });
+  if(L.tr && !L.tr.got){ var base=stonePos(L.tr.row, L.rows[L.tr.row].lane), tx=base.x+(L.tr.side===-1?-1:1)*g.lw*.8, tk=timers[L.tr.row+':'+L.tr.side];
+    if(!(tk!=null && tk>=1.6)){ cx.fillStyle='rgba(120,200,230,.85)'; rr(tx-g.lw*.25, base.y-base.h/2, g.lw*.5, base.h, 12); cx.fill(); cx.font='20px system-ui'; cx.textAlign='center'; cx.fillText('✨', tx, base.y+1); } }
+  /* 主角 */
+  var hx, hy;
+  if(hop){ var e=hop.t; hx=hop.from.x+(hop.to.x-hop.from.x)*e; hy=hop.from.y+(hop.to.y-hop.from.y)*e-Math.sin(e*Math.PI)*26; }
+  else { var lane=hero.lane, p0;
+    if(lane===-1||lane===3){ var b2=stonePos(hero.row, L.rows[hero.row].lane); p0={x:b2.x+(lane===-1?-1:1)*g.lw*.8, y:b2.y}; }
+    else p0=stonePos(hero.row, hero.row<0?1:lane);
+    hx=p0.x; hy=p0.y; }
+  hero.x=hx; hero.y=hy;
+  if(splash){ var s=splash.t/.7; cx.strokeStyle='rgba(220,240,255,'+(1-s)+')'; cx.lineWidth=3; cx.beginPath(); cx.arc(splash.x, splash.y, 10+s*30, 0, Math.PI*2); cx.stroke(); }
+  else { var sz=34; cx.imageSmoothingEnabled=false; cx.drawImage(heroImg, hx-sz/2, hy-sz+6, sz, sz); }
+}
+
+/* ---------- 開場 ---------- */
+requestAnimationFrame(loop);
+openBox('<h2>🪨 石頭過河</h2><div>照上面的中文，<b>按順序踩對的字</b>過河，頂端會拼出整句。</div>'+
+  '<div class="muted">・只能跳正前方或斜前方的石頭（亮框的那幾顆），先看好路線<br>・站上去的石頭會慢慢沉，別站太久<br>・踩錯字會掉回岸邊；同一句錯兩次，下一排對的石頭會發光<br>・偶爾旁邊有 ✨ 寶石，側跳過去拿（電腦：A／D），它沉得特別快</div>'+
+  '<div class="row"><button class="btn main" id="start">開始過河</button></div>');
+document.getElementById('start').onclick=function(){ closeBox(); newSentence(); };
+</script>
+</body>
+</html>

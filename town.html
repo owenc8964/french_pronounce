@@ -320,7 +320,10 @@ var CHALLENGES=[ {id:'garden', x:16, y:18, name:'菜園', em:'🌻', goal:3},
   /* ☕ 10-17：口說島一句一句練熟（選擇／手寫，⛔ 不用麥克風——Owen：辨識不夠靠譜） */
   {id:'cafe', x:17, y:29, name:'咖啡館', em:'☕', kind:'isle'},
   /* 🕵️ 10-17：抓錯字 */
-  {id:'notice', x:23, y:12, name:'告示牌', em:'📋', kind:'spot'} ];
+  {id:'notice', x:23, y:12, name:'告示牌', em:'📋', kind:'spot'},
+  /* 🪨🚪 10-18 Owen：「瑪利歐是因為跑來跑去、時機、路線、機關、隱藏關卡才有趣」→ 法文變成路線本身的兩個關卡（嵌入，跟守園同一套） */
+  {id:'stones', x:28, y:10, name:'石頭過河', em:'🪨', kind:'embed', page:'river.html', intro:'河面浮著一顆顆寫著字的石頭。照意思按順序踩過去，才過得了河——石頭站久了會沉。'},
+  {id:'run',    x:14, y:12, name:'跑酷小徑', em:'🚪', kind:'embed', page:'runner.html', intro:'一條往前延伸的小徑，路上一道道門寫著選項。邊跑邊轉進對的門，走錯會絆一下。'} ];
 var CLUES=[
   {id:'c1', x:7,  y:3,  topic:'accord-participe-passe'},
   {id:'c2', x:25, y:14, topic:'pronoms-y-en'},
@@ -701,6 +704,8 @@ var QPLACE={
   garden:{name:'🌻 菜園',  re:/^守園/,            need:8, verb:'答', unit:'題', pt:function(){ return chalPt('garden'); }},
   mine:  {name:'⛏ 礦坑',   re:/礦坑/,             need:4, verb:'答', unit:'題', pt:function(){ return nearestNode(['rock']); }},
   forest:{name:'🌳 森林',   re:/樹叢|草叢|陰陽性/,   need:4, verb:'答', unit:'題', pt:function(){ return nearestNode(['bush']); }},
+  stones:{name:'🪨 石頭過河', re:/過河/,           need:2, verb:'過', unit:'段河', pt:function(){ return chalPt('stones'); }},
+  run:   {name:'🚪 跑酷小徑', re:/跑酷/,           need:8, verb:'過', unit:'道門', pt:function(){ return chalPt('run'); }},
   river: {name:'🎣 河邊',   re:/聽力/,             need:3, verb:'答', unit:'題', pt:function(){ return nearestNode(['fish']); }, ok:function(){ return S.built.bridge; }}
 };
 function chalPt(id){ var c=CHALLENGES.filter(function(x){ return x.id===id; })[0]; return c?{x:c.x+.5, y:c.y+.5}:null; }
@@ -1883,16 +1888,37 @@ function raidResolve(win, kills){
   if(lots.length && Math.random()<.6){ S.broken=lots[Math.floor(Math.random()*lots.length)]; }
   save(); return null;
 }
+function embedPanel(ch){
+  var st=(S.chal||{})[ch.id]||{}, first=st.lastWin!==today();
+  openSheet('<h3>'+ch.em+' '+ch.name+'</h3><div class="story">'+ch.intro+'</div><div class="muted">'+(first?'今天第一次玩完再加 15 🪙。':'')+(st.plays?'已經玩過 '+st.plays+' 次。':'')+'</div>'+
+    '<div class="row2"><button class="btn ghost" id="later">晚點再來</button><button class="btn main" id="go">'+ch.em+' 開始</button></div>');
+  document.getElementById('later').onclick=function(){ closeSheet(); ch.cool=5; };
+  document.getElementById('go').onclick=function(){ closeSheet(); startPvz(ch); };
+}
 function startPvz(ch){
   busy=true; joy=null; keys={};
   pvzFrame=document.createElement('iframe');
-  pvzFrame.src='tower.html?embed=1&goal='+ch.goal+'&place='+encodeURIComponent(ch.name)+(ch.mode?'&mode='+ch.mode:'');
+  pvzFrame.src=ch.page ? ch.page+'?embed=1' : 'tower.html?embed=1&goal='+ch.goal+'&place='+encodeURIComponent(ch.name)+(ch.mode?'&mode='+ch.mode:'');
   pvzFrame.style.cssText='position:fixed;inset:0;width:100%;height:100%;border:0;z-index:30;background:#10170f';
   pvzFrame.dataset.ch=ch.id;
   document.body.appendChild(pvzFrame);
 }
 window.addEventListener('message', function(e){
-  var d=e.data; if(!d || d.type!=='pvz-done' || !pvzFrame) return;
+  var d=e.data; if(!d || !pvzFrame) return;
+  if(d.type==='river-done' || d.type==='runner-done'){
+    var cid=pvzFrame.dataset.ch, chx=CHALLENGES.filter(function(c){ return c.id===cid; })[0];
+    pvzFrame.remove(); pvzFrame=null; busy=false; lastClose=performance.now();
+    S.chal=S.chal||{}; var stx=S.chal[cid]||{wins:0, plays:0}; stx.plays++;
+    var g=(d.coins||d.gold||0), bonus=0; if((d.total||0)>0 && stx.lastWin!==today()){ bonus=15; stx.lastWin=today(); stx.wins++; }
+    S.chal[cid]=stx; S.gold+=g+bonus; save(); hud(); if(chx) chx.cool=6;
+    openSheet('<div class="catch"><div class="big">'+pix(chx?chx.em:'⭐',80)+'</div><div class="story">'+(d.type==='river-done'?'過了 '+(d.total||0)+' 段河'+(d.treasure?'，撿到 ✨ 寶石 '+d.treasure+' 顆':''):'過了 '+(d.ok||0)+' 道對的門，最高連對 '+(d.best||0))+'。</div>'+
+      ((g+bonus)?'<div class="bagrow"><span>+'+(g+bonus)+' 🪙'+(bonus?'（含今天第一次 +15）':'')+'</span></div>':'')+
+      (d.wrong&&d.wrong.length?'<div class="muted">這次卡住的：</div>'+d.wrong.slice(0,6).map(function(w){ return '<div class="item"><span class="say">'+esc(w)+'</span></div>'; }).join(''):'')+
+      '</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+    document.getElementById('ok').onclick=closeSheet;
+    return;
+  }
+  if(d.type!=='pvz-done') return;
   var id=pvzFrame.dataset.ch, ch=CHALLENGES.filter(function(c){ return c.id===id; })[0];
   pvzFrame.remove(); pvzFrame=null; busy=false; lastClose=performance.now();
   if(id==='raid'){
@@ -2369,12 +2395,76 @@ function bugDexHtml(){
   return h+'</div>';
 }
 
+/* ============================================================
+   🔢 數字反應（10-18 Owen：「看數字打出來法文，我覺得這也要練反應」）
+   ⭐ 在鎮上／往橋的小路上走，偶爾有店家問價錢 → 看阿拉伯數字，打出法文；記起手（第一個按鍵）時間
+   ⭐ frNum：標準拼法（70–99、71 加 et、80 有 s／81 沒有、deux cents／deux cent trois、mille 不加 s），35 個已知答案驗證過
+   ⭐ 1990 改革的全連字號（vingt-et-un、deux-cent-trois）也算對；⛔ cents／vingts 的 s 寫錯算錯（寫作會扣分）；只差重音＝對但提醒
+   ⭐ 出題：0–20／21–69／70–99／100–999／年份 1900–2099，權重 1：2：4：2：2（70–99 最常卡）；打錯過的數字 40% 機率再出
+   ⛔ 數字的拼法是規則推出來的，不是自創句子
+   ============================================================ */
+function frNum(n){
+  var U=['zéro','un','deux','trois','quatre','cinq','six','sept','huit','neuf','dix','onze','douze','treize','quatorze','quinze','seize'];
+  var T={20:'vingt',30:'trente',40:'quarante',50:'cinquante',60:'soixante'};
+  function u100(n){ /* 0–99 */
+    if(n<=16) return U[n];
+    if(n<20) return 'dix-'+U[n-10];
+    if(n<70){ var t=Math.floor(n/10)*10, r=n%10; return T[t]+(r===0?'':r===1?' et un':'-'+U[r]); }
+    if(n<80){ var r2=n-60; return 'soixante'+(r2===11?' et onze':'-'+u100(r2)); }
+    if(n===80) return 'quatre-vingts';
+    return 'quatre-vingt-'+u100(n-80);
+  }
+  function u1000(n){ /* 0–999 */
+    if(n<100) return u100(n);
+    var h=Math.floor(n/100), r=n%100;
+    var head=(h===1?'cent':U[h]+' cent'+(r===0?'s':''));
+    return r===0?head:head+' '+u100(r);
+  }
+  if(n<1000) return u1000(n);
+  var th=Math.floor(n/1000), rr=n%1000;
+  var hd=(th===1?'mille':u1000(th).replace(/(vingts|cents)$/,function(m){ return m.slice(0,-1); })+' mille');
+  return rr===0?hd:hd+' '+u1000(rr);
+}
+
+var NUM_BUCKETS=[[0,20,1,'整數'],[21,69,2,'價格'],[70,99,4,'價格'],[100,999,2,'價格'],[1900,2099,2,'年份']], numDist=0, lastNum=-99;
+function numNorm(x){ return String(x).toLowerCase().trim().replace(/[’]/g,"'").replace(/[-\s]+/g,' '); }
+function numPick(){
+  S.numWrong=S.numWrong||[];
+  if(S.numWrong.length && Math.random()<.4) return S.numWrong[Math.floor(Math.random()*S.numWrong.length)];
+  var tot=NUM_BUCKETS.reduce(function(a,b){ return a+b[2]; },0), r=Math.random()*tot, b=NUM_BUCKETS[0];
+  for(var i=0;i<NUM_BUCKETS.length;i++){ r-=NUM_BUCKETS[i][2]; if(r<=0){ b=NUM_BUCKETS[i]; break; } }
+  return b[0]+Math.floor(Math.random()*(b[1]-b[0]+1));
+}
+function numEncounter(){
+  var n=numPick(), ans=frNum(n), t0=Date.now(), fk=0, isYear=n>=1900&&n<=2099, rc={kind:'🔢 數字', ref:'n:'+n, q:String(n), a:ans};
+  var who=['la boulangère','le marchand','Madame Roy','Julie'][Math.floor(Math.random()*4)];
+  openSheet('<h3>🔢 '+esc(who)+'：« '+(isYear?'C\'était en quelle année ?':'Ça fait combien ? ')+'»</h3>'+
+    '<div class="qtext" style="text-align:center;font-size:2.4em;letter-spacing:2px">'+n+(isYear?'':(n<1000&&n>20?' €':''))+'</div>'+
+    '<input class="fill" id="nin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="用法文打出來">'+
+    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><button class="btn main" id="nsub">回答</button></div>'+repSlot(rc));
+  var inp=document.getElementById('nin'), sent=false; setTimeout(function(){ inp.focus(); },50);
+  inp.addEventListener('keydown', function(e){ if(!fk && e.key.length===1) fk=Date.now()-t0; if(e.key==='Enter') sub(); });
+  document.getElementById('skip').onclick=function(){ if(sent) return; sent=true; if(window.GameLog) GameLog.answer(null,{kind:'🔢 數字', ref:rc.ref}); closeSheet(); };
+  function sub(){ var v=inp.value.trim(); if(!v||sent) return; sent=true; inp.disabled=true; rc.pick=v;
+    var ms=Date.now()-t0, ok=numNorm(v)===numNorm(ans), acc=!ok && deacc(numNorm(v))===deacc(numNorm(ans));
+    if(acc) ok=true;
+    var W=S.numWrong=S.numWrong||[], wi=W.indexOf(n);
+    if(!ok && wi<0){ W.push(n); if(W.length>30) W.shift(); } else if(ok && !acc && wi>=0 && fk && fk<3000) W.splice(wi,1);
+    S.num=S.num||{}; var h=S.num[n]||[]; h.push({o:ok?1:0, f:fk||ms}); S.num[n]=h.slice(-3); save();
+    if(window.GameLog) GameLog.answer(ok, {kind:'🔢 數字', topic:'numbers', ref:rc.ref, ms:fk||ms, q:String(n), a:ans, pick:v});
+    speak(ans); if(ok){ S.gold+=1; hud(); }
+    document.getElementById('fb').innerHTML=(ok?'✓ '+(fk&&fk<2000?'<b style="color:var(--gold)">起手 '+(fk/1000).toFixed(1)+' 秒</b> ':'')+(acc?'（注意重音）':''):'👉 ')+'<span class="say">'+esc(ans)+'</span> '+spk(ans);
+    if(ok && !acc) setTimeout(closeSheet, 900);
+    else { document.querySelector('.row2').innerHTML='<span></span><button class="btn main" id="go">好</button>'; document.getElementById('go').onclick=closeSheet; }
+  }
+  document.getElementById('nsub').onclick=sub;
+}
 function drawChallenges(list,ox,oy,ts){
   CHALLENGES.forEach(function(ch){ list.push({y:ch.y+1, f:function(){
     var px=ox+ch.x*ts, py=oy+ch.y*ts, im=pixImg(ch.em);
     cx.fillStyle='#7a5a32'; cx.fillRect(px+ts*.05, py+ts*.55, ts*.9, ts*.38);
     if(im.complete){ cx.drawImage(im, px+ts*.05, py+ts*.05, ts*.9, ts*.9); }
-    var b=Math.sin(clock*4)*ts*.06; cx.font=Math.round(ts*.38)+'px system-ui'; cx.textAlign='center'; cx.fillText({tiles:'🧩', isle:'💬', spot:'🔍'}[ch.kind]||'⚔️', px+ts*.5, py-ts*.05+b);
+    var b=Math.sin(clock*4)*ts*.06; cx.font=Math.round(ts*.38)+'px system-ui'; cx.textAlign='center'; cx.fillText({tiles:'🧩', isle:'💬', spot:'🔍', embed:'⭐'}[ch.kind]||'⚔️', px+ts*.5, py-ts*.05+b);
     cx.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; var lab=ch.name; var tw=cx.measureText(lab).width+ts*.2;
     cx.fillStyle='rgba(0,0,0,.55)'; cx.fillRect(px+ts*.5-tw/2, py+ts*1.02, tw, ts*.34); cx.fillStyle='#fff'; cx.fillText(lab, px+ts*.5, py+ts*1.27);
   }}); });
@@ -2409,6 +2499,9 @@ function update(dt){
     hero.dust-=dt; if(hero.moving>.6 && hero.dust<=0){ hero.dust=.25; dusts.push({x:hero.x-hero.vx*.03, y:hero.y+.35, t:0, g:inGrass}); }
     /* 🌳 草叢：走著走著隨機跳出來（寶可夢手感） */
     if(inGrass && !pending){ grassDist+=spd*dt; if(grassDist>1.4){ grassDist=0; if(!wild && Math.random()<.28 && clock-lastWild>3){ lastWild=clock; pending={t:.3, x:hero.x, y:hero.y, fn:startWild, keep:1}; } } }
+    /* 🔢 鎮上／往橋的小路上，偶爾有人問價錢 */
+    var onPath=Math.floor(hero.x)>=19 && Math.floor(hero.x)<=20 && hero.y>=10 && hero.y<=23;
+    if((inTown(hero)||onPath) && !pending){ numDist+=spd*dt; if(numDist>2){ numDist=0; if(!wild && Math.random()<.18 && clock-lastNum>30){ lastNum=clock; pending={t:.3, x:hero.x, y:hero.y, fn:numEncounter}; } } }
     /* 🦋 田裡偶爾飛出蝴蝶（形容詞圖鑑） */
     if(region(Math.floor(hero.x),Math.floor(hero.y))==='field' && !pending){ bugDist+=spd*dt; if(bugDist>2){ bugDist=0; if(!wild && Math.random()<.12 && clock-lastBug>25){ lastBug=clock; pending={t:.3, x:hero.x, y:hero.y, fn:bugCatch}; } } }
     if(!inTown(hero)){ time-=dt*hero.moving; if(time<=0 && !night){ time=0; night=true; toast(raidDue()?'🌙 天黑了——怪物朝小鎮來了，回去守夜！':'🌙 天黑了，老鼠變多變快——回城吧'); spawnRat(); spawnRat(); } }
@@ -2423,7 +2516,7 @@ function update(dt){
   if(!it) wasInTown=false;
   if(updateWild(dt)) return;
   for(var ci=0;ci<CHALLENGES.length && !wild;ci++){ var CH=CHALLENGES[ci]; if(CH.cool>0){ CH.cool-=dt; continue; }
-    if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ if(CH.kind==='tiles') tilesPanel(CH); else if(CH.kind==='isle') cafePanel(CH); else if(CH.kind==='spot') spotPanel(CH); else challengePanel(CH); }; })(CH)}; break; } }
+    if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ if(CH.kind==='tiles') tilesPanel(CH); else if(CH.kind==='isle') cafePanel(CH); else if(CH.kind==='spot') spotPanel(CH); else if(CH.kind==='embed') embedPanel(CH); else challengePanel(CH); }; })(CH)}; break; } }
   /* 碰到節點 */
   for(var i=0;i<nodes.length && !wild;i++){ var n=nodes[i]; if(n.done) continue;
     var R=n.k==='fish'?1.15:.85;
