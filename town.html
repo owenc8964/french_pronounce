@@ -28,6 +28,8 @@
 <script src="answer_cards.js"></script>
 <script src="tools/town_emoji.js"></script>
 <script src="gram_rules.js"></script>
+<script src="verbs_full.js"></script>
+<script src="verb_freq.js"></script>
 <script src="topic_labels.js"></script>
 <script src="tts_reader.js"></script>
 <script src="sync_supabase.js"></script>
@@ -492,6 +494,7 @@ function pickQ(list, star){
   /* ⏳ 差一天就升格的題：從整個池子找（下面的抽樣只看 60 題，會漏掉），35% 機率直接出 */
   if(S.fmt && Math.random()<.35){ var pend=list.filter(function(q){ return typeof q._i==='number' && fmtPending(S.fmt['q:'+q._i]) && !(S.qlast[q._i] && Date.now()-S.qlast[q._i]<6*3600000); });
     if(pend.length) return pend[Math.floor(Math.random()*pend.length)]; }
+  list=tenseSlice(list);   /* ⚖️ 動詞：先照目標比例決定這題考哪一類時態 */
   var now=Date.now(), best=null, bw=-1, qt=activeQuest('topic');
   shuffle(list).slice(0,60).forEach(function(q){
     var w=1, st=S.topic[q.topic];
@@ -819,6 +822,10 @@ function mineRock(n){
   var hits=[], star=isStar(n), i=0;
   function next(){
     if(i>=2) return finish();
+    /* ⚡ 三成機率變成變位反應（委託題型進行中時讓位給委託） */
+    var cj=(!activeQuest('topic') && Math.random()<.3) ? conjPick() : null;
+    if(cj){ askConj('⛏ 礦坑'+(star?' ★':'')+' <small>第 '+(i+1)+' 敲・⚡ 變位</small>', cj, function(ok,ms){
+      hits.push(ok===null?'skip':ok?(ms<(5000+S.pick*2000)?'crit':'ok'):'no'); i++; next(); }); return; }
     var q=pickQ(questPool(POOL.verb.choose), star);
     askChoose('⛏ 礦坑'+(star?' ★':'')+' <small>第 '+(i+1)+' 敲・動詞</small>', q, function(ok,ms,ch,right){
       rec('q', q, ok, ms, {chosen:ch,right:right,where:'⛏ 礦坑'}); hits.push(ok===null?'skip':ok?(ms<(6000+S.pick*2500)?'crit':'ok'):'no');
@@ -835,6 +842,89 @@ function mineRock(n){
     floatTxt(n.x+.5,n.y,'+'+cnt+(good?' ⛏':' ⛏瑕')+(crit?' 會心！':''), good?'#ffd76a':'#bbb');
   }
   next();
+}
+/* ============================================================
+   ⚖️ 動詞時態配比（10-18 Owen：「時態變化有點少，都集中在過去式，未來跟其他的好像沒出現」）
+   查證：礦坑題庫 448 題裡過去類約 45%、現在式約 19%、未來 5.6%；
+   語料（memory reference_corpus_what_to_produce）聽力：現在式 70%、複合過去 10%、未完成 4.9%、條件 2.5%、未來 4.7%、虛擬 1.5%
+   → 照「目標比例 ÷ 題庫比例」調權重。目標＝語料為主，但現在式有一部分交給 ⚡ 變位反應，未來式依 Owen 要求拉到一成
+   ============================================================ */
+var TENSE_CAT=[
+  ['present', /^(er-verbs|ir-re-verbs|irregular-verbs-3rd-group|etre-avoir|reflexive-verbs|pouvoir-vouloir|ilfaut-devoir)$/, .30],
+  ['past',    /^(passe-compose|accord-participe-passe|pc-imparfait-recit|passe-recent)$/,                                     .20],
+  ['imp',     /^imparfait$/,                                                                                             .10],
+  ['fut',     /^(futur-simple|futur-proche)$/,                                                                           .10],
+  ['cond',    /^(conditionnel-present|condition-si)$/,                                                                   .10],
+  ['subj',    /^subjonctif-present$/,                                                                                    .05],
+  ['other',   /./,                                                                                                       .15]
+];
+function tenseCat(topic){ for(var i=0;i<TENSE_CAT.length;i++) if(TENSE_CAT[i][1].test(topic)) return i; return TENSE_CAT.length-1; }
+/* ⚠️ 不能用「乘權重」：pickQ 是抽 60 題取最高分，權重稍高的類別會壟斷（試跑時未來式跑到 60%）
+   → 兩段式：先照目標比例抽「這題考哪一類」，再交給原本的挑題邏輯（錯題加權、委託加權照舊） */
+function tenseSlice(list){
+  if(!list.length || famOf(list[0].topic)!=='verb') return list;
+  var by=TENSE_CAT.map(function(){ return []; }); list.forEach(function(q){ by[tenseCat(q.topic)].push(q); });
+  var cats=by.map(function(a,i){ return a.length ? i : -1; }).filter(function(i){ return i>=0; });
+  if(cats.length<2) return list;
+  var tot=cats.reduce(function(a,i){ return a+TENSE_CAT[i][2]; },0), r=Math.random()*tot;
+  for(var k=0;k<cats.length;k++){ r-=TENSE_CAT[cats[k]][2]; if(r<=0) return by[cats[k]]; }
+  return by[cats[cats.length-1]];
+}
+
+/* ============================================================
+   ⚡ 變位反應（10-18 Owen：「我原本那個你指定時態跟動詞主詞、讓我填空練反應的遊戲，感覺滿適合拿來玩的」＝verb_sprint.html）
+   ⭐ 做成礦坑的遭遇（memory feedback_streak_and_constant_flow：一直走一直有題，⛔ 不另開選單）
+   ⭐ 資料跟 verb_sprint 同一份：verbs_full.js 的 drillForms()、verb_freq.js 的語料權重、核心 11 個動詞
+   ⭐ 紀錄寫回同一個格子（clb7_sprint_cells＋時態後綴，key＝動詞_人稱）→ 衝刺頁的熱力圖、儀表板一起亮
+   ⭐ 反射＝最近 3 次都對、起手（第一個按鍵）中位數 ≤ 2 秒（跟 verb_sprint 同一把尺）；⛔ 不倒數
+   ============================================================ */
+var CONJ_VERBS=['être','avoir','faire','aller','devoir','pouvoir','vouloir','venir','prendre','savoir','voir'];
+var CONJ_MODES=[ {tense:'present', label:'présent', suffix:'', gram:null, w:.36}, {tense:'passe-compose', label:'passé composé', suffix:'_pc', gram:'passe', w:.18},
+  {tense:'imparfait', label:'imparfait', suffix:'_imp', gram:'imparfait', w:.12}, {tense:'futur-simple', label:'futur simple', suffix:'_fut', gram:'futur-simple', w:.14},
+  {tense:'conditionnel', label:'conditionnel', suffix:'_cond', gram:'conditionnel', w:.12}, {tense:'subjonctif', label:'subjonctif', suffix:'_subj', gram:'subjonctif', w:.08} ];
+var CONJ_PERS=['je','tu','il / elle','nous','vous','ils / elles'];
+function conjModes(){ return CONJ_MODES.filter(function(m){ if(!m.gram) return true; if(typeof GRAM_POINTS==='undefined') return m.tense==='passe-compose'; var p=GRAM_POINTS.filter(function(x){ return x.id===m.gram; })[0]; return !!p && p.unlocked!==false; }); }
+function conjCells(m){ try{ return JSON.parse(localStorage.getItem('clb7_sprint_cells'+m.suffix))||{}; }catch(e){ return {}; } }
+function conjState(h){ if(!h||!h.length) return 'new'; if(!h[h.length-1].o) return 'weak'; var l=h.slice(-3); if(l.length===3 && l.every(function(x){ return x.o; })){ var f=l.map(function(x){ return x.f; }).sort(function(a,b){ return a-b; }); if(f[1]<=2000) return 'reflex'; } return 'slow'; }
+function conjCorpus(inf, t){ if(typeof VERB_FREQ==='undefined') return 1; var f=VERB_FREQ[inf]; if(!f) return 1; var n=(f.t&&f.t[t])||0; return n>=100?3:n>=20?2:n>0?1.5:.5; }
+function conjPick(){
+  if(typeof VERBS_FULL==='undefined' || typeof drillForms!=='function') return null;
+  var ms=conjModes(); if(!ms.length) return null;
+  var tot=ms.reduce(function(a,m){ return a+m.w; },0), r=Math.random()*tot, m=ms[0];
+  for(var i=0;i<ms.length;i++){ r-=ms[i].w; if(r<=0){ m=ms[i]; break; } }
+  var cells=conjCells(m), pool=[], W={weak:4,new:3,slow:2,reflex:.5};
+  CONJ_VERBS.forEach(function(inf){ var v=VERBS_FULL.filter(function(x){ return x.inf===inf; })[0]; if(!v) return; var forms=drillForms(v, m.tense); if(!forms) return;
+    for(var pi=0;pi<6;pi++){ var key=inf+'_'+pi, w=W[conjState((cells[key]||{}).h)]*conjCorpus(inf, m.tense); pool.push({m:m, inf:inf, pi:pi, key:key, alts:String(forms[pi]).split('|'), w:w}); } });
+  var sum=pool.reduce(function(a,x){ return a+x.w; },0), rr=Math.random()*sum;
+  for(var j=0;j<pool.length;j++){ rr-=pool[j].w; if(rr<=0) return pool[j]; }
+  return pool[pool.length-1];
+}
+function conjNorm(s){ return String(s).toLowerCase().trim().replace(/[’]/g,"'").normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/^(j|je|tu|il|elle|on|nous|vous|ils|elles)['\s]+/,'').replace(/\s+/g,''); }
+function withPron(pi, form){ return (pi===0 && /^[aeiouâàéèêëîïôöûüùh]/i.test(form)) ? "j'"+form : ['je','tu','il','nous','vous','ils'][pi]+' '+form; }
+/* cb(ok, ms)：跟 askChoose 一樣的回呼（礦坑拿來判斷會心） */
+function askConj(head, c, cb){
+  var t0=Date.now(), fk=0, rc={kind:'⚡ 變位', ref:'v:'+c.m.tense+':'+c.key, q:c.inf+' · '+c.m.label+' · '+CONJ_PERS[c.pi], a:c.alts.join('|')};
+  openSheet('<h3>'+head+'</h3><div class="qtext fr" style="text-align:center;font-size:1.15em"><b>'+esc(c.inf)+'</b> · '+esc(c.m.label)+'<br><span style="font-size:1.3em">'+esc(CONJ_PERS[c.pi])+' …</span></div>'+
+    '<input class="fill" id="cin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="打出變位（主詞可打可不打）">'+
+    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><button class="btn main" id="csub">敲下去</button></div>'+repSlot(rc), true);
+  var inp=document.getElementById('cin'), sent=false; setTimeout(function(){ inp.focus(); },50);
+  inp.addEventListener('keydown', function(e){ if(!fk && e.key.length===1) fk=Date.now()-t0; if(e.key==='Enter') sub(); });
+  document.getElementById('skip').onclick=function(){ if(sent) return; sent=true; if(window.GameLog) GameLog.answer(null,{kind:'⚡ 變位', ref:rc.ref}); cb(null); };
+  function sub(){ var v=inp.value.trim(); if(!v||sent) return; sent=true; inp.disabled=true; rc.pick=v;
+    var ms=Date.now()-t0, n=conjNorm(v), ok=c.alts.some(function(a){ return conjNorm(a)===n; });
+    var exact=ok && c.alts.some(function(a){ return a.toLowerCase().replace(/\s+/g,'')===v.toLowerCase().replace(/^(j|je|tu|il|elle|on|nous|vous|ils|elles)['\s]+/,'').replace(/\s+/g,''); });
+    /* 寫回衝刺頁的格子（加 last，配合同步的物件合併） */
+    var cells=conjCells(c.m), cell=cells[c.key]||{h:[]}, was=conjState(cell.h);
+    cell.h.push({o:ok?1:0, f:Math.round(fk||ms), d:ms, t:Date.now()}); cell.h=cell.h.slice(-5); cell.last=Date.now(); cells[c.key]=cell;
+    try{ localStorage.setItem('clb7_sprint_cells'+c.m.suffix, JSON.stringify(cells)); }catch(e){}
+    if(window.GameLog) GameLog.answer(ok, {kind:'⚡ 變位', topic:'conj-'+c.m.tense, ref:rc.ref, ms:fk||ms, q:rc.q, a:c.alts[0], pick:v});
+    var now=conjState(cell.h), show=withPron(c.pi, c.alts[0]); speak(show);
+    if(now==='reflex' && was!=='reflex'){ masteryBonus(3,'反射'); toast('⚡ '+c.inf+'・'+c.m.label+'・'+['je','tu','il','nous','vous','ils'][c.pi]+' 變成反射了'); }
+    document.getElementById('fb').innerHTML=(ok?'✓ '+(fk&&fk<2000?'<b style="color:var(--gold)">起手 '+(fk/1000).toFixed(1)+' 秒</b> ':'')+(exact?'':'（注意重音）'):'👉')+' <span class="say">'+esc(show)+'</span> '+spk(show);
+    if(ok && exact) setTimeout(function(){ cb(true, ms); }, 800);
+    else { document.querySelector('.row2').innerHTML='<span></span><button class="btn main" id="go">繼續</button>'; document.getElementById('go').onclick=function(){ cb(ok, ms); }; }
+  }
+  document.getElementById('csub').onclick=sub;
 }
 /* 🌳 樹叢：翻出兩樣東西要叫出名字（un／une）＋一題名詞片語（對了撿到 🪙） */
 function shakeBush(n){
