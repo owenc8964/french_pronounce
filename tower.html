@@ -228,7 +228,8 @@ if(window.visualViewport) visualViewport.addEventListener('resize', function(){ 
    ============================================================ */
 var G=null, clock=0, floats=[], peas=[], bolts=[];
 /* ⭐ 嵌入小鎮（10-16 Owen：「兩個遊戲可以整合在一塊，去到哪就跳進這個挑戰」）：town.html 用 iframe 開 tower.html?embed=1&goal=3&place=… */
-var QS=new URLSearchParams(location.search), EMBED=QS.get('embed')==='1', GOAL=+QS.get('goal')||0, PLACE=QS.get('place')||'菜園', totalEarned=0, wrongAll=[];
+var QS=new URLSearchParams(location.search), EMBED=QS.get('embed')==='1', GOAL=+QS.get('goal')||0, PLACE=QS.get('place')||'菜園', RAID=QS.get('mode')==='raid', ICON=RAID?'🏘️':'🌻', totalEarned=0, wrongAll=[];
+/* 🌙 10-18 天黑突襲（mode=raid）：同一套守園，換成「怪物趁夜進攻小鎮」的文字 */
 function backToTown(win){
   var msg={type:'pvz-done', win:!!win, waves:G?G.wave:0, kills:G?G.kills:0, earned:totalEarned, wrong:wrongAll.slice(0,20)};
   if(EMBED && window.parent!==window) window.parent.postMessage(msg, '*'); else location.href='town.html';
@@ -428,7 +429,7 @@ function missList(){
 }
 function waveEnd(){
   if(EMBED && GOAL && G.wave>=GOAL) return victory();
-  var h='<h2>🌻 第 '+G.wave+' 波守住了</h2><div class="stat"><span>打倒 '+G.waveKills+' 隻</span><span>答題賺 ☀️'+G.earned+'</span><span>最高連對 '+G.maxCombo+'</span></div>';
+  var h='<h2>'+ICON+' 第 '+G.wave+' 波守住了</h2><div class="stat"><span>打倒 '+G.waveKills+' 隻</span><span>答題賺 ☀️'+G.earned+'</span><span>最高連對 '+G.maxCombo+'</span></div>';
   h+=G.waveMiss.length?'<div class="muted">這幾句再看一眼（之後還會再出現）：</div>'+missList():'<div class="muted">這一波題目全對 ✨</div>';
   h+='<div class="muted" style="margin-top:8px">下一波：殭屍更多'+(G.wave===1?'，會出現跑得快的蝙蝠':G.wave===2?'，會出現很耐打的盔甲蟹':'')+'。種好的植物會留著'+(G.hearts<3?'，家回 1 顆心':'')+'。</div><div class="row"><button id="nx">下一波 →</button></div>';
   openBox(h);
@@ -436,14 +437,14 @@ function waveEnd(){
 }
 function victory(){
   G.over=true; save();
-  var h='<h2>🌻 '+esc(PLACE)+'守住了！</h2><div class="stat"><span>守了 '+G.wave+' 波</span><span>打倒 '+G.kills+' 隻</span><span>答題賺 ☀️'+totalEarned+'</span><span>最高連對 '+G.maxCombo+'</span></div>';
+  var h='<h2>'+ICON+' '+esc(PLACE)+'守住了！</h2><div class="stat"><span>守了 '+G.wave+' 波</span><span>打倒 '+G.kills+' 隻</span><span>答題賺 ☀️'+totalEarned+'</span><span>最高連對 '+G.maxCombo+'</span></div>';
   h+=G.waveMiss.length?'<div class="muted">最後這一波卡住的：</div>'+missList():'<div class="muted">最後一波題目全對 ✨</div>';
   h+='<div class="row"><button id="home">回小鎮領獎勵 →</button></div>';
   openBox(h); document.getElementById('home').onclick=function(){ backToTown(true); };
 }
 function gameOver(){
   G.over=true; var nb=G.wave>(S.best||0); if(nb) S.best=G.wave; save();
-  var h='<h2>🧟 家被攻破了</h2><div class="stat"><span>撐到第 '+G.wave+' 波'+(nb?'　🏆 新紀錄':'')+'</span><span>打倒 '+G.kills+' 隻</span><span>最高連對 '+G.maxCombo+'</span></div>';
+  var h='<h2>🧟 '+(RAID?'怪物衝進鎮上了':'家被攻破了')+'</h2><div class="stat"><span>撐到第 '+G.wave+' 波'+(nb?'　🏆 新紀錄':'')+'</span><span>打倒 '+G.kills+' 隻</span><span>最高連對 '+G.maxCombo+'</span></div>';
   h+=G.waveMiss.length?'<div class="muted">這一波卡住的：</div>'+missList():'';
   h+='<div class="row">'+(EMBED?'<button id="home" style="margin-right:8px;background:#24362b">回小鎮</button>':'')+'<button id="again">再守一次</button></div>';
   openBox(h); document.getElementById('again').onclick=function(){ closeBox(); totalEarned=0; wrongAll=[]; newGame(); };
@@ -452,11 +453,11 @@ function gameOver(){
 
 /* 開場 */
 resize(); requestAnimationFrame(loop);
-document.getElementById('back').addEventListener('click', function(e){ if(EMBED){ e.preventDefault(); if(!G||G.over||confirm('現在離開，這次守園就不算了。要回小鎮嗎？')) backToTown(false); } });
+document.getElementById('back').addEventListener('click', function(e){ if(EMBED){ e.preventDefault(); if(!G||G.over||confirm(RAID?'現在離開，這次守夜就不算了。要回小鎮嗎？':'現在離開，這次守園就不算了。要回小鎮嗎？')) backToTown(false); } });
 if(EMBED){
-  openBox('<h2>🌻 '+esc(PLACE)+'告急！</h2><div>史萊姆要來偷菜了。<b>守住 '+(GOAL||3)+' 波</b>就過關。</div>'+
+  openBox('<h2>'+ICON+' '+esc(PLACE)+'告急！</h2><div>'+(RAID?'天黑了，史萊姆和蝙蝠趁夜朝鎮上進攻。<b>守住 '+(GOAL||3)+' 波</b>，鎮民的房子就保住了。':'史萊姆要來偷菜了。<b>守住 '+(GOAL||3)+' 波</b>就過關。')+'</div>'+
     '<div class="stat"><span>答題賺 ☀️</span><span>🌵 射手 🪨 石牆 💣 炸彈</span><span>⚡ 連對 5 題放雷擊</span></div>'+
-    '<div class="muted">點下面的植物，再點草地格子種下去。⏭ 跳過不算錯。</div><div class="row"><button id="start">開始守園</button></div>');
+    '<div class="muted">點下面的植物，再點草地格子種下去。⏭ 跳過不算錯。</div><div class="row"><button id="start">'+(RAID?'開始守夜':'開始守園')+'</button></div>');
   document.getElementById('start').onclick=function(){ closeBox(); newGame(); };
 } else
 openBox('<h2>🌻 守園</h2><div>殭屍從右邊一路走向你的家。<br><b>答題賺 ☀️ 陽光</b>，再用陽光在草地上種東西擋住牠們。</div>'+

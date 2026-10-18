@@ -1340,6 +1340,7 @@ function newDay(first){
 }
 function rest(){
   if(busy) return;
+  if(night && raidDue()) return raidPanel(true);
   var leftover=bag.length;
   openSheet('<h3>🌙 第 '+S.day+' 天收工</h3><div class="muted">'+(leftover?'背包裡的 '+leftover+' 件明天還在。':'')+'明天樹叢、礦石、魚會重新出現，交貨攤也有新訂單。</div><div class="row2"><button class="btn ghost" id="no">再玩一下</button><button class="btn main" id="nd">睡覺 → 第 '+(S.day+1)+' 天</button></div>');
   document.getElementById('no').onclick=closeSheet;
@@ -1375,7 +1376,7 @@ function hud(){
   document.getElementById('hBag').textContent='🎒 '+bag.length+'/'+S.bagCap;
   document.getElementById('tb').style.width=Math.max(0,100*time/dayLen())+'%';
   var qi=questInfo();
-  document.getElementById('quest').innerHTML= night ? '🌙 天黑了，老鼠變多變快——回城，或去 🏡 睡覺' : (/^📋/.test(qi.t)?'':'🎯 ')+qi.t;
+  document.getElementById('quest').innerHTML= night ? (raidDue()?'🌙 怪物朝小鎮來了——<b>回城守夜</b>（守住 '+raidGoal()+' 波）':'🌙 天黑了，老鼠變多變快——回城，或去 🏡 睡覺') : (/^📋/.test(qi.t)?'':'🎯 ')+qi.t;
 }
 /* ============================================================
    回城：先回顧（錯在哪、為什麼、建議、正確說法），再交貨
@@ -1857,10 +1858,35 @@ function challengePanel(ch){
   document.getElementById('later').onclick=function(){ closeSheet(); ch.cool=4; };
   document.getElementById('go').onclick=function(){ closeSheet(); startPvz(ch); };
 }
+/* ============================================================
+   🌙 天黑突襲（10-18 Owen 選的：「少了點刺激性（守塔）」→ 4 可以）
+   ⭐ 天黑後怪物進攻小鎮：回城（或按收工）就跳出「守夜」→ 嵌入守園（tower.html?mode=raid）
+   ⭐ 規模跟著小鎮長大：基本 2 波，蓋越多房子／居民回來越多就越多波（最多 4）——越熱鬧越有東西要保護
+   ⭐ 後果在小鎮身上，⛔ 不在他身上（memory feedback_stakes_on_character_not_person）：
+      沒守住或直接睡＝某一棟房子「窗戶被打破」（畫面上有裂痕 💥），⛔ 不扣錢不扣東西；下次守住，鎮民就一起修好
+   ⭐ 跳過合法：「直接睡」永遠可以選，不擋任何東西
+   ============================================================ */
+function raidDue(){ return S.raidDay!==S.day; }
+function raidGoal(){ var b=S.built||{}, n=2; if((b.forge?1:0)+(b.post?1:0)+(b.bakery?1:0)>=2) n++; if(b.cottage) n++; return Math.min(4,n); }
+function raidPanel(fromRest){
+  var g=raidGoal(), broken=S.broken&&LOTS[S.broken]?LOTS[S.broken].name:'';
+  openSheet('<h3>🌙 怪物趁夜進攻小鎮！</h3><div class="story">史萊姆和蝙蝠從鎮外一路逼近。'+(broken?'上次被打破的 '+broken+' 還沒修好。':'')+'</div>'+
+    '<div class="muted">守住 '+g+' 波：打倒一隻 2 🪙、守住再加 40 🪙'+(broken?'，鎮民會順便把 '+broken+' 修好':'')+'。<br>不守也可以：鎮民會自己擋，只是可能有一棟房子的窗戶被打破。</div>'+
+    '<div class="row2"><button class="btn ghost" id="rskip">'+(fromRest?'直接睡':'今晚不守')+'</button><button class="btn main" id="rgo">🛡 守夜</button></div>');
+  document.getElementById('rskip').onclick=function(){ raidResolve(false, 0); closeSheet(); if(fromRest) rest(); else toast('鎮民把門窗關好，自己撐過了這一晚'); };
+  document.getElementById('rgo').onclick=function(){ closeSheet(); startPvz({id:'raid', name:'小鎮', em:'🏘️', goal:g, mode:'raid'}); };
+}
+function raidResolve(win, kills){
+  S.raidDay=S.day;
+  if(win){ var fixed=S.broken; S.broken=null; S.raidWins=(S.raidWins||0)+1; save(); return fixed; }
+  var lots=Object.keys(LOTS).filter(function(k){ return S.built[k] && k!=='stall'; });
+  if(lots.length && Math.random()<.6){ S.broken=lots[Math.floor(Math.random()*lots.length)]; }
+  save(); return null;
+}
 function startPvz(ch){
   busy=true; joy=null; keys={};
   pvzFrame=document.createElement('iframe');
-  pvzFrame.src='tower.html?embed=1&goal='+ch.goal+'&place='+encodeURIComponent(ch.name);
+  pvzFrame.src='tower.html?embed=1&goal='+ch.goal+'&place='+encodeURIComponent(ch.name)+(ch.mode?'&mode='+ch.mode:'');
   pvzFrame.style.cssText='position:fixed;inset:0;width:100%;height:100%;border:0;z-index:30;background:#10170f';
   pvzFrame.dataset.ch=ch.id;
   document.body.appendChild(pvzFrame);
@@ -1869,6 +1895,16 @@ window.addEventListener('message', function(e){
   var d=e.data; if(!d || d.type!=='pvz-done' || !pvzFrame) return;
   var id=pvzFrame.dataset.ch, ch=CHALLENGES.filter(function(c){ return c.id===id; })[0];
   pvzFrame.remove(); pvzFrame=null; busy=false; lastClose=performance.now();
+  if(id==='raid'){
+    var fixed=raidResolve(!!d.win, d.kills||0), gold=(d.kills||0)*2+(d.win?40:0); S.gold+=gold; save(); hud();
+    if(d.win && S.rel && S.rel.clement){ S.rel.clement.pts=(S.rel.clement.pts||0)+1; }
+    openSheet('<div class="catch"><div class="big">'+pix(d.win?'🏘️':'🌧️',96)+'</div><div class="story">'+(d.win?'天亮前最後一隻怪物也被趕跑了。鎮民打開門窗跟你道謝。'+(fixed?'<br>大家順手把 '+LOTS[fixed].name+' 的窗戶修好了。':''):'怪物衝進鎮上鬧了一陣才散去……'+(S.broken?'<br>'+LOTS[S.broken].name+' 的窗戶被打破了，下次守住就會修好。':''))+'</div>'+
+      '<div class="bagrow"><span>打倒 '+(d.kills||0)+' 隻</span><span>守了 '+(d.waves||0)+' 波</span><span>+'+gold+' 🪙</span></div>'+
+      (d.wrong&&d.wrong.length?'<div class="muted">這次卡住的句子：</div>'+d.wrong.slice(0,6).map(function(w){ return '<div class="item"><span class="say">'+esc(w)+'</span></div>'; }).join(''):'')+
+      '</div><div class="row2"><span></span><button class="btn main" id="ok">'+(night?'回家睡覺':'好')+'</button></div>');
+    document.getElementById('ok').onclick=function(){ closeSheet(); if(night) rest(); };
+    return;
+  }
   S.chal=S.chal||{}; var st=S.chal[id]||{wins:0, plays:0}; st.plays++;
   var gold=(d.kills||0)*2, first=false;
   if(d.win){ st.wins++; if(st.lastWin!==today()){ first=true; gold+=30; } st.lastWin=today(); }
@@ -2375,7 +2411,7 @@ function update(dt){
     if(inGrass && !pending){ grassDist+=spd*dt; if(grassDist>1.4){ grassDist=0; if(!wild && Math.random()<.28 && clock-lastWild>3){ lastWild=clock; pending={t:.3, x:hero.x, y:hero.y, fn:startWild, keep:1}; } } }
     /* 🦋 田裡偶爾飛出蝴蝶（形容詞圖鑑） */
     if(region(Math.floor(hero.x),Math.floor(hero.y))==='field' && !pending){ bugDist+=spd*dt; if(bugDist>2){ bugDist=0; if(!wild && Math.random()<.12 && clock-lastBug>25){ lastBug=clock; pending={t:.3, x:hero.x, y:hero.y, fn:bugCatch}; } } }
-    if(!inTown(hero)){ time-=dt*hero.moving; if(time<=0 && !night){ time=0; night=true; toast('🌙 天黑了，老鼠變多變快——回城吧'); spawnRat(); spawnRat(); } }
+    if(!inTown(hero)){ time-=dt*hero.moving; if(time<=0 && !night){ time=0; night=true; toast(raidDue()?'🌙 天黑了——怪物朝小鎮來了，回去守夜！':'🌙 天黑了，老鼠變多變快——回城吧'); spawnRat(); spawnRat(); } }
     reveal();
     if(Math.random()<dt) { save(); hud(); }
   }
@@ -2383,7 +2419,7 @@ function update(dt){
   if(updateVillagers(dt)) return;
   /* 進城 → 有東西就回顧 */
   var it=inTown(hero);
-  if(it && !wasInTown){ wasInTown=true; if(log.some(function(l){ return l.ok===false; }) || log.length>=6){ joy=null; keys={}; review(); return; } if(maybeNews()) return; }
+  if(it && !wasInTown){ wasInTown=true; if(log.some(function(l){ return l.ok===false; }) || log.length>=6){ joy=null; keys={}; review(); return; } if(night && raidDue()){ joy=null; keys={}; raidPanel(false); return; } if(maybeNews()) return; }
   if(!it) wasInTown=false;
   if(updateWild(dt)) return;
   for(var ci=0;ci<CHALLENGES.length && !wild;ci++){ var CH=CHALLENGES[ci]; if(CH.cool>0){ CH.cool-=dt; continue; }
@@ -2517,6 +2553,10 @@ function drawLot(k,ox,oy,ts){ return function(){
   var L=LOTS[k], R=ROOF[L.roof], px=ox+L.x*ts, py=oy+L.y*ts, s=Math.ceil(ts);
   if(S.built[k]){
     for(var i=0;i<3;i++){ [R.top,R.bot,R.wall].forEach(function(row,j){ var im=img('t',row[i]); if(im.complete) cx.drawImage(im,Math.floor(px+i*ts),Math.floor(py+j*ts),s,s); }); }
+    if(S.broken===k){ /* 🌙 突襲後被打破的窗戶：裂痕＋💥，下次守住就修好 */
+      cx.strokeStyle='rgba(20,10,5,.85)'; cx.lineWidth=Math.max(1,DPR*1.5); cx.beginPath(); var bx=px+ts*.9, by=py+ts*1.9;
+      cx.moveTo(bx,by); cx.lineTo(bx+ts*.25,by+ts*.2); cx.lineTo(bx+ts*.15,by+ts*.45); cx.moveTo(bx+ts*.25,by+ts*.2); cx.lineTo(bx+ts*.55,by+ts*.1); cx.stroke();
+      cx.font=Math.round(ts*.4)+'px system-ui'; cx.textAlign='center'; cx.fillText('💥', px+ts*2.3, py+ts*1.7+Math.sin(clock*3)*ts*.04); }
     var o=starsOf(k); if(o){ cx.font=Math.round(ts*.32)+'px system-ui'; cx.textAlign='center'; var st=''; for(var q=0;q<3;q++) st+=q<o.s?'★':'☆'; cx.fillStyle='#000'; cx.fillText(st,px+ts*1.5+DPR,py-ts*.08+DPR); cx.fillStyle='#f0c95a'; cx.fillText(st,px+ts*1.5,py-ts*.08); }
   } else {
     [[0,2,'t',92],[2,2,'t',92],[1,1,'t',44],[0,1,'t',47]].forEach(function(p){ var im=img(p[2],p[3]); if(im.complete) cx.drawImage(im,Math.floor(px+p[0]*ts),Math.floor(py+p[1]*ts),s,s); });
