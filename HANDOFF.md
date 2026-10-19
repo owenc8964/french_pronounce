@@ -25,6 +25,7 @@
 > - 📚 **10-17 夜：語言遊戲研究三路＋總整理** → `research/2026-10-17_語言遊戲總整理_給小鎮的提案.md`（提案依序：回城回收→複習、晨間判定＋小鎮等級、金幣綁精熟、擴大閱讀、對話產出；⏸ 等 Owen 選）；請 Owen 下載 Sailer & Homner 2020 全文。
 > - ⭐⭐⭐ **10-17 晚：再加三個玩法（三之六十九）**：☕ 咖啡館口說島五階、📋 告示牌抓錯字、🦋 田裡蝴蝶形容詞圖鑑；⏸ 等 Owen 玩。另有待辦：API 當場批改（等 Owen 開 Anthropic 帳號）→ 之後才做攤子點單。
 > - ⭐⭐⭐ **10-17 新 session 先看「三之六十八」**：Owen 的 5 個建議（三之六十七）已全部做完並試跑 → ⏸ 等 Owen 玩：靜音鍵、🚩 題目回報、遊戲時間紀錄（週報會讀）、🌬️ 風車拼句、📰 鎮報閱讀。
+> - 📰 **10-19 深夜：鎮報 35 → 52 篇＋句庫 +30 句（三之七十九）**：以 Communication essentielle／Grammaire en dialogues 情境為藍本重寫（⛔ 不照搬，repo 公開）；下一批建議 CE L22–24 求職／面試。
 > - 🎧 **10-19 深夜：課本音檔官方來源找到了（三之七十八）**：e-didier.fr 公開頁、編號＝課本音軌號；A2＋Cahier＋B1 慢速下載中，對照表 A2 120 軌／Cahier 127 軌完成；⏸ 等 Owen 選壓縮品質。
 > - 📖 **10-19 第 43 課（三之七十七）**：A2 模擬考聽力 20／25＋⭐ **進入 Édito B1**（Unité 1 Famileo）＋三本新書（B1 課本、Communication essentielle、Grammaire en dialogues）文字快取。⏸ 待 Owen：地圖總課數改多少、要不要做「功能詞挖空聽寫＋換口音」（他說換口音就聽不懂）、貼逐字稿補 🎙／🔊 兩個 unit。
 > - 課程進度：**第 42 課**（p.175 動物詞彙與俗語、p.177 被動式、p.178 命令式＋代名詞、DELF A2 模擬閱讀 24／25）筆記＋連動完成（見「三之六十五」）。⭐ **老師宣布 Édito A2 上完**；下次：先練 A2 口說，或直接進 B1 課本（逐字稿糊，看起來是先練口說再進 B1）。
@@ -4924,6 +4925,36 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - 紀錄 `clb7_gender_seen`（每字一物件＋last）：上次錯的 ×4、錯多於對 ×3、連對 3 次且 2 次 <2 秒的 ×0.35。答對也呼叫 `growRec`（key `g:<字>`）→ 隔天以後又答對＝站穩，寵物會長大。每答對 1 枚金幣，中途回去也照給。結算：✓ 數、平均秒數、<2 秒的個數、「再看一眼這幾個」（可點聽）。⛔ 不顯示分母。
 - 🐛 順手發現：`tools/tmp_quest_nosync.js make` 產的暫存頁**自己回報 `sync tag present? true`**——那支工具已經不可靠，這次改用自己的隔離複本（只刪 `<script src=sync_supabase.js>`），⚠️ 以後測 quest.html 別用它。
 - ✅ 試跑（隔離複本，ROOM 沒動）：手機 375 版面；一局 20 題（含 1 跳過、4 錯）→ 結算正確、金幣 +15、紀錄 18 字；無錯誤。
+
+#### 三之七十九、10-19 深夜：兩本補充書 → 鎮報新增 17 篇（a36–a52）＋句庫 30 句口語短句
+- **起因**：Owen 問能不能把 Communication essentielle A2、Grammaire en dialogues 的對話／閱讀拿來做閱讀測驗。⛔ repo 是公開的 GitHub Pages，整篇照搬＝公開轉貼商業教材 → 定案：**以書的情境為藍本「重寫」短文＋3 題理解題**（CLAUDE.md 已核准的原創例外），短句才可以直接收。
+- **`reading_articles.js`：35 → 52 篇**（reading.html 與 town.html 鎮報共用，鎮報優先挑沒讀過的，所以接下來 17 次鎮報都是新文章）。每篇前面有註解標藍本課次與頁碼。詞彙取自該課的 VOCABULAIRE 詞彙圖，文法點對齊該課 GRAMMAIRE。
+  | id | 標題 | 藍本 | 文法點 |
+  |---|---|---|---|
+  | a36 | Un lave-vaisselle d'occasion | CE L1 購物 p.11 | 二手、保固、出價 |
+  | a37 | Panne sur la ligne B | CE L2 交通 p.17 | venir de |
+  | a38 | Un studio à la Croix-Rousse | CE L3 租屋搬家 p.23 | futur proche |
+  | a39 | Une journée de démarches | CE L4 行政手續 p.29 | passé composé |
+  | a40 | Deux invitations | CE L6 邀約 p.41 | 正式／非正式問句 |
+  | a41 | Nouvelle à Bordeaux | CE L7 交朋友 p.47 | y |
+  | a42 | Mot dans le cahier de liaison | CE L9 學校 p.59 | qui / que |
+  | a43 | Bonne adresse : La Table de Margaux | CE L11 餐廳 p.71 | pendant / depuis / il y a / dans |
+  | a44 | Confirmation d'inscription | CE L12 休閒活動 p.77 | COD |
+  | a45 | Que faire à Saint-Malo ? | CE L14 海邊度假 p.89 | si ＋ 現在式 |
+  | a46 | Une téléconsultation（A2+） | CE L15 看醫生 p.95 | il faut que ＋ 虛擬式 |
+  | a47 | Génial ou nul ? | CE L16 運動 p.101 | imparfait 評論 |
+  | a48 | Ville ou campagne ? | CE L18 城鄉 p.113 | 比較級 |
+  | a49 | Changer de métier（A2+） | CE L20 進修 p.125 | en |
+  | a50 | Un job pour l'été | CE L21 找工作 p.131 | ne…rien / personne / plus |
+  | a51 | Lundi matin au bureau | GeD 中級 ch.3 p.12 | passé récent |
+  | a52 | Trois heures dans le train（A2+） | GeD 中級 ch.4 p.15 | imparfait vs passé composé |
+  - 題型照舊三種混搭：細節、推論（例：a38 要從「只有週六看房」＋「今天早上」推出星期六）、文法點（y／que／en／la 指什麼）。expl 全法文、一兩句。
+  - ⚠️ 原本新題正解有 32/51 擠在第 2 個選項 → 已打散成 12／11／14／14，避免背位置。
+  - ⛔ 刻意沒用：Grammaire en dialogues ch.5 plus-que-parfait（還沒學）；書中的文件（廣告、表單）只借題材，名字、地點、數字全換。
+- **`sentences.js` +30 句**（`S_L43_CE1–24`、`S_L43_GD1–6`，lesson 43）：Communication essentielle 各課「POUR COMMUNIQUER」的高頻問答（退貨、邀約／婉拒、點餐、看醫生、Ça te dit de…、Ça te dérange si…）＋ Grammaire en dialogues 中級 ch.3–4 的口語回應（Calme-toi、J'en ai assez、Ce n'est pas grave、J'imagine la scène）。note 都標書名＋課次＋頁碼（書上印的頁碼；CE 的 PDF 頁＝書頁＋1）。⛔ 沒放進 chunks.js：它是從 french_notes.html 自動抽的，手加會被下次重抽蓋掉。第 43 課筆記已收的 Ah bon／Oh là là／Mesdames, messieurs 沒重複收。
+- ✅ **試跑**（ROOM 改 TEST → 測完改回 → preview_stop → grep 無 TEST 殘留）：reading.html 列出 52 篇、a52 題目正常顯示；town.html 把 a1–a35 標成讀過後連抽 40 次全部是新文章（16 篇都抽到過）；完整讀一篇（答 1 題、跳 1 題）→ `clb7_reading` 記 total 1（跳過不算分母）✓；測試紀錄已清。
+- 🐛 順手發現：`tools/audit_coverage.js` 還從 reading.html 讀 ARTICLES（10-17 已抽到 reading_articles.js）→ 閱讀一直顯示 0 篇，要改讀新檔。「遊戲裡沒有」那句也過時了（鎮報有）。
+- ⏭ **還沒用的情境（下一批）**：CE L5 媒體（已有媒體篇，可略）、L8 辦活動（futur simple）、L10 志工協會（反身動詞 PC）、L13 興趣（COI）、L17 飲食（cause / but）、L19 舒壓（à / de）、L22–24 求職信／面試／公司（cause、ordre du discours、opposition）——L22–24 很貼 TCF 題材，值得優先。GeD 可用：débutant ch.4–5（faire/prendre、aller/venir）、中級 Bilan「Des vacances en Irlande」。
 
 #### 三之七十八、10-19 深夜：⭐ 課本音檔找到官方來源（e-didier.fr）→ 慢速全下載＋音軌↔逐字稿對照表
 

@@ -946,5 +946,502 @@ const ARTICLES = [
         expl: "On suit quelqu'un : COD, donc le. On écrit à quelqu'un : COI, donc lui. Les deux remplacent le grand-père et se placent avant le verbe conjugué."
       }
     ]
+  },
+
+  /* ===== 2026-10-19 補充書藍本（a36–a52）=====
+     以 Communication essentielle du français A2（Didier）的情境、Grammaire en dialogues（CLE）的單元為藍本「重寫」的原創短文；
+     ⛔ 沒有照搬書中任何一篇對話或文件（repo 公開）。只借情境、詞彙表與該課文法點。 */
+
+  // 藍本：Communication essentielle L1 Faire des achats（p.11–16）｜詞彙：d'occasion, en bon état, sous garantie, faire une offre
+  {
+    id: 'a36',
+    title: 'Un lave-vaisselle d\'occasion',
+    level: 'A2',
+    theme: 'Achats',
+    text: `Le mois dernier, mon lave-vaisselle est tombé en panne. Il n'était plus sous garantie, et la réparation coûtait presque aussi cher qu'un appareil neuf. Alors j'ai cherché sur un site de vente entre particuliers.\n\nJ'ai trouvé une annonce intéressante : un lave-vaisselle d'occasion, acheté il y a deux ans, « en très bon état », à 150 euros. Le vendeur ne pouvait pas le livrer, donc mon voisin m'a prêté sa voiture. Avant de payer, j'ai demandé à voir la facture et j'ai fait une offre à 130 euros. Le vendeur a accepté !\n\nDepuis, la machine fonctionne parfaitement. Pour moi, c'est le meilleur rapport qualité-prix.`,
+    questions: [
+      {
+        q: "Pourquoi le narrateur n'a-t-il pas fait réparer son lave-vaisselle ?",
+        opts: ["Le réparateur n'était pas disponible", "Il voulait une machine plus grande", "La machine était encore sous garantie", "La réparation était presque aussi chère qu'une machine neuve"],
+        ans: 3,
+        expl: "« La réparation coûtait presque aussi cher qu'un appareil neuf » : réparer n'était pas intéressant. Et la machine n'était plus sous garantie."
+      },
+      {
+        q: "Combien a-t-il payé la machine ?",
+        opts: ["130 €", "150 €", "20 €", "Le texte ne le dit pas"],
+        ans: 0,
+        expl: "150 €, c'est le prix de l'annonce. Il a fait une offre à 130 € et le vendeur a accepté."
+      },
+      {
+        q: "Comment la machine est-elle arrivée chez lui ?",
+        opts: ["Le vendeur l'a livrée", "Par un service de livraison payant", "Il est allé la chercher avec la voiture de son voisin", "Il l'a reçue par colis"],
+        ans: 2,
+        expl: "Le vendeur ne pouvait pas livrer, donc le voisin lui a prêté sa voiture : il est allé la chercher lui-même."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L2 Se déplacer（p.17–22）｜文法：le passé récent（venir de）
+  {
+    id: 'a37',
+    title: 'Panne sur la ligne B',
+    level: 'A2',
+    theme: 'Transports',
+    text: `Message de Karim à sa collègue Sophie, 8 h 10 :\n\n« Sophie, je viens d'arriver au parc relais, mais il y a une panne sur la ligne B : aucun tram ne part ! On vient d'annoncer un bus de remplacement dans vingt minutes. Je vais être en retard pour la réunion de 9 h. Est-ce que tu peux prévenir le chef ?\n\nJe ne prends pas ma voiture pour aller au centre-ville : il y a des embouteillages partout et le parking coûte trop cher. Avec mon ticket, le parking et les transports sont compris pour la journée, donc j'attends le bus. À tout à l'heure ! »`,
+    questions: [
+      {
+        q: "Où est Karim quand il écrit ?",
+        opts: ["Au bureau", "Au parc relais", "Dans le tram", "Dans sa voiture, dans un embouteillage"],
+        ans: 1,
+        expl: "« Je viens d'arriver au parc relais » : venir de + infinitif = il est arrivé il y a très peu de temps. Il y est encore."
+      },
+      {
+        q: "Que demande Karim à Sophie ?",
+        opts: ["De venir le chercher en voiture", "D'annuler la réunion", "De lui acheter un ticket", "De dire au chef qu'il sera en retard"],
+        ans: 3,
+        expl: "« Est-ce que tu peux prévenir le chef ? » Prévenir quelqu'un = l'informer avant. Le chef doit savoir que Karim sera en retard."
+      },
+      {
+        q: "Pourquoi Karim ne va-t-il pas au centre-ville en voiture ?",
+        opts: ["Sa voiture est en panne", "Il n'a pas le permis", "Il y a des embouteillages et le parking est cher", "Le parc relais est fermé"],
+        ans: 2,
+        expl: "« Il y a des embouteillages partout et le parking coûte trop cher. » La panne, c'est la ligne de tram, pas sa voiture."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L3 Chercher un logement et déménager（p.23–28）｜文法：le futur proche
+  {
+    id: 'a38',
+    title: 'Un studio à la Croix-Rousse',
+    level: 'A2',
+    theme: 'Logement',
+    text: `À louer – Lyon, quartier de la Croix-Rousse. Studio meublé de 28 m² au 4e étage avec ascenseur, exposé sud, très lumineux. Cuisine équipée, proche des commerces et du métro. 650 € charges comprises. Disponible à partir du 1er novembre. Visites le samedi matin uniquement.\n\nMessage d'Inès à sa sœur : « J'ai visité le studio ce matin : coup de cœur ! Je vais signer le bail lundi à l'agence. On va faire l'état des lieux le 31 octobre. Comme il est meublé, je ne vais pas louer de camion : quelques cartons dans ta voiture, et c'est fini ! Tu vas m'aider ? »`,
+    questions: [
+      {
+        q: "Quel jour Inès a-t-elle visité le studio ?",
+        opts: ["Samedi", "Lundi", "Le 31 octobre", "Le 1er novembre"],
+        ans: 0,
+        expl: "Le texte ne le dit pas directement : l'annonce dit « visites le samedi matin uniquement » et Inès écrit « ce matin ». Donc c'était samedi."
+      },
+      {
+        q: "Pourquoi Inès n'a-t-elle pas besoin d'un camion ?",
+        opts: ["Le studio est à côté de chez sa sœur", "L'agence s'occupe du déménagement", "Il y a un ascenseur", "Le studio a déjà des meubles"],
+        ans: 3,
+        expl: "Meublé = avec des meubles. Elle a seulement quelques cartons à transporter."
+      },
+      {
+        q: "Qu'est-ce qui est vrai ?",
+        opts: ["Le loyer ne comprend pas les charges", "Inès va faire l'état des lieux avant d'emménager", "Le studio est au rez-de-chaussée", "Inès a déjà signé le bail"],
+        ans: 1,
+        expl: "L'état des lieux est le 31 octobre, juste avant le 1er novembre. « Je vais signer » = futur proche : ce n'est pas encore fait. Et 650 € charges comprises."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L4 Faire des démarches administratives（p.29–34）｜文法：le passé composé
+  {
+    id: 'a39',
+    title: 'Une journée de démarches',
+    level: 'A2',
+    theme: 'Administration',
+    text: `Mardi, Lucia a eu une journée chargée. Le matin, elle est allée à la mairie pour renouveler son passeport : il expire dans deux mois et elle part au Brésil cet été. Elle a apporté deux photos d'identité et un justificatif de domicile, mais elle a oublié son ancien passeport à la maison ! L'employé lui a donné un nouveau rendez-vous pour jeudi.\n\nL'après-midi, elle a ouvert un compte courant dans une nouvelle banque et elle a demandé une carte bancaire. Le soir, elle a résilié son abonnement téléphonique : elle a trouvé un forfait sans engagement à 9,99 € par mois. Pour résilier, elle a envoyé une lettre recommandée avec accusé de réception.`,
+    questions: [
+      {
+        q: "Pourquoi Lucia doit-elle retourner à la mairie jeudi ?",
+        opts: ["Ses photos ne sont pas bonnes", "La mairie était fermée", "Elle n'avait pas son ancien passeport", "Elle n'avait pas de justificatif de domicile"],
+        ans: 2,
+        expl: "« Elle a oublié son ancien passeport à la maison » : son dossier n'était pas complet, donc nouveau rendez-vous."
+      },
+      {
+        q: "Pourquoi Lucia renouvelle-t-elle son passeport maintenant ?",
+        opts: ["Il ne sera plus valide pendant son voyage", "Il a déjà expiré", "Elle l'a perdu", "La banque le demande"],
+        ans: 0,
+        expl: "Il expire dans deux mois et elle part cet été : il doit être valide pendant le voyage. Il n'a pas encore expiré."
+      },
+      {
+        q: "Un forfait « sans engagement », c'est un forfait…",
+        opts: ["gratuit", "sans accès à Internet", "qu'il faut garder deux ans", "qu'on peut arrêter quand on veut"],
+        ans: 3,
+        expl: "Sans engagement = on ne promet pas de rester un certain temps. On peut résilier quand on veut."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L6 Inviter et être invité(e)（p.41–46）｜文法：questions formelles / informelles
+  {
+    id: 'a40',
+    title: 'Deux invitations',
+    level: 'A2',
+    theme: 'Invitation',
+    text: `Message 1 – De Julie à Malik : « Salut ! Ça te dit de venir pique-niquer au parc samedi midi ? On sera six. Tu peux apporter une boisson ? Dis-moi si t'es dispo ! »\n\nMessage 2 – De Mme Bertrand à M. Ferreira : « Monsieur, seriez-vous disponible pour dîner à la maison vendredi 14, à 20 heures ? Mon mari et moi serions très heureux de vous recevoir. »\n\nRéponse de Malik : « Super, avec plaisir ! Je peux venir avec ma copine ? »\n\nRéponse de M. Ferreira : « Merci beaucoup pour votre invitation. Je regrette, mais ce n'est pas possible vendredi. Une autre fois, peut-être ? »`,
+    questions: [
+      {
+        q: "Pourquoi Mme Bertrand écrit « seriez-vous disponible » et pas « t'es dispo » ?",
+        opts: ["Parce qu'elle est en colère", "Parce que la situation est formelle : elle vouvoie M. Ferreira", "Parce que c'est un message oral", "Parce qu'elle invite plusieurs personnes"],
+        ans: 1,
+        expl: "Question formelle : inversion verbe-sujet (seriez-vous) et mots complets (disponible, pas dispo). Julie et Malik sont amis : question informelle."
+      },
+      {
+        q: "Qui accepte l'invitation ?",
+        opts: ["Malik", "M. Ferreira", "Les deux", "Personne"],
+        ans: 0,
+        expl: "Malik : « Super, avec plaisir ! » M. Ferreira refuse poliment : « Je regrette, mais ce n'est pas possible. »"
+      },
+      {
+        q: "Qu'est-ce que Julie demande à Malik ?",
+        opts: ["De venir avec sa copine", "D'arriver à 20 heures", "D'apporter quelque chose à boire", "De réserver une table"],
+        ans: 2,
+        expl: "« Tu peux apporter une boisson ? » C'est Malik qui demande s'il peut venir avec sa copine."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L7 Faire de nouvelles rencontres（p.47–52）｜文法：le pronom y
+  {
+    id: 'a41',
+    title: 'Nouvelle à Bordeaux',
+    level: 'A2',
+    theme: 'Rencontres',
+    text: `Ana habite à Bordeaux depuis un mois. Au début, elle ne connaissait personne. Une collègue lui a conseillé : « Inscris-toi sur le site de la ville, il y a plein de sorties ! » Ana a choisi un pseudo, elle a créé son espace perso et elle s'est inscrite à une randonnée.\n\nDimanche dernier, elle y est allée. Il y avait quinze participants. Pendant la pause, un homme lui a demandé combien elle gagnait par mois. Ana a été surprise : en France, on ne parle pas d'argent avec des gens qu'on ne connaît pas ! Mais les autres membres étaient très sympathiques.\n\nMaintenant, Ana va au cours de chant le mardi soir. Elle y va avec Clara, une nouvelle amie.`,
+    questions: [
+      {
+        q: "Dans « elle y est allée », que remplace y ?",
+        opts: ["Le site de la ville", "Bordeaux", "Le cours de chant", "La randonnée"],
+        ans: 3,
+        expl: "Y remplace un lieu ou une activité introduits par à : aller à la randonnée → y aller. C'est la sortie de la phrase précédente."
+      },
+      {
+        q: "Pourquoi Ana a-t-elle été surprise ?",
+        opts: ["Il y avait trop de participants", "Un homme lui a posé une question sur son salaire", "Personne ne lui a parlé", "La randonnée était trop difficile"],
+        ans: 1,
+        expl: "« Combien elle gagnait par mois » = son salaire. En France, l'argent est une question à éviter avec des inconnus."
+      },
+      {
+        q: "Qu'est-ce qui a changé pour Ana ?",
+        opts: ["Elle a quitté Bordeaux", "Elle ne va plus aux sorties", "Elle a une nouvelle amie et une activité chaque semaine", "Elle donne des cours de chant"],
+        ans: 2,
+        expl: "Au début, elle ne connaissait personne. Maintenant, elle va au chant tous les mardis avec Clara, une nouvelle amie."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L9 Participer à la vie scolaire（p.59–64）｜文法：pronoms relatifs qui / que
+  {
+    id: 'a42',
+    title: 'Mot dans le cahier de liaison',
+    level: 'A2',
+    theme: 'École',
+    text: `Chers parents,\n\nLa kermesse de l'école aura lieu le samedi 21 juin, de 14 h à 18 h, dans la cour de récréation. C'est une fête que nous organisons chaque année avec l'association des parents d'élèves. Il y aura des stands de jeux, une tombola et un spectacle que les élèves de la classe de Mme Roux préparent depuis janvier.\n\nNous cherchons des parents qui peuvent tenir un stand pendant une heure. Si vous êtes disponible, merci de remplir le coupon joint, de le dater, de le signer et de le remettre à l'enseignant avant le 6 juin.\n\nL'équipe pédagogique`,
+    questions: [
+      {
+        q: "Qu'est-ce que l'école demande aux parents ?",
+        opts: ["D'aider pendant la fête", "D'acheter des billets de tombola", "De préparer le spectacle", "De venir chercher les enfants à 14 h"],
+        ans: 0,
+        expl: "« Nous cherchons des parents qui peuvent tenir un stand » : l'école cherche de l'aide pour la kermesse."
+      },
+      {
+        q: "« Un spectacle que les élèves préparent » : que remplace que ?",
+        opts: ["Les élèves", "La kermesse", "Janvier", "Le spectacle"],
+        ans: 3,
+        expl: "Que remplace le COD : les élèves préparent le spectacle. Les élèves, c'est le sujet du verbe (après que)."
+      },
+      {
+        q: "Un parent veut aider. Qu'est-ce qu'il doit faire ?",
+        opts: ["Téléphoner à l'école le 21 juin", "Venir à la kermesse à 14 h sans prévenir", "Rendre le coupon signé à l'enseignant avant le 6 juin", "Écrire à l'association des parents"],
+        ans: 2,
+        expl: "Remplir le coupon, le dater, le signer et le remettre à l'enseignant avant le 6 juin."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L11 Apprécier la cuisine（p.71–76）｜文法：pendant / depuis / il y a / dans
+  {
+    id: 'a43',
+    title: 'Bonne adresse : La Table de Margaux',
+    level: 'A2',
+    theme: 'Restaurant',
+    text: `Notre bonne adresse de la semaine : La Table de Margaux.\n\nMargaux a ouvert son petit restaurant il y a huit ans, dans une rue calme du vieux Nice. Avant, elle a travaillé pendant dix ans dans un grand hôtel. Ici, elle cuisine les spécialités de la région avec des produits de saison et du coin : socca, salade niçoise, tarte aux légumes… La carte est simple et les prix sont abordables.\n\nDepuis l'année dernière, on peut aussi commander à emporter. Attention : il y a toujours du monde, donc il vaut mieux réserver une table ! Le restaurant est fermé le lundi. Et bonne nouvelle : dans deux semaines, Margaux ouvre une terrasse.`,
+    questions: [
+      {
+        q: "Depuis combien de temps le restaurant existe-t-il ?",
+        opts: ["Dix ans", "Huit ans", "Un an", "Deux semaines"],
+        ans: 1,
+        expl: "« Il y a huit ans » : l'ouverture, une action terminée. Dix ans, c'est la durée de son travail à l'hôtel, avant (pendant)."
+      },
+      {
+        q: "Qu'est-ce qui n'existe pas encore ?",
+        opts: ["La terrasse", "La vente à emporter", "Les spécialités de la région", "Les réservations"],
+        ans: 0,
+        expl: "Dans + durée = dans le futur : la terrasse ouvre dans deux semaines. La vente à emporter existe depuis l'année dernière."
+      },
+      {
+        q: "Pourquoi conseille-t-on de réserver ?",
+        opts: ["La cuisine ferme tôt", "Il est fermé le lundi", "Les prix sont abordables", "Le restaurant est souvent plein"],
+        ans: 3,
+        expl: "« Il y a toujours du monde » = il y a toujours beaucoup de clients."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L12 Pratiquer une activité de loisir（p.77–82）｜文法：les pronoms COD
+  {
+    id: 'a44',
+    title: 'Confirmation d\'inscription',
+    level: 'A2',
+    theme: 'Loisirs',
+    text: `Objet : Confirmation d'inscription\n\nBonjour Hugo,\n\nMerci pour votre inscription à notre atelier de poterie du samedi 8 mars, de 10 h à 12 h. L'atelier est animé par une artiste professionnelle et il est ouvert à tous les niveaux, même aux débutants.\n\nLe matériel est fourni : vous n'avez pas besoin de l'apporter. Mais pensez à prendre une vieille chemise ou une blouse : la terre, ça salit ! Vous pourrez garder votre création : nous la mettrons au four et vous pourrez la récupérer une semaine après. Le prix (20 €) est à payer sur place.\n\nÀ samedi !`,
+    questions: [
+      {
+        q: "Hugo n'a jamais fait de poterie. Est-ce un problème ?",
+        opts: ["Oui, l'atelier est pour les professionnels", "Oui, il doit d'abord suivre un cours", "Non, tous les niveaux sont acceptés", "Le texte ne le dit pas"],
+        ans: 2,
+        expl: "« Ouvert à tous les niveaux, même aux débutants. » C'est l'artiste qui est professionnelle, pas les participants."
+      },
+      {
+        q: "« Nous la mettrons au four » : que remplace la ?",
+        opts: ["L'artiste", "La blouse", "La terre", "La création de Hugo"],
+        ans: 3,
+        expl: "On met quoi au four ? Votre création. Pronom COD féminin → la, placé avant le verbe."
+      },
+      {
+        q: "Qu'est-ce que Hugo doit apporter ?",
+        opts: ["Un vieux vêtement", "Le matériel de poterie", "Rien, il paie avant samedi", "Sa création de la semaine dernière"],
+        ans: 0,
+        expl: "Le matériel est fourni et on paie sur place. Mais il faut « une vieille chemise ou une blouse »."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L14 Passer des vacances à la mer（p.89–94）｜文法：la condition（si + présent）
+  {
+    id: 'a45',
+    title: 'Que faire à Saint-Malo ?',
+    level: 'A2',
+    theme: 'Vacances',
+    text: `Office de tourisme – Que faire cette semaine ?\n\n• Si vous aimez l'histoire, inscrivez-vous à la visite guidée de la vieille ville (mardi et jeudi, 10 h). Places limitées !\n• Si vous êtes débutant en voile, l'école de la plage propose des cours pour les enfants dès 8 ans et pour les adultes. Il faut savoir nager.\n• Baignade : la grande plage est surveillée de 11 h à 19 h. S'il y a un drapeau rouge, la baignade est interdite.\n• Samedi soir : fête de la mer sur le port, avec concert et feu d'artifice. Gratuit.`,
+    questions: [
+      {
+        q: "Un touriste veut faire la visite guidée. Qu'est-ce qu'il doit faire ?",
+        opts: ["Venir à 10 h n'importe quel jour", "S'inscrire à l'avance", "Acheter un billet pour le concert", "Savoir nager"],
+        ans: 1,
+        expl: "« Inscrivez-vous » + « places limitées » : il faut réserver. Et la visite a lieu seulement le mardi et le jeudi."
+      },
+      {
+        q: "Paul, 6 ans, veut apprendre la voile. C'est possible ?",
+        opts: ["Oui, s'il sait nager", "Oui, avec ses parents", "Oui, le samedi soir", "Non, il est trop jeune"],
+        ans: 3,
+        expl: "Dès 8 ans = à partir de 8 ans. Paul a 6 ans."
+      },
+      {
+        q: "Il est 20 h. Qu'est-ce qui est vrai ?",
+        opts: ["La baignade est interdite", "La visite guidée commence", "La plage n'est plus surveillée", "Il faut payer pour aller sur le port"],
+        ans: 2,
+        expl: "Surveillée de 11 h à 19 h : à 20 h, il n'y a plus personne pour surveiller. La baignade est interdite seulement s'il y a un drapeau rouge."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L15 S'occuper de sa santé（p.95–100）｜文法：il faut que + subjonctif
+  {
+    id: 'a46',
+    title: 'Une téléconsultation',
+    level: 'A2+',
+    theme: 'Santé',
+    text: `Depuis trois jours, Thomas tousse et il a de la fièvre. Ce matin, il a appelé le cabinet médical, mais son médecin était absent. La secrétaire lui a proposé une téléconsultation avec une autre généraliste à 11 h.\n\nLa généraliste l'a écouté et lui a posé des questions. « Ce n'est probablement pas grave, mais il faut que vous fassiez une radio des poumons et une prise de sang. Il faut aussi que vous restiez chez vous cette semaine : je vous fais un arrêt de travail. » Elle lui a envoyé l'ordonnance par e-mail.\n\nThomas va aller au laboratoire demain matin. Les résultats d'analyse arriveront dans deux jours.`,
+    questions: [
+      {
+        q: "Pourquoi Thomas n'a-t-il pas vu son médecin habituel ?",
+        opts: ["Son médecin était absent", "Il n'avait pas de carte d'assurance", "Le cabinet était fermé", "Il préférait aller aux urgences"],
+        ans: 0,
+        expl: "« Son médecin était absent », alors la secrétaire lui a proposé une autre généraliste, en téléconsultation."
+      },
+      {
+        q: "« Il faut que vous fassiez une radio. » Fassiez, c'est…",
+        opts: ["le verbe faire au futur", "le verbe falloir", "le verbe faire au subjonctif", "le verbe faire à l'imparfait"],
+        ans: 2,
+        expl: "Après « il faut que », toujours le subjonctif. Faire est irrégulier : que je fasse, que vous fassiez."
+      },
+      {
+        q: "Cette semaine, Thomas…",
+        opts: ["va travailler comme d'habitude", "ne va pas travailler", "va aller aux urgences", "va revoir la généraliste au cabinet"],
+        ans: 1,
+        expl: "Un arrêt de travail = un papier du médecin : on ne va pas au travail. « Il faut que vous restiez chez vous. »"
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L16 Faire du sport（p.101–106）｜文法：l'imparfait pour commenter
+  {
+    id: 'a47',
+    title: 'Génial ou nul ?',
+    level: 'A2',
+    theme: 'Sport',
+    text: `Samedi dernier, Nadia a essayé le parcours de santé du parc avec une monitrice. « C'était génial ! Il faisait beau, le groupe était sympa et les exercices n'étaient pas trop difficiles. »\n\nSon mari Olivier, lui, s'est inscrit à un stage d'initiation au tennis. « C'était nul ! Il y avait trop de monde et l'entraîneur ne nous expliquait rien. J'ai abandonné après une heure. »\n\nAujourd'hui, Nadia a des courbatures, mais elle se sent en pleine forme. Elle veut prendre un abonnement annuel à la salle de gym. Olivier, lui, préfère courir seul le matin.`,
+    questions: [
+      {
+        q: "Qui a aimé son activité ?",
+        opts: ["Olivier", "Les deux", "Personne", "Nadia"],
+        ans: 3,
+        expl: "Nadia : « C'était génial ! » Olivier : « C'était nul ! » et il a abandonné."
+      },
+      {
+        q: "Pourquoi Olivier n'a-t-il pas aimé le stage ?",
+        opts: ["Il y avait trop de monde et l'entraîneur n'expliquait rien", "Il faisait mauvais", "Les exercices étaient trop faciles", "Il avait des courbatures"],
+        ans: 0,
+        expl: "« Il y avait trop de monde et l'entraîneur ne nous expliquait rien. » Les courbatures, c'est Nadia."
+      },
+      {
+        q: "« C'était génial », « il faisait beau » : pourquoi l'imparfait ?",
+        opts: ["Pour une action future", "Pour une action courte et terminée", "Pour décrire et donner son avis sur un moment passé", "Parce que c'est une question"],
+        ans: 2,
+        expl: "Pour commenter ou décrire au passé : imparfait. Pour les actions (essayer, s'inscrire, abandonner) : passé composé."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L18 Vivre en ville ou à la campagne ?（p.113–118）｜文法：la comparaison
+  {
+    id: 'a48',
+    title: 'Ville ou campagne ?',
+    level: 'A2',
+    theme: 'Ville',
+    text: `Il y a deux ans, Bruno et sa famille ont quitté le centre de Lille pour un village à 30 kilomètres. « À la campagne, il y a moins de bruit et moins de pollution, et les enfants jouent dans le jardin. Mais il y a moins de services : la boulangerie la plus proche est à cinq kilomètres ! » Bruno fait 60 kilomètres en voiture tous les jours pour aller travailler.\n\nSa sœur Élise, elle, habite dans un écoquartier en banlieue. « Mon immeuble est moderne et mieux isolé que les vieux immeubles. Le quartier est aussi vert et calme qu'un village, et il y a des pistes cyclables jusqu'au centre-ville. Je n'ai pas besoin de voiture. »`,
+    questions: [
+      {
+        q: "Selon Bruno, quel est un inconvénient de la campagne ?",
+        opts: ["Le bruit", "La pollution", "Le jardin est petit", "Les commerces sont loin"],
+        ans: 3,
+        expl: "« Il y a moins de services : la boulangerie la plus proche est à cinq kilomètres ! » Moins de bruit et de pollution, ce sont des avantages."
+      },
+      {
+        q: "« Le quartier est aussi vert et calme qu'un village. » Ça veut dire que…",
+        opts: ["le quartier est plus vert qu'un village", "le quartier est vert et calme comme un village", "le quartier est moins calme qu'un village", "il n'y a pas d'arbres dans le quartier"],
+        ans: 1,
+        expl: "Aussi … que = égalité (=). Plus … que (+), moins … que (−)."
+      },
+      {
+        q: "Pourquoi Élise n'a-t-elle pas besoin de voiture ?",
+        opts: ["Elle peut aller au centre-ville à vélo", "Elle travaille à la maison", "Elle habite au centre-ville", "Son frère l'emmène"],
+        ans: 0,
+        expl: "« Il y a des pistes cyclables jusqu'au centre-ville. » Elle habite en banlieue, pas au centre."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L20 Suivre une formation（p.125–130）｜文法：le pronom en
+  {
+    id: 'a49',
+    title: 'Changer de métier',
+    level: 'A2+',
+    theme: 'Travail',
+    text: `Sami a 34 ans. Pendant dix ans, il a été serveur, mais il a envie de changer de métier : il voudrait travailler dans l'informatique. Il en a parlé à une conseillère. Elle lui a répondu : « Des formations en informatique, il y en a beaucoup ! Vous pouvez en suivre une en ligne ou dans un centre de formation. »\n\nSami a choisi une formation intensive à distance : il a cours tous les jours de 9 h à 17 h pendant six mois. À la fin, il va passer un examen pour obtenir un diplôme. Il a payé avec son compte personnel de formation.\n\n« C'est difficile, mais j'apprends beaucoup et je développe de nouvelles compétences. Après, je vais faire un stage pour pratiquer. »`,
+    questions: [
+      {
+        q: "« Il en a parlé à une conseillère. » Que remplace en ?",
+        opts: ["La conseillère", "Les cours en ligne", "Son envie de changer de métier", "Le diplôme"],
+        ans: 2,
+        expl: "Parler de quelque chose → en parler. Il parle de son projet : changer de métier. La conseillère, c'est « à une conseillère »."
+      },
+      {
+        q: "Où Sami suit-il sa formation ?",
+        opts: ["Dans un centre de formation", "Chez lui, à distance", "À l'université", "Dans un restaurant"],
+        ans: 1,
+        expl: "« Une formation intensive à distance » = on ne va pas dans un centre, on suit les cours en ligne."
+      },
+      {
+        q: "Qu'est-ce que Sami va faire après la formation ?",
+        opts: ["Redevenir serveur", "Une deuxième formation", "Ouvrir un restaurant", "Un stage"],
+        ans: 3,
+        expl: "« Après, je vais faire un stage pour pratiquer. »"
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L21 Trouver un stage, une alternance, un job d'été（p.131–136）｜文法：la négation
+  {
+    id: 'a50',
+    title: 'Un job pour l\'été',
+    level: 'A2',
+    theme: 'Travail',
+    text: `Léo, 19 ans, cherche un job d'été pour payer ses études. Pendant un mois, il n'a rien trouvé : il a envoyé des CV sur Internet, mais personne ne lui a répondu. Alors il est allé au CIDJ et il a parlé à une conseillère. Elle lui a donné un conseil : « Ne reste pas devant ton ordinateur. Va directement dans les magasins et fais des candidatures spontanées ! »\n\nLéo l'a écoutée. En deux jours, il a eu trois entretiens. Finalement, il va travailler comme vendeur dans un magasin de sport en juillet et en août.\n\nSon amie Inès, elle, ne cherche plus : elle a signé un contrat en alternance pour deux ans.`,
+    questions: [
+      {
+        q: "« Personne ne lui a répondu » veut dire…",
+        opts: ["Aucune entreprise ne lui a répondu", "Une personne lui a répondu", "Il n'a répondu à personne", "Tout le monde lui a répondu"],
+        ans: 0,
+        expl: "Ne … personne = zéro personne. Léo a envoyé des CV, mais il n'a eu aucune réponse."
+      },
+      {
+        q: "Qu'est-ce qui a aidé Léo ?",
+        opts: ["Envoyer plus de CV en ligne", "Aller lui-même dans les magasins", "Un ami de son père", "Une petite annonce dans le journal"],
+        ans: 1,
+        expl: "La conseillère : « Va directement dans les magasins. » En deux jours, il a eu trois entretiens."
+      },
+      {
+        q: "Pourquoi Inès ne cherche-t-elle plus ?",
+        opts: ["Elle a trouvé un job d'été", "Elle a arrêté ses études", "Elle a déjà un contrat", "Elle part en vacances"],
+        ans: 2,
+        expl: "Ne … plus = avant oui, maintenant non. Elle a signé un contrat en alternance pour deux ans."
+      }
+    ]
+  },
+
+  // 藍本：Grammaire en dialogues（Niveau intermédiaire）ch.3 Le passé récent et le passé composé（pdf p.58）
+  {
+    id: 'a51',
+    title: 'Lundi matin au bureau',
+    level: 'A2',
+    theme: 'Travail',
+    text: `Lundi, 9 h 05. Chloé vient d'arriver au bureau et elle n'a pas encore ouvert ses mails. Son chef entre : « Chloé, vous avez vu le message du client ? » « Non, pas encore, je viens de m'asseoir ! »\n\nElle vient juste de finir son rapport et elle veut l'imprimer avant la réunion. Mais l'imprimante ne marche pas ! Chloé appelle Marc, le collègue qui sait tout réparer. Marc arrive, ouvre l'imprimante et sourit : « Il n'y a plus de papier ! »\n\nChloé rit : « Pardon, je t'ai dérangé pour rien. » « Pas de problème. Tu es un peu stressée ce matin, non ? »`,
+    questions: [
+      {
+        q: "À 9 h 05, Chloé…",
+        opts: ["est au bureau depuis une heure", "n'est pas encore arrivée", "a déjà lu tous ses mails", "est arrivée il y a très peu de temps"],
+        ans: 3,
+        expl: "Venir de + infinitif = passé récent : l'action vient de se passer. Et « pas encore ouvert ses mails »."
+      },
+      {
+        q: "Quel était le problème de l'imprimante ?",
+        opts: ["Il n'y avait plus de papier", "Elle était cassée", "Le câble était débranché", "Marc l'avait prise"],
+        ans: 0,
+        expl: "« Il n'y a plus de papier ! » L'imprimante n'était pas cassée."
+      },
+      {
+        q: "Pourquoi Chloé dit « je t'ai dérangé pour rien » ?",
+        opts: ["Marc n'a pas réparé l'imprimante", "Marc était en réunion", "Le problème était très simple", "Son rapport n'était pas fini"],
+        ans: 2,
+        expl: "Ajouter du papier, elle pouvait le faire toute seule : elle a appelé Marc pour un problème très simple."
+      }
+    ]
+  },
+
+  // 藍本：Grammaire en dialogues（Niveau intermédiaire）ch.4 L'imparfait et le passé composé（pdf p.61）
+  {
+    id: 'a52',
+    title: 'Trois heures dans le train',
+    level: 'A2+',
+    theme: 'Voyage',
+    text: `– Tiens, Paul ! Alors, ce voyage à Marseille ?\n– Ne m'en parle pas ! Le départ s'est bien passé : il faisait beau, le train était à l'heure et j'avais une place près de la fenêtre. Mais près de Lyon, le train s'est arrêté au milieu de la campagne. Il pleuvait très fort et il y avait beaucoup de vent. Au bout de vingt minutes, le contrôleur a fait une annonce : un arbre bloquait la voie !\n– Et alors ?\n– On est restés bloqués trois heures ! Les gens discutaient, les enfants pleuraient, une dame partageait des biscuits… Finalement, les pompiers ont coupé l'arbre et le train est reparti. Je suis arrivé à Marseille à minuit !\n– Oh là là ! Quelle aventure !`,
+    questions: [
+      {
+        q: "Comment était le début du voyage ?",
+        opts: ["Difficile : il pleuvait déjà", "Agréable : il faisait beau et le train était à l'heure", "Le train était en retard au départ", "Paul n'avait pas de place"],
+        ans: 1,
+        expl: "« Le départ s'est bien passé : il faisait beau, le train était à l'heure. » La pluie arrive plus tard, près de Lyon."
+      },
+      {
+        q: "Pourquoi le train s'est-il arrêté ?",
+        opts: ["Un problème technique", "Le contrôleur était malade", "Des passagers se disputaient", "Un arbre bloquait la voie"],
+        ans: 3,
+        expl: "Le contrôleur l'annonce : « un arbre bloquait la voie »."
+      },
+      {
+        q: "« Les gens discutaient, les enfants pleuraient » : pourquoi l'imparfait ?",
+        opts: ["Ce sont des actions courtes et terminées", "C'est le futur", "Ça décrit la scène pendant l'attente", "C'est une habitude de tous les jours"],
+        ans: 2,
+        expl: "Imparfait = le décor, ce qui se passait autour. Passé composé = les événements : le train s'est arrêté, les pompiers ont coupé l'arbre."
+      }
+    ]
   }
 ];
