@@ -121,9 +121,14 @@ function hud(){ document.getElementById('hud').textContent='🪙 '+G.gold+(G.com
 function passGate(g){
   g.done=true; var idx=g.lanes.indexOf(G.lane), pick=idx>=0?g.q.opts[idx]:null, ok=pick===g.q.right;
   G.n++;
-  if(GL) GL.answer(ok, {kind:'🚪 跑酷', topic:g.q.topic, ref:g.q.ref, q:document.getElementById('q').textContent, a:g.q.right, pick:pick||'（沒進門）'});
   var fb=document.getElementById('fb');
-  if(ok){ G.ok++; G.combo++; G.best=Math.max(G.best,G.combo); G.gold+=2+(G.combo>=3?1:0); G.speed=Math.min(260, G.speed*1.05); fb.innerHTML='✓ '+esc(g.q.say); G.flash={c:'rgba(121,211,154,.25)', t:.3}; }
+  /* ⚠️ 10-19 研究（research/2026-10-19_限時練文法買到什麼.md）：被時間逼的不算答錯——站在沒有門的跑道（來不及換道）
+     → 只絆一下、減速、給正解（灰色），⛔ 不記答錯、⛔ 不歸零連對、⛔ 不進「走錯的這幾道」 */
+  if(pick===null){ G.stumble=.8; G.speed=Math.max(130, G.speed*.95); fb.innerHTML='<span style="color:#9db1a2">沒來得及進門——</span>'+esc(g.q.say); G.flash={c:'rgba(160,160,160,.2)', t:.3};
+    if(GL) GL.answer(null, {kind:'🚪 跑酷', ref:g.q.ref}); }
+  else if(GL) GL.answer(ok, {kind:'🚪 跑酷', topic:g.q.topic, ref:g.q.ref, q:document.getElementById('q').textContent, a:g.q.right, pick:pick});
+  if(pick===null){}
+  else if(ok){ G.ok++; G.combo++; G.best=Math.max(G.best,G.combo); G.gold+=2+(G.combo>=3?1:0); G.speed=Math.min(260, G.speed*1.05); fb.innerHTML='✓ '+esc(g.q.say); G.flash={c:'rgba(121,211,154,.25)', t:.3}; }
   else { G.combo=0; G.stumble=1.2; G.speed=Math.max(130, G.speed*.9); fb.innerHTML='👉 '+esc(g.q.say)+(g.q.note?'　<span style="color:#9db1a2">'+esc(g.q.note)+'</span>':''); G.wrong.push(g.q.say); G.flash={c:'rgba(224,122,106,.3)', t:.4}; }
   speak(g.q.say); hud();
   G.cur=null; var nx=G.gates.filter(function(x){ return !x.done; })[0];
