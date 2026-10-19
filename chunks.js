@@ -21119,5 +21119,369 @@ const CHUNKS = [
   "fr": "l'animation",
   "zh": "活動、表演",
   "note": "f.｜⚠️ 不是卡通"
+ },
+ {
+  "id": "L43_Mesdames_messieurs_bonjo",
+  "lesson": 43,
+  "fr": "Mesdames, messieurs, bonjour !",
+  "zh": "各位先生女士，大家好！",
+  "note": "Grammaire en dialogues ch.1。🎙 Madame → Mesdames、Monsieur → Messieurs"
+ },
+ {
+  "id": "L43_bouger",
+  "lesson": 43,
+  "fr": "bouger",
+  "zh": "動、移動",
+  "note": "v.｜ne pas bouger de votre place"
+ },
+ {
+  "id": "L43_le_prêt_à_porter",
+  "lesson": 43,
+  "fr": "le prêt-à-porter",
+  "zh": "成衣",
+  "note": "m.｜字面：準備好可以穿"
+ },
+ {
+  "id": "L43_le_rayon",
+  "lesson": 43,
+  "fr": "le rayon",
+  "zh": "（賣場的）區",
+  "note": "m.｜le rayon prêt-à-porter"
+ },
+ {
+  "id": "L43_la_collection_printemps",
+  "lesson": 43,
+  "fr": "la collection printemps-été",
+  "zh": "春夏新品",
+  "note": "f.｜"
+ },
+ {
+  "id": "L43_le_dernier_appel",
+  "lesson": 43,
+  "fr": "le dernier appel",
+  "zh": "最後一次廣播",
+  "note": "m.｜機場、車站"
+ },
+ {
+  "id": "L43_à_destination_de",
+  "lesson": 43,
+  "fr": "à destination de",
+  "zh": "開往…",
+  "note": "loc.｜le bus à destination de Marseille"
+ },
+ {
+  "id": "L43_le_bonnet",
+  "lesson": 43,
+  "fr": "le bonnet",
+  "zh": "（毛線／泳）帽",
+  "note": "m.｜泳池裡＝泳帽"
+ },
+ {
+  "id": "L43_obligatoire",
+  "lesson": 43,
+  "fr": "obligatoire",
+  "zh": "強制的、必須的",
+  "note": "adj.｜dès l'entrée"
+ },
+ {
+  "id": "L43_le_bassin",
+  "lesson": 43,
+  "fr": "le bassin",
+  "zh": "（游泳）池",
+  "note": "m.｜les bassins de la piscine"
+ },
+ {
+  "id": "L43_le_café_théâtre",
+  "lesson": 43,
+  "fr": "le café-théâtre",
+  "zh": "咖啡劇場",
+  "note": "m.｜邊喝東西邊看小型表演"
+ },
+ {
+  "id": "L43_la_foire",
+  "lesson": 43,
+  "fr": "la foire",
+  "zh": "市集、博覽會",
+  "note": "f.｜la foire du printemps"
+ },
+ {
+  "id": "L43_artisanal_e_artisanaux",
+  "lesson": 43,
+  "fr": "artisanal(e), artisanaux",
+  "zh": "手工的",
+  "note": "adj.｜des biscuits artisanaux"
+ },
+ {
+  "id": "L43_en_hausse",
+  "lesson": 43,
+  "fr": "en hausse",
+  "zh": "上升中",
+  "note": "loc.｜≠ en baisse"
+ },
+ {
+  "id": "L43_l_habitat",
+  "lesson": 43,
+  "fr": "l'habitat",
+  "zh": "居住、住宅",
+  "note": "m.｜le salon de l'habitat"
+ },
+ {
+  "id": "L43_se_tenir",
+  "lesson": 43,
+  "fr": "se tenir",
+  "zh": "舉行",
+  "note": "v.｜se tiendra（futur）"
+ },
+ {
+  "id": "L43_rénover",
+  "lesson": 43,
+  "fr": "rénover",
+  "zh": "翻修",
+  "note": "v.｜rénover une maison"
+ },
+ {
+  "id": "L43_assister_à",
+  "lesson": 43,
+  "fr": "assister à",
+  "zh": "參加、出席",
+  "note": "v.｜⚠️ ＝attend，不是 assist"
+ },
+ {
+  "id": "L43_le_matériel_informatique",
+  "lesson": 43,
+  "fr": "le matériel informatique",
+  "zh": "電腦設備",
+  "note": "m.｜→ 圖上是筆電"
+ },
+ {
+  "id": "L43_rappeler",
+  "lesson": 43,
+  "fr": "rappeler",
+  "zh": "回電",
+  "note": "v.｜Rappelez-moi !"
+ },
+ {
+  "id": "L43_Inviter",
+  "lesson": 43,
+  "fr": "Inviter",
+  "zh": "邀請",
+  "note": "v.｜je t'invite à…（請對方一起做某事）"
+ },
+ {
+  "id": "L43_Se_renseigner",
+  "lesson": 43,
+  "fr": "Se renseigner",
+  "zh": "打聽、問資訊",
+  "note": "v.｜où se trouve… ?（自己要一個資訊）"
+ },
+ {
+  "id": "L43_Proposer_de_l_aide",
+  "lesson": 43,
+  "fr": "Proposer de l'aide",
+  "zh": "主動提議幫忙",
+  "note": "loc.｜tu veux que je… ?（我來幫你）"
+ },
+ {
+  "id": "L43_S_excuser",
+  "lesson": 43,
+  "fr": "S'excuser",
+  "zh": "道歉",
+  "note": "v.｜excusez-moi, je suis désolé"
+ },
+ {
+  "id": "L43_Demander_un_service",
+  "lesson": 43,
+  "fr": "Demander un service",
+  "zh": "請別人幫忙",
+  "note": "loc.｜（這次沒對應）跟 Proposer de l'aide 方向相反：是我要對方幫我做事"
+ },
+ {
+  "id": "L43_Conseiller_quelque_chose",
+  "lesson": 43,
+  "fr": "Conseiller quelque chose",
+  "zh": "給建議",
+  "note": "loc.｜（這次沒對應）告訴對方該怎麼做比較好"
+ },
+ {
+  "id": "L43_toc_toc",
+  "lesson": 43,
+  "fr": "toc toc",
+  "zh": "叩叩（敲門）",
+  "note": "onom.｜英文 knock knock"
+ },
+ {
+  "id": "L43_plouf",
+  "lesson": 43,
+  "fr": "plouf",
+  "zh": "撲通（掉進水裡）",
+  "note": "onom.｜"
+ },
+ {
+  "id": "L43_dring",
+  "lesson": 43,
+  "fr": "dring",
+  "zh": "鈴（電話、門鈴）",
+  "note": "onom.｜"
+ },
+ {
+  "id": "L43_tic_tac",
+  "lesson": 43,
+  "fr": "tic-tac",
+  "zh": "滴答（時鐘）",
+  "note": "onom.｜"
+ },
+ {
+  "id": "L43_paf",
+  "lesson": 43,
+  "fr": "paf",
+  "zh": "啪、碰（打到、撞到）",
+  "note": "onom.｜🎙 漫畫打架常見"
+ },
+ {
+  "id": "L43_les_uns_les_autres",
+  "lesson": 43,
+  "fr": "les uns… les autres",
+  "zh": "有些人…另一些人",
+  "note": "pron.｜numérique pour les uns, papier pour les autres"
+ },
+ {
+  "id": "L43_la_gazette",
+  "lesson": 43,
+  "fr": "la gazette",
+  "zh": "小報、刊物",
+  "note": "f.｜une gazette familiale"
+ },
+ {
+  "id": "L43_réconcilier",
+  "lesson": 43,
+  "fr": "réconcilier",
+  "zh": "使和好、拉近",
+  "note": "v.｜réconcilier les générations"
+ },
+ {
+  "id": "L43_chacun_e",
+  "lesson": 43,
+  "fr": "chacun(e)",
+  "zh": "每個人",
+  "note": "pron.｜後面動詞用單數"
+ },
+ {
+  "id": "L43_destiné_e_à",
+  "lesson": 43,
+  "fr": "destiné(e) à",
+  "zh": "給…的、專為…",
+  "note": "adj.｜destiné aux anciens"
+ },
+ {
+  "id": "L43_les_anciens",
+  "lesson": 43,
+  "fr": "les anciens",
+  "zh": "長輩、老人家",
+  "note": "m.pl.｜＝ les aînés（p.16）"
+ },
+ {
+  "id": "L43_disposer_de",
+  "lesson": 43,
+  "fr": "disposer de",
+  "zh": "擁有、可使用",
+  "note": "v.｜disposer de l'application"
+ },
+ {
+  "id": "L43_se_rendre_sur",
+  "lesson": 43,
+  "fr": "se rendre sur",
+  "zh": "上（網站）",
+  "note": "v.｜se rendre sur le site web"
+ },
+ {
+  "id": "L43_mettre_en_page",
+  "lesson": 43,
+  "fr": "mettre en page",
+  "zh": "排版",
+  "note": "v.｜être mis en page"
+ },
+ {
+  "id": "L43_imprimer",
+  "lesson": 43,
+  "fr": "imprimer",
+  "zh": "印刷、列印",
+  "note": "v.｜une gazette imprimée"
+ },
+ {
+  "id": "L43_la_maison_de_retraite",
+  "lesson": 43,
+  "fr": "la maison de retraite",
+  "zh": "養老院",
+  "note": "f.｜la retraite＝退休"
+ },
+ {
+  "id": "L43_la_tribu",
+  "lesson": 43,
+  "fr": "la tribu",
+  "zh": "大家族、部落",
+  "note": "f.｜課文加引號：一大家子"
+ },
+ {
+  "id": "L43_mensuel_le",
+  "lesson": 43,
+  "fr": "mensuel(le)",
+  "zh": "每月的",
+  "note": "adj.｜la gazette mensuelle"
+ },
+ {
+  "id": "L43_bimensuel_le",
+  "lesson": 43,
+  "fr": "bimensuel(le)",
+  "zh": "一個月兩次的",
+  "note": "adj.｜⚠️ 兩個月一次是 bimestriel"
+ },
+ {
+  "id": "L43_la_cagnotte",
+  "lesson": 43,
+  "fr": "la cagnotte",
+  "zh": "集資、共同基金",
+  "note": "f.｜une cagnotte en ligne"
+ },
+ {
+  "id": "L43_rechigner_à",
+  "lesson": 43,
+  "fr": "rechigner à",
+  "zh": "不情願做",
+  "note": "v.｜課本注：n'ont pas envie"
+ },
+ {
+  "id": "L43_ne_jurer_que_par",
+  "lesson": 43,
+  "fr": "ne jurer que par",
+  "zh": "只認、只愛",
+  "note": "v.｜ne jurer que par leur téléphone"
+ },
+ {
+  "id": "L43_s_adresser_à",
+  "lesson": 43,
+  "fr": "s'adresser à",
+  "zh": "針對、以…為對象",
+  "note": "v.｜Famileo s'adresse à vous"
+ },
+ {
+  "id": "L43_souffler_ses_bougies",
+  "lesson": 43,
+  "fr": "souffler ses bougies",
+  "zh": "吹蠟燭",
+  "note": "v.｜生日"
+ },
+ {
+  "id": "L43_prendre_l_air",
+  "lesson": 43,
+  "fr": "prendre l'air",
+  "zh": "出去透透氣",
+  "note": "v.｜🎙 老師補充"
+ },
+ {
+  "id": "L43_sacré_e",
+  "lesson": 43,
+  "fr": "sacré(e)",
+  "zh": "（放名詞前）好大的、了不起的",
+  "note": "adj.｜🎙 老師補充；B1 p.217 un sacré moral"
  }
 ];

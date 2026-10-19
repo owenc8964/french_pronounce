@@ -25,6 +25,7 @@
 > - 📚 **10-17 夜：語言遊戲研究三路＋總整理** → `research/2026-10-17_語言遊戲總整理_給小鎮的提案.md`（提案依序：回城回收→複習、晨間判定＋小鎮等級、金幣綁精熟、擴大閱讀、對話產出；⏸ 等 Owen 選）；請 Owen 下載 Sailer & Homner 2020 全文。
 > - ⭐⭐⭐ **10-17 晚：再加三個玩法（三之六十九）**：☕ 咖啡館口說島五階、📋 告示牌抓錯字、🦋 田裡蝴蝶形容詞圖鑑；⏸ 等 Owen 玩。另有待辦：API 當場批改（等 Owen 開 Anthropic 帳號）→ 之後才做攤子點單。
 > - ⭐⭐⭐ **10-17 新 session 先看「三之六十八」**：Owen 的 5 個建議（三之六十七）已全部做完並試跑 → ⏸ 等 Owen 玩：靜音鍵、🚩 題目回報、遊戲時間紀錄（週報會讀）、🌬️ 風車拼句、📰 鎮報閱讀。
+> - 📖 **10-19 第 43 課（三之七十七）**：A2 模擬考聽力 20／25＋⭐ **進入 Édito B1**（Unité 1 Famileo）＋三本新書（B1 課本、Communication essentielle、Grammaire en dialogues）文字快取。⏸ 待 Owen：地圖總課數改多少、要不要做「功能詞挖空聽寫＋換口音」（他說換口音就聽不懂）、貼逐字稿補 🎙／🔊 兩個 unit。
 > - 課程進度：**第 42 課**（p.175 動物詞彙與俗語、p.177 被動式、p.178 命令式＋代名詞、DELF A2 模擬閱讀 24／25）筆記＋連動完成（見「三之六十五」）。⭐ **老師宣布 Édito A2 上完**；下次：先練 A2 口說，或直接進 B1 課本（逐字稿糊，看起來是先練口說再進 B1）。
 > - 這輪工作紀錄在「三之二十九」～「三之四十五」（搜尋「三之四」）：變位總覽改版＋練習化（蓋住／隨機 8 題／記速／鏡子）、四篇研究、遊戲修 bug（同步蓋回主線、主線倒下、四格卡死）、文法三連、課本題補齊（A2 本冊 158＋A1 弱項 139）、第 39 課。
 > - ✅ **Cahier A2 練習本補題已合併**（+328 題，第 17–39 課，答案全出自 Corrigés；題庫 2136 題、choose 缺答案 0）。✅ **10-07 補完「答錯沒一行原因」**：見「三之四十六」。刻意不收：第19課 p.10 3f（Corrigés 寫 il y a，標準是 pendant）等 OCR 糊掉的題。
@@ -4922,6 +4923,36 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - 紀錄 `clb7_gender_seen`（每字一物件＋last）：上次錯的 ×4、錯多於對 ×3、連對 3 次且 2 次 <2 秒的 ×0.35。答對也呼叫 `growRec`（key `g:<字>`）→ 隔天以後又答對＝站穩，寵物會長大。每答對 1 枚金幣，中途回去也照給。結算：✓ 數、平均秒數、<2 秒的個數、「再看一眼這幾個」（可點聽）。⛔ 不顯示分母。
 - 🐛 順手發現：`tools/tmp_quest_nosync.js make` 產的暫存頁**自己回報 `sync tag present? true`**——那支工具已經不可靠，這次改用自己的隔離複本（只刪 `<script src=sync_supabase.js>`），⚠️ 以後測 quest.html 別用它。
 - ✅ 試跑（隔離複本，ROOM 沒動）：手機 375 版面；一局 20 題（含 1 跳過、4 錯）→ 結算正確、金幣 +15、紀錄 18 字；無錯誤。
+
+#### 三之七十七、10-19：第43課筆記（Édito A2 p.182–184 DELF A2 模擬考聽力 20／25｜兩本補充書｜⭐ 進入 Édito B1：Unité 1 Famileo p.12–13）＋連動＋三本新書文字快取
+
+- **來源**：`~/Desktop/1019/` 6 張截圖（A2 p.182–184 聽力題目、Grammaire en dialogues ch.1–3 對話頁，ch.3 有老師手寫 marrant）＋原對話的逐字稿**摘要**（逐字稿本身辨識很差，這個 session 沒拿到全文）。模擬考答案全部照 **A2 課本 p.211 Transcriptions** 對出來；⚠️ **扣的 5 分在哪幾題看不出來（未查證）**。
+- ✅ **筆記 `lesson-43`**（6 unit：📝 模擬考聽力＋生字表＋19 句逐字稿句｜🎯 聽力解題法＋六種溝通目的判斷表｜📚 兩本補充書＋擬聲詞表＋對話書 8 句｜📖 B1 Famileo 課文＋詞彙 25 個＋10 句｜🗣 老師的口說建議（秀時態）＋B1 p.13 方框 5 句｜📋 糾錯摘要）；check_notes 0／0。
+  - ⏳ **沒做的兩件**：🎙 老師的課堂法語、🔊 發音警報 —— 要逐字稿全文才撈得出來，⛔ 沒有憑摘要補。⏭ Owen 再貼一次逐字稿就能補（照 `skill_transcript_notes` 四件套）。
+- ⚠️ **標出來的衝突／推論**：① **bimensuel**：標準法文＝一個月兩次（兩個月一次是 bimestriel），課文價格 5,90 ＜ 9,90 ＜ 17,90 也對得上 ② Exercice 4 Dialogue 3（« tu veux que je te les explique ? »）摘要記成「expliquer」，但選項沒有這一格 → 正解是 **Proposer de l'aide** ③ B1 p.13 題目答案課堂有沒有逐題做看不出來，筆記裡標「照課文推的」④ 摘要裡的 `prendre l'air`、`sacré` 在 B1 第 1 單元課文裡找不到 → 標「🎙 老師補充」；sacré 用 B1 p.217 的 un sacré moral 當佐證。
+- ✅ **連動**：chunks **+52**（全部看過，沒有背面是描述句的卡；刪掉一列重複的 se renseigner）｜questions **+48**（新 topic `strategie-ecoute` 15、`vocab-famille-generations` 15、`expressions-orales` 7；`vocab-annonces` +8、`pc-imparfait-recit` +3；無撞 id、正解都在選項、audit 抓到的「正解帶括號／特別長」已修）＋ TOPIC_LABELS 三處（123 個）｜sentences `S_L43_1~13`（→414）｜table_drill +2（`famileo-b1-p12`、`delf-a2-ecoute-p182`，92 個）｜gram_rules `imparfait` lessons 加 43（沒有新文法點：B1 p.14 passé composé／imparfait 下次才上）｜map `CURRENT_LESSON` 43＋新地塊 `delf-ecoute`（A2）、`famille-generations`（B1 區第一塊）。
+- ⏸ **`TOTAL_LESSONS` 還是 44**（地圖顯示「第 43 課 / 預計 44 課」）：Owen 10-16 說進 B1 再改，⭐ 要問他新的總課數。參考：A2 大約第 17–42 課（≈26 課上完 12 單元），B1 也是 12 單元 → 照同樣速度大約再 26–30 課，總數約 **70**（估計值，等 Owen 決定）。
+- ✅ **驗證**：preview 開筆記第43課（6 unit、47 句都有發音鍵、導覽列有第43課、無 console 錯誤）、`quiz.html?lesson=43`（出題正常）、map（chip 顯示第 43 課、兩塊新地塊）、table_drill（兩張新表渲染、有「會了」與「⏭ 這題跳過」）。⛔ 沒有作答＝沒有寫 clb7_*；試跑期間 ROOM 改成 TEST、跑完改回並 preview_stop，grep 無 TEST 殘留。check_g3 ✓ 1028 題、check_scenes ✓。
+
+**🎯 考試策略（老師帶解 DELF A2 聽力）**：先讀題再聽（播放前那幾秒＝讀題時間）／🎙 **答案常在中間**（開頭是 Votre attention…、Bienvenue… 這種客套話）／數字陷阱（19 h 30 vs quai 20；3 et 4 mars＝兩天）／正解會換說法、跟錄音同字的選項常是陷阱（Le printemps est froid）／配對題 6 情境 4 對話有的配不到／判斷「溝通目的」看說話的人想要什麼（se renseigner vs demander un service vs conseiller vs proposer de l'aide）／🎙 **A2 20／25 很好，但 B2 時這種簡單題要全對**。慣例照舊：考試策略＝該課筆記 🎯 unit＋題庫 topic（閱讀是 `strategie-lecture`，這次新開聽力的 `strategie-ecoute`）。
+**🗣 老師的口說建議**：只用現在式會過但分數不高 → 要秀出不同時態（對應 TCF 評分的 étendue）。B1 p.13 方框「Pour raconter des événements passés」是現成模具，已入筆記＋句庫。
+
+**📚 三本新書（2026-10-19 Owen 給的，PDF 在 `assets/`，`assets/*.pdf` 與快取都在 .gitignore，⛔ 不 commit）**
+| 書 | 是什麼 | 老師建議怎麼用 | 快取 |
+|---|---|---|---|
+| ⭐ **`Edito.B1.Owen.pdf`**（Édito B1 3e édition，226 頁） | **新的主課本**，10-19 開始上。12 單元，每單元：Documents（聽讀）→ Grammaire → Vocabulaire → Entraînez-vous → DELF B1 題型；書後有 Transcriptions（p.197 起）。Unité 1「Les uns et les autres」p.11 | 課堂主教材 | ✅ **PDF 頁碼＝課本頁碼**（p.13 印「treize I 13」）。⚠️ 抽字會漏 `fi` 連字（« votre ls »＝votre fils） |
+| **`Communication essentielle A2 Owen.pdf`**（Didier，219 頁） | 24 課生活情境（vie quotidienne／vie sociale／loisirs et vacances／santé…）＋5 個 Bilans；p.161 起有**答案與聽力逐字稿** | 🎙 **聽力＋詞彙最重要**，練習可以跳、文化可以跳；問答可拿來練口說 | ✅ 有文字（87 萬字） |
+| **`Grammaire en dialogues.pdf`**（CLE International，90 頁） | ⚠️ 其實是**兩冊的節錄**：前段 *Niveau grand débutant A1*（Odile Grand-Clément，33 章）、pdf p.21 起 *Niveau débutant A1–A2*（Claire Miquel，32 章）。每章：一兩段生活對話（有音檔）→ 文法 → 練習 | 🎙 老師拿來講**口語語氣**（Mesdames messieurs、Ah bon、Oh là là、drôle＝marrant）與擬聲詞 | ✅ 有文字（37 萬字） |
+- **快取做法**：三本 PDF 複製進 `assets/` → 重跑 `python3 tools/extract_textbook.py`（它會整份重寫 `assets/.textbook_cache.txt`，現在 1481 頁／6.0MB；每頁存整頁＋左右半）。查法：`grep -n "===== \[Edito.B1.Owen.pdf\] page 12 " assets/.textbook_cache.txt`。原檔還在 `~/Desktop/1019/`。
+
+**👂 Owen 這次自己的觀察（⭐ 要記住）**：「**聽力換口音就不行，當然是字彙量不夠多，對聽音辨字的能力不佳，只能去感覺字的意思**」
+- 診斷：這正是 `METHOD_MAP.md` **G 家族（感知解碼）**描述的狀況——「只能去感覺字的意思」＝ Field 說的**弱聽者用語境代替沒解碼到的訊息**；「換口音就不行」＝表徵只綁在少數幾種聲音上（HVPT 研究處理的就是這個：多說話人才會類化）。⚠️ 他自己歸因「字彙量不夠」只對一半：同一個認得的字換人唸就認不出，那是**聽音辨字**，不是詞彙量。
+- 💡 **提案（⏸ 等 Owen 決定，⛔ 沒有動手、沒開新系統）**：把 09-23 就提過、一直在等拍板的「**功能詞挖空聽寫**」（三之十三）做成最小版本，並加一條「**換口音**」：
+  1. 素材用 TCF 真人音檔（已實測可切成單題，39 段 ↔ 39 題完全吻合，一套約 5MB）——真人、多說話人，比 TTS 更對症。
+  2. 一題：播 → 看挖掉功能詞的稿 → 填回 → 對答案（填的是 le/les/de/des/en/y/ne/pas/que 這種被連音吃掉的字）。
+  3. **口音變化放在「不同天之間」，不放在同一次之內**（G 的 HVPT vs J 的鞏固研究，METHOD_MAP 寫的中立讀法）。
+  4. 份量照研究：每週 2–3 次 × 10–15 分鐘；⭐ 照交付鐵律「先過大腦檢查」：可以變成小鎮的一種遭遇（例：車站廣播／電話留言），聽錯的字進錯題回收。
+  - 要 Owen 決定的：做不做／放小鎮裡還是獨立頁／先用哪一套音檔。
 
 #### 三之七十六、10-19：Owen 試玩回饋三點（數字判定、答對沒用、找不到守園）
 

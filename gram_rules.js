@@ -305,7 +305,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'imparfait', name:"L'imparfait", icon:'🌊', zone:'A2', cat:'verbe-temps',
-    lessons:[15,20,36], topics:['imparfait','pc-imparfait-recit'], unlocked:true,   // 09-24 第36課（Édito A2 p.142）：passé composé／imparfait 在故事裡怎麼切換
+    lessons:[15,20,36,43], topics:['imparfait','pc-imparfait-recit'], unlocked:true,   // 09-24 第36課（Édito A2 p.142）：passé composé／imparfait 在故事裡怎麼切換；10-19 第43課：B1 p.13「Pour raconter des événements passés」＋老師「口說要秀不同時態」
     rule:{
       title:'未完成過去式 — 描述過去的狀態與習慣（完整六人稱）',
       why:'法文的兩個過去式不是「兩套要背的規則」，是攝影機的兩顆鏡頭：imparfait 是廣角鏡拍背景（當時天氣如何、場景長怎樣——名字本身就是拉丁文「未完成」，事情攤在那裡沒有起訖），passé composé 是特寫鏡頭拍事件（然後發生了什麼）。問自己「這句是佈景還是劇情」，鏡頭就選對了。至於變位為什麼要繞去 nous 形——因為 nous 形保留了動詞真正的字根（finissons 的 -iss-、écrivons 的 v），原形反而是被磨掉的版本；而字根一律避開 r 音，是為了不跟未來式（-rai/-ras）撞聲音。',

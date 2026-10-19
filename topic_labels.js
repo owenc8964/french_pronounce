@@ -119,5 +119,8 @@ var TOPIC_LABELS_FR = {
  "vocab-etudes": "Les études",
  "medias-audio-reseaux": "Médias audios et réseaux sociaux",
  "critique-film": "Faire une critique",
- "place-pronoms-cod-coi": "Place des pronoms COD/COI"
+ "place-pronoms-cod-coi": "Place des pronoms COD/COI",
+ "strategie-ecoute": "Stratégie d'écoute",
+ "vocab-famille-generations": "La famille et les générations",
+ "expressions-orales": "Expressions orales et onomatopées"
 };
