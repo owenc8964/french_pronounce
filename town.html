@@ -134,6 +134,7 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .gm { color:#7fb2ff; } .gf { color:#ff8a9a; }
 .opts button.bm { border-color:#3c5a85; } .opts button.bf { border-color:#85404d; }
 .grule { color:#d9cfb6; font-size:.85em; margin-top:4px; }
+.numcard { display:grid; grid-template-columns:repeat(10,1fr); gap:3px; margin:6px 0 12px; } .numcard span { text-align:center; font-size:.72em; padding:3px 0; border-radius:5px; background:#0d130f; color:#4a5a4f; } .numcard span.on { background:#3c6b4c; color:#fff; }
 .dexcell.pending { opacity:.45; } .dexcell.fading { filter:grayscale(.85); opacity:.7; }
 .dexhead { font-size:.82em; color:var(--dim); margin-top:8px; }
 .catch { text-align:center; padding:6px 0; }
@@ -314,7 +315,7 @@ var NODE_DEF=[
   [4,8],[9,8],[14,8],[26,8],[31,8],[36,8]
 ].map(function(p){ return {k:'fish',x:p[0],y:p[1]}; }));
 /* ⚔️ 挑戰點：走到這裡跳進「守園」（植物大戰殭屍，tower.html 嵌入）。10-16 Owen：「兩個遊戲整合在一塊，去到哪就跳進挑戰」 */
-var CHALLENGES=[ {id:'garden', x:16, y:18, name:'菜園', em:'🌻', goal:3},
+var CHALLENGES=[ {id:'garden', x:16, y:18, name:'守園', em:'🌻', goal:3},   /* 10-19 名字從「菜園」改「守園」：Owen 找的是植物大戰殭屍 */
   /* 🧩 10-17 Owen 建議 d：quest.html 的拼句搬進來。⚠️ 研究 R29：拼句偏辨識、不算產出 → 輕量題型，⛔ 不取代打字 */
   {id:'mill', x:24, y:15, name:'風車', em:'🌬️', kind:'tiles', n:3},
   /* ☕ 10-17：口說島一句一句練熟（選擇／手寫，⛔ 不用麥克風——Owen：辨識不夠靠譜） */
@@ -1742,6 +1743,7 @@ function openDex(){
     h+='</div>';
   });
   h+=bugDexHtml();
+  h+=numCardHtml();
   h+='<div class="row2"><span></span><button class="btn main" id="ok">關閉</button></div>';
   openSheet(h, true);
   sheet.querySelectorAll('.dexcell[data-w]').forEach(function(c){ c.onclick=function(){ speak(c.dataset.w); toast(c.dataset.w+'＝'+c.dataset.zh); }; });
@@ -2435,29 +2437,64 @@ function numPick(){
   for(var i=0;i<NUM_BUCKETS.length;i++){ r-=NUM_BUCKETS[i][2]; if(r<=0){ b=NUM_BUCKETS[i]; break; } }
   return b[0]+Math.floor(Math.random()*(b[1]-b[0]+1));
 }
-function numEncounter(){
+/* 判定（10-19 Owen：「唸出數字是要連槓都打出來才算對嗎？」→ 空格／連字號本來就都算；再放寬兩種，算對但提醒）
+   ① 字黏在一起（vingtdeux）→ 對，提醒要分開寫  ② 只差 vingts／cents 的 s → 對，提醒 s 的規則  ③ 只差重音 → 對，提醒重音 */
+function numJudge(v, ans){
+  var a=numNorm(ans), x=numNorm(v);
+  if(x===a) return {ok:true, note:''};
+  var noS=function(t){ return t.replace(/(vingt|cent)s\b/g,'$1'); }, glue=function(t){ return deacc(t).replace(/\s+/g,''); };
+  if(deacc(x)===deacc(a)) return {ok:true, note:'注意重音'};
+  if(glue(x)===glue(a)) return {ok:true, note:'字要分開寫（空格或連字號都可以）'};
+  if(glue(noS(x))===glue(noS(a))) return {ok:true, note:/vingts|cents/.test(a)?'這裡要加 s：quatre-vingts、deux cents 後面沒接數字時要有 s':'這裡不加 s：後面還接數字時 vingt／cent 不加 s'};
+  return {ok:false, note:''};
+}
+/* 🔢 連問＋集點卡（10-19 Owen：「答對好像不能幹嘛」）
+   ⭐ 答對後店家接著問「Et ça ?」，一次最多 3 個，金幣 1→2→3
+   ⭐ 集點卡：答對又在 3 秒內開始打＝蓋章（0–99 每個數字一格＋年份）；一整排（例如 70–79）蓋滿 +10🪙；打錯會把那一格的章洗掉 */
+function numStamp(n, fast, ok){
+  S.numCard=S.numCard||{};
+  if(!ok){ if(S.numCard[n]){ delete S.numCard[n]; return 'lost'; } return ''; }
+  if(!fast || S.numCard[n]) return '';
+  S.numCard[n]=Date.now();
+  if(n<100){ var row=Math.floor(n/10), full=true; for(var k=row*10;k<row*10+10;k++) if(!S.numCard[k]) full=false;
+    if(full){ S.gold+=10; return 'row'+row; } }
+  return 'new';
+}
+function numEncounter(chain){
+  chain=chain||1;
   var n=numPick(), ans=frNum(n), t0=Date.now(), fk=0, isYear=n>=1900&&n<=2099, rc={kind:'🔢 數字', ref:'n:'+n, q:String(n), a:ans};
-  var who=['la boulangère','le marchand','Madame Roy','Julie'][Math.floor(Math.random()*4)];
-  openSheet('<h3>🔢 '+esc(who)+'：« '+(isYear?'C\'était en quelle année ?':'Ça fait combien ? ')+'»</h3>'+
+  var who=numEncounter.who=chain>1?numEncounter.who:['la boulangère','le marchand','Madame Roy','Julie'][Math.floor(Math.random()*4)];
+  var askTxt=chain>1?'Et ça ?':(isYear?'C\'était en quelle année ?':'Ça fait combien ?');
+  openSheet('<h3>🔢 '+esc(who)+'：« '+askTxt+' » <small>'+(chain>1?'連問 '+chain+'／3':'')+'</small></h3>'+
     '<div class="qtext" style="text-align:center;font-size:2.4em;letter-spacing:2px">'+n+(isYear?'':(n<1000&&n>20?' €':''))+'</div>'+
-    '<input class="fill" id="nin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="用法文打出來">'+
+    '<input class="fill" id="nin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="用法文打出來（空格或連字號都可以）">'+
     '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><button class="btn main" id="nsub">回答</button></div>'+repSlot(rc));
   var inp=document.getElementById('nin'), sent=false; setTimeout(function(){ inp.focus(); },50);
   inp.addEventListener('keydown', function(e){ if(!fk && e.key.length===1) fk=Date.now()-t0; if(e.key==='Enter') sub(); });
   document.getElementById('skip').onclick=function(){ if(sent) return; sent=true; if(window.GameLog) GameLog.answer(null,{kind:'🔢 數字', ref:rc.ref}); closeSheet(); };
   function sub(){ var v=inp.value.trim(); if(!v||sent) return; sent=true; inp.disabled=true; rc.pick=v;
-    var ms=Date.now()-t0, ok=numNorm(v)===numNorm(ans), acc=!ok && deacc(numNorm(v))===deacc(numNorm(ans));
-    if(acc) ok=true;
-    var W=S.numWrong=S.numWrong||[], wi=W.indexOf(n);
-    if(!ok && wi<0){ W.push(n); if(W.length>30) W.shift(); } else if(ok && !acc && wi>=0 && fk && fk<3000) W.splice(wi,1);
-    S.num=S.num||{}; var h=S.num[n]||[]; h.push({o:ok?1:0, f:fk||ms}); S.num[n]=h.slice(-3); save();
+    var ms=Date.now()-t0, J=numJudge(v, ans), ok=J.ok, fast=!!fk && fk<3000;
+    var Wl=S.numWrong=S.numWrong||[], wi=Wl.indexOf(n);
+    if(!ok && wi<0){ Wl.push(n); if(Wl.length>30) Wl.shift(); } else if(ok && !J.note && wi>=0 && fast) Wl.splice(wi,1);
+    S.num=S.num||{}; var h=S.num[n]||[]; h.push({o:ok?1:0, f:fk||ms}); S.num[n]=h.slice(-3);
+    var st=numStamp(n, fast && !J.note, ok);
+    if(ok){ S.gold+=chain; } save(); hud();
     if(window.GameLog) GameLog.answer(ok, {kind:'🔢 數字', topic:'numbers', ref:rc.ref, ms:fk||ms, q:String(n), a:ans, pick:v});
-    speak(ans); if(ok){ S.gold+=1; hud(); }
-    document.getElementById('fb').innerHTML=(ok?'✓ '+(fk&&fk<2000?'<b style="color:var(--gold)">起手 '+(fk/1000).toFixed(1)+' 秒</b> ':'')+(acc?'（注意重音）':''):'👉 ')+'<span class="say">'+esc(ans)+'</span> '+spk(ans);
-    if(ok && !acc) setTimeout(closeSheet, 900);
-    else { document.querySelector('.row2').innerHTML='<span></span><button class="btn main" id="go">好</button>'; document.getElementById('go').onclick=closeSheet; }
+    speak(ans);
+    var stTxt= st==='new' ? '　🔖 集點卡 +1' : /^row/.test(st) ? '　🎉 集點卡 '+(+st.slice(3)*10)+'–'+(+st.slice(3)*10+9)+' 蓋滿了！+10🪙' : st==='lost' ? '　（這一格的章掉了）' : '';
+    document.getElementById('fb').innerHTML=(ok?'✓ +'+chain+'🪙 '+(fk&&fk<2000?'<b style="color:var(--gold)">起手 '+(fk/1000).toFixed(1)+' 秒</b> ':''):'👉 ')+'<span class="say">'+esc(ans)+'</span> '+spk(ans)+
+      (J.note?'<div class="muted">'+esc(J.note)+'</div>':'')+(stTxt?'<div class="muted">'+stTxt+'</div>':'');
+    var more = ok && chain<3;
+    if(ok && !J.note && !stTxt.match(/蓋滿/)) setTimeout(function(){ if(more) numEncounter(chain+1); else closeSheet(); }, 850);
+    else { document.querySelector('.row2').innerHTML='<span></span><button class="btn main" id="go">'+(more?'下一個 →':'好')+'</button>'; document.getElementById('go').onclick=function(){ if(more) numEncounter(chain+1); else closeSheet(); }; }
   }
   document.getElementById('nsub').onclick=sub;
+}
+function numCardHtml(){
+  var c=S.numCard||{}, h='<div class="dexhead">🔖 數字集點卡（答對又在 3 秒內開始打＝蓋章，一排蓋滿 +10🪙）</div><div class="numcard">';
+  for(var n=0;n<100;n++) h+='<span class="'+(c[n]?'on':'')+'">'+n+'</span>';
+  var yrs=Object.keys(c).filter(function(k){ return +k>=1900; }).sort();
+  return h+'</div>'+(yrs.length?'<div class="muted">年份：'+yrs.join('、')+'</div>':'');
 }
 function drawChallenges(list,ox,oy,ts){
   CHALLENGES.forEach(function(ch){ list.push({y:ch.y+1, f:function(){
@@ -2501,7 +2538,7 @@ function update(dt){
     if(inGrass && !pending){ grassDist+=spd*dt; if(grassDist>1.4){ grassDist=0; if(!wild && Math.random()<.28 && clock-lastWild>3){ lastWild=clock; pending={t:.3, x:hero.x, y:hero.y, fn:startWild, keep:1}; } } }
     /* 🔢 鎮上／往橋的小路上，偶爾有人問價錢 */
     var onPath=Math.floor(hero.x)>=19 && Math.floor(hero.x)<=20 && hero.y>=10 && hero.y<=23;
-    if((inTown(hero)||onPath) && !pending){ numDist+=spd*dt; if(numDist>2){ numDist=0; if(!wild && Math.random()<.18 && clock-lastNum>30){ lastNum=clock; pending={t:.3, x:hero.x, y:hero.y, fn:numEncounter}; } } }
+    if((inTown(hero)||onPath) && !pending){ numDist+=spd*dt; if(numDist>2){ numDist=0; if(!wild && Math.random()<.18 && clock-lastNum>30){ lastNum=clock; pending={t:.3, x:hero.x, y:hero.y, fn:function(){ numEncounter(1); }}; } } }
     /* 🦋 田裡偶爾飛出蝴蝶（形容詞圖鑑） */
     if(region(Math.floor(hero.x),Math.floor(hero.y))==='field' && !pending){ bugDist+=spd*dt; if(bugDist>2){ bugDist=0; if(!wild && Math.random()<.12 && clock-lastBug>25){ lastBug=clock; pending={t:.3, x:hero.x, y:hero.y, fn:bugCatch}; } } }
     if(!inTown(hero)){ time-=dt*hero.moving; if(time<=0 && !night){ time=0; night=true; toast(raidDue()?'🌙 天黑了——怪物朝小鎮來了，回去守夜！':'🌙 天黑了，老鼠變多變快——回城吧'); spawnRat(); spawnRat(); } }
@@ -2612,6 +2649,10 @@ function draw(dt){
   var dusk=Math.max(0, 1-time/40); if(dusk>0){ cx.fillStyle='rgba(8,12,45,'+(dusk*.5)+')'; cx.fillRect(0,0,w,h); }
   /* 霧 */
   for(var y3=y0;y3<=y1;y3++) for(var x3=x0;x3<=x1;x3++){ if(seen[y3*W+x3]!=='1'){ cx.fillStyle='rgba(6,9,7,.92)'; cx.fillRect(Math.floor(ox+x3*ts),Math.floor(oy+y3*ts),Math.ceil(ts),Math.ceil(ts)); } }
+  /* ⭐ 挑戰點的標記浮在霧上（10-19 Owen：「我找不到植物打殭屍」——菜園被沒探索過的霧蓋住了） */
+  CHALLENGES.forEach(function(ch){ if(seen[ch.y*W+ch.x]==='1') return; var px=ox+(ch.x+.5)*ts, py=oy+ch.y*ts, b=Math.sin(clock*3)*ts*.05;
+    cx.font=Math.round(ts*.5)+'px system-ui'; cx.textAlign='center'; cx.globalAlpha=.9; cx.fillText(ch.em, px, py+ts*.4+b);
+    cx.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; var tw=cx.measureText(ch.name).width+ts*.2; cx.fillStyle='rgba(0,0,0,.6)'; cx.fillRect(px-tw/2, py+ts*.6, tw, ts*.34); cx.fillStyle='#f0e0b0'; cx.fillText(ch.name, px, py+ts*.85); cx.globalAlpha=1; });
   /* 金色箭頭 */
   var qi=questInfo(); if(qi.to && !busy) drawArrow(qi.to,ox,oy,ts,w,h);
   /* 搖桿 */
