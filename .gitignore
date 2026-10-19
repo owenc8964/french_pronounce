@@ -45,3 +45,6 @@ audio/t1_*.m4a
 audio/樣本_*.m4a
 # ⛔ TCF 聽力切段：買來的考題音檔，永不進公開 repo（⚠️ .gitignore 的 # 只在行首才是註解，⛔ 不要寫行尾註解）
 audio/listen_seg/
+
+# Didier 課本／Cahier 音檔（e-didier.fr 官方下載，商業教材）：只留本機，永不 commit、不上正式站
+assets/didier/
