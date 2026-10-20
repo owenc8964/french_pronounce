@@ -1443,5 +1443,266 @@ const ARTICLES = [
         expl: "Imparfait = le décor, ce qui se passait autour. Passé composé = les événements : le train s'est arrêté, les pompiers ont coupé l'arbre."
       }
     ]
+  },
+
+  // 藍本：Communication essentielle L22 Répondre à une offre d'emploi（p.137–142）｜文法：la cause（p.139）
+  {
+    id: 'a53',
+    title: "Enfin un entretien !",
+    level: 'A2',
+    theme: 'Travail',
+    text: `Depuis septembre, Karim cherche un poste de réceptionniste à Nantes. Il a envoyé beaucoup de candidatures, mais il n'a reçu aucune réponse. Pourquoi ? À cause de sa lettre de motivation : elle faisait deux pages et elle ressemblait à toutes les autres.\n\nComme il était un peu découragé, sa sœur lui a parlé d'un atelier CV gratuit à la médiathèque. Là-bas, une conseillère lui a donné trois règles : une lettre courte, un CV clair, et une phrase pour expliquer pourquoi il veut travailler dans cette entreprise.\n\nKarim a réécrit sa lettre en une soirée. Une semaine plus tard, un hôtel du centre-ville l'a appelé : il a un entretien jeudi. « C'est grâce à l'atelier ! » dit-il. Il est confiant, car il parle trois langues et il pense avoir le bon profil.`,
+    questions: [
+      {
+        q: "Pourquoi Karim ne recevait-il pas de réponse ?",
+        opts: ["Il ne parlait pas anglais", "Il n'envoyait pas de CV", "Sa lettre de motivation n'était pas bonne", "Il cherchait dans la mauvaise ville"],
+        ans: 2,
+        expl: "« À cause de sa lettre de motivation » : trop longue et comme toutes les autres. À cause de = cause négative."
+      },
+      {
+        q: "« C'est grâce à l'atelier ! » : pour Karim, l'atelier…",
+        opts: ["l'a aidé à obtenir un entretien", "était trop cher", "l'a découragé", "a duré une semaine"],
+        ans: 0,
+        expl: "Grâce à = cause positive. Après l'atelier, il a réécrit sa lettre et il a eu un entretien."
+      },
+      {
+        q: "Qu'est-ce que la conseillère n'a PAS conseillé ?",
+        opts: ["Écrire une lettre courte", "Expliquer pourquoi cette entreprise", "Faire un CV clair", "Envoyer plus de candidatures"],
+        ans: 3,
+        expl: "Les trois règles : lettre courte, CV clair, pourquoi cette entreprise. Rien sur le nombre de candidatures."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L23 Passer un entretien（p.143–148）｜文法：l'ordre du discours（p.145）
+  {
+    id: 'a54',
+    title: "Le jour de l'entretien",
+    level: 'A2',
+    theme: 'Travail',
+    text: `Jeudi, 10 heures. Karim est à l'hôtel Belle Rive pour son entretien. La directrice, Mme Perrin, lui explique le programme : « Tout d'abord, vous allez vous présenter. Ensuite, je vous poserai quelques questions sur votre expérience. Pour finir, je vous parlerai des conditions de travail. »\n\nKarim raconte : pendant deux étés, il a travaillé dans un camping à La Baule, où il était chargé d'accueillir les clients et de répondre au téléphone. Puis Mme Perrin lui pose une question piège : « Quel est votre plus grand défaut ? » Karim réfléchit : « Je suis un peu impatient, mais j'apprends à prendre mon temps. »\n\nÀ la fin, elle présente le poste : un CDD de six mois à plein temps, avec des horaires le soir et le week-end. « Nous vous donnerons une réponse lundi. »`,
+    questions: [
+      {
+        q: "Dans quel ordre se passe l'entretien ?",
+        opts: ["Questions → présentation → conditions", "Présentation → questions → conditions", "Conditions → présentation → questions", "Présentation → conditions → questions"],
+        ans: 1,
+        expl: "Tout d'abord = la présentation ; ensuite = les questions ; pour finir = les conditions de travail."
+      },
+      {
+        q: "Au camping, Karim…",
+        opts: ["accueillait les clients", "faisait le ménage", "était le directeur", "travaillait toute l'année"],
+        ans: 0,
+        expl: "« Il était chargé d'accueillir les clients et de répondre au téléphone », pendant deux étés."
+      },
+      {
+        q: "Le poste proposé, c'est…",
+        opts: ["un CDI à mi-temps", "un stage de six mois", "un CDD de six mois avec des horaires le soir et le week-end", "un CDD le matin seulement"],
+        ans: 2,
+        expl: "« Un CDD de six mois à plein temps, avec des horaires le soir et le week-end. »"
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L24 S'intégrer à l'entreprise（p.149–154）｜文法：l'opposition — mais / par contre（p.151）
+  {
+    id: 'a55',
+    title: "Un mois à la réception",
+    level: 'A2',
+    theme: 'Travail',
+    text: `Karim a eu le poste ! Il travaille à la réception de l'hôtel depuis un mois. Il écrit à son ami Hugo :\n\n« Salut Hugo ! Le travail me plaît beaucoup. Mes collègues sont sympas, mais les horaires sont difficiles : je finis souvent à minuit. Ma responsable, Nadia, est très exigeante. Par contre, elle prend toujours le temps d'expliquer.\n\nLa première semaine, je ne connaissais personne, mais l'équipe m'a organisé un pot de bienvenue, et maintenant on mange ensemble avant le service. Mardi, il y a une réunion de service : je dois présenter mes idées pour mieux accueillir les clients étrangers. Je suis un peu stressé ! Par contre, je suis content : ici, on m'écoute.\n\nÀ bientôt ! Karim »`,
+    questions: [
+      {
+        q: "Qu'est-ce qui est difficile pour Karim ?",
+        opts: ["Ses collègues", "Les horaires", "Sa responsable", "Les clients étrangers"],
+        ans: 1,
+        expl: "« Mes collègues sont sympas, mais les horaires sont difficiles : je finis souvent à minuit. »"
+      },
+      {
+        q: "« Nadia est très exigeante. Par contre, elle prend le temps d'expliquer. » Ici, par contre sert à…",
+        opts: ["donner une cause", "donner un exemple", "conclure", "ajouter une idée opposée"],
+        ans: 3,
+        expl: "Par contre (surtout à l'oral) = mais : exigeante (difficile) ↔ prend le temps d'expliquer (positif)."
+      },
+      {
+        q: "Pourquoi Karim est-il un peu stressé ?",
+        opts: ["Il va quitter l'hôtel", "Il organise un pot de départ", "Il doit présenter ses idées en réunion", "Il ne connaît encore personne"],
+        ans: 2,
+        expl: "« Mardi, il y a une réunion de service : je dois présenter mes idées… Je suis un peu stressé ! »"
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L8 Organiser un événement（p.53–58）｜文法：le futur simple（p.55）
+  {
+    id: 'a56',
+    title: "Les 80 ans de Mamie",
+    level: 'A2',
+    theme: 'Invitation',
+    text: `Objet : Les 80 ans de Mamie – c'est une surprise !\n\nBonjour à tous,\n\nLe samedi 14 juin, Mamie Jeanne aura 80 ans. Avec mon frère, nous organisons une fête chez nous, à Annecy. Attention : Mamie pense que c'est un simple déjeuner en famille !\n\nVoilà le programme. À midi, nous mangerons dans le jardin : chacun apportera un plat pour le buffet. L'après-midi, oncle Paul jouera de l'accordéon et nous danserons. Le soir, nous regarderons ensemble les vieilles photos de famille.\n\nPour le cadeau, nous avons ouvert une cagnotte en ligne : nous lui offrirons un week-end à Venise. Répondez-moi avant le 1er juin, s'il vous plaît, pour me dire combien vous serez.\n\nBises,\nCamille`,
+    questions: [
+      {
+        q: "Mamie Jeanne…",
+        opts: ["organise la fête", "ne sait pas qu'il y aura une fête", "a 80 ans aujourd'hui", "habite à Venise"],
+        ans: 1,
+        expl: "C'est une surprise : « Mamie pense que c'est un simple déjeuner en famille »."
+      },
+      {
+        q: "Que feront les invités l'après-midi ?",
+        opts: ["Ils regarderont des photos", "Ils prépareront le buffet", "Ils partiront à Venise", "Ils danseront"],
+        ans: 3,
+        expl: "Futur simple : « oncle Paul jouera de l'accordéon et nous danserons ». Les photos, c'est le soir."
+      },
+      {
+        q: "Pourquoi Camille veut une réponse avant le 1er juin ?",
+        opts: ["Pour savoir combien de personnes viendront", "Pour acheter les billets de train", "Pour choisir la date", "Pour réserver un restaurant"],
+        ans: 0,
+        expl: "« Pour me dire combien vous serez » : elle a besoin du nombre de personnes."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L10 Participer à la vie associative（p.65–70）｜文法：le passé composé des verbes pronominaux（p.67）
+  {
+    id: 'a57',
+    title: "Bénévole le samedi",
+    level: 'A2',
+    theme: 'Quartier',
+    text: `« Je m'appelle Lucie, j'ai 24 ans. L'année dernière, je me suis installée à Lille pour mon travail et je me sentais un peu seule. Un jour, j'ai vu une annonce sur le site de la mairie : une association de quartier cherchait des bénévoles pour aider des enfants à faire leurs devoirs.\n\nJe me suis inscrite tout de suite. Maintenant, chaque samedi matin, j'aide deux élèves en maths. Mon copain Thomas, lui, ne s'est pas engagé dans la même association : il s'est investi dans une banque alimentaire. En décembre, nous nous sommes mobilisés ensemble pour la grande collecte devant les supermarchés.\n\nGrâce au bénévolat, je me suis fait beaucoup d'amis ! »`,
+    questions: [
+      {
+        q: "Pourquoi Lucie a-t-elle cherché une association ?",
+        opts: ["Elle cherchait un travail", "Elle se sentait seule dans une nouvelle ville", "Elle est professeure de maths", "Thomas le lui a demandé"],
+        ans: 1,
+        expl: "Elle venait de s'installer à Lille et « je me sentais un peu seule ». À la fin : « je me suis fait beaucoup d'amis »."
+      },
+      {
+        q: "Que fait Thomas ?",
+        opts: ["Il aide des élèves en maths", "Il travaille à la mairie", "Il aide une banque alimentaire", "Il cherche des bénévoles"],
+        ans: 2,
+        expl: "« Il s'est investi dans une banque alimentaire » — pas dans la même association que Lucie."
+      },
+      {
+        q: "« Je me suis inscrite » : pourquoi inscrite avec un e ?",
+        opts: ["Parce que c'est au pluriel", "Parce que c'est l'imparfait", "Parce que le verbe est irrégulier", "Parce que Lucie est une femme et le verbe pronominal prend être"],
+        ans: 3,
+        expl: "Verbe pronominal → auxiliaire être → accord avec le sujet : Lucie s'est inscrite, Thomas s'est investi."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L13 Partager ses centres d'intérêt（p.83–88）｜文法：les pronoms COI（p.85）
+  {
+    id: 'a58',
+    title: "Forum : votre passion ?",
+    level: 'A2',
+    theme: 'Loisirs',
+    text: `Sujet : Comment avez-vous commencé votre passion ?\n\nMarco_62 : Moi, c'est la pâtisserie ! Quand j'avais douze ans, ma grand-mère m'a appris à faire des tartes. Après, je lui téléphonais chaque dimanche pour lui demander ses recettes. Aujourd'hui, je fais des gâteaux pour mes collègues : ça leur plaît beaucoup ! Et toi, Zoé ?\n\nZoé_lit : Moi, ce sont les romans policiers. Ma voisine m'en prête souvent, et après je lui donne mon avis. Le mois dernier, je lui ai conseillé un roman islandais… elle ne l'a pas aimé du tout ! Maintenant, j'écoute aussi des podcasts sur les livres. Je vous recommande « Page 12 » : c'est court et très drôle.`,
+    questions: [
+      {
+        q: "Qui a appris la pâtisserie à Marco ?",
+        opts: ["Ses collègues", "Un podcast", "Sa voisine", "Sa grand-mère"],
+        ans: 3,
+        expl: "« Ma grand-mère m'a appris à faire des tartes. »"
+      },
+      {
+        q: "« Ça leur plaît beaucoup » : leur, c'est…",
+        opts: ["à ses collègues", "à ses gâteaux", "à sa grand-mère", "aux recettes"],
+        ans: 0,
+        expl: "Leur = COI pluriel, il remplace « à + des personnes » : ça plaît à ses collègues."
+      },
+      {
+        q: "Le roman islandais…",
+        opts: ["Zoé ne l'a pas aimé", "c'est la voisine qui l'a conseillé", "la voisine ne l'a pas aimé", "c'est le titre d'un podcast"],
+        ans: 2,
+        expl: "« Je lui ai conseillé un roman islandais… elle ne l'a pas aimé » : lui / elle = la voisine."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L17 Manger équilibré（p.107–112）｜文法：la conséquence et le but（p.109）
+  {
+    id: 'a59',
+    title: "Le piège de 16 heures",
+    level: 'A2',
+    theme: 'Santé',
+    text: `Au travail, beaucoup de gens mangent sur le pouce : un sandwich devant l'ordinateur à midi, puis des biscuits à 16 heures. Résultat : ils ont très faim le soir et ils mangent trop au dîner. C'est pour ça qu'ils se sentent souvent fatigués.\n\nLa diététicienne Anne Moreau donne trois conseils. D'abord, prenez le temps de déjeuner loin de votre bureau : vous mangerez donc plus lentement. Ensuite, pour ne pas avoir faim l'après-midi, ajoutez des légumes et un peu de pâtes ou de riz à votre déjeuner. Enfin, si vous avez une petite faim, prenez un fruit ou un yaourt plutôt que des biscuits.\n\n« Inutile de faire un régime, explique-t-elle. Pour être en forme, il faut manger varié et à heures fixes. »`,
+    questions: [
+      {
+        q: "Selon l'article, pourquoi beaucoup de gens mangent trop le soir ?",
+        opts: ["Ils mangent mal et trop vite pendant la journée", "Ils font un régime", "Ils boivent trop de café", "Ils dînent au restaurant"],
+        ans: 0,
+        expl: "Sandwich devant l'ordinateur, biscuits à 16 h… « Résultat : ils ont très faim le soir. »"
+      },
+      {
+        q: "« Pour ne pas avoir faim l'après-midi » : pour + infinitif exprime…",
+        opts: ["une cause", "une conséquence", "une opposition", "un but"],
+        ans: 3,
+        expl: "Pour (ne pas) + infinitif = le but, l'objectif. La conséquence, c'est donc, alors, c'est pour ça que."
+      },
+      {
+        q: "Que conseille la diététicienne pour une petite faim ?",
+        opts: ["Des biscuits", "Un sandwich", "Un fruit ou un yaourt", "Rien : attendre le dîner"],
+        ans: 2,
+        expl: "« Prenez un fruit ou un yaourt plutôt que des biscuits. »"
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L19 Prendre soin de soi（p.119–124）｜文法：les verbes et adjectifs avec à ou de（p.121）
+  {
+    id: 'a60',
+    title: "Mes résolutions de septembre",
+    level: 'A2',
+    theme: 'Routine',
+    text: `Pour moi, la rentrée, c'est le nouvel an ! Cette année, j'ai décidé de prendre soin de moi. Voici ma liste :\n\n1. J'arrête de regarder mon téléphone au lit : après, je n'arrive pas à m'endormir.\n2. Je commence à marcher trente minutes par jour, pour prendre l'air.\n3. J'apprends à dire non. Au travail, je suis toujours prête à aider tout le monde, et le soir je n'ai plus de temps pour moi.\n4. J'essaie de cuisiner le dimanche pour toute la semaine.\n\nC'est facile à écrire, mais difficile à faire : cette semaine, j'ai déjà oublié la résolution numéro 2 deux fois… Rendez-vous dans un mois pour le bilan !`,
+    questions: [
+      {
+        q: "Pourquoi veut-elle arrêter le téléphone au lit ?",
+        opts: ["Après, elle n'arrive pas à s'endormir", "Son téléphone est cassé", "Elle se lève trop tôt", "Elle veut lire des livres"],
+        ans: 0,
+        expl: "« Après, je n'arrive pas à m'endormir. » (arriver à + infinitif = réussir à)"
+      },
+      {
+        q: "Quel est son problème au travail ?",
+        opts: ["Elle arrive en retard", "Elle aide tout le monde et n'a plus de temps pour elle", "Elle n'aime pas ses collègues", "Elle travaille le dimanche"],
+        ans: 1,
+        expl: "« Je suis toujours prête à aider tout le monde, et le soir je n'ai plus de temps pour moi. »"
+      },
+      {
+        q: "J'arrête ___ regarder… / J'apprends ___ dire non.",
+        opts: ["à / de", "de / de", "à / à", "de / à"],
+        ans: 3,
+        expl: "Arrêter de, essayer de, décider de + infinitif ; apprendre à, commencer à, être prêt à + infinitif."
+      }
+    ]
+  },
+
+  // 藍本：Communication essentielle L22 Répondre à une offre d'emploi（p.141 offre d'emploi en ligne）｜題材借「讀職缺」，職位、城市、條件全換
+  {
+    id: 'a61',
+    title: "Offre : animateur de centre de loisirs",
+    level: 'A2',
+    theme: 'Petite annonce',
+    text: `La Ville de Rennes recrute\nANIMATEUR / ANIMATRICE (H/F) – centre de loisirs des Lilas\n\nContrat : CDD de 10 mois, à partir du 1er septembre\nTemps partiel : les mercredis et pendant les vacances scolaires\n\nMissions : accueillir les enfants de 6 à 11 ans, préparer des activités (jeux, sport, ateliers de dessin), parler avec les parents à la fin de la journée.\n\nProfil : vous êtes patient(e) et dynamique, et vous avez l'esprit d'équipe. Le BAFA est demandé. Une première expérience avec des enfants est un plus, mais elle n'est pas obligatoire.\n\nPour postuler : envoyez votre CV et une lettre de motivation sur le site de la mairie avant le 30 juin. Les entretiens auront lieu début juillet.`,
+    questions: [
+      {
+        q: "Ce poste est…",
+        opts: ["à plein temps toute l'année", "un CDI", "à temps partiel", "un stage"],
+        ans: 2,
+        expl: "« Temps partiel : les mercredis et pendant les vacances scolaires. » C'est un CDD de 10 mois."
+      },
+      {
+        q: "Une personne qui n'a jamais travaillé avec des enfants…",
+        opts: ["ne peut pas postuler", "peut postuler", "doit d'abord faire un stage", "doit téléphoner à la mairie"],
+        ans: 1,
+        expl: "L'expérience « est un plus, mais elle n'est pas obligatoire »."
+      },
+      {
+        q: "Quand auront lieu les entretiens ?",
+        opts: ["Début juillet", "Le 30 juin", "Le 1er septembre", "Le mercredi"],
+        ans: 0,
+        expl: "« Les entretiens auront lieu début juillet. » Le 30 juin, c'est la date limite pour envoyer le CV."
+      }
+    ]
   }
 ];

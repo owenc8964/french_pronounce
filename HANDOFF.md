@@ -25,6 +25,7 @@
 > - 📚 **10-17 夜：語言遊戲研究三路＋總整理** → `research/2026-10-17_語言遊戲總整理_給小鎮的提案.md`（提案依序：回城回收→複習、晨間判定＋小鎮等級、金幣綁精熟、擴大閱讀、對話產出；⏸ 等 Owen 選）；請 Owen 下載 Sailer & Homner 2020 全文。
 > - ⭐⭐⭐ **10-17 晚：再加三個玩法（三之六十九）**：☕ 咖啡館口說島五階、📋 告示牌抓錯字、🦋 田裡蝴蝶形容詞圖鑑；⏸ 等 Owen 玩。另有待辦：API 當場批改（等 Owen 開 Anthropic 帳號）→ 之後才做攤子點單。
 > - ⭐⭐⭐ **10-17 新 session 先看「三之六十八」**：Owen 的 5 個建議（三之六十七）已全部做完並試跑 → ⏸ 等 Owen 玩：靜音鍵、🚩 題目回報、遊戲時間紀錄（週報會讀）、🌬️ 風車拼句、📰 鎮報閱讀。
+> - 📰 **10-20：鎮報 52 → 61 篇（三之八十）**：CE L22–24 求職三部曲（同一個主角 Karim：寫信 → 面試 → 上班一個月）＋ L8／L10／L13／L17／L19；`tools/audit_coverage.js` 改讀 reading_articles.js（閱讀篇數不再顯示 0）。
 > - 📰 **10-19 深夜：鎮報 35 → 52 篇＋句庫 +30 句（三之七十九）**：以 Communication essentielle／Grammaire en dialogues 情境為藍本重寫（⛔ 不照搬，repo 公開）；下一批建議 CE L22–24 求職／面試。
 > - 🎧 **10-19 深夜：課本音檔官方來源找到了（三之七十八）**：e-didier.fr 公開頁、編號＝課本音軌號；A2＋Cahier＋B1 慢速下載中，對照表 A2 120 軌／Cahier 127 軌完成；⏸ 等 Owen 選壓縮品質。
 > - 📖 **10-19 第 43 課（三之七十七）**：A2 模擬考聽力 20／25＋⭐ **進入 Édito B1**（Unité 1 Famileo）＋三本新書（B1 課本、Communication essentielle、Grammaire en dialogues）文字快取。⏸ 待 Owen：地圖總課數改多少、要不要做「功能詞挖空聽寫＋換口音」（他說換口音就聽不懂）、貼逐字稿補 🎙／🔊 兩個 unit。
@@ -4925,6 +4926,27 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - 紀錄 `clb7_gender_seen`（每字一物件＋last）：上次錯的 ×4、錯多於對 ×3、連對 3 次且 2 次 <2 秒的 ×0.35。答對也呼叫 `growRec`（key `g:<字>`）→ 隔天以後又答對＝站穩，寵物會長大。每答對 1 枚金幣，中途回去也照給。結算：✓ 數、平均秒數、<2 秒的個數、「再看一眼這幾個」（可點聽）。⛔ 不顯示分母。
 - 🐛 順手發現：`tools/tmp_quest_nosync.js make` 產的暫存頁**自己回報 `sync tag present? true`**——那支工具已經不可靠，這次改用自己的隔離複本（只刪 `<script src=sync_supabase.js>`），⚠️ 以後測 quest.html 別用它。
 - ✅ 試跑（隔離複本，ROOM 沒動）：手機 375 版面；一局 20 題（含 1 跳過、4 錯）→ 結算正確、金幣 +15、紀錄 18 字；無錯誤。
+
+#### 三之八十、10-20：鎮報第二批 9 篇（a53–a61）＋ audit_coverage 修正
+
+- **`reading_articles.js`：52 → 61 篇**。做法同三之七十九：以 Communication essentielle A2 情境為藍本**重寫**（⛔ 書中對話、文件不照搬，人名／地點／數字全換），每篇前面註解標藍本課次、書頁、文法點頁。
+  | id | 標題 | 藍本（書頁） | 文法點 |
+  |---|---|---|---|
+  | a53 | Enfin un entretien ! | CE L22 回應職缺 p.137 | la cause（à cause de／grâce à／comme／car，p.139） |
+  | a54 | Le jour de l'entretien | CE L23 面試 p.143 | l'ordre du discours（tout d'abord／ensuite／pour finir，p.145） |
+  | a55 | Un mois à la réception | CE L24 融入公司 p.149 | l'opposition（mais／par contre，p.151） |
+  | a56 | Les 80 ans de Mamie | CE L8 辦活動 p.53 | futur simple（p.55） |
+  | a57 | Bénévole le samedi | CE L10 志工協會 p.65 | 反身動詞 passé composé（p.67） |
+  | a58 | Forum : votre passion ? | CE L13 興趣 p.83 | COI（lui／leur，p.85） |
+  | a59 | Le piège de 16 heures | CE L17 飲食 p.107 | ⚠️ 課本這課文法是 **la conséquence et le but**（不是 cause，p.109）→ 題目考 pour + inf.＝but |
+  | a60 | Mes résolutions de septembre | CE L19 舒壓 p.119 | 動詞／形容詞 + à／de（p.121） |
+  | a61 | Offre : animateur de centre de loisirs | CE L22 p.141 職缺頁（只借「讀職缺」題型） | 推論題（temps partiel、經驗「est un plus」） |
+  - a53–a55 是**同一個主角 Karim 的連續故事**（投履歷 → 面試 → 上班一個月），鎮報隨機抽到時各篇也能單獨讀。
+  - 正解位置 27 題：7／6／7／7。expl 全法文、一兩句。
+  - a61 是 TCF 常見的「職缺／公告」文體，偏推論（「est un plus, mais pas obligatoire」→ 沒經驗也能應徵）。
+- **`tools/audit_coverage.js`**：ARTICLES 改從 `reading_articles.js` 讀（原本讀 reading.html，10-17 抽檔後一直顯示 0 篇）；「遊戲裡沒有」改成「reading.html 與小鎮鎮報共用」。現在顯示 61 篇。
+- ✅ **試跑**（ROOM 改 TEST → 測完改回 → preview_stop → grep 無 TEST 殘留）：reading.html 列出 61 篇、a53 打開正常；town.html 把 a1–a52 標成讀過後連抽 60 次，**9 篇新文全部抽到、沒抽到舊文**；測試前後 `clb7_reading` 原樣還原，沒寫任何紀錄。
+- ⏭ **CE 還沒用的情境**：L5 媒體（已有媒體篇，可略）。CE 的課大致用完了；下一批可改用 GeD débutant ch.4–5（faire/prendre、aller/venir）、GeD 中級 Bilan「Des vacances en Irlande」，或 Édito B1 已上課次的主題。
 
 #### 三之七十九、10-19 深夜：兩本補充書 → 鎮報新增 17 篇（a36–a52）＋句庫 30 句口語短句
 - **起因**：Owen 問能不能把 Communication essentielle A2、Grammaire en dialogues 的對話／閱讀拿來做閱讀測驗。⛔ repo 是公開的 GitHub Pages，整篇照搬＝公開轉貼商業教材 → 定案：**以書的情境為藍本「重寫」短文＋3 題理解題**（CLAUDE.md 已核准的原創例外），短句才可以直接收。

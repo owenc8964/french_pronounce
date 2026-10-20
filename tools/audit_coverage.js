@@ -22,7 +22,7 @@ const { STORY } = loadJs('story.js', ['STORY']);
 const { GRAM_POINTS } = loadJs('gram_rules.js', ['GRAM_POINTS']);
 const { WRITING_TASKS } = loadJs('writing_tasks.js', ['WRITING_TASKS']);
 const TABLES = loadBlock('table_drill.html', /^const TABLES = \[/, 'TABLES') || [];
-const ARTICLES = loadBlock('reading.html', /^const ARTICLES = \[/, 'ARTICLES') || [];
+const { ARTICLES = [] } = loadJs('reading_articles.js', ['ARTICLES']); // 10-17 起從 reading.html 抽成獨立檔
 const LQ = loadBlock('listening.html', /^const LISTENING_BANK = \[/, 'LISTENING_BANK') || [];
 
 const lessons = [...new Set(BANK.map(q => q.lesson).filter(Boolean))].sort((a, b) => a - b);
@@ -67,7 +67,7 @@ console.log('題庫 topic 數', bankTopics.length, '| 主線節點用到的 topi
 console.log('\n── 表格 ──');
 const tt = by(TABLES, t => t.type); console.log('table_drill 表格', TABLES.length, '依類型', Object.keys(tt).map(k => k + ':' + tt[k].length).join(' '), '｜遊戲「填表」只涵蓋動詞時態（verbs_full.js 由 A1/A2 動詞產生），其他類型（冠詞／介係詞／形容詞／文法詞／詞彙）遊戲裡沒有出口');
 console.log('\n── 四技能 ──');
-console.log('閱讀：reading.html 文章', ARTICLES.length, '篇（遊戲裡沒有）；考試之塔閱讀題只在有 assets/tcf 的電腦上');
+console.log('閱讀：reading_articles.js 文章', ARTICLES.length, '篇（reading.html 與小鎮 town.html 鎮報共用，鎮報約兩天一篇、優先沒讀過的）；考試之塔閱讀題只在有 assets/tcf 的電腦上');
 console.log('聽力：listening.html LISTENING_BANK', LQ.length, '題（遊戲裡沒有）；遊戲「看破」＝TTS 讀 SENTENCES', SENTENCES.length, '句、選中文');
 console.log('寫作：writing_tasks.js', WRITING_TASKS.length, '個任務（遊戲裡沒有）');
 console.log('口說：遊戲「吶喊」＝唸 SENTENCES（僅 Safari 有語音辨識）；t1_stock.js 24 個追問（遊戲裡沒有）');
