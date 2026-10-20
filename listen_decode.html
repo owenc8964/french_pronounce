@@ -64,6 +64,20 @@ button { font-family: inherit; cursor: pointer; }
 .err { color: #e07070; font-size: 0.85em; margin-top: 8px; }
 .hint { font-size: 0.8em; color: #445060; line-height: 1.7; margin-top: 10px; }
 .prog { font-size: 0.8em; color: #5a6878; }
+.src-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+.src { flex: 1; background: #0d1020; border: 1px solid #1a2438; color: #6a7888; border-radius: 10px; padding: 10px; font-size: 0.88em; }
+.src.on { border-color: #2a5a40; color: #60c0a0; background: #0f2018; }
+.units { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.unit-btn { display: flex; flex-direction: column; gap: 3px; text-align: left; background: #141928; border: 1px solid #1a2438;
+  color: #9aa8b8; border-radius: 10px; padding: 10px 12px; font-size: 0.85em; }
+.unit-btn b { color: #cfe4f5; font-weight: 600; }
+.unit-btn.wide { width: 100%; }
+.unit-btn .u-n { color: #5a8a70; font-size: 0.86em; }
+.unit-btn:hover { border-color: #60a0d0; }
+.crumb { font-size: 0.8em; color: #6a7888; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn.mini { padding: 4px 10px; font-size: 0.85em; }
+/* 課本整段對話很長：往下捲去填空時播放鍵要跟著，⛔ 不要讓他捲回頂端 */
+.play-row.sticky { position: sticky; top: 44px; z-index: 5; background: #0d1020; padding: 8px 0; margin: -8px 0 6px; border-bottom: 1px solid #1a2438; }
 @media (min-width: 760px) { .script { font-size: 1.06em; } }
 </style>
 </head>
@@ -86,7 +100,8 @@ button { font-family: inherit; cursor: pointer; }
     ⭐ 先聽一次，能填多少填多少；填不出來就<b>放慢到 0.75x 再聽</b>。<br>
     ⭐ <b>慢速填得出來、原速填不出來 → 音你認得，問題在處理速度</b>；慢速也填不出來 → 那個音還沒建立。兩種的練法不一樣，所以這頁會分開記。<br>
     ⚠️ 這個練習很硬，研究自己的建議是<b>每週 2–3 次、每次 10–15 分鐘就好</b>——做多了跟刷題一樣耗意志力。⛔ 它只修「聽得到」，不會讓你變得有話講。<br>
-    ⛔ 任何一格都可以按「這格算了」，整題也可以跳過——跳過不算錯、不進複習。
+    ⛔ 任何一格都可以按「這格算了」，整題也可以跳過——跳過不算錯、不進複習。<br>
+    📗 <b>課本</b>：Édito A2／B1 的原版錄音＋逐字稿（你上過的課），一段是一整段對話；🎧 <b>TCF 考題</b>：考試的短段。
   </div>
 </div>
 
@@ -141,6 +156,6 @@ function vaultGet(path, asBlob){
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
   .replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 </script>
-<script src="listen_decode.js?v=20260923a"></script>
+<script src="listen_decode.js?v=20261020d"></script>
 </body>
 </html>

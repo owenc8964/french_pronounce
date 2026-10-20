@@ -11,7 +11,7 @@
 
 上傳內容：
   didier/<book>/###.m4a        音檔（book = a2 課本／a2c Cahier／b1 課本）
-  didier/<book>.json           該本每一軌：track、page、title、dur（秒）、text（逐字稿；沒有的是 null）
+  didier/<book>.json           該本每一軌：track、unit、page、title、dur（秒）、text（逐字稿；沒有的是 null）
   didier/index.json            書目清單（最後才傳：網站看到 index 時，它列的檔案必須已經在）
 
 金鑰：讀專案根目錄 `.env` 的 SUPABASE_SECRET_KEY（⛔ 永不 commit、永不印出）。
@@ -52,7 +52,7 @@ def build_book(b):
         if not f.endswith('.m4a'):
             continue
         n = int(f[:3]); t = tr.get(str(n))
-        items.append({'track': n, 'f': f'{b["id"]}/{f}', 'dur': duration(os.path.join(folder, f)),
+        items.append({'track': n, 'f': f'{b["id"]}/{f}', 'dur': duration(os.path.join(folder, f)), 'unit': t and t.get('unit'),
                       'page': t and t['page'], 'title': t and t['title'],
                       'text': t and (t['text'] or None), 'ocr': bool(t and t.get('src') == 'OCR')})
     return items
