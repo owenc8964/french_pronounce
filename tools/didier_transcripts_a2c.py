@@ -16,7 +16,7 @@ for k, m in enumerate(ms):
         n = want; log.append(f'{n}: 編號 OCR 讀錯（「{m.group(0)[:24]}」），照順序補')
     end = ms[k + 1].start() if k + 1 < len(ms) else len(t)
     body = t[m.end():end].strip()
-    body = '\n'.join(l for l in body.split('\n') if not re.match(r'^\d{3}\s*[I|l]\s*cent', l) and not re.match(r'^(TRANSCRIPTIONS|Transcriptions)', l))
+    body = '\n'.join(l for l in body.split('\n') if not re.match(r'^\d{3}\s*[I|l]\s*cent', l) and not re.match(r'^(TRANSCRIPTIONS|Transcriptions)', l) and not re.match(r'^\s*\|?\s*Unité \d+', l) and l.strip() != '|')
     out[n] = {'track': n, 'page': int(m.group(2)), 'title': m.group(3).strip(), 'text': body, 'src': 'OCR'}
     if not cands: log.append(f'{n}: 標頭沒有編號，照順序補')
     prev = n

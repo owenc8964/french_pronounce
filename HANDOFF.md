@@ -4994,7 +4994,8 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - ✅ **音軌↔逐字稿對照表**（都在 `assets/didier/`，不入庫）：
   - `transcripts_a2.json`：**120／121 軌**（第 1 軌是片頭，沒有逐字稿）。來源：課本 p.195 起的 Transcriptions（`tools/didier_transcripts_a2.py`）。坑：① 影片逐字稿也用「1 Page 22」編號、會跟音軌撞號 → 從「Documents vidéos」切掉 ② 102 軌標頭沒逗號 ③ 頁尾「200 I deux-cents」夾在內文中間 → 濾掉。
   - `transcripts_a2c.json`：**127／127 軌**。Cahier 是掃描檔，舊 OCR 兩欄讀串只認出 30 個標頭 → **逐字稿頁是三欄排版**，改用 Vision 每行座標分欄重 OCR（300dpi，`tools/didier_ocr_cahier_cols.py`，輸出 `cahier_a2_transcripts_ocr.txt`，PDF p.149–160）。標頭前的手機圖示常被讀成 8／3／฿／E3 → 用「上一軌＋1」挑正確編號（`tools/didier_transcripts_a2c.py`）。驗證：**123–126 落在 Cahier p.140，跟 Owen 截圖那頁一致**。手動修一處：69 的標頭被黏到 61 那一行、內文併進 68。⚠️ 內文是 OCR，引用前要對原頁。
-  - ⏭ **B1**：逐字稿（B1 p.197 起）標頭**沒有印音軌號**（只有「Page 12, A – Une enfance musicale」）→ 等音檔下載完，用順序＋「音檔長度 vs 逐字稿字數」對號。
+  - ✅ **10-20 B1 對號完成**：`transcripts_b1.json` **98／98 軌**（`tools/didier_transcripts_b1.py`）。B1 標頭沒印音軌號，但逐字稿頁（p.197–217，p.218 起是影片）剛好 98 個標頭＝98 軌 → 照順序一對一；用「字數／秒數」驗證：一般對話都在 14–24 字/秒，偏低（3–10）的全是 Phonétique 跟讀軌（錄音裡留空讓學生跟讀），合理。最後三軌是 p.190–191 DELF B1 聽力 Exercice 1–3。
+  - ✅ 三本的頁尾殘字（「deux cent dix-sept I 217」、Cahier DELF 軌尾黏到的「Unité N …」）都已濾掉。
 - ✅ **切段已驗證可行**（p.182 那軌）：考試格式＝每則前 15 秒讀題、每則播兩遍中間停 10 秒 → 用「連續兩段長度一樣＝同一則播兩遍」配對，6 則語速都在 10–12.6 字／秒（切錯會亂跳）。
 - ⏸ **等 Owen**：聽 `~/Desktop/1019/壓縮試聽/` 的四個檔（同一段 35 秒：原檔 320k 立體聲、AAC 單聲道 64k／48k／32k）選壓縮品質；選好後全部轉檔、原檔才刪。原檔 320k 一軌約 3–16MB，A2 課本＋Cahier＋B1 估計 1.5–2.5GB。
 - ✅ **10-20 下載完成**：A2 課本 145／Cahier 127／B1 98 軌，370 檔全部 OK（大小逐一核對），原檔 1.3GB 在 `assets/didier/raw/`。總長 8 小時（A2 3h16、Cahier 2h07、B1 2h40）。
