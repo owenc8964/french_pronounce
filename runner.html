@@ -50,7 +50,7 @@ body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; 
 <body>
 <canvas id="cv"></canvas>
 <div class="top"><div class="sub" id="sub"></div><div class="q fr" id="q"></div><div class="fb fr" id="fb"></div></div>
-<div class="bot"><span class="chip" id="hud"></span><button class="btn" id="bend">■ 停</button></div>
+<div class="bot"><span class="chip" id="hud"></span><button class="btn" id="bflag" aria-label="回報問題">🚩</button><button class="btn" id="bend">■ 停</button></div>
 <div class="sheet" id="sheet"><div class="box" id="box"></div></div>
 <script>
 'use strict';
@@ -154,6 +154,7 @@ cv.addEventListener('pointerup', function(e){ if(!G||G.over||sx==null) return; v
   if(Math.abs(dx)>24) move(dx>0?1:-1); else move(e.clientX<W/2?-1:1); });
 window.addEventListener('keydown', function(e){ if(!G||G.over) return; if(e.key==='ArrowLeft'||e.key==='a'){ move(-1); e.preventDefault(); } if(e.key==='ArrowRight'||e.key==='d'){ move(1); e.preventDefault(); } });
 function move(d){ G.lane=Math.max(0,Math.min(2,G.lane+d)); }
+document.getElementById('bflag').onclick=function(){ if(window.GameLog) GameLog.quickReport('runner', '跑酷・第 '+(G?G.n+1:0)+' 道門'); };
 document.getElementById('bend').onclick=function(){ if(G && !G.over){ if(!EMBED || G.n===0 || confirm('現在停下來，這趟就到這裡。要回小鎮嗎？')) finish(); } };
 
 /* ---------- 迴圈 ---------- */

@@ -30,6 +30,7 @@
 <script src="gram_rules.js"></script>
 <script src="verbs_full.js"></script>
 <script src="verb_freq.js"></script>
+<script src="codex.js"></script>
 <script src="topic_labels.js"></script>
 <script src="tts_reader.js"></script>
 <script src="sync_supabase.js"></script>
@@ -49,6 +50,8 @@ body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; 
 .hud button.streak i { position:absolute; left:0; bottom:0; height:3px; background:#f0a13a; }
 .hud button.streak.done { border-color:#f0c95a; color:#f0c95a; }
 .quest { pointer-events:auto; cursor:pointer; } .qd { letter-spacing:1px; color:var(--gold); } small.up { color:#f0c95a; } small.pend { color:#9db1a2; }
+.flagbox { position:fixed; left:12px; right:12px; top:calc(env(safe-area-inset-top) + 60px); z-index:40; background:#16211b; border:1px solid var(--line); border-radius:14px; padding:14px; box-shadow:0 8px 30px rgba(0,0,0,.6); }
+.flagbox textarea { width:100%; margin:8px 0; background:#0c120e; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px; font-size:16px; font-family:inherit; }
 .goalrow { display:flex; gap:6px; flex-wrap:wrap; margin:8px 0; }
 .goalrow button.on { border-color:var(--gold); color:var(--gold); }
 .pbar { height:10px; background:#0c120e; border-radius:6px; overflow:hidden; margin:6px 0; } .pbar i { display:block; height:100%; background:linear-gradient(90deg,#f6b24a,#f0e07a); }
@@ -133,6 +136,9 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .dexcell .evo { position:absolute; top:1px; right:3px; font-size:.95em; }
 .gm { color:#7fb2ff; } .gf { color:#ff8a9a; }
 .opts button.bm { border-color:#3c5a85; } .opts button.bf { border-color:#85404d; }
+.ex-why { color:#ff9a8a; margin:4px 0; } .ex-ok { margin:4px 0; } .ex-rule { background:#0c120e; border-left:3px solid var(--gold); padding:6px 9px; border-radius:0 8px 8px 0; margin:6px 0; font-size:.92em; line-height:1.55; }
+.conjrow { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; margin:6px 0; font-size:.85em; } .conjrow span { background:#16211b; border-radius:6px; padding:3px 6px; } .conjrow small { color:var(--dim); } .conjrow .ok { background:#3c5a2c; color:#fff3c0; } .conjrow .no { background:#4a2c28; }
+.rlink { display:inline-block; margin-top:4px; color:#9fd0ff; font-size:.88em; text-decoration:none; border-bottom:1px dashed #9fd0ff; }
 .grule { color:#d9cfb6; font-size:.85em; margin-top:4px; }
 .numcard { display:grid; grid-template-columns:repeat(10,1fr); gap:3px; margin:6px 0 12px; } .numcard span { text-align:center; font-size:.72em; padding:3px 0; border-radius:5px; background:#0d130f; color:#4a5a4f; } .numcard span.on { background:#3c6b4c; color:#fff; }
 .dexcell.pending { opacity:.45; } .dexcell.fading { filter:grayscale(.85); opacity:.7; }
@@ -151,6 +157,7 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
     <span class="chip" id="hGold">💰 0</span>
     <span class="chip" id="hBag">🎒 0/8</span>
     <span class="sp"></span>
+    <button id="bFlag" aria-label="回報問題">🚩</button>
     <button id="bMute" aria-label="靜音">🔊</button>
     <button id="bDex">📖圖鑑</button>
     <button id="bHome">🏠回城</button>
@@ -188,7 +195,7 @@ BANK.forEach(function(q, i){
 (typeof FIELD_EXTRA!=='undefined'?FIELD_EXTRA:[]).forEach(function(x){
   if(x.cue || !POOL[x.fam] || !BANK[x.src]) return;
   var b=BANK[x.src];
-  POOL[x.fam].choose.push({lesson:b.lesson, topic:x.topic, type:'choose', q:x.q, a:x.a, opts:x.opts, aNote:x.aNote, hint:x.hint||'', zh:x.zh||'', _i:x.src, _fx:1});
+  POOL[x.fam].choose.push({lesson:b.lesson, topic:x.topic, type:'choose', q:x.q, a:x.a, opts:x.opts, aNote:x.aNote, hint:x.hint||'', zh:x.zh||'', _i:x.src, _fx:1, why:x.why||null});
 });
 /* 陰陽性字庫：跟 quest.html 的 genderPool 同一個抽法（chunks.js「un／une／le／la＋單字名詞」與「l'… (m.)／(f.)」） */
 var EMO={chien:'🐕',chat:'🐈',cheval:'🐎',lapin:'🐇',poisson:'🐟',poule:'🐔',vache:'🐄',canard:'🦆',renard:'🦊',loup:'🐺',lion:'🦁',rat:'🐀',
@@ -551,6 +558,91 @@ function clean(o){ return String(o).replace(/\s*[—–]{1,2}.*$/,'').replace(/[
 function note(s){ return esc(s).replace(/&lt;(\/?)b&gt;/g,'<$1b>'); }
 function frOnly(s){ return /[一-鿿]/.test(s) ? '' : s; }
 
+/* ============================================================
+   📖 解析區（10-21 Owen：「很多題目的詳解都只是把答案再寫一遍，也沒啥幫助」）
+   答錯時固定四行：✗ 你選的為什麼不對 → ✓ 正確整句＋中文 → 💡 規則 → 📍 去文法資料庫／規則卡
+   ⭐ 「為什麼不對」：路上擴充題有每個錯誤選項的原因代碼（WHY_ZH）；人稱類從 verbs_full.js 反查那個形是誰的
+   ⭐ 規則：aNote 去掉「Corrigés：…。」雜訊；太短（中文 <6 字）就補文法資料庫摘要或規則卡標題
+   ⭐ 動詞變位題：直接列出那個動詞在那個時態的六個人稱，你填的標紅、正確的標金
+   ============================================================ */
+var WHY_ZH={
+  'aux-person':'助動詞是別的人稱的形，看主詞', 'aux-etre->avoir':'這個動詞的複合時態要用 être，不是 avoir',
+  'agreement':'過去分詞的陰陽性／單複數沒配合對', 'pp->infinitif':'這裡要過去分詞（-é／-i／-u…），不是原形', 'pp->present':'這裡要過去分詞，不是現在式',
+  'infinitif->pp':'這裡要原形動詞', 'infinitif->present':'這裡要原形動詞，不是變位後的形',
+  'y/en':'y 和 en 混了：de＋東西 → en；à＋東西／地點 → y', 'là-preverbal':'là 不能放在動詞前面當代名詞，要用 y',
+  'relative':'關係代名詞選錯：qui 當主詞、que 當受詞、où 表地點／時間、dont 接 de', 'cequi/ceque':'ce qui 後面直接接動詞（當主詞）；ce que 後面接主詞＋動詞（當受詞）',
+  'art-elision':'冠詞遇到母音或啞音 h 要縮寫成 l\'', 'art-gender':'冠詞的陰陽性不對', 'art-number':'冠詞的單複數不對', 'art-contraction':'à／de 遇到 le／les 要合併：au、aux、du、des',
+  'art-after-quantity/neg':'數量詞（beaucoup、peu…）或否定之後，冠詞變成 de', 'art-adj-plural':'複數形容詞在名詞前時，des 變成 de',
+  'poss-gender':'所有格要跟「被擁有的東西」的陰陽性配合，不是跟擁有者', 'poss-number':'所有格的單複數要跟後面的名詞配合', 'poss-elision':'陰性名詞以母音開頭時用 mon／ton／son', 'poss-pronoun-as-det':'le mien 這類是所有格代名詞，不能放在名詞前',
+  'posspron-gender':'所有格代名詞要跟所指東西的陰陽性配合', 'posspron-det-form':'所有格代名詞要帶冠詞（le mien、la tienne）', 'posspron-number(ce sont)':'ce sont 後面接複數',
+  'adj-agreement':'形容詞要跟名詞的陰陽性／單複數配合', 'beau-before-vowel':'陽性單數名詞以母音開頭時 beau → bel', 'bel-before-consonant':'子音開頭的名詞前用 beau，不用 bel',
+  'cest/ilest':'c\'est＋冠詞＋名詞；il est＋形容詞（或不帶冠詞的職業）', 'cest/ilest-gender':'il／elle 要跟所指的人或東西配合',
+  'dem-elision':'陽性名詞以母音開頭時 ce → cet', 'dem-gender':'指示形容詞的陰陽性不對（ce／cet／cette）', 'dem-number':'複數一律用 ces',
+  'dempron-gender':'celui／celle 要跟所指東西的陰陽性配合', 'dempron-det-form':'指示代名詞是 celui／celle／ceux／celles', 'dempron-number(verb)':'看後面動詞是單數還是複數',
+  'imperatif-person(cue)':'命令式的人稱不對，看這句話是對誰說的', 'imperatif->indicatif':'命令式不帶主詞；-er 動詞的 tu 命令式去掉 s', 'imperatif->subj3':'這是虛擬式的形，不是命令式',
+  'tonic-vs-clitic':'介系詞後面、單獨使用時要用重讀代名詞（moi、toi、lui…）', 'tonic-person(verb-agreement)':'看動詞的人稱來決定代名詞',
+  'cod-elision':'le／la 遇到母音開頭要縮寫成 l\'', 'cod-gender':'受詞代名詞的陰陽性不對', 'cod-number':'受詞代名詞的單複數不對',
+  'coi-number':'間接受詞：單數 lui、複數 leur', 'leur-never-s':'leur 當受詞代名詞永遠不加 s',
+  'tout-agreement':'tout 要跟後面的名詞配合：tout／toute／tous／toutes', 'tout-gender':'tout 的陰陽性不對', 'tout-number':'tout 的單複數不對', 'chaque->pronom':'chaque 後面要接名詞；單獨用要說 chacun／chacune',
+  'gerondif->infinitif':'副動詞是 en＋現在分詞（-ant），不是原形', 'gerondif->pp':'副動詞是 en＋-ant，不是過去分詞', 'gerondif->nous':'副動詞用 nous 的字根＋-ant，不是 nous 的變位',
+  'aussi/autant-before-adj':'形容詞／副詞前用 aussi；名詞／動詞用 autant', 'aussi-de':'aussi 後面不接 de', 'autant-without-de':'autant＋名詞要加 de', 'compar-without-de':'比較數量的名詞前要加 de',
+  'compar-que':'比較的對象用 que 帶出', 'aussi-with-verb':'動詞後面比程度用 autant，不用 aussi', 'autant-de-with-verb':'動詞後面直接用 autant，不加 de', 'meme-agreement':'le／la／les même(s) 要跟名詞配合',
+  'super-meilleur-before-adj':'形容詞前不用 meilleur，用 plus', 'super-mieux-before-adj':'形容詞前不用 mieux，用 plus', 'super-plus-before-noun':'bon 的最高級是 le meilleur，不說 le plus bon',
+  'super-mieux-before-noun':'名詞前用 meilleur（形容詞），不用 mieux（副詞）', 'super-meilleur-adverbial':'修飾動詞用 le mieux（副詞），不用 le meilleur', 'super-bien':'bien 的最高級是 le mieux',
+  'super-moins-mieux':'「最不好」說 le moins bien', 'super-article-agreement':'最高級的冠詞要跟名詞配合（le／la／les）', 'mieux-invariable':'mieux 是副詞，不變化', 'super-agreement':'最高級的形容詞要跟名詞配合', 'super-plus-bon':'不說 plus bon，要用 meilleur',
+  'quel-gender':'quel 要跟名詞的陰陽性配合', 'quel-number':'quel 要跟名詞的單複數配合', 'lequel-before-noun':'lequel 是代名詞，不能放在名詞前（名詞前用 quel）', 'lequel-gender':'lequel／laquelle 要配合陰陽性', 'lequel-number(verb)':'看動詞的單複數',
+  'subj-person(verb-agreement)':'看主詞決定動詞的人稱', 'direct-quest':'間接引語裡不能保留問句語序', 'indirect-quest-est-ce':'間接引語裡不用 est-ce que', 'discours-que/si':'是非問句轉成間接引語用 si', 'discours-que/ce-que':'問「什麼」轉成間接引語用 ce que'
+};
+var TENSE_OF_TOPIC={ 'er-verbs':'present','ir-re-verbs':'present','irregular-verbs-3rd-group':'present','etre-avoir':'present','reflexive-verbs':'present','pouvoir-vouloir':'present',
+  'passe-compose':'passe-compose','imparfait':'imparfait','futur-simple':'futur-simple','conditionnel-present':'conditionnel','subjonctif-present':'subjonctif' };
+var FORM_PERSON=null;
+function formPersons(f){
+  if(!FORM_PERSON){ FORM_PERSON={}; if(typeof VERBS_FULL!=='undefined' && typeof drillForms==='function') VERBS_FULL.forEach(function(v){
+    ['present','passe-compose','imparfait','futur-simple','conditionnel','subjonctif'].forEach(function(t){ var fs=null; try{ fs=drillForms(v,t); }catch(e){} if(!fs) return;
+      fs.forEach(function(x,pi){ String(x).split('|').forEach(function(a){ var k=a.toLowerCase(); (FORM_PERSON[k]=FORM_PERSON[k]||{})[pi]=1; }); }); }); }); }
+  var hit=FORM_PERSON[String(f).toLowerCase().replace(/^(je|j'|tu|il|elle|on|nous|vous|ils|elles)\s*/,'')]; if(!hit) return [];
+  var P=['je','tu','il／elle','nous','vous','ils／elles']; return Object.keys(hit).map(function(i){ return P[+i]; });
+}
+function noteClean(n){ return String(n||'').replace(/^\s*Corrigés\s*[：:][^。]*。?\s*/,'').replace(/\s*Corrigés\s*[：:][^。]*。?/g,'').trim(); }
+function noteWeak(n){ return (String(n).match(/[一-鿿]/g)||[]).length<6; }
+function conjRow(q, right, pick){
+  var m=String(q.q).match(/\((\s*[a-zàâçéèêëîïôûùüÿœ']+)\s*\)/i), t=TENSE_OF_TOPIC[q.topic];
+  if(!m || !t || typeof VERBS_FULL==='undefined') return '';
+  var inf=m[1].trim().replace(/^s'|^se /,''), v=VERBS_FULL.filter(function(x){ return x.inf===inf; })[0]; if(!v) return '';
+  var fs=null; try{ fs=drillForms(v,t); }catch(e){} if(!fs) return '';
+  var P=['je','tu','il','nous','vous','ils'], r=String(right).toLowerCase(), p=String(pick||'').toLowerCase();
+  return '<div class="conjrow">'+fs.map(function(x,i){ var a=String(x).split('|')[0], k=a.toLowerCase(), cls=String(x).toLowerCase().split('|').indexOf(r)>=0?'ok':(String(x).toLowerCase().split('|').indexOf(p)>=0?'no':'');
+    return '<span class="'+cls+'"><small>'+P[i]+'</small> '+esc(a)+'</span>'; }).join('')+'</div>';
+}
+function ruleLink(topic){
+  var h='';
+  if(typeof codexLocate==='function'){ var c=codexLocate(topic); if(c) h+='<a class="rlink" href="map.html#cx-'+c.num+'" target="_blank" rel="noopener">📍 文法資料庫 '+c.num+' '+esc(c.name)+'</a>'; }
+  if(!h && typeof gramPointOfTopic==='function'){ var g=gramPointOfTopic(topic); if(g) h+='<a class="rlink" href="gram_trainer.html?point='+encodeURIComponent(g.id)+'" target="_blank" rel="noopener">📍 規則卡：'+esc((g.rule&&g.rule.title||g.name||g.id).split(/[—－]/)[0].trim())+'</a>'; }
+  return h;
+}
+function ruleBrief(topic){
+  if(typeof codexLocate==='function' && typeof CODEX_BY_N!=='undefined'){ var c=codexLocate(topic); if(c && CODEX_BY_N[c.num] && CODEX_BY_N[c.num].brief) return CODEX_BY_N[c.num].brief; }
+  if(typeof gramPointOfTopic==='function'){ var g=gramPointOfTopic(topic); if(g && g.rule && g.rule.points && g.rule.points.length) return g.rule.points[0]; }
+  return '';
+}
+/* q：題目；pick：他選／打的；right：正解；said：正確整句（可空） */
+function explainHtml(q, pick, right, said){
+  var h='', why='';
+  if(pick!=null && pick!=='' && q.why && q.opts){ var i=q.opts.indexOf(pick); if(i>0 && q.why[i-1]) {
+    var code=q.why[i-1];
+    if(code==='person'){ var ps=formPersons(pick); why=ps.length?'「'+pick+'」是 '+ps.join('／')+' 的變化，這句的主詞不是它':'「'+pick+'」是別的人稱的變化，看主詞'; }
+    else why=WHY_ZH[code]||''; } }
+  if(!why && pick && TENSE_OF_TOPIC[q.topic]){ var ps2=formPersons(pick); if(ps2.length) why='「'+pick+'」是 '+ps2.join('／')+' 的變化，看這句的主詞'; }
+  if(why) h+='<div class="ex-why">✗ '+esc(why)+'</div>';
+  var zhs=q.zh || (typeof q._i==='number' && BANK[q._i] && BANK[q._i].zh) || '';
+  if(said || zhs) h+='<div class="ex-ok">✓ '+(said?'<span class="say">'+esc(said)+'</span> '+spk(said):'')+(zhs&&/[一-鿿]/.test(zhs)?'<div class="muted">'+esc(zhs)+'</div>':'')+'</div>';
+  var n=noteClean(q.aNote), brief=noteWeak(n)?ruleBrief(q.topic):'';
+  if(n||brief) h+='<div class="ex-rule">💡 '+(n?note(n):'')+(brief?(n?'<br>':'')+esc(brief):'')+'</div>';
+  h+=conjRow(q, right, pick);
+  var L=ruleLink(q.topic); if(L) h+='<div>'+L+'</div>';
+  return h;
+}
+
 /* 🚩 題目回報（game_log.js）：ref 記題目來源——q:BANK 第幾題（_fx＝路上擴充版）、c:chunks id、g:陰陽性字 */
 function qRef(q){ return q._fx ? 'fx:'+q._i : (typeof q._i==='number' ? 'q:'+q._i : String(q._i||'')); }
 function repSlot(ctx){ return window.GameLog ? '<div>'+GameLog.repBtn(ctx)+'</div>' : ''; }
@@ -573,7 +665,7 @@ function askChoose0(head, q, cb){
     var fb=document.getElementById('fb');
     if(ok){ fb.innerHTML='✓ '+(ms<6000?'<b style="color:var(--gold)">會心一擊</b> ':'')+(said?'<span class="say">'+esc(said)+'</span> '+spk(said):''); if(said) speak(said); setTimeout(function(){ cb(true,ms,o,right); }, said?1100:500); }
     else{
-      fb.innerHTML=(said?'<div>👉 <span class="say">'+esc(said)+'</span> '+spk(said)+'</div>':'<div>👉 '+esc(right)+'</div>')+'<div class="muted">'+note(q.aNote||'')+'</div>';
+      fb.innerHTML=explainHtml(q, o, clean(right), said||clean(right));
       if(said) speak(said);
       document.getElementById('slot').outerHTML='<button class="btn main" id="go">繼續</button>';
       document.getElementById('go').onclick=function(){ cb(false,ms,o,right); };
@@ -646,8 +738,8 @@ function askTyped(head, q, cb){
     alts.forEach(function(a){ [a, sayOf(q,a)].forEach(function(x){ if(low(v)===low(x)) ok=true; else if(normAns(v)===normAns(x)) acc=true; }); });
     if(acc&&!ok) ok=true;
     var said=frOnly(sayOf(q,right)); if(said) speak(said);
-    document.getElementById('fb').innerHTML=(ok?'✓ '+(acc?'對了（注意重音：<span class="say">'+esc(right)+'</span>）':(ms<6000?'<b style="color:var(--gold)">會心一擊</b>':'寫對了')):'差一點')+
-      (said?'<div>👉 <span class="say">'+esc(said)+'</span> '+spk(said)+'</div>':'')+(!ok&&q.aNote?'<div class="muted">'+note(q.aNote)+'</div>':'');
+    document.getElementById('fb').innerHTML= ok ? '✓ '+(acc?'對了（注意重音：<span class="say">'+esc(right)+'</span>）':(ms<6000?'<b style="color:var(--gold)">會心一擊</b>':'寫對了'))+(said?'<div>👉 <span class="say">'+esc(said)+'</span> '+spk(said)+'</div>':'')
+      : explainHtml(q, v, right, said||right);
     if(ok && !acc) setTimeout(function(){ cb(true,ms,v,right); }, 1000);
     else { document.querySelector('.row2').innerHTML='<span></span><button class="btn main" id="go">繼續</button>'; document.getElementById('go').onclick=function(){ cb(ok,ms,v,right); }; }
   }
@@ -684,7 +776,7 @@ function askWhole(head, q, cb){
     });
     speak(best.f);
     var msg={ok:'✓ 整句寫對了', accent:'✓ 對了（注意重音）', close:'差一點——只差一個字，這次先不升也不退', no:'再看一次'}[best.res];
-    document.getElementById('fb').innerHTML='<div>'+msg+'</div><div>👉 <span class="say">'+(best.res==='ok'?esc(best.f):best.diff)+'</span> '+spk(best.f)+'</div>'+(best.res==='no'&&q.aNote?'<div class="muted">'+note(q.aNote)+'</div>':'');
+    document.getElementById('fb').innerHTML='<div>'+msg+'</div><div>👉 <span class="say">'+(best.res==='ok'?esc(best.f):best.diff)+'</span> '+spk(best.f)+'</div>'+(best.res==='no'?explainHtml(q, null, right, ''):'');
     var out=best.res==='ok'||best.res==='accent' ? true : best.res==='close' ? 'close' : false;
     document.querySelector('.row2').innerHTML='<span></span><button class="btn main" id="go">繼續</button>';
     document.getElementById('go').onclick=function(){ cb(out, ms, v, right); };
@@ -1048,7 +1140,8 @@ function ratSteal(r){
     else floatTxt(hero.x,hero.y-.6,'被叼走 '+it.em,'#f99');
     hud();
   }
-  if(other && Math.random()<.65){
+  /* ⛔ 10-21 停用 pris／prise 那一版（Owen：「那本身沒啥意義，畢竟直接看有沒有 e 就能選」）——只看字尾就能答，不用處理語言。老鼠一律出代名詞題 */
+  if(false && other && Math.random()<.65){
     var said='Le rat l\'a '+(it.g==='f'?'prise':'pris')+' !', t0=Date.now();
     var choices=shuffle([it, other]);
     openSheet('<h3>🐀 老鼠叼走了一樣東西！ <small>過去分詞配合</small></h3><div class="qtext">路人大喊：<span class="fr">« '+said+' »</span> '+spk(said)+
@@ -1251,7 +1344,7 @@ function writeOne(head, q, cb){
     rec('q', q, ok, ms, {chosen:v, right:right, where:'✍️ 寫下來'});
     var fb=document.getElementById('fb');
     fb.innerHTML=(ok?'✓ '+(accentOnly?'意思對了（注意重音：<span class="say">'+esc(right)+'</span>）':'寫對了'):'差一點')+
-      (said?'<div>👉 <span class="say">'+esc(said)+'</span> '+spk(said)+'</div>':'')+(!ok&&q.aNote?'<div class="muted">為什麼：'+note(q.aNote)+'</div>':'');
+      (ok?(said?'<div>👉 <span class="say">'+esc(said)+'</span> '+spk(said)+'</div>':''):explainHtml(q, v, right, said||right));
     if(said) speak(said);
     document.querySelector('.row2').innerHTML='<span></span><button class="btn main" id="back">繼續</button>';
     document.getElementById('back').onclick=function(){ cb(ok); };
@@ -1373,6 +1466,24 @@ function openStreak(){
   sheet.querySelectorAll('[data-goal]').forEach(function(b){ b.onclick=function(){ GameLog.setGoal(+b.dataset.goal); paintStreak(); openStreak(); }; });
   document.getElementById('ok').onclick=closeSheet;
 }
+/* 🚩 回報問題（10-21 Owen：「首頁要有個回報問題的點，有問題直接輸入進去，才即時」）
+   → 存進 clb7_game_reports（跟題目回報同一本，有同步），自動附上當下的位置、遊戲天數、最近一題 */
+document.getElementById('bFlag').onclick=function(){
+  if(pvzFrame) return;
+  var wasBusy=busy, sheetWas=sheet.className.indexOf('on')>=0, prevHtml=sheet.innerHTML, last=log.length?log[log.length-1]:null;
+  var ctx='位置：'+region(Math.floor(hero.x),Math.floor(hero.y))+'（'+Math.floor(hero.x)+','+Math.floor(hero.y)+'）・第 '+S.day+' 天'+(night?'・晚上':'')+(last&&last.item?'・最近一題：'+String(last.item.q||last.item.n||last.item.fr||'').slice(0,80):'');
+  var box=document.createElement('div'); box.className='flagbox';
+  box.innerHTML='<h3>🚩 回報問題</h3><div class="muted">卡住、怪怪的、不好玩、想要什麼——直接寫，我會讀到。</div>'+
+    '<textarea id="flagTxt" rows="4" placeholder="例如：守園第一關轉第二關卡住了"></textarea><div class="muted" style="font-size:.75em">會自動附上：'+esc(ctx)+'</div>'+
+    '<div class="row2"><button class="btn ghost" id="flagNo">取消</button><button class="btn main" id="flagGo">送出</button></div>';
+  document.body.appendChild(box); var ta=document.getElementById('flagTxt'); setTimeout(function(){ ta.focus(); },50);
+  busy=true; joy=null; keys={};
+  function close(){ box.remove(); busy=wasBusy||sheetWas; }
+  document.getElementById('flagNo').onclick=close;
+  document.getElementById('flagGo').onclick=function(){ var t=ta.value.trim(); if(!t) return;
+    if(window.GameLog) GameLog.report({src:'town', kind:'整體回報', ref:'general', q:ctx, a:'', pick:''}, t);
+    close(); toast('🚩 收到了，謝謝'); };
+};
 document.getElementById('quest').onclick=function(){ if(!busy && S.quests && S.quests.list && S.quests.list.length) openQuests(); };
 document.getElementById('hDay').onclick=function(){ if(!busy && window.GameLog) openStreak(); };
 setInterval(function(){ paintStreak(); if(!busy) makeQuests(); }, 5000);

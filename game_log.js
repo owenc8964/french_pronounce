@@ -137,5 +137,12 @@
   window.addEventListener('pagehide', flush);
   document.addEventListener('visibilitychange', function () { if (document.hidden) flush(); else { lastTick = Date.now(); ping(); } });
 
-  window.GameLog = { start: start, ping: ping, answer: answer, event: event, streak: streak, goalMin: goalMin, setGoal: setGoal, flush: flush, repBtn: repBtn, report: report, esc: esc };
+  /* 🚩 關卡裡的回報（10-21：守園等關卡會蓋住小鎮，小鎮的 🚩 按不到）：用系統對話框，最簡單也最不會被遮住 */
+  function quickReport(src, ctx){
+    var t=null; try{ t=window.prompt('🚩 遇到什麼問題？（卡住、怪怪的、不好玩都可以寫）'); }catch(e){}
+    if(!t || !t.trim()) return;
+    report({ src:src, kind:'整體回報', ref:'general', q:String(ctx||''), a:'', pick:'' }, t.trim());
+    try{ window.alert('收到了，謝謝'); }catch(e){}
+  }
+  window.GameLog = { start: start, ping: ping, answer: answer, event: event, quickReport: quickReport, streak: streak, goalMin: goalMin, setGoal: setGoal, flush: flush, repBtn: repBtn, report: report, esc: esc };
 })();

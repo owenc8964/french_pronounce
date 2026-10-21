@@ -50,7 +50,7 @@ body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; 
 <body>
 <canvas id="cv"></canvas>
 <div class="top"><div class="meta" id="meta"></div><div class="zh" id="zh"></div><div class="built fr" id="built"></div></div>
-<div class="bot"><button class="btn" id="bskip">↷ 這句跳過</button><button class="btn" id="bend">■ 上岸</button></div>
+<div class="bot"><button class="btn" id="bskip">↷ 這句跳過</button><button class="btn" id="bflag" aria-label="回報問題">🚩</button><button class="btn" id="bend">■ 上岸</button></div>
 <div class="toast" id="toast"></div>
 <div class="sheet" id="sheet"><div class="box" id="box"></div></div>
 <script>
@@ -196,6 +196,7 @@ window.addEventListener('keydown', function(e){
   if(/^Arrow/.test(k)) e.preventDefault();
 });
 document.getElementById('bskip').onclick=function(){ if(!over && !hop && !splash) sentenceDone(true); };
+document.getElementById('bflag').onclick=function(){ if(window.GameLog) GameLog.quickReport('river', '過河・第 '+(si+1)+' 段'); };
 document.getElementById('bend').onclick=function(){ if(over) return; if(EMBED){ if(run.total===0 || confirm('現在上岸，這趟就到這裡。要回小鎮嗎？')) { finish(); } } else finish(); };
 
 /* ---------- 迴圈 ---------- */
