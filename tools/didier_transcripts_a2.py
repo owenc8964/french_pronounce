@@ -30,6 +30,16 @@ def unit_at(text, pos, _c={}):
         else: break
     return n
 
+
+def strip_page_marks(s):
+    """頁面側邊直排的「Transcriptions」被兩欄切成「Transcr」、頁首「Documents audios」——夾在句子中間，⛔ 不是錄音內容
+    （10-21 抽聽 B1 第 2 軌發現；⚠️ 不可誤傷 inscriptions 這種正常字）"""
+    s = re.sub(r'(?<![A-Za-zÀ-ÿ])Transcr(?:iptions?)?(?![A-Za-zà-ÿ])', ' ', s)
+    s = re.sub(r'(?<![A-Za-zÀ-ÿ])riptions?(?![A-Za-zà-ÿ])', ' ', s)
+    s = re.sub(r'\bDocuments? (?:audios?|vidéos?)\b', ' ', s)
+    s = re.sub(r'[ \t]{2,}', ' ', s)
+    return '\n'.join(l.strip() for l in s.split('\n') if l.strip())
+
 hdr=re.compile(r'^(\d{1,3}) Page (\d{1,3})\s*,?\s*(.*)$',re.M)
 ms=list(hdr.finditer(stream))
 out={}
@@ -46,6 +56,7 @@ for k,m in enumerate(ms):
     vm=re.search(r'^Page \d+\s*,', body, re.M)
     if vm: body=body[:vm.start()].rstrip()
     if n in out: continue
+    body=strip_page_marks(body)
     out[n]={'track':n,'unit':unit_at(stream,m.start()),'page':int(m.group(2)),'title':m.group(3).strip(),'text':body.strip()}
 print(len(out),'軌；缺：',[i for i in range(1,122) if i not in out][:40])
 json.dump(out,open(sys.argv[1],'w',encoding='utf-8'),ensure_ascii=False,indent=1)

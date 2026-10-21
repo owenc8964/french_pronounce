@@ -27,6 +27,7 @@
 > - ⭐⭐⭐ **10-17 新 session 先看「三之六十八」**：Owen 的 5 個建議（三之六十七）已全部做完並試跑 → ⏸ 等 Owen 玩：靜音鍵、🚩 題目回報、遊戲時間紀錄（週報會讀）、🌬️ 風車拼句、📰 鎮報閱讀。
 > - 📰 **10-20：鎮報 52 → 61 篇（三之八十）**：CE L22–24 求職三部曲（同一個主角 Karim：寫信 → 面試 → 上班一個月）＋ L8／L10／L13／L17／L19；`tools/audit_coverage.js` 改讀 reading_articles.js（閱讀篇數不再顯示 0）。
 > - 📰 **10-19 深夜：鎮報 35 → 52 篇＋句庫 +30 句（三之七十九）**：以 Communication essentielle／Grammaire en dialogues 情境為藍本重寫（⛔ 不照搬，repo 公開）；下一批建議 CE L22–24 求職／面試。
+> - ✂️ **10-21：聽力填空改短段（≤1 分鐘）＋挖單字（三之八十一）**：裝了 whisperkit-cli（沿用 MacWhisper 的 large-v3 模型）抓每字時間點，`tools/didier_align.py` 切 B1 第 1 單元 12 段；⏸ 等 Owen 抽聽桌面的切段。
 > - 👂 **10-20：課本音檔接進聽力解碼頁（三之七十九）**：`listen_decode.html` 預設「📗 課本」，選單元 → 聽整段對話 → 填功能詞，77 段（A2 71＋B1 U1 6）；⏭ 原版選擇題做成小鎮遭遇。
 > - 🎧 **10-19 深夜：課本音檔官方來源找到了（三之七十八）**：e-didier.fr 公開頁、編號＝課本音軌號；A2＋Cahier＋B1 慢速下載中，對照表 A2 120 軌／Cahier 127 軌完成；⏸ 等 Owen 選壓縮品質。
 > - 🐛 **10-21 小鎮：守園卡關修好、開局陽光 150→50、老鼠 pris／prise 停用、🚩 回報鈕、答錯解析改四行＋文法資料庫連結（三之八十（小鎮））**
@@ -4988,6 +4989,25 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - ✅ **試跑**（ROOM 改 TEST → 測完改回 → preview_stop → grep 無 TEST 殘留）：reading.html 列出 52 篇、a52 題目正常顯示；town.html 把 a1–a35 標成讀過後連抽 40 次全部是新文章（16 篇都抽到過）；完整讀一篇（答 1 題、跳 1 題）→ `clb7_reading` 記 total 1（跳過不算分母）✓；測試紀錄已清。
 - 🐛 順手發現：`tools/audit_coverage.js` 還從 reading.html 讀 ARTICLES（10-17 已抽到 reading_articles.js）→ 閱讀一直顯示 0 篇，要改讀新檔。「遊戲裡沒有」那句也過時了（鎮報有）。
 - ⏭ **還沒用的情境（下一批）**：CE L5 媒體（已有媒體篇，可略）、L8 辦活動（futur simple）、L10 志工協會（反身動詞 PC）、L13 興趣（COI）、L17 飲食（cause / but）、L19 舒壓（à / de）、L22–24 求職信／面試／公司（cause、ordre du discours、opposition）——L22–24 很貼 TCF 題材，值得優先。GeD 可用：débutant ch.4–5（faire/prendre、aller/venir）、中級 Bilan「Des vacances en Irlande」。
+
+#### 三之八十一、10-21：聽力填空改「短段＋挖單字」→ 用 WhisperKit 抓每字時間點切段（⏸ 等 Owen 抽聽）
+
+- **Owen 的規格（10-21）**：① 填空不要太長、**最多一分鐘**，但可以多挖幾格 ② **大部分挖單字**（他覺得只挖代名詞連接詞「不是那麼需要」）③ 整段聽完後，需要的地方附**詳解** ④ 原版錄音開頭會唸報題，**要切準** ⑤ 聽力測驗（原版選擇題）用完整錄音沒關係 ⑥ ⭐ 填空**不需要每格的「算了」**：「沒啥需要跳過的，就只是不會而已」→ 空著＝不會，算進分母（⚠️ 這是 Owen 對三層跳過鐵律在聽力填空的例外；「這段跳過」照鐵律保留但做得不顯眼）。⏭ 前端還沒改（目前仍是只挖功能詞、整軌、有每格 ✕）。
+- **Owen 問分析與報告怎麼做**（已回覆，⏭ 等有資料再做）：每格記字／課次／原速或慢速才聽出／這個字在語流中的變形（連音、省音、字尾不發音、鼻母音，程式從逐字稿判）；聽完只在漏掉處給詳解（意思、哪課學的、為什麼沒聽出），⛔ 不自編例句；週報加「聽力」段：⭐「看得懂、聽不出」的字清單、最常卡的變形、原速 vs 慢速落差、跟上週比；漏掉的字進小鎮回收題且**改用聲音出題**，週報建議連動出題比重。
+- ✅ **工具**：Claude 聽不到聲音 → 要「每個字的時間點」得借辨識工具。
+  - Owen 本來就有 **MacWhisper**（13.20，模型 WhisperKit large-v3 v20240930，存在 `~/Library/Application Support/MacWhisper/models/…`）。它的命令列 `MacWhisper.app/Contents/MacOS/mw transcribe` **只吐文字、沒有時間點**；實測 B1 第 2 軌還**漏掉開頭約 25 秒**、結尾**自己編了「Sous-titrage Société Radio-Canada」**（Whisper 拿電視字幕訓練的老毛病）。⭐ 這可能也是 Owen 上課逐字稿常常很糊的原因之一（他說之前都用 MacWhisper）。
+  - ✅ 10-21 經 Owen 同意 `brew install whisperkit-cli`（1.1.1），**直接讀 MacWhisper 已下載的 large-v3 模型，不另外下載**，完全離線。`--language fr --word-timestamps` 時開頭就抓到了（MacWhisper 預設漏掉的那 25 秒）。B1 一軌 95 秒約 24 秒跑完。
+- ✅ **`tools/didier_align.py`**（`python3 tools/didier_align.py b1 1-8`／`a2 all`）：
+  1. whisperkit → 每字時間，快取 `assets/didier/asr/<book>/###.json`
+  2. 課本逐字稿拆字（⛔ 說話人名字不算，錄音裡不唸）跟辨識的字做序列比對 → 對上的字拿到真實時間；⛔ **辨識文字只拿來找時間，題目與正解一律用課本原文**
+  3. 以**句子**為單位，連續對得上的區段算要切幾等份（≤ 60 秒），在最接近等分點的句子邊界下刀；換人講話優先、**切點不夠安靜（> −35 dB）幾乎不選**；切點＝兩字空檔裡**音量最低的那一刻**（numpy 算 10ms 的音量曲線）
+  4. 不出題的情況：段內課本字對上 < 80%、頭尾 3 字內沒對上、短於 8 秒、**切點音量 > max(−30 dB, 這軌背景＋6 dB)**（可能切在講話中間）
+  5. 出處行（「INA, 10/11/2020」「(Le Petit Explorer, 30/06/2020)」）不進題目（錄音沒唸）；只有題號的「5.」併進下一句
+  6. DELF 模擬考的軌不切（留給原版題）
+  - 輸出 `assets/didier/segments_<book>.json`（start／end／text／match／db_in／db_out／ok）；前端只要在整軌裡播 start→end，**不用另外存一堆切好的檔**。
+- ✅ **B1 第 1 單元結果**：6 軌、全軌 84–90% 的字對上；**15 段裡 12 段可用**（13–59 秒，切點多半 < −40 dB）。不可用的 3 段：第 1 軌開頭（底下有片頭音樂、找不到安靜處）、第 3 軌兩段（兩人講話黏在一起，旁邊那句 Whisper 聽錯了「Planqueur」對不上）。⭐ 第 1 軌開頭其實先唸**作者名單＋出版社＋「Unité 1 Les uns et les autres」＋「Page 12, document A」**，對話 35 秒才開始——已切掉。
+- 🐛 **抽查抓到**：課本兩冊逐字稿有約 20 軌夾著頁面側邊直排「Transcriptions」被切成的「**Transcr**」與頁首「Documents audios」（B1 第 2 軌就在句子中間）→ A2／B1 解析加 `strip_page_marks()` 清掉（⚠️ 保留 inscriptions 這種正常字，已驗），重傳三份清單。
+- ⏸ **等 Owen 抽聽**：`~/Desktop/1019/切段抽聽_B1第1單元/`（12 段＋`00_每段的原文.txt`）：開頭有沒有殘留報題、頭尾有沒有切到字。OK 才跑 A2 全部＋改前端。
 
 #### 三之七十九、10-20：課本音檔接進聽力解碼頁（`listen_decode.html`）
 

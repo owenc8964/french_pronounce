@@ -26,6 +26,16 @@ def unit_at(text, pos, _c={}):
         else: break
     return n
 
+
+def strip_page_marks(s):
+    """頁面側邊直排的「Transcriptions」被兩欄切成「Transcr」、頁首「Documents audios」——夾在句子中間，⛔ 不是錄音內容
+    （10-21 抽聽 B1 第 2 軌發現；⚠️ 不可誤傷 inscriptions 這種正常字）"""
+    s = re.sub(r'(?<![A-Za-zÀ-ÿ])Transcr(?:iptions?)?(?![A-Za-zà-ÿ])', ' ', s)
+    s = re.sub(r'(?<![A-Za-zÀ-ÿ])riptions?(?![A-Za-zà-ÿ])', ' ', s)
+    s = re.sub(r'\bDocuments? (?:audios?|vidéos?)\b', ' ', s)
+    s = re.sub(r'[ \t]{2,}', ' ', s)
+    return '\n'.join(l.strip() for l in s.split('\n') if l.strip())
+
 hdr = re.compile(r'^Page (\d{1,3})\s*,\s*(.*)$', re.M)
 ms = list(hdr.finditer(stream))
 out = []
@@ -34,6 +44,7 @@ for k, m in enumerate(ms):
     keep = [l for l in stream[m.end():end].strip().split('\n')
             if not re.match(r'^Transcriptions?\b', l) and not re.search(r'^\d{3}\s*I\s*[a-zé -]+$', l.strip())
             and not re.search(r'cent.*I\s*\d{3}\s*$', l) and not re.match(r'^Unité \d+', l) and not re.match(r'^\d{1,2}$', l.strip())]
+    keep = strip_page_marks('\n'.join(keep)).split('\n')
     out.append({'unit': unit_at(stream, m.start()), 'page': int(m.group(1)), 'title': m.group(2).strip(), 'text': '\n'.join(keep)})
 assert len(out) == 98, f'標頭數 {len(out)} ≠ 98 軌，順序對應不成立，要人工檢查'
 out = {i + 1: dict(track=i + 1, **o) for i, o in enumerate(out)}
