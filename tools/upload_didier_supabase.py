@@ -80,6 +80,10 @@ def main():
         sp = os.path.join(DID, f'segments_{b}.json')
         if os.path.exists(sp):
             meta.append((f'{PREFIX}/segments_{b}.json', open(sp, 'rb').read(), 'application/json', 300))
+        # 小鎮的一句一句聽力（tools/didier_clips.py 產生；10-23 加）
+        cp = os.path.join(DID, f'clips_{b}.json')
+        if os.path.exists(cp):
+            meta.append((f'{PREFIX}/clips_{b}.json', open(cp, 'rb').read(), 'application/json', 300))
     index = {'updated': '2026-10-20', 'books': [dict(b, tracks=len(books[b['id']]),
                                                     with_text=sum(1 for i in books[b['id']] if i['text']))
                                                for b in BOOKS]}
