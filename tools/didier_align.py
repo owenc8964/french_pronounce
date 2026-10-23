@@ -30,6 +30,7 @@ MODEL = os.path.expanduser('~/Library/Application Support/MacWhisper/models/whis
                            'argmaxinc/whisperkit-coreml/openai_whisper-large-v3-v20240930')
 MAX_SEG, MIN_SEG, MIN_MATCH = 60.0, 20.0, 0.8
 TAIL = 0.4             # 段尾在安靜處再多留的秒數（Owen 10-23）
+MIN_DIP = 10.0         # 切點至少要比前後講話低這麼多 dB（有配樂時）
 LOUD = -30.0          # 切點音量超過這個＝可能切在講話中間 → 不出題
 LABEL = re.compile(r"^([^\n:]{1,40}?)\s?:\s?", re.M)          # 行首「說話人 :」
 # 課本在逐字稿尾巴標的出處：「INA, 10/11/2020」「(Le Petit Explorer, 30/06/2020)」——錄音裡沒唸，⛔ 不進題目
@@ -225,7 +226,12 @@ def rms_curve(book, track):
     hop, win = 160, 640
     n = max(1, (len(x) - win) // hop)
     fr = np.lib.stride_tricks.as_strided(x, shape=(n, win), strides=(x.strides[0] * hop, x.strides[0]))
-    db = 20 * np.log10(np.sqrt((fr ** 2).mean(axis=1)) + 1e-9)
+    pw = (fr ** 2).mean(axis=1)
+    # ⚠️ 平滑成 120ms 的平均功率（10-23）：講話中間 p／t／k 的閉氣只有 20–80ms 很安靜，
+    #    用單點最小值會把刀放進字裡；120ms 窗只有真正的停頓才會整段安靜
+    k = 12
+    pw = np.convolve(pw, np.ones(k) / k, mode='same')
+    db = 10 * np.log10(pw + 1e-18)
     floor = float(np.percentile(db, 10))       # 這一軌的背景音量（有配樂的訪談會比較高）
     _PCM[key] = (db, floor)
     return _PCM[key]
@@ -238,6 +244,18 @@ def quietest(book, track, lo, hi):
     if b <= a: return lo, None
     i = a + int(db[a:b].argmin())
     return i / 100 + 0.02, float(db[i])
+
+
+def cut_quality(book, track, at):
+    """切點那一刻的音量（跟挑切點用同一條曲線，±50ms 取最小）與「比前後 2 秒講話低多少 dB」"""
+    import numpy as np
+    db, _ = rms_curve(book, track)
+    i = min(len(db) - 1, max(0, int(at * 100)))
+    cut = float(db[i])                         # db 已是 120ms 平滑後的曲線
+    win = db[max(0, i - 200):i + 200]
+    sp = win[win > -60]
+    med = float(np.median(sp)) if len(sp) >= 20 else cut
+    return round(cut, 1), round(med - cut, 1)
 
 
 def edge_db(book, track, at):
@@ -268,17 +286,17 @@ def main():
         if not usable(t) or (t.get('page') or 0) >= delf_from:   # DELF 模擬考整段留給「原版題」，不切填空
             continue
         segs, hit = segments(book, t)
-        ok = [s for s in segs if s['ok']]
         for s in segs:
             s['unit'], s['page'], s['title'] = t.get('unit'), t.get('page'), t.get('title')
         for sg in segs:
-            sg['db_in'], sg['db_out'] = edge_db(book, n, sg['start']), edge_db(book, n, sg['end'])
-            floor = rms_curve(book, n)[1]
-            if sg['ok'] and any(d is not None and d > max(LOUD, floor + 6) for d in (sg['db_in'], sg['db_out'])):
-                sg['ok'] = False; sg['why'] = '切點落在聲音大的地方'
+            (sg['db_in'], sg['dip_in']), (sg['db_out'], sg['dip_out']) = cut_quality(book, n, sg['start']), cut_quality(book, n, sg['end'])
+            # 合格：切點真的安靜（≤ −35 dB），或比前後兩秒講話低 ≥ 10 dB（有配樂的訪談，但明顯是句子間的空檔）
+            # ⛔ 落差不到 10 dB＝可能切在人聲裡 → 不出題（10-23 B1 後段大量電台訪談有配樂，舊的絕對門檻把 99 段擋掉）
+            if sg['ok'] and not all(d <= -35 or dip >= MIN_DIP for d, dip in ((sg['db_in'], sg['dip_in']), (sg['db_out'], sg['dip_out']))):
+                sg['ok'] = False; sg['why'] = '切點跟人聲的落差不夠'
         allsegs += segs
-        print(f'{book} {n:3d} p.{t["page"]:<3} 全軌對上 {hit:5.1%}｜切 {len(segs)} 段，可用 {len(ok)}：' +
-              ' '.join(f'{s["dur"]:.0f}s({s["db_in"]:.0f}/{s["db_out"]:.0f}dB){"" if s["ok"] else "✗"}' for s in segs), flush=True)
+        print(f'{book} {n:3d} p.{t["page"]:<3} 全軌對上 {hit:5.1%}｜切 {len(segs)} 段，可用 {sum(1 for x in segs if x["ok"])}：' +
+              ' '.join(f'{s["dur"]:.0f}s{"" if s["ok"] else "✗"}' for s in segs), flush=True)
     allsegs.sort(key=lambda s: (s['track'], s['seg']))
     json.dump(allsegs, open(out_path, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     print(f'→ {out_path}：可用 {sum(1 for s in allsegs if s["ok"])} 段／共 {len(allsegs)} 段')
