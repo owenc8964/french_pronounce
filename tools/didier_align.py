@@ -29,10 +29,12 @@ DID = os.path.join(ROOT, 'assets', 'didier')
 MODEL = os.path.expanduser('~/Library/Application Support/MacWhisper/models/whisperkit/models/'
                            'argmaxinc/whisperkit-coreml/openai_whisper-large-v3-v20240930')
 MAX_SEG, MIN_SEG, MIN_MATCH = 60.0, 20.0, 0.8
+TAIL = 0.4             # 段尾在安靜處再多留的秒數（Owen 10-23）
 LOUD = -30.0          # 切點音量超過這個＝可能切在講話中間 → 不出題
 LABEL = re.compile(r"^([^\n:]{1,40}?)\s?:\s?", re.M)          # 行首「說話人 :」
 # 課本在逐字稿尾巴標的出處：「INA, 10/11/2020」「(Le Petit Explorer, 30/06/2020)」——錄音裡沒唸，⛔ 不進題目
 SOURCE = re.compile(r'^\(?[^.!?:]{1,60},\s*(\d{1,2}/)?\d{1,2}/\d{4}\)?\.?$|^\([^)]{1,60}\d{4}\)$')
+UNSPOKEN = re.compile(r"\([A-Za-zéè']{1,4}\)")
 WORD = re.compile(r"[A-Za-zÀ-ÿ0-9]+(?:'[A-Za-zÀ-ÿ]+)?")
 
 
@@ -84,6 +86,9 @@ def book_tokens(text):
     skip = []
     for m in LABEL.finditer(text):
         skip.append((m.start(1), m.end()))
+    # ⛔ B1 逐字稿用括號標「錄音裡沒唸的字」：(ne)／(n')／(e)（R57 讀檔發現 17 處）→ 不對齊、前端也不挖
+    for m in UNSPOKEN.finditer(text):
+        skip.append((m.start(), m.end()))
     toks = []
     for m in WORD.finditer(text):
         if any(a <= m.start() < b for a, b in skip):
@@ -186,6 +191,14 @@ def segments(book, t):
         hi = next_s if next_s is not None and next_s > g['e'] else g['e'] + 0.8
         start = quietest(book, t['track'], max(lo, g['s'] - 0.8) - 0.05, g['s'] + 0.05)[0]
         end = quietest(book, t['track'], g['e'] - 0.05, min(hi, g['e'] + 0.8) + 0.05)[0]
+        # 尾巴多留一點空白（Owen 10-23：「尾巴可以再多留一點點空白」）：往後延 0.4 秒，
+        # ⛔ 但只延進安靜的地方——延伸範圍內有聲音（下一句開始了）就停在那之前
+        db_curve, floor = rms_curve(book, t['track'])
+        quiet = max(-35.0, floor + 6)
+        k0 = int(end * 100); k1 = min(len(db_curve), int((end + TAIL) * 100))
+        k = k0
+        while k < k1 and db_curve[k] <= quiet: k += 1
+        end = max(end, k / 100 - (0.2 if k < k1 else 0)) if k > k0 else end
         ca = bt[g['a']][1]
         # 段頭：如果是一行的開頭，把說話人標籤一起帶進來（前端不挖它，但要看得到誰在講）
         lb = text.rfind('\n', 0, ca) + 1

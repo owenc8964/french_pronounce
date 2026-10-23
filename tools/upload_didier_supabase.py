@@ -12,6 +12,7 @@
 上傳內容：
   didier/<book>/###.m4a        音檔（book = a2 課本／a2c Cahier／b1 課本）
   didier/<book>.json           該本每一軌：track、unit、page、title、dur（秒）、text（逐字稿；沒有的是 null）
+  didier/segments_<book>.json  聽力填空的切段（≤ 60 秒、頭尾切在安靜處），見 tools/didier_align.py
   didier/index.json            書目清單（最後才傳：網站看到 index 時，它列的檔案必須已經在）
 
 金鑰：讀專案根目錄 `.env` 的 SUPABASE_SECRET_KEY（⛔ 永不 commit、永不印出）。
@@ -74,6 +75,11 @@ def main():
             for _, i in audio]
     meta = [(f'{PREFIX}/{b}.json', json.dumps(books[b], ensure_ascii=False).encode('utf-8'), 'application/json', 300)
             for b in books]
+    # 聽力填空的切段清單（tools/didier_align.py 產生；10-23 加）：⚠️ 段落指向的音檔已經在上面那批
+    for b in books:
+        sp = os.path.join(DID, f'segments_{b}.json')
+        if os.path.exists(sp):
+            meta.append((f'{PREFIX}/segments_{b}.json', open(sp, 'rb').read(), 'application/json', 300))
     index = {'updated': '2026-10-20', 'books': [dict(b, tracks=len(books[b['id']]),
                                                     with_text=sum(1 for i in books[b['id']] if i['text']))
                                                for b in BOOKS]}

@@ -76,6 +76,15 @@ button { font-family: inherit; cursor: pointer; }
 .unit-btn:hover { border-color: #60a0d0; }
 .crumb { font-size: 0.8em; color: #6a7888; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .btn.mini { padding: 4px 10px; font-size: 0.85em; }
+.gap.near input { border-bottom-color: #c0a050; color: #e0c070; }
+.unsp { color: #4a5868; font-size: 0.85em; }
+.btn-link { background: none; border: none; color: #4a5868; font-size: 0.8em; text-decoration: underline; padding: 6px; }
+.detail { margin-top: 12px; border-top: 1px solid #1a2438; padding-top: 10px; }
+.d-t { font-size: 0.75em; color: #5a6878; letter-spacing: 1px; margin-bottom: 6px; }
+.d-row { padding: 6px 0; border-bottom: 1px dashed #1a2438; font-size: 0.92em; }
+.d-row b { color: #e8c070; }
+.d-les { display: inline-block; margin-left: 8px; font-size: 0.75em; color: #5a8a70; border: 1px solid #1f3a2c; border-radius: 6px; padding: 0 6px; }
+.d-why { font-size: 0.8em; color: #7a8a9a; margin-top: 3px; }
 /* 課本整段對話很長：往下捲去填空時播放鍵要跟著，⛔ 不要讓他捲回頂端 */
 .play-row.sticky { position: sticky; top: 44px; z-index: 5; background: #0d1020; padding: 8px 0; margin: -8px 0 6px; border-bottom: 1px solid #1a2438; }
 @media (min-width: 760px) { .script { font-size: 1.06em; } }
@@ -100,8 +109,8 @@ button { font-family: inherit; cursor: pointer; }
     ⭐ 先聽一次，能填多少填多少；填不出來就<b>放慢到 0.75x 再聽</b>。<br>
     ⭐ <b>慢速填得出來、原速填不出來 → 音你認得，問題在處理速度</b>；慢速也填不出來 → 那個音還沒建立。兩種的練法不一樣，所以這頁會分開記。<br>
     ⚠️ 這個練習很硬，研究自己的建議是<b>每週 2–3 次、每次 10–15 分鐘就好</b>——做多了跟刷題一樣耗意志力。⛔ 它只修「聽得到」，不會讓你變得有話講。<br>
-    ⛔ 任何一格都可以按「這格算了」，整題也可以跳過——跳過不算錯、不進複習。<br>
-    📗 <b>課本</b>：Édito A2／B1 的原版錄音＋逐字稿（你上過的課），一段是一整段對話；🎧 <b>TCF 考題</b>：考試的短段。
+    📗 <b>課本</b>：Édito A2／B1 的原版錄音＋逐字稿（你上過的課），一段最多一分鐘，挖的大多是<b>你學過的單字</b>；空著就是不會。對完會列出沒聽出來的字：中文、哪一課學的、為什麼可能沒聽出來。拼法不同但唸起來一樣的，算聽到了。<br>
+    🎧 <b>TCF 考題</b>：考試的短段，只挖小字；每格可以按「這格算了」。整題都可以跳過——跳過不算錯、不進複習。
   </div>
 </div>
 
@@ -156,6 +165,9 @@ function vaultGet(path, asBlob){
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
   .replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 </script>
-<script src="listen_decode.js?v=20261020d"></script>
+<!-- 「學過的字」清單與詳解的中文：從複習卡、常用句來（10-23） -->
+<script src="chunks.js"></script>
+<script src="sentences.js"></script>
+<script src="listen_decode.js?v=20261023d"></script>
 </body>
 </html>

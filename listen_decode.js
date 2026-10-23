@@ -200,8 +200,7 @@ function nextQ() {
   for (var tries = 0; tries < 40; tries++) {
     var c = pool[Math.floor(Math.random() * pool.length)];
     var sp = c.book ? { body: c.script, ask: '' } : splitScript(c.script);
-    var cap = c.book ? Math.max(6, Math.min(14, Math.round(c.sec / 12))) : 8;
-    var bl = pickBlanks(sp.body, cap, !!c.book);
+    var bl = c.book ? pickBookBlanks(sp.body) : pickBlanks(sp.body, 8, false);
     if (sp.body.length >= 40 && bl.length >= 4) {
       CUR = c; CUR._body = sp.body; CUR._ask = sp.ask; BLANKS = bl;
       REVEALED = false; PLAYS = 0; SLOW_PLAYS = 0; SKIPPED = {};
@@ -215,20 +214,25 @@ function nextQ() {
 
 function fmt(t) { t = Math.max(0, Math.floor(t || 0)); return Math.floor(t / 60) + ':' + ('0' + t % 60).slice(-2); }
 function tick() {
+  if (AUDIO_EL && CUR && CUR.t1 && loaded() && AUDIO_EL.currentTime >= CUR.t1) {   /* 只播這一段 */
+    AUDIO_EL.pause(); AUDIO_EL.currentTime = CUR.t1;
+  }
   var el = document.getElementById('clock'); if (!el || !AUDIO_EL) return;
-  el.textContent = fmt(AUDIO_EL.currentTime) + ' / ' + fmt(CUR && CUR.sec);
+  var t0 = (CUR && CUR.t0) || 0;
+  el.textContent = fmt(AUDIO_EL.currentTime - t0) + ' / ' + fmt(CUR && CUR.sec);
   var pb = document.getElementById('pp'); if (pb) pb.textContent = AUDIO_EL.paused ? '⏯ 繼續' : '⏸ 暫停';
 }
 
 function drawQ() {
   var body = CUR._body, h = '', last = 0;
   BLANKS.forEach(function (g, gi) {
-    h += '<span class="plain">' + esc(body.slice(last, g.a)) + '</span>';
+    h += '<span class="plain">' + plainHtml(body.slice(last, g.a)) + '</span>';
     h += '<span class="gap" id="g' + gi + '"><input id="i' + gi + '" autocapitalize="off" autocorrect="off" spellcheck="false">' +
-         '<button class="gap-x" id="x' + gi + '" title="這格算了（不算錯）" onclick="gapSkip(' + gi + ')">✕</button></span>';
+         (CUR.book ? '' :   /* Owen 10-21：填空「沒啥需要跳過的，就只是不會而已」→ 課本段落不放每格 ✕，空著＝不會 */
+         '<button class="gap-x" id="x' + gi + '" title="這格算了（不算錯）" onclick="gapSkip(' + gi + ')">✕</button>') + '</span>';
     last = g.b;
   });
-  h += '<span class="plain">' + esc(body.slice(last)) + '</span>';
+  h += '<span class="plain">' + plainHtml(body.slice(last)) + '</span>';
   h = h.replace(/\n/g, '<br>');
 
   var head = CUR.book ? '<div class="crumb">' + esc(CUR.label) +
@@ -246,13 +250,15 @@ function drawQ() {
   render(
     '<div class="box">' + head +
       '<div class="play-row' + (CUR.book ? ' sticky' : '') + '">' + controls + '</div>' +
-      '<div class="hint" style="margin-top:0">填空只挖<b>功能詞</b>——名詞動詞都留著。聽不出來就放慢，⛔ 不要用文法推。' +
-        (CUR.book ? '<br>整段對話比較長：可以邊聽邊暫停填，<b>退 5 秒</b>重聽卡住的那句。' : '') + '</div>' +
+      (CUR.book
+        ? '<div class="hint" style="margin-top:0">挖的大多是<b>你學過的單字</b>，少數是連音、省音的小字。聽不出來就放慢或退 5 秒，空著就是不會，⛔ 不要用文法推。<span class="unsp">(ne)</span> 這種灰色括號＝錄音裡其實沒唸。</div>'
+        : '<div class="hint" style="margin-top:0">填空只挖<b>功能詞</b>——名詞動詞都留著。聽不出來就放慢，⛔ 不要用文法推。</div>') +
       '<div class="script">' + h + '</div>' +
       (CUR._ask ? '<div class="ask">❓ 這題考的是：' + esc(CUR._ask) + '</div>' : '') +
       '<div class="row" style="margin-top:14px">' +
         '<button class="btn go" onclick="check()">對答案</button>' +
-        '<button class="btn warn" onclick="skipQ()">⏭ 這題跳過</button>' +
+        (CUR.book ? '<button class="btn-link" onclick="skipQ()">這段跳過</button>'
+                  : '<button class="btn warn" onclick="skipQ()">⏭ 這題跳過</button>') +
       '</div>' +
       '<div id="res"></div>' +
     '</div>');
@@ -273,7 +279,7 @@ function play(rate, fromStart) {
     try { a.pause(); } catch (e) {}
     if (a.src !== u) a.src = u;
     a.playbackRate = rate;
-    if (fromStart !== false) a.currentTime = 0;
+    if (fromStart !== false) a.currentTime = CUR.t0 || 0;
     var p = a.play(); if (p && p.catch) p.catch(function () {});
   }).catch(function (e) {
     document.getElementById('res').innerHTML = '<div class="err">音檔載入失敗：' + esc(e.message) + '</div>';
@@ -282,11 +288,14 @@ function play(rate, fromStart) {
 function loaded() { return AUDIO_EL && CUR && AUDIO_EL.src === AUDIO_URL[CUR.path]; }
 function togglePause() {
   if (!loaded()) return play(RATE, true);
-  if (AUDIO_EL.paused) { var p = AUDIO_EL.play(); if (p && p.catch) p.catch(function () {}); } else AUDIO_EL.pause();
+  if (AUDIO_EL.paused) {
+    if (CUR.t1 && AUDIO_EL.currentTime >= CUR.t1 - 0.05) AUDIO_EL.currentTime = CUR.t0 || 0;   /* 播完了 → 從段頭再來 */
+    var p = AUDIO_EL.play(); if (p && p.catch) p.catch(function () {});
+  } else AUDIO_EL.pause();
 }
 function back5() {
   if (!loaded()) return play(RATE, true);
-  AUDIO_EL.currentTime = Math.max(0, AUDIO_EL.currentTime - 5);
+  AUDIO_EL.currentTime = Math.max(CUR.t0 || 0, AUDIO_EL.currentTime - 5);
   if (AUDIO_EL.paused) { var p = AUDIO_EL.play(); if (p && p.catch) p.catch(function () {}); }
 }
 function toggleRate() {
@@ -314,6 +323,7 @@ function gapSkip(gi) {
 
 function check() {
   if (REVEALED) return;
+  if (CUR.book) return checkBook();
   REVEALED = true;
   var ok = 0, bad = 0, skip = 0, missTier = {}, missed = [];
   BLANKS.forEach(function (g, gi) {
@@ -370,53 +380,61 @@ var UNIT_LESSONS = {
 };
 var B1_UNITS_DONE = 1;   /* B1 上到第幾單元（10-19 第43課開始 Unité 1）；之後的單元先不出 */
 
+/* 段落清單（tools/didier_align.py 產生、上傳到 didier/segments_<book>.json）：
+   每段 ≤ 60 秒、頭尾切在安靜處（已把開頭唸的報題「Page 13, document C…」切掉）；ok=false 的段 ⛔ 不出題 */
+var SEGS = {};
 function bookBoot() {
   render('<div class="box">載入課本音檔清單中…</div>');
-  var jobs = BOOKS_USE.map(function (b) {
-    return BOOK_DATA[b] ? Promise.resolve() : vaultGet('didier/' + b + '.json').then(function (j) { BOOK_DATA[b] = j; });
+  var jobs = [];
+  BOOKS_USE.forEach(function (b) {
+    if (!BOOK_DATA[b]) jobs.push(vaultGet('didier/' + b + '.json').then(function (j) { BOOK_DATA[b] = j; }));
+    if (!SEGS[b]) jobs.push(vaultGet('didier/segments_' + b + '.json').then(function (j) { SEGS[b] = j; }));
   });
   Promise.all(jobs).then(function () {
+    buildLex();
     if (BOOK_SEL && bookPool().length) nextQ(); else bookPicker();
   }).catch(function (e) { loadFail(e, 'didier'); });
 }
 
-function bookItem(b, t) {
-  var delf = (b === 'a2' && t.page >= 181) || (b === 'b1' && t.page >= 189);
-  var where = delf ? 'DELF 模擬考' : 'Unité ' + t.unit;
-  return { book: b, f: 'didier/' + b + '/' + ('00' + t.track).slice(-3) + '.m4a', path: t.f ? 'didier/' + t.f : '',
-           sec: Math.round(t.dur || 0), script: reflow(t.text), zh: '',
-           unit: t.unit, delf: delf,
-           label: (b === 'a2' ? 'Édito A2' : 'Édito B1') + '・' + where + '・p.' + t.page + '　' + (t.title || '') };
+function trackOf(b, n) {
+  var arr = BOOK_DATA[b] || [];
+  for (var i = 0; i < arr.length; i++) if (arr[i].track === n) return arr[i];
+  return null;
 }
-function usable(b, t) {
-  if (!t.text || t.text.length < 150) return false;
-  if (/Phon|Vocabulaire/.test(t.title || '')) return false;
-  if (b === 'b1' && (t.unit > B1_UNITS_DONE || t.page >= 189)) return false;   /* 還沒上的 B1 單元、B1 的 DELF 模擬考先不出 */
+function usable(b, sg) {
+  if (!sg.ok) return false;
+  if (/Phon|Vocabulaire/.test(sg.title || '')) return false;
+  if (b === 'b1' && (sg.unit > B1_UNITS_DONE || sg.page >= 189)) return false;   /* 還沒上的 B1 單元、B1 的 DELF 模擬考先不出 */
   return true;
+}
+function bookItem(b, sg) {
+  var t = trackOf(b, sg.track) || {};
+  var path = 'didier/' + (t.f || (b + '/' + ('00' + sg.track).slice(-3) + '.m4a'));
+  return { book: b, path: path, f: path + '#' + sg.seg,
+           t0: sg.start, t1: sg.end, sec: Math.round(sg.end - sg.start),
+           script: sg.text.replace(/[’‘]/g, "'"), zh: '', unit: sg.unit, page: sg.page,
+           label: (b === 'a2' ? 'Édito A2' : 'Édito B1') + '・Unité ' + sg.unit + '・p.' + sg.page + '　' + (sg.title || '') };
 }
 function bookAll() {
   var out = [];
   BOOKS_USE.forEach(function (b) {
-    (BOOK_DATA[b] || []).forEach(function (t) { if (usable(b, t)) out.push(bookItem(b, t)); });
+    (SEGS[b] || []).forEach(function (sg) { if (usable(b, sg)) out.push(bookItem(b, sg)); });
   });
   return out;
 }
-/* BOOK_SEL：'' / 'all' / 'a2:5' / 'a2:delf' / 'b1:1' */
+/* BOOK_SEL：'' / 'all' / 'a2:5' / 'b1:1' */
 function bookPool() {
   var all = bookAll();
   if (!BOOK_SEL || BOOK_SEL === 'all') return all;
   var p = BOOK_SEL.split(':');
-  return all.filter(function (i) {
-    if (i.book !== p[0]) return false;
-    return p[1] === 'delf' ? i.delf : (!i.delf && String(i.unit) === p[1]);
-  });
+  return all.filter(function (i) { return i.book === p[0] && String(i.unit) === p[1]; });
 }
 function bookPicker(msg) {
   stopAudio(); CUR = null;
   var all = bookAll(), s = stat(), groups = {};
   all.forEach(function (i) {
-    var k = i.book + ':' + (i.delf ? 'delf' : i.unit);
-    (groups[k] = groups[k] || { n: 0, done: 0, item: i }).n++;
+    var k = i.book + ':' + i.unit;
+    (groups[k] = groups[k] || { n: 0, done: 0 }).n++;
     if (s['q_' + i.f]) groups[k].done++;
   });
   function btn(k, title, sub) {
@@ -427,16 +445,166 @@ function bookPicker(msg) {
            '<span>' + esc(sub) + '</span><span class="u-n">' + (left ? '還有 ' + left + ' 段沒聽過' : '都聽過了，可以再聽') + '</span></button>';
   }
   var h = '<div class="box"><div class="box-t">選範圍</div>' + (msg ? '<div class="err">' + esc(msg) + '</div>' : '') +
-    '<div class="hint" style="margin:0 0 10px">都是你課本的原版錄音和逐字稿（真人、不同的人講）。⭐ 一段是一整段對話，大約 1–3 分鐘。</div>' +
-    '<button class="unit-btn wide" onclick="pickBook(\'all\')"><b>🎲 從上過的全部隨機</b><span>' + all.length + ' 段對話</span></button>';
+    '<div class="hint" style="margin:0 0 10px">都是你課本的原版錄音和逐字稿（真人、不同的人講）。⭐ 一段最多一分鐘。</div>' +
+    '<button class="unit-btn wide" onclick="pickBook(\'all\')"><b>🎲 從上過的全部隨機</b><span>' + all.length + ' 段</span></button>';
   h += '<div class="box-t" style="margin-top:14px">Édito B1（新課本）</div><div class="units">';
   for (var u = 1; u <= B1_UNITS_DONE; u++) h += btn('b1:' + u, 'Unité ' + u, '第 ' + UNIT_LESSONS.b1[u]);
   h += '</div><div class="box-t" style="margin-top:14px">Édito A2</div><div class="units">';
-  h += btn('a2:delf', 'DELF A2 模擬考聽力', 'p.182–184・第 43 課');
   for (u = 12; u >= 1; u--) h += btn('a2:' + u, 'Unité ' + u, '約第 ' + UNIT_LESSONS.a2[u] + ' 課');
   h += '</div></div>';
   render(h);
 }
 function pickBook(k) { BOOK_SEL = k; lsSet('ld_book_sel', k); nextQ(); }
+
+/* ══ 課本段落的挖空（2026-10-23，依 Owen 10-21 規格＋R57／R58）══════════
+   ⭐ 大部分挖「你學過的單字」（複習卡 CHUNKS＋常用句 SENTENCES 出現過的字），少數挖連音／省音的小字
+     （R58：挖學過的內容詞跟聽力 r=.77；約 75%／25%）。
+   ⭐ 格子之間至少隔 MIN_GAP 個字（R58：同一個片語裡挖兩格，一個沒聽到另一個也跟著掉，等於只量到一次）。
+   ⛔ 不挖：說話人標籤、(ne)／(n')／(e) 這種「錄音裡沒唸」的括號字（R57：B1 逐字稿有 17 處，挖了＝冤枉）。 */
+var MIN_GAP = 8;
+var FUNC = {};   /* 功能詞：不當「單字」挖（但可以在功能詞那一層挖） */
+('le la les l un une des du de d au aux à a en dans sur sous pour par avec chez sans vers et ou mais donc or ni car ' +
+ 'que qu qui quoi dont où ce c cet cette ces se s il ils elle elles on je j tu vous nous me m te t lui leur leurs y ' +
+ 'ne n pas plus moins très bien aussi si est sont ai as avons avez ont suis es sommes êtes était été être avoir ' +
+ 'mon ma mes ton ta tes son sa ses notre nos votre vos comme alors puis ça cela oui non quand tout tous toute toutes ' +
+ 'même autre autres peu trop bon voilà ah oh eh euh ben bah hein là ici déjà encore ' +
+ 'faire fait font va vais vas allez aller vont dit dire peut peux veut veux ' +
+ 'moi toi soi eux celui celle ceux celles quel quelle quels quelles').split(' ').forEach(function (w) { FUNC[norm(w)] = 1; });
+
+var LEX = null;   /* { learned: {norm: 1}, dict: {norm: {zh, lesson}}, lessonOf: {norm: lesson} } */
+function buildLex() {
+  if (LEX) return;
+  LEX = { learned: {}, dict: {}, lessonOf: {}, phrase: {} };   /* phrase：這個字出現在哪張學過的片語卡（給詳解對照用法） */
+  var art = /^(le |la |les |l'|un |une |des |du |de la |de l'|se |s'|à |au |aux )/i;
+  function addWords(fr, lesson) {
+    var ws = String(fr || '').replace(/[’‘]/g, "'").replace(/\([^)]*\)/g, ' ').match(/[A-Za-zÀ-ÿ]+/g) || [];
+    ws.forEach(function (w) {
+      var k = norm(w); if (k.length < 3 || FUNC[k]) return;
+      LEX.learned[k] = 1;
+      if (lesson && !(k in LEX.lessonOf)) LEX.lessonOf[k] = lesson;
+    });
+  }
+  (typeof CHUNKS !== 'undefined' ? CHUNKS : []).forEach(function (c) {   /* ⚠️ const 宣告不會掛到 window 上 */
+    addWords(c.fr, c.lesson);
+    var fw = String(c.fr || '').replace(/[’‘]/g, "'").match(/[A-Za-zÀ-ÿ]+/g) || [];
+    if (fw.length >= 2 && fw.length <= 8 && c.zh) fw.forEach(function (w) {
+      var k = norm(w); if (k.length >= 3 && !FUNC[k] && !LEX.phrase[k]) LEX.phrase[k] = { fr: c.fr, zh: c.zh, lesson: c.lesson };
+    });
+    /* 單字卡（去掉冠詞後只剩一個字）→ 拿來當詳解的中文 */
+    var head = String(c.fr || '').replace(/[’‘]/g, "'").split(/[\/,;]/)[0].trim().replace(art, '').replace(/\(.*?\)/g, '').trim();
+    if (/^[A-Za-zÀ-ÿ'-]+$/.test(head)) {
+      var k = norm(head);
+      /* ⚠️ 同一個字可能有好幾個意思（chouette＝貓頭鷹／很棒；truc＝訣竅／東西）→ 收最多兩個，讓他對照上下文（10-23 試跑抓到） */
+      if (k.length >= 3) {
+        var d = LEX.dict[k] || (LEX.dict[k] = { zh: [], lesson: c.lesson });
+        var z = String(c.zh || '').trim();
+        if (z && d.zh.length < 2 && d.zh.indexOf(z) < 0) d.zh.push(z);
+      }
+    }
+  });
+  (typeof SENTENCES !== 'undefined' ? SENTENCES : []).forEach(function (x) { addWords(x.fr, x.lesson); });
+}
+
+function plainHtml(t) {
+  return esc(t).replace(/\(([A-Za-zéè']{1,4})\)/g, '<span class="unsp" title="這裡錄音沒唸">($1)</span>');
+}
+
+function bookTokens(body) {
+  var skip = protectedStarts(body, SKIP_CTX.concat(LABEL_CTX).concat([/\([A-Za-zéè']{1,4}\)/g]));
+  var toks = [], m, re = new RegExp(WORD_RE.source, 'g');
+  while ((m = re.exec(body))) toks.push({ w: m[0], a: m.index, b: m.index + m[0].length, skip: !!skip[m.index] });
+  return toks;
+}
+
+function pickBookBlanks(body) {
+  buildLex();
+  var toks = bookTokens(body), words = toks.filter(function (t) { return !t.skip; }).length;
+  var N = Math.max(4, Math.min(14, Math.round(words / 10)));
+  var nWord = Math.round(N * 0.75);
+  var content = [], func = [];
+  toks.forEach(function (t, i) {
+    if (t.skip) return;
+    var lw = norm(t.w);
+    var proper = /^[A-ZÀ-Ý]/.test(t.w) && i > 0 && !/[.!?:\n]\s*$/.test(body.slice(Math.max(0, t.a - 3), t.a));
+    if (lw.length >= 3 && !FUNC[lw] && LEX.learned[lw] && !proper && t.w.indexOf("'") < 0) {
+      content.push({ i: i, w: t.w, a: t.a, b: t.b, kind: 'word', pri: (LEX.dict[lw] ? 2 : 1) + Math.min(lw.length, 10) / 10 + Math.random() * 0.8 });
+    } else {
+      for (var tier in TIER) if (TIER[tier].indexOf(lw) >= 0) { func.push({ i: i, w: t.w, a: t.a, b: t.b, kind: 'func', tier: +tier, pri: 6 - tier + Math.random() }); break; }
+    }
+  });
+  var picked = [];
+  /* 隔得夠遠＋同一段不重複挖同一個字（10-23 試跑：enfance、piano 各被挖兩次） */
+  function far(c) { return picked.every(function (p) { return Math.abs(p.i - c.i) >= MIN_GAP && norm(p.w) !== norm(c.w); }); }
+  content.sort(function (x, y) { return y.pri - x.pri; });
+  content.forEach(function (c) { if (picked.length < nWord && far(c)) picked.push(c); });
+  func.sort(function (x, y) { return y.pri - x.pri; });
+  func.forEach(function (c) { if (picked.length < N && far(c)) picked.push(c); });
+  content.forEach(function (c) { if (picked.length < N && far(c) && picked.indexOf(c) < 0) picked.push(c); });
+  return picked.sort(function (x, y) { return x.a - y.a; });
+}
+
+/* 同音不同拼（R58）：-er／-é／-ée／-ez 唸起來一樣、-ais／-ait／-aient 一樣、字尾 s／x 不發音
+   → 判「聽到了」，只另外提醒拼法；⛔ 不算聽力錯、不進「聽不出」清單 */
+function soundKey(w) {
+  var k = String(w || '').toLowerCase().trim().replace(/[’‘]/g, "'");
+  k = k.replace(/(ées|ée|és|ez|er|é)$/, 'É').replace(/(aient|ais|ait)$/, 'È').replace(/[sx]$/, '');
+  k = k.replace(/([aiouéy])e$/, '$1');
+  return k.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/É/g, '#E').replace(/È/g, '#e');
+}
+
+/* 為什麼可能沒聽出來：從逐字稿自動判斷這個字在語流裡怎麼變形 */
+function soundTags(body, g) {
+  var tags = [], w = norm(g.w), before = body.slice(Math.max(0, g.a - 20), g.a);
+  var prev = (before.match(/([A-Za-zÀ-ÿ']+)\s+$/) || [])[1] || '';
+  if (/[sxztdn]$/i.test(prev) && /^[aeiouyàâéèêîôûh]/i.test(g.w) && !/[.!?,;:]\s*$/.test(before))
+    tags.push('前面的「' + prev + '」連音黏過來（' + prev + '‿' + g.w + '）');
+  if (g.w.indexOf("'") > 0) tags.push('省音：跟下一個字黏在一起');
+  if (/(ent|[stdxpg]|es)$/i.test(g.w) && w.length > 3) tags.push('字尾不發音');
+  if (/(an|am|en|em|in|im|on|om|un|um|ain|ein)(?![aeiouyéèê]|n|m)/i.test(w)) tags.push('有鼻母音');
+  return tags.slice(0, 2);
+}
+
+function checkBook() {
+  REVEALED = true;
+  var ok = 0, near = 0, bad = 0, missed = [], s = stat(), now = Date.now();
+  BLANKS.forEach(function (g, gi) {
+    var el = document.getElementById('g' + gi), inp = document.getElementById('i' + gi);
+    var v = inp.value.trim(), good = norm(v) === norm(g.w), sound = !good && v && soundKey(v) === soundKey(g.w);
+    inp.disabled = true;
+    if (good) { ok++; el.className = 'gap ok'; }
+    else if (sound) { near++; el.className = 'gap near';
+      el.insertAdjacentHTML('beforeend', '<span class="sol">✓ 聽到了，拼法：' + esc(g.w) + '</span>'); }
+    else { bad++; el.className = 'gap bad'; missed.push(g);
+      el.insertAdjacentHTML('beforeend', '<span class="sol">→ ' + esc(g.w) + '</span>'); }
+    /* 每個字的紀錄（物件＋last，配合 sync 合併）：之後做「看得懂、聽不出」清單與週報用 */
+    var key = (g.kind === 'word' ? 'w_' : 'f_') + norm(g.w), r = s[key] || { n: 0, miss: 0, last: 0 };
+    r.n++; if (!(good || sound)) r.miss++; if (sound) r.spell = (r.spell || 0) + 1;
+    if (SLOW_PLAYS > 0) r.slow = (r.slow || 0) + 1;
+    r.last = now; s[key] = r;
+  });
+  var q = s['q_' + CUR.f] || { n: 0, miss: 0, last: 0 }; q.n++; if (bad) q.miss++; q.last = now; s['q_' + CUR.f] = q;
+  saveStat(s);
+
+  /* ⛔ 空著＝不會，算進分母（Owen 10-21 例外）；⛔ 不同段落之間的百分比不拿來比進步（R58） */
+  var msg = '<div class="res">聽出 <b>' + (ok + near) + '</b>／' + BLANKS.length + (near ? '　（其中 ' + near + ' 格是拼法不同）' : '') + '</div>';
+  if (missed.length) {
+    msg += '<div class="detail"><div class="d-t">這段沒聽出來的字</div>';
+    missed.forEach(function (g) {
+      var lw = norm(g.w), d = LEX.dict[lw], les = (d && d.lesson) || LEX.lessonOf[lw];
+      var tags = soundTags(CUR._body, g);
+      msg += '<div class="d-row"><b>' + esc(g.w) + '</b>' +
+        (d && d.zh.length ? '　' + esc(d.zh.join('／')) : '') + (les ? '<span class="d-les">第 ' + les + ' 課</span>' : '') +
+        (g.kind === 'func' ? '<span class="d-les">' + esc(TIER_NAME[g.tier] || '小字') + '</span>' : '') +
+        (LEX.phrase[lw] ? '<div class="d-why">也學過：' + esc(LEX.phrase[lw].fr) + '（' + esc(LEX.phrase[lw].zh) + '）</div>' : '') +
+        (tags.length ? '<div class="d-why">可能沒聽出的原因：' + tags.map(esc).join('；') + '</div>' : '') + '</div>';
+    });
+    msg += '</div>';
+  }
+  if (bad && SLOW_PLAYS === 0) msg += '<div class="miss">⭐ 還沒試過放慢——按 🐢 慢速從頭再聽，慢速聽得出來＝音你認得，問題在處理速度。</div>';
+  else if (bad && SLOW_PLAYS > 0) msg += '<div class="miss">⭐ 慢速也沒聽出來的字，代表那個音還沒建立——要針對它練，不是多聽就會好。</div>';
+  msg += '<div class="row" style="margin-top:14px"><button class="btn go" onclick="nextQ()">下一段 →</button>' +
+         '<button class="btn" onclick="RATE=0.75;SLOW_PLAYS++;play(0.75, true)">🐢 慢速從頭再聽</button></div>';
+  document.getElementById('res').innerHTML = msg;
+}
 
 boot();
