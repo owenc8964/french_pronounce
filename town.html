@@ -144,6 +144,7 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .rlink { display:inline-block; margin-top:4px; color:#9fd0ff; font-size:.88em; text-decoration:none; border-bottom:1px dashed #9fd0ff; }
 .grule { color:#d9cfb6; font-size:.85em; margin-top:4px; }
 .numcard { display:grid; grid-template-columns:repeat(10,1fr); gap:3px; margin:6px 0 12px; } .numcard span { text-align:center; font-size:.72em; padding:3px 0; border-radius:5px; background:#0d130f; color:#4a5a4f; } .numcard span.on { background:#3c6b4c; color:#fff; }
+.ctxline { color:var(--dim); font-size:.9em; margin:2px 0; } .minebox { margin:6px 0; } .minebox summary { cursor:pointer; font-size:.85em; } .minebox .btn { margin-top:4px; }
 .movecard { background:#16211b; border:1px solid var(--line); border-radius:10px; padding:6px 9px; margin:5px 0; } .movecard summary { cursor:pointer; }
 .dexcell.pending { opacity:.45; } .dexcell.fading { filter:grayscale(.85); opacity:.7; }
 .dexhead { font-size:.82em; color:var(--dim); margin-top:8px; }
@@ -2315,26 +2316,39 @@ var WRE=/(?<![A-Za-zÀ-ÿ])(?:jusqu|lorsqu|puisqu|qu|[jldcnsmt])['’]|[A-Za-zÀ
 function wkey(w){ return deacc(String(w).toLowerCase().replace(/’/g,"'")); }
 function wparts(s){ var out=[], last=0, m; WRE.lastIndex=0; while((m=WRE.exec(s))){ if(m.index>last) out.push({t:s.slice(last,m.index)}); out.push({t:m[0], w:1}); last=m.index+m[0].length; } if(last<s.length) out.push({t:s.slice(last)}); return out; }
 var ISLES=null;
+/* ✂️ 長句拆開背（10-23 Owen：「超過字數的可以拆開來背」）：超過 12 個字的句子在原本的停頓處切開（冒號、破折號、分號、「, mais／, et／, parce que…」、逗號），
+   ⛔ 法文一個字都不改，各段接起來＝原句；背後段時畫面給前段當接頭＋整句中文。鍵＝原句序號＋「.段」（例 AC1:3.2），不拆的句子鍵不變 */
+function isleSplit(f){
+  var n=function(t){ return t.trim().split(/\s+/).length; };
+  if(n(f)<=12) return [f];
+  var cuts=[], re=/( : | — | ; |, (?=(?:mais|et|parce|donc|alors|car|quand|puis|sinon|ou|pour|comme|si|même|surtout)\b)|, )/g, m;
+  while((m=re.exec(f))){ var at=m.index+m[0].length-(m[0]===' : '||m[0]===' — '||m[0]===' ; '?0:1); var a=f.slice(0,m.index+m[0].replace(/\s+$/,'').length).trim(), b=f.slice(m.index+m[0].length).trim();
+    if(n(a)>=3 && n(b)>=3) cuts.push({a:a, b:b, score:Math.abs(n(a)-n(b))+(/^, $/.test(m[0])?2:0)}); }
+  if(!cuts.length) return [f];
+  cuts.sort(function(x,y){ return x.score-y.score; });
+  return isleSplit(cuts[0].a).concat(isleSplit(cuts[0].b));
+}
 function isles(){
   if(ISLES) return ISLES; ISLES=[];
   (typeof ANSWER_CARDS!=='undefined'?ANSWER_CARDS:[]).forEach(function(c){
     var v=c.versions[c.versions.length-1], fp=String(v.fr).split(/\n\s*\n/), zp=String(v.zh).split(/\n\s*\n/), sents=[];
     fp.forEach(function(p,i){ var fs=p.trim().split(/(?<=[.!?…])\s+(?=[A-ZÀ-Ý«])/), zs=String(zp[i]||'').trim().split(/(?<=[。！？])/).filter(function(x){ return x.trim(); });
-      fs.forEach(function(f,j){ if(f.trim()) sents.push({fr:f.trim(), zh: fs.length===zs.length ? zs[j].trim() : '（這段中文）'+String(zp[i]||'').trim()}); }); });
+      fs.forEach(function(f,j){ if(!f.trim()) return; var zh1= fs.length===zs.length ? zs[j].trim() : '（這段中文）'+String(zp[i]||'').trim(), k=sents.k=(sents.k||0)+1, parts=isleSplit(f.trim());
+        parts.forEach(function(pt,pi){ sents.push({fr:pt, zh:zh1, key: parts.length>1 ? (k-1)+'.'+(pi+1) : String(k-1), ctx: parts.slice(0,pi).join(' '), part: parts.length>1 ? (pi+1)+'／'+parts.length : ''}); }); }); });
     ISLES.push({id:c.id, title:c.title, q_fr:c.q_fr, q_zh:c.q_zh, sents:sents});
   });
   return ISLES;
 }
 function isleSt(ref){ S.isle=S.isle||{cur:null, s:{}}; return S.isle.s[ref]||(S.isle.s[ref]={st:1, ups:{}, ok5:[], last:0}); }
 function isleStable(r){ return r && r.st>=5 && (r.ok5||[]).length>=2; }
-function isleIcon(I, j){ var r=(S.isle&&S.isle.s[I.id+':'+j]); if(!r||!r.last) return '○'; if(isleStable(r)) return '🌳'; return r.st>=3?'🌿':'🌱'; }
+function isleIcon(I, j){ var r=(S.isle&&S.isle.s[I.id+':'+I.sents[j].key]); if(!r||!r.last) return '○'; if(isleStable(r)) return '🌳'; return r.st>=3?'🌿':'🌱'; }
 function isleKnown(){ try{ return JSON.parse(localStorage.getItem('clb7_isle_known'))||{}; }catch(e){ return {}; } }
 function islePick(I, n){
   var known=isleKnown(), open=[], t=today(), now=Date.now();
-  for(var j=0;j<I.sents.length;j++){ var r=S.isle&&S.isle.s[I.id+':'+j]; open.push(j); if(!(r && r.st>=3)) break; }
-  var c=open.filter(function(j){ return !isleStable(S.isle&&S.isle.s[I.id+':'+j]); });
+  for(var j=0;j<I.sents.length;j++){ var r=S.isle&&S.isle.s[I.id+':'+I.sents[j].key]; open.push(j); if(!(r && r.st>=3)) break; }
+  var c=open.filter(function(j){ return !isleStable(S.isle&&S.isle.s[I.id+':'+I.sents[j].key]); });
   if(!c.length) c=open.slice();
-  c.sort(function(a,b){ var A=isleSt(I.id+':'+a), B=isleSt(I.id+':'+b), ka=known[I.id+':'+a], kb=known[I.id+':'+b];
+  c.sort(function(a,b){ var A=isleSt(I.id+':'+I.sents[a].key), B=isleSt(I.id+':'+I.sents[b].key), ka=known[I.id+':'+I.sents[a].key], kb=known[I.id+':'+I.sents[b].key];
     var pa=(ka&&now-ka.last<3*86400000)?1:0, pb=(kb&&now-kb.last<3*86400000)?1:0;
     return pa-pb || A.st-B.st || A.last-B.last; });
   return c.slice(0,n);
@@ -2378,6 +2392,16 @@ function upgradeQ(islandId, done){
     document.getElementById('slot').outerHTML='<button class="btn main" id="go">繼續</button>'; document.getElementById('go').onclick=done; }; });
   document.getElementById('skip').onclick=function(){ if(fin) return; fin=true; if(window.GameLog) GameLog.answer(null,{kind:'🔧 升級辨識', ref:rc.ref}); done(); };
 }
+/* ✍️ 我會這樣講（10-23 Owen：「讓我即時回饋我當下最想要回答的方法（可能比較低階）；你評估落差太大或重複性不高就不要改，重複性高且不至於降階再考慮調整」）
+   → 存 clb7_isle_mine（陣列、有同步），由 Claude 整批評估要不要改島的稿（週報會列出來）。⛔ 遊戲裡不自動改稿 */
+function mineBox(ref, fr){
+  return '<details class="minebox"><summary class="muted">✍️ 我會這樣講</summary><input class="fill" id="mineIn" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="用你最自然的說法打出來（講錯沒關係）">'+
+    '<button class="btn" id="mineGo" data-ref="'+esc(ref)+'" data-fr="'+esc(fr)+'">記下來</button><div class="muted" id="mineOk" style="font-size:.8em">我會評估：常用又不降級，就考慮把稿子改成你的說法。</div></details>';
+}
+sheet.addEventListener('click', function(e){ var b=e.target.closest && e.target.closest('#mineGo'); if(!b) return; e.stopPropagation();
+  var v=(document.getElementById('mineIn')||{}).value; v=String(v||'').trim(); if(!v) return;
+  try{ var a=JSON.parse(localStorage.getItem('clb7_isle_mine'))||[]; a.push({ts:Date.now(), ref:b.dataset.ref, fr:b.dataset.fr, mine:v}); localStorage.setItem('clb7_isle_mine', JSON.stringify(a.slice(-300))); }catch(er){}
+  document.getElementById('mineOk').textContent='✓ 記下了，我之後會看'; document.getElementById('mineIn').value=''; });
 function cafePanel(ch){
   var L=isles(); if(!L.length) return;
   if(S.isleOff===today()){ ch.cool=30; return; }
@@ -2405,8 +2429,9 @@ function isleRun(ch, I){
   var upDone=false;
   function next(){ if(k>=list.length){ if(!upDone){ upDone=true; return upgradeQ(I.id, finish); } return finish(); } var j=list[k++]; ask(j); }
   function ask(j){
-    var s=I.sents[j], ref=I.id+':'+j, r=isleSt(ref), st=r.st, parts=wparts(s.fr), words=parts.filter(function(p){ return p.w; }), t0=Date.now(), html='', blanks=[];
-    var head='<h3>☕ '+esc(I.title)+' <small>第 '+(j+1)+' 句・'+['','①四選一','②功能詞','③整塊','④只剩提示詞','⑤默寫'][st]+'</small></h3><div class="muted">'+esc(s.zh)+'</div>';
+    var s=I.sents[j], ref=I.id+':'+s.key, r=isleSt(ref), st=r.st, parts=wparts(s.fr), words=parts.filter(function(p){ return p.w; }), t0=Date.now(), html='', blanks=[];
+    var head='<h3>☕ '+esc(I.title)+' <small>第 '+(parseInt(s.key,10)+1)+' 句'+(s.part?'之 '+s.part:'')+'・'+['','①四選一','②功能詞','③整塊','④只剩提示詞','⑤默寫'][st]+'</small></h3><div class="muted">'+esc(s.zh)+'</div>'+
+      (s.ctx?'<div class="ctxline fr">⋯ '+esc(s.ctx)+'</div>':'');
     var rc={kind:'島 '+st, ref:'isle:'+ref, q:s.fr, a:s.fr};
     var content=parts.map(function(p,i){ return p.w && !FUNC_W[wkey(p.t)] && p.t.replace(/['’-]/g,'').length>=4 && !/^[A-ZÀ-Ý]/.test(p.t) ? i : -1; }).filter(function(i){ return i>=0; });
     var func=parts.map(function(p,i){ return p.w && FUNC_W[wkey(p.t)] ? i : -1; }).filter(function(i){ return i>=0; });
@@ -2458,7 +2483,7 @@ function isleRun(ch, I){
         result(exact?'ok':(miss===0?'accent':(miss<=1?'close':'no')), s.fr, diff);
       };
     });
-    function show(h, bind){ openSheet(h+'<div class="fb" id="fb"></div><div class="row2" id="iexit"><button class="btn ghost" id="iknow">這句會了</button><button class="btn ghost" id="iskip">↷ 這句跳過</button><button class="btn ghost" id="istop">■ 先到這</button></div>'+repSlot(rc), true);
+    function show(h, bind){ openSheet(h+'<div class="fb" id="fb"></div>'+mineBox(ref, s.fr)+'<div class="row2" id="iexit"><button class="btn ghost" id="iknow">這句會了</button><button class="btn ghost" id="iskip">↷ 這句跳過</button><button class="btn ghost" id="istop">■ 先到這</button></div>'+repSlot(rc), true);
       bind();
       document.getElementById('iknow').onclick=function(){ var kn=isleKnown(), o=kn[ref]||{n:0}; o.n++; o.last=Date.now(); kn[ref]=o; try{ localStorage.setItem('clb7_isle_known', JSON.stringify(kn)); }catch(e){} if(window.GameLog) GameLog.answer(null,{kind:'島 '+st, ref:'isle:'+ref}); next(); };
       document.getElementById('iskip').onclick=function(){ if(window.GameLog) GameLog.answer(null,{kind:'島 '+st, ref:'isle:'+ref}); next(); };
