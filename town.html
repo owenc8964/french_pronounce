@@ -31,6 +31,7 @@
 <script src="verbs_full.js"></script>
 <script src="verb_freq.js"></script>
 <script src="codex.js"></script>
+<script src="exam_items.js"></script>
 <script src="topic_labels.js"></script>
 <script src="tts_reader.js"></script>
 <script src="sync_supabase.js"></script>
@@ -956,7 +957,10 @@ function mineRock(n){
   function next(){
     if(i>=2) return finish();
     /* ⚡ 三成機率變成變位反應（委託題型進行中時讓位給委託） */
-    var cj=(!activeQuest('topic') && Math.random()<.3) ? conjPick() : null;
+    var rr=Math.random(), cj=(!activeQuest('topic') && rr<.3) ? conjPick() : null;
+    var ex=(!cj && !activeQuest('topic') && rr<.65) ? examPick(['time','hypo']) : null;
+    if(ex){ askExam('⛏ 礦坑'+(star?' ★':'')+' <small>第 '+(i+1)+' 敲</small>', ex, function(ok,ms,ch){ rec('q', examItem(ex), ok, ms, {chosen:ch, right:EXAM_TYPES[ex.type].opts[ex.ans], where:'⛏ 礦坑'});
+      hits.push(ok===null?'skip':ok?(ms<(6000+S.pick*2500)?'crit':'ok'):'no'); i++; next(); }); return; }
     if(cj){ askConj('⛏ 礦坑'+(star?' ★':'')+' <small>第 '+(i+1)+' 敲・⚡ 變位</small>', cj, function(ok,ms){
       hits.push(ok===null?'skip':ok?(ms<(5000+S.pick*2000)?'crit':'ok'):'no'); i++; next(); }); return; }
     var q=pickQ(questPool(POOL.verb.choose), star);
@@ -1059,6 +1063,40 @@ function askConj(head, c, cb){
   }
   document.getElementById('csub').onclick=sub;
 }
+/* ============================================================
+   🎯 理解型題（考試樣式，exam_items.js；10-23 Owen：「課本挖空主要練語感跟寫作，正式考試不會這樣出」）
+   ⭐ 一句法文＋法文問題，選意思；答錯才出中文與原因；答錯排進回收（跟其他題一樣隔天再出）
+   ⭐ 出題：沒做過的、錯過的優先；6 小時內出過的先避開
+   ============================================================ */
+function examItem(it){ return {topic:'exam-'+it.type, _i:'x:'+it.id, q:it.fr+(it.stmt?' ／ '+it.stmt:''), a:EXAM_TYPES[it.type].opts[it.ans], aNote:it.why, zh:it.zh}; }
+function examPick(types){
+  if(typeof EXAM_ITEMS==='undefined') return null;
+  var list=EXAM_ITEMS.filter(function(x){ return types.indexOf(x.type)>=0; }); if(!list.length) return null;
+  var due=recallDue(list, function(x){ return 'x:'+x.id; }); var rq=recallServe(due); if(rq) return rq;
+  var now=Date.now(), best=null, bw=-1;
+  shuffle(list).forEach(function(x){ var k='x:'+x.id, t=S.topic['exam-'+x.type], w=1, last=S.qlast[k], h=(S.exam||{})[x.id];
+    if(!h) w*=2.5; else if(h.w>h.r) w*=2; if(last && now-last<6*3600000) w*=.05; w*=Math.random()+.3; if(w>bw){ bw=w; best=x; } });
+  return best;
+}
+function askExam(head, it, cb){
+  var T=EXAM_TYPES[it.type], t0=Date.now(), done=false, rc={kind:'理解 '+it.type, ref:'x:'+it.id, q:it.fr, a:T.opts[it.ans]};
+  openSheet('<h3>'+head+' <small>'+T.label+'</small></h3><div class="qtext fr" style="font-size:1.1em">'+esc(it.fr)+' '+spk(it.fr)+'</div>'+
+    (it.stmt?'<div class="clue fr">« '+esc(it.stmt)+' »</div>':'')+'<div class="hint fr">'+esc(T.q)+'</div>'+
+    '<div class="opts">'+T.opts.map(function(o,i){ return '<button data-i="'+i+'" class="fr">'+esc(o)+'</button>'; }).join('')+'</div>'+
+    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><span id="slot"></span></div>'+repSlot(rc));
+  sheet.querySelectorAll('.opts button').forEach(function(b){ b.onclick=function(){ if(done) return; done=true;
+    var pi=+b.dataset.i, ok=pi===it.ans, ms=Date.now()-t0; rc.pick=T.opts[pi];
+    sheet.querySelectorAll('.opts button').forEach(function(x){ if(+x.dataset.i===it.ans) x.classList.add('ok'); }); if(!ok) b.classList.add('no');
+    S.exam=S.exam||{}; var h=S.exam[it.id]||{r:0,w:0}; h[ok?'r':'w']++; h.last=Date.now(); S.exam[it.id]=h; S.qlast['x:'+it.id]=Date.now();
+    speak(it.fr);
+    var fb=document.getElementById('fb');
+    if(ok){ fb.innerHTML='✓ '+(ms<6000?'<b style="color:var(--gold)">一眼看懂</b>':''); setTimeout(function(){ cb(true,ms,T.opts[pi]); }, 700); }
+    else { fb.innerHTML='<div class="ex-ok">✓ <span class="say">'+esc(it.fr)+'</span> '+spk(it.fr)+'<div class="muted">'+esc(it.zh)+'</div></div><div class="ex-rule">💡 '+esc(it.why)+'</div>';
+      document.getElementById('slot').outerHTML='<button class="btn main" id="go">繼續</button>'; document.getElementById('go').onclick=function(){ cb(false,ms,T.opts[pi]); }; }
+    document.getElementById('skip').style.visibility='hidden';
+  }; });
+  document.getElementById('skip').onclick=function(){ if(done) return; done=true; cb(null); };
+}
 /* 🌳 樹叢：翻出兩樣東西要叫出名字（un／une）＋一題名詞片語（對了撿到 🪙） */
 function shakeBush(n){
   var star=isStar(n), i=0, seq=['g','q','g'];
@@ -1069,6 +1107,13 @@ function shakeBush(n){
       askGender('🌳 樹叢'+(star?' ★':'')+' <small>翻出一樣東西・叫出它</small>', it, function(ok,ms){
         rec('g', it, ok, ms, {where:'🌳 樹叢'}); if(ok && lastCatch && lastCatch.isNew) floatTxt(n.x+.5,n.y-.5,'🆕 圖鑑','#f0c95a');
         if(ok!==null){ var c=(star?2:1); for(var k=0;k<c;k++) addBag({k:'obj', name:whole(it), n:it.n, g:it.g, em:EMO[it.n]||'📦', good:ok}); floatTxt(n.x+.5,n.y,(EMO[it.n]||'📦')+(ok?'':' 瑕'), ok?'#fff':'#bbb'); }
+        i++; next();
+      });
+    } else if(!activeQuest('topic') && Math.random()<.5 && examPick(['neg'])){
+      var ex=examPick(['neg']);
+      askExam('🌳 樹叢'+(star?' ★':''), ex, function(ok,ms,ch){
+        rec('q', examItem(ex), ok, ms, {chosen:ch, right:EXAM_TYPES.neg.opts[ex.ans], where:'🌳 樹叢'});
+        if(ok){ var g=star?6:3; S.gold+=g; floatTxt(n.x+.5,n.y,'+'+g+'🪙','#ffd76a'); hud(); save(); }
         i++; next();
       });
     } else {
@@ -1499,6 +1544,7 @@ function hud(){
    回城：先回顧（錯在哪、為什麼、建議、正確說法），再交貨
    ============================================================ */
 function topicLabel(t){
+  if(/^exam-/.test(t) && typeof EXAM_TYPES!=='undefined'){ var T=EXAM_TYPES[t.slice(5)]; return {fr:T?T.label:t, zh:'理解型（考試樣式）', point:null}; }
   if(/^scene:/.test(t)){ var sc=(typeof SCENE_BY_ID!=='undefined')&&SCENE_BY_ID[t.slice(6)]; return {fr:sc?sc.fr:'Dialogue', zh:'情境對話'+(sc?'・'+sc.zh:''), point:null}; }
   var p=(typeof gramPointOfTopic==='function')?gramPointOfTopic(t):null;
   var fr=(typeof TOPIC_LABELS_FR!=='undefined'&&TOPIC_LABELS_FR[t])||t;
