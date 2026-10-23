@@ -122,5 +122,6 @@ var TOPIC_LABELS_FR = {
  "place-pronoms-cod-coi": "Place des pronoms COD/COI",
  "strategie-ecoute": "Stratégie d'écoute",
  "vocab-famille-generations": "La famille et les générations",
+  "vocab-amour-relations": "L'amour et les relations humaines",
  "expressions-orales": "Expressions orales et onomatopées"
 };

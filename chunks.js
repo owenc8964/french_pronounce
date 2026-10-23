@@ -21483,5 +21483,523 @@ const CHUNKS = [
   "fr": "sacré(e)",
   "zh": "（放名詞前）好大的、了不起的",
   "note": "adj.｜🎙 老師補充；B1 p.217 un sacré moral"
+ },
+ {
+  "id": "L44_Vendredi_dernier_mes_par",
+  "lesson": 44,
+  "fr": "Vendredi dernier, mes parents sont venus dîner chez moi.",
+  "zh": "上週五，我爸媽來我家吃晚餐。",
+  "note": "練習 3b → 發生一次。🎙 parents 有爸爸也有媽媽 → 過去分詞加 s"
+ },
+ {
+  "id": "L44_Ma_sœur_adorait_jouer_de",
+  "lesson": 44,
+  "fr": "Ma sœur adorait jouer de la guitare quand elle avait 10 ans.",
+  "zh": "我姊姊十歲的時候很愛彈吉他。",
+  "note": "練習 3c → 習慣。🎙 quand elle avait dix ans 也可以放句首"
+ },
+ {
+  "id": "L44_Pendant_les_vacances_tu",
+  "lesson": 44,
+  "fr": "Pendant les vacances, tu allais toujours au même endroit ?",
+  "zh": "你放假的時候都去同一個地方嗎？",
+  "note": "🎙 老師的暖身問題（截圖上方）"
+ },
+ {
+  "id": "L44_J_y_suis_allé_avec_ma_fa",
+  "lesson": 44,
+  "fr": "J'y suis allé avec ma famille.",
+  "zh": "我是跟家人一起去的。",
+  "note": "練習 5a 🗣 事件 → passé composé。🎙 用 y 代替 au cinéma，不用一直重複"
+ },
+ {
+  "id": "L44_Je_n_aime_pas_ma_belle_m",
+  "lesson": 44,
+  "fr": "Je n'aime pas ma belle-mère.",
+  "zh": "我不喜歡我婆婆（岳母）。",
+  "note": "🎙 老師說很常聽到法國人這樣說"
+ },
+ {
+  "id": "L44_J_aimerais_trouver_l_âme",
+  "lesson": 44,
+  "fr": "J'aimerais trouver l'âme sœur.",
+  "zh": "我希望能找到靈魂伴侶。",
+  "note": "🎙 老師的例句"
+ },
+ {
+  "id": "L44_J_ai_trouvé_l_âme_sœur",
+  "lesson": 44,
+  "fr": "J'ai trouvé l'âme sœur.",
+  "zh": "我找到靈魂伴侶了。",
+  "note": "🎙 老師的例句"
+ },
+ {
+  "id": "L44_Mon_mariage_était_un_éch",
+  "lesson": 44,
+  "fr": "Mon mariage était un échec.",
+  "zh": "我的婚姻是失敗的。",
+  "note": "🎙 老師的例句"
+ },
+ {
+  "id": "L44_une_action_délimitée_dan",
+  "lesson": 44,
+  "fr": "une action délimitée dans le temps",
+  "zh": "有明確起訖的一段時間",
+  "note": "le passé composé｜d（pendant les vacances）"
+ },
+ {
+  "id": "L44_une_succession_d_actions",
+  "lesson": 44,
+  "fr": "une succession d'actions",
+  "zh": "一連串接著發生的動作",
+  "note": "le passé composé｜e"
+ },
+ {
+  "id": "L44_un_changement",
+  "lesson": 44,
+  "fr": "un changement",
+  "zh": "引出一個改變",
+  "note": "le passé composé｜g（puis un jour）"
+ },
+ {
+  "id": "L44_une_description",
+  "lesson": 44,
+  "fr": "une description",
+  "zh": "描述人、地方",
+  "note": "l'imparfait｜a"
+ },
+ {
+  "id": "L44_une_habitude",
+  "lesson": 44,
+  "fr": "une habitude",
+  "zh": "習慣",
+  "note": "l'imparfait｜f（souvent）"
+ },
+ {
+  "id": "L44_le_contexte_d_une_histoi",
+  "lesson": 44,
+  "fr": "le contexte d'une histoire",
+  "zh": "故事的背景",
+  "note": "l'imparfait｜h"
+ },
+ {
+  "id": "L44_une_situation_passée",
+  "lesson": 44,
+  "fr": "une situation passée",
+  "zh": "過去的狀況",
+  "note": "l'imparfait｜c（avant）"
+ },
+ {
+  "id": "L44_grandir",
+  "lesson": 44,
+  "fr": "grandir",
+  "zh": "長大",
+  "note": "v.｜J'ai grandi à Taipei."
+ },
+ {
+  "id": "L44_naître",
+  "lesson": 44,
+  "fr": "naître",
+  "zh": "出生",
+  "note": "v.｜je suis né(e)（être）"
+ },
+ {
+  "id": "L44_la_génération",
+  "lesson": 44,
+  "fr": "la génération",
+  "zh": "世代",
+  "note": "f.｜🎙 你是 millennial"
+ },
+ {
+  "id": "L44_l_aîné_e",
+  "lesson": 44,
+  "fr": "l'aîné(e)",
+  "zh": "老大、最年長的孩子",
+  "note": "n.｜mon fils aîné"
+ },
+ {
+  "id": "L44_le_gendre",
+  "lesson": 44,
+  "fr": "le gendre",
+  "zh": "女婿",
+  "note": "m.｜＝ le beau-fils"
+ },
+ {
+  "id": "L44_la_belle_fille",
+  "lesson": 44,
+  "fr": "la belle-fille",
+  "zh": "媳婦；繼女",
+  "note": "f.｜媳婦沒有別的字"
+ },
+ {
+  "id": "L44_le_beau_fils",
+  "lesson": 44,
+  "fr": "le beau-fils",
+  "zh": "女婿；繼子",
+  "note": "m.｜兩個意思"
+ },
+ {
+  "id": "L44_le_beau_père",
+  "lesson": 44,
+  "fr": "le beau-père",
+  "zh": "岳父／公公；繼父",
+  "note": "m.｜"
+ },
+ {
+  "id": "L44_la_belle_mère",
+  "lesson": 44,
+  "fr": "la belle-mère",
+  "zh": "岳母／婆婆；繼母",
+  "note": "f.｜"
+ },
+ {
+  "id": "L44_la_belle_famille",
+  "lesson": 44,
+  "fr": "la belle-famille",
+  "zh": "配偶的家人",
+  "note": "f.｜＝ beau-père＋belle-mère…"
+ },
+ {
+  "id": "L44_le_beau_frère",
+  "lesson": 44,
+  "fr": "le beau-frère",
+  "zh": "姊夫、妹夫、大伯、小叔…",
+  "note": "m.｜"
+ },
+ {
+  "id": "L44_la_belle_sœur",
+  "lesson": 44,
+  "fr": "la belle-sœur",
+  "zh": "嫂嫂、弟媳、大姑、小姑…",
+  "note": "f.｜"
+ },
+ {
+  "id": "L44_la_fratrie",
+  "lesson": 44,
+  "fr": "la fratrie",
+  "zh": "兄弟姊妹（全部）",
+  "note": "f.｜＝ le frère＋la sœur"
+ },
+ {
+  "id": "L44_le_cousin_la_cousine",
+  "lesson": 44,
+  "fr": "le cousin, la cousine",
+  "zh": "堂表兄弟姊妹",
+  "note": "n.｜"
+ },
+ {
+  "id": "L44_le_neveu_la_nièce",
+  "lesson": 44,
+  "fr": "le neveu, la nièce",
+  "zh": "姪子、外甥；姪女、外甥女",
+  "note": "n.｜"
+ },
+ {
+  "id": "L44_le_grand_oncle",
+  "lesson": 44,
+  "fr": "le grand-oncle",
+  "zh": "叔公、伯公、舅公",
+  "note": "m.｜爸媽的叔伯舅舅"
+ },
+ {
+  "id": "L44_la_mamie",
+  "lesson": 44,
+  "fr": "la mamie",
+  "zh": "奶奶、外婆",
+  "note": "f.｜＝ la grand-mère（比較常用）"
+ },
+ {
+  "id": "L44_le_papi",
+  "lesson": 44,
+  "fr": "le papi",
+  "zh": "爺爺、外公",
+  "note": "m.｜＝ le grand-père"
+ },
+ {
+  "id": "L44_les_arrière_petits_enfan",
+  "lesson": 44,
+  "fr": "les arrière-petits-enfants",
+  "zh": "曾孫",
+  "note": "m.pl.｜英文 great-grandchildren"
+ },
+ {
+  "id": "L44_la_famille_nombreuse",
+  "lesson": 44,
+  "fr": "la famille nombreuse",
+  "zh": "大家庭（小孩很多）",
+  "note": "f.｜"
+ },
+ {
+  "id": "L44_être_seul_e",
+  "lesson": 44,
+  "fr": "être seul(e)",
+  "zh": "單身、一個人",
+  "note": "v.｜≠ être en couple"
+ },
+ {
+  "id": "L44_être_en_couple",
+  "lesson": 44,
+  "fr": "être en couple",
+  "zh": "有伴侶",
+  "note": "v.｜"
+ },
+ {
+  "id": "L44_se_fiancer",
+  "lesson": 44,
+  "fr": "se fiancer",
+  "zh": "訂婚",
+  "note": "v.｜se marier 之前"
+ },
+ {
+  "id": "L44_la_séparation",
+  "lesson": 44,
+  "fr": "la séparation",
+  "zh": "分開、分居",
+  "note": "f.｜"
+ },
+ {
+  "id": "L44_le_divorce",
+  "lesson": 44,
+  "fr": "le divorce",
+  "zh": "離婚",
+  "note": "m.｜la fin d'un mariage"
+ },
+ {
+  "id": "L44_tomber_enceinte",
+  "lesson": 44,
+  "fr": "tomber enceinte",
+  "zh": "懷孕（變化）",
+  "note": "v.｜être enceinte＝懷孕中"
+ },
+ {
+  "id": "L44_l_âme_sœur",
+  "lesson": 44,
+  "fr": "l'âme sœur",
+  "zh": "靈魂伴侶、對的人",
+  "note": "f.｜男生也用"
+ },
+ {
+  "id": "L44_tomber_amoureux",
+  "lesson": 44,
+  "fr": "tomber amoureux",
+  "zh": "墜入愛河",
+  "note": "v.｜amoureuse（陰性）"
+ },
+ {
+  "id": "L44_l_être_aimé",
+  "lesson": 44,
+  "fr": "l'être aimé",
+  "zh": "心愛的人",
+  "note": "m.｜the loved one"
+ },
+ {
+  "id": "L44_être_fleur_bleue",
+  "lesson": 44,
+  "fr": "être fleur bleue",
+  "zh": "很浪漫、多愁善感",
+  "note": "loc.｜＝ être romantique"
+ },
+ {
+  "id": "L44_les_histoires_de_cœur",
+  "lesson": 44,
+  "fr": "les histoires de cœur",
+  "zh": "感情事、戀愛史",
+  "note": "f.pl.｜cœur＝心"
+ },
+ {
+  "id": "L44_s_amouracher_de",
+  "lesson": 44,
+  "fr": "s'amouracher de",
+  "zh": "一下子迷上（某人）",
+  "note": "v.｜帶一點「一頭熱」"
+ },
+ {
+  "id": "L44_trouver_l_amour",
+  "lesson": 44,
+  "fr": "trouver l'amour",
+  "zh": "找到真愛",
+  "note": "v.｜"
+ },
+ {
+  "id": "L44_attachant_e",
+  "lesson": 44,
+  "fr": "attachant(e)",
+  "zh": "讓人很喜歡、討人喜歡",
+  "note": "adj.｜🎙 很容易讓人親近，是優點"
+ },
+ {
+  "id": "L44_débattre",
+  "lesson": 44,
+  "fr": "débattre",
+  "zh": "討論、辯論",
+  "note": "v.｜en débattre"
+ },
+ {
+  "id": "L44_l_échec",
+  "lesson": 44,
+  "fr": "l'échec",
+  "zh": "失敗",
+  "note": "m.｜Mon mariage était un échec."
+ },
+ {
+  "id": "L44_jaloux_jalouse",
+  "lesson": 44,
+  "fr": "jaloux, jalouse",
+  "zh": "嫉妒的、吃醋的",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L44_juger",
+  "lesson": 44,
+  "fr": "juger",
+  "zh": "評斷",
+  "note": "v.｜"
+ },
+ {
+  "id": "L44_la_passion",
+  "lesson": 44,
+  "fr": "la passion",
+  "zh": "熱情、激情",
+  "note": "f.｜"
+ },
+ {
+  "id": "L44_ravi_e",
+  "lesson": 44,
+  "fr": "ravi(e)",
+  "zh": "非常高興",
+  "note": "adj.｜Je suis ravi de te rencontrer."
+ },
+ {
+  "id": "L44_remonter_le_moral",
+  "lesson": 44,
+  "fr": "remonter le moral",
+  "zh": "讓人振作、打氣",
+  "note": "v.｜remonter le moral à qqn"
+ },
+ {
+  "id": "L44_se_remettre_de",
+  "lesson": 44,
+  "fr": "se remettre de",
+  "zh": "（從病、打擊中）恢復",
+  "note": "v.｜Tu t'en es remis ?"
+ },
+ {
+  "id": "L44_trahir",
+  "lesson": 44,
+  "fr": "trahir",
+  "zh": "背叛",
+  "note": "v.｜＝ tromper la confiance"
+ },
+ {
+  "id": "L44_le_voyeur_la_voyeuse",
+  "lesson": 44,
+  "fr": "le voyeur, la voyeuse",
+  "zh": "偷窺的人",
+  "note": "n.｜🎙 看實境秀也有點像"
+ },
+ {
+  "id": "L44_la_téléréalité",
+  "lesson": 44,
+  "fr": "la téléréalité",
+  "zh": "實境秀",
+  "note": "f.｜"
+ },
+ {
+  "id": "L44_le_petit_écran",
+  "lesson": 44,
+  "fr": "le petit écran",
+  "zh": "電視",
+  "note": "m.｜le grand écran＝電影院"
+ },
+ {
+  "id": "L44_carburer_à",
+  "lesson": 44,
+  "fr": "carburer à",
+  "zh": "靠（燃料）運轉",
+  "note": "v.｜Ma voiture carbure à l'essence."
+ },
+ {
+  "id": "L44_l_émission",
+  "lesson": 44,
+  "fr": "l'émission",
+  "zh": "（電視）節目",
+  "note": "f.｜une émission de téléréalité"
+ },
+ {
+  "id": "L44_se_passionner_pour",
+  "lesson": 44,
+  "fr": "se passionner pour",
+  "zh": "對…很著迷",
+  "note": "v.｜"
+ },
+ {
+  "id": "L44_l_inconnu_e",
+  "lesson": 44,
+  "fr": "l'inconnu(e)",
+  "zh": "陌生人",
+  "note": "n.｜"
+ },
+ {
+  "id": "L44_le_décryptage",
+  "lesson": 44,
+  "fr": "le décryptage",
+  "zh": "解讀、分析",
+  "note": "m.｜HugoDécrypte"
+ },
+ {
+  "id": "L44_combler_un_besoin",
+  "lesson": 44,
+  "fr": "combler un besoin",
+  "zh": "滿足一個需求",
+  "note": "v.｜combler＝填滿"
+ },
+ {
+  "id": "L44_par_procuration",
+  "lesson": 44,
+  "fr": "par procuration",
+  "zh": "間接地、委託別人",
+  "note": "loc.｜英文 by proxy"
+ },
+ {
+  "id": "L44_scénarisé_e",
+  "lesson": 44,
+  "fr": "scénarisé(e)",
+  "zh": "有劇本的",
+  "note": "adj.｜≠ téléréalité"
+ },
+ {
+  "id": "L44_les_gens_ordinaires",
+  "lesson": 44,
+  "fr": "les gens ordinaires",
+  "zh": "普通人",
+  "note": "m.pl.｜不是名人"
+ },
+ {
+  "id": "L44_rassurer",
+  "lesson": 44,
+  "fr": "rassurer",
+  "zh": "讓人安心",
+  "note": "v.｜se faire rassurer（魁北克）"
+ },
+ {
+  "id": "L44_se_former",
+  "lesson": 44,
+  "fr": "se former",
+  "zh": "形成",
+  "note": "v.｜des couples qui se forment"
+ },
+ {
+  "id": "L44_se_chicaner",
+  "lesson": 44,
+  "fr": "se chicaner",
+  "zh": "吵架",
+  "note": "v.｜魁北克，＝ se disputer"
+ },
+ {
+  "id": "L44_sous_le_même_toit",
+  "lesson": 44,
+  "fr": "sous le même toit",
+  "zh": "住在一起",
+  "note": "loc.｜toit＝屋頂"
  }
 ];
