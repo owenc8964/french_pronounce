@@ -32,6 +32,8 @@
 <script src="verb_freq.js"></script>
 <script src="codex.js"></script>
 <script src="exam_items.js"></script>
+<script src="upgrade_moves.js"></script>
+<script src="island_upgrades.js"></script>
 <script src="topic_labels.js"></script>
 <script src="tts_reader.js"></script>
 <script src="sync_supabase.js"></script>
@@ -142,6 +144,7 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .rlink { display:inline-block; margin-top:4px; color:#9fd0ff; font-size:.88em; text-decoration:none; border-bottom:1px dashed #9fd0ff; }
 .grule { color:#d9cfb6; font-size:.85em; margin-top:4px; }
 .numcard { display:grid; grid-template-columns:repeat(10,1fr); gap:3px; margin:6px 0 12px; } .numcard span { text-align:center; font-size:.72em; padding:3px 0; border-radius:5px; background:#0d130f; color:#4a5a4f; } .numcard span.on { background:#3c6b4c; color:#fff; }
+.movecard { background:#16211b; border:1px solid var(--line); border-radius:10px; padding:6px 9px; margin:5px 0; } .movecard summary { cursor:pointer; }
 .dexcell.pending { opacity:.45; } .dexcell.fading { filter:grayscale(.85); opacity:.7; }
 .dexhead { font-size:.82em; color:var(--dim); margin-top:8px; }
 .catch { text-align:center; padding:6px 0; }
@@ -2336,6 +2339,45 @@ function islePick(I, n){
     return pa-pb || A.st-B.st || A.last-B.last; });
   return c.slice(0,n);
 }
+/* ============================================================
+   🔧 升級工坊（10-23 Owen：「口說寫作的思維訓練」「同一句話 A2 B1 B2 C1」→「用口說島好了，③ 自己改寫等之後再做」）
+   ① 📘 招式卡：upgrade_moves.js（30 招，例句全出自課本），只顯示已學的（taught）
+   ② 🔧 升級版用了哪一招？：island_upgrades.js（島的偶數句＋升級版），咖啡館每次練完接一題
+   ============================================================ */
+function movesTaught(){ return (typeof UPGRADE_MOVES!=='undefined'?UPGRADE_MOVES:[]).filter(function(m){ return m.taught; }); }
+function moveById(id){ return (typeof UPGRADE_MOVES!=='undefined'?UPGRADE_MOVES:[]).filter(function(m){ return m.id===id; })[0]; }
+function movesCard(back){
+  var L=movesTaught(), lv={A2:'A2 基本',B1:'B1',B2:'B2'};
+  var h='<h3>📘 升級招式卡 <small>已學的 '+L.length+' 招・例句出自課本</small></h3><div class="muted">一句簡單的話，用哪一招可以升一級。點一招看說明和課本例句。</div>';
+  ['A2','B1','B2'].forEach(function(l){ var M=L.filter(function(m){ return m.lvl===l; }); if(!M.length) return;
+    h+='<div class="dexhead">'+lv[l]+'</div>'+M.map(function(m){ return '<details class="movecard"><summary><b>'+esc(m.name)+'</b> <small class="muted fr">'+esc(m.fr)+'</small></summary><div class="muted">'+esc(m.how)+'</div>'+
+      m.examples.slice(0,3).map(function(e){ return '<div class="item"><span class="say fr">'+esc(e.fr)+'</span> '+spk(e.fr)+'<div class="muted">'+esc(e.zh)+'　<small>'+esc(e.src)+'</small></div></div>'; }).join('')+
+      (m.codex?'<a class="rlink" href="map.html#cx-'+m.codex+'" target="_blank" rel="noopener">📍 文法資料庫 '+esc(m.codex)+'</a>':'')+'</details>'; }).join(''); });
+  openSheet(h+'<div class="row2"><span></span><button class="btn main" id="mcok">'+(back?'回去':'關閉')+'</button></div>', true);
+  document.getElementById('mcok').onclick=function(){ if(back) back(); else closeSheet(); };
+}
+function upgradeQ(islandId, done){
+  var U=(typeof ISLAND_UPGRADES!=='undefined'?ISLAND_UPGRADES:[]).filter(function(u){ var m=moveById(u.move); return m && m.taught; });
+  if(!U.length) return done();
+  S.upq=S.upq||{};
+  var mine=U.filter(function(u){ return u.ref.split(':')[0]===islandId; }), pool=(mine.length?mine:U).slice().sort(function(a,b){ return (S.upq[a.ref]||0)-(S.upq[b.ref]||0) || Math.random()-.5; });
+  var u=pool[0], right=moveById(u.move), others=shuffle(movesTaught().filter(function(m){ return m.id!==u.move && m.name!==right.name; })).slice(0,3), opts=shuffle([right].concat(others)), t0=Date.now(), fin=false;
+  var rc={kind:'🔧 升級辨識', ref:'up:'+u.ref, q:u.base+' → '+u.up, a:right.name};
+  openSheet('<h3>🔧 升級版用了哪一招？ <small>你的島</small></h3>'+
+    '<div class="muted">原本（A2）</div><div class="qtext fr">'+esc(u.base)+(u.base2?' '+esc(u.base2):'')+'</div>'+
+    '<div class="muted">升級版（'+right.lvl+'）</div><div class="clue fr">'+esc(u.up)+' '+spk(u.up)+'</div>'+
+    '<div class="opts">'+opts.map(function(m,i){ return '<button data-i="'+i+'">'+esc(m.name)+'</button>'; }).join('')+'</div>'+
+    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 跳過</button><span id="slot"></span></div>'+repSlot(rc), true);
+  sheet.querySelectorAll('.opts button').forEach(function(b){ b.onclick=function(){ if(fin) return; fin=true;
+    var m=opts[+b.dataset.i], ok=m===right, ms=Date.now()-t0; rc.pick=m.name; S.upq[u.ref]=(S.upq[u.ref]||0)+1; save();
+    sheet.querySelectorAll('.opts button').forEach(function(x){ if(opts[+x.dataset.i]===right) x.classList.add('ok'); }); if(!ok) b.classList.add('no');
+    if(window.GameLog) GameLog.answer(ok, {kind:'🔧 升級辨識', topic:'upgrade-'+u.move, ref:rc.ref, ms:ms, q:u.up, a:right.name, pick:m.name});
+    speak(u.up); var ex=right.examples[0];
+    document.getElementById('fb').innerHTML=(ok?'✓ ':'👉 <b>'+esc(right.name)+'</b>')+'<div class="muted">'+esc(u.zh)+'</div><div class="ex-rule">💡 '+esc(right.how)+(ex?'<br><span class="fr">課本：'+esc(ex.fr)+'</span> <small>'+esc(ex.src)+'</small>':'')+'</div>';
+    if(ok) S.gold+=2;
+    document.getElementById('slot').outerHTML='<button class="btn main" id="go">繼續</button>'; document.getElementById('go').onclick=done; }; });
+  document.getElementById('skip').onclick=function(){ if(fin) return; fin=true; if(window.GameLog) GameLog.answer(null,{kind:'🔧 升級辨識', ref:rc.ref}); done(); };
+}
 function cafePanel(ch){
   var L=isles(); if(!L.length) return;
   if(S.isleOff===today()){ ch.cool=30; return; }
@@ -2346,7 +2388,8 @@ function cafePanel(ch){
     '<div class="clue fr">'+esc(cur.q_fr)+' '+spk(cur.q_fr)+'</div><details><summary class="muted">中文</summary><div class="muted">'+esc(cur.q_zh)+'</div></details>'+
     '<div class="muted" style="margin-top:6px">一次練 3 句。○ 還沒開始　🌱 剛起步　🌿 快會了　🌳 站穩</div>'+
     '<details><summary class="muted">🗺️ 島嶼地圖（換一座島）</summary><div class="islemap">'+map+'</div></details>'+
-    '<div class="row2"><button class="btn ghost" id="off">今天不練</button><button class="btn ghost" id="later">晚點再來</button><button class="btn main" id="go">☕ 開始</button></div>', true);
+    '<div class="row2"><button class="btn ghost" id="mcard">📘 招式卡</button><button class="btn ghost" id="off">今天不練</button><button class="btn ghost" id="later">晚點再來</button><button class="btn main" id="go">☕ 開始</button></div>', true);
+  document.getElementById('mcard').onclick=function(){ movesCard(function(){ cafePanel(ch); }); };
   sheet.querySelectorAll('[data-isle]').forEach(function(b){ b.onclick=function(){ S.isle.cur=b.dataset.isle; save(); cafePanel(ch); }; });
   document.getElementById('off').onclick=function(){ S.isleOff=today(); save(); closeSheet(); ch.cool=30; };
   document.getElementById('later').onclick=function(){ closeSheet(); ch.cool=5; };
@@ -2359,7 +2402,8 @@ function isleRun(ch, I){
       '<div class="fr" style="font-size:1.4em;letter-spacing:2px">'+I.sents.map(function(_,j){ return isleIcon(I,j); }).join('')+'</div>'+
       (got?'<div class="bagrow"><span>+'+(got*2)+' 🪙</span></div>':'')+'</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
     document.getElementById('ok').onclick=closeSheet; }
-  function next(){ if(k>=list.length) return finish(); var j=list[k++]; ask(j); }
+  var upDone=false;
+  function next(){ if(k>=list.length){ if(!upDone){ upDone=true; return upgradeQ(I.id, finish); } return finish(); } var j=list[k++]; ask(j); }
   function ask(j){
     var s=I.sents[j], ref=I.id+':'+j, r=isleSt(ref), st=r.st, parts=wparts(s.fr), words=parts.filter(function(p){ return p.w; }), t0=Date.now(), html='', blanks=[];
     var head='<h3>☕ '+esc(I.title)+' <small>第 '+(j+1)+' 句・'+['','①四選一','②功能詞','③整塊','④只剩提示詞','⑤默寫'][st]+'</small></h3><div class="muted">'+esc(s.zh)+'</div>';
