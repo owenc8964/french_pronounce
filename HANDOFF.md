@@ -32,6 +32,7 @@
 > - ✂️ **10-21：聽力填空改短段（≤1 分鐘）＋挖單字（三之八十一）**：裝了 whisperkit-cli（沿用 MacWhisper 的 large-v3 模型）抓每字時間點，`tools/didier_align.py` 切 B1 第 1 單元 12 段；⏸ 等 Owen 抽聽桌面的切段。
 > - 👂 **10-20：課本音檔接進聽力解碼頁（三之七十九）**：`listen_decode.html` 預設「📗 課本」，選單元 → 聽整段對話 → 填功能詞，77 段（A2 71＋B1 U1 6）；⏭ 原版選擇題做成小鎮遭遇。
 > - 🎧 **10-19 深夜：課本音檔官方來源找到了（三之七十八）**：e-didier.fr 公開頁、編號＝課本音軌號；A2＋Cahier＋B1 慢速下載中，對照表 A2 120 軌／Cahier 127 軌完成；⏸ 等 Owen 選壓縮品質。
+> - ✍️ **10-23 題庫詳解補寫（三之八十二）**：491 題弱解說改成「為什麼是這個答案」，非變位類弱解說歸零；⏸ 4 題可疑題（題幹錯字／選項重複）等 Owen 決定。
 > - 🐛 **10-21 小鎮：守園卡關修好、開局陽光 150→50、老鼠 pris／prise 停用、🚩 回報鈕、答錯解析改四行＋文法資料庫連結（三之八十（小鎮））**
 > - 📖 **10-19 第 43 課（三之七十七）**：A2 模擬考聽力 20／25＋⭐ **進入 Édito B1**（Unité 1 Famileo）＋三本新書（B1 課本、Communication essentielle、Grammaire en dialogues）文字快取。⏸ 待 Owen：地圖總課數改多少、要不要做「功能詞挖空聽寫＋換口音」（他說換口音就聽不懂）、貼逐字稿補 🎙／🔊 兩個 unit。
 > - 課程進度：**第 42 課**（p.175 動物詞彙與俗語、p.177 被動式、p.178 命令式＋代名詞、DELF A2 模擬閱讀 24／25）筆記＋連動完成（見「三之六十五」）。⭐ **老師宣布 Édito A2 上完**；下次：先練 A2 口說，或直接進 B1 課本（逐字稿糊，看起來是先練口說再進 B1）。
@@ -4932,6 +4933,22 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - 紀錄 `clb7_gender_seen`（每字一物件＋last）：上次錯的 ×4、錯多於對 ×3、連對 3 次且 2 次 <2 秒的 ×0.35。答對也呼叫 `growRec`（key `g:<字>`）→ 隔天以後又答對＝站穩，寵物會長大。每答對 1 枚金幣，中途回去也照給。結算：✓ 數、平均秒數、<2 秒的個數、「再看一眼這幾個」（可點聽）。⛔ 不顯示分母。
 - 🐛 順手發現：`tools/tmp_quest_nosync.js make` 產的暫存頁**自己回報 `sync tag present? true`**——那支工具已經不可靠，這次改用自己的隔離複本（只刪 `<script src=sync_supabase.js>`），⚠️ 以後測 quest.html 別用它。
 - ✅ 試跑（隔離複本，ROOM 沒動）：手機 375 版面；一局 20 題（含 1 跳過、4 錯）→ 結算正確、金幣 +15、紀錄 18 字；無錯誤。
+
+#### 三之八十二、10-23：題庫詳解補寫——491 題「只是把答案重寫一次」的 aNote 改成「為什麼是這個答案」
+
+- 起因：三之八十（小鎮）Owen 說「很多題目的詳解都只是把答案再寫一遍，也沒啥幫助」。
+- 🔧 新工具：`tools/check_weak_anote.js`（列弱解說，判準同 town.html 的 `noteWeak`：清掉「Corrigés：…。」後中文少於 6 字；預設只列非純變位題，`--all` 全列、`--topic=xxx`／`-v` 看題目、`--json` 輸出）；`tools/apply_anote.js notes.json`（把 `{BANK序號: 新aNote}` 寫回 questions.js，⭐ 只動 aNote，其他欄位有任何變動就中止）。
+- 📊 結果：choose＋fill 2030 題，弱解說 613 → **122**（剩下的全是「純變位題」：topic 是變位類＋題幹有「(原形)」，小鎮答錯會自動列六個人稱，所以先不補）。非純變位弱解說 491 → **0**。
+  - ⚠️ 原本說的 572 題是另一個算法；這次以 town.html 實際判準重算是 613（含純變位 122）。
+- ✍️ 補寫原則：一到兩句中文，寫「判斷線索在句子哪裡＋規則」，保留原本的答案標記。例：`mon message 是陽性 COD → le，遇到母音 ai 縮成 l'；複合過去式裡 COD 放在助動詞前：je ne l'ai pas reçu。` ⛔ 沒動題幹、答案、opts、hint。
+- 涵蓋 topic（多到少）：pronoms-y-en、preposition-place-transport、qui-que、gerondif、pronoms-demonstratifs、question-words、vocab-animaux、comparaison、passe-recent、negation、passe-compose（非純變位的）、medias-audio-reseaux、preposition-country、vocab-etudes、discours-rapporte、tout-chaque、accord-participe-passe、place-pronoms-cod-coi、body-health、articles、restriction-ne-que、pronoms-cod-coi……共 100 個 topic。
+- 順手修正的錯誤舊說明：#557 舊 aNote 寫「Je la aime」（錯，應為 je l'aime，已改）；#336 舊說明「habites 是單數動詞所以 pays 是單數」理由不對（已改寫）；#1582 補上 me／te／nous／vous 疊用時順序相反（il me le donne）。
+- ⏸ **可疑題，等 Owen 決定（⛔ 我沒改）**：
+  1. **#623**（vocab-alimentation）題幹「균衡飲食」第一個字是韓文，應為「均衡飲食」。
+  2. **#1136**（qui-que）題幹 `Le salon est la pièce que ils préfèrent…` 應為 `qu'ils`（que 遇母音要縮寫）。
+  3. **#73**（preposition-country）opts 有 12 個、互相重複（au Canada／en France…出現好幾次），看起來是組合題被攤平了，選項畫面會很怪。
+  4. #301（「我 180 公分 Je fais 1m80」）topic 標成 question-words，應該是 faire 用法；不影響作答，只影響分類。
+- ⏭ 下一步（可選）：純變位 122 題要不要也補一句（例如「主詞 nous → 字尾 -ons」）——小鎮已經會列變位表，優先度低；`node tools/check_weak_anote.js --all -v` 可以看清單。
 
 #### 三之八十（小鎮）、10-21：Owen 試玩回饋——守園卡關、平衡、老鼠題、回報鈕、解析改版
 
