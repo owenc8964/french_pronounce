@@ -267,6 +267,18 @@ def edge_db(book, track, at):
     return float(m.group(1)) if m else None
 
 
+def is_word_list(text):
+    """發音練習頁的單字清單（「a. libre / le bras / bravo – b. sucre…」「a. Deux îles touristiques – b. Nous avons regardé」）
+    不是語流，⛔ 不做填空；朗讀的信、短文、完整句子的練習照樣用（10-23）"""
+    items = [x for x in re.split(r'(?:^|\s|–\s?)[a-h]\.\s?', text) if x.strip()]
+    if text.count(' / ') >= 3: return True
+    if len(items) >= 4:
+        lens = sorted(len(WORD.findall(x)) for x in items)
+        sentences = sum(1 for x in items if re.search(r'[.!?…]\s*[–-]?\s*$', x.strip()))
+        return lens[len(lens) // 2] < 5 and sentences < len(items) / 2   # 大多以句號結尾＝完整短句，照用
+    return False
+
+
 def usable(t):
     return t.get('text') and len(t['text']) >= 150 and not re.search(r'Phon|Vocabulaire', t.get('title') or '')
 
@@ -288,6 +300,9 @@ def main():
         segs, hit = segments(book, t)
         for s in segs:
             s['unit'], s['page'], s['title'] = t.get('unit'), t.get('page'), t.get('title')
+        for sg in segs:
+            if sg['ok'] and is_word_list(sg['text']):
+                sg['ok'] = False; sg['why'] = '單字清單（不是語流）'
         for sg in segs:
             (sg['db_in'], sg['dip_in']), (sg['db_out'], sg['dip_out']) = cut_quality(book, n, sg['start']), cut_quality(book, n, sg['end'])
             # 合格：切點真的安靜（≤ −35 dB），或比前後兩秒講話低 ≥ 10 dB（有配樂的訪談，但明顯是句子間的空檔）
