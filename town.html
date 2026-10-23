@@ -368,6 +368,8 @@ function buildWorld(){
   /* 節點與線索的格子一定空出來，旁邊也是 */
   NODE_DEF.concat(CLUES).concat(CHALLENGES).forEach(function(n){ for(var dy=-1;dy<=1;dy++) for(var dx=-1;dx<=1;dx++){ var X=n.x+dx, Y=n.y+dy;
     if(X>0&&Y>0&&X<W-1&&Y<H-1&&region(X,Y)!=='river'){ deco[Y][X]=null; solid[Y][X]=false; } } });
+  /* 🏛 記憶宮殿路線：告示牌所在的格子清空、可以走（河以外） */
+  PALACE.forEach(function(R){ R.pts.forEach(function(p){ var X=p[0], Y=p[1]; if(X>0&&Y>0&&X<W-1&&Y<H-1&&region(X,Y)!=='river'){ deco[Y][X]=null; solid[Y][X]=false; } }); });
   applyBuildings();
   /* 走得到嗎？走不到就把擋路的樹清掉（從節點往小鎮方向） */
   NODE_DEF.concat(CLUES).forEach(function(n){
@@ -442,7 +444,7 @@ function reveal(){
    操作：按住畫面任何地方＝搖桿；方向鍵／WASD
    ============================================================ */
 var lastClose=0, ttsUnlocked=false;
-cv.addEventListener('pointerdown', function(e){ if(busy || performance.now()-lastClose<250) return; try{ cv.setPointerCapture(e.pointerId); }catch(err){} joy={id:e.pointerId, ox:e.clientX, oy:e.clientY, x:e.clientX, y:e.clientY}; });
+cv.addEventListener('pointerdown', function(e){ if(busy || performance.now()-lastClose<250) return; if(palaceTap(e)) return; try{ cv.setPointerCapture(e.pointerId); }catch(err){} joy={id:e.pointerId, ox:e.clientX, oy:e.clientY, x:e.clientX, y:e.clientY}; });
 cv.addEventListener('pointermove', function(e){ if(joy&&joy.id===e.pointerId){ joy.x=e.clientX; joy.y=e.clientY; } });
 function endJoy(e){ if(joy&&joy.id===e.pointerId) joy=null; unlockTts(); }
 /* iOS：朗讀要在手勢裡先唸過一次才解鎖（觸控時算手勢的是放手那一下）（審查 #14、手感研究 9） */
@@ -2402,6 +2404,94 @@ sheet.addEventListener('click', function(e){ var b=e.target.closest && e.target.
   var v=(document.getElementById('mineIn')||{}).value; v=String(v||'').trim(); if(!v) return;
   try{ var a=JSON.parse(localStorage.getItem('clb7_isle_mine'))||[]; a.push({ts:Date.now(), ref:b.dataset.ref, fr:b.dataset.fr, mine:v}); localStorage.setItem('clb7_isle_mine', JSON.stringify(a.slice(-300))); }catch(er){}
   document.getElementById('mineOk').textContent='✓ 記下了，我之後會看'; document.getElementById('mineIn').value=''; });
+/* ============================================================
+   🏛 記憶宮殿路線（10-23 Owen：「我覺得很難背……還是走一走會看到這完整句？不是純考試，而是真的有助於記憶」→「記憶宮殿路線做吧」）
+   ⭐ 每座島＝小鎮一條固定路線，每一段（拆句後的單位）＝路邊固定位置的告示牌，編號永不改（memory user_memory_palace_style：靠位置記）
+   ⭐ ⛔ 不擋路：走到告示牌旁，句子直接浮在牌子上方（邊走邊看）；想自我檢查才點泡泡
+   ⭐ 三階段（不計分，自己推進）：0 認識＝整句＋中文 → 1 提示＝中文＋首字母 → 2 只剩位置＝「📍第 N 站」
+      點開翻牌後「對上了」往下一階（第 2 階則記下日期）、「沒對上」退一階
+   ⭐ 先做面談最常考的 5 座：自我介紹、家庭、工作、興趣、為什麼去加拿大（AC8 在河北岸，要先修好橋）
+   進度存 S.palace[ref] = { st, last }（ref 跟咖啡館同一套：AC1:1.2）
+   ============================================================ */
+function pRoute(segs){ var pts=[]; segs.forEach(function(sg){ var x=sg[0], y=sg[1], x2=sg[2], y2=sg[3], dx=Math.sign(x2-x), dy=Math.sign(y2-y);
+  while(true){ pts.push([x,y]); if(x===x2 && y===y2) break; x+=dx; y+=dy; } }); return pts; }
+var PALACE=[
+  {id:'AC1', name:'自我介紹之路', where:'廣場往北的大路，到橋邊往東轉', pts:pRoute([[21,28,21,11],[22,11,26,11]])},
+  {id:'AC3', name:'工作之路',     where:'麥田南邊那一排，由西往東',     pts:pRoute([[13,20,27,20],[27,19,27,19]])},
+  {id:'AC2', name:'家庭之路',     where:'森林邊緣，由南往北',           pts:pRoute([[12,33,12,11]])},
+  {id:'AC5', name:'興趣之路',     where:'礦坑裡的直路，由南往北',       pts:pRoute([[32,33,32,11]])},
+  {id:'AC8', name:'加拿大之路',   where:'過橋後河的北岸，由西往東',     pts:pRoute([[4,5,35,5]])}
+];
+var PSIGNS=null;
+function palaceSigns(){
+  if(PSIGNS) return PSIGNS; PSIGNS=[];
+  PALACE.forEach(function(R){ var I=isles().filter(function(x){ return x.id===R.id; })[0]; if(!I) return;
+    I.sents.forEach(function(s,i){ var p=R.pts[i]; if(!p) return; PSIGNS.push({x:p[0], y:p[1], n:i+1, R:R, I:I, s:s, ref:I.id+':'+s.key}); }); });
+  return PSIGNS;
+}
+function pst(ref){ S.palace=S.palace||{}; return S.palace[ref]||{st:0, last:0}; }
+function firstLetters(fr){ return wparts(fr).map(function(p){ return p.w ? p.t.charAt(0)+(/['’]$/.test(p.t)?'\'':'') : p.t.replace(/\s+/g,' '); }).join('').replace(/\s+/g,' '); }
+var pBubble=null;   /* 這一幀畫出來的泡泡：{sign, x, y, w, h}（CSS px），點擊判定用 */
+function palaceNear(){
+  var best=null, bd=1.7; palaceSigns().forEach(function(g){ var d=Math.hypot(g.x+.5-hero.x, g.y+.5-hero.y); if(d<bd){ bd=d; best=g; } }); return best;
+}
+function drawPalace(list,ox,oy,ts){
+  palaceSigns().forEach(function(g){ list.push({y:g.y+.9, f:function(){
+    var px=ox+g.x*ts, py=oy+g.y*ts, st=pst(g.ref).st, col=['#e8e1cf','#8fc3ff','#f0c95a'][st];
+    cx.fillStyle='#6b4a2a'; cx.fillRect(px+ts*.46, py+ts*.45, ts*.08, ts*.5);
+    cx.fillStyle='#2a1a08'; cx.fillRect(px+ts*.18-1, py+ts*.18-1, ts*.64+2, ts*.34+2);
+    cx.fillStyle=col; cx.fillRect(px+ts*.18, py+ts*.18, ts*.64, ts*.34);
+    cx.fillStyle='#2a1a08'; cx.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; cx.textAlign='center'; cx.fillText(String(g.n), px+ts*.5, py+ts*.43);
+    if(g.n===1){ cx.font='bold '+Math.round(ts*.22)+'px Cubic11, system-ui'; var lab='🏛 '+g.R.name, tw=cx.measureText(lab).width+ts*.2; cx.fillStyle='rgba(0,0,0,.6)'; cx.fillRect(px+ts*.5-tw/2, py-ts*.32, tw, ts*.32); cx.fillStyle='#f0e0b0'; cx.fillText(lab, px+ts*.5, py-ts*.09); }
+  }}); });
+}
+function wrapLines(text, maxW){ var words=String(text).split(/\s+/), lines=[], cur=''; words.forEach(function(w){ var t=cur?cur+' '+w:w; if(cx.measureText(t).width>maxW && cur){ lines.push(cur); cur=w; } else cur=t; }); if(cur) lines.push(cur); return lines; }
+function drawPalaceBubble(ox,oy,ts,w){
+  pBubble=null; if(busy) return; var g=palaceNear(); if(!g) return;
+  var st=pst(g.ref).st, fsz=Math.round(15*DPR), small=Math.round(12*DPR), maxW=Math.min(w*.86, 340*DPR);
+  cx.font=fsz+'px Cubic11, system-ui';
+  var main = st===0 ? g.s.fr : st===1 ? firstLetters(g.s.fr) : '📍 第 '+g.n+' 站　這裡是哪一句？';
+  var lines=wrapLines(main, maxW-20*DPR), sub = st===0||st===1 ? g.s.zh : '（點我翻開）';
+  cx.font=small+'px Cubic11, system-ui'; var sl=wrapLines(sub, maxW-20*DPR).slice(0,2);
+  var bw=maxW, bh=(lines.length*fsz*1.35)+(sl.length*small*1.35)+18*DPR+(g.s.ctx&&st===0?small*1.4:0);
+  var bx=Math.round(Math.max(8*DPR, Math.min(w-bw-8*DPR, ox+(g.x+.5)*ts-bw/2))), by=Math.round(oy+g.y*ts-bh-10*DPR);
+  cx.fillStyle='rgba(18,26,20,.92)'; cx.fillRect(bx,by,bw,bh); cx.strokeStyle=['#e8e1cf','#8fc3ff','#f0c95a'][st]; cx.lineWidth=2*DPR; cx.strokeRect(bx,by,bw,bh);
+  var yy=by+10*DPR+fsz; cx.textAlign='left';
+  cx.font=small+'px Cubic11, system-ui'; cx.fillStyle='#9db1a2'; cx.fillText('🏛 '+g.R.name+'・'+g.n, bx+10*DPR, by+small+4*DPR);
+  yy+=small*.6;
+  if(g.s.ctx && st===0){ cx.fillStyle='#7f9585'; cx.fillText('⋯ '+g.s.ctx.slice(-40), bx+10*DPR, yy); yy+=small*1.4; }
+  cx.font=fsz+'px Cubic11, system-ui'; cx.fillStyle='#fff3c0'; lines.forEach(function(L){ cx.fillText(L, bx+10*DPR, yy); yy+=fsz*1.35; });
+  cx.font=small+'px Cubic11, system-ui'; cx.fillStyle='#b9c7bc'; sl.forEach(function(L){ cx.fillText(L, bx+10*DPR, yy); yy+=small*1.35; });
+  pBubble={g:g, x:bx/DPR, y:by/DPR, w:bw/DPR, h:bh/DPR};
+}
+function palaceTap(e){
+  if(!pBubble || busy) return false; var b=pBubble;
+  if(e.clientX<b.x || e.clientX>b.x+b.w || e.clientY<b.y || e.clientY>b.y+b.h) return false;
+  palaceOpen(b.g); return true;
+}
+function palaceOpen(g){
+  var P=pst(g.ref), st=P.st, s=g.s, head='<h3>🏛 '+esc(g.R.name)+' <small>第 '+g.n+' 站・'+['認識','提示','只剩位置'][st]+'</small></h3>';
+  var setSt=function(n){ S.palace=S.palace||{}; S.palace[g.ref]={st:Math.max(0,Math.min(2,n)), last:Date.now()}; save(); };
+  var full='<div class="clue fr">'+(s.ctx?'<span class="muted">⋯ '+esc(s.ctx)+'</span><br>':'')+esc(s.fr)+' '+spk(s.fr)+'</div><div class="muted">'+esc(s.zh)+'</div>';
+  if(st===0){
+    var chunks=wparts(s.fr).filter(function(p){ return p.w; }).length>8 ? '<div class="muted" style="margin-top:4px">語塊：'+esc(s.fr).replace(/([,:;—])\s*/g,'$1 ║ ')+'</div>' : '';
+    openSheet(head+full+chunks+'<div class="muted" style="margin-top:6px">出聲唸一遍。記得了，下次這塊牌子就只給中文和首字母。</div>'+mineBox(g.ref, s.fr)+
+      '<div class="row2"><button class="btn ghost" id="pclose">再看看</button><button class="btn main" id="pok">我記得了 →</button></div>', true);
+    speak(s.fr);
+    document.getElementById('pok').onclick=function(){ setSt(1); if(window.GameLog) GameLog.event('palace_up'); closeSheet(); toast('🏛 第 '+g.n+' 站：下次換成提示'); };
+    document.getElementById('pclose').onclick=closeSheet; return;
+  }
+  var cue = st===1 ? '<div class="qtext">'+esc(s.zh)+'</div><div class="clue fr">'+esc(firstLetters(s.fr))+'</div>' : '<div class="qtext">📍 第 '+g.n+' 站——這裡是哪一句？</div><details><summary class="muted">給我中文</summary><div class="muted">'+esc(s.zh)+'</div></details>';
+  openSheet(head+cue+'<div class="muted">先在心裡或出聲講一遍，再翻開。</div><div id="prev"></div>'+
+    '<div class="row2" id="prow"><button class="btn ghost" id="pclose">晚點</button><button class="btn main" id="pflip">翻開</button></div>', true);
+  document.getElementById('pclose').onclick=closeSheet;
+  document.getElementById('pflip').onclick=function(){ speak(s.fr);
+    document.getElementById('prev').innerHTML=full+mineBox(g.ref, s.fr);
+    document.getElementById('prow').innerHTML='<button class="btn" id="pno">沒對上</button><button class="btn main" id="pyes">對上了 ✓</button>';
+    document.getElementById('pyes').onclick=function(){ if(window.GameLog) GameLog.answer(true,{kind:'🏛 宮殿', topic:'palace', ref:'pal:'+g.ref, q:s.zh, a:s.fr}); setSt(st===1?2:2); closeSheet(); toast(st===1?'🏛 第 '+g.n+' 站：下次只剩位置':'🏛 第 '+g.n+' 站：記得 ✓'); };
+    document.getElementById('pno').onclick=function(){ if(window.GameLog) GameLog.answer(false,{kind:'🏛 宮殿', topic:'palace', ref:'pal:'+g.ref, q:s.zh, a:s.fr}); setSt(st-1); closeSheet(); toast('🏛 第 '+g.n+' 站：退回上一階，多看幾次'); };
+  };
+}
 function cafePanel(ch){
   var L=isles(); if(!L.length) return;
   if(S.isleOff===today()){ ch.cool=30; return; }
@@ -2411,6 +2501,7 @@ function cafePanel(ch){
   openSheet('<h3>☕ 咖啡館 <small>口說島</small></h3><div class="story">老闆一邊擦杯子一邊問你：</div>'+
     '<div class="clue fr">'+esc(cur.q_fr)+' '+spk(cur.q_fr)+'</div><details><summary class="muted">中文</summary><div class="muted">'+esc(cur.q_zh)+'</div></details>'+
     '<div class="muted" style="margin-top:6px">一次練 3 句。○ 還沒開始　🌱 剛起步　🌿 快會了　🌳 站穩</div>'+
+    (function(){ var R=PALACE.filter(function(x){ return x.id===cur.id; })[0]; return R?'<div class="muted">🏛 這座島的記憶宮殿：<b>'+esc(R.name)+'</b>（'+esc(R.where)+'）——走過告示牌就會看到句子</div>':''; })()+
     '<details><summary class="muted">🗺️ 島嶼地圖（換一座島）</summary><div class="islemap">'+map+'</div></details>'+
     '<div class="row2"><button class="btn ghost" id="mcard">📘 招式卡</button><button class="btn ghost" id="off">今天不練</button><button class="btn ghost" id="later">晚點再來</button><button class="btn main" id="go">☕ 開始</button></div>', true);
   document.getElementById('mcard').onclick=function(){ movesCard(function(){ cafePanel(ch); }); };
@@ -2857,6 +2948,7 @@ function draw(dt){
   rats.forEach(function(r){ list.push({y:r.y, f:drawSprite(SPR.rat,r.x,r.y,ox,oy,ts,r.face,Math.abs(Math.sin(clock*14))*.06)}); });
   drawWild(list,ox,oy,ts);
   drawChallenges(list,ox,oy,ts);
+  drawPalace(list,ox,oy,ts);
   list.push({y:hero.y, f:function(){
     var b=hero.moving>.05?Math.abs(Math.sin(hero.bob))*.12:Math.sin(clock*2)*.02;
     cx.fillStyle='rgba(0,0,0,.25)'; cx.beginPath(); cx.ellipse(ox+hero.x*ts, oy+hero.y*ts+ts*.38, ts*.28, ts*.1, 0, 0, 7); cx.fill();
@@ -2879,6 +2971,7 @@ function draw(dt){
   CHALLENGES.forEach(function(ch){ if(seen[ch.y*W+ch.x]==='1') return; var px=ox+(ch.x+.5)*ts, py=oy+ch.y*ts, b=Math.sin(clock*3)*ts*.05;
     cx.font=Math.round(ts*.5)+'px system-ui'; cx.textAlign='center'; cx.globalAlpha=.9; cx.fillText(ch.em, px, py+ts*.4+b);
     cx.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; var tw=cx.measureText(ch.name).width+ts*.2; cx.fillStyle='rgba(0,0,0,.6)'; cx.fillRect(px-tw/2, py+ts*.6, tw, ts*.34); cx.fillStyle='#f0e0b0'; cx.fillText(ch.name, px, py+ts*.85); cx.globalAlpha=1; });
+  drawPalaceBubble(ox,oy,ts,w);
   /* 金色箭頭 */
   var qi=questInfo(); if(qi.to && !busy) drawArrow(qi.to,ox,oy,ts,w,h);
   /* 搖桿 */
