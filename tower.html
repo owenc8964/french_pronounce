@@ -237,16 +237,18 @@ function backToTown(win){
 function newGame(){
   /* ⚖️ 10-21（Owen：「好像都不用答對也有足夠的能量贏，這種破壞遊戲平衡的要修正」）：開局 150 → 50，只夠種一株；
      四條路至少要四株才守得住 → 一定要靠答對賺陽光（答對是唯一的陽光來源） */
-  G={wave:1, hearts:3, sun:50, combo:0, maxCombo:0, plants:[], zombies:[], queue:[], spawnT:9, sel:null, star:0, starMode:false,
+  /* ⚖️ 10-25（Owen 回報「太難了」：第 1 波就剩 1 顆心、陽光 25）：開局 50 → 75、選擇題答對 25 → 35、第 1 波 7 隻 → 5 隻且間隔拉長。
+     不答題仍守不住（一株只顧得了一條路），答對還是陽光的主要來源 */
+  G={wave:1, hearts:3, sun:75, combo:0, maxCombo:0, plants:[], zombies:[], queue:[], spawnT:9, sel:null, star:0, starMode:false,
      rot:0, lastTopic:null, redo:[], waveMiss:[], kills:0, waveKills:0, earned:0, paused:false, over:false, q:null};
   peas=[]; floats=[]; bolts=[];
   buildWave(); renderBar(); nextQ(); hud();
 }
 function buildWave(){
-  var n=G.wave, list=[], cnt=5+2*n;
+  var n=G.wave, list=[], cnt=n===1?5:5+2*n;
   for(var i=0;i<cnt;i++){ var r=Math.random(), t='walk';
     if(n>=2 && r<.25+.04*n) t='fast'; if(n>=3 && r>.82-.03*n) t='tank'; list.push(t); }
-  G.queue=list; G.spawnT=n===1?9:5;
+  G.queue=list; G.spawnT=n===1?12:6;
 }
 function spawnZ(){
   var t=G.queue.shift(), Z=ZOMB[t], row=Math.floor(Math.random()*ROWS), hp=Z.hp+Math.floor((G.wave-1)*.6);
@@ -355,7 +357,7 @@ function answerType(v){
 function answerChoose(o, btn){
   var q=G.q; if(q.done) return; q.done=true; q.pick=o; var c=q.c, secs=clock-q.t0, fb=document.getElementById('fb'), ok=o===c.right;
   document.querySelectorAll('.opts button').forEach(function(b){ if(b.textContent===c.right) b.classList.add('ok'); });
-  if(ok){ rec(c,true); reward(25,10,secs<3); fb.innerHTML='✓ <span class="ans">'+esc(sayOf(c.q,c.right))+'</span>'; setTimeout(nextQ, 650); }
+  if(ok){ rec(c,true); reward(35,10,secs<3); fb.innerHTML='✓ <span class="ans">'+esc(sayOf(c.q,c.right))+'</span>'; setTimeout(nextQ, 650); }
   else { btn.classList.add('no'); miss(c); wrongFb(c, c.right); }
 }
 
@@ -366,7 +368,7 @@ var last=performance.now();
 function loop(t){ var dt=Math.min(.05,(t-last)/1000); last=t; clock+=dt; if(G && G.plants && !G.paused && !G.over) update(dt); draw(); requestAnimationFrame(loop); }
 function update(dt){
   G.spawnT-=dt;
-  if(G.queue.length && G.spawnT<=0){ spawnZ(); G.spawnT=Math.max(2.4, 6-.45*G.wave)+Math.random()*1.5; }
+  if(G.queue.length && G.spawnT<=0){ spawnZ(); G.spawnT=(G.wave===1?9:Math.max(2.6, 6.5-.45*G.wave))+Math.random()*1.5; }
   G.plants.forEach(function(p){
     if(p.k==='shoot'){ p.cd-=dt; var target=G.zombies.some(function(z){ return !z.dead && z.row===p.row && z.x>p.col && z.x<COLS+.2; });
       if(target && p.cd<=0){ p.cd=1.35; peas.push({row:p.row, x:p.col+.7, sp:4}); } }

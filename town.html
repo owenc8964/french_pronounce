@@ -633,6 +633,22 @@ function ruleBrief(topic){
   if(typeof gramPointOfTopic==='function'){ var g=gramPointOfTopic(topic); if(g && g.rule && g.rule.points && g.rule.points.length) return g.rule.points[0]; }
   return '';
 }
+/* 🧭 概念卡（10-25 Owen：「這個解釋沒解釋到 que 跟 où 的差別，我分不出來，你寫的解釋不在點上」「不懂，但是是 ils 吧？」）
+   → 他自己說「分不出來」＝概念缺口（教學鐵律）：給「怎麼判斷」的步驟，不是再寫一次答案 */
+var CONCEPT_CARD={
+  'qui-que':function(q,right,pick){ var w=[right,pick].join(' '); if(!/\b(où|que|qu'|qui)\b/i.test(w)) return '';
+    return '🧭 <b>qui／que／où 怎麼分</b>：把空格前的名詞放回後半句，看它在那裡是什麼角色——'+
+      '<br>・後面直接接動詞，名詞當<b>主詞</b> → <b>qui</b>（l\'annonce <u>qui</u> est sur le site）'+
+      '<br>・後半句的動詞<b>少了一個東西</b>、中間沒有介系詞 → <b>que</b>（vous proposez <u>l\'annonce</u> → l\'annonce <u>que</u> vous proposez）'+
+      '<br>・原本是<b>介系詞＋地點／時間</b>（dans, à, en…）→ <b>où</b>（vous habitez <u>dans</u> la ville → la ville <u>où</u> vous habitez）'+
+      '<br>⚠️ 名詞是不是地點不重要：la pièce <u>que</u> je préfère（je préfère la pièce，沒有介系詞）'; },
+  'accord-participe-passe':function(q,right,pick){
+    return '🧭 <b>過去分詞要不要配合</b>：先看助動詞——'+
+      '<br>・<b>être</b> → 跟<b>主詞</b>配合（elles sont allées）'+
+      '<br>・<b>avoir</b> → ⛔ <b>從來不看主詞</b>；只有<b>直接受詞跑到 avoir 前面</b>（que／la／les／l\'）時，才跟那個受詞配合'+
+      '<br>　Les anecdotes <u>qu\'</u>ils ont entendu<b>es</b>：que＝les anecdotes（陰性複數）在 ont 前面 → -es；ils 是主詞，不管它'+
+      '<br>　Nous avons proposé <u>un itinéraire</u>：受詞在後面 → 不變'; }
+};
 /* q：題目；pick：他選／打的；right：正解；said：正確整句（可空） */
 function explainHtml(q, pick, right, said){
   var h='', why='';
@@ -646,6 +662,7 @@ function explainHtml(q, pick, right, said){
   if(said || zhs) h+='<div class="ex-ok">✓ '+(said?'<span class="say">'+esc(said)+'</span> '+spk(said):'')+(zhs&&/[一-鿿]/.test(zhs)?'<div class="muted">'+esc(zhs)+'</div>':'')+'</div>';
   var n=noteClean(q.aNote), brief=noteWeak(n)?ruleBrief(q.topic):'';
   if(n||brief) h+='<div class="ex-rule">💡 '+(n?note(n):'')+(brief?(n?'<br>':'')+esc(brief):'')+'</div>';
+  var cc=CONCEPT_CARD[q.topic] && CONCEPT_CARD[q.topic](q, String(right||''), String(pick||'')); if(cc) h+='<div class="ex-rule">'+cc+'</div>';
   h+=conjRow(q, right, pick);
   var L=ruleLink(q.topic); if(L) h+='<div>'+L+'</div>';
   return h;
@@ -734,9 +751,23 @@ function askChoose(head, q, cb){
   return askWhole(head+fmtTag(q,2), q, function(res,ms,ch,right){ fmtMark(q, res, 2, ms); cb(res===true, ms, ch, right); });
 }
 /* ① 自己打空格（cb 跟 askChoose 一樣：ok, ms, 打的字, 正解） */
+/* 10-25 Owen 回報三題升格①：「答案看不出來」「沒有寫要填什麼」「沒有中文不知道怎麼填」
+   → 選擇題拿掉選項後，空格要填哪個動詞就不見了。題幹沒有（原形）時，從正解反查動詞原形補上；中文做成開關（純法語介面的慣例） */
+var INF_OF=null;
+function infOf(ans){
+  if(typeof VERBS_FULL==='undefined') return '';
+  if(!INF_OF){ INF_OF={}; VERBS_FULL.forEach(function(v){
+    if(v.pp) [v.pp, v.pp+'e', v.pp+'s', v.pp+'es'].forEach(function(f){ if(!INF_OF[f]) INF_OF[f]=v.inf; });
+    if(typeof drillForms==='function') ['present','imparfait','futur-simple','conditionnel','subjonctif'].forEach(function(t){ var fs=null; try{ fs=drillForms(v,t); }catch(e){} (fs||[]).forEach(function(x){ String(x).split('|').forEach(function(a){ a=a.toLowerCase(); if(!INF_OF[a]) INF_OF[a]=v.inf; }); }); }); }); }
+  var w=String(ans).toLowerCase().trim().replace(/^(nous |vous |me |te |se |m'|t'|s')/,'').replace(/^(ai|as|a|avons|avez|ont|suis|es|est|sommes|êtes|sont) /,'');
+  if(INF_OF[w]) return INF_OF[w];
+  var m=w.match(/^([a-zàâçéèêëîïôûùüÿœ]{2,})é(e|s|es)?$/); return m ? m[1]+'er' : '';   /* 規則的 -er 動詞（proposé → proposer）不一定在動詞表裡 */
+}
 function askTyped(head, q, cb){
   var t0=Date.now(), right=clean(fmtRight(q)), alts=String(q.a).split('|').concat([right]), rc={kind:'升格①', ref:qRef(q), q:q.q, a:q.a};
-  openSheet('<h3>'+head+'</h3><div class="qtext fr">'+esc(q.q)+'</div>'+(q.hint?'<div class="hint">💡 '+esc(q.hint)+'</div>':'')+
+  var inf=/\(\s*[a-zàâçéèêëîïôûùüÿœ' ]+\s*\)/i.test(q.q) ? '' : infOf(right), zhT=q.zh || (typeof q._i==='number' && BANK[q._i] && BANK[q._i].zh) || '';
+  openSheet('<h3>'+head+'</h3><div class="qtext fr">'+esc(q.q)+(inf?' <span class="muted">（'+esc(inf)+'）</span>':'')+'</div>'+(q.hint?'<div class="hint">💡 '+esc(q.hint)+'</div>':'')+
+    (zhT&&/[一-鿿]/.test(zhT)?'<div class="hint"><button class="btn ghost" style="padding:2px 8px;font-size:.85em" onclick="var e=document.createElement(\'span\');e.textContent=\'🈶 \'+this.dataset.z;this.replaceWith(e)" data-z="'+esc(zhT)+'">🈶 中文</button></div>':'')+
     '<input class="fill" id="tin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="打出空格裡的字">'+
     '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><button class="btn main" id="tsub">交出去</button></div>'+repSlot(rc), true);
   var inp=document.getElementById('tin'), sent=false; setTimeout(function(){ inp.focus(); },50);
@@ -1423,7 +1454,17 @@ function guide(cost, doorPt){
   if(S.gold<(cost.gold||0)) return {to:door('stall'), need:'🪙', money:true};
   return {to:doorPt, ready:true};
 }
+/* 10-25 Owen：「魚在哪拿，應該可以點了提醒我去哪裡打」→ 交貨攤的材料可以點，箭頭帶過去（走到附近就取消） */
+var pointTo=null;
+var WHERE={ ore:{kinds:['rock'], t:'⛏ 礦石：東邊礦坑的石頭'}, obj:{kinds:['bush'], t:'📦 東西：西邊森林的草叢'}, fish:{kinds:['fish'], t:'🐟 魚：北邊河岸的釣點（要先修好橋）'} };
+function showWhere(k){
+  var W=WHERE[k]; if(!W) return; closeSheet();
+  if(k==='fish' && !S.built.bridge){ pointTo={t:'🐟 魚在河的北岸——先修好北邊的 <b>橋</b>（⛏×4 📦×3）', to:{x:BRIDGE.door[0],y:BRIDGE.door[1]}}; toast('🐟 要先修好北邊的橋才釣得到魚'); return; }
+  var to=nearestNode(W.kinds); if(!to){ toast('附近的都採完了，明天會再長出來'); return; }
+  pointTo={t:'跟著箭頭去找 '+W.t, to:to}; toast('跟著金色箭頭走 → '+W.t);
+}
 function questInfo(){
+  if(pointTo){ if(Math.hypot(pointTo.to.x-hero.x, pointTo.to.y-hero.y)<1.6) pointTo=null; else return pointTo; }
   var qb=questBarInfo(); if(qb) return qb;
   var b=S.built, g, full=bag.length>=S.bagCap;
   if(!b.cottage) return {t:'走進 🌳 森林的草叢收集東西進 <b>📖 圖鑑</b>——再收 '+Math.max(1,DEX_MILESTONE-dexCount())+' 種，就會有人回到鎮上', to: region(Math.floor(hero.x),Math.floor(hero.y))==='forest' ? null : {x:8.5,y:19.5}};
@@ -1560,14 +1601,15 @@ function openStall(){
   h+='<div class="muted">背包（點一件＝賣掉那一件，1 🪙）：</div><div class="bagrow">'+(bag.length?bag.map(function(b,i){ return '<span data-sell="'+i+'" style="cursor:pointer" class="'+(b.good?'':'bad')+'">'+pix(b.em,18)+' '+esc(b.name)+(b.good?'':' 瑕')+'</span>'; }).join(''):'<span>空的</span>')+'</div>';
   orders.forEach(function(o,i){
     var can=count('ore')>=o.ore && count('obj')>=o.obj && count('fish')>=o.fish;
-    h+='<div class="order"><div><b>'+esc(o.who)+'</b><div class="need">要 '+(o.ore?'⛏×'+o.ore+' ':'')+(o.obj?'📦×'+o.obj+' ':'')+(o.fish?'🐟×'+o.fish:'')+'</div></div>'+
+    h+='<div class="order"><div><b>'+esc(o.who)+'</b><div class="need">要 '+(o.ore?'<a data-where="ore" style="cursor:pointer;text-decoration:underline">⛏×'+o.ore+'</a> ':'')+(o.obj?'<a data-where="obj" style="cursor:pointer;text-decoration:underline">📦×'+o.obj+'</a> ':'')+(o.fish?'<a data-where="fish" style="cursor:pointer;text-decoration:underline">🐟×'+o.fish+'</a> ':'')+'</div></div>'+
       '<button class="btn '+(can?'main':'')+'" data-o="'+i+'" '+(can?'':'disabled style="opacity:.4"')+'>交貨</button></div>';
   });
-  h+='<div class="muted">完整品一件 5 🪙、瑕疵品 2 🪙；交貨時寫對一句，整單翻倍。⚠️ 蓋房子的材料要留著。</div>';
+  h+='<div class="muted">點 ⛏／📦／🐟 會用箭頭帶你去哪裡拿。完整品一件 5 🪙、瑕疵品 2 🪙；交貨時寫對一句，整單翻倍。⚠️ 蓋房子的材料要留著。</div>';
   h+='<div class="shop">'+buyBtn('bag','🎒 背包 +3',costBag())+buyBtn('lamp','🏮 提燈：白天 +40 秒',costLamp())+'</div>';
   h+='<div class="row2"><button class="btn ghost" id="dump">整包便宜賣掉…</button><button class="btn main" id="out">出門 →</button></div>';
   openSheet(h, true);
   sheet.querySelectorAll('[data-o]').forEach(function(b){ b.onclick=function(){ deliver(+b.dataset.o); }; });
+  sheet.querySelectorAll('[data-where]').forEach(function(b){ b.onclick=function(){ showWhere(b.dataset.where); }; });
   sheet.querySelectorAll('[data-buy]').forEach(function(b){ b.onclick=function(){ buy(b.dataset.buy, openStall); }; });
   sheet.querySelectorAll('[data-sell]').forEach(function(b){ b.onclick=function(){ bag.splice(+b.dataset.sell,1); S.gold+=1; save(); hud(); openStall(); }; });
   document.getElementById('dump').onclick=function(){ if(!bag.length) return; if(!confirm('把背包 '+bag.length+' 件全部用 1 🪙 賣掉？（蓋房子的材料也會一起賣掉）')) return; S.gold+=bag.length; bag=[]; save(); hud(); openStall(); };
@@ -2419,7 +2461,9 @@ function readNews(){
     var qi=+b.parentNode.dataset.q, q=a.questions[qi]; if(res[qi]!=null) return;
     var ok=+b.dataset.o===q.ans; res[qi]=ok; if(ok) nOk++;
     b.parentNode.querySelectorAll('button').forEach(function(x){ if(+x.dataset.o===q.ans) x.classList.add('ok'); }); if(!ok) b.classList.add('no');
-    document.getElementById('nfb'+qi).innerHTML=(ok?'✓ ':'👉 ')+'<span class="muted">'+esc(q.expl||'')+'</span>';
+    /* 10-25 Owen：「解釋都英文」→ 答錯直接附中文；答對留法文＋🈶 開關（純法語介面慣例） */
+    var zx=q.explZh?(ok?'<div><button class="btn ghost" style="padding:2px 8px;font-size:.85em" onclick="this.parentNode.innerHTML=\'🈶 \'+this.dataset.z" data-z="'+esc(esc(q.explZh))+'">🈶 中文</button></div>':'<div style="margin-top:4px">🈶 '+esc(q.explZh)+'</div>'):'';
+    document.getElementById('nfb'+qi).innerHTML=(ok?'✓ ':'👉 ')+'<span class="muted">'+esc(q.expl||'')+'</span>'+zx;
     var sk=sheet.querySelector('[data-nskip="'+qi+'"]'); if(sk) sk.style.visibility='hidden';
     if(window.GameLog) GameLog.answer(ok, {kind:'📰 閱讀', topic:'reading', ref:'read:'+a.id+':'+qi, q:a.title+' — '+q.q, a:q.opts[q.ans], pick:q.opts[+b.dataset.o]});
   }; });
@@ -2569,19 +2613,23 @@ var pBubble=null;   /* 這一幀畫出來的泡泡：{sign, x, y, w, h}（CSS px
 function palaceNear(){
   var best=null, bd=1.7; palaceSigns().forEach(function(g){ var d=Math.hypot(g.x+.5-hero.x, g.y+.5-hero.y); if(d<bd){ bd=d; best=g; } }); return best;
 }
+/* 10-25 Owen：「一格一格的超醜，還有點擋路，會遮到很多東西」
+   → 告示牌改成地上的小圓石（畫在地面層、不跟房子搶前後），⛔ 不畫號碼框；只畫角色附近 4 格內的；
+     路名只在靠近第 1 站時出現。泡泡只在「停下來」時才跳（走路經過不會一直被蓋住） */
 function drawPalace(list,ox,oy,ts){
-  palaceSigns().forEach(function(g){ list.push({y:g.y+.9, f:function(){
-    var px=ox+g.x*ts, py=oy+g.y*ts, st=pst(g.ref).st, col=['#e8e1cf','#8fc3ff','#f0c95a'][st];
-    cx.fillStyle='#6b4a2a'; cx.fillRect(px+ts*.46, py+ts*.45, ts*.08, ts*.5);
-    cx.fillStyle='#2a1a08'; cx.fillRect(px+ts*.18-1, py+ts*.18-1, ts*.64+2, ts*.34+2);
-    cx.fillStyle=col; cx.fillRect(px+ts*.18, py+ts*.18, ts*.64, ts*.34);
-    cx.fillStyle='#2a1a08'; cx.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; cx.textAlign='center'; cx.fillText(String(g.n), px+ts*.5, py+ts*.43);
-    if(g.n===1){ cx.font='bold '+Math.round(ts*.22)+'px Cubic11, system-ui'; var lab='🏛 '+g.R.name, tw=cx.measureText(lab).width+ts*.2; cx.fillStyle='rgba(0,0,0,.6)'; cx.fillRect(px+ts*.5-tw/2, py-ts*.32, tw, ts*.32); cx.fillStyle='#f0e0b0'; cx.fillText(lab, px+ts*.5, py-ts*.09); }
+  palaceSigns().forEach(function(g){ if(Math.abs(g.x+.5-hero.x)>4 || Math.abs(g.y+.5-hero.y)>4) return;
+    list.push({y:-999, f:function(){
+    var px=ox+(g.x+.5)*ts, py=oy+(g.y+.62)*ts, st=pst(g.ref).st, col=['rgba(232,225,207,.75)','rgba(143,195,255,.8)','rgba(240,201,90,.85)'][st];
+    cx.fillStyle='rgba(0,0,0,.25)'; cx.beginPath(); cx.ellipse(px, py+ts*.04, ts*.13, ts*.07, 0, 0, 7); cx.fill();
+    cx.fillStyle=col; cx.beginPath(); cx.ellipse(px, py, ts*.11, ts*.065, 0, 0, 7); cx.fill();
+    if(g.n===1 && Math.hypot(g.x+.5-hero.x, g.y+.5-hero.y)<2.5){ cx.font=Math.round(ts*.2)+'px Cubic11, system-ui'; cx.textAlign='center'; var lab='🏛 '+g.R.name, tw=cx.measureText(lab).width+ts*.2;
+      cx.fillStyle='rgba(0,0,0,.5)'; cx.fillRect(px-tw/2, py+ts*.12, tw, ts*.28); cx.fillStyle='#f0e0b0'; cx.fillText(lab, px, py+ts*.33); }
   }}); });
 }
+var palaceStill=0;
 function wrapLines(text, maxW){ var words=String(text).split(/\s+/), lines=[], cur=''; words.forEach(function(w){ var t=cur?cur+' '+w:w; if(cx.measureText(t).width>maxW && cur){ lines.push(cur); cur=w; } else cur=t; }); if(cur) lines.push(cur); return lines; }
 function drawPalaceBubble(ox,oy,ts,w){
-  pBubble=null; if(busy) return; var g=palaceNear(); if(!g) return;
+  pBubble=null; if(busy) return; if(hero.moving>.15){ palaceStill=0; return; } palaceStill+=1; if(palaceStill<20) return; var g=palaceNear(); if(!g) return;
   var st=pst(g.ref).st, fsz=Math.round(15*DPR), small=Math.round(12*DPR), maxW=Math.min(w*.86, 340*DPR);
   cx.font=fsz+'px Cubic11, system-ui';
   var main = st===0 ? g.s.fr : st===1 ? firstLetters(g.s.fr) : '📍 第 '+g.n+' 站　這裡是哪一句？';

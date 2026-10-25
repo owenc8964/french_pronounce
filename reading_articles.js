@@ -13,19 +13,22 @@ const ARTICLES = [
         q: "Combien d'enfants y a-t-il dans la famille de Marie ?",
         opts: ["Un", "Deux", "Trois", "Quatre"],
         ans: 2,
-        expl: "Marie + son frère Thomas + sa sœur Léa = trois enfants. Le texte ne donne pas le chiffre — il faut compter soi-même, et ne pas oublier Marie."
+        expl: "Marie + son frère Thomas + sa sœur Léa = trois enfants. Le texte ne donne pas le chiffre — il faut compter soi-même, et ne pas oublier Marie.",
+        explZh: "Marie＋哥哥 Thomas＋妹妹 Léa＝三個小孩。文章沒有直接寫數字，要自己數，而且別漏了 Marie 自己。"
       },
       {
         q: "Qui travaille avec des enfants ?",
         opts: ["Le père", "La mère", "Thomas", "Léa"],
         ans: 1,
-        expl: "La mère est « professeure dans une école primaire » — une école primaire, c'est des enfants. Le père, lui, travaille à l'hôpital."
+        expl: "La mère est « professeure dans une école primaire » — une école primaire, c'est des enfants. Le père, lui, travaille à l'hôpital.",
+        explZh: "媽媽是「professeure dans une école primaire」——小學裡是小孩。爸爸在醫院上班。"
       },
       {
         q: "Qu'est-ce qui est vrai ?",
         opts: ["La famille se retrouve une fois par semaine", "Marie n'aime pas les repas en famille", "Le père travaille dans une école", "Marie a deux frères"],
         ans: 0,
-        expl: "« Le dimanche, toute la famille mange ensemble » = une fois par semaine. Les autres options contredisent le texte : Marie aime ces repas, le père est à l'hôpital, elle a un frère et une sœur."
+        expl: "« Le dimanche, toute la famille mange ensemble » = une fois par semaine. Les autres options contredisent le texte : Marie aime ces repas, le père est à l'hôpital, elle a un frère et une sœur.",
+        explZh: "「Le dimanche, toute la famille mange ensemble」＝一週一次。其他選項都跟文章矛盾：Marie 喜歡這些聚餐、爸爸在醫院、她有一個哥哥和一個妹妹。"
       }
     ]
   },
@@ -40,19 +43,22 @@ const ARTICLES = [
         q: "Combien de pièces y a-t-il dans l'appartement (salle de bain incluse) ?",
         opts: ["Deux", "Trois", "Quatre", "Cinq"],
         ans: 2,
-        expl: "Un salon + une cuisine + une chambre + une salle de bain = quatre pièces. Le texte ne donne pas le total, il faut compter."
+        expl: "Un salon + une cuisine + une chambre + une salle de bain = quatre pièces. Le texte ne donne pas le total, il faut compter.",
+        explZh: "客廳＋廚房＋臥室＋浴室＝四個房間。文章沒給總數，要自己數。"
       },
       {
         q: "Pourquoi n'entend-on pas le bruit de la rue dans la chambre ?",
         opts: ["Elle est au sous-sol", "Sa fenêtre est du côté du jardin", "Les murs sont épais", "Elle est très grande"],
         ans: 1,
-        expl: "« Elle donne sur un jardin » = sa fenêtre s'ouvre sur le jardin, pas sur la rue. C'est pour ça qu'elle est calme — le texte le dit avec d'autres mots."
+        expl: "« Elle donne sur un jardin » = sa fenêtre s'ouvre sur le jardin, pas sur la rue. C'est pour ça qu'elle est calme — le texte le dit avec d'autres mots.",
+        explZh: "「Elle donne sur un jardin」＝她的窗戶對著花園，不是對著街道。所以才安靜——文章是換句話說的。"
       },
       {
         q: "Qu'est-ce que le texte ne dit PAS ?",
         opts: ["La couleur du canapé", "L'étage de l'appartement", "La taille de la cuisine", "Le prix du loyer"],
         ans: 3,
-        expl: "Le canapé est bleu, l'appartement est au troisième étage, la cuisine est petite — tout ça est dans le texte. Le loyer n'est jamais mentionné."
+        expl: "Le canapé est bleu, l'appartement est au troisième étage, la cuisine est petite — tout ça est dans le texte. Le loyer n'est jamais mentionné.",
+        explZh: "沙發是藍的、公寓在三樓、廚房很小，都寫在文章裡。房租從頭到尾沒提到。"
       }
     ]
   },
@@ -67,19 +73,22 @@ const ARTICLES = [
         q: "Combien de temps y a-t-il entre le lever de Lucas et le début des cours ?",
         opts: ["Trente minutes", "Une heure", "Une heure et demie", "Deux heures"],
         ans: 2,
-        expl: "Il se lève à 7 h et les cours commencent à 8 h 30 → 1 h 30. Il faut trouver les deux heures dans le texte et calculer la différence."
+        expl: "Il se lève à 7 h et les cours commencent à 8 h 30 → 1 h 30. Il faut trouver les deux heures dans le texte et calculer la différence.",
+        explZh: "他 7 點起床，8 點半上課 → 1 小時 30 分。要在文章裡找到兩個時間再相減。"
       },
       {
         q: "Quel jour Lucas ne va-t-il PAS à l'école ?",
         opts: ["Le mardi", "Le jeudi", "Le vendredi", "Le dimanche"],
         ans: 3,
-        expl: "« Il va à l'école du lundi au vendredi » → le week-end (samedi et dimanche) n'est pas dans cette liste. Le texte ne dit jamais « dimanche », il faut le déduire."
+        expl: "« Il va à l'école du lundi au vendredi » → le week-end (samedi et dimanche) n'est pas dans cette liste. Le texte ne dit jamais « dimanche », il faut le déduire.",
+        explZh: "「Il va à l'école du lundi au vendredi」→ 週末（六、日）不在裡面。文章沒寫「dimanche」，要自己推。"
       },
       {
         q: "Que fait Lucas en premier après l'école ?",
         opts: ["Il joue avec ses amis", "Il fait ses devoirs", "Il prend le bus", "Il mange du pain"],
         ans: 1,
-        expl: "« Après l'école, il fait ses devoirs et il joue avec ses amis » — l'ordre de la phrase donne l'ordre des actions : d'abord les devoirs, ensuite les amis."
+        expl: "« Après l'école, il fait ses devoirs et il joue avec ses amis » — l'ordre de la phrase donne l'ordre des actions : d'abord les devoirs, ensuite les amis.",
+        explZh: "「Après l'école, il fait ses devoirs et il joue avec ses amis」——句子的順序就是做事的順序：先寫功課，再跟朋友玩。"
       }
     ]
   },
@@ -94,19 +103,22 @@ const ARTICLES = [
         q: "À quelle fréquence Madame Dupont va-t-elle au marché ?",
         opts: ["Tous les jours", "Une fois par semaine", "Deux fois par mois", "Une fois par mois"],
         ans: 1,
-        expl: "« Tous les samedis matin » = chaque samedi, donc une fois par semaine. Il faut traduire l'expression en fréquence."
+        expl: "« Tous les samedis matin » = chaque samedi, donc une fois par semaine. Il faut traduire l'expression en fréquence.",
+        explZh: "「Tous les samedis matin」＝每個星期六，所以是一週一次。要把這個說法換成頻率。"
       },
       {
         q: "Pourquoi achète-t-elle du poulet ?",
         opts: ["Pour le repas du lendemain", "Pour ce soir", "Pour le congeler", "Pour ses voisins"],
         ans: 0,
-        expl: "Elle fait le marché le samedi, et le poulet est « pour le repas du dimanche » — le dimanche, c'est le lendemain du samedi."
+        expl: "Elle fait le marché le samedi, et le poulet est « pour le repas du dimanche » — le dimanche, c'est le lendemain du samedi.",
+        explZh: "她星期六去市場，雞是「pour le repas du dimanche」——星期天是星期六的隔天。"
       },
       {
         q: "Qu'est-ce qui rend Madame Dupont contente ?",
         opts: ["Le sac en papier gratuit", "La qualité et le prix des légumes", "Le beau temps", "La gentillesse du marchand"],
         ans: 1,
-        expl: "« Les légumes sont beaux et pas trop chers » = bonne qualité + bon prix. La réponse reformule le texte avec d'autres mots."
+        expl: "« Les légumes sont beaux et pas trop chers » = bonne qualité + bon prix. La réponse reformule le texte avec d'autres mots.",
+        explZh: "「Les légumes sont beaux et pas trop chers」＝品質好＋價格好。正解是把文章換句話說。"
       }
     ]
   },
@@ -121,19 +133,22 @@ const ARTICLES = [
         q: "Pourquoi Sophie écrit-elle ce message ?",
         opts: ["Pour demander de l'argent", "Pour raconter ses vacances et proposer une rencontre", "Pour inviter Antoine à Nice", "Pour annuler un rendez-vous"],
         ans: 1,
-        expl: "Elle « donne des nouvelles » de ses vacances ET termine par « On peut se voir dimanche ? » — le message a deux buts. C'est une question sur l'intention globale, pas sur un détail."
+        expl: "Elle « donne des nouvelles » de ses vacances ET termine par « On peut se voir dimanche ? » — le message a deux buts. C'est une question sur l'intention globale, pas sur un détail.",
+        explZh: "她「donne des nouvelles」（報告近況）又在最後問「On peut se voir dimanche ?」——這則訊息有兩個目的。這題問的是整體意圖，不是細節。"
       },
       {
         q: "Où Sophie habite-t-elle normalement ?",
         opts: ["À Nice", "À Montréal", "À Paris", "Le texte ne le dit pas"],
         ans: 1,
-        expl: "« Je rentre à Montréal » — on « rentre » chez soi. Nice, c'est seulement les vacances. Le texte ne dit jamais « j'habite à Montréal », il faut le déduire du verbe rentrer."
+        expl: "« Je rentre à Montréal » — on « rentre » chez soi. Nice, c'est seulement les vacances. Le texte ne dit jamais « j'habite à Montréal », il faut le déduire du verbe rentrer.",
+        explZh: "「Je rentre à Montréal」——rentrer 是回自己家。Nice 只是度假。文章沒寫「j'habite à Montréal」，要從 rentrer 這個動詞推出來。"
       },
       {
         q: "Quand Sophie veut-elle voir Antoine ?",
         opts: ["Le jour de son retour", "Le lendemain de son retour", "Une semaine après son retour", "Avant de partir"],
         ans: 1,
-        expl: "Elle rentre samedi et propose de se voir dimanche → dimanche est le jour après samedi, donc le lendemain de son retour. Il faut relier les deux dates."
+        expl: "Elle rentre samedi et propose de se voir dimanche → dimanche est le jour après samedi, donc le lendemain de son retour. Il faut relier les deux dates.",
+        explZh: "她星期六回來、提議星期天見面 → 星期天是星期六的隔天，也就是她回來的第二天。要把兩個日期連起來。"
       }
     ]
   },
@@ -148,19 +163,22 @@ const ARTICLES = [
         q: "Combien de sortes de légumes faut-il pour cette soupe ?",
         opts: ["Deux", "Trois", "Quatre", "Cinq"],
         ans: 1,
-        expl: "Carottes, pommes de terre, oignon = trois sortes de légumes. Le bouillon est un liquide, pas un légume à compter. Il faut trier la liste d'ingrédients."
+        expl: "Carottes, pommes de terre, oignon = trois sortes de légumes. Le bouillon est un liquide, pas un légume à compter. Il faut trier la liste d'ingrédients.",
+        explZh: "紅蘿蔔、馬鈴薯、洋蔥＝三種蔬菜。高湯是液體，不算蔬菜。要把材料清單分類。"
       },
       {
         q: "Que fait-on juste avant de mixer la soupe ?",
         opts: ["On coupe les légumes", "On fait cuire vingt minutes", "On ajoute le sel", "On sert avec du pain"],
         ans: 1,
-        expl: "L'ordre des étapes : couper → chauffer le bouillon → ajouter les légumes → cuire 20 minutes → mixer. L'étape juste avant « mixez » est donc la cuisson."
+        expl: "L'ordre des étapes : couper → chauffer le bouillon → ajouter les légumes → cuire 20 minutes → mixer. L'étape juste avant « mixez » est donc la cuisson.",
+        explZh: "步驟順序：切 → 熱高湯 → 加蔬菜 → 煮 20 分鐘 → 打碎。「mixez」的前一步就是煮。"
       },
       {
         q: "Qu'est-ce qu'on ne met PAS dans cette soupe ?",
         opts: ["Du poivre", "Du sel", "De la crème", "Des oignons"],
         ans: 2,
-        expl: "Le sel, le poivre et l'oignon sont dans la recette. La crème n'est jamais mentionnée — attention, beaucoup de soupes ont de la crème, mais pas celle-ci."
+        expl: "Le sel, le poivre et l'oignon sont dans la recette. La crème n'est jamais mentionnée — attention, beaucoup de soupes ont de la crème, mais pas celle-ci.",
+        explZh: "鹽、胡椒、洋蔥都在食譜裡。鮮奶油從頭到尾沒提到——很多湯會加鮮奶油，但這道沒有，小心。"
       }
     ]
   },
@@ -175,19 +193,22 @@ const ARTICLES = [
         q: "À trois heures du matin, peut-on prendre le métro ?",
         opts: ["Oui, il est ouvert toute la nuit", "Non, il est fermé", "Oui, mais seulement le week-end", "Non, il ferme à minuit"],
         ans: 1,
-        expl: "Le métro fonctionne « de cinq heures à une heure du matin » → à 3 h, c'est fermé. Attention au piège : il ne ferme pas à minuit mais à 1 h — l'option D est fausse aussi."
+        expl: "Le métro fonctionne « de cinq heures à une heure du matin » → à 3 h, c'est fermé. Attention au piège : il ne ferme pas à minuit mais à 1 h — l'option D est fausse aussi.",
+        explZh: "地鐵營運時間「de cinq heures à une heure du matin」→ 3 點已經關了。陷阱：不是半夜 12 點關，是 1 點——所以 D 也不對。"
       },
       {
         q: "On prend le métro deux fois par jour, tous les jours. Quelle est la solution la plus économique ?",
         opts: ["Un billet à chaque trajet", "L'abonnement mensuel", "Prendre un taxi", "Le texte ne le dit pas"],
         ans: 1,
-        expl: "« On peut acheter un abonnement mensuel pour économiser de l'argent » — pour un usage quotidien, l'abonnement revient moins cher que des billets à 3,50 $ l'unité."
+        expl: "« On peut acheter un abonnement mensuel pour économiser de l'argent » — pour un usage quotidien, l'abonnement revient moins cher que des billets à 3,50 $ l'unité.",
+        explZh: "「On peut acheter un abonnement mensuel pour économiser de l'argent」——每天搭的話，月票比一張 3.50 元的單程票划算。"
       },
       {
         q: "Combien coûtent deux trajets en métro ?",
         opts: ["Trois dollars cinquante", "Cinq dollars", "Sept dollars", "Six dollars cinquante"],
         ans: 2,
-        expl: "Un trajet coûte 3,50 $ → 3,50 × 2 = 7 $. Le texte ne donne que le prix d'un trajet, il faut multiplier."
+        expl: "Un trajet coûte 3,50 $ → 3,50 × 2 = 7 $. Le texte ne donne que le prix d'un trajet, il faut multiplier.",
+        explZh: "一趟 3.50 元 → 3.50 × 2 ＝ 7 元。文章只給一趟的價錢，要自己乘。"
       }
     ]
   },
@@ -202,19 +223,22 @@ const ARTICLES = [
         q: "Qu'est-ce qu'il faut payer en plus du loyer ?",
         opts: ["Le chauffage", "Le parking", "L'eau chaude", "Rien"],
         ans: 1,
-        expl: "Le chauffage est « inclus dans le loyer », mais le parking est « disponible en supplément » — supplément = il faut payer en plus. Deux mots-clés opposés : inclus vs en supplément."
+        expl: "Le chauffage est « inclus dans le loyer », mais le parking est « disponible en supplément » — supplément = il faut payer en plus. Deux mots-clés opposés : inclus vs en supplément.",
+        explZh: "暖氣「inclus dans le loyer」（含在房租裡），停車位卻是「disponible en supplément」——en supplément＝要另外付錢。兩個關鍵字意思相反：inclus vs en supplément。"
       },
       {
         q: "Comment va-t-on de l'appartement au métro ?",
         opts: ["En bus", "En voiture", "À pied, en cinq minutes", "Le texte ne le dit pas"],
         ans: 2,
-        expl: "« Proche du métro (5 minutes à pied) » — la distance est donnée en temps de marche."
+        expl: "« Proche du métro (5 minutes à pied) » — la distance est donnée en temps de marche.",
+        explZh: "「Proche du métro (5 minutes à pied)」——距離是用走路幾分鐘來說的。"
       },
       {
         q: "Nous sommes le 1er juillet. Quand peut-on emménager ?",
         opts: ["Tout de suite", "Dans un mois", "Dans deux mois", "Dans une semaine"],
         ans: 1,
-        expl: "L'appartement est disponible « à partir du 1er août ». Du 1er juillet au 1er août, il y a un mois. Il faut calculer à partir de la date donnée dans la question."
+        expl: "L'appartement est disponible « à partir du 1er août ». Du 1er juillet au 1er août, il y a un mois. Il faut calculer à partir de la date donnée dans la question.",
+        explZh: "公寓「à partir du 1er août」可以入住。7 月 1 日到 8 月 1 日是一個月。要從題目給的日期去算。"
       }
     ]
   },
@@ -229,19 +253,22 @@ const ARTICLES = [
         q: "Quel est le sujet principal de ce texte ?",
         opts: ["Les vacances d'hiver", "Une grosse chute de neige et ses conséquences", "Les autobus de Montréal", "La météo de la semaine"],
         ans: 1,
-        expl: "Tout le texte tourne autour de la neige de cette nuit : les rues, les écoles fermées, les bus en retard, le conseil de la ville. C'est une question sur l'idée générale, pas sur un détail."
+        expl: "Tout le texte tourne autour de la neige de cette nuit : les rues, les écoles fermées, les bus en retard, le conseil de la ville. C'est une question sur l'idée générale, pas sur un détail.",
+        explZh: "整篇都在講昨晚的雪：街道、學校停課、公車誤點、市政府的建議。這題問的是主旨，不是細節。"
       },
       {
         q: "Les enfants vont-ils en classe aujourd'hui ?",
         opts: ["Oui, comme d'habitude", "Oui, mais en retard", "Non, les écoles sont fermées", "Le texte ne le dit pas"],
         ans: 2,
-        expl: "« Les écoles sont fermées aujourd'hui » → pas de classe. La question dit « en classe », le texte dit « écoles » — même idée, mots différents."
+        expl: "« Les écoles sont fermées aujourd'hui » → pas de classe. La question dit « en classe », le texte dit « écoles » — même idée, mots différents.",
+        explZh: "「Les écoles sont fermées aujourd'hui」→ 不用上課。題目說「en classe」，文章說「écoles」——意思一樣，字不一樣。"
       },
       {
         q: "Que conseille la ville aux habitants ?",
         opts: ["De prendre le bus", "De ne pas sortir", "D'aller travailler tôt", "D'acheter de la nourriture"],
         ans: 1,
-        expl: "« La ville demande aux habitants de rester à la maison » — rester à la maison = ne pas sortir. La bonne réponse reformule, elle ne recopie pas."
+        expl: "« La ville demande aux habitants de rester à la maison » — rester à la maison = ne pas sortir. La bonne réponse reformule, elle ne recopie pas.",
+        explZh: "「La ville demande aux habitants de rester à la maison」——待在家＝不要出門。正解是換句話說，不是照抄。"
       }
     ]
   },
@@ -256,19 +283,22 @@ const ARTICLES = [
         q: "Depuis combien de temps Julie est-elle à Nice ?",
         opts: ["C'est son premier jour", "Depuis trois jours", "Depuis une semaine", "Depuis un mois"],
         ans: 0,
-        expl: "« Premier jour à Nice ! » — elle vient d'arriver. Piège : « une semaine » est la durée totale de son séjour (dans les commentaires), pas le temps déjà passé."
+        expl: "« Premier jour à Nice ! » — elle vient d'arriver. Piège : « une semaine » est la durée totale de son séjour (dans les commentaires), pas le temps déjà passé.",
+        explZh: "「Premier jour à Nice !」——她剛到。陷阱：「une semaine」是整趟旅程的長度（在留言裡），不是已經待了多久。"
       },
       {
         q: "Où Julie a-t-elle mangé quelque chose de froid ?",
         opts: ["À la plage", "Au vieux port", "À l'hôtel", "Au marché"],
         ans: 1,
-        expl: "La glace au citron est froide, et elle l'a mangée pendant sa visite du vieux port (« j'ai visité le vieux port et j'ai mangé une glace »). Il faut relier « glace » → « froid »."
+        expl: "La glace au citron est froide, et elle l'a mangée pendant sa visite du vieux port (« j'ai visité le vieux port et j'ai mangé une glace »). Il faut relier « glace » → « froid ».",
+        explZh: "檸檬冰淇淋是冰的，是她逛舊港的時候吃的（「j'ai visité le vieux port et j'ai mangé une glace」）。要把 glace 跟「冰涼」連起來。"
       },
       {
         q: "Que va faire Julie demain ?",
         opts: ["Nager dans la mer", "Une promenade à vélo près de la mer", "Visiter le vieux port", "Rentrer chez elle"],
         ans: 1,
-        expl: "« Demain, je vais faire du vélo au bord de la mer » — futur proche (je vais faire) = projet de demain. « Au bord de la mer » = près de la mer."
+        expl: "« Demain, je vais faire du vélo au bord de la mer » — futur proche (je vais faire) = projet de demain. « Au bord de la mer » = près de la mer.",
+        explZh: "「Demain, je vais faire du vélo au bord de la mer」——近未來（je vais faire）＝明天的計畫。「au bord de la mer」＝海邊。"
       }
     ]
   },
@@ -283,19 +313,22 @@ const ARTICLES = [
         q: "Qui prépare le dessert pour la fête ?",
         opts: ["Camille", "Emma", "La sœur de Camille", "Personne, ils vont l'acheter"],
         ans: 2,
-        expl: "« Ma sœur fait un gâteau au chocolat » — le gâteau est le dessert, et « ma sœur » = la sœur de Camille, parce que c'est Camille qui écrit la lettre."
+        expl: "« Ma sœur fait un gâteau au chocolat » — le gâteau est le dessert, et « ma sœur » = la sœur de Camille, parce que c'est Camille qui écrit la lettre.",
+        explZh: "「Ma sœur fait un gâteau au chocolat」——蛋糕是甜點；寫信的是 Camille，所以 ma sœur＝Camille 的姊妹。"
       },
       {
         q: "Où la fête a-t-elle lieu ?",
         opts: ["Chez Emma", "Chez Camille", "Au restaurant", "Chez la sœur de Camille"],
         ans: 1,
-        expl: "« J'organise une fête chez moi » — « moi » = la personne qui écrit, donc Camille. Il faut identifier qui parle dans la lettre."
+        expl: "« J'organise une fête chez moi » — « moi » = la personne qui écrit, donc Camille. Il faut identifier qui parle dans la lettre.",
+        explZh: "「J'organise une fête chez moi」——moi＝寫信的人，也就是 Camille。要先搞清楚信裡是誰在說話。"
       },
       {
         q: "Emma peut répondre au plus tard...",
         opts: ["mercredi", "jeudi", "vendredi", "samedi"],
         ans: 0,
-        expl: "« Réponds-moi avant jeudi » : jeudi, c'est déjà trop tard. Le dernier jour possible est donc mercredi. « Avant X » ne comprend pas X."
+        expl: "« Réponds-moi avant jeudi » : jeudi, c'est déjà trop tard. Le dernier jour possible est donc mercredi. « Avant X » ne comprend pas X.",
+        explZh: "「Réponds-moi avant jeudi」：到星期四就太晚了，所以最後一天是星期三。「avant X」不包含 X。"
       }
     ]
   },
@@ -310,19 +343,22 @@ const ARTICLES = [
         q: "Quel est le jour le plus froid de la semaine ?",
         opts: ["Lundi", "Mardi", "Mercredi", "Vendredi"],
         ans: 2,
-        expl: "Il faut comparer toutes les températures : 25°, 18°, 15°, 22°, 27° → mercredi (15°) est le plus froid. Le texte ne dit jamais « le plus froid », c'est à toi de comparer."
+        expl: "Il faut comparer toutes les températures : 25°, 18°, 15°, 22°, 27° → mercredi (15°) est le plus froid. Le texte ne dit jamais « le plus froid », c'est à toi de comparer.",
+        explZh: "把氣溫全部比一遍：25°、18°、15°、22°、27° → 星期三（15°）最冷。文章沒寫「le plus froid」，要自己比。"
       },
       {
         q: "Mardi matin, quel temps fait-il ?",
         opts: ["Il pleut", "Il y a des nuages", "Il y a du soleil", "Il neige"],
         ans: 1,
-        expl: "« Mardi : nuages le matin, pluie l'après-midi » — attention à la partie de la journée : le matin il ne pleut pas encore, il y a seulement des nuages."
+        expl: "« Mardi : nuages le matin, pluie l'après-midi » — attention à la partie de la journée : le matin il ne pleut pas encore, il y a seulement des nuages.",
+        explZh: "「Mardi : nuages le matin, pluie l'après-midi」——注意是一天的哪個時段：早上還沒下雨，只是多雲。"
       },
       {
         q: "Quels jours faut-il prendre un parapluie ?",
         opts: ["Mardi seulement", "Mercredi seulement", "Mardi et mercredi", "Jeudi et vendredi"],
         ans: 2,
-        expl: "Il pleut mardi (l'après-midi) ET mercredi (toute la journée) → deux jours de pluie. Le texte ne mentionne le parapluie que pour mercredi — piège si on cherche juste le mot « parapluie »."
+        expl: "Il pleut mardi (l'après-midi) ET mercredi (toute la journée) → deux jours de pluie. Le texte ne mentionne le parapluie que pour mercredi — piège si on cherche juste le mot « parapluie ».",
+        explZh: "星期二（下午）和星期三（整天）都下雨 → 兩天。文章只在星期三提到雨傘——只找「parapluie」這個字就會掉進陷阱。"
       }
     ]
   },
@@ -337,19 +373,22 @@ const ARTICLES = [
         q: "Qu'est-ce qu'on met dans le bol en premier ?",
         opts: ["Les œufs", "Le lait", "La farine", "Le beurre"],
         ans: 2,
-        expl: "« D'abord, mettez la farine dans un grand bol. » — « d'abord » = en premier. Les œufs viennent après (« ajoutez »), puis le lait (« versez »)."
+        expl: "« D'abord, mettez la farine dans un grand bol. » — « d'abord » = en premier. Les œufs viennent après (« ajoutez »), puis le lait (« versez »).",
+        explZh: "「D'abord, mettez la farine dans un grand bol.」——d'abord＝首先。蛋在後面（ajoutez），然後是牛奶（versez）。"
       },
       {
         q: "Combien de temps faut-il pour cuire une crêpe entière ?",
         opts: ["Deux minutes", "Trois minutes", "Quatre minutes", "Six minutes"],
         ans: 2,
-        expl: "« Deux minutes de chaque côté » et une crêpe a deux côtés → 2 × 2 = 4 minutes. Le texte ne donne jamais « quatre minutes », il faut calculer."
+        expl: "« Deux minutes de chaque côté » et une crêpe a deux côtés → 2 × 2 = 4 minutes. Le texte ne donne jamais « quatre minutes », il faut calculer.",
+        explZh: "「Deux minutes de chaque côté」，可麗餅有兩面 → 2 × 2 ＝ 4 分鐘。文章沒寫「四分鐘」，要自己算。"
       },
       {
         q: "Dans quel état doit être le beurre quand on l'ajoute ?",
         opts: ["Froid", "Fondu", "Coupé en morceaux", "Salé"],
         ans: 1,
-        expl: "« Ajoutez le sel et le beurre fondu » — fondu = chauffé jusqu'à devenir liquide (verbe fondre)."
+        expl: "« Ajoutez le sel et le beurre fondu » — fondu = chauffé jusqu'à devenir liquide (verbe fondre).",
+        explZh: "「Ajoutez le sel et le beurre fondu」——fondu＝加熱到變成液體（動詞 fondre，融化）。"
       }
     ]
   },
@@ -364,19 +403,22 @@ const ARTICLES = [
         q: "Marie prend la salade, le poulet et la tarte séparément (sans le menu). Elle paie combien ?",
         opts: ["22 $", "24 $", "26 $", "20 $"],
         ans: 2,
-        expl: "Salade 6 $ + poulet 14 $ + tarte 6 $ = 26 $. Avec le menu complet (22 $), elle aurait économisé 4 $. Il faut trouver les trois prix et additionner."
+        expl: "Salade 6 $ + poulet 14 $ + tarte 6 $ = 26 $. Avec le menu complet (22 $), elle aurait économisé 4 $. Il faut trouver les trois prix et additionner.",
+        explZh: "沙拉 6 元＋雞肉 14 元＋塔 6 元＝26 元。點套餐（22 元）可以省 4 元。要找出三個價錢加起來。"
       },
       {
         q: "À quinze heures, peut-on commander le menu du midi ?",
         opts: ["Oui", "Non, c'est trop tard", "Oui, mais sans dessert", "Seulement le week-end"],
         ans: 1,
-        expl: "Le menu du midi est servi de 12 h à 14 h 30 → à 15 h, c'est fini. Il faut comparer l'heure de la question avec l'horaire du texte."
+        expl: "Le menu du midi est servi de 12 h à 14 h 30 → à 15 h, c'est fini. Il faut comparer l'heure de la question avec l'horaire du texte.",
+        explZh: "午餐套餐 12 點到 14 點 30 分供應 → 15 點已經結束了。要把題目的時間跟文章的時段比。"
       },
       {
         q: "Qu'est-ce qui est offert avec le menu complet ?",
         opts: ["Un dessert supplémentaire", "Une boisson chaude", "Un verre de vin", "Le pain"],
         ans: 1,
-        expl: "« Café ou thé inclus » — le café et le thé sont des boissons chaudes. « Inclus » = compris dans le prix, on ne paie pas en plus."
+        expl: "« Café ou thé inclus » — le café et le thé sont des boissons chaudes. « Inclus » = compris dans le prix, on ne paie pas en plus.",
+        explZh: "「Café ou thé inclus」——咖啡和茶是熱飲。inclus＝含在價錢裡，不用另外付。"
       }
     ]
   },
@@ -391,19 +433,22 @@ const ARTICLES = [
         q: "Combien de temps Thomas a-t-il fait de sport en tout ?",
         opts: ["Une heure", "Une heure et demie", "Trente minutes", "Deux heures"],
         ans: 1,
-        expl: "Une heure de musculation + trente minutes de vélo = 1 h 30. Le texte donne deux durées séparées, il faut les additionner."
+        expl: "Une heure de musculation + trente minutes de vélo = 1 h 30. Le texte donne deux durées séparées, il faut les additionner.",
+        explZh: "一小時重訓＋三十分鐘腳踏車＝1 小時 30 分。文章分開給兩段時間，要加起來。"
       },
       {
         q: "Pourquoi Anna ne vient-elle pas courir demain ?",
         opts: ["Elle est malade", "Elle n'aime pas courir", "Sept heures du matin, c'est trop tôt pour elle", "Elle travaille demain"],
         ans: 2,
-        expl: "Anna répond « Trop tôt pour moi… » — la course est à 7 h du matin. Il faut relier son commentaire à l'heure annoncée dans le post."
+        expl: "Anna répond « Trop tôt pour moi… » — la course est à 7 h du matin. Il faut relier son commentaire à l'heure annoncée dans le post.",
+        explZh: "Anna 回「Trop tôt pour moi…」——路跑是早上 7 點。要把她的留言跟貼文裡的時間連起來。"
       },
       {
         q: "Comment Thomas se sent-il après le gymnase ?",
         opts: ["Triste", "En colère", "Fatigué mais heureux", "Malade"],
         ans: 2,
-        expl: "« Je suis fatigué mais content ! » — content = heureux, même sens, mot différent. La bonne réponse ne recopie pas le texte."
+        expl: "« Je suis fatigué mais content ! » — content = heureux, même sens, mot différent. La bonne réponse ne recopie pas le texte.",
+        explZh: "「Je suis fatigué mais content !」——content＝heureux，意思一樣、字不一樣。正解不會照抄文章。"
       }
     ]
   },
@@ -418,19 +463,22 @@ const ARTICLES = [
         q: "Quel jour la bibliothèque est-elle fermée ?",
         opts: ["Le lundi", "Le mardi", "Le samedi", "Le dimanche"],
         ans: 0,
-        expl: "« Ouverte du mardi au dimanche » — le seul jour absent de cette liste est le lundi. Le texte ne dit jamais « fermée le lundi », il faut le déduire."
+        expl: "« Ouverte du mardi au dimanche » — le seul jour absent de cette liste est le lundi. Le texte ne dit jamais « fermée le lundi », il faut le déduire.",
+        explZh: "「Ouverte du mardi au dimanche」——清單裡唯一沒有的是星期一。文章沒寫「fermée le lundi」，要自己推。"
       },
       {
         q: "À vingt et une heures, la bibliothèque est...",
         opts: ["ouverte", "fermée", "ouverte le week-end seulement", "réservée aux étudiants"],
         ans: 1,
-        expl: "Elle est ouverte « de 10 heures à 20 heures » → à 21 h, elle est fermée depuis une heure. Il faut comparer l'heure de la question avec l'horaire."
+        expl: "Elle est ouverte « de 10 heures à 20 heures » → à 21 h, elle est fermée depuis une heure. Il faut comparer l'heure de la question avec l'horaire.",
+        explZh: "營業時間「de 10 heures à 20 heures」→ 21 點已經關門一小時了。要把題目的時間跟營業時間比。"
       },
       {
         q: "Combien paie un habitant de la ville pour s'inscrire ?",
         opts: ["5 $", "10 $", "20 $", "Rien"],
         ans: 3,
-        expl: "« L'inscription est gratuite pour tous les habitants » — gratuit = on ne paie rien. La réponse « Rien » reformule « gratuite »."
+        expl: "« L'inscription est gratuite pour tous les habitants » — gratuit = on ne paie rien. La réponse « Rien » reformule « gratuite ».",
+        explZh: "「L'inscription est gratuite pour tous les habitants」——gratuit＝不用付錢。「Rien」是把 gratuite 換句話說。"
       }
     ]
   },
@@ -445,19 +493,22 @@ const ARTICLES = [
         q: "Une famille arrive : deux adultes, un enfant de 8 ans et un bébé de 2 ans. Prix total ?",
         opts: ["14 $", "12 $", "10 $", "17 $"],
         ans: 1,
-        expl: "5 $ + 5 $ (deux adultes) + 2 $ (enfant de 8 ans) + 0 $ (le bébé a moins de 3 ans = gratuit) = 12 $. Il faut appliquer le bon tarif à chaque personne."
+        expl: "5 $ + 5 $ (deux adultes) + 2 $ (enfant de 8 ans) + 0 $ (le bébé a moins de 3 ans = gratuit) = 12 $. Il faut appliquer le bon tarif à chaque personne.",
+        explZh: "5 元＋5 元（兩個大人）＋2 元（8 歲小孩）＋0 元（嬰兒未滿 3 歲＝免費）＝12 元。每個人要套對票價。"
       },
       {
         q: "Mardi à vingt heures, peut-on encore nager ?",
         opts: ["Non, la piscine est fermée", "Oui, jusqu'à 21 h", "Oui, toute la nuit", "Seulement les enfants"],
         ans: 1,
-        expl: "Mardi est un jour de semaine → horaires « lundi à vendredi : 7 h – 21 h ». À 20 h, il reste encore une heure. Attention : le week-end, ce serait fermé (18 h)."
+        expl: "Mardi est un jour de semaine → horaires « lundi à vendredi : 7 h – 21 h ». À 20 h, il reste encore une heure. Attention : le week-end, ce serait fermé (18 h).",
+        explZh: "星期二是平日 → 時間是「lundi à vendredi : 7 h – 21 h」。20 點還有一小時。注意：週末的話就關了（18 點）。"
       },
       {
         q: "En décembre, ces horaires sont-ils valables ?",
         opts: ["Oui, toute l'année", "Non, ce sont les horaires d'été", "Oui, sauf le week-end", "Le texte ne le dit pas"],
         ans: 1,
-        expl: "Le titre dit « Horaires d'été » et la période est « du 15 juin au 31 août ». Décembre est en dehors de cette période → ces horaires ne s'appliquent pas."
+        expl: "Le titre dit « Horaires d'été » et la période est « du 15 juin au 31 août ». Décembre est en dehors de cette période → ces horaires ne s'appliquent pas.",
+        explZh: "標題寫「Horaires d'été」，期間是「du 15 juin au 31 août」。十二月不在這段時間內 → 這個時刻表不適用。"
       }
     ]
   },
@@ -472,19 +523,22 @@ const ARTICLES = [
         q: "À quelle heure M. Chen doit-il arriver à la clinique ?",
         opts: ["À 15 h 30", "À 15 h 15", "À 15 h 45", "À 15 h"],
         ans: 1,
-        expl: "Le rendez-vous est à 15 h 30 et il faut arriver « quinze minutes avant » → 15 h 30 − 15 min = 15 h 15. L'heure d'arrivée n'est pas écrite, il faut la calculer."
+        expl: "Le rendez-vous est à 15 h 30 et il faut arriver « quinze minutes avant » → 15 h 30 − 15 min = 15 h 15. L'heure d'arrivée n'est pas écrite, il faut la calculer.",
+        explZh: "約 15 點 30 分，要「quinze minutes avant」到 → 15:30 − 15 分＝15:15。到達時間沒寫出來，要自己算。"
       },
       {
         q: "M. Chen ne peut pas venir mardi. Quand doit-il appeler au plus tard ?",
         opts: ["Mardi matin", "La veille du rendez-vous", "Une semaine avant", "Le jour même, avant 15 h"],
         ans: 1,
-        expl: "« Au moins 24 heures à l'avance » = un jour avant = la veille (donc lundi). « La veille » reformule « 24 heures à l'avance »."
+        expl: "« Au moins 24 heures à l'avance » = un jour avant = la veille (donc lundi). « La veille » reformule « 24 heures à l'avance ».",
+        explZh: "「Au moins 24 heures à l'avance」＝提前一天＝前一天（所以是星期一）。「la veille」是換句話說的「24 heures à l'avance」。"
       },
       {
         q: "Pourquoi la clinique envoie-t-elle ce courriel ?",
         opts: ["Pour annuler le rendez-vous", "Pour confirmer le rendez-vous", "Pour demander un paiement", "Pour changer l'heure"],
         ans: 1,
-        expl: "« Nous confirmons votre rendez-vous » — le but du message est la confirmation. Question sur l'intention globale du courriel."
+        expl: "« Nous confirmons votre rendez-vous » — le but du message est la confirmation. Question sur l'intention globale du courriel.",
+        explZh: "「Nous confirmons votre rendez-vous」——這封信的目的是確認預約。問的是整封信的意圖。"
       }
     ]
   },
@@ -499,19 +553,22 @@ const ARTICLES = [
         q: "Le vélo coûte combien de moins que son prix d'achat ?",
         opts: ["120 $", "180 $", "300 $", "60 $"],
         ans: 1,
-        expl: "Prix d'achat 300 $ − prix de vente 120 $ = 180 $ de moins. Les deux prix sont dans le texte, la différence non — il faut soustraire."
+        expl: "Prix d'achat 300 $ − prix de vente 120 $ = 180 $ de moins. Les deux prix sont dans le texte, la différence non — il faut soustraire.",
+        explZh: "買價 300 元 − 賣價 120 元＝少了 180 元。兩個價錢都在文章裡，差額沒有——要自己減。"
       },
       {
         q: "Quelle partie du vélo est presque neuve ?",
         opts: ["Les roues", "Le casque", "Les freins", "La selle"],
         ans: 2,
-        expl: "« J'ai changé les freins le mois dernier » — changés il y a un mois = presque neufs. Il faut relier « changé récemment » → « presque neuf »."
+        expl: "« J'ai changé les freins le mois dernier » — changés il y a un mois = presque neufs. Il faut relier « changé récemment » → « presque neuf ».",
+        explZh: "「J'ai changé les freins le mois dernier」——一個月前才換＝幾乎是新的。要把「最近換過」連到「幾乎全新」。"
       },
       {
         q: "On appelle Paul à midi. Que se passe-t-il ?",
         opts: ["C'est le bon moment", "Il faut rappeler après 18 h", "Il ne vend plus le vélo", "Il baisse le prix"],
         ans: 1,
-        expl: "« Contactez-moi le soir après 18 heures » → midi n'est pas dans la bonne plage horaire, il faudra rappeler le soir."
+        expl: "« Contactez-moi le soir après 18 heures » → midi n'est pas dans la bonne plage horaire, il faudra rappeler le soir.",
+        explZh: "「Contactez-moi le soir après 18 heures」→ 中午不在可以聯絡的時段，要晚上再打。"
       }
     ]
   },
@@ -526,19 +583,22 @@ const ARTICLES = [
         q: "À qui Chloé écrit-elle ?",
         opts: ["À sa mère", "À sa grand-mère", "À sa sœur", "À son amie"],
         ans: 1,
-        expl: "« Chère mamie » — mamie = grand-mère en langage familier. Il faut connaître ce mot affectueux."
+        expl: "« Chère mamie » — mamie = grand-mère en langage familier. Il faut connaître ce mot affectueux.",
+        explZh: "「Chère mamie」——mamie＝口語的奶奶／外婆。要認得這個親暱的叫法。"
       },
       {
         q: "Pourquoi la famille choisit-elle une activité à l'intérieur aujourd'hui ?",
         opts: ["C'est gratuit", "Il fait mauvais", "Maman adore l'art", "La tour Eiffel est fermée"],
         ans: 1,
-        expl: "« Il pleut, alors nous allons au musée » — « alors » indique la conséquence : la pluie pousse la famille vers le musée (un lieu à l'intérieur). « Il fait mauvais » reformule « il pleut »."
+        expl: "« Il pleut, alors nous allons au musée » — « alors » indique la conséquence : la pluie pousse la famille vers le musée (un lieu à l'intérieur). « Il fait mauvais » reformule « il pleut ».",
+        explZh: "「Il pleut, alors nous allons au musée」——alors 表示結果：下雨，所以一家人去博物館（室內）。「Il fait mauvais」是把「il pleut」換句話說。"
       },
       {
         q: "La famille passe-t-elle toutes ses vacances à Paris ?",
         opts: ["Oui, toute la semaine", "Non, ils vont aussi en Normandie", "Non, ils rentrent demain", "Le texte ne le dit pas"],
         ans: 1,
-        expl: "« Demain, nous allons prendre le train pour aller voir la mer en Normandie » → ils quittent Paris pour une excursion. La réponse demande une vue d'ensemble du programme."
+        expl: "« Demain, nous allons prendre le train pour aller voir la mer en Normandie » → ils quittent Paris pour une excursion. La réponse demande une vue d'ensemble du programme.",
+        explZh: "「Demain, nous allons prendre le train pour aller voir la mer en Normandie」→ 他們要離開巴黎去一日遊。這題要看整個行程。"
       }
     ]
   },
@@ -553,19 +613,22 @@ const ARTICLES = [
         q: "Pourquoi le narrateur se levait-il tôt le samedi ?",
         opts: ["Pour aller à l'école", "Pour aller au marché avec son grand-père", "Pour faire du vélo tout seul", "Pour aider sa grand-mère à la maison"],
         ans: 1,
-        expl: "« Mon grand-père me réveillait très tôt : nous allions au marché ensemble. » Les deux points expliquent la raison. La bicyclette appartient au grand-père — le narrateur ne fait pas de vélo seul."
+        expl: "« Mon grand-père me réveillait très tôt : nous allions au marché ensemble. » Les deux points expliquent la raison. La bicyclette appartient au grand-père — le narrateur ne fait pas de vélo seul.",
+        explZh: "「Mon grand-père me réveillait très tôt : nous allions au marché ensemble.」冒號後面是原因。腳踏車是爺爺的——敘述者不是自己騎車。"
       },
       {
         q: "Quelle phrase raconte un événement unique, et non une habitude ?",
         opts: ["Mon grand-père me réveillait très tôt", "Je la mangeais debout devant le stand", "Je suis retourné à Quimper", "De temps en temps, il pleuvait"],
         ans: 2,
-        expl: "C'est le seul passé composé du groupe : « je suis retourné » = une fois, l'année dernière. Les trois autres sont à l'imparfait et décrivent des habitudes qui se répétaient (réveillait, mangeais, pleuvait). C'est exactement la différence entre les deux temps."
+        expl: "C'est le seul passé composé du groupe : « je suis retourné » = une fois, l'année dernière. Les trois autres sont à l'imparfait et décrivent des habitudes qui se répétaient (réveillait, mangeais, pleuvait). C'est exactement la différence entre les deux temps.",
+        explZh: "這組裡只有它是 passé composé：「je suis retourné」＝一次，去年。另外三個都是 imparfait，描述一再重複的習慣（réveillait、mangeais、pleuvait）。這正是兩個時態的差別。"
       },
       {
         q: "Qu'est-ce qui fait revenir les souvenirs du narrateur aujourd'hui ?",
         opts: ["Une photo de son grand-père", "Les odeurs du marché", "La vieille bicyclette", "Le chocolat chaud de sa grand-mère"],
         ans: 1,
-        expl: "« L'odeur du poisson et des fleurs m'a replongé dans mon enfance. » C'est une odeur, pas un objet — d'où l'expression « ma madeleine de Proust » : quelque chose qui réveille d'un coup un souvenir d'enfance."
+        expl: "« L'odeur du poisson et des fleurs m'a replongé dans mon enfance. » C'est une odeur, pas un objet — d'où l'expression « ma madeleine de Proust » : quelque chose qui réveille d'un coup un souvenir d'enfance.",
+        explZh: "「L'odeur du poisson et des fleurs m'a replongé dans mon enfance.」是氣味，不是東西——所以叫「ma madeleine de Proust」：一下子把童年回憶喚醒的東西。"
       }
     ]
   },
@@ -580,19 +643,22 @@ const ARTICLES = [
         q: "Dans « on y trouve une grande variété de paysages », que remplace le pronom « y » ?",
         opts: ["Les montagnes", "L'île de Lanyu", "Le sommet", "La mer"],
         ans: 1,
-        expl: "« Y » reprend le lieu dont on vient de parler : « L'île est petite, mais on y trouve… » = on trouve ces paysages SUR CETTE ÎLE. Le pronom y remplace toujours un lieu introduit par à, sur, sous ou dans."
+        expl: "« Y » reprend le lieu dont on vient de parler : « L'île est petite, mais on y trouve… » = on trouve ces paysages SUR CETTE ÎLE. Le pronom y remplace toujours un lieu introduit par à, sur, sous ou dans.",
+        explZh: "y 指的是剛剛講過的地方：「L'île est petite, mais on y trouve…」＝在這座島上可以看到這些風景。y 一定是代替 à／sur／sous／dans 帶出來的地點。"
       },
       {
         q: "Quelle phrase raconte un événement unique, et non une habitude ?",
         opts: ["On entendait le chant des oiseaux", "Nous avons fait l'ascension d'une colline", "Nous mangions du poisson grillé", "L'odeur de la mer était partout"],
         ans: 1,
-        expl: "C'est le seul passé composé : « nous avons fait » = une fois, un jour précis (le texte dit d'ailleurs « Un jour »). Les trois autres sont à l'imparfait et décrivent le décor ou ce qui se répétait chaque jour."
+        expl: "C'est le seul passé composé : « nous avons fait » = une fois, un jour précis (le texte dit d'ailleurs « Un jour »). Les trois autres sont à l'imparfait et décrivent le décor ou ce qui se répétait chaque jour.",
+        explZh: "只有它是 passé composé：「nous avons fait」＝一次、某一天（文章也寫了「Un jour」）。另外三個是 imparfait，描述場景或每天重複的事。"
       },
       {
         q: "Pourquoi le narrateur pense-t-il encore à ce voyage aujourd'hui ?",
         opts: ["Il regarde des photos", "Une odeur le lui rappelle", "Il y retourne chaque année", "Ses amis lui en parlent"],
         ans: 1,
-        expl: "« Quand je sens l'odeur de la mer, ça me replonge dans ce voyage. » C'est l'odorat qui déclenche le souvenir — le texte ne parle ni de photos, ni d'un retour sur l'île."
+        expl: "« Quand je sens l'odeur de la mer, ça me replonge dans ce voyage. » C'est l'odorat qui déclenche le souvenir — le texte ne parle ni de photos, ni d'un retour sur l'île.",
+        explZh: "「Quand je sens l'odeur de la mer, ça me replonge dans ce voyage.」是嗅覺喚起回憶——文章沒有講照片，也沒有講再回到島上。"
       }
     ]
   },
@@ -607,19 +673,22 @@ const ARTICLES = [
         q: "Pourquoi la famille est-elle restée à la maison un jour ?",
         opts: ["Il faisait trop chaud", "La météo annonçait un orage", "La maison était loin de la plage", "Ils étaient fatigués"],
         ans: 1,
-        expl: "« La météo a annoncé un orage. Nous sommes restés à la maison. » L'orage, c'est tout l'épisode de mauvais temps — à ne pas confondre avec le tonnerre, qui est seulement le bruit."
+        expl: "« La météo a annoncé un orage. Nous sommes restés à la maison. » L'orage, c'est tout l'épisode de mauvais temps — à ne pas confondre avec le tonnerre, qui est seulement le bruit.",
+        explZh: "「La météo a annoncé un orage. Nous sommes restés à la maison.」orage 是整場暴風雨——不要跟 tonnerre（只是雷聲）搞混。"
       },
       {
         q: "Dans « j'ai acheté un petit sac taïwanais », pourquoi « petit » est-il avant le nom et « taïwanais » après ?",
         opts: ["C'est une exception sans règle", "Les adjectifs courts sont avant, les nationalités toujours après", "Les deux places sont possibles", "Parce que le sac est petit"],
         ans: 1,
-        expl: "Règle de la leçon : les adjectifs courts (bon, gros, grand, petit, vieux, beau, joli) se placent avant le nom ; les adjectifs de nationalité, de couleur et de forme se placent toujours après. Quand les deux apparaissent, le nom est au milieu."
+        expl: "Règle de la leçon : les adjectifs courts (bon, gros, grand, petit, vieux, beau, joli) se placent avant le nom ; les adjectifs de nationalité, de couleur et de forme se placent toujours après. Quand les deux apparaissent, le nom est au milieu.",
+        explZh: "這課的規則：短的形容詞（bon、gros、grand、petit、vieux、beau、joli）放名詞前；國籍、顏色、形狀的形容詞一定放名詞後。兩種都有的時候，名詞夾在中間。"
       },
       {
         q: "Que veut dire « mon propre souvenir » à la fin du texte ?",
         opts: ["Un souvenir propre, pas sale", "Un souvenir qui est à moi", "Un souvenir récent", "Un souvenir acheté en solde"],
         ans: 1,
-        expl: "« Propre » change de sens selon sa place : AVANT le nom = « à moi » (mon propre souvenir) ; APRÈS le nom = « pas sale » (un mug propre). Ici l'adjectif est avant, donc il s'agit de possession."
+        expl: "« Propre » change de sens selon sa place : AVANT le nom = « à moi » (mon propre souvenir) ; APRÈS le nom = « pas sale » (un mug propre). Ici l'adjectif est avant, donc il s'agit de possession.",
+        explZh: "propre 放的位置不同，意思就不同：放名詞前＝「我自己的」（mon propre souvenir）；放名詞後＝「乾淨的」（un mug propre）。這裡放在前面，所以是「自己的」。"
       }
     ]
   },
@@ -634,19 +703,22 @@ const ARTICLES = [
         q: "Dans « Ma chambre est la pièce que je préfère », pourquoi utilise-t-on « que » et non « où » ?",
         opts: ["Parce qu'une chambre n'est pas un lieu", "Parce que le pronom remplace le COD de préférer", "Parce que « où » ne s'emploie jamais après « pièce »", "Parce que le verbe est au présent"],
         ans: 1,
-        expl: "Le test du prof : en anglais on dit « the room WHICH I prefer », pas « where I prefer ». Le pronom remplace le complément d'objet de préférer (je préfère la pièce), donc c'est QUE. L'antécédent a beau être un lieu, ça ne décide rien — ce qui décide, c'est le trou laissé dans la proposition : sujet → qui, COD → que, complément de lieu → où."
+        expl: "Le test du prof : en anglais on dit « the room WHICH I prefer », pas « where I prefer ». Le pronom remplace le complément d'objet de préférer (je préfère la pièce), donc c'est QUE. L'antécédent a beau être un lieu, ça ne décide rien — ce qui décide, c'est le trou laissé dans la proposition : sujet → qui, COD → que, complément de lieu → où.",
+        explZh: "老師的測試法：英文說「the room WHICH I prefer」，不說「where I prefer」。關係詞代替的是 préférer 的直接受詞（je préfère la pièce），所以是 que。前面的名詞是地點也不算數——決定的是後半句「缺了什麼」：缺主詞 → qui；缺直接受詞 → que；缺「介系詞＋地點」→ où。"
       },
       {
         q: "Dans « Le salon est l'endroit où nous mangeons ensemble », que remplace « où » ?",
         opts: ["Le sujet « nous »", "Le COD du verbe manger", "Un complément de lieu : nous mangeons DANS le salon", "Un complément de temps"],
         ans: 2,
-        expl: "On peut couper la phrase en deux : « Le salon est un endroit. » + « Nous mangeons DANS le salon. » Il y a une préposition + un lieu, donc OÙ. C'est le même mécanisme que « Voici la chambre où je dors »."
+        expl: "On peut couper la phrase en deux : « Le salon est un endroit. » + « Nous mangeons DANS le salon. » Il y a une préposition + un lieu, donc OÙ. C'est le même mécanisme que « Voici la chambre où je dors ».",
+        explZh: "把句子拆成兩句：「Le salon est un endroit.」＋「Nous mangeons DANS le salon.」有介系詞＋地點，所以是 où。跟「Voici la chambre où je dors」是同一個道理。"
       },
       {
         q: "« 400 euros par personne et par mois, charges comprises » : qu'est-ce que ça veut dire ?",
         opts: ["Il faut payer l'eau et l'électricité en plus", "L'eau, l'électricité et Internet sont déjà inclus dans les 400 euros", "Le loyer change tous les mois", "Les 400 euros sont pour tout l'appartement"],
         ans: 1,
-        expl: "« Les charges » = l'eau, l'électricité, le chauffage, Internet. « Charges comprises » veut donc dire que ces frais sont DÉJÀ dans le prix — c'est la ligne à vérifier en premier dans une annonce. Attention aussi à « comprendre », qui veut dire « inclure » ici (Il comprend une chambre…), pas « understand »."
+        expl: "« Les charges » = l'eau, l'électricité, le chauffage, Internet. « Charges comprises » veut donc dire que ces frais sont DÉJÀ dans le prix — c'est la ligne à vérifier en premier dans une annonce. Attention aussi à « comprendre », qui veut dire « inclure » ici (Il comprend une chambre…), pas « understand ».",
+        explZh: "「les charges」＝水、電、暖氣、網路。「charges comprises」就是這些費用已經含在價錢裡——看租屋廣告要先確認這一行。另外 comprendre 在這裡是「包含」（Il comprend une chambre…），不是「理解」。"
       }
     ]
   },
@@ -661,19 +733,22 @@ const ARTICLES = [
         q: "L'atelier de cuisine commence à 14 h 45. Comment dit-on cette heure à l'oral ?",
         opts: ["Trois heures moins le quart", "Deux heures et demie", "Trois heures moins et demie", "Quatorze heures et quart"],
         ans: 0,
-        expl: "14 h 45, c'est un quart d'heure avant 15 h → à l'oral : trois heures moins le quart. ⚠️ Le quart = 15 minutes, la demie = 30 minutes : « moins et demie » mélange les deux et n'existe pas. Rappel du système : avant la demie on ajoute (et quart, et demie) ; après la demie on regarde l'heure suivante (moins vingt, moins le quart, moins dix). Sur la feuille d'examen, la même heure s'écrit toujours en officiel : quatorze heures quarante-cinq."
+        expl: "14 h 45, c'est un quart d'heure avant 15 h → à l'oral : trois heures moins le quart. ⚠️ Le quart = 15 minutes, la demie = 30 minutes : « moins et demie » mélange les deux et n'existe pas. Rappel du système : avant la demie on ajoute (et quart, et demie) ; après la demie on regarde l'heure suivante (moins vingt, moins le quart, moins dix). Sur la feuille d'examen, la même heure s'écrit toujours en officiel : quatorze heures quarante-cinq.",
+        explZh: "14:45 是 15 點差一刻 → 口語說 trois heures moins le quart。⚠️ le quart＝15 分、la demie＝30 分：「moins et demie」把兩個混在一起，不存在。規則複習：過半點之前用加的（et quart、et demie）；過半點之後看下一個整點（moins vingt、moins le quart、moins dix）。考卷上同一個時間一律寫正式說法：quatorze heures quarante-cinq。"
       },
       {
         q: "Quelle activité est la moins chère par an ?",
         opts: ["Le cours de danse", "L'atelier de cuisine", "Le club de natation", "Les trois coûtent le même prix"],
         ans: 0,
-        expl: "Il faut tout ramener à la même période AVANT de comparer — c'est exactement ce que la question teste. Danse : 240 € par an. Cuisine : 25 × 12 = 300 € par an. Natation : 120 × 4 = 480 € par an (un trimestre = 3 mois, donc 4 par an). La moins chère est donc la danse. ⚠️ Le piège : comparer 25, 120 et 240 sans convertir ferait choisir la cuisine — le plus petit nombre n'est presque jamais le moins cher."
+        expl: "Il faut tout ramener à la même période AVANT de comparer — c'est exactement ce que la question teste. Danse : 240 € par an. Cuisine : 25 × 12 = 300 € par an. Natation : 120 × 4 = 480 € par an (un trimestre = 3 mois, donc 4 par an). La moins chère est donc la danse. ⚠️ Le piège : comparer 25, 120 et 240 sans convertir ferait choisir la cuisine — le plus petit nombre n'est presque jamais le moins cher.",
+        explZh: "比較之前要先換成同一段時間——這題考的就是這個。舞蹈：一年 240 歐。烹飪：25 × 12 ＝ 一年 300 歐。游泳：120 × 4 ＝ 一年 480 歐（un trimestre＝3 個月，一年 4 期）。所以最便宜的是舞蹈。⚠️ 陷阱：沒換算就比 25、120、240，會選到烹飪——數字最小的幾乎都不是最便宜的。"
       },
       {
         q: "Quelle activité propose-t-on le week-end ?",
         opts: ["Le cours de danse et la visite guidée", "L'atelier de cuisine et le club de natation", "Seulement la visite guidée", "Aucune activité"],
         ans: 1,
-        expl: "Le week-end = samedi et dimanche. L'atelier de cuisine est le samedi, le club de natation le dimanche. Le cours de danse (mardi) et la visite guidée (jeudi) sont en semaine. Astuce d'examen : entourez d'abord tous les jours de la semaine dans le document, la réponse saute aux yeux."
+        expl: "Le week-end = samedi et dimanche. L'atelier de cuisine est le samedi, le club de natation le dimanche. Le cours de danse (mardi) et la visite guidée (jeudi) sont en semaine. Astuce d'examen : entourez d'abord tous les jours de la semaine dans le document, la réponse saute aux yeux.",
+        explZh: "週末＝星期六和星期天。烹飪課在星期六、游泳社在星期天。舞蹈課（星期二）和導覽（星期四）在平日。考試技巧：先把文件裡所有的星期幾圈起來，答案就跳出來了。"
       }
     ]
   },
@@ -688,19 +763,22 @@ const ARTICLES = [
         q: "« Il y a autant de cafés que de magasins de thé. » Que signifie cette phrase ?",
         opts: ["Il y a plus de cafés que de magasins de thé", "Il y a le même nombre de cafés et de magasins de thé", "Il y a moins de cafés que de magasins de thé", "Il n'y a ni café ni magasin de thé"],
         ans: 1,
-        expl: "AUTANT DE … QUE exprime l'égalité de quantité : le nombre est le même. ⚠️ Deux pièges dans cette forme : avec un nom on dit autant (jamais aussi — aussi ne s'emploie qu'avec un adjectif ou un adverbe), et il faut le DE devant le nom, parce qu'on parle d'une quantité (même logique que beaucoup de)."
+        expl: "AUTANT DE … QUE exprime l'égalité de quantité : le nombre est le même. ⚠️ Deux pièges dans cette forme : avec un nom on dit autant (jamais aussi — aussi ne s'emploie qu'avec un adjectif ou un adverbe), et il faut le DE devant le nom, parce qu'on parle d'une quantité (même logique que beaucoup de).",
+        explZh: "autant de … que 表示數量一樣多。⚠️ 這個句型有兩個陷阱：接名詞要用 autant（不能用 aussi——aussi 只接形容詞或副詞）；名詞前面要有 de，因為講的是數量（跟 beaucoup de 同一個道理）。"
       },
       {
         q: "« Ma chambre est plus petite que le salon, mais je l'aime mieux. » Pourquoi « mieux » et non « meilleure » ?",
         opts: ["Parce que aimer est un verbe, et un verbe se compare avec un adverbe", "Parce que chambre est féminin", "Parce que meilleur ne s'emploie qu'au pluriel", "C'est une erreur, il faudrait meilleure"],
         ans: 0,
-        expl: "MEILLEUR est la forme comparative de l'adjectif bon : il qualifie un nom (un meilleur four). MIEUX est celle de l'adverbe bien : il modifie un verbe. Comme aimer est un verbe, on dit j'aime mieux. ⚠️ C'est exactement la question du manuel : « J'aime meilleur / mieux ce quartier » — la réponse est mieux."
+        expl: "MEILLEUR est la forme comparative de l'adjectif bon : il qualifie un nom (un meilleur four). MIEUX est celle de l'adverbe bien : il modifie un verbe. Comme aimer est un verbe, on dit j'aime mieux. ⚠️ C'est exactement la question du manuel : « J'aime meilleur / mieux ce quartier » — la réponse est mieux.",
+        explZh: "meilleur 是形容詞 bon 的比較級：修飾名詞（un meilleur four）。mieux 是副詞 bien 的比較級：修飾動詞。aimer 是動詞，所以說 j'aime mieux。⚠️ 課本的題目就是這個：「J'aime meilleur / mieux ce quartier」——答案是 mieux。"
       },
       {
         q: "« S'il fait très chaud, on met la clim. » Pourquoi écrit-on s'il et non si il ?",
         opts: ["Parce que si se contracte devant toutes les voyelles", "Parce que si se contracte uniquement devant il et ils", "Parce que le verbe faire commence par une consonne", "Parce que la phrase est au présent"],
         ans: 1,
-        expl: "L'élision si → s' ne se produit QUE devant il et ils. On écrit si on, si elle, si tu sans contraction. Ce n'est pas une règle de grammaire mais de prononciation : si et il commencent tous deux par i, et deux i de suite passent mal. Le prof précise que beaucoup de Français font eux-mêmes la faute en écrivant « si il »."
+        expl: "L'élision si → s' ne se produit QUE devant il et ils. On écrit si on, si elle, si tu sans contraction. Ce n'est pas une règle de grammaire mais de prononciation : si et il commencent tous deux par i, et deux i de suite passent mal. Le prof précise que beaucoup de Français font eux-mêmes la faute en écrivant « si il ».",
+        explZh: "si 只有在 il 和 ils 前面才縮成 s'。si on、si elle、si tu 都不縮。這不是文法規則，是發音規則：si 和 il 都是 i 開頭，兩個 i 連在一起不好唸。老師說很多法國人自己也會寫錯成「si il」。"
       }
     ]
   },
@@ -715,19 +793,22 @@ const ARTICLES = [
         q: "« Il ne fait pas autant de sport qu'Antoine. » Pourquoi autant et non aussi ?",
         opts: ["Parce que le mot comparé est un nom (du sport)", "Parce que la phrase est négative", "Parce qu'Antoine est un prénom masculin", "Parce que faire est un verbe irrégulier"],
         ans: 0,
-        expl: "AUSSI ne s'emploie qu'avec un adjectif ou un adverbe. Avec un nom ou un verbe, on utilise AUTANT. Ici le mot comparé est le nom « sport », donc autant — et devant un nom il faut encore ajouter DE : autant de sport. ⚠️ Le piège classique de cette leçon : la question n'est jamais « combien » mais « quelle est la nature du mot comparé »."
+        expl: "AUSSI ne s'emploie qu'avec un adjectif ou un adverbe. Avec un nom ou un verbe, on utilise AUTANT. Ici le mot comparé est le nom « sport », donc autant — et devant un nom il faut encore ajouter DE : autant de sport. ⚠️ Le piège classique de cette leçon : la question n'est jamais « combien » mais « quelle est la nature du mot comparé ».",
+        explZh: "aussi 只接形容詞或副詞。接名詞或動詞要用 autant。這裡比較的是名詞 sport，所以用 autant——名詞前還要加 de：autant de sport。⚠️ 這課的經典陷阱：問題從來不是「多少」，而是「被比較的是什麼詞性」。"
       },
       {
         q: "« Il cuisine chaque soir pour toute la famille. » Pourquoi chaque soir et toute la famille ?",
         opts: ["C'est une erreur, il faudrait chaques soirs", "Chaque s'emploie seulement avec les jours de la semaine", "Chaque compte un par un et exige le singulier ; tout s'accorde avec le nom", "Tout et chaque sont interchangeables partout"],
         ans: 2,
-        expl: "CHAQUE découpe : on regarde les soirs un par un, donc le nom reste au singulier et chaque ne change jamais. TOUT rassemble : on regarde la famille comme un ensemble, et tout s'accorde — famille est féminin singulier, d'où TOUTE la famille. ⚠️ Attention : tout et tous se prononcent de la même façon, c'est donc une règle qui s'applique avec les yeux."
+        expl: "CHAQUE découpe : on regarde les soirs un par un, donc le nom reste au singulier et chaque ne change jamais. TOUT rassemble : on regarde la famille comme un ensemble, et tout s'accorde — famille est féminin singulier, d'où TOUTE la famille. ⚠️ Attention : tout et tous se prononcent de la même façon, c'est donc une règle qui s'applique avec les yeux.",
+        explZh: "chaque 是一個一個看：每個晚上分開看，所以名詞用單數，chaque 本身不變。tout 是看成一整體：把家庭當成一個整體，tout 要配合——famille 是陰性單數，所以是 toute la famille。⚠️ tout 和 tous 唸起來一樣，這條規則只能用眼睛分。"
       },
       {
         q: "Antoine « est grand et sec ». Que signifie sec ici ?",
         opts: ["Sans cheveux", "Sans graisse — on peut d'ailleurs être musclé et sec", "Peu aimable, froid", "Très maigre et faible"],
         ans: 1,
-        expl: "SEC décrit un corps sans graisse, ce qui n'empêche pas d'être musclé : on dit couramment « musclé et sec ». MINCE, lui, insiste sur la finesse (skinny). Le manuel présente les deux mots comme équivalents, mais le prof précise qu'ils ne le sont pas tout à fait — et c'est justement l'expression « musclé et sec » qui le prouve."
+        expl: "SEC décrit un corps sans graisse, ce qui n'empêche pas d'être musclé : on dit couramment « musclé et sec ». MINCE, lui, insiste sur la finesse (skinny). Le manuel présente les deux mots comme équivalents, mais le prof précise qu'ils ne le sont pas tout à fait — et c'est justement l'expression « musclé et sec » qui le prouve.",
+        explZh: "sec 是指身體沒有脂肪，可以同時有肌肉：大家常說「musclé et sec」。mince 強調的是瘦、細（skinny）。課本把兩個字當成同義，但老師說不完全一樣——「musclé et sec」這個說法正好證明了這點。"
       }
     ]
   },
@@ -742,19 +823,22 @@ const ARTICLES = [
         q: "« Elle saura mon chemin, donc je n'aurai pas besoin de volant. » Pourquoi saura et aurai ?",
         opts: ["Ce sont des erreurs : il faudrait savera et averai", "Ce sont deux radicaux irréguliers du futur simple : savoir → saur-, avoir → aur-", "Ce sont des formes de l'imparfait", "Ce sont des subjonctifs"],
         ans: 1,
-        expl: "Au futur simple, les terminaisons ne changent jamais (ai, as, a, ons, ez, ont) : ce sont les RADICAUX de certains verbes qui sont irréguliers. Ici savoir donne saur- et avoir donne aur-. ⚠️ Le repère qui ne trompe pas : le squelette du futur est l'infinitif, donc il y a toujours un r avant la terminaison — j'écrirai (futur) contre j'écrivais (imparfait)."
+        expl: "Au futur simple, les terminaisons ne changent jamais (ai, as, a, ons, ez, ont) : ce sont les RADICAUX de certains verbes qui sont irréguliers. Ici savoir donne saur- et avoir donne aur-. ⚠️ Le repère qui ne trompe pas : le squelette du futur est l'infinitif, donc il y a toujours un r avant la terminaison — j'écrirai (futur) contre j'écrivais (imparfait).",
+        explZh: "簡單未來式的字尾永遠不變（ai、as、a、ons、ez、ont）：不規則的是某些動詞的「詞幹」。這裡 savoir → saur-、avoir → aur-。⚠️ 不會錯的判斷法：未來式的骨架是原形，所以字尾前一定有 r——j'écrirai（未來）vs j'écrivais（未完成）。"
       },
       {
         q: "« Ma collègue Léa aura le sien aussi. » Pourquoi le sien et non la sienne ?",
         opts: ["Parce que Léa est une femme", "Parce que le pronom s'accorde avec robot, qui est masculin", "Parce que le sien est la forme neutre", "C'est une erreur du texte"],
         ans: 1,
-        expl: "Le pronom possessif s'accorde avec le nom REMPLACÉ, pas avec le possesseur. Le mot remplacé est « son robot », masculin singulier, donc le sien — même si la personne qui possède est une femme. ⚠️ C'est exactement le piège du manuel : sa photo → la sienne, y compris quand c'est un homme qui parle."
+        expl: "Le pronom possessif s'accorde avec le nom REMPLACÉ, pas avec le possesseur. Le mot remplacé est « son robot », masculin singulier, donc le sien — même si la personne qui possède est une femme. ⚠️ C'est exactement le piège du manuel : sa photo → la sienne, y compris quand c'est un homme qui parle.",
+        explZh: "所有格代名詞跟「被代替的名詞」配合，不是跟擁有的人。被代替的是「son robot」（陽性單數），所以是 le sien——即使擁有的人是女生。⚠️ 課本的陷阱就是這個：sa photo → la sienne，就算說話的是男生也一樣。"
       },
       {
         q: "« Quand elle aura des difficultés, la tablette adaptera le contenu. » Pourquoi aura et non a ?",
         opts: ["Parce que quand + événement futur met les DEUX parties au futur en français", "Parce que avoir est irrégulier", "Parce que la phrase est négative", "Parce que le sujet est féminin"],
         ans: 0,
-        expl: "En français, si l'événement introduit par QUAND se situe dans le futur, la subordonnée est elle aussi au futur : Quand nous irons au salon, tu viendras avec nous ? ⚠️ C'est une source d'erreur classique pour les sinophones et les anglophones, dont les langues gardent le présent après « quand » / « when »."
+        expl: "En français, si l'événement introduit par QUAND se situe dans le futur, la subordonnée est elle aussi au futur : Quand nous irons au salon, tu viendras avec nous ? ⚠️ C'est une source d'erreur classique pour les sinophones et les anglophones, dont les langues gardent le présent après « quand » / « when ».",
+        explZh: "法文裡 quand 帶出的事情如果在未來，子句也要用未來式：Quand nous irons au salon, tu viendras avec nous ? ⚠️ 這是說中文和英文的人常犯的錯，因為中英文在「當…的時候／when」後面都用現在式。"
       }
     ]
   },
@@ -769,19 +853,22 @@ const ARTICLES = [
         q: "« Si je me perds demain, je demanderai mon chemin. » Pourquoi me perds au présent alors que la phrase parle de demain ?",
         opts: ["Parce que le verbe se perdre n'a pas de futur", "Parce qu'après si on met toujours le présent : c'est la moitié droite de la phrase qui change de temps", "Parce que demain est déjà dans la phrase, donc le futur serait répété", "C'est une erreur du texte"],
         ans: 1,
-        expl: "La règle unique de la condition avec si : après si, TOUJOURS le présent. Ce qui varie, c'est la deuxième moitié — présent (habitude), impératif (conseil) ou futur simple (prédiction). ⛔ Si je me perdrai est impossible. Ici on a la troisième forme : si + présent + futur simple."
+        expl: "La règle unique de la condition avec si : après si, TOUJOURS le présent. Ce qui varie, c'est la deuxième moitié — présent (habitude), impératif (conseil) ou futur simple (prédiction). ⛔ Si je me perdrai est impossible. Ici on a la troisième forme : si + présent + futur simple.",
+        explZh: "si 表示條件只有一條規則：si 後面一律用現在式。會變的是後半句——現在式（習慣）、命令式（建議）或簡單未來式（預測）。⛔ 不能說 Si je me perdrai。這裡是第三種：si＋現在式＋簡單未來式。"
       },
       {
         q: "« Quand je serai au travail, mes patients ne verront pas la différence. » Pourquoi serai et non suis ?",
         opts: ["Parce que quand + événement futur met les DEUX parties au futur", "Parce que être est un verbe irrégulier", "Parce que la deuxième partie est négative", "Parce que patients est au pluriel"],
         ans: 0,
-        expl: "Quand + futur + futur sert à exprimer une certitude dans le futur : l'événement va forcément arriver. ⚠️ Piège inverse de l'anglais et du chinois, qui gardent le présent après « when » / 「當…的時候」. Comparez avec si, qui introduit une chose qui n'arrivera peut-être pas : Si tout se passe bien, je recommencerai."
+        expl: "Quand + futur + futur sert à exprimer une certitude dans le futur : l'événement va forcément arriver. ⚠️ Piège inverse de l'anglais et du chinois, qui gardent le présent après « when » / 「當…的時候」. Comparez avec si, qui introduit une chose qui n'arrivera peut-être pas : Si tout se passe bien, je recommencerai.",
+        explZh: "quand＋未來式＋未來式表示未來一定會發生的事。⚠️ 跟英文、中文相反：中英文在 when／「當…的時候」後面用現在式。比較 si：si 帶出的是不一定會發生的事——Si tout se passe bien, je recommencerai."
       },
       {
         q: "« On dit que c'est difficile » et « on fera peut-être un selfie » : les deux on ont-ils le même sens ?",
         opts: ["Oui, on veut toujours dire nous", "Non : le premier vaut les gens, le second vaut nous", "Non : le premier vaut quelqu'un, le second vaut les gens", "Oui, on veut toujours dire quelqu'un"],
         ans: 1,
-        expl: "On a trois sens : quelqu'un, les gens, nous. Dans « On dit que c'est difficile », il s'agit d'une opinion générale → les gens. Dans « on fera peut-être un selfie », le locuteur est dedans → nous. ⚠️ Quel que soit le sens, on se conjugue toujours comme il / elle : on fera, jamais on feras."
+        expl: "On a trois sens : quelqu'un, les gens, nous. Dans « On dit que c'est difficile », il s'agit d'une opinion générale → les gens. Dans « on fera peut-être un selfie », le locuteur est dedans → nous. ⚠️ Quel que soit le sens, on se conjugue toujours comme il / elle : on fera, jamais on feras.",
+        explZh: "on 有三個意思：某人、大家、我們。「On dit que c'est difficile」是一般看法 → 大家。「on fera peut-être un selfie」說話的人也在裡面 → 我們。⚠️ 不管哪個意思，on 一律照 il／elle 變化：on fera，不是 on feras。"
       }
     ]
   },
@@ -796,19 +883,22 @@ const ARTICLES = [
         q: "« Des oignons ? J'en achète toujours une botte. » Pourquoi garde-t-on « une botte » après le verbe ?",
         opts: ["Parce que en ne remplace que le nom, la quantité reste toujours", "Parce que c'est une erreur : on devrait dire j'en achète toujours", "Parce que botte est féminin", "Parce que le verbe acheter demande une quantité"],
         ans: 0,
-        expl: "Le pronom en reprend uniquement le nom (des oignons) ; le mot de quantité — un nombre, une expression de quantité, un adverbe — reste après le verbe. C'est vrai des quatre emplois : j'en ai une, je n'en propose pas trois, j'en consomme beaucoup, j'en achète une botte."
+        expl: "Le pronom en reprend uniquement le nom (des oignons) ; le mot de quantité — un nombre, une expression de quantité, un adverbe — reste après le verbe. C'est vrai des quatre emplois : j'en ai une, je n'en propose pas trois, j'en consomme beaucoup, j'en achète une botte.",
+        explZh: "en 只代替名詞（des oignons）；數量詞——數字、數量說法、副詞——留在動詞後面。四種用法都一樣：j'en ai une、je n'en propose pas trois、j'en consomme beaucoup、j'en achète une botte。"
       },
       {
         q: "« Lavez-vous les mains avant de commencer ! » Pourquoi le pronom est-il après le verbe ?",
         opts: ["Parce que c'est un impératif affirmatif d'un verbe pronominal", "Parce que le verbe laver est irrégulier", "Parce que la phrase est une question", "Parce que vous est un pronom tonique"],
         ans: 0,
-        expl: "À l'impératif AFFIRMATIF, le pronom d'un verbe pronominal passe derrière le verbe, relié par un trait d'union : Se laver les mains → Lavez-vous les mains ! Avec tu, te devient toi : Brosse-toi les dents. ⚠️ À la forme négative, le pronom revient devant : Ne vous lavez pas les mains ici."
+        expl: "À l'impératif AFFIRMATIF, le pronom d'un verbe pronominal passe derrière le verbe, relié par un trait d'union : Se laver les mains → Lavez-vous les mains ! Avec tu, te devient toi : Brosse-toi les dents. ⚠️ À la forme négative, le pronom revient devant : Ne vous lavez pas les mains ici.",
+        explZh: "肯定命令式裡，反身動詞的代名詞跑到動詞後面，用連字號接起來：Se laver les mains → Lavez-vous les mains ! 對 tu 的時候 te 變成 toi：Brosse-toi les dents。⚠️ 否定的時候代名詞回到前面：Ne vous lavez pas les mains ici。"
       },
       {
         q: "« De la crème chantilly ? je n'en veux pas. Mais le café, lui, je le veux bien. » Pourquoi en dans un cas et le dans l'autre ?",
         opts: ["Parce que la crème est féminine et le café masculin", "Parce que en reprend une quantité indéterminée et le reprend l'objet précis dont on parle", "Parce que en s'emploie seulement à la forme négative", "C'est interchangeable, les deux sont corrects"],
         ans: 1,
-        expl: "en reprend une quantité indéterminée introduite par de / du / de la (de la crème → j'en veux) ; le / la reprend un objet précis et identifié (le café → je le veux). ⛔ On ne peut pas répondre « Oui, je veux » tout court : vouloir exige un complément, donc en ou le."
+        expl: "en reprend une quantité indéterminée introduite par de / du / de la (de la crème → j'en veux) ; le / la reprend un objet précis et identifié (le café → je le veux). ⛔ On ne peut pas répondre « Oui, je veux » tout court : vouloir exige un complément, donc en ou le.",
+        explZh: "en 代替 de／du／de la 帶出的「不定量」（de la crème → j'en veux）；le／la 代替一個明確的東西（le café → je le veux）。⛔ 不能只回「Oui, je veux」：vouloir 後面一定要有東西，所以要用 en 或 le。"
       }
     ]
   },
@@ -823,19 +913,22 @@ const ARTICLES = [
         q: "« On n'y sert que des plats simples mais goûteux. » Que remplace ne...que ici ?",
         opts: ["C'est une négation totale : on ne sert aucun plat", "C'est une limite : on sert seulement ces plats-là, rien d'autre", "C'est une question déguisée", "C'est identique à ne...pas encore"],
         ans: 1,
-        expl: "ne...que exprime une restriction, pas une négation totale — on peut le remplacer par uniquement ou seulement sans changer le sens : « on y sert uniquement des plats simples mais goûteux ». ⚠️ Ce n'est pas la même chose que « on n'y sert pas de plats » (négation vraie)."
+        expl: "ne...que exprime une restriction, pas une négation totale — on peut le remplacer par uniquement ou seulement sans changer le sens : « on y sert uniquement des plats simples mais goûteux ». ⚠️ Ce n'est pas la même chose que « on n'y sert pas de plats » (négation vraie).",
+        explZh: "ne…que 表示「只有」，不是完全否定——可以換成 uniquement 或 seulement，意思不變：「on y sert uniquement des plats simples mais goûteux」。⚠️ 跟「on n'y sert pas de plats」（真的否定）不一樣。"
       },
       {
         q: "« Je ne suis pas gourmet, je suis gourmand. » Quelle est la différence entre les deux mots ?",
         opts: ["Aucune différence, ce sont des synonymes", "gourmet = aime manger beaucoup de tout ; gourmand = aime surtout la cuisine raffinée", "gourmand = aime manger, en général ; gourmet = aime surtout les plats très fins, la grande cuisine", "gourmet s'utilise seulement pour les hommes"],
         ans: 2,
-        expl: "gourmand(e) décrit une personne qui aime manger, sans distinction de qualité ; gourmet décrit une personne qui aime surtout les plats très fins, la grande cuisine — quelqu'un de plus exigeant sur la qualité que sur la quantité."
+        expl: "gourmand(e) décrit une personne qui aime manger, sans distinction de qualité ; gourmet décrit une personne qui aime surtout les plats très fins, la grande cuisine — quelqu'un de plus exigeant sur la qualité que sur la quantité.",
+        explZh: "gourmand(e) 是愛吃的人，不挑品質；gourmet 是特別喜歡精緻料理、高級菜的人——比起份量，更講究品質。"
       },
       {
         q: "« La dernière fois, je n'ai pris qu'une entrée et un plat. » Pourquoi utilise-t-on que et non pas ici ?",
         opts: ["Parce que la phrase est au passé composé", "Parce qu'on veut exprimer une limite (seulement une entrée et un plat), pas une négation totale", "Les deux mots sont interchangeables ici", "Parce que entrée est féminin"],
         ans: 1,
-        expl: "Le locuteur A pris quelque chose (une entrée et un plat) — ce n'est pas une négation. ne...que limite la quantité prise : « seulement une entrée et un plat, pas plus (pas de dessert) ». Avec pas, la phrase deviendrait « je n'ai pas pris d'entrée » = négation totale, sens complètement différent."
+        expl: "Le locuteur A pris quelque chose (une entrée et un plat) — ce n'est pas une négation. ne...que limite la quantité prise : « seulement une entrée et un plat, pas plus (pas de dessert) ». Avec pas, la phrase deviendrait « je n'ai pas pris d'entrée » = négation totale, sens complètement différent.",
+        explZh: "說話的人有點東西（一道前菜和一道主菜）——不是否定。ne…que 限制的是份量：「只點了前菜和主菜，沒有更多（沒點甜點）」。換成 pas 的話就變成「je n'ai pas pris d'entrée」＝完全否定，意思完全不同。"
       }
     ]
   },
@@ -850,19 +943,22 @@ const ARTICLES = [
         q: "« Elle m'a aussi conseillé de placer un oreiller entre mes jambes. » Dans « Je lui ai demandé pourquoi », que remplace lui ?",
         opts: ["l'oreiller (COD)", "à ma coach bien-être (COI, car demander à quelqu'un)", "le dos (COD)", "la colonne vertébrale (COD)"],
         ans: 1,
-        expl: "lui est un pronom COI qui remplace « à ma coach » — demander se construit avec à quelqu'un (demander quelque chose à quelqu'un), donc le pronom qui remplace la personne est un COI (lui), pas un COD."
+        expl: "lui est un pronom COI qui remplace « à ma coach » — demander se construit avec à quelqu'un (demander quelque chose à quelqu'un), donc le pronom qui remplace la personne est un COI (lui), pas un COD.",
+        explZh: "lui 是間接受詞代名詞，代替「à ma coach」——demander 的用法是 demander quelque chose à quelqu'un，所以代替人的是間接受詞（lui），不是直接受詞。"
       },
       {
         q: "« Mes amis me demandent souvent des conseils pour bien dormir, et je les leur donne avec plaisir. » Que représentent les et leur ?",
         opts: ["les = mes amis (COD) ; leur = des conseils (COI)", "les = des conseils (COD) ; leur = à mes amis (COI)", "les et leur représentent tous les deux mes amis", "les et leur représentent tous les deux des conseils"],
         ans: 1,
-        expl: "les remplace des conseils (COD, l'objet direct de donner) et leur remplace à mes amis (COI, car donner quelque chose à quelqu'un). ⭐⭐⭐ Quand COD et COI sont dans la même phrase, l'ordre est fixe : COD avant COI (les leur, pas leur les)."
+        expl: "les remplace des conseils (COD, l'objet direct de donner) et leur remplace à mes amis (COI, car donner quelque chose à quelqu'un). ⭐⭐⭐ Quand COD et COI sont dans la même phrase, l'ordre est fixe : COD avant COI (les leur, pas leur les).",
+        explZh: "les 代替 des conseils（直接受詞，donner 的東西）；leur 代替 à mes amis（間接受詞，因為 donner quelque chose à quelqu'un）。⭐⭐⭐ 直接受詞和間接受詞在同一句時順序固定：直接在前、間接在後（les leur，不是 leur les）。"
       },
       {
         q: "« Depuis, je me sens beaucoup mieux : je suis reposée, apaisée et en pleine forme. » Quel est le sens de en pleine forme ici ?",
         opts: ["Fatiguée et sans énergie", "En très bonne forme, pleine d'énergie", "Malade mais qui se soigne", "En train de faire du sport"],
         ans: 1,
-        expl: "être en pleine forme signifie être dans un excellent état physique et mental — l'adjectif pleine renforce forme (avoir de l'énergie) pour dire « une énergie complète, maximale »."
+        expl: "être en pleine forme signifie être dans un excellent état physique et mental — l'adjectif pleine renforce forme (avoir de l'énergie) pour dire « une énergie complète, maximale ».",
+        explZh: "être en pleine forme＝身心狀態都非常好——pleine 加強 forme（有活力），意思是「活力滿滿」。"
       }
     ]
   },
@@ -877,19 +973,22 @@ const ARTICLES = [
         q: "« Je lui ai demandé : Laquelle est la plus efficace ? » Que remplace laquelle ?",
         opts: ["le médecin", "une des deux tisanes (tisane : féminin singulier)", "la migraine", "l'ambulance"],
         ans: 1,
-        expl: "laquelle est un pronom interrogatif : il remplace un nom déjà mentionné — ici une des deux tisanes (au romarin ou à la lavande). Il s'accorde avec ce nom : tisane est féminin singulier, donc laquelle. On ne répète pas le nom, c'est tout l'intérêt de lequel / laquelle."
+        expl: "laquelle est un pronom interrogatif : il remplace un nom déjà mentionné — ici une des deux tisanes (au romarin ou à la lavande). Il s'accorde avec ce nom : tisane est féminin singulier, donc laquelle. On ne répète pas le nom, c'est tout l'intérêt de lequel / laquelle.",
+        explZh: "laquelle 是疑問代名詞：代替剛剛提過的名詞——這裡是兩種花草茶的其中一種（迷迭香或薰衣草）。它要跟那個名詞配合：tisane 是陰性單數，所以用 laquelle。好處就是不用再重複一次名詞。"
       },
       {
         q: "« Contre la migraine, c'est le romarin qui soulage le mieux. » Pourquoi le mieux et pas le meilleur ?",
         opts: ["Parce que romarin est masculin", "Parce que mieux précise un verbe (soulager), alors que meilleur qualifie un nom", "Parce que le mieux est plus poli", "Les deux sont possibles ici"],
         ans: 1,
-        expl: "le mieux est le superlatif de bien, c'est un adverbe : il donne une précision sur un verbe (soulager). Le meilleur est le superlatif de bon, c'est un adjectif : il qualifie un nom, comme dans « le meilleur remède »."
+        expl: "le mieux est le superlatif de bien, c'est un adverbe : il donne une précision sur un verbe (soulager). Le meilleur est le superlatif de bon, c'est un adjectif : il qualifie un nom, comme dans « le meilleur remède ».",
+        explZh: "le mieux 是 bien 的最高級，是副詞：修飾動詞（soulager）。le meilleur 是 bon 的最高級，是形容詞：修飾名詞，例如「le meilleur remède」。"
       },
       {
         q: "Qui est arrivé en premier sur le lieu de l'accident ?",
         opts: ["L'ambulance", "Les policiers", "Les pompiers", "Le médecin"],
         ans: 2,
-        expl: "« Les pompiers sont arrivés en cinq minutes, puis une ambulance a transporté les blessés aux urgences. » — puis indique ce qui vient après : les pompiers sont arrivés d'abord, l'ambulance ensuite. Les policiers sont venus pour faciliter la circulation."
+        expl: "« Les pompiers sont arrivés en cinq minutes, puis une ambulance a transporté les blessés aux urgences. » — puis indique ce qui vient après : les pompiers sont arrivés d'abord, l'ambulance ensuite. Les policiers sont venus pour faciliter la circulation.",
+        explZh: "「Les pompiers sont arrivés en cinq minutes, puis une ambulance a transporté les blessés aux urgences.」——puis 表示接下來：消防員先到，救護車後到。警察是來疏導交通的。"
       }
     ]
   },
@@ -904,19 +1003,22 @@ const ARTICLES = [
         q: "« Grâce au tchat, les autres élèves peuvent poser des questions. » Pourquoi grâce à et pas à cause de ?",
         opts: ["Parce que tchat est masculin", "Parce que le tchat est une cause positive : il permet de participer", "Parce que grâce à s'utilise seulement à l'oral", "Les deux sont possibles, le sens est le même"],
         ans: 1,
-        expl: "grâce à introduit une cause positive : une bonne chose permet quelque chose de bien. À cause de introduit plutôt une cause négative. Ici, le tchat permet aux élèves de poser des questions, c'est positif. Et grâce à + le = grâce au."
+        expl: "grâce à introduit une cause positive : une bonne chose permet quelque chose de bien. À cause de introduit plutôt une cause négative. Ici, le tchat permet aux élèves de poser des questions, c'est positif. Et grâce à + le = grâce au.",
+        explZh: "grâce à 帶出正面的原因：一件好事促成了好結果。à cause de 比較常帶出負面的原因。這裡聊天室讓學生可以發問，是正面的。grâce à＋le＝grâce au。"
       },
       {
         q: "Pourquoi la classe n'a pas pu filmer la semaine dernière ?",
         opts: ["Parce que les élèves étaient absents", "À cause d'un problème de connexion", "Parce que la professeure était malade", "À cause du mauvais temps"],
         ans: 1,
-        expl: "« La semaine dernière, nous n'avons pas pu filmer à cause d'un problème de connexion. » — à cause de introduit la cause, négative. La conséquence arrive avec donc : ils ont publié la vidéo le lendemain."
+        expl: "« La semaine dernière, nous n'avons pas pu filmer à cause d'un problème de connexion. » — à cause de introduit la cause, négative. La conséquence arrive avec donc : ils ont publié la vidéo le lendemain.",
+        explZh: "「La semaine dernière, nous n'avons pas pu filmer à cause d'un problème de connexion.」——à cause de 帶出原因，是負面的。結果用 donc 帶出：他們隔天才發影片。"
       },
       {
         q: "« Au début, l'émission n'avait que dix spectateurs. » Qu'est-ce que ça veut dire ?",
         opts: ["L'émission avait plus de dix spectateurs", "L'émission avait seulement dix spectateurs", "L'émission n'avait pas de spectateurs", "Dix spectateurs n'aimaient pas l'émission"],
         ans: 1,
-        expl: "ne … que n'est pas une vraie négation : c'est une restriction, on peut la remplacer par seulement. L'émission avait seulement dix spectateurs. Ensuite, grâce à l'interaction, le nombre de spectateurs a vite augmenté."
+        expl: "ne … que n'est pas une vraie négation : c'est une restriction, on peut la remplacer par seulement. L'émission avait seulement dix spectateurs. Ensuite, grâce à l'interaction, le nombre de spectateurs a vite augmenté.",
+        explZh: "ne…que 不是真正的否定，是「只有」，可以換成 seulement。節目原本只有十個觀眾。後來因為有互動，觀眾很快就變多了。"
       }
     ]
   },
@@ -931,19 +1033,22 @@ const ARTICLES = [
         q: "« C'est bien qu'il soit en contact avec eux. » Pourquoi le verbe est au subjonctif ?",
         opts: ["Parce que la phrase est au passé", "Parce que « c'est bien que » exprime une opinion, un jugement", "Parce que le sujet est il", "Parce que la phrase est négative"],
         ans: 1,
-        expl: "Après une tournure qui exprime une opinion ou un jugement (c'est bien que, c'est normal que, il est important que), on utilise le subjonctif. Être est irrégulier : qu'il soit."
+        expl: "Après une tournure qui exprime une opinion ou un jugement (c'est bien que, c'est normal que, il est important que), on utilise le subjonctif. Être est irrégulier : qu'il soit.",
+        explZh: "表達意見或評價的句型（c'est bien que、c'est normal que、il est important que）後面要用虛擬式。être 不規則：qu'il soit。"
       },
       {
         q: "Qu'est-ce que le grand-père a fait la semaine dernière ?",
         opts: ["Il a fermé son compte", "Il a posté une fausse information sans le savoir", "Il a écouté un podcast sur la santé", "Il a commenté les photos de ses amis"],
         ans: 1,
-        expl: "« La semaine dernière, il a posté une infox sur la santé : il ne savait pas que c'était faux. » Une infox, c'est une fausse nouvelle. C'est pourquoi il faut qu'il fasse attention."
+        expl: "« La semaine dernière, il a posté une infox sur la santé : il ne savait pas que c'était faux. » Une infox, c'est une fausse nouvelle. C'est pourquoi il faut qu'il fasse attention.",
+        explZh: "「La semaine dernière, il a posté une infox sur la santé : il ne savait pas que c'était faux.」infox＝假新聞。所以他必須小心。"
       },
       {
         q: "« Ses amis le suivent et lui écrivent de petits messages. » Que remplacent le et lui ?",
         opts: ["le = le jardin, lui = le compte", "le = le grand-père (COD : suivre quelqu'un), lui = au grand-père (COI : écrire à quelqu'un)", "le = Instagram, lui = la photo", "le et lui remplacent ses amis"],
         ans: 1,
-        expl: "On suit quelqu'un : COD, donc le. On écrit à quelqu'un : COI, donc lui. Les deux remplacent le grand-père et se placent avant le verbe conjugué."
+        expl: "On suit quelqu'un : COD, donc le. On écrit à quelqu'un : COI, donc lui. Les deux remplacent le grand-père et se placent avant le verbe conjugué.",
+        explZh: "suivre quelqu'un：直接受詞，所以用 le。écrire à quelqu'un：間接受詞，所以用 lui。兩個都代替爺爺，放在變位動詞前面。"
       }
     ]
   },
@@ -964,19 +1069,22 @@ const ARTICLES = [
         q: "Pourquoi le narrateur n'a-t-il pas fait réparer son lave-vaisselle ?",
         opts: ["Le réparateur n'était pas disponible", "Il voulait une machine plus grande", "La machine était encore sous garantie", "La réparation était presque aussi chère qu'une machine neuve"],
         ans: 3,
-        expl: "« La réparation coûtait presque aussi cher qu'un appareil neuf » : réparer n'était pas intéressant. Et la machine n'était plus sous garantie."
+        expl: "« La réparation coûtait presque aussi cher qu'un appareil neuf » : réparer n'était pas intéressant. Et la machine n'était plus sous garantie.",
+        explZh: "「La réparation coûtait presque aussi cher qu'un appareil neuf」：修不划算。而且機器已經過了保固。"
       },
       {
         q: "Combien a-t-il payé la machine ?",
         opts: ["130 €", "150 €", "20 €", "Le texte ne le dit pas"],
         ans: 0,
-        expl: "150 €, c'est le prix de l'annonce. Il a fait une offre à 130 € et le vendeur a accepté."
+        expl: "150 €, c'est le prix de l'annonce. Il a fait une offre à 130 € et le vendeur a accepté.",
+        explZh: "150 歐是廣告上的價錢。他出價 130 歐，賣家接受了。"
       },
       {
         q: "Comment la machine est-elle arrivée chez lui ?",
         opts: ["Le vendeur l'a livrée", "Par un service de livraison payant", "Il est allé la chercher avec la voiture de son voisin", "Il l'a reçue par colis"],
         ans: 2,
-        expl: "Le vendeur ne pouvait pas livrer, donc le voisin lui a prêté sa voiture : il est allé la chercher lui-même."
+        expl: "Le vendeur ne pouvait pas livrer, donc le voisin lui a prêté sa voiture : il est allé la chercher lui-même.",
+        explZh: "賣家沒辦法送貨，所以鄰居借他車：他自己去載。"
       }
     ]
   },
@@ -993,19 +1101,22 @@ const ARTICLES = [
         q: "Où est Karim quand il écrit ?",
         opts: ["Au bureau", "Au parc relais", "Dans le tram", "Dans sa voiture, dans un embouteillage"],
         ans: 1,
-        expl: "« Je viens d'arriver au parc relais » : venir de + infinitif = il est arrivé il y a très peu de temps. Il y est encore."
+        expl: "« Je viens d'arriver au parc relais » : venir de + infinitif = il est arrivé il y a très peu de temps. Il y est encore.",
+        explZh: "「Je viens d'arriver au parc relais」：venir de＋原形＝剛剛才到。他現在還在那裡。"
       },
       {
         q: "Que demande Karim à Sophie ?",
         opts: ["De venir le chercher en voiture", "D'annuler la réunion", "De lui acheter un ticket", "De dire au chef qu'il sera en retard"],
         ans: 3,
-        expl: "« Est-ce que tu peux prévenir le chef ? » Prévenir quelqu'un = l'informer avant. Le chef doit savoir que Karim sera en retard."
+        expl: "« Est-ce que tu peux prévenir le chef ? » Prévenir quelqu'un = l'informer avant. Le chef doit savoir que Karim sera en retard.",
+        explZh: "「Est-ce que tu peux prévenir le chef ?」prévenir quelqu'un＝事先通知。主管要知道 Karim 會遲到。"
       },
       {
         q: "Pourquoi Karim ne va-t-il pas au centre-ville en voiture ?",
         opts: ["Sa voiture est en panne", "Il n'a pas le permis", "Il y a des embouteillages et le parking est cher", "Le parc relais est fermé"],
         ans: 2,
-        expl: "« Il y a des embouteillages partout et le parking coûte trop cher. » La panne, c'est la ligne de tram, pas sa voiture."
+        expl: "« Il y a des embouteillages partout et le parking coûte trop cher. » La panne, c'est la ligne de tram, pas sa voiture.",
+        explZh: "「Il y a des embouteillages partout et le parking coûte trop cher.」故障的是電車線路，不是他的車。"
       }
     ]
   },
@@ -1022,19 +1133,22 @@ const ARTICLES = [
         q: "Quel jour Inès a-t-elle visité le studio ?",
         opts: ["Samedi", "Lundi", "Le 31 octobre", "Le 1er novembre"],
         ans: 0,
-        expl: "Le texte ne le dit pas directement : l'annonce dit « visites le samedi matin uniquement » et Inès écrit « ce matin ». Donc c'était samedi."
+        expl: "Le texte ne le dit pas directement : l'annonce dit « visites le samedi matin uniquement » et Inès écrit « ce matin ». Donc c'était samedi.",
+        explZh: "文章沒有直接說：廣告寫「visites le samedi matin uniquement」，Inès 寫「ce matin」。所以那天是星期六。"
       },
       {
         q: "Pourquoi Inès n'a-t-elle pas besoin d'un camion ?",
         opts: ["Le studio est à côté de chez sa sœur", "L'agence s'occupe du déménagement", "Il y a un ascenseur", "Le studio a déjà des meubles"],
         ans: 3,
-        expl: "Meublé = avec des meubles. Elle a seulement quelques cartons à transporter."
+        expl: "Meublé = avec des meubles. Elle a seulement quelques cartons à transporter.",
+        explZh: "meublé＝附家具。她只要搬幾個紙箱。"
       },
       {
         q: "Qu'est-ce qui est vrai ?",
         opts: ["Le loyer ne comprend pas les charges", "Inès va faire l'état des lieux avant d'emménager", "Le studio est au rez-de-chaussée", "Inès a déjà signé le bail"],
         ans: 1,
-        expl: "L'état des lieux est le 31 octobre, juste avant le 1er novembre. « Je vais signer » = futur proche : ce n'est pas encore fait. Et 650 € charges comprises."
+        expl: "L'état des lieux est le 31 octobre, juste avant le 1er novembre. « Je vais signer » = futur proche : ce n'est pas encore fait. Et 650 € charges comprises.",
+        explZh: "點交（état des lieux）在 10 月 31 日，就在 11 月 1 日前一天。「Je vais signer」＝近未來：還沒簽。而且是 650 歐含雜費。"
       }
     ]
   },
@@ -1051,19 +1165,22 @@ const ARTICLES = [
         q: "Pourquoi Lucia doit-elle retourner à la mairie jeudi ?",
         opts: ["Ses photos ne sont pas bonnes", "La mairie était fermée", "Elle n'avait pas son ancien passeport", "Elle n'avait pas de justificatif de domicile"],
         ans: 2,
-        expl: "« Elle a oublié son ancien passeport à la maison » : son dossier n'était pas complet, donc nouveau rendez-vous."
+        expl: "« Elle a oublié son ancien passeport à la maison » : son dossier n'était pas complet, donc nouveau rendez-vous.",
+        explZh: "「Elle a oublié son ancien passeport à la maison」：她的資料不齊，所以要重新預約。"
       },
       {
         q: "Pourquoi Lucia renouvelle-t-elle son passeport maintenant ?",
         opts: ["Il ne sera plus valide pendant son voyage", "Il a déjà expiré", "Elle l'a perdu", "La banque le demande"],
         ans: 0,
-        expl: "Il expire dans deux mois et elle part cet été : il doit être valide pendant le voyage. Il n'a pas encore expiré."
+        expl: "Il expire dans deux mois et elle part cet été : il doit être valide pendant le voyage. Il n'a pas encore expiré.",
+        explZh: "護照兩個月後到期，她這個夏天要出發：旅途中護照必須有效。現在還沒過期。"
       },
       {
         q: "Un forfait « sans engagement », c'est un forfait…",
         opts: ["gratuit", "sans accès à Internet", "qu'il faut garder deux ans", "qu'on peut arrêter quand on veut"],
         ans: 3,
-        expl: "Sans engagement = on ne promet pas de rester un certain temps. On peut résilier quand on veut."
+        expl: "Sans engagement = on ne promet pas de rester un certain temps. On peut résilier quand on veut.",
+        explZh: "sans engagement＝不用承諾要用多久。想解約隨時可以解。"
       }
     ]
   },
@@ -1080,19 +1197,22 @@ const ARTICLES = [
         q: "Pourquoi Mme Bertrand écrit « seriez-vous disponible » et pas « t'es dispo » ?",
         opts: ["Parce qu'elle est en colère", "Parce que la situation est formelle : elle vouvoie M. Ferreira", "Parce que c'est un message oral", "Parce qu'elle invite plusieurs personnes"],
         ans: 1,
-        expl: "Question formelle : inversion verbe-sujet (seriez-vous) et mots complets (disponible, pas dispo). Julie et Malik sont amis : question informelle."
+        expl: "Question formelle : inversion verbe-sujet (seriez-vous) et mots complets (disponible, pas dispo). Julie et Malik sont amis : question informelle.",
+        explZh: "正式的問法：主詞動詞倒裝（seriez-vous）＋完整的字（disponible，不是 dispo）。Julie 和 Malik 是朋友：問法是口語的。"
       },
       {
         q: "Qui accepte l'invitation ?",
         opts: ["Malik", "M. Ferreira", "Les deux", "Personne"],
         ans: 0,
-        expl: "Malik : « Super, avec plaisir ! » M. Ferreira refuse poliment : « Je regrette, mais ce n'est pas possible. »"
+        expl: "Malik : « Super, avec plaisir ! » M. Ferreira refuse poliment : « Je regrette, mais ce n'est pas possible. »",
+        explZh: "Malik：「Super, avec plaisir !」Ferreira 先生禮貌地拒絕：「Je regrette, mais ce n'est pas possible.」"
       },
       {
         q: "Qu'est-ce que Julie demande à Malik ?",
         opts: ["De venir avec sa copine", "D'arriver à 20 heures", "D'apporter quelque chose à boire", "De réserver une table"],
         ans: 2,
-        expl: "« Tu peux apporter une boisson ? » C'est Malik qui demande s'il peut venir avec sa copine."
+        expl: "« Tu peux apporter une boisson ? » C'est Malik qui demande s'il peut venir avec sa copine.",
+        explZh: "「Tu peux apporter une boisson ?」問能不能帶女朋友來的是 Malik。"
       }
     ]
   },
@@ -1109,19 +1229,22 @@ const ARTICLES = [
         q: "Dans « elle y est allée », que remplace y ?",
         opts: ["Le site de la ville", "Bordeaux", "Le cours de chant", "La randonnée"],
         ans: 3,
-        expl: "Y remplace un lieu ou une activité introduits par à : aller à la randonnée → y aller. C'est la sortie de la phrase précédente."
+        expl: "Y remplace un lieu ou une activité introduits par à : aller à la randonnée → y aller. C'est la sortie de la phrase précédente.",
+        explZh: "y 代替 à 帶出的地點或活動：aller à la randonnée → y aller。指的是上一句說的那個活動。"
       },
       {
         q: "Pourquoi Ana a-t-elle été surprise ?",
         opts: ["Il y avait trop de participants", "Un homme lui a posé une question sur son salaire", "Personne ne lui a parlé", "La randonnée était trop difficile"],
         ans: 1,
-        expl: "« Combien elle gagnait par mois » = son salaire. En France, l'argent est une question à éviter avec des inconnus."
+        expl: "« Combien elle gagnait par mois » = son salaire. En France, l'argent est une question à éviter avec des inconnus.",
+        explZh: "「Combien elle gagnait par mois」＝她的薪水。在法國，錢是跟不熟的人要避開的話題。"
       },
       {
         q: "Qu'est-ce qui a changé pour Ana ?",
         opts: ["Elle a quitté Bordeaux", "Elle ne va plus aux sorties", "Elle a une nouvelle amie et une activité chaque semaine", "Elle donne des cours de chant"],
         ans: 2,
-        expl: "Au début, elle ne connaissait personne. Maintenant, elle va au chant tous les mardis avec Clara, une nouvelle amie."
+        expl: "Au début, elle ne connaissait personne. Maintenant, elle va au chant tous les mardis avec Clara, une nouvelle amie.",
+        explZh: "一開始她誰都不認識。現在她每週二跟新朋友 Clara 一起去唱歌。"
       }
     ]
   },
@@ -1138,19 +1261,22 @@ const ARTICLES = [
         q: "Qu'est-ce que l'école demande aux parents ?",
         opts: ["D'aider pendant la fête", "D'acheter des billets de tombola", "De préparer le spectacle", "De venir chercher les enfants à 14 h"],
         ans: 0,
-        expl: "« Nous cherchons des parents qui peuvent tenir un stand » : l'école cherche de l'aide pour la kermesse."
+        expl: "« Nous cherchons des parents qui peuvent tenir un stand » : l'école cherche de l'aide pour la kermesse.",
+        explZh: "「Nous cherchons des parents qui peuvent tenir un stand」：學校在找人幫忙園遊會。"
       },
       {
         q: "« Un spectacle que les élèves préparent » : que remplace que ?",
         opts: ["Les élèves", "La kermesse", "Janvier", "Le spectacle"],
         ans: 3,
-        expl: "Que remplace le COD : les élèves préparent le spectacle. Les élèves, c'est le sujet du verbe (après que)."
+        expl: "Que remplace le COD : les élèves préparent le spectacle. Les élèves, c'est le sujet du verbe (après que).",
+        explZh: "que 代替直接受詞：les élèves préparent le spectacle。les élèves 是（que 後面那個）動詞的主詞。"
       },
       {
         q: "Un parent veut aider. Qu'est-ce qu'il doit faire ?",
         opts: ["Téléphoner à l'école le 21 juin", "Venir à la kermesse à 14 h sans prévenir", "Rendre le coupon signé à l'enseignant avant le 6 juin", "Écrire à l'association des parents"],
         ans: 2,
-        expl: "Remplir le coupon, le dater, le signer et le remettre à l'enseignant avant le 6 juin."
+        expl: "Remplir le coupon, le dater, le signer et le remettre à l'enseignant avant le 6 juin.",
+        explZh: "填好回條、寫日期、簽名，6 月 6 日前交給老師。"
       }
     ]
   },
@@ -1167,19 +1293,22 @@ const ARTICLES = [
         q: "Depuis combien de temps le restaurant existe-t-il ?",
         opts: ["Dix ans", "Huit ans", "Un an", "Deux semaines"],
         ans: 1,
-        expl: "« Il y a huit ans » : l'ouverture, une action terminée. Dix ans, c'est la durée de son travail à l'hôtel, avant (pendant)."
+        expl: "« Il y a huit ans » : l'ouverture, une action terminée. Dix ans, c'est la durée de son travail à l'hôtel, avant (pendant).",
+        explZh: "「Il y a huit ans」：開店是已經完成的事。十年是他之前在飯店工作的時間長度（pendant）。"
       },
       {
         q: "Qu'est-ce qui n'existe pas encore ?",
         opts: ["La terrasse", "La vente à emporter", "Les spécialités de la région", "Les réservations"],
         ans: 0,
-        expl: "Dans + durée = dans le futur : la terrasse ouvre dans deux semaines. La vente à emporter existe depuis l'année dernière."
+        expl: "Dans + durée = dans le futur : la terrasse ouvre dans deux semaines. La vente à emporter existe depuis l'année dernière.",
+        explZh: "dans＋一段時間＝未來：露台兩週後開。外帶是從去年開始就有了。"
       },
       {
         q: "Pourquoi conseille-t-on de réserver ?",
         opts: ["La cuisine ferme tôt", "Il est fermé le lundi", "Les prix sont abordables", "Le restaurant est souvent plein"],
         ans: 3,
-        expl: "« Il y a toujours du monde » = il y a toujours beaucoup de clients."
+        expl: "« Il y a toujours du monde » = il y a toujours beaucoup de clients.",
+        explZh: "「Il y a toujours du monde」＝一直都有很多客人。"
       }
     ]
   },
@@ -1196,19 +1325,22 @@ const ARTICLES = [
         q: "Hugo n'a jamais fait de poterie. Est-ce un problème ?",
         opts: ["Oui, l'atelier est pour les professionnels", "Oui, il doit d'abord suivre un cours", "Non, tous les niveaux sont acceptés", "Le texte ne le dit pas"],
         ans: 2,
-        expl: "« Ouvert à tous les niveaux, même aux débutants. » C'est l'artiste qui est professionnelle, pas les participants."
+        expl: "« Ouvert à tous les niveaux, même aux débutants. » C'est l'artiste qui est professionnelle, pas les participants.",
+        explZh: "「Ouvert à tous les niveaux, même aux débutants.」專業的是藝術家，不是參加的人。"
       },
       {
         q: "« Nous la mettrons au four » : que remplace la ?",
         opts: ["L'artiste", "La blouse", "La terre", "La création de Hugo"],
         ans: 3,
-        expl: "On met quoi au four ? Votre création. Pronom COD féminin → la, placé avant le verbe."
+        expl: "On met quoi au four ? Votre création. Pronom COD féminin → la, placé avant le verbe.",
+        explZh: "放進烤箱的是什麼？你的作品。陰性直接受詞代名詞 → la，放在動詞前面。"
       },
       {
         q: "Qu'est-ce que Hugo doit apporter ?",
         opts: ["Un vieux vêtement", "Le matériel de poterie", "Rien, il paie avant samedi", "Sa création de la semaine dernière"],
         ans: 0,
-        expl: "Le matériel est fourni et on paie sur place. Mais il faut « une vieille chemise ou une blouse »."
+        expl: "Le matériel est fourni et on paie sur place. Mais il faut « une vieille chemise ou une blouse ».",
+        explZh: "材料有提供，現場付錢。但要帶「une vieille chemise ou une blouse」（舊襯衫或工作服）。"
       }
     ]
   },
@@ -1225,19 +1357,22 @@ const ARTICLES = [
         q: "Un touriste veut faire la visite guidée. Qu'est-ce qu'il doit faire ?",
         opts: ["Venir à 10 h n'importe quel jour", "S'inscrire à l'avance", "Acheter un billet pour le concert", "Savoir nager"],
         ans: 1,
-        expl: "« Inscrivez-vous » + « places limitées » : il faut réserver. Et la visite a lieu seulement le mardi et le jeudi."
+        expl: "« Inscrivez-vous » + « places limitées » : il faut réserver. Et la visite a lieu seulement le mardi et le jeudi.",
+        explZh: "「Inscrivez-vous」＋「places limitées」：要預約。而且導覽只有星期二和星期四。"
       },
       {
         q: "Paul, 6 ans, veut apprendre la voile. C'est possible ?",
         opts: ["Oui, s'il sait nager", "Oui, avec ses parents", "Oui, le samedi soir", "Non, il est trop jeune"],
         ans: 3,
-        expl: "Dès 8 ans = à partir de 8 ans. Paul a 6 ans."
+        expl: "Dès 8 ans = à partir de 8 ans. Paul a 6 ans.",
+        explZh: "dès 8 ans＝8 歲以上。Paul 才 6 歲。"
       },
       {
         q: "Il est 20 h. Qu'est-ce qui est vrai ?",
         opts: ["La baignade est interdite", "La visite guidée commence", "La plage n'est plus surveillée", "Il faut payer pour aller sur le port"],
         ans: 2,
-        expl: "Surveillée de 11 h à 19 h : à 20 h, il n'y a plus personne pour surveiller. La baignade est interdite seulement s'il y a un drapeau rouge."
+        expl: "Surveillée de 11 h à 19 h : à 20 h, il n'y a plus personne pour surveiller. La baignade est interdite seulement s'il y a un drapeau rouge.",
+        explZh: "有人看守的時間是 11 點到 19 點：20 點已經沒有救生員了。只有掛紅旗的時候才禁止游泳。"
       }
     ]
   },
@@ -1254,19 +1389,22 @@ const ARTICLES = [
         q: "Pourquoi Thomas n'a-t-il pas vu son médecin habituel ?",
         opts: ["Son médecin était absent", "Il n'avait pas de carte d'assurance", "Le cabinet était fermé", "Il préférait aller aux urgences"],
         ans: 0,
-        expl: "« Son médecin était absent », alors la secrétaire lui a proposé une autre généraliste, en téléconsultation."
+        expl: "« Son médecin était absent », alors la secrétaire lui a proposé une autre généraliste, en téléconsultation.",
+        explZh: "「Son médecin était absent」，所以秘書幫她安排另一位家醫科醫師，用視訊看診。"
       },
       {
         q: "« Il faut que vous fassiez une radio. » Fassiez, c'est…",
         opts: ["le verbe faire au futur", "le verbe falloir", "le verbe faire au subjonctif", "le verbe faire à l'imparfait"],
         ans: 2,
-        expl: "Après « il faut que », toujours le subjonctif. Faire est irrégulier : que je fasse, que vous fassiez."
+        expl: "Après « il faut que », toujours le subjonctif. Faire est irrégulier : que je fasse, que vous fassiez.",
+        explZh: "il faut que 後面一律用虛擬式。faire 不規則：que je fasse、que vous fassiez。"
       },
       {
         q: "Cette semaine, Thomas…",
         opts: ["va travailler comme d'habitude", "ne va pas travailler", "va aller aux urgences", "va revoir la généraliste au cabinet"],
         ans: 1,
-        expl: "Un arrêt de travail = un papier du médecin : on ne va pas au travail. « Il faut que vous restiez chez vous. »"
+        expl: "Un arrêt de travail = un papier du médecin : on ne va pas au travail. « Il faut que vous restiez chez vous. »",
+        explZh: "arrêt de travail＝醫生開的假單：不用去上班。「Il faut que vous restiez chez vous.」"
       }
     ]
   },
@@ -1283,19 +1421,22 @@ const ARTICLES = [
         q: "Qui a aimé son activité ?",
         opts: ["Olivier", "Les deux", "Personne", "Nadia"],
         ans: 3,
-        expl: "Nadia : « C'était génial ! » Olivier : « C'était nul ! » et il a abandonné."
+        expl: "Nadia : « C'était génial ! » Olivier : « C'était nul ! » et il a abandonné.",
+        explZh: "Nadia：「C'était génial !」Olivier：「C'était nul !」而且他放棄了。"
       },
       {
         q: "Pourquoi Olivier n'a-t-il pas aimé le stage ?",
         opts: ["Il y avait trop de monde et l'entraîneur n'expliquait rien", "Il faisait mauvais", "Les exercices étaient trop faciles", "Il avait des courbatures"],
         ans: 0,
-        expl: "« Il y avait trop de monde et l'entraîneur ne nous expliquait rien. » Les courbatures, c'est Nadia."
+        expl: "« Il y avait trop de monde et l'entraîneur ne nous expliquait rien. » Les courbatures, c'est Nadia.",
+        explZh: "「Il y avait trop de monde et l'entraîneur ne nous expliquait rien.」肌肉痠痛的是 Nadia。"
       },
       {
         q: "« C'était génial », « il faisait beau » : pourquoi l'imparfait ?",
         opts: ["Pour une action future", "Pour une action courte et terminée", "Pour décrire et donner son avis sur un moment passé", "Parce que c'est une question"],
         ans: 2,
-        expl: "Pour commenter ou décrire au passé : imparfait. Pour les actions (essayer, s'inscrire, abandonner) : passé composé."
+        expl: "Pour commenter ou décrire au passé : imparfait. Pour les actions (essayer, s'inscrire, abandonner) : passé composé.",
+        explZh: "在過去評論或描述：imparfait。動作（嘗試、報名、放棄）：passé composé。"
       }
     ]
   },
@@ -1312,19 +1453,22 @@ const ARTICLES = [
         q: "Selon Bruno, quel est un inconvénient de la campagne ?",
         opts: ["Le bruit", "La pollution", "Le jardin est petit", "Les commerces sont loin"],
         ans: 3,
-        expl: "« Il y a moins de services : la boulangerie la plus proche est à cinq kilomètres ! » Moins de bruit et de pollution, ce sont des avantages."
+        expl: "« Il y a moins de services : la boulangerie la plus proche est à cinq kilomètres ! » Moins de bruit et de pollution, ce sont des avantages.",
+        explZh: "「Il y a moins de services : la boulangerie la plus proche est à cinq kilomètres !」噪音和污染比較少是優點。"
       },
       {
         q: "« Le quartier est aussi vert et calme qu'un village. » Ça veut dire que…",
         opts: ["le quartier est plus vert qu'un village", "le quartier est vert et calme comme un village", "le quartier est moins calme qu'un village", "il n'y a pas d'arbres dans le quartier"],
         ans: 1,
-        expl: "Aussi … que = égalité (=). Plus … que (+), moins … que (−)."
+        expl: "Aussi … que = égalité (=). Plus … que (+), moins … que (−).",
+        explZh: "aussi … que＝一樣（=）。plus … que（+）、moins … que（−）。"
       },
       {
         q: "Pourquoi Élise n'a-t-elle pas besoin de voiture ?",
         opts: ["Elle peut aller au centre-ville à vélo", "Elle travaille à la maison", "Elle habite au centre-ville", "Son frère l'emmène"],
         ans: 0,
-        expl: "« Il y a des pistes cyclables jusqu'au centre-ville. » Elle habite en banlieue, pas au centre."
+        expl: "« Il y a des pistes cyclables jusqu'au centre-ville. » Elle habite en banlieue, pas au centre.",
+        explZh: "「Il y a des pistes cyclables jusqu'au centre-ville.」她住在郊區，不是市中心。"
       }
     ]
   },
@@ -1341,19 +1485,22 @@ const ARTICLES = [
         q: "« Il en a parlé à une conseillère. » Que remplace en ?",
         opts: ["La conseillère", "Les cours en ligne", "Son envie de changer de métier", "Le diplôme"],
         ans: 2,
-        expl: "Parler de quelque chose → en parler. Il parle de son projet : changer de métier. La conseillère, c'est « à une conseillère »."
+        expl: "Parler de quelque chose → en parler. Il parle de son projet : changer de métier. La conseillère, c'est « à une conseillère ».",
+        explZh: "parler de quelque chose → en parler。他在講他的計畫：轉行。顧問那部分是「à une conseillère」。"
       },
       {
         q: "Où Sami suit-il sa formation ?",
         opts: ["Dans un centre de formation", "Chez lui, à distance", "À l'université", "Dans un restaurant"],
         ans: 1,
-        expl: "« Une formation intensive à distance » = on ne va pas dans un centre, on suit les cours en ligne."
+        expl: "« Une formation intensive à distance » = on ne va pas dans un centre, on suit les cours en ligne.",
+        explZh: "「Une formation intensive à distance」＝不用去中心上課，在線上上。"
       },
       {
         q: "Qu'est-ce que Sami va faire après la formation ?",
         opts: ["Redevenir serveur", "Une deuxième formation", "Ouvrir un restaurant", "Un stage"],
         ans: 3,
-        expl: "« Après, je vais faire un stage pour pratiquer. »"
+        expl: "« Après, je vais faire un stage pour pratiquer. »",
+        explZh: "「Après, je vais faire un stage pour pratiquer.」"
       }
     ]
   },
@@ -1370,19 +1517,22 @@ const ARTICLES = [
         q: "« Personne ne lui a répondu » veut dire…",
         opts: ["Aucune entreprise ne lui a répondu", "Une personne lui a répondu", "Il n'a répondu à personne", "Tout le monde lui a répondu"],
         ans: 0,
-        expl: "Ne … personne = zéro personne. Léo a envoyé des CV, mais il n'a eu aucune réponse."
+        expl: "Ne … personne = zéro personne. Léo a envoyé des CV, mais il n'a eu aucune réponse.",
+        explZh: "ne … personne＝一個人都沒有。Léo 寄了履歷，但完全沒有回音。"
       },
       {
         q: "Qu'est-ce qui a aidé Léo ?",
         opts: ["Envoyer plus de CV en ligne", "Aller lui-même dans les magasins", "Un ami de son père", "Une petite annonce dans le journal"],
         ans: 1,
-        expl: "La conseillère : « Va directement dans les magasins. » En deux jours, il a eu trois entretiens."
+        expl: "La conseillère : « Va directement dans les magasins. » En deux jours, il a eu trois entretiens.",
+        explZh: "顧問說：「Va directement dans les magasins.」兩天內他就有三個面試。"
       },
       {
         q: "Pourquoi Inès ne cherche-t-elle plus ?",
         opts: ["Elle a trouvé un job d'été", "Elle a arrêté ses études", "Elle a déjà un contrat", "Elle part en vacances"],
         ans: 2,
-        expl: "Ne … plus = avant oui, maintenant non. Elle a signé un contrat en alternance pour deux ans."
+        expl: "Ne … plus = avant oui, maintenant non. Elle a signé un contrat en alternance pour deux ans.",
+        explZh: "ne … plus＝以前有、現在沒有。她簽了兩年的建教合約（alternance）。"
       }
     ]
   },
@@ -1399,19 +1549,22 @@ const ARTICLES = [
         q: "À 9 h 05, Chloé…",
         opts: ["est au bureau depuis une heure", "n'est pas encore arrivée", "a déjà lu tous ses mails", "est arrivée il y a très peu de temps"],
         ans: 3,
-        expl: "Venir de + infinitif = passé récent : l'action vient de se passer. Et « pas encore ouvert ses mails »."
+        expl: "Venir de + infinitif = passé récent : l'action vient de se passer. Et « pas encore ouvert ses mails ».",
+        explZh: "venir de＋原形＝剛剛發生的事。而且「pas encore ouvert ses mails」（還沒開信箱）。"
       },
       {
         q: "Quel était le problème de l'imprimante ?",
         opts: ["Il n'y avait plus de papier", "Elle était cassée", "Le câble était débranché", "Marc l'avait prise"],
         ans: 0,
-        expl: "« Il n'y a plus de papier ! » L'imprimante n'était pas cassée."
+        expl: "« Il n'y a plus de papier ! » L'imprimante n'était pas cassée.",
+        explZh: "「Il n'y a plus de papier !」印表機沒有壞。"
       },
       {
         q: "Pourquoi Chloé dit « je t'ai dérangé pour rien » ?",
         opts: ["Marc n'a pas réparé l'imprimante", "Marc était en réunion", "Le problème était très simple", "Son rapport n'était pas fini"],
         ans: 2,
-        expl: "Ajouter du papier, elle pouvait le faire toute seule : elle a appelé Marc pour un problème très simple."
+        expl: "Ajouter du papier, elle pouvait le faire toute seule : elle a appelé Marc pour un problème très simple.",
+        explZh: "補紙她自己就能做：她為了一個很簡單的問題打給 Marc。"
       }
     ]
   },
@@ -1428,19 +1581,22 @@ const ARTICLES = [
         q: "Comment était le début du voyage ?",
         opts: ["Difficile : il pleuvait déjà", "Agréable : il faisait beau et le train était à l'heure", "Le train était en retard au départ", "Paul n'avait pas de place"],
         ans: 1,
-        expl: "« Le départ s'est bien passé : il faisait beau, le train était à l'heure. » La pluie arrive plus tard, près de Lyon."
+        expl: "« Le départ s'est bien passé : il faisait beau, le train était à l'heure. » La pluie arrive plus tard, près de Lyon.",
+        explZh: "「Le départ s'est bien passé : il faisait beau, le train était à l'heure.」雨是後來、在里昂附近才下的。"
       },
       {
         q: "Pourquoi le train s'est-il arrêté ?",
         opts: ["Un problème technique", "Le contrôleur était malade", "Des passagers se disputaient", "Un arbre bloquait la voie"],
         ans: 3,
-        expl: "Le contrôleur l'annonce : « un arbre bloquait la voie »."
+        expl: "Le contrôleur l'annonce : « un arbre bloquait la voie ».",
+        explZh: "查票員廣播說：「un arbre bloquait la voie」（一棵樹擋住了軌道）。"
       },
       {
         q: "« Les gens discutaient, les enfants pleuraient » : pourquoi l'imparfait ?",
         opts: ["Ce sont des actions courtes et terminées", "C'est le futur", "Ça décrit la scène pendant l'attente", "C'est une habitude de tous les jours"],
         ans: 2,
-        expl: "Imparfait = le décor, ce qui se passait autour. Passé composé = les événements : le train s'est arrêté, les pompiers ont coupé l'arbre."
+        expl: "Imparfait = le décor, ce qui se passait autour. Passé composé = les événements : le train s'est arrêté, les pompiers ont coupé l'arbre.",
+        explZh: "imparfait＝場景、周圍正在發生的事。passé composé＝事件：火車停下來、消防員把樹鋸掉。"
       }
     ]
   },
@@ -1457,19 +1613,22 @@ const ARTICLES = [
         q: "Pourquoi Karim ne recevait-il pas de réponse ?",
         opts: ["Il ne parlait pas anglais", "Il n'envoyait pas de CV", "Sa lettre de motivation n'était pas bonne", "Il cherchait dans la mauvaise ville"],
         ans: 2,
-        expl: "« À cause de sa lettre de motivation » : trop longue et comme toutes les autres. À cause de = cause négative."
+        expl: "« À cause de sa lettre de motivation » : trop longue et comme toutes les autres. À cause de = cause négative.",
+        explZh: "「À cause de sa lettre de motivation」：太長、跟別人都一樣。à cause de＝負面的原因。"
       },
       {
         q: "« C'est grâce à l'atelier ! » : pour Karim, l'atelier…",
         opts: ["l'a aidé à obtenir un entretien", "était trop cher", "l'a découragé", "a duré une semaine"],
         ans: 0,
-        expl: "Grâce à = cause positive. Après l'atelier, il a réécrit sa lettre et il a eu un entretien."
+        expl: "Grâce à = cause positive. Après l'atelier, il a réécrit sa lettre et il a eu un entretien.",
+        explZh: "grâce à＝正面的原因。參加工作坊之後，他重寫了求職信，拿到了面試。"
       },
       {
         q: "Qu'est-ce que la conseillère n'a PAS conseillé ?",
         opts: ["Écrire une lettre courte", "Expliquer pourquoi cette entreprise", "Faire un CV clair", "Envoyer plus de candidatures"],
         ans: 3,
-        expl: "Les trois règles : lettre courte, CV clair, pourquoi cette entreprise. Rien sur le nombre de candidatures."
+        expl: "Les trois règles : lettre courte, CV clair, pourquoi cette entreprise. Rien sur le nombre de candidatures.",
+        explZh: "三條規則：信要短、履歷要清楚、說明為什麼選這家公司。沒有提到要投幾份。"
       }
     ]
   },
@@ -1486,19 +1645,22 @@ const ARTICLES = [
         q: "Dans quel ordre se passe l'entretien ?",
         opts: ["Questions → présentation → conditions", "Présentation → questions → conditions", "Conditions → présentation → questions", "Présentation → conditions → questions"],
         ans: 1,
-        expl: "Tout d'abord = la présentation ; ensuite = les questions ; pour finir = les conditions de travail."
+        expl: "Tout d'abord = la présentation ; ensuite = les questions ; pour finir = les conditions de travail.",
+        explZh: "tout d'abord＝自我介紹；ensuite＝問問題；pour finir＝工作條件。"
       },
       {
         q: "Au camping, Karim…",
         opts: ["accueillait les clients", "faisait le ménage", "était le directeur", "travaillait toute l'année"],
         ans: 0,
-        expl: "« Il était chargé d'accueillir les clients et de répondre au téléphone », pendant deux étés."
+        expl: "« Il était chargé d'accueillir les clients et de répondre au téléphone », pendant deux étés.",
+        explZh: "「Il était chargé d'accueillir les clients et de répondre au téléphone」，做了兩個暑假。"
       },
       {
         q: "Le poste proposé, c'est…",
         opts: ["un CDI à mi-temps", "un stage de six mois", "un CDD de six mois avec des horaires le soir et le week-end", "un CDD le matin seulement"],
         ans: 2,
-        expl: "« Un CDD de six mois à plein temps, avec des horaires le soir et le week-end. »"
+        expl: "« Un CDD de six mois à plein temps, avec des horaires le soir et le week-end. »",
+        explZh: "「Un CDD de six mois à plein temps, avec des horaires le soir et le week-end.」（六個月的全職定期合約，晚上和週末要上班）"
       }
     ]
   },
@@ -1515,19 +1677,22 @@ const ARTICLES = [
         q: "Qu'est-ce qui est difficile pour Karim ?",
         opts: ["Ses collègues", "Les horaires", "Sa responsable", "Les clients étrangers"],
         ans: 1,
-        expl: "« Mes collègues sont sympas, mais les horaires sont difficiles : je finis souvent à minuit. »"
+        expl: "« Mes collègues sont sympas, mais les horaires sont difficiles : je finis souvent à minuit. »",
+        explZh: "「Mes collègues sont sympas, mais les horaires sont difficiles : je finis souvent à minuit.」"
       },
       {
         q: "« Nadia est très exigeante. Par contre, elle prend le temps d'expliquer. » Ici, par contre sert à…",
         opts: ["donner une cause", "donner un exemple", "conclure", "ajouter une idée opposée"],
         ans: 3,
-        expl: "Par contre (surtout à l'oral) = mais : exigeante (difficile) ↔ prend le temps d'expliquer (positif)."
+        expl: "Par contre (surtout à l'oral) = mais : exigeante (difficile) ↔ prend le temps d'expliquer (positif).",
+        explZh: "par contre（多半是口語）＝mais：要求很高（難）↔ 會花時間解釋（正面）。"
       },
       {
         q: "Pourquoi Karim est-il un peu stressé ?",
         opts: ["Il va quitter l'hôtel", "Il organise un pot de départ", "Il doit présenter ses idées en réunion", "Il ne connaît encore personne"],
         ans: 2,
-        expl: "« Mardi, il y a une réunion de service : je dois présenter mes idées… Je suis un peu stressé ! »"
+        expl: "« Mardi, il y a une réunion de service : je dois présenter mes idées… Je suis un peu stressé ! »",
+        explZh: "「Mardi, il y a une réunion de service : je dois présenter mes idées… Je suis un peu stressé !」"
       }
     ]
   },
@@ -1544,19 +1709,22 @@ const ARTICLES = [
         q: "Mamie Jeanne…",
         opts: ["organise la fête", "ne sait pas qu'il y aura une fête", "a 80 ans aujourd'hui", "habite à Venise"],
         ans: 1,
-        expl: "C'est une surprise : « Mamie pense que c'est un simple déjeuner en famille »."
+        expl: "C'est une surprise : « Mamie pense que c'est un simple déjeuner en famille ».",
+        explZh: "這是驚喜：「Mamie pense que c'est un simple déjeuner en famille」（奶奶以為只是一般的家庭午餐）。"
       },
       {
         q: "Que feront les invités l'après-midi ?",
         opts: ["Ils regarderont des photos", "Ils prépareront le buffet", "Ils partiront à Venise", "Ils danseront"],
         ans: 3,
-        expl: "Futur simple : « oncle Paul jouera de l'accordéon et nous danserons ». Les photos, c'est le soir."
+        expl: "Futur simple : « oncle Paul jouera de l'accordéon et nous danserons ». Les photos, c'est le soir.",
+        explZh: "簡單未來式：「oncle Paul jouera de l'accordéon et nous danserons」。拍照是晚上的事。"
       },
       {
         q: "Pourquoi Camille veut une réponse avant le 1er juin ?",
         opts: ["Pour savoir combien de personnes viendront", "Pour acheter les billets de train", "Pour choisir la date", "Pour réserver un restaurant"],
         ans: 0,
-        expl: "« Pour me dire combien vous serez » : elle a besoin du nombre de personnes."
+        expl: "« Pour me dire combien vous serez » : elle a besoin du nombre de personnes.",
+        explZh: "「Pour me dire combien vous serez」：她需要知道有幾個人。"
       }
     ]
   },
@@ -1573,19 +1741,22 @@ const ARTICLES = [
         q: "Pourquoi Lucie a-t-elle cherché une association ?",
         opts: ["Elle cherchait un travail", "Elle se sentait seule dans une nouvelle ville", "Elle est professeure de maths", "Thomas le lui a demandé"],
         ans: 1,
-        expl: "Elle venait de s'installer à Lille et « je me sentais un peu seule ». À la fin : « je me suis fait beaucoup d'amis »."
+        expl: "Elle venait de s'installer à Lille et « je me sentais un peu seule ». À la fin : « je me suis fait beaucoup d'amis ».",
+        explZh: "她剛搬到里爾，「je me sentais un peu seule」。最後：「je me suis fait beaucoup d'amis」。"
       },
       {
         q: "Que fait Thomas ?",
         opts: ["Il aide des élèves en maths", "Il travaille à la mairie", "Il aide une banque alimentaire", "Il cherche des bénévoles"],
         ans: 2,
-        expl: "« Il s'est investi dans une banque alimentaire » — pas dans la même association que Lucie."
+        expl: "« Il s'est investi dans une banque alimentaire » — pas dans la même association que Lucie.",
+        explZh: "「Il s'est investi dans une banque alimentaire」——跟 Lucie 不是同一個協會。"
       },
       {
         q: "« Je me suis inscrite » : pourquoi inscrite avec un e ?",
         opts: ["Parce que c'est au pluriel", "Parce que c'est l'imparfait", "Parce que le verbe est irrégulier", "Parce que Lucie est une femme et le verbe pronominal prend être"],
         ans: 3,
-        expl: "Verbe pronominal → auxiliaire être → accord avec le sujet : Lucie s'est inscrite, Thomas s'est investi."
+        expl: "Verbe pronominal → auxiliaire être → accord avec le sujet : Lucie s'est inscrite, Thomas s'est investi.",
+        explZh: "反身動詞 → 助動詞 être → 跟主詞配合：Lucie s'est inscrite、Thomas s'est investi。"
       }
     ]
   },
@@ -1602,19 +1773,22 @@ const ARTICLES = [
         q: "Qui a appris la pâtisserie à Marco ?",
         opts: ["Ses collègues", "Un podcast", "Sa voisine", "Sa grand-mère"],
         ans: 3,
-        expl: "« Ma grand-mère m'a appris à faire des tartes. »"
+        expl: "« Ma grand-mère m'a appris à faire des tartes. »",
+        explZh: "「Ma grand-mère m'a appris à faire des tartes.」"
       },
       {
         q: "« Ça leur plaît beaucoup » : leur, c'est…",
         opts: ["à ses collègues", "à ses gâteaux", "à sa grand-mère", "aux recettes"],
         ans: 0,
-        expl: "Leur = COI pluriel, il remplace « à + des personnes » : ça plaît à ses collègues."
+        expl: "Leur = COI pluriel, il remplace « à + des personnes » : ça plaît à ses collègues.",
+        explZh: "leur＝複數的間接受詞，代替「à＋人」：ça plaît à ses collègues。"
       },
       {
         q: "Le roman islandais…",
         opts: ["Zoé ne l'a pas aimé", "c'est la voisine qui l'a conseillé", "la voisine ne l'a pas aimé", "c'est le titre d'un podcast"],
         ans: 2,
-        expl: "« Je lui ai conseillé un roman islandais… elle ne l'a pas aimé » : lui / elle = la voisine."
+        expl: "« Je lui ai conseillé un roman islandais… elle ne l'a pas aimé » : lui / elle = la voisine.",
+        explZh: "「Je lui ai conseillé un roman islandais… elle ne l'a pas aimé」：lui／elle＝鄰居太太。"
       }
     ]
   },
@@ -1631,19 +1805,22 @@ const ARTICLES = [
         q: "Selon l'article, pourquoi beaucoup de gens mangent trop le soir ?",
         opts: ["Ils mangent mal et trop vite pendant la journée", "Ils font un régime", "Ils boivent trop de café", "Ils dînent au restaurant"],
         ans: 0,
-        expl: "Sandwich devant l'ordinateur, biscuits à 16 h… « Résultat : ils ont très faim le soir. »"
+        expl: "Sandwich devant l'ordinateur, biscuits à 16 h… « Résultat : ils ont très faim le soir. »",
+        explZh: "在電腦前吃三明治、下午四點吃餅乾……「Résultat : ils ont très faim le soir.」"
       },
       {
         q: "« Pour ne pas avoir faim l'après-midi » : pour + infinitif exprime…",
         opts: ["une cause", "une conséquence", "une opposition", "un but"],
         ans: 3,
-        expl: "Pour (ne pas) + infinitif = le but, l'objectif. La conséquence, c'est donc, alors, c'est pour ça que."
+        expl: "Pour (ne pas) + infinitif = le but, l'objectif. La conséquence, c'est donc, alors, c'est pour ça que.",
+        explZh: "pour (ne pas)＋原形＝目的。結果要用 donc、alors、c'est pour ça que。"
       },
       {
         q: "Que conseille la diététicienne pour une petite faim ?",
         opts: ["Des biscuits", "Un sandwich", "Un fruit ou un yaourt", "Rien : attendre le dîner"],
         ans: 2,
-        expl: "« Prenez un fruit ou un yaourt plutôt que des biscuits. »"
+        expl: "« Prenez un fruit ou un yaourt plutôt que des biscuits. »",
+        explZh: "「Prenez un fruit ou un yaourt plutôt que des biscuits.」"
       }
     ]
   },
@@ -1660,19 +1837,22 @@ const ARTICLES = [
         q: "Pourquoi veut-elle arrêter le téléphone au lit ?",
         opts: ["Après, elle n'arrive pas à s'endormir", "Son téléphone est cassé", "Elle se lève trop tôt", "Elle veut lire des livres"],
         ans: 0,
-        expl: "« Après, je n'arrive pas à m'endormir. » (arriver à + infinitif = réussir à)"
+        expl: "« Après, je n'arrive pas à m'endormir. » (arriver à + infinitif = réussir à)",
+        explZh: "「Après, je n'arrive pas à m'endormir.」（arriver à＋原形＝做得到）"
       },
       {
         q: "Quel est son problème au travail ?",
         opts: ["Elle arrive en retard", "Elle aide tout le monde et n'a plus de temps pour elle", "Elle n'aime pas ses collègues", "Elle travaille le dimanche"],
         ans: 1,
-        expl: "« Je suis toujours prête à aider tout le monde, et le soir je n'ai plus de temps pour moi. »"
+        expl: "« Je suis toujours prête à aider tout le monde, et le soir je n'ai plus de temps pour moi. »",
+        explZh: "「Je suis toujours prête à aider tout le monde, et le soir je n'ai plus de temps pour moi.」"
       },
       {
         q: "J'arrête ___ regarder… / J'apprends ___ dire non.",
         opts: ["à / de", "de / de", "à / à", "de / à"],
         ans: 3,
-        expl: "Arrêter de, essayer de, décider de + infinitif ; apprendre à, commencer à, être prêt à + infinitif."
+        expl: "Arrêter de, essayer de, décider de + infinitif ; apprendre à, commencer à, être prêt à + infinitif.",
+        explZh: "arrêter de、essayer de、décider de＋原形；apprendre à、commencer à、être prêt à＋原形。"
       }
     ]
   },
@@ -1689,19 +1869,22 @@ const ARTICLES = [
         q: "Ce poste est…",
         opts: ["à plein temps toute l'année", "un CDI", "à temps partiel", "un stage"],
         ans: 2,
-        expl: "« Temps partiel : les mercredis et pendant les vacances scolaires. » C'est un CDD de 10 mois."
+        expl: "« Temps partiel : les mercredis et pendant les vacances scolaires. » C'est un CDD de 10 mois.",
+        explZh: "「Temps partiel : les mercredis et pendant les vacances scolaires.」是 10 個月的定期合約。"
       },
       {
         q: "Une personne qui n'a jamais travaillé avec des enfants…",
         opts: ["ne peut pas postuler", "peut postuler", "doit d'abord faire un stage", "doit téléphoner à la mairie"],
         ans: 1,
-        expl: "L'expérience « est un plus, mais elle n'est pas obligatoire »."
+        expl: "L'expérience « est un plus, mais elle n'est pas obligatoire ».",
+        explZh: "經驗「est un plus, mais elle n'est pas obligatoire」（加分，但不是必要）。"
       },
       {
         q: "Quand auront lieu les entretiens ?",
         opts: ["Début juillet", "Le 30 juin", "Le 1er septembre", "Le mercredi"],
         ans: 0,
-        expl: "« Les entretiens auront lieu début juillet. » Le 30 juin, c'est la date limite pour envoyer le CV."
+        expl: "« Les entretiens auront lieu début juillet. » Le 30 juin, c'est la date limite pour envoyer le CV.",
+        explZh: "「Les entretiens auront lieu début juillet.」6 月 30 日是寄履歷的截止日。"
       }
     ]
   }

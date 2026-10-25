@@ -464,6 +464,14 @@ function submitAnswers() {
     const fb = document.getElementById(`fb-${qi}`);
     fb.className = 'q-feedback show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
     fb.textContent = (isCorrect ? '✓ ' : '✗ ') + q.expl;
+    /* 10-25：答錯直接附中文解析；答對留一個 🈶 開關 */
+    if (q.explZh) {
+      const z = document.createElement('div'); z.style.marginTop = '6px';
+      if (isCorrect) { const b = document.createElement('button'); b.textContent = '🈶 中文'; b.className = 'zh-toggle';
+        b.onclick = () => { z.textContent = '🈶 ' + q.explZh; }; z.appendChild(b); }
+      else z.textContent = '🈶 ' + q.explZh;
+      fb.appendChild(z);
+    }
 
     if (!isCorrect) logWrong({ src:'reading', q: q.q, a: q.opts[q.ans], note: q.expl, title: a.title });
   });
