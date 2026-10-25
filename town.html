@@ -998,6 +998,7 @@ function count(k, goodOnly){ return bag.filter(function(b){ return b.k===k && (!
 
 /* ⛏ 礦石：兩敲＝兩題動詞；兩題都對＝完整礦，錯一題＝瑕疵礦；兩題都快＝雙倍 */
 function mineRock(n){
+  if(!(n._pal && Date.now()-n._pal<60000) && palaceServe(function(){ n._pal=Date.now(); mineRock(n); })) return;
   var hits=[], star=isStar(n), i=0;
   function next(){
     if(i>=2) return finish();
@@ -1144,6 +1145,7 @@ function askExam(head, it, cb){
 }
 /* 🌳 樹叢：翻出兩樣東西要叫出名字（un／une）＋一題名詞片語（對了撿到 🪙） */
 function shakeBush(n){
+  if(!(n._pal && Date.now()-n._pal<60000) && palaceServe(function(){ n._pal=Date.now(); shakeBush(n); })) return;
   var star=isStar(n), i=0, seq=['g','q','g'];
   function next(){
     if(i>=seq.length){ closeSheet(); n.done=true; return; }
@@ -1327,6 +1329,7 @@ function askClip(head, c, cb){
 }
 clipsLoad();
 function fishSpot(n){
+  if(!(n._pal && Date.now()-n._pal<60000) && palaceServe(function(){ n._pal=Date.now(); fishSpot(n); })) return;
   var i=0; clipsLoad();
   function next(){
     if(i>=2){ closeSheet(); n.done=true; return; }
@@ -2614,9 +2617,25 @@ function palRoom(I){
 }
 function pst(ref){ S.palace=S.palace||{}; return S.palace[ref]||{st:0, last:0}; }
 function firstLetters(fr){ return wparts(fr).map(function(p){ return p.w ? p.t.charAt(0)+(/['’]$/.test(p.t)?'\'':'') : p.t.replace(/\s+/g,' '); }).join('').replace(/\s+/g,' '); }
+var PAL_GAP=[1,3,7,21], PAL_DAY_CAP=4;
+/* 到期的句子：路上的遭遇開頭有一半機率先被宮殿叫住（⭐ Owen：一直走一直有題；⛔ 一天最多 4 件，複習太多他會跳過） */
+function palaceDue(){
+  var now=Date.now(), out=[]; S.palace=S.palace||{};
+  isles().forEach(function(I){ palRoom(I).forEach(function(g){ var p=S.palace[g.ref]; if(p && p.st>=1 && (p.due ? p.due<=now : p.last<sod(now))) out.push(g);   /* 舊進度沒有 due：隔天起算到期 */ }); });
+  return out;
+}
+function palaceServe(cont){
+  var d=today(); if(!S.palDay || S.palDay.d!==d) S.palDay={d:d, n:0};
+  if(S.palDay.n>=PAL_DAY_CAP || Math.random()>.5) return false;
+  var due=palaceDue(); if(!due.length) return false;
+  var g=due[Math.floor(Math.random()*due.length)]; S.palDay.n++; save();
+  toast('🏛 宮殿裡的 '+g.em+' 在叫你——'+g.R.name+'房'); if(window.GameLog) GameLog.event('palace_review');
+  palaceOpen({n:g.n, s:g.s, ref:g.ref, em:g.em, R:g.R, review:true}, cont, cont); return true;
+}
 function palaceHall(){
   var L=isles(); if(!L.length) return;
-  var h='<h3>🏛 記憶宮殿 <small>一座島一個房間</small></h3><div class="muted">每一句放在房間裡一件不一樣的東西上，位置永遠不變。點東西就走過去看。<br>白框＝認識　藍框＝只給首字母　金框＝只剩位置</div><div class="islemap">'+
+  var nd=palaceDue().length;
+  var h='<h3>🏛 記憶宮殿 <small>一座島一個房間</small></h3>'+(nd?'<div class="story">有幾件東西在等你回來看（也會在路上叫住你）。</div>':'')+'<div class="muted">每一句放在房間裡一件不一樣的東西上，位置永遠不變。點東西就走過去看。<br>白框＝認識　藍框＝只給首字母　金框＝只剩位置</div><div class="islemap">'+
     L.map(function(I){ var g=palRoom(I), started=g.some(function(x){ return pst(x.ref).last; });
       return '<button class="isle" data-room="'+I.id+'"><b>'+esc(I.title)+'</b><span>'+g.map(function(x){ var st=pst(x.ref); return st.last?['○','◐','●'][st.st]:'·'; }).join('')+'</span>'+(started?'':'<span class="muted" style="font-size:.8em">還沒進去過</span>')+'</button>'; }).join('')+
     '</div><div class="row2"><span></span><button class="btn main" id="phx">出去</button></div>';
@@ -2648,14 +2667,17 @@ function palaceRoom(I, at){
 function palaceOpen(g, done, stop){
   done=done||closeSheet; stop=stop||done;
   var P=pst(g.ref), st=P.st, s=g.s, head='<h3>🏛 '+esc(g.R.name)+' <small>'+pix(g.em,20)+' 第 '+g.n+' 件・'+['認識','提示','只剩位置'][st]+'</small></h3>';
-  var setSt=function(n){ S.palace=S.palace||{}; S.palace[g.ref]={st:Math.max(0,Math.min(2,n)), last:Date.now()}; save(); };
+  /* ⏰ 10-25 到期日：記得了／對上了 → 隔天再來；只剩位置又對上 → 3 天、7 天、21 天；沒對上 → 退一階、隔天再來 */
+  var setSt=function(n, res){ S.palace=S.palace||{}; var o=S.palace[g.ref]||{st:0,k:0}, now=Date.now(), k=0;
+    if(res==='ok' && o.st>=2) k=Math.min((o.k||0)+1, PAL_GAP.length-1);
+    S.palace[g.ref]={st:Math.max(0,Math.min(2,n)), last:now, k:k, due:sod(now)+PAL_GAP[k]*86400000}; save(); };
   var full='<div class="clue fr">'+(s.ctx?'<span class="muted">⋯ '+esc(s.ctx)+'</span><br>':'')+esc(s.fr)+' '+spk(s.fr)+'</div><div class="muted">'+esc(s.zh)+'</div>';
   if(st===0){
     var chunks=wparts(s.fr).filter(function(p){ return p.w; }).length>8 ? '<div class="muted" style="margin-top:4px">語塊：'+esc(s.fr).replace(/([,:;—])\s*/g,'$1 ║ ')+'</div>' : '';
     openSheet(head+'<div style="text-align:center;margin:4px 0">'+pix(g.em,56)+'</div>'+full+chunks+'<div class="muted" style="margin-top:6px">看著這件東西出聲唸一遍。記得了，下次它就只給中文和首字母。</div>'+mineBox(g.ref, s.fr)+
       '<div class="row2"><button class="btn ghost" id="pclose">'+(stop!==done?'先到這':'再看看')+'</button><button class="btn main" id="pok">我記得了 →</button></div>', true);
     speak(s.fr);
-    document.getElementById('pok').onclick=function(){ setSt(1); if(window.GameLog) GameLog.event('palace_up'); done(); };
+    document.getElementById('pok').onclick=function(){ setSt(1,'learn'); if(window.GameLog) GameLog.event('palace_up'); done(); };
     document.getElementById('pclose').onclick=stop; return;
   }
   var cue = st===1 ? '<div class="qtext">'+esc(s.zh)+'</div><div class="clue fr">'+esc(firstLetters(s.fr))+'</div>' : '<div class="qtext">'+pix(g.em,28)+' 這件東西上放的是哪一句？</div><details><summary class="muted">給我中文</summary><div class="muted">'+esc(s.zh)+'</div></details>';
@@ -2665,8 +2687,8 @@ function palaceOpen(g, done, stop){
   document.getElementById('pflip').onclick=function(){ speak(s.fr);
     document.getElementById('prev').innerHTML=full+mineBox(g.ref, s.fr);
     document.getElementById('prow').innerHTML='<button class="btn" id="pno">沒對上</button><button class="btn main" id="pyes">對上了 ✓</button>';
-    document.getElementById('pyes').onclick=function(){ if(window.GameLog) GameLog.answer(true,{kind:'🏛 宮殿', topic:'palace', ref:'pal:'+g.ref, q:s.zh, a:s.fr}); setSt(2); toast(st===1?'下次只剩位置':'記得 ✓'); done(); };
-    document.getElementById('pno').onclick=function(){ if(window.GameLog) GameLog.answer(false,{kind:'🏛 宮殿', topic:'palace', ref:'pal:'+g.ref, q:s.zh, a:s.fr}); setSt(st-1); toast('退回上一階，多看幾次'); done(); };
+    document.getElementById('pyes').onclick=function(){ if(window.GameLog) GameLog.answer(true,{kind:'🏛 宮殿', topic:'palace', ref:'pal:'+g.ref, q:s.zh, a:s.fr}); setSt(2,'ok'); if(g.review) masteryBonus(2,'🏛 宮殿'); toast(st===1?'下次只剩位置':'記得 ✓'); done(); };
+    document.getElementById('pno').onclick=function(){ if(window.GameLog) GameLog.answer(false,{kind:'🏛 宮殿', topic:'palace', ref:'pal:'+g.ref, q:s.zh, a:s.fr}); setSt(st-1,'no'); toast('退回上一階，明天再來'); done(); };
   };
 }
 function cafePanel(ch){
