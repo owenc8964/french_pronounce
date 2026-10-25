@@ -584,7 +584,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'duree-temps', name:'La durée (pendant · depuis · il y a)', icon:'⏳', zone:'A2', cat:'base',
-    lessons:[16,19], topics:['duree'], unlocked:true,
+    lessons:[16,19,45], topics:['duree'], unlocked:true,   // 10-25 第45課 B1 p.19：多了 dans／pour／en／ça fait… que
     rule:{
       title:'時間表達四天王 — 問自己「事情結束了沒」',
       why:'法文切時間只看一件事：括號閉合了沒。pendant 是閉合的括號（一段有頭有尾的時間），il y a 是往回量到過去的一個點，depuis 是開口的括號——起點在過去、另一端還連著現在。「depuis 要配現在式」不是例外，是法文最誠實的地方：事情現在還在發生，當然用現在式（J\'habite ici depuis deux ans＝我現在還住著）。中文和英文都用過去式講這種句子，所以這格才需要特別練。',
@@ -594,6 +594,10 @@ const GRAM_POINTS = [
         'il y a + 時長 = …之前（過去一個時間點）：Ils ont déménagé il y a dix jours',
         'à + 年紀 = 在幾歲時：Je suis arrivée en France à deux ans',
         'longtemps（很久）/ toujours（一直）當副詞直接放動詞後',
+        '⭐ 第45課：dans + 時長 = …之後（未來）：Il reviendra dans deux jours',
+        '⭐ 第45課：pour + 時長 = 預定多久：Je pars pour deux semaines',
+        '⭐ 第45課：en + 時長 = 花多久完成：Elle a couru cinq kilomètres en 34 minutes（🎙 不能說 « fini pendant deux heures »）',
+        '⭐ 第45課：ça fait + 時長 + que ＝ depuis：Ça fait deux ans que j\'habite à Toulouse',
       ],
       examples:[
         { fr:"J'habite ici depuis deux ans.", zh:'我住在這裡兩年了（還住著→depuis+現在式）。' },
@@ -727,7 +731,23 @@ const GRAM_POINTS = [
   { id:'opinions',     name:'Opinions & débats',        icon:'💬', zone:'B1', cat:'discours',    lessons:[], topics:[], unlocked:false },
   { id:'futur',        name:'Futur & conditionnel',     icon:'🌟', zone:'B1', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },   // ⚠️ 佔位點：兩半都已在 A2 各自解鎖（futur-simple 第27課、conditionnel 第35課）→ ⛔ 新的時態不要再掛這裡
   { id:'discours',     name:'Discours indirect',        icon:'💭', zone:'B1', cat:'discours',    lessons:[], topics:[], unlocked:false },
-  { id:'pluperfect',   name:'Plus-que-parfait',         icon:'⏪', zone:'B2', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
+  { id:'pluperfect',   name:'Plus-que-parfait',         icon:'⏪', zone:'B1', cat:'verbe-temps', lessons:[45], topics:['plus-que-parfait'], unlocked:true,   // 10-25 第45課（Édito B1 p.21）解鎖
+    rule:{
+      title:'愈過去式 — 過去的過去',
+      why:'講過去的故事時，時間軸上已經有一個「過去的參考點」；比那個點更早發生的事，就往後退一格用 plus-que-parfait。做法完全照抄 passé composé，只把助動詞從現在式換成 imparfait——所以它不是新東西，是把你已經會的兩樣拼起來。',
+      points:[
+        '做法：être／avoir 的 imparfait ＋ 過去分詞（j\'avais dit、elle était allée、nous avions fait、ils étaient partis）',
+        '用途：比另一件過去的事更早——J\'ai lu le livre que tu m\'avais conseillé（推薦在前，讀在後）',
+        '配合規則跟 passé composé 一樣：être 跟主詞配合（Elles étaient sorties）',
+        '⚠️ 反身動詞是間接結構（parler à quelqu\'un）時不配合：Ils s\'étaient parlé',
+        '語序跟 passé composé 一樣：Vous n\'étiez jamais venus avant ce soir ?',
+        '🎙 老師：有「比某個過去更早」的參考點（avant ce soir）才需要它；沒有的話 passé composé 就好。比 passé composé、imparfait 少用',
+      ],
+      examples:[
+        { fr:"J'ai lu le livre que tu m'avais conseillé.", zh:'我讀了你（之前）推薦給我的那本書。' },
+        { fr:"Vous n'étiez jamais venus avant ce soir ?", zh:'你們今晚之前從來沒來過嗎？' },
+        { fr:"L'aîné, Paul-Émile, était parti faire ses études à Dijon.", zh:'老大 Paul-Émile（那時）已經去第戎念書了。' },
+      ]}},
   { id:'cond-passe',   name:'Conditionnel passé',       icon:'😔', zone:'B2', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
   { id:'subj-passe',   name:'Subjonctif passé',         icon:'🌀', zone:'B2', cat:'verbe-mode',  lessons:[], topics:[], unlocked:false },
   { id:'passe-simple', name:'Passé simple',             icon:'📜', zone:'B2', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },

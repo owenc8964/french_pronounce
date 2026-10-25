@@ -882,6 +882,7 @@ const TOPIC_LABELS = {
   'strategie-ecoute':         "Stratégie d'écoute",
   'vocab-famille-generations': 'La famille et les générations',
   'vocab-amour-relations': 'L\'amour et les relations humaines',
+  'plus-que-parfait': 'Le plus-que-parfait',
   'expressions-orales':       'Expressions orales et onomatopées',
 };
 
@@ -954,6 +955,7 @@ const SPRINT_MODES = [
   { id:'futur',     label:'Futur simple',  suffix:'_fut',  gram:'futur-simple' },  // 27課教到 → 掛 A2 的 futur-simple
   { id:'subjonctif',label:'Subjonctif',    suffix:'_subj', gram:'subjonctif' },
   { id:'conditionnel',label:'Conditionnel', suffix:'_cond', gram:'conditionnel' },  // 35課教到
+  { id:'pqp',       label:'Plus-que-parfait', suffix:'_pqp', gram:'pluperfect' },  // 45課教到
 ];
 function sprintModesAvailable() {
   return SPRINT_MODES.filter(m => {

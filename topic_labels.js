@@ -123,5 +123,6 @@ var TOPIC_LABELS_FR = {
  "strategie-ecoute": "Stratégie d'écoute",
  "vocab-famille-generations": "La famille et les générations",
   "vocab-amour-relations": "L'amour et les relations humaines",
+  "plus-que-parfait": "Le plus-que-parfait",
  "expressions-orales": "Expressions orales et onomatopées"
 };

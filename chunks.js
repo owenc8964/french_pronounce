@@ -22001,5 +22001,481 @@ const CHUNKS = [
   "fr": "sous le même toit",
   "zh": "住在一起",
   "note": "loc.｜toit＝屋頂"
+ },
+ {
+  "id": "L45_Je_ne_sais_pas_encore",
+  "lesson": 45,
+  "fr": "Je ne sais pas encore.",
+  "zh": "我還不知道。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L45_Pour_moi_il_n_y_a_pas_de",
+  "lesson": 45,
+  "fr": "Pour moi, il n'y a pas de problème.",
+  "zh": "對我來說沒問題。",
+  "note": "🎙 老師：繼續線上上課"
+ },
+ {
+  "id": "L45_J_ai_du_mal_à_me_faire_d",
+  "lesson": 45,
+  "fr": "J'ai du mal à me faire des amis à Taïwan.",
+  "zh": "我在台灣很難交到朋友。",
+  "note": "🎙 老師說自己。⚠️ 逐字稿裡老師說成 « à Taïwan de me faire »；avoir du mal 後面接 à＋原形"
+ },
+ {
+  "id": "L45_Mon_ami_a_appris_le_fran",
+  "lesson": 45,
+  "fr": "Mon ami a appris le français en trois mois.",
+  "zh": "我朋友三個月就學會了法文。",
+  "note": "練習 2d：花了三個月學會（🎙 老師：我不信）"
+ },
+ {
+  "id": "L45_Tu_vis_à_Taipei_depuis_c",
+  "lesson": 45,
+  "fr": "Tu vis à Taipei depuis combien de temps ?",
+  "zh": "你住在台北多久了？",
+  "note": "🎙 老師問"
+ },
+ {
+  "id": "L45_Ça_fait_dix_ans_que_j_ai",
+  "lesson": 45,
+  "fr": "Ça fait dix ans que j'ai rencontré ma femme.",
+  "zh": "我認識我太太十年了。",
+  "note": "🎙 老師的例句"
+ },
+ {
+  "id": "L45_Vous_n_êtes_jamais_venus",
+  "lesson": 45,
+  "fr": "Vous n'êtes jamais venus avant ?",
+  "zh": "你們以前沒來過嗎？",
+  "note": "🎙 截圖上老師寫的：沒有「比某個過去更早」的話，passé composé 就好"
+ },
+ {
+  "id": "L45_J_étais_parti_pour_couri",
+  "lesson": 45,
+  "fr": "J'étais parti pour courir 5 km, mais j'ai couru 10 km.",
+  "zh": "我本來打算跑 5 公里，結果跑了 10 公里。",
+  "note": "🎙 截圖上老師寫的例句"
+ },
+ {
+  "id": "L45_le_père_au_foyer",
+  "lesson": 45,
+  "fr": "le père au foyer",
+  "zh": "家庭主夫",
+  "note": "m.｜la mère au foyer"
+ },
+ {
+  "id": "L45_le_congé_paternité",
+  "lesson": 45,
+  "fr": "le congé paternité",
+  "zh": "陪產假",
+  "note": "m.｜le congé maternité 產假"
+ },
+ {
+  "id": "L45_embarquer",
+  "lesson": 45,
+  "fr": "embarquer",
+  "zh": "（讓人）上船；帶進",
+  "note": "v.｜on vous embarque dans…"
+ },
+ {
+  "id": "L45_la_chronique",
+  "lesson": 45,
+  "fr": "la chronique",
+  "zh": "記事、故事",
+  "note": "f.｜une maladie chronique 慢性病"
+ },
+ {
+  "id": "L45_tendre",
+  "lesson": 45,
+  "fr": "tendre",
+  "zh": "溫柔的",
+  "note": "adj.｜英文 tender"
+ },
+ {
+  "id": "L45_le_quotidien",
+  "lesson": 45,
+  "fr": "le quotidien",
+  "zh": "日常生活",
+  "note": "m.｜du quotidien"
+ },
+ {
+  "id": "L45_le_comédien_la_comédienn",
+  "lesson": 45,
+  "fr": "le comédien, la comédienne",
+  "zh": "演員",
+  "note": "n.｜"
+ },
+ {
+  "id": "L45_chéri_e",
+  "lesson": 45,
+  "fr": "chéri(e)",
+  "zh": "心愛的",
+  "note": "adj.｜ma fille chérie"
+ },
+ {
+  "id": "L45_la_bouche_pleine",
+  "lesson": 45,
+  "fr": "la bouche pleine",
+  "zh": "滿嘴食物",
+  "note": "loc.｜plein＝滿的"
+ },
+ {
+  "id": "L45_mais_enfin",
+  "lesson": 45,
+  "fr": "mais enfin",
+  "zh": "拜託喔、哎呀",
+  "note": "interj.｜對方不懂簡單的事時"
+ },
+ {
+  "id": "L45_le_manque_de_crédibilité",
+  "lesson": 45,
+  "fr": "le manque de crédibilité",
+  "zh": "不夠可信",
+  "note": "m.｜manquer de"
+ },
+ {
+  "id": "L45_se_faire_des_amis",
+  "lesson": 45,
+  "fr": "se faire des amis",
+  "zh": "交朋友",
+  "note": "v.｜"
+ },
+ {
+  "id": "L45_avoir_du_mal_à",
+  "lesson": 45,
+  "fr": "avoir du mal à",
+  "zh": "很難做到…",
+  "note": "loc.｜＋原形"
+ },
+ {
+  "id": "L45_les_affaires",
+  "lesson": 45,
+  "fr": "les affaires",
+  "zh": "（個人的）東西",
+  "note": "f.pl.｜mes affaires"
+ },
+ {
+  "id": "L45_le_moyen",
+  "lesson": 45,
+  "fr": "le moyen",
+  "zh": "方法",
+  "note": "m.｜un bon moyen de…"
+ },
+ {
+  "id": "L45_une_bande_de_potes",
+  "lesson": 45,
+  "fr": "une bande de potes",
+  "zh": "一群朋友",
+  "note": "f.｜une bande＝一群"
+ },
+ {
+  "id": "L45_le_pote",
+  "lesson": 45,
+  "fr": "le pote",
+  "zh": "朋友（口語）",
+  "note": "m.｜c'est un bon pote"
+ },
+ {
+  "id": "L45_l_astuce",
+  "lesson": 45,
+  "fr": "l'astuce",
+  "zh": "訣竅、小撇步",
+  "note": "f.｜≈ le conseil"
+ },
+ {
+  "id": "L45_le_réseau",
+  "lesson": 45,
+  "fr": "le réseau",
+  "zh": "人脈、網絡",
+  "note": "m.｜activer son réseau"
+ },
+ {
+  "id": "L45_l_entourage",
+  "lesson": 45,
+  "fr": "l'entourage",
+  "zh": "身邊的人",
+  "note": "m.｜entourer 圍繞"
+ },
+ {
+  "id": "L45_les_proches",
+  "lesson": 45,
+  "fr": "les proches",
+  "zh": "親友",
+  "note": "m.pl.｜"
+ },
+ {
+  "id": "L45_le_bénévolat",
+  "lesson": 45,
+  "fr": "le bénévolat",
+  "zh": "志工服務",
+  "note": "m.｜faire du bénévolat"
+ },
+ {
+  "id": "L45_la_rencontre_amicale",
+  "lesson": 45,
+  "fr": "la rencontre amicale",
+  "zh": "交朋友的聚會",
+  "note": "f.｜amical＝友誼的"
+ },
+ {
+  "id": "L45_l_animal_de_compagnie",
+  "lesson": 45,
+  "fr": "l'animal de compagnie",
+  "zh": "寵物",
+  "note": "m.｜＝ un compagnon à quatre pattes"
+ },
+ {
+  "id": "L45_briser_la_glace",
+  "lesson": 45,
+  "fr": "briser la glace",
+  "zh": "破冰",
+  "note": "v.｜la glace＝冰"
+ },
+ {
+  "id": "L45_l_engagement",
+  "lesson": 45,
+  "fr": "l'engagement",
+  "zh": "承諾、責任",
+  "note": "m.｜pour plusieurs années"
+ },
+ {
+  "id": "L45_le_refuge_pour_animaux",
+  "lesson": 45,
+  "fr": "le refuge pour animaux",
+  "zh": "動物收容所",
+  "note": "m.｜"
+ },
+ {
+  "id": "L45_bref",
+  "lesson": 45,
+  "fr": "bref",
+  "zh": "總之",
+  "note": "adv.｜口語的結論"
+ },
+ {
+  "id": "L45_embêtant_e",
+  "lesson": 45,
+  "fr": "embêtant(e)",
+  "zh": "麻煩的、煩人的",
+  "note": "adj.｜🗣 你說養貓會很麻煩"
+ },
+ {
+  "id": "L45_chercher_à",
+  "lesson": 45,
+  "fr": "chercher à",
+  "zh": "想辦法、試著",
+  "note": "v.｜＋原形"
+ },
+ {
+  "id": "L45_il_y_a",
+  "lesson": 45,
+  "fr": "il y a",
+  "zh": "…之前（過去的時間點）",
+  "note": "le moment｜Il est parti il y a dix minutes."
+ },
+ {
+  "id": "L45_dans",
+  "lesson": 45,
+  "fr": "dans",
+  "zh": "…之後（未來的時間點）",
+  "note": "le moment｜Il reviendra dans deux jours."
+ },
+ {
+  "id": "L45_pendant",
+  "lesson": 45,
+  "fr": "pendant",
+  "zh": "持續了多久",
+  "note": "la durée｜Nous avons joué pendant trois heures."
+ },
+ {
+  "id": "L45_pour",
+  "lesson": 45,
+  "fr": "pour",
+  "zh": "預定多久",
+  "note": "la durée｜Je pars pour deux semaines."
+ },
+ {
+  "id": "L45_en",
+  "lesson": 45,
+  "fr": "en",
+  "zh": "花了多久完成",
+  "note": "la durée｜Elle a couru cinq kilomètres en 34 minutes."
+ },
+ {
+  "id": "L45_depuis",
+  "lesson": 45,
+  "fr": "depuis",
+  "zh": "從…起（到現在還在）",
+  "note": "la continuité｜J'habite à Toulouse depuis deux ans."
+ },
+ {
+  "id": "L45_ça_fait_que",
+  "lesson": 45,
+  "fr": "ça fait… que",
+  "zh": "…已經多久了",
+  "note": "la continuité｜Ça fait deux ans que j'habite à Toulouse."
+ },
+ {
+  "id": "L45_j_avais_dit",
+  "lesson": 45,
+  "fr": "j'avais dit",
+  "zh": "我（之前）說過",
+  "note": "j'ai dit｜avoir → avais"
+ },
+ {
+  "id": "L45_elle_était_allée",
+  "lesson": 45,
+  "fr": "elle était allée",
+  "zh": "她（之前）去過",
+  "note": "elle est allée｜être → était，配合 -e"
+ },
+ {
+  "id": "L45_nous_avions_fait",
+  "lesson": 45,
+  "fr": "nous avions fait",
+  "zh": "我們（之前）做過",
+  "note": "nous avons fait｜avoir → avions"
+ },
+ {
+  "id": "L45_ils_étaient_partis",
+  "lesson": 45,
+  "fr": "ils étaient partis",
+  "zh": "他們（之前）出發了",
+  "note": "ils sont partis｜être → étaient，配合 -s"
+ },
+ {
+  "id": "L45_ils_s_étaient_parlé",
+  "lesson": 45,
+  "fr": "ils s'étaient parlé",
+  "zh": "他們（之前）談過話",
+  "note": "ils se sont parlé｜parler à → 不配合"
+ },
+ {
+  "id": "L45_la_cité_ouvrière",
+  "lesson": 45,
+  "fr": "la cité ouvrière",
+  "zh": "工人住宅區",
+  "note": "f.｜l'ouvrier 工人"
+ },
+ {
+  "id": "L45_la_brique",
+  "lesson": 45,
+  "fr": "la brique",
+  "zh": "磚",
+  "note": "f.｜des maisons en brique"
+ },
+ {
+  "id": "L45_le_jardin_potager",
+  "lesson": 45,
+  "fr": "le jardin potager",
+  "zh": "菜園",
+  "note": "m.｜🎙 有種菜才叫 potager"
+ },
+ {
+  "id": "L45_à_l_arrière",
+  "lesson": 45,
+  "fr": "à l'arrière",
+  "zh": "在後面",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L45_résider",
+  "lesson": 45,
+  "fr": "résider",
+  "zh": "居住",
+  "note": "v.｜＝ habiter, loger"
+ },
+ {
+  "id": "L45_un_F3",
+  "lesson": 45,
+  "fr": "un F3",
+  "zh": "兩房一廳的公寓",
+  "note": "m.｜F＋房間數（含客廳）"
+ },
+ {
+  "id": "L45_centenaire",
+  "lesson": 45,
+  "fr": "centenaire",
+  "zh": "百年的",
+  "note": "adj.｜des arbres centenaires"
+ },
+ {
+  "id": "L45_à_égale_distance",
+  "lesson": 45,
+  "fr": "à égale distance",
+  "zh": "一樣遠",
+  "note": "loc.｜à 200 mètres près 差不到 200 公尺"
+ },
+ {
+  "id": "L45_la_récréation",
+  "lesson": 45,
+  "fr": "la récréation",
+  "zh": "下課時間",
+  "note": "f.｜la cantine 學校餐廳"
+ },
+ {
+  "id": "L45_l_annuaire",
+  "lesson": 45,
+  "fr": "l'annuaire",
+  "zh": "電話簿",
+  "note": "m.｜"
+ },
+ {
+  "id": "L45_au_hasard",
+  "lesson": 45,
+  "fr": "au hasard",
+  "zh": "隨便、隨機",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L45_composer_un_numéro",
+  "lesson": 45,
+  "fr": "composer un numéro",
+  "zh": "撥號",
+  "note": "v.｜"
+ },
+ {
+  "id": "L45_travestir",
+  "lesson": 45,
+  "fr": "travestir",
+  "zh": "改變、偽裝",
+  "note": "v.｜travestir sa voix"
+ },
+ {
+  "id": "L45_la_bataille_navale",
+  "lesson": 45,
+  "fr": "la bataille navale",
+  "zh": "海戰棋",
+  "note": "f.｜touché, coulé"
+ },
+ {
+  "id": "L45_à_l_unisson",
+  "lesson": 45,
+  "fr": "à l'unisson",
+  "zh": "異口同聲",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L45_la_boule_puante",
+  "lesson": 45,
+  "fr": "la boule puante",
+  "zh": "臭彈",
+  "note": "f.｜puer＝發臭"
+ },
+ {
+  "id": "L45_pouffer",
+  "lesson": 45,
+  "fr": "pouffer",
+  "zh": "噗哧笑出來",
+  "note": "v.｜en pouffant bêtement"
+ },
+ {
+  "id": "L45_le_trait_d_union",
+  "lesson": 45,
+  "fr": "le trait d'union",
+  "zh": "連字號；橋樑",
+  "note": "m.｜C'est Nina qui était leur trait d'union."
  }
 ];

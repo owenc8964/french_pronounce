@@ -34,6 +34,7 @@
 > - 👂 **10-20：課本音檔接進聽力解碼頁（三之七十九）**：`listen_decode.html` 預設「📗 課本」，選單元 → 聽整段對話 → 填功能詞，77 段（A2 71＋B1 U1 6）；⏭ 原版選擇題做成小鎮遭遇。
 > - 🎧 **10-19 深夜：課本音檔官方來源找到了（三之七十八）**：e-didier.fr 公開頁、編號＝課本音軌號；A2＋Cahier＋B1 慢速下載中，對照表 A2 120 軌／Cahier 127 軌完成；⏸ 等 Owen 選壓縮品質。
 > - ✍️ **10-23 題庫詳解補寫（三之八十二）**：491 題弱解說改成「為什麼是這個答案」，非變位類弱解說歸零；⏸ 4 題可疑題（題幹錯字／選項重複）等 Owen 決定。
+> - 📒 **10-25 第45課筆記（B1 p.17–21：Père au foyer、怎麼交朋友、時間指示詞、⭐ plus-que-parfait 解鎖、J Trois）＋連動（三之九十一）**
 > - 🏛 **10-25 小鎮：記憶宮殿改成「一棟房子、一座島一個房間、每句一件不一樣的家具」（廣場東邊），路上的告示牌全拿掉；修橋改成第一順位、箭頭蓋過今日委托（三之九十（小鎮））**
 > - 🛠 **10-25 小鎮：修 Owen 試玩 11 則回報——升格打字題補動詞原形＋🈶中文、鎮報 183 則解析補中文、que／où 與過去分詞配合的概念卡、交貨攤點材料會帶路、守園調簡單、記憶宮殿先縮成地面小標記（⏸ 改成「宮殿房間」等 Owen 決定）（三之八十九（小鎮））**
 > - 📒 **10-24 第44課筆記（B1 p.14 passé composé／imparfait 各四種用法、p.16 家庭與愛情詞彙、p.15 魁北克實境秀）＋連動；📝 作業：p.14 練習 5b、5c 寫長一點（三之八十八）**
@@ -4959,6 +4960,17 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
   3. **#73**（preposition-country）opts 有 12 個、互相重複（au Canada／en France…出現好幾次），看起來是組合題被攤平了，選項畫面會很怪。
   4. #301（「我 180 公分 Je fais 1m80」）topic 標成 question-words，應該是 faire 用法；不影響作答，只影響分類。
 - ⏭ 下一步（可選）：純變位 122 題要不要也補一句（例如「主詞 nous → 字尾 -ons」）——小鎮已經會列變位表，優先度低；`node tools/check_weak_anote.js --all -v` 可以看清單。
+
+#### 三之九十一、10-25：第45課筆記（Édito B1 Unité 1 p.17–21）＋連動
+
+- 來源：Owen 貼的逐字稿（線上課）＋桌面 1025 資料夾 5 張截圖（老師在課本上的標註）。
+- ✅ **french_notes.html 第45課**（9 unit、58 句）：🇫🇷 開場閒聊（法國育嬰假：陪產 28 天／產假 16 週／第三胎起 26 週；père／mère au foyer；ouragan vs typhon）｜📖 G Père au foyer（漫畫 Dad）｜📖 H Comment se faire des ami(e)s（全文＋練習 6 你講的五個建議＋le leur vs leur）｜📐 時間指示詞（il y a／dans／pendant／pour／en／depuis／ça fait… que；練習 2、3 答案）｜📐 ⭐ plus-que-parfait｜📖 J Trois｜🎙 課堂法語｜📋 糾錯。
+- ⚠️ 標出來的不一致：ouragan（老師說是「歐洲的颱風」→ 標準是大西洋／美洲，歐洲多叫 tempête）；育嬰假誰付錢（老師說公司付，一般是健保每日津貼，未查證）；avoir du mal **à**（逐字稿裡老師說成 « à Taïwan de me faire »）；joindre vs rejoindre（老師說 rejoindre 是「報名」，我寫成「加入」）。老師說法國有 1000 萬公務員——沒入庫（跟課程無關、數字有疑問）。
+- ⚠️ p.21 練習 3（plus-que-parfait 變位）課堂沒做，答案是我照規則填的，筆記裡有標；p.19 練習 4 老師說自己練。
+- ✅ 連動：chunks **+68**（全部看過）｜questions **+25**（`duree` 10、新 topic **`plus-que-parfait`** 8、`vocab-amour-relations` 7）＋ TOPIC_LABELS 三處＋quest.html `G3_AIM`（check_g3 要求）｜sentences `S_L45_1~14`（→472）｜table_drill +2（`temps-b1-p19`、`pqp-b1-p21`，95 個）｜gram_rules：**`pluperfect` 解鎖**（zone B2 → B1、lessons [45]、topics ['plus-que-parfait']、補 rule）、`duree-temps` lessons 加 45＋四條新 points｜verb_sprint `MODES`＋dashboard `SPRINT_MODES` 加 `pqp`（gram:'pluperfect'，⚠️ 照記憶裡的坑先確認 gram 指到已解鎖的點）｜map `CURRENT_LESSON` 45＋新地塊 `amis-temps`。
+- 驗證：check_notes 全綠、check_g3 ✓；preview 看筆記（9 unit、58 句）、quiz?lesson=45、verb_sprint 出現 Plus-que-parfait 按鈕、map 新地塊、table_drill 兩張新表；無 console 錯誤。ROOM 測試→已改回、preview 已關、無 TEST 殘留。
+- ⚠️ map chip 現在顯示「第 45 課 / 預計 44 課」（TOTAL_LESSONS 還是 44）——⏸ 等 Owen 給 B1 總課數。
+- 📅 老師 12 月回法國約兩週，課照常線上；下週課在星期五（逐字稿對時間的部分不清楚）。
 
 #### 三之九十（小鎮）、10-25：記憶宮殿改成房間＋修橋優先
 
