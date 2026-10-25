@@ -140,6 +140,11 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .gm { color:#7fb2ff; } .gf { color:#ff8a9a; }
 .opts button.bm { border-color:#3c5a85; } .opts button.bf { border-color:#85404d; }
 .ex-why { color:#ff9a8a; margin:4px 0; } .ex-ok { margin:4px 0; } .ex-rule { background:#0c120e; border-left:3px solid var(--gold); padding:6px 9px; border-radius:0 8px 8px 0; margin:6px 0; font-size:.92em; line-height:1.55; }
+.proom { position:relative; display:grid; grid-template-columns:repeat(6,var(--pc)); grid-auto-rows:var(--pc); width:calc(var(--pc)*6); margin:6px auto; background:#3a2c1e; border:4px solid #6b4a2a; border-radius:6px; box-sizing:content-box; }
+.pcell { position:relative; margin:2px; border:2px solid rgba(255,255,255,.18); border-radius:8px; background:rgba(255,255,255,.06); display:flex; align-items:center; justify-content:center; padding:0; cursor:pointer; font-family:inherit; }
+.pcell.empty { border:none; background:none; cursor:default; }
+.pcell small { position:absolute; right:3px; bottom:1px; font-size:.6em; color:#9aa39c; }
+.pme { position:absolute; width:var(--pc); height:var(--pc); display:flex; align-items:flex-start; justify-content:flex-start; font-size:calc(var(--pc)*.38); pointer-events:none; transition:left .35s ease, top .35s ease; }
 .cgap { color:var(--gold); letter-spacing:1px; } .cans { color:var(--gold); text-decoration:underline; }
 .conjrow { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; margin:6px 0; font-size:.85em; } .conjrow span { background:#16211b; border-radius:6px; padding:3px 6px; } .conjrow small { color:var(--dim); } .conjrow .ok { background:#3c5a2c; color:#fff3c0; } .conjrow .no { background:#4a2c28; }
 .rlink { display:inline-block; margin-top:4px; color:#9fd0ff; font-size:.88em; text-decoration:none; border-bottom:1px dashed #9fd0ff; }
@@ -333,6 +338,8 @@ var CHALLENGES=[ {id:'garden', x:16, y:18, name:'守園', em:'🌻', goal:3},   
   {id:'mill', x:24, y:15, name:'風車', em:'🌬️', kind:'tiles', n:3},
   /* ☕ 10-17：口說島一句一句練熟（選擇／手寫，⛔ 不用麥克風——Owen：辨識不夠靠譜） */
   {id:'cafe', x:17, y:29, name:'咖啡館', em:'☕', kind:'isle'},
+  /* 🏛 10-25：記憶宮殿（一座口說島＝一個房間），廣場東邊、跟咖啡館對稱 */
+  {id:'palace', x:24, y:28, name:'記憶宮殿', em:'🏛', kind:'palace'},
   /* 🕵️ 10-17：抓錯字 */
   {id:'notice', x:23, y:12, name:'告示牌', em:'📋', kind:'spot'},
   /* 🪨🚪 10-18 Owen：「瑪利歐是因為跑來跑去、時機、路線、機關、隱藏關卡才有趣」→ 法文變成路線本身的兩個關卡（嵌入，跟守園同一套） */
@@ -369,8 +376,6 @@ function buildWorld(){
   /* 節點與線索的格子一定空出來，旁邊也是 */
   NODE_DEF.concat(CLUES).concat(CHALLENGES).forEach(function(n){ for(var dy=-1;dy<=1;dy++) for(var dx=-1;dx<=1;dx++){ var X=n.x+dx, Y=n.y+dy;
     if(X>0&&Y>0&&X<W-1&&Y<H-1&&region(X,Y)!=='river'){ deco[Y][X]=null; solid[Y][X]=false; } } });
-  /* 🏛 記憶宮殿路線：告示牌所在的格子清空、可以走（河以外） */
-  PALACE.forEach(function(R){ R.pts.forEach(function(p){ var X=p[0], Y=p[1]; if(X>0&&Y>0&&X<W-1&&Y<H-1&&region(X,Y)!=='river'){ deco[Y][X]=null; solid[Y][X]=false; } }); });
   applyBuildings();
   /* 走得到嗎？走不到就把擋路的樹清掉（從節點往小鎮方向） */
   NODE_DEF.concat(CLUES).forEach(function(n){
@@ -445,7 +450,7 @@ function reveal(){
    操作：按住畫面任何地方＝搖桿；方向鍵／WASD
    ============================================================ */
 var lastClose=0, ttsUnlocked=false;
-cv.addEventListener('pointerdown', function(e){ if(busy || performance.now()-lastClose<250) return; if(palaceTap(e)) return; try{ cv.setPointerCapture(e.pointerId); }catch(err){} joy={id:e.pointerId, ox:e.clientX, oy:e.clientY, x:e.clientX, y:e.clientY}; });
+cv.addEventListener('pointerdown', function(e){ if(busy || performance.now()-lastClose<250) return; try{ cv.setPointerCapture(e.pointerId); }catch(err){} joy={id:e.pointerId, ox:e.clientX, oy:e.clientY, x:e.clientX, y:e.clientY}; });
 cv.addEventListener('pointermove', function(e){ if(joy&&joy.id===e.pointerId){ joy.x=e.clientX; joy.y=e.clientY; } });
 function endJoy(e){ if(joy&&joy.id===e.pointerId) joy=null; unlockTts(); }
 /* iOS：朗讀要在手勢裡先唸過一次才解鎖（觸控時算手勢的是放手那一下）（審查 #14、手感研究 9） */
@@ -1465,6 +1470,10 @@ function showWhere(k){
 }
 function questInfo(){
   if(pointTo){ if(Math.hypot(pointTo.to.x-hero.x, pointTo.to.y-hero.y)<1.6) pointTo=null; else return pointTo; }
+  /* 10-25 Owen：「讓我直接去修橋，否則沒辦法去其他遊戲」→ 第一單交完、橋還沒修：箭頭優先帶去修橋（蓋過今日委託） */
+  if(S.firstDeal && !S.built.bridge && S.built.cottage){ var gb=guide(BRIDGE.cost, {x:BRIDGE.door[0],y:BRIDGE.door[1]});
+    if(bag.length>=S.bagCap && !gb.ready) return {t:'🎒 背包滿了 → 回 <b>🏪 交貨攤</b>，換成修橋的材料', to:door('stall')};
+    return {t:'🌉 先修好北邊的 <b>橋</b>（⛏×4 📦×3）——過河才有 🎣 河邊的課本錄音'+(gb.ready?'　✅ 材料夠了':(gb.money?'':'　（缺 '+gb.need+'）')), to:gb.to}; }
   var qb=questBarInfo(); if(qb) return qb;
   var b=S.built, g, full=bag.length>=S.bagCap;
   if(!b.cottage) return {t:'走進 🌳 森林的草叢收集東西進 <b>📖 圖鑑</b>——再收 '+Math.max(1,DEX_MILESTONE-dexCount())+' 種，就會有人回到鎮上', to: region(Math.floor(hero.x),Math.floor(hero.y))==='forest' ? null : {x:8.5,y:19.5}};
@@ -1479,8 +1488,9 @@ function questInfo(){
     if(full) return {t:'🎒 背包滿了 → 回 <b>🏪 交貨攤</b>', to:door('stall')};
     return {t:'去 ⛏ 礦坑或 🌳 森林採 2 件以上，回 <b>🏪 交貨攤</b>交第一單', to:nearestNode(count('ore')>=count('obj')?['bush','rock']:['rock','bush'])};
   }
+  /* 10-25 Owen：「讓我直接去修橋，否則沒辦法去其他遊戲」→ 橋排在鐵匠鋪前面（河邊＝課本聽力） */
+  if(!b.bridge) return step('修好北邊的 <b>橋</b>（⛏×4 📦×3），過河去 🎣 河邊聽課本錄音', BRIDGE.cost, {x:BRIDGE.door[0],y:BRIDGE.door[1]});
   if(!b.forge) return step('重建 <b>⚒ 鐵匠鋪</b>（⛏×3）', LOTS.forge.cost, door('forge'));
-  if(!b.bridge) return step('修好北邊的 <b>橋</b>（⛏×4 📦×3），過河', BRIDGE.cost, {x:BRIDGE.door[0],y:BRIDGE.door[1]});
   if(!b.post) return step('到河邊釣魚，重建 <b>📮 郵局</b>（🐟×3 📦×2＋30🪙）', LOTS.post.cost, door('post'));
   if(!S.letter) return {t:'郵局蓋好了——進去看看', to:door('post')};
   if(Object.keys(S.clues).length<3) return {t:'找三張 <b>📜 紙條</b>（'+Object.keys(S.clues).length+'／3）', to:nearestClue()};
@@ -2583,95 +2593,80 @@ sheet.addEventListener('click', function(e){ var b=e.target.closest && e.target.
   try{ var a=JSON.parse(localStorage.getItem('clb7_isle_mine'))||[]; a.push({ts:Date.now(), ref:b.dataset.ref, fr:b.dataset.fr, mine:v}); localStorage.setItem('clb7_isle_mine', JSON.stringify(a.slice(-300))); }catch(er){}
   document.getElementById('mineOk').textContent='✓ 記下了，我之後會看'; document.getElementById('mineIn').value=''; });
 /* ============================================================
-   🏛 記憶宮殿路線（10-23 Owen：「我覺得很難背……還是走一走會看到這完整句？不是純考試，而是真的有助於記憶」→「記憶宮殿路線做吧」）
-   ⭐ 每座島＝小鎮一條固定路線，每一段（拆句後的單位）＝路邊固定位置的告示牌，編號永不改（memory user_memory_palace_style：靠位置記）
-   ⭐ ⛔ 不擋路：走到告示牌旁，句子直接浮在牌子上方（邊走邊看）；想自我檢查才點泡泡
-   ⭐ 三階段（不計分，自己推進）：0 認識＝整句＋中文 → 1 提示＝中文＋首字母 → 2 只剩位置＝「📍第 N 站」
-      點開翻牌後「對上了」往下一階（第 2 階則記下日期）、「沒對上」退一階
-   ⭐ 先做面談最常考的 5 座：自我介紹、家庭、工作、興趣、為什麼去加拿大（AC8 在河北岸，要先修好橋）
-   進度存 S.palace[ref] = { st, last }（ref 跟咖啡館同一套：AC1:1.2）
+   🏛 記憶宮殿（10-25 改版）
+   10-23 第一版把 113 塊一樣的告示牌排在小鎮的路上 → Owen：「一格一格的超醜、擋路、會遮東西」「現在那樣是個災難」
+   診斷：①記憶宮殿靠的是「每個位置一個不一樣的東西」，一排一樣的牌子沒有記憶鉤子 ②背誦塞在趕路的路上，兩邊互相干擾
+   → Owen 選 A：🏛 宮殿是一棟房子，一座口說島＝一個房間，每一段（拆句後的單位）＝房間裡一件不一樣的家具，位置永不改
+     （memory user_memory_palace_style：靠永久座標記）。小鎮路上 ⛔ 不放任何東西。
+   ⭐ 學習效果主要來自三階段回想＋隔天再來：0 認識＝整句＋中文 → 1 提示＝中文＋首字母 → 2 只剩位置（「床頭那件是哪一句？」）
+      空間負責「順序」和「提示鉤子」；擺放順序＝沿著牆繞一圈、再繞內圈（跟自我介紹講話的順序一樣）
+   進度存 S.palace[ref] = { st, last }（ref 跟咖啡館同一套：AC1:1.2），⚠️ 只存本機
    ============================================================ */
-function pRoute(segs){ var pts=[]; segs.forEach(function(sg){ var x=sg[0], y=sg[1], x2=sg[2], y2=sg[3], dx=Math.sign(x2-x), dy=Math.sign(y2-y);
-  while(true){ pts.push([x,y]); if(x===x2 && y===y2) break; x+=dx; y+=dy; } }); return pts; }
-var PALACE=[
-  {id:'AC1', name:'自我介紹之路', where:'廣場往北的大路，到橋邊往東轉', pts:pRoute([[21,28,21,11],[22,11,26,11]])},
-  {id:'AC3', name:'工作之路',     where:'麥田南邊那一排，由西往東',     pts:pRoute([[13,20,27,20],[27,19,27,19]])},
-  {id:'AC2', name:'家庭之路',     where:'森林邊緣，由南往北',           pts:pRoute([[12,33,12,11]])},
-  {id:'AC5', name:'興趣之路',     where:'礦坑裡的直路，由南往北',       pts:pRoute([[32,33,32,11]])},
-  {id:'AC8', name:'加拿大之路',   where:'過橋後河的北岸，由西往東',     pts:pRoute([[4,5,35,5]])}
-];
-var PSIGNS=null;
-function palaceSigns(){
-  if(PSIGNS) return PSIGNS; PSIGNS=[];
-  PALACE.forEach(function(R){ var I=isles().filter(function(x){ return x.id===R.id; })[0]; if(!I) return;
-    I.sents.forEach(function(s,i){ var p=R.pts[i]; if(!p) return; PSIGNS.push({x:p[0], y:p[1], n:i+1, R:R, I:I, s:s, ref:I.id+':'+s.key}); }); });
-  return PSIGNS;
+var PAL_FURN=['🛏️','🪑','🛋️','🚪','🪟','🪞','🖼️','🕰️','💡','🪴','📚','🧸','🎹','🎸','📺','☎️','🧺','🧹','🫖','☕','🍎','🧦','👟','🎩','🧳','🗝️','📷','🧯','🛁','🧴','🎨','🖋️','🗺️','🌂','🕯️','🎁'];
+function palSeed(str){ var h=0; for(var i=0;i<str.length;i++) h=(h*31+str.charCodeAt(i))>>>0; return function(){ h=(h*1103515245+12345)>>>0; return h/4294967296; }; }
+/* 6×6 房間：外圈順時針 20 格（從左上角門口出發）→ 內圈 12 格 → 中間 4 格 */
+var PAL_CELLS=(function(){ var o=[], N=6;
+  function ring(a,b){ var c; for(c=a;c<=b;c++) o.push([a,c]); for(c=a+1;c<=b;c++) o.push([c,b]); for(c=b-1;c>=a;c--) o.push([b,c]); for(c=b-1;c>a;c--) o.push([c,a]); }
+  ring(0,N-1); ring(1,N-2); ring(2,N-3); return o; })();
+function palRoom(I){
+  var rnd=palSeed(I.id), pool=PAL_FURN.slice(); for(var i=pool.length-1;i>0;i--){ var j=Math.floor(rnd()*(i+1)), t=pool[i]; pool[i]=pool[j]; pool[j]=t; }
+  return I.sents.slice(0,PAL_CELLS.length).map(function(s,i){ return {n:i+1, s:s, ref:I.id+':'+s.key, em:pool[i%pool.length], rc:PAL_CELLS[i], R:{name:I.title}}; });
 }
 function pst(ref){ S.palace=S.palace||{}; return S.palace[ref]||{st:0, last:0}; }
 function firstLetters(fr){ return wparts(fr).map(function(p){ return p.w ? p.t.charAt(0)+(/['’]$/.test(p.t)?'\'':'') : p.t.replace(/\s+/g,' '); }).join('').replace(/\s+/g,' '); }
-var pBubble=null;   /* 這一幀畫出來的泡泡：{sign, x, y, w, h}（CSS px），點擊判定用 */
-function palaceNear(){
-  var best=null, bd=1.7; palaceSigns().forEach(function(g){ var d=Math.hypot(g.x+.5-hero.x, g.y+.5-hero.y); if(d<bd){ bd=d; best=g; } }); return best;
+function palaceHall(){
+  var L=isles(); if(!L.length) return;
+  var h='<h3>🏛 記憶宮殿 <small>一座島一個房間</small></h3><div class="muted">每一句放在房間裡一件不一樣的東西上，位置永遠不變。點東西就走過去看。<br>白框＝認識　藍框＝只給首字母　金框＝只剩位置</div><div class="islemap">'+
+    L.map(function(I){ var g=palRoom(I), started=g.some(function(x){ return pst(x.ref).last; });
+      return '<button class="isle" data-room="'+I.id+'"><b>'+esc(I.title)+'</b><span>'+g.map(function(x){ var st=pst(x.ref); return st.last?['○','◐','●'][st.st]:'·'; }).join('')+'</span>'+(started?'':'<span class="muted" style="font-size:.8em">還沒進去過</span>')+'</button>'; }).join('')+
+    '</div><div class="row2"><span></span><button class="btn main" id="phx">出去</button></div>';
+  openSheet(h, true);
+  sheet.querySelectorAll('[data-room]').forEach(function(b){ b.onclick=function(){ var I=L.filter(function(x){ return x.id===b.dataset.room; })[0]; S.palaceRoom=I.id; save(); palaceRoom(I); }; });
+  document.getElementById('phx').onclick=closeSheet;
 }
-/* 10-25 Owen：「一格一格的超醜，還有點擋路，會遮到很多東西」
-   → 告示牌改成地上的小圓石（畫在地面層、不跟房子搶前後），⛔ 不畫號碼框；只畫角色附近 4 格內的；
-     路名只在靠近第 1 站時出現。泡泡只在「停下來」時才跳（走路經過不會一直被蓋住） */
-function drawPalace(list,ox,oy,ts){
-  palaceSigns().forEach(function(g){ if(Math.abs(g.x+.5-hero.x)>4 || Math.abs(g.y+.5-hero.y)>4) return;
-    list.push({y:-999, f:function(){
-    var px=ox+(g.x+.5)*ts, py=oy+(g.y+.62)*ts, st=pst(g.ref).st, col=['rgba(232,225,207,.75)','rgba(143,195,255,.8)','rgba(240,201,90,.85)'][st];
-    cx.fillStyle='rgba(0,0,0,.25)'; cx.beginPath(); cx.ellipse(px, py+ts*.04, ts*.13, ts*.07, 0, 0, 7); cx.fill();
-    cx.fillStyle=col; cx.beginPath(); cx.ellipse(px, py, ts*.11, ts*.065, 0, 0, 7); cx.fill();
-    if(g.n===1 && Math.hypot(g.x+.5-hero.x, g.y+.5-hero.y)<2.5){ cx.font=Math.round(ts*.2)+'px Cubic11, system-ui'; cx.textAlign='center'; var lab='🏛 '+g.R.name, tw=cx.measureText(lab).width+ts*.2;
-      cx.fillStyle='rgba(0,0,0,.5)'; cx.fillRect(px-tw/2, py+ts*.12, tw, ts*.28); cx.fillStyle='#f0e0b0'; cx.fillText(lab, px, py+ts*.33); }
-  }}); });
+function palaceRoom(I, at){
+  var g=palRoom(I), cell=Math.floor(Math.min(window.innerWidth-56, 380)/6), used={};
+  g.forEach(function(x){ used[x.rc[0]+','+x.rc[1]]=x; });
+  var grid='';
+  for(var r=0;r<6;r++) for(var c=0;c<6;c++){ var x=used[r+','+c];
+    if(!x){ grid+='<div class="pcell empty"></div>'; continue; }
+    var st=pst(x.ref), col=['#e8e1cf','#8fc3ff','#f0c95a'][st.st];
+    grid+='<button class="pcell" data-pn="'+x.n+'" style="border-color:'+(st.last?col:'rgba(255,255,255,.18)')+'">'+pix(x.em, Math.round(cell*.55))+'<small>'+x.n+'</small></button>'; }
+  var me=g[(at||1)-1]||g[0];
+  openSheet('<h3>🏛 '+esc(I.title)+' <small>的房間</small></h3><div class="proom" style="--pc:'+cell+'px">'+grid+
+    '<div class="pme" id="pme" style="left:'+(me.rc[1]*cell)+'px;top:'+(me.rc[0]*cell)+'px">🧍</div></div>'+
+    '<div class="muted" style="margin-top:6px">順序：從左上角的門口沿著牆走一圈，再走內圈。</div>'+
+    '<div class="row2"><button class="btn ghost" id="pback">← 其他房間</button><button class="btn main" id="ptour">▶ 照順序走一圈</button></div>', true);
+  function walkTo(x, then){ var m=document.getElementById('pme'); if(m){ m.style.left=(x.rc[1]*cell)+'px'; m.style.top=(x.rc[0]*cell)+'px'; } setTimeout(then, 380); }
+  sheet.querySelectorAll('[data-pn]').forEach(function(b){ b.onclick=function(){ var x=g[+b.dataset.pn-1]; walkTo(x, function(){ palaceOpen(x, function(){ palaceRoom(I, x.n); }); }); }; });
+  document.getElementById('pback').onclick=palaceHall;
+  document.getElementById('ptour').onclick=function(){ var i=0;
+    (function step(){ if(i>=g.length){ palaceRoom(I, g.length); toast('🏛 走完一圈了'); return; } var x=g[i++];
+      palaceRoom(I, i>1?g[i-2].n:1); walkTo(x, function(){ palaceOpen(x, step, function(){ palaceRoom(I, x.n); }); }); })(); };
 }
-var palaceStill=0;
-function wrapLines(text, maxW){ var words=String(text).split(/\s+/), lines=[], cur=''; words.forEach(function(w){ var t=cur?cur+' '+w:w; if(cx.measureText(t).width>maxW && cur){ lines.push(cur); cur=w; } else cur=t; }); if(cur) lines.push(cur); return lines; }
-function drawPalaceBubble(ox,oy,ts,w){
-  pBubble=null; if(busy) return; if(hero.moving>.15){ palaceStill=0; return; } palaceStill+=1; if(palaceStill<20) return; var g=palaceNear(); if(!g) return;
-  var st=pst(g.ref).st, fsz=Math.round(15*DPR), small=Math.round(12*DPR), maxW=Math.min(w*.86, 340*DPR);
-  cx.font=fsz+'px Cubic11, system-ui';
-  var main = st===0 ? g.s.fr : st===1 ? firstLetters(g.s.fr) : '📍 第 '+g.n+' 站　這裡是哪一句？';
-  var lines=wrapLines(main, maxW-20*DPR), sub = st===0||st===1 ? g.s.zh : '（點我翻開）';
-  cx.font=small+'px Cubic11, system-ui'; var sl=wrapLines(sub, maxW-20*DPR).slice(0,2);
-  var bw=maxW, bh=(lines.length*fsz*1.35)+(sl.length*small*1.35)+18*DPR+(g.s.ctx&&st===0?small*1.4:0);
-  var bx=Math.round(Math.max(8*DPR, Math.min(w-bw-8*DPR, ox+(g.x+.5)*ts-bw/2))), by=Math.round(oy+g.y*ts-bh-10*DPR);
-  cx.fillStyle='rgba(18,26,20,.92)'; cx.fillRect(bx,by,bw,bh); cx.strokeStyle=['#e8e1cf','#8fc3ff','#f0c95a'][st]; cx.lineWidth=2*DPR; cx.strokeRect(bx,by,bw,bh);
-  var yy=by+10*DPR+fsz; cx.textAlign='left';
-  cx.font=small+'px Cubic11, system-ui'; cx.fillStyle='#9db1a2'; cx.fillText('🏛 '+g.R.name+'・'+g.n, bx+10*DPR, by+small+4*DPR);
-  yy+=small*.6;
-  if(g.s.ctx && st===0){ cx.fillStyle='#7f9585'; cx.fillText('⋯ '+g.s.ctx.slice(-40), bx+10*DPR, yy); yy+=small*1.4; }
-  cx.font=fsz+'px Cubic11, system-ui'; cx.fillStyle='#fff3c0'; lines.forEach(function(L){ cx.fillText(L, bx+10*DPR, yy); yy+=fsz*1.35; });
-  cx.font=small+'px Cubic11, system-ui'; cx.fillStyle='#b9c7bc'; sl.forEach(function(L){ cx.fillText(L, bx+10*DPR, yy); yy+=small*1.35; });
-  pBubble={g:g, x:bx/DPR, y:by/DPR, w:bw/DPR, h:bh/DPR};
-}
-function palaceTap(e){
-  if(!pBubble || busy) return false; var b=pBubble;
-  if(e.clientX<b.x || e.clientX>b.x+b.w || e.clientY<b.y || e.clientY>b.y+b.h) return false;
-  palaceOpen(b.g); return true;
-}
-function palaceOpen(g){
-  var P=pst(g.ref), st=P.st, s=g.s, head='<h3>🏛 '+esc(g.R.name)+' <small>第 '+g.n+' 站・'+['認識','提示','只剩位置'][st]+'</small></h3>';
+/* g：{n, s, ref, em, R}；done：看完／答完之後；stop：中途離開（巡一圈時用） */
+function palaceOpen(g, done, stop){
+  done=done||closeSheet; stop=stop||done;
+  var P=pst(g.ref), st=P.st, s=g.s, head='<h3>🏛 '+esc(g.R.name)+' <small>'+pix(g.em,20)+' 第 '+g.n+' 件・'+['認識','提示','只剩位置'][st]+'</small></h3>';
   var setSt=function(n){ S.palace=S.palace||{}; S.palace[g.ref]={st:Math.max(0,Math.min(2,n)), last:Date.now()}; save(); };
   var full='<div class="clue fr">'+(s.ctx?'<span class="muted">⋯ '+esc(s.ctx)+'</span><br>':'')+esc(s.fr)+' '+spk(s.fr)+'</div><div class="muted">'+esc(s.zh)+'</div>';
   if(st===0){
     var chunks=wparts(s.fr).filter(function(p){ return p.w; }).length>8 ? '<div class="muted" style="margin-top:4px">語塊：'+esc(s.fr).replace(/([,:;—])\s*/g,'$1 ║ ')+'</div>' : '';
-    openSheet(head+full+chunks+'<div class="muted" style="margin-top:6px">出聲唸一遍。記得了，下次這塊牌子就只給中文和首字母。</div>'+mineBox(g.ref, s.fr)+
-      '<div class="row2"><button class="btn ghost" id="pclose">再看看</button><button class="btn main" id="pok">我記得了 →</button></div>', true);
+    openSheet(head+'<div style="text-align:center;margin:4px 0">'+pix(g.em,56)+'</div>'+full+chunks+'<div class="muted" style="margin-top:6px">看著這件東西出聲唸一遍。記得了，下次它就只給中文和首字母。</div>'+mineBox(g.ref, s.fr)+
+      '<div class="row2"><button class="btn ghost" id="pclose">'+(stop!==done?'先到這':'再看看')+'</button><button class="btn main" id="pok">我記得了 →</button></div>', true);
     speak(s.fr);
-    document.getElementById('pok').onclick=function(){ setSt(1); if(window.GameLog) GameLog.event('palace_up'); closeSheet(); toast('🏛 第 '+g.n+' 站：下次換成提示'); };
-    document.getElementById('pclose').onclick=closeSheet; return;
+    document.getElementById('pok').onclick=function(){ setSt(1); if(window.GameLog) GameLog.event('palace_up'); done(); };
+    document.getElementById('pclose').onclick=stop; return;
   }
-  var cue = st===1 ? '<div class="qtext">'+esc(s.zh)+'</div><div class="clue fr">'+esc(firstLetters(s.fr))+'</div>' : '<div class="qtext">📍 第 '+g.n+' 站——這裡是哪一句？</div><details><summary class="muted">給我中文</summary><div class="muted">'+esc(s.zh)+'</div></details>';
-  openSheet(head+cue+'<div class="muted">先在心裡或出聲講一遍，再翻開。</div><div id="prev"></div>'+
-    '<div class="row2" id="prow"><button class="btn ghost" id="pclose">晚點</button><button class="btn main" id="pflip">翻開</button></div>', true);
-  document.getElementById('pclose').onclick=closeSheet;
+  var cue = st===1 ? '<div class="qtext">'+esc(s.zh)+'</div><div class="clue fr">'+esc(firstLetters(s.fr))+'</div>' : '<div class="qtext">'+pix(g.em,28)+' 這件東西上放的是哪一句？</div><details><summary class="muted">給我中文</summary><div class="muted">'+esc(s.zh)+'</div></details>';
+  openSheet(head+'<div style="text-align:center;margin:4px 0">'+pix(g.em,56)+'</div>'+cue+'<div class="muted">先在心裡或出聲講一遍，再翻開。</div><div id="prev"></div>'+
+    '<div class="row2" id="prow"><button class="btn ghost" id="pclose">'+(stop!==done?'先到這':'晚點')+'</button><button class="btn main" id="pflip">翻開</button></div>', true);
+  document.getElementById('pclose').onclick=stop;
   document.getElementById('pflip').onclick=function(){ speak(s.fr);
     document.getElementById('prev').innerHTML=full+mineBox(g.ref, s.fr);
     document.getElementById('prow').innerHTML='<button class="btn" id="pno">沒對上</button><button class="btn main" id="pyes">對上了 ✓</button>';
-    document.getElementById('pyes').onclick=function(){ if(window.GameLog) GameLog.answer(true,{kind:'🏛 宮殿', topic:'palace', ref:'pal:'+g.ref, q:s.zh, a:s.fr}); setSt(st===1?2:2); closeSheet(); toast(st===1?'🏛 第 '+g.n+' 站：下次只剩位置':'🏛 第 '+g.n+' 站：記得 ✓'); };
-    document.getElementById('pno').onclick=function(){ if(window.GameLog) GameLog.answer(false,{kind:'🏛 宮殿', topic:'palace', ref:'pal:'+g.ref, q:s.zh, a:s.fr}); setSt(st-1); closeSheet(); toast('🏛 第 '+g.n+' 站：退回上一階，多看幾次'); };
+    document.getElementById('pyes').onclick=function(){ if(window.GameLog) GameLog.answer(true,{kind:'🏛 宮殿', topic:'palace', ref:'pal:'+g.ref, q:s.zh, a:s.fr}); setSt(2); toast(st===1?'下次只剩位置':'記得 ✓'); done(); };
+    document.getElementById('pno').onclick=function(){ if(window.GameLog) GameLog.answer(false,{kind:'🏛 宮殿', topic:'palace', ref:'pal:'+g.ref, q:s.zh, a:s.fr}); setSt(st-1); toast('退回上一階，多看幾次'); done(); };
   };
 }
 function cafePanel(ch){
@@ -2683,7 +2678,7 @@ function cafePanel(ch){
   openSheet('<h3>☕ 咖啡館 <small>口說島</small></h3><div class="story">老闆一邊擦杯子一邊問你：</div>'+
     '<div class="clue fr">'+esc(cur.q_fr)+' '+spk(cur.q_fr)+'</div><details><summary class="muted">中文</summary><div class="muted">'+esc(cur.q_zh)+'</div></details>'+
     '<div class="muted" style="margin-top:6px">一次練 3 句。○ 還沒開始　🌱 剛起步　🌿 快會了　🌳 站穩</div>'+
-    (function(){ var R=PALACE.filter(function(x){ return x.id===cur.id; })[0]; return R?'<div class="muted">🏛 這座島的記憶宮殿：<b>'+esc(R.name)+'</b>（'+esc(R.where)+'）——走過告示牌就會看到句子</div>':''; })()+
+    '<div class="muted">🏛 要背熟：鎮上的 <b>記憶宮殿</b> 有這座島的房間</div>'+
     '<details><summary class="muted">🗺️ 島嶼地圖（換一座島）</summary><div class="islemap">'+map+'</div></details>'+
     '<div class="row2"><button class="btn ghost" id="mcard">📘 招式卡</button><button class="btn ghost" id="off">今天不練</button><button class="btn ghost" id="later">晚點再來</button><button class="btn main" id="go">☕ 開始</button></div>', true);
   document.getElementById('mcard').onclick=function(){ movesCard(function(){ cafePanel(ch); }); };
@@ -3000,7 +2995,7 @@ function drawChallenges(list,ox,oy,ts){
     var px=ox+ch.x*ts, py=oy+ch.y*ts, im=pixImg(ch.em);
     cx.fillStyle='#7a5a32'; cx.fillRect(px+ts*.05, py+ts*.55, ts*.9, ts*.38);
     if(im.complete){ cx.drawImage(im, px+ts*.05, py+ts*.05, ts*.9, ts*.9); }
-    var b=Math.sin(clock*4)*ts*.06; cx.font=Math.round(ts*.38)+'px system-ui'; cx.textAlign='center'; cx.fillText({tiles:'🧩', isle:'💬', spot:'🔍', embed:'⭐'}[ch.kind]||'⚔️', px+ts*.5, py-ts*.05+b);
+    var b=Math.sin(clock*4)*ts*.06; cx.font=Math.round(ts*.38)+'px system-ui'; cx.textAlign='center'; cx.fillText({tiles:'🧩', isle:'💬', spot:'🔍', embed:'⭐', palace:'🏛'}[ch.kind]||'⚔️', px+ts*.5, py-ts*.05+b);
     cx.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; var lab=ch.name; var tw=cx.measureText(lab).width+ts*.2;
     cx.fillStyle='rgba(0,0,0,.55)'; cx.fillRect(px+ts*.5-tw/2, py+ts*1.02, tw, ts*.34); cx.fillStyle='#fff'; cx.fillText(lab, px+ts*.5, py+ts*1.27);
   }}); });
@@ -3052,7 +3047,7 @@ function update(dt){
   if(!it) wasInTown=false;
   if(updateWild(dt)) return;
   for(var ci=0;ci<CHALLENGES.length && !wild;ci++){ var CH=CHALLENGES[ci]; if(CH.cool>0){ CH.cool-=dt; continue; }
-    if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ if(CH.kind==='tiles') tilesPanel(CH); else if(CH.kind==='isle') cafePanel(CH); else if(CH.kind==='spot') spotPanel(CH); else if(CH.kind==='embed') embedPanel(CH); else challengePanel(CH); }; })(CH)}; break; } }
+    if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ if(CH.kind==='tiles') tilesPanel(CH); else if(CH.kind==='isle') cafePanel(CH); else if(CH.kind==='spot') spotPanel(CH); else if(CH.kind==='embed') embedPanel(CH); else if(CH.kind==='palace') palaceHall(); else challengePanel(CH); }; })(CH)}; break; } }
   /* 碰到節點 */
   for(var i=0;i<nodes.length && !wild;i++){ var n=nodes[i]; if(n.done) continue;
     var R=n.k==='fish'?1.15:.85;
@@ -3130,7 +3125,6 @@ function draw(dt){
   rats.forEach(function(r){ list.push({y:r.y, f:drawSprite(SPR.rat,r.x,r.y,ox,oy,ts,r.face,Math.abs(Math.sin(clock*14))*.06)}); });
   drawWild(list,ox,oy,ts);
   drawChallenges(list,ox,oy,ts);
-  drawPalace(list,ox,oy,ts);
   list.push({y:hero.y, f:function(){
     var b=hero.moving>.05?Math.abs(Math.sin(hero.bob))*.12:Math.sin(clock*2)*.02;
     cx.fillStyle='rgba(0,0,0,.25)'; cx.beginPath(); cx.ellipse(ox+hero.x*ts, oy+hero.y*ts+ts*.38, ts*.28, ts*.1, 0, 0, 7); cx.fill();
@@ -3153,7 +3147,6 @@ function draw(dt){
   CHALLENGES.forEach(function(ch){ if(seen[ch.y*W+ch.x]==='1') return; var px=ox+(ch.x+.5)*ts, py=oy+ch.y*ts, b=Math.sin(clock*3)*ts*.05;
     cx.font=Math.round(ts*.5)+'px system-ui'; cx.textAlign='center'; cx.globalAlpha=.9; cx.fillText(ch.em, px, py+ts*.4+b);
     cx.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; var tw=cx.measureText(ch.name).width+ts*.2; cx.fillStyle='rgba(0,0,0,.6)'; cx.fillRect(px-tw/2, py+ts*.6, tw, ts*.34); cx.fillStyle='#f0e0b0'; cx.fillText(ch.name, px, py+ts*.85); cx.globalAlpha=1; });
-  drawPalaceBubble(ox,oy,ts,w);
   /* 金色箭頭 */
   var qi=questInfo(); if(qi.to && !busy) drawArrow(qi.to,ox,oy,ts,w,h);
   /* 搖桿 */
