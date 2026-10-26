@@ -1192,10 +1192,10 @@ function pickListen(){
   shuffle(LISTEN).slice(0,50).forEach(function(c){ var r=S.gword['c:'+c.id]||{r:0,w:0}, w=(r.w>r.r?3:1)*(Math.random()+.3); if(S.qlast['c:'+c.id]&&Date.now()-S.qlast['c:'+c.id]<6*3600000) w*=.05; if(w>bw){ bw=w; best=c; } });
   return best;
 }
-function askListen(head, c, cb){
+function askListen(head, c, cb, extra){
   var t0=Date.now(), others=shuffle(LISTEN.filter(function(x){ return x.zh!==c.zh && normAns(x.fr)!==normAns(c.fr) && Math.abs((x.lesson||0)-(c.lesson||0))<=6; })).slice(0,2);
   var opts=shuffle([c].concat(others)), rc={kind:'聽力', ref:'c:'+c.id, q:c.fr, a:c.zh};
-  openSheet('<h3>'+head+'</h3><div class="qtext" style="text-align:center"><button class="btn main" id="play" style="font-size:1.1em">🔊 再聽一次</button><div class="hint" style="margin-top:6px">浮標動了——聽到的是什麼意思？</div></div>'+
+  openSheet('<h3>'+head+'</h3>'+(extra||'')+'<div class="qtext" style="text-align:center"><button class="btn main" id="play" style="font-size:1.1em">🔊 再聽一次</button><div class="hint" style="margin-top:6px">浮標動了——聽到的是什麼意思？</div></div>'+
     '<div class="opts">'+opts.map(function(o,i){ return '<button data-i="'+i+'" style="font-family:inherit">'+esc(o.zh)+'</button>'; }).join('')+'</div>'+
     '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><span id="slot"></span></div>'+repSlot(rc));
   speak(c.fr); document.getElementById('play').onclick=function(){ speak(c.fr); };
@@ -1328,6 +1328,8 @@ function askClip(head, c, cb){
   document.getElementById('skip').onclick=function(){ if(done) return; done=true; clipStop(); cb(null); };
 }
 clipsLoad();
+/* 從聽力解碼頁登入完切回來 → 馬上重試載入課本錄音 */
+document.addEventListener('visibilitychange', function(){ if(!document.hidden && !CLIPS){ CLIPS_TRY=0; clipsLoad(); } });
 function fishSpot(n){
   if(!(n._pal && Date.now()-n._pal<60000) && palaceServe(function(){ n._pal=Date.now(); fishSpot(n); })) return;
   var i=0; clipsLoad();
@@ -1342,11 +1344,13 @@ function fishSpot(n){
       }); return;
     }
     var c=pickListen();
+    /* 10-26 Owen：「聽力怎麼會是機器音的？」→ 課本錄音沒載到（這台裝置沒在聽力解碼頁登入過）才會退回電腦語音；講清楚怎麼換成真人 */
+    var why=CLIPS ? '' : '<div class="muted" style="font-size:.85em">🤖 這題是電腦語音。想換成課本真人錄音：先到 <a href="listen_decode.html" target="_blank" rel="noopener">聽力解碼頁</a> 登入一次（同一台裝置），回來再釣就會換。</div>';
     askListen('🎣 河邊 ★ <small>第 '+(i+1)+' 竿・聽力</small>', c, function(ok,ms,o){
       rec('c', c, ok, ms, {chosen:o&&o.zh, right:c.zh, where:'🎣 河邊'});
       if(ok!==null){ addBag({k:'fish', name:'魚', em:'🐟', good:ok}); floatTxt(n.x+.5,n.y,'🐟'+(ok?'':' 瑕'), ok?'#fff':'#bbb'); }
       i++; next();
-    });
+    }, why);
   }
   next();
 }
@@ -2621,7 +2625,7 @@ var PAL_GAP=[1,3,7,21], PAL_DAY_CAP=4;
 /* 到期的句子：路上的遭遇開頭有一半機率先被宮殿叫住（⭐ Owen：一直走一直有題；⛔ 一天最多 4 件，複習太多他會跳過） */
 function palaceDue(){
   var now=Date.now(), out=[]; S.palace=S.palace||{};
-  isles().forEach(function(I){ palRoom(I).forEach(function(g){ var p=S.palace[g.ref]; if(p && p.st>=1 && (p.due ? p.due<=now : p.last<sod(now))) out.push(g);   /* 舊進度沒有 due：隔天起算到期 */ }); });
+  isles().forEach(function(I){ palRoom(I).forEach(function(g){ var p=S.palace[g.ref]; if(p && p.seen && p.st>=1 && p.due && p.due<=now) out.push(g);   /* 10-26：只出房間裡學過、當場回想成功過的（舊版路線誤點的沒有 seen，⛔ 不出） */ }); });
   return out;
 }
 function palaceServe(cont){
@@ -2663,32 +2667,44 @@ function palaceRoom(I, at){
     (function step(){ if(i>=g.length){ palaceRoom(I, g.length); toast('🏛 走完一圈了'); return; } var x=g[i++];
       palaceRoom(I, i>1?g[i-2].n:1); walkTo(x, function(){ palaceOpen(x, step, function(){ palaceRoom(I, x.n); }); }); })(); };
 }
-/* g：{n, s, ref, em, R}；done：看完／答完之後；stop：中途離開（巡一圈時用） */
+/* g：{n, s, ref, em, R, review?}；done：看完／答完之後；stop：中途離開（巡一圈時用）
+   ⚠️ 10-26 Owen：「我根本還沒讀到這個文字，跳出來我不可能背得出來」「一次就要我記得很熟，也太不符合人的記憶力慣性了」
+   → ①「我記得了」之後 ⭐ 當場馬上用首字母試一次（第一次回想要在幾分鐘內，不是隔天），對上了才排到期日
+     ② 只有在房間裡真的學過（seen）、而且當場回想成功過的句子，才會在路上被叫住（舊版路線時誤點的、從沒進房間看過的 ⛔ 不出）
+     ③ 路上叫住時中文直接給、首字母再按一下；想不起來可以按「再學一次」看整句——不算錯，回到認識階段 */
 function palaceOpen(g, done, stop){
   done=done||closeSheet; stop=stop||done;
-  var P=pst(g.ref), st=P.st, s=g.s, head='<h3>🏛 '+esc(g.R.name)+' <small>'+pix(g.em,20)+' 第 '+g.n+' 件・'+['認識','提示','只剩位置'][st]+'</small></h3>';
-  /* ⏰ 10-25 到期日：記得了／對上了 → 隔天再來；只剩位置又對上 → 3 天、7 天、21 天；沒對上 → 退一階、隔天再來 */
-  var setSt=function(n, res){ S.palace=S.palace||{}; var o=S.palace[g.ref]||{st:0,k:0}, now=Date.now(), k=0;
-    if(res==='ok' && o.st>=2) k=Math.min((o.k||0)+1, PAL_GAP.length-1);
-    S.palace[g.ref]={st:Math.max(0,Math.min(2,n)), last:now, k:k, due:sod(now)+PAL_GAP[k]*86400000}; save(); };
+  var P=pst(g.ref), st=P.st, s=g.s, head='<h3>🏛 '+esc(g.R.name)+' <small>'+pix(g.em,20)+' 第 '+g.n+' 件・'+(g.review?'回來看看':['認識','提示','只剩位置'][st])+'</small></h3>';
+  /* ⏰ 對上了 → 隔天；只剩位置又對上 → 3、7、21 天；沒對上 → 退一階（退到認識就要回房間再學） */
+  var setSt=function(n, res){ S.palace=S.palace||{}; var o=S.palace[g.ref]||{st:0,k:0}, now=Date.now(), k=0, due=0;
+    if(res==='ok'){ if(o.st>=2) k=Math.min((o.k||0)+1, PAL_GAP.length-1); due=sod(now)+PAL_GAP[k]*86400000; }
+    else if(res==='no' && n>=1) due=sod(now)+86400000;
+    S.palace[g.ref]={st:Math.max(0,Math.min(2,n)), last:now, k:k, due:due, seen:1}; save(); };
   var full='<div class="clue fr">'+(s.ctx?'<span class="muted">⋯ '+esc(s.ctx)+'</span><br>':'')+esc(s.fr)+' '+spk(s.fr)+'</div><div class="muted">'+esc(s.zh)+'</div>';
-  if(st===0){
+  if(st===0 && !g.review){
     var chunks=wparts(s.fr).filter(function(p){ return p.w; }).length>8 ? '<div class="muted" style="margin-top:4px">語塊：'+esc(s.fr).replace(/([,:;—])\s*/g,'$1 ║ ')+'</div>' : '';
-    openSheet(head+'<div style="text-align:center;margin:4px 0">'+pix(g.em,56)+'</div>'+full+chunks+'<div class="muted" style="margin-top:6px">看著這件東西出聲唸一遍。記得了，下次它就只給中文和首字母。</div>'+mineBox(g.ref, s.fr)+
-      '<div class="row2"><button class="btn ghost" id="pclose">'+(stop!==done?'先到這':'再看看')+'</button><button class="btn main" id="pok">我記得了 →</button></div>', true);
+    openSheet(head+'<div style="text-align:center;margin:4px 0">'+pix(g.em,56)+'</div>'+full+chunks+'<div class="muted" style="margin-top:6px">看著這件東西出聲唸一遍。記住了就按右邊——馬上只用首字母試一次。</div>'+mineBox(g.ref, s.fr)+
+      '<div class="row2"><button class="btn ghost" id="pclose">'+(stop!==done?'先到這':'再看看')+'</button><button class="btn main" id="pok">記住了，試試看 →</button></div>', true);
     speak(s.fr);
-    document.getElementById('pok').onclick=function(){ setSt(1,'learn'); if(window.GameLog) GameLog.event('palace_up'); done(); };
+    document.getElementById('pok').onclick=function(){ setSt(1,'learn'); if(window.GameLog) GameLog.event('palace_up'); palaceOpen(g, done, stop); };
     document.getElementById('pclose').onclick=stop; return;
   }
-  var cue = st===1 ? '<div class="qtext">'+esc(s.zh)+'</div><div class="clue fr">'+esc(firstLetters(s.fr))+'</div>' : '<div class="qtext">'+pix(g.em,28)+' 這件東西上放的是哪一句？</div><details><summary class="muted">給我中文</summary><div class="muted">'+esc(s.zh)+'</div></details>';
+  var lead=pix(g.em,28)+' '+esc(g.R.name)+'房的這件東西上放的是哪一句？';
+  var cue = g.review ? '<div class="qtext">'+lead+'</div><div class="muted">'+esc(s.zh)+'</div><div id="pfl"><button class="btn ghost" id="pfirst" style="padding:3px 10px;font-size:.85em">給我首字母</button></div>'
+          : st===1 ? '<div class="qtext">'+esc(s.zh)+'</div><div class="clue fr">'+esc(firstLetters(s.fr))+'</div>'
+          : '<div class="qtext">'+pix(g.em,28)+' 這件東西上放的是哪一句？</div><details><summary class="muted">給我中文</summary><div class="muted">'+esc(s.zh)+'</div></details>';
   openSheet(head+'<div style="text-align:center;margin:4px 0">'+pix(g.em,56)+'</div>'+cue+'<div class="muted">先在心裡或出聲講一遍，再翻開。</div><div id="prev"></div>'+
-    '<div class="row2" id="prow"><button class="btn ghost" id="pclose">'+(stop!==done?'先到這':'晚點')+'</button><button class="btn main" id="pflip">翻開</button></div>', true);
+    '<div class="row2" id="prow"><button class="btn ghost" id="pclose">'+(stop!==done?'先到這':'晚點')+'</button>'+(g.review?'<button class="btn ghost" id="prelearn">再學一次</button>':'')+'<button class="btn main" id="pflip">翻開</button></div>', true);
   document.getElementById('pclose').onclick=stop;
+  var pf=document.getElementById('pfirst'); if(pf) pf.onclick=function(){ document.getElementById('pfl').innerHTML='<div class="clue fr">'+esc(firstLetters(s.fr))+'</div>'; };
+  var rl=document.getElementById('prelearn'); if(rl) rl.onclick=function(){ setSt(0,'relearn'); speak(s.fr);
+    document.getElementById('prev').innerHTML=full+'<div class="muted">沒關係，多看幾次。下次進 '+esc(g.R.name)+' 房再練它。</div>';
+    document.getElementById('prow').innerHTML='<span></span><button class="btn main" id="pgo">好</button>'; document.getElementById('pgo').onclick=done; };
   document.getElementById('pflip').onclick=function(){ speak(s.fr);
     document.getElementById('prev').innerHTML=full+mineBox(g.ref, s.fr);
     document.getElementById('prow').innerHTML='<button class="btn" id="pno">沒對上</button><button class="btn main" id="pyes">對上了 ✓</button>';
-    document.getElementById('pyes').onclick=function(){ if(window.GameLog) GameLog.answer(true,{kind:'🏛 宮殿', topic:'palace', ref:'pal:'+g.ref, q:s.zh, a:s.fr}); setSt(2,'ok'); if(g.review) masteryBonus(2,'🏛 宮殿'); toast(st===1?'下次只剩位置':'記得 ✓'); done(); };
-    document.getElementById('pno').onclick=function(){ if(window.GameLog) GameLog.answer(false,{kind:'🏛 宮殿', topic:'palace', ref:'pal:'+g.ref, q:s.zh, a:s.fr}); setSt(st-1,'no'); toast('退回上一階，明天再來'); done(); };
+    document.getElementById('pyes').onclick=function(){ if(window.GameLog) GameLog.answer(true,{kind:'🏛 宮殿', topic:'palace', ref:'pal:'+g.ref, q:s.zh, a:s.fr}); setSt(2,'ok'); if(g.review) masteryBonus(2,'🏛 宮殿'); toast(st===1?'明天回來再看一次':'記得 ✓'); done(); };
+    document.getElementById('pno').onclick=function(){ if(window.GameLog) GameLog.answer(false,{kind:'🏛 宮殿', topic:'palace', ref:'pal:'+g.ref, q:s.zh, a:s.fr}); setSt(st-1,'no'); toast(st-1>=1?'退回首字母，明天再來':'回到認識，再看幾次'); done(); };
   };
 }
 function cafePanel(ch){
