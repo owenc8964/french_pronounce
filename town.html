@@ -1224,23 +1224,43 @@ function askListen(head, c, cb, extra){
 var VAULT={ url:'https://hgkqyrglftljxaieberm.supabase.co', key:'sb_publishable_lPnh46F2Z2wj6qVs5nn56g_RwRpUO8_', bucket:'TCF', ls:'tcfvault_session' };
 function vaultGet(path, asBlob){
   var s=null; try{ s=JSON.parse(localStorage.getItem(VAULT.ls)); }catch(e){}
-  if(!s) return Promise.reject(new Error('尚未登入'));
+  if(!s){ var e0=new Error('尚未登入'); e0.code='nologin'; return Promise.reject(e0); }
   var tokP = Date.now()<(s.expires_at||0)-60000 ? Promise.resolve(s.access_token) :
     fetch(VAULT.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:VAULT.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:s.refresh_token})})
-      .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error('登入過期');
+      .then(function(r){ return r.json().then(function(j){ if(!r.ok){ try{ localStorage.removeItem(VAULT.ls); }catch(e){} var er=new Error('登入過期'); er.code='expired'; throw er; }
         var n={access_token:j.access_token, refresh_token:j.refresh_token, expires_at:Date.now()+(j.expires_in||3600)*1000, email:(j.user&&j.user.email)||s.email};
         try{ localStorage.setItem(VAULT.ls, JSON.stringify(n)); }catch(e){} return n.access_token; }); });
   return tokP.then(function(tok){ return fetch(VAULT.url+'/storage/v1/object/authenticated/'+VAULT.bucket+'/'+path,{headers:{apikey:VAULT.key, Authorization:'Bearer '+tok}}); })
     .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return asBlob?r.blob():r.json(); });
 }
-var CLIPS=null, CLIPS_TRY=0, CLIP_URL={}, CLIP_AUDIO=null, B1_UNITS_DONE=1;
+/* 10-26 Owen：「我不是已經在遊戲中登入過了嗎？還需要再登入嗎」
+   → 同一個網站的頁面共用登入；但手機「加到主畫面」的遊戲和瀏覽器分頁是兩個分開的儲存空間，另一邊登入過這邊不知道。
+     所以小鎮自己也能登入（帳號跟聽力解碼頁、考試之塔同一組），登入一次這個畫面就會記住 */
+function vaultLogin(email, pw){
+  return fetch(VAULT.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:VAULT.key,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:pw})})
+    .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if(!r.ok) throw new Error(j.error_description||j.msg||'登入失敗');
+      try{ localStorage.setItem(VAULT.ls, JSON.stringify({access_token:j.access_token, refresh_token:j.refresh_token, expires_at:Date.now()+(j.expires_in||3600)*1000, email:(j.user&&j.user.email)||email})); }catch(e){} }); });
+}
+function clipLoginBox(){
+  var msg = CLIPS_ERR==='expired' ? '登入過期了' : CLIPS_ERR==='nologin' ? '這個畫面還沒登入（手機桌面上的遊戲和瀏覽器是分開記的）' : CLIPS_ERR ? '剛剛沒載到（網路？）' : '還在載入';
+  return '<div class="muted" style="font-size:.85em">🤖 這題是電腦語音——'+msg+'。登入一次就會換成課本真人錄音（帳號跟聽力解碼頁同一組）。'+
+    (CLIPS_ERR && CLIPS_ERR!=='net' ? '<details><summary>在這裡登入</summary><div style="display:grid;gap:6px;margin-top:6px"><input class="fill" id="vem" type="email" placeholder="Email" autocomplete="username"><input class="fill" id="vpw" type="password" placeholder="密碼" autocomplete="current-password"><button class="btn main" id="vgo" type="button">登入</button><span id="vmsg"></span></div></details>' : '')+'</div>';
+}
+function clipLoginWire(){
+  var b=document.getElementById('vgo'); if(!b) return;
+  ['vem','vpw'].forEach(function(id){ var el=document.getElementById(id); if(el) el.addEventListener('keydown', function(e){ e.stopPropagation(); }); });
+  b.onclick=function(){ var m=document.getElementById('vmsg'); m.textContent='登入中…';
+    vaultLogin(document.getElementById('vem').value.trim(), document.getElementById('vpw').value).then(function(){ m.textContent='✓ 登入了，下一竿開始是課本錄音'; CLIPS_TRY=0; clipsLoad(); })
+      .catch(function(e){ m.textContent='✗ '+e.message; }); };
+}
+var CLIPS_ERR='', CLIPS=null, CLIPS_TRY=0, CLIP_URL={}, CLIP_AUDIO=null, B1_UNITS_DONE=1;
 function clipsLoad(){
   if(CLIPS || Date.now()-CLIPS_TRY<60000) return; CLIPS_TRY=Date.now();
   Promise.all([vaultGet('didier/clips_a2.json'), vaultGet('didier/clips_b1.json')]).then(function(r){
     var all=r[0].concat(r[1]).filter(function(c){ return !(c.book==='b1' && (c.unit>B1_UNITS_DONE || c.page>=189)); });
     all.forEach(function(c){ c.text=String(c.text).replace(/[’‘]/g,"'"); c.blank=clipBlankAll(c.text); });
-    CLIPS=all.filter(function(c){ return c.blank.length; });
-  }).catch(function(){});
+    CLIPS=all.filter(function(c){ return c.blank.length; }); CLIPS_ERR='';
+  }).catch(function(e){ CLIPS_ERR=(e&&e.code)||'net'; });
 }
 /* 學過的字：複習卡＋常用句（跟聽力解碼頁同一個判準） */
 var CLIP_FUNC={}, CLIP_LEARN=null, CLIP_ZH={};
@@ -1345,12 +1365,12 @@ function fishSpot(n){
     }
     var c=pickListen();
     /* 10-26 Owen：「聽力怎麼會是機器音的？」→ 課本錄音沒載到（這台裝置沒在聽力解碼頁登入過）才會退回電腦語音；講清楚怎麼換成真人 */
-    var why=CLIPS ? '' : '<div class="muted" style="font-size:.85em">🤖 這題是電腦語音。想換成課本真人錄音：先到 <a href="listen_decode.html" target="_blank" rel="noopener">聽力解碼頁</a> 登入一次（同一台裝置），回來再釣就會換。</div>';
+    var why=CLIPS ? '' : clipLoginBox();
     askListen('🎣 河邊 ★ <small>第 '+(i+1)+' 竿・聽力</small>', c, function(ok,ms,o){
       rec('c', c, ok, ms, {chosen:o&&o.zh, right:c.zh, where:'🎣 河邊'});
       if(ok!==null){ addBag({k:'fish', name:'魚', em:'🐟', good:ok}); floatTxt(n.x+.5,n.y,'🐟'+(ok?'':' 瑕'), ok?'#fff':'#bbb'); }
       i++; next();
-    }, why);
+    }, why); clipLoginWire();
   }
   next();
 }
