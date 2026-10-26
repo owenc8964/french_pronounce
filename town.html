@@ -170,7 +170,7 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
     <span class="sp"></span>
     <button id="bFlag" aria-label="回報問題">🚩</button>
     <button id="bMute" aria-label="靜音">🔊</button>
-    <button id="bAcct" aria-label="課本錄音帳號">🎧</button>
+    <button id="bAcct" aria-label="收音機">📻</button>
     <button id="bDex">📖圖鑑</button>
     <button id="bHome">🏠回城</button>
     <button id="bRest">🌙收工</button>
@@ -1159,7 +1159,7 @@ function shakeBush(n){
       });
     } else if(!activeQuest('topic') && Math.random()<.3 && clipPick()){
       var cl=clipPick();
-      askClip('🌳 樹叢'+(star?' ★':'')+' <small>樹上有人在講話・課本錄音</small>', cl, function(ok,ms,v,right){
+      askClip('🌳 樹叢'+(star?' ★':'')+' <small>樹上有人在講話</small>', cl, function(ok,ms,v,right){
         rec('L', cl, ok, ms, {chosen:v, right:right, where:'🌳 樹叢'});
         if(ok){ var g=star?6:3; S.gold+=g; floatTxt(n.x+.5,n.y,'+'+g+'🪙','#ffd76a'); hud(); save(); }
         i++; next();
@@ -1243,25 +1243,25 @@ function vaultLogin(email, pw){
       try{ localStorage.setItem(VAULT.ls, JSON.stringify({access_token:j.access_token, refresh_token:j.refresh_token, expires_at:Date.now()+(j.expires_in||3600)*1000, email:(j.user&&j.user.email)||email})); }catch(e){} }); });
 }
 function clipLoginBox(){
-  var msg = CLIPS_ERR==='expired' ? '登入過期了' : CLIPS_ERR==='nologin' ? '這個畫面還沒登入（手機桌面上的遊戲和瀏覽器是分開記的）' : CLIPS_ERR ? '剛剛沒載到（網路？）' : '還在載入';
-  return '<div class="muted" style="font-size:.85em">🤖 這題是電腦語音——'+msg+'。登入一次就會換成課本真人錄音（帳號跟聽力解碼頁同一組）。'+
-    (CLIPS_ERR && CLIPS_ERR!=='net' ? '<details><summary>在這裡登入</summary><div style="display:grid;gap:6px;margin-top:6px"><input class="fill" id="vem" type="email" placeholder="Email" autocomplete="username"><input class="fill" id="vpw" type="password" placeholder="密碼" autocomplete="current-password"><button class="btn main" id="vgo" type="button">登入</button><span id="vmsg"></span></div></details>' : '')+'</div>';
+  var msg = CLIPS_ERR==='expired' ? '收音機斷線了' : CLIPS_ERR==='nologin' ? '收音機還沒接上' : CLIPS_ERR ? '收音機收訊不好（網路？）' : '收音機還在暖機';
+  return '<div class="muted" style="font-size:.85em">🤖 現在是機器人的聲音——'+msg+'。接上之後就聽得到真人說話（右上 📻）。'+
+    (CLIPS_ERR && CLIPS_ERR!=='net' ? '<details><summary>在這裡接上</summary><div style="display:grid;gap:6px;margin-top:6px"><input class="fill" id="vem" type="email" placeholder="Email" autocomplete="username"><input class="fill" id="vpw" type="password" placeholder="密碼" autocomplete="current-password"><button class="btn main" id="vgo" type="button">接上</button><span id="vmsg"></span></div></details>' : '')+'</div>';
 }
 function clipLoginWire(){
   var b=document.getElementById('vgo'); if(!b) return;
   ['vem','vpw'].forEach(function(id){ var el=document.getElementById(id); if(el) el.addEventListener('keydown', function(e){ e.stopPropagation(); }); });
   b.onclick=function(){ var m=document.getElementById('vmsg'); m.textContent='登入中…';
-    vaultLogin(document.getElementById('vem').value.trim(), document.getElementById('vpw').value).then(function(){ m.textContent='✓ 登入了，河邊和樹叢開始出課本錄音'; CLIPS_TRY=0; clipsLoad(); })
+    vaultLogin(document.getElementById('vem').value.trim(), document.getElementById('vpw').value).then(function(){ m.textContent='✓ 接上了，河邊和樹林聽得到真人說話了'; CLIPS_TRY=0; clipsLoad(); })
       .catch(function(e){ m.textContent='✗ '+e.message; }); };
 }
-/* 🎧 10-26 Owen：「找不到」（登入原本只藏在河邊的電腦語音題裡，要先修橋才看得到）→ 上方工具列加 🎧，隨時可以登入／看狀態；沒登入時亮 ❗ */
-function acctPaint(){ var b=document.getElementById('bAcct'); if(b) b.textContent = CLIPS ? '🎧' : (CLIPS_ERR==='nologin'||CLIPS_ERR==='expired') ? '🎧❗' : '🎧'; }
+/* 📻 10-26 Owen：「找不到」「寫成課本真人錄音也太直接了吧」→ 改成鎮上的收音機；「找不到」（登入原本只藏在河邊的電腦語音題裡，要先修橋才看得到）→ 上方工具列加 🎧，隨時可以登入／看狀態；沒登入時亮 ❗ */
+function acctPaint(){ var b=document.getElementById('bAcct'); if(b) b.textContent = CLIPS ? '📻' : (CLIPS_ERR==='nologin'||CLIPS_ERR==='expired') ? '📻❗' : '📻'; }
 function acctPanel(){
   var on=!!CLIPS, em=''; try{ em=(JSON.parse(localStorage.getItem(VAULT.ls))||{}).email||''; }catch(e){}
-  openSheet('<h3>🎧 課本真人錄音</h3>'+(on?'<div class="story">✓ 已登入'+(em?'（'+esc(em)+'）':'')+'。🎣 河邊和 🌳 樹叢會出 Édito 課本的真人錄音。</div>':
-    '<div class="story">'+(CLIPS_ERR==='expired'?'登入過期了。':CLIPS_ERR==='net'?'剛剛沒載到（網路？）——也可以重新登入試試。':'這個畫面還沒登入。')+'登入後，🎣 河邊和 🌳 樹叢會換成課本的真人錄音（沒登入只有電腦語音）。</div>'+
-    '<div class="muted" style="font-size:.85em">帳號跟聽力解碼頁、考試之塔同一組。手機桌面上的遊戲和瀏覽器是分開記的，所以這裡要再登入一次。</div>'+
-    '<div style="display:grid;gap:6px;margin-top:8px"><input class="fill" id="vem" type="email" placeholder="Email" autocomplete="username"><input class="fill" id="vpw" type="password" placeholder="密碼" autocomplete="current-password"><button class="btn main" id="vgo" type="button">登入</button><span id="vmsg"></span></div>')+
+  openSheet('<h3>📻 鎮上的收音機</h3>'+(on?'<div class="story">✓ 收音機接上了'+(em?'（'+esc(em)+'）':'')+'。🎣 河邊和 🌳 樹林都聽得到真人在說話。</div>':
+    '<div class="story">'+(CLIPS_ERR==='expired'?'收音機斷線了。':CLIPS_ERR==='net'?'收音機收訊不好（網路？）——也可以重新接一次。':'收音機還沒接上。')+'接上之後，🎣 河邊和 🌳 樹林會聽到真人說話；沒接上只聽得到機器人的聲音。</div>'+
+    '<div class="muted" style="font-size:.85em">通行證＝聽力解碼頁、考試之塔那組帳號。手機桌面上的遊戲和瀏覽器是分開記的，這裡要另外接一次。</div>'+
+    '<div style="display:grid;gap:6px;margin-top:8px"><input class="fill" id="vem" type="email" placeholder="Email" autocomplete="username"><input class="fill" id="vpw" type="password" placeholder="密碼" autocomplete="current-password"><button class="btn main" id="vgo" type="button">接上</button><span id="vmsg"></span></div>')+
     '<div class="row2"><span></span><button class="btn" id="vclose">關閉</button></div>', true);
   clipLoginWire(); document.getElementById('vclose').onclick=closeSheet;
 }
@@ -1327,7 +1327,7 @@ function askClip(head, c, cb){
   var src=(c.book==='a2'?'Édito A2':'Édito B1')+'・Unité '+c.unit+'・p.'+c.page;
   var shown=esc(c.text.slice(0,g.a))+'<span class="cgap">'+'＿'.repeat(Math.max(2,Math.min(6,g.w.length)))+'</span>'+esc(c.text.slice(g.b));
   var t0=Date.now(), done=false, plays=0, slow=0, rc={kind:'課本聽力', ref:'L:'+c.id, q:c.text, a:g.w};
-  openSheet('<h3>'+head+'</h3><div class="muted" style="font-size:.8em">🎧 '+esc(src)+(c.spk?'　'+esc(c.spk)+'：':'')+'</div>'+
+  openSheet('<h3>'+head+'</h3>'+(c.spk?'<div class="muted" style="font-size:.8em">'+esc(c.spk)+'：</div>':'')+
     '<div class="qtext fr" style="font-size:1.05em;line-height:1.6">'+shown+'</div>'+
     '<div class="row2" style="justify-content:center;gap:8px"><button class="btn main" id="cpl">▶ 聽</button><button class="btn ghost" id="cslow">🐢 慢一點</button></div>'+
     '<input class="fill" id="cin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="空格裡聽到的字">'+
@@ -1345,6 +1345,7 @@ function askClip(head, c, cb){
     document.getElementById('fb').innerHTML=(ok?'✓ '+(acc?'聽到了（注意拼法：<span class="say">'+esc(g.w)+'</span>）':(plays<=1&&!slow?'<b style="color:var(--gold)">一次就聽到</b>':'聽到了')):
         (v?'✗ 你打的是 <span class="fr">'+esc(v)+'</span>　':'')+'👂 這格是 <span class="say">'+esc(g.w)+'</span>'+(zh?' <span class="muted">'+esc(zh)+'</span>':''))+
       '<div class="fr" style="margin-top:6px;line-height:1.6">'+full+'</div>'+
+      '<div class="muted" style="font-size:.75em">出處：'+esc(src)+'</div>'+
       (g.t==='s'&&!ok?'<div class="muted" style="font-size:.85em">💡 小字常跟前後黏在一起唸——再聽一次，專心聽空格前後那一拍</div>':'');
     document.getElementById('crow').innerHTML='<button class="btn ghost" id="cagain">▶ 再聽整句</button><button class="btn main" id="go">繼續</button>';
     document.getElementById('cagain').onclick=function(){ play(1); };
@@ -1370,7 +1371,7 @@ function fishSpot(n){
     if(i>=2){ closeSheet(); n.done=true; return; }
     var cl=clipPick();
     if(cl){
-      askClip('🎣 河邊 ★ <small>第 '+(i+1)+' 竿・課本錄音</small>', cl, function(ok,ms,v,right){
+      askClip('🎣 河邊 ★ <small>第 '+(i+1)+' 竿・聽力</small>', cl, function(ok,ms,v,right){
         rec('L', cl, ok, ms, {chosen:v, right:right, where:'🎣 河邊'});
         if(ok!==null){ addBag({k:'fish', name:'魚', em:'🐟', good:ok}); floatTxt(n.x+.5,n.y,'🐟'+(ok?'':' 瑕'), ok?'#fff':'#bbb'); }
         i++; next();
@@ -1513,7 +1514,7 @@ function questInfo(){
   /* 10-25 Owen：「讓我直接去修橋，否則沒辦法去其他遊戲」→ 第一單交完、橋還沒修：箭頭優先帶去修橋（蓋過今日委託） */
   if(S.firstDeal && !S.built.bridge && S.built.cottage){ var gb=guide(BRIDGE.cost, {x:BRIDGE.door[0],y:BRIDGE.door[1]});
     if(bag.length>=S.bagCap && !gb.ready) return {t:'🎒 背包滿了 → 回 <b>🏪 交貨攤</b>，換成修橋的材料', to:door('stall')};
-    return {t:'🌉 先修好北邊的 <b>橋</b>（⛏×4 📦×3）——過河才有 🎣 河邊的課本錄音'+(gb.ready?'　✅ 材料夠了':(gb.money?'':'　（缺 '+gb.need+'）')), to:gb.to}; }
+    return {t:'🌉 先修好北邊的 <b>橋</b>（⛏×4 📦×3）——過河才聽得到 🎣 河邊的人說話'+(gb.ready?'　✅ 材料夠了':(gb.money?'':'　（缺 '+gb.need+'）')), to:gb.to}; }
   var qb=questBarInfo(); if(qb) return qb;
   var b=S.built, g, full=bag.length>=S.bagCap;
   if(!b.cottage) return {t:'走進 🌳 森林的草叢收集東西進 <b>📖 圖鑑</b>——再收 '+Math.max(1,DEX_MILESTONE-dexCount())+' 種，就會有人回到鎮上', to: region(Math.floor(hero.x),Math.floor(hero.y))==='forest' ? null : {x:8.5,y:19.5}};
@@ -1529,7 +1530,7 @@ function questInfo(){
     return {t:'去 ⛏ 礦坑或 🌳 森林採 2 件以上，回 <b>🏪 交貨攤</b>交第一單', to:nearestNode(count('ore')>=count('obj')?['bush','rock']:['rock','bush'])};
   }
   /* 10-25 Owen：「讓我直接去修橋，否則沒辦法去其他遊戲」→ 橋排在鐵匠鋪前面（河邊＝課本聽力） */
-  if(!b.bridge) return step('修好北邊的 <b>橋</b>（⛏×4 📦×3），過河去 🎣 河邊聽課本錄音', BRIDGE.cost, {x:BRIDGE.door[0],y:BRIDGE.door[1]});
+  if(!b.bridge) return step('修好北邊的 <b>橋</b>（⛏×4 📦×3），過河去 🎣 河邊聽人說話', BRIDGE.cost, {x:BRIDGE.door[0],y:BRIDGE.door[1]});
   if(!b.forge) return step('重建 <b>⚒ 鐵匠鋪</b>（⛏×3）', LOTS.forge.cost, door('forge'));
   if(!b.post) return step('到河邊釣魚，重建 <b>📮 郵局</b>（🐟×3 📦×2＋30🪙）', LOTS.post.cost, door('post'));
   if(!S.letter) return {t:'郵局蓋好了——進去看看', to:door('post')};
