@@ -128,7 +128,7 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .stars { color:var(--gold); letter-spacing:2px; }
 .stars .off { color:#4a5a4f; }
 .hud button { padding:4px 7px; font-size:.76em; } .hud .chip { font-size:.76em; padding:2px 7px; }
-  .hrow { gap:4px; } .hud button { padding:4px 5px; } .hud .chip { padding:2px 5px; } #bMute { padding:4px 4px; }
+  .hrow { gap:4px; } .hud button { padding:4px 5px; } .hud .chip { padding:2px 5px; } #bMute, #bAcct { padding:4px 4px; }
 .dexgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); gap:6px; margin:6px 0 12px; }
 .dexcell { background:#16211b; border:1px solid var(--line); border-radius:10px; min-height:66px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:.72em; text-align:center; padding:3px 2px; cursor:pointer; position:relative; line-height:1.25; }
 .dexcell .em { font-size:1.9em; line-height:1.1; }
@@ -170,6 +170,7 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
     <span class="sp"></span>
     <button id="bFlag" aria-label="回報問題">🚩</button>
     <button id="bMute" aria-label="靜音">🔊</button>
+    <button id="bAcct" aria-label="課本錄音帳號">🎧</button>
     <button id="bDex">📖圖鑑</button>
     <button id="bHome">🏠回城</button>
     <button id="bRest">🌙收工</button>
@@ -1250,8 +1251,19 @@ function clipLoginWire(){
   var b=document.getElementById('vgo'); if(!b) return;
   ['vem','vpw'].forEach(function(id){ var el=document.getElementById(id); if(el) el.addEventListener('keydown', function(e){ e.stopPropagation(); }); });
   b.onclick=function(){ var m=document.getElementById('vmsg'); m.textContent='登入中…';
-    vaultLogin(document.getElementById('vem').value.trim(), document.getElementById('vpw').value).then(function(){ m.textContent='✓ 登入了，下一竿開始是課本錄音'; CLIPS_TRY=0; clipsLoad(); })
+    vaultLogin(document.getElementById('vem').value.trim(), document.getElementById('vpw').value).then(function(){ m.textContent='✓ 登入了，河邊和樹叢開始出課本錄音'; CLIPS_TRY=0; clipsLoad(); })
       .catch(function(e){ m.textContent='✗ '+e.message; }); };
+}
+/* 🎧 10-26 Owen：「找不到」（登入原本只藏在河邊的電腦語音題裡，要先修橋才看得到）→ 上方工具列加 🎧，隨時可以登入／看狀態；沒登入時亮 ❗ */
+function acctPaint(){ var b=document.getElementById('bAcct'); if(b) b.textContent = CLIPS ? '🎧' : (CLIPS_ERR==='nologin'||CLIPS_ERR==='expired') ? '🎧❗' : '🎧'; }
+function acctPanel(){
+  var on=!!CLIPS, em=''; try{ em=(JSON.parse(localStorage.getItem(VAULT.ls))||{}).email||''; }catch(e){}
+  openSheet('<h3>🎧 課本真人錄音</h3>'+(on?'<div class="story">✓ 已登入'+(em?'（'+esc(em)+'）':'')+'。🎣 河邊和 🌳 樹叢會出 Édito 課本的真人錄音。</div>':
+    '<div class="story">'+(CLIPS_ERR==='expired'?'登入過期了。':CLIPS_ERR==='net'?'剛剛沒載到（網路？）——也可以重新登入試試。':'這個畫面還沒登入。')+'登入後，🎣 河邊和 🌳 樹叢會換成課本的真人錄音（沒登入只有電腦語音）。</div>'+
+    '<div class="muted" style="font-size:.85em">帳號跟聽力解碼頁、考試之塔同一組。手機桌面上的遊戲和瀏覽器是分開記的，所以這裡要再登入一次。</div>'+
+    '<div style="display:grid;gap:6px;margin-top:8px"><input class="fill" id="vem" type="email" placeholder="Email" autocomplete="username"><input class="fill" id="vpw" type="password" placeholder="密碼" autocomplete="current-password"><button class="btn main" id="vgo" type="button">登入</button><span id="vmsg"></span></div>')+
+    '<div class="row2"><span></span><button class="btn" id="vclose">關閉</button></div>', true);
+  clipLoginWire(); document.getElementById('vclose').onclick=closeSheet;
 }
 var CLIPS_ERR='', CLIPS=null, CLIPS_TRY=0, CLIP_URL={}, CLIP_AUDIO=null, B1_UNITS_DONE=1;
 function clipsLoad(){
@@ -1259,8 +1271,8 @@ function clipsLoad(){
   Promise.all([vaultGet('didier/clips_a2.json'), vaultGet('didier/clips_b1.json')]).then(function(r){
     var all=r[0].concat(r[1]).filter(function(c){ return !(c.book==='b1' && (c.unit>B1_UNITS_DONE || c.page>=189)); });
     all.forEach(function(c){ c.text=String(c.text).replace(/[’‘]/g,"'"); c.blank=clipBlankAll(c.text); });
-    CLIPS=all.filter(function(c){ return c.blank.length; }); CLIPS_ERR='';
-  }).catch(function(e){ CLIPS_ERR=(e&&e.code)||'net'; });
+    CLIPS=all.filter(function(c){ return c.blank.length; }); CLIPS_ERR=''; acctPaint();
+  }).catch(function(e){ CLIPS_ERR=(e&&e.code)||'net'; acctPaint(); });
 }
 /* 學過的字：複習卡＋常用句（跟聽力解碼頁同一個判準） */
 var CLIP_FUNC={}, CLIP_LEARN=null, CLIP_ZH={};
@@ -1347,6 +1359,7 @@ function askClip(head, c, cb){
   inp.addEventListener('keydown',function(e){ e.stopPropagation(); if(e.key==='Enter') sub(); });
   document.getElementById('skip').onclick=function(){ if(done) return; done=true; clipStop(); cb(null); };
 }
+document.getElementById('bAcct').addEventListener('click', function(){ if(!busy) acctPanel(); });
 clipsLoad();
 /* 從聽力解碼頁登入完切回來 → 馬上重試載入課本錄音 */
 document.addEventListener('visibilitychange', function(){ if(!document.hidden && !CLIPS){ CLIPS_TRY=0; clipsLoad(); } });
