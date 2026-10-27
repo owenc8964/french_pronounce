@@ -532,4 +532,18 @@ const SENTENCES = [
   { id: 'S_L45_12', lesson: 45, fr: "J'ai lu le livre que tu m'avais conseillé.", zh: '我讀了你之前推薦給我的那本書。', note: 'B1 p.21：plus-que-parfait＝過去的過去' },
   { id: 'S_L45_13', lesson: 45, fr: "Vous n'étiez jamais venus avant ce soir ?", zh: '你們今晚之前從來沒來過嗎？', note: 'B1 p.21' },
   { id: 'S_L45_14', lesson: 45, fr: "On ne parle pas la bouche pleine !", zh: '嘴裡有東西不要講話！', note: 'B1 p.17 G：🎙 法國爸媽的口頭禪' },
+  // 第46課（2026-10-27）：B1 p.22 友誼詞彙、p.26 網路禮儀、p.27 問句語域、p.29 nécessité
+  { id: 'S_L46_1', lesson: 46, fr: "C'était la première fois que je le prenais.", zh: '那是我第一次搭它。', note: '第46課作業：la première fois que＋imparfait' },
+  { id: 'S_L46_2', lesson: 46, fr: "J'ai passé deux semaines sans mes parents.", zh: '我沒有爸媽陪過了兩個禮拜。', note: '第46課作業：passer＋時間（不是 durer）' },
+  { id: 'S_L46_3', lesson: 46, fr: "Il a besoin de moi.", zh: '他需要我。', note: 'B1 p.22 練習 3' },
+  { id: 'S_L46_4', lesson: 46, fr: "J'essaie d'être là pour lui, de l'écouter et de le réconforter.", zh: '我試著陪在他身邊，聽他說、安慰他。', note: 'B1 p.22 練習 3' },
+  { id: 'S_L46_5', lesson: 46, fr: "Combien tu mets de côté tous les mois ?", zh: '你每個月存多少錢？', note: '🎙 第46課老師：mettre de côté＝存錢' },
+  { id: 'S_L46_6', lesson: 46, fr: "Prends ton temps.", zh: '慢慢來。', note: '🎙 第46課老師：比 Pas de hâte 常用' },
+  { id: 'S_L46_7', lesson: 46, fr: "Peut-on annuler un rendez-vous par SMS ?", zh: '可以用簡訊取消約會嗎？', note: 'B1 p.26／27：正式問句（倒裝）' },
+  { id: 'S_L46_8', lesson: 46, fr: "Que peut-on faire ?", zh: '我們能做什麼？', note: 'B1 p.27：正式；日常說 On peut faire quoi ?' },
+  { id: 'S_L46_9', lesson: 46, fr: "Pourquoi les bonnes manières sont-elles importantes ?", zh: '為什麼禮儀很重要？', note: 'B1 p.27：名詞主詞倒裝要補代名詞' },
+  { id: 'S_L46_10', lesson: 46, fr: "Quand va-t-il répondre ?", zh: '他什麼時候會回？', note: 'B1 p.27：母音碰母音加 -t-' },
+  { id: 'S_L46_11', lesson: 46, fr: "Combien de messages envoyez-vous par jour ?", zh: '您一天傳幾則訊息？', note: 'B1 p.27 練習 2c' },
+  { id: 'S_L46_12', lesson: 46, fr: "Il faut que j'apprenne le français.", zh: '我得學法文。', note: '🎙 第46課老師：指定某人 → subjonctif' },
+  { id: 'S_L46_13', lesson: 46, fr: "Il est nécessaire d'apprendre les bonnes manières.", zh: '學禮貌是必要的。', note: 'B1 p.29：泛指 → de＋原形' },
 ];

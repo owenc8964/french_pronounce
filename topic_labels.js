@@ -98,6 +98,7 @@ var TOPIC_LABELS_FR = {
  "medias-vocab": "L'info, la presse, la télé",
  "preference-interet": "Préférence et intérêt",
  "subjonctif-present": "Subjonctif présent",
+ "interrogation-registres": "L'interrogation (registres)",
  "conditionnel-present": "Conditionnel présent",
  "gerondif": "Le gérondif",
  "vocab-consommation": "La consommation",

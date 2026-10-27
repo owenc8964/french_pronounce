@@ -168,7 +168,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'questions', name:'Questions simples', icon:'❓', zone:'A1', cat:'base',
-    lessons:[1,2,32], topics:['question-words','pronoms-interrogatifs'], unlocked:true,   // 09-11（第32課）補上疑問代名詞 lequel 家族
+    lessons:[1,2,32,46], topics:['question-words','pronoms-interrogatifs','interrogation-registres'], unlocked:true,   // 09-11（第32課）補上疑問代名詞 lequel 家族；10-27（第46課 B1 p.27）三種語域＋倒裝細節
     rule:{
       title:'問句三招＋quel 要配合＋lequel 代替名詞',
       why:'三種問法其實是三個歷史地層：倒裝（Viens-tu ?）最老、最書面；est-ce que 字面是「是不是說…」，是後來發明的萬用問句支架——插上去之後後面維持正常語序，什麼都不用動；語調上揚是日常口語。考試寫作用倒裝加分，口說用 est-ce que 和語調就夠。quel 是形容詞，所以照形容詞的天性跟名詞配合。⭐ 2026-09-11（第32課）：lequel 就是 le（那個）＋ quel（哪）黏成一個字——quel 是形容詞，要靠名詞才站得住；名詞前面已經講過、不想重複時，就在 quel 前面黏一個定冠詞，讓它自己變成代名詞站起來。所以它跟代替的名詞配合性數，四個形就是 le／la／les ＋ quel 的四個形。',
@@ -179,12 +179,19 @@ const GRAM_POINTS = [
         '⭐ 第32課 lequel／laquelle／lesquels／lesquelles：在前面已經提過的一群人或東西裡問「哪一個／哪些」，單獨使用、跟代替的名詞配合',
         '⚠️ 判斷：後面有名詞 → quel（Quels conseils peux-tu me donner ?）；後面沒有名詞、直接接動詞 → lequel（Lesquels sont les moins chers ?）',
         '口語 Lequel tu préfères ?（不倒裝）；寫作 Lequel préfères-tu ?',
+        '⭐ 第46課（B1 p.27）語域：語調上揚和 est-ce que 同一級（familier／standard，🎙 est-ce que 沒有比較正式）；倒裝＝soutenu，疑問詞一定放前面（On peut faire quoi ? → Que peut-on faire ?）',
+        '⭐ 名詞主詞不能直接倒裝，動詞後補代名詞：Pourquoi les bonnes manières sont-elles importantes ?',
+        '⭐ 動詞母音結尾＋il／elle／on → 中間加 -t-：Quand va-t-il répondre ? Qu\'a-t-il publié ?（已經有 t 的不加：apparaissent-elles）',
+        '受詞代名詞跟著動詞一起前移：La racontez-vous ? Lui as-tu donné un cadeau ?',
       ],
       examples:[
         { fr:'Tu habites dans quelle ville ?', zh:'你住在哪個城市？（ville陰性→quelle）' },
         { fr:'Quelles langues tu parles ?', zh:'你說哪些語言？（複數陰性）' },
         { fr:'Voici trois numéros d\'urgence, lequel composez-vous ?', zh:'這裡有三個緊急電話，您撥哪一個？（第32課）' },
         { fr:'Tu as vu ces tisanes ? Laquelle choisis-tu ?', zh:'你看到這些花草茶了嗎？你選哪一種？（tisane 陰單 → laquelle）' },
+        { fr:'Pourquoi les bonnes manières sont-elles importantes ?', zh:'為什麼禮儀很重要？（第46課 B1 p.27：名詞主詞倒裝補 elles）' },
+        { fr:'Quand va-t-il répondre ?', zh:'他什麼時候會回？（va＋il → -t-）' },
+        { fr:'Que peut-on faire ?', zh:'我們能做什麼？（正式；日常說 On peut faire quoi ?）' },
       ]}},
 
   { id:'prepositions', name:'Prépositions (lieu · pays · transport)', icon:'📍', zone:'A1', cat:'base',
@@ -650,7 +657,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'subjonctif', name:'Subjonctif présent', icon:'🌀', zone:'A2', cat:'verbe-mode',
-    lessons:[34], topics:['subjonctif-present'], unlocked:true,   // 09-15（第34課 Édito A2 p.117）從 B1 佔位點搬來解鎖；verb_sprint／dashboard 的 gram:'subjonctif' 本來就指這個 id
+    lessons:[34,46], topics:['subjonctif-present'], unlocked:true,   // 09-15（第34課 Édito A2 p.117）從 B1 佔位點搬來解鎖；verb_sprint／dashboard 的 gram:'subjonctif' 本來就指這個 id
     rule:{
       title:'虛擬式現在 — 不是在報告事實，是把動作放進「必須／評價」的框框',
       why:'直陳式在說「這件事是真的」；虛擬式在說「我對這件事的要求或看法」——Il faut que tu regardes 不是說你正在看，而是把「你看」這件事放進必要的框框。所以開關在主句：il faut que、il est important que 表達必要，c\'est bien que、c\'est normal que（il est／c\'est ＋ 形容詞或 bien ＋ que）表達評價。形也沒有新東西，全部借你會的：je／tu／il／ils 拿現在式 ils 的字根（ils informent → inform-）加 e／es／e／ent，nous／vous 直接跟 imparfait 一樣。所以 -er 動詞的 je／tu／il／ils 聽起來跟現在式一模一樣，真正會露出馬腳的只有三種：nous／vous 多出來的 i（que nous mangions）、字根本來就跟 je 形不同的動詞（ils finissent → que je finisse），以及少數真的不規則的 être／avoir／aller／faire。',
@@ -663,7 +670,7 @@ const GRAM_POINTS = [
         '⚠️⚠️ que nous mangions，⛔ 不是 mangeons（🎙 老師：很多法國人口語也講錯）',
         '不規則：être → sois／soit／soyons／soient；avoir → aie／ait／ayons／aient；aller → aille／allions；faire → fasse／fassions',
         '⚠️ aie／aies／ait／aient 全部唸 [ɛ]，跟 j\'ai 同音，只能看拼字',
-        'il faut ＋ 原形＝泛指；il faut que ＋ 虛擬式＝指定某人',
+        'il faut ＋ 原形＝泛指；il faut que ＋ 虛擬式＝指定某人（⭐ 第46課 B1 p.29 再整理：講自己也是指定的人 → Il faut que j\'apprenne le français；il est nécessaire／important 接原形要加 de）',
         '⭐ 第41課：pour que（為了讓…）後面也接虛擬式——Pour que votre chat se sente bien… ；savoir → que ses camarades sachent',
       ],
       examples:[

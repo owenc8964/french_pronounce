@@ -22477,5 +22477,684 @@ const CHUNKS = [
   "fr": "le trait d'union",
   "zh": "連字號；橋樑",
   "note": "m.｜C'est Nina qui était leur trait d'union."
+ },
+ {
+  "id": "L46_C_était_la_première_fois",
+  "lesson": 46,
+  "fr": "C'était la première fois que je le prenais.",
+  "zh": "那是我第一次搭它。",
+  "note": "🎙 老師改：la première fois que＋imparfait；le＝le train"
+ },
+ {
+  "id": "L46_Je_lui_ai_expliqué_ce_qu",
+  "lesson": 46,
+  "fr": "Je lui ai expliqué ce que j'avais.",
+  "zh": "我跟他說明我的狀況。",
+  "note": "🎙 老師幫你講"
+ },
+ {
+  "id": "L46_Combien_tu_mets_de_côté",
+  "lesson": 46,
+  "fr": "Combien tu mets de côté tous les mois ?",
+  "zh": "你每個月存多少錢？",
+  "note": "🎙 老師：mettre de côté＝存錢"
+ },
+ {
+  "id": "L46_Il_se_moque_de_toi",
+  "lesson": 46,
+  "fr": "Il se moque de toi.",
+  "zh": "他在笑你。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L46_Je_me_suis_fait_peur_Je",
+  "lesson": 46,
+  "fr": "Je me suis fait peur. Je pensais avoir perdu mon téléphone.",
+  "zh": "我自己嚇自己，以為手機掉了。",
+  "note": "🎙 老師。penser＋原形完成式（avoir perdu）"
+ },
+ {
+  "id": "L46_Il_te_raconte_des_histoi",
+  "lesson": 46,
+  "fr": "Il te raconte des histoires.",
+  "zh": "他在唬你。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L46_Parler_de_politique_c_es",
+  "lesson": 46,
+  "fr": "Parler de politique, c'est tabou.",
+  "zh": "談政治是禁忌。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L46_Prends_ton_temps",
+  "lesson": 46,
+  "fr": "Prends ton temps.",
+  "zh": "慢慢來。",
+  "note": "🎙 老師：比 Pas de hâte 常用"
+ },
+ {
+  "id": "L46_Pourquoi_Owen_a_t_il_fai",
+  "lesson": 46,
+  "fr": "Pourquoi Owen a-t-il faim ?",
+  "zh": "Owen 為什麼餓了？",
+  "note": "🎙 老師的例子"
+ },
+ {
+  "id": "L46_Pourquoi_a_t_on_faim_le",
+  "lesson": 46,
+  "fr": "Pourquoi a-t-on faim le matin ?",
+  "zh": "為什麼人早上會餓？",
+  "note": "🎙 老師：on＝泛指"
+ },
+ {
+  "id": "L46_La_racontez_vous_souvent",
+  "lesson": 46,
+  "fr": "La racontez-vous souvent ?",
+  "zh": "您常把它說出來嗎？",
+  "note": "🎙 練習 2a 延伸：la 跟著動詞放前面"
+ },
+ {
+  "id": "L46_Lui_as_tu_donné_un_cadea",
+  "lesson": 46,
+  "fr": "Lui as-tu donné un cadeau ?",
+  "zh": "你送他禮物了嗎？",
+  "note": "🎙 老師的例子（⚠️ 逐字稿是 « lui a-tu »；tu → as）"
+ },
+ {
+  "id": "L46_Il_faut_que_j_apprenne_l",
+  "lesson": 46,
+  "fr": "Il faut que j'apprenne le français.",
+  "zh": "我得學法文。",
+  "note": "🎙 老師：講自己就是指定的人"
+ },
+ {
+  "id": "L46_J_ai_passé_l_examen",
+  "lesson": 46,
+  "fr": "J'ai passé l'examen.",
+  "zh": "我參加了考試。",
+  "note": "❌ 一開始寫 j'ai rejoint l'examen → 🎙 老師說用 prendre；⚠️ 標準說法是 passer un examen"
+ },
+ {
+  "id": "L46_l_ami_e",
+  "lesson": 46,
+  "fr": "l'ami(e)",
+  "zh": "朋友",
+  "note": "n.｜"
+ },
+ {
+  "id": "L46_la_bande_de_potes",
+  "lesson": 46,
+  "fr": "la bande de potes",
+  "zh": "一群朋友",
+  "note": "f.｜la bande＝一群"
+ },
+ {
+  "id": "L46_le_compagnon_la_compagne",
+  "lesson": 46,
+  "fr": "le compagnon, la compagne",
+  "zh": "伴侶；夥伴",
+  "note": "n.｜mon chien, c'est mon compagnon"
+ },
+ {
+  "id": "L46_le_meilleur_ami_la_meill",
+  "lesson": 46,
+  "fr": "le meilleur ami, la meilleure amie",
+  "zh": "最好的朋友",
+  "note": "n.｜meilleur＝最好的"
+ },
+ {
+  "id": "L46_le_proche_la_proche",
+  "lesson": 46,
+  "fr": "le proche, la proche",
+  "zh": "親近的人",
+  "note": "n.｜mes proches＝親友"
+ },
+ {
+  "id": "L46_amical_e",
+  "lesson": 46,
+  "fr": "amical(e)",
+  "zh": "友好的、朋友間的",
+  "note": "adj.｜une relation amicale；⛔ 不用在家人"
+ },
+ {
+  "id": "L46_l_attraction_pour_quelqu",
+  "lesson": 46,
+  "fr": "l'attraction pour quelqu'un",
+  "zh": "被某人吸引",
+  "note": "f.｜"
+ },
+ {
+  "id": "L46_le_chagrin",
+  "lesson": 46,
+  "fr": "le chagrin",
+  "zh": "悲痛、心碎",
+  "note": "m.｜un chagrin d'amour 失戀"
+ },
+ {
+  "id": "L46_l_espoir",
+  "lesson": 46,
+  "fr": "l'espoir",
+  "zh": "希望",
+  "note": "m.｜動詞 espérer"
+ },
+ {
+  "id": "L46_être_intégré_e_dans_un_g",
+  "lesson": 46,
+  "fr": "être intégré(e) dans un groupe",
+  "zh": "融入團體",
+  "note": "v.｜"
+ },
+ {
+  "id": "L46_être_isolé_e",
+  "lesson": 46,
+  "fr": "être isolé(e)",
+  "zh": "被孤立",
+  "note": "v.｜l'isolement 孤立"
+ },
+ {
+  "id": "L46_être_mis_e_de_côté",
+  "lesson": 46,
+  "fr": "être mis(e) de côté",
+  "zh": "被冷落",
+  "note": "v.｜mettre de côté 也是「存錢」"
+ },
+ {
+  "id": "L46_être_moqué_e",
+  "lesson": 46,
+  "fr": "être moqué(e)",
+  "zh": "被嘲笑",
+  "note": "v.｜"
+ },
+ {
+  "id": "L46_l_isolement",
+  "lesson": 46,
+  "fr": "l'isolement",
+  "zh": "孤立、孤單",
+  "note": "m.｜"
+ },
+ {
+  "id": "L46_la_joie",
+  "lesson": 46,
+  "fr": "la joie",
+  "zh": "喜悅",
+  "note": "f.｜英文 joy"
+ },
+ {
+  "id": "L46_la_peine",
+  "lesson": 46,
+  "fr": "la peine",
+  "zh": "悲傷",
+  "note": "f.｜⚠️ 不是身體的痛"
+ },
+ {
+  "id": "L46_se_moquer_de",
+  "lesson": 46,
+  "fr": "se moquer de",
+  "zh": "嘲笑",
+  "note": "v.｜il se moque de toi"
+ },
+ {
+  "id": "L46_se_sentir_seul_e",
+  "lesson": 46,
+  "fr": "se sentir seul(e)",
+  "zh": "覺得寂寞",
+  "note": "v.｜lonely"
+ },
+ {
+  "id": "L46_le_souci",
+  "lesson": 46,
+  "fr": "le souci",
+  "zh": "擔心",
+  "note": "m.｜pas de souci 沒問題"
+ },
+ {
+  "id": "L46_avoir_besoin_de_quelqu_u",
+  "lesson": 46,
+  "fr": "avoir besoin de quelqu'un",
+  "zh": "需要某人",
+  "note": "v.｜"
+ },
+ {
+  "id": "L46_l_écoute",
+  "lesson": 46,
+  "fr": "l'écoute",
+  "zh": "傾聽",
+  "note": "f.｜動詞 écouter"
+ },
+ {
+  "id": "L46_l_empathie",
+  "lesson": 46,
+  "fr": "l'empathie",
+  "zh": "同理心",
+  "note": "f.｜se mettre à la place de"
+ },
+ {
+  "id": "L46_épauler",
+  "lesson": 46,
+  "fr": "épauler",
+  "zh": "支持、扶持",
+  "note": "v.｜l'épaule 肩膀"
+ },
+ {
+  "id": "L46_ouvrir_ses_bras",
+  "lesson": 46,
+  "fr": "ouvrir ses bras",
+  "zh": "敞開雙臂",
+  "note": "v.｜願意聽、接納"
+ },
+ {
+  "id": "L46_réconforter",
+  "lesson": 46,
+  "fr": "réconforter",
+  "zh": "安慰",
+  "note": "v.｜le réconfort"
+ },
+ {
+  "id": "L46_s_occuper_de_quelqu_un",
+  "lesson": 46,
+  "fr": "s'occuper de quelqu'un",
+  "zh": "照顧某人",
+  "note": "v.｜"
+ },
+ {
+  "id": "L46_tendre_la_main",
+  "lesson": 46,
+  "fr": "tendre la main",
+  "zh": "伸出援手",
+  "note": "v.｜tendre＝伸直 ↔ plier"
+ },
+ {
+  "id": "L46_le_soutien",
+  "lesson": 46,
+  "fr": "le soutien",
+  "zh": "支持",
+  "note": "m.｜動詞 soutenir"
+ },
+ {
+  "id": "L46_l_amitié",
+  "lesson": 46,
+  "fr": "l'amitié",
+  "zh": "友誼",
+  "note": "f.｜"
+ },
+ {
+  "id": "L46_décrocher_son_téléphone",
+  "lesson": 46,
+  "fr": "décrocher son téléphone",
+  "zh": "接起電話；打電話",
+  "note": "v.｜"
+ },
+ {
+  "id": "L46_la_différence_de_caractè",
+  "lesson": 46,
+  "fr": "la différence de caractère",
+  "zh": "個性差異",
+  "note": "f.｜"
+ },
+ {
+  "id": "L46_être_complémentaire",
+  "lesson": 46,
+  "fr": "être complémentaire",
+  "zh": "互補",
+  "note": "v.｜compléter"
+ },
+ {
+  "id": "L46_partager_le_quotidien",
+  "lesson": 46,
+  "fr": "partager le quotidien",
+  "zh": "分享日常",
+  "note": "v.｜"
+ },
+ {
+  "id": "L46_partager_des_bons_moment",
+  "lesson": 46,
+  "fr": "partager des bons moments",
+  "zh": "共度美好時光",
+  "note": "v.｜"
+ },
+ {
+  "id": "L46_passer_du_temps_ensemble",
+  "lesson": 46,
+  "fr": "passer du temps ensemble",
+  "zh": "一起度過時間",
+  "note": "v.｜"
+ },
+ {
+  "id": "L46_le_rapprochement",
+  "lesson": 46,
+  "fr": "le rapprochement",
+  "zh": "變親近",
+  "note": "m.｜"
+ },
+ {
+  "id": "L46_rire_des_mêmes_choses",
+  "lesson": 46,
+  "fr": "rire des mêmes choses",
+  "zh": "笑點一樣",
+  "note": "v.｜rire → j'ai ri"
+ },
+ {
+  "id": "L46_se_faire_peur",
+  "lesson": 46,
+  "fr": "se faire peur",
+  "zh": "自己嚇自己",
+  "note": "v.｜"
+ },
+ {
+  "id": "L46_se_raconter_des_histoire",
+  "lesson": 46,
+  "fr": "se raconter des histoires",
+  "zh": "互相講故事；騙自己",
+  "note": "v.｜raconter des histoires à qqn＝唬人"
+ },
+ {
+  "id": "L46_sceller_l_amitié",
+  "lesson": 46,
+  "fr": "sceller l'amitié",
+  "zh": "讓友誼更牢固",
+  "note": "v.｜sceller＝封印"
+ },
+ {
+  "id": "L46_la_sincérité",
+  "lesson": 46,
+  "fr": "la sincérité",
+  "zh": "真誠",
+  "note": "f.｜"
+ },
+ {
+  "id": "L46_le_tabou",
+  "lesson": 46,
+  "fr": "le tabou",
+  "zh": "禁忌",
+  "note": "m.｜"
+ },
+ {
+  "id": "L46_les_bonnes_manières",
+  "lesson": 46,
+  "fr": "les bonnes manières",
+  "zh": "禮貌、禮儀",
+  "note": "f.pl.｜manière 也是「方式」"
+ },
+ {
+  "id": "L46_le_monde_réel",
+  "lesson": 46,
+  "fr": "le monde réel",
+  "zh": "真實世界",
+  "note": "m.｜↔ le monde numérique"
+ },
+ {
+  "id": "L46_les_règles_de_conduite",
+  "lesson": 46,
+  "fr": "les règles de conduite",
+  "zh": "行為規範",
+  "note": "f.pl.｜"
+ },
+ {
+  "id": "L46_céder_sa_place",
+  "lesson": 46,
+  "fr": "céder sa place",
+  "zh": "讓位",
+  "note": "v.｜aux personnes âgées"
+ },
+ {
+  "id": "L46_le_savoir_vivre",
+  "lesson": 46,
+  "fr": "le savoir-vivre",
+  "zh": "禮貌、處世之道",
+  "note": "m.｜"
+ },
+ {
+  "id": "L46_taguer",
+  "lesson": 46,
+  "fr": "taguer",
+  "zh": "標記（人）",
+  "note": "v.｜英文 tag"
+ },
+ {
+  "id": "L46_la_publication",
+  "lesson": 46,
+  "fr": "la publication",
+  "zh": "貼文",
+  "note": "f.｜publier 發布"
+ },
+ {
+  "id": "L46_l_autorisation",
+  "lesson": 46,
+  "fr": "l'autorisation",
+  "zh": "同意、許可",
+  "note": "f.｜"
+ },
+ {
+  "id": "L46_diffuser",
+  "lesson": 46,
+  "fr": "diffuser",
+  "zh": "散布、分享",
+  "note": "v.｜"
+ },
+ {
+  "id": "L46_inonder",
+  "lesson": 46,
+  "fr": "inonder",
+  "zh": "淹沒",
+  "note": "v.｜une inondation 水災"
+ },
+ {
+  "id": "L46_une_avalanche_de",
+  "lesson": 46,
+  "fr": "une avalanche de",
+  "zh": "一大堆（雪崩）",
+  "note": "f.｜"
+ },
+ {
+  "id": "L46_suffire",
+  "lesson": 46,
+  "fr": "suffire",
+  "zh": "足夠",
+  "note": "v.｜quelques-uns suffisent"
+ },
+ {
+  "id": "L46_regrouper",
+  "lesson": 46,
+  "fr": "regrouper",
+  "zh": "合在一起",
+  "note": "v.｜"
+ },
+ {
+  "id": "L46_divulgâcher",
+  "lesson": 46,
+  "fr": "divulgâcher",
+  "zh": "爆雷",
+  "note": "v.｜＝ spoiler"
+ },
+ {
+  "id": "L46_l_époque",
+  "lesson": 46,
+  "fr": "l'époque",
+  "zh": "時代",
+  "note": "f.｜"
+ },
+ {
+  "id": "L46_révolu_e",
+  "lesson": 46,
+  "fr": "révolu(e)",
+  "zh": "已經過去的",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L46_le_dénouement",
+  "lesson": 46,
+  "fr": "le dénouement",
+  "zh": "結局",
+  "note": "m.｜"
+ },
+ {
+  "id": "L46_coupable",
+  "lesson": 46,
+  "fr": "coupable",
+  "zh": "有罪的；兇手",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L46_convenir_à",
+  "lesson": 46,
+  "fr": "convenir à",
+  "zh": "適合",
+  "note": "v.｜"
+ },
+ {
+  "id": "L46_avertir_d_un_retard",
+  "lesson": 46,
+  "fr": "avertir d'un retard",
+  "zh": "通知會遲到",
+  "note": "v.｜"
+ },
+ {
+  "id": "L46_tout_au_plus",
+  "lesson": 46,
+  "fr": "tout au plus",
+  "zh": "頂多",
+  "note": "adv.｜"
+ },
+ {
+  "id": "L46_la_hâte",
+  "lesson": 46,
+  "fr": "la hâte",
+  "zh": "匆忙",
+  "note": "f.｜pas de hâte＝不急"
+ },
+ {
+  "id": "L46_obsolète",
+  "lesson": 46,
+  "fr": "obsolète",
+  "zh": "過時的",
+  "note": "adj.｜＝ dépassé"
+ },
+ {
+  "id": "L46_urgent_e",
+  "lesson": 46,
+  "fr": "urgent(e)",
+  "zh": "緊急的",
+  "note": "adj.｜les affaires non urgentes"
+ },
+ {
+  "id": "L46_On_peut_annuler_par_SMS",
+  "lesson": 46,
+  "fr": "On peut annuler par SMS ?",
+  "zh": "語調上揚",
+  "note": "familier／standard｜最常用"
+ },
+ {
+  "id": "L46_On_peut_faire_quoi",
+  "lesson": 46,
+  "fr": "On peut faire quoi ?",
+  "zh": "疑問詞放最後",
+  "note": "familier／standard｜quoi"
+ },
+ {
+  "id": "L46_Est_ce_qu_on_peut_annule",
+  "lesson": 46,
+  "fr": "Est-ce qu'on peut annuler par SMS ?",
+  "zh": "est-ce que＋主詞＋動詞",
+  "note": "familier／standard｜不比較正式"
+ },
+ {
+  "id": "L46_Qu_est_ce_qu_on_peut_fai",
+  "lesson": 46,
+  "fr": "Qu'est-ce qu'on peut faire ?",
+  "zh": "疑問詞＋est-ce que",
+  "note": "familier／standard｜"
+ },
+ {
+  "id": "L46_Peut_on_annuler_par_SMS",
+  "lesson": 46,
+  "fr": "Peut-on annuler par SMS ?",
+  "zh": "動詞-主詞",
+  "note": "soutenu｜正式"
+ },
+ {
+  "id": "L46_Que_peut_on_faire",
+  "lesson": 46,
+  "fr": "Que peut-on faire ?",
+  "zh": "疑問詞＋動詞-主詞",
+  "note": "soutenu｜quoi → que 放前面"
+ },
+ {
+  "id": "L46_Pourquoi_les_bonnes_mani",
+  "lesson": 46,
+  "fr": "Pourquoi les bonnes manières sont-elles importantes ?",
+  "zh": "名詞＋動詞-代名詞",
+  "note": "soutenu｜名詞不能直接倒裝"
+ },
+ {
+  "id": "L46_Quand_va_t_il_répondre",
+  "lesson": 46,
+  "fr": "Quand va-t-il répondre ?",
+  "zh": "母音＋-t-＋母音",
+  "note": "soutenu｜il／elle／on"
+ },
+ {
+  "id": "L46_que_je_comprenne",
+  "lesson": 46,
+  "fr": "que je comprenne",
+  "zh": "（要）我懂",
+  "note": "je｜ils comprenn-ent"
+ },
+ {
+  "id": "L46_que_tu_comprennes",
+  "lesson": 46,
+  "fr": "que tu comprennes",
+  "zh": "（要）你懂",
+  "note": "tu｜＋es"
+ },
+ {
+  "id": "L46_qu_il_comprenne",
+  "lesson": 46,
+  "fr": "qu'il comprenne",
+  "zh": "（要）他懂",
+  "note": "il／elle／on｜＋e"
+ },
+ {
+  "id": "L46_que_nous_comprenions",
+  "lesson": 46,
+  "fr": "que nous comprenions",
+  "zh": "（要）我們懂",
+  "note": "nous｜＝ imparfait"
+ },
+ {
+  "id": "L46_que_vous_compreniez",
+  "lesson": 46,
+  "fr": "que vous compreniez",
+  "zh": "（要）你們懂",
+  "note": "vous｜＝ imparfait"
+ },
+ {
+  "id": "L46_qu_ils_comprennent",
+  "lesson": 46,
+  "fr": "qu'ils comprennent",
+  "zh": "（要）他們懂",
+  "note": "ils／elles｜＋ent"
+ },
+ {
+  "id": "L46_que_je_sois",
+  "lesson": 46,
+  "fr": "que je sois",
+  "zh": "aie 唸 [ɛ]",
+  "note": "que j'aie｜je"
+ },
+ {
+  "id": "L46_que_nous_soyons",
+  "lesson": 46,
+  "fr": "que nous soyons",
+  "zh": "沒有 i",
+  "note": "que nous ayons｜nous"
+ },
+ {
+  "id": "L46_que_vous_soyez",
+  "lesson": 46,
+  "fr": "que vous soyez",
+  "zh": "沒有 i",
+  "note": "que vous ayez｜vous"
  }
 ];

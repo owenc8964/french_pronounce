@@ -37,6 +37,7 @@
 > - 🎧 **10-19 深夜：課本音檔官方來源找到了（三之七十八）**：e-didier.fr 公開頁、編號＝課本音軌號；A2＋Cahier＋B1 慢速下載中，對照表 A2 120 軌／Cahier 127 軌完成；⏸ 等 Owen 選壓縮品質。
 > - ✍️ **10-23 題庫詳解補寫（三之八十二）**：491 題弱解說改成「為什麼是這個答案」，非變位類弱解說歸零；⏸ 4 題可疑題（題幹錯字／選項重複）等 Owen 決定。
 > - 🏝 **10-27 小鎮：口說群島樣品——碼頭搭船進群島總覽、自我介紹島（海岸、4 區、步道、23 個意思相符的地標、自己走、站著跳泡泡）（三之九十三（小鎮））**
+> - 📒 **10-27 第46課筆記（作業「第一次…」批改、B1 p.22 交友詞彙、進 Unité 2、p.26 網路禮儀、⭐ p.27 問句三種語域＋倒裝、p.29 必要與義務＝subjonctif 複習）＋連動（三之九十四）**
 > - 🐛 **10-27 小鎮：Clément 卡在樹裡看不到、手機聽力有時從整軌開頭播、句尾帶到下一句——三個都修（三之九十二（小鎮））**
 > - 📒 **10-25 第45課筆記（B1 p.17–21：Père au foyer、怎麼交朋友、時間指示詞、⭐ plus-que-parfait 解鎖、J Trois）＋連動（三之九十一）**
 > - 🏛 **10-25 小鎮：記憶宮殿改成「一棟房子、一座島一個房間、每句一件不一樣的家具」（廣場東邊），路上的告示牌全拿掉；修橋改成第一順位、箭頭蓋過今日委托（三之九十（小鎮））**
@@ -4964,6 +4965,16 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
   3. **#73**（preposition-country）opts 有 12 個、互相重複（au Canada／en France…出現好幾次），看起來是組合題被攤平了，選項畫面會很怪。
   4. #301（「我 180 公分 Je fais 1m80」）topic 標成 question-words，應該是 faire 用法；不影響作答，只影響分類。
 - ⏭ 下一步（可選）：純變位 122 題要不要也補一句（例如「主詞 nous → 字尾 -ons」）——小鎮已經會列變位表，優先度低；`node tools/check_weak_anote.js --all -v` 可以看清單。
+
+#### 三之九十四、10-27：第46課筆記（Édito B1 p.14 作業、p.22、p.25–27、p.29）＋連動
+
+- 來源：Owen 貼的逐字稿（線上課）＋桌面 1027 資料夾 5 張截圖（p.22 詞彙頁、Unité 2 封面、p.26 課文 A、p.27 L'interrogation、p.29 nécessité）。逐字稿中英中混雜。
+- ✅ **french_notes.html 第46課**（9 unit、78 句、9 張表）：✏️ 作業批改 p.14 練習 5b、5c（老師：考試這樣寫 A2 會過，盡量保留你的句子）｜🗣 閒聊看皮膚科｜📚 Les relations amicales 四張詞表＋練習 2、3（練習 5 沒做，照詞表配）｜📖 A 網路禮儀（Le Vif；divulgâcher＝魁北克造字、Pas de hâte → 老師說要講 Prends ton temps）｜📐 ⭐ L'interrogation 三種語域（語調／est-ce que 同級、倒裝＝soutenu；名詞主詞補代名詞、-t-；練習 2 答案）｜📐 p.29 泛指用原形、指定某人用 subjonctif（練習 4、5 課堂沒做，答案照規則填、標 ⏭）｜🎙 課堂法語｜🔊 發音（taguer 的 u、重音在最後音節）｜📋 糾錯。
+- ⚠️ 標出來的不一致：參加考試老師說 prendre，標準是 passer un examen｜看醫生那段老師說 « quand je suis rentré »、« il ne peut pas »（標準：entrer、轉述過去用 pouvait）｜練習 2e 老師傾向 se sentir seul，我判斷 se moquer 比較自然（課本沒附答案）｜老師口說 « lui a-tu »（tu → as）｜« je me soucis » → se soucie。
+- ⛔ 沒入庫：Owen 個人的作業內容只放老師改過的句子；老師用英文說的「越來越多人覺得寂寞」等沒有法文原句的，不自己翻成法文卡。
+- ✅ 連動：chunks **+97**（抽樣看過，糾錯卡背面都是正確句子的中文）｜questions **+32**（`vocab-amour-relations` 15、新 topic **`interrogation-registres`** 10、`subjonctif-present` 7）＋ TOPIC_LABELS 三處＋quest.html `G3_AIM`｜sentences `S_L46_1~13`｜table_drill +2（`interro-b1-p27`、`subj-b1-p29`，共 97 個）｜gram_rules：`questions` lessons 加 46、topics 加 `interrogation-registres`、四條新 points＋3 個例句（check_g3 要求例句在 gram_rules 裡）；`subjonctif` lessons 加 46、補一條｜map `CURRENT_LESSON` 46＋新地塊 `bonnes-manieres`。
+- 驗證：check_notes 全綠、check_g3 ✓；preview 看筆記（9 unit、78 句）、quiz?lesson=46 出題、table_drill 兩張新表載入、sentence_drill 第46課 13 句、map 新地塊；無 console 錯誤。ROOM 測試→已改回、preview 已關、無 TEST 殘留。
+- 🎙 老師：B1 後面會有生態主題（B2 考試很常考，台灣學生最常卡）；她會傳新版 Édito B1 Cahier。
 
 #### 三之九十三（小鎮）、10-27：口說群島樣品——自我介紹島
 
