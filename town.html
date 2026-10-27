@@ -145,6 +145,22 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .pcell.empty { border:none; background:none; cursor:default; }
 .pcell small { position:absolute; right:3px; bottom:1px; font-size:.6em; color:#9aa39c; }
 .pme { position:absolute; width:var(--pc); height:var(--pc); display:flex; align-items:flex-start; justify-content:flex-start; font-size:calc(var(--pc)*.38); pointer-events:none; transition:left .35s ease, top .35s ease; }
+.ihud { position:fixed; inset:0; z-index:9; pointer-events:none; display:none; }
+.ihud > * { pointer-events:auto; }
+.ihbar { position:absolute; top:calc(env(safe-area-inset-top) + 8px); left:10px; right:10px; display:flex; gap:8px; align-items:center; background:rgba(10,20,30,.72); border-radius:12px; padding:7px 10px; color:#fff3c0; }
+.ihbar b { white-space:nowrap; } .ihbar span { flex:1; font-size:.85em; } .ihbar button { background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.25); border-radius:8px; padding:4px 9px; font-family:inherit; }
+.ihint { position:absolute; left:14px; right:14px; bottom:calc(env(safe-area-inset-bottom) + 16px); background:rgba(10,20,30,.72); border-radius:10px; padding:8px 10px; color:#dfe8e1; transition:opacity .8s; }
+.arch { position:absolute; left:0; right:0; top:60px; bottom:90px; }
+.aisle { position:absolute; transform:translate(-50%,-50%); background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:2px; font-family:inherit; cursor:pointer; }
+.ablob { position:relative; display:flex; align-items:center; justify-content:center; width:50px; height:38px; border-radius:48% 52% 45% 55%; background:#6fb45a; box-shadow:0 0 0 5px #e3cd92, 0 0 0 9px rgba(255,255,255,.18); }
+.aisle:not(.live) .ablob { filter:saturate(.35) brightness(.8); }
+.aisle.live .ablob { animation:abob 2.4s ease-in-out infinite; }
+@keyframes abob { 50% { transform:translateY(-3px); } }
+.aflag { position:absolute; left:50%; top:-14px; width:12px; height:9px; border-left:2px solid #4a3020; }
+.aname { color:#fff; font-size:.75em; text-shadow:0 1px 2px #000; white-space:nowrap; } .aname small { display:block; color:#b9c7bc; font-size:.85em; text-align:center; }
+.aboat { position:absolute; font-size:20px; animation:aboat 14s linear infinite alternate; } .aboat.b2 { animation-duration:18s; }
+@keyframes aboat { to { transform:translate(60px,-20px); } }
+.ibub { position:fixed; z-index:9; max-width:min(86vw,340px); background:rgba(18,26,20,.93); border:2px solid #f0c95a; border-radius:12px; padding:8px 11px; color:#dfe8e1; cursor:pointer; line-height:1.45; }
 .cgap { color:var(--gold); letter-spacing:1px; } .cans { color:var(--gold); text-decoration:underline; }
 .conjrow { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; margin:6px 0; font-size:.85em; } .conjrow span { background:#16211b; border-radius:6px; padding:3px 6px; } .conjrow small { color:var(--dim); } .conjrow .ok { background:#3c5a2c; color:#fff3c0; } .conjrow .no { background:#4a2c28; }
 .rlink { display:inline-block; margin-top:4px; color:#9fd0ff; font-size:.88em; text-decoration:none; border-bottom:1px dashed #9fd0ff; }
@@ -340,7 +356,7 @@ var CHALLENGES=[ {id:'garden', x:16, y:18, name:'守園', em:'🌻', goal:3},   
   /* ☕ 10-17：口說島一句一句練熟（選擇／手寫，⛔ 不用麥克風——Owen：辨識不夠靠譜） */
   {id:'cafe', x:17, y:29, name:'咖啡館', em:'☕', kind:'isle'},
   /* 🏛 10-25：記憶宮殿（一座口說島＝一個房間），廣場東邊、跟咖啡館對稱 */
-  {id:'palace', x:24, y:28, name:'記憶宮殿', em:'🏛', kind:'palace'},
+  {id:'palace', x:24, y:28, name:'口說群島', em:'⛵', kind:'palace'},   /* 10-27 改成碼頭：搭船去口說群島 */
   /* 🕵️ 10-17：抓錯字 */
   {id:'notice', x:23, y:12, name:'告示牌', em:'📋', kind:'spot'},
   /* 🪨🚪 10-18 Owen：「瑪利歐是因為跑來跑去、時機、路線、機關、隱藏關卡才有趣」→ 法文變成路線本身的兩個關卡（嵌入，跟守園同一套） */
@@ -430,6 +446,7 @@ function nudge(axis, d){
 function blocked(x,y){ var r=.28; return isSolidAt(x-r,y-r)||isSolidAt(x+r,y-r)||isSolidAt(x-r,y+r)||isSolidAt(x+r,y+r); }
 
 function resize(){
+  if(typeof icv!=='undefined' && icv && ISLE.on) isleSize();
   DPR=Math.min(window.devicePixelRatio||1, 2);
   cv.width=Math.floor(window.innerWidth*DPR); cv.height=Math.floor(window.innerHeight*DPR);
   SC = window.innerWidth<520 ? 3 : 4; TS=16*SC;
@@ -2667,7 +2684,8 @@ var PAL_CELLS=(function(){ var o=[], N=6;
   ring(0,N-1); ring(1,N-2); ring(2,N-3); return o; })();
 function palRoom(I){
   var rnd=palSeed(I.id), pool=PAL_FURN.slice(); for(var i=pool.length-1;i>0;i--){ var j=Math.floor(rnd()*(i+1)), t=pool[i]; pool[i]=pool[j]; pool[j]=t; }
-  return I.sents.slice(0,PAL_CELLS.length).map(function(s,i){ return {n:i+1, s:s, ref:I.id+':'+s.key, em:pool[i%pool.length], rc:PAL_CELLS[i], R:{name:I.title}}; });
+  var sc=(typeof ISLE_SCENES!=='undefined') && ISLE_SCENES[I.id];   /* 蓋好的島：用島上的地標圖（路上叫住時也是同一個圖） */
+  return I.sents.slice(0,PAL_CELLS.length).map(function(s,i){ var m=sc&&sc.marks[s.key]; return {n:i+1, s:s, ref:I.id+':'+s.key, em:m?m[0]:pool[i%pool.length], rc:PAL_CELLS[i], R:{name:I.title}}; });
 }
 function pst(ref){ S.palace=S.palace||{}; return S.palace[ref]||{st:0, last:0}; }
 function firstLetters(fr){ return wparts(fr).map(function(p){ return p.w ? p.t.charAt(0)+(/['’]$/.test(p.t)?'\'':'') : p.t.replace(/\s+/g,' '); }).join('').replace(/\s+/g,' '); }
@@ -2712,7 +2730,7 @@ function palaceRoom(I, at){
     '<div class="row2"><button class="btn ghost" id="pback">← 其他房間</button><button class="btn main" id="ptour">▶ 照順序走一圈</button></div>', true);
   function walkTo(x, then){ var m=document.getElementById('pme'); if(m){ m.style.left=(x.rc[1]*cell)+'px'; m.style.top=(x.rc[0]*cell)+'px'; } setTimeout(then, 380); }
   sheet.querySelectorAll('[data-pn]').forEach(function(b){ b.onclick=function(){ var x=g[+b.dataset.pn-1]; walkTo(x, function(){ palaceOpen(x, function(){ palaceRoom(I, x.n); }); }); }; });
-  document.getElementById('pback').onclick=palaceHall;
+  document.getElementById('pback').onclick=ISLE.on ? closeSheet : palaceHall;
   document.getElementById('ptour').onclick=function(){ var i=0;
     (function step(){ if(i>=g.length){ palaceRoom(I, g.length); toast('🏛 走完一圈了'); return; } var x=g[i++];
       palaceRoom(I, i>1?g[i-2].n:1); walkTo(x, function(){ palaceOpen(x, step, function(){ palaceRoom(I, x.n); }); }); })(); };
@@ -2724,7 +2742,7 @@ function palaceRoom(I, at){
      ③ 路上叫住時中文直接給、首字母再按一下；想不起來可以按「再學一次」看整句——不算錯，回到認識階段 */
 function palaceOpen(g, done, stop){
   done=done||closeSheet; stop=stop||done;
-  var P=pst(g.ref), st=P.st, s=g.s, head='<h3>🏛 '+esc(g.R.name)+' <small>'+pix(g.em,20)+' 第 '+g.n+' 件・'+(g.review?'回來看看':['認識','提示','只剩位置'][st])+'</small></h3>';
+  var P=pst(g.ref), st=P.st, s=g.s, head='<h3>🏝 '+esc(g.R.name)+' <small>'+pix(g.em,20)+' 第 '+g.n+' 站・'+(g.review?'回來看看':['認識','提示','只剩位置'][st])+'</small></h3>';
   /* ⏰ 對上了 → 隔天；只剩位置又對上 → 3、7、21 天；沒對上 → 退一階（退到認識就要回房間再學） */
   var setSt=function(n, res){ S.palace=S.palace||{}; var o=S.palace[g.ref]||{st:0,k:0}, now=Date.now(), k=0, due=0;
     if(res==='ok'){ if(o.st>=2) k=Math.min((o.k||0)+1, PAL_GAP.length-1); due=sod(now)+PAL_GAP[k]*86400000; }
@@ -2757,6 +2775,161 @@ function palaceOpen(g, done, stop){
     document.getElementById('pno').onclick=function(){ if(window.GameLog) GameLog.answer(false,{kind:'🏛 宮殿', topic:'palace', ref:'pal:'+g.ref, q:s.zh, a:s.fr}); setSt(st-1,'no'); toast(st-1>=1?'退回首字母，明天再來':'回到認識，再看幾次'); done(); };
   };
 }
+/* ============================================================
+   🏝 口說群島（10-27 樣品：自我介紹島）——設計稿 research/2026-10-27_口說群島設計.md
+   Owen：「口說島可以跟沈伯洋的政策島怎麼比擬？我的遊戲要怎樣真的跟那些島很相像，才能類比圖像記憶」→「先多研究怎麼做得更到位，這樣才真的有島的感覺」
+   ⭐ 研究重點：①每個地點長得不一樣、同一個地標不在兩座島重複（干擾）②地標跟句子意思相符（物件—位置記憶）
+             ③自己用搖桿走過去（主動導航）④環境不必精緻（Legge 2012），力氣放在「不一樣、有意義」
+   ⭐ 一座島＝一座口說島；島上分區＝段落；環島步道＝講話順序；每個地標＝一個片段（ref 跟咖啡館／宮殿同一套 AC1:1.2，進度共用 S.palace）
+   做法：獨立全螢幕畫布 #icv 蓋在小鎮上（小鎮暫停），彈窗沿用 palaceOpen（sheet 在更上層）
+   ============================================================ */
+var ISLE_SCENES={
+  AC1:{ name:'自我介紹島', W:26, H:35,
+    blobs:[[12.5,17,10.3,14.6],[7,25,5.5,5],[19,10,5,5],[13,5,6,4]],
+    zones:[ {name:'🪪 我是誰',   y0:23.5, y1:99, tint:'#7fbf5f'},
+            {name:'🏢 我住哪',   y0:18.6, y1:23.5, tint:'#8cc06a'},
+            {name:'🎧 我怎麼學', y0:12,   y1:18.6, tint:'#76b88a'},
+            {name:'🌫️ 法文對我', y0:-9,   y1:12,   tint:'#93b8a4'} ],
+    path:[[13,32.2],[13,29.2],[11,28],[7.5,27],[5.2,24.6],[6,21.2],[13,21],[20,21],[20.4,17],[19.5,15],[13,15],[6,15],[5.6,11],[7,9],[13,8.6],[18.5,9],[18,6],[13,4.4]],
+    dock:[13,30.4,33.6],
+    tablet:{x:13,y:18.1},
+    marks:{ '0':['🦷','🧑‍⚕️','診療椅',[12.2,27.4]], '1.1':['🗂️','','分類櫃',[9.6,26.6]], '1.2':['🧩','','拼圖桌',[7.6,25.6]], '2':['📐','📜','工程圖',[5.0,26.2]], '3':['📖','🪑','樹下讀書',[4.2,23.4]],
+            '4':['🏢','','大樓',[7.2,20.0]], '5':['🚉','🚃','小車站',[10.2,22.2]], '6.1':['🍜','💸','貴的小吃攤',[13.2,20.0]], '6.2':['🏡','❤️','喜歡住這裡',[16.2,22.2]], '6.3':['🧹','👋','鄰居掃地',[19.2,20.0]],
+            '7':['📅','','五月的日曆',[21.4,16.4]], '8':['🦉','🤖','貓頭鷹與 AI',[18.4,16.0]], '9':['🎧','📺','耳機與電視',[15.6,13.9]], '10.1':['⏳','','大沙漏',[12.4,16.0]], '10.2':['⭐','','星星路標',[9.6,13.9]], '10.3':['🤿','🌊','跳進法文池',[6.8,16.0]],
+            '11':['🇫🇷','','旗子',[4.4,12.4]], '12.1':['💬','','對話石',[6.0,8.0]], '12.2':['👓','','大眼鏡',[9.0,9.8]], '12.3':['🌫️','','一半的霧',[12.0,7.6]], '12.4':['🌍','🔭','望遠台',[15.0,9.8]], '13.1':['🏃','','跑道',[19.6,10.2]], '13.2':['👧','','女兒在終點',[14.2,3.6]] },
+    deco:[['🌴',3.2,28.6],['🌴',21.6,25.4],['🌴',3.0,18.4],['🌴',22.6,13.0],['🌳',16.6,25.8],['🌳',18.8,24.2],['🌸',9.0,24.0],['🌸',14.6,24.4],['🪨',22.0,19.2],
+          ['🌳',8.2,18.4],['🌳',17.4,18.6],['🌸',3.8,15.2],['🌳',22.2,7.4],['🌲',9.2,5.4],['🌲',17.6,4.0],['🪨',4.8,6.6],['🌸',11.0,11.6],['🌳',16.6,12.0]] }
+};
+var ARCH_ICON={AC1:'🪪',AC2:'🏡',AC3:'🦷',AC4:'🎓',AC5:'🎨',AC6:'🍜',AC7:'🧳',AC8:'🍁',AC9:'🏢',AC10:'🛒',AC11:'🏃',AC12:'📱',AC13:'♻️',AC14:'🤝',AC15:'🔭'};   /* 每座島的招牌圖＝主題（遠看就知道是哪座） */
+var ARCH=[ /* 群島總覽：15 座固定位置（0–100），樣品只有 AC1 能上島 */
+  ['AC1',50,82],['AC2',26,70],['AC3',74,70],['AC4',14,52],['AC5',38,55],['AC6',62,55],['AC7',86,52],['AC8',50,38],
+  ['AC9',22,34],['AC10',78,34],['AC11',10,18],['AC12',34,20],['AC13',66,20],['AC14',90,18],['AC15',50,8]];
+var ISLE={on:false, id:null, x:13, y:31, vx:0, vy:0, still:0, joy:null, T:null, near:null, face:1};
+function isleSpec(id){ return ISLE_SCENES[id]; }
+function isleUnits(id){ var I=isles().filter(function(x){ return x.id===id; })[0], sc=isleSpec(id); if(!I||!sc) return [];
+  return I.sents.map(function(s,i){ var m=sc.marks[s.key]||['❔','','',[13,18]]; return {n:i+1, s:s, ref:I.id+':'+s.key, em:m[0], prop:m[1], lab:m[2], x:m[3][0], y:m[3][1], R:{name:I.title}}; }); }
+function isleField(sc,x,y){ var f=-9; sc.blobs.forEach(function(b){ var dx=(x-b[0])/b[2], dy=(y-b[1])/b[3]; f=Math.max(f, 1-(dx*dx+dy*dy)); });
+  return f + .05*Math.sin(x*1.1+y*.4) + .04*Math.cos(y*1.3-x*.7); }
+function isleBuild(id){ var sc=isleSpec(id), T=[];
+  for(var y=0;y<sc.H;y++){ T[y]=[]; for(var x=0;x<sc.W;x++){ var f=isleField(sc,x+.5,y+.5); T[y][x]= f>.16?'g' : f>0?'s' : f>-.14?'w' : 'd'; } }
+  return T; }
+function isleWalk(x,y){ var sc=isleSpec(ISLE.id), T=ISLE.T, X=Math.floor(x), Y=Math.floor(y);
+  if(Math.abs(x-sc.dock[0])<.55 && y>=sc.dock[1]-.6 && y<=sc.dock[2]) return true;
+  return !!(T[Y] && (T[Y][X]==='g'||T[Y][X]==='s')); }
+var icv=null, ictx=null, ihud=null;
+function isleSetup(){
+  if(icv) return;
+  icv=document.createElement('canvas'); icv.id='icv'; icv.style.cssText='position:fixed;inset:0;width:100%;height:100%;z-index:9;display:none;touch-action:none;background:#2a5fa8';
+  document.body.appendChild(icv); ictx=icv.getContext('2d');
+  ihud=document.createElement('div'); ihud.id='ihud'; ihud.className='ihud'; document.body.appendChild(ihud);
+  icv.addEventListener('pointerdown', function(e){ if(busy) return; if(isleBubbleTap(e)) return; try{ icv.setPointerCapture(e.pointerId); }catch(er){} ISLE.joy={id:e.pointerId, ox:e.clientX, oy:e.clientY, x:e.clientX, y:e.clientY}; });
+  icv.addEventListener('pointermove', function(e){ if(ISLE.joy && ISLE.joy.id===e.pointerId){ ISLE.joy.x=e.clientX; ISLE.joy.y=e.clientY; } });
+  ['pointerup','pointercancel'].forEach(function(t){ icv.addEventListener(t, function(e){ if(ISLE.joy && ISLE.joy.id===e.pointerId) ISLE.joy=null; }); });
+}
+function isleSize(){ var d=Math.min(window.devicePixelRatio||1,2); icv.width=Math.round(innerWidth*d); icv.height=Math.round(innerHeight*d); ictx.imageSmoothingEnabled=false; }
+/* ---------- 群島總覽 ---------- */
+function archOpen(){
+  isleSetup(); closeSheet(); ISLE.on=true; ISLE.id=null; busy=true; icv.style.display='block'; isleSize(); ISLE.joy=null;
+  var L=isles(), h='<div class="ihbar"><b>⛵ 口說群島</b><span class="muted">一座口說島＝一座島</span><button id="ixx">回小鎮</button></div><div class="arch">';
+  ARCH.forEach(function(a){ var I=L.filter(function(x){ return x.id===a[0]; })[0]; if(!I) return;
+    var u=palRoom(I), got=u.filter(function(g){ return pst(g.ref).st>=2; }).length, frac=u.length?got/u.length:0, ok=!!isleSpec(a[0]);
+    var flag= frac>=.8?'#f0c95a' : frac>=.3?'#8fc3ff' : frac>0?'#e8e1cf' : 'rgba(255,255,255,.25)';
+    var r=a[0].length*7+a[1], br=(40+r%15)+'% '+(55-r%12)+'% '+(45+r%10)+'% '+(52-r%9)+'%';
+    h+='<button class="aisle'+(ok?' live':'')+'" data-arch="'+a[0]+'" style="left:'+a[1]+'%;top:'+a[2]+'%"><span class="ablob" style="border-radius:'+br+'">'+pix(ARCH_ICON[a[0]]||'🏝',26)+'<span class="aflag" style="background:'+flag+'"></span></span><span class="aname">'+esc(I.title)+(ok?'':'<small>還在蓋</small>')+'</span></button>'; });
+  h+='<span class="aboat" style="left:30%;top:62%">⛵</span><span class="aboat b2" style="left:64%;top:28%">⛵</span></div>'+
+    '<div class="muted ihint">旗子顏色：白＝剛開始　藍＝記了一部分　金＝大多記熟了。現在只有「自我介紹島」蓋好了，其他島先用房間版。</div>';
+  ihud.innerHTML=h; ihud.style.display='block';
+  ihud.querySelectorAll('[data-arch]').forEach(function(b){ b.onclick=function(){ var id=b.dataset.arch;
+    if(isleSpec(id)) isleEnter(id); else { var I=L.filter(function(x){ return x.id===id; })[0]; palaceRoom(I); } }; });
+  document.getElementById('ixx').onclick=isleExit;
+}
+function isleExit(){ ISLE.on=false; busy=false; if(icv) icv.style.display='none'; if(ihud){ ihud.style.display='none'; ihud.innerHTML=''; } var b=document.getElementById('ibub'); if(b) b.remove(); closeSheet(); joy=null; keys={}; }
+/* ---------- 上島 ---------- */
+function isleEnter(id){
+  var sc=isleSpec(id); ISLE.id=id; ISLE.T=isleBuild(id); ISLE.x=sc.dock[0]; ISLE.y=sc.dock[2]-.8; ISLE.cx=ISLE.x; ISLE.cy=ISLE.y; ISLE.still=0; ISLE.units=isleUnits(id); busy=false;
+  var I=isles().filter(function(x){ return x.id===id; })[0];
+  ihud.innerHTML='<div class="ihbar"><b>🏝 '+esc(sc.name)+'</b><span id="izone" class="muted"></span><button id="iarch">🗺 群島</button></div>'+
+    '<div class="muted ihint" id="ihint">⛵ 靠岸了。拖曳畫面走路，沿著步道從 ① 走到 ㉓——順序就是你講話的順序。站在地標旁邊就會看到句子。</div>';
+  document.getElementById('iarch').onclick=archOpen;
+  if(window.GameLog) GameLog.event('isle_enter');
+  setTimeout(function(){ var h=document.getElementById('ihint'); if(h) h.style.opacity='0'; }, 6000);
+}
+function isleUpdate(dt){
+  if(!ISLE.id || busy) return;
+  var vx=0, vy=0;
+  if(ISLE.joy){ var dx=ISLE.joy.x-ISLE.joy.ox, dy=ISLE.joy.y-ISLE.joy.oy, L=Math.hypot(dx,dy); if(L>8){ var k=Math.min(1,L/60); vx=dx/L*k; vy=dy/L*k; } }
+  if(keys.arrowleft||keys.a) vx-=1; if(keys.arrowright||keys.d) vx+=1; if(keys.arrowup||keys.w) vy-=1; if(keys.arrowdown||keys.s) vy+=1;
+  var sp=3.4, nx=ISLE.x+vx*sp*dt, ny=ISLE.y+vy*sp*dt;
+  if(isleWalk(nx,ISLE.y)) ISLE.x=nx; if(isleWalk(ISLE.x,ny)) ISLE.y=ny;
+  if(Math.abs(vx)>.05) ISLE.face=vx<0?-1:1;
+  var moving=Math.hypot(vx,vy)>.1; ISLE.still= moving?0 : ISLE.still+dt; ISLE.moving=moving;
+  var best=null, bd=1.25; ISLE.units.forEach(function(g){ var d=Math.hypot(g.x-ISLE.x, g.y+.2-ISLE.y); if(d<bd){ bd=d; best=g; } }); ISLE.near=best;
+  var sc=isleSpec(ISLE.id), z=sc.zones.filter(function(z){ return ISLE.y>z.y0 && ISLE.y<=z.y1; })[0], ze=document.getElementById('izone'); if(ze && z) ze.textContent=z.name;
+}
+function isleDraw(dt){
+  if(!icv || icv.style.display==='none') return;
+  var c=ictx, w=icv.width, h=icv.height, d=w/innerWidth, ts=Math.min(innerWidth/10.5, 52)*d;
+  c.fillStyle='#1f4f93'; c.fillRect(0,0,w,h);
+  if(!ISLE.id){ isleSeaFx(c,w,h,d); return; }
+  var sc=isleSpec(ISLE.id), T=ISLE.T;
+  var k=1-Math.exp(-6*dt); ISLE.cx+=(ISLE.x-ISLE.cx)*k; ISLE.cy+=(ISLE.y-ISLE.cy)*k;
+  var ox=w/2-ISLE.cx*ts, oy=h*.55-ISLE.cy*ts;
+  var x0=Math.max(0,Math.floor(-ox/ts)-1), x1=Math.min(sc.W-1,Math.ceil((w-ox)/ts)+1), y0=Math.max(0,Math.floor(-oy/ts)-1), y1=Math.min(sc.H-1,Math.ceil((h-oy)/ts)+1);
+  /* 深海浪紋 */
+  c.fillStyle='rgba(255,255,255,.07)'; for(var yy=0;yy<h;yy+=ts*.9){ for(var xx=((yy/ts)%2)*ts*.6;xx<w;xx+=ts*1.3){ c.fillRect(xx+Math.sin(clock*1.2+yy)*ts*.2, yy, ts*.35, d*1.5); } }
+  for(var y=y0;y<=y1;y++) for(var x=x0;x<=x1;x++){ var t=T[y][x], px=Math.floor(ox+x*ts), py=Math.floor(oy+y*ts), s=Math.ceil(ts)+1;
+    if(t==='d') continue;
+    if(t==='w'){ c.fillStyle='#3d8fd6'; c.fillRect(px,py,s,s);
+      var nearSand=(T[y-1]&&T[y-1][x]==='s')||(T[y+1]&&T[y+1][x]==='s')||T[y][x-1]==='s'||T[y][x+1]==='s';
+      if(nearSand){ var a=.35+.3*Math.sin(clock*2+x*.8+y*.6); c.fillStyle='rgba(255,255,255,'+a.toFixed(2)+')'; c.fillRect(px+ts*.1, py+ts*(.45+.12*Math.sin(clock*2+x)), ts*.8, d*2); }
+      continue; }
+    if(t==='s'){ c.fillStyle=((x+y)%2)?'#ead69e':'#e3cd92'; c.fillRect(px,py,s,s); continue; }
+    var z=sc.zones.filter(function(z){ return y+.5>z.y0 && y+.5<=z.y1; })[0]; c.fillStyle=z?z.tint:'#7fbf5f'; c.fillRect(px,py,s,s);
+    if((x*7+y*3)%5===0){ c.fillStyle='rgba(0,0,0,.06)'; c.fillRect(px+ts*.3,py+ts*.4,ts*.12,ts*.12); } }
+  /* 碼頭 */
+  c.fillStyle='#8a5a32'; c.fillRect(ox+(sc.dock[0]-.5)*ts, oy+sc.dock[1]*ts, ts, (sc.dock[2]-sc.dock[1])*ts);
+  c.fillStyle='#6b4224'; for(var dy2=sc.dock[1];dy2<sc.dock[2];dy2+=.5) c.fillRect(ox+(sc.dock[0]-.5)*ts, oy+dy2*ts, ts, d*2);
+  /* 步道 */
+  c.lineCap='round'; c.lineJoin='round'; c.beginPath(); sc.path.forEach(function(p,i){ var X=ox+p[0]*ts, Y=oy+p[1]*ts; if(i) c.lineTo(X,Y); else c.moveTo(X,Y); });
+  c.strokeStyle='#b8925c'; c.lineWidth=ts*.62; c.stroke(); c.strokeStyle='#d6b47c'; c.lineWidth=ts*.46; c.stroke();
+  /* 物件（依 y 排序） */
+  var L=[];
+  sc.deco.forEach(function(o){ L.push({y:o[2], f:function(){ isleEmoji(c, o[0], ox+o[1]*ts, oy+o[2]*ts, ts*1.05); }}); });
+  L.push({y:sc.tablet.y, f:function(){ var X=ox+sc.tablet.x*ts, Y=oy+sc.tablet.y*ts; isleShadow(c,X,Y,ts*.5); isleEmoji(c,'🪧',X,Y,ts*1.1);
+    c.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; c.textAlign='center'; c.fillStyle='#2a1a08'; c.fillText('考官的問題', X, Y-ts*.62); }});
+  ISLE.units.forEach(function(g){ L.push({y:g.y, f:function(){ isleMark(c, g, ox+g.x*ts, oy+g.y*ts, ts, d); }}); });
+  L.push({y:ISLE.y, f:function(){ var X=ox+ISLE.x*ts, Y=oy+ISLE.y*ts; isleShadow(c,X,Y,ts*.32); var im=img.apply(null,SPR.hero), bob=ISLE.moving?Math.abs(Math.sin(clock*12))*ts*.06:0;
+    if(im.complete){ c.save(); c.translate(X,Y-ts*.5-bob); c.scale(ISLE.face,1); c.drawImage(im,-ts*.5,-ts*.5,ts,ts); c.restore(); } }});
+  L.sort(function(a,b){ return a.y-b.y; }).forEach(function(o){ o.f(); });
+  isleBubble(ox,oy,ts,d);
+}
+function isleSeaFx(c,w,h,d){ c.fillStyle='rgba(255,255,255,.06)'; for(var y=0;y<h;y+=40*d) for(var x=(y/(40*d))%2*25*d;x<w;x+=60*d) c.fillRect(x+Math.sin(clock+y)*8*d,y,18*d,1.5*d); }
+function isleShadow(c,X,Y,r){ c.fillStyle='rgba(0,0,0,.22)'; c.beginPath(); c.ellipse(X,Y,r,r*.38,0,0,7); c.fill(); }
+function isleEmoji(c,em,X,Y,size){ var im=pixImg(em); if(im.complete && im.naturalWidth) c.drawImage(im, X-size/2, Y-size, size, size); }
+function isleMark(c,g,X,Y,ts,d){
+  var P=pst(g.ref), col=P.last?['#e8e1cf','#8fc3ff','#f0c95a'][P.st]:'rgba(255,255,255,.35)';
+  c.strokeStyle=col; c.lineWidth=d*3; c.beginPath(); c.ellipse(X,Y,ts*.62,ts*.24,0,0,7); c.stroke();
+  isleShadow(c,X,Y,ts*.5);
+  isleEmoji(c,g.em,X,Y,ts*1.25);
+  if(g.prop) isleEmoji(c,g.prop,X+ts*.55,Y+ts*.05,ts*.62);
+  var bx=X-ts*.58, by=Y-ts*1.05, br=ts*.22; c.fillStyle='#2a1a08'; c.beginPath(); c.arc(bx,by,br,0,7); c.fill(); c.strokeStyle=col; c.lineWidth=d*2; c.stroke();
+  c.fillStyle='#fff3c0'; c.font='bold '+Math.round(ts*.26)+'px system-ui'; c.textAlign='center'; c.textBaseline='middle'; c.fillText(String(g.n), bx, by+d); c.textBaseline='alphabetic';
+}
+/* 站在地標旁、停下來 0.3 秒 → 泡泡（DOM，點了開三階段） */
+function isleBubble(ox,oy,ts,d){
+  var b=document.getElementById('ibub'), g=ISLE.near;
+  if(!g || ISLE.still<.3 || busy){ if(b) b.remove(); return; }
+  if(!b){ b=document.createElement('div'); b.id='ibub'; b.className='ibub'; document.body.appendChild(b); }
+  if(b.dataset.ref!==g.ref || b.dataset.st!==String(pst(g.ref).st)){
+    var st=pst(g.ref).st, s=g.s, main= st===0 ? esc(s.fr) : st===1 ? esc(firstLetters(s.fr)) : '這裡放的是哪一句？';
+    b.innerHTML='<div class="muted" style="font-size:.78em">第 '+g.n+' 站・'+esc(g.lab)+'</div>'+(s.ctx&&st===0?'<div class="muted" style="font-size:.78em">⋯ '+esc(s.ctx.slice(-40))+'</div>':'')+
+      '<div class="fr" style="color:#fff3c0">'+main+'</div>'+(st<2?'<div class="muted" style="font-size:.82em">'+esc(s.zh)+'</div>':'')+'<div class="muted" style="font-size:.72em;margin-top:2px">點我'+(st===0?'記這句':'自己考一下')+'</div>';
+    b.dataset.ref=g.ref; b.dataset.st=String(st);
+    b.onclick=function(){ b.remove(); palaceOpen(g, function(){ closeSheet(); }, function(){ closeSheet(); }); };
+  }
+  var X=(ox+g.x*ts)/d, Y=(oy+g.y*ts)/d; b.style.left=Math.max(8, Math.min(innerWidth-b.offsetWidth-8, X-b.offsetWidth/2))+'px'; b.style.top=Math.max(64, Y-ts/d*1.6-b.offsetHeight)+'px';
+}
+function isleBubbleTap(){ return false; }
 function cafePanel(ch){
   var L=isles(); if(!L.length) return;
   if(S.isleOff===today()){ ch.cool=30; return; }
@@ -3083,7 +3256,7 @@ function drawChallenges(list,ox,oy,ts){
     var px=ox+ch.x*ts, py=oy+ch.y*ts, im=pixImg(ch.em);
     cx.fillStyle='#7a5a32'; cx.fillRect(px+ts*.05, py+ts*.55, ts*.9, ts*.38);
     if(im.complete){ cx.drawImage(im, px+ts*.05, py+ts*.05, ts*.9, ts*.9); }
-    var b=Math.sin(clock*4)*ts*.06; cx.font=Math.round(ts*.38)+'px system-ui'; cx.textAlign='center'; cx.fillText({tiles:'🧩', isle:'💬', spot:'🔍', embed:'⭐', palace:'🏛'}[ch.kind]||'⚔️', px+ts*.5, py-ts*.05+b);
+    var b=Math.sin(clock*4)*ts*.06; cx.font=Math.round(ts*.38)+'px system-ui'; cx.textAlign='center'; cx.fillText({tiles:'🧩', isle:'💬', spot:'🔍', embed:'⭐', palace:'⛵'}[ch.kind]||'⚔️', px+ts*.5, py-ts*.05+b);
     cx.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; var lab=ch.name; var tw=cx.measureText(lab).width+ts*.2;
     cx.fillStyle='rgba(0,0,0,.55)'; cx.fillRect(px+ts*.5-tw/2, py+ts*1.02, tw, ts*.34); cx.fillStyle='#fff'; cx.fillText(lab, px+ts*.5, py+ts*1.27);
   }}); });
@@ -3137,7 +3310,7 @@ function update(dt){
   for(var ci=0;ci<CHALLENGES.length && !wild;ci++){ var CH=CHALLENGES[ci]; if(CH.cool>0){ CH.cool-=dt; continue; }
     /* 10-26 Owen：「站在宮殿門口會一直進去，只能重新整理」→ 出來之後要先走開（離門口 1.5 格以上）才會再觸發 */
     if(CH.away){ if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)>1.5) CH.away=0; else continue; }
-    if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ if(CH.kind==='tiles') tilesPanel(CH); else if(CH.kind==='isle') cafePanel(CH); else if(CH.kind==='spot') spotPanel(CH); else if(CH.kind==='embed') embedPanel(CH); else if(CH.kind==='palace'){ CH.away=1; palaceHall(); } else challengePanel(CH); }; })(CH)}; break; } }
+    if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ if(CH.kind==='tiles') tilesPanel(CH); else if(CH.kind==='isle') cafePanel(CH); else if(CH.kind==='spot') spotPanel(CH); else if(CH.kind==='embed') embedPanel(CH); else if(CH.kind==='palace'){ CH.away=1; archOpen(); } else challengePanel(CH); }; })(CH)}; break; } }
   /* 碰到節點 */
   for(var i=0;i<nodes.length && !wild;i++){ var n=nodes[i]; if(n.done) continue;
     var R=n.k==='fish'?1.15:.85;
@@ -3296,7 +3469,7 @@ function drawArrow(to,ox,oy,ts,w,h){
 }
 function loop(t){
   var dt=Math.min(.05,(t-lastT)/1000); lastT=t;
-  update(dt); draw(dt);
+  if(ISLE.on){ clock+=dt; isleUpdate(dt); isleDraw(dt); } else { update(dt); draw(dt); }
   requestAnimationFrame(loop);
 }
 
