@@ -14,7 +14,7 @@ Owen 10-23：「我覺得可以把聽力題整理進遊戲中了，邊玩邊微�
 """
 import json, os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from didier_align import DID, LABEL, UNSPOKEN, WORD, align, quietest, cut_quality
+from didier_align import DID, LABEL, UNSPOKEN, WORD, align, quietest, cut_quality, asr
 
 MIN_W, MAX_W = 4, 18          # 一句幾個字
 MIN_D, MAX_D = 1.2, 8.0       # 一句幾秒
@@ -22,6 +22,7 @@ MIN_D, MAX_D = 1.2, 8.0       # 一句幾秒
 
 def clips_of(book, t, segs):
     text, bt, tmap = align(book, t)
+    words = asr(book, t['track'])
     out = []
     pos = 0
     for line in text.split('\n'):
@@ -52,6 +53,12 @@ def clips_of(book, t, segs):
             d_out, dip_out = cut_quality(book, t['track'], ce - 0.15)
             if not all(d <= -35 or dip >= 10 for d, dip in ((d_in, dip_in), (d_out, dip_out))):
                 continue                                                   # 刀可能落在人聲裡 → 不要
+            # （合格判斷照舊用原本的切點，⛔ 不改變哪些句子入選＝id 不變）
+            # ⚠️ 10-26 Owen：「最尾巴有一點點下一句的聲音」→ 頭尾不能越過 whisper 聽到的前一個／下一個字
+            nxt = [w['s'] for w in words if w['s'] > e + 0.02]
+            prv = [w['e'] for w in words if w['e'] < s - 0.02]
+            if nxt: ce = min(ce, nxt[0] - 0.04)
+            if prv: cs = max(cs, prv[-1] + 0.03)
             say = frag.strip()
             if m.start() == 0 and m0: say = line[m0.end():m.end()].strip()
             say = re.sub(r'\s+', ' ', say)
