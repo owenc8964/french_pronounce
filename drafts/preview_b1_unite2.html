@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 Unité 2 預習單</title>
+<style>
+  :root {
+    --bg: #15171c;
+    --card: #1f232b;
+    --card2: #262b35;
+    --text: #e6e8ec;
+    --muted: #9aa3b2;
+    --fr: #ffffff;
+    --accent: #7cc4ff;
+    --gold: #f2c86b;
+    --warn: #ff9f7a;
+    --line: #333a46;
+    --gray-badge: #4a5160;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Helvetica Neue", sans-serif;
+    font-size: 16px; line-height: 1.65;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 1.35rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: .9rem; margin-bottom: 18px; }
+  section {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; margin: 0 0 16px;
+  }
+  h2 { font-size: 1.1rem; margin: 0 0 8px; color: var(--accent); }
+  h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--gold); }
+  p { margin: 6px 0; }
+  b { color: var(--fr); }
+  .time { float: right; font-size: .78rem; color: var(--muted); font-weight: normal; }
+  .rule {
+    background: var(--card2); border-left: 4px solid var(--accent);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .trap {
+    background: rgba(255,159,122,.08); border-left: 4px solid var(--warn);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .flag {
+    background: rgba(242,200,107,.08); border-left: 4px solid var(--gold);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: .92rem;
+  }
+  .map { list-style: none; padding: 0; margin: 0; }
+  .map li { padding: 7px 0; border-bottom: 1px solid var(--line); }
+  .map li:last-child { border-bottom: none; }
+  .pg { display: inline-block; min-width: 54px; color: var(--accent); font-weight: 600; }
+  .tag { display: inline-block; font-size: .72rem; padding: 1px 7px; border-radius: 10px;
+         background: var(--gray-badge); color: var(--text); margin-left: 4px; vertical-align: 1px; }
+  .tag.new { background: #2f5d8a; }
+  /* 法文句子載體：沿用 french_notes.html 的結構，之後可直接搬 */
+  .phrase-list { list-style: none; padding: 0; margin: 6px 0; }
+  .phrase-list li {
+    display: flex; flex-wrap: wrap; gap: 2px 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--line);
+  }
+  .phrase-list li:last-child { border-bottom: none; }
+  .fr { font-weight: 600; color: var(--fr); width: 100%; }
+  .zh { color: var(--muted); font-size: .9rem; }
+  .phrase-list li > span.note { color: #7d8696; font-size: .8rem; }
+  .fr em { font-style: normal; color: var(--gold); }
+  .vocab { list-style: none; padding: 0; margin: 4px 0 8px;
+           display: grid; grid-template-columns: 1fr; gap: 0; }
+  .vocab li { padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: .95rem; }
+  .vocab li:last-child { border-bottom: none; }
+  .vocab .w { color: var(--fr); font-weight: 600; }
+  .g { display: inline-block; font-size: .72rem; color: var(--muted); border: 1px solid var(--line);
+       border-radius: 4px; padding: 0 5px; margin: 0 4px; }
+  details { background: var(--card2); border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
+  summary { cursor: pointer; font-weight: 600; color: var(--text); }
+  details[open] summary { margin-bottom: 6px; }
+  .ex { margin: 8px 0; padding-left: 2px; }
+  .ex .q { color: var(--fr); }
+  .hint { color: var(--muted); font-size: .92rem; }
+  .likely { color: var(--gold); font-size: .8rem; }
+  ol.ask { padding-left: 20px; margin: 6px 0; }
+  ol.ask li { margin: 8px 0; }
+  .small { font-size: .85rem; color: var(--muted); }
+  @media (min-width: 640px) {
+    .vocab { grid-template-columns: 1fr 1fr; column-gap: 18px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Unité 2 Vivre ensemble sur la Terre・預習單（草稿）</h1>
+<div class="sub">範圍：Édito B1 p.25–38（第 2 單元）｜大約 15 分鐘｜全部法文句子都是課本原句，每句標頁碼</div>
+
+<div class="flag">
+  🚧 <b>這是草稿。</b>現在上的是 Unité 1，這張是給下一個單元先看的。<br>
+  中文翻譯、「它在處理什麼資訊」的說明、陷阱與標註是 Claude 加的；法文全部取自 <code>assets/.textbook_cache.txt</code> 的 Édito B1 內頁（PDF 頁碼＝課本頁碼）。
+</div>
+
+<!-- ============ 0. 地圖 ============ -->
+<section>
+  <h2>🗺 這個單元的頁面 <span class="time">1 分鐘</span></h2>
+  <ul class="map">
+    <li><span class="pg">p.25</span>單元首頁。目標：對問題做反應、表達不同意｜表達必要與義務｜表達滿意與不滿｜提議幫忙、請求幫忙</li>
+    <li><span class="pg">p.26</span>A 閱讀：網路上的禮貌（tag 別人、一天發幾篇、別爆雷、SMS 和 e-mail 怎麼用）</li>
+    <li><span class="pg">p.27</span>B 聽力：工作信件要不要用表情符號 ＋「反應問題、表達不同意」｜<b>文法：L'interrogation 問句的三種語域</b></li>
+    <li><span class="pg">p.28</span>C 聽力：從小培養公民意識｜D 閱讀：生態學該不該成為主科 ＋「表達必要、義務」</li>
+    <li><span class="pg">p.29</span><b>文法：Exprimer la nécessité et l'obligation</b>（il faut ＋ 不定式 vs il faut que ＋ 虛擬式）＋ 虛擬式複習<span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.30</span>詞彙頁：共同生活、禮貌、公民意識、自然 ＋ 發音：<b>Les groupes rythmiques 節奏群</b><span class="tag new">新</span></li>
+    <li><span class="pg">p.31</span>Culture：該不該放棄「紳士風度」（galanterie）？E 聽力｜F 漫畫</li>
+    <li><span class="pg">p.32</span>G 聽力：超市的「聊天收銀台」（blablabla caisse）｜H 閱讀：網友論壇正反意見</li>
+    <li><span class="pg">p.33</span>「表達不滿／滿意」功能句｜I 聽力：L'Heure Civique 每月一小時志工 ＋「提議、請求幫忙」</li>
+    <li><span class="pg">p.34</span><b>文法：Exprimer ses sentiments 表達感受</b>（de ＋ 不定式 vs que ＋ 虛擬式）<span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.35</span>J 影片：什麼是 tiers-lieu（第三空間）｜K 閱讀：Le Quai des possibles 介紹</li>
+    <li><span class="pg">p.36</span>詞彙頁：人際連結、互助、投入公益</li>
+    <li><span class="pg">p.37</span>l'essentiel 總複習（文法／詞彙）</li>
+    <li><span class="pg">p.38</span>Atelier médiation：替自己的法文課寫一份「禮貌守則」</li>
+  </ul>
+  <p class="small">p.39–40 是 DELF B1 聽力應考策略頁，不屬於本單元內容，這張沒整理。</p>
+</section>
+
+<!-- ============ 1. 問句 ============ -->
+<section>
+  <h2>📐 文法一：L'interrogation 問句的三種語域（p.27） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>同一個問題，法文用<b>句型</b>告訴對方「我們之間多正式」。問的內容一樣，換的是<b>距離感</b>。課本 Fonctionnement 表：<br>
+    <b>familier／standard（口語、一般）</b>：① 語調上揚——主詞＋動詞（＋疑問詞）＋？　② <b>Est-ce que</b>——（疑問詞）＋est-ce que＋主詞＋動詞＋？<br>
+    <b>soutenu（正式）</b>：③ <b>主詞動詞倒裝</b>——（疑問詞）＋動詞＋主詞＋？
+  </div>
+
+  <h3>課本 Fonctionnement 例句：同一個問題的三種說法（p.27）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">On peut annuler par SMS ? ／ On peut faire <em>quoi</em> ?</span><span class="zh">可以用簡訊取消嗎？／可以做什麼？</span><span class="note">p.27 語調上揚（疑問詞放句尾時是 quoi）</span></li>
+    <li><span class="fr"><em>Est-ce qu'</em>on peut annuler par SMS ? ／ <em>Qu'est-ce qu'</em>on peut faire ?</span><span class="zh">同上</span><span class="note">p.27 est-ce que</span></li>
+    <li><span class="fr"><em>Peut-on</em> annuler par SMS ? ／ Que <em>peut-on</em> faire ?</span><span class="zh">同上（正式）</span><span class="note">p.27 倒裝</span></li>
+  </ul>
+
+  <details>
+    <summary>想多看一點：p.27 Remarques 和 Échauffement</summary>
+    <ul class="phrase-list">
+      <li><span class="fr">Pourquoi les bonnes manières <em>sont-elles</em> importantes ?</span><span class="zh">為什麼禮貌很重要？</span><span class="note">p.27 Remarque：主詞是名詞時，名詞留在前面，動詞後面再補一個代名詞</span></li>
+      <li><span class="fr">Quand <em>va-t-il</em> répondre ?</span><span class="zh">他什麼時候會回？</span><span class="note">p.27 Remarque：動詞母音結尾＋主詞母音開頭 → 中間加 -t-</span></li>
+      <li><span class="fr">Que peut-on faire dans les e-mails ?</span><span class="zh">e-mail 裡可以做什麼？</span><span class="note">p.27 Échauffement a（出自 p.26 A 第4–5行）</span></li>
+      <li><span class="fr">Tu ne mets pas de smileys ?</span><span class="zh">你不放笑臉符號喔？</span><span class="note">p.27 Échauffement c</span></li>
+      <li><span class="fr">Qu'est-ce que ça veut dire ?</span><span class="zh">這是什麼意思？</span><span class="note">p.27 Échauffement d</span></li>
+    </ul>
+  </details>
+
+  <div class="trap">
+    ⚠️ <b>陷阱：名詞主詞不能直接倒裝。</b>直覺會把 <i>les bonnes manières sont importantes</i> 倒成「sont les bonnes manières…」。課本 Remarque 說：名詞<b>留在原位</b>，動詞後面<b>補 elles</b>——<b>les bonnes manières sont-elles</b>。p.27 練習 2e <i>Les publications Instagram apparaissent à quel moment ?</i> 就是在考這個。
+  </div>
+
+  <div class="flag">
+    🔎 <b>補充（標準文法，非課本）：</b>課本表裡只標「語域」，沒講聽力上的意義——口語、Podcast、訪談裡最常聽到的是第①種語調問句，<b>倒裝多半出現在書面和正式場合</b>。TCF 聽力要能聽懂①，寫作要能寫③。這點<b>未向老師查證</b>。
+  </div>
+</section>
+
+<!-- ============ 2. 必要與義務 ============ -->
+<section>
+  <h2>📐 文法二：Exprimer la nécessité et l'obligation 必要與義務（p.29） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>說「得做某事」時，法文要你先回答：<b>這條規定是對所有人，還是對某個特定的人？</b><br>
+    課本 Fonctionnement：<br>
+    <b>一般性、適用所有人</b> → <b>不定式</b>：il faut／il est nécessaire de ＋ 原形<br>
+    <b>針對某個特定主詞</b> → <b>que ＋ 虛擬式（subjonctif）</b>
+  </div>
+
+  <h3>課本 Fonctionnement 例句（p.29）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Il faut <em>apprendre</em> les bonnes manières.</span><span class="zh">（大家）要學禮貌。</span><span class="note">p.29 一般性 → 不定式</span></li>
+    <li><span class="fr">Il est nécessaire <em>d'apprendre</em> les bonnes manières.</span><span class="zh">學禮貌是必要的。</span><span class="note">p.29 一般性 → de ＋ 不定式</span></li>
+    <li><span class="fr">Il faut que notre fils <em>apprenne</em> les bonnes manières.</span><span class="zh">我們兒子得學學禮貌。</span><span class="note">p.29 特定主詞 → 虛擬式</span></li>
+    <li><span class="fr">Il est nécessaire que notre fils <em>apprenne</em> les bonnes manières.</span><span class="zh">我們兒子有必要學禮貌。</span><span class="note">p.29 特定主詞 → 虛擬式</span></li>
+  </ul>
+
+  <h3>虛擬式怎麼組（p.29 課本表，rappel 複習）</h3>
+  <div class="rule">
+    <b>je／tu／il／ils</b>：拿 <b>ils 的現在式</b>去掉 -ent 當字根，加 <b>-e, -es, -e, -ent</b>。例：ils comprennent → que je comprenne<br>
+    <b>nous／vous</b>：跟 imparfait 長得一樣。例：que nous comprenions<br>
+    課本列出的不規則：<b>avoir, être, aller, faire, pouvoir, vouloir, savoir</b>（表上只寫出 être、avoir 全表）
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">que je sois, que tu sois, qu'il soit, que nous soyons, que vous soyez, qu'ils soient</span><span class="zh">être 的虛擬式</span><span class="note">p.29 表</span></li>
+    <li><span class="fr">que j'aie, que tu aies, qu'il ait, que nous ayons, que vous ayez, qu'ils aient</span><span class="zh">avoir 的虛擬式</span><span class="note">p.29 表</span></li>
+  </ul>
+
+  <details>
+    <summary>想多看一點：其他不規則字根在課本句子裡的樣子</summary>
+    <ul class="phrase-list">
+      <li><span class="fr">Il faut que nous <em>fassions</em> des gestes au quotidien.</span><span class="zh">我們每天都得做些小動作（環保）。</span><span class="note">p.29 練習 5 Exemple（faire）</span></li>
+      <li><span class="fr">Il faudrait qu'ils <em>fassent</em> leurs propres observations.</span><span class="zh">應該讓他們自己去觀察。</span><span class="note">p.29 Échauffement e（faire）</span></li>
+      <li><span class="fr">Il faut que tous les employés <em>sachent</em> communiquer de manière formelle.</span><span class="zh">所有員工都得會用正式的方式溝通。</span><span class="note">p.29 練習 5a（savoir）</span></li>
+      <li><span class="fr">Il est important que les parents <em>puissent</em> avoir un comportement citoyen.</span><span class="zh">父母能有公民行為是很重要的。</span><span class="note">p.29 練習 5b（pouvoir）</span></li>
+      <li><span class="fr">Il est nécessaire que les enfants <em>aillent</em> à la découverte des espaces naturels.</span><span class="zh">孩子們有必要去探索自然環境。</span><span class="note">p.29 練習 5d（aller）</span></li>
+      <li><span class="fr">Pour avoir de bonnes manières, il faut qu'ils le <em>veuillent</em> vraiment.</span><span class="zh">要有禮貌，得他們自己真的想要。</span><span class="note">p.29 練習 5f（vouloir）</span></li>
+      <li><span class="fr">Il est important qu'il le <em>comprenne</em>.</span><span class="zh">他懂這件事很重要。</span><span class="note">p.29 Échauffement d（出自 p.28 D 第19–20行）</span></li>
+    </ul>
+  </details>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：que 一出現，後面就換模式。</b>Échauffement 問題 2 就在問：哪幾句有<b>兩個變位動詞</b>？第二個是什麼時態？——<b>il faut</b> 是一個，<b>que</b> 後面那個是虛擬式。沒有 que 的句子（a、b、c）只有一個變位動詞，後面接原形。<br>
+    ⚠️ <b>陷阱二：Il faut accepter que nous <i>sommes</i>…</b>（p.28 功能句框）——這句看起來像「il faut que ＋ 直陳式」，但 il faut 管的是 <b>accepter</b>（原形），que 是 accepter 帶出來的。見下面 🔎。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① p.28 D 第30行與功能句框 <b>Il faut accepter que nous sommes nous-mêmes vivants.</b> 用了直陳式 sommes。標準文法 <b>accepter que</b> 後面通常接<b>虛擬式</b>（soyons）。原文可能是強調「這是事實」的口語用法，<b>未查證</b>；自己寫作時接虛擬式比較保險。<br>
+    ② 課本說 nous／vous「跟 imparfait 一樣」，這只對規則動詞成立。同頁的 <b>fassions</b>（不是 faisions）就是反例——不規則的七個字 nous／vous 也要另外記。
+  </div>
+</section>
+
+<!-- ============ 3. 感受 ============ -->
+<section>
+  <h2>📐 文法三：Exprimer ses sentiments 表達感受（p.34） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>跟文法二同一個開關——<b>這件事是誰做的？</b><br>
+    課本 Fonctionnement：<br>
+    感受針對<b>自己的動作</b>或<b>一般的事</b> → <b>de ＋ 不定式</b><br>
+    感受針對<b>別人／另一個主詞的動作</b> → <b>que ＋ 虛擬式</b><br>
+    正面：C'est vraiment super… ／ Je suis content(e)… ／ Je trouve (ça) bien… ／ Ça fait du bien… ／ Je suis ravi(e)… ／ J'apprécie… ／ Ça me plaît…<br>
+    負面：C'est dommage… ／ Je trouve (ça) triste… ／ Je suis déçu(e)… ／ J'en ai assez… ／ Ça m'énerve…
+  </div>
+
+  <h3>課本 Fonctionnement 表的左右對照（p.34）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">… <em>d'avoir</em> des blablabla caisses ouvertes. ／ … que ce magasin <em>ait ouvert</em> des blablabla caisses.</span><span class="zh">……有開聊天收銀台。／……這家店開了聊天收銀台。</span><span class="note">p.34 正面</span></li>
+    <li><span class="fr">… <em>de pouvoir</em> papoter. ／ … que les gens <em>puissent</em> papoter entre eux.</span><span class="zh">……能聊聊天。／……大家能彼此聊天。</span><span class="note">p.34 正面</span></li>
+    <li><span class="fr">… <em>d'aller</em> dans un magasin différent. ／ … que mes parents <em>aillent</em> dans un magasin différent.</span><span class="zh">……去另一家店。／……我爸媽去另一家店。</span><span class="note">p.34 負面</span></li>
+    <li><span class="fr">… <em>de devoir</em> attendre. ／ … que ma mère <em>doive</em> attendre.</span><span class="zh">……得等。／……我媽得等。</span><span class="note">p.34 負面</span></li>
+  </ul>
+
+  <details>
+    <summary>想多看一點：p.34 Échauffement（全部出自 p.32 論壇）</summary>
+    <ul class="phrase-list">
+      <li><span class="fr">C'est dommage de devoir « recréer » des liens.</span><span class="zh">還得「重新建立」連結，真可惜。</span><span class="note">p.34 b（p.32 Assma）</span></li>
+      <li><span class="fr">Ça fait du bien de retrouver un peu de lien social.</span><span class="zh">重新找回一點人際連結，感覺很好。</span><span class="note">p.34 c（p.32 Jérôme）</span></li>
+      <li><span class="fr">J'en ai assez d'attendre derrière des personnes bavardes.</span><span class="zh">我受夠了排在話多的人後面等。</span><span class="note">p.34 d（p.32 Laurent）</span></li>
+      <li><span class="fr">Je trouve ça triste qu'on en <em>ait</em> besoin.</span><span class="zh">我覺得我們需要這種東西很悲哀。</span><span class="note">p.34 e（p.32 Anthony）</span></li>
+      <li><span class="fr">Ça m'énerve qu'on <em>doive</em> en arriver là.</span><span class="zh">要走到這一步讓我很火大。</span><span class="note">p.34 f（p.32 Sylvie）</span></li>
+      <li><span class="fr">Je trouve ça bien qu'ils <em>aient</em> la possibilité d'échanger des nouvelles.</span><span class="zh">他們有機會交換近況，我覺得很好。</span><span class="note">p.34 g（p.32 Stéphane）</span></li>
+    </ul>
+  </details>
+
+  <div class="trap">
+    ⚠️ <b>陷阱：on 也算「另一個主詞」。</b>e、f 句的主詞是 <b>on</b>，不是 je——所以是 <b>qu'on ait</b>、<b>qu'on doive</b>，要虛擬式。判斷的不是「有沒有別人」，是<b>感受的人和做事的人是不是同一個主詞</b>。<br>
+    p.34 練習 5 Exemple：<b>Ils sont trop pressés pour papoter. → C'est dommage qu'ils soient trop pressés pour papoter.</b>——原句的直陳式 sont 被「感受句」一包，就變 soient。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b>p.34 Fonctionnement 表裡印的是 <b>J'en peux plus…</b>，少了 ne。標準寫法是 <b>Je n'en peux plus</b>——p.32 Anthony 和 p.33 功能句框都是完整的 <b>Je n'en peux plus</b>。表上那個是口語省 ne，<b>寫作要寫完整版</b>。同樣，p.33 的 <b>C'est pas mal</b> 也是口語省 ne（標準：Ce n'est pas mal）。
+  </div>
+</section>
+
+<!-- ============ 4. 發音 ============ -->
+<section>
+  <h2>👂 發音：Les groupes rythmiques 節奏群（p.30） <span class="time">1 分鐘</span></h2>
+  <div class="rule">
+    <b>它在處理什麼：</b>Unité 1 學了「最後一個音節拉長」，這頁告訴你：拉長的單位不是一個字，而是<b>一整個節奏群</b>。<br>
+    課本規則（p.30 練習 2）：節奏群是表達同一個意思的一組字，<b>像一個字一樣一口氣說完</b>、所有音節連在一起。怎麼切照句法：<b>動詞和它的代名詞一組、名詞和它的限定詞一組</b>。組與組之間有一個很小的停頓，停頓前<b>語調微微往上</b>。
+  </div>
+  <p>課本練習 1 的句子（p.30，數數看有幾個停頓）：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">Je déteste les gens qui sont impolis.</span><span class="zh">我討厭沒禮貌的人。</span><span class="note">p.30 Phonétique 1a</span></li>
+    <li><span class="fr">Depuis toujours, le manque de politesse me pose problème.</span><span class="zh">我一直以來都很受不了沒禮貌。</span><span class="note">p.30 Phonétique 1b</span></li>
+    <li><span class="fr">Elle publie des photos chaque jour sur les réseaux sociaux depuis quatre ans.</span><span class="zh">她四年來每天都在社群上發照片。</span><span class="note">p.30 Phonétique 1c</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>陷阱：照字切、每個字都停。</b>中文腦會把 <i>le manque de politesse</i> 切成四個字。法文是一塊：le manque de politesse 中間不停，只有 <b>-tesse</b> 拉長。聽力時也一樣：聽不到字和字的界線是正常的，要去抓<b>每組的尾巴</b>。
+  </div>
+  <div class="flag">
+    🔎 <b>補充（標準語音學，非課本）：</b>課本說每組前「語調微微往上」，這指的是<b>句中</b>的組。陳述句的<b>最後一組</b>通常是往下收的，不然聽起來像問句。這點課本這頁沒寫，<b>未向老師查證</b>。
+  </div>
+</section>
+
+<!-- ============ 5. 功能句 ============ -->
+<section>
+  <h2>💬 上課會用到的說法 <span class="time">2 分鐘</span></h2>
+
+  <h3>Pour réagir à un problème et exprimer son désaccord 反應問題、表達不同意（p.27）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Personne ne te reproche de ne pas mettre de smileys ?</span><span class="zh">沒人怪你不放笑臉嗎？</span><span class="note">p.27</span></li>
+    <li><span class="fr">Tu pourrais mettre plus d'émoticônes.</span><span class="zh">你可以多放一點表情符號。</span><span class="note">p.27（條件式＝委婉建議）</span></li>
+    <li><span class="fr">Je préfère te dire que ton approche est mauvaise.</span><span class="zh">我還是直說吧，你的做法不對。</span><span class="note">p.27</span></li>
+    <li><span class="fr">Cela me pose problème.</span><span class="zh">這讓我覺得有問題。</span><span class="note">p.27</span></li>
+    <li><span class="fr">Ça me gêne.</span><span class="zh">這讓我不舒服。</span><span class="note">p.27</span></li>
+    <li><span class="fr">Évite de faire ça !</span><span class="zh">別這樣做！</span><span class="note">p.27</span></li>
+    <li><span class="fr">Tu te trompes !</span><span class="zh">你錯了！</span><span class="note">p.27</span></li>
+  </ul>
+
+  <h3>Pour exprimer la nécessité, l'obligation 必要、義務（p.28）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Il s'agirait de dire à nos enfants qu'ils font partie du vivant.</span><span class="zh">重點應該是告訴孩子他們是生物的一部分。</span><span class="note">p.28</span></li>
+    <li><span class="fr">Il faudrait que les enfants puissent faire leurs propres observations.</span><span class="zh">應該讓孩子能自己去觀察。</span><span class="note">p.28</span></li>
+    <li><span class="fr">Il est important que les enfants s'imprègnent d'écologie.</span><span class="zh">讓孩子耳濡目染生態觀念很重要。</span><span class="note">p.28</span></li>
+    <li><span class="fr">Il est nécessaire de prendre du recul.</span><span class="zh">有必要退一步看。</span><span class="note">p.28</span></li>
+  </ul>
+
+  <h3>Pour exprimer son mécontentement 表達不滿（p.33）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">C'est triste/dommage/décevant.</span><span class="zh">真可悲／可惜／令人失望。</span><span class="note">p.33</span></li>
+    <li><span class="fr">Ça ne me plaît pas du tout de devoir attendre.</span><span class="zh">我一點都不喜歡得等。</span><span class="note">p.33</span></li>
+    <li><span class="fr">J'en ai assez de devoir me dépêcher en caisse.</span><span class="zh">我受夠了在收銀台得趕。</span><span class="note">p.33</span></li>
+    <li><span class="fr">Je n'en peux plus de croiser des gens pressés.</span><span class="zh">我再也受不了遇到匆匆忙忙的人。</span><span class="note">p.33</span></li>
+  </ul>
+
+  <h3>Pour exprimer sa satisfaction 表達滿意（p.33）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Ça me plaît beaucoup de passer à une blablabla caisse.</span><span class="zh">我很喜歡去聊天收銀台結帳。</span><span class="note">p.33</span></li>
+    <li><span class="fr">Le concept fait mouche.</span><span class="zh">這個點子正中紅心。</span><span class="note">p.33</span></li>
+    <li><span class="fr">(C'est une) chouette/superbe initiative !</span><span class="zh">很棒的創舉！</span><span class="note">p.33（chouette 口語）</span></li>
+    <li><span class="fr">Je trouve ça bien qu'ils aient le choix.</span><span class="zh">他們有選擇，我覺得很好。</span><span class="note">p.33（que ＋ 虛擬式）</span></li>
+    <li><span class="fr">Je suis ravi(e) de venir ici.</span><span class="zh">來這裡我很開心。</span><span class="note">p.33（de ＋ 不定式）</span></li>
+  </ul>
+
+  <h3>Pour proposer et demander de l'aide 提議、請求幫忙（p.33）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Dis-moi si je peux faire quelque chose pour toi.</span><span class="zh">需要我做什麼就說一聲。</span><span class="note">p.33</span></li>
+    <li><span class="fr">Je peux être là/présent(e) pour toi.</span><span class="zh">我可以陪著你。</span><span class="note">p.33</span></li>
+    <li><span class="fr">N'hésite pas si tu as besoin d'aide !</span><span class="zh">需要幫忙別客氣！</span><span class="note">p.33</span></li>
+    <li><span class="fr">Je suis un peu dans l'embarras.</span><span class="zh">我現在有點為難（需要幫忙）。</span><span class="note">p.33</span></li>
+  </ul>
+
+  <h3>單元格言</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">La politesse basique, c'est aussi la façon dont on vit ensemble.</span><span class="zh">基本的禮貌，也就是我們一起生活的方式。</span><span class="note">p.25 單元首頁</span></li>
+  </ul>
+</section>
+
+<!-- ============ 6. 詞彙 ============ -->
+<section>
+  <h2>🧺 新詞彙（挑 B1 才出現、你筆記裡大多還沒有的） <span class="time">2 分鐘</span></h2>
+  <p class="small">哪些字筆記裡已經有，<b>未查證</b>（這次沒有對 french_notes.html 逐字核對）。</p>
+
+  <h3>禮貌與失禮（p.30）</h3>
+  <ul class="vocab">
+    <li><span class="w">le savoir-vivre</span><span class="g">m.</span>處世禮節（p.26 savoir-vivre digital）</li>
+    <li><span class="w">la règle de conduite</span><span class="g">f.</span>行為準則</li>
+    <li><span class="w">la marque de respect</span><span class="g">f.</span>表示尊重的舉動</li>
+    <li><span class="w">la familiarité</span><span class="g">f.</span>（過度）親暱、不拘禮</li>
+    <li><span class="w">avertir d'un retard</span><span class="g">v.</span>通知會遲到</li>
+    <li><span class="w">bafouer ≠ respecter</span><span class="g">v.</span>藐視、踐踏（規則）</li>
+    <li><span class="w">céder sa place</span><span class="g">v.</span>讓座</li>
+    <li><span class="w">se montrer indifférent(e)</span><span class="g">v.</span>表現得冷漠</li>
+    <li><span class="w">diverger</span><span class="g">v.</span>意見分歧</li>
+    <li><span class="w">lancer une conversation</span><span class="g">v.</span>開啟話題</li>
+    <li><span class="w">l'interlocuteur, l'interlocutrice</span><span class="g">n.</span>談話對象</li>
+    <li><span class="w">divulgâcher</span><span class="g">v.</span>爆雷（魁北克造字＝divulguer＋gâcher，p.26 Au fait!）</li>
+  </ul>
+
+  <h3>公民意識與自然（p.30）</h3>
+  <ul class="vocab">
+    <li><span class="w">sensibiliser (à)</span><span class="g">v.</span>喚起意識</li>
+    <li><span class="w">éduquer</span><span class="g">v.</span>教育、培養</li>
+    <li><span class="w">faire partie de</span><span class="g">v.</span>是……的一部分</li>
+    <li><span class="w">la valeur</span><span class="g">f.</span>價值觀</li>
+    <li><span class="w">l'écosystème</span><span class="g">m.</span>生態系</li>
+    <li><span class="w">l'espace naturel</span><span class="g">m.</span>自然環境</li>
+    <li><span class="w">les sciences de la vie</span><span class="g">f.pl.</span>生命科學</li>
+    <li><span class="w">les fossiles</span><span class="g">m.pl.</span>化石</li>
+  </ul>
+
+  <h3>人際連結（p.36）</h3>
+  <ul class="vocab">
+    <li><span class="w">papoter ＝ bavarder ＝ blablater</span><span class="g">v.</span>閒聊（blablater 很口語）</li>
+    <li><span class="w">sympathiser</span><span class="g">v.</span>（跟人）合得來、變朋友</li>
+    <li><span class="w">(re)créer du lien</span><span class="g">v.</span>（重新）建立人際連結</li>
+    <li><span class="w">mettre en relation</span><span class="g">v.</span>牽線、介紹認識</li>
+    <li><span class="w">convivial(e)</span><span class="g">adj.</span>氣氛融洽的</li>
+    <li><span class="w">chaleureux, chaleureuse</span><span class="g">adj.</span>熱情溫暖的</li>
+    <li><span class="w">déshumanisé(e)</span><span class="g">adj.</span>冷冰冰、沒有人味的</li>
+    <li><span class="w">avoir le moral au plus bas</span><span class="g">expr.</span>情緒跌到谷底</li>
+    <li><span class="w">peser sur le moral</span><span class="g">expr.</span>讓人心情沉重</li>
+    <li><span class="w">tenir compagnie</span><span class="g">expr.</span>陪伴</li>
+    <li><span class="w">se trouver dans l'embarras</span><span class="g">expr.</span>陷入困境</li>
+  </ul>
+
+  <h3>互助與投入（p.36）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'aidant, l'aidante</span><span class="g">n.</span>照顧者</li>
+    <li><span class="w">soulager</span><span class="g">v.</span>減輕（負擔）</li>
+    <li><span class="w">répondre présent(e)</span><span class="g">v.</span>（有需要時）挺身而出</li>
+    <li><span class="w">le/la volontaire, le volontariat</span><span class="g">n.</span>志工、志願服務</li>
+    <li><span class="w">prendre soin (de)</span><span class="g">v.</span>照顧</li>
+    <li><span class="w">le déclic</span><span class="g">m.</span>恍然大悟的那一刻</li>
+    <li><span class="w">lutter (pour/contre)</span><span class="g">v.</span>為……奮鬥／對抗……</li>
+    <li><span class="w">dédié(e) (à)</span><span class="g">adj.</span>專為……設的</li>
+    <li><span class="w">le tiers-lieu</span><span class="g">m.</span>第三空間（家和公司以外的共享空間，p.35）</li>
+  </ul>
+</section>
+
+<!-- ============ 7. 練習題 ============ -->
+<section>
+  <h2>✏️ 最可能上課做的題目：先想想看 <span class="time">2 分鐘</span></h2>
+  <p class="small">只給方向，不給答案。哪幾題會做是照 Unité 1 的節奏推測（未查證）。</p>
+
+  <div class="ex">
+    <div class="q">p.27 Entraînement 2：改成正式問句 <span class="likely">★★★ 文法頁一定做</span></div>
+    <div class="hint">先想想看：d 題 <i>Qu'est-ce qu'il a publié ces jours-ci ?</i>——複合過去式倒裝時，代名詞要貼在<b>哪一個</b>動詞後面？a 結尾是母音嗎？e 題主詞是名詞，見上面陷阱。</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.29 Entraînement 4：變成虛擬式 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：a 題 <i>Il faut que vous (céder) ……</i>——vous 要用 ils 的字根還是 imparfait 的樣子？b 題 <i>écrire</i> 的 ils 現在式是什麼？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.29 Entraînement 5：改成一般性的必要 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：這題是<b>反方向</b>——把「que ＋ 虛擬式」拿掉主詞變回原形。il faut 後面直接接原形，il est important／nécessaire 後面要加什麼小字？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.34 Entraînement 4：保留不定式還是變虛擬式 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：每一題先看括號前面是 <b>de</b> 還是 <b>que</b>——答案其實已經寫在題目上。e 題 <i>que nous (ne pas pouvoir)</i>：ne … pas 夾在哪裡？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.34 Entraînement 5：把 emoji 換成感受句 <span class="likely">★★</span></div>
+    <div class="hint">先想想看：c 題 <i>Coralie se sent seule.</i> 變成虛擬式時，代動詞的 se 會不會跑掉？f 題 <i>sont fermées</i> 的 être 虛擬式是哪一個？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.30 Phonétique 1：數停頓 <span class="likely">★ 有時間才做</span></div>
+    <div class="hint">先想想看：c 句 <i>Elle publie des photos chaque jour sur les réseaux sociaux depuis quatre ans.</i>——照「名詞跟限定詞一組」的規則，你會切成幾段？</div>
+  </div>
+</section>
+
+<!-- ============ 8. 問老師 ============ -->
+<section>
+  <h2>🙋 上課可以問老師的 3 個問題</h2>
+  <ol class="ask">
+    <li>p.28 <b>Il faut accepter que nous sommes nous-mêmes vivants</b>——accepter que 後面不是要接虛擬式（soyons）嗎？這裡為什麼用 sommes？</li>
+    <li>p.34 表上的 <b>J'en peux plus</b> 和 p.33 的 <b>Je n'en peux plus</b>，考試寫作一定要寫 ne 嗎？口說可以省嗎？</li>
+    <li>p.27 倒裝問句——TCF 寫作需要主動用倒裝，還是用 est-ce que 就夠正式了？</li>
+  </ol>
+</section>
+
+<p class="small">來源：Édito B1 課本 p.25–38（<code>assets/.textbook_cache.txt</code> 第 50986–52956 行；PDF 頁碼與課本頁碼一致，已用頁尾「26 I vingt-six」「trente-sept I 37」等核對）。p.26、p.35 的 « film »、« fin »、« affaires »、« suffisent »、« différents »、« réflexion » 等字在 PDF 抽字時掉了 fi／ff／fl 連字，推定原文，未對照紙本查證。p.31 Culture 的聽力標題在抽字時變成黏在一起的碎字，沒有引用。本頁未讀課本附錄的聽力逐字稿，所以聽力 B、C、E、G、I、J 的內容只寫了題目方向。</p>
+
+</main>
+</body>
+</html>
