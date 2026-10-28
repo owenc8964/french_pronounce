@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 Unité 3 預習單</title>
+<style>
+  :root {
+    --bg: #15171c;
+    --card: #1f232b;
+    --card2: #262b35;
+    --text: #e6e8ec;
+    --muted: #9aa3b2;
+    --fr: #ffffff;
+    --accent: #7cc4ff;
+    --gold: #f2c86b;
+    --warn: #ff9f7a;
+    --line: #333a46;
+    --gray-badge: #4a5160;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Helvetica Neue", sans-serif;
+    font-size: 16px; line-height: 1.65;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 1.35rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: .9rem; margin-bottom: 18px; }
+  section {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; margin: 0 0 16px;
+  }
+  h2 { font-size: 1.1rem; margin: 0 0 8px; color: var(--accent); }
+  h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--gold); }
+  p { margin: 6px 0; }
+  b { color: var(--fr); }
+  .time { float: right; font-size: .78rem; color: var(--muted); font-weight: normal; }
+  .rule {
+    background: var(--card2); border-left: 4px solid var(--accent);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .trap {
+    background: rgba(255,159,122,.08); border-left: 4px solid var(--warn);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .flag {
+    background: rgba(242,200,107,.08); border-left: 4px solid var(--gold);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: .92rem;
+  }
+  .map { list-style: none; padding: 0; margin: 0; }
+  .map li { padding: 7px 0; border-bottom: 1px solid var(--line); }
+  .map li:last-child { border-bottom: none; }
+  .pg { display: inline-block; min-width: 54px; color: var(--accent); font-weight: 600; }
+  .tag { display: inline-block; font-size: .72rem; padding: 1px 7px; border-radius: 10px;
+         background: var(--gray-badge); color: var(--text); margin-left: 4px; vertical-align: 1px; }
+  .tag.new { background: #2f5d8a; }
+  /* 法文句子載體：沿用 french_notes.html 的結構，之後可直接搬 */
+  .phrase-list { list-style: none; padding: 0; margin: 6px 0; }
+  .phrase-list li {
+    display: flex; flex-wrap: wrap; gap: 2px 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--line);
+  }
+  .phrase-list li:last-child { border-bottom: none; }
+  .fr { font-weight: 600; color: var(--fr); width: 100%; }
+  .zh { color: var(--muted); font-size: .9rem; }
+  .phrase-list li > span.note { color: #7d8696; font-size: .8rem; }
+  .fr em { font-style: normal; color: var(--gold); }
+  .vocab { list-style: none; padding: 0; margin: 4px 0 8px;
+           display: grid; grid-template-columns: 1fr; gap: 0; }
+  .vocab li { padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: .95rem; }
+  .vocab li:last-child { border-bottom: none; }
+  .vocab .w { color: var(--fr); font-weight: 600; }
+  .g { display: inline-block; font-size: .72rem; color: var(--muted); border: 1px solid var(--line);
+       border-radius: 4px; padding: 0 5px; margin: 0 4px; }
+  details { background: var(--card2); border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
+  summary { cursor: pointer; font-weight: 600; color: var(--text); }
+  details[open] summary { margin-bottom: 6px; }
+  .ex { margin: 8px 0; padding-left: 2px; }
+  .ex .q { color: var(--fr); }
+  .hint { color: var(--muted); font-size: .92rem; }
+  .likely { color: var(--gold); font-size: .8rem; }
+  ol.ask { padding-left: 20px; margin: 6px 0; }
+  ol.ask li { margin: 8px 0; }
+  .small { font-size: .85rem; color: var(--muted); }
+  @media (min-width: 640px) {
+    .vocab { grid-template-columns: 1fr 1fr; column-gap: 18px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Unité 3 Cultivons les arts・預習單（草稿）</h1>
+<div class="sub">範圍：Édito B1 p.41–54（第 3 單元）｜大約 15 分鐘｜全部法文句子都是課本原句，每句標頁碼</div>
+
+<div class="flag">
+  🚧 <b>這是草稿。</b>現在上的是 Unité 2，這張是給下一個單元先看的。<br>
+  中文翻譯、「它在處理什麼資訊」的說明、陷阱與標註是 Claude 加的；法文全部取自 <code>assets/.textbook_cache.txt</code> 的 Édito B1 內頁（PDF 頁碼＝課本頁碼）。
+</div>
+
+<!-- ============ 0. 地圖 ============ -->
+<section>
+  <h2>🗺 這個單元的頁面 <span class="time">1 分鐘</span></h2>
+  <ul class="map">
+    <li><span class="pg">p.41</span>單元首頁。目標：說明理由、解釋選擇｜請求與給建議｜表達意見｜講一部電影的劇情｜談一件藝術作品</li>
+    <li><span class="pg">p.42</span>A 閱讀：音樂節的生態問題（Hellfest 灑水、Sarcus 禁搭飛機、Gavarnie 在地餐飲）＋「說明理由、解釋選擇」</li>
+    <li><span class="pg">p.43</span>B 聽力：法語圈藝術節，Charlotte 打電話給 Mariam ＋「請求與給建議」｜C 影片：Piédon 家族馬戲團</li>
+    <li><span class="pg">p.44</span><b>文法：Le conditionnel présent 條件式現在時</b>（六種用法）＋「表達意見」<span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.45</span>D 閱讀：四位女性饒舌歌手｜E 聽力：饒舌歌手 Soprano</li>
+    <li><span class="pg">p.46</span>詞彙頁：表演、馬戲、音樂風格、歌曲、成功 ＋ 發音：<b>La prononciation de la consonne finale 字尾子音</b><span class="tag new">新</span></li>
+    <li><span class="pg">p.47</span>Culture：流行文化。F 閱讀：geek 是什麼｜G 聽力：什麼是 pop culture</li>
+    <li><span class="pg">p.48</span>H 閱讀：電影英文術語怎麼說成法文（blockbuster、teaser、prequel、reboot、found footage）＋「講電影劇情」</li>
+    <li><span class="pg">p.49</span>I 聽力：法國電影缺乏多元｜<b>文法：La restriction 限定（ne … que）</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.50</span>J 閱讀：小說片段，梵谷在 Auvers 畫畫｜K 聽力：Le Cyclop 大型雕塑 ＋「談藝術作品」</li>
+    <li><span class="pg">p.51</span><b>文法：La cause et la conséquence 原因與結果</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.52</span>詞彙頁：電影、電影類型、劇本、獎項、戲劇、傑作</li>
+    <li><span class="pg">p.53</span>l'essentiel 總複習（文法／詞彙）</li>
+    <li><span class="pg">p.54</span>Atelier médiation：全班選一件藝術作品來代表這個班</li>
+  </ul>
+  <p class="small">p.55 已經是 Unité 4 的首頁。本單元後面沒有 DELF 應考策略頁。</p>
+</section>
+
+<!-- ============ 1. 條件式 ============ -->
+<section>
+  <h2>📐 文法一：Le conditionnel présent 條件式現在時（p.44） <span class="time">4 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>條件式告訴對方「<b>這件事不是事實</b>」——是請求、可能、願望、建議、推測或想像。動詞本身就在說「我沒有把話說死」。<br>
+    <b>怎麼組（p.44 Rappel）</b>：<b>不定式 ＋ imparfait 的字尾</b>（-ais, -ais, -ait, -ions, -iez, -aient）。-re、-dre 結尾的動詞先拿掉最後的 e：vendre → je vendrais。<br>
+    課本列的不規則：je serais, j'aurais, j'irais, je pourrais, je ferais, je viendrais, je saurais, il faudrait…
+  </div>
+
+  <h3>課本 Fonctionnement 表：六種用法各一句（p.44）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr"><em>Sauriez</em>-vous où se trouve la billetterie ?</span><span class="zh">請問您知道售票處在哪裡嗎？</span><span class="note">p.44 有禮貌的請求</span></li>
+    <li><span class="fr">Je <em>pourrais</em> m'arranger pour vous emmener au concert.</span><span class="zh">我可以想辦法載您去音樂會。</span><span class="note">p.44 表達可能</span></li>
+    <li><span class="fr">Ils <em>aimeraient</em> faire partie du groupe de bénévoles du festival.</span><span class="zh">他們想加入音樂節的志工團。</span><span class="note">p.44 表達願望</span></li>
+    <li><span class="fr">Tu <em>devrais</em> plutôt aller voir cette artiste.</span><span class="zh">你應該去看這位藝人才對。</span><span class="note">p.44 給建議</span></li>
+    <li><span class="fr">Avec plus de subventions, les troupes de la région <em>seraient</em> plus dynamiques.</span><span class="zh">補助多一點的話，這區的劇團會更有活力。</span><span class="note">p.44 推測</span></li>
+    <li><span class="fr">Avec des ailes, je <em>pourrais</em> voler.</span><span class="zh">有翅膀的話，我就能飛。</span><span class="note">p.44 想像的情境</span></li>
+  </ul>
+
+  <details>
+    <summary>想多看一點：p.44 Échauffement（七句都出自 p.43 B 的對話）</summary>
+    <ul class="phrase-list">
+      <li><span class="fr">J'<em>aimerais</em> aussi aller au concert du vendredi.</span><span class="zh">我也想去星期五的音樂會。</span><span class="note">p.44 a</span></li>
+      <li><span class="fr">Les vols de rapaces, ça <em>pourrait</em> t'intéresser, toi qui adores les oiseaux !</span><span class="zh">猛禽飛行表演，你應該會有興趣，你那麼愛鳥！</span><span class="note">p.44 b</span></li>
+      <li><span class="fr">Ça leur <em>plairait</em> certainement.</span><span class="zh">他們一定會喜歡。</span><span class="note">p.44 c</span></li>
+      <li><span class="fr">À ta place, je me <em>dépêcherais</em>.</span><span class="zh">換作是我，我會趕快。</span><span class="note">p.44 d</span></li>
+      <li><span class="fr">Dans un monde idéal, les événements culturels <em>seraient</em> gratuits.</span><span class="zh">在理想世界裡，藝文活動都會是免費的。</span><span class="note">p.44 e（也是 p.41 單元格言）</span></li>
+      <li><span class="fr">Ça t'<em>ennuierait</em> de t'occuper des places ?</span><span class="zh">你介意負責買票嗎？</span><span class="note">p.44 f</span></li>
+      <li><span class="fr">Au cas où elle <em>serait</em> intéressée par le festival !</span><span class="zh">萬一她對這個音樂節有興趣呢！</span><span class="note">p.44 g</span></li>
+    </ul>
+  </details>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：條件式 vs imparfait，只差一個 r。</b>字尾跟 imparfait 一模一樣，差別只在字根是<b>不定式</b>（aimer-）而不是 nous 的字根（aim-）：j'<b>aimer</b>ais（我想要）vs j'aimais（我以前喜歡）。聽力時抓那個 <b>r</b>。<br>
+    ⚠️ <b>陷阱二：Ça t'ennuierait</b>（p.44 f）——ennuyer 的 y 在條件式變成 i。課本 Rappel 沒寫這條，但 Échauffement 就放了一個例子。見下面 🔎。<br>
+    ⚠️ <b>陷阱三：toi qui adores</b>（p.44 b）——qui 的動詞要跟著前面的 <b>toi</b> 變第二人稱，不是 adore。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>Rappel 只講了一半。</b>標準文法：條件式的字根＝<b>futur simple 的字根</b>，所以 futur 有變化的字（ennuyer → ennui-、appeler → appell-、acheter → achèt-）條件式也照變。課本只列了 -re 去 e 和幾個不規則字，Échauffement f 的 <b>ennuierait</b> 就是表上沒說明的情況。<br>
+    ② p.44 練習 4a、4b 的 <b>Je serais artiste de cirque, je…</b>／<b>On aurait un été entier pour aller à des festivals, on…</b> 是兩邊都用條件式的「假裝遊戲」句型，屬於<b>口語</b>。標準書面寫法是 <b>si ＋ imparfait, ＋ 條件式</b>；⛔ <b>si 後面不接條件式</b>。寫作考試請用 si 句。<br>
+    ③ <b>au cas où ＋ 條件式</b>（p.44 g）是固定搭配，不要跟 si 搞混——兩個都表示「如果」，但 au cas où 後面接條件式，si 後面不行。
+  </div>
+</section>
+
+<!-- ============ 2. 限定 ============ -->
+<section>
+  <h2>📐 文法二：La restriction 限定 ne … que（p.49） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>ne … que 不是否定，是在<b>畫範圍</b>：「就只有這個」＝ seulement／uniquement／juste。句子是肯定的，只是把範圍框小。<br>
+    課本 Fonctionnement：<b>ne</b> 放在動詞和受詞代名詞前面；<b>que／qu'</b> 放在動詞後面。<br>
+    Remarques：簡單時態，que 放在變位動詞或不定式後面；<b>複合時態，que 放在過去分詞後面</b>。
+  </div>
+
+  <h3>課本 Fonctionnement 例句（p.49）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Je <em>ne</em> vais au cinéma <em>qu'</em>une fois par mois.</span><span class="zh">我一個月只去一次電影院。</span><span class="note">p.49（＝ Je vais au cinéma seulement une fois par mois.）</span></li>
+    <li><span class="fr">Je <em>n'</em>en ai vu <em>qu'</em>un ce mois-ci.</span><span class="zh">這個月我只看了一部。</span><span class="note">p.49 ne 放在代名詞 en 前面</span></li>
+    <li><span class="fr">Je pense <em>n'</em>y aller <em>qu'</em>une fois ce mois-ci.</span><span class="zh">我想這個月只去一次。</span><span class="note">p.49 套在不定式上</span></li>
+    <li><span class="fr">Je <em>ne</em> déciderai <em>que</em> quand je connaîtrai les dates.</span><span class="zh">要等知道日期我才會決定。</span><span class="note">p.49 限定的是時間</span></li>
+    <li><span class="fr">Elle <em>ne</em> pourra assister <em>qu'</em>à deux concerts.</span><span class="zh">她只能去兩場音樂會。</span><span class="note">p.49 Remarque 簡單時態</span></li>
+    <li><span class="fr">Nous <em>n'</em>avons vu <em>qu'</em>un film.</span><span class="zh">我們只看了一部電影。</span><span class="note">p.49 Remarque 複合時態</span></li>
+  </ul>
+
+  <details>
+    <summary>想多看一點：Échauffement 和 n'avoir qu'à</summary>
+    <ul class="phrase-list">
+      <li><span class="fr">Quels sont les critères pour définir un blockbuster ? Il n'y en a que trois.</span><span class="zh">定義大片的標準是什麼？只有三個。</span><span class="note">p.49 Échauffement a（出自 p.48 H）</span></li>
+      <li><span class="fr">Le mot anglais prequel est un mot formé par le préfixe pre-, et le nom sequel, dont on n'a conservé que la fin.</span><span class="zh">英文 prequel 是 pre- 加上 sequel，而 sequel 只保留了結尾。</span><span class="note">p.49 Échauffement b</span></li>
+      <li><span class="fr">À ne pas confondre avec le remake, qui est juste une « reprise » d'une œuvre déjà existante.</span><span class="zh">別跟 remake 搞混，remake 只是把現有作品「重拍」。</span><span class="note">p.49 Échauffement c（juste ＝ 限定）</span></li>
+      <li><span class="fr">Tu n'as qu'à demander au metteur en scène.</span><span class="zh">你去問導演不就好了。</span><span class="note">p.49 Remarque（＝ Tu devrais demander au metteur en scène.）</span></li>
+      <li><span class="fr">Il écoute seulement du rap. → Il n'écoute que du rap.</span><span class="zh">他只聽饒舌。</span><span class="note">p.53 l'essentiel 3 Exemple</span></li>
+      <li><span class="fr">Je n'y suis allé(e) qu'une fois.</span><span class="zh">我只去過一次。</span><span class="note">p.49 練習 3 Exemple</span></li>
+    </ul>
+  </details>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：ne … que 不是否定，所以冠詞不變 de。</b>ne … pas 後面 du／des 會變 de，但 ne … que 不會：<b>Il n'écoute que du rap</b>（p.53），不是「que de rap」。<br>
+    ⚠️ <b>陷阱二：n'avoir qu'à 不是「只有」。</b>p.49 Remarque 特別說：<b>Tu n'as qu'à…</b> 是建議或責備（＝你應該…／你去…就好了），語氣可能有點不耐煩。<br>
+    ⚠️ <b>陷阱三：聽力。</b>口語常把 ne 吞掉，聽到的只剩 <i>que</i>——一句話裡突然出現 que 卻沒有接子句，多半就是「只」。（這點是標準口語現象，課本這頁沒寫。）
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b>課本 Remarque 說 que 放在「變位動詞／不定式後面」、「複合時態的過去分詞後面」。這是<b>最常見的位置，不是規則本身</b>。標準文法：que 要<b>緊貼在被限定的那個成分前面</b>，所以可以離動詞很遠。課本自己的例句就證明了：<b>Je ne déciderai que quand je connaîtrai les dates</b>（que 後面限定的是整個時間子句）。判斷法：先問「我要說『只有』<b>什麼</b>？」，que 就放在那個東西前面。
+  </div>
+</section>
+
+<!-- ============ 3. 原因結果 ============ -->
+<section>
+  <h2>📐 文法三：La cause et la conséquence 原因與結果（p.51） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>兩件事之間的<b>箭頭方向</b>：從原因指向結果（cause），還是從事件指向後果（conséquence）。再加一個開關：<b>後面接的是句子還是名詞？</b><br>
+    <b>原因 ＋ 句子（有變位動詞）</b>：puisque, parce que, comme, car, étant donné que<br>
+    <b>原因 ＋ 名詞</b>：à cause de, grâce à, étant donné, en raison de<br>
+    <b>結果 ＋ 句子</b>：donc, par conséquent, du coup, alors, tellement／si… que, ce qui fait que, c'est pour cela que, c'est pourquoi<br>
+    動詞：entraîner, provoquer, causer, avoir pour conséquence（結果）｜être à l'origine de, s'expliquer par（原因）｜名詞：l'effet, le résultat
+  </div>
+
+  <h3>課本 Fonctionnement 例句（p.51）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr"><em>Étant donné qu'</em>il pleuvait, nous sommes allés au musée.</span><span class="zh">因為在下雨，我們去了博物館。</span><span class="note">p.51 原因 ＋ 句子</span></li>
+    <li><span class="fr"><em>Puisque</em> tu es là, viens m'aider.</span><span class="zh">既然你在，來幫我。</span><span class="note">p.51 原因 ＋ 句子</span></li>
+    <li><span class="fr"><em>Étant donné</em> le prix de l'entrée, c'est normal qu'il reste des places.</span><span class="zh">門票這麼貴，還有位子很正常。</span><span class="note">p.51 原因 ＋ 名詞</span></li>
+    <li><span class="fr">Les artistes sont en retard <em>en raison d'</em>un problème de transport.</span><span class="zh">藝人因為交通問題遲到。</span><span class="note">p.51 原因 ＋ 名詞</span></li>
+    <li><span class="fr">Le conférencier est malade, <em>ce qui fait que</em> la visite est annulée.</span><span class="zh">講解員生病了，所以導覽取消。</span><span class="note">p.51 結果</span></li>
+    <li><span class="fr">Il a <em>tellement</em> aimé le film <em>qu'</em>il est retourné le voir.</span><span class="zh">他太喜歡這部片，又回去看了一次。</span><span class="note">p.51 結果</span></li>
+  </ul>
+
+  <details>
+    <summary>想多看一點：Remarques 和 Échauffement</summary>
+    <ul class="phrase-list">
+      <li><span class="fr">Comme ils étaient fatigués, ils ne sont pas allés au cinéma.</span><span class="zh">因為累了，他們沒去看電影。</span><span class="note">p.51 Remarque：comme 永遠放句首</span></li>
+      <li><span class="fr">Puisque tu es là, aide-moi.</span><span class="zh">既然你在，幫我一下。</span><span class="note">p.51 Remarque：puisque ＝ 明顯的、對方也知道的原因</span></li>
+      <li><span class="fr">Étant donné ses ventes de disques, Jul doit être très riche.</span><span class="zh">看他唱片的銷量，Jul 一定很有錢。</span><span class="note">p.51 Remarque：étant donné 不變化</span></li>
+      <li><span class="fr">Comme il est malade, il est suivi par un médecin.</span><span class="zh">因為他生病，有醫生在照顧他。</span><span class="note">p.51 Échauffement a（出自 p.50 J 第2–3行）</span></li>
+      <li><span class="fr">Ils n'habitent pas très loin d'ici et donc ils décident d'acheter un bout de parcelle dans les bois.</span><span class="zh">他們住得不遠，所以決定在樹林裡買一小塊地。</span><span class="note">p.51 Échauffement b</span></li>
+      <li><span class="fr">Il était confronté à cette chose si étonnante qu'il devait en ressentir une émotion extraordinaire.</span><span class="zh">他面對的東西太令人驚訝，一定感受到非比尋常的情緒。</span><span class="note">p.51 Échauffement c</span></li>
+    </ul>
+  </details>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：étant donné 和 étant donné que 是兩個工具。</b>後面是名詞 → étant donné；後面是句子 → étant donné <b>que</b>。p.53 l'essentiel 4 有好幾題就在考這個（例：e 題 <i>ce qui fait / étant donné que</i>）。<br>
+    ⚠️ <b>陷阱二：grâce à vs à cause de。</b>課本表上兩個並列，沒說差別。標準用法：grâce à ＝ <b>好的</b>原因，à cause de ＝ 中性或<b>壞的</b>原因。p.53 l'essentiel 4h <i>à cause des / grâce aux mauvaises critiques</i> 就是考這個。<br>
+    ⚠️ <b>陷阱三：語域。</b>p.51 Remarque：<b>du coup、alors、ce qui fait que</b> 主要是口語。寫作要用 donc、par conséquent、c'est pourquoi。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① 課本說「<b>Étant donné est invariable</b>」。這是常見用法，但標準法文<b>兩種都接受</b>：放在名詞前面時可以不變化，也可以跟名詞配合（étant donné<b>es</b> ses ventes 不算錯）。考試寫不變化最保險，看到配合版也別以為是錯字。<br>
+    ② 課本說「comme 永遠放句首」。更精確的說法是：表原因的 comme 要放在<b>主要子句前面</b>（原因先講）。這和 car 正好相反——car 只能放在後面，不能開頭。
+  </div>
+</section>
+
+<!-- ============ 4. 發音 ============ -->
+<section>
+  <h2>👂 發音：La prononciation de la consonne finale 字尾子音（p.46） <span class="time">1 分鐘</span></h2>
+  <div class="rule">
+    <b>它在處理什麼：</b>拼出來的字尾子音，大多數<b>不唸</b>。<br>
+    課本規則（p.46 練習 2）：一般來說，字尾的 <b>d, t, s, x, z 不發音</b>，除非跟下一個字做 liaison（連音）。
+  </div>
+  <p>課本練習的句子（p.46，找出不發音的字尾）：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">Elle prend le train pour rentrer chez elle après le spectacle ?</span><span class="zh">她看完表演搭火車回家？</span><span class="note">p.46 Phonétique 1a</span></li>
+    <li><span class="fr">Vous irez au festival avec un sac de couchage, c'est plus pratique.</span><span class="zh">你們帶睡袋去音樂節，比較方便。</span><span class="note">p.46 Phonétique 1b</span></li>
+    <li><span class="fr">On voit très bien le coucher de soleil depuis la terrasse, allez-y ! Je vous attends en bas pendant ce temps-là.</span><span class="zh">從露台看夕陽很清楚，去吧！我在樓下等你們。</span><span class="note">p.46 Phonétique 3a</span></li>
+    <li><span class="fr">Ce chanteur est très gentil, il est toujours à l'écoute de son public. Il a d'ailleurs discuté avec nous après le concert.</span><span class="zh">這位歌手很親切，總是很聽歌迷的話。他演唱會後還跟我們聊天。</span><span class="note">p.46 Phonétique 3b</span></li>
+    <li><span class="fr">Ont-ils réussi à voir ce spectacle sur Internet ? Si ce n'est pas le cas, je peux leur prêter le DVD.</span><span class="zh">他們有在網路上看到這場表演嗎？沒有的話我可以借他們 DVD。</span><span class="note">p.46 Phonétique 3c</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>陷阱：規則只列了 d, t, s, x, z。</b>1b 的 <b>sac</b>、3a 的 <b>soleil</b>、3b 的 <b>public</b>——c、l 這些字母<b>不在清單上</b>，所以照常發音。3c 的 <b>Ont-ils</b>：t 因為連音而發音。
+  </div>
+  <div class="flag">
+    🔎 <b>補充（標準語音學，非課本）：</b>課本寫「一般來說」，例外其實不少：同一個字在不同位置可能唸也可能不唸（例如 plus、tous、six、dix），也有字尾 s／t 固定發音的字（例如 le bus、le sud、net）。課本這頁沒列，<b>未向老師查證哪些會考</b>。
+  </div>
+</section>
+
+<!-- ============ 5. 功能句 ============ -->
+<section>
+  <h2>💬 上課會用到的說法 <span class="time">2 分鐘</span></h2>
+
+  <h3>Pour donner une raison, expliquer ses choix 說明理由、解釋選擇（p.42）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Il s'agit de privilégier une dimension plus locale, quitte à faire l'impasse sur des artistes.</span><span class="zh">重點是以在地為優先，就算因此不請某些藝人也沒關係。</span><span class="note">p.42</span></li>
+    <li><span class="fr">Comme nous sommes situés dans le parc national des Pyrénées, nous devons encore plus être porteurs d'un message écologique.</span><span class="zh">因為我們位在庇里牛斯國家公園，更要傳遞環保訊息。</span><span class="note">p.42</span></li>
+    <li><span class="fr">Il faut profiter du temps du festival pour questionner nos comportements.</span><span class="zh">要利用音樂節這段時間反思我們的行為。</span><span class="note">p.42</span></li>
+    <li><span class="fr">La sobriété numérique nous semble cruciale pour le monde culturel.</span><span class="zh">對藝文界來說，數位節制在我們看來非常關鍵。</span><span class="note">p.42</span></li>
+  </ul>
+
+  <h3>Pour demander et donner des conseils 請求與給建議（p.43）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Qu'est-ce que tu me conseilles ?</span><span class="zh">你建議我怎麼做？</span><span class="note">p.43</span></li>
+    <li><span class="fr">Alors, qu'est-ce que je devrais faire ?</span><span class="zh">那我該怎麼辦？</span><span class="note">p.43（條件式）</span></li>
+    <li><span class="fr">Pourquoi tu n'emmènes pas tes neveux ?</span><span class="zh">你何不帶你姪子們去？</span><span class="note">p.43（語調問句＝ Unité 2 的口語語域）</span></li>
+    <li><span class="fr">Tu ferais mieux d'y aller avec quelqu'un qui aime ça.</span><span class="zh">你最好跟喜歡這個的人一起去。</span><span class="note">p.43（條件式）</span></li>
+    <li><span class="fr">À ta place, je me dépêcherais !</span><span class="zh">換作是我，我會趕快！</span><span class="note">p.43（條件式）</span></li>
+  </ul>
+
+  <h3>Pour exprimer son opinion 表達意見（p.44）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Pour moi… ／ À mon avis… ／ D'après moi… ／ Selon moi…</span><span class="zh">對我來說／依我看……</span><span class="note">p.44</span></li>
+    <li><span class="fr">Personnellement… ／ En ce qui me concerne…</span><span class="zh">就我個人而言……</span><span class="note">p.44</span></li>
+  </ul>
+
+  <h3>Pour raconter l'intrigue d'un film 講電影劇情（p.48）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Le film traite d'événements se déroulant avant le récit initial.</span><span class="zh">這部片講的是原本故事之前發生的事。</span><span class="note">p.48</span></li>
+    <li><span class="fr">Le film se présente comme un documentaire.</span><span class="zh">這部片以紀錄片的形式呈現。</span><span class="note">p.48</span></li>
+    <li><span class="fr">C'est une fiction réaliste.</span><span class="zh">這是寫實的虛構作品。</span><span class="note">p.48</span></li>
+    <li><span class="fr">Le film offre un éclairage nouveau.</span><span class="zh">這部片提供了新的視角。</span><span class="note">p.48（抽字時 offre 的 ff 掉了，推定）</span></li>
+  </ul>
+
+  <h3>Pour parler d'une œuvre d'art 談藝術作品（p.50、p.54）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">C'était fascinant/magique/féerique/etc.</span><span class="zh">那很迷人／神奇／夢幻……</span><span class="note">p.50</span></li>
+    <li><span class="fr">J'ai ressenti une grande émotion.</span><span class="zh">我感受到很強烈的情緒。</span><span class="note">p.50</span></li>
+    <li><span class="fr">Ce qui a attiré mon attention, c'est...</span><span class="zh">吸引我注意的是……</span><span class="note">p.50</span></li>
+    <li><span class="fr">Ce que je trouve intéressant dans cette peinture, c'est…</span><span class="zh">這幅畫我覺得有意思的地方是……</span><span class="note">p.54 Stratégies</span></li>
+    <li><span class="fr">L'ensemble donne une impression de...</span><span class="zh">整體給人一種……的感覺</span><span class="note">p.54</span></li>
+    <li><span class="fr">Cette sculpture me rappelle…</span><span class="zh">這座雕塑讓我想起……</span><span class="note">p.54</span></li>
+    <li><span class="fr">Devant cette peinture, je me sens…</span><span class="zh">站在這幅畫前，我覺得……</span><span class="note">p.54</span></li>
+    <li><span class="fr">Ce qui me frappe ici, c'est…</span><span class="zh">這裡讓我印象深刻的是……</span><span class="note">p.54</span></li>
+    <li><span class="fr">Je partage l'opinion de l'artiste sur...</span><span class="zh">我同意藝術家對……的看法</span><span class="note">p.54</span></li>
+  </ul>
+
+  <h3>單元格言</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Dans un monde idéal, les événements culturels seraient gratuits.</span><span class="zh">在理想世界裡，藝文活動都會是免費的。</span><span class="note">p.41 單元首頁（條件式）</span></li>
+  </ul>
+</section>
+
+<!-- ============ 6. 詞彙 ============ -->
+<section>
+  <h2>🧺 新詞彙（挑 B1 才出現、你筆記裡大多還沒有的） <span class="time">2 分鐘</span></h2>
+  <p class="small">哪些字筆記裡已經有，<b>未查證</b>（這次沒有對 french_notes.html 逐字核對）。</p>
+
+  <h3>表演與馬戲（p.46）</h3>
+  <ul class="vocab">
+    <li><span class="w">les applaudissements</span><span class="g">m.pl.</span>掌聲</li>
+    <li><span class="w">les sifflets</span><span class="g">m.pl.</span>噓聲、口哨聲</li>
+    <li><span class="w">les coulisses</span><span class="g">f.pl.</span>後台</li>
+    <li><span class="w">l'éclairage</span><span class="g">m.</span>燈光；（p.48）觀點、角度</li>
+    <li><span class="w">la mise en scène</span><span class="g">f.</span>導演手法、舞台調度</li>
+    <li><span class="w">le premier/dernier rang</span><span class="g">m.</span>第一排／最後一排</li>
+    <li><span class="w">la troupe, la compagnie</span><span class="g">f.</span>劇團</li>
+    <li><span class="w">le chapiteau</span><span class="g">m.</span>馬戲大帳篷</li>
+    <li><span class="w">le jongleur, la jongleuse</span><span class="g">n.</span>雜耍藝人</li>
+    <li><span class="w">le numéro</span><span class="g">m.</span>（一段）表演節目</li>
+    <li><span class="w">en piste</span><span class="g">expr.</span>上場</li>
+    <li><span class="w">mener une vie de bohème</span><span class="g">expr.</span>過著漂泊的藝術家生活</li>
+  </ul>
+
+  <h3>歌曲與成功（p.45–46）</h3>
+  <ul class="vocab">
+    <li><span class="w">le tube</span><span class="g">m.</span>熱門歌</li>
+    <li><span class="w">le disque d'or</span><span class="g">m.</span>金唱片</li>
+    <li><span class="w">les paroles</span><span class="g">f.pl.</span>歌詞</li>
+    <li><span class="w">la mélodie, le rythme</span><span class="g">n.</span>旋律、節奏</li>
+    <li><span class="w">la variété</span><span class="g">f.</span>流行歌曲（法國的綜藝流行樂）</li>
+    <li><span class="w">être révélé(e) au grand public</span><span class="g">expr.</span>被大眾認識（p.45 Shay）</li>
+    <li><span class="w">être reconnu(e) pour</span><span class="g">expr.</span>以……聞名</li>
+    <li><span class="w">être au sommet (de son art)</span><span class="g">expr.</span>處於巔峰</li>
+    <li><span class="w">se faire remarquer</span><span class="g">v.</span>引起注意（p.45 Chilla）</li>
+  </ul>
+
+  <h3>電影與戲劇（p.52）</h3>
+  <ul class="vocab">
+    <li><span class="w">la bande-annonce</span><span class="g">f.</span>預告片</li>
+    <li><span class="w">le réalisateur, la réalisatrice</span><span class="g">n.</span>電影導演</li>
+    <li><span class="w">le metteur en scène</span><span class="g">m.</span>舞台劇導演（p.49）</li>
+    <li><span class="w">le rôle principal / le second rôle</span><span class="g">m.</span>主角／配角</li>
+    <li><span class="w">la sortie</span><span class="g">f.</span>（電影）上映</li>
+    <li><span class="w">monter (un film)</span><span class="g">v.</span>剪接</li>
+    <li><span class="w">sur grand écran</span><span class="g">expr.</span>在大銀幕上</li>
+    <li><span class="w">le film d'auteur / grand public</span><span class="g">m.</span>作者電影／大眾電影</li>
+    <li><span class="w">la superproduction</span><span class="g">f.</span>超級大片（＝ blockbuster，p.48）</li>
+    <li><span class="w">la suite, le remake</span><span class="g">n.</span>續集、翻拍</li>
+    <li><span class="w">traiter de, se dérouler</span><span class="g">v.</span>講述、（故事）發生</li>
+    <li><span class="w">le comédien, la comédienne</span><span class="g">n.</span>（舞台）演員</li>
+    <li><span class="w">la représentation</span><span class="g">f.</span>（一場）演出</li>
+    <li><span class="w">le rideau, le décor</span><span class="g">m.</span>幕、布景</li>
+    <li><span class="w">la récompense, le jury</span><span class="g">n.</span>獎項、評審團</li>
+  </ul>
+
+  <h3>面對傑作（p.50、p.52）</h3>
+  <ul class="vocab">
+    <li><span class="w">avoir un choc</span><span class="g">expr.</span>受到震撼</li>
+    <li><span class="w">rester interdit(e)/muet(te)/pétrifié(e)</span><span class="g">expr.</span>愣住、說不出話、呆住（p.50 Marguerite）</li>
+    <li><span class="w">saisissant(e)</span><span class="g">adj.</span>震撼人心的</li>
+    <li><span class="w">étincelant(e), lumineux(se)</span><span class="g">adj.</span>閃耀的、明亮的</li>
+    <li><span class="w">faire marcher l'imagination</span><span class="g">expr.</span>激發想像（p.48 teaser）</li>
+    <li><span class="w">symboliser, incarner</span><span class="g">v.</span>象徵、體現（p.52、p.54）</li>
+    <li><span class="w">le chevalet, la toile, la palette</span><span class="g">n.</span>畫架、畫布、調色盤（p.50）</li>
+  </ul>
+
+  <h3>音樂節與環保（p.42）</h3>
+  <ul class="vocab">
+    <li><span class="w">faire l'impasse sur</span><span class="g">expr.</span>放棄、略過（＝ se passer de，p.42 練習 8a）</li>
+    <li><span class="w">avoir la main</span><span class="g">expr.</span>掌控（＝ avoir le contrôle sur，練習 8b）</li>
+    <li><span class="w">mettre à contribution</span><span class="g">expr.</span>請……出力（＝ être invité à coopérer，練習 8d）</li>
+    <li><span class="w">quitte à</span><span class="g">prép.</span>就算要……也</li>
+    <li><span class="w">la sobriété numérique</span><span class="g">f.</span>數位節制</li>
+    <li><span class="w">en circuit court</span><span class="g">expr.</span>在地直供（短供應鏈）</li>
+  </ul>
+
+  <div class="flag">
+    🔎 <b>課本拼寫不一致：</b><br>
+    ① p.52 詞彙框標題印 <b>Le chef d'œuvre</b>（沒連字號），同頁練習 6 印 <b>chef-d'œuvre</b>。標準拼法是 <b>chef-d'œuvre</b>（複數 chefs-d'œuvre）。<br>
+    ② p.50 寫 <b>féerique</b>，p.52 詞彙框寫 <b>féérique</b>。傳統拼法是 <b>féerique</b>；1990 年拼寫改革後 féérique 也接受。<br>
+    ③ p.45 寫 <b>Keny Arkana</b>，p.53 l'essentiel 2a 寫 <b>Kenny Arkana</b>。同一個人，課本前後拼法不一，以 p.45 為準（未對照紙本查證）。
+  </div>
+</section>
+
+<!-- ============ 7. 練習題 ============ -->
+<section>
+  <h2>✏️ 最可能上課做的題目：先想想看 <span class="time">2 分鐘</span></h2>
+  <p class="small">只給方向，不給答案。哪幾題會做是照前兩個單元的節奏推測（未查證）。</p>
+
+  <div class="ex">
+    <div class="q">p.44 Entraînement 3：變成條件式，並說出它在表達什麼 <span class="likely">★★★ 文法頁一定做</span></div>
+    <div class="hint">先想想看：e 題 <i>(Savoir) ……-vous à quelle heure commence le concert ?</i>——savoir 是不規則，字根是什麼？倒裝時動詞和 vous 中間要加什麼？這題跟 Fonctionnement 第一句是同一種用法。</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.44 Production orale 4：接著說下去 <span class="likely">★★</span></div>
+    <div class="hint">先想想看：c 題 <i>Je dois me lever tôt demain, sinon je…</i>——sinon 後面接的是「不然會怎樣」，這是哪一種用法？a、b 題見上面 🔎②：考試寫作時要換成 si 句。</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.49 Entraînement 2：重組 ne … que 句子 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：b 題有 <i>ont … rendu</i>（複合時態）還有 <i>en</i>——ne 要放在 en 前面還是 ont 前面？que 要放在哪裡？d 題 <i>y … reviendrons … dans un an</i>：你要限定的是「什麼」？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.51 Entraînement 3：填原因／結果的連接詞 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：每一題先看空格<b>後面</b>是名詞還是句子。a 題 <i>…… la pluie</i> 是名詞，而且是壞事——grâce à 還是 à cause de？e 題空格夾在兩個名詞中間，需要的是<b>動詞</b>，看表最下面那幾行。g 題對方已經知道「你買了票」，要用哪一個？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.53 l'essentiel 4：二選一 <span class="likely">★★</span></div>
+    <div class="hint">先想想看：f 題 <i>comme / du coup</i>——comme 能放在句子中間嗎？d 題 <i>par conséquent / étant donné</i>——étant donné 後面接的是句子還是名詞？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.46 Phonétique 3：劃掉不發音的字尾子音 <span class="likely">★ 有時間才做</span></div>
+    <div class="hint">先想想看：a 句 <i>Je vous attends en bas</i>——attends 的 d 和 s 都不唸嗎？<i>vous attends</i> 那裡會不會連音？</div>
+  </div>
+</section>
+
+<!-- ============ 8. 問老師 ============ -->
+<section>
+  <h2>🙋 上課可以問老師的 3 個問題</h2>
+  <ol class="ask">
+    <li>p.44 <b>Je serais artiste de cirque, je…</b>——兩邊都用條件式，這是口語說法嗎？寫作是不是一定要改成 <b>si j'étais…</b>？</li>
+    <li>p.49 課本說 que 放在過去分詞後面，但 <b>Je ne déciderai que quand je connaîtrai les dates</b> 的 que 是放在被限定的東西前面——到底該用哪個規則判斷？</li>
+    <li>p.51 <b>du coup</b> 口語用得很多，TCF 口說用它會不會被扣分？寫作是不是一定要換成 donc／par conséquent？</li>
+  </ol>
+</section>
+
+<p class="small">來源：Édito B1 課本 p.41–54（<code>assets/.textbook_cache.txt</code> 第 53210–55253 行；PDF 頁碼與課本頁碼一致，已用頁尾「42 I quarante-deux」「cinquante-trois I 53」等核對；p.55 是 Unité 4 首頁）。PDF 抽字時掉了 fi／ff／fl 連字（例如 p.41 « lm »＝film、p.47 « méer »＝méfier、« science-ction »、p.48 « ore »＝offre、p.50 « indiérent »、« pétriée »），引用時推定原文，未對照紙本查證。p.48 H 的短文抽字缺漏很多段（blockbuster、teaser、found footage 的定義句不完整），只引用了完整的功能句。本頁未讀課本附錄的聽力逐字稿，所以聽力 B、C、E、G、I、K 的內容只寫了題目方向。</p>
+
+</main>
+</body>
+</html>
