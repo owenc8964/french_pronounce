@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 Unité 4 預習單</title>
+<style>
+  :root {
+    --bg: #15171c;
+    --card: #1f232b;
+    --card2: #262b35;
+    --text: #e6e8ec;
+    --muted: #9aa3b2;
+    --fr: #ffffff;
+    --accent: #7cc4ff;
+    --gold: #f2c86b;
+    --warn: #ff9f7a;
+    --line: #333a46;
+    --gray-badge: #4a5160;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Helvetica Neue", sans-serif;
+    font-size: 16px; line-height: 1.65;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 1.35rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: .9rem; margin-bottom: 18px; }
+  section {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; margin: 0 0 16px;
+  }
+  h2 { font-size: 1.1rem; margin: 0 0 8px; color: var(--accent); }
+  h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--gold); }
+  p { margin: 6px 0; }
+  b { color: var(--fr); }
+  .time { float: right; font-size: .78rem; color: var(--muted); font-weight: normal; }
+  .rule {
+    background: var(--card2); border-left: 4px solid var(--accent);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .trap {
+    background: rgba(255,159,122,.08); border-left: 4px solid var(--warn);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .flag {
+    background: rgba(242,200,107,.08); border-left: 4px solid var(--gold);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: .92rem;
+  }
+  .map { list-style: none; padding: 0; margin: 0; }
+  .map li { padding: 7px 0; border-bottom: 1px solid var(--line); }
+  .map li:last-child { border-bottom: none; }
+  .pg { display: inline-block; min-width: 54px; color: var(--accent); font-weight: 600; }
+  .tag { display: inline-block; font-size: .72rem; padding: 1px 7px; border-radius: 10px;
+         background: var(--gray-badge); color: var(--text); margin-left: 4px; vertical-align: 1px; }
+  .tag.new { background: #2f5d8a; }
+  /* 法文句子載體：沿用 french_notes.html 的結構，之後可直接搬 */
+  .phrase-list { list-style: none; padding: 0; margin: 6px 0; }
+  .phrase-list li {
+    display: flex; flex-wrap: wrap; gap: 2px 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--line);
+  }
+  .phrase-list li:last-child { border-bottom: none; }
+  .fr { font-weight: 600; color: var(--fr); width: 100%; }
+  .zh { color: var(--muted); font-size: .9rem; }
+  .phrase-list li > span.note { color: #7d8696; font-size: .8rem; }
+  .fr em { font-style: normal; color: var(--gold); }
+  .vocab { list-style: none; padding: 0; margin: 4px 0 8px;
+           display: grid; grid-template-columns: 1fr; gap: 0; }
+  .vocab li { padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: .95rem; }
+  .vocab li:last-child { border-bottom: none; }
+  .vocab .w { color: var(--fr); font-weight: 600; }
+  .g { display: inline-block; font-size: .72rem; color: var(--muted); border: 1px solid var(--line);
+       border-radius: 4px; padding: 0 5px; margin: 0 4px; }
+  details { background: var(--card2); border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
+  summary { cursor: pointer; font-weight: 600; color: var(--text); }
+  details[open] summary { margin-bottom: 6px; }
+  .ex { margin: 8px 0; padding-left: 2px; }
+  .ex .q { color: var(--fr); }
+  .hint { color: var(--muted); font-size: .92rem; }
+  .likely { color: var(--gold); font-size: .8rem; }
+  ol.ask { padding-left: 20px; margin: 6px 0; }
+  ol.ask li { margin: 8px 0; }
+  .small { font-size: .85rem; color: var(--muted); }
+  @media (min-width: 640px) {
+    .vocab { grid-template-columns: 1fr 1fr; column-gap: 18px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Unité 4 La francophonie jusque dans l'assiette・預習單（草稿）</h1>
+<div class="sub">範圍：Édito B1 p.55–70（第 4 單元）｜大約 15 分鐘｜全部法文句子都是課本原句，每句標頁碼</div>
+
+<div class="flag">
+  🚧 <b>這是草稿。</b>給 Unité 4 開課前先看的。<br>
+  中文翻譯、「它在處理什麼資訊」的說明、陷阱與標註是 Claude 加的；法文全部取自 <code>assets/.textbook_cache.txt</code> 的 Édito B1 內頁（PDF 頁碼＝課本頁碼）。
+</div>
+
+<!-- ============ 0. 地圖 ============ -->
+<section>
+  <h2>🗺 這個單元的頁面 <span class="time">1 分鐘</span></h2>
+  <ul class="map">
+    <li><span class="pg">p.55</span>單元首頁。目標：換句話說來解釋｜介紹一個國家、城市和居民｜表達意願、願望</li>
+    <li><span class="pg">p.56</span>A 閱讀：英國記者 Simon Kuper 的專欄〈Deux langues, mon cauchemar〉——學了二十年法文還是覺得自己很笨</li>
+    <li><span class="pg">p.57</span>B 聽力：podcast，法語圈各地的詞（比利時、魁北克、象牙海岸）＋「換句話說來解釋」｜C 閱讀：«Mes mots pour le dire» 影片比賽</li>
+    <li><span class="pg">p.58</span><b>文法：Les indéfinis (la quantité) 不定形容詞／代名詞（數量）</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.59</span>D 聽力：住在新喀里多尼亞的諾曼地人 Marianne ＋「介紹國家、城市和居民」｜E 閱讀：漫畫〈C'est bien de vivre à l'étranger !〉（抽字沒抓到內文）</li>
+    <li><span class="pg">p.60</span>詞彙頁：語言、法語圈、各地說法、在國外定居</li>
+    <li><span class="pg">p.61</span>Culture：語言趣聞。F 聽力：外語向法文借的字（Emily in Paris、日本店名）｜G 閱讀：會換性別的字</li>
+    <li><span class="pg">p.62</span>H 影片：Martinique Gourmande 美食節｜I 閱讀：網友留言 ＋「表達意願、願望」</li>
+    <li><span class="pg">p.63</span><b>文法：Exprimer la volonté, le souhait 表達意願與願望（接虛擬式）</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.64</span>J 閱讀：〈L'Œuf et la Plume〉媽媽用剩菜做歐姆蛋｜K 聽力：兩位塞內加爾主廚</li>
+    <li><span class="pg">p.65</span>L 閱讀：魁北克〈省錢吃好的六個建議〉｜<b>文法：La négation 否定</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.66</span>詞彙頁：飲食、豆類、異國菜、負責任的飲食、互助飲食 ＋ 發音：<b>L'enchaînement vocalique 母音連讀</b><span class="tag new">新</span></li>
+    <li><span class="pg">p.67</span>l'essentiel 總複習（文法／詞彙）</li>
+    <li><span class="pg">p.68</span>Atelier médiation：分組參加 «Mes mots pour le dire» 比賽</li>
+    <li><span class="pg">p.69–70</span>DELF B1 應考策略：Compréhension des écrits 閱讀（含 Exercice 1 練習）</li>
+  </ul>
+  <p class="small">p.71 已經是 Unité 5 Mondes urbains 的首頁。</p>
+</section>
+
+<!-- ============ 1. 不定詞 ============ -->
+<section>
+  <h2>📐 文法一：Les indéfinis 不定形容詞與代名詞（p.58） <span class="time">4 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>「<b>有多少</b>」——但不給精確數字，只給<b>四個刻度</b>：<br>
+    零（Nulle）→ aucun｜一個一個看（Individuelle）→ chaque／chacun｜不確定的一部分（Indéterminée）→ certains／quelques｜全部（Totalité）→ tout／tous<br>
+    <b>第二個開關：後面有沒有名詞？</b>有名詞 → 形容詞（chaque étudiant）；沒有名詞、自己當主詞 → 代名詞（chacun fera une vidéo）。
+  </div>
+
+  <h3>課本 Fonctionnement 表（p.58）：形容詞＋名詞 ↔ 代名詞</h3>
+  <ul class="phrase-list">
+    <li><span class="fr"><em>aucun/aucune</em> étudiant(e) ↔ <em>aucun/aucune</em> n'est inutile</span><span class="zh">沒有任何學生／沒有一個是沒用的</span><span class="note">p.58 零</span></li>
+    <li><span class="fr"><em>chaque</em> étudiant(e) ↔ <em>chacun/chacune</em> fera une vidéo</span><span class="zh">每個學生／每個人都會拍一支影片</span><span class="note">p.58 個別</span></li>
+    <li><span class="fr"><em>certains/certaines</em> étudiant(e)s ↔ <em>certains/certaines</em> parlent peu</span><span class="zh">某些學生／有些人很少說話</span><span class="note">p.58 不確定</span></li>
+    <li><span class="fr"><em>quelques</em> étudiant(e)s ↔ <em>quelques-uns/quelques-unes</em> ont des difficultés</span><span class="zh">幾個學生／有幾個人有困難</span><span class="note">p.58 不確定</span></li>
+    <li><span class="fr"><em>tout</em> le monde/<em>toute</em> la vie ↔ <em>tout</em> est possible</span><span class="zh">所有人／一輩子｜一切都有可能</span><span class="note">p.58 全部</span></li>
+    <li><span class="fr"><em>tous/toutes</em> les étudiant(e)s ↔ <em>tous/toutes</em> sont francophones</span><span class="zh">所有學生／大家都講法語</span><span class="note">p.58 全部</span></li>
+  </ul>
+
+  <h3>Remarques（p.58）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr"><em>Aucune</em> langue <em>n'</em>est difficile. <em>Aucune n'</em>est difficile.</span><span class="zh">沒有一種語言是難的。沒有一種是難的。</span><span class="note">p.58 aucun 要配 ne，但不加 pas</span></li>
+    <li><span class="fr"><em>Tous</em> les candidats sont francophiles.</span><span class="zh">所有參賽者都是親法語的人。</span><span class="note">p.58 形容詞：tous 的 s <b>不唸</b></span></li>
+    <li><span class="fr"><em>Tous</em> sont francophiles.</span><span class="zh">大家都是親法語的人。</span><span class="note">p.58 代名詞：tous 的 s <b>要唸</b></span></li>
+  </ul>
+
+  <details>
+    <summary>想多看一點：p.58 Échauffement（出自 p.56 A、p.57 B／C）</summary>
+    <ul class="phrase-list">
+      <li><span class="fr">L'anglais est parlé et écrit plus largement qu'<em>aucune</em> autre langue ne l'a jamais été.</span><span class="zh">英文被說、被寫的範圍，比過去任何一種語言都廣。</span><span class="note">p.58 a（出自 p.56 A）—— 見下面陷阱二</span></li>
+      <li><span class="fr">Imprégnée de <em>toutes</em> ces cultures, elle est devenue plus riche et nuancée.</span><span class="zh">吸收了這些文化，它變得更豐富、更細膩。</span><span class="note">p.58 b</span></li>
+      <li><span class="fr"><em>Certaines</em> sont très surprenantes.</span><span class="zh">有些非常令人驚訝。</span><span class="note">p.58 c</span></li>
+      <li><span class="fr"><em>Quelques-uns</em> sont très courants comme pourriel, magasinage ou égoportrait.</span><span class="zh">有幾個很常見，像 pourriel、magasinage、égoportrait。</span><span class="note">p.58 d</span></li>
+      <li><span class="fr"><em>Tous</em> les projets reçus respectant les critères de participation sont admissibles aux différents prix.</span><span class="zh">所有收到、符合參賽條件的作品都有資格角逐各個獎項。</span><span class="note">p.58 e</span></li>
+      <li><span class="fr"><em>Chaque</em> candidat devra choisir son mot ou expression favori(te).</span><span class="zh">每位參賽者要選出自己最喜歡的字或說法。</span><span class="note">p.58 f</span></li>
+      <li><span class="fr"><em>Chacun</em> procédera à illustrer sa vidéo.</span><span class="zh">每個人接著要替自己的影片配上畫面。</span><span class="note">p.58 g</span></li>
+    </ul>
+  </details>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：aucun 要 ne，⛔ 不要 pas。</b>Aucune langue <b>n'</b>est difficile——寫成 <i>n'est pas</i> 就錯了（p.58 Remarque）。<br>
+    ⚠️ <b>陷阱二：p.58 a 的 aucune 不是「沒有」。</b>plus largement qu'<b>aucune</b> autre langue <b>ne</b> l'a jamais été——放在<b>比較級後面</b>，aucune 是「任何一個」，ne 是不表否定的「贅詞 ne」。意思是肯定的：英文比<b>任何</b>語言都廣。（這是標準文法，課本這頁沒解釋，只把它放進「數量為零」的練習裡。）<br>
+    ⚠️ <b>陷阱三：tous 的 s 唸不唸，聽力就靠它。</b>[tu] ＝ 後面跟著名詞；[tus] ＝ 它自己就是主詞。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① p.58 Échauffement f 印 <b>son mot ou expression favori(te)</b>，但 p.57 C 原文是 <b>le mot ou l'expression favori(te)</b>。引用時課本自己改了字。標準寫法兩個名詞各帶自己的限定詞，課本兩個版本都省略了第二個（報刊體縮寫）。<br>
+    ② p.58 g <b>Chacun procédera à illustrer</b>：procéder à 在標準法文通常接<b>名詞</b>，接不定式比較少見。Claude 判斷，<b>未查證</b>老師怎麼看；自己寫作時接名詞較保險。<br>
+    ③ 表上把 <b>tout le monde／toute la vie</b> 放在「形容詞」欄。toute la vie 的 toute 是形容詞（整個），但 <b>tout le monde</b> 整塊用起來就像代名詞「大家」，後面動詞用<b>單數</b>。
+  </div>
+</section>
+
+<!-- ============ 2. 意願與願望 ============ -->
+<section>
+  <h2>📐 文法二：Exprimer la volonté, le souhait 表達意願與願望（p.63） <span class="time">4 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>que 後面那件事<b>還不是事實</b>，是「我希望／我要它發生」——所以動詞換成<b>虛擬式 subjonctif</b>。<br>
+    <b>唯一的例外：espérer que ＋ 直陳式 indicatif</b>（p.63 Fonctionnement 第一行）。<br>
+    <b>＋ subjonctif 的清單（p.63）</b>：J'aimerais (bien) que｜J'apprécierais que｜Je désire que／Je désirerais que｜Je préfère que／Je préférerais que｜Je rêve que／Je rêverais que｜Je souhaite que／Je souhaiterais que｜Je suggère que／Je suggérerais que｜Je tiens à ce que｜Je veux que／Je voudrais que｜Cela/Ça me ferait plaisir que｜Ce serait bien que｜Il serait bon que｜Pourvu que
+  </div>
+
+  <h3>課本 Fonctionnement 例句（p.63）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">J'espère que tu <em>viendras</em> au festival.</span><span class="zh">我希望你會來音樂節。</span><span class="note">p.63 espérer que ＋ 直陳式（這裡是 futur）</span></li>
+    <li><span class="fr">J'aimerais que vous <em>sachiez</em> à quel point j'ai adoré votre repas.</span><span class="zh">我想讓您知道我有多愛您做的菜。</span><span class="note">p.63 ＋ subjonctif（savoir → sachiez）</span></li>
+    <li><span class="fr">J'ai toujours voulu que mon fils <em>devienne</em> un grand chef.</span><span class="zh">我一直希望我兒子成為大廚。</span><span class="note">p.63 ＋ subjonctif</span></li>
+    <li><span class="fr">Que souhaites-tu que je te <em>prépare</em> pour le déjeuner ?</span><span class="zh">你希望我午餐幫你準備什麼？</span><span class="note">p.63 ＋ subjonctif</span></li>
+    <li><span class="fr">Ce serait bien que nous <em>fassions</em> un séjour gastronomique ensemble.</span><span class="zh">要是我們能一起來趟美食之旅就好了。</span><span class="note">p.63 ＋ subjonctif（faire → fassions）</span></li>
+    <li><span class="fr">Pourvu qu'il <em>prenne</em> des leçons de cuisine !</span><span class="zh">但願他去上烹飪課！</span><span class="note">p.63 ＋ subjonctif（prendre → prenne）</span></li>
+  </ul>
+
+  <h3>Remarques（p.63）：條件式＝願望（較客氣），直陳式＝意願（較直接）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Je <em>souhaiterais</em> que vous me donniez la recette de ce plat.</span><span class="zh">我希望您能給我這道菜的食譜。</span><span class="note">p.63 主要動詞用條件式 → 比較有禮貌、不那麼直接</span></li>
+    <li><span class="fr">Je <em>souhaite</em> que vous me donniez cette recette.</span><span class="zh">我希望您給我這份食譜。</span><span class="note">p.63 主要動詞用直陳式 → 表達意願</span></li>
+  </ul>
+
+  <details>
+    <summary>想多看一點：p.63 Échauffement（五句都出自 p.62 I 的網友留言）</summary>
+    <ul class="phrase-list">
+      <li><span class="fr"><em>Espérons qu'</em>il y <em>aura</em> beaucoup de monde pour célébrer la gastronomie martiniquaise !</span><span class="zh">希望會有很多人來慶祝馬丁尼克美食！</span><span class="note">p.63 a（p.62 Adama）</span></li>
+      <li><span class="fr"><em>J'espère qu'</em>on <em>peut</em> participer aux ateliers culinaires.</span><span class="zh">希望我們可以參加烹飪工作坊。</span><span class="note">p.63 b（p.62 Domia）</span></li>
+      <li><span class="fr"><em>J'aimerais trop que</em> vous l'<em>organisiez</em> deux fois par an !</span><span class="zh">真希望你們一年辦兩次！</span><span class="note">p.63 c（p.62 Sanaa）—— trop 見下面 🔎</span></li>
+      <li><span class="fr"><em>Ce serait bien qu'</em>on <em>puisse</em> faire un don au profit du restaurant Le Robin des bois.</span><span class="zh">要是能捐款給 Le Robin des bois 餐廳就好了。</span><span class="note">p.63 d（p.62 Rosea）</span></li>
+      <li><span class="fr"><em>Je souhaite que</em> vous <em>soyez</em> encore nombreux à venir cette année !</span><span class="zh">希望今年還是有很多人來！</span><span class="note">p.63 e（p.62 Liam）</span></li>
+      <li><span class="fr">Je rêve que nous allions au restaurant pour mon anniversaire.</span><span class="zh">我夢想我們生日那天去餐廳吃飯。</span><span class="note">p.63 練習 5 Exemple</span></li>
+    </ul>
+  </details>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：espérer ≠ souhaiter。</b>兩個中文都是「希望」，但 <b>espérer que ＋ 直陳式</b>、<b>souhaiter que ＋ 虛擬式</b>。p.63 練習 4b／4e 和 p.67 l'essentiel 3c／3f 就是故意混在一起考。<br>
+    ⚠️ <b>陷阱二：條件式在「前面」，虛擬式在「後面」。</b>J'<b>aimerais</b> que vous <b>sachiez</b>——前半句用條件式是為了客氣，que 後面還是虛擬式，⛔ 不會變成條件式。<br>
+    ⚠️ <b>陷阱三：je tiens à ce que。</b>tenir à 後面要接名詞，所以接子句時要先墊一個 <b>ce</b>：Je tiens à <b>ce</b> que…（p.63 表、練習 4f）。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>p.63 Remarque 第二條容易看錯。</b>課本寫「Pour exprimer une volonté, on utilise plutôt l'<b>indicatif</b>」，例句卻是 Je souhaite que vous me <b>donniez</b>（donniez 是虛擬式）。課本說的「indicatif」指的是<b>主要動詞 souhaite</b>（相對於條件式 souhaiterais），⛔ <b>不是</b>說 que 後面改用直陳式。que 後面永遠是虛擬式。<br>
+    ② <b>課本這頁沒教虛擬式怎麼變位</b>，例句裡就出現了 sachiez、devienne、fassions、prenne、puisse、soyez 這些不規則形。<br>
+    ③ <b>課本沒寫的標準規則：主詞相同就不用 que。</b>主詞相同時不用 que 子句，要改用<b>動詞＋不定式</b>（p.62 <i>Ça me ferait plaisir d'y aller</i> 就是這種）。課本表上所有例句兩邊主詞都不同，剛好沒碰到這條。<br>
+    ④ <b>espérer 的例外也有例外</b>（標準文法，課本沒寫）：espérer 用否定或疑問時，後面可以接虛擬式。考試很少考，知道就好。<br>
+    ⑤ p.63 c <b>J'aimerais trop que</b>：trop 在這裡＝「非常」，是<b>口語</b>（網路留言）。標準書面語 trop＝「太過」，寫作要用 vraiment／beaucoup。
+  </div>
+</section>
+
+<!-- ============ 3. 否定 ============ -->
+<section>
+  <h2>📐 文法三：La négation 否定（p.65） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>不只是「不」，而是「<b>不</b>＋<b>什麼方面</b>」：pas（一般）、plus（不再）、rien（沒有東西）、jamais（從不）、personne（沒有人）、ni（兩個都不）。<br>
+    課本分成<b>兩個成分</b>和<b>三個成分</b>兩組（p.65 Fonctionnement）。<br>
+    <b>新的重點：personne／rien 可以當主詞</b>，這時它們放在句首、<b>ne</b> 跟在後面，沒有 pas。
+  </div>
+
+  <h3>課本 Fonctionnement 表（p.65）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Je <em>n'</em>ai <em>jamais</em> goûté la cuisine créole.</span><span class="zh">我從來沒吃過克里奧料理。</span><span class="note">p.65 兩成分：ne… pas/plus/rien/jamais</span></li>
+    <li><span class="fr"><em>Personne n'</em>est aussi bonne cuisinière que Léa.</span><span class="zh">沒有人像 Léa 那麼會煮。</span><span class="note">p.65 兩成分：Personne ne…（當主詞）</span></li>
+    <li><span class="fr"><em>Rien ne</em> me plaît dans ce menu.</span><span class="zh">這份菜單上沒有一樣我喜歡。</span><span class="note">p.65 兩成分：Rien ne…（當主詞）</span></li>
+    <li><span class="fr">Il <em>n'</em>a <em>pas encore</em> dîné.</span><span class="zh">他還沒吃晚餐。</span><span class="note">p.65 三成分：ne… pas encore</span></li>
+    <li><span class="fr">Il <em>n'</em>y a <em>plus rien</em> dans le frigo.</span><span class="zh">冰箱裡什麼都沒了。</span><span class="note">p.65 三成分：ne… plus rien</span></li>
+    <li><span class="fr">Je <em>ne</em> mangerai <em>plus jamais</em> ce plat épicé.</span><span class="zh">我再也不吃這道辣菜了。</span><span class="note">p.65 三成分：ne… plus jamais</span></li>
+    <li><span class="fr">Je <em>n'</em>aime <em>pas</em> les courgettes, <em>ni</em> les poivrons.</span><span class="zh">我不喜歡櫛瓜，也不喜歡甜椒。</span><span class="note">p.65 三成分：ne… pas, ni…</span></li>
+    <li><span class="fr">Je <em>ne</em> veux <em>ni</em> fromage, <em>ni</em> dessert.</span><span class="zh">我既不要起司，也不要甜點。</span><span class="note">p.65 三成分：ne… ni…, ni…</span></li>
+  </ul>
+
+  <details>
+    <summary>想多看一點：p.65 Échauffement（出自 p.64 J 與 p.65 L）</summary>
+    <ul class="phrase-list">
+      <li><span class="fr">Elle <em>ne</em> savait <em>rien</em> de ce pays.</span><span class="zh">她對這個國家一無所知。</span><span class="note">p.65 a（p.64 J）</span></li>
+      <li><span class="fr">Elle <em>n'</em>avait <em>rien</em> trouvé d'autre.</span><span class="zh">她什麼別的都沒找到。</span><span class="note">p.65 b —— rien 放在過去分詞<b>前面</b></span></li>
+      <li><span class="fr">Cela <em>n'</em>a <em>pas</em> été <em>sans</em> influer sur mon écriture.</span><span class="zh">這對我的寫作不是沒有影響。（＝ 有影響）</span><span class="note">p.65 c —— 雙重否定＝肯定</span></li>
+      <li><span class="fr"><em>Ne</em> dérogez <em>pas</em> de cette liste à l'épicerie !</span><span class="zh">在超市別偏離這張清單！</span><span class="note">p.65 d（p.65 L 建議 1）</span></li>
+      <li><span class="fr"><em>Ne</em> commandez <em>plus jamais</em> au resto !</span><span class="zh">再也別叫餐廳外送！</span><span class="note">p.65 e（p.65 L 建議 4，原文在抽字時被截斷）</span></li>
+    </ul>
+  </details>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：Personne ne／Rien ne 開頭，⛔ 不加 pas。</b><i>Personne n'est pas…</i> 是錯的。<br>
+    ⚠️ <b>陷阱二：ni… ni… 後面冠詞消失。</b>Je ne veux ni fromage, ni dessert——沒有 de、沒有 du（p.65）。<br>
+    ⚠️ <b>陷阱三：sans 也是否定。</b>p.65 c <i>n'a pas été sans influer</i>＝兩個否定抵消，意思是「<b>有</b>影響」。閱讀題最愛這種。<br>
+    ⚠️ <b>陷阱四：ne 不一定是否定。</b>p.56 A 有一句 <i>plus stupide et ennuyeux que je <b>ne</b> le suis en anglais</i>——比較句後面的 ne 是「贅詞 ne」，沒有否定意思（標準文法，課本這頁沒提）。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>personne 和 rien 在複合時態的位置不一樣，課本表上沒說。</b>標準文法：<b>rien 放在過去分詞前面</b>（je n'ai rien trouvé，p.65 b 就是），<b>personne 放在過去分詞後面</b>。p.65 練習 2f <i>Quelqu'un a pris ton assiette</i> 就會碰到。<br>
+    ② p.65 d <b>Ne dérogez pas de cette liste</b>：標準法文是 <b>déroger à</b>。這句出自魁北克網站（p.65 L），課本照抄。寫作請用 à。<b>未查證</b> déroger de 在魁北克是否通行。<br>
+    ③ 課本表把 <b>ne… pas, ni…</b> 跟 <b>ne… ni…, ni…</b> 並列。標準法文兩種都對；口語常把 ne 吞掉（標準口語現象，課本這頁沒寫）。
+  </div>
+</section>
+
+<!-- ============ 4. 發音 ============ -->
+<section>
+  <h2>👂 發音：L'enchaînement vocalique 母音連讀（p.66） <span class="time">1 分鐘</span></h2>
+  <div class="rule">
+    <b>它在處理什麼：</b>兩個要唸出來的母音碰在一起時，<b>不停頓、不加喉塞音</b>，聲音直接滑過去。<br>
+    課本規則（p.66 練習 2）：兩個母音<b>在同一個字裡</b>（Montréal、météo），或<b>在兩個字之間</b>（Il a eu、Pensez à moi !）都要連著唸。
+  </div>
+  <p>課本練習的句子（p.66）：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">Émilie est partie à Montréal.</span><span class="zh">Émilie 去蒙特婁了。</span><span class="note">p.66 Phonétique 1a</span></li>
+    <li><span class="fr">Nicolas a eu son plat avant moi.</span><span class="zh">Nicolas 比我先拿到他的菜。</span><span class="note">p.66 Phonétique 1b</span></li>
+    <li><span class="fr">Il a eu ／ Pensez à moi !</span><span class="zh">他有過／想著我！</span><span class="note">p.66 規則例句</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>陷阱：這跟 Unité 3 的「連音 liaison」不一樣。</b>liaison 是多唸出一個子音（Unité 3 p.46 練習 3a 的 vous attends 會唸出 [z]）；enchaînement vocalique <b>沒有新增任何子音</b>，只是母音和母音不斷開。<br>
+    ⚠️ <b>練習 3 的重點：</b>課本要你分辨現在式、passé composé、imparfait。<i>Il a eu</i> 三個母音 [i]–[a]–[y] 連在一起，聽力時要能切出「a eu」＝ passé composé。
+  </div>
+  <div class="flag">
+    🔎 <b>補充（標準語音學，非課本）：</b>練習 3、4 的句子在聽力音檔裡，課本頁面沒印出來，這張單子<b>未收錄</b>。
+  </div>
+</section>
+
+<!-- ============ 5. 功能句 ============ -->
+<section>
+  <h2>💬 上課會用到的說法 <span class="time">2 分鐘</span></h2>
+
+  <h3>Pour reformuler pour expliquer 換句話說來解釋（p.57）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Si je vous dis « poser sa candidature », ça vous fait penser à quoi ?</span><span class="zh">如果我跟你們說「poser sa candidature」，你們會想到什麼？</span><span class="note">p.57</span></li>
+    <li><span class="fr">Vous l'avez ? Cela veut dire « faire une déclaration d'amour ».</span><span class="zh">猜到了嗎？意思是「告白」。</span><span class="note">p.57</span></li>
+    <li><span class="fr">Ça se dit de quelqu'un qui fait la fête.</span><span class="zh">這是用來說愛玩、愛跑趴的人。</span><span class="note">p.57</span></li>
+    <li><span class="fr">Si j'ai bien compris, cela signifie qu'on révèle trop tôt un élément important.</span><span class="zh">如果我沒理解錯，意思是太早說出重要情節。</span><span class="note">p.57</span></li>
+  </ul>
+
+  <h3>Pour présenter un pays, une ville et ses habitants 介紹國家、城市和居民（p.59）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">C'est un petit bout de France à 27 heures d'avion.</span><span class="zh">這是一小塊法國，飛機要 27 小時。</span><span class="note">p.59</span></li>
+    <li><span class="fr">Je vous présente un pays caractérisé par la diversité de ses paysages.</span><span class="zh">我要介紹一個以風景多樣著稱的國家。</span><span class="note">p.59</span></li>
+    <li><span class="fr">On vit beaucoup plus dehors et les gens se lèvent souvent tôt.</span><span class="zh">大家多半在戶外生活，而且常常早起。</span><span class="note">p.59</span></li>
+    <li><span class="fr">Ce qui caractérise cette île, c'est qu'on suit le rythme du soleil et de la nature.</span><span class="zh">這座島的特色是，生活跟著太陽和自然的節奏走。</span><span class="note">p.59（Ce qui…, c'est… 強調句，Unité 3 也出現過）</span></li>
+    <li><span class="fr">Ici les gens se fréquentent surtout au sein des familles.</span><span class="zh">這裡的人主要在家族內部往來。</span><span class="note">p.59</span></li>
+    <li><span class="fr">C'est un peu comme si on redémarrait une nouvelle vie.</span><span class="zh">有點像是重新開始一段新人生。</span><span class="note">p.59 D 標語（comme si ＋ imparfait）</span></li>
+  </ul>
+
+  <h3>Pour exprimer une volonté, un souhait 表達意願、願望（p.62）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Je ferais bien un tour au festival.</span><span class="zh">我倒是很想去美食節逛一圈。</span><span class="note">p.62（條件式）</span></li>
+    <li><span class="fr">Espérons qu'il y aura beaucoup de monde.</span><span class="zh">希望會有很多人。</span><span class="note">p.62（espérer ＋ 直陳式）</span></li>
+    <li><span class="fr">Ça me ferait plaisir d'y aller !</span><span class="zh">能去的話我會很開心！</span><span class="note">p.62（主詞相同 → de ＋ 原形）</span></li>
+    <li><span class="fr">Ce serait bien qu'on puisse faire un don.</span><span class="zh">要是能捐款就好了。</span><span class="note">p.62（＋ 虛擬式）</span></li>
+  </ul>
+
+  <h3>Coopérer dans un groupe 小組合作（p.68 Stratégies）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">On pourrait choisir un mot québécois. Qu'en dites-vous ?</span><span class="zh">我們可以選一個魁北克的字。你們覺得呢？</span><span class="note">p.68 提建議並徵詢意見</span></li>
+    <li><span class="fr">Que pensez-vous de la proposition d'Isabelle ?</span><span class="zh">你們覺得 Isabelle 的提議怎麼樣？</span><span class="note">p.68</span></li>
+    <li><span class="fr">Préférez-vous filmer à l'intérieur ou à l'extérieur ?</span><span class="zh">你們想在室內還是戶外拍？</span><span class="note">p.68 給選項的問句</span></li>
+    <li><span class="fr">Le décor vous paraît-il absolument nécessaire pour réussir une vidéo ?</span><span class="zh">你們覺得布景是拍好影片絕對必要的嗎？</span><span class="note">p.68 用副詞讓問題更精確</span></li>
+    <li><span class="fr">Samir, je crois que tu as déjà participé à un concours. Tu pourrais nous raconter ton expérience ?</span><span class="zh">Samir，我記得你參加過比賽。可以跟我們分享一下嗎？</span><span class="note">p.68 邀請別人發言</span></li>
+  </ul>
+
+  <h3>單元格言</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">La langue française est source de partage.</span><span class="zh">法語是分享的泉源。</span><span class="note">p.55 單元首頁</span></li>
+  </ul>
+</section>
+
+<!-- ============ 6. 詞彙 ============ -->
+<section>
+  <h2>🧺 新詞彙（挑 B1 才出現、你筆記裡大多還沒有的） <span class="time">2 分鐘</span></h2>
+  <p class="small">哪些字筆記裡已經有，<b>未查證</b>（這次沒有對 french_notes.html 逐字核對）。</p>
+
+  <h3>語言與法語圈（p.60）</h3>
+  <ul class="vocab">
+    <li><span class="w">la langue maternelle / seconde</span><span class="g">f.</span>母語／第二語言</li>
+    <li><span class="w">la langue officielle / régionale</span><span class="g">f.</span>官方語言／地方語言</li>
+    <li><span class="w">le locuteur, la locutrice</span><span class="g">n.</span>（某語言的）使用者</li>
+    <li><span class="w">la diversité linguistique</span><span class="g">f.</span>語言多樣性</li>
+    <li><span class="w">le/la francophone · francophile</span><span class="g">n.</span>說法語的人／喜愛法語法國的人（p.57 練習 5）</li>
+    <li><span class="w">l'OIF, le pays membre</span><span class="g">n.</span>法語國家組織、會員國</li>
+    <li><span class="w">promouvoir la langue française</span><span class="g">expr.</span>推廣法語</li>
+    <li><span class="w">se débrouiller au quotidien</span><span class="g">expr.</span>日常應付得來（p.56）</li>
+    <li><span class="w">glaner (çà et là)</span><span class="g">v.</span>（東一點西一點地）撿拾、累積（p.56 l.8）</li>
+    <li><span class="w">la traduction assistée par ordinateur</span><span class="g">f.</span>電腦輔助翻譯</li>
+  </ul>
+
+  <h3>語言的特點（p.60）</h3>
+  <ul class="vocab">
+    <li><span class="w">un faux ami</span><span class="g">m.</span>假朋友（長得像、意思不同的字）</li>
+    <li><span class="w">un emprunt</span><span class="g">m.</span>借詞</li>
+    <li><span class="w">un mot-valise</span><span class="g">m.</span>混成詞（前一個字的頭＋後一個字的尾）</li>
+    <li><span class="w">une équivalence</span><span class="g">f.</span>對等詞</li>
+    <li><span class="w">une expression typique, idiomatique</span><span class="g">f.</span>慣用語</li>
+    <li><span class="w">une langue imagée</span><span class="g">f.</span>充滿比喻的語言</li>
+  </ul>
+
+  <h3>各地法語說法（p.60；中文是 Claude 依 p.57、p.60 練習 5 推定，<b>未查證</b>）</h3>
+  <ul class="vocab">
+    <li><span class="w">placoter</span><span class="g">Québec</span>閒聊（≈ bavarder）</li>
+    <li><span class="w">le clavardage</span><span class="g">Québec</span>線上聊天</li>
+    <li><span class="w">divulgâcher</span><span class="g">Québec</span>爆雷（≈ spoiler）</li>
+    <li><span class="w">l'égoportrait (m.)</span><span class="g">Québec</span>自拍（≈ selfie）</li>
+    <li><span class="w">le magasinage</span><span class="g">Québec</span>逛街購物</li>
+    <li><span class="w">le pourriel</span><span class="g">Québec</span>垃圾郵件</li>
+    <li><span class="w">aller à guindaille</span><span class="g">Belgique</span>去狂歡</li>
+    <li><span class="w">faire son nez</span><span class="g">Belgique</span>擺架子、自以為了不起</li>
+    <li><span class="w">avoir deux bouches</span><span class="g">Côte d'Ivoire</span>說謊、兩面說法</li>
+    <li><span class="w">avoir la bouche sucrée</span><span class="g">Côte d'Ivoire</span>嘴甜、很會說</li>
+    <li><span class="w">poser sa candidature</span><span class="g">Côte d'Ivoire</span>告白（p.57 原句）</li>
+    <li><span class="w">s'ambiancer</span><span class="g">Côte d'Ivoire</span>炒熱氣氛、玩開</li>
+  </ul>
+
+  <h3>出國定居（p.59–60）</h3>
+  <ul class="vocab">
+    <li><span class="w">s'expatrier</span><span class="g">v.</span>移居國外</li>
+    <li><span class="w">redémarrer une nouvelle vie</span><span class="g">expr.</span>重新開始新生活</li>
+    <li><span class="w">refaire son cercle d'amis</span><span class="g">expr.</span>重建朋友圈</li>
+    <li><span class="w">le décalage horaire</span><span class="g">m.</span>時差</li>
+    <li><span class="w">être chamboulé(e)</span><span class="g">fam.</span>被打亂、心情大亂</li>
+    <li><span class="w">s'imprégner (de la culture)</span><span class="g">v.</span>浸潤（在文化裡）</li>
+    <li><span class="w">être originaire de</span><span class="g">expr.</span>原籍是……</li>
+    <li><span class="w">pour de bon</span><span class="g">expr.</span>永久地、真的（p.59 練習 8a）</li>
+    <li><span class="w">au sein de</span><span class="g">prép.</span>在……內部（p.59）</li>
+    <li><span class="w">bosser · engloutir · à fond</span><span class="g">fam.</span>工作・狼吞虎嚥・（音樂）開到最大（p.59 E 練習 3）</li>
+  </ul>
+
+  <h3>飲食（p.64–66）</h3>
+  <ul class="vocab">
+    <li><span class="w">les légumineuses</span><span class="g">f.pl.</span>豆類（p.65）</li>
+    <li><span class="w">les lentilles, les pois chiches, les fèves</span><span class="g">n.</span>扁豆、鷹嘴豆、蠶豆</li>
+    <li><span class="w">accommoder les restes</span><span class="g">expr.</span>把剩菜變成一道菜（p.64、p.66）</li>
+    <li><span class="w">confectionner un plat</span><span class="g">v.</span>做一道菜</li>
+    <li><span class="w">congeler ≠ décongeler</span><span class="g">v.</span>冷凍≠解凍</li>
+    <li><span class="w">se faire livrer un repas</span><span class="g">expr.</span>叫外送</li>
+    <li><span class="w">le lunch et le souper</span><span class="g">Québec</span>午餐（便當）與晚餐（p.65、p.66）</li>
+    <li><span class="w">le gaspillage alimentaire</span><span class="g">m.</span>食物浪費（p.65）</li>
+    <li><span class="w">le repas équilibré ≠ déséquilibré</span><span class="g">m.</span>均衡≠不均衡的一餐</li>
+    <li><span class="w">la banque alimentaire</span><span class="g">f.</span>食物銀行</li>
+    <li><span class="w">le restaurant à but non lucratif</span><span class="g">m.</span>非營利餐廳</li>
+    <li><span class="w">donner un coup de main</span><span class="g">expr.</span>幫個忙（p.62、p.66）</li>
+    <li><span class="w">valoir la peine de</span><span class="g">expr.</span>值得（p.65 建議 2）</li>
+    <li><span class="w">se substituer à</span><span class="g">v.</span>取代（p.65 建議 5）</li>
+  </ul>
+
+  <h3>會換性別、意思跟著變的字（p.61 G；中文是 Claude 依標準法文補的）</h3>
+  <ul class="vocab">
+    <li><span class="w">le livre / la livre</span><span class="g">n.</span>書／磅（重量、英鎊）</li>
+    <li><span class="w">le poste / la poste</span><span class="g">n.</span>職位、（電視）機／郵局</li>
+    <li><span class="w">le pendule / la pendule</span><span class="g">n.</span>擺錘／掛鐘</li>
+    <li><span class="w">le somme / la somme</span><span class="g">n.</span>小睡／總額</li>
+    <li><span class="w">le chèvre / la chèvre</span><span class="g">n.</span>山羊起司／山羊（p.61 原文）</li>
+    <li><span class="w">un ou une après-midi</span><span class="g">n.</span>陰陽性都可以（p.61 原文）</li>
+  </ul>
+
+  <div class="flag">
+    🔎 <b>課本與標準法文的落差：</b><br>
+    ① <b>le lunch / le souper</b>（p.66 標 Québec）：魁北克的用法是 déjeuner＝早餐、dîner＝午餐、souper＝晚餐；<i>lunch</i> 在魁北克多指自己帶的餐。課本詞彙框沒說明這套對應，p.67 l'essentiel 5c 考「找出不同類」時要小心——<b>未查證</b>課本預設的答案。<br>
+    ② <b>épicerie</b>（p.65 Au fait）：課本自己說明了——魁北克＝超市，法國＝小雜貨店。<br>
+    ③ <b>la réglisse / le réglisse</b>（p.61 G）：原文說陰性是植物、陽性是糖果。標準字典裡 réglisse 主要是陰性，糖果義的陽性用法是口語，<b>未查證</b>考試會不會採用。
+  </div>
+</section>
+
+<!-- ============ 7. DELF 策略 ============ -->
+<section>
+  <h2>📝 應考策略：DELF B1 閱讀（p.69–70） <span class="time">1 分鐘</span></h2>
+  <div class="rule">
+    課本重點（中文摘要）：閱讀共三題、45 分鐘。<b>Exercice 1</b> 是「快速掃讀」：四篇短文對照四個條件勾 OUI／NON；<b>Exercice 2、3</b> 各一篇 300–350 字報刊文章，4 題選擇＋3 題是非。<br>
+    做法：先讀題目再讀文章｜先看標題、導言、來源、圖片抓大意｜<b>答案在文章裡的順序＝題目的順序</b>｜第一次讀就畫線｜每題只有一個答案。
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">Notez que les informations dans les textes sont données dans le même ordre que les critères (exercice 1) et les questions (exercices 2 et 3).</span><span class="zh">注意：文章裡資訊出現的順序，跟條件（第 1 題）和問題（第 2、3 題）的順序一樣。</span><span class="note">p.69</span></li>
+    <li><span class="fr">Il n'y a qu'une seule bonne réponse par question.</span><span class="zh">每題只有一個正確答案。</span><span class="note">p.69（ne… que ＝ Unité 3 的限定）</span></li>
+    <li><span class="fr">Vous n'aurez que 15 minutes par exercice.</span><span class="zh">每一題你只有 15 分鐘。</span><span class="note">p.69</span></li>
+  </ul>
+  <p class="small">p.70 是 Exercice 1 的四則 Rouen 夏日表演廣告（條件：現場表演／每人 30 歐以下／大人小孩都適合／現場有簡餐），適合當限時掃讀練習。</p>
+</section>
+
+<!-- ============ 8. 練習題 ============ -->
+<section>
+  <h2>✏️ 最可能上課做的題目：先想想看 <span class="time">2 分鐘</span></h2>
+  <p class="small">只給方向，不給答案。哪幾題會做是照前幾個單元的節奏推測（未查證）。</p>
+
+  <div class="ex">
+    <div class="q">p.58 Entraînement 4：填不定形容詞／代名詞 <span class="likely">★★★ 文法頁一定做</span></div>
+    <div class="hint">先想想看：a 題 <i>…… étudient le français à Québec, d'autres à Montréal</i>——空格後面沒有名詞，要用形容詞還是代名詞？跟 d'autres 成對的是哪一個？d 題 <i>Je n'ai visité …… région francophone</i>——句子已經有 ne 沒有 pas，提示你什麼？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.63 Entraînement 4：直陳式還是虛擬式？ <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：每題先看主要動詞是不是 <b>espérer</b>。b、e 題是 espérer，其他都不是。g 題 <i>s'ennuyer</i>：反身代名詞跟著 tu 變成什麼？h 題 <i>Il serait souhaitable que</i> 不在表上，但它是哪一類？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.65 Entraînement 2：說反話（改成否定） <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：a 題 <i>tout</i> 的反面是什麼？b 題 <i>déjà</i>、c 題 <i>encore</i>、e 題 <i>toujours</i>——各自的否定是哪一個？（déjà 和 encore 的反面不一樣。）f 題 <i>Quelqu'un</i> 當主詞，否定要用哪個開頭、要不要 pas？d 題 <i>le temps et l'énergie</i> 兩個名詞一起否定，用哪個結構？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.67 l'essentiel 3：espérer 混在虛擬式裡 <span class="likely">★★</span></div>
+    <div class="hint">先想想看：c 題 <i>Espérons que tout le monde …… à la fête</i>——tout le monde 是單數還是複數？g 題 <i>Pourvu qu'il ne …… pas demain</i>：pleuvoir 的虛擬式是什麼？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.67 l'essentiel 1：選對不定詞 <span class="likely">★★</span></div>
+    <div class="hint">先想想看：e 題 <i>Charlotte a mangé …… son assiette</i>——assiette 是陰性單數，前面已經有 son。g 題 <i>ils sont …… fermés</i>：這裡 tous 是代名詞，s 要不要唸？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.66 Phonétique 3：分辨現在式／passé composé／imparfait <span class="likely">★ 有時間才做</span></div>
+    <div class="hint">先想想看：<i>Il a eu</i>（p.66）唸起來是三個母音連在一起，跟 <i>il a</i>、<i>il avait</i> 差在哪裡？</div>
+  </div>
+</section>
+
+<!-- ============ 9. 問老師 ============ -->
+<section>
+  <h2>🙋 上課可以問老師的 3 個問題</h2>
+  <ol class="ask">
+    <li>p.63 Remarque 說「表達意願用 indicatif」，但例句 <b>Je souhaite que vous me donniez</b> 的 donniez 是虛擬式——是不是指主要動詞 souhaite 用直陳式、相對於 souhaiterais？</li>
+    <li>p.65 <b>Ne dérogez pas de cette liste</b>——我查到標準用法是 <b>déroger à</b>，de 是魁北克說法嗎？寫作要用哪個？</li>
+    <li>p.58 <b>plus largement qu'aucune autre langue ne l'a jamais été</b>——這裡的 aucune 和 ne 都不是否定吧？在 TCF 閱讀裡這種句子常見嗎？</li>
+  </ol>
+</section>
+
+<p class="small">來源：Édito B1 課本 p.55–70（<code>assets/.textbook_cache.txt</code> 第 55255–57667 行；PDF 頁碼與課本頁碼一致，已用頁尾「56 I cinquante-six」「soixante-sept I 67」等核對；p.71 是 Unité 5 首頁）。PDF 抽字時掉了 fi／ff／fl 連字（例如 p.56 « eorts »＝efforts、« dicile »＝difficile；p.57 « spécicités »；p.58 標題 « indé nis »；p.61 « aaire »＝affaire、« ore »＝offre、« con serie »＝confiserie；p.64 « rééchir »＝réfléchir、« inuer »＝influer、« qualication »），引用時推定原文，<b>未對照紙本查證</b>。p.64 第 22 行有一個字整個不見（« ce qui n'est pas forcément …… ou digne d'attention »），本頁沒有引用該句。p.69 « stratéies » 掉的是 g，原因不明。p.56 署名被截成 « Simon K »、« Jules L B »，書名 « danse Story of English » 推定為 « dans The Story of English »（未查證）。p.59 E 的漫畫內文、p.65 L 建議 1 與 4 的後半句抽字缺漏，只引用了完整的句子。本頁未讀課本附錄的聽力逐字稿，所以聽力 B、D、F、K 和影片 H 的內容只寫了題目方向。</p>
+
+</main>
+</body>
+</html>
