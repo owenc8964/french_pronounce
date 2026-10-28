@@ -2909,13 +2909,20 @@ function palaceOpen(g, done, stop){
 var ISLE_SCENES={
   AC1:{ name:'自我介紹島', W:26, H:35,
     blobs:[[12.5,17,10.3,14.6],[7,25,5.5,5],[19,10,5,5],[13,5,6,4]],
-    zones:[ {name:'🪪 我是誰',   y0:23.5, y1:99, tint:'#7fbf5f'},
-            {name:'🏢 我住哪',   y0:18.6, y1:23.5, tint:'#8cc06a'},
-            {name:'🎧 我怎麼學', y0:12,   y1:18.6, tint:'#76b88a'},
-            {name:'🌫️ 法文對我', y0:-9,   y1:12,   tint:'#93b8a4'} ],
+    /* 10-28 界線微調（research/2026-10-28_自我介紹島核對.md）：第 5 站原本掉進「我住哪」、第 17 站掉進「我怎麼學」 */
+    zones:[ {name:'🪪 我是誰',   y0:23.2, y1:99, tint:'#7fbf5f'},
+            {name:'🏢 我住哪',   y0:18.6, y1:23.2, tint:'#8cc06a'},
+            {name:'🎧 我怎麼學', y0:12.6, y1:18.6, tint:'#76b88a'},
+            {name:'🌫️ 法文對我', y0:-9,   y1:12.6, tint:'#93b8a4'} ],
     path:[[13,32.2],[13,29.2],[11,28],[7.5,27],[5.2,24.6],[6,21.2],[13,21],[20,21],[20.4,17],[19.5,15],[13,15],[6,15],[5.6,11],[7,9],[13,8.6],[18.5,9],[18,6],[13,4.4]],
     dock:[13,30.4,33.6],
     tablet:{x:13,y:18.1},
+    /* 🪧 碼頭告示牌（10-28 Owen：「一上島的告示牌寫明這個島上的重點，用條列式」）——整理自 AC1 他自己的中文稿，⛔ 不加新內容 */
+    board:{x:14.8, y:29.4},
+    outline:[ ['🪪 我是誰','①–⑤',['名字、36 歲、牙醫','分析型：分類、換角度看、連起來','理性，但還不到工程師','木訥，喜歡思考和閱讀']],
+              ['🏢 我住哪','⑥–⑩',['板橋，住大樓','很空曠，車站很近','小吃少、貴一點，但喜歡住這裡：鄰居友善、乾淨']],
+              ['🎧 我怎麼學','⑪–⑯',['今年五月開始','家教＋Duolingo＋AI','聽 Coffee Break French、看 Extra French','最重要：浸泡在語言裡＋找對方法']],
+              ['🌫️ 法文對我','⑰–㉓',['很特別的語言','講法文像換一種眼光：有時模糊、有時清楚','模糊的時候，反而看見更大的世界','其他時間：運動、思考、照顧女兒']] ],
     marks:{ '0':['🦷','🧑‍⚕️','診療椅',[12.2,27.4]], '1.1':['🗂️','','分類櫃',[9.6,26.6]], '1.2':['🧩','','拼圖桌',[7.6,25.6]], '2':['📐','📜','工程圖',[5.0,26.2]], '3':['📖','🪑','樹下讀書',[4.2,23.4]],
             '4':['🏢','','大樓',[7.2,20.0]], '5':['🚉','🚃','小車站',[10.2,22.2]], '6.1':['🍜','💸','貴的小吃攤',[13.2,20.0]], '6.2':['🏡','❤️','喜歡住這裡',[16.2,22.2]], '6.3':['🧹','👋','鄰居掃地',[19.2,20.0]],
             '7':['📅','','五月的日曆',[21.4,16.4]], '8':['🦉','🤖','貓頭鷹與 AI',[18.4,16.0]], '9':['🎧','📺','耳機與電視',[15.6,13.9]], '10.1':['⏳','','大沙漏',[12.4,16.0]], '10.2':['⭐','','星星路標',[9.6,13.9]], '10.3':['🤿','🌊','跳進法文池',[6.8,16.0]],
@@ -2976,16 +2983,28 @@ function isleEnter(id){
   document.getElementById('iarch').onclick=archOpen;
   if(window.GameLog) GameLog.event('isle_enter');
   setTimeout(function(){ var h=document.getElementById('ihint'); if(h) h.style.opacity='0'; }, 6000);
+  ISLE.boardAway=0; if(sc.outline) setTimeout(function(){ if(ISLE.id===id) isleBoard(); }, 450);
+}
+/* 🪧 一上島先看到整座島的骨架：考官問什麼、四區各講什麼（站號對到步道上的編號）。走開再走回告示牌旁會再打開 */
+function isleBoard(){
+  var sc=isleSpec(ISLE.id), I=isles().filter(function(x){ return x.id===ISLE.id; })[0]; if(!sc||!sc.outline) return;
+  openSheet('<h3>🪧 '+esc(sc.name)+'・島上的重點</h3>'+(I&&I.q_zh?'<div class="story">🎤 考官問：'+esc(I.q_zh)+'</div>':'')+
+    sc.outline.map(function(z){ return '<div style="margin-top:10px"><b>'+esc(z[0])+'</b> <span class="muted">'+esc(z[1])+'</span><ul style="margin:4px 0 0 1.2em;padding:0">'+
+      z[2].map(function(b){ return '<li>'+esc(b)+'</li>'; }).join('')+'</ul></div>'; }).join('')+
+    '<div class="muted" style="margin-top:10px">照這個順序沿著步道走，一站一句。</div>'+
+    '<div class="row2"><span></span><button class="btn main" id="bdok">出發</button></div>');
+  document.getElementById('bdok').onclick=function(){ ISLE.boardAway=0; closeSheet(); };
 }
 function isleUpdate(dt){
   if(!ISLE.id || busy) return;
   var vx=0, vy=0;
   if(ISLE.joy){ var dx=ISLE.joy.x-ISLE.joy.ox, dy=ISLE.joy.y-ISLE.joy.oy, L=Math.hypot(dx,dy); if(L>8){ var k=Math.min(1,L/60); vx=dx/L*k; vy=dy/L*k; } }
   if(keys.arrowleft||keys.a) vx-=1; if(keys.arrowright||keys.d) vx+=1; if(keys.arrowup||keys.w) vy-=1; if(keys.arrowdown||keys.s) vy+=1;
-  var sp=3.4, nx=ISLE.x+vx*sp*dt, ny=ISLE.y+vy*sp*dt;
+  var sp=3.4, nx=ISLE.x+vx*sp*dt, ny=ISLE.y+vy*sp*dt, sc0=isleSpec(ISLE.id);
   if(isleWalk(nx,ISLE.y)) ISLE.x=nx; if(isleWalk(ISLE.x,ny)) ISLE.y=ny;
   if(Math.abs(vx)>.05) ISLE.face=vx<0?-1:1;
   var moving=Math.hypot(vx,vy)>.1; ISLE.still= moving?0 : ISLE.still+dt; ISLE.moving=moving;
+  if(sc0.board){ var dbd=Math.hypot(sc0.board.x-ISLE.x, sc0.board.y+.2-ISLE.y); if(dbd>2) ISLE.boardAway=1; else if(dbd<1 && ISLE.boardAway && ISLE.still>.3){ ISLE.boardAway=0; isleBoard(); return; } }
   var best=null, bd=1.25; ISLE.units.forEach(function(g){ var d=Math.hypot(g.x-ISLE.x, g.y+.2-ISLE.y); if(d<bd){ bd=d; best=g; } }); ISLE.near=best;
   var sc=isleSpec(ISLE.id), z=sc.zones.filter(function(z){ return ISLE.y>z.y0 && ISLE.y<=z.y1; })[0], ze=document.getElementById('izone'); if(ze && z) ze.textContent=z.name;
 }
@@ -3020,6 +3039,8 @@ function isleDraw(dt){
   sc.deco.forEach(function(o){ L.push({y:o[2], f:function(){ isleEmoji(c, o[0], ox+o[1]*ts, oy+o[2]*ts, ts*1.05); }}); });
   L.push({y:sc.tablet.y, f:function(){ var X=ox+sc.tablet.x*ts, Y=oy+sc.tablet.y*ts; isleShadow(c,X,Y,ts*.5); isleEmoji(c,'🪧',X,Y,ts*1.1);
     c.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; c.textAlign='center'; c.fillStyle='#2a1a08'; c.fillText('考官的問題', X, Y-ts*.62); }});
+  if(sc.board) L.push({y:sc.board.y, f:function(){ var X=ox+sc.board.x*ts, Y=oy+sc.board.y*ts; isleShadow(c,X,Y,ts*.5); isleEmoji(c,'🪧',X,Y,ts*1.1);
+    c.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; c.textAlign='center'; c.fillStyle='#2a1a08'; c.fillText('島上的重點', X, Y-ts*.62); }});
   ISLE.units.forEach(function(g){ L.push({y:g.y, f:function(){ isleMark(c, g, ox+g.x*ts, oy+g.y*ts, ts, d); }}); });
   L.push({y:ISLE.y, f:function(){ var X=ox+ISLE.x*ts, Y=oy+ISLE.y*ts; isleShadow(c,X,Y,ts*.32); var im=img.apply(null,SPR.hero), bob=ISLE.moving?Math.abs(Math.sin(clock*12))*ts*.06:0;
     if(im.complete){ c.save(); c.translate(X,Y-ts*.5-bob); c.scale(ISLE.face,1); c.drawImage(im,-ts*.5,-ts*.5,ts,ts); c.restore(); } }});
