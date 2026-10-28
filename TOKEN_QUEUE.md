@@ -74,4 +74,15 @@
 - [x] ✅ 10-28 完成：否定陷阱題 17 題 Vrai 3／Faux 12／不知道 2；提案只改 9 題敘述句（原句不動、標原創例外＋課次）→ 7／6／4，一直選同一個最多 41%；文獻沒有固定比例，自訂每選項 25–40%；另發現 6 秒內答對跳「一眼看懂」等於獎勵秒按 Faux（要改 town.html，未動）。`drafts/comprehension_balance_proposal.md`（＋`tools/q22_exam_balance.js`）
   **Q22 理解題 Vrai／Faux 偏差修正提案**（排程自補 10-28）：Q15 發現否定題 Faux 佔 71%（一直選 Faux 就有七成），查考試題型的答案分布研究／測驗設計文獻，寫平衡提案 `drafts/comprehension_balance_proposal.md`（哪些題可改為 Vrai 版、只用已學詞彙、不自創教學句，原句改寫需標「原創例外」並標課次）。⛔ 不改題庫。
 
+- [x] ✅ 10-29 完成：966 格變位全對（含 plus-que-parfait 138 格）；判分有兩個冤枉：il／elle 格只收陽性（elle était allée 判錯，10 格）、虛擬式連 que 一起打判錯（138 格，verb_sprint 也同樣）；改法寫成提案。`research/2026-10-29_鐵砧變位資料核對.md`（＋`tools/q23_anvil_dump.js`）
+  **Q23 鐵砧變位遊戲＋plus-que-parfait 變位資料核對**（排程自補 10-29）：commit dd50f5e 在 town.html 新增 🔨 鐵砧變位遊戲並加入 plus-que-parfait。找出遊戲用到的所有「原形＋人稱→變形」資料，逐格查變位是否為標準法文（助動詞 être／avoir 選擇、過去分詞配合、省音 j'），並對 `french_notes.html`／課本快取標課次，寫 `research/2026-10-29_鐵砧變位資料核對.md`（✓／✗＋改法）。⛔ 不改 town.html。
+- [x] ✅ 10-29 完成：61 篇約 330 條，法文片段一字不差；錯 1 條（a28 把 conduire 當 -er 動詞講 futur）；5 條講窄（天氣不一定 imparfait、son amie 例外、où 也接時間等）；4 條中文可更精準。`research/2026-10-29_鎮報註解核對.md`
+  **Q24 鎮報單字＋文法註解核對**（排程自補 10-29）：commit fa6a5d9 新增 `reading_notes.js`（鎮報讀完附單字＋文法），逐條查法文拼字、中文意思、文法說明是否正確且不講窄，是否對齊已學課次，寫 `research/2026-10-29_鎮報註解核對.md`。⛔ 不改 reading_notes.js。
+- [x] ✅ 10-29 完成：3,143 種題目標準答案全對；判分太嚴——1–12 點的 et quart／et demie／moins le quart 等被判錯（約 26% 時刻題冤枉）；另年份 dix-neuf cent、2,30 尾數 0、答整句被判錯；改法寫成提案。`research/2026-10-29_數字題新題型核對.md`（＋`tools/q25_num_kinds_check.js`）
+  **Q25 數字題新題型核對**（排程自補 10-29）：commit fa6a5d9 在 town.html／questions.js 加入價錢零錢／小數／時刻／日期數字題，逐類查產生出來的法文讀法是否正確（如 virgule、centimes、heures 的 24 小時制、日期 le premier）、答案唯一，寫 `research/2026-10-29_數字題新題型核對.md`。⛔ 不改遊戲檔。
+- [x] ✅ 10-29 完成：考官問題用 AC1 原題、四區 23 站全對上；漏第 ⑭ 站「學習不只是花時間」；A2 版沒回答「來自哪裡」；第 ⑰ 站壓在區界線上（推算未實測）；前次 9 項待 Owen 試玩決定。`research/2026-10-29_自我介紹島告示牌核對.md`
+  **Q26 自我介紹島告示牌重點核對**（排程自補 10-29）：commit 0bff434 在 town.html 加「島上的重點」告示牌（考官問題＋四區條列重點附站號），查考官問題法文、四區分類與站號是否對得上島上地標、中文重點是否符合 Owen 原稿，並對照 `research/2026-10-28_自我介紹島核對.md` 的問題是否都修了，寫 `research/2026-10-29_自我介紹島告示牌核對.md`。⛔ 不改 town.html。
+- [x] ✅ 10-29 完成：U4＝p.55–70；不定詞 p.58、意願／願望接虛擬式 p.63、否定 p.65、母音連讀 p.66、DELF B1 閱讀策略 p.69–70；全課本原句＋頁碼；標出 p.63 說明與例句打架、p.65 dérogez de 應為 déroger à 等；連字掉字標未查證。`drafts/preview_b1_unite4.html`
+  **Q27 Édito B1 Unité 4 預習單草稿**（排程自補 10-29）：照 `drafts/preview_b1_unite3.html` 格式，內容只出自課本快取 B1 Unité 4 頁面，產出 `drafts/preview_b1_unite4.html`。
+
 > 清單快用完時：排程可以自己補 3 項新題，但只能補「研究／稽核／草稿」類，補的時候在項目後面標「（排程自補）」。
