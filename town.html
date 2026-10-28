@@ -356,7 +356,9 @@ var CHALLENGES=[ {id:'garden', x:16, y:18, name:'守園', em:'🌻', goal:3},   
   /* ☕ 10-17：口說島一句一句練熟（選擇／手寫，⛔ 不用麥克風——Owen：辨識不夠靠譜） */
   {id:'cafe', x:17, y:29, name:'咖啡館', em:'☕', kind:'isle'},
   /* 🏛 10-25：記憶宮殿（一座口說島＝一個房間），廣場東邊、跟咖啡館對稱 */
-  {id:'palace', x:24, y:28, name:'口說群島', em:'⛵', kind:'palace'},   /* 10-27 改成碼頭：搭船去口說群島 */
+  {id:'palace', x:24, y:28, name:'口說群島', em:'⛵', kind:'palace'},
+  /* 🔨 10-28：鐵匠鋪旁的鐵砧＝變位（原形＋時態＋人稱 → 變形） */
+  {id:'anvil', x:18, y:25, name:'鐵砧', em:'🔨', kind:'forge'},   /* 10-27 改成碼頭：搭船去口說群島 */
   /* 🕵️ 10-17：抓錯字 */
   {id:'notice', x:23, y:12, name:'告示牌', em:'📋', kind:'spot'},
   /* 🪨🚪 10-18 Owen：「瑪利歐是因為跑來跑去、時機、路線、機關、隱藏關卡才有趣」→ 法文變成路線本身的兩個關卡（嵌入，跟守園同一套） */
@@ -1082,7 +1084,8 @@ function tenseSlice(list){
 var CONJ_VERBS=['être','avoir','faire','aller','devoir','pouvoir','vouloir','venir','prendre','savoir','voir'];
 var CONJ_MODES=[ {tense:'present', label:'présent', suffix:'', gram:null, w:.36}, {tense:'passe-compose', label:'passé composé', suffix:'_pc', gram:'passe', w:.18},
   {tense:'imparfait', label:'imparfait', suffix:'_imp', gram:'imparfait', w:.12}, {tense:'futur-simple', label:'futur simple', suffix:'_fut', gram:'futur-simple', w:.14},
-  {tense:'conditionnel', label:'conditionnel', suffix:'_cond', gram:'conditionnel', w:.12}, {tense:'subjonctif', label:'subjonctif', suffix:'_subj', gram:'subjonctif', w:.08} ];
+  {tense:'conditionnel', label:'conditionnel', suffix:'_cond', gram:'conditionnel', w:.12}, {tense:'subjonctif', label:'subjonctif', suffix:'_subj', gram:'subjonctif', w:.08},
+  {tense:'plus-que-parfait', label:'plus-que-parfait', suffix:'_pqp', gram:'pluperfect', w:.06} ];   /* 10-28 加：第45課解鎖（suffix 跟 verb_sprint 同一格） */
 var CONJ_PERS=['je','tu','il / elle','nous','vous','ils / elles'];
 function conjModes(){ return CONJ_MODES.filter(function(m){ if(!m.gram) return true; if(typeof GRAM_POINTS==='undefined') return m.tense==='passe-compose'; var p=GRAM_POINTS.filter(function(x){ return x.id===m.gram; })[0]; return !!p && p.unlocked!==false; }); }
 function conjCells(m){ try{ return JSON.parse(localStorage.getItem('clb7_sprint_cells'+m.suffix))||{}; }catch(e){ return {}; } }
@@ -1126,6 +1129,85 @@ function askConj(head, c, cb){
     else { document.querySelector('.row2').innerHTML='<span></span><button class="btn main" id="go">繼續</button>'; document.getElementById('go').onclick=function(){ cb(ok, ms); }; }
   }
   document.getElementById('csub').onclick=sub;
+}
+/* ============================================================
+   🔨 鐵砧（10-28 Owen：「遊戲中沒有時態變化的那個遊戲耶——給原形、時態／文法，變形成哪個樣子，輸入跟選擇都可以」）
+   查證：⚡ 變位只藏在礦坑（三成機率，又常被宮殿複習、委託蓋掉）→ 10-14～10-27 兩週答了約 140 題，變位 0 題
+   ⭐ 鐵匠鋪旁一座鐵砧：一爐＝一個時態、敲 8 下（同結構連發＝壓縮練習），原形＋人稱 → 變形
+   ⭐ 打字或選擇 ⛔ 不給他自己選（memory feedback_menu_defaults_to_easiest）：這格沒碰過／上次錯 → 選擇（先認得）；選對過、打對過 → 打字（產出）
+   ⭐ 紀錄跟 ⚡ 變位、verb_sprint 同一份格子（clb7_sprint_cells＋時態後綴）；選擇題答對記 f=9999（⛔ 不算反射，只讓下次改打字）
+   ⭐ 跳過三層：這格「↷ 跳過」（不記錄）、整爐「今天先到這」、整個鐵砧不擋任何東西
+   ============================================================ */
+var FORGE_N=8;
+var FORGE_TZ={'present':'現在式','passe-compose':'複合過去','imparfait':'未完成過去','futur-simple':'簡單未來','conditionnel':'條件式','subjonctif':'虛擬式','plus-que-parfait':'愈過去'};
+function forgeVerbs(){ return (typeof VERBS_FULL==='undefined')?[]:VERBS_FULL.filter(function(v){ return v.inf!=='falloir' && v.inf!=='pleuvoir'; }); }
+function forgeCells(m){ var cells=conjCells(m), pool=[], W={weak:4,new:3,slow:2,reflex:.4};
+  forgeVerbs().forEach(function(v){ var fs=null; try{ fs=drillForms(v, m.tense); }catch(e){} if(!fs) return;
+    for(var pi=0;pi<6;pi++){ if(!fs[pi]) continue; var key=v.inf+'_'+pi, st=conjState((cells[key]||{}).h);
+      pool.push({m:m, inf:v.inf, pi:pi, key:key, alts:String(fs[pi]).split('|'), st:st, w:W[st]*conjCorpus(v.inf, m.tense)*(CONJ_VERBS.indexOf(v.inf)>=0?1.6:1)}); } });
+  return pool; }
+/* 這一爐挑哪個時態：照配比，再往「還沒站穩的格子多」的時態傾斜 */
+function forgeMode(){ var ms=conjModes(); if(!ms.length) return null;
+  var sc=ms.map(function(m){ var p=forgeCells(m), soft=p.filter(function(x){ return x.st!=='reflex'; }).length/Math.max(1,p.length); return m.w*(.4+soft)*(Math.random()+.5); });
+  var bi=0; sc.forEach(function(s,i){ if(s>sc[bi]) bi=i; }); return ms[bi]; }
+function forgeDraw(pool, used){ var c=pool.filter(function(x){ return used.indexOf(x.key)<0; }); if(!c.length) c=pool;
+  var sum=c.reduce(function(a,x){ return a+x.w; },0), r=Math.random()*sum; for(var i=0;i<c.length;i++){ r-=c[i].w; if(r<=0) return c[i]; } return c[c.length-1]; }
+function forgeSay(c, form){ var s=withPron(c.pi, form); if(c.m.tense!=='subjonctif') return s; return (/^[aeiouh]/i.test(s)?"qu'":"que ")+s; }
+/* 選擇題的干擾項：同一個動詞、同一個人稱的別的時態＋同時態的別的人稱（都是真的存在的形，⛔ 不自己造錯字） */
+function forgeOpts(c){ var v=VERBS_FULL.filter(function(x){ return x.inf===c.inf; })[0], right=c.alts[0], seen={}, out=[];
+  function add(f){ if(!f) return; f=String(f).split('|')[0]; var k=conjNorm(f); if(seen[k]) return; seen[k]=1; out.push(f); }
+  add(right);
+  var other=[]; conjModes().forEach(function(m){ if(m.tense===c.m.tense) return; var fs=null; try{ fs=drillForms(v,m.tense); }catch(e){} if(fs) other.push(fs[c.pi]); });
+  var same=[]; var fs0=drillForms(v,c.m.tense); for(var i=0;i<6;i++) if(i!==c.pi && fs0[i]) same.push(fs0[i]);
+  shuffle(other).slice(0,2).forEach(add); shuffle(same).forEach(function(f){ if(out.length<4) add(f); }); shuffle(other).forEach(function(f){ if(out.length<4) add(f); });
+  return shuffle(out); }
+function askForgeChoice(head, c, cb){
+  var t0=Date.now(), done=false, opts=forgeOpts(c), rc={kind:'🔨 鐵砧', ref:'v:'+c.m.tense+':'+c.key, q:c.inf+' · '+c.m.label+' · '+CONJ_PERS[c.pi], a:c.alts.join('|')};
+  openSheet('<h3>'+head+'</h3><div class="qtext fr" style="text-align:center;font-size:1.15em"><b>'+esc(c.inf)+'</b> · '+esc(c.m.label)+'<br><span style="font-size:1.3em">'+esc(CONJ_PERS[c.pi])+' …</span></div>'+
+    '<div class="opts">'+opts.map(function(o){ return '<button class="fr" data-f="'+esc(o)+'">'+esc(forgeSay(c,o))+'</button>'; }).join('')+'</div>'+
+    '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 這格跳過</button><span id="slot"></span></div>'+repSlot(rc), true);
+  sheet.querySelectorAll('.opts button').forEach(function(b){ b.onclick=function(){ if(done) return; done=true;
+    var f=b.dataset.f, ok=c.alts.some(function(a){ return conjNorm(a)===conjNorm(f); }), ms=Date.now()-t0; rc.pick=f;
+    sheet.querySelectorAll('.opts button').forEach(function(x){ if(c.alts.some(function(a){ return conjNorm(a)===conjNorm(x.dataset.f); })) x.classList.add('ok'); }); if(!ok) b.classList.add('no');
+    var cells=conjCells(c.m), cell=cells[c.key]||{h:[]};
+    cell.h.push({o:ok?1:0, f:ok?9999:ms, d:ms, t:Date.now(), c:1}); cell.h=cell.h.slice(-5); cell.last=Date.now(); cells[c.key]=cell;
+    try{ localStorage.setItem('clb7_sprint_cells'+c.m.suffix, JSON.stringify(cells)); }catch(e){}
+    if(window.GameLog) GameLog.answer(ok, {kind:'🔨 鐵砧', topic:'conj-'+c.m.tense, ref:rc.ref, ms:ms, q:rc.q, a:c.alts[0], pick:f});
+    var show=forgeSay(c, c.alts[0]); speak(show); document.getElementById('skip').style.visibility='hidden';
+    document.getElementById('fb').innerHTML=(ok?'✓ <span class="muted">下次這格換你打出來</span> ':'👉 ')+'<span class="say">'+esc(show)+'</span> '+spk(show);
+    if(ok) setTimeout(function(){ cb(true, ms); }, 900);
+    else { document.getElementById('slot').outerHTML='<button class="btn main" id="go">繼續</button>'; document.getElementById('go').onclick=function(){ cb(false, ms); }; }
+  }; });
+  document.getElementById('skip').onclick=function(){ if(done) return; done=true; cb(null); };
+}
+function forgePanel(ch){
+  if(!forgeVerbs().length || typeof drillForms!=='function'){ toast('鐵砧還冷著（動詞資料沒載入）'); return; }
+  var m=forgeMode(); if(!m) return;
+  openSheet('<h3>🔨 鐵砧 <small>變位</small></h3><div class="story">鐵匠把燒紅的原形放上鐵砧：「照這一爐的時態敲成型。」</div>'+
+    '<div class="qtext" style="text-align:center"><span class="fr" style="font-size:1.25em"><b>'+esc(m.label)+'</b></span><br><span class="muted">'+esc(FORGE_TZ[m.tense]||'')+'・一爐敲 '+FORGE_N+' 下</span></div>'+
+    '<div class="muted">給你原形和人稱，敲出變形。剛認識的格子用選的，選對過的改成自己打。敲對一下 1 🪙。</div>'+
+    '<div class="row2"><button class="btn ghost" id="later">晚點再來</button><button class="btn ghost" id="other">換一爐</button><button class="btn main" id="go">🔨 開爐</button></div>');
+  document.getElementById('later').onclick=function(){ closeSheet(); };
+  document.getElementById('other').onclick=function(){ forgePanel(ch); };
+  document.getElementById('go').onclick=function(){ forgeRun(m); };
+}
+function forgeRun(m){
+  var pool=forgeCells(m), used=[], i=0, got=0;
+  function next(){
+    if(i>=FORGE_N) return finish();
+    var c=forgeDraw(pool, used); used.push(c.key);
+    var head='🔨 鐵砧 <small>'+esc(m.label)+'・第 '+(i+1)+' 下</small> <button class="btn ghost" id="fstop" style="float:right;padding:2px 8px">今天先到這</button>';
+    var after=function(ok){ if(ok){ got++; S.gold+=1; } i++; save(); hud(); next(); };
+    if(c.st==='new' || c.st==='weak') askForgeChoice(head, c, after); else askConj(head, c, after);
+    var st=document.getElementById('fstop'); if(st) st.onclick=function(){ finish(); };
+  }
+  function finish(){ i=FORGE_N+1;
+    openSheet('<h3>🔨 這一爐敲完了</h3><div class="qtext" style="text-align:center">'+(got?'敲出 <b>'+got+'</b> 塊好鐵　+'+got+' 🪙':'鐵還熱著，下次再來')+'</div>'+
+      '<div class="row2"><button class="btn ghost" id="bye">走了</button><button class="btn main" id="again">再一爐</button></div>');
+    document.getElementById('bye').onclick=function(){ closeSheet(); };
+    document.getElementById('again').onclick=function(){ forgePanel(); };
+  }
+  next();
 }
 /* ============================================================
    🎯 理解型題（考試樣式，exam_items.js；10-23 Owen：「課本挖空主要練語感跟寫作，正式考試不會這樣出」）
@@ -3256,7 +3338,7 @@ function drawChallenges(list,ox,oy,ts){
     var px=ox+ch.x*ts, py=oy+ch.y*ts, im=pixImg(ch.em);
     cx.fillStyle='#7a5a32'; cx.fillRect(px+ts*.05, py+ts*.55, ts*.9, ts*.38);
     if(im.complete){ cx.drawImage(im, px+ts*.05, py+ts*.05, ts*.9, ts*.9); }
-    var b=Math.sin(clock*4)*ts*.06; cx.font=Math.round(ts*.38)+'px system-ui'; cx.textAlign='center'; cx.fillText({tiles:'🧩', isle:'💬', spot:'🔍', embed:'⭐', palace:'⛵'}[ch.kind]||'⚔️', px+ts*.5, py-ts*.05+b);
+    var b=Math.sin(clock*4)*ts*.06; cx.font=Math.round(ts*.38)+'px system-ui'; cx.textAlign='center'; cx.fillText({tiles:'🧩', isle:'💬', spot:'🔍', embed:'⭐', palace:'⛵', forge:'⚡'}[ch.kind]||'⚔️', px+ts*.5, py-ts*.05+b);
     cx.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; var lab=ch.name; var tw=cx.measureText(lab).width+ts*.2;
     cx.fillStyle='rgba(0,0,0,.55)'; cx.fillRect(px+ts*.5-tw/2, py+ts*1.02, tw, ts*.34); cx.fillStyle='#fff'; cx.fillText(lab, px+ts*.5, py+ts*1.27);
   }}); });
@@ -3310,7 +3392,7 @@ function update(dt){
   for(var ci=0;ci<CHALLENGES.length && !wild;ci++){ var CH=CHALLENGES[ci]; if(CH.cool>0){ CH.cool-=dt; continue; }
     /* 10-26 Owen：「站在宮殿門口會一直進去，只能重新整理」→ 出來之後要先走開（離門口 1.5 格以上）才會再觸發 */
     if(CH.away){ if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)>1.5) CH.away=0; else continue; }
-    if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ if(CH.kind==='tiles') tilesPanel(CH); else if(CH.kind==='isle') cafePanel(CH); else if(CH.kind==='spot') spotPanel(CH); else if(CH.kind==='embed') embedPanel(CH); else if(CH.kind==='palace'){ CH.away=1; archOpen(); } else challengePanel(CH); }; })(CH)}; break; } }
+    if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ if(CH.kind==='tiles') tilesPanel(CH); else if(CH.kind==='isle') cafePanel(CH); else if(CH.kind==='spot') spotPanel(CH); else if(CH.kind==='embed') embedPanel(CH); else if(CH.kind==='palace'){ CH.away=1; archOpen(); } else if(CH.kind==='forge'){ CH.away=1; forgePanel(CH); } else challengePanel(CH); }; })(CH)}; break; } }
   /* 碰到節點 */
   for(var i=0;i<nodes.length && !wild;i++){ var n=nodes[i]; if(n.done) continue;
     var R=n.k==='fish'?1.15:.85;
