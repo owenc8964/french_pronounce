@@ -3088,6 +3088,7 @@ function isleSetup(){
 function isleSize(){ var d=Math.min(window.devicePixelRatio||1,2); icv.width=Math.round(innerWidth*d); icv.height=Math.round(innerHeight*d); ictx.imageSmoothingEnabled=false; }
 /* ---------- 群島總覽 ---------- */
 function archOpen(){
+  var ob=document.getElementById('ibub'); if(ob) ob.remove(); ISLE.auto=null;   /* 10-29 審查：從島上按「群島」時泡泡會留在總覽上 */
   isleSetup(); closeSheet(); ISLE.on=true; ISLE.id=null; busy=true; icv.style.display='block'; isleSize(); ISLE.joy=null;
   var L=isles(), h='<div class="ihbar"><b>⛵ 口說群島</b><span class="muted">一座口說島＝一座島</span><button id="ixx">回小鎮</button></div><div class="arch">';
   ARCH.forEach(function(a){ var I=L.filter(function(x){ return x.id===a[0]; })[0]; if(!I) return;
@@ -3117,7 +3118,7 @@ function isleEnter(id){
   document.getElementById('inext').onclick=function(){ if(!busy) isleStep(1); };
   if(window.GameLog) GameLog.event('isle_enter');
   setTimeout(function(){ var h=document.getElementById('ihint'); if(h) h.style.opacity='0'; }, 6000);
-  ISLE.boardAway=0; if(sc.outline) setTimeout(function(){ if(ISLE.id===id) isleBoard(); }, 450);
+  ISLE.boardAway=0; if(sc.outline) setTimeout(function(){ if(ISLE.id===id && !busy) isleBoard(); }, 450);
 }
 /* 🪧 一上島先看到整座島的骨架：考官問什麼、四區各講什麼（站號對到步道上的編號）。走開再走回告示牌旁會再打開 */
 function isleBoard(){
@@ -3137,11 +3138,12 @@ function isleUpdate(dt){
   /* 🚶 自動沿步道走到點的那一站（自己拖曳或按方向鍵就取消） */
   if(ISLE.auto && (vx||vy) && ISLE.joy && ISLE.joy.far) ISLE.auto=null;
   if(ISLE.auto && (keys.arrowleft||keys.arrowright||keys.arrowup||keys.arrowdown||keys.a||keys.d||keys.w||keys.s)) ISLE.auto=null;
-  if(ISLE.auto){ var A=ISLE.auto, wp=A.pts[0];
+  if(ISLE.auto){ var A=ISLE.auto, wp=A.pts[0], sc0a=isleSpec(ISLE.id);
     if(!wp){ ISLE.auto=null; ISLE.cur=A.g.n; ISLE.still=0; ISLE.moving=false; }
-    else { var ddx=wp[0]-ISLE.x, ddy=wp[1]-ISLE.y, dl=Math.hypot(ddx,ddy), step=6.2*dt;
+    else { var ddx=wp[0]-ISLE.x, ddy=wp[1]-ISLE.y, dl=Math.hypot(ddx,ddy), step=Math.max(6.2, (A.len||0)/5)*dt;   /* 長程依距離加速：最多約 5 秒到 */
       if(dl<=step){ ISLE.x=wp[0]; ISLE.y=wp[1]; A.pts.shift(); } else { ISLE.x+=ddx/dl*step; ISLE.y+=ddy/dl*step; }
-      if(Math.abs(ddx)>.05) ISLE.face=ddx<0?-1:1; ISLE.moving=true; ISLE.still=0; ISLE.near=null; return; } }
+      if(Math.abs(ddx)>.05) ISLE.face=ddx<0?-1:1; ISLE.moving=true; ISLE.still=0; ISLE.near=null;
+      var zA=sc0a.zones.filter(function(z){ return ISLE.y>z.y0 && ISLE.y<=z.y1; })[0], zeA=document.getElementById('izone'); if(zeA && zA) zeA.textContent=zA.name; return; } }
   var sp=3.4, nx=ISLE.x+vx*sp*dt, ny=ISLE.y+vy*sp*dt, sc0=isleSpec(ISLE.id);
   if(isleWalk(nx,ISLE.y)) ISLE.x=nx; if(isleWalk(ISLE.x,ny)) ISLE.y=ny;
   if(Math.abs(vx)>.05) ISLE.face=vx<0?-1:1;
@@ -3227,6 +3229,7 @@ function isleTap(cx, cy){
   var V=ISLE.view; if(!V || !ISLE.id || busy) return;
   var wx=(cx*V.d-V.ox)/V.ts, wy=(cy*V.d-V.oy)/V.ts, sc=isleSpec(ISLE.id), best=null, bd=1.1;
   ISLE.units.forEach(function(g){ var dd=Math.min(Math.hypot(g.x-wx, g.y-wy), Math.hypot(g.x-wx, g.y-.6-wy)); if(dd<bd){ bd=dd; best=g; } });
+  if(best && best===ISLE.near && !ISLE.auto){ var bb=document.getElementById('ibub'); if(bb) bb.remove(); return palaceOpen(best, function(){ closeSheet(); }, function(){ closeSheet(); }); }   /* 點自己站著的那站＝直接開 */
   if(best) return isleGo(best);
   if(sc.board && Math.hypot(sc.board.x-wx, sc.board.y-.5-wy)<1) isleBoard();
 }
@@ -3242,12 +3245,13 @@ function isleGo(g){
   var ex=g.x-b.x, ey=g.y+.2-b.y, el=Math.hypot(ex,ey); if(el>.75){ var k=(el-.7)/el, fx=b.x+ex*k, fy=b.y+ey*k; if(isleWalk(fx,fy)) pts.push([fx,fy]); }
   if(a.d>.3 && !isleWalk(a.x,a.y)) pts.shift();
   var b0=document.getElementById('ibub'); if(b0) b0.remove();
-  ISLE.auto={g:g, pts:pts};
+  var len=0; for(var q=1;q<pts.length;q++) len+=Math.hypot(pts[q][0]-pts[q-1][0], pts[q][1]-pts[q-1][1]);
+  ISLE.auto={g:g, pts:pts, len:len};
 }
-function isleStep(dir){ var U=ISLE.units; if(!U||!U.length) return; var n=(ISLE.near?ISLE.near.n:ISLE.cur)||0, to=Math.max(1, Math.min(U.length, n+dir));
-  if(!ISLE.near && !ISLE.cur && dir>0) to=1; if(ISLE.near && to===ISLE.near.n) return; isleGo(U[to-1]); }
+function isleStep(dir){ var U=ISLE.units; if(!U||!U.length) return; var n=(ISLE.auto?ISLE.auto.g.n:(ISLE.near?ISLE.near.n:ISLE.cur))||0,   /* 走到一半再按：從正要去的那站算 */ to=Math.max(1, Math.min(U.length, n+dir));
+  if(!ISLE.auto && !ISLE.near && !ISLE.cur && dir>0) to=1; if(ISLE.near && to===ISLE.near.n) return; isleGo(U[to-1]); }
 /* 📜 清單（政策島右側的編號清單）＋ 🔗 串起來（整段法文、站號、連接詞標色、串聯故事） */
-var ISLE_CONN=/(\b(?:mais|et|alors|quand|aussi|parce que|donc|pour moi|puis|sinon|car|surtout|même si|le plus important)\b|[—:;])/gi;
+var ISLE_CONN=/(\b(?:d'abord|ensuite|enfin|mais|et|alors|quand|aussi|parce que|donc|pour moi|puis|sinon|car|surtout|même si|le plus important)\b|[—:;])/gi;
 function isleList(mode){
   var sc=isleSpec(ISLE.id), U=ISLE.units, zoneOf=function(g){ return sc.zones.filter(function(z){ return g.y>z.y0 && g.y<=z.y1; })[0]||sc.zones[0]; };
   var groups=sc.zones.map(function(z){ return {z:z, u:U.filter(function(g){ return zoneOf(g)===z; })}; }).filter(function(G){ return G.u.length; });
@@ -3261,7 +3265,7 @@ function isleList(mode){
     h+='<div class="muted">整座島照順序順一遍：橘色是把句子接起來的字，🔗 是每一站怎麼接到下一站。</div>';
     groups.forEach(function(G){ h+='<div style="margin-top:10px"><b>'+esc(G.z.name)+'</b></div><div class="para fr">'+
         G.u.map(function(g){ return '<sup>'+g.n+'</sup>'+g.s.fr.split(ISLE_CONN).map(function(p,i){ return i%2?'<span class="cn">'+esc(p)+'</span>':esc(p); }).join(''); }).join(' ')+'</div>';
-      G.u.forEach(function(g){ var pz=U[g.n-2]; h+='<div class="chain">'+g.n+'. '+(pz&&pz.s.zh===g.s.zh?'<span style="opacity:.6">（同一句的後半）</span>':esc(g.s.zh))+(g.n<U.length?'<br><span style="opacity:.8">🔗 '+esc(isleLinkTxt(g.n))+'</span>':'')+'</div>'; }); });
+      G.u.forEach(function(g){ var pz=U[g.n-2]; h+='<div class="chain">'+g.n+'. '+(parseInt(g.s.part,10)>1?'<span style="opacity:.6">（同一句的後半）</span>':esc(g.s.zh))+(g.n<U.length?'<br><span style="opacity:.8">🔗 '+esc(isleLinkTxt(g.n))+'</span>':'')+'</div>'; }); });
   }
   h+='</div><div class="row2"><span></span><button class="btn main" id="ilok">好</button></div>';
   openSheet(h, true);
