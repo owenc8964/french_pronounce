@@ -1607,12 +1607,79 @@ function solveChapter(){
     var i=+b.dataset.i;
     if(i!==0){ b.classList.add('no'); document.getElementById('fb').innerHTML=i===1?'🔎 再看紙條三：<span class="fr">j\'allais</span> 是 imparfait——那是習慣，不是一次。':'🔎 再看紙條一跟二：<span class="fr">mise</span> 是陰性（鑰匙不是帳本）；<span class="fr">il en revient</span> 是剛回來，不是正要去。'; return; }
     if(done) return; done=true; b.classList.add('ok'); S.solved=1; S.gold+=40; save(); hud();
-    document.getElementById('fb').innerHTML='<div class="story">你走到橋下，在石縫裡摸到一把冰冷的鑰匙，上面刻著：<span class="fr">« Pour la cloche. »</span><br>你打開鐘樓的門——<b>鐘不見了。</b></div><div class="muted">第一章完　+40 🪙　（第二章待續）</div>';
+    document.getElementById('fb').innerHTML='<div class="story">你走到橋下，在石縫裡摸到一把冰冷的鑰匙，上面刻著：<span class="fr">« Pour la cloche. »</span><br>你打開鐘樓的門——<b>鐘不見了。</b></div><div class="muted">第一章完　+40 🪙<br>下一章：去 🍞 麵包店找麵包師傅問清楚</div>';
     document.getElementById('slot').outerHTML='<button class="btn main" id="go">繼續</button>';
     document.getElementById('go').onclick=function(){ closeSheet(); };
     document.getElementById('skip').style.visibility='hidden';
   }; });
   document.getElementById('skip').onclick=function(){ closeSheet(); };
+}
+
+/* ============================================================
+   主線：第二章「麵包師傅的夜路」（10-29 定的主線，全貌見 HANDOFF「主線」）
+   ⚠️ 原創法文照無限城例外，只用已學句型（y／ne…jamais／imparfait／être＋accord）
+   ⭐ 伏筆：« Elle est partie » 的 elle 玩家會以為是鐘——第二部揭曉是他的女兒（文法上兩者都是陰性，題目選項裡只有鐘）
+   ============================================================ */
+var CH2=[
+  { scene:'麵包師傅一邊揉麵團，一邊頭也不抬地說：', fr:'Le pont ? Je n\'y suis jamais allé, la nuit.', gloss:'y ＝ 那裡（橋）・ne … jamais 從來沒有',
+    ask:'他這句話，跟哪一張紙條對不上？', opts:['紙條三：日記寫「每天晚上都去橋邊」','都對得上——紙條講的是白天的事','都對得上，他說的是真的'], a:0, topic:'pc-imparfait-recit',
+    why:'日記寫 chaque nuit, j\'allais au pont——imparfait＝每天晚上的習慣；他卻說 ne … jamais＝從來沒有。', hint:'再看紙條三：<span class="fr">j\'allais</span> 是每天晚上的習慣，跟 <span class="fr">jamais</span> 撞在一起。' },
+  { scene:'你把日記那一頁放到他面前。他的手停了下來，低聲說：', fr:'D\'accord. J\'y allais chaque nuit. Elle est partie sur un bateau, un soir d\'hiver.', gloss:'partir 離開（être 當助動詞 → elle est partie）・un bateau 船',
+    ask:'elle 指的是哪一個？', opts:['la cloche（鐘）','le bateau（船）','le boulanger（麵包師傅自己）'], a:0, topic:'accord-participe-passe',
+    why:'elle 只能代替陰性名詞，bateau、boulanger 都是陽性；partie 多了 -e，也說明主詞是陰性。', hint:'看 <span class="fr">partie</span> 結尾多的 -e：主詞是陰性的。' }
+];
+function ch2Talk(step){
+  step=step||0; var T=CH2[step], t0=Date.now(), tried=false;
+  openSheet('<h3>🍞 第二章・麵包師傅的夜路 <small>'+(step+1)+'／2</small></h3><div class="story">'+T.scene+'</div><div class="clue">'+esc(T.fr)+' '+spk(T.fr)+'</div><div class="muted">'+esc(T.gloss)+'</div>'+
+    '<div class="qtext">'+esc(T.ask)+'</div><div class="opts">'+T.opts.map(function(o,i){ return '<button data-i="'+i+'" style="font-family:inherit">'+esc(o)+'</button>'; }).join('')+'</div><div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 晚點再問</button><span id="slot"></span></div>', true);
+  speak(T.fr);
+  var done=false;
+  sheet.querySelectorAll('.opts button').forEach(function(b){ b.onclick=function(){
+    if(done) return; var i=+b.dataset.i, ok=i===T.a;
+    if(!tried){ tried=true; rec('q', {topic:T.topic, _i:'ch2-'+step, q:T.fr+'　'+T.ask, aNote:T.why, a:T.opts[T.a], say:T.fr}, ok, Date.now()-t0, {chosen:T.opts[i], right:T.opts[T.a], where:'🍞 麵包師傅'}); }
+    if(!ok){ b.classList.add('no'); document.getElementById('fb').innerHTML='🔎 '+T.hint; return; }
+    done=true; b.classList.add('ok'); S.ch2=step+1; save();
+    document.getElementById('fb').innerHTML='✓ 看穿了。<div>🔎 '+esc(T.why)+'</div>';
+    document.getElementById('skip').style.visibility='hidden';
+    document.getElementById('slot').outerHTML='<button class="btn main" id="go">繼續</button>';
+    document.getElementById('go').onclick=function(){ if(step+1<CH2.length) return ch2Talk(step+1); ch2End(); };
+  }; });
+  document.getElementById('skip').onclick=function(){ if(done) return; closeSheet(); };
+}
+function ch2End(){
+  if(!S.ch2done){ S.ch2done=1; S.gold+=40; save(); hud(); }
+  openSheet('<h3>🍞 第二章完</h3><div class="story">鐘被搬上一艘船，往下游去了？<br>你還想再問，他已經轉過身去：<span class="fr">« Je ne veux plus en parler. »</span> '+spk('Je ne veux plus en parler.')+'<br>他的背影，看起來比鐘樓還要舊。</div>'+
+    '<div class="muted">+40 🪙　下一章：🔒 第三章「河對岸」製作中</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+  document.getElementById('ok').onclick=closeSheet;
+}
+
+/* 📜 主線進度板（點畫面上方的目標列打開）：現在第幾章、這章還差什麼。⛔ 不秀分母、不秀還沒到的劇情 */
+function storyChapters(){
+  var b=S.built, nc=Object.keys(S.clues||{}).length;
+  return [
+    {t:'序章・小鎮醒來', steps:[['有人回到森林邊的小屋', !!b.cottage],['交第一單', !!S.firstDeal],['修好北邊的橋', !!b.bridge],['重建鐵匠鋪', !!b.forge]]},
+    {t:'第一章・停掉的鐘', steps:[['重建郵局', !!b.post],['找到三張紙條'+(nc&&nc<3?'（已找到 '+nc+' 張）':''), nc>=3],['把紙條拼起來', !!S.solved]]},
+    {t:'第二章・麵包師傅的夜路', steps:[['重建麵包店', !!b.bakery],['問清楚麵包師傅', !!S.ch2done]]},
+    {t:'第三章・河對岸', soon:1}, {t:'第四章', soon:1}, {t:'第五章', soon:1}
+  ];
+}
+function openStory(){
+  var C=storyChapters(), cur=C.findIndex(function(c){ return c.soon || c.steps.some(function(s){ return !s[1]; }); });
+  var h='<h3>📜 主線・第一部「鐘」</h3><div class="muted">鐘停掉那天起，小鎮的時間也停了，人一個個離開。每一步都可以不照順序玩。</div>';
+  C.forEach(function(c,i){
+    if(i>cur+1) return;
+    var done=i<cur, now=i===cur;
+    h+='<div class="item" style="margin-top:8px'+(done?';opacity:.6':'')+'"><b>'+(done?'✓ ':now?'▶ ':'')+c.t+'</b>';
+    if(c.soon) h+='<div class="muted">'+(now?'製作中，很快就來。':'？')+'</div>';
+    else if(now) h+='<div class="muted">'+c.steps.map(function(s){ return (s[1]?'✓ ':'・')+s[0]; }).join('<br>')+'</div>';
+    h+='</div>';
+  });
+  h+='<div class="muted" style="margin-top:8px">之後還有第二部、第三部……</div>';
+  var hasQ=S.quests && S.quests.d===today() && S.quests.list && S.quests.list.length;
+  h+='<div class="row2">'+(hasQ?'<button class="btn ghost" id="sq">📋 今日委託</button>':'<span></span>')+'<button class="btn main" id="ok">好</button></div>';
+  openSheet(h);
+  document.getElementById('ok').onclick=closeSheet;
+  if(hasQ) document.getElementById('sq').onclick=openQuests;
 }
 
 /* ============================================================
@@ -1663,7 +1730,8 @@ function questInfo(){
   if(!S.letter) return {t:'郵局蓋好了——進去看看', to:door('post')};
   if(Object.keys(S.clues).length<3) return {t:'找三張 <b>📜 紙條</b>（'+Object.keys(S.clues).length+'／3）', to:nearestClue()};
   if(!S.solved) return {t:'回 <b>📮 郵局</b>把三張紙條拼起來', to:door('post')};
-  if(!b.bakery) return step('第一章完。重建 <b>🍞 麵包店</b>（📦×4 🐟×2＋40🪙），白天變長', LOTS.bakery.cost, door('bakery'));
+  if(!b.bakery) return step('第二章：重建 <b>🍞 麵包店</b>（📦×4 🐟×2＋40🪙），找麵包師傅問清楚', LOTS.bakery.cost, door('bakery'));
+  if(!S.ch2done) return {t:'第二章：去 <b>🍞 麵包店</b>找麵包師傅問清楚', to:door('bakery')};
   return {t:'小鎮在長大：房子上的 ⭐ 只在你「隔天又答對」時才會亮', to:null};
 }
 function door(k){ var d=LOTS[k].door; return {x:d[0]+.5, y:d[1]+.5}; }
@@ -1699,11 +1767,12 @@ function openLot(k){
   }
   if(!S.built[k]) return buildPanel(L.name, L.cost, L.fam, function(){ S.built[k]=1; applyBuildings(); spawnNpcs(); if(k==='post') setTimeout(readLetter,400); });
   if(k==='post'){ if(!S.letter) return readLetter(); if(Object.keys(S.clues).length>=3 && !S.solved) return solveChapter(); }
+  if(k==='bakery' && S.solved && !S.ch2done) return ch2Talk(S.ch2&&S.ch2<CH2.length?S.ch2:0);
   var o=starsOf(k);
   var h='<h3>'+L.name+' '+starHtml(k)+'</h3><div class="muted">這棟房子對應「'+L.famName+'」。⭐ 只在同一題「隔天又答對」時才會長：現在站穩 '+o.n+' 個（5／15／30 各一顆星）。</div>';
   if(k==='forge') h+='<div class="shop">'+buyBtn('pick','⛏ 好十字鎬：會心一擊更容易',costPick())+buyBtn('trap','🪤 捕鼠夾：老鼠比較不敢靠近',costTrap())+'</div>';
   if(k==='bakery') h+='<div class="muted" style="margin-top:6px">🍞 麵包店開了：每天的白天多 30 秒。</div>';
-  if(k==='post') h+='<div class="muted" style="margin-top:6px">'+(S.solved?'第一章完。第二章待續。':'還差 '+(3-Object.keys(S.clues).length)+' 張紙條。')+'</div>';
+  if(k==='post') h+='<div class="muted" style="margin-top:6px">'+(S.solved?'第一章完。':'還差 '+(3-Object.keys(S.clues).length)+' 張紙條。')+'</div>';
   h+='<div class="row2"><span></span><button class="btn main" id="ok">離開</button></div>';
   openSheet(h);
   sheet.querySelectorAll('[data-buy]').forEach(function(b){ b.onclick=function(){ buy(b.dataset.buy, function(){ openLot(k); }); }; });
@@ -1900,7 +1969,7 @@ document.getElementById('bFlag').onclick=function(){
     if(window.GameLog) GameLog.report({src:'town', kind:'整體回報', ref:'general', q:ctx, a:'', pick:''}, t);
     close(); toast('🚩 收到了，謝謝'); };
 };
-document.getElementById('quest').onclick=function(){ if(!busy && S.quests && S.quests.list && S.quests.list.length) openQuests(); };
+document.getElementById('quest').onclick=function(){ if(!busy) openStory(); };
 document.getElementById('hDay').onclick=function(){ if(!busy && window.GameLog) openStreak(); };
 setInterval(function(){ paintStreak(); if(!busy) makeQuests(); }, 5000);
 function hud(){
