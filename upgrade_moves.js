@@ -19,8 +19,7 @@
    已知缺口（課本例句不足或被雙欄 OCR 切碎，未收）：certes…mais（B1 p.147、p.177 各只有 1 句）、
      également／mais aussi 補充（B1 p.146 只有 2 句乾淨）、名詞化 nominalisation（只有詞對沒有句子）。
    例句皆已用腳本逐句對回快取原文（忽略空白、OCR 私用字元與 ﬁ 連字）全數通過。
-   ⚠️ 若 gram_rules 與「Owen 已學」不一致（例如 plus-que-parfait 在 gram_rules 仍 unlocked:false，
-     但 B1 p.21 在 Unité 1 內），以此檔 taught 為準並請人工確認。
+   ⚠️ 若 gram_rules 與「Owen 已學」不一致，以此檔 taught 為準並請人工確認。
    ============================================================ */
 var UPGRADE_MOVES = [
 
@@ -68,7 +67,7 @@ var UPGRADE_MOVES = [
 { id:'a2-pc-imparfait', lvl:'A2',
   name:'imparfait 鋪背景，passé composé 推劇情',
   fr:'imparfait + passé composé (quand…)',
-  how:'背景和持續的狀態用 imparfait，突然發生的事用 passé composé，常搭 quand。',
+  how:'背景和持續的狀態用 imparfait，突然發生的事用 passé composé，常搭 quand。過去的習慣（avant、quand j’étais petit…）也用 imparfait。',
   gram:'imparfait', codex:'5-3-3', taught:true,
   pattern:'\\b\\w+(ais|ait|aient|ions|iez)\\b[^.!?]*\\b(quand|et|mais)\\b[^.!?]*\\b(a|ont|est|sont|ai|suis|avons) \\w+',
   examples:[
@@ -94,7 +93,7 @@ var UPGRADE_MOVES = [
 { id:'a2-si-present', lvl:'A2',
   name:'用 si＋現在式 給條件',
   fr:'Si + présent, présent / impératif',
-  how:'si 後面接現在式說條件，後半句用現在式或命令式給結果或建議。',
+  how:'si 後面接現在式說條件，後半句用現在式、未來式或命令式給結果或建議。（課本 A2 p.51 只列現在式／命令式，未來式在 A2 p.75、B1 p.134。）',
   gram:'condition-si', codex:'6-6-2', taught:true,
   pattern:'\\b[Ss]i (je|j[’\']|tu|il|elle|on|nous|vous|ils|elles)\\b|\\b[Ss][’\'](il|ils)\\b',
   examples:[
@@ -122,7 +121,7 @@ var UPGRADE_MOVES = [
 { id:'b1-rel-ou-dont', lvl:'B1',
   name:'用 où／dont 補充地點、時間、de 的內容',
   fr:'Les pronoms relatifs où / dont',
-  how:'地點與時間用 où，帶 de 的補充（…的）用 dont，句子更緊實。',
+  how:'地點與時間用 où；dont 代替「de＋名詞」（…的，或 parler de 這種接 de 的動詞），句子更緊實。',
   gram:'relatifs', codex:'3-5-3', taught:false,
   pattern:'(^|\\W)(où|dont)(\\W|$)',
   examples:[
@@ -148,7 +147,7 @@ var UPGRADE_MOVES = [
 { id:'b1-comme-puisque', lvl:'B1',
   name:'用 comme／puisque／étant donné 開頭說原因',
   fr:'comme / puisque / étant donné que',
-  how:'原因放句首：comme 是一般原因，puisque 是對方也知道的原因。',
+  how:'comme 說一般原因，一定放句首；puisque 是對方也知道的原因，句首句中都可以；en raison de＋名詞是正式說法。',
   gram:'cause-consequence', codex:'8-4-3', taught:false,
   pattern:'(^|[.!?] ?)Comme |\\b[Pp]uisque\\b|(^|\\W)[Éé]tant donné|\\ben raison d',
   examples:[
@@ -160,8 +159,8 @@ var UPGRADE_MOVES = [
 
 { id:'b1-consequence', lvl:'B1',
   name:'用 alors／c’est pourquoi 說結果',
-  fr:'alors / c’est pourquoi / tellement… que',
-  how:'先講原因，再用 alors（口語）或 c’est pourquoi（書面）帶出結果。',
+  fr:'alors / c’est pourquoi',
+  how:'先講原因，再用 alors（較隨意，口語書面都用）或 c’est pourquoi（較正式）帶出結果。',
   gram:'cause-consequence', codex:'8-4-4', taught:true,
   pattern:'\\b(alors|c[’\']est pourquoi|c[’\']est pour cela que|donc|tellement .{1,25} que)\\b',
   examples:[
@@ -173,7 +172,7 @@ var UPGRADE_MOVES = [
 { id:'b1-gerondif', lvl:'B1',
   name:'用 en＋-ant 同時說方法或同時動作',
   fr:'Le gérondif (en + verbe-ant)',
-  how:'兩個動作同時發生，或說「靠什麼方式」，用 en＋現在分詞，不用拆兩句。',
+  how:'兩個動作同時發生，或說「靠什麼方式」，用 en＋現在分詞，不用拆兩句。也可以表示條件或情況（＝當…的時候／如果…；課本 A2 p.131 沒列這個用法）。',
   gram:'gerondif', codex:'6-5-1', taught:true,
   pattern:'\\ben ([^\\s]+ant)(\\W|$)',
   examples:[
@@ -225,7 +224,7 @@ var UPGRADE_MOVES = [
 { id:'b1-y-en', lvl:'B1',
   name:'用 y／en 取代重複的地點或事物',
   fr:'Les pronoms y et en',
-  how:'前面提過的地點或「à／de＋事物」，用 y 或 en 代替，避免重複。',
+  how:'前面提過的地點或「à／de＋事物」，用 y 或 en 代替，避免重複。（en 也常代替數量或 du／de la／des＋名詞，例如「幾個」「一些」；課本 A2 p.33 這一課只教地點。）',
   gram:'pronoms-y-en', codex:'3-4-5', taught:true,
   pattern:'\\b[jmnstl][’\'](y|en)\\b|\\bon (y|en)\\b|\\b(y|en) est\\b',
   examples:[
@@ -238,7 +237,7 @@ var UPGRADE_MOVES = [
 { id:'b1-duree', lvl:'B1',
   name:'用 il y a／depuis／pendant 精準說時間',
   fr:'il y a / depuis / ça fait… que / pendant / en',
-  how:'用對時間詞：il y a 是多久前，depuis 是從那時到現在，pendant 是一段期間。',
+  how:'用對時間詞：il y a 是多久前，depuis／ça fait… que 是從那時到現在，pendant 是一段期間，en 是花多久完成，dans 是多久之後。',
   gram:'duree-temps', codex:'9-4-1', taught:true,
   pattern:'(\\bil y a \\w+ (an|ans|jours?|semaines?|mois|minutes?|heures?)|\\bdepuis|(^|\\W)ça fait .{1,20} que|\\bpendant)',
   examples:[
@@ -277,7 +276,7 @@ var UPGRADE_MOVES = [
 { id:'b1-mise-en-relief', lvl:'B1',
   name:'用 c’est…qui／que 強調重點',
   fr:'C’est… qui / C’est… que',
-  how:'想強調的那個詞放在 c’est 後面，再接 qui（主詞）或 que（受詞）。',
+  how:'想強調的那個詞放在 c’est 後面，強調主詞接 qui，強調其他成分（受詞、地點、時間…）接 que。',
   gram:'mise-en-relief', codex:'7-4-1', taught:true,
   pattern:'\\b[Cc][’\']est .{1,30}\\b(qui|que|qu[’\'])|\\bCe sont .{1,30}\\b(qui|que|qu[’\'])',
   examples:[
@@ -298,8 +297,8 @@ var UPGRADE_MOVES = [
     { fr:'Pour moi…', zh:'對我來說……', src:'Édito B1 p.44' },
     { fr:'D’après moi…', zh:'依我看……', src:'Édito B1 p.44' },
     { fr:'Selon moi…', zh:'依我之見……', src:'Édito B1 p.44' },
-    { fr:'Personnellement…', zh:'就我個人而言……', src:'Édito B1 p.44' },
-    { fr:'Il me semble que c’est une aide précieuse pour les habitants.', zh:'我覺得這對居民是很寶貴的幫助。', src:'Édito B1 p.117' }
+    { fr:'Personnellement…', zh:'就我個人而言……', src:'Édito B1 p.44' }
+    // 10-29 移除 B1 p.117 的 Il me semble que…（跟 b2-certitude-doute 的 p.118 句幾乎一樣，兩招偵測式會同時命中）
   ] },
 
 
@@ -368,7 +367,7 @@ var UPGRADE_MOVES = [
   pattern:'\\b(afin (de|d[’\']|que|qu[’\'])|mon objectif,? c[’\']est)\\b',
   examples:[
     { fr:'Les Français espèrent gagner en liberté afin de mieux concilier leur vie professionnelle et privée.', zh:'法國人希望多些自由，更能兼顧工作與私生活。', src:'Édito B1 p.109' },
-    { fr:'Mon objectif c’est d’avoir une heure de spectacle.', zh:'我的目標是做出一小時的表演。', src:'Édito B1 p.109' },
+    { fr:'Mon objectif, c’est d’avoir une heure de spectacle.', zh:'我的目標是做出一小時的表演。', src:'Édito B1 p.109' }, // 課本暖身句漏了逗號；同頁 Fonctionnement 與標準法文都寫 Mon objectif, c’est
     { fr:'Nous faisons un bilan avec le stagiaire afin qu’il nous dise ce qu’il a ressenti.', zh:'我們與實習生檢討，讓他說出感受。', src:'Édito B1 p.109' },
     { fr:'Elle s’est reconvertie pour que/afin que sa famille vive mieux.', zh:'她轉職，好讓家人過得更好。', src:'Édito B1 p.109' }
   ] },
@@ -389,7 +388,7 @@ var UPGRADE_MOVES = [
 { id:'b2-cond-incertain', lvl:'B2',
   name:'用條件式表示「據說／未證實」',
   fr:'Le conditionnel et l’information incertaine',
-  how:'報導沒查證的消息時用條件式（aurait、auraient＋過去分詞），暗示「據傳」。',
+  how:'報導沒查證的消息時用條件式，暗示「據傳」：現在／未來的事用條件式現在（serait、devrait），已經發生的事用條件式過去（aurait、auraient＋過去分詞）。',
   gram:'cond-passe', codex:'6-2-3', taught:false,
   pattern:'(^|\\W)(aurait|auraient|serait|seraient|devrait|devraient)( déjà)? ([^\\s]+(é|és|i|is|u|us)|eu|été|fait|dit|pu|dû|pouvoir)(\\W|$)',
   examples:[
@@ -402,7 +401,7 @@ var UPGRADE_MOVES = [
 { id:'b2-hypothese', lvl:'B2',
   name:'假設：si＋imparfait，結果用條件式',
   fr:'Si + imparfait, conditionnel présent',
-  how:'說不太可能或想像的事：si 後接 imparfait，後半句用條件式。',
+  how:'說不太可能或想像的事：si 後接 imparfait，後半句用條件式。也可以不用 si，用 avec… 帶出想像（Avec des ailes…）。',
   gram:'condition-si', codex:'6-6-1', taught:false,
   pattern:'\\b[Ss]i (j[’\']|je |tu |il |elle |on |nous |vous |ils |elles )(\\w+ )?\\w*(ais|ait|ions|iez|aient)\\b',
   examples:[

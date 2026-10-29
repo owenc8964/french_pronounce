@@ -521,7 +521,7 @@ const SENTENCES = [
   { id: 'S_L45_1', lesson: 45, fr: "J'ai du mal à me faire des amis.", zh: '我很難交到朋友。', note: '🎙 第45課老師：avoir du mal à＋原形' },
   { id: 'S_L45_2', lesson: 45, fr: "C'est un bon moyen de briser la glace.", zh: '這是很好的破冰方法。', note: 'B1 p.18 H' },
   { id: 'S_L45_3', lesson: 45, fr: "Si on vous propose une sortie sympa, acceptez, même si vous êtes fatigué.", zh: '有人約你出去就答應吧，就算你很累。', note: 'B1 p.18 H' },
-  { id: 'S_L45_4', lesson: 45, fr: "Bref, suivez mes conseils et vous verrez !", zh: '總之，照我的建議做就知道了！', note: 'B1 p.18 H：bref＝總之' },
+  { id: 'S_L45_4', lesson: 45, fr: "Bref, suivez mes conseils et vous verrez que, dans deux ou trois semaines, vous aurez quelques numéros de plus dans votre téléphone !", zh: '總之，照我的建議做，你會發現兩三個星期後，手機裡就多了幾個電話號碼！', note: 'B1 p.18 H 第 38–40 行（10-29 改成完整原句）：bref＝總之；dans deux ou trois semaines＝兩三週後' },
   { id: 'S_L45_5', lesson: 45, fr: "Tu peux rejoindre un club de sport.", zh: '你可以加入運動社團。', note: '第45課練習 6：rejoindre＝加入' },
   { id: 'S_L45_6', lesson: 45, fr: "Il est parti il y a dix minutes.", zh: '他十分鐘前走了。', note: 'B1 p.19：il y a＝過去的時間點' },
   { id: 'S_L45_7', lesson: 45, fr: "Il reviendra dans deux jours.", zh: '他兩天後回來。', note: 'B1 p.19：dans＝未來的時間點' },
@@ -533,7 +533,7 @@ const SENTENCES = [
   { id: 'S_L45_13', lesson: 45, fr: "Vous n'étiez jamais venus avant ce soir ?", zh: '你們今晚之前從來沒來過嗎？', note: 'B1 p.21' },
   { id: 'S_L45_14', lesson: 45, fr: "On ne parle pas la bouche pleine !", zh: '嘴裡有東西不要講話！', note: 'B1 p.17 G：🎙 法國爸媽的口頭禪' },
   // 第46課（2026-10-27）：B1 p.22 友誼詞彙、p.26 網路禮儀、p.27 問句語域、p.29 nécessité
-  { id: 'S_L46_1', lesson: 46, fr: "C'était la première fois que je le prenais.", zh: '那是我第一次搭它。', note: '第46課作業：la première fois que＋imparfait' },
+  { id: 'S_L46_1', lesson: 46, fr: "C'était la première fois que je le prenais.", zh: '那是我第一次搭它。', note: '第46課作業：la première fois que＋句子（前面 c\'était → imparfait）' },
   { id: 'S_L46_2', lesson: 46, fr: "J'ai passé deux semaines sans mes parents.", zh: '我沒有爸媽陪過了兩個禮拜。', note: '第46課作業：passer＋時間（不是 durer）' },
   { id: 'S_L46_3', lesson: 46, fr: "Il a besoin de moi.", zh: '他需要我。', note: 'B1 p.22 練習 3' },
   { id: 'S_L46_4', lesson: 46, fr: "J'essaie d'être là pour lui, de l'écouter et de le réconforter.", zh: '我試著陪在他身邊，聽他說、安慰他。', note: 'B1 p.22 練習 3' },

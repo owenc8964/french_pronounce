@@ -343,8 +343,6 @@ function stems(v) {
  *    衝刺頁自己就會跟上，不用再手動維護第二份變位表。 */
 const COMPOUND = ['passe-compose', 'plus-que-parfait', 'futur-anterieur',
                   'conditionnel-passe', 'subjonctif-passe'];
-// être 動詞：每個人稱可以接受的過去分詞寫法
-const AGREE_ALT = [['é'], ['é'], [''], ['s'], ['', 's'], ['s']];
 
 function drillForms(v, tenseId) {
   const t = conjugate(v).find(x => x.id === tenseId);
@@ -358,7 +356,7 @@ function drillForms(v, tenseId) {
   const variants = [
     [v.pp, v.pp + 'e'],                                   // je
     [v.pp, v.pp + 'e'],                                   // tu
-    [v.pp],                                               // il
+    [v.pp, v.pp + 'e'],                                   // il / elle（elle était allée，課本 B1 p.21）
     [v.pp + 's', v.pp + 'es'],                            // nous
     [v.pp, v.pp + 'e', v.pp + 's', v.pp + 'es'],          // vous
     [v.pp + 's', v.pp + 'es'],                            // ils

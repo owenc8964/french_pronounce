@@ -40,24 +40,29 @@ var EXAM_ITEMS = [
   { id:'t23', type:'time', fr:'À cette époque, je ne parlais pas français.', ans:3, zh:'那時候我不會說法文。', why:'à cette époque＋未完成式＝過去那段時間的狀態', focus:'imp' },
   { id:'t24', type:'time', fr:'On se lève tôt tous les matins.', ans:1, zh:'我們每天早上都很早起。', why:'tous les matins＋現在式＝現在的習慣', focus:'pres' },
 
-  /* ---------- 🚫 否定陷阱：0 Vrai 1 Faux 2 On ne sait pas ---------- */
-  { id:'n01', type:'neg', fr:'Il ne mange que des légumes.', stmt:'Il mange de la viande.', ans:1, zh:'他只吃蔬菜。', why:'ne … que＝「只有」，不是「不吃」——所以他只吃蔬菜、不吃肉', focus:'neg' },
-  { id:'n02', type:'neg', fr:'Elle ne travaille plus à la banque.', stmt:'Elle travaille à la banque maintenant.', ans:1, zh:'她已經不在銀行工作了。', why:'ne … plus＝「不再」：以前有，現在沒有', focus:'neg' },
+  /* ---------- 🚫 否定陷阱：0 Vrai 1 Faux 2 On ne sait pas ----------
+     10-29 平衡答案（drafts/comprehension_balance_proposal.md）：原本 Faux 12／17，一直按 Faux 有七成 → 只改敘述句 stmt（原句 fr 一字不動）
+     ⭐ 新敘述句＝CLAUDE.md 內容鐵律 1 的原創例外（理解題題幹）；每題後面註明用到的文法點與課次（french_notes 的 lesson-N）
+     ⭐ On ne sait pas 只用在「原句完全沒提到」的資訊（⛔ 不用在靠排除含意推出來的地方）
+     ⏸ n12（→「明天要去？」不知道）會不會太刁、否定題要不要拿掉「一眼看懂」：等 Owen 決定，這次沒改
+     改完：Vrai 7（n01 n05 n09 n11 n14 n16 n17）／Faux 7（n03 n04 n07 n08 n10 n12 n13）／不知道 3（n02 n06 n15） */
+  { id:'n01', type:'neg', fr:'Il ne mange que des légumes.', stmt:'Il mange des légumes.', ans:0, zh:'他只吃蔬菜。', why:'ne … que＝「只有」，不是「不吃」→ 他確實吃蔬菜，對', focus:'neg' },   /* 原創敘述：des légumes 第13課；考 ne…que 第14／30課 */
+  { id:'n02', type:'neg', fr:'Elle ne travaille plus à la banque.', stmt:'Elle travaille dans un magasin maintenant.', ans:2, zh:'她已經不在銀行工作了。', why:'ne … plus 只說不在銀行了，現在在哪裡工作、有沒有工作都沒說 → 不知道', focus:'neg' },   /* 原創敘述：magasin 第17課、maintenant 第16課；考「不再 A ≠ 現在 B」 */
   { id:'n03', type:'neg', fr:'Je n\'ai jamais pris l\'avion.', stmt:'Il a déjà voyagé en avion.', ans:1, zh:'我從來沒搭過飛機。', why:'ne … jamais＝「從來沒有」', focus:'neg' },
   { id:'n04', type:'neg', fr:'Il n\'y a plus de pain.', stmt:'Il reste du pain.', ans:1, zh:'麵包沒了。', why:'il n\'y a plus de＝「已經沒有了」', focus:'neg' },
   { id:'n05', type:'neg', fr:'Nous ne sortons que le week-end.', stmt:'Ils sortent le samedi ou le dimanche.', ans:0, zh:'我們只在週末出門。', why:'ne … que le week-end＝「只在週末」——所以週末會出門', focus:'neg' },
-  { id:'n06', type:'neg', fr:'Elle ne boit pas de café le soir.', stmt:'Elle boit du café le matin.', ans:2, zh:'她晚上不喝咖啡。', why:'句子只說「晚上不喝」，早上喝不喝沒提到 → 不知道', focus:'neg' },
+  { id:'n06', type:'neg', fr:'Elle ne boit pas de café le soir.', stmt:'Elle boit du thé le soir.', ans:2, zh:'她晚上不喝咖啡。', why:'句子只說晚上不喝咖啡，完全沒提到茶 → 不知道', focus:'neg' },   /* 原創敘述（舊版「早上喝咖啡？」一般人會推出有喝，會冤枉）：thé 第14課、le soir 第17課；部分冠詞 du */
   { id:'n07', type:'neg', fr:'Je ne connais personne dans cette ville.', stmt:'Il a des amis dans cette ville.', ans:1, zh:'我在這個城市誰都不認識。', why:'ne … personne＝「沒有任何人」', focus:'neg' },
-  { id:'n08', type:'neg', fr:'Il n\'a rien mangé ce matin.', stmt:'Il a pris son petit déjeuner.', ans:1, zh:'他今天早上什麼都沒吃。', why:'ne … rien＝「什麼都沒有」', focus:'neg' },
-  { id:'n09', type:'neg', fr:'Le magasin n\'ouvre qu\'à dix heures.', stmt:'On peut faire des courses dans ce magasin à neuf heures.', ans:1, zh:'這家店十點才開門。', why:'ne … qu\'à dix heures＝「直到十點才」——九點還沒開', focus:'neg' },
+  { id:'n08', type:'neg', fr:'Il n\'a rien mangé ce matin.', stmt:'Il a mangé ce matin.', ans:1, zh:'他今天早上什麼都沒吃。', why:'ne … rien＝「什麼都沒有」→ 他今天早上沒吃東西', focus:'neg' },   /* 原創敘述（舊版「吃了早餐？」答案不唯一：第17課筆記就有早餐只喝咖啡）：mangé 複合過去 第17課、ce matin 第32課 */
+  { id:'n09', type:'neg', fr:'Le magasin n\'ouvre qu\'à dix heures.', stmt:'À neuf heures, le magasin est fermé.', ans:0, zh:'這家店十點才開門。', why:'ne … qu\'à dix heures＝十點才開 → 九點還關著，對', focus:'neg' },   /* 原創敘述：fermé 第35課（les magasins sont fermés le dimanche）、magasin 第17課、heures 第6課、neuf 第7課；考 ne…qu'à＝直到…才 */
   { id:'n10', type:'neg', fr:'Elle ne regarde jamais la télé.', stmt:'Elle regarde parfois la télé.', ans:1, zh:'她從來不看電視。', why:'jamais（從不）跟 parfois（有時）相反', focus:'neg' },
   { id:'n11', type:'neg', fr:'Mon fils ne fume plus.', stmt:'Avant, son fils fumait.', ans:0, zh:'我兒子已經不抽菸了。', why:'ne … plus＝「不再」，代表以前有抽 → 對', focus:'neg' },
   { id:'n12', type:'neg', fr:'Nous n\'avons pas encore visité le musée.', stmt:'Ils ont visité le musée.', ans:1, zh:'我們還沒參觀博物館。', why:'pas encore＝「還沒」', focus:'neg' },
   { id:'n13', type:'neg', fr:'Il ne parle à personne au bureau.', stmt:'Il parle avec ses collègues.', ans:1, zh:'他在辦公室不跟任何人說話。', why:'ne … à personne＝「不跟任何人」', focus:'neg' },
-  { id:'n14', type:'neg', fr:'Ce train ne s\'arrête qu\'à Lyon.', stmt:'Le train s\'arrête à Dijon.', ans:1, zh:'這班火車只停里昂。', why:'ne … qu\'à Lyon＝「只停里昂」，其他站都不停', focus:'neg' },
-  { id:'n15', type:'neg', fr:'Je ne travaille pas le lundi.', stmt:'Il travaille le mardi.', ans:2, zh:'我星期一不上班。', why:'只說星期一不上班，星期二沒提到 → 不知道', focus:'neg' },
+  { id:'n14', type:'neg', fr:'Ce train ne s\'arrête qu\'à Lyon.', stmt:'Le train ne s\'arrête pas à Dijon.', ans:0, zh:'這班火車只停里昂。', why:'ne … qu\'à Lyon＝只停里昂 → 第戎不停，對（兩句都有 ne，答案還是對）', focus:'neg' },   /* 原創敘述：s'arrêter 第27課；代動詞否定 ne se … pas 第26課 */
+  { id:'n15', type:'neg', fr:'Je ne travaille pas le lundi.', stmt:'Il travaille dans un bureau.', ans:2, zh:'我星期一不上班。', why:'句子只說星期一不上班，完全沒提到在哪裡工作 → 不知道', focus:'neg' },   /* 原創敘述（舊版「星期二上班？」一般人會推出有上班，會冤枉）：bureau 第11課 */
   { id:'n16', type:'neg', fr:'Il n\'est jamais en retard.', stmt:'Il arrive toujours à l\'heure.', ans:0, zh:'他從來不遲到。', why:'從不遲到＝總是準時 → 對', focus:'neg' },
-  { id:'n17', type:'neg', fr:'Je n\'ai que dix minutes pour manger.', stmt:'Il a beaucoup de temps pour manger.', ans:1, zh:'我只有十分鐘吃飯。', why:'ne … que dix minutes＝「只有十分鐘」，很趕', focus:'neg' },
+  { id:'n17', type:'neg', fr:'Je n\'ai que dix minutes pour manger.', stmt:'Il n\'a pas beaucoup de temps pour manger.', ans:0, zh:'我只有十分鐘吃飯。', why:'ne … que dix minutes＝只有十分鐘 → 時間不多，對', focus:'neg' },   /* 原創敘述：beaucoup de temps 第33課、ne … pas beaucoup de 第29課 */
 
   /* ---------- 💭 真的還是假設：0 réelle 1 possible（si＋現在式）2 imaginée（si＋未完成式＋條件式／願望） ---------- */
   { id:'h01', type:'hypo', fr:'Si j\'avais le temps, je partirais en voyage.', ans:2, zh:'如果我有時間，我會去旅行。', why:'si＋未完成式（avais）＋條件式（partirais）＝現在其實沒時間，是想像', focus:'cond' },

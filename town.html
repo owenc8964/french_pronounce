@@ -1122,7 +1122,11 @@ function conjPick(){
   for(var j=0;j<pool.length;j++){ rr-=pool[j].w; if(rr<=0) return pool[j]; }
   return pool[pool.length-1];
 }
-function conjNorm(s){ return String(s).toLowerCase().trim().replace(/[’]/g,"'").normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/^(j|je|tu|il|elle|on|nous|vous|ils|elles)['\s]+/,'').replace(/\s+/g,''); }
+/* 10-29：subjonctif 的引用形本來就帶 que（按鈕也顯示 que je sois）→ 打字連 que／qu' 一起打也算對（research/2026-10-29_鐵砧變位資料核對 ✗2）
+   ⚠️ 只有 subj=true（虛擬式那一爐）才剝 que，其他時態打 que je suis 不放寬 */
+var CONJ_SUBJ_RE=/^(j|je|tu|il|elle|on|nous|vous|ils|elles)['\s]+/, CONJ_QUE_RE=/^qu(?:e\s+|')/;
+function conjStrip(s, subj){ s=String(s).toLowerCase().trim().replace(/[’]/g,"'"); if(subj) s=s.replace(CONJ_QUE_RE,''); return s.replace(CONJ_SUBJ_RE,''); }
+function conjNorm(s, subj){ return conjStrip(String(s).normalize('NFD').replace(/[̀-ͯ]/g,''), subj).replace(/\s+/g,''); }
 function withPron(pi, form){ return (pi===0 && /^[aeiouâàéèêëîïôöûüùh]/i.test(form)) ? "j'"+form : ['je','tu','il','nous','vous','ils'][pi]+' '+form; }
 /* cb(ok, ms)：跟 askChoose 一樣的回呼（礦坑拿來判斷會心） */
 function askConj(head, c, cb){
@@ -1134,14 +1138,14 @@ function askConj(head, c, cb){
   inp.addEventListener('keydown', function(e){ if(!fk && e.key.length===1) fk=Date.now()-t0; if(e.key==='Enter') sub(); });
   document.getElementById('skip').onclick=function(){ if(sent) return; sent=true; if(window.GameLog) GameLog.answer(null,{kind:'⚡ 變位', ref:rc.ref}); cb(null); };
   function sub(){ var v=inp.value.trim(); if(!v||sent) return; sent=true; inp.disabled=true; rc.pick=v;
-    var ms=Date.now()-t0, n=conjNorm(v), ok=c.alts.some(function(a){ return conjNorm(a)===n; });
-    var exact=ok && c.alts.some(function(a){ return a.toLowerCase().replace(/\s+/g,'')===v.toLowerCase().replace(/^(j|je|tu|il|elle|on|nous|vous|ils|elles)['\s]+/,'').replace(/\s+/g,''); });
+    var subj=c.m.tense==='subjonctif', ms=Date.now()-t0, n=conjNorm(v, subj), ok=c.alts.some(function(a){ return conjNorm(a)===n; });
+    var exact=ok && c.alts.some(function(a){ return a.toLowerCase().replace(/\s+/g,'')===conjStrip(v, subj).replace(/\s+/g,''); });
     /* 寫回衝刺頁的格子（加 last，配合同步的物件合併） */
     var cells=conjCells(c.m), cell=cells[c.key]||{h:[]}, was=conjState(cell.h);
     cell.h.push({o:ok?1:0, f:Math.round(fk||ms), d:ms, t:Date.now()}); cell.h=cell.h.slice(-5); cell.last=Date.now(); cells[c.key]=cell;
     try{ localStorage.setItem('clb7_sprint_cells'+c.m.suffix, JSON.stringify(cells)); }catch(e){}
     if(window.GameLog) GameLog.answer(ok, {kind:'⚡ 變位', topic:'conj-'+c.m.tense, ref:rc.ref, ms:fk||ms, q:rc.q, a:c.alts[0], pick:v});
-    var now=conjState(cell.h), show=withPron(c.pi, c.alts[0]); speak(show);
+    var now=conjState(cell.h), show=forgeSay(c, c.alts[0]); speak(show);   /* 10-29：虛擬式顯示 que je sois，跟選擇模式同一個樣子（鐵砧核對 △1） */
     if(now==='reflex' && was!=='reflex'){ masteryBonus(3,'反射'); toast('⚡ '+c.inf+'・'+c.m.label+'・'+['je','tu','il','nous','vous','ils'][c.pi]+' 變成反射了'); }
     document.getElementById('fb').innerHTML=(ok?'✓ '+(fk&&fk<2000?'<b style="color:var(--gold)">起手 '+(fk/1000).toFixed(1)+' 秒</b> ':'')+(exact?'':'（注意重音）'):'👉')+' <span class="say">'+esc(show)+'</span> '+spk(show);
     if(ok && exact) setTimeout(function(){ cb(true, ms); }, 800);
@@ -1243,10 +1247,18 @@ function examPick(types){
     if(!h) w*=2.5; else if(h.w>h.r) w*=2; if(last && now-last<6*3600000) w*=.05; w*=Math.random()+.3; if(w>bw){ bw=w; best=x; } });
   return best;
 }
+/* 10-29：否定題原句是「我／我們」、敘述句卻是「他／他們」時，畫面上說清楚「他＝剛剛說話的人」（理解題核對 整批 B）
+   ⭐ 不然選 On ne sait pas（句子沒提到「他」）也說得通 → 冤枉；以後新增的題也自動套用 */
+function examWho(it){
+  var f=String(it.fr), st=String(it.stmt||'');
+  if(/^(je|j')/i.test(f) && /^(il|elle)\b/i.test(st)) return '<div class="muted fr">« '+st.match(/^(il|elle)/i)[1].toLowerCase()+' » = la personne qui parle.</div>';
+  if(/^nous\b/i.test(f) && /^(ils|elles)\b/i.test(st)) return '<div class="muted fr">« '+st.match(/^(ils|elles)/i)[1].toLowerCase()+' » = les personnes qui parlent.</div>';
+  return '';
+}
 function askExam(head, it, cb){
   var T=EXAM_TYPES[it.type], t0=Date.now(), done=false, rc={kind:'理解 '+it.type, ref:'x:'+it.id, q:it.fr, a:T.opts[it.ans]};
   openSheet('<h3>'+head+' <small>'+T.label+'</small></h3><div class="qtext fr" style="font-size:1.1em">'+esc(it.fr)+' '+spk(it.fr)+'</div>'+
-    (it.stmt?'<div class="clue fr">« '+esc(it.stmt)+' »</div>':'')+'<div class="hint fr">'+esc(T.q)+'</div>'+
+    (it.stmt?'<div class="clue fr">« '+esc(it.stmt)+' »</div>'+examWho(it):'')+'<div class="hint fr">'+esc(T.q)+'</div>'+
     '<div class="opts">'+T.opts.map(function(o,i){ return '<button data-i="'+i+'" class="fr">'+esc(o)+'</button>'; }).join('')+'</div>'+
     '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><span id="slot"></span></div>'+repSlot(rc));
   sheet.querySelectorAll('.opts button').forEach(function(b){ b.onclick=function(){ if(done) return; done=true;
@@ -2826,12 +2838,16 @@ function movesCard(back){
   openSheet(h+'<div class="row2"><span></span><button class="btn main" id="mcok">'+(back?'回去':'關閉')+'</button></div>', true);
   document.getElementById('mcok').onclick=function(){ if(back) back(); else closeSheet(); };
 }
+/* 10-29：升級版如果「順便」也用到別的已學招式（AC1:8 多了 mais aussi、AC13:4 多了 moins de），那一招不能當干擾選項，不然兩個答案都說得通
+   判準：那一招的偵測式在升級版有命中、在原句（含 base2）沒命中（升級工坊招式卡核對 B1、B5 的改法 a） */
+function upAlsoUses(m, u){ if(!m.pattern) return false; var re; try{ re=new RegExp(m.pattern,'i'); }catch(e){ return false; }
+  return re.test(u.up) && !re.test(u.base+' '+(u.base2||'')); }
 function upgradeQ(islandId, done){
   var U=(typeof ISLAND_UPGRADES!=='undefined'?ISLAND_UPGRADES:[]).filter(function(u){ var m=moveById(u.move); return m && m.taught; });
   if(!U.length) return done();
   S.upq=S.upq||{};
   var mine=U.filter(function(u){ return u.ref.split(':')[0]===islandId; }), pool=(mine.length?mine:U).slice().sort(function(a,b){ return (S.upq[a.ref]||0)-(S.upq[b.ref]||0) || Math.random()-.5; });
-  var u=pool[0], right=moveById(u.move), others=shuffle(movesTaught().filter(function(m){ return m.id!==u.move && m.name!==right.name; })).slice(0,3), opts=shuffle([right].concat(others)), t0=Date.now(), fin=false;
+  var u=pool[0], right=moveById(u.move), others=shuffle(movesTaught().filter(function(m){ return m.id!==u.move && m.name!==right.name && !upAlsoUses(m, u); })).slice(0,3), opts=shuffle([right].concat(others)), t0=Date.now(), fin=false;
   var rc={kind:'🔧 升級辨識', ref:'up:'+u.ref, q:u.base+' → '+u.up, a:right.name};
   openSheet('<h3>🔧 升級版用了哪一招？ <small>你的島</small></h3>'+
     '<div class="muted">原本（A2）</div><div class="qtext fr">'+esc(u.base)+(u.base2?' '+esc(u.base2):'')+'</div>'+
@@ -2990,7 +3006,7 @@ var ISLE_SCENES={
     board:{x:14.8, y:29.4},
     outline:[ ['🪪 我是誰','①–⑤',['名字、36 歲、牙醫','分析型：分類、換角度看、連起來','理性，但還不到工程師','木訥，喜歡思考和閱讀']],
               ['🏢 我住哪','⑥–⑩',['板橋，住大樓','很空曠，車站很近','小吃少、貴一點，但喜歡住這裡：鄰居友善、乾淨']],
-              ['🎧 我怎麼學','⑪–⑯',['今年五月開始','家教＋Duolingo＋AI','聽 Coffee Break French、看 Extra French','最重要：浸泡在語言裡＋找對方法']],
+              ['🎧 我怎麼學','⑪–⑯',['今年五月開始','家教＋Duolingo＋AI','聽 Coffee Break French、看 Extra French','學習不只是花時間：最重要的是浸泡在語言裡＋找對方法']],   /* 10-29：補第 ⑭ 站「不只是花時間」（告示牌核對 B，用他原稿的字） */
               ['🌫️ 法文對我','⑰–㉓',['很特別的語言','講法文像換一種眼光：有時模糊、有時清楚','模糊的時候，反而看見更大的世界','其他時間：運動、思考、照顧女兒']] ],
     marks:{ '0':['🦷','🧑‍⚕️','診療椅',[12.2,27.4]], '1.1':['🗂️','','分類櫃',[9.6,26.6]], '1.2':['🧩','','拼圖桌',[7.6,25.6]], '2':['📐','📜','工程圖',[5.0,26.2]], '3':['📖','🪑','樹下讀書',[4.2,23.4]],
             '4':['🏢','','大樓',[7.2,20.0]], '5':['🚉','🚃','小車站',[10.2,22.2]], '6.1':['🍜','💸','貴的小吃攤',[13.2,20.0]], '6.2':['🏡','❤️','喜歡住這裡',[16.2,22.2]], '6.3':['🧹','👋','鄰居掃地',[19.2,20.0]],
@@ -3404,23 +3420,41 @@ var MONTHS_FR=['janvier','février','mars','avril','mai','juin','juillet','août
 function rint(a,b){ return a+Math.floor(Math.random()*(b-a+1)); }
 function numKindKey(t){
   if(t==='p') return 'p:'+rint(1,49)+'.'+['50','20','90','99','75','30','10','95','45','80'][rint(0,9)];
-  if(t==='d') return 'd:'+rint(0,20)+'.'+(Math.random()<.6?rint(1,9):rint(11,99));
+  /* 10-29：小數不出尾數 0（2,30 其實就是 2,3，讀法會不唯一）→ 兩位數跳過 10 的倍數（數字題核對 ✗3） */
+  if(t==='d'){ var f2; do{ f2=rint(11,99); }while(f2%10===0); return 'd:'+rint(0,20)+'.'+(Math.random()<.6?rint(1,9):f2); }
   if(t==='t') return 't:'+rint(1,23)+':'+['00','15','30','45','05','10','20','40','50','25'][rint(0,9)];
   var mo=rint(1,12); return 'D:'+rint(1,[31,28,31,30,31,30,31,31,30,31,30,31][mo-1])+'/'+mo;
 }
 /* 一題：show 畫面上的字、ans 可接受的說法（第一個是標準答案）、ask 店家問的話 */
 function numItem(k){
-  if(typeof k==='number'){ var yr=k>=1900&&k<=2099; return {k:k, show:k+(yr?'':(k<1000&&k>20?' €':'')), ans:[frNum(k)], ask:yr?'C\'était en quelle année ?':'Ça fait combien ?', yr:yr}; }
+  if(typeof k==='number'){ var yr=k>=1900&&k<=2099, ya=[frNum(k)];
+    /* 10-29：1900–1999 的年份也可以說 dix-neuf cent …（1900 本身＝dix-neuf cents，後面沒接數字要加 s）；mil 罕見，不收（數字題核對 ✗2） */
+    if(yr && k<2000){ var yr2=k%100; ya.push(yr2?'dix-neuf cent '+frNum(yr2):'dix-neuf cents'); }
+    return {k:k, show:k+(yr?'':(k<1000&&k>20?' €':'')), ans:ya, ask:yr?'C\'était en quelle année ?':'Ça fait combien ?', yr:yr}; }
   var t=k[0], v=k.slice(2);
   if(t==='p'){ var e=+v.split('.')[0], c=+v.split('.')[1], eu=(e===1?'un euro':frNum(e)+' euros');
     return {k:k, show:e+','+v.split('.')[1]+' €', ans:[eu+' '+frNum(c), eu+' '+frNum(c)+' centimes', eu+' et '+frNum(c)+' centimes'], ask:'Ça fait combien ?'}; }
   if(t==='d'){ var i=v.split('.')[0], f=v.split('.')[1];
-    return {k:k, show:i+','+f, ans:[frNum(+i)+' virgule '+frNum(+f)], ask:'Et ce chiffre-là ?'}; }
+    var da=[frNum(+i)+' virgule '+frNum(+f)];
+    if(f.length===2 && +f%10===0) da.push(frNum(+i)+' virgule '+frNum(+f/10));   /* 舊錯題本裡可能還有 2,30 這種 key：2,30＝2,3，讀 deux virgule trois 也對 */
+    return {k:k, show:i+','+f, ans:da, ask:'Et ce nombre-là ?'}; }
   if(t==='t'){ var h=+v.split(':')[0], m=+v.split(':')[1], hh=(h===1?'une heure':h===21?'vingt et une heures':frNum(h)+' heures'), mm=m?' '+frNum(m):'';
-    var a=[hh+mm]; if(h===12) a.push('midi'+mm);
-    return {k:k, show:h+' h '+v.split(':')[1], ans:a, ask:'C\'est à quelle heure ?'}; }
+    var a=[hh+mm], soft=[]; if(h===12) a.push('midi'+mm);
+    /* 10-29：1–12 點也收 12 小時制口語的 et quart／et demie／moins le quart／moins vingt／moins dix（數字題核對 ✗1）
+       ⛔ 13–23 點是 24 小時制，不能配 quart／demie（quinze heures et quart 是錯的）→ 只加在 h≤12
+       ⭐ heure 陰性 → une heure et demie；midi 陽性 → midi et demi（Larousse／Académie）；打 midi et demie 算對但提醒 */
+    if(h<=12){
+      var H12=function(n){ n=((n-1)%12)+1; return n===12?'midi':(n===1?'une heure':frNum(n)+' heures'); }, base=H12(h), nxt=H12(h+1);
+      if(m===15) a.push(base+' et quart');
+      if(m===30){ a.push(base+(h===12?' et demi':' et demie')); if(h===12) soft.push({s:'midi et demie', note:'midi 是陽性 → midi et demi（不加 e）；une heure et demie 才加 e', to:'midi et demi'}); }
+      if(m===45) a.push(nxt+' moins le quart');
+      if(m===40) a.push(nxt+' moins vingt');
+      if(m===50) a.push(nxt+' moins dix');
+    }
+    return {k:k, show:h+' h '+v.split(':')[1], ans:a, soft:soft, ask:'C\'est à quelle heure ?'}; }
   var d=+v.split('/')[0], mo=+v.split('/')[1], dd=(d===1?'premier':frNum(d))+' '+MONTHS_FR[mo-1];
-  return {k:k, show:('0'+d).slice(-2)+'/'+('0'+mo).slice(-2), ans:['le '+dd, dd], ask:'C\'est quel jour ?'};
+  /* 10-29：C'est quel jour ? 容易被聽成問星期幾 → 改問日期（數字題核對 ✗4；C'est quelle date ? 的自然度屬語感，未查證） */
+  return {k:k, show:('0'+d).slice(-2)+'/'+('0'+mo).slice(-2), ans:['le '+dd, dd], date:true, ask:'C\'est quelle date ?'};
 }
 function numNorm(x){ return String(x).toLowerCase().trim().replace(/[’]/g,"'").replace(/[-\s]+/g,' '); }
 function numPick(){
@@ -3442,8 +3476,19 @@ function numJudge(v, ans){
   if(glue(noS(x))===glue(noS(a))) return {ok:true, note:/vingts|cents/.test(a)?'這裡要加 s：quatre-vingts、deux cents 後面沒接數字時要有 s':'這裡不加 s：後面還接數字時 vingt／cent 不加 s'};
   return {ok:false, note:''};
 }
-/* 多種說法任一個對就算對（日期可以不加 le、價錢可以加 centimes／et … centimes） */
-function numJudgeAny(v, alts){ var best=null; for(var i=0;i<alts.length;i++){ var J=numJudge(v, alts[i]); if(J.ok && !J.note) return J; if(J.ok && !best) best=J; } return best||{ok:false, note:''}; }
+/* 多種說法任一個對就算對（日期可以不加 le、價錢可以加 centimes／et … centimes）
+   ⭐ 10-29：答成整句也算（à quatorze heures trente／c'est le premier mai／ça fait trois euros／en mille neuf cent…）→ ⛔ 只剝句首，不全域替換（數字題核對 ✗5）
+   ⭐ soft：算對但要提醒的說法（例 midi et demie）；回傳的 alt＝他對上的是哪一種說法（顯示用） */
+var NUM_LEAD_RE=/^(?:(?:il est|c'est|c est|ca fait|ça fait|on est|c'etait|c'était|à|a|en)\s+)+/;
+function numJudgeAny(v, alts, soft){
+  var vs=[v], st=numNorm(v).replace(NUM_LEAD_RE,''); if(st && st!==numNorm(v)) vs.push(st);
+  /* 10-29：整數價錢（75 €）答「soixante-quinze euros」也對 → 標準答案沒帶 euro 時，去掉句尾的 euro(s) 再比 */
+  if(!alts.some(function(a){ return /euro/.test(a); })){ var se=(st||numNorm(v)).replace(/\s+euros?\s*$/,''); if(se && vs.indexOf(se)<0) vs.push(se); }
+  var best=null;
+  for(var j=0;j<vs.length;j++) for(var i=0;i<alts.length;i++){ var J=numJudge(vs[j], alts[i]); J.alt=alts[i]; if(J.ok && !J.note) return J; if(J.ok && !best) best=J; }
+  if(!best && soft) for(var j2=0;j2<vs.length;j2++) for(var k=0;k<soft.length;k++){ var S2=numJudge(vs[j2], soft[k].s); if(S2.ok) return {ok:true, note:soft[k].note, alt:soft[k].to||alts[0]}; }
+  return best||{ok:false, note:''};
+}
 var NUM_CHAIN=2;   /* 10-28 Owen 嫌太頻繁：連問 3 → 2、間隔 30 → 90 秒、機率 .18 → .12 */
 /* 🔢 連問＋集點卡（10-19 Owen：「答對好像不能幹嘛」）
    ⭐ 答對後店家接著問「Et ça ?」，一次最多 3 個，金幣 1→2→3
@@ -3470,16 +3515,19 @@ function numEncounter(chain){
   inp.addEventListener('keydown', function(e){ if(!fk && e.key.length===1) fk=Date.now()-t0; if(e.key==='Enter') sub(); });
   document.getElementById('skip').onclick=function(){ if(sent) return; sent=true; if(window.GameLog) GameLog.answer(null,{kind:'🔢 數字', ref:rc.ref}); closeSheet(); };
   function sub(){ var v=inp.value.trim(); if(!v||sent) return; sent=true; inp.disabled=true; rc.pick=v;
-    var ms=Date.now()-t0, J=numJudgeAny(v, I.ans), ok=J.ok, fast=!!fk && fk<3000;
+    var ms=Date.now()-t0, J=numJudgeAny(v, I.ans, I.soft), ok=J.ok, fast=!!fk && fk<3000;
+    /* 10-29：月份要小寫（數字題核對 ✗6）→ 算對，但提醒 */
+    if(ok && !J.note && I.date && MONTHS_FR.some(function(mn){ return v.indexOf(mn)<0 && v.toLowerCase().indexOf(mn)>=0; })) J={ok:true, note:'月份要小寫（juillet，不是 Juillet）', alt:J.alt};
+    var say=(ok && J.alt)?J.alt:ans;   /* 他用 et quart 答對，就顯示／唸他那種說法（紀錄仍記標準答案） */
     var Wl=S.numWrong=S.numWrong||[], wi=Wl.indexOf(n);
     if(!ok && wi<0){ Wl.push(n); if(Wl.length>30) Wl.shift(); } else if(ok && !J.note && wi>=0 && fast) Wl.splice(wi,1);
     S.num=S.num||{}; var h=S.num[n]||[]; h.push({o:ok?1:0, f:fk||ms}); S.num[n]=h.slice(-3);
     var st=typeof n==='number'?numStamp(n, fast && !J.note, ok):'';
     if(ok){ S.gold+=chain; } save(); hud();
     if(window.GameLog) GameLog.answer(ok, {kind:'🔢 數字', topic:'numbers', ref:rc.ref, ms:fk||ms, q:I.show, a:ans, pick:v});
-    speak(ans);
+    speak(say);
     var stTxt= st==='new' ? '　🔖 集點卡 +1' : /^row/.test(st) ? '　🎉 集點卡 '+(+st.slice(3)*10)+'–'+(+st.slice(3)*10+9)+' 蓋滿了！+10🪙' : st==='lost' ? '　（這一格的章掉了）' : '';
-    document.getElementById('fb').innerHTML=(ok?'✓ +'+chain+'🪙 '+(fk&&fk<2000?'<b style="color:var(--gold)">起手 '+(fk/1000).toFixed(1)+' 秒</b> ':''):'👉 ')+'<span class="say">'+esc(ans)+'</span> '+spk(ans)+
+    document.getElementById('fb').innerHTML=(ok?'✓ +'+chain+'🪙 '+(fk&&fk<2000?'<b style="color:var(--gold)">起手 '+(fk/1000).toFixed(1)+' 秒</b> ':''):'👉 ')+'<span class="say">'+esc(say)+'</span> '+spk(say)+
       (J.note?'<div class="muted">'+esc(J.note)+'</div>':'')+(stTxt?'<div class="muted">'+stTxt+'</div>':'');
     var more = ok && chain<NUM_CHAIN;
     if(ok && !J.note && !stTxt.match(/蓋滿/)) setTimeout(function(){ if(more) numEncounter(chain+1); else closeSheet(); }, 850);

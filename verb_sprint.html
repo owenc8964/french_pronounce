@@ -403,7 +403,8 @@ function coreReflexCount(cells) {
 function normalize(s) {
   return s.toLowerCase().trim()
     .normalize('NFD').replace(/[̀-ͯ]/g, '')   // 去重音
-    .replace(/^(j|je|tu|il|elle|on|nous|vous|ils|elles)['\s]+/, '') // 去開頭代名詞
+    .replace(/[’‘]/g, "'")                           // 彎引號 j’ai → j'ai
+    .replace(/^(?:qu(?:e\s+|'))?(j|je|tu|il|elle|on|nous|vous|ils|elles)['\s]+/, '') // 去開頭 que＋代名詞（que je sois／qu'il soit）
     .replace(/\s+/g, '');
 }
 function isCorrect(input, vi, pi) {

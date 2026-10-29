@@ -21615,7 +21615,7 @@ const CHUNKS = [
   "lesson": 44,
   "fr": "l'aîné(e)",
   "zh": "老大、最年長的孩子",
-  "note": "n.｜mon fils aîné"
+  "note": "n.｜mon fils aîné。⚠️ 複數 les aînés 也可以指長輩、老人家"
  },
  {
   "id": "L44_le_gendre",
@@ -21629,7 +21629,7 @@ const CHUNKS = [
   "lesson": 44,
   "fr": "la belle-fille",
   "zh": "媳婦；繼女",
-  "note": "f.｜媳婦沒有別的字"
+  "note": "f.｜口語媳婦幾乎都說 belle-fille（另有舊式的 la bru，課本沒列）"
  },
  {
   "id": "L44_le_beau_fils",
@@ -22483,7 +22483,7 @@ const CHUNKS = [
   "lesson": 46,
   "fr": "C'était la première fois que je le prenais.",
   "zh": "那是我第一次搭它。",
-  "note": "🎙 老師改：la première fois que＋imparfait；le＝le train"
+  "note": "🎙 老師改：la première fois que＋句子（前面 c'était → imparfait）；le＝le train"
  },
  {
   "id": "L46_Je_lui_ai_expliqué_ce_qu",
@@ -22812,7 +22812,7 @@ const CHUNKS = [
   "lesson": 46,
   "fr": "partager des bons moments",
   "zh": "共度美好時光",
-  "note": "v.｜"
+  "note": "v.｜⚠️ 課本這頁寫 des；標準書面是 de bons moments（形容詞在複數名詞前 des 變 de）"
  },
  {
   "id": "L46_passer_du_temps_ensemble",
@@ -23085,7 +23085,7 @@ const CHUNKS = [
   "lesson": 46,
   "fr": "Pourquoi les bonnes manières sont-elles importantes ?",
   "zh": "名詞＋動詞-代名詞",
-  "note": "soutenu｜名詞不能直接倒裝"
+  "note": "soutenu｜pourquoi＋名詞一定這樣做"
  },
  {
   "id": "L46_Quand_va_t_il_répondre",
