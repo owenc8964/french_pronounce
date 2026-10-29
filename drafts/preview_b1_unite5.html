@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 Unité 5 預習單</title>
+<style>
+  :root {
+    --bg: #15171c;
+    --card: #1f232b;
+    --card2: #262b35;
+    --text: #e6e8ec;
+    --muted: #9aa3b2;
+    --fr: #ffffff;
+    --accent: #7cc4ff;
+    --gold: #f2c86b;
+    --warn: #ff9f7a;
+    --line: #333a46;
+    --gray-badge: #4a5160;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Helvetica Neue", sans-serif;
+    font-size: 16px; line-height: 1.65;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 1.35rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: .9rem; margin-bottom: 18px; }
+  section {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; margin: 0 0 16px;
+  }
+  h2 { font-size: 1.1rem; margin: 0 0 8px; color: var(--accent); }
+  h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--gold); }
+  p { margin: 6px 0; }
+  b { color: var(--fr); }
+  .time { float: right; font-size: .78rem; color: var(--muted); font-weight: normal; }
+  .rule {
+    background: var(--card2); border-left: 4px solid var(--accent);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .trap {
+    background: rgba(255,159,122,.08); border-left: 4px solid var(--warn);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .flag {
+    background: rgba(242,200,107,.08); border-left: 4px solid var(--gold);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: .92rem;
+  }
+  .map { list-style: none; padding: 0; margin: 0; }
+  .map li { padding: 7px 0; border-bottom: 1px solid var(--line); }
+  .map li:last-child { border-bottom: none; }
+  .pg { display: inline-block; min-width: 54px; color: var(--accent); font-weight: 600; }
+  .tag { display: inline-block; font-size: .72rem; padding: 1px 7px; border-radius: 10px;
+         background: var(--gray-badge); color: var(--text); margin-left: 4px; vertical-align: 1px; }
+  .tag.new { background: #2f5d8a; }
+  /* 法文句子載體：沿用 french_notes.html 的結構，之後可直接搬 */
+  .phrase-list { list-style: none; padding: 0; margin: 6px 0; }
+  .phrase-list li {
+    display: flex; flex-wrap: wrap; gap: 2px 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--line);
+  }
+  .phrase-list li:last-child { border-bottom: none; }
+  .fr { font-weight: 600; color: var(--fr); width: 100%; }
+  .zh { color: var(--muted); font-size: .9rem; }
+  .phrase-list li > span.note { color: #7d8696; font-size: .8rem; }
+  .fr em { font-style: normal; color: var(--gold); }
+  .vocab { list-style: none; padding: 0; margin: 4px 0 8px;
+           display: grid; grid-template-columns: 1fr; gap: 0; }
+  .vocab li { padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: .95rem; }
+  .vocab li:last-child { border-bottom: none; }
+  .vocab .w { color: var(--fr); font-weight: 600; }
+  .g { display: inline-block; font-size: .72rem; color: var(--muted); border: 1px solid var(--line);
+       border-radius: 4px; padding: 0 5px; margin: 0 4px; }
+  details { background: var(--card2); border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
+  summary { cursor: pointer; font-weight: 600; color: var(--text); }
+  details[open] summary { margin-bottom: 6px; }
+  .ex { margin: 8px 0; padding-left: 2px; }
+  .ex .q { color: var(--fr); }
+  .hint { color: var(--muted); font-size: .92rem; }
+  .likely { color: var(--gold); font-size: .8rem; }
+  ol.ask { padding-left: 20px; margin: 6px 0; }
+  ol.ask li { margin: 8px 0; }
+  .small { font-size: .85rem; color: var(--muted); }
+  @media (min-width: 640px) {
+    .vocab { grid-template-columns: 1fr 1fr; column-gap: 18px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Unité 5 Mondes urbains・預習單（草稿）</h1>
+<div class="sub">範圍：Édito B1 p.71–84（第 5 單元）｜大約 15 分鐘｜全部法文句子都是課本原句，每句標頁碼</div>
+
+<div class="flag">
+  🚧 <b>這是草稿。</b>給 Unité 5 開課前先看的。<br>
+  中文翻譯、「它在處理什麼資訊」的說明、陷阱與標註是 Claude 加的；法文全部取自 <code>assets/.textbook_cache.txt</code> 的 Édito B1 內頁（PDF 頁碼＝課本頁碼）。
+</div>
+
+<!-- ============ 0. 地圖 ============ -->
+<section>
+  <h2>🗺 這個單元的頁面 <span class="time">1 分鐘</span></h2>
+  <ul class="map">
+    <li><span class="pg">p.71</span>單元首頁。目標：描述一項活動｜講述一則社會新聞（fait divers）｜抱怨</li>
+    <li><span class="pg">p.72</span>A 閱讀：Andrée Chedid 的詩〈Le chant des villes〉｜B 影片：Exploration urbaine（urbex 廢墟探險）＋「描述一項活動」</li>
+    <li><span class="pg">p.73</span>C 閱讀：新聞〈Strasbourg : Spider-Man arrêté par la police〉＋「講述社會新聞」</li>
+    <li><span class="pg">p.74</span><b>文法：Le passif 被動語態</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.75</span>D 聽力：Quand les quartiers mutent（南特 Trentemoult 的仕紳化）｜E 閱讀：〈Des quartiers inabordables〉蒙特婁的仕紳化</li>
+    <li><span class="pg">p.76</span>詞彙頁：城市與街區生活（地點、建築、居民、房地產、社會新聞）＋ 發音：<b>Les liaisons facultatives 可連可不連的連音</b><span class="tag new">新</span></li>
+    <li><span class="pg">p.77</span>Culture：巴黎與它的紀念建築。F 聽力：Christo 包裹新橋｜G 閱讀：〈Les Parisiens adorent les détester〉</li>
+    <li><span class="pg">p.78</span>H 閱讀：城市還是鄉下？民調｜I 閱讀：〈Le retour vers les petites villes〉＋「抱怨」</li>
+    <li><span class="pg">p.79</span>J 聽力：Ville et pollution｜<b>文法：La place de l'adjectif 形容詞的位置</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.80</span>K 閱讀：〈Tout faire à pied en ville ?〉步行友善度調查｜L 聽力：Le vélo à Paris</li>
+    <li><span class="pg">p.81</span><b>文法：La nominalisation de l'adjectif 形容詞變名詞</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.82</span>詞彙頁：在城市生活（都市規劃、干擾、服務、交通、用路人）</li>
+    <li><span class="pg">p.83</span>l'essentiel 總複習（文法／詞彙）</li>
+    <li><span class="pg">p.84</span>Atelier médiation：當評審，選出「法國最宜居城市」（讀資訊圖表）</li>
+  </ul>
+  <p class="small">p.85 已經是 Unité 6 En route ! 的首頁。⚠️ 跟 Unité 4 不同，這個單元<b>沒有</b> DELF 應考策略頁（頁尾 84 → 85 連號，不是缺頁）。</p>
+</section>
+
+<!-- ============ 1. 被動 ============ -->
+<section>
+  <h2>📐 文法一：Le passif 被動語態（p.74） <span class="time">4 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>把鏡頭從「<b>誰做的</b>」移到「<b>發生了什麼結果</b>」（p.74：met l'accent sur le résultat d'une action plutôt que sur son auteur）。社會新聞（fait divers）最愛用——受害的東西、被抓的人放主詞，做的人可以不說。<br>
+    <b>公式：</b>être（跟主動句<b>同一個時態</b>）＋ 過去分詞（<b>跟主詞配合</b>）＋（par ＋ 做的人）。<br>
+    <b>只有帶直接受詞（COD）的動詞</b>才能變被動（p.74）。
+  </div>
+
+  <h3>課本 Fonctionnement（p.74）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Le propriétaire a vendu le château.</span><span class="zh">屋主把城堡賣了。</span><span class="note">p.74 主動：主詞＋動詞＋COD</span></li>
+    <li><span class="fr">Le château <em>a été vendu par</em> le propriétaire.</span><span class="zh">城堡被屋主賣掉了。</span><span class="note">p.74 被動：a vendu（passé composé）→ a été vendu。課本印成 « proprétaire »，見下面 🔎</span></li>
+    <li><span class="fr">Nous avons rangé la salle. → La salle <em>a été rangée</em>.</span><span class="zh">我們整理了房間。→ 房間被整理好了。</span><span class="note">p.74 做的人是人稱代名詞 → 不用 par</span></li>
+    <li><span class="fr">Annie a tout remis en place. → Tout <em>a été remis</em> en place <em>par</em> Annie.</span><span class="zh">Annie 把一切歸位。→ 一切都被 Annie 歸位了。</span><span class="note">p.74</span></li>
+  </ul>
+
+  <h3>Remarques（p.74）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Ma voiture <em>a été volée</em>. → <em>On</em> a volé ma voiture.</span><span class="zh">我的車被偷了。→ 有人偷了我的車。</span><span class="note">p.74 不知道誰做的 → 也可以用 on ＋ 主動</span></li>
+    <li><span class="fr">La poétesse <em>s'est fait applaudir</em>.</span><span class="zh">女詩人博得了掌聲。</span><span class="note">p.74 se faire ＋ 原形 ＝ 被動意思</span></li>
+    <li><span class="fr">Il <em>s'est laissé convaincre</em> d'escalader la cathédrale.</span><span class="zh">他被說動去爬大教堂。</span><span class="note">p.74 se laisser ＋ 原形 ＝ 被動意思</span></li>
+  </ul>
+
+  <details>
+    <summary>想多看一點：p.74 Échauffement（全部出自 p.73 C 的新聞）</summary>
+    <ul class="phrase-list">
+      <li><span class="fr">Personne <em>n'a été blessé</em> et l'édifice <em>n'a pas été endommagé</em>.</span><span class="zh">沒有人受傷，建築也沒有損壞。</span><span class="note">p.74 a（p.73 l.16–17；Personne ne… 是 Unité 4 的否定）</span></li>
+      <li><span class="fr">Le passage <em>a été condamné</em>.</span><span class="zh">那條通道已被封死。</span><span class="note">p.74 b —— condamner 在這裡＝封閉，不是「判刑」</span></li>
+      <li><span class="fr">Une plainte à l'encontre des grimpeurs <em>a été déposée</em>.</span><span class="zh">已對攀爬者提出告訴。</span><span class="note">p.74 c</span></li>
+      <li><span class="fr">La police <em>a été alertée par</em> une habitante.</span><span class="zh">警方是接到一位居民報案的。</span><span class="note">p.74 d</span></li>
+      <li><span class="fr">Les grimpeurs se sont fait arrêter par la police. → Les grimpeurs <em>ont été arrêtés</em> par la police.</span><span class="zh">攀爬者被警察逮捕了。</span><span class="note">p.74 練習 4 Exemple</span></li>
+    </ul>
+  </details>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：être 的時態＝原句的時態。</b>a vendu → <b>a été</b> vendu；organisera → <b>sera</b> organisé；il faut que … libère → il faut que … <b>soit</b> libérée（p.74 練習 3b、3e）。真正變位的是 être，過去分詞只負責配性數。<br>
+    ⚠️ <b>陷阱二：過去分詞配「被動句的主詞」。</b>La police a été alerté<b>e</b>、Les grimpeurs ont été arrêté<b>s</b>——été 本身永遠不變。<br>
+    ⚠️ <b>陷阱三：se faire／se laisser ＋ 原形，fait 和 laissé 不加 e、不加 s。</b>La poétesse s'est <b>fait</b> applaudir（⛔ 不是 faite）；Juliette s'est <b>laissé</b> convaincre（p.74 練習 4c）。<br>
+    ⚠️ <b>陷阱四：on 的句子變被動，⛔ 不會出現 par on。</b>On a pris les dernières décisions（p.74 練習 3d）→ 直接把 par 拿掉。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>p.74 例句 « par le proprétaire »</b>：同一頁主動句寫 propriétaire，被動句兩層抽字都是 proprétaire，看起來是<b>課本排版錯字</b>，標準拼法是 <b>propriétaire</b>。<b>未對照紙本查證</b>。<br>
+    ② <b>「做的人是人稱代名詞就不能用 par」</b>（p.74）：課本講得太絕對。標準法文裡 <i>par lui</i>、<i>par elle</i> 文法上可以，只是像 <i>par nous</i> 這種多半不自然，通常乾脆省略或改回主動。當成「<b>最好不要</b>」來記就好。這是 Claude 依標準文法的判斷，<b>未查證</b>老師的說法。<br>
+    ③ <b>「只有帶直接受詞的動詞才能變被動」</b>（p.74）：大原則沒錯，但標準文法有幾個老例外：obéir à、désobéir à、pardonner à 可以說 <i>être obéi</i>、<i>être pardonné</i>。考試很少考，知道就好。<br>
+    ④ <b>se faire ＋ 原形 ≠ 完全等於被動。</b>課本練習 4 把兩者直接互換。標準語感裡 se faire 常帶一點「自己招來的」意味（<i>se faire gronder</i> 被罵，多半是自己有錯）。換成 être 被動，這層意思就沒了。這是語感補充，課本沒寫。
+  </div>
+</section>
+
+<!-- ============ 2. 形容詞位置 ============ -->
+<section>
+  <h2>📐 文法二：La place de l'adjectif 形容詞的位置（p.79） <span class="time">4 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>形容詞放後面＝<b>客觀分類</b>（什麼樣的街、什麼顏色）；少數短的常用形容詞放前面＝<b>主觀評價或基本屬性</b>。<br>
+    <b>預設：放名詞後面。</b>放前面的短清單（p.79）：beau, bon, joli, petit, grand, autre, même, jeune, vieux, ancien, nouveau。<br>
+    <b>第三類：換位置就換意思</b>（p.79）：grand, curieux, différent, drôle, propre, ancien, pauvre, cher, seul，還有 prochain／dernier。
+  </div>
+
+  <h3>課本 Fonctionnement 表（p.79）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Cette rue <em>étroite</em> est charmante.</span><span class="zh">這條窄街很迷人。</span><span class="note">p.79 一般情況：放後面</span></li>
+    <li><span class="fr">C'est un <em>bon</em> architecte.</span><span class="zh">他是個好建築師。</span><span class="note">p.79 短形容詞：放前面</span></li>
+    <li><span class="fr">C'est un <em>curieux</em> bâtiment. C'est une personne <em>curieuse</em>.</span><span class="zh">這是棟奇怪的建築。這是個好奇的人。</span><span class="note">p.79 前面＝奇特；後面＝好奇</span></li>
+    <li><span class="fr">J'irai avec ma <em>propre</em> voiture. J'ai mis une chemise <em>propre</em>.</span><span class="zh">我會開我自己的車去。我穿了件乾淨的襯衫。</span><span class="note">p.79 前面＝自己的；後面＝乾淨的</span></li>
+    <li><span class="fr">La rue sera fermée la semaine <em>prochaine</em>.</span><span class="zh">這條街下週會封閉。</span><span class="note">p.79 時間說法：prochain／dernier 放後面</span></li>
+    <li><span class="fr">La <em>prochaine</em> visite a lieu dans une heure.</span><span class="zh">下一場導覽一小時後開始。</span><span class="note">p.79 其他情況：放前面（＝順序上的下一個）</span></li>
+  </ul>
+
+  <h3>Remarque（p.79）：des 碰到前置形容詞 → de</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">J'ai vu <em>des</em> monuments magnifiques. J'ai vu <em>de beaux</em> monuments.</span><span class="zh">我看到了很壯觀的紀念建築。我看到了漂亮的紀念建築。</span><span class="note">p.79</span></li>
+  </ul>
+
+  <details>
+    <summary>想多看一點：p.79 Échauffement（出自 p.79 J 聽力）與口說練習範例</summary>
+    <ul class="phrase-list">
+      <li><span class="fr">Nous sommes les <em>premiers</em> responsables de notre <em>propre</em> santé.</span><span class="zh">我們是自己健康的首要負責人。</span><span class="note">p.79 a</span></li>
+      <li><span class="fr">La ville peut favoriser une <em>bonne</em> santé <em>physique</em>.</span><span class="zh">城市可以促進良好的身體健康。</span><span class="note">p.79 b（同時有前置和後置形容詞）</span></li>
+      <li><span class="fr">Les espaces <em>urbains</em> ont une influence <em>directe</em> sur notre santé.</span><span class="zh">城市空間對我們的健康有直接影響。</span><span class="note">p.79 c</span></li>
+      <li><span class="fr">J'ai un téléphone portable. → J'ai un <em>nouveau</em> téléphone portable.</span><span class="zh">我有一支手機。→ 我有一支新手機。</span><span class="note">p.79 練習 4 Exemple</span></li>
+    </ul>
+  </details>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：ancien、cher、propre、dernier 都在 p.83 l'essentiel 3 考。</b>mon <b>ancien</b> logement＝我<b>以前的</b>住處；un logement <b>ancien</b>＝<b>老</b>房子。<b>chers</b> amis＝親愛的；un appartement <b>cher</b>＝貴的。<br>
+    ⚠️ <b>陷阱二：prochain／dernier 的判準是「是不是時間說法」</b>，不是「是不是未來」。la semaine prochaine（時間）放後面；le prochain bus（順序）放前面。<br>
+    ⚠️ <b>陷阱三：兩個形容詞可以前後夾。</b>une <b>bonne</b> santé <b>physique</b>（p.79 b）——各自照自己的規則站位，⛔ 不用擠在同一邊。<br>
+    ⚠️ <b>陷阱四：bel 這個形式。</b>p.76 練習 2b <i>C'est un <b>bel</b> …… qui date du Moyen Âge</i>——beau 放在母音開頭的陽性名詞前要變 bel（édifice 正好是母音開頭）。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>des → de 的規則是書面標準</b>（p.79 Remarque 沒錯），但口語裡很多人照樣說 <i>des beaux monuments</i>，聽力會聽到。另外形容詞＋名詞已經黏成一個詞時保留 des（標準例子：des jeunes gens、des petits pois）。課本沒寫這兩點。<br>
+    ② <b>ancien 在課本表上出現兩次</b>：「放前面」清單裡有，「換位置就換意思」清單裡也有。不矛盾——放前面是常態用法（＝以前的），放後面才是「古老的」。<br>
+    ③ 抽字把 « la semaine prochaine »、« La prochaine visite » 黏成一個字（« semaineprochaine »），引用時已補上空格。
+  </div>
+</section>
+
+<!-- ============ 3. 名詞化 ============ -->
+<section>
+  <h2>📐 文法三：La nominalisation de l'adjectif 形容詞變名詞（p.81） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>把「某人<b>是</b>怎樣」（形容詞）壓成「那個<b>特質</b>」（名詞），句子就能把特質當主詞或受詞來談——新聞、論說文、TCF 寫作很需要這招（<i>il est lent</i> → <i>sa lenteur</i>）。<br>
+    <b>做法：</b>加後綴。課本說這樣做出來的名詞<b>通常是陰性</b>（p.81；例外見下面 🔎）。
+  </div>
+
+  <h3>課本 Fonctionnement 表（p.81）：後綴 ＋ 例子</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">bon → la bont<em>é</em>｜actif → l'activ<em>ité</em></span><span class="zh">好 → 善良｜積極的 → 活動、活躍</span><span class="note">p.81 -té／-ité</span></li>
+    <li><span class="fr">lent → la lent<em>eur</em></span><span class="zh">慢 → 緩慢</span><span class="note">p.81 -eur</span></li>
+    <li><span class="fr">franc(-he) → la franch<em>ise</em>｜humain → l'human<em>iste</em>, l'human<em>isme</em></span><span class="zh">坦率 → 坦率｜人的 → 人文主義者、人文主義</span><span class="note">p.81 -ise／-iste／-isme</span></li>
+    <li><span class="fr">tolérant → la tolér<em>ance</em>｜intelligent → l'intellig<em>ence</em></span><span class="zh">寬容的 → 寬容｜聰明的 → 智慧</span><span class="note">p.81 -ance／-ence</span></li>
+    <li><span class="fr">gentil(-le) → la gentill<em>esse</em></span><span class="zh">親切的 → 親切</span><span class="note">p.81 -esse</span></li>
+    <li><span class="fr">exact → l'exact<em>itude</em></span><span class="zh">精確的 → 精確</span><span class="note">p.81 -itude</span></li>
+    <li><span class="fr">concentré → la concentra<em>tion</em></span><span class="zh">專注的 → 專注</span><span class="note">p.81 -tion</span></li>
+    <li><span class="fr">diplomate → la diplomat<em>ie</em>｜drôle → la drôl<em>erie</em></span><span class="zh">圓滑的 → 外交手腕｜好笑的 → 滑稽</span><span class="note">p.81 -ie／-erie</span></li>
+  </ul>
+
+  <h3>Remarque（p.81）：反過來，名詞 ＋ -eux(-se) → 形容詞</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">l'envie → env<em>ieux</em>, env<em>ieuse</em>｜le danger → danger<em>eux</em>, danger<em>euse</em></span><span class="zh">羨慕 → 羨慕的｜危險 → 危險的</span><span class="note">p.81</span></li>
+  </ul>
+
+  <details>
+    <summary>想多看一點：p.81 練習 3 的 Exemple 與 Échauffement</summary>
+    <ul class="phrase-list">
+      <li><span class="fr">Hugo aime les gens gentils. → Il apprécie la <em>gentillesse</em>.</span><span class="zh">Hugo 喜歡親切的人。→ 他欣賞親切。</span><span class="note">p.81 練習 3 Exemple</span></li>
+      <li><span class="fr">compétent → la <em>compétence</em></span><span class="zh">有能力的 → 能力</span><span class="note">p.81 練習 2 Exemple</span></li>
+      <li><span class="fr">la possibilité, la largeur, le moteur, la fréquentation, la noirceur, la globalité, le danger</span><span class="zh">（練習 1：找出對應的形容詞，答案都在 p.80 K 文章裡）</span><span class="note">p.81 Échauffement 1</span></li>
+    </ul>
+  </details>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：-eur 名詞是陰性。</b>la lenteur、la largeur、la noirceur（都是 p.81）——⛔ 不是 le。（但做事的人 le moteur、le promoteur 是陽性，那是另一個 -eur。）<br>
+    ⚠️ <b>陷阱二：gentil → gentillesse 是雙 l。</b>從陰性 gentille 出發，不是從 gentil。很多後綴都是接在<b>陰性形</b>上：franche → franchise。<br>
+    ⚠️ <b>陷阱三：一個形容詞可能對到不同後綴的名詞，意思不同。</b>p.81 練習 3a <i>Nicolas veut être seul → Il aime la ……</i>：要的是「獨處」那個字，不是「唯一性」。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>「名詞化後通常是陰性」有例外，課本自己的表就有。</b>-isme 一律陽性（<b>l'</b>humanisme 是 le humanisme），-iste 陰陽同形（un／une humaniste）。<br>
+    ② <b>humain → l'humaniste, l'humanisme</b>（p.81）跟其他例子不同類：表上其他都是「特質」，這兩個是「人」和「主義」。「人性」這個特質標準法文是 <b>l'humanité</b>。<br>
+    ③ <b>p.81 課本錯字：</b>« Les adjectif nominalisés » 少了 s（標準：<b>Les adjectifs</b>）；練習 4 « les noms <b>correspondants</b> aux adjectifs »——現在分詞後面帶補語時不變，標準寫法是 <b>correspondant</b>（p.83 l'essentiel 4 課本自己就寫對了 « correspondant »）。抽字兩層都一樣，<b>未對照紙本查證</b>是不是排版錯。<br>
+    ④ 抽字把 fi 拆成 « fi n »、« fi dèle »（＝fin、fidèle），引用時已併回。
+  </div>
+</section>
+
+<!-- ============ 4. 發音 ============ -->
+<section>
+  <h2>👂 發音：Les liaisons facultatives 可連可不連的連音（p.76） <span class="time">1 分鐘</span></h2>
+  <div class="rule">
+    <b>它在處理什麼：</b>連音有三種——一定要連、一定不能連、<b>可連可不連</b>。這頁只管第三種。<br>
+    課本規則（p.76 練習 2）：<b>名詞和形容詞之間（複數）</b>、<b>être／avoir／aller 後面</b>、<b>pas 後面</b>可連可不連。<b>連得越多越正式</b>（soutenu），日常口語（courant）多半不連。
+  </div>
+  <p>課本練習的句子（p.76）：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">Madame la maire, les travaux importants qui avaient été prévus dans notre rue n'ont pas encore commencé, nous sommes inquiets pour les futurs aménagements.</span><span class="zh">市長女士，原本預定在我們這條街的重要工程還沒開始，我們很擔心之後的整建。</span><span class="note">p.76 Phonétique 1a（正式場合）</span></li>
+    <li><span class="fr">Je n'ai pas entendu de bruit cette nuit dans le quartier, je suis allé me promener vers vingt heures et il n'y avait pas un chat dans la rue.</span><span class="zh">昨晚社區裡我沒聽到聲音，我八點左右去散步，街上連個鬼影都沒有。</span><span class="note">p.76 Phonétique 1b（日常）</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>陷阱：可連的地方，1a 和 1b 的語域不同。</b>1a 是對市長說話（正式）→ travaux‿importants、pas‿encore、sommes‿inquiets 比較會連；1b 是日常聊天 → suis allé、pas un chat 多半不連。練習 3 要你「依語域」決定連不連。<br>
+    ⚠️ <b>跟 Unité 4 的母音連讀不同：</b>liaison 是<b>多唸出一個子音</b>（travaux‿importants 多出 [z]），enchaînement vocalique 不新增子音。
+  </div>
+  <div class="flag">
+    🔎 <b>補充（標準語音學，非課本）：</b>① <i>il n'y avait pas un chat</i>＝慣用語「一個人也沒有」，不是真的貓。② 練習 3 的題目在聽力音檔裡，課本頁面沒印出來，這張單子<b>未收錄</b>。③ 1a、1b 哪幾處「課本預期」要連，抽字看不到標記，上面的判斷是 Claude 依規則推的，<b>未查證</b>音檔。
+  </div>
+</section>
+
+<!-- ============ 5. 功能句 ============ -->
+<section>
+  <h2>💬 上課會用到的說法 <span class="time">2 分鐘</span></h2>
+
+  <h3>Pour décrire une activité 描述一項活動（p.72）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">L'urbex est une activité qui me donne le sentiment d'être un explorateur.</span><span class="zh">urbex 是一種讓我覺得自己是探險家的活動。</span><span class="note">p.72</span></li>
+    <li><span class="fr">On appelle ça l'urbex.</span><span class="zh">這叫做 urbex。</span><span class="note">p.72</span></li>
+    <li><span class="fr">Il s'agit d'une activité qui fait de plus en plus d'adeptes.</span><span class="zh">這是一項愛好者越來越多的活動。</span><span class="note">p.72（il s'agit de ＝ 這是／講的是）</span></li>
+    <li><span class="fr">La pratique date des années 80.</span><span class="zh">這種活動始於 80 年代。</span><span class="note">p.72（dater de ＝ 始於）</span></li>
+    <li><span class="fr">L'urbex consiste à visiter toute bâtisse abandonnée.</span><span class="zh">urbex 就是去探訪任何廢棄的建築。</span><span class="note">p.72（consister à ＋ 原形；toute ＝ 任何一個，Unité 4 不定詞）</span></li>
+  </ul>
+
+  <h3>Pour raconter un fait divers 講述社會新聞（p.73）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">La police a été alertée.</span><span class="zh">警方接獲報案。</span><span class="note">p.73（被動）</span></li>
+    <li><span class="fr">La police et les pompiers sont intervenus.</span><span class="zh">警察和消防隊介入處理。</span><span class="note">p.73（intervenir 用 être）</span></li>
+    <li><span class="fr">Personne n'a été blessé.</span><span class="zh">沒有人受傷。</span><span class="note">p.73</span></li>
+    <li><span class="fr">La descente s'est déroulée sans incident supplémentaire.</span><span class="zh">下降過程順利，沒有再出其他狀況。</span><span class="note">p.73</span></li>
+    <li><span class="fr">Nous aurions pu frôler le drame.</span><span class="zh">我們差一點就釀成悲劇。</span><span class="note">p.73（條件式過去：aurions pu）</span></li>
+    <li><span class="fr">Une plainte à l'encontre des grimpeurs a été déposée.</span><span class="zh">已對攀爬者提出告訴。</span><span class="note">p.73</span></li>
+    <li><span class="fr">C'est dans la nuit de lundi à mardi que la police a été alertée par une habitante qui avait vu des lampes torches sur les hauteurs de la cathédrale de Strasbourg.</span><span class="zh">警方是在週一晚上到週二凌晨，接到一位居民報案，她看到史特拉斯堡大教堂高處有手電筒的光。</span><span class="note">p.73 C l.5–7（C'est … que 強調時間；avait vu ＝ 愈過去式）</span></li>
+  </ul>
+
+  <h3>Pour se plaindre 抱怨（p.78）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Trop de monde, trop de bruit !</span><span class="zh">人太多、太吵了！</span><span class="note">p.78</span></li>
+    <li><span class="fr">Il n'y a pas de car ni de train commode.</span><span class="zh">沒有方便的客運，也沒有方便的火車。</span><span class="note">p.78（ne… pas…, ni… ＝ Unité 4 否定）</span></li>
+    <li><span class="fr">Vivre à la campagne, ce n'est pas évident pour la vie sociale.</span><span class="zh">住鄉下，社交生活不太容易。</span><span class="note">p.78（pas évident ＝ 不容易，口語）</span></li>
+    <li><span class="fr">J'en ai assez des nuisances.</span><span class="zh">這些噪音干擾我受夠了。</span><span class="note">p.78（en avoir assez de ＝ 受夠了）</span></li>
+    <li><span class="fr">Je n'en peux plus des trajets en voiture.</span><span class="zh">開車通勤我再也受不了了。</span><span class="note">p.78（n'en pouvoir plus de ＝ 撐不下去）</span></li>
+    <li><span class="fr">Les bouchons ne me manquent pas !</span><span class="zh">我一點都不懷念塞車！</span><span class="note">p.78 I l.6（manquer à：主詞是「被懷念的東西」）</span></li>
+  </ul>
+
+  <h3>Interpréter et utiliser des données chiffrées 使用數據（p.84 Stratégies）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Sélectionnez les informations les plus pertinentes et illustrez votre propos avec des données chiffrées tirées de l'infographie.</span><span class="zh">挑出最相關的資訊，用圖表裡的數據來佐證你的論點。</span><span class="note">p.84（抽字 « chirées »＝chiffrées，未查證）</span></li>
+    <li><span class="fr">Ne donnez pas tous les chiffres, un ou deux bien choisis suffisent.</span><span class="zh">不要把數字全丟出來，挑一兩個就夠了。</span><span class="note">p.84（抽字 « chires »、« su sent »＝chiffres、suffisent，未查證）</span></li>
+  </ul>
+
+  <h3>單元格言</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Trois quarts des humains vivront en ville dans 30 ans.</span><span class="zh">三十年後，四分之三的人類會住在城市。</span><span class="note">p.71 單元首頁</span></li>
+    <li><span class="fr">La ville cyclable, c'est une ville où il y a moins de bruit.</span><span class="zh">自行車友善的城市，就是比較不吵的城市。</span><span class="note">p.80 L 引言</span></li>
+  </ul>
+</section>
+
+<!-- ============ 6. 詞彙 ============ -->
+<section>
+  <h2>🧺 新詞彙（挑 B1 才出現、你筆記裡大多還沒有的） <span class="time">2 分鐘</span></h2>
+  <p class="small">哪些字筆記裡已經有，<b>未查證</b>（這次沒有對 french_notes.html 逐字核對）。</p>
+
+  <h3>城市裡的地點（p.76）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'arrondissement</span><span class="g">m.</span>（大城市的）區</li>
+    <li><span class="w">la banlieue</span><span class="g">f.</span>郊區</li>
+    <li><span class="w">le carrefour</span><span class="g">m.</span>十字路口</li>
+    <li><span class="w">la cité</span><span class="g">f.</span>國宅社區（＝un grand ensemble de logements）</li>
+    <li><span class="w">le commissariat · la gendarmerie</span><span class="g">m./f.</span>警察局・憲兵隊</li>
+    <li><span class="w">la mairie</span><span class="g">f.</span>市政府（＝l'hôtel de ville）</li>
+    <li><span class="w">le quartier populaire ≠ bourgeois</span><span class="g">m.</span>平民區≠高級住宅區</li>
+    <li><span class="w">la ruelle</span><span class="g">f.</span>小巷（p.72 詩裡也有）</li>
+    <li><span class="w">le chantier naval</span><span class="g">m.</span>造船廠</li>
+    <li><span class="w">l'espace vert</span><span class="g">m.</span>綠地</li>
+  </ul>
+
+  <h3>建築與慣用語（p.76）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'édifice · la bâtisse</span><span class="g">m./f.</span>（大型）建築・（老舊的）房子</li>
+    <li><span class="w">la clôture</span><span class="g">f.</span>圍牆、圍籬</li>
+    <li><span class="w">laissé(e) à l'abandon</span><span class="g">adj.</span>荒廢的</li>
+    <li><span class="w">être classé(e) monument historique</span><span class="g">expr.</span>被列為歷史古蹟</li>
+    <li><span class="w">être un haut lieu (de)</span><span class="g">expr.</span>是……的重鎮</li>
+    <li><span class="w">se trouver à une encablure</span><span class="g">expr.</span>就在不遠處</li>
+  </ul>
+
+  <h3>居民與房地產（p.75–76）</h3>
+  <ul class="vocab">
+    <li><span class="w">le/la citadin(e)</span><span class="g">n.</span>城市居民</li>
+    <li><span class="w">urbain ≠ rural</span><span class="g">adj.</span>城市的≠鄉村的</li>
+    <li><span class="w">le ménage</span><span class="g">m.</span>家戶（也是「家務」，p.76 練習 4 問多義）</li>
+    <li><span class="w">le promoteur</span><span class="g">m.</span>建商（p.75 註 2：constructeurs immobiliers）</li>
+    <li><span class="w">la spéculation</span><span class="g">f.</span>炒作、投機</li>
+    <li><span class="w">l'agent(e) immobilier(-ière)</span><span class="g">n.</span>房仲</li>
+    <li><span class="w">la gentrification</span><span class="g">f.</span>仕紳化（p.75；抽字 « gentrication »）</li>
+    <li><span class="w">être évincé(e)</span><span class="g">v.</span>被排擠出去（p.75 E l.4）</li>
+    <li><span class="w">la rénoviction</span><span class="g">Québec</span>以整修為名趕走房客（p.75 註 1：rénovation＋éviction）</li>
+    <li><span class="w">inabordable</span><span class="g">adj.</span>（房價）負擔不起的（p.75 E 標題）</li>
+  </ul>
+
+  <h3>社會新聞（p.73、p.76）</h3>
+  <ul class="vocab">
+    <li><span class="w">alerter</span><span class="g">v.</span>報警、通報</li>
+    <li><span class="w">intervenir</span><span class="g">v.</span>介入處理（助動詞 être）</li>
+    <li><span class="w">l'arrestation</span><span class="g">f.</span>逮捕</li>
+    <li><span class="w">le contrôle d'identité</span><span class="g">m.</span>身分盤查</li>
+    <li><span class="w">déposer une plainte = porter plainte</span><span class="g">expr.</span>提告</li>
+    <li><span class="w">endommager</span><span class="g">v.</span>損壞（＝abîmer，p.73 練習 9d）</li>
+    <li><span class="w">entrer par effraction</span><span class="g">expr.</span>強行闖入</li>
+    <li><span class="w">la garde à vue</span><span class="g">f.</span>拘留</li>
+    <li><span class="w">le/la témoin</span><span class="g">n.</span>目擊者</li>
+    <li><span class="w">majeur(e)</span><span class="g">adj.</span>成年的（＝de plus de 18 ans，p.73 練習 9a）</li>
+    <li><span class="w">condamner (un passage)</span><span class="g">v.</span>封死（通道）（p.73 l.15）</li>
+    <li><span class="w">frôler le drame</span><span class="g">expr.</span>差點釀成悲劇（p.73 l.19）</li>
+  </ul>
+
+  <h3>都市規劃與干擾（p.82）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'agglomération</span><span class="g">f.</span>都會區（含周邊市鎮）</li>
+    <li><span class="w">l'aménagement urbain</span><span class="g">m.</span>都市規劃、整建</li>
+    <li><span class="w">l'orientation · la disposition</span><span class="g">f.</span>（房子的）座向・格局</li>
+    <li><span class="w">le terrain · faire construire</span><span class="g">m./v.</span>土地・請人蓋（房子）</li>
+    <li><span class="w">le bouchon = l'embouteillage</span><span class="g">m.</span>塞車</li>
+    <li><span class="w">la foule = le monde</span><span class="g">f./m.</span>人潮</li>
+    <li><span class="w">la pollution lumineuse / sonore</span><span class="g">f.</span>光害／噪音污染</li>
+    <li><span class="w">le tapage · la saleté</span><span class="g">m./f.</span>喧鬧・髒亂</li>
+    <li><span class="w">la crèche · le cabinet médical</span><span class="g">f./m.</span>托兒所・診所</li>
+    <li><span class="w">la station-service</span><span class="g">f.</span>加油站</li>
+  </ul>
+
+  <h3>交通與用路人（p.80、p.82）</h3>
+  <ul class="vocab">
+    <li><span class="w">le deux-roues · l'engin motorisé</span><span class="g">m.</span>兩輪車・機動車輛</li>
+    <li><span class="w">le car</span><span class="g">m.</span>長途客運（≠ le bus 市區公車）</li>
+    <li><span class="w">le/la piéton(ne) · la rue piétonne</span><span class="g">n.</span>行人・行人徒步街</li>
+    <li><span class="w">le passage piéton · le trottoir</span><span class="g">m.</span>斑馬線・人行道</li>
+    <li><span class="w">la piste cyclable</span><span class="g">f.</span>自行車道</li>
+    <li><span class="w">le stationnement · la place de parking</span><span class="g">m./f.</span>停車・停車位</li>
+    <li><span class="w">l'artère · le réseau</span><span class="g">f./m.</span>交通幹道・路網</li>
+    <li><span class="w">modérer la vitesse</span><span class="g">expr.</span>降低車速</li>
+    <li><span class="w">verbaliser</span><span class="g">v.</span>開罰單（p.80 K l.14）</li>
+    <li><span class="w">la marchabilité</span><span class="g">f.</span>步行友善度（p.80 K）</li>
+    <li><span class="w">la rocade</span><span class="g">f.</span>環城道路（p.78 I l.32）</li>
+    <li><span class="w">las, lasse</span><span class="g">adj.</span>厭倦的（p.78 註：fatigués）</li>
+  </ul>
+
+  <h3>巴黎紀念建築（p.77 G）</h3>
+  <ul class="vocab">
+    <li><span class="w">faire polémique</span><span class="g">expr.</span>引發爭議</li>
+    <li><span class="w">faire tache dans le paysage</span><span class="g">expr.</span>在景觀裡很突兀</li>
+    <li><span class="w">le patrimoine historique</span><span class="g">m.</span>歷史遺產</li>
+    <li><span class="w">emballer</span><span class="g">v.</span>包裹；（口語）讓人著迷（p.77 F 標題雙關）</li>
+  </ul>
+
+  <div class="flag">
+    🔎 <b>課本與標準法文的落差：</b><br>
+    ① <b>p.82 練習 7g « un …… sous-terrain »</b>：標準拼法是 <b>souterrain</b>（一個字、沒有連字號）。« sous-terrain » 不是標準拼法。抽字兩層一樣，<b>未對照紙本查證</b>。<br>
+    ② <b>p.83 l'essentiel 5d « la station service »</b> 沒有連字號，同一單元 p.82 詞彙框寫 <b>station-service</b>（標準）。可能是抽字吃掉連字號，<b>未查證</b>。<br>
+    ③ <b>le/la témoin</b>（p.76）：傳統字典只收陽性 <i>un témoin</i>（女性也用 un），<i>la témoin</i> 是近年新用法。課本採新用法，兩種都會遇到。<br>
+    ④ 抽字把 édifice 斷成 « l'édifi ce »（p.76）或掉成 « l'édice »（p.73），piéton 斷成 « pié ton »（p.80），引用時已併回。
+  </div>
+</section>
+
+<!-- ============ 7. 閱讀亮點 ============ -->
+<section>
+  <h2>📰 閱讀裡值得先看的句子 <span class="time">1 分鐘</span></h2>
+  <ul class="phrase-list">
+    <li><span class="fr">Je ne pourrai me passer / D'être foncièrement : / Urbaine.</span><span class="zh">我將無法不做一個／徹徹底底的／城市人。</span><span class="note">p.72 A 詩末三行（foncièrement＝totalement，課本註 2）</span></li>
+    <li><span class="fr">Quatre jeunes, tous majeurs, âgés de 21 à 27 ans, déguisés en Spider-Man, ont pris l'initiative, vers une heure du matin, d'escalader à mains nues l'édifice.</span><span class="zh">四名年輕人，全都成年，21 到 27 歲，扮成蜘蛛人，凌晨一點左右徒手攀爬這棟建築。</span><span class="note">p.73 C l.7–10（tous 是代名詞，s 要唸——Unité 4）</span></li>
+    <li><span class="fr">Elles sont évincées, de manière directe, notamment avec les « rénovictions », ou indirecte, parce qu'elles ne peuvent pas, par exemple, se permettre de fréquenter les nouveaux commerces alors que les anciens ferment les uns après les autres.</span><span class="zh">她們被擠走——直接的方式是「整修驅逐」，間接的方式則是負擔不起新開的店，而舊店一家接一家關門。</span><span class="note">p.75 E l.4–6（被動 sont évincées；les anciens＝舊店）</span></li>
+    <li><span class="fr">Guy de Maupassant, qui la trouvait très laide, recommandait de la visiter car c'est le seul endroit de Paris où on ne la voit pas.</span><span class="zh">莫泊桑覺得艾菲爾鐵塔很醜，他推薦去鐵塔上面，因為那是巴黎唯一看不到它的地方。</span><span class="note">p.77 G l.6–10</span></li>
+    <li><span class="fr">« Vivre à la campagne, c'est joli sur la carte postale, mais ce n'est pas évident pour la vie sociale. »</span><span class="zh">「住鄉下，在明信片上很美，但社交生活不容易。」</span><span class="note">p.78 I l.45–47</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>p.72 <i>Je ne pourrai me passer</i>：只有 ne、沒有 pas，但<b>是</b>否定。</b>pouvoir、savoir、oser、cesser 在書面／文學語體可以只用 ne 否定（標準文法，課本這頁沒解釋）。跟 Unité 4 的「贅詞 ne」（不否定）剛好相反，要分清楚。p.72 練習 6 問最後一句用什麼時態：pourrai＝簡單未來式。
+  </div>
+  <div class="flag">
+    🔎 ① <b>p.73 C l.22 « aux environ de 2h30 »</b>：標準寫法是 <b>aux environs de</b>（environs 要有 s）。新聞原文或課本少了 s，<b>未對照紙本查證</b>。② 作者署名被抽字截斷：p.72 « Andrée C »（題目裡寫明是 Andrée Chedid）、p.73 « Lucie ’A D »、p.75 « Antoine T et Marie S »、p.80 « Javier G »，全名<b>未查證</b>。③ p.77 G l.13 « Elle offre pourtant une » 後面那半句（l.13–15）抽字缺漏，本頁沒有引用。④ p.78 I 是三欄排版，抽字把三欄交錯在一起，只引用了能確定接續的句子。
+  </div>
+</section>
+
+<!-- ============ 8. 練習題 ============ -->
+<section>
+  <h2>✏️ 最可能上課做的題目：先想想看 <span class="time">2 分鐘</span></h2>
+  <p class="small">只給方向，不給答案。哪幾題會做是照前幾個單元的節奏推測（未查證）。</p>
+
+  <div class="ex">
+    <div class="q">p.74 Entraînement 3：主動改被動 <span class="likely">★★★ 文法頁一定做</span></div>
+    <div class="hint">先想想看：b 題 <i>organisera</i> 是什麼時態？被動時 être 要變成哪個形？d 題主詞是 <i>On</i>——還需要 par 嗎？e 題 <i>Il faut que ce camion libère la rue</i>：il faut que 後面要虛擬式，être 的虛擬式是什麼？f 題 <i>On doit trouver une solution</i>：被動要放在 devoir 上還是 trouver 上？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.74 Entraînement 4：se faire／se laisser → être 被動 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：每題先找「真正被做的那個東西是誰」。d 題 <i>Pablo s'est fait remettre la médaille</i>——被「頒發」的是 Pablo 還是獎牌？那被動句的主詞應該是誰？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.79 Entraînement 2：把形容詞放進短文 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：題目給 premier, bon, vieux, élevé, gros, efficace, nombreux, grand。哪幾個是「放前面」清單上的？放前面時，前面的 <i>des</i> 要變成什麼（p.79 Remarque）？「Faites tous les changements nécessaires」還提醒你什麼——性數配合、bel／vieil 這種形式。</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.83 l'essentiel 3：加上形容詞改寫 <span class="likely">★★</span></div>
+    <div class="hint">先想想看：d 題 <i>propre</i>、e 題 <i>ancien</i>、h 題 <i>cher</i>——這三個換位置就換意思，句子要的是哪個意思？f 題 <i>Je prendrai le bus (prochain)</i>：「下一班公車」是時間說法還是順序？g 題 <i>dernier livre</i>：是「最後一本」還是「最新一本」？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.81 Entraînement 3：形容詞換成名詞 <span class="likely">★★</span></div>
+    <div class="hint">先想想看：b 題 <i>tranquille</i>、c 題 <i>indépendante</i>、f 題 <i>résistant</i>——分別對到 p.81 表上哪一個後綴？e 題 <i>compétitive</i>：要的名詞是「競爭力」還是「比賽」？看後面 <i>participer à des ……</i> 是複數。</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.76 Phonétique 3：依語域回答、決定連不連 <span class="likely">★ 有時間才做</span></div>
+    <div class="hint">先想想看：用否定回答（pas 後面可連可不連）。對老師／長官回答時，你會連 <i>pas‿encore</i> 嗎？跟朋友呢？</div>
+  </div>
+</section>
+
+<!-- ============ 9. 問老師 ============ -->
+<section>
+  <h2>🙋 上課可以問老師的 3 個問題</h2>
+  <ol class="ask">
+    <li>p.74 說「做的人是人稱代名詞就<b>不能</b>用 par」——被動句後面接 <b>par lui</b>、<b>par elle</b> 是錯的，還是只是比較不自然？</li>
+    <li>p.82 練習 7g 印 <b>sous-terrain</b>、p.73 新聞印 <b>aux environ de</b>——我查到的標準拼法是 <b>souterrain</b>、<b>aux environs de</b>，是課本印錯嗎？</li>
+    <li>p.74 練習 4 把 <b>se faire arrêter</b> 直接換成 <b>être arrêté</b>——這兩個意思完全一樣嗎？se faire 有沒有「自己造成」的意味？</li>
+  </ol>
+</section>
+
+<p class="small">來源：Édito B1 課本 p.71–84（<code>assets/.textbook_cache.txt</code> 第 57670–59691 行；PDF 頁碼與課本頁碼一致，已用頁尾「72 I soixante-douze」「soixante-treize I 73」「quatre-vingt-un I 81」「84 I quatre-vingt-quatre」等核對；p.85 是 Unité 6 首頁）。PDF 抽字時掉了或拆開 fi／ff 連字（例如 p.73 « l'édice »＝l'édifice；p.75 « gentrication »、« dénir »＝gentrification、définir；p.76 « l'édifi ce »；p.81 « fi n »、« fi dèle »；p.84 « chirées »、« chires »、« su sent »＝chiffrées、chiffres、suffisent），引用時推定原文，<b>未對照紙本查證</b>。p.79 « semaineprochaine »、p.74 « propriétairea » 等黏字已補空格。標成「課本錯字」的幾處（p.74 proprétaire、p.81 adjectif／correspondants、p.82 sous-terrain、p.73 aux environ）在兩層抽字裡都一樣，所以推定是印刷本身如此，但仍<b>未對照紙本查證</b>。標準法文的判斷（被動例外、des→de 例外、ne 單獨否定、témoin 陰性用法、-isme 陽性）是 Claude 依一般標準文法知識寫的，這次沒有另外查字典或文法書，視為<b>未查證</b>。本頁未讀課本附錄的聽力逐字稿，所以影片 B、聽力 D、F、J、L 的內容只寫了題目方向。</p>
+
+</main>
+</body>
+</html>
