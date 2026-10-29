@@ -166,6 +166,13 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .aname { color:#fff; font-size:.75em; text-shadow:0 1px 2px #000; white-space:nowrap; } .aname small { display:block; color:#b9c7bc; font-size:.85em; text-align:center; }
 .aboat { position:absolute; font-size:20px; animation:aboat 14s linear infinite alternate; } .aboat.b2 { animation-duration:18s; }
 @keyframes aboat { to { transform:translate(60px,-20px); } }
+.inav { position:absolute; left:50%; transform:translateX(-50%); bottom:calc(env(safe-area-inset-bottom) + 14px); display:flex; gap:8px; z-index:2; }
+.inav button { background:rgba(10,20,30,.82); color:#fff3c0; border:1px solid rgba(240,201,90,.5); border-radius:12px; padding:9px 14px; font-family:inherit; font-size:1em; }
+.ilink { margin-top:6px; padding-top:5px; border-top:1px dashed rgba(240,201,90,.45); font-size:.82em; color:#cfe3d4; display:flex; gap:6px; align-items:center; }
+.ilink span { flex:1; } .ilink button { background:#f0c95a; color:#2a1a08; border:0; border-radius:8px; padding:3px 8px; font-family:inherit; font-weight:bold; white-space:nowrap; }
+.ilist button.st { display:flex; width:100%; gap:8px; align-items:center; text-align:left; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:9px; padding:6px 8px; margin-top:4px; color:inherit; font-family:inherit; }
+.ilist .dot { width:9px; height:9px; border-radius:50%; flex:none; } .ilist .chain { font-size:.85em; color:#cfe3d4; margin:2px 0 2px 1.6em; }
+.ilist .para { line-height:1.75; } .ilist .para sup { color:#f0c95a; font-weight:bold; margin-right:2px; } .ilist .cn { color:#ffb36b; font-weight:bold; }
 .ibub { position:fixed; z-index:9; max-width:min(86vw,340px); background:rgba(18,26,20,.93); border:2px solid #f0c95a; border-radius:12px; padding:8px 11px; color:#dfe8e1; cursor:pointer; line-height:1.45; }
 .cgap { color:var(--gold); letter-spacing:1px; } .cans { color:var(--gold); text-decoration:underline; }
 .conjrow { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; margin:6px 0; font-size:.85em; } .conjrow span { background:#16211b; border-radius:6px; padding:3px 6px; } .conjrow small { color:var(--dim); } .conjrow .ok { background:#3c5a2c; color:#fff3c0; } .conjrow .no { background:#4a2c28; }
@@ -3008,6 +3015,13 @@ var ISLE_SCENES={
               ['🏢 我住哪','⑥–⑩',['板橋，住大樓','很空曠，車站很近','小吃少、貴一點，但喜歡住這裡：鄰居友善、乾淨']],
               ['🎧 我怎麼學','⑪–⑯',['今年五月開始','家教＋Duolingo＋AI','聽 Coffee Break French、看 Extra French','學習不只是花時間：最重要的是浸泡在語言裡＋找對方法']],   /* 10-29：補第 ⑭ 站「不只是花時間」（告示牌核對 B，用他原稿的字） */
               ['🌫️ 法文對我','⑰–㉓',['很特別的語言','講法文像換一種眼光：有時模糊、有時清楚','模糊的時候，反而看見更大的世界','其他時間：運動、思考、照顧女兒']] ],
+    /* 🔗 10-29 Owen：「幫我串聯那些句子，讓我更好記」→ 第 n 站接第 n+1 站：意思為什麼接下去＋一個把兩個地標連起來的畫面（中文，整理自他的稿，⛔ 不寫新法文） */
+    links:[ '牙醫也要分類 → 診療椅旁就是分類櫃', '分類完再換角度看 → 櫃子裡拿出拼圖', '愛分析，但沒到工程師 → 拼圖下壓著一張工程圖', '理性又木訥 → 捲起工程圖，到樹下讀書',
+            '介紹完自己，換講住哪 → 抬頭看見大樓', '大樓附近很空曠 → 走幾步就到車站', '車站附近小吃少又貴 → 小吃攤標著高價', '但（mais）還是喜歡 → 貴歸貴，愛心掛在家門',
+            '喜歡的原因：鄰居和乾淨 → 鄰居在門口掃地', '講完住處，換講學法文 → 掃把旁掛著五月的日曆', '五月開始，用了哪些工具 → 日曆上停著貓頭鷹', '除了上課，還有聽的看的 → 貓頭鷹戴上耳機',
+            '但學習不只是花時間 → 耳機旁放著大沙漏', '那什麼最重要？ → 沙漏頂端亮起一顆星', '最重要的是浸泡 → 星星掉進法文池', '泡進語言裡，覺得很特別 → 池邊插著法國旗',
+            '特別在哪？我講的時候（quand）… → 旗下有塊對話石', '講法文像換一種眼光 → 對話石上擺著大眼鏡', '換了眼光，有時模糊 → 眼鏡起霧了一半', '模糊的時候反而看得更廣 → 霧後面是望遠台',
+            '講完法文，其他時間呢 → 望遠台下有條跑道', '運動、思考，還有照顧女兒 → 跑道終點女兒在等' ],
     marks:{ '0':['🦷','🧑‍⚕️','診療椅',[12.2,27.4]], '1.1':['🗂️','','分類櫃',[9.6,26.6]], '1.2':['🧩','','拼圖桌',[7.6,25.6]], '2':['📐','📜','工程圖',[5.0,26.2]], '3':['📖','🪑','樹下讀書',[4.2,23.4]],
             '4':['🏢','','大樓',[7.2,20.0]], '5':['🚉','🚃','小車站',[10.2,22.2]], '6.1':['🍜','💸','貴的小吃攤',[13.2,20.0]], '6.2':['🏡','❤️','喜歡住這裡',[16.2,22.2]], '6.3':['🧹','👋','鄰居掃地',[19.2,20.0]],
             '7':['📅','','五月的日曆',[21.4,16.4]], '8':['🦉','🤖','貓頭鷹與 AI',[18.4,16.0]], '9':['🎧','📺','耳機與電視',[15.6,13.9]], '10.1':['⏳','','大沙漏',[12.4,16.0]], '10.2':['⭐','','星星路標',[9.6,13.9]], '10.3':['🤿','🌊','跳進法文池',[6.8,16.0]],
@@ -3030,6 +3044,12 @@ var ISLE_SCENES={
               ['🍁 太太怎麼想','⑦–⑪',['講到加拿大的計畫，她很開心','台灣生活很舒適，到處都是便利商店','但房子越來越貴，養小孩不太理想']],
               ['🧘 週末','⑫–⑰',['週末是家庭時間','每個禮拜天早上兩個人上瑜伽，Jolie 在教室裡玩','老師很開放，她可以自由探索','享受陽光和大自然：在台灣不常有這個時間']],
               ['🛤️ 對女兒、對我們','⑱–㉓',['希望她在加拿大表達自己、探索自己','不一定要當工程師或醫生：最重要的是找到自己的路','那我們呢？去了才知道','但希望有更多相處的時間']] ],
+    links:[ '三個人的家，先介紹女兒 → 桌上擺著一歲半的蛋糕', '一歲半，剛會走路說話 → 蛋糕旁一串小腳印', '會走了，就到處冒險 → 腳印一路走到指南針', '冒險＝想要就去拿 → 指南針旁伸手抓玩具',
+            '女兒講完，換講太太 → 玩具掉在媽媽的筆電上', '太太聽到加拿大計畫 → 筆電跳出楓葉，她笑了', '為什麼想走？台灣其實很舒服 → 楓葉飄到沙發上', '舒服在哪？到處都是便利商店 → 沙發對面就是便利商店',
+            '但（mais）房子越來越貴 → 商店旁的房價箭頭往上衝', '房子貴，養小孩不理想 → 房子前擋著施工牌', '換講週末的家庭時間 → 施工牌後面掛著週末日曆', '週末的哪一天？禮拜天早上 → 日曆翻到日出',
+            '早上去瑜伽，Jolie 在教室玩 → 日出照進瑜伽教室', '她玩得自在，因為老師很開放（alors）→ 教室的門大大打開', '走出門，也（aussi）享受陽光和自然 → 門外陽光和草地', '這種時間在台灣不常有 → 草地上的鐘在催',
+            '所以到了加拿大，希望她… → 鐘聲變成她開口說話', '表達自己，不一定當醫生工程師 → 聽診器和尺放到一邊', '最重要的是自己的路 → 放下工具，前面一條小路', '講完女兒，那我們呢？ → 小路盡頭一個問號',
+            '去了才知道 → 問號旁架著望遠鏡', '但（mais）希望更多時間在一起 → 望遠鏡裡看見我們三個' ],
     marks:{ '0':['👨‍👩‍👧','🏠','我們三個的家',[11.0,26.6]], '1.1':['🎂','','一歲半的蛋糕',[9.0,28.6]], '1.2':['👣','💬','剛學會走路說話',[7.4,25.4]], '2.1':['🧭','','小探險家',[5.0,27.4]], '2.2':['🧸','🙌','伸手抓玩具',[3.6,24.4]], '3':['💻','','科技業的辦公桌',[7.6,23.2]],
             '4':['🍁','😊','講加拿大，她很開心',[9.0,19.6]], '5.1':['🛋️','','舒服的沙發',[11.8,22.2]], '5.2':['🏪','','便利商店',[14.6,19.6]], '5.3':['🏘️','📈','越來越貴的房子',[17.4,22.2]], '6':['👶','🚧','養小孩不理想',[20.6,19.4]],
             '7':['📅','','週末的日曆',[21.4,16.4]], '8.1':['🌅','','禮拜天早上',[18.4,16.0]], '8.2':['🧘','🧸','瑜伽教室',[15.6,13.9]], '8.3':['🚪','🦋','打開的門',[12.4,16.0]], '9.1':['☀️','🌿','陽光與大自然',[9.6,13.9]], '9.2':['⏰','','趕時間的鐘',[6.8,16.0]],
@@ -3059,9 +3079,11 @@ function isleSetup(){
   icv=document.createElement('canvas'); icv.id='icv'; icv.style.cssText='position:fixed;inset:0;width:100%;height:100%;z-index:9;display:none;touch-action:none;background:#2a5fa8';
   document.body.appendChild(icv); ictx=icv.getContext('2d');
   ihud=document.createElement('div'); ihud.id='ihud'; ihud.className='ihud'; document.body.appendChild(ihud);
-  icv.addEventListener('pointerdown', function(e){ if(busy) return; if(isleBubbleTap(e)) return; try{ icv.setPointerCapture(e.pointerId); }catch(er){} ISLE.joy={id:e.pointerId, ox:e.clientX, oy:e.clientY, x:e.clientX, y:e.clientY}; });
-  icv.addEventListener('pointermove', function(e){ if(ISLE.joy && ISLE.joy.id===e.pointerId){ ISLE.joy.x=e.clientX; ISLE.joy.y=e.clientY; } });
-  ['pointerup','pointercancel'].forEach(function(t){ icv.addEventListener(t, function(e){ if(ISLE.joy && ISLE.joy.id===e.pointerId) ISLE.joy=null; }); });
+  icv.addEventListener('pointerdown', function(e){ if(busy) return; if(isleBubbleTap(e)) return; try{ icv.setPointerCapture(e.pointerId); }catch(er){} ISLE.joy={id:e.pointerId, ox:e.clientX, oy:e.clientY, x:e.clientX, y:e.clientY, t0:Date.now(), far:false}; });
+  icv.addEventListener('pointermove', function(e){ if(ISLE.joy && ISLE.joy.id===e.pointerId){ ISLE.joy.x=e.clientX; ISLE.joy.y=e.clientY; if(Math.hypot(e.clientX-ISLE.joy.ox, e.clientY-ISLE.joy.oy)>10) ISLE.joy.far=true; } });
+  ['pointerup','pointercancel'].forEach(function(t){ icv.addEventListener(t, function(e){ if(ISLE.joy && ISLE.joy.id===e.pointerId){ var J=ISLE.joy; ISLE.joy=null;
+    /* 10-29 Owen：「口說島操作起來類似政策島的手感」→ 點地標（或編號）＝自己沿步道走過去，不用一路拖 */
+    if(t==='pointerup' && !J.far && Date.now()-J.t0<350) isleTap(e.clientX, e.clientY); } }); });
 }
 function isleSize(){ var d=Math.min(window.devicePixelRatio||1,2); icv.width=Math.round(innerWidth*d); icv.height=Math.round(innerHeight*d); ictx.imageSmoothingEnabled=false; }
 /* ---------- 群島總覽 ---------- */
@@ -3085,9 +3107,14 @@ function isleExit(){ ISLE.on=false; busy=false; if(icv) icv.style.display='none'
 function isleEnter(id){
   var sc=isleSpec(id); ISLE.id=id; ISLE.T=isleBuild(id); ISLE.x=sc.dock[0]; ISLE.y=sc.dock[2]-.8; ISLE.cx=ISLE.x; ISLE.cy=ISLE.y; ISLE.still=0; ISLE.units=isleUnits(id); busy=false;
   var I=isles().filter(function(x){ return x.id===id; })[0];
-  ihud.innerHTML='<div class="ihbar"><b>🏝 '+esc(sc.name)+'</b><span id="izone" class="muted"></span><button id="iarch">🗺 群島</button></div>'+
-    '<div class="muted ihint" id="ihint">⛵ 靠岸了。拖曳畫面走路，沿著步道從 ① 走到最後一站——順序就是你講話的順序。站在地標旁邊就會看到句子。</div>';
+  ISLE.auto=null; ISLE.cur=0; ISLE.zoom=1;
+  ihud.innerHTML='<div class="ihbar"><b>🏝 '+esc(sc.name)+'</b><span id="izone" class="muted"></span><button id="ilist">📜 清單</button><button id="iarch">🗺 群島</button></div>'+
+    '<div class="inav"><button id="iprev">◀ 上一站</button><button id="inext">下一站 ▶</button></div>'+
+    '<div class="muted ihint" id="ihint" style="bottom:calc(env(safe-area-inset-bottom) + 66px)">⛵ 靠岸了。點地標或「下一站 ▶」就會自己走過去；也可以拖曳畫面自己走。順序就是你講話的順序。</div>';
   document.getElementById('iarch').onclick=archOpen;
+  document.getElementById('ilist').onclick=function(){ if(!busy) isleList('list'); };
+  document.getElementById('iprev').onclick=function(){ if(!busy) isleStep(-1); };
+  document.getElementById('inext').onclick=function(){ if(!busy) isleStep(1); };
   if(window.GameLog) GameLog.event('isle_enter');
   setTimeout(function(){ var h=document.getElementById('ihint'); if(h) h.style.opacity='0'; }, 6000);
   ISLE.boardAway=0; if(sc.outline) setTimeout(function(){ if(ISLE.id===id) isleBoard(); }, 450);
@@ -3107,22 +3134,33 @@ function isleUpdate(dt){
   var vx=0, vy=0;
   if(ISLE.joy){ var dx=ISLE.joy.x-ISLE.joy.ox, dy=ISLE.joy.y-ISLE.joy.oy, L=Math.hypot(dx,dy); if(L>8){ var k=Math.min(1,L/60); vx=dx/L*k; vy=dy/L*k; } }
   if(keys.arrowleft||keys.a) vx-=1; if(keys.arrowright||keys.d) vx+=1; if(keys.arrowup||keys.w) vy-=1; if(keys.arrowdown||keys.s) vy+=1;
+  /* 🚶 自動沿步道走到點的那一站（自己拖曳或按方向鍵就取消） */
+  if(ISLE.auto && (vx||vy) && ISLE.joy && ISLE.joy.far) ISLE.auto=null;
+  if(ISLE.auto && (keys.arrowleft||keys.arrowright||keys.arrowup||keys.arrowdown||keys.a||keys.d||keys.w||keys.s)) ISLE.auto=null;
+  if(ISLE.auto){ var A=ISLE.auto, wp=A.pts[0];
+    if(!wp){ ISLE.auto=null; ISLE.cur=A.g.n; ISLE.still=0; ISLE.moving=false; }
+    else { var ddx=wp[0]-ISLE.x, ddy=wp[1]-ISLE.y, dl=Math.hypot(ddx,ddy), step=6.2*dt;
+      if(dl<=step){ ISLE.x=wp[0]; ISLE.y=wp[1]; A.pts.shift(); } else { ISLE.x+=ddx/dl*step; ISLE.y+=ddy/dl*step; }
+      if(Math.abs(ddx)>.05) ISLE.face=ddx<0?-1:1; ISLE.moving=true; ISLE.still=0; ISLE.near=null; return; } }
   var sp=3.4, nx=ISLE.x+vx*sp*dt, ny=ISLE.y+vy*sp*dt, sc0=isleSpec(ISLE.id);
   if(isleWalk(nx,ISLE.y)) ISLE.x=nx; if(isleWalk(ISLE.x,ny)) ISLE.y=ny;
   if(Math.abs(vx)>.05) ISLE.face=vx<0?-1:1;
   var moving=Math.hypot(vx,vy)>.1; ISLE.still= moving?0 : ISLE.still+dt; ISLE.moving=moving;
   if(sc0.board){ var dbd=Math.hypot(sc0.board.x-ISLE.x, sc0.board.y+.2-ISLE.y); if(dbd>2) ISLE.boardAway=1; else if(dbd<1 && ISLE.boardAway && ISLE.still>.3){ ISLE.boardAway=0; isleBoard(); return; } }
-  var best=null, bd=1.25; ISLE.units.forEach(function(g){ var d=Math.hypot(g.x-ISLE.x, g.y+.2-ISLE.y); if(d<bd){ bd=d; best=g; } }); ISLE.near=best;
+  var best=null, bd=1.25; ISLE.units.forEach(function(g){ var d=Math.hypot(g.x-ISLE.x, g.y+.2-ISLE.y); if(d<bd){ bd=d; best=g; } }); ISLE.near=best; if(best) ISLE.cur=best.n;
   var sc=isleSpec(ISLE.id), z=sc.zones.filter(function(z){ return ISLE.y>z.y0 && ISLE.y<=z.y1; })[0], ze=document.getElementById('izone'); if(ze && z) ze.textContent=z.name;
 }
 function isleDraw(dt){
   if(!icv || icv.style.display==='none') return;
-  var c=ictx, w=icv.width, h=icv.height, d=w/innerWidth, ts=Math.min(innerWidth/10.5, 52)*d;
+  var c=ictx, w=icv.width, h=icv.height, d=w/innerWidth;
+  /* 🔍 到站停下 → 鏡頭拉近（政策島點進細項的感覺）；走路時拉遠看路 */
+  var zt=(ISLE.near && ISLE.still>.3 && !ISLE.auto)?1.28:1; ISLE.zoom=(ISLE.zoom||1)+(zt-(ISLE.zoom||1))*(1-Math.exp(-4*dt));
+  var ts=Math.min(innerWidth/10.5, 52)*d*ISLE.zoom;
   c.fillStyle='#1f4f93'; c.fillRect(0,0,w,h);
   if(!ISLE.id){ isleSeaFx(c,w,h,d); return; }
   var sc=isleSpec(ISLE.id), T=ISLE.T;
   var k=1-Math.exp(-6*dt); ISLE.cx+=(ISLE.x-ISLE.cx)*k; ISLE.cy+=(ISLE.y-ISLE.cy)*k;
-  var ox=w/2-ISLE.cx*ts, oy=h*.55-ISLE.cy*ts;
+  var ox=w/2-ISLE.cx*ts, oy=h*.55-ISLE.cy*ts; ISLE.view={ox:ox, oy:oy, ts:ts, d:d};
   var x0=Math.max(0,Math.floor(-ox/ts)-1), x1=Math.min(sc.W-1,Math.ceil((w-ox)/ts)+1), y0=Math.max(0,Math.floor(-oy/ts)-1), y1=Math.min(sc.H-1,Math.ceil((h-oy)/ts)+1);
   /* 深海浪紋 */
   c.fillStyle='rgba(255,255,255,.07)'; for(var yy=0;yy<h;yy+=ts*.9){ for(var xx=((yy/ts)%2)*ts*.6;xx<w;xx+=ts*1.3){ c.fillRect(xx+Math.sin(clock*1.2+yy)*ts*.2, yy, ts*.35, d*1.5); } }
@@ -3174,13 +3212,63 @@ function isleBubble(ox,oy,ts,d){
   if(b.dataset.ref!==g.ref || b.dataset.st!==String(pst(g.ref).st)){
     var st=pst(g.ref).st, s=g.s, main= st===0 ? esc(s.fr) : st===1 ? esc(firstLetters(s.fr)) : '這裡放的是哪一句？';
     b.innerHTML='<div class="muted" style="font-size:.78em">第 '+g.n+' 站・'+esc(g.lab)+'</div>'+(s.ctx&&st===0?'<div class="muted" style="font-size:.78em">⋯ '+esc(s.ctx.slice(-40))+'</div>':'')+
-      '<div class="fr" style="color:#fff3c0">'+main+'</div>'+(st<2?'<div class="muted" style="font-size:.82em">'+esc(s.zh)+'</div>':'')+'<div class="muted" style="font-size:.72em;margin-top:2px">點我'+(st===0?'記這句':'自己考一下')+'</div>';
+      '<div class="fr" style="color:#fff3c0">'+main+'</div>'+(st<2?'<div class="muted" style="font-size:.82em">'+esc(s.zh)+'</div>':'')+'<div class="muted" style="font-size:.72em;margin-top:2px">點我'+(st===0?'記這句':'自己考一下')+'</div>'+
+      (g.n<ISLE.units.length ? '<div class="ilink"><span>🔗 '+esc(isleLinkTxt(g.n))+'</span><button data-go="1">下一站 ▶</button></div>' : '<div class="ilink"><span>🏁 最後一站。回 📜 清單按「🔗 串起來」，整座島從頭順一遍</span></div>');
     b.dataset.ref=g.ref; b.dataset.st=String(st);
-    b.onclick=function(){ b.remove(); palaceOpen(g, function(){ closeSheet(); }, function(){ closeSheet(); }); };
+    b.onclick=function(e){ if(e.target && e.target.dataset && e.target.dataset.go){ e.stopPropagation(); b.remove(); isleStep(1); return; } b.remove(); palaceOpen(g, function(){ closeSheet(); }, function(){ closeSheet(); }); };
   }
   var X=(ox+g.x*ts)/d, Y=(oy+g.y*ts)/d; b.style.left=Math.max(8, Math.min(innerWidth-b.offsetWidth-8, X-b.offsetWidth/2))+'px'; b.style.top=Math.max(64, Y-ts/d*1.6-b.offsetHeight)+'px';
 }
 function isleBubbleTap(){ return false; }
+/* 🔗 串聯：第 n 站接第 n+1 站——先講意思為什麼接下去，再用畫面把兩個地標連起來（中文；⛔ 不寫新法文）。島沒寫 links 時用「下一站：地標名」 */
+function isleLinkTxt(n){ var sc=isleSpec(ISLE.id), nx=ISLE.units[n]; return (sc.links && sc.links[n-1]) || ('下一站：'+(nx?nx.lab:'')); }
+/* 點畫面：點到地標（含上方的圖）→ 走過去；點到告示牌 → 打開 */
+function isleTap(cx, cy){
+  var V=ISLE.view; if(!V || !ISLE.id || busy) return;
+  var wx=(cx*V.d-V.ox)/V.ts, wy=(cy*V.d-V.oy)/V.ts, sc=isleSpec(ISLE.id), best=null, bd=1.1;
+  ISLE.units.forEach(function(g){ var dd=Math.min(Math.hypot(g.x-wx, g.y-wy), Math.hypot(g.x-wx, g.y-.6-wy)); if(dd<bd){ bd=dd; best=g; } });
+  if(best) return isleGo(best);
+  if(sc.board && Math.hypot(sc.board.x-wx, sc.board.y-.5-wy)<1) isleBoard();
+}
+/* 沿步道走：投影到折線上，沿著頂點走到目標地標的投影點，最後一小段走到地標前面 */
+function islePathProj(P, x, y){ var best={i:0, t:0, d:1e9, x:P[0][0], y:P[0][1]};
+  for(var i=0;i<P.length-1;i++){ var ax=P[i][0], ay=P[i][1], bx=P[i+1][0], by=P[i+1][1], vx=bx-ax, vy=by-ay, L2=vx*vx+vy*vy||1, t=Math.max(0,Math.min(1,((x-ax)*vx+(y-ay)*vy)/L2)), px=ax+vx*t, py=ay+vy*t, d=Math.hypot(x-px,y-py);
+    if(d<best.d) best={i:i, t:t, d:d, x:px, y:py}; }
+  return best; }
+function isleGo(g){
+  var P=isleSpec(ISLE.id).path, a=islePathProj(P, ISLE.x, ISLE.y), b=islePathProj(P, g.x, g.y+.2), pts=[[a.x,a.y]];
+  if(a.i+a.t < b.i+b.t){ for(var i=a.i+1;i<=b.i;i++) pts.push(P[i]); } else { for(var j=a.i;j>b.i;j--) pts.push(P[j]); }
+  pts.push([b.x,b.y]);
+  var ex=g.x-b.x, ey=g.y+.2-b.y, el=Math.hypot(ex,ey); if(el>.75){ var k=(el-.7)/el, fx=b.x+ex*k, fy=b.y+ey*k; if(isleWalk(fx,fy)) pts.push([fx,fy]); }
+  if(a.d>.3 && !isleWalk(a.x,a.y)) pts.shift();
+  var b0=document.getElementById('ibub'); if(b0) b0.remove();
+  ISLE.auto={g:g, pts:pts};
+}
+function isleStep(dir){ var U=ISLE.units; if(!U||!U.length) return; var n=(ISLE.near?ISLE.near.n:ISLE.cur)||0, to=Math.max(1, Math.min(U.length, n+dir));
+  if(!ISLE.near && !ISLE.cur && dir>0) to=1; if(ISLE.near && to===ISLE.near.n) return; isleGo(U[to-1]); }
+/* 📜 清單（政策島右側的編號清單）＋ 🔗 串起來（整段法文、站號、連接詞標色、串聯故事） */
+var ISLE_CONN=/(\b(?:mais|et|alors|quand|aussi|parce que|donc|pour moi|puis|sinon|car|surtout|même si|le plus important)\b|[—:;])/gi;
+function isleList(mode){
+  var sc=isleSpec(ISLE.id), U=ISLE.units, zoneOf=function(g){ return sc.zones.filter(function(z){ return g.y>z.y0 && g.y<=z.y1; })[0]||sc.zones[0]; };
+  var groups=sc.zones.map(function(z){ return {z:z, u:U.filter(function(g){ return zoneOf(g)===z; })}; }).filter(function(G){ return G.u.length; });
+  var tab='<div class="row2" style="margin:0 0 6px"><button class="btn '+(mode==='list'?'main':'ghost')+'" data-m="list">📋 清單</button><button class="btn '+(mode==='chain'?'main':'ghost')+'" data-m="chain">🔗 串起來</button></div>';
+  var h='<h3>📜 '+esc(sc.name)+'</h3>'+tab+'<div class="ilist">';
+  if(mode==='list'){
+    groups.forEach(function(G){ h+='<div style="margin-top:8px"><b>'+esc(G.z.name)+'</b></div>';
+      G.u.forEach(function(g){ var P=pst(g.ref), col=P.last?['#e8e1cf','#8fc3ff','#f0c95a'][P.st]:'rgba(255,255,255,.3)';
+        h+='<button class="st" data-n="'+g.n+'"><span class="dot" style="background:'+col+'"></span>'+pix(g.em,22)+'<b>'+g.n+'</b><span>'+esc(g.lab)+'</span></button>'; }); });
+  } else {
+    h+='<div class="muted">整座島照順序順一遍：橘色是把句子接起來的字，🔗 是每一站怎麼接到下一站。</div>';
+    groups.forEach(function(G){ h+='<div style="margin-top:10px"><b>'+esc(G.z.name)+'</b></div><div class="para fr">'+
+        G.u.map(function(g){ return '<sup>'+g.n+'</sup>'+g.s.fr.split(ISLE_CONN).map(function(p,i){ return i%2?'<span class="cn">'+esc(p)+'</span>':esc(p); }).join(''); }).join(' ')+'</div>';
+      G.u.forEach(function(g){ h+='<div class="chain">'+g.n+'. '+esc(g.s.zh)+(g.n<U.length?'<br><span style="opacity:.8">🔗 '+esc(isleLinkTxt(g.n))+'</span>':'')+'</div>'; }); });
+  }
+  h+='</div><div class="row2"><span></span><button class="btn main" id="ilok">好</button></div>';
+  openSheet(h, true);
+  sheet.querySelectorAll('[data-m]').forEach(function(b){ b.onclick=function(){ isleList(b.dataset.m); }; });
+  sheet.querySelectorAll('[data-n]').forEach(function(b){ b.onclick=function(){ closeSheet(); isleGo(U[+b.dataset.n-1]); }; });
+  document.getElementById('ilok').onclick=closeSheet;
+}
 function cafePanel(ch){
   var L=isles(); if(!L.length) return;
   if(S.isleOff===today()){ ch.cool=30; return; }
