@@ -85,4 +85,15 @@
 - [x] ✅ 10-29 完成：U4＝p.55–70；不定詞 p.58、意願／願望接虛擬式 p.63、否定 p.65、母音連讀 p.66、DELF B1 閱讀策略 p.69–70；全課本原句＋頁碼；標出 p.63 說明與例句打架、p.65 dérogez de 應為 déroger à 等；連字掉字標未查證。`drafts/preview_b1_unite4.html`
   **Q27 Édito B1 Unité 4 預習單草稿**（排程自補 10-29）：照 `drafts/preview_b1_unite3.html` 格式，內容只出自課本快取 B1 Unité 4 頁面，產出 `drafts/preview_b1_unite4.html`。
 
+- [x] ✅ 10-29 完成：U5＝p.71–84；被動語態 p.74、形容詞位置 p.79、形容詞變名詞 p.81、可連可不連的連音 p.76；全課本原句＋頁碼；標出 sous-terrain→souterrain、aux environ→environs、proprétaire 等錯字，「代名詞不能用 par」講太絕對；連字掉字標未查證。`drafts/preview_b1_unite5.html`
+  **Q28 Édito B1 Unité 5 預習單草稿**（排程自補 10-29 10:00）：照 `drafts/preview_b1_unite4.html` 格式，內容只出自課本快取 B1 Unité 5 頁面，產出 `drafts/preview_b1_unite5.html`。
+- [x] ✅ 10-29 完成：法文全對、例句出自 A2 p.156（第38課）；規則講窄兩處（「qui 後直接接動詞」碰 Ce ___ me plaît 說不通；「que＝受詞」碰 C'est à l'université que… 解不出）；Ce sont 開頭兩題（questions.js 2440、2443 行）會跳錯卡；睡醒畫面 Bonjour ! 對。`research/2026-10-29_強調句概念卡核對.md`
+  **Q29 強調句概念卡＋天色／睡覺畫面法文核對**（排程自補 10-29 10:00）：commit fa6a5d9 在 town.html 新增強調句概念卡（c'est … qui／que）與天色變化、睡覺醒來畫面的法文，逐條查法文正確、規則不講窄、對齊 `french_notes.html` 課次與課本快取，寫 `research/2026-10-29_強調句概念卡核對.md`。⛔ 不改 town.html。
+- [x] ✅ 10-29 完成：97 條法文全對、全出自筆記第 46 課；81 合格、3 錯（虛擬式表抽進 chunks 欄位錯位，que j'aie 等沒成卡，提案拆 6 條）、13 要注意（p.27 問句 8 句中文欄放了結構說明；des bons moments 課本寫法 vs 標準 de bons）。`research/2026-10-29_第46課chunks核對.md`（＋`tools/q30_check_l46_chunks.js`）
+  **Q30 第 46 課 chunks +97 條核對**（排程自補 10-29 10:00）：commit 834e1b8 進 `chunks.js` 的第 46 課新增約 97 條，逐條查拼字、中文意思、是否一字不差出自筆記／課本、發音標記，寫 `research/2026-10-29_第46課chunks核對.md`。⛔ 不改 chunks.js。
+- [x] ✅ 10-29 完成：2 份提案＋12 份報告去重成 64 條（冤枉他 20／教錯 21／小問題 24），3 條已修移文末；最該先修：1–12 點時刻 et quart／et demie 被判錯、鐵砧連 que 打或 elle était allée 被判錯、題庫 5 題把對的當錯。`drafts/待決定提案彙整_2026-10-29.md`
+  **Q31 待 Owen 決定的提案彙整**（排程自補 10-29 10:00）：把 `drafts/questions_fix_proposal.md`、`drafts/comprehension_balance_proposal.md` 與 10-22～10-29 各份核對報告（Q13–Q27）裡「要改但沒改、待 Owen 決定」的項目合併成一張去重清單，依「會冤枉他／會教錯／小問題」排序，每條一句白話＋出處檔，寫 `drafts/待決定提案彙整_2026-10-29.md`。⛔ 不改任何正在用的檔。
+- [x] ✅ 10-29 完成：7 島素材齊全（家庭、工作、興趣、旅行、加拿大、健康、未來計畫）、7 島只有 7 月 A1 短版要 Owen 補講；共 193 個地標候選；建議下一座家庭島（等 Owen 確認自我介紹島有「島的感覺」）；工作島一地標混兩句、住家島與自我介紹島重疊待問。`research/2026-10-29_口說群島素材盤點.md`（＋`tools/tmp_q32_isle_inventory.js`）
+  **Q32 口說群島其餘 14 島素材盤點**（排程自補 10-29 10:00）：讀 `research/` 的口說群島設計稿與 `answer_cards.js` 等 Owen 本人島稿，替自我介紹島以外的 14 座島列出「已有 Owen 原稿的句子數／缺稿」與可當地標的意思單位，寫 `research/2026-10-29_口說群島素材盤點.md`。⛔ 不代筆、不自創句子、不改 town.html。
+
 > 清單快用完時：排程可以自己補 3 項新題，但只能補「研究／稽核／草稿」類，補的時候在項目後面標「（排程自補）」。
