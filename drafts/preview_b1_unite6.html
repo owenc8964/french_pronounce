@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 Unité 6 預習單</title>
+<style>
+  :root {
+    --bg: #15171c;
+    --card: #1f232b;
+    --card2: #262b35;
+    --text: #e6e8ec;
+    --muted: #9aa3b2;
+    --fr: #ffffff;
+    --accent: #7cc4ff;
+    --gold: #f2c86b;
+    --warn: #ff9f7a;
+    --line: #333a46;
+    --gray-badge: #4a5160;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Helvetica Neue", sans-serif;
+    font-size: 16px; line-height: 1.65;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 1.35rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: .9rem; margin-bottom: 18px; }
+  section {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; margin: 0 0 16px;
+  }
+  h2 { font-size: 1.1rem; margin: 0 0 8px; color: var(--accent); }
+  h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--gold); }
+  p { margin: 6px 0; }
+  b { color: var(--fr); }
+  .time { float: right; font-size: .78rem; color: var(--muted); font-weight: normal; }
+  .rule {
+    background: var(--card2); border-left: 4px solid var(--accent);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .trap {
+    background: rgba(255,159,122,.08); border-left: 4px solid var(--warn);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .flag {
+    background: rgba(242,200,107,.08); border-left: 4px solid var(--gold);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: .92rem;
+  }
+  .map { list-style: none; padding: 0; margin: 0; }
+  .map li { padding: 7px 0; border-bottom: 1px solid var(--line); }
+  .map li:last-child { border-bottom: none; }
+  .pg { display: inline-block; min-width: 54px; color: var(--accent); font-weight: 600; }
+  .tag { display: inline-block; font-size: .72rem; padding: 1px 7px; border-radius: 10px;
+         background: var(--gray-badge); color: var(--text); margin-left: 4px; vertical-align: 1px; }
+  .tag.new { background: #2f5d8a; }
+  /* 法文句子載體：沿用 french_notes.html 的結構，之後可直接搬 */
+  .phrase-list { list-style: none; padding: 0; margin: 6px 0; }
+  .phrase-list li {
+    display: flex; flex-wrap: wrap; gap: 2px 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--line);
+  }
+  .phrase-list li:last-child { border-bottom: none; }
+  .fr { font-weight: 600; color: var(--fr); width: 100%; }
+  .zh { color: var(--muted); font-size: .9rem; }
+  .phrase-list li > span.note { color: #7d8696; font-size: .8rem; }
+  .fr em { font-style: normal; color: var(--gold); }
+  .vocab { list-style: none; padding: 0; margin: 4px 0 8px;
+           display: grid; grid-template-columns: 1fr; gap: 0; }
+  .vocab li { padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: .95rem; }
+  .vocab li:last-child { border-bottom: none; }
+  .vocab .w { color: var(--fr); font-weight: 600; }
+  .g { display: inline-block; font-size: .72rem; color: var(--muted); border: 1px solid var(--line);
+       border-radius: 4px; padding: 0 5px; margin: 0 4px; }
+  details { background: var(--card2); border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
+  summary { cursor: pointer; font-weight: 600; color: var(--text); }
+  details[open] summary { margin-bottom: 6px; }
+  .ex { margin: 8px 0; padding-left: 2px; }
+  .ex .q { color: var(--fr); }
+  .hint { color: var(--muted); font-size: .92rem; }
+  .likely { color: var(--gold); font-size: .8rem; }
+  ol.ask { padding-left: 20px; margin: 6px 0; }
+  ol.ask li { margin: 8px 0; }
+  .small { font-size: .85rem; color: var(--muted); }
+  @media (min-width: 640px) {
+    .vocab { grid-template-columns: 1fr 1fr; column-gap: 18px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Unité 6 En route !・預習單（草稿）</h1>
+<div class="sub">範圍：Édito B1 p.85–100（第 6 單元）｜大約 15 分鐘｜全部法文句子都是課本原句，每句標頁碼</div>
+
+<div class="flag">
+  🚧 <b>這是草稿。</b>給 Unité 6 開課前先看的。<br>
+  中文翻譯、「它在處理什麼資訊」的說明、陷阱與標註是 Claude 加的；法文全部取自 <code>assets/.textbook_cache.txt</code> 的 Édito B1 內頁（PDF 頁碼＝課本頁碼）。
+</div>
+
+<!-- ============ 0. 地圖 ============ -->
+<section>
+  <h2>🗺 這個單元的頁面 <span class="time">1 分鐘</span></h2>
+  <ul class="map">
+    <li><span class="pg">p.85</span>單元首頁。目標：講述一趟旅行｜介紹一項計畫的好處｜提醒（重提）一項資訊</li>
+    <li><span class="pg">p.86</span>A 閱讀：〈Viens, je t'emmène !〉孫女帶百歲奶奶開露營車遊歐洲</li>
+    <li><span class="pg">p.87</span>B 聽力：家庭旅行（電台節目）＋「講述一趟旅行」｜C 閱讀：《小淘氣尼古拉的假期》〈Retour de vacances〉</li>
+    <li><span class="pg">p.88</span><b>文法：Le plus-que-parfait et les temps du passé 愈過去式與過去時態</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.89</span>D 閱讀：〈Du projet au voyage〉從 Dijon 走路到伊斯坦堡｜<b>文法：Les indicateurs de temps (2) 時間標記</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.90</span>詞彙頁：旅行的準備與經驗 ＋ 發音：<b>Le « h » aspiré 嘘音 h</b><span class="tag new">新</span></li>
+    <li><span class="pg">p.91</span>Culture：社群媒體上的觀光。E 閱讀：Instagram〈Visa to Africa〉｜F 影片：Chouchou 帶我們去喀麥隆＋「介紹計畫的好處」</li>
+    <li><span class="pg">p.92</span>G 聽力：搭火車環遊世界｜H 閱讀：〈On tente la micro-aventure ?〉微冒險</li>
+    <li><span class="pg">p.93</span>I 聽力：太陽能腳踏車之旅｜J 資訊圖表：更綠的觀光？（抽字全亂，本頁未收錄圖表內容）</li>
+    <li><span class="pg">p.94</span><b>文法：Les prépositions et adverbes de lieu 地點介系詞與副詞</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.95</span>K 閱讀：〈On a testé pour vous les vacances en 2050〉｜L 聽力：太空旅行＋「提醒一項資訊」</li>
+    <li><span class="pg">p.96</span>詞彙頁：交通與觀光（陸上、天空與海上、生態觀光、方位說法）</li>
+    <li><span class="pg">p.97</span>l'essentiel 總複習（文法／詞彙）</li>
+    <li><span class="pg">p.98</span>Atelier médiation：全班規劃一趟「綠色旅行」</li>
+    <li><span class="pg">p.99–100</span><b>DELF B1 應考策略：S'exprimer à l'écrit 寫作</b>＋兩個模擬題目</li>
+  </ul>
+  <p class="small">p.101 已經是 Unité 7 Apprendre… encore et toujours ! 的首頁。跟 Unité 5 不同，這個單元<b>有</b> DELF 策略頁（p.99–100）。</p>
+</section>
+
+<!-- ============ 1. 愈過去式 ============ -->
+<section>
+  <h2>📐 文法一：Le plus-que-parfait 愈過去式（p.88） <span class="time">4 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>在「已經是過去」的故事裡，再往<b>更早</b>退一格——「那時候之前就已經……」。課本說它標示的是 <b>l'antériorité（先於）</b>（p.88 Échauffement 3）。<br>
+    <b>公式：</b>avoir／être 的 <b>imparfait</b>（avais、étais…）＋ 過去分詞。<br>
+    <b>其他全照 passé composé：</b>用 avoir 還是 être、過去分詞配不配合、否定放在助動詞兩邊（p.88 Rappel）。
+  </div>
+
+  <h3>課本 Fonctionnement（p.88）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Elle <em>n'avait jamais beaucoup voyagé</em> et elle <em>a compris</em> pourquoi j'<em>aimais</em> tant cela.</span><span class="zh">她以前從沒怎麼旅行過，（這次）她懂了我為什麼那麼愛旅行。</span><span class="note">p.88 前（plus-que-parfait）→ 後（passé composé ＋ imparfait）；出自 p.86 A l.39–40</span></li>
+    <li><span class="fr">j'avais voyagé · j'étais allé(e) · je m'étais préparé(e)</span><span class="zh">我（之前）旅行過・去過・準備好了</span><span class="note">p.88 變位表三個代表：avoir 類／être 類／代動詞</span></li>
+    <li><span class="fr">Ma mère <em>s'était</em> beaucoup <em>occupée</em>...</span><span class="zh">我媽（之前）照顧了她很多……</span><span class="note">p.88 配合規則跟 passé composé 一樣：occupée 配 ma mère</span></li>
+    <li><span class="fr">Je <em>n'avais pas été</em> présente.</span><span class="zh">我（那時之前）一直不在身邊。</span><span class="note">p.88 否定夾住助動詞 avais</span></li>
+  </ul>
+
+  <details>
+    <summary>想多看一點：p.88 Échauffement（全部出自 p.86 A、p.87 B／C）</summary>
+    <ul class="phrase-list">
+      <li><span class="fr">Avant, ma mère <em>s'était</em> beaucoup <em>occupée</em> d'elle et je <em>n'avais pas été</em> très présente.</span><span class="zh">以前是我媽在照顧她，我不太常在。</span><span class="note">p.88 a</span></li>
+      <li><span class="fr">Le guide <em>avait demandé</em> s'il y avait des événements particuliers.</span><span class="zh">導遊（事先）問過有沒有什麼特別的事。</span><span class="note">p.88 c</span></li>
+      <li><span class="fr">Moi je lui <em>avais dit</em> que ma fille fêtait ses 12 ans le lendemain.</span><span class="zh">我跟他說過我女兒隔天滿 12 歲。</span><span class="note">p.88 d（抽字黏成 « ditque »，已補空格；le lendemain 是文法二）</span></li>
+      <li><span class="fr">Il y en avait qui pleuraient parce qu'ils <em>n'avaient pas encore retrouvé</em> leurs mamans et leurs papas.</span><span class="zh">有些人在哭，因為他們還沒找到爸媽。</span><span class="note">p.88 e</span></li>
+      <li><span class="fr">On s'est embrassés, et ils m'ont dit que j'<em>avais grandi</em>.</span><span class="zh">我們互相擁抱，他們說我長大了。</span><span class="note">p.88 f（轉述「之前發生的變化」→ plus-que-parfait）</span></li>
+      <li><span class="fr">Il s'est rendu compte que son vol <em>avait été annulé</em>…</span><span class="zh">他發現他的班機（早就）被取消了……</span><span class="note">p.88 練習 4e（avait été ＋ p.p.＝被動的愈過去式，接 Unité 5）</span></li>
+      <li><span class="fr">J'avais acheté un guide touristique du pays.</span><span class="zh">我（出發前）買了一本那個國家的旅遊指南。</span><span class="note">p.88 練習 6 Exemple</span></li>
+    </ul>
+  </details>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：三個過去時態分工。</b>passé composé＝故事往前走的事件；imparfait＝背景、狀態；plus-que-parfait＝<b>比故事線更早</b>的事。p.88 練習 5 就是在三個裡面選。<br>
+    ⚠️ <b>陷阱二：déjà／jamais 不是自動等於 plus-que-parfait。</b>p.88 練習 5f <i>Vous avez déjà visité / aviez déjà visité la tour Eiffel ou c'était la première fois ?</i>——要看「déjà」是相對於<b>現在</b>還是相對於<b>過去某個時點</b>。<br>
+    ⚠️ <b>陷阱三：助動詞選擇＝passé composé 的選擇。</b>partir、aller、rentrer 用 être → <b>étaient partis</b>（p.88 練習 5e）；代動詞一律 être → <b>s'était renseignée</b>（p.88 練習 4c）。<br>
+    ⚠️ <b>陷阱四：轉述過去的話時會自動往後退一格。</b>ils m'ont dit que j'<b>avais grandi</b>（p.88 f）——原話是「你長大了」（passé composé），轉述到過去就變 plus-que-parfait。這是之後「間接引語」的前奏。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① 課本只講「前一件事」。標準文法裡 plus-que-parfait 還有兩個常見用法課本這頁沒提：<b>si ＋ plus-que-parfait</b>（與過去事實相反的假設：<i>si j'avais su…</i>），以及<b>客氣的請求</b>（<i>j'étais venu vous demander…</i>）。前者 TCF 很常見，之後單元應該會學。這是 Claude 依標準文法補的，課本這頁沒有，<b>未查證</b>後面單元。<br>
+    ② p.86 原文 <i>Elle avait attrapé le virus du voyage</i>（l.37–38）用 plus-que-parfait 描述「那時已經染上」的<b>結果狀態</b>，不完全是「先後順序」。課本規則講得比較窄，看到這種用法不用困惑。
+  </div>
+</section>
+
+<!-- ============ 2. 時間標記 ============ -->
+<section>
+  <h2>📐 文法二：Les indicateurs de temps (2) 時間標記（p.89） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>時間詞的<b>參考點</b>是誰——是「我說話的現在」，還是「故事裡的那一刻」。<br>
+    以現在為準：hier／aujourd'hui／demain、la semaine dernière／prochaine。<br>
+    以故事裡的某一刻為準：<b>la veille／ce jour-là／le lendemain</b>、la semaine d'avant（précédente）／d'après（suivante）。
+  </div>
+
+  <h3>課本 Fonctionnement 表（p.89）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Hier · Aujourd'hui · Demain</span><span class="zh">昨天・今天・明天</span><span class="note">p.89 以「說話的時刻」為準</span></li>
+    <li><span class="fr">La semaine dernière · Cette semaine · La semaine prochaine</span><span class="zh">上週・這週・下週</span><span class="note">p.89</span></li>
+    <li><span class="fr">Le mois dernier · Ce mois-ci · Le mois prochain</span><span class="zh">上個月・這個月・下個月</span><span class="note">p.89</span></li>
+    <li><span class="fr">La veille · Ce jour-là · Le lendemain</span><span class="zh">前一天・那一天・隔天</span><span class="note">p.89 以「另一個時刻」為準</span></li>
+    <li><span class="fr">La semaine d'avant/précédente · Cette semaine-là · La semaine d'après/suivante</span><span class="zh">前一週・那一週・後一週</span><span class="note">p.89</span></li>
+    <li><span class="fr">Le mois d'avant/précédent · Ce mois-là · Le mois d'après/suivant</span><span class="zh">前一個月・那個月・後一個月</span><span class="note">p.89</span></li>
+  </ul>
+
+  <h3>Échauffement（p.89，出自同頁 D 文章）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">C'est arrivé en Allemagne <em>l'été dernier</em>, au moment des inondations.</span><span class="zh">那是去年夏天在德國，碰上淹水的時候。</span><span class="note">p.89 a（以說話時刻為準）</span></li>
+    <li><span class="fr">Au début du voyage, ça faisait huit ans qu'on était ensemble, on s'était mariés <em>l'année précédente</em>.</span><span class="zh">旅行剛開始時，我們在一起八年了，前一年結的婚。</span><span class="note">p.89 b（以「旅行開始」為準；s'était mariés 同時是文法一）</span></li>
+  </ul>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：跟時態綁在一起。</b>故事用 plus-que-parfait／過去敘事時，時間詞通常也要換成「另一個時刻」那一欄：<i>Elle a acheté ses billets et demain / le lendemain elle était dans l'avion !</i>（p.89 練習 2b）。<br>
+    ⚠️ <b>陷阱二：prochain ≠ suivant。</b><i>j'y retournerai le mois prochain / suivant</i>（p.89 練習 2a）——說話者現在在講「從今天算起」的下個月，用哪一個？<br>
+    ⚠️ <b>陷阱三：這是 Unité 5 形容詞位置的延續。</b>la semaine <b>prochaine</b>、l'été <b>dernier</b> 放後面（時間說法）；這裡的 dernier／précédent／suivant 一律後置。
+  </div>
+
+  <div class="flag">
+    🔎 <b>補充：</b>這張表就是轉述（discours indirect）時的「時間詞換算表」——之後學間接引語會整張再用一次。這是 Claude 依標準文法的預告，<b>未查證</b>課本後面單元的排法。
+  </div>
+</section>
+
+<!-- ============ 3. 地點介系詞與副詞 ============ -->
+<section>
+  <h2>📐 文法三：Les prépositions et adverbes de lieu 地點介系詞與副詞（p.94） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>「在哪裡」。差別只在<b>後面有沒有接名詞</b>：<br>
+    <b>介系詞</b>通常帶一個名詞（p.94：<i>accompagne généralement un nom</i>）——dans le musée、le long de la Loire。<br>
+    <b>副詞</b>自己就說完了，通常跟著動詞（p.94：<i>accompagne généralement un verbe</i>）——je vais dehors、vous ne pourrez pas aller loin。
+  </div>
+
+  <h3>課本 Fonctionnement（p.94）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Ils ont très envie d'aller <em>à</em> la mer.</span><span class="zh">他們很想去海邊。</span><span class="note">p.94 介系詞（抽字 « àla »，已補空格）</span></li>
+    <li><span class="fr">Il est interdit de prendre des photos <em>dans</em> le musée.</span><span class="zh">博物館裡禁止拍照。</span><span class="note">p.94 介系詞</span></li>
+    <li><span class="fr">Nous avons fait du vélo <em>le long de</em> la Loire.</span><span class="zh">我們沿著羅亞爾河騎腳踏車。</span><span class="note">p.94 介系詞</span></li>
+    <li><span class="fr">Pars <em>devant</em>, je te rejoins !</span><span class="zh">你先走，我跟上！</span><span class="note">p.94 副詞（抽字 « Parsdevant »）</span></li>
+    <li><span class="fr">Je vais <em>dehors</em>, il fait trop chaud.</span><span class="zh">我出去外面，太熱了。</span><span class="note">p.94 副詞</span></li>
+    <li><span class="fr">Vous ne pourrez pas aller <em>loin</em>.</span><span class="zh">你們走不遠的。</span><span class="note">p.94 副詞</span></li>
+  </ul>
+  <ul class="vocab">
+    <li><span class="w">介系詞：</span>dans · à côté de · au/aux · au bout de · sur · à · autour de · sous · à travers · près de · au coin de · le long de · loin de · en · sur l'avant de · hors de <span class="g">p.94</span></li>
+    <li><span class="w">副詞：</span>partout · loin · dessous · nulle part · devant · dedans · ici · derrière · dehors · ailleurs · dessus · là-haut <span class="g">p.94</span></li>
+  </ul>
+
+  <details>
+    <summary>想多看一點：p.94 Échauffement（出自 p.92 G、H 與 p.93 I）</summary>
+    <ul class="phrase-list">
+      <li><span class="fr">On passe <em>à travers</em> le désert.</span><span class="zh">我們穿越沙漠。</span><span class="note">p.94 b</span></li>
+      <li><span class="fr">Alors pourquoi partir <em>loin</em> quand l'aventure est <em>partout</em> ?</span><span class="zh">那為什麼要跑那麼遠，冒險明明到處都是？</span><span class="note">p.94 d（兩個都是副詞）</span></li>
+      <li><span class="fr">La micro-aventure consiste à nous émerveiller de lieux magnifiques <em>au coin de</em> notre rue.</span><span class="zh">微冒險就是在我們家街角驚嘆美麗的地方。</span><span class="note">p.94 e</span></li>
+      <li><span class="fr">Le tourisme doit encourager les excursions <em>hors des</em> sentiers battus.</span><span class="zh">觀光應該鼓勵走出熱門路線的小旅行。</span><span class="note">p.94 f</span></li>
+      <li><span class="fr">Prenons le temps de regarder <em>autour de</em> nous.</span><span class="zh">花點時間看看我們周圍。</span><span class="note">p.94 h</span></li>
+      <li><span class="fr">Nous vivons <em>à côté de</em> merveilles méconnues.</span><span class="zh">我們就住在不為人知的奇景旁邊。</span><span class="note">p.94 i</span></li>
+    </ul>
+  </details>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：同一個字常常兩邊都是。</b>loin（副詞）↔ loin <b>de</b>（介系詞）；dessus／dessous／dedans（副詞）↔ sur／sous／dans（介系詞）。p.94 練習 2b <i>Le guide de voyage est ici / sur la table ? Oui, il est dessous / dessus.</i>——後面沒有名詞了，所以要用哪一組？<br>
+    ⚠️ <b>陷阱二：de ＋ le 要縮寫。</b>le long <b>du</b> Nil、le long <b>du</b> fleuve（p.94 練習 3 字庫就是印 « le long du »）；hors <b>des</b> sentiers battus。<br>
+    ⚠️ <b>陷阱三：nulle part 要配 ne。</b><i>Ils ne vont jamais nulle part</i>（p.94 練習 2c）——Unité 4 的否定，ne … nulle part。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>devant、derrière 在課本表上只列在「副詞」</b>，但標準法文裡它們<b>同時是介系詞</b>：課本自己的練習 2d <i>La visite débute devant / dedans le Grand-Théâtre</i> 的 devant 就帶了名詞，是介系詞用法。課本有寫「通常」（généralement），不算錯，但表格容易讓人以為 devant 只能當副詞。<br>
+    ② <b>p.94 Échauffement c « Ils ont des beaux trains de nuit le long du Nil. »</b>——照 Unité 5 p.79 的書面規則，前置形容詞前 des → de，標準書面要寫 <b>de beaux trains</b>。這句是從 p.92 G 聽力（口語）摘出來的，口語常說 des beaux。課本原樣保留口語，⛔ 寫作時不要照抄。<br>
+    ③ <b>p.94 練習 3i « Elle a escaladé et elle arrivée tout …… . »</b>——少了助動詞，標準法文要 <b>elle est arrivée</b>。兩層抽字都一樣，推定是課本印漏，<b>未對照紙本查證</b>。<br>
+    ④ « sur l'avant de » 課本列為介系詞片語（來自 p.93 I 腳踏車：<i>On a ajouté un panneau solaire sur l'avant du vélo</i>，p.94 j），一般文法書不太會單獨列它，當詞組記就好。
+  </div>
+</section>
+
+<!-- ============ 4. 發音 ============ -->
+<section>
+  <h2>👂 發音：Le « h » aspiré 嘘音 h（p.90） <span class="time">1 分鐘</span></h2>
+  <div class="rule">
+    <b>它在處理什麼：</b>法文的 h <b>永遠不發音</b>，但分兩種：<br>
+    <b>h muet（啞音 h）</b>：當作母音開頭 → 要連音、要省音（les‿habitants、l'hôtel）。<br>
+    <b>h aspiré（嘘音 h）</b>：當作子音開頭 → ⛔ 不連音、⛔ 不省音（les | haricots、la hauteur）。<br>
+    課本規則（p.90 練習 2）：h muet 做 liaison，h aspiré 不做。
+  </div>
+  <p>課本練習 1 的句子（p.90）：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">Ils séjournent toujours dans des hôtels trois étoiles.</span><span class="zh">他們總是住三星級飯店。</span><span class="note">p.90 1a（h muet → des‿hôtels）</span></li>
+    <li><span class="fr">Ils vont faire des haltes.</span><span class="zh">他們會中途停留幾次。</span><span class="note">p.90 1b</span></li>
+    <li><span class="fr">Il raconte toutes ses histoires de voyages.</span><span class="zh">他講他所有的旅行故事。</span><span class="note">p.90 1c（抽字 « histoiresde »）</span></li>
+    <li><span class="fr">Des hamacs sont installés dans le jardin.</span><span class="zh">花園裡掛了吊床。</span><span class="note">p.90 1d</span></li>
+  </ul>
+  <p>練習 3 的句子（p.90，課本自己分好欄）：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">Les habitants de ce village sont accueillants.</span><span class="zh">這個村子的居民很好客。</span><span class="note">p.90 3a「h muet」欄</span></li>
+    <li><span class="fr">Consultons les horaires de train.</span><span class="zh">查一下火車時刻表吧。</span><span class="note">p.90 3b「h muet」欄</span></li>
+    <li><span class="fr">Les dortoirs des hommes et des femmes sont séparés.</span><span class="zh">男女宿舍是分開的。</span><span class="note">p.90 3c「h muet」欄</span></li>
+    <li><span class="fr">Dans ce plat typique, il y a des haricots rouges.</span><span class="zh">這道傳統菜裡有紅腰豆。</span><span class="note">p.90 3d「h aspiré」欄</span></li>
+    <li><span class="fr">Il séjourne dans les hauteurs de la ville.</span><span class="zh">他住在城裡的高處。</span><span class="note">p.90 3e「h aspiré」欄</span></li>
+    <li><span class="fr">Ce monument est un hommage aux héros.</span><span class="zh">這座紀念碑是向英雄致敬。</span><span class="note">p.90 3f「h aspiré」欄</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>陷阱：沒有規則可推，只能一個一個記。</b>從拼法看不出是哪一種 h。高頻的 h aspiré：halte、hamac、haricot、hauteur（haut）、héros——都在這頁。<br>
+    ⚠️ <b>3f 一句裡兩種都有：</b>un‿hommage（muet，要連）但 aux | héros（aspiré，⛔ 不連；連了會聽成 aux zéros）。課本把整句放在「aspiré」欄，指的是 héros。
+  </div>
+  <div class="flag">
+    🔎 <b>補充（標準語音學，非課本）：</b>① 1a–1d 哪幾題連、哪幾題不連，答案在音檔，上面 1a 的判斷是 Claude 依字典的 h 類型推的；1b haltes、1d hamacs 是 h aspiré、1c histoires 是 h muet，<b>未查證</b>音檔。② 「aux zéros」那個例子是常見教學梗，課本沒寫。③ 練習 3 的分欄是課本自己印的，這張單子照抄。
+  </div>
+</section>
+
+<!-- ============ 5. 功能句 ============ -->
+<section>
+  <h2>💬 上課會用到的說法 <span class="time">2 分鐘</span></h2>
+
+  <h3>Pour raconter un voyage 講述一趟旅行（p.87）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">J'ai un merveilleux souvenir de voyage que j'ai fait.</span><span class="zh">我有一段很美好的旅行回憶。</span><span class="note">p.87</span></li>
+    <li><span class="fr">Je me souviens de tout !</span><span class="zh">我全都記得！</span><span class="note">p.87（se souvenir <b>de</b>）</span></li>
+    <li><span class="fr">Je me rappelle la magie de ce lieu.</span><span class="zh">我還記得那個地方的魔力。</span><span class="note">p.87（se rappeler 直接接受詞，⛔ 不加 de）</span></li>
+    <li><span class="fr">C'est une expérience gravée dans ma mémoire.</span><span class="zh">那是刻在我記憶裡的經驗。</span><span class="note">p.87</span></li>
+    <li><span class="fr">Ce voyage était inoubliable.</span><span class="zh">那趟旅行令人難忘。</span><span class="note">p.87</span></li>
+    <li><span class="fr">C'était vraiment un dépaysement total.</span><span class="zh">那真的是完全換了一個世界。</span><span class="note">p.87 B 引言</span></li>
+  </ul>
+
+  <h3>Pour présenter les avantages d'une initiative 介紹一項計畫的好處（p.91）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Instagram lance une campagne pour promouvoir le voyage en Afrique.</span><span class="zh">Instagram 發起一項推廣非洲旅遊的活動。</span><span class="note">p.91</span></li>
+    <li><span class="fr">L'initiative vise à encourager la reprise économique.</span><span class="zh">這項計畫的目標是促進經濟復甦。</span><span class="note">p.91（viser à ＋ 原形）</span></li>
+    <li><span class="fr">Les nouvelles technologies ont contribué à populariser le tourisme en Afrique.</span><span class="zh">新科技幫助非洲觀光變得熱門。</span><span class="note">p.91（contribuer à ＋ 原形）</span></li>
+  </ul>
+
+  <h3>Pour rappeler une information 提醒一項資訊（p.95）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Pour rappel : quand Jeff Bezos a été dans l'espace, ça n'a duré qu'une dizaine de minutes.</span><span class="zh">提醒一下：貝佐斯上太空那次，只持續了十分鐘左右。</span><span class="note">p.95（抽字 « Je Bezos »＝Jeff，ff 連字，未查證；ne… que＝只）</span></li>
+    <li><span class="fr">Il faut rappeler que le tourisme est lié au réchauffement climatique.</span><span class="zh">必須提醒的是，觀光跟全球暖化有關。</span><span class="note">p.95（抽字 « réchauement »，未查證）</span></li>
+    <li><span class="fr">Comme chacun sait, s'envoler dans l'espace coûte cher.</span><span class="zh">大家都知道，飛上太空很貴。</span><span class="note">p.95</span></li>
+    <li><span class="fr">Sans oublier que s'envoler dans l'espace représente 429 tonnes de CO2 par passager.</span><span class="zh">更別忘了，飛上太空每位乘客要排 429 噸二氧化碳。</span><span class="note">p.95</span></li>
+  </ul>
+
+  <h3>Étudier des propositions et faire un choix 比較提案、做出選擇（p.98 Stratégies）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Faites une liste des avantages et des inconvénients de chaque proposition.</span><span class="zh">把每個提案的優缺點列出來。</span><span class="note">p.98</span></li>
+    <li><span class="fr">Il ne s'agit pas de compter les points positifs ou négatifs, mais de comparer en gardant à l'esprit les critères du projet.</span><span class="zh">重點不是數優點缺點有幾個，而是記著計畫的標準去比較。</span><span class="note">p.98（前面的 « En eet »＝En effet，ff 連字）</span></li>
+  </ul>
+
+  <h3>單元格言</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">On part où tu veux !</span><span class="zh">你想去哪我們就去哪！</span><span class="note">p.85 單元首頁（原句在 p.86 A l.38–39：« On part où tu veux du moment qu'on est ensemble »）</span></li>
+    <li><span class="fr">Pour moi, le voyage, il est dans le déplacement.</span><span class="zh">對我來說，旅行就在移動的過程裡。</span><span class="note">p.93 I 引言（le voyage, il… ＝口語把主詞提到前面）</span></li>
+    <li><span class="fr">J'ai le rêve d'aller vers les étoiles.</span><span class="zh">我夢想飛向星空。</span><span class="note">p.95 L 引言</span></li>
+  </ul>
+</section>
+
+<!-- ============ 6. 詞彙 ============ -->
+<section>
+  <h2>🧺 新詞彙（挑 B1 才出現、你筆記裡大多還沒有的） <span class="time">2 分鐘</span></h2>
+  <p class="small">哪些字筆記裡已經有，<b>未查證</b>（這次沒有對 french_notes.html 逐字核對）。</p>
+
+  <h3>準備旅行（p.90）</h3>
+  <ul class="vocab">
+    <li><span class="w">arrêter son choix (sur)</span><span class="g">expr.</span>決定選……（p.89 D l.6）</li>
+    <li><span class="w">opter pour · privilégier</span><span class="g">v.</span>選擇・優先考慮</li>
+    <li><span class="w">établir l'itinéraire</span><span class="g">expr.</span>排好路線</li>
+    <li><span class="w">mettre de l'argent de côté</span><span class="g">expr.</span>存錢</li>
+    <li><span class="w">la tente · le duvet · le matelas</span><span class="g">f./m.</span>帳篷・睡袋・睡墊</li>
+    <li><span class="w">la pension</span><span class="g">f.</span>民宿、小旅館</li>
+  </ul>
+
+  <h3>移動（p.90）</h3>
+  <ul class="vocab">
+    <li><span class="w">parcourir</span><span class="g">v.</span>走遍、行經（＝effectuer un trajet，p.86 練習 9a）</li>
+    <li><span class="w">faire un bivouac = bivouaquer</span><span class="g">expr.</span>露宿、野營</li>
+    <li><span class="w">faire un circuit · faire un périple</span><span class="g">expr.</span>跑一趟環線・長途遊歷</li>
+    <li><span class="w">prendre un chemin de traverse</span><span class="g">expr.</span>抄小路（p.86 註 3：plus courts）</li>
+    <li><span class="w">être sur les chemins · partir/être sur les routes</span><span class="g">expr.</span>在路上</li>
+    <li><span class="w">faire le tour d'une ville ou d'un pays</span><span class="g">expr.</span>繞一圈、走遍</li>
+  </ul>
+
+  <h3>經驗與慣用語（p.90）</h3>
+  <ul class="vocab">
+    <li><span class="w">le dépaysement</span><span class="g">m.</span>換了環境的新奇感</li>
+    <li><span class="w">demander l'hospitalité</span><span class="g">expr.</span>請人收留借住</li>
+    <li><span class="w">le moment d'exception</span><span class="g">m.</span>非凡的時刻</li>
+    <li><span class="w">réjouissant(e)</span><span class="g">adj.</span>令人開心的</li>
+    <li><span class="w">être marqué(e) par</span><span class="g">expr.</span>被……深深影響</li>
+    <li><span class="w">attraper le virus du voyage</span><span class="g">expr.</span>愛上旅行（染上旅行病毒）</li>
+    <li><span class="w">à couper le souffle</span><span class="g">expr.</span>美得令人屏息（p.86 註 2：incroyables）</li>
+    <li><span class="w">être un(e) accro de voyages</span><span class="g">fam.</span>旅行成癮的人</li>
+    <li><span class="w">voir du pays</span><span class="g">expr.</span>見見世面、四處走走</li>
+    <li><span class="w">Roulez jeunesse !</span><span class="g">expr.</span>出發囉！（p.86 小標題）</li>
+    <li><span class="w">s'apprivoiser</span><span class="g">v.</span>慢慢熟悉彼此（＝apprendre à se connaître，p.86 練習 9c）</li>
+    <li><span class="w">complice</span><span class="g">adj.</span>默契好的、很親的（＝proche，p.86 練習 9b）</li>
+  </ul>
+
+  <h3>陸上、天空與海上（p.96）</h3>
+  <ul class="vocab">
+    <li><span class="w">le ferroviaire</span><span class="g">m.</span>鐵路（業）（p.92 G 練習 6）</li>
+    <li><span class="w">le trajet en correspondance</span><span class="g">m.</span>要轉車的行程</li>
+    <li><span class="w">la voiture couchette</span><span class="g">f.</span>臥鋪車廂</li>
+    <li><span class="w">pédaler · le vélo solaire</span><span class="g">v./m.</span>踩踏板・太陽能腳踏車</li>
+    <li><span class="w">le décollage · s'envoler</span><span class="g">m./v.</span>起飛</li>
+    <li><span class="w">le vol (intérieur)</span><span class="g">m.</span>（國內）班機</li>
+    <li><span class="w">le vol en ballon = en montgolfière · la nacelle</span><span class="g">m./f.</span>熱氣球飛行・吊籃（抽字 « montgolfi ère »）</li>
+    <li><span class="w">naviguer · le voilier</span><span class="g">v./m.</span>航行・帆船</li>
+  </ul>
+
+  <h3>欣賞與冒險（p.96）</h3>
+  <ul class="vocab">
+    <li><span class="w">arpenter</span><span class="g">v.</span>徒步走遍（＝parcourir à pied，p.97 練習 5）</li>
+    <li><span class="w">contempler · s'émerveiller</span><span class="g">v.</span>凝視欣賞・驚嘆</li>
+    <li><span class="w">flâner</span><span class="g">v.</span>閒逛（p.95 K 練習 5；抽字 « fl âner »）</li>
+    <li><span class="w">s'immerger · l'immersion</span><span class="g">v./f.</span>沉浸</li>
+    <li><span class="w">franchir des barrières</span><span class="g">expr.</span>跨越障礙（＝dépasser，p.92 H 練習 5a）</li>
+    <li><span class="w">hors des sentiers battus</span><span class="g">expr.</span>不走熱門路線（p.92 H 練習 5b）</li>
+    <li><span class="w">l'odyssée · l'expédition</span><span class="g">f.</span>長途冒險・遠征</li>
+  </ul>
+
+  <h3>觀光與生態、組織旅行（p.96）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'écotourisme · le tourisme vert</span><span class="g">m.</span>生態觀光・綠色觀光</li>
+    <li><span class="w">le slow tourisme ≠ le tourisme de masse</span><span class="g">m.</span>慢遊≠大眾觀光</li>
+    <li><span class="w">l'impact environnemental</span><span class="g">m.</span>環境衝擊</li>
+    <li><span class="w">préserver un site</span><span class="g">expr.</span>保護景點</li>
+    <li><span class="w">le prestataire touristique</span><span class="g">m.</span>旅遊業者</li>
+    <li><span class="w">sur réservation · réserver à l'avance</span><span class="g">expr.</span>須預約・提前預訂</li>
+  </ul>
+
+  <h3>方位說法（p.96 La localisation）</h3>
+  <ul class="vocab">
+    <li><span class="w">à deux pas (de) · à notre porte</span><span class="g">expr.</span>就在附近・就在家門口</li>
+    <li><span class="w">au bout du monde · le lointain</span><span class="g">expr./m.</span>天涯海角・遠方</li>
+    <li><span class="w">au coin de la rue</span><span class="g">expr.</span>街角</li>
+    <li><span class="w">de long en large</span><span class="g">expr.</span>走遍各處、來來回回</li>
+    <li><span class="w">sur les hauteurs de · au sommet · d'en haut</span><span class="g">expr.</span>在……的高處・在頂端・從高處</li>
+    <li><span class="w">la proximité</span><span class="g">f.</span>鄰近</li>
+  </ul>
+
+  <div class="flag">
+    🔎 <b>課本與標準法文的落差：</b><br>
+    ① <b>p.95 K 練習 3 « que faudra-il faire »</b>：標準法文倒裝要加 t——<b>que faudra-t-il faire</b>。兩層抽字一樣，推定是課本印漏，<b>未對照紙本查證</b>。<br>
+    ② <b>p.97 練習 3d « être un(e) accro de voyage »</b> 單數，p.90 詞彙框寫 <b>accro de voyages</b> 複數。兩種都說得通，課本自己前後不一。<br>
+    ③ <b>p.89 D « une fois tous les 36 du mois »</b>（註：très rarement）：標準慣用語是 <i>tous les trente-six du mois</i>（＝幾乎從不）。沒錯，但要知道它是反話：一個月沒有 36 號。<br>
+    ④ 抽字把 fi／ff 連字吃掉：p.86 « petite-lle »、« soue »（＝petite-fille、souffle），p.89 « nale »、« intensiée »（＝finale、intensifiée），p.91 « ltre »、« seles »（＝filtre、selfies），p.92 « sut »、« magniques »（＝suffit、magnifiques），p.97 « planifi er »、« affi rmations »，引用時已推定原文，<b>未查證</b>。
+  </div>
+</section>
+
+<!-- ============ 7. DELF 策略 ============ -->
+<section>
+  <h2>📝 應考策略：DELF B1 寫作（p.99–100） <span class="time">1 分鐘</span></h2>
+  <div class="rule">
+    課本重點（中文摘要）：寫作 45 分鐘、25 分、<b>至少 160 字</b>（可多不可少）。根據一份書面文件（信、email、報導、論壇留言）表達個人觀點。<br>
+    做法：看清楚寫給誰（朋友用 Salut, tu…；陌生人用 Madame, Monsieur, vous…）｜詞彙要變化｜時態語式要對｜注意拼字、配合、標點｜先打草稿、列大綱、用連接詞串起來｜開頭結尾先寫在草稿｜分段、字寫清楚。<br>
+    <b>時間分配（p.99）：</b>讀題 5 分 → 草稿 10 分 → 寫 25 分 → 檢查 5 分。
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">Votre texte doit comprendre au moins 160 mots. Vous pouvez écrire plus mais pas moins.</span><span class="zh">你的文章至少要 160 字。可以多寫，不能少。</span><span class="note">p.99</span></li>
+    <li><span class="fr">Lisez bien la consigne pour savoir à qui vous vous adressez.</span><span class="zh">仔細讀題目，搞清楚你是寫給誰。</span><span class="note">p.99</span></li>
+    <li><span class="fr">Faites un brouillon avant de rédiger : écrivez toutes vos idées et organisez-les dans un plan.</span><span class="zh">動筆前先打草稿：把所有想法寫下來，整理成大綱。</span><span class="note">p.99</span></li>
+    <li><span class="fr">Écrivez vos productions à la maison en conditions d'examen : limitez-vous à 45 minutes et respectez le nombre de mots demandé.</span><span class="zh">在家用考試條件寫：限時 45 分鐘、遵守字數。</span><span class="note">p.99</span></li>
+  </ul>
+  <p class="small">p.99 Sujet 1：前同事 Hélène 找到「旅行團領隊」的工作機會，請你分析優缺點並給建議（160 字以上）。p.100 Sujet 2：朋友 Lucie 工作過勞想請一年長假（année sabbatique），你有條理地給意見（160 字以上）。</p>
+  <div class="flag">
+    🔎 ① <b>字數前後不一：</b>同單元 p.87 練習 10、p.92 練習 6 的 DELF 寫作題寫「<b>150 mots minimum</b>」，p.99–100 策略頁與模擬題寫「<b>160 mots minimum</b>」。以策略頁的 160 為準比較保險；現行 DELF B1 官方規定是多少，Claude 這次<b>未查證</b>。<br>
+    ② 這是 DELF 的規格，⭐ 不是 TCF Canada。TCF Canada 寫作是三個任務、字數各不同，策略可以借（草稿、時間分配、看收件人），字數與時間不要直接套。TCF 規格這次<b>未查證</b>。<br>
+    ③ 抽字把標題 stratégies 印成 « Stratéies »（p.99，掉了 g），已更正。
+  </div>
+</section>
+
+<!-- ============ 8. 閱讀亮點 ============ -->
+<section>
+  <h2>📰 閱讀裡值得先看的句子 <span class="time">1 分鐘</span></h2>
+  <ul class="phrase-list">
+    <li><span class="fr">« Ma grand-mère de 100 ans était en Ehpad depuis un an quand l'établissement nous a appelés », se souvient Fiona Lauriol.</span><span class="zh">「我 100 歲的奶奶住進安養院一年了，那時院方打電話給我們。」Fiona Lauriol 回憶道。</span><span class="note">p.86 A l.6–8（imparfait 背景 ＋ passé composé 事件；Ehpad＝maison de retraite médicalisée，註 1）</span></li>
+    <li><span class="fr">Si on imagine que les deux femmes ont toujours été très proches et complices, on a tort.</span><span class="zh">如果你以為兩人一直都很親、很有默契，那就錯了。</span><span class="note">p.86 A l.13–14</span></li>
+    <li><span class="fr">Mais à peine étions-nous rentrées qu'elle a demandé à repartir !</span><span class="zh">「可是我們才剛到家，她就說要再出發！」</span><span class="note">p.86 A（à peine 放句首 → 主詞動詞倒裝：étions-nous）</span></li>
+    <li><span class="fr">Pour faire ce voyage, nous avons mis 15000 euros de côté.</span><span class="zh">為了這趟旅行，我們存了一萬五千歐。</span><span class="note">p.89 D l.12</span></li>
+    <li><span class="fr">Il nous arrive aussi de demander l'hospitalité.</span><span class="zh">我們有時也會請人收留。</span><span class="note">p.89 D l.17–18（il arrive à qqn de ＋ 原形＝有時會）</span></li>
+    <li><span class="fr">Alors pourquoi partir loin quand l'aventure est partout ?</span><span class="zh">那為什麼要跑那麼遠，冒險明明到處都是？</span><span class="note">p.92 H l.3–4</span></li>
+    <li><span class="fr">Finis les vols low cost au bout du monde et les destinations saturées de touristes !</span><span class="zh">別再搭廉航飛到天涯海角、去擠滿觀光客的地方了！</span><span class="note">p.92 H l.22–24（Finis… 放句首＝「……的時代結束了」）</span></li>
+    <li><span class="fr">Bienvenue en 2050, époque où l'intégralité de vos vacances doit être réservée à l'avance.</span><span class="zh">歡迎來到 2050 年，一個假期全部都得提前預訂的時代。</span><span class="note">p.95 K l.1–3（où 接時間；doit être réservée＝被動，Unité 5）</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>p.87 C《小淘氣尼古拉》是故意的小孩口吻：</b>一長串 <i>et… et puis… et…</i>、<i>papa il rigolait doucement</i>（主詞重複）、<i>ça a été chouette comme je ne peux pas vous dire</i>。這是文學上模仿小孩說話，⛔ 寫作時不要學這種句型。
+  </div>
+  <div class="flag">
+    🔎 ① <b>p.86 A 中間一欄抽字被切斷</b>（« râce à nos soins »、« lle allait déjà mieux »、« lors eu l'idée »），句首字母缺漏，本頁沒有引用那段。② <b>p.87 C l.8–11 抽字缺字嚴重</b>（« d'autres qui r avaient retrouvés »、« siaient »、« ne sient plus »，推定是 sifflaient／sifflent，ff 連字），本頁沒有引用；練習 7 問 siffler 的不同用法就在這兩行。③ 作者署名被截斷：p.86 « Céline J »、p.87 « S-G »、p.89 « Marion S-R »，全名<b>未查證</b>。④ p.93 J 是資訊圖表，抽字是逐字母直排的亂碼，本頁沒有收錄任何內容。⑤ 聽力 B、G、I、L 與影片 F 沒讀附錄逐字稿，只寫了題目方向。
+  </div>
+</section>
+
+<!-- ============ 9. 練習題 ============ -->
+<section>
+  <h2>✏️ 最可能上課做的題目：先想想看 <span class="time">2 分鐘</span></h2>
+  <p class="small">只給方向，不給答案。哪幾題會做是照前幾個單元的節奏推測（未查證）。</p>
+
+  <div class="ex">
+    <div class="q">p.88 Entraînement 5：passé composé／imparfait／plus-que-parfait 三選一 <span class="likely">★★★ 文法頁一定做</span></div>
+    <div class="hint">先想想看：每題先找出「故事線」的那個時刻，再問另一個動作是<b>在它之前</b>（plus-que-parfait）、<b>當時的背景</b>（imparfait），還是<b>故事往前推的事件</b>（passé composé）。a 題 <i>quand tu es partie / partais au Cambodge</i>：出發是一個事件還是背景？e 題 <i>Avant l'été dernier</i>：參考點在過去還是現在？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.88 Entraînement 4：前後句配對 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：a 題 <i>Quand j'ai acheté mon billet…</i>——後半句如果是「價格已經漲了」，要用哪個時態？看 1–7 裡哪幾句有 <i>avait déjà</i>。</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.89 Entraînement 2：選時間標記 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：每題問一次「參考點是現在，還是句子裡別的時刻？」d 題 <i>Hier / La veille, nous avons campé, mais ce soir nous dormons à l'hôtel</i>——後半句的 ce soir 和現在式告訴你參考點在哪？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.94 Entraînement 2、3：地點介系詞或副詞 <span class="likely">★★</span></div>
+    <div class="hint">先想想看：每個空格後面<b>有沒有名詞</b>？有 → 介系詞（記得 de ＋ le → du）；沒有 → 副詞。2f <i>L'arrêt de bus est vraiment loin / dehors du musée</i>：後面有 du musée，哪一個能接 de？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.97 l'essentiel 1、2：旅行故事填時態＋時間標記 <span class="likely">★★</span></div>
+    <div class="hint">先想想看：第 1 題 <i>Nous (ne pas réserver) …… d'hébergement avant le départ</i>——avant le départ 是在故事線的前面還是後面？第 2 題 b <i>En 2022, j'ai décidé… ……, j'avais passé les vacances d'été en Inde</i>：參考點是 2022，要用「去年」還是「前一年」那一欄？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.90 Phonétique 3：h muet／h aspiré 朗讀 <span class="likely">★ 有時間才做</span></div>
+    <div class="hint">先想想看：唸 <i>les hauteurs</i> 時 les 的 s 要不要發出來？<i>des hommes</i> 呢？</div>
+  </div>
+</section>
+
+<!-- ============ 10. 問老師 ============ -->
+<section>
+  <h2>🙋 上課可以問老師的 3 個問題</h2>
+  <ol class="ask">
+    <li>p.94 Échauffement 印 <b>des beaux trains de nuit</b>——Unité 5 學的是前置形容詞前要寫 <b>de beaux</b>。這句是因為摘自口語才保留 des 嗎？寫作時一定要用 de 嗎？</li>
+    <li>p.94 練習 3i <b>elle arrivée</b>、p.95 練習 3 <b>que faudra-il faire</b>——我以為標準寫法是 <b>elle est arrivée</b>、<b>que faudra-t-il faire</b>，是課本印漏嗎？</li>
+    <li>p.87、p.92 的寫作題寫 150 字、p.99 策略頁寫 160 字——DELF B1 現在到底是幾個字？TCF Canada 寫作的字數要怎麼抓？</li>
+  </ol>
+</section>
+
+<p class="small">來源：Édito B1 課本 p.85–100（<code>assets/.textbook_cache.txt</code> 第 59694–61958 行；PDF 頁碼與課本頁碼一致，已用頁尾「86 I quatre-vingt-six」「quatre-vingt-neuf I 89」「94 I quatre-vingt-quatorze」「quatre-vingt-dix-sept I 97」「100 I cent」等核對；p.101 是 Unité 7 首頁）。PDF 抽字時掉了或拆開 fi／ff 連字（清單見詞彙段 🔎 ④，另有 p.95 « Je Bezos »、« réchauement »、p.98 « eet »＝Jeff、réchauffement、effet），引用時推定原文，<b>未對照紙本查證</b>。p.88 « ditque »、p.94 « àla »、« Parsdevant »、p.90 « histoiresde » 等黏字已補空格。標成「課本印漏」的兩處（p.94 elle arrivée、p.95 faudra-il）在兩層抽字裡都一樣，推定是印刷本身如此，但仍<b>未對照紙本查證</b>。p.95 « CO 2 » 抽字把下標 2 拆到下一行，已併回 CO2。標準法文的判斷（plus-que-parfait 其他用法、devant／derrière 兼作介系詞、des→de 書面規則、h 的類型、倒裝要加 t）是 Claude 依一般標準文法知識寫的，這次沒有另外查字典或文法書，視為<b>未查證</b>。本頁未讀課本附錄的聽力逐字稿。</p>
+
+</main>
+</body>
+</html>
