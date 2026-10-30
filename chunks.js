@@ -23156,5 +23156,565 @@ const CHUNKS = [
   "fr": "que vous soyez",
   "zh": "沒有 i",
   "note": "que vous ayez｜vous"
+ },
+ {
+  "id": "L47_Il_faut_avertir_d_un_ret",
+  "lesson": 47,
+  "fr": "Il faut avertir d'un retard par SMS.",
+  "zh": "會遲到要先傳簡訊說。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L47_Pour_sortir_il_faut_une",
+  "lesson": 47,
+  "fr": "Pour sortir, il faut une autorisation.",
+  "zh": "要出門得有許可。",
+  "note": "🎙 老師：疫情時的法國"
+ },
+ {
+  "id": "L47_Ils_prennent_toute_la_ro",
+  "lesson": 47,
+  "fr": "Ils prennent toute la route.",
+  "zh": "他們把整條路都佔了。",
+  "note": "🎙 老師的大稻埕故事"
+ },
+ {
+  "id": "L47_Ils_ne_me_demandent_pas",
+  "lesson": 47,
+  "fr": "Ils ne me demandent pas : « Tu vas bien ? »",
+  "zh": "他們沒問我：「你還好嗎？」",
+  "note": "🎙 老師的大稻埕故事＝se montrer indifférent"
+ },
+ {
+  "id": "L47_J_ai_appris_l_anglais_dè",
+  "lesson": 47,
+  "fr": "J'ai appris l'anglais dès le plus jeune âge.",
+  "zh": "我從很小就開始學英文。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L47_Je_fais_partie_de_ce_gro",
+  "lesson": 47,
+  "fr": "Je fais partie de ce groupe.",
+  "zh": "我是這個團體的一員。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L47_L_humain_fait_partie_du",
+  "lesson": 47,
+  "fr": "L'humain fait partie du monde animal.",
+  "zh": "人類也是動物界的一份子。",
+  "note": "🎙 老師：faire partie de＋le → du"
+ },
+ {
+  "id": "L47_L_humain_détruit_souvent",
+  "lesson": 47,
+  "fr": "L'humain détruit souvent l'écosystème.",
+  "zh": "人類常常破壞生態系。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L47_Je_suis_citoyen_de_Taïwa",
+  "lesson": 47,
+  "fr": "Je suis citoyen de Taïwan.",
+  "zh": "我是台灣公民。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L47_Il_est_galant",
+  "lesson": 47,
+  "fr": "Il est galant.",
+  "zh": "他很有紳士風度。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L47_Allez_dépêche_toi_on_y_v",
+  "lesson": 47,
+  "fr": "Allez, dépêche-toi, on y va !",
+  "zh": "快點，我們走了！",
+  "note": "🎙 老師：se dépêcher 的命令式"
+ },
+ {
+  "id": "L47_le_ventilateur",
+  "lesson": 47,
+  "fr": "le ventilateur",
+  "zh": "電風扇",
+  "note": "m.｜le vent＝風"
+ },
+ {
+  "id": "L47_le_ventilo",
+  "lesson": 47,
+  "fr": "le ventilo",
+  "zh": "電風扇（口語）",
+  "note": "m.｜ventilateur 剪短"
+ },
+ {
+  "id": "L47_appliquer",
+  "lesson": 47,
+  "fr": "appliquer",
+  "zh": "執行、套用",
+  "note": "v.｜appliquer des règles"
+ },
+ {
+  "id": "L47_la_familiarité",
+  "lesson": 47,
+  "fr": "la familiarité",
+  "zh": "熟稔；太隨便",
+  "note": "f.｜familier（形容詞）"
+ },
+ {
+  "id": "L47_gentiment",
+  "lesson": 47,
+  "fr": "gentiment",
+  "zh": "溫和地、客氣地",
+  "note": "adv.｜gentil 拿掉 l＋ment"
+ },
+ {
+  "id": "L47_la_marque_de_respect",
+  "lesson": 47,
+  "fr": "la marque de respect",
+  "zh": "尊重的表現",
+  "note": "f.｜une marque de politesse"
+ },
+ {
+  "id": "L47_poli_e",
+  "lesson": 47,
+  "fr": "poli(e)",
+  "zh": "有禮貌的",
+  "note": "adj.｜la politesse 禮貌"
+ },
+ {
+  "id": "L47_la_règle_de_conduite",
+  "lesson": 47,
+  "fr": "la règle de conduite",
+  "zh": "行為準則",
+  "note": "f.｜交通規則＝le code de la route"
+ },
+ {
+  "id": "L47_bafouer",
+  "lesson": 47,
+  "fr": "bafouer",
+  "zh": "踐踏、無視",
+  "note": "v.｜≠ respecter"
+ },
+ {
+  "id": "L47_refuser_de_donner_sa_pla",
+  "lesson": 47,
+  "fr": "refuser de donner sa place",
+  "zh": "拒絕讓位",
+  "note": "v.｜別人開口了還不讓"
+ },
+ {
+  "id": "L47_jeter_des_déchets_sur_la",
+  "lesson": 47,
+  "fr": "jeter des déchets sur la place publique",
+  "zh": "在公共場所亂丟垃圾",
+  "note": "v.｜les déchets 垃圾"
+ },
+ {
+  "id": "L47_se_montrer_indifférent_e",
+  "lesson": 47,
+  "fr": "se montrer indifférent(e)",
+  "zh": "表現得漠不關心",
+  "note": "v.｜"
+ },
+ {
+  "id": "L47_l_incivilité",
+  "lesson": 47,
+  "fr": "l'incivilité",
+  "zh": "不文明的行為",
+  "note": "f.｜"
+ },
+ {
+  "id": "L47_le_fumeur_la_fumeuse",
+  "lesson": 47,
+  "fr": "le fumeur, la fumeuse",
+  "zh": "抽菸的人",
+  "note": "n.｜fumer 抽菸"
+ },
+ {
+  "id": "L47_le_mégot",
+  "lesson": 47,
+  "fr": "le mégot",
+  "zh": "菸蒂",
+  "note": "m.｜"
+ },
+ {
+  "id": "L47_les_aînés",
+  "lesson": 47,
+  "fr": "les aînés",
+  "zh": "長輩、老人家",
+  "note": "m. pl.｜l'aîné＝老大"
+ },
+ {
+  "id": "L47_diverger",
+  "lesson": 47,
+  "fr": "diverger",
+  "zh": "意見分歧",
+  "note": "v.｜on diverge"
+ },
+ {
+  "id": "L47_l_interlocuteur_l_interl",
+  "lesson": 47,
+  "fr": "l'interlocuteur, l'interlocutrice",
+  "zh": "談話的對象",
+  "note": "n.｜"
+ },
+ {
+  "id": "L47_lancer_une_conversation",
+  "lesson": 47,
+  "fr": "lancer une conversation",
+  "zh": "開啟對話",
+  "note": "v.｜傳訊息也算"
+ },
+ {
+  "id": "L47_rentrer_en_interaction",
+  "lesson": 47,
+  "fr": "rentrer en interaction",
+  "zh": "開始互動",
+  "note": "v.｜＝ entrer en interaction"
+ },
+ {
+  "id": "L47_répondre",
+  "lesson": 47,
+  "fr": "répondre",
+  "zh": "回答、回覆",
+  "note": "v.｜"
+ },
+ {
+  "id": "L47_se_dire_des_choses",
+  "lesson": 47,
+  "fr": "se dire des choses",
+  "zh": "彼此說些話",
+  "note": "v.｜J'ai des choses à te dire."
+ },
+ {
+  "id": "L47_l_acte",
+  "lesson": 47,
+  "fr": "l'acte",
+  "zh": "行為",
+  "note": "m.｜l'acte de manger"
+ },
+ {
+  "id": "L47_comprendre_dès_le_plus_j",
+  "lesson": 47,
+  "fr": "comprendre dès le plus jeune âge",
+  "zh": "從小就懂",
+  "note": "v.｜dès＝從……起"
+ },
+ {
+  "id": "L47_construire",
+  "lesson": 47,
+  "fr": "construire",
+  "zh": "建立、建造",
+  "note": "v.｜建築或社會都可以"
+ },
+ {
+  "id": "L47_éduquer",
+  "lesson": 47,
+  "fr": "éduquer",
+  "zh": "教養、教育",
+  "note": "v.｜教做人"
+ },
+ {
+  "id": "L47_faire_partie_de",
+  "lesson": 47,
+  "fr": "faire partie de",
+  "zh": "是……的一部分",
+  "note": "v.｜"
+ },
+ {
+  "id": "L47_la_valeur",
+  "lesson": 47,
+  "fr": "la valeur",
+  "zh": "價值（觀）",
+  "note": "f.｜les valeurs citoyennes"
+ },
+ {
+  "id": "L47_le_citoyen_la_citoyenne",
+  "lesson": 47,
+  "fr": "le citoyen, la citoyenne",
+  "zh": "公民",
+  "note": "n.｜citoyen(ne)（形容詞）"
+ },
+ {
+  "id": "L47_l_école_maternelle",
+  "lesson": 47,
+  "fr": "l'école maternelle",
+  "zh": "幼兒園",
+  "note": "f.｜"
+ },
+ {
+  "id": "L47_l_ADN",
+  "lesson": 47,
+  "fr": "l'ADN",
+  "zh": "字母順序跟英文相反",
+  "note": "m.｜DNA"
+ },
+ {
+  "id": "L47_la_biologie",
+  "lesson": 47,
+  "fr": "la biologie",
+  "zh": "生物學",
+  "note": "f.｜"
+ },
+ {
+  "id": "L47_détruire",
+  "lesson": 47,
+  "fr": "détruire",
+  "zh": "破壞、摧毀",
+  "note": "v.｜"
+ },
+ {
+  "id": "L47_l_écosystème",
+  "lesson": 47,
+  "fr": "l'écosystème",
+  "zh": "生態系",
+  "note": "m.｜"
+ },
+ {
+  "id": "L47_l_environnement",
+  "lesson": 47,
+  "fr": "l'environnement",
+  "zh": "環境",
+  "note": "m.｜"
+ },
+ {
+  "id": "L47_l_espace_naturel",
+  "lesson": 47,
+  "fr": "l'espace naturel",
+  "zh": "自然區域",
+  "note": "m.｜"
+ },
+ {
+  "id": "L47_explorer",
+  "lesson": 47,
+  "fr": "explorer",
+  "zh": "探索",
+  "note": "v.｜"
+ },
+ {
+  "id": "L47_les_fossiles",
+  "lesson": 47,
+  "fr": "les fossiles",
+  "zh": "化石",
+  "note": "m. pl.｜les énergies fossiles 化石燃料"
+ },
+ {
+  "id": "L47_la_géographie",
+  "lesson": 47,
+  "fr": "la géographie",
+  "zh": "地理",
+  "note": "f.｜"
+ },
+ {
+  "id": "L47_le_monde_animal",
+  "lesson": 47,
+  "fr": "le monde animal",
+  "zh": "動物界",
+  "note": "m.｜le monde du cinéma 電影圈"
+ },
+ {
+  "id": "L47_l_observation",
+  "lesson": 47,
+  "fr": "l'observation",
+  "zh": "觀察",
+  "note": "f.｜"
+ },
+ {
+  "id": "L47_les_plantes",
+  "lesson": 47,
+  "fr": "les plantes",
+  "zh": "植物",
+  "note": "f. pl.｜"
+ },
+ {
+  "id": "L47_les_sciences_de_la_vie",
+  "lesson": 47,
+  "fr": "les sciences de la vie",
+  "zh": "生命科學",
+  "note": "f. pl.｜"
+ },
+ {
+  "id": "L47_l_être_humain",
+  "lesson": 47,
+  "fr": "l'être humain",
+  "zh": "人類",
+  "note": "m.｜un être 一個生命"
+ },
+ {
+  "id": "L47_la_galanterie",
+  "lesson": 47,
+  "fr": "la galanterie",
+  "zh": "紳士風度",
+  "note": "f.｜galant（形容詞）"
+ },
+ {
+  "id": "L47_perpétuer",
+  "lesson": 47,
+  "fr": "perpétuer",
+  "zh": "延續",
+  "note": "v.｜perpétuer la tradition"
+ },
+ {
+  "id": "L47_une_fausse_bonne_idée",
+  "lesson": 47,
+  "fr": "une fausse bonne idée",
+  "zh": "看似好其實不好的主意",
+  "note": "f.｜≠ une mauvaise idée"
+ },
+ {
+  "id": "L47_le_prince_charmant",
+  "lesson": 47,
+  "fr": "le prince charmant",
+  "zh": "白馬王子",
+  "note": "m.｜"
+ },
+ {
+  "id": "L47_le_sexisme_bienveillant",
+  "lesson": 47,
+  "fr": "le sexisme bienveillant",
+  "zh": "善意的性別歧視",
+  "note": "m.｜"
+ },
+ {
+  "id": "L47_bienveillant_e",
+  "lesson": 47,
+  "fr": "bienveillant(e)",
+  "zh": "出於好意的",
+  "note": "adj.｜≠ malveillant"
+ },
+ {
+  "id": "L47_traiter",
+  "lesson": 47,
+  "fr": "traiter",
+  "zh": "對待",
+  "note": "v.｜英文 treat"
+ },
+ {
+  "id": "L47_bavarder",
+  "lesson": 47,
+  "fr": "bavarder",
+  "zh": "聊天",
+  "note": "v.｜bavard(e) 愛講話的"
+ },
+ {
+  "id": "L47_papoter",
+  "lesson": 47,
+  "fr": "papoter",
+  "zh": "閒聊",
+  "note": "v.｜"
+ },
+ {
+  "id": "L47_la_caisse",
+  "lesson": 47,
+  "fr": "la caisse",
+  "zh": "結帳櫃台",
+  "note": "f.｜le caissier, la caissière"
+ },
+ {
+  "id": "L47_les_commerces_de_quartie",
+  "lesson": 47,
+  "fr": "les commerces de quartier",
+  "zh": "社區小店",
+  "note": "m. pl.｜"
+ },
+ {
+  "id": "L47_recréer_des_liens",
+  "lesson": 47,
+  "fr": "recréer des liens",
+  "zh": "重建人際連結",
+  "note": "v.｜"
+ },
+ {
+  "id": "L47_le_lien_social",
+  "lesson": 47,
+  "fr": "le lien social",
+  "zh": "社交連結",
+  "note": "m.｜"
+ },
+ {
+  "id": "L47_déshumanisé_e",
+  "lesson": 47,
+  "fr": "déshumanisé(e)",
+  "zh": "沒有人味的",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L47_les_rayons",
+  "lesson": 47,
+  "fr": "les rayons",
+  "zh": "超市貨架區",
+  "note": "m. pl.｜"
+ },
+ {
+  "id": "L47_les_heures_de_pointe",
+  "lesson": 47,
+  "fr": "les heures de pointe",
+  "zh": "尖峰時段",
+  "note": "f. pl.｜la pointe 尖端"
+ },
+ {
+  "id": "L47_le_personnel_d_accueil",
+  "lesson": 47,
+  "fr": "le personnel d'accueil",
+  "zh": "櫃台接待人員",
+  "note": "m.｜le personnel 全體員工"
+ },
+ {
+  "id": "L47_individualiste",
+  "lesson": 47,
+  "fr": "individualiste",
+  "zh": "個人主義的",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L47_chouette",
+  "lesson": 47,
+  "fr": "chouette",
+  "zh": "很棒（口語）",
+  "note": "adj.｜la chouette＝貓頭鷹"
+ },
+ {
+  "id": "L47_Je_suis_ravi_d_avoir_des",
+  "lesson": 47,
+  "fr": "Je suis ravi d'avoir des blablabla caisses ouvertes.",
+  "zh": "正面",
+  "note": "de＋原形｜自己的動作"
+ },
+ {
+  "id": "L47_Je_suis_ravi_de_pouvoir",
+  "lesson": 47,
+  "fr": "Je suis ravi de pouvoir papoter.",
+  "zh": "正面",
+  "note": "de＋原形｜自己的動作"
+ },
+ {
+  "id": "L47_Je_suis_ravi_que_les_gen",
+  "lesson": 47,
+  "fr": "Je suis ravi que les gens puissent papoter entre eux.",
+  "zh": "正面",
+  "note": "que＋subjonctif｜別人的動作"
+ },
+ {
+  "id": "L47_C_est_dommage_d_aller_da",
+  "lesson": 47,
+  "fr": "C'est dommage d'aller dans un magasin différent.",
+  "zh": "負面",
+  "note": "de＋原形｜自己的動作"
+ },
+ {
+  "id": "L47_C_est_dommage_de_devoir",
+  "lesson": 47,
+  "fr": "C'est dommage de devoir attendre.",
+  "zh": "負面",
+  "note": "de＋原形｜自己的動作"
+ },
+ {
+  "id": "L47_C_est_dommage_que_ma_mèr",
+  "lesson": 47,
+  "fr": "C'est dommage que ma mère doive attendre.",
+  "zh": "負面",
+  "note": "que＋subjonctif｜別人的動作"
  }
 ];

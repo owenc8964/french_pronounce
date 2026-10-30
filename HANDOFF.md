@@ -44,6 +44,7 @@
 > - 🪧 **10-28 小鎮：自我介紹島碼頭旁加「島上的重點」告示牌——一上島自動打開，考官問題＋四區條列（附站號）；走開再走回會再開；順手修兩個地標放錯區（三之九十七（小鎮））**
 > - 📜 **10-29 小鎮：定主線（鐘→塔→出航→對岸的城市，遊戲沒有終點、考試只當送行事件）＋做第二章「麵包師傅的夜路」＋點目標列打開主線進度板（三之九十八（小鎮））**
 > - 🩹 **10-29 待決定提案 64 條裡「冤枉他／教錯」的大部分修掉了：時刻 et quart、鐵砧 que／elle était allée、題庫 17 題、筆記第 44–46 課、鎮報註解、升級工坊說明、Vrai/Faux 平衡（三之九十九）**
+> - 📚 **10-30 第47課（Édito B1 p.30–34：Le vivre-ensemble 詞彙、galanterie、blablabla caisses、Pour 方框、⭐ Exprimer ses sentiments de＋原形 vs que＋subjonctif）筆記四件套＋連動全做（卡 80、題 26、句 13、表格 1、地圖）；Owen「全部都補」→ A1／A2 課本與練習本剩下做得成一句一空的文法小題 +1215 題入題庫（BANK 2751→3966），小鎮路上選擇題 858→1485（三之一百零五）**
 > - 🏘️ **10-30 小鎮：居民活起來（town_life.js）——Bernard／Clément／Lucie／Amira／Gaston 照時段走動、彼此聊天、約 5 分鐘一次來找你一起解題、點了聊天越熟越深（每人 8 句＋3 幕故事＋問你口說卡的追問）、👥 鎮上的人圖鑑；Édito B1 Cahier 放進 assets 並抽進課本快取（三之一百零四）**
 > - 🏠 **10-30 小鎮：數字題分 9 類，熟的類別休息 4 天、弱的加倍、整體降頻；房子可以進去（鐵匠鋪含鐵砧、咖啡館、麵包店、郵局、你的家）；路上文法選擇題從約 880 擴到 1065 題、三天內出過的少出（三之一百零三）**
 > - 🐾 **10-30 小鎮：口說島照 Owen 7 點回饋調整——泡泡加 🔊／🚩回報／📖全文對照／◀上一站；🀄 中文先模式＋清單「中文順稿」；每島一隻島主跟著走（問考官問題、陪從頭講一遍、抽考官追問）；自我介紹島 Coffee Break French → podcast；健康島冥想待 Owen 口述（三之一百零二）**
@@ -4980,6 +4981,17 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
   3. **#73**（preposition-country）opts 有 12 個、互相重複（au Canada／en France…出現好幾次），看起來是組合題被攤平了，選項畫面會很怪。
   4. #301（「我 180 公分 Je fais 1m80」）topic 標成 question-words，應該是 faire 用法；不影響作答，只影響分類。
 - ⏭ 下一步（可選）：純變位 122 題要不要也補一句（例如「主詞 nous → 字尾 -ons」）——小鎮已經會列變位表，優先度低；`node tools/check_weak_anote.js --all -v` 可以看清單。
+
+#### 三之一百零五、10-30：第47課筆記＋A1／A2 文法練習全部補進題庫
+- **第47課**（Édito B1 p.30–34，10-30 線上課，逐字稿＋6 張截圖）：french_notes.html lesson-47（check_notes 全綠）；chunks +80（L47_）；questions.js +26（subjonctif-present 16、新 topic `vocab-vivre-ensemble` 10，quiz.html／dashboard.html 都加了標籤）；sentences.js S_L47_1–13；table_drill.html `senti-b1-p34`；map.html CURRENT_LESSON＝47＋地塊 `vivre-ensemble`。
+  - ⚠️ 標出來的衝突：老師說回答 « Tu n'as jamais fumé ? » 用 oui → 標準是 **Non, je n'ai jamais fumé**（反駁用 si）；練習 5f 老師口說 soit fermé → 標準 **soient fermées**；p.34 表格 « J'en peux plus » → 標準 Je n'en peux plus；交通規則老師說 les règles de la route → 標準 le code de la route；être familier avec quelqu'un 用在人身上多半是「沒大沒小」；chouette 字源（chouetter）是老師當堂查的，未查證。
+  - p.30 練習 3 第一格當堂很亂，筆記用 enseigner（後面沒有 à）；練習 4（找不同類）沒做，筆記標「我的判斷」。
+- **Owen「全部都補」**（回應 A1／A2 盤點）：六批代理照 `research/2026-10-30_A1／A2文法練習收錄盤點.md` 補，合併腳本檢查（topic 存在、一個空格、choose 正解在 opts、hint 與題幹不重複）後入庫 **1215 題**：A2 練習本 p.1–58 153、p.63–123 168、p.125 起＋A2 課本零星 96；A1 練習本 p.5–70 314、p.71 起 264；A1 課本 220。BANK 2751→3966；audit_questions 新增的旗標全是誤報；小鎮 gen_town_field_extra 重跑 858→1485；三連可出 1368→2545。
+  - 仍不收：配對、分類表、看圖、聽力、開放／不唯一、少數 OCR 壞掉（A2 p.39 練習3e/3f、A1 課本 p.64 練習1b）。A1 課本 p.47 練習2、p.50 練習1（名詞單複數，8 小題）因為題庫沒有對應 topic 沒收——要的話先開 topic。
+  - Corrigés 和標準法文衝突的都寫在各題 aNote（例：A2 p.139 練習2d plantés／plantées 兩個都收、A1 p.115 練習1e m'ont invitée、A1 p.50 Bilan 練習2 Corrigés 字母錯位、A1 課本 p.123 練習2d 否定用 de）。
+  - 順手修：questions.js 四題 hint「Cahier A1 p.8」→ p.11。
+  - 盤點報告兩處小錯（代理照原文收）：A2 p.41 練習4、p.29 練習4 其實是一字填空；A2 p.123 練習2 只有 4 小題不是 6。
+- 下一步：觀察 Owen 作答紀錄，A1 新補的（-er、être/avoir 這些原本「刻意不補」的）如果一直秒答，pickQ 的近期權重會自然把它們壓低；不需要另外處理。
 
 #### 三之一百零四（小鎮）、10-30：居民活起來（第一批）
 
