@@ -1698,12 +1698,13 @@ function openStory(){
     else if(now) h+='<div class="muted">'+c.steps.map(function(s){ return (s[1]?'✓ ':'・')+s[0]; }).join('<br>')+'</div>';
     h+='</div>';
   });
-  h+='<div class="muted" style="margin-top:8px">之後還有第二部、第三部……</div>';
+  h+='<div class="muted" style="margin-top:8px">之後還有第二部、第三部……</div>'+(typeof lifeBook==='function'?'<div class="row2" style="margin-top:6px"><button class="btn ghost" id="sppl">👥 鎮上的人</button><span></span></div>':'');
   var hasQ=S.quests && S.quests.d===today() && S.quests.list && S.quests.list.length;
   h+='<div class="row2">'+(hasQ?'<button class="btn ghost" id="sq">📋 今日委託</button>':'<span></span>')+'<button class="btn main" id="ok">好</button></div>';
   openSheet(h);
   document.getElementById('ok').onclick=closeSheet;
   if(hasQ) document.getElementById('sq').onclick=openQuests;
+  var pp=document.getElementById('sppl'); if(pp) pp.onclick=function(){ lifeBook(openStory); };
 }
 
 /* ============================================================
@@ -3936,6 +3937,7 @@ function update(dt){
   }
   if(S.moveIn && !S.built.cottage && !pending){ moveIn(); return; }
   if(updateVillagers(dt)) return;
+  if(typeof lifeUpdate==='function' && lifeUpdate(dt)) return;   /* 🏘️ 居民（town_life.js） */
   /* 進城 → 有東西就回顧 */
   var it=inTown(hero);
   if(it && !wasInTown){ wasInTown=true; if(log.some(function(l){ return l.ok===false; }) || log.length>=6){ joy=null; keys={}; review(); return; } if(night && raidDue()){ joy=null; keys={}; raidPanel(false); return; } if(maybeNews()) return; }
@@ -4014,6 +4016,7 @@ function draw(dt){
   nodes.forEach(function(n){ list.push({y:n.y+1, f:drawNode(n,ox,oy,ts)}); });
   if(S.letter) CLUES.forEach(function(c){ if(!S.clues[c.id]) list.push({y:c.y+1, f:drawClue(c,ox,oy,ts)}); });
   npcs.forEach(function(p){ list.push({y:p.y, f:drawSprite(p.s,p.x,p.y,ox,oy,ts,1,Math.sin(clock*2+p.x)*.03)}); });
+  if(typeof lifeDraw==='function') lifeDraw(list,ox,oy,ts);
   villagers.forEach(function(v){ list.push({y:v.y, f:function(){ drawSprite(v.s,v.x,v.y,ox,oy,ts,v.face,Math.abs(Math.sin(clock*6))*.04)();
     var R=residentById(v.rid), st=relOf(v.rid), lab=(st.met?R.name:'？')+' '+(REL_STAGE[stageOf(st.pts)].ic||'');
     cx.font='bold '+Math.round(ts*.24)+'px system-ui'; cx.textAlign='center'; var tw=cx.measureText(lab).width+ts*.15;
@@ -4135,6 +4138,7 @@ if(!S.intro){ S.intro=1; save();
   document.getElementById('ok').onclick=function(){ unlockTts(); closeSheet(); }; }
 
 </script>
-<script src="isle_more.js"></script>   <!-- 10-29：口說群島其餘六座島（工作／興趣／旅行／加拿大／健康／未來計畫）的地形與地標 -->
+<script src="isle_more.js"></script>
+<script src="town_life.js"></script>   <!-- 10-30：居民活起來（作息、彼此聊天、來找你、越熟越深） -->   <!-- 10-29：口說群島其餘六座島（工作／興趣／旅行／加拿大／健康／未來計畫）的地形與地標 -->
 </body>
 </html>
