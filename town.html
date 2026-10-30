@@ -465,6 +465,7 @@ function blocked(x,y){ var r=.28; return isSolidAt(x-r,y-r)||isSolidAt(x+r,y-r)|
 
 function resize(){
   if(typeof icv!=='undefined' && icv && ISLE.on) isleSize();
+  if(typeof rcv!=='undefined' && rcv && ROOM.on){ var rd=Math.min(window.devicePixelRatio||1,2); rcv.width=Math.round(innerWidth*rd); rcv.height=Math.round(innerHeight*rd); rctx.imageSmoothingEnabled=false; }
   DPR=Math.min(window.devicePixelRatio||1, 2);
   cv.width=Math.floor(window.innerWidth*DPR); cv.height=Math.floor(window.innerHeight*DPR);
   SC = window.innerWidth<520 ? 3 : 4; TS=16*SC;
@@ -1776,10 +1777,118 @@ function canPay(c){ return count('ore')>=(c.ore||0) && count('obj')>=(c.obj||0) 
 function pay(c){ ['ore','obj','fish'].forEach(function(k){ for(var i=0;i<(c[k]||0);i++){ var j=bag.findIndex(function(b){ return b.k===k&&!b.good; }); if(j<0) j=bag.findIndex(function(b){ return b.k===k; }); bag.splice(j,1); } }); S.gold-=(c.gold||0); }
 function starsOf(k){ var L=LOTS[k]; if(!L.fam) return ''; var n=standCount(L.fam)+(L.fam==='noun'?0:0), s=n>=30?3:n>=15?2:n>=5?1:0; return {s:s, n:n}; }
 function starHtml(k){ var o=starsOf(k); if(!o) return ''; var h=''; for(var i=0;i<3;i++) h+=i<o.s?'★':'<span class="off">★</span>'; return '<span class="stars">'+h+'</span>'; }
-function openLot(k){
+/* ============================================================
+   🏠 室內（10-30 Owen：「房子應該要可以進去」「咖啡館、鐵砧太陽春了，看起來有點可憐」）
+   蓋好的房子走到門口 → 進到屋裡：拖曳／方向鍵走路，或點東西自己走過去；靠近東西會冒泡泡，點泡泡＝原本的功能
+   （鐵砧、買工具、口說島練習、招式卡、睡覺、主線進度…）。門口那一格往下走＝出去。⛔ 屋裡沒有新的法文
+   ============================================================ */
+var ROOMS={
+  forge:{ name:'⚒ 鐵匠鋪', W:9, H:7, floor:['#6b5a4a','#5f4f40'], wall:'#4a3a30', trim:'#2e231c',
+    walls:[['🪓',1.4],['⛓️',3.0],['🗡️',6.2],['🛡️',7.6]], win:[4.6],
+    objs:[ {spr:'smith', x:2.2, y:3.4, lab:'鐵匠：買工具、看看這間店', act:function(){ openLot('forge',true); }},
+           {em:'🔥', x:6.6, y:2.9, size:1.5, lab:'熔爐', act:function(){ toast('🔥 爐火燒得正旺——旁邊的鐵砧在等你'); }},
+           {em:'🔨', x:5.0, y:4.4, size:1.25, lab:'🔨 鐵砧：變位（一爐一個時態）', act:function(){ var ch=CHALLENGES.filter(function(c){ return c.kind==='forge'; })[0]; if(ch) forgePanel(ch); }} ],
+    deco:[['🪵',7.8,5.6],['🧱',1.0,5.8],['🪣',3.4,5.9],['⚙️',7.9,4.2]] },
+  cafe:{ name:'☕ 咖啡館', W:9, H:7, floor:['#c9a27a','#bb946d'], wall:'#7b4f3a', trim:'#4a2e22',
+    walls:[['🖼️',1.6],['🕰️',4.5],['🌿',7.4]], win:[3.0,6.0],
+    objs:[ {spr:'keeper', x:4.5, y:2.9, lab:'老闆：口說島練習（一次 3 句）', act:function(){ var ch=CHALLENGES.filter(function(c){ return c.kind==='isle'; })[0]; if(ch) cafePanel(ch); }},
+           {em:'📘', x:1.6, y:4.2, lab:'📘 招式卡：升級句子的招式', act:function(){ movesCard(function(){ closeSheet(); }); }},
+           {em:'🗺️', x:7.4, y:4.2, lab:'🗺️ 牆上的群島地圖：搭船去口說群島', act:function(){ roomExit(); archOpen(); }} ],
+    deco:[['☕',3.0,2.6],['🍰',6.0,2.6],['🪑',2.6,5.6],['🪑',6.4,5.6],['🪴',0.9,2.6],['🪴',8.1,2.6],['🎵',8.0,5.8]] },
+  bakery:{ name:'🍞 麵包店', W:9, H:7, floor:['#e8d2a6','#ddc596'], wall:'#9c6b3f', trim:'#5e3d22',
+    walls:[['🥖',1.6],['🥐',3.2],['🥨',6.0],['🍩',7.6]], win:[4.6],
+    objs:[ {spr:'baker', x:4.5, y:3.0, lab:'麵包師傅', act:function(){ openLot('bakery',true); }},
+           {em:'🔥', x:7.4, y:3.0, size:1.3, lab:'烤爐', act:function(){ toast('🍞 烤爐暖烘烘的：麵包店開著，白天多 30 秒'); }} ],
+    deco:[['🍞',2.0,2.8],['🥯',2.8,2.8],['🧺',1.2,5.6],['🌾',7.9,5.6],['🪑',4.0,5.6]] },
+  post:{ name:'📮 郵局', W:9, H:7, floor:['#8fa3b8','#8398ad'], wall:'#3f5670', trim:'#273748',
+    walls:[['🗺️',1.6],['🕰️',4.5],['📯',7.4]], win:[3.0,6.0],
+    objs:[ {spr:'post', x:3.2, y:3.0, lab:'郵差：信和紙條', act:function(){ openLot('post',true); }},
+           {em:'📜', x:6.8, y:3.4, lab:'📜 布告欄：主線進度', act:function(){ openStory(); }} ],
+    deco:[['📦',1.2,5.4],['📦',1.9,5.8],['✉️',5.0,2.7],['🪴',8.0,5.6],['🪑',4.6,5.6]] },
+  home:{ name:'🏡 你的家', W:9, H:7, floor:['#b08d68','#a3825f'], wall:'#6d5a7a', trim:'#3d3046',
+    walls:[['🖼️',2.0],['🕰️',6.8]], win:[4.4],
+    objs:[ {em:'🛏️', x:2.0, y:3.2, size:1.5, lab:'🛏️ 床：收工睡覺', act:function(){ rest(); }},
+           {em:'📅', x:6.8, y:3.0, lab:'📅 月曆：今天的目標與連續天數', act:function(){ if(window.GameLog) openStreak(); }} ],
+    deco:[['🛋️',6.6,5.2],['🪴',8.1,2.8],['🧸',3.4,5.6],['💡',4.4,2.6],['🧶',1.2,5.6]] }
+};
+var ROOM={on:false, id:null, x:4.5, y:6, joy:null, near:null, auto:null, face:1, still:0, moving:false, view:null}, rcv=null, rctx=null, rhud=null;
+function roomSetup(){
+  if(rcv) return;
+  rcv=document.createElement('canvas'); rcv.style.cssText='position:fixed;inset:0;width:100%;height:100%;z-index:9;display:none;touch-action:none;background:#1a1410';
+  document.body.appendChild(rcv); rctx=rcv.getContext('2d');
+  rhud=document.createElement('div'); rhud.className='ihud'; document.body.appendChild(rhud);
+  rcv.addEventListener('pointerdown', function(e){ if(busy) return; try{ rcv.setPointerCapture(e.pointerId); }catch(er){} ROOM.joy={id:e.pointerId, ox:e.clientX, oy:e.clientY, x:e.clientX, y:e.clientY, t0:Date.now(), far:false}; });
+  rcv.addEventListener('pointermove', function(e){ var J=ROOM.joy; if(J && J.id===e.pointerId){ J.x=e.clientX; J.y=e.clientY; if(Math.hypot(J.x-J.ox, J.y-J.oy)>10){ J.far=true; ROOM.auto=null; } } });
+  ['pointerup','pointercancel'].forEach(function(t){ rcv.addEventListener(t, function(e){ var J=ROOM.joy; if(J && J.id===e.pointerId){ ROOM.joy=null; if(t==='pointerup' && !J.far && Date.now()-J.t0<350) roomTap(e.clientX, e.clientY); } }); });
+}
+function roomEnter(id){
+  var R=ROOMS[id]; if(!R) return; roomSetup(); closeSheet();
+  ROOM.on=true; ROOM.id=id; ROOM.x=R.W/2; ROOM.y=R.H-.9; ROOM.auto=null; ROOM.joy=null; ROOM.near=null; ROOM.still=0; busy=false; joy=null; keys={};
+  rcv.style.display='block'; var d=Math.min(window.devicePixelRatio||1,2); rcv.width=Math.round(innerWidth*d); rcv.height=Math.round(innerHeight*d); rctx.imageSmoothingEnabled=false;
+  rhud.innerHTML='<div class="ihbar"><b>'+esc(R.name)+'</b><span class="muted">點東西就會走過去</span><button id="rout">🚪 出去</button></div>';
+  rhud.style.display='block'; document.getElementById('rout').onclick=roomExit;
+}
+function roomExit(){ ROOM.on=false; ROOM.id=null; if(rcv) rcv.style.display='none'; if(rhud){ rhud.style.display='none'; rhud.innerHTML=''; } var b=document.getElementById('rbub'); if(b) b.remove(); closeSheet(); busy=false; joy=null; keys={};
+  /* 出來時站在門口外一步，不會馬上又走進去 */ hero.y+=.6; }
+function roomObjs(){ return ROOMS[ROOM.id].objs; }
+function roomTap(cx, cy){ var V=ROOM.view; if(!V || busy) return; var wx=(cx*V.d-V.ox)/V.ts, wy=(cy*V.d-V.oy)/V.ts, best=null, bd=1.0;
+  roomObjs().forEach(function(o){ var dd=Math.min(Math.hypot(o.x-wx,o.y-wy), Math.hypot(o.x-wx,o.y-.6-wy)); if(dd<bd){ bd=dd; best=o; } });
+  if(best){ if(ROOM.near===best && !ROOM.auto){ var b=document.getElementById('rbub'); if(b) b.remove(); return best.act(); } ROOM.auto={o:best, x:best.x, y:Math.min(ROOMS[ROOM.id].H-.7, best.y+.85)}; return; }
+  var R=ROOMS[ROOM.id]; ROOM.auto={x:Math.max(.6,Math.min(R.W-.6,wx)), y:Math.max(2.2,Math.min(R.H-.5,wy))}; }
+function roomUpdate(dt){
+  if(!ROOM.on || busy) return; var R=ROOMS[ROOM.id], vx=0, vy=0;
+  if(ROOM.joy && ROOM.joy.far){ var dx=ROOM.joy.x-ROOM.joy.ox, dy=ROOM.joy.y-ROOM.joy.oy, L=Math.hypot(dx,dy); if(L>8){ var k=Math.min(1,L/60); vx=dx/L*k; vy=dy/L*k; } }
+  if(keys.arrowleft||keys.a) vx-=1; if(keys.arrowright||keys.d) vx+=1; if(keys.arrowup||keys.w) vy-=1; if(keys.arrowdown||keys.s) vy+=1;
+  if(vx||vy) ROOM.auto=null;
+  if(ROOM.auto){ var ax=ROOM.auto.x-ROOM.x, ay=ROOM.auto.y-ROOM.y, al=Math.hypot(ax,ay); if(al<.08){ ROOM.auto=null; } else { vx=ax/al; vy=ay/al; if(al<.3){ vx*=al/.3; vy*=al/.3; } } }
+  var sp=3.2, nx=ROOM.x+vx*sp*dt, ny=ROOM.y+vy*sp*dt, doorX=Math.abs(nx-R.W/2)<.7;
+  ROOM.x=Math.max(.5, Math.min(R.W-.5, nx)); ROOM.y=Math.max(2.3, Math.min(doorX?R.H+.3:R.H-.45, ny));
+  if(Math.abs(vx)>.05) ROOM.face=vx<0?-1:1; ROOM.moving=Math.hypot(vx,vy)>.1; ROOM.still=ROOM.moving?0:ROOM.still+dt;
+  if(ROOM.y>R.H) return roomExit();
+  var best=null, bd=1.15; roomObjs().forEach(function(o){ var d=Math.hypot(o.x-ROOM.x, o.y+.5-ROOM.y); if(d<bd){ bd=d; best=o; } }); ROOM.near=best;
+}
+function roomDraw(dt){
+  if(!ROOM.on) return; var R=ROOMS[ROOM.id], c=rctx, w=rcv.width, h=rcv.height, d=w/innerWidth;
+  var ts=Math.min(w/(R.W+.6), (h-120*d)/(R.H+.6)), ox=(w-R.W*ts)/2, oy=Math.max(70*d, (h-R.H*ts)/2+20*d); ROOM.view={ox:ox, oy:oy, ts:ts, d:d};
+  c.fillStyle='#1a1410'; c.fillRect(0,0,w,h);
+  /* 牆（上面兩排）＋窗＋掛飾 */
+  c.fillStyle=R.wall; c.fillRect(ox, oy, R.W*ts, 2*ts); c.fillStyle=R.trim; c.fillRect(ox, oy+1.85*ts, R.W*ts, .15*ts);
+  c.fillStyle='rgba(255,255,255,.05)'; for(var wx=0;wx<R.W;wx++) c.fillRect(ox+wx*ts+ts*.48, oy, d*2, 1.85*ts);
+  R.win.forEach(function(x){ var X=ox+x*ts, Y=oy+.35*ts; c.fillStyle=R.trim; c.fillRect(X-.55*ts, Y-.06*ts, 1.1*ts, 1.02*ts); c.fillStyle=night?'#1d2a52':'#a9d8f5'; c.fillRect(X-.48*ts, Y, .96*ts, .9*ts); c.fillStyle=R.trim; c.fillRect(X-.03*ts, Y, .06*ts, .9*ts); c.fillRect(X-.48*ts, Y+.42*ts, .96*ts, .06*ts); });
+  R.walls.forEach(function(o){ isleEmoji(c, o[0], ox+o[1]*ts, oy+1.45*ts, ts*.8); });
+  /* 地板 */
+  for(var y=2;y<R.H;y++) for(var x=0;x<R.W;x++){ c.fillStyle=R.floor[(x+y)%2]; c.fillRect(Math.floor(ox+x*ts), Math.floor(oy+y*ts), Math.ceil(ts)+1, Math.ceil(ts)+1); }
+  c.fillStyle='rgba(0,0,0,.12)'; for(var y2=2;y2<R.H;y2++) c.fillRect(ox, oy+y2*ts, R.W*ts, d);
+  /* 門口地墊＋門框 */
+  c.fillStyle='#7a3b2e'; c.fillRect(ox+(R.W/2-.6)*ts, oy+(R.H-.35)*ts, 1.2*ts, .35*ts); c.fillStyle='rgba(255,255,255,.75)'; c.font='bold '+Math.round(ts*.22)+'px system-ui'; c.textAlign='center'; c.fillText('🚪 出口', ox+R.W/2*ts, oy+(R.H+.3)*ts);
+  /* 地毯 */
+  c.fillStyle='rgba(160,40,40,.18)'; c.fillRect(ox+(R.W/2-1.6)*ts, oy+4.3*ts, 3.2*ts, 1.6*ts);
+  var L=[];
+  R.deco.forEach(function(o){ L.push({y:o[2], f:function(){ isleShadow(c, ox+o[1]*ts, oy+o[2]*ts, ts*.3); isleEmoji(c, o[0], ox+o[1]*ts, oy+o[2]*ts, ts*.85); }}); });
+  roomObjs().forEach(function(o){ L.push({y:o.y, f:function(){ var X=ox+o.x*ts, Y=oy+o.y*ts, near=ROOM.near===o;
+    if(near){ c.strokeStyle='#f0c95a'; c.lineWidth=d*3; c.beginPath(); c.ellipse(X,Y,ts*.6,ts*.22,0,0,7); c.stroke(); }
+    isleShadow(c,X,Y,ts*.42);
+    if(o.spr){ var im=img.apply(null, SPR[o.spr]), bob=Math.abs(Math.sin(clock*2+o.x))*ts*.04; if(im.complete) c.drawImage(im, X-ts*.6, Y-ts*1.2-bob, ts*1.2, ts*1.2); }
+    else isleEmoji(c, o.em, X, Y, ts*(o.size||1.1));
+    if(!near){ c.font=Math.round(ts*.3)+'px system-ui'; c.textAlign='center'; c.fillText('💬', X+ts*.45, Y-ts*1.05+Math.sin(clock*3+o.x)*ts*.05); } }}); });
+  L.push({y:ROOM.y, f:function(){ var X=ox+ROOM.x*ts, Y=oy+ROOM.y*ts; isleShadow(c,X,Y,ts*.3); var im=img.apply(null,SPR.hero), bob=ROOM.moving?Math.abs(Math.sin(clock*12))*ts*.06:0;
+    if(im.complete){ c.save(); c.translate(X,Y-ts*.5-bob); c.scale(ROOM.face,1); c.drawImage(im,-ts*.5,-ts*.5,ts,ts); c.restore(); } }});
+  L.sort(function(a,b){ return a.y-b.y; }).forEach(function(o){ o.f(); });
+  /* 黃昏後屋裡點燈：四角暗、中間暖 */
+  if(night){ var g=c.createRadialGradient(w/2,h/2,ts,w/2,h/2,Math.max(w,h)*.6); g.addColorStop(0,'rgba(255,190,90,.10)'); g.addColorStop(1,'rgba(10,8,30,.45)'); c.fillStyle=g; c.fillRect(0,0,w,h); }
+  roomBubble();
+}
+function roomBubble(){
+  var b=document.getElementById('rbub'), o=ROOM.near, V=ROOM.view;
+  if(!o || ROOM.still<.2 || busy || !V){ if(b) b.remove(); return; }
+  if(!b){ b=document.createElement('div'); b.id='rbub'; b.className='ibub'; document.body.appendChild(b); }
+  if(b.dataset.lab!==o.lab){ b.dataset.lab=o.lab; b.innerHTML='<div style="color:#fff3c0">'+esc(o.lab)+'</div><div class="muted" style="font-size:.74em">點我</div>'; b.onclick=function(){ b.remove(); o.act(); }; }
+  var X=(V.ox+o.x*V.ts)/V.d, Y=(V.oy+o.y*V.ts)/V.d; b.style.left=Math.max(8, Math.min(innerWidth-b.offsetWidth-8, X-b.offsetWidth/2))+'px'; b.style.top=Math.max(64, Y-V.ts/V.d*1.5-b.offsetHeight)+'px';
+}
+function openLot(k, inside){
   var L=LOTS[k];
   if(k==='stall') return openStall();
-  if(k==='home') return rest();
+  if(k==='home') return inside ? rest() : roomEnter('home');
   if(k==='cottage'){
     if(!S.built.cottage){ var left=Math.max(0,DEX_MILESTONE-dexCount());
       openSheet('<h3>🏡 森林邊的小屋</h3><div class="story">門鎖著，窗台上積了灰。以前住在這裡的人，好像還會回來。</div><div class="muted">物品圖鑑再收 '+left+' 種，就會有人回來住。</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
@@ -1787,6 +1896,7 @@ function openLot(k){
     var v=villagers.filter(function(x){ return x.rid==='clement'; })[0]; if(v) return villager(v);
   }
   if(!S.built[k]) return buildPanel(L.name, L.cost, L.fam, function(){ S.built[k]=1; applyBuildings(); spawnNpcs(); if(k==='post') setTimeout(readLetter,400); });
+  if(!inside && ROOMS[k]) return roomEnter(k);
   if(k==='post'){ if(!S.letter) return readLetter(); if(Object.keys(S.clues).length>=3 && !S.solved) return solveChapter(); }
   if(k==='bakery' && S.solved && !S.ch2done) return ch2Talk(S.ch2&&S.ch2<CH2.length?S.ch2:0);
   var o=starsOf(k);
@@ -1796,7 +1906,7 @@ function openLot(k){
   if(k==='post') h+='<div class="muted" style="margin-top:6px">'+(S.solved?'第一章完。':'還差 '+(3-Object.keys(S.clues).length)+' 張紙條。')+'</div>';
   h+='<div class="row2"><span></span><button class="btn main" id="ok">離開</button></div>';
   openSheet(h);
-  sheet.querySelectorAll('[data-buy]').forEach(function(b){ b.onclick=function(){ buy(b.dataset.buy, function(){ openLot(k); }); }; });
+  sheet.querySelectorAll('[data-buy]').forEach(function(b){ b.onclick=function(){ buy(b.dataset.buy, function(){ openLot(k,true); }); }; });
   document.getElementById('ok').onclick=closeSheet;
 }
 function buildPanel(name, cost, fam, done){
@@ -3668,13 +3778,29 @@ function numItem(k){
   return {k:k, show:('0'+d).slice(-2)+'/'+('0'+mo).slice(-2), ans:['le '+dd, dd], date:true, ask:'C\'est quelle date ?'};
 }
 function numNorm(x){ return String(x).toLowerCase().trim().replace(/[’]/g,"'").replace(/[-\s]+/g,' '); }
+/* 🎯 10-30 Owen：「數字還是太常出了；如果發現我熟悉了某部份，先停不要再出那題，出比較弱的部分」
+   → 分 9 類（0–20／21–69／70–99／100–999／年份／價錢零錢／時刻／日期／小數），每類記連續答對。
+   連 3 次答對、沒提醒、3 秒內起手＝「熟了」→ 那類休息 4 天（之後偶爾回來確認一次，答錯就回到正常輪）；
+   答錯或很慢的類別權重加倍；全部都在休息時，路上就幾乎不出數字題 */
+var NUM_CATS=[['n0','0–20',1],['n1','21–69',2],['n2','70–99',4],['n3','100–999',2],['yr','年份',2],['p','價錢零錢',3],['t','時刻',3],['D','日期',3],['d','小數',1.5]];
+function numCat(n){ if(typeof n!=='number') return String(n)[0]; if(n>=1900) return 'yr'; return n<=20?'n0':n<=69?'n1':n<=99?'n2':'n3'; }
+function numSk(c){ S.numSk=S.numSk||{}; return S.numSk[c]||(S.numSk[c]={ok:0, n:0, wr:0, rest:0}); }
+function numResting(c){ var k=numSk(c); return k.rest && Date.now()<k.rest; }
+function numCatKey(c){ var B={n0:[0,20],n1:[21,69],n2:[70,99],n3:[100,999],yr:[1900,2099]}[c]; return B ? B[0]+Math.floor(Math.random()*(B[1]-B[0]+1)) : numKindKey(c); }
+function numAllRest(){ return NUM_CATS.every(function(c){ return numResting(c[0]); }) && !(S.numWrong||[]).length; }
+function numRecord(n, ok, clean){ var k=numSk(numCat(n)); k.n++;
+  if(ok && clean){ k.ok++; if(k.ok>=3 && !k.rest){ k.rest=Date.now()+4*86400000; k.ok=0; return 'rest'; } }
+  else { k.ok=0; if(!ok){ k.wr++; k.rest=0; } }
+  if(ok && clean && k.rest && Date.now()>=k.rest){ k.rest=Date.now()+4*86400000; }   /* 休息後回來確認：還是熟 → 再休息 */
+  return ''; }
 function numPick(){
   S.numWrong=S.numWrong||[];
-  if(S.numWrong.length && Math.random()<.4) return S.numWrong[Math.floor(Math.random()*S.numWrong.length)];
-  if(Math.random()<.5){ var kt=NUM_KINDS.reduce(function(a,b){ return a+b[1]; },0), kr=Math.random()*kt; for(var j=0;j<NUM_KINDS.length;j++){ kr-=NUM_KINDS[j][1]; if(kr<=0) return numKindKey(NUM_KINDS[j][0]); } }
-  var tot=NUM_BUCKETS.reduce(function(a,b){ return a+b[2]; },0), r=Math.random()*tot, b=NUM_BUCKETS[0];
-  for(var i=0;i<NUM_BUCKETS.length;i++){ r-=NUM_BUCKETS[i][2]; if(r<=0){ b=NUM_BUCKETS[i]; break; } }
-  return b[0]+Math.floor(Math.random()*(b[1]-b[0]+1));
+  if(S.numWrong.length && Math.random()<.5) return S.numWrong[Math.floor(Math.random()*S.numWrong.length)];
+  var W=NUM_CATS.map(function(c){ var k=numSk(c[0]); if(numResting(c[0])) return [c[0], 0];
+    var w=c[2]*(k.wr>0 && k.ok===0 ? 2 : 1)*(k.rest ? .3 : 1); return [c[0], w]; });   /* k.rest 已過期＝回來確認，少出 */
+  var tot=W.reduce(function(a,b){ return a+b[1]; },0); if(!tot) return numCatKey(NUM_CATS[Math.floor(Math.random()*NUM_CATS.length)][0]);
+  var r=Math.random()*tot; for(var i=0;i<W.length;i++){ r-=W[i][1]; if(r<=0) return numCatKey(W[i][0]); }
+  return numCatKey(W[W.length-1][0]);
 }
 /* 判定（10-19 Owen：「唸出數字是要連槓都打出來才算對嗎？」→ 空格／連字號本來就都算；再放寬兩種，算對但提醒）
    ① 字黏在一起（vingtdeux）→ 對，提醒要分開寫  ② 只差 vingts／cents 的 s → 對，提醒 s 的規則  ③ 只差重音 → 對，提醒重音 */
@@ -3700,7 +3826,7 @@ function numJudgeAny(v, alts, soft){
   if(!best && soft) for(var j2=0;j2<vs.length;j2++) for(var k=0;k<soft.length;k++){ var S2=numJudge(vs[j2], soft[k].s); if(S2.ok) return {ok:true, note:soft[k].note, alt:soft[k].to||alts[0]}; }
   return best||{ok:false, note:''};
 }
-var NUM_CHAIN=2;   /* 10-28 Owen 嫌太頻繁：連問 3 → 2、間隔 30 → 90 秒、機率 .18 → .12 */
+var NUM_CHAIN=1;   /* 10-28 Owen 嫌太頻繁：連問 3 → 2、間隔 30 → 90 秒、機率 .18 → .12；10-30 再嫌：連問 2 → 1、間隔 150 秒、機率 .08，熟的類別休息（numPick） */
 /* 🔢 連問＋集點卡（10-19 Owen：「答對好像不能幹嘛」）
    ⭐ 答對後店家接著問「Et ça ?」，一次最多 3 個，金幣 1→2→3
    ⭐ 集點卡：答對又在 3 秒內開始打＝蓋章（0–99 每個數字一格＋年份）；一整排（例如 70–79）蓋滿 +10🪙；打錯會把那一格的章洗掉 */
@@ -3732,6 +3858,7 @@ function numEncounter(chain){
     var say=(ok && J.alt)?J.alt:ans;   /* 他用 et quart 答對，就顯示／唸他那種說法（紀錄仍記標準答案） */
     var Wl=S.numWrong=S.numWrong||[], wi=Wl.indexOf(n);
     if(!ok && wi<0){ Wl.push(n); if(Wl.length>30) Wl.shift(); } else if(ok && !J.note && wi>=0 && fast) Wl.splice(wi,1);
+    var restNow=numRecord(n, ok, !J.note && fast);
     S.num=S.num||{}; var h=S.num[n]||[]; h.push({o:ok?1:0, f:fk||ms}); S.num[n]=h.slice(-3);
     var st=typeof n==='number'?numStamp(n, fast && !J.note, ok):'';
     if(ok){ S.gold+=chain; } save(); hud();
@@ -3739,7 +3866,7 @@ function numEncounter(chain){
     speak(say);
     var stTxt= st==='new' ? '　🔖 集點卡 +1' : /^row/.test(st) ? '　🎉 集點卡 '+(+st.slice(3)*10)+'–'+(+st.slice(3)*10+9)+' 蓋滿了！+10🪙' : st==='lost' ? '　（這一格的章掉了）' : '';
     document.getElementById('fb').innerHTML=(ok?'✓ +'+chain+'🪙 '+(fk&&fk<2000?'<b style="color:var(--gold)">起手 '+(fk/1000).toFixed(1)+' 秒</b> ':''):'👉 ')+'<span class="say">'+esc(say)+'</span> '+spk(say)+
-      (J.note?'<div class="muted">'+esc(J.note)+'</div>':'')+(stTxt?'<div class="muted">'+stTxt+'</div>':'');
+      (J.note?'<div class="muted">'+esc(J.note)+'</div>':'')+(restNow?'<div class="muted">✨ '+esc(NUM_CATS.filter(function(c){ return c[0]===numCat(n); })[0][1])+' 你已經很熟了，這幾天先不出這類</div>':'')+(stTxt?'<div class="muted">'+stTxt+'</div>':'');
     var more = ok && chain<NUM_CHAIN;
     if(ok && !J.note && !stTxt.match(/蓋滿/)) setTimeout(function(){ if(more) numEncounter(chain+1); else closeSheet(); }, 850);
     else { document.querySelector('.row2').innerHTML='<span></span><button class="btn main" id="go">'+(more?'下一個 →':'好')+'</button>'; document.getElementById('go').onclick=function(){ if(more) numEncounter(chain+1); else closeSheet(); }; }
@@ -3753,7 +3880,8 @@ function numCardHtml(){
   return h+'</div>'+(yrs.length?'<div class="muted">年份：'+yrs.join('、')+'</div>':'');
 }
 function drawChallenges(list,ox,oy,ts){
-  CHALLENGES.forEach(function(ch){ list.push({y:ch.y+1, f:function(){
+  CHALLENGES.forEach(function(ch){ if(ch.kind==='forge' && S.built.forge) return;   /* 鐵匠鋪蓋好後鐵砧搬進屋裡 */
+    list.push({y:ch.y+1, f:function(){
     var px=ox+ch.x*ts, py=oy+ch.y*ts, im=pixImg(ch.em);
     if(ch.kind==='palace'){ /* 木碼頭：從岸邊伸進河裡 */
       cx.fillStyle='#5a3d1e'; cx.fillRect(px+ts*.18, py-ts*1.1, ts*.08, ts*1.25); cx.fillRect(px+ts*.74, py-ts*1.1, ts*.08, ts*1.25);
@@ -3797,7 +3925,7 @@ function update(dt){
     if(inGrass && !pending){ grassDist+=spd*dt; if(grassDist>1.4){ grassDist=0; if(!wild && Math.random()<.28 && clock-lastWild>3){ lastWild=clock; pending={t:.3, x:hero.x, y:hero.y, fn:startWild, keep:1}; } } }
     /* 🔢 鎮上／往橋的小路上，偶爾有人問價錢 */
     var onPath=Math.floor(hero.x)>=19 && Math.floor(hero.x)<=20 && hero.y>=10 && hero.y<=23;
-    if((inTown(hero)||onPath) && !pending){ numDist+=spd*dt; if(numDist>2){ numDist=0; if(!wild && Math.random()<.12 && clock-lastNum>90){ lastNum=clock; pending={t:.3, x:hero.x, y:hero.y, fn:function(){ numEncounter(1); }}; } } }
+    if((inTown(hero)||onPath) && !pending){ numDist+=spd*dt; if(numDist>2){ numDist=0; if(!wild && !numAllRest() && Math.random()<.08 && clock-lastNum>150){ lastNum=clock; pending={t:.3, x:hero.x, y:hero.y, fn:function(){ numEncounter(1); }}; } } }
     /* 🦋 田裡偶爾飛出蝴蝶（形容詞圖鑑） */
     if(region(Math.floor(hero.x),Math.floor(hero.y))==='field' && !pending){ bugDist+=spd*dt; if(bugDist>2){ bugDist=0; if(!wild && Math.random()<.12 && clock-lastBug>25){ lastBug=clock; pending={t:.3, x:hero.x, y:hero.y, fn:bugCatch}; } } }
     if(!inTown(hero)){ time-=dt*hero.moving; if(time<=0 && !night){ time=0; night=true; toast(raidDue()?'🌙 天黑了——怪物朝小鎮來了，回去守夜！':'🌙 天黑了，老鼠變多變快——回城吧'); spawnRat(); spawnRat(); } }
@@ -3811,10 +3939,10 @@ function update(dt){
   if(it && !wasInTown){ wasInTown=true; if(log.some(function(l){ return l.ok===false; }) || log.length>=6){ joy=null; keys={}; review(); return; } if(night && raidDue()){ joy=null; keys={}; raidPanel(false); return; } if(maybeNews()) return; }
   if(!it) wasInTown=false;
   if(updateWild(dt)) return;
-  for(var ci=0;ci<CHALLENGES.length && !wild;ci++){ var CH=CHALLENGES[ci]; if(CH.cool>0){ CH.cool-=dt; continue; }
+  for(var ci=0;ci<CHALLENGES.length && !wild;ci++){ var CH=CHALLENGES[ci]; if(CH.kind==='forge' && S.built.forge) continue; if(CH.cool>0){ CH.cool-=dt; continue; }
     /* 10-26 Owen：「站在宮殿門口會一直進去，只能重新整理」→ 出來之後要先走開（離門口 1.5 格以上）才會再觸發 */
     if(CH.away){ if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)>1.5) CH.away=0; else continue; }
-    if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ if(CH.kind==='tiles') tilesPanel(CH); else if(CH.kind==='isle') cafePanel(CH); else if(CH.kind==='spot') spotPanel(CH); else if(CH.kind==='embed') embedPanel(CH); else if(CH.kind==='palace'){ CH.away=1; archOpen(); } else if(CH.kind==='forge'){ CH.away=1; forgePanel(CH); } else challengePanel(CH); }; })(CH)}; break; } }
+    if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ if(CH.kind==='tiles') tilesPanel(CH); else if(CH.kind==='isle') roomEnter('cafe'); else if(CH.kind==='spot') spotPanel(CH); else if(CH.kind==='embed') embedPanel(CH); else if(CH.kind==='palace'){ CH.away=1; archOpen(); } else if(CH.kind==='forge'){ CH.away=1; if(S.built.forge) roomEnter('forge'); else forgePanel(CH); } else challengePanel(CH); }; })(CH)}; break; } }
   /* 碰到節點 */
   for(var i=0;i<nodes.length && !wild;i++){ var n=nodes[i]; if(n.done) continue;
     var R=n.k==='fish'?1.15:.85;
@@ -3983,7 +4111,7 @@ function drawArrow(to,ox,oy,ts,w,h){
 }
 function loop(t){
   var dt=Math.min(.05,(t-lastT)/1000); lastT=t;
-  if(ISLE.on){ clock+=dt; isleUpdate(dt); isleDraw(dt); } else { update(dt); draw(dt); }
+  if(ROOM.on){ clock+=dt; roomUpdate(dt); roomDraw(dt); } else if(ISLE.on){ clock+=dt; isleUpdate(dt); isleDraw(dt); } else { update(dt); draw(dt); }
   requestAnimationFrame(loop);
 }
 
