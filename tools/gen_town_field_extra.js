@@ -23,9 +23,9 @@ const VF = require(path.join(ROOT, 'verbs_full.js'));
 
 /* 跟 town.html 同一張分家表（⚠️ 原樣抄，不改） */
 const FAM = {
-  verb: /passe|imparfait|conditionnel|futur|subjonctif|reflexive|verbs|etre-avoir|imperative|accord-participe|pouvoir|gerondif|condition-si|discours|ilfaut|recit|duree|negation|restriction|forme-passive|interdiction|cause-consequence|expression-but/,
+  verb: /passe|imparfait|conditionnel|futur|subjonctif|reflexive|(?<!ad)verbs|etre-avoir|imperative|accord-participe|pouvoir|gerondif|condition-si|discours|ilfaut|recit|plus-que-parfait|duree|negation|restriction|forme-passive|interdiction|cause-consequence|expression-but/,
   pron: /pronom|qui-que|on-vs-nous|cod/,
-  noun: /article|adjective|demonstrative-adj|possessives|tout-chaque|comparaison|superlatif|cest-il|mise-en-relief|intensite|preposition|question-words/
+  noun: /article|adjective|demonstrative-adj|possessives|tout-chaque|comparaison|superlatif|cest-il|mise-en-relief|intensite|preposition|question-words|interrogation/
 };
 const famOf = t => { for (const k in FAM) if (FAM[k].test(t)) return k; return null; };
 

@@ -4993,7 +4993,7 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
   - 接點：town.html update 裡 `lifeUpdate`、draw 裡 `lifeDraw`；town_life.js 覆寫 spawnNpcs（不再站樁）、spawnVillagers、openLot('cottage')＝找 Clément 聊、與 Clément 聊天時設 relOf('clement').met（舊目標鏈靠它）。
   - ⛔ 法文：台詞裡的法文全是 chunks.js 原句（id 寫在設定稿）；中文故事原創。
 - 驗證（ROOM 隔離）：五人出現位置、中午走到廣場各自的位子（休息時兩兩最近 1.41 格）、Amira／Bernard 聊天泡泡依序出現（截圖）、第一次見面介紹、熟悉度 3 解鎖第一幕＋居民頁、Lucie 的追問、Amira 跑來揮手→請你看價目牌、森林小屋＝Clément、鎮上的人圖鑑；console 無錯。
-- 📚 Owen 傳 `edito_b1_cahier_d_exercices(1).pdf` → `assets/Edito B1 Cahier Owen.pdf`（assets/*.pdf 不進 git），用單檔抽取把 145 頁（68 萬字）附加進 `assets/.textbook_cache.txt`（沒重跑整份 extract_textbook.py）。⏭ 題庫：待把已上過單元的 Cahier 練習加進 questions.js。
+- 📚 Owen 傳 `edito_b1_cahier_d_exercices(1).pdf` → `assets/Edito B1 Cahier Owen.pdf`（assets/*.pdf 不進 git），用單檔抽取把 145 頁（68 萬字）附加進 `assets/.textbook_cache.txt`（沒重跑整份 extract_textbook.py）。✅ 第一批入題庫（research/2026-10-30_Cahier_B1入題庫.md）：⚠️ 這本 Cahier 是 **2018 版**，單元跟他的課本（新版）對不起來 → 用文法點對筆記課次。+133 題（subjonctif 24、pc／imparfait 33、duree 36、accord 23、PQP 7、問句語域 10），答案全對 Corrigés，hint 寫「Cahier B1 p.X 練習N」，Corrigés 與標準法文不一致處收兩解並標 ⚠️。BANK 2414→2547；town 的 FAM 補 plus-que-parfait（verb）、interrogation（noun），產生器 FAM 同步成 (?<!ad)verbs；fill 轉選擇 772 題全過；路上池 verb 689／pron 239／noun 264。順手修第 45 課「_____ un mois que Wolfgang…」：Il y a…que 也對 → 選項換成 Ça fait／Pendant／Dans／En。⏭ 第二批：Cahier 裡 A1／A2 已學的文法（négation、qui/que/où、比較級、en/y、passif、futur、condition、gérondif、discours rapporté、cause/conséquence、雙代名詞、mise en relief）。
 
 #### 三之一百零三（小鎮）、10-30：數字題自適應＋室內
 

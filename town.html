@@ -218,9 +218,9 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
    資料：題目池（全部出自 questions.js；依「處理什麼資訊」分家，跟研究檔第五節同一張表）
    ============================================================ */
 var FAM = {
-  verb: /passe|imparfait|conditionnel|futur|subjonctif|reflexive|(?<!ad)verbs|etre-avoir|imperative|accord-participe|pouvoir|gerondif|condition-si|discours|ilfaut|recit|duree|negation|restriction|forme-passive|interdiction|cause-consequence|expression-but/,
+  verb: /passe|imparfait|conditionnel|futur|subjonctif|reflexive|(?<!ad)verbs|etre-avoir|imperative|accord-participe|pouvoir|gerondif|condition-si|discours|ilfaut|recit|plus-que-parfait|duree|negation|restriction|forme-passive|interdiction|cause-consequence|expression-but/,
   pron: /pronom|qui-que|on-vs-nous|cod/,
-  noun: /article|adjective|demonstrative-adj|possessives|tout-chaque|comparaison|superlatif|cest-il|mise-en-relief|intensite|preposition|question-words/
+  noun: /article|adjective|demonstrative-adj|possessives|tout-chaque|comparaison|superlatif|cest-il|mise-en-relief|intensite|preposition|question-words|interrogation/
 };
 function famOf(topic){ for(var k in FAM) if(FAM[k].test(topic)) return k; return null; }
 var POOL = { verb:{choose:[],fill:[]}, pron:{choose:[],fill:[]}, noun:{choose:[],fill:[]} };
