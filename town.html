@@ -176,7 +176,7 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .ibt { display:flex; gap:4px; } .ibt button, .ilink button[data-act=prev] { background:rgba(255,255,255,.12); color:#fff3c0; border:1px solid rgba(255,255,255,.25); border-radius:7px; padding:2px 7px; font-family:inherit; font-size:1em; }
 .ibtn { margin-top:5px; background:#f0c95a; color:#2a1a08; border:0; border-radius:8px; padding:4px 10px; font-family:inherit; font-weight:bold; }
 .ibub { position:fixed; z-index:9; max-width:min(86vw,340px); background:rgba(18,26,20,.93); border:2px solid #f0c95a; border-radius:12px; padding:8px 11px; color:#dfe8e1; cursor:pointer; line-height:1.45; }
-.cgap { color:var(--gold); letter-spacing:1px; } .cans { color:var(--gold); text-decoration:underline; }
+.cgap { color:var(--gold); letter-spacing:1px; } .cgin { display:inline-block; font:inherit; padding:1px 4px; margin:0 2px; border:0; border-bottom:2px solid var(--gold); background:#0f1813; color:var(--ink); border-radius:4px; user-select:text; -webkit-user-select:text; } .cans { color:var(--gold); text-decoration:underline; }
 .conjrow { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; margin:6px 0; font-size:.85em; } .conjrow span { background:#16211b; border-radius:6px; padding:3px 6px; } .conjrow small { color:var(--dim); } .conjrow .ok { background:#3c5a2c; color:#fff3c0; } .conjrow .no { background:#4a2c28; }
 .rlink { display:inline-block; margin-top:4px; color:#9fd0ff; font-size:.88em; text-decoration:none; border-bottom:1px dashed #9fd0ff; }
 .grule { color:#d9cfb6; font-size:.85em; margin-top:4px; }
@@ -1301,9 +1301,9 @@ function shakeBush(n){
       });
     } else if(!activeQuest('topic') && Math.random()<.3 && clipPick()){
       var cl=clipPick();
-      askClip('🌳 樹叢'+(star?' ★':'')+' <small>樹上有人在講話</small>', cl, function(ok,ms,v,right){
+      askClip('🌳 樹叢'+(star?' ★':'')+' <small>樹上有人在講話</small>', cl, function(ok,ms,v,right,half){
         rec('L', cl, ok, ms, {chosen:v, right:right, where:'🌳 樹叢'});
-        if(ok){ var g=star?6:3; S.gold+=g; floatTxt(n.x+.5,n.y,'+'+g+'🪙','#ffd76a'); hud(); save(); }
+        if(half){ var g=star?6:3; S.gold+=g; floatTxt(n.x+.5,n.y,'+'+g+'🪙','#ffd76a'); hud(); save(); }
         i++; next();
       });
     } else if(!activeQuest('topic') && Math.random()<.5 && examPick(['neg'])){
@@ -1407,12 +1407,13 @@ function acctPanel(){
     '<div class="row2"><span></span><button class="btn" id="vclose">關閉</button></div>', true);
   clipLoginWire(); document.getElementById('vclose').onclick=closeSheet;
 }
-var CLIPS_ERR='', CLIPS=null, CLIPS_TRY=0, CLIP_URL={}, CLIP_AUDIO=null, B1_UNITS_DONE=1;
+var CLIPS_ERR='', CLIPS=null, CLIPS_TRY=0, CLIP_URL={}, CLIP_AUDIO=null, CLIPS_ALL=null, B1_UNITS_DONE=2;  /* 10-30 第46–47課上到 B1 Unité 2 */
 function clipsLoad(){
   if(CLIPS || Date.now()-CLIPS_TRY<60000) return; CLIPS_TRY=Date.now();
   Promise.all([vaultGet('didier/clips_a2.json'), vaultGet('didier/clips_b1.json')]).then(function(r){
     var all=r[0].concat(r[1]).filter(function(c){ return !(c.book==='b1' && (c.unit>B1_UNITS_DONE || c.page>=189)); });
     all.forEach(function(c){ c.text=String(c.text).replace(/[’‘]/g,"'"); c.blank=clipBlankAll(c.text); });
+    CLIPS_ALL=all.slice().sort(function(x,y){ return (x.book>y.book?1:x.book<y.book?-1:0) || x.track-y.track || x.s-y.s; });
     CLIPS=all.filter(function(c){ return c.blank.length; }); CLIPS_ERR=''; acctPaint();
   }).catch(function(e){ CLIPS_ERR=(e&&e.code)||'net'; acctPaint(); });
 }
@@ -1472,43 +1473,76 @@ function clipPlay(c, rate){
   });
 }
 function clipStop(){ try{ if(CLIP_AUDIO) CLIP_AUDIO.pause(); }catch(e){} clearInterval(clipPlay.h); }
+/* 10-30 Owen：「感覺聽力太短 只填一格也太少」
+   → 從抽到的那句往後（不夠長再往前）接同一軌相鄰的句子，最多 4 句／約 15 秒，聽一小段連續對話；
+     整段挖 3–4 格（每句最多 2 格、七成學過的字）。空著不填＝「這格還沒進耳朵」，⛔ 不算錯、不打叉 */
+function clipPassage(c){
+  var L=CLIPS_ALL||[c], i=L.indexOf(c); if(i<0) return [c];
+  function adj(a,b){ return a.book===b.book && a.track===b.track && b.s>=a.e-.3 && b.s-a.e<2.5; }
+  var seq=[c], j;
+  for(j=i+1; j<L.length && seq.length<4 && seq[seq.length-1].e-seq[0].s<15 && adj(seq[seq.length-1],L[j]); j++) seq.push(L[j]);
+  for(j=i-1; j>=0 && seq.length<4 && seq[seq.length-1].e-seq[0].s<10 && adj(L[j],seq[0]); j--) seq.unshift(L[j]);
+  return seq;
+}
+function clipGaps(seq){
+  var all=[]; seq.forEach(function(c,si){ (c.blank||[]).forEach(function(x){ all.push({si:si,a:x.a,b:x.b,w:x.w,t:x.t}); }); });
+  var n=Math.min(all.length, seq.length>=3?4:3), words=shuffle(all.filter(function(x){ return x.t==='w'; })), small=shuffle(all.filter(function(x){ return x.t==='s'; })), out=[];
+  function ok(x){ var per=out.filter(function(y){ return y.si===x.si; });
+    return per.length<2 && per.every(function(y){ return x.b+2<=y.a || y.b+2<=x.a; }); }
+  while(out.length<n && (words.length||small.length)){
+    var src=(words.length && (Math.random()<.7 || !small.length)) ? words : small, x=src.shift();
+    if(ok(x)) out.push(x);
+  }
+  return out.sort(function(x,y){ return x.si-y.si || x.a-y.a; });
+}
 function askClip(head, c, cb){
-  var cands=c.blank, words=cands.filter(function(x){ return x.t==='w'; }), small=cands.filter(function(x){ return x.t==='s'; });
-  var g=(words.length && (Math.random()<.7 || !small.length)) ? words[Math.floor(Math.random()*words.length)] : small[Math.floor(Math.random()*small.length)];
+  var seq=clipPassage(c), gaps=clipGaps(seq);
+  if(!gaps.length){ seq=[c]; gaps=clipGaps(seq); }
+  var P={book:c.book, track:c.track, s:seq[0].s, e:seq[seq.length-1].e};
   var src=(c.book==='a2'?'Édito A2':'Édito B1')+'・Unité '+c.unit+'・p.'+c.page;
-  var shown=esc(c.text.slice(0,g.a))+'<span class="cgap">'+'＿'.repeat(Math.max(2,Math.min(6,g.w.length)))+'</span>'+esc(c.text.slice(g.b));
-  var t0=Date.now(), done=false, plays=0, slow=0, rc={kind:'課本聽力', ref:'L:'+c.id, q:c.text, a:g.w};
-  openSheet('<h3>'+head+'</h3>'+(c.spk?'<div class="muted" style="font-size:.8em">'+esc(c.spk)+'：</div>':'')+
-    '<div class="qtext fr" style="font-size:1.05em;line-height:1.6">'+shown+'</div>'+
+  function line(si, fill){
+    var x=seq[si], t=x.text, pos=0, h='';
+    gaps.forEach(function(g,k){ if(g.si!==si) return;
+      h+=esc(t.slice(pos,g.a))+fill(g,k); pos=g.b; });
+    h+=esc(t.slice(pos));
+    return '<div style="margin:4px 0">'+(x.spk?'<span class="muted" style="font-size:.8em">'+esc(x.spk)+'：</span>':'')+h+'</div>';
+  }
+  var body=seq.map(function(x,si){ return line(si, function(g,k){
+    return '<input class="cgin" data-k="'+k+'" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" style="width:'+Math.max(3,Math.min(9,g.w.length+1))+'em">'; }); }).join('');
+  var t0=Date.now(), done=false, plays=0, slow=0, rc={kind:'課本聽力', ref:'L:'+c.id, q:seq.map(function(x){ return x.text; }).join(' '), a:gaps.map(function(g){ return g.w; }).join(' ／ ')};
+  openSheet('<h3>'+head+'</h3>'+
+    '<div class="muted" style="font-size:.8em">'+seq.length+' 句・'+gaps.length+' 格・約 '+Math.round(P.e-P.s)+' 秒　聽不出來的格空著就好</div>'+
+    '<div class="qtext fr" id="cbody" style="font-size:1.05em;line-height:1.9;text-align:left">'+body+'</div>'+
     '<div class="row2" style="justify-content:center;gap:8px"><button class="btn main" id="cpl">▶ 聽</button><button class="btn ghost" id="cslow">🐢 慢一點</button></div>'+
-    '<input class="fill" id="cin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="空格裡聽到的字">'+
-    '<div class="fb" id="fb"></div><div class="row2" id="crow"><button class="btn ghost" id="skip">↷ 繞過</button><button class="btn ghost" id="cno">聽不出來</button><button class="btn main" id="csub">交出去</button></div>'+repSlot(rc), true);
-  function play(r){ plays++; if(r<1) slow++; clipPlay(c, r).catch(function(){ document.getElementById('fb').textContent='音檔載入失敗（網路？），可以先繞過'; }); }
+    '<div class="fb" id="fb"></div><div class="row2" id="crow"><button class="btn ghost" id="skip">↷ 繞過</button><button class="btn main" id="csub">交出去</button></div>'+repSlot(rc), true);
+  function play(r){ plays++; if(r<1) slow++; clipPlay(P, r).catch(function(){ document.getElementById('fb').textContent='音檔載入失敗（網路？），可以先繞過'; }); }
   document.getElementById('cpl').onclick=function(){ play(1); };
   document.getElementById('cslow').onclick=function(){ play(.75); };
   play(1);
-  var inp=document.getElementById('cin');
-  function finish(ok, v){
-    if(done) return; done=true; inp.disabled=true; rc.pick=v; var ms=Date.now()-t0;
-    var acc = ok && v.toLowerCase().replace(/[’]/g,"'")!==g.w.toLowerCase();   /* 對了但重音／省音符號不一樣 */
-    var full=esc(c.text.slice(0,g.a))+'<b class="cans">'+esc(c.text.slice(g.a,g.b))+'</b>'+esc(c.text.slice(g.b));
-    var zh=CLIP_ZH[normAns(g.w)];
-    document.getElementById('fb').innerHTML=(ok?'✓ '+(acc?'聽到了（注意拼法：<span class="say">'+esc(g.w)+'</span>）':(plays<=1&&!slow?'<b style="color:var(--gold)">一次就聽到</b>':'聽到了')):
-        (v?'✗ 你打的是 <span class="fr">'+esc(v)+'</span>　':'')+'👂 這格是 <span class="say">'+esc(g.w)+'</span>'+(zh?' <span class="muted">'+esc(zh)+'</span>':''))+
-      '<div class="fr" style="margin-top:6px;line-height:1.6">'+full+'</div>'+
-      '<div class="muted" style="font-size:.75em">出處：'+esc(src)+'</div>'+
-      (g.t==='s'&&!ok?'<div class="muted" style="font-size:.85em">💡 小字常跟前後黏在一起唸——再聽一次，專心聽空格前後那一拍</div>':'');
-    document.getElementById('crow').innerHTML='<button class="btn ghost" id="cagain">▶ 再聽整句</button><button class="btn main" id="go">繼續</button>';
-    document.getElementById('cagain').onclick=function(){ play(1); };
-    document.getElementById('go').onclick=function(){ clipStop(); cb(ok, ms, v, g.w); };
-    if(ok && !acc && plays<=2) setTimeout(function(){ if(document.getElementById('go')){ clipStop(); cb(ok, ms, v, g.w); } }, 1600);
-    if(window.GameLog){ GameLog.event(ok?'clip_ok':'clip_miss'); if(slow) GameLog.event('clip_slow'); }
-  }
+  var ins=[].slice.call(document.querySelectorAll('#cbody .cgin'));
   function cmp(x){ return normAns(x).replace(/'/g,''); }
-  function sub(){ var v=inp.value.trim(); if(!v) return; finish(cmp(v)===cmp(g.w), v); }
-  document.getElementById('csub').onclick=sub;
-  document.getElementById('cno').onclick=function(){ finish(false, ''); };
-  inp.addEventListener('keydown',function(e){ e.stopPropagation(); if(e.key==='Enter') sub(); });
+  function finish(){
+    if(done) return; done=true; var ms=Date.now()-t0;
+    var res=gaps.map(function(g,k){ var v=ins[k].value.trim(); return {v:v, ok:!!v && cmp(v)===cmp(g.w), acc:!!v && cmp(v)===cmp(g.w) && v.toLowerCase().replace(/[’]/g,"'")!==g.w.toLowerCase()}; });
+    var nOk=res.filter(function(r){ return r.ok; }).length, all=nOk===gaps.length;
+    rc.pick=res.map(function(r){ return r.v||'—'; }).join(' ／ ');
+    document.getElementById('cbody').innerHTML=seq.map(function(x,si){ return line(si, function(g,k){ var r=res[k];
+      return r.ok ? '<b class="cans">'+esc(g.w)+'</b>'+(r.acc?'<small class="muted">（拼法）</small>':'')
+        : '<b class="cans" style="color:#9ec5ff">'+esc(g.w)+'</b>'+(r.v?'<small class="muted">（你打 '+esc(r.v)+'）</small>':''); }); }).join('');
+    var miss=gaps.filter(function(g,k){ return !res[k].ok; }), zh=miss.map(function(g){ var z=CLIP_ZH[normAns(g.w)]; return z?'<span class="say">'+esc(g.w)+'</span> <span class="muted">'+esc(z)+'</span>':''; }).filter(Boolean);
+    document.getElementById('fb').innerHTML=(all?(plays<=1&&!slow?'<b style="color:var(--gold)">一次就全聽到</b>':'✓ 全聽到了'):
+        nOk?'✓ 聽到 '+nOk+' 格；👂 藍色的還沒進耳朵':'👂 藍色的還沒進耳朵——再聽一次，專心聽那一拍')+
+      (zh.length?'<div style="margin-top:4px">'+zh.join('　')+'</div>':'')+
+      '<div class="muted" style="font-size:.75em">出處：'+esc(src)+'</div>'+
+      (miss.some(function(g){ return g.t==='s'; })?'<div class="muted" style="font-size:.85em">💡 小字常跟前後黏在一起唸</div>':'');
+    document.getElementById('crow').innerHTML='<button class="btn ghost" id="cagain">▶ 再聽整段</button><button class="btn main" id="go">繼續</button>';
+    document.getElementById('cagain').onclick=function(){ play(1); };
+    document.getElementById('go').onclick=function(){ clipStop(); cb(all, ms, rc.pick, rc.a, nOk*2>=gaps.length); };
+    if(window.GameLog){ GameLog.event(all?'clip_ok':'clip_miss'); if(slow) GameLog.event('clip_slow'); }
+  }
+  ins.forEach(function(el,k){ el.addEventListener('keydown',function(e){ e.stopPropagation();
+    if(e.key==='Enter'){ e.preventDefault(); if(k<ins.length-1) ins[k+1].focus(); else finish(); } }); });
+  document.getElementById('csub').onclick=finish;
   document.getElementById('skip').onclick=function(){ if(done) return; done=true; clipStop(); cb(null); };
 }
 document.getElementById('bAcct').addEventListener('click', function(){ if(!busy) acctPanel(); });
@@ -1522,9 +1556,9 @@ function fishSpot(n){
     if(i>=2){ closeSheet(); n.done=true; return; }
     var cl=clipPick();
     if(cl){
-      askClip('🎣 河邊 ★ <small>第 '+(i+1)+' 竿・聽力</small>', cl, function(ok,ms,v,right){
+      askClip('🎣 河邊 ★ <small>第 '+(i+1)+' 竿・聽力</small>', cl, function(ok,ms,v,right,half){
         rec('L', cl, ok, ms, {chosen:v, right:right, where:'🎣 河邊'});
-        if(ok!==null){ addBag({k:'fish', name:'魚', em:'🐟', good:ok}); floatTxt(n.x+.5,n.y,'🐟'+(ok?'':' 瑕'), ok?'#fff':'#bbb'); }
+        if(ok!==null){ addBag({k:'fish', name:'魚', em:'🐟', good:!!half}); floatTxt(n.x+.5,n.y,'🐟'+(half?'':' 瑕'), half?'#fff':'#bbb'); }
         i++; next();
       }); return;
     }
