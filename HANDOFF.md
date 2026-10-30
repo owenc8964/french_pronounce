@@ -4987,7 +4987,7 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
   - ⚠️ 標出來的衝突：老師說回答 « Tu n'as jamais fumé ? » 用 oui → 標準是 **Non, je n'ai jamais fumé**（反駁用 si）；練習 5f 老師口說 soit fermé → 標準 **soient fermées**；p.34 表格 « J'en peux plus » → 標準 Je n'en peux plus；交通規則老師說 les règles de la route → 標準 le code de la route；être familier avec quelqu'un 用在人身上多半是「沒大沒小」；chouette 字源（chouetter）是老師當堂查的，未查證。
   - p.30 練習 3 第一格當堂很亂，筆記用 enseigner（後面沒有 à）；練習 4（找不同類）沒做，筆記標「我的判斷」。
 - **Owen「全部都補」**（回應 A1／A2 盤點）：六批代理照 `research/2026-10-30_A1／A2文法練習收錄盤點.md` 補，合併腳本檢查（topic 存在、一個空格、choose 正解在 opts、hint 與題幹不重複）後入庫 **1215 題**：A2 練習本 p.1–58 153、p.63–123 168、p.125 起＋A2 課本零星 96；A1 練習本 p.5–70 314、p.71 起 264；A1 課本 220。BANK 2751→3966；audit_questions 新增的旗標全是誤報；小鎮 gen_town_field_extra 重跑 858→1485；三連可出 1368→2545。
-  - 仍不收：配對、分類表、看圖、聽力、開放／不唯一、少數 OCR 壞掉（A2 p.39 練習3e/3f、A1 課本 p.64 練習1b）。A1 課本 p.47 練習2、p.50 練習1（名詞單複數，8 小題）因為題庫沒有對應 topic 沒收——要的話先開 topic。
+  - 仍不收：配對、分類表、看圖、聽力、開放／不唯一、少數 OCR 壞掉（A2 p.39 練習3e/3f、A1 課本 p.64 練習1b）。A1 課本 p.47 練習2、p.50 練習1（名詞單複數）Owen 說 go 之後補了 9 題，放 adjective-agreement（跟 Cahier A1 p.31 單複數題同一個 topic，沒開新 topic）。
   - Corrigés 和標準法文衝突的都寫在各題 aNote（例：A2 p.139 練習2d plantés／plantées 兩個都收、A1 p.115 練習1e m'ont invitée、A1 p.50 Bilan 練習2 Corrigés 字母錯位、A1 課本 p.123 練習2d 否定用 de）。
   - 順手修：questions.js 四題 hint「Cahier A1 p.8」→ p.11。
   - 盤點報告兩處小錯（代理照原文收）：A2 p.41 練習4、p.29 練習4 其實是一字填空；A2 p.123 練習2 只有 4 小題不是 6。
