@@ -218,9 +218,9 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
    資料：題目池（全部出自 questions.js；依「處理什麼資訊」分家，跟研究檔第五節同一張表）
    ============================================================ */
 var FAM = {
-  verb: /passe|imparfait|conditionnel|futur|subjonctif|reflexive|(?<!ad)verbs|etre-avoir|imperative|accord-participe|pouvoir|gerondif|condition-si|discours|ilfaut|recit/,
+  verb: /passe|imparfait|conditionnel|futur|subjonctif|reflexive|(?<!ad)verbs|etre-avoir|imperative|accord-participe|pouvoir|gerondif|condition-si|discours|ilfaut|recit|duree|negation|restriction|forme-passive|interdiction|cause-consequence|expression-but/,
   pron: /pronom|qui-que|on-vs-nous|cod/,
-  noun: /article|adjective|demonstrative-adj|possessives|tout-chaque|comparaison|superlatif|cest-il|mise-en-relief|intensite/
+  noun: /article|adjective|demonstrative-adj|possessives|tout-chaque|comparaison|superlatif|cest-il|mise-en-relief|intensite|preposition|question-words/
 };
 function famOf(topic){ for(var k in FAM) if(FAM[k].test(topic)) return k; return null; }
 var POOL = { verb:{choose:[],fill:[]}, pron:{choose:[],fill:[]}, noun:{choose:[],fill:[]} };
@@ -570,6 +570,8 @@ function pickQ(list, star){
     var inTrip=log.filter(function(l){ return l.item&&l.item.topic===q.topic; }).length;
     if(inTrip>=2) w*=.25;                         /* 路上要有變化；同一結構的密集練習交給回顧的連發 */
     if(S.qlast[q._i] && now-S.qlast[q._i]<6*3600000) w*=.05;
+    else if(S.qlast[q._i] && now-S.qlast[q._i]<3*86400000) w*=.35;   /* 10-30 Owen：「文法選擇題有點固定，好像就那些」→ 三天內出過的也少出，讓沒見過的題先上 */
+    else if(!S.qlast[q._i]) w*=1.6;
     if(qt && q.topic===qt.key) w*=4;                 /* 📋 今日委託的題型 */
     var fs=S.fmt && typeof q._i==='number' && S.fmt['q:'+q._i]; if(fmtPending(fs)) w*=3;   /* ⏳ 差一天就升格的題優先出（10-18：不然同一題要兩週才遇得到） */
     if(star) w*= q.lesson>=25 ? 2.5 : .5;
