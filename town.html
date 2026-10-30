@@ -169,10 +169,12 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .inav { position:absolute; left:50%; transform:translateX(-50%); bottom:calc(env(safe-area-inset-bottom) + 14px); display:flex; gap:8px; z-index:2; }
 .inav button { background:rgba(10,20,30,.82); color:#fff3c0; border:1px solid rgba(240,201,90,.5); border-radius:12px; padding:9px 14px; font-family:inherit; font-size:1em; }
 .ilink { margin-top:6px; padding-top:5px; border-top:1px dashed rgba(240,201,90,.45); font-size:.82em; color:#cfe3d4; display:flex; gap:6px; align-items:center; }
-.ilink span { flex:1; } .ilink button { background:#f0c95a; color:#2a1a08; border:0; border-radius:8px; padding:3px 8px; font-family:inherit; font-weight:bold; white-space:nowrap; }
+.ilink span { flex:1; } .ilink button[data-act=next] { background:#f0c95a; color:#2a1a08; border:0; border-radius:8px; padding:3px 8px; font-family:inherit; font-weight:bold; white-space:nowrap; }
 .ilist button.st { display:flex; width:100%; gap:8px; align-items:center; text-align:left; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:9px; padding:6px 8px; margin-top:4px; color:inherit; font-family:inherit; }
 .ilist .dot { width:9px; height:9px; border-radius:50%; flex:none; } .ilist .chain { font-size:.85em; color:#cfe3d4; margin:2px 0 2px 1.6em; }
 .ilist .para { line-height:1.75; } .ilist .para sup { color:#f0c95a; font-weight:bold; margin-right:2px; } .ilist .cn { color:#ffb36b; font-weight:bold; }
+.ibt { display:flex; gap:4px; } .ibt button, .ilink button[data-act=prev] { background:rgba(255,255,255,.12); color:#fff3c0; border:1px solid rgba(255,255,255,.25); border-radius:7px; padding:2px 7px; font-family:inherit; font-size:1em; }
+.ibtn { margin-top:5px; background:#f0c95a; color:#2a1a08; border:0; border-radius:8px; padding:4px 10px; font-family:inherit; font-weight:bold; }
 .ibub { position:fixed; z-index:9; max-width:min(86vw,340px); background:rgba(18,26,20,.93); border:2px solid #f0c95a; border-radius:12px; padding:8px 11px; color:#dfe8e1; cursor:pointer; line-height:1.45; }
 .cgap { color:var(--gold); letter-spacing:1px; } .cans { color:var(--gold); text-decoration:underline; }
 .conjrow { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; margin:6px 0; font-size:.85em; } .conjrow span { background:#16211b; border-radius:6px; padding:3px 6px; } .conjrow small { color:var(--dim); } .conjrow .ok { background:#3c5a2c; color:#fff3c0; } .conjrow .no { background:#4a2c28; }
@@ -3013,7 +3015,7 @@ var ISLE_SCENES={
     board:{x:14.8, y:29.4},
     outline:[ ['🪪 我是誰','①–⑤',['名字、36 歲、牙醫','分析型：分類、換角度看、連起來','理性，但還不到工程師','木訥，喜歡思考和閱讀']],
               ['🏢 我住哪','⑥–⑩',['板橋，住大樓','很空曠，車站很近','小吃少、貴一點，但喜歡住這裡：鄰居友善、乾淨']],
-              ['🎧 我怎麼學','⑪–⑯',['今年五月開始','家教＋Duolingo＋AI','聽 Coffee Break French、看 Extra French','學習不只是花時間：最重要的是浸泡在語言裡＋找對方法']],   /* 10-29：補第 ⑭ 站「不只是花時間」（告示牌核對 B，用他原稿的字） */
+              ['🎧 我怎麼學','⑪–⑯',['今年五月開始','家教＋Duolingo＋AI','聽 podcast、看 Extra French','學習不只是花時間：最重要的是浸泡在語言裡＋找對方法']],   /* 10-29：補第 ⑭ 站「不只是花時間」（告示牌核對 B，用他原稿的字） */
               ['🌫️ 法文對我','⑰–㉓',['很特別的語言','講法文像換一種眼光：有時模糊、有時清楚','模糊的時候，反而看見更大的世界','其他時間：運動、思考、照顧女兒']] ],
     /* 🔗 10-29 Owen：「幫我串聯那些句子，讓我更好記」→ 第 n 站接第 n+1 站：意思為什麼接下去＋一個把兩個地標連起來的畫面（中文，整理自他的稿，⛔ 不寫新法文） */
     links:[ '牙醫也要分類 → 診療椅旁就是分類櫃', '分類完再換角度看 → 櫃子裡拿出拼圖', '愛分析，但沒到工程師 → 拼圖下壓著一張工程圖', '理性又木訥 → 捲起工程圖，到樹下讀書',
@@ -3108,12 +3110,13 @@ function isleExit(){ ISLE.on=false; busy=false; if(icv) icv.style.display='none'
 function isleEnter(id){
   var sc=isleSpec(id); ISLE.id=id; ISLE.T=isleBuild(id); ISLE.x=sc.dock[0]; ISLE.y=sc.dock[2]-.8; ISLE.cx=ISLE.x; ISLE.cy=ISLE.y; ISLE.still=0; ISLE.units=isleUnits(id); busy=false;
   var I=isles().filter(function(x){ return x.id===id; })[0];
-  ISLE.auto=null; ISLE.cur=0; ISLE.zoom=1;
-  ihud.innerHTML='<div class="ihbar"><b>🏝 '+esc(sc.name)+'</b><span id="izone" class="muted"></span><button id="ilist">📜 清單</button><button id="iarch">🗺 群島</button></div>'+
+  ISLE.auto=null; ISLE.cur=0; ISLE.zoom=1; ISLE.full=false; ISLE.reveal=null; isleHostInit(id);
+  ihud.innerHTML='<div class="ihbar"><b>🏝 '+esc(sc.name)+'</b><span id="izone" class="muted"></span><button id="izh">'+(S.isleZh?'🀄 中文先':'🇫🇷 法文先')+'</button><button id="ilist">📜</button><button id="iarch">🗺 群島</button></div>'+
     '<div class="inav"><button id="iprev">◀ 上一站</button><button id="inext">下一站 ▶</button></div>'+
     '<div class="muted ihint" id="ihint" style="bottom:calc(env(safe-area-inset-bottom) + 66px)">⛵ 靠岸了。點地標或「下一站 ▶」就會自己走過去；也可以拖曳畫面自己走。順序就是你講話的順序。</div>';
   document.getElementById('iarch').onclick=archOpen;
   document.getElementById('ilist').onclick=function(){ if(!busy) isleList('list'); };
+  document.getElementById('izh').onclick=function(){ S.isleZh=!S.isleZh; save(); ISLE.reveal=null; this.textContent=S.isleZh?'🀄 中文先':'🇫🇷 法文先'; toast(S.isleZh?'🀄 中文先：每站先看中文、自己順一遍，再看法文':'🇫🇷 法文先：每站直接看法文'); };
   document.getElementById('iprev').onclick=function(){ if(!busy) isleStep(-1); };
   document.getElementById('inext').onclick=function(){ if(!busy) isleStep(1); };
   if(window.GameLog) GameLog.event('isle_enter');
@@ -3143,12 +3146,14 @@ function isleUpdate(dt){
     else { var ddx=wp[0]-ISLE.x, ddy=wp[1]-ISLE.y, dl=Math.hypot(ddx,ddy), step=Math.max(6.2, (A.len||0)/5)*dt;   /* 長程依距離加速：最多約 5 秒到 */
       if(dl<=step){ ISLE.x=wp[0]; ISLE.y=wp[1]; A.pts.shift(); } else { ISLE.x+=ddx/dl*step; ISLE.y+=ddy/dl*step; }
       if(Math.abs(ddx)>.05) ISLE.face=ddx<0?-1:1; ISLE.moving=true; ISLE.still=0; ISLE.near=null;
+      isleHostFollow(dt);
       var zA=sc0a.zones.filter(function(z){ return ISLE.y>z.y0 && ISLE.y<=z.y1; })[0], zeA=document.getElementById('izone'); if(zeA && zA) zeA.textContent=zA.name; return; } }
   var sp=3.4, nx=ISLE.x+vx*sp*dt, ny=ISLE.y+vy*sp*dt, sc0=isleSpec(ISLE.id);
   if(isleWalk(nx,ISLE.y)) ISLE.x=nx; if(isleWalk(ISLE.x,ny)) ISLE.y=ny;
   if(Math.abs(vx)>.05) ISLE.face=vx<0?-1:1;
   var moving=Math.hypot(vx,vy)>.1; ISLE.still= moving?0 : ISLE.still+dt; ISLE.moving=moving;
   if(sc0.board){ var dbd=Math.hypot(sc0.board.x-ISLE.x, sc0.board.y+.2-ISLE.y); if(dbd>2) ISLE.boardAway=1; else if(dbd<1 && ISLE.boardAway && ISLE.still>.3){ ISLE.boardAway=0; isleBoard(); return; } }
+  isleHostFollow(dt);
   var best=null, bd=1.25; ISLE.units.forEach(function(g){ var d=Math.hypot(g.x-ISLE.x, g.y+.2-ISLE.y); if(d<bd){ bd=d; best=g; } }); ISLE.near=best; if(best) ISLE.cur=best.n;
   var sc=isleSpec(ISLE.id), z=sc.zones.filter(function(z){ return ISLE.y>z.y0 && ISLE.y<=z.y1; })[0], ze=document.getElementById('izone'); if(ze && z) ze.textContent=z.name;
 }
@@ -3189,6 +3194,8 @@ function isleDraw(dt){
   if(sc.board) L.push({y:sc.board.y, f:function(){ var X=ox+sc.board.x*ts, Y=oy+sc.board.y*ts; isleShadow(c,X,Y,ts*.5); isleEmoji(c,'🪧',X,Y,ts*1.1);
     c.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; c.textAlign='center'; c.fillStyle='#2a1a08'; c.fillText('島上的重點', X, Y-ts*.62); }});
   ISLE.units.forEach(function(g){ L.push({y:g.y, f:function(){ isleMark(c, g, ox+g.x*ts, oy+g.y*ts, ts, d); }}); });
+  if(ISLE.host) L.push({y:ISLE.host.y, f:function(){ var H=ISLE.host, X=ox+H.x*ts, Y=oy+H.y*ts, hop=H.moving?Math.abs(Math.sin(clock*10))*ts*.12:Math.abs(Math.sin(clock*2))*ts*.03; isleShadow(c,X,Y,ts*.28); isleEmoji(c,H.em,X,Y-hop,ts*.85);
+    if(!H.met){ c.font='bold '+Math.round(ts*.3)+'px system-ui'; c.textAlign='center'; c.fillStyle='#fff3c0'; c.fillText('💬', X+ts*.35, Y-ts*.85-hop); } }});
   L.push({y:ISLE.y, f:function(){ var X=ox+ISLE.x*ts, Y=oy+ISLE.y*ts; isleShadow(c,X,Y,ts*.32); var im=img.apply(null,SPR.hero), bob=ISLE.moving?Math.abs(Math.sin(clock*12))*ts*.06:0;
     if(im.complete){ c.save(); c.translate(X,Y-ts*.5-bob); c.scale(ISLE.face,1); c.drawImage(im,-ts*.5,-ts*.5,ts,ts); c.restore(); } }});
   L.sort(function(a,b){ return a.y-b.y; }).forEach(function(o){ o.f(); });
@@ -3211,15 +3218,99 @@ function isleBubble(ox,oy,ts,d){
   var b=document.getElementById('ibub'), g=ISLE.near;
   if(!g || ISLE.still<.3 || busy){ if(b) b.remove(); return; }
   if(!b){ b=document.createElement('div'); b.id='ibub'; b.className='ibub'; document.body.appendChild(b); }
-  if(b.dataset.ref!==g.ref || b.dataset.st!==String(pst(g.ref).st)){
-    var st=pst(g.ref).st, s=g.s, main= st===0 ? esc(s.fr) : st===1 ? esc(firstLetters(s.fr)) : '這裡放的是哪一句？';
-    b.innerHTML='<div class="muted" style="font-size:.78em">第 '+g.n+' 站・'+esc(g.lab)+'</div>'+(s.ctx&&st===0?'<div class="muted" style="font-size:.78em">⋯ '+esc(s.ctx.slice(-40))+'</div>':'')+
-      '<div class="fr" style="color:#fff3c0">'+main+'</div>'+(st<2?'<div class="muted" style="font-size:.82em">'+esc(s.zh)+'</div>':'')+'<div class="muted" style="font-size:.72em;margin-top:2px">點我'+(st===0?'記這句':'自己考一下')+'</div>'+
-      (g.n<ISLE.units.length ? '<div class="ilink"><span>🔗 '+esc(isleLinkTxt(g.n))+'</span><button data-go="1">下一站 ▶</button></div>' : '<div class="ilink"><span>🏁 最後一站。回 📜 清單按「🔗 串起來」，整座島從頭順一遍</span></div>');
-    b.dataset.ref=g.ref; b.dataset.st=String(st);
-    b.onclick=function(e){ if(e.target && e.target.dataset && e.target.dataset.go){ e.stopPropagation(); b.remove(); isleStep(1); return; } b.remove(); palaceOpen(g, function(){ closeSheet(); }, function(){ closeSheet(); }); };
+  /* 10-30 Owen：「還是附上發音」「島沒辦法做問題標記」「不確定中文跟法文有沒有對上 → 顯示全文」「上一站也可以回」「要先熟中文要表達的，法文才講得順」 */
+  var st=pst(g.ref).st, sig=g.ref+'|'+st+'|'+(S.isleZh?1:0)+'|'+(ISLE.full?1:0)+'|'+(ISLE.reveal===g.ref?1:0);
+  if(b.dataset.sig!==sig){
+    var s=g.s, zhFirst=S.isleZh && ISLE.reveal!==g.ref, main= st===0 ? esc(s.fr) : st===1 ? esc(firstLetters(s.fr)) : '這裡放的是哪一句？';
+    var tools='<span class="ibt"><button data-act="say" title="發音">🔊</button><button data-act="full" title="整句對照">'+(ISLE.full?'📖 收起':'📖 全文')+'</button><button data-act="flag" title="回報這一站">🚩</button></span>';
+    var body;
+    if(ISLE.full){ var W=isleWhole(g);
+      body='<div class="fr" style="color:#fff3c0;line-height:1.6">'+W.fr+'</div><div style="font-size:.9em;margin-top:3px">'+esc(W.zh)+'</div>'+
+        '<div class="muted" style="font-size:.72em">亮的是這一站；整句的中文對整句的法文</div>';
+    } else if(zhFirst){
+      body='<div style="font-size:1.08em;color:#fff3c0">'+esc(s.zh)+'</div>'+(s.part?'<div class="muted" style="font-size:.74em">（這一站是整句的第 '+esc(s.part)+' 段）</div>':'')+
+        '<div class="muted" style="font-size:.78em;margin-top:3px">🀄 先用中文順一遍要講什麼，再看法文</div><button class="ibtn" data-act="reveal">🇫🇷 看法文</button>';
+    } else {
+      body=(s.ctx&&st===0?'<div class="muted" style="font-size:.78em">⋯ '+esc(s.ctx.slice(-40))+'</div>':'')+
+        '<div class="fr" style="color:#fff3c0">'+main+'</div>'+(st<2||S.isleZh?'<div class="muted" style="font-size:.82em">'+esc(s.zh)+'</div>':'')+
+        '<div class="muted" style="font-size:.72em;margin-top:2px">點我'+(st===0?'記這句':'自己考一下')+'</div>';
+    }
+    var nav='<div class="ilink">'+(g.n>1?'<button data-act="prev">◀</button>':'')+
+      '<span>'+(g.n<ISLE.units.length?'🔗 '+esc(isleLinkTxt(g.n)):'🏁 最後一站。📜 清單 →「🔗 串起來」整座島順一遍')+'</span>'+(g.n<ISLE.units.length?'<button data-act="next">下一站 ▶</button>':'')+'</div>';
+    b.innerHTML='<div class="muted" style="font-size:.78em;display:flex;align-items:center;gap:6px"><span style="flex:1">第 '+g.n+' 站・'+esc(g.lab)+'</span>'+tools+'</div>'+body+nav;
+    b.dataset.sig=sig;
+    b.onclick=function(e){ var t=e.target.closest && e.target.closest('[data-act]'), act=t&&t.dataset.act;
+      if(act){ e.stopPropagation();
+        if(act==='say') return speak(ISLE.full?isleWhole(g).plain:s.fr);
+        if(act==='full'){ ISLE.full=!ISLE.full; return; }
+        if(act==='reveal'){ ISLE.reveal=g.ref; speak(s.fr); return; }
+        if(act==='flag') return isleFlag(g);
+        b.remove(); ISLE.full=false; return isleStep(act==='prev'?-1:1); }
+      if(zhFirst && !ISLE.full){ ISLE.reveal=g.ref; speak(s.fr); return; }
+      b.remove(); palaceOpen(g, function(){ closeSheet(); }, function(){ closeSheet(); }); };
   }
   var X=(ox+g.x*ts)/d, Y=(oy+g.y*ts)/d; b.style.left=Math.max(8, Math.min(innerWidth-b.offsetWidth-8, X-b.offsetWidth/2))+'px'; b.style.top=Math.max(64, Y-ts/d*1.6-b.offsetHeight)+'px';
+}
+/* 🐾 島主（10-30 Owen：「島還是太陽春了，每個島能有島主或寵物跟我對話嗎？」）
+   一上島在碼頭迎接，之後像寵物一樣跟著你走；點牠：問考官的開場問題、陪你從頭講一遍、或抽一題考官追問。
+   ⛔ 島主的台詞只講中文；法文只出現考官問題（卡上的 q_fr／follow_ups）和你自己的句子——不替你編回答 */
+var ISLE_HOSTS={ AC1:['🐱','咪嚕'], AC2:['🐻','熊熊'], AC3:['🐙','八爪醫生'], AC5:['🐢','慢慢'], AC7:['🐧','企鵝阿飛'], AC8:['🦫','河狸 Castor'], AC11:['🐼','圓仔'], AC15:['🦊','狐狸 Renard'] };
+function isleHostInit(id){ var H=ISLE_HOSTS[id], sc=isleSpec(id); if(!H){ ISLE.host=null; return; }
+  S.isleHost=S.isleHost||{}; ISLE.host={em:H[0], name:H[1], x:sc.dock[0]+.9, y:sc.dock[1]-.2, met:!!S.isleHost[id], trail:[], moving:false}; }
+function isleHostFollow(dt){ var H=ISLE.host; if(!H) return;
+  H.trail.push([ISLE.x,ISLE.y]); if(H.trail.length>14) H.trail.shift();
+  var tg=H.trail[0], dx=tg[0]-H.x, dy=tg[1]-H.y, dl=Math.hypot(dx,dy), far=Math.hypot(ISLE.x-H.x, ISLE.y-H.y);
+  if(far>1.1 && dl>.05){ var sp=Math.min(dl, Math.max(3.2, far*2.2)*dt); H.x+=dx/dl*sp; H.y+=dy/dl*sp; H.moving=true; } else H.moving=false; }
+function isleHostTalk(){
+  var H=ISLE.host, I=isles().filter(function(x){ return x.id===ISLE.id; })[0], card=(typeof ANSWER_CARDS!=='undefined'?ANSWER_CARDS:[]).filter(function(c){ return c.id===ISLE.id; })[0]||{};
+  if(!H||!I) return; var first=!H.met; H.met=true; S.isleHost=S.isleHost||{}; S.isleHost[ISLE.id]=1; save();
+  var b0=document.getElementById('ibub'); if(b0) b0.remove();
+  var fu=(card.follow_ups||[]).length;
+  openSheet('<h3>'+pix(H.em,28)+' '+esc(H.name)+'</h3><div class="story">'+(first?'嗨！我是 '+esc(H.name)+'，這座島歸我管。我會一直跟著你走。':'又見面了！今天想怎麼練？')+'<br>考官一開口通常會問：</div>'+
+    '<div class="clue fr">'+esc(I.q_fr)+' '+spk(I.q_fr)+'</div><div class="muted">'+esc(I.q_zh)+'</div>'+
+    '<div class="opts" style="margin-top:8px"><button id="hRec">🗣️ 從頭講給我聽（一站一站，先講再看）</button>'+(fu?'<button id="hFu">❓ 考官還可能問什麼？</button>':'')+'<button id="hBye">👋 先自己逛</button></div>', true);
+  document.getElementById('hBye').onclick=closeSheet;
+  document.getElementById('hRec').onclick=function(){ isleRecite(0); };
+  if(fu) document.getElementById('hFu').onclick=function(){ isleFollowUp(card); };
+}
+/* 🗣️ 從頭講一遍：每站給圖＋中文，你先開口講，再翻法文對；可以跳站、可以中途收 */
+function isleRecite(i){
+  var H=ISLE.host, U=ISLE.units, g=U[i]; if(!g){ openSheet('<h3>'+pix(H.em,28)+' 講完了！</h3><div class="story">整座島從頭到尾講了一遍。'+esc(H.name)+' 很滿意地點點頭。</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>'); document.getElementById('ok').onclick=closeSheet; return; }
+  openSheet('<h3>'+pix(H.em,24)+' 第 '+g.n+'／'+U.length+' 站 <small>'+esc(g.lab)+'</small></h3><div style="text-align:center">'+pix(g.em,56)+(g.prop?pix(g.prop,30):'')+'</div>'+
+    '<div class="story">'+esc(g.s.zh)+(g.s.part?'<span class="muted">（這站是第 '+esc(g.s.part)+' 段）</span>':'')+'</div><div class="muted">先用法文講出來，再按「對答案」。</div>'+
+    '<div class="fb" id="rcA"></div><div class="row2"><button class="btn ghost" id="rcEnd">今天先到這</button><button class="btn ghost" id="rcSkip">跳過這站</button><button class="btn main" id="rcGo">對答案</button></div>', true);
+  document.getElementById('rcEnd').onclick=closeSheet;
+  document.getElementById('rcSkip').onclick=function(){ isleRecite(i+1); };
+  document.getElementById('rcGo').onclick=function(){ var A=document.getElementById('rcA');
+    if(A.dataset.on) return isleRecite(i+1); A.dataset.on=1; A.innerHTML='<div class="fr" style="color:#fff3c0">'+esc(g.s.fr)+' '+spk(g.s.fr)+'</div>'+(i<U.length-1?'<div class="muted">🔗 '+esc(isleLinkTxt(g.n))+'</div>':''); speak(g.s.fr); this.textContent=i<U.length-1?'下一站 ▶':'講完了'; };
+}
+/* ❓ 考官追問：卡上的 follow_ups（法文是卡上原本的問題）；⛔ 不給參考回答——想一想你會怎麼答 */
+function isleFollowUp(card){
+  var H=ISLE.host, L=card.follow_ups||[], q=L[Math.floor(Math.random()*L.length)]; if(!q) return;
+  openSheet('<h3>'+pix(H.em,24)+' 考官可能接著問</h3><div class="clue fr">'+esc(q.fr)+' '+spk(q.fr)+'</div><div class="muted">'+esc(q.zh||'')+'</div>'+
+    '<div class="story">想一想：島上哪幾站的句子可以拿來接住這題？先用中文想要講什麼，再用你學過的句子講出來。</div>'+
+    '<div class="row2"><button class="btn ghost" id="fuBack">回去</button><button class="btn main" id="fuNext">換一題</button></div>', true);
+  speak(q.fr);
+  document.getElementById('fuBack').onclick=isleHostTalk;
+  document.getElementById('fuNext').onclick=function(){ isleFollowUp(card); };
+}
+/* 📖 整句：同一句切成好幾站時，把各段接回來，這一站亮起來；中文是整句的 */
+function isleWhole(g){ var k=String(g.s.key).split('.')[0], P=ISLE.units.filter(function(u){ return String(u.s.key).split('.')[0]===k; });
+  return {fr:P.map(function(u){ return u===g?'<b style="color:#f0c95a;text-decoration:underline">'+esc(u.s.fr)+'</b>':'<span style="opacity:.75">'+esc(u.s.fr)+'</span>'; }).join(' '), plain:P.map(function(u){ return u.s.fr; }).join(' '), zh:g.s.zh}; }
+/* 🚩 島上回報：自動附上島名、站號、這一站的法文與中文 */
+function isleFlag(g){
+  var sc=isleSpec(ISLE.id), ctx='🏝 '+sc.name+' 第 '+g.n+' 站（'+g.lab+'）'+(ISLE.full?'・看全文時':'')+'｜'+g.s.fr+'｜'+g.s.zh, wasBusy=busy;
+  var box=document.createElement('div'); box.className='flagbox';
+  box.innerHTML='<h3>🚩 這一站有問題</h3><div class="muted">中文跟法文對不上、圖不對、句子怪怪的——直接寫。</div>'+
+    '<textarea id="flagTxt" rows="3" placeholder="例如：中文少了「到處」"></textarea><div class="muted" style="font-size:.75em">會自動附上：'+esc(ctx)+'</div>'+
+    '<div class="row2"><button class="btn ghost" id="flagNo">取消</button><button class="btn main" id="flagGo">送出</button></div>';
+  document.body.appendChild(box); var ta=document.getElementById('flagTxt'); setTimeout(function(){ ta.focus(); },50);
+  busy=true; ISLE.joy=null; keys={};
+  function close(){ box.remove(); busy=wasBusy; }
+  document.getElementById('flagNo').onclick=close;
+  document.getElementById('flagGo').onclick=function(){ var t=ta.value.trim(); if(!t) return;
+    if(window.GameLog) GameLog.report({src:'town', kind:'口說島', ref:g.ref, q:ctx, a:g.s.fr, pick:''}, t);
+    close(); toast('🚩 收到了，謝謝'); };
 }
 function isleBubbleTap(){ return false; }
 /* 🔗 串聯：第 n 站接第 n+1 站——先講意思為什麼接下去，再用畫面把兩個地標連起來（中文；⛔ 不寫新法文）。島沒寫 links 時用「下一站：地標名」 */
@@ -3229,6 +3320,7 @@ function isleTap(cx, cy){
   var V=ISLE.view; if(!V || !ISLE.id || busy) return;
   var wx=(cx*V.d-V.ox)/V.ts, wy=(cy*V.d-V.oy)/V.ts, sc=isleSpec(ISLE.id), best=null, bd=1.1;
   ISLE.units.forEach(function(g){ var dd=Math.min(Math.hypot(g.x-wx, g.y-wy), Math.hypot(g.x-wx, g.y-.6-wy)); if(dd<bd){ bd=dd; best=g; } });
+  if(ISLE.host && Math.hypot(ISLE.host.x-wx, ISLE.host.y-.4-wy)<.8) return isleHostTalk();
   if(best && best===ISLE.near && !ISLE.auto){ var bb=document.getElementById('ibub'); if(bb) bb.remove(); return palaceOpen(best, function(){ closeSheet(); }, function(){ closeSheet(); }); }   /* 點自己站著的那站＝直接開 */
   if(best) return isleGo(best);
   if(sc.board && Math.hypot(sc.board.x-wx, sc.board.y-.5-wy)<1) isleBoard();
@@ -3255,9 +3347,14 @@ var ISLE_CONN=/(\b(?:d'abord|ensuite|enfin|mais|et|alors|quand|aussi|parce que|d
 function isleList(mode){
   var sc=isleSpec(ISLE.id), U=ISLE.units, zoneOf=function(g){ return sc.zones.filter(function(z){ return g.y>z.y0 && g.y<=z.y1; })[0]||sc.zones[0]; };
   var groups=sc.zones.map(function(z){ return {z:z, u:U.filter(function(g){ return zoneOf(g)===z; })}; }).filter(function(G){ return G.u.length; });
-  var tab='<div class="row2" style="margin:0 0 6px"><button class="btn '+(mode==='list'?'main':'ghost')+'" data-m="list">📋 清單</button><button class="btn '+(mode==='chain'?'main':'ghost')+'" data-m="chain">🔗 串起來</button></div>';
+  var tab='<div class="row2" style="margin:0 0 6px"><button class="btn '+(mode==='list'?'main':'ghost')+'" data-m="list">📋 清單</button><button class="btn '+(mode==='chain'?'main':'ghost')+'" data-m="chain">🔗 串起來</button><button class="btn '+(mode==='zh'?'main':'ghost')+'" data-m="zh">🀄 中文順稿</button></div>';
   var h='<h3>📜 '+esc(sc.name)+'</h3>'+tab+'<div class="ilist">';
-  if(mode==='list'){
+  if(mode==='zh'){
+    h+='<div class="muted">先把中文要講的順下來：一句一句照站號念，念得順了，法文才接得上。</div>'+(isles().filter(function(I){ return I.id===ISLE.id; })[0]||{}).q_zh.replace(/^/,'<div class="story" style="margin-top:6px">🎤 考官問：')+'</div>';
+    groups.forEach(function(G){ h+='<div style="margin-top:10px"><b>'+esc(G.z.name)+'</b></div>'; var seen={};
+      G.u.forEach(function(g){ var k=String(g.s.key).split('.')[0]; if(seen[k]||seen['z'+g.s.zh]) return; seen[k]=1; seen['z'+g.s.zh]=1; var nn=U.filter(function(u){ return String(u.s.key).split('.')[0]===k; }).map(function(u){ return u.n; });
+        h+='<div class="chain" style="margin-left:0;font-size:1em;color:inherit"><b style="color:#f0c95a">'+(nn.length>1?nn[0]+'–'+nn[nn.length-1]:nn[0])+'</b>　'+esc(g.s.zh)+'</div>'; }); });
+  } else if(mode==='list'){
     groups.forEach(function(G){ h+='<div style="margin-top:8px"><b>'+esc(G.z.name)+'</b></div>';
       G.u.forEach(function(g){ var P=pst(g.ref), col=P.last?['#e8e1cf','#8fc3ff','#f0c95a'][P.st]:'rgba(255,255,255,.3)';
         h+='<button class="st" data-n="'+g.n+'"><span class="dot" style="background:'+col+'"></span>'+pix(g.em,22)+'<b>'+g.n+'</b><span>'+esc(g.lab)+'</span></button>'; }); });
