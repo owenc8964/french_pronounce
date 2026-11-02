@@ -1,4 +1,4 @@
-# METHOD_MAP.md — 學習法家族地圖（十二個，不是一個）
+# METHOD_MAP.md — 學習法家族地圖（十三個，不是一個）
 
 > 2026-08-27 建立。起因：Owen 看完 `SPEAKING_METHOD.md` 回推出來的兩階段協定後說
 > 「**我覺得這算合理，但好像還是沒跳脫我們舊有方法太多。還是很吃背誦跟重複。
@@ -8,12 +8,12 @@
 > （DeKeyser、Conti、4/3/2）。那一支的世界觀本來就是「刻意練習＋重複」，
 > 所以回推出來的東西當然長得像舊做法。
 >
-> 這份文件把**互相對立的十二個家族**攤開。它們不是替代關係，是**不同的槓桿**。
+> 這份文件把**互相對立的十三個家族**攤開。它們不是替代關係，是**不同的槓桿**。
 > ⚠️ 用法：先問「我現在缺的是哪一種槓桿」，再選家族——不要預設答案永遠是 A。
 
 ---
 
-## 十二個家族速覽
+## 十三個家族速覽
 
 | 家族 | 核心機制 | 見效速度 | 好玩度 | 對 TEF 直接嗎 |
 |---|---|---|---|---|
@@ -29,6 +29,7 @@
 | **J 離線鞏固（睡眠與干擾管理）** ⭐新 | 練完之後那段**不練習**的時間決定留下多少 | 中 | 中 | 🔸 間接（它不加分，它防止已學到的流失） |
 | **K 背景知識與知識啟動** ⭐新 | 理解的上限有一半不是語言，是**你對這件事知道多少** | 快（啟動）／慢（建構） | 中高 | 🔸 間接（⚠️ 而且 A2 可能還在門檻下） |
 | **L 可懂度工程** ⭐新 | 在你所有的錯誤裡，只有一部分真的讓人聽不懂——**選靶** | 快（選靶）／中（修正） | 中高 | ✅✅ 極直接（口說與聽者判斷直接相關） |
+| **M 聽覺詞彙** ⭐新 | 你的每一個字**有沒有聲音版本**、那個版本**調得出來有多快** | 中（⚠️ 療法未定） | 中高 | ✅✅ 極直接（詞彙 ↔ 聽力 r = .56） |
 
 ---
 
@@ -507,9 +508,81 @@ Kazuya Saito 那條「哪些語音特徵真的進了聽者的判斷」的統合�
   ⚠️ 是否寫進每日流程**等第一次實驗結果**（見 `RESEARCH_2026-W44_口說.md` 第 5 節），⛔ 不要憑空排。
 
 
+## M. 聽覺詞彙（phonological vocabulary／aural lexicon）⭐ 2026-11-02 新增
+
+> 2026-W45 聽力研究時找到的第十三個家族。完整證據、樣本數與侷限見
+> [`research/RESEARCH_2026-W45_聽力.md`](research/RESEARCH_2026-W45_聽力.md) 第 1A ①。
+
+**代表**：Kazuya Saito／Takumi Uchihara 那條 **phonological vocabulary knowledge** 的線
+（三階段：phonologization → generalization → **automatization**）、
+Joshua Matthews／Junyu Cheng 的 **aural vs orthographic vocabulary** 對比研究、
+McLean 的聽覺版詞彙量表（LVLT）。對立面是把詞彙當成**一個**量來測的傳統（書面詞彙量表）。
+
+**機制**：**前面十二個家族，沒有一個的單位是「一個字」**——
+結構的自動化（A）、小時數（B）、一段打磨過的話（C）、一個對手（D）、一份素材（E）、
+一個想打開它的理由（F）、**次詞彙的訊號**（G）、你剛寫的那一篇（H）、
+一個非語言的結果（I）、不練習的那段時間（J）、你對這件事知道多少（K）、
+哪些錯誤真的讓人聽不懂（L）。
+
+⭐⭐ **M 的單位是「一個字，以及它有沒有聲音版本、那個版本調得出來有多快」。**
+它主張：你會不會這個字、和你**用耳朵**會不會這個字，是**兩個不同的量**；
+聽力測驗量到的主要是後者；而**用課本與文字學起來的人，前者遠大於後者**。
+⭐ 注意第三階段（automatization）：它不是「會不會」，是「**多快**」。
+
+⭐ 操作型定義（這部分不需要相信任何效果量也能用）：
+① 抽一批**已學過的內容詞**（⛔ 不是功能詞）→
+② **看字**那一輪：3 秒內講出意思 → ③ 隔開 ≥30 分鐘、打亂順序 →
+④ **只聽**那一輪（⛔ 不看字）：記 **立刻／想了一下／沒認出來** →
+⑤ ⭐ 分四格：**眼會耳也會** ／ **眼會但慢** ／ ⭐⭐ **眼會耳不會（＝啞巴字，M 要治的病）** ／ **兩邊都不會（＝還沒學會，⛔ 不是聽力問題）**
+
+**⚠️⚠️ 它跟 G 的主張是對立的，衝突要並陳**：
+- **G 說**：字你都認得，是**訊號**沒進來（Field：弱聽者認得的字在紙上都會）。
+- **M 說**：訊號進來了也沒用，因為**那個字在你腦裡沒有聲音版本**，或有但調得太慢。
+- ⭐ **這不是學術爭論，它在我們系統裡已經有後果**：`listen_decode.js` 開頭明文寫着
+  「⛔ 只挖功能詞，不挖內容詞：名詞動詞你猜得到」——**那是純 G 的立場**，
+  而 M 說**內容詞能不能用耳朵認出來才是最強的單一預測因子**。
+- ⚠️ **中立的讀法（⚠️ 推論，不是文獻結論）**：兩者是不同層，不是零和；
+  但**系統目前只實作了 G 那一邊**，所以 M 這一邊的大小是未知的，⛔ 不要假設它小。
+
+**證據**（🟢 皆為檢索摘要層級，原文全被 egress proxy 擋掉）：
+
+| 來源 | 數字 |
+|---|---|
+| ⭐⭐ Cheng & Matthews (2018)，*Language Testing* 35(1)，**N = 250** 中國大專 EFL | **產出型語音詞彙（ProPhon）↔ 聽力 r = .71**，解釋 **51%** 變異；正字法（ProOrth）↔ 閱讀 r = .57／33%。⚠️ 另一處引用把閱讀寫成 .46，**有引用錯誤** |
+| ⭐⭐ Saito, Uchihara, Takizawa & Suzukida，*SSLA* 47(1), 26–52 | **「用在脈絡裡」的判斷（LJT）↔ 聽力 r = .6–.7** ＞ 單字的 recognition／recall **r = .4–.5** |
+| ⭐⭐⭐ 同團隊的**訓練研究**，*Applied Psycholinguistics*（N = 133，⚠️ 勘誤寫 126） | 兩種訓練**誰都沒有明顯較優**；⭐⭐ **只有「自動化」面向的進步跟聽力進步相關**，宣告式的不相關。劑量：**30 分鐘／80 詞／160 trials** |
+| ⚠️⚠️ **反方（最該並陳）**：Bozorgian, Nasari & Matthews (2025)，*Pedagogies*，**N = 100**／6 次課 | 聽覺詞彙教學與書面詞彙教學**都勝對照（中等效果量）**，⛔ **彼此沒有顯著差異** |
+| ⚠️ **反方 2**：Saito et al. (2026)，*Second Language Research* | **限時 vs 不限時沒差**；另有一處報告**反應時間變異（CV）與聽力無關** → ⛔ 不要拿 CV 當指標 |
+| ⚠️ **重疊度警訊** | 正字法與聽覺詞彙知識 **r = .88** — ⛔ 不是兩個獨立的能力 |
+| 參照：詞彙知識 ↔ 理解統合分析（100+ 研究，*LTR* 2022） | 閱讀 **r = .57**／聽力 **r = .56** — ⭐ 比 K 的內容知識 **.41** 大 |
+| 測法：Milliner, Matthews & McLean (2026)，*Language Testing* | 聽覺詞彙量表 **meaning-recall r = .58 ＞ meaning-recognition r = .50** |
+| ⚠️ 程度調節（*System* 2017 等） | 低程度：**高頻詞**就能預測；高程度才要中頻。另有研究說高程度組聽覺詞彙量影響很小（r = .38） |
+| ⚠️ 不一致 | 一篇回顧直說「聽覺詞彙與 L2 聽力的關聯**仍然 mixed**」 |
+
+- ✅ ⭐ **診斷極便宜**：一支手機、20 個字、15 分鐘就知道有沒有這個病
+- ✅ ⭐ **對 Owen 的先驗機率很高**：他的詞彙全部從**課本與文字筆記**進來
+  （`chunks.js` 由 `french_notes.html` 抽取），而文獻說的正是這種學習者前者遠大於後者
+- ✅ **材料零成本**：`chunks.js` ＋ `sentences.js` 已有 **3,439 個不同法文字形**，每一個都接得到 TTS
+- ✅ **指標客觀**（認出來／沒認出來／認出來但要想），⛔ 不吃自評 — ⭐ 正好補 W37 缺口 4 的熟悉度錯覺
+- ✅ ⭐ **量測零件已經做好了**：`verb_sprint.html` 的 `REFLEX_MS = 2000`（中位起手時間）
+  與 `WEIGHT = { weak:4, new:3, slow:2, reflex:1 }` — ⚠️ **但只用在產出側的變位格，聽覺側 0%**
+- ⛔ **它不會讓人多會一個結構**，也不會讓人變得有話講（那是 A／C）
+- ⛔ **它只治「字」這一層**：句法沒剖析、功能詞沒收到，M 一點都幫不上（那是 G）
+- ⛔⛔ **療法未定**：唯一直接比較的實驗說「改成聽覺」**不比書面好** →
+  ⭐ 它現在只能當**選靶器（診斷）**，⛔ 不是療法
+- ⛔ **跟書面詞彙高度重疊（r = .88）** → ⛔ 不要說成兩個獨立能力
+- ⛔⛔ **外推風險**：證據幾乎全是**英語為 L2** 的中國／日本／伊朗學習者；
+  ⚠️ **法文側查無已驗證的聽覺詞彙量表**（TTV 是書面的、LVLT 是英文的）→ 要自製
+- ⛔ **不要做的替代品**：⛔ **音樂／節奏訓練**（只有相關、無因果遷移，見下方來源）
+- **它適合的位置：⛔ 不另開時段、⛔ 不新增卡片，掛在既有的 3,393 張複習卡上**——
+  ⭐ 讓同一張卡多一個「聽得出來嗎」的狀態。
+  ⚠️⚠️ **前置條件**：先做 `RESEARCH_2026-W45_聽力.md` 第 5 節的「啞巴字體檢」；
+  **啞巴字 < 10% 就不要做任何功能**，⛔ 不要憑空排。
+
+
 ## 怎麼組合（這才是重點）
 
-十二個家族不是選一個，是**配比**。一個可能的配方：
+十三個家族不是選一個，是**配比**。一個可能的配方：
 
 | 家族 | 時間佔比 | 排在哪 | 為什麼 |
 |---|---|---|---|
@@ -525,6 +598,7 @@ Kazuya Saito 那條「哪些語音特徵真的進了聽者的判斷」的統合�
 | J 離線鞏固 ⭐ | **不佔時間** | ⭐ **把 G 排到睡前**，隔天早上 5 分鐘免費複測 | 它不加分，它防止已學到的流失；而這一格目前也是 0%（⚠️ 時段待第一次實驗後再定） |
 | K 背景知識 ⭐ | **不佔獨立時段** | ⭐ 掛在閱讀／聽力步驟**前面 30 秒**（只做啟動） | 啟動 g = 0.66 便宜又快；而這一格目前也是 0%（⚠️⚠️ 但 A2 可能還在門檻下，佔比待第一次實驗後再定） |
 | L 可懂度工程 ⭐ | **不佔獨立時段** | ⭐ 掛在口說練習的**錄完之後**（分四堆、只修韻律與 liaison） | 它**刪掉**工作而不是增加工作；而這一格目前也是 0%（⚠️ 系統連一筆可懂度資料都沒有，佔比待第一次實驗後再定） |
+| M 聽覺詞彙 ⭐ | **不佔獨立時段、不新增卡片** | ⭐ 掛在既有複習卡上（同一張卡多一個「聽得出來嗎」的狀態） | 詞彙 ↔ 聽力 r = .56（比 K 的 .41 大），而系統 3,393 張卡**沒有一張的正面是聲音**；⚠️⚠️ **療法未定**，⛔ 先做啞巴字體檢，< 10% 就不要做 |
 
 ⚠️ **注意這個配比跟我們現在的系統剛好相反**：現在幾乎 100% 是 A，而 A 在這張表裡只佔每天 10–15 分鐘。
 
@@ -558,6 +632,16 @@ Kazuya Saito 那條「哪些語音特徵真的進了聽者的判斷」的統合�
 - ⚠️ **G 的視覺側（正字法解碼）要不要擴寫**：W38 提議過，⚠️ **2026-W42 把它往「不急」偏了一格**——
   視覺側有真的病（靠內容詞蒙對），但 Fukkink et al. 2005 顯示詞形／詞義提取訓練**不遷移到閱讀速度與理解**，
   也就是**有病沒藥**。⛔ 等「蒙對偵測」實驗做過再談（見 `RESEARCH_2026-W42_閱讀.md` 2.4）
+- ⭐ **互動式聽力（interactive listening）**：W41 把它列為「地圖上還沒有的構念」，⭐ **2026-W45 查完決定 ⛔ 不另立家族**——
+  Lam & Goh (2026, *RELC*) 的分類學（次技能與認知歷程各五群、屬性三群）與 Duolingo 的 Interactive Listening 作業都證明構念是真的，
+  但 ①**TCF CO 根本不考**（只播一次、你對音檔做不了任何事）②槓桿落在 **C（策略）＋ I（任務）＋ D（對手）**
+  ③⚠️ **查無任何對照組訓練實驗**。細節見 `RESEARCH_2026-W45_聽力.md` 1A ②
+- ⛔⛔ **音樂／節奏訓練**：2026-W45 查過，⛔ **不另立家族，而且進「不要做」清單**——
+  音樂能力與 L2 **有相關**（統合分析，韻律感知 109 研究中等相關、非母語韻律更大），
+  ⛔ 但作者明說**無法確認因果、不支持遷移**；Zulu 音位研究直接說「音樂訓練無遷移」。
+  ⭐ 這跟 `research/2026-10-02_節奏唱誦與記憶術記變位.md` 的結論撞在一起，**是同一方向的第二個獨立否證**
+- ⚠️ **M 家族尚未查的**：①**法文、成人、A2** 的聽覺詞彙直接研究（本輪查無，證據全是英語為 L2 的中／日／伊朗學習者）
+  ②**怎麼練**才有效（唯一的直接比較實驗說聽覺教學不比書面好）③「自動化」到底該怎麼量（同一團隊自己在翻案：CV 無關、限時沒差）
 - ⚠️ 每週一的雲端研究例行（`trig_01WwYqQodLQjqbU7d3iwJfwG`）會持續往這些方向補
 
 ---
@@ -647,3 +731,18 @@ Kazuya Saito 那條「哪些語音特徵真的進了聽者的判斷」的統合�
 - ⚠️ 可懂度與程度只有弱相關：Tergujeff (2021)，*System* 100:102567：https://www.sciencedirect.com/science/article/pii/S0346251X21001214
 - 量尺（A／L 共用）：Suzuki, Kormos & Uchihara (2021)，發話流暢度與知覺流暢度（22 研究／263 ES；⭐ 停頓**次數**＞長度＞⛔ 修補，*MLJ* 105(2), 435–463）：https://onlinelibrary.wiley.com/doi/full/10.1111/modl.12706
 - ⚠️ 以上皆為**檢索摘要層級**的查證（Wiley／Cambridge／Benjamins／ScienceDirect／UTP／ACL／`files.eric.ed.gov`／作者自架站全部 `ENOTFOUND`，**一篇原文都沒讀到**），逐條限制見 `research/RESEARCH_2026-W44_口說.md` 開頭
+
+
+### M 家族（2026-11-02 新增）
+- ⭐⭐ Cheng, J. & Matthews, J. (2018)，三種詞彙知識 vs 聽力與閱讀（**N = 250**；**ProPhon ↔ 聽力 r = .71／51% 變異**，*Language Testing* 35(1), 3–25）：https://eric.ed.gov/?id=EJ1163897 ／ https://www.researchgate.net/publication/322195612_The_relationship_between_three_measures_of_L2_vocabulary_knowledge_and_L2_listening_and_reading
+- ⭐⭐ Saito, K., Uchihara, T., Takizawa, K. & Suzukida, Y.，聽力程度的個別差異再探（**LJT ↔ 聽力 r = .6–.7 ＞ recognition／recall .4–.5**，*SSLA* 47(1), 26–52）：https://www.cambridge.org/core/services/aop-cambridge-core/content/view/0AB54264DF81D0A2CC5A30D8F699BDFE/S027226312300044Xa.pdf/individual-differences-in-l2-listening-proficiency-revisited-roles-of-form-meaning-and-use-aspects-of-phonological-vocabulary-knowledge.pdf
+- ⭐⭐⭐ 同團隊的**訓練研究**：宣告式 vs 自動化語音詞彙知識（N = 133，⚠️ 勘誤寫 126；⭐ **只有自動化面向的進步跟聽力進步相關**；30 分鐘／80 詞／160 trials，*Applied Psycholinguistics*）：https://www.cambridge.org/core/journals/applied-psycholinguistics/article/declarative-and-automatized-phonological-vocabulary-knowledge-in-l2-listening-proficiency-a-training-study/51142963AC07BF241EDF0F2C2ADA1586 ／勘誤：https://www.researchgate.net/publication/404656743_Declarative_and_automatized_phonological_vocabulary_knowledge_in_L2_listening_proficiency_A_training_study_-_CORRIGENDUM
+- ⚠️⚠️ **反方**：Bozorgian, H., Nasari, A. & Matthews, J. (2025)，聽覺 vs 書面詞彙教學對聽力（**N = 100**／6 次課；⛔ **兩者無顯著差異**，*Pedagogies*）：https://www.tandfonline.com/doi/full/10.1080/1554480X.2025.2456553
+- ⚠️ **反方 2**：Saito, K. et al. (2026)，限時 vs 不限時的詞彙語意判斷（⛔ 時間壓力沒讓關係變強；⛔ CV 與聽力無關，*Second Language Research*）：https://doi.org/10.1177/02676583261420616
+- Milliner, B., Matthews, J. & McLean, S. (2026)，聽覺詞彙量表三種題型的預測力（**meaning-recall r = .58 ＞ recognition .50**，*Language Testing*）：https://doi.org/10.1177/02655322261428738
+- 詞彙知識 ↔ 閱讀/聽力統合分析（100+ 研究；閱讀 r = .57／**聽力 r = .56**，*Language Teaching Research* 2022）：https://eric.ed.gov/?id=EJ1342379
+- 法文**書面**詞彙量表 TTV：Batista, R. & Horst, M. (2016)，*CMLR*：https://doi.org/10.3138/cmlr.2820 ／ https://www.lextutor.ca/tests/batista_horst_2016.pdf
+- ⛔ **音樂／節奏不另立家族的依據**：音樂能力 ↔ L2 統合分析（⛔ 相關、無因果，*Royal Society Open Science* 12(1), 241193）：https://royalsocietypublishing.org/rsos/article/12/1/241193/92888/Is-musical-ability-related-to-second-language ／ 音樂能力 ↔ 韻律感知（**109 研究**，*Journal of Phonetics*）：https://www.sciencedirect.com/science/article/pii/S0095447023000670 ／ Zulu 音位：⛔ 音樂訓練無遷移：https://pubmed.ncbi.nlm.nih.gov/28204984
+- ⛔ **互動式聽力不另立家族的依據**：Lam, D. M. K. & Goh, C. C. M. (2026)，互動式聽力技能分類學（*RELC Journal*）：https://doi.org/10.1177/00336882261448243 ／ Duolingo English Test, Interactive Listening：https://duolingo-papers.s3.amazonaws.com/other/Interactive+Listening+%E2%80%93+The+Duolingo+English+Test.pdf
+- ⛔ **ASR 不能當判分員**：McCrocklin, S. (2026)，ASR 聽寫對 L2 語音的準確度（*Human Behavior and Emerging Technologies*）：https://onlinelibrary.wiley.com/doi/10.1155/hbe2/5762328
+- ⚠️ 以上皆為**檢索摘要層級**的查證（`eric.ed.gov`／`www.kazuyasaito.net`／`discovery.ucl.ac.uk` 全部 `ENOTFOUND`，**一篇原文都沒讀到**），逐條限制見 `research/RESEARCH_2026-W45_聽力.md` 開頭
