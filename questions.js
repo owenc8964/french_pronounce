@@ -77,11 +77,11 @@ const BANK = [
   { lesson:2, topic:'question-words', type:'trans', q:'你喜歡什麼音樂？',                               hint:'quelle + musique', a:'Tu aimes quelle musique ?', aNote:'quelle（陰性）隨 musique（f）', askClaude:true },
   { lesson:2, topic:'preposition-country', type:'trans', q:'她去法國，他去加拿大。',                          hint:'en / au', a:'Elle va en France, il va au Canada.', aNote:'France（陰性）→ en；Canada（陽性）→ au', askClaude:true },
 
-  { lesson:2, topic:'adjective-agreement', type:'gender', q:'sport → 陽性 or 陰性？冠詞是？',                hint:'字尾為子音', a:'陽性 → le sport|le sport|le|m|陽性', aNote:'le sport（m）' },
-  { lesson:2, topic:'adjective-agreement', type:'gender', q:'musique → 陽性 or 陰性？冠詞是？',              hint:'字尾為 -e', a:'陰性 → la musique|la musique|la|f|陰性', aNote:'la musique（f）' },
-  { lesson:2, topic:'adjective-agreement', type:'gender', q:'art → 陽性 or 陰性？冠詞是？',                  hint:'母音開頭', a:'陽性 → l\'art|le|m|陽性', aNote:'l\'art（m），母音開頭用 l\'，但本身陽性（所以只打 l\'art 看不出陰陽性，要答 le／m／陽性）' },
-  { lesson:2, topic:'adjective-agreement', type:'gender', q:'histoire → 陽性 or 陰性？冠詞是？',             hint:'字尾 -e，母音開頭', a:'陰性 → l\'histoire|la|f|陰性', aNote:'l\'histoire（f），母音開頭用 l\'（所以只打 l\'histoire 看不出陰陽性，要答 la／f／陰性）' },
-  { lesson:2, topic:'adjective-agreement', type:'gender', q:'café → 陽性 or 陰性？冠詞是？',                 hint:'-é 結尾≠陰性 -e', a:'陽性 → le café|le café|le|m|陽性', aNote:'le café（m），帶重音的 -é 不算陰性字尾 -e' },
+  { lesson:2, topic:'adjective-agreement', type:'gender', q:'sport → 陽性 or 陰性？冠詞是？',                hint:'字尾為子音', a:'陽性 → le sport|le sport|le|m|陽性|陽 le|le 陽|陽 le sport|le sport 陽|陽性 le|le 陽性|陽性 le sport|le sport 陽性|m le|le m|m le sport|le sport m|陽', aNote:'le sport（m）' },
+  { lesson:2, topic:'adjective-agreement', type:'gender', q:'musique → 陽性 or 陰性？冠詞是？',              hint:'字尾為 -e', a:'陰性 → la musique|la musique|la|f|陰性|陰 la|la 陰|陰 la musique|la musique 陰|陰性 la|la 陰性|陰性 la musique|la musique 陰性|f la|la f|f la musique|la musique f|陰', aNote:'la musique（f）' },
+  { lesson:2, topic:'adjective-agreement', type:'gender', q:'art → 陽性 or 陰性？冠詞是？',                  hint:'母音開頭', a:'陽性 → l\'art|le|m|陽性|陽 le|le 陽|陽 l\'art|l\'art 陽|陽性 le|le 陽性|陽性 l\'art|l\'art 陽性|m le|le m|m l\'art|l\'art m|陽', aNote:'l\'art（m），母音開頭用 l\'，但本身陽性（所以只打 l\'art 看不出陰陽性，要答 le／m／陽性）' },
+  { lesson:2, topic:'adjective-agreement', type:'gender', q:'histoire → 陽性 or 陰性？冠詞是？',             hint:'字尾 -e，母音開頭', a:'陰性 → l\'histoire|la|f|陰性|陰 la|la 陰|陰 l\'histoire|l\'histoire 陰|陰性 la|la 陰性|陰性 l\'histoire|l\'histoire 陰性|f la|la f|f l\'histoire|l\'histoire f|陰', aNote:'l\'histoire（f），母音開頭用 l\'（所以只打 l\'histoire 看不出陰陽性，要答 la／f／陰性）' },
+  { lesson:2, topic:'adjective-agreement', type:'gender', q:'café → 陽性 or 陰性？冠詞是？',                 hint:'-é 結尾≠陰性 -e', a:'陽性 → le café|le café|le|m|陽性|陽 le|le 陽|陽 le café|le café 陽|陽性 le|le 陽性|陽性 le café|le café 陽性|m le|le m|m le café|le café m|陽', aNote:'le café（m），帶重音的 -é 不算陰性字尾 -e' },
 
   { lesson:2, topic:'vocab-places-city', type:'choose', q:'librairie 和 bibliothèque，哪個是「圖書館」？', hint:'faux ami（假朋友）', a:'bibliothèque', aNote:'bibliothèque＝圖書館（借書）；librairie 長得像英文 library 但其實是「書店」（買書）——假朋友，別被騙。', opts:['librairie','bibliothèque'] },
   { lesson:2, topic:'on-vs-nous', type:'choose', q:'「on」在口語中等於哪個主詞？', hint:'動詞變位同 il/elle', a:'nous', aNote:'On habite = Nous habitons，但動詞是 habite 不是 habitons', opts:['tu','nous','vous','ils'] },
@@ -101,9 +101,9 @@ const BANK = [
   { lesson:2, topic:'question-words', type:'trans', q:'她是哪裡人？她是義大利人。',                       hint:'Qui / d\'où / italienne', a:'Elle est d\'où ? Elle est italienne.', aNote:'D\'où es-tu ? = 你是哪裡人？', askClaude:true },
   { lesson:2, topic:'negation', type:'trans', q:'我說中文，不說西班牙文。',                          hint:'parler / ne...pas', a:'Je parle chinois, je ne parle pas espagnol.', aNote:'語言前不加冠詞；否定 ne...pas', askClaude:true },
 
-  { lesson:2, topic:'preposition-country', type:'gender', q:'France → 陰性 or 陽性？用哪個介詞去那裡？',      hint:'字尾 -e', a:'陰性 → en France|en France|en|陰性', aNote:'la France（字尾 -e）→ en' },
-  { lesson:2, topic:'preposition-country', type:'gender', q:'Canada → 陰性 or 陽性？用哪個介詞去那裡？',      hint:'字尾不是 -e', a:'陽性 → au Canada|au Canada|au|陽性', aNote:'le Canada（字尾 -a）→ au' },
-  { lesson:2, topic:'preposition-country', type:'gender', q:'Mexique → 陰性 or 陽性？用哪個介詞去那裡？',     hint:'⚠️ 例外！字尾 -e 但…', a:'陽性例外 → au Mexique|au Mexique|au|陽性|陽性例外', aNote:'le Mexique = 例外，字尾 -e 卻是陽性 → au' },
+  { lesson:2, topic:'preposition-country', type:'gender', q:'France → 陰性 or 陽性？用哪個介詞去那裡？',      hint:'字尾 -e', a:'陰性 → en France|en France|en|陰性|陰 en|en 陰|陰 en France|en France 陰|陰性 en|en 陰性|陰性 en France|en France 陰性|陰', aNote:'la France（字尾 -e）→ en' },
+  { lesson:2, topic:'preposition-country', type:'gender', q:'Canada → 陰性 or 陽性？用哪個介詞去那裡？',      hint:'字尾不是 -e', a:'陽性 → au Canada|au Canada|au|陽性|陽 au|au 陽|陽 au Canada|au Canada 陽|陽性 au|au 陽性|陽性 au Canada|au Canada 陽性|陽', aNote:'le Canada（字尾 -a）→ au' },
+  { lesson:2, topic:'preposition-country', type:'gender', q:'Mexique → 陰性 or 陽性？用哪個介詞去那裡？',     hint:'⚠️ 例外！字尾 -e 但…', a:'陽性例外 → au Mexique|au Mexique|au|陽性|陽性例外|陽 au|au 陽|陽 au Mexique|au Mexique 陽|陽性 au|au 陽性|陽性 au Mexique|au Mexique 陽性|陽', aNote:'le Mexique = 例外，字尾 -e 卻是陽性 → au' },
   { lesson:2, topic:'preposition-country', type:'gender', q:'États-Unis → 單數 or 複數？用哪個介詞去那裡？', hint:'les + 複數', a:'複數 → aux États-Unis|aux États-Unis|aux|複數', aNote:'les États-Unis（複數）→ aux' },
 
   { lesson:2, topic:'question-words', type:'choose', q:'「為什麼」用哪個疑問詞？',           hint:'Why', a:'Pourquoi', aNote:'問「為什麼」用 Pourquoi ?，回答用 Parce que…（因為…）。Qui 問人、Où 問地點、Comment 問方式。', opts:['Qui','Où','Comment','Pourquoi'] },
@@ -814,7 +814,7 @@ const BANK = [
   { lesson:13, topic:'vocab-sport-gym', type:'choose', q:'allumer 的反義詞是？', hint:'開 vs 關', a:'éteindre', aNote:'allumer = 開（電器）；éteindre = 關（電器）；Il faut éteindre les appareils après l\'utilisation.', opts:['éteindre','fermer','sortir','partir'] },
   { lesson:13, topic:'vocab-sport-gym', type:'trans', q:'使用完器材後要清潔。', hint:'nettoyer / après l\'utilisation', a:'Il faut nettoyer les appareils après l\'utilisation.', aNote:'nettoyer = 清潔；après l\'utilisation = 使用後；il faut = 必須', askClaude:true },
   { lesson:13, topic:'vocab-sport-gym', type:'choose', q:'進三溫暖必須穿什麼？', hint:'maillot de…', a:'un maillot de bain', aNote:'maillot de bain = 泳衣；serviette de bain = 浴巾（放器材上用）', opts:['un maillot de bain','une serviette de bain','un manteau','des chaussures de sport'] },
-  { lesson:13, topic:'vocab-sport-gym', type:'gender', q:'vestiaire（更衣室）→ 陰性 or 陽性？', hint:'le / la ?', a:'陽性 → le vestiaire|le vestiaire|le|m|陽性', aNote:'le vestiaire（m）；la douche（f）；la serviette（f）；le sauna（m）' },
+  { lesson:13, topic:'vocab-sport-gym', type:'gender', q:'vestiaire（更衣室）→ 陰性 or 陽性？', hint:'le / la ?', a:'陽性 → le vestiaire|le vestiaire|le|m|陽性|陽 le|le 陽|陽 le vestiaire|le vestiaire 陽|陽性 le|le 陽性|陽性 le vestiaire|le vestiaire 陽性|m le|le m|m le vestiaire|le vestiaire m|陽', aNote:'le vestiaire（m）；la douche（f）；la serviette（f）；le sauna（m）' },
 
   // Il faut vs Devoir
   { lesson:13, topic:'ilfaut-devoir', type:'choose', q:'Il faut 和 il doit 最主要的差別是？', hint:'通則 vs 個人', a:'il faut = 通則建議（針對所有人）；il doit = 某人的具體義務', aNote:'Il faut faire du sport = 大家都應該；Il doit faire du sport = 他（因健康狀況）必須', opts:['il faut = 通則建議（針對所有人）；il doit = 某人的具體義務','兩者意思完全相同','il faut 比較強烈','il doit 是過去式'] },

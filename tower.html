@@ -221,7 +221,18 @@ function resize(){
   cv.style.height=CH+'px'; cv.width=Math.round(CW*DPR); cv.height=Math.round(CH*DPR);
 }
 window.addEventListener('resize', resize);
-if(window.visualViewport) visualViewport.addEventListener('resize', function(){ document.body.style.height=visualViewport.height+'px'; });
+/* ⚠️ 11-02 Owen 10-29：「打字的時候上面玩的螢幕會直接卡到最上方，根本看不到」（那場打字 0／10）
+   手機鍵盤一開，iOS 把整個畫面往上推；嵌在小鎮時被推走的是 iframe，iframe 裡面收不到鍵盤事件
+   → 跟著「看得到的範圍」放：嵌入時調 iframe 的位置與高度、獨立開時調 #app；畫面縮小後 resize() 會把田重畫到放得下 */
+function fitKeyboard(fake){
+  var host=null, pv=null; try{ if(window.parent!==window && window.frameElement){ host=window.frameElement; pv=window.parent.visualViewport; } }catch(e){}
+  var vv=fake||(host?pv:window.visualViewport); if(!vv) return;
+  if(host){ host.style.top=vv.offsetTop+'px'; host.style.bottom='auto'; host.style.height=vv.height+'px'; if(!fake) try{ window.parent.scrollTo(0,0); }catch(e){} }
+  else { var a=document.getElementById('app'); document.body.style.height=vv.height+'px'; if(a) a.style.transform=vv.offsetTop?'translateY('+vv.offsetTop+'px)':''; if(!fake) window.scrollTo(0,0); }
+}
+(function(){ var vv=null; try{ vv=(window.parent!==window && window.frameElement) ? window.parent.visualViewport : window.visualViewport; }catch(e){ vv=window.visualViewport; }
+  if(!vv) return; vv.addEventListener('resize', fitKeyboard); vv.addEventListener('scroll', fitKeyboard);
+  window.addEventListener('pagehide', function(){ vv.removeEventListener('resize', fitKeyboard); vv.removeEventListener('scroll', fitKeyboard); }); })();
 
 /* ============================================================
    遊戲
@@ -316,11 +327,11 @@ function renderQ(){
     box.innerHTML=head+qt+'<div class="accents" id="acc"></div><div class="inrow"><input id="inp" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" enterkeyhint="send" placeholder="打空格裡的字"><button id="go">送出</button></div><div class="fb" id="fb"></div>';
     var inp=document.getElementById('inp');
     ['é','è','ê','à','â','ç','ù','û','ô','î','ï','ë','œ',"'"].forEach(function(ch){ var b=document.createElement('button'); b.textContent=ch; b.type='button';
-      b.addEventListener('pointerdown', function(e){ e.preventDefault(); var s=inp.selectionStart||inp.value.length, en=inp.selectionEnd||s; inp.value=inp.value.slice(0,s)+ch+inp.value.slice(en); inp.setSelectionRange(s+1,s+1); inp.focus(); });
+      b.addEventListener('pointerdown', function(e){ e.preventDefault(); var s=inp.selectionStart||inp.value.length, en=inp.selectionEnd||s; inp.value=inp.value.slice(0,s)+ch+inp.value.slice(en); inp.setSelectionRange(s+1,s+1); inp.focus({preventScroll:true}); });
       document.getElementById('acc').appendChild(b); });
     inp.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); answerType(inp.value); } });
     document.getElementById('go').addEventListener('pointerdown', function(e){ e.preventDefault(); answerType(inp.value); });
-    setTimeout(function(){ inp.focus(); }, 30);
+    setTimeout(function(){ inp.focus({preventScroll:true}); }, 30);
   } else {
     var opts=shuffle(c.opts);
     box.innerHTML=head+qt+'<div class="opts">'+opts.map(function(o,i){ return '<button data-i="'+i+'">'+esc(o)+'</button>'; }).join('')+'</div><div class="fb" id="fb"></div>';

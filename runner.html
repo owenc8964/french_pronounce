@@ -110,7 +110,8 @@ function newRun(){
   spawnGate(H*.9); for(var i=0;i<14;i++) spawnCoin(H*.25+i*60);
 }
 function spawnGate(ahead){
-  if(G.n+G.gates.length>=N_GATES) return;
+  /* ⚠️ 11-02 Owen：「看不到題目」「怎麼一直沒有最後一題」→ G.gates 還留著剛走過的門（畫面用），算進去會少出最後一道、永遠跑不完 */
+  if(G.n+G.gates.filter(function(x){ return !x.done; }).length>=N_GATES) return;
   var q=nextQ(), n=q.opts.length, lanes = n===2 ? shuffle([[0,1],[1,2],[0,2]])[0] : [0,1,2];
   var g={y:G.dist+ahead, q:q, lanes:lanes, done:false}; G.gates.push(g);
   if(!G.cur) showQ(g);

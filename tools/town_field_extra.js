@@ -1,5 +1,5 @@
 /* town_field_extra.js — 路上遭遇用的「fill 轉選擇」題（自動產生，⛔ 不要手改；改 tools/gen_town_field_extra.js 再重跑）
- * 產生：node tools/gen_town_field_extra.js（2026-10-30）
+ * 產生：node tools/gen_town_field_extra.js（2026-11-02）
  * 每題：src＝BANK 索引；q／a／aNote 原樣來自 questions.js；opts[0] 是正解（town 會洗牌），其餘是保證錯的干擾項
  * why＝每個干擾項的來源；cue:true＝有干擾項要靠題幹看得到的線索（(+)/(−)、中文翻譯、(xxx, vous)）才判錯，本身合文法
  * hint 已清掉「直接寫出正解」的那種（選擇題會變成送分）

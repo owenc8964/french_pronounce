@@ -968,7 +968,34 @@ function openQuests(){
 }
 
 function gcol(it, txt){ return '<span class="g'+(it.g==='f'?'f':'m')+'">'+esc(txt||whole(it))+'</span>'; }
+/* ✍️ 11-02 Owen：「陰陽性本身就沒什麼規則，我總不能看到尾巴有 e 都猜」→ 來回錯的字不再猜 un／une：
+   錯滿 3 次 → 看圖＋中文＋字，打整塊（un salon）；兩個不同天打對才回到按鈕；回到按鈕又錯就再打。⛔ 不加題數，只換問法 */
+var GPICK=null;
+function gHard(it){ var g=S.gword[it.n]; return !!g && g.w>=3 && (g.typed||[]).length<2; }
+function askGenderType(head, it, cb){
+  var t0=Date.now(), w=whole(it), art=it.g==='f'?'une':'un', rc={kind:'陰陽性', ref:'g:'+it.n, q:it.n+'（'+it.zh+'）', a:w};
+  openSheet('<h3>'+head+'</h3><div class="qtext" style="text-align:center">'+pix(EMO[it.n]||'📦',64)+'<br><span class="fr" style="font-size:1.3em">'+esc(it.n)+'</span><div class="muted">'+esc(it.zh)+'</div></div>'+
+    '<input class="fill" id="gtq" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="連 un／une 打整塊">'+
+    '<div class="muted" style="font-size:.8em;text-align:center;margin-top:3px">這個字前幾次卡住，這次整塊打出來</div><div class="fb" id="fb"></div>'+
+    '<div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><button class="btn ghost" id="gno">不記得</button><button class="btn main" id="gok">好</button></div>'+repSlot(rc));
+  var inp=document.getElementById('gtq'), done=false; setTimeout(function(){ inp.focus(); },50);
+  function miss(v){ done=true; GPICK=v||'不記得'; rc.pick=GPICK; var ms=Date.now()-t0; speak(w);
+    genderType(it, '<div class="catch"><div class="big">'+pix(EMO[it.n]||'📦',72)+'</div><div class="fr" style="font-size:1.3em">👉 '+gcol(it)+' '+spk(w)+'</div><div class="muted">'+esc(it.zh)+'</div></div>', function(){ cb(false, ms, {guess:false}); }); }
+  function sub(){ if(done) return; var v=inp.value.trim().toLowerCase().replace(/’/g,"'").replace(/\s+/g,' '); if(!v) return;
+    var first=v.split(' ')[0];
+    if(v.indexOf(' ')<0){ if(first==='un'||first==='une'){ document.getElementById('fb').textContent='字也打上，整塊一起記'; return; } }
+    if(first!==art) return miss(v);
+    done=true; rc.pick=v; GPICK=v; var ms=Date.now()-t0, g=S.gword[it.n]||(S.gword[it.n]={r:0,w:0}), t=today(); g.typed=g.typed||[]; if(g.typed.indexOf(t)<0) g.typed.push(t);
+    var exact=v===w.toLowerCase(); speak(w); inp.disabled=true;
+    document.getElementById('fb').innerHTML='✓ '+gcol(it)+' '+spk(w)+(exact?'':'<div class="muted">冠詞對了；拼法看一下：'+esc(w)+'</div>');
+    setTimeout(function(){ cb(true, ms, {guess:false}); }, exact?800:1800); }
+  document.getElementById('gok').onclick=sub;
+  document.getElementById('gno').onclick=function(){ if(!done) miss(''); };
+  inp.addEventListener('keydown',function(e){ e.stopPropagation(); if(e.key==='Enter') sub(); });
+  document.getElementById('skip').onclick=function(){ if(done) return; done=true; cb(null); };
+}
 function askGender(head, it, cb){
+  if(gHard(it)) return askGenderType(head, it, cb);
   var t0=Date.now(), pic=EMO[it.n]||'', rc={kind:'陰陽性', ref:'g:'+it.n, q:it.n+'（'+it.zh+'）', a:whole(it)};
   var html='<h3>'+head+'</h3><div class="qtext" style="text-align:center">'+pix(pic||'📦',64)+'<br>'+
     '<span class="fr" style="font-size:1.3em">… '+esc(it.n)+'</span><div class="muted">'+esc(it.zh)+'</div></div>'+
@@ -978,6 +1005,7 @@ function askGender(head, it, cb){
   var done=false;
   sheet.querySelectorAll('.opts button').forEach(function(b){ b.onclick=function(){
     if(done) return; done=true; rc.pick=b.dataset.g==='f'?'une':'un';
+    GPICK=rc.pick;
     var ok=b.dataset.g===it.g, ms=Date.now()-t0;
     b.classList.add(ok?'ok':'no'); if(!ok) sheet.querySelector('[data-g="'+it.g+'"]').classList.add('ok');
     setTimeout(function(){ genderAfter(it, ok, ms, cb); }, ok?250:450);
@@ -1000,7 +1028,7 @@ function genderAfter(it, ok, ms, cb){
     openSheet(head+'<div class="muted" style="text-align:center;margin-top:6px">剛剛那一下，你是……</div>'+
       '<div class="row2"><button class="btn" id="gre">🔁 需要重練</button><button class="btn main" id="gsure">💯 很確定</button></div>');
     document.getElementById('gsure').onclick=function(){ cb(true, ms, {guess:true}); };
-    document.getElementById('gre').onclick=function(){ genderType(it, head, function(){ cb(false, ms, {guess:true, unsure:true}); }); };
+    document.getElementById('gre').onclick=function(){ GPICK=(GPICK||'')+'（猜對但沒把握）'; genderType(it, head, function(){ cb(false, ms, {guess:true, unsure:true}); }); };
   } else genderType(it, head, function(){ cb(false, ms, {guess:false}); });
 }
 function genderType(it, head, done){
@@ -1033,13 +1061,13 @@ function markStand(key, fam){
 function masteryBonus(n, why){ S.gold+=n; floatTxt(hero.x, hero.y-.8, why+' +'+n+'🪙', '#f0c95a'); try{ hud(); }catch(e){} }
 function standCount(fam){ var n=0; for(var k in S.stand) if(S.standFam[k]===fam && S.stand[k].length>=2) n++; return n; }
 function rec(kind, item, ok, ms, extra){
-  if(window.GameLog) GameLog.answer(ok, kind==='g' ? {kind:'陰陽性', topic:'gender', q:item.n, a:whole(item), pick:ok?'':'(錯)', ref:'g:'+item.n, ms:ms}
+  if(window.GameLog) GameLog.answer(ok, kind==='g' ? {kind:'陰陽性', topic:'gender', q:item.n, a:whole(item), pick:ok?'':(GPICK||'(錯)'), ref:'g:'+item.n, ms:ms}
                                  : kind==='c' ? {kind:'聽力', topic:'listen', q:item.fr, a:item.zh, pick:extra&&extra.chosen, ref:'c:'+item.id, ms:ms}
                                  : kind==='L' ? {kind:'課本聽力', topic:'listen-book', q:item.text, a:extra&&extra.right, pick:extra&&extra.chosen, ref:'L:'+item.id, ms:ms}
                                  : {kind:(extra&&extra.where)||'題目', topic:item.topic, q:item.q, a:item.a, pick:extra&&extra.chosen, ref:qRef(item), ms:ms});
   if(ok===null) return;
   recallMark(kind, item, ok);
-  if(kind==='g'){ var g=S.gword[item.n]||{r:0,w:0}; g[ok?'r':'w']++; g.last=Date.now(); S.gword[item.n]=g; if(ok){ markStand('g:'+item.n,'noun'); lastCatch=dexCatch(item, ms); } else { lastCatch=null; dexMiss(item); } }
+  if(kind==='g'){ var g=S.gword[item.n]||{r:0,w:0}; g[ok?'r':'w']++; g.last=Date.now(); if(!ok) g.typed=[]; S.gword[item.n]=g; GPICK=null; if(ok){ markStand('g:'+item.n,'noun'); lastCatch=dexCatch(item, ms); } else { lastCatch=null; dexMiss(item); } }
   else if(kind==='c'){ var c=S.gword['c:'+item.id]||{r:0,w:0}; c[ok?'r':'w']++; S.gword['c:'+item.id]=c; if(ok) markStand('c:'+item.id,'listen'); }
   else if(kind==='L'){ var l=S.gword['L:'+item.id]||{r:0,w:0}; l[ok?'r':'w']++; l.last=Date.now(); S.gword['L:'+item.id]=l; S.qlast['L:'+item.id]=Date.now(); if(ok) markStand('L:'+item.id,'listen'); }
   else { var t=S.topic[item.topic]||{r:0,w:0}; t[ok?'r':'w']++; if(!ok) t.lastWrong=Date.now(); S.topic[item.topic]=t; S.qlast[item._i]=Date.now();
@@ -2483,8 +2511,8 @@ function pickWild(){
   });
   return best;
 }
-function wildEncounter(){
-  var it=pickWild(), em=EMO[it.n]||'📦', rr=rarity(it);
+function wildEncounter(it0){
+  var it=it0||pickWild(), em=EMO[it.n]||'📦', rr=rarity(it);
   askGender('🌳 野生的 '+em+' 出現了！ <small>'+RAR[rr]+'・叫對 un／une 就收服</small>', it, function(ok,ms,info){
     S.qlast['w:'+it.n]=Date.now();
     if(ok===null){ closeSheet(); toast('牠鑽回草叢裡了'); return; }
@@ -2565,6 +2593,7 @@ function pixImg(em){ if(!PIXIMG[em]){ var im=new Image(); im.src=pixURL(em); PIX
 function freeSpot(x,y){ return x>1 && y>1 && x<W-1 && y<H-1 && !blocked(x,y) && region(Math.floor(x),Math.floor(y))!=='river'; }
 function startWild(){
   var it=pickWild(), em=EMO[it.n]||'📦', f=hero.face||1;
+  if(gHard(it)) return wildEncounter(it);   /* 來回錯的字不撞方塊猜，改打整塊 */
   var cands=[[hero.x-1.9,hero.y-1.5],[hero.x+1.9,hero.y-1.5],[hero.x-1.9,hero.y+1.5],[hero.x+1.9,hero.y+1.5],[hero.x-2.4,hero.y],[hero.x+2.4,hero.y],[hero.x,hero.y-2.4],[hero.x,hero.y+2.4]].filter(function(p){ return freeSpot(p[0],p[1]); });
   var two=null;
   for(var i=0;i<cands.length && !two;i++) for(var j=i+1;j<cands.length;j++) if(Math.hypot(cands[i][0]-cands[j][0],cands[i][1]-cands[j][1])>=2.4){ two=[cands[i],cands[j]]; break; }
