@@ -96,6 +96,9 @@ body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; 
 .bbank { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0; }
 .tile { background:#24362b; color:var(--ink); border:1px solid var(--line); border-radius:9px; padding:6px 10px; font-size:1em; font-family:Cubic11,Georgia,serif; cursor:pointer; }
 .tile.gone { visibility:hidden; } .tile.bad { background:#4a2c28; border-color:var(--red); }
+.tile { touch-action:none; -webkit-user-select:none; user-select:none; } .tile.on { border-color:var(--gold); }
+.tile.dragghost { position:fixed; left:0; top:0; z-index:95; margin:0; pointer-events:none; box-shadow:0 10px 18px rgba(0,0,0,.55); opacity:.95; }
+.dropmark { display:inline-block; width:4px; min-height:32px; border-radius:2px; background:var(--gold); box-shadow:0 0 8px var(--gold); }
 .bph { color:var(--dim); font-size:.85em; }
 .islemap { display:flex; flex-direction:column; gap:5px; margin:6px 0; }
 .isle { display:flex; justify-content:space-between; gap:8px; background:#1a271f; color:var(--ink); border:1px solid var(--line); border-radius:9px; padding:6px 9px; font-family:inherit; font-size:.85em; text-align:left; }
@@ -2783,6 +2786,7 @@ window.addEventListener('message', function(e){
    ⭐ 句子只取自題庫中翻法題（questions.js type:'trans'）、句庫 sentences.js、筆記句 chunks.js，⛔ 不自創法文
    ⭐ 陷阱＝容易搞混的同族字；第一塊一律小寫（⛔ 不讓大寫洩漏開頭）
    ⭐ 第一次排錯：順序對的幫你留著（LCS）、錯的變紅退回，不算錯；第二次還錯才給答案、記錯
+   ⭐ 11-02 搬 quest 的拖曳（Owen 09-20：「按錯就得一個一個放回去很麻煩」）：點一下＝放進去／拿出來；按住拖＝排到指定位置，拖出答案列＝放回去
    三層出口：↷ 這句跳過（不記錯）／■ 先到這（整封信）／晚點再來（今天不做，不擋任何東西）
    ============================================================ */
 var CONFUSE=[['suis','es','est','sommes','êtes','sont'],['ai','as','a','avons','avez','ont'],['a','à'],['le','la','les','un','une','des'],
@@ -2853,7 +2857,46 @@ function tilesPanel(ch){
   document.getElementById('go').onclick=function(){ tilesRun(ch); };
 }
 function tilesRun(ch){
-  var n=0, got=0, gold=0, skipped=0, q=null, bd=null, t0=0, rc=null, ended=false;
+  var n=0, got=0, gold=0, skipped=0, q=null, bd=null, t0=0, rc=null, ended=false, TD=null, dragEnd=0;
+  function tileIns(x,y,skipI){
+    var sl=document.getElementById('bslot'); if(!sl) return -1; var r=sl.getBoundingClientRect();
+    if(x<r.left-14||x>r.right+14||y<r.top-18||y>r.bottom+18) return -1;
+    var els=[].slice.call(sl.querySelectorAll('.tile')).filter(function(el){ return +el.dataset.i!==skipI; }), idx=els.length;
+    for(var k=0;k<els.length;k++){ var b=els[k].getBoundingClientRect(); if(y<b.top-2||(y<=b.bottom+2&&x<b.left+b.width/2)){ idx=k; break; } }
+    return idx;
+  }
+  function tileOff(){ window.removeEventListener('pointermove',tileMove); window.removeEventListener('pointerup',tileUp); window.removeEventListener('pointercancel',tileUp); }
+  function tileDown(e){
+    var t=e.target.closest?e.target.closest('.tile'):null; if(TD||!t||bd.done||bd.badAt||t.classList.contains('gone')||e.button>0) return;
+    TD={i:+t.dataset.i, slot:!!t.closest('#bslot'), sx:e.clientX, sy:e.clientY, id:e.pointerId, moved:false, el:t, g:null, bd:bd};
+    window.addEventListener('pointermove',tileMove); window.addEventListener('pointerup',tileUp); window.addEventListener('pointercancel',tileUp);
+  }
+  function tileMove(e){
+    if(!TD||e.pointerId!==TD.id) return;
+    if(!TD.moved&&Math.hypot(e.clientX-TD.sx,e.clientY-TD.sy)>8){
+      TD.moved=true; var g=TD.el.cloneNode(true); g.className='tile on dragghost'; g.removeAttribute('data-i'); document.body.appendChild(g); TD.g=g; TD.el.style.opacity='.25'; }
+    if(!TD.moved) return;
+    TD.g.style.transform='translate('+Math.round(e.clientX-TD.g.offsetWidth/2)+'px,'+Math.round(e.clientY-TD.g.offsetHeight-16)+'px)';
+    var old=document.getElementById('dropmark'); if(old) old.remove();
+    var skip=TD.slot?TD.i:-9, idx=tileIns(e.clientX,e.clientY,skip), sl=document.getElementById('bslot');
+    if(idx>=0&&sl){ var mk=document.createElement('span'); mk.id='dropmark'; mk.className='dropmark';
+      var els=[].slice.call(sl.querySelectorAll('.tile')).filter(function(el){ return +el.dataset.i!==skip; }), ph=sl.querySelector('.bph'); if(ph) ph.remove();
+      if(els[idx]) sl.insertBefore(mk,els[idx]); else sl.appendChild(mk); }
+  }
+  function tileUp(e){
+    if(!TD||e.pointerId!==TD.id) return;
+    tileOff(); var d=TD; TD=null; if(d.g) d.g.remove();
+    if(!d.moved||d.bd!==bd||bd.done) return;   /* 沒動＝點一下，交給 click */
+    dragEnd=Date.now();
+    var mk=document.getElementById('dropmark'); if(mk) mk.remove();
+    if(e.type!=='pointercancel'){
+      var idx=tileIns(e.clientX,e.clientY,d.slot?d.i:-9), at=bd.put.indexOf(d.i);
+      if(at>=0) bd.put.splice(at,1);
+      if(idx>=0) bd.put.splice(Math.min(idx,bd.put.length),0,d.i);   /* 拖到答案列外面＝放回去 */
+      bd.msg='';
+    }
+    render();
+  }
   function finish(){
     if(ended) return; ended=true;
     S.chal=S.chal||{}; var st=S.chal[ch.id]||{wins:0, plays:0}; st.plays++;
@@ -2873,21 +2916,22 @@ function tilesRun(ch){
   }
   function render(){
     var on={}, bad={}; bd.put.forEach(function(i){ on[i]=1; }); (bd.badAt||[]).forEach(function(x){ bad[x]=1; });
-    var slot=bd.put.map(function(i,x){ return '<button class="tile'+(bad[x]?' bad':'')+'" data-i="'+i+'">'+esc(q.tiles[i])+'</button>'; }).join('');
+    var slot=bd.put.map(function(i,x){ return '<button class="tile on'+(bad[x]?' bad':'')+'" data-i="'+i+'">'+esc(q.tiles[i])+'</button>'; }).join('');
     var bank=bd.order.map(function(i){ return '<button class="tile'+(on[i]?' gone':'')+'" data-i="'+i+'">'+esc(q.tiles[i])+'</button>'; }).join('');
     openSheet('<h3>🧩 第 '+n+'／'+ch.n+' 句</h3><div class="qtext">'+esc(q.zh)+'</div>'+
-      '<div class="bslot" id="bslot">'+(slot||'<span class="bph">點下面的詞塊，照順序排成句子（有幾塊是混進來的）</span>')+'</div>'+
+      '<div class="bslot" id="bslot">'+(slot||'<span class="bph">點下面的詞塊，照順序排成句子，也可以按住拖到想要的位置（有幾塊是混進來的）</span>')+'</div>'+
       '<div class="bbank" id="bbank">'+bank+'</div><div class="fb" id="fb">'+(bd.msg?'<span style="color:var(--gold)">'+bd.msg+'</span>':'')+'</div>'+
       '<div class="row2"><button class="btn ghost" id="tskip">↷ 這句跳過</button><button class="btn ghost" id="tstop">■ 先到這</button><button class="btn" id="tclr">清掉</button><button class="btn main" id="tok">確定</button></div>'+repSlot(rc), true);
-    sheet.querySelectorAll('#bslot .tile').forEach(function(b){ b.onclick=function(){ var i=+b.dataset.i; bd.put.splice(bd.put.indexOf(i),1); bd.msg=''; bd.badAt=null; render(); }; });
-    sheet.querySelectorAll('#bbank .tile').forEach(function(b){ b.onclick=function(){ var i=+b.dataset.i; if(bd.put.indexOf(i)<0){ bd.put.push(i); bd.msg=''; bd.badAt=null; render(); } }; });
+    sheet.querySelectorAll('#bslot .tile').forEach(function(b){ b.onclick=function(){ if(bd.badAt||Date.now()-dragEnd<300) return; var i=+b.dataset.i; bd.put.splice(bd.put.indexOf(i),1); bd.msg=''; render(); }; });
+    sheet.querySelectorAll('#bbank .tile').forEach(function(b){ b.onclick=function(){ if(bd.badAt||Date.now()-dragEnd<300) return; var i=+b.dataset.i; if(bd.put.indexOf(i)<0){ bd.put.push(i); bd.msg=''; render(); } }; });
+    document.getElementById('bslot').onpointerdown=tileDown; document.getElementById('bbank').onpointerdown=tileDown;
     document.getElementById('tclr').onclick=function(){ bd.put=[]; bd.msg=''; bd.badAt=null; render(); };
     document.getElementById('tskip').onclick=function(){ skipped++; if(window.GameLog) GameLog.answer(null, {kind:'🧩 拼句', ref:q.id}); next(); };
     document.getElementById('tstop').onclick=finish;
     document.getElementById('tok').onclick=check;
   }
   function result(ok){
-    var ms=Date.now()-t0; (S.tseen=S.tseen||{})[q.id]=Date.now();
+    bd.done=true; var ms=Date.now()-t0; (S.tseen=S.tseen||{})[q.id]=Date.now();
     if(q.bank) rec('q', q.bank, ok, ms, {chosen:bd.put.map(function(i){ return q.tiles[i]; }).join(' '), right:q.full, where:'🧩 拼句'});
     else if(window.GameLog) GameLog.answer(ok, {kind:'🧩 拼句', topic:'tiles', ref:q.id, ms:ms, q:q.zh, a:q.full, pick:bd.put.map(function(i){ return q.tiles[i]; }).join(' ')});
     if(ok){ got++; gold+=3; }
