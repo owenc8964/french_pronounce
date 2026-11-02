@@ -85,7 +85,7 @@ body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; 
 .qtext { font-size:1.08em; margin:6px 0 10px; }
 .qtext .fr, .fr { font-family:Cubic11,Georgia,serif; }
 .pix { image-rendering:pixelated; image-rendering:crisp-edges; vertical-align:middle; }
-.hint { font-size:.8em; color:var(--dim); margin-top:-6px; margin-bottom:8px; }
+.hint { font-size:.8em; color:var(--dim); margin-top:-6px; margin-bottom:8px; } .hzh summary { cursor:pointer; }
 .opts { display:flex; flex-direction:column; gap:7px; }
 .opts.row { flex-direction:row; }
 .opts.row button { flex:1; font-size:1.25em; padding:14px 0; text-align:center; }
@@ -735,12 +735,17 @@ function explainHtml(q, pick, right, said){
 
 /* 🚩 題目回報（game_log.js）：ref 記題目來源——q:BANK 第幾題（_fx＝路上擴充版）、c:chunks id、g:陰陽性字 */
 function qRef(q){ return q._fx ? 'fx:'+q._i : (typeof q._i==='number' ? 'q:'+q._i : String(q._i||'')); }
+/* 💡 11-02：提示不可以只有頁碼（10-07 Owen：只放頁碼等於沒提示；10-25「沒有中文，不知道怎麼填」）
+   → 只有出處的提示不顯示；中文收在開關裡，想看才點（練習介面純法語＋中文當開關） */
+var HINT_SRC=/^(Cahier( A[12]| B1)?|課本( A[12])?|B1|Édito( A[12]| B1)?)\s*(p\.\s*\d+)?\s*(Bilan\s*)?(練習\s*\d*[a-z]*|課文)?\s*(（[^）]*）)?\s*$/;
+function qHint(q, noZh){ var h=String(q.hint||'').trim(), o=(h&&!HINT_SRC.test(h))?'<div class="hint">💡 '+esc(h)+'</div>':'';
+  if(q.zh && !noZh) o+='<details class="hint hzh"><summary>🀄 中文</summary>'+esc(q.zh)+'</details>'; return o; }
 function repSlot(ctx){ return window.GameLog ? '<div>'+GameLog.repBtn(ctx)+'</div>' : ''; }
 /* 共用：一題選擇題。cb(ok, ms, chosen) */
 function askChoose0(head, q, cb){
   var t0=Date.now(), alts=String(q.a).split('|'), rc={kind:'選擇', ref:qRef(q), q:q.q, a:q.a};
   var opts=shuffle(q.opts);
-  var html='<h3>'+head+'</h3><div class="qtext">'+esc(q.q)+'</div>'+(q.hint?'<div class="hint">💡 '+esc(q.hint)+'</div>':'')+
+  var html='<h3>'+head+'</h3><div class="qtext">'+esc(q.q)+'</div>'+qHint(q)+
     '<div class="opts">'+opts.map(function(o,i){ return '<button data-i="'+i+'">'+esc(clean(o)||o)+'</button>'; }).join('')+'</div>'+
     '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><span id="slot"></span></div>'+repSlot(rc);
   openSheet(html);
@@ -831,7 +836,7 @@ function infOf(ans){
 function askTyped(head, q, cb){
   var t0=Date.now(), right=clean(fmtRight(q)), alts=String(q.a).split('|').concat([right]), rc={kind:'升格①', ref:qRef(q), q:q.q, a:q.a};
   var inf=/\(\s*[a-zàâçéèêëîïôûùüÿœ' ]+\s*\)/i.test(q.q) ? '' : infOf(right), zhT=q.zh || (typeof q._i==='number' && BANK[q._i] && BANK[q._i].zh) || '';
-  openSheet('<h3>'+head+'</h3><div class="qtext fr">'+esc(q.q)+(inf?' <span class="muted">（'+esc(inf)+'）</span>':'')+'</div>'+(q.hint?'<div class="hint">💡 '+esc(q.hint)+'</div>':'')+
+  openSheet('<h3>'+head+'</h3><div class="qtext fr">'+esc(q.q)+(inf?' <span class="muted">（'+esc(inf)+'）</span>':'')+'</div>'+qHint(q)+
     (zhT&&/[一-鿿]/.test(zhT)?'<div class="hint"><button class="btn ghost" style="padding:2px 8px;font-size:.85em" onclick="var e=document.createElement(\'span\');e.textContent=\'🈶 \'+this.dataset.z;this.replaceWith(e)" data-z="'+esc(zhT)+'">🈶 中文</button></div>':'')+
     '<input class="fill" id="tin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="打出空格裡的字">'+
     '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><button class="btn main" id="tsub">交出去</button></div>'+repSlot(rc), true);
@@ -861,7 +866,7 @@ function askWhole(head, q, cb){
   var hintM=String(q.q).match(/_{2,}\s*(\([^)]*\)|（[^）]*）)/), hint=hintM?hintM[1]:'';
   var cueW=function(t){ return wparts(t).map(function(p){ return p.w ? (FUNC_W[wkey(p.t)] ? '＿' : esc(p.t)) : esc(p.t); }).join(''); };
   var cue = (a1>=0&&a2>a1) ? cueW(mk.slice(0,a1))+'<b>［＿＿'+(hint?' '+esc(hint):'')+'］</b>'+cueW(mk.slice(a2+1)) : '';
-  openSheet('<h3>'+head+'</h3><div class="qtext">'+esc(zhs)+'</div>'+(cue?'<div class="qtext fr" style="opacity:.85">'+cue+'</div>':'')+(q.hint?'<div class="hint">💡 '+esc(q.hint)+'</div>':'')+
+  openSheet('<h3>'+head+'</h3><div class="qtext">'+esc(zhs)+'</div>'+(cue?'<div class="qtext fr" style="opacity:.85">'+cue+'</div>':'')+qHint(q,true)+
     '<textarea class="fill" id="win" rows="2" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="用法文把整句寫出來"></textarea>'+
     '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 繞過</button><button class="btn main" id="wsub">交出去</button></div>'+repSlot(rc), true);
   var ta=document.getElementById('win'), sent=false; setTimeout(function(){ ta.focus(); },50);
@@ -1769,13 +1774,25 @@ function openStory(){
     else if(now) h+='<div class="muted">'+c.steps.map(function(s){ return (s[1]?'✓ ':'・')+s[0]; }).join('<br>')+'</div>';
     h+='</div>';
   });
-  h+='<div class="muted" style="margin-top:8px">之後還有第二部、第三部……</div>'+(typeof lifeBook==='function'?'<div class="row2" style="margin-top:6px"><button class="btn ghost" id="sppl">👥 鎮上的人</button><span></span></div>':'');
+  h+='<div class="muted" style="margin-top:8px">之後還有第二部、第三部……</div>'+(typeof lifeBook==='function'?'<div class="row2" style="margin-top:6px"><button class="btn ghost" id="sppl">👥 鎮上的人</button><button class="btn ghost" id="shelp">❓ 這些東西是什麼</button></div>':'');
   var hasQ=S.quests && S.quests.d===today() && S.quests.list && S.quests.list.length;
   h+='<div class="row2">'+(hasQ?'<button class="btn ghost" id="sq">📋 今日委託</button>':'<span></span>')+'<button class="btn main" id="ok">好</button></div>';
   openSheet(h);
   document.getElementById('ok').onclick=closeSheet;
   if(hasQ) document.getElementById('sq').onclick=openQuests;
   var pp=document.getElementById('sppl'); if(pp) pp.onclick=function(){ lifeBook(openStory); };
+  var hp=document.getElementById('shelp'); if(hp) hp.onclick=gameHelp;
+}
+/* ❓ 11-02 Owen 回報過：「錢跟石頭怎麼通用」「背包裡為什麼有瑕疵的跟詞卡」「Michel Barbier 是誰」「Val Brune 是什麼」 */
+function gameHelp(){
+  openSheet('<h3>❓ 這些東西是什麼</h3><div class="story">'+
+    '<b>🏘️ Val-Brume</b>：這個小鎮的名字，遊戲虛構的。val＝山谷、brume＝薄霧。<br><br>'+
+    '<b>🪙 錢和 ⛏ 礦石不一樣</b>：礦石、📦 東西、🐟 魚是<b>材料</b>，放背包；🪙 是錢。材料拿到 🏪 交貨攤交貨才變成錢。蓋房子有時要材料、有時要錢，所以要蓋的材料先留著。<br><br>'+
+    '<b>🎒 背包裡寫著字的（un salon…）</b>：森林裡叫對或叫錯 un／une 拿到的 📦，名字就是那個字。<br><br>'+
+    '<b>瑕疵品</b>：答錯也會拿到，只是品質差：交貨一件 2 🪙，完整品 5 🪙。蓋房子會先用掉瑕疵品。交貨時寫對一句，整單翻倍。<br><br>'+
+    '<b>🎭 對話裡叫你別的名字</b>：居民的對話來自課本劇本，你有時要演裡面的角色（例如 Michel Barbier），所以對方才那樣叫你。'+
+    '</div><div class="row2"><span></span><button class="btn main" id="hpok">好</button></div>', true);
+  document.getElementById('hpok').onclick=openStory;
 }
 
 /* ============================================================
@@ -2002,7 +2019,7 @@ function buildPanel(name, cost, fam, done){
 function writeOne(head, q, cb){
   var t0=Date.now(), rc={kind:'打字', ref:qRef(q), q:q.q, a:q.a};
   openSheet('<h3>'+head+'</h3>'+(q.zh?'<div class="muted">'+esc(q.zh)+'</div>':'')+
-    '<div class="qtext fr">'+esc(q.q)+'</div>'+(q.hint?'<div class="hint">💡 '+esc(q.hint)+'</div>':'')+
+    '<div class="qtext fr">'+esc(q.q)+'</div>'+qHint(q)+
     '<input class="fill" id="fin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="打空格裡的字（或整句）">'+
     '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 不寫</button><button class="btn main" id="sub">交出去</button></div>'+repSlot(rc), true);
   var inp=document.getElementById('fin'); setTimeout(function(){ inp.focus(); },50);
@@ -2394,7 +2411,7 @@ function villager(v){
     if(n.line){ bubble('你', n.line); mark(st.at); st.at=n.next; return step(); }
     if(asked>=MAX) return pause();
     var goods=n.choices.filter(function(c){ return c.tag==='good' && !c.constructed; });
-    if(goods.some(function(c){ return NOT_ME.test(c.fr); })){ var g0=goods[0]; bubble('你', g0.fr); mark(st.at); st.at=g0.next; return step(); }
+    if(goods.some(function(c){ return NOT_ME.test(c.fr); })){ var g0=goods[0]; var nm=(goods.map(function(c){ return (String(c.fr).match(NOT_ME)||[''])[0]; }).filter(Boolean)[0])||''; if(nm) toast('🎭 這段對話你演 '+nm+'（課本劇本裡的角色）'); bubble('你', g0.fr); mark(st.at); st.at=g0.next; return step(); }
     return ask(n);
   }
   function ask(n){
@@ -3878,7 +3895,7 @@ function bugCatch(){
     askChoose('🦋 一隻蝴蝶停在旁邊', q, function(ok,ms,ch,right){ rec('q',q,ok,ms,{chosen:ch,right:right,where:'🦋 捕蟲'}); if(ok){ S.gold+=1; hud(); } closeSheet(); }); return; }
   var dex=S.bugdex=S.bugdex||{}, cand=P.type.slice().sort(function(a,b){ var da=dex[bugKey(a)], db=dex[bugKey(b)]; return (da?1:0)-(db?1:0) || Math.random()-.5; });
   var q=cand[Math.floor(Math.random()*Math.min(8,cand.length))], t0=Date.now(), rc={kind:'🦋 捕蟲', ref:'q:'+q._i, q:q.q, a:q.a};
-  openSheet('<h3>🦋 野生的蝴蝶飛出來了！</h3><div class="qtext" style="text-align:center">'+pix('🦋',64)+'<div class="fr" style="font-size:1.2em;margin-top:4px">'+esc(q.q)+'</div>'+(q.hint?'<div class="hint">💡 '+esc(q.hint)+'</div>':'')+'</div>'+
+  openSheet('<h3>🦋 野生的蝴蝶飛出來了！</h3><div class="qtext" style="text-align:center">'+pix('🦋',64)+'<div class="fr" style="font-size:1.2em;margin-top:4px">'+esc(q.q)+'</div>'+qHint(q)+'</div>'+
     '<input class="fill" id="bin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="打出來，網子就揮出去">'+
     '<div class="fb" id="fb"></div><div class="row2" id="bx"><button class="btn ghost" id="bskip">↷ 讓牠飛走</button><button class="btn main" id="bgo">🥅 揮網</button></div>'+repSlot(rc), true);
   var inp=document.getElementById('bin'); setTimeout(function(){ inp.focus(); },50);
