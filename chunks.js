@@ -23746,10 +23746,10 @@ const CHUNKS = [
   "note": "🎙 老師"
  },
  {
-  "id": "L48_Mais_il_ne_l_a_pas_amené",
+  "id": "L48_Il_a_aussi_une_fille_mai",
   "lesson": 48,
-  "fr": "Mais il ne l'a pas amenée.",
-  "zh": "但他沒有帶她來。",
+  "fr": "Il a aussi une fille, mais il ne l'a pas emmenée.",
+  "zh": "他也有一個女兒，但他沒有帶她去。",
   "note": "⭐ l'＝女兒，在前面 → 加 e"
  },
  {
@@ -23758,6 +23758,13 @@ const CHUNKS = [
   "fr": "Dimanche dernier, le matin, on a fait du yoga.",
   "zh": "上週日早上，我們做了瑜伽。",
   "note": "⭐ 先講時間"
+ },
+ {
+  "id": "L48_On_a_déjeuné",
+  "lesson": 48,
+  "fr": "On a déjeuné.",
+  "zh": "我們吃了午餐。",
+  "note": "🎙 老師：比較簡單的說法"
  },
  {
   "id": "L48_Aujourd_hui_j_étais_enco",
@@ -23772,6 +23779,13 @@ const CHUNKS = [
   "fr": "J'ai dormi jusqu'à 10 heures.",
   "zh": "我睡到十點。",
   "note": "🎙 老師"
+ },
+ {
+  "id": "L48_Je_regrette",
+  "lesson": 48,
+  "fr": "Je regrette.",
+  "zh": "我後悔了。",
+  "note": "🎙 老師：不該去運動"
  },
  {
   "id": "L48_J_avais_la_tête_qui_tour",
@@ -23809,10 +23823,10 @@ const CHUNKS = [
   "note": "🎙 老師"
  },
  {
-  "id": "L48_Je_suis_KO",
+  "id": "L48_J_étais_KO",
   "lesson": 48,
-  "fr": "Je suis KO.",
-  "zh": "我累垮了。",
+  "fr": "J'étais KO.",
+  "zh": "我那時候累垮了。",
   "note": "🎙 老師：口語、很常用"
  },
  {
@@ -23837,17 +23851,24 @@ const CHUNKS = [
   "note": "🎙 老師：請你介紹一個地方"
  },
  {
-  "id": "L48_C_est_à_deux_heures_d_av",
+  "id": "L48_Ce_n_est_pas_très_loin_d",
   "lesson": 48,
-  "fr": "C'est à deux heures d'avion environ.",
-  "zh": "搭飛機大概兩小時。",
+  "fr": "Ce n'est pas très loin d'ici, à environ deux heures d'avion.",
+  "zh": "離這裡不太遠，搭飛機大概兩小時。",
   "note": "🎙 老師修你的 l'avion, deux heures"
  },
  {
-  "id": "L48_Il_y_en_avait",
+  "id": "L48_Elle_n_est_pas_fan",
   "lesson": 48,
-  "fr": "Il y en avait.",
-  "zh": "那時候有（一些）。",
+  "fr": "Elle n'est pas fan.",
+  "zh": "她不太喜歡。",
+  "note": "🎙 老師：講你岳母"
+ },
+ {
+  "id": "L48_Il_y_en_avait_partout",
+  "lesson": 48,
+  "fr": "Il y en avait partout.",
+  "zh": "到處都有。",
   "note": "🎙 老師：y 和 en 同時出現"
  },
  {
@@ -23939,7 +23960,14 @@ const CHUNKS = [
   "lesson": 48,
   "fr": "environ",
   "zh": "大概",
-  "note": "adv.｜deux heures d'avion environ"
+  "note": "adv.｜à environ deux heures d'avion"
+ },
+ {
+  "id": "L48_partout",
+  "lesson": 48,
+  "fr": "partout",
+  "zh": "到處",
+  "note": "adv.｜il y en avait partout"
  },
  {
   "id": "L48_les_intestins_de_bœuf",

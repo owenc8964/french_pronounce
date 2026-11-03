@@ -561,8 +561,8 @@ const SENTENCES = [
   { id: 'S_L47_13', lesson: 47, fr: "Non, je n'ai jamais fumé.", zh: '對，我從來沒抽過菸。', note: '第47課：回答否定問句，同意用 non' },
   { id: 'S_L48_1', lesson: 48, fr: "Dimanche dernier, le matin, on a fait du yoga.", zh: '上週日早上，我們做了瑜伽。', note: '第48課：先講時間，再講事情' },
   { id: 'S_L48_2', lesson: 48, fr: "J'ai emmené ma famille à un dîner.", zh: '我帶家人去吃一場晚餐。', note: '第48課：帶人用 emmener' },
-  { id: 'S_L48_3', lesson: 48, fr: "Mais il ne l'a pas amenée.", zh: '但他沒有帶她來。', note: "第48課：l' 在前 → 加 e" },
-  { id: 'S_L48_4', lesson: 48, fr: "C'est à deux heures d'avion environ.", zh: '搭飛機大概兩小時。', note: '第48課：介紹地方' },
+  { id: 'S_L48_3', lesson: 48, fr: "Il a aussi une fille, mais il ne l'a pas emmenée.", zh: '他也有一個女兒，但他沒有帶她去。', note: "第48課：l' 在前 → 加 e" },
+  { id: 'S_L48_4', lesson: 48, fr: "Ce n'est pas très loin d'ici, à environ deux heures d'avion.", zh: '離這裡不太遠，搭飛機大概兩小時。', note: '第48課：介紹地方' },
   { id: 'S_L48_5', lesson: 48, fr: "J'aime ça, mais ma belle-mère pense que c'était bizarre.", zh: '我喜歡，但我岳母覺得很奇怪。', note: '第48課 🗣 你' },
   { id: 'S_L48_6', lesson: 48, fr: "La ville ressemble beaucoup à New Taipei.", zh: '那座城市很像新北市。', note: '第48課：現在還是這樣 → 現在式' },
   { id: 'S_L48_7', lesson: 48, fr: "On a passé beaucoup de temps à faire du shopping.", zh: '我們花了很多時間購物。', note: '第48課：passer du temps à＋原形' },
@@ -572,5 +572,6 @@ const SENTENCES = [
   { id: 'S_L48_11', lesson: 48, fr: "Ça m'énerve que le marché de Noël soit trop bruyant.", zh: '聖誕市集太吵，讓我很煩。', note: 'B1 p.34 練習 6：que＋subjonctif' },
   { id: 'S_L48_12', lesson: 48, fr: "J'en ai assez que ma fille ne puisse pas dormir à cause du marché de Noël.", zh: '我受夠了我女兒因為聖誕市集睡不著。', note: 'B1 p.34 練習 6：que＋subjonctif' },
   { id: 'S_L48_13', lesson: 48, fr: "Prendre soin des autres commence par prendre soin de soi.", zh: '照顧別人，要從照顧自己開始。', note: 'B1 p.35' },
+  { id: 'S_L48_15', lesson: 48, fr: "Il y en avait partout.", zh: '到處都有。', note: '第48課：y 和 en 同時出現' },
   { id: 'S_L48_14', lesson: 48, fr: "Prends soin de toi.", zh: '你要照顧好自己。', note: '第48課 🎙 老師' },
 ];
