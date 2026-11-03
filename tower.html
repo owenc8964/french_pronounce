@@ -69,6 +69,9 @@ body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; 
 .miss { border-top:1px dashed var(--line); padding:6px 0; font-size:.9em; } .miss .ans { color:var(--gold); } .miss .why { color:var(--dim); font-size:.9em; }
 .muted { color:var(--dim); font-size:.85em; }
 .pix { image-rendering:pixelated; vertical-align:middle; }
+.kb .hud { margin-bottom:2px; } .kb .bar { margin-top:3px; } .kb .card { font-size:.62em; padding:1px 2px; } .kb .card img, .kb .card br { display:none; }
+.kb .qbox { margin-top:3px; padding:4px 8px; } .kb .qtext { margin:1px 0 3px; font-size:1em; } .kb .accents { margin-bottom:3px; } .kb .accents button { height:26px; min-width:28px; }
+.zhline { color:var(--dim); font-size:.85em; margin-bottom:4px; }
 </style>
 </head>
 <body>
@@ -125,7 +128,8 @@ BANK.forEach(function(q,i){
   if(zh(stem)) return;
   var alts=String(q.a).split('|'), right=q.opts.filter(function(o){ return alts.indexOf(o)>=0; });
   if(right.length!==1) return;
-  CHOOSE.push({k:'c'+i, kind:'choose', q:stem, right:right[0], opts:q.opts.slice(0,4), zh:q.zh||'', note:q.aNote||'', topic:q.topic});
+  /* ⚠️ 11-03 Owen：「答案有在選項嗎？」連連看題有 5 個選項，舊寫法切前 4 個，正解排第 5 就不見了（3 題）→ 正解一定留著 */
+  CHOOSE.push({k:'c'+i, kind:'choose', q:stem, right:right[0], opts:[right[0]].concat(q.opts.filter(function(o){ return o!==right[0]; }).slice(0,3)), zh:q.zh||'', note:q.aNote||'', topic:q.topic});
 });
 var CHOOSE_BANK=CHOOSE.length;
 (function(){
@@ -208,6 +212,11 @@ var PLANTS={
   wall: {em:'🪨', name:'石牆', cost:50,  hp:36, desc:'很耐咬'},
   bomb: {em:'💣', name:'炸彈', cost:150, hp:99, desc:'炸周圍九格'}
 };
+/* ⬆️ 11-03 Owen：「射手那些的應該要可以升級，然後越玩越難這樣？」→ 點已經種好的再升級；陽光還是只能靠答題，所以升級＝多一個答題的理由 */
+var UPG={
+  shoot:[{cost:60, cd:.95, dmg:1, txt:'射更快'},{cost:100, cd:.8, dmg:2, txt:'傷害加倍'}],
+  wall:[{cost:40, hp:60, txt:'更耐咬'}]
+};
 var ZOMB={
   walk: {spr:['d',108], hp:6,  sp:.24, name:'史萊姆'},
   fast: {spr:['d',120], hp:4,  sp:.5,  name:'蝙蝠'},
@@ -226,11 +235,16 @@ window.addEventListener('resize', resize);
 /* ⚠️ 11-02 Owen 10-29：「打字的時候上面玩的螢幕會直接卡到最上方，根本看不到」（那場打字 0／10）
    手機鍵盤一開，iOS 把整個畫面往上推；嵌在小鎮時被推走的是 iframe，iframe 裡面收不到鍵盤事件
    → 跟著「看得到的範圍」放：嵌入時調 iframe 的位置與高度、獨立開時調 #app；畫面縮小後 resize() 會把田重畫到放得下 */
+var KBMAX=0;
 function fitKeyboard(fake){
   var host=null, pv=null; try{ if(window.parent!==window && window.frameElement){ host=window.frameElement; pv=window.parent.visualViewport; } }catch(e){}
   var vv=fake||(host?pv:window.visualViewport); if(!vv) return;
   if(host){ host.style.top=vv.offsetTop+'px'; host.style.bottom='auto'; host.style.height=vv.height+'px'; if(!fake) try{ window.parent.scrollTo(0,0); }catch(e){} }
   else { var a=document.getElementById('app'); document.body.style.height=vv.height+'px'; if(a) a.style.transform=vv.offsetTop?'translateY('+vv.offsetTop+'px)':''; if(!fake) window.scrollTo(0,0); }
+  /* ⚠️ 11-03 Owen：「輸入文字會跑到下面，看不到戰爭過程」→ 鍵盤開著時版面縮緊（植物卡變一行、題目區變薄），田留在上面、輸入框捲進看得到的地方 */
+  KBMAX=Math.max(KBMAX, vv.height); var kb=vv.height<KBMAX*.8; document.body.classList.toggle('kb', kb);
+  resize();
+  var qb=document.getElementById('qbox'); if(kb && qb){ qb.scrollTop=qb.scrollHeight; if(!fake) window.scrollTo(0,0); }
 }
 (function(){ var vv=null; try{ vv=(window.parent!==window && window.frameElement) ? window.parent.visualViewport : window.visualViewport; }catch(e){ vv=window.visualViewport; }
   if(!vv) return; vv.addEventListener('resize', fitKeyboard); vv.addEventListener('scroll', fitKeyboard);
@@ -295,13 +309,23 @@ cv.addEventListener('pointerdown', function(e){
   var r=cv.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top, col=Math.floor((x-OX)/CELL), row=Math.floor(y/CELL);
   if(row<0||row>=ROWS) return;
   if(G.starMode){ strike(row); return; }
+  var here=G.plants.filter(function(p){ return p.row===row && p.col===col; })[0];
+  if(here){ upgrade(here); return; }
   if(!G.sel){ flash('先點下面要種什麼'); return; }
   if(col<0||col>=COLS-1){ flash('這一格種不了'); return; }
-  if(G.plants.some(function(p){ return p.row===row && p.col===col; })){ flash('這格已經有了'); return; }
   var P=PLANTS[G.sel]; if(G.sun<P.cost){ flash('陽光不夠'); G.sel=null; renderBar(); return; }
   G.sun-=P.cost; G.plants.push({k:G.sel, row:row, col:col, hp:P.hp, cd:.6, fuse:G.sel==='bomb'?.8:0, born:clock});
   if(G.sun<P.cost) G.sel=null; hud();
 });
+function upgrade(p){
+  var L=UPG[p.k], lv=p.lv||0; if(!L){ flash('這個不能升級'); return; }
+  var U=L[lv]; if(!U){ flash('已經滿級了'); return; }
+  if(G.sun<U.cost){ flash('升級要 ☀️'+U.cost+'——答題賺'); return; }
+  G.sun-=U.cost; p.lv=lv+1;
+  if(U.hp) p.hp=U.hp; if(U.cd) p.rate=U.cd; if(U.dmg) p.dmg=U.dmg;
+  floats.push({x:OX+(p.col+.5)*CELL, y:p.row*CELL+CELL*.4, t:0, txt:'⬆️ '+U.txt, c:'#ffe27a', big:false});
+  hud();
+}
 function strike(row){
   G.star=0; G.starMode=false;
   G.zombies.forEach(function(z){ if(z.row===row && !z.dead){ z.hp-=12; z.hit=.3; } });
@@ -313,7 +337,7 @@ function strike(row){
    題目面板：輪替「打字 1：四選一 2」
    ============================================================ */
 function nextQ(){
-  if(!G || G.over) return;
+  if(!G || G.over) return; G.review=false;
   var kind = (G.rot%3===0) ? 'type' : 'choose'; G.rot++;
   var c=null;
   var due=G.redo.filter(function(r){ return r.after<=0 && r.c.kind===kind; })[0];
@@ -324,7 +348,7 @@ function nextQ(){
 }
 function renderQ(){
   var c=G.q.c, box=document.getElementById('qbox');
-  var head='<div class="qhead"><span>'+(c.kind==='type'?'✍️ 打出空格（☀️50・4 秒內 +25）':'🔤 選最適合的（☀️25・3 秒內 +10）')+'</span><button class="skipbtn" id="sk">⏭ 跳過</button></div>';
+  var head='<div class="qhead"><span>'+(c.kind==='type'?'✍️ 打出空格（☀️50・4 秒內 +25）':'🔤 選最適合的（☀️35・3 秒內 +10）')+'</span><span>'+(c.zh?'<button class="skipbtn" id="zhb">🀄 中文</button> ':'')+'<button class="skipbtn" id="sk">⏭ 跳過</button></span></div>'+(c.zh?'<div class="zhline" id="zht" style="display:none">'+esc(c.zh)+'</div>':'');
   var qt='<div class="qtext">'+esc(c.q).replace(/_{2,}/,'<b>　　</b>')+'</div>';
   if(c.kind==='type'){
     box.innerHTML=head+qt+'<div class="accents" id="acc"></div><div class="inrow"><input id="inp" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" enterkeyhint="send" placeholder="打空格裡的字"><button id="go">送出</button></div><div class="fb" id="fb"></div>';
@@ -341,6 +365,7 @@ function renderQ(){
     var ae=document.activeElement; if(ae && ae.blur) ae.blur();
     box.querySelectorAll('.opts button').forEach(function(b){ b.addEventListener('pointerdown', function(e){ e.preventDefault(); answerChoose(opts[+b.dataset.i], b); }); });
   }
+  var zb=document.getElementById('zhb'); if(zb) zb.addEventListener('pointerdown', function(e){ e.preventDefault(); var z=document.getElementById('zht'); if(z) z.style.display=z.style.display==='none'?'':'none'; });
   document.getElementById('sk').addEventListener('pointerdown', function(e){ e.preventDefault(); if(G.q.done) return; G.q.done=true; if(GL) GL.answer(null, {kind:G.q.c.kind==='type'?'守園打字':'守園四選一', ref:G.q.c.k});
     document.getElementById('fb').innerHTML='<span class="why">跳過（不算錯）</span>'; setTimeout(nextQ, 350); });
 }
@@ -364,8 +389,10 @@ function killed(z){
 }
 function miss(c){ G.combo=0; rec(c,false); G.waveMiss.push(c); wrongAll.push(sayOf(c.q, c.kind==='type'?c.show:c.right)); G.redo.push({c:c, after:4}); hud(); }
 function wrongFb(c, ans){
+  /* ⏸ 11-03 Owen：「答錯讀解釋時可以停下來嗎？」→ 答錯就停住戰場，按「下一題」才繼續 */
+  G.review=true;
   var fb=document.getElementById('fb');
-  fb.innerHTML='✗ <span class="ans">'+esc(sayOf(c.q,ans))+'</span>'+(c.zh?'　<span class="why">'+esc(c.zh)+'</span>':'')+(c.note?'<div class="why">'+note(c.note)+'</div>':'')+
+  fb.innerHTML='<div class="why">⏸ 戰場停著，看完再按下一題</div>✗ <span class="ans">'+esc(sayOf(c.q,ans))+'</span>'+(c.zh?'　<span class="why">'+esc(c.zh)+'</span>':'')+(c.note?'<div class="why">'+note(c.note)+'</div>':'')+
     '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-top:4px">'+repHtml(c)+'<button class="skipbtn" id="nx" style="color:var(--gold)">下一題 →</button></div>';
   document.getElementById('nx').addEventListener('pointerdown', function(e){ e.preventDefault(); nextQ(); });
 }
@@ -390,20 +417,20 @@ function answerChoose(o, btn){
    迴圈
    ============================================================ */
 var last=performance.now();
-function loop(t){ var dt=Math.min(.05,(t-last)/1000); last=t; clock+=dt; if(G && G.plants && !G.paused && !G.over) update(dt); draw(); requestAnimationFrame(loop); }
+function loop(t){ var dt=Math.min(.05,(t-last)/1000); last=t; clock+=dt; if(G && G.plants && !G.paused && !G.review && !G.over) update(dt); draw(); requestAnimationFrame(loop); }
 function update(dt){
   G.spawnT-=dt;
   if(G.queue.length && G.spawnT<=0){ spawnZ(); G.spawnT=(G.wave===1?9:Math.max(2.6, 6.5-.45*G.wave))+Math.random()*1.5; }
   G.plants.forEach(function(p){
     if(p.k==='shoot'){ p.cd-=dt; var target=G.zombies.some(function(z){ return !z.dead && z.row===p.row && z.x>p.col && z.x<COLS+.2; });
-      if(target && p.cd<=0){ p.cd=1.35; peas.push({row:p.row, x:p.col+.7, sp:4}); } }
+      if(target && p.cd<=0){ p.cd=p.rate||1.35; peas.push({row:p.row, x:p.col+.7, sp:4, dmg:p.dmg||1}); } }
     if(p.k==='bomb'){ p.fuse-=dt; if(p.fuse<=0 && !p.boom){ p.boom=1; p.hp=0;
       G.zombies.forEach(function(z){ if(!z.dead && Math.abs(z.row-p.row)<=1 && Math.abs(z.x-(p.col+.5))<=1.6){ z.hp-=30; z.hit=.3; } });
       floats.push({x:OX+(p.col+.5)*CELL, y:p.row*CELL+CELL*.6, t:0, txt:'💥', c:'#fff', big:true}); } }
   });
   peas.forEach(function(b){ b.x+=b.sp*dt;
     var z=G.zombies.filter(function(z){ return !z.dead && z.row===b.row && Math.abs(z.x-b.x)<.35; })[0];
-    if(z){ z.hp-=1; z.hit=.12; b.dead=1; } if(b.x>COLS+.5) b.dead=1; });
+    if(z){ z.hp-=b.dmg||1; z.hit=.12; b.dead=1; } if(b.x>COLS+.5) b.dead=1; });
   peas=peas.filter(function(b){ return !b.dead; });
   G.zombies.forEach(function(z){
     if(z.hit>0) z.hit-=dt;
@@ -434,7 +461,9 @@ function draw(){
     var bob=p.k==='shoot'?Math.sin(clock*4+p.col)*CELL*.03:0;
     if(im.complete) cx.drawImage(im, x+CELL*.1, y+CELL*.08+bob, CELL*.8*(1+sq), CELL*.8*(1-sq));
     if(p.k==='bomb'){ cx.fillStyle='rgba(255,80,40,'+(.25+.25*Math.sin(clock*20))+')'; cx.beginPath(); cx.arc(x+CELL/2,y+CELL/2,CELL*.42,0,7); cx.fill(); }
-    if(p.hp<P.hp && p.k!=='bomb'){ cx.fillStyle='#000'; cx.fillRect(x+CELL*.15,y+CELL*.9,CELL*.7,3); cx.fillStyle='#79d39a'; cx.fillRect(x+CELL*.15,y+CELL*.9,CELL*.7*p.hp/P.hp,3); } });
+    for(var lv=0;lv<(p.lv||0);lv++){ cx.fillStyle='#ffe27a'; cx.fillRect(x+CELL*.12+lv*CELL*.16, y+CELL*.06, CELL*.11, CELL*.11); }
+    var maxHp=(p.k==='wall'&&p.lv)?UPG.wall[0].hp:P.hp;
+    if(p.hp<maxHp && p.k!=='bomb'){ cx.fillStyle='#000'; cx.fillRect(x+CELL*.15,y+CELL*.9,CELL*.7,3); cx.fillStyle='#79d39a'; cx.fillRect(x+CELL*.15,y+CELL*.9,CELL*.7*p.hp/maxHp,3); } });
   peas.forEach(function(b){ cx.fillStyle='#9be15d'; cx.strokeStyle='#1b3a14'; cx.lineWidth=1.5; cx.beginPath(); cx.arc(OX+b.x*CELL, b.row*CELL+CELL*.42, CELL*.1, 0, 7); cx.fill(); cx.stroke(); });
   G.zombies.slice().sort(function(a,b){ return a.row-b.row; }).forEach(function(z){ var Z=ZOMB[z.t], im=tile(Z.spr[0],Z.spr[1]), x=OX+z.x*CELL, y=z.row*CELL+CELL*.5;
     cx.globalAlpha=z.dead?Math.max(0,1-z.dt/.5):1;
@@ -493,13 +522,13 @@ document.getElementById('back').addEventListener('click', function(e){ if(EMBED)
 if(EMBED){
   openBox('<h2>'+ICON+' '+esc(PLACE)+'告急！</h2><div>'+(RAID?'天黑了，史萊姆和蝙蝠趁夜朝鎮上進攻。<b>守住 '+(GOAL||3)+' 波</b>，鎮民的房子就保住了。':'史萊姆要來偷菜了。<b>守住 '+(GOAL||3)+' 波</b>就過關。')+'</div>'+
     '<div class="stat"><span>答題賺 ☀️</span><span>🌵 射手 🪨 石牆 💣 炸彈</span><span>⚡ 連對 5 題放雷擊</span></div>'+
-    '<div class="muted">點下面的植物，再點草地格子種下去。⏭ 跳過不算錯。</div><div class="row"><button id="start">'+(RAID?'開始守夜':'開始守園')+'</button></div>');
+    '<div class="muted">點下面的植物，再點草地格子種下去。⬆️ 點已經種好的 🌵／🪨 可以花陽光升級。答錯時戰場會停住，看完解釋再繼續。⏭ 跳過不算錯。</div><div class="row"><button id="start">'+(RAID?'開始守夜':'開始守園')+'</button></div>');
   document.getElementById('start').onclick=function(){ closeBox(); newGame(); };
 } else
 openBox('<h2>🌻 守園</h2><div>殭屍從右邊一路走向你的家。<br><b>答題賺 ☀️ 陽光</b>，再用陽光在草地上種東西擋住牠們。</div>'+
-  '<div class="stat"><span>✍️ 打字題 ☀️50</span><span>🔤 四選一 ☀️25</span><span>答得快、連對＝更多 ☀️</span></div>'+
+  '<div class="stat"><span>✍️ 打字題 ☀️50</span><span>🔤 四選一 ☀️35</span><span>答得快、連對＝更多 ☀️</span></div>'+
   '<div class="stat"><span>🌵 射手：自動射擊</span><span>🪨 石牆：擋住牠們</span><span>💣 炸彈：炸周圍九格</span><span>⚡ 連對 5 題：選一條路雷擊</span></div>'+
-  '<div class="muted">點下面的植物，再點草地上的格子就種下去。題目照「打字 1 題、四選一 2 題」輪流出；⏭ 跳過不算錯。'+(S.best?'<br>最高紀錄：第 '+S.best+' 波':'')+'</div><div class="row"><button id="start">開始</button></div>');
+  '<div class="muted">點下面的植物，再點草地上的格子就種下去。⬆️ 點已經種好的 🌵／🪨 可以花陽光升級。題目照「打字 1 題、四選一 2 題」輪流出；⏭ 跳過不算錯。'+(S.best?'<br>最高紀錄：第 '+S.best+' 波':'')+'</div><div class="row"><button id="start">開始</button></div>');
 document.getElementById('start').onclick=function(){ closeBox(); newGame(); };
 </script>
 </body>

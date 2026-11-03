@@ -48,6 +48,8 @@ body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; 
 #cv { position:fixed; inset:0; width:100vw; height:100dvh; display:block; touch-action:none; image-rendering:pixelated; }
 .hud { position:fixed; top:0; left:0; right:0; padding:calc(env(safe-area-inset-top) + 8px) 10px 0; pointer-events:none; z-index:5; }
 .hrow { display:flex; gap:6px; align-items:center; }
+/* 11-03 Owen：「上排選單好像會遮住」→ 手機寬度放不下，🔥 被擠成一條細線 → 窄螢幕只留圖示 */
+@media (max-width:430px){ .hud .lb { display:none; } .hud button.streak { flex:0 0 auto; } }
 .chip { background:rgba(10,16,12,.72); border:1px solid rgba(255,255,255,.12); border-radius:999px; padding:2px 9px; font-size:.82em; white-space:nowrap; }
 .hrow .sp { flex:1; }
 .hud button.streak { position:relative; overflow:hidden; border-radius:999px; }
@@ -214,9 +216,9 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
     <button id="bFlag" aria-label="回報問題">🚩</button>
     <button id="bMute" aria-label="靜音">🔊</button>
     <button id="bAcct" aria-label="收音機">📻</button>
-    <button id="bDex">📖圖鑑</button>
-    <button id="bHome">🏠回城</button>
-    <button id="bRest">🌙收工</button>
+    <button id="bDex" aria-label="圖鑑">📖<span class="lb">圖鑑</span></button>
+    <button id="bHome" aria-label="回城">🏠<span class="lb">回城</span></button>
+    <button id="bRest" aria-label="收工">🌙<span class="lb">收工</span></button>
   </div>
   <div class="sun"><i id="tb"></i></div>
   <div class="quest" id="quest"></div>
@@ -247,10 +249,15 @@ BANK.forEach(function(q, i){
 
 /* ⭐ 10-15 擴充：fill 填空題轉成路上用的選擇題（tools/town_field_extra.js；題幹與正解原樣，只新增保證錯的干擾項，驗證腳本 tools/check_town_field_extra.js）
    ⛔ cue:true 的 24 題先不用（干擾項本身合文法，要靠題幹線索才判錯） */
+/* 11-03 Owen 對「Elle ne mange pas au restaurant. Elles ne _____ pas au restaurant.」：「這三小」→ 練習本的改寫題，少了「把前一句改成這樣」的提示，看起來像兩句無關的話 → 中間補箭頭 */
+function fxArrow(q){ var m=String(q).match(/^([^_→—]+\.)\s+([A-ZÀ-Ý][^→—]*_{2,}.*)$/); if(!m) return q;
+  var A=m[1].toLowerCase().split(/[^a-zà-ÿœ']+/), B=m[2].toLowerCase().split(/[^a-zà-ÿœ']+/).filter(Boolean);
+  if(A.length<3 || B.length<2 || B.filter(function(w){ return A.indexOf(w)>=0; }).length/B.length<.5) return q;
+  return m[1]+' → '+m[2]; }
 (typeof FIELD_EXTRA!=='undefined'?FIELD_EXTRA:[]).forEach(function(x){
   if(x.cue || !POOL[x.fam] || !BANK[x.src]) return;
   var b=BANK[x.src];
-  POOL[x.fam].choose.push({lesson:b.lesson, topic:x.topic, type:'choose', q:x.q, a:x.a, opts:x.opts, aNote:x.aNote, hint:x.hint||'', zh:x.zh||'', _i:x.src, _fx:1, why:x.why||null});
+  POOL[x.fam].choose.push({lesson:b.lesson, topic:x.topic, type:'choose', q:fxArrow(x.q), a:x.a, opts:x.opts, aNote:x.aNote, hint:x.hint||'', zh:x.zh||'', _i:x.src, _fx:1, why:x.why||null});
 });
 /* 陰陽性字庫：跟 quest.html 的 genderPool 同一個抽法（chunks.js「un／une／le／la＋單字名詞」與「l'… (m.)／(f.)」） */
 var EMO={chien:'🐕',chat:'🐈',cheval:'🐎',lapin:'🐇',poisson:'🐟',poule:'🐔',vache:'🐄',canard:'🦆',renard:'🦊',loup:'🐺',lion:'🦁',rat:'🐀',
@@ -1227,7 +1234,8 @@ function forgeCells(m){ var cells=conjCells(m), pool=[], W={weak:4,new:3,slow:2,
       pool.push({m:m, inf:v.inf, pi:pi, key:key, alts:String(fs[pi]).split('|'), st:st, w:W[st]*conjCorpus(v.inf, m.tense)*(CONJ_VERBS.indexOf(v.inf)>=0?1.6:1)}); } });
   return pool; }
 /* 這一爐挑哪個時態：照配比，再往「還沒站穩的格子多」的時態傾斜 */
-function forgeMode(){ var ms=conjModes(); if(!ms.length) return null;
+function forgeMode(not){ var ms=conjModes(); if(!ms.length) return null;
+  if(not && ms.length>1) ms=ms.filter(function(x){ return x.tense!==not; });   /* 11-03 Owen：「這換一爐真的是 work 的嗎」→ 舊版重抽常抽回同一爐（présent 配比最高），看起來像沒反應 */
   var sc=ms.map(function(m){ var p=forgeCells(m), soft=p.filter(function(x){ return x.st!=='reflex'; }).length/Math.max(1,p.length); return m.w*(.4+soft)*(Math.random()+.5); });
   var bi=0; sc.forEach(function(s,i){ if(s>sc[bi]) bi=i; }); return ms[bi]; }
 function forgeDraw(pool, used){ var c=pool.filter(function(x){ return used.indexOf(x.key)<0; }); if(!c.length) c=pool;
@@ -1260,15 +1268,15 @@ function askForgeChoice(head, c, cb){
   }; });
   document.getElementById('skip').onclick=function(){ if(done) return; done=true; cb(null); };
 }
-function forgePanel(ch){
+function forgePanel(ch, not){
   if(!forgeVerbs().length || typeof drillForms!=='function'){ toast('鐵砧還冷著（動詞資料沒載入）'); return; }
-  var m=forgeMode(); if(!m) return;
+  var m=forgeMode(not); if(!m) return;
   openSheet('<h3>🔨 鐵砧 <small>變位</small></h3><div class="story">鐵匠把燒紅的原形放上鐵砧：「照這一爐的時態敲成型。」</div>'+
     '<div class="qtext" style="text-align:center"><span class="fr" style="font-size:1.25em"><b>'+esc(m.label)+'</b></span><br><span class="muted">'+esc(FORGE_TZ[m.tense]||'')+'・一爐敲 '+FORGE_N+' 下</span></div>'+
     '<div class="muted">給你原形和人稱，敲出變形。剛認識的格子用選的，選對過的改成自己打。敲對一下 1 🪙。</div>'+
     '<div class="row2"><button class="btn ghost" id="later">晚點再來</button><button class="btn ghost" id="other">換一爐</button><button class="btn main" id="go">🔨 開爐</button></div>');
   document.getElementById('later').onclick=function(){ closeSheet(); };
-  document.getElementById('other').onclick=function(){ forgePanel(ch); };
+  document.getElementById('other').onclick=function(){ forgePanel(ch, m.tense); };
   document.getElementById('go').onclick=function(){ forgeRun(m); };
 }
 function forgeRun(m){
@@ -1768,7 +1776,11 @@ function storyChapters(){
 }
 function openStory(){
   var C=storyChapters(), cur=C.findIndex(function(c){ return c.soon || c.steps.some(function(s){ return !s[1]; }); });
-  var h='<h3>📜 主線・第一部「鐘」</h3><div class="muted">鐘停掉那天起，小鎮的時間也停了，人一個個離開。每一步都可以不照順序玩。</div>';
+  /* 11-03 Owen：「我還是搞不清楚主線是什麼」→ 目標列平常被今日委託佔走，主線看不到 → 這裡先白話講：發生什麼、你要做什麼、現在這一步、其他東西跟主線的關係 */
+  var nowStep=C[cur]&&!C[cur].soon?C[cur].steps.filter(function(s){ return !s[1]; })[0]:null;
+  var h='<h3>📜 主線・第一部「鐘」</h3><div class="story"><b>發生了什麼</b>：鐘停掉那天起，小鎮的時間也停了，人一個個離開。<br><b>你要做什麼</b>：把房子蓋回來，人就會回來；一路查出鐘為什麼停。</div>'+
+    (nowStep?'<div class="clue" style="margin-top:6px">▶ 現在這一步：<b>'+esc(nowStep[0])+'</b></div>':'')+
+    '<div class="muted" style="margin-top:6px">主線只看蓋房子和找線索。採集、交貨是賺材料和錢；今日委託、鐵砧、守園、口說島都是日常，不做也不會卡主線。</div>';
   C.forEach(function(c,i){
     if(i>cur+1) return;
     var done=i<cur, now=i===cur;
@@ -1791,7 +1803,6 @@ function gameHelp(){
   openSheet('<h3>❓ 這些東西是什麼</h3><div class="story">'+
     '<b>🏘️ Val-Brume</b>：這個小鎮的名字，遊戲虛構的。val＝山谷、brume＝薄霧。<br><br>'+
     '<b>🪙 錢和 ⛏ 礦石不一樣</b>：礦石、📦 東西、🐟 魚是<b>材料</b>，放背包；🪙 是錢。材料拿到 🏪 交貨攤交貨才變成錢。蓋房子有時要材料、有時要錢，所以要蓋的材料先留著。<br><br>'+
-    '<b>🎒 背包裡寫著字的（un salon…）</b>：森林裡叫對或叫錯 un／une 拿到的 📦，名字就是那個字。<br><br>'+
     '<b>瑕疵品</b>：答錯也會拿到，只是品質差：交貨一件 2 🪙，完整品 5 🪙。蓋房子會先用掉瑕疵品。交貨時寫對一句，整單翻倍。<br><br>'+
     '<b>🎭 對話裡叫你別的名字</b>：居民的對話來自課本劇本，你有時要演裡面的角色（例如 Michel Barbier），所以對方才那樣叫你。'+
     '</div><div class="row2"><span></span><button class="btn main" id="hpok">好</button></div>', true);
@@ -2070,7 +2081,9 @@ function fillOrders(){
 function openStall(){
   fillOrders();
   var h='<h3>🏪 交貨攤 <small>💰 '+S.gold+'</small></h3>';
-  h+='<div class="muted">背包（點一件＝賣掉那一件，1 🪙）：</div><div class="bagrow">'+(bag.length?bag.map(function(b,i){ return '<span data-sell="'+i+'" style="cursor:pointer" class="'+(b.good?'':'bad')+'">'+pix(b.em,18)+' '+esc(b.name)+(b.good?'':' 瑕')+'</span>'; }).join(''):'<span>空的</span>')+'</div>';
+  /* 11-01、11-03 Owen：「背包裡會有很多瑕疵跟圖鑑的品項，似乎不需要？」→ 交貨只看種類和數量，不再一件一件列 */
+  var nBad=bag.filter(function(b){ return !b.good; }).length;
+  h+='<div class="muted">背包：</div><div class="bagrow">'+(bag.length?[['ore','⛏'],['obj','📦'],['fish','🐟']].map(function(K){ var n=count(K[0]); return n?'<span>'+K[1]+' ×'+n+'</span>':''; }).join('')+(nBad?'<span class="muted">其中 '+nBad+' 件品質差一點</span>':''):'<span>空的</span>')+'</div>';
   orders.forEach(function(o,i){
     var can=count('ore')>=o.ore && count('obj')>=o.obj && count('fish')>=o.fish;
     h+='<div class="order"><div><b>'+esc(o.who)+'</b><div class="need">要 '+(o.ore?'<a data-where="ore" style="cursor:pointer;text-decoration:underline">⛏×'+o.ore+'</a> ':'')+(o.obj?'<a data-where="obj" style="cursor:pointer;text-decoration:underline">📦×'+o.obj+'</a> ':'')+(o.fish?'<a data-where="fish" style="cursor:pointer;text-decoration:underline">🐟×'+o.fish+'</a> ':'')+'</div></div>'+
@@ -2083,7 +2096,6 @@ function openStall(){
   sheet.querySelectorAll('[data-o]').forEach(function(b){ b.onclick=function(){ deliver(+b.dataset.o); }; });
   sheet.querySelectorAll('[data-where]').forEach(function(b){ b.onclick=function(){ showWhere(b.dataset.where); }; });
   sheet.querySelectorAll('[data-buy]').forEach(function(b){ b.onclick=function(){ buy(b.dataset.buy, openStall); }; });
-  sheet.querySelectorAll('[data-sell]').forEach(function(b){ b.onclick=function(){ bag.splice(+b.dataset.sell,1); S.gold+=1; save(); hud(); openStall(); }; });
   document.getElementById('dump').onclick=function(){ if(!bag.length) return; if(!confirm('把背包 '+bag.length+' 件全部用 1 🪙 賣掉？（蓋房子的材料也會一起賣掉）')) return; S.gold+=bag.length; bag=[]; save(); hud(); openStall(); };
   document.getElementById('out').onclick=function(){ closeSheet(); if(time<=0) toast('天黑了，今天先收工吧（🌙）'); };
 }
@@ -2203,7 +2215,7 @@ function hud(){
   document.getElementById('hBag').textContent='🎒 '+bag.length+'/'+S.bagCap;
   document.getElementById('tb').style.width=Math.max(0,100*time/dayLen())+'%';
   var qi=questInfo();
-  document.getElementById('quest').innerHTML= night ? (raidDue()?'🌙 怪物朝小鎮來了——<b>回城守夜</b>（守住 '+raidGoal()+' 波）':'🌙 天黑了，老鼠變多變快——回城，或去 🏡 睡覺') : (/^📋/.test(qi.t)?'':'🎯 ')+qi.t;
+  document.getElementById('quest').innerHTML= night ? (raidDue()?'🌙 怪物朝小鎮來了——<b>回城守夜</b>（守住 '+raidGoal()+' 波）':'🌙 天黑了，老鼠變多變快——回城，或去 🏡 睡覺') : (/^📋/.test(qi.t)?'':'🎯 ')+qi.t+(/^📋/.test(qi.t)?' <small class="pend">📜 主線</small>':'');
 }
 /* ============================================================
    回城：先回顧（錯在哪、為什麼、建議、正確說法），再交貨
@@ -2865,32 +2877,41 @@ function tilesRun(ch){
     for(var k=0;k<els.length;k++){ var b=els[k].getBoundingClientRect(); if(y<b.top-2||(y<=b.bottom+2&&x<b.left+b.width/2)){ idx=k; break; } }
     return idx;
   }
+  /* ⚠️ 11-03 Owen：「拖曳還是沒做」→ 上一版只用 pointer 事件，手機／平板上瀏覽器會中途 pointercancel 把拖曳取消，等於沒做
+     → 觸控改走 touch 事件（touchmove 擋掉捲動），滑鼠才走 pointer */
   function tileOff(){ window.removeEventListener('pointermove',tileMove); window.removeEventListener('pointerup',tileUp); window.removeEventListener('pointercancel',tileUp); }
-  function tileDown(e){
-    var t=e.target.closest?e.target.closest('.tile'):null; if(TD||!t||bd.done||bd.badAt||t.classList.contains('gone')||e.button>0) return;
-    TD={i:+t.dataset.i, slot:!!t.closest('#bslot'), sx:e.clientX, sy:e.clientY, id:e.pointerId, moved:false, el:t, g:null, bd:bd};
-    window.addEventListener('pointermove',tileMove); window.addEventListener('pointerup',tileUp); window.addEventListener('pointercancel',tileUp);
+  function tileStart(target,x,y,id){
+    var t=target&&target.closest?target.closest('.tile'):null; if(TD||!t||bd.done||bd.badAt||t.classList.contains('gone')) return false;
+    TD={i:+t.dataset.i, slot:!!t.closest('#bslot'), sx:x, sy:y, id:id, moved:false, el:t, g:null, bd:bd}; return true;
   }
-  function tileMove(e){
-    if(!TD||e.pointerId!==TD.id) return;
-    if(!TD.moved&&Math.hypot(e.clientX-TD.sx,e.clientY-TD.sy)>8){
+  function tileDown(e){
+    if(e.pointerType==='touch'||e.button>0) return;
+    if(tileStart(e.target,e.clientX,e.clientY,e.pointerId)){ window.addEventListener('pointermove',tileMove); window.addEventListener('pointerup',tileUp); window.addEventListener('pointercancel',tileUp); }
+  }
+  function tileTouch(e,id){ for(var k=0;k<e.changedTouches.length;k++) if(e.changedTouches[k].identifier===id) return e.changedTouches[k]; return null; }
+  function tileTS(e){ if(e.touches.length>1) return; var c=e.changedTouches[0]; tileStart(e.target,c.clientX,c.clientY,c.identifier); }
+  function tileTM(e){ if(!TD) return; var c=tileTouch(e,TD.id); if(!c) return; e.preventDefault(); tileDrag(c.clientX,c.clientY); }
+  function tileTE(e){ if(!TD) return; var c=tileTouch(e,TD.id); if(!c) return; var m=TD.moved; tileDrop(c.clientX,c.clientY,e.type==='touchcancel'); if(m&&e.cancelable) e.preventDefault(); }
+  function tileMove(e){ if(!TD||e.pointerId!==TD.id) return; tileDrag(e.clientX,e.clientY); }
+  function tileDrag(cx,cy){
+    if(!TD.moved&&Math.hypot(cx-TD.sx,cy-TD.sy)>8){
       TD.moved=true; var g=TD.el.cloneNode(true); g.className='tile on dragghost'; g.removeAttribute('data-i'); document.body.appendChild(g); TD.g=g; TD.el.style.opacity='.25'; }
     if(!TD.moved) return;
-    TD.g.style.transform='translate('+Math.round(e.clientX-TD.g.offsetWidth/2)+'px,'+Math.round(e.clientY-TD.g.offsetHeight-16)+'px)';
+    TD.g.style.transform='translate('+Math.round(cx-TD.g.offsetWidth/2)+'px,'+Math.round(cy-TD.g.offsetHeight-16)+'px)';
     var old=document.getElementById('dropmark'); if(old) old.remove();
-    var skip=TD.slot?TD.i:-9, idx=tileIns(e.clientX,e.clientY,skip), sl=document.getElementById('bslot');
+    var skip=TD.slot?TD.i:-9, idx=tileIns(cx,cy,skip), sl=document.getElementById('bslot');
     if(idx>=0&&sl){ var mk=document.createElement('span'); mk.id='dropmark'; mk.className='dropmark';
       var els=[].slice.call(sl.querySelectorAll('.tile')).filter(function(el){ return +el.dataset.i!==skip; }), ph=sl.querySelector('.bph'); if(ph) ph.remove();
       if(els[idx]) sl.insertBefore(mk,els[idx]); else sl.appendChild(mk); }
   }
-  function tileUp(e){
-    if(!TD||e.pointerId!==TD.id) return;
-    tileOff(); var d=TD; TD=null; if(d.g) d.g.remove();
+  function tileUp(e){ if(!TD||e.pointerId!==TD.id) return; tileOff(); tileDrop(e.clientX,e.clientY,e.type==='pointercancel'); }
+  function tileDrop(cx,cy,cancel){
+    var d=TD; TD=null; if(d.g) d.g.remove();
     if(!d.moved||d.bd!==bd||bd.done) return;   /* 沒動＝點一下，交給 click */
     dragEnd=Date.now();
     var mk=document.getElementById('dropmark'); if(mk) mk.remove();
-    if(e.type!=='pointercancel'){
-      var idx=tileIns(e.clientX,e.clientY,d.slot?d.i:-9), at=bd.put.indexOf(d.i);
+    if(!cancel){
+      var idx=tileIns(cx,cy,d.slot?d.i:-9), at=bd.put.indexOf(d.i);
       if(at>=0) bd.put.splice(at,1);
       if(idx>=0) bd.put.splice(Math.min(idx,bd.put.length),0,d.i);   /* 拖到答案列外面＝放回去 */
       bd.msg='';
@@ -2924,7 +2945,8 @@ function tilesRun(ch){
       '<div class="row2"><button class="btn ghost" id="tskip">↷ 這句跳過</button><button class="btn ghost" id="tstop">■ 先到這</button><button class="btn" id="tclr">清掉</button><button class="btn main" id="tok">確定</button></div>'+repSlot(rc), true);
     sheet.querySelectorAll('#bslot .tile').forEach(function(b){ b.onclick=function(){ if(bd.badAt||Date.now()-dragEnd<300) return; var i=+b.dataset.i; bd.put.splice(bd.put.indexOf(i),1); bd.msg=''; render(); }; });
     sheet.querySelectorAll('#bbank .tile').forEach(function(b){ b.onclick=function(){ if(bd.badAt||Date.now()-dragEnd<300) return; var i=+b.dataset.i; if(bd.put.indexOf(i)<0){ bd.put.push(i); bd.msg=''; render(); } }; });
-    document.getElementById('bslot').onpointerdown=tileDown; document.getElementById('bbank').onpointerdown=tileDown;
+    ['bslot','bbank'].forEach(function(id){ var el=document.getElementById(id); el.onpointerdown=tileDown;
+      el.addEventListener('touchstart',tileTS,{passive:true}); el.addEventListener('touchmove',tileTM,{passive:false}); el.addEventListener('touchend',tileTE,{passive:false}); el.addEventListener('touchcancel',tileTE,{passive:false}); });
     document.getElementById('tclr').onclick=function(){ bd.put=[]; bd.msg=''; bd.badAt=null; render(); };
     document.getElementById('tskip').onclick=function(){ skipped++; if(window.GameLog) GameLog.answer(null, {kind:'🧩 拼句', ref:q.id}); next(); };
     document.getElementById('tstop').onclick=finish;
@@ -2988,9 +3010,11 @@ function maybeNews(){
 function readNews(){
   var done={}; (function(){ try{ (JSON.parse(localStorage.getItem('clb7_reading'))||[]).forEach(function(r){ done[r.id]=1; }); }catch(e){} })();
   var fresh=ARTICLES.filter(function(a){ return !done[a.id]; }), a=(fresh.length?fresh:ARTICLES)[Math.floor(Math.random()*(fresh.length||ARTICLES.length))];
-  var t0=Date.now(), res={}, nOk=0, nSkip=0, nQ=a.questions.length;
+  var t0=Date.now(), res={}, nOk=0, nSkip=0, nQ=a.questions.length, RN=(typeof READING_NOTES!=='undefined') && READING_NOTES[a.id];
   openSheet('<h3>📰 '+esc(a.title)+' <small>'+esc(a.level||'')+'</small></h3>'+
     '<div class="clue fr" style="white-space:pre-wrap;line-height:1.7">'+esc(a.text)+'</div><div style="text-align:right">'+spk(a.text)+'</div>'+
+    /* 11-03 Owen 讀天氣那篇問「Nuages 是？」→ 單字原本只有讀完才看得到；作答時就能打開（預設收起來，維持先讀法文） */
+    (RN?'<details class="ex-rule" style="text-align:left"><summary class="muted">📝 卡住了，看這篇的單字</summary>'+RN.w.map(function(x){ return '<div><span class="say">'+esc(x[0])+'</span> '+spk(x[0])+' <span class="muted">'+esc(x[1])+'</span></div>'; }).join('')+'</details>':'')+
     a.questions.map(function(q,qi){ return '<div class="qtext" style="margin-top:12px">'+(qi+1)+'. '+esc(q.q)+'</div>'+
       '<div class="opts" data-q="'+qi+'">'+q.opts.map(function(o,oi){ return '<button data-o="'+oi+'">'+esc(o)+'</button>'; }).join('')+'</div>'+
       '<div class="fb" id="nfb'+qi+'"></div><div><button class="btn ghost" data-nskip="'+qi+'">↷ 這題跳過</button></div>'+
@@ -3082,6 +3106,10 @@ function islePick(I, n){
    ② 🔧 升級版用了哪一招？：island_upgrades.js（島的偶數句＋升級版），咖啡館每次練完接一題
    ============================================================ */
 function movesTaught(){ return (typeof UPGRADE_MOVES!=='undefined'?UPGRADE_MOVES:[]).filter(function(m){ return m.taught; }); }
+/* 11-03 Owen：「這樣出題太怪了，很明顯其他選項的字眼都沒有在裡頭」→ 招式名裡有法文關鍵字，看哪個字出現就選到了 → 選項只講「這招在做什麼」，要懂功能才選得出來；法文關鍵字留到答完的解說 */
+var UP_FN={'a2-parce-que':'補上原因','a2-mais':'加一個轉折','a2-puis-du-coup':'把動作一個接一個串起來','a2-pc-imparfait':'分開背景和劇情','a2-avis':'亮出自己的意見','a2-si-present':'給一個條件',
+  'b1-rel-qui-que':'把兩句併成一句','b1-rel-ou-dont':'補充地點、時間或內容','b1-grace-a':'用一個名詞說原因','b1-comme-puisque':'句子一開頭先說原因','b1-consequence':'說出結果','b1-gerondif':'說方法或同時的動作','b1-but':'說目的','b1-cond-poli':'說得更客氣、委婉','b1-comparaison':'說出差別','b1-y-en':'不重複前面的地點或事物','b1-duree':'精準說時間長短','b1-plus-que-parfait':'說更早之前發生的事','b1-discours-rapporte':'轉述別人的話','b1-mise-en-relief':'強調重點','b1-avis-ouvreur':'換個方式開場',
+  'b2-concession':'讓步','b2-opposition':'兩邊對比','b2-subj-jugement':'表達評價或必要','b2-certitude-doute':'分清確定與懷疑','b2-afin-que':'用書面語說目的','b2-passif':'強調結果或做的人','b2-cond-incertain':'表示還沒證實','b2-hypothese':'假設','b2-double-pronom':'一次省掉兩個重複的東西'};
 function moveById(id){ return (typeof UPGRADE_MOVES!=='undefined'?UPGRADE_MOVES:[]).filter(function(m){ return m.id===id; })[0]; }
 function movesCard(back){
   var L=movesTaught(), lv={A2:'A2 基本',B1:'B1',B2:'B2'};
@@ -3104,17 +3132,17 @@ function upgradeQ(islandId, done){
   var mine=U.filter(function(u){ return u.ref.split(':')[0]===islandId; }), pool=(mine.length?mine:U).slice().sort(function(a,b){ return (S.upq[a.ref]||0)-(S.upq[b.ref]||0) || Math.random()-.5; });
   var u=pool[0], right=moveById(u.move), others=shuffle(movesTaught().filter(function(m){ return m.id!==u.move && m.name!==right.name && !upAlsoUses(m, u); })).slice(0,3), opts=shuffle([right].concat(others)), t0=Date.now(), fin=false;
   var rc={kind:'🔧 升級辨識', ref:'up:'+u.ref, q:u.base+' → '+u.up, a:right.name};
-  openSheet('<h3>🔧 升級版用了哪一招？ <small>你的島</small></h3>'+
+  openSheet('<h3>🔧 升級版多做了什麼？ <small>你的島</small></h3>'+
     '<div class="muted">原本（A2）</div><div class="qtext fr">'+esc(u.base)+(u.base2?' '+esc(u.base2):'')+'</div>'+
     '<div class="muted">升級版（'+right.lvl+'）</div><div class="clue fr">'+esc(u.up)+' '+spk(u.up)+'</div>'+
-    '<div class="opts">'+opts.map(function(m,i){ return '<button data-i="'+i+'">'+esc(m.name)+'</button>'; }).join('')+'</div>'+
+    '<div class="opts">'+opts.map(function(m,i){ return '<button data-i="'+i+'">'+esc(UP_FN[m.id]||m.name)+'</button>'; }).join('')+'</div>'+
     '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="skip">↷ 跳過</button><span id="slot"></span></div>'+repSlot(rc), true);
   sheet.querySelectorAll('.opts button').forEach(function(b){ b.onclick=function(){ if(fin) return; fin=true;
     var m=opts[+b.dataset.i], ok=m===right, ms=Date.now()-t0; rc.pick=m.name; S.upq[u.ref]=(S.upq[u.ref]||0)+1; save();
     sheet.querySelectorAll('.opts button').forEach(function(x){ if(opts[+x.dataset.i]===right) x.classList.add('ok'); }); if(!ok) b.classList.add('no');
     if(window.GameLog) GameLog.answer(ok, {kind:'🔧 升級辨識', topic:'upgrade-'+u.move, ref:rc.ref, ms:ms, q:u.up, a:right.name, pick:m.name});
     speak(u.up); var ex=right.examples[0];
-    document.getElementById('fb').innerHTML=(ok?'✓ ':'👉 <b>'+esc(right.name)+'</b>')+'<div class="muted">'+esc(u.zh)+'</div><div class="ex-rule">💡 '+esc(right.how)+(ex?'<br><span class="fr">課本：'+esc(ex.fr)+'</span> <small>'+esc(ex.src)+'</small>':'')+'</div>';
+    document.getElementById('fb').innerHTML=(ok?'✓ ':'👉 ')+'<b>'+esc(right.name)+'</b><div class="muted">'+esc(u.zh)+'</div><div class="ex-rule">💡 '+esc(right.how)+(ex?'<br><span class="fr">課本：'+esc(ex.fr)+'</span> <small>'+esc(ex.src)+'</small>':'')+'</div>';
     if(ok) S.gold+=2;
     document.getElementById('slot').outerHTML='<button class="btn main" id="go">繼續</button>'; document.getElementById('go').onclick=done; }; });
   document.getElementById('skip').onclick=function(){ if(fin) return; fin=true; if(window.GameLog) GameLog.answer(null,{kind:'🔧 升級辨識', ref:rc.ref}); done(); };
@@ -3150,7 +3178,8 @@ function palRoom(I){
   var sc=(typeof ISLE_SCENES!=='undefined') && ISLE_SCENES[I.id];   /* 蓋好的島：用島上的地標圖（路上叫住時也是同一個圖） */
   return I.sents.slice(0,PAL_CELLS.length).map(function(s,i){ var m=sc&&sc.marks[s.key]; return {n:i+1, s:s, ref:I.id+':'+s.key, em:m?m[0]:pool[i%pool.length], rc:PAL_CELLS[i], R:{name:I.title}}; });
 }
-function pst(ref){ S.palace=S.palace||{}; return S.palace[ref]||{st:0, last:0}; }
+/* ⚠️ 11-03 Owen：「一句點記住了，下一句也會直接只顯示字首」→ 10-26 以前的舊路線走過就會記階段（沒有 seen），這裡一律當還沒學過，要自己按過「記住了」才算 */
+function pst(ref){ S.palace=S.palace||{}; var p=S.palace[ref]; return p&&p.seen ? p : {st:0, last:0}; }
 function firstLetters(fr){ return wparts(fr).map(function(p){ return p.w ? p.t.charAt(0)+(/['’]$/.test(p.t)?'\'':'') : p.t.replace(/\s+/g,' '); }).join('').replace(/\s+/g,' '); }
 var PAL_GAP=[1,3,7,21], PAL_DAY_CAP=4;
 /* 到期的句子：路上的遭遇開頭有一半機率先被宮殿叫住（⭐ Owen：一直走一直有題；⛔ 一天最多 4 件，複習太多他會跳過） */
@@ -3205,7 +3234,8 @@ function palaceRoom(I, at){
      ③ 路上叫住時中文直接給、首字母再按一下；想不起來可以按「再學一次」看整句——不算錯，回到認識階段 */
 function palaceOpen(g, done, stop){
   done=done||closeSheet; stop=stop||done;
-  var P=pst(g.ref), st=P.st, s=g.s, head='<h3>🏝 '+esc(g.R.name)+' <small>'+pix(g.em,20)+' 第 '+g.n+' 站・'+(g.review?'回來看看':['認識','提示','只剩位置'][st])+'</small></h3>';
+  var P=pst(g.ref), st=P.st, s=g.s, head='<h3>🏝 '+esc(g.R.name)+' <small>'+pix(g.em,20)+' 第 '+g.n+' 站・'+(g.review?'回來看看':['認識','提示','只剩位置'][st])+'</small></h3>',
+    rep1=repSlot({kind:'口說島', ref:g.ref, q:'🏝 '+g.R.name+' 第 '+g.n+' 站｜'+s.fr+'｜'+s.zh, a:s.fr});
   /* ⏰ 對上了 → 隔天；只剩位置又對上 → 3、7、21 天；沒對上 → 退一階（退到認識就要回房間再學） */
   var setSt=function(n, res){ S.palace=S.palace||{}; var o=S.palace[g.ref]||{st:0,k:0}, now=Date.now(), k=0, due=0;
     if(res==='ok'){ if(o.st>=2) k=Math.min((o.k||0)+1, PAL_GAP.length-1); due=sod(now)+PAL_GAP[k]*86400000; }
@@ -3215,7 +3245,7 @@ function palaceOpen(g, done, stop){
   if(st===0 && !g.review){
     var chunks=wparts(s.fr).filter(function(p){ return p.w; }).length>8 ? '<div class="muted" style="margin-top:4px">語塊：'+esc(s.fr).replace(/([,:;—])\s*/g,'$1 ║ ')+'</div>' : '';
     openSheet(head+'<div style="text-align:center;margin:4px 0">'+pix(g.em,56)+'</div>'+full+chunks+'<div class="muted" style="margin-top:6px">看著這件東西出聲唸一遍。記住了就按右邊——馬上只用首字母試一次。</div>'+mineBox(g.ref, s.fr)+
-      '<div class="row2"><button class="btn ghost" id="pclose">'+(stop!==done?'先到這':'再看看')+'</button><button class="btn main" id="pok">記住了，試試看 →</button></div>', true);
+      '<div class="row2"><button class="btn ghost" id="pclose">'+(stop!==done?'先到這':'再看看')+'</button><button class="btn main" id="pok">記住了，試試看 →</button></div>'+rep1, true);
     speak(s.fr);
     document.getElementById('pok').onclick=function(){ setSt(1,'learn'); if(window.GameLog) GameLog.event('palace_up'); palaceOpen(g, done, stop); };
     document.getElementById('pclose').onclick=stop; return;
@@ -3225,7 +3255,7 @@ function palaceOpen(g, done, stop){
           : st===1 ? '<div class="qtext">'+esc(s.zh)+'</div><div class="clue fr">'+esc(firstLetters(s.fr))+'</div>'
           : '<div class="qtext">'+pix(g.em,28)+' 這件東西上放的是哪一句？</div><details><summary class="muted">給我中文</summary><div class="muted">'+esc(s.zh)+'</div></details>';
   openSheet(head+'<div style="text-align:center;margin:4px 0">'+pix(g.em,56)+'</div>'+cue+'<div class="muted">先在心裡或出聲講一遍，再翻開。</div><div id="prev"></div>'+
-    '<div class="row2" id="prow"><button class="btn ghost" id="pclose">'+(stop!==done?'先到這':'晚點')+'</button>'+(g.review?'<button class="btn ghost" id="prelearn">再學一次</button>':'')+'<button class="btn main" id="pflip">翻開</button></div>', true);
+    '<div class="row2" id="prow"><button class="btn ghost" id="pclose">'+(stop!==done?'先到這':'晚點')+'</button>'+(g.review||st>=1?'<button class="btn ghost" id="prelearn">再學一次</button>':'')+'<button class="btn main" id="pflip">翻開</button></div>'+rep1, true);
   document.getElementById('pclose').onclick=stop;
   var pf=document.getElementById('pfirst'); if(pf) pf.onclick=function(){ document.getElementById('pfl').innerHTML='<div class="clue fr">'+esc(firstLetters(s.fr))+'</div>'; };
   var rl=document.getElementById('prelearn'); if(rl) rl.onclick=function(){ setSt(0,'relearn'); speak(s.fr);
@@ -3357,11 +3387,13 @@ function isleEnter(id){
   var sc=isleSpec(id); ISLE.id=id; ISLE.T=isleBuild(id); ISLE.x=sc.dock[0]; ISLE.y=sc.dock[2]-.8; ISLE.cx=ISLE.x; ISLE.cy=ISLE.y; ISLE.still=0; ISLE.units=isleUnits(id); busy=false;
   var I=isles().filter(function(x){ return x.id===id; })[0];
   ISLE.auto=null; ISLE.cur=0; ISLE.zoom=1; ISLE.full=false; ISLE.reveal=null; isleHostInit(id);
-  ihud.innerHTML='<div class="ihbar"><b>🏝 '+esc(sc.name)+'</b><span id="izone" class="muted"></span><button id="izh">'+(S.isleZh?'🀄 中文先':'🇫🇷 法文先')+'</button><button id="ilist">📜</button><button id="iarch">🗺 群島</button></div>'+
+  ihud.innerHTML='<div class="ihbar"><b>🏝 '+esc(sc.name)+'</b><span id="izone" class="muted"></span><button id="izh">'+(S.isleZh?'🀄 中文先':'🇫🇷 法文先')+'</button><button id="ilist">📜</button><button id="iflag" aria-label="回報問題">🚩</button><button id="iarch">🗺 群島</button></div>'+
     '<div class="irail" id="irail"></div>'+
     '<div class="inav"><button id="iprev">◀</button><button id="irun">🎙 一口氣講</button><button id="ijoint">🔗 接力</button><button id="inext">▶</button></div>'+
     '<div class="muted ihint" id="ihint" style="bottom:calc(env(safe-area-inset-bottom) + 66px)">⛵ 靠岸了。點地標或「下一站 ▶」就會自己走過去；也可以拖曳畫面自己走。順序就是你講話的順序。</div>';
   document.getElementById('iarch').onclick=archOpen;
+  /* 11-03 Owen：「口說群島還是沒有回報按鈕」→ 原本只有站在地標旁的泡泡裡才有，島上頂列常駐一顆；開著記句子的畫面時畫面下方也有 */
+  document.getElementById('iflag').onclick=function(){ if(ISLE.near) return isleFlag(ISLE.near); if(window.GameLog) GameLog.quickReport('town','🏝 '+sc.name); };
   document.getElementById('ilist').onclick=function(){ if(!busy) isleList('list'); };
   document.getElementById('izh').onclick=function(){ S.isleZh=!S.isleZh; save(); ISLE.reveal=null; this.textContent=S.isleZh?'🀄 中文先':'🇫🇷 法文先'; toast(S.isleZh?'🀄 中文先：每站先看中文、自己順一遍，再看法文':'🇫🇷 法文先：每站直接看法文'); };
   document.getElementById('iprev').onclick=function(){ if(!busy) isleStep(-1); };
