@@ -23716,5 +23716,432 @@ const CHUNKS = [
   "fr": "C'est dommage que ma mère doive attendre.",
   "zh": "負面",
   "note": "que＋subjonctif｜別人的動作"
+ },
+ {
+  "id": "L48_Tu_as_fait_quoi_ce_week",
+  "lesson": 48,
+  "fr": "Tu as fait quoi ce week-end ?",
+  "zh": "你這個週末做了什麼？",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L48_Et_tu_as_fait_quoi_le_we",
+  "lesson": 48,
+  "fr": "Et tu as fait quoi le week-end dernier ?",
+  "zh": "那你上個週末做了什麼？",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L48_Elle_a_pu_rencontrer_du",
+  "lesson": 48,
+  "fr": "Elle a pu rencontrer du monde ?",
+  "zh": "她有認識到人嗎？",
+  "note": "🎙 老師問你女兒"
+ },
+ {
+  "id": "L48_Est_ce_qu_ils_ont_des_en",
+  "lesson": 48,
+  "fr": "Est-ce qu'ils ont des enfants ?",
+  "zh": "他們有小孩嗎？",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L48_Mais_il_ne_l_a_pas_amené",
+  "lesson": 48,
+  "fr": "Mais il ne l'a pas amenée.",
+  "zh": "但他沒有帶她來。",
+  "note": "⭐ l'＝女兒，在前面 → 加 e"
+ },
+ {
+  "id": "L48_Dimanche_dernier_le_mati",
+  "lesson": 48,
+  "fr": "Dimanche dernier, le matin, on a fait du yoga.",
+  "zh": "上週日早上，我們做了瑜伽。",
+  "note": "⭐ 先講時間"
+ },
+ {
+  "id": "L48_Aujourd_hui_j_étais_enco",
+  "lesson": 48,
+  "fr": "Aujourd'hui, j'étais encore malade.",
+  "zh": "今天我還是不舒服。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L48_J_ai_dormi_jusqu_à_10_he",
+  "lesson": 48,
+  "fr": "J'ai dormi jusqu'à 10 heures.",
+  "zh": "我睡到十點。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L48_J_avais_la_tête_qui_tour",
+  "lesson": 48,
+  "fr": "J'avais la tête qui tourne.",
+  "zh": "我那時候頭很暈。",
+  "note": "🎙 老師：運動完之後"
+ },
+ {
+  "id": "L48_J_ai_déjeuné_j_ai_fait_l",
+  "lesson": 48,
+  "fr": "J'ai déjeuné, j'ai fait la sieste.",
+  "zh": "我吃了午餐，睡了午覺。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L48_J_ai_annulé_des_cours",
+  "lesson": 48,
+  "fr": "J'ai annulé des cours.",
+  "zh": "我取消了一些課。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L48_Dimanche_dernier_on_n_a",
+  "lesson": 48,
+  "fr": "Dimanche dernier, on n'a pas fait cours.",
+  "zh": "上週日我們沒有上課。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L48_J_ai_totalement_oublié",
+  "lesson": 48,
+  "fr": "J'ai totalement oublié.",
+  "zh": "我完全忘了。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L48_Je_suis_KO",
+  "lesson": 48,
+  "fr": "Je suis KO.",
+  "zh": "我累垮了。",
+  "note": "🎙 老師：口語、很常用"
+ },
+ {
+  "id": "L48_Prends_soin_de_toi",
+  "lesson": 48,
+  "fr": "Prends soin de toi.",
+  "zh": "你要照顧好自己。",
+  "note": "🎙 下課時你想講 take care，老師教的"
+ },
+ {
+  "id": "L48_Je_vais_prendre_soin_de",
+  "lesson": 48,
+  "fr": "Je vais prendre soin de moi.",
+  "zh": "我會照顧好自己。",
+  "note": "🎙 老師的回答"
+ },
+ {
+  "id": "L48_C_est_comment_là_bas",
+  "lesson": 48,
+  "fr": "C'est comment là-bas ?",
+  "zh": "那邊怎麼樣？",
+  "note": "🎙 老師：請你介紹一個地方"
+ },
+ {
+  "id": "L48_C_est_à_deux_heures_d_av",
+  "lesson": 48,
+  "fr": "C'est à deux heures d'avion environ.",
+  "zh": "搭飛機大概兩小時。",
+  "note": "🎙 老師修你的 l'avion, deux heures"
+ },
+ {
+  "id": "L48_Il_y_en_avait",
+  "lesson": 48,
+  "fr": "Il y en avait.",
+  "zh": "那時候有（一些）。",
+  "note": "🎙 老師：y 和 en 同時出現"
+ },
+ {
+  "id": "L48_La_ville_ressemble_beauc",
+  "lesson": 48,
+  "fr": "La ville ressemble beaucoup à New Taipei.",
+  "zh": "那座城市很像新北市。",
+  "note": "⭐ 現在還是這樣 → 現在式"
+ },
+ {
+  "id": "L48_On_a_passé_beaucoup_de_t",
+  "lesson": 48,
+  "fr": "On a passé beaucoup de temps à faire du shopping.",
+  "zh": "我們花了很多時間購物。",
+  "note": "⭐ passer du temps à＋原形"
+ },
+ {
+  "id": "L48_Je_prends_mon_temps",
+  "lesson": 48,
+  "fr": "Je prends mon temps.",
+  "zh": "我慢慢來。",
+  "note": "🎙 老師：刻意的"
+ },
+ {
+  "id": "L48_Il_y_a_une_rivière_et_on",
+  "lesson": 48,
+  "fr": "Il y a une rivière et on s'y est promenés.",
+  "zh": "那裡有一條河，我們在河邊散了步。",
+  "note": "⭐ se＋y＋être＋過去分詞"
+ },
+ {
+  "id": "L48_La_vie_n_a_pas_de_sens",
+  "lesson": 48,
+  "fr": "La vie n'a pas de sens.",
+  "zh": "人生沒有意義。",
+  "note": "🎙 老師舉例"
+ },
+ {
+  "id": "L48_Je_prends_soin_de_toi",
+  "lesson": 48,
+  "fr": "Je prends soin de toi.",
+  "zh": "我照顧你。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L48_C_est_un_lieu_pour_tout",
+  "lesson": 48,
+  "fr": "C'est un lieu pour tout le monde.",
+  "zh": "這是給所有人的地方。",
+  "note": "🎙 第 3 題當堂的回答"
+ },
+ {
+  "id": "L48_emmener",
+  "lesson": 48,
+  "fr": "emmener",
+  "zh": "帶（人）去",
+  "note": "v.｜j'ai emmené"
+ },
+ {
+  "id": "L48_rencontrer_du_monde",
+  "lesson": 48,
+  "fr": "rencontrer du monde",
+  "zh": "認識人",
+  "note": "v.｜rencontrer 不加 avec"
+ },
+ {
+  "id": "L48_le_camarade_de_classe",
+  "lesson": 48,
+  "fr": "le camarade de classe",
+  "zh": "同班同學",
+  "note": "m.｜女生 la camarade"
+ },
+ {
+  "id": "L48_le_camarade_d_université",
+  "lesson": 48,
+  "fr": "le camarade d'université",
+  "zh": "大學同學",
+  "note": "m.｜女生 la camarade"
+ },
+ {
+  "id": "L48_la_réunion",
+  "lesson": 48,
+  "fr": "la réunion",
+  "zh": "聚會、會議",
+  "note": "f.｜une réunion d'une organisation"
+ },
+ {
+  "id": "L48_environ",
+  "lesson": 48,
+  "fr": "environ",
+  "zh": "大概",
+  "note": "adv.｜deux heures d'avion environ"
+ },
+ {
+  "id": "L48_les_intestins_de_bœuf",
+  "lesson": 48,
+  "fr": "les intestins de bœuf",
+  "zh": "牛腸",
+  "note": "m. pl.｜l'intestin"
+ },
+ {
+  "id": "L48_la_commande",
+  "lesson": 48,
+  "fr": "la commande",
+  "zh": "點餐、訂單",
+  "note": "f.｜不是 l'ordre"
+ },
+ {
+  "id": "L48_la_fondue",
+  "lesson": 48,
+  "fr": "la fondue",
+  "zh": "起司鍋",
+  "note": "f.｜法國講的 fondue"
+ },
+ {
+  "id": "L48_la_fondue_chinoise",
+  "lesson": 48,
+  "fr": "la fondue chinoise",
+  "zh": "火鍋",
+  "note": "f.｜"
+ },
+ {
+  "id": "L48_le_centre_commercial",
+  "lesson": 48,
+  "fr": "le centre commercial",
+  "zh": "購物中心",
+  "note": "m.｜複數 les centres commerciaux"
+ },
+ {
+  "id": "L48_le_long_de",
+  "lesson": 48,
+  "fr": "le long de",
+  "zh": "沿著",
+  "note": "prép.｜le long de la rivière"
+ },
+ {
+  "id": "L48_passer_du_temps",
+  "lesson": 48,
+  "fr": "passer du temps",
+  "zh": "花時間",
+  "note": "v.｜≠ prendre du temps"
+ },
+ {
+  "id": "L48_C_est_vraiment_super_d_a",
+  "lesson": 48,
+  "fr": "C'est vraiment super d'avoir le TGV à côté de chez moi.",
+  "zh": "高鐵就在我家旁邊，真棒",
+  "note": "de＋原形｜正面、自己的看法"
+ },
+ {
+  "id": "L48_C_est_vraiment_super_de",
+  "lesson": 48,
+  "fr": "C'est vraiment super de prendre le TGV facilement.",
+  "zh": "能輕鬆搭高鐵，真棒",
+  "note": "de＋原形｜正面、自己的看法"
+ },
+ {
+  "id": "L48_Ça_m_énerve_que_le_march",
+  "lesson": 48,
+  "fr": "Ça m'énerve que le marché de Noël soit trop bruyant.",
+  "zh": "聖誕市集太吵，讓我很煩",
+  "note": "que＋subjonctif｜負面。être → soit"
+ },
+ {
+  "id": "L48_facilement",
+  "lesson": 48,
+  "fr": "facilement",
+  "zh": "容易地",
+  "note": "adv.｜facile＋ment"
+ },
+ {
+  "id": "L48_à_côté_de_chez_moi",
+  "lesson": 48,
+  "fr": "à côté de chez moi",
+  "zh": "就在我家旁邊",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L48_bruyant",
+  "lesson": 48,
+  "fr": "bruyant",
+  "zh": "吵的",
+  "note": "adj.｜陰性 bruyante"
+ },
+ {
+  "id": "L48_bavard",
+  "lesson": 48,
+  "fr": "bavard",
+  "zh": "愛講話的",
+  "note": "adj.｜第47課學過"
+ },
+ {
+  "id": "L48_le_marché_de_Noël",
+  "lesson": 48,
+  "fr": "le marché de Noël",
+  "zh": "聖誕市集",
+  "note": "m.｜"
+ },
+ {
+  "id": "L48_à_cause_de",
+  "lesson": 48,
+  "fr": "à cause de",
+  "zh": "因為（負面）",
+  "note": "prép.｜à cause du marché"
+ },
+ {
+  "id": "L48_le_tiers_lieu",
+  "lesson": 48,
+  "fr": "le tiers-lieu",
+  "zh": "第三空間",
+  "note": "m.｜tiers＝第三"
+ },
+ {
+  "id": "L48_dédié_à",
+  "lesson": 48,
+  "fr": "dédié à",
+  "zh": "專為……而設",
+  "note": "adj.｜陰性 dédiée"
+ },
+ {
+  "id": "L48_solidaire",
+  "lesson": 48,
+  "fr": "solidaire",
+  "zh": "互助的、團結的",
+  "note": "adj.｜la solidarité"
+ },
+ {
+  "id": "L48_tout_au_long_de_la_semai",
+  "lesson": 48,
+  "fr": "tout au long de la semaine",
+  "zh": "整整一週",
+  "note": "loc.｜le long de 沿著"
+ },
+ {
+  "id": "L48_réservé_à",
+  "lesson": 48,
+  "fr": "réservé à",
+  "zh": "保留給……的",
+  "note": "adj.｜réservé aux entrepreneurs"
+ },
+ {
+  "id": "L48_la_ruche",
+  "lesson": 48,
+  "fr": "la ruche",
+  "zh": "蜂巢",
+  "note": "f.｜"
+ },
+ {
+  "id": "L48_entreprendre",
+  "lesson": 48,
+  "fr": "entreprendre",
+  "zh": "創業、著手做",
+  "note": "v.｜l'entrepreneur"
+ },
+ {
+  "id": "L48_pérenne",
+  "lesson": 48,
+  "fr": "pérenne",
+  "zh": "長久的、可持續的",
+  "note": "adj.｜de manière pérenne"
+ },
+ {
+  "id": "L48_le_déclic",
+  "lesson": 48,
+  "fr": "le déclic",
+  "zh": "靈光一閃",
+  "note": "m.｜light bulb moment"
+ },
+ {
+  "id": "L48_la_soirée_dédicace",
+  "lesson": 48,
+  "fr": "la soirée dédicace",
+  "zh": "簽書會",
+  "note": "f.｜"
+ },
+ {
+  "id": "L48_relier",
+  "lesson": 48,
+  "fr": "relier",
+  "zh": "連起來",
+  "note": "v.｜≠ relire 重讀"
+ },
+ {
+  "id": "L48_la_fracture_numérique",
+  "lesson": 48,
+  "fr": "la fracture numérique",
+  "zh": "數位落差",
+  "note": "f.｜"
+ },
+ {
+  "id": "L48_le_thème_clé",
+  "lesson": 48,
+  "fr": "le thème clé",
+  "zh": "關鍵主題",
+  "note": "m.｜複數 thèmes clés"
  }
 ];

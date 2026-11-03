@@ -45,6 +45,7 @@
 > - 📜 **10-29 小鎮：定主線（鐘→塔→出航→對岸的城市，遊戲沒有終點、考試只當送行事件）＋做第二章「麵包師傅的夜路」＋點目標列打開主線進度板（三之九十八（小鎮））**
 > - 🩹 **10-29 待決定提案 64 條裡「冤枉他／教錯」的大部分修掉了：時刻 et quart、鐵砧 que／elle était allée、題庫 17 題、筆記第 44–46 課、鎮報註解、升級工坊說明、Vrai/Faux 平衡（三之九十九）**
 > - ⚠️⚠️ **11-03 考試規則新發現（清晨排程 R81，⏸ 等 Owen）：2026-04 版官方手冊 p.21 寫明口說背誦背熟的文本可能評 A1 non atteint、可能算作弊（repo 內 2022 舊版沒有）→ 背熟只當訓練；`PRACTICE_ORAL.md:251` 待改；見 `research/2026-11-03_官方手冊背誦條款與背稿怎麼走到自發.md`**
+> - 📚 **11-03 第48課（開口課：週末與旅行、B1 p.34 練習 6 評價社區、p.35 K Le Quai des possibles）筆記四件套＋連動全做（卡 61、題 23、句 14、表格 2、地圖）；⏸ 待 Owen 確認旅行地名、發燒的是誰（三之一百一十）**
 > - 🚩 **11-03 小鎮：處理今天 13 則回報（雲端 `clb7_game_reports` 處理到 11-03 15:58）——守園正解被切掉、答錯暫停、射手升級、鍵盤版面；拖曳改走觸控事件；口說島舊存檔與回報鈕；換一爐；升級辨識選項只講功能；主線說明（三之一百零九）**
 > - 🛠 **11-02 小鎮：修捕蟲判錯、跑酷第 12 道門不出現、守園鍵盤推走畫面；陰陽性錯滿 3 次改打整塊（三之一百零八）**
 > - 🎙 **10-31 小鎮口說島：骨架列（明確）、步道接點字＋🔗 接力（串連）、🎙 一口氣講只列卡住的站（熟練）；Owen 否決收集／裝飾方向（三之一百零七）**
@@ -4989,6 +4990,17 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
   3. **#73**（preposition-country）opts 有 12 個、互相重複（au Canada／en France…出現好幾次），看起來是組合題被攤平了，選項畫面會很怪。
   4. #301（「我 180 公分 Je fais 1m80」）topic 標成 question-words，應該是 faire 用法；不影響作答，只影響分類。
 - ⏭ 下一步（可選）：純變位 122 題要不要也補一句（例如「主詞 nous → 字尾 -ons」）——小鎮已經會列變位表，優先度低；`node tools/check_weak_anote.js --all -v` 可以看清單。
+
+#### 三之一百一十、11-03：第48課筆記（開口課＋Édito B1 p.34 練習 6＋p.35 K）＋連動
+- **材料**：逐字稿＋2 張截圖（p.34 Fonctionnement、p.35 K 全文）。老師說今天主要讓 Owen 開口；觀察是文法不錯，但少有長時間全法文的經驗。
+- **french_notes.html lesson-48**（8 unit、63 句、6 張表，check_notes 全綠）：🗣 週末（dernier／prochain、emmener／amener、il ne l'a pas amenée、先講時間再講事情）｜🗣 問老師今天做什麼（la tête qui tourne、être KO）｜🗣 介紹旅行地點（à deux heures d'avion environ、bon／mauvais／meilleur、le goût、il y en avait、現在還是這樣用現在式、beaucoup de、passer du temps à、s'y promener、le long de）｜📐 p.34 練習 6（de＋原形 vs que＋subjonctif 套到自己的社區）｜📖 K 課文詞彙與精選句｜🎙｜🔊｜📋。
+- **連動**：chunks +61（L48_）；questions.js +23（subjonctif-present 3、accord-participe-passe 2、pronoms-y-en 2、adjective-agreement 2、articles、imparfait、negation、vocab-voyage-tourisme 2、新 topic `vocab-tiers-lieu` 9，quiz／dashboard 標籤都加）；sentences.js S_L48_1–14；table_drill.html `parler-l48`、`senti-quartier-b1-p34`；map.html CURRENT_LESSON＝48＋地塊 `tiers-lieu`；gen_town_field_extra 重跑（路上選擇題 1485→1490）。
+- **標出來的衝突（標準法文 vs 課堂）**：des nouvelles personnes → de｜否定後 trouver de la nourriture → de nourriture｜meilleur＝最好 → le／la meilleur(e)｜passer du temps pour → à＋原形｜les vacances que tu as fait → faites｜emmener 老師譯 to bring，實際比較像 take｜la nourriture bonne 不是完整說法｜sortir dehors 是重複。
+- ⚠️ **第一版抽卡踩到的坑**：例句表第二欄放「正面／負面」，抽取器會把它當中文（出現「…TGV… → 正面」的卡）。改成第二欄放中文再重抽；第47課 p.34 表格是同樣結構，那 8 句當時有沒有抽壞**沒有查**。
+- **⏸ 待 Owen 確認**：① 旅行地名：逐字稿寫 « Foucault »，聽起來像福岡但沒有確認，法文句一律不寫地名；② 交辦訊息說 Owen 課前發燒，但逐字稿讀起來發燒的是老師（« j'étais encore malade »、取消其他課、結尾 « Je vais prendre soin de moi »），筆記照逐字稿寫；③ « Ankyli » 我判斷是 tranquille；④ 逐字稿糊掉的兩句沒進卡：Ça me plaît que… 的後半（筆記裡標明是我補的）、老師提到 dont 的那句。
+- **驗證**：check_notes 0／0、check_town_field_extra 全過、audit_questions 無第48課問題；preview 看筆記（導覽列有第48課、63 句與 57 格法文都有喇叭）、quiz `?lesson=48` 出題、table_drill 新表全部填對 8／8、sentence_drill 14 句、map chip 與地塊；無 console 錯誤。ROOM 測試→已改回、preview 已關、無 TEST 殘留。
+- ⚠️ check_g3 回報「交卷整句沒填回答案 2 題」是**第30課舊題**（題幹含 → 的 ne … que 兩題），不是這次造成，沒動。
+- ⏭ **下次課**：B1 p.36 詞彙＋老師念題的聽力小測驗；Owen 要把 Instagram 傳的題目唸熟、下次問老師；老師會 AirDrop A2＋B1 文法書。
 
 #### 三之一百零九（小鎮）、11-03：處理 11-03 的 13 則回報
 - Owen「應該有不少遊戲的回覆可以處理了」→ 讀雲端 `clb7_game_reports`：共 49 則，11-02 已處理到第 36 則，今天 14:50–15:58 新增 13 則。⚠️ 回報沒有「已處理」標記，靠時間判斷：**下次從 11-03 15:58 之後看**。
