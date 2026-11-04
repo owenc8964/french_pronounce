@@ -196,7 +196,7 @@ function lifeTalk(p){
   var bi=R.beats.indexOf(beat), stg=lifeStage(st.pts), body;
   if(first) body='<div class="story">'+R.intro+'</div>';
   else if(beat){ st.beats[bi]=1; st.pts+=1; eveMark(R.id); if(beat.sign) stSign(beat.sign); if(window.GameLog) GameLog.event('story_beat_'+R.id); body='<div class="story">'+beat.t+'</div><div class="muted">📖 '+esc(R.name)+' 的居民頁多了一行</div>'; }
-  else { var pool=R.lines.filter(function(l){ return l[0]<=stg-1 || (stg<=1 && l[0]===0); }), un=pool.filter(function(l){ return !st.seen[R.lines.indexOf(l)]; }); if(!un.length){ st.seen={}; un=pool; }
+  else { var pool=R.lines.filter(function(l){ return (!l[4]||l[4]()) && (l[0]<=stg-1 || (stg<=1 && l[0]===0)); }), un=pool.filter(function(l){ return !st.seen[R.lines.indexOf(l)]; }); if(!un.length){ st.seen={}; un=pool; }
     var L=un[Math.floor(Math.random()*un.length)]; st.seen[R.lines.indexOf(L)]=1;
     body='<div class="story">「'+esc(L[1])+'」</div>'+(L[2]?'<div class="clue fr">'+esc(L[2])+' '+spk(L[2])+'</div><div class="muted">'+esc(L[3])+'</div>':''); }
   if(busyToday) body+='<div class="muted">好像有話想說。但今天你已經陪過別人了，改天吧。</div>';

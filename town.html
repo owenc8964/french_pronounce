@@ -1738,8 +1738,9 @@ var CH2=[
     ask:'他這句話，跟哪一張紙條對不上？', opts:['紙條三：日記寫「每天晚上都去橋邊」','都對得上——紙條講的是白天的事','都對得上，他說的是真的'], a:0, topic:'pc-imparfait-recit',
     why:'日記寫 chaque nuit, j\'allais au pont——chaque nuit＋imparfait＝每天晚上的習慣；他卻說 ne … jamais＝從來沒有。', hint:'再看紙條三：<span class="fr">j\'allais</span> 是每天晚上的習慣，跟 <span class="fr">jamais</span> 撞在一起。' },
   { scene:'你把日記那一頁放到他面前。他的手停了下來，低聲說：', fr:'D\'accord. J\'y allais chaque nuit. Elle est partie sur un bateau, un soir d\'hiver.', gloss:'partir 離開（être 當助動詞 → elle est partie）・un bateau 船',
-    ask:'選項裡，elle 可能指的是哪一個？', opts:['la cloche（鐘）','le bateau（船）','le boulanger（麵包師傅自己）'], a:0, topic:'accord-participe-passe',
-    why:'elle 代替陰性名詞（或女性的人）；選項裡 bateau、boulanger 都是陽性，partie 多了 -e，也說明主詞是陰性。', hint:'看 <span class="fr">partie</span> 結尾多的 -e：主詞是陰性的。' }
+    ask:'partie 多了一個 -e。這告訴你，離開的——', opts:['是陰性的：某個「她」，或某樣陰性的東西','是陽性的','不只一個'], a:0, topic:'accord-participe-passe',
+    /* 11-04 盲讀：舊題把 elle 的正解定成鐘，之後被推翻＝題目在說謊 → 只考文法，讓誤會留在玩家自己心裡 */
+    why:'être 當助動詞時，過去分詞跟主詞配合：陰性單數加 -e。陽性是 il est parti，複數是 ils sont partis。', hint:'看 <span class="fr">partie</span> 結尾的 -e：-e＝陰性，-s 才是複數。' }
 ];
 function ch2Talk(step){
   step=step||0; var T=CH2[step], t0=Date.now(), tried=false;
@@ -1761,7 +1762,7 @@ function ch2Talk(step){
 }
 function ch2End(){
   if(!S.ch2done){ S.ch2done=1; S.gold+=40; save(); hud(); }
-  openSheet('<h3>🍞 第二章完</h3><div class="story">鐘被搬上一艘船，往下游去了？<br>你還想再問，他已經轉過身去：<span class="fr">« Je ne veux plus en parler. »</span> '+spk('Je ne veux plus en parler.')+'<br>他的背影，看起來比鐘樓還要舊。</div>'+
+  openSheet('<h3>🍞 第二章完</h3><div class="story">la cloche 也是陰性。鐘被搬上一艘船，往下游去了？<br>你還想再問，他已經轉過身去，把櫃台上的價目牌扶正。<span class="fr">« Je ne veux plus en parler. »</span> '+spk('Je ne veux plus en parler.')+'<br>價目牌是倒著的。</div>'+
     '<div class="muted">+40 🪙　下一章：第三章・河對岸——去 ⛵ 碼頭</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
   document.getElementById('ok').onclick=closeSheet;
 }
@@ -4438,7 +4439,7 @@ Object.keys(SPR).forEach(function(k){ img.apply(null,SPR[k]); });
 requestAnimationFrame(loop);
 setTimeout(function(){ document.getElementById('toast').style.opacity=0; },4000);
 if(!S.intro){ S.intro=1; save();
-  openSheet('<h3>🏘️ Val-Brume</h3><div class="story">你剛搬到魁北克一個沒落的小鎮 Val-Brume，人幾乎都走光了。<br>鎮外的森林裡藏著各種東西——把它們一樣一樣收進 📖 圖鑑，鎮上的人就會慢慢回來。</div>'+
+  openSheet('<h3>🏘️ Val-Brume</h3><div class="story">房仲把鑰匙塞給你就上車了，引擎沒熄火。<br>「一塊錢，不退。」<br>車子開走以後，魁北克的 Val-Brume 只剩風聲。森林那邊，有東西在草叢裡動。</div><div class="muted">把森林裡的東西收進 📖 圖鑑，鎮上的人就會慢慢回來。</div>'+
     '<div class="muted">按住畫面任何地方拖曳就能走（電腦用方向鍵）。走到 🌳 ⛏ 旁邊會自動開始；跟著上方的 🎯 和金色箭頭走。</div><div class="row2"><span></span><button class="btn main" id="ok">出發</button></div>');
   document.getElementById('ok').onclick=function(){ unlockTts(); closeSheet(); }; }
 
