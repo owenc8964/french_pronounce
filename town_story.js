@@ -321,15 +321,27 @@ function storyMorning(){
 }
 
 /* ---------- 🏁 對手：Zoé 的粉筆黑板（用已經在玩的小遊戲比，⛔ 不是只有台詞） ---------- */
-var RV_NAME={run:'🚪 跑酷', stone:'🪨 過河', garden:'🌻 守園'};
+var RV_NAME={run:'🚪 跑酷', stone:'🪨 過河', garden:'🌻 守園', spot:'📋 告示牌'};
+var RV_CAP={stone:3, spot:5};   /* 滿分有上限的項目，不能把數字改到打不贏 */
 function storyRival(game, score){
   var st=stSt(); if(!((S.ch3||{}).step>=1)) return;
-  var z=st.rv[game], win=score>z;
-  if(win){ st.wins[game]=(st.wins[game]||0)+1; st.rv[game]=score+1; save();
-    setTimeout(function(){ toast('🏁 Zoé 瞪著柱子：「'+RV_NAME[game]+' '+score+'？……運氣。」她把自己的數字改成 '+(score+1)+'。'); }, 1200);
-  } else setTimeout(function(){ toast('🏁 Zoé：「'+RV_NAME[game]+'我 '+z+'。」她沒有抬頭。'); }, 1200);
+  if(st.rv[game]===undefined) st.rv[game]=4;
+  var z=st.rv[game], win=score>z, cap=RV_CAP[game];
+  if(win){ st.wins[game]=(st.wins[game]||0)+1; st.rv[game]=cap?Math.min(cap,score+1):score+1; save();
+    var nz=st.rv[game];
+    setTimeout(function(){ toast('🏁 Zoé 瞪著柱子：「'+RV_NAME[game]+' '+score+'？……運氣。」'+(nz>score?'她把自己的數字改成 '+nz+'。':'她把粉筆折斷了。')); }, 1200);
+  } else if(cap && score===z && score===cap) setTimeout(function(){ toast('🏁 Zoé：「……平手。不算。」'); }, 1200);
+  else setTimeout(function(){ toast('🏁 Zoé：「'+RV_NAME[game]+'我 '+z+'。」她沒有抬頭。'); }, 1200);
 }
-function rivalBoard(){ var st=stSt(); return '<div class="muted" style="margin-top:6px">碼頭柱子上的粉筆：'+Object.keys(RV_NAME).map(function(k){ return RV_NAME[k]+' '+st.rv[k]; }).join('　')+'</div>'; }
+/* 📋 告示牌是誰改的（Owen 11-04：「公布欄也不錯」）：每次收尾多一個發現，⛔ 不講破，靠玩家自己拼 */
+var SPOT_BEATS=['牌子底下有一點粉筆灰。','牌子背面有人畫了一顆很醜的星星。','你走近的時候，一個很大的背包從牌子後面跑走了。','這次的錯字旁邊有人用鉛筆寫：「你看得到這個？」','牌子後面傳來一聲：「……運氣。」','Zoé 從牌子後面走出來，把粉筆丟給你。<br>「Pelletier 的公告太無聊了。」她抬起下巴，「換你改一個，我來抓。」<br>你看著粉筆。她已經走了，粉筆留給你。'];
+function storySpot(got,n){ if(!got) return ''; var st=stSt(); st.spotN=st.spotN||0; storyRival('spot',got);
+  var met=(S.ch3||{}).step>=1, limit=met?SPOT_BEATS.length:2; if(st.spotN>=limit) return ''; if(st.spotN>=4 && got<n) return '';
+  var t=SPOT_BEATS[st.spotN]; st.spotN++; save(); return '<br>'+t; }
+/* 🌬 風車的信：拼回來的信是誰寫給誰的（一封信一小段，看完就安靜結束） */
+var MILL_BEATS=['磨坊主人接過信，臉紅了。「別問。」信是寫給河對岸藥局的。','他今天又寫了一封，風又把它吹散了。「風是故意的。」他很認真地說。','你問他為什麼不走路送去，走路只要十分鐘。他看著你，好像你問了很蠢的問題。','他的手上有藥膏味。你問他哪裡受傷。「沒有。」他的抽屜裡有十一條藥膏。','今天的風從河對岸吹來。你排好的那些字，不是他的筆跡。他看了很久。「……她也在寫。」','他們還是不走路。風車上現在每天卡著兩個人的字。他說這樣比較有效率。'];
+function storyMill(){ var st=stSt(); st.millN=st.millN||0; if(st.millN>=MILL_BEATS.length) return ''; var t=MILL_BEATS[st.millN]; st.millN++; save(); if(window.GameLog) GameLog.event('story_mill'); return '<br>'+t; }
+function rivalBoard(){ var st=stSt(); return '<div class="muted" style="margin-top:6px">碼頭柱子上的粉筆：'+Object.keys(RV_NAME).map(function(k){ return RV_NAME[k]+' '+(st.rv[k]===undefined?4:st.rv[k]); }).join('　')+'</div>'; }
 function rivalWins(){ var w=stSt().wins, n=0; for(var k in w) n+=w[k]; return n; }
 
 /* ---------- 居民：Margot、Zoé 登場；每個人多兩幕（一天只能深聊一個人＝時間要取捨） ---------- */

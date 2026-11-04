@@ -384,7 +384,7 @@ var NODE_DEF=[
   [4,8],[9,8],[14,8],[26,8],[31,8],[36,8]
 ].map(function(p){ return {k:'fish',x:p[0],y:p[1]}; }));
 /* ⚔️ 挑戰點：走到這裡跳進「守園」（植物大戰殭屍，tower.html 嵌入）。10-16 Owen：「兩個遊戲整合在一塊，去到哪就跳進挑戰」 */
-var CHALLENGES=[ {id:'garden', x:16, y:18, name:'守園', em:'🌻', goal:3},   /* 10-19 名字從「菜園」改「守園」：Owen 找的是植物大戰殭屍 */
+var CHALLENGES=[ {id:'garden', x:16, y:18, name:'守園', em:'🌻', goal:6},   /* 10-19 名字從「菜園」改「守園」：Owen 找的是植物大戰殭屍 */
   /* 🧩 10-17 Owen 建議 d：quest.html 的拼句搬進來。⚠️ 研究 R29：拼句偏辨識、不算產出 → 輕量題型，⛔ 不取代打字 */
   {id:'mill', x:24, y:15, name:'風車', em:'🌬️', kind:'tiles', n:3},
   /* ☕ 10-17：口說島一句一句練熟（選擇／手寫，⛔ 不用麥克風——Owen：辨識不夠靠譜） */
@@ -1128,6 +1128,7 @@ function mineRock(n){
     var cnt=(crit?2:1)*(star?2:1);
     for(var c=0;c<cnt;c++) addBag({k:'ore', name:'礦石', em:'⛏', good:good});
     floatTxt(n.x+.5,n.y,'+'+cnt+(good?' ⛏':' ⛏瑕')+(crit?' 會心！':''), good?'#ffd76a':'#bbb');
+    if(crit && star) gemFind();
   }
   next();
 }
@@ -1281,18 +1282,32 @@ function forgePanel(ch, not){
   document.getElementById('other').onclick=function(){ forgePanel(ch, m.tense); };
   document.getElementById('go').onclick=function(){ forgeRun(m); };
 }
+/* 🗡 兵器架（鏡子）：每個時態一件，照「已經反射的格子」長大；看得見自己變強，⛔ 不秀分母 */
+var FORGE_TOOL={'present':'🔨','passe-compose':'⛏️','imparfait':'🪓','futur-simple':'🗡️','conditionnel':'🛡️','subjonctif':'🔱','plus-que-parfait':'⚔️'};
+var FORGE_GRADE=[[50,'金'],[25,'銀'],[10,'鋼'],[3,'鐵'],[0,'生鐵']];
+function forgeRack(){ return conjModes().map(function(m){ var cs=conjCells(m), n=0; for(var k in cs) if(conjState(cs[k].h)==='reflex') n++;
+    var g=FORGE_GRADE.filter(function(x){ return n>=x[0]; })[0][1];
+    return '<span class="item" style="display:inline-block;margin:2px 3px;padding:3px 7px">'+(FORGE_TOOL[m.tense]||'🔧')+' '+esc(FORGE_TZ[m.tense]||m.label)+'・<b>'+g+'</b></span>'; }).join(''); }
 function forgeRun(m){
   var pool=forgeCells(m), used=[], i=0, got=0;
+  /* ⚖️ 11-04 紀錄：鐵砧答對 93%，對 Owen 偏輕鬆 → 這個時態上一爐敲對 7 下以上，這一爐一律自己打、優先不規則；掉到 4 下以下才回到先選後打 */
+  S.forgeHot=S.forgeHot||{}; var hot=!!S.forgeHot[m.tense];
+  if(hot){ pool=pool.map(function(c){ c=Object.assign({},c); if(CONJ_VERBS.indexOf(c.inf)>=0) c.w*=2.5; return c; }); if(window.GameLog) GameLog.event('forge_hot'); }
   function next(){
     if(i>=FORGE_N) return finish();
     var c=forgeDraw(pool, used); used.push(c.key);
-    var head='🔨 鐵砧 <small>'+esc(m.label)+'・第 '+(i+1)+' 下</small> <button class="btn ghost" id="fstop" style="float:right;padding:2px 8px">今天先到這</button>';
+    var head='🔨 鐵砧 <small>'+esc(m.label)+'・第 '+(i+1)+' 下'+(hot?'・🔥 高溫':'')+'</small> <button class="btn ghost" id="fstop" style="float:right;padding:2px 8px">今天先到這</button>';
     var after=function(ok){ if(ok){ got++; S.gold+=1; } i++; save(); hud(); next(); };
-    if(c.st==='new' || c.st==='weak') askForgeChoice(head, c, after); else askConj(head, c, after);
+    if(!hot && (c.st==='new' || c.st==='weak')) askForgeChoice(head, c, after); else askConj(head, c, after);
     var st=document.getElementById('fstop'); if(st) st.onclick=function(){ finish(); };
   }
-  function finish(){ i=FORGE_N+1;
+  function finish(){ var whole=i>=FORGE_N; i=FORGE_N+1;
+    if(whole){ if(got>=7) S.forgeHot[m.tense]=1; else if(got<=4) delete S.forgeHot[m.tense]; }
+    var fence=whole && got>=6; if(fence){ S.forgeIron=Math.min(4,(S.forgeIron||0)+1); } save();
     openSheet('<h3>🔨 這一爐敲完了</h3><div class="qtext" style="text-align:center">'+(got?'敲出 <b>'+got+'</b> 塊好鐵　+'+got+' 🪙':'鐵還熱著，下次再來')+'</div>'+
+      (fence?'<div class="muted" style="text-align:center">🪨 Gaston 拿這爐打了一道柵欄。下次 🌻 守園，它會先立在路上（現在有 '+S.forgeIron+' 道）。</div>':'')+
+      (whole&&got>=7?'<div class="muted" style="text-align:center">🔥 這個時態下一爐是高溫：全部自己打。</div>':'')+
+      '<div style="margin-top:8px;text-align:center">'+forgeRack()+'</div>'+
       '<div class="row2"><button class="btn ghost" id="bye">走了</button><button class="btn main" id="again">再一爐</button></div>');
     document.getElementById('bye').onclick=function(){ closeSheet(); };
     document.getElementById('again').onclick=function(){ forgePanel(); };
@@ -1592,7 +1607,7 @@ function askClip(head, c, cb){
       (miss.some(function(g){ return g.t==='s'; })?'<div class="muted" style="font-size:.85em">💡 小字常跟前後黏在一起唸</div>':'');
     document.getElementById('crow').innerHTML='<button class="btn ghost" id="cagain">▶ 再聽整段</button><button class="btn main" id="go">繼續</button>';
     document.getElementById('cagain').onclick=function(){ play(1); };
-    document.getElementById('go').onclick=function(){ clipStop(); cb(all, ms, rc.pick, rc.a, nOk*2>=gaps.length); };
+    document.getElementById('go').onclick=function(){ clipStop(); cb(all, ms, rc.pick, rc.a, nOk*2>=gaps.length, {plays:plays, slow:slow, n:gaps.length, nOk:nOk}); };
     if(window.GameLog){ GameLog.event(all?'clip_ok':'clip_miss'); if(slow) GameLog.event('clip_slow'); }
   }
   ins.forEach(function(el,k){ el.addEventListener('keydown',function(e){ e.stopPropagation();
@@ -1604,6 +1619,30 @@ document.getElementById('bAcct').addEventListener('click', function(){ if(!busy)
 clipsLoad();
 /* 從聽力解碼頁登入完切回來 → 馬上重試載入課本錄音 */
 document.addEventListener('visibilitychange', function(){ if(!document.hidden && !CLIPS){ CLIPS_TRY=0; clipsLoad(); } });
+/* 🐟 魚譜（Owen 的拉力＝圖鑑）：聽得怎樣決定釣到什麼。⛔ 重聽、慢放都不會釣不到，只有最大的魚要「一次聽完全對」
+   魚名是標準法文（魁北克河裡真的有），只當收集，⛔ 不出題 */
+var FISH_TIERS=[
+  {t:0, em:'🐟', list:[['le vairon','小鰷魚'],['la perche','河鱸']]},
+  {t:1, em:'🐠', list:[['la truite','鱒魚'],['l\'anguille','鰻魚']]},
+  {t:2, em:'🐡', list:[['le brochet','狗魚'],['le saumon','鮭魚']]},
+  {t:3, em:'🦈', list:[['le doré','魁北克的金色河鱸'],['l\'esturgeon','鱘魚']]}
+];
+function fishTier(how){ if(!how) return 0; if(how.nOk===how.n){ if(how.plays<=1&&!how.slow) return how.n>=4?3:2; return how.slow?1:2; } return how.nOk*2>=how.n?1:0; }
+function fishCatch(n, how){
+  var T=FISH_TIERS[fishTier(how)], f=T.list[Math.floor(Math.random()*T.list.length)]; S.fishBook=S.fishBook||{};
+  var fresh=!S.fishBook[f[0]]; S.fishBook[f[0]]=(S.fishBook[f[0]]||0)+1; save();
+  floatTxt(n.x+.5,n.y,T.em+' '+f[0],T.t>=2?'#f0c95a':'#fff'); toast(T.em+' 釣到 '+f[0]+'（'+f[1]+'）'+(fresh?'——收藏多了一格':''));
+  if(window.GameLog) GameLog.event('fish_t'+T.t);
+}
+/* 💎 礦坑最裡面的★礦石，兩敲都又快又對才會敲出寶石（礦名只當收集，⛔ 不出題） */
+var GEMS=[['le quartz','石英'],['le grenat','石榴石'],['l\'améthyste','紫水晶'],['la labradorite','拉布拉多石']];
+function gemFind(){ var g=GEMS[Math.floor(Math.random()*GEMS.length)]; S.gems=S.gems||{}; var fresh=!S.gems[g[0]]; S.gems[g[0]]=(S.gems[g[0]]||0)+1; save(); toast('💎 敲出 '+g[0]+'（'+g[1]+'）'+(fresh?'——收藏多了一格':'')); if(window.GameLog) GameLog.event('gem'); }
+function fishBook(back){
+  var h='<h3>🗃 收藏</h3><div class="muted">聽得越完整，釣到的魚越大；最大的魚，要一次聽完全對。寶石只在最深的礦石，要敲得又快又對。</div><div style="margin-top:8px">';
+  GEMS.forEach(function(g){ var n=(S.gems||{})[g[0]]; h+='<div class="item">'+(n?'💎 <span class="say">'+esc(g[0])+'</span> <span class="muted">'+esc(g[1])+'・'+n+' 顆</span>':'<span class="muted">💎 ？？？</span>')+'</div>'; });
+  FISH_TIERS.forEach(function(T){ T.list.forEach(function(f){ var n=(S.fishBook||{})[f[0]]; h+='<div class="item">'+(n?T.em+' <span class="say">'+esc(f[0])+'</span> <span class="muted">'+esc(f[1])+'・'+n+' 條</span>':'<span class="muted">？？？</span>')+'</div>'; }); });
+  openSheet(h+'</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>'); document.getElementById('ok').onclick=back||closeSheet;
+}
 function fishSpot(n){
   if(!(n._pal && Date.now()-n._pal<60000) && palaceServe(function(){ n._pal=Date.now(); fishSpot(n); })) return;
   var i=0; clipsLoad();
@@ -1611,9 +1650,9 @@ function fishSpot(n){
     if(i>=2){ closeSheet(); n.done=true; return; }
     var cl=clipPick();
     if(cl){
-      askClip('🎣 河邊 ★ <small>第 '+(i+1)+' 竿・聽力</small>', cl, function(ok,ms,v,right,half){
+      askClip('🎣 河邊 ★ <small>第 '+(i+1)+' 竿・聽力</small>', cl, function(ok,ms,v,right,half,how){
         rec('L', cl, ok, ms, {chosen:v, right:right, where:'🎣 河邊'}); if(ok===true) storyFish();
-        if(ok!==null){ addBag({k:'fish', name:'魚', em:'🐟', good:!!half}); floatTxt(n.x+.5,n.y,'🐟'+(half?'':' 瑕'), half?'#fff':'#bbb'); }
+        if(ok!==null){ addBag({k:'fish', name:'魚', em:'🐟', good:!!half}); fishCatch(n, how); }
         i++; next();
       }); return;
     }
@@ -1791,13 +1830,14 @@ function openStory(){
     else if(now) h+='<div class="muted">'+c.steps.map(function(s){ return (s[1]?'✓ ':'・')+s[0]; }).join('<br>')+'</div>';
     h+='</div>';
   });
-  h+='<div class="muted" style="margin-top:8px">之後還有第二部、第三部……</div>'+(typeof lifeBook==='function'?'<div class="row2" style="margin-top:6px"><button class="btn ghost" id="sreg">📖 名冊</button><button class="btn ghost" id="sppl">👥 鎮上的人</button><button class="btn ghost" id="shelp">❓ 這些東西是什麼</button></div>':'');
+  h+='<div class="muted" style="margin-top:8px">之後還有第二部、第三部……</div>'+(typeof lifeBook==='function'?'<div class="row2" style="margin-top:6px"><button class="btn ghost" id="sreg">📖 名冊</button><button class="btn ghost" id="sfish">🗃 收藏</button><button class="btn ghost" id="sppl">👥 鎮上的人</button><button class="btn ghost" id="shelp">❓ 這些東西是什麼</button></div>':'');
   var hasQ=S.quests && S.quests.d===today() && S.quests.list && S.quests.list.length;
   h+='<div class="row2">'+(hasQ?'<button class="btn ghost" id="sq">📋 今日委託</button>':'<span></span>')+'<button class="btn main" id="ok">好</button></div>';
   openSheet(h);
   document.getElementById('ok').onclick=closeSheet;
   if(hasQ) document.getElementById('sq').onclick=openQuests;
   var rg=document.getElementById('sreg'); if(rg) rg.onclick=function(){ openRegister(openStory); };
+  var fb0=document.getElementById('sfish'); if(fb0) fb0.onclick=function(){ fishBook(openStory); };
   var pp=document.getElementById('sppl'); if(pp) pp.onclick=function(){ lifeBook(openStory); };
   var hp=document.getElementById('shelp'); if(hp) hp.onclick=gameHelp;
 }
@@ -2755,7 +2795,8 @@ function embedPanel(ch){
 function startPvz(ch){
   busy=true; joy=null; keys={};
   pvzFrame=document.createElement('iframe');
-  pvzFrame.src=ch.page ? ch.page+'?embed=1' : 'tower.html?embed=1&goal='+ch.goal+'&place='+encodeURIComponent(ch.name)+(ch.mode?'&mode='+ch.mode:'');
+  var ironN=ch.page?0:(S.forgeIron||0); if(ironN){ S.forgeIron=0; save(); }   /* 🔨 鐵砧打的柵欄帶進守園 */
+  pvzFrame.src=ch.page ? ch.page+'?embed=1' : 'tower.html?embed=1&goal='+ch.goal+'&place='+encodeURIComponent(ch.name)+(ch.mode?'&mode='+ch.mode:'')+(ironN?'&iron='+ironN:'');
   pvzFrame.style.cssText='position:fixed;inset:0;width:100%;height:100%;border:0;z-index:30;background:#10170f';
   pvzFrame.dataset.ch=ch.id;
   document.body.appendChild(pvzFrame);
@@ -2931,7 +2972,7 @@ function tilesRun(ch){
     S.chal=S.chal||{}; var st=S.chal[ch.id]||{wins:0, plays:0}; st.plays++;
     var bonus=0; if(got>0 && st.lastWin!==today()){ bonus=15; st.lastWin=today(); st.wins++; }
     S.chal[ch.id]=st; S.gold+=gold+bonus; save(); hud(); ch.cool=6;
-    openSheet('<div class="catch"><div class="big">'+pix('✉️',80)+'</div><div class="story">'+(got?'信拼回來了，寄給磨坊主人。':'今天先放著，風車會等你。')+'</div>'+
+    openSheet('<div class="catch"><div class="big">'+pix('✉️',80)+'</div><div class="story">'+(got?'信拼回來了，寄給磨坊主人。'+storyMill():'今天先放著，風車會等你。')+'</div>'+
       (gold+bonus?'<div class="bagrow"><span>+'+(gold+bonus)+' 🪙'+(bonus?'（含今天第一次 +15）':'')+'</span></div>':'')+
       '</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
     document.getElementById('ok').onclick=closeSheet;
@@ -3926,11 +3967,13 @@ function spotPool(){
 function spotRun(ch){
   var P=spotPool(), n=0, got=0, ended=false, N=5;
   function finish(){ if(ended) return; ended=true; S.gold+=got*2; save(); hud(); ch.cool=6;
-    openSheet('<div class="catch"><div class="big">'+pix('📋',80)+'</div><div class="story">'+(got?'告示牌乾淨多了。':'告示牌先放著。')+'</div>'+(got?'<div class="bagrow"><span>+'+(got*2)+' 🪙</span></div>':'')+'</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+    openSheet('<div class="catch"><div class="big">'+pix('📋',80)+'</div><div class="story">'+(got?'告示牌乾淨多了。':'告示牌先放著。')+storySpot(got,n)+'</div>'+(got?'<div class="bagrow"><span>+'+(got*2)+' 🪙</span></div>':'')+'</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
     document.getElementById('ok').onclick=closeSheet; }
   function next(){
     if(n>=N||!P.length) return finish(); n++;
-    var it=P[Math.floor(Math.random()*P.length)], w=it.wrong[Math.floor(Math.random()*it.wrong.length)];
+    /* 11-04：舊版純隨機，剛答過的會再來、錯過的不會回來 → 三天內出過的避開、抓錯過的優先 */
+    S.spotLog=S.spotLog||{}; var it=null, itw=-1; for(var si=0;si<14;si++){ var ci=P[Math.floor(Math.random()*P.length)], lg=S.spotLog[ci.q._i], wi=(Math.random()+.2)*(lg?(lg.miss?2.5:(Date.now()-lg.t<3*86400000?.05:1)):1.3); if(wi>itw){ itw=wi; it=ci; } }
+    var w=it.wrong[Math.floor(Math.random()*it.wrong.length)];
     var mk='\u0001'+w+'\u0002', sent=sayOf({q:it.stem}, mk), a=sent.indexOf('\u0001'), b=sent.indexOf('\u0002');
     if(a<0||b<0) return next();
     var before=sent.slice(0,a), mid=sent.slice(a+1,b), after=sent.slice(b+1), html='', t0=Date.now(), done=false;
@@ -3942,7 +3985,7 @@ function spotRun(ch){
       var ok=btn.dataset.t==='1', ms=Date.now()-t0; rc.pick=btn.textContent;
       sheet.querySelectorAll('.sw[data-t="1"]').forEach(function(x){ x.classList.add('bad'); }); if(!ok) btn.classList.add('miss');
       rec('q', it.q, ok, ms, {chosen:btn.textContent+'（點的字）', right:it.right, where:'🕵️ 抓錯字'});
-      if(ok) got++;
+      if(ok) got++; S.spotLog[it.q._i]={t:Date.now(), miss:!ok}; 
       var said=frOnly(good); if(said) speak(said);
       document.getElementById('fb').innerHTML=(ok?'✓ '+(ms<4000?'<b style="color:var(--gold)">一眼看穿</b> ':'')+'抓到了：':'錯在 <b>'+esc(mid)+'</b>：')+'<div>👉 <span class="say">'+esc(good)+'</span> '+(said?spk(said):'')+'</div>'+(it.q.aNote?'<div class="muted">'+note(it.q.aNote)+'</div>':'');
       document.getElementById('sx').innerHTML='<span></span><button class="btn main" id="snext">'+(n>=N?'結束':'下一句')+'</button>';

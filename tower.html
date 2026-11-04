@@ -113,7 +113,7 @@ BANK.forEach(function(q,i){
   var alts=String(q.a).split('|').filter(function(a){ return !zh(a); });
   var short=alts.filter(function(a){ return a.split(' ').length<=3; });
   if(!short.length) return;
-  TYPE.push({k:'t'+i, kind:'type', q:q.q, alts:alts, show:short.sort(function(a,b){ return a.length-b.length; })[0], zh:q.zh||'', note:q.aNote||'', irr:IRR.test(q.q), topic:q.topic});
+  TYPE.push({k:'t'+i, kind:'type', q:q.q, alts:alts, show:short.sort(function(a,b){ return a.length-b.length; })[0], zh:q.zh||'', note:q.aNote||'', irr:IRR.test(q.q), topic:q.topic, lesson:q.lesson||0});
 });
 
 /* ============================================================
@@ -129,7 +129,7 @@ BANK.forEach(function(q,i){
   var alts=String(q.a).split('|'), right=q.opts.filter(function(o){ return alts.indexOf(o)>=0; });
   if(right.length!==1) return;
   /* ⚠️ 11-03 Owen：「答案有在選項嗎？」連連看題有 5 個選項，舊寫法切前 4 個，正解排第 5 就不見了（3 題）→ 正解一定留著 */
-  CHOOSE.push({k:'c'+i, kind:'choose', q:stem, right:right[0], opts:[right[0]].concat(q.opts.filter(function(o){ return o!==right[0]; }).slice(0,3)), zh:q.zh||'', note:q.aNote||'', topic:q.topic});
+  CHOOSE.push({k:'c'+i, kind:'choose', q:stem, right:right[0], opts:[right[0]].concat(q.opts.filter(function(o){ return o!==right[0]; }).slice(0,3)), zh:q.zh||'', note:q.aNote||'', topic:q.topic, lesson:q.lesson||0});
 });
 var CHOOSE_BANK=CHOOSE.length;
 (function(){
@@ -147,7 +147,7 @@ var CHOOSE_BANK=CHOOSE.length;
       var far=nouns.filter(function(o){ return o.g===N.g && o.n!==N.n && Math.abs((o.lesson||0)-(N.lesson||0))>=8; });
       if(far.length<3) return;
       var ds=shuffle(far).slice(0,3).map(function(o){ return o.n; });
-      CHOOSE.push({k:'n'+c.id, kind:'choose', q:s.replace(re, function(all,pre,art){ return pre+art+' _____'; }), right:N.n, opts:[N.n].concat(ds), zh:c.zh||'', note:N.n+'＝'+N.zh, topic:'vocab'});
+      CHOOSE.push({k:'n'+c.id, kind:'choose', q:s.replace(re, function(all,pre,art){ return pre+art+' _____'; }), right:N.n, opts:[N.n].concat(ds), zh:c.zh||'', note:N.n+'＝'+N.zh, topic:'vocab', lesson:N.lesson||0});
       return;
     }
   });
@@ -157,18 +157,24 @@ var CHOOSE_BANK=CHOOSE.length;
 var KEY='pvz_v1';
 var S=(function(){ try{ return JSON.parse(localStorage.getItem(KEY))||null; }catch(e){ return null; } })()||{best:0, rec:{}};
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+/* ⚖️ 11-04 紀錄：鐵砧答對 93%、守園只有 31%（打字 26%），Owen 也說「題目特別難」→ 依最近 12 題調整出題範圍（存檔保留，下一場接著算）
+   目標大約七到八成：太低就先出早期課次，並減少打字比例；打得好就全範圍。⛔ 不告訴他在調，也不扣東西 */
+function towerRate(){ var a=S.recent||[]; if(a.length<4) return .5; return a.reduce(function(x,y){ return x+y; },0)/a.length; }
+function towerCap(){ var r=towerRate(); return r<.4?18:(r<.55?30:(r<.72?42:99)); }
 function pick(list, lastTopic, irrBoost){
-  var now=Date.now(), best=null, bw=-1;
+  var now=Date.now(), best=null, bw=-1, cap=towerCap();
+  if(towerRate()<.55) irrBoost=false;
   for(var k=0;k<70;k++){ var c=list[Math.floor(Math.random()*list.length)], r=S.rec[c.k], w=1;
     if(!r) w*=1.5; else if(r.w>r.r) w*=3;
     if(irrBoost && c.irr) w*=2.5;
     if(r && now-r.last<10*60000) w*=.1;
     if(c.topic===lastTopic) w*=.25;
+    if(c.lesson>cap) w*=.08;
     w*=Math.random()+.3; if(w>bw){ bw=w; best=c; } }
   return best;
 }
-function rec(c, ok){ var r=S.rec[c.k]||{r:0,w:0,last:0}; r[ok?'r':'w']++; r.last=Date.now(); S.rec[c.k]=r; save();
-  if(GL) GL.answer(ok, {kind:c.kind==='type'?'守園打字':'守園四選一', topic:c.topic, q:c.q, a:c.kind==='type'?c.show:c.right, pick:G&&G.q?G.q.pick:'', src:'tower', ref:c.k, ms:G&&G.q?Math.round((clock-G.q.t0)*1000):0}); }
+function rec(c, ok){ var r=S.rec[c.k]||{r:0,w:0,last:0}; r[ok?'r':'w']++; r.last=Date.now(); S.rec[c.k]=r; (S.recent=S.recent||[]).push(ok?1:0); if(S.recent.length>12) S.recent.shift(); save();
+  if(GL) GL.answer(ok, {kind:c.kind==='type'?'守園打字':c.kind==='listen'?'守園聽力':'守園四選一', topic:c.topic, q:c.q, a:c.kind==='type'?c.show:c.right, pick:G&&G.q?G.q.pick:'', src:'tower', ref:c.k, ms:G&&G.q?Math.round((clock-G.q.t0)*1000):0}); }
 /* 紀錄層（game_log.js）：嵌在小鎮裡就記進小鎮那一筆（⛔ 同一段時間不算兩次），單獨開才自己開一筆 */
 var GL=null;
 try{ GL=(new URLSearchParams(location.search).get('embed')==='1' && parent!==window && parent.GameLog) ? parent.GameLog : (window.GameLog||null); }catch(e){ GL=window.GameLog||null; }
@@ -210,8 +216,22 @@ var IMG={}; function tile(set,i){ var k=set+i; if(!IMG[k]){ var im=new Image(); 
 var PLANTS={
   shoot:{em:'🌵', name:'射手', cost:50,  hp:5,  desc:'自動射擊'},
   wall: {em:'🪨', name:'石牆', cost:50,  hp:36, desc:'很耐咬'},
-  bomb: {em:'💣', name:'炸彈', cost:150, hp:99, desc:'炸周圍九格'}
+  bomb: {em:'💣', name:'炸彈', cost:150, hp:99, desc:'炸周圍九格'},
+  /* ⬇️ 11-04 Owen：「更多輪、升級武器、選擇武器、來一波大的衝擊，讓我可以練更多題目，甚至聽力也可以一起」→ 這兩個要在波與波之間選到才有 */
+  ice:  {em:'❄️', name:'冰霜', cost:75,  hp:5,  desc:'打到的怪變慢'},
+  fire: {em:'🔥', name:'火焰', cost:100, hp:5,  desc:'穿過整條路'}
 };
+/* 🎁 波與波之間三選一（每局不同的打法）：都只在這一局有效；陽光還是只能靠答題 */
+var DRAFT=[
+  {k:'ice', em:'❄️', t:'冰霜射手', d:'打到的怪走路變慢。', ok:function(){ return G.owned.indexOf('ice')<0; }, go:function(){ G.owned.push('ice'); }},
+  {k:'fire', em:'🔥', t:'火焰射手', d:'一發穿過整條路。', ok:function(){ return G.owned.indexOf('fire')<0; }, go:function(){ G.owned.push('fire'); }},
+  {k:'aim', em:'🎯', t:'準星', d:'答對射的那一發，傷害 +1。', ok:function(){ return G.aimPlus<3; }, go:function(){ G.aimPlus++; }},
+  {k:'rate', em:'🌵', t:'加快裝填', d:'所有射手射得更快。', ok:function(){ return G.rateMul>.6; }, go:function(){ G.rateMul*=.8; }},
+  {k:'star', em:'⚡', t:'充電', d:'大招只要連對 3 題。', ok:function(){ return G.starNeed>3; }, go:function(){ G.starNeed=3; G.star=Math.min(G.star,3); }},
+  {k:'bomb', em:'💣', t:'便宜火藥', d:'炸彈只要 ☀️100。', ok:function(){ return G.cost.bomb>100; }, go:function(){ G.cost.bomb=100; }},
+  {k:'thorn', em:'🪨', t:'帶刺石牆', d:'咬石牆的怪會受傷。', ok:function(){ return !G.thorn; }, go:function(){ G.thorn=true; }},
+  {k:'ear', em:'🎧', t:'聽力砲', d:'聽力題答對，那條路所有怪都挨一發。', ok:function(){ return !G.earGun && !!listenReady(); }, go:function(){ G.earGun=true; }}
+];
 /* ⬆️ 11-03 Owen：「射手那些的應該要可以升級，然後越玩越難這樣？」→ 點已經種好的再升級；陽光還是只能靠答題，所以升級＝多一個答題的理由 */
 var UPG={
   shoot:[{cost:60, cd:.95, dmg:1, txt:'射更快'},{cost:100, cd:.8, dmg:2, txt:'傷害加倍'}],
@@ -220,7 +240,8 @@ var UPG={
 var ZOMB={
   walk: {spr:['d',108], hp:6,  sp:.24, name:'史萊姆'},
   fast: {spr:['d',120], hp:4,  sp:.5,  name:'蝙蝠'},
-  tank: {spr:['d',110], hp:18, sp:.16, name:'盔甲蟹'}
+  tank: {spr:['d',110], hp:18, sp:.16, name:'盔甲蟹'},
+  king: {spr:['d',110], hp:45, sp:.13, name:'蟹王'}
 };
 var ROWS=4, COLS=8, cv=document.getElementById('cv'), cx=cv.getContext('2d'), DPR=1, CW=0, CH=0, CELL=40, OX=0;
 /* ⚠️ 10-18：壞掉的圖（載入失敗）complete 也是 true，drawImage 會丟例外讓迴圈停掉 → 跳過不畫 */
@@ -253,9 +274,9 @@ function fitKeyboard(fake){
 /* ============================================================
    遊戲
    ============================================================ */
-var G=null, clock=0, floats=[], peas=[], bolts=[], puffs=[];
+var G=null, clock=0, floats=[], peas=[], bolts=[], puffs=[], zaps=[];
 /* ⭐ 嵌入小鎮（10-16 Owen：「兩個遊戲可以整合在一塊，去到哪就跳進這個挑戰」）：town.html 用 iframe 開 tower.html?embed=1&goal=3&place=… */
-var QS=new URLSearchParams(location.search), EMBED=QS.get('embed')==='1', GOAL=+QS.get('goal')||0, PLACE=QS.get('place')||'菜園', RAID=QS.get('mode')==='raid', ICON=RAID?'🏘️':'🌻', totalEarned=0, wrongAll=[];
+var QS=new URLSearchParams(location.search), IRON=+QS.get('iron')||0, EMBED=QS.get('embed')==='1', GOAL=+QS.get('goal')||0, PLACE=QS.get('place')||'菜園', RAID=QS.get('mode')==='raid', ICON=RAID?'🏘️':'🌻', totalEarned=0, wrongAll=[];
 /* 🌙 10-18 天黑突襲（mode=raid）：同一套守園，換成「怪物趁夜進攻小鎮」的文字 */
 function backToTown(win){
   var msg={type:'pvz-done', win:!!win, waves:G?G.wave:0, kills:G?G.kills:0, earned:totalEarned, wrong:wrongAll.slice(0,20)};
@@ -267,14 +288,19 @@ function newGame(){
   /* ⚖️ 10-25（Owen 回報「太難了」：第 1 波就剩 1 顆心、陽光 25）：開局 50 → 75、選擇題答對 25 → 35、第 1 波 7 隻 → 5 隻且間隔拉長。
      不答題仍守不住（一株只顧得了一條路），答對還是陽光的主要來源 */
   G={wave:1, hearts:3, sun:75, combo:0, maxCombo:0, plants:[], zombies:[], queue:[], spawnT:9, sel:null, star:0, starMode:false,
-     rot:0, lastTopic:null, redo:[], waveMiss:[], kills:0, waveKills:0, earned:0, paused:false, over:false, q:null};
-  peas=[]; floats=[]; bolts=[]; puffs=[];
+     rot:0, owned:['shoot','wall','bomb'], cost:{}, aimPlus:0, rateMul:1, starNeed:5, thorn:false, earGun:false, won:false, big:false, lastTopic:null, redo:[], waveMiss:[], kills:0, waveKills:0, earned:0, paused:false, over:false, q:null};
+  peas=[]; floats=[]; bolts=[]; puffs=[]; zaps=[];
+  /* 🔨 鐵砧打的柵欄：小鎮帶進來，開場就立在路上（一次性，再來一局不重給） */
+  if(IRON>0){ for(var fi=0;fi<Math.min(4,IRON);fi++) G.plants.push({k:'wall', row:fi%ROWS, col:1, hp:PLANTS.wall.hp, cd:0, fuse:0, born:clock}); floats.push({x:CW/2, y:CELL, t:0, txt:'🔨 鐵匠打的柵欄！', c:'#ffe27a', big:false}); IRON=0; }
   buildWave(); renderBar(); nextQ(); hud();
 }
 function buildWave(){
   var n=G.wave, list=[], cnt=n===1?5:5+2*n;
+  /* 🌊 每 3 波一大波：數量多一半、後段一起湧上來、最後一隻蟹王（守夜不套用，規模由小鎮決定） */
+  G.big=!RAID && n%3===0; if(G.big) cnt=Math.round(cnt*1.5);
   for(var i=0;i<cnt;i++){ var r=Math.random(), t='walk';
     if(n>=2 && r<.25+.04*n) t='fast'; if(n>=3 && r>.82-.03*n) t='tank'; list.push(t); }
+  if(G.big){ list.push('king'); G.bigStart=Math.floor(list.length*.5); floats.push({x:CW/2, y:CELL*1.4, t:0, txt:'⚠️ 一大波來了！', c:'#ffb36a', big:true}); }
   G.queue=list; G.spawnT=n===1?12:6;
 }
 function spawnZ(){
@@ -289,16 +315,17 @@ function hud(){
   document.getElementById('hKill').textContent=(EMBED?'🪙 +'+G.kills*KILL_GOLD:'👾 '+G.kills);
   renderBar();
 }
+function plantCost(k){ return (G&&G.cost&&G.cost[k])||PLANTS[k].cost; }
 function renderBar(){
   var bar=document.getElementById('bar'), h='';
-  Object.keys(PLANTS).forEach(function(k){ var P=PLANTS[k];
-    h+='<div class="card'+(G&&G.sel===k?' sel':'')+(G&&G.sun<P.cost?' off':'')+'" data-p="'+k+'"><img class="pix" src="'+pixURL(P.em)+'" width="28" height="28">'+P.name+'<br>☀️'+P.cost+'</div>'; });
-  var ready=G&&G.star>=5;
-  h+='<div class="card star'+(ready?' ready':'')+(G&&G.starMode?' sel':'')+'" data-p="star"><img class="pix" src="'+pixURL('⚡')+'" width="28" height="28">大招<br>'+(ready?'點一條路':'連對 '+Math.min(5,G?G.star:0)+'/5')+'</div>';
+  Object.keys(PLANTS).forEach(function(k){ var P=PLANTS[k], cost=plantCost(k); if(G&&G.owned&&G.owned.indexOf(k)<0) return;
+    h+='<div class="card'+(G&&G.sel===k?' sel':'')+(G&&G.sun<cost?' off':'')+'" data-p="'+k+'"><img class="pix" src="'+pixURL(P.em)+'" width="28" height="28">'+P.name+'<br>☀️'+cost+'</div>'; });
+  var ready=G&&G.star>=(G.starNeed||5);
+  h+='<div class="card star'+(ready?' ready':'')+(G&&G.starMode?' sel':'')+'" data-p="star"><img class="pix" src="'+pixURL('⚡')+'" width="28" height="28">大招<br>'+(ready?'點一條路':'連對 '+Math.min(G?G.starNeed:5,G?G.star:0)+'/'+(G?G.starNeed:5))+'</div>';
   bar.innerHTML=h;
   bar.querySelectorAll('.card').forEach(function(c){ c.addEventListener('pointerdown', function(e){ e.preventDefault(); if(!G||G.paused) return; var k=c.dataset.p;
-    if(k==='star'){ if(G.star>=5){ G.starMode=!G.starMode; G.sel=null; } else flash('連續答對 5 題才能放大招'); }
-    else { G.starMode=false; G.sel = G.sel===k ? null : k; if(G.sel && G.sun<PLANTS[k].cost){ flash('陽光不夠——答題賺 ☀️'); G.sel=null; } }
+    if(k==='star'){ if(G.star>=G.starNeed){ G.starMode=!G.starMode; G.sel=null; } else flash('連續答對 '+G.starNeed+' 題才能放大招'); }
+    else { G.starMode=false; G.sel = G.sel===k ? null : k; if(G.sel && G.sun<plantCost(k)){ flash('陽光不夠——答題賺 ☀️'); G.sel=null; } }
     renderBar(); }); });
 }
 function flash(t){ floats.push({x:CW/2, y:CH*.45, t:0, txt:t, c:'#fff', big:false}); }
@@ -309,16 +336,19 @@ cv.addEventListener('pointerdown', function(e){
   var r=cv.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top, col=Math.floor((x-OX)/CELL), row=Math.floor(y/CELL);
   if(row<0||row>=ROWS) return;
   if(G.starMode){ strike(row); return; }
+  /* 🎯 點怪物＝鎖定，下一題答對就打牠 */
+  var tz=G.zombies.filter(function(z){ return !z.dead && z.row===row && Math.abs(OX+z.x*CELL-x)<CELL*.6; })[0];
+  if(tz){ G.aim=tz; if(GL) GL.event('tower_aim'); return; }
   var here=G.plants.filter(function(p){ return p.row===row && p.col===col; })[0];
   if(here){ upgrade(here); return; }
   if(!G.sel){ flash('先點下面要種什麼'); return; }
   if(col<0||col>=COLS-1){ flash('這一格種不了'); return; }
-  var P=PLANTS[G.sel]; if(G.sun<P.cost){ flash('陽光不夠'); G.sel=null; renderBar(); return; }
-  G.sun-=P.cost; G.plants.push({k:G.sel, row:row, col:col, hp:P.hp, cd:.6, fuse:G.sel==='bomb'?.8:0, born:clock});
-  if(G.sun<P.cost) G.sel=null; hud();
+  var P=PLANTS[G.sel], pc=plantCost(G.sel); if(G.sun<pc){ flash('陽光不夠'); G.sel=null; renderBar(); return; }
+  G.sun-=pc; G.plants.push({k:G.sel, row:row, col:col, hp:P.hp, cd:.6, fuse:G.sel==='bomb'?.8:0, born:clock});
+  if(G.sun<pc) G.sel=null; hud();
 });
 function upgrade(p){
-  var L=UPG[p.k], lv=p.lv||0; if(!L){ flash('這個不能升級'); return; }
+  var L=UPG[p.k==='ice'||p.k==='fire'?'shoot':p.k], lv=p.lv||0; if(!L){ flash('這個不能升級'); return; }
   var U=L[lv]; if(!U){ flash('已經滿級了'); return; }
   if(G.sun<U.cost){ flash('升級要 ☀️'+U.cost+'——答題賺'); return; }
   G.sun-=U.cost; p.lv=lv+1;
@@ -336,9 +366,26 @@ function strike(row){
 /* ============================================================
    題目面板：輪替「打字 1：四選一 2」
    ============================================================ */
+/* 🎧 聽力題：只用課本真人錄音（小鎮載好的那份；Owen 10-16：「聽機器聲沒有什麼幫助」）→ 沒登入過就不出，⛔ 不退回電腦語音 */
+function listenHost(){ try{ if(EMBED && parent!==window && parent.CLIPS && parent.CLIPS.length && parent.clipPick && parent.clipPlay) return parent; }catch(e){} return null; }
+function listenReady(){ return listenHost(); }
+function listenQ(){
+  var H=listenHost(); if(!H) return null; var c=null, bl=null;
+  for(var t=0;t<6&&!bl;t++){ c=H.clipPick(); var ws=(c&&c.blank||[]).filter(function(x){ return x.t==='w'; }); if(ws.length) bl=ws[Math.floor(Math.random()*ws.length)]; }
+  if(!bl) return null;
+  var seen={}, opts=[bl.w]; seen[bl.w.toLowerCase()]=1;
+  shuffle(H.CLIPS).slice(0,80).forEach(function(o){ if(opts.length>=4) return; (o.blank||[]).forEach(function(x){ var k=x.w.toLowerCase(); if(opts.length<4 && x.t==='w' && !seen[k] && Math.abs(x.w.length-bl.w.length)<=3){ seen[k]=1; opts.push(x.w); } }); });
+  if(opts.length<3) return null;
+  try{ H.S.qlast['L:'+c.id]=Date.now(); }catch(e){}
+  return {k:'L:'+c.id, kind:'listen', q:c.text.slice(0,bl.a)+'_____'+c.text.slice(bl.b), right:bl.w, opts:opts, zh:'', note:'', topic:'listen-book', clip:c, row:null};
+}
+function listenPlay(c){ var H=listenHost(); if(!H||!c.clip) return; try{ var p=H.clipPlay({book:c.clip.book, track:c.clip.track, s:c.clip.s, e:c.clip.e}, 1); if(p&&p.catch) p.catch(function(){}); }catch(e){} }
+function listenStop(){ var H=listenHost(); if(H&&H.clipStop) try{ H.clipStop(); }catch(e){} }
 function nextQ(){
   if(!G || G.over) return; G.review=false;
-  var kind = (G.rot%3===0) ? 'type' : 'choose'; G.rot++;
+  listenStop();
+  if(G.rot%5===4){ var lq=listenQ(); if(lq){ G.rot++; G.lastTopic=lq.topic; G.q={c:lq, t0:clock, done:false}; renderQ(); listenPlay(lq); return; } }
+  var kind = (G.rot%(towerRate()<.4?4:3)===0) ? 'type' : 'choose'; G.rot++;
   var c=null;
   var due=G.redo.filter(function(r){ return r.after<=0 && r.c.kind===kind; })[0];
   if(due){ c=due.c; G.redo.splice(G.redo.indexOf(due),1); }
@@ -348,7 +395,7 @@ function nextQ(){
 }
 function renderQ(){
   var c=G.q.c, box=document.getElementById('qbox');
-  var head='<div class="qhead"><span>'+(c.kind==='type'?'✍️ 打出空格（☀️50・4 秒內 +25）':'🔤 選最適合的（☀️35・3 秒內 +10）')+'</span><span>'+(c.zh?'<button class="skipbtn" id="zhb">🀄 中文</button> ':'')+'<button class="skipbtn" id="sk">⏭ 跳過</button></span></div>'+(c.zh?'<div class="zhline" id="zht" style="display:'+(c.kind==='type'?'':'none')+'">'+esc(c.zh)+'</div>':'');   /* 11-04 Owen：「這題沒中文無法打對」→ 打字題光看動詞原形猜不出時態，中文直接打開；選擇題維持收起 */
+  var head='<div class="qhead"><span>'+(c.kind==='type'?'✍️ 打出空格（☀️50・4 秒內 +25）':c.kind==='listen'?'🎧 聽，選空格的字（☀️60）<button class="skipbtn" id="lplay" style="color:var(--gold)">▶ 聽</button>':'🔤 選最適合的（☀️35・3 秒內 +10）')+'</span><span>'+(c.zh?'<button class="skipbtn" id="zhb">🀄 中文</button> ':'')+'<button class="skipbtn" id="sk">⏭ 跳過</button></span></div>'+(c.zh?'<div class="zhline" id="zht" style="display:'+(c.kind==='type'?'':'none')+'">'+esc(c.zh)+'</div>':'');   /* 11-04 Owen：「這題沒中文無法打對」→ 打字題光看動詞原形猜不出時態，中文直接打開；選擇題維持收起 */
   var qt='<div class="qtext">'+esc(c.q).replace(/_{2,}/,'<b>　　</b>')+'</div>';
   if(c.kind==='type'){
     box.innerHTML=head+qt+'<div class="accents" id="acc"></div><div class="inrow"><input id="inp" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" enterkeyhint="send" placeholder="打空格裡的字"><button id="go">送出</button></div><div class="fb" id="fb"></div>';
@@ -366,11 +413,20 @@ function renderQ(){
     box.querySelectorAll('.opts button').forEach(function(b){ b.addEventListener('pointerdown', function(e){ e.preventDefault(); answerChoose(opts[+b.dataset.i], b); }); });
   }
   var zb=document.getElementById('zhb'); if(zb) zb.addEventListener('pointerdown', function(e){ e.preventDefault(); var z=document.getElementById('zht'); if(z) z.style.display=z.style.display==='none'?'':'none'; });
-  document.getElementById('sk').addEventListener('pointerdown', function(e){ e.preventDefault(); if(G.q.done) return; G.q.done=true; if(GL) GL.answer(null, {kind:G.q.c.kind==='type'?'守園打字':'守園四選一', ref:G.q.c.k});
+  var lb=document.getElementById('lplay'); if(lb) lb.addEventListener('pointerdown', function(e){ e.preventDefault(); listenPlay(c); });
+  document.getElementById('sk').addEventListener('pointerdown', function(e){ e.preventDefault(); if(G.q.done) return; G.q.done=true; if(GL) GL.answer(null, {kind:G.q.c.kind==='type'?'守園打字':G.q.c.kind==='listen'?'守園聽力':'守園四選一', ref:G.q.c.k});
     document.getElementById('fb').innerHTML='<span class="why">跳過（不算錯）</span>'; setTimeout(nextQ, 350); });
 }
+/* 🎯 11-04 依 Habgood & Ainsworth（學習內容要在核心動作裡，不是答完領獎）：答對＝直接射一發，答得快打得重；可以點怪物選目標 */
+function aimShot(dmg){
+  var z=(G.aim&&!G.aim.dead&&G.zombies.indexOf(G.aim)>=0)?G.aim:null;
+  if(!z) G.zombies.forEach(function(q){ if(!q.dead && q.x<COLS+.2 && (!z||q.x<z.x)) z=q; });
+  if(!z) return; G.lastRow=z.row; z.hp-=dmg; z.hit=.25; zaps.push({x:OX+z.x*CELL, y:z.row*CELL+CELL*.45, t:0});
+  floats.push({x:OX+z.x*CELL, y:z.row*CELL+CELL*.1, t:0, txt:'-'+dmg, c:'#fff', big:true});
+}
 function reward(base, bonus, fast){
-  G.combo++; G.maxCombo=Math.max(G.maxCombo,G.combo); G.star=Math.min(5,G.star+1);
+  aimShot((base>=50?3:2)+(fast?1:0)+G.aimPlus);
+  G.combo++; G.maxCombo=Math.max(G.maxCombo,G.combo); G.star=Math.min(G.starNeed,G.star+1);
   var sun=base+(fast?bonus:0)+Math.min(20,Math.max(0,G.combo-2)*2);
   G.sun+=sun; G.earned+=sun; totalEarned+=sun;
   floats.push({x:CW*.2, y:CELL*.6, t:0, txt:'☀️+'+sun+(fast?' 快！':''), c:'#ffe27a', big:fast});
@@ -387,7 +443,7 @@ function killed(z){
   for(var i=0;i<8;i++){ var a=i/8*6.28+Math.random()*.5, v=CELL*(1.2+Math.random()*1.3); puffs.push({x:x, y:y, vx:Math.cos(a)*v, vy:Math.sin(a)*v, t:0}); }
   hud();
 }
-function miss(c){ G.combo=0; rec(c,false); G.waveMiss.push(c); wrongAll.push(sayOf(c.q, c.kind==='type'?c.show:c.right)); G.redo.push({c:c, after:4}); hud(); }
+function miss(c){ G.combo=0; rec(c,false); G.waveMiss.push(c); wrongAll.push(sayOf(c.q, c.kind==='type'?c.show:c.right)); if(c.kind!=='listen') G.redo.push({c:c, after:4}); hud(); }
 function wrongFb(c, ans){
   /* ⏸ 11-03 Owen：「答錯讀解釋時可以停下來嗎？」→ 答錯就停住戰場，按「下一題」才繼續 */
   G.review=true;
@@ -409,7 +465,7 @@ function answerType(v){
 function answerChoose(o, btn){
   var q=G.q; if(q.done) return; q.done=true; q.pick=o; var c=q.c, secs=clock-q.t0, fb=document.getElementById('fb'), ok=o===c.right;
   document.querySelectorAll('.opts button').forEach(function(b){ if(b.textContent===c.right) b.classList.add('ok'); });
-  if(ok){ rec(c,true); reward(35,10,secs<3); fb.innerHTML='✓ <span class="ans">'+esc(sayOf(c.q,c.right))+'</span>'; setTimeout(nextQ, 650); }
+  if(ok){ rec(c,true); if(c.kind==='listen'){ reward(60,20,secs<7); if(G.earGun) G.zombies.forEach(function(z){ if(!z.dead && z.x<COLS+.2 && z.row===G.lastRow){ z.hp-=3; z.hit=.2; } }); } else reward(35,10,secs<3); fb.innerHTML='✓ <span class="ans">'+esc(sayOf(c.q,c.right))+'</span>'; setTimeout(nextQ, 650); }
   else { btn.classList.add('no'); miss(c); wrongFb(c, c.right); }
 }
 
@@ -420,31 +476,33 @@ var last=performance.now();
 function loop(t){ var dt=Math.min(.05,(t-last)/1000); last=t; clock+=dt; if(G && G.plants && !G.paused && !G.review && !G.over) update(dt); draw(); requestAnimationFrame(loop); }
 function update(dt){
   G.spawnT-=dt;
-  if(G.queue.length && G.spawnT<=0){ spawnZ(); G.spawnT=(G.wave===1?9:Math.max(2.6, 6.5-.45*G.wave))+Math.random()*1.5; }
+  if(G.queue.length && G.spawnT<=0){ spawnZ(); G.spawnT=(G.wave===1?9:Math.max(2.6, 6.5-.45*G.wave))+Math.random()*1.5; if(G.big && G.queue.length<=G.bigStart) G.spawnT=.9+Math.random()*.9; }
   G.plants.forEach(function(p){
-    if(p.k==='shoot'){ p.cd-=dt; var target=G.zombies.some(function(z){ return !z.dead && z.row===p.row && z.x>p.col && z.x<COLS+.2; });
-      if(target && p.cd<=0){ p.cd=p.rate||1.35; peas.push({row:p.row, x:p.col+.7, sp:4, dmg:p.dmg||1}); } }
+    if(p.k==='shoot'||p.k==='ice'||p.k==='fire'){ p.cd-=dt; var target=G.zombies.some(function(z){ return !z.dead && z.row===p.row && z.x>p.col && z.x<COLS+.2; });
+      if(target && p.cd<=0){ p.cd=(p.rate||1.35)*G.rateMul; peas.push({row:p.row, x:p.col+.7, sp:4, dmg:p.dmg||1, k:p.k, seen:[]}); } }
     if(p.k==='bomb'){ p.fuse-=dt; if(p.fuse<=0 && !p.boom){ p.boom=1; p.hp=0;
       G.zombies.forEach(function(z){ if(!z.dead && Math.abs(z.row-p.row)<=1 && Math.abs(z.x-(p.col+.5))<=1.6){ z.hp-=30; z.hit=.3; } });
       floats.push({x:OX+(p.col+.5)*CELL, y:p.row*CELL+CELL*.6, t:0, txt:'💥', c:'#fff', big:true}); } }
   });
   peas.forEach(function(b){ b.x+=b.sp*dt;
-    var z=G.zombies.filter(function(z){ return !z.dead && z.row===b.row && Math.abs(z.x-b.x)<.35; })[0];
-    if(z){ z.hp-=b.dmg||1; z.hit=.12; b.dead=1; } if(b.x>COLS+.5) b.dead=1; });
+    var z=G.zombies.filter(function(z){ return !z.dead && z.row===b.row && Math.abs(z.x-b.x)<.35 && b.seen.indexOf(z)<0; })[0];
+    if(z){ z.hp-=b.dmg||1; z.hit=.12; if(b.k==='ice') z.slow=2.5; if(b.k==='fire') b.seen.push(z); else b.dead=1; } if(b.x>COLS+.5) b.dead=1; });
   peas=peas.filter(function(b){ return !b.dead; });
   G.zombies.forEach(function(z){
     if(z.hit>0) z.hit-=dt;
     if(z.dead){ z.dt+=dt; return; }
     if(z.hp<=0){ killed(z); return; }
     var col=Math.floor(z.x-.2), block=G.plants.filter(function(p){ return p.row===z.row && p.col===col && p.hp>0 && p.k!=='bomb'; })[0];
-    if(block){ z.eat+=dt; if(z.eat>=1){ z.eat=0; block.hp-=1; } }
-    else z.x-=ZOMB[z.t].sp*dt*(1+.05*(G.wave-1));
+    if(z.slow>0) z.slow-=dt;
+    if(block){ z.eat+=dt; if(z.eat>=1){ z.eat=0; block.hp-=1; if(G.thorn && block.k==='wall'){ z.hp-=1; z.hit=.12; } } }
+    else z.x-=ZOMB[z.t].sp*dt*(1+.05*(G.wave-1))*(z.slow>0?.5:1);
     if(z.x<-.3){ z.dead=1; z.dt=0; z.reached=1; G.hearts--; floats.push({x:OX*.5+CELL*.2, y:z.row*CELL+CELL*.6, t:0, txt:'💔', c:'#fff', big:true}); hud(); if(G.hearts<=0) gameOver(); }
   });
   G.zombies=G.zombies.filter(function(z){ return !z.dead || z.dt<.5; });
   G.plants=G.plants.filter(function(p){ return p.hp>0; });
   floats.forEach(function(f){ f.t+=dt; }); floats=floats.filter(function(f){ return f.t<1.1; });
   bolts.forEach(function(b){ b.t+=dt; }); bolts=bolts.filter(function(b){ return b.t<.4; });
+  zaps.forEach(function(p){ p.t+=dt; }); zaps=zaps.filter(function(p){ return p.t<.22; });
   puffs.forEach(function(p){ p.t+=dt; p.x+=p.vx*dt; p.y+=p.vy*dt; }); puffs=puffs.filter(function(p){ return p.t<.45; });
   if(!G.over && !G.queue.length && !G.zombies.some(function(z){ return !z.dead; })) waveEnd();
 }
@@ -464,14 +522,16 @@ function draw(){
     for(var lv=0;lv<(p.lv||0);lv++){ cx.fillStyle='#ffe27a'; cx.fillRect(x+CELL*.12+lv*CELL*.16, y+CELL*.06, CELL*.11, CELL*.11); }
     var maxHp=(p.k==='wall'&&p.lv)?UPG.wall[0].hp:P.hp;
     if(p.hp<maxHp && p.k!=='bomb'){ cx.fillStyle='#000'; cx.fillRect(x+CELL*.15,y+CELL*.9,CELL*.7,3); cx.fillStyle='#79d39a'; cx.fillRect(x+CELL*.15,y+CELL*.9,CELL*.7*p.hp/maxHp,3); } });
-  peas.forEach(function(b){ cx.fillStyle='#9be15d'; cx.strokeStyle='#1b3a14'; cx.lineWidth=1.5; cx.beginPath(); cx.arc(OX+b.x*CELL, b.row*CELL+CELL*.42, CELL*.1, 0, 7); cx.fill(); cx.stroke(); });
+  peas.forEach(function(b){ cx.fillStyle=b.k==='ice'?'#9fdcff':(b.k==='fire'?'#ff9a4a':'#9be15d'); cx.strokeStyle='#1b3a14'; cx.lineWidth=1.5; cx.beginPath(); cx.arc(OX+b.x*CELL, b.row*CELL+CELL*.42, CELL*.1, 0, 7); cx.fill(); cx.stroke(); });
   G.zombies.slice().sort(function(a,b){ return a.row-b.row; }).forEach(function(z){ var Z=ZOMB[z.t], im=tile(Z.spr[0],Z.spr[1]), x=OX+z.x*CELL, y=z.row*CELL+CELL*.5;
     cx.globalAlpha=z.dead?Math.max(0,1-z.dt/.5):1;
     var hop=z.dead?0:Math.abs(Math.sin((clock-z.born)*(z.t==='fast'?12:6)))*CELL*.06, jx=z.hit>0?(Math.random()-.5)*4:0;
-    if(im.complete){ cx.save(); cx.translate(x+jx,y-hop); cx.drawImage(im,-CELL*.42,-CELL*.48,CELL*.84,CELL*.84); if(z.hit>0){ cx.globalCompositeOperation='lighter'; cx.globalAlpha*=.6; cx.drawImage(im,-CELL*.42,-CELL*.48,CELL*.84,CELL*.84); } cx.restore(); }
+    if(im.complete){ cx.save(); cx.translate(x+jx,y-hop); if(z.t==='king') cx.scale(1.45,1.45); cx.drawImage(im,-CELL*.42,-CELL*.48,CELL*.84,CELL*.84); if(z.hit>0){ cx.globalCompositeOperation='lighter'; cx.globalAlpha*=.6; cx.drawImage(im,-CELL*.42,-CELL*.48,CELL*.84,CELL*.84); } cx.restore(); }
     if(!z.dead && z.hp<z.max){ cx.fillStyle='#000'; cx.fillRect(x-CELL*.35,y-CELL*.52,CELL*.7,3); cx.fillStyle='#e07a6a'; cx.fillRect(x-CELL*.35,y-CELL*.52,CELL*.7*Math.max(0,z.hp)/z.max,3); }
     cx.globalAlpha=1; });
   bolts.forEach(function(b){ cx.fillStyle='rgba(220,190,255,'+(1-b.t/.4)*.7+')'; cx.fillRect(OX, b.row*CELL+CELL*.3, CELL*COLS, CELL*.4); });
+  zaps.forEach(function(p){ cx.strokeStyle='rgba(255,226,122,'+(1-p.t/.22)+')'; cx.lineWidth=3; cx.beginPath(); cx.moveTo(OX*.8,p.y); cx.lineTo(p.x,p.y); cx.stroke(); });
+  if(G.aim&&!G.aim.dead&&G.zombies.indexOf(G.aim)>=0){ var ax=OX+G.aim.x*CELL, ay=G.aim.row*CELL+CELL*.45; cx.strokeStyle='#ffe27a'; cx.lineWidth=2; cx.beginPath(); cx.arc(ax,ay,CELL*.48+Math.sin(clock*6)*2,0,7); cx.stroke(); }
   puffs.forEach(function(p){ var q=Math.max(0,1-p.t/.45), w=Math.max(2,CELL*.09*q); cx.fillStyle='rgba(255,226,122,'+q+')'; cx.fillRect(p.x-w/2,p.y-w/2,w,w); });
   floats.forEach(function(f){ cx.globalAlpha=Math.max(0,1-f.t/1.1); cx.font=(f.big?'bold ':'')+Math.round(CELL*(f.big?.5:.36))+'px Cubic11, system-ui'; cx.textAlign='center';
     cx.fillStyle='#000'; cx.fillText(f.txt,f.x+1,f.y-f.t*CELL*.8+1); cx.fillStyle=f.c; cx.fillText(f.txt,f.x,f.y-f.t*CELL*.8); });
@@ -488,23 +548,32 @@ function missList(){
   return out;
 }
 function waveEnd(){
-  if(EMBED && GOAL && G.wave>=GOAL) return victory();
+  if(EMBED && GOAL && G.wave>=GOAL && !G.won) return victory();
+  listenStop();
   var h='<h2>'+ICON+' 第 '+G.wave+' 波守住了</h2><div class="stat"><span>打倒 '+G.waveKills+' 隻</span><span>答題賺 ☀️'+G.earned+'</span><span>最高連對 '+G.maxCombo+'</span></div>';
   h+=G.waveMiss.length?'<div class="muted">這幾句再看一眼（之後還會再出現）：</div>'+missList():'<div class="muted">這一波題目全對 ✨</div>';
-  h+='<div class="muted" style="margin-top:8px">下一波：殭屍更多'+(G.wave===1?'，會出現跑得快的蝙蝠':G.wave===2?'，會出現很耐打的盔甲蟹':'')+'。種好的植物會留著'+(G.hearts<3?'，家回 1 顆心':'')+'。</div><div class="row">'+(EMBED?'<button id="wquit" style="margin-right:8px;background:#24362b">回小鎮</button>':'')+'<button id="wnext">下一波 →</button></div>';
+  var pool=shuffle(DRAFT.filter(function(d){ return d.ok(); })).slice(0,3);
+  var nb=!RAID && (G.wave+1)%3===0;
+  h+='<div class="muted" style="margin-top:8px">'+(nb?'⚠️ <b>下一波是一大波，最後還有蟹王。</b>':'下一波：殭屍更多'+(G.wave===1?'，會出現跑得快的蝙蝠':G.wave===2?'，會出現很耐打的盔甲蟹':'')+'。')+'種好的植物會留著'+(G.hearts<3?'，家回 1 顆心':'')+'。</div>';
+  if(pool.length) h+='<div class="muted" style="margin-top:8px"><b>選一樣帶進下一波：</b></div><div class="opts" id="draft">'+pool.map(function(d,i){ return '<button data-d="'+i+'">'+d.em+' <b>'+d.t+'</b>　'+d.d+'</button>'; }).join('')+'</div>';
+  h+='<div class="row">'+(EMBED?'<button id="wquit" style="margin-right:8px;background:#24362b">回小鎮</button>':'')+'<button id="wnext">'+(pool.length?'都不要，':'')+'下一波 →</button></div>';
   /* ⚠️ 10-21 修（Owen：「第一關轉第二關卡住了，沒辦法繼續也無法跳出」）：
      這顆原本也叫 id="nx"，跟題目區答錯時的「下一題 →」撞名 → getElementById 綁到題目區那顆，結算畫面的按鈕按了沒反應，
      而結算畫面蓋住整個螢幕、左上角的離開也按不到。改名 wnext，嵌在小鎮時另外給一顆「回小鎮」，保證永遠出得去 */
   openBox(h);
-  if(EMBED) document.getElementById('wquit').onclick=function(){ G.over=true; backToTown(false); };
-  document.getElementById('wnext').onclick=function(){ G.wave++; G.hearts=Math.min(3,G.hearts+1); G.waveMiss=[]; G.waveKills=0; G.earned=0; buildWave(); hud(); closeBox(); };
+  if(EMBED) document.getElementById('wquit').onclick=function(){ G.over=true; backToTown(G.won); };
+  function go(){ G.wave++; G.hearts=Math.min(3,G.hearts+1); G.waveMiss=[]; G.waveKills=0; G.earned=0; buildWave(); hud(); closeBox(); }
+  document.getElementById('wnext').onclick=go;
+  document.querySelectorAll('[data-d]').forEach(function(b){ b.onclick=function(){ var d=pool[+b.dataset.d]; d.go(); if(GL) GL.event('tower_pick_'+d.k); go(); }; });
 }
 function victory(){
   G.over=true; save();
   var h='<h2>'+ICON+' '+esc(PLACE)+'守住了！</h2><div class="stat"><span>守了 '+G.wave+' 波</span><span>打倒 '+G.kills+' 隻</span><span>答題賺 ☀️'+totalEarned+'</span><span>最高連對 '+G.maxCombo+'</span></div>';
   h+=G.waveMiss.length?'<div class="muted">最後這一波卡住的：</div>'+missList():'<div class="muted">最後一波題目全對 ✨</div>';
-  h+='<div class="row"><button id="home">回小鎮領獎勵 →</button></div>';
+  h+='<div class="row"><button id="more" style="margin-right:8px;background:#24362b">繼續守下去</button><button id="home">回小鎮領獎勵 →</button></div>';
   openBox(h); document.getElementById('home').onclick=function(){ backToTown(true); };
+  /* 守住之後還想練就繼續，獎勵保留；回小鎮隨時可以 */
+  document.getElementById('more').onclick=function(){ G.over=false; G.won=true; if(GL) GL.event('tower_endless'); waveEnd(); };
 }
 function gameOver(){
   G.over=true; var nb=G.wave>(S.best||0); if(nb) S.best=G.wave; save();
@@ -522,13 +591,13 @@ document.getElementById('back').addEventListener('click', function(e){ if(EMBED)
 if(EMBED){
   openBox('<h2>'+ICON+' '+esc(PLACE)+'告急！</h2><div>'+(RAID?'天黑了，史萊姆和蝙蝠趁夜朝鎮上進攻。<b>守住 '+(GOAL||3)+' 波</b>，鎮民的房子就保住了。':'史萊姆要來偷菜了。<b>守住 '+(GOAL||3)+' 波</b>就過關。')+'</div>'+
     '<div class="stat"><span>答題賺 ☀️</span><span>🌵 射手 🪨 石牆 💣 炸彈</span><span>⚡ 連對 5 題放雷擊</span></div>'+
-    '<div class="muted">點下面的植物，再點草地格子種下去。⬆️ 點已經種好的 🌵／🪨 可以花陽光升級。答錯時戰場會停住，看完解釋再繼續。⏭ 跳過不算錯。</div><div class="row"><button id="start">'+(RAID?'開始守夜':'開始守園')+'</button></div>');
+    '<div class="muted">點下面的植物，再點草地格子種下去。🎯 答對會直接射一發，答得快打得重；點怪物可以選目標。⬆️ 點已經種好的 🌵／🪨 可以花陽光升級。答錯時戰場會停住，看完解釋再繼續。⏭ 跳過不算錯。</div><div class="row"><button id="start">'+(RAID?'開始守夜':'開始守園')+'</button></div>');
   document.getElementById('start').onclick=function(){ closeBox(); newGame(); };
 } else
 openBox('<h2>🌻 守園</h2><div>殭屍從右邊一路走向你的家。<br><b>答題賺 ☀️ 陽光</b>，再用陽光在草地上種東西擋住牠們。</div>'+
   '<div class="stat"><span>✍️ 打字題 ☀️50</span><span>🔤 四選一 ☀️35</span><span>答得快、連對＝更多 ☀️</span></div>'+
   '<div class="stat"><span>🌵 射手：自動射擊</span><span>🪨 石牆：擋住牠們</span><span>💣 炸彈：炸周圍九格</span><span>⚡ 連對 5 題：選一條路雷擊</span></div>'+
-  '<div class="muted">點下面的植物，再點草地上的格子就種下去。⬆️ 點已經種好的 🌵／🪨 可以花陽光升級。題目照「打字 1 題、四選一 2 題」輪流出；⏭ 跳過不算錯。'+(S.best?'<br>最高紀錄：第 '+S.best+' 波':'')+'</div><div class="row"><button id="start">開始</button></div>');
+  '<div class="muted">點下面的植物，再點草地上的格子就種下去。🎯 答對會直接射一發，答得快打得重；點怪物可以選目標。⬆️ 點已經種好的 🌵／🪨 可以花陽光升級。題目照「打字 1 題、四選一 2 題」輪流出；⏭ 跳過不算錯。'+(S.best?'<br>最高紀錄：第 '+S.best+' 波':'')+'</div><div class="row"><button id="start">開始</button></div>');
 document.getElementById('start').onclick=function(){ closeBox(); newGame(); };
 </script>
 </body>
