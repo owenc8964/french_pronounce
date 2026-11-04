@@ -348,7 +348,7 @@ function nextQ(){
 }
 function renderQ(){
   var c=G.q.c, box=document.getElementById('qbox');
-  var head='<div class="qhead"><span>'+(c.kind==='type'?'✍️ 打出空格（☀️50・4 秒內 +25）':'🔤 選最適合的（☀️35・3 秒內 +10）')+'</span><span>'+(c.zh?'<button class="skipbtn" id="zhb">🀄 中文</button> ':'')+'<button class="skipbtn" id="sk">⏭ 跳過</button></span></div>'+(c.zh?'<div class="zhline" id="zht" style="display:none">'+esc(c.zh)+'</div>':'');
+  var head='<div class="qhead"><span>'+(c.kind==='type'?'✍️ 打出空格（☀️50・4 秒內 +25）':'🔤 選最適合的（☀️35・3 秒內 +10）')+'</span><span>'+(c.zh?'<button class="skipbtn" id="zhb">🀄 中文</button> ':'')+'<button class="skipbtn" id="sk">⏭ 跳過</button></span></div>'+(c.zh?'<div class="zhline" id="zht" style="display:'+(c.kind==='type'?'':'none')+'">'+esc(c.zh)+'</div>':'');   /* 11-04 Owen：「這題沒中文無法打對」→ 打字題光看動詞原形猜不出時態，中文直接打開；選擇題維持收起 */
   var qt='<div class="qtext">'+esc(c.q).replace(/_{2,}/,'<b>　　</b>')+'</div>';
   if(c.kind==='type'){
     box.innerHTML=head+qt+'<div class="accents" id="acc"></div><div class="inrow"><input id="inp" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" enterkeyhint="send" placeholder="打空格裡的字"><button id="go">送出</button></div><div class="fb" id="fb"></div>';

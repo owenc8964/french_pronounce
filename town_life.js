@@ -99,11 +99,11 @@ var LIFE_REL=[ {at:0,ic:'',zh:'陌生'}, {at:1,ic:'🌱',zh:'認識'}, {at:4,ic:
 function lifeSt(id){ S.life=S.life||{}; return S.life[id]||(S.life[id]={pts:0, met:0, seen:{}, beats:{}, talkDay:'', last:0}); }
 function lifeStage(p){ var s=0; LIFE_REL.forEach(function(r,i){ if(p>=r.at) s=i; }); return s; }
 function lifeRes(id){ return LIFE.filter(function(r){ return r.id===id; })[0]; }
-function lifeBuilt(R){ return R.lot==='stall' || !!S.built[R.lot]; }
+function lifeBuilt(R){ if(R.on) return R.on(); return R.lot==='stall' || !!S.built[R.lot]; }
 
 /* ---------- 作息：照遊戲裡一天的時段（早上上工、中午廣場、下午河邊或串門子、晚上回家亮燈） ---------- */
 var people=[], lifeApproach={t:0, who:null, wait:0}, lifeChat=null, lifeChatCool=0;
-function lifeDoor(R){ var L=LOTS[R.lot], d=L?L.door:[20,29]; return freeNear(d[0]+.5, d[1]+1.2); }
+function lifeDoor(R){ if(R.spot) return freeNear(R.spot[0],R.spot[1]); var L=LOTS[R.lot], d=L?L.door:[20,29]; return freeNear(d[0]+.5, d[1]+1.2); }
 function lifeSpots(R){
   var ix=LIFE.indexOf(R), home=lifeDoor(R), pl=lifeSlot('pl'+ix, PLAZA.x+[-1.6,1.6,-.6,.8,0][ix%5], PLAZA.y+[0,0,1.4,1.4,-1.2][ix%5]), riv=lifeSlot('rv'+ix, 17.5+ix*1.6, 24.2);
   var ph=(1-time/dayLen()), P;
@@ -192,12 +192,15 @@ function lifeTalk(p){
   if(lifeApproach.who===p) return lifeHelp(p);
   st.met=1; if(first) st.pts=Math.max(st.pts,1);
   if(st.talkDay!==td){ st.talkDay=td; if(!first) st.pts+=1; }
-  var beat=R.beats.filter(function(b,i){ return st.pts>=b.at && !st.beats[i]; })[0], bi=R.beats.indexOf(beat), stg=lifeStage(st.pts), body;
+  var beat=R.beats.filter(function(b,i){ return st.pts>=b.at && !st.beats[i] && (!b.need||b.need()); })[0], busyToday=beat&&!first&&!eveFree(R.id); if(busyToday) beat=null;   /* 一天只能深聊一個人，他的事往後延 */
+  var bi=R.beats.indexOf(beat), stg=lifeStage(st.pts), body;
   if(first) body='<div class="story">'+R.intro+'</div>';
-  else if(beat){ st.beats[bi]=1; st.pts+=1; body='<div class="story">'+beat.t+'</div><div class="muted">📖 '+esc(R.name)+' 的居民頁多了一行</div>'; }
+  else if(beat){ st.beats[bi]=1; st.pts+=1; eveMark(R.id); if(beat.sign) stSign(beat.sign); if(window.GameLog) GameLog.event('story_beat_'+R.id); body='<div class="story">'+beat.t+'</div><div class="muted">📖 '+esc(R.name)+' 的居民頁多了一行</div>'; }
   else { var pool=R.lines.filter(function(l){ return l[0]<=stg-1 || (stg<=1 && l[0]===0); }), un=pool.filter(function(l){ return !st.seen[R.lines.indexOf(l)]; }); if(!un.length){ st.seen={}; un=pool; }
     var L=un[Math.floor(Math.random()*un.length)]; st.seen[R.lines.indexOf(L)]=1;
     body='<div class="story">「'+esc(L[1])+'」</div>'+(L[2]?'<div class="clue fr">'+esc(L[2])+' '+spk(L[2])+'</div><div class="muted">'+esc(L[3])+'</div>':''); }
+  if(busyToday) body+='<div class="muted">好像有話想說。但今天你已經陪過別人了，改天吧。</div>';
+  if(R.id==='zoe') body+=rivalBoard();
   save();
   var hasAsk=stg>=2 && R.asks.length;
   openSheet('<h3>'+esc(R.name)+' <small>'+esc(R.role)+' '+(LIFE_REL[lifeStage(st.pts)].ic||'')+' '+LIFE_REL[lifeStage(st.pts)].zh+'</small></h3>'+body+
@@ -249,6 +252,7 @@ function lifeDraw(list,ox,oy,ts){
       cx.fillStyle='rgba(255,250,235,.95)'; cx.fillRect(px-bw/2, py-bh, bw, bh); cx.fillStyle='rgba(255,250,235,.95)'; cx.beginPath(); cx.moveTo(px-ts*.1,py); cx.lineTo(px+ts*.1,py); cx.lineTo(px,py+ts*.14); cx.fill();
       cx.fillStyle='#2a1a08'; lines.forEach(function(l,i){ cx.fillText(l, px, py-bh+ts*.27+i*ts*.3); });
     } else if(!lifeSt(p.rid).met && near){ cx.font=Math.round(ts*.3)+'px system-ui'; cx.fillText('💬', px+ts*.3, py+ts*.1); }
+    else if(lifeBeatReady(p.rid) && eveFree(p.rid)){ cx.font=Math.round(ts*.34)+'px system-ui'; cx.fillText('✨', px+ts*.3, py+ts*.1-Math.abs(Math.sin(clock*3))*ts*.06); }
     cx.font='bold '+Math.round(ts*.2)+'px system-ui'; cx.fillStyle='rgba(0,0,0,.5)'; var nm=lifeSt(p.rid).met?p.R.name:'？'; var nw=cx.measureText(nm).width+ts*.14; cx.fillRect(px-nw/2, oy+p.y*ts+ts*.08, nw, ts*.26); cx.fillStyle='#fff'; cx.fillText(nm, px, oy+p.y*ts+ts*.27);
   }}); });
 }
