@@ -3485,7 +3485,7 @@ function isleUpdate(dt){
   var moving=Math.hypot(vx,vy)>.1; ISLE.still= moving?0 : ISLE.still+dt; ISLE.moving=moving;
   if(sc0.board){ var dbd=Math.hypot(sc0.board.x-ISLE.x, sc0.board.y+.2-ISLE.y); if(dbd>2) ISLE.boardAway=1; else if(dbd<1 && ISLE.boardAway && ISLE.still>.3){ ISLE.boardAway=0; isleBoard(); return; } }
   isleHostFollow(dt);
-  var best=null, bd=1.25; ISLE.units.forEach(function(g){ var d=Math.hypot(g.x-ISLE.x, g.y+.2-ISLE.y); if(d<bd){ bd=d; best=g; } }); ISLE.near=best; if(best) ISLE.cur=best.n; if(ISLE._rc!==ISLE.cur) isleRailPaint();
+  var best=null, bd=1.25; ISLE.units.forEach(function(g){ var d=Math.hypot(g.x-ISLE.x, g.y+.2-ISLE.y); if(d<bd){ bd=d; best=g; } }); ISLE.near=best; if(best){ ISLE.cur=best.n; storyIsleVisit(ISLE.id, best.n, ISLE.units.length); } if(ISLE._rc!==ISLE.cur) isleRailPaint();
   var sc=isleSpec(ISLE.id), z=sc.zones.filter(function(z){ return ISLE.y>z.y0 && ISLE.y<=z.y1; })[0], ze=document.getElementById('izone'); if(ze && z) ze.textContent=z.name;
 }
 function isleDraw(dt){

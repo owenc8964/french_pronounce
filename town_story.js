@@ -146,17 +146,21 @@ function ch3Dock(){
 function zoeArrives(){
   stScene('zoe1','<div class="story">船艙裡跳出一個大概九歲的女孩，背包比她還大。她聽你跟那個女人講了兩句，皺起眉頭：</div>'+stFr('Tu parles comme un livre.','你講話像一本書。')+
     '<div class="story">「而且是很舊的那種。」她伸出手。<span class="fr">« Zoé. Avec un accent. »</span><br>「Margot。」補船的女人頭也不抬，「她暫時住我船上。別問。」<br>Zoé 拿粉筆在碼頭柱子上畫了三格：🚪 跑酷、🪨 過河、🌻 守園，每格寫一個數字。「這是我的。你一定比不過。」</div>'+
-    '<div class="muted">碎片不在船上。河裡、島上都可能漂到。</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+    '<div class="muted">碎片不在船上。🎣 河邊撈，或走到一座島的最後一站。</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
   stOk('ok','',function(){ lifeSpawn(); stEnd(); });
 }
 function ch3IsleDone(){ return isles().some(function(I){ var u=palRoom(I); return u.length && u.every(function(g){ return pst(g.ref).seen; }); }); }
 function ch3Frag(how){
   var c=ch3St(); c.frag=how; save();
   var T=Object.assign({}, CH3[1], {scene: how==='isle'?'你在島的另一頭、浪打上來的沙灘上，撿到一塊沉甸甸的金屬。邊緣刻著一行字：':'收網的時候，網子裡卡著一塊沉甸甸的金屬。邊緣刻著一行字：'});
-  stAsk('ch3-1','⛵ 河裡撈到的東西',T,function(){ c.step=2; save(); stEnd(); toast('拿去 ⚒ 鐵匠鋪給 Gaston 看'); });
+  stAsk('ch3-1',how==='isle'?'🏝 沙灘上的東西':'⛵ 河裡撈到的東西',T,function(){ c.step=2; save(); stEnd(); toast('拿去 ⚒ 鐵匠鋪給 Gaston 看'); });
 }
 function storyFish(){ if(!S.ch2done||S.ch3done) return; var c=ch3St(); if(c.step<1||c.frag) return; c.fish++; save(); if(c.fish>=CH3_FISH) c.pend=1; }
 function storyIsleCheck(){ if(!S.ch2done||S.ch3done) return; var c=ch3St(); if(c.step<1||c.frag) return; if(ch3IsleDone()) c.pendIsle=1; }
+/* 11-05 Owen：「我走完一座島了，但好像沒解開」→ 舊條件要每站都在房間版標記過，走路不算。改成真的看走到哪：到最後一站，或走過一半的站 */
+function storyIsleVisit(id,n,total){ if(!S.ch2done||S.ch3done) return; var c=ch3St(); if(c.step<1||c.frag||c.pendIsle) return;
+  var w=c.walk=c.walk||{}, v=w[id]=w[id]||{}; if(v[n]) return; v[n]=1; save();
+  if(n>=total || Object.keys(v).length*2>=total){ c.pendIsle=1; save(); toast('🏝 沙灘上有東西在發亮。回小鎮看看。'); } }
 function ch3End(){
   if(!S.ch3done){ S.ch3done=1; S.gold+=40; save(); hud(); }
   stScene('ch3end','<h3>⛵ 第三章完</h3><div class="story">鐘不是整口被載走的。它碎了，碎片順著河漂到下游。<br>你回到碼頭。Margot 看了碎片上的字一眼，繼續補她的船：</div>'+stFr('Elle n\'est jamais revenue.','revenir 回來（être 當助動詞）・ne … jamais 從來沒有')+
@@ -526,7 +530,7 @@ function storyQuest(){
   var st=stSt(), c=ch3St();
   if(!S.ch3done){
     if(c.step<1) return {t:'第三章：去 <b>⛵ 碼頭</b>，問問那艘船', to:{x:24.5,y:10.5}};
-    if(!c.frag){ var fp=nearestNode(['fish']); return fp ? {t:'第三章：過橋到河的北岸，走到 <b>🎣 釣點</b>撈撈看', to:fp} : {t:'第三章：今天河邊的魚釣完了，睡一覺再來；或 🏝 走完一座島', to:null}; }
+    if(!c.frag){ var fp=nearestNode(['fish']); return fp ? {t:'第三章：過橋到河的北岸，走到 <b>🎣 釣點</b>撈撈看', to:fp} : {t:'第三章：今天河邊的魚釣完了，睡一覺再來；或 🏝 走到一座島的最後一站', to:null}; }
     return {t:'第三章：拿碎片去 <b>⚒ 鐵匠鋪</b>', to:door('forge')};
   }
   if(st.ch4 && !st.nest) return {t:'第四章：追 <b>🎩 戴帽子的老鼠</b>，牠往礦坑最裡面去了', to:{x:NEST.x+.5,y:NEST.y+.5}};
@@ -544,7 +548,7 @@ function storyQuest(){
 function storyChaptersExtra(){
   var st=stSt(), c=S.ch3||{};
   return [
-    {t:'第三章・河對岸', steps:[['去 ⛵ 碼頭', c.step>=1||!!S.ch3done],['找到鐘的碎片（🎣 河邊，或 🏝 走完一座島）', !!c.frag||!!S.ch3done],['拿去 ⚒ 鐵匠鋪', !!S.ch3done]]},
+    {t:'第三章・河對岸', steps:[['去 ⛵ 碼頭', c.step>=1||!!S.ch3done],['找到鐘的碎片（🎣 河邊，或 🏝 走到一座島的最後一站）', !!c.frag||!!S.ch3done],['拿去 ⚒ 鐵匠鋪', !!S.ch3done]]},
     {t:'第四章・戴帽子的老鼠', steps:[['追上牠', !!st.nest],['回 📮 郵局', !!st.sorted],['去 🍞 麵包店', !!st.delivered]]},
     {t:'第五章・橋下的燈', steps:[['天黑以後，去橋邊', st.letters>=1],['聽他的第二封', st.letters>=2]]},
     {t:'第六章・舊信', steps:[['一天一封', st.letters>=4]]},
