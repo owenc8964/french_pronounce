@@ -188,6 +188,7 @@ function lifeHelp(p){
 }
 /* ---------- 點居民聊天：越熟講越深；到門檻會解鎖一幕故事 ---------- */
 function lifeTalk(p){
+  if(typeof storyItem==='function' && storyItem(p)) return;
   var R=p.R, st=lifeSt(R.id), first=!st.met, td=today();
   if(lifeApproach.who===p) return lifeHelp(p);
   st.met=1; if(first) st.pts=Math.max(st.pts,1);

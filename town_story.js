@@ -381,6 +381,68 @@ function doorEnd(){
   stScene('door-end','<div class="story">'+z+'<br><br>「信怎麼寄？」他問。「船不靠岸。」<br>他抬頭，看著窗外空的鐘樓。</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
   stOk('ok','',function(){ stEnd(); toast('第七章完　+60 🪙'); });
 }
+/* ---------- 第八章・每個人的一塊（劇透見 bible 第 9 節）
+   ⭐ 盲讀兩位都猜中「大家各交一塊」→ 順著他們的猜測走，然後第一口鐘失敗。之後要的是捨不得的東西，包括你的
+   ⭐ 支線聊得深，對方交出來的東西就不一樣（看 beats 數）；後果放在角色與鎮上，⛔ 圖鑑、題目紀錄都不動 ---------- */
+var CH8_ITEMS={
+  gaston:{name:'小鐵鎚', small:'一把舊釘子',
+    deep:'他從牆上拿下那把小小的鐵鎚，放在砧上，看了一眼，沒有再看第二眼。', shallow:'他從抽屜抓了一把舊釘子給你。牆上那把小鐵鎚，他沒有碰。',
+    q:{fr:'Il était à mon fils.', gloss:'il était à＋人＝是…的（未完成過去）・mon fils 我兒子', ask:'他的意思是——', opts:['這以前是他兒子的','這以前是他爸爸的','這現在是他兒子的'], a:0, topic:'pc-imparfait-recit', why:'était 是過去；à mon fils＝我兒子的。現在還是會說 il est à mon fils。', hint:'看 <span class="fr">mon fils</span> 和 <span class="fr">était</span>。'}},
+  clement:{name:'眼鏡框', small:'一個書架的鐵角',
+    deep:'他拉開抽屜，拿出那副女用的眼鏡，把鏡片一片一片退下來，收回抽屜。鏡框放到你手上。「鏡片留著。她看書比我快。」', shallow:'他從書架上拆下一個鐵角。「書倒了再說。」',
+    q:{fr:'Elle ne les a jamais perdues.', gloss:'les ＝ 那些東西・perdre 弄丟（perdu／perdues）・ne … jamais 從來沒有', ask:'les 指的是——', opts:['les lunettes（眼鏡）','les livres（書）'], a:0, topic:'accord-participe-passe', why:'les 放在 avoir 前面，過去分詞要配合：perdues＝陰性複數，對應 les lunettes。書是陽性，會寫 perdus。', hint:'看 <span class="fr">perdues</span> 的 -es。'}},
+  amira:{name:'秤砣', small:'兩枚舊硬幣',
+    deep:'她把攤子上那個秤砣拿起來，秤了秤。「第一個冬天買的。騙了很多人。」她笑了一下，塞給你。「明天我用手秤。」', shallow:'她從錢盒挑了兩枚舊硬幣。「不用還。也不要跟我談價。」',
+    q:{fr:'Il est à toi, maintenant.', gloss:'il est à toi 是你的・maintenant 現在', ask:'她的意思是——', opts:['現在是你的了','現在還是她的','以前是你的'], a:0, topic:'pronoms-cod-coi', why:'être à＋人＝屬於某人；à toi＝你的；maintenant＝現在。', hint:'<span class="fr">à toi</span>＝你的。'}},
+  lucie:{name:'郵差哨子', small:'一個鐵製信箱牌',
+    deep:'她解下脖子上的哨子，她騎車時你常聽到的那一個。「奶奶說我吵死了。」她沒有笑。', shallow:'她拆下郵局門口一塊鐵牌。「反正鎮上每個人都知道這裡是郵局。」',
+    q:{fr:'Je n\'en ai plus besoin.', gloss:'avoir besoin de 需要・en ＝ de 那個東西・ne … plus 不再', ask:'她的意思是——', opts:['她不再需要它了','她還需要它','她從來不需要它'], a:0, topic:'pronoms-y-en', why:'en 代替 de＋東西；ne … plus＝不再。從來沒有會用 ne … jamais。', hint:'<span class="fr">ne … plus</span>＝不再。'}},
+  margot:{name:'船錨扣', small:'一段舊鐵鍊',
+    deep:'她跳上船，用力扳下錨上的鐵扣。「我載過的人都記得這個聲音。」她丟給你，很重。「別謝我，我討厭鎮上開會。」', shallow:'她丟給你一段生鏽的鐵鍊。「就這個。我還要開船。」', q:null}
+};
+function ch8Items(){ return stSt().items||(stSt().items={}); }
+function storyItem(p){
+  var st=stSt(), I=CH8_ITEMS[p.rid]; if(st.ch8!==1 || !I || ch8Items()[p.rid]) return false;
+  var ls=lifeSt(p.rid), deep=Object.keys(ls.beats||{}).length>=2;
+  function give(){ ch8Items()[p.rid]={n:deep?I.name:I.small, deep:deep}; save(); var n=Object.keys(ch8Items()).length;
+    stScene('item-'+p.rid+'-b','<div class="story">你拿到了'+(deep?'<b>'+I.name+'</b>':I.small)+'。</div><div class="muted">'+(n>=3?'夠一爐了。可以拿去 ⚒ 鐵匠鋪，也可以再多問幾個人。':'')+'</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>'); stOk('ok','',stEnd); }
+  var scene=deep?I.deep:I.shallow;
+  if(I.q) stAsk('item-'+p.rid,'🔔 '+esc(p.R.name),Object.assign({scene:scene},I.q),function(){ give(); });
+  else { stScene('item-'+p.rid,'<h3>🔔 '+esc(p.R.name)+'</h3><div class="story">'+scene+'</div><div class="row2"><span></span><button class="btn main" id="ok">收下</button></div>'); stOk('ok','',give); }
+  return true;
+}
+function ch8Start(){
+  var st=stSt(); st.ch8=1; save();
+  stScene('ch8a','<h3>⚒ 第八章・每個人的一塊</h3><div class="story">Gaston 把三塊碎片排在砧上，敲了敲，搖頭。</div>'+stFr('Il nous faut du métal.','il faut 需要・nous 我們・du métal 一些金屬')+'<div class="story">「不夠打一口鐘。」<br>Zoé 坐在爐邊：「那問大家啊。誰家裡沒有一塊鐵。」</div><div class="muted">去問鎮上的人。熟的人，給的東西不一樣。</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+  stOk('ok','',stEnd);
+}
+function ch8Cast1(){
+  var st=stSt(), names=Object.keys(ch8Items()).map(function(k){ return ch8Items()[k].n; }); st.ch8=2; save();
+  stScene('cast1','<h3>🔔 第一爐</h3><div class="story">全鎮都來了。'+esc(names.join('、'))+'，一樣一樣放進爐裡。Gaston 的兒子不在，他自己抬。<br>Pelletier 抱著他的腳踏車站得很遠，「我只是路過。」<br>新鐘掛上鐘樓那天，Bernard 親自拉繩子。大家屏住呼吸。</div><div class="row2"><span></span><button class="btn main" id="ok">噹——</button></div>');
+  stOk('ok','',function(){
+    stScene('cast1b','<div class="story"><b>咚。</b><br><br>像有人用湯匙敲了一個鍋子。<br>沒有人說話。遠處一隻狗叫了一聲，叫完也覺得不好意思。<br>男爵從鑄模旁邊走過去。牠沒戴帽子，比你想的小很多。模子邊緣卡著一點很小的黑色的東西。<br>Gaston 把耳朵貼在鐘上，敲了第二下。</div>'+stFr('C\'est gentil, mais ça ne sonne pas.','gentil 好心的・sonner（鐘）響：是很好心，但它不會響。')+'<div class="story">Bernard 把繩子放下，沒有看任何人，走回店裡。</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+    stOk('ok','',stEnd);
+  });
+}
+function ch8Lantern(){
+  var st=stSt(); st.ch8=3; save();
+  stScene('lantern','<h3>🍞 麵包店</h3><div class="story">他坐在櫃台後面，手上拿著你在橋下找到的那把鑰匙。Pour la cloche。<br>「紙條上署名 B.，你以為是我。」他沒有抬頭。「我不會寫字。」<br>他把鑰匙放下。「她走之前藏的。我一直以為她是氣我。」<br>外面天黑了。他站起來，提起那盞燈，你以為他要去橋邊。<br>他把燈放在你面前。十年了，把手磨得發亮。</div>'+stFr('Elle ne sonne pas parce que personne n\'a mal.','personne … ne 沒有人・avoir mal 痛：它不響，是因為沒有人會痛。')+'<div class="story">「我今天晚上不去了。」</div><div class="row2"><span></span><button class="btn main" id="ok">拿去 ⚒ 鐵匠鋪</button></div>');
+  stOk('ok','',stEnd);
+}
+function ch8Give(){
+  var st=stSt(), opts=[
+    {k:'key', label:'家門鑰匙（一塊錢買的那把，以後門關不起來）', fn:function(){ ch8Cast2('key'); }},
+    {k:'gold', label:'身上全部的錢（'+S.gold+' 🪙）', fn:function(){ S.gold=0; hud(); ch8Cast2('gold'); }}];
+  var gems=Object.keys(S.gems||{}).length; if(gems) opts.push({k:'gem', label:'收藏的寶石（'+gems+' 種，全部）', fn:function(){ S.gems={}; ch8Cast2('gem'); }});
+  opts.push({k:'none', label:'我沒有東西要放', fn:function(){ ch8Cast2('none'); }});
+  stChoose('give','<h3>⚒ 第二爐</h3><div class="story">舊鐘融回去了。提燈放進去，把手最後才軟掉。Gaston 看著火，再看著你。<br>「他們都放了。」<br>Zoé 看著你。全鎮都有東西在裡面，除了你。<br>你摸了摸口袋。</div>',opts);
+}
+function ch8Cast2(k){
+  var st=stSt(); st.ch8=4; st.give=k; S.gold+=k==='gold'?0:30; save(); hud();
+  var T={key:'你把鑰匙放上去。那塊一塊錢的小東西，一下子就不見了。<br>Margot 吹了一聲口哨。「好了，這下你走不掉了。」',gold:'你把錢袋倒進爐裡。Amira 別過頭去，好像看到有人在燒鈔票。她其實就是看到了。',gem:'你把寶石一顆一顆放進去。它們沒有變成什麼特別的顏色。Gaston 看了你一眼，點一下頭。',none:'Gaston 等了一下。「好。」他轉回去。<br>沒有人說什麼。Zoé 把頭轉開了。'}[k];
+  stScene('cast2','<div class="story">'+T+'<br><br>這一爐燒了一整夜。天亮時，新鐘冷下來，比上一口小，顏色很難看。<br>Gaston 敲了一下鐘身，很輕。聲音很短，但它還在空氣裡。他愣了一下。<br>「裡面少了鐘舌。沒有舌頭，它不會自己說話。」<br>Bernard 看著窗外。北邊的霧裡，有一個你以前沒注意過的影子。<br>「鐘舌她帶走了。」Zoé 說。「不。她跟我說過，她把它放在最高的地方。」</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+  stOk('ok','',function(){ st.ch8done=1; save(); stEnd(); toast('第八章完　下一章：第九章・霧裡的影子'); });
+}
 /* 第二封：唸之前先看到那一句，要不要照唸是你決定的 */
 function secondLetterChoice(){
   stChoose('line','<h3>🏮 第 2 封信</h3><div class="story">你先自己看了一遍。第三行寫著：</div>'+stFr('Je sais, tu es encore en colère. Moi aussi.','en colère 生氣・Moi aussi 我也是')+'<div class="story">他在等你開口，手放在膝蓋上。</div>',[
@@ -451,6 +513,10 @@ function storyDoor(k){
   if(k==='post' && st.nest && !st.sorted){ lucieScene(); return true; }
   if(k==='bakery' && st.sorted && !st.delivered){ deliverScene(); return true; }
   if(k==='bakery' && st.dark){ doorScene(); return true; }
+  if(k==='forge' && st.ch7 && !st.ch8){ ch8Start(); return true; }
+  if(k==='forge' && st.ch8===1 && Object.keys(ch8Items()).length>=3){ ch8Cast1(); return true; }
+  if(k==='bakery' && st.ch8===2){ ch8Lantern(); return true; }
+  if(k==='forge' && st.ch8===3){ ch8Give(); return true; }
   return false;
 }
 
@@ -467,6 +533,10 @@ function storyQuest(){
   if(st.nest && !st.sorted) return {t:'第四章：把袋子帶回 <b>📮 郵局</b>', to:door('post')};
   if(st.sorted && !st.delivered) return {t:'第四章：把那疊信送去 <b>🍞 麵包店</b>', to:door('bakery')};
   if(st.dark) return st.doorDay===today() ? null : {t:'第七章：去 <b>🍞 麵包店</b>', to:door('bakery')};
+  if(st.ch7 && !st.ch8) return {t:'第八章：去 <b>⚒ 鐵匠鋪</b>', to:door('forge')};
+  if(st.ch8===1) return Object.keys(ch8Items()).length>=3 ? {t:'第八章：夠一爐了，去 <b>⚒ 鐵匠鋪</b>；也可以再問幾個人', to:door('forge')} : {t:'第八章：問問 <b>鎮上的人</b>，誰家有一塊鐵', to:null};
+  if(st.ch8===2) return {t:'第八章：去 <b>🍞 麵包店</b>看看他', to:door('bakery')};
+  if(st.ch8===3) return {t:'第八章：把提燈拿去 <b>⚒ 鐵匠鋪</b>', to:door('forge')};
   if(st.letters>=5 && !st.zoeDone && (st.lied?st.letterDay!==today():true)) return {t:'第七章：<b>🎒 碼頭</b>有人在等你', to:{x:26.5,y:11.5}};
   if(st.delivered && st.letters<LETTERS.length && st.letterDay!==today()){ var B=bridgePoint(); return {t:night?'第五章：<b>🏮 橋邊有光</b>':'第五章：等天黑，去 <b>橋邊</b>看看', to:{x:B.x+.5,y:B.y+.5}}; }
   return null;
@@ -479,7 +549,8 @@ function storyChaptersExtra(){
     {t:'第五章・橋下的燈', steps:[['天黑以後，去橋邊', st.letters>=1],['聽他的第二封', st.letters>=2]]},
     {t:'第六章・舊信', steps:[['一天一封', st.letters>=4]]},
     {t:'第七章・沒有響的那一天', steps:[['最底下那封', st.letters>=5],['碼頭', !!st.zoeDone],['麵包店', !!st.ch7]]},
-    {t:'第八章', soon:1}
+    {t:'第八章・每個人的一塊', steps:[['問鎮上的人', (st.ch8||0)>=2],['第一爐', (st.ch8||0)>=2],['麵包店', (st.ch8||0)>=3],['第二爐', !!st.ch8done]]},
+    {t:'第九章・霧裡的影子', soon:1}
   ];
 }
 
@@ -487,6 +558,9 @@ function storyChaptersExtra(){
 function storyMorning(){
   var st=stSt(), b=S.built, cand=[];
   if(st.dark){ cand.push(['d1','今天沒有麵包的味道。'],['d2','麵包店門口排著昨天的長棍，沒有人拿。'],['d3','Lucie 的腳踏車停在郵局門口，一整天沒動。'],['d4','清晨的橋上，還有一盞沒熄的燈。']); var u0=cand.filter(function(c){ return !st.morn[c[0]]; }); if(u0.length){ st.morn[u0[0][0]]=1; save(); return u0[0][1]; } return '今天沒有麵包的味道。'; }
+  if(st.give==='key') cand.push(['keyless','你家的門關不起來了。半夜有人幫你把一條毯子塞在門縫。你不知道是誰，毯子上有麵粉。']);
+  if(st.ch8done) cand.push(['smallbell','鐘樓上掛著一口不會響的小鐘。有鳥停在上面，看起來很滿意。']);
+  if(st.ch8>=3) cand.push(['nolamp','昨天晚上，橋上第一次沒有光。']);
   if(st.ch7) cand.push(['r1','窗外有烤麵包的味道。這次比平常焦一點。'],['r2','麵包店櫃台上的字，今天 N 是正的。後面那個又反了。']);
   var myw=myWords(1)[0]; if((S.ch3||{}).step>=1 && myw && S.gword[myw.n] && S.gword[myw.n].w>0) cand.push(['myerr','碼頭柱子上多了一行粉筆字：'+(myw.g==='f'?'une ':'un ')+myw.n+'。下面畫了三條線。它好像在對你說話。']);
   if(st.letters>=1) cand.push(['papa','麵包店的櫃台上有一層薄薄的麵粉。有人用手指在上面寫了四個字母，歪歪的：P A P A。']);
