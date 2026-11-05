@@ -42,6 +42,36 @@ function stAsk(id, head, T, done){
   document.getElementById('skip').onclick=function(){ if(ended) return; ended=true; if(!tried) rec('q', item, null, Date.now()-t0, {where:'📜 主線'}); stClose(); done(true); };
 }
 
+/* ---------- 開場（11-05 Owen：「這開頭一開始就不太夠力」「中段變成另一個開頭呢？」）
+   ⭐ 不解釋是誰、在哪、為什麼。玩家唯一能做的動作是聽，而什麼都聽不到（悲傷放在操作裡，不放在旁白裡）
+   ⚠️ 只用已學的短句；只看一次，看過記 st.cold；沒有題目，⏭ 可以跳過 ---------- */
+var COLD=[
+  {t:'霧很大。<br>你很小。你戴著手套，站在一艘船上。', fr:'Écoute.', g:'聽。'},
+  {t:'沒有聲音。<br><br>岸很近了。霧裡有一盞燈，小小的，不動。<br>牽著你的那隻手很冷。', fr:'Écoute encore.', g:'再聽一次。'},
+  {t:'沒有聲音。<br><br>船頭有人在唱歌，很難聽。唱到一半，停了。<br>天快亮了。', fr:'Écoute.', g:'聽。'},
+  {t:'沒有聲音。<br><br>船開始轉彎。<br>牽著你的手放開了，又牽回來。<br>霧裡的那盞燈，還是沒有動。', fr:'', g:''}
+];
+function coldOpen(done){
+  var st=stSt(), el=document.createElement('div'), i=0, t0=Date.now(), wasBusy=busy; busy=true;
+  el.id='coldOpen'; el.style.cssText='position:fixed;inset:0;z-index:90;background:#0b0f13;color:#d8dde2;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;line-height:1.9;transition:background 1.2s';
+  document.body.appendChild(el);
+  function finish(skip){ st.cold=1; save(); if(window.GameLog) GameLog.event(skip?'story_cold_skip':(Date.now()-t0<9000?'story_cold_fast':'story_cold_read'));
+    if(skip){ el.remove(); busy=wasBusy; if(done) done(); return; }
+    el.style.background='#e9dfc4'; el.style.color='#3a2c18';
+    el.innerHTML='<button id="coldBtn" class="btn main" style="min-width:120px">👂 聽</button>';
+    document.getElementById('coldBtn').onclick=function(){
+      el.innerHTML='<div style="max-width:340px">有聲音。<br><br>遠處，有人在大聲數數：「一、二……」<br>數到二就停了。<br>然後打了一個很大的噴嚏。</div><button id="coldBtn" class="btn main" style="margin-top:28px;min-width:120px">好</button>';
+      document.getElementById('coldBtn').onclick=function(){ el.remove(); busy=wasBusy; if(done) done(); };
+    }; }
+  function draw(){ var C=COLD[i], grey=Math.round(11+i*9);
+    el.style.background='rgb('+grey+','+(grey+4)+','+(grey+8)+')';
+    el.innerHTML='<div style="max-width:340px">'+C.t+'</div>'+(C.fr?'<div class="fr" style="margin-top:22px;font-size:1.25em">« '+esc(C.fr)+' »</div><div style="opacity:.55;font-size:.8em;margin-top:2px">'+esc(C.g)+'</div>':'')+
+      '<button id="coldBtn" class="btn main" style="margin-top:28px;min-width:120px">'+(C.fr?'👂 聽':'……')+'</button><button id="coldSkip" style="position:absolute;right:14px;bottom:18px;background:none;border:none;color:#6d7780;font:inherit;font-size:.8em">⏭ 跳過</button>';
+    document.getElementById('coldSkip').onclick=function(){ finish(true); };
+    document.getElementById('coldBtn').onclick=function(){ if(i>=COLD.length-1) return finish(false); i++; var b=this; b.disabled=true; b.textContent='……'; setTimeout(draw, 900); }; }
+  draw();
+}
+
 /* ---------- 名冊 ---------- */
 function regNames(){
   var st=stSt(), b=S.built, c3=S.ch3||{}, out=[];
@@ -76,14 +106,14 @@ function pelletierFirst(){
     '<div class="row2"><span></span><button class="btn main" id="go">簽名</button></div>');
   stOk('go','',function(){
     var v=document.getElementById('stNm').value.trim(); st.name=v; st.insp=1; save();
-    stScene('pelletier1b','<div class="story">他把冊子闔上，打了一個噴嚏。<br>「鐘？那個啊，十年沒響了。沒有鐘，船也不靠岸了。」<br>他跨上腳踏車，按了一下車鈴。沒有聲音。他的臉垮了一下。<br>「下次來，我會再數一次。」</div>'+
+    stScene('pelletier1b','<div class="story">他把冊子闔上，打了一個噴嚏。<br>「鐘？那個啊，十年沒響了。」<br>他跨上腳踏車，按了一下車鈴。沒有聲音。他的臉垮了一下。<br>「下次來，我會再數一次。」</div>'+
       '<div class="muted">點畫面上方的目標列，可以看 📖 名冊。</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
     stOk('ok','',stEnd);
   });
 }
 function pelletierAgain(level){
   var st=stSt(), n=regNames().length; st.insp=level; if(level===2) st.pencil=1; save();
-  var T=level===4 ? '他在麵包店門口站了一下，拿出筆。<br>「名字要本人在鎮上才算。」他在名冊上劃了一條線，劃得很慢。<br>他沒有按車鈴。' : level===2 ? '「'+n+' 個。」他用筆尖一個一個點過去，「上次我以為這個鎮只剩鬼。」<br>他看到碼頭那邊跑過去一個小孩：「那個不算，未成年。」<br>小孩遠遠地對他吐舌頭。'
+  var T=level===4 ? '他在麵包店門口站了一下，拿出筆。<br>「名字要本人在鎮上才算。」他在 Bernard 那一行劃了一條線，劃得很慢。<br>他沒有按車鈴。' : level===2 ? '「'+n+' 個。」他用筆尖一個一個點過去，「上次我以為這個鎮只剩鬼。」<br>他看到碼頭那邊跑過去一個小孩：「那個不算，未成年。」<br>小孩遠遠地對他吐舌頭。'
                   : '他今天沒數人。他站在郵局門口，盯著 Lucie 手上的東西，又看看自己的腳踏車。<br>你把車鈴還給他。他按了一下：叮。<br>他按了很多下。然後他發現你在看，收起笑容：「……名冊還是不夠。」';
   stScene('pelletier'+level,'<h3>🚲 Pelletier 又來了</h3><div class="story">'+T+'</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
   stOk('ok','',stEnd);
@@ -164,7 +194,7 @@ var LUCIE_Q={ scene:'Lucie 看到袋子，話講到一半停了。你第一次�
 function lucieScene(){
   stAsk('ch4-1','📮 郵局',LUCIE_Q,function(){
     var st=stSt(); st.sorted=1; save();
-    stChoose('bundle','<div class="story">「我第一個禮拜。騎太快，袋子掉了，找不到。我跟大家說信都送到了。」<br>「一封都不會漏——我每天都這樣講。」<br>她把信一疊一疊分好，手很快。其中一疊特別厚，用麻繩綁著，全部寄給麵包店。她把那疊推到你面前。<br>「你順路吧？……我不敢。」</div>',[
+    stChoose('bundle','<div class="story">「我第一個禮拜。騎太快，袋子掉了，找不到。我跟大家說信都送到了。」<br>「一封都不會漏——我每天都這樣講。」<br>她把信一疊一疊分好，手很快。那年冬天沒有船，整個冬天的信都在這一袋。其中一疊用麻繩綁著，全部寄給麵包店。她把那疊推到你面前。<br>「你順路吧？……我不敢。」</div>',[
       {k:'you', label:'我幫你送', fn:function(){ stEnd(); toast('把那疊信送去 🍞 麵包店'); }},
       {k:'lucie', label:'這要你自己去', fn:function(){ stScene('bundle-l','<div class="story">她瞪著你。瞪了一陣子，把郵差帽戴正，拿起那疊信。<br>走到門口，她回頭：「你陪我走到門口。只到門口。」</div><div class="row2"><span></span><button class="btn main" id="ok">去 🍞 麵包店</button></div>'); stOk('ok','',stEnd); }},
       {k:'open', label:'先拆一封看看是誰寫的', fn:function(){ stScene('bundle-o','<div class="story">你趁她轉身，用指甲挑開最上面那封的封口。第一個字是 <span class="fr">Papa</span>，署名是 <span class="fr">Béa</span>。<br>你把封口壓回去。壓不太平。</div><div class="row2"><span></span><button class="btn main" id="ok">拿去 🍞 麵包店</button></div>'); stOk('ok','',stEnd); }}
@@ -265,7 +295,7 @@ function lastLetterScene(){
 }
 function lastTrue(){
   var st=stSt(); st.dark=1; save(); lifeSpawn();
-  stScene('last-true','<div class="story">你唸完了。他還在等，以為後面還有。<br>「回來的人，鐘響兩聲。」他說，「以前都是這樣。」<br>「三月三號。是哪一年？」<br>你告訴他。<br>他沒有說話。他把信摺好，提著燈，走回麵包店。<br>那天晚上，麵包店的燈一直亮著。你躺在床上，聽得到揉麵團的聲音，一整夜。</div><div class="row2"><span></span><button class="btn main" id="ok">回去</button></div>');
+  stScene('last-true','<div class="story">你唸完了。他還在等，以為後面還有。<br>「回來的人，鐘響兩聲。」他說，「以前都是這樣。」<br>「三月三號。是哪一年？」<br>你告訴他。<br>他沒有說話。他看了看身邊的提燈，看了看橋。<br>「每天晚上，我都在這裡。」<br>他把信摺好，提著燈，走回麵包店。<br>那天晚上，麵包店的燈一直亮著。你躺在床上，聽得到揉麵團的聲音，一整夜。</div><div class="row2"><span></span><button class="btn main" id="ok">回去</button></div>');
   stOk('ok','',stEnd);
 }
 function lastLie(){
@@ -274,10 +304,19 @@ function lastLie(){
   stOk('ok','',stEnd);
 }
 /* Zoé：她在那艘船上。要不要說出他的秘密，是你決定的 */
+/* 盲讀 11-05：別讓她把開場重講一遍 → 切黑，那顆按鈕回來，只按一次。開場到這裡才算付帳 */
 function zoeTruth(){
   var st=stSt();
-  stChoose('secret','<h3>🎒 碼頭</h3><div class="story">柱子上的粉筆字被擦掉一半。Zoé 坐在地上，沒有看你。</div>'+stFr('J\'étais sur le bateau.','j\'étais（être 的未完成過去）我那時候在')+
-    '<div class="story">「我六歲。我媽站在甲板上，站了一整夜。什麼聲音都沒有。天亮的時候，Margot 把船掉頭。」<br>「他有收到信對不對？他每天晚上都拿著信。我看到了。」<br>「他看得懂，他就是不要我們。」</div>',[
+  stScene('zoe0','<h3>🎒 碼頭</h3><div class="story">柱子上的粉筆字被擦掉一半。Zoé 坐在地上，沒有看你。</div>'+stFr('J\'étais sur le bateau.','j\'étais（être 的未完成過去）我那時候在')+'<div class="row2"><span></span><button class="btn main" id="ok">……</button></div>');
+  stOk('ok','',function(){ closeSheet(); var el=document.createElement('div'); busy=true;
+    el.style.cssText='position:fixed;inset:0;z-index:90;background:#0b0f13;color:#d8dde2;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;line-height:1.9';
+    el.innerHTML='<div class="fr" style="font-size:1.25em">« Écoute. »</div><button id="coldBtn" class="btn main" style="margin-top:28px;min-width:120px">👂 聽</button>'; document.body.appendChild(el);
+    document.getElementById('coldBtn').onclick=function(){ el.innerHTML='<div>沒有聲音。</div>'; setTimeout(function(){ el.remove(); zoeChoice(); }, 1300); };
+  });
+}
+function zoeChoice(){
+  var st=stSt();
+  stChoose('secret','<div class="story">「我六歲。」她把粉筆在手上轉了一圈。<br>「他有收到信對不對？他每天晚上都拿著信。我看到了。」<br>「他看得懂，他就是不要我們。」</div>',[
     {k:'tell', label:'告訴她：他不識字', fn:function(){ st.zoeDone=1; zoeAfter(true); }},
     {k:'keep', label:'那是他的秘密，什麼都不說', fn:function(){ st.zoeDone=1; zoeAfter(false); }}
   ]);
@@ -320,7 +359,7 @@ function doorOpen(){
   var st=stSt();
   stScene('door2','<h3>🍞 麵包店</h3><div class="story">門開了。<br>櫃台上全是麵粉，麵粉上全是字。同一個字，寫了幾百次，N 都是反的。</div>'+stFr('Reviens.','revenir 回來（命令式）：回來吧')+
     /* 盲讀 11-05：「我選了洩密，他開門卻完全沒提」→ 你在碼頭做的決定，他第一句就看得到。這是他第一次寫完整的句子，是寫給你的 */
-    (stPick('secret')==='tell'?'<div class="story">板子角落有一行字，跟別的字分開，歪歪的，是他這輩子第一個完整的句子：</div>'+stFr('Tu lui as dit.','lui ＝ 她（Zoé）・dire 說（過去分詞 dit）：你跟她說了。')+'<div class="story">他沒有看你，也沒有擦掉。</div>':'<div class="story">板子角落有一行字，跟別的字分開，歪歪的，是他這輩子第一個完整的句子：</div>'+stFr('Tu n\'as rien dit.','ne … rien 什麼都沒有・dire 說：你什麼都沒說。')+'<div class="story">他沒有看你。「她還是恨我。」他把那行字擦掉一半，又停住。</div>')+
+    (stPick('secret')==='tell'?'<div class="story">板子角落有一行字，跟別的字分開：</div>'+stFr('Tu lui as dit.','lui ＝ 她（Zoé）・dire 說（過去分詞 dit）：你跟她說了。')+'<div class="story">他沒有看你，也沒有擦掉。</div>':'<div class="story">板子角落有一行字，跟別的字分開：</div>'+stFr('Tu n\'as rien dit.','ne … rien 什麼都沒有・dire 說：你什麼都沒說。')+'<div class="story">他沒有看你。「她還是恨我。」他把那行字擦掉一半，又停住。</div>')+
     '<div class="story">「旁邊這些，是我想寫給她的。我照你以前教我的字寫。」<br>他把麵粉板推過來。你認得這些字。都是你常常弄錯的。</div><div class="row2"><span></span><button class="btn main" id="ok">幫他看</button></div>');
   stOk('ok','',function(){ flourLesson(0); });
 }
@@ -557,3 +596,4 @@ function lifeBeatReady(id){ var R=lifeRes(id), st=lifeSt(id); return R.beats.fil
 function eveFree(id){ var e=stSt().eve; return e.d!==today() || e.who===id; }
 function eveMark(id){ var st=stSt(); st.eve={d:today(), who:id}; save(); }
 lifeSpawn();
+if(!stSt().cold) coldOpen();   /* 一打開就是它，蓋在新玩家的介紹畫面上面 */
