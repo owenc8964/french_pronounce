@@ -1651,8 +1651,8 @@ function fishSpot(n){
     var cl=clipPick();
     if(cl){
       askClip('🎣 河邊 ★ <small>第 '+(i+1)+' 竿・聽力</small>', cl, function(ok,ms,v,right,half,how){
-        rec('L', cl, ok, ms, {chosen:v, right:right, where:'🎣 河邊'}); if(ok===true) storyFish();
-        if(ok!==null){ addBag({k:'fish', name:'魚', em:'🐟', good:!!half}); fishCatch(n, how); }
+        rec('L', cl, ok, ms, {chosen:v, right:right, where:'🎣 河邊'}); if(ok===true||half) storyFish();
+        if(ok!==null){ if(bag.length<S.bagCap) addBag({k:'fish', name:'魚', em:'🐟', good:!!half}); fishCatch(n, how); }
         i++; next();
       }); return;
     }
@@ -1661,7 +1661,7 @@ function fishSpot(n){
     var why=CLIPS ? '' : clipLoginBox();
     askListen('🎣 河邊 ★ <small>第 '+(i+1)+' 竿・聽力</small>', c, function(ok,ms,o){
       rec('c', c, ok, ms, {chosen:o&&o.zh, right:c.zh, where:'🎣 河邊'}); if(ok===true) storyFish();
-      if(ok!==null){ addBag({k:'fish', name:'魚', em:'🐟', good:ok}); floatTxt(n.x+.5,n.y,'🐟'+(ok?'':' 瑕'), ok?'#fff':'#bbb'); }
+      if(ok!==null){ if(bag.length<S.bagCap){ addBag({k:'fish', name:'魚', em:'🐟', good:ok}); floatTxt(n.x+.5,n.y,'🐟'+(ok?'':' 瑕'), ok?'#fff':'#bbb'); } else floatTxt(n.x+.5,n.y,'🎒 滿了，放回河裡','#ddd'); }
       i++; next();
     }, why); clipLoginWire();
   }
@@ -4299,7 +4299,8 @@ function update(dt){
     var R=n.k==='fish'?1.15:.85;
     if(Math.hypot(n.x+.5-hero.x, n.y+.5-hero.y)<R){
       if(n.k==='fish' && hero.y>8) continue;
-      if(bag.length>=S.bagCap){ if(!n.warn){ toast('🎒 背包滿了——回城交貨吧'); n.warn=1; } continue; }
+      /* 11-04 Owen：「怎麼還是沒辦法釣魚？」背包滿時站在釣點什麼都不會發生（提示只跳一次）→ 釣魚不擋：背包滿了就放回河裡，練習和魚譜照算 */
+      if(bag.length>=S.bagCap && n.k!=='fish'){ if(!n.warn){ toast('🎒 背包滿了——回城交貨吧'); n.warn=1; } continue; }
       n.warn=0; if(pending) return;
       pending={t:.25, x:n.x+.5, y:n.y, fn:(function(n){ return function(){ if(n.k==='rock') mineRock(n); else if(n.k==='bush') shakeBush(n); else fishSpot(n); }; })(n)};
       return;

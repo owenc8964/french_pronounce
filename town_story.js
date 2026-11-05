@@ -136,7 +136,7 @@ var CH3=[
     why:'si＝如果（不一定會發生）：si＋現在式（trouves），結果用未來式（ferai）。確定會發生要用 quand＋未來式：quand tu trouveras les autres morceaux…；已經打好會說 j\'ai fait une nouvelle cloche。',
     hint:'看開頭的 <span class="fr">si</span>：「要是」——還不一定。<span class="fr">ferai</span> 是未來式，還沒打。' }
 ];
-var CH3_FISH=4;
+var CH3_FISH=3;   /* 聽到一半以上就算（紀錄：全對很難，會卡在這裡） */
 function ch3St(){ S.ch3=S.ch3||{step:0, frag:null, fish:0}; return S.ch3; }
 function ch3Dock(){
   if(!S.ch2done || S.ch3done || ch3St().step>=1) return false;
@@ -526,7 +526,7 @@ function storyQuest(){
   var st=stSt(), c=ch3St();
   if(!S.ch3done){
     if(c.step<1) return {t:'第三章：去 <b>⛵ 碼頭</b>，問問那艘船', to:{x:24.5,y:10.5}};
-    if(!c.frag) return {t:'第三章：找 <b>鐘的碎片</b>——🎣 河邊撈，或 🏝 走完一座島', to:{x:24.5,y:9}};
+    if(!c.frag){ var fp=nearestNode(['fish']); return fp ? {t:'第三章：過橋到河的北岸，走到 <b>🎣 釣點</b>撈撈看', to:fp} : {t:'第三章：今天河邊的魚釣完了，睡一覺再來；或 🏝 走完一座島', to:null}; }
     return {t:'第三章：拿碎片去 <b>⚒ 鐵匠鋪</b>', to:door('forge')};
   }
   if(st.ch4 && !st.nest) return {t:'第四章：追 <b>🎩 戴帽子的老鼠</b>，牠往礦坑最裡面去了', to:{x:NEST.x+.5,y:NEST.y+.5}};
