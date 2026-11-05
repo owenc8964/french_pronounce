@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,344 +12,716 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <script src="pwa.js" defer></script>
   <title>Sons du Français</title>
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f5f4f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#16181d" media="(prefers-color-scheme: dark)">
   <style>
+    /* 2026-11-05 改版：CSS 變數＋深色模式（跟系統／手動切換）＋手機／桌面排版＋無障礙 */
+    :root {
+      --bg: #f5f4f0; --card: #ffffff; --text: #2c2c2c; --muted: #666; --faint: #8a8a8a;
+      --line: #ecebe6; --hover: #efefef; --accent: #1f6f4a; --accent-bg: #e3f2e8;
+      --badge-bg: #f0efea; --badge-fg: #6b6b6b; --bar-bg: #2c2c2c; --bar-fg: #fff;
+      --bad: #a13a2a; --bad-bg: #fbe9e5; --focus: #2563eb; --shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    :root[data-theme="dark"] {
+      --bg: #16181d; --card: #20232a; --text: #e8e6e1; --muted: #b0aea8; --faint: #9a988f;
+      --line: #2d3038; --hover: #2b2f38; --accent: #7fd6a4; --accent-bg: #1d3a2b;
+      --badge-bg: #2b2e36; --badge-fg: #b8b6ae; --bar-bg: #e8e6e1; --bar-fg: #16181d;
+      --bad: #ff9c8a; --bad-bg: #3a2420; --focus: #8ab4ff; --shadow: 0 1px 4px rgba(0,0,0,0.4);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #16181d; --card: #20232a; --text: #e8e6e1; --muted: #b0aea8; --faint: #9a988f;
+        --line: #2d3038; --hover: #2b2f38; --accent: #7fd6a4; --accent-bg: #1d3a2b;
+        --badge-bg: #2b2e36; --badge-fg: #b8b6ae; --bar-bg: #e8e6e1; --bar-fg: #16181d;
+        --bad: #ff9c8a; --bad-bg: #3a2420; --focus: #8ab4ff; --shadow: 0 1px 4px rgba(0,0,0,0.4);
+      }
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f5f4f0; color: #2c2c2c;
-      padding: 20px 14px 80px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang TC', 'Noto Sans TC', sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.5;
+      padding: calc(16px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right)) calc(96px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left));
+      -webkit-text-size-adjust: 100%;
     }
-    h1 { text-align: center; font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
-    .subtitle { text-align: center; font-size: 0.82rem; color: #999; margin-bottom: 28px; }
-    h2 { font-size: 0.8rem; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.08em; margin: 28px 0 10px; }
-    .card { background: white; border-radius: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 8px; overflow: hidden; }
-    .row { display: flex; align-items: stretch; border-bottom: 1px solid #f2f2f2; min-height: 60px; }
+    .wrap { max-width: 1080px; margin: 0 auto; }
+    .skip { position: absolute; left: -9999px; top: 8px; background: var(--card); color: var(--text); padding: 8px 12px; border-radius: 8px; z-index: 200; }
+    .skip:focus { left: 12px; }
+    header.top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+    h1 { font-size: 1.5rem; font-weight: 700; }
+    .subtitle { font-size: 0.85rem; color: var(--muted); margin-bottom: 16px; }
+    .icon-btn { min-width: 44px; min-height: 44px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--text); font-size: 1rem; cursor: pointer; padding: 0 12px; }
+    .tabs { display: flex; gap: 6px; background: var(--card); border-radius: 14px; padding: 4px; box-shadow: var(--shadow); position: sticky; top: calc(6px + env(safe-area-inset-top)); z-index: 50; margin-bottom: 8px; }
+    .tabs button { flex: 1; min-height: 44px; border: 0; border-radius: 10px; background: transparent; color: var(--muted); font-size: 0.92rem; font-weight: 600; cursor: pointer; }
+    .tabs button[aria-selected="true"] { background: var(--accent-bg); color: var(--accent); }
+    [hidden] { display: none !important; }
+    .jump { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+    .jump a { font-size: 0.8rem; color: var(--accent); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; text-decoration: none; }
+    h2 { font-size: 0.82rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin: 24px 0 10px; scroll-margin-top: 70px; }
+    .card { background: var(--card); border-radius: 14px; box-shadow: var(--shadow); margin-bottom: 8px; overflow: hidden; }
+    .row { display: flex; align-items: stretch; border-bottom: 1px solid var(--line); min-height: 60px; }
     .row:last-child { border-bottom: none; }
-    .row.no-audio { opacity: 0.38; }
-    .col-son { width: 72px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-right: 1px solid #f2f2f2; padding: 10px 4px; }
-    .col-right { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 10px 14px; gap: 2px; }
-    .graphies { font-size: 0.72rem; color: #aaa; margin-bottom: 3px; }
-    .exemples { font-size: 0.9rem; line-height: 1.9; }
-    .playable { cursor: pointer; display: inline; padding: 3px 8px; border-radius: 8px; -webkit-tap-highlight-color: transparent; transition: background 0.12s; touch-action: manipulation; }
-    .playable:active, .playable:hover { background: #efefef; }
-    .playable.playing { background: #e6f4e6; color: #2a7a2a; }
-    .son-btn { font-size: 1.25rem; font-weight: 700; font-family: 'Georgia', serif; padding: 6px 8px; border-radius: 10px; cursor: pointer; text-align: center; -webkit-tap-highlight-color: transparent; transition: background 0.12s; line-height: 1.2; touch-action: manipulation; }
-    .son-btn:active, .son-btn:hover { background: #efefef; }
-    .son-btn.playing { background: #e6f4e6; color: #2a7a2a; }
-    .playable::before { content: '▶\00a0'; font-size: 0.55rem; color: #ccc; vertical-align: middle; }
-    .playable.playing::before { content: '■\00a0'; color: #2a7a2a; }
-    .ul { text-decoration: underline; text-underline-offset: 2px; }
-    .no-ex { color: #ccc; font-size: 0.85rem; }
-    .badge { font-size: 0.65rem; color: #ccc; background: #f5f5f5; border-radius: 4px; padding: 1px 5px; margin-left: 3px; vertical-align: middle; }
-    .now-playing-bar { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%) translateY(80px); background: #2c2c2c; color: white; padding: 10px 22px; border-radius: 24px; font-size: 0.82rem; box-shadow: 0 4px 16px rgba(0,0,0,0.22); transition: transform 0.25s ease; white-space: nowrap; z-index: 100; max-width: 90vw; overflow: hidden; text-overflow: ellipsis; }
+    .row.no-audio { opacity: 0.6; }
+    .col-son { width: 76px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-right: 1px solid var(--line); padding: 10px 4px; }
+    .col-right { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; padding: 10px 14px; gap: 2px; }
+    .graphies { font-size: 0.78rem; color: var(--faint); margin-bottom: 3px; }
+    .exemples { font-size: 0.95rem; line-height: 2; overflow-wrap: anywhere; }
+    .playable { cursor: pointer; display: inline; padding: 4px 8px; border-radius: 8px; -webkit-tap-highlight-color: transparent; transition: background 0.12s; touch-action: manipulation; }
+    .playable:hover { background: var(--hover); }
+    .playable.playing { background: var(--accent-bg); color: var(--accent); }
+    .son-btn { font-size: 1.25rem; font-weight: 700; font-family: 'Georgia', serif; padding: 8px 10px; min-width: 52px; min-height: 44px; display: inline-flex !important; align-items: center; justify-content: center; border-radius: 10px; text-align: center; line-height: 1.2; }
+    .playable::before { content: '▶\00a0'; font-size: 0.55rem; color: var(--faint); vertical-align: middle; }
+    .playable.playing::before { content: '■\00a0'; color: var(--accent); }
+    :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+    .ul { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 2px; }
+    .no-ex { color: var(--faint); font-size: 0.88rem; }
+    .badge { font-size: 0.68rem; color: var(--badge-fg); background: var(--badge-bg); border-radius: 4px; padding: 1px 6px; margin-left: 3px; vertical-align: middle; white-space: nowrap; }
+    .now-playing-bar { position: fixed; bottom: calc(16px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%) translateY(120px); background: var(--bar-bg); color: var(--bar-fg); padding: 10px 22px; border-radius: 24px; font-size: 0.85rem; box-shadow: 0 4px 16px rgba(0,0,0,0.22); transition: transform 0.25s ease; white-space: nowrap; z-index: 100; max-width: 90vw; overflow: hidden; text-overflow: ellipsis; }
     .now-playing-bar.visible { transform: translateX(-50%) translateY(0); }
+    /* 桌面：三區並排成兩欄 */
+    @media (min-width: 900px) {
+      #view-table .groups { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; align-items: start; }
+      #view-table .grp-cons { grid-column: 2; grid-row: 1 / span 2; }
+      .tabs { max-width: 520px; }
+    }
+    /* 聽辨練習與紀錄 */
+    .panel { background: var(--card); border-radius: 14px; box-shadow: var(--shadow); padding: 18px 16px; margin-top: 14px; }
+    .panel h3 { font-size: 1rem; margin-bottom: 8px; }
+    .muted { color: var(--muted); font-size: 0.88rem; }
+    .btn { min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--text); font-size: 0.95rem; cursor: pointer; }
+    .btn.primary { background: var(--accent); color: var(--card); border-color: var(--accent); font-weight: 700; }
+    .btn.ghost { color: var(--muted); }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .seg { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+    .seg button[aria-pressed="true"] { background: var(--accent-bg); color: var(--accent); border-color: var(--accent); }
+    .q-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .big-play { display: block; width: 100%; min-height: 72px; margin: 14px 0; border-radius: 14px; border: 2px dashed var(--line); background: var(--bg); color: var(--text); font-size: 1.1rem; cursor: pointer; }
+    .choices { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    @media (min-width: 640px) { .choices { grid-template-columns: repeat(4, 1fr); } }
+    .choice { min-height: 64px; border-radius: 12px; border: 2px solid var(--line); background: var(--card); color: var(--text); font: 700 1.35rem Georgia, serif; cursor: pointer; }
+    .choice .g { display: block; font: 400 0.72rem -apple-system, sans-serif; color: var(--faint); margin-top: 2px; }
+    .choice.right { border-color: var(--accent); background: var(--accent-bg); color: var(--accent); }
+    .choice.wrong { border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+    .choice:disabled { cursor: default; }
+    .feedback { min-height: 1.6em; margin-top: 10px; font-size: 0.95rem; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+    .stat { background: var(--bg); border-radius: 12px; padding: 12px; }
+    .stat b { display: block; font-size: 1.4rem; }
+    .stat span { font-size: 0.8rem; color: var(--muted); }
+    table.t { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    table.t th, table.t td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+    table.t th { color: var(--muted); font-weight: 600; font-size: 0.8rem; white-space: nowrap; }
+    .meter { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; min-width: 60px; }
+    .meter i { display: block; height: 100%; background: var(--accent); }
+    .pill-gray { display: inline-block; font-size: 0.75rem; color: var(--badge-fg); background: var(--badge-bg); border-radius: 999px; padding: 2px 8px; }
+    .t-scroll { overflow-x: auto; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
   </style>
 </head>
 <body>
-<h1>Sons du Français</h1>
-<p class="subtitle">點擊音標或例句即可播放</p>
+<a class="skip" href="#main">跳到主要內容</a>
+<div class="wrap">
+<header class="top">
+  <h1 lang="fr">Sons du Français</h1>
+  <button type="button" class="icon-btn" id="themeBtn" aria-label="切換外觀">🌓 自動</button>
+</header>
+<p class="subtitle">點擊（或用 Tab＋Enter）音標或例句即可播放；「聽辨練習」用同一份錄音考你分辨音標</p>
+<nav class="tabs" role="tablist" aria-label="頁面">
+  <button type="button" role="tab" id="tab-table" aria-controls="view-table" aria-selected="true">🔊 音表</button>
+  <button type="button" role="tab" id="tab-quiz" aria-controls="view-quiz" aria-selected="false" tabindex="-1">🎯 聽辨練習</button>
+  <button type="button" role="tab" id="tab-stats" aria-controls="view-stats" aria-selected="false" tabindex="-1">📊 紀錄</button>
+</nav>
+<main id="main">
+<section id="view-table" role="tabpanel" aria-labelledby="tab-table">
+<nav class="jump" aria-label="跳到分類">
+  <a href="#g-oral">口腔母音</a><a href="#g-nasal">鼻母音</a><a href="#g-cons">子音</a>
+</nav>
+<div class="groups">
+<div class="grp-oral">
 <audio id="player" playsinline src="audio/french_pronunciation.m4a" preload="auto"></audio>
 
-<h2>Voyelles orales 口腔母音</h2>
+<h2 id="g-oral"><span lang="fr">Voyelles orales</span> 口腔母音</h2>
 <div class="card">
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="-0.2" data-end="1.2">(i)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="-0.2" data-end="1.2">(i)</div></div>
     <div class="col-right">
-      <div class="graphies">i, y</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">i, y</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="0.9" data-end="3.4">Il est m<span class="ul">i</span>d<span class="ul">i</span></span><br>
         <span class="no-ex">Rém<span class="ul">y</span> est à Nanc<span class="ul">y</span> <span class="badge">待補</span></span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="3.3" data-end="4.6">(y)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="3.3" data-end="4.6">(y)</div></div>
     <div class="col-right">
-      <div class="graphies">u</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">u</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="4.7" data-end="7.6">T<span class="ul">u</span> as v<span class="ul">u</span> le men<span class="ul">u</span> ?</span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="8.0" data-end="9.4">(u)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="8.0" data-end="9.4">(u)</div></div>
     <div class="col-right">
-      <div class="graphies">ou</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">ou</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="9.1" data-end="11.5">V<span class="ul">ou</span>s allez <span class="ul">où</span> ?</span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="11.7" data-end="12.7">(e)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="11.7" data-end="12.7">(e)</div></div>
     <div class="col-right">
-      <div class="graphies">é, er, ez, ed</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">é, er, ez, ed</div>
+      <div class="exemples" lang="fr">
         <span class="no-ex">J'ai le n<span class="ul">ez</span> bouch<span class="ul">é</span> <span class="badge">待補</span></span><br>
         <span class="playable" data-start="12.8" data-end="16.3">Rog<span class="ul">er</span> a mal au pi<span class="ul">ed</span></span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="16.2" data-end="17.4">(ø)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="16.2" data-end="17.4">(ø)</div></div>
     <div class="col-right">
-      <div class="graphies">eu, œu</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">eu, œu</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="17.3" data-end="21.15">D<span class="ul">eu</span>x <span class="ul">eu</span>ros, c'est p<span class="ul">eu</span></span><br>
         <span class="no-ex">Fais un n<span class="ul">oeu</span>d <span class="badge">待補</span></span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="21.1" data-end="22.4">(o)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="21.1" data-end="22.4">(o)</div></div>
     <div class="col-right">
-      <div class="graphies">o, au, eau</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">o, au, eau</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="22.0" data-end="25.4">Il y a b<span class="ul">eau</span>coup d'<span class="ul">au</span>t<span class="ul">o</span>s</span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="25.45" data-end="26.55">(ɛ)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="25.45" data-end="26.55">(ɛ)</div></div>
     <div class="col-right">
-      <div class="graphies">e, è, ê, ai, ei</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">e, è, ê, ai, ei</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="26.6" data-end="30.4">Hél<span class="ul">è</span>ne, passe-moi le s<span class="ul">e</span>l</span><br>
         <span class="no-ex">Je r<span class="ul">ê</span>ve : il n<span class="ul">ei</span>ge en m<span class="ul">ai</span> <span class="badge">待補</span></span>
       </div>
     </div>
   </div>
   <div class="row no-audio">
-    <div class="col-son"><div class="son-btn">(œ)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn">(œ)</div></div>
     <div class="col-right">
-      <div class="graphies">eu, œu</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">eu, œu</div>
+      <div class="exemples" lang="fr">
         Je mange un <span class="ul">œu</span>f <span class="badge">待補</span><br>
         Claire finit à une h<span class="ul">eu</span>re
       </div>
     </div>
   </div>
   <div class="row no-audio">
-    <div class="col-son"><div class="son-btn">(ɔ)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn">(ɔ)</div></div>
     <div class="col-right">
-      <div class="graphies">o, au</div>
-      <div class="exemples">C'est le b<span class="ul">o</span>l de Paul <span class="badge">待補</span></div>
+      <div class="graphies" lang="fr">o, au</div>
+      <div class="exemples" lang="fr">C'est le b<span class="ul">o</span>l de Paul <span class="badge">待補</span></div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="31.3" data-end="32.5">(a)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="31.3" data-end="32.5">(a)</div></div>
     <div class="col-right">
-      <div class="graphies">a</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">a</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="32.5" data-end="36.4"><span class="ul">A</span>nne h<span class="ul">a</span>bite au C<span class="ul">a</span>n<span class="ul">a</span>d<span class="ul">a</span></span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="36.6" data-end="37.9">(ua)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="36.6" data-end="37.9">(ua)</div></div>
     <div class="col-right">
-      <div class="graphies">oi</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">oi</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="38.2" data-end="41.4">Le chat est sur le t<span class="ul">oi</span>t</span>
       </div>
     </div>
   </div>
 </div>
-
-<h2>Voyelles nasales 鼻母音</h2>
+</div>
+<div class="grp-nasal">
+<h2 id="g-nasal"><span lang="fr">Voyelles nasales</span> 鼻母音</h2>
 <div class="card">
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="42.2" data-end="43.4">(ẽ)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="42.2" data-end="43.4">(ẽ)</div></div>
     <div class="col-right">
-      <div class="graphies">in, ain, ein</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">in, ain, ein</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="43.2" data-end="46.5">Ils se serrent la m<span class="ul">ain</span></span><br>
         <span class="no-ex">Le bass<span class="ul">in</span> est pl<span class="ul">ein</span> <span class="badge">待補</span></span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="46.6" data-end="47.9">(œ̃)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="46.6" data-end="47.9">(œ̃)</div></div>
     <div class="col-right">
-      <div class="graphies">un, um</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">un, um</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="48.0" data-end="50.6"><span class="ul">Un</span>, rue Lebr<span class="ul">un</span></span><br>
         <span class="no-ex">Quel parf<span class="ul">um</span> ! <span class="badge">待補</span></span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="51.2" data-end="52.4">(õ)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="51.2" data-end="52.4">(õ)</div></div>
     <div class="col-right">
-      <div class="graphies">on</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">on</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="52.6" data-end="55.7">All<span class="ul">on</span>s sous le p<span class="ul">on</span>t</span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="55.5" data-end="56.7">(ã)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="55.5" data-end="56.7">(ã)</div></div>
     <div class="col-right">
-      <div class="graphies">en, an</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">en, an</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="56.7" data-end="59.4">Il a tr<span class="ul">en</span>te <span class="ul">an</span>s</span>
       </div>
     </div>
   </div>
 </div>
-
-<h2>Consonnes 子音</h2>
+</div>
+<div class="grp-cons">
+<h2 id="g-cons"><span lang="fr">Consonnes</span> 子音</h2>
 <div class="card">
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="60.2" data-end="61.4">(K)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="60.2" data-end="61.4">(K)</div></div>
     <div class="col-right">
-      <div class="graphies">qu, k, c, ca, co, cu</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">qu, k, c, ca, co, cu</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="61.4" data-end="65.4">Le <span class="ul">c</span>amion a abîmé mon sa<span class="ul">c</span></span><br>
         <span class="no-ex">Line est devant le <span class="ul">k</span>ios<span class="ul">qu</span>e <span class="badge">待補</span></span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="66.1" data-end="67.4">(g)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="66.1" data-end="67.4">(g)</div></div>
     <div class="col-right">
-      <div class="graphies">ga, go, gu</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">ga, go, gu</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="67.4" data-end="70.4">Elle man<span class="ul">g</span>e un <span class="ul">g</span>âteau</span><br>
         <span class="no-ex"><span class="ul">Ge</span>or<span class="ul">ge</span>s est fati<span class="ul">gu</span>é <span class="badge">待補</span></span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="70.9" data-end="72.4">(f)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="70.9" data-end="72.4">(f)</div></div>
     <div class="col-right">
-      <div class="graphies">f, ff, ph</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">f, ff, ph</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="72.1" data-end="78.4">Il prend un ca<span class="ul">f</span>é au bu<span class="ul">ff</span>et et il télé<span class="ul">ph</span>one</span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="78.6" data-end="80.4">(s)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="78.6" data-end="80.4">(s)</div></div>
     <div class="col-right">
-      <div class="graphies">s, ç, ss, ce, ci, ti, x</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">s, ç, ss, ce, ci, ti, x</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="80.1" data-end="84.4">Fran<span class="ul">ç</span>ois regarde les poi<span class="ul">ss</span>ons</span><br>
         <span class="no-ex">C'est à la sta<span class="ul">ti</span>on de ta<span class="ul">x</span>i <span class="badge">待補</span></span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="84.3" data-end="85.6">(ʃ)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="84.3" data-end="85.6">(ʃ)</div></div>
     <div class="col-right">
-      <div class="graphies">ch</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">ch</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="85.8" data-end="89.9">Le <span class="ul">ch</span>at aime le <span class="ul">ch</span>ocolat</span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="90.1" data-end="91.4">(ɲ)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="90.1" data-end="91.4">(ɲ)</div></div>
     <div class="col-right">
-      <div class="graphies">gn</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">gn</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="91.3" data-end="95.4">Il a une montre au poi<span class="ul">gn</span>et</span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="95.2" data-end="96.4">(l)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="95.2" data-end="96.4">(l)</div></div>
     <div class="col-right">
-      <div class="graphies">l, ll</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">l, ll</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="96.4" data-end="100.4">J'ai p<span class="ul">l</span>us de mi<span class="ul">ll</span>e <span class="ul">l</span>ivres</span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="100.35" data-end="102.15">(z)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="100.35" data-end="102.15">(z)</div></div>
     <div class="col-right">
-      <div class="graphies">s, z, x</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">s, z, x</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="101.8" data-end="106.4">Un e<span class="ul">x</span>emple : dou<span class="ul">z</span>e mai<span class="ul">s</span>ons</span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="106.0" data-end="107.4">(v)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="106.0" data-end="107.4">(v)</div></div>
     <div class="col-right">
-      <div class="graphies">v</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">v</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="107.5" data-end="110.6"><span class="ul">V</span>oici un <span class="ul">v</span>élo</span>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-son"><div class="son-btn playable" data-start="110.8" data-end="112.1">(ʒ)</div></div>
+    <div class="col-son"><div lang="fr" class="son-btn playable" data-start="110.8" data-end="112.1">(ʒ)</div></div>
     <div class="col-right">
-      <div class="graphies">j, ge, gi</div>
-      <div class="exemples">
+      <div class="graphies" lang="fr">j, ge, gi</div>
+      <div class="exemples" lang="fr">
         <span class="playable" data-start="112.8" data-end="118.4">Un oiseau <span class="ul">j</span>aune s'a<span class="ul">gi</span>te dans la ca<span class="ul">ge</span></span>
       </div>
     </div>
   </div>
 </div>
+</div>
+</div><!-- .groups -->
+</section>
 
-<div class="now-playing-bar" id="nowPlaying">▶ 播放中…</div>
+<section id="view-quiz" role="tabpanel" aria-labelledby="tab-quiz" hidden></section>
+<section id="view-stats" role="tabpanel" aria-labelledby="tab-stats" hidden></section>
+</main>
+</div><!-- .wrap -->
+
+<div class="now-playing-bar" id="nowPlaying" role="status" aria-live="polite">▶ 播放中…</div>
 
 <script>
-  const audio = document.getElementById('player');
-  const bar   = document.getElementById('nowPlaying');
-  let stopAt = null, currentEl = null;
-
-
-  // iOS audio unlock
-  document.addEventListener('touchstart', function unlock() {
-    audio.load();
-    document.removeEventListener('touchstart', unlock);
-  }, { once: true });
-  function clearPlaying() {
-    if (currentEl) { currentEl.classList.remove('playing'); currentEl = null; }
-    bar.classList.remove('visible');
-    stopAt = null;
+/* ===== 外觀（自動／淺色／深色）===== */
+(function () {
+  const KEY = 'sons_theme', btn = document.getElementById('themeBtn');
+  const order = ['auto', 'light', 'dark'], label = { auto: '🌓 自動', light: '☀️ 淺色', dark: '🌙 深色' };
+  function apply(m) {
+    if (m === 'auto') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', m);
+    btn.textContent = label[m];
+    btn.setAttribute('aria-label', '外觀：' + label[m].slice(2) + '（點一下切換）');
   }
-
-  let pendingPlay = false;
-  audio.addEventListener('seeked', () => {
-    if (pendingPlay) { pendingPlay = false; audio.play().catch(() => {}); }
+  let mode = 'auto';
+  try { mode = localStorage.getItem(KEY) || 'auto'; } catch (e) {}
+  if (!order.includes(mode)) mode = 'auto';
+  apply(mode);
+  btn.addEventListener('click', () => {
+    mode = order[(order.indexOf(mode) + 1) % order.length];
+    try { localStorage.setItem(KEY, mode); } catch (e) {}
+    apply(mode);
   });
+})();
 
-  function triggerPlay(el) {
-    const start = Math.max(0, parseFloat(el.dataset.start));
-    const end   = parseFloat(el.dataset.end);
-    if (isNaN(end)) return;
+/* ===== 練習紀錄（只存本機；⛔ 刻意不用 clb7_ 前綴，不進 Supabase 同步、不會蓋到雲端）===== */
+const LOG_KEY = 'sons_practice_v1';
+function today() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function loadLog() {
+  let L = null;
+  try { L = JSON.parse(localStorage.getItem(LOG_KEY)); } catch (e) {}
+  if (!L || typeof L !== 'object') L = {};
+  L.v = 1; L.per = L.per || {}; L.conf = L.conf || {}; L.sessions = L.sessions || []; L.plays = L.plays || {}; L.days = L.days || {};
+  return L;
+}
+let LOG = loadLog();
+function saveLog() { try { localStorage.setItem(LOG_KEY, JSON.stringify(LOG)); } catch (e) {} }
+function perOf(id) { return LOG.per[id] || (LOG.per[id] = { right: 0, wrong: 0, skip: 0, known: 0, last: '' }); }
+function bumpDay(field) { const d = today(); const o = LOG.days[d] || (LOG.days[d] = { right: 0, wrong: 0, skip: 0, plays: 0 }); o[field] = (o[field] || 0) + 1; }
 
-    if (currentEl === el && !audio.paused) {
-      audio.pause(); clearPlaying(); return;
-    }
+/* ===== 播放 ===== */
+const audio = document.getElementById('player');
+const bar   = document.getElementById('nowPlaying');
+let stopAt = null, currentEl = null, pendingPlay = false;
 
-    clearPlaying();
-    stopAt = end;
-    currentEl = el;
-    el.classList.add('playing');
-    bar.textContent = '▶ ' + el.textContent.trim();
-    bar.classList.add('visible');
-    pendingPlay = true;
-    audio.currentTime = start;
+document.addEventListener('touchstart', function unlock() { audio.load(); }, { once: true });
+function clearPlaying() {
+  if (currentEl) { currentEl.classList.remove('playing'); currentEl.removeAttribute('aria-pressed'); currentEl = null; }
+  bar.classList.remove('visible');
+  stopAt = null;
+}
+audio.addEventListener('seeked', () => { if (pendingPlay) { pendingPlay = false; audio.play().catch(() => {}); } });
+function playSegment(start, end, el, label) {
+  start = Math.max(0, start);
+  if (isNaN(end)) return;
+  if (el && currentEl === el && !audio.paused) { audio.pause(); clearPlaying(); return; }
+  clearPlaying();
+  stopAt = end; currentEl = el || null;
+  if (el) { el.classList.add('playing'); el.setAttribute('aria-pressed', 'true'); }
+  bar.textContent = '▶ ' + (label || '播放中…');
+  bar.classList.add('visible');
+  pendingPlay = true;
+  audio.currentTime = start;
+  if (Math.abs(audio.currentTime - start) < 0.01 && audio.readyState >= 2) { pendingPlay = false; audio.play().catch(() => {}); }
+}
+function triggerPlay(el) {
+  playSegment(parseFloat(el.dataset.start), parseFloat(el.dataset.end), el, el.textContent.trim());
+  if (el.closest('#view-table')) { LOG.plays[today()] = (LOG.plays[today()] || 0) + 1; bumpDay('plays'); saveLog(); }
+}
+function bindPlayable(el) {
+  const isSon = el.classList.contains('son-btn');
+  el.setAttribute('role', 'button');
+  el.setAttribute('tabindex', '0');
+  el.setAttribute('aria-label', (isSon ? '播放音標 ' : '播放例句：') + el.textContent.trim());
+  el.addEventListener('touchstart', e => { e.preventDefault(); triggerPlay(el); }, { passive: false });
+  el.addEventListener('click', () => triggerPlay(el));
+  el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); triggerPlay(el); } });
+}
+document.querySelectorAll('#view-table .playable').forEach(bindPlayable);
+document.querySelectorAll('#view-table .row.no-audio .son-btn').forEach(el => el.setAttribute('aria-label', '音標 ' + el.textContent.trim() + '（還沒有錄音）'));
+audio.addEventListener('timeupdate', () => { if (stopAt !== null && audio.currentTime >= stopAt) { audio.pause(); clearPlaying(); } });
+audio.addEventListener('ended', clearPlaying);
+
+/* ===== 題目資料：直接從音表撈（⭐ 不自創內容：音檔與例句全是頁面上既有的）===== */
+const ITEMS = [];
+document.querySelectorAll('#view-table .row:not(.no-audio)').forEach(row => {
+  const son = row.querySelector('.son-btn.playable'); if (!son) return;
+  const grp = row.closest('.grp-oral') ? 'oral' : row.closest('.grp-nasal') ? 'nasal' : 'cons';
+  const ex = [...row.querySelectorAll('.exemples .playable')].map(e => ({ s: +e.dataset.start, e: +e.dataset.end, html: e.innerHTML, text: e.textContent.trim() }));
+  ITEMS.push({ id: son.textContent.trim(), s: +son.dataset.start, e: +son.dataset.end, g: row.querySelector('.graphies').textContent.trim(), grp, ex });
+});
+const byId = Object.fromEntries(ITEMS.map(x => [x.id, x]));
+
+/* ===== 分頁 ===== */
+const TABS = ['table', 'quiz', 'stats'];
+function showTab(name, focus) {
+  TABS.forEach(t => {
+    const b = document.getElementById('tab-' + t), v = document.getElementById('view-' + t), on = t === name;
+    b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1; v.hidden = !on;
+    if (on && focus) b.focus();
+  });
+  if (name === 'quiz' && !Q.started) renderQuizStart();
+  if (name === 'stats') renderStats();
+  if (location.hash.slice(1) !== name) history.replaceState(null, '', name === 'table' ? location.pathname + location.search : '#' + name);
+}
+TABS.forEach((t, k) => {
+  const b = document.getElementById('tab-' + t);
+  b.addEventListener('click', () => showTab(t));
+  b.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); showTab(TABS[(k + (e.key === 'ArrowRight' ? 1 : TABS.length - 1)) % TABS.length], true); }
+  });
+});
+
+/* ===== 聽辨練習 ===== */
+const QV = document.getElementById('view-quiz');
+const Q = { started: false, mode: 'son', len: 10, list: [], i: 0, right: 0, wrong: 0, skip: 0, wrongIds: [], answered: false };
+function esc(t) { return String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+function weightOf(it) {
+  const p = LOG.per[it.id] || {};
+  let w = 1 + 2 * (p.wrong || 0) / (1 + (p.right || 0));
+  w = w / (1 + (p.known || 0));          // 「會了」只降低頻率，⛔ 不移除
+  return Math.max(0.15, w);
+}
+function pickRound(n, pool) {
+  pool = pool.slice(); const out = [];
+  while (out.length < n && pool.length) {
+    const tot = pool.reduce((a, x) => a + weightOf(x), 0); let r = Math.random() * tot, k = 0;
+    for (; k < pool.length - 1; k++) { r -= weightOf(pool[k]); if (r <= 0) break; }
+    out.push(pool.splice(k, 1)[0]);
   }
+  return out;
+}
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function optionsFor(it) {
+  const same = shuffle(ITEMS.filter(x => x.grp === it.grp && x.id !== it.id));
+  const conf = Object.entries(LOG.conf).filter(([k]) => k.startsWith(it.id + '>')).sort((a, b) => b[1] - a[1]).map(([k]) => byId[k.split('>')[1]]).filter(Boolean);
+  const opts = [it];
+  for (const x of [...conf, ...same, ...shuffle(ITEMS.slice())]) { if (opts.length >= 4) break; if (!opts.includes(x)) opts.push(x); }
+  return shuffle(opts);
+}
+function clipOf(it) {
+  if (Q.mode === 'ex' && it.ex.length) { const e = it.ex[Q.exPick[it.id] || 0]; return { s: e.s, e: e.e }; }
+  return { s: it.s, e: it.e };
+}
+function renderQuizStart() {
+  const pool = Q.mode === 'ex' ? ITEMS.filter(x => x.ex.length) : ITEMS;
+  QV.innerHTML = `<div class="panel">
+    <h3>🎯 聽辨練習</h3>
+    <p class="muted">聽一段錄音，選出它的音標。錯過的音會比較常出現；按「會了」的音會少出現（不會消失）。</p>
+    <div style="margin-top:14px"><div class="muted" id="lblMode">題目播放</div>
+      <div class="seg" role="group" aria-labelledby="lblMode">
+        <button type="button" class="btn" data-mode="son" aria-pressed="${Q.mode === 'son'}">單獨的音</button>
+        <button type="button" class="btn" data-mode="ex" aria-pressed="${Q.mode === 'ex'}">整句例句（找出重點音）</button>
+      </div></div>
+    <div style="margin-top:12px"><div class="muted" id="lblLen">題數</div>
+      <div class="seg" role="group" aria-labelledby="lblLen">
+        ${[5, 10, 20].map(n => `<button type="button" class="btn" data-len="${n}" aria-pressed="${Q.len === n}">${n} 題</button>`).join('')}
+      </div></div>
+    <div class="btn-row"><button type="button" class="btn primary" id="qStart">開始（${Math.min(Q.len, pool.length)} 題）</button></div>
+  </div>`;
+  QV.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => { Q.mode = b.dataset.mode; renderQuizStart(); });
+  QV.querySelectorAll('[data-len]').forEach(b => b.onclick = () => { Q.len = +b.dataset.len; renderQuizStart(); });
+  QV.querySelector('#qStart').onclick = () => startRound(pickRound(Q.len, pool));
+}
+function startRound(list) {
+  Object.assign(Q, { started: true, list, i: 0, right: 0, wrong: 0, skip: 0, wrongIds: [], exPick: {} });
+  list.forEach(it => { Q.exPick[it.id] = Math.floor(Math.random() * Math.max(1, it.ex.length)); });
+  renderQuestion();
+}
+function scoreText() {
+  const done = Q.right + Q.wrong;
+  return `${Q.right}/${done}` + (Q.skip ? ` <span class="pill-gray">⏭ ${Q.skip}（不計分）</span>` : '');
+}
+function renderQuestion() {
+  if (Q.i >= Q.list.length) return finishRound();
+  const it = Q.list[Q.i]; Q.answered = false; Q.opts = optionsFor(it);
+  QV.innerHTML = `<div class="panel">
+    <div class="q-head"><strong>第 ${Q.i + 1} / ${Q.list.length} 題</strong><span aria-live="polite">答對 ${scoreText()}</span></div>
+    <button type="button" class="big-play" id="qPlay">🔊 播放題目${Q.mode === 'ex' ? '（整句）' : ''}<br><span class="muted">快捷鍵：R 重聽、1–4 作答</span></button>
+    <div class="choices" role="group" aria-label="選出你聽到的音標">
+      ${Q.opts.map((o, k) => `<button type="button" class="choice" data-id="${esc(o.id)}" lang="fr" aria-label="${k + 1}：${esc(o.id)}，拼法 ${esc(o.g)}">${esc(o.id)}<span class="g">${esc(o.g)}</span></button>`).join('')}
+    </div>
+    <div class="feedback" id="qFb" role="status" aria-live="polite"></div>
+    <div class="btn-row" id="qActs">
+      <button type="button" class="btn ghost" id="qKnown">✅ 這個音我會了</button>
+      <button type="button" class="btn ghost" id="qSkip">⏭ 這題跳過</button>
+      <button type="button" class="btn ghost" id="qEnd">⏹ 跳過剩下的、結束這輪</button>
+    </div>
+  </div>`;
+  const play = () => { const c = clipOf(it); playSegment(c.s, c.e, null, '題目播放中'); };
+  QV.querySelector('#qPlay').onclick = play;
+  QV.querySelectorAll('.choice').forEach(b => b.onclick = () => answer(b.dataset.id));
+  QV.querySelector('#qKnown').onclick = () => { const p = perOf(it.id); p.known++; p.last = today(); skipCurrent(); };
+  QV.querySelector('#qSkip').onclick = () => skipCurrent();
+  QV.querySelector('#qEnd').onclick = () => { if (!Q.answered) skipCurrent(true); Q.skip += Q.list.length - Q.i; for (let k = Q.i; k < Q.list.length; k++) { const p = perOf(Q.list[k].id); p.skip++; } Q.i = Q.list.length; saveLog(); finishRound(); };
+  QV.querySelector('#qPlay').focus();
+  play();
+}
+function skipCurrent(noAdvance) {
+  const it = Q.list[Q.i]; const p = perOf(it.id); p.skip++; p.last = today(); bumpDay('skip'); Q.skip++; saveLog();
+  Q.i++; if (!noAdvance) renderQuestion();
+}
+function answer(id) {
+  if (Q.answered) return; Q.answered = true;
+  const it = Q.list[Q.i], ok = id === it.id, p = perOf(it.id);
+  p.last = today();
+  if (ok) { p.right++; Q.right++; bumpDay('right'); }
+  else { p.wrong++; Q.wrong++; Q.wrongIds.push(it.id); bumpDay('wrong'); LOG.conf[it.id + '>' + id] = (LOG.conf[it.id + '>' + id] || 0) + 1; }
+  saveLog();
+  QV.querySelectorAll('.choice').forEach(b => { b.disabled = true; if (b.dataset.id === it.id) b.classList.add('right'); else if (b.dataset.id === id) b.classList.add('wrong'); });
+  const fb = QV.querySelector('#qFb');
+  const ex = it.ex[0];
+  fb.innerHTML = ok ? `✅ 對，是 <span lang="fr">${esc(it.id)}</span>（${esc(it.g)}）`
+    : `正解是 <strong lang="fr">${esc(it.id)}</strong>（${esc(it.g)}），你選了 <span lang="fr">${esc(id)}</span>。
+       <div class="btn-row"><button type="button" class="btn" id="cmpA" lang="fr">▶ ${esc(it.id)}</button><button type="button" class="btn" id="cmpB" lang="fr">▶ ${esc(id)}</button></div>`
+      + (ex ? `<div class="muted" lang="fr" style="margin-top:6px">例句：${ex.html}</div>` : '');
+  if (!ok) {
+    fb.querySelector('#cmpA').onclick = () => playSegment(it.s, it.e, null, it.id);
+    fb.querySelector('#cmpB').onclick = () => { const o = byId[id]; playSegment(o.s, o.e, null, o.id); };
+  }
+  QV.querySelector('.q-head span').innerHTML = '答對 ' + scoreText();
+  QV.querySelector('#qActs').innerHTML = `<button type="button" class="btn primary" id="qNext">${Q.i + 1 < Q.list.length ? '下一題 →' : '看結果'}</button>`;
+  const nx = QV.querySelector('#qNext'); nx.onclick = () => { Q.i++; renderQuestion(); }; nx.focus();
+}
+function finishRound() {
+  const done = Q.right + Q.wrong;
+  if (done || Q.skip) {
+    LOG.sessions.push({ ts: Date.now(), date: today(), mode: Q.mode, right: Q.right, wrong: Q.wrong, skip: Q.skip });
+    if (LOG.sessions.length > 300) LOG.sessions = LOG.sessions.slice(-300);
+    saveLog();
+  }
+  const uniqWrong = [...new Set(Q.wrongIds)];
+  QV.innerHTML = `<div class="panel">
+    <h3>這輪結束</h3>
+    <p style="font-size:1.6rem;font-weight:700;margin:6px 0">${Q.right}/${done}${done ? `<span class="muted">（${Math.round(Q.right / done * 100)}%）</span>` : ''}</p>
+    ${Q.skip ? `<p><span class="pill-gray">⏭ ${Q.skip}（不計分）</span></p>` : ''}
+    ${uniqWrong.length ? `<p class="muted" style="margin-top:8px">這輪要再聽的音：<span lang="fr">${uniqWrong.map(esc).join('　')}</span></p>` : ''}
+    <div class="btn-row">
+      ${uniqWrong.length ? `<button type="button" class="btn primary" id="qRetry">再練答錯的（${uniqWrong.length}）</button>` : ''}
+      <button type="button" class="btn${uniqWrong.length ? '' : ' primary'}" id="qAgain">再來一輪</button>
+      <button type="button" class="btn" id="qStats">📊 看紀錄</button>
+    </div></div>`;
+  Q.started = false;
+  const r = QV.querySelector('#qRetry'); if (r) r.onclick = () => startRound(shuffle(uniqWrong.map(id => byId[id])));
+  QV.querySelector('#qAgain').onclick = () => renderQuizStart();
+  QV.querySelector('#qStats').onclick = () => showTab('stats', true);
+  (r || QV.querySelector('#qAgain')).focus();
+}
+document.addEventListener('keydown', e => {
+  if (document.getElementById('view-quiz').hidden || !Q.started || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
+  if (e.key === 'r' || e.key === 'R') { const b = QV.querySelector('#qPlay'); if (b) b.click(); }
+  if (/^[1-4]$/.test(e.key) && !Q.answered) { const b = QV.querySelectorAll('.choice')[+e.key - 1]; if (b) b.click(); }
+});
 
-  document.querySelectorAll('.playable').forEach(el => {
-    el.addEventListener('touchstart', e => { e.preventDefault(); triggerPlay(el); }, { passive: false });
-    el.addEventListener('click', () => { triggerPlay(el); });
-  });
+/* ===== 紀錄與錯誤統計 ===== */
+const SV = document.getElementById('view-stats');
+function streakDays() {
+  let n = 0; const d = new Date();
+  const has = k => { const o = LOG.days[k]; return o && (o.right + o.wrong + o.skip + (o.plays || 0)) > 0; };
+  const key = x => x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0');
+  if (!has(key(d))) d.setDate(d.getDate() - 1);
+  while (has(key(d))) { n++; d.setDate(d.getDate() - 1); }
+  return n;
+}
+function renderStats() {
+  LOG = loadLog();
+  const rows = ITEMS.map(it => ({ it, p: LOG.per[it.id] || { right: 0, wrong: 0, skip: 0, known: 0 } }));
+  const R = rows.reduce((a, x) => a + x.p.right, 0), W = rows.reduce((a, x) => a + x.p.wrong, 0);
+  const td = LOG.days[today()] || { right: 0, wrong: 0, skip: 0, plays: 0 };
+  const tried = rows.filter(x => x.p.right + x.p.wrong > 0)
+    .sort((a, b) => (a.p.right / (a.p.right + a.p.wrong)) - (b.p.right / (b.p.right + b.p.wrong)) || b.p.wrong - a.p.wrong);
+  const conf = Object.entries(LOG.conf).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const last14 = [];
+  for (let k = 13; k >= 0; k--) { const d = new Date(); d.setDate(d.getDate() - k); const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); const o = LOG.days[key] || {}; last14.push({ key, n: (o.right || 0) + (o.wrong || 0), w: o.wrong || 0 }); }
+  const maxN = Math.max(1, ...last14.map(x => x.n));
+  const sess = LOG.sessions.slice(-8).reverse();
+  SV.innerHTML = `
+  <div class="panel"><h3>📊 練習紀錄</h3>
+    <div class="stat-grid">
+      <div class="stat"><b>${R + W}</b><span>累計作答</span></div>
+      <div class="stat"><b>${R + W ? Math.round(R / (R + W) * 100) + '%' : '—'}</b><span>整體答對率</span></div>
+      <div class="stat"><b>${td.right + td.wrong}</b><span>今天作答（對 ${td.right}）</span></div>
+      <div class="stat"><b>${td.plays || 0}</b><span>今天在音表聽了幾次</span></div>
+      <div class="stat"><b>${streakDays()}</b><span>連續練習天數</span></div>
+    </div>
+    <h3 style="margin-top:18px">最近 14 天</h3>
+    <div style="display:flex;align-items:flex-end;gap:4px;height:80px" role="img" aria-label="最近 14 天每天作答題數：${last14.map(x => x.key.slice(5) + ' ' + x.n + ' 題').join('、')}">
+      ${last14.map(x => `<div title="${x.key}：${x.n} 題，錯 ${x.w}" style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%"><div style="height:${Math.round(x.n / maxN * 100)}%;min-height:${x.n ? 3 : 1}px;background:${x.n ? 'var(--accent)' : 'var(--line)'};border-radius:3px 3px 0 0"></div></div>`).join('')}
+    </div>
+    <div class="muted" style="display:flex;justify-content:space-between;font-size:0.75rem"><span>${last14[0].key.slice(5)}</span><span>今天</span></div>
+  </div>
+  <div class="panel"><h3>❗ 各音答對率（最弱的在上面）</h3>
+    ${tried.length ? `<div class="t-scroll"><table class="t"><thead><tr><th scope="col">音標</th><th scope="col">答對率</th><th scope="col">對／錯</th><th scope="col">會了</th><th scope="col"><span class="sr">聽</span></th></tr></thead><tbody>
+      ${tried.map(({ it, p }) => { const pc = Math.round(p.right / (p.right + p.wrong) * 100); return `<tr><th scope="row" lang="fr">${esc(it.id)} <span class="muted">${esc(it.g)}</span></th><td><div class="meter" aria-hidden="true"><i style="width:${pc}%"></i></div>${pc}%</td><td>${p.right}／${p.wrong}</td><td>${p.known ? `<span class="pill-gray">${p.known}</span>` : ''}</td><td><button type="button" class="btn" data-play="${esc(it.id)}" aria-label="播放 ${esc(it.id)}">▶</button></td></tr>`; }).join('')}
+    </tbody></table></div>` : '<p class="muted">還沒有作答紀錄。到「🎯 聽辨練習」做一輪就會出現。</p>'}
+  </div>
+  <div class="panel"><h3>🔀 最常聽混的音</h3>
+    ${conf.length ? `<table class="t"><thead><tr><th scope="col">正解 → 聽成</th><th scope="col">次數</th><th scope="col">對比聽</th></tr></thead><tbody>
+      ${conf.map(([k, n]) => { const [a, b] = k.split('>'); return byId[a] && byId[b] ? `<tr><td lang="fr">${esc(a)} → ${esc(b)}</td><td>${n}</td><td><button type="button" class="btn" data-play="${esc(a)}" lang="fr">▶ ${esc(a)}</button> <button type="button" class="btn" data-play="${esc(b)}" lang="fr">▶ ${esc(b)}</button></td></tr>` : ''; }).join('')}
+    </tbody></table>` : '<p class="muted">還沒有聽混的紀錄。</p>'}
+  </div>
+  <div class="panel"><h3>🕘 最近幾輪</h3>
+    ${sess.length ? `<table class="t"><thead><tr><th scope="col">時間</th><th scope="col">模式</th><th scope="col">結果</th></tr></thead><tbody>
+      ${sess.map(x => { const d = new Date(x.ts), n = x.right + x.wrong; return `<tr><td>${x.date.slice(5)} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}</td><td>${x.mode === 'ex' ? '例句' : '單音'}</td><td>${x.right}/${n}${x.skip ? ` <span class="pill-gray">⏭ ${x.skip}</span>` : ''}</td></tr>`; }).join('')}
+    </tbody></table>` : '<p class="muted">還沒有完成的練習。</p>'}
+    <div class="btn-row">
+      <button type="button" class="btn" id="sExport">⬇️ 匯出紀錄（JSON）</button>
+      <button type="button" class="btn ghost" id="sReset">🗑 清除紀錄</button>
+    </div>
+    <p class="muted" style="margin-top:8px">紀錄只存在這台裝置的瀏覽器裡，不會上傳。</p>
+  </div>`;
+  SV.querySelectorAll('[data-play]').forEach(b => b.onclick = () => { const it = byId[b.dataset.play]; playSegment(it.s, it.e, null, it.id); });
+  SV.querySelector('#sExport').onclick = () => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(LOG, null, 2)], { type: 'application/json' }));
+    a.download = 'sons_practice_' + today() + '.json'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  };
+  SV.querySelector('#sReset').onclick = () => {
+    if (!confirm('確定要清除這個頁面的所有練習紀錄？（無法復原）')) return;
+    localStorage.removeItem(LOG_KEY); LOG = loadLog(); renderStats();
+  };
+}
 
-  audio.addEventListener('timeupdate', () => {
-    if (stopAt !== null && audio.currentTime >= stopAt) {
-      audio.pause(); clearPlaying();
-    }
-  });
-
-  audio.addEventListener('ended', clearPlaying);
+/* 進頁時依網址（#quiz／#stats）打開分頁 */
+showTab(TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'table');
+window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (TABS.includes(h)) showTab(h); });
 </script>
 
 </body>
