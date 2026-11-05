@@ -2382,7 +2382,7 @@ function handleKey(e) {
 // ════════════════════════════════════════════════════════════
 function norm(s) {
   return s.trim().toLowerCase()
-    .replace(/['']/g, "'")   // 統一撇號
+    .replace(/[’‘`]/g, "'")   // 統一撇號（iPhone 會打出彎撇號 ’）
     .replace(/\s+/g, ' ');
 }
 

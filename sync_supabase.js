@@ -94,6 +94,9 @@
         if (local.story && inc.story) out0.story = mergeStory(local.story, inc.story);
         return out0;
       }
+      /* ⚠️ 2026-11-05 修：單筆紀錄本身就帶 last（如 clb7_game_goal = {min, last}）時，要整筆取較新的。
+         原本落到下面的逐欄合併，數字欄一律被雲端蓋掉 → 在 A 裝置剛改的設定，被 B 裝置的舊值蓋回去。 */
+      if (typeof local.last === 'number' && typeof inc.last === 'number') return inc.last >= local.last ? inc : local;
       var out = Object.assign({}, local);
       Object.keys(inc).forEach(function (k) {
         var a = out[k], b = inc[k];
@@ -110,17 +113,20 @@
   function apply(rm) {
     if (!rm) return;
     Object.keys(rm).forEach(function (k) {
-      var inc = scrub(k, sp(rm[k])), ls = localStorage.getItem(k);   /* 從雲端讀進來時濾掉 */
-      if (ls == null) { _si.call(localStorage, k, typeof inc === 'string' ? inc : JSON.stringify(inc)); return; }
-      var o = scrub(k, merge(sp(ls), inc));
-      _si.call(localStorage, k, typeof o === 'string' ? o : JSON.stringify(o));
+      /* 一個 key 出錯（例如 localStorage 滿了）只跳過那一個，⛔ 不讓後面的 key 全部沒合併到 */
+      try {
+        var inc = scrub(k, sp(rm[k])), ls = localStorage.getItem(k);   /* 從雲端讀進來時濾掉 */
+        if (ls == null) { _si.call(localStorage, k, typeof inc === 'string' ? inc : JSON.stringify(inc)); return; }
+        var o = scrub(k, merge(sp(ls), inc));
+        _si.call(localStorage, k, typeof o === 'string' ? o : JSON.stringify(o));
+      } catch (e) {}
     });
   }
 
   function pull() {
     return fetch(URL + '/rest/v1/clb7_sync?id=eq.' + ROOM + '&select=payload', { headers: H })
       .then(function (r) { return r.ok ? r.json() : []; })
-      .then(function (x) { if (x[0] && x[0].payload) apply(x[0].payload); })
+      .then(function (x) { if (Array.isArray(x) && x[0] && x[0].payload) apply(x[0].payload); })
       .catch(function () {});
   }
   function push() {
@@ -142,7 +148,8 @@
     if (String(k).indexOf('clb7_') === 0) sched();
   };
 
-  window.ClbSync = { pull: pull, push: push };
+  /* _merge／_scrub 只給 tests/ 用（node --test），頁面不要呼叫 */
+  window.ClbSync = { pull: pull, push: push, _merge: merge, _scrub: scrub };
 
   // 開頁先把本地已登記刪除的紀錄清掉；有清到就排程上傳，讓雲端也跟著乾淨
   Object.keys(TOMB).forEach(function (k) {

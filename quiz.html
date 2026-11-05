@@ -470,7 +470,7 @@ function ttsSpeak(text, btn) {
 
 // ── 比對 ─────────────────────────────────────────────────────
 function norm(s) {
-  return s.toLowerCase().trim().replace(/[.,!?'`'']/g, '').replace(/\s+/g, ' ').trim();
+  return s.toLowerCase().trim().replace(/[.,!?'`’‘]/g, '').replace(/\s+/g, ' ').trim();
 }
 function isCorrect(input, answer) {
   const n = norm(input);

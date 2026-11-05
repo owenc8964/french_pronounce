@@ -188,7 +188,7 @@ function speak(text) {
 
 // ── 比對（與 quiz.html 相同） ──
 function norm(s) {
-  return s.toLowerCase().trim().replace(/[.,!?'`'']/g, '').replace(/\s+/g, ' ').trim();
+  return s.toLowerCase().trim().replace(/[.,!?'`’‘]/g, '').replace(/\s+/g, ' ').trim();
 }
 function isCorrect(input, answer) {
   const n = norm(input);

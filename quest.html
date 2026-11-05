@@ -684,7 +684,7 @@ function isAns(q,o){ return String(q.a).split('|').indexOf(o)>=0; }
 function shownAns(q){ var alts=String(q.a).split('|'), hit=(q.opts||[]).filter(function(o){ return alts.indexOf(o)>=0; });
   return hit.length ? hit.join(' / ') : alts[0]; }
 function deacc(x){ return String(x).normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
-function normAns(x){ return deacc(String(x)).toLowerCase().replace(/[.,!?;:«»"']/g,'').replace(/\s+/g,' ').trim(); }
+function normAns(x){ return deacc(String(x)).toLowerCase().replace(/[.,!?;:«»"'’‘]/g,'').replace(/\s+/g,' ').trim(); }
 function identityOf(topic, lesson){
   var sit = (typeof SITUATIONS!=='undefined') ? SITUATIONS.filter(function(x){ return (x.topics||[]).indexOf(topic)>=0; })[0] : null;
   if (sit) return { name:sit.zh, fr:sit.fr };

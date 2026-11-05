@@ -36,12 +36,19 @@
     lastAct = lastTick = Date.now();
   }
   function ping() { lastAct = Date.now(); }
-  function tick() {
-    if (!cur) return;
+  /* 把上次 tick 到現在的有效秒數加進這一筆（頁面看得到、且 IDLE 內有操作才算） */
+  function accrue() {
     var now = Date.now();
     if (!document.hidden && now - lastAct < IDLE) cur.sec += Math.round((now - lastTick) / 1000);
     lastTick = now;
-    if (cur.d !== day()) { flush(); start(cur.src); }   /* 跨過午夜就切成新的一筆，每天的時間才對得上 */
+  }
+  function tick() {
+    if (!cur) return;
+    accrue();
+    /* 跨過午夜就切成新的一筆，每天的時間才對得上。
+       ⚠️ 2026-11-05 修：原本這裡呼叫 flush()，而 flush() 又先呼叫 tick() → 午夜後無限遞迴（stack overflow），
+          那一整筆遊玩紀錄存不進去、之後每 5 秒再炸一次。改成直接存檔再開新的一筆，且保留最後操作時間。 */
+    if (cur.d !== day()) { var src = cur.src, la = lastAct; persist(); start(src); lastAct = la; }
   }
   /* ok：true 答對／false 答錯／null 跳過。m：{ topic, kind, q, a, pick, src } */
   function answer(ok, m) {
@@ -58,7 +65,13 @@
   }
   function event(name) { if (!cur) return; cur.ev[name] = (cur.ev[name] || 0) + 1; dirty = true; }
   function flush() {
-    if (!cur) return; tick();
+    if (!cur) return;
+    tick();
+    persist();
+  }
+  /* 把目前這一筆寫進 clb7_game_time（同一個 ts 就覆蓋，不會重複） */
+  function persist() {
+    if (!cur) return;
     if (cur.sec < 20 && !cur.n) return;   /* 開了就走、沒玩 → 不記 */
     cur.end = Date.now();
     var a = rd('clb7_game_time'), i = -1;
@@ -81,9 +94,11 @@
   function setGoal(min) { try { localStorage.setItem('clb7_game_goal', JSON.stringify({ min: min, last: Date.now() })); } catch (e) {} }
   function dstr(t) { var d = new Date(t); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
   function streak() {
-    var m = daySecs(), need = goalMin() * 60, n = 0, freezeAt = -99, t = Date.now(), today = dstr(t), todayDone = (m[today] || 0) >= need;
+    /* ⚠️ 2026-11-05 修：原本用「現在 − i×24 小時」往回推日期，夏令時間開始那天只有 23 小時，
+       凌晨往回推會直接跳過那一天（連勝少算一天、或漏玩的那天沒被看到）。改用日曆日往回推。 */
+    var m = daySecs(), need = goalMin() * 60, n = 0, freezeAt = -99, base = new Date(), today = dstr(base.getTime()), todayDone = (m[today] || 0) >= need;
     for (var i = 0; i < 400; i++) {
-      var d = dstr(t - i * 86400000), ok = (m[d] || 0) >= need;
+      var d = dstr(new Date(base.getFullYear(), base.getMonth(), base.getDate() - i, 12).getTime()), ok = (m[d] || 0) >= need;
       if (ok) { n++; continue; }
       if (i === 0) continue;                                  /* 今天還沒達標：不算斷 */
       if (i - freezeAt > 7 && n > 0) { freezeAt = i; continue; }   /* 休息卡：7 天內漏 1 天 */

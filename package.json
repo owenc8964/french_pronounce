@@ -1,0 +1,10 @@
+{
+  "name": "french-pronounce",
+  "private": true,
+  "description": "CLB7 法語學習系統（靜態網站，GitHub Pages）。沒有任何執行期依賴，測試只用 Node 內建的 node:test。",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "check:notes": "node tools/check_notes.js"
+  },
+  "engines": { "node": ">=18" }
+}

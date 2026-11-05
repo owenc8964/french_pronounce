@@ -31,6 +31,15 @@
   function load() { try { return JSON.parse(localStorage.getItem(SKEY)) || null; } catch (e) { return null; } }
   function save(s) { try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {} }
   function now() { return Date.now(); }
+  /* 正在跑的這一段「最多算到哪一刻」：閒置超過門檻 → 最後操作那一刻；再夾單段上限。
+     ⚠️ 2026-11-05：pause()／pauseAtTime() 原本直接算到「現在」，沒套閒置與 3 小時上限，
+        只靠畫面每秒呼叫 elapsedSec() 先收掉；沒有 pill 的頁面直接按暫停就會把閒置那段算進去。 */
+  function stopPoint(s, at) {
+    var t = Math.min(at == null ? now() : at, now());
+    var lastAct = Math.max(s.startedAt, s.lastAct || s.startedAt);
+    if (t - lastAct > IDLE_MS) t = lastAct;
+    return Math.max(s.startedAt, Math.min(t, s.startedAt + MAX_STRETCH_MS));
+  }
   function zhDate() { return new Date().toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' }); }
 
   var API = {
@@ -74,7 +83,7 @@
     pause: function () {
       var s = load();
       if (!s || !s.running) return;
-      s.accSec += (now() - s.startedAt) / 1000;
+      s.accSec += (stopPoint(s) - s.startedAt) / 1000;
       s.running = false;
       save(s);
     },
@@ -113,8 +122,7 @@
     pauseAtTime: function (stopAt) {
       var s = load();
       if (!s || !s.running) return;
-      var clamped = Math.max(s.startedAt, Math.min(stopAt, now()));
-      s.accSec += (clamped - s.startedAt) / 1000;
+      s.accSec += (stopPoint(s, stopAt) - s.startedAt) / 1000;
       s.running = false;
       save(s);
     }
