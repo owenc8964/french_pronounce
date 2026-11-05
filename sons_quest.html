@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/app/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CLB7">
+<meta name="theme-color" content="#f6f3ec">
+<script src="pwa.js" defer></script>
+<title>Sons Quest · 發音闖關</title>
+<!--
+  sons_quest.html — 發音「闖關」版（2026-11-05）
+  ────────────────────────────────────────────────────────────
+  ⭐ 設計方向：把 index.html 的發音表變成一條「每天走一點」的路。
+    · 每日連續天數 🔥 ＋ 一週小點列（❄ 今天跳過 = 不斷連勝、也不加）
+    · 4 個世界、10 關，每關 6–8 題，三種題型輪流：
+        ① 聽音選音標　② 先聽句子再選它練的音（答完才顯示句子）　③ 看拼法選音
+    · 即時回饋：答對＝格子彈跳＋粒子＋XP 飄字＋連對火焰；答錯＝輕晃＋兩個音並排可對照重聽
+  ⛔ 內容鐵律：題目全部用 index.html 那張表的音檔分段與例句，⛔ 沒有自創法文句子。
+    ⚠️ 兩處以標準法文寫、並在畫面上標出原表寫法：
+      · 音標：表上 (ẽ)(õ)(ã)(ua)(K) → 這裡寫 ɛ̃ ɔ̃ ɑ̃ wa k，格子下方小字標「表：…」
+      · (g) 的例句：原表把 man<u>g</u>e 的 g 也畫線，但那個 g 念 [ʒ]；這裡只畫 gâteau
+  ⭐ 跳過鐵律（CLAUDE.md，table_drill.html 為範本）三層出口：
+      題：「會了」　關：「⏭ 這關剩下的跳過」　今日：「今天跳過」（不擋任何關卡）
+    · 不計分（分母扣掉跳過）、不進答錯重聽、不記錯題
+    · 重玩這關時，上次跳過的題保持跳過（可以手動「放回來」）
+    · badge 一律灰色、措辭中性
+    · 記進 clb7_sons_known（{音: {n, last}}），⛔ 只拿來降低混合關的出現頻率，不刪題
+  資料形狀配合 sync_supabase.js 的物件慣例：每個 key 底下都是帶 last 的物件。
+-->
+<style>
+:root{
+  --bg:#f6f3ec; --card:#fff; --ink:#22252c; --mute:#8a8f99; --line:#ebe6db;
+  --blue:#2f5bd3; --blue-soft:#e8eefc; --ok:#1f9d6b; --ok-soft:#e3f6ee;
+  --no:#e0674f; --no-soft:#fdeee9; --gold:#f2b632; --grey:#b9bdc6; --grey-soft:#f0f1f3;
+  --r:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang TC','Noto Sans TC',sans-serif;-webkit-tap-highlight-color:transparent}
+body{padding:calc(12px + env(safe-area-inset-top)) 14px calc(90px + env(safe-area-inset-bottom))}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation}
+.wrap{max-width:480px;margin:0 auto}
+.hidden{display:none!important}
+
+/* ── 頂部狀態列 ───────────────── */
+.top{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.top a.back{font-size:.82rem;color:var(--mute);text-decoration:none;padding:6px 2px}
+.pill{display:flex;align-items:center;gap:5px;background:var(--card);border-radius:999px;padding:7px 12px;font-weight:700;font-size:.9rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.pill.streak .n{color:#e8742c}
+.pill.xp .n{color:var(--blue)}
+.spacer{flex:1}
+
+/* ── 首頁：今日卡 ───────────────── */
+.today{background:var(--card);border-radius:var(--r);padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;gap:16px;align-items:center}
+.ring{position:relative;width:76px;height:76px;flex-shrink:0}
+.ring svg{transform:rotate(-90deg)}
+.ring .lbl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;line-height:1.1}
+.ring .lbl small{font-size:.62rem;color:var(--mute);font-weight:600}
+.today h2{font-size:1rem;margin-bottom:4px}
+.today p{font-size:.8rem;color:var(--mute);line-height:1.5}
+.week{display:flex;gap:6px;margin-top:10px}
+.week .d{width:26px;text-align:center;font-size:.62rem;color:var(--mute)}
+.week .d i{display:block;width:22px;height:22px;margin:0 auto 2px;border-radius:50%;background:var(--grey-soft);font-style:normal;line-height:22px;font-size:.72rem}
+.week .d.on i{background:#ffe7d3}
+.week .d.frz i{background:var(--grey-soft);color:var(--grey)}
+.week .d.now{color:var(--ink);font-weight:700}
+.today .actions{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.link-btn{font-size:.76rem;color:var(--mute);text-decoration:underline;text-underline-offset:2px;padding:2px 0}
+.badge-grey{display:inline-block;font-size:.7rem;color:#6d727c;background:var(--grey-soft);border-radius:6px;padding:2px 7px;font-weight:600}
+
+.lvl-bar{margin-top:12px;background:var(--card);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:10px;font-size:.8rem;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.lvl-bar .track{flex:1;height:8px;background:var(--grey-soft);border-radius:8px;overflow:hidden}
+.lvl-bar .fill{height:100%;background:linear-gradient(90deg,#6f8ff0,var(--blue));border-radius:8px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+
+/* ── 關卡路徑 ───────────────── */
+.world{margin-top:26px}
+.world h3{font-size:.74rem;letter-spacing:.08em;color:var(--mute);text-transform:uppercase;margin:0 0 4px 4px}
+.world .wsub{font-size:.78rem;color:var(--mute);margin:0 0 12px 4px}
+.path{position:relative;display:flex;flex-direction:column;gap:14px;padding:4px 0}
+.node{display:flex;align-items:center;gap:14px;width:100%;text-align:left}
+.node:nth-child(3n+2){padding-left:56px}
+.node:nth-child(3n+3){padding-left:112px}
+.orb{width:66px;height:66px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.25rem;background:var(--card);border:3px solid var(--line);box-shadow:0 4px 0 var(--line);transition:transform .15s}
+.node:active .orb{transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
+.node.cur .orb{background:var(--blue);color:#fff;border-color:#2449b0;box-shadow:0 4px 0 #2449b0;animation:bob 2.2s ease-in-out infinite}
+.node.done .orb{background:#fff7e0;border-color:var(--gold);box-shadow:0 4px 0 #d79c19}
+.node.skp .orb{background:var(--grey-soft);border-color:var(--grey);box-shadow:0 4px 0 var(--grey);color:#6d727c}
+.node.lock .orb{opacity:.45}
+.node .meta b{display:block;font-size:.92rem}
+.node .meta span{font-size:.74rem;color:var(--mute)}
+.node .meta .stars{font-size:.95rem;letter-spacing:1px;color:var(--gold)}
+.node .meta .stars .off{color:#ddd}
+.node .meta .badge-grey{color:#6d727c}
+.node .meta b{font-family:Georgia,'Times New Roman','Noto Serif',serif;font-size:1rem}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.pending{margin-top:8px;font-size:.74rem;color:var(--mute);background:var(--grey-soft);border-radius:12px;padding:8px 12px}
+
+/* ── 關卡畫面 ───────────────── */
+.play-top{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.x{width:36px;height:36px;border-radius:50%;font-size:1.1rem;color:var(--mute)}
+.prog{flex:1;height:12px;background:#e5e1d6;border-radius:12px;overflow:hidden;position:relative}
+.prog .fill{height:100%;width:0;background:var(--ok);border-radius:12px;transition:width .35s cubic-bezier(.2,.8,.2,1)}
+.combo{min-width:52px;text-align:right;font-weight:800;color:#e8742c;font-size:.9rem;opacity:0;transition:opacity .2s}
+.combo.on{opacity:1}
+.combo.pop{animation:pop .35s}
+.qtype{font-size:.74rem;color:var(--mute);font-weight:700;letter-spacing:.05em;margin-bottom:8px}
+.prompt{background:var(--card);border-radius:var(--r);padding:22px 16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.06);min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.big-play{width:84px;height:84px;border-radius:50%;background:var(--blue);color:#fff;font-size:2rem;box-shadow:0 5px 0 #2449b0;display:flex;align-items:center;justify-content:center;transition:transform .1s}
+.big-play:active{transform:translateY(4px);box-shadow:0 1px 0 #2449b0}
+.big-play.playing{animation:pulse 1s infinite}
+@keyframes pulse{0%{box-shadow:0 5px 0 #2449b0,0 0 0 0 rgba(47,91,211,.45)}100%{box-shadow:0 5px 0 #2449b0,0 0 0 18px rgba(47,91,211,0)}}
+.hint{font-size:.78rem;color:var(--mute)}
+.graph{font-family:Georgia,serif;font-size:1.6rem;font-weight:700;letter-spacing:.02em}
+.sent{font-size:1.05rem;line-height:1.6;font-family:Georgia,serif}
+.sent.veil{filter:blur(6px);user-select:none}
+.ul{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;color:var(--blue)}
+.src-note{font-size:.7rem;color:var(--mute);background:var(--grey-soft);border-radius:8px;padding:4px 8px}
+
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.opt{background:var(--card);border:2px solid var(--line);border-bottom-width:5px;border-radius:16px;padding:16px 8px 12px;text-align:center;transition:transform .08s,background .15s,border-color .15s}
+.opt:active{transform:translateY(2px)}
+.opt .ipa{display:block;font-family:Georgia,'Times New Roman',serif;font-size:1.7rem;font-weight:700}
+.opt .src{display:block;font-size:.64rem;color:var(--mute);margin-top:2px;min-height:.9em}
+.opt.ok{background:var(--ok-soft);border-color:var(--ok);animation:pop .4s}
+.opt.no{background:var(--no-soft);border-color:var(--no);animation:shake .4s}
+.opt.dim{opacity:.45}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
+.skiprow{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:8px}
+.ghost{font-size:.8rem;color:#6d727c;background:var(--grey-soft);border-radius:999px;padding:8px 14px;font-weight:600}
+
+/* 回饋抽屜 */
+.sheet{position:fixed;left:0;right:0;bottom:0;padding:16px 16px calc(18px + env(safe-area-inset-bottom));transform:translateY(110%);visibility:hidden;transition:transform .28s cubic-bezier(.2,.8,.2,1),visibility 0s .28s;z-index:20}
+.sheet.show{transform:none;visibility:visible;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+body.sheet-open{padding-bottom:300px}
+.sheet .in{max-width:480px;margin:0 auto}
+.sheet.good{background:var(--ok-soft)}
+.sheet.bad{background:var(--no-soft)}
+.sheet h4{font-size:1.05rem;margin-bottom:6px}
+.sheet.good h4{color:var(--ok)}
+.sheet.bad h4{color:#c24a33}
+.sheet .cmp{display:flex;gap:8px;margin:8px 0 12px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border-radius:999px;padding:7px 12px;font-size:.86rem;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.chip b{font-family:Georgia,serif}
+.sheet .sent{font-size:.95rem;margin-bottom:10px}
+.cta{width:100%;padding:15px;border-radius:16px;font-weight:800;font-size:1rem;color:#fff;background:var(--ok);box-shadow:0 4px 0 #157551}
+.sheet.bad .cta{background:var(--no);box-shadow:0 4px 0 #b64b36}
+.cta:active{transform:translateY(3px);box-shadow:none}
+.cta.blue{background:var(--blue);box-shadow:0 4px 0 #2449b0}
+
+/* 飄字與粒子 */
+.float{position:fixed;pointer-events:none;font-weight:800;color:var(--blue);font-size:1rem;z-index:30;animation:floatUp .9s ease-out forwards}
+@keyframes floatUp{from{opacity:1;transform:translate(-50%,0)}to{opacity:0;transform:translate(-50%,-46px)}}
+.spark{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:29;animation:spark .7s ease-out forwards}
+@keyframes spark{to{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(200deg)}}
+
+/* 過關畫面 */
+.result{text-align:center;padding-top:30px}
+.result .trophy{font-size:3.4rem;animation:pop .6s}
+.result h2{margin:10px 0 4px;font-size:1.4rem}
+.result .bigstars{font-size:2.2rem;letter-spacing:6px;margin:10px 0}
+.result .bigstars span{display:inline-block;color:#ddd}
+.result .bigstars span.on{color:var(--gold);animation:starIn .5s both}
+@keyframes starIn{0%{transform:scale(0) rotate(-40deg)}70%{transform:scale(1.25)}100%{transform:scale(1)}}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}
+.stat{background:var(--card);border-radius:14px;padding:12px 6px}
+.stat b{display:block;font-size:1.2rem}
+.stat span{font-size:.7rem;color:var(--mute)}
+.result .row2{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+
+/* ── 桌面版：左路徑、右側欄 ───────────────── */
+@media (min-width:900px){
+  .wrap{max-width:980px}
+  #home{display:grid;grid-template-columns:340px 1fr;gap:34px;align-items:start}
+  #side{position:sticky;top:20px}
+  #playWrap{max-width:560px;margin:0 auto}
+  .sheet .in{max-width:560px}
+  .opts{grid-template-columns:repeat(4,1fr)}
+  .world:first-child{margin-top:0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<audio id="player" playsinline src="audio/french_pronunciation.m4a" preload="auto"></audio>
+<div class="wrap">
+
+  <div class="top">
+    <a class="back" href="index.html">← 發音表</a>
+    <div class="spacer"></div>
+    <div class="pill streak" title="連續天數"><span>🔥</span><span class="n" id="stStreak">0</span></div>
+    <div class="pill xp" title="經驗值"><span>⭐</span><span class="n" id="stXp">0</span></div>
+  </div>
+
+  <!-- 首頁 -->
+  <div id="home">
+    <div id="side">
+      <div class="today">
+        <div class="ring">
+          <svg width="76" height="76"><circle cx="38" cy="38" r="32" stroke="#efece4" stroke-width="9" fill="none"/>
+            <circle id="ringFill" cx="38" cy="38" r="32" stroke="#e8742c" stroke-width="9" fill="none" stroke-linecap="round" stroke-dasharray="201" stroke-dashoffset="201" style="transition:stroke-dashoffset .7s"/></svg>
+          <div class="lbl"><span id="goalN">0/15</span><small>今日題數</small></div>
+        </div>
+        <div style="flex:1;min-width:0">
+          <h2 id="todayTitle">今天聽 15 題就點燃 🔥</h2>
+          <p id="todaySub">一關大約 2 分鐘。</p>
+          <div class="week" id="week"></div>
+          <div class="actions"><button class="link-btn" id="skipToday">今天跳過</button></div>
+        </div>
+      </div>
+      <div class="lvl-bar"><b id="plLv">Lv 1</b><div class="track"><div class="fill" id="plFill" style="width:0"></div></div><span id="plNext" style="color:var(--mute)">0/200</span></div>
+    </div>
+    <div id="map"></div>
+  </div>
+
+  <!-- 關卡 -->
+  <div id="playWrap" class="hidden">
+    <div class="play-top">
+      <button class="x" id="quit" aria-label="離開">✕</button>
+      <div class="prog"><div class="fill" id="progFill"></div></div>
+      <div class="combo" id="combo">🔥×0</div>
+    </div>
+    <div class="qtype" id="qType"></div>
+    <div class="prompt" id="prompt"></div>
+    <div class="opts" id="opts"></div>
+    <div class="skiprow">
+      <button class="ghost" id="btnKnown">會了</button>
+      <button class="ghost" id="btnSkipRest">⏭ 這關剩下的跳過</button>
+    </div>
+  </div>
+
+  <!-- 結算 -->
+  <div id="resultWrap" class="hidden"></div>
+</div>
+
+<div class="sheet" id="sheet"><div class="in" id="sheetIn"></div></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ════════ 資料：完全取自 index.html 的發音表與音檔分段 ════════
+   ipa＝標準寫法；src＝原表寫法（不同時才顯示）；s＝音標分段；ex＝例句（[ ] 是原表畫線處）、e＝例句分段 */
+var S = {
+  i :{ipa:'i', g:'i, y',                 s:[0,1.2],      ex:"Il est m[i]d[i]",                              e:[0.9,3.4]},
+  y :{ipa:'y', g:'u',                    s:[3.3,4.6],    ex:"T[u] as v[u] le men[u] ?",                     e:[4.7,7.6]},
+  u :{ipa:'u', g:'ou',                   s:[8.0,9.4],    ex:"V[ou]s allez [où] ?",                          e:[9.1,11.5]},
+  e :{ipa:'e', g:'é, er, ez, ed',        s:[11.7,12.7],  ex:"Rog[er] a mal au pi[ed]",                      e:[12.8,16.3]},
+  eu:{ipa:'ø', g:'eu, œu',               s:[16.2,17.4],  ex:"D[eu]x [eu]ros, c'est p[eu]",                  e:[17.3,21.15]},
+  o :{ipa:'o', g:'o, au, eau',           s:[21.1,22.4],  ex:"Il y a b[eau]coup d'[au]t[o]s",                e:[22.0,25.4]},
+  E :{ipa:'ɛ', g:'e, è, ê, ai, ei',      s:[25.45,26.55],ex:"Hél[è]ne, passe-moi le s[e]l",                 e:[26.6,30.4]},
+  a :{ipa:'a', g:'a',                    s:[31.3,32.5],  ex:"[A]nne h[a]bite au C[a]n[a]d[a]",              e:[32.5,36.4]},
+  wa:{ipa:'wa',src:'ua', g:'oi',         s:[36.6,37.9],  ex:"Le chat est sur le t[oi]t",                    e:[38.2,41.4]},
+  in:{ipa:'ɛ̃', src:'ẽ', g:'in, ain, ein', s:[42.2,43.4],  ex:"Ils se serrent la m[ain]",                     e:[43.2,46.5]},
+  un:{ipa:'œ̃', g:'un, um',               s:[46.6,47.9],  ex:"[Un], rue Lebr[un]",                           e:[48.0,50.6]},
+  on:{ipa:'ɔ̃', src:'õ', g:'on',          s:[51.2,52.4],  ex:"All[on]s sous le p[on]t",                      e:[52.6,55.7]},
+  an:{ipa:'ɑ̃', src:'ã', g:'en, an',      s:[55.5,56.7],  ex:"Il a tr[en]te [an]s",                          e:[56.7,59.4]},
+  k :{ipa:'k', src:'K', g:'qu, k, c, ca, co, cu', s:[60.2,61.4], ex:"Le [c]amion a abîmé mon sa[c]",       e:[61.4,65.4]},
+  g :{ipa:'g', g:'ga, go, gu',           s:[66.1,67.4],  ex:"Elle mange un [g]âteau",                       e:[67.4,70.4],
+      note:'原表把 mange 的 g 也畫線；但 mange 的 g 念 [ʒ]，這裡只畫 gâteau。'},
+  f :{ipa:'f', g:'f, ff, ph',            s:[70.9,72.4],  ex:"Il prend un ca[f]é au bu[ff]et et il télé[ph]one", e:[72.1,78.4]},
+  s :{ipa:'s', g:'s, ç, ss, ce, ci, ti, x', s:[78.6,80.4],ex:"Fran[ç]ois regarde les poi[ss]ons",            e:[80.1,84.4]},
+  sh:{ipa:'ʃ', g:'ch',                   s:[84.3,85.6],  ex:"Le [ch]at aime le [ch]ocolat",                 e:[85.8,89.9]},
+  gn:{ipa:'ɲ', g:'gn',                   s:[90.1,91.4],  ex:"Il a une montre au poi[gn]et",                 e:[91.3,95.4]},
+  l :{ipa:'l', g:'l, ll',                s:[95.2,96.4],  ex:"J'ai p[l]us de mi[ll]e [l]ivres",              e:[96.4,100.4]},
+  z :{ipa:'z', g:'s, z, x',              s:[100.35,102.15],ex:"Un e[x]emple : dou[z]e mai[s]ons",           e:[101.8,106.4]},
+  v :{ipa:'v', g:'v',                    s:[106.0,107.4],ex:"[V]oici un [v]élo",                            e:[107.5,110.6]},
+  zh:{ipa:'ʒ', g:'j, ge, gi',            s:[110.8,112.1],ex:"Un oiseau [j]aune s'a[gi]te dans la ca[ge]",   e:[112.8,118.4]}
+};
+
+var WORLDS = [
+  {id:'w1', name:'口腔母音', sub:'Voyelles orales', levels:[
+    {id:'L1', name:'i · y · u',   set:['i','y','u']},
+    {id:'L2', name:'e · ɛ · ø',   set:['e','E','eu']},
+    {id:'L3', name:'o · a · wa',  set:['o','a','wa']}
+  ], pending:'(œ)(ɔ) 原表還沒有錄音，等補錄再開關。'},
+  {id:'w2', name:'鼻母音', sub:'Voyelles nasales', levels:[
+    {id:'L4', name:'ɛ̃ · œ̃',      set:['in','un'], pad:['on']},
+    {id:'L5', name:'ɔ̃ · ɑ̃',      set:['on','an'], pad:['in']},
+    {id:'L6', name:'四個鼻音',    set:['in','un','on','an'], mix:true}
+  ]},
+  {id:'w3', name:'子音', sub:'Consonnes', levels:[
+    {id:'L7', name:'k · g · f',      set:['k','g','f']},
+    {id:'L8', name:'s · z · ʃ · ʒ',  set:['s','z','sh','zh']},
+    {id:'L9', name:'ɲ · l · v',      set:['gn','l','v']}
+  ]},
+  {id:'w4', name:'魔王關', sub:'易混音對決', levels:[
+    {id:'L10', name:'易混音對決', boss:true, pairs:[['y','u'],['e','E'],['on','an'],['s','z'],['sh','zh'],['in','an'],['o','on']]}
+  ]}
+];
+var ALL_LEVELS = []; WORLDS.forEach(function(w){ w.levels.forEach(function(l){ l.world=w; ALL_LEVELS.push(l); }); });
+
+var GOAL = 15;
+
+/* ════════ 存檔（形狀配合 sync_supabase.js：每個 key 底下是帶 last 的物件）════════ */
+var K_PROG='clb7_sons_quest', K_KNOWN='clb7_sons_known';
+function load(k){ try{ var v=JSON.parse(localStorage.getItem(k)); return (v&&typeof v==='object'&&!Array.isArray(v))?v:{}; }catch(e){ return {}; } }
+function save(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+function today(d){ return (d||new Date()).toLocaleDateString('sv-SE'); }
+function dayOf(p, d){ var k='day_'+d; return p[k] || {answered:0, correct:0, skipped:0, frozen:false, last:0}; }
+function putDay(p, d, o){ o.last=Date.now(); p['day_'+d]=o; }
+function meta(p){ return p._meta || {xp:0, last:0}; }
+
+/* 連勝：從今天（或昨天）往回數「有玩的日子」；❄ 今天跳過的日子不中斷也不加 */
+function streak(p){
+  var n=0, d=new Date(), t=today(d);
+  var first=dayOf(p,t);
+  if(!(first.answered>0) && !first.frozen){ d.setDate(d.getDate()-1); }   // 今天還沒玩不算斷
+  for(var i=0;i<400;i++){
+    var x=dayOf(p, today(d));
+    if(x.answered>0) n++;
+    else if(!x.frozen) break;
+    d.setDate(d.getDate()-1);
+  }
+  return n;
+}
+
+function markKnown(sid){
+  var o=load(K_KNOWN), prev=o[sid];
+  o[sid]={id:sid, ipa:S[sid].ipa, n:(prev&&prev.n||0)+1, last:Date.now()};
+  save(K_KNOWN,o);
+}
+
+/* ════════ 小工具 ════════ */
+function $(id){ return document.getElementById(id); }
+function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function sentHTML(s){ return esc(s).replace(/\[([^\]]+)\]/g,'<span class="ul">$1</span>'); }
+function srcTag(sid){ return S[sid].src ? '表：('+esc(S[sid].src)+')' : ''; }
+
+/* ════════ 音訊：同一支 m4a 分段播放 ════════ */
+var audio=$('player'), stopAt=null, stopTimer=null, playBtn=null;
+document.addEventListener('touchstart', function(){ audio.load(); }, {once:true});
+function play(seg, btn){
+  clearTimeout(stopTimer);
+  if(playBtn) playBtn.classList.remove('playing');
+  playBtn=btn||null; if(playBtn) playBtn.classList.add('playing');
+  stopAt=seg[1];
+  try{ audio.currentTime=Math.max(0,seg[0]); }catch(e){}
+  var pr=audio.play(); if(pr&&pr.catch) pr.catch(function(){});
+  stopTimer=setTimeout(stop, (seg[1]-seg[0])*1000+400);
+}
+function stop(){ audio.pause(); stopAt=null; if(playBtn){ playBtn.classList.remove('playing'); playBtn=null; } }
+audio.addEventListener('timeupdate', function(){ if(stopAt!==null && audio.currentTime>=stopAt) stop(); });
+
+/* ════════ 首頁 ════════ */
+function levelState(p, lv){ return p[lv.id] || null; }
+function isOpen(p, idx){ if(idx===0) return true; var prev=levelState(p, ALL_LEVELS[idx-1]); return !!(prev && (prev.done)); }
+
+function renderTop(p){
+  var m=meta(p), st=streak(p);
+  $('stStreak').textContent=st; $('stXp').textContent=m.xp;
+  var lv=Math.floor(m.xp/200)+1, into=m.xp%200;
+  $('plLv').textContent='Lv '+lv; $('plFill').style.width=(into/2)+'%'; $('plNext').textContent=into+'/200';
+}
+
+function renderHome(){
+  var p=load(K_PROG), t=today(), d=dayOf(p,t);
+  renderTop(p);
+  var n=Math.min(d.answered,GOAL);
+  $('goalN').textContent=d.answered+'/'+GOAL;
+  $('ringFill').setAttribute('stroke-dashoffset', String(201-201*n/GOAL));
+  $('ringFill').setAttribute('stroke', d.frozen && !d.answered ? '#b9bdc6' : '#e8742c');
+  if(d.frozen && !d.answered){
+    $('todayTitle').innerHTML='今天休息 <span class="badge-grey">今天跳過</span>';
+    $('todaySub').textContent='連續天數保留著。想玩隨時都可以點下面任何一關。';
+    $('skipToday').textContent='取消今天跳過';
+  } else if(d.answered>=GOAL){
+    $('todayTitle').textContent='今天的火點燃了 🔥';
+    $('todaySub').textContent='再玩也會加經驗值，不玩也完全可以。';
+    $('skipToday').classList.add('hidden');
+  } else {
+    $('todayTitle').textContent= d.answered? '還差 '+(GOAL-d.answered)+' 題' : '今天聽 '+GOAL+' 題就點燃 🔥';
+    $('todaySub').textContent='一關大約 2 分鐘。答一題就算今天有來。';
+    $('skipToday').textContent='今天跳過'; $('skipToday').classList.remove('hidden');
+  }
+  // 一週小點
+  var w='', dd=new Date(); dd.setDate(dd.getDate()-6);
+  var names='日一二三四五六';
+  for(var i=0;i<7;i++){
+    var k=today(dd), x=dayOf(p,k), cls='d', ic='';
+    if(x.answered>0){ cls+=' on'; ic= x.answered>=GOAL?'🔥':'•'; }
+    else if(x.frozen){ cls+=' frz'; ic='❄'; }
+    if(k===t) cls+=' now';
+    w+='<div class="'+cls+'"><i>'+ic+'</i>'+names[dd.getDay()]+'</div>';
+    dd.setDate(dd.getDate()+1);
+  }
+  $('week').innerHTML=w;
+
+  // 路徑
+  var html='', curFound=false;
+  WORLDS.forEach(function(wd){
+    html+='<div class="world"><h3>'+esc(wd.sub)+'</h3><div class="wsub">'+esc(wd.name)+'</div><div class="path">';
+    wd.levels.forEach(function(lv){
+      var idx=ALL_LEVELS.indexOf(lv), stt=levelState(p,lv), open=isOpen(p,idx);
+      var cls='node', inner=String(idx+1), sub='';
+      if(stt && stt.done){
+        if(stt.stars>0){ cls+=' done'; inner='★'; sub='<span class="stars">'+'★'.repeat(stt.stars)+'<span class="off">'+'★'.repeat(3-stt.stars)+'</span></span>'; }
+        else { cls+=' skp'; inner='⏭'; sub='<span class="badge-grey">跳過</span>'; }
+      } else if(open && !curFound){ cls+=' cur'; curFound=true; inner=lv.boss?'👑':'▶'; sub='<span>點我開始</span>'; }
+      else if(!open){ cls+=' lock'; inner='🔒'; sub='<span>先過上一關</span>'; }
+      else { sub='<span>可以玩</span>'; }
+      html+='<button class="'+cls+'" data-lv="'+lv.id+'"'+(open?'':' disabled')+'><div class="orb">'+inner+'</div><div class="meta"><b>'+esc(lv.name)+'</b>'+sub+'</div></button>';
+    });
+    html+='</div>'+(wd.pending?'<div class="pending">⏳ '+esc(wd.pending)+'</div>':'')+'</div>';
+  });
+  $('map').innerHTML=html;
+  Array.prototype.forEach.call(document.querySelectorAll('#map .node'), function(b){
+    b.addEventListener('click', function(){ if(!b.disabled) startLevel(b.dataset.lv); });
+  });
+}
+
+$('skipToday').addEventListener('click', function(){
+  var p=load(K_PROG), t=today(), d=dayOf(p,t);
+  d.frozen=!d.frozen; putDay(p,t,d); save(K_PROG,p); renderHome();
+});
+
+/* ════════ 出題 ════════ */
+var TYPES={
+  hear:{label:'👂 聽音 → 選音標'},
+  sent:{label:'🗣 聽句子 → 它在練哪個音？'},
+  graph:{label:'👀 看拼法 → 念哪個音？'}
+};
+function optionPool(lv, sid){
+  var base = lv.boss ? null : lv.set.concat(lv.pad||[]);
+  return base;
+}
+function makeQ(type, sid, opts){
+  return {id:type+':'+sid, type:type, sid:sid, opts:shuffle(opts)};
+}
+function buildLevel(lv){
+  var qs=[];
+  if(lv.boss){
+    shuffle(lv.pairs).forEach(function(pr, i){
+      var t = i%2 ? 'sent' : 'hear', sid = pr[Math.random()<.5?0:1];
+      qs.push(makeQ(t, sid, pr.slice()));
+    });
+    // 再加一題「看拼法」收尾
+    var pr=lv.pairs[Math.floor(Math.random()*lv.pairs.length)];
+    qs.push(makeQ('graph', pr[0], pr.slice()));
+  } else if(lv.mix){
+    // 自評「會了」的音出現機率降低（⛔ 不刪）
+    var kn=load(K_KNOWN);
+    var bag=[]; lv.set.forEach(function(sid){ var n=kn[sid]&&kn[sid].n||0; var w=Math.max(1,4-n); for(var i=0;i<w;i++) bag.push(sid); });
+    var tps=['hear','sent','graph','hear','sent','hear','graph','sent'];
+    tps.forEach(function(t){ var sid=bag[Math.floor(Math.random()*bag.length)]; qs.push(makeQ(t, sid, lv.set)); });
+  } else {
+    var pool=optionPool(lv);
+    lv.set.forEach(function(sid){ ['hear','sent','graph'].forEach(function(t){ qs.push(makeQ(t, sid, pool)); }); });
+    qs=shuffle(qs).slice(0,8);
+  }
+  // 同 id 去重（混合關可能重複，加序號）
+  var seen={}; qs.forEach(function(q){ if(seen[q.id]){ q.id+='#'+(seen[q.id]++); } else seen[q.id]=1; });
+  return qs;
+}
+
+/* ════════ 關卡進行 ════════ */
+var R=null;   // 這一輪的狀態
+function startLevel(lvId, keepSkip){
+  var lv=ALL_LEVELS.filter(function(l){return l.id===lvId;})[0];
+  var p=load(K_PROG), prev=p[lvId]||{};
+  var qs = (keepSkip && R && R.lv===lv) ? R.qs.map(function(q){ return {id:q.id,type:q.type,sid:q.sid,opts:shuffle(q.opts)}; }) : buildLevel(lv);
+  // ⭐ 重玩時保持跳過：上一輪在這關跳過的題（同 id）維持跳過
+  var keep = (prev.skip||[]);
+  R={lv:lv, qs:qs, i:0, combo:0, best:0, xp:0, firstOk:0, answered:0, skipped:0, retry:[], inRetry:false, locked:false};
+  qs.forEach(function(q){ if(keep.indexOf(q.id)>=0){ q.skip=true; R.skipped++; } });
+  $('home').classList.add('hidden'); $('resultWrap').classList.add('hidden'); $('playWrap').classList.remove('hidden');
+  window.scrollTo(0,0);
+  next(true);
+}
+
+function curList(){ return R.inRetry ? R.retry : R.qs; }
+function next(first){
+  if(!first) R.i++;
+  var list=curList();
+  while(R.i<list.length && list[R.i].skip) R.i++;
+  if(R.i>=list.length){
+    if(!R.inRetry && R.retry.length){ R.inRetry=true; R.i=0; return next(true); }
+    return finish();
+  }
+  renderQ(list[R.i]);
+}
+
+function updProg(){
+  var total=R.qs.length, done=0;
+  R.qs.forEach(function(q){ if(q.skip || q.res) done++; });
+  if(R.inRetry){ done = total - (R.retry.length - R.i)*0.5; }
+  $('progFill').style.width=Math.min(100, done/total*100)+'%';
+}
+
+function renderQ(q){
+  R.locked=false; hideSheet(); updProg();
+  var s=S[q.sid];
+  $('qType').textContent=(R.inRetry?'🔁 再聽一次 · ':'')+TYPES[q.type].label;
+  var pr='';
+  if(q.type==='hear'){
+    pr='<button class="big-play" id="pBtn" aria-label="播放">🔊</button><div class="hint">點喇叭再聽一次</div>';
+  } else if(q.type==='sent'){
+    pr='<button class="big-play" id="pBtn" aria-label="播放">🔊</button><div class="sent veil" id="pSent">'+sentHTML(s.ex)+'</div><div class="hint">先用耳朵，答完才看得到句子</div>';
+  } else {
+    pr='<div class="hint">這些拼法念什麼？</div><div class="graph">'+esc(s.g)+'</div>';
+  }
+  $('prompt').innerHTML=pr;
+  var b=$('pBtn');
+  if(b){ var seg = q.type==='hear'? s.s : s.e; b.addEventListener('click', function(){ play(seg,b); }); setTimeout(function(){ play(seg,b); }, 250); }
+  $('opts').innerHTML=q.opts.map(function(o){
+    return '<button class="opt" data-o="'+o+'"><span class="ipa">'+esc(S[o].ipa)+'</span><span class="src">'+srcTag(o)+'</span></button>';
+  }).join('');
+  Array.prototype.forEach.call(document.querySelectorAll('#opts .opt'), function(el){
+    el.addEventListener('click', function(){ answer(q, el.dataset.o, el); });
+  });
+  $('btnKnown').disabled=false; $('btnKnown').style.opacity=1;
+}
+
+function answer(q, o, el){
+  if(R.locked) return; R.locked=true;
+  var ok = (o===q.sid), s=S[q.sid];
+  var opts=document.querySelectorAll('#opts .opt');
+  Array.prototype.forEach.call(opts, function(x){
+    if(x.dataset.o===q.sid) x.classList.add('ok');
+    else if(x===el) x.classList.add('no');
+    else x.classList.add('dim');
+  });
+  var sv=$('pSent'); if(sv) sv.classList.remove('veil');
+  $('btnKnown').disabled=true; $('btnKnown').style.opacity=.4;
+
+  var p=load(K_PROG), t=today(), d=dayOf(p,t);
+  if(!R.inRetry){ d.answered++; R.answered++; }
+  if(ok){
+    var gain=10 + (R.combo>=2?5:0);
+    R.combo++; R.best=Math.max(R.best,R.combo); R.xp+=gain;
+    if(!R.inRetry){ R.firstOk++; d.correct++; q.res='ok'; }
+    var m=meta(p); m.xp+=gain; m.last=Date.now(); p._meta=m;
+    burst(el); floatText(el, '+'+gain);
+  } else {
+    R.combo=0;
+    if(!R.inRetry){ q.res='no'; R.retry.push({id:q.id+'~r', type:q.type, sid:q.sid, opts:shuffle(q.opts)}); }
+  }
+  putDay(p,t,d); save(K_PROG,p); renderTop(p);
+  var c=$('combo'); c.textContent='🔥×'+R.combo; c.classList.toggle('on', R.combo>=2);
+  if(R.combo>=2){ c.classList.remove('pop'); void c.offsetWidth; c.classList.add('pop'); }
+  updProg();
+  showFeedback(ok, q, o);
+}
+
+function showFeedback(ok, q, picked){
+  var s=S[q.sid], h='';
+  if(ok){
+    var cheer=['Bien !','Très bien !','Parfait !','Bravo !'][Math.min(3,Math.floor(R.combo/2))];
+    h='<h4>✓ '+cheer+(R.combo>=3?' 連對 '+R.combo+' 題':'')+'</h4>';
+    h+='<div class="sent">'+sentHTML(s.ex)+'</div>';
+  } else {
+    h='<h4>差一點——是 ['+esc(s.ipa)+']</h4>';
+    h+='<div class="cmp"><button class="chip" data-seg="s:'+q.sid+'">🔊 正解 <b>'+esc(s.ipa)+'</b></button>'+
+       '<button class="chip" data-seg="s:'+picked+'">🔊 你選的 <b>'+esc(S[picked].ipa)+'</b></button>'+
+       '<button class="chip" data-seg="e:'+q.sid+'">🔊 例句</button></div>';
+    h+='<div class="sent">'+sentHTML(s.ex)+'</div>';
+    h+='<div class="hint" style="margin-bottom:10px">拼法：'+esc(s.g)+'　·　這題會在關尾再出一次</div>';
+  }
+  if(s.note) h+='<div class="src-note" style="margin-bottom:10px">📎 '+esc(s.note)+'</div>';
+  h+='<button class="cta" id="goNext">繼續</button>';
+  document.body.classList.add('sheet-open'); var sh=$('sheet'); sh.className='sheet show '+(ok?'good':'bad'); $('sheetIn').innerHTML=h;
+  Array.prototype.forEach.call(sh.querySelectorAll('.chip'), function(cp){
+    cp.addEventListener('click', function(){ var a=cp.dataset.seg.split(':'); play(a[0]==='s'?S[a[1]].s:S[a[1]].e); });
+  });
+  $('goNext').addEventListener('click', function(){ next(); });
+  if(ok && q.type!=='sent') setTimeout(function(){ if(R && R.locked) play(s.e); }, 350);
+}
+function hideSheet(){ $('sheet').className='sheet'; document.body.classList.remove('sheet-open'); }
+
+/* ── 跳過：題 ── */
+$('btnKnown').addEventListener('click', function(){
+  if(R.locked) return;
+  var q=curList()[R.i];
+  q.skip=true; markKnown(q.sid);
+  if(!R.inRetry){ R.skipped++; rememberSkip([q.id]); }
+  else { var orig=R.qs.filter(function(x){return x.id+'~r'===q.id;})[0]; if(orig) orig.retrySkipped=true; }
+  toast('已記下：['+S[q.sid].ipa+'] 這輪不算');
+  next();
+});
+/* ── 跳過：整關剩下的（已作答的不動） ── */
+$('btnSkipRest').addEventListener('click', function(){
+  var ids=[];
+  if(!R.inRetry){
+    R.qs.forEach(function(q,idx){ if(idx>=R.i && !q.skip && !q.res){ q.skip=true; R.skipped++; ids.push(q.id); } });
+    rememberSkip(ids);
+  }
+  R.retry=[]; R.inRetry=false; R.i=R.qs.length;
+  finish();
+});
+function rememberSkip(ids){
+  if(!ids.length) return;
+  var p=load(K_PROG), L=p[R.lv.id]||{}; L.skip=(L.skip||[]).concat(ids.filter(function(x){ return (L.skip||[]).indexOf(x)<0; }));
+  L.last=Date.now(); p[R.lv.id]=L; save(K_PROG,p);
+  var t=today(), d=dayOf(p,t); d.skipped+=ids.length; putDay(p,t,d); save(K_PROG,p);
+}
+
+$('quit').addEventListener('click', function(){ stop(); hideSheet(); R=null; showHome(); });
+
+/* ════════ 結算 ════════ */
+function finish(){
+  stop(); hideSheet();
+  var denom=R.answered, acc= denom? R.firstOk/denom : 0;
+  var stars= denom===0 ? 0 : acc>=.9 ? 3 : acc>=.7 ? 2 : 1;
+  var p=load(K_PROG), L=p[R.lv.id]||{};
+  var bonus = stars*20;
+  L.done=true; L.stars=Math.max(L.stars||0, stars); L.best=Math.max(L.best||0, Math.round(acc*100)); L.plays=(L.plays||0)+1; L.last=Date.now();
+  p[R.lv.id]=L;
+  var m=meta(p); m.xp+=bonus; m.last=Date.now(); p._meta=m; save(K_PROG,p); renderTop(p);
+  R.xp+=bonus;
+
+  var d=dayOf(p,today()), lit=d.answered>=GOAL;
+  var title = denom===0 ? '這關先放著' : stars===3 ? 'Magnifique !' : stars===2 ? 'Très bien !' : '過關！';
+  var h='<div class="result">';
+  h+='<div class="trophy">'+(denom===0?'⏭':(R.lv.boss?'👑':'🏆'))+'</div><h2>'+title+'</h2>';
+  h+='<div class="hint">'+esc(R.lv.world.name)+' · '+esc(R.lv.name)+'</div>';
+  if(denom>0){
+    h+='<div class="bigstars">'+[0,1,2].map(function(i){ return '<span class="'+(i<stars?'on':'')+'" style="animation-delay:'+(0.2+i*0.18)+'s">★</span>'; }).join('')+'</div>';
+  }
+  h+='<div class="statgrid">'+
+     '<div class="stat"><b>'+R.firstOk+'/'+denom+'</b><span>一次就對</span></div>'+
+     '<div class="stat"><b>+'+R.xp+'</b><span>經驗值</span></div>'+
+     '<div class="stat"><b>🔥'+R.best+'</b><span>最高連對</span></div></div>';
+  if(R.skipped) h+='<div style="margin-bottom:10px"><span class="badge-grey">跳過 '+R.skipped+'</span></div>';
+  if(lit) h+='<div class="hint" style="margin-bottom:14px">今天的 🔥 已點燃，連續 '+streak(p)+' 天</div>';
+  else h+='<div class="hint" style="margin-bottom:14px">今天 '+d.answered+'/'+GOAL+' 題</div>';
+  h+='<div class="row2">';
+  var idx=ALL_LEVELS.indexOf(R.lv), nx=ALL_LEVELS[idx+1];
+  if(nx) h+='<button class="cta blue" id="rNext">下一關：'+esc(nx.name)+'</button>';
+  h+='<button class="cta" style="background:#fff;color:var(--ink);box-shadow:0 3px 0 var(--line)" id="rAgain">重玩這關</button>';
+  if((L.skip||[]).length) h+='<button class="link-btn" id="rUnskip">把跳過的 '+L.skip.length+' 題放回這關</button>';
+  h+='<button class="link-btn" id="rHome">回地圖</button></div></div>';
+  $('playWrap').classList.add('hidden');
+  var rw=$('resultWrap'); rw.innerHTML=h; rw.classList.remove('hidden'); window.scrollTo(0,0);
+  if(stars===3) setTimeout(function(){ confetti(); }, 500);
+  if(nx) $('rNext').addEventListener('click', function(){ startLevel(nx.id); });
+  $('rAgain').addEventListener('click', function(){ startLevel(R.lv.id, true); });
+  if($('rUnskip')) $('rUnskip').addEventListener('click', function(){
+    var p2=load(K_PROG); p2[R.lv.id].skip=[]; p2[R.lv.id].last=Date.now(); save(K_PROG,p2);
+    $('rUnskip').textContent='已放回，下次玩這關會出現'; $('rUnskip').disabled=true;
+  });
+  $('rHome').addEventListener('click', showHome);
+}
+function showHome(){ $('playWrap').classList.add('hidden'); $('resultWrap').classList.add('hidden'); $('home').classList.remove('hidden'); renderHome(); window.scrollTo(0,0); }
+
+/* ════════ 動畫小物 ════════ */
+var COLORS=['#2f5bd3','#1f9d6b','#f2b632','#e8742c','#e0674f'];
+function rectC(el){ var r=el.getBoundingClientRect(); return {x:r.left+r.width/2, y:r.top+r.height/2}; }
+function floatText(el, txt){ var c=rectC(el), f=document.createElement('div'); f.className='float'; f.textContent=txt; f.style.left=c.x+'px'; f.style.top=(c.y-30)+'px'; document.body.appendChild(f); setTimeout(function(){ f.remove(); }, 950); }
+function burst(el, n){
+  var c=rectC(el); n=n||14;
+  for(var i=0;i<n;i++){
+    var sp=document.createElement('div'); sp.className='spark';
+    var a=Math.random()*Math.PI*2, r=40+Math.random()*50;
+    sp.style.left=c.x+'px'; sp.style.top=c.y+'px'; sp.style.background=COLORS[i%COLORS.length];
+    sp.style.setProperty('--dx', Math.cos(a)*r+'px'); sp.style.setProperty('--dy', Math.sin(a)*r+'px');
+    document.body.appendChild(sp); (function(s){ setTimeout(function(){ s.remove(); }, 750); })(sp);
+  }
+}
+function confetti(){ var fake={getBoundingClientRect:function(){ return {left:innerWidth/2-1,top:innerHeight*0.25,width:2,height:2}; }}; burst(fake,40); }
+function toast(t){ var f=document.createElement('div'); f.className='float'; f.style.color='#6d727c'; f.style.fontSize='.82rem'; f.style.left='50%'; f.style.top='70%'; f.textContent=t; document.body.appendChild(f); setTimeout(function(){ f.remove(); }, 950); }
+
+renderHome();
+})();
+</script>
+<script src="sync_supabase.js"></script>
+</body>
+</html>
