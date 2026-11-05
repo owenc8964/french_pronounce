@@ -50,7 +50,7 @@ function regNames(){
   if(S.firstDeal) out.push('Amira');
   if(b.forge) out.push('Gaston');
   if(b.post) out.push('Lucie');
-  if(b.bakery) out.push('Bernard');
+  if(b.bakery && !st.dark) out.push('Bernard');
   if(S.clues&&S.clues.c2) out.push('Hector');
   if(c3.step>=1||S.ch3done) out.push('Margot');
   Object.keys(st.reg).forEach(function(k){ out.push(k); });
@@ -83,7 +83,7 @@ function pelletierFirst(){
 }
 function pelletierAgain(level){
   var st=stSt(), n=regNames().length; st.insp=level; if(level===2) st.pencil=1; save();
-  var T=level===2 ? '「'+n+' 個。」他用筆尖一個一個點過去，「上次我以為這個鎮只剩鬼。」<br>他看到碼頭那邊跑過去一個小孩：「那個不算，未成年。」<br>小孩遠遠地對他吐舌頭。'
+  var T=level===4 ? '他在麵包店門口站了一下，拿出筆。<br>「名字要本人在鎮上才算。」他在名冊上劃了一條線，劃得很慢。<br>他沒有按車鈴。' : level===2 ? '「'+n+' 個。」他用筆尖一個一個點過去，「上次我以為這個鎮只剩鬼。」<br>他看到碼頭那邊跑過去一個小孩：「那個不算，未成年。」<br>小孩遠遠地對他吐舌頭。'
                   : '他今天沒數人。他站在郵局門口，盯著 Lucie 手上的東西，又看看自己的腳踏車。<br>你把車鈴還給他。他按了一下：叮。<br>他按了很多下。然後他發現你在看，收起笑容：「……名冊還是不夠。」';
   stScene('pelletier'+level,'<h3>🚲 Pelletier 又來了</h3><div class="story">'+T+'</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
   stOk('ok','',stEnd);
@@ -114,7 +114,7 @@ function ch3Dock(){
   return true;
 }
 function zoeArrives(){
-  stScene('zoe1','<div class="story">船艙裡跳出一個大概十一歲的女孩，背包比她還大。她聽你跟那個女人講了兩句，皺起眉頭：</div>'+stFr('Tu parles comme un livre.','你講話像一本書。')+
+  stScene('zoe1','<div class="story">船艙裡跳出一個大概九歲的女孩，背包比她還大。她聽你跟那個女人講了兩句，皺起眉頭：</div>'+stFr('Tu parles comme un livre.','你講話像一本書。')+
     '<div class="story">「而且是很舊的那種。」她伸出手。<span class="fr">« Zoé. Avec un accent. »</span><br>「Margot。」補船的女人頭也不抬，「她暫時住我船上。別問。」<br>Zoé 拿粉筆在碼頭柱子上畫了三格：🚪 跑酷、🪨 過河、🌻 守園，每格寫一個數字。「這是我的。你一定比不過。」</div>'+
     '<div class="muted">碎片不在船上。河裡、島上都可能漂到。</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
   stOk('ok','',function(){ lifeSpawn(); stEnd(); });
@@ -199,7 +199,29 @@ var LETTERS=[
     ask:'他抬頭：「她寫什麼？」你告訴他——', opts:['她覺得你還在生氣，說她也在生氣，但還是會每個月寫信','她不生氣了，以後不會再寫信','她問你為什麼生氣，要你馬上回信'], a:0, topic:'comprehension',
     wrong:{1:'他愣住：「不寫了？」手上的信抖了一下。<br>你低頭再看一次。<span class="fr">Je t\'écrirai</span>，未來式。不對，你講錯了。',2:'他張開嘴，又閉上。<br>你低頭再看一次。她沒有問，她說 <span class="fr">Je sais</span>。'},
     okTxt:'他聽完了。', why:'Je sais＝我知道（不是問句）；Moi aussi＝我也是；Je t\'écrirai＝我會寫給你（未來式）；ne … jamais＝從來沒有。',
-    hint:'看 <span class="fr">Je sais</span>、<span class="fr">Moi aussi</span>、<span class="fr">Je t\'écrirai</span> 這三處。' }
+    hint:'看 <span class="fr">Je sais</span>、<span class="fr">Moi aussi</span>、<span class="fr">Je t\'écrirai</span> 這三處。' },
+  { fr:'Papa, ici il pleut tout le temps. J\'ai rencontré quelqu\'un. Il s\'appelle Karim, il répare des bateaux et il ne sait pas faire cuire un œuf. Tu l\'aimerais bien. Non, c\'est faux, tu ne l\'aimerais pas. Béa',
+    zh:'爸，這裡一直下雨。我遇到一個人，他叫 Karim，修船的，連蛋都不會煮。你會喜歡他。不，騙你的，你不會喜歡他。Béa',
+    gloss:'réparer 修理・faire cuire un œuf 煮蛋・tu l\'aimerais（條件式）你會喜歡他',
+    ask:'他抬頭：「她寫什麼？」你告訴他——', opts:['她遇到一個修船的人，連蛋都不會煮，她說你不會喜歡他','她遇到一個廚師，她說你一定會喜歡他','她要回來了，因為那裡一直下雨'], a:0, topic:'comprehension',
+    wrong:{1:'「廚師？」他坐直了。<br>你低頭再看一次。<span class="fr">il répare des bateaux</span>。不對。',2:'他站起來，看向河。<br>你趕快低頭再看一次。她沒有這樣寫。'},
+    okTxt:'他想了一下。', why:'il ne sait pas＋原形＝他不會做…；tu l\'aimerais 是條件式「你會喜歡他」；c\'est faux 把前一句推翻。',
+    hint:'看 <span class="fr">il répare des bateaux</span> 和最後的 <span class="fr">tu ne l\'aimerais pas</span>。',
+    after:'「修船的。」他說。<br>「連蛋都不會煮。」<br>他看著河，表情很嚴肅。<br>「那我確實不喜歡他。」' },
+  { fr:'Papa, j\'ai une fille. Elle est née ce matin. Elle s\'appelle Zoé, avec un accent. Elle a tes mains. Je ne sais pas pourquoi je te le dis. Tu ne réponds jamais. Béa',
+    zh:'爸，我有女兒了。今天早上生的。她叫 Zoé，有一撇。她有你的手。我不知道為什麼要跟你說。反正你從來不回。Béa',
+    gloss:'une fille 女兒・elle est née 她出生了・avec un accent 有重音符號',
+    ask:'他抬頭：「她寫什麼？」你告訴他——', opts:['她生了一個女兒，手跟你很像','她領養了一個女孩','她找到一份新工作'], a:0, topic:'comprehension',
+    wrong:{1:'他皺眉：「領養？」<br>你低頭再看一次。<span class="fr">elle est née ce matin</span>：今天早上才出生。',2:'他點點頭，等你講下去。<br>你低頭再看一次。第一句就不是工作。'},
+    okTxt:'他的手放在膝蓋上，沒有動。', why:'naître 的複合過去用 être：elle est née（她出生了）；Elle a tes mains＝她有你的手。',
+    hint:'看 <span class="fr">j\'ai une fille</span> 和 <span class="fr">elle est née</span>。' },
+  { fr:'Papa, c\'est ma dernière lettre. Zoé a six ans. Nous arrivons le 3 mars, sur le bateau de Margot. Je ne descendrai que si j\'entends la cloche deux fois. Si elle ne sonne pas, je comprendrai. Béa',
+    zh:'爸，這是我最後一封信。Zoé 六歲了。我們三月三號到，搭 Margot 的船。只有聽到鐘響兩聲，我才會下船。如果鐘沒響，我就懂了。Béa',
+    gloss:'dernière 最後的・descendre 下（船）・ne … que 只有・deux fois 兩次・sonner（鐘）響',
+    ask:'你先自己看懂。她什麼時候才會下船？', opts:['聽到鐘響兩聲才下船','鐘沒響就下船','一定會下船'], a:0, topic:'comprehension',
+    wrong:{1:'你再看一次。<span class="fr">si elle ne sonne pas, je comprendrai</span>。',2:'你再看一次。<span class="fr">ne … que</span> 不是「一定」。'},
+    okTxt:'你看懂了。郵戳是三年前。', why:'ne … que＝只有；Je ne descendrai que si…＝只有…我才會下船。不是否定。',
+    hint:'<span class="fr">ne … que</span>＝「只有」，不是「不」。' }
 ];
 function bridgePoint(){ return {x:BRIDGE.door[0]-1.4, y:BRIDGE.door[1]-.2}; }
 function bridgeScene(){
@@ -210,7 +232,115 @@ function bridgeScene(){
     document.getElementById('no').onclick=function(){ stClose(); st.bridgeCool=1; closeSheet(); };
     stOk('ok','',readLetterAloud);
   } else if(st.letters===1 && !stPick('line')) secondLetterChoice();
+  else if(st.letters===3 && !stPick('zline')) fourthLetterChoice();
+  else if(st.letters===4) lastLetterScene();
   else readLetterAloud();
+}
+/* 第四封：遠處的影子 */
+function fourthLetterChoice(){
+  stChoose('zline','<h3>🏮 第 4 封信</h3><div class="story">你先自己看了一遍。第二行有個名字。<br>河對面的碼頭上，有個小小的影子蹲在地上，用手指寫著什麼。</div>'+stFr('Elle s\'appelle Zoé, avec un accent.','elle s\'appelle 她叫')+'<div class="story">Bernard 等你開口。</div>',[
+    {k:'all', label:'照唸', fn:readLetterAloud},
+    {k:'skip', label:'那個名字先不唸', fn:readLetterAloud}
+  ]);
+}
+function fourthLetterAfter(){
+  var skip=stPick('zline')==='skip';
+  var T=(skip?'你唸完了，跳過那個名字。<br>他伸出手指，按在第二行中間。「這裡有個字。」<br>':'')+'「我知道。」<br>'+(skip?'':'你抬頭看他。<br>')+'他指著信上那個歪歪的 Z。「這個形狀，我看了九年。上個月，它出現在碼頭的柱子上。」<br>「她切麵包，從邊開始。」<br>「那你為什麼不說？」<br>他把信摺回去。「她還沒準備好。」<br>河對面的影子站起來，走了。';
+  stScene('letter-3-after','<div class="story">'+T+'</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+  stOk('ok','',stEnd);
+}
+/* 第五封：故事的中點。看懂之後，要不要照唸是你決定的 */
+function lastLetterScene(){
+  var st=stSt(), L=LETTERS[4];
+  stScene('last0','<h3>🏮 麻繩</h3><div class="story">舊信看完了。他解開麻繩，是你帶來的那疊。他把整疊翻過來，抽出最底下那封。<br>「從最新的開始。我老了，等不及。」<br>他遞給你。你先自己看。</div><div class="row2"><span></span><button class="btn main" id="ok">打開</button></div>');
+  stOk('ok','',function(){
+    stAsk('letter-4','🏮 最底下那封',{fr:L.fr, gloss:L.gloss, zh:L.zh, ask:L.ask, opts:L.opts, a:L.a, topic:L.topic, why:L.why, hint:L.hint, wrong:L.wrong, okTxt:L.okTxt},function(){
+      st.letters=5; st.letterDay=today(); save();
+      stChoose('last','<div class="story">郵戳是三年前。<br>「她寫什麼？」Bernard 在笑。今天的麵包烤得很好，他手上還有麵粉。</div>',[
+        {k:'all', label:'照唸', fn:lastTrue},
+        {k:'lie', label:'只唸前兩行，說她很好', fn:lastLie}
+      ]);
+    });
+  });
+}
+function lastTrue(){
+  var st=stSt(); st.dark=1; save(); lifeSpawn();
+  stScene('last-true','<div class="story">你唸完了。他還在等，以為後面還有。<br>「回來的人，鐘響兩聲。」他說，「以前都是這樣。」<br>「三月三號。是哪一年？」<br>你告訴他。<br>他沒有說話。他把信摺好，提著燈，走回麵包店。<br>那天晚上，麵包店的燈一直亮著。你躺在床上，聽得到揉麵團的聲音，一整夜。</div><div class="row2"><span></span><button class="btn main" id="ok">回去</button></div>');
+  stOk('ok','',stEnd);
+}
+function lastLie(){
+  var st=stSt(); st.lied=1; save();
+  stScene('last-lie','<div class="story">你唸了前兩行，把信摺起來。「她說她很好。」<br>他笑了，把信收進圍裙。「那就好。」<br>他講了一個新的笑話。麵包的笑話。很爛。<br>你也笑了。</div><div class="row2"><span></span><button class="btn main" id="ok">回去</button></div>');
+  stOk('ok','',stEnd);
+}
+/* Zoé：她在那艘船上。要不要說出他的秘密，是你決定的 */
+function zoeTruth(){
+  var st=stSt();
+  stChoose('secret','<h3>🎒 碼頭</h3><div class="story">柱子上的粉筆字被擦掉一半。Zoé 坐在地上，沒有看你。</div>'+stFr('J\'étais sur le bateau.','j\'étais（être 的未完成過去）我那時候在')+
+    '<div class="story">「我六歲。我媽站在甲板上，站了一整夜。什麼聲音都沒有。天亮的時候，Margot 把船掉頭。」<br>「他有收到信對不對？他每天晚上都拿著信。我看到了。」<br>「他看得懂，他就是不要我們。」</div>',[
+    {k:'tell', label:'告訴她：他不識字', fn:function(){ st.zoeDone=1; zoeAfter(true); }},
+    {k:'keep', label:'那是他的秘密，什麼都不說', fn:function(){ st.zoeDone=1; zoeAfter(false); }}
+  ]);
+}
+function zoeAfter(tell){
+  var st=stSt(), lied=st.lied&&!st.dark; if(lied){ st.dark=1; save(); lifeSpawn(); }
+  var T=tell ? '「……什麼？」<br>你又說了一次。<br>她張開嘴，什麼都沒講出來。她低頭看手上的粉筆，把它折成兩半。<br>「那他為什麼不找人唸！」<br>你沒有回答。'
+             : '她等了一下。<br>「沒話說是吧。」<br>她站起來，把柱子上的數字一格一格擦掉，連你的也擦了。';
+  if(lied) T+='<br><br>她背起背包，往麵包店走。你在外面聽不到裡面說什麼。門開了，她跑出來。<br>麵包店的燈關了。';
+  if(!tell){ st.rvOff=1; save(); }
+  stScene('zoe-after','<div class="story">'+T+'</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+  stOk('ok','',stEnd);
+}
+/* 關門的麵包店：你寫的字，他一個字一個字唸。⛔ 不批改、不代筆，寫什麼都可以 */
+function doorScene(){
+  var st=stSt();
+  if(!st.doorDay){
+    stScene('door1','<h3>🍞 麵包店</h3><div class="story">門關著。門口排著昨天烤好的長棍，整整齊齊，沒有人拿。'+(stPick('secret')==='tell'?'<br>台階上有粉筆字，歪歪的：A B C D。':'')+'<br>男爵坐在台階上，帽子拿在手上。牠看了你一眼，沒有偷任何東西。</div>'+
+      '<div class="muted">塞一張字條進門縫？用法文寫什麼都可以，寫錯也沒關係。</div><input id="stNote" maxlength="80" autocomplete="off" autocapitalize="off" spellcheck="false" lang="fr" placeholder="Bernard, …" style="width:100%;margin-top:6px;font:inherit;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.25);color:inherit">'+
+      '<div class="row2"><button class="btn ghost" id="no">今天先走</button><button class="btn main" id="go">塞進去</button></div>');
+    document.getElementById('no').onclick=function(){ stClose(); closeSheet(); };
+    stOk('go','',function(){
+      var v=document.getElementById('stNote').value.trim(); if(!v){ closeSheet(); return; }
+      st.note=v; st.doorDay=today(); save();
+      stScene('door1b','<div class="story">很久都沒有聲音。<br>然後，門後面有人開始唸。很慢，一個字一個字，有幾個字唸錯了。</div><div class="clue fr">'+esc(v)+'</div><div class="story">'+(st.lied?'唸完，他停了一下。<br>「你那天也是這樣唸的。一個字一個字。」':'唸完，又從頭唸了一次。')+'</div><div class="row2"><span></span><button class="btn main" id="ok">明天再來</button></div>');
+      stOk('ok','',stEnd);
+    });
+    return;
+  }
+  if(st.doorDay===today()){ toast('門後面還有人在唸你的字條。明天再來。'); return; }
+  doorOpen();
+}
+/* 你常錯的字＝他學會的字（只有這個遊戲做得到）：真的從你的紀錄挑 */
+function myWords(n){
+  var g=S.gword||{}, list=(typeof GENDER!=='undefined'?GENDER:[]).filter(function(it){ return g[it.n]&&g[it.n].w>0; }).sort(function(a,b){ return g[b.n].w-g[a.n].w; });
+  if(list.length<n) list=list.concat((typeof GENDER!=='undefined'?GENDER:[]).filter(function(it){ return list.indexOf(it)<0; }).slice(0,n));
+  return list.slice(0,n);
+}
+function doorOpen(){
+  var st=stSt();
+  stScene('door2','<h3>🍞 麵包店</h3><div class="story">門開了。<br>櫃台上全是麵粉，麵粉上全是字。同一個字，寫了幾百次，N 都是反的。</div>'+stFr('Reviens.','revenir 回來（命令式）：回來吧')+
+    /* 盲讀 11-05：「我選了洩密，他開門卻完全沒提」→ 你在碼頭做的決定，他第一句就看得到。這是他第一次寫完整的句子，是寫給你的 */
+    (stPick('secret')==='tell'?'<div class="story">板子角落有一行字，跟別的字分開，歪歪的，是他這輩子第一個完整的句子：</div>'+stFr('Tu lui as dit.','lui ＝ 她（Zoé）・dire 說（過去分詞 dit）：你跟她說了。')+'<div class="story">他沒有看你，也沒有擦掉。</div>':'<div class="story">板子角落有一行字，跟別的字分開，歪歪的，是他這輩子第一個完整的句子：</div>'+stFr('Tu n\'as rien dit.','ne … rien 什麼都沒有・dire 說：你什麼都沒說。')+'<div class="story">他沒有看你。「她還是恨我。」他把那行字擦掉一半，又停住。</div>')+
+    '<div class="story">「旁邊這些，是我想寫給她的。我照你以前教我的字寫。」<br>他把麵粉板推過來。你認得這些字。都是你常常弄錯的。</div><div class="row2"><span></span><button class="btn main" id="ok">幫他看</button></div>');
+  stOk('ok','',function(){ flourLesson(0); });
+}
+function flourLesson(i){
+  var st=stSt(), W=myWords(3), it=W[i]; if(!it) return doorEnd();
+  var wrong=(it.g==='f'?'un ':'une ')+it.n, right=(it.g==='f'?'une ':'un ')+it.n, t0=Date.now(), rc={kind:'麵粉板', ref:'g:'+it.n, q:wrong, a:right};
+  stScene('flour'+i,'<h3>🍞 麵粉板 <small>他寫的</small></h3><div class="clue fr" style="font-size:1.3em;text-align:center">'+esc(wrong)+'</div><div class="muted">「這樣對嗎？」把對的寫給他看。</div>'+
+    '<input class="fill" id="flIn" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="un／une ＋ 字"><div class="fb" id="fb"></div><div class="row2" id="flR"><button class="btn ghost" id="sk">↷ 這個跳過</button><button class="btn main" id="go">寫給他看</button></div>', true);
+  var inp=document.getElementById('flIn'); setTimeout(function(){ inp.focus(); },50);
+  document.getElementById('sk').onclick=function(){ stClose(); flourLesson(i+1); };
+  document.getElementById('go').onclick=function(){ var v=inp.value.trim(); if(!v) return; var ok=normAns(v)===normAns(right); GPICK=v; rec('g', it, ok, Date.now()-t0); speak(right);
+    document.getElementById('fb').innerHTML=ok?'他照著你的字，用手指描了一遍。<div class="say">'+esc(right)+'</div>':'你們兩個都看了很久。他把對的那個描了一遍：<div class="say">'+esc(right)+'</div>「你也會錯啊。」他好像比較放心了。';
+    document.getElementById('flR').innerHTML='<span></span><button class="btn main" id="nx">下一個</button>'; stOk('nx','',function(){ flourLesson(i+1); }); };
+}
+function doorEnd(){
+  var st=stSt(), told=stPick('secret')==='tell'; st.dark=0; st.ch7=1; st.rvOff=0; S.gold+=60; save(); hud(); lifeSpawn();
+  var z=told ? 'Zoé 坐在櫃台上吃麵包邊，指著麵粉：「N 反了。」<br>他擦掉，再寫。<br>「還是反了。」'
+             : '門口站著一個很大的背包。Zoé 看著櫃台上幾百個字，看了很久，沒有人說話。<br>她走過去，擦掉一個 N，把它畫正。';
+  stScene('door-end','<div class="story">'+z+'<br><br>「信怎麼寄？」他問。「船不靠岸。」<br>他抬頭，看著窗外空的鐘樓。</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
+  stOk('ok','',function(){ stEnd(); toast('第七章完　+60 🪙'); });
 }
 /* 第二封：唸之前先看到那一句，要不要照唸是你決定的 */
 function secondLetterChoice(){
@@ -231,6 +361,7 @@ function readLetterAloud(){
   stAsk('letter-'+i,'🏮 第 '+(i+1)+' 封信',{fr:L.fr, gloss:L.gloss, zh:L.zh, ask:L.ask, opts:L.opts, a:L.a, topic:L.topic, why:L.why, hint:L.hint, wrong:L.wrong, okTxt:L.okTxt},function(){
     st.letters=i+1; st.letterDay=today(); save();
     if(i===1) return secondLetterAfter();
+    if(i===3) return fourthLetterAfter();
     stScene('letter-'+i+'-after','<div class="story">'+L.after+'</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
     stOk('ok','',stEnd);
   });
@@ -241,16 +372,21 @@ function storyPoints(){
   var st=stSt(), o=[];
   if(st.ch4 && !st.nest) o.push({id:'nest', x:NEST.x, y:NEST.y, em:'🎩', fn:nestScene});
   if(st.delivered && night && st.letters<LETTERS.length && st.letterDay!==today()){ var B=bridgePoint(); o.push({id:'bridge', x:B.x, y:B.y, em:'🏮', fn:bridgeScene}); }
+  if(st.letters>=5 && !st.zoeDone && (st.lied?st.letterDay!==today():true)){ o.push({id:'zoe', x:26, y:11, em:'🎒', fn:zoeTruth}); }
   return o;
 }
 var stCool={}, stWait=0;
+/* 好幾天沒來：世界有注意到，⛔ 不責備，是角色在講自己的事 */
+var ABSENCE=['櫃台上留了一條長棍給你，已經硬得可以蓋房子了。','Zoé 在柱子上畫了一個小小的問號。','Pelletier 來數過人。他在你的名字旁邊點了一下，又點了一下。','男爵好像有來過你家。門口的東西都很整齊，只少了一隻襪子。'];
 function storyTick(dt){
   var st=stSt(); stWait+=dt;
   if(pending) return false;
+  if(!st.absChk){ st.absChk=1; var nowD=Math.floor(Date.now()/86400000), gap=st.lastD?nowD-st.lastD:0; st.lastD=nowD; save(); if(gap>=3 && st.insp) toast(ABSENCE[Math.floor(Math.random()*ABSENCE.length)]); }
   if(stWait>3){
     if(!st.insp && (S.firstDeal||S.day>1)){ stWait=0; pending={t:.25, x:hero.x, y:hero.y, fn:pelletierFirst}; return true; }
     if(st.insp===1 && S.ch3done && st.nest){ stWait=0; pending={t:.25, x:hero.x, y:hero.y, fn:function(){ pelletierAgain(2); }}; return true; }
     if(st.insp===2 && st.delivered){ stWait=0; pending={t:.25, x:hero.x, y:hero.y, fn:function(){ pelletierAgain(3); }}; return true; }
+    if(st.insp===3 && st.dark){ stWait=0; pending={t:.25, x:hero.x, y:hero.y, fn:function(){ pelletierAgain(4); }}; return true; }
     var c=S.ch3; if(c && !c.frag && (c.pend||c.pendIsle)){ var how=c.pendIsle?'isle':'river'; c.pend=c.pendIsle=0; stWait=0; pending={t:.25, x:hero.x, y:hero.y, fn:function(){ ch3Frag(how); }}; return true; }
   }
   var P=storyPoints();
@@ -275,6 +411,7 @@ function storyDoor(k){
   if(k==='forge' && c && c.frag && c.step===2 && !S.ch3done){ stAsk('ch3-2','⚒ 鐵匠鋪',CH3[2],function(){ c.step=3; save(); ch3End(); }); return true; }
   if(k==='post' && st.nest && !st.sorted){ lucieScene(); return true; }
   if(k==='bakery' && st.sorted && !st.delivered){ deliverScene(); return true; }
+  if(k==='bakery' && st.dark){ doorScene(); return true; }
   return false;
 }
 
@@ -290,6 +427,8 @@ function storyQuest(){
   if(st.ch4 && !st.nest) return {t:'第四章：追 <b>🎩 戴帽子的老鼠</b>，牠往礦坑最裡面去了', to:{x:NEST.x+.5,y:NEST.y+.5}};
   if(st.nest && !st.sorted) return {t:'第四章：把袋子帶回 <b>📮 郵局</b>', to:door('post')};
   if(st.sorted && !st.delivered) return {t:'第四章：把那疊信送去 <b>🍞 麵包店</b>', to:door('bakery')};
+  if(st.dark) return st.doorDay===today() ? null : {t:'第七章：去 <b>🍞 麵包店</b>', to:door('bakery')};
+  if(st.letters>=5 && !st.zoeDone && (st.lied?st.letterDay!==today():true)) return {t:'第七章：<b>🎒 碼頭</b>有人在等你', to:{x:26.5,y:11.5}};
   if(st.delivered && st.letters<LETTERS.length && st.letterDay!==today()){ var B=bridgePoint(); return {t:night?'第五章：<b>🏮 橋邊有光</b>':'第五章：等天黑，去 <b>橋邊</b>看看', to:{x:B.x+.5,y:B.y+.5}}; }
   return null;
 }
@@ -298,14 +437,19 @@ function storyChaptersExtra(){
   return [
     {t:'第三章・河對岸', steps:[['去 ⛵ 碼頭', c.step>=1||!!S.ch3done],['找到鐘的碎片（🎣 河邊，或 🏝 走完一座島）', !!c.frag||!!S.ch3done],['拿去 ⚒ 鐵匠鋪', !!S.ch3done]]},
     {t:'第四章・戴帽子的老鼠', steps:[['追上牠', !!st.nest],['回 📮 郵局', !!st.sorted],['去 🍞 麵包店', !!st.delivered]]},
-    {t:'第五章・橋下的燈', steps:[['天黑以後，去橋邊', st.letters>=1],['一天一封', st.letters>=LETTERS.length]]},
-    {t:'第六章', soon:1}
+    {t:'第五章・橋下的燈', steps:[['天黑以後，去橋邊', st.letters>=1],['聽他的第二封', st.letters>=2]]},
+    {t:'第六章・舊信', steps:[['一天一封', st.letters>=4]]},
+    {t:'第七章・沒有響的那一天', steps:[['最底下那封', st.letters>=5],['碼頭', !!st.zoeDone],['麵包店', !!st.ch7]]},
+    {t:'第八章', soon:1}
   ];
 }
 
 /* ---------- 🌅 早晨：睡一覺世界會不一樣（Owen 10-28：「睡覺跟醒來基本上沒變」）。一天一句，看過的不重複 ---------- */
 function storyMorning(){
   var st=stSt(), b=S.built, cand=[];
+  if(st.dark){ cand.push(['d1','今天沒有麵包的味道。'],['d2','麵包店門口排著昨天的長棍，沒有人拿。'],['d3','Lucie 的腳踏車停在郵局門口，一整天沒動。'],['d4','清晨的橋上，還有一盞沒熄的燈。']); var u0=cand.filter(function(c){ return !st.morn[c[0]]; }); if(u0.length){ st.morn[u0[0][0]]=1; save(); return u0[0][1]; } return '今天沒有麵包的味道。'; }
+  if(st.ch7) cand.push(['r1','窗外有烤麵包的味道。這次比平常焦一點。'],['r2','麵包店櫃台上的字，今天 N 是正的。後面那個又反了。']);
+  var myw=myWords(1)[0]; if((S.ch3||{}).step>=1 && myw && S.gword[myw.n] && S.gword[myw.n].w>0) cand.push(['myerr','碼頭柱子上多了一行粉筆字：'+(myw.g==='f'?'une ':'un ')+myw.n+'。下面畫了三條線。它好像在對你說話。']);
   if(st.letters>=1) cand.push(['papa','麵包店的櫃台上有一層薄薄的麵粉。有人用手指在上面寫了四個字母，歪歪的：P A P A。']);
   if(st.letters>=2) cand.push(['papa2','麵包店今天晚開門。Bernard 手上有墨水。']);
   if((S.ch3||{}).step>=1) cand.push(['crust','麵包店後窗的窗台上，放著切下來的麵包邊。中午就不見了。隔天，窗台上的麵包邊變多了。']);
@@ -324,7 +468,7 @@ function storyMorning(){
 var RV_NAME={run:'🚪 跑酷', stone:'🪨 過河', garden:'🌻 守園', spot:'📋 告示牌'};
 var RV_CAP={stone:3, spot:5};   /* 滿分有上限的項目，不能把數字改到打不贏 */
 function storyRival(game, score){
-  var st=stSt(); if(!((S.ch3||{}).step>=1)) return;
+  var st=stSt(); if(!((S.ch3||{}).step>=1) || st.rvOff) return;
   if(st.rv[game]===undefined) st.rv[game]=4;
   var z=st.rv[game], win=score>z, cap=RV_CAP[game];
   if(win){ st.wins[game]=(st.wins[game]||0)+1; st.rv[game]=cap?Math.min(cap,score+1):score+1; save();
@@ -397,6 +541,7 @@ LIFE_PAIRS['gaston|zoe']=[ ['zoe','你為什麼都不講話？'], ['gaston','…
   /* ⚠️ 只能往後加、不能排序：存檔 st.beats 記的是陣列位置 */
   /* 盲讀 11-04：線索跟答案放太近，一讀就猜到 → 這幾句等主線走到才開放（L[4]＝條件） */
   var B=lifeRes('bernard');
+  B.on=function(){ return !!S.built.bakery && !stSt().dark; };   /* 關門那段時間，他不在路上 */
   B.lines.forEach(function(l){ if(l[1].indexOf('麵包的邊')>=0) l[4]=function(){ return (S.ch3||{}).step>=1; }; });
   if(B.beats[2]) B.beats[2].need=function(){ return !!S.ch3done; };
   B.lines.push([0,'麵包為什麼什麼都不肯說？因為它被烤問過了！……好笑吧？'],

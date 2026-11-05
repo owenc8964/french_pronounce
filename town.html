@@ -1801,7 +1801,7 @@ function ch2Talk(step){
 }
 function ch2End(){
   if(!S.ch2done){ S.ch2done=1; S.gold+=40; save(); hud(); }
-  openSheet('<h3>🍞 第二章完</h3><div class="story">la cloche 也是陰性。鐘被搬上一艘船，往下游去了？<br>你還想再問，他已經轉過身去，把櫃台上的價目牌扶正。<span class="fr">« Je ne veux plus en parler. »</span> '+spk('Je ne veux plus en parler.')+'<br>價目牌是倒著的。</div>'+
+  openSheet('<h3>🍞 第二章完</h3><div class="story">你還想再問，他已經轉過身去，把櫃台上的價目牌扶正。<span class="fr">« Je ne veux plus en parler. »</span> '+spk('Je ne veux plus en parler.')+'<br>價目牌是倒著的。</div>'+
     '<div class="muted">+40 🪙　下一章：第三章・河對岸——去 ⛵ 碼頭</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>');
   document.getElementById('ok').onclick=closeSheet;
 }
