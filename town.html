@@ -1647,7 +1647,7 @@ function fishSpot(n){
   if(!(n._pal && Date.now()-n._pal<60000) && palaceServe(function(){ n._pal=Date.now(); fishSpot(n); })) return;
   var i=0; clipsLoad();
   function next(){
-    if(i>=2){ closeSheet(); n.done=true; return; }
+    if(i>=2){ closeSheet(); n.done=true; n.doneAt=Date.now(); return; }
     var cl=clipPick();
     if(cl){
       askClip('🎣 河邊 ★ <small>第 '+(i+1)+' 竿・聽力</small>', cl, function(ok,ms,v,right,half,how){
@@ -2187,7 +2187,7 @@ function newDay(first){
   rats=[]; spawnRat(); spawnRat(); spawnRat();
   if(first && S.run && S.run.day===S.day){
     bag=S.run.bag||[]; orders=S.run.orders||[]; time=typeof S.run.time==='number'?S.run.time:time; night=!!S.run.night;
-    (S.run.done||[]).forEach(function(d,i){ if(nodes[i]) nodes[i].done=!!d; });
+    (S.run.done||[]).forEach(function(d,i){ if(nodes[i] && nodes[i].k!=='fish') nodes[i].done=!!d; });
     if(night){ spawnRat(); spawnRat(); }
   } else if(!first){ orders=[]; }
   hero.x=PLAZA.x; hero.y=PLAZA.y; wasInTown=true; log=[];
@@ -4249,6 +4249,7 @@ function drawChallenges(list,ox,oy,ts){
    ============================================================ */
 var lastT=performance.now(), clock=0;
 function update(dt){
+  for(var fi=0;fi<nodes.length;fi++){ var fn=nodes[fi]; if(fn.done && fn.k==='fish' && Date.now()-(fn.doneAt||0)>90000) fn.done=false; }   /* 魚 90 秒後回來（放最前面，不被其他狀態擋掉） */
   clock+=dt;
   floats.forEach(function(f){ f.t+=dt; }); floats=floats.filter(function(f){ return f.t<1.2; });
   if(hero.flash>0) hero.flash-=dt;
@@ -4295,6 +4296,7 @@ function update(dt){
     if(CH.away){ if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)>1.5) CH.away=0; else continue; }
     if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ if(CH.kind==='tiles') tilesPanel(CH); else if(CH.kind==='isle') roomEnter('cafe'); else if(CH.kind==='spot') spotPanel(CH); else if(CH.kind==='embed') embedPanel(CH); else if(CH.kind==='palace'){ CH.away=1; if(!ch3Dock()) archOpen(); } else if(CH.kind==='forge'){ CH.away=1; if(S.built.forge) roomEnter('forge'); else forgePanel(CH); } else challengePanel(CH); }; })(CH)}; break; } }
   /* 碰到節點 */
+  /* 11-06 Owen：「我居然找不到魚了」→ 釣過的點整個消失、要睡一覺才回來。釣魚是他最愛的三個之一 → 魚游走 90 秒後就回來，⛔ 不限一天幾次 */
   for(var i=0;i<nodes.length && !wild;i++){ var n=nodes[i]; if(n.done) continue;
     var R=n.k==='fish'?1.15:.85;
     if(Math.hypot(n.x+.5-hero.x, n.y+.5-hero.y)<R){
@@ -4422,7 +4424,7 @@ function drawSprite(s,x,y,ox,oy,ts,face,bob){ return function(){
 function drawNode(n,ox,oy,ts){ return function(){
   var px=ox+n.x*ts, py=oy+n.y*ts;
   if(n.k==='fish'){
-    if(n.done) return;
+    if(n.done){ cx.strokeStyle='rgba(255,255,255,.18)'; cx.lineWidth=1.5*DPR; cx.beginPath(); cx.ellipse(px+ts/2,py+ts/2,ts*.32,ts*.13,0,0,7); cx.stroke(); return; }   /* 魚游走了：留一圈淡淡的水紋，知道等一下會回來 */
     var r=ts*(.25+.12*Math.sin(clock*3+n.x)); cx.strokeStyle='rgba(255,255,255,.7)'; cx.lineWidth=2*DPR; cx.beginPath(); cx.ellipse(px+ts/2,py+ts/2,r*1.4,r*.6,0,0,7); cx.stroke();
     cx.fillStyle='rgba(20,40,80,.5)'; cx.beginPath(); cx.ellipse(px+ts/2+Math.sin(clock+n.x)*ts*.15,py+ts*.55,ts*.18,ts*.07,0,0,7); cx.fill();
     return;

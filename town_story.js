@@ -530,7 +530,7 @@ function storyQuest(){
   var st=stSt(), c=ch3St();
   if(!S.ch3done){
     if(c.step<1) return {t:'第三章：去 <b>⛵ 碼頭</b>，問問那艘船', to:{x:24.5,y:10.5}};
-    if(!c.frag){ var fp=nearestNode(['fish']); return fp ? {t:'第三章：過橋到河的北岸，走到 <b>🎣 釣點</b>撈撈看', to:fp} : {t:'第三章：今天河邊的魚釣完了，睡一覺再來；或 🏝 走到一座島的最後一站', to:null}; }
+    if(!c.frag){ var fp=nearestNode(['fish']); return fp ? {t:'第三章：過橋到河的北岸，走到 <b>🎣 釣點</b>撈撈看', to:fp} : {t:'第三章：魚游走了，一分多鐘就回來；或 🏝 走到一座島的最後一站', to:null}; }
     return {t:'第三章：拿碎片去 <b>⚒ 鐵匠鋪</b>', to:door('forge')};
   }
   if(st.ch4 && !st.nest) return {t:'第四章：追 <b>🎩 戴帽子的老鼠</b>，牠往礦坑最裡面去了', to:{x:NEST.x+.5,y:NEST.y+.5}};
