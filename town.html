@@ -1676,8 +1676,7 @@ function deepFish(n, P, cb){
   }
   function qHtml(i, mode){
     var q=Q[i], s=st[i];
-    var h='<div class="item" style="margin:8px 0;text-align:left" data-q="'+i+'"><div><b>'+(i+1)+'</b> <span class="fr">'+esc(q.q)+'</span> <button class="btn ghost dzh" data-i="'+i+'" style="padding:0 6px;font-size:.75em">中</button>'+
-      '<div class="muted dzt" id="dzt'+i+'" style="display:none;font-size:.85em">'+esc(q.zh)+'</div></div>';
+    var h='<div class="item" style="margin:8px 0;text-align:left" data-q="'+i+'"><div><b>'+(i+1)+'</b> <span class="fr">'+esc(q.q)+'</span></div>';   /* 11-06 Owen：「這種題目就不要有中文翻譯了，解答時再放就好」 */
     if(mode==='ask'){
       h+='<div class="opts" style="margin-top:4px">'+q.opts.map(function(o,k){ return '<button data-i="'+i+'" data-k="'+k+'" class="dop'+(s.pick===k?' ok':'')+'" style="padding:7px 10px'+(s.pick===k?';background:#3c5a85;border-color:#9ec5ff':'')+'">'+'ABC'[k]+'　'+esc(o)+'</button>'; }).join('')+'</div>'+
         '<div style="text-align:right"><button class="btn ghost dsk" data-i="'+i+'" style="font-size:.75em;padding:2px 8px">'+(s.skip?'已跳過・改回來':'跳過這題')+'</button></div>';
@@ -1685,7 +1684,6 @@ function deepFish(n, P, cb){
     return h+'</div>';
   }
   function wire(){
-    sheet.querySelectorAll('.dzh').forEach(function(b){ b.onclick=function(){ var z=document.getElementById('dzt'+b.dataset.i); z.style.display=z.style.display==='none'?'block':'none'; }; });
     sheet.querySelectorAll('.dop').forEach(function(b){ b.onclick=function(){ var i=+b.dataset.i, s=st[i]; s.pick=+b.dataset.k; s.skip=false; redrawQ(i); }; });
     sheet.querySelectorAll('.dsk').forEach(function(b){ b.onclick=function(){ var i=+b.dataset.i, s=st[i]; s.skip=!s.skip; if(s.skip) s.pick=null; redrawQ(i); }; });
   }
@@ -1740,7 +1738,7 @@ function deepFish(n, P, cb){
       var mark=s.skip?'<span class="muted">—</span>':s.ok1?'✓':s.ok2?'✓<small class="muted">（第二次）</small>':'<span style="color:#9ec5ff">●</span>';
       return '<div class="item" style="text-align:left;margin:6px 0">'+mark+' <b>'+(i+1)+'</b> <span class="fr">'+esc(q.q)+'</span> → <b class="cans">'+'ABC'[q.a]+' '+esc(q.opts[q.a])+'</b>'+
         (l?'<div style="margin-top:3px"><button class="btn ghost dl" data-l="'+li+'" style="padding:0 6px">▶</button> <span class="muted">錄音：</span><span class="fr">'+esc(l.text)+'</span></div>':'')+
-        '<div class="muted" style="font-size:.85em">'+esc(q.why)+'</div></div>'; }).join('');
+        '<div class="muted" style="font-size:.85em">'+esc(q.zh)+'——'+esc(q.why)+'</div></div>'; }).join('');
     var tr='<details style="text-align:left;margin-top:8px"><summary>📜 整段原文（點一句就從那裡聽）</summary><div id="dtr">'+P.lines.map(function(l,i){ return '<div class="dln fr" data-l="'+i+'" style="padding:2px 4px;border-radius:6px;cursor:pointer"><span class="muted" style="font-size:.8em">'+esc(l.spk)+'：</span>'+esc(l.text)+'</div>'; }).join('')+'</div></details>';
     openSheet('<h3>🌊 深水區 <small>答案</small></h3>'+(cnt.length?'<div class="story">'+(n1===cnt.length?'<b style="color:var(--gold)">一次就全抓到</b>':(n2>n1?'再聽一次，又多抓到 '+(n2-n1)+' 題。':'這段的字，下次再來會更熟。'))+'</div>':'')+
       '<div class="muted" style="font-size:.85em">💡 題目和錄音常換句話說——對照看「錄音說的」和「選項寫的」。</div>'+body+tr+
