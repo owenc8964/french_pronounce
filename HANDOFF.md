@@ -43,6 +43,7 @@
 > - ✍️ **10-23 題庫詳解補寫（三之八十二）**：491 題弱解說改成「為什麼是這個答案」，非變位類弱解說歸零；⏸ 4 題可疑題（題幹錯字／選項重複）等 Owen 決定。
 > - 🏝 **10-27 小鎮：口說群島樣品——碼頭搭船進群島總覽、自我介紹島（海岸、4 區、步道、23 個意思相符的地標、自己走、站著跳泡泡）（三之九十三（小鎮））**
 > - 🪧 **10-28 小鎮：自我介紹島碼頭旁加「島上的重點」告示牌——一上島自動打開，考官問題＋四區條列（附站號）；走開再走回會再開；順手修兩個地標放錯區（三之九十七（小鎮））**
+> - 📚 **11-06 第49課（口說第二部分問答、ce mois-ci、B1 p.36 Le mieux-vivre ensemble、p.39 DELF B1 聽力、進 Unité 3 p.41–42）筆記四件套＋連動全做（卡 106、題 39、句 15、表格 1、地圖）；第48課依老師筆記截圖補兩句（三之一百一十二）**
 > - 📄 **11-06 清晨排程 R87、R88（只有研究，沒動遊戲）：寫作 B1→B2 靠錯得少（每 100 字 3.2→1.2，七成錯在名詞組配合），⛔ 不往難句型加力；批改提示可加錯誤分類（只存不秀，⏸ 等 Owen）（`research/2026-11-06_法文寫作B1到B2的判準特徵.md`）。語塊：法文初學者最會背的也最會拆，口說島「換一個人講」該升為主線（`research/2026-11-06_法文語塊與程度及A2語塊教學.md`）**
 > - 📄 **11-05 清晨排程 R85、R86（只有研究，沒動遊戲）：語塊買到順、不是等級，⛔ 不做語塊計數（`research/2026-11-05_口說考試裡的預製語言與分數.md`）；FIDELIA 不用替機器改寫法，⭐ `tcf_writing.html:141–142、444` 的四條自動不及格要照 2026-04 手冊改成七條，待互動 session（`research/2026-11-05_FIDELIA自動批改與TCF寫作.md`）**
 > - 🎭 **11-05 小鎮主線寫到第七章、全本設計完成（劇透在 bible 第 9 節，⛔ 不轉述；三之一百一十一）**
@@ -4998,6 +4999,18 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
   3. **#73**（preposition-country）opts 有 12 個、互相重複（au Canada／en France…出現好幾次），看起來是組合題被攤平了，選項畫面會很怪。
   4. #301（「我 180 公分 Je fais 1m80」）topic 標成 question-words，應該是 faire 用法；不影響作答，只影響分類。
 - ⏭ 下一步（可選）：純變位 122 題要不要也補一句（例如「主詞 nous → 字尾 -ons」）——小鎮已經會列變位表，優先度低；`node tools/check_weak_anote.js --all -v` 可以看清單。
+
+#### 三之一百一十二、11-06：第49課筆記＋補第48課
+- **材料**（`~/Desktop/1106/`）：6 張截圖＋逐字稿。前兩張是**上一課（第48課）**老師的筆記截圖：p.34 Fonctionnement 上手寫的社區四句＋練習 4 答案、p.35 K 上手寫的三處；後四張是這課的 p.36 詞彙（手寫 voyage d'affaire、classe affaire、faire des affaires、ce mois）、p.39 DELF B1 聽力（勾了答案）、Unité 3 開場 p.41、p.42 A 課文前 18 行。
+- **補第48課**：之前猜的 *Ça me plaît que le centre commercial soit à côté de chez moi* 拿掉，改用老師原句 **…soit proche, c'est pratique pour faire du shopping**（進卡）；*Ça m'énerve…* 補後半 **ça empêche ma fille de dormir**；表格加 proche、pratique、empêcher quelqu'un de；記下截圖跟筆記不同處（à côté 沒有 de chez moi、de la nourriture pas cher → de nourriture pas chère、soit soit 多寫）。練習 4 答案跟第47課一致；p.35 三處手寫原本就有。chunks +2、S_L48_16–17、table_drill `senti-quartier-b1-p34` +2 格。
+- **french_notes.html lesson-49**（8 unit、64 句、104 個法文格、check_notes 0／0）：🗣 口說第二部分（回答要成句、les espèces、réduction、formule、au même prix、combien de temps ça dure、disponible le 19）｜📐 ce mois／ce mois-ci（＋截圖的 affaires 三個）｜📚 p.36 四組詞彙＋練習 1、4、5 答案｜🎧 p.39 聽力答案＋老師的解題重點（題目順序＝對話順序、錄音常原字出現、小心像的選項）｜📖 Unité 3 開場句＋p.42 A 前 18 行｜🎙｜🔊｜📋。
+- **連動**：chunks +106（L49_）；questions.js +39（新 topic `vocab-mieux-vivre` 21 題，quiz／dashboard 標籤都加；另 strategie-ecoute 5、vocab-environnement 4、vocab-restauration 2、articles、negation、question-words、numbers-dates-heure、demonstrative-adj、passe-compose、adjective-agreement、pronoms-y-en、subjonctif-present、conditionnel-present、vocab-shopping）；sentences.js S_L49_1–15；table_drill `parler-l49`（12 列）；map CURRENT_LESSON＝49＋地塊 `mieux-vivre`；gen_town_field_extra 重跑（路上選擇題 1492→1496）。
+- **進遊戲**：town.html 實測讀到第49課 BANK 39 題（其中文法類 13 題進路上題池）、釣魚聽句 67 句、句庫 15 句。⚠️ `vocab-mieux-vivre` 這類詞彙 topic 不在 FAM 分家表，跟第48課 `vocab-tiers-lieu` 一樣只走 quiz／chunks，沒有進路上選擇題。
+- **錄音缺漏**（Owen 說有一段沒錄到）：第一段結尾（講 11 月哪幾天有空）到第二段開頭（Ce mois-ci）之間斷掉。→ 口說問答最後一部分、ce mois／ce mois-ci 講解的前半、截圖上 affaires 三個字是怎麼講到的，都沒錄音；筆記只寫截圖與錄得到的，沒補。另外第一段那段英文（某個星期六、「四週」）辨識太亂，沒收。
+- **標出來的衝突（標準法文 vs 課堂）**：l'espèce → les espèces｜à le même prix → au｜beaucoup d'endroits convivial → conviviaux｜cette trophée → ce trophée｜mettre du sens à sa vie → remettre du sens dans／donner du sens à｜j'ai mis en action de… 不是標準搭配（不進卡）｜指說過的那個月用 ce mois → 最清楚是 ce mois-là｜老師說 se trouver dans la peine 不太用（📐 être dans la peine 存在但正式）｜截圖 voyage d'affaire、classe affaire → affaires｜課本錄音 on s'est pas croisés 省 ne。
+- **我的判斷（課本沒附答案、當堂沒對到）**：p.36 練習 1e déshumanisé、4b prendre soin、4f aidante；都在筆記標了「我的判斷」，沒出成題目。p.39 答案已對過課本附錄錄音原文（p.200）。文法書 PDF 是掃描檔沒有文字層，這次沒用到。
+- **驗證**：check_notes 0／0、check_town_field_extra 全過、audit_questions 無第49課問題；preview 看筆記（導覽列有第49課、64 句與 104 格全有喇叭、第48課新兩句也有）、quiz `?lesson=49` 答一題判對、table_drill 兩張表全填對（11／11、5／5）、sentence_drill 讀到 15＋2 句、map chip 第 49 課＋地塊、town 讀得到；無 console 錯誤。ROOM 測試→清掉 preview 的本機資料→已改回→preview 已關。
+- ⏭ **下次課**：p.42 A 課文第 19 行以後＋題目；p.36 練習 6 答案沒對。11 月上課日：逐字稿聽到 19、22、24、27 號，老師最後複述成 19、24、27（22 號有沒有排，請 Owen 確認）。
 
 #### 三之一百一十一、11-05：主線中段（⚠️ 細節只在 `drafts/STORY_BIBLE_v3` 第 9 節，⛔ 不轉述給 Owen）
 

@@ -24171,5 +24171,761 @@ const CHUNKS = [
   "fr": "le thème clé",
   "zh": "關鍵主題",
   "note": "m.｜複數 thèmes clés"
+ },
+ {
+  "id": "L48_Ça_me_plaît_que_le_centr",
+  "lesson": 48,
+  "fr": "Ça me plaît que le centre commercial soit proche.",
+  "zh": "購物中心很近，我很喜歡",
+  "note": "que＋subjonctif｜正面。être → soit（老師截圖）"
+ },
+ {
+  "id": "L48_empêcher_quelqu_un_de",
+  "lesson": 48,
+  "fr": "empêcher quelqu'un de",
+  "zh": "讓某人無法……",
+  "note": "v.｜empêcher ma fille de dormir"
+ },
+ {
+  "id": "L49_Il_y_a_les_espèces_la_ca",
+  "lesson": 49,
+  "fr": "Il y a les espèces, la carte bancaire ou les applications.",
+  "zh": "可以付現金、刷卡或用手機支付。",
+  "note": "🎙 老師示範的回答；⚠️ 逐字稿是 l'espèce，現金要用複數"
+ },
+ {
+  "id": "L49_En_général_je_ne_fais_pa",
+  "lesson": 49,
+  "fr": "En général, je ne fais pas de réduction.",
+  "zh": "一般來說我不打折。",
+  "note": "🎙 老師。否定後 une → de"
+ },
+ {
+  "id": "L49_Le_prix_ne_change_pas",
+  "lesson": 49,
+  "fr": "Le prix ne change pas.",
+  "zh": "價錢不會變。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L49_Si_tu_veux_entrée_plat_d",
+  "lesson": 49,
+  "fr": "Si tu veux entrée-plat-dessert, c'est un peu plus cher.",
+  "zh": "如果你要前菜、主菜加甜點，就會貴一點。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L49_Le_cours_commence_à_huit",
+  "lesson": 49,
+  "fr": "Le cours commence à huit heures et demie.",
+  "zh": "課八點半開始。",
+  "note": "🎙 老師的回答（原話是 8h30）"
+ },
+ {
+  "id": "L49_La_campagne_c_est_plus_c",
+  "lesson": 49,
+  "fr": "La campagne, c'est plus convivial que Taipei.",
+  "zh": "鄉下比台北更容易跟人打成一片。",
+  "note": "🎙 老師舉例"
+ },
+ {
+  "id": "L49_Taipei_ce_n_est_pas_très",
+  "lesson": 49,
+  "fr": "Taipei, ce n'est pas très convivial.",
+  "zh": "台北不太容易跟人聊起來。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L49_Je_te_mets_en_relation_a",
+  "lesson": 49,
+  "fr": "Je te mets en relation avec quelqu'un d'autre.",
+  "zh": "我介紹你認識另一個人。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L49_On_va_faire_connaissance",
+  "lesson": 49,
+  "fr": "On va faire connaissance.",
+  "zh": "我們來認識一下。",
+  "note": "🎙 老師（練習 1a）"
+ },
+ {
+  "id": "L49_Je_t_aide_tu_m_aides_c_e",
+  "lesson": 49,
+  "fr": "Je t'aide, tu m'aides, c'est de l'entraide.",
+  "zh": "我幫你、你幫我，這就是互助。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L49_J_ai_pris_un_chien_parce",
+  "lesson": 49,
+  "fr": "J'ai pris un chien parce que j'avais besoin de compagnie.",
+  "zh": "我養了一隻狗，因為我需要有人陪。",
+  "note": "🎙 老師舉例"
+ },
+ {
+  "id": "L49_Le_chien_te_tient_compag",
+  "lesson": 49,
+  "fr": "Le chien te tient compagnie.",
+  "zh": "狗陪著你。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L49_Je_te_tiens_compagnie",
+  "lesson": 49,
+  "fr": "Je te tiens compagnie.",
+  "zh": "我陪你。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L49_J_ai_quelque_chose_qui_m",
+  "lesson": 49,
+  "fr": "J'ai quelque chose qui me pèse sur le moral.",
+  "zh": "有件事一直壓在我心上。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L49_J_ai_de_la_peine_pour_to",
+  "lesson": 49,
+  "fr": "J'ai de la peine pour toi.",
+  "zh": "我替你難過。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L49_J_ai_des_choses_à_régler",
+  "lesson": 49,
+  "fr": "J'ai des choses à régler.",
+  "zh": "我有些事要處理。",
+  "note": "🎙 老師：例如今天沒辦法上課時"
+ },
+ {
+  "id": "L49_Est_ce_que_toi_tu_as_déj",
+  "lesson": 49,
+  "fr": "Est-ce que toi, tu as déjà été déprimé ?",
+  "zh": "你自己有沒有憂鬱過？",
+  "note": "🎙 老師問你"
+ },
+ {
+  "id": "L49_J_ai_dédié_ma_vie_à_ma_f",
+  "lesson": 49,
+  "fr": "J'ai dédié ma vie à ma famille.",
+  "zh": "我把一生獻給了家人。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L49_Les_musées_ne_sont_pas_c",
+  "lesson": 49,
+  "fr": "Les musées ne sont pas chers, les concerts sont chers.",
+  "zh": "博物館不貴，音樂會很貴。",
+  "note": "🎙 老師（口說省了 ne）"
+ },
+ {
+  "id": "L49_un_échange",
+  "lesson": 49,
+  "fr": "un échange",
+  "zh": "交流、你來我往",
+  "note": "m.｜第二部分的形式"
+ },
+ {
+  "id": "L49_les_moyens_de_paiement",
+  "lesson": 49,
+  "fr": "les moyens de paiement",
+  "zh": "付款方式",
+  "note": "m. pl.｜"
+ },
+ {
+  "id": "L49_les_espèces",
+  "lesson": 49,
+  "fr": "les espèces",
+  "zh": "現金",
+  "note": "f. pl.｜payer en espèces；⚠️ 不說 l'espèce"
+ },
+ {
+  "id": "L49_la_carte_bancaire",
+  "lesson": 49,
+  "fr": "la carte bancaire",
+  "zh": "銀行卡、信用卡",
+  "note": "f.｜"
+ },
+ {
+  "id": "L49_une_réduction",
+  "lesson": 49,
+  "fr": "une réduction",
+  "zh": "折扣",
+  "note": "f.｜faire une réduction"
+ },
+ {
+  "id": "L49_la_formule",
+  "lesson": 49,
+  "fr": "la formule",
+  "zh": "套餐組合",
+  "note": "f.｜entrée-plat／plat-dessert"
+ },
+ {
+  "id": "L49_au_même_prix",
+  "lesson": 49,
+  "fr": "au même prix",
+  "zh": "同樣價錢",
+  "note": "loc.｜à＋le → au"
+ },
+ {
+  "id": "L49_durer",
+  "lesson": 49,
+  "fr": "durer",
+  "zh": "持續、歷時",
+  "note": "v.｜la durée"
+ },
+ {
+  "id": "L49_ce_mois_ci",
+  "lesson": 49,
+  "fr": "ce mois-ci",
+  "zh": "這個月（現在）",
+  "note": "loc.｜🎙 永遠指現在這個月"
+ },
+ {
+  "id": "L49_ce_mois_là",
+  "lesson": 49,
+  "fr": "ce mois-là",
+  "zh": "那個月（說過的）",
+  "note": "loc.｜📐 標準補充"
+ },
+ {
+  "id": "L49_ces_jours_ci",
+  "lesson": 49,
+  "fr": "ces jours-ci",
+  "zh": "最近這幾天",
+  "note": "loc.｜🔗 第46課"
+ },
+ {
+  "id": "L49_un_voyage_d_affaires",
+  "lesson": 49,
+  "fr": "un voyage d'affaires",
+  "zh": "出差",
+  "note": "m.｜🧾 截圖；⚠️ affaires 有 s"
+ },
+ {
+  "id": "L49_la_classe_affaires",
+  "lesson": 49,
+  "fr": "la classe affaires",
+  "zh": "商務艙",
+  "note": "f.｜🧾 截圖"
+ },
+ {
+  "id": "L49_faire_des_affaires",
+  "lesson": 49,
+  "fr": "faire des affaires",
+  "zh": "做生意",
+  "note": "v.｜🧾 截圖"
+ },
+ {
+  "id": "L49_un_homme_d_affaires",
+  "lesson": 49,
+  "fr": "un homme d'affaires",
+  "zh": "商人",
+  "note": "m.｜🎙 老師"
+ },
+ {
+  "id": "L49_convivial",
+  "lesson": 49,
+  "fr": "convivial",
+  "zh": "容易跟人打成一片的",
+  "note": "adj.｜複數 conviviaux"
+ },
+ {
+  "id": "L49_déshumanisé",
+  "lesson": 49,
+  "fr": "déshumanisé",
+  "zh": "沒有人味的",
+  "note": "adj.｜練習 1e"
+ },
+ {
+  "id": "L49_mettre_en_relation",
+  "lesson": 49,
+  "fr": "mettre en relation",
+  "zh": "介紹兩人認識",
+  "note": "v.｜je les mets en relation"
+ },
+ {
+  "id": "L49_sympathiser",
+  "lesson": 49,
+  "fr": "sympathiser",
+  "zh": "變成朋友",
+  "note": "v.｜練習 1b"
+ },
+ {
+  "id": "L49_blablater",
+  "lesson": 49,
+  "fr": "blablater",
+  "zh": "瞎聊",
+  "note": "v.｜口語"
+ },
+ {
+  "id": "L49_créer_du_lien",
+  "lesson": 49,
+  "fr": "créer du lien",
+  "zh": "建立連結",
+  "note": "v.｜練習 1d"
+ },
+ {
+  "id": "L49_échanger_des_nouvelles",
+  "lesson": 49,
+  "fr": "échanger des nouvelles",
+  "zh": "互通近況",
+  "note": "v.｜"
+ },
+ {
+  "id": "L49_se_retrouver",
+  "lesson": 49,
+  "fr": "se retrouver",
+  "zh": "碰面、聚在一起",
+  "note": "v.｜"
+ },
+ {
+  "id": "L49_l_ami_d_un_ami",
+  "lesson": 49,
+  "fr": "l'ami d'un ami",
+  "zh": "朋友的朋友",
+  "note": "m.｜🗣 你的萬聖節故事"
+ },
+ {
+  "id": "L49_l_entraide",
+  "lesson": 49,
+  "fr": "l'entraide",
+  "zh": "互助",
+  "note": "f.｜entre＋aide"
+ },
+ {
+  "id": "L49_l_aidant_l_aidante",
+  "lesson": 49,
+  "fr": "l'aidant, l'aidante",
+  "zh": "照顧者",
+  "note": "n.｜"
+ },
+ {
+  "id": "L49_avoir_du_temps_à_donner",
+  "lesson": 49,
+  "fr": "avoir du temps à donner",
+  "zh": "有時間可以付出",
+  "note": "v.｜練習 4e"
+ },
+ {
+  "id": "L49_prendre_soin_de",
+  "lesson": 49,
+  "fr": "prendre soin de",
+  "zh": "照顧",
+  "note": "v.｜🔗 第48課"
+ },
+ {
+  "id": "L49_répondre_à_un_besoin",
+  "lesson": 49,
+  "fr": "répondre à un besoin",
+  "zh": "回應需求",
+  "note": "v.｜練習 4g"
+ },
+ {
+  "id": "L49_répondre_présent",
+  "lesson": 49,
+  "fr": "répondre présent",
+  "zh": "需要時挺身而出",
+  "note": "v.｜練習 4c"
+ },
+ {
+  "id": "L49_soulagé",
+  "lesson": 49,
+  "fr": "soulagé",
+  "zh": "鬆一口氣的",
+  "note": "adj.｜陰性 soulagée"
+ },
+ {
+  "id": "L49_le_volontaire",
+  "lesson": 49,
+  "fr": "le volontaire",
+  "zh": "志工",
+  "note": "m.｜la volontaire；練習 4a"
+ },
+ {
+  "id": "L49_le_volontariat",
+  "lesson": 49,
+  "fr": "le volontariat",
+  "zh": "志工服務",
+  "note": "m.｜la volonté 意願"
+ },
+ {
+  "id": "L49_ne_plus_pouvoir",
+  "lesson": 49,
+  "fr": "ne plus pouvoir",
+  "zh": "已經做不到了",
+  "note": "v.｜≠ je n'ai pas le temps"
+ },
+ {
+  "id": "L49_une_femme_de_ménage",
+  "lesson": 49,
+  "fr": "une femme de ménage",
+  "zh": "打掃阿姨",
+  "note": "f.｜"
+ },
+ {
+  "id": "L49_les_tâches_ménagères",
+  "lesson": 49,
+  "fr": "les tâches ménagères",
+  "zh": "家事",
+  "note": "f. pl.｜"
+ },
+ {
+  "id": "L49_le_réconfort",
+  "lesson": 49,
+  "fr": "le réconfort",
+  "zh": "安慰",
+  "note": "m.｜練習 4g"
+ },
+ {
+  "id": "L49_avoir_besoin_de_compagni",
+  "lesson": 49,
+  "fr": "avoir besoin de compagnie",
+  "zh": "需要有人陪",
+  "note": "v.｜練習 5b"
+ },
+ {
+  "id": "L49_tenir_compagnie_à",
+  "lesson": 49,
+  "fr": "tenir compagnie à",
+  "zh": "陪伴某人",
+  "note": "v.｜練習 5e"
+ },
+ {
+  "id": "L49_avoir_le_moral_au_plus_b",
+  "lesson": 49,
+  "fr": "avoir le moral au plus bas",
+  "zh": "心情跌到谷底",
+  "note": "v.｜練習 5c"
+ },
+ {
+  "id": "L49_n_avoir_personne_à_qui_p",
+  "lesson": 49,
+  "fr": "n'avoir personne à qui parler",
+  "zh": "沒有人可以說話",
+  "note": "v.｜練習 5f"
+ },
+ {
+  "id": "L49_peser_sur_le_moral",
+  "lesson": 49,
+  "fr": "peser sur le moral",
+  "zh": "壓在心上",
+  "note": "v.｜peser 秤重"
+ },
+ {
+  "id": "L49_se_trouver_dans_l_embarr",
+  "lesson": 49,
+  "fr": "se trouver dans l'embarras",
+  "zh": "左右為難",
+  "note": "v.｜練習 5d（老師）"
+ },
+ {
+  "id": "L49_avoir_de_la_peine",
+  "lesson": 49,
+  "fr": "avoir de la peine",
+  "zh": "難過",
+  "note": "v.｜j'ai de la peine pour toi"
+ },
+ {
+  "id": "L49_régler",
+  "lesson": 49,
+  "fr": "régler",
+  "zh": "解決；調整；付錢",
+  "note": "v.｜le réglage 設定"
+ },
+ {
+  "id": "L49_déprimé",
+  "lesson": 49,
+  "fr": "déprimé",
+  "zh": "憂鬱的",
+  "note": "adj.｜陰性 déprimée"
+ },
+ {
+  "id": "L49_l_humeur",
+  "lesson": 49,
+  "fr": "l'humeur",
+  "zh": "心情、情緒",
+  "note": "f.｜練習 5a"
+ },
+ {
+  "id": "L49_dédier_à",
+  "lesson": 49,
+  "fr": "dédier à",
+  "zh": "獻給",
+  "note": "v.｜dédié(e) à 專為……"
+ },
+ {
+  "id": "L49_le_trophée",
+  "lesson": 49,
+  "fr": "le trophée",
+  "zh": "獎盃",
+  "note": "m.｜⚠️ 陽性：ce trophée"
+ },
+ {
+  "id": "L49_lutter_pour",
+  "lesson": 49,
+  "fr": "lutter pour",
+  "zh": "為……奮鬥",
+  "note": "v.｜la lutte 摔角"
+ },
+ {
+  "id": "L49_remettre_du_sens",
+  "lesson": 49,
+  "fr": "remettre du sens",
+  "zh": "讓……重新有意義",
+  "note": "v.｜dans son quotidien"
+ },
+ {
+  "id": "L49_la_mise_en_action",
+  "lesson": 49,
+  "fr": "la mise en action",
+  "zh": "開始行動",
+  "note": "f.｜練習 6e 一類"
+ },
+ {
+  "id": "L49_la_réflexion",
+  "lesson": 49,
+  "fr": "la réflexion",
+  "zh": "思考",
+  "note": "f.｜"
+ },
+ {
+  "id": "L49_le_féminisme",
+  "lesson": 49,
+  "fr": "le féminisme",
+  "zh": "女權主義",
+  "note": "m.｜練習 6g"
+ },
+ {
+  "id": "L49_l_inspiration",
+  "lesson": 49,
+  "fr": "l'inspiration",
+  "zh": "靈感",
+  "note": "f.｜"
+ },
+ {
+  "id": "L49_le_grimpeur",
+  "lesson": 49,
+  "fr": "le grimpeur",
+  "zh": "攀岩的人",
+  "note": "m.｜grimper 爬"
+ },
+ {
+  "id": "L49_la_voie",
+  "lesson": 49,
+  "fr": "la voie",
+  "zh": "（攀岩）路線",
+  "note": "f.｜"
+ },
+ {
+  "id": "L49_s_y_mettre",
+  "lesson": 49,
+  "fr": "s'y mettre",
+  "zh": "開始投入",
+  "note": "v.｜je viens de m'y mettre"
+ },
+ {
+  "id": "L49_croiser_quelqu_un",
+  "lesson": 49,
+  "fr": "croiser quelqu'un",
+  "zh": "碰到某人",
+  "note": "v.｜on ne s'est pas croisés"
+ },
+ {
+  "id": "L49_le_côté_social",
+  "lesson": 49,
+  "fr": "le côté social",
+  "zh": "社交的那一面",
+  "note": "m.｜"
+ },
+ {
+  "id": "L49_un_défi_collectif",
+  "lesson": 49,
+  "fr": "un défi collectif",
+  "zh": "團體挑戰",
+  "note": "m.｜défi personnel 個人挑戰"
+ },
+ {
+  "id": "L49_souple",
+  "lesson": 49,
+  "fr": "souple",
+  "zh": "柔軟的",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L49_ça_donne_envie",
+  "lesson": 49,
+  "fr": "ça donne envie",
+  "zh": "讓人想試",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L49_reprendre",
+  "lesson": 49,
+  "fr": "reprendre",
+  "zh": "重新開始",
+  "note": "v.｜reprendre le sport"
+ },
+ {
+  "id": "L49_tentant",
+  "lesson": 49,
+  "fr": "tentant",
+  "zh": "誘人的",
+  "note": "adj.｜陰性 tentante"
+ },
+ {
+  "id": "L49_prévenir",
+  "lesson": 49,
+  "fr": "prévenir",
+  "zh": "事先告知",
+  "note": "v.｜je vais la prévenir"
+ },
+ {
+  "id": "L49_les_événements_culturels",
+  "lesson": 49,
+  "fr": "les événements culturels",
+  "zh": "文化活動",
+  "note": "m. pl.｜"
+ },
+ {
+  "id": "L49_gratuit",
+  "lesson": 49,
+  "fr": "gratuit",
+  "zh": "免費的",
+  "note": "adj.｜陰性 gratuite"
+ },
+ {
+  "id": "L49_souffler_le_chaud_et_le",
+  "lesson": 49,
+  "fr": "souffler le chaud et le froid",
+  "zh": "時好時壞、反覆",
+  "note": "loc.｜souffler 吹"
+ },
+ {
+  "id": "L49_déverser",
+  "lesson": 49,
+  "fr": "déverser",
+  "zh": "大量倒出、灑",
+  "note": "v.｜des litres d'eau déversés"
+ },
+ {
+  "id": "L49_rafraîchir",
+  "lesson": 49,
+  "fr": "rafraîchir",
+  "zh": "使涼快",
+  "note": "v.｜"
+ },
+ {
+  "id": "L49_le_spectateur",
+  "lesson": 49,
+  "fr": "le spectateur",
+  "zh": "觀眾",
+  "note": "m.｜"
+ },
+ {
+  "id": "L49_l_agriculteur",
+  "lesson": 49,
+  "fr": "l'agriculteur",
+  "zh": "農民",
+  "note": "m.｜"
+ },
+ {
+  "id": "L49_rationné",
+  "lesson": 49,
+  "fr": "rationné",
+  "zh": "被限量的",
+  "note": "adj.｜課本註：limités"
+ },
+ {
+  "id": "L49_choquer",
+  "lesson": 49,
+  "fr": "choquer",
+  "zh": "使震驚、引起反感",
+  "note": "v.｜"
+ },
+ {
+  "id": "L49_une_manifestation",
+  "lesson": 49,
+  "fr": "une manifestation",
+  "zh": "活動；遊行",
+  "note": "f.｜"
+ },
+ {
+  "id": "L49_la_vigne",
+  "lesson": 49,
+  "fr": "la vigne",
+  "zh": "葡萄園",
+  "note": "f.｜"
+ },
+ {
+  "id": "L49_arracher",
+  "lesson": 49,
+  "fr": "arracher",
+  "zh": "拔除",
+  "note": "v.｜"
+ },
+ {
+  "id": "L49_accueillir_le_public",
+  "lesson": 49,
+  "fr": "accueillir le public",
+  "zh": "容納觀眾",
+  "note": "v.｜🔗 第48課 accueillir"
+ },
+ {
+  "id": "L49_dénoncer",
+  "lesson": 49,
+  "fr": "dénoncer",
+  "zh": "揭發、譴責",
+  "note": "v.｜"
+ },
+ {
+  "id": "L49_le_fondateur",
+  "lesson": 49,
+  "fr": "le fondateur",
+  "zh": "創辦人",
+  "note": "m.｜"
+ },
+ {
+  "id": "L49_le_refus",
+  "lesson": 49,
+  "fr": "le refus",
+  "zh": "拒絕",
+  "note": "m.｜refuser"
+ },
+ {
+  "id": "L49_le_déplacement",
+  "lesson": 49,
+  "fr": "le déplacement",
+  "zh": "移動、出行",
+  "note": "m.｜déplacer"
+ },
+ {
+  "id": "L49_étroitement_liées",
+  "lesson": 49,
+  "fr": "étroitement liées",
+  "zh": "密切相關的",
+  "note": "adj.｜étroit 窄"
+ },
+ {
+  "id": "L49_privilégier",
+  "lesson": 49,
+  "fr": "privilégier",
+  "zh": "優先選擇",
+  "note": "v.｜⚠️ 不是特權"
+ },
+ {
+  "id": "L49_faire_l_impasse_sur",
+  "lesson": 49,
+  "fr": "faire l'impasse sur",
+  "zh": "略過、放棄",
+  "note": "v.｜"
+ },
+ {
+  "id": "L49_quitte_à",
+  "lesson": 49,
+  "fr": "quitte à",
+  "zh": "就算要……也",
+  "note": "loc.｜quitte à＋原形"
  }
 ];
