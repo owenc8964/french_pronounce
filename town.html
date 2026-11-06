@@ -1616,9 +1616,9 @@ function askClip(head, c, cb){
   document.getElementById('skip').onclick=function(){ if(done) return; done=true; clipStop(); cb(null); };
 }
 document.getElementById('bAcct').addEventListener('click', function(){ if(!busy) acctPanel(); });
-clipsLoad();
+clipsLoad(); passLoad();
 /* 從聽力解碼頁登入完切回來 → 馬上重試載入課本錄音 */
-document.addEventListener('visibilitychange', function(){ if(!document.hidden && !CLIPS){ CLIPS_TRY=0; clipsLoad(); } });
+document.addEventListener('visibilitychange', function(){ if(!document.hidden && !CLIPS){ CLIPS_TRY=0; clipsLoad(); } if(!document.hidden && !PASSAGES){ PASS_TRY=0; passLoad(); } });
 /* 🐟 魚譜（Owen 的拉力＝圖鑑）：聽得怎樣決定釣到什麼。⛔ 重聽、慢放都不會釣不到，只有最大的魚要「一次聽完全對」
    魚名是標準法文（魁北克河裡真的有），只當收集，⛔ 不出題 */
 var FISH_TIERS=[
@@ -1643,9 +1643,131 @@ function fishBook(back){
   FISH_TIERS.forEach(function(T){ T.list.forEach(function(f){ var n=(S.fishBook||{})[f[0]]; h+='<div class="item">'+(n?T.em+' <span class="say">'+esc(f[0])+'</span> <span class="muted">'+esc(f[1])+'・'+n+' 條</span>':'<span class="muted">？？？</span>')+'</div>'; }); });
   openSheet(h+'</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>'); document.getElementById('ok').onclick=back||closeSheet;
 }
+/* 🌊 11-06 深水區：一整段考試型聽力（課本 DELF 練習，有題目）
+   Owen：「一句不夠，我今天卡住就是聽整段抓不到重點，還在想下一句就來」「不要先認字，應該直接聽；聽完不會再來認字，認字後再重聽一次」
+   流程：看題 → 整段只播一次（邊聽邊答）→ 對答案（錯的先不講答案）→ 🔤 認字（可跳）→ 重聽一次、只答剛才沒抓到的 → 全部答案＋「錄音說的 ↔ 選項寫的」
+   ⭐ 跳過三層：每題「跳過」、整題「↷ 這題跳過」、深水區本身可以不下（照平常釣）；跳過的題不算分母
+   資料：didier/passages_<book>.json（tools/didier_passage.py 產生，私人空間；⛔ 商業教材不進公開 repo） */
+var PASSAGES=null, PASS_TRY=0;
+function passLoad(){
+  if(PASSAGES || Date.now()-PASS_TRY<60000) return; PASS_TRY=Date.now();
+  vaultGet('didier/passages_b1.json').then(function(r){ PASSAGES=(r||[]).filter(function(p){ return !(p.book==='b1' && p.unit>B1_UNITS_DONE); }); }).catch(function(){});
+}
+function passPick(){
+  if(!PASSAGES || !PASSAGES.length) return null; S.deep=S.deep||{};
+  var now=Date.now(), c=PASSAGES.filter(function(p){ var d=S.deep[p.id]; return !d || now-(d.last||0)>20*3600000; });
+  if(!c.length) return null;
+  c.sort(function(a,b){ return ((S.deep[a.id]||{}).n||0)-((S.deep[b.id]||{}).n||0); });
+  return c[0];
+}
+function passNorm(s){ return normAns(String(s||'')).replace(/[^a-z0-9]/g,''); }
+function deepFish(n, P, cb){
+  var Q=P.qs, st=Q.map(function(){ return {pick:null, skip:false, ok1:null, ok2:null}; }), round=1, t0=Date.now(), tick=null, played=false;
+  var src='Édito B1・Unité '+P.unit+'・p.'+P.page;
+  var R={book:P.book, track:P.track, s:P.s, e:P.e};
+  function stopTick(){ clearInterval(tick); tick=null; }
+  function bar(){ return '<div style="height:6px;background:#1a2620;border-radius:4px;overflow:hidden;margin:6px 0"><div id="dbar" style="height:100%;width:0;background:var(--gold)"></div></div><div class="muted" id="dtime" style="font-size:.75em;text-align:right">'+Math.round(P.e-P.s)+' 秒</div>'; }
+  function playAll(onEnd){
+    played=true; clipPlay(R,1).catch(function(){ var f=document.getElementById('fb'); if(f) f.textContent='音檔載入失敗（網路？），可以先跳過'; });
+    stopTick(); var t1=Date.now();
+    tick=setInterval(function(){ var a=CLIP_AUDIO, b=document.getElementById('dbar'), tt=document.getElementById('dtime'); if(!a||!b){ stopTick(); return; }
+      var t=a.currentTime, p=Math.max(0,Math.min(1,(t-P.s)/(P.e-P.s))); b.style.width=(p*100)+'%'; if(tt) tt.textContent=Math.max(0,Math.round(P.e-t))+' 秒';
+      if(Date.now()-t1>1500 && (a.paused || t>=P.e-.4)){ stopTick(); b.style.width='100%'; if(tt) tt.textContent='播完了'; if(onEnd) onEnd(); } }, 200);
+  }
+  function qHtml(i, mode){
+    var q=Q[i], s=st[i];
+    var h='<div class="item" style="margin:8px 0;text-align:left" data-q="'+i+'"><div><b>'+(i+1)+'</b> <span class="fr">'+esc(q.q)+'</span> <button class="btn ghost dzh" data-i="'+i+'" style="padding:0 6px;font-size:.75em">中</button>'+
+      '<div class="muted dzt" id="dzt'+i+'" style="display:none;font-size:.85em">'+esc(q.zh)+'</div></div>';
+    if(mode==='ask'){
+      h+='<div class="opts" style="margin-top:4px">'+q.opts.map(function(o,k){ return '<button data-i="'+i+'" data-k="'+k+'" class="dop'+(s.pick===k?' ok':'')+'" style="padding:7px 10px'+(s.pick===k?';background:#3c5a85;border-color:#9ec5ff':'')+'">'+'ABC'[k]+'　'+esc(o)+'</button>'; }).join('')+'</div>'+
+        '<div style="text-align:right"><button class="btn ghost dsk" data-i="'+i+'" style="font-size:.75em;padding:2px 8px">'+(s.skip?'已跳過・改回來':'跳過這題')+'</button></div>';
+    }
+    return h+'</div>';
+  }
+  function wire(){
+    sheet.querySelectorAll('.dzh').forEach(function(b){ b.onclick=function(){ var z=document.getElementById('dzt'+b.dataset.i); z.style.display=z.style.display==='none'?'block':'none'; }; });
+    sheet.querySelectorAll('.dop').forEach(function(b){ b.onclick=function(){ var i=+b.dataset.i, s=st[i]; s.pick=+b.dataset.k; s.skip=false; redrawQ(i); }; });
+    sheet.querySelectorAll('.dsk').forEach(function(b){ b.onclick=function(){ var i=+b.dataset.i, s=st[i]; s.skip=!s.skip; if(s.skip) s.pick=null; redrawQ(i); }; });
+  }
+  function redrawQ(i){ var el=sheet.querySelector('[data-q="'+i+'"]'); if(!el) return; var d=document.createElement('div'); d.innerHTML=qHtml(i,'ask'); el.replaceWith(d.firstChild); wire(); }
+  function open(i){ return !st[i].skip && (round===1 || st[i].ok1===false); }
+  function ask(){
+    var idx=Q.map(function(q,i){ return i; }).filter(open);
+    openSheet('<h3>🌊 深水區 <small>'+(round===1?'整段只播一次':'再聽一次')+'</small></h3>'+
+      '<div class="muted" style="font-size:.85em">'+(round===1?'先看題目，按 ▶ 開始。可以邊聽邊選；不會的空著、或按「跳過這題」。':'只剩剛才沒抓到的題。')+'</div>'+
+      '<div style="position:sticky;top:-2px;z-index:2;background:var(--panel,#16221b);padding:4px 0"><div class="row2" style="justify-content:center"><button class="btn main" id="dplay">▶ 開始播放</button></div>'+bar()+'</div>'+
+      '<div id="dqs">'+idx.map(function(i){ return qHtml(i,'ask'); }).join('')+'</div>'+
+      '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="dskip">↷ 這題跳過</button><button class="btn main" id="dsub">交出去</button></div>'+
+      repSlot({kind:'深水區聽力', ref:'D:'+P.id, q:src}), true);
+    wire();
+    document.getElementById('dplay').onclick=function(){ this.disabled=true; this.textContent='播放中…'; playAll(function(){ var f=document.getElementById('fb'); if(f) f.textContent='播完了——選好就交出去'; }); };
+    document.getElementById('dsub').onclick=function(){ if(!played){ document.getElementById('fb').textContent='還沒聽喔——先按 ▶'; return; } clipStop(); stopTick(); grade(); };
+    document.getElementById('dskip').onclick=function(){ clipStop(); stopTick();
+      st.forEach(function(s,i){ if(open(i) && s.pick===null) s.skip=true; });
+      if(!played){ closeSheet(); cb(null); return; } grade(); };
+  }
+  function grade(){
+    st.forEach(function(s,i){ if(!open(i)) return; var ok=s.pick===null?false:s.pick===Q[i].a;
+      if(s.skip) return; if(round===1) s.ok1=ok; else s.ok2=ok; });
+    var cnt=st.filter(function(s){ return !s.skip; }), got1=cnt.filter(function(s){ return s.ok1; }).length;
+    var miss=cnt.filter(function(s){ return s.ok1===false && (round===1 || s.ok2!==true); });
+    if(window.GameLog) GameLog.event(round===1?'deep_r1':'deep_r2');
+    if(round===2 || !miss.length){ final(); return; }
+    openSheet('<h3>🌊 深水區 <small>第一次聽</small></h3>'+
+      '<div class="story">'+(got1?'✓ 的是抓到的。':'')+'圓圈的先不講答案——等一下再聽一次。</div>'+
+      Q.map(function(q,i){ var s=st[i]; if(s.skip) return ''; return '<div class="item" style="text-align:left">'+(s.ok1?'✓':'<span class="muted">○</span>')+' <b>'+(i+1)+'</b> <span class="fr">'+esc(q.q)+'</span></div>'; }).join('')+
+      '<div class="row2"><button class="btn ghost" id="dagain">直接再聽</button><button class="btn main" id="dwords">🔤 先認字，再聽</button></div>', true);
+    function again(){ clipStop(); st.forEach(function(x){ if(x.ok1===false) x.pick=null; }); round=2; ask(); }
+    document.getElementById('dagain').onclick=again;
+    document.getElementById('dwords').onclick=words;
+  }
+  function lineOf(fr){ var k=passNorm(fr.replace(/….*$/,'').replace(/^(un|une|le|la|l')\s*/i,'')); for(var i=0;i<P.lines.length;i++){ if(passNorm(P.lines[i].text).indexOf(k)>=0) return i; } return -1; }
+  function playLine(i){ var l=P.lines[i]; if(l) clipPlay({book:P.book, track:P.track, s:Math.max(0,l.s-.15), e:l.e+.25},1).catch(function(){}); }
+  function words(){
+    if(window.GameLog) GameLog.event('deep_words');
+    openSheet('<h3>🔤 這段的字 <small>點 ▶ 聽它在錄音裡怎麼唸</small></h3>'+
+      '<div style="text-align:left">'+P.words.map(function(w,k){ var li=lineOf(w[2]||w[0]);
+        return '<div class="item" style="display:flex;gap:8px;align-items:center">'+(li>=0?'<button class="btn ghost dw" data-l="'+li+'" style="padding:2px 8px">▶</button>':'<span style="width:2.2em"></span>')+'<span class="say">'+esc(w[0])+'</span> <span class="muted">'+esc(w[1])+'</span></div>'; }).join('')+'</div>'+
+      '<div class="row2"><span></span><button class="btn main" id="dgo">好，再聽一次</button></div>', true);
+    sheet.querySelectorAll('.dw').forEach(function(b){ b.onclick=function(){ playLine(+b.dataset.l); }; });
+    document.getElementById('dgo').onclick=function(){ clipStop(); st.forEach(function(x){ if(x.ok1===false) x.pick=null; }); round=2; ask(); };
+  }
+  function final(){
+    var cnt=st.filter(function(s){ return !s.skip; }), n1=cnt.filter(function(s){ return s.ok1; }).length, n2=cnt.filter(function(s){ return s.ok1||s.ok2; }).length;
+    S.deep=S.deep||{}; var d=S.deep[P.id]=S.deep[P.id]||{n:0}; d.n++; d.last=Date.now(); d.r1=n1; d.r2=n2; d.of=cnt.length; save();
+    if(window.GameLog){ GameLog.event('deep_done'); if(cnt.length && n1===cnt.length) GameLog.event('deep_all1'); }
+    var body=Q.map(function(q,i){ var s=st[i], li=q.line, l=P.lines[li];
+      var mark=s.skip?'<span class="muted">—</span>':s.ok1?'✓':s.ok2?'✓<small class="muted">（第二次）</small>':'<span style="color:#9ec5ff">●</span>';
+      return '<div class="item" style="text-align:left;margin:6px 0">'+mark+' <b>'+(i+1)+'</b> <span class="fr">'+esc(q.q)+'</span> → <b class="cans">'+'ABC'[q.a]+' '+esc(q.opts[q.a])+'</b>'+
+        (l?'<div style="margin-top:3px"><button class="btn ghost dl" data-l="'+li+'" style="padding:0 6px">▶</button> <span class="muted">錄音：</span><span class="fr">'+esc(l.text)+'</span></div>':'')+
+        '<div class="muted" style="font-size:.85em">'+esc(q.why)+'</div></div>'; }).join('');
+    var tr='<details style="text-align:left;margin-top:8px"><summary>📜 整段原文（點一句就從那裡聽）</summary><div id="dtr">'+P.lines.map(function(l,i){ return '<div class="dln fr" data-l="'+i+'" style="padding:2px 4px;border-radius:6px;cursor:pointer"><span class="muted" style="font-size:.8em">'+esc(l.spk)+'：</span>'+esc(l.text)+'</div>'; }).join('')+'</div></details>';
+    openSheet('<h3>🌊 深水區 <small>答案</small></h3>'+(cnt.length?'<div class="story">'+(n1===cnt.length?'<b style="color:var(--gold)">一次就全抓到</b>':(n2>n1?'再聽一次，又多抓到 '+(n2-n1)+' 題。':'這段的字，下次再來會更熟。'))+'</div>':'')+
+      '<div class="muted" style="font-size:.85em">💡 題目和錄音常換句話說——對照看「錄音說的」和「選項寫的」。</div>'+body+tr+
+      '<div class="muted" style="font-size:.75em">出處：'+esc(src)+'</div><div class="row2"><span></span><button class="btn main" id="dend">收竿</button></div>', true);
+    sheet.querySelectorAll('.dl').forEach(function(b){ b.onclick=function(){ playLine(+b.dataset.l); }; });
+    sheet.querySelectorAll('.dln').forEach(function(el){ el.onclick=function(){ var i=+el.dataset.l; clipPlay({book:P.book,track:P.track,s:Math.max(0,P.lines[i].s-.15),e:P.e},1).catch(function(){});
+      stopTick(); tick=setInterval(function(){ var a=CLIP_AUDIO; if(!a||!document.getElementById('dtr')){ stopTick(); return; } var t=a.currentTime;
+        sheet.querySelectorAll('.dln').forEach(function(x){ var L=P.lines[+x.dataset.l]; x.style.background=(t>=L.s-.1&&t<L.e+.3)?'rgba(240,201,90,.18)':''; });
+        if(a.paused) stopTick(); },150); }; });
+    document.getElementById('dend').onclick=function(){ clipStop(); stopTick(); closeSheet();
+      var how=cnt.length?{n:cnt.length, nOk:n2, plays:n1===cnt.length?1:2, slow:0}:null; cb(how, n2*2>=cnt.length && cnt.length>0); };
+  }
+  ask();
+}
 function fishSpot(n){
   if(!(n._pal && Date.now()-n._pal<60000) && palaceServe(function(){ n._pal=Date.now(); fishSpot(n); })) return;
-  var i=0; clipsLoad();
+  var i=0; clipsLoad(); passLoad();
+  var DP=!n._deepNo && passPick();
+  if(DP){
+    openSheet('<h3>🌊 河中央比較深</h3><div class="story">水底有很大的影子。這裡要聽<b>一整段對話</b>（約 '+Math.round((DP.e-DP.s)/60*2)/2+' 分鐘），先看題目，整段只播一次。</div>'+
+      '<div class="row2"><button class="btn ghost" id="dno">照平常釣</button><button class="btn main" id="dyes">下深水區</button></div>');
+    document.getElementById('dno').onclick=function(){ closeSheet(); n._deepNo=1; fishSpot(n); n._deepNo=0; };
+    document.getElementById('dyes').onclick=function(){ deepFish(n, DP, function(how, half){
+      closeSheet(); if(how){ if(half) storyFish(); if(bag.length<S.bagCap) addBag({k:'fish', name:'魚', em:'🐟', good:!!half}); fishCatch(n, how); }
+      n.done=true; n.doneAt=Date.now(); }); };
+    return;
+  }
   function next(){
     if(i>=2){ closeSheet(); n.done=true; n.doneAt=Date.now(); return; }
     var cl=clipPick();
