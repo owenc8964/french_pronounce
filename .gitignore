@@ -51,3 +51,5 @@ assets/didier/
 
 # RFI《Journal en français facile》音檔與原文：條款只允許個人下載，⛔ 不轉載 → 永不 commit（tools/rfi_download.py）
 assets/rfi/
+# podcast 音檔（Easy French、InnerFrench…）：個人收聽用，⛔ 不轉載 → 永不 commit（tools/podcast_download.py）
+assets/podcast/

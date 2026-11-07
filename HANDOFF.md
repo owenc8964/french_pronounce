@@ -43,6 +43,7 @@
 > - ✍️ **10-23 題庫詳解補寫（三之八十二）**：491 題弱解說改成「為什麼是這個答案」，非變位類弱解說歸零；⏸ 4 題可疑題（題幹錯字／選項重複）等 Owen 決定。
 > - 🏝 **10-27 小鎮：口說群島樣品——碼頭搭船進群島總覽、自我介紹島（海岸、4 區、步道、23 個意思相符的地標、自己走、站著跳泡泡）（三之九十三（小鎮））**
 > - 🪧 **10-28 小鎮：自我介紹島碼頭旁加「島上的重點」告示牌——一上島自動打開，考官問題＋四區條列（附站號）；走開再走回會再開；順手修兩個地標放錯區（三之九十七（小鎮））**
+> - 🎧 **11-07 podcast 素材：7 個節目實測對照 TCF，下載 Easy French、InnerFrench 各 20 集（三之一百一十六）**；TV5MONDE 條款禁止下載不做；Audio Lingua 網域被導到賭場頁（停手）
 > - ⛏ **11-07 課本聽力填空越挖越多（每段自己的層數）；TCF 聽力資源網路推薦整理（research/2026-11-07）；RFI 字量實測太難先存著（三之一百一十五）**
 > - 📻 **11-07 下載 RFI《Journal en français facile》最近 30 集（音檔＋原文），存 `assets/rfi/`（gitignore）並上傳私人空間 `rfi/`；還沒接進遊戲（三之一百一十四）**
 > - 🌊 **11-06 釣魚深水區：一整段 DELF 聽力（先聽→答→認字→重聽），第一題 B1 p.39 攀岩（三之一百一十三）**
@@ -5002,6 +5003,14 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
   3. **#73**（preposition-country）opts 有 12 個、互相重複（au Canada／en France…出現好幾次），看起來是組合題被攤平了，選項畫面會很怪。
   4. #301（「我 180 公分 Je fais 1m80」）topic 標成 question-words，應該是 faire 用法；不影響作答，只影響分類。
 - ⏭ 下一步（可選）：純變位 122 題要不要也補一句（例如「主詞 nous → 字尾 -ons」）——小鎮已經會列變位表，優先度低；`node tools/check_weak_anote.js --all -v` 可以看清單。
+
+#### 三之一百一十六、11-07：podcast 當原速聽力素材（實測→下載）
+- **TV5MONDE**：條款明文禁止下載與程式抓取 → ⛔ 不做。網路上有人用 yt-dlp（有 TV5MONDE 擷取器，常壞要變通），沒幫跑。合法路：官方 EDU App 離線（只能在 App 內）、enseigner.tv5monde.com 教學單元附可下載逐字稿（未逐一確認）。
+- **Audio Lingua**：程式連線回 403；用 Owen 的 Chrome 開，**舊網域 audio-lingua.eu 跟官方 audio-lingua.ac-versailles.fr 都被導到境外賭場推薦頁** → 立刻停手、沒點任何東西、沒下載。ac-versailles 學區網站從這台機器連線逾時。⏸ 請 Owen 用手機行動網路確認是網站壞了還是家裡 DNS 問題。
+- **Podcast 走得通**：Apple 的搜尋 API（itunes.apple.com/search）→ 節目公開 RSS → 音檔網址。這本來就是給 podcast App 下載用的。
+- **實測**（`research/2026-11-07_podcast難度實測對照TCF.md`）：每節目 2 集×3 分鐘，whisperkit 轉文字，量語速＋認得的字；TCF 第 1 回用同一把尺分四段。結論：TCF 難在字（後段 84–88%）不在快（120–170 字/分）；課本 p.39 字 98% 卻聽不懂＝瓶頸是自動化。Easy French／InnerFrench 字≈TCF 第 11–19 題（93%）、速度 180 比考試快 → 主力；RFI 8 milliards de voisins＝進階；RFI 簡易新聞字≈TCF 最後段。
+- ✅ **`tools/podcast_download.py <show> N`**（easyfrench／innerfrench）：存 `assets/podcast/<show>/mp3/<集數>.mp3`＋`episodes.json`（gitignore 已加 `assets/podcast/`）。已下：Easy French 195–213（20 集、546 分鐘、543 MB）、InnerFrench E181–E200（20 集、749 分鐘、⚠️ 1.6 GB，位元率高）。ffprobe 檢查長度全部跟節目清單一致。
+- ⏳ **下一步**：① 轉文字（whisperkit 約 4 倍速，1300 分鐘≈5–6 小時，要背景跑）② ⚠️ 要上傳私人空間給手機用前先壓縮（InnerFrench 1.6 GB 會撐爆 Supabase 免費 1 GB；可參考 `tools/tmp_compress_audio.js`）③ 接進遊戲：照深水區「先聽→認字→再聽」，原文用轉出來的文字、理解題原創但用字對齊已學課次。
 
 #### 三之一百一十五、11-07：課本聽力填空越挖越多＋聽力資源定位
 - **RFI 難度實測**（用筆記／卡片／句庫出現過的字當「見過」）：課本 p.39 對話 97.8%（語速約 210 字／分）、TCF 前段 96.6%／中段 92.7%／後段 88.8–85.8%、**RFI 平均 82.7%**（語速約 155 字／分，含頭尾）。RFI 難在新聞用字且很分散（背最常見 400 個也只到 90.7%）→ 先存著，等 TCF 中段穩了再當進階。Owen 同意先做課本。
