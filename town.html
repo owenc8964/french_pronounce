@@ -1523,7 +1523,7 @@ function clipPick(){
 }
 function clipPlay(c, rate){
   if(MUTED){ toast('🔇 靜音中——右上角打開聲音才聽得到'); }
-  var path='didier/'+c.book+'/'+('00'+c.track).slice(-3)+'.m4a';
+  var path=c.path||('didier/'+c.book+'/'+('00'+c.track).slice(-3)+'.m4a');   /* c.path：收音機的 podcast 整集（11-07） */
   var p=CLIP_URL[path] ? Promise.resolve(CLIP_URL[path]) : vaultGet(path,true).then(function(b){ return (CLIP_URL[path]=URL.createObjectURL(b)); });
   return p.then(function(u){
     var a=CLIP_AUDIO||(CLIP_AUDIO=new Audio()); try{ a.pause(); }catch(e){}
@@ -1623,9 +1623,9 @@ function askClip(head, c, cb){
   document.getElementById('skip').onclick=function(){ if(done) return; done=true; clipStop(); cb(null); };
 }
 document.getElementById('bAcct').addEventListener('click', function(){ if(!busy) acctPanel(); });
-clipsLoad(); passLoad();
+clipsLoad(); passLoad(); radioLoad();
 /* 從聽力解碼頁登入完切回來 → 馬上重試載入課本錄音 */
-document.addEventListener('visibilitychange', function(){ if(!document.hidden && !CLIPS){ CLIPS_TRY=0; clipsLoad(); } if(!document.hidden && !PASSAGES){ PASS_TRY=0; passLoad(); } });
+document.addEventListener('visibilitychange', function(){ if(!document.hidden && !CLIPS){ CLIPS_TRY=0; clipsLoad(); } if(!document.hidden && !PASSAGES){ PASS_TRY=0; passLoad(); } if(!document.hidden && !RADIO){ RADIO_TRY=0; radioLoad(); } });
 /* 🐟 魚譜（Owen 的拉力＝圖鑑）：聽得怎樣決定釣到什麼。⛔ 重聽、慢放都不會釣不到，只有最大的魚要「一次聽完全對」
    魚名是標準法文（魁北克河裡真的有），只當收集，⛔ 不出題 */
 var FISH_TIERS=[
@@ -1759,6 +1759,208 @@ function deepFish(n, P, cb){
       var how=cnt.length?{n:cnt.length, nOk:n2, plays:n1===cnt.length?1:2, slow:0}:null; cb(how, n2*2>=cnt.length && cnt.length>0); };
   }
   ask();
+}
+/* ============================================================
+   📻 收音機（11-07）：坐在家裡聽外面的聲音——podcast 原速、真人、一段 1–2 分鐘
+   Owen 11-07：「好好設計遊戲該怎麼操作，讓我可以練好練滿，又能綁上故事線，聽力大幅提升」
+     選了：坐到收音機前聽（不是邊走邊聽）／每天 5 段左右／原文 Claude 先抽查才上／出題要像 TCF Canada
+   為什麼是這兩個節目：research/2026-11-07_podcast難度實測對照TCF.md（認得的字≈TCF 第 11–19 題，語速比考試快）
+   一段的流程（照研究）：
+     ① 第一遍只播一次、只看題目（TCF 樣式：選項換句話說）——⭐ 進步只看這一遍
+     ② 沒抓到 → 認字（點 ▶ 聽他原本那句）③ 第二遍看原文、字跟著亮 ④ 第三遍不看字 → 答案＋詳解
+     ⑤ 沒按「會了」的字 → 收音機自己的複習卡（卡片放真人那一句；1/3/7/14/30/60 天）
+   ⭐ 第一遍沒抓到的段，兩天後會再回來考第一遍（分得出是真的聽懂、還是記住了）
+   ⭐ 跳過三層：每一步「⏭」、整段「⏭ 這段跳過」、收音機本身不在今日步驟裡；跳過記次數（S.radio.skip），⛔ 不刪
+   ⛔ 不秀分母、不罵人；訊號格子是收集（清楚／聽過／還沒聽／跳過），不是成績
+   故事：ep.tags（例如 story:xxx）整集聽完 → radioStoryHook(tag)（劇情在 town_story.js，⛔ 這裡不寫劇情）
+   資料：podcast/index.json＋podcast/<show>_<id>.json＋podcast/<show>/<id>.m4a（tools/radio_build.py，私人空間，⛔ 不進公開 repo）
+   ============================================================ */
+var RADIO=null, RADIO_TRY=0, RADIO_EP={}, RADIO_IV=[1,3,7,14,30,60];
+function radioLoad(){
+  if(RADIO || Date.now()-RADIO_TRY<60000) return; RADIO_TRY=Date.now();
+  vaultGet('podcast/index.json').then(function(r){ RADIO=r||[]; }).catch(function(e){ RADIO_ERR=e&&e.code||'net'; });
+}
+var RADIO_ERR=null;
+function radioEp(file){ return RADIO_EP[file] ? Promise.resolve(RADIO_EP[file]) : vaultGet(file).then(function(d){ return (RADIO_EP[file]=d); }); }
+function radioDay(){ var d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+function radioS(){ var R=S.radio=S.radio||{}; R.seg=R.seg||{}; R.w=R.w||{}; R.skip=R.skip||{}; if(R.day!==radioDay()){ R.day=radioDay(); R.dn=0; } return R; }
+function radioDue(){ var R=radioS(), now=Date.now(); return Object.keys(R.w).filter(function(k){ return (R.w[k].due||0)<=now; }); }
+/* 下一段：① 第一遍沒抓到、兩天前聽的 → 再考第一遍 ② 同一個節目，照順序接著聽（窄聽：同一批聲音、同一類話題）③ 跳過的最後才回來 */
+function radioPick(show){
+  var R=radioS(), now=Date.now(), eps=(RADIO||[]).filter(function(e){ return e.show===show; });
+  for(var i=0;i<eps.length;i++) for(var j=0;j<eps[i].segs.length;j++){ var id=eps[i].segs[j], r=R.seg[id];
+    if(r && r.f1===false && !r.re && now-(r.last||0)>2*86400000) return {ep:eps[i], id:id, re:true}; }
+  for(i=0;i<eps.length;i++) for(j=0;j<eps[i].segs.length;j++){ id=eps[i].segs[j]; if(!R.seg[id] && !R.skip[id]) return {ep:eps[i], id:id}; }
+  var sk=[]; eps.forEach(function(e){ e.segs.forEach(function(id){ if(!R.seg[id] && R.skip[id] && now-(R.skip[id].last||0)>3*86400000) sk.push({ep:e, id:id, n:R.skip[id].n}); }); });
+  sk.sort(function(a,b){ return a.n-b.n; }); return sk[0]||null;
+}
+function radioCell(id){ var R=radioS(), r=R.seg[id];
+  var c=r ? (r.f1 ? 'var(--gold)' : '#5b7da8') : R.skip[id] ? '#555' : '#22302a';
+  var t=r ? (r.f1 ? '第一遍就聽懂' : '聽過了（還沒有一次就抓到）') : R.skip[id] ? '跳過' : '還沒聽';
+  return '<span title="'+t+'" style="display:inline-block;width:12px;height:12px;margin:1px;border-radius:3px;background:'+c+(r&&!r.f1?';background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.18) 0 2px,transparent 2px 4px)':'')+'"></span>'; }
+function radioOpen(){
+  radioLoad();
+  if(!RADIO){
+    openSheet('<h3>📻 收音機</h3><div class="story">沙沙沙……還收不到訊號。</div>'+
+      (RADIO_ERR==='nologin'||RADIO_ERR==='expired' ? clipLoginBox() : '<div class="muted">稍等一下再來（要連網路）。</div>')+
+      '<div class="row2"><span></span><button class="btn main" id="rx">離開</button></div>');
+    clipLoginWire(); document.getElementById('rx').onclick=closeSheet; return;
+  }
+  var R=radioS(), due=radioDue(), shows={};
+  RADIO.forEach(function(e){ (shows[e.show]=shows[e.show]||{name:e.name, eps:[]}).eps.push(e); });
+  var h='<h3>📻 收音機</h3>'+
+    '<div class="story">'+(R.dn>=5 ? '今天的份量收好了 ✓——想再聽也可以。' : R.dn ? '今天已經收了 '+R.dn+' 段訊號。' : '轉開收音機，外面的聲音一段一段傳進來。')+'</div>'+
+    (due.length ? '<div class="row2"><span class="muted">🔁 有 '+due.length+' 張卡到期（真人說的那一句）</span><button class="btn main" id="rcards">先複習</button></div>' : '');
+  Object.keys(shows).forEach(function(k){ var S0=shows[k];
+    h+='<div class="item" style="text-align:left;margin:8px 0"><b>'+esc(S0.name)+'</b>'+
+      S0.eps.map(function(e){ return '<div style="margin:4px 0"><span class="fr" style="font-size:.85em">'+esc(e.title.replace(/^\d+[:：]?\s*|^E\d+\s*/,''))+'</span><div>'+e.segs.map(radioCell).join('')+'</div></div>'; }).join('')+
+      '<div class="row2"><span></span><button class="btn main rgo" data-s="'+k+'">▶ 收聽下一段</button></div></div>';
+  });
+  h+='<div class="muted" style="font-size:.75em">格子：<span style="color:var(--gold)">■</span> 第一遍就聽懂　<span style="color:#5b7da8">■</span> 聽過了　■ 還沒聽——第一遍沒抓到的，過兩天會再回來。</div>'+
+    '<div class="row2"><span></span><button class="btn ghost" id="rx">離開</button></div>';
+  openSheet(h, true);
+  document.getElementById('rx').onclick=closeSheet;
+  var rc=document.getElementById('rcards'); if(rc) rc.onclick=function(){ radioCards(radioOpen); };
+  sheet.querySelectorAll('.rgo').forEach(function(b){ b.onclick=function(){ var pk=radioPick(b.dataset.s);
+    if(!pk){ toast('📻 這個頻道的段都聽過了——新的集數之後會進來'); return; }
+    b.disabled=true; b.textContent='調頻中…';
+    radioEp(pk.ep.file).then(function(E){ var sg=E.segs.filter(function(x){ return x.id===pk.id; })[0]; if(!sg){ toast('📻 這段訊號斷了'); radioOpen(); return; } radioSeg(E, sg, pk.re); })
+      .catch(function(){ toast('📻 收訊不好（網路？）'); b.disabled=false; b.textContent='▶ 收聽下一段'; }); }; });
+}
+function radioSeg(E, G, re){
+  var Q=G.q, pick=null, played=false, plays=0, tick=null, known={}, first=null, src=E.name+'・'+E.title;
+  var C={path:E.audio, s:Math.max(0,G.s-.2), e:G.e+.4};
+  function stopTick(){ clearInterval(tick); tick=null; }
+  function bar(){ return '<div style="height:6px;background:#1a2620;border-radius:4px;overflow:hidden;margin:6px 0"><div id="rbar" style="height:100%;width:0;background:var(--gold)"></div></div><div class="muted" id="rtime" style="font-size:.75em;text-align:right">'+Math.round(G.e-G.s)+' 秒</div>'; }
+  function play(c, onEnd, kar){
+    plays++; clipPlay(c,1).catch(function(){ var f=document.getElementById('fb'); if(f) f.textContent='音檔載入失敗（網路？），可以先跳過'; });
+    stopTick(); var t1=Date.now();
+    tick=setInterval(function(){ var a=CLIP_AUDIO, b=document.getElementById('rbar'), tt=document.getElementById('rtime'); if(!a){ stopTick(); return; }
+      var t=a.currentTime, p=Math.max(0,Math.min(1,(t-c.s)/(c.e-c.s))); if(b) b.style.width=(p*100)+'%'; if(tt) tt.textContent=Math.max(0,Math.round(c.e-t))+' 秒';
+      if(kar) sheet.querySelectorAll('.rln').forEach(function(x){ var L=G.lines[+x.dataset.l]; var on=t>=L.s-.1&&t<L.e+.25; x.style.background=on?'rgba(240,201,90,.2)':''; if(on && kar==='follow' && !x._seen){ x._seen=1; x.scrollIntoView({block:'nearest'}); } });
+      if(Date.now()-t1>1500 && (a.paused || t>=c.e-.3)){ stopTick(); if(b) b.style.width='100%'; if(tt) tt.textContent='播完了'; if(onEnd) onEnd(); } }, 150);
+  }
+  function opts(lock){ return '<div class="opts" style="margin-top:4px">'+Q.o.map(function(o,k){ var on=pick===k;
+      return '<button data-k="'+k+'" class="rop" '+(lock?'disabled ':'')+'style="padding:7px 10px;text-align:left'+(on?';background:#3c5a85;border-color:#9ec5ff':'')+'">'+'ABCD'[k]+'　'+esc(o)+'</button>'; }).join('')+'</div>'; }
+  function wireOpts(){ sheet.querySelectorAll('.rop').forEach(function(b){ b.onclick=function(){ pick=+b.dataset.k; sheet.querySelectorAll('.rop').forEach(function(x){ var on=+x.dataset.k===pick; x.style.background=on?'#3c5a85':''; x.style.borderColor=on?'#9ec5ff':''; }); }; }); }
+  function head(sub){ return '<h3>📻 '+esc(E.name)+' <small>'+sub+'</small></h3>'; }
+  function lineIdx(hint){ var k=passNorm(hint); for(var i=0;i<G.lines.length;i++) if(passNorm(G.lines[i].t).indexOf(k)>=0) return i; return -1; }
+  function playLine(i){ var l=G.lines[i]; if(l) clipPlay({path:E.audio, s:Math.max(0,l.s-.15), e:l.e+.3},1).catch(function(){}); }
+  function record(ok){ var R=radioS(), r=R.seg[G.id];
+    if(!r){ r=R.seg[G.id]={f1:ok, n:0}; } else if(re){ r.f1=ok; r.re=1; } else if(ok && !r.f1){ r.f1=true; }
+    r.n++; r.last=Date.now(); if(R.skip[G.id]) R.skip[G.id].done=1; save();
+    if(window.GameLog) GameLog.event(ok?'radio_first_ok':'radio_first_miss'); }
+  /* ① 第一遍：只播一次 */
+  function first1(){
+    openSheet(head(re?'這段又回來了・第一遍':'第一遍・只播一次')+
+      '<div class="muted" style="font-size:.85em">'+(re?'前幾天這段第一遍沒抓到——再當第一次聽一遍。':'先看題目，按 ▶。跟考試一樣只播一次，邊聽邊選。')+'</div>'+
+      '<div style="position:sticky;top:-2px;z-index:2;background:var(--panel,#16221b);padding:4px 0"><div class="row2" style="justify-content:center"><button class="btn main" id="rplay">▶ 開始播放</button></div>'+bar()+'</div>'+
+      '<div class="item" style="text-align:left"><span class="fr">'+esc(Q.q)+'</span>'+opts(false)+
+      '<div style="text-align:right"><button class="btn ghost" id="rnone" style="font-size:.8em;padding:2px 8px">沒聽懂</button></div></div>'+
+      '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="rskip">⏭ 這段跳過</button><button class="btn main" id="rsub">交出去</button></div>'+
+      repSlot({kind:'收音機', ref:'R:'+G.id, q:src}), true);
+    wireOpts();
+    document.getElementById('rplay').onclick=function(){ this.disabled=true; this.textContent='播放中…（只播一次）'; played=true; play(C, function(){ var f=document.getElementById('fb'); if(f) f.textContent='播完了——選好就交出去'; }); };
+    document.getElementById('rnone').onclick=function(){ pick=null; submit(); };
+    document.getElementById('rsub').onclick=function(){ if(!played){ document.getElementById('fb').textContent='還沒聽喔——先按 ▶'; return; } submit(); };
+    document.getElementById('rskip').onclick=function(){ clipStop(); stopTick(); var R=radioS(), k=R.skip[G.id]=R.skip[G.id]||{n:0}; k.n++; k.last=Date.now(); save();
+      if(window.GameLog) GameLog.event('radio_skip'); radioOpen(); };
+  }
+  function submit(){ if(!played){ document.getElementById('fb').textContent='還沒聽喔——先按 ▶'; return; }
+    clipStop(); stopTick(); first=(pick===Q.a); record(first); var R=radioS(); R.dn=(R.dn||0)+1; save();
+    if(first) answer(); else words(); }
+  /* ② 認字 */
+  function words(){
+    openSheet(head('第一遍沒抓到・先認字')+
+      '<div class="story">答案先不講。這段裡可能卡住的字——點 ▶ 聽他原本那句；已經會的按「會了」。</div>'+
+      '<div style="text-align:left">'+G.w.map(function(w,k){ var li=lineIdx(w[2]||w[0]);
+        return '<div class="item" style="display:flex;gap:8px;align-items:center">'+(li>=0?'<button class="btn ghost rw" data-l="'+li+'" style="padding:2px 8px">▶</button>':'')+
+          '<span class="say" style="flex:1"><span class="fr">'+esc(w[0])+'</span> <span class="muted">'+esc(w[1])+'</span></span><button class="btn ghost rk" data-k="'+k+'" style="font-size:.75em;padding:2px 8px">'+(known[k]?'✓ 會了':'會了')+'</button></div>'; }).join('')+'</div>'+
+      '<div class="row2"><button class="btn ghost" id="r3">⏭ 直接聽第三遍</button><button class="btn main" id="r2">看著原文聽第二遍</button></div>', true);
+    sheet.querySelectorAll('.rw').forEach(function(b){ b.onclick=function(){ playLine(+b.dataset.l); }; });
+    sheet.querySelectorAll('.rk').forEach(function(b){ b.onclick=function(){ var k=+b.dataset.k; known[k]=!known[k]; b.textContent=known[k]?'✓ 會了':'會了'; }; });
+    document.getElementById('r2').onclick=function(){ clipStop(); second(); };
+    document.getElementById('r3').onclick=function(){ clipStop(); third(); };
+    if(window.GameLog) GameLog.event('radio_words');
+  }
+  function lines(){ return '<div id="rtr" style="text-align:left;max-height:46vh;overflow:auto">'+G.lines.map(function(l,i){ return '<div class="rln fr" data-l="'+i+'" style="padding:2px 4px;border-radius:6px;cursor:pointer">'+esc(l.t)+'</div>'; }).join('')+'</div>'; }
+  function wireLines(){ sheet.querySelectorAll('.rln').forEach(function(el){ el.onclick=function(){ var i=+el.dataset.l; clipStop(); play({path:E.audio, s:Math.max(0,G.lines[i].s-.15), e:G.e+.4}, null, 'on'); }; }); }
+  /* ③ 第二遍：看原文，字跟著亮 */
+  function second(){
+    openSheet(head('第二遍・看著原文聽')+
+      '<div style="position:sticky;top:-2px;z-index:2;background:var(--panel,#16221b);padding:4px 0"><div class="row2" style="justify-content:center"><button class="btn main" id="rplay">▶ 播放</button></div>'+bar()+'</div>'+
+      lines()+'<div class="muted" style="font-size:.75em">點任何一句就從那裡開始聽。</div>'+
+      '<div class="row2"><span></span><button class="btn main" id="r3">第三遍：不看字</button></div>', true);
+    wireLines();
+    document.getElementById('rplay').onclick=function(){ clipStop(); play(C, null, 'follow'); };
+    document.getElementById('r3').onclick=function(){ clipStop(); stopTick(); third(); };
+    if(window.GameLog) GameLog.event('radio_second');
+  }
+  /* ④ 第三遍：不看字，再答一次 */
+  function third(){ pick=null;
+    openSheet(head('第三遍・不看字')+
+      '<div style="position:sticky;top:-2px;z-index:2;background:var(--panel,#16221b);padding:4px 0"><div class="row2" style="justify-content:center"><button class="btn main" id="rplay">▶ 播放</button></div>'+bar()+'</div>'+
+      '<div class="item" style="text-align:left"><span class="fr">'+esc(Q.q)+'</span>'+opts(false)+'</div>'+
+      '<div class="fb" id="fb"></div><div class="row2"><button class="btn ghost" id="rans">⏭ 直接看答案</button><button class="btn main" id="rsub">對答案</button></div>', true);
+    wireOpts();
+    document.getElementById('rplay').onclick=function(){ clipStop(); play(C); };
+    document.getElementById('rsub').onclick=function(){ clipStop(); stopTick(); answer(); };
+    document.getElementById('rans').onclick=function(){ clipStop(); stopTick(); pick=null; answer(); };
+  }
+  /* ⑤ 答案＋收卡 */
+  function answer(){
+    var li=lineIdx(Q.hint), R=radioS(), now=Date.now(), added=0;
+    if(!first) G.w.forEach(function(w,k){ if(known[k]) return; var c=R.w[w[0]];
+      if(!c){ R.w[w[0]]={zh:w[1], ep:E.show+'_'+E.id, seg:G.id, li:lineIdx(w[2]||w[0]), iv:0, due:now+20*3600000, n:0}; added++; } });
+    save();
+    var mark=first ? '<b style="color:var(--gold)">第一遍就抓到了</b>' : pick===Q.a ? '第三遍抓到了。' : '這段的聲音，下次再來會更熟。';
+    openSheet(head('答案')+'<div class="story">'+mark+(added?'　🎒 '+added+' 個字收進複習卡。':'')+'</div>'+
+      '<div class="item" style="text-align:left"><span class="fr">'+esc(Q.q)+'</span><div style="margin-top:4px">→ <b class="cans">'+'ABCD'[Q.a]+' '+esc(Q.o[Q.a])+'</b></div>'+
+      (li>=0?'<div style="margin-top:4px"><button class="btn ghost rl" data-l="'+li+'" style="padding:0 6px">▶</button> <span class="muted">錄音：</span><span class="fr">'+esc(Q.line)+'</span></div>':'')+
+      '<div class="muted" style="font-size:.85em;margin-top:4px">'+esc(Q.why)+'</div></div>'+
+      '<div class="muted" style="font-size:.8em">💡 TCF 的選項幾乎都換句話說——對照「錄音說的」和「選項寫的」。</div>'+
+      '<details style="margin-top:6px"><summary>📜 整段原文（點一句就從那裡聽）</summary>'+lines()+'</details>'+
+      (first?'<details><summary>🔤 這段的字</summary><div style="text-align:left">'+G.w.map(function(w){ return '<div class="item"><span class="fr">'+esc(w[0])+'</span> <span class="muted">'+esc(w[1])+'</span></div>'; }).join('')+'</div></details>':'')+
+      '<div class="muted" style="font-size:.75em">出處：'+esc(src)+'</div>'+
+      '<div class="row2"><button class="btn ghost" id="rend">收工</button><button class="btn main" id="rnext">下一段</button></div>', true);
+    var rl=sheet.querySelector('.rl'); if(rl) rl.onclick=function(){ playLine(+rl.dataset.l); };
+    wireLines();
+    if(window.GameLog) GameLog.event('radio_done');
+    radioStoryCheck(E);
+    document.getElementById('rend').onclick=function(){ clipStop(); stopTick(); closeSheet(); };
+    document.getElementById('rnext').onclick=function(){ clipStop(); stopTick(); radioOpen(); };
+  }
+  first1();
+}
+/* 故事：這集標了 story:xxx、而且每一段都聽過（或跳過）→ 交給 town_story.js；⛔ 劇情不寫在這裡 */
+function radioStoryCheck(E){
+  var R=radioS(); (E.tags||[]).forEach(function(t){ if(t.indexOf('story:')) return;
+    var all=E.segs.every(function(s){ return R.seg[s.id] || R.skip[s.id]; });
+    R.story=R.story||{}; if(all && !R.story[t]){ R.story[t]=Date.now(); save(); if(window.radioStoryHook) setTimeout(function(){ radioStoryHook(t.slice(6)); }, 400); } });
+}
+/* 🔁 複習卡：先聽他那一句 → 想意思 → 看中文 → 記得／還不熟／會了／跳過 */
+function radioCards(back){
+  var R=radioS(), q=radioDue().slice(0,12), i=0;
+  function card(){
+    if(i>=q.length){ toast('🔁 卡片複習完了'); back(); return; }
+    var k=q[i], c=R.w[k], ef=(RADIO||[]).filter(function(e){ return e.show+'_'+e.id===c.ep; })[0];
+    openSheet('<h3>🔁 複習卡 <small>先聽他那一句</small></h3><div class="item" style="text-align:center;font-size:1.4em"><span class="fr">'+esc(k)+'</span></div>'+
+      '<div class="row2" style="justify-content:center"><button class="btn ghost" id="cpl">▶ 聽那一句</button></div><div id="cline" class="fr muted" style="text-align:left"></div>'+
+      '<div id="czh" class="story" style="display:none">'+esc(c.zh)+'</div>'+
+      '<div class="row2" id="c1"><button class="btn ghost" id="csk">⏭ 跳過</button><button class="btn main" id="cshow">想好了，看意思</button></div>'+
+      '<div class="row2" id="c2" style="display:none"><button class="btn ghost" id="cno">還不熟</button><button class="btn ghost" id="cknow">會了</button><button class="btn main" id="cok">記得</button></div>', true);
+    var G=null;
+    if(ef) radioEp(ef.file).then(function(E){ G=E.segs.filter(function(s){ return s.id===c.seg; })[0]; var L=G&&G.lines[c.li];
+      document.getElementById('cpl').onclick=function(){ if(L) clipPlay({path:E.audio, s:Math.max(0,L.s-.15), e:L.e+.3},1).catch(function(){}); };
+      if(L){ document.getElementById('cline').textContent=L.t; document.getElementById('cpl').click(); } }).catch(function(){});
+    document.getElementById('cshow').onclick=function(){ document.getElementById('czh').style.display=''; document.getElementById('c1').style.display='none'; document.getElementById('c2').style.display=''; };
+    function next(iv){ var now=Date.now(); c.n=(c.n||0)+1; c.last=now; if(iv!=null){ c.iv=iv; c.due=now+RADIO_IV[Math.min(iv,RADIO_IV.length-1)]*86400000-4*3600000; } save(); clipStop(); i++; card(); }
+    document.getElementById('cok').onclick=function(){ next(Math.min((c.iv||0)+1, RADIO_IV.length-1)); };
+    document.getElementById('cno').onclick=function(){ next(0); };
+    document.getElementById('cknow').onclick=function(){ c.known=(c.known||0)+1; next(RADIO_IV.length-1); };   /* 會了：拉到最長間隔，⛔ 不刪（自評不可靠） */
+    document.getElementById('csk').onclick=function(){ c.skip=(c.skip||0)+1; c.due=Date.now()+86400000; next(null); };
+  }
+  card();
 }
 function fishSpot(n){
   if(!(n._pal && Date.now()-n._pal<60000) && palaceServe(function(){ n._pal=Date.now(); fishSpot(n); })) return;
@@ -2084,7 +2286,8 @@ var ROOMS={
   home:{ name:'🏡 你的家', W:9, H:7, floor:['#b08d68','#a3825f'], wall:'#6d5a7a', trim:'#3d3046',
     walls:[['🖼️',2.0],['🕰️',6.8]], win:[4.4],
     objs:[ {em:'🛏️', x:2.0, y:3.2, size:1.5, lab:'🛏️ 床：收工睡覺', act:function(){ rest(); }},
-           {em:'📅', x:6.8, y:3.0, lab:'📅 月曆：今天的目標與連續天數', act:function(){ if(window.GameLog) openStreak(); }} ],
+           {em:'📅', x:6.8, y:3.0, lab:'📅 月曆：今天的目標與連續天數', act:function(){ if(window.GameLog) openStreak(); }},
+           {em:'📻', x:4.6, y:4.3, size:1.3, lab:'📻 收音機：坐下來聽外面的聲音', act:function(){ radioOpen(); }} ],
     deco:[['🛋️',6.6,5.2],['🪴',8.1,2.8],['🧸',3.4,5.6],['💡',4.4,2.6],['🧶',1.2,5.6]] }
 };
 var ROOM={on:false, id:null, x:4.5, y:6, joy:null, near:null, auto:null, face:1, still:0, moving:false, view:null}, rcv=null, rctx=null, rhud=null;
