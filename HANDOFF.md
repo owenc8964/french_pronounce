@@ -5021,6 +5021,7 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - ✅ **11-07 晚：全遊戲選字搜尋**（Owen：「遊戲中的相關文法、單字問題設定成可搜尋」）：面板（`#sheet`）裡的 `.fr .qtext .say .story .clue .cans .muted .item` 改成可選取（按鈕仍不可選）；選到字（≤300 字）時畫面上方浮出 🔍 Google／DeepL／Reverso／📋。⚠️ 選項按鈕裡的字選不到；嵌入的小遊戲（守園、過河、跑酷 iframe）沒做。GameLog `sel_search`。
 - ✅ **收音機故事集（11-07）**：Easy French 212、195 抽查完上線（212：23 段、195：21 段，兩段廣告跳過；重聽切片確認了 kouign-amann、Bo&Mie、Ladurée、Évian、classe affaires 等辨識錯字）。notes 產生器在 scratchpad（`notes212.py`／`notes195.py` 的格式＝答案先寫、seed 洗牌），notes 本身在 `assets/podcast/easyfrench/notes/`（不入庫）。整集聽完 → `radioStoryHook` 出提示 → 對應居民多一幕三選一（`town_story.js` 最後一段；`town_life.js` 的 beat 新增 `pick`：選了才算聊過、居民頁記他選的那條）。哪集對到誰記在 bible 第 10 節，⛔ 不告訴 Owen。
 - ✅ **聽到一半的那集先聽完**：`radioPick` 先接已開始那集，新集數上架不會把他拉走（195 排在 213 前面，原本會跳過去）。
+- 🗑 **雲端 RFI 已刪（11-07，Owen 同意）**：遊戲沒用到，31 個檔從 bucket `TCF/rfi/` 拿掉，雲端 520→約 370 MB（免費 1 GB）。本機 `assets/rfi/` 完整保留，要接進遊戲時重新上傳。
 - ⏳ **下一步**：① **故事接點**：`radioStoryCheck` 已留（`tags` 有 `story:xxx` 且整集聽完 → `radioStoryHook`），劇情還沒寫。依集數內容挑：Easy French 195 麵包點心、212 機場、211 跳蚤市場、206 孤單；InnerFrench 198、199、197 等。⛔ 回報不講對到誰。② 其他集數抽查出題（一集約 19 段＝4 天份）③ 每週額度可拿來批次出題 ④ 偶爾插一題沒看過的 TCF 真題當量尺（還沒做）。
 
 #### 三之一百一十六、11-07：podcast 當原速聽力素材（實測→下載）
