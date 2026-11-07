@@ -48,3 +48,6 @@ audio/listen_seg/
 
 # Didier 課本／Cahier 音檔（e-didier.fr 官方下載，商業教材）：只留本機，永不 commit、不上正式站
 assets/didier/
+
+# RFI《Journal en français facile》音檔與原文：條款只允許個人下載，⛔ 不轉載 → 永不 commit（tools/rfi_download.py）
+assets/rfi/
