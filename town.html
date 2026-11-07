@@ -1554,11 +1554,16 @@ function clipPassage(c){
   for(j=i-1; j>=0 && seq.length<4 && seq[seq.length-1].e-seq[0].s<10 && adj(L[j],seq[0]); j--) seq.unshift(L[j]);
   return seq;
 }
-function clipGaps(seq){
+/* ⛏ 11-07 Owen：「課本的聽力填空感覺字可以慢慢越挖越多？」
+   → 每段（以抽到的那句為準）有自己的層數 S.clipLv[id]：整段全聽到 → 下次多挖 2 格；聽到不到一半 → 退一層；最多挖到整段學過的字全挖。
+   內容詞七成、小字三成（研究 R60：挖學過的內容詞最接近聽力本身）。層數高了，每句可挖的格數、相鄰的字也放寬 */
+function clipLv(c){ return ((S.clipLv||{})[c.id])||0; }
+function clipGaps(seq, lv){
+  lv=lv||0;
   var all=[]; seq.forEach(function(c,si){ (c.blank||[]).forEach(function(x){ all.push({si:si,a:x.a,b:x.b,w:x.w,t:x.t}); }); });
-  var n=Math.min(all.length, seq.length>=3?4:3), words=shuffle(all.filter(function(x){ return x.t==='w'; })), small=shuffle(all.filter(function(x){ return x.t==='s'; })), out=[];
-  function ok(x){ var per=out.filter(function(y){ return y.si===x.si; });
-    return per.length<2 && per.every(function(y){ return x.b+2<=y.a || y.b+2<=x.a; }); }
+  var n=Math.min(all.length, (seq.length>=3?4:3)+lv*2), words=shuffle(all.filter(function(x){ return x.t==='w'; })), small=shuffle(all.filter(function(x){ return x.t==='s'; })), out=[];
+  function ok(x){ var per=out.filter(function(y){ return y.si===x.si; }), gap=lv>=3?1:2;
+    return per.length<2+lv && per.every(function(y){ return x.b+gap<=y.a || y.b+gap<=x.a; }); }
   while(out.length<n && (words.length||small.length)){
     var src=(words.length && (Math.random()<.7 || !small.length)) ? words : small, x=src.shift();
     if(ok(x)) out.push(x);
@@ -1566,8 +1571,8 @@ function clipGaps(seq){
   return out.sort(function(x,y){ return x.si-y.si || x.a-y.a; });
 }
 function askClip(head, c, cb){
-  var seq=clipPassage(c), gaps=clipGaps(seq);
-  if(!gaps.length){ seq=[c]; gaps=clipGaps(seq); }
+  var lv=clipLv(c), seq=clipPassage(c), gaps=clipGaps(seq, lv);
+  if(!gaps.length){ seq=[c]; gaps=clipGaps(seq, lv); }
   var P={book:c.book, track:c.track, s:seq[0].s, e:seq[seq.length-1].e};
   var src=(c.book==='a2'?'Édito A2':'Édito B1')+'・Unité '+c.unit+'・p.'+c.page;
   function line(si, fill){
@@ -1595,12 +1600,14 @@ function askClip(head, c, cb){
     if(done) return; done=true; var ms=Date.now()-t0;
     var res=gaps.map(function(g,k){ var v=ins[k].value.trim(); return {v:v, ok:!!v && cmp(v)===cmp(g.w), acc:!!v && cmp(v)===cmp(g.w) && v.toLowerCase().replace(/[’]/g,"'")!==g.w.toLowerCase()}; });
     var nOk=res.filter(function(r){ return r.ok; }).length, all=nOk===gaps.length;
+    S.clipLv=S.clipLv||{}; var lv0=clipLv(c), up=all && plays<=3, cap=gaps.length>=clipGaps(seq, 99).length;
+    S.clipLv[c.id]=up ? (cap?lv0:lv0+1) : (nOk*2<gaps.length ? Math.max(0,lv0-1) : lv0); save();
     rc.pick=res.map(function(r){ return r.v||'—'; }).join(' ／ ');
     document.getElementById('cbody').innerHTML=seq.map(function(x,si){ return line(si, function(g,k){ var r=res[k];
       return r.ok ? '<b class="cans">'+esc(g.w)+'</b>'+(r.acc?'<small class="muted">（拼法）</small>':'')
         : '<b class="cans" style="color:#9ec5ff">'+esc(g.w)+'</b>'+(r.v?'<small class="muted">（你打 '+esc(r.v)+'）</small>':''); }); }).join('');
     var miss=gaps.filter(function(g,k){ return !res[k].ok; }), zh=miss.map(function(g){ var z=CLIP_ZH[normAns(g.w)]; return z?'<span class="say">'+esc(g.w)+'</span> <span class="muted">'+esc(z)+'</span>':''; }).filter(Boolean);
-    document.getElementById('fb').innerHTML=(all?(plays<=1&&!slow?'<b style="color:var(--gold)">一次就全聽到</b>':'✓ 全聽到了'):
+    document.getElementById('fb').innerHTML=(all?(plays<=1&&!slow?'<b style="color:var(--gold)">一次就全聽到</b>':'✓ 全聽到了')+(S.clipLv[c.id]>lv0?'<div class="muted" style="font-size:.85em">⛏ 下次這段會多挖幾格</div>':cap&&up?'<div class="muted" style="font-size:.85em">⛏ 這段學過的字全挖出來了</div>':''):
         nOk?'✓ 聽到 '+nOk+' 格；👂 藍色的還沒進耳朵':'👂 藍色的還沒進耳朵——再聽一次，專心聽那一拍')+
       (zh.length?'<div style="margin-top:4px">'+zh.join('　')+'</div>':'')+
       '<div class="muted" style="font-size:.75em">出處：'+esc(src)+'</div>'+
