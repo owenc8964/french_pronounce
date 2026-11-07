@@ -40,8 +40,13 @@ def build(show, eid):
                         lines[i] = {'s': lines[i]['s'], 'e': lines[i + 1]['e'], 't': clean(two.replace(old, new))}
                         del lines[i + 1]; break
         lines = [l for l in lines if l['t']]
-        cut = N.get('trim', {}).get(k, 0)   # 段首裁掉幾句（前一段跳過時留下的尾巴）
-        if cut: lines = lines[cut:]
+        def at(p):   # 句數，或「從含這段字的那一句」
+            if isinstance(p, int): return p
+            i = next((i for i, l in enumerate(lines) if p in l['t']), None); assert i is not None, f'段 {k} 找不到「{p}」'; return i
+        cut = N.get('trim', {}).get(k)   # 段首裁掉（前一段跳過時留下的尾巴）
+        if cut is not None: lines = lines[at(cut):]
+        end = N.get('tail', {}).get(k)   # 從這一句起裁掉（段尾的廣告）
+        if end is not None: lines = lines[:at(end)]
         A = N['segs'][k]
         q = A['q']; assert len(q[1]) == 4 and 0 <= q[2] < 4, k
         txt = ' '.join(l['t'] for l in lines).lower()

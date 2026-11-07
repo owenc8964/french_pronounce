@@ -5015,6 +5015,9 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - **資料流程**：`tools/podcast_asr.py`（whisperkit 離線轉文字，一集約 2 分鐘，40 集背景在跑）→ `tools/podcast_segment.py <show> <id>`（切 50–120 秒，低信心字標 ⟦⟧）→ Claude 寫 `assets/podcast/<show>/notes/<id>.json`（skip／fix／trim／每段 q＋w）→ `tools/radio_build.py <show> <id> --upload`（套修正、檢查原句提示對得到、壓 40kbps m4a、上傳 `podcast/…` 並更新 `podcast/index.json`）。⚠️ notes 也在 gitignore 裡（`assets/podcast/`），只存本機。
 - **213 抽查**：Whisper 錯的：hypotypose（聽成 hyper-hypothèque）、j'étais curieux、Thomas Bernhard、結尾自己編的「Sous-titrage Société Radio-Canada」（老毛病，之後每集都要刪）；第 6 段是節目廣告、第 16 段人名糊 → 跳過；第 17 段裁掉前 6 句。
 - **測試**（ROOM 改 TEST、測完清 localStorage、改回、preview_stop）：預覽沒登入私人空間 → 測試時在頁面裡把 `vaultGet` 換成讀本機檔（只在預覽分頁，程式沒改）。走過：答錯→認字→第二遍（字會亮）→第三遍→答案＋收 3 張卡／答對直接看答案／跳過記次數／兩天後重考會被優先挑／複習卡記得・不熟・會了的間隔／滿 5 段的訊息／手機寬度。
+- ✅ **11-07 晚：原文可以選取＋每句 🔍**（Owen：「是否可以複製或長按直接搜尋？」）：全站 body 是 `user-select:none`（地圖操作不誤選），收音機原文、答案頁的錄音句、複習卡那一句加 `.sel` 可長按選取（手機會跳系統的查詢／搜尋）；每句旁邊 🔍 → 📋 複製／Google／Reverso（fr→en）／DeepL（fr→zh）。正在選字時點句子不會開始播。GameLog `radio_search`。
+- 🧭 **11-07 晚 Owen 提的方向（待他選先做哪個）**：「遊戲要隨每次上課和練完的量滾動調整」→ 規劃：每個練習點記四個數字（碰過幾次／第一次就對／作答秒數／隔天還對不對）→ 自動分成 🧠 不懂／✂️ 還要想／⚡ 反射（教學鐵律那張表）；上課的糾錯摘要 → 每週焦點 3–5 點，遊戲題目往焦點傾斜約四成，練到反射自動降溫；收音機加「單句精聽」（挑講得快、有連音、含焦點文法、第一遍沒懂那段的關鍵句，挖字填空）與「聽到就按」。
+- ⏸ **機場那集（212）故事做到一半**：設計＝整集聽完去找 Margot，她問「收音機上說了什麼？」三個選項都是錄音裡真的講過的事（時間停住／怕被廣播叫名字／延誤時跟陌生人聊天），選哪個她回不同的話，給她自己想要的東西那一層（⛔ 不碰三年前那艘船）。212 已切段（23 段，第 8 段尾、第 9 段頭是廣告 → `radio_build.py` 新增 `tail`／`trim` 可用字串指定），notes 還沒寫。195 麵包點心→Bernard 待轉文字完再看。
 - ⏳ **下一步**：① **故事接點**：`radioStoryCheck` 已留（`tags` 有 `story:xxx` 且整集聽完 → `radioStoryHook`），劇情還沒寫。依集數內容挑：Easy French 195 麵包點心、212 機場、211 跳蚤市場、206 孤單；InnerFrench 198、199、197 等。⛔ 回報不講對到誰。② 其他集數抽查出題（一集約 19 段＝4 天份）③ 每週額度可拿來批次出題 ④ 偶爾插一題沒看過的 TCF 真題當量尺（還沒做）。
 
 #### 三之一百一十六、11-07：podcast 當原速聽力素材（實測→下載）
