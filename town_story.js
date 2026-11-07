@@ -670,6 +670,33 @@ LIFE_PAIRS['gaston|zoe']=[ ['zoe','你為什麼都不講話？'], ['gaston','…
     [0,'最上面那封的封口好像開過？……我沒問喔。我什麼都沒問。', '', '', function(){ return stPick('bundle')==='open'; }]);
 })();
 function lifeBeatReady(id){ var R=lifeRes(id), st=lifeSt(id); return R.beats.filter(function(b,i){ return st.pts>=b.at && !st.beats[i] && (!b.need||b.need()); })[0]||null; }
+/* ---------- 📻 收音機的故事集（11-07）：整集聽完 → 對應居民多一幕，問你「她們說了什麼？」三個選項都是錄音裡真的講過的事
+   ⛔ 回報、commit 不講哪集對到誰；選項法文是 podcast 原句（真實教材），回覆是角色自己的慾望（bible 9：配角要有第二層） ---------- */
+function radioHeard(tag){ return !!(((S.radio||{}).story||{})['story:'+tag]); }
+(function(){
+  function add(id, list){ var R=lifeRes(id); if(R) R.beats=R.beats.concat(list); }   /* ⚠️ 只能往後加 */
+  add('margot',[
+    {at:2, need:function(){ return radioHeard('margot'); }, fact:'也在聽收音機',
+     t:'她船艙裡有一台舊收音機，雜訊很多，沒關。<br>「你也聽那個台？」她把線咬斷。「機場那集我只聽到一半，船就在叫了。」<br>她看著你。「她們說了什麼？」',
+     pick:[
+      {b:'「機場是時間停住的地方。」', fr:'C\'est un endroit où le temps est suspendu.', f:'喜歡待在兩岸中間',
+       r:'她想了一下。<br>「船上也是。在兩岸中間，你已經不是走了的人，也還不是到了的人。」<br>她拍拍船舷。<br>「我最喜歡那一段。所以我一直待在中間。」'},
+      {b:'「她最怕聽到廣播叫自己的名字。」', fr:'C\'est toujours ma hantise d\'entendre mon nom.', f:'希望有人在岸上喊她的名字',
+       r:'「怕？」她笑了一聲。<br>「我倒想要有人在岸上喊我的名字。不是叫我開船，是喊我。」<br>她低頭繼續補。<br>「一次就好。」'},
+      {b:'「班機延誤，她跟陌生人聊天，時間就過去了。」', fr:'Ça a fait passer le temps, en fait.', f:'想當一次乘客',
+       r:'「對。」她點頭，好像那是她自己的事。<br>「人在船上什麼都跟我講。下了船，就忘了開船的是誰。」<br>她看著對岸。<br>「總有一天，我也要當一次乘客。坐著就好，什麼都不用管。」'} ]} ]);
+  add('bernard',[
+    {at:2, need:function(){ return radioHeard('bernard'); }, fact:'店裡多了一台收音機',
+     t:'麵包店的櫃台上多了一台收音機，底下墊著麵粉袋。<br>「客人說這台會講法文。」他擦擦手。「她們講太快，我聽不懂。」<br>他看你。「麵包那集，你聽完了？她們說了什麼？」',
+     pick:[
+      {b:'「前一天沒賣完的可頌，可以做成杏仁可頌。」', fr:'C\'est fait avec des croissants de la veille.', f:'想試試用昨天的麵包做點什麼',
+       r:'他看了一眼角落那籃昨天的麵包。<br>「我都拿去餵鴨子。」<br>過了一會兒。<br>「……杏仁要放多少？」'},
+      {b:'「傳說有麵包師半夜醒著，看到敵人來，發了警報。」', fr:'Les boulangers ont pu donner l\'alerte.', f:'聽到半夜的麵包師那段，手停了一下',
+       r:'他揉麵的手停了。<br>「半夜醒著的人，看得到別人看不到的東西。」<br>他把麵團翻過來，用力壓下去。<br>「也做得出別人不會做的事。」<br>他沒有再說話。'},
+      {b:'「好的麵包店，排隊的是街坊鄰居，不是觀光客。」', fr:'Une file d\'attente, mais de gens du quartier.', f:'想知道自己的麵包到底好不好吃',
+       r:'「這裡只有我一家。」他哼了一聲。「好不好吃，大家都得來排。」<br>他包好一條長棍推給你，沒收錢。<br>「你吃。不好吃要講。」<br>「……從來沒有人跟我講過。」'} ]} ]);
+})();
+window.radioStoryHook=function(tag){ toast('📻 這一集聽完了。鎮上好像也有人在聽這個台。'); };
 /* ⭐ 一天只能深聊一個人（實況野球的取捨）：另一個人的事往後延，⛔ 不會消失、不扣任何東西 */
 function eveFree(id){ var e=stSt().eve; return e.d!==today() || e.who===id; }
 function eveMark(id){ var st=stSt(); st.eve={d:today(), who:id}; save(); }

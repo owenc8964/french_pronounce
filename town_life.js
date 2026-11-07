@@ -196,12 +196,16 @@ function lifeTalk(p){
   var beat=R.beats.filter(function(b,i){ return st.pts>=b.at && !st.beats[i] && (!b.need||b.need()); })[0], busyToday=beat&&!first&&!eveFree(R.id); if(busyToday) beat=null;   /* 一天只能深聊一個人，他的事往後延 */
   var bi=R.beats.indexOf(beat), stg=lifeStage(st.pts), body;
   if(first) body='<div class="story">'+R.intro+'</div>';
+  else if(beat && beat.pick){ body='<div class="story">'+beat.t+'</div><div class="opts" id="lfPick" style="flex-direction:column;align-items:stretch">'+beat.pick.map(function(o,i){ return '<button data-k="'+i+'" style="text-align:left">'+o.b+(o.fr?'<br><span class="fr" style="font-size:.85em;opacity:.8">'+esc(o.fr)+'</span>':'')+'</button>'; }).join('')+'</div>'; }   /* 選了才算聊過；沒選就關掉，下次還在 */
   else if(beat){ st.beats[bi]=1; st.pts+=1; eveMark(R.id); if(beat.sign) stSign(beat.sign); if(window.GameLog) GameLog.event('story_beat_'+R.id); body='<div class="story">'+beat.t+'</div><div class="muted">📖 '+esc(R.name)+' 的居民頁多了一行</div>'; }
   else { var pool=R.lines.filter(function(l){ return (!l[4]||l[4]()) && (l[0]<=stg-1 || (stg<=1 && l[0]===0)); }), un=pool.filter(function(l){ return !st.seen[R.lines.indexOf(l)]; }); if(!un.length){ st.seen={}; un=pool; }
     var L=un[Math.floor(Math.random()*un.length)]; st.seen[R.lines.indexOf(L)]=1;
     body='<div class="story">「'+esc(L[1])+'」</div>'+(L[2]?'<div class="clue fr">'+esc(L[2])+' '+spk(L[2])+'</div><div class="muted">'+esc(L[3])+'</div>':''); }
   if(busyToday) body+='<div class="muted">好像有話想說。但今天你已經陪過別人了，改天吧。</div>';
   if(R.id==='zoe') body+=rivalBoard();
+  var lfPickWire=function(){ if(!(beat&&beat.pick)) return; sheet.querySelectorAll('#lfPick [data-k]').forEach(function(el){ el.onclick=function(){ var k=+el.dataset.k, o=beat.pick[k]; st.beats[bi]=1; st.pick=st.pick||{}; st.pick[bi]=k; st.pts+=1; eveMark(R.id); if(window.GameLog) GameLog.event('story_beat_'+R.id); save();
+      document.getElementById('lfPick').outerHTML='<div class="story" style="margin-top:6px">'+o.r+'</div><div class="muted">📖 '+esc(R.name)+' 的居民頁多了一行</div>'; }; }); };
+
   save();
   var hasAsk=stg>=2 && R.asks.length;
   openSheet('<h3>'+esc(R.name)+' <small>'+esc(R.role)+' '+(LIFE_REL[lifeStage(st.pts)].ic||'')+' '+LIFE_REL[lifeStage(st.pts)].zh+'</small></h3>'+body+
@@ -209,6 +213,7 @@ function lifeTalk(p){
   document.getElementById('lfBye').onclick=closeSheet;
   document.getElementById('lfBook').onclick=function(){ lifePage(R, function(){ lifeTalk(p); }); };
   if(hasAsk) document.getElementById('lfAsk').onclick=function(){ lifeAsk(p); };
+  lfPickWire();
   var fr=document.getElementById('lfFr'); if(fr) fr.onclick=function(){ closeSheet(); villager({rid:'clement', x:p.x, y:p.y, calm:3, face:p.face}); };
 }
 /* 💬 他問你：朋友口吻問，問題本身＝你口說卡的考官追問（法文是卡上原本的），⛔ 不給參考回答 */
@@ -224,7 +229,7 @@ function lifeAsk(p){
 }
 /* 📖 居民頁＋居民圖鑑 */
 function lifePage(R, back){
-  var st=lifeSt(R.id), stg=lifeStage(st.pts), facts=R.beats.filter(function(b,i){ return st.beats[i]; }).map(function(b){ return b.fact; });
+  var st=lifeSt(R.id), stg=lifeStage(st.pts), facts=R.beats.map(function(b,i){ if(!st.beats[i]) return null; var o=b.pick&&b.pick[(st.pick||{})[i]]; return o&&o.f||b.fact; }).filter(Boolean);
   openSheet('<h3>📖 '+esc(R.name)+' <small>'+esc(R.role)+'</small></h3><div class="muted">'+(LIFE_REL[stg].ic||'')+' '+LIFE_REL[stg].zh+'</div>'+
     '<ul style="margin:8px 0 0 1.2em;padding:0">'+(facts.length?facts.map(function(f){ return '<li>'+esc(f)+'</li>'; }).join(''):'<li class="muted">還不太認識他。多聊幾次、幫他一點忙。</li>')+'</ul>'+
     '<div class="row2"><span></span><button class="btn main" id="lpOk">好</button></div>');

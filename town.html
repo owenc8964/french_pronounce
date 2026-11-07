@@ -1792,6 +1792,9 @@ function radioPick(show){
   var R=radioS(), now=Date.now(), eps=(RADIO||[]).filter(function(e){ return e.show===show; });
   for(var i=0;i<eps.length;i++) for(var j=0;j<eps[i].segs.length;j++){ var id=eps[i].segs[j], r=R.seg[id];
     if(r && r.f1===false && !r.re && now-(r.last||0)>2*86400000) return {ep:eps[i], id:id, re:true}; }
+  /* 聽到一半的那集先聽完（新集數上架時不會把他拉去別集） */
+  for(i=0;i<eps.length;i++){ var segs=eps[i].segs, started=segs.some(function(id){ return R.seg[id]||R.skip[id]; });
+    if(started) for(j=0;j<segs.length;j++){ id=segs[j]; if(!R.seg[id] && !R.skip[id]) return {ep:eps[i], id:id}; } }
   for(i=0;i<eps.length;i++) for(j=0;j<eps[i].segs.length;j++){ id=eps[i].segs[j]; if(!R.seg[id] && !R.skip[id]) return {ep:eps[i], id:id}; }
   var sk=[]; eps.forEach(function(e){ e.segs.forEach(function(id){ if(!R.seg[id] && R.skip[id] && now-(R.skip[id].last||0)>3*86400000) sk.push({ep:e, id:id, n:R.skip[id].n}); }); });
   sk.sort(function(a,b){ return a.n-b.n; }); return sk[0]||null;
