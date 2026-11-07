@@ -190,7 +190,8 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
 .ibt { display:flex; gap:4px; } .ibt button, .ilink button[data-act=prev] { background:rgba(255,255,255,.12); color:#fff3c0; border:1px solid rgba(255,255,255,.25); border-radius:7px; padding:2px 7px; font-family:inherit; font-size:1em; }
 .ibtn { margin-top:5px; background:#f0c95a; color:#2a1a08; border:0; border-radius:8px; padding:4px 10px; font-family:inherit; font-weight:bold; }
 .ibub { position:fixed; z-index:9; max-width:min(86vw,340px); background:rgba(18,26,20,.93); border:2px solid #f0c95a; border-radius:12px; padding:8px 11px; color:#dfe8e1; cursor:pointer; line-height:1.45; }
-.sel { user-select:text; -webkit-user-select:text; -webkit-touch-callout:default; }   /* 11-07 Owen：「是否可以複製或長按直接搜尋？」→ 收音機原文可以選取、長按查 */
+.sel, .sheet .fr, .sheet .qtext, .sheet .say, .sheet .story, .sheet .clue, .sheet .cans, .sheet .muted, .sheet .item { user-select:text; -webkit-user-select:text; -webkit-touch-callout:default; }
+.sheet button, .sheet .tile { -webkit-user-select:none; user-select:none; }   /* 11-07 Owen：「是否可以複製或長按直接搜尋？」→ 收音機原文可以選取、長按查 */
 .cgap { color:var(--gold); letter-spacing:1px; } .cgin { display:inline-block; font:inherit; padding:1px 4px; margin:0 2px; border:0; border-bottom:2px solid var(--gold); background:#0f1813; color:var(--ink); border-radius:4px; user-select:text; -webkit-user-select:text; } .cans { color:var(--gold); text-decoration:underline; }
 .conjrow { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; margin:6px 0; font-size:.85em; } .conjrow span { background:#16211b; border-radius:6px; padding:3px 6px; } .conjrow small { color:var(--dim); } .conjrow .ok { background:#3c5a2c; color:#fff3c0; } .conjrow .no { background:#4a2c28; }
 .rlink { display:inline-block; margin-top:4px; color:#9fd0ff; font-size:.88em; text-decoration:none; border-bottom:1px dashed #9fd0ff; }
@@ -1811,7 +1812,8 @@ function radioOpen(){
   RADIO.forEach(function(e){ (shows[e.show]=shows[e.show]||{name:e.name, eps:[]}).eps.push(e); });
   var h='<h3>📻 收音機</h3>'+
     '<div class="story">'+(R.dn>=5 ? '今天的份量收好了 ✓——想再聽也可以。' : R.dn ? '今天已經收了 '+R.dn+' 段訊號。' : '轉開收音機，外面的聲音一段一段傳進來。')+'</div>'+
-    (due.length ? '<div class="row2"><span class="muted">🔁 有 '+due.length+' 張卡到期（真人說的那一句）</span><button class="btn main" id="rcards">先複習</button></div>' : '');
+    (due.length ? '<div class="row2"><span class="muted">🔁 有 '+due.length+' 張卡到期（真人說的那一句）</span><button class="btn main" id="rcards">先複習</button></div>' : '')+
+    (Object.keys(R.seg).length ? '<div class="row2"><span class="muted">🎯 挑幾句講得快、黏在一起的，一句一句聽</span><button class="btn ghost" id="rdict">🎯 單句精聽</button></div>' : '');
   Object.keys(shows).forEach(function(k){ var S0=shows[k];
     h+='<div class="item" style="text-align:left;margin:8px 0"><b>'+esc(S0.name)+'</b>'+
       S0.eps.map(function(e){ return '<div style="margin:4px 0"><span class="fr" style="font-size:.85em">'+esc(e.title.replace(/^\d+[:：]?\s*|^E\d+\s*/,''))+'</span><div>'+e.segs.map(radioCell).join('')+'</div></div>'; }).join('')+
@@ -1822,6 +1824,7 @@ function radioOpen(){
   openSheet(h, true);
   document.getElementById('rx').onclick=closeSheet;
   var rc=document.getElementById('rcards'); if(rc) rc.onclick=function(){ radioCards(radioOpen); };
+  var rd=document.getElementById('rdict'); if(rd) rd.onclick=function(){ rd.disabled=true; radioDictStart(null, radioOpen); };
   sheet.querySelectorAll('.rgo').forEach(function(b){ b.onclick=function(){ var pk=radioPick(b.dataset.s);
     if(!pk){ toast('📻 這個頻道的段都聽過了——新的集數之後會進來'); return; }
     b.disabled=true; b.textContent='調頻中…';
@@ -1936,13 +1939,14 @@ function radioSeg(E, G, re){
       '<details style="margin-top:6px"><summary>📜 整段原文（點一句就從那裡聽）</summary>'+lines()+'</details>'+
       (first?'<details><summary>🔤 這段的字</summary><div style="text-align:left">'+G.w.map(function(w){ return '<div class="item"><span class="fr">'+esc(w[0])+'</span> <span class="muted">'+esc(w[1])+'</span></div>'; }).join('')+'</div></details>':'')+
       '<div class="muted" style="font-size:.75em">出處：'+esc(src)+'</div>'+
-      '<div class="row2"><button class="btn ghost" id="rend">收工</button><button class="btn main" id="rnext">下一段</button></div>', true);
+      '<div class="row2"><button class="btn ghost" id="rend">收工</button><button class="btn ghost" id="rdict1">🎯 精聽這段</button><button class="btn main" id="rnext">下一段</button></div>', true);
     var rl=sheet.querySelector('.rl'); if(rl) rl.onclick=function(){ playLine(+rl.dataset.l); };
     wireLines();
     if(window.GameLog) GameLog.event('radio_done');
     radioStoryCheck(E);
     document.getElementById('rend').onclick=function(){ clipStop(); stopTick(); closeSheet(); };
     document.getElementById('rnext').onclick=function(){ clipStop(); stopTick(); radioOpen(); };
+    document.getElementById('rdict1').onclick=function(){ clipStop(); stopTick(); radioDictStart(G.id, radioOpen); };
   }
   first1();
 }
@@ -1976,6 +1980,108 @@ function radioCards(back){
   }
   card();
 }
+/* 🎯 單句精聽（11-07 Owen：「有沒有可能是只聽特殊的一句」）
+   聽懂整段常常卡在少數幾句的「聲音」：講太快、連音吞音、學過的字認不出來。→ 一句一句播，挖字填空（跟課本填空同一套挖法）
+   挑句子（radioDictCands）：只從聽過的段裡挑；1.5–8 秒、5–22 字、至少 2 格可挖；
+     加權：講得快（字／秒）、撇號與連音多、那段第一遍沒聽懂 ×2、裡面有複習卡的字 ×1.5、12 小時內做過 ×0.05、已經全對的句子 ×0.3
+   每句自己的層數 S.radio.dl[id].lv：全聽到且播 ≤3 次 → 下次多挖 2 格；聽到不到一半 → 退一層（同課本填空）
+   ⛔ 空著不填＝「這格還沒進耳朵」，不算錯、不打叉；⛔ 不秀分母
+   一輪 3 句；入口：收音機首頁「🎯 單句精聽」、答完一段後「🎯 精聽這段」 */
+function radioDictCands(only){
+  var R=radioS(), out=[], cards={}, now=Date.now(); R.dl=R.dl||{};
+  Object.keys(R.w).forEach(function(k){ cards[normAns(k).split(' ').pop()]=1; });
+  (RADIO||[]).forEach(function(ix){ var E=RADIO_EP[ix.file]; if(!E) return;
+    E.segs.forEach(function(G){ var r=R.seg[G.id]; if(!r || (only && G.id!==only)) return;
+      G.lines.forEach(function(L,i){ var d=L.e-L.s, ws=(L.t.match(/[A-Za-zÀ-ÿ]+/g)||[]);
+        if(d<1.5 || d>8 || ws.length<5 || ws.length>22) return;
+        var bl=clipBlankAll(L.t); if(bl.length<2) return;
+        var id=G.id+'#'+i, h=R.dl[id]||{}, w=(ws.length/d)/3;
+        w*=1+((L.t.match(/'/g)||[]).length+(L.t.match(/\b(est|sont|ont|vous|nous|les|des|ces|mes|tes|ses|un|on|en|très|plus|quand|dont|c'est)\s+[aeiouyhéèêàâîôû]/gi)||[]).length)*.25;
+        if(!r.f1) w*=2;
+        if(ws.some(function(x){ return cards[normAns(x)]; })) w*=1.5;
+        if(h.last && now-h.last<12*3600000) w*=.05;
+        if(h.all) w*=.3;
+        out.push({E:E, G:G, i:i, L:L, id:id, blank:bl, w:w*(Math.random()+.5)});
+      }); }); });
+  return out.sort(function(a,b){ return b.w-a.w; });
+}
+/* 先把聽過的集數都載進來，再挑 */
+function radioDictStart(only, back){
+  var need=(RADIO||[]).filter(function(ix){ return !RADIO_EP[ix.file] && ix.segs.some(function(id){ return radioS().seg[id]; }); });
+  Promise.all(need.map(function(ix){ return radioEp(ix.file).catch(function(){}); })).then(function(){
+    var c=radioDictCands(only), pick=[], seen={};
+    c.forEach(function(x){ if(pick.length<3 && !seen[x.G.id+'|'+Math.floor(x.i/3)]){ seen[x.G.id+'|'+Math.floor(x.i/3)]=1; pick.push(x); } });   /* 不要三句都擠在一起 */
+    if(!pick.length){ toast(only?'🎯 這段沒有適合精聽的句子（太長或太短）':'🎯 先聽幾段收音機，這裡才有句子可以精聽'); back(); return; }
+    var k=0; (function next(){ if(k>=pick.length){ back(); return; } radioDict(pick[k], k, pick.length, function(stop){ k++; if(stop) back(); else next(); }); })();
+  });
+}
+function radioDict(C, k, n, cb){
+  var R=radioS(); R.dl=R.dl||{}; var h=R.dl[C.id]=R.dl[C.id]||{lv:0, n:0};
+  var seq=[{text:C.L.t, blank:C.blank}], gaps=clipGaps(seq, h.lv), plays=0, slow=0, done=false, t0=Date.now();
+  var P={path:C.E.audio, s:Math.max(0,C.L.s-.15), e:C.L.e+.3};
+  function body(fill){ var t=C.L.t, pos=0, s=''; gaps.forEach(function(g,j){ s+=esc(t.slice(pos,g.a))+fill(g,j); pos=g.b; }); return s+esc(t.slice(pos)); }
+  openSheet('<h3>🎯 單句精聽 <small>'+(n>1?'第 '+(k+1)+' 句':'')+'</small></h3>'+
+    '<div class="muted" style="font-size:.8em">'+esc(C.E.name)+'・約 '+Math.round(C.L.e-C.L.s)+' 秒　聽不出來的格空著就好</div>'+
+    '<div class="qtext fr" id="dbody" style="font-size:1.1em;line-height:1.9;text-align:left">'+body(function(g,j){ return '<input class="cgin" data-k="'+j+'" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" style="width:'+Math.max(3,Math.min(9,g.w.length+1))+'em">'; })+'</div>'+
+    '<div class="row2" style="justify-content:center;gap:8px"><button class="btn main" id="dpl">▶ 聽</button><button class="btn ghost" id="dslow">🐢 慢一點</button></div>'+
+    '<div class="fb" id="fb"></div><div class="row2" id="drow"><button class="btn ghost" id="dsk">⏭ 這句跳過</button><button class="btn main" id="dsub">交出去</button></div>'+
+    repSlot({kind:'收音機精聽', ref:'RD:'+C.id, q:C.L.t, a:gaps.map(function(g){ return g.w; }).join(' ／ ')}), true);
+  function play(r){ plays++; if(r<1) slow++; clipPlay(P, r).catch(function(){ document.getElementById('fb').textContent='音檔載入失敗（網路？），可以先跳過'; }); }
+  document.getElementById('dpl').onclick=function(){ play(1); };
+  document.getElementById('dslow').onclick=function(){ play(.75); };
+  play(1);
+  var ins=[].slice.call(document.querySelectorAll('#dbody .cgin'));
+  function cmp(x){ return normAns(x).replace(/'/g,''); }
+  function finish(){
+    if(done) return; done=true; clipStop();
+    var res=gaps.map(function(g,j){ var v=ins[j].value.trim(); return {v:v, ok:!!v && cmp(v)===cmp(g.w)}; }), nOk=res.filter(function(r){ return r.ok; }).length, all=nOk===gaps.length;
+    var lv0=h.lv, cap=gaps.length>=clipGaps(seq,99).length, up=all && plays<=3;
+    h.lv=up ? (cap?lv0:lv0+1) : (nOk*2<gaps.length ? Math.max(0,lv0-1) : lv0);
+    h.n++; h.last=Date.now(); h.ms=Date.now()-t0; h.plays=plays; h.all=all && cap ? 1 : 0;
+    h.miss=gaps.filter(function(g,j){ return !res[j].ok; }).map(function(g){ return g.w; });   /* 之後「每週焦點」看哪些字在語流裡認不出來 */
+    save();
+    document.getElementById('dbody').innerHTML='<span class="sel">'+body(function(g,j){ var r=res[j];
+      return r.ok ? '<b class="cans">'+esc(g.w)+'</b>' : '<b class="cans" style="color:#9ec5ff">'+esc(g.w)+'</b>'+(r.v?'<small class="muted">（你打 '+esc(r.v)+'）</small>':''); })+'</span>';
+    var u=encodeURIComponent(C.L.t), miss=gaps.filter(function(g,j){ return !res[j].ok; });
+    document.getElementById('fb').innerHTML=(all ? (plays<=1&&!slow?'<b style="color:var(--gold)">一次就全聽到</b>':'✓ 全聽到了')+(h.lv>lv0?'<div class="muted" style="font-size:.85em">⛏ 下次這句會多挖幾格</div>':'')
+        : nOk ? '✓ 聽到 '+nOk+' 格；👂 藍色的還沒進耳朵' : '👂 藍色的還沒進耳朵——再聽一次，專心聽那一拍')+
+      (miss.some(function(g){ return g.t==='s'; })?'<div class="muted" style="font-size:.85em">💡 小字常跟前後黏在一起唸</div>':'')+
+      '<div class="row2" style="justify-content:flex-start;flex-wrap:wrap;gap:6px;margin-top:6px"><a class="btn ghost" style="padding:2px 8px;font-size:.8em" target="_blank" rel="noopener" href="https://www.deepl.com/translator#fr/zh/'+u+'">這句的意思（DeepL）</a>'+
+      '<a class="btn ghost" style="padding:2px 8px;font-size:.8em" target="_blank" rel="noopener" href="https://context.reverso.net/traduction/francais-anglais/'+u+'">Reverso</a></div>';
+    document.getElementById('drow').innerHTML='<button class="btn ghost" id="dagain">▶ 再聽</button><button class="btn ghost" id="dslow2">🐢</button><button class="btn main" id="dgo">'+(k+1<n?'下一句':'好')+'</button>';
+    document.getElementById('dagain').onclick=function(){ play(1); };
+    document.getElementById('dslow2').onclick=function(){ play(.75); };
+    document.getElementById('dgo').onclick=function(){ clipStop(); cb(false); };
+    if(window.GameLog) GameLog.event(all?'radio_dict_ok':'radio_dict_miss');
+  }
+  ins.forEach(function(el,j){ el.addEventListener('keydown',function(e){ e.stopPropagation(); if(e.key==='Enter'){ e.preventDefault(); if(j<ins.length-1) ins[j+1].focus(); else finish(); } }); });
+  document.getElementById('dsub').onclick=finish;
+  document.getElementById('dsk').onclick=function(){ if(done) return; done=true; clipStop(); h.skip=(h.skip||0)+1; h.last=Date.now(); save(); if(window.GameLog) GameLog.event('radio_dict_skip'); cb(false); };
+}
+/* 🔍 11-07 Owen：「遊戲中的相關文法、單字問題設定成可搜尋」
+   → 面板裡的法文／題目／解說都能長按選取（手機系統的「查詢／搜尋」會出現）；選到字時下方浮出 Google／DeepL／Reverso／📋。
+   ⛔ 選項按鈕裡的字選不到（按鈕吃掉長按）——答完題，答案頁的字可以選 */
+(function(){
+  var bar=null, tm=null;
+  function hide(){ if(bar) bar.style.display='none'; }
+  function show(t){
+    if(!bar){ bar=document.createElement('div'); bar.id='selbar';
+      bar.style.cssText='position:fixed;left:50%;top:max(70px,env(safe-area-inset-top));transform:translateX(-50%);z-index:9999;display:none;gap:6px;padding:6px 8px;border-radius:12px;background:#0f1813;border:1px solid var(--gold);box-shadow:0 4px 16px rgba(0,0,0,.5);max-width:94vw;flex-wrap:wrap;justify-content:center';
+      document.body.appendChild(bar);
+      bar.addEventListener('mousedown', function(e){ e.preventDefault(); });   /* 按按鈕時不要把選取清掉 */
+    }
+    var u=encodeURIComponent(t), a='class="btn ghost" style="padding:3px 9px;font-size:.85em" target="_blank" rel="noopener"';
+    bar.innerHTML='<a '+a+' href="https://www.google.com/search?q='+u+'">🔍 Google</a><a '+a+' href="https://www.deepl.com/translator#fr/zh/'+u+'">DeepL</a>'+
+      '<a '+a+' href="https://context.reverso.net/traduction/francais-anglais/'+u+'">Reverso</a><button class="btn ghost" id="selcp" style="padding:3px 9px;font-size:.85em">📋</button>';
+    bar.style.display='flex';
+    document.getElementById('selcp').onclick=function(){ var b=this; if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function(){ b.textContent='✓'; }).catch(function(){}); };
+    bar.querySelectorAll('a').forEach(function(x){ x.addEventListener('click', function(){ if(window.GameLog) GameLog.event('sel_search'); }); });
+  }
+  document.addEventListener('selectionchange', function(){ clearTimeout(tm); tm=setTimeout(function(){
+    var s=window.getSelection&&getSelection(), t=s?String(s).trim():'';
+    var n=s&&s.anchorNode, inSheet=n && typeof sheet!=='undefined' && sheet.contains(n.nodeType===1?n:n.parentNode);
+    if(t && t.length<=300 && inSheet) show(t); else hide(); }, 250); });
+})();
 function fishSpot(n){
   if(!(n._pal && Date.now()-n._pal<60000) && palaceServe(function(){ n._pal=Date.now(); fishSpot(n); })) return;
   var i=0; clipsLoad(); passLoad();
