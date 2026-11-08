@@ -170,6 +170,9 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
 .result-time { font-size: 0.82rem; color: #60a0d0; margin-bottom: 12px; }
 .result-band { font-size: 0.92rem; color: #ddd8cc; line-height: 1.7; }
 .result-band b { color: #60d090; }
+.lv-table { margin: 14px auto 0; max-width: 300px; font-size: 0.78rem; color: #aaa8a0; }
+.lv-row { display: flex; justify-content: space-between; padding: 4px 2px; border-bottom: 1px solid #1c2430; }
+.lv-row b { color: #ddd8cc; font-weight: 700; }
 .caveat { font-size: 0.68rem; color: #445060; line-height: 1.6; margin-top: 12px; }
 
 /* Review */
@@ -303,6 +306,7 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
     <div class="result-label">Réponses correctes</div>
     <div class="result-time" id="resTime"></div>
     <div class="result-band" id="resBand"></div>
+    <div class="lv-table" id="resLevels"></div>
     <div class="caveat" id="resCaveat"></div>
   </div>
 
@@ -329,6 +333,12 @@ const LS_FLAGS = 'tcfmock_flags';
 const LS_HIST  = 'tcfmock_history';
 const LS_SET   = 'tcfmock_settings';
 const DATA_DIR = 'assets/tcf/exam/';
+
+/* 題號 → 等級與配分（2026-11-09）。題目本來就依 A1→C2 排列。
+   ⚠️ 配分是補習班通用的估算（4／6／9／10／6／4 題，滿分剛好 699），官方沒有公開；
+   官方手冊 p.18 只說：答對 1、答錯或空白 0，再依題目難度換算成 100–699，而且每個版本不同。 */
+const LEVELS = [['A1',1,4,3],['A2',5,10,9],['B1',11,19,15],['B2',20,29,21],['C1',30,35,26],['C2',36,39,33]];
+const levelOf = n => LEVELS.find(l => n >= l[1] && n <= l[2]);
 
 /* CLB 對照表（抽自題庫 PDF 首頁） */
 const CLB_TABLE = {
@@ -573,11 +583,15 @@ function submitExam() {
   cur.submitted = true;
   const secs = Math.floor((Date.now() - cur.t0) / 1000);
   const letters = ['A', 'B', 'C', 'D'];
-  let correct = 0, scorable = 0;
+  let correct = 0, scorable = 0, points = 0;
+  const byLevel = {};
   t.questions.forEach((q, i) => {
     if (!q.answer) return;              // 正解抽不到的題不計分
     scorable++;
-    if (cur.answers[i] !== null && letters[cur.answers[i]] === q.answer) correct++;
+    const lv = levelOf(q.q);
+    const row = byLevel[lv[0]] = byLevel[lv[0]] || { ok: 0, n: 0 };
+    row.n++;
+    if (cur.answers[i] !== null && letters[cur.answers[i]] === q.answer) { correct++; row.ok++; points += lv[3]; }
   });
 
   document.getElementById('resScore').textContent = correct + ' / ' + scorable;
@@ -585,13 +599,16 @@ function submitExam() {
     '用時 ' + Math.floor(secs / 60) + ' 分 ' + String(secs % 60).padStart(2, '0') + ' 秒' +
     (blank ? ' · 空白 ' + blank + ' 題' : '');
 
-  const est = Math.round(correct / scorable * 699);
+  const est = Math.max(100, points);   // 官方分數範圍 100–699
+  const cefr = ['A1','A2','B1','B2','C1','C2'][Math.min(5, Math.floor(est / 100) - 1)];
   const band = (CLB_TABLE[t.skill] || []).find(b => est >= b[0] && est <= b[1]);
   document.getElementById('resBand').innerHTML =
-    '粗估分數 <b>' + est + '</b> / 699 · 約 CLB <b>' + (band ? band[2] : '4 以下') + '</b>';
+    '粗估 <b>' + est + '</b> 分 · 約 <b>' + cefr + '</b> · CLB <b>' + (band ? band[2] : '4 以下') + '</b>';
+  document.getElementById('resLevels').innerHTML = LEVELS.filter(l => byLevel[l[0]]).map(l =>
+    '<div class="lv-row"><span>' + l[0] + '（第 ' + l[1] + '–' + l[2] + ' 題）</span><b>' + byLevel[l[0]].ok + ' / ' + byLevel[l[0]].n + '</b></div>').join('');
   document.getElementById('resCaveat').textContent =
-    '粗估＝答對率 × 699，TCF 真正的計分不是這樣線性換算，只能當方向參考。' +
-    '而且這批是 2025 年流出的真題，分數會比實考偏高。CLB 7 的門檻：' +
+    '粗估用補習班常見的每題配分（A1 3、A2 9、B1 15、B2 21、C1 26、C2 33），官方沒有公開，真正的換算每個版本不同，只能當方向參考。' +
+    '做過或看過的題目分數會偏高。CLB 7 的門檻：' +
     (t.skill === 'reading' ? '閱讀 453 分' : '聽力 458 分') + '。';
 
   document.getElementById('resGrid').innerHTML = t.questions.map((q, i) => {
@@ -620,7 +637,7 @@ function submitExam() {
 
   const hist = getHist();
   hist.push({ ts: Date.now(), id: t.id, label: t.label, skill: t.skill,
-              correct, n: scorable, secs, mock: cur.mock });
+              correct, n: scorable, secs, mock: cur.mock, est });
   lsSet(LS_HIST, hist.slice(-200));
 
   show('resultPanel');
