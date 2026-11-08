@@ -5,7 +5,7 @@
 mock.html 的「模擬考模式不准倒帶」因此在本機根本測不出來。GitHub Pages 支援 Range，沒這問題。
 
 跑法：python3 tools/dev_server.py [port]   （預設 7788，等同 .claude/launch.json 的 french-app）"""
-import http.server, os, re, socketserver, sys
+import http.server, os, re, socketserver, sys, threading
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -69,5 +69,13 @@ class Server(socketserver.ThreadingTCPServer):
 
 if __name__ == '__main__':
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 7788
-    print('serving %s on http://localhost:%d （支援 Range）' % (ROOT, port))
-    Server(('127.0.0.1', port), RangeHandler).serve_forever()
+    # 第二個參數：要聽哪些位址（逗號分隔），預設只給本機。
+    # iPad 走 Tailscale：python3 tools/dev_server.py 7788 127.0.0.1,100.83.72.21
+    # ⛔ 不要用 0.0.0.0：那會開放給同一個 Wi-Fi 上的所有人，題目與音檔不該外流
+    hosts = (sys.argv[2] if len(sys.argv) > 2 else '127.0.0.1').split(',')
+    servers = [Server((h, port), RangeHandler) for h in hosts]
+    for h in hosts:
+        print('serving %s on http://%s:%d （支援 Range）' % (ROOT, h, port))
+    for srv in servers[1:]:
+        threading.Thread(target=srv.serve_forever, daemon=True).start()
+    servers[0].serve_forever()

@@ -9,6 +9,16 @@
         "7788"
       ],
       "port": 7788
+    },
+    {
+      "name": "mock-tailscale",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "tools/dev_server.py",
+        "7788",
+        "127.0.0.1,100.83.72.21"
+      ],
+      "port": 7788
     }
   ]
 }
