@@ -234,7 +234,7 @@ input.fill { width:100%; font-size:1.1em; padding:10px 12px; border-radius:10px;
    資料：題目池（全部出自 questions.js；依「處理什麼資訊」分家，跟研究檔第五節同一張表）
    ============================================================ */
 var FAM = {
-  verb: /passe|imparfait|conditionnel|futur|subjonctif|reflexive|(?<!ad)verbs|etre-avoir|imperative|accord-participe|pouvoir|gerondif|condition-si|discours|ilfaut|recit|plus-que-parfait|duree|negation|restriction|forme-passive|interdiction|cause-consequence|expression-but/,
+  verb: /passe|imparfait|conditionnel|futur|subjonctif|reflexive|(?<!ad)verbs|etre-avoir|imperative|accord-participe|pouvoir|gerondif|condition-si|discours|ilfaut|recit|plus-que-parfait|duree|negation|restriction|forme-passive|interdiction|cause-consequence|expression-but|tcf-phrases/,
   pron: /pronom|qui-que|on-vs-nous|cod/,
   noun: /article|adjective|demonstrative-adj|possessives|tout-chaque|comparaison|superlatif|cest-il|mise-en-relief|intensite|preposition|question-words|interrogation/
 };
@@ -1141,13 +1141,14 @@ function mineRock(n){
    → 照「目標比例 ÷ 題庫比例」調權重。目標＝語料為主，但現在式有一部分交給 ⚡ 變位反應，未來式依 Owen 要求拉到一成
    ============================================================ */
 var TENSE_CAT=[
-  ['present', /^(er-verbs|ir-re-verbs|irregular-verbs-3rd-group|etre-avoir|reflexive-verbs|pouvoir-vouloir|ilfaut-devoir)$/, .30],
+  ['present', /^(er-verbs|ir-re-verbs|irregular-verbs-3rd-group|etre-avoir|reflexive-verbs|pouvoir-vouloir|ilfaut-devoir)$/, .24],
   ['past',    /^(passe-compose|accord-participe-passe|pc-imparfait-recit|passe-recent)$/,                                     .20],
   ['imp',     /^imparfait$/,                                                                                             .10],
-  ['fut',     /^(futur-simple|futur-proche)$/,                                                                           .10],
+  ['fut',     /^(futur-simple|futur-proche)$/,                                                                           .06],
   ['cond',    /^(conditionnel-present|condition-si)$/,                                                                   .10],
   ['subj',    /^subjonctif-present$/,                                                                                    .05],
-  ['other',   /./,                                                                                                       .15]
+  ['frame',   /^tcf-phrases$/,                                                                                           .15],   /* 11-09 Owen：遊戲要著重會考的重點（PLAN_TCF_2026-11.md） */
+  ['other',   /./,                                                                                                       .10]
 ];
 function tenseCat(topic){ for(var i=0;i<TENSE_CAT.length;i++) if(TENSE_CAT[i][1].test(topic)) return i; return TENSE_CAT.length-1; }
 /* ⚠️ 不能用「乘權重」：pickQ 是抽 60 題取最高分，權重稍高的類別會壟斷（試跑時未來式跑到 60%）
@@ -1170,10 +1171,10 @@ function tenseSlice(list){
    ⭐ 反射＝最近 3 次都對、起手（第一個按鍵）中位數 ≤ 2 秒（跟 verb_sprint 同一把尺）；⛔ 不倒數
    ============================================================ */
 var CONJ_VERBS=['être','avoir','faire','aller','devoir','pouvoir','vouloir','venir','prendre','savoir','voir'];
-var CONJ_MODES=[ {tense:'present', label:'présent', suffix:'', gram:null, w:.36}, {tense:'passe-compose', label:'passé composé', suffix:'_pc', gram:'passe', w:.18},
-  {tense:'imparfait', label:'imparfait', suffix:'_imp', gram:'imparfait', w:.12}, {tense:'futur-simple', label:'futur simple', suffix:'_fut', gram:'futur-simple', w:.14},
-  {tense:'conditionnel', label:'conditionnel', suffix:'_cond', gram:'conditionnel', w:.12}, {tense:'subjonctif', label:'subjonctif', suffix:'_subj', gram:'subjonctif', w:.08},
-  {tense:'plus-que-parfait', label:'plus-que-parfait', suffix:'_pqp', gram:'pluperfect', w:.06} ];   /* 10-28 加：第45課解鎖（suffix 跟 verb_sprint 同一格） */
+var CONJ_MODES=[ {tense:'present', label:'présent', suffix:'', gram:null, w:.34}, {tense:'passe-compose', label:'passé composé', suffix:'_pc', gram:'passe', w:.24},
+  {tense:'imparfait', label:'imparfait', suffix:'_imp', gram:'imparfait', w:.12}, {tense:'futur-simple', label:'futur simple', suffix:'_fut', gram:'futur-simple', w:.06},
+  {tense:'conditionnel', label:'conditionnel', suffix:'_cond', gram:'conditionnel', w:.12}, {tense:'subjonctif', label:'subjonctif', suffix:'_subj', gram:'subjonctif', w:.10},
+  {tense:'plus-que-parfait', label:'plus-que-parfait', suffix:'_pqp', gram:'pluperfect', w:.02} ];   /* 10-28 加：第45課解鎖（suffix 跟 verb_sprint 同一格） */
 var CONJ_PERS=['je','tu','il / elle','nous','vous','ils / elles'];
 function conjModes(){ return CONJ_MODES.filter(function(m){ if(!m.gram) return true; if(typeof GRAM_POINTS==='undefined') return m.tense==='passe-compose'; var p=GRAM_POINTS.filter(function(x){ return x.id===m.gram; })[0]; return !!p && p.unlocked!==false; }); }
 function conjCells(m){ try{ return JSON.parse(localStorage.getItem('clb7_sprint_cells'+m.suffix))||{}; }catch(e){ return {}; } }

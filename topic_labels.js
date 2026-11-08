@@ -97,6 +97,7 @@ var TOPIC_LABELS_FR = {
  "cause-consequence": "Cause et conséquence",
  "medias-vocab": "L'info, la presse, la télé",
  "preference-interet": "Préférence et intérêt",
+ "tcf-phrases": "Phrases utiles TCF",
  "subjonctif-present": "Subjonctif présent",
  "interrogation-registres": "L'interrogation (registres)",
  "conditionnel-present": "Conditionnel présent",
