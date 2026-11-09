@@ -174,6 +174,9 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
 .lv-row { display: flex; justify-content: space-between; padding: 4px 2px; border-bottom: 1px solid #1c2430; }
 .lv-row b { color: #ddd8cc; font-weight: 700; }
 .q-play { display: flex; gap: 8px; margin: 10px 0 2px; }
+.q-play button.mark { border-color: #3a4656; background: none; color: #aaa8a0; font-weight: 400; }
+.mark-note { min-height: 1.2em; font-size: 0.74rem; color: #aaa8a0; }
+.mark-note a { color: #60a0d0; cursor: pointer; text-decoration: underline; }
 .q-play button { flex: 1; padding: 11px 8px; border-radius: 9px; border: 1px solid #f0c060; background: #1a1800;
   color: #f0c060; font: inherit; font-size: 0.86rem; font-weight: 700; cursor: pointer; }
 .caveat { font-size: 0.68rem; color: #445060; line-height: 1.6; margin-top: 12px; }
@@ -512,16 +515,35 @@ function stopAudio() {
    起點來自 tools/tcf_listening_cues.py（音檔自己報題號的位置）；找不到的題不顯示按鈕。
    ⛔ 模擬考模式不走這段：真考是連續播完、不能倒帶。 */
 let qEnd = null;
-function cueOf(i) {
-  if (!cur || cur.mock || cur.test.skill !== 'listening') return null;
-  const c = (window.TCF_CUES || {})[cur.test.id];
-  return c && typeof c[i] === 'number' ? c[i] : null;
+let manualCues = {};   // Owen 手動標的分割點（存在 Mac mini 的 cues_manual.json），優先於自動結果
+fetch('assets/tcf/exam/cues_manual.json', { cache: 'no-store' })
+  .then(r => r.ok ? r.json() : {}).then(j => { manualCues = j || {}; }).catch(() => {});
+function practising() { return cur && !cur.mock && cur.test.skill === 'listening'; }
+function cueList() {
+  const base = (window.TCF_CUES || {})[cur.test.id] || [], m = manualCues[cur.test.id] || {};
+  return Array.from({ length: 39 }, (_, i) => m[i + 1] ? m[i + 1].t : (typeof base[i] === 'number' ? base[i] : null));
+}
+function cueOf(i) { return practising() ? cueList()[i] : null; }
+function clock(t) { return Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0'); }
+function saveCue(t, q) {
+  return fetch('api/mock-cue', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ test: cur.test.id, q, t }) }).then(r => { if (!r.ok) throw 0; });
+}
+function markCue() {
+  if (!audioEl || audioEl.currentTime < 0.5) { document.getElementById('markNote').textContent = '先播音檔，聽到這題開頭時再按'; return; }
+  const q = cur.test.questions[cur.idx].q, id = cur.test.id, t = Math.max(0, audioEl.currentTime - 0.5);   // 扣掉按下去的反應時間
+  saveCue(t, q).then(() => { (manualCues[id] = manualCues[id] || {})[q] = { t }; renderQ(); })
+    .catch(() => { document.getElementById('markNote').textContent = '沒有存到，再按一次看看'; });
+}
+function undoCue() {
+  const q = cur.test.questions[cur.idx].q, id = cur.test.id;
+  saveCue(null, q).then(() => { delete (manualCues[id] || {})[q]; renderQ(); })
+    .catch(() => { document.getElementById('markNote').textContent = '沒有復原成功，再按一次看看'; });
 }
 function playQuestion() {
   const start = cueOf(cur.idx);
   if (start === null || !audioEl) return;
-  const c = window.TCF_CUES[cur.test.id];
-  const next = c.slice(cur.idx + 1).find(x => typeof x === 'number');
+  const next = cueList().slice(cur.idx + 1).find(x => typeof x === 'number' && x > start);
   qEnd = typeof next === 'number' ? next : null;   // 最後一題：播到結尾
   audioEl.currentTime = start;
   audioEl.play().catch(() => {});
@@ -541,7 +563,12 @@ function renderQ() {
   let html = `<div class="q-num"><span>Question ${q.q} / ${t.questions.length}</span>
     <button class="flag-btn${flags.has(fid) ? ' on' : ''}" onclick="toggleFlag()"
       title="標記這題">${flags.has(fid) ? '★' : '☆'}</button></div>`;
-  if (cueOf(cur.idx) !== null) html += `<div class="q-play"><button onclick="playQuestion()">▶ 播這一題</button></div>`;
+  if (practising()) {
+    const mine = (manualCues[t.id] || {})[q.q];
+    html += `<div class="q-play">${cueOf(cur.idx) !== null ? '<button onclick="playQuestion()">▶ 播這一題</button>' : ''}
+      <button class="mark" onclick="markCue()">📍 這裡是第 ${q.q} 題開頭</button></div>
+      <div class="mark-note" id="markNote">${mine ? '已標記在 ' + clock(mine.t) + ' · <a onclick="undoCue()">復原</a>' : ''}</div>`;
+  }
   if (q.img) html += `<img class="doc-img" src="${DATA_DIR}${q.img}" alt="document">`;
   html += `<div class="q-text">${esc(q.stem)}</div><div class="options">`;
   q.opts.forEach((o, i) => {
