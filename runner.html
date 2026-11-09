@@ -31,6 +31,7 @@ body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; 
 #cv { position:fixed; inset:0; width:100vw; height:100dvh; display:block; touch-action:none; }
 .top { position:fixed; top:0; left:0; right:0; padding:calc(env(safe-area-inset-top) + 8px) 12px 10px; background:linear-gradient(#10190fee,#10190f00); pointer-events:none; z-index:2; text-align:center; }
 .q { font-size:1.25em; } .q b { color:var(--gold); }
+.lanes { display:flex; justify-content:center; margin-top:6px; } .lanes span { box-sizing:border-box; padding:4px 3px; border:1px solid rgba(232,214,168,.35); border-radius:7px; background:rgba(10,16,12,.72); font-size:.9em; line-height:1.15; overflow-wrap:anywhere; } .lanes span.no { visibility:hidden; } .lanes span.at { border-color:var(--gold); color:var(--gold); }
 .sub { font-size:.8em; color:var(--dim); min-height:1.2em; }
 .fb { font-size:.95em; color:var(--gold); min-height:1.4em; }
 .bot { position:fixed; left:0; right:0; bottom:0; padding:8px 12px calc(env(safe-area-inset-bottom) + 10px); display:flex; justify-content:space-between; z-index:2; pointer-events:none; }
@@ -49,7 +50,7 @@ body { color:var(--ink); font-family:'Cubic11','Segoe UI',system-ui,sans-serif; 
 </head>
 <body>
 <canvas id="cv"></canvas>
-<div class="top"><div class="sub" id="sub"></div><div class="q fr" id="q"></div><div class="fb fr" id="fb"></div></div>
+<div class="top"><div class="sub" id="sub"></div><div class="q fr" id="q"></div><div class="lanes fr" id="lanes"></div><div class="fb fr" id="fb"></div></div>
 <div class="bot"><span class="chip" id="hud"></span><button class="btn" id="bflag" aria-label="回報問題">🚩</button><button class="btn" id="bend">■ 停</button></div>
 <div class="sheet" id="sheet"><div class="box" id="box"></div></div>
 <script>
@@ -117,7 +118,15 @@ function spawnGate(ahead){
   if(!G.cur) showQ(g);
 }
 function spawnCoin(ahead){ G.coins.push({y:G.dist+ahead, lane:Math.floor(Math.random()*3), got:false}); }
-function showQ(g){ G.cur=g; document.getElementById('sub').textContent=g.q.sub+'　（第 '+(G.n+1)+'／'+N_GATES+' 道門）'; document.getElementById('q').innerHTML=g.q.q; }
+/* 🚪 11-09 Owen：「要考慮讀題目又要看路線，真的有點太難了」「題目還沒看完就死了」
+   ① 依題目長度保留讀題時間（句子長就跑慢，短題照樣快；剛走錯再多 1.5 秒看正解）；連對加速只在看得完的前提下生效
+   ② 選項固定在題目下面、位置對應三條路，不用追著移動的門讀字 */
+function showQ(g){ G.cur=g; document.getElementById('sub').textContent=g.q.sub+'　（第 '+(G.n+1)+'／'+N_GATES+' 道門）'; document.getElementById('q').innerHTML=g.q.q;
+  var len=(g.q.q+' '+g.q.opts.join(' ')).replace(/<[^>]+>/g,'').length, T=Math.min(9, 2.2+.08*len)+(G.stumble>0?1.5:0);
+  g.sp=Math.max(40,(g.y-G.dist)/T); paintLanes(); }
+function paintLanes(){ var el=document.getElementById('lanes'), g=G&&G.cur, lw=Math.min(W/3,150)-4, h='';
+  if(g) [0,1,2].forEach(function(l){ var i=g.lanes.indexOf(l); h+='<span class="'+(i<0?'no':l===G.lane?'at':'')+'" style="width:'+lw+'px;margin:0 2px">'+(i<0?'&nbsp;':esc(g.q.opts[i]))+'</span>'; });
+  el.innerHTML=h; }
 function hud(){ document.getElementById('hud').textContent='🪙 '+G.gold+(G.combo>=2?'　🔥 連對 '+G.combo:''); }
 function passGate(g){
   g.done=true; var idx=g.lanes.indexOf(G.lane), pick=idx>=0?g.q.opts[idx]:null, ok=pick===g.q.right;
@@ -154,7 +163,7 @@ cv.addEventListener('pointerdown', function(e){ sx=e.clientX; });
 cv.addEventListener('pointerup', function(e){ if(!G||G.over||sx==null) return; var dx=e.clientX-sx; sx=null;
   if(Math.abs(dx)>24) move(dx>0?1:-1); else move(e.clientX<W/2?-1:1); });
 window.addEventListener('keydown', function(e){ if(!G||G.over) return; if(e.key==='ArrowLeft'||e.key==='a'){ move(-1); e.preventDefault(); } if(e.key==='ArrowRight'||e.key==='d'){ move(1); e.preventDefault(); } });
-function move(d){ G.lane=Math.max(0,Math.min(2,G.lane+d)); }
+function move(d){ G.lane=Math.max(0,Math.min(2,G.lane+d)); paintLanes(); }
 document.getElementById('bflag').onclick=function(){ if(window.GameLog) GameLog.quickReport('runner', '跑酷・第 '+(G?G.n+1:0)+' 道門'); };
 document.getElementById('bend').onclick=function(){ if(G && !G.over){ if(!EMBED || G.n===0 || confirm('現在停下來，這趟就到這裡。要回小鎮嗎？')) finish(); } };
 
@@ -164,7 +173,8 @@ var HERO_Y=function(){ return H*.74; };
 function loop(now){
   var dt=Math.min(.05,(now-last)/1000); last=now; t+=dt;
   if(G && !G.over && document.getElementById('sheet').className.indexOf('on')<0){
-    var sp=G.speed*(G.stumble>0?.45:1); if(G.stumble>0) G.stumble-=dt;
+    var tgt=Math.min(G.speed,(G.cur&&G.cur.sp)||G.speed); G.v=G.v==null?tgt:G.v+(tgt-G.v)*Math.min(1,dt*5);
+    var sp=G.v*(G.stumble>0?.45:1); if(G.stumble>0) G.stumble-=dt;
     G.dist+=sp*dt; G.lx+=(laneX(G.lane)-G.lx)*Math.min(1,dt*14);
     G.gates.forEach(function(g){ if(!g.done && g.y<=G.dist) passGate(g); });
     G.coins.forEach(function(c){ if(!c.got && Math.abs(c.y-G.dist)<14 && c.lane===G.lane){ c.got=true; G.gold++; hud(); } });
@@ -199,7 +209,7 @@ function draw(){
 /* ---------- 開場 ---------- */
 requestAnimationFrame(loop);
 openBox('<h2>🚪 文法跑酷</h2><div>一路往前跑，前方的門上寫著選項，<b>轉進對的那道門</b>。</div>'+
-  '<div class="muted">・左右滑（或點畫面左半／右半、方向鍵）換跑道<br>・題目在上方：動詞變位、選對的字、un／une<br>・走錯門會絆一下、減速；連對會越跑越快<br>・路上的金幣順手撿</div>'+
+  '<div class="muted">・左右滑（或點畫面左半／右半、方向鍵）換跑道<br>・題目在上方：動詞變位、選對的字、un／une<br>・走錯門會絆一下、減速；連對會越跑越快，但句子長的題目會自動跑慢，讓你看得完<br>・選項在題目下面也看得到，位置就是三條路<br>・路上的金幣順手撿</div>'+
   '<div class="row"><button class="btn main" id="start">開跑</button></div>');
 document.getElementById('start').onclick=function(){ closeBox(); newRun(); hud(); };
 </script>

@@ -381,11 +381,9 @@ function listenQ(){
   var H=listenReady(); if(!H) return null; var c=null, bl=null;
   for(var t=0;t<6&&!bl;t++){ c=H.clipPick(); var ws=(c&&c.blank||[]).filter(function(x){ return x.t==='w'; }); if(ws.length) bl=ws[Math.floor(Math.random()*ws.length)]; }
   if(!bl) return null;
-  var seen={}, opts=[bl.w]; seen[bl.w.toLowerCase()]=1;
-  shuffle(H.CLIPS).slice(0,80).forEach(function(o){ if(opts.length>=4) return; (o.blank||[]).forEach(function(x){ var k=x.w.toLowerCase(); if(opts.length<4 && x.t==='w' && !seen[k] && Math.abs(x.w.length-bl.w.length)<=3){ seen[k]=1; opts.push(x.w); } }); });
-  if(opts.length<3) return null;
+  /* ✍️ 11-09 Owen：「聽力辨字太簡單了，其他字根本發音完全不一樣，要不要換成填空」→ 不給選項，聽了打出來；挖的仍是他學過的字（clipBlankAll） */
   try{ H.S.qlast['L:'+c.id]=Date.now(); }catch(e){}
-  return {k:'L:'+c.id, kind:'listen', q:c.text.slice(0,bl.a)+'_____'+c.text.slice(bl.b), right:bl.w, opts:opts, zh:'', note:'', topic:'listen-book', clip:c, row:null};
+  return {k:'L:'+c.id, kind:'listen', q:c.text.slice(0,bl.a)+'_____'+c.text.slice(bl.b), right:bl.w, alts:[bl.w, bl.w.replace(/'$/,'')], show:bl.w, zh:'', note:'', topic:'listen-book', clip:c, row:null};
 }
 function listenPlay(c){ var H=listenHost(); if(!H||!c.clip) return; try{ var p=H.clipPlay({book:c.clip.book, track:c.clip.track, s:c.clip.s, e:c.clip.e}, 1); if(p&&p.catch) p.catch(function(){}); }catch(e){} }
 function listenStop(){ var H=listenHost(); if(H&&H.clipStop) try{ H.clipStop(); }catch(e){} }
@@ -403,10 +401,10 @@ function nextQ(){
 }
 function renderQ(){
   var c=G.q.c, box=document.getElementById('qbox');
-  var head='<div class="qhead"><span>'+(c.kind==='type'?'✍️ 打出空格（☀️50・4 秒內 +25）':c.kind==='listen'?'🎧 聽，選空格的字（☀️60）<button class="skipbtn" id="lplay" style="color:var(--gold)">▶ 聽</button>':'🔤 選最適合的（☀️35・3 秒內 +10）')+'</span><span>'+(c.zh?'<button class="skipbtn" id="zhb">🀄 中文</button> ':'')+'<button class="skipbtn" id="sk">⏭ 跳過</button></span></div>'+(c.zh?'<div class="zhline" id="zht" style="display:'+(c.kind==='type'?'':'none')+'">'+esc(c.zh)+'</div>':'');   /* 11-04 Owen：「這題沒中文無法打對」→ 打字題光看動詞原形猜不出時態，中文直接打開；選擇題維持收起 */
+  var head='<div class="qhead"><span>'+(c.kind==='type'?'✍️ 打出空格（☀️50・4 秒內 +25）':c.kind==='listen'?'🎧 聽，打出空格的字（☀️60）<button class="skipbtn" id="lplay" style="color:var(--gold)">▶ 聽</button>':'🔤 選最適合的（☀️35・3 秒內 +10）')+'</span><span>'+(c.zh?'<button class="skipbtn" id="zhb">🀄 中文</button> ':'')+'<button class="skipbtn" id="sk">⏭ 跳過</button></span></div>'+(c.zh?'<div class="zhline" id="zht" style="display:'+(c.kind==='type'?'':'none')+'">'+esc(c.zh)+'</div>':'');   /* 11-04 Owen：「這題沒中文無法打對」→ 打字題光看動詞原形猜不出時態，中文直接打開；選擇題維持收起 */
   var qt='<div class="qtext">'+esc(c.q).replace(/_{2,}/,'<b>　　</b>')+'</div>';
-  if(c.kind==='type'){
-    box.innerHTML=head+qt+'<div class="accents" id="acc"></div><div class="inrow"><input id="inp" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" enterkeyhint="send" placeholder="打空格裡的字"><button id="go">送出</button></div><div class="fb" id="fb"></div>';
+  if(c.kind==='type'||c.kind==='listen'){
+    box.innerHTML=head+qt+'<div class="accents" id="acc"></div><div class="inrow"><input id="inp" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" enterkeyhint="send" placeholder="'+(c.kind==='listen'?'打你聽到的字':'打空格裡的字')+'"><button id="go">送出</button></div><div class="fb" id="fb"></div>';
     var inp=document.getElementById('inp');
     ['é','è','ê','à','â','ç','ù','û','ô','î','ï','ë','œ',"'"].forEach(function(ch){ var b=document.createElement('button'); b.textContent=ch; b.type='button';
       b.addEventListener('pointerdown', function(e){ e.preventDefault(); var s=inp.selectionStart||inp.value.length, en=inp.selectionEnd||s; inp.value=inp.value.slice(0,s)+ch+inp.value.slice(en); inp.setSelectionRange(s+1,s+1); inp.focus({preventScroll:true}); });
@@ -465,7 +463,9 @@ function answerType(v){
   var n=norm(v), res='no';
   c.alts.forEach(function(a){ [a, sayOf(c.q,a)].forEach(function(t){ if(norm(t)===n) res='ok'; else if(res!=='ok' && deacc(norm(t))===deacc(n)) res='accent'; }); });
   q.done=true; q.pick=v.trim(); var inp=document.getElementById('inp'); if(inp) inp.disabled=true;
-  if(res!=='no'){ rec(c,true); reward(50,25,res==='ok'&&secs<4);
+  if(res!=='no'){ rec(c,true);
+    if(c.kind==='listen'){ reward(60,20,res==='ok'&&secs<10); if(G.earGun) G.zombies.forEach(function(z){ if(!z.dead && z.x<COLS+.2 && z.row===G.lastRow){ z.hp-=3; z.hit=.2; } }); }
+    else reward(50,25,res==='ok'&&secs<4);
     fb.innerHTML=(res==='accent'?'✓ 對了——注意重音：<span class="ans">'+esc(c.show)+'</span>':'✓ <span class="ans">'+esc(sayOf(c.q,c.show))+'</span>');
     setTimeout(nextQ, 650);
   } else { miss(c); wrongFb(c, c.show); }
@@ -473,7 +473,7 @@ function answerType(v){
 function answerChoose(o, btn){
   var q=G.q; if(q.done) return; q.done=true; q.pick=o; var c=q.c, secs=clock-q.t0, fb=document.getElementById('fb'), ok=o===c.right;
   document.querySelectorAll('.opts button').forEach(function(b){ if(b.textContent===c.right) b.classList.add('ok'); });
-  if(ok){ rec(c,true); if(c.kind==='listen'){ reward(60,20,secs<7); if(G.earGun) G.zombies.forEach(function(z){ if(!z.dead && z.x<COLS+.2 && z.row===G.lastRow){ z.hp-=3; z.hit=.2; } }); } else reward(35,10,secs<3); fb.innerHTML='✓ <span class="ans">'+esc(sayOf(c.q,c.right))+'</span>'; setTimeout(nextQ, 650); }
+  if(ok){ rec(c,true); reward(35,10,secs<3); fb.innerHTML='✓ <span class="ans">'+esc(sayOf(c.q,c.right))+'</span>'; setTimeout(nextQ, 650); }
   else { btn.classList.add('no'); miss(c); wrongFb(c, c.right); }
 }
 
