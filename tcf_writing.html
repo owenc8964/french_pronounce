@@ -335,6 +335,11 @@ function renderWrite() {
   }
   host.innerHTML = h;
   Array.prototype.forEach.call(host.querySelectorAll('textarea'), function(ta){
+    // 跟考場一樣：不幫忙補重音、改拼字、自動大寫（考場電腦應該沒有拼字檢查）
+    ta.setAttribute('spellcheck', 'false');
+    ta.setAttribute('autocorrect', 'off');
+    ta.setAttribute('autocapitalize', 'off');
+    ta.setAttribute('autocomplete', 'off');
     ta.addEventListener('input', recount);
   });
   recount();
