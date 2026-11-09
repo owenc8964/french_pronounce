@@ -43,6 +43,7 @@
 > - ✍️ **10-23 題庫詳解補寫（三之八十二）**：491 題弱解說改成「為什麼是這個答案」，非變位類弱解說歸零；⏸ 4 題可疑題（題幹錯字／選項重複）等 Owen 決定。
 > - 🏝 **10-27 小鎮：口說群島樣品——碼頭搭船進群島總覽、自我介紹島（海岸、4 區、步道、23 個意思相符的地標、自己走、站著跳泡泡）（三之九十三（小鎮））**
 > - 🪧 **10-28 小鎮：自我介紹島碼頭旁加「島上的重點」告示牌——一上島自動打開，考官問題＋四區條列（附站號）；走開再走回會再開；順手修兩個地標放錯區（三之九十七（小鎮））**
+> - 📚 **11-09 第50課（B1 p.44 條件式、p.45 女饒舌歌手、p.46 表演音樂、p.47 宅宅＋連接詞、p.48 電影用語、蛋的做法）筆記四件套＋連動全做（卡 65、題 37、句 12、表格 2、地圖、文法點）（三之一百一十三）**
 > - ⌨️ **11-09 寫作練習框關掉自動校正、拼字檢查、自動大寫（`tcf_writing.html` 的 `renderWrite`，第一到第三題都有；貼批改結果的框不動）。鍵盤：網路上只有媒體引述可用 QWERTY 或 AZERTY、有螢幕重音鍵，官方和台灣考場都沒查到，⏸ 等 Owen 打給法協（問題清單在 `PLAN_TCF_2026-11.md` 第五節）才決定 Mac 要不要換法文鍵盤；Windows 考場上長按打重音用不了**
 > - 📄 **11-09 清晨排程 D8、R93、R94（只有草稿與研究，沒動遊戲）：`drafts/tcf_backward_list.md` 從題庫回推背誦清單（162 字＋30 句型，Test 35–44 留給診斷考不算，⏸ 等 Owen 看）；第三題聽題預設用中文講在問什麼（`research/2026-11-09_聽完用自己的話講出題目.md`）；第二題接話要加任務目標與升格，只選句子是最弱的一型（`research/2026-11-09_單人能不能練到接話.md`）**
 > - 🎧 **11-09 模考聽力逐題播放（只有練習模式）：`tools/tcf_listening_cues.py` 用語音辨識對照題目文字找起點（第 11 題起是先放對話、後報題號），對不上的題不給按鈕，44 套全跑完：1,607／1,716 題（93.6%）有起點；Owen 可在頁面按「📍 這裡是第 N 題開頭」手動標，存在 Mac mini 的 `assets/tcf/exam/cues_manual.json`（優先於自動結果，也可拿來檢查自動準不準）；`dev_server.py` 新增 POST `/api/mock-cue`；⭐ Owen 說標完時跑 `python3 tools/tcf_cue_check.py` 做核對（只寫 chk／msg，不改他的時間，頁面會顯示結果；故意標對、標錯題、標早、標晚都驗過）**
@@ -5063,6 +5064,16 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - **資料**：`tools/didier_passage.py b1 --upload` 把錄音原文和語音辨識的字時間對齊成每句時間（track 17：34 句、字對上 91%、6 題都找到原句），題目／答案／關鍵字在 `assets/didier/_local/passage_q_b1.json`（人工從課本打，答案已對過錄音原文 p.200），輸出 `didier/passages_b1.json` 上傳私人空間（⛔ 商業教材不進 repo）。要加新的一段：在 _local 檔加一筆再跑一次。
 - **驗證**：本機音檔替身跑完整流程（播放、進度條、選答、跳過、分母扣掉跳過、認字頁 13 字都對到句子、重聽只剩錯題且選項清空、答案頁跟讀亮句、收竿給魚、照平常釣、整頁跳過）。⚠️ 真手機、真登入下的整段播放沒試（clipPlay 的長段播放限制是「段長＋2 秒」，理論上夠）。ROOM 測試→清本機資料→改回→preview 已關。
 - **下一步**：看 Owen 玩一次的反應再決定 ① 要不要擴到每單元的 DELF 聽力（B1 p.40 Exercice 2–3 等） ② 守園的「一看就懂」速度練習（Owen 提的，還沒做）。
+
+#### 三之一百一十三、11-09：第50課筆記
+- **材料**（`~/Desktop/1109/`）：6 張截圖＋逐字稿，對到 Édito B1 p.44–48。截圖上的打字 *s'amuserait beaucoup*、*serais sans doute en retard pour le travail*、*rappeur rappeuse* 照收。
+- **french_notes.html lesson-50**（8 unit、54 句、90 個法文格、check_notes 0／0）：📐 條件式（字幹表、六用途、練習 3、4）｜🎤 p.45｜🎭 p.46｜✍️ p.47＋連接詞、表達意見｜🎬 p.48＋蛋｜🎙｜🔊｜📋。
+- **連動**：chunks +65（L50_）；questions.js +37（conditionnel-present 17、新 topic `vocab-spectacles` 14、新 topic `connecteurs-ecrit` 4、vocab-aliments、restriction-ne-que；quiz／dashboard／topic_labels 都加標籤）；sentences.js S_L50_1–12；table_drill `cond-l50`（8）、`spectacles-l50`（6）；map CURRENT_LESSON＝50＋地塊 `spectacles`；gram_rules conditionnel lessons 加 50；gen_town_field_extra 重跑（路上選擇題 1510）。
+- **進遊戲**：town.html 讀到第50課 37 題，其中 18 題進路上題池（條件式 17、ne…que 1）。詞彙和連接詞 topic 不在分家表，只走 quiz／chunks。
+- **標出來的衝突（標準法文 vs 課堂）**：je serai／je serais 老師說發音一樣（標準 [e]／[ɛ]，口語常混）｜en effet 老師點頭 in fact（是「的確」，en fait 才是其實）｜se méfier 被理解成照顧（是提防）｜éclair 老師說 thunder（是閃電）｜au final 口語｜j'en ai que deux 省 ne｜dans ma gorge → dans la gorge｜課本 l'acrobate (m.) 其實陰陽同形｜la pop musique 常說 la musique pop｜en retard pour le travail 更常見 au travail｜逐字稿 serai／ferai 在想像情境要 serais／ferais。
+- **我的判斷（課本沒附答案）**：練習 1、3 的用途分類；老師把 b 歸 supposition，課本 possibilité 格印複數 Phrases，看起來是 b＋g，筆記兩種都寫，沒出成題目。la compagnie、les sifflets 當堂糊掉，中文依標準法文。練習 4 的「吞劍」只錄到 J'avalerai 和英文 a sword，法文沒進卡。
+- **驗證**：check_notes 0／0、check_town_field_extra 全過；preview 看筆記（導覽列有第50課、8 unit）、quiz `?lesson=50` 答一題判對、table_drill 兩張表全填對（8／8、6／6）、sentence_drill 讀到 12 句、map chip 第 50 課＋地塊、town 讀得到；無 console 錯誤。ROOM 測試→清掉 preview 的本機資料→已改回→preview 已關。
+- ⏭ **下次課**：p.44 練習 5 寫作、p.45 題目、p.46 練習 1、4–7 和發音、p.47 題目沒做；p.42 A 第 19 行以後這份逐字稿沒出現。課尾提到 vendredi soir, le 13，又說 dans la journée，下次時間要 Owen 確認。
 
 #### 三之一百一十二、11-06：第49課筆記＋補第48課
 - **材料**（`~/Desktop/1106/`）：6 張截圖＋逐字稿。前兩張是**上一課（第48課）**老師的筆記截圖：p.34 Fonctionnement 上手寫的社區四句＋練習 4 答案、p.35 K 上手寫的三處；後四張是這課的 p.36 詞彙（手寫 voyage d'affaire、classe affaire、faire des affaires、ce mois）、p.39 DELF B1 聽力（勾了答案）、Unité 3 開場 p.41、p.42 A 課文前 18 行。

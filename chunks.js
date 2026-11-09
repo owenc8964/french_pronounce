@@ -24927,5 +24927,460 @@ const CHUNKS = [
   "fr": "quitte à",
   "zh": "就算要……也",
   "note": "loc.｜quitte à＋原形"
+ },
+ {
+  "id": "L50_Tu_as_fermé_la_porte_à_c",
+  "lesson": 50,
+  "fr": "Tu as fermé la porte à clé ? — Sans doute.",
+  "zh": "你門鎖了嗎？——應該有吧。",
+  "note": "⭐ sans doute＝大概，不是「毫無疑問」；確定要說 sans aucun doute"
+ },
+ {
+  "id": "L50_Je_me_méfie_des_chiens",
+  "lesson": 50,
+  "fr": "Je me méfie des chiens.",
+  "zh": "我對狗很提防。",
+  "note": "🎙 老師；se méfier de"
+ },
+ {
+  "id": "L50_Je_suis_un_geek_de_l_IA",
+  "lesson": 50,
+  "fr": "Je suis un geek de l'IA.",
+  "zh": "我是 AI 宅。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L50_J_ai_quelque_chose_dans",
+  "lesson": 50,
+  "fr": "J'ai quelque chose dans la gorge.",
+  "zh": "我喉嚨卡卡的。",
+  "note": "🎙 老師說 dans ma gorge，身體部位通常用 la"
+ },
+ {
+  "id": "L50_Je_n_en_ai_que_deux",
+  "lesson": 50,
+  "fr": "Je n'en ai que deux.",
+  "zh": "我只有兩個。",
+  "note": "🎙 老師口語說 j'en ai que deux"
+ },
+ {
+  "id": "L50_un_rappeur",
+  "lesson": 50,
+  "fr": "un rappeur",
+  "zh": "饒舌歌手",
+  "note": "m.｜兩個 p；陰性 une rappeuse（截圖上有寫）"
+ },
+ {
+  "id": "L50_un_conservatoire",
+  "lesson": 50,
+  "fr": "un conservatoire",
+  "zh": "音樂學院",
+  "note": "m.｜老師：學音樂的學校"
+ },
+ {
+  "id": "L50_engagé",
+  "lesson": 50,
+  "fr": "engagé",
+  "zh": "有社會訴求的",
+  "note": "adj.｜des textes engagés"
+ },
+ {
+  "id": "L50_un_mannequin",
+  "lesson": 50,
+  "fr": "un mannequin",
+  "zh": "模特兒",
+  "note": "m.｜男女都用 un"
+ },
+ {
+  "id": "L50_malgache",
+  "lesson": 50,
+  "fr": "malgache",
+  "zh": "馬達加斯加的",
+  "note": "adj.｜franco-malgache"
+ },
+ {
+  "id": "L50_un_caleçon",
+  "lesson": 50,
+  "fr": "un caleçon",
+  "zh": "男生四角內褲",
+  "note": "m.｜老師閒聊"
+ },
+ {
+  "id": "L50_les_applaudissements",
+  "lesson": 50,
+  "fr": "les applaudissements",
+  "zh": "掌聲",
+  "note": "m. pl.｜動詞 applaudir"
+ },
+ {
+  "id": "L50_la_compagnie",
+  "lesson": 50,
+  "fr": "la compagnie",
+  "zh": "劇團",
+  "note": "f.｜🔎 當堂糊掉"
+ },
+ {
+  "id": "L50_l_éclairage",
+  "lesson": 50,
+  "fr": "l'éclairage",
+  "zh": "燈光",
+  "note": "m.｜"
+ },
+ {
+  "id": "L50_la_mise_en_scène",
+  "lesson": 50,
+  "fr": "la mise en scène",
+  "zh": "舞台或電影的調度",
+  "note": "f.｜mettre en scène"
+ },
+ {
+  "id": "L50_le_premier_rang",
+  "lesson": 50,
+  "fr": "le premier rang",
+  "zh": "第一排",
+  "note": "m.｜rang 也是排名"
+ },
+ {
+  "id": "L50_le_dernier_rang",
+  "lesson": 50,
+  "fr": "le dernier rang",
+  "zh": "最後一排",
+  "note": "m.｜"
+ },
+ {
+  "id": "L50_le_public",
+  "lesson": 50,
+  "fr": "le public",
+  "zh": "觀眾",
+  "note": "m.｜"
+ },
+ {
+  "id": "L50_la_scène",
+  "lesson": 50,
+  "fr": "la scène",
+  "zh": "舞台",
+  "note": "f.｜L'artiste est sur la scène."
+ },
+ {
+  "id": "L50_les_sifflets",
+  "lesson": 50,
+  "fr": "les sifflets",
+  "zh": "噓聲、口哨聲",
+  "note": "m. pl.｜🔎 當堂糊掉；在法國吹口哨常表示不滿"
+ },
+ {
+  "id": "L50_la_troupe",
+  "lesson": 50,
+  "fr": "la troupe",
+  "zh": "表演團隊",
+  "note": "f.｜"
+ },
+ {
+  "id": "L50_un_acrobate",
+  "lesson": 50,
+  "fr": "un acrobate",
+  "zh": "特技演員",
+  "note": "m.｜"
+ },
+ {
+  "id": "L50_le_chapiteau",
+  "lesson": 50,
+  "fr": "le chapiteau",
+  "zh": "馬戲帳篷",
+  "note": "m.｜老師：馬戲在帳篷裡"
+ },
+ {
+  "id": "L50_le_clown",
+  "lesson": 50,
+  "fr": "le clown",
+  "zh": "小丑",
+  "note": "m.｜[klun]"
+ },
+ {
+  "id": "L50_le_jongleur",
+  "lesson": 50,
+  "fr": "le jongleur",
+  "zh": "雜耍藝人",
+  "note": "m.｜陰性 la jongleuse"
+ },
+ {
+  "id": "L50_En_piste",
+  "lesson": 50,
+  "fr": "En piste !",
+  "zh": "上場！",
+  "note": "expr.｜"
+ },
+ {
+  "id": "L50_faire_rire_petits_et_gra",
+  "lesson": 50,
+  "fr": "faire rire petits et grands",
+  "zh": "逗得老少都笑",
+  "note": "expr.｜"
+ },
+ {
+  "id": "L50_mener_une_vie_de_bohème",
+  "lesson": 50,
+  "fr": "mener une vie de bohème",
+  "zh": "過著放浪不羈的生活",
+  "note": "expr.｜當堂沒講"
+ },
+ {
+  "id": "L50_le_freestyle",
+  "lesson": 50,
+  "fr": "le freestyle",
+  "zh": "即興饒舌",
+  "note": "m.｜"
+ },
+ {
+  "id": "L50_la_musique_classique",
+  "lesson": 50,
+  "fr": "la musique classique",
+  "zh": "古典音樂",
+  "note": "f.｜"
+ },
+ {
+  "id": "L50_la_musique_électronique",
+  "lesson": 50,
+  "fr": "la musique électronique",
+  "zh": "電子音樂",
+  "note": "f.｜老師舉 David Guetta"
+ },
+ {
+  "id": "L50_la_variété",
+  "lesson": 50,
+  "fr": "la variété",
+  "zh": "通俗流行歌",
+  "note": "f.｜"
+ },
+ {
+  "id": "L50_un_album",
+  "lesson": 50,
+  "fr": "un album",
+  "zh": "專輯",
+  "note": "m.｜"
+ },
+ {
+  "id": "L50_la_compositrice",
+  "lesson": 50,
+  "fr": "la compositrice",
+  "zh": "女作曲家",
+  "note": "f.｜陽性 le compositeur"
+ },
+ {
+  "id": "L50_le_disque_d_or",
+  "lesson": 50,
+  "fr": "le disque d'or",
+  "zh": "金唱片",
+  "note": "m.｜"
+ },
+ {
+  "id": "L50_le_duo",
+  "lesson": 50,
+  "fr": "le duo",
+  "zh": "二重唱",
+  "note": "m.｜"
+ },
+ {
+  "id": "L50_la_mélodie",
+  "lesson": 50,
+  "fr": "la mélodie",
+  "zh": "旋律",
+  "note": "f.｜"
+ },
+ {
+  "id": "L50_le_rythme",
+  "lesson": 50,
+  "fr": "le rythme",
+  "zh": "節奏",
+  "note": "m.｜"
+ },
+ {
+  "id": "L50_les_paroles",
+  "lesson": 50,
+  "fr": "les paroles",
+  "zh": "歌詞",
+  "note": "f. pl.｜也可以說 le texte"
+ },
+ {
+  "id": "L50_être_au_sommet",
+  "lesson": 50,
+  "fr": "être au sommet",
+  "zh": "處於巔峰",
+  "note": "expr.｜"
+ },
+ {
+  "id": "L50_être_une_star",
+  "lesson": 50,
+  "fr": "être une star",
+  "zh": "是明星",
+  "note": "expr.｜"
+ },
+ {
+  "id": "L50_À_mon_avis",
+  "lesson": 50,
+  "fr": "À mon avis",
+  "zh": "我認為",
+  "note": ""
+ },
+ {
+  "id": "L50_D_après_moi",
+  "lesson": 50,
+  "fr": "D'après moi",
+  "zh": "依我看",
+  "note": ""
+ },
+ {
+  "id": "L50_Selon_moi",
+  "lesson": 50,
+  "fr": "Selon moi",
+  "zh": "依我看",
+  "note": ""
+ },
+ {
+  "id": "L50_Personnellement",
+  "lesson": 50,
+  "fr": "Personnellement",
+  "zh": "就我個人而言",
+  "note": ""
+ },
+ {
+  "id": "L50_En_ce_qui_me_concerne",
+  "lesson": 50,
+  "fr": "En ce qui me concerne",
+  "zh": "就我而言",
+  "note": ""
+ },
+ {
+  "id": "L50_une_superproduction",
+  "lesson": 50,
+  "fr": "une superproduction",
+  "zh": "大製作",
+  "note": "f.｜＝blockbuster，也說 une grosse machine"
+ },
+ {
+  "id": "L50_le_film_d_auteur",
+  "lesson": 50,
+  "fr": "le film d'auteur",
+  "zh": "作者電影",
+  "note": "m.｜blockbuster 的反義"
+ },
+ {
+  "id": "L50_élitiste",
+  "lesson": 50,
+  "fr": "élitiste",
+  "zh": "只給少數人的",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L50_la_médiatisation",
+  "lesson": 50,
+  "fr": "la médiatisation",
+  "zh": "媒體曝光",
+  "note": "f.｜"
+ },
+ {
+  "id": "L50_la_pub",
+  "lesson": 50,
+  "fr": "la pub",
+  "zh": "廣告",
+  "note": "f.｜publicité 的簡稱"
+ },
+ {
+  "id": "L50_une_accroche",
+  "lesson": 50,
+  "fr": "une accroche",
+  "zh": "吸引人的開頭",
+  "note": "f.｜teaser 的法文"
+ },
+ {
+  "id": "L50_la_bande_annonce",
+  "lesson": 50,
+  "fr": "la bande-annonce",
+  "zh": "電影預告片",
+  "note": "f.｜trailer"
+ },
+ {
+  "id": "L50_un_mot_valise",
+  "lesson": 50,
+  "fr": "un mot-valise",
+  "zh": "混成詞",
+  "note": "m.｜兩個字併成一個"
+ },
+ {
+  "id": "L50_un_retour_en_arrière",
+  "lesson": 50,
+  "fr": "un retour en arrière",
+  "zh": "倒敘",
+  "note": "m.｜flashback"
+ },
+ {
+  "id": "L50_s_essouffler",
+  "lesson": 50,
+  "fr": "s'essouffler",
+  "zh": "喘不過氣、後繼無力",
+  "note": "v.｜une saga qui s'essouffle"
+ },
+ {
+  "id": "L50_un_film_culte",
+  "lesson": 50,
+  "fr": "un film culte",
+  "zh": "經典電影",
+  "note": "m.｜老師：大家都該知道的"
+ },
+ {
+  "id": "L50_un_œuf_au_plat",
+  "lesson": 50,
+  "fr": "un œuf au plat",
+  "zh": "荷包蛋",
+  "note": "老師最喜歡"
+ },
+ {
+  "id": "L50_des_œufs_brouillés",
+  "lesson": 50,
+  "fr": "des œufs brouillés",
+  "zh": "炒蛋",
+  "note": "你最喜歡"
+ },
+ {
+  "id": "L50_un_œuf_à_la_coque",
+  "lesson": 50,
+  "fr": "un œuf à la coque",
+  "zh": "帶殼半熟蛋",
+  "note": "蛋黃是流動的"
+ },
+ {
+  "id": "L50_un_œuf_mollet",
+  "lesson": 50,
+  "fr": "un œuf mollet",
+  "zh": "溏心蛋",
+  "note": "剝殼吃，最接近拉麵上那種"
+ },
+ {
+  "id": "L50_un_œuf_dur",
+  "lesson": 50,
+  "fr": "un œuf dur",
+  "zh": "全熟水煮蛋",
+  "note": ""
+ },
+ {
+  "id": "L50_un_œuf_poché",
+  "lesson": 50,
+  "fr": "un œuf poché",
+  "zh": "水波蛋",
+  "note": "打進滾水煮幾分鐘"
+ },
+ {
+  "id": "L50_un_œuf_parfait",
+  "lesson": 50,
+  "fr": "un œuf parfait",
+  "zh": "低溫慢煮蛋",
+  "note": "老師：大約一小時"
+ },
+ {
+  "id": "L50_une_omelette",
+  "lesson": 50,
+  "fr": "une omelette",
+  "zh": "歐姆蛋",
+  "note": ""
  }
 ];

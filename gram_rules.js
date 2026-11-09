@@ -682,7 +682,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'conditionnel', name:'Conditionnel présent', icon:'🎀', zone:'A2', cat:'verbe-mode',
-    lessons:[35,36], topics:['conditionnel-present'], unlocked:true,   // 09-22（第35課 Édito A2 p.128）；B1 的 'futur' 佔位點 name 寫「Futur & conditionnel」，兩半現在都在 A2 各自解鎖了
+    lessons:[35,36,50], topics:['conditionnel-present'], unlocked:true,   // 09-22（第35課 Édito A2 p.128）；B1 的 'futur' 佔位點 name 寫「Futur & conditionnel」，兩半現在都在 A2 各自解鎖了
     rule:{
       title:'條件式現在 — 把同一句話從「我要」調成「我想，是不是可以」',
       why:'未來式講的是「時間上的之後」；條件式講的是「現實上隔一層」——動作沒有真的發生，只是想要、建議、提議，所以說出口就不會像命令。它的零件全部是借來的，一個新東西都沒有：詞幹跟未來式一模一樣（整個原形，那個 r 一定在），字尾跟未完成過去一模一樣（-ais／-ais／-ait／-ions／-iez／-aient）。所以可以直接記成「未來式的 r ＋ 過去的字尾」＝本來會發生、但現在只是想想。也因為這樣，它最容易跟左右兩邊搞混：跟未來式只差一個 i（aimerions／aimerons），跟未完成過去只差一個 r（aimerait／aimait）。',
