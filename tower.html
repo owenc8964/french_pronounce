@@ -301,10 +301,15 @@ function buildWave(){
   for(var i=0;i<cnt;i++){ var r=Math.random(), t='walk';
     if(n>=2 && r<.25+.04*n) t='fast'; if(n>=3 && r>.82-.03*n) t='tank'; list.push(t); }
   if(G.big){ list.push('king'); G.bigStart=Math.floor(list.length*.5); floats.push({x:CW/2, y:CELL*1.4, t:0, txt:'⚠️ 一大波來了！', c:'#ffb36a', big:true}); }
+  /* ⚖️ 11-09：第 3 波起，每波有一條路特別多怪，開打時先亮出來（第 1、2 波不動，守夜不套用） */
+  G.surge=(!RAID && n>=3) ? Math.floor(Math.random()*ROWS) : -1;
+  if(G.surge>=0) floats.push({x:CW/2, y:CELL*(G.big?2.2:1.4), t:0, txt:'⚠️ 第 '+(G.surge+1)+' 條路怪特別多', c:'#ffb36a', big:true});
   G.queue=list; G.spawnT=n===1?12:6;
 }
 function spawnZ(){
-  var t=G.queue.shift(), Z=ZOMB[t], row=Math.floor(Math.random()*ROWS), hp=Z.hp+Math.floor((G.wave-1)*.6);
+  var t=G.queue.shift(), Z=ZOMB[t], row=(G.surge>=0 && Math.random()<.45) ? G.surge : Math.floor(Math.random()*ROWS), hp=Z.hp+Math.floor((G.wave-1)*.6);
+  /* ⚖️ 11-09：第 3 波起血量每波 ×1.25，跟得上越種越多的射手 */
+  if(!RAID && G.wave>=3) hp=Math.round(hp*Math.pow(1.25,G.wave-2));
   G.zombies.push({t:t, row:row, x:COLS+.4, hp:hp, max:hp, eat:0, hit:0, born:clock});
 }
 function hud(){
@@ -315,7 +320,10 @@ function hud(){
   document.getElementById('hKill').textContent=(EMBED?'🪙 +'+G.kills*KILL_GOLD:'👾 '+G.kills);
   renderBar();
 }
-function plantCost(k){ return (G&&G.cost&&G.cost[k])||PLANTS[k].cost; }
+/* ⚖️ 11-09 Owen：「平衡在能量一多之後就沒了，可能會死的狀況只有一開始……放了之後就是時間問題」
+   → 每條路一株（前 4 株）照原價，第 5 株起每多一株射手貴 8；多的能量要拿去選擇，不是無限種。守夜規模由小鎮決定，不套用 */
+function attackers(){ return G&&G.plants ? G.plants.filter(function(p){ return p.k==='shoot'||p.k==='ice'||p.k==='fire'; }).length : 0; }
+function plantCost(k){ var c=(G&&G.cost&&G.cost[k])||PLANTS[k].cost; if(!RAID && (k==='shoot'||k==='ice'||k==='fire')) c+=8*Math.max(0,attackers()-4); return c; }
 function renderBar(){
   var bar=document.getElementById('bar'), h='';
   Object.keys(PLANTS).forEach(function(k){ var P=PLANTS[k], cost=plantCost(k); if(G&&G.owned&&G.owned.indexOf(k)<0) return;
@@ -515,6 +523,7 @@ function draw(){
   if(G && G.sel){ cx.fillStyle='rgba(255,240,180,.10)'; cx.fillRect(OX,0,CELL*(COLS-1),CH); }
   if(G && G.starMode){ for(var s=0;s<ROWS;s++){ cx.strokeStyle='rgba(201,154,240,'+(.4+.3*Math.sin(clock*6))+')'; cx.lineWidth=2; cx.strokeRect(OX+2, s*CELL+2, CELL*COLS-4, CELL-4); } }
   if(!G || !G.plants) return;
+  if(G.surge>=0 && G.queue.length){ cx.fillStyle='rgba(255,120,60,'+(.12+.06*Math.sin(clock*4))+')'; cx.fillRect(OX,G.surge*CELL,CELL*COLS,CELL); }
   G.plants.forEach(function(p){ var P=PLANTS[p.k], im=pixImg(P.em), x=OX+p.col*CELL, y=p.row*CELL, sq=Math.max(0,.15-(clock-p.born))*2;
     var bob=p.k==='shoot'?Math.sin(clock*4+p.col)*CELL*.03:0;
     if(im.complete) cx.drawImage(im, x+CELL*.1, y+CELL*.08+bob, CELL*.8*(1+sq), CELL*.8*(1-sq));
