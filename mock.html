@@ -567,7 +567,7 @@ function renderQ() {
     const mine = (manualCues[t.id] || {})[q.q];
     html += `<div class="q-play">${cueOf(cur.idx) !== null ? '<button onclick="playQuestion()">▶ 播這一題</button>' : ''}
       <button class="mark" onclick="markCue()">📍 這裡是第 ${q.q} 題開頭</button></div>
-      <div class="mark-note" id="markNote">${mine ? '已標記在 ' + clock(mine.t) + ' · <a onclick="undoCue()">復原</a>' : ''}</div>`;
+      <div class="mark-note" id="markNote">${mine ? '已標記在 ' + clock(mine.t) + ' · <a onclick="undoCue()">復原</a>' + (mine.chk ? '<br>' + (mine.chk === 'ok' ? '✅ 已核對' : '🔎 ' + esc(mine.msg || '請再聽一次確認')) : '') : ''}</div>`;
   }
   if (q.img) html += `<img class="doc-img" src="${DATA_DIR}${q.img}" alt="document">`;
   html += `<div class="q-text">${esc(q.stem)}</div><div class="options">`;
