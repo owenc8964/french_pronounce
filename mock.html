@@ -199,6 +199,11 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
 .rev-detail { display: none; margin-top: 8px; padding: 10px 12px;
   background: #0a0c16; border-radius: 7px; }
 .rev-detail.show { display: block; }
+.single-res { margin-top: 12px; font-weight: 700; font-size: 1rem; }
+.single-res.ok { color: #60d090; } .single-res.bad { color: #d07060; } .single-res.none { color: #aaa8a0; font-weight: 400; }
+.single-next { width: 100%; margin-top: 12px; padding: 13px; border-radius: 10px; border: 0; background: #f0c060; color: #1a1408; font: inherit; font-weight: 700; cursor: pointer; }
+.single-skip { display: block; margin: 12px 0 0 auto; padding: 6px 12px; border-radius: 8px; border: 1px solid #333c48; background: transparent; color: #aaa8a0; font: inherit; font-size: .8rem; cursor: pointer; }
+.jump-cell.skipped { color: #808890; border-style: dashed; }
 .rev-detail h4 { font-size: 0.68rem; color: #f0c060; text-transform: uppercase;
   letter-spacing: 1px; margin: 10px 0 4px; }
 .rev-detail h4:first-child { margin-top: 0; }
@@ -246,8 +251,8 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
     </div>
     <div class="toggle-row">
       <input type="checkbox" id="instantMode">
-      <label for="instantMode">每題作答後立刻看解析
-        <span class="hint">練習模式限定。開了就不是模擬考，是逐題精練。</span>
+      <label for="instantMode">單題模式：寫完一題馬上看解析
+        <span class="hint">答完立刻對答案、看翻譯和解析，再按下一題。可以跳題，中途離開下次接著做，不換算分數。看過答案的套題就不能當模考用，Test 35–44 建議留到診斷考前。</span>
       </label>
     </div>
   </div>
@@ -301,8 +306,8 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
     <div class="jump-grid" id="jumpGrid"></div>
   </div>
 
-  <button class="submit-btn" onclick="submitExam()">Terminer et corriger</button>
-  <button class="quit-btn" onclick="quitExam()">放棄這次，回選單</button>
+  <button class="submit-btn" id="submitBtn" onclick="submitExam()">Terminer et corriger</button>
+  <button class="quit-btn" id="quitBtn" onclick="quitExam()">放棄這次，回選單</button>
 </div>
 
 <!-- ══ 結果 ══ -->
@@ -339,6 +344,7 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
 const LS_FLAGS = 'tcfmock_flags';
 const LS_HIST  = 'tcfmock_history';
 const LS_SET   = 'tcfmock_settings';
+const LS_SINGLE = 'tcfmock_single';   // 單題模式的進度：{ 套題id: {answers, skipped, idx, last} }
 const DATA_DIR = 'assets/tcf/exam/';
 
 /* 題號 → 等級與配分（2026-11-09）。題目本來就依 A1→C2 排列。
@@ -369,7 +375,7 @@ function getHist() { return lsGet(LS_HIST, []); }
 function loadSettings() {
   const s = lsGet(LS_SET, {});
   document.getElementById('mockMode').checked = !!s.mock;
-  document.getElementById('instantMode').checked = !!s.instant;
+  document.getElementById('instantMode').checked = !!s.instant && !s.mock;
   if (s.skill) setSkill(s.skill);
 }
 function saveSettings() {
@@ -379,8 +385,11 @@ function saveSettings() {
     skill
   });
 }
-document.getElementById('mockMode').addEventListener('change', saveSettings);
-document.getElementById('instantMode').addEventListener('change', saveSettings);
+/* 模擬考與單題模式互斥：以前兩個都勾時單題會默默失效 */
+['mockMode', 'instantMode'].forEach((id, n, all) => document.getElementById(id).addEventListener('change', e => {
+  if (e.target.checked) document.getElementById(all[1 - n]).checked = false;
+  saveSettings(); renderTestGrid();
+}));
 
 /* ── panels ──────────────────────────────────────────────────── */
 function show(id) {
@@ -410,10 +419,11 @@ function renderTestGrid() {
   }
   const hist = getHist();
   const best = {};
-  hist.forEach(h => { if (!(h.id in best) || h.correct > best[h.id]) best[h.id] = h.correct; });
+  hist.forEach(h => { if (h.single) return; if (!(h.id in best) || h.correct > best[h.id]) best[h.id] = h.correct; });
+  const going = document.getElementById('instantMode').checked ? lsGet(LS_SINGLE, {}) : {};
   grid.innerHTML = idx.map(t =>
     `<button class="test-btn${t.id in best ? ' done' : ''}" onclick="startTest('${t.id}')">` +
-    `${t.label}<span class="tb-sub">${t.id in best ? best[t.id] + '/' + t.n : t.n + ' q'}</span></button>`
+    `${t.label}<span class="tb-sub">${going[t.id] ? '接著做' : t.id in best ? best[t.id] + '/' + t.n : t.n + ' q'}</span></button>`
   ).join('');
   msg.textContent = idx.length + ' 套 · 每套 39 題' +
     (skill === 'listening' ? ' · 音檔約 30 分鐘' : '');
@@ -439,9 +449,18 @@ function startTest(id) {
     cur = { test: t, answers: new Array(t.questions.length).fill(null),
             idx: 0, t0: Date.now(), submitted: false,
             mock: document.getElementById('mockMode').checked,
-            instant: document.getElementById('instantMode').checked && !document.getElementById('mockMode').checked };
+            instant: document.getElementById('instantMode').checked && !document.getElementById('mockMode').checked,
+            skipped: new Set() };
+    if (cur.instant) {            // 單題模式：中途離開過就接著做
+      const old = lsGet(LS_SINGLE, {})[id];
+      if (old && Array.isArray(old.answers) && old.answers.length === t.questions.length) {
+        cur.answers = old.answers; cur.idx = Math.min(old.idx || 0, t.questions.length - 1); cur.skipped = new Set(old.skipped || []);
+      }
+    }
     document.getElementById('examTitle').textContent = t.label;
-    document.getElementById('modeTag').textContent = cur.mock ? '模擬考模式' : '';
+    document.getElementById('modeTag').textContent = cur.mock ? '模擬考模式' : cur.instant ? '單題模式' : '';
+    document.getElementById('submitBtn').textContent = cur.instant ? '看總結' : 'Terminer et corriger';
+    document.getElementById('quitBtn').textContent = cur.instant ? '先離開，下次接著做' : '放棄這次，回選單';
     buildAudio(t);
     renderQ(); renderJump(); startTimer();
     show('examPanel');
@@ -581,7 +600,15 @@ function renderQ() {
       <span class="opt-letter">${letters[i]}</span>${esc(o)}</button>`;
   });
   html += '</div>';
-  if (revealed) html += detailHtml(q, t);
+  if (revealed) {
+    const ok = letters[picked] === q.answer, last = cur.idx === t.questions.length - 1;
+    html += q.answer ? `<div class="single-res ${ok ? 'ok' : 'bad'}">${ok ? '✓ 答對' : '✗ 正解是 ' + q.answer}</div>`
+                     : '<div class="single-res none">這題沒有正解資料</div>';
+    html += detailHtml(q, t, true);
+    html += `<button class="single-next" onclick="nextSingle()">${last ? '看總結' : '下一題 →'}</button>`;
+  } else if (cur.instant) {
+    html += '<button class="single-skip" onclick="skipSingle()">⏭ 這題跳過</button>';
+  }
   document.getElementById('qCard').innerHTML = html;
 
   document.getElementById('prevBtn').disabled = cur.idx === 0;
@@ -594,15 +621,32 @@ function renderQ() {
 function pick(i) {
   if (cur.instant && cur.answers[cur.idx] !== null) return;
   cur.answers[cur.idx] = i;
+  if (cur.instant) {
+    cur.skipped.delete(cur.idx); saveSingle();
+    qEnd = null; if (audioEl) audioEl.pause();     // 看解析時不要繼續播到下一題
+  }
   renderQ();
+  if (cur.instant) { const r = document.querySelector('.single-res'); if (r) r.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
 }
 function go(d) {
   const n = cur.test.questions.length;
   cur.idx = Math.max(0, Math.min(n - 1, cur.idx + d));
   qEnd = null; if (audioEl && !cur.mock) audioEl.pause();
-  renderQ(); window.scrollTo(0, 0);
+  saveSingle(); renderQ(); window.scrollTo(0, 0);
 }
-function jump(i) { cur.idx = i; qEnd = null; if (audioEl && !cur.mock) audioEl.pause(); renderQ(); window.scrollTo(0, 0); }
+function jump(i) { cur.idx = i; qEnd = null; if (audioEl && !cur.mock) audioEl.pause(); saveSingle(); renderQ(); window.scrollTo(0, 0); }
+
+/* ── 單題模式 2026-11-09（Owen：「我想每題寫完做解析」）──────────────
+   跳過不計分、不算錯，有記下來但之後點回去還是可以作答。 */
+function saveSingle() {
+  if (!cur || !cur.instant) return;
+  const all = lsGet(LS_SINGLE, {});
+  all[cur.test.id] = { answers: cur.answers, skipped: [...cur.skipped], idx: cur.idx, last: Date.now() };
+  lsSet(LS_SINGLE, all);
+}
+function clearSingle(id) { const all = lsGet(LS_SINGLE, {}); delete all[id]; lsSet(LS_SINGLE, all); }
+function nextSingle() { if (cur.idx >= cur.test.questions.length - 1) submitExam(); else go(1); }
+function skipSingle() { cur.skipped.add(cur.idx); saveSingle(); nextSingle(); }
 function toggleFlag() {
   const fid = cur.test.id + '#' + cur.test.questions[cur.idx].q;
   const f = getFlags();
@@ -614,7 +658,8 @@ function renderJump() {
   const t = cur.test, flags = getFlags();
   document.getElementById('jumpGrid').innerHTML = t.questions.map((q, i) => {
     let c = 'jump-cell';
-    if (cur.answers[i] !== null) c += ' answered';
+    if (cur.answers[i] !== null) c += cur.instant && q.answer ? (['A', 'B', 'C', 'D'][cur.answers[i]] === q.answer ? ' ok' : ' bad') : ' answered';
+    else if (cur.skipped.has(i)) c += ' skipped';
     if (i === cur.idx) c += ' now';
     if (flags.has(t.id + '#' + q.q)) c += ' flagged';
     return `<button class="${c}" onclick="jump(${i})">${q.q}</button>`;
@@ -635,7 +680,7 @@ function startTimer() {
 function submitExam() {
   const t = cur.test;
   const blank = cur.answers.filter(a => a === null).length;
-  if (blank && !confirm('還有 ' + blank + ' 題沒作答，要現在交卷嗎？')) return;
+  if (blank && !cur.instant && !confirm('還有 ' + blank + ' 題沒作答，要現在交卷嗎？')) return;
   clearInterval(timerId);
   stopAudio();
   cur.submitted = true;
@@ -645,6 +690,7 @@ function submitExam() {
   const byLevel = {};
   t.questions.forEach((q, i) => {
     if (!q.answer) return;              // 正解抽不到的題不計分
+    if (cur.instant && cur.answers[i] === null) return;   // 單題模式：跳過或沒做到的不算
     scorable++;
     const lv = levelOf(q.q);
     const row = byLevel[lv[0]] = byLevel[lv[0]] || { ok: 0, n: 0 };
@@ -655,27 +701,30 @@ function submitExam() {
   document.getElementById('resScore').textContent = correct + ' / ' + scorable;
   document.getElementById('resTime').textContent =
     '用時 ' + Math.floor(secs / 60) + ' 分 ' + String(secs % 60).padStart(2, '0') + ' 秒' +
-    (blank ? ' · 空白 ' + blank + ' 題' : '');
+    (blank && !cur.instant ? ' · 空白 ' + blank + ' 題' : '');
 
   const est = Math.max(100, points);   // 官方分數範圍 100–699
   const cefr = ['A1','A2','B1','B2','C1','C2'][Math.min(5, Math.floor(est / 100) - 1)];
   const band = (CLB_TABLE[t.skill] || []).find(b => est >= b[0] && est <= b[1]);
   document.getElementById('resBand').innerHTML =
     '粗估 <b>' + est + '</b> 分 · 約 <b>' + cefr + '</b> · CLB <b>' + (band ? band[2] : '4 以下') + '</b>';
+  if (cur.instant) document.getElementById('resBand').textContent = '單題模式看過解析，不換算分數';
   document.getElementById('resLevels').innerHTML = LEVELS.filter(l => byLevel[l[0]]).map(l =>
     '<div class="lv-row"><span>' + l[0] + '（第 ' + l[1] + '–' + l[2] + ' 題）</span><b>' + byLevel[l[0]].ok + ' / ' + byLevel[l[0]].n + '</b></div>').join('');
-  document.getElementById('resCaveat').textContent =
+  document.getElementById('resCaveat').textContent = cur.instant ? '' :
     '粗估用補習班常見的每題配分（A1 3、A2 9、B1 15、B2 21、C1 26、C2 33），官方沒有公開，真正的換算每個版本不同，只能當方向參考。' +
     '做過或看過的題目分數會偏高。CLB 7 的門檻：' +
     (t.skill === 'reading' ? '閱讀 453 分' : '聽力 458 分') + '。';
 
   document.getElementById('resGrid').innerHTML = t.questions.map((q, i) => {
+    if (cur.instant && cur.answers[i] === null) return `<button class="jump-cell skipped">${q.q}</button>`;
     const ok = q.answer && cur.answers[i] !== null && letters[cur.answers[i]] === q.answer;
     return `<button class="jump-cell ${ok ? 'ok' : 'bad'}" onclick="scrollRev(${i})">${q.q}</button>`;
   }).join('');
 
   const flags = getFlags();
   document.getElementById('revList').innerHTML = t.questions.map((q, i) => {
+    if (cur.instant && cur.answers[i] === null) return '';
     const pickedL = cur.answers[i] === null ? null : letters[cur.answers[i]];
     const ok = q.answer && pickedL === q.answer;
     const fid = t.id + '#' + q.q;
@@ -694,9 +743,10 @@ function submitExam() {
   }).join('');
 
   const hist = getHist();
-  hist.push({ ts: Date.now(), id: t.id, label: t.label, skill: t.skill,
-              correct, n: scorable, secs, mock: cur.mock, est });
+  if (!cur.instant || scorable) hist.push({ ts: Date.now(), id: t.id, label: t.label, skill: t.skill,
+              correct, n: scorable, secs, mock: cur.mock, est, single: !!cur.instant });
   lsSet(LS_HIST, hist.slice(-200));
+  if (cur.instant) clearSingle(t.id);
 
   show('resultPanel');
 }
@@ -714,10 +764,11 @@ function revFlag(fid, btn) {
 }
 
 /* ── explanation block ───────────────────────────────────────── */
-function detailHtml(q, t) {
-  let h = '<div class="rev-detail">';
+function detailHtml(q, t, inline) {   // inline：單題模式直接展開，圖片上面已經有了不重複
+  const open = inline ? '<div class="rev-detail show">' : '<div class="rev-detail">';
+  let h = open;
   if (t.skill === 'reading') {
-    if (q.img)     h += `<img src="${DATA_DIR}${q.img}" alt="document">`;
+    if (q.img && !inline) h += `<img src="${DATA_DIR}${q.img}" alt="document">`;
     if (q.src_zh)  h += '<h4>原文翻譯</h4><p>' + esc(q.src_zh) + '</p>';
     if (q.q_zh)    h += '<h4>題目翻譯</h4><p>' + esc(q.q_zh) + '</p>';
     if (q.key_zh)  h += '<h4>關鍵點解析</h4><p>' + esc(q.key_zh) + '</p>';
@@ -726,7 +777,7 @@ function detailHtml(q, t) {
     if (q.script_fr) h += '<h4>Transcription</h4><p>' + esc(q.script_fr) + '</p>';
     if (q.script_zh) h += '<h4>翻譯與解析</h4><p>' + esc(q.script_zh) + '</p>';
   }
-  if (h === '<div class="rev-detail">') h += '<p>（這題沒有附解析）</p>';
+  if (h === open) h += '<p>（這題沒有附解析）</p>';
   return h + '</div>';
 }
 
@@ -763,14 +814,15 @@ function renderHist() {
     const d = new Date(r.ts);
     return `<div class="hist-row">
       <span class="h-date">${d.getMonth() + 1}/${d.getDate()}</span>
-      <span class="h-name">${(r.skill === 'reading' ? '📖 ' : '🎧 ') + r.label}${r.mock ? ' · 模擬' : ''}</span>
+      <span class="h-name">${(r.skill === 'reading' ? '📖 ' : '🎧 ') + r.label}${r.mock ? ' · 模擬' : r.single ? ' · 單題' : ''}</span>
       <span class="h-score ${cls}">${r.correct}/${r.n}</span></div>`;
   }).join('');
 }
 
 /* ── misc ────────────────────────────────────────────────────── */
 function quitExam() {
-  if (!confirm('放棄這次作答？不會留下紀錄。')) return;
+  if (cur.instant) saveSingle();
+  else if (!confirm('放棄這次作答？不會留下紀錄。')) return;
   clearInterval(timerId); stopAudio(); cur = null; backToSetup();
 }
 function backToSetup() { renderTestGrid(); show('setupPanel'); }
