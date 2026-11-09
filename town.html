@@ -1823,11 +1823,13 @@ function radioOpen(){
       S0.eps.map(function(e){ return '<div style="margin:4px 0"><span class="fr" style="font-size:.85em">'+esc(e.title.replace(/^\d+[:：]?\s*|^E\d+\s*/,''))+'</span><div>'+e.segs.map(radioCell).join('')+'</div></div>'; }).join('')+
       '<div class="row2"><span></span><button class="btn main rgo" data-s="'+k+'">▶ 收聽下一段</button></div></div>';
   });
+  h+='<div class="item" style="text-align:left;margin:8px 0"><b>🎙 廣播問答</b><div class="muted" style="font-size:.85em">有人在廣播裡丟出一個問題，只念一次。</div><div class="row2"><span></span><button class="btn main" id="rt3">▶ 聽一題</button></div></div>';
   h+='<div class="muted" style="font-size:.75em">格子：<span style="color:var(--gold)">■</span> 第一遍就聽懂　<span style="color:#5b7da8">■</span> 聽過了　■ 還沒聽——第一遍沒抓到的，過兩天會再回來。</div>'+
     '<div class="row2"><span></span><button class="btn ghost" id="rx">離開</button></div>';
   openSheet(h, true);
   document.getElementById('rx').onclick=closeSheet;
   var rc=document.getElementById('rcards'); if(rc) rc.onclick=function(){ radioCards(radioOpen); };
+  document.getElementById('rt3').onclick=function(){ var b=this; b.disabled=true; b.textContent='調頻中…'; t3Load().then(t3Next).catch(function(){ toast('📻 收訊不好（網路？）'); b.disabled=false; b.textContent='▶ 聽一題'; }); };
   var rd=document.getElementById('rdict'); if(rd) rd.onclick=function(){ rd.disabled=true; radioDictStart(null, radioOpen); };
   sheet.querySelectorAll('.rgo').forEach(function(b){ b.onclick=function(){ var pk=radioPick(b.dataset.s);
     if(!pk){ toast('📻 這個頻道的段都聽過了——新的集數之後會進來'); return; }
@@ -1961,6 +1963,98 @@ function radioStoryCheck(E){
     R.story=R.story||{}; if(all && !R.story[t]){ R.story[t]=Date.now(); save(); if(window.radioStoryHook) setTimeout(function(){ radioStoryHook(t.slice(6)); }, 400); } });
 }
 /* 🔁 複習卡：先聽他那一句 → 想意思 → 看中文 → 記得／還不熟／會了／跳過 */
+/* ============================================================
+   🎙 廣播問答（11-09，聽考題）：口說第三題的第一關是「聽懂考官問什麼」
+   流程：只念一次（可再聽一次）→ 講出在問什麼（先定好用中文或法文）→ 翻開看意思與關鍵字 → 自己對照
+   依據：research/2026-11-09_聽完用自己的話講出題目.md
+   ⭐ 跳過三層：「會了」、「⏭ 這題跳過」、收音機本身不在今日步驟裡；都記次數（clb7_t3_known），只降低頻率，⛔ 不刪
+   ⛔ 不計分、不顯示比例：自評只決定什麼時候再出現
+   資料：私人空間 t3q/topics.json（tools/upload_t3_listen.py），⛔ 題目不進公開 repo
+   聲音：題目有 a（私人空間音檔路徑）就播真人／預錄，沒有就用瀏覽器朗讀
+   ============================================================ */
+var T3L=null;
+function t3Load(){ return T3L ? Promise.resolve(T3L) : vaultGet('t3q/topics.json').then(function(d){ return (T3L=d.items||[]); }); }
+function t3Rec(){ try{ return JSON.parse(localStorage.getItem('clb7_t3_known'))||{}; }catch(e){ return {}; } }
+function t3Put(id, fn){ var A=t3Rec(), r=A[id]||{n:0, skip:0, known:0}; fn(r); r.last=Date.now(); A[id]=r; try{ localStorage.setItem('clb7_t3_known', JSON.stringify(A)); }catch(e){} }
+function t3S(){ var T=S.t3=S.t3||{lang:'zh'}; if(T.day!==radioDay()){ T.day=radioDay(); T.dn=0; T.seen=[]; } T.seen=T.seen||[]; return T; }
+/* 下一題：① 到期的 ② 沒聽過的（主題跟上一題不同）③ 都聽過了就挑最快到期的 */
+function t3Pick(){
+  var A=t3Rec(), now=Date.now(), T=t3S();
+  var pool=T3L.filter(function(x){ return T.seen.indexOf(x.id)<0; });
+  var due=pool.filter(function(x){ return A[x.id] && (A[x.id].due||0)<=now; }).sort(function(a,b){ return (A[a.id].due||0)-(A[b.id].due||0); });
+  if(due.length) return due[0];
+  var fresh=pool.filter(function(x){ return !A[x.id]; });
+  if(fresh.length){ var other=fresh.filter(function(x){ return x.th!==T.th; }); var L=other.length?other:fresh; return L[Math.floor(Math.random()*L.length)]; }
+  return pool.sort(function(a,b){ return (A[a.id].due||0)-(A[b.id].due||0); })[0]||null;
+}
+function t3Later(r, days){ r.due=Date.now()+days*86400000; }
+function t3Say(it){
+  if(MUTED){ toast('🔇 靜音中——右上角打開聲音才聽得到'); return false; }
+  if(it.a){ var p=CLIP_URL[it.a] ? Promise.resolve(CLIP_URL[it.a]) : vaultGet(it.a,true).then(function(b){ return (CLIP_URL[it.a]=URL.createObjectURL(b)); });
+    p.then(function(u){ var a=CLIP_AUDIO||(CLIP_AUDIO=new Audio()); a.src=u; a.playbackRate=1; a.muted=false; a.play(); }).catch(function(){ toast('📻 收訊不好（網路？）'); });
+    return true; }
+  /* 考官不會念出 seul(e) 的括號 */
+  try{ if(window.TtsReader&&TtsReader.supported) TtsReader.speak(it.fr.replace(/\((e|s)\)/g,''), {rate:.95}); }catch(e){}
+  return true;
+}
+function t3Hush(){ clipStop(); try{ speechSynthesis.cancel(); }catch(e){} }
+function t3Next(){
+  var it=t3Pick();
+  if(!it){ toast('🎙 今天的問題都聽過了'); radioOpen(); return; }
+  t3Ask(it);
+}
+function t3Done(it){ var T=t3S(); T.seen.push(it.id); T.th=it.th; save(); t3Hush(); }
+function t3Ask(it){
+  var T=t3S(), plays=0;
+  function langs(){ return ['zh','fr'].map(function(l){ var on=T.lang===l;
+    return '<button class="btn t3lang" data-l="'+l+'" style="padding:3px 10px;font-size:.85em'+(on?';background:#3c5a85;border-color:#9ec5ff':'')+'">'+(l==='zh'?'用中文講':'用法文講')+'</button>'; }).join(' '); }
+  openSheet('<h3>🎙 廣播問答 <small>只念一次</small></h3>'+
+    '<div class="story">有人在廣播裡丟出一個問題。聽完，講出他在問什麼。</div>'+
+    '<div class="row2" style="justify-content:center" id="t3langs">'+langs()+'</div>'+
+    '<div class="row2" style="justify-content:center"><button class="btn main" id="t3play">▶ 聽題目</button></div>'+
+    '<div id="t3after" style="display:none">'+
+      '<div class="row2" style="justify-content:center"><button class="btn ghost" id="t3again">🔁 再聽一次</button></div>'+
+      '<input id="t3type" class="fr" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="想打就打一句，對自己講也可以" style="width:100%;box-sizing:border-box;padding:8px;margin:6px 0">'+
+      '<div class="row2" style="justify-content:center"><button class="btn main" id="t3open">講完了，翻開</button></div>'+
+    '</div>'+
+    '<div class="row2"><button class="btn ghost" id="t3known">會了</button><button class="btn ghost" id="t3skip">⏭ 這題跳過</button><button class="btn ghost" id="t3x">今天先到這</button></div>'+
+    repSlot({kind:'廣播問答', ref:'T3:'+it.id, q:it.id}), true);
+  function wireLang(){ sheet.querySelectorAll('.t3lang').forEach(function(b){ b.onclick=function(){ T.lang=b.dataset.l; save(); document.getElementById('t3langs').innerHTML=langs(); wireLang(); }; }); }
+  wireLang();
+  document.getElementById('t3play').onclick=function(){
+    if(!t3Say(it)) return;
+    plays=1; this.style.display='none';
+    /* 聽之前就定好語言，聽完不再換 */
+    sheet.querySelectorAll('.t3lang').forEach(function(b){ b.disabled=true; });
+    document.getElementById('t3after').style.display='';
+  };
+  document.getElementById('t3again').onclick=function(){ if(!t3Say(it)) return; plays=2; this.disabled=true; this.textContent='已經再聽過了'; };
+  document.getElementById('t3open').onclick=function(){ var v=document.getElementById('t3type').value.trim(); t3Hush(); t3Reveal(it, plays, v); };
+  document.getElementById('t3known').onclick=function(){ t3Put(it.id,function(r){ r.known++; t3Later(r,45); }); t3Done(it); if(window.GameLog) GameLog.event('t3_listen_known'); t3Next(); };
+  document.getElementById('t3skip').onclick=function(){ t3Put(it.id,function(r){ r.skip++; t3Later(r,3+r.skip*4); }); t3Done(it); if(window.GameLog) GameLog.event('t3_listen_skip'); t3Next(); };
+  document.getElementById('t3x').onclick=function(){ t3Hush(); radioOpen(); };
+}
+function t3Reveal(it, plays, typed){
+  var T=t3S(), f=esc(it.fr);
+  it.k.forEach(function(k){ f=f.split(esc(k)).join('<b style="color:var(--gold)">'+esc(k)+'</b>'); });
+  openSheet('<h3>🎙 廣播問答 <small>他問的是</small></h3>'+
+    (typed?'<div class="muted" style="font-size:.85em">你講的：'+esc(typed)+'</div>':'')+
+    '<div class="item" style="text-align:left"><span class="fr">'+f+'</span><div style="margin-top:6px">'+esc(it.zh)+'</div>'+
+    (it.tip?'<div class="muted" style="font-size:.85em;margin-top:4px">'+esc(it.tip)+'</div>':'')+'</div>'+
+    '<div class="row2" style="justify-content:center"><button class="btn ghost" id="t3hear">🔊 再聽</button></div>'+
+    '<div class="muted" style="font-size:.85em;text-align:center">跟你剛剛講的比起來？</div>'+
+    '<div class="row2" style="justify-content:center;flex-wrap:wrap;gap:6px"><button class="btn main t3r" data-r="ok">抓到了</button><button class="btn ghost t3r" data-r="half">抓到一半</button><button class="btn ghost t3r" data-r="miss">聽成別的</button></div>'+
+    '<div class="row2"><span></span><button class="btn ghost" id="t3x">今天先到這</button></div>'+
+    repSlot({kind:'廣播問答', ref:'T3:'+it.id, q:it.id}), true);
+  document.getElementById('t3hear').onclick=function(){ t3Say(it); };
+  document.getElementById('t3x').onclick=function(){ t3Hush(); radioOpen(); };
+  sheet.querySelectorAll('.t3r').forEach(function(b){ b.onclick=function(){ var res=b.dataset.r;
+    t3Put(it.id,function(r){ r.n++; r.plays=(r.plays||0)+plays; r.res=res; r.lang=T.lang; if(res==='ok') r.ok=(r.ok||0)+1; else r.ok=0;
+      t3Later(r, res==='ok' ? (r.ok>1?45:21) : res==='half' ? 4 : 2); });
+    T.dn=(T.dn||0)+1; t3Done(it); if(window.GameLog) GameLog.event('t3_listen_'+res);
+    if(T.dn===5) toast('🎙 今天的份量收好了 ✓——想再聽也可以');
+    t3Next(); }; });
+}
 function radioCards(back){
   var R=radioS(), q=radioDue().slice(0,12), i=0;
   function card(){
