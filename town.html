@@ -1823,13 +1823,14 @@ function radioOpen(){
       S0.eps.map(function(e){ return '<div style="margin:4px 0"><span class="fr" style="font-size:.85em">'+esc(e.title.replace(/^\d+[:：]?\s*|^E\d+\s*/,''))+'</span><div>'+e.segs.map(radioCell).join('')+'</div></div>'; }).join('')+
       '<div class="row2"><span></span><button class="btn main rgo" data-s="'+k+'">▶ 收聽下一段</button></div></div>';
   });
-  h+='<div class="item" style="text-align:left;margin:8px 0"><b>🎙 廣播問答</b><div class="muted" style="font-size:.85em">有人在廣播裡丟出一個問題，只念一次。</div><div class="row2"><span></span><button class="btn main" id="rt3">▶ 聽一題</button></div></div>';
+  /* 11-09 Owen：廣播問答先保留不做（聲音未定）→ 入口先關，程式留著；要開時把 T3_LISTEN_ON 改成 true */
+  if(T3_LISTEN_ON) h+='<div class="item" style="text-align:left;margin:8px 0"><b>🎙 廣播問答</b><div class="muted" style="font-size:.85em">有人在廣播裡丟出一個問題，只念一次。</div><div class="row2"><span></span><button class="btn main" id="rt3">▶ 聽一題</button></div></div>';
   h+='<div class="muted" style="font-size:.75em">格子：<span style="color:var(--gold)">■</span> 第一遍就聽懂　<span style="color:#5b7da8">■</span> 聽過了　■ 還沒聽——第一遍沒抓到的，過兩天會再回來。</div>'+
     '<div class="row2"><span></span><button class="btn ghost" id="rx">離開</button></div>';
   openSheet(h, true);
   document.getElementById('rx').onclick=closeSheet;
   var rc=document.getElementById('rcards'); if(rc) rc.onclick=function(){ radioCards(radioOpen); };
-  document.getElementById('rt3').onclick=function(){ var b=this; b.disabled=true; b.textContent='調頻中…'; t3Load().then(t3Next).catch(function(){ toast('📻 收訊不好（網路？）'); b.disabled=false; b.textContent='▶ 聽一題'; }); };
+  if(T3_LISTEN_ON) document.getElementById('rt3').onclick=function(){ var b=this; b.disabled=true; b.textContent='調頻中…'; t3Load().then(t3Next).catch(function(){ toast('📻 收訊不好（網路？）'); b.disabled=false; b.textContent='▶ 聽一題'; }); };
   var rd=document.getElementById('rdict'); if(rd) rd.onclick=function(){ rd.disabled=true; radioDictStart(null, radioOpen); };
   sheet.querySelectorAll('.rgo').forEach(function(b){ b.onclick=function(){ var pk=radioPick(b.dataset.s);
     if(!pk){ toast('📻 這個頻道的段都聽過了——新的集數之後會進來'); return; }
@@ -1972,7 +1973,7 @@ function radioStoryCheck(E){
    資料：私人空間 t3q/topics.json（tools/upload_t3_listen.py），⛔ 題目不進公開 repo
    聲音：題目有 a（私人空間音檔路徑）就播真人／預錄，沒有就用瀏覽器朗讀
    ============================================================ */
-var T3L=null;
+var T3L=null, T3_LISTEN_ON=false;
 function t3Load(){ return T3L ? Promise.resolve(T3L) : vaultGet('t3q/topics.json').then(function(d){ return (T3L=d.items||[]); }); }
 function t3Rec(){ try{ return JSON.parse(localStorage.getItem('clb7_t3_known'))||{}; }catch(e){ return {}; } }
 function t3Put(id, fn){ var A=t3Rec(), r=A[id]||{n:0, skip:0, known:0}; fn(r); r.last=Date.now(); A[id]=r; try{ localStorage.setItem('clb7_t3_known', JSON.stringify(A)); }catch(e){} }

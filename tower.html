@@ -368,9 +368,9 @@ function strike(row){
    ============================================================ */
 /* 🎧 聽力題：只用課本真人錄音（小鎮載好的那份；Owen 10-16：「聽機器聲沒有什麼幫助」）→ 沒登入過就不出，⛔ 不退回電腦語音 */
 function listenHost(){ try{ if(EMBED && parent!==window && parent.CLIPS && parent.CLIPS.length && parent.clipPick && parent.clipPlay) return parent; }catch(e){} return null; }
-function listenReady(){ return listenHost(); }
+function listenReady(){ var H=listenHost(); return H && !H.MUTED ? H : null; }   /* 11-09 Owen：守園中遇到靜音，聽力聽不了 → 靜音時不出聽力題 */
 function listenQ(){
-  var H=listenHost(); if(!H) return null; var c=null, bl=null;
+  var H=listenReady(); if(!H) return null; var c=null, bl=null;
   for(var t=0;t<6&&!bl;t++){ c=H.clipPick(); var ws=(c&&c.blank||[]).filter(function(x){ return x.t==='w'; }); if(ws.length) bl=ws[Math.floor(Math.random()*ws.length)]; }
   if(!bl) return null;
   var seen={}, opts=[bl.w]; seen[bl.w.toLowerCase()]=1;
