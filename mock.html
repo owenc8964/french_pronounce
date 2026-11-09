@@ -199,6 +199,8 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
 .rev-detail { display: none; margin-top: 8px; padding: 10px 12px;
   background: #0a0c16; border-radius: 7px; }
 .rev-detail.show { display: block; }
+.voice-btn { margin-top: 8px; padding: 6px 12px; border-radius: 8px; border: 1px solid #333c48; background: transparent; color: #aaa8a0; font: inherit; font-size: .8rem; cursor: pointer; }
+.voice-btn.on { border-color: #f0c060; color: #f0c060; }
 .single-res { margin-top: 12px; font-weight: 700; font-size: 1rem; }
 .single-res.ok { color: #60d090; } .single-res.bad { color: #d07060; } .single-res.none { color: #aaa8a0; font-weight: 400; }
 .single-next { width: 100%; margin-top: 12px; padding: 13px; border-radius: 10px; border: 0; background: #f0c060; color: #1a1408; font: inherit; font-weight: 700; cursor: pointer; }
@@ -374,6 +376,7 @@ function getHist() { return lsGet(LS_HIST, []); }
 /* ── settings ────────────────────────────────────────────────── */
 function loadSettings() {
   const s = lsGet(LS_SET, {});
+  voiceOn = !!s.voice;
   document.getElementById('mockMode').checked = !!s.mock;
   document.getElementById('instantMode').checked = !!s.instant && !s.mock;
   if (s.skill) setSkill(s.skill);
@@ -382,6 +385,7 @@ function saveSettings() {
   lsSet(LS_SET, {
     mock: document.getElementById('mockMode').checked,
     instant: document.getElementById('instantMode').checked,
+    voice: voiceOn,
     skill
   });
 }
@@ -444,6 +448,8 @@ function loadTest(id, cb) {
 
 /* ── start ───────────────────────────────────────────────────── */
 function startTest(id) {
+  // iOS 只准在使用者點按的當下啟動音訊處理，題目檔載完才啟動會變成沒聲音
+  if (voiceOn && skill === 'listening' && !document.getElementById('mockMode').checked) voiceCtx();
   loadTest(id, t => {
     if (!t) { alert('讀不到 ' + id + ' 的題目檔。'); return; }
     cur = { test: t, answers: new Array(t.questions.length).fill(null),
@@ -498,8 +504,11 @@ function buildAudio(t) {
   } else {
     slot.innerHTML =
       '<audio id="au" controls preload="metadata" src="' + src + '"></audio>' +
+      '<button class="voice-btn" id="voiceBtn" onclick="toggleVoice()"></button>' +
       '<div class="audio-note">練習模式：可暫停、可倒帶重聽。想模擬真考就回選單打開「模擬考模式」。</div>';
     audioEl = document.getElementById('au');
+    paintVoice(); if (voiceOn) voiceRoute();
+    on('play', () => { if (vCtx && vCtx.state === 'suspended') vCtx.resume().catch(() => {}); });
     on('timeupdate', checkQEnd);
     on('seeking', el => { if (qEnd !== null && (el.currentTime >= qEnd || el.currentTime < qEnd - 400)) qEnd = null; });
   }
@@ -518,6 +527,36 @@ function buildAudio(t) {
     el.addEventListener(evt, () => { if (el === audioEl) fn(el); });
   }
 }
+/* ── 人聲加強 2026-11-09（Owen：Test 3 聲音好模糊）─────────────────
+   播放時即時處理，不動音檔，所以時間軸和逐題起點不變；原始錄音沒有的細節補不回來，只是讓人聲比較突出。
+   ⛔ 模擬考模式不用：要跟真考聽到的一樣。 */
+let voiceOn = false, vCtx = null, vIn = null, vSrc = null, vEl = null;
+function voiceCtx() {
+  if (!vCtx) {
+    vCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const mk = (type, f, g, q) => { const n = vCtx.createBiquadFilter(); n.type = type; n.frequency.value = f; if (g !== undefined) n.gain.value = g; if (q !== undefined) n.Q.value = q; return n; };
+    const nodes = [mk('highpass', 110), mk('lowshelf', 260, -3), mk('peaking', 2800, 5, 0.9), mk('highshelf', 6500, 2)];
+    const c = vCtx.createDynamicsCompressor();
+    c.threshold.value = -20; c.knee.value = 12; c.ratio.value = 3; c.attack.value = 0.004; c.release.value = 0.2;
+    const out = vCtx.createGain(); out.gain.value = 0.85;
+    nodes.concat([c, out]).reduce((a, b) => (a.connect(b), b)).connect(vCtx.destination);
+    vIn = nodes[0];
+  }
+  if (vCtx.state === 'suspended') vCtx.resume().catch(() => {});
+  return vCtx;
+}
+function voiceRoute() {
+  if (!audioEl || !vCtx) return;
+  if (vEl !== audioEl) { if (vSrc) try { vSrc.disconnect(); } catch (e) {} vSrc = vCtx.createMediaElementSource(audioEl); vEl = audioEl; }
+  try { vSrc.disconnect(); } catch (e) {}
+  vSrc.connect(voiceOn ? vIn : vCtx.destination);
+}
+function paintVoice() {
+  const b = document.getElementById('voiceBtn'); if (!b) return;
+  b.textContent = '🔊 人聲加強：' + (voiceOn ? '開' : '關'); b.classList.toggle('on', voiceOn);
+}
+function toggleVoice() { voiceOn = !voiceOn; voiceCtx(); voiceRoute(); paintVoice(); saveSettings(); }
+
 function stopAudio() {
   const el = audioEl;
   audioEl = null;                       // 先退位，接下來這顆發的事件就都不算數了
