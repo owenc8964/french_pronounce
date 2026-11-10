@@ -1179,7 +1179,7 @@ function paintQuestions(body, t) {
     r.qs.forEach(q => {
       const k = qi++;
       html += `<div class="qbox">${qHead(q, k)}` + (q.opts
-        ? q.opts.map((o, j) => `<button class="opt ${mine[k] === j ? 'sel' : ''}" onclick="BL.pickOpt(${k},${j},this)">${'ABC'[j]}. ${esc(o)}</button>`).join('')
+        ? q.opts.map((o, j) => `<button class="opt ${mine[k] === j ? 'sel' : ''}" onclick="BL.pickOpt(${k},${j},this)">${'ABCDEFGHIJ'[j]}. ${esc(o)}</button>`).join('')
         : `<input placeholder="關鍵字（可空白）" value="${esc(mine[k] || '')}" oninput="BL.setMine(${k},this.value)">`) + '</div>';
     });
   });
@@ -1199,7 +1199,7 @@ function paintAnswers(body, t) {
       const k = qi++;
       html += `<div class="qbox">${qHead(q, k)}`;
       if (q.opts) {
-        html += q.opts.map((o, j) => `<div class="opt ${j === q.ans ? 'right' : mine[k] === j ? 'wrong' : ''}">${'ABC'[j]}. ${esc(o)}</div>`).join('');
+        html += q.opts.map((o, j) => `<div class="opt ${j === q.ans ? 'right' : mine[k] === j ? 'wrong' : ''}">${'ABCDEFGHIJ'[j]}. ${esc(o)}</div>`).join('');
       } else if (mine[k] && mine[k].trim()) {
         html += `<div class="mine">你寫的：${esc(mine[k])}</div>`;
       }
