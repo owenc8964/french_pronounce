@@ -212,6 +212,11 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
 .rev-detail h4 { font-size: 0.68rem; color: #f0c060; text-transform: uppercase;
   letter-spacing: 1px; margin: 10px 0 4px; }
 .rev-detail h4:first-child { margin-top: 0; }
+/* 詳解旁的大按鈕：貼在畫面下緣，邊讀詳解邊倒退重聽（11-10 Owen） */
+.big-ctl { position: sticky; bottom: 10px; z-index: 5; display: flex; gap: 8px; margin: 2px 0 10px;
+  padding: 6px; background: #0a0c16; border-radius: 10px; }
+.big-ctl button { flex: 1; padding: 14px 4px; border-radius: 9px; border: 1.5px solid #2a5a7a; background: #12223a;
+  color: #cfe6f7; font: inherit; font-size: 0.95rem; font-weight: 700; cursor: pointer; }
 .rev-detail p { font-size: 0.78rem; color: #aaa8a0; line-height: 1.65; white-space: pre-wrap; }
 .rev-detail img { width: 100%; border-radius: 6px; background: #fff; margin-bottom: 8px; }
 
@@ -230,6 +235,89 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
 .panel.active { display: block; }
 .msg { font-size: 0.8rem; color: #445060; line-height: 1.6; }
 .err { color: #d07060; }
+
+/* ── 課本聽力（11-10 從 book_listen.html 併進來，Owen：「跟 TCF 放在同個頁面，往下滑就好」） ── */
+#bookCard .book-row { display: flex; gap: 8px; margin-bottom: 14px; }
+#bookCard .book-btn { flex: 1; padding: 11px 6px; border-radius: 9px; cursor: pointer; background: #141928;
+  border: 1.5px solid #1a2438; color: #aaa8a0; font-family: inherit; font-size: 0.84rem; }
+#bookCard .book-btn.on { border-color: #f0c060; color: #f0c060; background: #1a1800; font-weight: 700; }
+#bookCard .go-btn { width: 100%; padding: 13px; border: none; border-radius: 9px; font-family: inherit; font-size: 0.92rem;
+  font-weight: 700; cursor: pointer; background: linear-gradient(135deg, #1d3550, #2a5a7a); color: #cfe6f7; margin-bottom: 14px; }
+#bookCard .unit { margin-bottom: 14px; }
+#bookCard .unit-head { display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;
+  color: #f0c060; margin: 0 2px 6px; }
+#bookCard .unit-head .later { color: #445060; font-size: 0.68rem; margin-left: 6px; }
+#bookCard .unit-skip { background: none; border: 1px solid #1a2438; color: #6a7488; border-radius: 6px; font-family: inherit;
+  font-size: 0.66rem; padding: 3px 8px; cursor: pointer; }
+#bookCard .trk { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #0d1020; border: 1px solid #1a2438;
+  border-radius: 9px; margin-bottom: 6px; cursor: pointer; }
+#bookCard .trk:hover { border-color: #445060; }
+#bookCard .trk .no { font-size: 0.68rem; color: #445060; width: 30px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+#bookCard .trk .tt { flex: 1; font-size: 0.82rem; line-height: 1.4; }
+#bookCard .trk .meta { font-size: 0.64rem; color: #445060; }
+#bookCard .badge { font-size: 0.64rem; padding: 2px 7px; border-radius: 10px; white-space: nowrap; }
+#bookCard .b-ok { color: #8fd0a8; border: 1px solid #2a5a3a; }
+#bookCard .b-again { color: #e0b060; border: 1px solid #5a4a20; }
+#bookCard .b-skip { color: #7a8090; border: 1px solid #2a3040; }
+#bookCard .p-title { font-size: 0.95rem; font-weight: 700; line-height: 1.5; }
+#bookCard .p-meta { font-size: 0.68rem; color: #445060; margin-top: 4px; }
+#bookCard .steps { display: flex; gap: 6px; margin: 14px 0 4px; }
+#bookCard .step { flex: 1; text-align: center; padding: 8px 4px; border-radius: 8px; font-size: 0.74rem; background: #141928;
+  border: 1.5px solid #1a2438; color: #6a7488; cursor: pointer; font-family: inherit; }
+#bookCard .step.on { border-color: #f0c060; color: #f0c060; font-weight: 700; }
+#bookCard audio { width: 100%; margin-top: 12px; filter: invert(0.9) hue-rotate(180deg); }
+#bookCard .seek-row { display: flex; gap: 8px; margin-top: 8px; }
+#bookCard .seek-row button { flex: 1; padding: 10px; background: #141928; border: 1.5px solid #1a2438; border-radius: 8px;
+  color: #aaa8a0; font-family: inherit; font-size: 0.82rem; cursor: pointer; }
+#bookCard .hint { font-size: 0.8rem; color: #8a92a4; line-height: 1.6; margin: 14px 0 10px; }
+#bookCard .script { background: #090b16; border: 1px solid #1a2438; border-radius: 9px; padding: 12px 14px; margin: 12px 0;
+  font-size: 0.92rem; line-height: 1.75; color: #e6e1d4; max-height: 52vh; overflow-y: auto; }
+#bookCard .script p { margin-bottom: 8px; }
+#bookCard .script .spk { color: #60a0d0; font-size: 0.8rem; }
+#bookCard .ocr-note { font-size: 0.66rem; color: #6a7488; margin-top: -4px; margin-bottom: 8px; }
+#bookCard .main-btn { width: 100%; padding: 13px; border-radius: 9px; border: none; font-family: inherit; font-size: 0.9rem;
+  font-weight: 700; cursor: pointer; background: linear-gradient(135deg, #1d3550, #2a5a7a); color: #cfe6f7; margin-top: 4px; }
+#bookCard .pair { display: flex; gap: 8px; margin-top: 4px; }
+#bookCard .pair button { flex: 1; padding: 13px; border-radius: 9px; font-family: inherit; font-size: 0.9rem; font-weight: 700; cursor: pointer; }
+#bookCard .btn-ok { background: #13281c; border: 1.5px solid #2a5a3a; color: #8fd0a8; }
+#bookCard .btn-again { background: #241e0c; border: 1.5px solid #5a4a20; color: #e0b060; }
+#bookCard .exits { display: flex; gap: 8px; margin-top: 16px; padding-top: 12px; border-top: 1px solid #141928; }
+#bookCard .exits button { flex: 1; padding: 9px; background: none; border: 1px solid #1a2438; border-radius: 8px; color: #7a8090;
+  font-family: inherit; font-size: 0.76rem; cursor: pointer; }
+#bookCard .back { background: none; border: none; color: #60a0d0; font-family: inherit; font-size: 0.78rem; cursor: pointer; margin-bottom: 10px; }
+#bookCard .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: #1a2438; color: #ddd8cc;
+  padding: 9px 16px; border-radius: 20px; font-size: 0.8rem; opacity: 0; transition: opacity .2s; pointer-events: none; }
+#bookCard .toast.on { opacity: 1; }
+#bookCard .err { color: #d07060; font-size: 0.82rem; line-height: 1.6; }
+#bookCard .rlabel { font-size: 0.68rem; color: #f0c060; letter-spacing: 1px; margin: 14px 0 6px; }
+#bookCard .qbox { background: #090b16; border: 1px solid #1a2438; border-radius: 9px; padding: 11px 13px; margin-bottom: 8px; }
+#bookCard .qtext { font-size: 0.9rem; line-height: 1.55; color: #e6e1d4; }
+#bookCard .zh-btn { background: none; border: 1px solid #1a2438; color: #6a7488; border-radius: 5px; font-size: 0.66rem;
+  padding: 1px 6px; margin-left: 6px; cursor: pointer; font-family: inherit; vertical-align: middle; }
+#bookCard .zh { display: none; font-size: 0.76rem; color: #8a92a4; margin-top: 4px; }
+#bookCard .zh.on { display: block; }
+#bookCard .qbox input { width: 100%; margin-top: 8px; background: #0d1020; border: 1px solid #1a2438; border-radius: 7px;
+  color: #ddd8cc; padding: 8px 10px; font-family: inherit; font-size: 0.84rem; }
+#bookCard .opt { display: block; width: 100%; text-align: left; margin-top: 6px; padding: 9px 12px; background: #141928;
+  border: 1.5px solid #1a2438; border-radius: 8px; color: #aaa8a0; font-family: inherit; font-size: 0.84rem; cursor: pointer; }
+#bookCard .opt.sel { border-color: #60a0d0; color: #cfe6f7; }
+#bookCard .opt.right { border-color: #2a5a3a; color: #8fd0a8; }
+#bookCard .opt.wrong { border-color: #5a3a2a; color: #d09070; }
+#bookCard .mine { font-size: 0.78rem; color: #8a92a4; margin-top: 6px; }
+#bookCard .ans { font-size: 0.86rem; color: #cfe6f7; margin-top: 8px; line-height: 1.55; }
+#bookCard .qnote { font-size: 0.72rem; color: #8a92a4; margin-top: 4px; line-height: 1.5; }
+#bookCard .ev { font-size: 0.84rem; color: #e6e1d4; border-left: 2px solid #2a5a7a; padding-left: 9px; margin-top: 6px; line-height: 1.5; }
+#bookCard .qmark { display: flex; gap: 6px; margin-top: 9px; }
+#bookCard .qmark button { flex: 1; padding: 7px; border-radius: 7px; background: none; border: 1px solid #1a2438; color: #7a8090;
+  font-family: inherit; font-size: 0.74rem; cursor: pointer; }
+#bookCard .qmark button.on[data-m=got] { border-color: #2a5a3a; color: #8fd0a8; }
+#bookCard .qmark button.on[data-m=miss] { border-color: #5a4a20; color: #e0b060; }
+#bookCard .qmark button.on[data-m=skip] { border-color: #3a4050; color: #aab0c0; }
+#bookCard details.full { margin: 10px 0; }
+#bookCard details.full summary, #bookCard details.rest summary { cursor: pointer; font-size: 0.78rem; color: #60a0d0; }
+#bookCard details.rest { margin-top: 10px; }
+#bookCard .qcount { font-size: 0.64rem; color: #60a0d0; margin-left: 6px; }
+#bookCard .note-top { font-size: 0.74rem; color: #6a7488; margin-bottom: 12px; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -238,7 +326,7 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
   <a class="back" href="dashboard.html">← Retour au tableau de bord</a>
   <h1>🎯 TCF CANADA · EXAMEN BLANC</h1>
   <div class="sub">閱讀 39 題 · 聽力 39 題 · 真題題庫（2025-10～11）</div>
-  <div class="sub"><a href="book_listen.html" style="color:#60a0d0;text-decoration:none">🎧 課本聽力（A2 課本・練習本・B1）→</a></div>
+  <div class="sub"><a href="#bookCard" style="color:#60a0d0;text-decoration:none">🎧 課本聽力在最下面（A2 課本・練習本・B1）↓</a></div>
 </div>
 
 <!-- ══ 選單 ══ -->
@@ -277,6 +365,12 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
   <div class="card" id="histCard" style="display:none">
     <div class="card-title">Historique</div>
     <div id="histRows"></div>
+  </div>
+
+  <div class="card" id="bookCard">
+    <div class="card-title">課本聽力 · Édito A2／B1</div>
+    <div id="blApp"></div>
+    <div class="toast" id="blToast"></div>
   </div>
 </div>
 
@@ -452,6 +546,7 @@ function loadTest(id, cb) {
 
 /* ── start ───────────────────────────────────────────────────── */
 function startTest(id) {
+  if (window.BL) BL.stop();
   loadTest(id, t => {
     if (!t) { alert('讀不到 ' + id + ' 的題目檔。'); return; }
     cur = { test: t, answers: new Array(t.questions.length).fill(null),
@@ -812,6 +907,14 @@ function revFlag(fid, btn) {
 }
 
 /* ── explanation block ───────────────────────────────────────── */
+/* 聽力逐字稿：原檔是 PDF 換行（一行斷在句子中間、換人說話卻接在同一行）→ 先接回去，再一句一行。
+   11-10 Owen 回報 co_3 Q11「C'est vrai 應該已經換行了」。 */
+function reflowFr(s) {
+  return String(s || '').split('\n').map(l => l.trim()).filter(Boolean).join(' ')
+    .replace(/([.?!…])\s+(?=[«"A-ZÀ-Ý–—-])/g, '$1\n')
+    .replace(/\s+(Question\s*\d)/g, '\n$1');
+}
+function togglePlay() { if (audioEl) audioEl.paused ? audioEl.play() : audioEl.pause(); }
 function detailHtml(q, t, inline) {   // inline：單題模式直接展開，圖片上面已經有了不重複
   const open = inline ? '<div class="rev-detail show">' : '<div class="rev-detail">';
   let h = open;
@@ -822,7 +925,15 @@ function detailHtml(q, t, inline) {   // inline：單題模式直接展開，圖
     if (q.key_zh)  h += '<h4>關鍵點解析</h4><p>' + esc(q.key_zh) + '</p>';
     if (q.opt_zh)  h += '<h4>選項分析</h4><p>' + esc(q.opt_zh) + '</p>';
   } else {
-    if (q.script_fr) h += '<h4>Transcription</h4><p>' + esc(q.script_fr) + '</p>';
+    /* 11-10 Owen 回報：詳解旁要有大的前進後退＋暫停（練習／單題才有，模考模式不會走到 inline） */
+    if (inline) h += '<div class="big-ctl"><button onclick="seekBy(-5)">⏪ 5 秒</button>' +
+      '<button onclick="togglePlay()">⏯ 播放／暫停</button><button onclick="seekBy(5)">5 秒 ⏩</button></div>';
+    /* 選項翻譯（11-10 Owen 回報「答案也要翻譯」；佔位選項 Proposition a–d 那種沒有 opts_zh） */
+    if (q.opts_zh) h += '<h4>選項翻譯</h4><p>' + q.opts_zh.map((z, i) => {
+      const L = 'ABCD'[i], line = L + '. ' + esc(z);
+      return L === q.answer ? '<b style="color:#60d090">' + line + '　← 正解</b>' : line;
+    }).join('\n') + '</p>';
+    if (q.script_fr) h += '<h4>Transcription</h4><p>' + esc(reflowFr(q.script_fr)) + '</p>';
     if (q.script_zh) h += '<h4>翻譯與解析</h4><p>' + esc(q.script_zh) + '</p>';
   }
   if (h === open) h += '<p>（這題沒有附解析）</p>';
@@ -878,6 +989,276 @@ function esc(s) {
   return String(s == null ? '' : s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
+
+
+/* ══ 課本聽力（11-10 併入；原 book_listen.html，規格 PRD_textbook_listen.md）══
+   ⚠️ 包在 IIFE 裡：lsGet／seekBy／audioEl 等名字跟模考的重複，對外只開 window.BL。
+   ⛔ 只寫 tcfbook_* key。 */
+(function () {
+const LS_PROG = 'tcfbook_progress';   // { "a2/002": {s:'ok'|'again'|'skip', n, last} }
+const LS_SET  = 'tcfbook_settings';   // { book, last:{a2:idx} }
+const BOOKS = [
+  { id: 'a2',  name: 'A2 課本' },
+  { id: 'a2c', name: 'A2 練習本', ocr: true },
+  { id: 'b1',  name: 'B1 課本' },
+];
+const B1_DONE = 3;   // B1 上到第幾單元（11-06 第49課進 Unité 3）；之後的單元照樣能聽，只標「還沒上」
+const STATUS = { ok: ['聽懂了', 'b-ok'], again: ['還要再聽', 'b-again'], skip: ['跳過', 'b-skip'] };
+
+function lsGet(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } }
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+let DATA = {}, QS = {}, set = lsGet(LS_SET, {}), book = set.book || 'a2', idx = -1, step = 1, audioEl = null;
+let mine = {};   // 這一軌這一輪的作答：{ qi: 文字 或 選項 index }（不存檔，只在畫面上對答案用）
+/* 題目：assets/didier/_local/questions_<book>.json（課本原題＋中文答案＋逐字稿原句，見 PRD_textbook_listen.md） */
+const qsOf = t => QS[book] && QS[book][String(t.track)];
+const flatQs = q => q.rounds.flatMap(r => r.qs);
+const keyOf = t => t.f.replace(/\.m4a$/, '');
+const prog = () => lsGet(LS_PROG, {});
+const fmt = s => Math.floor(s / 60) + ':' + String(Math.round(s % 60)).padStart(2, '0');
+
+function toast(m) { const t = document.getElementById('blToast'); t.textContent = m; t.classList.add('on');
+  clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 1600); }
+
+async function load(b) {
+  if (DATA[b]) return DATA[b];
+  const r = await fetch('assets/didier/_local/' + b + '.json');
+  if (!r.ok) throw new Error(r.status);
+  try { const q = await fetch('assets/didier/_local/questions_' + b + '.json'); QS[b] = q.ok ? await q.json() : {}; }
+  catch (e) { QS[b] = {}; }
+  // ⛔ 沒有逐字稿的軌不列（11-10 Owen：「沒有附逐字稿…我大概也不會聽」，A2 課本 35 軌）
+  return (DATA[b] = (await r.json()).filter(t => t.text));
+}
+
+function mark(t, s) {
+  const p = prog(), r = p[keyOf(t)] || { n: 0 };
+  r.s = s; r.n = (r.n || 0) + 1; r.last = Date.now();
+  p[keyOf(t)] = r; lsSet(LS_PROG, p);
+}
+/* 每題自評：got 抓到了／miss 沒抓到／skip 跳過（跳過不算錯，照專案鐵律） */
+function markQ(qi, m) {
+  const t = DATA[book][idx], p = prog(), r = p[keyOf(t)] || { n: 0 };
+  r.q = r.q || {}; r.q[qi] = m; r.qlast = Date.now();
+  p[keyOf(t)] = r; lsSet(LS_PROG, p);
+  document.querySelectorAll(`.qmark[data-q="${qi}"] button`).forEach(b => b.classList.toggle('on', b.dataset.m === m));
+}
+
+/* 下一軌：沒有紀錄或標了「還要再聽」的，從 from 往後找，繞一圈；⭐ 有題目的軌優先 */
+function nextPending(list, from) {
+  const p = prog(), pending = i => { const r = p[keyOf(list[i])]; return !r || !r.s || r.s === 'again'; };
+  for (const needQ of [true, false])
+    for (let k = 1; k <= list.length; k++) {
+      const i = (from + k + list.length) % list.length;
+      if (pending(i) && (!needQ || qsOf(list[i]))) return i;
+    }
+  return -1;
+}
+
+/* ── 列表 ───────────────────────────────────────────── */
+async function renderList() {
+  stopAudio(); idx = -1;
+  const app = document.getElementById('blApp');
+  app.innerHTML = '<div class="book-row">' + BOOKS.map(b =>
+    `<button class="book-btn ${b.id === book ? 'on' : ''}" onclick="BL.pickBook('${b.id}')">${b.name}</button>`).join('') + '</div><div id="lst">載入中…</div>';
+  let list;
+  try { list = await load(book); }
+  catch (e) { document.getElementById('lst').innerHTML = '<div class="card err">讀不到課本音檔清單。這頁要從 Mac mini 開（7799），正式站上沒有課本檔案。</div>'; return; }
+  const p = prog();
+  const units = idxs => {
+    const groups = [];
+    idxs.forEach(i => {
+      const u = list[i].unit || 0, g = groups.find(x => x.u === u) || (groups.push({ u, items: [] }), groups[groups.length - 1]);
+      g.items.push(i);
+    });
+    groups.sort((a, b) => (a.u || 99) - (b.u || 99));
+    return groups.map(g => {
+      const later = book === 'b1' && g.u > B1_DONE;
+      return `<div class="unit"><div class="unit-head"><span>${g.u ? 'Unité ' + g.u : '其他'}${later ? '<span class="later">還沒上</span>' : ''}</span>
+        <button class="unit-skip" onclick="BL.skipUnit(${g.u})">跳過這單元還沒聽的</button></div>` +
+        g.items.map(i => {
+          const t = list[i], r = p[keyOf(t)], st = r && STATUS[r.s], q = qsOf(t);
+          return `<div class="trk" onclick="BL.openTrack(${i})"><span class="no">${t.track}</span>
+            <span class="tt">${esc(t.title || '（沒有標題）')}${q ? `<span class="qcount">${flatQs(q).length} 題</span>` : ''}
+            <div class="meta">${t.page ? 'p.' + t.page + ' · ' : ''}${fmt(t.dur)}</div></span>
+            ${st ? `<span class="badge ${st[1]}">${st[0]}</span>` : ''}</div>`;
+        }).join('') + '</div>';
+    }).join('');
+  };
+  const all = list.map((_, i) => i), withQ = all.filter(i => qsOf(list[i])), rest = all.filter(i => !qsOf(list[i]));
+  let html = '<button class="go-btn" onclick="BL.resume()">▶ 接著聽</button>';
+  if (withQ.length) {
+    html += units(withQ) + `<details class="rest"><summary>其他軌（題目還沒搬上來，只能盲聽＋對逐字稿）</summary><div style="margin-top:10px">${units(rest)}</div></details>`;
+  } else {
+    html += '<div class="note-top">這本的題目還沒搬上來，先只能盲聽＋對逐字稿。</div>' + units(all);
+  }
+  document.getElementById('lst').innerHTML = html;
+}
+function pickBook(b) { book = b; set.book = b; lsSet(LS_SET, set); renderList(); }
+function resume() {
+  const list = DATA[book], last = (set.last || {})[book] ?? -1;
+  const i = nextPending(list, last);
+  if (i < 0) { toast('這本都有紀錄了，點任一軌可以再聽'); return; }
+  openTrack(i);
+}
+function skipUnit(u) {
+  const list = DATA[book], p = prog(); let n = 0;
+  list.forEach(t => { if ((t.unit || 0) === u && !p[keyOf(t)]) { mark(t, 'skip'); n++; } });
+  toast(n ? '先跳過了，之後想聽隨時點' : '這單元的每一軌都有紀錄了');
+  renderList();
+}
+
+/* ── 播放 ───────────────────────────────────────────── */
+function stopAudio() { if (audioEl) { audioEl.pause(); audioEl = null; } }
+function openTrack(i) {
+  stopAudio(); idx = i; step = 1; mine = {};
+  document.getElementById('bookCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  set.last = set.last || {}; set.last[book] = i; lsSet(LS_SET, set);
+  const t = DATA[book][i], bk = BOOKS.find(b => b.id === book), hasQ = !!qsOf(t);
+  const r = prog()[keyOf(t)], st = r && STATUS[r.s];
+  document.getElementById('blApp').innerHTML = `
+    <button class="back" onclick="BL.renderList()">← ${bk.name}列表</button>
+    <div class="card">
+      <div class="p-title">${esc(t.title || '第 ' + t.track + ' 軌')}</div>
+      <div class="p-meta">${bk.name} · 第 ${t.track} 軌${t.unit ? ' · Unité ' + t.unit : ''}${t.page ? ' · p.' + t.page : ''} · ${fmt(t.dur)}${st ? ' · 上次：' + st[0] : ''}</div>
+      <div class="steps">
+        <button class="step" data-s="1" onclick="BL.goStep(1)">${hasQ ? '① 聽＋答題' : '① 盲聽'}</button>
+        <button class="step" data-s="2" onclick="BL.goStep(2)">${hasQ ? '② 對答案' : '② 對逐字稿'}</button>
+        <button class="step" data-s="3" onclick="BL.goStep(3)">③ 再聽一次</button>
+      </div>
+      <audio id="au" controls preload="metadata" src="assets/didier/m4a/${t.f}"></audio>
+      <div class="seek-row">
+        <button onclick="BL.seekBy(-5)">⏪ 5 秒</button>
+        <button onclick="BL.seekBy(5)">5 秒 ⏩</button>
+        <button onclick="BL.seekTo0()">⏮ 從頭</button>
+      </div>
+      <div id="stepBody"></div>
+      <div class="exits">
+        <button onclick="BL.finish('ok')">會了</button>
+        <button onclick="BL.finish('skip')">這軌跳過</button>
+      </div>
+    </div>`;
+  audioEl = document.getElementById('au');
+  audioEl.onerror = () => { document.getElementById('stepBody').innerHTML = '<div class="hint err">音檔讀不到，按「這軌跳過」先往下。</div>'; };
+  paintStep();
+}
+function seekBy(d) { if (audioEl) audioEl.currentTime = Math.max(0, Math.min(audioEl.duration || Infinity, audioEl.currentTime + d)); }
+function seekTo0() { if (audioEl) audioEl.currentTime = 0; }
+function goStep(s) {
+  if (s === 3 && step !== 3 && audioEl) { audioEl.pause(); audioEl.currentTime = 0; }
+  step = s; paintStep();
+}
+
+/* 逐字稿排版：PDF 換行接回去，說話人另起一段；練習本把「a. … - b. …」拆成一行一題 */
+function scriptHtml(t) {
+  let txt = String(t.text || '');
+  if (book === 'a2c') txt = txt.replace(/\s+-\s*\n?\s*(?=[a-z]\.\s)/g, '\n§');
+  const paras = [];
+  txt.split('\n').forEach(line => {
+    line = line.trim(); if (!line) return;
+    const isNew = /^§/.test(line) || /^[A-ZÀ-Ý][^:\n]{0,38}\s?:/.test(line) || /^[a-z]\.\s/.test(line) || !paras.length;
+    line = line.replace(/^§/, '');
+    if (isNew) paras.push(line);
+    else paras[paras.length - 1] += (/-$/.test(paras[paras.length - 1]) ? '' : ' ') + line;
+  });
+  return paras.map(p => {
+    const m = p.match(/^([A-ZÀ-Ý][^:]{0,38}?)\s?:\s?(.*)$/);
+    return m && !/^[a-z]\./.test(p) ? `<p><span class="spk">${esc(m[1])}：</span>${esc(m[2])}</p>` : `<p>${esc(p)}</p>`;
+  }).join('');
+}
+
+/* ── 有題目的軌：① 聽＋答題 ② 對答案 ─────────────────── */
+function qHead(q, qi) {
+  return `<div class="qtext">${esc(q.q)}<button class="zh-btn" onclick="this.parentNode.nextElementSibling.classList.toggle('on')">中</button></div>
+    <div class="zh">${esc(q.zh || '')}</div>`;
+}
+function paintQuestions(body, t) {
+  let qi = 0, html = '<div class="hint">先看題目再聽。可以打幾個關鍵字（不打也行），想好了就對答案。</div>';
+  qsOf(t).rounds.forEach(r => {
+    html += `<div class="rlabel">${esc(r.label)}</div>`;
+    r.qs.forEach(q => {
+      const k = qi++;
+      html += `<div class="qbox">${qHead(q, k)}` + (q.opts
+        ? q.opts.map((o, j) => `<button class="opt ${mine[k] === j ? 'sel' : ''}" onclick="BL.pickOpt(${k},${j},this)">${'ABC'[j]}. ${esc(o)}</button>`).join('')
+        : `<input placeholder="關鍵字（可空白）" value="${esc(mine[k] || '')}" oninput="BL.setMine(${k},this.value)">`) + '</div>';
+    });
+  });
+  body.innerHTML = html + '<button class="main-btn" onclick="BL.goStep(2)">對答案 →</button>';
+}
+function pickOpt(k, j, el) {
+  mine[k] = j;
+  el.parentNode.querySelectorAll('.opt').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function paintAnswers(body, t) {
+  const rec = (prog()[keyOf(t)] || {}).q || {};
+  let qi = 0, html = '';
+  qsOf(t).rounds.forEach(r => {
+    html += `<div class="rlabel">${esc(r.label)}</div>`;
+    r.qs.forEach(q => {
+      const k = qi++;
+      html += `<div class="qbox">${qHead(q, k)}`;
+      if (q.opts) {
+        html += q.opts.map((o, j) => `<div class="opt ${j === q.ans ? 'right' : mine[k] === j ? 'wrong' : ''}">${'ABC'[j]}. ${esc(o)}</div>`).join('');
+      } else if (mine[k] && mine[k].trim()) {
+        html += `<div class="mine">你寫的：${esc(mine[k])}</div>`;
+      }
+      html += `<div class="ans">${esc(q.a)}</div>` + (q.note ? `<div class="qnote">${esc(q.note)}</div>` : '') +
+        q.ev.map(e => `<div class="ev">${esc(e)}</div>`).join('');
+      if (!q.opts) html += `<div class="qmark" data-q="${k}">` +
+        [['got', '抓到了'], ['miss', '沒抓到'], ['skip', '跳過']].map(([m, l]) =>
+          `<button data-m="${m}" class="${rec[k] === m ? 'on' : ''}" onclick="BL.markQ(${k},'${m}')">${l}</button>`).join('') + '</div>';
+      html += '</div>';
+    });
+  });
+  body.innerHTML = html +
+    `<details class="full"><summary>看整篇逐字稿</summary><div class="script">${scriptHtml(t)}</div></details>` +
+    '<button class="main-btn" onclick="BL.goStep(3)">下一步：再聽一次不看字 →</button>';
+  /* 選擇題自動記對錯；沒選的不記（不算錯） */
+  qi = 0;
+  qsOf(t).rounds.forEach(r => r.qs.forEach(q => { const k = qi++; if (q.opts && mine[k] !== undefined) markQ(k, mine[k] === q.ans ? 'got' : 'miss'); }));
+}
+
+function paintStep() {
+  document.querySelectorAll('.step').forEach(b => b.classList.toggle('on', +b.dataset.s === step));
+  const t = DATA[book][idx], body = document.getElementById('stepBody');
+  if (step === 1 && qsOf(t)) paintQuestions(body, t);
+  else if (step === 2 && qsOf(t)) paintAnswers(body, t);
+  else if (step === 1) {
+    body.innerHTML = `<div class="hint">先不看字聽一次。卡住的地方可以倒退 5 秒，不用每個字都聽懂。</div>
+      <button class="main-btn" onclick="BL.goStep(2)">下一步：看逐字稿 →</button>`;
+  } else if (step === 2) {
+    body.innerHTML = t.text
+      ? `<div class="script">${scriptHtml(t)}</div>${BOOKS.find(b => b.id === book).ocr ? '<div class="ocr-note">練習本的逐字稿是掃描辨識的，偶爾會有錯字或漏字。</div>' : ''}
+         <div class="hint" style="margin-top:4px">邊聽邊看，找出剛剛沒聽出來的地方。</div>
+         <button class="main-btn" onclick="BL.goStep(3)">下一步：再聽一次不看字 →</button>`
+      : `<div class="hint">這一軌課本沒有附逐字稿，直接再聽一次就好。</div>
+         <button class="main-btn" onclick="BL.goStep(3)">下一步：再聽一次 →</button>`;
+  } else {
+    body.innerHTML = `<div class="hint">字收起來了，從頭再聽一次。聽完選一個：</div>
+      <div class="pair"><button class="btn-ok" onclick="BL.finish('ok')">聽懂了</button>
+      <button class="btn-again" onclick="BL.finish('again')">還要再聽</button></div>`;
+  }
+}
+
+function finish(s) {
+  const list = DATA[book];
+  mark(list[idx], s);
+  toast(s === 'ok' ? '記下了：聽懂了' : s === 'again' ? '記下了，之後會再排到' : '先跳過了');
+  const n = nextPending(list, idx);
+  if (n < 0 || n === idx) { renderList(); return; }
+  openTrack(n);
+}
+
+document.addEventListener('keydown', e => {
+  if (!audioEl || e.target.tagName === 'INPUT' || !document.getElementById('setupPanel').classList.contains('active')) return;
+  if (e.key === 'ArrowLeft') seekBy(-5);
+  else if (e.key === 'ArrowRight') seekBy(5);
+  else if (e.key === ' ') { e.preventDefault(); audioEl.paused ? audioEl.play() : audioEl.pause(); }
+});
+renderList();
+window.BL = { pickBook, openTrack, resume, skipUnit, renderList, goStep, seekBy, seekTo0, finish, pickOpt, markQ, stop: stopAudio, setMine: (k, v) => { mine[k] = v; } };
+})();
 
 /* ── boot ────────────────────────────────────────────────────── */
 loadSettings();
