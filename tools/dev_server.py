@@ -10,6 +10,9 @@ import http.server, json, os, re, socketserver, sys, threading, time
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 class RangeHandler(http.server.SimpleHTTPRequestHandler):
+    # 課本 m4a：系統預設會猜成 audio/mp4a-latm，iPad Safari 不一定認（11-10 課本聽力頁）
+    extensions_map = {**http.server.SimpleHTTPRequestHandler.extensions_map, '.m4a': 'audio/mp4'}
+
     def __init__(self, *a, **kw):
         super().__init__(*a, directory=ROOT, **kw)
 
