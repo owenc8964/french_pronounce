@@ -73,6 +73,36 @@ audio { width: 100%; margin-top: 12px; filter: invert(0.9) hue-rotate(180deg); }
   padding: 9px 16px; border-radius: 20px; font-size: 0.8rem; opacity: 0; transition: opacity .2s; pointer-events: none; }
 .toast.on { opacity: 1; }
 .err { color: #d07060; font-size: 0.82rem; line-height: 1.6; }
+/* 題目 */
+.rlabel { font-size: 0.68rem; color: #f0c060; letter-spacing: 1px; margin: 14px 0 6px; }
+.qbox { background: #090b16; border: 1px solid #1a2438; border-radius: 9px; padding: 11px 13px; margin-bottom: 8px; }
+.qtext { font-size: 0.9rem; line-height: 1.55; color: #e6e1d4; }
+.zh-btn { background: none; border: 1px solid #1a2438; color: #6a7488; border-radius: 5px; font-size: 0.66rem;
+  padding: 1px 6px; margin-left: 6px; cursor: pointer; font-family: inherit; vertical-align: middle; }
+.zh { display: none; font-size: 0.76rem; color: #8a92a4; margin-top: 4px; }
+.zh.on { display: block; }
+.qbox input { width: 100%; margin-top: 8px; background: #0d1020; border: 1px solid #1a2438; border-radius: 7px;
+  color: #ddd8cc; padding: 8px 10px; font-family: inherit; font-size: 0.84rem; }
+.opt { display: block; width: 100%; text-align: left; margin-top: 6px; padding: 9px 12px; background: #141928;
+  border: 1.5px solid #1a2438; border-radius: 8px; color: #aaa8a0; font-family: inherit; font-size: 0.84rem; cursor: pointer; }
+.opt.sel { border-color: #60a0d0; color: #cfe6f7; }
+.opt.right { border-color: #2a5a3a; color: #8fd0a8; }
+.opt.wrong { border-color: #5a3a2a; color: #d09070; }
+.mine { font-size: 0.78rem; color: #8a92a4; margin-top: 6px; }
+.ans { font-size: 0.86rem; color: #cfe6f7; margin-top: 8px; line-height: 1.55; }
+.qnote { font-size: 0.72rem; color: #8a92a4; margin-top: 4px; line-height: 1.5; }
+.ev { font-size: 0.84rem; color: #e6e1d4; border-left: 2px solid #2a5a7a; padding-left: 9px; margin-top: 6px; line-height: 1.5; }
+.qmark { display: flex; gap: 6px; margin-top: 9px; }
+.qmark button { flex: 1; padding: 7px; border-radius: 7px; background: none; border: 1px solid #1a2438; color: #7a8090;
+  font-family: inherit; font-size: 0.74rem; cursor: pointer; }
+.qmark button.on[data-m=got] { border-color: #2a5a3a; color: #8fd0a8; }
+.qmark button.on[data-m=miss] { border-color: #5a4a20; color: #e0b060; }
+.qmark button.on[data-m=skip] { border-color: #3a4050; color: #aab0c0; }
+details.full { margin: 10px 0; }
+details.full summary, details.rest summary { cursor: pointer; font-size: 0.78rem; color: #60a0d0; }
+details.rest { margin-top: 10px; }
+.qcount { font-size: 0.64rem; color: #60a0d0; margin-left: 6px; }
+.note-top { font-size: 0.74rem; color: #6a7488; margin-bottom: 12px; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -99,7 +129,11 @@ function lsGet(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } 
 function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-let DATA = {}, set = lsGet(LS_SET, {}), book = set.book || 'a2', idx = -1, step = 1, audioEl = null;
+let DATA = {}, QS = {}, set = lsGet(LS_SET, {}), book = set.book || 'a2', idx = -1, step = 1, audioEl = null;
+let mine = {};   // 這一軌這一輪的作答：{ qi: 文字 或 選項 index }（不存檔，只在畫面上對答案用）
+/* 題目：assets/didier/_local/questions_<book>.json（課本原題＋中文答案＋逐字稿原句，見 PRD_textbook_listen.md） */
+const qsOf = t => QS[book] && QS[book][String(t.track)];
+const flatQs = q => q.rounds.flatMap(r => r.qs);
 const keyOf = t => t.f.replace(/\.m4a$/, '');
 const prog = () => lsGet(LS_PROG, {});
 const fmt = s => Math.floor(s / 60) + ':' + String(Math.round(s % 60)).padStart(2, '0');
@@ -111,6 +145,8 @@ async function load(b) {
   if (DATA[b]) return DATA[b];
   const r = await fetch('assets/didier/_local/' + b + '.json');
   if (!r.ok) throw new Error(r.status);
+  try { const q = await fetch('assets/didier/_local/questions_' + b + '.json'); QS[b] = q.ok ? await q.json() : {}; }
+  catch (e) { QS[b] = {}; }
   // ⛔ 沒有逐字稿的軌不列（11-10 Owen：「沒有附逐字稿…我大概也不會聽」，A2 課本 35 軌）
   return (DATA[b] = (await r.json()).filter(t => t.text));
 }
@@ -120,14 +156,22 @@ function mark(t, s) {
   r.s = s; r.n = (r.n || 0) + 1; r.last = Date.now();
   p[keyOf(t)] = r; lsSet(LS_PROG, p);
 }
+/* 每題自評：got 抓到了／miss 沒抓到／skip 跳過（跳過不算錯，照專案鐵律） */
+function markQ(qi, m) {
+  const t = DATA[book][idx], p = prog(), r = p[keyOf(t)] || { n: 0 };
+  r.q = r.q || {}; r.q[qi] = m; r.qlast = Date.now();
+  p[keyOf(t)] = r; lsSet(LS_PROG, p);
+  document.querySelectorAll(`.qmark[data-q="${qi}"] button`).forEach(b => b.classList.toggle('on', b.dataset.m === m));
+}
 
-/* 下一軌：沒有紀錄或標了「還要再聽」的，從 from 往後找，繞一圈 */
+/* 下一軌：沒有紀錄或標了「還要再聽」的，從 from 往後找，繞一圈；⭐ 有題目的軌優先 */
 function nextPending(list, from) {
-  const p = prog();
-  for (let k = 1; k <= list.length; k++) {
-    const i = (from + k + list.length) % list.length, r = p[keyOf(list[i])];
-    if (!r || r.s === 'again') return i;
-  }
+  const p = prog(), pending = i => { const r = p[keyOf(list[i])]; return !r || !r.s || r.s === 'again'; };
+  for (const needQ of [true, false])
+    for (let k = 1; k <= list.length; k++) {
+      const i = (from + k + list.length) % list.length;
+      if (pending(i) && (!needQ || qsOf(list[i]))) return i;
+    }
   return -1;
 }
 
@@ -140,25 +184,34 @@ async function renderList() {
   let list;
   try { list = await load(book); }
   catch (e) { document.getElementById('lst').innerHTML = '<div class="card err">讀不到課本音檔清單。這頁要從 Mac mini 開（7799），正式站上沒有課本檔案。</div>'; return; }
-  const p = prog(), groups = [];
-  list.forEach((t, i) => {
-    const u = t.unit || 0, g = groups.find(x => x.u === u) || (groups.push({ u, items: [] }), groups[groups.length - 1]);
-    g.items.push(i);
-  });
-  groups.sort((a, b) => (a.u || 99) - (b.u || 99));
-  let html = '<button class="go-btn" onclick="resume()">▶ 接著聽</button>';
-  groups.forEach(g => {
-    const later = book === 'b1' && g.u > B1_DONE;
-    html += `<div class="unit"><div class="unit-head"><span>${g.u ? 'Unité ' + g.u : '其他'}${later ? '<span class="later">還沒上</span>' : ''}</span>
-      <button class="unit-skip" onclick="skipUnit(${g.u})">跳過這單元還沒聽的</button></div>`;
-    g.items.forEach(i => {
-      const t = list[i], r = p[keyOf(t)], st = r && STATUS[r.s];
-      html += `<div class="trk" onclick="openTrack(${i})"><span class="no">${t.track}</span>
-        <span class="tt">${esc(t.title || '（沒有標題）')}<div class="meta">${t.page ? 'p.' + t.page + ' · ' : ''}${fmt(t.dur)}${t.text ? '' : ' · 沒有逐字稿'}</div></span>
-        ${st ? `<span class="badge ${st[1]}">${st[0]}</span>` : ''}</div>`;
+  const p = prog();
+  const units = idxs => {
+    const groups = [];
+    idxs.forEach(i => {
+      const u = list[i].unit || 0, g = groups.find(x => x.u === u) || (groups.push({ u, items: [] }), groups[groups.length - 1]);
+      g.items.push(i);
     });
-    html += '</div>';
-  });
+    groups.sort((a, b) => (a.u || 99) - (b.u || 99));
+    return groups.map(g => {
+      const later = book === 'b1' && g.u > B1_DONE;
+      return `<div class="unit"><div class="unit-head"><span>${g.u ? 'Unité ' + g.u : '其他'}${later ? '<span class="later">還沒上</span>' : ''}</span>
+        <button class="unit-skip" onclick="skipUnit(${g.u})">跳過這單元還沒聽的</button></div>` +
+        g.items.map(i => {
+          const t = list[i], r = p[keyOf(t)], st = r && STATUS[r.s], q = qsOf(t);
+          return `<div class="trk" onclick="openTrack(${i})"><span class="no">${t.track}</span>
+            <span class="tt">${esc(t.title || '（沒有標題）')}${q ? `<span class="qcount">${flatQs(q).length} 題</span>` : ''}
+            <div class="meta">${t.page ? 'p.' + t.page + ' · ' : ''}${fmt(t.dur)}</div></span>
+            ${st ? `<span class="badge ${st[1]}">${st[0]}</span>` : ''}</div>`;
+        }).join('') + '</div>';
+    }).join('');
+  };
+  const all = list.map((_, i) => i), withQ = all.filter(i => qsOf(list[i])), rest = all.filter(i => !qsOf(list[i]));
+  let html = '<button class="go-btn" onclick="resume()">▶ 接著聽</button>';
+  if (withQ.length) {
+    html += units(withQ) + `<details class="rest"><summary>其他軌（題目還沒搬上來，只能盲聽＋對逐字稿）</summary><div style="margin-top:10px">${units(rest)}</div></details>`;
+  } else {
+    html += '<div class="note-top">這本的題目還沒搬上來，先只能盲聽＋對逐字稿。</div>' + units(all);
+  }
   document.getElementById('lst').innerHTML = html;
 }
 function pickBook(b) { book = b; set.book = b; lsSet(LS_SET, set); renderList(); }
@@ -178,9 +231,9 @@ function skipUnit(u) {
 /* ── 播放 ───────────────────────────────────────────── */
 function stopAudio() { if (audioEl) { audioEl.pause(); audioEl = null; } }
 function openTrack(i) {
-  stopAudio(); idx = i; step = 1;
+  stopAudio(); idx = i; step = 1; mine = {};
   set.last = set.last || {}; set.last[book] = i; lsSet(LS_SET, set);
-  const t = DATA[book][i], bk = BOOKS.find(b => b.id === book);
+  const t = DATA[book][i], bk = BOOKS.find(b => b.id === book), hasQ = !!qsOf(t);
   const r = prog()[keyOf(t)], st = r && STATUS[r.s];
   document.getElementById('app').innerHTML = `
     <button class="back" onclick="renderList()">← ${bk.name}列表</button>
@@ -188,8 +241,8 @@ function openTrack(i) {
       <div class="p-title">${esc(t.title || '第 ' + t.track + ' 軌')}</div>
       <div class="p-meta">${bk.name} · 第 ${t.track} 軌${t.unit ? ' · Unité ' + t.unit : ''}${t.page ? ' · p.' + t.page : ''} · ${fmt(t.dur)}${st ? ' · 上次：' + st[0] : ''}</div>
       <div class="steps">
-        <button class="step" data-s="1" onclick="goStep(1)">① 盲聽</button>
-        <button class="step" data-s="2" onclick="goStep(2)">② 對逐字稿</button>
+        <button class="step" data-s="1" onclick="goStep(1)">${hasQ ? '① 聽＋答題' : '① 盲聽'}</button>
+        <button class="step" data-s="2" onclick="goStep(2)">${hasQ ? '② 對答案' : '② 對逐字稿'}</button>
         <button class="step" data-s="3" onclick="goStep(3)">③ 再聽一次</button>
       </div>
       <audio id="au" controls preload="metadata" src="assets/didier/m4a/${t.f}"></audio>
@@ -233,10 +286,64 @@ function scriptHtml(t) {
   }).join('');
 }
 
+/* ── 有題目的軌：① 聽＋答題 ② 對答案 ─────────────────── */
+function qHead(q, qi) {
+  return `<div class="qtext">${esc(q.q)}<button class="zh-btn" onclick="this.parentNode.nextElementSibling.classList.toggle('on')">中</button></div>
+    <div class="zh">${esc(q.zh || '')}</div>`;
+}
+function paintQuestions(body, t) {
+  let qi = 0, html = '<div class="hint">先看題目再聽。可以打幾個關鍵字（不打也行），想好了就對答案。</div>';
+  qsOf(t).rounds.forEach(r => {
+    html += `<div class="rlabel">${esc(r.label)}</div>`;
+    r.qs.forEach(q => {
+      const k = qi++;
+      html += `<div class="qbox">${qHead(q, k)}` + (q.opts
+        ? q.opts.map((o, j) => `<button class="opt ${mine[k] === j ? 'sel' : ''}" onclick="pickOpt(${k},${j},this)">${'ABC'[j]}. ${esc(o)}</button>`).join('')
+        : `<input placeholder="關鍵字（可空白）" value="${esc(mine[k] || '')}" oninput="mine[${k}]=this.value">`) + '</div>';
+    });
+  });
+  body.innerHTML = html + '<button class="main-btn" onclick="goStep(2)">對答案 →</button>';
+}
+function pickOpt(k, j, el) {
+  mine[k] = j;
+  el.parentNode.querySelectorAll('.opt').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function paintAnswers(body, t) {
+  const rec = (prog()[keyOf(t)] || {}).q || {};
+  let qi = 0, html = '';
+  qsOf(t).rounds.forEach(r => {
+    html += `<div class="rlabel">${esc(r.label)}</div>`;
+    r.qs.forEach(q => {
+      const k = qi++;
+      html += `<div class="qbox">${qHead(q, k)}`;
+      if (q.opts) {
+        html += q.opts.map((o, j) => `<div class="opt ${j === q.ans ? 'right' : mine[k] === j ? 'wrong' : ''}">${'ABC'[j]}. ${esc(o)}</div>`).join('');
+      } else if (mine[k] && mine[k].trim()) {
+        html += `<div class="mine">你寫的：${esc(mine[k])}</div>`;
+      }
+      html += `<div class="ans">${esc(q.a)}</div>` + (q.note ? `<div class="qnote">${esc(q.note)}</div>` : '') +
+        q.ev.map(e => `<div class="ev">${esc(e)}</div>`).join('');
+      if (!q.opts) html += `<div class="qmark" data-q="${k}">` +
+        [['got', '抓到了'], ['miss', '沒抓到'], ['skip', '跳過']].map(([m, l]) =>
+          `<button data-m="${m}" class="${rec[k] === m ? 'on' : ''}" onclick="markQ(${k},'${m}')">${l}</button>`).join('') + '</div>';
+      html += '</div>';
+    });
+  });
+  body.innerHTML = html +
+    `<details class="full"><summary>看整篇逐字稿</summary><div class="script">${scriptHtml(t)}</div></details>` +
+    '<button class="main-btn" onclick="goStep(3)">下一步：再聽一次不看字 →</button>';
+  /* 選擇題自動記對錯；沒選的不記（不算錯） */
+  qi = 0;
+  qsOf(t).rounds.forEach(r => r.qs.forEach(q => { const k = qi++; if (q.opts && mine[k] !== undefined) markQ(k, mine[k] === q.ans ? 'got' : 'miss'); }));
+}
+
 function paintStep() {
   document.querySelectorAll('.step').forEach(b => b.classList.toggle('on', +b.dataset.s === step));
   const t = DATA[book][idx], body = document.getElementById('stepBody');
-  if (step === 1) {
+  if (step === 1 && qsOf(t)) paintQuestions(body, t);
+  else if (step === 2 && qsOf(t)) paintAnswers(body, t);
+  else if (step === 1) {
     body.innerHTML = `<div class="hint">先不看字聽一次。卡住的地方可以倒退 5 秒，不用每個字都聽懂。</div>
       <button class="main-btn" onclick="goStep(2)">下一步：看逐字稿 →</button>`;
   } else if (step === 2) {
