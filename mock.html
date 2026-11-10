@@ -200,6 +200,9 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
   background: #0a0c16; border-radius: 7px; }
 .rev-detail.show { display: block; }
 .voice-btn { margin-top: 8px; padding: 6px 12px; border-radius: 8px; border: 1px solid #333c48; background: transparent; color: #aaa8a0; font: inherit; font-size: .8rem; cursor: pointer; }
+.seek-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.q-report { margin-top: 10px; display: flex; align-items: center; justify-content: flex-end; gap: 8px; font-size: .75rem; color: #808890; }
+.q-report button { padding: 4px 10px; border-radius: 8px; border: 1px solid #333c48; background: transparent; color: #808890; font: inherit; cursor: pointer; }
 .voice-btn.on { border-color: #f0c060; color: #f0c060; }
 .single-res { margin-top: 12px; font-weight: 700; font-size: 1rem; }
 .single-res.ok { color: #60d090; } .single-res.bad { color: #d07060; } .single-res.none { color: #aaa8a0; font-weight: 400; }
@@ -502,7 +505,9 @@ function buildAudio(t) {
   } else {
     slot.innerHTML =
       '<audio id="au" controls preload="metadata" src="' + voiceSrc(t) + '"></audio>' +
-      '<button class="voice-btn" id="voiceBtn" onclick="toggleVoice()"></button>' +
+      '<div class="seek-row"><button class="voice-btn" onclick="seekBy(-5)">⏪ 5 秒</button>' +
+      '<button class="voice-btn" onclick="seekBy(5)">5 秒 ⏩</button>' +
+      '<button class="voice-btn" id="voiceBtn" onclick="toggleVoice()"></button></div>' +
       '<div class="audio-note">練習模式：可暫停、可倒帶重聽。想模擬真考就回選單打開「模擬考模式」。</div>';
     audioEl = document.getElementById('au');
     paintVoice();
@@ -537,6 +542,10 @@ function voiceSrc(t) { return DATA_DIR + (voiceOn ? t.audio.replace(/^audio\//, 
 function paintVoice() {
   const b = document.getElementById('voiceBtn'); if (!b) return;
   b.textContent = '🔊 人聲加強：' + (voiceOn ? '開' : '關'); b.classList.toggle('on', voiceOn);
+}
+function seekBy(d) {
+  if (!audioEl) return;
+  audioEl.currentTime = Math.max(0, Math.min(audioEl.duration || Infinity, audioEl.currentTime + d));
 }
 function toggleVoice() {
   if (!audioEl) return;
@@ -615,7 +624,7 @@ function renderQ() {
     const mine = (manualCues[t.id] || {})[q.q];
     html += `<div class="q-play">${cueOf(cur.idx) !== null ? '<button onclick="playQuestion()">▶ 播這一題</button>' : ''}
       <button class="mark" onclick="markCue()">📍 這裡是第 ${q.q} 題開頭</button></div>
-      <div class="mark-note" id="markNote">${mine ? '已標記在 ' + clock(mine.t) + ' · <a onclick="undoCue()">復原</a>' + (mine.chk ? '<br>' + (mine.chk === 'ok' ? '✅ 已核對' : '🔎 ' + esc(mine.msg || '請再聽一次確認')) : '') : ''}</div>`;
+      <div class="mark-note" id="markNote">${mine ? '已標記在 ' + clock(mine.t) + ' · <a onclick="undoCue()">復原</a>' + (mine.chk ? '<br>' + (mine.chk === 'ok' ? '✅ 已核對' : '🔎 ' + esc(mine.msg || '請再聽一次確認')) : '') : '要標的是這題對話開始的地方；題號常在對話播完才念'}</div>`;
   }
   if (q.img) html += `<img class="doc-img" src="${DATA_DIR}${q.img}" alt="document">`;
   html += `<div class="q-text">${esc(q.stem)}</div><div class="options">`;
@@ -638,6 +647,7 @@ function renderQ() {
   } else if (cur.instant) {
     html += '<button class="single-skip" onclick="skipSingle()">⏭ 這題跳過</button>';
   }
+  html += '<div class="q-report"><span id="repNote"></span><button onclick="reportQ()">🚩 回報這題</button></div>';
   document.getElementById('qCard').innerHTML = html;
 
   document.getElementById('prevBtn').disabled = cur.idx === 0;
@@ -676,6 +686,14 @@ function saveSingle() {
 function clearSingle(id) { const all = lsGet(LS_SINGLE, {}); delete all[id]; lsSet(LS_SINGLE, all); }
 function nextSingle() { if (cur.idx >= cur.test.questions.length - 1) submitExam(); else go(1); }
 function skipSingle() { cur.skipped.add(cur.idx); saveSingle(); nextSingle(); }
+function reportQ() {
+  const q = cur.test.questions[cur.idx], note = window.prompt('第 ' + q.q + ' 題哪裡有問題？（直接打，會傳給 Claude）');
+  if (!note || !note.trim()) return;
+  const say = m => { const e = document.getElementById('repNote'); if (e) e.textContent = m; };
+  fetch('api/mock-report', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ test: cur.test.id, q: q.q, note: note.trim().slice(0, 1000), t: audioEl ? Math.round(audioEl.currentTime) : null }) })
+    .then(r => { if (!r.ok) throw 0; say('已送出'); }).catch(() => say('沒有送到，再按一次看看'));
+}
 function toggleFlag() {
   const fid = cur.test.id + '#' + cur.test.questions[cur.idx].q;
   const f = getFlags();

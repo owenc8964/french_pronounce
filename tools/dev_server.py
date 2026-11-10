@@ -70,6 +70,8 @@ CUE_LOCK = threading.Lock()
 def do_POST(self):
     """mock.html 的手動分割點。只收這一條路徑；要求 JSON 標頭，其他網站的頁面就送不進來。
     檔案在 assets/tcf/exam/（gitignore），不進公開 repo。"""
+    if self.path == '/api/mock-report':
+        return mock_report(self)
     if self.path != '/api/mock-cue' or 'application/json' not in (self.headers.get('Content-Type') or ''):
         return self.send_error(404)
     try:
@@ -97,6 +99,41 @@ def do_POST(self):
         tmp = CUE_FILE + '.tmp'
         json.dump(all_, open(tmp, 'w', encoding='utf-8'), separators=(',', ':'))
         os.replace(tmp, CUE_FILE)
+    self.send_response(204)
+    self.end_headers()
+
+
+REPORT_FILE = os.path.join(ROOT, 'assets/tcf/exam/reports.json')
+
+
+def mock_report(self):
+    """mock.html 的 🚩 回報：一題一筆，存在 assets/tcf/exam/（gitignore），下個 session 讀這個檔處理。"""
+    if 'application/json' not in (self.headers.get('Content-Type') or ''):
+        return self.send_error(404)
+    try:
+        n = int(self.headers.get('Content-Length') or 0)
+        if not 0 < n < 4000:
+            raise ValueError
+        d = json.loads(self.rfile.read(n))
+        test, q, note = d['test'], d['q'], d['note']
+        if not re.fullmatch(r'c[oe]_\d+s?', test) or not (isinstance(q, int) and 1 <= q <= 39):
+            raise ValueError
+        if not (isinstance(note, str) and 0 < len(note) <= 1000):
+            raise ValueError
+        t = d.get('t')
+        if t is not None and not isinstance(t, (int, float)):
+            raise ValueError
+    except (ValueError, KeyError, TypeError):
+        return self.send_error(400)
+    with CUE_LOCK:
+        try:
+            all_ = json.load(open(REPORT_FILE, encoding='utf-8'))
+        except (OSError, ValueError):
+            all_ = []
+        all_.append({'test': test, 'q': q, 'note': note, 't': t, 'at': int(time.time())})
+        tmp = REPORT_FILE + '.tmp'
+        json.dump(all_, open(tmp, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+        os.replace(tmp, REPORT_FILE)
     self.send_response(204)
     self.end_headers()
 
