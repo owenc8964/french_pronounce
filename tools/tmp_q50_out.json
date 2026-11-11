@@ -1,0 +1,3644 @@
+{
+ "cases": [
+  {
+   "desc": "完全正確",
+   "q": "Finalement, vous avez _____ de vie.",
+   "right": "changé",
+   "input": "changé",
+   "res": "ok"
+  },
+  {
+   "desc": "大寫",
+   "q": "Finalement, vous avez _____ de vie.",
+   "right": "changé",
+   "input": "Changé",
+   "res": "ok"
+  },
+  {
+   "desc": "句首字（原文大寫）打小寫",
+   "q": "_____, vous avez changé de vie.",
+   "right": "Finalement",
+   "input": "finalement",
+   "res": "ok"
+  },
+  {
+   "desc": "重音漏打",
+   "q": "Finalement, vous avez _____ de vie.",
+   "right": "changé",
+   "input": "change",
+   "res": "accent"
+  },
+  {
+   "desc": "重音打錯方向",
+   "q": "Finalement, vous avez _____ de vie.",
+   "right": "changé",
+   "input": "changè",
+   "res": "accent"
+  },
+  {
+   "desc": "前後多空白",
+   "q": "Finalement, vous avez _____ de vie.",
+   "right": "changé",
+   "input": "  changé  ",
+   "res": "ok"
+  },
+  {
+   "desc": "句點結尾",
+   "q": "Finalement, vous avez _____ de vie.",
+   "right": "changé",
+   "input": "changé.",
+   "res": "ok"
+  },
+  {
+   "desc": "空白＋句點（iPhone 連按兩下空白會出 \". \"）",
+   "q": "Finalement, vous avez _____ de vie.",
+   "right": "changé",
+   "input": "changé. ",
+   "res": "no"
+  },
+  {
+   "desc": "逗號結尾",
+   "q": "Finalement, vous avez _____ de vie.",
+   "right": "changé",
+   "input": "changé,",
+   "res": "no"
+  },
+  {
+   "desc": "法式空格問號",
+   "q": "Finalement, vous avez _____ de vie.",
+   "right": "changé",
+   "input": "changé ?",
+   "res": "ok"
+  },
+  {
+   "desc": "拆開的重音（NFD，e＋組合符號）",
+   "q": "Finalement, vous avez _____ de vie.",
+   "right": "changé",
+   "input": "changé",
+   "res": "accent"
+  },
+  {
+   "desc": "打錯一個字母",
+   "q": "Finalement, vous avez _____ de vie.",
+   "right": "changé",
+   "input": "chamgé",
+   "res": "no"
+  },
+  {
+   "desc": "連冠詞一起打 l'＋字",
+   "q": "Je vais à l'_____ demain.",
+   "right": "école",
+   "input": "l'école",
+   "res": "no"
+  },
+  {
+   "desc": "連冠詞（iPhone 彎撇號）",
+   "q": "Je vais à l'_____ demain.",
+   "right": "école",
+   "input": "l’école",
+   "res": "no"
+  },
+  {
+   "desc": "連冠詞（左彎撇號 ‘）",
+   "q": "Je vais à l'_____ demain.",
+   "right": "école",
+   "input": "l‘école",
+   "res": "no"
+  },
+  {
+   "desc": "連前面的字一起打",
+   "q": "Finalement, vous avez _____ de vie.",
+   "right": "changé",
+   "input": "avez changé",
+   "res": "no"
+  },
+  {
+   "desc": "整句照打（標點全對）",
+   "q": "Finalement, vous avez _____ de vie.",
+   "right": "changé",
+   "input": "Finalement, vous avez changé de vie.",
+   "res": "ok"
+  },
+  {
+   "desc": "整句照打（漏逗號）",
+   "q": "Finalement, vous avez _____ de vie.",
+   "right": "changé",
+   "input": "Finalement vous avez changé de vie",
+   "res": "no"
+  },
+  {
+   "desc": "挖到的字帶撇號 jusqu'：打 jusqu'",
+   "q": "Il marche _____au parc.",
+   "right": "jusqu'",
+   "input": "jusqu'",
+   "res": "ok"
+  },
+  {
+   "desc": "挖到的字帶撇號：打 jusqu（沒撇號）",
+   "q": "Il marche _____au parc.",
+   "right": "jusqu'",
+   "input": "jusqu",
+   "res": "ok"
+  },
+  {
+   "desc": "挖到的字帶撇號：iPhone 彎撇號 jusqu’",
+   "q": "Il marche _____au parc.",
+   "right": "jusqu'",
+   "input": "jusqu’",
+   "res": "ok"
+  },
+  {
+   "desc": "挖到的字帶撇號：左彎 jusqu‘",
+   "q": "Il marche _____au parc.",
+   "right": "jusqu'",
+   "input": "jusqu‘",
+   "res": "no"
+  },
+  {
+   "desc": "連字號字被拆半：打完整 rendez-vous",
+   "q": "On a _____-vous demain.",
+   "right": "rendez",
+   "input": "rendez-vous",
+   "res": "no"
+  },
+  {
+   "desc": "同音不同拼（陰陽性）",
+   "q": "Elle est _____.",
+   "right": "fatiguée",
+   "input": "fatigué",
+   "res": "no"
+  },
+  {
+   "desc": "同音不同拼（單複數）",
+   "q": "Ils sont _____.",
+   "right": "contents",
+   "input": "content",
+   "res": "no"
+  },
+  {
+   "desc": "同音不同拼（-er/-é）",
+   "q": "Je vais _____.",
+   "right": "manger",
+   "input": "mangé",
+   "res": "no"
+  },
+  {
+   "desc": "同音不同拼（-ais/-ait）",
+   "q": "Il _____ vite.",
+   "right": "parlait",
+   "input": "parlais",
+   "res": "no"
+  },
+  {
+   "desc": "œ 打成 oe",
+   "q": "Ma _____ arrive.",
+   "right": "sœur",
+   "input": "soeur",
+   "res": "no"
+  }
+ ],
+ "n": {
+  "clips": 471,
+  "listenClips": 447,
+  "items": 1334
+ },
+ "apos": [
+  {
+   "id": "a2-33-91",
+   "q": "Vous allez rendre _____un plus joyeux.",
+   "w": "quelqu'"
+  },
+  {
+   "id": "a2-88-240",
+   "q": "Et pour cela, je vous emmène _____hui dans une « Troc Party ».",
+   "w": "aujourd'"
+  },
+  {
+   "id": "a2-109-308",
+   "q": "Vous m'avez donné la motivation et le courage de continuer _____au bout.",
+   "w": "jusqu'"
+  },
+  {
+   "id": "b1-19-95",
+   "q": "Tu ferais mieux d'y aller avec _____un qui aime ça.",
+   "w": "quelqu'"
+  }
+ ],
+ "hyph": [
+  {
+   "id": "a2-5-10",
+   "q": "Ils ne veulent rien faire le _____-end.",
+   "w": "week"
+  },
+  {
+   "id": "a2-5-10",
+   "q": "Ils ne veulent rien faire le week-_____.",
+   "w": "end"
+  },
+  {
+   "id": "a2-24-62",
+   "q": "Il y a un espace salon, avec un _____-lit, une table basse et deux tabourets.",
+   "w": "canapé"
+  },
+  {
+   "id": "a2-24-62",
+   "q": "Il y a un espace salon, avec un canapé-_____, une table basse et deux tabourets.",
+   "w": "lit"
+  },
+  {
+   "id": "a2-24-65",
+   "q": "Pas de _____-vaisselle ?",
+   "w": "lave"
+  },
+  {
+   "id": "a2-24-65",
+   "q": "Pas de lave-_____ ?",
+   "w": "vaisselle"
+  },
+  {
+   "id": "a2-24-68",
+   "q": "Et vous dormez sur le _____-lit du salon ?",
+   "w": "canapé"
+  },
+  {
+   "id": "a2-24-68",
+   "q": "Et vous dormez sur le canapé-_____ du salon ?",
+   "w": "lit"
+  },
+  {
+   "id": "a2-31-80",
+   "q": "_____-moi quand vous pouvez au 06 09 92 66 65.",
+   "w": "Rappelez"
+  },
+  {
+   "id": "a2-32-83",
+   "q": "_____-moi pour le retard.",
+   "w": "Excusez"
+  },
+  {
+   "id": "a2-47-129",
+   "q": "Mais avant, on vous donne _____-vous à la prochaine RoboCup qui aura lieu à Bordeaux en 2023 !",
+   "w": "rendez"
+  },
+  {
+   "id": "a2-55-158",
+   "q": "Bon ben on va cuisiner nous-_____ alors.",
+   "w": "mêmes"
+  },
+  {
+   "id": "a2-61-173",
+   "q": "Il faut patienter plus d'une _____-heure entre chaque plat.",
+   "w": "demi"
+  },
+  {
+   "id": "a2-61-173",
+   "q": "Il faut patienter plus d'une demi-_____ entre chaque plat.",
+   "w": "heure"
+  },
+  {
+   "id": "a2-65-184",
+   "q": "Une mission essentielle assurée par ces _____-pompiers 365 jours par an et 24 heures sur 24.",
+   "w": "sapeurs"
+  },
+  {
+   "id": "a2-65-184",
+   "q": "Une mission essentielle assurée par ces sapeurs-_____ 365 jours par an et 24 heures sur 24.",
+   "w": "pompiers"
+  },
+  {
+   "id": "a2-73-206",
+   "q": "Il faut que les _____- parents connaissent l'univers de leurs petits-enfants.",
+   "w": "grands"
+  },
+  {
+   "id": "a2-73-206",
+   "q": "Il faut que les grands- parents connaissent l'univers de leurs _____-enfants.",
+   "w": "petits"
+  },
+  {
+   "id": "a2-73-206",
+   "q": "Il faut que les grands- parents connaissent l'univers de leurs petits-_____.",
+   "w": "enfants"
+  },
+  {
+   "id": "a2-92-257",
+   "q": "Nous ne proposons pas de pension complète, ni de _____-pension.",
+   "w": "demi"
+  },
+  {
+   "id": "a2-92-257",
+   "q": "Nous ne proposons pas de pension complète, ni de demi-_____.",
+   "w": "pension"
+  },
+  {
+   "id": "a2-96-267",
+   "q": "Non, mais _____-ci est vraiment bien !",
+   "w": "celle"
+  },
+  {
+   "id": "a2-100-277",
+   "q": "Les maths, la _____-chimie, la biologie, ce sont des matières que j'ai toujours aimées.",
+   "w": "physique"
+  },
+  {
+   "id": "a2-110-317",
+   "q": "_____-la, respectez-la !",
+   "w": "Aimez"
+  },
+  {
+   "id": "a2-110-317",
+   "q": "Aimez-la, _____-la !",
+   "w": "respectez"
+  },
+  {
+   "id": "a2-113-320",
+   "q": "Dès le début de la saison pluvieuse, _____-juin.",
+   "w": "mai"
+  },
+  {
+   "id": "a2-113-320",
+   "q": "Dès le début de la saison pluvieuse, mai-_____.",
+   "w": "juin"
+  },
+  {
+   "id": "b1-2-5",
+   "q": "À l'époque, mon oncle et ma tante habitaient là-_____.",
+   "w": "bas"
+  },
+  {
+   "id": "b1-16-65",
+   "q": "Pourquoi n'_____-t-elle pas utiliser les caisses rapides ?",
+   "w": "aime"
+  },
+  {
+   "id": "b1-19-102",
+   "q": "Je vais être assez occupée ces _____-ci.",
+   "w": "jours"
+  },
+  {
+   "id": "b1-24-119",
+   "q": "Cette _____-là, Omar Sy reçoit le César du meilleur acteur pour le film Intouchable.",
+   "w": "année"
+  }
+ ],
+ "elid": 50,
+ "homo": [
+  {
+   "id": "a2-2-0",
+   "q": "Finalement, vous avez _____ de vie, vous vous êtes tourné vers la musique.",
+   "w": "changé",
+   "vs": [
+    "changer"
+   ]
+  },
+  {
+   "id": "a2-2-0",
+   "q": "Finalement, vous avez changé de _____, vous vous êtes tourné vers la musique.",
+   "w": "vie",
+   "vs": [
+    "vies"
+   ]
+  },
+  {
+   "id": "a2-3-2",
+   "q": "Vous _____ votre nouvelle vie à Lyon ?",
+   "w": "aimez",
+   "vs": [
+    "aimé",
+    "aimés",
+    "aimées"
+   ]
+  },
+  {
+   "id": "a2-3-2",
+   "q": "Vous aimez votre _____ vie à Lyon ?",
+   "w": "nouvelle",
+   "vs": [
+    "nouvelles"
+   ]
+  },
+  {
+   "id": "a2-3-2",
+   "q": "Vous aimez votre nouvelle _____ à Lyon ?",
+   "w": "vie",
+   "vs": [
+    "vies"
+   ]
+  },
+  {
+   "id": "a2-3-3",
+   "q": "Oui, j'_____ cette ville et je me suis fait de nouveaux amis.",
+   "w": "adore",
+   "vs": [
+    "adorent",
+    "adores"
+   ]
+  },
+  {
+   "id": "a2-3-3",
+   "q": "Oui, j'adore cette ville et je me suis fait de nouveaux _____.",
+   "w": "amis",
+   "vs": [
+    "ami",
+    "amie"
+   ]
+  },
+  {
+   "id": "a2-3-5",
+   "q": "Et _____ ça s'est passé au niveau professionnel ?",
+   "w": "comment",
+   "vs": [
+    "comme"
+   ]
+  },
+  {
+   "id": "a2-3-5",
+   "q": "Et comment ça s'est _____ au niveau professionnel ?",
+   "w": "passé",
+   "vs": [
+    "passer",
+    "passée",
+    "passés"
+   ]
+  },
+  {
+   "id": "a2-3-5",
+   "q": "Et comment ça s'est passé au niveau _____ ?",
+   "w": "professionnel",
+   "vs": [
+    "professionnels"
+   ]
+  },
+  {
+   "id": "a2-3-6",
+   "q": "Et vous avez l'intention de _____ en France ?",
+   "w": "rester",
+   "vs": [
+    "resté"
+   ]
+  },
+  {
+   "id": "a2-5-7",
+   "q": "Oui, moi j'ai _____ le concert, mais mes enfants ne sont pas fans de jazz.",
+   "w": "adoré",
+   "vs": [
+    "adorée",
+    "adorés"
+   ]
+  },
+  {
+   "id": "a2-5-9",
+   "q": "Ah, moi aussi j'_____ bien sortir, mais pas mes enfants, c'est pas du tout leur truc.",
+   "w": "aime",
+   "vs": [
+    "aiment"
+   ]
+  },
+  {
+   "id": "a2-9-14",
+   "q": "Nous avons _____ des monuments et une exposition de peinture.",
+   "w": "visité",
+   "vs": [
+    "visiter"
+   ]
+  },
+  {
+   "id": "a2-10-15",
+   "q": "Mesdames et Messieurs, le concert va _____.",
+   "w": "commencer",
+   "vs": [
+    "commencé"
+   ]
+  },
+  {
+   "id": "a2-10-17",
+   "q": "La ville de Bordeaux propose des _____ pour la Semaine du patrimoine.",
+   "w": "activités",
+   "vs": [
+    "activité"
+   ]
+  },
+  {
+   "id": "a2-10-18",
+   "q": "Pour _____ le programme, connectez-vous sur le site internet de la ville.",
+   "w": "regarder",
+   "vs": [
+    "regardé",
+    "regardés"
+   ]
+  },
+  {
+   "id": "a2-10-19",
+   "q": "Nous informons les visiteurs que le château va bientôt _____ ses portes.",
+   "w": "fermer",
+   "vs": [
+    "fermé"
+   ]
+  },
+  {
+   "id": "a2-10-20",
+   "q": "Merci de _____ vers la sortie et bonne fin de journée.",
+   "w": "marcher",
+   "vs": [
+    "marché",
+    "marchés"
+   ]
+  },
+  {
+   "id": "a2-10-20",
+   "q": "Merci de marcher vers la _____ et bonne fin de journée.",
+   "w": "sortie",
+   "vs": [
+    "sorties",
+    "sorti",
+    "sortis"
+   ]
+  },
+  {
+   "id": "a2-10-20",
+   "q": "Merci de marcher vers la sortie et bonne fin de _____.",
+   "w": "journée",
+   "vs": [
+    "journées"
+   ]
+  },
+  {
+   "id": "a2-10-21",
+   "q": "Mesdames et messieurs, notre spectacle de cirque va _____.",
+   "w": "commencer",
+   "vs": [
+    "commencé"
+   ]
+  },
+  {
+   "id": "a2-10-23",
+   "q": "Bienvenue au _____ aquatique !",
+   "w": "centre",
+   "vs": [
+    "centres"
+   ]
+  },
+  {
+   "id": "a2-10-24",
+   "q": "Nous vous informons qu'il est interdit de courir _____ des piscines.",
+   "w": "près",
+   "vs": [
+    "prè"
+   ]
+  },
+  {
+   "id": "a2-10-25",
+   "q": "Les inscriptions pour la _____ en canoë-kayak sont ouvertes.",
+   "w": "sortie",
+   "vs": [
+    "sorties",
+    "sorti",
+    "sortis"
+   ]
+  },
+  {
+   "id": "a2-10-26",
+   "q": "Venez vite _____ votre place pour la journée à la réception du camping.",
+   "w": "réserver",
+   "vs": [
+    "réservé"
+   ]
+  },
+  {
+   "id": "a2-10-26",
+   "q": "Venez vite réserver votre place pour la _____ à la réception du camping.",
+   "w": "journée",
+   "vs": [
+    "journées"
+   ]
+  },
+  {
+   "id": "a2-11-29",
+   "q": "Tu viens les _____ avec nous ?",
+   "w": "regarder",
+   "vs": [
+    "regardé",
+    "regardés"
+   ]
+  },
+  {
+   "id": "a2-11-30",
+   "q": "Bonne _____, ça me plaît bien de revoir ces photos !",
+   "w": "idée",
+   "vs": [
+    "idées"
+   ]
+  },
+  {
+   "id": "a2-11-30",
+   "q": "Bonne idée, ça me plaît bien de revoir ces _____ !",
+   "w": "photos",
+   "vs": [
+    "photo"
+   ]
+  },
+  {
+   "id": "a2-11-37",
+   "q": "Oui, eh bien c'est parfait si tu _____ faire des albums, moi, j'ai horreur de ça !",
+   "w": "aimes",
+   "vs": [
+    "aiment"
+   ]
+  },
+  {
+   "id": "a2-14-38",
+   "q": "Vous, Achille, vous avez _____ un séjour dans les arbres.",
+   "w": "passé",
+   "vs": [
+    "passer",
+    "passée",
+    "passés"
+   ]
+  },
+  {
+   "id": "a2-14-38",
+   "q": "Vous, Achille, vous avez passé un séjour dans les _____.",
+   "w": "arbres",
+   "vs": [
+    "arbre"
+   ]
+  },
+  {
+   "id": "a2-14-41",
+   "q": "ou _____ dans le désert au milieu des dunes et du sable.",
+   "w": "marcher",
+   "vs": [
+    "marché",
+    "marchés"
+   ]
+  },
+  {
+   "id": "a2-17-43",
+   "q": "Mais pour nous _____ de ces bons moments, nous avons opté cette année pour des posters.",
+   "w": "rappeler",
+   "vs": [
+    "rappelez"
+   ]
+  },
+  {
+   "id": "a2-17-43",
+   "q": "Mais pour nous rappeler de ces bons moments, nous avons opté cette _____ pour des posters.",
+   "w": "année",
+   "vs": [
+    "années"
+   ]
+  },
+  {
+   "id": "a2-17-44",
+   "q": "Et puis elles sont _____, les couleurs sont belles, ça donne envie de voyager.",
+   "w": "belles",
+   "vs": [
+    "belle"
+   ]
+  },
+  {
+   "id": "a2-17-44",
+   "q": "Et puis elles sont belles, les couleurs sont _____, ça donne envie de voyager.",
+   "w": "belles",
+   "vs": [
+    "belle"
+   ]
+  },
+  {
+   "id": "a2-17-45",
+   "q": "Dans cette boutique toulousaine, les _____ affiches touristiques côtoient celles des années 30.",
+   "w": "nouvelles",
+   "vs": [
+    "nouvelle"
+   ]
+  },
+  {
+   "id": "a2-17-45",
+   "q": "Dans cette boutique toulousaine, les nouvelles affiches touristiques côtoient _____ des années 30.",
+   "w": "celles",
+   "vs": [
+    "celle"
+   ]
+  },
+  {
+   "id": "a2-17-46",
+   "q": "Le vintage revient en force, ici, les ventes augmentent de 10 % chaque _____.",
+   "w": "année",
+   "vs": [
+    "années"
+   ]
+  },
+  {
+   "id": "a2-17-47",
+   "q": "Chaque destination _____ veut son modèle, comme Carcassonne.",
+   "w": "touristique",
+   "vs": [
+    "touristiques"
+   ]
+  },
+  {
+   "id": "a2-17-48",
+   "q": "Pour la cité médiévale, c'est un _____ de promotion indispensable.",
+   "w": "outil",
+   "vs": [
+    "outils"
+   ]
+  },
+  {
+   "id": "a2-20-49",
+   "q": "Nous avons _____ dans deux îles touristiques.",
+   "w": "voyagé",
+   "vs": [
+    "voyager",
+    "voyagés"
+   ]
+  },
+  {
+   "id": "a2-20-49",
+   "q": "Nous avons voyagé dans deux _____ touristiques.",
+   "w": "îles",
+   "vs": [
+    "île"
+   ]
+  },
+  {
+   "id": "a2-20-51",
+   "q": "Ma cousine est venue trois _____ à l'île Maurice.",
+   "w": "jours",
+   "vs": [
+    "jour"
+   ]
+  },
+  {
+   "id": "a2-20-51",
+   "q": "Ma cousine est venue trois jours à l'_____ Maurice.",
+   "w": "île",
+   "vs": [
+    "îles"
+   ]
+  },
+  {
+   "id": "a2-20-52",
+   "q": "Elle en est _____ en avion le premier avril pour rentrer chez elle.",
+   "w": "partie",
+   "vs": [
+    "parties",
+    "parti",
+    "partis"
+   ]
+  },
+  {
+   "id": "a2-20-52",
+   "q": "Elle en est partie en avion le _____ avril pour rentrer chez elle.",
+   "w": "premier",
+   "vs": [
+    "premiere",
+    "premiers",
+    "premieres"
+   ]
+  },
+  {
+   "id": "a2-20-52",
+   "q": "Elle en est partie en avion le premier avril pour _____ chez elle.",
+   "w": "rentrer",
+   "vs": [
+    "rentré"
+   ]
+  },
+  {
+   "id": "a2-21-53",
+   "q": "Bonjour, je suis _____ par votre annonce de coliving à Marseille.",
+   "w": "intéressé",
+   "vs": [
+    "intéresser",
+    "intéressée",
+    "intéressés"
+   ]
+  },
+  {
+   "id": "a2-21-54",
+   "q": "Je _____ sur l'annonce que la résidence a 18 chambres et studios.",
+   "w": "vois",
+   "vs": [
+    "voie"
+   ]
+  },
+  {
+   "id": "a2-21-54",
+   "q": "Je vois sur l'annonce que la résidence a 18 _____ et studios.",
+   "w": "chambres",
+   "vs": [
+    "chambre"
+   ]
+  },
+  {
+   "id": "a2-21-55",
+   "q": "_____ elle est organisée ?",
+   "w": "Comment",
+   "vs": [
+    "comme"
+   ]
+  },
+  {
+   "id": "a2-21-56",
+   "q": "_____ est le montant du loyer ?",
+   "w": "Quel",
+   "vs": [
+    "quels"
+   ]
+  },
+  {
+   "id": "a2-21-57",
+   "q": "Les _____ sont à 650 euros par mois et les studios à 1090.",
+   "w": "chambres",
+   "vs": [
+    "chambre"
+   ]
+  },
+  {
+   "id": "a2-21-57",
+   "q": "Les chambres sont à 650 _____ par mois et les studios à 1090.",
+   "w": "euros",
+   "vs": [
+    "euro"
+   ]
+  },
+  {
+   "id": "a2-21-57",
+   "q": "Les chambres sont à 650 euros par _____ et les studios à 1090.",
+   "w": "mois",
+   "vs": [
+    "moi"
+   ]
+  },
+  {
+   "id": "a2-21-59",
+   "q": "Parfait, quand est-ce que je peux venir _____ ?",
+   "w": "visiter",
+   "vs": [
+    "visité"
+   ]
+  },
+  {
+   "id": "a2-24-61",
+   "q": "Expliquez-nous, il est _____ ce bus ?",
+   "w": "comment",
+   "vs": [
+    "comme"
+   ]
+  },
+  {
+   "id": "a2-24-63",
+   "q": "Elle est moins grande qu'une _____ classique mais elle est aussi bien !",
+   "w": "cuisine",
+   "vs": [
+    "cuisinent"
+   ]
+  },
+  {
+   "id": "a2-24-63",
+   "q": "Elle est moins grande qu'une cuisine _____ mais elle est aussi bien !",
+   "w": "classique",
+   "vs": [
+    "classiques"
+   ]
+  },
+  {
+   "id": "a2-24-66",
+   "q": "On a moins d'_____ électroménagers que dans notre ancien appartement.",
+   "w": "appareils",
+   "vs": [
+    "appareil"
+   ]
+  },
+  {
+   "id": "a2-24-66",
+   "q": "On a moins d'appareils _____ que dans notre ancien appartement.",
+   "w": "électroménagers",
+   "vs": [
+    "électroménager"
+   ]
+  },
+  {
+   "id": "a2-24-69",
+   "q": "Non, on a une _____.",
+   "w": "chambre",
+   "vs": [
+    "chambres"
+   ]
+  },
+  {
+   "id": "a2-24-75",
+   "q": "Mais de _____ générale, c'est très confortable, on a un meilleur cadre de vie.",
+   "w": "manière",
+   "vs": [
+    "manières"
+   ]
+  },
+  {
+   "id": "a2-24-75",
+   "q": "Mais de manière générale, c'est très confortable, on a un _____ cadre de vie.",
+   "w": "meilleur",
+   "vs": [
+    "meilleure",
+    "meilleurs",
+    "meilleures"
+   ]
+  },
+  {
+   "id": "a2-24-75",
+   "q": "Mais de manière générale, c'est très confortable, on a un meilleur cadre de _____.",
+   "w": "vie",
+   "vs": [
+    "vies"
+   ]
+  },
+  {
+   "id": "a2-30-76",
+   "q": "Il y a une grande pièce principale avec une _____ équipée.",
+   "w": "cuisine",
+   "vs": [
+    "cuisinent"
+   ]
+  },
+  {
+   "id": "a2-30-77",
+   "q": "À _____ tout de suite.",
+   "w": "louer",
+   "vs": [
+    "loué",
+    "louez"
+   ]
+  },
+  {
+   "id": "a2-31-79",
+   "q": "Ah non, on voudrait faire la visite _____ à 15 h si c'est possible pour vous.",
+   "w": "jeudi",
+   "vs": [
+    "jeudis"
+   ]
+  },
+  {
+   "id": "a2-31-80",
+   "q": "_____-moi quand vous pouvez au 06 09 92 66 65.",
+   "w": "Rappelez",
+   "vs": [
+    "rappeler"
+   ]
+  },
+  {
+   "id": "a2-32-83",
+   "q": "_____-moi pour le retard.",
+   "w": "Excusez",
+   "vs": [
+    "excuser",
+    "excusé"
+   ]
+  },
+  {
+   "id": "a2-33-87",
+   "q": "« Bonjour la plus _____ !",
+   "w": "belle",
+   "vs": [
+    "belles"
+   ]
+  },
+  {
+   "id": "a2-33-88",
+   "q": "« La _____ de cette écharpe vous donne une mine exquise » à votre voisine si fatiguée.",
+   "w": "couleur",
+   "vs": [
+    "couleurs"
+   ]
+  },
+  {
+   "id": "a2-33-90",
+   "q": "Ce sont juste des petits mots _____, dits comme ça en passant, qui demandent rien en retour.",
+   "w": "gentils",
+   "vs": [
+    "gentil"
+   ]
+  },
+  {
+   "id": "a2-33-90",
+   "q": "Ce sont juste des petits mots gentils, dits comme ça en passant, qui _____ rien en retour.",
+   "w": "demandent",
+   "vs": [
+    "demande",
+    "demandes"
+   ]
+  },
+  {
+   "id": "a2-33-91",
+   "q": "Vous allez rendre _____un plus joyeux.",
+   "w": "quelqu'",
+   "vs": [
+    "quelque",
+    "quelques"
+   ]
+  },
+  {
+   "id": "a2-33-92",
+   "q": "Voilà une minute qui peut tout _____.",
+   "w": "changer",
+   "vs": [
+    "changé"
+   ]
+  },
+  {
+   "id": "a2-41-97",
+   "q": "Je vais _____ vingt nouvelles photos.",
+   "w": "poster",
+   "vs": [
+    "posté",
+    "postés",
+    "posters"
+   ]
+  },
+  {
+   "id": "a2-41-97",
+   "q": "Je vais poster vingt _____ photos.",
+   "w": "nouvelles",
+   "vs": [
+    "nouvelle"
+   ]
+  },
+  {
+   "id": "a2-41-97",
+   "q": "Je vais poster vingt nouvelles _____.",
+   "w": "photos",
+   "vs": [
+    "photo"
+   ]
+  },
+  {
+   "id": "a2-43-101",
+   "q": "Nous allons _____ l'avis des visiteurs.",
+   "w": "demander",
+   "vs": [
+    "demandé",
+    "demandez",
+    "demandés"
+   ]
+  },
+  {
+   "id": "a2-43-102",
+   "q": "Bonjour madame, qu'avez-vous _____ des nouveautés de ce salon ?",
+   "w": "pensé",
+   "vs": [
+    "pensez",
+    "pensés"
+   ]
+  },
+  {
+   "id": "a2-43-104",
+   "q": "Et _____ ça marche ?",
+   "w": "comment",
+   "vs": [
+    "comme"
+   ]
+  },
+  {
+   "id": "a2-43-107",
+   "q": "Quand j'_____ cette imprimante, je pourrai transformer les légumes en plats amusants pour mes enfants.",
+   "w": "aurai",
+   "vs": [
+    "aurais"
+   ]
+  },
+  {
+   "id": "a2-43-108",
+   "q": "Et vous monsieur, _____ est votre découverte préférée ?",
+   "w": "quelle",
+   "vs": [
+    "quelles"
+   ]
+  },
+  {
+   "id": "a2-43-110",
+   "q": "Son moteur électrique marche à l'énergie solaire, il ne peut donc pas _____ en panne.",
+   "w": "tomber",
+   "vs": [
+    "tombé",
+    "tombée",
+    "tombés"
+   ]
+  },
+  {
+   "id": "a2-43-112",
+   "q": "Non, les chercheurs veulent l'_____ pour étudier les océans.",
+   "w": "utiliser",
+   "vs": [
+    "utilisé",
+    "utilisez",
+    "utilisés"
+   ]
+  },
+  {
+   "id": "a2-43-112",
+   "q": "Non, les chercheurs veulent l'utiliser pour _____ les océans.",
+   "w": "étudier",
+   "vs": [
+    "étudié"
+   ]
+  },
+  {
+   "id": "a2-45-115",
+   "q": "Et j'ai aussi _____ de passer une semaine sans smartphone et sans ordinateur.",
+   "w": "décidé",
+   "vs": [
+    "décider"
+   ]
+  },
+  {
+   "id": "a2-45-115",
+   "q": "Et j'ai aussi décidé de _____ une semaine sans smartphone et sans ordinateur.",
+   "w": "passer",
+   "vs": [
+    "passé",
+    "passée",
+    "passés"
+   ]
+  },
+  {
+   "id": "a2-45-118",
+   "q": "Et quand je _____ mes amis, on discute sans clavier et sans écran.",
+   "w": "vois",
+   "vs": [
+    "voie"
+   ]
+  },
+  {
+   "id": "a2-45-118",
+   "q": "Et quand je vois mes _____, on discute sans clavier et sans écran.",
+   "w": "amis",
+   "vs": [
+    "ami",
+    "amie"
+   ]
+  },
+  {
+   "id": "a2-45-120",
+   "q": "Seulement pour _____ un document ou aller sur un site Internet si c'est vraiment indispensable.",
+   "w": "imprimer",
+   "vs": [
+    "imprimé"
+   ]
+  },
+  {
+   "id": "a2-45-122",
+   "q": "Si je fais ça, je ferai _____ pour communiquer avec mes amis ?",
+   "w": "comment",
+   "vs": [
+    "comme"
+   ]
+  },
+  {
+   "id": "a2-45-122",
+   "q": "Si je fais ça, je ferai comment pour communiquer avec mes _____ ?",
+   "w": "amis",
+   "vs": [
+    "ami",
+    "amie"
+   ]
+  },
+  {
+   "id": "a2-47-123",
+   "q": "Et la France a _____ combien de compétitions ?",
+   "w": "gagné",
+   "vs": [
+    "gagner"
+   ]
+  },
+  {
+   "id": "a2-47-125",
+   "q": "Et vous _____ que c'est possible ?",
+   "w": "pensez",
+   "vs": [
+    "pensé",
+    "pensés"
+   ]
+  },
+  {
+   "id": "a2-47-126",
+   "q": "Oui, car on améliore nos robots chaque _____.",
+   "w": "année",
+   "vs": [
+    "années"
+   ]
+  },
+  {
+   "id": "a2-47-129",
+   "q": "Mais avant, on vous donne rendez-vous à la prochaine RoboCup qui _____ lieu à Bordeaux en 2023 !",
+   "w": "aura",
+   "vs": [
+    "auras"
+   ]
+  },
+  {
+   "id": "a2-52-137",
+   "q": "Une ville très _____, agréable et incroyable !",
+   "w": "pratique",
+   "vs": [
+    "pratiques"
+   ]
+  },
+  {
+   "id": "a2-52-137",
+   "q": "Une ville très pratique, _____ et incroyable !",
+   "w": "agréable",
+   "vs": [
+    "agréables"
+   ]
+  },
+  {
+   "id": "a2-55-144",
+   "q": "Toi de toute façon t'_____ rien.",
+   "w": "aimes",
+   "vs": [
+    "aiment"
+   ]
+  },
+  {
+   "id": "a2-55-149",
+   "q": "La _____ fois, mon steak saignant est arrivé trop cuit.",
+   "w": "dernière",
+   "vs": [
+    "dernièr"
+   ]
+  },
+  {
+   "id": "a2-55-149",
+   "q": "La dernière _____, mon steak saignant est arrivé trop cuit.",
+   "w": "fois",
+   "vs": [
+    "foie"
+   ]
+  },
+  {
+   "id": "a2-55-149",
+   "q": "La dernière fois, mon steak saignant est _____ trop cuit.",
+   "w": "arrivé",
+   "vs": [
+    "arriver",
+    "arrivée",
+    "arrivés"
+   ]
+  },
+  {
+   "id": "a2-55-150",
+   "q": "Parce que tu l'as _____ « à point ».",
+   "w": "demandé",
+   "vs": [
+    "demander",
+    "demandez",
+    "demandés"
+   ]
+  },
+  {
+   "id": "a2-55-154",
+   "q": "Parce que moi j'ai très bien _____, je me suis régalé.",
+   "w": "mangé",
+   "vs": [
+    "manger",
+    "mangés"
+   ]
+  },
+  {
+   "id": "a2-55-156",
+   "q": "Lundi _____ le gratin était congelé, la ratatouille était brûlée et le flan était amer.",
+   "w": "dernier",
+   "vs": [
+    "derniere"
+   ]
+  },
+  {
+   "id": "a2-55-156",
+   "q": "Lundi dernier le gratin était congelé, la ratatouille était brûlée et le flan était _____.",
+   "w": "amer",
+   "vs": [
+    "amere"
+   ]
+  },
+  {
+   "id": "a2-55-157",
+   "q": "Il était pas _____, il était acide.",
+   "w": "amer",
+   "vs": [
+    "amere"
+   ]
+  },
+  {
+   "id": "a2-56-162",
+   "q": "Nous rappelons qu'il est interdit de boire et de _____ dans le musée.",
+   "w": "manger",
+   "vs": [
+    "mangé",
+    "mangés"
+   ]
+  },
+  {
+   "id": "a2-56-162",
+   "q": "Nous rappelons qu'il est interdit de boire et de manger dans le _____.",
+   "w": "musée",
+   "vs": [
+    "musées"
+   ]
+  },
+  {
+   "id": "a2-56-164",
+   "q": "Un groupe a _____ cette table.",
+   "w": "réservé",
+   "vs": [
+    "réserver"
+   ]
+  },
+  {
+   "id": "a2-59-165",
+   "q": "En _____, je voudrais des samossas au thon.",
+   "w": "entrée",
+   "vs": [
+    "entrer",
+    "entré",
+    "entrées"
+   ]
+  },
+  {
+   "id": "a2-59-165",
+   "q": "En entrée, je _____ des samossas au thon.",
+   "w": "voudrais",
+   "vs": [
+    "voudrait"
+   ]
+  },
+  {
+   "id": "a2-59-169",
+   "q": "Si vous _____ la viande, je vous conseille le colombo.",
+   "w": "aimez",
+   "vs": [
+    "aimé",
+    "aimés",
+    "aimées"
+   ]
+  },
+  {
+   "id": "a2-59-169",
+   "q": "Si vous aimez la viande, je vous _____ le colombo.",
+   "w": "conseille",
+   "vs": [
+    "conseilles"
+   ]
+  },
+  {
+   "id": "a2-59-171",
+   "q": "Super, je vais _____ ça.",
+   "w": "goûter",
+   "vs": [
+    "goûté"
+   ]
+  },
+  {
+   "id": "a2-61-172",
+   "q": "Nous avons pris deux menus du _____ et c'était délicieux.",
+   "w": "jour",
+   "vs": [
+    "jours"
+   ]
+  },
+  {
+   "id": "a2-61-173",
+   "q": "Il faut patienter plus d'une _____-heure entre chaque plat.",
+   "w": "demi",
+   "vs": [
+    "demie"
+   ]
+  },
+  {
+   "id": "a2-61-173",
+   "q": "Il faut patienter plus d'une demi-_____ entre chaque plat.",
+   "w": "heure",
+   "vs": [
+    "heures"
+   ]
+  },
+  {
+   "id": "a2-61-175",
+   "q": "Il y a une très bonne ambiance, c'est _____ !",
+   "w": "génial",
+   "vs": [
+    "géniale"
+   ]
+  },
+  {
+   "id": "a2-64-178",
+   "q": "On _____ que vous avez un gros rhume.",
+   "w": "dirait",
+   "vs": [
+    "dirais"
+   ]
+  },
+  {
+   "id": "a2-65-184",
+   "q": "Une mission essentielle assurée par ces sapeurs-_____ 365 jours par an et 24 heures sur 24.",
+   "w": "pompiers",
+   "vs": [
+    "pompier",
+    "pompiere"
+   ]
+  },
+  {
+   "id": "a2-65-184",
+   "q": "Une mission essentielle assurée par ces sapeurs-pompiers 365 _____ par an et 24 heures sur 24.",
+   "w": "jours",
+   "vs": [
+    "jour"
+   ]
+  },
+  {
+   "id": "a2-65-184",
+   "q": "Une mission essentielle assurée par ces sapeurs-pompiers 365 jours par an et 24 _____ sur 24.",
+   "w": "heures",
+   "vs": [
+    "heure"
+   ]
+  },
+  {
+   "id": "a2-68-185",
+   "q": "Ce sont les revues _____ que je lis le plus.",
+   "w": "médicales",
+   "vs": [
+    "médical"
+   ]
+  },
+  {
+   "id": "a2-68-186",
+   "q": "Ce sont les _____ qu'il faut pratiquer le plus.",
+   "w": "activités",
+   "vs": [
+    "activité"
+   ]
+  },
+  {
+   "id": "a2-68-186",
+   "q": "Ce sont les activités qu'il faut _____ le plus.",
+   "w": "pratiquer",
+   "vs": [
+    "pratiqué",
+    "pratiqués"
+   ]
+  },
+  {
+   "id": "a2-69-187",
+   "q": "Pour être en _____ forme, vous devez dormir plus et manger équilibré.",
+   "w": "meilleure",
+   "vs": [
+    "meilleures",
+    "meilleur",
+    "meilleurs"
+   ]
+  },
+  {
+   "id": "a2-69-187",
+   "q": "Pour être en meilleure forme, vous devez dormir plus et _____ équilibré.",
+   "w": "manger",
+   "vs": [
+    "mangé",
+    "mangés"
+   ]
+  },
+  {
+   "id": "a2-69-188",
+   "q": "Les _____ qu'il faut pratiquer le plus sont la marche et la natation.",
+   "w": "activités",
+   "vs": [
+    "activité"
+   ]
+  },
+  {
+   "id": "a2-69-188",
+   "q": "Les activités qu'il faut _____ le plus sont la marche et la natation.",
+   "w": "pratiquer",
+   "vs": [
+    "pratiqué",
+    "pratiqués"
+   ]
+  },
+  {
+   "id": "a2-70-191",
+   "q": "On _____ d'abord Alix et Floriane.",
+   "w": "écoute",
+   "vs": [
+    "écoutent"
+   ]
+  },
+  {
+   "id": "a2-70-192",
+   "q": "Je peux pas _____ le journal télé, à cause des images qui sont souvent horribles.",
+   "w": "regarder",
+   "vs": [
+    "regardé",
+    "regardés"
+   ]
+  },
+  {
+   "id": "a2-70-194",
+   "q": "Si une information m'_____, je vais peut-être cliquer dessus.",
+   "w": "intéresse",
+   "vs": [
+    "intéressent"
+   ]
+  },
+  {
+   "id": "a2-70-195",
+   "q": "Mais en _____ c'est vrai que je lis les titres, pas les articles.",
+   "w": "général",
+   "vs": [
+    "générale"
+   ]
+  },
+  {
+   "id": "a2-70-195",
+   "q": "Mais en général c'est vrai que je lis les _____, pas les articles.",
+   "w": "titres",
+   "vs": [
+    "titre"
+   ]
+  },
+  {
+   "id": "a2-70-195",
+   "q": "Mais en général c'est vrai que je lis les titres, pas les _____.",
+   "w": "articles",
+   "vs": [
+    "article"
+   ]
+  },
+  {
+   "id": "a2-70-197",
+   "q": "Et vous Abel, _____ vous vous informez ?",
+   "w": "comment",
+   "vs": [
+    "comme"
+   ]
+  },
+  {
+   "id": "a2-70-198",
+   "q": "Je _____ les réseaux sociaux aux médias traditionnels.",
+   "w": "préfère",
+   "vs": [
+    "préfèrent",
+    "préfères"
+   ]
+  },
+  {
+   "id": "a2-70-199",
+   "q": "Tu reçois les _____ sur ton téléphone, alors t'as pas besoin de les chercher.",
+   "w": "nouvelles",
+   "vs": [
+    "nouvelle"
+   ]
+  },
+  {
+   "id": "a2-70-199",
+   "q": "Tu reçois les nouvelles sur ton téléphone, alors t'as pas besoin de les _____.",
+   "w": "chercher",
+   "vs": [
+    "cherché",
+    "cherchés"
+   ]
+  },
+  {
+   "id": "a2-70-203",
+   "q": "Ils publient des résumés d'_____ de magazines économiques, culturels ou politiques.",
+   "w": "articles",
+   "vs": [
+    "article"
+   ]
+  },
+  {
+   "id": "a2-70-204",
+   "q": "Alors c'est plus rapide à lire et c'est plus _____ que les articles entiers, mais c'est très sérieux.",
+   "w": "simple",
+   "vs": [
+    "simples"
+   ]
+  },
+  {
+   "id": "a2-70-204",
+   "q": "Alors c'est plus rapide à lire et c'est plus simple que les _____ entiers, mais c'est très sérieux.",
+   "w": "articles",
+   "vs": [
+    "article"
+   ]
+  },
+  {
+   "id": "a2-73-205",
+   "q": "Bien sûr que ça nous _____ !",
+   "w": "intéresse",
+   "vs": [
+    "intéressent"
+   ]
+  },
+  {
+   "id": "a2-73-208",
+   "q": "Je m'_____ à leur vie !",
+   "w": "intéresse",
+   "vs": [
+    "intéressent"
+   ]
+  },
+  {
+   "id": "a2-73-208",
+   "q": "Je m'intéresse à leur _____ !",
+   "w": "vie",
+   "vs": [
+    "vies"
+   ]
+  },
+  {
+   "id": "a2-73-209",
+   "q": "Mon _____ m'a montré comment ça marche et maintenant je vais tous les jours sur Facebook.",
+   "w": "fils",
+   "vs": [
+    "fil"
+   ]
+  },
+  {
+   "id": "a2-73-209",
+   "q": "Mon fils m'a _____ comment ça marche et maintenant je vais tous les jours sur Facebook.",
+   "w": "montré",
+   "vs": [
+    "montrer",
+    "montrés"
+   ]
+  },
+  {
+   "id": "a2-73-209",
+   "q": "Mon fils m'a montré _____ ça marche et maintenant je vais tous les jours sur Facebook.",
+   "w": "comment",
+   "vs": [
+    "comme"
+   ]
+  },
+  {
+   "id": "a2-73-209",
+   "q": "Mon fils m'a montré comment ça marche et maintenant je vais tous les _____ sur Facebook.",
+   "w": "jours",
+   "vs": [
+    "jour"
+   ]
+  },
+  {
+   "id": "a2-74-212",
+   "q": "Julie Nicolas _____ des podcasts, des contenus sonores le plus souvent gratuits.",
+   "w": "écoute",
+   "vs": [
+    "écoutent"
+   ]
+  },
+  {
+   "id": "a2-74-214",
+   "q": "9 % déclarent en _____ au moins un, une fois par semaine.",
+   "w": "écouter",
+   "vs": [
+    "écouté",
+    "écoutés"
+   ]
+  },
+  {
+   "id": "a2-74-214",
+   "q": "9 % déclarent en écouter au moins un, une _____ par semaine.",
+   "w": "fois",
+   "vs": [
+    "foie"
+   ]
+  },
+  {
+   "id": "a2-74-216",
+   "q": "27 épisodes et _____ de 800 000 écoutes.",
+   "w": "près",
+   "vs": [
+    "prè"
+   ]
+  },
+  {
+   "id": "a2-74-217",
+   "q": "« Viens, je t'emmène dans mon _____.",
+   "w": "histoire",
+   "vs": [
+    "histoires"
+   ]
+  },
+  {
+   "id": "a2-80-218",
+   "q": "Cette _____ est difficile à suivre.",
+   "w": "histoire",
+   "vs": [
+    "histoires"
+   ]
+  },
+  {
+   "id": "a2-81-220",
+   "q": "Alors, qu'attendez-vous pour _____ à écouter ou à télécharger vos premiers podcasts ?",
+   "w": "commencer",
+   "vs": [
+    "commencé"
+   ]
+  },
+  {
+   "id": "a2-81-220",
+   "q": "Alors, qu'attendez-vous pour commencer à _____ ou à télécharger vos premiers podcasts ?",
+   "w": "écouter",
+   "vs": [
+    "écouté",
+    "écoutés"
+   ]
+  },
+  {
+   "id": "a2-82-221",
+   "q": "5 raisons de _____ les réseaux sociaux.",
+   "w": "quitter",
+   "vs": [
+    "quitté"
+   ]
+  },
+  {
+   "id": "a2-82-222",
+   "q": "Deuxième point, c'est que les réseaux sociaux sont vraiment addictifs, et sont conçus pour _____ vraiment une addiction.",
+   "w": "créer",
+   "vs": [
+    "créé"
+   ]
+  },
+  {
+   "id": "a2-82-224",
+   "q": "_____ de trouver quelque chose qui permet d'avoir une interaction avec d'autres personnes.",
+   "w": "Essayez",
+   "vs": [
+    "essayer",
+    "essayés"
+   ]
+  },
+  {
+   "id": "a2-82-224",
+   "q": "Essayez de _____ quelque chose qui permet d'avoir une interaction avec d'autres personnes.",
+   "w": "trouver",
+   "vs": [
+    "trouvé",
+    "trouvés",
+    "trouvées"
+   ]
+  },
+  {
+   "id": "a2-82-224",
+   "q": "Essayez de trouver _____ chose qui permet d'avoir une interaction avec d'autres personnes.",
+   "w": "quelque",
+   "vs": [
+    "quelques",
+    "quelqu"
+   ]
+  },
+  {
+   "id": "a2-82-225",
+   "q": "Quatrième point, les réseaux sociaux, ça _____ toujours un idéal qui est inexistant.",
+   "w": "montre",
+   "vs": [
+    "montres"
+   ]
+  },
+  {
+   "id": "a2-82-226",
+   "q": "Tout le monde a une certaine personnalité qu'il _____ sur les réseaux.",
+   "w": "montre",
+   "vs": [
+    "montres"
+   ]
+  },
+  {
+   "id": "a2-83-228",
+   "q": "Je dirais aussi que la télé ralentit l'_____ cérébrale.",
+   "w": "activité",
+   "vs": [
+    "activités"
+   ]
+  },
+  {
+   "id": "a2-83-231",
+   "q": "Donc le lien _____ est complètement brisé.",
+   "w": "social",
+   "vs": [
+    "sociales"
+   ]
+  },
+  {
+   "id": "a2-84-232",
+   "q": "Votre site de petites annonces entre particuliers, c'est le sixième site le plus _____ du pays.",
+   "w": "visité",
+   "vs": [
+    "visiter"
+   ]
+  },
+  {
+   "id": "a2-84-233",
+   "q": "Sur le _____, à peu près un Français sur deux, trente millions.",
+   "w": "mois",
+   "vs": [
+    "moi"
+   ]
+  },
+  {
+   "id": "a2-84-233",
+   "q": "Sur le mois, à peu _____ un Français sur deux, trente millions.",
+   "w": "près",
+   "vs": [
+    "prè"
+   ]
+  },
+  {
+   "id": "a2-84-234",
+   "q": "La seconde raison, c'est plus une raison de mieux _____.",
+   "w": "consommer",
+   "vs": [
+    "consommé",
+    "consommez"
+   ]
+  },
+  {
+   "id": "a2-86-235",
+   "q": "Pour _____, quelle est l'activité de Spareka ?",
+   "w": "commencer",
+   "vs": [
+    "commencé"
+   ]
+  },
+  {
+   "id": "a2-86-235",
+   "q": "Pour commencer, _____ est l'activité de Spareka ?",
+   "w": "quelle",
+   "vs": [
+    "quelles"
+   ]
+  },
+  {
+   "id": "a2-86-235",
+   "q": "Pour commencer, quelle est l'_____ de Spareka ?",
+   "w": "activité",
+   "vs": [
+    "activités"
+   ]
+  },
+  {
+   "id": "a2-86-236",
+   "q": "Et si j'ai besoin de _____ une pièce, je vais trouver aussi la pièce et tout ira bien ?",
+   "w": "changer",
+   "vs": [
+    "changé"
+   ]
+  },
+  {
+   "id": "a2-86-236",
+   "q": "Et si j'ai besoin de changer une pièce, je vais _____ aussi la pièce et tout ira bien ?",
+   "w": "trouver",
+   "vs": [
+    "trouvé",
+    "trouvés",
+    "trouvées"
+   ]
+  },
+  {
+   "id": "a2-86-237",
+   "q": "Donc déjà on va vous _____ sur comment identifier s'il faut une pièce ou pas.",
+   "w": "accompagner",
+   "vs": [
+    "accompagné"
+   ]
+  },
+  {
+   "id": "a2-86-237",
+   "q": "Donc déjà on va vous accompagner sur _____ identifier s'il faut une pièce ou pas.",
+   "w": "comment",
+   "vs": [
+    "comme"
+   ]
+  },
+  {
+   "id": "a2-88-239",
+   "q": "Mais _____ sans payer, c'est possible.",
+   "w": "acheter",
+   "vs": [
+    "acheté",
+    "achetez",
+    "achetée",
+    "achetés"
+   ]
+  },
+  {
+   "id": "a2-88-239",
+   "q": "Mais acheter sans _____, c'est possible.",
+   "w": "payer",
+   "vs": [
+    "payez"
+   ]
+  },
+  {
+   "id": "a2-88-242",
+   "q": "Est-ce que vous pouvez nous _____ comment ça fonctionne ?",
+   "w": "expliquer",
+   "vs": [
+    "expliqué",
+    "expliquez"
+   ]
+  },
+  {
+   "id": "a2-88-242",
+   "q": "Est-ce que vous pouvez nous expliquer _____ ça fonctionne ?",
+   "w": "comment",
+   "vs": [
+    "comme"
+   ]
+  },
+  {
+   "id": "a2-88-243",
+   "q": "Vous les déposez à l'_____ et ensuite, vous prenez les choses qui vous intéressent.",
+   "w": "entrée",
+   "vs": [
+    "entrer",
+    "entré",
+    "entrées"
+   ]
+  },
+  {
+   "id": "a2-88-247",
+   "q": "Et vous avez _____ des choses qui vous intéressent ?",
+   "w": "trouvé",
+   "vs": [
+    "trouver",
+    "trouvés",
+    "trouvées"
+   ]
+  },
+  {
+   "id": "a2-88-248",
+   "q": "Oui, ce _____ que je cherche depuis longtemps !",
+   "w": "livre",
+   "vs": [
+    "livres"
+   ]
+  },
+  {
+   "id": "a2-88-249",
+   "q": "Pour vous, dans un monde idéal, tout le monde _____ du troc ?",
+   "w": "ferait",
+   "vs": [
+    "ferais"
+   ]
+  },
+  {
+   "id": "a2-90-251",
+   "q": "Des _____ écologiques – g.",
+   "w": "règles",
+   "vs": [
+    "règle"
+   ]
+  },
+  {
+   "id": "a2-92-253",
+   "q": "Florence à votre _____.",
+   "w": "écoute",
+   "vs": [
+    "écoutent"
+   ]
+  },
+  {
+   "id": "a2-92-254",
+   "q": "Il y a un circuit qui vous _____ ?",
+   "w": "intéresse",
+   "vs": [
+    "intéressent"
+   ]
+  },
+  {
+   "id": "a2-92-256",
+   "q": "Juste le petit _____.",
+   "w": "déjeuner",
+   "vs": [
+    "déjeuné"
+   ]
+  },
+  {
+   "id": "a2-92-257",
+   "q": "Nous ne proposons pas de pension complète, ni de _____-pension.",
+   "w": "demi",
+   "vs": [
+    "demie"
+   ]
+  },
+  {
+   "id": "a2-92-258",
+   "q": "_____ est la meilleure période pour visiter le Vietnam ?",
+   "w": "Quelle",
+   "vs": [
+    "quelles"
+   ]
+  },
+  {
+   "id": "a2-92-258",
+   "q": "Quelle est la _____ période pour visiter le Vietnam ?",
+   "w": "meilleure",
+   "vs": [
+    "meilleures",
+    "meilleur",
+    "meilleurs"
+   ]
+  },
+  {
+   "id": "a2-92-258",
+   "q": "Quelle est la meilleure période pour _____ le Vietnam ?",
+   "w": "visiter",
+   "vs": [
+    "visité"
+   ]
+  },
+  {
+   "id": "a2-92-261",
+   "q": "Je vous envoie un devis et je vous rappelle dans 48 _____ pour finaliser le voyage.",
+   "w": "heures",
+   "vs": [
+    "heure"
+   ]
+  },
+  {
+   "id": "a2-94-262",
+   "q": "Après deux _____ de marche, elle paraît complètement dans son élément, bien loin de son quotidien parisien.",
+   "w": "heures",
+   "vs": [
+    "heure"
+   ]
+  },
+  {
+   "id": "a2-94-263",
+   "q": "Et je crois que la _____ est plus ici que derrière mon PC, franchement.",
+   "w": "vie",
+   "vs": [
+    "vies"
+   ]
+  },
+  {
+   "id": "a2-96-264",
+   "q": "Voilà, nous sommes _____ à Saint-Louis !",
+   "w": "arrivés",
+   "vs": [
+    "arriver",
+    "arrivé",
+    "arrivée"
+   ]
+  },
+  {
+   "id": "a2-96-267",
+   "q": "Non, mais _____-ci est vraiment bien !",
+   "w": "celle",
+   "vs": [
+    "celles"
+   ]
+  },
+  {
+   "id": "a2-98-269",
+   "q": "Ça te dit d'aller à la _____ demain ?",
+   "w": "mer",
+   "vs": [
+    "mere"
+   ]
+  },
+  {
+   "id": "a2-98-270",
+   "q": "Vous avez _____ un séjour d'une semaine en Bretagne.",
+   "w": "réservé",
+   "vs": [
+    "réserver"
+   ]
+  },
+  {
+   "id": "a2-98-271",
+   "q": "Elles ont _____ à vélo de Grenoble à Venise.",
+   "w": "voyagé",
+   "vs": [
+    "voyager",
+    "voyagés"
+   ]
+  },
+  {
+   "id": "a2-98-271",
+   "q": "Elles ont voyagé à _____ de Grenoble à Venise.",
+   "w": "vélo",
+   "vs": [
+    "vélos"
+   ]
+  },
+  {
+   "id": "a2-98-272",
+   "q": "Il est _____ la même année au Québec et au Mexique.",
+   "w": "allé",
+   "vs": [
+    "aller",
+    "allez",
+    "allée",
+    "allés"
+   ]
+  },
+  {
+   "id": "a2-98-272",
+   "q": "Il est allé la même _____ au Québec et au Mexique.",
+   "w": "année",
+   "vs": [
+    "années"
+   ]
+  },
+  {
+   "id": "a2-100-274",
+   "q": "Vous allez nous _____ votre parcours scolaire et universitaire.",
+   "w": "raconter",
+   "vs": [
+    "raconté",
+    "racontez",
+    "racontées"
+   ]
+  },
+  {
+   "id": "a2-100-274",
+   "q": "Vous allez nous raconter votre parcours scolaire et _____.",
+   "w": "universitaire",
+   "vs": [
+    "universitaires"
+   ]
+  },
+  {
+   "id": "a2-100-275",
+   "q": "Alors, dans _____ lycée avez-vous obtenu votre baccalauréat ?",
+   "w": "quel",
+   "vs": [
+    "quels"
+   ]
+  },
+  {
+   "id": "a2-100-277",
+   "q": "Les maths, la physique-chimie, la biologie, ce sont des _____ que j'ai toujours aimées.",
+   "w": "matières",
+   "vs": [
+    "matière"
+   ]
+  },
+  {
+   "id": "a2-100-277",
+   "q": "Les maths, la physique-chimie, la biologie, ce sont des matières que j'ai toujours _____.",
+   "w": "aimées",
+   "vs": [
+    "aimé",
+    "aimez",
+    "aimés"
+   ]
+  },
+  {
+   "id": "a2-100-278",
+   "q": "On travaillait beaucoup en classe, mais on s'amusait bien après les _____.",
+   "w": "cours",
+   "vs": [
+    "cour"
+   ]
+  },
+  {
+   "id": "a2-100-279",
+   "q": "Mais la _____ année, on a trop fait la fête et...",
+   "w": "première",
+   "vs": [
+    "premières",
+    "premièr",
+    "premièrs"
+   ]
+  },
+  {
+   "id": "a2-100-279",
+   "q": "Mais la première _____, on a trop fait la fête et...",
+   "w": "année",
+   "vs": [
+    "années"
+   ]
+  },
+  {
+   "id": "a2-100-280",
+   "q": "Moi aussi, j'ai _____ ma première année parce que j'avais des mauvaises notes.",
+   "w": "raté",
+   "vs": [
+    "rater"
+   ]
+  },
+  {
+   "id": "a2-100-280",
+   "q": "Moi aussi, j'ai raté ma _____ année parce que j'avais des mauvaises notes.",
+   "w": "première",
+   "vs": [
+    "premières",
+    "premièr",
+    "premièrs"
+   ]
+  },
+  {
+   "id": "a2-100-280",
+   "q": "Moi aussi, j'ai raté ma première _____ parce que j'avais des mauvaises notes.",
+   "w": "année",
+   "vs": [
+    "années"
+   ]
+  },
+  {
+   "id": "a2-100-281",
+   "q": "Alors j'ai _____ de faire une pause.",
+   "w": "décidé",
+   "vs": [
+    "décider"
+   ]
+  },
+  {
+   "id": "a2-100-282",
+   "q": "Je suis maintenant en troisième _____ de licence.",
+   "w": "année",
+   "vs": [
+    "années"
+   ]
+  },
+  {
+   "id": "a2-103-285",
+   "q": "« Ça sert encore à _____ chose de faire un CV ?",
+   "w": "quelque",
+   "vs": [
+    "quelques",
+    "quelqu"
+   ]
+  },
+  {
+   "id": "a2-103-286",
+   "q": "Trouveur d'emploi, le _____ podcast qui vous aide à trouver un emploi.",
+   "w": "premier",
+   "vs": [
+    "premiere",
+    "premiers",
+    "premieres"
+   ]
+  },
+  {
+   "id": "a2-103-286",
+   "q": "Trouveur d'emploi, le premier podcast qui vous aide à _____ un emploi.",
+   "w": "trouver",
+   "vs": [
+    "trouvé",
+    "trouvés",
+    "trouvées"
+   ]
+  },
+  {
+   "id": "a2-103-290",
+   "q": "Parce qu'il doit _____ dans ces fameuses cases.",
+   "w": "rentrer",
+   "vs": [
+    "rentré"
+   ]
+  },
+  {
+   "id": "a2-103-291",
+   "q": "_____ je peux rentrer ma non- expérience sur ce bout de papier ?",
+   "w": "Comment",
+   "vs": [
+    "comme"
+   ]
+  },
+  {
+   "id": "a2-103-291",
+   "q": "Comment je peux _____ ma non- expérience sur ce bout de papier ?",
+   "w": "rentrer",
+   "vs": [
+    "rentré"
+   ]
+  },
+  {
+   "id": "a2-103-291",
+   "q": "Comment je peux rentrer ma non- expérience sur ce bout de _____ ?",
+   "w": "papier",
+   "vs": [
+    "papiers"
+   ]
+  },
+  {
+   "id": "a2-104-294",
+   "q": "_____ avez-vous eu l'idée d'ouvrir un espace pour les métiers de la beauté et du bien-être ?",
+   "w": "Comment",
+   "vs": [
+    "comme"
+   ]
+  },
+  {
+   "id": "a2-104-294",
+   "q": "Comment avez-vous eu l'_____ d'ouvrir un espace pour les métiers de la beauté et du bien-être ?",
+   "w": "idée",
+   "vs": [
+    "idées"
+   ]
+  },
+  {
+   "id": "a2-104-294",
+   "q": "Comment avez-vous eu l'idée d'ouvrir un espace pour les _____ de la beauté et du bien-être ?",
+   "w": "métiers",
+   "vs": [
+    "métier"
+   ]
+  },
+  {
+   "id": "a2-104-299",
+   "q": "_____ sont les autres avantages pour les professionnels ?",
+   "w": "Quels",
+   "vs": [
+    "quel"
+   ]
+  },
+  {
+   "id": "a2-104-300",
+   "q": "Mais je suis là pour les _____ quand ils débutent.",
+   "w": "aider",
+   "vs": [
+    "aidé",
+    "aidés"
+   ]
+  },
+  {
+   "id": "a2-104-301",
+   "q": "Et ils peuvent aussi _____ de mon réseau.",
+   "w": "profiter",
+   "vs": [
+    "profité"
+   ]
+  },
+  {
+   "id": "a2-107-302",
+   "q": "Je me rappelle ce _____ jeu de mot de ma professeure de biologie.",
+   "w": "joli",
+   "vs": [
+    "jolie",
+    "jolies"
+   ]
+  },
+  {
+   "id": "a2-107-302",
+   "q": "Je me rappelle ce joli jeu de mot de ma _____ de biologie.",
+   "w": "professeure",
+   "vs": [
+    "professeur",
+    "professeurs"
+   ]
+  },
+  {
+   "id": "a2-107-303",
+   "q": "Vous avez besoin de vos diplômes pour _____ du travail.",
+   "w": "trouver",
+   "vs": [
+    "trouvé",
+    "trouvés",
+    "trouvées"
+   ]
+  },
+  {
+   "id": "a2-107-304",
+   "q": "Sur les réseaux sociaux, on peut _____ des CV complètement fous !",
+   "w": "poster",
+   "vs": [
+    "posté",
+    "postés",
+    "posters"
+   ]
+  },
+  {
+   "id": "a2-108-305",
+   "q": "Ma sœur veut se perfectionner et recherche une entreprise qui peut l'_____ en stage.",
+   "w": "accepter",
+   "vs": [
+    "acceptez",
+    "acceptés"
+   ]
+  },
+  {
+   "id": "a2-108-306",
+   "q": "Je vous remercie de m'avoir dit où _____ pour trouver du travail.",
+   "w": "chercher",
+   "vs": [
+    "cherché",
+    "cherchés"
+   ]
+  },
+  {
+   "id": "a2-108-306",
+   "q": "Je vous remercie de m'avoir dit où chercher pour _____ du travail.",
+   "w": "trouver",
+   "vs": [
+    "trouvé",
+    "trouvés",
+    "trouvées"
+   ]
+  },
+  {
+   "id": "a2-109-307",
+   "q": "_____ monsieur Roux, Au collège, vous avoir comme professeur a été un grand bonheur.",
+   "w": "Cher",
+   "vs": [
+    "chere",
+    "chers"
+   ]
+  },
+  {
+   "id": "a2-109-307",
+   "q": "Cher monsieur Roux, Au collège, vous avoir comme _____ a été un grand bonheur.",
+   "w": "professeur",
+   "vs": [
+    "professeure",
+    "professeurs"
+   ]
+  },
+  {
+   "id": "a2-109-308",
+   "q": "Vous m'avez _____ la motivation et le courage de continuer jusqu'au bout.",
+   "w": "donné",
+   "vs": [
+    "donner",
+    "donnés"
+   ]
+  },
+  {
+   "id": "a2-109-308",
+   "q": "Vous m'avez donné la motivation et le courage de _____ jusqu'au bout.",
+   "w": "continuer",
+   "vs": [
+    "continuez"
+   ]
+  },
+  {
+   "id": "a2-109-309",
+   "q": "Je vous remercie pour tout ce que vous m'avez _____.",
+   "w": "apporté",
+   "vs": [
+    "apporter"
+   ]
+  },
+  {
+   "id": "a2-110-311",
+   "q": "Nous proposons des _____ « nature » avec des animateurs qui connaissent très bien la faune et la flore.",
+   "w": "sorties",
+   "vs": [
+    "sortie",
+    "sorti",
+    "sortis"
+   ]
+  },
+  {
+   "id": "a2-110-312",
+   "q": "Connaître la nature permet de mieux la _____.",
+   "w": "respecter",
+   "vs": [
+    "respecté",
+    "respectez"
+   ]
+  },
+  {
+   "id": "a2-110-313",
+   "q": "Une autre _____ de notre activité, c'est de sensibiliser le public au problème du gaspillage.",
+   "w": "partie",
+   "vs": [
+    "parties",
+    "parti",
+    "partis"
+   ]
+  },
+  {
+   "id": "a2-110-313",
+   "q": "Une autre partie de notre _____, c'est de sensibiliser le public au problème du gaspillage.",
+   "w": "activité",
+   "vs": [
+    "activités"
+   ]
+  },
+  {
+   "id": "a2-110-317",
+   "q": "_____-la, respectez-la !",
+   "w": "Aimez",
+   "vs": [
+    "aimé",
+    "aimés",
+    "aimées"
+   ]
+  },
+  {
+   "id": "a2-110-317",
+   "q": "Aimez-la, _____-la !",
+   "w": "respectez",
+   "vs": [
+    "respecter",
+    "respecté"
+   ]
+  },
+  {
+   "id": "a2-113-320",
+   "q": "Dès le début de la saison pluvieuse, _____-juin.",
+   "w": "mai",
+   "vs": [
+    "mais"
+   ]
+  },
+  {
+   "id": "a2-113-321",
+   "q": "Cette levée de fonds a pour objectif de planter 500 000 _____.",
+   "w": "arbres",
+   "vs": [
+    "arbre"
+   ]
+  },
+  {
+   "id": "a2-113-322",
+   "q": "Je le répète, avec 500 francs CFA, vous pouvez planter cinq _____ forestiers.",
+   "w": "arbres",
+   "vs": [
+    "arbre"
+   ]
+  },
+  {
+   "id": "a2-113-323",
+   "q": "À vous de décider ce que vous voulez _____ à la forêt ivoirienne.",
+   "w": "apporter",
+   "vs": [
+    "apporté"
+   ]
+  },
+  {
+   "id": "a2-114-324",
+   "q": "La jeune femme connaissait des _____ de jardins qui ne jardinaient pas du tout.",
+   "w": "propriétaires",
+   "vs": [
+    "propriétaire"
+   ]
+  },
+  {
+   "id": "a2-114-326",
+   "q": "Alors elle a _____ un site Internet.",
+   "w": "créé",
+   "vs": [
+    "créer"
+   ]
+  },
+  {
+   "id": "a2-114-329",
+   "q": "Elle a donc mis en contact ces personnes pour qu'elles _____ jardiner ensemble.",
+   "w": "puissent",
+   "vs": [
+    "puisse"
+   ]
+  },
+  {
+   "id": "a2-114-330",
+   "q": "Nous avons _____ Nadia qui nous parle de son expérience avec Plantezcheznous.",
+   "w": "rencontré",
+   "vs": [
+    "rencontrer",
+    "rencontrés"
+   ]
+  },
+  {
+   "id": "a2-114-330",
+   "q": "Nous avons rencontré Nadia qui nous _____ de son expérience avec Plantezcheznous.",
+   "w": "parle",
+   "vs": [
+    "parlent",
+    "parles"
+   ]
+  },
+  {
+   "id": "a2-114-332",
+   "q": "Très vite, j'ai été _____ par Alex, qui n'habite pas très loin de chez moi.",
+   "w": "contactée",
+   "vs": [
+    "contacter"
+   ]
+  },
+  {
+   "id": "a2-114-334",
+   "q": "Maintenant, mon jardin est _____ par une personne compétente et disponible.",
+   "w": "cultivé",
+   "vs": [
+    "cultiver"
+   ]
+  },
+  {
+   "id": "a2-114-335",
+   "q": "Il connaît très bien les plantes, il sait _____ dans un jardin.",
+   "w": "travailler",
+   "vs": [
+    "travaillé"
+   ]
+  },
+  {
+   "id": "a2-114-336",
+   "q": "De temps en temps, je lui _____ des conseils et il m'explique comment faire.",
+   "w": "demande",
+   "vs": [
+    "demandent"
+   ]
+  },
+  {
+   "id": "a2-114-336",
+   "q": "De temps en temps, je lui demande des conseils et il m'explique _____ faire.",
+   "w": "comment",
+   "vs": [
+    "comme"
+   ]
+  },
+  {
+   "id": "a2-114-337",
+   "q": "Je lui ai _____ les clés de chez moi.",
+   "w": "donné",
+   "vs": [
+    "donner",
+    "donnés"
+   ]
+  },
+  {
+   "id": "a2-114-337",
+   "q": "Je lui ai donné les _____ de chez moi.",
+   "w": "clés",
+   "vs": [
+    "clé"
+   ]
+  },
+  {
+   "id": "b1-1-0",
+   "q": "Vous vous êtes mis(e) au piano à _____ âge, vous ?",
+   "w": "quel",
+   "vs": [
+    "quels"
+   ]
+  },
+  {
+   "id": "b1-2-1",
+   "q": "Bonjour François, _____ vas-tu ?",
+   "w": "comment",
+   "vs": [
+    "comme"
+   ]
+  },
+  {
+   "id": "b1-2-2",
+   "q": "Avant, ils m'envoyaient des _____ sur mon téléphone et je ne les voyais pas bien.",
+   "w": "photos",
+   "vs": [
+    "photo"
+   ]
+  },
+  {
+   "id": "b1-2-3",
+   "q": "Ils ont fait du _____, ils ont visité des châteaux et ils se sont perdus dans un labyrinthe.",
+   "w": "vélo",
+   "vs": [
+    "vélos"
+   ]
+  },
+  {
+   "id": "b1-2-3",
+   "q": "Ils ont fait du vélo, ils ont _____ des châteaux et ils se sont perdus dans un labyrinthe.",
+   "w": "visité",
+   "vs": [
+    "visiter"
+   ]
+  },
+  {
+   "id": "b1-2-4",
+   "q": "Moi aussi, quand j'étais petit, j'_____ souvent dans le Val de Loire.",
+   "w": "allais",
+   "vs": [
+    "allait"
+   ]
+  },
+  {
+   "id": "b1-2-5",
+   "q": "À l'époque, mon oncle et ma tante _____ là-bas.",
+   "w": "habitaient",
+   "vs": [
+    "habitais",
+    "habitait"
+   ]
+  },
+  {
+   "id": "b1-2-6",
+   "q": "Puis un _____, mon oncle a changé de travail et ils ont déménagé à Marseille.",
+   "w": "jour",
+   "vs": [
+    "jours"
+   ]
+  },
+  {
+   "id": "b1-2-6",
+   "q": "Puis un jour, mon oncle a _____ de travail et ils ont déménagé à Marseille.",
+   "w": "changé",
+   "vs": [
+    "changer"
+   ]
+  },
+  {
+   "id": "b1-2-6",
+   "q": "Puis un jour, mon oncle a changé de travail et ils ont _____ à Marseille.",
+   "w": "déménagé",
+   "vs": [
+    "déménager"
+   ]
+  },
+  {
+   "id": "b1-2-8",
+   "q": "Et sur cette _____, c'est bien toi ?",
+   "w": "photo",
+   "vs": [
+    "photos"
+   ]
+  },
+  {
+   "id": "b1-2-9",
+   "q": "Je lisais tranquillement quand ma _____ et mon gendre sont arrivés par surprise avec un gâteau.",
+   "w": "fille",
+   "vs": [
+    "filles"
+   ]
+  },
+  {
+   "id": "b1-2-9",
+   "q": "Je lisais tranquillement quand ma fille et mon gendre sont _____ par surprise avec un gâteau.",
+   "w": "arrivés",
+   "vs": [
+    "arriver",
+    "arrivé",
+    "arrivée"
+   ]
+  },
+  {
+   "id": "b1-2-11",
+   "q": "Nous avons _____ un moment très agréable.",
+   "w": "passé",
+   "vs": [
+    "passer",
+    "passée",
+    "passés"
+   ]
+  },
+  {
+   "id": "b1-2-11",
+   "q": "Nous avons passé un moment très _____.",
+   "w": "agréable",
+   "vs": [
+    "agréables"
+   ]
+  },
+  {
+   "id": "b1-2-12",
+   "q": "Tu as vraiment une _____ en or !",
+   "w": "famille",
+   "vs": [
+    "familles"
+   ]
+  },
+  {
+   "id": "b1-3-13",
+   "q": "Tu as _____ L'Amour est dans le pré hier soir ?",
+   "w": "regardé",
+   "vs": [
+    "regarder",
+    "regardés"
+   ]
+  },
+  {
+   "id": "b1-3-13",
+   "q": "Tu as regardé L'Amour est dans le pré hier _____ ?",
+   "w": "soir",
+   "vs": [
+    "soirs"
+   ]
+  },
+  {
+   "id": "b1-3-15",
+   "q": "Mais oui, je t'en ai déjà _____.",
+   "w": "parlé",
+   "vs": [
+    "parler",
+    "parlez",
+    "parlés"
+   ]
+  },
+  {
+   "id": "b1-3-17",
+   "q": "Tu n'es pas en train de _____ En thérapie ?",
+   "w": "regarder",
+   "vs": [
+    "regardé",
+    "regardés"
+   ]
+  },
+  {
+   "id": "b1-3-20",
+   "q": "Normalement, je ne m'_____ pas spécialement à la psychologie, mais là, j'ai aimé tout de suite !",
+   "w": "intéresse",
+   "vs": [
+    "intéressent"
+   ]
+  },
+  {
+   "id": "b1-3-20",
+   "q": "Normalement, je ne m'intéresse pas spécialement à la psychologie, mais là, j'ai _____ tout de suite !",
+   "w": "aimé",
+   "vs": [
+    "aimez",
+    "aimés",
+    "aimées"
+   ]
+  },
+  {
+   "id": "b1-3-21",
+   "q": "_____ personnage tu préfères ?",
+   "w": "Quel",
+   "vs": [
+    "quels"
+   ]
+  },
+  {
+   "id": "b1-3-21",
+   "q": "Quel personnage tu _____ ?",
+   "w": "préfères",
+   "vs": [
+    "préfèrent",
+    "préfère"
+   ]
+  },
+  {
+   "id": "b1-3-23",
+   "q": "Il est un peu _____ avec le divorce de ses parents et je le trouve attachant.",
+   "w": "perdu",
+   "vs": [
+    "perdus"
+   ]
+  },
+  {
+   "id": "b1-3-23",
+   "q": "Il est un peu perdu avec le divorce de ses parents et je le _____ attachant.",
+   "w": "trouve",
+   "vs": [
+    "trouvent"
+   ]
+  },
+  {
+   "id": "b1-3-24",
+   "q": "Moi je _____ Inès et ses questions sur son désir d'avoir des enfants, de tomber enceinte.",
+   "w": "préfère",
+   "vs": [
+    "préfèrent",
+    "préfères"
+   ]
+  },
+  {
+   "id": "b1-3-24",
+   "q": "Moi je préfère Inès et ses questions sur son désir d'avoir des enfants, de _____ enceinte.",
+   "w": "tomber",
+   "vs": [
+    "tombé",
+    "tombée",
+    "tombés"
+   ]
+  },
+  {
+   "id": "b1-3-25",
+   "q": "Ah oui, je me _____ quel choix elle va faire.",
+   "w": "demande",
+   "vs": [
+    "demandent"
+   ]
+  },
+  {
+   "id": "b1-3-25",
+   "q": "Ah oui, je me demande _____ choix elle va faire.",
+   "w": "quel",
+   "vs": [
+    "quels"
+   ]
+  },
+  {
+   "id": "b1-8-30",
+   "q": "Martin et moi sommes des _____ de longue date.",
+   "w": "amis",
+   "vs": [
+    "ami",
+    "amie"
+   ]
+  },
+  {
+   "id": "b1-8-33",
+   "q": "Je suis content d'avoir un _____ comme ça !",
+   "w": "ami",
+   "vs": [
+    "amie",
+    "amis"
+   ]
+  },
+  {
+   "id": "b1-8-34",
+   "q": "Quand je suis _____ à l'université, je ne connaissais personne.",
+   "w": "arrivé",
+   "vs": [
+    "arriver",
+    "arrivée",
+    "arrivés"
+   ]
+  },
+  {
+   "id": "b1-8-34",
+   "q": "Quand je suis arrivé à l'université, je ne _____ personne.",
+   "w": "connaissais",
+   "vs": [
+    "connaissait"
+   ]
+  },
+  {
+   "id": "b1-8-35",
+   "q": "En plus, comme j'étais assez timide, j'avais du mal à me faire des _____.",
+   "w": "amis",
+   "vs": [
+    "ami",
+    "amie"
+   ]
+  },
+  {
+   "id": "b1-8-38",
+   "q": "Mon _____ Johan vit une période difficile et il a beaucoup de peines et de soucis.",
+   "w": "ami",
+   "vs": [
+    "amie",
+    "amis"
+   ]
+  },
+  {
+   "id": "b1-8-39",
+   "q": "Je décroche souvent mon téléphone pour prendre de ses _____.",
+   "w": "nouvelles",
+   "vs": [
+    "nouvelle"
+   ]
+  },
+  {
+   "id": "b1-8-40",
+   "q": "Et lui aussi, il m'a ouvert ses bras quand je n'_____ pas bien !",
+   "w": "allais",
+   "vs": [
+    "allait"
+   ]
+  },
+  {
+   "id": "b1-8-42",
+   "q": "Mais mon _____ ami, c'était Sam, mon petit compagnon à quatre pattes.",
+   "w": "meilleur",
+   "vs": [
+    "meilleure",
+    "meilleurs",
+    "meilleures"
+   ]
+  },
+  {
+   "id": "b1-8-42",
+   "q": "Mais mon meilleur _____, c'était Sam, mon petit compagnon à quatre pattes.",
+   "w": "ami",
+   "vs": [
+    "amie",
+    "amis"
+   ]
+  },
+  {
+   "id": "b1-8-43",
+   "q": "Je pouvais tout lui _____ et il ne me jugeait jamais.",
+   "w": "raconter",
+   "vs": [
+    "raconté",
+    "racontez",
+    "racontées"
+   ]
+  },
+  {
+   "id": "b1-8-44",
+   "q": "Je ne sais pas s'il me comprenait mais il avait une _____ formidable !",
+   "w": "écoute",
+   "vs": [
+    "écoutent"
+   ]
+  },
+  {
+   "id": "b1-9-49",
+   "q": "Une _____ que la conversation est lancée, c'est parti.",
+   "w": "fois",
+   "vs": [
+    "foie"
+   ]
+  },
+  {
+   "id": "b1-9-49",
+   "q": "Une fois que la conversation est lancée, c'est _____.",
+   "w": "parti",
+   "vs": [
+    "partie",
+    "partis",
+    "parties"
+   ]
+  },
+  {
+   "id": "b1-15-54",
+   "q": "Eh bien cette plateforme, justement, elle vous propose de _____ une heure par mois.",
+   "w": "donner",
+   "vs": [
+    "donné",
+    "donnés"
+   ]
+  },
+  {
+   "id": "b1-15-54",
+   "q": "Eh bien cette plateforme, justement, elle vous propose de donner une _____ par mois.",
+   "w": "heure",
+   "vs": [
+    "heures"
+   ]
+  },
+  {
+   "id": "b1-15-54",
+   "q": "Eh bien cette plateforme, justement, elle vous propose de donner une heure par _____.",
+   "w": "mois",
+   "vs": [
+    "moi"
+   ]
+  },
+  {
+   "id": "b1-15-58",
+   "q": "Pour lui, _____ une heure par mois de son temps est à la portée de tous.",
+   "w": "donner",
+   "vs": [
+    "donné",
+    "donnés"
+   ]
+  },
+  {
+   "id": "b1-15-58",
+   "q": "Pour lui, donner une _____ par mois de son temps est à la portée de tous.",
+   "w": "heure",
+   "vs": [
+    "heures"
+   ]
+  },
+  {
+   "id": "b1-15-58",
+   "q": "Pour lui, donner une heure par _____ de son temps est à la portée de tous.",
+   "w": "mois",
+   "vs": [
+    "moi"
+   ]
+  },
+  {
+   "id": "b1-16-59",
+   "q": "Est-ce que tu es sensible aux _____ de politesse ?",
+   "w": "règles",
+   "vs": [
+    "règle"
+   ]
+  },
+  {
+   "id": "b1-16-61",
+   "q": "Vous vous saluez tous les _____ ?",
+   "w": "jours",
+   "vs": [
+    "jour"
+   ]
+  },
+  {
+   "id": "b1-16-62",
+   "q": "Vous saluez-vous tous les _____ ?",
+   "w": "jours",
+   "vs": [
+    "jour"
+   ]
+  },
+  {
+   "id": "b1-16-63",
+   "q": "_____ forme d'impolitesse avez-vous du mal à accepter ?",
+   "w": "Quelle",
+   "vs": [
+    "quelles"
+   ]
+  },
+  {
+   "id": "b1-16-63",
+   "q": "Quelle forme d'impolitesse avez-vous du mal à _____ ?",
+   "w": "accepter",
+   "vs": [
+    "acceptez",
+    "acceptés"
+   ]
+  },
+  {
+   "id": "b1-16-64",
+   "q": "_____ forme d'impolitesse est-ce que vous avez du mal à accepter ?",
+   "w": "Quelle",
+   "vs": [
+    "quelles"
+   ]
+  },
+  {
+   "id": "b1-16-64",
+   "q": "Quelle forme d'impolitesse est-ce que vous avez du mal à _____ ?",
+   "w": "accepter",
+   "vs": [
+    "acceptez",
+    "acceptés"
+   ]
+  },
+  {
+   "id": "b1-16-65",
+   "q": "Pourquoi n'_____-t-elle pas utiliser les caisses rapides ?",
+   "w": "aime",
+   "vs": [
+    "aiment"
+   ]
+  },
+  {
+   "id": "b1-16-65",
+   "q": "Pourquoi n'aime-t-elle pas _____ les caisses rapides ?",
+   "w": "utiliser",
+   "vs": [
+    "utilisé",
+    "utilisez",
+    "utilisés"
+   ]
+  },
+  {
+   "id": "b1-17-66",
+   "q": "Je passe devant cette _____ tous les jours mais je ne suis jamais entrée.",
+   "w": "salle",
+   "vs": [
+    "salles"
+   ]
+  },
+  {
+   "id": "b1-17-66",
+   "q": "Je passe devant cette salle tous les _____ mais je ne suis jamais entrée.",
+   "w": "jours",
+   "vs": [
+    "jour"
+   ]
+  },
+  {
+   "id": "b1-17-66",
+   "q": "Je passe devant cette salle tous les jours mais je ne suis jamais _____.",
+   "w": "entrée",
+   "vs": [
+    "entrer",
+    "entré",
+    "entrées"
+   ]
+  },
+  {
+   "id": "b1-17-67",
+   "q": "Mais c'est quand même un sport individuel, tu es _____ à escalader cette voie, non ?",
+   "w": "seul",
+   "vs": [
+    "seule"
+   ]
+  },
+  {
+   "id": "b1-17-67",
+   "q": "Mais c'est quand même un sport individuel, tu es seul à escalader cette _____, non ?",
+   "w": "voie",
+   "vs": [
+    "vois"
+   ]
+  },
+  {
+   "id": "b1-17-68",
+   "q": "Et les autres, ce sont des _____, des collègues ?",
+   "w": "amis",
+   "vs": [
+    "ami",
+    "amie"
+   ]
+  },
+  {
+   "id": "b1-17-68",
+   "q": "Et les autres, ce sont des amis, des _____ ?",
+   "w": "collègues",
+   "vs": [
+    "collègue"
+   ]
+  },
+  {
+   "id": "b1-17-69",
+   "q": "Sinon, les autres, ce sont des gens que j'ai _____ à la salle.",
+   "w": "rencontrés",
+   "vs": [
+    "rencontrer",
+    "rencontré"
+   ]
+  },
+  {
+   "id": "b1-17-69",
+   "q": "Sinon, les autres, ce sont des gens que j'ai rencontrés à la _____.",
+   "w": "salle",
+   "vs": [
+    "salles"
+   ]
+  },
+  {
+   "id": "b1-17-70",
+   "q": "Comme j'y vais toujours aux mêmes _____, je retrouve généralement les mêmes personnes.",
+   "w": "horaires",
+   "vs": [
+    "horaire"
+   ]
+  },
+  {
+   "id": "b1-17-70",
+   "q": "Comme j'y vais toujours aux mêmes horaires, je _____ généralement les mêmes personnes.",
+   "w": "retrouve",
+   "vs": [
+    "retrouvent"
+   ]
+  },
+  {
+   "id": "b1-17-71",
+   "q": "Tu finis par te faire des _____.",
+   "w": "amis",
+   "vs": [
+    "ami",
+    "amie"
+   ]
+  },
+  {
+   "id": "b1-17-73",
+   "q": "Mais tu _____ t'y mettre aussi !",
+   "w": "pourrais",
+   "vs": [
+    "pourrai",
+    "pourrait"
+   ]
+  },
+  {
+   "id": "b1-17-75",
+   "q": "Ça me _____ du bien de reprendre une activité physique.",
+   "w": "ferait",
+   "vs": [
+    "ferais"
+   ]
+  },
+  {
+   "id": "b1-17-75",
+   "q": "Ça me ferait du bien de reprendre une _____ physique.",
+   "w": "activité",
+   "vs": [
+    "activités"
+   ]
+  },
+  {
+   "id": "b1-18-77",
+   "q": "Alors ce matin, vous allez nous _____ de musique avec le dispositif Demos.",
+   "w": "parler",
+   "vs": [
+    "parlé",
+    "parlez",
+    "parlés"
+   ]
+  },
+  {
+   "id": "b1-18-78",
+   "q": "Demos leur confie un instrument dans le but d'ouvrir le monde de la musique _____ à tous.",
+   "w": "classique",
+   "vs": [
+    "classiques"
+   ]
+  },
+  {
+   "id": "b1-18-79",
+   "q": "_____ les enfants arrivent-ils dans ce dispositif ?",
+   "w": "Comment",
+   "vs": [
+    "comme"
+   ]
+  },
+  {
+   "id": "b1-18-81",
+   "q": "Pour la plupart, c'est la _____ fois qu'ils touchent un instrument.",
+   "w": "première",
+   "vs": [
+    "premières",
+    "premièr",
+    "premièrs"
+   ]
+  },
+  {
+   "id": "b1-18-81",
+   "q": "Pour la plupart, c'est la première _____ qu'ils touchent un instrument.",
+   "w": "fois",
+   "vs": [
+    "foie"
+   ]
+  },
+  {
+   "id": "b1-18-82",
+   "q": "Et puis c'est un dispositif d'apprentissage et de _____ à effet domino.",
+   "w": "partage",
+   "vs": [
+    "partagent"
+   ]
+  },
+  {
+   "id": "b1-18-83",
+   "q": "En effet, c'est un événement pour toute la _____ quand l'instrument arrive.",
+   "w": "famille",
+   "vs": [
+    "familles"
+   ]
+  },
+  {
+   "id": "b1-18-83",
+   "q": "En effet, c'est un événement pour toute la famille quand l'instrument _____.",
+   "w": "arrive",
+   "vs": [
+    "arrivent"
+   ]
+  },
+  {
+   "id": "b1-19-84",
+   "q": "Ah salut Charlotte, _____ vas-tu ?",
+   "w": "comment",
+   "vs": [
+    "comme"
+   ]
+  },
+  {
+   "id": "b1-19-86",
+   "q": "Le programme est enfin _____ !",
+   "w": "sorti",
+   "vs": [
+    "sortie",
+    "sortis",
+    "sorties"
+   ]
+  },
+  {
+   "id": "b1-19-88",
+   "q": "Tu te souviens de la pièce de Molière l'_____ dernière ?",
+   "w": "année",
+   "vs": [
+    "années"
+   ]
+  },
+  {
+   "id": "b1-19-88",
+   "q": "Tu te souviens de la pièce de Molière l'année _____ ?",
+   "w": "dernière",
+   "vs": [
+    "dernièr"
+   ]
+  },
+  {
+   "id": "b1-19-90",
+   "q": "Ça te _____ d'y faire un tour ?",
+   "w": "dirait",
+   "vs": [
+    "dirais"
+   ]
+  },
+  {
+   "id": "b1-19-92",
+   "q": "Il m'avait fait _____ les coulisses.",
+   "w": "visiter",
+   "vs": [
+    "visité"
+   ]
+  },
+  {
+   "id": "b1-19-93",
+   "q": "Je ne _____ pas mais je suis curieuse de découvrir.",
+   "w": "connais",
+   "vs": [
+    "connait"
+   ]
+  },
+  {
+   "id": "b1-19-94",
+   "q": "Mouais, moi c'est pas trop mon style la musique _____.",
+   "w": "classique",
+   "vs": [
+    "classiques"
+   ]
+  },
+  {
+   "id": "b1-19-95",
+   "q": "Tu ferais mieux d'y aller avec _____un qui aime ça.",
+   "w": "quelqu'",
+   "vs": [
+    "quelque",
+    "quelques"
+   ]
+  },
+  {
+   "id": "b1-19-95",
+   "q": "Tu ferais mieux d'y aller avec quelqu'un qui _____ ça.",
+   "w": "aime",
+   "vs": [
+    "aiment"
+   ]
+  },
+  {
+   "id": "b1-19-96",
+   "q": "Et puis ben nous, on peut se _____ samedi soir avant les concerts.",
+   "w": "retrouver",
+   "vs": [
+    "retrouvé"
+   ]
+  },
+  {
+   "id": "b1-19-96",
+   "q": "Et puis ben nous, on peut se retrouver samedi _____ avant les concerts.",
+   "w": "soir",
+   "vs": [
+    "soirs"
+   ]
+  },
+  {
+   "id": "b1-19-97",
+   "q": "Les vols de rapaces, ça _____ t'intéresser, toi qui adores les oiseaux.",
+   "w": "pourrait",
+   "vs": [
+    "pourrais"
+   ]
+  },
+  {
+   "id": "b1-19-100",
+   "q": "Dans un monde idéal, les événements culturels _____ gratuits…",
+   "w": "seraient",
+   "vs": [
+    "serai",
+    "serais",
+    "serait"
+   ]
+  },
+  {
+   "id": "b1-19-101",
+   "q": "Au fait, ça t'ennuierait de t'_____ des places pour nous deux ?",
+   "w": "occuper",
+   "vs": [
+    "occupée"
+   ]
+  },
+  {
+   "id": "b1-19-102",
+   "q": "Je vais être assez occupée ces _____-ci.",
+   "w": "jours",
+   "vs": [
+    "jour"
+   ]
+  },
+  {
+   "id": "b1-19-106",
+   "q": "Au cas où elle _____ intéressée par le festival !",
+   "w": "serait",
+   "vs": [
+    "serais",
+    "seraient"
+   ]
+  },
+  {
+   "id": "b1-19-106",
+   "q": "Au cas où elle serait _____ par le festival !",
+   "w": "intéressée",
+   "vs": [
+    "intéresser",
+    "intéressé",
+    "intéressés"
+   ]
+  },
+  {
+   "id": "b1-20-111",
+   "q": "Lui qui a toujours _____ chanter se fait appeler Soprano.",
+   "w": "aimé",
+   "vs": [
+    "aimez",
+    "aimés",
+    "aimées"
+   ]
+  },
+  {
+   "id": "b1-20-111",
+   "q": "Lui qui a toujours aimé chanter se fait _____ Soprano.",
+   "w": "appeler",
+   "vs": [
+    "appelé"
+   ]
+  },
+  {
+   "id": "b1-24-115",
+   "q": "Pour la _____ fois, 115 films sortis en 2019 ont été passés au peigne fin.",
+   "w": "première",
+   "vs": [
+    "premières",
+    "premièr",
+    "premièrs"
+   ]
+  },
+  {
+   "id": "b1-24-115",
+   "q": "Pour la première _____, 115 films sortis en 2019 ont été passés au peigne fin.",
+   "w": "fois",
+   "vs": [
+    "foie"
+   ]
+  },
+  {
+   "id": "b1-24-115",
+   "q": "Pour la première fois, 115 films _____ en 2019 ont été passés au peigne fin.",
+   "w": "sortis",
+   "vs": [
+    "sorti",
+    "sortie",
+    "sorties"
+   ]
+  },
+  {
+   "id": "b1-24-115",
+   "q": "Pour la première fois, 115 films sortis en 2019 ont été _____ au peigne fin.",
+   "w": "passés",
+   "vs": [
+    "passer",
+    "passé",
+    "passée"
+   ]
+  },
+  {
+   "id": "b1-24-119",
+   "q": "Cette _____-là, Omar Sy reçoit le César du meilleur acteur pour le film Intouchable.",
+   "w": "année",
+   "vs": [
+    "années"
+   ]
+  },
+  {
+   "id": "b1-24-119",
+   "q": "Cette année-là, Omar Sy reçoit le César du _____ acteur pour le film Intouchable.",
+   "w": "meilleur",
+   "vs": [
+    "meilleure",
+    "meilleurs",
+    "meilleures"
+   ]
+  },
+  {
+   "id": "b1-24-121",
+   "q": "Un _____ pas loin d'être suffisant.",
+   "w": "premier",
+   "vs": [
+    "premiere",
+    "premiers",
+    "premieres"
+   ]
+  },
+  {
+   "id": "b1-24-122",
+   "q": "Le cinéma demeure un milieu _____, centralisé et dominé par les hommes blancs.",
+   "w": "fermé",
+   "vs": [
+    "fermer"
+   ]
+  },
+  {
+   "id": "b1-24-123",
+   "q": "Le changement _____ venir du public.",
+   "w": "pourrait",
+   "vs": [
+    "pourrais"
+   ]
+  },
+  {
+   "id": "b1-26-126",
+   "q": "Nous serons _____ à une représentation seulement.",
+   "w": "invités",
+   "vs": [
+    "inviter",
+    "invité"
+   ]
+  },
+  {
+   "id": "b1-26-128",
+   "q": "Elle en a _____ juste une.",
+   "w": "mangé",
+   "vs": [
+    "manger",
+    "mangés"
+   ]
+  }
+ ]
+}
