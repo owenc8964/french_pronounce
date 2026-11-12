@@ -3,7 +3,7 @@
 Owen：「簡體中文的可以翻譯成繁體並台灣口語一點」→ 背景助手一套一套對照法文重翻
 輸入：assets/tcf/exam/_polish/polish_<id>.json：{"<題號>": {"<欄位>": "新中文"}}（⛔ 考題資料夾，gitignore）
 檢查不過的題整題不收（答案字母要一致、原本引用的法文片段要還在、不能有大陸用詞）。
-用法：python3 tools/exam_zh_polish_apply.py [--write]   寫完要再跑 tools/exam_build_mock_data.py
+用法：python3 tools/exam_zh_polish_apply.py [--write]   寫完要再跑 tools/exam_morph.py listening（逐字稿可能被切短）和 tools/exam_build_mock_data.py
 """
 import difflib, glob, json, os, re, shutil, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,8 +31,11 @@ def check(skill, q, f, new):
     if lost: return '法文片段不見：' + lost[0][:40]
     return ''
 
+ALLOW_P = os.path.join(EX, '_polish', 'allow.json')
+ALLOW = set(json.load(open(ALLOW_P))) if os.path.exists(ALLOW_P) else set()
+
 def main(write):
-    files = sorted(glob.glob(os.path.join(EX, '_polish', 'polish_*.json')))
+    files = sorted(glob.glob(os.path.join(EX, '_polish', 'polish_*.json')))   # allow.json：人工確認過可以換掉舊引文的題（["co_6#17"]）
     for skill in ('listening', 'reading'):
         p = os.path.join(EX, f'{skill}.json'); D = json.load(open(p, encoding='utf-8'))
         byid = {t['id']: t for t in D['tests']}; changed = 0
@@ -48,8 +51,15 @@ def main(write):
                 for f, v in fs.items():
                     e = check(skill, q, f, v) if f in FIELDS[skill] else '欄位不對'
                     if e: errs.append(f + '：' + e)
+                if errs and f'{tid}#{qn}' in ALLOW and all('法文片段不見' in e for e in errs): errs = []   # 人工看過：改正錯的引文
                 if errs: print(tid, qn, '；'.join(errs)); bad += 1; continue
                 for f, v in fs.items(): q[f] = v.strip()
+                if skill == 'listening' and q.get('script_fr'):     # 逐字稿尾巴混到的中文解析（PDF 切錯欄），解析已重寫進 script_zh → 切掉
+                    L = q['script_fr'].split('\n'); k = next((i for i, l in enumerate(L) if re.search(r'[一-鿿]', l)), None)
+                    if k is not None:
+                        L = L[:k]
+                        while L and L[-1].strip() in ('–', '-', ''): L.pop()
+                        q['script_fr'] = '\n'.join(L); q.pop('tok', None)
                 ok += 1; changed += 1
             print(f'{tid}: 收 {ok} 題，退 {bad} 題')
         if write and changed:
