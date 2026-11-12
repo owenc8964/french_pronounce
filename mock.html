@@ -1014,24 +1014,50 @@ function wordPopShow(el) {
   const me = full.indexOf(w, off), st = Math.max(full.lastIndexOf('.', me - 1), full.lastIndexOf('?', me - 1), full.lastIndexOf('!', me - 1), full.lastIndexOf('\n', me - 1)) + 1;
   let en = full.slice(me).search(/[.?!\n]/); en = en < 0 ? full.length : me + en + 1;
   const sent = full.slice(st, en).trim();
+  const key = String(l).toLowerCase() + '|' + p, P = blk.dataset;
+  const row = { ts: Date.now(), w, lemma: l, pos: p, f, zh: glossOf(l, p), test: P.t, q: +P.q, skill: P.k, res: P.r, sent };
+  if (P.t) vocabSend([row]);                     /* 查過就記（統計用）；⭐ 才進複習 */
   const render = () => {
-    const zh = glossOf(l, p);
+    const zh = glossOf(l, p), on = !!vocabStars()[key];
     pop.innerHTML = `<div><span class="w">${esc(w)}</span>${l.toLowerCase() !== w.toLowerCase() ? ' → <span class="lem">' + esc(l) + '</span>' : ''}<span class="pos">${POS_ZH[p] || ''}</span></div>` +
       (ten ? `<div class="ten">${ten}</div>` : '') +
       `<div class="zh">${zh ? esc(zh) : (GLOSS_ST === 1 ? '…' : '<span style="color:#606878">（字義表還沒收這個字）</span>')}</div>` +
       `<div class="lk"><a target="_blank" rel="noopener" href="https://www.wordreference.com/fren/${encodeURIComponent(l)}">WordReference</a>` +
       `<a target="_blank" rel="noopener" href="https://www.deepl.com/translator#fr/zh-hant/${encodeURIComponent(sent)}">整句 DeepL</a>` +
+      (P.t ? `<button id="wpStar" style="${on ? 'border-color:#f0c060;color:#f0c060' : ''}">${on ? '⭐ 要背（再按取消）' : '☆ 要背'}</button>` : '') +
       `<button onclick="wordPopHide()">✕</button><span class="note">自動分析，偶爾會判錯</span></div>`;
+    const sb = document.getElementById('wpStar');
+    if (sb) sb.onclick = ev => { ev.stopPropagation(); const S = vocabStars(), nv = !S[key];
+      if (nv) S[key] = 1; else delete S[key]; try { localStorage.setItem('tcfmock_vocab_star', JSON.stringify(S)); } catch (e) {}
+      vocabSend([{ ...row, ts: Date.now(), zh: glossOf(l, p), star: nv }]); render(); };
   };
   render(); pop.classList.add('show');
   if (GLOSS_ST === 1) { const t = setInterval(() => { if (GLOSS_ST !== 1) { clearInterval(t); if (pop.classList.contains('show')) render(); } }, 200); }
+}
+/* ── 單字庫（11-12，規格 PRD_vocab_bank.md）：查過全記、⭐ 才進複習 → POST 給 Mac mini → 小鎮讀 ──
+   ⛔ 連不上（不在家、Mac mini 關機）先存 tcfmock_vocab_q，下次成功再補送 */
+function vocabAttr(q, t) {
+  let r = '';
+  if (cur && cur.test === t) { const i = t.questions.indexOf(q), a = i >= 0 ? cur.answers[i] : undefined;
+    r = a === null || a === undefined ? 'skip' : ('ABCD'[a] === q.answer ? 'ok' : 'bad'); }
+  return ` data-t="${esc(t.id)}" data-q="${q.q}" data-k="${t.skill || skill}" data-r="${r}"`;
+}
+function vocabStars() { try { return JSON.parse(localStorage.getItem('tcfmock_vocab_star')) || {}; } catch (e) { return {}; } }
+function vocabSend(rows) {
+  let q = []; try { q = JSON.parse(localStorage.getItem('tcfmock_vocab_q')) || []; } catch (e) {}
+  const all = q.concat(rows).slice(-500);
+  const keep = x => { try { localStorage.setItem('tcfmock_vocab_q', JSON.stringify(x)); } catch (e) {} };
+  keep([]);
+  fetch('/api/vocab', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ rows: all.slice(0, 200) }) })
+    .then(r => { if (!r.ok) throw 0; if (all.length > 200) vocabSend([]); })
+    .catch(() => { let now = []; try { now = JSON.parse(localStorage.getItem('tcfmock_vocab_q')) || []; } catch (e) {} keep(all.concat(now).slice(-500)); });
 }
 function detailHtml(q, t, inline) {   // inline：單題模式直接展開，圖片上面已經有了不重複
   const open = inline ? '<div class="rev-detail show">' : '<div class="rev-detail">';
   let h = open;
   if (t.skill === 'reading') {
     if (q.img && !inline) h += `<img src="${DATA_DIR}${q.img}" alt="document">`;
-    if (q.text_fr) h += '<h4>原文・點兩下查字</h4><p class="frt">' + frTokHtml(q.text_fr, q.tok, false) + '</p>';
+    if (q.text_fr) h += '<h4>原文・點兩下查字</h4><p class="frt"' + vocabAttr(q, t) + '>' + frTokHtml(q.text_fr, q.tok, false) + '</p>';
     if (q.src_zh)  h += '<h4>原文翻譯</h4><p>' + esc(q.src_zh) + '</p>';
     if (q.q_zh)    h += '<h4>題目翻譯</h4><p>' + esc(q.q_zh) + '</p>';
     if (q.key_zh)  h += '<h4>關鍵點解析</h4><p>' + esc(q.key_zh) + '</p>';
@@ -1045,7 +1071,7 @@ function detailHtml(q, t, inline) {   // inline：單題模式直接展開，圖
       const L = 'ABCD'[i], line = L + '. ' + esc(z);
       return L === q.answer ? '<b style="color:#60d090">' + line + '　← 正解</b>' : line;
     }).join('\n') + '</p>';
-    if (q.script_fr) h += '<h4>Transcription・點兩下查字</h4><p class="frt">' + frTokHtml(q.script_fr, q.tok, true) + '</p>';
+    if (q.script_fr) h += '<h4>Transcription・點兩下查字</h4><p class="frt"' + vocabAttr(q, t) + '>' + frTokHtml(q.script_fr, q.tok, true) + '</p>';
     if (q.script_zh) h += '<h4>翻譯與解析</h4><p>' + esc(q.script_zh) + '</p>';
   }
   if (h === open) h += '<p>（這題沒有附解析）</p>';
