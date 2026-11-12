@@ -220,6 +220,23 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
 .rev-detail p { font-size: 0.78rem; color: #aaa8a0; line-height: 1.65; white-space: pre-wrap; }
 .rev-detail img { width: 100%; border-radius: 6px; background: #fff; margin-bottom: 8px; }
 
+/* 點兩下查字（11-12） */
+.rev-detail p.frt { color: #cfd6e0; font-size: .86rem; }
+.tw { cursor: pointer; border-radius: 3px; touch-action: manipulation; }
+.tw.hit { background: #3c5a85; color: #fff; }
+.word-pop { position: fixed; left: 50%; transform: translateX(-50%); bottom: 86px; z-index: 60; width: min(560px, calc(100% - 24px));
+  background: #151b2c; border: 1.5px solid #3c5a85; border-radius: 12px; padding: 12px 14px; box-shadow: 0 8px 28px rgba(0,0,0,.55);
+  font-size: .9rem; color: #e0e4ea; line-height: 1.6; display: none; }
+.word-pop.show { display: block; }
+.word-pop .w { font-size: 1.15rem; font-weight: 700; color: #fff; }
+.word-pop .lem { color: #f0c060; font-weight: 700; }
+.word-pop .pos { color: #8090a8; font-size: .8rem; margin-left: 6px; }
+.word-pop .ten { color: #9ec5ff; }
+.word-pop .zh { margin-top: 4px; }
+.word-pop .lk { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.word-pop .lk a, .word-pop .lk button { padding: 4px 10px; border-radius: 8px; border: 1px solid #333c48; background: transparent; color: #aaa8a0; font: inherit; font-size: .8rem; text-decoration: none; cursor: pointer; }
+.word-pop .note { color: #606878; font-size: .7rem; margin-left: auto; }
+
 /* History */
 .hist-row { display: flex; gap: 10px; align-items: center; padding: 7px 0;
   border-bottom: 1px solid #141928; font-size: 0.76rem; }
@@ -915,11 +932,106 @@ function reflowFr(s) {
     .replace(/\s+(Question\s*\d)/g, '\n$1');
 }
 function togglePlay() { if (audioEl) audioEl.paused ? audioEl.play() : audioEl.pause(); }
+/* ── 點兩下查字（11-12 Owen：「詳解不夠詳細，可以我直接連點兩下原文就能知道翻譯或是哪個動詞的變形及時態」）──
+   原形／詞性／時態：tools/exam_morph.py 用 spaCy 依上下文標好，存在每題的 tok：[起, 迄, 原形, 詞性, 形態]
+   中文字義：assets/tcf/exam/gloss.js（window.TCF_GLOSS，key＝原形|詞性）
+   ⚠️ 自動分析，偶爾會判錯——彈窗有寫。 */
+const POS_ZH = { NOUN: '名詞', VERB: '動詞', AUX: '助動詞', ADJ: '形容詞', ADV: '副詞', PRON: '代名詞', DET: '限定詞', ADP: '介系詞',
+  CCONJ: '連接詞', SCONJ: '連接詞', PROPN: '專有名詞', NUM: '數字', INTJ: '感嘆詞' };
+const MT_ZH = { 'Ind.Pres': '現在式（présent）', 'Ind.Imp': '未完成過去式（imparfait）', 'Ind.Fut': '簡單未來式（futur simple）',
+  'Ind.Past': '簡單過去式（passé simple，書面語）', 'Cnd.Pres': '條件式（conditionnel présent）', 'Sub.Pres': '虛擬式（subjonctif présent）',
+  'Sub.Imp': '虛擬式未完成過去（書面語）', 'Imp.Pres': '命令式（impératif）', Ind: '直陳式' };
+const COMP_ZH = { PC: '複合過去式（passé composé）', PQP: '愈過去式（plus-que-parfait）', FA: '先未來式（futur antérieur）',
+  CP: '條件式過去（conditionnel passé）', SP: '虛擬式過去（subjonctif passé）', PA: '先過去式（passé antérieur，書面語）' };
+const PN_ZH = { '1.S': 'je', '2.S': 'tu', '3.S': 'il／elle／on', '1.P': 'nous', '2.P': 'vous', '3.P': 'ils／elles' };
+function morphZh(f) {
+  if (!f) return '';
+  if (f === 'Inf') return '原形（不定式）';
+  if (f === 'PartPast') return '過去分詞';
+  if (f === 'PartPres') return '現在分詞（-ant）';
+  if (f === 'InfPast') return '過去不定式（avoir／être＋過去分詞）';
+  if (f.startsWith('Pass.')) return '被動（être＋過去分詞）・' + morphZh(f.slice(5));
+  const a = f.split('.');
+  if (COMP_ZH[a[0]]) return COMP_ZH[a[0]] + (PN_ZH[a.slice(1).join('.')] ? '・' + PN_ZH[a.slice(1).join('.')] : '');
+  const mt = MT_ZH[a.slice(0, 2).join('.')] || MT_ZH[a[0]] || f, pn = PN_ZH[a.slice(2).join('.')];
+  return mt + (pn ? '・' + pn : '');
+}
+function frTokHtml(text, tok, reflow) {
+  text = String(text || '');
+  if (!tok || !tok.length) return esc(reflow ? reflowFr(text) : text);
+  const at = {}; tok.forEach(t => { at[t[0]] = t; });
+  let h = '', pos = 0;
+  const gap = (g, next) => {
+    if (!reflow) return esc(g);
+    g = g.replace(/\s+/g, ' ');
+    g = g.replace(/([.?!…])\s+(?=[«"–—-])/g, '$1\n');
+    if (next && /[.?!…]\s$/.test(g) && /^[A-ZÀ-Ý]/.test(next)) g = g.replace(/\s$/, '\n');
+    if (next && /^Question$/.test(next)) g = g.replace(/\s$/, '\n');
+    return esc(g);
+  };
+  tok.forEach(t => {
+    const [a, b, l, p, f] = t, w = text.slice(a, b);
+    h += gap(text.slice(pos, a), w);
+    let hw = '';
+    if (f && f.startsWith('Aux@')) { const ht = at[+f.slice(4, f.indexOf('|'))]; if (ht) hw = text.slice(ht[0], ht[1]); }
+    h += `<span class="tw" data-s="${a}" data-l="${esc(l || w)}" data-p="${p}" data-f="${esc(f || '')}"${hw ? ` data-h="${esc(hw)}"` : ''}>${esc(w)}</span>`;
+    pos = b;
+  });
+  return h + gap(text.slice(pos), '');
+}
+let GLOSS_ST = 0;
+function glossLoad() {
+  if (GLOSS_ST) return; GLOSS_ST = 1;
+  const sc = document.createElement('script'); sc.src = DATA_DIR + 'gloss.js?v=' + Date.now();
+  sc.onload = () => { GLOSS_ST = 2; }; sc.onerror = () => { GLOSS_ST = 3; }; document.head.appendChild(sc);
+}
+function glossOf(l, p) {
+  const G = window.TCF_GLOSS || {}, k = String(l).toLowerCase();
+  return G[k + '|' + p] || G[k + '|' + (p === 'AUX' ? 'VERB' : p === 'VERB' ? 'AUX' : '')] || G[k] || '';
+}
+let wpLast = null, wpT = 0;
+document.addEventListener('click', e => {
+  const el = e.target.closest && e.target.closest('.tw');
+  if (!el) { if (!(e.target.closest && e.target.closest('.word-pop'))) wordPopHide(); return; }
+  const now = Date.now();
+  if (wpLast === el && now - wpT < 450) { wpLast = null; wordPopShow(el); }
+  else { wpLast = el; wpT = now; }
+});
+function wordPopHide() { const p = document.getElementById('wordPop'); if (p) p.classList.remove('show'); document.querySelectorAll('.tw.hit').forEach(x => x.classList.remove('hit')); }
+function wordPopShow(el) {
+  glossLoad();
+  let pop = document.getElementById('wordPop');
+  if (!pop) { pop = document.createElement('div'); pop.id = 'wordPop'; pop.className = 'word-pop'; document.body.appendChild(pop); }
+  document.querySelectorAll('.tw.hit').forEach(x => x.classList.remove('hit')); el.classList.add('hit');
+  const w = el.textContent, l = el.dataset.l, p = el.dataset.p, f = el.dataset.f || '';
+  let ten = '';
+  if (f.startsWith('Aux@')) ten = '助動詞，跟後面的「' + esc(el.dataset.h || '') + '」一起組成：' + morphZh(f.slice(f.indexOf('|') + 1));
+  else ten = morphZh(f);
+  /* 整句：往前往後找到句號 */
+  const blk = el.closest('p'), sp = [...blk.querySelectorAll('.tw')], i = sp.indexOf(el);
+  const full = blk.textContent;
+  let off = 0; for (let k = 0; k < i; k++) off = full.indexOf(sp[k].textContent, off) + sp[k].textContent.length;
+  const me = full.indexOf(w, off), st = Math.max(full.lastIndexOf('.', me - 1), full.lastIndexOf('?', me - 1), full.lastIndexOf('!', me - 1), full.lastIndexOf('\n', me - 1)) + 1;
+  let en = full.slice(me).search(/[.?!\n]/); en = en < 0 ? full.length : me + en + 1;
+  const sent = full.slice(st, en).trim();
+  const render = () => {
+    const zh = glossOf(l, p);
+    pop.innerHTML = `<div><span class="w">${esc(w)}</span>${l.toLowerCase() !== w.toLowerCase() ? ' → <span class="lem">' + esc(l) + '</span>' : ''}<span class="pos">${POS_ZH[p] || ''}</span></div>` +
+      (ten ? `<div class="ten">${ten}</div>` : '') +
+      `<div class="zh">${zh ? esc(zh) : (GLOSS_ST === 1 ? '…' : '<span style="color:#606878">（字義表還沒收這個字）</span>')}</div>` +
+      `<div class="lk"><a target="_blank" rel="noopener" href="https://www.wordreference.com/fren/${encodeURIComponent(l)}">WordReference</a>` +
+      `<a target="_blank" rel="noopener" href="https://www.deepl.com/translator#fr/zh-hant/${encodeURIComponent(sent)}">整句 DeepL</a>` +
+      `<button onclick="wordPopHide()">✕</button><span class="note">自動分析，偶爾會判錯</span></div>`;
+  };
+  render(); pop.classList.add('show');
+  if (GLOSS_ST === 1) { const t = setInterval(() => { if (GLOSS_ST !== 1) { clearInterval(t); if (pop.classList.contains('show')) render(); } }, 200); }
+}
 function detailHtml(q, t, inline) {   // inline：單題模式直接展開，圖片上面已經有了不重複
   const open = inline ? '<div class="rev-detail show">' : '<div class="rev-detail">';
   let h = open;
   if (t.skill === 'reading') {
     if (q.img && !inline) h += `<img src="${DATA_DIR}${q.img}" alt="document">`;
+    if (q.text_fr) h += '<h4>原文・點兩下查字</h4><p class="frt">' + frTokHtml(q.text_fr, q.tok, false) + '</p>';
     if (q.src_zh)  h += '<h4>原文翻譯</h4><p>' + esc(q.src_zh) + '</p>';
     if (q.q_zh)    h += '<h4>題目翻譯</h4><p>' + esc(q.q_zh) + '</p>';
     if (q.key_zh)  h += '<h4>關鍵點解析</h4><p>' + esc(q.key_zh) + '</p>';
@@ -933,7 +1045,7 @@ function detailHtml(q, t, inline) {   // inline：單題模式直接展開，圖
       const L = 'ABCD'[i], line = L + '. ' + esc(z);
       return L === q.answer ? '<b style="color:#60d090">' + line + '　← 正解</b>' : line;
     }).join('\n') + '</p>';
-    if (q.script_fr) h += '<h4>Transcription</h4><p>' + esc(reflowFr(q.script_fr)) + '</p>';
+    if (q.script_fr) h += '<h4>Transcription・點兩下查字</h4><p class="frt">' + frTokHtml(q.script_fr, q.tok, true) + '</p>';
     if (q.script_zh) h += '<h4>翻譯與解析</h4><p>' + esc(q.script_zh) + '</p>';
   }
   if (h === open) h += '<p>（這題沒有附解析）</p>';
