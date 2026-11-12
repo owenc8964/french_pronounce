@@ -1108,6 +1108,7 @@ function count(k, goodOnly){ return bag.filter(function(b){ return b.k===k && (!
 /* ⛏ 礦石：兩敲＝兩題動詞；兩題都對＝完整礦，錯一題＝瑕疵礦；兩題都快＝雙倍 */
 function mineRock(n){
   if(!(n._pal && Date.now()-n._pal<60000) && palaceServe(function(){ n._pal=Date.now(); mineRock(n); })) return;
+  if(!(n._voc && Date.now()-n._voc<60000) && vocabServe(function(){ n._voc=Date.now(); mineRock(n); })) return;
   var hits=[], star=isStar(n), i=0;
   function next(){
     if(i>=2) return finish();
@@ -1364,6 +1365,7 @@ function askExam(head, it, cb){
 /* 🌳 樹叢：翻出兩樣東西要叫出名字（un／une）＋一題名詞片語（對了撿到 🪙） */
 function shakeBush(n){
   if(!(n._pal && Date.now()-n._pal<60000) && palaceServe(function(){ n._pal=Date.now(); shakeBush(n); })) return;
+  if(!(n._voc && Date.now()-n._voc<60000) && vocabServe(function(){ n._voc=Date.now(); shakeBush(n); })) return;
   var star=isStar(n), i=0, seq=['g','q','g'];
   function next(){
     if(i>=seq.length){ closeSheet(); n.done=true; return; }
@@ -1628,7 +1630,7 @@ function askClip(head, c, cb){
   document.getElementById('skip').onclick=function(){ if(done) return; done=true; clipStop(); cb(null); };
 }
 document.getElementById('bAcct').addEventListener('click', function(){ if(!busy) acctPanel(); });
-clipsLoad(); passLoad(); radioLoad();
+clipsLoad(); passLoad(); radioLoad(); setTimeout(function(){ vocabLoad(function(){}); }, 0);   /* 字典屋的字先載好，路上才冒得出來 */
 /* 從聽力解碼頁登入完切回來 → 馬上重試載入課本錄音 */
 document.addEventListener('visibilitychange', function(){ if(!document.hidden && !CLIPS){ CLIPS_TRY=0; clipsLoad(); } if(!document.hidden && !PASSAGES){ PASS_TRY=0; passLoad(); } if(!document.hidden && !RADIO){ RADIO_TRY=0; radioLoad(); } });
 /* 🐟 魚譜（Owen 的拉力＝圖鑑）：聽得怎樣決定釣到什麼。⛔ 重聽、慢放都不會釣不到，只有最大的魚要「一次聽完全對」
@@ -1825,6 +1827,21 @@ function vocabStats(){
       vPut(k, function(r){ r.star=on?1:0; }); b.textContent=on?'⭐':'☆'; b.style.color=on?'var(--gold)':''; b.style.borderColor=on?'var(--gold)':''; if(window.GameLog) GameLog.event(on?'vocab_star':'vocab_unstar'); }; });
   });
 }
+/* 第 5 步：路上偶爾冒出來（跟宮殿複習同一個模式：採集點觸發、一天上限、到期的 ⭐ 字才出）
+   跳過第三層「今天路上先不要」：今天不再冒出來，字典屋照樣能進 */
+var VOC_DAY_CAP=4;
+function vocabServe(cont){
+  if(!VOCAB || !VOCAB.length) return false;
+  var d=today(); if(!S.vocDay || S.vocDay.d!==d) S.vocDay={d:d, n:0, off:0};
+  if(S.vocDay.off || S.vocDay.n>=VOC_DAY_CAP || Math.random()>.35) return false;
+  var A=vSrs(), now=Date.now(), due=VOCAB.filter(function(w){ return vStarred(w,A) && vDue(w,A,now); });
+  if(!due.length) return false;
+  var w=due[Math.floor(Math.random()*due.length)]; S.vocDay.n++; save();
+  toast('📖 字典屋的字跑出來找你'); if(window.GameLog) GameLog.event('vocab_road');
+  vocabRun([w], VOCAB, {road:true, done:function(){ closeSheet(); cont(); },
+    off:function(){ S.vocDay.off=1; save(); closeSheet(); toast('今天路上不再出單字——字典屋照樣能進'); cont(); }});
+  return true;
+}
 function vocabStudy(){
   openSheet('<h3>📚 書架</h3><div class="muted">找書中…</div>');
   vocabLoad(function(V, e){
@@ -1838,17 +1855,17 @@ function vocabStudy(){
     vocabRun(due.slice(0,VOCAB_BATCH), V);
   });
 }
-function vocabRun(list, V){
-  var i=0, got=0, seen=0;
+function vocabRun(list, V, opt){
+  opt=opt||{}; var i=0, got=0, seen=0;
   function sayW(w){ speak(w.lemma); }
   function ex(w){ return (w.ex||[])[0]; }
-  function end(){ if(window.GameLog) GameLog.event('vocab_batch');
+  function end(){ if(opt.done) return opt.done(); if(window.GameLog) GameLog.event('vocab_batch');
     openSheet('<h3>📚 這批好了</h3><div class="story">'+(seen?(got?'有 '+got+' 個字已經聽得懂了。':'這些字下次會再回來。'):'先放著，下次再背。')+'</div><div class="row2"><span></span><button class="btn main" id="ok">收書</button></div>');
     document.getElementById('ok').onclick=closeSheet; }
   function next(){ if(i>=list.length) return end(); var w=list[i++], r=vSrs()[w.key]||{stage:1};
     if(r.stage>=2 && ex(w) && V.length>=3) stage2(w); else stage1(w, r); }
-  function foot(){ return '<div style="text-align:right;margin-top:6px"><button class="btn ghost" id="vstop" style="font-size:.75em;padding:2px 8px">⏭ 這批先到這</button></div>'; }
-  function wireStop(){ document.getElementById('vstop').onclick=function(){ try{ speechSynthesis.cancel(); }catch(e){} end(); }; }
+  function foot(){ return '<div style="text-align:right;margin-top:6px"><button class="btn ghost" id="vstop" style="font-size:.75em;padding:2px 8px">'+(opt.road?'今天路上先不要':'⏭ 這批先到這')+'</button></div>'; }
+  function wireStop(){ document.getElementById('vstop').onclick=function(){ try{ speechSynthesis.cancel(); }catch(e){} if(opt.road) return opt.off(); end(); }; }
   function stage1(w, r){
     var prod=r.bank==='prod';
     openSheet('<h3>📚 '+(prod?'想想法文怎麼說':'聽，想意思')+'</h3>'+
@@ -2312,6 +2329,7 @@ function radioDict(C, k, n, cb){
 })();
 function fishSpot(n){
   if(!(n._pal && Date.now()-n._pal<60000) && palaceServe(function(){ n._pal=Date.now(); fishSpot(n); })) return;
+  if(!(n._voc && Date.now()-n._voc<60000) && vocabServe(function(){ n._voc=Date.now(); fishSpot(n); })) return;
   var i=0; clipsLoad(); passLoad();
   var DP=!n._deepNo && passPick();
   if(DP){
