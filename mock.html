@@ -633,7 +633,7 @@ function buildAudio(t) {
       return;
     }
     document.getElementById('audioSlot').innerHTML =
-      '<div class="audio-note err">音檔載入失敗：' + src + '</div>';
+      '<div class="audio-note err">音檔載入失敗：' + src + '<br>在 iPad 上的話，先確認 Tailscale 有開（連得到 Mac mini），再重新整理這頁。</div>';
   });
 
   /* ⭐ 所有音檔事件都要走這個閘：只有「還是現役那一顆 <audio>」的事件算數。
@@ -656,9 +656,20 @@ function paintVoice() {
   const b = document.getElementById('voiceBtn'); if (!b) return;
   b.textContent = '🔊 人聲加強：' + (voiceOn ? '開' : '關'); b.classList.toggle('on', voiceOn);
 }
+/* ⚠️ 11-13 Owen：「聽力卡住出不來沒有聲音」「向前向後暫停都無法使用」
+   iPad Safari 不會預先載入音檔（preload 被忽略），還沒載入就設 currentTime 會丟錯，後面的 play() 就不會跑。
+   → 一律走 seekTo：還沒載入先 load()／play()，等 loadedmetadata 再跳；任何錯誤都吞掉、不讓按鈕整顆失效 */
+function seekTo(t, thenPlay) {
+  const el = audioEl; if (!el) return;
+  const go = () => { try { el.currentTime = Math.max(0, Math.min(el.duration || Infinity, t)); } catch (e) {}
+    if (thenPlay) { const p = el.play(); if (p && p.catch) p.catch(() => {}); } };
+  if (el.readyState >= 1) return go();
+  el.addEventListener('loadedmetadata', go, { once: true });
+  try { if (thenPlay) { const p = el.play(); if (p && p.catch) p.catch(() => {}); } else el.load(); } catch (e) {}
+}
 function seekBy(d) {
   if (!audioEl) return;
-  audioEl.currentTime = Math.max(0, Math.min(audioEl.duration || Infinity, audioEl.currentTime + d));
+  seekTo((audioEl.currentTime || 0) + d, !audioEl.paused);
 }
 function toggleVoice() {
   if (!audioEl) return;
@@ -715,8 +726,7 @@ function playQuestion() {
   if (start === null || !audioEl) return;
   const next = cueList().slice(cur.idx + 1).find(x => typeof x === 'number' && x > start);
   qEnd = typeof next === 'number' ? next : null;   // 最後一題：播到結尾
-  audioEl.currentTime = start;
-  audioEl.play().catch(() => {});
+  seekTo(start, true);
 }
 function checkQEnd() {
   if (audioEl && qEnd !== null && audioEl.currentTime >= qEnd) { qEnd = null; audioEl.pause(); }
@@ -931,7 +941,7 @@ function reflowFr(s) {
     .replace(/([.?!…])\s+(?=[«"A-ZÀ-Ý–—-])/g, '$1\n')
     .replace(/\s+(Question\s*\d)/g, '\n$1');
 }
-function togglePlay() { if (audioEl) audioEl.paused ? audioEl.play() : audioEl.pause(); }
+function togglePlay() { if (!audioEl) return; if (audioEl.paused) { const p = audioEl.play(); if (p && p.catch) p.catch(() => {}); } else audioEl.pause(); }
 /* ── 點兩下查字（11-12 Owen：「詳解不夠詳細，可以我直接連點兩下原文就能知道翻譯或是哪個動詞的變形及時態」）──
    原形／詞性／時態：tools/exam_morph.py 用 spaCy 依上下文標好，存在每題的 tok：[起, 迄, 原形, 詞性, 形態]
    中文字義：assets/tcf/exam/gloss.js（window.TCF_GLOSS，key＝原形|詞性）
@@ -1280,10 +1290,10 @@ function openTrack(i) {
   audioEl.onerror = () => { document.getElementById('stepBody').innerHTML = '<div class="hint err">音檔讀不到，按「這軌跳過」先往下。</div>'; };
   paintStep();
 }
-function seekBy(d) { if (audioEl) audioEl.currentTime = Math.max(0, Math.min(audioEl.duration || Infinity, audioEl.currentTime + d)); }
-function seekTo0() { if (audioEl) audioEl.currentTime = 0; }
+function seekBy(d) { if (audioEl) try { audioEl.currentTime = Math.max(0, Math.min(audioEl.duration || Infinity, audioEl.currentTime + d)); } catch (e) {} }   /* iPad 未載入時會丟錯（11-13） */
+function seekTo0() { if (audioEl) try { audioEl.currentTime = 0; } catch (e) {} }
 function goStep(s) {
-  if (s === 3 && step !== 3 && audioEl) { audioEl.pause(); audioEl.currentTime = 0; }
+  if (s === 3 && step !== 3 && audioEl) { audioEl.pause(); try { audioEl.currentTime = 0; } catch (e) {} }
   step = s; paintStep();
 }
 
