@@ -400,6 +400,8 @@ var CHALLENGES=[ {id:'garden', x:16, y:18, name:'守園', em:'🌻', goal:6},   
   {id:'notice', x:23, y:12, name:'告示牌', em:'📋', kind:'spot'},
   /* 🪨🚪 10-18 Owen：「瑪利歐是因為跑來跑去、時機、路線、機關、隱藏關卡才有趣」→ 法文變成路線本身的兩個關卡（嵌入，跟守園同一套） */
   {id:'stones', x:28, y:10, name:'石頭過河', em:'🪨', kind:'embed', page:'river.html', intro:'河面浮著一顆顆寫著字的石頭。照意思按順序踩過去，才過得了河——石頭站久了會沉。'},
+  /* 📖 11-12 字典屋：模考查過的字（PRD_vocab_bank.md）——書桌看統計、書架背一批 */
+  {id:'dict', x:16, y:21, name:'字典屋', em:'📖', kind:'dict'},
   {id:'run',    x:14, y:12, name:'跑酷小徑', em:'🚪', kind:'embed', page:'runner.html', intro:'一條往前延伸的小徑，路上一道道門寫著選項。邊跑邊轉進對的門，走錯會絆一下。'} ];
 var CLUES=[
   {id:'c1', x:7,  y:3,  topic:'accord-participe-passe'},
@@ -1772,6 +1774,125 @@ function deepFish(n, P, cb){
   ask();
 }
 /* ============================================================
+   📖 字典屋（11-12，規格 PRD_vocab_bank.md）
+   Owen：「我不會的單字進入背誦單字庫 or 認字庫，然後再進遊戲中做複習背誦」「相關的統計跟協助記誦一併設計」
+   資料：私人空間 tcf/vocab.json（Mac mini 從模考查字紀錄算出來；⛔ 原句是考題內容，只放私人空間）
+   進度：clb7_vocab_srs（雲端同步，物件形狀）{ key: {stage, ok1, st, last, miss, skip, known, star, bank} }
+   兩階（research/2026-11-10_單字怎麼用聽的背.md）：① 先聽字、⛔ 不給拼字 → 翻開自評；連兩次「懂了」升 ②
+     ② 聽考題原句（不給字）→ 選這個字在句子裡的意思（錯的選項是別的字的中文，⛔ 不改法文）
+   ⛔ 不計時、不秀分母；跳過三層：「這個會了」／「⏭ 這批先到這」／（路上遇到的「今天跳過」第 5 步再做）
+   ============================================================ */
+var VOCAB=null, VOCAB_TRY=0, VOCAB_GAP=[1,3,7,21], VOCAB_BATCH=12;
+function vocabLoad(cb){
+  if(VOCAB && Date.now()-VOCAB_TRY<5*60000) return cb(VOCAB);
+  vaultGet('tcf/vocab.json').then(function(r){ VOCAB=(r&&r.words)||[]; VOCAB_TRY=Date.now(); cb(VOCAB); })
+    .catch(function(e){ cb(null, e); });
+}
+function vSrs(){ try{ return JSON.parse(localStorage.getItem('clb7_vocab_srs'))||{}; }catch(e){ return {}; } }
+function vPut(key, fn){ var A=vSrs(), r=A[key]||{stage:1, ok1:0, st:0, last:0, miss:0, skip:0}; fn(r); r.last=r.last||0; r.ts=Date.now(); A[key]=r;
+  try{ localStorage.setItem('clb7_vocab_srs', JSON.stringify(A)); }catch(e){} }
+function vStarred(w, A){ var r=A[w.key]; return r&&r.star!==undefined ? !!r.star : !!w.star; }   /* 小鎮按過的優先，否則照模考 */
+function vDue(w, A, now){ var r=A[w.key]; if(!r || !r.last) return true;
+  var gap=r.known?60:(r.stage===1?(r.ok1?0.5:1):VOCAB_GAP[Math.min(r.st,3)]); return now-r.last>=gap*86400000; }
+function vErr(e){ return '<div class="story">'+(e&&e.code==='nologin'?'字典屋要先登入才打得開（右上角 🔑）。':'字典打不開（網路？），等一下再來。')+'</div>'; }
+function vEmpty(){ return '<div class="story">書架還是空的。<br>去模考做完題目，在詳解裡<b>點兩下</b>法文字查意思；想背的按「☆ 要背」，就會出現在這裡。</div>'; }
+var VCAT_ORDER=['動詞變化','生字','小字','動詞'];
+var VCAT_NOTE={'動詞變化':'看得懂原形，認不出變化後的樣子','生字':'名詞、形容詞、副詞','小字':'介系詞、連接詞、代名詞這類小字','動詞':'原形動詞本身不認得'};
+function vocabStats(){
+  openSheet('<h3>📊 書桌</h3><div class="muted">翻開本子…</div>');
+  vocabLoad(function(V, e){
+    if(!V){ openSheet('<h3>📊 書桌</h3>'+vErr(e)+'<div class="row2"><span></span><button class="btn main" id="ok">好</button></div>'); document.getElementById('ok').onclick=closeSheet; return; }
+    if(!V.length){ openSheet('<h3>📊 書桌</h3>'+vEmpty()+'<div class="row2"><span></span><button class="btn main" id="ok">好</button></div>'); document.getElementById('ok').onclick=closeSheet; return; }
+    var A=vSrs(), cats={}, tot=0;
+    V.forEach(function(w){ var c=w.cat||'生字'; cats[c]=cats[c]||{n:0, list:[]}; cats[c].n+=w.n_look; cats[c].list.push(w); tot+=w.n_look; });
+    var h='<h3>📊 書桌 <small>你在模考查過的字</small></h3>';
+    h+='<div class="story"><b>卡在哪一類</b></div>';
+    VCAT_ORDER.concat(Object.keys(cats).filter(function(c){ return VCAT_ORDER.indexOf(c)<0; })).forEach(function(c){ var C=cats[c]; if(!C) return;
+      var pct=Math.round(C.n/tot*100);
+      h+='<div class="item" style="text-align:left"><div style="display:flex;align-items:center;gap:8px"><b style="min-width:5.5em">'+esc(c)+'</b>'+
+        '<div style="flex:1;height:8px;background:#1a2620;border-radius:4px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:var(--gold)"></div></div><span class="muted" style="min-width:3em;text-align:right">'+pct+'%</span></div>'+
+        '<div class="muted" style="font-size:.8em">'+esc(VCAT_NOTE[c]||'')+'：'+C.list.slice(0,4).map(function(w){ return '<span class="say">'+esc(w.forms&&w.forms[0]||w.lemma)+'</span>'; }).join('、')+'</div></div>';
+    });
+    h+='<div class="story" style="margin-top:10px"><b>最常卡的字</b> <small class="muted">（出現在越多套、查越多次的排前面）</small></div>';
+    V.slice(0,20).forEach(function(w){ var on=vStarred(w,A);
+      h+='<div class="item" style="display:flex;gap:8px;align-items:center;text-align:left"><button class="btn ghost vst" data-k="'+esc(w.key)+'" style="padding:2px 8px;'+(on?'color:var(--gold);border-color:var(--gold)':'')+'">'+(on?'⭐':'☆')+'</button>'+
+        '<div style="flex:1"><span class="say">'+esc(w.lemma)+'</span> <span class="muted">'+esc(w.zh||'')+'</span><div class="muted" style="font-size:.75em">'+
+        (w.forms&&w.forms.length&&(w.forms.length>1||w.forms[0]!==w.lemma)?'查過的樣子：'+w.forms.map(esc).join('、')+'・':'')+w.tests.length+' 套出現・查 '+w.n_look+' 次</div></div></div>';
+    });
+    h+='<div class="muted" style="font-size:.8em">☆ 按了就會放上書架；再按一次拿下來。</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>';
+    openSheet(h, true); document.getElementById('ok').onclick=closeSheet;
+    sheet.querySelectorAll('.vst').forEach(function(b){ b.onclick=function(){ var k=b.dataset.k, w=V.filter(function(x){ return x.key===k; })[0]; var on=!vStarred(w, vSrs());
+      vPut(k, function(r){ r.star=on?1:0; }); b.textContent=on?'⭐':'☆'; b.style.color=on?'var(--gold)':''; b.style.borderColor=on?'var(--gold)':''; if(window.GameLog) GameLog.event(on?'vocab_star':'vocab_unstar'); }; });
+  });
+}
+function vocabStudy(){
+  openSheet('<h3>📚 書架</h3><div class="muted">找書中…</div>');
+  vocabLoad(function(V, e){
+    var bye=function(h){ openSheet('<h3>📚 書架</h3>'+h+'<div class="row2"><span></span><button class="btn main" id="ok">好</button></div>'); document.getElementById('ok').onclick=closeSheet; };
+    if(!V) return bye(vErr(e));
+    var A=vSrs(), now=Date.now(), star=V.filter(function(w){ return vStarred(w,A); });
+    if(!star.length) return bye(V.length?'<div class="story">書架上還沒有書。去旁邊的📊 書桌，把想背的字按 ☆，就會放上來。</div>':vEmpty());
+    var due=star.filter(function(w){ return vDue(w,A,now); });
+    if(!due.length) return bye('<div class="story">書架上的字今天都看過了，過幾天它們會再回來找你。<br>想多背幾個，可以去📊 書桌把常卡的字按 ☆。</div>');
+    due.sort(function(a,b){ var ra=A[a.key]||{}, rb=A[b.key]||{}; return (ra.last||0)-(rb.last||0) || b.tests.length-a.tests.length; });
+    vocabRun(due.slice(0,VOCAB_BATCH), V);
+  });
+}
+function vocabRun(list, V){
+  var i=0, got=0, seen=0;
+  function sayW(w){ speak(w.lemma); }
+  function ex(w){ return (w.ex||[])[0]; }
+  function end(){ if(window.GameLog) GameLog.event('vocab_batch');
+    openSheet('<h3>📚 這批好了</h3><div class="story">'+(seen?(got?'有 '+got+' 個字已經聽得懂了。':'這些字下次會再回來。'):'先放著，下次再背。')+'</div><div class="row2"><span></span><button class="btn main" id="ok">收書</button></div>');
+    document.getElementById('ok').onclick=closeSheet; }
+  function next(){ if(i>=list.length) return end(); var w=list[i++], r=vSrs()[w.key]||{stage:1};
+    if(r.stage>=2 && ex(w) && V.length>=3) stage2(w); else stage1(w, r); }
+  function foot(){ return '<div style="text-align:right;margin-top:6px"><button class="btn ghost" id="vstop" style="font-size:.75em;padding:2px 8px">⏭ 這批先到這</button></div>'; }
+  function wireStop(){ document.getElementById('vstop').onclick=function(){ try{ speechSynthesis.cancel(); }catch(e){} end(); }; }
+  function stage1(w, r){
+    var prod=r.bank==='prod';
+    openSheet('<h3>📚 '+(prod?'想想法文怎麼說':'聽，想意思')+'</h3>'+
+      (prod?'<div class="story" style="font-size:1.2em">'+esc(w.zh||'')+'</div>':'<div class="row2" style="justify-content:center"><button class="btn ghost" id="vhear" style="font-size:1.3em">🔊 再聽一次</button></div><div class="muted" style="text-align:center">先不看字，心裡想它是什麼意思</div>')+
+      '<div class="row2"><span></span><button class="btn main" id="vflip">👀 翻開</button></div>'+foot(), true);
+    if(!prod){ sayW(w); document.getElementById('vhear').onclick=function(){ sayW(w); }; }
+    wireStop();
+    document.getElementById('vflip').onclick=function(){ seen++; var e=ex(w);
+      openSheet('<h3>📚 <span class="say">'+esc(w.lemma)+'</span> <small>'+esc(w.zh||'')+'</small></h3>'+
+        (w.forms&&w.forms.length?'<div class="muted">你在考題查到的樣子：'+w.forms.map(function(f){ return '<span class="say">'+esc(f)+'</span>'; }).join('、')+'</div>':'')+
+        (e?'<div class="item" style="text-align:left;margin-top:6px"><button class="btn ghost" id="vsent" style="padding:0 6px">🔊</button> <span class="fr">'+esc(e.fr)+'</span><div class="muted" style="font-size:.75em">'+esc(e.test.replace('co_','聽力 Test ').replace('ce_','閱讀 Test '))+' 第 '+e.q+' 題</div></div>':'')+
+        '<div class="row2"><button class="btn ghost" id="vno">還不熟</button><button class="btn main" id="vok">懂了</button></div>'+
+        '<div style="display:flex;justify-content:space-between;margin-top:6px"><button class="btn ghost" id="vbank" style="font-size:.75em;padding:2px 8px">'+(prod?'改回只要認得':'↑ 這個要會講出來')+'</button><button class="btn ghost" id="vknown" style="font-size:.75em;padding:2px 8px">這個會了</button></div>'+foot(), true);
+      if(prod) sayW(w);
+      if(e) document.getElementById('vsent').onclick=function(){ speak(e.fr); };
+      wireStop();
+      document.getElementById('vok').onclick=function(){ got++; vPut(w.key, function(r){ r.ok1=(r.ok1||0)+1; if(r.ok1>=2 && r.stage===1){ r.stage=2; r.st=0; } r.last=Date.now(); }); next(); };
+      document.getElementById('vno').onclick=function(){ vPut(w.key, function(r){ r.ok1=0; r.miss=(r.miss||0)+1; r.last=Date.now(); }); next(); };
+      document.getElementById('vknown').onclick=function(){ got++; vPut(w.key, function(r){ r.known=1; r.st=3; r.last=Date.now(); }); next(); };
+      document.getElementById('vbank').onclick=function(){ vPut(w.key, function(r){ r.bank=prod?'rec':'prod'; }); toast(prod?'改成只要認得':'放進背誦庫：下次先看中文、想法文'); };
+    };
+  }
+  function stage2(w){
+    var e=ex(w), others=V.filter(function(x){ return x.key!==w.key && x.zh && x.zh!==w.zh; });
+    for(var k=others.length-1;k>0;k--){ var j=Math.floor(Math.random()*(k+1)), t=others[k]; others[k]=others[j]; others[j]=t; }
+    var opts=[w.zh].concat(others.slice(0,2).map(function(x){ return x.zh; }));
+    for(var k2=opts.length-1;k2>0;k2--){ var j2=Math.floor(Math.random()*(k2+1)), t2=opts[k2]; opts[k2]=opts[j2]; opts[j2]=t2; }
+    openSheet('<h3>📚 聽一整句</h3><div class="muted">考題裡的原句。聽完選：<b>這句裡的 <span class="say">'+esc(e.w||w.lemma)+'</span></b> 是什麼意思？</div>'+
+      '<div class="row2" style="justify-content:center"><button class="btn ghost" id="vhear" style="font-size:1.2em">🔊 再聽一次</button></div>'+
+      '<div class="opts">'+opts.map(function(o,k){ return '<button class="vop" data-k="'+k+'" style="padding:8px 10px;text-align:left">'+esc(o)+'</button>'; }).join('')+'</div>'+foot(), true);
+    speak(e.fr); document.getElementById('vhear').onclick=function(){ speak(e.fr); }; wireStop();
+    sheet.querySelectorAll('.vop').forEach(function(b){ b.onclick=function(){ seen++; var ok=opts[+b.dataset.k]===w.zh; if(ok) got++;
+      vPut(w.key, function(r){ if(ok) r.st=Math.min((r.st||0)+1,3); else { r.st=0; r.miss=(r.miss||0)+1; } r.last=Date.now(); });
+      if(window.GameLog) GameLog.event(ok?'vocab_s2_ok':'vocab_s2_miss');
+      var hl=esc(e.fr).replace(esc(e.w||''), '<b style="color:var(--gold)">'+esc(e.w||'')+'</b>');
+      openSheet('<h3>'+(ok?'✓ 對':'這次沒抓到')+'</h3><div class="item" style="text-align:left"><span class="fr">'+hl+'</span></div>'+
+        '<div class="story"><span class="say">'+esc(w.lemma)+'</span>＝'+esc(w.zh)+'</div><div class="row2"><button class="btn ghost" id="vknown" style="font-size:.8em">這個會了</button><button class="btn main" id="vnext">下一個</button></div>'+foot(), true);
+      wireStop(); document.getElementById('vnext').onclick=next;
+      document.getElementById('vknown').onclick=function(){ vPut(w.key, function(r){ r.known=1; r.st=3; r.last=Date.now(); }); next(); };
+    }; });
+  }
+  next();
+}
+/* ============================================================
    📻 收音機（11-07）：坐在家裡聽外面的聲音——podcast 原速、真人、一段 1–2 分鐘
    Owen 11-07：「好好設計遊戲該怎麼操作，讓我可以練好練滿，又能綁上故事線，聽力大幅提升」
      選了：坐到收音機前聽（不是邊走邊聽）／每天 5 段左右／原文 Claude 先抽查才上／出題要像 TCF Canada
@@ -2510,6 +2631,11 @@ var ROOMS={
     objs:[ {spr:'post', x:3.2, y:3.0, lab:'郵差：信和紙條', act:function(){ openLot('post',true); }},
            {em:'📜', x:6.8, y:3.4, lab:'📜 布告欄：主線進度', act:function(){ openStory(); }} ],
     deco:[['📦',1.2,5.4],['📦',1.9,5.8],['✉️',5.0,2.7],['🪴',8.0,5.6],['🪑',4.6,5.6]] },
+  dict:{ name:'📖 字典屋', W:9, H:7, floor:['#a98c6a','#9c805f'], wall:'#5a4632', trim:'#33271b',
+    walls:[['📜',1.6],['🕰️',4.5],['🗺️',7.4]], win:[3.0,6.0],
+    objs:[ {em:'📊', x:2.2, y:3.2, size:1.3, lab:'📊 書桌：你最常卡的字', act:function(){ vocabStats(); }},
+           {em:'📚', x:6.6, y:3.0, size:1.5, lab:'📚 書架：背一批（⭐ 要背的字）', act:function(){ vocabStudy(); }} ],
+    deco:[['🕯️',4.5,2.6],['🪑',2.2,4.6],['🪴',0.9,2.6],['🪴',8.1,2.6],['📕',5.4,5.6],['📗',6.0,5.7]] },
   home:{ name:'🏡 你的家', W:9, H:7, floor:['#b08d68','#a3825f'], wall:'#6d5a7a', trim:'#3d3046',
     walls:[['🖼️',2.0],['🕰️',6.8]], win:[4.4],
     objs:[ {em:'🛏️', x:2.0, y:3.2, size:1.5, lab:'🛏️ 床：收工睡覺', act:function(){ rest(); }},
@@ -4795,7 +4921,7 @@ function drawChallenges(list,ox,oy,ts){
       cx.fillStyle='#9a7040'; for(var k=0;k<5;k++) cx.fillRect(px+ts*.12, py-ts*1.05+k*ts*.27, ts*.76, ts*.2); }
     cx.fillStyle='#7a5a32'; cx.fillRect(px+ts*.05, py+ts*.55, ts*.9, ts*.38);
     if(im.complete){ cx.drawImage(im, px+ts*.05, py+ts*.05, ts*.9, ts*.9); }
-    var b=Math.sin(clock*4)*ts*.06; cx.font=Math.round(ts*.38)+'px system-ui'; cx.textAlign='center'; cx.fillText({tiles:'🧩', isle:'💬', spot:'🔍', embed:'⭐', palace:'⛵', forge:'⚡'}[ch.kind]||'⚔️', px+ts*.5, py-ts*.05+b);
+    var b=Math.sin(clock*4)*ts*.06; cx.font=Math.round(ts*.38)+'px system-ui'; cx.textAlign='center'; cx.fillText({tiles:'🧩', isle:'💬', spot:'🔍', embed:'⭐', palace:'⛵', forge:'⚡', dict:'📒'}[ch.kind]||'⚔️', px+ts*.5, py-ts*.05+b);
     cx.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; var lab=ch.name; var tw=cx.measureText(lab).width+ts*.2;
     cx.fillStyle='rgba(0,0,0,.55)'; cx.fillRect(px+ts*.5-tw/2, py+ts*1.02, tw, ts*.34); cx.fillStyle='#fff'; cx.fillText(lab, px+ts*.5, py+ts*1.27);
   }}); });
@@ -4851,7 +4977,7 @@ function update(dt){
   for(var ci=0;ci<CHALLENGES.length && !wild;ci++){ var CH=CHALLENGES[ci]; if(CH.kind==='forge' && S.built.forge) continue; if(CH.cool>0){ CH.cool-=dt; continue; }
     /* 10-26 Owen：「站在宮殿門口會一直進去，只能重新整理」→ 出來之後要先走開（離門口 1.5 格以上）才會再觸發 */
     if(CH.away){ if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)>1.5) CH.away=0; else continue; }
-    if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ if(CH.kind==='tiles') tilesPanel(CH); else if(CH.kind==='isle') roomEnter('cafe'); else if(CH.kind==='spot') spotPanel(CH); else if(CH.kind==='embed') embedPanel(CH); else if(CH.kind==='palace'){ CH.away=1; if(!ch3Dock()) archOpen(); } else if(CH.kind==='forge'){ CH.away=1; if(S.built.forge) roomEnter('forge'); else forgePanel(CH); } else challengePanel(CH); }; })(CH)}; break; } }
+    if(Math.hypot(CH.x+.5-hero.x, CH.y+.5-hero.y)<.8 && !pending){ pending={t:.25, x:CH.x+.5, y:CH.y, fn:(function(CH){ return function(){ if(CH.kind==='tiles') tilesPanel(CH); else if(CH.kind==='isle') roomEnter('cafe'); else if(CH.kind==='dict') roomEnter('dict'); else if(CH.kind==='spot') spotPanel(CH); else if(CH.kind==='embed') embedPanel(CH); else if(CH.kind==='palace'){ CH.away=1; if(!ch3Dock()) archOpen(); } else if(CH.kind==='forge'){ CH.away=1; if(S.built.forge) roomEnter('forge'); else forgePanel(CH); } else challengePanel(CH); }; })(CH)}; break; } }
   /* 碰到節點 */
   /* 11-06 Owen：「我居然找不到魚了」→ 釣過的點整個消失、要睡一覺才回來。釣魚是他最愛的三個之一 → 魚游走 90 秒後就回來，⛔ 不限一天幾次 */
   for(var i=0;i<nodes.length && !wild;i++){ var n=nodes[i]; if(n.done) continue;
