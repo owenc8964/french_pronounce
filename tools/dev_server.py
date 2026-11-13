@@ -149,11 +149,14 @@ def mock_report(self):
 VOCAB_DIR = os.path.join(ROOT, 'assets/tcf/exam/vocab')
 VOCAB_LOG = os.path.join(VOCAB_DIR, 'log.json')
 VOCAB_OUT = os.path.join(VOCAB_DIR, 'vocab.json')
+VOCAB_PHZ = os.path.join(VOCAB_DIR, 'phrase_zh.json')     # 📎 11-13 自己圈的片語，中文之後補在這（{key: 中文}，Claude 或 Owen）
 _vocab_timer = None
 
 
 def vocab_cat(pos, f, w, lemma):
     """卡在哪一類（統計用）"""
+    if pos == 'PHR':
+        return '片語'
     if pos in ('VERB', 'AUX'):
         return '動詞變化' if f and f not in ('Inf',) and w.lower() != lemma.lower() else '動詞'
     if pos in ('NOUN', 'ADJ', 'ADV', 'PROPN', 'INTJ', 'NUM'):
@@ -166,12 +169,17 @@ def vocab_build():
         log = json.load(open(VOCAB_LOG, encoding='utf-8'))
     except (OSError, ValueError):
         log = []
+    try:
+        phz = json.load(open(VOCAB_PHZ, encoding='utf-8'))
+    except (OSError, ValueError):
+        phz = {}
     V = {}
     for r in log:
         key = (r.get('lemma') or r['w']).lower() + '|' + r.get('pos', '')
         v = V.setdefault(key, {'key': key, 'lemma': r.get('lemma') or r['w'], 'pos': r.get('pos', ''), 'zh': '', 'forms': [],
                                'n_look': 0, 'tests': [], 'star': False, 'star_ts': 0, 'bank': 'rec', 'ex': [], 'cats': {}, 'first': r['ts'], 'last': 0})
         if r.get('zh'): v['zh'] = r['zh']
+        if r.get('ph'): v['ph'] = r['ph']                 # 📎 片語：auto＝系統認的、mine＝自己圈的
         if 'star' in r:                                   # ⭐ 按／取消：以最後一次為準
             v['star'] = bool(r['star']); v['star_ts'] = r['ts']
             continue
@@ -183,7 +191,9 @@ def vocab_build():
         if r.get('sent') and not any(e['fr'] == r['sent'] for e in v['ex']) and len(v['ex']) < 5:
             v['ex'].append({'fr': r['sent'], 'w': r['w'], 'test': r['test'], 'q': r['q'], 'skill': r.get('skill', ''), 'res': r.get('res', '')})
     out = sorted(V.values(), key=lambda v: (-len(v['tests']), -v['n_look']))
-    for v in out: v['cat'] = max(v['cats'], key=v['cats'].get) if v['cats'] else '生字'
+    for v in out:
+        v['cat'] = max(v['cats'], key=v['cats'].get) if v['cats'] else ('片語' if v['pos'] == 'PHR' else '生字')
+        if phz.get(v['key']): v['zh'] = phz[v['key']]     # 補寫的中文優先
     tmp = VOCAB_OUT + '.tmp'
     json.dump({'v': 1, 'at': int(time.time() * 1000), 'words': out}, open(tmp, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
     os.replace(tmp, VOCAB_OUT)
@@ -212,11 +222,13 @@ def vocab_log(self):
         clean = []
         for r in rows[:200]:
             w, test, q = r['w'], r['test'], r['q']
-            if not (isinstance(w, str) and 0 < len(w) <= 60 and re.fullmatch(r'c[oe]_\d+s?', test) and isinstance(q, int) and 1 <= q <= 39):
+            lim_w = 120 if r.get('pos') == 'PHR' else 60     # 片語最多 10 個字
+            if not (isinstance(w, str) and 0 < len(w) <= lim_w and re.fullmatch(r'c[oe]_\d+s?', test) and isinstance(q, int) and 1 <= q <= 39):
                 raise ValueError
             c = {'ts': int(r.get('ts') or time.time() * 1000), 'w': w, 'test': test, 'q': q}
-            for k, lim in (('lemma', 60), ('pos', 8), ('f', 40), ('zh', 80), ('skill', 12), ('res', 6), ('sent', 400)):
+            for k, lim in (('lemma', lim_w), ('pos', 8), ('f', 40), ('zh', 80), ('skill', 12), ('res', 6), ('sent', 400)):
                 if isinstance(r.get(k), str): c[k] = r[k][:lim]
+            if r.get('ph') in ('auto', 'mine'): c['ph'] = r['ph']
             if isinstance(r.get('star'), bool): c['star'] = r['star']
             clean.append(c)
     except (ValueError, KeyError, TypeError):

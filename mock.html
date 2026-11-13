@@ -236,6 +236,19 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
 .word-pop .lk { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .word-pop .lk a, .word-pop .lk button { padding: 4px 10px; border-radius: 8px; border: 1px solid #333c48; background: transparent; color: #aaa8a0; font: inherit; font-size: .8rem; text-decoration: none; cursor: pointer; }
 .word-pop .note { color: #606878; font-size: .7rem; margin-left: auto; }
+/* 📎 片語（11-13，規格 PRD_vocab_bank.md 片語段） */
+.tw.ph-hit { background: #2c3f2a; box-shadow: 0 0 0 1px #4a6a40; }
+.tw.hit.ph-hit { background: #3c5a85; }
+.word-pop .ph { margin-bottom: 6px; padding: 5px 8px; border-radius: 8px; background: #1c2a22; border: 1px solid #35503a; display: flex; gap: 8px; align-items: center; }
+.word-pop .ph b { color: #b8e0a0; }
+.word-pop .ph .phz { flex: 1; }
+.word-pop .ph button, .word-pop .circ button { padding: 2px 9px; border-radius: 8px; border: 1px solid #35503a; background: transparent; color: #aaa8a0; font: inherit; font-size: .8rem; cursor: pointer; }
+.word-pop .ph button.on { border-color: #f0c060; color: #f0c060; }
+.word-pop .circ input { width: 100%; box-sizing: border-box; margin: 6px 0; padding: 6px 8px; border-radius: 8px; border: 1px solid #333c48; background: #0f1422; color: #e0e4ea; font: inherit; }
+.circ-bar { position: fixed; left: 50%; transform: translateX(-50%); top: 10px; z-index: 61; background: #1c2a22; border: 1.5px solid #4a6a40; color: #d8f0c8;
+  border-radius: 10px; padding: 8px 12px; font-size: .88rem; display: none; gap: 10px; align-items: center; box-shadow: 0 6px 20px rgba(0,0,0,.5); }
+.circ-bar.show { display: flex; }
+.circ-bar button { padding: 3px 10px; border-radius: 8px; border: 1px solid #4a6a40; background: transparent; color: #aaa8a0; font: inherit; font-size: .8rem; cursor: pointer; }
 
 /* History */
 .hist-row { display: flex; gap: 10px; align-items: center; padding: 7px 0;
@@ -453,6 +466,7 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
 
 <script src="assets/tcf/exam/index.js"></script>
 <script src="assets/tcf/exam/cues.js"></script>
+<script src="tcf_phrases.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════════
    TCF Canada 模擬考。資料來自 assets/tcf/exam/（本地，不進 repo）。
@@ -966,10 +980,15 @@ function morphZh(f) {
   const mt = MT_ZH[a.slice(0, 2).join('.')] || MT_ZH[a[0]] || f, pn = PN_ZH[a.slice(2).join('.')];
   return mt + (pn ? '・' + pn : '');
 }
+/* 📎 系統認的片語：每一個命中記在 PH_HITS，字的 data-m 列出它屬於哪幾個（空白分隔的編號） */
+const PH_HITS = [];
 function frTokHtml(text, tok, reflow) {
   text = String(text || '');
   if (!tok || !tok.length) return esc(reflow ? reflowFr(text) : text);
   const at = {}; tok.forEach(t => { at[t[0]] = t; });
+  const mOf = {};
+  if (window.TCF_PHRASES) try { TCF_PHRASES.matchTok(text, tok).forEach(m => { const n = PH_HITS.push({ id: m.id, len: m.i1 - m.i0 }) - 1;
+    for (let k = m.i0; k <= m.i1; k++) (mOf[k] = mOf[k] || []).push(n); }); } catch (e) {}
   let h = '', pos = 0;
   const gap = (g, next) => {
     if (!reflow) return esc(g);
@@ -979,12 +998,12 @@ function frTokHtml(text, tok, reflow) {
     if (next && /^Question$/.test(next)) g = g.replace(/\s$/, '\n');
     return esc(g);
   };
-  tok.forEach(t => {
+  tok.forEach((t, ti) => {
     const [a, b, l, p, f] = t, w = text.slice(a, b);
     h += gap(text.slice(pos, a), w);
     let hw = '';
     if (f && f.startsWith('Aux@')) { const ht = at[+f.slice(4, f.indexOf('|'))]; if (ht) hw = text.slice(ht[0], ht[1]); }
-    h += `<span class="tw" data-s="${a}" data-l="${esc(l || w)}" data-p="${p}" data-f="${esc(f || '')}"${hw ? ` data-h="${esc(hw)}"` : ''}>${esc(w)}</span>`;
+    h += `<span class="tw" data-s="${a}" data-l="${esc(l || w)}" data-p="${p}" data-f="${esc(f || '')}"${hw ? ` data-h="${esc(hw)}"` : ''}${mOf[ti] ? ` data-m="${mOf[ti].join(' ')}"` : ''}>${esc(w)}</span>`;
     pos = b;
   });
   return h + gap(text.slice(pos), '');
@@ -1002,44 +1021,76 @@ function glossOf(l, p) {
 let wpLast = null, wpT = 0;
 document.addEventListener('click', e => {
   const el = e.target.closest && e.target.closest('.tw');
+  if (CIRC) {                                    /* ✂️ 圈片語中：點一下就是終點；點別段＝取消 */
+    if (e.target.closest && e.target.closest('.circ-bar')) return;
+    if (el && el.closest('p') === CIRC.blk) { e.preventDefault(); circEnd(el); }
+    else if (el) circCancel();
+    return;
+  }
   if (!el) { if (!(e.target.closest && e.target.closest('.word-pop'))) wordPopHide(); return; }
   const now = Date.now();
   if (wpLast === el && now - wpT < 450) { wpLast = null; wordPopShow(el); }
   else { wpLast = el; wpT = now; }
 });
-function wordPopHide() { const p = document.getElementById('wordPop'); if (p) p.classList.remove('show'); document.querySelectorAll('.tw.hit').forEach(x => x.classList.remove('hit')); }
-function wordPopShow(el) {
-  glossLoad();
-  let pop = document.getElementById('wordPop');
-  if (!pop) { pop = document.createElement('div'); pop.id = 'wordPop'; pop.className = 'word-pop'; document.body.appendChild(pop); }
-  document.querySelectorAll('.tw.hit').forEach(x => x.classList.remove('hit')); el.classList.add('hit');
-  const w = el.textContent, l = el.dataset.l, p = el.dataset.p, f = el.dataset.f || '';
-  let ten = '';
-  if (f.startsWith('Aux@')) ten = '助動詞，跟後面的「' + esc(el.dataset.h || '') + '」一起組成：' + morphZh(f.slice(f.indexOf('|') + 1));
-  else ten = morphZh(f);
-  /* 整句：往前往後找到句號 */
-  const blk = el.closest('p'), sp = [...blk.querySelectorAll('.tw')], i = sp.indexOf(el);
+function wordPopHide() { const p = document.getElementById('wordPop'); if (p) p.classList.remove('show'); document.querySelectorAll('.tw.hit, .tw.ph-hit').forEach(x => x.classList.remove('hit', 'ph-hit')); }
+/* 一個字所在的那一句（往前往後找到句號） */
+function sentOf(el) {
+  const blk = el.closest('p'), sp = [...blk.querySelectorAll('.tw')], i = sp.indexOf(el), w = el.textContent;
   const full = blk.textContent;
   let off = 0; for (let k = 0; k < i; k++) off = full.indexOf(sp[k].textContent, off) + sp[k].textContent.length;
   const me = full.indexOf(w, off), st = Math.max(full.lastIndexOf('.', me - 1), full.lastIndexOf('?', me - 1), full.lastIndexOf('!', me - 1), full.lastIndexOf('\n', me - 1)) + 1;
   let en = full.slice(me).search(/[.?!\n]/); en = en < 0 ? full.length : me + en + 1;
-  const sent = full.slice(st, en).trim();
+  return full.slice(st, en).trim();
+}
+/* 兩個字之間（含頭尾）在畫面上的原文，空白收成一格 */
+function spanText(a, b) {
+  const r = document.createRange(); r.setStartBefore(a); r.setEndAfter(b);
+  return r.toString().replace(/\s+/g, ' ').trim();
+}
+const PH_KEY = fr => String(fr).toLowerCase().replace(/\s+/g, ' ').trim() + '|PHR';
+function wordPopShow(el) {
+  glossLoad();
+  let pop = document.getElementById('wordPop');
+  if (!pop) { pop = document.createElement('div'); pop.id = 'wordPop'; pop.className = 'word-pop'; document.body.appendChild(pop); }
+  document.querySelectorAll('.tw.hit, .tw.ph-hit').forEach(x => x.classList.remove('hit', 'ph-hit')); el.classList.add('hit');
+  const w = el.textContent, l = el.dataset.l, p = el.dataset.p, f = el.dataset.f || '';
+  let ten = '';
+  if (f.startsWith('Aux@')) ten = '助動詞，跟後面的「' + esc(el.dataset.h || '') + '」一起組成：' + morphZh(f.slice(f.indexOf('|') + 1));
+  else ten = morphZh(f);
+  const blk = el.closest('p'), sent = sentOf(el);
   const key = String(l).toLowerCase() + '|' + p, P = blk.dataset;
   const row = { ts: Date.now(), w, lemma: l, pos: p, f, zh: glossOf(l, p), test: P.t, q: +P.q, skill: P.k, res: P.r, sent };
-  if (P.t) vocabSend([row]);                     /* 查過就記（統計用）；⭐ 才進複習 */
+  /* 📎 這個字落在哪些片語裡（長的在上面），整段淡淡標出來 */
+  const phs = (el.dataset.m || '').split(' ').filter(Boolean).map(n => ({ n, h: PH_HITS[+n] })).filter(x => x.h && window.TCF_PHRASES)
+    .sort((a, b) => b.h.len - a.h.len).slice(0, 2).map(x => {
+      const e = TCF_PHRASES.LIST[x.h.id], ss = [...blk.querySelectorAll('.tw[data-m~="' + x.n + '"]')];
+      ss.forEach(s => s.classList.add('ph-hit'));
+      return { e, key: PH_KEY(e.fr), surf: spanText(ss[0], ss[ss.length - 1]) };
+    });
+  const phRow = x => ({ ts: Date.now(), w: x.surf, lemma: x.e.fr, pos: 'PHR', f: '', zh: x.e.zh, test: P.t, q: +P.q, skill: P.k, res: P.r, sent, ph: 'auto' });
+  if (P.t) vocabSend([row].concat(phs.map(phRow)));   /* 查過就記（統計用）；⭐ 才進複習 */
   const render = () => {
     const zh = glossOf(l, p), on = !!vocabStars()[key];
-    pop.innerHTML = `<div><span class="w">${esc(w)}</span>${l.toLowerCase() !== w.toLowerCase() ? ' → <span class="lem">' + esc(l) + '</span>' : ''}<span class="pos">${POS_ZH[p] || ''}</span></div>` +
+    const S0 = vocabStars();
+    pop.innerHTML = phs.map((x, k) => `<div class="ph">📎 片語：<span class="phz"><b>${esc(x.e.fr)}</b>＝${esc(x.e.zh)}</span>` +
+        (P.t ? `<button class="phs${S0[x.key] ? ' on' : ''}" data-k="${k}">${S0[x.key] ? '⭐ 要背' : '☆ 要背'}</button>` : '') + '</div>').join('') +
+      `<div><span class="w">${esc(w)}</span>${l.toLowerCase() !== w.toLowerCase() ? ' → <span class="lem">' + esc(l) + '</span>' : ''}<span class="pos">${POS_ZH[p] || ''}</span></div>` +
       (ten ? `<div class="ten">${ten}</div>` : '') +
       `<div class="zh">${zh ? esc(zh) : (GLOSS_ST === 1 ? '…' : '<span style="color:#606878">（字義表還沒收這個字）</span>')}</div>` +
       `<div class="lk"><a target="_blank" rel="noopener" href="https://www.wordreference.com/fren/${encodeURIComponent(l)}">WordReference</a>` +
       `<a target="_blank" rel="noopener" href="https://www.deepl.com/translator#fr/zh-hant/${encodeURIComponent(sent)}">整句 DeepL</a>` +
       (P.t ? `<button id="wpStar" style="${on ? 'border-color:#f0c060;color:#f0c060' : ''}">${on ? '⭐ 要背（再按取消）' : '☆ 要背'}</button>` : '') +
+      (P.t ? `<button id="wpCirc">✂️ 從這個字開始圈</button>` : '') +
       `<button onclick="wordPopHide()">✕</button><span class="note">自動分析，偶爾會判錯</span></div>`;
     const sb = document.getElementById('wpStar');
     if (sb) sb.onclick = ev => { ev.stopPropagation(); const S = vocabStars(), nv = !S[key];
       if (nv) S[key] = 1; else delete S[key]; try { localStorage.setItem('tcfmock_vocab_star', JSON.stringify(S)); } catch (e) {}
       vocabSend([{ ...row, ts: Date.now(), zh: glossOf(l, p), star: nv }]); render(); };
+    pop.querySelectorAll('.phs').forEach(b => b.onclick = ev => { ev.stopPropagation(); const x = phs[+b.dataset.k], S = vocabStars(), nv = !S[x.key];
+      if (nv) S[x.key] = 1; else delete S[x.key]; try { localStorage.setItem('tcfmock_vocab_star', JSON.stringify(S)); } catch (e) {}
+      vocabSend([{ ...phRow(x), star: nv }]); render(); });
+    const cb = document.getElementById('wpCirc');
+    if (cb) cb.onclick = ev => { ev.stopPropagation(); circStart(el); };
   };
   render(); pop.classList.add('show');
   if (GLOSS_ST === 1) { const t = setInterval(() => { if (GLOSS_ST !== 1) { clearInterval(t); if (pop.classList.contains('show')) render(); } }, 200); }
@@ -1061,6 +1112,43 @@ function vocabSend(rows) {
   fetch('/api/vocab', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ rows: all.slice(0, 200) }) })
     .then(r => { if (!r.ok) throw 0; if (all.length > 200) vocabSend([]); })
     .catch(() => { let now = []; try { now = JSON.parse(localStorage.getItem('tcfmock_vocab_q')) || []; } catch (e) {} keep(all.concat(now).slice(-500)); });
+}
+/* ── ✂️ 自己圈片語（11-13）：彈窗「從這個字開始圈」→ 點同一段的最後一個字 → 存成一張片語卡 ──
+   中文可以空著（之後 Claude 補進 assets/tcf/exam/vocab/phrase_zh.json，或他自己打） */
+let CIRC = null;
+function circBar(on) {
+  let b = document.getElementById('circBar');
+  if (!b) { b = document.createElement('div'); b.id = 'circBar'; b.className = 'circ-bar';
+    b.innerHTML = '✂️ 圈片語：點片語的<b>最後一個字</b>（點一下就好） <button onclick="circCancel()">取消</button>'; document.body.appendChild(b); }
+  b.classList.toggle('show', on);
+}
+function circStart(el) {
+  wordPopHide(); CIRC = { el, blk: el.closest('p') }; el.classList.add('ph-hit'); circBar(true);
+}
+function circCancel() { CIRC = null; circBar(false); wordPopHide(); }
+function circEnd(el2) {
+  const { el, blk } = CIRC; CIRC = null; circBar(false);
+  const sp = [...blk.querySelectorAll('.tw')]; let a = sp.indexOf(el), b = sp.indexOf(el2);
+  if (a > b) [a, b] = [b, a];
+  if (b - a > 9) { b = a + 9; }                                /* 最多 10 個字 */
+  const ss = sp.slice(a, b + 1), surf = spanText(ss[0], ss[ss.length - 1]), key = PH_KEY(surf), P = blk.dataset;
+  document.querySelectorAll('.tw.hit, .tw.ph-hit').forEach(x => x.classList.remove('hit', 'ph-hit'));
+  ss.forEach(s => s.classList.add('ph-hit'));
+  let pop = document.getElementById('wordPop');
+  if (!pop) { pop = document.createElement('div'); pop.id = 'wordPop'; pop.className = 'word-pop'; document.body.appendChild(pop); }
+  const sent = sentOf(ss[0]), had = !!vocabStars()[key];
+  pop.innerHTML = `<div class="circ"><div>📎 自己圈的片語：<b style="color:#b8e0a0">${esc(surf)}</b></div>` +
+    `<input id="circZh" placeholder="中文（可以空著，之後 Claude 補）" maxlength="60">` +
+    `<div class="lk"><button id="circSave" style="border-color:#f0c060;color:#f0c060">${had ? '⭐ 已經存過（再按＝更新中文）' : '⭐ 存成片語卡'}</button>` +
+    `<button onclick="wordPopHide()">取消</button><span class="note">原句：這一句考題原文</span></div></div>`;
+  pop.classList.add('show');
+  document.getElementById('circSave').onclick = ev => { ev.stopPropagation();
+    const zh = document.getElementById('circZh').value.trim().slice(0, 60);
+    const row = { ts: Date.now(), w: surf, lemma: surf, pos: 'PHR', f: '', zh, test: P.t, q: +P.q, skill: P.k, res: P.r, sent, ph: 'mine' };
+    const S = vocabStars(); S[key] = 1; try { localStorage.setItem('tcfmock_vocab_star', JSON.stringify(S)); } catch (e) {}
+    vocabSend([row, { ...row, ts: row.ts + 1, star: true }]);
+    pop.innerHTML = `<div class="circ">⭐ 存好了：<b style="color:#b8e0a0">${esc(surf)}</b>${zh ? '＝' + esc(zh) : '（中文之後補）'}<div class="lk"><button onclick="wordPopHide()">好</button><span class="note">小鎮字典屋的書架上會看到</span></div></div>`;
+  };
 }
 function detailHtml(q, t, inline) {   // inline：單題模式直接展開，圖片上面已經有了不重複
   const open = inline ? '<div class="rev-detail show">' : '<div class="rev-detail">';
