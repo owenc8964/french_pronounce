@@ -8,7 +8,7 @@ Owen：「簡體中文的可以翻譯成繁體並台灣口語一點」→ 背景
 import difflib, glob, json, os, re, shutil, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EX = os.path.join(ROOT, 'assets', 'tcf', 'exam')
-FIELDS = {'listening': ('script_zh',), 'reading': ('src_zh', 'q_zh', 'key_zh', 'opt_zh', 'ans_zh')}
+FIELDS = {'listening': ('script_zh', 'script_fr', 'script_spk'), 'reading': ('src_zh', 'q_zh', 'key_zh', 'opt_zh', 'ans_zh')}
 BAD = re.compile('视频|視頻|質量|信息|網絡|打車|屏幕|軟件')
 norm = lambda s: re.sub(r'\s+', ' ', s.replace('’', "'")).strip()
 
@@ -16,7 +16,11 @@ def frags(s): return [norm(x) for x in re.findall(r"[A-Za-zÀ-ÿœ'’][A-Za-zÀ
 
 def check(skill, q, f, new):
     old = q.get(f)
+    if f == 'script_spk':                                 # 每行一個字：A/B/C 哪個人講、- 旁白或題號
+        return '' if re.fullmatch(r'[A-D-]+', new or '') else 'script_spk 只能是 A–D 和 -'
     if not old: return '原本沒有這欄'
+    if f == 'script_fr':                                  # 11-13：只准改換行（一個人講的一段一行），字一個都不能動
+        return '' if re.sub(r'\s', '', new) == re.sub(r'\s', '', old) else '逐字稿的字被改了（只准改換行）'
     if BAD.search(new): return '大陸用詞'
     if f != 'ans_zh' and not re.search(r'[一-鿿]', new): return '沒有中文'
     if f == 'script_zh':
@@ -54,6 +58,7 @@ def main(write):
                 if errs and f'{tid}#{qn}' in ALLOW and all('法文片段不見' in e for e in errs): errs = []   # 人工看過：改正錯的引文
                 if errs: print(tid, qn, '；'.join(errs)); bad += 1; continue
                 for f, v in fs.items(): q[f] = v.strip()
+                if 'script_fr' in fs: q['lined'] = True; q.pop('tok', None)   # 前端：lined＝每個換行都是換人講／分段
                 if skill == 'listening' and q.get('script_fr'):     # 逐字稿尾巴混到的中文解析（PDF 切錯欄），解析已重寫進 script_zh → 切掉
                     L = q['script_fr'].split('\n'); k = next((i for i, l in enumerate(L) if re.search(r'[一-鿿]', l)), None)
                     if k is not None:

@@ -213,8 +213,29 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
   letter-spacing: 1px; margin: 10px 0 4px; }
 .rev-detail h4:first-child { margin-top: 0; }
 /* 詳解旁的大按鈕：貼在畫面下緣，邊讀詳解邊倒退重聽（11-10 Owen） */
-.big-ctl { position: sticky; bottom: 10px; z-index: 5; display: flex; gap: 8px; margin: 2px 0 10px;
-  padding: 6px; background: #0a0c16; border-radius: 10px; }
+/* 11-13 Owen：「可以順著頁面上下滑時一起滑動，不要死死在原地」→ sticky 只在它自己那一小段有效，改成固定在畫面下緣 */
+.big-ctl { position: fixed; left: 50%; transform: translateX(-50%); bottom: 10px; z-index: 30; display: flex; gap: 8px;
+  width: min(680px, calc(100% - 24px)); padding: 6px; background: #0a0c16; border: 1px solid #1a2438; border-radius: 10px;
+  box-shadow: 0 -4px 18px rgba(0,0,0,.55); }
+/* 法文／中文左右對照（11-13 Owen：「中文想對照看都要往下滑，我傾向左右兩邊看（iPad 橫看）」「中文可以有隱藏打開的功能」）
+   .bi.rows：逐字稿一段配一行中文（段數對得上才用）；直拿時變成一段法文下面接它的中文 */
+.bi > div, .bi > p { min-width: 0; }
+.rev-detail .bi.rows p { margin: 0 0 6px; }
+.rev-detail .bi.rows p.zh-col { color: #8f98a4; font-size: .76rem; margin-bottom: 12px; }
+.rev-detail p.frt.turn { padding-left: 8px; border-left: 3px solid #2a5a7a; }
+.rev-detail p.frt.turn.b { border-left-color: #8a6a30; }
+.rev-detail p.frt.turn.c { border-left-color: #4a7a4a; }
+.rev-detail .zh-col h4 { margin-top: 0; }
+.zh-tog { float: right; margin-top: -3px; padding: 2px 9px; border-radius: 7px; border: 1px solid #333c48; background: transparent;
+  color: #aaa8a0; font: inherit; font-size: .7rem; text-transform: none; letter-spacing: 0; cursor: pointer; }
+body.zh-off .zh-col { display: none !important; }
+@media (orientation: landscape) and (min-width: 900px) {
+  body { max-width: 1180px; }
+  .bi { display: grid; grid-template-columns: 1fr 1fr; column-gap: 22px; align-items: start; }
+  .rev-detail .bi.rows p.zh-col { margin-bottom: 6px; font-size: .8rem; }
+  .rev-detail .bi > .zh-col h4 { display: none; }
+  body.zh-off .bi { grid-template-columns: 1fr; }
+}
 .big-ctl button { flex: 1; padding: 14px 4px; border-radius: 9px; border: 1.5px solid #2a5a7a; background: #12223a;
   color: #cfe6f7; font: inherit; font-size: 0.95rem; font-weight: 700; cursor: pointer; }
 .rev-detail p { font-size: 0.78rem; color: #aaa8a0; line-height: 1.65; white-space: pre-wrap; }
@@ -982,15 +1003,37 @@ function morphZh(f) {
 }
 /* 📎 系統認的片語：每一個命中記在 PH_HITS，字的 data-m 列出它屬於哪幾個（空白分隔的編號） */
 const PH_HITS = [];
-function frTokHtml(text, tok, reflow) {
+/* 逐字稿哪些換行是真的分段（換人講話、題號、選項），哪些只是 PDF 排版折行（11-13 Owen：「兩人對話沒有照開始結束，斷句斷在錯的位置」）
+   判準：上一行以句號類結尾、而且明顯沒排滿（< 最長行 80%）＝分段；全部都是短行（看圖題 A–D）＝每行都分段 */
+function hardBreaks(text) {
+  const H = new Set(), L = text.split('\n'), len = L.map(l => l.trim().length);
+  const mx = Math.max(0, ...len.slice(0, -1));
+  let off = 0;
+  for (let i = 0; i < L.length - 1; i++) {
+    const nl = off + L[i].length, a = L[i].trim(), b = L[i + 1].trim();
+    if (mx < 45 || /^Question\s*\d/.test(a) || /^(Question\s*\d|[–—-])/.test(b) || (/[.?!…»"]$/.test(a) && a.length < mx * 0.8)) H.add(nl);
+    off = nl + 1;
+  }
+  return H;
+}
+const ROW_SEP = '\u0001';
+function frTokHtml(text, tok, reflow, lined) {   // lined：資料已經標好分段（潤飾時一人一段），換行全照資料
   text = String(text || '');
-  if (!tok || !tok.length) return esc(reflow ? reflowFr(text) : text);
+  if (reflow === 'rows') {                     // 回傳用 ROW_SEP 分開的一段一段
+    let H = hardBreaks(text);
+    if (lined) { H = new Set(); for (let i = text.indexOf('\n'); i >= 0; i = text.indexOf('\n', i + 1)) H.add(i); }
+    const rowGap = (g, st) => { let o = ''; for (let k = 0; k < g.length; k++) { const c = g[k]; o += c === '\n' && H.has(st + k) ? ROW_SEP : /\s/.test(c) ? ' ' : c; } return esc(o.replace(/ {2,}/g, ' ')); };
+    if (!tok || !tok.length) return rowGap(text, 0);
+    var customGap = rowGap;
+  }
+  else if (!tok || !tok.length) return esc(reflow ? reflowFr(text) : text);
   const at = {}; tok.forEach(t => { at[t[0]] = t; });
   const mOf = {};
   if (window.TCF_PHRASES) try { TCF_PHRASES.matchTok(text, tok).forEach(m => { const n = PH_HITS.push({ id: m.id, len: m.i1 - m.i0 }) - 1;
     for (let k = m.i0; k <= m.i1; k++) (mOf[k] = mOf[k] || []).push(n); }); } catch (e) {}
   let h = '', pos = 0;
-  const gap = (g, next) => {
+  const gap = (g, next, st) => {
+    if (customGap) return customGap(g, st);
     if (!reflow) return esc(g);
     g = g.replace(/\s+/g, ' ');
     g = g.replace(/([.?!…])\s+(?=[«"–—-])/g, '$1\n');
@@ -1000,13 +1043,13 @@ function frTokHtml(text, tok, reflow) {
   };
   tok.forEach((t, ti) => {
     const [a, b, l, p, f] = t, w = text.slice(a, b);
-    h += gap(text.slice(pos, a), w);
+    h += gap(text.slice(pos, a), w, pos);
     let hw = '';
     if (f && f.startsWith('Aux@')) { const ht = at[+f.slice(4, f.indexOf('|'))]; if (ht) hw = text.slice(ht[0], ht[1]); }
     h += `<span class="tw" data-s="${a}" data-l="${esc(l || w)}" data-p="${p}" data-f="${esc(f || '')}"${hw ? ` data-h="${esc(hw)}"` : ''}${mOf[ti] ? ` data-m="${mOf[ti].join(' ')}"` : ''}>${esc(w)}</span>`;
     pos = b;
   });
-  return h + gap(text.slice(pos), '');
+  return h + gap(text.slice(pos), '', pos);
 }
 let GLOSS_ST = 0;
 function glossLoad() {
@@ -1150,27 +1193,61 @@ function circEnd(el2) {
     pop.innerHTML = `<div class="circ">⭐ 存好了：<b style="color:#b8e0a0">${esc(surf)}</b>${zh ? '＝' + esc(zh) : '（中文之後補）'}<div class="lk"><button onclick="wordPopHide()">好</button><span class="note">小鎮字典屋的書架上會看到</span></div></div>`;
   };
 }
+/* 聽力逐字稿：法文一段一段（換人講話就換段），右邊（直拿時是下面）配中文；「答案X…」那段解析另外放、不跟著收起來 */
+function scriptBiHtml(q, t) {
+  const va = vocabAttr(q, t), plain = r => r.replace(/<[^>]*>/g, '');
+  const rows = frTokHtml(q.script_fr, q.tok, 'rows', q.lined).split(ROW_SEP).map(r => r.trim()).filter(r => /[A-Za-zÀ-ÿ0-9]/.test(plain(r)));
+  const zl = String(q.script_zh || '').split('\n');
+  let k = zl.findIndex(l => /^\s*答案/.test(l)); if (k < 0) k = zl.length;
+  const tr = zl.slice(0, k).map(l => l.trim()).filter(Boolean), ex = zl.slice(k).join('\n').trim();
+  /* 對話（不是 A–D 選項那種）：每段左邊一條色線，換段換顏色，看得出換人講。⚠️ 沒有 lined 的題是用 PDF 分段推的，同一人連講兩段會猜錯 */
+  const talk = rows.filter(r => !/^Question\s*\d/.test(plain(r))).length >= 2 && !rows.some(r => /^[A-D]\.\s/.test(plain(r)));
+  let n = 0, li = -1;
+  const spk = q.lined && q.script_spk && q.script_spk.length === rows.length ? q.script_spk : '';   // 潤飾時標好的說話人（每段一個字）
+  const frP = r => { li++; const isQ = /^Question\s*\d/.test(plain(r));
+    const c = spk ? (spk[li] === '-' ? '' : ' turn' + (spk[li] === 'B' ? ' b' : spk[li] === 'C' ? ' c' : ''))
+                  : talk && !isQ ? ' turn' + (n++ % 2 ? ' b' : '') : '';
+    return '<p class="frt' + c + '"' + va + '>' + r + '</p>'; };
+  let h = '<h4>Transcription・點兩下查字' + (tr.length ? zhTogBtn() : '') + '</h4>';
+  if (tr.length && tr.length === rows.length) h += '<div class="bi rows">' + rows.map((r, i) => frP(r) + '<p class="zh-col">' + esc(tr[i]) + '</p>').join('') + '</div>';
+  else h += '<div class="bi"><div>' + rows.map(frP).join('') + '</div>' + (tr.length ? '<div class="zh-col"><h4>翻譯</h4><p>' + esc(tr.join('\n')) + '</p></div>' : '') + '</div>';
+  if (ex) h += '<h4>解析</h4><p>' + esc(ex) + '</p>';
+  return h;
+}
+/* 中文收起／打開：記在本機，全部詳解一起套 */
+const ZH_KEY = 'tcfmock_zh_off';
+function zhOff() { try { return localStorage.getItem(ZH_KEY) === '1'; } catch (e) { return false; } }
+function zhTogBtn() { return '<button class="zh-tog" onclick="zhToggle(event)">' + (zhOff() ? '顯示中文' : '收起中文') + '</button>'; }
+function zhToggle(ev) {
+  if (ev) ev.stopPropagation();
+  const off = !zhOff(); try { localStorage.setItem(ZH_KEY, off ? '1' : '0'); } catch (e) {}
+  document.body.classList.toggle('zh-off', off);
+  document.querySelectorAll('.zh-tog').forEach(b => { b.textContent = off ? '顯示中文' : '收起中文'; });
+}
+document.addEventListener('DOMContentLoaded', () => document.body.classList.toggle('zh-off', zhOff()));
 function detailHtml(q, t, inline) {   // inline：單題模式直接展開，圖片上面已經有了不重複
   const open = inline ? '<div class="rev-detail show">' : '<div class="rev-detail">';
   let h = open;
   if (t.skill === 'reading') {
     if (q.img && !inline) h += `<img src="${DATA_DIR}${q.img}" alt="document">`;
-    if (q.text_fr) h += '<h4>原文・點兩下查字</h4><p class="frt"' + vocabAttr(q, t) + '>' + frTokHtml(q.text_fr, q.tok, false) + '</p>';
-    if (q.src_zh)  h += '<h4>原文翻譯</h4><p>' + esc(q.src_zh) + '</p>';
+    if (q.text_fr) h += '<h4>原文・點兩下查字' + (q.src_zh ? zhTogBtn() : '') + '</h4><div class="bi"><div><p class="frt"' + vocabAttr(q, t) + '>' + frTokHtml(q.text_fr, q.tok, false) + '</p></div>' +
+      (q.src_zh ? '<div class="zh-col"><h4>原文翻譯</h4><p>' + esc(q.src_zh) + '</p></div>' : '') + '</div>';
+    else if (q.src_zh) h += '<h4>原文翻譯</h4><p>' + esc(q.src_zh) + '</p>';
     if (q.q_zh)    h += '<h4>題目翻譯</h4><p>' + esc(q.q_zh) + '</p>';
     if (q.key_zh)  h += '<h4>關鍵點解析</h4><p>' + esc(q.key_zh) + '</p>';
     if (q.opt_zh)  h += '<h4>選項分析</h4><p>' + esc(q.opt_zh) + '</p>';
   } else {
     /* 11-10 Owen 回報：詳解旁要有大的前進後退＋暫停（練習／單題才有，模考模式不會走到 inline） */
     if (inline) h += '<div class="big-ctl"><button onclick="seekBy(-5)">⏪ 5 秒</button>' +
-      '<button onclick="togglePlay()">⏯ 播放／暫停</button><button onclick="seekBy(5)">5 秒 ⏩</button></div>';
+      '<button onclick="togglePlay()">⏯ 播放／暫停</button><button onclick="seekBy(5)">5 秒 ⏩</button>' +
+      (cueOf(cur.idx) !== null ? '<button onclick="playQuestion()">▶ 這一題</button>' : '') + '</div>';
     /* 選項翻譯（11-10 Owen 回報「答案也要翻譯」；佔位選項 Proposition a–d 那種沒有 opts_zh） */
     if (q.opts_zh) h += '<h4>選項翻譯</h4><p>' + q.opts_zh.map((z, i) => {
       const L = 'ABCD'[i], line = L + '. ' + esc(z);
       return L === q.answer ? '<b style="color:#60d090">' + line + '　← 正解</b>' : line;
     }).join('\n') + '</p>';
-    if (q.script_fr) h += '<h4>Transcription・點兩下查字</h4><p class="frt"' + vocabAttr(q, t) + '>' + frTokHtml(q.script_fr, q.tok, true) + '</p>';
-    if (q.script_zh) h += '<h4>翻譯與解析</h4><p>' + esc(q.script_zh) + '</p>';
+    if (q.script_fr) h += scriptBiHtml(q, t);
+    else if (q.script_zh) h += '<h4>翻譯與解析</h4><p>' + esc(q.script_zh) + '</p>';
   }
   if (h === open) h += '<p>（這題沒有附解析）</p>';
   return h + '</div>';
