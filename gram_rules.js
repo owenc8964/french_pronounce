@@ -446,7 +446,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'tout-chaque', name:'Tout / chaque (全部 vs 每一個)', icon:'🔢', zone:'A2', cat:'base',
-    lessons:[26], topics:['tout-chaque'], unlocked:true,
+    lessons:[26,51], topics:['tout-chaque'], unlocked:true,
     rule:{
       title:'tout / toute / tous / toutes vs chaque — 整批看還是一個一個看',
       why:'這兩個字中文都可以翻成「每」，但法文分得很清楚：chaque 是把東西一個一個拆開看，所以後面永遠是單數，而且 chaque 本身完全不變化；tout 是把東西當成一整批看，所以它要跟那批名詞配合性數，後面通常還帶著冠詞（tous les jours）。第三種身分最容易漏掉——tout 也可以單獨當中性代名詞用，意思是「所有東西」（Tout va bien），這時它不配合任何東西，永遠寫 t-o-u-t。⚠️ 真正的陷阱在於 tout 跟 tous 唸起來一模一樣，所以這是一條「用看的」規則不是「用聽的」規則：要寫對只能回頭看名詞是什麼性數。',
@@ -568,7 +568,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'restriction-ne-que', name:'La restriction : ne...que', icon:'🎯', zone:'A2', cat:'negation',
-    lessons:[30], topics:['restriction-ne-que'], unlocked:true,
+    lessons:[30,51], topics:['restriction-ne-que'], unlocked:true,
     rule:{
       title:'ne...que — 限制，不是否定',
       why:'ne...que 長得像否定句（有 ne），但骨子裡是「只」，跟 pas／jamais／rien 那一組真正的否定完全不同陣營——它限制的是「數量、範圍」，不是「有沒有發生」。可以直接換成 uniquement／juste／seulement，換完句子的邏輯完全不變，這是判斷它是不是這個文法點最快的測試：換得過就是限制，換不過就是別的。也因為它不是真否定，跟 en、pronom 疊用時完全不衝突，反而是口說評論最常見的疊法（je n\'en dis que du bien）。',
@@ -634,7 +634,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'cause-consequence', name:'La cause et la conséquence', icon:'➡️', zone:'A2', cat:'discours',
-    lessons:[33], topics:['cause-consequence'], unlocked:true,   // 09-14（第33課）主文法
+    lessons:[33,51], topics:['cause-consequence'], unlocked:true,   // 09-14（第33課）主文法
     rule:{
       title:'因果連接詞 — 先分方向（原因往前指／結果往後推），再看後面接什麼、在哪裡用',
       why:'原因和結果是同一條因果線的兩端，連接詞只是決定你站在哪一端講話：站在結果這邊回頭指原因，用 parce que／car／grâce à／à cause de；站在原因這邊往下推結果，用 donc／alors／c\'est pourquoi。方向定了之後剩下兩個岔路，都不是新規則：① 後面接名詞還是句子——grâce à、à cause de 本身是介系詞，介系詞只能接名詞，所以 à／de 碰到 le／les 照樣縮成 au、aux、du、des；要接一整個句子就得換 parce que（que 就是專門帶子句的）。② 口說還是書面——car、donc、c\'est pourquoi、c\'est pour cela que 偏書面，alors、c\'est pour ça que 偏口說；c\'est pour ça que 跟 c\'est pour cela que 其實是同一句，ça 就是 cela 在嘴裡被磨短的樣子。car 不能單獨回答 Pourquoi ? 也是結構決定的：car 是對等連接詞，任務是把兩個句子並排接起來，前面沒有句子就沒東西可接；parce que 帶的是從屬子句，可以自己站出來當答案。grâce à 裡的 grâce 是「恩典、感謝」，本身就帶謝意，所以只接好事。',

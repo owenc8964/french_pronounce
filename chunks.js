@@ -25382,5 +25382,922 @@ const CHUNKS = [
   "fr": "une omelette",
   "zh": "歐姆蛋",
   "note": ""
+ },
+ {
+  "id": "L51_Je_ne_vais_au_cinéma_qu",
+  "lesson": 51,
+  "fr": "Je ne vais au cinéma qu'une fois par mois.",
+  "zh": "我一個月只去一次電影院。",
+  "note": "⭐ p.49；地點 au cinéma 先講，que 放在 une fois 前面"
+ },
+ {
+  "id": "L51_Je_n_en_ai_vu_qu_un_ce_m",
+  "lesson": 51,
+  "fr": "Je n'en ai vu qu'un ce mois-ci.",
+  "zh": "這個月我只看了一部。",
+  "note": "⭐ ne 在 en 前面；que 在過去分詞 vu 後面"
+ },
+ {
+  "id": "L51_Je_n_en_ai_pas_vu_qu_une",
+  "lesson": 51,
+  "fr": "Je n'en ai pas vu qu'une.",
+  "zh": "我看的不只一個。",
+  "note": "🎙 老師打在截圖上：加了 pas 意思就反過來"
+ },
+ {
+  "id": "L51_Nous_n_avons_vu_qu_un_fi",
+  "lesson": 51,
+  "fr": "Nous n'avons vu qu'un film.",
+  "zh": "我們只看了一部電影。",
+  "note": "⭐ Remarques：複合時態，que 在過去分詞後面"
+ },
+ {
+  "id": "L51_Tu_n_as_qu_à_demander_au",
+  "lesson": 51,
+  "fr": "Tu n'as qu'à demander au metteur en scène.",
+  "zh": "你去問導演就好了。",
+  "note": "⭐ ＝Tu devrais demander au metteur en scène.（建議）"
+ },
+ {
+  "id": "L51_Tu_n_as_qu_à_pratiquer",
+  "lesson": 51,
+  "fr": "Tu n'as qu'à pratiquer.",
+  "zh": "你只要練習就好。",
+  "note": "🎙 老師舉例：你說 Je veux réussir le B2，他就這樣回"
+ },
+ {
+  "id": "L51_Je_ne_lui_ai_dit_que_la",
+  "lesson": 51,
+  "fr": "Je ne lui ai dit que la vérité.",
+  "zh": "我只跟他說了實話。",
+  "note": "⭐ c"
+ },
+ {
+  "id": "L51_Nous_n_y_reviendrons_que",
+  "lesson": 51,
+  "fr": "Nous n'y reviendrons que dans un an.",
+  "zh": "我們一年後才會再回去那裡。",
+  "note": "⭐ d（老師打在截圖上）"
+ },
+ {
+  "id": "L51_Il_n_y_avait_que_deux_mu",
+  "lesson": 51,
+  "fr": "Il n'y avait que deux musiciens sur scène.",
+  "zh": "台上只有兩個樂手。",
+  "note": "⭐ e"
+ },
+ {
+  "id": "L51_Étant_donné_qu_il_pleuva",
+  "lesson": 51,
+  "fr": "Étant donné qu'il pleuvait, nous sommes allés au musée.",
+  "zh": "因為在下雨，我們就去了博物館。",
+  "note": "⭐ ＋句子"
+ },
+ {
+  "id": "L51_Puisque_tu_es_là_viens_m",
+  "lesson": 51,
+  "fr": "Puisque tu es là, viens m'aider.",
+  "zh": "既然你在，來幫我。",
+  "note": "⭐ 雙方都知道你在這裡"
+ },
+ {
+  "id": "L51_Il_a_tellement_aimé_le_f",
+  "lesson": 51,
+  "fr": "Il a tellement aimé le film qu'il est retourné le voir.",
+  "zh": "他太喜歡那部電影了，又回去看了一次。",
+  "note": "⭐ tellement…que"
+ },
+ {
+  "id": "L51_Comme_ils_étaient_fatigu",
+  "lesson": 51,
+  "fr": "Comme ils étaient fatigués, ils ne sont pas allés au cinéma.",
+  "zh": "由於他們很累，就沒去看電影。",
+  "note": "⭐ Remarques；老師：comme 也有「像」的意思（Je suis comme toi）"
+ },
+ {
+  "id": "L51_Je_suis_à_l_origine_de_c",
+  "lesson": 51,
+  "fr": "Je suis à l'origine de ce problème.",
+  "zh": "這個問題是我造成的。",
+  "note": "🎙 老師的例子；主詞不一定是 je"
+ },
+ {
+  "id": "L51_Je_reste_interdite_muett",
+  "lesson": 51,
+  "fr": "Je reste interdite, muette, pétrifiée.",
+  "zh": "我愣住了，說不出話，動彈不得。",
+  "note": "⭐ 老師：她就是很震撼"
+ },
+ {
+  "id": "L51_Je_préfère_voir_les_film",
+  "lesson": 51,
+  "fr": "Je préfère voir les films d'action sur grand écran.",
+  "zh": "動作片我比較喜歡在大銀幕看。",
+  "note": "⭐ 1f；當堂答出來"
+ },
+ {
+  "id": "L51_Cette_peinture_symbolise",
+  "lesson": 51,
+  "fr": "Cette peinture symbolise la vie de Van Gogh.",
+  "zh": "這幅畫象徵梵谷的一生。",
+  "note": "🎙 老師的例子"
+ },
+ {
+  "id": "L51_Aucune_langue_n_est_diff",
+  "lesson": 51,
+  "fr": "Aucune langue n'est difficile.",
+  "zh": "沒有一種語言是難的。",
+  "note": "⭐ Remarques；有 ne、沒有 pas"
+ },
+ {
+  "id": "L51_Tous_les_candidats_sont",
+  "lesson": 51,
+  "fr": "Tous les candidats sont francophiles.",
+  "zh": "所有參賽者都喜愛法語文化。",
+  "note": "⭐ 形容詞：tous 的 s 不唸"
+ },
+ {
+  "id": "L51_Tous_sont_francophiles",
+  "lesson": 51,
+  "fr": "Tous sont francophiles.",
+  "zh": "大家都喜愛法語文化。",
+  "note": "⭐ 代名詞：tous 的 s 要唸"
+ },
+ {
+  "id": "L51_Certaines_sont_très_surp",
+  "lesson": 51,
+  "fr": "Certaines sont très surprenantes.",
+  "zh": "有些非常令人驚訝。",
+  "note": "⭐ 1c"
+ },
+ {
+  "id": "L51_Et_quand_un_Français_fai",
+  "lesson": 51,
+  "fr": "Et quand un Français fait une blague, je panique.",
+  "zh": "法國人一開玩笑，我就慌了。",
+  "note": "⭐"
+ },
+ {
+  "id": "L51_J_admire_la_France_et_sa",
+  "lesson": 51,
+  "fr": "J'admire la France et sa langue.",
+  "zh": "我欣賞法國和它的語言。",
+  "note": "⭐"
+ },
+ {
+  "id": "L51_Ça_on_a_déjà_un_peu_vu",
+  "lesson": 51,
+  "fr": "Ça, on a déjà un peu vu.",
+  "zh": "這個我們之前稍微看過了。",
+  "note": "🎙 開場講 ne…que"
+ },
+ {
+  "id": "L51_Vous_devez_savoir_ce_typ",
+  "lesson": 51,
+  "fr": "Vous devez savoir ce type de mot.",
+  "zh": "你們一定要會這類詞。",
+  "note": "🎙 講因果連接詞"
+ },
+ {
+  "id": "L51_Il_m_en_reste_trois",
+  "lesson": 51,
+  "fr": "Il m'en reste trois.",
+  "zh": "我還剩三個。",
+  "note": "🎙 解釋 rester＝剩下"
+ },
+ {
+  "id": "L51_Le_film_sort_le_25_novem",
+  "lesson": 51,
+  "fr": "Le film sort le 25 novembre.",
+  "zh": "電影 11 月 25 日上映。",
+  "note": "🎙 解釋 la sortie"
+ },
+ {
+  "id": "L51_Est_ce_que_tu_as_déjà_eu",
+  "lesson": 51,
+  "fr": "Est-ce que tu as déjà eu un choc devant un chef-d'œuvre ?",
+  "zh": "你有沒有在一件傑作前面受到震撼過？",
+  "note": "🎙 p.52 口說題"
+ },
+ {
+  "id": "L51_On_commence_par_regarder",
+  "lesson": 51,
+  "fr": "On commence par regarder ça, après on reviendra au texte.",
+  "zh": "我們先看這個，之後再回到課文。",
+  "note": "🎙 先看文法再看閱讀"
+ },
+ {
+  "id": "L51_Aucune_langue_n_est_diff_2",
+  "lesson": 51,
+  "fr": "Aucune langue n'est difficile. Tu es d'accord ?",
+  "zh": "沒有一種語言是難的。你同意嗎？",
+  "note": "🎙 接著是 Non, le français c'est difficile."
+ },
+ {
+  "id": "L51_Viens_m_aider",
+  "lesson": 51,
+  "fr": "Viens m'aider.",
+  "zh": "來幫我。",
+  "note": "⭐ ❓ 課堂上出現 viens aider moi（逐字稿分不出是誰說的）→ 受詞代名詞放在原形動詞前面"
+ },
+ {
+  "id": "L51_Tu_as_eu_un_choc_en_Isla",
+  "lesson": 51,
+  "fr": "Tu as eu un choc en Islande.",
+  "zh": "你在冰島受到很大的震撼。",
+  "note": "🎙 老師說 à l'Islande → 陰性國名前用 en"
+ },
+ {
+  "id": "L51_parce_que",
+  "lesson": 51,
+  "fr": "parce que",
+  "zh": "因為",
+  "note": "句子｜最一般"
+ },
+ {
+  "id": "L51_puisque",
+  "lesson": 51,
+  "fr": "puisque",
+  "zh": "既然",
+  "note": "句子｜原因雙方都知道"
+ },
+ {
+  "id": "L51_comme",
+  "lesson": 51,
+  "fr": "comme",
+  "zh": "由於",
+  "note": "句子｜一定放句首"
+ },
+ {
+  "id": "L51_étant_donné_que",
+  "lesson": 51,
+  "fr": "étant donné que",
+  "zh": "鑑於",
+  "note": "句子｜正式"
+ },
+ {
+  "id": "L51_étant_donné",
+  "lesson": 51,
+  "fr": "étant donné",
+  "zh": "鑑於",
+  "note": "名詞｜不變化"
+ },
+ {
+  "id": "L51_en_raison_de",
+  "lesson": 51,
+  "fr": "en raison de",
+  "zh": "由於",
+  "note": "名詞｜正式"
+ },
+ {
+  "id": "L51_être_à_l_origine_de",
+  "lesson": 51,
+  "fr": "être à l'origine de",
+  "zh": "是…的起因",
+  "note": "名詞｜動詞片語"
+ },
+ {
+  "id": "L51_s_expliquer_par",
+  "lesson": 51,
+  "fr": "s'expliquer par",
+  "zh": "原因在於",
+  "note": "名詞｜動詞片語"
+ },
+ {
+  "id": "L51_par_conséquent",
+  "lesson": 51,
+  "fr": "par conséquent",
+  "zh": "因此",
+  "note": "正式，老師推薦寫作用"
+ },
+ {
+  "id": "L51_du_coup",
+  "lesson": 51,
+  "fr": "du coup",
+  "zh": "結果、所以",
+  "note": "口語"
+ },
+ {
+  "id": "L51_alors",
+  "lesson": 51,
+  "fr": "alors",
+  "zh": "所以",
+  "note": "口語，老師：跟 donc 差不多"
+ },
+ {
+  "id": "L51_tellement_que",
+  "lesson": 51,
+  "fr": "tellement…que",
+  "zh": "太…所以",
+  "note": "si…que 也一樣"
+ },
+ {
+  "id": "L51_ce_qui_fait_que",
+  "lesson": 51,
+  "fr": "ce qui fait que",
+  "zh": "這使得",
+  "note": "口語"
+ },
+ {
+  "id": "L51_c_est_pour_cela_que",
+  "lesson": 51,
+  "fr": "c'est pour cela que",
+  "zh": "就是因為這樣",
+  "note": ""
+ },
+ {
+  "id": "L51_c_est_pourquoi",
+  "lesson": 51,
+  "fr": "c'est pourquoi",
+  "zh": "這就是為什麼",
+  "note": ""
+ },
+ {
+  "id": "L51_entraîner",
+  "lesson": 51,
+  "fr": "entraîner",
+  "zh": "導致",
+  "note": "動詞"
+ },
+ {
+  "id": "L51_provoquer",
+  "lesson": 51,
+  "fr": "provoquer",
+  "zh": "引起",
+  "note": "動詞"
+ },
+ {
+  "id": "L51_causer",
+  "lesson": 51,
+  "fr": "causer",
+  "zh": "造成",
+  "note": "動詞"
+ },
+ {
+  "id": "L51_avoir_pour_conséquence",
+  "lesson": 51,
+  "fr": "avoir pour conséquence",
+  "zh": "造成…後果",
+  "note": "動詞片語"
+ },
+ {
+  "id": "L51_l_effet",
+  "lesson": 51,
+  "fr": "l'effet",
+  "zh": "效果、影響",
+  "note": "名詞"
+ },
+ {
+  "id": "L51_le_résultat",
+  "lesson": 51,
+  "fr": "le résultat",
+  "zh": "結果",
+  "note": "名詞；老師打 donc le résultat …"
+ },
+ {
+  "id": "L51_une_œuvre",
+  "lesson": 51,
+  "fr": "une œuvre",
+  "zh": "作品",
+  "note": "n.f.｜chef-d'œuvre 傑作"
+ },
+ {
+  "id": "L51_un_peintre_paysagiste",
+  "lesson": 51,
+  "fr": "un peintre paysagiste",
+  "zh": "風景畫家",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L51_la_narratrice",
+  "lesson": 51,
+  "fr": "la narratrice",
+  "zh": "敘事者",
+  "note": "n.f.｜講故事的人；le narrateur"
+ },
+ {
+  "id": "L51_à_la_demande_de",
+  "lesson": 51,
+  "fr": "à la demande de",
+  "zh": "應…的要求",
+  "note": "loc.｜Théo 要他看醫生"
+ },
+ {
+  "id": "L51_cheminer",
+  "lesson": 51,
+  "fr": "cheminer",
+  "zh": "慢慢走",
+  "note": "v.｜從 le chemin 來"
+ },
+ {
+  "id": "L51_sans_se_presser",
+  "lesson": 51,
+  "fr": "sans se presser",
+  "zh": "不慌不忙",
+  "note": "loc.｜se presser＝趕（A1 學過）"
+ },
+ {
+  "id": "L51_la_morsure",
+  "lesson": 51,
+  "fr": "la morsure",
+  "zh": "咬",
+  "note": "n.f.｜la morsure du soleil 烈日"
+ },
+ {
+  "id": "L51_vêtu_de",
+  "lesson": 51,
+  "fr": "vêtu de",
+  "zh": "穿著",
+  "note": "adj.｜描述的另一種說法"
+ },
+ {
+  "id": "L51_le_feutre",
+  "lesson": 51,
+  "fr": "le feutre",
+  "zh": "毛氈",
+  "note": "n.m.｜chapeau en feutre"
+ },
+ {
+  "id": "L51_un_sac_en_tissu",
+  "lesson": 51,
+  "fr": "un sac en tissu",
+  "zh": "布袋",
+  "note": "n.m.｜en＝材質"
+ },
+ {
+  "id": "L51_le_chevalet",
+  "lesson": 51,
+  "fr": "le chevalet",
+  "zh": "畫架",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L51_une_toile_vierge",
+  "lesson": 51,
+  "fr": "une toile vierge",
+  "zh": "空白畫布",
+  "note": "n.f.｜老師：vierge＝還沒畫過"
+ },
+ {
+  "id": "L51_une_butte",
+  "lesson": 51,
+  "fr": "une butte",
+  "zh": "小丘",
+  "note": "n.f.｜比 colline 小"
+ },
+ {
+  "id": "L51_contempler",
+  "lesson": 51,
+  "fr": "contempler",
+  "zh": "凝視欣賞",
+  "note": "v.｜老師：因為很美才看"
+ },
+ {
+  "id": "L51_déplier",
+  "lesson": 51,
+  "fr": "déplier",
+  "zh": "打開、攤開",
+  "note": "v.｜plier 摺"
+ },
+ {
+  "id": "L51_deviner",
+  "lesson": 51,
+  "fr": "deviner",
+  "zh": "猜",
+  "note": "v.｜"
+ },
+ {
+  "id": "L51_s_essuyer_le_front",
+  "lesson": 51,
+  "fr": "s'essuyer le front",
+  "zh": "擦額頭",
+  "note": "v.｜essuyer＝擦乾"
+ },
+ {
+  "id": "L51_un_oiseau_de_proie",
+  "lesson": 51,
+  "fr": "un oiseau de proie",
+  "zh": "猛禽",
+  "note": "n.m.｜la proie 獵物"
+ },
+ {
+  "id": "L51_se_remettre_à",
+  "lesson": 51,
+  "fr": "se remettre à",
+  "zh": "又開始",
+  "note": "v.｜＋原形動詞"
+ },
+ {
+  "id": "L51_absorbé_par",
+  "lesson": 51,
+  "fr": "absorbé par",
+  "zh": "專注於",
+  "note": "adj.｜老師：很專心"
+ },
+ {
+  "id": "L51_la_foudre",
+  "lesson": 51,
+  "fr": "la foudre",
+  "zh": "雷擊",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L51_une_gifle",
+  "lesson": 51,
+  "fr": "une gifle",
+  "zh": "耳光",
+  "note": "n.f.｜monumentale 很大的"
+ },
+ {
+  "id": "L51_un_tremblement_de_terre",
+  "lesson": 51,
+  "fr": "un tremblement de terre",
+  "zh": "地震",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L51_engloutir",
+  "lesson": 51,
+  "fr": "engloutir",
+  "zh": "吞沒",
+  "note": "v.｜老師：像掉進洞裡"
+ },
+ {
+  "id": "L51_rester_interdit_e",
+  "lesson": 51,
+  "fr": "rester interdit(e)",
+  "zh": "愣住",
+  "note": "v.｜不是「被禁止」"
+ },
+ {
+  "id": "L51_muet_muette",
+  "lesson": 51,
+  "fr": "muet, muette",
+  "zh": "說不出話",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L51_pétrifié_e",
+  "lesson": 51,
+  "fr": "pétrifié(e)",
+  "zh": "嚇呆",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L51_sans_cesse",
+  "lesson": 51,
+  "fr": "sans cesse",
+  "zh": "不斷地",
+  "note": "adv.｜老師：sans stop"
+ },
+ {
+  "id": "L51_le_casting",
+  "lesson": 51,
+  "fr": "le casting",
+  "zh": "卡司",
+  "note": "n.m.｜所有演員"
+ },
+ {
+  "id": "L51_sur_grand_écran",
+  "lesson": 51,
+  "fr": "sur grand écran",
+  "zh": "在大銀幕",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L51_monter_un_film",
+  "lesson": 51,
+  "fr": "monter un film",
+  "zh": "剪輯電影",
+  "note": "v.｜"
+ },
+ {
+  "id": "L51_le_réalisateur_la_réalis",
+  "lesson": 51,
+  "fr": "le réalisateur, la réalisatrice",
+  "zh": "導演",
+  "note": "n.｜"
+ },
+ {
+  "id": "L51_le_rôle_principal",
+  "lesson": 51,
+  "fr": "le rôle principal",
+  "zh": "主角",
+  "note": "n.m.｜le second rôle 配角"
+ },
+ {
+  "id": "L51_la_sortie",
+  "lesson": 51,
+  "fr": "la sortie",
+  "zh": "上映",
+  "note": "n.f.｜sortir 上映"
+ },
+ {
+  "id": "L51_l_adaptation",
+  "lesson": 51,
+  "fr": "l'adaptation",
+  "zh": "改編作品",
+  "note": "n.f.｜老師：漫畫變成電影"
+ },
+ {
+  "id": "L51_le_film_grand_public",
+  "lesson": 51,
+  "fr": "le film grand public",
+  "zh": "大眾電影",
+  "note": "n.m.｜老師：Astérix"
+ },
+ {
+  "id": "L51_le_film_à_gros_budget",
+  "lesson": 51,
+  "fr": "le film à gros budget",
+  "zh": "大製作",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L51_la_suite",
+  "lesson": 51,
+  "fr": "la suite",
+  "zh": "續集",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L51_la_superproduction",
+  "lesson": 51,
+  "fr": "la superproduction",
+  "zh": "大片",
+  "note": "n.f.｜＝blockbuster"
+ },
+ {
+  "id": "L51_le_personnage",
+  "lesson": 51,
+  "fr": "le personnage",
+  "zh": "角色",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L51_traiter_de",
+  "lesson": 51,
+  "fr": "traiter de",
+  "zh": "探討",
+  "note": "v.｜老師：to speak about"
+ },
+ {
+  "id": "L51_se_dérouler",
+  "lesson": 51,
+  "fr": "se dérouler",
+  "zh": "（情節）進行",
+  "note": "v.｜"
+ },
+ {
+  "id": "L51_la_récompense",
+  "lesson": 51,
+  "fr": "la récompense",
+  "zh": "獎項",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L51_la_sélection_officielle",
+  "lesson": 51,
+  "fr": "la sélection officielle",
+  "zh": "正式入選",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L51_la_représentation",
+  "lesson": 51,
+  "fr": "la représentation",
+  "zh": "演出場次",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L51_le_décor",
+  "lesson": 51,
+  "fr": "le décor",
+  "zh": "布景",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L51_avoir_un_choc",
+  "lesson": 51,
+  "fr": "avoir un choc",
+  "zh": "受到震撼",
+  "note": "v.｜"
+ },
+ {
+  "id": "L51_étincelant_e",
+  "lesson": 51,
+  "fr": "étincelant(e)",
+  "zh": "閃耀的",
+  "note": "adj.｜étincelle 火花"
+ },
+ {
+  "id": "L51_féerique",
+  "lesson": 51,
+  "fr": "féerique",
+  "zh": "夢幻的",
+  "note": "adj.｜fée 仙女"
+ },
+ {
+  "id": "L51_lumineux_lumineuse",
+  "lesson": 51,
+  "fr": "lumineux, lumineuse",
+  "zh": "明亮的",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L51_saisissant_e",
+  "lesson": 51,
+  "fr": "saisissant(e)",
+  "zh": "震撼人心的",
+  "note": "adj.｜breathtaking"
+ },
+ {
+  "id": "L51_faire_marcher_l_imaginat",
+  "lesson": 51,
+  "fr": "faire marcher l'imagination",
+  "zh": "激發想像",
+  "note": "v.｜"
+ },
+ {
+  "id": "L51_symboliser",
+  "lesson": 51,
+  "fr": "symboliser",
+  "zh": "象徵",
+  "note": "v.｜"
+ },
+ {
+  "id": "L51_aucun_étudiant",
+  "lesson": 51,
+  "fr": "aucun étudiant",
+  "zh": "沒有一個",
+  "note": "aucun n'est inutile"
+ },
+ {
+  "id": "L51_chaque_étudiant",
+  "lesson": 51,
+  "fr": "chaque étudiant",
+  "zh": "每一個",
+  "note": "chacun fera une vidéo"
+ },
+ {
+  "id": "L51_certains_étudiants",
+  "lesson": 51,
+  "fr": "certains étudiants",
+  "zh": "某些",
+  "note": "certains parlent peu"
+ },
+ {
+  "id": "L51_quelques_étudiants",
+  "lesson": 51,
+  "fr": "quelques étudiants",
+  "zh": "幾個",
+  "note": "quelques-uns ont des difficultés"
+ },
+ {
+  "id": "L51_tout_le_monde",
+  "lesson": 51,
+  "fr": "tout le monde",
+  "zh": "全部（單數）",
+  "note": "tout est possible"
+ },
+ {
+  "id": "L51_tous_les_étudiants",
+  "lesson": 51,
+  "fr": "tous les étudiants",
+  "zh": "全部（複數）",
+  "note": "tous sont francophones"
+ },
+ {
+  "id": "L51_le_cauchemar",
+  "lesson": 51,
+  "fr": "le cauchemar",
+  "zh": "惡夢",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L51_le_chroniqueur",
+  "lesson": 51,
+  "fr": "le chroniqueur",
+  "zh": "評論員、專欄作家",
+  "note": "n.m.｜老師：節目上發表意見的人"
+ },
+ {
+  "id": "L51_c_est_à_dire",
+  "lesson": 51,
+  "fr": "c'est-à-dire",
+  "zh": "也就是說",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L51_vanter_les_mérites_de",
+  "lesson": 51,
+  "fr": "vanter les mérites de",
+  "zh": "大力推薦",
+  "note": "expr.｜老師：to promote"
+ },
+ {
+  "id": "L51_glaner",
+  "lesson": 51,
+  "fr": "glaner",
+  "zh": "一點一點撿",
+  "note": "v.｜çà et là 到處"
+ },
+ {
+  "id": "L51_se_débrouiller",
+  "lesson": 51,
+  "fr": "se débrouiller",
+  "zh": "應付得來",
+  "note": "v.｜au quotidien 日常"
+ },
+ {
+  "id": "L51_malgré",
+  "lesson": 51,
+  "fr": "malgré",
+  "zh": "儘管",
+  "note": "prép.｜＋名詞"
+ },
+ {
+  "id": "L51_paraître",
+  "lesson": 51,
+  "fr": "paraître",
+  "zh": "顯得",
+  "note": "v.｜"
+ },
+ {
+  "id": "L51_priver_de",
+  "lesson": 51,
+  "fr": "priver de",
+  "zh": "使失去",
+  "note": "v.｜"
+ },
+ {
+  "id": "L51_la_spontanéité",
+  "lesson": 51,
+  "fr": "la spontanéité",
+  "zh": "自然反應",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L51_une_blague",
+  "lesson": 51,
+  "fr": "une blague",
+  "zh": "笑話",
+  "note": "n.f.｜faire une blague"
+ },
+ {
+  "id": "L51_rigoler",
+  "lesson": 51,
+  "fr": "rigoler",
+  "zh": "笑",
+  "note": "v.｜口語"
+ },
+ {
+  "id": "L51_l_arrogance",
+  "lesson": 51,
+  "fr": "l'arrogance",
+  "zh": "傲慢",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L51_à_l_heure_de",
+  "lesson": 51,
+  "fr": "à l'heure de",
+  "zh": "在…的時代",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L51_prédire",
+  "lesson": 51,
+  "fr": "prédire",
+  "zh": "預言",
+  "note": "v.｜je prédis"
+ },
+ {
+  "id": "L51_le_rayonnement",
+  "lesson": 51,
+  "fr": "le rayonnement",
+  "zh": "影響力",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L51_à_l_échelle_de_la_planèt",
+  "lesson": 51,
+  "fr": "à l'échelle de la planète",
+  "zh": "在全球規模",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L51_la_langue_maternelle",
+  "lesson": 51,
+  "fr": "la langue maternelle",
+  "zh": "母語",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L51_se_disputer",
+  "lesson": 51,
+  "fr": "se disputer",
+  "zh": "爭奪",
+  "note": "v.｜也可以是吵架"
  }
 ];

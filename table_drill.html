@@ -1818,6 +1818,30 @@ const TABLES = [
       ["C'est une saga qui s'...... .（後繼無力）",                                     {a:'essouffle',  h:true }],
     ]
   },
+  { id:'cause-l51', title:'原因與結果（第51課 B1 p.51）', zh:'課本的句子，填連接詞', type:'vocab', lesson:51,
+    note:'句子：parce que／puisque／comme（句首）／car／étant donné que；名詞：à cause de／grâce à／étant donné（不變化）／en raison de；結果：donc／par conséquent（正式）／du coup・alors・ce qui fait que（口語）／tellement・si…que',
+    headers:['句子','填入'],
+    rows:[
+      ["...... il est malade, il est suivi par un médecin.（由於，放句首）",          {a:'Comme',            h:true }],
+      ["...... le prix de l'entrée, c'est normal qu'il reste des places.（鑑於＋名詞）", {a:'Étant donné',      h:true }],
+      ["...... tu es là, viens m'aider.（既然）",                                        {a:'Puisque',          h:true }],
+      ["Les artistes sont en retard ...... d'un problème de transport.（由於，正式）",   {a:'en raison',        h:true }],
+      ["Le conférencier est malade, ce qui ...... que la visite est annulée.",           {a:'fait',             h:true }],
+      ["Il a ...... aimé le film qu'il est retourné le voir.",                           {a:'tellement',        h:true }],
+      ["Cette chose ...... étonnante qu'il devait en ressentir une émotion extraordinaire.", {a:'si',           h:true }],
+    ]
+  },
+  { id:'restriction-l51', title:'限制 ne…que（第51課 B1 p.49）', zh:'課本練習 2：把 que 放對位置', type:'vocab', lesson:51,
+    note:'ne 放在動詞和 en、y 前面；que 放在要限制的東西前面；複合時態放在過去分詞後面',
+    headers:['句子','填入'],
+    rows:[
+      ["Je ne vais au cinéma ...... une fois par mois.",                                 {a:"qu'",              h:true }],
+      ["Nous n'y reviendrons ...... dans un an.",                                        {a:'que',              h:true }],
+      ["Il ...... avait que deux musiciens sur scène.",                                  {a:"n'y",              h:true }],
+      ["Elles n'en ont rendu ...... la moitié.",                                         {a:'que',              h:true }],
+      ["Tu n'as ...... demander au metteur en scène.（＝Tu devrais）",                   {a:"qu'à",             h:true }],
+    ]
+  },
   { id:'parler-l49', title:'口說問答與心情詞（第49課）', zh:'口說第二部分＋B1 p.36 Le mieux-vivre ensemble：老師改過的地方與練習答案（第49課）', type:'vocab', lesson:49,
     note:'現金用複數 les espèces；à＋le → au；日期前用 le；devenir 不加 se；只是沒空說 je n\'ai pas le temps；peser → pèse；tenir → tient',
     headers:['句子','填入'],
@@ -2428,7 +2452,7 @@ function handleKey(e) {
 // ════════════════════════════════════════════════════════════
 function norm(s) {
   return s.trim().toLowerCase()
-    .replace(/['']/g, "'")   // 統一撇號
+    .replace(/['’‘]/g, "'")   // 統一撇號（11-13 修：原本兩個都是直撇號，iPhone 的 ’ 會被判錯）
     .replace(/\s+/g, ' ');
 }
 
