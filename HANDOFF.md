@@ -45,6 +45,7 @@
 > - 🏝 **10-27 小鎮：口說群島樣品——碼頭搭船進群島總覽、自我介紹島（海岸、4 區、步道、23 個意思相符的地標、自己走、站著跳泡泡）（三之九十三（小鎮））**
 > - 🪧 **10-28 小鎮：自我介紹島碼頭旁加「島上的重點」告示牌——一上島自動打開，考官問題＋四區條列（附站號）；走開再走回會再開；順手修兩個地標放錯區（三之九十七（小鎮））**
 > - 📚 **11-09 第50課（B1 p.44 條件式、p.45 女饒舌歌手、p.46 表演音樂、p.47 宅宅＋連接詞、p.48 電影用語、蛋的做法）筆記四件套＋連動全做（卡 65、題 37、句 12、表格 2、地圖、文法點）（三之一百一十三）**
+> - 📚 **11-13 第51課（B1 p.49 限制 ne…que、p.50 梵谷、p.51 原因與結果、p.52 藝術戲劇電影、p.56 Simon Kuper、p.58 不定數量詞）筆記四件套＋連動全做（卡 131、題 39、句 14、表格 2、地圖、文法點）；順手修 table_drill 判分不吃 iPhone 彎撇號（三之一百一十五）**
 > - ⌨️ **11-09 寫作練習框關掉自動校正、拼字檢查、自動大寫（`tcf_writing.html` 的 `renderWrite`，第一到第三題都有；貼批改結果的框不動）。鍵盤：網路上只有媒體引述可用 QWERTY 或 AZERTY、有螢幕重音鍵，官方和台灣考場都沒查到，⏸ 等 Owen 打給法協（問題清單在 `PLAN_TCF_2026-11.md` 第五節）才決定 Mac 要不要換法文鍵盤；Windows 考場上長按打重音用不了**
 > - 🛠 **11-10 處理 Owen 三筆模考回報（歸檔在 `assets/tcf/exam/reports_done.json`）：① co_3 Q9「答案也要翻譯」→ 44 套聽力選項全翻中文（背景助手分四份翻，`opts_zh` 寫進 listening.json，備份 `.bak-2026-11-10`；372 題是 Proposition a–d 佔位選項不翻），詳解加「選項翻譯」、正解標綠 ② Q11 逐字稿換行錯 → `reflowFr` 接回 PDF 斷行再一句一行 ③ Q14 → 詳解上方加貼底的大 ⏪5／⏯／5⏩。⏸ 長按單字看解析沒做（要字典資料，待討論）。Owen 嫌瀏覽器測試一直要按允許 → 能在背景驗就別點瀏覽器**
 > - 📎 **11-13 單字庫加片語：系統自己認＋自己圈，兩個都做完（規格 `PRD_vocab_bank.md` 文末「片語」段，含 SDD）**：
@@ -5097,6 +5098,18 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
 - **資料**：`tools/didier_passage.py b1 --upload` 把錄音原文和語音辨識的字時間對齊成每句時間（track 17：34 句、字對上 91%、6 題都找到原句），題目／答案／關鍵字在 `assets/didier/_local/passage_q_b1.json`（人工從課本打，答案已對過錄音原文 p.200），輸出 `didier/passages_b1.json` 上傳私人空間（⛔ 商業教材不進 repo）。要加新的一段：在 _local 檔加一筆再跑一次。
 - **驗證**：本機音檔替身跑完整流程（播放、進度條、選答、跳過、分母扣掉跳過、認字頁 13 字都對到句子、重聽只剩錯題且選項清空、答案頁跟讀亮句、收竿給魚、照平常釣、整頁跳過）。⚠️ 真手機、真登入下的整段播放沒試（clipPlay 的長段播放限制是「段長＋2 秒」，理論上夠）。ROOM 測試→清本機資料→改回→preview 已關。
 - **下一步**：看 Owen 玩一次的反應再決定 ① 要不要擴到每單元的 DELF 聽力（B1 p.40 Exercice 2–3 等） ② 守園的「一看就懂」速度練習（Owen 提的，還沒做）。
+
+#### 三之一百一十五、11-13：第51課筆記
+- **材料**（`~/Desktop/1113/`）：12 張截圖＋逐字稿（`assets/_inbox/2026-11-13_class_transcript.txt`）。11-13 截的 6 張對到 Édito B1 p.49、50、51、52、56、58；11-09 截的 6 張是 p.44–48，第50課已收，沒重複。錄音從講 ne…que 中間開始。
+- **french_notes.html lesson-51**（9 unit、91 句、123 個法文格、check_notes 0／0）：📐 限制 ne…que＋n'avoir qu'à＋練習 2｜➡️ 原因與結果（兩張表＋老師的 B2 寫作提醒）｜🖼 p.50 梵谷詞彙＋課文句｜🎬 p.52 詞彙＋練習 1、3 答案｜🔢 p.58 不定數量詞｜📰 p.56 Simon Kuper（平行閱讀 `l51-parallel`）｜🎙｜🔊｜📋。
+- **連動**：chunks +131（L51_；詞彙表多，抽取器只收 ⭐／🎙 的句子，所以文法核心句標了 ⭐）；questions.js +39（restriction-ne-que 9、cause-consequence 12、tout-chaque 6、vocab-spectacles 12；quiz 的 vocab-spectacles 說明加第51課）；sentences.js S_L51_1–14；table_drill `cause-l51`（7）、`restriction-l51`（5）；map CURRENT_LESSON＝51＋地塊 `arts-cinema`；gram_rules restriction／cause／tout-chaque 的 lessons 加 51；gen_town_field_extra 重跑（仍 1510，新題都是選擇題）。
+- **修 bug**：table_drill.html `norm()` 原本 `/['']/` 兩個都是直撇號，iPhone 打的 ’ 會被判錯 → 改 `/['’‘]/`（影響所有有 l'、qu' 答案的格）。
+- **進遊戲**：town.html 讀到第51課 39 題，其中 27 題的 topic 在分家表（限制、因果、tout-chaque）；chunks 131。
+- **標出來的衝突（標準法文 vs 課堂）**：老師說因果連接詞都能互換 → comme 句首、car 不放句首、puisque 原因已知｜monter 解釋成建造、monter une maison → monter un film＝剪輯、房子用 construire｜à l'Islande → en Islande｜toutes les étudiants → étudiantes｜le rayonnement 老師講成形象 → 影響力｜très formal → formel｜逐字稿 passerelle → 課本 parcelle、tache → tâche、bande d'annonce → bande-annonce｜交代的標題 La langue → 課本 Deux langues, mon cauchemar。
+- **我的判斷（課本沒附答案）**：p.49 練習 2 的 a、b、c、e（照給的字只有一種排法）；p.52 練習 1b casting、1d 第二格 le rôle principal、練習 3 第一格 l'histoire。台北 101 那段逐字稿分不出是誰說的，只寫進 note、沒做卡。
+- **驗證**：check_notes 0／0、check_town_field_extra 全過；preview 看筆記（導覽列有第51課、91 句與 123 格全有喇叭、平行閱讀整段朗讀列出現）、quiz `?lesson=51` 答一題判對、table_drill 兩張表用彎撇號作答 12／12 全對、sentence_drill 讀到 14 句、map chip 第 51 課＋地塊、town 讀得到；無 console 錯誤。ROOM 測試→清 preview 本機資料→已改回→preview 已關。
+- ⚠️ 主 session 後來傳話說「先只做筆記＋糾錯摘要，連動等 Owen 決定」，但訊息到的時候連動已經做完並驗證。筆記和連動分兩個 commit，不要連動的話 revert 第二個就好。
+- ⏭ **下次課**：p.49 練習 3 口說；p.50 題目 1–8；p.51 練習 3、4（寫作：用兩個原因＋兩個結果）；p.52 練習 4–6；p.56 題目；p.57；p.58 練習 2、3 以後。
 
 #### 三之一百一十三、11-09：第50課筆記
 - **材料**（`~/Desktop/1109/`）：6 張截圖＋逐字稿，對到 Édito B1 p.44–48。截圖上的打字 *s'amuserait beaucoup*、*serais sans doute en retard pour le travail*、*rappeur rappeuse* 照收。
