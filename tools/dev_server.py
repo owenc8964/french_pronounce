@@ -150,6 +150,7 @@ VOCAB_DIR = os.path.join(ROOT, 'assets/tcf/exam/vocab')
 VOCAB_LOG = os.path.join(VOCAB_DIR, 'log.json')
 VOCAB_OUT = os.path.join(VOCAB_DIR, 'vocab.json')
 VOCAB_PHZ = os.path.join(VOCAB_DIR, 'phrase_zh.json')     # 📎 11-13 自己圈的片語，中文之後補在這（{key: 中文}，Claude 或 Owen）
+VOCAB_LUCAS = os.path.join(VOCAB_DIR, 'lucas_words.json')  # 📘 11-14 Lucas 高階詞彙＋真題例句（tools/lucas_vocab.py）
 _vocab_timer = None
 
 
@@ -194,6 +195,20 @@ def vocab_build():
     for v in out:
         v['cat'] = max(v['cats'], key=v['cats'].get) if v['cats'] else ('片語' if v['pos'] == 'PHR' else '生字')
         if phz.get(v['key']): v['zh'] = phz[v['key']]     # 補寫的中文優先
+    # 📘 11-14 Lucas 高階詞彙（tools/lucas_vocab.py 產生）：預設 ⭐ 放上書架；模考查過同一個字就併成一張
+    try:
+        lucas = json.load(open(VOCAB_LUCAS, encoding='utf-8'))['words']
+    except (OSError, ValueError, KeyError):
+        lucas = []
+    for L in lucas:
+        v = V.get(L['key'])
+        if v is None:
+            out.append(L); continue
+        v['src'] = 'lucas'; v['disp'] = L['disp']; v['say'] = L['say']
+        if not v['star_ts']: v['star'] = True             # 模考沒按過 ⭐／取消 → 照 Lucas 放上書架
+        if not v['zh']: v['zh'] = L['zh']
+        for e in L['ex']:
+            if len(v['ex']) < 5 and not any(x['fr'] == e['fr'] for x in v['ex']): v['ex'].append(e)
     tmp = VOCAB_OUT + '.tmp'
     json.dump({'v': 1, 'at': int(time.time() * 1000), 'words': out}, open(tmp, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
     os.replace(tmp, VOCAB_OUT)
