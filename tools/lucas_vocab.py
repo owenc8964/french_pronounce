@@ -48,6 +48,65 @@ def load_xlsx():
     return out, os.path.basename(f)
 
 
+# ── 11-14 網站三個詞庫（Owen 登入後 Claude 逐張翻、存成 web/<bank>.txt，一行一張：進度¦字¦詞性…¦中文¦表達法¦搭配¦中文¦例句¦中文×3）
+WEB = os.path.join(ROOT, 'assets/tcf/lucas/web')
+WPOS = {'動詞': 'VERB', '代詞式動詞': 'VERB', '陽性名詞': 'NOUN', '陰性名詞': 'NOUN', '名詞': 'NOUN',
+        '形容詞': 'ADJ', '副詞': 'ADV', '連詞': 'ADV', '表達': 'PHR'}
+WGEN = {'陽性名詞': '(m.) ', '陰性名詞': '(f.) '}
+# 網站原文的明顯錯字（標準法文 ＞ 來源；照來源三層優先序，改了要列給 Owen 看）
+WFIX = [(r'^es chiffres', 'Les chiffres'), (r'\bsocia$', 'social'), (r'\bactue$', 'actuel'), (r'^\.\s+', ''),
+        (r'^la détail', 'le détail')]
+FIXLOG = []
+
+
+def _fix(t, where):
+    o = t
+    for a, b in WFIX:
+        t = re.sub(a, b, t)
+    t = t.strip()
+    if t and t[0].islower() and re.search(r'[.!?]$', t): t = t[0].upper() + t[1:]   # 句首小寫（la communication est…）
+    if t != o: FIXLOG.append(f'{where}：{o} → {t}')
+    return t
+
+
+def _plain(t):
+    import unicodedata
+    return ''.join(c for c in unicodedata.normalize('NFD', t.lower().replace('’', "'")) if unicodedata.category(c) != 'Mn')
+
+
+def _stem(w):
+    w = _plain(re.sub(r"^(le |la |les |l'|l’|se |s'|s’)", '', w.lower()).split(' / ')[0].strip())
+    return w[:max(3, len(w) - 4)]          # soutenir→sout（soutiennent）、convenir→conv（convient）、loger→log（logé）
+
+
+def load_web():
+    out = []
+    for f in sorted(glob.glob(os.path.join(WEB, '*.txt'))):
+        bank = os.path.basename(f)[:-4]
+        for line in open(f, encoding='utf-8'):
+            x = line.rstrip('\n').split('¦')
+            if len(x) < 6 or '表達法' not in x: continue
+            k = x.index('表達法')
+            word, praw, zh = x[1].strip(), x[2], x[k - 1]
+            pos = WPOS.get(praw)
+            if not pos: print('⚠️ 不認得詞性', x[:4], file=sys.stderr); continue
+            col = {'fr': _fix(x[k + 1], word + ' 搭配'), 'zh': x[k + 2]} if len(x) > k + 2 else None
+            lex, st = [], _stem(word)
+            for i in range(k + 3, len(x) - 1, 2):
+                fr = _fix(x[i], word + ' 例句')
+                if st not in _plain(fr):          # 例句裡沒有這個字（en revanche 用 au contraire 舉例）→ 不收
+                    FIXLOG.append(f'{word} 例句沒有用到這個字，不收：{fr}'); continue
+                lex.append({'fr': fr, 'zh': x[i + 1]})
+            m = re.match(r"^(le |la |les |l'|l’)(.+)$", word)
+            bare = m.group(2) if m and pos == 'NOUN' else word
+            first = re.split(r'\s*/\s*', bare)[0].strip()
+            say = word.split(' / ')[0].strip() if pos == 'NOUN' else first           # 名詞念「le chiffre」（陰陽性整塊記）
+            lemma = re.sub(r"^(se |s'|s’)", '', first) if pos == 'VERB' else first
+            out.append({'disp': word, 'say': say, 'lemma': lemma, 'pos': pos, 'zh': WGEN.get(praw, '') + zh,
+                        'praw': praw, 'col': col, 'lex': lex, 'banks': [bank]})
+    return out
+
+
 def load_corpus():
     """[(test, q, skill, text, tok)]；tok＝[start, end, 原形（跟字面一樣時空白）, POS, feat]"""
     rows = []
@@ -76,6 +135,16 @@ def sentence_at(text, s, e):
 
 def build():
     words, src = load_xlsx()
+    for w in words: w['banks'] = ['xlsx']
+    byk = {(w['lemma'].lower().replace('’', "'"), w['pos']): w for w in words}
+    for W in load_web():                                           # 網站的字：跟 xlsx 同一個就併（網站資料比較完整：搭配＋例句）
+        k = (W['lemma'].lower().replace('’', "'"), W['pos'])
+        if k in byk:
+            o = byk[k]; o['banks'] = sorted(set(o['banks'] + W['banks']))
+            for f in ('col', 'lex', 'disp', 'say'): o[f] = W[f] if W.get(f) else o.get(f)
+            if W['zh'] and W['zh'] not in o['zh']: o['zh'] = W['zh']             # 網站中文是繁體原文、比較完整
+        else:
+            byk[k] = W; words.append(W)
     corpus = load_corpus()
     idx = {}                                                       # (lemma, pos) → [(test,q,skill,sent,w)]
     for test, q, skill, text, tok in corpus:
@@ -88,6 +157,12 @@ def build():
     for w in words:
         key_l = w['lemma'].lower()
         hits = idx.get((key_l, w['pos']), [])
+        if w['pos'] == 'PHR':                                      # 片語（afin de、en revanche）：直接在原文找整串
+            pat = re.compile(r'(?<![\w])' + re.escape(w['lemma']).replace("'", "['’]") + r'(?![\w])'
+                             + (r"(?!\s+(?:la|le|les|l['’]|un|une|des|du|mon|ma|mes|ton|ta|tes|ses|sa|son|notre|votre|leur|nos|vos|leurs|ce|cet|cette|ces)\b)" if re.search(r' (à|de)$', w['lemma']) else ''), re.I)   # chercher à + 原形，⛔ chercher à la gare
+            hits = [(t, q, sk, tx, m.start(), m.end(), tx[m.start():m.end()]) for t, q, sk, tx, _ in corpus for m in pat.finditer(tx)]
+        if not hits and w['pos'] == 'ADV':                         # lorsque／toutefois 這類 spaCy 常標 SCONJ／CCONJ
+            hits = idx.get((key_l, 'SCONJ'), []) or idx.get((key_l, 'CCONJ'), [])
         if not hits and w['pos'] == 'ADJ':                         # 過去分詞當形容詞（motivé）spaCy 常還原成動詞 motiver
             hits = idx.get((key_l, 'VERB'), [])
             for inf in (re.sub(r'é$', 'er', key_l), re.sub(r'i$', 'ir', key_l)):
@@ -107,11 +182,12 @@ def build():
                 left, right = sent[:off].split(), sent[off:].split()
                 sent = ('… ' if len(left) > 12 else '') + ' '.join(left[-12:] + right[:13]) + (' …' if len(right) > 13 else '')
                 n = len(sent.split())
-            if n < 4 or sent in seen: continue
+            sig = re.sub(r'\W+', '', sent.lower())[:45]
+            if n < 4 or sig in seen: continue                      # 同一句換標點出現在兩套（par ailleurs）只收一次
             if not re.search(r"(?<![\w'’-])" + re.escape(surf) + r"(?![\w-])", sent): continue   # PDF 斷字（g aspiller）
             if re.search(r"(?<![\w'’])[b-xz] [a-zàâçéèêëîïôûù]{2,}", sent): continue           # 句中有其他斷字也不要
             if re.search(r'[\u3000-\u9fff]|^Question\b|\bII\b', sent): continue               # 夾中文解說、題號句、OCR 把 Il 認成 II
-            seen.add(sent)
+            seen.add(sig)
             score = abs(n - 14) + (8 if '…' in sent else 0) + (0 if re.match(r'[A-ZÀÂÇÉÈÊÎÔ«"]', sent) and re.search(r'[.!?»"]$', sent) else 5)
             cands.append((score, test, q, skill, sent, surf))
         cands.sort()
@@ -123,7 +199,8 @@ def build():
         if not ex: miss.append(w['disp'])
         out.append({'key': key_l + '|' + w['pos'], 'lemma': w['lemma'], 'disp': w['disp'], 'say': w['say'], 'pos': w['pos'],
                     'zh': w['zh'], 'forms': forms, 'n_look': 0, 'tests': tests, 'star': True, 'star_ts': 0, 'bank': 'rec',
-                    'ex': ex, 'cats': {}, 'cat': '動詞' if w['pos'] == 'VERB' else '生字', 'src': 'lucas'})
+                    'ex': ex, 'cats': {}, 'cat': {'VERB': '動詞', 'PHR': '片語'}.get(w['pos'], '生字'), 'src': 'lucas',
+                    'col': w.get('col'), 'lex': w.get('lex', []), 'banks': w.get('banks', [])})
     # 同一原形＋詞性在表上出現兩次（同字不同義）→ 中文併成一張
     merged = {}
     for v in out:
@@ -136,6 +213,9 @@ def build():
     tmp = OUT + '.tmp'
     json.dump({'src': src, 'n': len(res), 'words': res}, open(tmp, 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
     os.replace(tmp, OUT)
+    json.dump(FIXLOG, open(os.path.join(WEB, 'fixlog.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1) if os.path.isdir(WEB) else None
+    import collections
+    print('來源：', collections.Counter('+'.join(v['banks']) for v in res), '；改字／不收例句', len(FIXLOG), '條')
     print(f'{len(words)} 列 → {len(res)} 字；有真題例句 {len(res) - len(miss)}；沒例句 {len(miss)}：{miss}')
     print('出現套數最多：', [(v["disp"], len(v["tests"])) for v in sorted(res, key=lambda v: -len(v['tests']))[:8]])
     print('出現最少（≤2 題）：', [(v["disp"], len(v["tests"])) for v in res if len(v['tests']) <= 2])

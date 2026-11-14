@@ -1811,7 +1811,7 @@ function vocabStats(){
   vocabLoad(function(V, e){
     if(!V){ openSheet('<h3>📊 書桌</h3>'+vErr(e)+'<div class="row2"><span></span><button class="btn main" id="ok">好</button></div>'); document.getElementById('ok').onclick=closeSheet; return; }
     var nL=V.filter(function(w){ return w.src==='lucas'; }).length; V=vLooked(V);
-    if(!V.length){ openSheet('<h3>📊 書桌</h3>'+vEmpty()+(nL?'<div class="muted" style="font-size:.8em">📘 Lucas 高階詞彙 '+nL+' 個已經在書架上。</div>':'')+'<div class="row2"><span></span><button class="btn main" id="ok">好</button></div>'); document.getElementById('ok').onclick=closeSheet; return; }
+    if(!V.length){ openSheet('<h3>📊 書桌</h3>'+vEmpty()+(nL?'<div class="muted" style="font-size:.8em">📘 Lucas 詞彙 '+nL+' 個已經在書架上。</div>':'')+'<div class="row2"><span></span><button class="btn main" id="ok">好</button></div>'); document.getElementById('ok').onclick=closeSheet; return; }
     var A=vSrs(), cats={}, tot=0;
     V.forEach(function(w){ var c=w.cat||'生字'; cats[c]=cats[c]||{n:0, list:[]}; cats[c].n+=w.n_look; cats[c].list.push(w); tot+=w.n_look; });
     var h='<h3>📊 書桌 <small>你在模考查過的字</small></h3>';
@@ -1828,7 +1828,7 @@ function vocabStats(){
         '<div style="flex:1">'+(vIsPh(w)?'📎 ':'')+'<span class="say">'+esc(w.lemma)+'</span> <span class="muted">'+esc(w.zh||(vIsPh(w)?'（中文還沒補）':''))+'</span><div class="muted" style="font-size:.75em">'+
         (w.forms&&w.forms.length&&(w.forms.length>1||w.forms[0].toLowerCase()!==w.lemma.toLowerCase())?(vIsPh(w)?'在考題裡的樣子：':'查過的樣子：')+w.forms.map(esc).join('、')+'・':'')+w.tests.length+' 套出現・查 '+w.n_look+' 次</div></div></div>';
     });
-    h+='<div class="muted" style="font-size:.8em">☆ 按了就會放上書架；再按一次拿下來。'+(nL?'<br>📘 Lucas 高階詞彙 '+nL+' 個也在書架上（例句是真題原句）。':'')+'</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>';
+    h+='<div class="muted" style="font-size:.8em">☆ 按了就會放上書架；再按一次拿下來。'+(nL?'<br>📘 Lucas 詞彙 '+nL+' 個也在書架上（例句是真題原句）。':'')+'</div><div class="row2"><span></span><button class="btn main" id="ok">好</button></div>';
     openSheet(h, true); document.getElementById('ok').onclick=closeSheet;
     sheet.querySelectorAll('.vst').forEach(function(b){ b.onclick=function(){ var k=b.dataset.k, w=V.filter(function(x){ return x.key===k; })[0]; var on=!vStarred(w, vSrs());
       vPut(k, function(r){ r.star=on?1:0; }); b.textContent=on?'⭐':'☆'; b.style.color=on?'var(--gold)':''; b.style.borderColor=on?'var(--gold)':''; if(window.GameLog) GameLog.event(on?'vocab_star':'vocab_unstar'); }; });
@@ -1866,11 +1866,17 @@ function vocabRun(list, V, opt){
   opt=opt||{}; var i=0, got=0, seen=0;
   function sayW(w){ speak(vSay(w)); }
   function ex(w){ return (w.ex||[])[0]; }
+  function ex2(w){ var e=ex(w); if(e) return e; var L=(w.lex||[])[0]; return L?{fr:L.fr, w:'', zh:L.zh, lucas:1}:null; }   /* 📘 沒真題例句的 Lucas 字：第②階改聽 Lucas 例句 */
+  function lucasBox(w){ if(!w.col && !(w.lex&&w.lex.length)) return '';
+    var L=(w.lex||[])[0], h='<div class="item" style="text-align:left;margin-top:6px;font-size:.92em">';
+    if(w.col) h+='<div><span class="muted" style="font-size:.8em">常用搭配</span> <span class="fr say">'+esc(w.col.fr)+'</span> <span class="muted">'+esc(w.col.zh||'')+'</span></div>';
+    if(L) h+='<div style="margin-top:4px"><button class="btn ghost vlx" style="padding:0 6px">🔊</button> <span class="fr">'+esc(L.fr)+'</span><div class="muted" style="font-size:.8em">'+esc(L.zh||'')+'</div></div>';
+    return h+'<div class="muted" style="font-size:.7em;text-align:right">📘 Lucas</div></div>'; }
   function end(){ if(opt.done) return opt.done(); if(window.GameLog) GameLog.event('vocab_batch');
     openSheet('<h3>📚 這批好了</h3><div class="story">'+(seen?(got?'有 '+got+' 個字已經聽得懂了。':'這些字下次會再回來。'):'先放著，下次再背。')+'</div><div class="row2"><span></span><button class="btn main" id="ok">收書</button></div>');
     document.getElementById('ok').onclick=closeSheet; }
   function next(){ if(i>=list.length) return end(); var w=list[i++], r=vSrs()[w.key]||{stage:1};
-    if(r.stage>=2 && ex(w) && w.zh && V.length>=3) stage2(w); else stage1(w, r); }   /* 沒中文的片語卡（自己圈、還沒補）只走第 ① 階 */
+    if(r.stage>=2 && ex2(w) && w.zh && V.length>=3) stage2(w); else stage1(w, r); }   /* 沒中文的片語卡（自己圈、還沒補）只走第 ① 階 */
   function foot(){ return '<div style="text-align:right;margin-top:6px"><button class="btn ghost" id="vstop" style="font-size:.75em;padding:2px 8px">'+(opt.road?'今天路上先不要':'⏭ 這批先到這')+'</button></div>'; }
   function wireStop(){ document.getElementById('vstop').onclick=function(){ try{ speechSynthesis.cancel(); }catch(e){} if(opt.road) return opt.off(); end(); }; }
   function stage1(w, r){
@@ -1883,11 +1889,13 @@ function vocabRun(list, V, opt){
     document.getElementById('vflip').onclick=function(){ seen++; var e=ex(w);
       openSheet('<h3>📚 '+(vIsPh(w)?'📎 ':'')+(w.src==='lucas'?'📘 ':'')+'<span class="say">'+esc(vName(w))+'</span> <small>'+esc(w.zh||(vIsPh(w)?'（中文還沒補）':''))+'</small></h3>'+
         (w.forms&&w.forms.length?'<div class="muted">'+(vIsPh(w)||!w.n_look?'在考題裡的樣子：':'你在考題查到的樣子：')+w.forms.map(function(f){ return '<span class="say">'+esc(f)+'</span>'; }).join('、')+'</div>':'')+
-        (e?'<div class="item" style="text-align:left;margin-top:6px"><button class="btn ghost" id="vsent" style="padding:0 6px">🔊</button> <span class="fr">'+esc(e.fr)+'</span><div class="muted" style="font-size:.75em">'+esc(e.test.replace('co_','聽力 Test ').replace('ce_','閱讀 Test '))+' 第 '+e.q+' 題</div></div>':'')+
+        lucasBox(w)+
+        (e?'<div class="item" style="text-align:left;margin-top:6px"><button class="btn ghost" id="vsent" style="padding:0 6px">🔊</button> <span class="fr">'+esc(e.fr)+'</span><div class="muted" style="font-size:.75em">'+esc(e.test.replace('co_','聽力 Test ').replace('ce_','閱讀 Test '))+' 第 '+e.q+' 題（真題原句）</div></div>':'')+
         '<div class="row2"><button class="btn ghost" id="vno">還不熟</button><button class="btn main" id="vok">懂了</button></div>'+
         '<div style="display:flex;justify-content:space-between;margin-top:6px"><button class="btn ghost" id="vbank" style="font-size:.75em;padding:2px 8px">'+(prod?'改回只要認得':'↑ 這個要會講出來')+'</button><button class="btn ghost" id="vknown" style="font-size:.75em;padding:2px 8px">這個會了</button></div>'+foot(), true);
       if(prod) sayW(w);
       if(e) document.getElementById('vsent').onclick=function(){ speak(e.fr); };
+      sheet.querySelectorAll('.vlx').forEach(function(b){ b.onclick=function(){ speak(w.lex[0].fr); }; });
       wireStop();
       document.getElementById('vok').onclick=function(){ got++; vPut(w.key, function(r){ r.ok1=(r.ok1||0)+1; if(r.ok1>=2 && r.stage===1){ r.stage=2; r.st=0; } r.last=Date.now(); }); next(); };
       document.getElementById('vno').onclick=function(){ vPut(w.key, function(r){ r.ok1=0; r.miss=(r.miss||0)+1; r.last=Date.now(); }); next(); };
@@ -1896,21 +1904,21 @@ function vocabRun(list, V, opt){
     };
   }
   function stage2(w){
-    var e=ex(w), others=V.filter(function(x){ return x.key!==w.key && x.zh && x.zh!==w.zh; });
+    var e=ex2(w), others=V.filter(function(x){ return x.key!==w.key && x.zh && x.zh!==w.zh; });
     for(var k=others.length-1;k>0;k--){ var j=Math.floor(Math.random()*(k+1)), t=others[k]; others[k]=others[j]; others[j]=t; }
     /* 片語的錯選項先挑別的片語（同類才不會一眼看穿），不夠再用單字；單字也一樣先挑單字 */
     others.sort(function(a,b){ return (vIsPh(a)===vIsPh(w)?0:2)+(a.pos===w.pos?0:1)-(vIsPh(b)===vIsPh(w)?0:2)-(b.pos===w.pos?0:1); });   /* 📘 11-14 再加：同詞性優先 */
     var opts=[w.zh].concat(others.slice(0,2).map(function(x){ return x.zh; }));
     for(var k2=opts.length-1;k2>0;k2--){ var j2=Math.floor(Math.random()*(k2+1)), t2=opts[k2]; opts[k2]=opts[j2]; opts[j2]=t2; }
-    openSheet('<h3>📚 聽一整句</h3><div class="muted">考題裡的原句。聽完選：<b>這句裡的 <span class="say">'+esc(e.w||w.lemma)+'</span></b> 是什麼意思？</div>'+
+    openSheet('<h3>📚 聽一整句</h3><div class="muted">'+(e.lucas?'Lucas 的例句':'考題裡的原句')+'。聽完選：<b>這句裡的 <span class="say">'+esc(e.w||w.lemma)+'</span></b> 是什麼意思？</div>'+
       '<div class="row2" style="justify-content:center"><button class="btn ghost" id="vhear" style="font-size:1.2em">🔊 再聽一次</button></div>'+
       '<div class="opts">'+opts.map(function(o,k){ return '<button class="vop" data-k="'+k+'" style="padding:8px 10px;text-align:left">'+esc(o)+'</button>'; }).join('')+'</div>'+foot(), true);
     speak(e.fr); document.getElementById('vhear').onclick=function(){ speak(e.fr); }; wireStop();
     sheet.querySelectorAll('.vop').forEach(function(b){ b.onclick=function(){ seen++; var ok=opts[+b.dataset.k]===w.zh; if(ok) got++;
       vPut(w.key, function(r){ if(ok) r.st=Math.min((r.st||0)+1,3); else { r.st=0; r.miss=(r.miss||0)+1; } r.last=Date.now(); });
       if(window.GameLog) GameLog.event(ok?'vocab_s2_ok':'vocab_s2_miss');
-      var hl=esc(e.fr).replace(esc(e.w||''), '<b style="color:var(--gold)">'+esc(e.w||'')+'</b>');
-      openSheet('<h3>'+(ok?'✓ 對':'這次沒抓到')+'</h3><div class="item" style="text-align:left"><span class="fr">'+hl+'</span></div>'+
+      var hl=e.w?esc(e.fr).replace(esc(e.w), '<b style="color:var(--gold)">'+esc(e.w)+'</b>'):esc(e.fr);
+      openSheet('<h3>'+(ok?'✓ 對':'這次沒抓到')+'</h3><div class="item" style="text-align:left"><span class="fr">'+hl+'</span>'+(e.zh?'<div class="muted" style="font-size:.8em">'+esc(e.zh)+'</div>':'')+'</div>'+
         '<div class="story"><span class="say">'+esc(vName(w))+'</span>＝'+esc(w.zh)+'</div><div class="row2"><button class="btn ghost" id="vknown" style="font-size:.8em">這個會了</button><button class="btn main" id="vnext">下一個</button></div>'+foot(), true);
       wireStop(); document.getElementById('vnext').onclick=next;
       document.getElementById('vknown').onclick=function(){ vPut(w.key, function(r){ r.known=1; r.st=3; r.last=Date.now(); }); next(); };
