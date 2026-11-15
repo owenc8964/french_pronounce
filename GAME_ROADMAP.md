@@ -221,6 +221,7 @@
 
 - [ ] ⏸ 2026-11-08 週報排程：需要 Owen 開放授權：Bash `curl`（唯讀 GET 雲端 `clb7_sync`，週報 SKILL 指定的指令）——被排程權限擋下，已跳過，本週週報缺雲端資料（`reports/2026-11-08-weekly.md`）
 - [ ] ⏸ 2026-11-08 週報排程：需要 Owen 開放授權：Bash `cp "…/Anki2/使用者 1/collection.anki2" /tmp/col.anki2`（週報 SKILL 指定的唯讀複本）——被排程權限擋下，已跳過，Anki 到期積壓這次算不了
+- [ ] ⏸ 2026-11-15 兩週報告排程（`clb7-biweekly-optimization`）：同上兩條再被擋一次——需要 Owen 開放授權：Bash `curl -s "<URL>/rest/v1/clb7_sync?id=eq.<ROOM>&select=payload,updated_at" -H apikey… -o <scratchpad>/sync.json`（唯讀 GET）；Bash `ls -la "/Users/owen/Library/Application Support/Anki2/使用者 1/"`（連列資料夾都被擋，cp 沒試）；另外 `node "<絕對路徑>/tools/…js"` 被擋、`node tools/…js`（相對路徑）可以。已跳過，報告不完整（`reports/2026-11-15-biweekly.md`）
 
 - [x] ✅ 2026-09-18 Owen 玩過新版並回報 5 點，逐項診斷完（存到程式碼裡的實際原因）：
   ① **主線題目太簡單、問中文答法文單字**——戰鬥選單「普通攻擊」（choose 型，12秒最低風險）最省力，玩家自然只選它，
