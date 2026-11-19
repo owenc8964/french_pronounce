@@ -446,7 +446,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'tout-chaque', name:'Tout / chaque (全部 vs 每一個)', icon:'🔢', zone:'A2', cat:'base',
-    lessons:[26,51], topics:['tout-chaque'], unlocked:true,
+    lessons:[26,51,52], topics:['tout-chaque'], unlocked:true,
     rule:{
       title:'tout / toute / tous / toutes vs chaque — 整批看還是一個一個看',
       why:'這兩個字中文都可以翻成「每」，但法文分得很清楚：chaque 是把東西一個一個拆開看，所以後面永遠是單數，而且 chaque 本身完全不變化；tout 是把東西當成一整批看，所以它要跟那批名詞配合性數，後面通常還帶著冠詞（tous les jours）。第三種身分最容易漏掉——tout 也可以單獨當中性代名詞用，意思是「所有東西」（Tout va bien），這時它不配合任何東西，永遠寫 t-o-u-t。⚠️ 真正的陷阱在於 tout 跟 tous 唸起來一模一樣，所以這是一條「用看的」規則不是「用聽的」規則：要寫對只能回頭看名詞是什麼性數。',
@@ -738,7 +738,7 @@ const GRAM_POINTS = [
   { id:'opinions',     name:'Opinions & débats',        icon:'💬', zone:'B1', cat:'discours',    lessons:[], topics:[], unlocked:false },
   { id:'futur',        name:'Futur & conditionnel',     icon:'🌟', zone:'B1', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },   // ⚠️ 佔位點：兩半都已在 A2 各自解鎖（futur-simple 第27課、conditionnel 第35課）→ ⛔ 新的時態不要再掛這裡
   { id:'discours',     name:'Discours indirect',        icon:'💭', zone:'B1', cat:'discours',    lessons:[], topics:[], unlocked:false },
-  { id:'pluperfect',   name:'Plus-que-parfait',         icon:'⏪', zone:'B1', cat:'verbe-temps', lessons:[45], topics:['plus-que-parfait'], unlocked:true,   // 10-25 第45課（Édito B1 p.21）解鎖
+  { id:'pluperfect',   name:'Plus-que-parfait',         icon:'⏪', zone:'B1', cat:'verbe-temps', lessons:[45,52], topics:['plus-que-parfait'], unlocked:true,   // 10-25 第45課（Édito B1 p.21）解鎖
     rule:{
       title:'愈過去式 — 過去的過去',
       why:'講過去的故事時，時間軸上已經有一個「過去的參考點」；比那個點更早發生的事，就往後退一格用 plus-que-parfait。做法完全照抄 passé composé，只把助動詞從現在式換成 imparfait——所以它不是新東西，是把你已經會的兩樣拼起來。',

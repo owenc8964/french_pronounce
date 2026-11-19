@@ -26299,5 +26299,607 @@ const CHUNKS = [
   "fr": "se disputer",
   "zh": "爭奪",
   "note": "v.｜也可以是吵架"
+ },
+ {
+  "id": "L52_Les_enfants_n_ont_pas_be",
+  "lesson": 52,
+  "fr": "Les enfants n'ont pas besoin de visa.",
+  "zh": "小孩不需要簽證。",
+  "note": "⭐ 老師打在截圖上；你一開始說 Le enfant ne doit pas le visa"
+ },
+ {
+  "id": "L52_J_ai_découvert_que_son_n",
+  "lesson": 52,
+  "fr": "J'ai découvert que son nom n'est pas écrit.",
+  "zh": "我發現她的名字沒有寫上去。",
+  "note": "⭐ 老師打在截圖上"
+ },
+ {
+  "id": "L52_Tu_n_as_pas_le_droit_aux",
+  "lesson": 52,
+  "fr": "Tu n'as pas le droit aux lunettes.",
+  "zh": "（照片）不可以戴眼鏡。",
+  "note": "🎙 老師口語；avoir le droit à＝可以有"
+ },
+ {
+  "id": "L52_Je_n_étais_pas_allé_au_V",
+  "lesson": 52,
+  "fr": "Je n'étais pas allé au Vietnam depuis deux ans.",
+  "zh": "（這次之前）我已經兩年沒去越南了。",
+  "note": "⭐ 愈過去式：過去某時間點之前的狀態"
+ },
+ {
+  "id": "L52_Je_n_ai_visité_que_Hanoï",
+  "lesson": 52,
+  "fr": "Je n'ai visité que Hanoï, et j'aime beaucoup.",
+  "zh": "我只去過河內，我很喜歡。",
+  "note": "🎙 老師說的；ne…que 第51課"
+ },
+ {
+  "id": "L52_Ce_n_est_pas_si_spécial",
+  "lesson": 52,
+  "fr": "Ce n'est pas si spécial parce qu'on trouve ça à Taïwan.",
+  "zh": "沒那麼特別，因為台灣也有。",
+  "note": "⭐ 你自己說的，老師沒改"
+ },
+ {
+  "id": "L52_Certains_étudient_le_fra",
+  "lesson": 52,
+  "fr": "Certains étudient le français à Québec, d'autres à Montréal.",
+  "zh": "有些人在魁北克市學法文，其他人在蒙特婁。",
+  "note": "⭐ 練習 4a；certains…, d'autres…"
+ },
+ {
+  "id": "L52_Je_n_ai_visité_aucune_ré",
+  "lesson": 52,
+  "fr": "Je n'ai visité aucune région francophone.",
+  "zh": "我沒去過任何一個法語地區。",
+  "note": "⭐ 4d；形容詞 aucune 跟在動詞後"
+ },
+ {
+  "id": "L52_Je_prends_des_cours_de_f",
+  "lesson": 52,
+  "fr": "Je prends des cours de français toutes les semaines.",
+  "zh": "我每個星期都上法文課。",
+  "note": "⭐ 練習 5a；你說 Je prends de français → 要 des cours de français"
+ },
+ {
+  "id": "L52_Non_certains_sont_franco",
+  "lesson": 52,
+  "fr": "Non, certains sont francophones, d'autres anglophones.",
+  "zh": "不是，有些人說法語，其他人說英語。",
+  "note": "⭐ 5b"
+ },
+ {
+  "id": "L52_Oui_j_aurais_besoin_de_q",
+  "lesson": 52,
+  "fr": "Oui, j'aurais besoin de quelques conseils.",
+  "zh": "要，我想要一些建議。",
+  "note": "⭐ 5d；條件式讓語氣客氣（第50課）。老師：餐廳點餐也能用 j'aurais besoin de quelques recommandations"
+ },
+ {
+  "id": "L52_Je_donne_ma_langue_au_ch",
+  "lesson": 52,
+  "fr": "Je donne ma langue au chat.",
+  "zh": "我猜不到，放棄。",
+  "note": "⭐ 🎙 老師：問小孩 5×5，答不出來就這樣說"
+ },
+ {
+  "id": "L52_C_est_un_petit_bout_de_F",
+  "lesson": 52,
+  "fr": "C'est un petit bout de France à 27 heures d'avion.",
+  "zh": "那是一小塊法國，飛機要坐 27 個小時。",
+  "note": "⭐ Pour présenter un pays"
+ },
+ {
+  "id": "L52_Ici_les_gens_se_fréquent",
+  "lesson": 52,
+  "fr": "Ici les gens se fréquentent surtout au sein des familles.",
+  "zh": "這裡的人主要是跟家人往來。",
+  "note": "⭐ 老師：surtout＝特別是，不是「只有」"
+ },
+ {
+  "id": "L52_C_est_un_peu_comme_si_on",
+  "lesson": 52,
+  "fr": "C'est un peu comme si on redémarrait une nouvelle vie.",
+  "zh": "有點像重新開始一段新的人生。",
+  "note": "⭐ p.59 引言；comme si＋未完成過去式"
+ },
+ {
+  "id": "L52_Dire_à_voix_haute_tout_c",
+  "lesson": 52,
+  "fr": "Dire à voix haute tout ce qui nous passe par la tête.",
+  "zh": "把腦中閃過的每件事都大聲說出來。",
+  "note": "⭐ E 第四格；passer par la tête＝閃過腦中"
+ },
+ {
+  "id": "L52_Ma_langue_maternelle_c_e",
+  "lesson": 52,
+  "fr": "Ma langue maternelle, c'est le français.",
+  "zh": "我的母語是法文。",
+  "note": "🎙 老師的例子"
+ },
+ {
+  "id": "L52_La_langue_officielle_de",
+  "lesson": 52,
+  "fr": "La langue officielle de Taïwan, c'est le chinois.",
+  "zh": "台灣的官方語言是中文。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L52_À_Taïwan_on_parle_le_chi",
+  "lesson": 52,
+  "fr": "À Taïwan, on parle le chinois et le taïwanais.",
+  "zh": "在台灣大家說中文和台語。",
+  "note": "⭐ 口說題 1"
+ },
+ {
+  "id": "L52_Ne_t_inquiète_pas_je_me",
+  "lesson": 52,
+  "fr": "Ne t'inquiète pas, je me débrouille.",
+  "zh": "別擔心，我自己會想辦法。",
+  "note": "⭐ 🎙 老師"
+ },
+ {
+  "id": "L52_On_a_emprunté_week_end_à",
+  "lesson": 52,
+  "fr": "On a emprunté week-end à l'anglais.",
+  "zh": "week-end 是從英文借來的。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L52_Parler_de_mieux_en_mieux",
+  "lesson": 52,
+  "fr": "Parler de mieux en mieux.",
+  "zh": "說得越來越好。",
+  "note": "⭐ p.60 練習 2c；老師說你就是這樣"
+ },
+ {
+  "id": "L52_La_culture_c_est_la_rich",
+  "lesson": 52,
+  "fr": "La culture, c'est la richesse de la France.",
+  "zh": "文化是法國的財富。",
+  "note": "🎙 老師：richesse 不只是錢"
+ },
+ {
+  "id": "L52_Comment_a_été_le_voyage",
+  "lesson": 52,
+  "fr": "Comment a été le voyage ? Ça s'est bien passé ?",
+  "zh": "旅行怎麼樣？順利嗎？",
+  "note": "🎙 開場"
+ },
+ {
+  "id": "L52_Qu_est_ce_qu_il_y_a_avec",
+  "lesson": 52,
+  "fr": "Qu'est-ce qu'il y a avec son nom ?",
+  "zh": "她的名字怎麼了？",
+  "note": "🎙 追問簽證"
+ },
+ {
+  "id": "L52_Au_Vietnam_à_l_aéroport",
+  "lesson": 52,
+  "fr": "Au Vietnam, à l'aéroport, ils adorent te faire payer plus.",
+  "zh": "越南的機場很愛讓你多付錢。",
+  "note": "🎙 faire payer＝讓人付錢"
+ },
+ {
+  "id": "L52_Elle_est_restée_deux_jou",
+  "lesson": 52,
+  "fr": "Elle est restée deux jours seulement au Vietnam.",
+  "zh": "她只在越南待了兩天。",
+  "note": "🎙 講女友"
+ },
+ {
+  "id": "L52_Elle_est_partie_dimanche",
+  "lesson": 52,
+  "fr": "Elle est partie dimanche et elle rentre vendredi.",
+  "zh": "她星期天出發，星期五回來。",
+  "note": "🎙 老師說 le dimanche；指特定一天不用 le"
+ },
+ {
+  "id": "L52_Vendredi_soir_on_va_à_un",
+  "lesson": 52,
+  "fr": "Vendredi soir, on va à un mariage.",
+  "zh": "星期五晚上我們要去參加婚禮。",
+  "note": "🎙"
+ },
+ {
+  "id": "L52_On_peut_gagner_de_l_arge",
+  "lesson": 52,
+  "fr": "On peut gagner de l'argent grâce au concours.",
+  "zh": "參加比賽可以贏錢。",
+  "note": "🎙"
+ },
+ {
+  "id": "L52_Donc_c_est_quoi_le_but_d",
+  "lesson": 52,
+  "fr": "Donc c'est quoi le but de ce concours ?",
+  "zh": "那這個比賽的目的是什麼？",
+  "note": "🎙 口語問句"
+ },
+ {
+  "id": "L52_Au_Vietnam_tu_as_beaucou",
+  "lesson": 52,
+  "fr": "Au Vietnam, tu as beaucoup mangé de spécialités locales ?",
+  "zh": "你在越南吃了很多在地特產嗎？",
+  "note": "🎙"
+ },
+ {
+  "id": "L52_À_Taïwan_il_y_a_de_la_té",
+  "lesson": 52,
+  "fr": "À Taïwan, il y a de la télé-réalité ?",
+  "zh": "台灣有實境節目嗎？",
+  "note": "🎙"
+ },
+ {
+  "id": "L52_Il_y_a_de_plus_en_plus_d",
+  "lesson": 52,
+  "fr": "Il y a de plus en plus de Taïwanais qui parlent anglais.",
+  "zh": "越來越多台灣人會說英文。",
+  "note": "🎙 de plus en plus"
+ },
+ {
+  "id": "L52_un_concours",
+  "lesson": 52,
+  "fr": "un concours",
+  "zh": "比賽",
+  "note": "n.m.｜老師：compétition"
+ },
+ {
+  "id": "L52_francophile",
+  "lesson": 52,
+  "fr": "francophile",
+  "zh": "喜愛法語文化的（人）",
+  "note": "adj./n.｜-phile 喜歡、-phone 說"
+ },
+ {
+  "id": "L52_sans_critère_d_âge",
+  "lesson": 52,
+  "fr": "sans critère d'âge",
+  "zh": "不限年齡",
+  "note": "loc.｜老師：五歲小孩也能參加"
+ },
+ {
+  "id": "L52_d_une_durée_minimale_de",
+  "lesson": 52,
+  "fr": "d'une durée minimale de",
+  "zh": "最短長度",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L52_proclamer",
+  "lesson": 52,
+  "fr": "proclamer",
+  "zh": "宣布（結果）",
+  "note": "v.｜"
+ },
+ {
+  "id": "L52_faire_preuve_de",
+  "lesson": 52,
+  "fr": "faire preuve de",
+  "zh": "展現",
+  "note": "v.｜"
+ },
+ {
+  "id": "L52_puiser_dans",
+  "lesson": 52,
+  "fr": "puiser dans",
+  "zh": "從…汲取",
+  "note": "v.｜un puits 水井"
+ },
+ {
+  "id": "L52_évolutif",
+  "lesson": 52,
+  "fr": "évolutif",
+  "zh": "會持續更新的",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L52_participatif",
+  "lesson": 52,
+  "fr": "participatif",
+  "zh": "大家可參與的",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L52_au_regard_de",
+  "lesson": 52,
+  "fr": "au regard de",
+  "zh": "考量到",
+  "note": "loc.｜課本註：＝par rapport à"
+ },
+ {
+  "id": "L52_illustrer",
+  "lesson": 52,
+  "fr": "illustrer",
+  "zh": "配圖說明",
+  "note": "v.｜"
+ },
+ {
+  "id": "L52_viser_à",
+  "lesson": 52,
+  "fr": "viser à",
+  "zh": "旨在",
+  "note": "v.｜"
+ },
+ {
+  "id": "L52_l_appartenance",
+  "lesson": 52,
+  "fr": "l'appartenance",
+  "zh": "歸屬感",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L52_une_liseuse_numérique",
+  "lesson": 52,
+  "fr": "une liseuse numérique",
+  "zh": "電子書閱讀器",
+  "note": "n.f.｜老師：Kindle 是品牌名"
+ },
+ {
+  "id": "L52_tomber_dans_les_pommes",
+  "lesson": 52,
+  "fr": "tomber dans les pommes",
+  "zh": "昏倒",
+  "note": "expr.｜掉進蘋果裡"
+ },
+ {
+  "id": "L52_se_tenir_à_carreaux",
+  "lesson": 52,
+  "fr": "se tenir à carreaux",
+  "zh": "小心不出錯",
+  "note": "expr.｜格子一格一格很整齊；老師：軍中常說"
+ },
+ {
+  "id": "L52_se_faire_rouler_dans_la",
+  "lesson": 52,
+  "fr": "se faire rouler dans la farine",
+  "zh": "被騙",
+  "note": "expr.｜被丟進麵粉裡滾"
+ },
+ {
+  "id": "L52_rentrer_dans_sa_coquille",
+  "lesson": 52,
+  "fr": "rentrer dans sa coquille",
+  "zh": "縮回自己的殼",
+  "note": "expr.｜＝se replier sur soi，不想跟人說話"
+ },
+ {
+  "id": "L52_raconter_des_salades",
+  "lesson": 52,
+  "fr": "raconter des salades",
+  "zh": "說謊",
+  "note": "expr.｜講沙拉"
+ },
+ {
+  "id": "L52_jeter_l_argent_par_les_f",
+  "lesson": 52,
+  "fr": "jeter l'argent par les fenêtres",
+  "zh": "亂花錢",
+  "note": "expr.｜把錢丟出窗外"
+ },
+ {
+  "id": "L52_fumer_comme_un_pompier",
+  "lesson": 52,
+  "fr": "fumer comme un pompier",
+  "zh": "菸抽很兇",
+  "note": "expr.｜像消防員一樣冒煙"
+ },
+ {
+  "id": "L52_donner_sa_langue_au_chat",
+  "lesson": 52,
+  "fr": "donner sa langue au chat",
+  "zh": "猜不到、放棄",
+  "note": "expr.｜把舌頭給貓"
+ },
+ {
+  "id": "L52_à_l_autre_bout_du_monde",
+  "lesson": 52,
+  "fr": "à l'autre bout du monde",
+  "zh": "在地球另一端",
+  "note": "loc.｜老師打在截圖上"
+ },
+ {
+  "id": "L52_un_petit_bout_de_France",
+  "lesson": 52,
+  "fr": "un petit bout de France",
+  "zh": "法國的一小塊",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L52_pour_de_bon",
+  "lesson": 52,
+  "fr": "pour de bon",
+  "zh": "真正地、長久地",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L52_chamboulé",
+  "lesson": 52,
+  "fr": "chamboulé",
+  "zh": "被打亂的",
+  "note": "adj.｜口語"
+ },
+ {
+  "id": "L52_se_fréquenter",
+  "lesson": 52,
+  "fr": "se fréquenter",
+  "zh": "彼此往來",
+  "note": "v.｜老師：跟人互動"
+ },
+ {
+  "id": "L52_au_sein_de",
+  "lesson": 52,
+  "fr": "au sein de",
+  "zh": "在…之內",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L52_bosser",
+  "lesson": 52,
+  "fr": "bosser",
+  "zh": "工作",
+  "note": "v.｜口語；3b"
+ },
+ {
+  "id": "L52_bien_pourri",
+  "lesson": 52,
+  "fr": "bien pourri",
+  "zh": "很爛",
+  "note": "adj.｜3c"
+ },
+ {
+  "id": "L52_à_fond",
+  "lesson": 52,
+  "fr": "à fond",
+  "zh": "開到最大",
+  "note": "loc.｜3d"
+ },
+ {
+  "id": "L52_la_télé_réalité",
+  "lesson": 52,
+  "fr": "la télé-réalité",
+  "zh": "實境節目",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L52_une_spécialité_locale",
+  "lesson": 52,
+  "fr": "une spécialité locale",
+  "zh": "在地特產",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L52_la_diversité_linguistiqu",
+  "lesson": 52,
+  "fr": "la diversité linguistique",
+  "zh": "語言多樣性",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L52_la_langue_officielle",
+  "lesson": 52,
+  "fr": "la langue officielle",
+  "zh": "官方語言",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L52_la_langue_seconde",
+  "lesson": 52,
+  "fr": "la langue seconde",
+  "zh": "第二語言",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L52_la_langue_régionale",
+  "lesson": 52,
+  "fr": "la langue régionale",
+  "zh": "地方語言",
+  "note": "n.f.｜老師：像台語"
+ },
+ {
+  "id": "L52_le_locuteur_la_locutrice",
+  "lesson": 52,
+  "fr": "le locuteur, la locutrice",
+  "zh": "說話的人",
+  "note": "n.｜"
+ },
+ {
+  "id": "L52_faire_un_effort_linguist",
+  "lesson": 52,
+  "fr": "faire un effort linguistique",
+  "zh": "努力學語言",
+  "note": "v.｜"
+ },
+ {
+  "id": "L52_un_investissement_utile",
+  "lesson": 52,
+  "fr": "un investissement utile",
+  "zh": "值得的投資",
+  "note": "n.m.｜老師：學法文對你就是"
+ },
+ {
+  "id": "L52_progresser",
+  "lesson": 52,
+  "fr": "progresser",
+  "zh": "進步",
+  "note": "v.｜"
+ },
+ {
+  "id": "L52_se_débrouiller_au_quotid",
+  "lesson": 52,
+  "fr": "se débrouiller au quotidien",
+  "zh": "日常應付得來",
+  "note": "v.｜"
+ },
+ {
+  "id": "L52_la_traduction_assistée_p",
+  "lesson": 52,
+  "fr": "la traduction assistée par ordinateur",
+  "zh": "電腦輔助翻譯",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L52_de_mieux_en_mieux",
+  "lesson": 52,
+  "fr": "de mieux en mieux",
+  "zh": "越來越好",
+  "note": "loc.｜老師：越來越…"
+ },
+ {
+  "id": "L52_un_emprunt",
+  "lesson": 52,
+  "fr": "un emprunt",
+  "zh": "外來詞",
+  "note": "n.m.｜emprunter 借"
+ },
+ {
+  "id": "L52_une_équivalence",
+  "lesson": 52,
+  "fr": "une équivalence",
+  "zh": "對應說法",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L52_une_expression_idiomatiq",
+  "lesson": 52,
+  "fr": "une expression idiomatique",
+  "zh": "慣用語",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L52_un_faux_ami",
+  "lesson": 52,
+  "fr": "un faux ami",
+  "zh": "假朋友（形近義異的字）",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L52_la_richesse_de_la_langue",
+  "lesson": 52,
+  "fr": "la richesse de la langue",
+  "zh": "語言的豐富",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L52_la_communauté_francophon",
+  "lesson": 52,
+  "fr": "la communauté francophone",
+  "zh": "法語社群",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L52_le_pays_membre",
+  "lesson": 52,
+  "fr": "le pays membre",
+  "zh": "會員國",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L52_promouvoir_la_langue_fra",
+  "lesson": 52,
+  "fr": "promouvoir la langue française",
+  "zh": "推廣法語",
+  "note": "v.｜"
  }
 ];

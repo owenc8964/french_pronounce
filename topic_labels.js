@@ -99,6 +99,7 @@ var TOPIC_LABELS_FR = {
  "preference-interet": "Préférence et intérêt",
  "tcf-phrases": "Phrases utiles TCF",
  "vocab-spectacles": "Les spectacles et le cinéma",
+ "vocab-langues": "La langue et la francophonie",
  "connecteurs-ecrit": "Les connecteurs à l'écrit",
  "subjonctif-present": "Subjonctif présent",
  "interrogation-registres": "L'interrogation (registres)",

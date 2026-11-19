@@ -1,9 +1,9 @@
 /* town_field_extra.js — 路上遭遇用的「fill 轉選擇」題（自動產生，⛔ 不要手改；改 tools/gen_town_field_extra.js 再重跑）
- * 產生：node tools/gen_town_field_extra.js（2026-11-13）
+ * 產生：node tools/gen_town_field_extra.js（2026-11-19）
  * 每題：src＝BANK 索引；q／a／aNote 原樣來自 questions.js；opts[0] 是正解（town 會洗牌），其餘是保證錯的干擾項
  * why＝每個干擾項的來源；cue:true＝有干擾項要靠題幹看得到的線索（(+)/(−)、中文翻譯、(xxx, vous)）才判錯，本身合文法
  * hint 已清掉「直接寫出正解」的那種（選擇題會變成送分）
- * 各家族：{"verb":914,"noun":327,"pron":269}  共 1510 題
+ * 各家族：{"verb":914,"noun":328,"pron":269}  共 1511 題
  */
 var FIELD_EXTRA = [{"src":0,"fam":"verb","topic":"etre-avoir","q":"Je _____ (être) taïwanais.","a":"Je suis taïwanais|suis","opts":["suis","es","êtes","sont"],"aNote":"être → je suis","hint":"être 現在式","zh":"我是台灣人。","why":["person","person","person"],"cue":false},
 {"src":1,"fam":"verb","topic":"etre-avoir","q":"Tu _____ (être) français ?","a":"Tu es français|es","opts":["es","est","êtes","suis"],"aNote":"être → tu es","hint":"être 現在式","zh":"你是法國人嗎？","why":["person","person","person"],"cue":false},
@@ -1514,5 +1514,6 @@ var FIELD_EXTRA = [{"src":0,"fam":"verb","topic":"etre-avoir","q":"Je _____ (êt
 {"src":4077,"fam":"verb","topic":"conditionnel-present","q":"Je serais artiste de cirque, je _____ (faire) rire tous les enfants.","a":"ferais","opts":["ferais","ferait","ferions","feriez"],"aNote":"faire 字幹 fer-＋-ais。","hint":"第50課 老師的示範","zh":"如果我是馬戲團藝人，我會逗得所有小孩都笑。","why":["person","person","person"],"cue":false},
 {"src":4078,"fam":"verb","topic":"conditionnel-present","q":"On aurait un été entier pour aller à des festivals, on s'_____ (amuser) beaucoup.","a":"amuserait","opts":["amuserait","amuserais","amuseraient","amuseriez"],"aNote":"on 用 -ait。","hint":"B1 p.44 練習 4b","zh":"如果我們有一整個夏天去音樂節，一定會玩得很開心。","why":["person","person","person"],"cue":false},
 {"src":4079,"fam":"verb","topic":"conditionnel-present","q":"Tu _____ (devoir) plutôt aller voir cette artiste.","a":"devrais","opts":["devrais","devrait","devrions","devriez"],"aNote":"devoir 字幹 devr-＋-ais。","hint":"B1 p.44 建議","zh":"你應該去看這位藝人才對。","why":["person","person","person"],"cue":false},
-{"src":4101,"fam":"verb","topic":"restriction-ne-que","q":"Il n'y en a _____ trois.","a":"que","opts":["que","qui","où","dont"],"aNote":"ne…que＝只有。","hint":"B1 p.48","zh":"只有三個。","why":["relative","relative","relative"],"cue":false}];
+{"src":4101,"fam":"verb","topic":"restriction-ne-que","q":"Il n'y en a _____ trois.","a":"que","opts":["que","qui","où","dont"],"aNote":"ne…que＝只有。","hint":"B1 p.48","zh":"只有三個。","why":["relative","relative","relative"],"cue":false},
+{"src":4149,"fam":"noun","topic":"tout-chaque","q":"Je prends des cours de français _____ les semaines.","a":"toutes","opts":["toutes","tous","tout","toute"],"aNote":"semaines 陰性複數 → toutes les。","hint":"B1 p.58 練習 5a","zh":"我每個星期都上法文課。","why":["tout-gender","tout-number","tout-number"],"cue":false}];
 if (typeof module !== 'undefined') module.exports = { FIELD_EXTRA: FIELD_EXTRA };
