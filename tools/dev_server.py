@@ -205,6 +205,8 @@ def vocab_build():
         if v is None:
             out.append(L); continue
         v['src'] = 'lucas'; v['disp'] = L['disp']; v['say'] = L['say']
+        for f in ('col', 'lex', 'banks', 'prod', 'cz'):           # 11-19 搭配、Lucas 例句、要會用、挖空題也帶上
+            if f in L: v[f] = L[f]
         if not v['star_ts']: v['star'] = True             # 模考沒按過 ⭐／取消 → 照 Lucas 放上書架
         if not v['zh']: v['zh'] = L['zh']
         for e in L['ex']:

@@ -133,6 +133,32 @@ def sentence_at(text, s, e):
     return sent, s - a
 
 
+TOK = re.compile(r"[A-Za-zÀ-ÖØ-öø-ÿœŒ]+(?:-[A-Za-zÀ-ÖØ-öø-ÿœŒ]+)*")
+
+
+def find_gap(fr, v):
+    """句子裡這個字實際的樣子：回傳 (起點, 字面)；找不到回 None。片語整串挖。"""
+    if v['pos'] == 'PHR':
+        m = re.search(re.escape(v['lemma']).replace("'", "['’]"), fr, re.I)
+        return (m.start(), m.group(0)) if m else None
+    st = _stem(v['lemma'])
+    for m in TOK.finditer(fr):
+        t = _plain(m.group(0))
+        if t.startswith(st) and len(t) >= len(st) + 1 - (len(st) < 4):
+            return (m.start(), m.group(0))
+    return None
+
+
+def make_cz(v):
+    out = []
+    items = ([dict(v['col'], kind='col')] if v.get('col') else []) + [dict(L, kind='lex') for L in v.get('lex') or []]
+    for it in items:
+        g = find_gap(it['fr'], v)
+        if not g: continue
+        out.append({'fr': it['fr'], 'zh': it.get('zh', ''), 'a': g[1], 's': g[0], 'k': it['kind']})
+    return out
+
+
 def build():
     words, src = load_xlsx()
     for w in words: w['banks'] = ['xlsx']
@@ -201,6 +227,10 @@ def build():
                     'zh': w['zh'], 'forms': forms, 'n_look': 0, 'tests': tests, 'star': True, 'star_ts': 0, 'bank': 'rec',
                     'ex': ex, 'cats': {}, 'cat': {'VERB': '動詞', 'PHR': '片語'}.get(w['pos'], '生字'), 'src': 'lucas',
                     'col': w.get('col'), 'lex': w.get('lex', []), 'banks': w.get('banks', [])})
+    # ③ 用出來（11-19 Owen 同意）：寫作口語核心詞庫的字預設要會用；替搭配和 Lucas 例句算挖空題
+    for v in out:
+        v['prod'] = 'core' in v['banks']
+        v['cz'] = make_cz(v)
     # 同一原形＋詞性在表上出現兩次（同字不同義）→ 中文併成一張
     merged = {}
     for v in out:

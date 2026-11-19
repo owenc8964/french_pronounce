@@ -1795,7 +1795,14 @@ function vPut(key, fn){ var A=vSrs(), r=A[key]||{stage:1, ok1:0, st:0, last:0, m
   try{ localStorage.setItem('clb7_vocab_srs', JSON.stringify(A)); }catch(e){} }
 function vStarred(w, A){ var r=A[w.key]; return r&&r.star!==undefined ? !!r.star : !!w.star; }   /* 小鎮按過的優先，否則照模考 */
 function vDue(w, A, now){ var r=A[w.key]; if(!r || !r.last) return true;
-  var gap=r.known?60:(r.stage===1?(r.ok1?0.5:1):VOCAB_GAP[Math.min(r.st,3)]); return now-r.last>=gap*86400000; }
+  var gap=r.known?60:(r.stage===1?(r.ok1?0.5:1):r.stage===3?VOCAB_GAP[Math.min(r.p||0,3)]:VOCAB_GAP[Math.min(r.st,3)]); return now-r.last>=gap*86400000; }
+/* ✍️ 11-19 第③階「用出來」（Owen 同意：寫作口語核心詞庫的字預設要會用，其他只要認得；打字填空；每天最多 5 題，書架＋路上合計）
+   prodWanted：按過「↑這個要會講出來／改回只要認得」的照按的，沒按過照 Lucas 詞庫（w.prod）
+   第②階連對 2 次（st≥2）＋要會用＋有挖空題（w.cz）→ stage 3；第③階到期用 VOCAB_GAP[r.p]；今天額度用完就退回第②階認字 */
+var VPROD_CAP=5;
+function prodWanted(w, r){ return r&&r.bank ? r.bank==='prod' : !!w.prod; }
+function vProdLeft(){ var d=today(); if(!S.vocProd || S.vocProd.d!==d) S.vocProd={d:d, n:0}; return VPROD_CAP-S.vocProd.n; }
+function vNorm(x){ return String(x||'').toLowerCase().replace(/[’‘]/g,"'").replace(/\s+/g,' ').replace(/^[\s.,;:!?«»"]+|[\s.,;:!?«»"]+$/g,''); }
 function vErr(e){ return '<div class="story">'+(e&&e.code==='nologin'?'字典屋要先登入才打得開（右上角 🔑）。':'字典打不開（網路？），等一下再來。')+'</div>'; }
 function vEmpty(){ return '<div class="story">書架還是空的。<br>去模考做完題目，在詳解裡<b>點兩下</b>法文字查意思；想背的按「☆ 要背」，就會出現在這裡。</div>'; }
 var VCAT_ORDER=['動詞變化','生字','小字','片語','動詞'];
@@ -1876,11 +1883,12 @@ function vocabRun(list, V, opt){
     openSheet('<h3>📚 這批好了</h3><div class="story">'+(seen?(got?'有 '+got+' 個字已經聽得懂了。':'這些字下次會再回來。'):'先放著，下次再背。')+'</div><div class="row2"><span></span><button class="btn main" id="ok">收書</button></div>');
     document.getElementById('ok').onclick=closeSheet; }
   function next(){ if(i>=list.length) return end(); var w=list[i++], r=vSrs()[w.key]||{stage:1};
-    if(r.stage>=2 && ex2(w) && w.zh && V.length>=3) stage2(w); else stage1(w, r); }   /* 沒中文的片語卡（自己圈、還沒補）只走第 ① 階 */
+    if(r.stage===3 && prodWanted(w,r) && w.cz && w.cz.length && vProdLeft()>0) stage3(w, r);
+    else if(r.stage>=2 && ex2(w) && w.zh && V.length>=3) stage2(w); else stage1(w, r); }   /* 沒中文的片語卡（自己圈、還沒補）只走第 ① 階 */
   function foot(){ return '<div style="text-align:right;margin-top:6px"><button class="btn ghost" id="vstop" style="font-size:.75em;padding:2px 8px">'+(opt.road?'今天路上先不要':'⏭ 這批先到這')+'</button></div>'; }
   function wireStop(){ document.getElementById('vstop').onclick=function(){ try{ speechSynthesis.cancel(); }catch(e){} if(opt.road) return opt.off(); end(); }; }
   function stage1(w, r){
-    var prod=r.bank==='prod' && !!w.zh;
+    var prod=r.bank==='prod' && !!w.zh && !(w.cz&&w.cz.length), want=prodWanted(w,r);   /* 有挖空題的字到第③階再打字，這裡照樣先認 */
     openSheet('<h3>📚 '+(prod?'想想法文怎麼說':'聽，想意思')+'</h3>'+
       (prod?'<div class="story" style="font-size:1.2em">'+esc(w.zh||'')+'</div>':'<div class="row2" style="justify-content:center"><button class="btn ghost" id="vhear" style="font-size:1.3em">🔊 再聽一次</button></div><div class="muted" style="text-align:center">先不看字，心裡想它是什麼意思</div>')+
       '<div class="row2"><span></span><button class="btn main" id="vflip">👀 翻開</button></div>'+foot(), true);
@@ -1892,7 +1900,7 @@ function vocabRun(list, V, opt){
         lucasBox(w)+
         (e?'<div class="item" style="text-align:left;margin-top:6px"><button class="btn ghost" id="vsent" style="padding:0 6px">🔊</button> <span class="fr">'+esc(e.fr)+'</span><div class="muted" style="font-size:.75em">'+esc(e.test.replace('co_','聽力 Test ').replace('ce_','閱讀 Test '))+' 第 '+e.q+' 題（真題原句）</div></div>':'')+
         '<div class="row2"><button class="btn ghost" id="vno">還不熟</button><button class="btn main" id="vok">懂了</button></div>'+
-        '<div style="display:flex;justify-content:space-between;margin-top:6px"><button class="btn ghost" id="vbank" style="font-size:.75em;padding:2px 8px">'+(prod?'改回只要認得':'↑ 這個要會講出來')+'</button><button class="btn ghost" id="vknown" style="font-size:.75em;padding:2px 8px">這個會了</button></div>'+foot(), true);
+        '<div style="display:flex;justify-content:space-between;margin-top:6px"><button class="btn ghost" id="vbank" style="font-size:.75em;padding:2px 8px">'+(want?'改回只要認得':'↑ 這個要會講出來')+'</button><button class="btn ghost" id="vknown" style="font-size:.75em;padding:2px 8px">這個會了</button></div>'+foot(), true);
       if(prod) sayW(w);
       if(e) document.getElementById('vsent').onclick=function(){ speak(e.fr); };
       sheet.querySelectorAll('.vlx').forEach(function(b){ b.onclick=function(){ speak(w.lex[0].fr); }; });
@@ -1900,7 +1908,7 @@ function vocabRun(list, V, opt){
       document.getElementById('vok').onclick=function(){ got++; vPut(w.key, function(r){ r.ok1=(r.ok1||0)+1; if(r.ok1>=2 && r.stage===1){ r.stage=2; r.st=0; } r.last=Date.now(); }); next(); };
       document.getElementById('vno').onclick=function(){ vPut(w.key, function(r){ r.ok1=0; r.miss=(r.miss||0)+1; r.last=Date.now(); }); next(); };
       document.getElementById('vknown').onclick=function(){ got++; vPut(w.key, function(r){ r.known=1; r.st=3; r.last=Date.now(); }); next(); };
-      document.getElementById('vbank').onclick=function(){ vPut(w.key, function(r){ r.bank=prod?'rec':'prod'; }); toast(prod?'改成只要認得':'放進背誦庫：下次先看中文、想法文'); };
+      document.getElementById('vbank').onclick=function(){ vPut(w.key, function(r){ r.bank=want?'rec':'prod'; if(want && r.stage===3){ r.stage=2; } }); toast(want?'改成只要認得':(w.cz&&w.cz.length?'認得之後，會請你打出來':'放進背誦庫：下次先看中文、想法文')); want=!want; this.textContent=want?'改回只要認得':'↑ 這個要會講出來'; };
     };
   }
   function stage2(w){
@@ -1915,7 +1923,8 @@ function vocabRun(list, V, opt){
       '<div class="opts">'+opts.map(function(o,k){ return '<button class="vop" data-k="'+k+'" style="padding:8px 10px;text-align:left">'+esc(o)+'</button>'; }).join('')+'</div>'+foot(), true);
     speak(e.fr); document.getElementById('vhear').onclick=function(){ speak(e.fr); }; wireStop();
     sheet.querySelectorAll('.vop').forEach(function(b){ b.onclick=function(){ seen++; var ok=opts[+b.dataset.k]===w.zh; if(ok) got++;
-      vPut(w.key, function(r){ if(ok) r.st=Math.min((r.st||0)+1,3); else { r.st=0; r.miss=(r.miss||0)+1; } r.last=Date.now(); });
+      vPut(w.key, function(r){ if(ok) r.st=Math.min((r.st||0)+1,3); else { r.st=0; r.miss=(r.miss||0)+1; } r.last=Date.now();
+        if(ok && r.stage===2 && r.st>=2 && prodWanted(w,r) && w.cz && w.cz.length){ r.stage=3; r.p=0; r.last=0; } });   /* 認得了 → 下次換打字（last=0 讓它下一批就到期） */
       if(window.GameLog) GameLog.event(ok?'vocab_s2_ok':'vocab_s2_miss');
       var hl=e.w?esc(e.fr).replace(esc(e.w), '<b style="color:var(--gold)">'+esc(e.w)+'</b>'):esc(e.fr);
       openSheet('<h3>'+(ok?'✓ 對':'這次沒抓到')+'</h3><div class="item" style="text-align:left"><span class="fr">'+hl+'</span>'+(e.zh?'<div class="muted" style="font-size:.8em">'+esc(e.zh)+'</div>':'')+'</div>'+
@@ -1923,6 +1932,39 @@ function vocabRun(list, V, opt){
       wireStop(); document.getElementById('vnext').onclick=next;
       document.getElementById('vknown').onclick=function(){ vPut(w.key, function(r){ r.known=1; r.st=3; r.last=Date.now(); }); next(); };
     }; });
+  }
+  function stage3(w, r){
+    var cz=w.cz[(r.pn||0)%w.cz.length], hint=0, done=false;
+    vPut(w.key, function(r){ r.pn=(r.pn||0)+1; });
+    var pre=cz.fr.slice(0,cz.s), post=cz.fr.slice(cz.s+cz.a.length);
+    openSheet('<h3>✍️ 用出來</h3>'+
+      (cz.zh?'<div class="story" style="font-size:1.1em">'+esc(cz.zh)+'</div>':'')+
+      '<div class="item" style="text-align:left;font-size:1.05em"><span class="fr">'+esc(pre)+'<b style="color:var(--gold)">______</b>'+esc(post)+'</span></div>'+
+      '<div class="muted" style="font-size:.85em">空格是「'+esc(w.zh||'')+'」'+(cz.k==='col'?'（常用搭配）':'')+'——照句子要的樣子打（陰陽性、單複數、動詞變化）</div>'+
+      '<input class="fill" id="vin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="打出空格裡的字" style="width:100%;margin-top:6px">'+
+      '<div class="muted" id="vhint" style="font-size:.85em;min-height:1.2em"></div>'+
+      '<div class="row2"><button class="btn ghost" id="vtip">💡 提示</button><button class="btn main" id="vgo">送出</button></div>'+
+      '<div style="text-align:left;margin-top:6px"><button class="btn ghost" id="vknown" style="font-size:.75em;padding:2px 8px">這個會了</button></div>'+foot(), true);
+    var inp=document.getElementById('vin'); try{ inp.focus(); }catch(e){}
+    wireStop();
+    document.getElementById('vtip').onclick=function(){ hint++; document.getElementById('vhint').textContent=hint===1?'第一個字母：'+cz.a.charAt(0)+'（共 '+cz.a.length+' 個字母）':'原形：'+vName(w); if(hint>=2) this.disabled=true; };
+    document.getElementById('vknown').onclick=function(){ got++; vPut(w.key, function(r){ r.known=1; r.p=3; r.last=Date.now(); }); next(); };
+    inp.onkeydown=function(e){ if(e.key==='Enter') document.getElementById('vgo').click(); };
+    document.getElementById('vgo').onclick=function(){ if(done) return; var v=vNorm(inp.value); if(!v) return; done=true;
+      var want=vNorm(cz.a), ok=v===want, acc=!ok && deacc(v)===deacc(want); seen++; if(ok||acc) got++;
+      vProdLeft(); S.vocProd.n++; save();
+      vPut(w.key, function(r){ if(ok||acc) r.p=Math.min((r.p||0)+1,3); else { r.p=0; r.miss=(r.miss||0)+1; } r.last=Date.now(); });
+      if(window.GameLog) GameLog.event(ok||acc?'vocab_s3_ok':'vocab_s3_miss');
+      var full=esc(pre)+'<b style="color:var(--gold)">'+esc(cz.a)+'</b>'+esc(post);
+      openSheet('<h3>'+(ok?'✓ 對':acc?'✓ 對，注意重音':'這次沒寫出來')+'</h3>'+
+        (ok?'':'<div class="story">'+(acc?'寫法是 ':'答案是 ')+'<span class="fr say">'+esc(cz.a)+'</span>'+(acc?'':'（你寫的是 '+esc(inp.value.trim())+'）')+'</div>')+
+        '<div class="item" style="text-align:left"><button class="btn ghost" id="vsay3" style="padding:0 6px">🔊</button> <span class="fr">'+full+'</span>'+(cz.zh?'<div class="muted" style="font-size:.8em">'+esc(cz.zh)+'</div>':'')+'</div>'+
+        '<div class="story"><span class="say">'+esc(vName(w))+'</span>＝'+esc(w.zh||'')+'</div>'+
+        '<div class="row2"><button class="btn ghost" id="vknown" style="font-size:.8em">這個會了</button><button class="btn main" id="vnext">下一個</button></div>'+foot(), true);
+      speak(cz.fr); document.getElementById('vsay3').onclick=function(){ speak(cz.fr); };
+      wireStop(); document.getElementById('vnext').onclick=next;
+      document.getElementById('vknown').onclick=function(){ vPut(w.key, function(r){ r.known=1; r.p=3; r.last=Date.now(); }); next(); };
+    };
   }
   next();
 }
