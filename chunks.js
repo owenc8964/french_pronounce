@@ -26901,5 +26901,859 @@ const CHUNKS = [
   "fr": "promouvoir la langue française",
   "zh": "推廣法語",
   "note": "v.｜"
+ },
+ {
+  "id": "L53_On_va_s_arrêter_à_Shangh",
+  "lesson": 53,
+  "fr": "On va s'arrêter à Shanghai pour une nuit.",
+  "zh": "我們會在上海停一晚。",
+  "note": "🎙 s'arrêter＝中途停下"
+ },
+ {
+  "id": "L53_Les_avions_chinois_c_est",
+  "lesson": 53,
+  "fr": "Les avions chinois, c'est vraiment pas cher maintenant.",
+  "zh": "中國的飛機現在真的很便宜。",
+  "note": "🎙 口語省了 ne；寫作要 ce n'est vraiment pas cher"
+ },
+ {
+  "id": "L53_Vendredi_je_suis_allé_à",
+  "lesson": 53,
+  "fr": "Vendredi, je suis allé à un mariage.",
+  "zh": "星期五我去參加了一場婚禮。",
+  "note": "🎙"
+ },
+ {
+  "id": "L53_En_France_quand_on_mange",
+  "lesson": 53,
+  "fr": "En France, quand on mange beaucoup le soir, on boit un café.",
+  "zh": "在法國，晚上吃很多的時候會喝杯咖啡。",
+  "note": "🎙 🇫🇷 飯後咖啡"
+ },
+ {
+  "id": "L53_Si_je_te_raconte_la_fin",
+  "lesson": 53,
+  "fr": "Si je te raconte la fin du film, j'ai gâché le film.",
+  "zh": "如果我把電影結局講給你聽，我就把這部電影毀了。",
+  "note": "🎙 老師解釋 divulgâcher"
+ },
+ {
+  "id": "L53_Tu_penses_que_c_est_diff",
+  "lesson": 53,
+  "fr": "Tu penses que c'est difficile de changer de vie ?",
+  "zh": "你覺得改變生活很難嗎？",
+  "note": "🎙 老師問你"
+ },
+ {
+  "id": "L53_Je_suis_originaire_de_Ta",
+  "lesson": 53,
+  "fr": "Je suis originaire de Taïwan.",
+  "zh": "我是從台灣來的。",
+  "note": "⭐ 🎙＝Je viens de Taïwan."
+ },
+ {
+  "id": "L53_Je_suis_d_origine_taïwan",
+  "lesson": 53,
+  "fr": "Je suis d'origine taïwanaise.",
+  "zh": "我有台灣血統。",
+  "note": "⭐ 🎙 父母或祖父母是台灣人"
+ },
+ {
+  "id": "L53_J_ai_laissé_ma_famille_d",
+  "lesson": 53,
+  "fr": "J'ai laissé ma famille derrière moi.",
+  "zh": "我把家人留在了家鄉。",
+  "note": "⭐ 🎙 soi 跟著人稱變 moi"
+ },
+ {
+  "id": "L53_Au_Canada_tu_vas_refaire",
+  "lesson": 53,
+  "fr": "Au Canada, tu vas refaire ton cercle d'amis.",
+  "zh": "在加拿大你會重新交一群朋友。",
+  "note": "🎙＝trouver de nouveaux amis"
+ },
+ {
+  "id": "L53_Moi_je_suis_immigré_à_Ta",
+  "lesson": 53,
+  "fr": "Moi, je suis immigré à Taïwan.",
+  "zh": "我是移民到台灣的。",
+  "note": "🎙 老師說自己不是 expatrié"
+ },
+ {
+  "id": "L53_Ils_travaillent_moins_qu",
+  "lesson": 53,
+  "fr": "Ils travaillent moins que les Taïwanais.",
+  "zh": "他們工作得比台灣人少。",
+  "note": "⭐ 你自己說的，老師複述"
+ },
+ {
+  "id": "L53_Je_ferais_bien_un_tour_a",
+  "lesson": 53,
+  "fr": "Je ferais bien un tour au festival le week-end prochain.",
+  "zh": "下個週末我很想去美食節逛一下。",
+  "note": "⭐ p.62 Adam；je ferais bien＝我很想（條件式）"
+ },
+ {
+  "id": "L53_En_plus_des_chefs_vous_d",
+  "lesson": 53,
+  "fr": "En plus, des chefs vous donneront des conseils avisés.",
+  "zh": "而且主廚們會給你們內行的建議。",
+  "note": "⭐ p.62 Liam"
+ },
+ {
+  "id": "L53_Je_ferais_bien_un_tour_a_2",
+  "lesson": 53,
+  "fr": "Je ferais bien un tour au marché de Noël.",
+  "zh": "我很想去聖誕市集逛一下。",
+  "note": "⭐ 🎙 老師"
+ },
+ {
+  "id": "L53_Ce_film_il_a_l_air_bien",
+  "lesson": 53,
+  "fr": "Ce film, il a l'air bien.",
+  "zh": "這部電影看起來不錯。",
+  "note": "⭐ 🎙 老師"
+ },
+ {
+  "id": "L53_Tu_veux_boire_une_petite",
+  "lesson": 53,
+  "fr": "Tu veux boire une petite bière ?",
+  "zh": "要不要去喝杯小啤酒？",
+  "note": "⭐ 🎙 老師打在截圖上；加 petite 聽起來比較好約"
+ },
+ {
+  "id": "L53_J_espère_que_tu_viendras",
+  "lesson": 53,
+  "fr": "J'espère que tu viendras au festival.",
+  "zh": "我希望你會來美食節。",
+  "note": "⭐ p.63 規則表；espérer → 直陳式（未來式）"
+ },
+ {
+  "id": "L53_J_ai_toujours_voulu_que",
+  "lesson": 53,
+  "fr": "J'ai toujours voulu que mon fils devienne un grand chef.",
+  "zh": "我一直希望我兒子成為大廚。",
+  "note": "⭐ p.63；devenir → devienne"
+ },
+ {
+  "id": "L53_Que_souhaites_tu_que_je",
+  "lesson": 53,
+  "fr": "Que souhaites-tu que je te prépare pour le déjeuner ?",
+  "zh": "你希望我午餐做什麼給你吃？",
+  "note": "⭐ p.63"
+ },
+ {
+  "id": "L53_Pourvu_qu_il_prenne_des",
+  "lesson": 53,
+  "fr": "Pourvu qu'il prenne des leçons de cuisine !",
+  "zh": "但願他去上烹飪課！",
+  "note": "⭐ p.63；prendre → prenne"
+ },
+ {
+  "id": "L53_Je_souhaiterais_que_vous",
+  "lesson": 53,
+  "fr": "Je souhaiterais que vous me donniez la recette de ce plat.",
+  "zh": "希望您能給我這道菜的食譜。",
+  "note": "⭐ p.63 Remarques：條件式比較客氣"
+ },
+ {
+  "id": "L53_J_aimerais_qu_elle_me_fa",
+  "lesson": 53,
+  "fr": "J'aimerais qu'elle me fasse des compliments sur ma cuisine.",
+  "zh": "真希望她稱讚一下我做的菜。",
+  "note": "⭐ 練習 4a（老師打 fasse）"
+ },
+ {
+  "id": "L53_J_espère_que_tu_n_oublie",
+  "lesson": 53,
+  "fr": "J'espère que tu n'oublieras pas de saler la préparation.",
+  "zh": "希望你不會忘記給料理加鹽。",
+  "note": "⭐ 4b（老師打 n'oublieras pas）；espérer → 未來式"
+ },
+ {
+  "id": "L53_Pourvu_qu_elle_vienne_sa",
+  "lesson": 53,
+  "fr": "Pourvu qu'elle vienne samedi pour le pique-nique !",
+  "zh": "但願她星期六會來野餐！",
+  "note": "⭐ 4c（老師打 vienne）"
+ },
+ {
+  "id": "L53_J_espère_que_vous_viendr",
+  "lesson": 53,
+  "fr": "J'espère que vous viendrez nous rendre visite au Québec.",
+  "zh": "希望你們會來魁北克看我們。",
+  "note": "⭐ 4e（老師打 viendrez）"
+ },
+ {
+  "id": "L53_Ce_serait_bien_qu_ils_vi",
+  "lesson": 53,
+  "fr": "Ce serait bien qu'ils viennent nombreux au festival.",
+  "zh": "要是很多人來美食節就好了。",
+  "note": "⭐ 練習 5b；老師說 Il serait bien qu'il vienne，nombreux 是複數，要 qu'ils viennent"
+ },
+ {
+  "id": "L53_Je_n_ai_jamais_goûté_la",
+  "lesson": 53,
+  "fr": "Je n'ai jamais goûté la cuisine créole.",
+  "zh": "我從來沒吃過克里奧爾料理。",
+  "note": "⭐ p.65 規則表；老師：你可以這樣說"
+ },
+ {
+  "id": "L53_Rien_ne_me_plaît_dans_ce",
+  "lesson": 53,
+  "fr": "Rien ne me plaît dans ce menu.",
+  "zh": "這份菜單上沒有一樣我喜歡的。",
+  "note": "⭐ p.65 規則表"
+ },
+ {
+  "id": "L53_Il_n_a_pas_encore_dîné",
+  "lesson": 53,
+  "fr": "Il n'a pas encore dîné.",
+  "zh": "他還沒吃晚餐。",
+  "note": "⭐ p.65 規則表"
+ },
+ {
+  "id": "L53_Il_n_y_a_plus_rien_dans",
+  "lesson": 53,
+  "fr": "Il n'y a plus rien dans le frigo.",
+  "zh": "冰箱裡什麼都沒了。",
+  "note": "⭐ p.65 規則表"
+ },
+ {
+  "id": "L53_Je_ne_mangerai_plus_jama",
+  "lesson": 53,
+  "fr": "Je ne mangerai plus jamais ce plat épicé.",
+  "zh": "我再也不會吃這道辣菜了。",
+  "note": "⭐ p.65 規則表"
+ },
+ {
+  "id": "L53_Je_ne_veux_ni_fromage_ni",
+  "lesson": 53,
+  "fr": "Je ne veux ni fromage, ni dessert.",
+  "zh": "我不要起司，也不要甜點。",
+  "note": "⭐ p.65 規則表；老師：吃飽了"
+ },
+ {
+  "id": "L53_Je_n_ai_rien_acheté_au_m",
+  "lesson": 53,
+  "fr": "Je n'ai rien acheté au marché.",
+  "zh": "我在市場什麼都沒買。",
+  "note": "⭐ 練習 2a（J'ai tout acheté 的反面）"
+ },
+ {
+  "id": "L53_Elle_n_est_jamais_allée",
+  "lesson": 53,
+  "fr": "Elle n'est jamais allée à ce festival.",
+  "zh": "她從來沒去過這個美食節。",
+  "note": "⭐ 2b（déjà 的反面是 jamais）"
+ },
+ {
+  "id": "L53_Il_ne_voudrait_plus_goût",
+  "lesson": 53,
+  "fr": "Il ne voudrait plus goûter à ce plat.",
+  "zh": "他不想再吃這道菜了。",
+  "note": "⭐ 2c（encore 的反面是 ne… plus）"
+ },
+ {
+  "id": "L53_Je_n_achète_jamais_de_pr",
+  "lesson": 53,
+  "fr": "Je n'achète jamais de produits locaux.",
+  "zh": "我從來不買在地產品。",
+  "note": "⭐ 2e（toujours 的反面是 jamais）；老師說 des produits，否定後標準是 de"
+ },
+ {
+  "id": "L53_Personne_n_a_pris_ton_as",
+  "lesson": 53,
+  "fr": "Personne n'a pris ton assiette.",
+  "zh": "沒有人拿你的盤子。",
+  "note": "⭐ 2f；你自己答對"
+ },
+ {
+  "id": "L53_Je_n_ai_pas_encore_rangé",
+  "lesson": 53,
+  "fr": "Je n'ai pas encore rangé les valises.",
+  "zh": "我還沒整理行李。",
+  "note": "⭐ 你自己說的；老師問你從台中回來整理了沒"
+ },
+ {
+  "id": "L53_Je_n_ai_pas_encore_eu_le",
+  "lesson": 53,
+  "fr": "Je n'ai pas encore eu le temps de ranger.",
+  "zh": "我還沒有時間整理。",
+  "note": "⭐ 🎙 老師打在截圖上；eu 後面的 ranger 用原形"
+ },
+ {
+  "id": "L53_Je_n_aime_ni_la_nourritu",
+  "lesson": 53,
+  "fr": "Je n'aime ni la nourriture épicée ni le tofu puant.",
+  "zh": "我既不喜歡辣的食物，也不喜歡臭豆腐。",
+  "note": "⭐ 🎙 老師的答案"
+ },
+ {
+  "id": "L53_Je_ne_veux_pas_de_café_n",
+  "lesson": 53,
+  "fr": "Je ne veux pas de café ni de dessert, merci.",
+  "zh": "我不要咖啡也不要甜點，謝謝。",
+  "note": "⭐ 🎙 在餐廳；老師說 pas du café ni du dessert，否定後標準是 de"
+ },
+ {
+  "id": "L53_Évitez_le_gaspillage_ali",
+  "lesson": 53,
+  "fr": "Évitez le gaspillage alimentaire.",
+  "zh": "避免浪費食物。",
+  "note": "⭐ p.65 第 6 招"
+ },
+ {
+  "id": "L53_Je_préfère_commander_en",
+  "lesson": 53,
+  "fr": "Je préfère commander en ligne.",
+  "zh": "我比較喜歡網購。",
+  "note": "⭐ 你說 acheter sur Internet，老師換成 commander en ligne"
+ },
+ {
+  "id": "L53_Avec_le_Canada_il_y_a_co",
+  "lesson": 53,
+  "fr": "Avec le Canada, il y a combien d'heures de décalage ?",
+  "zh": "跟加拿大差幾個小時？",
+  "note": "🎙"
+ },
+ {
+  "id": "L53_Tu_as_déjà_vu_Ma_copine",
+  "lesson": 53,
+  "fr": "Tu as déjà vu ? Ma copine adore.",
+  "zh": "你看過嗎？我女友超愛。",
+  "note": "🎙 講 Emily in Paris"
+ },
+ {
+  "id": "L53_On_n_est_pas_obligé_de_d",
+  "lesson": 53,
+  "fr": "On n'est pas obligé de dire ça.",
+  "zh": "這個不一定要講。",
+  "note": "🎙 跳過一段時"
+ },
+ {
+  "id": "L53_Ça_ce_n_est_pas_importan",
+  "lesson": 53,
+  "fr": "Ça, ce n'est pas important non plus.",
+  "zh": "這個也不重要。",
+  "note": "🎙 non plus＝也不"
+ },
+ {
+  "id": "L53_Ce_jeu_il_a_l_air_cool",
+  "lesson": 53,
+  "fr": "Ce jeu, il a l'air cool.",
+  "zh": "這個遊戲看起來很酷。",
+  "note": "🎙 avoir l'air"
+ },
+ {
+  "id": "L53_Faire_un_don_c_est_donne",
+  "lesson": 53,
+  "fr": "Faire un don, c'est donner de l'argent sans rien en retour.",
+  "zh": "捐款就是給錢，不求回報。",
+  "note": "🎙"
+ },
+ {
+  "id": "L53_Tu_ne_vas_pas_souvent_au",
+  "lesson": 53,
+  "fr": "Tu ne vas pas souvent au supermarché ?",
+  "zh": "你不常去超市嗎？",
+  "note": "🎙"
+ },
+ {
+  "id": "L53_Est_ce_que_tu_as_rangé_l",
+  "lesson": 53,
+  "fr": "Est-ce que tu as rangé les valises ?",
+  "zh": "你行李整理好了嗎？",
+  "note": "🎙"
+ },
+ {
+  "id": "L53_J_ai_un_peu_peur",
+  "lesson": 53,
+  "fr": "J'ai un peu peur.",
+  "zh": "我有點怕。",
+  "note": "🎙 第一次滑雪"
+ },
+ {
+  "id": "L53_s_ambiancer",
+  "lesson": 53,
+  "fr": "s'ambiancer",
+  "zh": "跳舞玩樂、享受氣氛",
+  "note": "v.｜象牙海岸"
+ },
+ {
+  "id": "L53_l_ambiance",
+  "lesson": 53,
+  "fr": "l'ambiance",
+  "zh": "氣氛",
+  "note": "n.f.｜老師：mood、vibe"
+ },
+ {
+  "id": "L53_divulguer",
+  "lesson": 53,
+  "fr": "divulguer",
+  "zh": "說出去、洩露",
+  "note": "v.｜"
+ },
+ {
+  "id": "L53_gâcher",
+  "lesson": 53,
+  "fr": "gâcher",
+  "zh": "搞砸、破壞",
+  "note": "v.｜gâcher un film"
+ },
+ {
+  "id": "L53_le_pourriel",
+  "lesson": 53,
+  "fr": "le pourriel",
+  "zh": "垃圾郵件",
+  "note": "n.m.｜魁北克；pourri＋courriel"
+ },
+ {
+  "id": "L53_pourri",
+  "lesson": 53,
+  "fr": "pourri",
+  "zh": "爛掉的、壞掉的",
+  "note": "adj.｜食物壞了也用"
+ },
+ {
+  "id": "L53_le_changement_de_vie",
+  "lesson": 53,
+  "fr": "le changement de vie",
+  "zh": "生活大轉變",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L53_redémarrer_une_nouvelle",
+  "lesson": 53,
+  "fr": "redémarrer une nouvelle vie",
+  "zh": "重新開始新生活",
+  "note": "v.｜"
+ },
+ {
+  "id": "L53_le_décalage_horaire",
+  "lesson": 53,
+  "fr": "le décalage horaire",
+  "zh": "時差",
+  "note": "n.m.｜也指時差反應"
+ },
+ {
+  "id": "L53_décaler",
+  "lesson": 53,
+  "fr": "décaler",
+  "zh": "往後挪",
+  "note": "v.｜"
+ },
+ {
+  "id": "L53_être_chamboulé_e",
+  "lesson": 53,
+  "fr": "être chamboulé(e)",
+  "zh": "被打亂、還沒習慣",
+  "note": "v.｜口語"
+ },
+ {
+  "id": "L53_être_originaire_de",
+  "lesson": 53,
+  "fr": "être originaire de",
+  "zh": "出身於、從…來",
+  "note": "v.｜＝venir de"
+ },
+ {
+  "id": "L53_être_d_origine_taïwanais",
+  "lesson": 53,
+  "fr": "être d'origine taïwanaise",
+  "zh": "有台灣血統",
+  "note": "v.｜父母或祖父母是台灣人"
+ },
+ {
+  "id": "L53_laisser_sa_famille_derri",
+  "lesson": 53,
+  "fr": "laisser sa famille derrière soi",
+  "zh": "丟下家人出國",
+  "note": "v.｜"
+ },
+ {
+  "id": "L53_refaire_son_cercle_d_ami",
+  "lesson": 53,
+  "fr": "refaire son cercle d'amis",
+  "zh": "重新交朋友",
+  "note": "v.｜"
+ },
+ {
+  "id": "L53_s_expatrier",
+  "lesson": 53,
+  "fr": "s'expatrier",
+  "zh": "（被派）到國外工作生活",
+  "note": "v.｜"
+ },
+ {
+  "id": "L53_un_immigré",
+  "lesson": 53,
+  "fr": "un immigré",
+  "zh": "移民",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L53_s_imprégner_de_la_cultur",
+  "lesson": 53,
+  "fr": "s'imprégner de la culture",
+  "zh": "浸潤在文化裡",
+  "note": "v.｜"
+ },
+ {
+  "id": "L53_les_spécificités_d_un_te",
+  "lesson": 53,
+  "fr": "les spécificités d'un territoire",
+  "zh": "一個地方的特色",
+  "note": "n.f.pl.｜"
+ },
+ {
+  "id": "L53_faire_un_tour",
+  "lesson": 53,
+  "fr": "faire un tour",
+  "zh": "去逛一下",
+  "note": "v.｜老師：逛一下"
+ },
+ {
+  "id": "L53_célébrer",
+  "lesson": 53,
+  "fr": "célébrer",
+  "zh": "慶祝、推崇",
+  "note": "v.｜"
+ },
+ {
+  "id": "L53_la_gastronomie",
+  "lesson": 53,
+  "fr": "la gastronomie",
+  "zh": "美食（文化）",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L53_avoir_l_air",
+  "lesson": 53,
+  "fr": "avoir l'air",
+  "zh": "看起來",
+  "note": "v.｜il a l'air bien"
+ },
+ {
+  "id": "L53_haut_en_saveurs",
+  "lesson": 53,
+  "fr": "haut en saveurs",
+  "zh": "味道豐富的",
+  "note": "adj.｜la saveur 味道"
+ },
+ {
+  "id": "L53_un_atelier_culinaire",
+  "lesson": 53,
+  "fr": "un atelier culinaire",
+  "zh": "料理工作坊",
+  "note": "n.m.｜culinaire＝跟料理有關的"
+ },
+ {
+  "id": "L53_chaleureux_chaleureuse",
+  "lesson": 53,
+  "fr": "chaleureux, chaleureuse",
+  "zh": "熱情溫暖的",
+  "note": "adj.｜une ambiance chaleureuse"
+ },
+ {
+  "id": "L53_faire_un_don",
+  "lesson": 53,
+  "fr": "faire un don",
+  "zh": "捐款",
+  "note": "v.｜"
+ },
+ {
+  "id": "L53_au_profit_de",
+  "lesson": 53,
+  "fr": "au profit de",
+  "zh": "為了…的利益",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L53_apporter_son_soutien_à",
+  "lesson": 53,
+  "fr": "apporter son soutien à",
+  "zh": "給予支持",
+  "note": "v.｜"
+ },
+ {
+  "id": "L53_je_vous_assure_que",
+  "lesson": 53,
+  "fr": "je vous assure que",
+  "zh": "我向你們保證",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L53_typique",
+  "lesson": 53,
+  "fr": "typique",
+  "zh": "道地的",
+  "note": "adj.｜真的當地的"
+ },
+ {
+  "id": "L53_atypique",
+  "lesson": 53,
+  "fr": "atypique",
+  "zh": "不一般的、特別的",
+  "note": "adj.｜說人可能是怪"
+ },
+ {
+  "id": "L53_un_conseil_avisé",
+  "lesson": 53,
+  "fr": "un conseil avisé",
+  "zh": "內行的建議",
+  "note": "n.m.｜＝éclairé、réfléchi"
+ },
+ {
+  "id": "L53_créole",
+  "lesson": 53,
+  "fr": "créole",
+  "zh": "克里奧爾的",
+  "note": "adj.｜安地列斯群島的料理與文化"
+ },
+ {
+  "id": "L53_J_espère_que",
+  "lesson": 53,
+  "fr": "J'espère que",
+  "zh": "我希望",
+  "note": "直陳式｜⭐ 唯一接直陳式的"
+ },
+ {
+  "id": "L53_J_aimerais_bien_que",
+  "lesson": 53,
+  "fr": "J'aimerais (bien) que",
+  "zh": "我很希望",
+  "note": "虛擬式｜⭐ 最常用"
+ },
+ {
+  "id": "L53_J_apprécierais_que",
+  "lesson": 53,
+  "fr": "J'apprécierais que",
+  "zh": "我會很感激",
+  "note": "虛擬式｜"
+ },
+ {
+  "id": "L53_Je_désirerais_que",
+  "lesson": 53,
+  "fr": "Je désirerais que",
+  "zh": "我渴望",
+  "note": "虛擬式｜je désire que 也可以"
+ },
+ {
+  "id": "L53_Je_préférerais_que",
+  "lesson": 53,
+  "fr": "Je préférerais que",
+  "zh": "我比較希望",
+  "note": "虛擬式｜je préfère que 也可以"
+ },
+ {
+  "id": "L53_Je_rêverais_que",
+  "lesson": 53,
+  "fr": "Je rêverais que",
+  "zh": "我夢想",
+  "note": "虛擬式｜老師：記住中間的 r"
+ },
+ {
+  "id": "L53_Je_souhaiterais_que",
+  "lesson": 53,
+  "fr": "Je souhaiterais que",
+  "zh": "我希望（客氣）",
+  "note": "虛擬式｜je souhaite que 較直接"
+ },
+ {
+  "id": "L53_Je_suggérerais_que",
+  "lesson": 53,
+  "fr": "Je suggérerais que",
+  "zh": "我建議",
+  "note": "虛擬式｜"
+ },
+ {
+  "id": "L53_Je_tiens_à_ce_que",
+  "lesson": 53,
+  "fr": "Je tiens à ce que",
+  "zh": "我堅持要",
+  "note": "虛擬式｜比 je veux que 強"
+ },
+ {
+  "id": "L53_Je_voudrais_que",
+  "lesson": 53,
+  "fr": "Je voudrais que",
+  "zh": "我想要",
+  "note": "虛擬式｜je veux que 較直接"
+ },
+ {
+  "id": "L53_Ça_me_ferait_plaisir_que",
+  "lesson": 53,
+  "fr": "Ça me ferait plaisir que",
+  "zh": "…我會很開心",
+  "note": "虛擬式｜"
+ },
+ {
+  "id": "L53_Ce_serait_bien_que",
+  "lesson": 53,
+  "fr": "Ce serait bien que",
+  "zh": "要是…就好了",
+  "note": "虛擬式｜⭐"
+ },
+ {
+  "id": "L53_Il_serait_bon_que",
+  "lesson": 53,
+  "fr": "Il serait bon que",
+  "zh": "最好…",
+  "note": "虛擬式｜"
+ },
+ {
+  "id": "L53_Pourvu_que",
+  "lesson": 53,
+  "fr": "Pourvu que",
+  "zh": "但願",
+  "note": "虛擬式｜多用在書面、歌詞"
+ },
+ {
+  "id": "L53_ne_pas_encore",
+  "lesson": 53,
+  "fr": "ne… pas encore",
+  "zh": "還沒",
+  "note": "三段式"
+ },
+ {
+  "id": "L53_ne_plus_rien",
+  "lesson": 53,
+  "fr": "ne… plus rien",
+  "zh": "什麼都不剩",
+  "note": "三段式"
+ },
+ {
+  "id": "L53_ne_plus_jamais",
+  "lesson": 53,
+  "fr": "ne… plus jamais",
+  "zh": "再也不會",
+  "note": "三段式"
+ },
+ {
+  "id": "L53_ne_ni_ni",
+  "lesson": 53,
+  "fr": "ne… ni…, ni…",
+  "zh": "既不…也不",
+  "note": "三段式"
+ },
+ {
+  "id": "L53_personne_ne",
+  "lesson": 53,
+  "fr": "personne ne…",
+  "zh": "沒有人",
+  "note": "放句首當主詞"
+ },
+ {
+  "id": "L53_rien_ne",
+  "lesson": 53,
+  "fr": "rien ne…",
+  "zh": "沒有東西",
+  "note": "放句首當主詞"
+ },
+ {
+  "id": "L53_se_ruiner",
+  "lesson": 53,
+  "fr": "se ruiner",
+  "zh": "把錢花光",
+  "note": "v.｜老師：bankrupt"
+ },
+ {
+  "id": "L53_d_avance",
+  "lesson": 53,
+  "fr": "d'avance",
+  "zh": "事先",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L53_déroger_de",
+  "lesson": 53,
+  "fr": "déroger de",
+  "zh": "偏離",
+  "note": "v.｜字典常見 déroger à"
+ },
+ {
+  "id": "L53_les_fruits_secs",
+  "lesson": 53,
+  "fr": "les fruits secs",
+  "zh": "果乾、堅果",
+  "note": "n.m.pl.｜sec＝乾的"
+ },
+ {
+  "id": "L53_les_légumes_congelés",
+  "lesson": 53,
+  "fr": "les légumes congelés",
+  "zh": "冷凍蔬菜",
+  "note": "n.m.pl.｜congelé＝frozen"
+ },
+ {
+  "id": "L53_valoir_la_peine",
+  "lesson": 53,
+  "fr": "valoir la peine",
+  "zh": "值得",
+  "note": "v.｜"
+ },
+ {
+  "id": "L53_surveiller_les_promotion",
+  "lesson": 53,
+  "fr": "surveiller les promotions",
+  "zh": "留意特價",
+  "note": "v.｜"
+ },
+ {
+  "id": "L53_de_saison",
+  "lesson": 53,
+  "fr": "de saison",
+  "zh": "當季的",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L53_revenir_moins_cher",
+  "lesson": 53,
+  "fr": "revenir moins cher",
+  "zh": "算下來比較便宜",
+  "note": "v.｜"
+ },
+ {
+  "id": "L53_importé",
+  "lesson": 53,
+  "fr": "importé",
+  "zh": "進口的",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L53_le_souper",
+  "lesson": 53,
+  "fr": "le souper",
+  "zh": "晚餐（魁北克）",
+  "note": "n.m.｜老師：舊的說法"
+ },
+ {
+  "id": "L53_les_légumineuses",
+  "lesson": 53,
+  "fr": "les légumineuses",
+  "zh": "豆類",
+  "note": "n.f.pl.｜老師：beans"
+ },
+ {
+  "id": "L53_se_substituer_à",
+  "lesson": 53,
+  "fr": "se substituer à",
+  "zh": "代替",
+  "note": "v.｜"
+ },
+ {
+  "id": "L53_le_gaspillage_alimentair",
+  "lesson": 53,
+  "fr": "le gaspillage alimentaire",
+  "zh": "浪費食物",
+  "note": "n.m.｜gaspiller 浪費"
+ },
+ {
+  "id": "L53_commander_en_ligne",
+  "lesson": 53,
+  "fr": "commander en ligne",
+  "zh": "網購",
+  "note": "v.｜"
  }
 ];

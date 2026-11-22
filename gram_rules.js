@@ -339,7 +339,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'negation', name:'Négation & quantités', icon:'🚫', zone:'A2', cat:'base',
-    lessons:[1,6,16,18,19], topics:['negation','frequency-adverbs','intensite'], unlocked:true,
+    lessons:[1,6,16,18,19,53], topics:['negation','frequency-adverbs','intensite'], unlocked:true,
     rule:{
       title:'否定家族＋頻率＋強度 — ne...X 換尾巴',
       why:'原本真正的否定詞只有 ne，後面那些字全是加強語氣的名詞：pas＝一步（「連一步都不走」）、personne＝一個人、rien＝一件東西（拉丁 rem）、jamais＝永遠。講了幾百年，加強的字反而搶走了否定的意義——這就是為什麼今天「換尾巴」就換否定意思，也是為什麼口語常把 ne 丟掉（je sais pas）：真正扛意義的是尾巴。否定後冠詞變 de 跟 beaucoup de 同邏輯——數量歸零也是一種數量。',
@@ -657,7 +657,7 @@ const GRAM_POINTS = [
       ]}},
 
   { id:'subjonctif', name:'Subjonctif présent', icon:'🌀', zone:'A2', cat:'verbe-mode',
-    lessons:[34,46], topics:['subjonctif-present'], unlocked:true,   // 09-15（第34課 Édito A2 p.117）從 B1 佔位點搬來解鎖；verb_sprint／dashboard 的 gram:'subjonctif' 本來就指這個 id
+    lessons:[34,46,53], topics:['subjonctif-present'], unlocked:true,   // 09-15（第34課 Édito A2 p.117）從 B1 佔位點搬來解鎖；verb_sprint／dashboard 的 gram:'subjonctif' 本來就指這個 id
     rule:{
       title:'虛擬式現在 — 不是在報告事實，是把動作放進「必須／評價」的框框',
       why:'直陳式在說「這件事是真的」；虛擬式在說「我對這件事的要求或看法」——Il faut que tu regardes 不是說你正在看，而是把「你看」這件事放進必要的框框。所以開關在主句：il faut que、il est important que 表達必要，c\'est bien que、c\'est normal que（il est／c\'est ＋ 形容詞或 bien ＋ que）表達評價。形也沒有新東西，全部借你會的：je／tu／il／ils 拿現在式 ils 的字根（ils informent → inform-）加 e／es／e／ent，nous／vous 直接跟 imparfait 一樣。所以 -er 動詞的 je／tu／il／ils 聽起來跟現在式一模一樣，真正會露出馬腳的只有三種：nous／vous 多出來的 i（que nous mangions）、字根本來就跟 je 形不同的動詞（ils finissent → que je finisse），以及少數真的不規則的 être／avoir／aller／faire。',

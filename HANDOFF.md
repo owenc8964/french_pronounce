@@ -51,6 +51,7 @@
 > - 🏝 **10-27 小鎮：口說群島樣品——碼頭搭船進群島總覽、自我介紹島（海岸、4 區、步道、23 個意思相符的地標、自己走、站著跳泡泡）（三之九十三（小鎮））**
 > - 🪧 **10-28 小鎮：自我介紹島碼頭旁加「島上的重點」告示牌——一上島自動打開，考官問題＋四區條列（附站號）；走開再走回會再開；順手修兩個地標放錯區（三之九十七（小鎮））**
 > - 📚 **11-09 第50課（B1 p.44 條件式、p.45 女饒舌歌手、p.46 表演音樂、p.47 宅宅＋連接詞、p.48 電影用語、蛋的做法）筆記四件套＋連動全做（卡 65、題 37、句 12、表格 2、地圖、文法點）（三之一百一十三）**
+> - 📚 **11-22 第53課（B1 p.60 Expressions 三個字＋搬到國外的生活・p.61 會換性別的字・p.62 Martinique 美食節論壇・p.63 表達願望（只有 espérer 接直陳式）・p.65 三段否定＋省錢吃好六招）筆記四件套＋連動全做（卡 122、題 47、句 15、填表 2、地圖地塊 souhaits-gastronomie、文法點 subjonctif／negation 加 53、小鎮路上題 1511→1522 全過）（三之一百一十八）**。check_notes 全綠。老師跟標準不同的 7 處已在筆記標出。⚠️ 老師 12/18–1/3 回法國，這段應該沒課。
 > - 📚 **11-19 第52課（開場越南簽證・B1 p.57 Mes mots pour le dire・p.58 不定數量詞練習 4、5・圖像式說法・p.59 新喀里多尼亞＋住國外・p.60 語言與法語圈詞彙）筆記四件套＋連動全做（卡 86、題 33、句 14、表格 2、地圖地塊 francophonie、文法點 tout-chaque／plus-que-parfait 加 52、新 topic vocab-langues 登記在 topic_labels／quiz／dashboard、小鎮路上題重產全過）**。check_notes 全綠。老師兩處跟標準不同已在筆記標出：chacun 說成「全部」、新喀里多尼亞公投說成一半一半。資料夾裡 11-09 的 6 張是第50課，沒收。
 > - 📚 **11-13 第51課（B1 p.49 限制 ne…que、p.50 梵谷、p.51 原因與結果、p.52 藝術戲劇電影、p.56 Simon Kuper、p.58 不定數量詞）筆記四件套＋連動全做（卡 131、題 39、句 14、表格 2、地圖、文法點）；順手修 table_drill 判分不吃 iPhone 彎撇號（三之一百一十五）**
 > - ⌨️ **11-09 寫作練習框關掉自動校正、拼字檢查、自動大寫（`tcf_writing.html` 的 `renderWrite`，第一到第三題都有；貼批改結果的框不動）。鍵盤：網路上只有媒體引述可用 QWERTY 或 AZERTY、有螢幕重音鍵，官方和台灣考場都沒查到，⏸ 等 Owen 打給法協（問題清單在 `PLAN_TCF_2026-11.md` 第五節）才決定 Mac 要不要換法文鍵盤；Windows 考場上長按打重音用不了**
@@ -5060,6 +5061,16 @@ Owen 貼進 2026-09-07 課堂逐字稿＋10 張截圖（`~/Desktop/0907/`，Édi
   3. **#73**（preposition-country）opts 有 12 個、互相重複（au Canada／en France…出現好幾次），看起來是組合題被攤平了，選項畫面會很怪。
   4. #301（「我 180 公分 Je fais 1m80」）topic 標成 question-words，應該是 faire 用法；不影響作答，只影響分類。
 - ⏭ 下一步（可選）：純變位 122 題要不要也補一句（例如「主詞 nous → 字尾 -ons」）——小鎮已經會列變位表，優先度低；`node tools/check_weak_anote.js --all -v` 可以看清單。
+
+#### 三之一百一十八、11-22：第53課筆記
+- **材料**：逐字稿（貼在對話裡，沒另存檔）＋`~/Desktop/1122/` 5 張截圖，對到 Édito B1 p.60、62、63、65（另 1 張 11-09 的是第50課，沒收）。老師打在截圖上的字照收：spoiled、pourri courriel、entourage、tu veux boire une petite bière、p.63 練習 4 八個答案、je n'ai pas encore eu le temps de ranger。
+- **french_notes.html lesson-53**（11 unit、99 句、84 個法文格、check_notes 0／0）：✈️ 開場｜🌍 p.60 Expressions（s'ambiancer、divulgâcher、pourriel）｜🧳 p.60 S'installer hors de ses frontières｜⚧ p.61 G（只寫 note，老師說可跳過）｜🍽 p.62 論壇｜📐 p.63 表達願望＋練習 4、5b｜🚫 p.65 否定＋練習 2｜🛒 p.65 L 六招｜🎙｜🔊｜📋。
+- **連動**：chunks +122（L53_）；questions.js +47（subjonctif-present 16、negation 12、vocab-langues 8、vocab-aliments 11；quiz 兩個標籤加第53課）；sentences.js S_L53_1–15；table_drill `souhait-l53`（9）、`negation-l53`（7）；map CURRENT_LESSON＝53＋地塊 `souhaits-gastronomie`；gram_rules subjonctif、negation 的 lessons 加 53；gen_town_field_extra 重跑（1511→1522，新增 11 題都是虛擬式）。
+- ⚠️ **抽卡踩到的坑**：願望表原本欄位是「說法｜後面接｜中文」，抽取器把「虛擬式」當成卡片背面（J'aimerais que → 虛擬式）。已改成「說法｜中文｜後面接」重抽。**以後文法表的第二欄一定放中文意思**。
+- **標出來的衝突（標準法文 vs 課堂）**：décalage horaire 老師說不是 jet lag → 兩個意思都有｜je n'achète jamais des produits → de｜je ne veux pas du café ni du dessert → pas de café ni de dessert｜練習 5b Il serait bien qu'il vienne nombreux → Ce serait bien qu'ils viennent｜je veux me goûter des restaurants → essayer｜Martinique「在美國旁邊」→ 加勒比海｜Pourvu qu'elle soit douce → 歌名是複數 qu'elles soient douces｜課本 des bons petits plats 口語 vs 課本 de bons｜課本 déroger de（魁北克文章）vs 字典常見 déroger à｜課本 Remarques 說「表達意志用直陳式」是指主句 je souhaite，從句仍是虛擬式。
+- **我的判斷**：練習 2（否定）六題答案課本沒附，照當堂對出來的寫；練習 4h 老師打 nous lavions，完整句寫成 que nous nous lavions。台灣「文化日」那段日期聽不清楚，沒收。
+- **驗證**：check_notes 0／0、check_town_field_extra 全過、audit_questions 無第53課問題；preview 看筆記（導覽列有第53課、99 句與 84 格全有喇叭）、quiz `?lesson=53` 答一題判對、table_drill 兩張表用彎撇號作答 16／16 全對、sentence_drill 讀到 15 句、map chip 第 53 課＋地塊、town 讀到 47 題／11 題上路／122 張卡；無 console 錯誤。ROOM 測試→清 preview 本機資料→已改回→preview 已關。
+- ⏭ **下次課**：p.60 練習 5（Expressions 配對）、6 寫作；p.61 F、G 題目；p.62 H 影片、I 題目；p.63 練習 5 其他題、6；p.64 J、K；p.65 L 題目、否定練習 3。老師 12/18 回法國、1/3 回台灣，請 Owen 跟老師確認這段的課。
 
 #### 三之一百一十七、11-07：📻 收音機（podcast 聽力，坐在家裡聽）
 - **Owen 拍板**：「好好設計遊戲該怎麼操作，讓我可以練好練滿，又能綁上故事線」→ 選 **坐到收音機前聽**（不是邊走邊聽）、**每天 5 段左右**、**原文 Claude 先抽查才上**；途中補兩條：「看語音內容做，如果有內容跟故事線相關，聽完之後可能可以解故事」「出題我希望跟 TCF Canada 像一點」。
