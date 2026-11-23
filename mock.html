@@ -213,10 +213,13 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
   letter-spacing: 1px; margin: 10px 0 4px; }
 .rev-detail h4:first-child { margin-top: 0; }
 /* 詳解旁的大按鈕：貼在畫面下緣，邊讀詳解邊倒退重聽（11-10 Owen） */
-/* 11-13 Owen：「可以順著頁面上下滑時一起滑動，不要死死在原地」→ sticky 只在它自己那一小段有效，改成固定在畫面下緣 */
-.big-ctl { position: fixed; left: 50%; transform: translateX(-50%); bottom: 10px; z-index: 30; display: flex; gap: 8px;
-  width: min(680px, calc(100% - 24px)); padding: 6px; background: #0a0c16; border: 1px solid #1a2438; border-radius: 10px;
-  box-shadow: 0 -4px 18px rgba(0,0,0,.55); }
+/* 11-13 Owen：「可以順著頁面上下滑時一起滑動，不要死死在原地」→ sticky 只在它自己那一小段有效，改成固定在畫面下緣
+   11-23 Owen：「播放按鍵在正下方使用上不順，我是右撇子，可能右手比較好」→ 改貼右側中下方、一直排，右手拇指按得到；
+   詳解右邊留空，按鈕才不會蓋到字 */
+.big-ctl { position: fixed; right: 10px; bottom: 96px; z-index: 30; display: flex; flex-direction: column; gap: 8px;
+  width: 104px; padding: 6px; background: #0a0c16; border: 1px solid #1a2438; border-radius: 12px;
+  box-shadow: -4px 0 18px rgba(0,0,0,.55); }
+.rev-detail:has(.big-ctl) { padding-right: 112px; }
 /* 法文／中文左右對照（11-13 Owen：「中文想對照看都要往下滑，我傾向左右兩邊看（iPad 橫看）」「中文可以有隱藏打開的功能」）
    .bi.rows：逐字稿一段配一行中文（段數對得上才用）；直拿時變成一段法文下面接它的中文 */
 .bi > div, .bi > p { min-width: 0; }
@@ -236,7 +239,7 @@ body.zh-off .zh-col { display: none !important; }
   .rev-detail .bi > .zh-col h4 { display: none; }
   body.zh-off .bi { grid-template-columns: 1fr; }
 }
-.big-ctl button { flex: 1; padding: 14px 4px; border-radius: 9px; border: 1.5px solid #2a5a7a; background: #12223a;
+.big-ctl button { flex: 1; padding: 16px 4px; border-radius: 9px; border: 1.5px solid #2a5a7a; background: #12223a;
   color: #cfe6f7; font: inherit; font-size: 0.95rem; font-weight: 700; cursor: pointer; }
 .rev-detail p { font-size: 0.78rem; color: #aaa8a0; line-height: 1.65; white-space: pre-wrap; }
 .rev-detail img { width: 100%; border-radius: 6px; background: #fff; margin-bottom: 8px; }
@@ -254,6 +257,10 @@ body.zh-off .zh-col { display: none !important; }
 .word-pop .pos { color: #8090a8; font-size: .8rem; margin-left: 6px; }
 .word-pop .ten { color: #9ec5ff; }
 .word-pop .zh { margin-top: 4px; }
+.word-pop .ctx { margin-top: 6px; font-size: 1.05rem; font-weight: 700; color: #b8e0a0; }
+.word-pop .line { margin-top: 4px; color: #cfd6e0; }
+.word-pop .k { display: inline-block; min-width: 3.2em; margin-right: 6px; padding: 0 6px; border-radius: 6px; background: #222c40; color: #8090a8; font-size: .72rem; font-weight: 400; text-align: center; vertical-align: 1px; }
+.word-pop .ctx + .line + .zh, .word-pop .ctx + .zh, .word-pop .line + .zh { color: #8f98a4; font-size: .82rem; }
 .word-pop .lk { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .word-pop .lk a, .word-pop .lk button { padding: 4px 10px; border-radius: 8px; border: 1px solid #333c48; background: transparent; color: #aaa8a0; font: inherit; font-size: .8rem; text-decoration: none; cursor: pointer; }
 .word-pop .note { color: #606878; font-size: .7rem; margin-left: auto; }
@@ -587,7 +594,17 @@ function renderTestGrid() {
 
 /* ── data loading (script tag → works on file:// too) ─────────── */
 window.TCF_LOAD = function (id, data) { cache[id] = data; };
+/* 「在這題的意思」（11-23 Owen：「中文意思感覺要照題目給耶」）：ctx/<套>.js，{題號:{字的起始位置:中文}}；
+   tools/exam_ctx.py 產生，還沒做的套沒有這個檔 → 照舊只顯示字典意思 */
+window.TCF_CTX = {};
+window.TCF_CTX_LOAD = function (id, data) { TCF_CTX[id] = data; };
+function ctxLoad(id) {
+  if (TCF_CTX[id]) return;
+  const s = document.createElement('script'); s.src = DATA_DIR + 'ctx/' + id + '.js?v=' + Date.now();
+  s.onerror = () => {}; document.head.appendChild(s);
+}
 function loadTest(id, cb) {
+  ctxLoad(id);
   if (cache[id]) { cb(cache[id]); return; }
   const s = document.createElement('script');
   s.src = DATA_DIR + 'data/' + id + '.js';
@@ -872,6 +889,14 @@ function renderJump() {
 }
 
 /* ── timer ───────────────────────────────────────────────────── */
+/* 11-23 Owen：「計時器應該在螢幕關掉時就停了」→ 畫面看不到（鎖螢幕、切到別的 app、換分頁）的時間不算：
+   回來時把 t0 往後推「不在的那段」，用時跟交卷的秒數都一起對 */
+let hiddenAt = 0;
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { hiddenAt = Date.now(); return; }
+  if (hiddenAt && cur && !cur.submitted) cur.t0 += Date.now() - hiddenAt;
+  hiddenAt = 0;
+});
 function startTimer() {
   clearInterval(timerId);
   timerId = setInterval(() => {
@@ -1112,6 +1137,9 @@ function wordPopShow(el) {
     });
   const phRow = x => ({ ts: Date.now(), w: x.surf, lemma: x.e.fr, pos: 'PHR', f: '', zh: x.e.zh, test: P.t, q: +P.q, skill: P.k, res: P.r, sent, ph: 'auto' });
   if (P.t) vocabSend([row].concat(phs.map(phRow)));   /* 查過就記（統計用）；⭐ 才進複習 */
+  const ctxZh = ((TCF_CTX[P.t] || {})[P.q] || {})[el.dataset.s] || '';
+  const nx = blk.nextElementSibling, lineZh = nx && nx.classList.contains('zh-col') ? nx.textContent.trim() : '';
+  if (ctxZh) row.ctx = ctxZh;
   const render = () => {
     const zh = glossOf(l, p), on = !!vocabStars()[key];
     const S0 = vocabStars();
@@ -1119,7 +1147,9 @@ function wordPopShow(el) {
         (P.t ? `<button class="phs${S0[x.key] ? ' on' : ''}" data-k="${k}">${S0[x.key] ? '⭐ 要背' : '☆ 要背'}</button>` : '') + '</div>').join('') +
       `<div><span class="w">${esc(w)}</span>${l.toLowerCase() !== w.toLowerCase() ? ' → <span class="lem">' + esc(l) + '</span>' : ''}<span class="pos">${POS_ZH[p] || ''}</span></div>` +
       (ten ? `<div class="ten">${ten}</div>` : '') +
-      `<div class="zh">${zh ? esc(zh) : (GLOSS_ST === 1 ? '…' : '<span style="color:#606878">（字義表還沒收這個字）</span>')}</div>` +
+      (ctxZh ? `<div class="ctx"><span class="k">在這題</span>${esc(ctxZh)}</div>` : '') +
+      (lineZh ? `<div class="line"><span class="k">這句</span>${esc(lineZh)}</div>` : '') +
+      `<div class="zh">${ctxZh || lineZh ? '<span class="k">字典</span>' : ''}${zh ? esc(zh) : (GLOSS_ST === 1 ? '…' : '<span style="color:#606878">（字義表還沒收這個字）</span>')}</div>` +
       `<div class="lk"><a target="_blank" rel="noopener" href="https://www.wordreference.com/fren/${encodeURIComponent(l)}">WordReference</a>` +
       `<a target="_blank" rel="noopener" href="https://www.deepl.com/translator#fr/zh-hant/${encodeURIComponent(sent)}">整句 DeepL</a>` +
       (P.t ? `<button id="wpStar" style="${on ? 'border-color:#f0c060;color:#f0c060' : ''}">${on ? '⭐ 要背（再按取消）' : '☆ 要背'}</button>` : '') +
@@ -1238,9 +1268,8 @@ function detailHtml(q, t, inline) {   // inline：單題模式直接展開，圖
     if (q.opt_zh)  h += '<h4>選項分析</h4><p>' + esc(q.opt_zh) + '</p>';
   } else {
     /* 11-10 Owen 回報：詳解旁要有大的前進後退＋暫停（練習／單題才有，模考模式不會走到 inline） */
-    if (inline) h += '<div class="big-ctl"><button onclick="seekBy(-5)">⏪ 5 秒</button>' +
-      '<button onclick="togglePlay()">⏯ 播放／暫停</button><button onclick="seekBy(5)">5 秒 ⏩</button>' +
-      (cueOf(cur.idx) !== null ? '<button onclick="playQuestion()">▶ 這一題</button>' : '') + '</div>';
+    if (inline) h += '<div class="big-ctl">' + (cueOf(cur.idx) !== null ? '<button onclick="playQuestion()">▶ 這一題</button>' : '') +
+      '<button onclick="seekBy(-5)">⏪ 5 秒</button><button onclick="togglePlay()">⏯ 播放<br>暫停</button><button onclick="seekBy(5)">5 秒 ⏩</button></div>';
     /* 選項翻譯（11-10 Owen 回報「答案也要翻譯」；佔位選項 Proposition a–d 那種沒有 opts_zh） */
     if (q.opts_zh) h += '<h4>選項翻譯</h4><p>' + q.opts_zh.map((z, i) => {
       const L = 'ABCD'[i], line = L + '. ' + esc(z);
