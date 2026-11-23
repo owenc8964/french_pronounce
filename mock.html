@@ -122,6 +122,10 @@ audio { width: 100%; margin-top: 10px; filter: invert(0.9) hue-rotate(180deg); }
 .opt-btn.correct  { border-color: #60d090; color: #60d090; background: #0a1a0c; }
 .opt-btn.wrong    { border-color: #d07060; color: #d07060; background: #1a0a08; }
 .opt-btn:disabled { cursor: default; }
+/* 11-23 Owen：「選項也要可以點兩下就能翻譯」→ 看解析時選項改成 div（disabled 的 button 收不到點擊），法文一字一字可以點 */
+.opt-btn p.optp, .rev-line p.optp { margin: 0; display: inline; }
+div.opt-btn { cursor: default; }
+.bar-sub { font-size: .62rem; color: #607080; font-variant-numeric: tabular-nums; margin-top: 1px; }
 .opt-letter { font-weight: 700; margin-right: 8px; opacity: .7; }
 
 /* Nav */
@@ -440,6 +444,7 @@ body.zh-off .zh-col { display: none !important; }
       <div>
         <div class="bar-label">Temps</div>
         <div class="bar-val" id="timerVal">0:00</div>
+        <div class="bar-sub" id="timerRev"></div>
       </div>
       <div style="text-align:center">
         <div class="bar-label" id="examTitle"></div>
@@ -521,7 +526,7 @@ const CLB_TABLE = {
 
 let skill = 'reading';
 let cache = {};              // id -> test object
-let cur = null;              // { test, answers[], flags:Set, idx, t0, submitted }
+let cur = null;              // { test, answers[], flags:Set, idx, ans, rev（作答／看解析毫秒）, tick, submitted }
 let timerId = null;
 
 /* ── storage helpers ─────────────────────────────────────────── */
@@ -622,7 +627,7 @@ function startTest(id) {
   loadTest(id, t => {
     if (!t) { alert('讀不到 ' + id + ' 的題目檔。'); return; }
     cur = { test: t, answers: new Array(t.questions.length).fill(null),
-            idx: 0, t0: Date.now(), submitted: false,
+            idx: 0, ans: 0, rev: 0, tick: Date.now(), submitted: false,
             mock: document.getElementById('mockMode').checked,
             instant: document.getElementById('instantMode').checked && !document.getElementById('mockMode').checked,
             skipped: new Set() };
@@ -630,6 +635,7 @@ function startTest(id) {
       const old = lsGet(LS_SINGLE, {})[id];
       if (old && Array.isArray(old.answers) && old.answers.length === t.questions.length) {
         cur.answers = old.answers; cur.idx = Math.min(old.idx || 0, t.questions.length - 1); cur.skipped = new Set(old.skipped || []);
+        cur.ans = old.ans || 0; cur.rev = old.rev || 0;
       }
     }
     document.getElementById('examTitle').textContent = t.label;
@@ -812,7 +818,8 @@ function renderQ() {
       if (letters[i] === q.answer) cls = ' correct';
       else if (i === picked) cls = ' wrong';
     } else if (i === picked) cls = ' selected';
-    html += `<button class="opt-btn${cls}" ${revealed ? 'disabled' : ''} onclick="pick(${i})">
+    html += revealed ? `<div class="opt-btn${cls}"><span class="opt-letter">${letters[i]}</span>${optFr(q, t, i)}</div>`
+      : `<button class="opt-btn${cls}" onclick="pick(${i})">
       <span class="opt-letter">${letters[i]}</span>${esc(o)}</button>`;
   });
   html += '</div>';
@@ -837,6 +844,7 @@ function renderQ() {
 
 function pick(i) {
   if (cur.instant && cur.answers[cur.idx] !== null) return;
+  tickTime();
   cur.answers[cur.idx] = i;
   if (cur.instant) {
     cur.skipped.delete(cur.idx); saveSingle();
@@ -847,18 +855,19 @@ function pick(i) {
 }
 function go(d) {
   const n = cur.test.questions.length;
+  tickTime();
   cur.idx = Math.max(0, Math.min(n - 1, cur.idx + d));
   qEnd = null; if (audioEl && !cur.mock) audioEl.pause();
   saveSingle(); renderQ(); window.scrollTo(0, 0);
 }
-function jump(i) { cur.idx = i; qEnd = null; if (audioEl && !cur.mock) audioEl.pause(); saveSingle(); renderQ(); window.scrollTo(0, 0); }
+function jump(i) { tickTime(); cur.idx = i; qEnd = null; if (audioEl && !cur.mock) audioEl.pause(); saveSingle(); renderQ(); window.scrollTo(0, 0); }
 
 /* ── 單題模式 2026-11-09（Owen：「我想每題寫完做解析」）──────────────
    跳過不計分、不算錯，有記下來但之後點回去還是可以作答。 */
 function saveSingle() {
   if (!cur || !cur.instant) return;
   const all = lsGet(LS_SINGLE, {});
-  all[cur.test.id] = { answers: cur.answers, skipped: [...cur.skipped], idx: cur.idx, last: Date.now() };
+  tickTime(); all[cur.test.id] = { answers: cur.answers, skipped: [...cur.skipped], idx: cur.idx, ans: cur.ans, rev: cur.rev, last: Date.now() };
   lsSet(LS_SINGLE, all);
 }
 function clearSingle(id) { const all = lsGet(LS_SINGLE, {}); delete all[id]; lsSet(LS_SINGLE, all); }
@@ -892,21 +901,29 @@ function renderJump() {
 }
 
 /* ── timer ───────────────────────────────────────────────────── */
-/* 11-23 Owen：「計時器應該在螢幕關掉時就停了」→ 畫面看不到（鎖螢幕、切到別的 app、換分頁）的時間不算：
-   回來時把 t0 往後推「不在的那段」，用時跟交卷的秒數都一起對 */
-let hiddenAt = 0;
+/* 11-23 Owen：「計時器應該在螢幕關掉時就停了」→ 畫面看不到（鎖螢幕、切到別的 app、換分頁）的時間不算
+   11-23 Owen：「答案出來後複習的時間不應該算在寫題目的計時，可以分兩個時間」
+   → 兩個桶：作答（ans）＝還沒選答案的時間；看解析（rev）＝單題模式選完、解析攤開的時間。交卷的「用時」只算作答 */
+function reviewing() { return cur && cur.instant && cur.answers[cur.idx] !== null; }
+function tickTime() {
+  if (!cur || cur.submitted) return;
+  const now = Date.now();
+  if (!document.hidden) { if (reviewing()) cur.rev += now - cur.tick; else cur.ans += now - cur.tick; }
+  cur.tick = now;
+}
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) { hiddenAt = Date.now(); return; }
-  if (hiddenAt && cur && !cur.submitted) cur.t0 += Date.now() - hiddenAt;
-  hiddenAt = 0;
+  if (!cur || cur.submitted) return;
+  if (document.hidden) tickTime(); else cur.tick = Date.now();   // 看不到的那段直接丟掉
 });
 function startTimer() {
   clearInterval(timerId);
-  timerId = setInterval(() => {
-    const s = Math.floor((Date.now() - cur.t0) / 1000);
-    document.getElementById('timerVal').textContent =
-      Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
-  }, 500);
+  const mmss = ms => { const s = Math.floor(ms / 1000); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+  const paint = () => {
+    tickTime();
+    document.getElementById('timerVal').textContent = mmss(cur.ans);
+    document.getElementById('timerRev').textContent = cur.instant ? '看解析 ' + mmss(cur.rev) : '';
+  };
+  paint(); timerId = setInterval(paint, 500);
 }
 
 /* ── submit ──────────────────────────────────────────────────── */
@@ -916,8 +933,8 @@ function submitExam() {
   if (blank && !cur.instant && !confirm('還有 ' + blank + ' 題沒作答，要現在交卷嗎？')) return;
   clearInterval(timerId);
   stopAudio();
-  cur.submitted = true;
-  const secs = Math.floor((Date.now() - cur.t0) / 1000);
+  tickTime(); cur.submitted = true;
+  const secs = Math.floor(cur.ans / 1000), rsecs = Math.floor(cur.rev / 1000);
   const letters = ['A', 'B', 'C', 'D'];
   let correct = 0, scorable = 0, points = 0;
   const byLevel = {};
@@ -934,6 +951,7 @@ function submitExam() {
   document.getElementById('resScore').textContent = correct + ' / ' + scorable;
   document.getElementById('resTime').textContent =
     '用時 ' + Math.floor(secs / 60) + ' 分 ' + String(secs % 60).padStart(2, '0') + ' 秒' +
+    (cur.instant ? ' · 看解析 ' + Math.floor(rsecs / 60) + ' 分 ' + String(rsecs % 60).padStart(2, '0') + ' 秒' : '') +
     (blank && !cur.instant ? ' · 空白 ' + blank + ' 題' : '');
 
   const est = Math.max(100, points);   // 官方分數範圍 100–699
@@ -968,8 +986,8 @@ function submitExam() {
         <button class="flag-btn${flags.has(fid) ? ' on' : ''}" onclick="revFlag('${fid}',this)">
           ${flags.has(fid) ? '★' : '☆'}</button>
       </div>
-      <div class="rev-line"><span class="k">你選：</span>${pickedL ? pickedL + '. ' + esc(q.opts[cur.answers[i]]) : '（空白）'}</div>
-      <div class="rev-line"><span class="k">正解：</span>${q.answer ? q.answer + '. ' + esc(q.opts['ABCD'.indexOf(q.answer)] || '') : '（此題正解未能從原始檔抽出）'}</div>
+      <div class="rev-line"><span class="k">你選：</span>${pickedL ? pickedL + '. ' + optFr(q, t, cur.answers[i]) : '（空白）'}</div>
+      <div class="rev-line"><span class="k">正解：</span>${q.answer ? q.answer + '. ' + optFr(q, t, 'ABCD'.indexOf(q.answer)) : '（此題正解未能從原始檔抽出）'}</div>
       <button class="rev-toggle" onclick="this.nextElementSibling.classList.toggle('show')">解析 ▾</button>
       ${detailHtml(q, t)}
     </div>`;
@@ -977,7 +995,7 @@ function submitExam() {
 
   const hist = getHist();
   if (!cur.instant || scorable) hist.push({ ts: Date.now(), id: t.id, label: t.label, skill: t.skill,
-              correct, n: scorable, secs, mock: cur.mock, est, single: !!cur.instant });
+              correct, n: scorable, secs, rsecs, mock: cur.mock, est, single: !!cur.instant });
   lsSet(LS_HIST, hist.slice(-200));
   if (cur.instant) clearSingle(t.id);
 
@@ -1004,7 +1022,20 @@ function reflowFr(s) {
     .replace(/([.?!…])\s+(?=[«"A-ZÀ-Ý–—-])/g, '$1\n')
     .replace(/\s+(Question\s*\d)/g, '\n$1');
 }
-function togglePlay() { if (!audioEl) return; if (audioEl.paused) { const p = audioEl.play(); if (p && p.catch) p.catch(() => {}); } else audioEl.pause(); }
+/* 11-23 Owen：「這一題播放應該在下一題出現之前就要停」→ 解析旁的 ⏯ 也只播這一題：
+   從這題範圍內接著播、播到下一題起點就停；目前位置不在這題（例如停在別題）就從這題開頭播 */
+function togglePlay() {
+  if (!audioEl) return;
+  if (!audioEl.paused) { audioEl.pause(); return; }
+  const start = cueOf(cur.idx);
+  if (start !== null) {
+    const next = cueList().slice(cur.idx + 1).find(x => typeof x === 'number' && x > start);
+    const end = typeof next === 'number' ? next : null, at = audioEl.currentTime || 0;
+    if (at < start - 1 || (end !== null && at >= end - 0.3)) { qEnd = end; seekTo(start, true); return; }
+    qEnd = end;
+  }
+  const p = audioEl.play(); if (p && p.catch) p.catch(() => {});
+}
 /* ── 點兩下查字（11-12 Owen：「詳解不夠詳細，可以我直接連點兩下原文就能知道翻譯或是哪個動詞的變形及時態」）──
    原形／詞性／時態：tools/exam_morph.py 用 spaCy 依上下文標好，存在每題的 tok：[起, 迄, 原形, 詞性, 形態]
    中文字義：assets/tcf/exam/gloss.js（window.TCF_GLOSS，key＝原形|詞性）
@@ -1059,6 +1090,15 @@ function frTokHtml(text, tok, reflow, lined) {   // lined：資料已經標好�
   const mOf = {};
   if (window.TCF_PHRASES) try { TCF_PHRASES.matchTok(text, tok).forEach(m => { const n = PH_HITS.push({ id: m.id, len: m.i1 - m.i0 }) - 1;
     for (let k = m.i0; k <= m.i1; k++) (mOf[k] = mOf[k] || []).push(n); }); } catch (e) {}
+  const INV = {};                                  // 倒裝問句：動詞＋-t-il／-elle／-ce…（動詞、-t、主詞三塊都標同一個說明）
+  tok.forEach((t, ti) => {
+    const n1 = tok[ti + 1]; if (!n1 || n1[0] !== t[1] || !/^(VERB|AUX)$/.test(t[3])) return;
+    let w1 = text.slice(n1[0], n1[1]), grp = [ti, ti + 1], end = n1[1];
+    if (/^-t$/i.test(w1)) { const n2 = tok[ti + 2]; if (!n2 || n2[0] !== n1[1]) return; w1 = '-t' + text.slice(n2[0], n2[1]); grp.push(ti + 2); end = n2[1]; }
+    const m = /^-(?:t-)?(il|elle|on|ils|elles|je|tu|nous|vous|ce)$/i.exec(w1); if (!m) return;
+    const info = text.slice(t[0], end) + '|' + text.slice(t[0], t[1]) + '|' + m[1].toLowerCase();
+    grp.forEach(k => { INV[k] = info; });
+  });
   let h = '', pos = 0;
   const gap = (g, next, st) => {
     if (customGap) return customGap(g, st);
@@ -1074,7 +1114,7 @@ function frTokHtml(text, tok, reflow, lined) {   // lined：資料已經標好�
     h += gap(text.slice(pos, a), w, pos);
     let hw = '';
     if (f && f.startsWith('Aux@')) { const ht = at[+f.slice(4, f.indexOf('|'))]; if (ht) hw = text.slice(ht[0], ht[1]); }
-    h += `<span class="tw" data-s="${a}" data-l="${esc(l || w)}" data-p="${p}" data-f="${esc(f || '')}"${hw ? ` data-h="${esc(hw)}"` : ''}${mOf[ti] ? ` data-m="${mOf[ti].join(' ')}"` : ''}>${esc(w)}</span>`;
+    h += `<span class="tw" data-s="${a}" data-l="${esc(l || w)}" data-p="${p}" data-f="${esc(f || '')}"${hw ? ` data-h="${esc(hw)}"` : ''}${mOf[ti] ? ` data-m="${mOf[ti].join(' ')}"` : ''}${INV[ti] ? ` data-inv="${esc(INV[ti])}"` : ''}>${esc(w)}</span>`;
     pos = b;
   });
   return h + gap(text.slice(pos), '', pos);
@@ -1128,12 +1168,16 @@ function wordPopShow(el) {
   let ten = '';
   if (f.startsWith('Aux@')) ten = '助動詞，跟後面的「' + esc(el.dataset.h || '') + '」一起組成：' + morphZh(f.slice(f.indexOf('|') + 1));
   else ten = morphZh(f);
+  /* 11-23 Owen：「tire-t-il 不是專有名詞，應該是 tire il 的那個文法」→ 倒裝問句講清楚 */
+  if (el.dataset.inv) { const [sf, v, sj] = el.dataset.inv.split('|');
+    ten = (ten ? ten + '<br>' : '') + '倒裝問句：<b>' + esc(sf) + '</b>＝' + esc(sj === 'ce' ? 'c\'' + v.toLowerCase() : sj + ' ' + v.toLowerCase()) +
+      '（問句把主詞搬到動詞後面）' + (/-t-/i.test(sf) ? '；中間的 <b>-t-</b> 沒有意思，只是兩個母音碰在一起時加來好念的' : ''); }
   const blk = el.closest('p'), sent = sentOf(el);
   const key = String(l).toLowerCase() + '|' + p, P = blk.dataset;
   const row = { ts: Date.now(), w, lemma: l, pos: p, f, zh: glossOf(l, p), test: P.t, q: +P.q, skill: P.k, res: P.r, sent };
   /* 📎 這個字落在哪些片語裡（長的在上面），整段淡淡標出來 */
   const s0 = +el.dataset.s, area = el.closest('.bi') || blk;
-  const cps = (((TCF_CTXPH[P.t] || {})[P.q]) || []).filter(x => s0 >= x[0] && s0 < x[1])
+  const cps = (P.o !== undefined ? [] : ((TCF_CTXPH[P.t] || {})[P.q]) || []).filter(x => s0 >= x[0] && s0 < x[1])
     .sort((a, b) => (a[1] - a[0]) - (b[1] - b[0])).slice(0, 2).map(x => {
       area.querySelectorAll('.tw').forEach(t => { const v = +t.dataset.s; if (v >= x[0] && v < x[1]) t.classList.add('ph-hit'); });
       return { e: { fr: x[2], zh: x[3] }, key: PH_KEY(x[2]), surf: x[2].replace(/\s+/g, ' '), ctx: true };
@@ -1148,8 +1192,8 @@ function wordPopShow(el) {
   const phs = cps.concat(phs0.filter(x => !cps.some(c => c.e.fr.toLowerCase().replace(/\s+/g, ' ') === x.e.fr.toLowerCase())));
   const phRow = x => ({ ts: Date.now(), w: x.surf, lemma: x.e.fr, pos: 'PHR', f: '', zh: x.e.zh, test: P.t, q: +P.q, skill: P.k, res: P.r, sent, ph: x.ctx ? 'ctx' : 'auto' });
   if (P.t) vocabSend([row].concat(phs.map(phRow)));   /* 查過就記（統計用）；⭐ 才進複習 */
-  const ctxZh = ((TCF_CTX[P.t] || {})[P.q] || {})[el.dataset.s] || '';
-  const nx = blk.nextElementSibling, lineZh = nx && nx.classList.contains('zh-col') ? nx.textContent.trim() : '';
+  const ctxZh = P.o !== undefined ? '' : ((TCF_CTX[P.t] || {})[P.q] || {})[el.dataset.s] || '';   // 位置對的是原文，選項不能借用
+  const nx = blk.nextElementSibling, lineZh = nx && (nx.classList.contains('zh-col') || nx.classList.contains('opt-zh')) ? nx.textContent.trim() : '';
   if (ctxZh) row.ctx = ctxZh;
   const render = () => {
     const zh = glossOf(l, p), on = !!vocabStars()[key];
@@ -1159,7 +1203,7 @@ function wordPopShow(el) {
       `<div><span class="w">${esc(w)}</span>${l.toLowerCase() !== w.toLowerCase() ? ' → <span class="lem">' + esc(l) + '</span>' : ''}<span class="pos">${POS_ZH[p] || ''}</span></div>` +
       (ten ? `<div class="ten">${ten}</div>` : '') +
       (ctxZh ? `<div class="ctx"><span class="k">在這題</span>${esc(ctxZh)}</div>` : '') +
-      (lineZh ? `<div class="line"><span class="k">這句</span>${esc(lineZh)}</div>` : '') +
+      (lineZh ? `<div class="line"><span class="k">${P.o !== undefined ? '這個選項' : '這句'}</span>${esc(lineZh)}</div>` : '') +
       `<div class="zh">${ctxZh || lineZh ? '<span class="k">字典</span>' : ''}${zh ? esc(zh) : (GLOSS_ST === 1 ? '…' : '<span style="color:#606878">（字義表還沒收這個字）</span>')}</div>` +
       `<div class="lk"><a target="_blank" rel="noopener" href="https://www.wordreference.com/fren/${encodeURIComponent(l)}">WordReference</a>` +
       `<a target="_blank" rel="noopener" href="https://www.deepl.com/translator#fr/zh-hant/${encodeURIComponent(sent)}">整句 DeepL</a>` +
@@ -1266,6 +1310,15 @@ function zhToggle(ev) {
   document.querySelectorAll('.zh-tog').forEach(b => { b.textContent = off ? '顯示中文' : '收起中文'; });
 }
 document.addEventListener('DOMContentLoaded', () => document.body.classList.toggle('zh-off', zhOff()));
+/* 選項：法文一字一字可點兩下查（opts_tok 由 tools/exam_morph.py fix 標）；後面藏一份這個選項的中文，彈窗「這句」用 */
+function optFr(q, t, i) {
+  const o = (q.opts || [])[i]; if (o === undefined) return '';
+  const tk = (q.opts_tok || [])[i];
+  if (!tk || !tk.length) return esc(o);
+  const zh = (q.opts_zh || [])[i];
+  return `<p class="optp frt"${vocabAttr(q, t)} data-o="${i}">${frTokHtml(o, tk, false)}</p>` +
+    (zh ? `<span class="opt-zh" style="display:none">${esc(zh)}</span>` : '');
+}
 function detailHtml(q, t, inline) {   // inline：單題模式直接展開，圖片上面已經有了不重複
   const open = inline ? '<div class="rev-detail show">' : '<div class="rev-detail">';
   let h = open;
