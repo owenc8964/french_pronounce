@@ -87,10 +87,23 @@ def build(tid):
         miss = [tg[s][1] for s in tg if s not in got]
         if miss:
             bad.append(f"第{q['q']}題 缺 {len(miss)} 個：{' '.join(miss[:8])}")
+    # 片語（整塊意思）：_ctx/<套>.phr.json {題號:[[起,迄,法文,中文]]}，fr[起:迄] 要等於法文
+    ph = {}
+    pf = os.path.join(ROOT, '_ctx', tid + '.phr.json')
+    if os.path.exists(pf):
+        texts = {str(q['q']): text_of(q) for q in t['questions']}
+        for qn, L in json.load(open(pf, encoding='utf8')).items():
+            for a, b, fr, zh in L:
+                if texts.get(str(qn), '')[a:b] != fr:
+                    bad.append(f"第{qn}題 片語位置不符：{fr}"); continue
+                if SIMP.search(zh):
+                    bad.append(f"第{qn}題 片語疑似簡體：{zh}")
+                ph.setdefault(str(qn), []).append([a, b, fr, zh])
+        print('片語', sum(len(v) for v in ph.values()))
     os.makedirs(os.path.join(ROOT, 'ctx'), exist_ok=True)
     p = os.path.join(ROOT, 'ctx', tid + '.js')
     open(p, 'w', encoding='utf8').write('/* exam_ctx.py build 產生，⛔ 不要手改 */\nwindow.TCF_CTX_LOAD && TCF_CTX_LOAD(' +
-                                        json.dumps(tid) + ',' + json.dumps(out, ensure_ascii=False) + ');\n')
+                                        json.dumps(tid) + ',' + json.dumps(out, ensure_ascii=False) + ',' + json.dumps(ph, ensure_ascii=False) + ');\n')
     print(p, f'{have}/{want} 個字有「在這題的意思」')
     for b in bad[:40]:
         print('  ⚠️', b)

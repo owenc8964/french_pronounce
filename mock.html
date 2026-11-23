@@ -269,6 +269,7 @@ body.zh-off .zh-col { display: none !important; }
 .tw.hit.ph-hit { background: #3c5a85; }
 .word-pop .ph { margin-bottom: 6px; padding: 5px 8px; border-radius: 8px; background: #1c2a22; border: 1px solid #35503a; display: flex; gap: 8px; align-items: center; }
 .word-pop .ph b { color: #b8e0a0; }
+.word-pop .ph.cx { font-size: 1.02rem; padding: 7px 10px; }
 .word-pop .ph .phz { flex: 1; }
 .word-pop .ph button, .word-pop .circ button { padding: 2px 9px; border-radius: 8px; border: 1px solid #35503a; background: transparent; color: #aaa8a0; font: inherit; font-size: .8rem; cursor: pointer; }
 .word-pop .ph button.on { border-color: #f0c060; color: #f0c060; }
@@ -596,8 +597,10 @@ function renderTestGrid() {
 window.TCF_LOAD = function (id, data) { cache[id] = data; };
 /* 「在這題的意思」（11-23 Owen：「中文意思感覺要照題目給耶」）：ctx/<套>.js，{題號:{字的起始位置:中文}}；
    tools/exam_ctx.py 產生，還沒做的套沒有這個檔 → 照舊只顯示字典意思 */
-window.TCF_CTX = {};
-window.TCF_CTX_LOAD = function (id, data) { TCF_CTX[id] = data; };
+window.TCF_CTX = {}; window.TCF_CTXPH = {};
+/* 11-23 Owen：「我通常是要一段片語、看不懂的那種：pas vraiment 兩個字看得懂，串在一起就無法翻譯」
+   → ph：{題號:[[起,迄,法文,中文]]}，點到片語裡任何一個字，彈窗最上面給整塊意思、整塊標亮 */
+window.TCF_CTX_LOAD = function (id, data, ph) { TCF_CTX[id] = data; TCF_CTXPH[id] = ph || {}; };
 function ctxLoad(id) {
   if (TCF_CTX[id]) return;
   const s = document.createElement('script'); s.src = DATA_DIR + 'ctx/' + id + '.js?v=' + Date.now();
@@ -1129,13 +1132,21 @@ function wordPopShow(el) {
   const key = String(l).toLowerCase() + '|' + p, P = blk.dataset;
   const row = { ts: Date.now(), w, lemma: l, pos: p, f, zh: glossOf(l, p), test: P.t, q: +P.q, skill: P.k, res: P.r, sent };
   /* 📎 這個字落在哪些片語裡（長的在上面），整段淡淡標出來 */
-  const phs = (el.dataset.m || '').split(' ').filter(Boolean).map(n => ({ n, h: PH_HITS[+n] })).filter(x => x.h && window.TCF_PHRASES)
+  const s0 = +el.dataset.s, area = el.closest('.bi') || blk;
+  const cps = (((TCF_CTXPH[P.t] || {})[P.q]) || []).filter(x => s0 >= x[0] && s0 < x[1])
+    .sort((a, b) => (a[1] - a[0]) - (b[1] - b[0])).slice(0, 2).map(x => {
+      area.querySelectorAll('.tw').forEach(t => { const v = +t.dataset.s; if (v >= x[0] && v < x[1]) t.classList.add('ph-hit'); });
+      return { e: { fr: x[2], zh: x[3] }, key: PH_KEY(x[2]), surf: x[2].replace(/\s+/g, ' '), ctx: true };
+    });
+  const phs0 = (el.dataset.m || '').split(' ').filter(Boolean).map(n => ({ n, h: PH_HITS[+n] })).filter(x => x.h && window.TCF_PHRASES)
     .sort((a, b) => b.h.len - a.h.len).slice(0, 2).map(x => {
       const e = TCF_PHRASES.LIST[x.h.id], ss = [...blk.querySelectorAll('.tw[data-m~="' + x.n + '"]')];
       ss.forEach(s => s.classList.add('ph-hit'));
       return { e, key: PH_KEY(e.fr), surf: spanText(ss[0], ss[ss.length - 1]) };
     });
-  const phRow = x => ({ ts: Date.now(), w: x.surf, lemma: x.e.fr, pos: 'PHR', f: '', zh: x.e.zh, test: P.t, q: +P.q, skill: P.k, res: P.r, sent, ph: 'auto' });
+  /* 這題自己的片語放最上面；系統片語表也認到同一個就不重複 */
+  const phs = cps.concat(phs0.filter(x => !cps.some(c => c.e.fr.toLowerCase().replace(/\s+/g, ' ') === x.e.fr.toLowerCase())));
+  const phRow = x => ({ ts: Date.now(), w: x.surf, lemma: x.e.fr, pos: 'PHR', f: '', zh: x.e.zh, test: P.t, q: +P.q, skill: P.k, res: P.r, sent, ph: x.ctx ? 'ctx' : 'auto' });
   if (P.t) vocabSend([row].concat(phs.map(phRow)));   /* 查過就記（統計用）；⭐ 才進複習 */
   const ctxZh = ((TCF_CTX[P.t] || {})[P.q] || {})[el.dataset.s] || '';
   const nx = blk.nextElementSibling, lineZh = nx && nx.classList.contains('zh-col') ? nx.textContent.trim() : '';
@@ -1143,7 +1154,7 @@ function wordPopShow(el) {
   const render = () => {
     const zh = glossOf(l, p), on = !!vocabStars()[key];
     const S0 = vocabStars();
-    pop.innerHTML = phs.map((x, k) => `<div class="ph">📎 片語：<span class="phz"><b>${esc(x.e.fr)}</b>＝${esc(x.e.zh)}</span>` +
+    pop.innerHTML = phs.map((x, k) => `<div class="ph${x.ctx ? ' cx' : ''}">📎 ${x.ctx ? '這裡' : '片語'}：<span class="phz"><b>${esc(x.e.fr)}</b>＝${esc(x.e.zh)}</span>` +
         (P.t ? `<button class="phs${S0[x.key] ? ' on' : ''}" data-k="${k}">${S0[x.key] ? '⭐ 要背' : '☆ 要背'}</button>` : '') + '</div>').join('') +
       `<div><span class="w">${esc(w)}</span>${l.toLowerCase() !== w.toLowerCase() ? ' → <span class="lem">' + esc(l) + '</span>' : ''}<span class="pos">${POS_ZH[p] || ''}</span></div>` +
       (ten ? `<div class="ten">${ten}</div>` : '') +
