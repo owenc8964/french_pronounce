@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TCF Canada — entraînement (CO / CE)</title>
+<!-- 模板：tools/exam_prof_index.html → tools/exam_prof_build.py 複製成練習包的 index.html。⛔ 這支只有介面，考題在練習包的 data/（不進 repo） -->
+<style>
+:root{ --bg:#f6f4ef; --card:#fff; --ink:#1f2328; --dim:#6b6f76; --line:#ddd8cc; --ok:#1d7a46; --okbg:#e3f4e9; --no:#b3261e; --nobg:#fbe5e3; --acc:#2a5fa8; }
+*{ box-sizing:border-box; }
+body{ margin:0; font:17px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif; background:var(--bg); color:var(--ink); }
+header{ position:sticky; top:0; z-index:5; background:#1f3047; color:#fff; padding:10px 14px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+header h1{ font-size:1.05em; margin:0; flex:1; min-width:160px; }
+header button, header a{ background:rgba(255,255,255,.14); color:#fff; border:1px solid rgba(255,255,255,.3); border-radius:8px; padding:5px 11px; font:inherit; font-size:.9em; cursor:pointer; text-decoration:none; }
+header audio{ width:100%; margin-top:4px; }
+main{ max-width:860px; margin:0 auto; padding:14px; }
+.cols{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+@media (max-width:640px){ .cols{ grid-template-columns:1fr; } }
+.cols h2{ font-size:1.1em; margin:6px 0 10px; }
+.tl{ display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:8px; }
+.tl a{ display:block; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px; text-decoration:none; color:var(--ink); }
+.tl a small{ display:block; color:var(--dim); font-size:.8em; }
+.intro{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:16px; color:var(--dim); font-size:.92em; }
+.q{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; margin:14px 0; scroll-margin-top:130px; }
+.q .num{ font-weight:700; color:var(--acc); margin-right:6px; }
+.q .stem{ font-weight:600; margin:6px 0 10px; }
+.q img{ max-width:100%; border:1px solid var(--line); border-radius:8px; display:block; margin:8px 0; }
+.opts{ display:grid; gap:7px; }
+.opt{ text-align:left; background:#fafaf7; border:1.5px solid var(--line); border-radius:9px; padding:9px 11px; font:inherit; cursor:pointer; color:var(--ink); }
+.opt b{ display:inline-block; width:1.6em; color:var(--acc); }
+.opt.sel{ border-color:var(--acc); background:#e8f0fb; }
+.opt.ok{ border-color:var(--ok); background:var(--okbg); }
+.opt.no{ border-color:var(--no); background:var(--nobg); }
+.tools{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.tools button{ background:#fff; border:1px solid var(--line); border-radius:8px; padding:5px 10px; font:inherit; font-size:.88em; cursor:pointer; }
+.tools button.play{ background:#1d5a34; color:#fff; border-color:#1d5a34; }
+.txt{ display:none; white-space:pre-wrap; background:#fbfaf6; border-left:3px solid var(--acc); padding:10px 12px; margin-top:10px; font-size:.95em; }
+.txt.on{ display:block; }
+.ans{ display:none; margin-top:8px; font-weight:600; color:var(--ok); }
+.ans.on{ display:block; }
+.score{ background:#1f3047; color:#fff; border-radius:10px; padding:10px 14px; margin:12px 0; display:none; }
+.nav{ display:flex; justify-content:space-between; margin:20px 0 40px; }
+.nav a{ color:var(--acc); }
+.muted{ color:var(--dim); font-size:.85em; }
+</style>
+</head>
+<body>
+<header id="hd"><h1>TCF Canada — entraînement</h1></header>
+<main id="mn"></main>
+<script>
+var INDEX=null, T=null, sel={}, shown=false, qEnd=null;
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function load(src, cb){ var s=document.createElement('script'); s.src=src; s.onload=cb; s.onerror=function(){ document.getElementById('mn').innerHTML='<p>Impossible de charger '+esc(src)+'.</p>'; }; document.body.appendChild(s); }
+function TCF_INDEX(d){ INDEX=d; route(); }
+function TCF_LOAD(d){ T=d; sel={}; shown=false; renderTest(); }
+function fmt(s){ s=Math.round(s); return Math.floor(s/60)+':'+('0'+s%60).slice(-2); }
+function route(){
+  var id=location.hash.slice(1);
+  if(!id){ T=null; return renderHome(); }
+  if(T && T.id===id) return renderTest();
+  load('data/'+id+'.js');
+}
+window.addEventListener('hashchange', route);
+function renderHome(){
+  document.getElementById('hd').innerHTML='<h1>TCF Canada — entraînement</h1>';
+  function list(L){ return '<div class="tl">'+L.map(function(t){ return '<a href="#'+t.id+'">'+esc(t.label)+'<small>'+t.n+' questions</small></a>'; }).join('')+'</div>'; }
+  document.getElementById('mn').innerHTML='<div class="intro">Épreuves de compréhension orale et écrite (39 questions chacune). '+
+    'Cliquez sur une réponse pour la sélectionner ; « Réponse » montre la bonne réponse d’une question, « Corriger » corrige toute l’épreuve. '+
+    'En compréhension orale, « ▶ Écouter » joue seulement la question choisie ; la transcription est sous chaque question. '+
+    'Fonctionne hors ligne : ouvrez simplement index.html.</div>'+
+    '<div class="cols"><div><h2>🎧 Compréhension orale</h2>'+list(INDEX.co)+'</div><div><h2>📖 Compréhension écrite</h2>'+list(INDEX.ce)+'</div></div>';
+  window.scrollTo(0,0);
+}
+function renderTest(){
+  var co=T.skill==='co', L=INDEX[T.skill], i=L.findIndex(function(x){ return x.id===T.id; });
+  document.getElementById('hd').innerHTML='<a href="#">← Accueil</a><h1>'+(co?'🎧 Compréhension orale':'📖 Compréhension écrite')+' — '+esc(T.label)+'</h1>'+
+    '<button id="bAll">'+(shown?'Masquer les réponses':'Afficher toutes les réponses')+'</button><button id="bFix">Corriger</button>'+
+    (co?'<audio id="au" controls preload="metadata" src="'+esc(T.audio)+'"></audio>':'');
+  var h='<div class="score" id="sc"></div>';
+  T.q.forEach(function(q){ var c=co?T.cues[q.n-1]:null;
+    h+='<div class="q" id="q'+q.n+'"><span class="num">'+q.n+'.</span>'+(q.stem?'<span class="stem">'+esc(q.stem)+'</span>':'')+
+      (q.img?'<img src="'+esc(q.img)+'" alt="document" loading="lazy">':'')+
+      '<div class="opts">'+q.opts.map(function(o,k){ var L='ABCD'[k]; return '<button class="opt" data-q="'+q.n+'" data-o="'+L+'"><b>'+L+'</b>'+esc(o)+'</button>'; }).join('')+'</div>'+
+      '<div class="ans" id="a'+q.n+'">Réponse : '+esc(q.a)+'</div>'+
+      '<div class="tools">'+(co?(c!=null?'<button class="play" data-play="'+q.n+'">▶ Écouter la question '+q.n+' <span class="muted" style="color:#cfe">('+fmt(c)+')</span></button>':'<span class="muted">(début de la question non repéré : utilisez le lecteur)</span>'):'')+
+      '<button data-ans="'+q.n+'">Réponse</button><button data-txt="'+q.n+'">'+(co?'Transcription':'Texte')+'</button></div>'+
+      '<div class="txt" id="t'+q.n+'">'+esc(q.t)+'</div></div>'; });
+  h+='<div class="nav">'+(i>0?'<a href="#'+L[i-1].id+'">← '+esc(L[i-1].label)+'</a>':'<span></span>')+(i<L.length-1?'<a href="#'+L[i+1].id+'">'+esc(L[i+1].label)+' →</a>':'<span></span>')+'</div>';
+  document.getElementById('mn').innerHTML=h; window.scrollTo(0,0);
+  if(shown) showAll(true);
+  document.getElementById('bAll').onclick=function(){ shown=!shown; showAll(shown); this.textContent=shown?'Masquer les réponses':'Afficher toutes les réponses'; };
+  document.getElementById('bFix').onclick=correct;
+  var au=document.getElementById('au');
+  if(au) au.addEventListener('timeupdate', function(){ if(qEnd!=null && au.currentTime>=qEnd){ au.pause(); qEnd=null; } });
+}
+function nextCue(n){ for(var k=n;k<T.cues.length;k++) if(T.cues[k]!=null) return T.cues[k]; return null; }
+function mark(n, all){ var q=T.q[n-1]; document.querySelectorAll('#q'+n+' .opt').forEach(function(b){ b.classList.remove('ok','no');
+  if(b.dataset.o===q.a) b.classList.add('ok'); else if(sel[n]===b.dataset.o) b.classList.add('no'); }); document.getElementById('a'+n).classList.add('on'); }
+function unmark(n){ document.querySelectorAll('#q'+n+' .opt').forEach(function(b){ b.classList.remove('ok','no'); }); document.getElementById('a'+n).classList.remove('on'); }
+function showAll(on){ T.q.forEach(function(q){ if(on) mark(q.n); else unmark(q.n); }); }
+function correct(){ var ok=0, done=0; T.q.forEach(function(q){ mark(q.n); if(sel[q.n]){ done++; if(sel[q.n]===q.a) ok++; } });
+  var s=document.getElementById('sc'); s.style.display='block'; s.textContent='Résultat : '+ok+' / '+T.q.length+' bonnes réponses ('+done+' questions répondues).'; window.scrollTo(0,0); }
+document.addEventListener('click', function(e){ var b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.o){ var n=+b.dataset.q; sel[n]=b.dataset.o; document.querySelectorAll('#q'+n+' .opt').forEach(function(x){ x.classList.toggle('sel', x===b); }); if(document.getElementById('a'+n).classList.contains('on')) mark(n); }
+  else if(b.dataset.ans){ var a=+b.dataset.ans; if(document.getElementById('a'+a).classList.contains('on')) unmark(a); else mark(a); }
+  else if(b.dataset.txt){ document.getElementById('t'+b.dataset.txt).classList.toggle('on'); }
+  else if(b.dataset.play){ var p=+b.dataset.play, au=document.getElementById('au'); au.currentTime=Math.max(0,T.cues[p-1]-0.3); qEnd=nextCue(p); au.play(); }
+});
+load('data/index.js');
+</script>
+</body>
+</html>
