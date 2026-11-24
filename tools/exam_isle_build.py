@@ -1,5 +1,6 @@
 """考場島第三題題目檔：寶典3目錄的題目（assets/tcf/_analyse/g3_toc_questions.json，pdfplumber 濾掉浮水印抽出）
-＋ pack3/_analyse/T3_new_126_bilingue.json（已有中文）合併去重 → exam_t3_data.js
+＋ pack3/_analyse/T3_new_126_bilingue.json（已有中文）合併去重 → assets/tcf/exam_isle/exam_t3_data.js，再跟 exam_t2_sits.js、content_src.js 合併成 assets/tcf/exam_isle/content.js
+⛔ 寶典衍生內容只放本機＋Supabase 私人空間（tools/upload_exam_isle_supabase.py），永不進公開 repo
 用法：python3 tools/exam_isle_build.py"""
 import json,re,difflib,os
 R=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -53,4 +54,9 @@ for b in B:
     n+=1; out.append({'id':'B%d'%b['n'],'z':zof(b['fr'],b.get('theme')),'fr':clean(b['fr']),'zh':b['zh'],'src':'題庫'})
 from collections import Counter
 print(len(out),'題',Counter(o['z'] for o in out),'補',n)
-open(R+'/exam_t3_data.js','w').write('/* 考場島第三題題目（tools/exam_isle_build.py 產生，⛔ 不要手改）。G＝寶典3目錄（t＝寶典的中文短標題）；B＝pack3 題庫（zh 全句中文）；note＝跟寶典原文不同的地方 */\nvar EXAM_T3='+json.dumps(out,ensure_ascii=False,indent=0)+';\n')
+D=R+'/assets/tcf/exam_isle'
+open(D+'/exam_t3_data.js','w').write('/* 考場島第三題題目（tools/exam_isle_build.py 產生，⛔ 不要手改）。G＝寶典3目錄（t＝寶典的中文短標題）；B＝pack3 題庫（zh 全句中文）；note＝跟寶典原文不同的地方 */\nvar EXAM_T3='+json.dumps(out,ensure_ascii=False,indent=0)+';\n')
+
+B=[open(D+'/'+f).read() for f in ('exam_t2_sits.js','exam_t3_data.js','content_src.js')]
+B.append('window.EXAM_CONTENT={zones:EXAM_ZONES, zorder:EXAM_ZORDER, dims:EXAM_DIMS, cards:EXAM_CARDS, angles:EXAM_ANGLES, follow:EXAM_FOLLOW, t2cats:EXAM_T2_CATS, t2sits:EXAM_T2_SITS, t3:EXAM_T3};\n')
+open(D+'/content.js','w').write('\n'.join(B)); print('content.js', sum(len(x) for x in B), 'chars')

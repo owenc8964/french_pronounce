@@ -12,126 +12,23 @@
 if(typeof ISLE_SCENES==='undefined') return;
 var css=document.createElement('style'); css.textContent='ul.phr{list-style:none;margin:4px 0;padding:0} ul.phr li{margin:6px 0;line-height:1.35} ul.phr .fr{color:#fff3c0} ul.phr .spk{margin-left:2px} #exMine{width:100%;box-sizing:border-box}'; document.head.appendChild(css);
 
-/* ---------- 七類題目（寶典第 2–8 章）＋每類詞彙（取自寶典的詞彙表與範文裡標了中文的詞；中文轉繁體、改成台灣用語） ---------- */
-var EXAM_ZONES={
-  tech:{em:'📱', name:'科技與媒體', fr:'Technologies, réseaux et médias', vocab:[
-    ['les réseaux sociaux','社群媒體'],['une messagerie instantanée','即時通訊（LINE、WhatsApp）'],['les données personnelles','個人資料'],['la fracture numérique','數位落差'],
-    ['la surcharge d’information','資訊過載'],['le besoin de déconnexion','需要斷網、數位排毒'],['l’addiction, la dépendance','成癮、依賴'],['se comparer aux autres','跟別人比較'],
-    ['le cyber-harcèlement','網路霸凌'],['l’arnaque en ligne','網路詐騙'],['l’intelligence artificielle (IA)','人工智慧'],['être à l’aise avec le numérique','很會用數位工具']]},
-  rel:{em:'👪', name:'家庭、關係與教育', fr:'Relations, éducation et apprentissage', vocab:[
-    ['élargir ses horizons','開闊眼界'],['le respect des différences','尊重差異'],['l’écoute active','用心傾聽'],['entretenir le lien','維持聯繫'],
-    ['le sentiment d’appartenance','歸屬感'],['la pression familiale / sociale','家庭／社會壓力'],['les valeurs traditionnelles','傳統價值觀'],['transmettre ses expériences','傳承經驗'],
-    ['l’épanouissement personnel','個人的成長與充實'],['une pression scolaire excessive','過大的課業壓力'],['la confiance en soi','自信'],['apprendre sur le terrain','從實作中學']]},
-  work:{em:'💼', name:'工作', fr:'Travail', vocab:[
-    ['le bien-être des employés','員工的身心健康'],['la qualité de vie au travail','職場生活品質'],['l’épuisement professionnel (le burn-out)','職業倦怠'],['la reconnaissance','被肯定'],
-    ['la motivation','工作動力'],['le télétravail','遠距工作'],['la flexibilité des horaires','工時彈性'],['le trajet domicile-travail','通勤路程'],
-    ['la cohésion d’équipe','團隊凝聚力'],['la formation continue','在職進修'],['le marché du travail','就業市場'],['la rémunération','薪酬']]},
-  cult:{em:'🌍', name:'文化與移民', fr:'Culture et immigration', vocab:[
-    ['le pays d’accueil','移入的國家'],['s’intégrer','融入'],['s’adapter à…','適應……'],['la barrière linguistique','語言隔閡'],
-    ['le choc culturel','文化衝擊'],['les codes culturels','文化上的潛規則'],['garder son identité','保有自己的身分認同'],['se sentir chez soi','有家的感覺'],
-    ['l’ouverture d’esprit','心胸開放'],['élargir ses horizons','開闊眼界'],['les traditions','傳統'],['le mode de vie','生活方式']]},
-  sante:{em:'🥗', name:'健康、飲食與生活', fr:'Santé, alimentation et mode de vie', vocab:[
-    ['une alimentation saine et équilibrée','健康均衡的飲食'],['les aliments transformés','加工食品'],['prévenir les maladies chroniques','預防慢性病'],['l’activité physique régulière','規律運動'],
-    ['la gestion du stress','壓力管理'],['les effets secondaires','副作用'],['l’automédication','自己買藥吃'],['prévenir plutôt que guérir','預防勝於治療'],
-    ['prendre soin de soi','照顧自己'],['la chirurgie esthétique','整形手術'],['le regard des autres','別人的眼光'],['la qualité du sommeil','睡眠品質']]},
-  env:{em:'🌱', name:'環境、交通與動物', fr:'Environnement, transport et développement', vocab:[
-    ['la pollution','汙染'],['la qualité de l’air','空氣品質'],['l’empreinte carbone','碳足跡'],['les énergies renouvelables','再生能源'],
-    ['le tri des déchets','垃圾分類'],['la surconsommation','過度消費'],['le gaspillage','浪費'],['la biodiversité','生物多樣性'],
-    ['les transports en commun','大眾運輸'],['les embouteillages','塞車'],['les animaux de compagnie','寵物'],['le bien-être animal','動物福利']]},
-  soc:{em:'⚖️', name:'政治與社會', fr:'Politique, société et justice', vocab:[
-    ['les inégalités','不平等'],['la justice sociale','社會正義'],['l’égalité','平等'],['la liberté d’expression','言論自由'],
-    ['les citoyens','公民'],['l’engagement','投入、參與'],['s’engager dans une association','投入協會'],['le bénévolat','志工服務'],
-    ['la solidarité','團結互助'],['les personnes en difficulté','弱勢、有困難的人'],['les plus vulnérables','最脆弱的族群'],['la cohésion sociale','社會凝聚力']]}
-};
-var EXAM_ZORDER=['tech','rel','work','cult','sante','env','soc'];
-
-/* ---------- 方法卡 ---------- */
-/* 寶典 1.2 Q1 維度化思考 表 1：幾乎每題都能套的六個維度（「集裝箱」）＋常用子題 */
-var EXAM_DIMS=[
-  ['eco','💶','Économie / efficacité','經濟與效率',[['la productivité','生產力、效率'],['la gestion du temps','時間管理'],['le coût de la vie','生活成本'],['la création d’emplois','創造就業'],['la croissance économique','經濟成長'],['le soutien à l’industrie locale','支持在地產業']]],
-  ['cul','📚','Culture / éducation','文化與教育',[['l’accès à la culture','接觸文化的機會'],['l’ouverture d’esprit / la diversité','開放、多元'],['l’apprentissage et la motivation','學習與動機'],['le développement personnel','自我成長']]],
-  ['pol','🏛️','Politique / justice','政治與社會正義',[['l’égalité / les inégalités','公平／不平等'],['la liberté individuelle','個人自由'],['la réglementation / la sécurité','法規管制與安全'],['la responsabilité de l’État','政府的責任']]],
-  ['soc','🤝','Société','人際與社會',[['les relations humaines / l’amitié','人際關係、友誼'],['la communication interpersonnelle','面對面溝通'],['le respect / les valeurs partagées','尊重與共同價值'],['l’intégration sociale / l’isolement','融入社會／孤立']]],
-  ['env','🌱','Environnement','環境與永續',[['la pollution','汙染（空氣、水、噪音）'],['le changement climatique','氣候變遷'],['la biodiversité','生物多樣性'],['la surconsommation / le gaspillage','過度消費與浪費'],['l’exploitation des ressources limitées','有限資源的過度開發']]],
-  ['san','🩺','Santé','身心健康',[['le stress / l’anxiété','壓力與焦慮'],['l’addiction','成癮（網路、甜食…）'],['les problèmes physiques','身體問題（視力、肥胖、缺乏運動）'],['le sommeil et le bien-être','睡眠與身心狀態']]]
-];
+/* ⛔ 內容（題目、詞彙、方法卡）不在這支檔：11-24 Owen：「TCF 之前買的那個資料要整理進 Supabase」→ 放私人空間 exam_isle/content.js，登入（📻 通行證）才讀得到。
+   本機原始檔在 assets/tcf/exam_isle/（gitignore），改完跑 python3 tools/exam_isle_build.py && python3 tools/upload_exam_isle_supabase.py */
+var EXAM_ZONES, EXAM_ZORDER, EXAM_DIMS, EXAM_CARDS, EXAM_ANGLES, EXAM_FOLLOW, EXAM_T2_CATS, EXAM_T2_SITS, EXAM_T3, EXAM_OK=false;
 function dimById(k){ return EXAM_DIMS.filter(function(d){ return d[0]===k; })[0]; }
 function frList(L){ return '<ul class="phr">'+L.map(function(x){ return '<li><span class="fr">'+esc(x[0])+'</span> '+spk(x[0])+(x[1]?'<div class="muted">'+esc(x[1])+'</div>':'')+'</li>'; }).join('')+'</ul>'; }
 function fixNote(t){ return '<div class="muted" style="font-size:.78em;margin-top:4px">✏️ 跟寶典不一樣的地方：'+esc(t)+'</div>'; }
-
-var EXAM_CARDS={
-  dims:{t:'🧭 維度化思考（第三題）', h:function(){
-    return '<div class="story">考官念完題目幾乎沒有準備時間。寶典的解法：平常就準備幾個固定的「集裝箱」（維度），考場上花幾秒判斷「這題從哪 2–3 個維度講最自然」，再從裡面挑一個具體的子題往下講。</div>'+
-      '<div class="muted">考場上可以先講一句爭取時間，例如 <span class="fr">C’est une question intéressante…</span>，同時在腦中掃一遍下面六個維度。</div>'+
-      EXAM_DIMS.map(function(d){ return '<details class="movecard"><summary>'+d[1]+' <b>'+esc(d[3])+'</b> <small class="muted fr">'+esc(d[2])+'</small></summary>'+frList(d[4])+'</details>'; }).join('')+
-      '<div class="muted" style="margin-top:8px">寶典建議的練法：拿題目清單隨便抽，在每題後面寫上打算用的維度，養成固定的回答方向。→ 考場島每一題都可以點維度，會記下來。</div>'; }},
-  arg:{t:'🎬 組織論證：遠景→特寫→拉遠（第三題）', h:function(){
-    return '<div class="story">寶典把一段論證比喻成拍影片：</div>'+
-      '<ol style="margin:6px 0 0 1.2em;padding:0;line-height:1.7">'+
-      '<li>🔭 <b>遠景</b>：你怎麼看這個題目 <small class="muted fr">niveau global — l’idée principale</small></li>'+
-      '<li>🔎 <b>拉近</b>：為什麼這麼想 <small class="muted fr">niveau intermédiaire — l’explication</small></li>'+
-      '<li>📸 <b>特寫</b>：身邊的例子、以前跟現在比、跟別人比 <small class="muted fr">niveau concret — un exemple ou une comparaison</small></li>'+
-      '<li>🔭 <b>拉遠收尾</b>：回到主張 <small class="muted fr">retour au global — la conclusion</small></li></ol>'+
-      '<div class="dexhead">想到的點太小怎麼辦？</div><div class="muted">像「不用通勤」這種點只是中間層。問自己一句 <span class="fr">Et alors ?</span>（那又怎樣？），把它往上提到一個維度：<br>'+
-      '不用通勤 → 少了焦慮和疲勞（🩺 健康）／省下交通費（💶 經濟）／少排碳（🌱 環境）／多陪家人（🤝 人際）。<br>同一個點，可以從不同維度解釋。</div>'+
-      '<div class="dexhead">開頭</div><div class="muted">寶典作者喜歡在第一段直接點出要講的 2–3 個維度；也可以只說有好幾個原因（<span class="fr">plusieurs raisons</span>），後面再展開。</div>'+
-      '<div class="muted" style="margin-top:6px">寶典的原則：<span class="fr">mieux vaut être clair, fluide et structuré que trop compliqué.</span>（清楚、流暢、有結構，比講得很複雜重要）</div>'; }},
-  conn:{t:'🔗 段落銜接詞（第三題）', h:function(){
-    var G=[['開頭：說出看法',[['C’est une question qui mérite réflexion.','這是一個值得思考的問題。'],['C’est une question intéressante. Pour répondre, je vais commencer par…','這個問題很有意思。我先從……講起。'],['Aujourd’hui, le thème de… est très présent dans notre société.','現在……這個主題在社會上很常見。'],['À mon avis, c’est un sujet complexe, mais je pense que…','我覺得這個題目很複雜，但我認為……'],['Pour ma part, je pense que…','就我來說，我認為……'],['Il me semble que…','我覺得……']]],
-      ['順序',[['d’abord / premièrement','首先'],['ensuite / deuxièmement','其次'],['puis / après cela','然後'],['enfin / finalement','最後']]],
-      ['補充',[['de plus / en outre / par ailleurs','此外'],['également / aussi','也']]],
-      ['轉折',[['mais / cependant / toutefois','但是'],['néanmoins / en revanche','然而、相反地'],['malgré cela','儘管如此']]],
-      ['因果',[['parce que / car / puisque','因為'],['donc / c’est pourquoi / par conséquent','所以'],['grâce à','多虧（好的原因）'],['à cause de','因為（壞的原因）']]],
-      ['好處和壞處',[['être bénéfique à / favoriser / contribuer à / améliorer','對……有益／促進／有助於／改善'],['être nuisible à / causer / poser problème / nuire à','對……有害／造成／帶來問題／損害']]],
-      ['舉例',[['Par exemple…','例如……'],['Prenons l’exemple de…','舉……為例'],['C’est le cas notamment de…','……尤其是這種情況']]],
-      ['結尾',[['En résumé / En conclusion / Pour conclure','總之'],['Pour finir / Pour terminer','最後'],['Voilà ce que je pense sur ce sujet.','這就是我對這個題目的看法。'],['La question reste ouverte.','這個問題還沒有定論。']]]];
-    return G.map(function(g){ return '<div class="dexhead">'+esc(g[0])+'</div>'+frList(g[1]); }).join(''); }},
-  ask:{t:'❓ 三種問句＋疑問詞（第二題）', h:function(){
-    return '<div class="story">第二題考的是「看情境問問題」：2 分鐘準備（可以寫大綱），3 分 30 秒跟考官對話，寶典建議準備 10–15 個問題。</div>'+
-      '<div class="dexhead">是非問句（答 oui／non）</div>'+
-      '<div class="muted">好處：考官照你的框架走，答案短、比較聽得懂。缺點：用太多考官會答得很短，你要一直想下一題 → 跟開放問句混著用。</div>'+
-      '<details class="movecard" open><summary><b>① 語調上揚</b> <small class="muted">口語最常用</small></summary>'+frList([['Les prix sont compris ?','價格都含了嗎？'],['Si je veux une cabine avec vue sur l’océan, c’est possible ?','如果我想要看得到海的艙房，可以嗎？']])+'</details>'+
-      '<details class="movecard"><summary><b>② Est-ce que＋直述句</b> <small class="muted">日常最常用</small></summary>'+frList([['Est-ce qu’on peut réserver directement avec vous ?','可以直接跟你們訂嗎？'],['Est-ce qu’il y a des activités pour les enfants ?','有給小孩的活動嗎？']])+'</details>'+
-      '<details class="movecard"><summary><b>③ 倒裝</b> <small class="muted">比較正式</small></summary>'+frList([['Pouvez-vous me dire les horaires ?','可以告訴我時間嗎？'],['Puis-je payer en plusieurs fois ?','可以分期付嗎？（je peux 倒裝要變成 puis-je）'],['Faut-il réserver à l’avance ?','要先預約嗎？'],['Y a-t-il des réductions pour les étudiants ?','學生有折扣嗎？（動詞母音結尾，中間加 -t-）'],['Le bateau est-il accessible aux personnes à mobilité réduite ?','行動不便的人可以上船嗎？（主詞是名詞：名詞放前面，後面再倒裝代名詞）']])+'</details>'+
-      '<div class="dexhead">開放問句（要對方給資訊）</div>'+frList([['Quel est le prix de l’appartement ?','公寓多少錢？'],['Quels sont les moyens de transport disponibles ?','有哪些交通工具可以搭？'],['À quelle heure est-ce que ton enfant se couche d’habitude ?','你的小孩通常幾點睡？'],['Qui contrôle l’ouverture des portes ?','誰負責開關門？（問人：qui）'],['Qu’est-ce qui contrôle l’ouverture des portes ?','什麼東西控制開關門？（問東西當主詞：qu’est-ce qui）'],['Qu’est-ce que tu regardes ?','你在看什麼？（問東西當受詞：qu’est-ce que）'],['Que se passe-t-il en cas de mauvais temps ?','天氣不好的話怎麼辦？'],['Où se trouve le musée ?','博物館在哪裡？'],['Combien coûte une croisière d’une semaine ?','一週的郵輪多少錢？'],['Comment se passe la réservation ?','預訂的流程是怎樣？']])+
-      '<div class="dexhead">順著考官的回答追問</div><div class="muted">例：租房子，考官說在市中心 → <span class="fr">Ce n’est pas trop bruyant ?</span>（不會太吵嗎？）⛔ 不要完全不回應、一題接一題乾問，會像在背稿。</div>'+
-      fixNote('寶典把 À quelle heure 那句寫成 à quelle heure est-ce que ton enfant a l’habitude de se coucher（可以，但比較長）；Comment se déroule le processus de réservation 簡化成 Comment se passe la réservation；其他句子拼字錯的（regards、Combine、Ou se trouve）已改正。'); }},
-  open:{t:'👋 開場 ABC＋結尾（第二題）', h:function(){
-    return '<div class="story">開場＝A 打招呼（＋背景）＋B 說你的興趣或目的＋C 請對方幫忙。開得順，後面比較不緊張。</div>'+
-      '<div class="dexhead">⚠️ 先看對方是誰</div><div class="muted">不認識的人（機構人員、店員、新環境的鄰居或同事）→ 用 <b>vous</b>；朋友 → 用 <b>tu</b>。</div>'+
-      '<details class="movecard" open><summary><b>不認識的人 → vous</b></summary>'+
-        '<div class="muted">A 背景</div>'+frList([['Bonjour, je suis nouveau / nouvelle dans le quartier.','你好，我剛搬來這一區。'],['Bonjour ! Je viens d’arriver au Canada.','你好！我剛到加拿大。'],['Bonjour, je viens d’emménager dans l’immeuble.','你好，我剛搬進這棟大樓。'],['Bonjour, on m’a dit que vous…','你好，我聽說您……']])+
-        '<div class="muted">B 興趣／目的</div>'+frList([['Je suis intéressé(e) par votre annonce.','我對你們的廣告有興趣。'],['Ça m’intéresse beaucoup.','我很有興趣。'],['Je voudrais… / J’aimerais…','我想要……'],['Je cherche des idées pour…','我在找……的點子。']])+
-        '<div class="muted">C 請對方幫忙</div>'+frList([['J’aimerais vous poser quelques questions.','我想問您幾個問題。'],['Vous pouvez m’en dire plus ?','可以多跟我說一些嗎？'],['Pourriez-vous me donner plus d’informations sur… ?','可以給我更多……的資訊嗎？'],['Je voudrais en savoir plus sur…','我想多了解……']])+'</details>'+
-      '<details class="movecard"><summary><b>朋友 → tu</b> <small class="muted">多半是問他過去的經歷或經驗，時態比較多變</small></summary>'+
-        '<div class="muted">A 打招呼＋點出題目</div>'+frList([['Salut ! On m’a dit que tu avais changé de poste.','嗨！聽說你換職位了。（avais changé＝愈過去式）'],['Salut ! J’ai vu ton blog.','嗨！我看到你的部落格了。'],['Salut ! J’ai appris que tu pratiques un sport depuis longtemps.','嗨！聽說你運動很久了。']])+
-        '<div class="muted">B 好奇／興趣</div>'+frList([['Ça s’est bien passé ?','還順利嗎？'],['C’était comment ?','怎麼樣？'],['Ça a l’air sympa !','看起來很不錯！'],['Félicitations !','恭喜！']])+
-        '<div class="muted">C 請他幫忙</div>'+frList([['Tu peux m’en dire plus ?','可以多說一點嗎？'],['Tu pourrais me donner quelques conseils ?','可以給我一些建議嗎？'],['Tu pourrais m’expliquer comment ça fonctionne ?','可以跟我說是怎麼運作的嗎？']])+'</details>'+
-      '<div class="dexhead">結尾</div>'+frList([['Merci beaucoup pour toutes ces informations !','謝謝你告訴我這麼多！'],['Je vais réfléchir (et en parler avec…).','我會想一想（再跟……討論）。'],['Je vais réfléchir et probablement m’inscrire bientôt.','我會考慮，應該很快就會報名。']])+
-      fixNote('寶典寫 J’aimerais bien de vous poser quelque questions → 標準是 J’aimerais vous poser quelques questions；Comment s’est passé ? → Comment ça s’est passé ?；tu va faire → tu vas faire；寶典說「針對過往經歷用未完成過去式 tu avais…」，但 tu avais changé 其實是愈過去式。'); }},
-  angles:{t:'🧰 通用問題角度＋人設（第二題）', h:function(){
-    return '<div class="story">寶典：大部分題目都會碰到商品、服務或活動，下面這幾個角度幾乎每題都問得到。先熟 2–3 種問法就好，熟了再加。</div>'+
-      EXAM_ANGLES.map(function(a){ return '<details class="movecard"><summary>'+a[0]+' <b>'+esc(a[1])+'</b></summary>'+frList(a[2])+'</details>'; }).join('')+
-      '<div class="dexhead">固定一個人設</div><div class="muted">寶典建議平常就固定幾個人設，考場上自然會多出問題：家庭（<span class="fr">seul(e)／en couple／en famille avec des enfants</span>）、寵物、有沒有駕照、新移民（<span class="fr">les nouveaux arrivants</span>）、過敏（<span class="fr">être allergique à…</span>）、吃素、住市中心（<span class="fr">en centre-ville</span>）或郊區（<span class="fr">en banlieue</span>）。用你自己真實的情況最好記。</div>'; }},
-  react:{t:'😊 自然回應（第二題）', h:function(){
-    return '<div class="story">考官回答完，先回一句再問下一題，對話才自然。寶典說 CLB7 至少要會基本和簡單版。</div>'+
-      '<div class="dexhead">謝謝、很好</div>'+frList([['Merci beaucoup !',''],['C’est parfait !',''],['Super, merci !',''],['Très bien !',''],['C’est une excellente idée.','好主意。'],['Ça me semble parfait.','聽起來很完美。'],['C’est génial !','太棒了！']])+
-      '<div class="dexhead">可惜、了解</div>'+frList([['C’est dommage.','真可惜。'],['Ah, je comprends.','啊，我懂了。'],['D’accord, tant pis.','好吧，那算了。'],['C’est un peu décevant.','有點失望。']])+
-      '<div class="dexhead">進階</div>'+frList([['Merci beaucoup, je ne savais pas, c’est vraiment utile.','謝謝，我之前不知道，真的很有用。'],['C’est vraiment dommage, mais je comprends.','真的很可惜，但我了解。'],['C’est exactement ce dont j’avais besoin.','這正是我需要的。']])+
-      fixNote('寶典寫 je ne savais pas cela → 口語通常只說 je ne savais pas。'); }}
-};
-/* 寶典 第 1 章四「常用人設與通用問題」：時間、空間、錢、特殊情況與售後（取原句，拼字錯的已改） */
-var EXAM_ANGLES=[
-  ['⏰','時間',[['Quels sont les horaires d’ouverture ?','營業時間是幾點到幾點？'],['À partir de quelle heure le musée est-il ouvert ?','博物館幾點開始開？'],['Jusqu’à quelle heure fonctionne le métro ?','捷運開到幾點？'],['Combien de temps dure la visite guidée ?','導覽多久？'],['Est-ce que la bibliothèque est ouverte les jours fériés ?','圖書館國定假日有開嗎？']]],
-  ['📍','地點和交通',[['Où se trouve ce parc ?','這個公園在哪裡？'],['Est-ce qu’il y a une école près d’ici ?','附近有學校嗎？'],['Comment peut-on aller à… ?','怎麼去……？'],['Y a-t-il une station de métro à proximité ?','附近有捷運站嗎？'],['Où peut-on se garer gratuitement ?','哪裡可以免費停車？']]],
-  ['💶','錢',[['Combien ça coûte ?','多少錢？'],['Quel est le prix de… ?','……的價格是多少？'],['Y a-t-il des réductions pour les étudiants ?','學生有折扣嗎？'],['C’est payant ou gratuit ?','要錢還是免費？'],['Est-ce que je peux payer par carte bancaire ?','可以刷卡嗎？']]],
-  ['👨‍👩‍👧','特殊需求（人）',[['Avez-vous un service de garde d’enfants pendant la visite ?','參觀的時候有托兒服務嗎？'],['Est-ce que vous avez un lit bébé ?','有嬰兒床嗎？'],['Y a-t-il des rampes d’accès pour les fauteuils roulants ?','有輪椅坡道嗎？'],['Proposez-vous des menus végétariens ou sans gluten ?','有素食或無麩質的菜單嗎？'],['Est-ce qu’il y a un guide qui parle anglais ?','有會說英文的導遊嗎？']]],
-  ['🌧️','天氣和突發狀況',[['Que se passe-t-il si le temps est mauvais pendant l’excursion ?','出遊時天氣不好怎麼辦？'],['Comment gérez-vous les annulations en cas de mauvais temps ?','天氣不好取消的話怎麼處理？']]],
-  ['📜','規定和售後',[['Quelle est votre politique de remboursement ?','退款規定是什麼？'],['Est-ce que je peux annuler ma réservation sans frais ?','可以免費取消預訂嗎？'],['Puis-je modifier ma réservation ?','可以改預訂嗎？'],['Comment faire une réclamation en cas de problème ?','有問題的話怎麼申訴？']]],
-  ['🧩','內容（要配合題目準備）',[['Quels services proposez-vous ?','你們提供哪些服務？'],['Quelles activités sont disponibles ?','有哪些活動可以參加？']]]
-];
-/* 考官追問：只用寶典裡出現過的問法（Et alors ? 出自 1.2；Pourquoi ? 出自題目；Par exemple 出自 1.3） */
-var EXAM_FOLLOW=[['Pourquoi ?','為什麼？→ 補一個理由'],['Par exemple ?','例如呢？→ 給一個身邊的例子（📸 特寫）'],['Et alors ?','那又怎樣？→ 把這個點往上提到一個維度']];
+window.ExamIsleUtil={frList:frList, fixNote:fixNote};
+function examLoad(cb){
+  if(EXAM_OK) return cb();
+  vaultGet('exam_isle/content.js', true).then(function(b){ return b.text(); }).then(function(t){
+    new Function(t)(); var C=window.EXAM_CONTENT; if(!C) throw new Error('內容格式不對');
+    EXAM_ZONES=C.zones; EXAM_ZORDER=C.zorder; EXAM_DIMS=C.dims; EXAM_CARDS=C.cards; EXAM_ANGLES=C.angles; EXAM_FOLLOW=C.follow; EXAM_T2_CATS=C.t2cats; EXAM_T2_SITS=C.t2sits; EXAM_T3=C.t3; EXAM_OK=true; cb();
+  }).catch(function(e){ var c=e&&e.code;
+    openSheet('<h3>🎤 考場島</h3><div class="story">'+(c==='nologin'||c==='expired'?'考場島的題目放在私人空間，要先接上 📻 收音機（通行證＝考試之塔那組帳號）。':'考場島的題目載不下來（網路？'+esc(e&&e.message||'')+'）。')+'</div>'+
+      '<div class="row2"><button class="btn ghost" id="exNo">回去</button>'+(c==='nologin'||c==='expired'?'<button class="btn main" id="exAcct">📻 接上收音機</button>':'')+'</div>', true);
+    document.getElementById('exNo').onclick=closeSheet; var a=document.getElementById('exAcct'); if(a) a.onclick=acctPanel; });
+}
 
 /* ---------- 小工具 ---------- */
 function LS(k, d){ try{ var v=JSON.parse(localStorage.getItem(k)); return v==null?d:v; }catch(e){ return d; } }
@@ -379,7 +276,7 @@ var _arch=archOpen;
 archOpen=function(){ _arch(); var A=ihud.querySelector('.arch'); if(!A) return;
   var b=document.createElement('button'); b.className='aisle live'; b.style.left='86%'; b.style.top='84%';
   b.innerHTML='<span class="ablob" style="border-radius:48% 52% 44% 56%">'+pix('🎤',26)+'</span><span class="aname">考場島<small>第二、三題</small></span>';
-  b.onclick=function(){ isleEnter('EXAM'); }; A.appendChild(b); };
+  b.onclick=function(){ examLoad(function(){ isleEnter('EXAM'); }); }; A.appendChild(b); };
 var _exit=isleExit;
 isleExit=function(){ stopTimer(); return _exit.apply(this, arguments); };
 window.ExamIsle={t3:examT3, t2:examT2, board:examBoard};
