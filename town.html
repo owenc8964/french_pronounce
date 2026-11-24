@@ -4282,9 +4282,9 @@ function isleDraw(dt){
   var L=[];
   sc.deco.forEach(function(o){ L.push({y:o[2], f:function(){ isleEmoji(c, o[0], ox+o[1]*ts, oy+o[2]*ts, ts*1.05); }}); });
   L.push({y:sc.tablet.y, f:function(){ var X=ox+sc.tablet.x*ts, Y=oy+sc.tablet.y*ts; isleShadow(c,X,Y,ts*.5); isleEmoji(c,'🪧',X,Y,ts*1.1);
-    c.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; c.textAlign='center'; c.fillStyle='#2a1a08'; c.fillText('考官的問題', X, Y-ts*.62); }});
+    c.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; c.textAlign='center'; c.fillStyle='#2a1a08'; c.fillText(sc.tabletLab||'考官的問題', X, Y-ts*.62); }});
   if(sc.board) L.push({y:sc.board.y, f:function(){ var X=ox+sc.board.x*ts, Y=oy+sc.board.y*ts; isleShadow(c,X,Y,ts*.5); isleEmoji(c,'🪧',X,Y,ts*1.1);
-    c.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; c.textAlign='center'; c.fillStyle='#2a1a08'; c.fillText('島上的重點', X, Y-ts*.62); }});
+    c.font='bold '+Math.round(ts*.24)+'px Cubic11, system-ui'; c.textAlign='center'; c.fillStyle='#2a1a08'; c.fillText(sc.boardLab||'島上的重點', X, Y-ts*.62); }});
   ISLE.units.forEach(function(g){ L.push({y:g.y, f:function(){ isleMark(c, g, ox+g.x*ts, oy+g.y*ts, ts, d); }}); });
   if(ISLE.host) L.push({y:ISLE.host.y, f:function(){ var H=ISLE.host, X=ox+H.x*ts, Y=oy+H.y*ts, hop=H.moving?Math.abs(Math.sin(clock*10))*ts*.12:Math.abs(Math.sin(clock*2))*ts*.03; isleShadow(c,X,Y,ts*.28); isleEmoji(c,H.em,X,Y-hop,ts*.85);
     if(!H.met){ c.font='bold '+Math.round(ts*.3)+'px system-ui'; c.textAlign='center'; c.fillStyle='#fff3c0'; c.fillText('💬', X+ts*.35, Y-ts*.85-hop); } }});
@@ -5252,5 +5252,6 @@ if(!S.intro){ S.intro=1; save();
 </script>
 <script src="isle_more.js"></script>
 <script src="town_life.js"></script><script src="town_story.js"></script>   <!-- 10-30：居民活起來（作息、彼此聊天、來找你、越熟越深） -->   <!-- 10-29：口說群島其餘六座島（工作／興趣／旅行／加拿大／健康／未來計畫）的地形與地標 -->
+<script src="exam_t2_sits.js"></script><script src="exam_t3_data.js"></script><script src="exam_isle.js"></script>   <!-- 11-24：🎤 考場島（口說第二、三題：寶典的方法＋詞彙＋題目，⛔ 不放範文） -->
 </body>
 </html>
