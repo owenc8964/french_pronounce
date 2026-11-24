@@ -177,7 +177,8 @@ div.opt-btn { cursor: default; }
 .lv-table { margin: 14px auto 0; max-width: 300px; font-size: 0.78rem; color: #aaa8a0; }
 .lv-row { display: flex; justify-content: space-between; padding: 4px 2px; border-bottom: 1px solid #1c2430; }
 .lv-row b { color: #ddd8cc; font-weight: 700; }
-.q-play { display: flex; gap: 8px; margin: 10px 0 2px; }
+.q-play { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 2px; }
+.q-play button.mark.end { flex-basis: 100%; }
 .q-play button.mark { border-color: #3a4656; background: none; color: #aaa8a0; font-weight: 400; }
 .mark-note { min-height: 1.2em; font-size: 0.74rem; color: #aaa8a0; }
 .mark-note a { color: #60a0d0; cursor: pointer; text-decoration: underline; }
@@ -777,6 +778,28 @@ function markCue() {
   saveCue(t, q).then(() => { (manualCues[id] = manualCues[id] || {})[q] = { t }; renderQ(); })
     .catch(() => { document.getElementById('markNote').textContent = '沒有存到，再按一次看看'; });
 }
+/* 11-24 Owen：「我唯一擔心的是播放這一題、但下一題的開頭標錯時間，那就需要可調整的機制，並可以直接在這一題標下一題的開頭」
+   → 聽到這題的對話已經講完、下一題開始了，就按 🏁：存成下一題的起點（同一份 cues_manual.json），這題就播到那裡停 */
+function markNextCue() {
+  const q = cur.test.questions[cur.idx].q, id = cur.test.id, start = cueOf(cur.idx);
+  if (!audioEl || audioEl.currentTime < 0.5) { document.getElementById('markNote').textContent = '先播音檔，聽到下一題開始時再按'; return; }
+  const t = Math.max(0, audioEl.currentTime - 0.5);   // 扣掉按下去的反應時間
+  if (start !== null && t <= start + 2) { document.getElementById('markNote').textContent = '這個位置還在這一題開頭，聽到下一題開始時再按'; return; }
+  saveCue(t, q + 1).then(() => { (manualCues[id] = manualCues[id] || {})[q + 1] = { t }; if (qEnd !== null) qEnd = t; renderQ(); })
+    .catch(() => { document.getElementById('markNote').textContent = '沒有存到，再按一次看看'; });
+}
+function undoNextCue() {
+  const q = cur.test.questions[cur.idx].q, id = cur.test.id;
+  saveCue(null, q + 1).then(() => { delete (manualCues[id] || {})[q + 1]; renderQ(); })
+    .catch(() => { document.getElementById('markNote').textContent = '沒有復原成功，再按一次看看'; });
+}
+function endNote(q) {
+  const start = cueOf(cur.idx); if (start === null || cur.idx >= cur.test.questions.length - 1) return '';
+  const next = cueList().slice(cur.idx + 1).find(x => typeof x === 'number' && x > start);
+  const mineNext = (manualCues[cur.test.id] || {})[q.q + 1];
+  return '<div class="mark-note">這題 ' + clock(start) + ' 開始、' + (typeof next === 'number' ? '播到 ' + clock(next) + ' 停' : '播到音檔結尾') +
+    (mineNext ? '（停點是你標的 · <a onclick="undoNextCue()">復原</a>）' : '') + '</div>';
+}
 function undoCue() {
   const q = cur.test.questions[cur.idx].q, id = cur.test.id;
   saveCue(null, q).then(() => { delete (manualCues[id] || {})[q]; renderQ(); })
@@ -807,7 +830,9 @@ function renderQ() {
   if (practising()) {
     const mine = (manualCues[t.id] || {})[q.q];
     html += `<div class="q-play">${cueOf(cur.idx) !== null ? '<button onclick="playQuestion()">▶ 播這一題</button>' : ''}
-      <button class="mark" onclick="markCue()">📍 這裡是第 ${q.q} 題開頭</button></div>
+      <button class="mark" onclick="markCue()">📍 這裡是第 ${q.q} 題開頭</button>
+      ${cur.idx < t.questions.length - 1 ? `<button class="mark end" onclick="markNextCue()">🏁 這裡是第 ${q.q + 1} 題開頭（這題播到這裡就停）</button>` : ''}</div>
+      ${endNote(q)}
       <div class="mark-note" id="markNote">${mine ? '已標記在 ' + clock(mine.t) + ' · <a onclick="undoCue()">復原</a>' + (mine.chk ? '<br>' + (mine.chk === 'ok' ? '✅ 已核對' : '🔎 ' + esc(mine.msg || '請再聽一次確認')) : '') : '要標的是這題對話開始的地方；題號常在對話播完才念'}</div>`;
   }
   if (q.img) html += `<img class="doc-img" src="${DATA_DIR}${q.img}" alt="document">`;
