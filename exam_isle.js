@@ -57,6 +57,20 @@ sheet.addEventListener('click', function(e){ var b=e.target.closest && e.target.
   var t=prompt('這一題有什麼問題？（中文翻錯、法文怪怪的、題目重複…）'); if(!t||!t.trim()) return;
   if(window.GameLog) GameLog.report({src:'town', kind:'考場島', ref:'exam', q:b.dataset.ctx, a:'', pick:''}, t.trim()); toast('🚩 收到了，謝謝'); });
 
+
+/* 🧰 工具箱（toolbox.js）：講之前挑 1–3 個句型「這次要用」→ 講的畫面一直顯示 → 講完勾有沒有用到（clb7_toolbox_use） */
+var EX_TB=[];
+function tbBlock(){ if(!window.Toolbox) return '';
+  return '<div class="dexhead">🧰 這次試著用的句型</div>'+(EX_TB.length?'<div class="story">'+Toolbox.chips(EX_TB)+'</div>':'<div class="muted">還沒挑。挑 1–3 個你想練到用得出來的句型。</div>')+
+    '<div class="row2" style="margin:4px 0"><button class="btn ghost" id="exTbPick">🧰 '+(EX_TB.length?'換句型':'挑句型')+'</button><span></span></div>'; }
+function tbWire(repaint){ var b=document.getElementById('exTbPick'); if(b) b.onclick=function(){ Toolbox.open({pick:true, max:3, list:EX_TB, onDone:function(L){ EX_TB=L; repaint(); }}); };
+  var c=document.getElementById('exTbLook'); if(c) c.onclick=function(){ Toolbox.open(); }; }
+function tbTalk(){ if(!window.Toolbox) return ''; return (EX_TB.length?'<div class="story">🧰 試著用：'+Toolbox.chips(EX_TB)+'</div>':'')+'<div class="row2" style="margin:2px 0"><button class="btn ghost" id="exTbLook">🧰 查工具箱</button><span></span></div>'; }
+function tbDone(){ if(!window.Toolbox||!EX_TB.length) return '';
+  return '<div class="dexhead">🧰 剛剛有用到嗎？（勾有用到的）</div>'+EX_TB.map(function(x,i){ return '<label style="display:block;margin:4px 0"><input type="checkbox" class="exTbU" data-i="'+i+'"> <span class="fr">'+esc(x.fr)+'</span> <small class="muted">'+esc(x.zh)+'</small></label>'; }).join(''); }
+function tbCommit(){ if(!window.Toolbox||!EX_TB.length) return; var u=EX_TB.map(function(){ return false; });
+  sheet.querySelectorAll('.exTbU').forEach(function(c){ if(c.checked) u[+c.dataset.i]=true; }); Toolbox.markUsed(EX_TB, u); }
+
 /* ---------- 第三題一站 ---------- */
 function examT3(z, q){
   stopTimer();
@@ -74,6 +88,7 @@ function examT3(z, q){
       (dims.length?'<div class="muted" style="font-size:.8em">'+dims.map(function(k){ var d=dimById(k); return d[1]+' '+d[4].slice(0,3).map(function(s){ return s[1]; }).join('、'); }).join('<br>')+'</div>':'')+
       '<details class="movecard"><summary>📦 這一類常用的詞</summary>'+frList(Z.vocab)+'</details>'+
       '<details class="movecard"><summary>🎬 怎麼排：遠景→拉近→特寫→拉遠</summary><div class="muted">① 你怎麼看 ② 為什麼 ③ 一個例子或比較 ④ 回到主張。每個維度走一輪。</div></details>'+
+      tbBlock()+
       '<div class="row2"><button class="btn ghost" id="exSkip">⏭ 這題跳過</button>'+flagBtn('🎤 考場島 '+Z.name+'｜'+q.id+'｜'+q.fr)+'<button class="btn main" id="exGo">🎙 開始講（4:30）</button></div>'+
       '<div class="row2"><button class="btn ghost" id="exOther">🔀 同一類換一題</button><button class="btn ghost" id="exBack">回島上</button></div>';
     openSheet(h, true);
@@ -85,7 +100,7 @@ function examT3(z, q){
     document.getElementById('exSkip').onclick=function(){ bump('clb7_exam_known', q.id); if(window.GameLog) GameLog.answer(null,{kind:'🎤 考場島', ref:'exam:'+q.id}); examT3(z); };
     document.getElementById('exOther').onclick=function(){ examT3(z); };
     document.getElementById('exBack').onclick=function(){ stopTimer(); closeSheet(); };
-    document.getElementById('exGo').onclick=talk;
+    document.getElementById('exGo').onclick=talk; tbWire(paint);
   }
   function talk(){
     var t0=Date.now(), T=270, asked=[], fu=shuf(EXAM_FOLLOW);
@@ -95,9 +110,10 @@ function examT3(z, q){
       (show?'<div class="muted fr" style="margin-top:6px">'+esc(q.fr)+'</div>':'<div class="row2"><button class="btn ghost" id="exPeek">👀 忘記題目了</button></div>')+
       (dims.length?'<div class="story">你選的維度：'+dims.map(function(k){ var d=dimById(k); return d[1]+' '+esc(d[3]); }).join('　')+'</div>':'')+
       '<div class="muted">每個維度：🔭 看法 → 🔎 為什麼 → 📸 例子 → 🔭 收回來</div>'+
+      tbTalk()+
       '<div id="exFu"></div>'+
       '<div class="row2"><button class="btn ghost" id="exAsk">🦉 考官追問一句</button><button class="btn main" id="exEnd">講完了</button></div>';
-    openSheet(h, true); speak(q.fr);
+    openSheet(h, true); speak(q.fr); tbWire(function(){});
     var pk=document.getElementById('exPeek'); if(pk) pk.onclick=function(){ pk.outerHTML='<div class="muted fr">'+esc(q.fr)+'</div>'; };
     document.getElementById('exAsk').onclick=function(){ var f=fu[asked.length%fu.length]; asked.push(f[0]); speak(f[0]);
       document.getElementById('exFu').innerHTML='<div class="clue fr">🦉 '+esc(f[0])+' '+spk(f[0])+'</div><div class="muted">'+esc(f[1])+'</div>'; };
@@ -113,11 +129,11 @@ function examT3(z, q){
     S.gold=(S.gold||0)+3; save(); if(typeof hud==='function') hud();
     openSheet('<h3>👍 講完了 <small>'+fmt(sec)+'</small></h3><div class="muted fr">'+esc(q.fr)+'</div>'+
       '<div class="story">回想一下：每個維度有沒有走到 📸 例子？最後有沒有收回主張？</div>'+
-      mineBlock('t3:'+q.id, q.fr)+
+      tbDone()+      mineBlock('t3:'+q.id, q.fr)+
       '<div class="row2"><button class="btn ghost" id="exAgain">同一題再講一次</button><button class="btn" id="exNext">同一類下一題</button><button class="btn main" id="exBack">回島上</button></div>', true);
-    document.getElementById('exAgain').onclick=function(){ examT3(z, q); };
-    document.getElementById('exNext').onclick=function(){ examT3(z); };
-    document.getElementById('exBack').onclick=closeSheet;
+    document.getElementById('exAgain').onclick=function(){ tbCommit(); examT3(z, q); };
+    document.getElementById('exNext').onclick=function(){ tbCommit(); examT3(z); };
+    document.getElementById('exBack').onclick=function(){ tbCommit(); closeSheet(); };
   }
   paint(); speak(q.fr);
 }
@@ -137,6 +153,7 @@ function examT2(cat, sit){
       '<div class="dexhead">🧰 準備（考試有 2 分鐘）：這題你要問哪些角度？</div><div class="opts" style="flex-direction:row;flex-wrap:wrap">'+
       EXAM_ANGLES.map(function(a,i){ return '<button data-ang="'+i+'" class="'+(picked[i]?'ok':'')+'" style="flex:1 1 30%">'+a[0]+' '+esc(a[1])+'</button>'; }).join('')+'</div>'+
       Object.keys(picked).map(function(i){ var a=EXAM_ANGLES[i]; return '<details class="movecard"><summary>'+a[0]+' '+esc(a[1])+' 的問法</summary>'+frList(a[2])+'</details>'; }).join('')+
+      tbBlock()+
       '<details class="movecard"><summary>👋 開場和結尾</summary><div class="muted">A 打招呼（＋背景）→ B 你的興趣或目的 → C 請對方幫忙。完整句子在碼頭告示牌的「開場 ABC」。</div>'+
         frList(tu?[['Salut ! J’ai entendu dire que…',''],['Tu peux m’en dire plus ?',''],['Merci beaucoup pour toutes ces informations !','']]:[['Bonjour, je viens d’arriver au Canada.',''],['J’aimerais vous poser quelques questions.',''],['Merci beaucoup pour toutes ces informations !','']])+'</details>'+
       '<div class="row2"><button class="btn ghost" id="exSkip">⏭ 這題跳過</button>'+flagBtn('🛎️ 考場島 第二題｜'+sit.fr)+'<button class="btn main" id="exGo">🎙 開始問（3:30）</button></div>'+
@@ -149,7 +166,7 @@ function examT2(cat, sit){
     document.getElementById('exOther').onclick=function(){ examT2(cat); };
     document.getElementById('exCat').onclick=catPick;
     document.getElementById('exBack').onclick=function(){ stopTimer(); closeSheet(); };
-    document.getElementById('exGo').onclick=talk;
+    document.getElementById('exGo').onclick=talk; tbWire(paint);
   }
   function catPick(){
     openSheet('<h3>🛎️ 選一類情境</h3><div class="opts">'+Object.keys(EXAM_T2_CATS).map(function(k){ return '<button data-c="'+k+'">'+esc(EXAM_T2_CATS[k])+'</button>'; }).join('')+'<button data-c="">🎲 不分類，隨便抽</button></div>', true);
@@ -161,9 +178,10 @@ function examT2(cat, sit){
       '<div style="text-align:center;font-size:2.6em;font-variant-numeric:tabular-nums;color:#fff3c0" id="exClock">3:30</div>'+
       '<div class="muted" style="text-align:center">每問一題就按一下 ➕。考官回答後先回一句（<span class="fr">D’accord ! / C’est parfait !</span>）再問下一題。</div>'+
       '<div style="text-align:center;margin:10px 0"><button class="btn main" id="exPlus" style="font-size:1.3em">➕ 問了一題</button> <span id="exN" class="muted"></span></div>'+
+      tbTalk()+
       '<div class="muted">角度：'+(Object.keys(picked).length?Object.keys(picked).map(function(i){ return EXAM_ANGLES[i][0]+' '+esc(EXAM_ANGLES[i][1]); }).join('　'):EXAM_ANGLES.map(function(a){ return a[0]; }).join(' '))+'</div>'+
       '<div class="row2"><span></span><button class="btn main" id="exEnd">問完了</button></div>', true);
-    speak(sit.fr);
+    speak(sit.fr); tbWire(function(){});
     document.getElementById('exPlus').onclick=function(){ n++; document.getElementById('exN').textContent='已經問了 '+n+' 題'; };
     timerH=setInterval(function(){ var el=document.getElementById('exClock'); if(!el){ stopTimer(); return; } var left=T-(Date.now()-t0)/1000; el.textContent=fmt(left);
       if(left<=0){ el.textContent='0:00'; el.style.color='#8fc3ff'; stopTimer(); toast('⏱ 3 分 30 秒到了'); } }, 250);
@@ -175,11 +193,11 @@ function examT2(cat, sit){
     S.gold=(S.gold||0)+3; save(); if(typeof hud==='function') hud();
     openSheet('<h3>👍 問完了 <small>'+fmt(sec)+(n?'・'+n+' 題':'')+'</small></h3><div class="muted">'+esc(sit.zh)+'</div>'+
       '<div class="story">回想一下：有沒有哪個角度一直卡住、想不出問法？下次先點那個角度看問法。</div>'+
-      mineBlock(id, sit.fr)+
+      tbDone()+mineBlock(id, sit.fr)+
       '<div class="row2"><button class="btn ghost" id="exAgain">同一個情境再問一次</button><button class="btn" id="exNext">下一個情境</button><button class="btn main" id="exBack">回島上</button></div>', true);
-    document.getElementById('exAgain').onclick=function(){ examT2(cat, sit); };
-    document.getElementById('exNext').onclick=function(){ examT2(cat); };
-    document.getElementById('exBack').onclick=closeSheet;
+    document.getElementById('exAgain').onclick=function(){ tbCommit(); examT2(cat, sit); };
+    document.getElementById('exNext').onclick=function(){ tbCommit(); examT2(cat); };
+    document.getElementById('exBack').onclick=function(){ tbCommit(); closeSheet(); };
   }
   paint(); speak(sit.fr);
 }
@@ -238,6 +256,7 @@ var _enter=isleEnter;
 isleEnter=function(id){ ISLE.examSkipAuto= id==='EXAM' && !!S.examBoardSeen; _enter(id); if(id!=='EXAM') return;
   ['izh','ilist','irun','ijoint'].forEach(function(k){ var e=document.getElementById(k); if(e) e.style.display='none'; });
   var nav=ihud.querySelector('.inav'); if(nav){ var b=document.createElement('button'); b.id='iexam'; b.textContent='🎲 抽一題'; b.onclick=function(){ if(!busy) examHost(); }; nav.insertBefore(b, document.getElementById('inext')); }
+  if(nav && window.Toolbox){ var tb=document.createElement('button'); tb.textContent='🧰'; tb.title='口說寫作工具箱'; tb.onclick=function(){ if(!busy) Toolbox.open(); }; nav.insertBefore(tb, document.getElementById('inext')); }
   var r=document.getElementById('irail'); if(r) r.style.display='none';
   var h=document.getElementById('ihint'); if(h) h.textContent='⛵ 靠岸了。🛎️ 碼頭旁是第二題櫃台；往上走七區是第三題七大類。走到地標旁點一下就出題，🦉 考官也可以直接出題。';
   document.getElementById('iflag').onclick=function(){ if(window.GameLog) GameLog.quickReport('town','🎤 考場島'); };

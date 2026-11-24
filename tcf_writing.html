@@ -161,6 +161,7 @@ select { background: #141928; border: 1px solid #1a2438; border-radius: 8px;
 
 <div class="card">
   <div class="card-title">Votre réponse</div>
+  <div id="tbStrip" style="margin:-4px 0 12px;font-size:.85rem"></div>
   <div id="writeArea"></div>
 </div>
 
@@ -540,6 +541,27 @@ document.getElementById('btnSave').addEventListener('click', function(){
   var q = new URLSearchParams(location.search).get('t');
   if (q && SPEC[q.toUpperCase()]) cur = q.toUpperCase();
   renderTabs(); fillThemes(); pick(); renderHistory();
+})();
+</script>
+<script src="toolbox.js"></script>
+<script>
+/* 🧰 11-24 Owen：「會不代表用得出來，口說跟寫作要有一個地方好提取」→ 寫之前挑 1–3 個句型，寫的時候一直看得到，用到了就勾（clb7_toolbox_use）
+   內容在私人空間，登入（通行證）才讀得到；挑的句型存 clb7_toolbox_wpick（換題也留著，練到用得出來為止） */
+(function(){
+  function get(){ try{ return JSON.parse(localStorage.getItem('clb7_toolbox_wpick'))||[]; }catch(e){ return []; } }
+  function set(L){ try{ localStorage.setItem('clb7_toolbox_wpick', JSON.stringify(L)); }catch(e){} }
+  function e(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function paintTb(){ var L=get(), el=document.getElementById('tbStrip'); if(!el) return;
+    el.innerHTML='<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span style="color:#8090a0">🧰 這篇試著用：</span>'+
+      (L.length?'':'<span style="color:#556270">還沒挑</span>')+
+      '<button class="btn-ghost" id="tbPick" style="padding:3px 10px">'+(L.length?'換句型':'挑句型')+'</button><button class="btn-ghost" id="tbLook" style="padding:3px 10px">查工具箱</button></div>'+
+      L.map(function(x,i){ return '<label style="display:block;margin:5px 0;cursor:pointer"><input type="checkbox" data-tbi="'+i+'"> <span style="color:#f0c060">'+e(x.fr)+'</span> <span style="color:#667788">'+e(x.zh)+'</span></label>'; }).join('')+
+      (L.length?'<div style="color:#556270;font-size:.75rem">寫進去了就勾一下。</div>':'');
+    document.getElementById('tbPick').onclick=function(){ Toolbox.open({pick:true, max:3, list:get(), onDone:function(N){ set(N); paintTb(); }}); };
+    document.getElementById('tbLook').onclick=function(){ Toolbox.open(); };
+    Array.prototype.forEach.call(el.querySelectorAll('[data-tbi]'), function(c){ c.onchange=function(){ if(c.checked) Toolbox.markUsed([get()[+c.dataset.tbi]],[true]); }; });
+  }
+  paintTb();
 })();
 </script>
 <script src="sync_supabase.js"></script>
