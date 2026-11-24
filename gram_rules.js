@@ -760,7 +760,7 @@ const GRAM_POINTS = [
   { id:'passe-simple', name:'Passé simple',             icon:'📜', zone:'B2', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
   { id:'concordance',  name:'Concordance des temps',    icon:'🔄', zone:'B2', cat:'verbe-temps', lessons:[], topics:[], unlocked:false },
   { id:'passive', name:'La forme passive', icon:'🔃', zone:'A2', cat:'verbe-mode',
-    lessons:[42], topics:['forme-passive'], unlocked:true,   // 10-16（第42課 Édito A2 p.177）從 B2 佔位點就地解鎖（照 gerondif 的做法）；map.html 的 passive 地塊靠同一個 id 連著，⛔ 不要改 id
+    lessons:[42,54], topics:['forme-passive'], unlocked:true,   // 10-16（第42課 Édito A2 p.177）從 B2 佔位點就地解鎖（照 gerondif 的做法）；map.html 的 passive 地塊靠同一個 id 連著，⛔ 不要改 id
     rule:{
       title:'被動式 — être ＋ 過去分詞（＋ par 做的人）：時態全看 être',
       why:'主動句和被動句講的是同一件事，只是鏡頭對準的東西不一樣：主動句的主角是「做事的人」（Un botaniste développe la méthode），被動句把「被做的東西」拉到主詞的位置（La méthode est développée par un botaniste），用來強調結果、或根本不想提是誰做的。換的方法很機械：原本的受詞變主詞，原本的動詞一律變成過去分詞，原本是什麼時態就交給 être 去扛。因為主詞換了，過去分詞就像形容詞一樣要跟新主詞配合陰陽單複。',
@@ -770,6 +770,11 @@ const GRAM_POINTS = [
         '🎙 passé composé 換成被動：中間加 été（a créé → a été créé）',
         '過去分詞跟主詞配合：La méthode est développée；Les micro-forêts ont été inventées；J\'ai été contactée（Nadia）',
         '換回主動：par 後面那個人變主詞，助動詞／動詞跟著新主詞變（ont été inventées par Akira → Akira a inventé）',
+        '⭐（第54課）虛擬式、原形也照同一條：il faut que ce camion libère → que la rue soit libérée；on doit trouver → une solution doit être trouvée（devoir 不動，原形 trouver 變 être trouvé(e)）',
+        '（第54課）不寫 par：不知道是誰、不重要、或原本主詞是 on（On a pris les décisions → Les décisions ont été prises）',
+        '（第54課）不知道是誰 → 也可以用 on 說主動句：Ma voiture a été volée ＝ On a volé ma voiture',
+        '（第54課）se faire／se laisser ＋ 原形也是被動的意思：Ils se sont fait arrêter（fait 永遠不配合、後面維持原形）；Il s\'est laissé convaincre（沒抵抗、讓自己被說動）',
+        '⚠️（第54課）被動主詞一定是原本的直接受詞：Pablo s\'est fait remettre la médaille → La médaille a été remise à Pablo（⛔ Pablo a été remis）',
         '⚠️ être ＋ 名詞不是被動：La campagne sera un succès 是主動句',
         '⚠️ 只有能直接接受詞的動詞才能變被動；partir 不行（Ma fille est partie 是複合過去式）',
       ],
@@ -778,6 +783,8 @@ const GRAM_POINTS = [
         { fr:'Le site a été créé par Chantal Perdigau.', zh:'這個網站是 Chantal Perdigau 創立的。（passé composé → a été）' },
         { fr:'Mon jardin sera cultivé par une personne compétente.', zh:'我的花園將由一位能幹的人照顧耕種。（futur → sera）' },
         { fr:'Les micro-forêts ont été inventées par Akira Miyawaki.', zh:'微型森林是宮脇昭發明的。（陰性複數 → inventées）' },
+        { fr:'Une solution doit être trouvée pour protéger ce monument.', zh:'必須找到保護這座古蹟的辦法。（第54課；devoir ＋ être trouvée）' },
+        { fr:'Les grimpeurs se sont fait arrêter par la police.', zh:'攀爬者被警察逮捕了。（第54課；se faire ＋ 原形）' },
       ]}},
   { id:'pronoms-demonstratifs', name:'Pronoms démonstratifs', icon:'👉', zone:'A2', cat:'pronoms',
     lessons:[38], topics:['pronoms-demonstratifs'], unlocked:true,   // 10-02 第38課（Édito A2 p.149）

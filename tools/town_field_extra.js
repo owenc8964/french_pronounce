@@ -1,9 +1,9 @@
 /* town_field_extra.js — 路上遭遇用的「fill 轉選擇」題（自動產生，⛔ 不要手改；改 tools/gen_town_field_extra.js 再重跑）
- * 產生：node tools/gen_town_field_extra.js（2026-11-22）
+ * 產生：node tools/gen_town_field_extra.js（2026-11-24）
  * 每題：src＝BANK 索引；q／a／aNote 原樣來自 questions.js；opts[0] 是正解（town 會洗牌），其餘是保證錯的干擾項
  * why＝每個干擾項的來源；cue:true＝有干擾項要靠題幹看得到的線索（(+)/(−)、中文翻譯、(xxx, vous)）才判錯，本身合文法
  * hint 已清掉「直接寫出正解」的那種（選擇題會變成送分）
- * 各家族：{"verb":925,"noun":328,"pron":269}  共 1522 題
+ * 各家族：{"verb":928,"noun":328,"pron":269}  共 1525 題
  */
 var FIELD_EXTRA = [{"src":0,"fam":"verb","topic":"etre-avoir","q":"Je _____ (être) taïwanais.","a":"Je suis taïwanais|suis","opts":["suis","es","êtes","sont"],"aNote":"être → je suis","hint":"être 現在式","zh":"我是台灣人。","why":["person","person","person"],"cue":false},
 {"src":1,"fam":"verb","topic":"etre-avoir","q":"Tu _____ (être) français ?","a":"Tu es français|es","opts":["es","est","êtes","suis"],"aNote":"être → tu es","hint":"être 現在式","zh":"你是法國人嗎？","why":["person","person","person"],"cue":false},
@@ -1526,5 +1526,8 @@ var FIELD_EXTRA = [{"src":0,"fam":"verb","topic":"etre-avoir","q":"Je _____ (êt
 {"src":4182,"fam":"verb","topic":"subjonctif-present","q":"Il serait souhaitable que nous nous _____ (laver) les mains avant de cuisiner.","a":"lavions","opts":["lavions","laves","laviez","lavent"],"aNote":"nous 的虛擬式＝nous lavons 的字根＋ions。","hint":"B1 p.63 練習 4h","zh":"做菜前我們最好洗個手。","why":["person","person","person"],"cue":false},
 {"src":4183,"fam":"verb","topic":"subjonctif-present","q":"Je rêve que nous _____ (aller) au restaurant pour mon anniversaire.","a":"allions","opts":["allions","alliez","ailles","aillent"],"aNote":"aller 的虛擬式：que j'aille、que nous allions。","hint":"B1 p.63 練習 5 例句","zh":"我夢想生日那天我們去餐廳吃飯。","why":["person","person","person"],"cue":false},
 {"src":4184,"fam":"verb","topic":"subjonctif-present","q":"Ce serait bien que nous _____ (faire) un séjour gastronomique ensemble.","a":"fassions","opts":["fassions","fasses","fassiez","fassent"],"aNote":"faire → que nous fassions。","hint":"B1 p.63 規則表","zh":"要是我們能一起去來趟美食之旅就好了。","why":["person","person","person"],"cue":false},
-{"src":4185,"fam":"verb","topic":"subjonctif-present","q":"J'ai toujours voulu que mon fils _____ (devenir) un grand chef.","a":"devienne","opts":["devienne","deviennes","deviennent","deveniez"],"aNote":"ils deviennent → qu'il devienne。","hint":"B1 p.63 規則表","zh":"我一直希望我兒子成為大廚。","why":["person","person","person"],"cue":false}];
+{"src":4185,"fam":"verb","topic":"subjonctif-present","q":"J'ai toujours voulu que mon fils _____ (devenir) un grand chef.","a":"devienne","opts":["devienne","deviennes","deviennent","deveniez"],"aNote":"ils deviennent → qu'il devienne。","hint":"B1 p.63 規則表","zh":"我一直希望我兒子成為大廚。","why":["person","person","person"],"cue":false},
+{"src":4222,"fam":"verb","topic":"forme-passive","q":"La bibliothèque organisera bientôt un salon. → Un salon _____ (être) bientôt organisé par la bibliothèque.","a":"sera","opts":["sera","serai","seras","serez"],"aNote":"主動句是未來式 organisera → être 也用未來式 sera；bientôt 放在 sera 和 organisé 中間。","hint":"B1 p.74 練習 3b（當堂做的）","zh":"圖書館很快會辦一場展覽。","why":["person","person","person"],"cue":false},
+{"src":4223,"fam":"verb","topic":"forme-passive","q":"En cas de pluie, la mairie annulera les activités. → En cas de pluie, les activités _____ (annuler) par la mairie.","a":"seront annulées","opts":["seront annulées","serons annulées","seront annulé","seront annulée"],"aNote":"未來式 → seront；新主詞 les activités 是陰性複數 → être 用複數、分詞加 es。","hint":"B1 p.74 練習 3c（當堂做的）","zh":"下雨的話，市政府會取消活動。","why":["aux-person","agreement","agreement"],"cue":false},
+{"src":4225,"fam":"verb","topic":"forme-passive","q":"Il faut que ce camion libère la rue. → Il faut que la rue _____ (libérer) par ce camion.","a":"soit libérée","opts":["soit libérée","sois libérée","soit libéré","soit libérés"],"aNote":"主動句的 libère 是虛擬式（il faut que）→ être 也用虛擬式 soit；la rue 陰性 → libérée。⚠️ 老師當堂說 a été libéré，不對。","hint":"B1 p.74 練習 3e（老師當堂不確定）","zh":"這輛卡車必須把路讓出來。","why":["aux-person","agreement","agreement"],"cue":false}];
 if (typeof module !== 'undefined') module.exports = { FIELD_EXTRA: FIELD_EXTRA };

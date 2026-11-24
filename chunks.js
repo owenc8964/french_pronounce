@@ -27755,5 +27755,824 @@ const CHUNKS = [
   "fr": "commander en ligne",
   "zh": "網購",
   "note": "v.｜"
+ },
+ {
+  "id": "L54_Il_y_a_beaucoup_de_gens",
+  "lesson": 54,
+  "fr": "Il y a beaucoup de gens qui se font livrer.",
+  "zh": "很多人叫外送。",
+  "note": "⭐ 🎙 老師"
+ },
+ {
+  "id": "L54_Le_plat_préféré_des_Fran",
+  "lesson": 54,
+  "fr": "Le plat préféré des Français, c'est le couscous.",
+  "zh": "法國人最喜歡的菜是北非小米飯。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L54_À_la_boulangerie_il_y_a",
+  "lesson": 54,
+  "fr": "À la boulangerie, il y a du pain, du sucré et du salé.",
+  "zh": "麵包店裡有麵包、甜的和鹹的。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L54_Donner_un_coup_de_main_c",
+  "lesson": 54,
+  "fr": "Donner un coup de main, c'est aider quelqu'un.",
+  "zh": "出手幫一把，就是幫別人的忙。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L54_Je_me_glisse_dans_leurs",
+  "lesson": 54,
+  "fr": "Je me glisse dans leurs ruelles.",
+  "zh": "我鑽進城市的小巷。",
+  "note": "⭐ p.72 第 4 行"
+ },
+ {
+  "id": "L54_Tu_préfères_vivre_en_vil",
+  "lesson": 54,
+  "fr": "Tu préfères vivre en ville ?",
+  "zh": "你比較喜歡住在城市嗎？",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L54_Moi_je_préfère_les_petit",
+  "lesson": 54,
+  "fr": "Moi, je préfère les petits villages.",
+  "zh": "我比較喜歡小村子。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L54_La_police_a_été_alertée",
+  "lesson": 54,
+  "fr": "La police a été alertée par une habitante.",
+  "zh": "一位居民通報了警察。",
+  "note": "⭐ p.73；Pour raconter un fait divers"
+ },
+ {
+  "id": "L54_La_descente_s_est_déroul",
+  "lesson": 54,
+  "fr": "La descente s'est déroulée sans incident supplémentaire.",
+  "zh": "下來的過程很順利，沒再出事。",
+  "note": "⭐ p.73；Pour raconter un fait divers"
+ },
+ {
+  "id": "L54_Personne_n_a_été_blessé",
+  "lesson": 54,
+  "fr": "Personne n'a été blessé et l'édifice n'a pas été endommagé.",
+  "zh": "沒有人受傷，建築也沒有損壞。",
+  "note": "⭐ p.73；blessé 用在人、endommagé 用在東西"
+ },
+ {
+  "id": "L54_Nous_aurions_pu_frôler_l",
+  "lesson": 54,
+  "fr": "Nous aurions pu frôler le drame.",
+  "zh": "差一點就出人命了。",
+  "note": "⭐ p.73；條件式過去「本來可能」"
+ },
+ {
+  "id": "L54_Une_plainte_à_l_encontre",
+  "lesson": 54,
+  "fr": "Une plainte à l'encontre des grimpeurs a été déposée.",
+  "zh": "有人對這些攀爬者提告了。",
+  "note": "⭐ p.73；Pour raconter un fait divers"
+ },
+ {
+  "id": "L54_Le_château_a_été_vendu_p",
+  "lesson": 54,
+  "fr": "Le château a été vendu par le propriétaire.",
+  "zh": "城堡被屋主賣掉了。",
+  "note": "⭐ p.74 規則表；主動 Le propriétaire a vendu le château."
+ },
+ {
+  "id": "L54_Le_prix_d_architecture_a",
+  "lesson": 54,
+  "fr": "Le prix d'architecture a été gagné par ma tante.",
+  "zh": "建築獎是我阿姨得的。",
+  "note": "⭐ p.74 練習 3a（當堂做的）"
+ },
+ {
+  "id": "L54_Une_solution_doit_être_t",
+  "lesson": 54,
+  "fr": "Une solution doit être trouvée pour protéger ce monument.",
+  "zh": "必須找到保護這座古蹟的辦法。",
+  "note": "⭐ p.74 練習 3f；⚠️ 老師說 doit être trouvé，要配合 une solution → trouvée"
+ },
+ {
+  "id": "L54_Les_grimpeurs_ont_été_ar",
+  "lesson": 54,
+  "fr": "Les grimpeurs ont été arrêtés par la police.",
+  "zh": "攀爬者被警察逮捕了。",
+  "note": "⭐ p.74 練習 4 例句（被動句）"
+ },
+ {
+  "id": "L54_Ma_voiture_a_été_volée",
+  "lesson": 54,
+  "fr": "Ma voiture a été volée.",
+  "zh": "我的車被偷了。",
+  "note": "⭐ p.74 Remarques"
+ },
+ {
+  "id": "L54_On_a_volé_ma_voiture",
+  "lesson": 54,
+  "fr": "On a volé ma voiture.",
+  "zh": "有人偷了我的車。",
+  "note": "⭐ p.74 Remarques；不知道是誰 → on"
+ },
+ {
+  "id": "L54_Elles_sont_évincées_de_m",
+  "lesson": 54,
+  "fr": "Elles sont évincées, de manière directe ou indirecte.",
+  "zh": "她們被直接或間接地趕走。",
+  "note": "⭐ p.75 第 4–5 行（課本句中間省略）；被動"
+ },
+ {
+  "id": "L54_Paris_se_gentrifie",
+  "lesson": 54,
+  "fr": "Paris se gentrifie.",
+  "zh": "巴黎正在士紳化。",
+  "note": "🎙 老師"
+ },
+ {
+  "id": "L54_On_parlait_de_nourriture",
+  "lesson": 54,
+  "fr": "On parlait de nourriture ici.",
+  "zh": "我們上次在這裡講到食物。",
+  "note": "🎙 開場接上次的進度"
+ },
+ {
+  "id": "L54_Tu_peux_utiliser_ça_pour",
+  "lesson": 54,
+  "fr": "Tu peux utiliser ça pour dire « faire soi-même ».",
+  "zh": "你可以用這個字來說「自己動手做」。",
+  "note": "🎙 講 confectionner"
+ },
+ {
+  "id": "L54_Ici_tu_te_fais_souvent_l",
+  "lesson": 54,
+  "fr": "Ici, tu te fais souvent livrer ?",
+  "zh": "你在這裡常叫外送嗎？",
+  "note": "🎙"
+ },
+ {
+  "id": "L54_Ils_se_prennent_une_amen",
+  "lesson": 54,
+  "fr": "Ils se prennent une amende tous les jours.",
+  "zh": "他們每天都被罰錢。",
+  "note": "🎙 口語；講路邊攤販。se prendre une amende＝收到罰單"
+ },
+ {
+  "id": "L54_C_est_dur_de_dire_non",
+  "lesson": 54,
+  "fr": "C'est dur de dire non.",
+  "zh": "很難說不。",
+  "note": "🎙 超市門口請你捐東西"
+ },
+ {
+  "id": "L54_Tu_bois_un_café_mais_tu",
+  "lesson": 54,
+  "fr": "Tu bois un café, mais tu en payes deux.",
+  "zh": "你喝一杯咖啡，但付兩杯的錢。",
+  "note": "🎙 en＝un café；payes、paies 兩種寫法都對"
+ },
+ {
+  "id": "L54_Tu_aimes_voir_beaucoup_d",
+  "lesson": 54,
+  "fr": "Tu aimes voir beaucoup de monde ?",
+  "zh": "你喜歡看到很多人嗎？",
+  "note": "🎙 beaucoup de monde＝很多人"
+ },
+ {
+  "id": "L54_Un_édifice_c_est_un_bâti",
+  "lesson": 54,
+  "fr": "Un édifice, c'est un bâtiment.",
+  "zh": "這個字就是「建築物」。",
+  "note": "🎙"
+ },
+ {
+  "id": "L54_Est_ce_qu_à_Taipei_il_y",
+  "lesson": 54,
+  "fr": "Est-ce qu'à Taipei, il y a des quartiers comme ça ?",
+  "zh": "台北有這樣的街區嗎？",
+  "note": "🎙"
+ },
+ {
+  "id": "L54_On_en_entend_beaucoup_pa",
+  "lesson": 54,
+  "fr": "On en entend beaucoup parler en ce moment en France.",
+  "zh": "現在在法國很常聽到人在講這件事。",
+  "note": "🎙 en entendre parler＝聽人說起這件事"
+ },
+ {
+  "id": "L54_Chez_moi_on_n_a_pas_ce_p",
+  "lesson": 54,
+  "fr": "Chez moi, on n'a pas ce problème.",
+  "zh": "我家鄉沒有這個問題。",
+  "note": "🎙 法國西南部"
+ },
+ {
+  "id": "L54_On_peut_vérifier_ceci_et",
+  "lesson": 54,
+  "fr": "On peut vérifier ceci et on est bien pour aujourd'hui.",
+  "zh": "我們確認一下這個，今天就差不多了。",
+  "note": "🎙 下課前"
+ },
+ {
+  "id": "L54_Je_peux_me_faire_livrer",
+  "lesson": 54,
+  "fr": "Je peux me faire livrer.",
+  "zh": "我可以叫外送。",
+  "note": "⭐ ❌ 說成 je peux se faire livrer → 反身代名詞要跟主詞：je → me"
+ },
+ {
+  "id": "L54_les_haricots",
+  "lesson": 54,
+  "fr": "les haricots",
+  "zh": "四季豆、菜豆",
+  "note": "n.m.pl.｜h 不連音：les ‖ haricots"
+ },
+ {
+  "id": "L54_les_lentilles",
+  "lesson": 54,
+  "fr": "les lentilles",
+  "zh": "扁豆",
+  "note": "n.f.pl.｜"
+ },
+ {
+  "id": "L54_les_pois_chiches",
+  "lesson": 54,
+  "fr": "les pois chiches",
+  "zh": "鷹嘴豆",
+  "note": "n.m.pl.｜le houmous 的材料"
+ },
+ {
+  "id": "L54_les_restes",
+  "lesson": 54,
+  "fr": "les restes",
+  "zh": "剩菜",
+  "note": "n.m.pl.｜老師：leftovers"
+ },
+ {
+  "id": "L54_accommoder_les_restes",
+  "lesson": 54,
+  "fr": "accommoder les restes",
+  "zh": "把剩菜重新料理",
+  "note": "v.｜老師：不重要"
+ },
+ {
+  "id": "L54_confectionner_un_plat",
+  "lesson": 54,
+  "fr": "confectionner un plat",
+  "zh": "親手做一道菜",
+  "note": "v.｜老師打 soi-même"
+ },
+ {
+  "id": "L54_congeler",
+  "lesson": 54,
+  "fr": "congeler",
+  "zh": "冷凍",
+  "note": "v.｜≠ décongeler 解凍"
+ },
+ {
+  "id": "L54_découvrir_de_nouvelles_s",
+  "lesson": 54,
+  "fr": "découvrir de nouvelles saveurs",
+  "zh": "發現新味道",
+  "note": "v.｜la saveur＝flavor"
+ },
+ {
+  "id": "L54_emporter",
+  "lesson": 54,
+  "fr": "emporter",
+  "zh": "帶走",
+  "note": "v.｜des plats à emporter 外帶"
+ },
+ {
+  "id": "L54_préparer_d_avance",
+  "lesson": 54,
+  "fr": "préparer d'avance",
+  "zh": "事先準備",
+  "note": "v.｜"
+ },
+ {
+  "id": "L54_se_faire_livrer_un_repas",
+  "lesson": 54,
+  "fr": "se faire livrer un repas",
+  "zh": "叫外送",
+  "note": "v.｜livrer＝deliver"
+ },
+ {
+  "id": "L54_la_livraison",
+  "lesson": 54,
+  "fr": "la livraison",
+  "zh": "外送、送貨",
+  "note": "n.f.｜un livreur 外送員"
+ },
+ {
+  "id": "L54_le_repas_équilibré",
+  "lesson": 54,
+  "fr": "le repas équilibré",
+  "zh": "均衡的一餐",
+  "note": "n.m.｜≠ déséquilibré"
+ },
+ {
+  "id": "L54_manger_sain",
+  "lesson": 54,
+  "fr": "manger sain",
+  "zh": "吃得健康",
+  "note": "v.｜老師打在截圖上"
+ },
+ {
+  "id": "L54_lutter_contre_le_gaspill",
+  "lesson": 54,
+  "fr": "lutter contre le gaspillage",
+  "zh": "對抗浪費",
+  "note": "v.｜＝éviter le gaspillage"
+ },
+ {
+  "id": "L54_diversifier_son_alimenta",
+  "lesson": 54,
+  "fr": "diversifier son alimentation",
+  "zh": "吃得多樣化",
+  "note": "v.｜"
+ },
+ {
+  "id": "L54_les_produits_locaux",
+  "lesson": 54,
+  "fr": "les produits locaux",
+  "zh": "在地產品",
+  "note": "n.m.pl.｜"
+ },
+ {
+  "id": "L54_la_banque_alimentaire",
+  "lesson": 54,
+  "fr": "la banque alimentaire",
+  "zh": "食物銀行",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L54_donner_un_coup_de_main",
+  "lesson": 54,
+  "fr": "donner un coup de main",
+  "zh": "幫忙",
+  "note": "v.｜un coup＝打一下"
+ },
+ {
+  "id": "L54_être_en_difficulté_finan",
+  "lesson": 54,
+  "fr": "être en difficulté financière",
+  "zh": "經濟有困難",
+  "note": "v.｜alimentaire＝吃不飽"
+ },
+ {
+  "id": "L54_le_restaurant_à_but_non",
+  "lesson": 54,
+  "fr": "le restaurant à but non lucratif",
+  "zh": "非營利餐廳",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L54_une_amende",
+  "lesson": 54,
+  "fr": "une amende",
+  "zh": "罰款",
+  "note": "n.f.｜老師：fine"
+ },
+ {
+  "id": "L54_urbain_urbaine",
+  "lesson": 54,
+  "fr": "urbain, urbaine",
+  "zh": "城市的",
+  "note": "adj.｜le monde urbain"
+ },
+ {
+  "id": "L54_le_béton",
+  "lesson": 54,
+  "fr": "le béton",
+  "zh": "混凝土、水泥",
+  "note": "n.m.｜老師：concrete"
+ },
+ {
+  "id": "L54_bétonner",
+  "lesson": 54,
+  "fr": "bétonner",
+  "zh": "鋪上水泥",
+  "note": "v.｜把綠地變城市"
+ },
+ {
+  "id": "L54_végétaliser",
+  "lesson": 54,
+  "fr": "végétaliser",
+  "zh": "綠化",
+  "note": "v.｜加樹、植物、公園"
+ },
+ {
+  "id": "L54_le_végétal",
+  "lesson": 54,
+  "fr": "le végétal",
+  "zh": "植物、綠地",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L54_par_ci_par_là",
+  "lesson": 54,
+  "fr": "par-ci par-là",
+  "zh": "這裡那裡、到處",
+  "note": "loc.｜＝ici et là"
+ },
+ {
+  "id": "L54_les_pulsations",
+  "lesson": 54,
+  "fr": "les pulsations",
+  "zh": "脈動",
+  "note": "n.f.pl.｜像心跳"
+ },
+ {
+  "id": "L54_mouvementé_mouvementée",
+  "lesson": 54,
+  "fr": "mouvementé, mouvementée",
+  "zh": "熱鬧的、多變動的",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L54_se_glisser_dans",
+  "lesson": 54,
+  "fr": "se glisser dans",
+  "zh": "鑽進、溜進",
+  "note": "v.｜glisser＝滑"
+ },
+ {
+  "id": "L54_la_ruelle",
+  "lesson": 54,
+  "fr": "la ruelle",
+  "zh": "小巷",
+  "note": "n.f.｜la rue 大街"
+ },
+ {
+  "id": "L54_de_partout",
+  "lesson": 54,
+  "fr": "de partout",
+  "zh": "來自各地",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L54_la_cité",
+  "lesson": 54,
+  "fr": "la cité",
+  "zh": "城市",
+  "note": "n.f.｜文雅的說法"
+ },
+ {
+  "id": "L54_ou_bien",
+  "lesson": 54,
+  "fr": "ou bien",
+  "zh": "或者",
+  "note": "conj.｜⚠️ 不是「很好」"
+ },
+ {
+  "id": "L54_retentir",
+  "lesson": 54,
+  "fr": "retentir",
+  "zh": "迴響",
+  "note": "v.｜＝résonner"
+ },
+ {
+  "id": "L54_coller_à_la_peau",
+  "lesson": 54,
+  "fr": "coller à la peau",
+  "zh": "甩不掉",
+  "note": "v.｜黏在皮膚上"
+ },
+ {
+  "id": "L54_se_passer_de",
+  "lesson": 54,
+  "fr": "se passer de",
+  "zh": "沒有…也行",
+  "note": "v.｜"
+ },
+ {
+  "id": "L54_foncièrement",
+  "lesson": 54,
+  "fr": "foncièrement",
+  "zh": "徹底地",
+  "note": "adv.｜＝totalement"
+ },
+ {
+  "id": "L54_un_fait_divers",
+  "lesson": 54,
+  "fr": "un fait divers",
+  "zh": "社會新聞",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L54_déguisé_en",
+  "lesson": 54,
+  "fr": "déguisé en",
+  "zh": "打扮成",
+  "note": "adj.｜déguisés en Spider-Man"
+ },
+ {
+  "id": "L54_escalader",
+  "lesson": 54,
+  "fr": "escalader",
+  "zh": "攀爬",
+  "note": "v.｜un grimpeur 攀爬的人"
+ },
+ {
+  "id": "L54_intervenir",
+  "lesson": 54,
+  "fr": "intervenir",
+  "zh": "出動處理、介入",
+  "note": "v.｜ils sont intervenus（être）"
+ },
+ {
+  "id": "L54_alerter",
+  "lesson": 54,
+  "fr": "alerter",
+  "zh": "通報",
+  "note": "v.｜la police a été alertée"
+ },
+ {
+  "id": "L54_une_lampe_torche",
+  "lesson": 54,
+  "fr": "une lampe torche",
+  "zh": "手電筒",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L54_majeur_mineur",
+  "lesson": 54,
+  "fr": "majeur ≠ mineur",
+  "zh": "成年 ≠ 未成年",
+  "note": "adj.｜老師打在截圖上"
+ },
+ {
+  "id": "L54_à_mains_nues",
+  "lesson": 54,
+  "fr": "à mains nues",
+  "zh": "徒手",
+  "note": "loc.｜pieds nus 光腳"
+ },
+ {
+  "id": "L54_l_édifice",
+  "lesson": 54,
+  "fr": "l'édifice",
+  "zh": "建築物",
+  "note": "n.m.｜＝le bâtiment"
+ },
+ {
+  "id": "L54_selon",
+  "lesson": 54,
+  "fr": "selon",
+  "zh": "根據",
+  "note": "prép.｜＝d'après"
+ },
+ {
+  "id": "L54_avec_l_appui_de",
+  "lesson": 54,
+  "fr": "avec l'appui de",
+  "zh": "在…支援下",
+  "note": "loc.｜＝avec l'aide de"
+ },
+ {
+  "id": "L54_prétexter",
+  "lesson": 54,
+  "fr": "prétexter",
+  "zh": "藉口說",
+  "note": "v.｜"
+ },
+ {
+  "id": "L54_blessé",
+  "lesson": 54,
+  "fr": "blessé",
+  "zh": "（人）受傷的",
+  "note": "adj.｜⭐ 用在人"
+ },
+ {
+  "id": "L54_endommagé",
+  "lesson": 54,
+  "fr": "endommagé",
+  "zh": "（東西）損壞的",
+  "note": "adj.｜⭐ 用在東西"
+ },
+ {
+  "id": "L54_condamner_un_passage",
+  "lesson": 54,
+  "fr": "condamner un passage",
+  "zh": "封住通道",
+  "note": "v.｜也有「判刑」的意思"
+ },
+ {
+  "id": "L54_frôler_le_drame",
+  "lesson": 54,
+  "fr": "frôler le drame",
+  "zh": "差一點出人命",
+  "note": "v.｜frôler 擦過"
+ },
+ {
+  "id": "L54_l_entretien",
+  "lesson": 54,
+  "fr": "l'entretien",
+  "zh": "維護保養",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L54_aux_environs_de",
+  "lesson": 54,
+  "fr": "aux environs de",
+  "zh": "大約在",
+  "note": "loc.｜課本漏了 s"
+ },
+ {
+  "id": "L54_déposer_une_plainte",
+  "lesson": 54,
+  "fr": "déposer une plainte",
+  "zh": "提告",
+  "note": "v.｜＝porter plainte"
+ },
+ {
+  "id": "L54_à_l_encontre_de",
+  "lesson": 54,
+  "fr": "à l'encontre de",
+  "zh": "針對、對…不利",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L54_Elles_sont_évincées",
+  "lesson": 54,
+  "fr": "Elles sont évincées.",
+  "zh": "她們被趕走。",
+  "note": "présent → sont"
+ },
+ {
+  "id": "L54_Un_salon_sera_bientôt_or",
+  "lesson": 54,
+  "fr": "Un salon sera bientôt organisé par la bibliothèque.",
+  "zh": "圖書館很快會辦一場展覽。",
+  "note": "futur → sera"
+ },
+ {
+  "id": "L54_Les_activités_seront_ann",
+  "lesson": 54,
+  "fr": "Les activités seront annulées par la mairie.",
+  "zh": "市政府會取消活動。",
+  "note": "futur → seront"
+ },
+ {
+  "id": "L54_Il_faut_que_la_rue_soit",
+  "lesson": 54,
+  "fr": "Il faut que la rue soit libérée par ce camion.",
+  "zh": "這輛卡車得把路讓出來。",
+  "note": "subjonctif → soit"
+ },
+ {
+  "id": "L54_Une_solution_doit_être_t_2",
+  "lesson": 54,
+  "fr": "Une solution doit être trouvée.",
+  "zh": "必須找到解決辦法。",
+  "note": "devoir + infinitif → être"
+ },
+ {
+  "id": "L54_inabordable",
+  "lesson": 54,
+  "fr": "inabordable",
+  "zh": "貴到負擔不起",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L54_héberger",
+  "lesson": 54,
+  "fr": "héberger",
+  "zh": "收容、讓人住",
+  "note": "v.｜"
+ },
+ {
+  "id": "L54_ouvrier_ouvrière",
+  "lesson": 54,
+  "fr": "ouvrier, ouvrière",
+  "zh": "工人",
+  "note": "n.｜l'usine 工廠"
+ },
+ {
+  "id": "L54_se_mettre_à",
+  "lesson": 54,
+  "fr": "se mettre à",
+  "zh": "開始（做）",
+  "note": "v.｜＋原形"
+ },
+ {
+  "id": "L54_un_ménage_aisé",
+  "lesson": 54,
+  "fr": "un ménage aisé",
+  "zh": "富裕的家庭",
+  "note": "n.m.｜aisé＝有錢的"
+ },
+ {
+  "id": "L54_évincer",
+  "lesson": 54,
+  "fr": "évincer",
+  "zh": "趕走",
+  "note": "v.｜老師：evict"
+ },
+ {
+  "id": "L54_se_permettre_de",
+  "lesson": 54,
+  "fr": "se permettre de",
+  "zh": "負擔得起",
+  "note": "v.｜＋原形"
+ },
+ {
+  "id": "L54_fréquenter",
+  "lesson": 54,
+  "fr": "fréquenter",
+  "zh": "常去",
+  "note": "v.｜"
+ },
+ {
+  "id": "L54_les_commerces",
+  "lesson": 54,
+  "fr": "les commerces",
+  "zh": "商店",
+  "note": "n.m.pl.｜"
+ },
+ {
+  "id": "L54_les_uns_après_les_autres",
+  "lesson": 54,
+  "fr": "les uns après les autres",
+  "zh": "一個接一個",
+  "note": "loc.｜"
+ },
+ {
+  "id": "L54_la_gentrification",
+  "lesson": 54,
+  "fr": "la gentrification",
+  "zh": "士紳化",
+  "note": "n.f.｜se gentrifier"
+ },
+ {
+  "id": "L54_fulgurant_fulgurante",
+  "lesson": 54,
+  "fr": "fulgurant, fulgurante",
+  "zh": "非常快的",
+  "note": "adj.｜"
+ },
+ {
+  "id": "L54_la_spéculation",
+  "lesson": 54,
+  "fr": "la spéculation",
+  "zh": "炒作",
+  "note": "n.f.｜"
+ },
+ {
+  "id": "L54_les_promoteurs",
+  "lesson": 54,
+  "fr": "les promoteurs",
+  "zh": "建商",
+  "note": "n.m.pl.｜constructeurs immobiliers"
+ },
+ {
+  "id": "L54_un_bien_essentiel",
+  "lesson": 54,
+  "fr": "un bien essentiel",
+  "zh": "必需品",
+  "note": "n.m.｜"
+ },
+ {
+  "id": "L54_quelconque",
+  "lesson": 54,
+  "fr": "quelconque",
+  "zh": "隨便一個、普通的",
+  "note": "adj.｜老師：any、random"
+ },
+ {
+  "id": "L54_chose_certaine",
+  "lesson": 54,
+  "fr": "chose certaine",
+  "zh": "可以確定的是",
+  "note": "loc.｜⚠️ ≠ certaines choses"
+ },
+ {
+  "id": "L54_renverser_la_tendance",
+  "lesson": 54,
+  "fr": "renverser la tendance",
+  "zh": "扭轉趨勢",
+  "note": "v.｜"
+ },
+ {
+  "id": "L54_donner_la_parole_à",
+  "lesson": 54,
+  "fr": "donner la parole à",
+  "zh": "讓…發聲",
+  "note": "v.｜"
+ },
+ {
+  "id": "L54_subir",
+  "lesson": 54,
+  "fr": "subir",
+  "zh": "承受（壞事）",
+  "note": "v.｜ils subissent"
  }
 ];
