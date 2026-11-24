@@ -810,10 +810,16 @@ function playQuestion() {
   if (start === null || !audioEl) return;
   const next = cueList().slice(cur.idx + 1).find(x => typeof x === 'number' && x > start);
   qEnd = typeof next === 'number' ? next : null;   // 最後一題：播到結尾
+  stoppedAt = null;
   seekTo(start, true);
 }
+let stoppedAt = null;   // 剛剛自動停在哪（停點）：再按 ⏯ 就越過停點繼續聽
 function checkQEnd() {
-  if (audioEl && qEnd !== null && audioEl.currentTime >= qEnd) { qEnd = null; audioEl.pause(); }
+  if (audioEl && qEnd !== null && audioEl.currentTime >= qEnd) {
+    stoppedAt = qEnd; qEnd = null; audioEl.pause();
+    const n = document.getElementById('markNote');
+    if (n && cur.idx < cur.test.questions.length - 1) n.innerHTML = '⏸ 停在第 ' + (cur.test.questions[cur.idx].q + 1) + ' 題開頭。<b>這題其實還沒講完？</b>按 ⏯ 繼續聽，聽到真正的下一題開始再按 🏁';
+  }
 }
 
 /* ── render one question ─────────────────────────────────────── */
@@ -882,10 +888,10 @@ function go(d) {
   const n = cur.test.questions.length;
   tickTime();
   cur.idx = Math.max(0, Math.min(n - 1, cur.idx + d));
-  qEnd = null; if (audioEl && !cur.mock) audioEl.pause();
+  qEnd = null; stoppedAt = null; if (audioEl && !cur.mock) audioEl.pause();
   saveSingle(); renderQ(); window.scrollTo(0, 0);
 }
-function jump(i) { tickTime(); cur.idx = i; qEnd = null; if (audioEl && !cur.mock) audioEl.pause(); saveSingle(); renderQ(); window.scrollTo(0, 0); }
+function jump(i) { tickTime(); cur.idx = i; qEnd = null; stoppedAt = null; if (audioEl && !cur.mock) audioEl.pause(); saveSingle(); renderQ(); window.scrollTo(0, 0); }
 
 /* ── 單題模式 2026-11-09（Owen：「我想每題寫完做解析」）──────────────
    跳過不計分、不算錯，有記下來但之後點回去還是可以作答。 */
@@ -1052,7 +1058,14 @@ function reflowFr(s) {
 function togglePlay() {
   if (!audioEl) return;
   if (!audioEl.paused) { audioEl.pause(); return; }
-  const start = cueOf(cur.idx);
+  const start = cueOf(cur.idx), at0 = audioEl.currentTime || 0;
+  /* 11-24 Owen：「如果下一題的標示提前呢？」→ 剛自動停在停點、再按 ⏯ ＝ 越過停點繼續聽（不再拉回這題開頭），
+     聽到真正的下一題開始時按 🏁 改停點 */
+  if (stoppedAt !== null && Math.abs(at0 - stoppedAt) < 2) {
+    stoppedAt = null; qEnd = null;
+    const p = audioEl.play(); if (p && p.catch) p.catch(() => {}); return;
+  }
+  stoppedAt = null;
   if (start !== null) {
     const next = cueList().slice(cur.idx + 1).find(x => typeof x === 'number' && x > start);
     const end = typeof next === 'number' ? next : null, at = audioEl.currentTime || 0;
