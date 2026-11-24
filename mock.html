@@ -225,6 +225,10 @@ div.opt-btn { cursor: default; }
   width: 104px; padding: 6px; background: #0a0c16; border: 1px solid #1a2438; border-radius: 12px;
   box-shadow: -4px 0 18px rgba(0,0,0,.55); }
 .rev-detail:has(.big-ctl) { padding-right: 112px; }
+/* 11-24 Owen：「播放暫停鍵需要用不同顏色標出來，不然我很容易錯按成這一題」→ ⏯ 綠色實心、▶ 這一題 金色外框，中間隔開 */
+.big-ctl button.pp { background: #1d5a34 !important; border-color: #60d090 !important; color: #e8fff0 !important; padding: 22px 4px !important; }
+.big-ctl button.this-q { background: none !important; border: 1.5px dashed #c9a040 !important; color: #f0c060 !important; margin-bottom: 14px; }
+.big-ctl button.this-q small { font-size: .7em; color: #a89060; font-weight: 400; }
 /* 法文／中文左右對照（11-13 Owen：「中文想對照看都要往下滑，我傾向左右兩邊看（iPad 橫看）」「中文可以有隱藏打開的功能」）
    .bi.rows：逐字稿一段配一行中文（段數對得上才用）；直拿時變成一段法文下面接它的中文 */
 .bi > div, .bi > p { min-width: 0; }
@@ -1370,8 +1374,8 @@ function detailHtml(q, t, inline) {   // inline：單題模式直接展開，圖
     if (q.opt_zh)  h += '<h4>選項分析</h4><p>' + esc(q.opt_zh) + '</p>';
   } else {
     /* 11-10 Owen 回報：詳解旁要有大的前進後退＋暫停（練習／單題才有，模考模式不會走到 inline） */
-    if (inline) h += '<div class="big-ctl">' + (cueOf(cur.idx) !== null ? '<button onclick="playQuestion()">▶ 這一題</button>' : '') +
-      '<button onclick="seekBy(-5)">⏪ 5 秒</button><button onclick="togglePlay()">⏯ 播放<br>暫停</button><button onclick="seekBy(5)">5 秒 ⏩</button></div>';
+    if (inline) h += '<div class="big-ctl">' + (cueOf(cur.idx) !== null ? '<button class="this-q" onclick="playQuestion()">▶ 這一題<br><small>從頭播</small></button>' : '') +
+      '<button onclick="seekBy(-5)">⏪ 5 秒</button><button class="pp" onclick="togglePlay()">⏯ 播放<br>暫停</button><button onclick="seekBy(5)">5 秒 ⏩</button></div>';
     /* 選項翻譯（11-10 Owen 回報「答案也要翻譯」；佔位選項 Proposition a–d 那種沒有 opts_zh） */
     if (q.opts_zh) h += '<h4>選項翻譯</h4><p>' + q.opts_zh.map((z, i) => {
       const L = 'ABCD'[i], line = L + '. ' + esc(z);
