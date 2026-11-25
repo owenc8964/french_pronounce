@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 Unité 7 預習單</title>
+<style>
+  :root {
+    --bg: #15171c;
+    --card: #1f232b;
+    --card2: #262b35;
+    --text: #e6e8ec;
+    --muted: #9aa3b2;
+    --fr: #ffffff;
+    --accent: #7cc4ff;
+    --gold: #f2c86b;
+    --warn: #ff9f7a;
+    --line: #333a46;
+    --gray-badge: #4a5160;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Helvetica Neue", sans-serif;
+    font-size: 16px; line-height: 1.65;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 1.35rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: .9rem; margin-bottom: 18px; }
+  section {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; margin: 0 0 16px;
+  }
+  h2 { font-size: 1.1rem; margin: 0 0 8px; color: var(--accent); }
+  h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--gold); }
+  p { margin: 6px 0; }
+  b { color: var(--fr); }
+  .time { float: right; font-size: .78rem; color: var(--muted); font-weight: normal; }
+  .rule {
+    background: var(--card2); border-left: 4px solid var(--accent);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .trap {
+    background: rgba(255,159,122,.08); border-left: 4px solid var(--warn);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .flag {
+    background: rgba(242,200,107,.08); border-left: 4px solid var(--gold);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: .92rem;
+  }
+  .map { list-style: none; padding: 0; margin: 0; }
+  .map li { padding: 7px 0; border-bottom: 1px solid var(--line); }
+  .map li:last-child { border-bottom: none; }
+  .pg { display: inline-block; min-width: 54px; color: var(--accent); font-weight: 600; }
+  .tag { display: inline-block; font-size: .72rem; padding: 1px 7px; border-radius: 10px;
+         background: var(--gray-badge); color: var(--text); margin-left: 4px; vertical-align: 1px; }
+  .tag.new { background: #2f5d8a; }
+  /* 法文句子載體：沿用 french_notes.html 的結構，之後可直接搬 */
+  .phrase-list { list-style: none; padding: 0; margin: 6px 0; }
+  .phrase-list li {
+    display: flex; flex-wrap: wrap; gap: 2px 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--line);
+  }
+  .phrase-list li:last-child { border-bottom: none; }
+  .fr { font-weight: 600; color: var(--fr); width: 100%; }
+  .zh { color: var(--muted); font-size: .9rem; }
+  .phrase-list li > span.note { color: #7d8696; font-size: .8rem; }
+  .fr em { font-style: normal; color: var(--gold); }
+  .vocab { list-style: none; padding: 0; margin: 4px 0 8px;
+           display: grid; grid-template-columns: 1fr; gap: 0; }
+  .vocab li { padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: .95rem; }
+  .vocab li:last-child { border-bottom: none; }
+  .vocab .w { color: var(--fr); font-weight: 600; }
+  .g { display: inline-block; font-size: .72rem; color: var(--muted); border: 1px solid var(--line);
+       border-radius: 4px; padding: 0 5px; margin: 0 4px; }
+  details { background: var(--card2); border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
+  summary { cursor: pointer; font-weight: 600; color: var(--text); }
+  details[open] summary { margin-bottom: 6px; }
+  .ex { margin: 8px 0; padding-left: 2px; }
+  .ex .q { color: var(--fr); }
+  .hint { color: var(--muted); font-size: .92rem; }
+  .likely { color: var(--gold); font-size: .8rem; }
+  ol.ask { padding-left: 20px; margin: 6px 0; }
+  ol.ask li { margin: 8px 0; }
+  .small { font-size: .85rem; color: var(--muted); }
+  @media (min-width: 640px) {
+    .vocab { grid-template-columns: 1fr 1fr; column-gap: 18px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Unité 7 Apprendre… encore et toujours !・預習單（草稿）</h1>
+<div class="sub">範圍：Édito B1 p.101–114（第 7 單元）｜大約 15 分鐘｜全部法文句子都是課本原句，每句標頁碼</div>
+
+<div class="flag">
+  🚧 <b>這是草稿。</b>給 Unité 7 開課前先看的。<br>
+  中文翻譯、「它在處理什麼資訊」的說明、陷阱與標註是 Claude 加的；法文全部取自 <code>assets/.textbook_cache.txt</code> 的 Édito B1 內頁（PDF 頁碼＝課本頁碼）與課本附錄逐字稿 p.207。
+</div>
+
+<!-- ============ 0. 地圖 ============ -->
+<section>
+  <h2>🗺 這個單元的頁面 <span class="time">1 分鐘</span></h2>
+  <ul class="map">
+    <li><span class="pg">p.101</span>單元首頁。目標：表達意圖｜使用正式書信的固定格式｜談自己的計畫｜發展有邏輯、連貫的論證</li>
+    <li><span class="pg">p.102</span>A 閱讀：〈Les Campus connectés〉偏遠城市的遠距上大學據點｜B 聽力：正規學制 vs 建教合作（formation initiale／en alternance）</li>
+    <li><span class="pg">p.103</span>C 閱讀：Lucas 的<b>動機信</b>（lettre de motivation）＋「表達意圖」＋「正式書信的格式」</li>
+    <li><span class="pg">p.104</span><b>文法：Les pronoms relatifs simples qui, que, dont, où 簡單關係代名詞</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.105</span>D 影片：Eucor 歐洲聯合校園｜E 閱讀：〈Ma thèse en 180 secondes〉三分鐘講完博士論文</li>
+    <li><span class="pg">p.106</span>詞彙頁：學業（人、學制、formation、科系、入學）＋ 發音：<b>L'élision（e 的脫落）</b><span class="tag new">新</span></li>
+    <li><span class="pg">p.107</span>Culture：F 閱讀：免費時尚學校 Casa 93｜G 聽力：喀麥隆的工程師學校</li>
+    <li><span class="pg">p.108</span>H 閱讀＋圖表：法國人與轉職（reconversion professionnelle）｜I 聽力：轉行當單口喜劇演員</li>
+    <li><span class="pg">p.109</span>J 閱讀：TestUnMetier.com 試做一個職業｜<b>文法：Exprimer le but 表達目的</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.110</span>K 閱讀：master class 線上大師課｜L 聽力：在催眠下學外語＋「談計畫」＋「有邏輯的論證」</li>
+    <li><span class="pg">p.111</span><b>文法：Le gérondif 副動詞（en ＋ -ant）</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.112</span>詞彙頁：學習（方法、工具、能力與特質、轉職、知識）</li>
+    <li><span class="pg">p.113</span>l'essentiel 總複習（文法／詞彙）</li>
+    <li><span class="pg">p.114</span>Atelier médiation：用投影片介紹一所法語學校的課程＋策略「簡化一段文字」</li>
+  </ul>
+  <p class="small">p.115 已經是 Unité 8 Mieux consommer ! 的首頁。⚠️ 跟 Unité 6 不同，這個單元<b>沒有</b> DELF 應考策略頁（p.114 之後直接進 Unité 8）；DELF 只以練習題出現（p.103 練習 7、p.106 練習 5、p.108 練習 6，見第 7 段）。</p>
+</section>
+
+<!-- ============ 1. 關係代名詞 ============ -->
+<section>
+  <h2>📐 文法一：Les pronoms relatifs qui, que, dont, où 關係代名詞（p.104） <span class="time">4 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>把兩句話併成一句，用一個小字「指回」前面那個名詞，同時告訴你<b>它在第二句裡扮演什麼角色</b>。<br>
+    <b>qui</b>＝第二句的主詞｜<b>que</b>＝第二句的直接受詞（COD）｜<b>dont</b>＝第二句裡「de ＋ 名詞」那一塊｜<b>où</b>＝地點<b>或時間</b>。<br>
+    ⭐ 選哪一個看的是<b>第二句裡的動詞怎麼接</b>，不是看前面的名詞是人還是物。
+  </div>
+
+  <h3>課本 Fonctionnement（p.104）</h3>
+  <p class="small">課本給的示範（p.104 Exemple）：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">Il y a des salles de cours <em>où</em> les étudiants peuvent travailler.</span><span class="zh">有一些學生可以在裡面讀書的教室。</span><span class="note">p.104 Exemple → 拆成 Il y a des salles de cours. Les étudiants peuvent travailler dans des salles de cours.（où＝地點補語）</span></li>
+  </ul>
+  <p class="small">表格其餘欄位課本留空讓你填；下面的「角色」是 Claude 依同頁例句推的，<b>未查證</b>（快取裡沒有 B1 解答頁）：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">les ordinateurs <em>qu'</em>on met à leur disposition</span><span class="zh">（學校）提供給他們用的電腦</span><span class="note">p.104 b → que＝COD（on met les ordinateurs）</span></li>
+    <li><span class="fr">C'est une opportunité pour les jeunes <em>qui</em> habitent dans des villes éloignées.</span><span class="zh">這是給住在偏遠城市的年輕人的機會。</span><span class="note">p.104 c → qui＝主詞（les jeunes habitent）</span></li>
+    <li><span class="fr">Le jour <em>où</em> j'ai commencé le stage, j'ai pu mettre en application la théorie.</span><span class="zh">我開始實習的那天，就能把理論拿來用了。</span><span class="note">p.104 d → où＝時間補語</span></li>
+    <li><span class="fr">C'est une école <em>dont</em> les enseignants sont des universitaires.</span><span class="zh">這是一所老師都是大學教授的學校。</span><span class="note">p.104 e → dont＝« de l'école »（les enseignants de l'école）</span></li>
+    <li><span class="fr">J'envisage de faire un autre stage dans une entreprise <em>dont</em> ils m'ont parlé.</span><span class="zh">我打算去他們跟我提過的一家公司再實習一次。</span><span class="note">p.104 f → dont＝« d'une entreprise »（parler de）</span></li>
+  </ul>
+
+  <h3>課本 Remarques（p.104）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">les ordinateurs qu'on met à leur disposition</span><span class="zh">qui 永遠不變；que 遇到母音變 qu'</span><span class="note">p.104 Remarque 1</span></li>
+    <li><span class="fr">les études <em>que</em> j'ai <em>suivies</em> ; la théorie <em>que</em> j'avais <em>apprise</em></span><span class="zh">que 引導的子句用複合時態時，過去分詞要跟 COD 配合</span><span class="note">p.104 Remarque 2</span></li>
+    <li><span class="fr">les études que fait mon frère ; l'université où a étudié mon ami ; l'entreprise dont m'ont parlé les anciens élèves</span><span class="zh">que、dont、où 後面主詞和動詞可以倒裝</span><span class="note">p.104 Remarque 4（Remarque 3：dont 永遠放在它補充的名詞或動詞前面）</span></li>
+  </ul>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：où 也管時間。</b>le jour <b>où</b>、cette année <b>où</b>——中文會想成「當……的那天」，很容易誤用 quand。p.104 練習 4f <i>On se souvient de cette année …… il a réussi ses examens du premier coup !</i>：句首有 se souvenir <b>de</b>，但那個 de 已經在主句用掉了；空格要補的是「在那一年」，所以是哪一個？<br>
+    ⚠️ <b>陷阱二：dont 只吃「de ＋ 名詞」。</b>p.104 練習 3b <i>Nous avons intégré un master. Beaucoup d'étudiants rêvent de faire ce master.</i>——rêver <b>de</b> 後面接的是 faire，ce master 是 faire 的<b>直接受詞</b>。所以不是 dont。<br>
+    ⚠️ <b>陷阱三：que ＋ 複合時態要配合。</b><i>la lettre de motivation que j'ai envoyée</i>（p.113 練習 1d＋1.）、<i>Quelle formule … ont-ils choisie ?</i>（p.105 D 練習 3，前置 COD 同一條規則）。用耳朵聽不出 -e，⭐ 寫作才扣分。<br>
+    ⚠️ <b>陷阱四：dont ＋ 名詞後面的冠詞保留。</b><i>C'est une université …… la réputation est bonne.</i>（p.104 練習 4c）——dont <b>la</b> réputation，冠詞不能掉。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>Remarque 2 沒寫「助動詞是 avoir 時」。</b>標準文法：過去分詞跟前置 COD 配合是 <b>avoir</b> 的規則；助動詞是 être 時本來就跟主詞配合。課本的例子都是 avoir，不算錯，只是規則寫得比較寬。這是 Claude 依標準文法補的。<br>
+    ② <b>dont 的範圍比課本這頁大。</b>課本只寫「de 引導的補語」。標準法文裡 dont 還管 de ＋ 形容詞（<i>fier de</i>）等，課本這頁沒提，之後看到不用困惑（<b>未查證</b>後面單元）。<br>
+    ③ Remarque 3「dont 永遠放在它補充的名詞或動詞前面」是課本的簡化說法；dont 一定緊接在先行詞後面，這點課本沒明講。
+  </div>
+</section>
+
+<!-- ============ 2. 表達目的 ============ -->
+<section>
+  <h2>📐 文法二：Exprimer le but 表達目的（p.109） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>「為了什麼」。法文多了一道判斷：<b>做事的人跟目的裡的人是不是同一個？</b><br>
+    同一個 → <b>pour／afin de ＋ 原形</b>｜不同人 → <b>pour que／afin que ＋ 虛擬式（subjonctif）</b>（p.109 Remarque）。<br>
+    另外一個說法：<b>Mon objectif, c'est de ＋ 原形</b>。
+  </div>
+
+  <h3>課本 Fonctionnement 與 Remarque（p.109）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Afin de · Afin que · Pour · Pour que · Mon objectif, c'est de/d'</span><span class="zh">表格要你把這幾個分成「接原形」和「接虛擬式」兩欄</span><span class="note">p.109（抽字把表格排成 « Pour + …… + …… »，欄位版面推定，<b>未查證</b>）</span></li>
+    <li><span class="fr">Elle s'est reconvertie <em>pour/afin d'</em>être actrice.</span><span class="zh">她轉行是為了當演員。</span><span class="note">p.109 Remarque（主詞相同 → 原形）</span></li>
+    <li><span class="fr">Elle s'est reconvertie <em>pour que/afin que</em> sa famille <em>vive</em> mieux.</span><span class="zh">她轉行是為了讓家人過得更好。</span><span class="note">p.109 Remarque（主詞不同 → 虛擬式 vive）</span></li>
+  </ul>
+
+  <h3>Échauffement（p.109，出自 p.108 H、I 與 p.109 J）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Les Français espèrent gagner en liberté <em>afin de</em> mieux concilier leur vie professionnelle et privée.</span><span class="zh">法國人希望多一點自由，好兼顧工作與私生活。</span><span class="note">p.109 a</span></li>
+    <li><span class="fr">J'ai quitté mon job <em>pour</em> devenir humoriste.</span><span class="zh">我辭掉工作去當喜劇演員。</span><span class="note">p.109 b（原句在 p.207 逐字稿 I）</span></li>
+    <li><span class="fr"><em>Mon objectif c'est d'</em>avoir une heure de spectacle.</span><span class="zh">我的目標是寫出一小時的表演。</span><span class="note">p.109 c（逐字稿原句後面還有 « écrite d'ici le mois de juin »）</span></li>
+    <li><span class="fr"><em>Pour qu'</em>il <em>fasse</em> un stage qui <em>corresponde</em> au mieux à son envie, il faut d'abord qu'on <em>cerne</em> la demande.</span><span class="zh">為了讓他做一個最符合他想要的實習，我們得先搞清楚他的需求。</span><span class="note">p.109 d（一句三個虛擬式：fasse／corresponde／cerne；cerner＝comprendre bien，p.109 J 註 2）</span></li>
+    <li><span class="fr">Nous faisons un bilan avec le stagiaire <em>afin qu'</em>il nous <em>dise</em> ce qu'il a ressenti.</span><span class="zh">我們跟實習者做一次檢討，好讓他告訴我們他的感受。</span><span class="note">p.109 e</span></li>
+  </ul>
+  <ul class="phrase-list">
+    <li><span class="fr">Il fait une formation pour que son travail soit plus intéressant.</span><span class="zh">他去上課，好讓工作變得更有意思。</span><span class="note">p.109 練習 3 Exemple（son travail ≠ il → 虛擬式 soit）</span></li>
+  </ul>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：主詞「看起來」一樣其實不一樣。</b>p.109 練習 3d <i>Je vais me renseigner. Je veux savoir comment ça fonctionne. (pour)</i>——兩句都是 je，所以用哪一種？對照練習 3a <i>Nous proposons ce dispositif. Tout le monde a une chance…</i>：nous ≠ tout le monde。<br>
+    ⚠️ <b>陷阱二：否定原形的位置。</b><i>afin de ne pas être trop loin de chez lui</i>（p.113 練習 2b）——ne pas 兩個字一起放在原形<b>前面</b>，不是夾住。<br>
+    ⚠️ <b>陷阱三：這是虛擬式的實戰。</b>pour que 後面的 fasse、dise、puisse、vive 全是不規則虛擬式（p.109、p.113 練習 2e <i>afin que tout le monde puisse accéder…</i>、2h <i>afin que nous passions du temps ensemble</i>）。規則你講得出來的話，卡住的是變位反射，不是概念。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b>課本只列 pour／afin 兩組加 mon objectif。標準法文還有 <i>de façon à</i>、<i>de peur que</i> 等其他目的連接詞，這頁沒有，B1 程度先不用管（Claude 依標準文法補的，<b>未查證</b>後面單元）。
+  </div>
+</section>
+
+<!-- ============ 3. 副動詞 ============ -->
+<section>
+  <h2>📐 文法三：Le gérondif 副動詞（p.111） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>用一個「en ＋ -ant」把<b>第二個動作</b>掛在主要動作旁邊，說明它是<b>怎麼做的</b>（方式）、<b>同時在做</b>（同時性）、或<b>在什麼條件下</b>（條件，可以換成 si）。<br>
+    <b>公式（p.111 Rappel）：</b>en ＋ <b>nous 現在式的字根</b> ＋ -ant，形式不變。nous discutons → en discut<b>ant</b>。<br>
+    <b>三個例外：</b>en <b>ayant</b>（avoir）、en <b>étant</b>（être）、en <b>sachant</b>（savoir）。<br>
+    Échauffement 2 問「主詞相同嗎？」——副動詞的主詞＝主要動詞的主詞。
+  </div>
+
+  <h3>課本 Échauffement（p.111，出自 p.110 K、L）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Les speakers parlent d'eux <em>en s'adressant</em> directement au public.</span><span class="zh">講者直接對觀眾說話來談自己。</span><span class="note">p.111 a（課本規則：方式）</span></li>
+    <li><span class="fr"><em>En discutant</em> avec ma petite-fille, j'ai découvert l'hypnocoaching.</span><span class="zh">跟孫女聊天的時候，我發現了催眠學習法。</span><span class="note">p.111 b</span></li>
+    <li><span class="fr"><em>En étant</em> sous hypnose, on est décomplexé.</span><span class="zh">在催眠狀態下，人就放得開。</span><span class="note">p.111 c（例外 étant）</span></li>
+    <li><span class="fr"><em>En travaillant</em> tous les jours, on y arrive.</span><span class="zh">每天練，就做得到。</span><span class="note">p.111 d</span></li>
+    <li><span class="fr">On me dit que je peux apprendre <em>en dormant</em>.</span><span class="zh">有人跟我說我可以睡覺時學。</span><span class="note">p.111 e</span></li>
+    <li><span class="fr">J'ai appris l'italien en étudiant seul.</span><span class="zh">我自學學會了義大利文。</span><span class="note">p.111 練習 5 Exemple（課本標 la manière）</span></li>
+  </ul>
+  <p class="small">Fonctionnement 表格（p.111）課本只寫了「方式：a 和 ……」，其餘空格要你填。Claude 推的分法：方式 a、d／同時 b、e／條件 c——但 c、d 兩題都說得通（見下方 🔎），<b>未查證</b>。</p>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：字根來自 nous，不是原形。</b>faire → nous <b>fais</b>ons → en <b>fais</b>ant；prendre → nous <b>pren</b>ons → en <b>pren</b>ant。p.111 練習 4 的字庫有 aller、suivre、s'inscrire——先在心裡講出 nous 的形式。<br>
+    ⚠️ <b>陷阱二：代動詞的 se 要跟著人變。</b>p.111 a <i>en <b>s'</b>adressant</i>（主詞 les speakers）；如果主詞是 nous，就是 en <b>nous</b> inscrivant。練習 4c <i>Nous avons écouté une star du cinéma …… à une master class</i> 就是在考這個。<br>
+    ⚠️ <b>陷阱三：en ＋ -ant 不等於中文的「在……中」。</b>它只能用在<b>同一個主詞</b>。p.111 練習 5d <i>Je suivais une master class. J'envoyais des textos à mes amis.</i>——兩句都是 je，所以可以併。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>課本只列三種用法（方式、同時、條件）。</b>標準文法裡 gérondif 也常表示<b>原因</b>，加 tout 時表示<b>讓步／對比</b>（tout en …）。p.111 c <i>En étant sous hypnose, on est décomplexé</i> 在逐字稿裡的原句是 <i>ce n'est pas si étonnant que ça marche <b>parce qu'</b>en étant sous hypnose, on est décomplexé</i>（p.110 功能句框、p.208 逐字稿）——前面就有 parce que，讀成「條件」或「原因」都說得通。tout en 下一個單元 p.116 A 就出現了（<i>tout en créant un lien social</i>）。這是 Claude 依標準文法補的。<br>
+    ② 這張單子寫的「主詞必須相同」是標準文法規則；課本用 Échauffement 2 的問題帶出來，沒有寫成一條規則。
+  </div>
+</section>
+
+<!-- ============ 4. 發音 ============ -->
+<section>
+  <h2>👂 發音：L'élision 口語裡 e 的脫落（p.106） <span class="time">1 分鐘</span></h2>
+  <div class="rule">
+    <b>它在處理什麼：</b>口語裡很多 e 會整個不唸，s'ra、sam'di、j'vais。這就是你聽真實法文時「字黏在一起、少了一拍」的主因之一。<br>
+    <b>課本規則（p.106 練習 2，抽字排版亂掉，以下是 Claude 整理）：</b><br>
+    <b>一定要唸：</b>句子開頭的 e（但 je、ce 可唸可不唸）：<i>Le café</i>｜「兩個子音 ＋ e ＋ 一個子音」：<i>mercredi</i>。<br>
+    <b>一定不唸：</b>字中間「子音 ＋ e ＋ 子音」：<i>samedi</i>｜字尾的 e：<i>l'écol'</i>（但字尾兩個發音子音 ＋ e 時可唸可不唸：<i>Je rest' là / Je reste là</i>）。<br>
+    <b>可唸可不唸：</b>字的第一個音節「子音 ＋ e ＋ 子音」：<i>s'ra / sera</i>。
+  </div>
+  <p>課本練習 1、3 的句子（逐字稿 p.207，撇號就是不唸的 e）：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">J'vais donner des cours particuliers tous les sam'dis. Le café à côté d'l'écol' s'ra parfait pour ça !</span><span class="zh">我要每週六教家教。學校旁邊那家咖啡店剛好。</span><span class="note">p.106 1a（逐字稿 p.207）</span></li>
+    <li><span class="fr">Je n'sais pas quel cours choisir. Le cours d'anglais ou d'espagnol ? J'dois fair' un choix rapid'ment.</span><span class="zh">我不知道選哪門課。英文還是西班牙文？我得趕快決定。</span><span class="note">p.106 1b（逐字稿 p.207）</span></li>
+    <li><span class="fr">J'révis' c'week-end. J'reste chez moi ! L'oral de français c'est mercredi et l'écrit vendredi.</span><span class="zh">這週末我要複習，待在家！法文口試週三、筆試週五。</span><span class="note">p.106 1c（逐字稿 p.207；mercredi、vendredi 的 e 照規則要唸）</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>陷阱：這是聽力的事，不是寫作的事。</b>寫的時候照樣寫 samedi、sera、l'école。⭐ 預習重點是聽到 <i>s'ra</i>、<i>j'dois</i> 時認得出來。
+  </div>
+  <div class="flag">
+    🔎 <b>課本與標準法文的落差：</b>課本把這個現象叫 <b>« L'élision »</b>。標準文法書通常把 élision 留給<b>寫出來</b>的省略（l'école、j'ai、qu'on），口語裡 e 不唸叫做 <b>e caduc／e muet 的脫落（chute du e）</b>。這兩件事不一樣：前者寫作必須做，後者寫作⛔ 不能照寫。這是 Claude 依標準語音學補的，課本沒有區分，<b>未查證</b>其他教材。
+  </div>
+</section>
+
+<!-- ============ 5. 功能句 ============ -->
+<section>
+  <h2>💬 上課會用到的說法 <span class="time">2 分鐘</span></h2>
+
+  <h3>Pour exprimer des intentions 表達意圖（p.103）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">J'ai décidé de poursuivre mes études en alternance.</span><span class="zh">我決定以建教合作的方式繼續念書。</span><span class="note">p.103</span></li>
+    <li><span class="fr">J'envisage de faire un autre stage.</span><span class="zh">我打算再做一次實習。</span><span class="note">p.103（envisager <b>de</b> ＋ 原形）</span></li>
+    <li><span class="fr">Je pense faire un séjour linguistique.</span><span class="zh">我想去遊學。</span><span class="note">p.103（penser ＋ 原形＝打算，⛔ 不加 de）</span></li>
+    <li><span class="fr">J'ai l'intention de suivre cette formation avec le plus grand sérieux.</span><span class="zh">我打算以最認真的態度上這個課程。</span><span class="note">p.103</span></li>
+  </ul>
+
+  <h3>Pour utiliser les rituels de la lettre formelle 正式書信格式（p.103）</h3>
+  <div class="rule">
+    課本要求寫出：寄件人與收件人的資料｜日期與地點｜信的主旨（Objet）｜開頭稱呼與結尾敬語（p.103）。
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">Toulouse, le 25 mars 2023</span><span class="zh">地點，日期</span><span class="note">p.103 C</span></li>
+    <li><span class="fr">Objet : Candidature pour intégrer un master en communication en alternance</span><span class="zh">主旨：申請就讀建教合作傳播碩士</span><span class="note">p.103 C</span></li>
+    <li><span class="fr">Madame, Monsieur,</span><span class="zh">（不知道收件人是誰時的開頭）</span><span class="note">p.103 C</span></li>
+    <li><span class="fr">Je reste à votre disposition pour un éventuel entretien.</span><span class="zh">如有面試機會，我隨時配合。</span><span class="note">p.103 C</span></li>
+    <li><span class="fr">Je vous prie d'agréer, Madame, Monsieur, mes salutations respectueuses.</span><span class="zh">（結尾敬語，類似「敬祝 安好」）</span><span class="note">p.103 C</span></li>
+  </ul>
+
+  <h3>Pour parler de ses projets 談自己的計畫（p.110）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">J'ai le projet de partir en Amérique latine.</span><span class="zh">我計畫去拉丁美洲。</span><span class="note">p.110</span></li>
+    <li><span class="fr">J'ai (bien) envie d'essayer !</span><span class="zh">我（很）想試試看！</span><span class="note">p.110</span></li>
+    <li><span class="fr">Je vais me lancer dans l'aventure.</span><span class="zh">我要放手去試。</span><span class="note">p.110</span></li>
+  </ul>
+
+  <h3>Pour développer une argumentation logique et cohérente 有邏輯的論證（p.110）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Je me réinscris parce que les cours me permettent de travailler la mémoire et la concentration.</span><span class="zh">我再報名，是因為這些課讓我能訓練記憶力和專注力。</span><span class="note">p.110</span></li>
+    <li><span class="fr">Ce n'est pas si étonnant que ça marche parce qu'en étant sous hypnose, on est décomplexé !</span><span class="zh">有效也沒那麼奇怪，因為在催眠狀態下人就放得開！</span><span class="note">p.110（étonnant que ＋ 虛擬式 marche；en étant＝文法三）</span></li>
+  </ul>
+
+  <h3>Simplifier un texte 簡化一段文字（p.114 Stratégies）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Évitez donc de lire les informations écrites telles que vous les avez trouvées sur Internet et n'hésitez pas à les simplifier.</span><span class="zh">不要照念網路上找到的原文，大膽把它簡化。</span><span class="note">p.114</span></li>
+    <li><span class="fr">Quand il y a beaucoup d'informations, identifiez et notez seulement les informations essentielles.</span><span class="zh">資訊很多時，只挑出並記下最重要的。</span><span class="note">p.114</span></li>
+    <li><span class="fr">… c'est-à-dire que l'on met en place des stratégies marketing et commerciales pour développer une entreprise.</span><span class="zh">……也就是說，要訂出行銷與業務策略來發展公司。</span><span class="note">p.114 Exemple（c'est-à-dire que＝換句話說，重述的萬用句）</span></li>
+  </ul>
+
+  <h3>單元格言</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">C'est une formation qui se fait en deux ans.</span><span class="zh">這是一個要兩年的課程。</span><span class="note">p.101 單元首頁（原句在 p.207 逐字稿 I；se faire＝被動意義的代動詞）</span></li>
+    <li><span class="fr">Le besoin en ingénieurs va être de plus en plus important.</span><span class="zh">對工程師的需求會越來越大。</span><span class="note">p.107 G 引言</span></li>
+    <li><span class="fr">Gagner sa vie en faisant rire les autres.</span><span class="zh">靠逗別人笑來謀生。</span><span class="note">p.108 I 引言（en faisant＝文法三）</span></li>
+  </ul>
+</section>
+
+<!-- ============ 6. 詞彙 ============ -->
+<section>
+  <h2>🧺 新詞彙（挑 B1 才出現、你筆記裡大多還沒有的） <span class="time">2 分鐘</span></h2>
+  <p class="small">哪些字筆記裡已經有，<b>未查證</b>（這次沒有對 french_notes.html 逐字核對）。法國學制名詞是法國特有的，跟台灣不能一對一換算，中文是近似說法。</p>
+
+  <h3>人（p.106 Les personnes）</h3>
+  <ul class="vocab">
+    <li><span class="w">le/la candidat(e)</span><span class="g">n.</span>考生、應徵者</li>
+    <li><span class="w">le/la doctorant(e)</span><span class="g">n.</span>博士生</li>
+    <li><span class="w">l'enseignant-chercheur, l'enseignante-chercheuse</span><span class="g">n.</span>大學教研人員</li>
+    <li><span class="w">le tuteur, la tutrice · le tutorat individuel ≠ collectif</span><span class="g">n.</span>導師・個別／團體輔導（p.102 A 練習 6）</li>
+    <li><span class="w">l'universitaire</span><span class="g">n.</span>大學教授／學者</li>
+  </ul>
+
+  <h3>學制（p.106 Le cursus）</h3>
+  <ul class="vocab">
+    <li><span class="w">le CAP · le BTS</span><span class="g">m.</span>職業能力證書（國中後）・高級技師文憑（高中後兩年）</li>
+    <li><span class="w">la licence · le master (bac +5) · la thèse</span><span class="g">f./m./f.</span>學士・碩士・博士論文</li>
+    <li><span class="w">l'école de commerce/d'ingénieurs</span><span class="g">f.</span>商學院／工程師學校</li>
+    <li><span class="w">la rentrée · le semestre</span><span class="g">f./m.</span>開學・學期</li>
+    <li><span class="w">le cursus · le parcours d'études</span><span class="g">m.</span>學程（p.102 A 練習 7）</li>
+  </ul>
+
+  <h3>課程（p.106 La formation）</h3>
+  <ul class="vocab">
+    <li><span class="w">la formation initiale ≠ en alternance</span><span class="g">f.</span>正規全職學制≠建教合作（一邊上班一邊上課）</li>
+    <li><span class="w">la formation diplômante · pratique ≠ théorique</span><span class="g">f.</span>可拿文憑的課程・實務≠理論</li>
+    <li><span class="w">intégrer/suivre une formation</span><span class="g">expr.</span>進入／上一個課程</li>
+    <li><span class="w">poursuivre des études (post-bac)</span><span class="g">expr.</span>（高中後）繼續升學</li>
+    <li><span class="w">acquérir des connaissances/des compétences</span><span class="g">expr.</span>獲得知識／能力</li>
+    <li><span class="w">se professionnaliser · l'insertion professionnelle</span><span class="g">v./f.</span>專業化・就業</li>
+  </ul>
+
+  <h3>入學（p.106 Accéder aux études）</h3>
+  <ul class="vocab">
+    <li><span class="w">candidater · la candidature</span><span class="g">v./f.</span>申請</li>
+    <li><span class="w">écrire une lettre de motivation</span><span class="g">expr.</span>寫動機信／自傳</li>
+    <li><span class="w">passer un diplôme · passer une épreuve</span><span class="g">expr.</span>考文憑・參加考試（passer＝去考，⛔ 不是「通過」）</li>
+    <li><span class="w">réussir ≠ rater (un concours)</span><span class="g">v.</span>考上≠落榜</li>
+    <li><span class="w">payer des frais de scolarité · s'inscrire</span><span class="g">expr.</span>繳學費・註冊</li>
+    <li><span class="w">la communication · la gestion · les sciences de l'éducation · STAPS</span><span class="g">f.</span>科系：傳播・管理・教育學・運動科學</li>
+  </ul>
+
+  <h3>學習方法與工具（p.112）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'auto-formation · le e-learning</span><span class="g">f./m.</span>自學・線上學習</li>
+    <li><span class="w">le cours particulier · le cours en groupe</span><span class="g">m.</span>家教課・團體課</li>
+    <li><span class="w">la master class · le MOOC</span><span class="g">f./m.</span>大師課・大型開放線上課程</li>
+    <li><span class="w">l'hypnocoaching · le coaching</span><span class="g">m.</span>催眠學習法・教練指導</li>
+    <li><span class="w">le dispositif (d'accompagnement) · la plateforme</span><span class="g">m./f.</span>（輔導）機制・平台</li>
+    <li><span class="w">le format court ≠ long</span><span class="g">m.</span>短／長格式</li>
+  </ul>
+
+  <h3>能力與特質（p.112）</h3>
+  <ul class="vocab">
+    <li><span class="w">avoir confiance en soi</span><span class="g">expr.</span>有自信</li>
+    <li><span class="w">ne pas avoir peur/honte de parler (en espagnol)</span><span class="g">expr.</span>不怕／不羞於開口（說西文）</li>
+    <li><span class="w">se concentrer · la concentration</span><span class="g">v./f.</span>專注</li>
+    <li><span class="w">mémoriser · la mémoire</span><span class="g">v./f.</span>記住・記憶力</li>
+    <li><span class="w">savoir synthétiser</span><span class="g">expr.</span>會歸納重點</li>
+    <li><span class="w">être motivé(e) · être expert(e)</span><span class="g">expr.</span>有動力・是專家</li>
+  </ul>
+
+  <h3>轉職與知識（p.112）</h3>
+  <ul class="vocab">
+    <li><span class="w">se reconvertir · la reconversion professionnelle</span><span class="g">v./f.</span>轉行</li>
+    <li><span class="w">changer de secteur d'activité</span><span class="g">expr.</span>換產業（changer <b>de</b>，不加冠詞）</li>
+    <li><span class="w">redonner du sens à son travail · se sentir utile</span><span class="g">expr.</span>讓工作重新有意義・覺得自己有用</li>
+    <li><span class="w">tester un nouveau métier</span><span class="g">expr.</span>試做新職業</li>
+    <li><span class="w">reprendre des études · l'université inter-âges</span><span class="g">expr./f.</span>重拾學業・不限年齡的社區大學</li>
+    <li><span class="w">ancrer les connaissances · booster l'apprentissage</span><span class="g">expr.</span>把知識固定下來・加速學習</li>
+  </ul>
+
+  <h3>課文裡的好用說法</h3>
+  <ul class="vocab">
+    <li><span class="w">la vulgarisation scientifique</span><span class="g">f.</span>科普（p.105 E 練習 6；抽字 « devulgarisation scientique »）</li>
+    <li><span class="w">l'immersion</span><span class="g">f.</span>沉浸（p.109 J 練習 5）</li>
+    <li><span class="w">les inédits</span><span class="g">m.</span>沒人聽過的新內容（p.110 K 練習 5）</li>
+    <li><span class="w">cartonner · avoir le vent en poupe</span><span class="g">fam./expr.</span>大紅・正走紅（p.110 K 註 1、2）</li>
+    <li><span class="w">passer à côté de sa vie</span><span class="g">expr.</span>錯過自己真正想過的人生（p.108 I 練習 6）</li>
+    <li><span class="w">gagner sa vie</span><span class="g">expr.</span>謀生（p.108 I）</li>
+    <li><span class="w">décloisonner</span><span class="g">v.</span>打破隔閡（＝donner accès à，p.107 F 註 1）</li>
+    <li><span class="w">les quartiers prioritaires</span><span class="g">m.</span>弱勢社區（＝défavorisés，p.107 F 註 2）</li>
+  </ul>
+</section>
+
+<!-- ============ 7. DELF ============ -->
+<section>
+  <h2>📝 DELF：這單元沒有策略頁，只有三道 DELF 標記的練習 <span class="time">1 分鐘</span></h2>
+  <ul class="phrase-list">
+    <li><span class="fr">Vous voulez intégrer un master ou une grande école (de commerce, d'architecture, d'ingénieurs…). Vous écrivez une lettre de motivation. Exprimez vos intentions. (150 mots minimum)</span><span class="zh">你想進碩士班或高等學院，寫一封動機信，表達你的意圖（至少 150 字）。</span><span class="note">p.103 練習 7（Production écrite DELF B1）</span></li>
+    <li><span class="fr">Racontez votre parcours scolaire, universitaire ou de formation professionnelle.</span><span class="zh">講述你的求學、大學或職業訓練經歷。</span><span class="note">p.106 練習 5（Production orale DELF B1）</span></li>
+    <li><span class="fr">Vous avez commencé une formation pour vous reconvertir. Vous décrivez sur votre blog les bénéfices de cette reconversion et les difficultés que vous rencontrez. (150 mots minimum)</span><span class="zh">你開始上課準備轉行，在部落格寫轉行的好處和遇到的困難（至少 150 字）。</span><span class="note">p.108 練習 6（Production écrite DELF B1）</span></li>
+  </ul>
+  <div class="flag">
+    🔎 ① <b>字數又不一致：</b>這單元的 DELF 寫作題寫 <b>150 mots minimum</b>，上一單元 p.99 策略頁寫 <b>160</b>。課本自己前後不一，現行官方規定 Claude <b>未查證</b>。<br>
+    ② 這是 DELF 規格，⭐ 不是 TCF Canada；字數與時間不要直接套。<br>
+    ③ 👉 p.106 練習 5「講你的求學經歷」對你是現成的口說題，但內容要是你自己的經歷——Claude 不代寫，只能幫你修。
+  </div>
+</section>
+
+<!-- ============ 8. 閱讀亮點 ============ -->
+<section>
+  <h2>📰 閱讀裡值得先看的句子 <span class="time">1 分鐘</span></h2>
+  <ul class="phrase-list">
+    <li><span class="fr">Étudiant en licence 3 en information et communication à l'université de Toulouse, je souhaiterais intégrer à la rentrée un master 1 dans votre établissement.</span><span class="zh">我是土魯斯大學資訊傳播系大三生，希望開學時進貴校碩一。</span><span class="note">p.103 C（句首身分同位語＋條件式 souhaiterais＝客氣）</span></li>
+    <li><span class="fr">En effet, le jour où j'ai commencé le stage de licence 3 du second semestre, je me suis rendu compte que j'avais besoin de mettre en application la théorie que j'avais apprise.</span><span class="zh">事實上，大三下開始實習那天，我發現我需要把學過的理論拿來用。</span><span class="note">p.103 C（le jour où＋que j'avais apprise＝文法一兩個點；se rendre compte 的 rendu 不配合）</span></li>
+    <li><span class="fr">Votre école, dont les enseignants sont des universitaires mais aussi des professionnels en activité, me permettrait d'acquérir les connaissances et l'expérience nécessaires pour compléter ma formation.</span><span class="zh">貴校的老師有學者也有業界人士，能讓我獲得完成學業所需的知識和經驗。</span><span class="note">p.103 C</span></li>
+    <li><span class="fr">Ils ont la possibilité de poursuivre une formation diplômante sans s'éloigner de leur ville.</span><span class="zh">他們不用離開自己的城市，就能繼續念可拿文憑的課程。</span><span class="note">p.102 A l.19–20（sans ＋ 原形）</span></li>
+    <li><span class="fr">Ce concours invite les doctorants à monter sur scène pour expliquer leur thèse en trois minutes chrono.</span><span class="zh">這個比賽請博士生上台，限時三分鐘講完自己的論文。</span><span class="note">p.105 E l.4–5</span></li>
+    <li><span class="fr">C'est la raison pour laquelle Nadine Gonzalez a décidé d'ouvrir Casa 93.</span><span class="zh">這就是 Nadine Gonzalez 決定開 Casa 93 的原因。</span><span class="note">p.107 F l.3–4（pour laquelle＝複合關係代名詞，這單元只學簡單的，先當整塊記）</span></li>
+    <li><span class="fr">Aujourd'hui, on n'intègre plus une entreprise pour toute la vie.</span><span class="zh">現在已經沒有人進一家公司待一輩子了。</span><span class="note">p.109 J l.7–8</span></li>
+    <li><span class="fr">Sans les cours et sans l'école, c'est sûr que jamais je n'aurais osé aller raconter des blagues.</span><span class="zh">沒有這些課和這所學校，我絕對不敢去講笑話。</span><span class="note">p.207 逐字稿 I（條件式過去 n'aurais osé）</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>p.102 A 學生證詞是口語：</b><i>C'est pas mal, on est dans un bel endroit</i>——掉了 ne。引用證詞課本照原樣保留，⛔ 寫作時要寫 Ce n'est pas mal。
+  </div>
+  <div class="flag">
+    🔎 ① <b>p.109 J l.23 抽字亂掉：</b>« qui fera savoir si la personne a lesso skillset l'agilité pour intégrer ce secteur »，同頁註 1「ont des difficultés à」也對不到正文位置，本頁沒有引用這段，原文<b>未查證</b>。② 聽力 B、G、I、L 只讀了附錄逐字稿 p.207–208 的部分段落；影片 D 沒讀逐字稿。③ p.108 H 是資訊圖表（17%、6%、12%、14%，合計 49%），抽字排版散亂，本頁沒有收錄圖表文字。④ 作者署名被截斷：p.107 « Pauline S »、p.108 « Audrey »、p.109 « Caroline L »、p.110 « Sylvie L »，全名<b>未查證</b>。
+  </div>
+</section>
+
+<!-- ============ 9. 練習題 ============ -->
+<section>
+  <h2>✏️ 最可能上課做的題目：先想想看 <span class="time">2 分鐘</span></h2>
+  <p class="small">只給方向，不給答案。哪幾題會做是照前幾個單元的節奏推測（未查證）。</p>
+
+  <div class="ex">
+    <div class="q">p.104 Entraînement 4：填 qui／que／dont／où <span class="likely">★★★ 文法頁一定做</span></div>
+    <div class="hint">先想想看：把空格後面的子句補回完整句子，問「前面那個名詞在這句裡是什麼」。d 題 <i>L'expérience …… j'ai acquise</i>：acquise 有 -e，提示你什麼？e 題 <i>L'étudiant, …… ce tuteur s'est occupé</i>：s'occuper 後面接什麼介系詞？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.104 Entraînement 3：兩句併一句 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：c 題 <i>Le travail de cet étudiant est remarquable</i>——「de cet étudiant」整塊被誰取代？f 題 <i>entendu parler de cet auteur</i> 也是同一招。b 題小心：rêver de faire <b>ce master</b>，ce master 前面其實沒有 de。</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.109 Entraînement 3、p.113 l'essentiel 2：pour／pour que、afin de／afin que <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：每題只問一件事——兩邊主詞是不是同一個人？p.113 2g <i>Mon amie m'a offert une master class pour / pour que je découvre…</i>：mon amie 跟 je 一樣嗎？後面的 découvre 已經是虛擬式了，這也是線索。</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.111 Entraînement 4、5：做出副動詞並說出用法 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：4 的字庫 avoir、être 是例外（ayant、étant），s'inscrire 的 nous 形式是什麼？5f <i>Tu apprendras beaucoup de choses. Tu acceptes de suivre des master class.</i>——後半句可以換成 « si tu acceptes »，所以是哪一種用法？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.113 l'essentiel 3：把 si 句、同時句改成副動詞 <span class="likely">★★</span></div>
+    <div class="hint">先想想看：b <i>Si je vais à l'université inter-âges, je pourrai…</i>——si 拿掉換成 en ＋ ?。e、g 有 « En même temps »，那是哪一種用法？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.106 Phonétique 1、3：哪些 e 不唸 <span class="likely">★ 有時間才做</span></div>
+    <div class="hint">先想想看：samedi 跟 mercredi，哪一個中間的 e 要唸？差在 e 前面有幾個子音。</div>
+  </div>
+</section>
+
+<!-- ============ 10. 問老師 ============ -->
+<section>
+  <h2>🙋 上課可以問老師的 3 個問題</h2>
+  <ol class="ask">
+    <li>p.111 <i>En étant sous hypnose, on est décomplexé</i>——課本 Fonctionnement 要放進「條件」，但原文前面有 parce que。gérondif 可以表示<b>原因</b>嗎？這句算條件還是原因？</li>
+    <li>p.106 這頁叫 <b>L'élision</b>，但 l'école、j'ai 這種寫出來的省略也叫 élision。口語裡 samedi 唸成 sam'di 跟寫的 élision 是同一件事嗎？</li>
+    <li>p.112 詞彙框寫 <b>les softs skills</b>，同頁練習 5 寫 <b>soft skills</b>——哪一個才對？法文裡借來的英文字複數要怎麼處理？</li>
+  </ol>
+</section>
+
+<!-- ============ 11. 不一致處 ============ -->
+<section>
+  <h2>📋 課本與標準法文不一致處（彙整）</h2>
+  <div class="flag">
+    ① <b>p.112 « les softs skills »</b>（詞彙框，兩層抽字都一樣）vs 同頁練習 5 « Quelles soft skills avez-vous ? »。英文原文是 soft skills（soft 是形容詞不加 s），標準寫法是 <b>les soft skills</b>。課本同頁自己不一致。<br>
+    ② <b>p.106 « L'élision »</b>：課本用 élision 指口語 e 的脫落；標準文法通常稱 e caduc／e muet 的脫落，élision 指寫出來的省略（見第 4 段）。<br>
+    ③ <b>p.104 Remarque 2</b>：過去分詞跟前置 que 配合，課本沒寫限於助動詞 avoir（見第 1 段 🔎 ①）。<br>
+    ④ <b>p.111 gérondif 用法只列三種</b>：標準文法還有原因、讓步（tout en），且 Échauffement c 的原句是原因句（見第 3 段 🔎 ①）。<br>
+    ⑤ <b>p.103／p.108 DELF 寫作 150 字</b> vs 上一單元 p.99 策略頁 160 字（見第 7 段）。<br>
+    ⑥ <b>p.102 A « C'est pas mal »</b>：口語掉 ne，課本照證詞原樣保留（見第 8 段）。
+  </div>
+</section>
+
+<p class="small"><b>來源與未查證：</b>Édito B1 課本 p.101–114（<code>assets/.textbook_cache.txt</code> 第 61959–64085 行；已用頁尾「102 I cent deux」「cent trois I 103」「104 I cent quatre」「cent onze I 111」「cent treize I 113」「114 I cent quatorze」核對，p.115 是 Unité 8 首頁）＋附錄逐字稿 p.207–208（第 78521–78760 行）。PDF 抽字掉了 fi／ff／fl 連字，引用時推定原文，<b>未對照紙本查證</b>：p.102 « protent »、« la n du cursus »、« nancier »（＝profitent、fin、financier），p.105 « scientique »、« nales »、« non scientiques »（＝scientifique、finales），p.107 « s'orir »、« Enn »、« délé »（＝s'offrir、Enfin、défilé），p.108 « an de »（＝afin de），p.109 « an qu'il »、« diérents »、« dicultés »、« afi n »（＝afin qu'il、différents、difficultés），p.110 « l'ore »、« à chaque n de vidéo »（＝l'offre、fin），p.114 « diérentes »。黏字已補空格：p.102 « Oùsont »、« étudeslabellisés »，p.105 « devulgarisation »、« Letoutavec »（＝Le tout avec），p.110 « D'abordl'accessibilité »、« desspeakers »。p.110 小標 « L pprendre sous hypnose » 抽字掉了大寫 A，已更正為 Apprendre。p.106 發音規則表與 p.109 目的表格的欄位版面在抽字裡錯位，本頁的整理是推定的，<b>未查證</b>。p.104、p.111 Fonctionnement 表格的空格答案是 Claude 依例句推的（快取裡沒有 B1 解答），<b>未查證</b>。標準法文的判斷（avoir 配合限制、gérondif 原因用法、e caduc 術語、soft skills 拼法、dont 其他用法）是 Claude 依一般標準文法知識寫的，這次沒有另外查字典或文法書，視為<b>未查證</b>。哪些詞彙已在 french_notes.html 也<b>未查證</b>。</p>
+
+</main>
+</body>
+</html>
