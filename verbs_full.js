@@ -35,6 +35,7 @@ const END = {
  * subj  : 不規則的 subjonctif 六格（省略＝用 ils 詞幹推導）
  * imper : 不規則的命令式 [tu, nous, vous]（省略＝用現在式推導）
  * imp   : 不規則的 imparfait 詞幹（只有 être）
+ * impf／psf : imparfait／passé simple 六格直接存（只用在 -ger／-cer 的拼字例外）
  */
 const VERBS_FULL = [
   { inf:'être', zh:'是', grp:'核心', lvl:'A1', aux:'avoir', pp:'été', fut:'ser',
@@ -154,6 +155,113 @@ const VERBS_FULL = [
   { inf:'finir', zh:'結束（第二組 -ir 的樣本）', grp:'規則樣本', lvl:'A2', aux:'avoir', pp:'fini', fut:'finir',
     pres:['finis','finis','finit','finissons','finissez','finissent'], ps:['fin','i'],
     note:'第二組的招牌是 nous 以下多出來的 -iss-，imparfait 也跟著有：je finissais。同型：choisir, réussir, grandir' },
+
+  /* ── 2026-11-25 補：Lucas 學習資料「動詞變位」表裡有、這份還沒有的 24 個 ──
+   * ⚠️ Lucas 原表的變位錯很多，這裡一律照標準法文寫（不是抄他的表）。
+   * impf／psf ＝ 拼字例外時直接存六格（manger／déplacer：g、c 在 a、o 前面要變 ge、ç，所以 mangeais 但 mangions）。
+   * 反身動詞（se lever、s'appeler、s'ennuyer）存原形本身；反身用法助動詞改 être，寫在 note。 */
+  { inf:'perdre', zh:'失去、輸（同 attendre 型）', grp:'規則樣本', lvl:'A2', aux:'avoir', pp:'perdu', fut:'perdr',
+    pres:['perds','perds','perd','perdons','perdez','perdent'], ps:['perd','i'],
+    note:'跟 attendre 完全同型：字根 perd- ＋ -s/-s/-∅/-ons/-ez/-ent' },
+
+  { inf:'rendre', zh:'歸還；使變得（同 attendre 型）', grp:'規則樣本', lvl:'A2', aux:'avoir', pp:'rendu', fut:'rendr',
+    pres:['rends','rends','rend','rendons','rendez','rendent'], ps:['rend','i'],
+    note:'規則 -re 型。rendre ＋ 形容詞＝使…變得：rendre qn heureux；rendre visite à qn＝拜訪某人' },
+
+  { inf:'agrandir', zh:'擴大（同 finir 型）', grp:'規則樣本', lvl:'B1', aux:'avoir', pp:'agrandi', fut:'agrandir',
+    pres:['agrandis','agrandis','agrandit','agrandissons','agrandissez','agrandissent'], ps:['agrand','i'],
+    note:'第二組，跟 finir 同型：nous 以下多 -iss-（nous agrandissons、j\'agrandissais）' },
+
+  { inf:'manger', zh:'吃', grp:'-er 拼字會變', lvl:'A1', aux:'avoir', pp:'mangé', fut:'manger',
+    pres:['mange','manges','mange','mangeons','mangez','mangent'], ps:['mange','a'],
+    impf:['mangeais','mangeais','mangeait','mangions','mangiez','mangeaient'],
+    psf:['mangeai','mangeas','mangea','mangeâmes','mangeâtes','mangèrent'],
+    note:'⚠️ g 在 a、o 前面要寫成 ge 才維持 [ʒ] 音：nous mangeons、je mangeais，但 nous mangions（i 前面不用 e）。-ger 動詞都這樣（voyager, changer, partager）' },
+
+  { inf:'déplacer', zh:'移動、搬動（se déplacer 移動、出行）', grp:'-er 拼字會變', lvl:'B1', aux:'avoir', pp:'déplacé', fut:'déplacer',
+    pres:['déplace','déplaces','déplace','déplaçons','déplacez','déplacent'], ps:['déplaç','a'],
+    impf:['déplaçais','déplaçais','déplaçait','déplacions','déplaciez','déplaçaient'],
+    psf:['déplaçai','déplaças','déplaça','déplaçâmes','déplaçâtes','déplacèrent'],
+    note:'⚠️ c 在 a、o 前面要寫成 ç 才維持 [s] 音：nous déplaçons、je déplaçais，但 nous déplacions。-cer 動詞都這樣（commencer, placer）。反身 se déplacer 用 être' },
+
+  { inf:'acheter', zh:'買', grp:'-er 拼字會變', lvl:'A1', aux:'avoir', pp:'acheté', fut:'achèter',
+    pres:['achète','achètes','achète','achetons','achetez','achètent'], ps:['achet','a'],
+    note:'⚠️ 字尾不發音的格（je／tu／il／ils）e 變 è：j\'achète，但 nous achetons。未來詞幹也是 è：j\'achèterai' },
+
+  { inf:'lever', zh:'舉起（se lever 起床、站起來）', grp:'-er 拼字會變', lvl:'A2', aux:'avoir', pp:'levé', fut:'lèver',
+    pres:['lève','lèves','lève','levons','levez','lèvent'], ps:['lev','a'],
+    note:'跟 acheter 同型（e → è）。⭐ 最常用的是反身 se lever：je me lève・nous nous levons・je me suis levé(e)（反身用 être）・命令式 Lève-toi !' },
+
+  { inf:'compléter', zh:'補全、填寫', grp:'-er 拼字會變', lvl:'A2', aux:'avoir', pp:'complété', fut:'compléter',
+    pres:['complète','complètes','complète','complétons','complétez','complètent'], ps:['complét','a'],
+    note:'é 在字尾不發音的格變 è：je complète，但 nous complétons。未來式傳統寫 je compléterai；1990 拼字改革後也接受 je complèterai' },
+
+  { inf:'appeler', zh:'叫、打電話（s\'appeler 名叫）', grp:'-er 拼字會變', lvl:'A1', aux:'avoir', pp:'appelé', fut:'appeller',
+    pres:['appelle','appelles','appelle','appelons','appelez','appellent'], ps:['appel','a'],
+    note:'⚠️ 字尾不發音的格 l 變 ll：j\'appelle，但 nous appelons；未來 j\'appellerai。反身 s\'appeler：je m\'appelle・je me suis appelé(e)' },
+
+  { inf:'rappeler', zh:'再打電話；提醒（se rappeler 記得）', grp:'-er 拼字會變', lvl:'A2', aux:'avoir', pp:'rappelé', fut:'rappeller',
+    pres:['rappelle','rappelles','rappelle','rappelons','rappelez','rappellent'], ps:['rappel','a'],
+    note:'跟 appeler 完全同型（re- ＋ appeler）：je rappelle・nous rappelons・je rappellerai' },
+
+  { inf:'envoyer', zh:'寄、送出', grp:'-er 拼字會變', lvl:'A2', aux:'avoir', pp:'envoyé', fut:'enverr',
+    pres:['envoie','envoies','envoie','envoyons','envoyez','envoient'], ps:['envoy','a'],
+    note:'y 在字尾不發音的格變 i：j\'envoie，nous envoyons。⚠️ 未來詞幹是例外 enverr-（j\'enverrai），不是 envoier-' },
+
+  { inf:'payer', zh:'付錢', grp:'-er 拼字會變', lvl:'A2', aux:'avoir', pp:'payé', fut:'paier',
+    pres:['paie','paies','paie','payons','payez','paient'], ps:['pay','a'],
+    note:'-ayer 兩種寫法都對：je paie／je paye、je paierai／je payerai（這裡列 paie 型）。nous payons、nous payions 一律是 y' },
+
+  { inf:'ennuyer', zh:'使厭煩（s\'ennuyer 覺得無聊）', grp:'-er 拼字會變', lvl:'B1', aux:'avoir', pp:'ennuyé', fut:'ennuier',
+    pres:['ennuie','ennuies','ennuie','ennuyons','ennuyez','ennuient'], ps:['ennuy','a'],
+    note:'-uyer 的 y 在字尾不發音的格一定變 i：j\'ennuie、j\'ennuierai。⭐ 常用反身 s\'ennuyer：je m\'ennuie・je me suis ennuyé(e)' },
+
+  { inf:'offrir', zh:'送（禮）、提供', grp:'其他不規則', lvl:'A2', aux:'avoir', pp:'offert', fut:'offrir',
+    pres:['offre','offres','offre','offrons','offrez','offrent'], ps:['offr','i'],
+    imper:['offre','offrons','offrez'],
+    note:'⚠️ -ir 但現在式字尾像 -er（j\'offre、tu offres），命令式也沒有 s：Offre !。過去分詞 offert 要背。同型：ouvrir → ouvert' },
+
+  { inf:'accueillir', zh:'接待、迎接', grp:'其他不規則', lvl:'B1', aux:'avoir', pp:'accueilli', fut:'accueiller',
+    pres:['accueille','accueilles','accueille','accueillons','accueillez','accueillent'], ps:['accueill','i'],
+    imper:['accueille','accueillons','accueillez'],
+    note:'⚠️ -ir 但現在式字尾像 -er（j\'accueille），未來詞幹也像 -er：j\'accueillerai。過去分詞照 -ir：accueilli' },
+
+  { inf:'servir', zh:'服務、端上；servir à 用來', grp:'其他不規則', lvl:'A2', aux:'avoir', pp:'servi', fut:'servir',
+    pres:['sers','sers','sert','servons','servez','servent'], ps:['serv','i'],
+    note:'跟 partir 同型：單數掉尾巴子音（je sers・nous servons）' },
+
+  { inf:'suivre', zh:'跟隨；修（課）', grp:'其他不規則', lvl:'A2', aux:'avoir', pp:'suivi', fut:'suivr',
+    pres:['suis','suis','suit','suivons','suivez','suivent'], ps:['suiv','i'],
+    note:'⚠️ je suis 跟 être 的 je suis 同形，靠上下文分。單數掉 v：je suis・nous suivons。suivre un cours＝修課' },
+
+  { inf:'recevoir', zh:'收到、接待', grp:'其他不規則', lvl:'A2', aux:'avoir', pp:'reçu', fut:'recevr',
+    pres:['reçois','reçois','reçoit','recevons','recevez','reçoivent'], ps:['reç','u'],
+    note:'靴子型：單數和 ils 是 reçoi-／reçoiv-，nous／vous 是 recev-。⚠️ c 在 o、u 前面要寫 ç：reçois、reçu' },
+
+  { inf:'valoir', zh:'值得（il vaut mieux 最好…）', grp:'其他不規則', lvl:'B1', aux:'avoir', pp:'valu', fut:'vaudr',
+    pres:['vaux','vaux','vaut','valons','valez','valent'], ps:['val','u'],
+    subj:['vaille','vailles','vaille','valions','valiez','vaillent'],
+    note:'最常見的是無人稱 il vaut mieux ＋ 原形／que ＋ 虛擬式（最好…）。未來 il vaudra mieux、條件式 il vaudrait mieux。虛擬式不規則：qu\'il vaille' },
+
+  { inf:'paraître', zh:'看起來、似乎；出版', grp:'其他不規則', lvl:'B1', aux:'avoir', pp:'paru', fut:'paraîtr',
+    pres:['parais','parais','paraît','paraissons','paraissez','paraissent'], ps:['par','u'],
+    note:'跟 connaître 同型：nous 多 -ss-、il paraît 的 i 帶帽子。Il paraît que…＝聽說…' },
+
+  { inf:'plaire', zh:'討人喜歡（ça me plaît 我喜歡）', grp:'其他不規則', lvl:'A2', aux:'avoir', pp:'plu', fut:'plair',
+    pres:['plais','plais','plaît','plaisons','plaisez','plaisent'], ps:['pl','u'],
+    note:'⭐ s\'il vous plaît 就是這個動詞。il plaît 的 i 帶帽子。⚠️ 過去分詞 plu 跟 pleuvoir 的 plu 同形' },
+
+  { inf:'rire', zh:'笑', grp:'其他不規則', lvl:'A2', aux:'avoir', pp:'ri', fut:'rir',
+    pres:['ris','ris','rit','rions','riez','rient'], ps:['r','i'],
+    note:'⚠️ imparfait／虛擬式的 nous、vous 有兩個 i：nous riions、vous riiez（字根 ri- ＋ 字尾 -ions）。同型：sourire' },
+
+  { inf:'éteindre', zh:'關掉（燈、電器）、熄滅', grp:'其他不規則', lvl:'B1', aux:'avoir', pp:'éteint', fut:'éteindr',
+    pres:['éteins','éteins','éteint','éteignons','éteignez','éteignent'], ps:['éteign','i'],
+    note:'-eindre 型：單數 éteins，nous 以下變 éteign-（nous éteignons、j\'éteignais）。過去分詞 éteint。同型：peindre, craindre（-aindre）' },
+
+  { inf:'réduire', zh:'減少、降低', grp:'其他不規則', lvl:'B1', aux:'avoir', pp:'réduit', fut:'réduir',
+    pres:['réduis','réduis','réduit','réduisons','réduisez','réduisent'], ps:['réduis','i'],
+    note:'-uire 型：nous 以下多一個 s（réduisons），過去分詞 réduit。同型：conduire, produire, construire' },
 ];
 
 /* ── 推導引擎 ──────────────────────────────────────────────
@@ -186,6 +294,7 @@ function stemIls(v)   { return v.pres[5].replace(/ent$/, ''); }   // 現在式 i
 function conjSimple(stem, endings) { return endings.map(e => stem + e); }
 
 function imparfait(v) {
+  if (v.impf) return v.impf.slice();            // 拼字例外（manger／déplacer）直接存六格
   return conjSimple(v.imp || stemNous(v), END.imparfait);
 }
 function futur(v)        { return conjSimple(v.fut, END.futur); }
@@ -198,6 +307,7 @@ function subjonctif(v) {
 }
 
 function passeSimple(v) {
+  if (v.psf) return v.psf.slice();
   const [stem, type] = v.ps;
   return conjSimple(stem, END['ps_' + type]);
 }
@@ -253,7 +363,8 @@ function conjugate(v) {
 
   push({ id:'imparfait', name:'未完成過去式', fr:'imparfait', lvl:'A2', cx:'5-3-1',
     forms: imparfait(v),
-    how: v.imp ? `⚠️ 例外詞幹 ${v.imp}-（不是從 nous 來）＋ -ais/-ais/-ait/-ions/-iez/-aient`
+    how: v.impf ? `現在式 nous「${v.pres[3]}」去掉 -ons ＋ 字尾；⚠️ 拼字：${v.pres[3].includes('ç') ? 'ç' : 'ge'} 只留在 a、o 前面（${v.impf[0]}，但 ${v.impf[3]}）`
+       : v.imp ? `⚠️ 例外詞幹 ${v.imp}-（不是從 nous 來）＋ -ais/-ais/-ait/-ions/-iez/-aient`
                : `現在式 nous「${v.pres[3]}」去掉 -ons ＝ ${stemNous(v)}- ＋ -ais/-ais/-ait/-ions/-iez/-aient` });
 
   push({ id:'futur-proche', name:'近未來', fr:'futur proche', lvl:'A1', cx:'5-5-1',

@@ -1182,7 +1182,7 @@ var CONJ_PERS=['je','tu','il / elle','nous','vous','ils / elles'];
 function conjModes(){ return CONJ_MODES.filter(function(m){ if(!m.gram) return true; if(typeof GRAM_POINTS==='undefined') return m.tense==='passe-compose'; var p=GRAM_POINTS.filter(function(x){ return x.id===m.gram; })[0]; return !!p && p.unlocked!==false; }); }
 function conjCells(m){ try{ return JSON.parse(localStorage.getItem('clb7_sprint_cells'+m.suffix))||{}; }catch(e){ return {}; } }
 function conjState(h){ if(!h||!h.length) return 'new'; if(!h[h.length-1].o) return 'weak'; var l=h.slice(-3); if(l.length===3 && l.every(function(x){ return x.o; })){ var f=l.map(function(x){ return x.f; }).sort(function(a,b){ return a-b; }); if(f[1]<=2000) return 'reflex'; } return 'slow'; }
-function conjCorpus(inf, t){ if(typeof VERB_FREQ==='undefined') return 1; var f=VERB_FREQ[inf]; if(!f) return 1; var n=(f.t&&f.t[t])||0; return n>=100?3:n>=20?2:n>0?1.5:.5; }
+function conjCorpus(inf, t){ if(typeof VERB_FREQ==='undefined') return 1; var f=VERB_FREQ[inf]; if(!f) return .5; var n=(f.t&&f.t[t])||0; return n>=100?3:n>=20?2:n>0?1.5:.5; }   /* 11-25：語料表沒有的動詞（Lucas 補的 24 個）當低頻，鐵砧不被稀釋 */
 function conjPick(){
   if(typeof VERBS_FULL==='undefined' || typeof drillForms!=='function') return null;
   var ms=conjModes(); if(!ms.length) return null;
