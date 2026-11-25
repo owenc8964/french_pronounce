@@ -263,6 +263,8 @@ body.zh-off .zh-col { display: none !important; }
 .word-pop.show { display: block; }
 .word-pop .w { font-size: 1.15rem; font-weight: 700; color: #fff; }
 .word-pop .lem { color: #f0c060; font-weight: 700; }
+.word-pop button.say { margin: 0 4px 0 6px; padding: 2px 8px; border-radius: 8px; border: 1px solid #3a4a64; background: #1a2232; color: #cfe0ff; font-size: .95rem; cursor: pointer; vertical-align: 2px; }
+.word-pop button.say:active { background: #2a3a58; }
 .word-pop .pos { color: #8090a8; font-size: .8rem; margin-left: 6px; }
 .word-pop .ten { color: #9ec5ff; }
 .word-pop .zh { margin-top: 4px; }
@@ -1201,6 +1203,26 @@ function spanText(a, b) {
   return r.toString().replace(/\s+/g, ' ').trim();
 }
 const PH_KEY = fr => String(fr).toLowerCase().replace(/\s+/g, ' ').trim() + '|PHR';
+/* 11-25 Owen：「點兩下我希望可以有發音的選項」→ 字、原形、片語旁邊各一顆 🔊（瀏覽器內建法文語音，單字夠用）
+   正在播考題音檔就先暫停，不然兩個聲音疊在一起 */
+let WP_VOICE = null;
+function wpVoice() {
+  if (WP_VOICE || !('speechSynthesis' in window)) return WP_VOICE;
+  const vs = speechSynthesis.getVoices().filter(v => /^fr/i.test(v.lang));
+  WP_VOICE = vs.find(v => /fr-FR/i.test(v.lang) && /premium|enhanced|Amélie|Thomas|Google/i.test(v.name)) || vs.find(v => /fr-FR/i.test(v.lang)) || vs[0] || null;
+  return WP_VOICE;
+}
+if ('speechSynthesis' in window) speechSynthesis.onvoiceschanged = () => { WP_VOICE = null; wpVoice(); };
+function wpSay(text, ev) {
+  if (ev) ev.stopPropagation();
+  if (!('speechSynthesis' in window) || !text) return;
+  if (audioEl && !audioEl.paused) audioEl.pause();
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text); u.lang = 'fr-FR'; u.rate = 0.85;
+  const v = wpVoice(); if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+function wpSayBtn(text) { return `<button class="say" title="聽發音" data-say="${esc(text)}">🔊</button>`; }
 function wordPopShow(el) {
   glossLoad();
   let pop = document.getElementById('wordPop');
@@ -1240,9 +1262,9 @@ function wordPopShow(el) {
   const render = () => {
     const zh = glossOf(l, p), on = !!vocabStars()[key];
     const S0 = vocabStars();
-    pop.innerHTML = phs.map((x, k) => `<div class="ph${x.ctx ? ' cx' : ''}">📎 ${x.ctx ? '這裡' : '片語'}：<span class="phz"><b>${esc(x.e.fr)}</b>＝${esc(x.e.zh)}</span>` +
+    pop.innerHTML = phs.map((x, k) => `<div class="ph${x.ctx ? ' cx' : ''}">📎 ${x.ctx ? '這裡' : '片語'}：<span class="phz"><b>${esc(x.e.fr)}</b>${wpSayBtn(x.e.fr)}＝${esc(x.e.zh)}</span>` +
         (P.t ? `<button class="phs${S0[x.key] ? ' on' : ''}" data-k="${k}">${S0[x.key] ? '⭐ 要背' : '☆ 要背'}</button>` : '') + '</div>').join('') +
-      `<div><span class="w">${esc(w)}</span>${l.toLowerCase() !== w.toLowerCase() ? ' → <span class="lem">' + esc(l) + '</span>' : ''}<span class="pos">${POS_ZH[p] || ''}</span></div>` +
+      `<div><span class="w">${esc(w)}</span>${wpSayBtn(w)}${l.toLowerCase() !== w.toLowerCase() ? ' → <span class="lem">' + esc(l) + '</span>' + wpSayBtn(l) : ''}<span class="pos">${POS_ZH[p] || ''}</span></div>` +
       (ten ? `<div class="ten">${ten}</div>` : '') +
       (ctxZh ? `<div class="ctx"><span class="k">在這題</span>${esc(ctxZh)}</div>` : '') +
       (lineZh ? `<div class="line"><span class="k">${P.o !== undefined ? '這個選項' : '這句'}</span>${esc(lineZh)}</div>` : '') +
@@ -1252,6 +1274,7 @@ function wordPopShow(el) {
       (P.t ? `<button id="wpStar" style="${on ? 'border-color:#f0c060;color:#f0c060' : ''}">${on ? '⭐ 要背（再按取消）' : '☆ 要背'}</button>` : '') +
       (P.t ? `<button id="wpCirc">✂️ 從這個字開始圈</button>` : '') +
       `<button onclick="wordPopHide()">✕</button><span class="note">自動分析，偶爾會判錯</span></div>`;
+    pop.querySelectorAll('button.say').forEach(b => b.onclick = ev => wpSay(b.dataset.say, ev));
     const sb = document.getElementById('wpStar');
     if (sb) sb.onclick = ev => { ev.stopPropagation(); const S = vocabStars(), nv = !S[key];
       if (nv) S[key] = 1; else delete S[key]; try { localStorage.setItem('tcfmock_vocab_star', JSON.stringify(S)); } catch (e) {}

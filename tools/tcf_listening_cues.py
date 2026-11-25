@@ -148,6 +148,9 @@ def main():
             print(base, 'found', n, 'missing', [i + 1 for i, x in enumerate(c) if x is None])
     open(os.path.join(EX, 'cues.js'), 'w', encoding='utf-8').write('window.TCF_CUES=' + json.dumps(out, separators=(',', ':')) + ';\n')
     print('sets', len(out), 'complete', full)
+    # 11-25：報題號辨識錯造成的錯位，修正存在 cues_fix.json（tools/tcf_cue_fix.py 產生），每次重算後套回去
+    from tcf_cue_fix import apply
+    apply()
 
 
 if __name__ == '__main__':
