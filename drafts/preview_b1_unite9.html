@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 Unité 9 預習單</title>
+<style>
+  :root {
+    --bg: #15171c;
+    --card: #1f232b;
+    --card2: #262b35;
+    --text: #e6e8ec;
+    --muted: #9aa3b2;
+    --fr: #ffffff;
+    --accent: #7cc4ff;
+    --gold: #f2c86b;
+    --warn: #ff9f7a;
+    --line: #333a46;
+    --gray-badge: #4a5160;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Helvetica Neue", sans-serif;
+    font-size: 16px; line-height: 1.65;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 1.35rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: .9rem; margin-bottom: 18px; }
+  section {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; margin: 0 0 16px;
+  }
+  h2 { font-size: 1.1rem; margin: 0 0 8px; color: var(--accent); }
+  h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--gold); }
+  p { margin: 6px 0; }
+  b { color: var(--fr); }
+  .time { float: right; font-size: .78rem; color: var(--muted); font-weight: normal; }
+  .rule {
+    background: var(--card2); border-left: 4px solid var(--accent);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .trap {
+    background: rgba(255,159,122,.08); border-left: 4px solid var(--warn);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .flag {
+    background: rgba(242,200,107,.08); border-left: 4px solid var(--gold);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: .92rem;
+  }
+  .map { list-style: none; padding: 0; margin: 0; }
+  .map li { padding: 7px 0; border-bottom: 1px solid var(--line); }
+  .map li:last-child { border-bottom: none; }
+  .pg { display: inline-block; min-width: 54px; color: var(--accent); font-weight: 600; }
+  .tag { display: inline-block; font-size: .72rem; padding: 1px 7px; border-radius: 10px;
+         background: var(--gray-badge); color: var(--text); margin-left: 4px; vertical-align: 1px; }
+  .tag.new { background: #2f5d8a; }
+  /* 法文句子載體：沿用 french_notes.html 的結構，之後可直接搬 */
+  .phrase-list { list-style: none; padding: 0; margin: 6px 0; }
+  .phrase-list li {
+    display: flex; flex-wrap: wrap; gap: 2px 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--line);
+  }
+  .phrase-list li:last-child { border-bottom: none; }
+  .fr { font-weight: 600; color: var(--fr); width: 100%; }
+  .zh { color: var(--muted); font-size: .9rem; }
+  .phrase-list li > span.note { color: #7d8696; font-size: .8rem; }
+  .fr em { font-style: normal; color: var(--gold); }
+  .vocab { list-style: none; padding: 0; margin: 4px 0 8px;
+           display: grid; grid-template-columns: 1fr; gap: 0; }
+  .vocab li { padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: .95rem; }
+  .vocab li:last-child { border-bottom: none; }
+  .vocab .w { color: var(--fr); font-weight: 600; }
+  .g { display: inline-block; font-size: .72rem; color: var(--muted); border: 1px solid var(--line);
+       border-radius: 4px; padding: 0 5px; margin: 0 4px; }
+  .compare-table { overflow-x: auto; margin: 8px 0; }
+  .compare-table table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  .compare-table th, .compare-table td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+  .compare-table th { background: var(--card2); color: var(--gold); font-weight: 600; }
+  .compare-table td.m { color: var(--fr); font-weight: 600; }
+  details { background: var(--card2); border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
+  summary { cursor: pointer; font-weight: 600; color: var(--text); }
+  details[open] summary { margin-bottom: 6px; }
+  .ex { margin: 8px 0; padding-left: 2px; }
+  .ex .q { color: var(--fr); }
+  .hint { color: var(--muted); font-size: .92rem; }
+  .likely { color: var(--gold); font-size: .8rem; }
+  ol.ask { padding-left: 20px; margin: 6px 0; }
+  ol.ask li { margin: 8px 0; }
+  .small { font-size: .85rem; color: var(--muted); }
+  @media (min-width: 640px) {
+    .vocab { grid-template-columns: 1fr 1fr; column-gap: 18px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Unité 9 Mieux-être au travail・預習單（草稿）</h1>
+<div class="sub">範圍：Édito B1 p.131–144（第 9 單元）｜大約 15 分鐘｜全部法文句子都是課本原句，每句標頁碼</div>
+
+<div class="flag">
+  🚧 <b>這是草稿。</b>給 Unité 9 開課前先看的。<br>
+  中文翻譯、「它在處理什麼資訊」的說明、陷阱與標註是 Claude 加的；法文全部取自 <code>assets/.textbook_cache.txt</code> 的 Édito B1 內頁（PDF 頁碼＝課本頁碼）與課本附錄逐字稿 p.209–211、p.220–221。
+</div>
+
+<!-- ============ 0. 地圖 ============ -->
+<section>
+  <h2>🗺 這個單元的頁面 <span class="time">1 分鐘</span></h2>
+  <ul class="map">
+    <li><span class="pg">p.131</span>單元首頁。目標：進行面試｜談自己的工作經歷｜描述一項行動計畫。標語：<i>Que faites-vous dans la vie ?</i></li>
+    <li><span class="pg">p.132</span>A 閱讀：小說節錄〈Parlez-moi de vous〉大學講師去應徵奧賽美術館展間警衛｜B 影片：〈Embauché ?〉搞笑面試（逐字稿 p.220–221）</li>
+    <li><span class="pg">p.133</span>C 聽力：Karim 的面試準備教學影片｜D 閱讀：面試最常被問的問題＋「進行面試」說法框</li>
+    <li><span class="pg">p.134</span><b>文法：La condition et l'hypothèse 條件與假設（si 句）</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.135</span>E 閱讀：魁北克社區工作者的證詞｜F 聽力：Eileen 轉行當花藝師＋「談工作經歷」說法框｜DELF 寫作題</li>
+    <li><span class="pg">p.136</span>詞彙頁：就業市場（工作、求職、面試、特質與能力）＋ 發音：<b>La courbe intonative 語調曲線（情緒）</b><span class="tag new">新</span></li>
+    <li><span class="pg">p.137</span>Culture：G 閱讀：辦公室同事類型｜H 聽力：Arte Radio〈Le bocal〉「我的同事是隻魷魚」</li>
+    <li><span class="pg">p.138</span>I 閱讀：志工經驗是履歷加分｜J 聽力：蒲隆地青年就業計畫 Eloquentia＋「描述行動計畫」說法框</li>
+    <li><span class="pg">p.139</span><b>文法：Les adverbes de manière en -ment 情狀副詞 -ment</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.140</span>K 閱讀：〈Halte à la surchauffe mentale〉停止腦袋過熱｜L 聽力：休息的好處（podcast）</li>
+    <li><span class="pg">p.141</span>M 圖表：法國人度假時的「離線權」｜<b>文法：L'antériorité, la simultanéité, la postériorité 先、同時、後</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.142</span>詞彙頁：職場生活與健康（工作地點、任務、心理健康、照顧自己、腦袋過熱）</li>
+    <li><span class="pg">p.143</span>l'essentiel 總複習（文法／詞彙）</li>
+    <li><span class="pg">p.144</span>Atelier médiation：編一本「職場幸福小手冊」＋策略「在討論小組裡交流」</li>
+  </ul>
+  <p class="small">p.145 已經是 Unité 10 Du neuf dans les loisirs 的首頁。⚠️ 跟 Unité 8 不同，這個單元<b>沒有</b> DELF 策略頁，DELF 標記只散在各頁練習裡（見第 7 段）。</p>
+</section>
+
+<!-- ============ 1. 條件與假設 ============ -->
+<section>
+  <h2>📐 文法一：La condition et l'hypothèse 條件與假設（p.134） <span class="time">4 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>si 後面用哪個時態，等於在告訴對方<b>「這件事有沒有可能成真」</b>。<br>
+    <b>做得到的（condition）</b>→ si ＋ 現在式，主句用現在式／命令式／未來式。<br>
+    <b>很難成真或不可能的（hypothèse）</b>→ si ＋ 未完成過去式（imparfait），主句用條件式現在時（conditionnel présent）。<br>
+    ⭐ 重點：<b>si 後面的動詞形式「往回退一格」</b>（現在→未完成過去），句子的意思才變成「如果真的……（但其實不太可能）」。你已經會 imparfait 和 conditionnel 的變位，這頁是把兩塊<b>扣在一起</b>。
+  </div>
+
+  <div class="compare-table">
+    <table>
+      <tr><th>類型</th><th>結構（p.134 Fonctionnement）</th><th>課本例句</th></tr>
+      <tr><td>條件</td><td>Si ＋ présent ＋ présent</td><td class="m">Si vous voulez, je peux vous accompagner au rendez-vous.</td></tr>
+      <tr><td>條件</td><td>Si ＋ présent ＋ impératif</td><td class="m">Si tu as peur d'être en retard, prends un taxi !</td></tr>
+      <tr><td>條件</td><td>Si ＋ présent ＋ futur</td><td class="m">Si on prend un taxi, nous serons à l'heure.</td></tr>
+      <tr><td>假設</td><td>Si ＋ imparfait ＋ conditionnel présent</td><td class="m">Si j'obtenais ce job, je pourrais financer mes études.</td></tr>
+    </table>
+  </div>
+  <p class="small">Rappel（p.134）：<i>On n'emploie jamais le futur ni le conditionnel après si.</i>（si 後面永遠不用未來式或條件式。⚠️ 這句有適用範圍，見下方 🔎 ①）</p>
+
+  <h3>課本 Échauffement（p.134，出自 p.132 A、p.133 C／D 與逐字稿 p.209–210）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Prenez-moi à l'essai, <em>si</em> vous <em>avez</em> des doutes.</span><span class="zh">如果您有疑慮，就讓我試用看看。</span><span class="note">p.134 a（si ＋ 現在式，主句命令式；原句在 p.132 A 結尾）</span></li>
+    <li><span class="fr">Jette un œil sur l'Instagram de l'entreprise <em>si</em> elle en <em>possède</em> un.</span><span class="zh">如果公司有 Instagram，也去看一眼。</span><span class="note">p.134 b（逐字稿 p.209 版本是 <i>Jette un œil aussi sur…</i>）</span></li>
+    <li><span class="fr">Il <em>regardera</em> tes profils publics, <em>si</em> tu en <em>as</em>, sur les réseaux sociaux.</span><span class="zh">他也會看你在社群網站上的公開檔案，如果你有的話。</span><span class="note">p.134 c（si ＋ 現在式，主句未來式）</span></li>
+    <li><span class="fr"><em>Si</em> tu <em>as</em> un imprévu, il <em>faut</em> prévenir l'entreprise.</span><span class="zh">如果你臨時有狀況，要先通知公司。</span><span class="note">p.134 d（si ＋ 現在式 ＋ 現在式）</span></li>
+    <li><span class="fr"><em>Si</em> tu <em>es</em> là, c'est parce que ton profil correspond au poste.</span><span class="zh">你會在這裡，是因為你的條件符合這個職位。</span><span class="note">p.134 e（逐字稿 p.210；這個 si 其實不是條件，見 🔎 ②）</span></li>
+    <li><span class="fr"><em>Si</em> vous <em>deviez</em> embaucher quelqu'un pour ce poste, quelles qualités <em>rechercheriez</em>-vous ?</span><span class="zh">如果要您替這個職位找人，您會找什麼樣的特質？</span><span class="note">p.134 f（假設：si ＋ imparfait deviez，主句 conditionnel rechercheriez；原題在 p.133 D）</span></li>
+    <li><span class="fr"><em>Seriez</em>-vous prêt à déménager <em>si</em> nous vous <em>proposions</em> un poste à l'étranger ?</span><span class="zh">如果我們給您國外的職位，您願意搬家嗎？</span><span class="note">p.134 g（假設：主句在前、si 子句在後，語序可以對調）</span></li>
+  </ul>
+
+  <h3>課本 Entraînement 4 的兩個 Exemple（p.134）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Pour obtenir ce poste à Tokyo, apprends le japonais ! → Si tu apprends le japonais, tu obtiendras ce poste à Tokyo.</span><span class="zh">想拿到東京的職位，就學日文！→ 如果你學日文，你就會拿到東京的職位。</span><span class="note">p.134 練習 4 Exemple（condition；抽字黏成 « Tokyo,apprends »）</span></li>
+    <li><span class="fr">Je ne parle pas anglais. J'ai du mal à trouver un travail dans la vente. → Si je parlais anglais, je n'aurais pas de mal à trouver un travail dans la vente.</span><span class="zh">我不會說英文，很難找到業務工作。→ 如果我會說英文，就不會那麼難找業務工作。</span><span class="note">p.134 練習 4 Exemple（hypothèse：⭐ 跟事實相反時，si 子句的肯定否定也要翻過來）</span></li>
+    <li><span class="fr">J'aurais probablement un métier créatif. Si j'étais écrivain, je voyagerais pour trouver l'inspiration…</span><span class="zh">我大概會做有創意的工作。如果我是作家，我會去旅行找靈感……</span><span class="note">p.134 練習 6 Exemple（題目：<i>Si vous n'aviez pas besoin d'argent, quel métier exerceriez-vous ?</i>）</span></li>
+  </ul>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：中文「如果」不分可能性，法文分。</b>中文「如果我拿到這份工作」不管你機率多高都一樣說；法文要先決定：<i>Si j'obtiens ce poste à Québec, il (falloir)… que j'organise mon départ</i>（練習 3d，有可能 → 主句未來式）vs <i>Si j'obtenais ce job, je pourrais…</i>（表格，不太可能 → 條件式）。<br>
+    ⚠️ <b>陷阱二：si 後面那格最常被填錯成條件式。</b>練習 3c <i>Je t'aiderais à préparer ton entretien si j'(avoir) …… le temps.</i>——主句已經是 aiderais，si 那格是 imparfait，⛔ 不是 aurais。p.143 l'essentiel 1 <i>si j'(avoir) …… moins de travail, je viendrais sans hésiter</i> 是同一個坑。<br>
+    ⚠️ <b>陷阱三：si ＋ il → s'il，但 si ＋ elle 不縮。</b><i>S'il quittait son emploi…</i>（練習 5b）、<i>S'il (faire) …… beau ce week-end</i>（p.143 l'essentiel 1）。<br>
+    ⚠️ <b>陷阱四：命令式的主句。</b>練習 3b <i>Si vous avez de meilleures idées, (faire) …… une proposition plus intéressante !</i>、3e <i>(dire) ……-lui</i>——有驚嘆號、有連字號，就是命令式。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>「si 後面永遠不用未來式或條件式」只對「條件／假設的 si」成立。</b>標準文法裡，<b>間接問句的 si</b>（＝「是否」）後面可以用未來式或條件式。這個單元自己就有一個間接問句的 si：p.132 A <i>je voudrais savoir si j'ai déjà des chances de l'avoir</i>（這裡剛好用現在式，但換成 <i>si j'aurai</i> 在標準法文也成立）。課本 Rappel 沒說明範圍，照字面背會誤殺間接問句。Claude 依標準文法補的，<b>未查證</b>後面單元有沒有講。<br>
+    ② <b>Échauffement e 的 si 不是條件。</b><i>Si tu es là, c'est parce que ton profil correspond au poste</i> 的意思是「既然你在這裡，那是因為……」——前半是已成立的事實，不是「做得到的條件」。形式上符合 si ＋ présent ＋ présent，但練習 2 要你分「條件 vs 假設」時，這句會有點尷尬。Claude 依標準文法判斷，課本怎麼歸類<b>未查證</b>（快取裡沒有 B1 解答）。<br>
+    ③ <b>課本這頁只教到 si ＋ imparfait。</b>「過去沒發生的假設」（si ＋ plus-que-parfait ＋ conditionnel passé）這頁沒教，但聽力已經出現條件式過去時：<i>Mon collègue aurait voulu être un artiste.</i>（逐字稿 p.210 H）——聽得懂就好，產出不急。
+  </div>
+</section>
+
+<!-- ============ 2. 副詞 -ment ============ -->
+<section>
+  <h2>📐 文法二：Les adverbes de manière en -ment 情狀副詞（p.139） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>把形容詞（描述東西）變成副詞（描述<b>動作怎麼做</b>）。中文是加「地」（認真→認真地），法文是加 <b>-ment</b>，但要先決定接在<b>陽性還是陰性</b>後面。<br>
+    <b>子音結尾</b> → 陰性 ＋ -ment（seul → seule → seulement）｜<b>母音結尾</b> → 直接 ＋ -ment（juste → justement、vrai → vraiment）｜<b>-ant／-ent</b> → -amment／-emment（méchant → méchamment、fréquent → fréquemment）。<br>
+    ⭐ 這是<b>規則型</b>的文法，規則講得出來之後就是機械操作；真正要記的是「Cas particuliers」那一排例外。
+  </div>
+
+  <h3>課本 Échauffement（p.139，出自 p.138 I 與逐字稿 p.210 J）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Le bénévolat est désormais <em>institutionnellement</em> encouragé.</span><span class="zh">志工服務現在受到制度性的鼓勵。</span><span class="note">p.139 a（institutionnel → institutionnelle → -ment；原句 p.138 I l.13–14）</span></li>
+    <li><span class="fr">Les étudiants développent <em>concrètement</em> leur aptitude à l'ouverture.</span><span class="zh">學生實際培養出開放的能力。</span><span class="note">p.139 b（concret → concrète → concrètement，注意重音符號）</span></li>
+    <li><span class="fr">Nous veillons à ce que ces initiatives impliquent <em>vraiment</em> un travail de terrain.</span><span class="zh">我們確保這些行動真的包含實地工作。</span><span class="note">p.139 c（vrai 母音結尾 → vraiment；veiller à ce que ＋ 虛擬式 impliquent）</span></li>
+    <li><span class="fr">Il ne doit pas s'agir de <em>simplement</em> concevoir une campagne de com'.</span><span class="zh">不能只是設計一個宣傳活動而已。</span><span class="note">p.139 d（simple → simplement）</span></li>
+    <li><span class="fr">Elles sont <em>évidemment</em> gratuites.</span><span class="zh">它們當然是免費的。</span><span class="note">p.139 e（évident → évidemment；逐字稿 p.210 J）</span></li>
+    <li><span class="fr">Je me concentrerai <em>exclusivement</em> pour la réussite de ce projet.</span><span class="zh">我會全心投入讓這個計畫成功。</span><span class="note">p.139 f（exclusif → exclusive → exclusivement；⚠️ « se concentrer pour » 不標準，見 🔎 ①）</span></li>
+  </ul>
+
+  <h3>課本 Fonctionnement：位置（p.139 Rappel）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">C'est un dossier <em>extrêmement</em> important.</span><span class="zh">這是一個極重要的案子。</span><span class="note">p.139（修飾形容詞 → 放在形容詞前面）</span></li>
+    <li><span class="fr">Elle s'adapte <em>vraiment facilement</em> à son nouveau poste.</span><span class="zh">她非常輕鬆地適應新職位。</span><span class="note">p.139（修飾另一個副詞 → 放在那個副詞前面）</span></li>
+    <li><span class="fr">Je parle <em>calmement</em> pendant les réunions.</span><span class="zh">我開會時講話很冷靜。</span><span class="note">p.139（簡單時態 → 放在動詞後面）</span></li>
+    <li><span class="fr">Il a <em>bien</em> compris.</span><span class="zh">他完全懂了。</span><span class="note">p.139（複合時態、短副詞 → 放在助動詞後面）</span></li>
+    <li><span class="fr">Il a parlé <em>sérieusement</em> de la situation.</span><span class="zh">他認真地談了這個情況。</span><span class="note">p.139（複合時態、長副詞 → 放在過去分詞後面）</span></li>
+    <li><span class="fr">L'imprimante fonctionne ? (parfait) → Oui, elle fonctionne parfaitement.</span><span class="zh">印表機能用嗎？→ 能，運作得很完美。</span><span class="note">p.139 練習 5 Exemple</span></li>
+  </ul>
+
+  <div class="compare-table">
+    <table>
+      <tr><th>Cas particuliers（p.139）</th><th>為什麼特別（Claude 補的說明）</th></tr>
+      <tr><td class="m">bref → brièvement</td><td>字根整個變了</td></tr>
+      <tr><td class="m">énorme → énormément／intense → intensément／précis → précisément／profond → profondément</td><td>中間多一個 <b>é</b></td></tr>
+      <tr><td class="m">gai → gaiement</td><td>母音結尾卻保留 e</td></tr>
+      <tr><td class="m">gentil → gentiment</td><td>子音結尾卻沒用陰性 gentille</td></tr>
+    </table>
+  </div>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：-amment 和 -emment 唸起來一樣。</b>méchamment、fréquemment、évidemment 的 a／e 都唸 [a]（Claude 依標準發音補的）。所以聽到 [amɑ̃] 寫的時候要回頭查形容詞是 -ant 還是 -ent。<br>
+    ⚠️ <b>陷阱二：練習 4 裡藏著不照規則的。</b><i>a. curieux · b. long · c. patient · d. particulier · e. doux · f. individuel · g. franc · h. bruyant</i>——doux 的陰性是 douce、franc 的陰性是 franche、long 的陰性是 longue（陰性本身不規則，副詞就跟著不規則）。⭐ 卡的不是副詞規則，是<b>陰性形</b>。<br>
+    ⚠️ <b>陷阱三：p.143 l'essentiel 3 的 (nouveau)。</b><i>elle est (nouveau) …… devenue cheffe d'équipe</i>——nouveau 的陰性是 nouvelle，不是 nouveaue。同一題的 (actif)、(malheureux)、(complet)、(précis) 也都要先變陰性（précis 還在 Cas particuliers 裡）。<br>
+    ⚠️ <b>陷阱四：位置。</b>練習 5c <i>Avez-vous vu la DRH ? (récent) → Non, ……</i>——複合時態 ＋ 長副詞，récemment 要放哪？照 p.139 Rappel 放過去分詞後面。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>Échauffement f 的 « se concentrer pour » 不是標準搭配。</b>標準法文是 <b>se concentrer sur</b>——課本自己 p.142 詞彙表就寫 <i>se concentrer sur un projet</i>，p.140 K 也寫 <i>Concentrez-vous sur une tâche</i>。這句來自逐字稿 p.210（Yvan Darcy 的口語），課本直接搬進文法頁沒改。⭐ 拿來學副詞沒問題，⛔ 但不要把 <i>se concentrer pour</i> 記成搭配。<br>
+    ② <b>-ant／-ent 規則有例外沒列。</b>標準法文：<i>lent → lentement</i>、<i>présent → présentement</i> 不走 -emment。課本這頁沒提，Claude 依標準文法補的，<b>未查證</b>後面單元。<br>
+    ③ <b>「子音結尾用陰性」反過來說：母音結尾用陽性。</b>課本寫「母音結尾直接加 -ment」，例子是 juste、vrai、simple；標準文法說的是 <b>-é／-i／-u 結尾的陽性</b>直接加（如練習 5b 的 absolu → absolument）。兩種說法結果一樣，不算衝突。
+  </div>
+</section>
+
+<!-- ============ 3. 先／同時／後 ============ -->
+<section>
+  <h2>📐 文法三：L'antériorité, la simultanéité, la postériorité 先、同時、後（p.141） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>兩個動作的<b>時間先後</b>。法文用不同的連接詞，⭐ 而且每個連接詞後面接的東西要整塊記：<br>
+    <b>接名詞</b>：avant ＋ 名詞、après ＋ 名詞｜<b>接原形</b>：avant de ＋ 原形、après ＋ 原形（après avoir／être ＋ 過去分詞）｜<b>接虛擬式</b>：avant que、jusqu'à ce que、en attendant que｜<b>接直陳式</b>：chaque fois que、la première fois que、pendant que、depuis que、dès que、une fois que、après que。<br>
+    ⭐ 背法：<b>「還沒發生的」（avant que、jusqu'à ce que、en attendant que）→ 虛擬式</b>；「已經發生／正在發生的」→ 直陳式。
+  </div>
+
+  <div class="compare-table">
+    <table>
+      <tr><th>Antériorité</th><th>Simultanéité</th><th>Postériorité</th></tr>
+      <tr><td class="m">Avant ＋ nom</td><td class="m">Chaque fois que ＋ indicatif</td><td class="m">Après ＋ nom</td></tr>
+      <tr><td class="m">Avant de ＋ infinitif</td><td class="m">La première fois que ＋ indicatif</td><td class="m">Après ＋ infinitif</td></tr>
+      <tr><td class="m">Avant que ＋ subjonctif</td><td class="m">Pendant que ＋ indicatif</td><td class="m">Après que ＋ indicatif</td></tr>
+      <tr><td class="m">Jusqu'à ce que ＋ subjonctif</td><td class="m">Depuis que ＋ indicatif</td><td></td></tr>
+      <tr><td class="m">En attendant que ＋ subjonctif</td><td class="m">Dès que ＋ indicatif（？）</td><td></td></tr>
+      <tr><td></td><td></td><td class="m">Une fois que ＋ indicatif（？）</td></tr>
+    </table>
+  </div>
+  <p class="small">⚠️ 這張表是從抽字版面重排的。前四列很清楚；<b>dès que、une fois que 到底在哪一欄，抽字看不出來</b>（標「？」），<b>未查證</b>，拿紙本對一下。</p>
+
+  <h3>課本 Échauffement（p.141，出自 p.140 K）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr"><em>Avant de</em> consulter votre smartphone, posez-vous la question : est-ce par réflexe ?</span><span class="zh">看手機之前先問自己：是不是反射動作？</span><span class="note">p.141 a（avant de ＋ 原形）</span></li>
+    <li><span class="fr">Faites des pauses <em>chaque fois que</em> vous en avez le besoin.</span><span class="zh">每次需要的時候就休息一下。</span><span class="note">p.141 b（chaque fois que ＋ 直陳式）</span></li>
+    <li><span class="fr">Récompensez-vous avec des moments de détente <em>après avoir terminé</em> la tâche que vous vous étiez fixée.</span><span class="zh">完成自己設定的任務後，用放鬆時間犒賞自己。</span><span class="note">p.141 c（après ＋ 過去原形 avoir terminé；fixée 配合前面的 que＝la tâche）</span></li>
+    <li><span class="fr">Autorisez-vous des moments de vagabondage mental <em>jusqu'à ce que</em> vous <em>trouviez</em> une solution.</span><span class="zh">允許自己放空，直到找到解法為止。</span><span class="note">p.141 d（jusqu'à ce que ＋ 虛擬式 trouviez）</span></li>
+  </ul>
+
+  <h3>l'essentiel 4 的聽力句（逐字稿 p.211）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr"><em>Après</em> trois heures de réunion, j'avais mal à la tête.</span><span class="zh">開了三小時會之後，我頭很痛。</span><span class="note">p.143 l'essentiel 4a（après ＋ 名詞）</span></li>
+    <li><span class="fr">Prenons un café <em>en attendant que</em> la réunion <em>commence</em>.</span><span class="zh">等會議開始前，我們去喝杯咖啡。</span><span class="note">p.143 l'essentiel 4b（虛擬式 commence——跟直陳式拼法一樣，只能靠連接詞判斷）</span></li>
+    <li><span class="fr"><em>Une fois que</em> vous <em>aurez</em> le code d'accès, vous pourrez accéder à ce dossier.</span><span class="zh">一旦你們拿到密碼，就可以打開這個檔案。</span><span class="note">p.143 l'essentiel 4c（une fois que ＋ 未來式；主句也是未來）</span></li>
+    <li><span class="fr"><em>Chaque fois que</em> je passe un entretien d'embauche, je stresse.</span><span class="zh">每次面試我都很緊張。</span><span class="note">p.143 l'essentiel 4d</span></li>
+    <li><span class="fr">J'attendrai la directrice <em>jusqu'à ce qu'</em>elle <em>revienne</em>.</span><span class="zh">我會等主任直到她回來。</span><span class="note">p.143 l'essentiel 4e（虛擬式 revienne——不規則）</span></li>
+    <li><span class="fr">Ma famille était en vacances <em>pendant que</em> je travaillais dur.</span><span class="zh">我拚命工作的時候，家人在度假。</span><span class="note">p.143 l'essentiel 4f（pendant que ＋ 直陳式）</span></li>
+  </ul>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：avant que ＋ 虛擬式、après que ＋ 直陳式。</b>長得像一對，語式相反。標準法文 après que 接直陳式；口語常聽到 après que ＋ 虛擬式，但那是常見錯誤（Claude 依標準文法補的）。課本表格的寫法是對的。<br>
+    ⚠️ <b>陷阱二：練習 3d 的 ne。</b><i>J'ai relu son CV …… il ne l'envoie à un cabinet de recrutement.</i>——這個 ne <b>不是否定</b>，是 avant que 後面可加可不加的「贅詞 ne」（ne explétif），意思還是「在他寄出之前」。課本這頁沒解釋，見 🔎 ②。<br>
+    ⚠️ <b>陷阱三：練習 3e、3f 看主詞。</b><i>e. …… avoir fait entrer le candidat dans son bureau, le directeur a fermé la porte.</i>——後面是原形 avoir fait，所以只能用 après（après ＋ 原形，兩個動作同一個主詞）。<i>f. …… elle a passé un entretien d'embauche, elle était très stressée.</i>——後面是完整句子。<br>
+    ⚠️ <b>陷阱四：虛擬式形式又來了。</b>trouviez、commence、revienne、envoie——規則是「還沒發生 → 虛擬式」，卡的是變位反射。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>「Antériorité」是從哪個動作的角度看？</b>課本把 avant que 放在 antériorité 欄：意思是<b>主句的動作在前</b>（<i>J'ai relu son CV avant qu'il ne l'envoie</i>：「重讀」在前）。有些文法書是從子句的角度命名，剛好相反。課本自己一致，只是讀其他文法書時不要被名稱搞混。Claude 依一般文法知識補的，<b>未查證</b>。<br>
+    ② <b>ne explétif 沒說明。</b>練習 3d <i>avant qu'il ne l'envoie</i> 用了，但 p.141 沒解釋。標準法文：avant que 後面的 ne 可有可無、不表否定，寫作時用比較正式。Claude 依標準文法補的，<b>未查證</b>後面單元。<br>
+    ③ <b>Échauffement b « chaque fois que vous en avez le besoin »</b>（p.140 K、p.141 b 一樣）：常見說法是 <i>chaque fois que vous en avez besoin</i>（avoir besoin 不加冠詞）。加 le 的 « en avoir le besoin » 不算錯但比較少見。Claude 依語感判斷，<b>未查證</b>。
+  </div>
+</section>
+
+<!-- ============ 4. 發音 ============ -->
+<section>
+  <h2>👂 發音：La courbe intonative 語調曲線（p.136） <span class="time">1 分鐘</span></h2>
+  <div class="rule">
+    <b>它在處理什麼：</b>Unité 8 學的是「語調讓一句話變問句」；這次是<b>語調帶情緒</b>：同一句話，用驚訝、肯定、堅持、疑問、不相信的語調講，意思就不同。<br>
+    <b>課本規則（p.136 練習 2）：</b><i>Une courbe intonative peut-être montante ou descendante. Cette courbe varie en fonction de la ponctuation, mais aussi de nos émotions (joie, colère, surprise, peur, mécontentement...). Cela permet d'accentuer ou de renforcer le sens de ce que l'on dit.</i>（⚠️ 「peut-être」是錯字，見 🔎）
+  </div>
+  <p>練習 1：同一句話唸五次（逐字稿 p.210），要你分出驚訝、肯定、堅持、疑問、不相信：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">Tu as raté ton entretien.</span><span class="zh">你面試搞砸了。</span><span class="note">p.136 練習 1（逐字稿 p.210 印了 1–5 五次同一句；哪一次是哪種情緒要聽音檔）</span></li>
+  </ul>
+  <p>練習 3：照括號的語調唸對話（逐字稿 p.210）：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">A : Quoi ? Tu n'as pas eu le poste ?</span><span class="zh">什麼？你沒拿到那份工作？</span><span class="note">p.136 練習 3（surprise 驚訝）</span></li>
+    <li><span class="fr">B : J'ai reçu un mail de refus. Pourtant mon profil était parfait !</span><span class="zh">我收到拒絕信。可是我的條件明明很完美！</span><span class="note">p.136 練習 3（affirmation 肯定；pourtant＝Unité 8 文法三的讓步）</span></li>
+    <li><span class="fr">A : Il y a forcément une raison.</span><span class="zh">一定有原因。</span><span class="note">p.136 練習 3（affirmation）</span></li>
+    <li><span class="fr">B : Je ne vois pas.</span><span class="zh">我想不出來。</span><span class="note">p.136 練習 3（incrédulité 不相信）</span></li>
+    <li><span class="fr">A : Tu as sans doute raté ton entretien ?</span><span class="zh">你大概是面試沒表現好？</span><span class="note">p.136 練習 3（interrogation 疑問）</span></li>
+    <li><span class="fr">B : Absolument pas !</span><span class="zh">絕對沒有！</span><span class="note">p.136 練習 3（affirmation）</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>陷阱：<i>sans doute</i> 不是「毫無疑問」。</b>現代法文的 sans doute 通常是「大概、可能」（要說「毫無疑問」用 <i>sans aucun doute</i>）——Claude 依標準用法補的。所以 A 這句是「猜測 ＋ 問句語調」，不是篤定。這跟 TCF 聽力的「說話者有多確定」題型直接相關。
+  </div>
+  <div class="flag">
+    🔎 <b>p.136 規則句 « peut-être montante »</b>（兩層抽字都一樣）：這裡是動詞 pouvoir ＋ être（「可以是上升或下降」），標準寫法是 <b>peut être</b>，不加連字號。加了連字號的 peut-être 是副詞「也許」。課本錯字。
+  </div>
+</section>
+
+<!-- ============ 5. 功能句 ============ -->
+<section>
+  <h2>💬 上課會用到的說法 <span class="time">2 分鐘</span></h2>
+
+  <h3>Pour réaliser un entretien 進行面試（p.133 說法框）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Quelles sont vos principales qualités et vos défauts ?</span><span class="zh">您主要的優點和缺點是什麼？</span><span class="note">p.133（逐字稿 p.209 C）</span></li>
+    <li><span class="fr">Quels sont vos objectifs ?</span><span class="zh">您的目標是什麼？</span><span class="note">p.133</span></li>
+    <li><span class="fr">Vous avez plus de facilités en espagnol ?</span><span class="zh">您西班牙文是不是比較拿手？</span><span class="note">p.133（影片原句是 <i>Peut-être que vous avez plus de facilités en espagnol ?</i>，逐字稿 p.220）</span></li>
+    <li><span class="fr">Votre profil est très intéressant.</span><span class="zh">您的資歷很吸引人。</span><span class="note">p.133</span></li>
+    <li><span class="fr">Vous feriez donc partie de notre équipe communication.</span><span class="zh">那您會加入我們的公關團隊。</span><span class="note">p.133（feriez＝條件式，委婉：「如果錄取的話」）</span></li>
+    <li><span class="fr">Je vois que vous avez fait dix ans à Madrid.</span><span class="zh">我看到您在馬德里待了十年。</span><span class="note">p.133</span></li>
+  </ul>
+
+  <h3>LES QUESTIONS LES PLUS POSÉES EN ENTRETIEN 面試最常被問的問題（p.133 D）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Parlez-moi de vous. Qui êtes-vous et que faites-vous dans la vie ?</span><span class="zh">談談您自己。您是誰、做什麼工作？</span><span class="note">p.133 D</span></li>
+    <li><span class="fr">Quels sont vos objectifs liés à ce poste ?</span><span class="zh">您對這個職位有什麼目標？</span><span class="note">p.133 D</span></li>
+    <li><span class="fr">Pourquoi avez-vous quitté votre dernier employeur ?</span><span class="zh">您為什麼離開上一個雇主？</span><span class="note">p.133 D</span></li>
+    <li><span class="fr">Pourquoi devrions-nous vous engager ?</span><span class="zh">我們為什麼應該錄用您？</span><span class="note">p.133 D（devrions＝條件式）</span></li>
+    <li><span class="fr">Où vous voyez-vous dans cinq ans ?</span><span class="zh">您覺得五年後的自己在哪裡？</span><span class="note">p.133 D</span></li>
+    <li><span class="fr">Qu'allez-vous nous apporter ?</span><span class="zh">您能帶給我們什麼？</span><span class="note">p.133 D</span></li>
+    <li><span class="fr">Avez-vous des questions ?</span><span class="zh">您有什麼問題嗎？</span><span class="note">p.133 D</span></li>
+  </ul>
+
+  <h3>Pour parler de son expérience professionnelle 談工作經歷（p.135 說法框）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">J'ai fait plein de choses assez différentes et assez passionnantes.</span><span class="zh">我做過很多滿不一樣、也滿有意思的事。</span><span class="note">p.135（抽字 « diérentes »＝différentes，<b>未查證</b>；逐字稿 p.210 F 有完整版）</span></li>
+    <li><span class="fr">J'ai commencé par fleuriste.</span><span class="zh">我先從花藝師開始。</span><span class="note">p.135（commencer par ＋ 職業名，口語；見 🔎）</span></li>
+    <li><span class="fr">J'ai travaillé dans la vente aux enchères.</span><span class="zh">我在拍賣業工作過。</span><span class="note">p.135</span></li>
+    <li><span class="fr">J'ai fait un stage de découverte.</span><span class="zh">我做過一個職業體驗實習。</span><span class="note">p.135</span></li>
+    <li><span class="fr">Cela me permet de rencontrer beaucoup de gens.</span><span class="zh">這讓我能認識很多人。</span><span class="note">p.135</span></li>
+    <li><span class="fr">Il y a eu un moment où j'ai eu un peu envie d'autre chose.</span><span class="zh">有一段時間我有點想做別的。</span><span class="note">p.135 F 引言（逐字稿 p.210）</span></li>
+  </ul>
+
+  <h3>Pour décrire une initiative 描述一項行動計畫（p.138 說法框）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Nous veillons à ce que ces initiatives impliquent vraiment un travail de terrain.</span><span class="zh">我們確保這些行動真的包含實地工作。</span><span class="note">p.138（veiller à ce que ＋ 虛擬式）</span></li>
+    <li><span class="fr">Pourquoi ne pas créer un programme pour aider ces jeunes ?</span><span class="zh">何不設立一個計畫來幫這些年輕人？</span><span class="note">p.138（pourquoi ne pas ＋ 原形＝提議）</span></li>
+    <li><span class="fr">L'idée en fait, c'est de fournir un accompagnement.</span><span class="zh">其實想法是提供陪伴輔導。</span><span class="note">p.138（L'idée, c'est de ＋ 原形）</span></li>
+    <li><span class="fr">À l'avenir, je pense m'élargir à d'autres pays.</span><span class="zh">未來我打算擴展到其他國家。</span><span class="note">p.138（⚠️ « s'élargir » 這樣用是口語，見第 11 段 ⑥）</span></li>
+  </ul>
+
+  <h3>Échanger dans un groupe de réflexion 在討論小組裡交流（p.144 Stratégies）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Si je t'ai bien compris(e)… / Tu veux dire que… / Donc, à ton avis…</span><span class="zh">如果我沒理解錯……／你的意思是……／所以你覺得……</span><span class="note">p.144（幫卡住的人換句話說）</span></li>
+    <li><span class="fr">Ton idée est intéressante Max, nous pourrons en reparler plus tard. Ce serait bien que les autres puissent s'exprimer aussi.</span><span class="zh">Max 你的想法很好，我們晚點再談。讓其他人也說說話會比較好。</span><span class="note">p.144（委婉打斷；ce serait bien que ＋ 虛擬式 puissent）</span></li>
+    <li><span class="fr">Nous n'avons pas beaucoup de temps, nous pourrions passer à un autre point.</span><span class="zh">時間不多了，我們可以進到下一點。</span><span class="note">p.144（條件式 pourrions＝委婉提議）</span></li>
+  </ul>
+
+  <h3>單元格言與引言</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Que faites-vous dans la vie ?</span><span class="zh">您是做什麼的？（問職業的標準說法）</span><span class="note">p.131 單元首頁</span></li>
+    <li><span class="fr">Entraîne-toi à l'oral, cela va t'aider !</span><span class="zh">練習用說的，會有幫助！</span><span class="note">p.133 C 引言（逐字稿 p.209）</span></li>
+    <li><span class="fr">Mon collègue jette des sorts.</span><span class="zh">我的同事會下咒。</span><span class="note">p.137 H 引言（逐字稿 p.210）</span></li>
+    <li><span class="fr">Faire des pauses, c'est optimiser le fonctionnement de son cerveau.</span><span class="zh">休息，就是讓大腦運作最佳化。</span><span class="note">p.140 L 引言（抽字版面拆成多行，已合併）</span></li>
+    <li><span class="fr">Ça fait un bien fou !</span><span class="zh">超級舒服！／好太多了！</span><span class="note">p.142 Expression（逐字稿 p.211 L 原句）</span></li>
+  </ul>
+  <div class="flag">
+    🔎 <b>« J'ai commencé par fleuriste »</b>（p.135、逐字稿 p.210）：這是 Eileen 的口語；比較完整的說法是 <i>j'ai commencé par le métier de fleuriste</i> 或 <i>par un stage de fleuriste</i>。聽懂就好，寫作時補完整比較安全（Claude 依語感判斷，<b>未查證</b>）。
+  </div>
+</section>
+
+<!-- ============ 6. 詞彙 ============ -->
+<section>
+  <h2>🧺 新詞彙（挑 B1 才出現、你筆記裡大多還沒有的） <span class="time">2 分鐘</span></h2>
+  <p class="small">哪些字筆記裡已經有，<b>未查證</b>（這次沒有對 french_notes.html 逐字核對）。</p>
+
+  <h3>工作（p.136 Le travail）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'activité professionnelle · l'expérience professionnelle</span><span class="g">f.</span>職業活動・工作經驗</li>
+    <li><span class="w">la carrière · le changement de carrière</span><span class="g">f./m.</span>職涯・轉換跑道</li>
+    <li><span class="w">le collaborateur, la collaboratrice · le/la collègue</span><span class="g">n.</span>合作夥伴・同事</li>
+    <li><span class="w">exercer un métier (reposant, de rêve…)</span><span class="g">expr.</span>從事一份（輕鬆的、夢想的）工作</li>
+    <li><span class="w">faire partie d'un service</span><span class="g">expr.</span>隸屬某個部門</li>
+    <li><span class="w">le métier = la profession · le poste</span><span class="g">m./f./m.</span>職業・職位</li>
+    <li><span class="w">la période d'essai</span><span class="g">f.</span>試用期</li>
+    <li><span class="w">se former en ligne ≠ à distance · travailler en équipe</span><span class="g">expr.</span>線上進修・遠距進修・團隊合作（課本印「≠」，見 🔎）</li>
+  </ul>
+
+  <h3>求職（p.136 Rechercher un emploi）</h3>
+  <ul class="vocab">
+    <li><span class="w">la candidature · être candidat(e)</span><span class="g">f./expr.</span>應徵・當應徵者</li>
+    <li><span class="w">postuler à un emploi/un poste · envoyer un CV</span><span class="g">expr.</span>應徵工作・寄履歷</li>
+    <li><span class="w">être au chômage · Pôle Emploi</span><span class="g">expr./m.</span>失業・法國就業服務中心</li>
+    <li><span class="w">explorer une piste · se renseigner</span><span class="g">expr./v.</span>探索一條路・打聽資訊</li>
+    <li><span class="w">faire un stage de découverte · passer un entretien</span><span class="g">expr.</span>做職業體驗實習・參加面試</li>
+  </ul>
+
+  <h3>面試（p.136 L'entretien d'embauche）</h3>
+  <ul class="vocab">
+    <li><span class="w">embaucher = recruter · le recruteur</span><span class="g">v./m.</span>錄用・招募者</li>
+    <li><span class="w">le/la DRH</span><span class="g">n.</span>人資主管（directeur/directrice des ressources humaines）</li>
+    <li><span class="w">avoir un profil intéressant · la motivation · la qualité</span><span class="g">expr./f.</span>條件很好・動機・優點</li>
+    <li><span class="w">la tenue adaptée</span><span class="g">f.</span>合宜的服裝</li>
+  </ul>
+
+  <h3>特質與能力（p.136 Les qualités et les compétences）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'ambition · la curiosité · la capacité d'adaptation</span><span class="g">f.</span>企圖心・好奇心・適應力</li>
+    <li><span class="w">avoir des facilités (en langues étrangères)</span><span class="g">expr.</span>（外語）很有天分</li>
+    <li><span class="w">avoir le sens de (l'initiative, la créativité)</span><span class="g">expr.</span>有（主動性、創造力）</li>
+    <li><span class="w">être à l'écoute · être compétent(e) · être qualifié(e)</span><span class="g">expr.</span>願意傾聽・能幹・夠資格</li>
+    <li><span class="w">faire preuve de (flexibilité, d'écoute)</span><span class="g">expr.</span>展現出（彈性、傾聽）</li>
+  </ul>
+
+  <h3>工作地點與任務（p.142 Les lieux de travail／Les tâches）</h3>
+  <ul class="vocab">
+    <li><span class="w">la boîte (fam.) = l'entreprise · le local · le domicile · le télétravail</span><span class="g">f./m.</span>公司（口語）・辦公場所・住處・遠距工作</li>
+    <li><span class="w">concevoir une campagne de com' · conquérir un marché</span><span class="g">expr.</span>設計宣傳活動・攻下市場</li>
+    <li><span class="w">fournir un accompagnement, un suivi · piloter une action</span><span class="g">expr.</span>提供輔導與追蹤・主導一項行動</li>
+    <li><span class="w">la gestion de projet · le leadership · le travail de terrain</span><span class="g">f./m./m.</span>專案管理・領導力・實地工作</li>
+    <li><span class="w">s'appuyer sur un réseau · traiter des informations</span><span class="g">expr.</span>靠人脈・處理資訊</li>
+    <li><span class="w">décider dans un cadre collectif · participer au développement (local, économique)</span><span class="g">expr.</span>集體決策・參與（地方、經濟）發展</li>
+  </ul>
+
+  <h3>心理健康與腦袋過熱（p.142 La santé mentale／La surchauffe mentale）</h3>
+  <ul class="vocab">
+    <li><span class="w">le burn-out · la dépression · la fatigue · la pression · le stress</span><span class="g">n.</span>職業倦怠・憂鬱症・疲勞・壓力・緊張</li>
+    <li><span class="w">la charge de travail · la contrainte professionnelle</span><span class="g">f.</span>工作量・職業上的約束</li>
+    <li><span class="w">être sursollicité(e) · être (tout le temps) joignable</span><span class="g">expr.</span>被過度要求・（隨時）聯絡得到</li>
+    <li><span class="w">pouvoir difficilement faire face (à une situation)</span><span class="g">expr.</span>難以應付（某種情況）</li>
+    <li><span class="w">travailler sans discontinuer · générer du stress · diminuer l'efficacité</span><span class="g">expr.</span>不間斷地工作・製造壓力・降低效率</li>
+    <li><span class="w">la baisse, le manque de concentration · la ressource mentale disponible · le volume d'informations</span><span class="g">f./m.</span>專注力下降・可用的心理資源・資訊量</li>
+  </ul>
+
+  <h3>照顧自己（p.142 Prendre soin de soi）</h3>
+  <ul class="vocab">
+    <li><span class="w">conserver un équilibre · le droit à la déconnexion</span><span class="g">expr./m.</span>保持平衡・離線權</li>
+    <li><span class="w">être précautionneux, précautionneuse</span><span class="g">adj.</span>小心謹慎的</li>
+    <li><span class="w">faire des pauses régulières · s'accorder un petit break</span><span class="g">expr.</span>規律休息・給自己小休片刻</li>
+    <li><span class="w">faire un exercice de respiration · le moment de détente</span><span class="g">expr./m.</span>做呼吸練習・放鬆時間</li>
+    <li><span class="w">prendre du recul · recalibrer ses journées · trouver le rythme idéal</span><span class="g">expr.</span>退一步看・重新調整每天的安排・找到理想節奏</li>
+    <li><span class="w">se déconnecter · se récompenser · se régénérer · se ressourcer</span><span class="g">v.</span>斷線・犒賞自己・恢復・充電</li>
+    <li><span class="w">le vagabondage mental</span><span class="g">m.</span>放空、思緒漫遊</li>
+  </ul>
+
+  <h3>課文裡的好用說法</h3>
+  <ul class="vocab">
+    <li><span class="w">du jour au lendemain · sans la moindre raison</span><span class="g">expr.</span>一夕之間・毫無理由（p.132 A）</li>
+    <li><span class="w">en avoir marre de</span><span class="g">expr.</span>受夠了（口語，p.132 A）</li>
+    <li><span class="w">tomber sur</span><span class="g">v.</span>偶然看到（p.132 A <i>Je suis déjà tombée sur l'un de vos articles</i>）</li>
+    <li><span class="w">prendre quelqu'un à l'essai</span><span class="g">expr.</span>試用某人（p.132 A）</li>
+    <li><span class="w">le jour J · jeter un œil sur · un imprévu</span><span class="g">expr./m.</span>當天・看一眼・臨時狀況（p.133 C 練習 9）</li>
+    <li><span class="w">en adéquation avec</span><span class="g">expr.</span>與……相符（逐字稿 p.210 C）</li>
+    <li><span class="w">de fil en aiguille</span><span class="g">expr.</span>一件接一件、慢慢地（逐字稿 p.210 F）</li>
+    <li><span class="w">être loin d'être une exception</span><span class="g">expr.</span>絕不是特例（p.138 I l.12）</li>
+    <li><span class="w">les « soft skills » (savoir-être)</span><span class="g">f.</span>軟實力（p.138 I；抽字 « so skills »＝soft，掉了 ft，<b>未查證</b>）</li>
+    <li><span class="w">à portée de main · a fortiori · la parade</span><span class="g">expr./f.</span>伸手可及・更何況・對策（p.140 K）</li>
+    <li><span class="w">semer la panique · être foutu (fam.)</span><span class="g">expr.</span>製造恐慌・完蛋了（p.137 G）</li>
+    <li><span class="w">ne pas savoir où donner de la tête</span><span class="g">expr.</span>忙得不知從何下手（p.143 l'essentiel 5）</li>
+  </ul>
+  <div class="flag">
+    🔎 ① <b>p.136 « se former en ligne ≠ à distance »</b>：線上和遠距在一般用法裡幾乎是同義（逐字稿 p.210 F 的 Eileen 就把 <i>formation en ligne</i> 和 <i>formation à distance</i> 混著用）。「≠」可能是抽字把「=」或「/」印錯，也可能課本真的這樣寫，<b>未查證</b>，看紙本。<br>
+    ② <b>Pôle Emploi</b>：法國的就業服務機構 2024 年起改名 <b>France Travail</b>（Claude 依一般知識補的，<b>未查證</b>）。課本是 2022 年前後的資料，考試或新聞裡可能看到新名字。<br>
+    ③ <b>p.137 G 的「同事類型」名稱掉了</b>：四個 « Profil » 後面的名稱在抽字裡都只剩 « Profi »（fi 連字＋圖片文字），第 1 型的說明文字完全亂序，本頁只引用第 2–4 型，<b>未查證</b>。
+  </div>
+</section>
+
+<!-- ============ 7. DELF ============ -->
+<section>
+  <h2>📝 本單元 DELF 標記的練習（沒有策略頁） <span class="time">2 分鐘</span></h2>
+  <ul class="phrase-list">
+    <li><span class="fr">Vous témoignez de votre expérience professionnelle sur le site Partagersonexpériencepro. Racontez les principaux métiers ou jobs de vacances que vous avez exercés jusqu'à présent et partagez vos impressions. (160 mots minimum)</span><span class="zh">在網站上分享你的工作經歷：說說你目前做過的主要工作或暑期打工，以及你的感想（至少 160 字）。</span><span class="note">p.135 練習 6（Production écrite DELF B1；exercés 配合前面的 que＝les métiers）</span></li>
+    <li><span class="fr">Pour intégrer leur cursus, les écoles de commerce demandent de plus en plus aux candidats une expérience dans le milieu associatif. Trouvez-vous cela important ? Pourquoi ? Vous présentez votre opinion sous la forme d'un court exposé.</span><span class="zh">商學院越來越要求申請者有社團／志工經驗。你覺得重要嗎？為什麼？用簡短報告表達意見。</span><span class="note">p.138 練習 5（Production orale DELF B1＝口說第 3 部分「表達觀點」的題型）</span></li>
+    <li><span class="fr">Racontez votre première expérience professionnelle : âge, lieu, tâches à accomplir, émotions... (160 mots minimum)</span><span class="zh">說說你的第一份工作經驗：幾歲、在哪、做什麼、感受……（至少 160 字）</span><span class="note">p.142 練習 3（Production écrite DELF B1）</span></li>
+  </ul>
+  <div class="flag">
+    🔎 ① <b>字數：</b>這個單元兩題寫作都寫 <b>160 mots minimum</b>；Unité 8 p.118、Unité 7 寫 150，Unité 6 p.99 策略頁寫 160。課本前後不一，現行官方規定 Claude <b>未查證</b>。<br>
+    ② 這是 DELF 規格，⭐ 不是 TCF Canada；但 p.138 練習 5「讀一個現象 → 表態 → 說理由」跟 TCF 口說第 3 題方向類似，<b>未查證</b>兩邊評分標準。<br>
+    ③ 👉 p.135 練習 6、p.142 練習 3 是現成的寫作題，⭐ 而且內容就是你自己的牙醫職涯——但要你自己寫，Claude 只修語法、不代寫。
+  </div>
+</section>
+
+<!-- ============ 8. 閱讀亮點 ============ -->
+<section>
+  <h2>📰 閱讀裡值得先看的句子 <span class="time">1 分鐘</span></h2>
+  <ul class="phrase-list">
+    <li><span class="fr">Une fois dans son bureau, Mathilde proposa du thé, du café, de l'eau, ce qu'il voulait à vrai dire, mais Antoine préféra dire non merci, non merci, non merci.</span><span class="zh">一進辦公室，Mathilde 問他要茶、咖啡、水，其實他要什麼都可以，但 Antoine 寧可一直說不用了、不用了、不用了。</span><span class="note">p.132 A l.1–5（⭐ proposa、préféra＝<b>簡單過去式 passé simple</b>，小說敘事用，只需要認得；兩欄抽字交錯，已重排）</span></li>
+    <li><span class="fr">Je dois vous dire que j'ai été très surprise en recevant votre CV.</span><span class="zh">我得說，收到您的履歷時我非常驚訝。</span><span class="note">p.132 A l.6–7（en ＋ -ant＝Unité 7 的副動詞）</span></li>
+    <li><span class="fr">Je me suis permis d'appeler l'ENSBA, avoua Mathilde après un temps.</span><span class="zh">過了一會兒，Mathilde 坦白說：「我冒昧打了電話給美術學院。」</span><span class="note">p.132 A l.20–21（⚠️ 說話的是女性，但 permis <b>不加 e</b>：se permettre de 的 se 是間接受詞，不配合——Claude 依標準文法補的）</span></li>
+    <li><span class="fr">On m'a confirmé que vous aviez décidé de quitter votre emploi. Du jour au lendemain, comme ça, sans la moindre raison.</span><span class="zh">有人跟我證實您決定辭職。一夕之間，就這樣，沒有任何理由。</span><span class="note">p.132 A l.24–28（aviez décidé＝愈過去式，轉述）</span></li>
+    <li><span class="fr">J'aime l'art. Je l'ai étudié, je l'ai enseigné, d'accord, mais j'ai simplement envie maintenant d'être assis dans une salle au milieu des tableaux.</span><span class="zh">我愛藝術。我學過它、教過它，沒錯，但我現在只是想坐在一間滿是畫的展間裡。</span><span class="note">p.132 A l.45–48（simplement＝文法二）</span></li>
+    <li><span class="fr">Différents chemins mènent au milieu communautaire, mais l'élément qui fait que l'on y reste est assurément le sentiment de faire la différence.</span><span class="zh">走進社區工作的路有很多條，但讓人留下來的，一定是「我能帶來改變」的感覺。</span><span class="note">p.135 E 導言（y＝au milieu communautaire；assurément＝副詞 -ment）</span></li>
+    <li><span class="fr">Ce n'est pas d'aujourd'hui que je fais du bénévolat.</span><span class="zh">我當志工不是今天才開始的。</span><span class="note">p.135 E 證詞 3（C'est … que 強調句的否定）</span></li>
+    <li><span class="fr">Cela fait 18 ans que je suis avec le Carrefour dignité St-Jean en tant que responsable d'un centre de distribution.</span><span class="zh">我在 Carrefour dignité St-Jean 擔任發放中心負責人已經 18 年了。</span><span class="note">p.135 E 證詞 3（cela fait … que ＋ 現在式＝「已經……了」）</span></li>
+    <li><span class="fr">J'ai par exemple compris qu'il faut prendre du recul quand certains bénéficiaires se montrent agressifs. Cela ne veut pas dire qu'ils ne sont pas reconnaissants, mais ils ont une colère à exprimer. Il ne faut pas la prendre pour soi.</span><span class="zh">例如我懂了，受助者態度很衝的時候要退一步。那不代表他們不感激，而是他們有怒氣要發。不要往自己身上攬。</span><span class="note">p.138 I l.9–12（抽字 « bénéciaires »＝bénéficiaires，<b>未查證</b>；牙醫看診也用得到）</span></li>
+    <li><span class="fr">Au-delà des compétences techniques, les recruteurs sont de plus en plus en recherche de compétences comportementales.</span><span class="zh">除了專業技能，招募者越來越重視行為能力。</span><span class="note">p.138 I l.32–34</span></li>
+    <li><span class="fr">Quand le smartphone est à portée de main, il est toujours tentant d'aller faire un petit tour sur les réseaux sociaux, a fortiori en télétravail…</span><span class="zh">手機就在手邊時，總會想去社群網站逛一下，在家工作時更是如此……</span><span class="note">p.140 K l.6–8</span></li>
+    <li><span class="fr">Repousser une pause nécessaire ne fera que diminuer l'efficacité du temps qui la précède.</span><span class="zh">把必要的休息往後拖，只會降低休息前那段時間的效率。</span><span class="note">p.140 K l.14–15（ne … que＝「只」，不是否定；抽字 « ecacité »＝efficacité，<b>未查證</b>）</span></li>
+    <li><span class="fr">Le droit à la déconnexion est inscrit dans la loi française pour permettre aux salarié(e)s de conserver un équilibre entre leur vie personnelle et leur vie professionnelle.</span><span class="zh">離線權寫進了法國法律，讓受雇者能維持個人生活與工作的平衡。</span><span class="note">p.141 M「Au fait !」框（數字題型：TCF 閱讀常考圖表）</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>p.137 G 的同事側寫是很口語的書寫</b>：<i>qui ne semble jamais gavé par son taf</i>（gavé＝受夠、taf＝工作，都是俚語）、<i>Si tu le croises, tu es foutu</i>（p.137 G）——聽懂就好，⛔ 寫作和口說考試別用。
+  </div>
+  <div class="flag">
+    🔎 ① 聽力 C、F、H、J、L 讀了附錄逐字稿 p.209–211；影片 B 讀了 p.220–221 逐字稿。② p.135 E 證詞 1 中間有一段在抽字裡斷掉（« Avec peu de ressources, le communautaire peut … compétences, mon sens de l'initiative, ma créativité »），缺的字<b>未查證</b>，本頁沒有引用那句。③ p.141 M 圖表的百分比（10,2 %、21,4 %、45,1 %、23,3 %、31 %、26 %）在抽字裡跟選項錯位，哪個數字對哪個答案<b>未查證</b>。④ p.132 A 是三欄交錯排版，行號依抽字裡的行號標記推定，可能差一兩行，<b>未查證</b>。
+  </div>
+</section>
+
+<!-- ============ 9. 練習題 ============ -->
+<section>
+  <h2>✏️ 最可能上課做的題目：先想想看 <span class="time">2 分鐘</span></h2>
+  <p class="small">只給方向，不給答案。哪幾題會做是照前幾個單元的節奏推測（未查證）。</p>
+
+  <div class="ex">
+    <div class="q">p.134 Entraînement 3：si 句填時態 <span class="likely">★★★ 文法頁一定做</span></div>
+    <div class="hint">先想想看：先看<b>另一半</b>已經給的時態。3c 主句是 aiderais（條件式）→ si 那格要什麼？3f <i>J'(envoyer) …… mon CV à Paul si j'avais son mail.</i>——si 那半是 imparfait，主句要什麼？3a <i>Si vous (changer) …… d'avis, voici mon numéro</i>：主句是現在式，所以是「做得到的條件」。</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.134 Entraînement 4：改寫成條件或假設 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：4d <i>Je n'ai pas le bon diplôme. Je ne peux pas travailler dans cette entreprise. (hypothèse)</i>——事實是「沒有」，假設要翻成「如果我有」；主句「不能」要翻成什麼？4f 的 Octave 騎腳踏車上班，翻過來是什麼？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.139 Entraînement 4、5、p.143 l'essentiel 3：形容詞變副詞 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：先把每個形容詞變成<b>陰性</b>，再決定加不加 -ment。doux、franc、long、nouveau 的陰性是什麼？patient、bruyant、récent 是 -ent／-ant 結尾，走哪條規則？5a <i>Parlez-vous français ? (courant) → Non, ……</i>：否定句裡 couramment 放哪？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.141 Entraînement 3：選時間連接詞 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：空格後面是名詞、原形、還是句子？如果是句子，動詞是直陳式還是虛擬式？3b <i>…… le médecin m'appelle</i>：m'appelle 看不出語式，要從意思判斷（等醫生叫我之前）。3c <i>J'ai répondu à ton appel …… le téléphone a sonné</i>：電話一響就接，用哪個？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.143 l'essentiel 1：對話裡的 si 句 <span class="likely">★★</span></div>
+    <div class="hint">先想想看：同一段對話裡條件和假設混在一起。<i>Si j'avais le temps, je (ne pas hésiter) ……</i>（抽字黏成 « nepashésiter »）——否定的條件式怎麼排 ne…pas？<i>Je te (promettre) …… de venir si je réussis…</i>：si 那半是現在式，主句可以用現在式或未來式嗎？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.136 Phonétique 1、3：分辨語調情緒 <span class="likely">★★ 有時間才做</span></div>
+    <div class="hint">先想想看：<i>Tu as raté ton entretien.</i> 如果句尾上揚，是在問；如果拉長又帶停頓，可能是不相信；如果重重往下壓，是肯定。你能用中文「你面試搞砸了」唸出五種感覺嗎？</div>
+  </div>
+</section>
+
+<!-- ============ 10. 問老師 ============ -->
+<section>
+  <h2>🙋 上課可以問老師的 3 個問題</h2>
+  <ol class="ask">
+    <li>p.134 Rappel 說 si 後面不能用未來式或條件式；那 p.132 A <i>je voudrais savoir si j'ai déjà des chances</i> 這種「是否」的 si，可以說 <i>si j'aurai</i> 嗎？</li>
+    <li>p.141 表格裡 <i>dès que</i> 和 <i>une fois que</i> 是放在「同時」還是「之後」那一欄？練習 3d <i>avant qu'il ne l'envoie</i> 的 ne 可以拿掉嗎？</li>
+    <li>p.139 Échauffement f <i>Je me concentrerai exclusivement pour la réussite de ce projet</i>，跟 p.142 的 <i>se concentrer sur un projet</i>——<i>se concentrer pour</i> 可以用嗎，還是只能用 sur？</li>
+  </ol>
+</section>
+
+<!-- ============ 11. 不一致處 ============ -->
+<section>
+  <h2>📋 課本與標準法文不一致處（彙整）</h2>
+  <div class="flag">
+    ① <b>p.136 發音規則 « Une courbe intonative peut-être montante ou descendante »</b>（兩層抽字都一樣）：應為動詞 <b>peut être</b>（不加連字號）；peut-être 是副詞「也許」。課本錯字（見第 4 段）。<br>
+    ② <b>p.139 Échauffement f « Je me concentrerai exclusivement pour la réussite de ce projet »</b>（出自逐字稿 p.210 J）：標準搭配是 <b>se concentrer sur</b>，課本自己 p.142 詞彙表、p.140 K 都用 sur（見第 2 段 🔎 ①）。<br>
+    ③ <b>逐字稿 p.210 J « plutôt que de se laisser accablé par les statistiques »</b>：laisser 後面接原形，標準寫法是 <b>se laisser accabler</b>（唸起來一樣，只有寫的時候看得出來）。逐字稿錯字。<br>
+    ④ <b>p.134 Rappel「si 後面永遠不用未來式或條件式」</b>只適用於條件／假設的 si，間接問句的 si（＝是否）不受限（見第 1 段 🔎 ①）。<br>
+    ⑤ <b>p.138 J 引言與逐字稿 p.210 « j'avais des grandes idées »</b>：規範文法在「形容詞 ＋ 複數名詞」前用 <b>de</b>（de grandes idées）——跟 Unité 8 的 des vieux meubles 是同一個現象。口語常見，寫作用 de 比較安全（Claude 依規範文法判斷，<b>未查證</b>課本立場）。<br>
+    ⑥ <b>p.138 說法框與逐字稿 p.210 « À l'avenir, je pense m'élargir à d'autres pays »</b>：s'élargir 一般指「（東西）變寬」，人當主詞說「擴展到其他國家」比較自然的是 <i>élargir le programme à d'autres pays</i> 或 <i>m'étendre à</i>。這是受訪者的口語，課本把它放進「描述行動計畫」說法框。Claude 依語感判斷，<b>未查證</b>。<br>
+    ⑦ <b>逐字稿 p.210 J « l'entreprenariat social »</b>：較常見的標準拼法是 <b>entrepreneuriat</b>；entreprenariat 是常見變體，有沒有被字典收錄 Claude <b>未查證</b>。<br>
+    ⑧ <b>逐字稿 p.210 J « Les sciences sont amenées par des professionnels expérimentés »</b>：意思不通，推測是語音轉寫錯誤（可能是 <i>les séances sont animées</i> 之類），<b>未查證</b>，要聽音檔。<br>
+    ⑨ <b>逐字稿 p.210 受訪者姓名前後不一</b>：前面都是 Yvan Darcy，最後一行寫 « Ivan Darcy »。逐字稿錯字。<br>
+    ⑩ <b>p.140 K « notre cerveau d'Homos sapiens »</b>：學名是 <b>Homo sapiens</b>（Homo 不加 s）。兩層抽字都是 « Homos sapiensait »，比較像課本本身的錯字，但不排除抽字問題，<b>未查證</b>。<br>
+    ⑪ <b>p.141 時間連接詞表格</b>：dès que、une fois que 的欄位在抽字裡看不出來（見第 3 段），<b>未查證</b>；練習 3d 用了 ne explétif 但沒說明。<br>
+    ⑫ <b>p.136 « se former en ligne ≠ à distance »</b>：一般用法兩者近乎同義，「≠」可疑，<b>未查證</b>（見第 6 段 🔎 ①）。<br>
+    ⑬ <b>DELF 寫作字數</b>：本單元 p.135、p.142 都寫 160 字，Unité 7、8 寫 150 字（見第 7 段），<b>未查證</b>官方規定。
+  </div>
+</section>
+
+<p class="small"><b>來源與未查證：</b>Édito B1 課本 p.131–144（<code>assets/.textbook_cache.txt</code> 第 66469–68534 行；已用頁首「===== [Edito.B1.Owen.pdf] page N =====」與頁尾「132 I cent trente-deux」「cent trente-trois I 133」「134 I cent trente-quatre」「cent trente-cinq I 135」「136 I cent trente-six」「cent trente-sept I 137」「138 I cent trente-huit」「cent trente-neuf I 139」「140 I cent quarante」「cent quarante et un I 141」「142 I cent quarante-deux」「cent quarante-trois I 143」「144 I cent quarante-quatre」核對，p.145 是 Unité 10 首頁）＋附錄逐字稿 p.209–211（第 79178–79531 行，Unité 9 從 p.209 中段開始）與影片逐字稿 p.220–221（第 81666–81725 行）。PDF 抽字掉了 fi／ff／fl／ft 連字，引用時推定原文，<b>未對照紙本查證</b>：p.132 « trop qualié »（＝qualifié），p.135 « diérentes »（＝différentes），p.137 « Profi »（後面的類型名稱整段遺失），p.138 « bénéciaires »、« so skills »（＝bénéficiaires、soft skills），p.140 « notications »、« dicilement »、« surchaue »、« réexe »、« xée »、« ecacité »（＝notifications、difficilement、surchauffe、réflexe、fixée、efficacité），p.142 « réfl échir »（中間斷開），p.144 « di cultés »（＝difficultés），p.136、p.142 « affi rmation »（中間斷開）。黏字已補空格：p.134 « Tokyo,apprends »，p.143 « nepashésiter »、« d'embauche,vous »，p.144 « façonà »。逐字稿 p.210 H 的中文拼音 « W ài n. » 聲調符號掉了，本頁沒有引用。p.134 表格、p.141 表格的欄位版面在抽字裡錯位，本頁的整理是推定的，<b>未查證</b>。p.134、p.139、p.141 練習答案快取裡沒有（沒有 B1 解答頁），本頁不給答案。p.132 A、p.135 E、p.138 I、p.140 K 的行號依抽字裡的行號標記推定，可能差一兩行，<b>未查證</b>。標準法文的判斷（peut être 拼法、se concentrer sur、se laisser accabler、si 間接問句、de grandes idées 規範、s'élargir 用法、entrepreneuriat 拼法、-amment／-emment 發音、lentement 例外、après que ＋ 直陳式、ne explétif、sans doute 的語意、se permettre 不配合、Homo sapiens、France Travail 改名）是 Claude 依一般標準文法與常識寫的，這次沒有另外查字典或文法書，視為<b>未查證</b>。哪些詞彙已在 french_notes.html 也<b>未查證</b>。</p>
+
+</main>
+</body>
+</html>
