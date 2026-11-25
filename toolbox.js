@@ -67,7 +67,7 @@ function paintPat(){
     h+='<details'+(q?' open':'')+'><summary>'+c.em+' '+esc(c.name)+' <span class="muted">'+its.length+'</span></summary>'+its.map(function(x){
       return '<div class="it"><div class="zh">'+esc(x[0])+'<span class="src">'+({L:'Lucas',B:'寶典',B2:'寶典 2'}[x[4]]||'')+'</span></div><div class="fr">'+esc(x[1])+' <button class="sp" data-say="'+esc(x[1])+'">🔊</button></div>'+
         (x[2]?'<div class="ex">例：'+esc(x[2])+' <button class="sp" data-say="'+esc(x[2])+'">🔊</button>'+(x[3]?'<br>'+esc(x[3]):'')+'</div>':'')+
-        (x[5]?'<div class="nt">✏️ '+esc(x[5])+'</div>':'')+(st.pick?'<div class="row">'+pickBtn(x[1], x[0])+'</div>':'')+'</div>'; }).join('')+'</details>'; });
+        (x[5]?'<div class="nt">✏️ '+esc(x[5])+'</div>':'')+(upMove(x[1])?'<div class="nt">🔧 升級工坊也有這招：'+esc(upMove(x[1]))+'</div>':'')+(st.pick?'<div class="row">'+pickBtn(x[1], x[0])+'</div>':'')+'</div>'; }).join('')+'</details>'; });
   return h||'<p class="muted">找不到「'+esc(q)+'」。試試中文意圖，例如：雖然、因為、例如、越來越。</p>';
 }
 function paintVoc(){
@@ -126,7 +126,15 @@ function start(){
       '<p>工具箱的內容放在私人空間，要先登入（通行證＝考試之塔那組帳號）。</p><div style="display:grid;gap:6px"><input id="tbxE" type="email" placeholder="Email" autocomplete="username"><input id="tbxP" type="password" placeholder="密碼" autocomplete="current-password"><button class="main" id="tbxGo">登入</button><div class="muted" id="tbxMsg"></div></div>' :
       '<p class="muted">載不下來（網路？'+esc(e&&e.message||'')+'）。</p>'; });
 }
+/* 🔧 工具箱句型 ↔ 升級工坊招式（upgrade_moves.js）：同一招在兩邊都看得到 */
+var UPMAP=[[/^Pour ma part|^À mon avis/,'用 je pense que／je trouve que 亮出意見'],[/^Bien que|^malgré cela/,'讓步：bien que／même si／malgré'],[/tandis que|^en revanche/,'對比：en revanche／tandis que'],
+  [/^Comme…/,'用 comme／puisque 開頭說原因'],[/^parce que/,'用 parce que 補上原因'],[/^donc \/ c’est pourquoi/,'用 alors／c’est pourquoi 說結果'],[/^grâce à/,'用 grâce à／à cause de 說原因'],
+  [/^afin que/,'目的的書面說法：afin de／afin que'],[/^Il est indispensable que/,'il faut que／c’est bien que＋虛擬式'],[/^Il faudrait|^Je voudrais souligner|^J’aimerais/,'用條件式說得更客氣、更委婉'],
+  [/^en \+ 現在分詞/,'用 en＋-ant 說方法或同時動作'],[/^C’est… qu/,'用 c’est…qui／que 強調重點'],[/^depuis|^pendant|^il y a/,'用 il y a／depuis／pendant 精準說時間'],[/^puis \/ après cela/,'用 un jour／puis／du coup 串起動作']];
+function upMove(fr){ for(var i=0;i<UPMAP.length;i++) if(UPMAP[i][0].test(fr)) return UPMAP[i][1]; return ''; }
 window.Toolbox={
+  data:function(){ return load(); },
+  upMove:upMove,
   open:function(opt){ opt=opt||{}; close(); st.q=''; st.tab=opt.tab||'pat';
     st.pick= opt.pick ? {max:opt.max||3, list:(opt.list||[]).slice(), onDone:opt.onDone} : null;
     shell(); start(); },
