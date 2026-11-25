@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 Unité 8 預習單</title>
+<style>
+  :root {
+    --bg: #15171c;
+    --card: #1f232b;
+    --card2: #262b35;
+    --text: #e6e8ec;
+    --muted: #9aa3b2;
+    --fr: #ffffff;
+    --accent: #7cc4ff;
+    --gold: #f2c86b;
+    --warn: #ff9f7a;
+    --line: #333a46;
+    --gray-badge: #4a5160;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Helvetica Neue", sans-serif;
+    font-size: 16px; line-height: 1.65;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 1.35rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: .9rem; margin-bottom: 18px; }
+  section {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; margin: 0 0 16px;
+  }
+  h2 { font-size: 1.1rem; margin: 0 0 8px; color: var(--accent); }
+  h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--gold); }
+  p { margin: 6px 0; }
+  b { color: var(--fr); }
+  .time { float: right; font-size: .78rem; color: var(--muted); font-weight: normal; }
+  .rule {
+    background: var(--card2); border-left: 4px solid var(--accent);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .trap {
+    background: rgba(255,159,122,.08); border-left: 4px solid var(--warn);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .flag {
+    background: rgba(242,200,107,.08); border-left: 4px solid var(--gold);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: .92rem;
+  }
+  .map { list-style: none; padding: 0; margin: 0; }
+  .map li { padding: 7px 0; border-bottom: 1px solid var(--line); }
+  .map li:last-child { border-bottom: none; }
+  .pg { display: inline-block; min-width: 54px; color: var(--accent); font-weight: 600; }
+  .tag { display: inline-block; font-size: .72rem; padding: 1px 7px; border-radius: 10px;
+         background: var(--gray-badge); color: var(--text); margin-left: 4px; vertical-align: 1px; }
+  .tag.new { background: #2f5d8a; }
+  /* 法文句子載體：沿用 french_notes.html 的結構，之後可直接搬 */
+  .phrase-list { list-style: none; padding: 0; margin: 6px 0; }
+  .phrase-list li {
+    display: flex; flex-wrap: wrap; gap: 2px 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--line);
+  }
+  .phrase-list li:last-child { border-bottom: none; }
+  .fr { font-weight: 600; color: var(--fr); width: 100%; }
+  .zh { color: var(--muted); font-size: .9rem; }
+  .phrase-list li > span.note { color: #7d8696; font-size: .8rem; }
+  .fr em { font-style: normal; color: var(--gold); }
+  .vocab { list-style: none; padding: 0; margin: 4px 0 8px;
+           display: grid; grid-template-columns: 1fr; gap: 0; }
+  .vocab li { padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: .95rem; }
+  .vocab li:last-child { border-bottom: none; }
+  .vocab .w { color: var(--fr); font-weight: 600; }
+  .g { display: inline-block; font-size: .72rem; color: var(--muted); border: 1px solid var(--line);
+       border-radius: 4px; padding: 0 5px; margin: 0 4px; }
+  details { background: var(--card2); border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
+  summary { cursor: pointer; font-weight: 600; color: var(--text); }
+  details[open] summary { margin-bottom: 6px; }
+  .ex { margin: 8px 0; padding-left: 2px; }
+  .ex .q { color: var(--fr); }
+  .hint { color: var(--muted); font-size: .92rem; }
+  .likely { color: var(--gold); font-size: .8rem; }
+  ol.ask { padding-left: 20px; margin: 6px 0; }
+  ol.ask li { margin: 8px 0; }
+  .small { font-size: .85rem; color: var(--muted); }
+  @media (min-width: 640px) {
+    .vocab { grid-template-columns: 1fr 1fr; column-gap: 18px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Unité 8 Mieux consommer !・預習單（草稿）</h1>
+<div class="sub">範圍：Édito B1 p.115–130（第 8 單元，含 p.129–130 DELF 口說策略頁）｜大約 15 分鐘｜全部法文句子都是課本原句，每句標頁碼</div>
+
+<div class="flag">
+  🚧 <b>這是草稿。</b>給 Unité 8 開課前先看的。<br>
+  中文翻譯、「它在處理什麼資訊」的說明、陷阱與標註是 Claude 加的；法文全部取自 <code>assets/.textbook_cache.txt</code> 的 Édito B1 內頁（PDF 頁碼＝課本頁碼）與課本附錄逐字稿 p.208–209、p.220。
+</div>
+
+<!-- ============ 0. 地圖 ============ -->
+<section>
+  <h2>🗺 這個單元的頁面 <span class="time">1 分鐘</span></h2>
+  <ul class="map">
+    <li><span class="pg">p.115</span>單元首頁。目標：表達同意與不同意｜表達觀點｜表達驚訝｜發展簡單的推論。標語：<i>Ça n'a pas de prix !</i></li>
+    <li><span class="pg">p.116</span>A 閱讀：〈Consommez solidaire〉待用咖啡（café suspendu）｜B 聽力：Rezo Pouce 有組織的搭便車網絡</li>
+    <li><span class="pg">p.117</span>「表達同意／不同意」＋「表達觀點」＋ C 閱讀：Tut Tut 協作送貨 App</li>
+    <li><span class="pg">p.118</span><b>文法：Exprimer l'opinion 表達意見——直陳式還是虛擬式</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.119</span>D 閱讀：INCI Beauty 化妝品成分 App｜E 聽力：網路評論是真是假（podcast）</li>
+    <li><span class="pg">p.120</span>詞彙頁：消費與經濟（消費、人、共享經濟、產品、評價、付款與預算、消費者評論）</li>
+    <li><span class="pg">p.121</span>Culture：F 閱讀：手工藝重新流行｜G 聽力：非洲皮件設計師 Meli Bodombossou</li>
+    <li><span class="pg">p.122</span>H 閱讀＋圖表：兩噸 CO₂ 是多少？（ADEME 換算器）＋「表達驚訝」｜I 聽力：Kazoo 家電租賃</li>
+    <li><span class="pg">p.123</span>J 閱讀：翻新手機（reconditionnement）｜<b>文法：Les pronoms y et en 代名詞 y 與 en</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.124</span>K 影片：上網也在污染（逐字稿 p.220）｜L 閱讀：數位大掃除 Cyber Cleanup Day＋「發展簡單的推論」</li>
+    <li><span class="pg">p.125</span><b>文法：L'opposition et la concession 對立與讓步</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.126</span>詞彙頁：消費與環境（消費部門、永續消費、為環境行動、污染）＋ 發音：<b>L'intonation montante et descendante 上升與下降語調</b><span class="tag new">新</span></li>
+    <li><span class="pg">p.127</span>l'essentiel 總複習（文法／詞彙）</li>
+    <li><span class="pg">p.128</span>Atelier médiation：介紹一件街頭藝術作品＋策略「描述、分析、評論一件平面作品」</li>
+    <li><span class="pg">p.129</span><b>DELF B1 策略：S'exprimer à l'oral 口說</b><span class="tag new">策略頁</span></li>
+    <li><span class="pg">p.130</span>DELF B1 口說準備：角色扮演兩題＋觀點表達一篇短文〈Se former à distance ?〉</li>
+  </ul>
+  <p class="small">p.131 已經是 Unité 9 Mieux-être au travail 的首頁。跟 Unité 7 不同，這個單元<b>有</b> DELF 策略頁（p.129–130，見第 7 段）。</p>
+</section>
+
+<!-- ============ 1. 意見：直陳式／虛擬式 ============ -->
+<section>
+  <h2>📐 文法一：Exprimer l'opinion — indicatif ou subjonctif（p.118） <span class="time">4 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>que 後面的動詞用哪個語式，等於在告訴對方<b>「我有多確定」</b>。<br>
+    <b>我覺得／我確定／很可能</b> → 直陳式（indicatif）｜<b>有可能／我懷疑／我不確定</b> → 虛擬式（subjonctif）。<br>
+    ⭐ 分界線不在「意見 vs 事實」，在<b>「我站在確定那一邊，還是不確定那一邊」</b>：probable（很可能）還在確定那邊，possible（有可能）就跨過去了。
+  </div>
+
+  <h3>課本 Échauffement（p.118，出自 p.116 A、B 與逐字稿 p.208）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Nous sommes convaincus que ce lien social <em>est</em> tout aussi essentiel pour ces populations.</span><span class="zh">我們深信這種社會連結對這些人同樣重要。</span><span class="note">p.118 a（確信 → 直陳式）</span></li>
+    <li><span class="fr">Il me semble que c'<em>est</em> une aide très précieuse pour les habitants.</span><span class="zh">我覺得這對居民是很寶貴的幫助。</span><span class="note">p.118 b</span></li>
+    <li><span class="fr">Je pense que c'<em>est</em> un plus.</span><span class="zh">我認為這是加分。</span><span class="note">p.118 c</span></li>
+    <li><span class="fr">Il est probable que ce réseau <em>va avoir</em> beaucoup de succès.</span><span class="zh">這個網絡很可能會非常成功。</span><span class="note">p.118 d（probable → 直陳式）</span></li>
+    <li><span class="fr">Je suis sûr que les adhésions <em>vont continuer</em> d'augmenter !</span><span class="zh">我確定加入的會繼續增加！</span><span class="note">p.118 e</span></li>
+    <li><span class="fr">Je doute qu'ils le <em>fassent</em> très longtemps !</span><span class="zh">我不相信他們會猶豫很久！</span><span class="note">p.118 f（doute → 虛擬式 fassent；le＝hésiter，見逐字稿 p.208 « si certains hésitent encore »）</span></li>
+    <li><span class="fr">Il est possible que vous <em>entendiez</em> parler à nouveau de Rezo Pouce très bientôt !</span><span class="zh">你們很可能很快又會聽到 Rezo Pouce 的消息！</span><span class="note">p.118 g（possible → 虛擬式 entendiez）</span></li>
+  </ul>
+
+  <h3>課本 Fonctionnement 表格的例句（p.118）</h3>
+  <p class="small">規則句的空格（« suivis du mode …… »）課本留空讓你填；下面這些是表格裡已經印好的例句：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">Je pense que / Je crois que / Je trouve que / Il me semble que l'auto-stop organisé est une bonne idée !</span><span class="zh">我覺得有組織的搭便車是好主意！（意見 → 直陳式）</span><span class="note">p.118 Exemples</span></li>
+    <li><span class="fr">Je suis convaincu(e) / sûr(e) / certain(e) que la livraison collaborative va intéresser beaucoup de monde.</span><span class="zh">我確信協作送貨會吸引很多人。（確定 → 直陳式）</span><span class="note">p.118 La certitude（抽字黏成 « quela livraison collaborativeva »，已補空格）</span></li>
+    <li><span class="fr">Il est probable que le colis <em>arrivera</em> demain.</span><span class="zh">包裹很可能明天到。（很可能 → 直陳式）</span><span class="note">p.118 La probabilité</span></li>
+    <li><span class="fr">Il est possible qu'on <em>voie</em> apparaître d'autres initiatives solidaires.</span><span class="zh">有可能會出現其他互助行動。（有可能 → 虛擬式 voie）</span><span class="note">p.118 La possibilité</span></li>
+    <li><span class="fr">Je doute que le maire <em>veuille</em> mettre en place un réseau d'auto-stop organisé.</span><span class="zh">我懷疑市長會想設立搭便車網絡。（懷疑 → 虛擬式 veuille）</span><span class="note">p.118 Le doute</span></li>
+    <li><span class="fr">Je ne suis pas sûr(e) / certain(e) que tout le monde <em>connaisse</em> Rezo Pouce.</span><span class="zh">我不確定大家都知道 Rezo Pouce。（不確定 → 虛擬式 connaisse）</span><span class="note">p.118 Le doute</span></li>
+    <li><span class="fr">Je ne pense/crois pas qu'il <em>puisse</em> se déplacer facilement.</span><span class="zh">我不認為他能輕鬆移動。</span><span class="note">p.118 Remarque：penser、croire 用否定時表示懷疑，所以接虛擬式</span></li>
+  </ul>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：probable ≠ possible。</b>只差幾個字母，語式相反。p.118 練習 4e <i>Il est probable que je partirai / parte avant ce soir</i> 和 4f <i>Il est possible que le maire sera / soit d'accord</i> 就是並排考這一對。<br>
+    ⚠️ <b>陷阱二：同一個動詞，肯定和否定語式不同。</b><i>Elle pense qu'il faut / faille…</i>（練習 4a）對照 <i>Il ne croit pas que cette application a / ait beaucoup de succès</i>（練習 4d）——先看有沒有 ne…pas。<br>
+    ⚠️ <b>陷阱三：虛擬式的形式是不規則的大宗。</b>fassent、veuille、puisse、voie、connaisse、faille——規則你講得出來的話，卡的是變位反射，不是概念。<br>
+    ⚠️ <b>陷阱四：聽力裡分不出來的。</b>p.127 l'essentiel 1 是聽句子判斷語式。像 <i>Je trouve que ces applications alimentaires et cosmétiques aident vraiment les consommateurs !</i>（逐字稿 p.209 e）的 aident，直陳和虛擬唸起來一樣，⭐ 只能靠 que 前面的那個詞判斷。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>Remarque 只講了否定，沒講疑問。</b>p.118 練習 6 的題目自己就寫 <i>Pensez-vous que ce soit une bonne chose ?</i>——倒裝疑問句的 penser 接了虛擬式 soit，但這頁規則沒有說明。標準法文：倒裝疑問時虛擬式可以用（直陳式也常見）。這是 Claude 依標準文法補的，<b>未查證</b>。<br>
+    ② <b>「否定的 penser／croire 一律接虛擬式」是簡化。</b>標準文法裡說話者自己很確定時，否定後面也可能用直陳式；B1 考試照課本用虛擬式就安全。Claude 依標準文法補的，<b>未查證</b>。<br>
+    ③ <b>課本只列 Il me semble que（接直陳式）。</b>標準文法裡少了 me 的 <i>il semble que</i> 通常接虛擬式，兩個長得很像。課本這頁沒提，之後遇到不用困惑（Claude 補的，<b>未查證</b>後面單元）。
+  </div>
+</section>
+
+<!-- ============ 2. y / en ============ -->
+<section>
+  <h2>📐 文法二：Les pronoms y et en 代名詞 y 與 en（p.123） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>不想重複說一整塊東西時，用一個字指回去。判斷只看<b>動詞後面原本接的介系詞</b>：<br>
+    原本接 <b>de</b> → 用 <b>en</b>｜原本接 <b>à</b> → 用 <b>y</b>。<br>
+    ⭐ B1 的新東西：被取代的可以是<b>一整個原形動詞子句</b>（« de ＋ 原形 »、« à ＋ 原形 »），不只是名詞（p.123 Fonctionnement）。
+  </div>
+
+  <h3>課本 Échauffement（p.123，出自 p.122 H、I 與 p.123 J）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">D'où vient cet impact ? Quels gestes de mon quotidien <em>en</em> sont responsables ?</span><span class="zh">這些影響從哪來？我日常的哪些動作要負責？</span><span class="note">p.123 a（en＝de cet impact；抽字黏成 « ensont »）</span></li>
+    <li><span class="fr">Choisissez un appareil si vous êtes convaincus que vous allez <em>en</em> avoir un usage dans la durée.</span><span class="zh">如果你確定會長期使用，就選一台。</span><span class="note">p.123 b（en＝de cet appareil）</span></li>
+    <li><span class="fr">Les Français laissent leur téléphone au fond d'un tiroir : ils ne s'<em>en</em> servent plus et n'<em>y</em> pensent plus.</span><span class="zh">法國人把手機丟在抽屜深處：不再用、也不再想起。</span><span class="note">p.123 c（se servir <b>de</b> → en；penser <b>à</b> → y）</span></li>
+    <li><span class="fr">24 % des Français ne revendent pas leur téléphone. Ils <em>y</em> renoncent par crainte qu'il soit piraté.</span><span class="zh">24% 的法國人不轉賣手機，因為怕被駭而放棄。</span><span class="note">p.123 d（renoncer <b>à</b> → y；par crainte que ＋ 虛擬式 soit）</span></li>
+  </ul>
+
+  <h3>課本 Fonctionnement：取代整個子句（p.123）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Tu as besoin d'avoir ce logiciel ? Oui j'en ai besoin.</span><span class="zh">你需要這個軟體嗎？對，我需要。</span><span class="note">p.123（avoir besoin de ＋ 原形 → en）</span></li>
+    <li><span class="fr">Tu es sûr d'utiliser ce logiciel ? Oui, j'en suis sûr.</span><span class="zh">你確定要用這個軟體？對，我確定。</span><span class="note">p.123（être sûr de ＋ 原形 → en）</span></li>
+    <li><span class="fr">Tu as pensé à acheter du pain ? Oui, j'y ai pensé.</span><span class="zh">你有記得買麵包嗎？有，我記得。</span><span class="note">p.123（penser à ＋ 原形 → y）</span></li>
+  </ul>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：中文沒有這個字。</b>「我需要」「我記得」中文直接講完，法文的 en／y 不能省。p.123 練習 2b <i>Tu as besoin d'acheter ce téléphone ?</i> → <i>Tu…</i>：位置在變位動詞前面。<br>
+    ⚠️ <b>陷阱二：同一句裡一個 en 一個 y。</b>p.123 c 一句裡兩個都有——每個動詞要各自查它的介系詞。p.127 l'essentiel 3 就是混著考：se servir de、avoir besoin de、se souvenir de、avoir envie de、être sûr de（en）／penser à、s'intéresser à（y）。<br>
+    ⚠️ <b>陷阱三：代動詞 ＋ en／y 的順序。</b><i>ils ne s'en servent plus</i>（p.123 c）——se 在前、en 在後，否定的 ne 夾在最外面。<br>
+    ⚠️ <b>陷阱四：p.127 l'essentiel 3d <i>Vous vous intéressez au travail de ce jeune artisan ?</i></b>——au travail 是東西，可以用 y。但如果 à 後面是一個「人」，標準法文通常不用 y（見下方 🔎 ②）。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>課本寫「動詞 suivi de la préposition de／à」，但自己的例子用的是形容詞。</b><i>Tu es sûr d'utiliser ce logiciel ? Oui, j'en suis sûr.</i>（p.123 Fonctionnement）、練習 2c <i>Je suis sûr d'adhérer à la location</i>、Échauffement a <i>en sont responsables</i>——sûr de、responsable de 都是「形容詞 ＋ de」。標準文法：en 也取代形容詞的 de 補語，課本規則寫得比例子窄。這是 Claude 依標準文法補的。<br>
+    ② <b>課本沒說 y／en 主要用在「物」或「事」。</b>標準法文：à ＋ 人 通常用間接受詞代名詞（lui／leur）或 à lui、à elle；de ＋ 人 通常用 de lui、d'elle。這頁的例子全是物或事，所以沒衝突，但規則照字面套到人身上會出錯。Claude 依標準文法補的，<b>未查證</b>後面單元。
+  </div>
+</section>
+
+<!-- ============ 3. 對立與讓步 ============ -->
+<section>
+  <h2>📐 文法三：L'opposition et la concession 對立與讓步（p.125） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>兩件事「方向相反」時，法文分兩種：<br>
+    <b>對立（opposition）</b>＝把兩個同類的東西擺在一起對照（A 這樣，B 那樣）。<br>
+    <b>讓步（concession）</b>＝「照理說會 X，結果卻沒有」（跟預期相反）。<br>
+    ⭐ 每個連接詞後面接什麼要整塊記：<b>alors que／tandis que ＋ 直陳式</b>｜<b>bien que ＋ 虛擬式</b>｜<b>même si ＋ 直陳式</b>｜<b>malgré、contrairement à、à l'opposé de、à l'inverse de ＋ 名詞</b>（p.125 Fonctionnement）。
+  </div>
+
+  <h3>課本 Échauffement（p.125，出自 p.124 L）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr"><em>Bien que</em> cela ne <em>soit</em> pas passionnant, il est grand temps de faire un ménage de printemps dans vos téléphones.</span><span class="zh">雖然不是什麼有趣的事，但該好好大掃除一下你的手機了。</span><span class="note">p.125 a（讓步；bien que ＋ 虛擬式 soit）</span></li>
+    <li><span class="fr"><em>Même si</em> on ne s'en rend pas compte, nos fichiers prennent de la place.</span><span class="zh">就算我們沒察覺，檔案還是佔空間。</span><span class="note">p.125 b（讓步；même si ＋ 直陳式）</span></li>
+    <li><span class="fr">Cette pollution représente 4 % des émissions de gaz à effet de serre. <em>Mais</em> cette proportion pourrait doubler.</span><span class="zh">這種污染佔溫室氣體排放的 4%，但比例可能翻倍。</span><span class="note">p.125 c</span></li>
+    <li><span class="fr">Ceux qui ont une consommation intense d'Internet doivent le faire toutes les deux semaines, <em>alors que</em> ceux qui en ont une plus raisonnée doivent le faire seulement une fois par mois.</span><span class="zh">上網很兇的人要每兩週做一次，而用得比較節制的人一個月一次就好。</span><span class="note">p.125 d（對立；alors que ＋ 直陳式）</span></li>
+  </ul>
+
+  <h3>課本 Fonctionnement 例句（p.125）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Elle aime bien trier ses photos. <em>Par contre</em>, elle déteste faire le tri dans ses applications.</span><span class="zh">她喜歡整理照片，但很討厭整理 App。</span><span class="note">p.125 對立・連接詞（Remarque：par contre 比較口語）</span></li>
+    <li><span class="fr">Il ne s'est pas ennuyé pendant l'atelier, <em>au contraire</em>, il a trouvé que c'était très intéressant !</span><span class="zh">他在工作坊一點都不無聊，相反地，他覺得很有趣！</span><span class="note">p.125 對立</span></li>
+    <li><span class="fr">Tu ne tries pas tes photos. <em>En revanche</em>, tu effaces toujours ton historique de navigation.</span><span class="zh">你不整理照片，但你總是會清瀏覽紀錄。</span><span class="note">p.125 對立</span></li>
+    <li><span class="fr"><em>Contrairement à</em> mes amis, je nettoie souvent mes données sur mon ordinateur.</span><span class="zh">跟我朋友不同，我常清電腦裡的資料。</span><span class="note">p.125 對立・介系詞 ＋ 名詞</span></li>
+    <li><span class="fr">Certains font beaucoup d'efforts pour changer leurs habitudes <em>tandis que</em> d'autres n'en font aucun !</span><span class="zh">有些人很努力改變習慣，另一些人卻一點都不做！</span><span class="note">p.125 對立・連接詞 ＋ 直陳式</span></li>
+    <li><span class="fr">Elle ne s'est pas inscrite aux ateliers, <em>pourtant</em> elle était intéressée.</span><span class="zh">她沒報名工作坊，可是她明明有興趣。</span><span class="note">p.125 讓步・連接詞</span></li>
+    <li><span class="fr"><em>Malgré</em> la pollution causée par Internet, le nombre d'internautes continue d'augmenter.</span><span class="zh">儘管網路造成污染，上網人數還是持續增加。</span><span class="note">p.125 讓步・介系詞 ＋ 名詞</span></li>
+    <li><span class="fr"><em>Bien qu'</em>Internet <em>permette</em> d'économiser du papier, son impact écologique reste important.</span><span class="zh">雖然網路能省紙，它對生態的影響還是很大。</span><span class="note">p.125 讓步・bien que ＋ 虛擬式</span></li>
+    <li><span class="fr"><em>Même s'</em>il sait très bien qu'il faut nettoyer ses données, il ne le fait jamais.</span><span class="zh">就算他很清楚要清資料，他還是從來不做。</span><span class="note">p.125 讓步・même si ＋ 直陳式</span></li>
+    <li><span class="fr">Lauren ne vide jamais sa corbeille, contrairement à Élisa qui la vide souvent.</span><span class="zh">Lauren 從不清垃圾桶，跟常清的 Élisa 相反。</span><span class="note">p.125 練習 4 Exemple</span></li>
+  </ul>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：bien que 和 même si 意思幾乎一樣，語式相反。</b>bien que → 虛擬式、même si → 直陳式。p.125 練習 3 把 même si、bien que、malgré、pourtant 混在一起考：先看空格後面接的是<b>名詞</b>還是<b>句子</b>，再看動詞是不是虛擬式（3b 的 <i>soient</i> 就是線索）。<br>
+    ⚠️ <b>陷阱二：contrairement à 後面接名詞，alors que 後面接句子。</b>p.125 練習 2a <i>Il veut participer à cette journée contrairement à / alors que sa femme qui la trouve inutile.</i>——空格後面是 « sa femme qui… »，主要結構是一個名詞（後面掛關係子句），還是一個完整句子？<br>
+    ⚠️ <b>陷阱三：au contraire 只用在「前面是否定」的時候最自然。</b>課本例句 <i>Il ne s'est pas ennuyé…, au contraire…</i> 前半是否定。p.125 練習 2c、2e 拿 en revanche 和 au contraire 讓你選——看前半句有沒有 ne…pas。這條是 Claude 從課本例句歸納的，課本沒寫成規則，<b>未查證</b>。<br>
+    ⚠️ <b>陷阱四：p.121 F 有現成的 alors que：</b><i>« Quand on pense paillage, on pense chaise de cuisine marron, alors qu'au final non, la paille peut se décliner en plusieurs couleurs »</i>（p.121 F l.14–16，抽字 « nal »＝final，<b>未查證</b>）——這裡 alors que 比較接近「但其實」，語意介於對立和讓步之間。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b>① <b>p.125 練習 3b 有錯字：</b><i>…… ils ne soient pas convaincus pas cette journée mondiale, ils vont y participer.</i>（兩層抽字都一樣）——第二個 pas 應該是 <b>par</b>（être convaincu par）。② 課本把 mais 同時放在對立和讓步兩欄，標準文法也是這樣看，不算錯，只是 mais 最萬用、最不精準。
+  </div>
+</section>
+
+<!-- ============ 4. 發音 ============ -->
+<section>
+  <h2>👂 發音：L'intonation montante et descendante 上升與下降語調（p.126） <span class="time">1 分鐘</span></h2>
+  <div class="rule">
+    <b>它在處理什麼：</b>問句沒有倒裝、沒有 est-ce que 時，<b>語調就是唯一的「這是問句」的訊號</b>。這是口語法文最常見的問法，也是 TCF 聽力裡最常見的問句樣子。<br>
+    <b>課本表格（p.126 練習 2）</b>分兩列：<b>有疑問詞</b>的問句（pourquoi、combien…）／<b>沒有疑問詞</b>的問句（是非題），空格要你填「聲音上升或下降」。<br>
+    <b>標準語音學的一般描述（Claude 補的）：</b>沒有疑問詞的是非問句 → 句尾<b>上升</b>；有疑問詞的問句 → 通常<b>下降</b>（疑問詞已經表示這是問句了）。⚠️ 抽字版面裡第一格好像已經印了 « La voix monte »，但看不出是印在哪一列（見下方 🔎），<b>未查證</b>。
+  </div>
+  <p>課本練習 1、3 的句子（逐字稿 p.209）：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">Vous avez un téléphone reconditionné ?</span><span class="zh">你有翻新手機嗎？</span><span class="note">p.126 練習 1a（沒有疑問詞）</span></li>
+    <li><span class="fr">Pourquoi tu ne nettoies pas tes données numériques ?</span><span class="zh">你為什麼不清理你的數位資料？</span><span class="note">p.126 練習 1b（有疑問詞）</span></li>
+    <li><span class="fr">Combien de tonnes de CO₂ on produit ?</span><span class="zh">我們排放多少噸 CO₂？</span><span class="note">p.126 練習 1c（抽字把下標 2 拆到下一行）</span></li>
+    <li><span class="fr">Quel secteur est très polluant ?</span><span class="zh">哪個產業污染很嚴重？</span><span class="note">p.126 練習 1d（逐字稿 p.209）</span></li>
+    <li><span class="fr">Quand a lieu la Journée du nettoyage numérique ?</span><span class="zh">數位清潔日是什麼時候？</span><span class="note">p.126 練習 1e（逐字稿 p.209）</span></li>
+    <li><span class="fr">Quelle énergie vous utilisez ?</span><span class="zh">你們用哪種能源？</span><span class="note">p.126 練習 1f（逐字稿 p.209；口語語序，沒倒裝）</span></li>
+    <li><span class="fr">Est-ce qu'il y a une commission ?</span><span class="zh">有手續費嗎？</span><span class="note">p.126 練習 3d</span></li>
+    <li><span class="fr">Comment se déplacer à moindre coût ?</span><span class="zh">怎麼用最低成本移動？</span><span class="note">p.126 練習 3f</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>陷阱：練習 3 要你每句唸兩次，一次上升一次下降。</b>所以課本的意思是「兩種都可能出現」，不是只有一種對。預習重點：⭐ 聽到一句<b>沒有疑問詞、沒有倒裝、句尾上揚</b>的話，要反應過來這是問句。
+  </div>
+  <div class="flag">
+    🔎 <b>版面無法判斷的地方：</b>p.126 練習 2 表格抽字是 « La voix monte • Combien de tonnes de CO₂ on produit ? »，看起來像是把「有疑問詞」那列的第一格印好了「上升」。如果課本真的寫有疑問詞的問句聲音上升，就跟一般語音學描述（通常下降）不一樣；但也可能那只是表頭或另一格。⭐ 這點<b>未查證</b>，拿紙本對一下，或上課問老師（見第 10 段）。
+  </div>
+</section>
+
+<!-- ============ 5. 功能句 ============ -->
+<section>
+  <h2>💬 上課會用到的說法 <span class="time">2 分鐘</span></h2>
+
+  <h3>Pour exprimer son accord et son désaccord 表達同意與不同意（p.117）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">C'est exact ! / Effectivement. / Absolument.</span><span class="zh">沒錯！／確實。／完全是。</span><span class="note">p.117（抽字 « Eectivement »＝Effectivement，<b>未查證</b>；三個都在逐字稿 p.208 Robin 的話裡出現）</span></li>
+    <li><span class="fr">Je suis (tout à fait) d'accord avec vous.</span><span class="zh">我（完全）同意您。</span><span class="note">p.117</span></li>
+    <li><span class="fr">Je suis de votre avis.</span><span class="zh">我跟您看法一樣。</span><span class="note">p.117（逐字稿 p.208 的版本：<i>Je suis tout à fait de cet avis !</i>）</span></li>
+    <li><span class="fr">Vous avez tort ! / Détrompez-vous ! / Eh bien non, en fait !</span><span class="zh">您錯了！／別這麼想！／其實不是喔！</span><span class="note">p.117（Détrompez-vous＝「您想錯了」，比 Vous avez tort 客氣）</span></li>
+  </ul>
+
+  <h3>Pour exprimer son point de vue 表達觀點（p.117）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Je pense que c'est un plus, parce que ça permet de développer l'entraide entre les habitants et aussi de créer du lien social.</span><span class="zh">我認為這是加分，因為能讓居民互相幫忙，也能建立社會連結。</span><span class="note">p.117</span></li>
+    <li><span class="fr">Il me semble que c'est une aide précieuse pour les habitants.</span><span class="zh">我覺得這對居民是很寶貴的幫助。</span><span class="note">p.117（＝文法一的直陳式）</span></li>
+  </ul>
+
+  <h3>Pour exprimer sa surprise 表達驚訝（p.122）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">C'est incroyable !</span><span class="zh">太不可思議了！</span><span class="note">p.122</span></li>
+    <li><span class="fr">Quelle (bonne/mauvaise) surprise !</span><span class="zh">真是（好的／壞的）意外！</span><span class="note">p.122</span></li>
+    <li><span class="fr">Je suis surpris(e).</span><span class="zh">我很驚訝。</span><span class="note">p.122</span></li>
+  </ul>
+
+  <h3>Pour développer un raisonnement simple 發展簡單的推論（p.124）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Plus nos smartphones, tablettes ou ordinateurs sont chargés de données, plus ça va réduire leur durée de vie.</span><span class="zh">手機、平板、電腦塞的資料越多，壽命就越短。</span><span class="note">p.124（plus…, plus…＝越……越……）</span></li>
+    <li><span class="fr">Il y a plein de choses qui ne vous servent pas. Donc autant les supprimer.</span><span class="zh">有一堆你用不到的東西，那乾脆刪掉。</span><span class="note">p.124（autant ＋ 原形＝「那不如……」）</span></li>
+  </ul>
+
+  <h3>Décrire, analyser et critiquer une œuvre graphique 描述、分析、評論平面作品（p.128 Stratégies）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Dites ce que vous voyez sur l'œuvre : des personnages ? des animaux ? Où sont-ils ? Que font-ils ? Dans quelle situation sont-ils ?</span><span class="zh">說出你在作品上看到什麼：人物？動物？在哪？在做什麼？什麼處境？</span><span class="note">p.128 描述</span></li>
+    <li><span class="fr">À votre avis, que dénonce-t-il/elle ?</span><span class="zh">你覺得他／她在批判什麼？</span><span class="note">p.128 分析</span></li>
+    <li><span class="fr">Est-elle esthétique ? efficace ? claire ? dérangeante ? effrayante ?</span><span class="zh">它好看嗎？有效嗎？清楚嗎？讓人不舒服嗎？嚇人嗎？</span><span class="note">p.128 評論（抽字 « e cace »、« erayante »＝efficace、effrayante，<b>未查證</b>）</span></li>
+  </ul>
+
+  <h3>單元格言</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Ça n'a pas de prix !</span><span class="zh">這是無價的！</span><span class="note">p.115 單元首頁（原句在逐字稿 p.208 B：<i>Et ça, ça n'a pas de prix !</i>）</span></li>
+    <li><span class="fr">Je me demande comment faire confiance aux avis en ligne.</span><span class="zh">我在想要怎麼相信網路評論。</span><span class="note">p.119 E 引言（se demander comment ＋ 原形）</span></li>
+    <li><span class="fr">Je veux promouvoir l'Afrique partout, partout, partout dans le monde.</span><span class="zh">我想把非洲推廣到世界每一個角落。</span><span class="note">p.121 G 引言（逐字稿 p.209）</span></li>
+  </ul>
+</section>
+
+<!-- ============ 6. 詞彙 ============ -->
+<section>
+  <h2>🧺 新詞彙（挑 B1 才出現、你筆記裡大多還沒有的） <span class="time">2 分鐘</span></h2>
+  <p class="small">哪些字筆記裡已經有，<b>未查證</b>（這次沒有對 french_notes.html 逐字核對）。</p>
+
+  <h3>消費與人（p.120 Consommer／Les personnes）</h3>
+  <ul class="vocab">
+    <li><span class="w">le bien · le service</span><span class="g">m.</span>商品・服務（經濟學的「財貨與服務」）</li>
+    <li><span class="w">la dépense · dépenser</span><span class="g">f./v.</span>花費</li>
+    <li><span class="w">la commande · commander</span><span class="g">f./v.</span>訂單・訂購</li>
+    <li><span class="w">le concurrent, la concurrente</span><span class="g">n.</span>競爭對手</li>
+    <li><span class="w">le coursier-livreur</span><span class="g">m.</span>外送員</li>
+    <li><span class="w">le particulier</span><span class="g">m.</span>個人（相對於公司、專業人士）</li>
+    <li><span class="w">l'utilisateur, l'utilisatrice</span><span class="g">n.</span>使用者</li>
+  </ul>
+
+  <h3>共享經濟（p.120 L'économie partagée）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'association caritative</span><span class="g">f.</span>慈善團體</li>
+    <li><span class="w">l'auto-stop organisé · le covoiturage · le cotransportage</span><span class="g">m.</span>有組織的搭便車・共乘・共享運貨</li>
+    <li><span class="w">le geste solidaire · l'initiative solidaire</span><span class="g">m./f.</span>互助的舉動・互助行動</li>
+    <li><span class="w">faire une bonne action</span><span class="g">expr.</span>做好事</li>
+    <li><span class="w">partager les frais</span><span class="g">expr.</span>分攤費用</li>
+    <li><span class="w">la société coopérative</span><span class="g">f.</span>合作社</li>
+  </ul>
+
+  <h3>產品與評價（p.120 Les produits／L'évaluation／Les avis）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'additif · l'ingrédient · la composition</span><span class="g">m./m./f.</span>添加物・成分・組成</li>
+    <li><span class="w">allergène · sain, saine · la toxicité</span><span class="g">adj./f.</span>致敏的・健康的・毒性</li>
+    <li><span class="w">un produit recommandé ≠ à éviter</span><span class="g">expr.</span>推薦的≠要避開的產品</li>
+    <li><span class="w">laisser un avis en ligne · noter</span><span class="g">expr./v.</span>留網路評論・評分</li>
+    <li><span class="w">se méfier (de) · la fraude</span><span class="g">v./f.</span>提防・詐欺</li>
+    <li><span class="w">l'expérience de consommation · la qualité du service</span><span class="g">f.</span>消費經驗・服務品質</li>
+    <li><span class="w">« bon rapport qualité-prix » · « vendeur au top »</span><span class="g">expr.</span>CP 值高・賣家超讚</li>
+  </ul>
+
+  <h3>付款與預算（p.120 Le paiement, le budget）</h3>
+  <ul class="vocab">
+    <li><span class="w">à moindre coût · gratuitement</span><span class="g">expr./adv.</span>用最低成本・免費</li>
+    <li><span class="w">arrondir ses fins de mois</span><span class="g">expr.</span>賺點外快貼補月底（p.117 C 練習 9）</li>
+    <li><span class="w">payer en liquide = en espèces · par carte · par chèque</span><span class="g">expr.</span>付現・刷卡・開支票</li>
+    <li><span class="w">la commission</span><span class="g">f.</span>手續費／佣金</li>
+    <li><span class="w">le pouvoir d'achat</span><span class="g">m.</span>購買力</li>
+    <li><span class="w">faire un paiement en ligne</span><span class="g">expr.</span>線上付款</li>
+  </ul>
+
+  <h3>永續消費（p.126 La consommation durable）</h3>
+  <ul class="vocab">
+    <li><span class="w">acheter à prix (d')occasion = acheter d'occasion</span><span class="g">expr.</span>買二手</li>
+    <li><span class="w">le produit d'occasion · reconditionné · la seconde main</span><span class="g">m./f.</span>二手品・翻新品・二手市場</li>
+    <li><span class="w">la consommation raisonnée/réfléchie/responsable/vertueuse</span><span class="g">f.</span>理性／負責任的消費</li>
+    <li><span class="w">le modèle circulaire</span><span class="g">m.</span>循環模式</li>
+    <li><span class="w">prolonger la durée de vie · redonner vie à un objet</span><span class="g">expr.</span>延長壽命・讓東西重生</li>
+    <li><span class="w">réemployer = réutiliser · revendre</span><span class="g">v.</span>再利用・轉賣</li>
+  </ul>
+
+  <h3>為環境行動與污染（p.126）</h3>
+  <ul class="vocab">
+    <li><span class="w">diminuer/réduire son impact (sur l'écosystème, les ressources naturelles, sur le climat)</span><span class="g">expr.</span>減少對生態／資源／氣候的影響</li>
+    <li><span class="w">freiner son empreinte carbone</span><span class="g">expr.</span>壓低碳足跡</li>
+    <li><span class="w">faire le tri dans ses logiciels · nettoyer ses données numériques</span><span class="g">expr.</span>整理軟體・清理數位資料</li>
+    <li><span class="w">donner un coup de balai · faire un ménage de printemps</span><span class="g">expr.</span>大掃除（比喻）</li>
+    <li><span class="w">les déchets électroniques · le dioxyde de carbone = le CO₂</span><span class="g">m.</span>電子垃圾・二氧化碳</li>
+    <li><span class="w">émettre des gaz à effet de serre · les émissions</span><span class="g">expr./f.</span>排放溫室氣體・排放量</li>
+    <li><span class="w">les énergies polluantes · l'énergie hydraulique</span><span class="g">f.</span>污染能源・水力</li>
+    <li><span class="w">les recherches énergivores · la surconsommation numérique · la pollution invisible</span><span class="g">f.</span>耗能的搜尋・數位過度消費・看不見的污染</li>
+  </ul>
+
+  <h3>消費部門（p.126 Les secteurs）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'alimentation · l'automobile</span><span class="g">f.</span>食品・汽車</li>
+    <li><span class="w">l'habillement · le mobilier</span><span class="g">m.</span>服飾・家具</li>
+    <li><span class="w">le multimédia · la téléphonie · le transport</span><span class="g">m./f./m.</span>多媒體・電信・運輸</li>
+  </ul>
+
+  <h3>課文裡的好用說法</h3>
+  <ul class="vocab">
+    <li><span class="w">n'avoir rien à voir avec</span><span class="g">expr.</span>跟……毫無關係（p.116 A l.2）</li>
+    <li><span class="w">loufoque · en suspens · démuni(e)</span><span class="g">adj.</span>古怪的・懸而未決的・貧困的（p.116 A 註 1、2）</li>
+    <li><span class="w">aux quatre coins du monde</span><span class="g">expr.</span>世界各地（p.116 A l.12–13）</li>
+    <li><span class="w">solliciter</span><span class="g">v.</span>找某人來做（＝faire appel à quelqu'un，p.117 C 練習 8）</li>
+    <li><span class="w">sillonner</span><span class="g">v.</span>到處跑（＝parcourir，p.117 C 註 2）</li>
+    <li><span class="w">avoir la cote · faire son retour en grâce</span><span class="g">expr.</span>很受歡迎・重新受青睞（p.121 F l.2–3）</li>
+    <li><span class="w">le circuit court</span><span class="g">m.</span>短通路（產地直銷，p.121 F l.9）</li>
+    <li><span class="w">tirer son épingle du jeu</span><span class="g">expr.</span>從中得利（＝en tirer des avantages，p.123 J 註 1）</li>
+    <li><span class="w">s'atteler à</span><span class="g">v.</span>著手做（＝s'occuper de，p.123 J 註 2）</li>
+    <li><span class="w">apporter sa pierre à l'édifice</span><span class="g">expr.</span>出一份力（逐字稿 p.209 I）</li>
+  </ul>
+</section>
+
+<!-- ============ 7. DELF ============ -->
+<section>
+  <h2>📝 DELF B1 策略：S'exprimer à l'oral 口說（p.129–130） <span class="time">2 分鐘</span></h2>
+  <div class="rule">
+    <b>考試結構（p.129）：</b>約 15 分鐘，三部分。<br>
+    ① <b>Entretien dirigé</b> 引導式面談，不準備，2–3 分鐘：介紹自己、過去、現在、計畫。<br>
+    ② <b>Exercice en interaction</b> 互動練習，不準備，3–4 分鐘：角色扮演，處理一個意外狀況（抽兩題選一題）。<br>
+    ③ <b>Expression d'un point de vue</b> 表達觀點，準備 10 分鐘，5–7 分鐘：從一份文件抓出主題，講約 3 分鐘自己的意見，再回答約 3 分鐘提問。
+  </div>
+  <ul class="phrase-list">
+    <li><span class="fr">« Pouvez-vous vous présenter, me parler de vous, de votre famille ? »</span><span class="zh">請介紹自己、談談你和你的家人。</span><span class="note">p.129 第 1 部分開場題</span></li>
+    <li><span class="fr">Pour expliquer quelque chose, pensez à utiliser « parce que », « car » ou un gérondif (« en prenant le métro »).</span><span class="zh">要解釋一件事，記得用 parce que、car 或副動詞（「搭地鐵」）。</span><span class="note">p.129 第 1 部分建議（gérondif＝Unité 7 文法三）</span></li>
+    <li><span class="fr">n'oubliez jamais que, pour vous comme pour l'examinateur, c'est du théâtre !</span><span class="zh">別忘了，對你和考官來說，這都是演戲！</span><span class="note">p.129 第 2 部分建議</span></li>
+    <li><span class="fr">Ce qui intéresse surtout l'examinateur, c'est votre point de vue !</span><span class="zh">考官最在意的是你的觀點！</span><span class="note">p.129 第 3 部分建議</span></li>
+    <li><span class="fr">Pour aller plus vite, notez uniquement des mots-clés sur votre brouillon.</span><span class="zh">為了快，草稿紙上只寫關鍵字。</span><span class="note">p.129 第 3 部分建議</span></li>
+    <li><span class="fr">N'hésitez pas à illustrer vos propos avec des exemples et des anecdotes personnelles.</span><span class="zh">大膽用例子和個人小故事來佐證。</span><span class="note">p.129 第 3 部分建議</span></li>
+  </ul>
+
+  <h3>p.130 準備題（課本原題）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Vous avez acheté un smartphone dans une boutique de téléphonie mobile. Arrivé(e) chez vous, vous vous rendez compte qu'il ne fonctionne pas. Vous retournez au magasin pour expliquer le problème mais le/la vendeur(-euse) ne veut ni reprendre ni échanger l'article car le smartphone était en solde. Vous insistez.</span><span class="zh">你在手機店買的手機回家發現不能用，回店說明，店員說特價品不退不換，你堅持。</span><span class="note">p.130 Sujet 2（互動練習；跟本單元消費主題直接相關）</span></li>
+    <li><span class="fr">Se former à distance ?</span><span class="zh">遠距進修好不好？</span><span class="note">p.130 表達觀點的文件標題（內文抽字掉了 fl／fi：« exibilité »、« certicats »、« planication »＝flexibilité、certificats、planification，<b>未查證</b>）</span></li>
+  </ul>
+
+  <h3>本單元其他 DELF 標記的練習</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Vous expliquez au/à la maire de votre village pourquoi il est indispensable que la commune adhère à Rezo Pouce.</span><span class="zh">你跟村長解釋為什麼村子一定要加入 Rezo Pouce。</span><span class="note">p.117 練習 7（Production orale DELF B1；indispensable que ＋ 虛擬式 adhère）</span></li>
+    <li><span class="fr">La livraison se développe et se diversifie (repas, vêtements, livres, etc.). Pensez-vous que ce soit une bonne chose ? Présentez votre opinion dans un court texte argumenté. (150 mots minimum)</span><span class="zh">外送越來越多樣，你覺得是好事嗎？寫一篇短論說文（至少 150 字）。</span><span class="note">p.118 練習 6（Production écrite DELF B1）</span></li>
+    <li><span class="fr">Un(e) ami(e) vient en France pour un an. Vous lui conseillez de s'abonner à Kazoo.</span><span class="zh">朋友要來法國一年，你建議他訂 Kazoo。</span><span class="note">p.122 練習 7（Production orale DELF B1）</span></li>
+  </ul>
+  <div class="flag">
+    🔎 ① <b>字數：</b>p.118 寫作題寫 <b>150 mots minimum</b>，跟 Unité 7 一樣，但 Unité 6 p.99 策略頁寫 160。現行官方規定 Claude <b>未查證</b>。<br>
+    ② <b>時間：</b>p.129 寫「約 15 分鐘」，三部分加起來 10–14 分鐘，另外第 3 部分有 10 分鐘準備（不算在 15 分鐘內）。現行官方規格<b>未查證</b>。<br>
+    ③ 這是 DELF 規格，⭐ 不是 TCF Canada；但第 3 部分「讀一份短文 → 抓主題 → 講自己的意見」的能力，跟 TCF 口說第 3 題的方向類似，<b>未查證</b>兩邊評分標準。<br>
+    ④ 👉 p.129 第 1 部分（介紹自己、過去、計畫）對你是現成的口說題，但內容要是你自己的——Claude 不代寫，只能幫你修。<br>
+    ⑤ p.129 抽字把 Stratégies 印成 « Stratéies »（掉了 g）、« justifi er » 中間斷開，本頁已更正。
+  </div>
+</section>
+
+<!-- ============ 8. 閱讀亮點 ============ -->
+<section>
+  <h2>📰 閱讀裡值得先看的句子 <span class="time">1 分鐘</span></h2>
+  <ul class="phrase-list">
+    <li><span class="fr">… le caffè sospeso (« café suspendu ») est un geste solidaire qui consiste à commander un café et en payer deux, un pour soi et un autre pour un client démuni qui en fera la demande.</span><span class="zh">待用咖啡是一種互助：點一杯付兩杯，一杯自己喝，一杯留給有需要的人來要。</span><span class="note">p.116 A l.5–9（consister à ＋ 原形；en payer deux＝文法二的 en；抽字黏成 « lecaffè »、« uncaféet »）</span></li>
+    <li><span class="fr">La commande reste donc « en suspens » jusqu'à ce que quelqu'un vienne la réclamer.</span><span class="zh">這份點單就一直「懸著」，直到有人來領。</span><span class="note">p.116 A l.9–10（jusqu'à ce que ＋ 虛擬式 vienne）</span></li>
+    <li><span class="fr">… les commerçants solidaires peuvent aussi afficher un label sur leur vitrine afin que les personnes dans le besoin sachent qu'elles sont les bienvenues dans le lieu.</span><span class="zh">互助商家也可以在櫥窗貼標章，讓有需要的人知道這裡歡迎他們。</span><span class="note">p.116 A l.19–21（afin que ＋ 虛擬式 sachent＝Unité 7 文法二；抽字 « acher »、« an »＝afficher、afin，<b>未查證</b>）</span></li>
+    <li><span class="fr">C'est en sillonnant les routes en tant que responsable de plusieurs hôtels que cet habitant de Tavel (Gard) a eu l'idée de cette application.</span><span class="zh">這位 Tavel 居民是在以多家飯店主管的身分到處跑的時候，想到這個 App 的。</span><span class="note">p.117 C l.6–8（C'est … que 強調句 ＋ 副動詞）</span></li>
+    <li><span class="fr">On s'adresse donc aux personnes qui souhaitent arrondir leurs fins de mois ou aux étudiants qui souhaitent payer leurs études.</span><span class="zh">所以對象是想賺點外快的人，或想付學費的學生。</span><span class="note">p.117 C l.28–30（抽字 « ns »＝fins，<b>未查證</b>）</span></li>
+    <li><span class="fr">Les métiers manuels font leur retour en grâce et attirent autant les jeunes que les candidats à la reconversion.</span><span class="zh">手工職業重新受青睞，吸引年輕人也吸引想轉行的人。</span><span class="note">p.121 F l.3–4（autant A que B）</span></li>
+    <li><span class="fr">Aujourd'hui, un Français émet en moyenne dix tonnes de CO₂ par an. Pour atteindre l'objectif des Accords de Paris, il nous faut diviser cet impact par cinq et arriver à 2 tonnes d'ici 2050.</span><span class="zh">現在一個法國人平均每年排放十噸 CO₂。要達到巴黎協定目標，得降到五分之一，2050 年前降到兩噸。</span><span class="note">p.122 H（數字題型：TCF 閱讀常考）</span></li>
+    <li><span class="fr">Mais est-il possible d'avoir un téléphone récent tout en freinant notre empreinte carbone ? La réponse est oui.</span><span class="zh">但有可能一邊用新手機一邊壓低碳足跡嗎？答案是可以。</span><span class="note">p.123 J l.22–25（tout en ＋ -ant＝讓步／同時）</span></li>
+    <li><span class="fr">Il suffit de vider régulièrement la corbeille de sa boîte mails, d'installer un anti-spams, de compresser ses fichiers joints…</span><span class="zh">只要定期清空信箱垃圾桶、裝防垃圾信、壓縮附件……</span><span class="note">逐字稿 p.220 K（il suffit de ＋ 原形）</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>p.121 F 的顧客證詞是口語</b>：<i>« C'est le fait de ne pas avoir forcément le même objet que tout le monde, et que ce soit fait vraiment à la main »</i>（p.121 F l.5–7）——結構比較鬆（« le fait de … et que … »），聽懂就好，⛔ 寫作別照抄這種接法。
+  </div>
+  <div class="flag">
+    🔎 ① 聽力 B、E、G、I 讀了附錄逐字稿 p.208–209；影片 K 讀了 p.220 逐字稿。② p.122 H 是資訊圖表（15、151、515、8、64、12 等數字配「comparer」按鈕），抽字排版散亂，數字對應哪個物品<b>未查證</b>，本頁只引用圖表下方的說明文字。③ 作者署名被截斷：p.116 « Souâd B »、« Xavier P »，p.117 « Sylvie D »，p.124 « Chloé M »，全名<b>未查證</b>。④ p.116 A 的網站名抽字是 « Coeefunders »（推定為 Coffeefunders，掉了 ff），<b>未查證</b>。
+  </div>
+</section>
+
+<!-- ============ 9. 練習題 ============ -->
+<section>
+  <h2>✏️ 最可能上課做的題目：先想想看 <span class="time">2 分鐘</span></h2>
+  <p class="small">只給方向，不給答案。哪幾題會做是照前幾個單元的節奏推測（未查證）。</p>
+
+  <div class="ex">
+    <div class="q">p.118 Entraînement 4：直陳式還是虛擬式 <span class="likely">★★★ 文法頁一定做</span></div>
+    <div class="hint">先想想看：每題只看 que 前面那幾個字——是「我確定／很可能」那邊，還是「有可能／懷疑」那邊？4b <i>Ils doutent que nous pouvons / puissions…</i>：douter 在哪一邊？4c <i>Nous sommes convaincus que…</i> 呢？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.118 Entraînement 5：用括號裡的開頭改寫 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：5b <i>Elle sera chez elle… (Je ne suis pas certain que)</i>——sera 要換成什麼？être 的虛擬式第三人稱是哪個？5f <i>(Il est probable que)</i> 那題，pourront 要不要動？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.123 Entraînement 2、p.127 l'essentiel 3：y 還是 en <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：把動詞後面的介系詞念出來。réfléchir <b>à</b>、avoir envie <b>de</b>、se souvenir <b>de</b>、s'intéresser <b>à</b>。p.127 3b <i>Elle se sert souvent de sa machine à pain ? – Non, …</i>：否定句裡 ne、se、en 怎麼排？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.125 Entraînement 2：選對立的說法 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：空格後面是名詞還是完整句子？2b <i>tandis que / à l'opposé de son frère ne le fait jamais</i>——son frère 後面還有動詞 fait，所以是哪一種？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.125 Entraînement 3、p.127 l'essentiel 4：même si／bien que／malgré／pourtant <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：3a <i>…… nos inquiétudes pour le climat</i> 後面直接是名詞；3c <i>…… elle n'en avait pas besoin</i> 是直陳式；3d 空格在逗號後面、句子中間。p.127 4b <i>J'ai acheté ce téléphone bien que</i> 要配哪一個結尾？找有虛擬式的那個。</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.126 Phonétique 1、3：語調上升還是下降 <span class="likely">★★ 有時間才做</span></div>
+    <div class="hint">先想想看：1a <i>Vous avez un téléphone reconditionné ?</i> 沒有疑問詞也沒倒裝——如果語調不上揚，聽起來會變成什麼句子？</div>
+  </div>
+</section>
+
+<!-- ============ 10. 問老師 ============ -->
+<section>
+  <h2>🙋 上課可以問老師的 3 個問題</h2>
+  <ol class="ask">
+    <li>p.126 語調表：<i>Combien de tonnes de CO₂ on produit ?</i> 這種有疑問詞的問句，課本表格是說聲音上升還是下降？練習 3 又要兩種都唸，到底哪個比較自然？</li>
+    <li>p.118 Remarque 說 <i>Je ne pense pas que</i> 後面接虛擬式；那練習 6 的 <i>Pensez-vous que ce soit une bonne chose ?</i> 為什麼也用 soit？疑問句一定要用虛擬式嗎？</li>
+    <li>p.126 練習 2f <i>Il retape des vieux meubles</i>、p.127 l'essentiel 4 <i>ils en achètent des nouveaux</i>，但逐字稿 p.209 寫 <i>de nouveaux vêtements</i>——形容詞在名詞前面時，用 des 還是 de？</li>
+  </ol>
+</section>
+
+<!-- ============ 11. 不一致處 ============ -->
+<section>
+  <h2>📋 課本與標準法文不一致處（彙整）</h2>
+  <div class="flag">
+    ① <b>p.122 H 練習 4 « Comment ce convertisseur peut-t-il aider les Français… »</b>（兩層抽字都一樣）：peut 已經以 t 結尾，標準寫法是 <b>peut-il</b>，不加 -t-（-t- 只加在母音結尾的動詞後面，如 a-t-il）。課本錯字。<br>
+    ② <b>p.125 練習 3b « ils ne soient pas convaincus pas cette journée mondiale »</b>：第二個 pas 應為 <b>par</b>（見第 3 段）。課本錯字。<br>
+    ③ <b>逐字稿 p.208 E « les avis … qui ont été publié »</b>：主詞是 les avis（陽性複數），被動的過去分詞要配合，標準寫法是 <b>publiés</b>（唸起來一樣，只有寫的時候看得出來）。<br>
+    ④ <b>p.126 練習 2f « des vieux meubles »、p.127 l'essentiel 4 « ils en achètent des nouveaux »</b>：規範文法在「形容詞 ＋ 複數名詞」前用 <b>de</b>（de vieux meubles、de nouveaux），課本自己的逐字稿 p.209 就寫 <i>de nouveaux vêtements</i>。des 是口語常見說法，不算聽不懂，但寫作用 de 比較安全（Claude 依規範文法判斷，<b>未查證</b>課本立場）。<br>
+    ⑤ <b>p.123 y／en 規則寫「動詞 suivi de de／à」</b>，但例句用 être sûr de、être responsable de（形容詞）；規則也沒說 à／de ＋ 人時通常不用 y／en（見第 2 段 🔎）。<br>
+    ⑥ <b>p.118 Remarque 只講否定的 penser／croire 接虛擬式</b>，沒講疑問倒裝；練習 6 自己就用了 <i>Pensez-vous que ce soit</i>（見第 1 段 🔎 ①）。<br>
+    ⑦ <b>p.126 練習 3b « Comment consommer plus responsable ? »</b>（逐字稿 p.209 l'essentiel 1a 也有 <i>consommer plus responsable</i>）：形容詞 responsable 當副詞用，是廣告、媒體常見的說法；規範寫法會用 <i>de manière plus responsable</i>。Claude 依規範文法判斷，這種用法是否已被接受<b>未查證</b>。<br>
+    ⑧ <b>p.126 語調表版面</b>：如果課本把有疑問詞的問句寫成「聲音上升」，跟一般語音學描述不同；抽字看不出來（見第 4 段 🔎），<b>未查證</b>。<br>
+    ⑨ <b>p.118 DELF 寫作 150 字</b> vs Unité 6 p.99 策略頁 160 字（見第 7 段）。
+  </div>
+</section>
+
+<p class="small"><b>來源與未查證：</b>Édito B1 課本 p.115–130（<code>assets/.textbook_cache.txt</code> 第 64086–66466 行；已用頁首「===== page N =====」與頁尾「116 I cent seize」「cent dix-sept I 117」「118 I cent dix-huit」「cent vingt-trois I 123」「cent vingt-cinq I 125」「128 I cent vingt-huit」「I 129 cent vingt-neuf」「130 I cent trente」核對，p.131 是 Unité 9 首頁）＋附錄逐字稿 p.208–209（第 78749–79160 行）與 p.220（第 81630–81665 行）。PDF 抽字掉了 fi／ff／fl 連字，引用時推定原文，<b>未對照紙本查證</b>：p.116 « bénécier »、« acher »、« an que »、« Coeefunders »（＝bénéficier、afficher、afin que、Coffeefunders），p.117 « Eectivement »、« ns de mois »、« eurs »（＝Effectivement、fins、fleurs），p.121 « au nal »（＝au final），p.123 « en eet »、« orir »（＝en effet、offrir），p.124 « chiers »、« achés »、« eacer »、« Enn »、« eet de serre »（＝fichiers、affichés、effacer、Enfin、effet），p.128 « e cace »、« erayante »（＝efficace、effrayante），p.129 « Stratéies »、« justifi er »（＝Stratégies、justifier），p.130 « certicats »、« exibilité »、« planication »（＝certificats、flexibilité、planification）。黏字已補空格：p.116 « lecaffè »、« uncaféet »，p.117 « pasutiliser »、« voiturespour »、« quece »、« vingtkilomètres »，p.118 « failledévelopper »、« quela »、« collaborativeva »、« onvoie »，p.123 « ensont »、« enavoir »、« s'enservent »、« n'ypensent »、« yrenoncent »，p.124 « desconséquences »、« pourlimiter »、« letri »。CO₂ 的下標 2 在抽字裡都被拆到下一行，已合併。p.118 意見表格與 p.126 語調表格的欄位版面在抽字裡錯位，本頁的整理是推定的，<b>未查證</b>。p.118、p.125、p.126 練習答案快取裡沒有（沒有 B1 解答頁），本頁不給答案。p.116 A、p.117 C、p.121 F、p.123 J 的行號依抽字裡的行號標記推定，可能差一兩行，<b>未查證</b>。標準法文的判斷（peut-il 拼法、de vieux 規範、y／en 與人、il semble que、疑問句虛擬式、consommer responsable 的語域、語調描述）是 Claude 依一般標準文法知識寫的，這次沒有另外查字典或文法書，視為<b>未查證</b>。哪些詞彙已在 french_notes.html 也<b>未查證</b>。</p>
+
+</main>
+</body>
+</html>
