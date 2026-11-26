@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 Unité 11 預習單</title>
+<style>
+  :root {
+    --bg: #15171c;
+    --card: #1f232b;
+    --card2: #262b35;
+    --text: #e6e8ec;
+    --muted: #9aa3b2;
+    --fr: #ffffff;
+    --accent: #7cc4ff;
+    --gold: #f2c86b;
+    --warn: #ff9f7a;
+    --line: #333a46;
+    --gray-badge: #4a5160;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Helvetica Neue", sans-serif;
+    font-size: 16px; line-height: 1.65;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 1.35rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: .9rem; margin-bottom: 18px; }
+  section {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; margin: 0 0 16px;
+  }
+  h2 { font-size: 1.1rem; margin: 0 0 8px; color: var(--accent); }
+  h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--gold); }
+  p { margin: 6px 0; }
+  b { color: var(--fr); }
+  .time { float: right; font-size: .78rem; color: var(--muted); font-weight: normal; }
+  .rule {
+    background: var(--card2); border-left: 4px solid var(--accent);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .trap {
+    background: rgba(255,159,122,.08); border-left: 4px solid var(--warn);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .flag {
+    background: rgba(242,200,107,.08); border-left: 4px solid var(--gold);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: .92rem;
+  }
+  .map { list-style: none; padding: 0; margin: 0; }
+  .map li { padding: 7px 0; border-bottom: 1px solid var(--line); }
+  .map li:last-child { border-bottom: none; }
+  .pg { display: inline-block; min-width: 54px; color: var(--accent); font-weight: 600; }
+  .tag { display: inline-block; font-size: .72rem; padding: 1px 7px; border-radius: 10px;
+         background: var(--gray-badge); color: var(--text); margin-left: 4px; vertical-align: 1px; }
+  .tag.new { background: #2f5d8a; }
+  /* 法文句子載體：沿用 french_notes.html 的結構，之後可直接搬 */
+  .phrase-list { list-style: none; padding: 0; margin: 6px 0; }
+  .phrase-list li {
+    display: flex; flex-wrap: wrap; gap: 2px 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--line);
+  }
+  .phrase-list li:last-child { border-bottom: none; }
+  .fr { font-weight: 600; color: var(--fr); width: 100%; }
+  .zh { color: var(--muted); font-size: .9rem; }
+  .phrase-list li > span.note { color: #7d8696; font-size: .8rem; }
+  .fr em { font-style: normal; color: var(--gold); }
+  .vocab { list-style: none; padding: 0; margin: 4px 0 8px;
+           display: grid; grid-template-columns: 1fr; gap: 0; }
+  .vocab li { padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: .95rem; }
+  .vocab li:last-child { border-bottom: none; }
+  .vocab .w { color: var(--fr); font-weight: 600; }
+  .g { display: inline-block; font-size: .72rem; color: var(--muted); border: 1px solid var(--line);
+       border-radius: 4px; padding: 0 5px; margin: 0 4px; }
+  .compare-table { overflow-x: auto; margin: 8px 0; }
+  .compare-table table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  .compare-table th, .compare-table td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+  .compare-table th { background: var(--card2); color: var(--gold); font-weight: 600; }
+  .compare-table td.m { color: var(--fr); font-weight: 600; }
+  details { background: var(--card2); border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
+  summary { cursor: pointer; font-weight: 600; color: var(--text); }
+  details[open] summary { margin-bottom: 6px; }
+  .ex { margin: 8px 0; padding-left: 2px; }
+  .ex .q { color: var(--fr); }
+  .hint { color: var(--muted); font-size: .92rem; }
+  .likely { color: var(--gold); font-size: .8rem; }
+  ol.ask { padding-left: 20px; margin: 6px 0; }
+  ol.ask li { margin: 8px 0; }
+  .small { font-size: .85rem; color: var(--muted); }
+  @media (min-width: 640px) {
+    .vocab { grid-template-columns: 1fr 1fr; column-gap: 18px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Unité 11 (Se) mettre en scène・預習單（草稿）</h1>
+<div class="sub">範圍：Édito B1 p.161–174（第 11 單元）｜大約 15 分鐘｜全部法文句子都是課本原句，每句標頁碼</div>
+
+<div class="flag">
+  🚧 <b>這是草稿。</b>給 Unité 11 開課前先看的。<br>
+  中文翻譯、「它在處理什麼資訊」的說明、陷阱與標註是 Claude 加的；法文全部取自 <code>assets/.textbook_cache.txt</code> 的 Édito B1 內頁（PDF 頁碼＝課本頁碼）與課本附錄逐字稿 p.213–216、影片逐字稿 p.221。
+</div>
+
+<!-- ============ 0. 地圖 ============ -->
+<section>
+  <h2>🗺 這個單元的頁面 <span class="time">1 分鐘</span></h2>
+  <ul class="map">
+    <li><span class="pg">p.161</span>單元首頁。目標：講過去事件的先後順序｜問該怎麼做｜給建議｜提醒、表示懷疑｜談一場表演或活動。標語：<i>Deviens qui tu es !</i>（出自逐字稿 p.214 C，見第 11 段 ⑭）</li>
+    <li><span class="pg">p.162</span>A 閱讀：〈Plus je scrolle, plus je complexe…〉Esther 談 TikTok 上的完美人生＋TikTok 資訊圖</li>
+    <li><span class="pg">p.163</span>B 聽力：Laetitia Ky 用頭髮做藝術（RFI，逐字稿 p.213–214）＋「講過去事件的先後順序」說法框｜<b>文法：Les indicateurs de temps (2) 時間標記</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.164</span>C 聽力：〈Qui suis-je sur les réseaux sociaux ?〉年輕人談「理想的我」（France Info，逐字稿 p.214）｜D 影片：畫家 Sacha Floch Poliakoff（逐字稿 p.221）｜DELF 寫作題</li>
+    <li><span class="pg">p.165</span><b>文法：Le comparatif (particularités) 比較級的強弱與趨勢</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.166</span>詞彙頁：塑造形象、他人的眼光、做自己、建立自信、藝術創作</li>
+    <li><span class="pg">p.167</span>Culture：E 閱讀：Jamel Debbouze 談即興表演（Le Monde）｜F 聽力：求職者上即興課（France 3，逐字稿 p.214）</li>
+    <li><span class="pg">p.168</span>G 閱讀：網紅 Léna Situations 的暢銷書｜H 聽力：自我成長書能改變人生嗎（France Inter，逐字稿 p.214–215）＋「問該怎麼做」「給建議」說法框</li>
+    <li><span class="pg">p.169</span>I 閱讀：小說《Le parfum du bonheur est plus fort sous la pluie》節選｜J 聽力：Owen 和 Noam 談一場講座（逐字稿 p.215）＋「提醒、表示懷疑」說法框｜DELF 口說題</li>
+    <li><span class="pg">p.170</span><b>文法：Le discours rapporté au passé 轉述（過去式引導）＋時態呼應</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.171</span>K 閱讀：Live Magazine「現場演出的雜誌」＋媒體評語｜L 聽力：Z Event 電玩慈善馬拉松（Arte，逐字稿 p.215）＋「談表演、活動」說法框｜DELF 口說題</li>
+    <li><span class="pg">p.172</span>詞彙頁：個人成就（成功、創作者、感想、自我成長、感覺不好／變好、陪伴）＋ 發音：<b>Les voyelles nasales 鼻母音</b><span class="tag new">新</span></li>
+    <li><span class="pg">p.173</span>l'essentiel 總複習（文法／詞彙，逐字稿 p.216）</li>
+    <li><span class="pg">p.174</span>Atelier médiation：推薦法語 YouTuber 影片＋策略「看影片抓重點、轉述重點」</li>
+  </ul>
+  <p class="small">p.175 已經是 Unité 12 Être citoyen(ne) 的首頁。⭐ 跟 Unité 10 不同，這個單元<b>沒有</b> DELF 準備頁（Atelier 在 p.174 就結束）。⭐ 文法三（p.170）正好補上 Unité 10 預習單 🔎 ① 說「這頁沒教」的時態轉換。</p>
+</section>
+
+<!-- ============ 1. 時間標記 ============ -->
+<section>
+  <h2>📐 文法一：Les indicateurs de temps (2) 時間標記（p.163） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>「這個『上週』是<b>從現在算</b>，還是<b>從故事裡那天算</b>？」——法文用兩套不同的字：<br>
+    <b>以說話當下為準</b> → la semaine <b>dernière</b>、aujourd'hui、la semaine <b>prochaine</b><br>
+    <b>以另一個時間點為準</b>（講故事、轉述）→ la semaine <b>précédente／d'avant</b>、<b>ce jour-là</b>、la semaine <b>suivante／d'après</b><br>
+    ⭐ 這一頁跟文法三（p.170 轉述過去）是一組：把別人過去說的 <i>demain</i> 轉述出來，就要換成「從那天算」的那一套（Claude 依標準文法補的連結，課本 p.170 沒明講，<b>未查證</b>）。
+  </div>
+
+  <div class="compare-table">
+    <table>
+      <tr><th>（p.163 Fonctionnement）</th><th>以說話當下為準</th><th>以另一個時間點為準</th></tr>
+      <tr><td>之前</td><td class="m">la semaine dernière<br>le mois dernier</td><td class="m">la semaine précédente／d'avant<br>le mois précédent／d'avant</td></tr>
+      <tr><td>當時</td><td class="m">aujourd'hui</td><td class="m">ce jour-là</td></tr>
+      <tr><td>之後</td><td class="m">la semaine prochaine<br>le mois prochain</td><td class="m">la semaine suivante／d'après<br>le mois suivant／d'après</td></tr>
+      <tr><td>某時間點往前推</td><td colspan="2" class="m">la semaine d'avant、deux semaines avant、le mois d'avant、deux mois avant</td></tr>
+      <tr><td>某時間點往後推</td><td colspan="2" class="m">la semaine d'après、deux semaines après、le mois d'après、deux mois après</td></tr>
+    </table>
+  </div>
+  <p class="small">⚠️ 抽字把這張表攪亂了（欄位交錯、précédent(e)／suivant(e) 的陰陽性括號斷在兩行），上表是依抽字內容重排的，最後兩列的位置<b>未查證</b>，看紙本。</p>
+
+  <h3>課本 Échauffement（p.163，出自 p.162 A）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Je repensais aux vidéos <em>de la veille</em>, celles de <em>deux jours avant</em> ou celles de <em>deux semaines avant</em>.</span><span class="zh">我會想起前一天的影片、前兩天的、甚至兩週前的。</span><span class="note">p.163 a（原句 p.162 A l.15–17；la veille＝前一天）</span></li>
+    <li><span class="fr">J'y retournais toujours <em>un ou deux jours après</em>.</span><span class="zh">我總是過一兩天又回去用。</span><span class="note">p.163 b（原句 p.162 A l.23–24）</span></li>
+    <li><span class="fr">Depuis septembre, je suis lycéenne. <em>Le mois d'avant</em>, je traînais encore beaucoup sur l'application.</span><span class="zh">從九月起我是高中生了。前一個月我還常常泡在那個 app 上。</span><span class="note">p.163 c（原句 p.162 A l.25–26）</span></li>
+    <li><span class="fr"><em>La semaine dernière</em>, je l'ai consultée une fois. <em>La semaine d'avant</em>, j'y allais encore souvent.</span><span class="zh">上週我只看了一次。再前一週我還常常去看。</span><span class="note">p.163 d（原句 p.162 A l.31–33；⭐ 同一句裡兩套都用到：dernière 從現在算，d'avant 從上週算）</span></li>
+  </ul>
+
+  <h3>課本 Entraînement 2 題目（p.163，二選一）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">L'expo commence le week-end prochain. On ira la voir la semaine prochaine / d'après ?</span><span class="zh">展覽下週末開始。我們（展覽開始的）下一週去看？</span><span class="note">p.163 練習 2a</span></li>
+    <li><span class="fr">La semaine dernière, ils m'ont parlé d'une artiste qu'ils avaient découverte le mois d'avant / d'après.</span><span class="zh">上週他們跟我提到一位他們前一個月發現的藝術家。</span><span class="note">p.163 練習 2b（⭐ découverte 配合 une artiste：COD que 在前）</span></li>
+    <li><span class="fr">Ce jour-là, il a commencé à jouer son premier spectacle. Il a vraiment rencontré le succès six mois après / d'après.</span><span class="zh">那天他開始演他的第一場表演。六個月後他真正成功了。</span><span class="note">p.163 練習 2c</span></li>
+    <li><span class="fr">En mai dernier, elle a mis en ligne tous les contenus préparés les mois précédents / derniers.</span><span class="zh">去年五月，她把之前幾個月準備的內容全部上線。</span><span class="note">p.163 練習 2d</span></li>
+  </ul>
+  <p class="small">快取裡沒有 B1 解答，本頁不填答案。</p>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：「d'après」和「après」不能互換。</b>練習 2c 的選項就是在考這個：<i>six mois après</i>（數字＋après）vs <i>la semaine d'après</i>（la semaine／le mois＋d'après）。看前面有沒有數字。<br>
+    ⚠️ <b>陷阱二：dernier 放前放後意思不同。</b>p.163 表格用的是 <i>la semaine dernière</i>（名詞後＝上一個）；l'essentiel 2h <i>les précédentes éditions</i>、練習 2d <i>les mois précédents / derniers</i> 在考你分辨。Claude 依標準文法補充：<i>la dernière semaine</i>（名詞前）是「最後一週」，<b>未查證</b>課本後面有沒有教。<br>
+    ⚠️ <b>陷阱三：聽力最容易漏。</b>l'essentiel 1（逐字稿 p.216）：<i>Le week-end dernier et le week-end d'avant, il a passé tout son temps sur son téléphone.</i>——兩個時間詞連著出現，一個從現在算、一個從上週末算。
+  </div>
+</section>
+
+<!-- ============ 2. 比較級 ============ -->
+<section>
+  <h2>📐 文法二：Le comparatif (particularités) 比較級的強弱與趨勢（p.165） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>「差<b>多少</b>」和「<b>越來越</b>」。plus／moins／aussi 你已經會了，這頁加兩件事：<br>
+    ① <b>強度刻度</b>：beaucoup moins ＜ moins ＜ un peu moins ＜ un petit peu moins ｜ un petit peu plus ＜ un peu plus ＜ plus ＜ beaucoup plus（p.165 原表順序）<br>
+    ② <b>趨勢</b>：<b>de plus en plus</b>（越來越多＝上升）｜<b>de moins en moins</b>（越來越少＝下降）<br>
+    ⭐ 搭配規則照舊：形容詞／副詞 → plus／moins／aussi ＋ adj.｜名詞 → plus de／moins de／autant de ＋ n.｜動詞 → 動詞 ＋ plus／moins／autant（p.165 Rappel）。<br>
+    ⭐ 這是 TCF 閱讀／聽力看圖表、比數字的基本功（Claude 判斷，<b>未查證</b>題型細節）。
+  </div>
+
+  <div class="compare-table">
+    <table>
+      <tr><th>p.165 Rappel</th><th>形容詞／副詞</th><th>名詞</th><th>動詞</th></tr>
+      <tr><td>－</td><td class="m">moins + adj./adv. (+ que)</td><td class="m">moins de + nom (+ que)</td><td class="m">verbe + moins (+ que)</td></tr>
+      <tr><td>＝</td><td class="m">aussi + adj./adv. (+ que)</td><td class="m">autant de + nom (+ que)</td><td class="m">verbe + autant (+ que)</td></tr>
+      <tr><td>＋</td><td class="m">plus + adj./adv. (+ que)</td><td class="m">plus de + nom (+ que)</td><td class="m">verbe + plus (+ que)</td></tr>
+    </table>
+  </div>
+  <p class="small">p.165 Remarque 例外：<i>bon(ne) → meilleur(e)｜mauvais(e) → plus mauvais(e)/pire｜bien → mieux｜mal → plus mal/pire</i>（⚠️ 最後一條見 🔎 ①）。抽字把箭頭變成「1」，已還原。</p>
+
+  <h3>課本 Échauffement（p.165，出自 p.164 C 逐字稿、D 影片）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Est-ce que je suis <em>moins bien</em> qu'avant ?</span><span class="zh">我是不是比以前差了？</span><span class="note">p.165 a（逐字稿 p.214 C，Emma）</span></li>
+    <li><span class="fr">Ils vont se sentir <em>mieux</em>.</span><span class="zh">他們會覺得好一點。</span><span class="note">p.165 b（逐字稿 p.214 C）</span></li>
+    <li><span class="fr">Cela contraste avec ce trait <em>un peu plus</em> brut.</span><span class="zh">這跟那個比較粗獷一點的線條形成對比。</span><span class="note">p.165 c（影片逐字稿 p.221 D：<i>ce trait en noir et blanc un peu plus brut, un peu plus dur</i>）</span></li>
+    <li><span class="fr">Mon travail de peinture est <em>beaucoup moins</em> discipliné.</span><span class="zh">我的繪畫作品自由得多（遠沒那麼守規矩）。</span><span class="note">p.165 d（影片原句 p.221：<i>mon travail de peinture, qui lui est beaucoup moins discipliné</i>）</span></li>
+    <li><span class="fr">Pour que vous compreniez <em>un petit peu mieux</em>, je vous ai apporté un triptyque.</span><span class="zh">為了讓你們稍微更懂一點，我帶了一組三聯畫來。</span><span class="note">p.165 e（⚠️ 影片原句是 <i>pour que vous puissiez comprendre</i>，課本改寫過；兩種都對）</span></li>
+  </ul>
+
+  <h3>課本 Fonctionnement 例句與 Exemple（p.165）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Elle a une esthétique <em>un petit peu moins</em> colorée.</span><span class="zh">她的美學風格稍微沒那麼繽紛。</span><span class="note">p.165（抽字黏成 « peumoins »，已補空格）</span></li>
+    <li><span class="fr">Ce travail est <em>beaucoup plus</em> connu que les autres.</span><span class="zh">這件作品比其他的有名得多。</span><span class="note">p.165（抽字黏成 « beaucoupplus »）</span></li>
+    <li><span class="fr"><em>De plus en plus de</em> jeunes se mettent en scène sur les réseaux sociaux.</span><span class="zh">越來越多年輕人在社群網站上包裝自己。</span><span class="note">p.165（趨勢上升；接名詞要加 de）</span></li>
+    <li><span class="fr">Elle publie <em>de moins en moins de</em> photos.</span><span class="zh">她發的照片越來越少。</span><span class="note">p.165（趨勢下降）</span></li>
+    <li><span class="fr">Maintenant, je me sens bien. Je me sentais pas bien avant. (beaucoup plus) → Maintenant, je me sens beaucoup mieux qu'avant.</span><span class="zh">現在我感覺很好，以前不好。→ 現在我感覺比以前好得多。</span><span class="note">p.165 練習 3 Exemple（⚠️ bien 的比較級是 mieux，不是 plus bien；⚠️ 題目省了 ne，見 🔎 ②）</span></li>
+  </ul>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：「beaucoup plus」碰到 bien／bon 要變形。</b>練習 3 Exemple 就是在考這個：<i>(beaucoup plus)</i> ＋ bien → <b>beaucoup mieux</b>。l'essentiel 2b <i>Elle partage ses sentiments un petit peu plus souvent qu'avant</i> 的 souvent 則照常用 plus（重組題的字：<i>ses / un / qu'avant. / peu / petit / souvent / partage / Elle / sentiments / plus</i>）。<br>
+    ⚠️ <b>陷阱二：名詞前一定有 de。</b>練習 3b <i>Elle a vraiment beaucoup de succès, comparé à moi. (beaucoup plus)</i>、l'essentiel 2g <i>de / plus / plus / succès. / en / de / remporte / Cet événement</i>——兩個 de 各有位置。<br>
+    ⚠️ <b>陷阱三：「un petit peu moins」不是「很少」。</b>練習 3c <i>Arnaud a 50 000 abonnés sur Insta et Ludovic en a 50 200. (un petit peu moins)</i>——差 200 人，主詞要選誰？<br>
+    ⚠️ <b>陷阱四：beaucoup 的位置。</b>l'essentiel 2h <i>beaucoup / les précédentes éditions. / plus / que / avons recueilli / d'argent / Nous</i>——beaucoup plus d'argent 整塊放在動詞後。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>p.165 Remarque「mal → plus mal/pire」</b>：標準文法裡 <i>pire</i> 是形容詞（mauvais 的比較級），副詞 mal 的比較級是 <b>plus mal</b>（文雅用法是 <i>pis</i>，如 <i>de mal en pis</i>）。口語常把 pire 當副詞用（<i>ça va pire</i>），但規範文法不建議。課本把 pire 列在 mal 底下，Claude 依標準文法判斷，<b>未查證</b>字典或文法書。考試寫作建議用 <b>plus mal</b>。<br>
+    ② <b>p.165 練習 3 Exemple « Je me sentais pas bien avant. »</b>：少了 ne，標準寫法是 <b>Je ne me sentais pas bien avant.</b> 課本題目用口語寫法。<br>
+    ③ <b>p.165 Échauffement e 改寫了影片原句</b>（<i>puissiez comprendre</i> → <i>compreniez</i>），兩種都是合文法的 subjonctif，只是要知道不是逐字引用。
+  </div>
+</section>
+
+<!-- ============ 3. 轉述過去 ============ -->
+<section>
+  <h2>📐 文法三：Le discours rapporté au passé 轉述（過去式引導）（p.170） <span class="time">4 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>「他<b>那時候</b>說了什麼」。Unité 10 p.148 教的是 <i>Il dit que…</i>（現在式引導，時態不動）；這頁是 <i>Il a dit que…</i>：<b>引導動詞一旦是過去式，子句的時態要往回推一格</b>（concordance des temps）。<br>
+    <b>présent → imparfait</b>｜<b>passé composé → plus-que-parfait</b>｜<b>futur simple → conditionnel présent</b>｜<b>impératif → de ＋ 原形</b>｜<b>imparfait、conditionnel présent → 不變</b>（p.170 表）<br>
+    ⭐ 連接詞的選法跟 Unité 10 一樣（que／si／疑問詞／ce que），p.170 Rappel 又列了一次。<br>
+    ⭐ 背法：「過去的過去用 plus-que-parfait，過去的未來用 conditionnel」——conditionnel 在這裡<b>不是</b>假設，也不是 Unité 10 的「傳聞」，是「從過去看的未來」（Claude 依標準文法補的說法，<b>未查證</b>課本立場）。
+  </div>
+
+  <div class="compare-table">
+    <table>
+      <tr><th>直接引語（p.170 表）</th><th>轉述（過去式引導）</th><th>課本例句</th></tr>
+      <tr><td>Présent</td><td>Imparfait</td><td class="m">Elle s'appelle Ambre.</td></tr>
+      <tr><td>Passé composé</td><td>Plus-que-parfait</td><td class="m">Je n'ai pas vu l'heure.</td></tr>
+      <tr><td>Futur simple</td><td>Conditionnel présent</td><td class="m">On continuera bientôt notre discussion.</td></tr>
+      <tr><td>Impératif</td><td>De ＋ 原形</td><td class="m">Asseyez-vous !</td></tr>
+      <tr><td>Imparfait</td><td>不變 Imparfait</td><td class="m">Elle souhaitait échanger avec ses lecteurs. → Je lui ai dit qu'elle souhaitait échanger avec ses lecteurs.</td></tr>
+      <tr><td>Conditionnel présent</td><td>不變 Conditionnel présent</td><td class="m">Elle ne devrait plus tarder à arriver.</td></tr>
+    </table>
+  </div>
+  <p class="small">表裡的「Phrase : ……」是要你從 Échauffement 找對應句填進去（練習 2），本頁只列 Échauffement 句子，不替你配對。抽字把「→」變成「1」、把 « J'ai demandé si » 黏成 « demandési »，已還原。</p>
+
+  <h3>課本 Échauffement（p.170，出自 p.169 I 閱讀與 J 逐字稿）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Je t'ai dit que je <em>n'avais pas vu</em> l'heure.</span><span class="zh">我跟你說過我沒注意到時間。</span><span class="note">p.170 a（原句 p.169 I l.7 <i>Je t'ai dit que je n'avais pas vu l'heure à cause du boulot.</i>）</span></li>
+    <li><span class="fr">Le radiologue m'a demandé <em>de m'asseoir</em>.</span><span class="zh">放射科醫生請我坐下。</span><span class="note">p.170 b（原句 p.169 I l.8；⭐ 反身代名詞跟著換成 m'）</span></li>
+    <li><span class="fr">Le radiologue m'a dit qu'elle ne <em>devrait</em> plus tarder à arriver.</span><span class="zh">醫生跟我說她應該很快就會來了。</span><span class="note">p.170 c（⚠️ p.169 原文是 <i>nous a dit</i>，見第 11 段 ⑬）</span></li>
+    <li><span class="fr">Il nous a demandé si on <em>avait choisi</em> son prénom.</span><span class="zh">他問我們名字取好了沒。</span><span class="note">p.170 d（原句 p.169 I l.21–22；抽字黏成 « nousa »）</span></li>
+    <li><span class="fr">J'ai répondu qu'elle <em>s'appelait</em> Ambre.</span><span class="zh">我回答說她叫 Ambre。</span><span class="note">p.170 e（原句 p.169 I l.25–26）</span></li>
+    <li><span class="fr">Tu m'avais expliqué que ces lectures t'<em>apportaient</em> beaucoup.</span><span class="zh">你之前跟我說過這些書讓你收穫很多。</span><span class="note">p.170 f（逐字稿 p.215 J，Noam；⭐ 引導動詞是 plus-que-parfait 也算過去）</span></li>
+    <li><span class="fr">Elle m'a promis qu'on <em>continuerait</em> bientôt notre discussion.</span><span class="zh">她答應我很快會再繼續聊。</span><span class="note">p.170 g（逐字稿 p.215 J，Owen；futur → conditionnel）</span></li>
+  </ul>
+
+  <h3>課本 Rappel 與 Exemple（p.170）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Vous voudriez venir ? → J'ai demandé si vous voudriez venir.</span><span class="zh">您想來嗎？→ 我問了您想不想來。</span><span class="note">p.170 Rappel（是非問句 → si；conditionnel 不變）</span></li>
+    <li><span class="fr">Comment allez-vous faire ça ? → J'ai demandé comment vous alliez faire ça.</span><span class="zh">您要怎麼做？→ 我問了您要怎麼做。</span><span class="note">p.170 Rappel（疑問詞照搬；allez → alliez）</span></li>
+    <li><span class="fr">Qu'est-ce qu'il présentera ? → J'ai demandé ce qu'il présentera.</span><span class="zh">他會報告什麼？→ 我問了他會報告什麼。</span><span class="note">p.170 Rappel（⚠️⚠️ 課本這句沒做時態呼應，見 🔎 ①）</span></li>
+    <li><span class="fr">Ils ont dit : « Nous nous intéressons beaucoup à ces livres. » → Ils ont dit qu'ils s'intéressaient beaucoup à ces livres.</span><span class="zh">他們說：「我們對這些書很有興趣。」→ 他們說他們對這些書很有興趣。</span><span class="note">p.170 練習 3 Exemple（nous nous → ils s'；présent → imparfait）</span></li>
+  </ul>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：futur 要變 conditionnel，不是 imparfait。</b>練習 3b <i>Nous avons entendu dire : « Le prochain événement aura lieu près de chez nous. »</i>、3d <i>Ils ont ajouté : « On finira prochainement. »</i>——aura、finira 都要換。⭐ 3b 還有 <i>le prochain</i>，對照文法一要不要改？（課本題目沒要求，Claude 依標準文法提醒，<b>未查證</b>）<br>
+    ⚠️ <b>陷阱二：passé composé → plus-que-parfait，助動詞跟著換時態。</b>練習 3c <i>Ils ont expliqué : « Nous n'avons pas trouvé le temps de tout préparer. »</i>——avons → avaient，否定 ne…pas 包住助動詞。<br>
+    ⚠️ <b>陷阱三：疑問形容詞 quel 照搬，但倒裝要拆。</b>練習 3e <i>Il m'a demandé : « Quel livre peux-tu me recommander ? »</i>——peux-tu 要變回直述語序，tu／me 也要換人。<br>
+    ⚠️ <b>陷阱四：反方向（轉述 → 直接引語）要把時態推回來。</b>l'essentiel 4b <i>Il a précisé que le spectacle serait bientôt joué ici.</i>（serait → ？）、4c <i>La journaliste a indiqué que ce roman avait battu tous les records.</i>（avait battu → ？）、4e <i>…devait être un acte engagé</i>——devait 原本可能是 doit 也可能是 devait，Claude 判斷兩種都說得通，<b>未查證</b>課本預期哪個。<br>
+    ⚠️ <b>陷阱五：Atelier 直接用得到。</b>p.174 策略：<i>Vous pouvez aussi utiliser le discours rapporté (Il a dit que… Il a ajouté que…) pour rappeler quelques phrases essentielles du/de la créateur(-trice).</i>
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>p.170 Rappel « J'ai demandé ce qu'il présentera. »</b>：同一頁的表才說 futur simple 在過去式引導下要變 conditionnel présent，標準寫法是 <b>J'ai demandé ce qu'il présenterait.</b> 課本 Rappel 只是要示範 qu'est-ce que → ce que，時態沒跟著改；同一框的另外兩句（voudriez、alliez）都有做呼應。Claude 依標準文法判斷這句在書面考試會被扣分；口語裡如果「他報告」這件事到現在還沒發生，保留 futur 也有人說，<b>未查證</b>課本是不是故意的。⭐ 上課可以問老師（第 10 段第 2 題）。<br>
+    ② <b>p.170 只寫「il faut parfois changer」</b>（有時要改）：沒說「什麼時候可以不改」。標準文法：轉述的內容到現在仍然成立時，口語常保留現在式。課本沒提，Claude 依標準文法補的，<b>未查證</b>。<br>
+    ③ <b>p.170 表沒有列「時間詞也要換」</b>（demain → le lendemain、hier → la veille）。p.163 文法一的字剛好就是要用在這裡，Claude 依標準文法補的連結，<b>未查證</b>課本後面有沒有教。
+  </div>
+</section>
+
+<!-- ============ 4. 發音 ============ -->
+<section>
+  <h2>👂 發音：Les voyelles nasales 鼻母音（p.172） <span class="time">1 分鐘</span></h2>
+  <div class="rule">
+    <b>它在處理什麼：</b>三個鼻母音（抽字把音標符號弄掉了，只剩「E· A· O·」）：<br>
+    <b>[ɛ̃] 像 intime</b>：in, im, ain, ein, yn, ym, en（在 i 後面）, un, um<br>
+    <b>[ɑ̃] 像 grand public</b>：an, am, en, em<br>
+    <b>[ɔ̃] 像 son</b>：on, om（p.172 練習 2 規則表；音標是 Claude 依標準補的）<br>
+    p.172 Remarque：<i>Suivis de la lettre b ou p, les graphies in, on, en, an deviennent im, om, em, am.</i>（在 b、p 前面，n 要寫成 m）<br>
+    ⭐ 最容易混的是 [ɑ̃] 和 [ɔ̃]（Claude 依一般中文母語者經驗判斷，<b>未查證</b>）：<i>vent</i> 跟 <i>vont</i> 這類對比課本這頁沒有，本頁不另造例子。
+  </div>
+  <p>練習 1：聽句子，哪個鼻母音最多（逐字稿 p.215）：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">Un événement vraiment enthousiasmant.</span><span class="zh">一場真的很振奮人心的活動。</span><span class="note">p.172 練習 1a</span></li>
+    <li><span class="fr">Nous organisons un marathon de jeux vidéo pour récolter des dons.</span><span class="zh">我們辦了一場電玩馬拉松來募款。</span><span class="note">p.172 練習 1b（抽字黏成 « marathonde »）</span></li>
+    <li><span class="fr">Un livre bien écrit incite à s'interroger sur sa vie.</span><span class="zh">一本寫得好的書會讓人反思自己的人生。</span><span class="note">p.172 練習 1c</span></li>
+  </ul>
+  <p>練習 3：聽完跟著唸（逐字稿 p.215）：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">Un spectacle de danse vibrant et captivant.</span><span class="zh">一場充滿活力、扣人心弦的舞蹈表演。</span><span class="note">p.172 練習 3a</span></li>
+    <li><span class="fr">Le mode d'emploi pour mieux se comprendre.</span><span class="zh">更了解自己的使用說明書。</span><span class="note">p.172 練習 3b</span></li>
+    <li><span class="fr">Un événement hors compétition qui fait un carton.</span><span class="zh">一個非競賽單元卻大受歡迎的活動。</span><span class="note">p.172 練習 3c（⭐ compétition 的 m 在 p 前＝Remarque 規則）</span></li>
+    <li><span class="fr">Un ouvrage captivant encourageant la réflexion.</span><span class="zh">一部引人入勝、鼓勵思考的作品。</span><span class="note">p.172 練習 3d</span></li>
+    <li><span class="fr">Une œuvre contemporaine intime et émouvante.</span><span class="zh">一件私密又動人的當代作品。</span><span class="note">p.172 練習 3e</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>陷阱：拼字是 en，不一定唸 [ɑ̃]。</b>課本規則寫了「en（在 i 後面）→ [ɛ̃]」：Claude 依標準發音補例子方向——像 <i>bien</i>（練習 1c）的 ien 唸 [jɛ̃]，不是 [jɑ̃]。另外 <i>une</i>、<i>œuvre</i>、<i>émouvante</i> 的 n 後面接母音，<b>不是</b>鼻母音（Claude 依標準發音補的）。
+  </div>
+  <div class="flag">
+    🔎 ① <b>課本把 un, um 放在 [ɛ̃]</b>：傳統上 un 是另一個鼻母音 [œ̃]，但現在法國多數人已經跟 [ɛ̃] 合併成一個音，課本採合併的說法。比利時、法國南部等地還分得出來（Claude 依一般知識，<b>未查證</b>）。聽力遇到不同口音不用慌。<br>
+    ② <b>Remarque 的例外沒列</b>：<i>bonbon</i>、<i>embonpoint</i> 這類字在 b／p 前面仍然寫 n。Claude 依標準拼字補的，<b>未查證</b>。
+  </div>
+</section>
+
+<!-- ============ 5. 功能句 ============ -->
+<section>
+  <h2>💬 上課會用到的說法 <span class="time">2 分鐘</span></h2>
+
+  <h3>Pour faire la chronologie d'un événement passé 講過去事件的先後順序（p.163 說法框）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Tout a commencé, il y a environ cinq-six ans.</span><span class="zh">一切大約從五、六年前開始。</span><span class="note">p.163（逐字稿 p.213 B，Laetitia Ky；il y a ＋ 時間＝……之前）</span></li>
+    <li><span class="fr">Quand j'ai eu 16-17 ans, je suis revenue au naturel.</span><span class="zh">我十六、七歲的時候改回留自然髮。</span><span class="note">p.163（quand ＋ passé composé＝某個時間點）</span></li>
+    <li><span class="fr">Dès que j'ai fermé l'album, j'ai voulu tester.</span><span class="zh">我一闔上相簿就想試試看。</span><span class="note">p.163（dès que＝一……就；逐字稿原句是 <i>je me suis dit, je vais tester quelque chose</i>）</span></li>
+    <li><span class="fr">Depuis que je suis petite, je suis très habile.</span><span class="zh">我從小手就很巧。</span><span class="note">p.163（depuis que ＋ présent＝持續到現在）</span></li>
+    <li><span class="fr">Au fur et à mesure (que je faisais ça), j'ai commencé à recevoir des messages.</span><span class="zh">隨著我一直做下去，我開始收到訊息。</span><span class="note">p.163（au fur et à mesure que＝隨著……逐漸）</span></li>
+    <li><span class="fr">Quelques années après, j'ai vu cet album.</span><span class="zh">幾年後，我看到了那本相簿。</span><span class="note">p.163（⭐ 數字＋après＝文法一；逐字稿原句是 <i>je suis tombée sur cet album</i>）</span></li>
+  </ul>
+
+  <h3>Pour demander ce qu'il faut faire 問該怎麼做（p.168 說法框）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Comment s'y prendre pour trouver un bon livre ?</span><span class="zh">要怎麼著手才能找到一本好書？</span><span class="note">p.168（s'y prendre＝著手、下手）</span></li>
+    <li><span class="fr">Comment je me débrouille avec autant de livres ?</span><span class="zh">這麼多書我要怎麼辦？</span><span class="note">p.168（⚠️ 逐字稿 p.215 原句是 <i>comment je me débrouille avec tout ça ?</i>）</span></li>
+    <li><span class="fr">Je fais quoi moi pour choisir ?</span><span class="zh">那我要怎麼選？</span><span class="note">p.168（口語語序；逐字稿原句 <i>Je fais quoi moi là-dessus ?</i>）</span></li>
+  </ul>
+
+  <h3>Pour faire des recommandations 給建議（p.168 說法框）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Ce qui importe, c'est l'auteur.</span><span class="zh">重要的是作者。</span><span class="note">p.168（逐字稿 p.215 Pascale Senk；Ce qui ＋ 動詞, c'est…＝凸顯句，接 Unité 10）</span></li>
+    <li><span class="fr">Eh bien moi, je partirais de votre besoin.</span><span class="zh">我的話，會從您的需求出發。</span><span class="note">p.168（⭐ 條件式＝委婉建議）</span></li>
+    <li><span class="fr">Je commencerais par les livres les plus connus.</span><span class="zh">我會先從最有名的書開始。</span><span class="note">p.168</span></li>
+    <li><span class="fr">Autant être pragmatique, on va partir d'une problématique.</span><span class="zh">不如務實一點，我們從一個具體問題出發。</span><span class="note">p.168（autant ＋ 原形＝不如……；逐字稿原句 <i>on va partir de sa problématique</i>）</span></li>
+    <li><span class="fr">Il faudrait mieux définir son besoin.</span><span class="zh">應該把自己的需求定義得更清楚。</span><span class="note">p.168（⚠️ 別跟 <i>il vaudrait mieux</i> 搞混，見第 11 段 ⑩）</span></li>
+  </ul>
+
+  <h3>Pour mettre en garde, se méfier 提醒、表示懷疑（p.169 說法框）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Tu ne devrais peut-être pas commencer par ça.</span><span class="zh">你也許不該從這個開始。</span><span class="note">p.169（逐字稿 p.215 J，Owen；devoir 的條件式＝委婉勸告）</span></li>
+    <li><span class="fr">D'expérience, tu devrais plutôt trouver un auteur qui te convient bien.</span><span class="zh">以我的經驗，你應該先找一個適合你的作者。</span><span class="note">p.169（⚠️ 逐字稿原句較長：<i>tu devrais plutôt prendre du temps pour toi, puis faire quelques lectures pour trouver un auteur…</i>）</span></li>
+    <li><span class="fr">Ne te précipite pas trop !</span><span class="zh">別太急！</span><span class="note">p.169（逐字稿原句 <i>Surtout, ne te précipite pas !</i>）</span></li>
+    <li><span class="fr">Par contre, ça me paraît être surtout du bon sens, non ?</span><span class="zh">不過，這聽起來主要只是常識吧？</span><span class="note">p.169（逐字稿 p.215 Noam；⭐ 句尾 non ? 是在表達懷疑）</span></li>
+    <li><span class="fr">Mais de quoi peux-tu bien parler ?</span><span class="zh">那你到底能聊什麼？</span><span class="note">p.169（逐字稿原句後面還有 <i>avec des inconnus</i>；bien 加強語氣＝「到底」）</span></li>
+  </ul>
+
+  <h3>Pour parler d'un spectacle, d'un événement 談表演、活動（p.171 說法框）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">J'aimerais vous parler d'un événement annuel qui s'appelle Z Event.</span><span class="zh">我想跟各位介紹一個叫 Z Event 的年度活動。</span><span class="note">p.171（逐字稿 p.215 L，Mathilde）</span></li>
+    <li><span class="fr">C'est en quelque sorte un marathon organisé dans le but de récolter de l'argent.</span><span class="zh">這有點像是一場為了募款而辦的馬拉松。</span><span class="note">p.171（en quelque sorte＝可以說是；dans le but de＝目的是）</span></li>
+    <li><span class="fr">C'est un événement méconnu du grand public.</span><span class="zh">這是一般大眾不太知道的活動。</span><span class="note">p.171（méconnu de＝不為……所知）</span></li>
+    <li><span class="fr">La dernière édition s'est déroulée ce week-end. Tout a commencé vendredi soir avant de prendre fin dimanche soir.</span><span class="zh">最新一屆在這個週末舉行，從週五晚上開始、週日晚上結束。</span><span class="note">p.171（se dérouler＝舉行；prendre fin＝結束；抽字斷在 « week- / end »）</span></li>
+    <li><span class="fr">Imaginez une cinquantaine de joueurs de jeux vidéo réunis.</span><span class="zh">想像一下大約五十個電玩玩家聚在一起。</span><span class="note">p.171（Imaginez…＝把聽眾拉進場景）</span></li>
+  </ul>
+
+  <h3>Stratégies : Identifier et restituer les informations pertinentes d'un document vidéo 看影片抓重點、轉述重點（p.174）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Regardez bien les premiers indices visuels : Que voyez-vous ? Où se trouve-t-on ? Qui prend la parole ? Que fait cette personne ?</span><span class="zh">先看開頭的畫面線索：看到什麼？在哪裡？誰在說話？他在做什麼？</span><span class="note">p.174（⭐ 跟 TCF 聽力看圖題的先看再聽同一個思路，Claude 判斷，<b>未查證</b>）</span></li>
+    <li><span class="fr">Il ne faut pas noter tout ce que vous voyez et entendez car beaucoup d'éléments se répètent.</span><span class="zh">不要看到聽到什麼都記，因為很多內容會重複。</span><span class="note">p.174</span></li>
+    <li><span class="fr">Pendant votre présentation, il est nécessaire de respecter un ordre logique. On commence par le thème général puis on décrit le profil du/de la créateur(-trice).</span><span class="zh">報告時要照邏輯順序：先講大主題，再介紹創作者。</span><span class="note">p.174</span></li>
+  </ul>
+
+  <h3>單元格言與引言</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Deviens qui tu es !</span><span class="zh">成為你自己！</span><span class="note">p.161 單元首頁（出自逐字稿 p.214 C；⚠️ 見第 11 段 ⑭）</span></li>
+    <li><span class="fr">J'ai commencé à associer mon activisme à mon art.</span><span class="zh">我開始把我的社會運動和藝術結合起來。</span><span class="note">p.163 B 引言（逐字稿 p.214）</span></li>
+    <li><span class="fr">On a envie de poster un moi idéal !</span><span class="zh">我們就是想貼出一個理想的自己！</span><span class="note">p.164 C 引言（逐字稿 p.214 Maël）</span></li>
+    <li><span class="fr">L'objectif, c'est de réussir à se vendre.</span><span class="zh">目標是要能把自己推銷出去。</span><span class="note">p.167 F 引言（逐字稿 p.214）</span></li>
+    <li><span class="fr">C'est un livre dans lequel il y a une pensée.</span><span class="zh">這是一本有思想在裡面的書。</span><span class="note">p.168 H 引言（⭐ dans lequel＝Unité 10 文法二）</span></li>
+    <li><span class="fr">A-t-on besoin d'aller à une conférence pour ça ?</span><span class="zh">為了這個需要去聽講座嗎？</span><span class="note">p.169 J 引言（逐字稿 p.215 Noam）</span></li>
+    <li><span class="fr">C'est un événement qui bat des records de dons.</span><span class="zh">這是一個屢破捐款紀錄的活動。</span><span class="note">p.171 L 引言</span></li>
+  </ul>
+</section>
+
+<!-- ============ 6. 詞彙 ============ -->
+<section>
+  <h2>🧺 新詞彙（挑 B1 才出現、你筆記裡大多還沒有的） <span class="time">2 分鐘</span></h2>
+  <p class="small">哪些字筆記裡已經有，<b>未查證</b>（這次沒有對 french_notes.html 逐字核對）。</p>
+
+  <h3>塑造形象（p.166 Se fabriquer une image）</h3>
+  <ul class="vocab">
+    <li><span class="w">cacher = masquer une imperfection · camoufler</span><span class="g">v.</span>遮掩缺點・掩飾</li>
+    <li><span class="w">dénaturer · lisser · tricher</span><span class="g">v.</span>扭曲本性・修飾得完美無瑕・作假</li>
+    <li><span class="w">le filtre · jouer un rôle</span><span class="g">m./expr.</span>濾鏡・演一個角色</li>
+    <li><span class="w">montrer une vie de rêve · se montrer au mieux</span><span class="g">expr.</span>秀出夢幻人生・展現最好的一面</li>
+  </ul>
+
+  <h3>他人的眼光（p.166 Le regard des autres）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'approbation · être validé(e)</span><span class="g">f./expr.</span>認可・被肯定</li>
+    <li><span class="w">le complexe · se comparer</span><span class="g">m./v.</span>自卑感・跟人比較</li>
+    <li><span class="w">l'imaginaire collectif · le stéréotype · mettre dans des cases</span><span class="g">m./m./expr.</span>集體想像・刻板印象・把人貼標籤</li>
+  </ul>
+
+  <h3>做自己、建立自信（p.166 Être soi-même／Prendre confiance en soi）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'authenticité · être décomplexé(e) · vivre sa vie</span><span class="g">f./expr.</span>真實・不再自卑、放得開・過自己的生活</li>
+    <li><span class="w">se réconcilier avec ses origines</span><span class="g">expr.</span>跟自己的出身和解</li>
+    <li><span class="w">(s')affirmer · s'assumer · s'exposer</span><span class="g">v.</span>表明（立場）／展現自我・接納自己・曝光自己</li>
+    <li><span class="w">être fier, fière de soi · l'estime personnelle</span><span class="g">expr./f.</span>以自己為傲・自尊</li>
+    <li><span class="w">se mettre en valeur · se rassurer</span><span class="g">v.</span>凸顯自己的優點・讓自己安心</li>
+  </ul>
+
+  <h3>藝術創作（p.166 La création artistique）</h3>
+  <ul class="vocab">
+    <li><span class="w">à la main · l'autoportrait · la composition</span><span class="g">expr./m./f.</span>手工・自畫像・構圖</li>
+    <li><span class="w">l'élan (artistique) · l'esthétique</span><span class="g">m./f.</span>（創作）衝動・美學風格</li>
+    <li><span class="w">expérimenter · magnifier · retravailler l'image</span><span class="g">v.</span>嘗試・讚頌、使更美・重新加工影像</li>
+    <li><span class="w">s'exprimer · s'inspirer (de)</span><span class="g">v.</span>表達自己・從……得到靈感</li>
+  </ul>
+
+  <h3>成功（p.172 Le succès／Expressions）</h3>
+  <ul class="vocab">
+    <li><span class="w">arriver en tête des ventes · battre les records de vente</span><span class="g">expr.</span>登上銷售冠軍・打破銷售紀錄</li>
+    <li><span class="w">cartonner (fam.) · faire un carton plein</span><span class="g">v./expr.</span>大賣、爆紅（口語）・大獲全勝</li>
+    <li><span class="w">être suivi(e) par · un public conquis</span><span class="g">expr.</span>被……追蹤・被征服的觀眾</li>
+    <li><span class="w">(jouer) à guichets fermés · enflammer les théâtres</span><span class="g">expr.</span>場場滿座・讓劇院沸騰</li>
+  </ul>
+
+  <h3>創作者與感想（p.172 Les créateurs et créatrices／Les impressions）</h3>
+  <ul class="vocab">
+    <li><span class="w">le dessinateur, la dessinatrice · le romancier, la romancière</span><span class="g">n.</span>插畫家・小說家</li>
+    <li><span class="w">le metteur, la metteuse en scène · le/la photographe</span><span class="g">n.</span>導演・攝影師</li>
+    <li><span class="w">captivant(e) · enthousiasmant(e) · émouvant(e)</span><span class="g">adj.</span>引人入勝的・振奮人心的・感人的</li>
+    <li><span class="w">dingue (fam.) · inoubliable · intime · vivant(e)</span><span class="g">adj.</span>瘋狂的、超扯的（口語）・難忘的・私密的・生動的</li>
+  </ul>
+
+  <h3>自我成長、感覺不好／變好、陪伴（p.172）</h3>
+  <ul class="vocab">
+    <li><span class="w">devenir adepte de · dire non à · suivre des conseils</span><span class="g">expr.</span>成為……的愛好者・拒絕・聽從建議</li>
+    <li><span class="w">la méditation · la réflexion personnelle</span><span class="g">f.</span>冥想・自我反思</li>
+    <li><span class="w">se rendre compte de · se sentir prêt(e) à · se transformer</span><span class="g">v.</span>意識到・覺得準備好・徹底改變</li>
+    <li><span class="w">l'embarras · la morosité · isolé(e) · souffrir de</span><span class="g">m./f./adj./v.</span>困窘・憂鬱低迷・孤立的・受……之苦</li>
+    <li><span class="w">avoir le sourire · s'épanouir · se retrouver</span><span class="g">expr./v.</span>心情好・成長茁壯、活出自己・找回自己</li>
+    <li><span class="w">passer au-dessus de · surmonter · se comprendre</span><span class="g">expr./v.</span>跨越・克服・理解自己</li>
+    <li><span class="w">encourager · recommander · montrer la voie</span><span class="g">v./expr.</span>鼓勵・推薦・指引方向</li>
+    <li><span class="w">transmettre une pensée · le/la psychologue · la psychologie</span><span class="g">expr./n./f.</span>傳遞一種想法・心理學家・心理學</li>
+  </ul>
+
+  <h3>課文裡的好用說法</h3>
+  <ul class="vocab">
+    <li><span class="w">traîner sur (l'application)</span><span class="g">expr.</span>泡在……上（p.162 A l.26）</li>
+    <li><span class="w">les idées noires · prisonnier, prisonnière des apparences</span><span class="g">expr.</span>負面念頭・被外表困住（p.162 A）</li>
+    <li><span class="w">tomber sur · habile des mains</span><span class="g">expr.</span>偶然碰到・手很巧（逐字稿 p.213 B）</li>
+    <li><span class="w">il n'y a pas lieu de ＋ 原形</span><span class="g">expr.</span>沒有理由……（逐字稿 p.214 B <i>il n'y a pas lieu de le cacher</i>）</li>
+    <li><span class="w">la tchatche (fam.) · le tremplin · une caisse de résonance</span><span class="g">f./m./f.</span>好口才（口語）・跳板・擴音器、讓聲音被聽見的管道（p.167 E；註 1：<i>qui permet un large partage</i>）</li>
+    <li><span class="w">tirer quelqu'un d'affaire</span><span class="g">expr.</span>幫人脫困（p.167 E；註 2：<i>aider quelqu'un à régler une situation difficile</i>）</li>
+    <li><span class="w">prendre la mesure de</span><span class="g">expr.</span>認清……的分量（p.167 E）</li>
+    <li><span class="w">au point de ＋ 原形 · le développement personnel</span><span class="g">expr./m.</span>甚至到……的地步（p.168 G 註 1：<i>jusqu'à</i>）・自我成長</li>
+    <li><span class="w">s'accepter tel(le) qu'on est · faire de même</span><span class="g">expr.</span>接受原本的自己・照著做（p.168 G）</li>
+    <li><span class="w">lancer un regard noir · un fou rire</span><span class="g">expr./m.</span>狠狠瞪一眼・止不住的大笑（p.169 I）</li>
+    <li><span class="w">guichets fermés · le trac</span><span class="g">expr./m.</span>票全賣光・上台緊張（p.171 K）</li>
+    <li><span class="w">n'avoir rien à envier à · se prêter au jeu</span><span class="g">expr.</span>一點也不輸給……・配合參與（逐字稿 p.215 L）</li>
+  </ul>
+  <div class="flag">
+    🔎 ① <b>p.166「Jouez avec les mots ! p.10 « Poème en rime »」、p.172「« La chaîne de mots »」</b>：課本指向 p.10 的詞彙遊戲，本頁沒有讀 p.10，<b>未查證</b>。<br>
+    ② <b>p.166 抽字把 fi 連字拆成空格</b>：« (s')affi rmer »、« camoufl er »、« magnifi er » 已還原成 affirmer、camoufler、magnifier。<br>
+    ③ <b>p.172 l'essentiel 5 的字表</b>寫 <i>se sentir prêt(e) – se rendre compte – dire non</i>，詞彙頁是 <i>se sentir prêt(e) à</i>、<i>se rendre compte de</i>、<i>dire non à</i>——填空時介系詞要自己補回來。
+  </div>
+</section>
+
+<!-- ============ 7. DELF ============ -->
+<section>
+  <h2>📝 本單元 DELF：沒有準備頁，只有散在各頁的練習 <span class="time">1 分鐘</span></h2>
+  <ul class="phrase-list">
+    <li><span class="fr">Vous souhaitez commander un portrait à un(e) artiste peintre. Dans votre mail, vous précisez, à partir d'une photo, ce que vous voulez mettre en avant ou cacher. Puis vous demandez des informations sur le prix et les délais de réalisation. (160 mots minimum)</span><span class="zh">你想請畫家幫你畫肖像。寫 email：根據一張照片說明想凸顯或遮掉什麼，再問價格和完成時間（至少 160 字）。</span><span class="note">p.164 練習 6（Production écrite DELF B1：正式 email＋詢問）</span></li>
+    <li><span class="fr">À deux ! Un(e) de vos ami(e)s est très enthousiaste à l'idée de participer à une conférence sur le développement personnel. Mais le prix très élevé et les intervenant(e)s peu connu(e)s vous inquiètent un peu. Vous échangez avec votre ami(e) à ce sujet.</span><span class="zh">兩人一組：朋友很想去一場自我成長講座，但票價很貴、講者沒什麼名氣，你有點擔心。跟朋友討論。</span><span class="note">p.169 練習 7（Production orale DELF B1：互動；⭐ 正好用 p.169「提醒、表示懷疑」說法框）</span></li>
+    <li><span class="fr">À deux ! Vous pensez faire un don au prochain Z Event. Votre ami(e) ne connaît pas bien cet événement et doute de la dimension caritative d'une telle initiative. Vous lui présentez l'événement en détail et vous lui proposez de faire un don avec vous.</span><span class="zh">兩人一組：你打算捐款給下一屆 Z Event，朋友不太了解、懷疑它的公益性。你詳細介紹這個活動，並邀他一起捐。</span><span class="note">p.171 練習 7（Production orale DELF B1：介紹＋說服；⭐ 用 p.171「談表演、活動」說法框）</span></li>
+  </ul>
+  <div class="flag">
+    🔎 ① <b>字數：</b>p.164 寫 <b>160 mots minimum</b>，跟 Unité 9、10 一致。現行官方規定 Claude <b>未查證</b>。<br>
+    ② 這是 DELF 規格，⭐ 不是 TCF Canada；但 p.169、p.171 兩題「朋友有疑慮 → 你回應／說服」跟 TCF 口說第 2 題的互動方向類似，兩邊評分標準<b>未查證</b>。<br>
+    ③ 👉 p.164 練習 6 是現成的寫作題，⭐ 但要你自己寫，Claude 只修語法、不代寫。
+  </div>
+</section>
+
+<!-- ============ 8. 閱讀亮點 ============ -->
+<section>
+  <h2>📰 閱讀與聽力裡值得先看的句子 <span class="time">1 分鐘</span></h2>
+  <ul class="phrase-list">
+    <li><span class="fr">Pendant qu'elles faisaient des choses formidables, qu'elles s'exposaient dans des lieux extraordinaires, j'étais seule dans ma chambre avec le reflet de mon visage sur l'écran du téléphone.</span><span class="zh">她們在做很棒的事、在很特別的地方曝光的時候，我一個人在房間，看著手機螢幕上自己的倒影。</span><span class="note">p.162 A l.7–10（pendant que…, que…＝第二個 que 代替 pendant que；抽字 « reet »＝reflet，<b>未查證</b>）</span></li>
+    <li><span class="fr">J'ai le sentiment que certaines personnes cachent leurs problèmes, les aspects ordinaires de leur vie et qu'elles préfèrent dénaturer leur personnalité pour attirer les regards.</span><span class="zh">我覺得有些人藏起自己的問題和生活中平凡的一面，寧願扭曲自己的個性來吸引目光。</span><span class="note">p.162 A l.34–36</span></li>
+    <li><span class="fr">Peut-être sont-elles prisonnières des apparences ?</span><span class="zh">也許她們被外表困住了？</span><span class="note">p.162 A l.37（⭐ peut-être 放句首 → 主詞動詞倒裝；同一篇 l.30 也有 <i>Peut-être que c'est le bon moment</i> 不倒裝的版本）</span></li>
+    <li><span class="fr">Comme pour le hip-hop, le stand-up est un mouvement qui a émergé d'en bas et s'est propagé.</span><span class="zh">跟嘻哈一樣，單口喜劇是一個從底層冒出來、再擴散開的運動。</span><span class="note">p.167 E l.18–20</span></li>
+    <li><span class="fr">Si on donnait à nos gamins de banlieue ces deux outils que m'a donnés l'impro – s'exprimer et être dans l'écoute active – on les tirerait d'affaire.</span><span class="zh">如果我們把即興表演給我的兩樣工具——表達自己、積極傾聽——交給郊區的孩子，就能幫他們脫困。</span><span class="note">p.167 E l.26–28（⭐ si ＋ imparfait → conditionnel＝Unité 9；⭐ donnés 配合前面的 outils，主詞 l'impro 倒裝；抽字 « d'aaire »＝d'affaire，<b>未查證</b>）</span></li>
+    <li><span class="fr">Vous ne cessez, depuis plusieurs années, de défendre l'improvisation théâtrale et de réclamer qu'elle soit développée dans les établissements scolaires.</span><span class="zh">您這幾年一直不斷捍衛即興戲劇，要求學校推廣它。</span><span class="note">p.167 E l.24–26（ne cesser de＝不斷；réclamer que ＋ subjonctif）</span></li>
+    <li><span class="fr">La jeune femme a en effet souffert de harcèlement scolaire au collège, sa belle chevelure bouclée était le sujet de nombreuses moqueries.</span><span class="zh">這位年輕女性國中時確實被霸凌過，她一頭漂亮的捲髮常被嘲笑。</span><span class="note">p.168 G l.23–25</span></li>
+    <li><span class="fr">Elle a décidé de s'accepter telle qu'elle est et son message est d'encourager les plus jeunes à faire de même.</span><span class="zh">她決定接受原本的自己，她要傳遞的訊息是鼓勵更年輕的人也這樣做。</span><span class="note">p.168 G l.27–29（tel(le) que＝跟……一樣）</span></li>
+    <li><span class="fr">On avait déjà vécu ça, mais, cette fois, il y avait un truc en plus : on savait.</span><span class="zh">我們以前經歷過一次，但這一次多了一樣東西：我們已經知道了。</span><span class="note">p.169 I l.13–14（plus-que-parfait＝更早的那次）</span></li>
+    <li><span class="fr">Live Magazine est un journal vivant pendant lequel des journalistes, des photographes, des dessinateurs, des réalisateurs se succèdent sur une scène pour raconter – en mots, en sons, en images – une histoire chacun.</span><span class="zh">Live Magazine 是一份「活的雜誌」，記者、攝影師、插畫家、導演輪流上台，各自用文字、聲音、影像講一個故事。</span><span class="note">p.171 K l.8–10（⭐ pendant lequel＝Unité 10 文法二）</span></li>
+    <li><span class="fr">En plus d'être suivis pour leurs talents de joueurs, ils sont appréciés pour leur façon particulière de se filmer en train de jouer à des jeux vidéo.</span><span class="zh">他們除了因為打得好被追蹤，也因為拍自己打電動的獨特方式受歡迎。</span><span class="note">逐字稿 p.215 L（en plus de ＋ 原形；être en train de）</span></li>
+    <li><span class="fr">700 000 spectateurs, c'est non seulement un record pour un programme diffusé sur Twitch mais cela dépasse même l'audience de beaucoup d'émissions de télé.</span><span class="zh">70 萬名觀眾，不只是 Twitch 節目的紀錄，甚至超過很多電視節目的收視。</span><span class="note">逐字稿 p.215 L（non seulement… mais… même＝不只……甚至）</span></li>
+    <li><span class="fr">J'ai entendu dire qu'une nouvelle conférence aurait lieu dans trois mois.</span><span class="zh">我聽說三個月後會有一場新的講座。</span><span class="note">逐字稿 p.215 J（⭐ 一句同時是 Unité 10 的「傳聞條件式」和文法三的「過去看未來」——Claude 判斷，<b>未查證</b>課本歸哪一類）</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>p.164 C 聽力很口語</b>：<i>t'as pas besoin de l'approbation des autres</i>（省 ne、tu as → t'as）、<i>tu vas t'en foutre !</i>（粗俗＝不在乎）——聽懂就好，⛔ 寫作和口說考試別用。F 聽力 <i>C'est vachement beau !</i>（vachement＝超級，口語）也一樣。
+  </div>
+  <div class="flag">
+    🔎 ① 聽力 B、C、F、H、J、L 和 l'essentiel 1、發音讀了附錄逐字稿 p.213–216；影片 D 讀了 p.221 逐字稿。<br>
+    ② <b>抽字斷掉的地方</b>：p.168 G 第 8–9、11–12、17–19 行有整段空白（書名後的引文、追蹤人數、影片描述），p.169 I 第 16–19 行兩欄交錯（<i>on savait qu'on aurait le cœur gonflé … en la regardant dormir, des fous rires à chacune de ses grimaces</i> 的接法），p.162 資訊圖數字錯位，缺的字與順序<b>未查證</b>，本頁沒有引用那幾句。<br>
+    ③ p.162 A、p.167 E、p.168 G、p.169 I、p.171 K 是多欄交錯排版，行號依抽字裡的行號標記推定，可能差一兩行，<b>未查證</b>。<br>
+    ④ 出處殘缺：p.167 E « Sandrine B, Le Monde »、p.169 I « de Virginie G, »、p.171 K 媒體評語的版面，作者全名<b>未查證</b>。<br>
+    ⑤ J 聽力裡的人物剛好叫 <b>Owen</b>，跟你同名，純屬巧合。
+  </div>
+</section>
+
+<!-- ============ 9. 練習題 ============ -->
+<section>
+  <h2>✏️ 最可能上課做的題目：先想想看 <span class="time">2 分鐘</span></h2>
+  <p class="small">只給方向，不給答案。哪幾題會做是照前幾個單元的節奏推測（未查證）。</p>
+
+  <div class="ex">
+    <div class="q">p.170 Entraînement 3、p.173 l'essentiel 4：轉述過去 ↔ 直接引語 <span class="likely">★★★ 文法頁一定做</span></div>
+    <div class="hint">先想想看：每題先找「原句是什麼時態」，再查 p.170 表往回推一格。3a <i>Elle a dit : « J'ai une grande nouvelle à vous annoncer. »</i>：ai 變什麼？vous 變誰？3f <i>Vous vouliez savoir : « Combien de temps je dois consacrer à la lecture par jour ? »</i>：combien 照搬，dois 變什麼？反方向 4g <i>Il a demandé si nous avions écrit beaucoup de livres.</i>：avions écrit 推回來是什麼？要不要加 est-ce que？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.165 Entraînement 3、p.173 l'essentiel 2：比較級強度 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：3e <i>Les adolescents consultent Internet 3 h par jour. C'est 2 h 45 pour les adultes. (un peu plus)</i>——consulter 是動詞，plus 放哪？3f <i>Je passe très peu de temps sur les réseaux. Mes amis y passent leur vie. (beaucoup moins)</i>——temps 是名詞，要不要 de？l'essentiel 2a <i>en / moins / De / préfèrent / rester / isolés. / de gens / moins</i>：先拼出 de moins en moins de 這一塊。</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.163 Entraînement 2、p.173 l'essentiel 1：時間標記 <span class="likely">★★</span></div>
+    <div class="hint">先想想看：每題問自己「這個時間是從<b>現在</b>算，還是從<b>句子裡另一個時間</b>算？」2a 的參考點是 <i>le week-end prochain</i>，所以「之後那週」用哪套？l'essentiel 1e（逐字稿 p.216）<i>la semaine prochaine … la semaine d'après</i>：哪個跟說話當下有關？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.166 詞彙 4、p.173 l'essentiel 3「找出不同類」 <span class="likely">★★</span></div>
+    <div class="hint">先想想看：l'essentiel 3a <i>lisser – camoufler – être soi-même – masquer</i>：哪個不是在「遮」？3e <i>s'exposer – se mettre en valeur – se montrer au mieux – s'inspirer</i>：哪個不是「讓別人看到自己」？p.166 詞彙 4g <i>Il a tout de suite réussi à s'affirmer / affirmer dans ce nouveau groupe d'amis.</i>：後面沒有受詞，選哪個？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.172 Phonétique 1、3：鼻母音 <span class="likely">★★ 有時間才做</span></div>
+    <div class="hint">先想想看：1a <i>Un événement vraiment enthousiasmant.</i> 裡 en／an 出現幾次？un 唸哪個？1b <i>organisons, marathon, dons</i> 都是哪一個音？</div>
+  </div>
+</section>
+
+<!-- ============ 10. 問老師 ============ -->
+<section>
+  <h2>🙋 上課可以問老師的 3 個問題</h2>
+  <ol class="ask">
+    <li>p.170 的表說 futur 要變 conditionnel，但 Rappel 的 <i>J'ai demandé ce qu'il présentera.</i> 沒變。考試寫 <i>présenterait</i> 才對嗎？什麼情況可以不改？</li>
+    <li>轉述 <i>« Je viendrai demain »</i> 這種句子時，<i>demain</i> 要不要換成 p.163 的 <i>le lendemain</i>？</li>
+    <li>p.165 Remarque 寫 <i>mal → plus mal/pire</i>：<i>Il chante pire que moi</i> 這種說法考試可以用嗎？還是只能用 <i>plus mal</i>？</li>
+  </ol>
+</section>
+
+<!-- ============ 11. 不一致處 ============ -->
+<section>
+  <h2>📋 課本與標準法文不一致處（彙整）</h2>
+  <div class="flag">
+    ① <b>p.170 Rappel « J'ai demandé ce qu'il présentera. »</b>：同頁規則是 futur → conditionnel，標準寫法 <b>J'ai demandé ce qu'il présenterait.</b>（見第 3 段 🔎 ①）。課本自相矛盾，<b>最值得注意</b>。<br>
+    ② <b>p.171 L 問題 6 « Comme expliquer autant de dons pendant l'événement ? »</b>（兩層抽字都一樣）：標準寫法是 <b>Comment expliquer…</b>。課本錯字。<br>
+    ③ <b>p.165 Remarque « mal → plus mal/pire »</b>：pire 規範上是形容詞，副詞比較級是 <b>plus mal</b>（文雅 pis）。Claude 依標準文法判斷，<b>未查證</b>（見第 2 段 🔎 ①）。<br>
+    ④ <b>p.165 練習 3 Exemple « Je me sentais pas bien avant. »</b>：少了 ne，標準寫法 <b>Je ne me sentais pas bien avant.</b><br>
+    ⑤ <b>p.172 規則把 un, um 歸在 [ɛ̃]</b>：傳統上是 [œ̃]，現代多數人已合併。不算錯，是採合併派（見第 4 段 🔎 ①）。Remarque 沒列 bonbon 類例外（<b>未查證</b>）。<br>
+    ⑥ <b>p.163 文法表抽字錯位</b>：最後兩列（某時間點往前／往後推）的確切位置<b>未查證</b>，看紙本。<br>
+    ⑦ <b>逐字稿 p.216 l'essentiel 1e « nous jouerons à guichet fermé »</b> vs p.172 詞彙 <b>à guichets fermés</b>（複數）。固定說法是複數，逐字稿單數可能是轉寫錯，<b>未查證</b>。<br>
+    ⑧ <b>影片逐字稿 p.221 D « les couleurs deviennent presque que des tâches »</b>：色塊是 <b>taches</b>（沒有 ^），tâche 是「任務」。同一份逐字稿後面寫 <i>ces taches de couleurs</i> 是對的。轉寫錯字。<br>
+    ⑨ <b>逐字稿 p.213 B « avec l'esthétique africain(e) »</b>：esthétique 是陰性，標準寫法 <b>l'esthétique africaine</b>。轉寫時打了括號，大概是聽不出來，<b>未查證</b>。<br>
+    ⑩ <b>p.168 說法框 « Il faudrait mieux définir son besoin. »</b>：這句本身對（＝需要把需求定義得更清楚），但很容易跟 <i>il vaudrait mieux</i>（最好……）搞混；常見錯誤是寫成 <i>il faudrait mieux ＋ 原形</i> 想表達「最好」。這句在逐字稿 p.214–215 找不到原句（可能在 (…) 剪掉的部分），<b>未查證</b>老師的原意。<br>
+    ⑪ <b>p.168、p.169 說法框都是改寫過的</b>，不是逐字稿原句：<i>autant de livres</i>（原 <i>tout ça</i>）、<i>partir d'une problématique</i>（原 <i>de sa problématique</i>）、<i>tu devrais plutôt trouver un auteur</i>（原句較長）、<i>Ne te précipite pas trop !</i>（原 <i>Surtout, ne te précipite pas !</i>）。<i>Comment s'y prendre…</i>、<i>Je commencerais par…</i> 在逐字稿裡找不到，<b>未查證</b>。不是錯，但聽力時聽到的跟框裡不完全一樣。<br>
+    ⑫ <b>p.165 Échauffement e</b> 改寫了影片原句（<i>puissiez comprendre</i> → <i>compreniez</i>），d 也省了 <i>qui lui</i>。兩邊都合文法。<br>
+    ⑬ <b>p.170 Échauffement c « Le radiologue m'a dit… »</b> vs p.169 I 原文 <b>« nous a dit »</b>。另外 p.169 原文抽字是 <i>nous a dit / Qu'elle ne devrait plus tarder à arriver.</i>（大寫 Q 另起一行），可能是小說刻意斷句，也可能是抽字問題，<b>未查證</b>，看紙本。<br>
+    ⑭ <b>單元格言 « Deviens qui tu es ! »</b>（逐字稿 p.214 Camille Tassel 說是 Nietzsche 引 Pindare）：這句在法文最常見的譯法是 <b>« Deviens ce que tu es »</b>。用 qui 指人也說得通，不算文法錯，只是跟通行譯法不同。Claude 依一般知識，<b>未查證</b>。<br>
+    ⑮ <b>逐字稿 p.215 H Pascale Senk « ne soyons pas sûr les hypocrites »</b>（只出現在第一層抽字，第二層是 <i>ne soyons pas hypocrites</i>）：兩欄交錯把隔壁欄的 « sûr les » 插進來了，正確是 <b>ne soyons pas hypocrites</b>。抽字問題，不是課本錯。
+  </div>
+</section>
+
+<p class="small"><b>來源與未查證：</b>Édito B1 課本 p.161–174（<code>assets/.textbook_cache.txt</code> 第 70845–72977 行；已用頁首「===== [Edito.B1.Owen.pdf] page N =====」與頁尾「162 Icent soixante-deux」「cent soixante-trois I 163」「164 Icent soixante-quatre」「cent soixante-cinq I 165」「166 Icent soixante-six」「cent soixante-sept I 167」「168 Icent soixante-huit」「cent soixante-neufI 169」「170 Icent soixante-dix」「cent soixante et onzeI 171」「172 Icent soixante-douze」「cent soixante-treizeI 173」「174 Icent soixante-quatorze」核對，p.175 是 Unité 12 首頁）＋附錄逐字稿 p.213–216（第 79932–80696 行，Unité 11 從 p.213 中段 B 開始、到 p.216 l'essentiel 1 結束，之後是 Unité 12）與影片逐字稿 p.221（第 81865–81910 行）。PDF 抽字掉了 fi／fl／ff／ffi 連字，引用時推定原文，<b>未對照紙本查證</b>：p.161 « mé er »（＝méfier），p.162 « prols »、« lles »、« reet »、« vériais »、« n »（＝profils、filles、reflet、vérifiais、fin），p.166 « affi rmer »、« camoufl er »、« magnifi er »，p.167 « bénéces »、« diérence »、« d'aaire »、« dicile »、« con ance »（＝bénéfices、différence、d'affaire、difficile、confiance），p.169 « goné »（＝gonflé），p.171 « magniques »（＝magnifiques），p.174 « diérence »。黏字已補空格：p.162 « surl'application »，p.165 « peumoins »、« beaucoupplus »，p.166 « s'exposerses »，p.170 « nousa »、« demandési »、« demandécomment »、« demandéce »，p.172 « marathonde »，p.173 « etdites sion »、« parleou »。鼻母音音標 [ɛ̃]／[ɑ̃]／[ɔ̃] 在抽字裡只剩「E· A· O·」，是 Claude 依標準補回的。p.163、p.165、p.166、p.170、p.172、p.173 練習答案快取裡沒有（沒有 B1 解答頁），本頁不給答案。標準法文的判斷（présenterait、Comment expliquer、plus mal／pis／pire、ne 不可省、[œ̃] 合併、bonbon 例外、guichets fermés、taches／tâches、esthétique africaine、il faudrait／il vaudrait mieux、Deviens ce que tu es、時間詞在轉述中要換、la dernière semaine、時態可不呼應的情況、peut-être 倒裝、vachement／t'en foutre 的語域）是 Claude 依一般標準文法與常識寫的，這次沒有另外查字典或文法書，視為<b>未查證</b>。哪些詞彙已在 french_notes.html 也<b>未查證</b>。</p>
+
+</main>
+</body>
+</html>
