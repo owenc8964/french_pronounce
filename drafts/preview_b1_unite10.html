@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 Unité 10 預習單</title>
+<style>
+  :root {
+    --bg: #15171c;
+    --card: #1f232b;
+    --card2: #262b35;
+    --text: #e6e8ec;
+    --muted: #9aa3b2;
+    --fr: #ffffff;
+    --accent: #7cc4ff;
+    --gold: #f2c86b;
+    --warn: #ff9f7a;
+    --line: #333a46;
+    --gray-badge: #4a5160;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Helvetica Neue", sans-serif;
+    font-size: 16px; line-height: 1.65;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 1.35rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: .9rem; margin-bottom: 18px; }
+  section {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; margin: 0 0 16px;
+  }
+  h2 { font-size: 1.1rem; margin: 0 0 8px; color: var(--accent); }
+  h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--gold); }
+  p { margin: 6px 0; }
+  b { color: var(--fr); }
+  .time { float: right; font-size: .78rem; color: var(--muted); font-weight: normal; }
+  .rule {
+    background: var(--card2); border-left: 4px solid var(--accent);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .trap {
+    background: rgba(255,159,122,.08); border-left: 4px solid var(--warn);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0;
+  }
+  .flag {
+    background: rgba(242,200,107,.08); border-left: 4px solid var(--gold);
+    border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: .92rem;
+  }
+  .map { list-style: none; padding: 0; margin: 0; }
+  .map li { padding: 7px 0; border-bottom: 1px solid var(--line); }
+  .map li:last-child { border-bottom: none; }
+  .pg { display: inline-block; min-width: 54px; color: var(--accent); font-weight: 600; }
+  .tag { display: inline-block; font-size: .72rem; padding: 1px 7px; border-radius: 10px;
+         background: var(--gray-badge); color: var(--text); margin-left: 4px; vertical-align: 1px; }
+  .tag.new { background: #2f5d8a; }
+  /* 法文句子載體：沿用 french_notes.html 的結構，之後可直接搬 */
+  .phrase-list { list-style: none; padding: 0; margin: 6px 0; }
+  .phrase-list li {
+    display: flex; flex-wrap: wrap; gap: 2px 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--line);
+  }
+  .phrase-list li:last-child { border-bottom: none; }
+  .fr { font-weight: 600; color: var(--fr); width: 100%; }
+  .zh { color: var(--muted); font-size: .9rem; }
+  .phrase-list li > span.note { color: #7d8696; font-size: .8rem; }
+  .fr em { font-style: normal; color: var(--gold); }
+  .vocab { list-style: none; padding: 0; margin: 4px 0 8px;
+           display: grid; grid-template-columns: 1fr; gap: 0; }
+  .vocab li { padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: .95rem; }
+  .vocab li:last-child { border-bottom: none; }
+  .vocab .w { color: var(--fr); font-weight: 600; }
+  .g { display: inline-block; font-size: .72rem; color: var(--muted); border: 1px solid var(--line);
+       border-radius: 4px; padding: 0 5px; margin: 0 4px; }
+  .compare-table { overflow-x: auto; margin: 8px 0; }
+  .compare-table table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  .compare-table th, .compare-table td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+  .compare-table th { background: var(--card2); color: var(--gold); font-weight: 600; }
+  .compare-table td.m { color: var(--fr); font-weight: 600; }
+  details { background: var(--card2); border-radius: 8px; padding: 8px 12px; margin: 8px 0; }
+  summary { cursor: pointer; font-weight: 600; color: var(--text); }
+  details[open] summary { margin-bottom: 6px; }
+  .ex { margin: 8px 0; padding-left: 2px; }
+  .ex .q { color: var(--fr); }
+  .hint { color: var(--muted); font-size: .92rem; }
+  .likely { color: var(--gold); font-size: .8rem; }
+  ol.ask { padding-left: 20px; margin: 6px 0; }
+  ol.ask li { margin: 8px 0; }
+  .small { font-size: .85rem; color: var(--muted); }
+  @media (min-width: 640px) {
+    .vocab { grid-template-columns: 1fr 1fr; column-gap: 18px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Unité 10 Du neuf dans les loisirs・預習單（草稿）</h1>
+<div class="sub">範圍：Édito B1 p.145–160（第 10 單元）｜大約 15 分鐘｜全部法文句子都是課本原句，每句標頁碼</div>
+
+<div class="flag">
+  🚧 <b>這是草稿。</b>給 Unité 10 開課前先看的。<br>
+  中文翻譯、「它在處理什麼資訊」的說明、陷阱與標註是 Claude 加的；法文全部取自 <code>assets/.textbook_cache.txt</code> 的 Édito B1 內頁（PDF 頁碼＝課本頁碼）與課本附錄逐字稿 p.211–213、影片逐字稿 p.221。
+</div>
+
+<!-- ============ 0. 地圖 ============ -->
+<section>
+  <h2>🗺 這個單元的頁面 <span class="time">1 分鐘</span></h2>
+  <ul class="map">
+    <li><span class="pg">p.145</span>單元首頁。目標：解釋、給細節｜要求確認與確認｜描述社會現象｜描述與形容事物｜凸顯論點。標語：<i>Le jeu reste au cœur de l'échange.</i>（出自 p.149 E）</li>
+    <li><span class="pg">p.146</span>A 閱讀：〈Des activités sportives récompensées〉運動換獎勵的 app（Sport Heroes、WeWard、Km for Change）＋「解釋、給細節」說法框</li>
+    <li><span class="pg">p.147</span>B 聽力：〈Pourquoi faire du sport ?〉France Culture（逐字稿 p.211）＋「要求確認與確認」說法框｜C 閱讀：〈L'e-sport : une discipline olympique ?〉｜DELF 寫作題</li>
+    <li><span class="pg">p.148</span><b>文法：Le discours rapporté au présent 轉述（現在式引導）</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.149</span>D 聽力：年輕玩家（RFI，逐字稿 p.211）＋「描述社會現象」說法框｜E 閱讀：長者也玩電玩｜DELF 口說補充題</li>
+    <li><span class="pg">p.150</span>詞彙頁：體能活動與數位活動（運動、比賽、捐款與金錢、正負變化、數位）</li>
+    <li><span class="pg">p.151</span>Culture：F 閱讀：桌遊是法國的熱愛｜G 聽力：唱歌桌遊 Shabadabada（逐字稿 p.211–212）＋ Au fait! 唱歌難聽的說法</li>
+    <li><span class="pg">p.152</span>H 閱讀：〈Poussiéreux, les musées ?〉博物館用新科技＋「描述與形容事物」說法框｜I 聽力：Cézanne 沉浸式展覽（逐字稿 p.212）｜DELF 口說題</li>
+    <li><span class="pg">p.153</span><b>文法：Les pronoms relatifs composés 複合關係代名詞（lequel…）</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.154</span>J 影片：〈Un bal immersif〉Blanca Li 的 Bal de Paris（逐字稿 p.221）｜K 閱讀：〈Plongée dans le métavers〉Elle 記者的元宇宙體驗</li>
+    <li><span class="pg">p.155</span>L 聽力：VRROOM 元宇宙平台（逐字稿 p.212）＋「凸顯論點」說法框｜<b>文法：Le conditionnel et l'information incertaine 條件式表示未證實的消息</b><span class="tag new">B1 重點</span></li>
+    <li><span class="pg">p.156</span>詞彙頁：遊戲與技術創新（遊戲、虛擬實境、科技、變化、正面評價）＋ 發音：<b>Les sons [i], [y], [u]</b><span class="tag new">新</span></li>
+    <li><span class="pg">p.157</span>l'essentiel 總複習（文法／詞彙）</li>
+    <li><span class="pg">p.158</span>Atelier médiation：聽廣播做筆記、轉述給沒聽到的人＋策略「Prendre des notes 做筆記」（逐字稿 p.213）</li>
+    <li><span class="pg">p.159–160</span><b>DELF B1 Préparation</b>：Compréhension des écrits 練習 2「讀懂資訊型文章」（8 分），文章〈Des jeux où on s'entraide〉</li>
+  </ul>
+  <p class="small">p.161 已經是 Unité 11 (Se) mettre en scène 的首頁。⭐ 跟 Unité 9 不同，這個單元<b>有</b> DELF 準備頁（p.159–160，見第 7 段）。</p>
+</section>
+
+<!-- ============ 1. 轉述 ============ -->
+<section>
+  <h2>📐 文法一：Le discours rapporté au présent 轉述（p.148） <span class="time">4 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>「誰說了什麼」——把別人的話塞進自己的句子裡。法文要先判斷原句是<b>哪一種句子</b>，才知道要用哪個連接詞：<br>
+    <b>直述句</b> → que｜<b>是非問句</b> → si｜<b>疑問詞問句</b>（où、quand、comment、pourquoi…）→ 疑問詞照搬｜<b>que／qu'est-ce que／quoi</b> → ce que｜<b>qu'est-ce qui</b> → ce qui｜<b>命令句</b> → de ＋ 原形。<br>
+    ⭐ 另外兩件事一定要跟著做：<b>問號、驚嘆號、引號拿掉</b>；<b>人稱代名詞和所有格要換成說話者的角度</b>（我→他、你們的→我們的）。<br>
+    ⚠️ 這頁標題是 <b>au présent</b>：引導動詞是現在式（il dit、elle demande），所以時態不用動。引導動詞變成過去式的情況這頁沒教（見 🔎 ①）。
+  </div>
+
+  <div class="compare-table">
+    <table>
+      <tr><th>原句類型（p.148 Fonctionnement）</th><th>直接引語</th><th>轉述</th></tr>
+      <tr><td>直述句 → que</td><td class="m">Je suis sportive.</td><td class="m">Elle dit qu'elle est sportive.</td></tr>
+      <tr><td>是非問句 → si</td><td class="m">Vous venez ?</td><td class="m">Il demande si vous venez.</td></tr>
+      <tr><td>疑問詞問句 → 疑問詞</td><td class="m">Comment ça marche ?</td><td class="m">Nous voulons savoir comment ça marche.</td></tr>
+      <tr><td>qu'est-ce que → ce que</td><td class="m">Qu'est-ce que vous faites ?</td><td class="m">Elle demande ce que nous faisons.</td></tr>
+      <tr><td>qu'est-ce qui → ce qui</td><td class="m">Qu'est-ce qui t'intéresse ?</td><td class="m">Il veut savoir ce qui m'intéresse.</td></tr>
+      <tr><td>命令句 → de ＋ 原形</td><td class="m">Cours plus vite !</td><td class="m">Vous ordonnez de courir plus vite.</td></tr>
+    </table>
+  </div>
+  <p class="small">引導動詞清單（p.148）：<i>dire, ajouter, affirmer, confirmer, expliquer, annoncer, déclarer, constater, avouer, souligner, rapporter, répéter, répondre, demander, vouloir savoir, ordonner</i>。抽字把動詞和後面的字黏在一起（« ditqu'elle »、« demandesi »、« ordonnezdecourir »），已補空格。</p>
+
+  <h3>課本 Échauffement（p.148，出自 p.146 A、p.147 C）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Yves Benchimol <em>explique que</em> cette application fonctionne quand nous marchons.</span><span class="zh">Yves Benchimol 解釋說，這個 app 在我們走路時就會運作。</span><span class="note">p.148 a（原句 p.146 A l.17–18）</span></li>
+    <li><span class="fr">Ses pratiquants <em>répondent que</em> c'est un sport cérébral.</span><span class="zh">玩的人回答說，這是一種動腦的運動。</span><span class="note">p.148 b（原句 p.147 C l.9–10）</span></li>
+    <li><span class="fr">Quelqu'un <em>veut savoir pourquoi</em> on appelle « sport » cette activité.</span><span class="zh">有人想知道為什麼把這種活動叫做「運動」。</span><span class="note">p.148 c（疑問詞 pourquoi 照搬）</span></li>
+    <li><span class="fr">Le comité olympique <em>se demande s'</em>il doit l'intégrer aux Jeux olympiques.</span><span class="zh">奧委會在考慮是否該把它納入奧運。</span><span class="note">p.148 d（si ＋ il → s'il；⭐ 這就是 Unité 9 預習單說的「是否」的 si）</span></li>
+  </ul>
+
+  <h3>課本 Remarque 與 Exemple（p.148）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Les spectateurs demandent : « Que font les joueurs ? » → Les spectateurs demandent ce que font les joueurs.</span><span class="zh">觀眾問：「選手在做什麼？」→ 觀眾問選手在做什麼。</span><span class="note">p.148 Remarque（標點拿掉；ce que 後面主詞動詞倒裝 font les joueurs）</span></li>
+    <li><span class="fr">Le coach annonce : « Je vais vous aider avant votre match. » → Le coach annonce qu'il va nous aider avant notre match.</span><span class="zh">教練宣布：「我會在你們比賽前幫你們。」→ 教練宣布他會在我們比賽前幫我們。</span><span class="note">p.148 Remarque（je→il、vous→nous、votre→notre）</span></li>
+    <li><span class="fr">Il demande : « Où est mon maillot ? » → Il demande où est son maillot.</span><span class="zh">他問：「我的球衣在哪？」→ 他問他的球衣在哪。</span><span class="note">p.148 練習 3 Exemple</span></li>
+    <li><span class="fr">Elles demandent où elles jouent. → Elles demandent : « Où est-ce que nous jouons ? »</span><span class="zh">她們問她們在哪裡比賽。→ 她們問：「我們在哪裡比賽？」</span><span class="note">p.148 練習 4 Exemple（反方向：轉述 → 直接引語）</span></li>
+    <li><span class="fr">Joachim dit : « J'adore ma nouvelle équipe. » → Joachim dit qu'il adore sa nouvelle équipe.</span><span class="zh">Joachim 說：「我超愛我的新隊伍。」→ Joachim 說他超愛他的新隊伍。</span><span class="note">p.157 l'essentiel 1 Exemple</span></li>
+  </ul>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：est-ce que 在轉述裡要消失。</b>練習 3b <i>Nous voulons savoir : « Quand est-ce que vous pratiquez ? »</i>、3c <i>Il demande : « Est-ce que j'ai perdu ? »</i>——轉述時 est-ce que 不留下來（Claude 依標準文法補的：「il demande qu'est-ce que…」是常見錯誤）。<br>
+    ⚠️ <b>陷阱二：qu'est-ce que 和 qu'est-ce qui 要分開。</b>練習 3d <i>« Qu'est-ce que tu penses de cette application ? »</i> → ce que；l'essentiel 1f <i>Le joueur veut savoir : « Qu'est-ce qui m'arrive ? »</i> → ce qui，⭐ 而且 m' 要換成他的角度。<br>
+    ⚠️ <b>陷阱三：命令句沒有 que。</b>練習 3f <i>Le coach dit : « Venez dans mon cours ! »</i>、l'essentiel 1h <i>Aurélien ordonne : « Faites comme moi ! »</i>——要變成 de ＋ 原形。<br>
+    ⚠️ <b>陷阱四：代名詞的連鎖反應。</b>l'essentiel 1d <i>Le coach nous demande : « Pourquoi êtes-vous en retard ? »</i>——教練問「我們」，所以 vous 轉述後變誰？1e <i>« Où sont partis mes collègues ? »</i> 的 mes 要換。<br>
+    ⚠️ <b>陷阱五：複合過去式照搬，但反身代名詞要跟著換人。</b>l'essentiel 1b <i>Le sportif explique : « Je me suis cassé la jambe. »</i>——je me suis → il s'est。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>這頁只教「引導動詞是現在式」。</b>標準文法裡，引導動詞換成過去式（il a dit、elle demandait）時，子句時態要往回推（現在→未完成過去、複合過去→愈過去、未來→條件式），叫做 concordance des temps。這頁完全沒提，照這頁的規則去轉述過去的話會出錯。Claude 依標準文法補的，後面單元有沒有教<b>未查證</b>。<br>
+    ② <b>p.148 « Vous ordonnez de courir plus vite. »</b>：ordonner 一般是 <i>ordonner à quelqu'un de</i>，這句省掉了「命令誰」。不算錯，但跟直接引語 <i>Cours plus vite !</i>（tu）放一起有點怪——命令的對象是 tu，主詞卻是 vous。Claude 依語感判斷，<b>未查證</b>。<br>
+    ③ <b>Fonctionnement 第一格「phrases …… et ……」</b>兩個空格是要你填的，快取裡沒有 B1 解答，本頁不填。
+  </div>
+</section>
+
+<!-- ============ 2. 複合關係代名詞 ============ -->
+<section>
+  <h2>📐 文法二：Les pronoms relatifs composés 複合關係代名詞（p.153） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b>「在<b>那個東西上面／裡面／旁邊</b>……」——前面的名詞要跟一個<b>介系詞</b>綁在一起時，qui／que 處理不了，就用 <b>介系詞 ＋ lequel</b>。<br>
+    lequel 要跟它代替的名詞<b>配合陰陽性和單複數</b>：lequel／laquelle／lesquels／lesquelles。<br>
+    ⭐ 指<b>人</b>的時候，常常可以改用 <b>介系詞 ＋ qui</b>（p.153 Remarque）。<br>
+    ⭐ 背法：先問「這個介系詞原本黏在哪個名詞上？」——<i>on peut découvrir le château <b>sur</b> la tablette</i> → la tablette <b>sur laquelle</b> on peut découvrir le château。
+  </div>
+
+  <h3>課本 Échauffement（p.153，出自 p.151 G 逐字稿、p.152 H）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Il va falloir trouver des chansons <em>dans lesquelles</em> on trouve ces mots.</span><span class="zh">要找出歌詞裡有這些字的歌。</span><span class="note">p.153 a（des chansons 陰性複數 → lesquelles；逐字稿 p.212 原句是 <i>…on trouve ce mot-là</i>）</span></li>
+    <li><span class="fr">Un HistoPad est une tablette <em>sur laquelle</em> on peut découvrir le château.</span><span class="zh">HistoPad 是一台可以在上面探索城堡的平板。</span><span class="note">p.153 b（原句 p.152 H l.5–8）</span></li>
+    <li><span class="fr">C'est un assistant virtuel <em>avec lequel</em> on peut discuter.</span><span class="zh">這是一個可以跟它聊天的虛擬助理。</span><span class="note">p.153 c（原句 p.152 H l.15–16）</span></li>
+    <li><span class="fr">Le Muséum national d'histoire naturelle propose un voyage inédit <em>dans lequel</em> des odeurs plongent les visiteurs dans différents endroits du globe.</span><span class="zh">國家自然史博物館推出一趟前所未有的旅程，用氣味把觀眾帶到世界各地。</span><span class="note">p.153 d（⚠️ 原句 p.152 H 的時態不一樣，見 🔎 ①）</span></li>
+  </ul>
+
+  <h3>課本 Fonctionnement 與 Remarque（p.153）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Le tableau <em>devant lequel</em> tu te trouves et la sculpture <em>devant laquelle</em> je me trouve sont tous les deux des œuvres de Rosa Bonheur.</span><span class="zh">你面前的那幅畫和我面前的那座雕塑，都是 Rosa Bonheur 的作品。</span><span class="note">p.153 Fonctionnement 例句（le tableau → lequel、la sculpture → laquelle）</span></li>
+    <li><span class="fr">Je rejoins les copains <em>avec lesquels</em> je vais au Louvre. = Je rejoins les copains <em>avec qui</em> je vais au Louvre.</span><span class="zh">我去找要跟我一起去羅浮宮的朋友們。</span><span class="note">p.153 Remarque（指人 → 可以換成 qui）</span></li>
+    <li><span class="fr">Je rejoins la copine <em>avec laquelle</em> je vais au Louvre. = Je rejoins la copine <em>avec qui</em> je vais au Louvre.</span><span class="zh">我去找要跟我一起去羅浮宮的那位朋友。</span><span class="note">p.153 Remarque</span></li>
+    <li><span class="fr">Nous avons visité un château. Il y avait une exposition de jouets anciens dans ce château. → Nous avons visité un château dans lequel il y avait une exposition de jouets anciens.</span><span class="zh">我們參觀了一座城堡，裡面有古董玩具展。</span><span class="note">p.153 練習 4 Exemple（兩句合一句的標準做法）</span></li>
+    <li><span class="fr">C'est un musée dans lequel on peut utiliser des consoles de jeux. → Le musée du Louvre.</span><span class="zh">這是一間可以用遊戲機的博物館。→ 羅浮宮。</span><span class="note">p.153 練習 5 Exemple（猜謎）</span></li>
+  </ul>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：配合的對象是「被代替的名詞」，不是句子主詞。</b>l'essentiel 3a <i>Picasso a vécu dans la maison devant lequel / devant laquelle nous sommes.</i>——看 la maison。3c <i>Merci pour ce livre dans lesquelles / dans lequel…</i>——看 ce livre。<br>
+    ⚠️ <b>陷阱二：qui 只能指人。</b>l'essentiel 3d <i>Tu as besoin de ce casque sans lequel / sans qui tu ne pourras rien voir.</i>——casque 是東西。練習 3「哪幾句可以改用 qui」也是在考這個：3a <i>La femme avec …… je viens de parler</i>、3c <i>des personnes intéressantes pour ……</i>、3f <i>des peintres sans ……</i> 是人；3b voyage、3d tableaux、3e bâtiment 是東西。<br>
+    ⚠️ <b>陷阱三：介系詞要選對。</b>l'essentiel 3e <i>C'est l'ami sous qui / pour lequel tu as acheté une place ?</i>、3h <i>des tablettes sous lesquelles / sur lesquelles vous trouverez…</i>——兩個選項配合都對，差在介系詞合不合理。<br>
+    ⚠️ <b>陷阱四：發音。</b>lesquels、lesquelles 的 s 不發音，跟 lequel 只差在 le／les 的母音（Claude 依標準發音補的）。聽寫時要靠前面名詞的單複數判斷。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>p.152 H 與 p.153 d 時態不同。</b>p.152 H 原文是 <i>vient de proposer un voyage sensoriel inédit dans lequel des sons, des images et des odeurs plongeaient les visiteurs</i>（未完成過去式），p.153 Échauffement d 改寫成 <i>propose … plongent</i>（現在式）。課本自己改了句子，兩邊都合文法，只是要知道不是同一句。<br>
+    ② <b>「指人常用 qui」有例外沒列。</b>標準文法：介系詞是 <b>parmi</b>、<b>entre</b> 時，指人也要用 lesquels／lesquelles，不能用 qui。課本 Remarque 沒提，Claude 依標準文法補的，<b>未查證</b>後面單元。<br>
+    ③ <b>介系詞 à、de 的縮合形這頁沒教。</b>Fonctionnement 列的介系詞是 sur、sous、dans、devant、derrière、avec、sans、pour、chez；à ＋ lequel → auquel、de ＋ lequel → duquel 這類縮合形這頁沒出現。順帶一提，p.154 K 的 <i>les métavers dont on parle le plus</i>（parler de）用的是 dont。Claude 依標準文法補的，<b>未查證</b>後面單元有沒有教。
+  </div>
+</section>
+
+<!-- ============ 3. 條件式 未證實消息 ============ -->
+<section>
+  <h2>📐 文法三：Le conditionnel et l'information incertaine 條件式表示未證實的消息（p.155） <span class="time">3 分鐘</span></h2>
+
+  <div class="rule">
+    <b>它在處理什麼資訊：</b><b>「這件事還沒證實」</b>——新聞和傳聞用條件式，等於中文的「據說、傳聞、可能已經」。動詞形式本身就在告訴你：<b>說話者不替這件事背書</b>。<br>
+    <b>現在或未來的事</b> → conditionnel présent｜<b>過去的事</b> → conditionnel passé（avoir／être 的條件式現在時 ＋ 過去分詞）。<br>
+    ⭐ conditionnel passé 的配合規則跟 passé composé 一模一樣（用 être 的要配合主詞）。你已經會條件式現在時和複合過去式，這頁是把兩塊<b>拼起來</b>。<br>
+    ⭐ 聽讀時特別有用：看到 <i>aurait</i>、<i>seraient</i> 就要知道「這是傳聞，不是事實」（Claude 判斷這跟 TCF 閱讀／聽力「資訊有多確定」的題型相關，<b>未查證</b>題型細節）。
+  </div>
+
+  <h3>課本 Échauffement 與 Fonctionnement（p.155）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">De grandes marques <em>auraient</em> déjà <em>acheté</em> des parcelles virtuelles.</span><span class="zh">據說已經有大品牌買下了虛擬土地。</span><span class="note">p.155 Échauffement a（原句 p.154 K l.22–24）</span></li>
+    <li><span class="fr">À terme, on <em>devrait</em> pouvoir y accéder depuis n'importe quel ordinateur.</span><span class="zh">最終應該從任何一台電腦都能連進去。</span><span class="note">p.155 Échauffement b（逐字稿 p.212 原句是 <i>…sur n'importe quel ordinateur ou smartphone</i>）</span></li>
+    <li><span class="fr">Le concert est annulé. Le chanteur <em>aurait eu</em> un accident.</span><span class="zh">演唱會取消了。據說歌手出了意外。</span><span class="note">p.155 Fonctionnement（取消是確定的，原因還沒證實）</span></li>
+    <li><span class="fr">200 personnes <em>n'auraient pas eu</em> l'information à temps et <em>seraient venues</em> à la salle de concert.</span><span class="zh">據說有 200 人沒有及時收到消息，還是跑去了演唱會場地。</span><span class="note">p.155 Fonctionnement（⭐ venir 用 être → venues 配合 200 personnes 陰性複數）</span></li>
+    <li><span class="fr">Un enfant de 8 ans aurait gagné des milliers d'euros grâce au métavers.</span><span class="zh">據說一個 8 歲小孩靠元宇宙賺了好幾千歐元。</span><span class="note">p.155 練習 3（寫作題的開頭句）</span></li>
+  </ul>
+  <p class="small">p.155 變位表：dire → <i>j'aurais dit, tu aurais dit, il/elle/on aurait dit, nous aurions dit, vous auriez dit, ils/elles auraient dit</i>（抽字黏成 « j'auraisdit »，已補空格）。</p>
+
+  <div class="trap">
+    ⚠️ <b>陷阱一：用 être 的動詞要配合。</b>練習 2e <i>Vous (aller) …… à cette expo sans moi ? Vraiment ?</i>、2f <i>Charles et Carla (se marier) …… hier dans le métavers.</i>（抽字黏成 « semarier »）、l'essentiel 4b <i>Jean-Michel Jarre (arriver) ……</i>、4g <i>Mon collègue et sa femme (se rencontrer) ……</i>——全部是 être，要看主詞配合。<br>
+    ⚠️ <b>陷阱二：présent 還是 passé？看時間詞。</b>l'essentiel 4 要你自己選：4a 有 <i>la semaine dernière</i>、4b 有 <i>hier</i> → 過去；4c 有 <i>l'année prochaine</i>、4h 有 <i>bientôt</i> → 現在／未來。4d <i>les jeunes (être) …… accros aux jeux vidéo</i> 沒有時間詞，是現在的狀態。<br>
+    ⚠️ <b>陷阱三：問句裡的條件式＝驚訝或猜測。</b>練習 2c <i>Alors ? Tu (proposer) …… tes services à VRROOM ?</i>、l'essentiel 4f <i>Je ne trouve pas le vidéoprojecteur. Tu l'(prendre) …… ?</i>——不是傳聞，是「你該不會已經……了吧？」。<br>
+    ⚠️ <b>陷阱四：跟 Unité 9 的 si 句分開。</b>這裡的條件式<b>不需要 si</b>，也不是假設；同樣的形式 <i>aurait</i>，在 si 句裡是「如果……就會」，在新聞裡是「據說」。
+  </div>
+
+  <div class="flag">
+    🔎 <b>課本說法 vs 標準文法：</b><br>
+    ① <b>Échauffement b 的 devrait 不完全是「未證實」。</b><i>on devrait pouvoir y accéder</i> 是 devoir 的條件式＝「預計、應該會」，比較接近預測，跟 a 的「傳聞」不是同一種。課本把兩句放在一起問「資訊確定嗎」，答案都是「不確定」，但不確定的原因不一樣。Claude 依標準用法判斷，<b>未查證</b>。<br>
+    ② <b>課本沒寫這是「新聞用語」。</b>標準法文裡這種條件式常叫 conditionnel journalistique，新聞標題和報導大量使用。Claude 依一般知識補的名稱，<b>未查證</b>課本後面有沒有用這個詞。
+  </div>
+</section>
+
+<!-- ============ 4. 發音 ============ -->
+<section>
+  <h2>👂 發音：Les sons [i], [y], [u]（p.156） <span class="time">1 分鐘</span></h2>
+  <div class="rule">
+    <b>它在處理什麼：</b>三個「嘴巴幾乎閉著」的母音，差別只在<b>嘴唇</b>和<b>舌頭</b>。<br>
+    <b>課本規則（p.156 練習 2，[u] 這條是課本直接給的）：</b><i>Pour former le son [u], on a la bouche fermée, les lèvres en avant et la langue en arrière. C'est un son plus grave.</i> 另外兩格（嘴唇往兩邊拉像在笑／嘴唇往前像在吹氣）是要你填的。<br>
+    ⭐ Claude 補的對照（依標準發音，<b>未查證</b>課本立場）：三個音剛好對應注音 <b>ㄧ、ㄩ、ㄨ</b>。法文拼字的陷阱是 <b>u 唸 ㄩ [y]、ou 才唸 ㄨ [u]</b>——中文母語者最容易把 <i>u</i> 唸成 ㄨ。
+  </div>
+  <p>練習 1：聽句子，分出 [i]、[y]、[u]（逐字稿 p.212）：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">Elle travaille dans la culture.</span><span class="zh">她在文化界工作。</span><span class="note">p.156 練習 1a</span></li>
+    <li><span class="fr">Tout, ou presque, est à vendre.</span><span class="zh">幾乎所有東西都可以賣。</span><span class="note">p.156 練習 1b</span></li>
+    <li><span class="fr">Ce film a été primé à Venise.</span><span class="zh">這部片在威尼斯得了獎。</span><span class="note">p.156 練習 1c</span></li>
+    <li><span class="fr">Nous voulons un casque pour jouer.</span><span class="zh">我們想要一個打電動的頭戴裝置。</span><span class="note">p.156 練習 1d</span></li>
+    <li><span class="fr">C'est un spectacle immersif et interactif.</span><span class="zh">這是一場沉浸式又互動的表演。</span><span class="note">p.156 練習 1e</span></li>
+    <li><span class="fr">Tu aimes les trucs amusants.</span><span class="zh">你喜歡好玩的東西。</span><span class="note">p.156 練習 1f</span></li>
+  </ul>
+  <p>練習 3：聽完跟著唸（逐字稿 p.212）：</p>
+  <ul class="phrase-list">
+    <li><span class="fr">Ce film fou m'a plu !</span><span class="zh">這部瘋狂的電影我很喜歡！</span><span class="note">p.156 練習 3a（fou 和 plu 剛好是一組 [u]／[y] 對比）</span></li>
+    <li><span class="fr">Un univers à couper le souffle !</span><span class="zh">美到讓人屏息的世界！</span><span class="note">p.156 練習 3b</span></li>
+    <li><span class="fr">C'était dur mais émouvant !</span><span class="zh">很難，但很感人！</span><span class="note">p.156 練習 3c</span></li>
+    <li><span class="fr">Une expérience unique, magique et amusante !</span><span class="zh">獨一無二、神奇又好玩的體驗！</span><span class="note">p.156 練習 3d</span></li>
+    <li><span class="fr">La musique diffusée est addictive !</span><span class="zh">播放的音樂會讓人上癮！</span><span class="note">p.156 練習 3e</span></li>
+    <li><span class="fr">Nous voulons toujours plus de réalité virtuelle !</span><span class="zh">我們想要越來越多的虛擬實境！</span><span class="note">p.156 練習 3f</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>陷阱：拼字看起來是 u，不一定是 [y]。</b><i>un</i>、<i>univers</i> 的 un 是鼻母音（Claude 依標準發音補的）；<i>pour</i>、<i>tout</i>、<i>jouer</i> 的 ou 是 [u]。練習 1 要你「聽」，不要看拼字猜。
+  </div>
+</section>
+
+<!-- ============ 5. 功能句 ============ -->
+<section>
+  <h2>💬 上課會用到的說法 <span class="time">2 分鐘</span></h2>
+
+  <h3>Pour donner une explication, des précisions 解釋、給細節（p.146 說法框）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Toutes trois permettent, en faisant un effort physique, de cumuler des points.</span><span class="zh">三個 app 都能讓人靠運動累積點數。</span><span class="note">p.146（抽字 « eort »＝effort，<b>未查證</b>；en faisant＝副動詞）</span></li>
+    <li><span class="fr">Elles proposent également divers challenges.</span><span class="zh">它們也提供各種挑戰。</span><span class="note">p.146</span></li>
+    <li><span class="fr">Cette application fonctionne quand nous marchons mais aussi lorsque nous faisons de la corde à sauter.</span><span class="zh">這個 app 在我們走路時會運作，跳繩時也會。</span><span class="note">p.146（quand／lorsque 同義替換）</span></li>
+    <li><span class="fr">Les pas accumulés (qui doivent être validés quotidiennement sur l'application) alimentent une cagnotte.</span><span class="zh">累積的步數（每天要在 app 上確認）會存進一個獎金池。</span><span class="note">p.146（括號＝補充細節）</span></li>
+    <li><span class="fr">Son idée : lancer une application pour courir n'importe quand.</span><span class="zh">他的點子：推出一個隨時都能跑的 app。</span><span class="note">p.146（Son idée : ＋ 原形）</span></li>
+    <li><span class="fr">Le principe : les coureurs choisissent le projet qui les intéresse.</span><span class="zh">原理是：跑者選擇自己感興趣的計畫。</span><span class="note">p.146（Le principe : ＋ 句子）</span></li>
+  </ul>
+
+  <h3>Pour demander une confirmation et confirmer 要求確認與確認（p.147 說法框）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">C'est 65 % de la population qui pratiquent au moins une fois par semaine une activité sportive ?</span><span class="zh">是 65% 的人每週至少運動一次嗎？</span><span class="note">p.147（逐字稿 p.211 B；c'est … qui 強調 ＋ 直述句語調當問句）</span></li>
+    <li><span class="fr">Oui. / Oui tout à fait.</span><span class="zh">對。／完全正確。</span><span class="note">p.147</span></li>
+    <li><span class="fr">C'est effectivement leur première motivation.</span><span class="zh">這確實是他們的首要動機。</span><span class="note">p.147（抽字 « eectivement »＝effectivement，<b>未查證</b>）</span></li>
+    <li><span class="fr">C'est vrai qu'on a un modèle sportif qui a complètement été chamboulé.</span><span class="zh">確實，我們的運動模式已經被徹底打亂了。</span><span class="note">p.147（逐字稿 p.211；⚠️ 副詞位置見第 11 段 ⑦）</span></li>
+  </ul>
+  <div class="flag">
+    🔎 <b>p.147 框裡的「Oui」在聽力裡其實是軟性修正。</b>逐字稿 p.211 B：主持人問 65%，Claire Rabès 回答 <i>Oui, alors les chiffres sont difficilement trouvables, forcément, mais ce qu'on arrive à dire effectivement c'est qu'un Français sur deux pratique une activité physique régulière</i>——她說的是「二分之一」，不是 65%。⭐ <i>Oui, alors… mais…</i> 開頭的回答常常不是同意（Claude 依語感判斷，<b>未查證</b>）。這正好是 TCF 聽力會考的「說話者到底同不同意」。
+  </div>
+
+  <h3>Pour décrire un fait de société 描述社會現象（p.149 說法框）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Selon une dernière étude, sur 10 Européens âgés de 13 à 39 ans, 9 sont au moins des joueurs occasionnels.</span><span class="zh">根據最新研究，13 到 39 歲的歐洲人裡，每 10 人有 9 人至少偶爾玩遊戲。</span><span class="note">p.149（逐字稿 p.211 D；selon ＋ 來源、sur 10… 9…＝比例）</span></li>
+    <li><span class="fr">Plus on est jeune, plus on pratique.</span><span class="zh">越年輕玩得越多。</span><span class="note">p.149（plus … plus …＝越……越……）</span></li>
+    <li><span class="fr">En France, chez les 10-14 ans, il y a 98 % de joueurs.</span><span class="zh">在法國，10 到 14 歲的孩子裡有 98% 玩遊戲。</span><span class="note">p.149（chez ＋ 年齡層）</span></li>
+    <li><span class="fr">Près d'un tiers disent même s'être fait des amis.</span><span class="zh">將近三分之一的人甚至說自己因此交到朋友。</span><span class="note">p.149（près d'un tiers 後面動詞用複數；s'être fait＝過去原形）</span></li>
+    <li><span class="fr">Une centaine de streamers français se réunissent chaque année depuis 2017.</span><span class="zh">從 2017 年起，每年有大約一百位法國實況主聚在一起。</span><span class="note">p.149（une centaine de＝大約一百）</span></li>
+  </ul>
+
+  <h3>Pour décrire et caractériser des choses 描述與形容事物（p.152 說法框）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">De plus en plus de musées ont recours aux nouvelles technologies pour attirer du public.</span><span class="zh">越來越多博物館借助新科技吸引觀眾。</span><span class="note">p.152（avoir recours à＝借助、求助於）</span></li>
+    <li><span class="fr">C'est un assistant virtuel qui nous accompagne pendant notre visite.</span><span class="zh">這是一個在參觀時陪著我們的虛擬助理。</span><span class="note">p.152</span></li>
+    <li><span class="fr">Ce chatbox offre aussi des contenus en lien avec les œuvres.</span><span class="zh">這個聊天機器人也提供跟作品相關的內容。</span><span class="note">p.152（抽字 « ore »＝offre，<b>未查證</b>；⚠️ chatbox 見第 11 段 ②）</span></li>
+  </ul>
+
+  <h3>Pour mettre en valeur des arguments 凸顯論點（p.155 說法框）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Le métavers, c'est avant tout un gage de liberté créative.</span><span class="zh">元宇宙首先是創作自由的保證。</span><span class="note">p.155（名詞, c'est avant tout…＝先把主題提出來再定義）</span></li>
+    <li><span class="fr">Ce qui est intéressant, c'est qu'il n'y a pas de limites.</span><span class="zh">有意思的是，它沒有限制。</span><span class="note">p.155（Ce qui est ＋ 形容詞, c'est que…＝凸顯句；逐字稿 p.212 是 <i>il (n')y a pas</i>）</span></li>
+    <li><span class="fr">En plus de la technique, il y a un autre enjeu, celui de rendre ces expériences émouvantes.</span><span class="zh">除了技術之外，還有另一個挑戰：讓這些體驗能打動人。</span><span class="note">p.155（celui de＝代替 enjeu）</span></li>
+    <li><span class="fr">C'est quelque chose que la technologie peut maintenant permettre.</span><span class="zh">這是現在科技做得到的事。</span><span class="note">p.155</span></li>
+  </ul>
+
+  <h3>Stratégies : Prendre des notes 做筆記（p.158）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">L'exercice de la prise de notes consiste à écouter un document et à noter l'essentiel de son contenu. Il faut donc écouter et écrire en même temps.</span><span class="zh">做筆記就是一邊聽一邊記下重點。所以要同時聽和寫。</span><span class="note">p.158</span></li>
+    <li><span class="fr">Relevez les idées générales : Qui ? Quoi ? Où ? Quand ? Comment ? Pourquoi ? Vous ne devez pas transcrire l'intégralité du document.</span><span class="zh">抓大意：誰、什麼、哪裡、何時、怎麼、為什麼。不要逐字抄。</span><span class="note">p.158</span></li>
+    <li><span class="fr">Notez les mots-clés et les données importantes (les dates, les nombres, les noms).</span><span class="zh">記關鍵字和重要資料（日期、數字、名字）。</span><span class="note">p.158（⭐ 跟 TCF 聽力直接相關）</span></li>
+    <li><span class="fr">Astuce : si vous pouvez faire plusieurs écoutes, laissez de l'espace entre vos notes pour pouvoir les compléter facilement et proprement d'une écoute à l'autre.</span><span class="zh">小技巧：如果能聽好幾次，筆記之間留空白，每聽一次就能乾淨地補上去。</span><span class="note">p.158</span></li>
+  </ul>
+  <p class="small">p.158 也教縮寫：<i>« expo » pour « exposition »</i>、<i>« RV » pour « réalité virtuelle »</i>、電報式 <i>« images projetées murs » pour « les images sont projetées sur les murs »</i>。p.158 符號例子在抽字裡只剩 « +; -; »，其餘<b>未查證</b>。</p>
+
+  <h3>單元格言與引言</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Le jeu reste au cœur de l'échange.</span><span class="zh">遊戲始終是交流的核心。</span><span class="note">p.145 單元首頁（出自 p.149 E l.17）</span></li>
+    <li><span class="fr">On fait du sport de façon libre et autonome.</span><span class="zh">大家用自由、自主的方式運動。</span><span class="note">p.147 B 引言（逐字稿 p.211）</span></li>
+    <li><span class="fr">C'est le jeu du repas de famille.</span><span class="zh">這是家庭聚餐的遊戲。</span><span class="note">p.151 G 引言（逐字稿 p.211）</span></li>
+    <li><span class="fr">C'est juste magique !</span><span class="zh">簡直太神奇了！</span><span class="note">p.152 I 引言（逐字稿 p.212 參觀者原句）</span></li>
+    <li><span class="fr">Il n'y a pas de limites.</span><span class="zh">沒有限制。</span><span class="note">p.155 L 引言</span></li>
+  </ul>
+</section>
+
+<!-- ============ 6. 詞彙 ============ -->
+<section>
+  <h2>🧺 新詞彙（挑 B1 才出現、你筆記裡大多還沒有的） <span class="time">2 分鐘</span></h2>
+  <p class="small">哪些字筆記裡已經有，<b>未查證</b>（這次沒有對 french_notes.html 逐字核對）。</p>
+
+  <h3>體能活動（p.150 L'activité physique）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'anti-stress · la détente · la dépense physique</span><span class="g">m./f.</span>紓壓・放鬆・體力消耗</li>
+    <li><span class="w">le bénéfice = le bienfait = le gain</span><span class="g">m.</span>好處</li>
+    <li><span class="w">la corde à sauter · la course à pied · la natation</span><span class="g">f.</span>跳繩・跑步・游泳</li>
+    <li><span class="w">l'effort physique · le pas · la piste de course</span><span class="g">m./m./f.</span>體能付出・步伐・跑道</li>
+    <li><span class="w">l'équipement · l'infrastructure · le maillot · le stade</span><span class="g">m./f./m./m.</span>裝備・設施・球衣・體育場</li>
+    <li><span class="w">la discipline · pratiquer · s'entraîner</span><span class="g">f./v.</span>運動項目・從事・訓練</li>
+  </ul>
+
+  <h3>比賽（p.150 La compétition）</h3>
+  <ul class="vocab">
+    <li><span class="w">affronter · se mesurer à · la rencontre</span><span class="g">v./f.</span>對戰・跟……較量・比賽</li>
+    <li><span class="w">le bon réflexe · la capacité d'analyse</span><span class="g">m./f.</span>好反應・分析能力</li>
+    <li><span class="w">le challenge · le dossard</span><span class="g">m.</span>挑戰・號碼布</li>
+    <li><span class="w">le joueur, la joueuse professionnel(le) · les Jeux olympiques</span><span class="g">n.</span>職業選手・奧運</li>
+  </ul>
+
+  <h3>捐款與金錢（p.150 Le don et l'aspect financier）</h3>
+  <ul class="vocab">
+    <li><span class="w">le bon de réduction · la cagnotte · cumuler</span><span class="g">m./f./v.</span>折價券・獎金池／募款罐・累積</li>
+    <li><span class="w">financer · lever des fonds · reverser de l'argent</span><span class="g">v./expr.</span>資助・募款・把錢轉給</li>
+    <li><span class="w">le/la mécène · le soutien · le sponsor</span><span class="g">n.</span>贊助人（文化公益）・支持・贊助商</li>
+  </ul>
+
+  <h3>正負變化（p.150 L'évolution positive et négative）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'amélioration · améliorer · augmenter · exploser</span><span class="g">f./v.</span>改善・改善・增加・暴增</li>
+    <li><span class="w">la baisse ≠ la hausse · grandissant(e)</span><span class="g">f./adj.</span>下降≠上升・越來越大的</li>
+    <li><span class="w">la répercussion positive ≠ négative</span><span class="g">f.</span>正面≠負面影響</li>
+    <li><span class="w">s'adapter à · se tourner vers</span><span class="g">v.</span>適應・轉向</li>
+  </ul>
+
+  <h3>數位（p.150 Le numérique）</h3>
+  <ul class="vocab">
+    <li><span class="w">la console · l'écran · le logiciel · le support</span><span class="g">f./m.</span>遊戲機・螢幕・軟體・載具</li>
+    <li><span class="w">la digitalisation · l'informatique</span><span class="g">f.</span>數位化・資訊科技</li>
+    <li><span class="w">en direct ≠ en différé</span><span class="g">expr.</span>直播≠重播</li>
+    <li><span class="w">l'e-sport = le sport électronique · jouer en réseau</span><span class="g">m./expr.</span>電競・連線玩</li>
+    <li><span class="w">être accro aux jeux vidéo (fam.) · le/la geek</span><span class="g">expr./n.</span>沉迷電玩（口語）・宅宅</li>
+    <li><span class="w">être connecté(e) ≠ déconnecté(e)</span><span class="g">expr.</span>連線中≠斷線</li>
+    <li><span class="w">l'influenceur, l'influenceuse · le streamer, la streameuse</span><span class="g">n.</span>網紅・實況主</li>
+    <li><span class="w">l'éditeur de jeux vidéo · l'événement virtuel</span><span class="g">m.</span>遊戲發行商・線上活動</li>
+  </ul>
+
+  <h3>遊戲（p.156 Le jeu）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'équipe adverse · le point · tricher</span><span class="g">f./m./v.</span>對手隊伍・分數・作弊</li>
+    <li><span class="w">l'escape game · le jeu de société · la salle de jeux</span><span class="g">m./m./f.</span>密室逃脫・桌遊・遊戲室</li>
+    <li><span class="w">ludique · tirer une carte</span><span class="g">adj./expr.</span>好玩的、寓教於樂的・抽一張牌</li>
+  </ul>
+
+  <h3>虛擬實境與科技（p.156 La réalité virtuelle／La technologie）</h3>
+  <ul class="vocab">
+    <li><span class="w">l'avatar · le capteur · la manette</span><span class="g">m./m./f.</span>虛擬化身・感測器・手把</li>
+    <li><span class="w">le casque de réalité virtuelle · le métavers · l'univers</span><span class="g">m.</span>VR 頭盔・元宇宙・世界</li>
+    <li><span class="w">immersif, immersive · interactif, interactive</span><span class="g">adj.</span>沉浸式的・互動的</li>
+    <li><span class="w">la cryptomonnaie · la plateforme</span><span class="g">f.</span>加密貨幣・平台</li>
+    <li><span class="w">l'assistant virtuel · la reconnaissance visuelle</span><span class="g">m./f.</span>虛擬助理・影像辨識</li>
+    <li><span class="w">l'enceinte · le vidéoprojecteur · la haute résolution · diffuser</span><span class="g">f./m./f./v.</span>喇叭・投影機・高解析度・播放</li>
+  </ul>
+
+  <h3>變化與正面評價（p.156 Le changement／L'appréciation positive）</h3>
+  <ul class="vocab">
+    <li><span class="w">innover · lancer · s'accélérer · s'achever · stagner</span><span class="g">v.</span>創新・推出・加速・結束・停滯</li>
+    <li><span class="w">la dynamique · évoluer · transformer</span><span class="g">f./v.</span>動能・演變・轉變</li>
+    <li><span class="w">addictif, addictive · émouvant(e) · convaincant(e)</span><span class="g">adj.</span>讓人上癮的・感人的・有說服力的</li>
+    <li><span class="w">enchanteur, enchanteresse · merveilleux, merveilleuse</span><span class="g">adj.</span>迷人的・美妙的（⚠️ 陰性 -eresse 不規則）</li>
+    <li><span class="w">être bluffé(e) · être impressionné(e) · fasciner</span><span class="g">expr./v.</span>被唬住、驚豔・印象深刻・使著迷</li>
+    <li><span class="w">immense = gigantesque · incroyable · extraordinaire</span><span class="g">adj.</span>巨大的・難以置信的・非凡的</li>
+  </ul>
+
+  <h3>課文裡的好用說法</h3>
+  <ul class="vocab">
+    <li><span class="w">tirer au sort · lever des fonds</span><span class="g">expr.</span>抽籤・募款（p.146 A）</li>
+    <li><span class="w">la jeune pousse</span><span class="g">f.</span>新創公司（p.146 A 註 1：start-up）</li>
+    <li><span class="w">au même titre que</span><span class="g">expr.</span>跟……一樣（p.147 C l.10）</li>
+    <li><span class="w">certes … mais · n'en demeure pas moins</span><span class="g">expr.</span>固然……但・仍然是（p.147 C l.17–19）</li>
+    <li><span class="w">en revanche · avoir beau ＋ 原形</span><span class="g">expr.</span>反之・儘管……也（逐字稿 p.211 D <i>Ils ont beau être seuls derrière leurs écrans</i>）</li>
+    <li><span class="w">il n'y a pas à dire · bel et bien · à l'instar de</span><span class="g">expr.</span>不用說・確確實實・仿照、跟……一樣（p.151 F）</li>
+    <li><span class="w">le cador (fam.)</span><span class="g">m.</span>龍頭、老大（p.151 F <i>la France est le cador européen du secteur</i>）</li>
+    <li><span class="w">chanter comme une casserole</span><span class="g">expr.</span>唱歌很難聽（p.151 Au fait!）</li>
+    <li><span class="w">avoir recours à · en lien avec</span><span class="g">expr.</span>借助・跟……相關（p.152 H）</li>
+    <li><span class="w">en apothéose · éphémère</span><span class="g">expr./adj.</span>以高潮收尾・短暫的（p.152 I 練習 4）</li>
+    <li><span class="w">à leur guise</span><span class="g">expr.</span>隨心所欲（逐字稿 p.212 I <i>Les visiteurs vagabondent à leur guise</i>）</li>
+    <li><span class="w">en bon français · quasi · davantage</span><span class="g">expr./adv.</span>用道地法文說・幾乎・更多（p.154 K）</li>
+    <li><span class="w">à force de ＋ 原形</span><span class="g">expr.</span>由於一再……（逐字稿 p.212 L <i>à force de parler avec</i>）</li>
+    <li><span class="w">primer sur</span><span class="g">v.</span>優先於（p.159 DELF <i>le collectif doit toujours primer sur l'individualité</i>）</li>
+  </ul>
+  <div class="flag">
+    🔎 ① <b>p.150 「Jouez avec les mots ! p.10 « Le memory »」、p.156「« Le petit bac »」</b>：課本指向 p.10 的詞彙遊戲，本頁沒有讀 p.10，<b>未查證</b>。<br>
+    ② <b>p.151 F « les Français.es »</b>：這是包容性寫法（écriture inclusive，原本應該是中間點 ·，抽字成了句點），同時指男性和女性。考試寫作用一般寫法比較安全（Claude 依一般知識判斷，<b>未查證</b> TCF 立場）。<br>
+    ③ <b>p.146 註 2「alimentent ＝ arrivent sur」</b>：alimenter une cagnotte 的意思是「存進、補充」獎金池，註解寫「arrivent sur」不太對得上。可能是抽字把註解錯位，也可能課本真的這樣寫，<b>未查證</b>，看紙本。
+  </div>
+</section>
+
+<!-- ============ 7. DELF ============ -->
+<section>
+  <h2>📝 本單元 DELF：一頁準備＋散在各頁的練習 <span class="time">2 分鐘</span></h2>
+  <h3>p.159–160 DELF B1 Préparation：Compréhension des écrits 練習 2（8 分）</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Les jeux de société coopératifs, dans lesquels les joueurs ne sont pas des adversaires mais des coéquipiers, attirent de plus en plus.</span><span class="zh">合作型桌遊——玩家不是對手而是隊友——越來越受歡迎。</span><span class="note">p.159 導言（⭐ dans lesquels＝文法二；抽字黏成 « desadversairesmais descoéquipiers »）</span></li>
+    <li><span class="fr">En effet, au lieu de jouer en opposition, les joueurs collaborent dans un objectif commun, sans esprit de compétition. Ils gagnent ou perdent ensemble.</span><span class="zh">玩家不是互相對抗，而是為共同目標合作，沒有競爭心態。輸贏一起。</span><span class="note">p.159</span></li>
+    <li><span class="fr">Le collaboratif n'est pas fait pour les accros à la compétition car le collectif doit toujours primer sur l'individualité.</span><span class="zh">合作型遊戲不適合愛競爭的人，因為團體永遠要優先於個人。</span><span class="note">p.159 結尾</span></li>
+  </ul>
+  <p class="small">題型：選擇題（A／B／C）＋是非題（Vrai／Faux），共 7 題，配分 1＋1＋1＋1.5＋1＋1.5＋1＝8 分，跟標題「8 points」一致。快取裡沒有 B1 解答，本頁不給答案。</p>
+
+  <h3>散在各頁的 DELF 題</h3>
+  <ul class="phrase-list">
+    <li><span class="fr">Vous habitez dans une ville française et vous êtes amateur(-trice) d'e-sport. Vous écrivez au/à la maire pour lui demander de développer cette discipline dans votre ville. Vous précisez ce que vous aimeriez (infrastructure, matériel, compétitions...) et vous lui expliquez comment il/elle peut vous aider. (160 mots minimum)</span><span class="zh">你住在法國某個城市、喜歡電競。寫信給市長，請他在市內發展電競：說明你希望有什麼（設施、器材、比賽……），以及他可以怎麼幫你（至少 160 字）。</span><span class="note">p.147 練習 5（Production écrite DELF B1：正式書信＋請求）</span></li>
+    <li><span class="fr">Et vous, que pensez-vous de la pratique des jeux vidéo chez les jeunes ? Est-elle positive ou négative ? Pourquoi ?</span><span class="zh">你覺得年輕人玩電玩是好是壞？為什麼？</span><span class="note">p.149 練習 5（Production orale DELF B1，Activité complémentaire；表達觀點）</span></li>
+    <li><span class="fr">À deux ! Vous voulez visiter une exposition immersive avec un(e) ami(e) mais il/elle n'est pas très motivé(e). Vous essayez de le/la convaincre.</span><span class="zh">兩人一組：你想跟朋友去看沉浸式展覽，但他興趣缺缺，你要說服他。</span><span class="note">p.152 練習 5（Production orale DELF B1：互動、說服）</span></li>
+  </ul>
+  <div class="flag">
+    🔎 ① <b>字數：</b>p.147 寫 <b>160 mots minimum</b>，跟 Unité 9 一致；Unité 7、8 寫 150。現行官方規定 Claude <b>未查證</b>。<br>
+    ② 這是 DELF 規格，⭐ 不是 TCF Canada；但 p.152 練習 5「說服不想去的朋友」跟 TCF 口說第 2 題的互動方向類似，p.149 練習 5 跟口說第 3 題「表達觀點」類似，兩邊評分標準<b>未查證</b>。<br>
+    ③ 👉 p.147 練習 5 是現成的寫作題，⭐ 但要你自己寫，Claude 只修語法、不代寫。
+  </div>
+</section>
+
+<!-- ============ 8. 閱讀亮點 ============ -->
+<section>
+  <h2>📰 閱讀與聽力裡值得先看的句子 <span class="time">1 分鐘</span></h2>
+  <ul class="phrase-list">
+    <li><span class="fr">Ceux qui réussissent à les accomplir peuvent espérer être tirés au sort et gagner des bons de réduction, des équipements de sport, des goodies, des dossards pour participer à des événements, des voyages… ou encore l'équivalent de leur poids en fromages !</span><span class="zh">完成挑戰的人有機會被抽中，贏得折價券、運動裝備、贈品、參賽號碼布、旅行……甚至跟自己體重一樣重的起司！</span><span class="note">p.146 A l.10–14（ceux qui＝那些……的人；être tirés＝被動原形）</span></li>
+    <li><span class="fr">Une fois que la cagnotte atteint vingt euros, il est possible de faire un virement sur son compte bancaire.</span><span class="zh">獎金池一到 20 歐元，就可以轉帳到自己的銀行帳戶。</span><span class="note">p.146 A l.25–27（une fois que＝Unité 9 文法三；抽字黏成 « vingteuros »）</span></li>
+    <li><span class="fr">Même s'ils n'appartiennent pas à un club sportif, les joueurs professionnels font partie d'une équipe qui, comme un club, dispose d'une infrastructure réservée à la pratique de leur discipline.</span><span class="zh">職業玩家雖然不屬於運動俱樂部，但他們的隊伍就像俱樂部一樣，有專門練習用的設施。</span><span class="note">p.147 C l.14–17（même si＝即使）</span></li>
+    <li><span class="fr">Le comité olympique se demande s'il doit intégrer le sport électronique aux Jeux olympiques.</span><span class="zh">奧委會在考慮是否要把電競納入奧運。</span><span class="note">p.147 C l.33–34（se demander si＝文法一）</span></li>
+    <li><span class="fr">S'il y a un gain moral à effectuer une session de jeu vidéo, il y a aussi un bienfait physique.</span><span class="zh">玩一場電玩如果有心理上的好處，也有身體上的好處。</span><span class="note">p.149 E l.5–6（這個 si 不是假設，是「如果說……那也……」；抽字 « eectuer »＝effectuer，<b>未查證</b>；⚠️ 見第 11 段 ⑧）</span></li>
+    <li><span class="fr">Ils ont beau être seuls derrière leurs écrans, ils partagent une culture, des références informatiques mais aussi littéraires et populaires.</span><span class="zh">他們雖然各自坐在螢幕前，卻共享一種文化，有資訊的、也有文學和流行的共同話題。</span><span class="note">逐字稿 p.211 D（avoir beau＝儘管）</span></li>
+    <li><span class="fr">Non, cette spécialité-là ne se mange ni ne se déguste, mais elle est et reste bel et bien un classique indémodable des soirées en famille et entre amis bien de chez nous.</span><span class="zh">不，這項特產不能吃也不能品嚐，但它確確實實一直是我們家庭和朋友聚會裡退不了流行的經典。</span><span class="note">p.151 F l.2–5（ne … ni ne…＝既不……也不……；se manger＝被動意義的反身）</span></li>
+    <li><span class="fr">Au musée du Louvre, les audioguides ont été remplacés par des consoles de jeux qui contiennent de nombreuses images (dont certaines en 3D) et de nombreux audios.</span><span class="zh">在羅浮宮，語音導覽機被換成了遊戲機，裡面有大量圖片（有些是 3D）和音檔。</span><span class="note">p.152 H l.9–13（被動複合過去式；dont certaines＝其中有些）</span></li>
+    <li><span class="fr">Romain Lesare fait partie des gens qui pensent qu'acheter un casque de réalité virtuelle sera bientôt aussi banal qu'acheter une console de jeux.</span><span class="zh">Romain Lesare 認為，買 VR 頭盔很快就會跟買遊戲機一樣普通。</span><span class="note">p.154 K l.4–7（原形當主詞；aussi … que＝比較）</span></li>
+    <li><span class="fr">Alors oui, bien sûr, nous n'en sommes qu'au début. (…) Mais, quand même, je m'attendais à rêver davantage.</span><span class="zh">當然啦，這才剛開始。……但我本來還是期待能多做點夢。</span><span class="note">p.154 K l.28–29（n'en être qu'au début＝才剛起步；ne … que＝只）</span></li>
+    <li><span class="fr">Une exposition immersive n'est pas faite pour apprendre avec le cerveau, avec l'intellect. C'est plutôt pour vivre une émotion.</span><span class="zh">沉浸式展覽不是用來動腦學東西的，比較是用來感受一種情緒。</span><span class="note">逐字稿 p.212 I（Gianfranco Iannuzzi）</span></li>
+    <li><span class="fr">Ils en ressortent bluffés, les spectateurs du Bal de Paris.</span><span class="zh">看完 Bal de Paris 的觀眾，出來時都被震撼到了。</span><span class="note">逐字稿 p.221 J 開頭（主詞放句尾、先用 ils 預告＝口語強調）</span></li>
+    <li><span class="fr">Et si vous lui offriez un casque de réalité virtuelle ?</span><span class="zh">要不要送她一個 VR 頭盔？</span><span class="note">逐字稿 p.213 Atelier 文件 A（⭐ Et si ＋ imparfait＝提議，接 Unité 9 的 si 句；兩欄抽字交錯，已重組，<b>未查證</b>）</span></li>
+  </ul>
+  <div class="trap">
+    ⚠️ <b>p.154 K 是很口語的雜誌書寫</b>：<i>ce n'est pas fait pour les génies, puisque j'y arrive pas trop mal</i>（省掉 ne）、<i>On n'est pas dans un monde enchanteur, mais dans un gigantesque mall.</i>（英文 mall）——聽懂就好，⛔ 寫作和口說考試別省 ne。
+  </div>
+  <div class="flag">
+    🔎 ① 聽力 B、D、G、I、L 和 l'essentiel 2、Atelier 讀了附錄逐字稿 p.211–213；影片 J 讀了 p.221 逐字稿。② G 聽力裡有唱歌片段，本頁不引用歌詞。③ <b>抽字斷掉的地方</b>：p.147 C 第 11–12 行與第 21 行、p.149 E 標題中間、p.151 F 第 26–27 行、p.152 H 結尾都有整行空白，缺的字<b>未查證</b>，本頁沒有引用那幾句。④ p.146 A、p.147 C、p.151 F、p.152 H、p.154 K 是多欄交錯排版，行號依抽字裡的行號標記推定，可能差一兩行，<b>未查證</b>。⑤ p.151 F 的出處只剩作者名（« Adam BELGHITI ALAOUI, , 28 décembre 2021 »，媒體名消失），p.154 K 作者名也殘缺（« Alix G ’ »），<b>未查證</b>。
+  </div>
+</section>
+
+<!-- ============ 9. 練習題 ============ -->
+<section>
+  <h2>✏️ 最可能上課做的題目：先想想看 <span class="time">2 分鐘</span></h2>
+  <p class="small">只給方向，不給答案。哪幾題會做是照前幾個單元的節奏推測（未查證）。</p>
+
+  <div class="ex">
+    <div class="q">p.148 Entraînement 3、p.157 l'essentiel 1：直接引語 → 轉述 <span class="likely">★★★ 文法頁一定做</span></div>
+    <div class="hint">先想想看：每一題先判斷原句是<b>哪一種</b>（直述／是非問／疑問詞問／qu'est-ce que／qu'est-ce qui／命令），再處理代名詞。3a <i>Le journaliste déclare : « Les Bleus vont gagner ! »</i>：驚嘆號要拿掉，連接詞是哪個？3e <i>Tu réponds : « Je vais me détendre. »</i>：je 和 me 都要換成誰？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.148 Entraînement 4：轉述 → 直接引語 <span class="likely">★★</span></div>
+    <div class="hint">先想想看：反方向要<b>把標點加回來</b>（課本特別提醒 <i>Faites attention à la ponctuation !</i>）。4b <i>Le joueur avoue qu'il a triché.</i>：還原後主詞是誰？4f <i>Il ordonne de regarder le match.</i>：de ＋ 原形要還原成什麼句型？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.153 Entraînement 3、4、p.157 l'essentiel 3：複合關係代名詞 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：4 的做法是找出第二句裡「介系詞 ＋ 重複的名詞」（<i>dans cette expérience</i>、<i>sur ces tablettes</i>、<i>chez cet ami</i>、<i>avec ces casques</i>、<i>sous ce pont</i>、<i>devant ces tableaux</i>），把它換成介系詞 ＋ lequel 的正確形式接到第一句。4c 是人（<i>cet ami</i>），還可以怎麼說？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.155 Entraînement 2、p.157 l'essentiel 4：條件式現在時／過去時 <span class="likely">★★★</span></div>
+    <div class="hint">先想想看：先看時間詞決定 présent 還是 passé，再決定 avoir 還是 être。2b <i>Mes voisins (investir) ……</i>、2d <i>Cette artiste (vendre) ……</i> 用 avoir；2e、2f 用 être 要配合。4e <i>l'État (décider) …… d'investir</i>：決定是已經發生還是還沒？</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.156 Phonétique 1、3：[i]／[y]／[u] <span class="likely">★★ 有時間才做</span></div>
+    <div class="hint">先想想看：用注音 ㄧ、ㄩ、ㄨ 唸 <i>Ce film fou m'a plu !</i>——film、fou、plu 各是哪一個？如果你把 plu 唸成「ㄆㄌㄨ」，就是把 [y] 唸成 [u] 了。</div>
+  </div>
+
+  <div class="ex">
+    <div class="q">p.159–160 DELF 閱讀練習 2 <span class="likely">★★ 可能當作業</span></div>
+    <div class="hint">先想想看：第 5 題 <i>Community, le premier jeu coopératif n'a jamais rencontré le succès.</i>——文章說 <i>jusqu'aux années 2000, il est très peu diffusé</i>，再對照 <i>Aujourd'hui, il existe de plus en plus de jeux</i>：<i>jamais</i> 這個字是不是太絕對？（⭐ TCF 也常用這種「絕對字」當陷阱，Claude 依題型經驗判斷，<b>未查證</b>）</div>
+  </div>
+</section>
+
+<!-- ============ 10. 問老師 ============ -->
+<section>
+  <h2>🙋 上課可以問老師的 3 個問題</h2>
+  <ol class="ask">
+    <li>p.148 只教 <i>Il dit que…</i> 這種現在式；如果是 <i>Il a dit que…</i>（過去式），子句的時態要不要改？會在後面哪一課教？</li>
+    <li>p.153 Remarque 說指人可以用 qui 代替 lequel；那 <i>parmi</i>、<i>entre</i> 也可以嗎？<i>à</i> ＋ lequel 要怎麼處理？</li>
+    <li>p.155 Échauffement b <i>À terme, on devrait pouvoir y accéder</i> 的 devrait，跟 a <i>De grandes marques auraient déjà acheté</i> 的 auraient，都是「資訊不確定」嗎？還是一個是預測、一個是傳聞？</li>
+  </ol>
+</section>
+
+<!-- ============ 11. 不一致處 ============ -->
+<section>
+  <h2>📋 課本與標準法文不一致處（彙整）</h2>
+  <div class="flag">
+    ① <b>p.154 J 練習 3 « Qu'a-t-il a de spécial ? »</b>（兩層抽字都一樣）：多了一個 a，標準寫法是 <b>Qu'a-t-il de spécial ?</b>。課本錯字。<br>
+    ② <b>p.152 H 與說法框 « ce chatbox »</b>：網站上會回答問題的虛擬助理，一般叫 <b>chatbot</b>（法文也說 agent conversationnel）；chatbox 通常指聊天視窗。Claude 依一般用法判斷，<b>未查證</b>課本是不是故意的。<br>
+    ③ <b>p.152 H « vient de proposer … plongeaient » vs p.153 d « propose … plongent »</b>：課本把同一句改了時態（見第 2 段 🔎 ①）。兩邊都合文法，但不是同一句。<br>
+    ④ <b>逐字稿 p.211 B « dans le top véritablement un des motivations »</b>：motivation 是陰性，標準寫法是 <b>une des motivations</b>。口語轉寫錯誤。<br>
+    ⑤ <b>逐字稿 p.211 D « je suis un peu une OVNI »</b>：OVNI 是陽性（<b>un OVNI</b>）。說話者是女性，口語裡跟著自己的性別說，Claude 依標準文法判斷，<b>未查證</b>算不算可接受的口語。<br>
+    ⑥ <b>逐字稿 p.212 L « l'entreprise française VRROOM … a annoncé le lancement … de ce qu'il appelle un YouTube du métavers »</b>：主詞是 l'entreprise（陰性），代名詞應為 <b>elle</b>。同一段 « la plateforme que veut lancer VRROOM, mettra à disposition des artistes, une boîte à outils » 主詞和動詞之間、動詞和受詞之間多了逗號（標準寫作不放）。口語轉寫。<br>
+    ⑦ <b>p.147 說法框與逐字稿 p.211 « un modèle sportif qui a complètement été chamboulé »</b>：寫作的一般語序是 <b>a été complètement chamboulé</b>（長副詞放在 été 後面、過去分詞前面）。這是 Michel Desbordes 的口語，課本直接放進說法框。Claude 依標準語序判斷，<b>未查證</b>。<br>
+    ⑧ <b>p.149 E « il y a aussi un bienfait physique. En jouant, la personne âgée peut … développer ses facultés de mémoire courte ou de concentration »</b>＋問題 3 « bienfaits physiques »：記憶力和專注力是認知能力，一般不歸為「身體上」的好處（後面的 <i>amélioration de l'équilibre</i> 才是）。Claude 依語意判斷，<b>未查證</b>；做問題 3 時可能會卡。<br>
+    ⑨ <b>影片逐字稿 p.221 J « Blanca Li tenait absolument à amener le public danser sur scène »</b>：amener 接原形一般要加 à：<b>amener le public à danser</b>。也可能是轉寫漏字，<b>未查證</b>，要聽影片。<br>
+    ⑩ <b>p.156 詞彙練習 1 « On ne connaît pas mais, d'après beaucoup de …… expérimentés »</b>：connaître 是及物動詞，一般要有受詞（<i>on ne le connaît pas</i>），逗號位置也怪。可能是課本漏字或抽字問題，<b>未查證</b>，看紙本。<br>
+    ⑪ <b>p.148 « Vous ordonnez de courir plus vite. »</b> 對應直接引語 <i>Cours plus vite !</i>（tu）：命令的對象和主詞人稱對不上，ordonner 一般也會說「命令誰」（見第 1 段 🔎 ②），<b>未查證</b>。<br>
+    ⑫ <b>p.146 註 2 「alimentent ＝ arrivent sur」</b>：註解跟 alimenter une cagnotte 的意思對不上，<b>未查證</b>（見第 6 段 🔎 ③）。<br>
+    ⑬ <b>p.148 範圍</b>：只教引導動詞現在式，沒提引導動詞過去式時的時態轉換（見第 1 段 🔎 ①）；<b>p.153 Remarque</b> 沒提 parmi／entre 的例外和 auquel／duquel（見第 2 段 🔎 ②③）。這兩條不是錯，是範圍沒說清楚。
+  </div>
+</section>
+
+<p class="small"><b>來源與未查證：</b>Édito B1 課本 p.145–160（<code>assets/.textbook_cache.txt</code> 第 68537–70842 行；已用頁首「===== [Edito.B1.Owen.pdf] page N =====」與頁尾「146 I cent quarante-six」「cent quarante-sept I 147」「148 I cent quarante-huit」「cent quarante-neuf I 149」「150 I cent cinquante」「cent cinquante et un I 151」「152 I cent cinquante-deux」「cent cinquante-trois I 153」「154 Icent cinquante-quatre」「cent cinquante-cinq I 155」「156 Icent cinquante-six」「cent cinquante-septI 157」「158 Icent cinquante-huit」「cent cinquante-neufI 159」「160 I cent soixante」核對，p.161 是 Unité 11 首頁）＋附錄逐字稿 p.211–213（第 79570–79931 行，Unité 10 從 p.211 中段開始、到 p.213 Atelier 文件 A／B 中段，之後是 Unité 11）與影片逐字稿 p.221（第 81818–81864 行）。⚠️ Unité 9 預習單註明的行號（66469–68534）跟這次快取的行號對不上，快取可能重新產生過，本頁以這次實際讀到的行號為準。PDF 抽字掉了 fi／ff／ffi／Th 連字，引用時推定原文，<b>未對照紙本查證</b>：p.145 « con rmation »（＝confirmation），p.146 « eort »、« nancer »（＝effort、financer），p.147 « eectivement »（＝effectivement），p.149 « proter »、« eectuer »、« spéciques »、« an »、« bénéces »（＝profiter、effectuer、spécifiques、afin、bénéfices），p.152 « sut »、« diérents »、« ore »（＝suffit、différents、offre），p.154 « chee »、« e Sandbox »（＝cheffe、The Sandbox），p.155 « spectacula re »（＝spectaculaire），p.161 « mé er »（＝méfier）。黏字已補空格：p.146 « vingteuros »、« proposentégalement »，p.148 « ditqu'elle » 等，p.153 « devantlequel »、« lesquelsetlesquelles »，p.155 « semarier »、« j'auraisdit »，p.157 l'essentiel 3 全部選項，p.159 « desadversairesmais »、« en1971 »、« leséditeurs »。p.148、p.153、p.155、p.157、p.159–160 練習答案快取裡沒有（沒有 B1 解答頁），本頁不給答案。p.146 A、p.147 C、p.151 F、p.152 H、p.154 K 的行號依抽字裡的行號標記推定，可能差一兩行，<b>未查證</b>。逐字稿 p.213 是兩欄交錯，引用的 Atelier 句子是重組的，<b>未查證</b>。標準法文的判斷（Qu'a-t-il de spécial、chatbot、une des motivations、un OVNI、elle／il 指 entreprise、a été complètement、amener à、concordance des temps、parmi／entre ＋ lesquels、auquel／duquel、est-ce que 在轉述裡消失、conditionnel journalistique、devrait＝預測、[i]／[y]／[u] 對應ㄧ／ㄩ／ㄨ、un 鼻母音、lesquels 的 s 不發音、écriture inclusive、bienfait physique 的語意）是 Claude 依一般標準文法與常識寫的，這次沒有另外查字典或文法書，視為<b>未查證</b>。哪些詞彙已在 french_notes.html 也<b>未查證</b>。</p>
+
+</main>
+</body>
+</html>
