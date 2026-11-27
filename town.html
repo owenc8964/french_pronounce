@@ -1107,7 +1107,7 @@ function count(k, goodOnly){ return bag.filter(function(b){ return b.k===k && (!
 
 /* ⛏ 礦石：兩敲＝兩題動詞；兩題都對＝完整礦，錯一題＝瑕疵礦；兩題都快＝雙倍 */
 function mineRock(n){
-  if(!(n._pal && Date.now()-n._pal<60000) && (palaceServe(function(){ n._pal=Date.now(); mineRock(n); }) || (window.ToolQ && ToolQ.serve(function(){ n._pal=Date.now(); mineRock(n); })))) return;   /* 🧰 11-25 句型題（toolbox_game.js）跟宮殿同一個入口 */
+  if(!(n._pal && Date.now()-n._pal<60000) && (palaceServe(function(){ n._pal=Date.now(); mineRock(n); }) || (window.ToolQ && ToolQ.serve(function(){ n._pal=Date.now(); mineRock(n); })) || (window.AskQ && AskQ.serve(function(){ n._pal=Date.now(); mineRock(n); })))) return;   /* 🧰 11-25 句型題（toolbox_game.js）跟宮殿同一個入口 */
   if(!(n._voc && Date.now()-n._voc<60000) && vocabServe(function(){ n._voc=Date.now(); mineRock(n); })) return;
   var hits=[], star=isStar(n), i=0;
   function next(){
@@ -1364,7 +1364,7 @@ function askExam(head, it, cb){
 }
 /* 🌳 樹叢：翻出兩樣東西要叫出名字（un／une）＋一題名詞片語（對了撿到 🪙） */
 function shakeBush(n){
-  if(!(n._pal && Date.now()-n._pal<60000) && (palaceServe(function(){ n._pal=Date.now(); shakeBush(n); }) || (window.ToolQ && ToolQ.serve(function(){ n._pal=Date.now(); shakeBush(n); })))) return;   /* 🧰 11-25 句型題（toolbox_game.js）跟宮殿同一個入口 */
+  if(!(n._pal && Date.now()-n._pal<60000) && (palaceServe(function(){ n._pal=Date.now(); shakeBush(n); }) || (window.ToolQ && ToolQ.serve(function(){ n._pal=Date.now(); shakeBush(n); })) || (window.AskQ && AskQ.serve(function(){ n._pal=Date.now(); shakeBush(n); })))) return;   /* 🧰 11-25 句型題（toolbox_game.js）跟宮殿同一個入口 */
   if(!(n._voc && Date.now()-n._voc<60000) && vocabServe(function(){ n._voc=Date.now(); shakeBush(n); })) return;
   var star=isStar(n), i=0, seq=['g','q','g'];
   function next(){
@@ -2387,7 +2387,7 @@ function radioDict(C, k, n, cb){
     if(t && t.length<=300 && inSheet) show(t); else hide(); }, 250); });
 })();
 function fishSpot(n){
-  if(!(n._pal && Date.now()-n._pal<60000) && (palaceServe(function(){ n._pal=Date.now(); fishSpot(n); }) || (window.ToolQ && ToolQ.serve(function(){ n._pal=Date.now(); fishSpot(n); })))) return;   /* 🧰 11-25 句型題（toolbox_game.js）跟宮殿同一個入口 */
+  if(!(n._pal && Date.now()-n._pal<60000) && (palaceServe(function(){ n._pal=Date.now(); fishSpot(n); }) || (window.ToolQ && ToolQ.serve(function(){ n._pal=Date.now(); fishSpot(n); })) || (window.AskQ && AskQ.serve(function(){ n._pal=Date.now(); fishSpot(n); })))) return;   /* 🧰 11-25 句型題（toolbox_game.js）跟宮殿同一個入口 */
   if(!(n._voc && Date.now()-n._voc<60000) && vocabServe(function(){ n._voc=Date.now(); fishSpot(n); })) return;
   var i=0; clipsLoad(); passLoad();
   var DP=!n._deepNo && passPick();
@@ -5252,6 +5252,6 @@ if(!S.intro){ S.intro=1; save();
 </script>
 <script src="isle_more.js"></script>
 <script src="town_life.js"></script><script src="town_story.js"></script>   <!-- 10-30：居民活起來（作息、彼此聊天、來找你、越熟越深） -->   <!-- 10-29：口說群島其餘六座島（工作／興趣／旅行／加拿大／健康／未來計畫）的地形與地標 -->
-<script src="toolbox.js"></script><script src="toolbox_game.js"></script><script src="exam_isle.js"></script>   <!-- 11-24：🎤 考場島（口說第二、三題）；⛔ 內容在 Supabase 私人空間 exam_isle/content.js，登入才讀 -->
+<script src="toolbox.js"></script><script src="toolbox_game.js"></script><script src="ask_game.js"></script><script src="exam_isle.js"></script>   <!-- 11-24：🎤 考場島（口說第二、三題）；⛔ 內容在 Supabase 私人空間 exam_isle/content.js，登入才讀 -->
 </body>
 </html>

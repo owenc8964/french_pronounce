@@ -12,17 +12,23 @@ from upload_listen_supabase import secret_key, upload, status_of, URL, BUCKET, P
 
 def main():
     key = secret_key()
-    src = os.path.join(ROOT, 'assets', 'tcf', 'exam_isle', 'content.js')
+    ok_all = True
+    for name in ('content.js', 't2_ask.js'):   # 11-27：加問句選擇題題庫（tools/t2_ask_build.py）
+        ok_all = one(key, name) and ok_all
+    print('✓ 完成' if ok_all else '⚠️ 有問題，看上面'); sys.exit(0 if ok_all else 1)
+
+
+def one(key, name):
+    src = os.path.join(ROOT, 'assets', 'tcf', 'exam_isle', name)
     data = open(src, 'rb').read()
-    path = 'exam_isle/content.js'
+    path = 'exam_isle/' + name
     st, msg = upload(key, path, data, 'text/plain; charset=utf-8', 300)
     print(f'上傳 {path}（{len(data)/1e3:.0f} KB）→ HTTP {st} {msg}')
     pub = status_of(f'{URL}/storage/v1/object/public/{BUCKET}/{path}', {})
     anon = status_of(f'{URL}/storage/v1/object/authenticated/{BUCKET}/{path}', {'apikey': PUBLISHABLE, 'Authorization': 'Bearer ' + PUBLISHABLE})
     mine = status_of(f'{URL}/storage/v1/object/authenticated/{BUCKET}/{path}', {'apikey': key})
     print(f'檢查：公開網址 → HTTP {pub}（要被擋）｜只帶公開 key → HTTP {anon}（要被擋）｜本機 secret key → HTTP {mine}（要 200）')
-    ok = st in (200, 201) and pub != 200 and anon != 200 and mine == 200
-    print('✓ 完成' if ok else '⚠️ 有問題，看上面'); sys.exit(0 if ok else 1)
+    return st in (200, 201) and pub != 200 and anon != 200 and mine == 200
 
 if __name__ == '__main__':
     main()
