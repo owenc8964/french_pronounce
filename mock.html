@@ -1281,7 +1281,8 @@ function wordPopShow(el) {
       `<div><span class="w">${esc(w)}</span>${wpSayBtn(w)}${l.toLowerCase() !== w.toLowerCase() ? ' → <span class="lem">' + esc(l) + '</span>' + wpSayBtn(l) : ''}<span class="pos">${POS_ZH[p] || ''}</span></div>` +
       (ten ? `<div class="ten">${ten}</div>` : '') +
       (ctxZh ? `<div class="ctx"><span class="k">在這題</span>${esc(ctxZh)}</div>` : '') +
-      (lineZh ? `<div class="line"><span class="k">${P.o !== undefined ? '這個選項' : '這句'}</span>${esc(lineZh)}</div>` : '') +
+      /* 11-28 Owen：「這句跟旁邊的翻譯一樣，不太需要放」→ 原文的字只在「收起中文」時才顯示這句；選項旁邊沒有中文，「這個選項」照舊 */
+      (lineZh && (P.o !== undefined || document.body.classList.contains('zh-off')) ? `<div class="line"><span class="k">${P.o !== undefined ? '這個選項' : '這句'}</span>${esc(lineZh)}</div>` : '') +
       `<div class="zh">${ctxZh || lineZh ? '<span class="k">字典</span>' : ''}${zh ? esc(zh) : (GLOSS_ST === 1 ? '…' : '<span style="color:#606878">（字義表還沒收這個字）</span>')}</div>` +
       `<div class="lk"><a target="_blank" rel="noopener" href="https://www.wordreference.com/fren/${encodeURIComponent(l)}">WordReference</a>` +
       `<a target="_blank" rel="noopener" href="https://www.deepl.com/translator#fr/zh-hant/${encodeURIComponent(sent)}">整句 DeepL</a>` +
