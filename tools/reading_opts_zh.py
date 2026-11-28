@@ -9,7 +9,7 @@ import json, re, sys, unicodedata, shutil, os
 P = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'assets/tcf/exam/reading.json')
 MARK = re.compile(r'(?mi)^\s*([A-D])\s*[\.．、:：)]\s*')
 CJK = re.compile(r'[㐀-鿿]')
-BAD = re.compile(r'^(錯|對|正確|不正確|錯誤|這個選項|此選項|選項|原文|文中|排除|分析|符合|不符|答案|正解|雖然|但)')
+BAD = re.compile(r'^((錯|對)(?=[，,。、！!：:\s]|$)|正確|不正確|錯誤|這個選項|此選項|選項[：:是]|原文|文中|排除|分析[：:]|不符|答案|正解|雖然|但[是，])')   # 11-28：「對健康有益」「分析音樂引起的情緒」這種翻譯不能被當成解析開頭擋掉
 
 
 def blocks(text):
