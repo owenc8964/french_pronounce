@@ -1398,6 +1398,22 @@ function optFr(q, t, i) {
   return `<p class="optp frt"${vocabAttr(q, t)} data-o="${i}">${frTokHtml(o, tk, false)}</p>` +
     (zh ? `<span class="opt-zh" style="display:none">${esc(zh)}</span>` : '');
 }
+/* 11-28 Owen：「選項分析也要能讓我點單字方便查找學習」→ 每個選項一段；開頭那句法文跟選項對得上，就換成可點兩下的字（同選項的 data-o，查字的「在這題／這個選項」都通） */
+function optAnalysisHtml(q, t) {
+  const txt = String(q.opt_zh || ''), re = /^\s*([A-Da-d])\s*[.．、:：)]\s*/gm, ms = [...txt.matchAll(re)];
+  if (!ms.length || !q.opts_tok) return '<p>' + esc(txt) + '</p>';
+  const norm = x => String(x).toLowerCase().replace(/[’]/g, "'").replace(/[\s.。]+$/g, '').trim();
+  let h = ms[0].index > 0 ? '<p>' + esc(txt.slice(0, ms[0].index)) + '</p>' : '';
+  ms.forEach((m, k) => {
+    const i = 'ABCD'.indexOf(m[1].toUpperCase()), body = txt.slice(m.index + m[0].length, k + 1 < ms.length ? ms[k + 1].index : txt.length).replace(/\s+$/, '');
+    const o = (q.opts || [])[i], tk = (q.opts_tok || [])[i], zh = (q.opts_zh || [])[i];
+    if (o && tk && tk.length && norm(body.slice(0, o.length)) === norm(o)) {
+      h += `<p class="optp frt"${vocabAttr(q, t)} data-o="${i}">${m[1].toUpperCase()}. ${frTokHtml(o, tk, false)}${esc(body.slice(o.length))}</p>` +
+        (zh ? `<span class="opt-zh" style="display:none">${esc(zh)}</span>` : '');
+    } else h += '<p>' + esc(m[0].trim() + ' ' + body) + '</p>';
+  });
+  return h;
+}
 function detailHtml(q, t, inline) {   // inline：單題模式直接展開，圖片上面已經有了不重複
   const open = inline ? '<div class="rev-detail show">' : '<div class="rev-detail">';
   let h = open;
@@ -1420,7 +1436,7 @@ function detailHtml(q, t, inline) {   // inline：單題模式直接展開，圖
       return L === q.answer ? '<b style="color:#60d090">' + line + '　← 正解</b>' : line;
     }).join('\n') + '</p>';
     if (q.key_zh)  h += '<h4>關鍵點解析</h4><p>' + esc(q.key_zh) + '</p>';
-    if (q.opt_zh)  h += '<h4>選項分析</h4><p>' + esc(q.opt_zh) + '</p>';
+    if (q.opt_zh)  h += '<h4>選項分析・點兩下查字</h4>' + optAnalysisHtml(q, t);
   } else {
     /* 11-10 Owen 回報：詳解旁要有大的前進後退＋暫停（練習／單題才有，模考模式不會走到 inline） */
     if (inline) h += '<div class="big-ctl">' + (cueOf(cur.idx) !== null ? '<button class="this-q" onclick="playQuestion()">▶ 這一題<br><small>從頭播</small></button>' : '') +
