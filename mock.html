@@ -256,6 +256,8 @@ body.zh-off .zh-col { display: none !important; }
 /* 點兩下查字（11-12） */
 .rev-detail p.frt { color: #cfd6e0; font-size: .86rem; }
 .tw { cursor: pointer; border-radius: 3px; touch-action: manipulation; }
+/* 11-28 Owen：「點兩下會很容易點到頁面放大」→ 整頁關掉「點兩下放大」（兩指縮放照樣可以）；只標在 .tw 上不夠，點到字和字之間的空白還是會放大 */
+html, body { touch-action: manipulation; }
 .tw.hit { background: #3c5a85; color: #fff; }
 .word-pop { position: fixed; left: 50%; transform: translateX(-50%); bottom: 86px; z-index: 60; width: min(560px, calc(100% - 24px));
   background: #151b2c; border: 1.5px solid #3c5a85; border-radius: 12px; padding: 12px 14px; box-shadow: 0 8px 28px rgba(0,0,0,.55);
@@ -1203,6 +1205,17 @@ function spanText(a, b) {
   return r.toString().replace(/\s+/g, ' ').trim();
 }
 const PH_KEY = fr => String(fr).toLowerCase().replace(/\s+/g, ' ').trim() + '|PHR';
+/* 11-28 Owen：「放大後點兩下，單字解釋欄位會不在視線範圍內」→ 畫面放大時，彈窗改放在「眼睛現在看得到的那一塊」底部，並縮回正常字級 */
+function wpPlace(pop) {
+  const vv = window.visualViewport;
+  if (!vv || vv.scale <= 1.02) { pop.style.top = pop.style.left = pop.style.width = pop.style.transform = pop.style.bottom = pop.style.transformOrigin = ''; return; }
+  const k = 1 / vv.scale, w = Math.min(560, window.innerWidth - 24);
+  pop.style.bottom = 'auto'; pop.style.transformOrigin = '0 0'; pop.style.width = w + 'px';
+  pop.style.transform = 'scale(' + k + ')';
+  pop.style.left = (vv.offsetLeft + (vv.width - w * k) / 2) + 'px';
+  pop.style.top = (vv.offsetTop + vv.height - pop.offsetHeight * k - 12 * k) + 'px';
+}
+if (window.visualViewport) visualViewport.addEventListener('resize', () => { const p = document.getElementById('wordPop'); if (p && p.classList.contains('show')) wpPlace(p); });
 /* 11-25 Owen：「點兩下我希望可以有發音的選項」→ 字、原形、片語旁邊各一顆 🔊（瀏覽器內建法文語音，單字夠用）
    正在播考題音檔就先暫停，不然兩個聲音疊在一起 */
 let WP_VOICE = null;
@@ -1285,7 +1298,7 @@ function wordPopShow(el) {
     const cb = document.getElementById('wpCirc');
     if (cb) cb.onclick = ev => { ev.stopPropagation(); circStart(el); };
   };
-  render(); pop.classList.add('show');
+  render(); pop.classList.add('show'); wpPlace(pop);
   if (GLOSS_ST === 1) { const t = setInterval(() => { if (GLOSS_ST !== 1) { clearInterval(t); if (pop.classList.contains('show')) render(); } }, 200); }
 }
 /* ── 單字庫（11-12，規格 PRD_vocab_bank.md）：查過全記、⭐ 才進複習 → POST 給 Mac mini → 小鎮讀 ──
@@ -1389,10 +1402,22 @@ function detailHtml(q, t, inline) {   // inline：單題模式直接展開，圖
   let h = open;
   if (t.skill === 'reading') {
     if (q.img && !inline) h += `<img src="${DATA_DIR}${q.img}" alt="document">`;
-    if (q.text_fr) h += '<h4>原文・點兩下查字' + (q.src_zh ? zhTogBtn() : '') + '</h4><div class="bi"><div><p class="frt"' + vocabAttr(q, t) + '>' + frTokHtml(q.text_fr, q.tok, false) + '</p></div>' +
+    /* 11-28 Owen：「翻譯跟內文分段不太對」→ 原文和翻譯段數一樣時，一段法文配一段中文（點兩下查字的「這句」也會變成這一段的中文） */
+    const zr = q.src_zh ? q.src_zh.split('\n').filter(l => l.trim()) : [], fr = q.text_fr ? q.text_fr.split('\n').filter(l => l.trim()) : [];
+    if (q.text_fr && zr.length > 1 && zr.length === fr.length) {
+      const rows = frTokHtml(q.text_fr, q.tok, 'rows', true).split(ROW_SEP).map(r => r.trim()).filter(r => /[A-Za-zÀ-ÿ0-9]/.test(r.replace(/<[^>]*>/g, '')));
+      if (rows.length === zr.length) h += '<h4>原文・點兩下查字' + zhTogBtn() + '</h4><div class="bi rows">' + rows.map((r, i) => '<p class="frt"' + vocabAttr(q, t) + '>' + r + '</p><p class="zh-col">' + esc(zr[i]) + '</p>').join('') + '</div>';
+      else h += '<h4>原文・點兩下查字' + zhTogBtn() + '</h4><div class="bi"><div><p class="frt"' + vocabAttr(q, t) + '>' + frTokHtml(q.text_fr, q.tok, false) + '</p></div><div class="zh-col"><h4>原文翻譯</h4><p>' + esc(q.src_zh) + '</p></div></div>';
+    }
+    else if (q.text_fr) h += '<h4>原文・點兩下查字' + (q.src_zh ? zhTogBtn() : '') + '</h4><div class="bi"><div><p class="frt"' + vocabAttr(q, t) + '>' + frTokHtml(q.text_fr, q.tok, false) + '</p></div>' +
       (q.src_zh ? '<div class="zh-col"><h4>原文翻譯</h4><p>' + esc(q.src_zh) + '</p></div>' : '') + '</div>';
     else if (q.src_zh) h += '<h4>原文翻譯</h4><p>' + esc(q.src_zh) + '</p>';
     if (q.q_zh)    h += '<h4>題目翻譯</h4><p>' + esc(q.q_zh) + '</p>';
+    /* 11-28 Owen：「選項內部沒有翻譯耶」→ 跟聽力一樣列選項翻譯（opts_zh 是 11-25 從解析抽出來的） */
+    if (q.opts_zh && q.opts_zh.some(Boolean)) h += '<h4>選項翻譯</h4><p>' + q.opts_zh.map((z, i) => {
+      const L = 'ABCD'[i], line = L + '. ' + esc(z || '—');
+      return L === q.answer ? '<b style="color:#60d090">' + line + '　← 正解</b>' : line;
+    }).join('\n') + '</p>';
     if (q.key_zh)  h += '<h4>關鍵點解析</h4><p>' + esc(q.key_zh) + '</p>';
     if (q.opt_zh)  h += '<h4>選項分析</h4><p>' + esc(q.opt_zh) + '</p>';
   } else {

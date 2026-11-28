@@ -20,6 +20,8 @@
     ['avoir de la chance', '運氣好', 'avoir de le chance'],
     /* 11-26 Owen 回報 ce_3 Q14「Remet aux norm?」：remettre 字典只給「放回；交給」，整塊才看得懂 */
     ['remettre aux normes', '整修到符合規定標準；使合乎規範', 'remettre à le norme'],
+    /* 11-28 Owen 回報 ce_3 Q15「Une maison d'édition」：maison 單查是房子，整塊才是出版社 */
+    ['maison d\'édition', '出版社', 'maison de édition'],
     ['remettre sur le marché', '重新推上市場、再拿出來賣', 'remettre sur le marché'],
     ['avoir raison', '（說得）對'],
     ['avoir tort', '（說得）不對；錯了'],
