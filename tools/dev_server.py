@@ -151,6 +151,7 @@ VOCAB_LOG = os.path.join(VOCAB_DIR, 'log.json')
 VOCAB_OUT = os.path.join(VOCAB_DIR, 'vocab.json')
 VOCAB_PHZ = os.path.join(VOCAB_DIR, 'phrase_zh.json')     # 📎 11-13 自己圈的片語，中文之後補在這（{key: 中文}，Claude 或 Owen）
 VOCAB_LUCAS = os.path.join(VOCAB_DIR, 'lucas_words.json')  # 📘 11-14 Lucas 高階詞彙＋真題例句（tools/lucas_vocab.py）
+VOCAB_ISLE = os.path.join(VOCAB_DIR, 'isle_words.json')    # 🏝 11-28 口說島的字（tools/isle_vocab.py）：島不背稿了，字照背
 _vocab_timer = None
 
 
@@ -211,6 +212,19 @@ def vocab_build():
         if not v['zh']: v['zh'] = L['zh']
         for e in L['ex']:
             if len(v['ex']) < 5 and not any(x['fr'] == e['fr'] for x in v['ex']): v['ex'].append(e)
+    # 🏝 11-28 口說島的字：例句＝他自己島上的那句；已經在庫裡（模考查過／Lucas）就把島上的句子補進例句
+    try:
+        isle = json.load(open(VOCAB_ISLE, encoding='utf-8'))['words']
+    except (OSError, ValueError, KeyError):
+        isle = []
+    have = {v['key']: v for v in out}
+    for I in isle:
+        v = have.get(I['key'])
+        if v is None:
+            out.append(I); have[I['key']] = I; continue
+        v['isles'] = I.get('isles', [])
+        for e in I['ex']:
+            if len(v['ex']) < 6 and not any(x['fr'] == e['fr'] for x in v['ex']): v['ex'].append(e)
     tmp = VOCAB_OUT + '.tmp'
     json.dump({'v': 1, 'at': int(time.time() * 1000), 'words': out}, open(tmp, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
     os.replace(tmp, VOCAB_OUT)

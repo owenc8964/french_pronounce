@@ -13,7 +13,7 @@ from upload_listen_supabase import secret_key, upload, status_of, URL, BUCKET, P
 def main():
     key = secret_key()
     ok_all = True
-    for name in ('content.js', 't2_ask.js'):   # 11-27：加問句選擇題題庫（tools/t2_ask_build.py）
+    for name in ('content.js', 't2_ask.js', 'isle_tasks.js'):   # 11-28：口說島對應寫作第二題   # 11-27：加問句選擇題題庫（tools/t2_ask_build.py）
         ok_all = one(key, name) and ok_all
     print('✓ 完成' if ok_all else '⚠️ 有問題，看上面'); sys.exit(0 if ok_all else 1)
 

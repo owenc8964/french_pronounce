@@ -1898,7 +1898,7 @@ function vocabRun(list, V, opt){
       openSheet('<h3>📚 '+(vIsPh(w)?'📎 ':'')+(w.src==='lucas'?'📘 ':'')+'<span class="say">'+esc(vName(w))+'</span> <small>'+esc(w.zh||(vIsPh(w)?'（中文還沒補）':''))+'</small></h3>'+
         (w.forms&&w.forms.length?'<div class="muted">'+(vIsPh(w)||!w.n_look?'在考題裡的樣子：':'你在考題查到的樣子：')+w.forms.map(function(f){ return '<span class="say">'+esc(f)+'</span>'; }).join('、')+'</div>':'')+
         lucasBox(w)+
-        (e?'<div class="item" style="text-align:left;margin-top:6px"><button class="btn ghost" id="vsent" style="padding:0 6px">🔊</button> <span class="fr">'+esc(e.fr)+'</span><div class="muted" style="font-size:.75em">'+esc(e.test.replace('co_','聽力 Test ').replace('ce_','閱讀 Test '))+' 第 '+e.q+' 題（真題原句）</div></div>':'')+
+        (e?'<div class="item" style="text-align:left;margin-top:6px"><button class="btn ghost" id="vsent" style="padding:0 6px">🔊</button> <span class="fr">'+esc(e.fr)+'</span><div class="muted" style="font-size:.75em">'+(e.skill==='isle'?'🏝 你自己的'+esc(((isles().filter(function(I){ return I.id===e.test; })[0])||{}).title||'口說島')+'（第 '+e.q+' 句）':esc(e.test.replace('co_','聽力 Test ').replace('ce_','閱讀 Test '))+' 第 '+e.q+' 題（真題原句）')+'</div></div>':'')+
         '<div class="row2"><button class="btn ghost" id="vno">還不熟</button><button class="btn main" id="vok">懂了</button></div>'+
         '<div style="display:flex;justify-content:space-between;margin-top:6px"><button class="btn ghost" id="vbank" style="font-size:.75em;padding:2px 8px">'+(want?'改回只要認得':'↑ 這個要會講出來')+'</button><button class="btn ghost" id="vknown" style="font-size:.75em;padding:2px 8px">這個會了</button></div>'+foot(), true);
       if(prod) sayW(w);
@@ -3998,6 +3998,9 @@ function palaceDue(){
   return out;
 }
 function palaceServe(cont){
+  /* 11-28 Owen：「口說島跟 TCF 的考試差很多，花時間背不太對」→ 選「照這樣改」：宮殿不再在路上叫住你（宮殿本身、進度紀錄都留著，想背自己進去）。
+     依據：口說第一題手冊寫背誦可能評為未達 A1（11/8 Lucas 諮詢）；島改成素材庫＝講重點，見 isleRun 的「講重點」 */
+  return false;
   var d=today(); if(!S.palDay || S.palDay.d!==d) S.palDay={d:d, n:0};
   if(S.palDay.n>=PAL_DAY_CAP || Math.random()>.5) return false;
   var due=palaceDue(); if(!due.length) return false;
@@ -4008,7 +4011,7 @@ function palaceServe(cont){
 function palaceHall(){
   var L=isles(); if(!L.length) return;
   var nd=palaceDue().length;
-  var h='<h3>🏛 記憶宮殿 <small>一座島一個房間</small></h3>'+(nd?'<div class="story">有幾件東西在等你回來看（也會在路上叫住你）。</div>':'')+'<div class="muted">每一句放在房間裡一件不一樣的東西上，位置永遠不變。點東西就走過去看。<br>白框＝認識　藍框＝只給首字母　金框＝只剩位置</div><div class="islemap">'+
+  var h='<h3>🏛 記憶宮殿 <small>一座島一個房間</small></h3>'+(nd?'<div class="story">有幾件東西在等你回來看（想背的時候再進來，⛔ 不會在路上叫住你）。</div>':'')+'<div class="muted">每一句放在房間裡一件不一樣的東西上，位置永遠不變。點東西就走過去看。<br>白框＝認識　藍框＝只給首字母　金框＝只剩位置</div><div class="islemap">'+
     L.map(function(I){ var g=palRoom(I), started=g.some(function(x){ return pst(x.ref).last; });
       return '<button class="isle" data-room="'+I.id+'"><b>'+esc(I.title)+'</b><span>'+g.map(function(x){ var st=pst(x.ref); return st.last?['○','◐','●'][st.st]:'·'; }).join('')+'</span>'+(started?'':'<span class="muted" style="font-size:.8em">還沒進去過</span>')+'</button>'; }).join('')+
     '</div><div class="row2"><span></span><button class="btn main" id="phx">出去</button></div>';
@@ -4198,7 +4201,7 @@ function isleEnter(id){
   ISLE.auto=null; ISLE.cur=0; ISLE.zoom=1; ISLE.full=false; ISLE.reveal=null; isleHostInit(id);
   ihud.innerHTML='<div class="ihbar"><b>🏝 '+esc(sc.name)+'</b><span id="izone" class="muted"></span><button id="izh">'+(S.isleZh?'🀄 中文先':'🇫🇷 法文先')+'</button><button id="ilist">📜</button><button id="iflag" aria-label="回報問題">🚩</button><button id="iarch">🗺 群島</button></div>'+
     '<div class="irail" id="irail"></div>'+
-    '<div class="inav"><button id="iprev">◀</button><button id="irun">🎙 一口氣講</button><button id="ijoint">🔗 接力</button><button id="inext">▶</button></div>'+
+    '<div class="inav"><button id="iprev">◀</button><button id="irun">🗣 講重點</button><button id="ijoint" title="選用">🔗 接力（選用）</button><button id="inext">▶</button></div>'+
     '<div class="muted ihint" id="ihint" style="bottom:calc(env(safe-area-inset-bottom) + 66px)">⛵ 靠岸了。點地標或「下一站 ▶」就會自己走過去；也可以拖曳畫面自己走。順序就是你講話的順序。</div>';
   document.getElementById('iarch').onclick=archOpen;
   /* 11-03 Owen：「口說群島還是沒有回報按鈕」→ 原本只有站在地標旁的泡泡裡才有，島上頂列常駐一顆；開著記句子的畫面時畫面下方也有 */
@@ -4207,7 +4210,7 @@ function isleEnter(id){
   document.getElementById('izh').onclick=function(){ S.isleZh=!S.isleZh; save(); ISLE.reveal=null; this.textContent=S.isleZh?'🀄 中文先':'🇫🇷 法文先'; toast(S.isleZh?'🀄 中文先：每站先看中文、自己順一遍，再看法文':'🇫🇷 法文先：每站直接看法文'); };
   document.getElementById('iprev').onclick=function(){ if(!busy) isleStep(-1); };
   document.getElementById('inext').onclick=function(){ if(!busy) isleStep(1); };
-  document.getElementById('irun').onclick=function(){ if(!busy && !ISLE.run) isleRunPick(); };
+  document.getElementById('irun').onclick=function(){ if(!busy && !ISLE.run) isleKeyPick(); };   /* 11-28：主要玩法改成講重點（一口氣講背稿的版本還在，isleRunPick，不再放主按鈕） */
   document.getElementById('ijoint').onclick=function(){ if(!busy && !ISLE.run) isleJoints(); };
   ISLE.run=null; isleRailPaint();
   if(window.GameLog) GameLog.event('isle_enter');
@@ -4360,9 +4363,9 @@ function isleHostTalk(){
   var fu=(card.follow_ups||[]).length;
   openSheet('<h3>'+pix(H.em,28)+' '+esc(H.name)+'</h3><div class="story">'+(first?'嗨！我是 '+esc(H.name)+'，這座島歸我管。我會一直跟著你走。':'又見面了！今天想怎麼練？')+'<br>考官一開口通常會問：</div>'+
     '<div class="clue fr">'+esc(I.q_fr)+' '+spk(I.q_fr)+'</div><div class="muted">'+esc(I.q_zh)+'</div>'+
-    '<div class="opts" style="margin-top:8px"><button id="hRec">🎙 一口氣講給我聽（卡住才看法文）</button><button id="hJn">🔗 練接縫（上一站接下一站）</button>'+(fu?'<button id="hFu">❓ 考官還可能問什麼？</button>':'')+'<button id="hBye">👋 先自己逛</button></div>', true);
+    '<div class="opts" style="margin-top:8px"><button id="hRec">🗣 講重點給我聽（用自己的話）</button><button id="hJn">🔗 練接縫（選用）</button>'+(fu?'<button id="hFu">❓ 考官還可能問什麼？</button>':'')+'<button id="hBye">👋 先自己逛</button></div>', true);
   document.getElementById('hBye').onclick=closeSheet;
-  document.getElementById('hRec').onclick=isleRunPick;
+  document.getElementById('hRec').onclick=isleKeyPick;
   document.getElementById('hJn').onclick=function(){ isleJoints(); };
   if(fu) document.getElementById('hFu').onclick=function(){ isleFollowUp(card); };
 }
@@ -4509,6 +4512,45 @@ function isleDrawJoints(c,ox,oy,ts,d){
     c.fillStyle='rgba(30,20,8,.78)'; c.fillRect(X-tw/2, Y-th/2, tw, th); c.fillStyle='#ffb35c'; c.fillText(w, X, Y+d); });
   c.textBaseline='alphabetic';
 }
+/* 🗣 講重點（11-28 取代「一口氣講」當主要玩法）
+   Owen：「口說島跟 TCF 的考試差很多，花時間背不太對」→ 選「照這樣改」。依據：口說第一題考官會追問，手冊寫背誦可能評為未達 A1（11/8 Lucas 諮詢）。
+   做法：一區一張卡，只給中文重點（碼頭告示牌那幾條；沒有告示牌的島用這區每句的中文），用自己的話講；想不出來才翻「我的稿」當參考。
+   ⛔ 不計時、不記卡住、不比對原句（這不是背誦）；考官常追問的兩句提醒在卡片下面。單字照背：島上的字在字典屋（見 isleWordsToBank） */
+function isleKeyPick(){
+  var G=isleGroups();
+  var I=isles().filter(function(x){ return x.id===ISLE.id; })[0]||{};
+  openSheet('<h3>🗣 講重點</h3><div class="story">一區一張卡，只給中文重點。用自己的話講出來（講出聲音最好），⛔ 不用照稿、不用一字不差——考官會追問，背出來的稿反而會被扣分。</div>'+
+    /* 11-28 第 4 點：這座島能用在哪（口說第一題＝島自己的問題；寫作第二題＝私人空間 exam_isle/isle_tasks.js，依主題對應） */
+    '<div class="muted" style="font-size:.85em;margin:4px 0">📍 能用在：🎤 口說第一題，考官可能問 <span class="fr">'+esc(I.q_fr||'')+'</span>（'+esc(I.q_zh||'')+'） '+(I.q_fr?spk(I.q_fr):'')+
+    '<br><button class="btn ghost" id="kzW2" style="padding:2px 8px;margin-top:4px">✍️ 寫作第二題哪些題目用得上</button><div id="kzW2L"></div></div>'+
+    '<div class="opts">'+G.map(function(x,i){ return '<button data-kz="'+i+'">'+esc(x.z.name)+'</button>'; }).join('')+'<button data-kz="all">🏝 整座島一區一區講</button></div>'+
+    '<div class="row2"><span></span><button class="btn ghost" id="kzx">先不要</button></div>', true);
+  sheet.querySelectorAll('[data-kz]').forEach(function(b){ b.onclick=function(){ var v=b.dataset.kz; isleKeyCard(v==='all'?G:[G[+v]], 0); }; });
+  document.getElementById('kzx').onclick=closeSheet;
+  document.getElementById('kzW2').onclick=function(){ var box=document.getElementById('kzW2L'), b=this; b.disabled=true;
+    var show=function(){ var T=window.ISLE_TASKS, L=(T&&T.w2&&T.w2[ISLE.id])||[];
+      box.innerHTML=L.length?'<div style="margin-top:4px">寫作第二題（講一段經驗＋為什麼）'+L.length+' 題可以用這座島的素材：</div>'+L.map(function(x){ return '<div class="fr" style="color:#e8e1cf;margin:3px 0">・'+esc(x.fr)+'</div>'; }).join(''):'<div>寫作第二題沒有直接對到這座島的題目。</div>'; };
+    if(window.ISLE_TASKS) return show();
+    box.textContent='載入中…';
+    vaultGet('exam_isle/isle_tasks.js', true).then(function(r){ return r.text(); }).then(function(t){ new Function(t)(); show(); })
+      .catch(function(e){ box.textContent=e&&e.code==='nologin'?'要先登入（右上角 🔑）才看得到題目。':'題目載不到（網路？），等一下再試。'; b.disabled=false; }); };
+}
+function isleKeyCard(list, i){
+  if(i>=list.length){ if(window.GameLog) GameLog.event('isle_key_done'); S.isleKey=S.isleKey||{}; S.isleKey[ISLE.id]=Date.now(); save();
+    openSheet('<h3>🗣 講完了</h3><div class="story">講得出重點、被問「為什麼？」「例如呢？」接得上，就夠了。下次可以換個順序講，或加一個新的例子。</div><div class="row2"><span></span><button class="btn main" id="kzOk">好</button></div>', true);
+    document.getElementById('kzOk').onclick=closeSheet; return; }
+  var x=list[i], seen={}, pts=x.gist&&x.gist.length?x.gist:x.u.map(function(g){ return g.s.zh; }).filter(function(z){ if(seen[z]) return false; seen[z]=1; return true; });
+  var sents=[], ss={}; x.u.forEach(function(g){ var k=g.s.fr; if(!ss[k]){ ss[k]=1; sents.push(g.s); } });
+  openSheet('<h3>🗣 '+esc(x.z.name)+' <small>'+(i+1)+'／'+list.length+'</small></h3>'+
+    '<ul style="margin:6px 0 4px 18px;line-height:1.7">'+pts.map(function(p){ return '<li>'+esc(p)+'</li>'; }).join('')+'</ul>'+
+    '<div class="muted" style="font-size:.82em">考官常追問：<span class="fr">Pourquoi ?</span>（為什麼）／<span class="fr">Par exemple ?</span>（例如呢）——講完自己補一句理由或例子。</div>'+
+    '<div id="kzRef"></div>'+
+    '<div class="row2" style="gap:6px"><button class="btn ghost" id="kzEnd">結束</button><button class="btn ghost" id="kzShow">想不出來，看我的稿</button><button class="btn main" id="kzNx">'+(i===list.length-1?'講完了 🏁':'下一區 ▶')+'</button></div>', true);
+  document.getElementById('kzShow').onclick=function(){ this.style.display='none';
+    document.getElementById('kzRef').innerHTML='<div class="muted" style="font-size:.8em;margin-top:6px">📄 我的稿（參考，⛔ 不用背）</div>'+sents.map(function(t){ return '<div class="fr" style="color:#fff3c0">'+esc(t.fr)+' '+spk(t.fr)+'</div>'; }).join(''); };
+  document.getElementById('kzEnd').onclick=closeSheet;
+  document.getElementById('kzNx').onclick=function(){ isleKeyCard(list, i+1); };
+}
 /* ③ 一口氣講 */
 function isleRunPick(){
   var G=isleGroups(), g0=ISLE.units[(ISLE.cur||1)-1], z=g0?isleZoneOf(g0):G[0].z;
@@ -4568,8 +4610,8 @@ function isleJoints(ns){
   if(!ns.length) ns=[2];
   var k=0;
   function one(){
-    if(k>=ns.length){ save(); isleRailPaint(); openSheet('<h3>🔗 接縫練完了</h3><div class="story">這幾個接縫都順過一遍了。去 🎙 一口氣講 試試看接不接得起來。</div><div class="row2"><button class="btn ghost" id="jRun">🎙 一口氣講</button><button class="btn main" id="jOk">好</button></div>', true);
-      document.getElementById('jOk').onclick=closeSheet; document.getElementById('jRun').onclick=isleRunPick; return; }
+    if(k>=ns.length){ save(); isleRailPaint(); openSheet('<h3>🔗 接縫練完了</h3><div class="story">這幾個接縫都順過一遍了。去 🗣 講重點 試試看接不接得起來。</div><div class="row2"><button class="btn ghost" id="jRun">🗣 講重點</button><button class="btn main" id="jOk">好</button></div>', true);
+      document.getElementById('jOk').onclick=closeSheet; document.getElementById('jRun').onclick=isleKeyPick; return; }
     var g=U[ns[k]-1], p=U[ns[k]-2], jw=isleJointWord(g), same=parseInt(g.s.part,10)>1;
     openSheet('<h3>🔗 接力 <small>第 '+p.n+' 站 → 第 '+g.n+' 站</small></h3>'+
       '<div class="chain" style="margin-left:0">'+pix(p.em,22)+' '+esc(p.lab)+'<div class="fr">'+esc(isleTail(p.s.fr))+'</div></div>'+
