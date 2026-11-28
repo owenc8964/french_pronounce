@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-⭐ 11-28 再修正（Owen：「忠實翻譯沒有每一句都比較好」「翻完之後也還是要對照一下」）：翻完要逐句對照舊版，每句挑「意思完整＋中文自然」的那版或融合重寫；慣用語照整塊意思翻，⛔ 拆字硬翻（做法見 TOKEN_QUEUE.md 5c）
 """listening_faithful_apply.py — 聽力逐字稿的中文換成忠實翻譯（2026-11-28）
 Owen：「聽力也改」（同閱讀：每個法文字的意思都在、不刪不加、仍是通順中文；⛔ 不照法文字序硬排）
 輸入：assets/tcf/exam/_trans/<套>.json {"題號": "第一行\n第二行…"}——⭐ 一行對 script_fr 的一行
       （script_fr 有字母或數字的非空行；mock.html 逐句對照就是照這個切）
 做的事：備份 listening.json → 舊中文存 script_zh_free（只存第一次）→ script_zh＝新翻譯（原本「答案…」以後的解析行接在後面保留）
        → lined=True（照行分段）→ 重跑 exam_build_mock_data.py
-跑法：python3 tools/listening_faithful_apply.py co_5"""
+跑法：python3 tools/listening_faithful_apply.py co_5
+⭐ 11-28 再修正（Owen：「忠實翻譯沒有每一句都比較好」「翻完之後也還是要對照一下」）：翻完要逐句對照舊版，每句挑「意思完整＋中文自然」的那版或融合重寫；慣用語照整塊意思翻，⛔ 拆字硬翻（做法見 TOKEN_QUEUE.md 5c）"""
 import json, os, re, shutil, subprocess, sys, time
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EX = os.path.join(ROOT, 'assets/tcf/exam')

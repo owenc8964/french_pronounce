@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-⭐ 11-28 再修正（Owen：「忠實翻譯沒有每一句都比較好」「翻完之後也還是要對照一下」）：翻完要逐句對照舊版，每句挑「意思完整＋中文自然」的那版或融合重寫；慣用語照整塊意思翻，⛔ 拆字硬翻（做法見 TOKEN_QUEUE.md 5c）
 """reading_faithful_apply.py — 把閱讀題的「原文翻譯」換成忠實翻譯（2026-11-28）
 Owen：「翻譯沒有照著字義翻，而是翻成比較順的中文，會讓我學習有點困難」→ 確認「忠實翻譯」：
   每個法文字的意思都在中文裡找得到，不刪、不加、不換說法；語氣、時態、推測、否定、連接詞都譯出來；
@@ -9,7 +8,8 @@ Owen：「翻譯沒有照著字義翻，而是翻成比較順的中文，會讓�
         → 客機上供應的餐點，一向以淡而無味而惡名昭彰。（舊：飛機上的餐點一直以來都以淡而無味出名。）
 輸入：assets/tcf/exam/_trans/<套>.json {"題號": "第一段\n第二段…"}，段數要跟 text_fr 的非空行一樣（一段配一段並排）
 做的事：備份 reading.json → 舊的意譯存進 src_zh_free（只存第一次）→ src_zh 換新 → 重跑 exam_build_mock_data.py
-跑法：python3 tools/reading_faithful_apply.py ce_5"""
+跑法：python3 tools/reading_faithful_apply.py ce_5
+⭐ 11-28 再修正（Owen：「忠實翻譯沒有每一句都比較好」「翻完之後也還是要對照一下」）：翻完要逐句對照舊版，每句挑「意思完整＋中文自然」的那版或融合重寫；慣用語照整塊意思翻，⛔ 拆字硬翻（做法見 TOKEN_QUEUE.md 5c）"""
 import json, os, shutil, subprocess, sys, time
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EX = os.path.join(ROOT, 'assets/tcf/exam')
