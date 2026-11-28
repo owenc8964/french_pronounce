@@ -632,6 +632,7 @@ function loadTest(id, cb) {
 
 /* ── start ───────────────────────────────────────────────────── */
 function startTest(id) {
+  glossLoad();   /* 11-28 Owen：選項的字點了沒有翻譯 → 第一次點兩下才開始載字義表（1.7 萬字），iPad 上要等幾秒、彈窗先顯示「…」；改成一開始做題就先載 */
   if (window.BL) BL.stop();
   loadTest(id, t => {
     if (!t) { alert('讀不到 ' + id + ' 的題目檔。'); return; }
@@ -1269,7 +1270,7 @@ function wordPopShow(el) {
   const phs = cps.concat(phs0.filter(x => !cps.some(c => c.e.fr.toLowerCase().replace(/\s+/g, ' ') === x.e.fr.toLowerCase())));
   const phRow = x => ({ ts: Date.now(), w: x.surf, lemma: x.e.fr, pos: 'PHR', f: '', zh: x.e.zh, test: P.t, q: +P.q, skill: P.k, res: P.r, sent, ph: x.ctx ? 'ctx' : 'auto' });
   if (P.t) vocabSend([row].concat(phs.map(phRow)));   /* 查過就記（統計用）；⭐ 才進複習 */
-  const ctxZh = P.o !== undefined ? '' : ((TCF_CTX[P.t] || {})[P.q] || {})[el.dataset.s] || '';   // 位置對的是原文，選項不能借用
+  const ctxZh = ((TCF_CTX[P.t] || {})[P.q] || {})[P.o !== undefined ? 'o' + P.o + '.' + el.dataset.s : el.dataset.s] || '';   // 選項的字鍵是 o選項序.位置（11-28），不能借原文的位置
   const nx = blk.nextElementSibling, lineZh = nx && (nx.classList.contains('zh-col') || nx.classList.contains('opt-zh')) ? nx.textContent.trim() : '';
   if (ctxZh) row.ctx = ctxZh;
   const render = () => {

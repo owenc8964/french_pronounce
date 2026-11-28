@@ -8,7 +8,7 @@
   python3 tools/exam_ctx.py prep co_4          → assets/tcf/exam/_ctx/work_co_4.json（給寫的人看：每題原文、中文、要寫的字）
   python3 tools/exam_ctx.py build co_4         → 讀 _ctx/co_4*.json（可分好幾份 part），檢查後寫 ctx/co_4.js（mock.html 載入）
 
-資料格式（_ctx/co_4.json 或 co_4.part1.json…）：{"題號": {"字的起始位置": "中文"}}
+資料格式（_ctx/co_4.json 或 co_4.part1.json…）：{"題號": {"字的起始位置": "中文"}}；選項的字鍵是 "o選項序.起始位置"（11-28，例 "o2.15"）
 ⚠️ assets/tcf/ 整個不進 git（考題版權），這支程式進 git。
 """
 import json, sys, glob, os, re
@@ -44,13 +44,24 @@ def targets(q):
     return out
 
 
+def targets_opts(q):
+    """11-28：選項裡的字也要「在這題的意思」（Owen：選項的某個字不懂，只有整句翻譯查不到單字）。鍵＝'o選項序.起始位置'"""
+    out = []
+    for i, (o, tk) in enumerate(zip(q.get('opts') or [], q.get('opts_tok') or [])):
+        for a, b, l, p, f in tk or []:
+            w = o[a:b]
+            if p in POS and re.search('[a-zA-Zà-ÿÀ-Ý]{2,}', w) and not re.fullmatch(r'[A-D]\.?', w) and w.lower() != 'correctanswer':
+                out.append(['o%d.%d' % (i, a), w, l or w, p, f or ''])
+    return out
+
+
 def prep(tid):
     t = load_test(tid)
     items = []
     for q in t['questions']:
-        tg = targets(q)
+        tg = targets(q) + targets_opts(q)
         if tg:
-            items.append({'q': q['q'], 'fr': text_of(q), 'zh': zh_of(q), 'words': tg})
+            items.append({'q': q['q'], 'fr': text_of(q), 'zh': zh_of(q), 'opts': q.get('opts') or [], 'opts_zh': q.get('opts_zh') or [], 'words': tg})
     os.makedirs(os.path.join(ROOT, '_ctx'), exist_ok=True)
     p = os.path.join(ROOT, '_ctx', 'work_' + tid + '.json')
     json.dump({'test': tid, 'items': items}, open(p, 'w', encoding='utf8'), ensure_ascii=False, indent=1)
@@ -72,7 +83,7 @@ def build(tid):
     want = 0; have = 0; bad = []
     out = {}
     for q in t['questions']:
-        tg = {str(w[0]): w for w in targets(q)}
+        tg = {str(w[0]): w for w in targets(q) + targets_opts(q)}
         want += len(tg)
         got = merged.get(str(q['q']), {})
         for s, zh in got.items():
