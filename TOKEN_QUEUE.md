@@ -250,6 +250,7 @@
 > 4. `python3 tools/exam_ctx.py build <套>` 要「N/N 個字有『在這題的意思』」、沒有「缺」「疑似簡體」警告；抽 10 個字對句子
 > 5. ⭐ **閱讀套（ce_）另外做忠實翻譯**（11-28 Owen：「對，就是忠實翻譯，照這個做」）：標準與範例見 `tools/reading_faithful_apply.py` 開頭（每個字的意思都在、不刪不加、仍是通順中文，⛔ 不照法文字序）；逐題寫 `assets/tcf/exam/_trans/<套>.json`（`{"題號": "一段一行"}`，段數＝text_fr 非空行數），再跑 `python3 tools/reading_faithful_apply.py <套>`（會備份 reading.json、舊意譯存 src_zh_free、重產 mock 資料）。範本：`_trans/ce_3.json`。**例外擴大到這一步可以改 reading.json 的 src_zh／src_zh_free**，其他欄位不准動。
 > 5b. ⭐ **聽力套（co_）也做忠實翻譯**（11-28 Owen：「聽力也改」）：一行對 script_fr 一行（有字母或數字的非空行），寫 `assets/tcf/exam/_trans/<套>.json`，再跑 `python3 tools/listening_faithful_apply.py <套>`（備份、舊中文存 script_zh_free、保留「答案」解析行、重產 mock 資料）。範本：`_trans/co_4.json`。例外：這一步可以改 listening.json 的 script_zh／script_zh_free／lined，其他欄位不准動。
+> 5c. ⭐⭐ **翻完一定要逐句對照舊版、留最理想的**（11-28 Owen：「忠實翻譯沒有每一句都比較好」「翻完之後也還是要對照一下，是不是有比較理想」）：每一句在「舊意譯／新忠實版／融合重寫」裡挑最好的，標準依序：① 意思完整正確（舊版常漏副詞、語氣、推測、連接詞；也不加原文沒有的）② 中文自然——慣用語、固定搭配、口語照整塊意思翻（反例：Vous allez nous apprendre des choses ⛔「您會教我們一些事情」→「您可以讓我們長點知識」；⛔「那些眾多幸福指南中的一本」這種照法文結構排的）③ 不犧牲自然的前提下實詞盡量對得回法文（單字另有「在這題的意思」）。範本：11-28 定稿的 `_trans/ce_3.json`、`_trans/co_4.json`。
 > 6. 打勾：`- [x] ✅ 日期 <套> N 字完成（並註明忠實翻譯 N 題）`
 > 順序：Owen 正在練的優先（查字紀錄 ce_3、co_4 最多；計畫是閱讀、聽力輪流），Test 35–44 留到最後（2027-04 診斷考前才做）。ce_3＋co_4 選項由 11-28 互動 session 做。
 
